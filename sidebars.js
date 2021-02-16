@@ -102,7 +102,7 @@ module.exports = {
       "legal/privacy-policy",
       "legal/cookie-policy"
   ],
-    "CONTACT": ["contact/bug-bounty"],
+    "CONTACT": ["contact/bug-bounty"]
 
   },
 };
