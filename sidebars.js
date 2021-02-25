@@ -1,5 +1,10 @@
 module.exports = {
-  docs: {
-    Docusaurus: ['index', 'doc1', 'doc2', 'doc3', 'mdx'],
-  },
+  docs: [
+    'index',
+    {
+      type: 'category',
+      label: 'Docusaurus',
+      items: ['doc1', 'doc2', 'doc3', 'mdx']
+    }
+  ]
 };
