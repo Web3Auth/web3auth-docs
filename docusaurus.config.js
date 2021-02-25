@@ -17,12 +17,6 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/',
-          activeBasePath: 'docs',
-          label: 'Docs',
-          position: 'left',
-        },
-        {
           href: 'https://dashboard.tor.us', // TODO: replace with actual dashboard link
           label: 'Dashboard',
           position: 'right',
@@ -76,7 +70,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Torus Labs Private Limited`,
     },
   },
   presets: [
