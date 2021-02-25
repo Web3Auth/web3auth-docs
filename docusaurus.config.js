@@ -149,7 +149,7 @@ module.exports = {
             'https://github.com/torusresearch/torus-documentation/edit/master/',
         },
         theme: {
-          customCss: require.resolve('./src/css/global.css'),
+          customCss: require.resolve('./styles.css'),
         },
       },
     ],
