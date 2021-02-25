@@ -27,15 +27,48 @@ module.exports = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: 'Users',
           items: [
             {
-              label: 'Style Guide',
-              to: 'docs/',
+              label: 'OpenLogin',
+              href: 'https://openlogin.com'
             },
             {
-              label: 'Second Doc',
-              to: 'docs/doc2/',
+              label: 'Torus Wallet',
+              href: 'https://app.tor.us/'
+            },
+            {
+              label: 'Torus Extension (coming soon)',
+              href: 'https://tor.us/media-kit.html#'
+            },
+          ],
+        },
+        {
+          title: 'Developers',
+          items: [
+            {
+              label: 'OpenLogin',
+              href: 'https://openlogin.com'
+            },
+            {
+              label: 'DirectAuth',
+              href: 'https://docs.tor.us/direct-auth/what-is-directauth'
+            },
+            {
+              label: 'Torus Embed',
+              href: 'https://docs.tor.us/torus-wallet/quick-start#integrate-via'
+            },
+            {
+              label: 'tKey',
+              href: 'https://hackmd.io/keVuRfrwSxygfyCfzsrQfw'
+            },
+            {
+              label: 'Status',
+              href: 'https://status.torusnode.com/'
+            },
+            {
+              label: 'Support',
+              href: 'https://t.me/torusdev'
             },
           ],
         },
@@ -43,34 +76,66 @@ module.exports = {
           title: 'Community',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              label: 'Telegram',
+              href: 'https://t.me/TorusLabs',
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
+              href: 'https://twitter.com/TorusLabs',
+            },
+            {
+              label: 'Medium',
+              href: 'https://tor.us/images/Exclude.png',
+            },
+            {
+              label: 'Github',
+              href: 'https://github.com/torusresearch/',
+            },
+            {
+              label: 'Reddit',
+              href: 'https://www.reddit.com/r/toruslabs',
+            },
+            {
+              label: 'LinkedIn',
+              href: 'https://www.linkedin.com/company/toruslabs',
+            },
+            {
+              label: 'YouTube',
+              href: 'https://www.youtube.com/c/toruslabs',
             },
           ],
         },
         {
-          title: 'More',
+          title: 'Company',
           items: [
             {
-              label: 'Blog',
-              to: 'blog',
+              label: 'About us',
+              to: 'https://tor.us/about-us.html',
             },
             {
-              label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              label: 'Partners',
+              href: 'https://tor.us/partners.html',
+            },
+            {
+              label: 'Career',
+              href: 'https://angel.co/company/torus-2'
+            },
+            {
+              label: 'Media kit',
+              href: 'https://tor.us/media-kit.html'
+            },
+            {
+              label: 'Blog',
+              href: 'https://medium.com/@TorusLabs'
+            },
+            {
+              label: 'Contact us',
+              href: 'https://tor.us/contact-us.html'
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Torus Labs Private Limited`,
+      copyright: `© ${new Date().getFullYear()} Torus Labs Private Limited`,
     },
   },
   presets: [
