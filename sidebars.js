@@ -13,13 +13,8 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Torus Wallet',
-      items: ['get-started'].map(name => `torus-wallet/${name}`)
-    },
-    {
-      type: 'category',
-      label: 'Docusaurus',
-      items: ['doc1', 'doc2', 'doc3', 'mdx'].map(name => `docusaurus/${name}`)
+      label: 'Torus Network',
+      items: ['get-started'].map(name => `torus-network/${name}`)
     },
   ]
 };
