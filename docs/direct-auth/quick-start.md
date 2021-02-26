@@ -1,7 +1,5 @@
 ---
-id: quick-start
 title: Quick Start
-sidebar_label: Quick Start
 ---
 
 Integrate DirectAuth in your web application today
@@ -48,7 +46,7 @@ const torus = new DirectWebSdk({
 await torus.init();
 ```
 
-6.  Trigger the login
+6. Trigger the login
 
 ```javascript
 const userInfo = await torus.triggerLogin({
