@@ -1,7 +1,7 @@
 module.exports = {
   docs: {
-    INTRODUCTION: ["overview", "getting-started"],
-    "DIRECT AUTH": [
+    Introduction: ["index", "overview", "getting-started"],
+    "Direct Auth": [
       "direct-auth/quick-start",
       "direct-auth/what-is-directauth",
       {
@@ -34,7 +34,7 @@ module.exports = {
       "direct-auth/examples",
       "direct-auth/faq",
     ],
-    "TORUS WALLET": [
+    "Torus Wallet": [
       "torus-wallet/quick-start",
       "torus-wallet/changelog",
       {
@@ -80,7 +80,7 @@ module.exports = {
       },
       "torus-wallet/integration-guidelines",
     ],
-    "HOW TORUS WORKS": [
+    "How Torus works": [
       "how-torus-works/system-architecture",
       "how-torus-works/role-of-torus-nodes",
       "how-torus-works/key-generation-and-resharing",
