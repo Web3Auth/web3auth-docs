@@ -1,11 +1,10 @@
 ---
 title: Role of Torus Nodes
-sidebar_label: Role of Torus Nodes
 ---
 
 This document describes the role of Torus Nodes that operate the Torus Network.
 
-#### Epochs
+## Epochs
 
 Torus nodes operate within a certain time period, called an epoch. Nodes within
 the same epoch are part of the same BFT network and hold key shares that are
@@ -14,7 +13,7 @@ The main purpose of epochs is to ensure that node operators can be removed and
 added, and to minimize the impact of loss of key shares or node failures over
 time.
 
-#### Initialization
+## Initialization
 
 When a Torus node is started, the node tries to register its connection details
 on an Ethereum smart contract. Once all nodes have been registered for that
@@ -22,7 +21,7 @@ epoch, they try to connect with each other to set up the BFT network, and start
 generating distributed keys. They also listen for incoming information from
 nodes in the previous epoch.
 
-#### Operation <a id="operation"></a>
+## Operation
 
 During operation, a Torus node runs three separate parallel process: one to map
 user IDs to keys, one to generate distributed key shares, and one to allow users
@@ -50,7 +49,7 @@ such, we are able to assign keys to accounts ahead of time, before that
 accounts' owner decides to login and reconstruct the key. This forms the basis
 for our account resolver APIs.
 
-#### Migration
+## Migration
 
 When an epoch comes to an end, the current node operators agree on the next
 epoch, and send information about the current mapping state and the existing
@@ -58,7 +57,7 @@ keys to the next set of nodes in the next epoch. This is done via typical
 reliable broadcast methods for the mapping, and PSS \(proactive secret sharing\)
 for the key shares.
 
-#### Trust Assumptions <a id="trust-assumptions"></a>
+## Trust Assumptions
 
 The Torus Network operates on two main threshold assumptions: a key generation
 threshold \(&gt;¼\)and a key retrieval threshold \(&gt;½\). Generating keys for
