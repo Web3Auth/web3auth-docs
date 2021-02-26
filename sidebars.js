@@ -90,11 +90,11 @@ module.exports = {
       "how-torus-works/dkg-specification",
       "how-torus-works/audits",
     ],
-    LEGAL: [
+    Legal: [
       "legal/terms-and-conditions",
       "legal/privacy-policy",
       "legal/cookie-policy",
     ],
-    CONTACT: ["contact/bug-bounty"],
+    Contact: ["contact/bug-bounty"],
   },
 };
