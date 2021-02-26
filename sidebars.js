@@ -39,7 +39,6 @@ module.exports = {
       "torus-wallet/changelog",
       {
         Features: [
-          "torus-wallet/features/README",
           "torus-wallet/features/accountrecovery",
           "torus-wallet/features/purchasecryptocurrency",
           "torus-wallet/features/erc721",
@@ -52,8 +51,7 @@ module.exports = {
         ],
       },
       {
-        "API REFERENCE": [
-          "torus-wallet/api-reference/README",
+        "API Reference": [
           "torus-wallet/api-reference/class",
           "torus-wallet/api-reference/account",
           "torus-wallet/api-reference/display",
@@ -64,7 +62,6 @@ module.exports = {
       },
       {
         "Developing with Torus Wallet": [
-          "torus-wallet/developing-with-torus-wallet/README",
           "torus-wallet/developing-with-torus-wallet/oauth",
           "torus-wallet/developing-with-torus-wallet/layer2",
           "torus-wallet/developing-with-torus-wallet/ganache",
@@ -72,11 +69,7 @@ module.exports = {
         ],
       },
       {
-        FAQ: [
-          "torus-wallet/faq-1/README",
-          "torus-wallet/faq-1/developers",
-          "torus-wallet/faq-1/users",
-        ],
+        FAQ: ["torus-wallet/faq-1/developers", "torus-wallet/faq-1/users"],
       },
       "torus-wallet/integration-guidelines",
     ],
