@@ -1,22 +1,27 @@
 ---
-
 title: Linking Accounts
 sidebar_label: Linking Accounts
-
 ---
 
+DirectAuth supports the linking of user accounts from various identity
+providers. This allows a user to authenticate from any of their accounts and
+still be recognized by your app and associated with the same public/private key.
 
-DirectAuth supports the linking of user accounts from various identity providers. This allows a user to authenticate from any of their accounts and still be recognized by your app and associated with the same public/private key.
-
-It is possible to link accounts via two methods; user initiated links between accounts after login or via a common unique identifier across logins used.
+It is possible to link accounts via two methods; user initiated links between
+accounts after login or via a common unique identifier across logins used.
 
 ### User Initiated Linking
 
-This process of linking accounts merges two existing user profiles into a single one. When linking accounts, a **primary login** and a **secondary login** must be specified.
+This process of linking accounts merges two existing user profiles into a single
+one. When linking accounts, a **primary login** and a **secondary login** must
+be specified.
 
-The way this works behind the scenes is we store the difference `nonce` between the primary login key A and secondary key B on a self-hosted/public storage layer \(e.g. IPFS with a cached server\) for future retrieval.
+The way this works behind the scenes is we store the difference `nonce` between
+the primary login key A and secondary key B on a self-hosted/public storage
+layer \(e.g. IPFS with a cached server\) for future retrieval.
 
-When next time when the user logs into his/her secondary login he/she reconstructs `privKeyA` through the sum of `nonce` and `privKeyB`
+When next time when the user logs into his/her secondary login he/she
+reconstructs `privKeyA` through the sum of `nonce` and `privKeyB`
 
 ```typescript
 // Connecting Login A with Login B
@@ -30,13 +35,21 @@ privKeyA = privKeyB + nonce
 
 #### Suggesting users to account link
 
-You can find accounts with the same email, and prompt the users to link them. For example, a user can create an account with Google with the user@gmail.com, and then log in with Facebook, with an account linked to the same email.
+You can find accounts with the same email, and prompt the users to link them.
+For example, a user can create an account with Google with the user@gmail.com,
+and then log in with Facebook, with an account linked to the same email.
 
-If that occurs, you can show users the list of available accounts so they can link them, by first authenticating with the account they will be linking to.
+If that occurs, you can show users the list of available accounts so they can
+link them, by first authenticating with the account they will be linking to.
 
 ### Common Unique Identifier
 
-Several logins in DirectAuth have common datafields for users. For example, Google and traditional email logins share that they use email accounts to identify a user. Take a look at [Supported Verifiers/Logins](supported-authenticators-verifiers.md) for more details here.
+Several logins in DirectAuth have common datafields for users. For example,
+Google and traditional email logins share that they use email accounts to
+identify a user. Take a look at
+[Supported Verifiers/Logins](supported-authenticators-verifiers.md) for more
+details here.
 
-We can automatically join accounts here via Aggregate Logins. There are some nuances here when considering how to join users, and mostly joins other than email are not recommended.
-
+We can automatically join accounts here via Aggregate Logins. There are some
+nuances here when considering how to join users, and mostly joins other than
+email are not recommended.

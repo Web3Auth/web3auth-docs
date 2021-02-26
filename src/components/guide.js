@@ -13,7 +13,9 @@ const Guide = ({ title }) => (
       </p>
     </div>
     <div class="card__footer">
-      <button class="button button--secondary button--block">Get started</button>
+      <button class="button button--secondary button--block">
+        Get started
+      </button>
     </div>
   </div>
 );

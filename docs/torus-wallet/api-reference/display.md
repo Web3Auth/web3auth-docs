@@ -1,10 +1,7 @@
 ---
-
 title: Display
 sidebar_label: Display
-
 ---
-
 
 show or hide wallet/button
 
@@ -22,7 +19,8 @@ torus.showWallet(path);
 
 **Parameters**
 
-* `path` - `enum` : The route of Torus wallet to open in the popup. Supported options are `transfer` `topup` `home` `settings` `history`
+- `path` - `enum` : The route of Torus wallet to open in the popup. Supported
+  options are `transfer` `topup` `home` `settings` `history`
 
 **Examples**
 
@@ -53,4 +51,3 @@ Hides the Torus default button from the user.
 ```javascript
 torus.hideTorusButton();
 ```
-

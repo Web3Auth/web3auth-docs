@@ -1,13 +1,13 @@
 ---
-
 title: Private Key Export
 sidebar_label: Private Key Export
-
 ---
 
-In the event where the user would like to export their private key and use their funds from a different wallet provider, they can export their private key from `Settings > Private Key`.
+In the event where the user would like to export their private key and use their
+funds from a different wallet provider, they can export their private key from
+`Settings > Private Key`.
 
-The soft copy of your Private key requires password protection. Please set a password to protect this file and keep a record of it offline.
+The soft copy of your Private key requires password protection. Please set a
+password to protect this file and keep a record of it offline.
 
 ![Export private key](../../../static/assets/privatekeyexport.png)
-

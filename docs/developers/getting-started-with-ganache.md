@@ -1,16 +1,18 @@
 ---
-
 title: Developing with Ganache
 sidebar_label: Developing with Ganache
-
 ---
 
 description: Install Ganache to run a local blockchain test-net on your machine.
 
 ---
 
-
-The torus website runs on `HTTPS`. The browser security model does not allow an insecure connection to a `HTTP` endpoint over `HTTPS`. Install the [npm package](https://www.npmjs.com/package/ganache-http-proxy) to proxy your `HTTP` traffic from Ganache through a `HTTPS` endpoint. The npm package redirects the traffic present on your Ganache port through `https://localhost:8545`.
+The torus website runs on `HTTPS`. The browser security model does not allow an
+insecure connection to a `HTTP` endpoint over `HTTPS`. Install the
+[npm package](https://www.npmjs.com/package/ganache-http-proxy) to proxy your
+`HTTP` traffic from Ganache through a `HTTPS` endpoint. The npm package
+redirects the traffic present on your Ganache port through
+`https://localhost:8545`.
 
 ## Install and run ganache-http-proxy
 
@@ -38,4 +40,3 @@ Chrome: Paste the following URL into the address bar.
 ```text
 chrome://flags/#allow-insecure-localhost
 ```
-

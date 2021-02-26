@@ -1,22 +1,22 @@
 module.exports = {
   docs: [
-    'index',
+    "index",
     {
-      type: 'category',
-      label: 'OpenLogin',
-      items: ['get-started'].map(name => `openlogin/${name}`)
+      type: "category",
+      label: "OpenLogin",
+      items: ["get-started"].map((name) => `openlogin/${name}`),
     },
     {
-      type: 'category',
-      label: 'DirectAuth',
-      items: ['get-started'].map(name => `directauth/${name}`)
+      type: "category",
+      label: "DirectAuth",
+      items: ["get-started"].map((name) => `directauth/${name}`),
     },
     {
-      type: 'category',
-      label: 'Torus Network',
-      items: ['get-started'].map(name => `torus-network/${name}`)
+      type: "category",
+      label: "Torus Network",
+      items: ["get-started"].map((name) => `torus-network/${name}`),
     },
-  ]
+  ],
   // docs: {
   //   "INTRODUCTION":['overview','getting-started'],
   //   "DIRECT AUTH": [
@@ -89,9 +89,9 @@ module.exports = {
   //         "torus-wallet/developing-with-torus-wallet/layer2",
   //         "torus-wallet/developing-with-torus-wallet/ganache",
   //         "torus-wallet/developing-with-torus-wallet/networklist",
-        
+
   //       ],
-        
+
   //     },
   //     {
   //       "FAQ":[
@@ -101,8 +101,6 @@ module.exports = {
   //       ]
   //     },
   //     "torus-wallet/integration-guidelines"
-  
-
 
   //   ],
   //   "HOW TORUS WORKS": [
@@ -124,7 +122,3 @@ module.exports = {
 
   // },
 };
-
-
-
-

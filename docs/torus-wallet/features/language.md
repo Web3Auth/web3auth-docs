@@ -1,14 +1,11 @@
 ---
-
 title: Language Support
 sidebar_label: Language Support
-
 ---
 
-
-Our wallet is currently available in English, German, Japanese, Korean, and Mandarin \(Chinese\).
+Our wallet is currently available in English, German, Japanese, Korean, and
+Mandarin \(Chinese\).
 
 ![](../../../static/assets/language-selection.png)
 
 ![](../../../static/assets/japanese-language.png)
-

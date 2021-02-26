@@ -1,52 +1,90 @@
 ---
-
 title: Logins, Key Assignments and Retrievals
 sidebar_label: Logins, Key Assignments and Retrievals
-
 ---
 
-
-Do also refer to this [high-level writeup](https://medium.com/toruslabs/key-assignments-resolution-and-retrieval-afb984500612)
+Do also refer to this
+[high-level writeup](https://medium.com/toruslabs/key-assignments-resolution-and-retrieval-afb984500612)
 
 #### Key Assignments <a id="key-assignments"></a>
 
-The keys are assigned to a combination of `verifier` \(e.g., Google, Reddit, Discord\) and `verifier_id` \(e.g., email, username\), which is a unique identifier respective to and provided by the `verifier`.‌ This assignment can be triggered by any node and is decided through the nodes consensus layer.
+The keys are assigned to a combination of `verifier` \(e.g., Google, Reddit,
+Discord\) and `verifier_id` \(e.g., email, username\), which is a unique
+identifier respective to and provided by the `verifier`.‌ This assignment can be
+triggered by any node and is decided through the nodes consensus layer.
 
 #### Verifiers and Key Retrieval <a id="verifiers-and-key-retrieval"></a>
 
 The fundamental flow for Torus sign-in is as follows:
 
-![Standard login with OAuth2 \(Google, Facebook, Apple, Reddit, Discord, Twitch\)](../../static/assets/image.png)
+![Standard login with OAuth2 (Google, Facebook, Apple, Reddit, Discord, Twitch)](../../static/assets/image.png)
 
-1. Your application gets the user to sign-in via their preferred method \(OAuth / email password / passwordless / verification code\).
-2. After the user gives consent/verify his/her email, Torus SDK will receive an ID token and assign a key to the user depending on User Verifier ID from ID Token.
-3. The key is retrieved from the Torus network and exposed to Web3 provider \(DApp\) to complete user sign-in request. 
-4. Torus uses this ID Token to check if the user’s profile information exists in the DApp.
-   1. If it does, the user will be signed in to the DApp with their preferred login. 
-   2. If it doesn’t, the user can create a new account on the DApp with their preferred login.
+1. Your application gets the user to sign-in via their preferred method \(OAuth
+   / email password / passwordless / verification code\).
+2. After the user gives consent/verify his/her email, Torus SDK will receive an
+   ID token and assign a key to the user depending on User Verifier ID from ID
+   Token.
+3. The key is retrieved from the Torus network and exposed to Web3 provider
+   \(DApp\) to complete user sign-in request.
+4. Torus uses this ID Token to check if the user’s profile information exists in
+   the DApp.
+   1. If it does, the user will be signed in to the DApp with their preferred
+      login.
+   2. If it doesn’t, the user can create a new account on the DApp with their
+      preferred login.
 
-In order to allow for general verifiers to be used instead of only allowing OAuth, we typically need at least two of these APIs to be implemented by the external verifier:‌
+In order to allow for general verifiers to be used instead of only allowing
+OAuth, we typically need at least two of these APIs to be implemented by the
+external verifier:‌
 
 1. an API that issues unique tokens when a user is logged in.
-2. an API that consumes these tokens and returns user information as well as when the token was issued.
+2. an API that consumes these tokens and returns user information as well as
+   when the token was issued.
 
-The first API must be accessible from the browser \(e.g. CORS-enabled, restricted headers\), in order to ensure that the Torus servers are not able to intercept the user's token \(front-running\).
+The first API must be accessible from the browser \(e.g. CORS-enabled,
+restricted headers\), in order to ensure that the Torus servers are not able to
+intercept the user's token \(front-running\).
 
-Typically any entity that fulfills these two APIs and provides signatures on unique ID strings and timestamp can be a verifier. This is extendable to several authentication schemes, including existing authentication standards like OAuth Token flow and OpenID Connect.‌
+Typically any entity that fulfills these two APIs and provides signatures on
+unique ID strings and timestamp can be a verifier. This is extendable to several
+authentication schemes, including existing authentication standards like OAuth
+Token flow and OpenID Connect.‌
 
 **Front-Running Protection**
 
-In order to prevent a rogue node, or the Torus servers, from front-running you by taking your token, impersonating your login, and thereby stealing your key, we use a commitment scheme on our token similar to Bracha's Reliable Broadcast, to ensure that all nodes can be sure that a threshold number of other nodes are aware of the commitment, before it is finally revealed.‌
+In order to prevent a rogue node, or the Torus servers, from front-running you
+by taking your token, impersonating your login, and thereby stealing your key,
+we use a commitment scheme on our token similar to Bracha's Reliable Broadcast,
+to ensure that all nodes can be sure that a threshold number of other nodes are
+aware of the commitment, before it is finally revealed.‌
 
-The general approach is as follows: we ensure that the front-end gets access to the token first, creates a commitment to the token and a temporary public-private keypair, and reveals the token only if a threshold number of nodes accept this commitment. The nodes will then use this keypair to encrypt the shares before sending it to the user.
+The general approach is as follows: we ensure that the front-end gets access to
+the token first, creates a commitment to the token and a temporary
+public-private keypair, and reveals the token only if a threshold number of
+nodes accept this commitment. The nodes will then use this keypair to encrypt
+the shares before sending it to the user.
 
-This is done by generating a temporary public-private keypair in the front-end. The front-end calls the first API and receives an authentication token. This token is hashed, and the front-end sends the token hash and the temporary public key to each node, and each node returns a signature on this message, if this is the first time they have seen this token commitment. A bundle of these signatures is the proof, and submitting the proof together with the plain \(unhashed token\) to each node results in the node responding with a key share that is encrypted with the temporary public key.
+This is done by generating a temporary public-private keypair in the front-end.
+The front-end calls the first API and receives an authentication token. This
+token is hashed, and the front-end sends the token hash and the temporary public
+key to each node, and each node returns a signature on this message, if this is
+the first time they have seen this token commitment. A bundle of these
+signatures is the proof, and submitting the proof together with the plain
+\(unhashed token\) to each node results in the node responding with a key share
+that is encrypted with the temporary public key.
 
-**Attack 1: Front-runner intercepts the original commitment request and sends a modified public key**
+**Attack 1: Front-runner intercepts the original commitment request and sends a
+modified public key**
 
-In this case, the user will not receive a threshold number of signatures, and thus will not reveal their token. They will then be required to login again and request for a new token. Since the requests to the nodes are made in a random order, eventually a threshold honest set can be reached before a front-runner receives the commitment request.
+In this case, the user will not receive a threshold number of signatures, and
+thus will not reveal their token. They will then be required to login again and
+request for a new token. Since the requests to the nodes are made in a random
+order, eventually a threshold honest set can be reached before a front-runner
+receives the commitment request.
 
-**Attack 2: Front-runner intercepts the reveal request and resends it to other nodes**
+**Attack 2: Front-runner intercepts the reveal request and resends it to other
+nodes**
 
-Since a public key is already associated with the token in the commitment request, nodes will only respond with encrypted shares. Even if a front-runner intercepts the encrypted shares, they will be unable to decrypt it.
-
+Since a public key is already associated with the token in the commitment
+request, nodes will only respond with encrypted shares. Even if a front-runner
+intercepts the encrypted shares, they will be unable to decrypt it.

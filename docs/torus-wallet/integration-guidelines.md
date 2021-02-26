@@ -1,27 +1,22 @@
 ---
-
 title: Integration Examples
 sidebar_label: Integration Examples
-
 ---
 
+We have shortlisted the top 3 applications for your easy reference on how Torus
+Wallet is integrated:
 
-
-We have shortlisted the top 3 applications for your easy reference on how Torus Wallet is integrated:
-
-* [KyberSwap - Fast and simple way to exchange Ethereum tokens](https://kyberswap.com/swap/eth-knc)
+- [KyberSwap - Fast and simple way to exchange Ethereum tokens](https://kyberswap.com/swap/eth-knc)
 
 ![](../../static/assets/kyber-swap.png)
 
-* [DDEX - Decentralized Margin Trading](https://ddex.io/margin/ETH-USDT)
+- [DDEX - Decentralized Margin Trading](https://ddex.io/margin/ETH-USDT)
 
 ![](../../static/assets/ddex.png)
 
-* [1inchexchange - DEX Aggregator with the best prices on the market.](https://1inch.exchange/#/)
+- [1inchexchange - DEX Aggregator with the best prices on the market.](https://1inch.exchange/#/)
 
 ![](../../static/assets/1inch.png)
 
-For code snippets from Torus on how to integrate, do also [check these out](https://github.com/torusresearch/torus-embed/tree/master/examples)
-
-
-
+For code snippets from Torus on how to integrate, do also
+[check these out](https://github.com/torusresearch/torus-embed/tree/master/examples)

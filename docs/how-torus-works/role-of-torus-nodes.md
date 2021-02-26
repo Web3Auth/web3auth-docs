@@ -1,40 +1,72 @@
 ---
-
 title: Role of Torus Nodes
 sidebar_label: Role of Torus Nodes
-
 ---
-
 
 This document describes the role of Torus Nodes that operate the Torus Network.
 
 #### Epochs
 
-Torus nodes operate within a certain time period, called an epoch. Nodes within the same epoch are part of the same BFT network and hold key shares that are compatible with each others' key shares. Nodes within different epochs do not. The main purpose of epochs is to ensure that node operators can be removed and added, and to minimize the impact of loss of key shares or node failures over time.
+Torus nodes operate within a certain time period, called an epoch. Nodes within
+the same epoch are part of the same BFT network and hold key shares that are
+compatible with each others' key shares. Nodes within different epochs do not.
+The main purpose of epochs is to ensure that node operators can be removed and
+added, and to minimize the impact of loss of key shares or node failures over
+time.
 
 #### Initialization
 
-When a Torus node is started, the node tries to register its connection details on an Ethereum smart contract. Once all nodes have been registered for that epoch, they try to connect with each other to set up the BFT network, and start generating distributed keys. They also listen for incoming information from nodes in the previous epoch.
+When a Torus node is started, the node tries to register its connection details
+on an Ethereum smart contract. Once all nodes have been registered for that
+epoch, they try to connect with each other to set up the BFT network, and start
+generating distributed keys. They also listen for incoming information from
+nodes in the previous epoch.
 
 #### Operation <a id="operation"></a>
 
-During operation, a Torus node runs three separate parallel process: one to map user IDs to keys, one to generate distributed key shares, and one to allow users to retrieve their shares.
+During operation, a Torus node runs three separate parallel process: one to map
+user IDs to keys, one to generate distributed key shares, and one to allow users
+to retrieve their shares.
 
-The mapping process primarily interacts with the BFT layer, which allows nodes to share state on which keys belong to which users. When a new user requests for a key, the node submits a BFT transaction that modifies this state. Existing users who have logged in are compared against this shared state to ensure that they retrieve the correct key share.
+The mapping process primarily interacts with the BFT layer, which allows nodes
+to share state on which keys belong to which users. When a new user requests for
+a key, the node submits a BFT transaction that modifies this state. Existing
+users who have logged in are compared against this shared state to ensure that
+they retrieve the correct key share.
 
-The distributed key generation process primarily uses libp2p for communication between nodes, and generates a buffer of shared keys, in order to reduce the average response time for key assignments for new users.
+The distributed key generation process primarily uses libp2p for communication
+between nodes, and generates a buffer of shared keys, in order to reduce the
+average response time for key assignments for new users.
 
-The share retrieval process starts when a user wishes to retrieve their keys. They individually submit their OAuth token via a commit-reveal scheme to the nodes, and once this OAuth token is checked for uniqueness and validity, each node returns the user's \(encrypted\) key share. This does not require communication between the nodes.
+The share retrieval process starts when a user wishes to retrieve their keys.
+They individually submit their OAuth token via a commit-reveal scheme to the
+nodes, and once this OAuth token is checked for uniqueness and validity, each
+node returns the user's \(encrypted\) key share. This does not require
+communication between the nodes.
 
-Assignments of keys to new users only require interaction with the mapping process, assuming that there is at least one unassigned key in the buffer. As such, we are able to assign keys to accounts ahead of time, before that accounts' owner decides to login and reconstruct the key. This forms the basis for our account resolver APIs.
+Assignments of keys to new users only require interaction with the mapping
+process, assuming that there is at least one unassigned key in the buffer. As
+such, we are able to assign keys to accounts ahead of time, before that
+accounts' owner decides to login and reconstruct the key. This forms the basis
+for our account resolver APIs.
 
 #### Migration
 
-When an epoch comes to an end, the current node operators agree on the next epoch, and send information about the current mapping state and the existing keys to the next set of nodes in the next epoch. This is done via typical reliable broadcast methods for the mapping, and PSS \(proactive secret sharing\) for the key shares.
+When an epoch comes to an end, the current node operators agree on the next
+epoch, and send information about the current mapping state and the existing
+keys to the next set of nodes in the next epoch. This is done via typical
+reliable broadcast methods for the mapping, and PSS \(proactive secret sharing\)
+for the key shares.
 
 #### Trust Assumptions <a id="trust-assumptions"></a>
 
-The Torus Network operates on two main threshold assumptions: a key generation threshold \(&gt;¼\)and a key retrieval threshold \(&gt;½\). Generating keys for new users requires more than ¾ of the nodes to be operating honestly, and reconstructing keys for existing users requires &gt;½ of the nodes to be operating honestly. For more information, refer to the dual-threshold construction in [AVSS](https://eprint.iacr.org/2002/134.pdf).
+The Torus Network operates on two main threshold assumptions: a key generation
+threshold \(&gt;¼\)and a key retrieval threshold \(&gt;½\). Generating keys for
+new users requires more than ¾ of the nodes to be operating honestly, and
+reconstructing keys for existing users requires &gt;½ of the nodes to be
+operating honestly. For more information, refer to the dual-threshold
+construction in [AVSS](https://eprint.iacr.org/2002/134.pdf).
 
-While most other secret sharing schemes use ⅔ honest majority with a &gt;⅓ reconstruction threshold, our preference for total system failure over key theft favors the former thresholds.‌
-
+While most other secret sharing schemes use ⅔ honest majority with a &gt;⅓
+reconstruction threshold, our preference for total system failure over key theft
+favors the former thresholds.‌

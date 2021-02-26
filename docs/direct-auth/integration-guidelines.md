@@ -1,27 +1,21 @@
 ---
-
 title: Integration Guidelines
 sidebar_label: Integration Guidelines
+---
+
+At Torus, user experience is key. The following serves as a guideline to create
+a seamless experience for your application to onboard users.
 
 ---
 
+It would be ideal for DirectAuth branding \(Image A\) to be located at the
+bottom of your Sign in page \(Refer to Image B and C below\).
 
+![Image A: DirectAuth branding (Light Mode)](../../static/assets/directauth-logo.png)
 
-At Torus, user experience is key. The following serves as a guideline to
-create a seamless experience for your application to onboard users.
+![Image B: Application Sign in (Pop Up)](../../static/assets/app-signin-popup.png)
 
----
-
-
-It would be ideal for DirectAuth branding \(Image A\) to be located at the bottom of your Sign in page \(Refer to Image B and C below\).
-
-![Image A: DirectAuth branding \(Light Mode\)](../../static/assets/directauth-logo.png)
-
-![Image B: Application Sign in \(Pop Up\)](../../static/assets/app-signin-popup.png)
-
-![Image C: Application Sign in \(Full Page\)](../../static/assets/app-sign-in-full-screen.png)
-
-
+![Image C: Application Sign in (Full Page)](../../static/assets/app-sign-in-full-screen.png)
 
 ## **A separate version in Dark Mode is available**
 
@@ -30,4 +24,3 @@ It would be ideal for DirectAuth branding \(Image A\) to be located at the botto
 ![](../../static/assets/app-signin-popup-dark-mode.png)
 
 ![](../../static/assets/app-sign-in-full-screen-dark-mode.png)
-
