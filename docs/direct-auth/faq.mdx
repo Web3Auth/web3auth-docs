@@ -1,6 +1,5 @@
 ---
 title: FAQ
-sidebar_label: FAQ
 ---
 
 ## What is a verifier?
@@ -34,16 +33,16 @@ correctly by navigating to `baseUrl/redirect#a=123`. It should show a loader
 For nginx, here is a simple server configuration
 
 ```text
-    location ~* (/serviceworker/redirect) {
-            add_header 'Access-Control-Allow-Origin' '*';
-            add_header Content-Security-Policy "default-src https:; script-src https: 'unsafe-inline' 'unsafe-eval'; style-src https: 'unsafe-inline';";
-            add_header X-Content-Type-Options nosniff;
-            add_header X-XSS-Protection "1; mode=block";
-            add_header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload";
-            default_type "text/html";
-            alias PATH_TO_REDIRECT_HTML_FILE;
-            autoindex off;
-    }
+location ~* (/serviceworker/redirect) {
+  add_header 'Access-Control-Allow-Origin' '*';
+  add_header Content-Security-Policy "default-src https:; script-src https: 'unsafe-inline' 'unsafe-eval'; style-src https: 'unsafe-inline';";
+  add_header X-Content-Type-Options nosniff;
+  add_header X-XSS-Protection "1; mode=block";
+  add_header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload";
+  default_type "text/html";
+  alias PATH_TO_REDIRECT_HTML_FILE;
+  autoindex off;
+}
 ```
 
 Alternatively, you can configure your redirect url to include redirect.html by
