@@ -1,6 +1,6 @@
 module.exports = {
   docs: {
-    Introduction: ["index", "overview", "getting-started"],
+    Introduction: ["overview", "getting-started"],
     "Direct Auth": [
       "direct-auth/quick-start",
       "direct-auth/what-is-directauth",
