@@ -17,6 +17,11 @@ module.exports = {
       },
       items: [
         {
+          to: "integration-builder",
+          label: "Integration Builder",
+          position: "right",
+        },
+        {
           href: "https://dashboard.tor.us", // TODO: replace with actual dashboard link
           label: "Dashboard",
           position: "right",
