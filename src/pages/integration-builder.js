@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Layout from "@theme/Layout";
 import classNames from "classnames";
+import buildExample from "../libs/example-builder";
 
 const products = {
   directAuth: {
@@ -112,6 +113,7 @@ export default function IntegrationBuilderPage() {
             </div>
           ))}
         </div>
+        {buildExample(selection)}
       </div>
     </Layout>
   );
