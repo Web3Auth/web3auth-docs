@@ -1,6 +1,15 @@
 import React from "react";
 import Layout from "@theme/Layout";
 
+/**
+ * TODO:
+ *
+ * - [ ] Top level options
+ * - [ ] Product options
+ * - [ ] Content part
+ * - [ ] Code block
+ */
+
 export default function IntegrationBuilderPage() {
   return (
     <Layout title="Hello">
@@ -9,13 +18,23 @@ export default function IntegrationBuilderPage() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "50vh",
           fontSize: "20px",
         }}
       >
-        <p>
-          Edit <code>pages/hello.js</code> and save to reload.
-        </p>
+        <div className="templates-group">
+          <span>Language/Framework:</span>
+          <ul>
+            <li>Web</li>
+            <li>iOS</li>
+            <li>Android</li>
+          </ul>
+        </div>
+        <div className="products-group">
+          <ul>
+            <li>DirectAuth</li>
+            <li>Torus Wallet</li>
+          </ul>
+        </div>
       </div>
     </Layout>
   );
