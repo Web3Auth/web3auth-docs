@@ -9,6 +9,7 @@ module.exports = {
           "direct-auth/integrating-directauth/README",
           "direct-auth/integrating-directauth/designing-your-key-management-architecture",
           "direct-auth/integrating-directauth/deploying-on-the-torus-network",
+          "direct-auth/integrating-directauth/integrate-with-different-networks",
         ],
       },
       {
