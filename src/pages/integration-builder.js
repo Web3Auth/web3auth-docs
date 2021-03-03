@@ -71,9 +71,9 @@ export default function IntegrationBuilderPage() {
     <Layout title="Hello">
       <div className={styles.container}>
         {/* List of options */}
-        <div className={styles.optionsContainer}>
+        <div className={styles.header}>
           {Object.entries(selection.product.options).map(([key, param]) => (
-            <div className={styles.optionChoices} key={key}>
+            <div className={styles.optionContainer} key={key}>
               <span className={styles.optionLabel}>{param.displayName}:</span>
               <ul className="pills">
                 {param.choices.map((opt) => (
@@ -91,24 +91,31 @@ export default function IntegrationBuilderPage() {
             </div>
           ))}
         </div>
-        <h1>{selection.product.displayName}</h1>
-        <div>
-          {/* List of products */}
-          <ul className="pills">
-            {Object.entries(products).map(([key, product]) => (
-              <li
-                key={key}
-                className={classNames("pills__item", {
-                  "pills__item--active": product === selection.product,
-                })}
-                onClick={() => selectProduct(key)}
-              >
-                {product.displayName}
-              </li>
-            ))}
-          </ul>
+        <div className={styles.body}>
+          <div className={styles.contentContainer}>
+            <h1>{selection.product.displayName}</h1>
+            <div>
+              {/* List of products */}
+              <ul className="pills">
+                {Object.entries(products).map(([key, product]) => (
+                  <li
+                    key={key}
+                    className={classNames("pills__item", {
+                      "pills__item--active": product === selection.product,
+                    })}
+                    onClick={() => selectProduct(key)}
+                  >
+                    {product.displayName}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className={styles.stepsContainer}>
+              {buildExample(selection)}
+            </div>
+          </div>
+          <div className={styles.srcFilesContainer}>Source files</div>
         </div>
-        <div className={styles.stepsContainer}>{buildExample(selection)}</div>
       </div>
     </Layout>
   );

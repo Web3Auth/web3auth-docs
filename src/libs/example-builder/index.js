@@ -2,11 +2,12 @@ import React from "react";
 
 const StepOne = () => (
   <div>
-    <h3>Install the Stripe.net library</h3>
+    <h3>Install the DirectAuth Web SDK</h3>
     <p>
-      Install the package with dotnet or NuGet. Alternatively, if you are
-      starting from scratch and need a .csproj file, download the files using
-      the Download link in the code editor.
+      Install the package using npm or yarn: Install the package using npm or
+      yarn:Install the package using npm or yarn:Install the package using npm
+      or yarn:Install the package using npm or yarn:Install the package using
+      npm or yarn:Install the package using npm or yarn:
     </p>
     <pre>
       <code>npm i @toruslabs/torus-direct-web-sdk</code>
@@ -17,6 +18,18 @@ const StepOne = () => (
 export default function buildExample() {
   return (
     <div>
+      <StepOne />
+      <StepOne />
+      <StepOne />
+      <StepOne />
+      <StepOne />
+      <StepOne />
+      <StepOne />
+      <StepOne />
+      <StepOne />
+      <StepOne />
+      <StepOne />
+      <StepOne />
       <StepOne />
     </div>
   );
