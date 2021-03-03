@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Layout from "@theme/Layout";
+import SourceFiles from "../components/source-files";
 import classNames from "classnames";
 import styles from "./integration-builder.module.css";
 import buildExample from "../libs/example-builder";
@@ -114,7 +115,9 @@ export default function IntegrationBuilderPage() {
               {buildExample(selection)}
             </div>
           </div>
-          <div className={styles.srcFilesContainer}>Source files</div>
+          <div className={styles.srcFilesContainer}>
+            <SourceFiles />
+          </div>
         </div>
       </div>
     </Layout>
