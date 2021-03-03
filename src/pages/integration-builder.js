@@ -10,7 +10,7 @@ const products = {
     options: {
       blockchain: {
         displayName: "Blockchain",
-        choices: ["Ethereum", "Solana", "Conflux"],
+        choices: ["Ethereum", "Conflux"],
         defaultChoice: "Ethereum",
       },
       framework: {
@@ -25,7 +25,7 @@ const products = {
     options: {
       blockchain: {
         displayName: "Blockchain",
-        choices: ["Ethereum", "Solana", "Conflux"],
+        choices: ["Ethereum", "Solana"],
         defaultChoice: "Ethereum",
       },
       framework: {
