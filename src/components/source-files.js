@@ -1,6 +1,15 @@
 import React from "react";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import CodeBlock from "./code-block";
+
+const code = `(function someDemo() {
+  var test = "Hello World!";
+  console.log(test);
+})();
+
+return () => <App />;
+`;
 
 export default function SourceFilesView() {
   return (
@@ -15,7 +24,9 @@ export default function SourceFilesView() {
         { label: "serviceworker/sw.js", value: "serviceworker/sw.js" },
       ]}
     >
-      <TabItem value="App.js">App.js</TabItem>
+      <TabItem value="App.js">
+        <CodeBlock code={code} language="jsx" />
+      </TabItem>
       <TabItem value="serviceworker/redirect.html">
         serviceworker/redirect.html
       </TabItem>
