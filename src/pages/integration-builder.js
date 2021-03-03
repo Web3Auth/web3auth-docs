@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Layout from "@theme/Layout";
 import classNames from "classnames";
+import styles from "./integration-builder.module.css";
 import buildExample from "../libs/example-builder";
 
 const products = {
@@ -68,35 +69,12 @@ export default function IntegrationBuilderPage() {
 
   return (
     <Layout title="Hello">
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "20px",
-        }}
-      >
-        <h1>{selection.product.displayName}</h1>
-        {/* List of products */}
-        <ul className="pills">
-          {Object.entries(products).map(([key, product]) => (
-            <li
-              key={key}
-              className={classNames("pills__item", {
-                "pills__item--active": product === selection.product,
-              })}
-              onClick={() => selectProduct(key)}
-            >
-              {product.displayName}
-            </li>
-          ))}
-        </ul>
+      <div className={styles.container}>
         {/* List of options */}
-        <div>
+        <div className={styles.optionsContainer}>
           {Object.entries(selection.product.options).map(([key, param]) => (
-            <div key={key}>
-              <span>{param.displayName}</span>
+            <div className={styles.optionChoices} key={key}>
+              <span className={styles.optionLabel}>{param.displayName}:</span>
               <ul className="pills">
                 {param.choices.map((opt) => (
                   <li
@@ -113,7 +91,24 @@ export default function IntegrationBuilderPage() {
             </div>
           ))}
         </div>
-        {buildExample(selection)}
+        <h1>{selection.product.displayName}</h1>
+        <div>
+          {/* List of products */}
+          <ul className="pills">
+            {Object.entries(products).map(([key, product]) => (
+              <li
+                key={key}
+                className={classNames("pills__item", {
+                  "pills__item--active": product === selection.product,
+                })}
+                onClick={() => selectProduct(key)}
+              >
+                {product.displayName}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className={styles.stepsContainer}>{buildExample(selection)}</div>
       </div>
     </Layout>
   );
