@@ -1,3 +1,5 @@
+const path = require("path");
+
 module.exports = {
   title: "Torus Documentation",
   tagline: "Flexible, Universal Key Management",
@@ -159,5 +161,8 @@ module.exports = {
         },
       },
     ],
+  ],
+  plugins: [
+    path.resolve(__dirname, "plugins", "docusaurus-plugin-mdx-component"),
   ],
 };

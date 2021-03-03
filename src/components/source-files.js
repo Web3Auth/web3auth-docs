@@ -1,7 +1,6 @@
 import React from "react";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import styles from "./source-files.module.css";
 
 export default function SourceFilesView() {
   return (
