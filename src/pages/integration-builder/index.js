@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Layout from "@theme/Layout";
-import SourceFiles from "../components/source-files";
+import SourceFiles from "../../components/source-files";
 import classNames from "classnames";
-import styles from "./integration-builder.module.css";
-import buildExample from "../libs/example-builder";
+import buildExample from "../../libs/example-builder";
+import styles from "./index.module.css";
 
 const products = {
   directAuth: {
@@ -70,52 +70,50 @@ export default function IntegrationBuilderPage() {
 
   return (
     <Layout title="Hello">
-      <div className={styles.container}>
+      <div className={styles.header}>
         {/* List of options */}
-        <div className={styles.header}>
-          {Object.entries(selection.product.options).map(([key, param]) => (
-            <div className={styles.optionContainer} key={key}>
-              <span className={styles.optionLabel}>{param.displayName}:</span>
-              <ul className="pills">
-                {param.choices.map((opt) => (
-                  <li
-                    key={opt}
-                    className={classNames("pills__item", {
-                      "pills__item--active": opt === selection.params[key],
-                    })}
-                    onClick={() => setParam(key, opt)}
-                  >
-                    {opt}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+        {Object.entries(selection.product.options).map(([key, param]) => (
+          <div className={styles.optionContainer} key={key}>
+            <span className={styles.optionLabel}>{param.displayName}:</span>
+            <ul className="pills">
+              {param.choices.map((opt) => (
+                <li
+                  key={opt}
+                  className={classNames("pills__item", {
+                    "pills__item--active": opt === selection.params[key],
+                  })}
+                  onClick={() => setParam(key, opt)}
+                >
+                  {opt}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <div className={styles.content}>
         <div className={styles.body}>
-          <div className={styles.contentContainer}>
+          <div className={styles.leftCol}>
             <h1>{selection.product.displayName}</h1>
-            <div>
-              {/* List of products */}
-              <ul className="pills">
-                {Object.entries(products).map(([key, product]) => (
-                  <li
-                    key={key}
-                    className={classNames("pills__item", {
-                      "pills__item--active": product === selection.product,
-                    })}
-                    onClick={() => selectProduct(key)}
-                  >
-                    {product.displayName}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {/* List of products */}
+            <ul className="pills">
+              {Object.entries(products).map(([key, product]) => (
+                <li
+                  key={key}
+                  className={classNames("pills__item", {
+                    "pills__item--active": product === selection.product,
+                  })}
+                  onClick={() => selectProduct(key)}
+                >
+                  {product.displayName}
+                </li>
+              ))}
+            </ul>
             <div className={styles.stepsContainer}>
               {buildExample(selection)}
             </div>
           </div>
-          <div className={styles.srcFilesContainer}>
+          <div className={styles.rightCol}>
             <SourceFiles />
           </div>
         </div>
