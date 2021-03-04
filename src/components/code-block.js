@@ -1,11 +1,12 @@
 import React from "react";
 import Highlight, { defaultProps } from "prism-react-renderer";
 import classNames from "classnames";
+import theme from "prism-react-renderer/themes/palenight";
 import styles from "./code-block.module.css";
 
 export default function CodeBlock({ code, language }) {
   return (
-    <Highlight {...defaultProps} code={code} language={language}>
+    <Highlight {...defaultProps} theme={theme} code={code} language={language}>
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <pre className={classNames(styles.pre, className)} style={style}>
           {tokens.map((line, i) => (
