@@ -174,6 +174,7 @@ export default function IntegrationBuilderPage() {
                   <CodeView
                     code={DirectAuthContents.AppJS.code}
                     language={DirectAuthContents.AppJS.language}
+                    hightlight="2-5,8-9"
                   />
                 </TabItem>
                 <TabItem value="redirect.html">This is an orange 🍊</TabItem>
