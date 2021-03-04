@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import Layout from "@theme/Layout";
+import Step from "../../components/step";
 import classNames from "classnames";
 import styles from "./styles.module.css";
+
+import * as DirectAuthSteps from "../../libs/integration-builder-v2/direct-auth";
 
 const products = [
   {
@@ -45,16 +48,32 @@ function getDefaultOptions(product) {
   );
 }
 
+function getIntegrationData() {
+  return {
+    steps: [
+      <DirectAuthSteps.InstallWebSDK />,
+      <DirectAuthSteps.InstantiateSDKInstance />,
+      <DirectAuthSteps.ServeServiceWorker />,
+      <DirectAuthSteps.ServeRedirectPage />,
+      <DirectAuthSteps.TriggerLogin />,
+    ],
+  };
+}
+
 export default function IntegrationBuilderPage() {
   const [selectedProduct, setSelectedProduct] = useState({
     index: 0,
+    step: -1,
     options: getDefaultOptions(products[0]),
   });
+
+  const integration = getIntegrationData();
 
   const onClickProduct = (index) => {
     if (index === selectedProduct.index) return;
     setSelectedProduct({
       index,
+      step: -1,
       options: getDefaultOptions(products[index]),
     });
   };
@@ -63,10 +82,19 @@ export default function IntegrationBuilderPage() {
     if (selectedProduct.options[option] === choice) return;
     setSelectedProduct({
       ...selectedProduct,
+      step: -1,
       options: {
         ...selectedProduct.options,
         [option]: choice,
       },
+    });
+  };
+
+  const onClickStep = (step) => {
+    if (selectedProduct.step === step) return;
+    setSelectedProduct({
+      ...selectedProduct,
+      step,
     });
   };
 
@@ -82,7 +110,7 @@ export default function IntegrationBuilderPage() {
                 {option.choices.map((choice) => (
                   <li
                     key={choice}
-                    className={classNames("pills__item", {
+                    className={classNames("pills__item", styles.optionChoice, {
                       "pills__item--active":
                         selectedProduct.options[key] === choice,
                     })}
@@ -116,7 +144,17 @@ export default function IntegrationBuilderPage() {
                 ))}
               </ul>
             </div>
-            <div className={styles.stepsContainer}></div>
+            <div>
+              {integration.steps.map((step, index) => (
+                <Step
+                  key={index}
+                  isSelected={index === selectedProduct.step}
+                  onClick={onClickStep.bind(this, index)}
+                >
+                  {step}
+                </Step>
+              ))}
+            </div>
           </div>
           <div className={styles.rightCol}></div>
         </div>
