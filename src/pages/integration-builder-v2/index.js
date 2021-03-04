@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import Layout from "@theme/Layout";
 import Step from "../../components/step";
 import CodeView from "../../components/code-view";
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
 import classNames from "classnames";
 import styles from "./styles.module.css";
 
@@ -54,11 +52,26 @@ function getDefaultOptions(product) {
 function getIntegrationData() {
   return {
     steps: [
-      <DirectAuthContents.InstallWebSDK />,
-      <DirectAuthContents.InstantiateSDKInstance />,
-      <DirectAuthContents.ServeServiceWorker />,
-      <DirectAuthContents.ServeRedirectPage />,
-      <DirectAuthContents.TriggerLogin />,
+      {
+        pointer: ["App.js", "3"],
+        component: <DirectAuthContents.InstallWebSDK />,
+      },
+      {
+        pointer: ["App.js", "137-141"],
+        component: <DirectAuthContents.InstantiateSDKInstance />,
+      },
+      {
+        pointer: ["sw.js"],
+        component: <DirectAuthContents.ServeServiceWorker />,
+      },
+      {
+        pointer: ["redirect.html"],
+        component: <DirectAuthContents.ServeRedirectPage />,
+      },
+      {
+        pointer: ["App.js", "158-163"],
+        component: <DirectAuthContents.TriggerLogin />,
+      },
     ],
     sourceFiles: [
       DirectAuthContents.AppJS,
@@ -76,6 +89,10 @@ export default function IntegrationBuilderPage() {
   });
 
   const integration = getIntegrationData();
+
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [hightlightRange, setHightlightRange] = useState();
+  const selectedSourceFile = integration.sourceFiles[selectedTab];
 
   const onClickProduct = (index) => {
     if (index === selectedProduct.index) return;
@@ -100,10 +117,23 @@ export default function IntegrationBuilderPage() {
 
   const onClickStep = (step) => {
     if (selectedProduct.step === step) return;
+
     setSelectedProduct({
       ...selectedProduct,
       step,
     });
+
+    const stepIntegration = integration.steps[step];
+    const tab = integration.sourceFiles.findIndex(
+      (it) => it.name === stepIntegration.pointer[0]
+    );
+    setSelectedTab(tab);
+    setHightlightRange(stepIntegration.pointer[1]);
+  };
+
+  const onClickTab = (index) => {
+    setHightlightRange();
+    setSelectedTab(index);
   };
 
   return (
@@ -159,27 +189,42 @@ export default function IntegrationBuilderPage() {
                   isSelected={index === selectedProduct.step}
                   onClick={onClickStep.bind(this, index)}
                 >
-                  {step}
+                  {step.component}
                 </Step>
               ))}
             </div>
           </div>
           <div className={styles.rightCol}>
             <div>
-              <Tabs
-                className="code-view-tabs"
-                defaultValue={integration.sourceFiles[0].name}
-                values={integration.sourceFiles.map((it) => ({
-                  label: it.name,
-                  value: it.name,
-                }))}
+              <ul
+                role="tablist"
+                aria-orientation="horizontal"
+                className="tabs code-view-tabs"
               >
-                {integration.sourceFiles.map((it) => (
-                  <TabItem value={it.name}>
-                    <CodeView code={it.code} language={it.language} />
-                  </TabItem>
+                {integration.sourceFiles.map((it, index) => (
+                  <li
+                    key={it.name}
+                    role="tab"
+                    className={classNames("tabs__item", {
+                      "tabs__item--active": selectedTab === index,
+                    })}
+                    onClick={onClickTab.bind(this, index)}
+                  >
+                    {it.name}
+                  </li>
                 ))}
-              </Tabs>
+              </ul>
+              <div>
+                {integration.sourceFiles.map((it) => (
+                  <div key={it.name} hidden={it !== selectedSourceFile}>
+                    <CodeView
+                      code={selectedSourceFile.code}
+                      language={selectedSourceFile.language}
+                      hightlight={hightlightRange}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
