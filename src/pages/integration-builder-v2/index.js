@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Layout from "@theme/Layout";
 import Step from "../../components/step";
+import CodeView from "../../components/code-view";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import classNames from "classnames";
 import styles from "./styles.module.css";
 
-import * as DirectAuthSteps from "../../libs/integration-builder-v2/direct-auth";
+import * as DirectAuthContents from "../../libs/integration-builder-v2/direct-auth";
 
 const products = [
   {
@@ -53,11 +54,11 @@ function getDefaultOptions(product) {
 function getIntegrationData() {
   return {
     steps: [
-      <DirectAuthSteps.InstallWebSDK />,
-      <DirectAuthSteps.InstantiateSDKInstance />,
-      <DirectAuthSteps.ServeServiceWorker />,
-      <DirectAuthSteps.ServeRedirectPage />,
-      <DirectAuthSteps.TriggerLogin />,
+      <DirectAuthContents.InstallWebSDK />,
+      <DirectAuthContents.InstantiateSDKInstance />,
+      <DirectAuthContents.ServeServiceWorker />,
+      <DirectAuthContents.ServeRedirectPage />,
+      <DirectAuthContents.TriggerLogin />,
     ],
   };
 }
@@ -164,16 +165,20 @@ export default function IntegrationBuilderPage() {
                 className="code-view-tabs"
                 defaultValue="apple"
                 values={[
-                  { label: "Apple", value: "apple" },
-                  { label: "Orange", value: "orange" },
-                  { label: "Banana", value: "banana" },
+                  { label: "App.js", value: "App.js" },
+                  { label: "redirect.html", value: "redirect.html" },
+                  { label: "sw.js", value: "sw.js" },
                 ]}
               >
-                <TabItem value="apple">This is an apple 🍎</TabItem>
-                <TabItem value="orange">This is an orange 🍊</TabItem>
-                <TabItem value="banana">This is a banana 🍌</TabItem>
+                <TabItem value="App.js">
+                  <CodeView
+                    code={DirectAuthContents.AppJS.code}
+                    language={DirectAuthContents.AppJS.language}
+                  />
+                </TabItem>
+                <TabItem value="redirect.html">This is an orange 🍊</TabItem>
+                <TabItem value="sw.js">This is a banana 🍌</TabItem>
               </Tabs>
-              ;
             </div>
           </div>
         </div>
