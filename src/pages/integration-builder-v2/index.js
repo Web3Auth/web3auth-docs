@@ -215,15 +215,11 @@ export default function IntegrationBuilderPage() {
                 ))}
               </ul>
               <div>
-                {integration.sourceFiles.map((it) => (
-                  <div key={it.name} hidden={it !== selectedSourceFile}>
-                    <CodeView
-                      code={selectedSourceFile.code}
-                      language={selectedSourceFile.language}
-                      hightlight={hightlightRange}
-                    />
-                  </div>
-                ))}
+                <CodeView
+                  code={selectedSourceFile.code}
+                  language={selectedSourceFile.language}
+                  hightlight={hightlightRange}
+                />
               </div>
             </div>
           </div>
