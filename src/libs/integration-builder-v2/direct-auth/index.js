@@ -5,3 +5,4 @@ export { default as InstantiateSDKInstance } from "./instantiate-sdk-instance.co
 export { default as TriggerLogin } from "./trigger-login.component.mdx";
 export { default as AppJS } from "./App.js";
 export { default as RedirectHTML } from "./redirect.html";
+export { default as SwJS } from "./sw.js";

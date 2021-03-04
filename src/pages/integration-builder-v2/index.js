@@ -60,7 +60,11 @@ function getIntegrationData() {
       <DirectAuthContents.ServeRedirectPage />,
       <DirectAuthContents.TriggerLogin />,
     ],
-    sourceFiles: [DirectAuthContents.AppJS, DirectAuthContents.RedirectHTML],
+    sourceFiles: [
+      DirectAuthContents.AppJS,
+      DirectAuthContents.SwJS,
+      DirectAuthContents.RedirectHTML,
+    ],
   };
 }
 
