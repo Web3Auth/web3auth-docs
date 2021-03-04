@@ -1,4 +1,5 @@
 import React from "react";
+import Step from "./step";
 import * as DirectAuth from "./direct-auth";
 import * as TorusWallet from "./torus-wallet";
 
@@ -7,11 +8,21 @@ export default function buildExample({ product }) {
     case "DirectAuth":
       return (
         <div>
-          <DirectAuth.InstallWebSDK />
-          <DirectAuth.ServeServiceWorker />
-          <DirectAuth.ServeRedirectPage />
-          <DirectAuth.InstantiateSDKInstance />
-          <DirectAuth.TriggerLogin />
+          <Step>
+            <DirectAuth.InstallWebSDK />
+          </Step>
+          <Step isSelected>
+            <DirectAuth.ServeServiceWorker />
+          </Step>
+          <Step>
+            <DirectAuth.ServeRedirectPage />
+          </Step>
+          <Step>
+            <DirectAuth.InstantiateSDKInstance />
+          </Step>
+          <Step>
+            <DirectAuth.TriggerLogin />
+          </Step>
         </div>
       );
     case "Torus Wallet":

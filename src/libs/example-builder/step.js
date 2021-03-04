@@ -1,11 +1,15 @@
 import React from "react";
+import classNames from "classnames";
+import styles from "./styles.module.css";
 
-/**
- * TODO:
- *
- * - Step contains header, content, source points (filename and lines)
- */
-
-export default function Step() {
-  return <>Content</>;
+export default function Step({ isSelected = false, children }) {
+  return (
+    <div
+      className={classNames(styles.step, {
+        [styles.stepSelected]: isSelected,
+      })}
+    >
+      {children}
+    </div>
+  );
 }
