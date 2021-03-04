@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Layout from "@theme/Layout";
 import Step from "../../components/step";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 import classNames from "classnames";
 import styles from "./styles.module.css";
 
@@ -156,7 +158,24 @@ export default function IntegrationBuilderPage() {
               ))}
             </div>
           </div>
-          <div className={styles.rightCol}></div>
+          <div className={styles.rightCol}>
+            <div>
+              <Tabs
+                className="code-view-tabs"
+                defaultValue="apple"
+                values={[
+                  { label: "Apple", value: "apple" },
+                  { label: "Orange", value: "orange" },
+                  { label: "Banana", value: "banana" },
+                ]}
+              >
+                <TabItem value="apple">This is an apple 🍎</TabItem>
+                <TabItem value="orange">This is an orange 🍊</TabItem>
+                <TabItem value="banana">This is a banana 🍌</TabItem>
+              </Tabs>
+              ;
+            </div>
+          </div>
         </div>
       </div>
     </Layout>

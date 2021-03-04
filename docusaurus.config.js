@@ -145,6 +145,11 @@ module.exports = {
       ],
       copyright: `© ${new Date().getFullYear()} Torus Labs Private Limited`,
     },
+    colorMode: {
+      defaultMode: "light",
+      disableSwitch: true,
+      respectPrefersColorScheme: false,
+    },
   },
   presets: [
     [
