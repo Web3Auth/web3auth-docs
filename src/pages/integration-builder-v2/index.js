@@ -60,6 +60,7 @@ function getIntegrationData() {
       <DirectAuthContents.ServeRedirectPage />,
       <DirectAuthContents.TriggerLogin />,
     ],
+    sourceFiles: [DirectAuthContents.AppJS, DirectAuthContents.RedirectHTML],
   };
 }
 
@@ -163,22 +164,17 @@ export default function IntegrationBuilderPage() {
             <div>
               <Tabs
                 className="code-view-tabs"
-                defaultValue="apple"
-                values={[
-                  { label: "App.js", value: "App.js" },
-                  { label: "redirect.html", value: "redirect.html" },
-                  { label: "sw.js", value: "sw.js" },
-                ]}
+                defaultValue={integration.sourceFiles[0].name}
+                values={integration.sourceFiles.map((it) => ({
+                  label: it.name,
+                  value: it.name,
+                }))}
               >
-                <TabItem value="App.js">
-                  <CodeView
-                    code={DirectAuthContents.AppJS.code}
-                    language={DirectAuthContents.AppJS.language}
-                    hightlight="2-5,8-9"
-                  />
-                </TabItem>
-                <TabItem value="redirect.html">This is an orange 🍊</TabItem>
-                <TabItem value="sw.js">This is a banana 🍌</TabItem>
+                {integration.sourceFiles.map((it) => (
+                  <TabItem value={it.name}>
+                    <CodeView code={it.code} language={it.language} />
+                  </TabItem>
+                ))}
               </Tabs>
             </div>
           </div>
