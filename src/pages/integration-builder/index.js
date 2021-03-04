@@ -51,11 +51,16 @@ export default function IntegrationBuilderPage() {
   const [selection, setSelection] = useState({
     product: products.directAuth,
     params: getDefaultParams(products.directAuth),
+    selectedStep: -1,
   });
 
   const selectProduct = (key) => {
     const product = products[key];
-    setSelection({ product, params: getDefaultParams(product) });
+    setSelection({
+      product,
+      params: getDefaultParams(product),
+      selectedStep: -1,
+    });
   };
 
   const setParam = (key, value) => {
@@ -66,6 +71,13 @@ export default function IntegrationBuilderPage() {
         [key]: value,
       },
     }));
+  };
+
+  const onClickStep = (index) => {
+    setSelection({
+      ...selection,
+      selectedStep: index,
+    });
   };
 
   return (
@@ -112,7 +124,7 @@ export default function IntegrationBuilderPage() {
               </ul>
             </div>
             <div className={styles.stepsContainer}>
-              {buildExample(selection)}
+              {buildExample({ ...selection, onClickStep })}
             </div>
           </div>
           <div className={styles.rightCol}>

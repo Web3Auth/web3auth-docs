@@ -3,44 +3,43 @@ import Step from "./step";
 import * as DirectAuth from "./direct-auth";
 import * as TorusWallet from "./torus-wallet";
 
-export default function buildExample({ product }) {
+export default function buildExample({ product, selectedStep, onClickStep }) {
+  let steps = [];
   switch (product.displayName) {
     case "DirectAuth":
-      return (
-        <div>
-          <Step>
-            <DirectAuth.InstallWebSDK />
-          </Step>
-          <Step isSelected>
-            <DirectAuth.ServeServiceWorker />
-          </Step>
-          <Step>
-            <DirectAuth.ServeRedirectPage />
-          </Step>
-          <Step>
-            <DirectAuth.InstantiateSDKInstance />
-          </Step>
-          <Step>
-            <DirectAuth.TriggerLogin />
-          </Step>
-        </div>
-      );
+      steps = [
+        <DirectAuth.InstallWebSDK />,
+        <DirectAuth.ServeServiceWorker />,
+        <DirectAuth.ServeRedirectPage />,
+        <DirectAuth.InstantiateSDKInstance />,
+        <DirectAuth.TriggerLogin />,
+      ];
+      break;
     case "Torus Wallet":
-      return (
-        <div>
-          <Step>
-            <TorusWallet.InstallWebSDK />
-          </Step>
-          <Step>
-            <TorusWallet.InstantiateSDKInstance />
-          </Step>
-          <Step>
-            <TorusWallet.TriggerLogin />
-          </Step>
-          <Step>
-            <TorusWallet.IntegrateWithWeb3 />
-          </Step>
-        </div>
-      );
+      steps = [
+        <TorusWallet.InstallWebSDK />,
+        <TorusWallet.InstantiateSDKInstance />,
+        <TorusWallet.TriggerLogin />,
+        <TorusWallet.IntegrateWithWeb3 />,
+      ];
+      break;
   }
+
+  const onClick = (index) => {
+    onClickStep && onClickStep(index);
+  };
+
+  return (
+    <div>
+      {steps.map((step, index) => (
+        <Step
+          key={index}
+          isSelected={index === selectedStep}
+          onClick={onClick.bind(this, index)}
+        >
+          {step}
+        </Step>
+      ))}
+    </div>
+  );
 }
