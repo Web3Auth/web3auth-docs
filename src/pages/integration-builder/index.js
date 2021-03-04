@@ -94,21 +94,23 @@ export default function IntegrationBuilderPage() {
       <div className={styles.content}>
         <div className={styles.body}>
           <div className={styles.leftCol}>
-            <h1>{selection.product.displayName}</h1>
-            {/* List of products */}
-            <ul className="pills">
-              {Object.entries(products).map(([key, product]) => (
-                <li
-                  key={key}
-                  className={classNames("pills__item", {
-                    "pills__item--active": product === selection.product,
-                  })}
-                  onClick={() => selectProduct(key)}
-                >
-                  {product.displayName}
-                </li>
-              ))}
-            </ul>
+            <div className={styles.leftHeading}>
+              <h1>{selection.product.displayName}</h1>
+              {/* List of products */}
+              <ul className="pills">
+                {Object.entries(products).map(([key, product]) => (
+                  <li
+                    key={key}
+                    className={classNames("pills__item", {
+                      "pills__item--active": product === selection.product,
+                    })}
+                    onClick={() => selectProduct(key)}
+                  >
+                    {product.displayName}
+                  </li>
+                ))}
+              </ul>
+            </div>
             <div className={styles.stepsContainer}>
               {buildExample(selection)}
             </div>

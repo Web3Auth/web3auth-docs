@@ -28,10 +28,18 @@ export default function buildExample({ product }) {
     case "Torus Wallet":
       return (
         <div>
-          <TorusWallet.InstallWebSDK />
-          <TorusWallet.InstantiateSDKInstance />
-          <TorusWallet.TriggerLogin />
-          <TorusWallet.IntegrateWithWeb3 />
+          <Step>
+            <TorusWallet.InstallWebSDK />
+          </Step>
+          <Step>
+            <TorusWallet.InstantiateSDKInstance />
+          </Step>
+          <Step>
+            <TorusWallet.TriggerLogin />
+          </Step>
+          <Step>
+            <TorusWallet.IntegrateWithWeb3 />
+          </Step>
         </div>
       );
   }
