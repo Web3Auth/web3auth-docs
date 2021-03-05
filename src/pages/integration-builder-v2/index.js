@@ -5,7 +5,9 @@ import CodeView from "../../components/code-view";
 import classNames from "classnames";
 import styles from "./styles.module.css";
 
-import * as DirectAuthContents from "../../libs/integration-builder-v2/direct-auth";
+import DirectAuthIntegrationBuilder from "../../libs/integration-builder-v2/direct-auth";
+import * as DirectAuthSteps from "../../libs/integration-builder-v2/direct-auth/steps";
+import * as DirectAuthFiles from "../../libs/integration-builder-v2/direct-auth/srcfiles";
 
 const products = [
   {
@@ -49,34 +51,35 @@ function getDefaultOptions(product) {
   );
 }
 
-function getIntegrationData() {
+function getIntegration(product, options) {
+  if (product === "DirectAuth") return DirectAuthIntegrationBuilder(options);
   return {
     steps: [
       {
         pointer: ["App.js", "3"],
-        component: <DirectAuthContents.InstallWebSDK />,
+        component: <DirectAuthSteps.InstallWebSDK />,
       },
       {
         pointer: ["App.js", "137-141"],
-        component: <DirectAuthContents.InstantiateSDKInstance />,
+        component: <DirectAuthSteps.InstantiateSDKInstance />,
       },
       {
         pointer: ["sw.js"],
-        component: <DirectAuthContents.ServeServiceWorker />,
+        component: <DirectAuthSteps.ServeServiceWorker />,
       },
       {
         pointer: ["redirect.html"],
-        component: <DirectAuthContents.ServeRedirectPage />,
+        component: <DirectAuthSteps.ServeRedirectPage />,
       },
       {
         pointer: ["App.js", "158-163"],
-        component: <DirectAuthContents.TriggerLogin />,
+        component: <DirectAuthSteps.TriggerLogin />,
       },
     ],
     sourceFiles: [
-      DirectAuthContents.AppJS,
-      DirectAuthContents.SwJS,
-      DirectAuthContents.RedirectHTML,
+      DirectAuthFiles.AppJS,
+      DirectAuthFiles.SwJS,
+      DirectAuthFiles.RedirectHTML,
     ],
   };
 }
@@ -88,7 +91,10 @@ export default function IntegrationBuilderPage() {
     options: getDefaultOptions(products[0]),
   });
 
-  const integration = getIntegrationData();
+  const integration = getIntegration(
+    products[selectedProduct.index].name,
+    selectedProduct.options
+  );
 
   const [selectedTab, setSelectedTab] = useState(0);
   const [hightlightRange, setHightlightRange] = useState();
