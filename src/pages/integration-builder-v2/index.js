@@ -26,7 +26,7 @@ const products = [
       },
       framework: {
         displayName: "Language/Framework",
-        choices: ["React", "Vue", "iOS", "Android"],
+        choices: ["React", "iOS", "Android"],
         defaultChoice: "React",
       },
     },
