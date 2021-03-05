@@ -31,26 +31,30 @@ export default function getIntegration({ framework }) {
       }
     );
   } else if (framework === "Android") {
-    sourceFiles.push(SrcFiles.AppJS, SrcFiles.SwJS, SrcFiles.RedirectHTML);
+    sourceFiles.push(
+      SrcFiles.ProjectBuildGradle,
+      SrcFiles.AppBuildGradle,
+      SrcFiles.MainActivity
+    );
     steps.push(
       {
-        pointer: ["App.js", "3"],
+        pointer: [SrcFiles.ProjectBuildGradle.name, "17"],
         component: <Steps.AddJitpack />,
       },
       {
-        pointer: ["App.js", "137-141"],
+        pointer: [SrcFiles.AppBuildGradle.name, "50"],
         component: <Steps.InstallAndroidSDK />,
       },
       {
-        pointer: ["sw.js"],
+        pointer: [SrcFiles.AppBuildGradle.name, "16-20"],
         component: <Steps.RegisterAndroidRedirect />,
       },
       {
-        pointer: ["redirect.html"],
+        pointer: [SrcFiles.MainActivity.name, "33-45,56-57"],
         component: <Steps.InstantiateAndroidSDK />,
       },
       {
-        pointer: ["App.js", "158-163"],
+        pointer: [SrcFiles.MainActivity.name, "74-83"],
         component: <Steps.TriggerAndroidLogin />,
       }
     );

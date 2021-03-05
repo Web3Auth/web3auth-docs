@@ -9,6 +9,11 @@ import DirectAuthIntegrationBuilder from "../../libs/integration-builder-v2/dire
 import * as DirectAuthSteps from "../../libs/integration-builder-v2/direct-auth/steps";
 import * as DirectAuthFiles from "../../libs/integration-builder-v2/direct-auth/srcfiles";
 
+import Prism from "prism-react-renderer/prism";
+(typeof global !== "undefined" ? global : window).Prism = Prism;
+require("prismjs/components/prism-java");
+require("prismjs/components/prism-groovy");
+
 const products = [
   {
     name: "DirectAuth",
