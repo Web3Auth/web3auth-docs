@@ -5,3 +5,6 @@ export { default as InstantiateSDKInstance } from "./instantiate-sdk-instance.co
 export { default as TriggerLogin } from "./trigger-login.component.mdx";
 export { default as AddJitpack } from "./add-jitpack-to-android.component.mdx";
 export { default as InstallAndroidSDK } from "./install-android-sdk.component.mdx";
+export { default as RegisterAndroidRedirect } from "./register-android-redirect.component.mdx";
+export { default as InstantiateAndroidSDK } from "./instantiate-android-sdk.component.mdx";
+export { default as TriggerAndroidLogin } from "./trigger-android-login.component.mdx";

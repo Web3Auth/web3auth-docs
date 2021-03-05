@@ -43,15 +43,15 @@ export default function getIntegration({ framework }) {
       },
       {
         pointer: ["sw.js"],
-        component: <Steps.ServeServiceWorker />,
+        component: <Steps.RegisterAndroidRedirect />,
       },
       {
         pointer: ["redirect.html"],
-        component: <Steps.ServeRedirectPage />,
+        component: <Steps.InstantiateAndroidSDK />,
       },
       {
         pointer: ["App.js", "158-163"],
-        component: <Steps.TriggerLogin />,
+        component: <Steps.TriggerAndroidLogin />,
       }
     );
   }
