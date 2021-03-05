@@ -58,6 +58,30 @@ export default function getIntegration({ framework }) {
         component: <Steps.TriggerAndroidLogin />,
       }
     );
+  } else if (framework === "iOS") {
+    sourceFiles.push(
+      SrcFiles.PackageSwift,
+      SrcFiles.ContentViewSwift,
+      SrcFiles.SceneDelegateSwift
+    );
+    steps.push(
+      {
+        pointer: [SrcFiles.PackageSwift.name, "3-8"],
+        component: <Steps.AddSwiftPackage />,
+      },
+      {
+        pointer: [SrcFiles.ContentViewSwift.name, "21-32"],
+        component: <Steps.InitializeSwiftSDK />,
+      },
+      {
+        pointer: [SrcFiles.SceneDelegateSwift.name, "19-24"],
+        component: <Steps.SetupSwiftURLSchemas />,
+      },
+      {
+        pointer: [SrcFiles.SceneDelegateSwift.name, "10-16"],
+        component: <Steps.SetupSwiftUniversalLinks />,
+      }
+    );
   }
 
   return {

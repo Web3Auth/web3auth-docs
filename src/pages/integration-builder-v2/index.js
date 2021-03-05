@@ -13,6 +13,7 @@ import Prism from "prism-react-renderer/prism";
 (typeof global !== "undefined" ? global : window).Prism = Prism;
 require("prismjs/components/prism-java");
 require("prismjs/components/prism-groovy");
+require("prismjs/components/prism-swift");
 
 const products = [
   {

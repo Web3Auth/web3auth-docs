@@ -8,3 +8,7 @@ export { default as InstallAndroidSDK } from "./install-android-sdk.component.md
 export { default as RegisterAndroidRedirect } from "./register-android-redirect.component.mdx";
 export { default as InstantiateAndroidSDK } from "./instantiate-android-sdk.component.mdx";
 export { default as TriggerAndroidLogin } from "./trigger-android-login.component.mdx";
+export { default as AddSwiftPackage } from "./add-swift-package.component.mdx";
+export { default as InitializeSwiftSDK } from "./initialize-swift-sdk.component.mdx";
+export { default as SetupSwiftURLSchemas } from "./setup-swift-url-schemas.component.mdx";
+export { default as SetupSwiftUniversalLinks } from "./setup-swift-universal-links.component.mdx";

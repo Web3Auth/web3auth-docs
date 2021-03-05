@@ -4,3 +4,6 @@ export { default as SwJS } from "./sw.js";
 export { default as ProjectBuildGradle } from "./project-build.gradle";
 export { default as AppBuildGradle } from "./app-build.gradle";
 export { default as MainActivity } from "./MainActivity.java";
+export { default as PackageSwift } from "./Package.swift";
+export { default as ContentViewSwift } from "./ContentView.swift";
+export { default as SceneDelegateSwift } from "./SceneDelegate.swift";
