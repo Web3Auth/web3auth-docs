@@ -26,6 +26,26 @@ export default function getIntegration({ framework }) {
         component: <Steps.IntegrateWithWeb3 />,
       }
     );
+  } else if (framework === "Vue") {
+    sourceFiles.push(SrcFiles.AppVue, SrcFiles.mainVueJS);
+    steps.push(
+      {
+        pointer: [SrcFiles.AppVue.name, "111"],
+        component: <Steps.InstallWebSDK />,
+      },
+      {
+        pointer: [SrcFiles.AppVue.name, "160-189"],
+        component: <Steps.InstantiateSDKInstance />,
+      },
+      {
+        pointer: [SrcFiles.AppVue.name, "190"],
+        component: <Steps.TriggerLogin />,
+      },
+      {
+        pointer: [SrcFiles.AppVue.name, "191"],
+        component: <Steps.IntegrateWithWeb3 />,
+      }
+    );
   }
 
   return { steps, sourceFiles };
