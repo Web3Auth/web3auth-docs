@@ -6,6 +6,7 @@ import classNames from "classnames";
 import styles from "./styles.module.css";
 
 import DirectAuthIntegrationBuilder from "../../libs/integration-builder-v2/direct-auth";
+import TorusWalletIntegrationBuilder from "../../libs/integration-builder-v2/torus-wallet";
 import * as DirectAuthSteps from "../../libs/integration-builder-v2/direct-auth/steps";
 import * as DirectAuthFiles from "../../libs/integration-builder-v2/direct-auth/srcfiles";
 
@@ -42,7 +43,7 @@ const products = [
       framework: {
         displayName: "Language/Framework",
         choices: ["React", "Vue", "Angular"],
-        defaultChoice: "Vue",
+        defaultChoice: "React",
       },
     },
   },
@@ -59,6 +60,7 @@ function getDefaultOptions(product) {
 
 function getIntegration(product, options) {
   if (product === "DirectAuth") return DirectAuthIntegrationBuilder(options);
+  if (product === "Torus Wallet") return TorusWalletIntegrationBuilder(options);
   return {
     steps: [
       {
