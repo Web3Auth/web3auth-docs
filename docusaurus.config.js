@@ -19,7 +19,7 @@ module.exports = {
       },
       items: [
         {
-          to: "integration-builder",
+          to: "integration-builder-v2",
           label: "Integration Builder",
           position: "right",
         },
