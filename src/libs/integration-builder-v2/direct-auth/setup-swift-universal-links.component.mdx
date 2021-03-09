@@ -1,0 +1,15 @@
+### Setup Universal links
+
+Universal Links allow your users to intelligently follow links to content inside
+your app or to your website. Checkout
+[Documentation](https://developer.apple.com/ios/universal-links/) for
+implementation.
+
+```swift
+func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+    guard userActivity.activityType == NSUserActivityTypeBrowsingWeb, let urlToOpen = userActivity.webpageURL else {
+        return
+    }
+    TorusSwiftDirectSDK.handle(url: urlToOpen)
+}
+```

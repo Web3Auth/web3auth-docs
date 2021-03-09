@@ -1,105 +1,173 @@
+const path = require("path");
+
 module.exports = {
-  title: 'My Site',
-  tagline: 'The tagline of my site',
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  title: "Torus Documentation",
+  tagline: "Flexible, Universal Key Management",
+  url: "https://docs.tor.us",
+  baseUrl: "/",
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
+  favicon: "img/favicon.ico",
+  organizationName: "torus",
+  projectName: "docs",
   themeConfig: {
     navbar: {
-      title: 'My Site',
+      title: "Documentation",
       logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
+        alt: "Torus",
+        src: "img/logo.svg",
       },
       items: [
         {
-          to: 'docs/',
-          activeBasePath: 'docs',
-          label: 'Docs',
-          position: 'left',
+          to: "integration-builder-v2",
+          label: "Integration Builder",
+          position: "right",
         },
-        {to: 'blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/facebook/docusaurus',
-          label: 'GitHub',
-          position: 'right',
+          href: "https://dashboard.tor.us", // TODO: replace with actual dashboard link
+          label: "Dashboard",
+          position: "right",
         },
       ],
     },
     footer: {
-      style: 'dark',
+      style: "dark",
       links: [
         {
-          title: 'Docs',
+          title: "Users",
           items: [
             {
-              label: 'Style Guide',
-              to: 'docs/',
+              label: "OpenLogin",
+              href: "https://openlogin.com",
             },
             {
-              label: 'Second Doc',
-              to: 'docs/doc2/',
+              label: "Torus Wallet",
+              href: "https://app.tor.us/",
+            },
+            {
+              label: "Torus Extension (coming soon)",
+              href: "https://tor.us/media-kit.html#",
             },
           ],
         },
         {
-          title: 'Community',
+          title: "Developers",
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              label: "OpenLogin",
+              href: "https://openlogin.com",
             },
             {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              label: "DirectAuth",
+              href: "https://docs.tor.us/direct-auth/what-is-directauth",
             },
             {
-              label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
+              label: "Torus Embed",
+              href:
+                "https://docs.tor.us/torus-wallet/quick-start#integrate-via",
+            },
+            {
+              label: "tKey",
+              href: "https://hackmd.io/keVuRfrwSxygfyCfzsrQfw",
+            },
+            {
+              label: "Status",
+              href: "https://status.torusnode.com/",
+            },
+            {
+              label: "Support",
+              href: "https://t.me/torusdev",
             },
           ],
         },
         {
-          title: 'More',
+          title: "Community",
           items: [
             {
-              label: 'Blog',
-              to: 'blog',
+              label: "Telegram",
+              href: "https://t.me/TorusLabs",
             },
             {
-              label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              label: "Twitter",
+              href: "https://twitter.com/TorusLabs",
+            },
+            {
+              label: "Medium",
+              href: "https://tor.us/images/Exclude.png",
+            },
+            {
+              label: "Github",
+              href: "https://github.com/torusresearch/",
+            },
+            {
+              label: "Reddit",
+              href: "https://www.reddit.com/r/toruslabs",
+            },
+            {
+              label: "LinkedIn",
+              href: "https://www.linkedin.com/company/toruslabs",
+            },
+            {
+              label: "YouTube",
+              href: "https://www.youtube.com/c/toruslabs",
+            },
+          ],
+        },
+        {
+          title: "Company",
+          items: [
+            {
+              label: "About us",
+              to: "https://tor.us/about-us.html",
+            },
+            {
+              label: "Partners",
+              href: "https://tor.us/partners.html",
+            },
+            {
+              label: "Career",
+              href: "https://angel.co/company/torus-2",
+            },
+            {
+              label: "Media kit",
+              href: "https://tor.us/media-kit.html",
+            },
+            {
+              label: "Blog",
+              href: "https://medium.com/@TorusLabs",
+            },
+            {
+              label: "Contact us",
+              href: "https://tor.us/contact-us.html",
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `© ${new Date().getFullYear()} Torus Labs Private Limited`,
+    },
+    colorMode: {
+      defaultMode: "light",
+      disableSwitch: true,
+      respectPrefersColorScheme: false,
     },
   },
   presets: [
     [
-      '@docusaurus/preset-classic',
+      "@docusaurus/preset-classic",
       {
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
+          routeBasePath: "/",
+          sidebarPath: require.resolve("./sidebars.js"),
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
-        },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
+            "https://github.com/torusresearch/torus-documentation/edit/master/",
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./styles.css"),
         },
       },
     ],
+  ],
+  plugins: [
+    path.resolve(__dirname, "plugins", "docusaurus-plugin-mdx-component"),
   ],
 };

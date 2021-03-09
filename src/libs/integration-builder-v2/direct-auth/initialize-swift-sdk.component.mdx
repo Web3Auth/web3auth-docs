@@ -1,0 +1,20 @@
+### Initialize Direct Auth SDK
+
+Initalize the SDK depending on the login you require:
+
+```swift
+import TorusSwiftDirectSDK
+
+let sub = SubVerifierDetails(loginType: .installed,
+                            loginProvider: .google,
+                            clientId: "<your-client-id>",
+                            verifierName: <verifier-name>,
+                            redirectURL: "<your-redirect-url>")
+let tdsdk = TorusSwiftDirectSDK(aggregateVerifierType: <type-of-verifier>, aggregateVerifierName: <verifier-name>, subVerifierDetails: [sub])
+
+tdsdk.triggerLogin(controller: <UIViewController>?).done{ data in
+    print("private key rebuild", data)
+}.catch{ err in
+    print(err)
+}
+```
