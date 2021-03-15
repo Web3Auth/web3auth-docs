@@ -61,10 +61,26 @@ export default function IntegrationBuilderPage({ files }) {
   }, [builder, optionValues]);
 
   const steps = [
-    { title: "Install Torus Embed SDK", range: "1-5" },
-    { title: "Instantiate the SDK", range: "70-80" },
-    { title: "Trigger user login", range: "10-15" },
-    { title: "Integrate with Web3/ether.js", range: "30-40" },
+    {
+      title: "Install Torus Embed SDK",
+      file: "torus-wallet/react/App.js",
+      range: "2",
+    },
+    {
+      title: "Instantiate the SDK",
+      file: "torus-wallet/react/App.js",
+      range: "13-16",
+    },
+    {
+      title: "Trigger user login",
+      file: "torus-wallet/react/App.js",
+      range: "17",
+    },
+    {
+      title: "Integrate with Web3/ether.js",
+      file: "torus-wallet/react/App.js",
+      range: "19-22",
+    },
   ];
 
   const [stepIndex, setStepIndex] = useState(0);
@@ -82,7 +98,9 @@ export default function IntegrationBuilderPage({ files }) {
           inline: "start",
         });
     }
+
     setStepIndex(index);
+    setSelectedFilename(steps[index].file);
   };
 
   return (
