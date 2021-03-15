@@ -20,11 +20,13 @@ export interface IntegrationBuilder {
   build(values: Record<string, string>): Integration;
 }
 
+export interface IntegrationStep {
+  title: string;
+  content: React.ReactNode;
+  pointer?: { filename: string; range?: string };
+}
+
 export interface Integration {
   filenames: string[];
-  steps: Array<{
-    title: string;
-    content: React.ReactNode[];
-    pointer?: { filename: string; range?: string };
-  }>;
+  steps: IntegrationStep[];
 }
