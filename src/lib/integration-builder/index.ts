@@ -4,7 +4,7 @@ import torusWalletIntegrationBuilder from "./torus-wallet";
 
 const integrationBuilders: IntegrationBuilder[] = [
   torusWalletIntegrationBuilder,
-  // directAuthIntegrationBuilder,
+  directAuthIntegrationBuilder,
 ];
 
 export * from "./interfaces";

@@ -68,7 +68,7 @@ export default function IntegrationBuilderPage({ files }) {
     if (pointer) {
       setSelectedFilename(pointer.filename);
 
-      const range = rangeParser(pointer.range);
+      const range = rangeParser(pointer.range || "1");
       if (range.length) {
         const ref = document.getElementById(
           `integration-builder-docusaurus-code-line-no-${
