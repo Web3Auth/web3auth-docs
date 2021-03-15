@@ -71,7 +71,9 @@ export default function IntegrationBuilderPage({ files }) {
       const range = rangeParser(pointer.range);
       if (range.length) {
         const ref = document.getElementById(
-          `integration-builder-docusaurus-code-line-no-${range[0]}`
+          `integration-builder-docusaurus-code-line-no-${
+            range[Math.floor(range.length / 2)]
+          }`
         );
         ref &&
           ref.scrollIntoView({

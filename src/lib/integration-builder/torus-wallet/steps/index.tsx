@@ -14,7 +14,8 @@ export const InstallSDK = () => (
 export const InstantiateSDK = () => (
   <>
     <p>
-      Instantiate Torus Embed SDK by creating a instance of <code>Torus</code>:
+      Instantiate Torus Embed SDK by creating a instance of{" "}
+      <code>class Torus</code>:
     </p>
     <pre>
       <code>
@@ -31,7 +32,7 @@ await torus.init();`.trim()}
 export const TriggerUserLogin = () => (
   <>
     <p>
-      Trigger user login wherever it makes sense on your application lifecycle:
+      Trigger user login wherever it makes sense in your application lifecycle:
     </p>
     <pre>
       <code>{`await torus.login();`}</code>
