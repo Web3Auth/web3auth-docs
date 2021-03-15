@@ -2,6 +2,9 @@
 title: Quick Start
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 An `iframe` wallet allows any web application to seamlessly support their user's
 interactions with Ethereum (and similar EVM chains): OAuth logins,
 fiat-to-crypto and much more ([see Features](features/list-of-features)).
@@ -12,13 +15,42 @@ fiat-to-crypto and much more ([see Features](features/list-of-features)).
 
 ### [npm package](https://www.npmjs.com/package/@toruslabs/torus-embed)
 
-```markup
-npm i @toruslabs/torus-embed
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "Yarn", value: "yarn" },
+  ]}
+>
+<TabItem value="npm">
+
+```shell
+npm i --save @toruslabs/torus-embed
 ```
 
-#### Basic
+</TabItem>
 
-```javascript
+<TabItem value="yarn">
+
+```shell
+yarn add @toruslabs/torus-embed
+```
+
+</TabItem>
+
+</Tabs>
+
+<Tabs
+  defaultValue="basic"
+  values={[
+    { label: "Basic", value: "basic" },
+    { label: "More options", value: "more-options" },
+  ]}
+>
+
+<TabItem value="basic">
+
+```js
 import Torus from "@toruslabs/torus-embed";
 import Web3 from "web3";
 
@@ -28,9 +60,11 @@ await torus.login(); // await torus.ethereum.enable()
 const web3 = new Web3(torus.provider);
 ```
 
-#### More options
+</TabItem>
 
-```javascript
+<TabItem value="more-options">
+
+```js
 import Torus from "@toruslabs/torus-embed";
 import Web3 from "web3";
 
@@ -51,18 +85,40 @@ await torus.login(); // await torus.ethereum.enable()
 const web3 = new Web3(torus.provider);
 ```
 
+</TabItem>
+
+</Tabs>
+
 ### Script tag
 
 The code snippet below sets Torus Wallet as the default login method for a DApp,
 add one of the following `script` tags to end of `body` in your `index.html`.
 
-```markup
+<Tabs
+  defaultValue="jsdelivr"
+  values={[
+    { label: "jsdelivr", value: "jsdelivr" },
+    { label: "unpkg", value: "unpkg" },
+  ]}
+>
+
+<TabItem value="jsdelivr">
+
+```html
 <script src="https://cdn.jsdelivr.net/npm/@toruslabs/torus-embed"></script>
 ```
 
-```markup
+</TabItem>
+
+<TabItem value="unpkg">
+
+```html
 <script src="https://unpkg.com/@toruslabs/torus-embed"></script>
 ```
+
+</TabItem>
+
+</Tabs>
 
 The script tag creates a `window.torus` object, which you can initialize and use
 as [described above](#basic).

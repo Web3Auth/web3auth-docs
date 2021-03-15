@@ -52,7 +52,7 @@ const torusWalletIntegrationBuilder: IntegrationBuilder = {
         },
         {
           title: "Trigger user login",
-          content: <Steps.TriggerUserLogin />,
+          content: <Steps.TriggerLogin />,
           pointer: { filename: "react/App.js", range: "17" },
         },
         {
@@ -76,7 +76,7 @@ const torusWalletIntegrationBuilder: IntegrationBuilder = {
         },
         {
           title: "Trigger user login",
-          content: <Steps.TriggerUserLogin />,
+          content: <Steps.TriggerLogin />,
           pointer: { filename: "vue/components/Home.vue", range: "35" },
         },
         {
