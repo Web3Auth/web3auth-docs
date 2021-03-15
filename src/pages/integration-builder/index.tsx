@@ -6,27 +6,82 @@ import rangeParser from "parse-numeric-range";
 import builders from "../../lib/integration-builder";
 import styles from "./styles.module.css";
 
-const getDefaultBuilderOptions = (index: number) =>
+const defaultBuilderId = "torus-wallet";
+
+const getDefaultBuilderOptions = (id: string) =>
   Object.fromEntries(
-    Object.entries(builders[index].options).map(([key, option]) => [
+    Object.entries(builders[id].options).map(([key, option]) => [
       key,
       option.default,
     ])
   );
 
+const getInitialBuilderOptions = () => {
+  const url = new URL(window.location.href);
+
+  // Get builder id from URL
+  const id = url.searchParams.get("b");
+  if (!builders[id])
+    return {
+      id: defaultBuilderId,
+      values: getDefaultBuilderOptions(defaultBuilderId),
+    };
+
+  // Read all applicable query options
+  const queriedOptions: Record<string, string> = {};
+  for (const opt of Object.keys(builders[id].options)) {
+    const value = url.searchParams.get(opt);
+    if (value) queriedOptions[opt] = value;
+  }
+
+  // Return default if no additional query is specified
+  const queriedKeys = Object.keys(queriedOptions);
+  if (queriedKeys.length === 0)
+    return {
+      id,
+      values: getDefaultBuilderOptions(id),
+    };
+
+  // Find best matched options
+  const queriedKey = queriedKeys[0];
+  const availableValues = builders[id].getAvailableOptions(
+    queriedKey,
+    queriedOptions[queriedKey]
+  );
+
+  let maxScore = 0;
+  let maxScoreIndex = 0;
+  for (let i = 0; i < availableValues.length; i++) {
+    let score = 0;
+    for (const comparingKey of Object.keys(availableValues[i])) {
+      if (queriedOptions[comparingKey] === availableValues[i][comparingKey])
+        score++;
+    }
+    if (score > maxScore) {
+      maxScore = score;
+      maxScoreIndex = i;
+    }
+  }
+
+  return {
+    id,
+    values: {
+      [queriedKey]: queriedOptions[queriedKey],
+      ...availableValues[maxScoreIndex],
+    },
+  };
+};
+
 export default function IntegrationBuilderPage({ files }) {
   const [builderOptions, setBuilderOptions] = useState<{
-    index: number;
+    id: string;
     values: Record<string, string>;
-  }>({
-    index: 0,
-    values: getDefaultBuilderOptions(0),
-  });
+  }>(getInitialBuilderOptions());
 
-  const onChangeBuilder = (index: number) => {
+  const onChangeBuilder = (id: string) => {
     setBuilderOptions({
-      index,
-      values: getDefaultBuilderOptions(index),
+      id,
+      values: getDefaultBuilderOptions(id),
     });
   };
 
@@ -37,8 +92,9 @@ export default function IntegrationBuilderPage({ files }) {
   ) => {
     event.preventDefault();
 
-    setBuilderOptions(({ index, values: currValues }) => {
-      const availableValues = builders[index].getAvailableOptions(
+    setBuilderOptions(({ id, values: currValues }) => {
+      // Find best matched options
+      const availableValues = builders[id].getAvailableOptions(
         optionKey,
         optionValue
       );
@@ -58,7 +114,7 @@ export default function IntegrationBuilderPage({ files }) {
       }
 
       return {
-        index,
+        id,
         values: {
           ...availableValues[maxScoreIndex],
           [optionKey]: optionValue,
@@ -67,7 +123,7 @@ export default function IntegrationBuilderPage({ files }) {
     });
   };
 
-  const builder = builders[builderOptions.index];
+  const builder = builders[builderOptions.id];
 
   const integration = useMemo(() => builder.build(builderOptions.values), [
     builderOptions,
@@ -154,13 +210,13 @@ export default function IntegrationBuilderPage({ files }) {
             <header className={styles.heading}>
               <h1>{builder.displayName}</h1>
               <ul className="pills">
-                {builders.map((builder, index) => (
+                {Object.entries(builders).map(([id, builder]) => (
                   <li
-                    key={index}
+                    key={id}
                     className={classNames("pills__item", {
-                      "pills__item--active": builderOptions.index === index,
+                      "pills__item--active": builderOptions.id === id,
                     })}
-                    onClick={onChangeBuilder.bind(this, index)}
+                    onClick={onChangeBuilder.bind(this, id)}
                   >
                     {builder.displayName}
                   </li>
