@@ -1,6 +1,5 @@
-import React from "react";
 import { IntegrationBuilder, IntegrationStep } from "../interfaces";
-import * as Steps from "./steps";
+import STEPS from "./steps";
 
 const torusWalletIntegrationBuilder: IntegrationBuilder = {
   displayName: "Torus Wallet",
@@ -41,23 +40,19 @@ const torusWalletIntegrationBuilder: IntegrationBuilder = {
       filenames.push("react/App.js", "react/index.js");
       steps.push(
         {
-          title: "Install Torus Embed SDK",
-          content: <Steps.InstallSDK />,
+          ...STEPS.installSDK,
           pointer: { filename: "react/App.js", range: "2" },
         },
         {
-          title: "Instantiate the SDK",
-          content: <Steps.InstantiateSDK />,
+          ...STEPS.instantiateSDK,
           pointer: { filename: "react/App.js", range: "13-16" },
         },
         {
-          title: "Trigger user login",
-          content: <Steps.TriggerLogin />,
+          ...STEPS.triggerLogin,
           pointer: { filename: "react/App.js", range: "17" },
         },
         {
-          title: "Integrate with Web3/ether.js",
-          content: <Steps.IntegrateWithWeb3 />,
+          ...STEPS.integrateWithWeb3,
           pointer: { filename: "react/App.js", range: "19-22" },
         }
       );
@@ -65,23 +60,19 @@ const torusWalletIntegrationBuilder: IntegrationBuilder = {
       filenames.push("vue/components/Home.vue", "vue/App.vue", "vue/main.js");
       steps.push(
         {
-          title: "Install Torus Embed SDK",
-          content: <Steps.InstallSDK />,
+          ...STEPS.installSDK,
           pointer: { filename: "vue/components/Home.vue", range: "19" },
         },
         {
-          title: "Instantiate the SDK",
-          content: <Steps.InstantiateSDK />,
+          ...STEPS.instantiateSDK,
           pointer: { filename: "vue/components/Home.vue", range: "33-34" },
         },
         {
-          title: "Trigger user login",
-          content: <Steps.TriggerLogin />,
+          ...STEPS.triggerLogin,
           pointer: { filename: "vue/components/Home.vue", range: "35" },
         },
         {
-          title: "Integrate with Web3/ether.js",
-          content: <Steps.IntegrateWithWeb3 />,
+          ...STEPS.integrateWithWeb3,
           pointer: { filename: "vue/components/Home.vue", range: "36-42" },
         }
       );

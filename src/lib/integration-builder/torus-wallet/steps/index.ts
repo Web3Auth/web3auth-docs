@@ -1,4 +1,14 @@
-export { default as InstallSDK } from "./install-sdk.mdx";
-export { default as InstantiateSDK } from "./instantiate-sdk.mdx";
-export { default as TriggerLogin } from "./trigger-login.mdx";
-export { default as IntegrateWithWeb3 } from "./integrate-with-web3.mdx";
+import * as installSDK from "./install-sdk.mdx";
+import * as instantiateSDK from "./instantiate-sdk.mdx";
+import * as triggerLogin from "./trigger-login.mdx";
+import * as integrateWithWeb3 from "./integrate-with-web3.mdx";
+import { toSteps } from "../../utils";
+
+const STEPS = toSteps({
+  installSDK,
+  instantiateSDK,
+  triggerLogin,
+  integrateWithWeb3,
+});
+
+export default STEPS;
