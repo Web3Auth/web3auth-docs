@@ -1,5 +1,6 @@
 import React from "react";
 import CodeBlock from "@theme/CodeBlock";
+import { FiFile } from "react-icons/fi";
 import classNames from "classnames";
 import path from "path";
 import styles from "./styles.module.css";
@@ -40,7 +41,8 @@ export default function IntegrationBuilderCodeView({
               role="tab"
               onClick={onClickFilename.bind(this, filename)}
             >
-              {getDisplayName(filename)}
+              <FiFile />
+              <span>{getDisplayName(filename)}</span>
             </li>
           ))}
         </ul>
