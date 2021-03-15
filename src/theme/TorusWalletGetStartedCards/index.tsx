@@ -4,7 +4,7 @@ import { SiReact, SiVueDotJs } from "react-icons/si";
 import classNames from "classnames";
 import styles from "./styles.module.css";
 
-export default function ProductSuiteGetStartedCards() {
+export default function TorusWalletGetStartedCards() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
