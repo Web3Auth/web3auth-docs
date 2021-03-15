@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useState } from "react";
+import React, { MouseEvent, useEffect, useMemo, useState } from "react";
 import Layout from "@theme/Layout";
 import IntegrationBuilderCodeView from "@theme/IntegrationBuilderCodeView";
 import classNames from "classnames";
@@ -6,18 +6,29 @@ import rangeParser from "parse-numeric-range";
 import builders from "../../lib/integration-builder";
 import styles from "./styles.module.css";
 
-export default function IntegrationBuilderPage({ files }) {
-  const [builderIndex, setBuilderIndex] = useState(0);
-  const builder = builders[builderIndex];
-
-  const [optionValues, setOptionValues] = useState<Record<string, string>>(
-    Object.fromEntries(
-      Object.entries(builder.options).map(([key, option]) => [
-        key,
-        option.default,
-      ])
-    )
+const getDefaultBuilderOptions = (index: number) =>
+  Object.fromEntries(
+    Object.entries(builders[index].options).map(([key, option]) => [
+      key,
+      option.default,
+    ])
   );
+
+export default function IntegrationBuilderPage({ files }) {
+  const [builderOptions, setBuilderOptions] = useState<{
+    index: number;
+    values: Record<string, string>;
+  }>({
+    index: 0,
+    values: getDefaultBuilderOptions(0),
+  });
+
+  const onChangeBuilder = (index: number) => {
+    setBuilderOptions({
+      index,
+      values: getDefaultBuilderOptions(index),
+    });
+  };
 
   const onChangeOptionValue = (
     optionKey: string,
@@ -26,9 +37,12 @@ export default function IntegrationBuilderPage({ files }) {
   ) => {
     event.preventDefault();
 
-    const availableValues = builder.getAvailableOptions(optionKey, optionValue);
+    setBuilderOptions(({ index, values: currValues }) => {
+      const availableValues = builders[index].getAvailableOptions(
+        optionKey,
+        optionValue
+      );
 
-    setOptionValues((currValues) => {
       let maxScore = 0;
       let maxScoreIndex = 0;
       for (let i = 0; i < availableValues.length; i++) {
@@ -44,21 +58,28 @@ export default function IntegrationBuilderPage({ files }) {
       }
 
       return {
-        ...availableValues[maxScoreIndex],
-        [optionKey]: optionValue,
+        index,
+        values: {
+          ...availableValues[maxScoreIndex],
+          [optionKey]: optionValue,
+        },
       };
     });
   };
 
-  const integration = builder.build(optionValues);
+  const builder = builders[builderOptions.index];
+
+  const integration = useMemo(() => builder.build(builderOptions.values), [
+    builderOptions,
+  ]);
   const [selectedFilename, setSelectedFilename] = useState(
     integration.filenames[0]
   );
 
   useEffect(() => {
-    // Update selected fil when either builder or option values changed
+    // Update selected file when either integration changed
     setSelectedFilename(integration.filenames[0]);
-  }, [builder, optionValues]);
+  }, [integration]);
 
   const steps = integration.steps;
   const [stepIndex, setStepIndex] = useState(0);
@@ -100,13 +121,13 @@ export default function IntegrationBuilderPage({ files }) {
                   href="#"
                   onClick={(e) => e.preventDefault()}
                 >
-                  {optionValues[key]}
+                  {builderOptions.values[key]}
                 </a>
                 {option.choices.length > 1 && (
                   <ul className="dropdown__menu">
                     {option.choices.map(
                       (value) =>
-                        value !== optionValues[key] && (
+                        value !== builderOptions.values[key] && (
                           <li key={value}>
                             <a
                               className="dropdown__link"
@@ -137,9 +158,9 @@ export default function IntegrationBuilderPage({ files }) {
                   <li
                     key={index}
                     className={classNames("pills__item", {
-                      "pills__item--active": builderIndex === index,
+                      "pills__item--active": builderOptions.index === index,
                     })}
-                    onClick={setBuilderIndex.bind(this, index)}
+                    onClick={onChangeBuilder.bind(this, index)}
                   >
                     {builder.displayName}
                   </li>
