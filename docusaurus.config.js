@@ -1,52 +1,79 @@
 const path = require("path");
 
+const githubOrg = "torusresearch";
+const githubRepo = "torus-documentation";
+const githubOrgUrl = `https://github.com/${githubOrg}`;
+const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
+const githubEditUrl = `${githubRepoUrl}/edit/master`;
+const contactUrl = "https://tor.us/contact-us.html"; // TODO: Confirm with content team
+const mediumUrl = "https://medium.com/@TorusLabs";
+
+/** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: "Torus Documentation",
-  tagline: "Flexible, Universal Key Management",
-  url: "https://docs.tor.us",
+  title: "Documentation",
+  tagline: "Flexible, Universal Key Management", // TODO: Confirm with content team
+  url: "https://tor.us",
   baseUrl: "/",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
-  favicon: "img/favicon.ico",
-  organizationName: "torus",
-  projectName: "docs",
+  onBrokenMarkdownLinks: "throw",
+  favicon: "images/favicon.ico",
+  organizationName: githubOrg,
+  projectName: githubRepo,
   themeConfig: {
+    colorMode: {
+      defaultMode: "light", // "light" | "dark"
+      disableSwitch: true, // Set to "true" when Dark mode is ready
+      respectPrefersColorScheme: false, // Set to "true" when Dark mode is ready
+    },
     navbar: {
       title: "Documentation",
       logo: {
-        alt: "Torus",
-        src: "img/logo.svg",
+        alt: "Torus's Logo",
+        src: "images/logo.svg",
       },
       items: [
         {
-          to: "integration-builder-v2",
-          label: "Integration Builder",
+          label: "Dashboard",
+          href: "https://register.directauth.io", // TODO: DirectAuth or OpenLogin?
+          target: "_self",
           position: "right",
+          className: "navbar__button",
         },
         {
-          href: "https://dashboard.tor.us", // TODO: replace with actual dashboard link
-          label: "Dashboard",
+          label: "Integration Builder",
+          to: "/integration-builder",
+          position: "left",
+          className: "navbar__button",
+        },
+        {
+          label: "GitHub",
+          href: githubRepoUrl,
+          position: "left",
+        },
+        {
+          label: "Contact us",
+          href: contactUrl,
           position: "right",
         },
       ],
     },
     footer: {
-      style: "dark",
+      style: "light",
       links: [
         {
           title: "Users",
           items: [
             {
-              label: "OpenLogin",
-              href: "https://openlogin.com",
+              label: "Torus Wallet",
+              href: "https://app.tor.us",
             },
             {
-              label: "Torus Wallet",
-              href: "https://app.tor.us/",
+              label: "OpenLogin",
+              href: "https://openlogin.com", // TODO: beta.openlogin.com?
             },
             {
               label: "Torus Extension (coming soon)",
-              href: "https://tor.us/media-kit.html#",
+              href: "#", // TODO: Update later
             },
           ],
         },
@@ -54,25 +81,24 @@ module.exports = {
           title: "Developers",
           items: [
             {
-              label: "OpenLogin",
-              href: "https://openlogin.com",
+              label: "Torus Embed",
+              href: "https://docs.tor.us/torus-wallet/quick-start", // TODO: Update later
             },
             {
               label: "DirectAuth",
-              href: "https://docs.tor.us/direct-auth/what-is-directauth",
+              href: "https://directauth.io",
             },
             {
-              label: "Torus Embed",
-              href:
-                "https://docs.tor.us/torus-wallet/quick-start#integrate-via",
+              label: "OpenLogin",
+              href: "https://openlogin.com", // TODO: beta.openlogin.com?
             },
             {
               label: "tKey",
-              href: "https://hackmd.io/keVuRfrwSxygfyCfzsrQfw",
+              href: "https://hackmd.io/keVuRfrwSxygfyCfzsrQfw", // TODO: Confirm with content team
             },
             {
               label: "Status",
-              href: "https://status.torusnode.com/",
+              href: "https://status.torusnode.com",
             },
             {
               label: "Support",
@@ -81,6 +107,7 @@ module.exports = {
           ],
         },
         {
+          // TODO: Confirm with content team
           title: "Community",
           items: [
             {
@@ -93,11 +120,11 @@ module.exports = {
             },
             {
               label: "Medium",
-              href: "https://tor.us/images/Exclude.png",
+              href: mediumUrl,
             },
             {
               label: "Github",
-              href: "https://github.com/torusresearch/",
+              href: githubOrgUrl,
             },
             {
               label: "Reddit",
@@ -114,6 +141,7 @@ module.exports = {
           ],
         },
         {
+          // TODO: Confirm with content team
           title: "Company",
           items: [
             {
@@ -134,21 +162,20 @@ module.exports = {
             },
             {
               label: "Blog",
-              href: "https://medium.com/@TorusLabs",
+              href: mediumUrl,
             },
             {
               label: "Contact us",
-              href: "https://tor.us/contact-us.html",
+              href: contactUrl,
             },
           ],
         },
       ],
+      logo: {
+        alt: "Torus's Logo",
+        src: "images/logo.svg",
+      },
       copyright: `© ${new Date().getFullYear()} Torus Labs Private Limited`,
-    },
-    colorMode: {
-      defaultMode: "light",
-      disableSwitch: true,
-      respectPrefersColorScheme: false,
     },
   },
   presets: [
@@ -157,17 +184,25 @@ module.exports = {
       {
         docs: {
           routeBasePath: "/",
+          editUrl: githubEditUrl,
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl:
-            "https://github.com/torusresearch/torus-documentation/edit/master/",
         },
+        /** Uncomment to enable Blog features, see https://v2.docusaurus.io/docs/blog
+        blog: {
+          showReadingTime: true,
+          editUrl: githubEditUrl,
+        },
+        */
         theme: {
-          customCss: require.resolve("./styles.css"),
+          customCss: require.resolve("./src/css/custom.css"),
         },
       },
     ],
   ],
   plugins: [
-    path.resolve(__dirname, "plugins", "docusaurus-plugin-mdx-component"),
+    [
+      path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"),
+      { rootDir: "files" },
+    ],
   ],
 };
