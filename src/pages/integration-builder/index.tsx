@@ -63,21 +63,76 @@ export default function IntegrationBuilderPage({ files }) {
   const steps = [
     {
       title: "Install Torus Embed SDK",
+      content: (
+        <>
+          <p>
+            Install Torus Embed SDK using <code>npm</code> or <code>yarn</code>:
+          </p>
+          <pre>
+            <code>npm i --save @toruslabs/torus-embed</code>
+          </pre>
+        </>
+      ),
       file: "torus-wallet/react/App.js",
       range: "2",
     },
     {
       title: "Instantiate the SDK",
+      content: (
+        <>
+          <p>
+            Instantiate Torus Embed SDK by creating a instance of{" "}
+            <code>Torus</code>:
+          </p>
+          <pre>
+            <code>
+              {`
+import Torus from "@toruslabs/torus-embed";
+
+const torus = new Torus();
+await torus.init();`.trim()}
+            </code>
+          </pre>
+        </>
+      ),
       file: "torus-wallet/react/App.js",
       range: "13-16",
     },
     {
       title: "Trigger user login",
+      content: (
+        <>
+          <p>
+            Trigger user login wherever it makes sense on your application
+            lifecycle:
+          </p>
+          <pre>
+            <code>{`await torus.login();`}</code>
+          </pre>
+        </>
+      ),
       file: "torus-wallet/react/App.js",
       range: "17",
     },
     {
       title: "Integrate with Web3/ether.js",
+      content: (
+        <>
+          <p>
+            Integrating with the Torus Wallet gives you a provider, which can be
+            wrapped by the Web3. This instance functions similar to that as
+            Metamask's Web3 provider. We have taken great care to make it
+            compatible with Metamask's Web3 interface.
+          </p>
+          <pre>
+            <code>
+              {`
+import Web3 from "web3";
+const web3 = new Web3(torus.provider);`.trim()}
+            </code>
+          </pre>
+        </>
+      ),
       file: "torus-wallet/react/App.js",
       range: "19-22",
     },
@@ -171,12 +226,7 @@ export default function IntegrationBuilderPage({ files }) {
                 onClick={onChangeStep.bind(this, index)}
               >
                 <p className={styles.stepHeader}>{step.title}</p>
-                <p className={styles.stepBody}>
-                  Add the dependency to your build and import the library.
-                  Alternatively, if you are starting from scratch and need a
-                  go.mod file, download the project files using the Download
-                  link in the code editor.
-                </p>
+                <div className={styles.stepBody}>{step.content}</div>
               </div>
             ))}
           </div>
