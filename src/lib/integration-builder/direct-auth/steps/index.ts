@@ -12,6 +12,12 @@ import * as registerAndroidRedirect from "./register-android-redirect.mdx";
 import * as instantiateAndroidSDK from "./instantiate-android-sdk.mdx";
 import * as triggerAndroidLogin from "./trigger-android-login.mdx";
 
+// iOS
+import * as installSwiftPackage from "./install-swift-package.mdx";
+import * as setupSwiftUrlSchema from "./setup-swift-url-schema.mdx";
+import * as setupSwiftUniversalLinks from "./setup-swift-universal-links.mdx";
+import * as triggerSwiftLogin from "./trigger-swift-login.mdx";
+
 import { toSteps } from "../../utils";
 
 const STEPS = toSteps({
@@ -28,6 +34,12 @@ const STEPS = toSteps({
   registerAndroidRedirect,
   instantiateAndroidSDK,
   triggerAndroidLogin,
+
+  // iOS
+  installSwiftPackage,
+  setupSwiftUrlSchema,
+  setupSwiftUniversalLinks,
+  triggerSwiftLogin,
 });
 
 export default STEPS;

@@ -13,7 +13,7 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
     lang: {
       displayName: "Language/Framework",
       default: "React",
-      choices: ["React", "Vue", "Android"],
+      choices: ["React", "Vue", "Android", "iOS"],
     },
   },
 
@@ -24,7 +24,8 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
         availableOptions.push(
           { lang: "React" },
           { lang: "Vue" },
-          { lang: "Android" }
+          { lang: "Android" },
+          { lang: "iOS" }
         );
         break;
       case "lang":
@@ -126,6 +127,30 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
             filename: "android/app/MainActivity.java",
             range: "74-83",
           },
+        }
+      );
+    } else if (values.lang === "iOS") {
+      filenames.push(
+        "ios/Package.swift",
+        "ios/ContentView.swift",
+        "ios/SceneDelegate.swift"
+      );
+      steps.push(
+        {
+          ...STEPS.installSwiftPackage,
+          pointer: { filename: "ios/Package.swift", range: "3-8" },
+        },
+        {
+          ...STEPS.setupSwiftUrlSchema,
+          pointer: { filename: "ios/SceneDelegate.swift", range: "18-23" },
+        },
+        {
+          ...STEPS.setupSwiftUniversalLinks,
+          pointer: { filename: "ios/SceneDelegate.swift", range: "9-15" },
+        },
+        {
+          ...STEPS.triggerSwiftLogin,
+          pointer: { filename: "ios/ContentView.swift", range: "21-32" },
         }
       );
     }
