@@ -66,6 +66,8 @@ export default function IntegrationBuilderPage({ files }) {
   const onChangeStep = (index: number) => {
     const pointer = steps[index].pointer;
     if (pointer) {
+      setSelectedFilename(pointer.filename);
+
       const range = rangeParser(pointer.range);
       if (range.length) {
         const ref = document.getElementById(
@@ -78,7 +80,6 @@ export default function IntegrationBuilderPage({ files }) {
             inline: "start",
           });
       }
-      setSelectedFilename(pointer.filename);
     }
 
     setStepIndex(index);
