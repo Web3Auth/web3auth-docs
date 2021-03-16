@@ -87,7 +87,14 @@ module.exports = {
     {
       type: "category",
       label: "OpenLogin",
-      items: ["open-login/quick-start"],
+      items: [
+        "open-login/quick-start",
+        {
+          type: "category",
+          label: "Guides",
+          items: ["open-login/guides/how-to-build-x-with-openlogin"],
+        },
+      ],
     },
     {
       type: "category",
