@@ -1,0 +1,82 @@
+.container {
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--ifm-global-radius);
+}
+
+.header {
+  height: 56px;
+  padding: 0 12px;
+  background: #292e3e;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.body {
+  height: 100%;
+  overflow: scroll;
+}
+
+.body > div {
+  margin-bottom: 0;
+}
+
+.body :global .prism-code > div {
+  min-height: 80vh;
+}
+
+.container :global .prism-code {
+  counter-reset: line-number;
+  border-radius: 0;
+}
+
+.container :global .prism-code > div {
+  padding-top: 10px;
+}
+
+.container :global .prism-code[class*="language-"] .token-line::before {
+  counter-increment: line-number;
+  display: inline-block;
+  content: counter(line-number);
+  min-width: 1.625em;
+  text-align: right;
+  margin-right: calc(var(--ifm-pre-padding) * 1.25);
+  opacity: 0.25;
+}
+
+.codeTabs :global .tabs__item {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: #6b7280;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 4px 10px 3px 10px;
+  margin-right: 6px;
+  border-radius: 9999px;
+  border: none;
+  user-select: none;
+  transition: all var(--ifm-transition-fast)
+    var(--ifm-transition-timing-default);
+}
+
+.codeTabs :global .tabs__item > svg {
+  margin-right: 4px;
+  margin-bottom: 2px;
+}
+
+.codeTabs :global .tabs__item:last-child {
+  margin-right: 0;
+}
+
+.codeTabs :global .tabs__item:hover {
+  color: var(--ifm-color-primary-lightest);
+}
+
+.codeTabs :global .tabs__item.tabs__item--active {
+  color: var(--ifm-color-primary-light);
+  background: #daf0ff;
+}

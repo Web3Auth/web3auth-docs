@@ -1,62 +1,64 @@
 ---
-id: overview
-title: Overview
+title: Torus
 slug: /
+hide_table_of_contents: true
 ---
 
-Torus is a user-friendly, secure, and non-custodial key management system for
-DApps. We're focused on providing mainstream users a gateway to the
-decentralized ecosystem.
+import ProductSuiteStack from "@theme/ProductSuiteStack";
+import ProductSuiteGetStartedCards from "@theme/ProductSuiteGetStartedCards";
 
----
+Torus is a suite of authentication and key management products, powered by a
+decentralized non-custodial PKI infrastructure that is maintained by users and
+some of the most competent and trusted stakeholders in the blockchain ecosystem.
 
-## Quickstart
+<ProductSuiteStack />
 
-[Integrate Torus](getting-started) into your DApp with just a few lines of code
-and give your users an amazing onboarding experience:
+## Get Started
 
-:::info Geting Started
+<ProductSuiteGetStartedCards />
 
-See [Getting Started](getting-started).
+## More Details
+
+### Torus Wallet
+
+The Torus Wallet allows any application to seamlessly support their user's
+interactions with Ethereum (and similar EVM chains). It comes with a prebuilt
+UI, OAuth logins, fiat-to-crypto, whitelabel and
+[much more](torus-wallet/features/list-of-features).
+
+If your application is already compatible with Metamask/other Web3 providers,
+integrating the Torus Wallet would give you a provider to wrap the same Web3
+interface. You can install via
+[npm](https://www.npmjs.com/package/@toruslabs/torus-embed),
+[ipfs](torus-wallet/quick-start.mdx#ipfs),
+[jsdelivr](https://cdn.jsdelivr.net/npm/@toruslabs/torus-embed), or
+[unpkg](https://unpkg.com/@toruslabs/torus-embed)
+([see more details](torus-wallet/quick-start)).
+
+### DirectAuth
+
+Distributed Key Generation as a Service: applications can directly interact with
+the Torus Network to assign, store and retrieve keys on the network. Whilst
+abstracting key management from your application, the integration is compatible
+with both web and native apps, blockchain agnostic, and there are no longer any
+pop-ups - your application will have full control of the permissions flow
+([see more details](direct-auth/what-is-directauth)).
+
+If you're looking to control your UX, from logins to every interaction,
+DirectAuth is the integration for you. You can
+[integrate via one of our SDKs](direct-auth/integrating-directauth/README)
+depending on the platform(s) you are building on.
+
+### OpenLogin
+
+{OpenLogin short explanation goes here}
+
+<br />
+
+:::tip Want to know more?
+
+See our
+[High-level Overview](https://medium.com/toruslabs/what-distributed-key-generation-is-866adc79620)
+and [Technical Write-up](how-torus-works/system-architecture).
 
 :::
-
-Don't just take our word for it, [check it out](https://app.tor.us) for
-yourself!
-
-## What's Torus, how does it work?
-
-Torus is a user-friendly, fully open source and non-custodial key management
-system for DApps. It runs a Distributed Key Generation protocol that allows
-applications to access its generated keys via OAuths and thus existing user
-accounts. Try out the experience on the [Torus Wallet](https://app.tor.us).
-
-![Architecture](../static/assets/graph-6-final.png)
-
-### General Architecture <a id="general-overview"></a>
-
-The architecture consists of four parts:‌
-
-- Nodes in charge of Distributed Key Generation \(DKG\)
-- A smart contract in charge of the management of nodes
-- A private BFT network between nodes
-- A front-end client/SDK that interacts with nodes
-
-A smart contract is used for node discovery. Nodes are selected, operate for a
-fixed period, and generate a set of keys via DKG.‌
-
-When a user arrives at a DApp, the client is loaded. From there, a user logs in,
-they provide proof that they are logged in, and the proof is verified by each
-node individually. This proof is integrated with the modern OAuth 2.0 Token
-Authentication flow. For new users, nodes will assign a new key share from the
-pre-generated set of key shares, and store this assignment in an internal
-mapping. For returning users, nodes will look up their internal mapping and
-return that user's corresponding key share.‌
-
-The client then assembles these shares and reconstructs the users key in the
-front-end. This key is kept for the session and is not persisted in
-localstorage, or for native apps kept in memory for a session.
-
-For more, take a look at
-[system architecture](how-torus-works/system-architecture) or our
-[high-level write ups](https://medium.com/toruslabs/what-distributed-key-generation-is-866adc79620).
