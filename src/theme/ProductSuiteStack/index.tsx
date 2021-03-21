@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Link from "@docusaurus/Link";
 import styles from "./styles.module.css";
+import classNames from "classnames";
 
 export default function ProductSuiteStack() {
   const [tab, setTab] = useState<
@@ -11,7 +12,10 @@ export default function ProductSuiteStack() {
   switch (tab) {
     case "overview":
       content = (
-        <section className={styles.contentContainer}>
+        <section
+          key="overview"
+          className={classNames(styles.contentContainer, "anim-fade-in")}
+        >
           <div>
             <h1>The Torus Stack</h1>
             <div className={styles.content}>
@@ -29,7 +33,10 @@ export default function ProductSuiteStack() {
       break;
     case "openlogin":
       content = (
-        <section className={styles.contentContainer}>
+        <section
+          key="openlogin"
+          className={classNames(styles.contentContainer, "anim-fade-in")}
+        >
           <div>
             <h1>Torus | OpenLogin</h1>
             <div className={styles.content}>
@@ -61,7 +68,10 @@ export default function ProductSuiteStack() {
       break;
     case "wallet":
       content = (
-        <section className={styles.contentContainer}>
+        <section
+          key="wallet"
+          className={classNames(styles.contentContainer, "anim-fade-in")}
+        >
           <div>
             <h1>Torus | Wallet</h1>
             <div className={styles.content}>
@@ -87,7 +97,10 @@ export default function ProductSuiteStack() {
       break;
     case "custom-auth":
       content = (
-        <section className={styles.contentContainer}>
+        <section
+          key="custom-auth"
+          className={classNames(styles.contentContainer, "anim-fade-in")}
+        >
           <div>
             <h1>Torus | CustomAuth</h1>
             <div className={styles.content}>
@@ -116,7 +129,10 @@ export default function ProductSuiteStack() {
       break;
     case "network":
       content = (
-        <section className={styles.contentContainer}>
+        <section
+          key="network"
+          className={classNames(styles.contentContainer, "anim-fade-in")}
+        >
           <div>
             <h1>Torus | Network</h1>
             <div className={styles.content}>
