@@ -55,7 +55,26 @@ export default function ProductSuiteStack() {
       );
       break;
     case "wallet":
-      content = <div>Wallet</div>;
+      content = (
+        <section className={styles.contentContainer}>
+          <div>
+            <h1>Torus | Wallet</h1>
+            <div className={styles.content}>
+              <p>
+                Wallet uses the same OpenLogin flows and additionally provides a
+                direct connection to Ethereum and other blockchains via a
+                metamask esque style.
+              </p>
+              <ul>
+                <li>Same seamless login experiences</li>
+                <li>Interoperable with other decentralized applications</li>
+                <li>Comes with fiat-to-crypto provider</li>
+              </ul>
+            </div>
+          </div>
+          <img src="/contents/stack-wallet.png" alt="Wallet" height={320} />
+        </section>
+      );
       break;
     case "custom-auth":
       content = <div>CustomAuth</div>;
