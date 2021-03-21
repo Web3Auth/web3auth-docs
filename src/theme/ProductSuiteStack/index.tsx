@@ -27,7 +27,32 @@ export default function ProductSuiteStack() {
       );
       break;
     case "openlogin":
-      content = <div>OpenLogin</div>;
+      content = (
+        <section className={styles.contentContainer}>
+          <div>
+            <h1>Torus | OpenLogin</h1>
+            <div className={styles.content}>
+              <p>
+                An authentication suite that combines the simplicity of
+                passwordless authentication with the security of non-custodial
+                PKI
+              </p>
+              <ul>
+                <li>Passwordless, SSO, Face/TouchID Login</li>
+                <li>
+                  Manage data flows to acheive GDPR, CPRA, or CCPA compliance
+                </li>
+                <li>Connect up to any blockchain</li>
+              </ul>
+            </div>
+          </div>
+          <img
+            src="/contents/stack-openlogin.png"
+            alt="OpenLogin"
+            height={320}
+          />
+        </section>
+      );
       break;
     case "wallet":
       content = <div>Wallet</div>;
