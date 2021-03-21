@@ -77,7 +77,29 @@ export default function ProductSuiteStack() {
       );
       break;
     case "custom-auth":
-      content = <div>CustomAuth</div>;
+      content = (
+        <section className={styles.contentContainer}>
+          <div>
+            <h1>Torus | CustomAuth</h1>
+            <div className={styles.content}>
+              <p>
+                Do everything you can do with OpenLogin and Wallet in a fully
+                customizable way
+              </p>
+              <ul>
+                <li>All logins and full UX control</li>
+                <li>Fully-customizable authentication experiences</li>
+                <li>Leverage on Torus' key infrastructure</li>
+              </ul>
+            </div>
+          </div>
+          <img
+            src="/contents/stack-customauth.png"
+            alt="CustomAuth"
+            height={320}
+          />
+        </section>
+      );
       break;
     case "network":
       content = <div>Network</div>;
