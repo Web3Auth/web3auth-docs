@@ -18,7 +18,7 @@ export default function ProductSuiteStack() {
                 An SDK of authentication and key management products, powered by
                 a decentralized non-custodial PKI infrastructure that is
                 maintained by users themselves and large stakeholders in the
-                blockchain ecosystem.
+                blockchain ecosystem
               </p>
             </div>
           </div>
@@ -102,7 +102,31 @@ export default function ProductSuiteStack() {
       );
       break;
     case "network":
-      content = <div>Network</div>;
+      content = (
+        <section className={styles.contentContainer}>
+          <div>
+            <h1>Torus | Network</h1>
+            <div className={styles.content}>
+              <p>
+                The Torus Network is a decentralized non-custodial PKI
+                infrastructure that is maintained by users themselves and large
+                stakeholders in the blockchain ecosystem. Keys (or user
+                accounts) are managed by multiple authentication factors,
+                threshold of which gives access to the account
+              </p>
+              <ul>
+                <li>No central server, its decentralized</li>
+                <li>Open-source</li>
+                <li>
+                  Non-custodial PKI designed to leverage on existing
+                  authentication systems
+                </li>
+              </ul>
+            </div>
+          </div>
+          <img src="/contents/stack-network.png" alt="Network" height={320} />
+        </section>
+      );
       break;
     default:
       content = <></>;
