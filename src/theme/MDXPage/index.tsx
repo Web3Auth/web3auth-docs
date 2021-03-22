@@ -1,7 +1,6 @@
 import React from "react";
 import { MDXProvider } from "@mdx-js/react";
 import Layout from "@theme/Layout";
-import Link from "@docusaurus/Link";
 import MDXComponents from "@theme/MDXComponents";
 import TOC from "@theme/TOC";
 import OriginalMDXPage from "@theme-original/MDXPage";
