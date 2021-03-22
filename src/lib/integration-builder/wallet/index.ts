@@ -2,7 +2,7 @@ import { IntegrationBuilder, IntegrationStep } from "../interfaces";
 import STEPS from "./steps";
 
 const torusWalletIntegrationBuilder: IntegrationBuilder = {
-  displayName: "Torus Wallet",
+  displayName: "Wallet",
 
   options: {
     chain: {
