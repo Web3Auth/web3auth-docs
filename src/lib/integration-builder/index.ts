@@ -4,9 +4,9 @@ import torusWalletIntegrationBuilder from "./torus-wallet";
 import openLoginIntegrationBuilder from "./open-login";
 
 const integrationBuilders: Record<string, IntegrationBuilder> = {
+  "open-login": openLoginIntegrationBuilder,
   "torus-wallet": torusWalletIntegrationBuilder,
   "direct-auth": directAuthIntegrationBuilder,
-  "open-login": openLoginIntegrationBuilder,
 };
 
 export * from "./interfaces";

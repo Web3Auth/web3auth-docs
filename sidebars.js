@@ -4,7 +4,19 @@ module.exports = {
     "README",
     {
       type: "category",
-      label: "Torus Wallet",
+      label: "OpenLogin",
+      items: [
+        "open-login/quick-start",
+        {
+          type: "category",
+          label: "Guides",
+          items: ["open-login/guides/how-to-build-x-with-openlogin"],
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Wallet",
       items: [
         "torus-wallet/quick-start",
         "torus-wallet/changelog",
@@ -82,18 +94,6 @@ module.exports = {
         "direct-auth/redirects-and-service-workers",
         "direct-auth/examples",
         "direct-auth/faq",
-      ],
-    },
-    {
-      type: "category",
-      label: "OpenLogin",
-      items: [
-        "open-login/quick-start",
-        {
-          type: "category",
-          label: "Guides",
-          items: ["open-login/guides/how-to-build-x-with-openlogin"],
-        },
       ],
     },
     {
