@@ -38,7 +38,7 @@ export default function ProductSuiteGetStartedCards() {
         <p>Fully-whitelabeled UI/UX paired up to Torus PKI and auth</p>
         <Link
           className={classNames(styles.button, styles.button2)}
-          to="/direct-auth/quick-start"
+          to="/customauth/quick-start"
         >
           Get Started
         </Link>

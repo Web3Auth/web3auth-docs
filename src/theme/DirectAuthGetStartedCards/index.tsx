@@ -15,7 +15,7 @@ export default function DirectAuthGetStartedCards() {
           <p>Integrate DirectAuth into your React app</p>
           <Link
             className={classNames(styles.button, styles.buttonReact)}
-            to="/integration-builder?b=direct-auth&lang=React"
+            to="/integration-builder?b=customauth&lang=React"
           >
             Get Started
           </Link>
@@ -27,7 +27,7 @@ export default function DirectAuthGetStartedCards() {
           <p>Integrate DirectAuth into your Vue app</p>
           <Link
             className={classNames(styles.button, styles.buttonVue)}
-            to="/integration-builder?b=direct-auth&lang=Vue"
+            to="/integration-builder?b=customauth&lang=Vue"
           >
             Get Started
           </Link>
@@ -41,7 +41,7 @@ export default function DirectAuthGetStartedCards() {
           <p>Integrate DirectAuth into your Android app</p>
           <Link
             className={classNames(styles.button, styles.buttonAndroid)}
-            to="/integration-builder?b=direct-auth&lang=Android"
+            to="/integration-builder?b=customauth&lang=Android"
           >
             Get Started
           </Link>
@@ -53,7 +53,7 @@ export default function DirectAuthGetStartedCards() {
           <p>Integrate DirectAuth into your iOS app</p>
           <Link
             className={classNames(styles.button, styles.buttonIos)}
-            to="/integration-builder?b=direct-auth&lang=iOS"
+            to="/integration-builder?b=customauth&lang=iOS"
           >
             Get Started
           </Link>

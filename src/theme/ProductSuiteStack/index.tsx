@@ -114,7 +114,7 @@ export default function ProductSuiteStack() {
                 <li>Leverage on Torus' key infrastructure</li>
               </ul>
               <hr />
-              <Link to="/direct-auth/quick-start" className={styles.link}>
+              <Link to="/customauth/quick-start" className={styles.link}>
                 Get started
               </Link>
             </div>

@@ -156,11 +156,11 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
     }
 
     return {
-      filenames: filenames.map((it) => `direct-auth/${it}`),
+      filenames: filenames.map((it) => `customauth/${it}`),
       steps: steps.map((it) => ({
         ...it,
         pointer: it.pointer
-          ? { ...it.pointer, filename: `direct-auth/${it.pointer.filename}` }
+          ? { ...it.pointer, filename: `customauth/${it.pointer.filename}` }
           : undefined,
       })),
     };
