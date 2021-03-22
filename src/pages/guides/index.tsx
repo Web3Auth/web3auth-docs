@@ -27,20 +27,16 @@ export default function GuidesPage({ guides }: Props) {
         <p>A collection of {Object.keys(guides).length} posts</p>
         <hr />
       </header>
-      <div className={classNames("container", styles.container)}>
-        <div className="row">
-          {sortedGuides.map(([key, guide]) => (
-            <Link
-              key={key}
-              className={classNames("col col--4", styles.article)}
-              to={`/guides/${key}`}
-            >
-              <img src={guide.image} alt="Banner" />
+      <div className={styles.container}>
+        {sortedGuides.map(([key, guide]) => (
+          <Link key={key} className={styles.article} to={`/guides/${key}`}>
+            <img src={guide.image} alt="Banner" />
+            <div className={styles.contentContainer}>
               <h3>{guide.title}</h3>
               <p>{guide.description}</p>
-            </Link>
-          ))}
-        </div>
+            </div>
+          </Link>
+        ))}
       </div>
     </Layout>
   );
