@@ -14,6 +14,8 @@ import TabItem from "@theme/TabItem";
 This tutorial will show you how to integrate OpenLogin authentication into one
 of the most popular web front-end library: React.
 
+You can find [the source code of this is example on Github](https://github.com/phuctm97/openlogin-react).
+
 ## Create your React app
 
 > Ignore this step if you're integrating into an existing React project.
@@ -88,7 +90,7 @@ Initialize the SDK after your application is mounted using `useEffect` hook and 
 
 ```jsx
 const VERIFIER = {
-  typeOfLogin: "google", // "facebook", "apple", "twitter", "reddit", etc. See full list of supported logins: https://docs.tor.us/direct-auth/supported-authenticators-verifiers
+  loginProvider: "google", // "facebook", "apple", "twitter", "reddit", etc. See full list of supported logins: https://docs.tor.us/direct-auth/supported-authenticators-verifiers
   clientId: "Your social provider ID",
 }
 
@@ -121,7 +123,7 @@ function App() {
     setLoading(true);
     try {
       await openlogin.login({
-        loginProvider: VERIFIER.typeOfLogin,
+        loginProvider: VERIFIER.loginProvider,
         redirectUrl: "http://localhost:3000/redirect",
       });
       setPrivKey(openlogin.privKey);
