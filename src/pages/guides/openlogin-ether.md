@@ -1,10 +1,8 @@
 ---
-title: How to Add OpenLogin to Next.js
-image: "/contents/openlogin-next.png"
-description:
-  Learn to build a simple Next.js app secured by OpenLogin and deployed to
-  Vercel.
-order: 3
+title: How to Integrate OpenLogin and Web3/Ether.js
+image: "/contents/openlogin-ether.png"
+description: Learn to use OpenLogin to integrate your app with Web3/Ether.js
+order: 4
 ---
 
 # How to Add OpenLogin to Next.js
