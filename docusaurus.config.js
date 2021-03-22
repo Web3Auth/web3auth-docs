@@ -85,7 +85,7 @@ module.exports = {
               href: "https://docs.tor.us/wallet/quick-start", // TODO: Update later
             },
             {
-              label: "DirectAuth",
+              label: "CustomAuth",
               href: "https://directauth.io",
             },
             {

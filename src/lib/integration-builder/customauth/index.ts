@@ -2,7 +2,7 @@ import { IntegrationBuilder, IntegrationStep } from "../interfaces";
 import STEPS from "./steps";
 
 const directAuthIntegrationBuilder: IntegrationBuilder = {
-  displayName: "DirectAuth",
+  displayName: "CustomAuth",
 
   options: {
     chain: {
