@@ -5,8 +5,6 @@ description: Learn to build a simple Vue app secured by OpenLogin.
 order: 2
 ---
 
-# How to Add OpenLogin to Vue
-
 ## Levi nuruumque tecta
 
 Lorem markdownum supponas. Fata quam contrahit, at saniem, prius movit condidit.

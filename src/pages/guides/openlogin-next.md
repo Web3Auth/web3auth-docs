@@ -7,8 +7,6 @@ description:
 order: 3
 ---
 
-# How to Add OpenLogin to Next.js
-
 ## Sumus profanis
 
 Lorem markdownum magno, cremabit auras. Inpar primosque celeberrima et cum sed

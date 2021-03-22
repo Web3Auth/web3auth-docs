@@ -46,8 +46,8 @@ module.exports = {
           className: "navbar__button",
         },
         {
-          label: "GitHub",
-          href: githubRepoUrl,
+          label: "Guides",
+          to: "/guides",
           position: "left",
         },
         {

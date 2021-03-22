@@ -5,8 +5,6 @@ description: Learn to use OpenLogin to integrate your app with Polygon Network
 order: 4
 ---
 
-# How to Add OpenLogin to Next.js
-
 ## Sumus profanis
 
 Lorem markdownum magno, cremabit auras. Inpar primosque celeberrima et cum sed
