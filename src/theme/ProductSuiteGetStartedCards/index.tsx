@@ -8,7 +8,10 @@ export default function ProductSuiteGetStartedCards() {
     <div className={styles.container}>
       <div className={styles.card}>
         <h3>OpenLogin</h3>
-        <p>A privacy-focused login.</p>
+        <p>
+          An auth suite that combines the simplicity of passwordless
+          authentication with the security of non-custodial PKI
+        </p>
         <Link
           className={classNames(styles.button, styles.button3)}
           to="/open-login/quick-start"
@@ -18,7 +21,11 @@ export default function ProductSuiteGetStartedCards() {
       </div>
       <div className={styles.card}>
         <h3>Torus Wallet</h3>
-        <p>A 1-click sign-up solution.</p>
+        <p>
+          {" "}
+          Uses OpenLogin flows with a direct connection to Ethereum and other
+          blockchains via a metamask esque style
+        </p>
         <Link
           className={classNames(styles.button, styles.button1)}
           to="/torus-wallet/quick-start"
@@ -28,7 +35,7 @@ export default function ProductSuiteGetStartedCards() {
       </div>
       <div className={styles.card}>
         <h3>CustomAuth</h3>
-        <p>A fully-customizable authentication.</p>
+        <p>Fully-whitelabeled UI/UX paired up to Torus PKI and auth</p>
         <Link
           className={classNames(styles.button, styles.button2)}
           to="/direct-auth/quick-start"
