@@ -28,7 +28,7 @@ export default function ProductSuiteGetStartedCards() {
         </p>
         <Link
           className={classNames(styles.button, styles.button1)}
-          to="/torus-wallet/quick-start"
+          to="/wallet/quick-start"
         >
           Get Started
         </Link>
