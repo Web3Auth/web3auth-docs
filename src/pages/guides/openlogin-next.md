@@ -1,5 +1,8 @@
 ---
 title: How to Add OpenLogin to Next.js
+description:
+  Learn to build a simple Next.js app secured by OpenLogin and deployed to
+  Vercel.
 ---
 
 # How to Add OpenLogin to Next.js

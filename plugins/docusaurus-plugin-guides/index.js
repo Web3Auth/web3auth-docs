@@ -9,6 +9,10 @@ const readFileAsync = util.promisify(fs.readFile);
 
 module.exports = (context, options) => ({
   name: "docusaurus-plugin-guides",
+  getPathsToWatch() {
+    const dir = path.resolve(context.siteDir, "src", "pages", "guides");
+    return [`${dir}/**/*.md`];
+  },
   async loadContent() {
     const dir = path.resolve(context.siteDir, "src", "pages", "guides");
 
@@ -19,11 +23,7 @@ module.exports = (context, options) => ({
       const src = await readFileAsync(path.join(dir, filename), "utf-8");
       const { data } = matter(src);
 
-      let name = filename;
-      if (filename.endsWith(".mdx"))
-        name = filename.substr(0, filename.length - 4);
-      if (filename.endsWith(".md"))
-        name = filename.substr(0, filename.length - 3);
+      const name = filename.substr(0, filename.length - 3); // Trim .md
       frontMatters[name] = data;
     }
 
@@ -34,6 +34,7 @@ module.exports = (context, options) => ({
     const guides = await createData("guides.json", JSON.stringify(content));
     addRoute({
       path: "/guides",
+      exact: true,
       component: "@site/src/pages/guides",
       modules: { guides },
     });

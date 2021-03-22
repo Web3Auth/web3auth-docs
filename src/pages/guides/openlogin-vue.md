@@ -1,5 +1,6 @@
 ---
 title: How to Add OpenLogin to Vue
+description: Learn to build a simple Vue app secured by OpenLogin.
 ---
 
 # How to Add OpenLogin to Vue

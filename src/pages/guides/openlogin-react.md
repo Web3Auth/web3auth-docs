@@ -1,5 +1,6 @@
 ---
 title: How to Add OpenLogin to React
+description: Learn to build a simple React.js app secured by OpenLogin.
 ---
 
 # How to Add OpenLogin to React
