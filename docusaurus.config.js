@@ -200,6 +200,7 @@ module.exports = {
     ],
   ],
   plugins: [
+    path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
     path.resolve(__dirname, "plugins", "docusaurus-plugin-mdx-components"),
     [
       path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"),
