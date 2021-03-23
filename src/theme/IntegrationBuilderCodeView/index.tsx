@@ -57,7 +57,6 @@ export default function IntegrationBuilderCodeView({
         <CodeBlock
           className="language-jsx"
           metastring={highlight ? `{${highlight}}` : undefined}
-          lineNamespace="integration-builder"
         >
           {fileContents[selectedFilename]}
         </CodeBlock>
