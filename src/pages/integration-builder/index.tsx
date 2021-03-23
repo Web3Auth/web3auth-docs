@@ -2,7 +2,6 @@ import React, { MouseEvent, useEffect, useMemo, useState } from "react";
 import Layout from "@theme/Layout";
 import IntegrationBuilderCodeView from "@theme/IntegrationBuilderCodeView";
 import classNames from "classnames";
-import rangeParser from "parse-numeric-range";
 import builders from "../../lib/integration-builder";
 import styles from "./styles.module.css";
 
@@ -142,25 +141,7 @@ export default function IntegrationBuilderPage({ files }) {
 
   const onChangeStep = (index: number) => {
     const pointer = steps[index].pointer;
-    if (pointer) {
-      setSelectedFilename(pointer.filename);
-
-      const range = rangeParser(pointer.range || "1");
-      if (range.length) {
-        const ref = document.getElementById(
-          `integration-builder-docusaurus-code-line-no-${
-            range[Math.floor(range.length / 2)]
-          }`
-        );
-        ref &&
-          ref.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-            inline: "start",
-          });
-      }
-    }
-
+    if (pointer) setSelectedFilename(pointer.filename);
     setStepIndex(index);
   };
 
