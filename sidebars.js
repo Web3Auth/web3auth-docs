@@ -40,7 +40,7 @@ module.exports = {
         },
         {
           Features: [
-            "wallet/features/list-of-features",
+            "wallet/features/layer2",
             "wallet/features/accountrecovery",
             "wallet/features/purchasecryptocurrency",
             "wallet/features/erc721",
