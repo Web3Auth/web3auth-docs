@@ -1,6 +1,8 @@
 import React, { MouseEvent, useEffect, useMemo, useState } from "react";
+import { MDXProvider } from "@mdx-js/react";
 import Layout from "@theme/Layout";
 import IntegrationBuilderCodeView from "@theme/IntegrationBuilderCodeView";
+import MDXComponents from "@theme/MDXComponents";
 import classNames from "classnames";
 import builders from "../../lib/integration-builder";
 import styles from "./styles.module.css";
@@ -204,18 +206,20 @@ export default function IntegrationBuilderPage({ files }) {
                 ))}
               </ul>
             </header>
-            {steps.map((step, index) => (
-              <div
-                key={index}
-                className={classNames(styles.stepContainer, {
-                  [styles.stepSelected]: index === stepIndex,
-                })}
-                onClick={onChangeStep.bind(this, index)}
-              >
-                <p className={styles.stepHeader}>{step.title}</p>
-                <div className={styles.stepBody}>{step.content}</div>
-              </div>
-            ))}
+            <MDXProvider components={MDXComponents}>
+              {steps.map((step, index) => (
+                <div
+                  key={index}
+                  className={classNames(styles.stepContainer, {
+                    [styles.stepSelected]: index === stepIndex,
+                  })}
+                  onClick={onChangeStep.bind(this, index)}
+                >
+                  <p className={styles.stepHeader}>{step.title}</p>
+                  <div className={styles.stepBody}>{step.content}</div>
+                </div>
+              ))}
+            </MDXProvider>
           </div>
           <div className={styles.rightCol}>
             <IntegrationBuilderCodeView
