@@ -19,7 +19,25 @@ module.exports = {
       label: "Wallet",
       items: [
         "wallet/quick-start",
-        "wallet/changelog",
+        "wallet/what-is-wallet",
+        {
+          "API Reference": [
+            "wallet/api-reference/installation",
+            "wallet/api-reference/class",
+            "wallet/api-reference/account",
+            "wallet/api-reference/display",
+            "wallet/api-reference/address-resolver",
+            "wallet/api-reference/topup",
+            "wallet/api-reference/ethereum-api",
+          ],
+        },
+        {
+          "Developing with Torus Wallet": [
+            "wallet/developing-with-wallet/layer2",
+            "wallet/developing-with-wallet/ganache",
+            "wallet/developing-with-wallet/networklist",
+          ],
+        },
         {
           Features: [
             "wallet/features/list-of-features",
@@ -35,27 +53,10 @@ module.exports = {
           ],
         },
         {
-          "API Reference": [
-            "wallet/api-reference/class",
-            "wallet/api-reference/account",
-            "wallet/api-reference/display",
-            "wallet/api-reference/address-resolver",
-            "wallet/api-reference/topup",
-            "wallet/api-reference/ethereum-api",
-          ],
-        },
-        {
-          "Developing with Torus Wallet": [
-            "wallet/developing-with-wallet/oauth",
-            "wallet/developing-with-wallet/layer2",
-            "wallet/developing-with-wallet/ganache",
-            "wallet/developing-with-wallet/networklist",
-          ],
-        },
-        {
           FAQ: ["wallet/faq-1/developers", "wallet/faq-1/users"],
         },
         "wallet/integration-guidelines",
+        "wallet/changelog",
       ],
     },
     {
