@@ -18,7 +18,7 @@ module.exports = {
       type: "category",
       label: "Wallet",
       items: [
-        "wallet/quick-start",
+        "wallet/getting-started",
         "wallet/what-is-wallet",
         {
           "API Reference": [
