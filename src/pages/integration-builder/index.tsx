@@ -145,20 +145,20 @@ export default function IntegrationBuilderPage({ files }) {
     if (pointer) {
       setSelectedFilename(pointer.filename);
 
-      const range = rangeParser(pointer.range || "1");
-      if (range.length) {
-        const ref = document.getElementById(
-          `integration-builder-docusaurus-code-line-no-${
-            range[Math.floor(range.length / 2)]
-          }`
-        );
-        ref &&
-          ref.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-            inline: "start",
-          });
-      }
+      // const range = rangeParser(pointer.range || "1");
+      // if (range.length) {
+      //   const ref = document.getElementById(
+      //     `integration-builder-docusaurus-code-line-no-${
+      //       range[Math.floor(range.length / 2)]
+      //     }`
+      //   );
+      //   ref &&
+      //     ref.scrollIntoView({
+      //       behavior: "smooth",
+      //       block: "center",
+      //       inline: "start",
+      //     });
+      // }
     }
 
     setStepIndex(index);

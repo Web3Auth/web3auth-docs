@@ -1,6 +1,8 @@
 import React from "react";
 import CodeBlock from "@theme/CodeBlock";
 import { FiFile } from "react-icons/fi";
+import { useSpring, animated } from "react-spring";
+import rangeParser from "parse-numeric-range";
 import classNames from "classnames";
 import path from "path";
 import styles from "./styles.module.css";
@@ -24,6 +26,9 @@ export default function IntegrationBuilderCodeView({
   highlight,
   onClickFilename,
 }: Props) {
+  const highlightLines = rangeParser(highlight || "0");
+  const props = useSpring({ scroll: Math.max(highlightLines[0] * 22 - 64, 0) }); // 22 is line height, 64 is offset to scroll the line close to top
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -47,7 +52,8 @@ export default function IntegrationBuilderCodeView({
           ))}
         </ul>
       </div>
-      <div className={styles.body}>
+      {/* @ts-ignore */}
+      <animated.div className={styles.body} scrollTop={props.scroll}>
         <CodeBlock
           className="language-jsx"
           metastring={highlight ? `{${highlight}}` : undefined}
@@ -55,7 +61,7 @@ export default function IntegrationBuilderCodeView({
         >
           {fileContents[selectedFilename]}
         </CodeBlock>
-      </div>
+      </animated.div>
     </div>
   );
 }
