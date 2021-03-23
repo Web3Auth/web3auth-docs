@@ -94,6 +94,14 @@ const torusWalletIntegrationBuilder: IntegrationBuilder = {
         {
           ...STEPS.triggerLogin,
           pointer: { filename: "web/index.html", range: "39-52" },
+        },
+        {
+          ...STEPS.getUserInfo,
+          pointer: { filename: "web/index.html", range: "28-35" },
+        },
+        {
+          ...STEPS.logout,
+          pointer: { filename: "web/index.html", range: "56-65" },
         }
       );
     }

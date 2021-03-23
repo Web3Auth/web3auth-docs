@@ -2,10 +2,55 @@
 title: Instantiate the SDK
 ---
 
-Instantiate Torus Embed SDK by creating an instance of class `Torus`:
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Instantiate Torus Embed SDK by creating an instance of class `Torus` and call
+its `init` function.
+
+<Tabs
+  defaultValue="simple"
+  values={[
+    { label: "Simple", value: "simple" },
+    { label: "More options", value: "more-options" },
+  ]}
+>
+<TabItem value="simple">
 
 ```js
-import Torus from "@toruslabs/torus-embed";
 const torus = new Torus();
 await torus.init();
 ```
+
+</TabItem>
+
+<TabItem value="more-options">
+
+```js
+const torus = new Torus({
+  buttonPosition: "top-right", // The position of the Torus button. Supported values are top-left bottom-left top-right bottom-right.
+});
+await torus.init({
+  showTorusButton: true, // Set to false to hide Torus button.
+  enabledVerifiers: {
+    facebook: false, // Hide certain types of logins (default will show all)
+  },
+  loginConfig: {
+    // Customize login provider configurations.
+    google: {
+      description: "Login with google",
+      clientId: "CLIENT_ID",
+      logoHover: "https://sample.com/google-logo-hover.svg",
+      logoLight: "https://sample.com/google-logo-light.svg",
+      logoDark: "https://sample.com/google-logo-dark.svg",
+      showOnModal: true,
+    },
+  },
+});
+```
+
+</TabItem>
+
+</Tabs>
+
+See [API reference](/wallet/api-reference/initialization) for more details.
