@@ -4,88 +4,6 @@ module.exports = {
     "README",
     {
       type: "category",
-      label: "Torus Wallet",
-      items: [
-        "torus-wallet/quick-start",
-        "torus-wallet/changelog",
-        {
-          Features: [
-            "torus-wallet/features/list-of-features",
-            "torus-wallet/features/accountrecovery",
-            "torus-wallet/features/purchasecryptocurrency",
-            "torus-wallet/features/erc721",
-            "torus-wallet/features/exportprivatekey",
-            "torus-wallet/features/language",
-            "torus-wallet/features/nameresolver",
-            "torus-wallet/features/themes",
-            "torus-wallet/features/pwa",
-            "torus-wallet/features/whitelabeling",
-          ],
-        },
-        {
-          "API Reference": [
-            "torus-wallet/api-reference/class",
-            "torus-wallet/api-reference/account",
-            "torus-wallet/api-reference/display",
-            "torus-wallet/api-reference/address-resolver",
-            "torus-wallet/api-reference/topup",
-            "torus-wallet/api-reference/ethereum-api",
-          ],
-        },
-        {
-          "Developing with Torus Wallet": [
-            "torus-wallet/developing-with-torus-wallet/oauth",
-            "torus-wallet/developing-with-torus-wallet/layer2",
-            "torus-wallet/developing-with-torus-wallet/ganache",
-            "torus-wallet/developing-with-torus-wallet/networklist",
-          ],
-        },
-        {
-          FAQ: ["torus-wallet/faq-1/developers", "torus-wallet/faq-1/users"],
-        },
-        "torus-wallet/integration-guidelines",
-      ],
-    },
-    {
-      type: "category",
-      label: "Direct Auth",
-      items: [
-        // "direct-auth/get-started",
-        "direct-auth/quick-start",
-        "direct-auth/what-is-directauth",
-        {
-          Integeration: [
-            "direct-auth/integrating-directauth/README",
-            "direct-auth/integrating-directauth/designing-your-key-management-architecture",
-            "direct-auth/integrating-directauth/deploying-on-the-torus-network",
-            "direct-auth/integrating-directauth/integrate-with-different-networks",
-          ],
-        },
-        {
-          "Verifiers/Logins": [
-            "direct-auth/supported-authenticators-verifiers",
-            "direct-auth/setting-up-verifiers-logins/README",
-            "direct-auth/setting-up-verifiers-logins/setting-up-a-proxy-provider-auth0",
-          ],
-        },
-        {
-          "Compatiblity and common patterns": [
-            "direct-auth/compatibility-and-common-patterns/README",
-            "direct-auth/compatibility-and-common-patterns/gasless-meta-transactions",
-            "direct-auth/compatibility-and-common-patterns/scalability-layer2-solutions",
-            "direct-auth/compatibility-and-common-patterns/password-manager-flow",
-            "direct-auth/compatibility-and-common-patterns/untitled",
-          ],
-        },
-        "direct-auth/linking-accounts",
-        "direct-auth/integration-guidelines",
-        "direct-auth/redirects-and-service-workers",
-        "direct-auth/examples",
-        "direct-auth/faq",
-      ],
-    },
-    {
-      type: "category",
       label: "OpenLogin",
       items: [
         "open-login/quick-start",
@@ -98,13 +16,96 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Wallet",
+      items: [
+        "wallet/quick-start",
+        "wallet/what-is-wallet",
+        {
+          "API Reference": [
+            "wallet/api-reference/installation",
+            "wallet/api-reference/class",
+            "wallet/api-reference/account",
+            "wallet/api-reference/display",
+            "wallet/api-reference/address-resolver",
+            "wallet/api-reference/topup",
+            "wallet/api-reference/ethereum-api",
+          ],
+        },
+        {
+          "Developing with Torus Wallet": [
+            "wallet/developing-with-wallet/layer2",
+            "wallet/developing-with-wallet/ganache",
+            "wallet/developing-with-wallet/networklist",
+          ],
+        },
+        {
+          Features: [
+            "wallet/features/list-of-features",
+            "wallet/features/accountrecovery",
+            "wallet/features/purchasecryptocurrency",
+            "wallet/features/erc721",
+            "wallet/features/exportprivatekey",
+            "wallet/features/language",
+            "wallet/features/nameresolver",
+            "wallet/features/themes",
+            "wallet/features/pwa",
+            "wallet/features/whitelabeling",
+          ],
+        },
+        {
+          FAQ: ["wallet/faq-1/developers", "wallet/faq-1/users"],
+        },
+        "wallet/integration-guidelines",
+        "wallet/changelog",
+      ],
+    },
+    {
+      type: "category",
+      label: "CustomAuth",
+      items: [
+        // "customauth/get-started",
+        "customauth/quick-start",
+        "customauth/what-is-customauth",
+        {
+          Integeration: [
+            "customauth/integrating-customauth/README",
+            "customauth/integrating-customauth/designing-your-key-management-architecture",
+            "customauth/integrating-customauth/deploying-on-the-torus-network",
+            "customauth/integrating-customauth/integrate-with-different-networks",
+          ],
+        },
+        {
+          "Verifiers/Logins": [
+            "customauth/supported-authenticators-verifiers",
+            "customauth/setting-up-verifiers-logins/README",
+            "customauth/setting-up-verifiers-logins/setting-up-a-proxy-provider-auth0",
+          ],
+        },
+        {
+          "Compatiblity and common patterns": [
+            "customauth/compatibility-and-common-patterns/README",
+            "customauth/compatibility-and-common-patterns/gasless-meta-transactions",
+            "customauth/compatibility-and-common-patterns/scalability-layer2-solutions",
+            "customauth/compatibility-and-common-patterns/password-manager-flow",
+            "customauth/compatibility-and-common-patterns/untitled",
+          ],
+        },
+        "customauth/linking-accounts",
+        "customauth/integration-guidelines",
+        "customauth/redirects-and-service-workers",
+        "customauth/examples",
+        "customauth/faq",
+      ],
+    },
+    {
+      type: "category",
       label: "How Torus works",
       items: [
         "how-torus-works/system-architecture",
         "how-torus-works/role-of-torus-nodes",
         "how-torus-works/key-generation-and-resharing",
         "how-torus-works/logins-key-assignments-and-retrievals",
-        "how-torus-works/torus-wallet",
+        "how-torus-works/wallet",
         "how-torus-works/oauth2-vs-proxy-sign-in",
         "how-torus-works/dkg-specification",
         "how-torus-works/audits",

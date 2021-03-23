@@ -82,10 +82,10 @@ module.exports = {
           items: [
             {
               label: "Torus Embed",
-              href: "https://docs.tor.us/torus-wallet/quick-start", // TODO: Update later
+              href: "https://docs.tor.us/wallet/quick-start", // TODO: Update later
             },
             {
-              label: "DirectAuth",
+              label: "CustomAuth",
               href: "https://directauth.io",
             },
             {

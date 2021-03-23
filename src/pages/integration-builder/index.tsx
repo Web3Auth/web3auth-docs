@@ -6,7 +6,7 @@ import rangeParser from "parse-numeric-range";
 import builders from "../../lib/integration-builder";
 import styles from "./styles.module.css";
 
-const defaultBuilderId = "torus-wallet";
+const defaultBuilderId = "wallet";
 
 const getDefaultBuilderOptions = (id: string) =>
   Object.fromEntries(

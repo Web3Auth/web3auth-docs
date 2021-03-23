@@ -2,7 +2,7 @@ import { IntegrationBuilder, IntegrationStep } from "../interfaces";
 import STEPS from "./steps";
 
 const directAuthIntegrationBuilder: IntegrationBuilder = {
-  displayName: "DirectAuth",
+  displayName: "CustomAuth",
 
   options: {
     chain: {
@@ -156,11 +156,11 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
     }
 
     return {
-      filenames: filenames.map((it) => `direct-auth/${it}`),
+      filenames: filenames.map((it) => `customauth/${it}`),
       steps: steps.map((it) => ({
         ...it,
         pointer: it.pointer
-          ? { ...it.pointer, filename: `direct-auth/${it.pointer.filename}` }
+          ? { ...it.pointer, filename: `customauth/${it.pointer.filename}` }
           : undefined,
       })),
     };

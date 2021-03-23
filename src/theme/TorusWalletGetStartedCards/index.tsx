@@ -14,7 +14,7 @@ export default function TorusWalletGetStartedCards() {
         <p>Integrate Torus Wallet into your React app</p>
         <Link
           className={classNames(styles.button, styles.buttonReact)}
-          to="/integration-builder?b=torus-wallet&lang=React"
+          to="/integration-builder?b=wallet&lang=React"
         >
           Get Started
         </Link>
@@ -26,7 +26,7 @@ export default function TorusWalletGetStartedCards() {
         <p>Integrate Torus Wallet into your Vue app</p>
         <Link
           className={classNames(styles.button, styles.buttonVue)}
-          to="/integration-builder?b=torus-wallet&lang=Vue"
+          to="/integration-builder?b=wallet&lang=Vue"
         >
           Get Started
         </Link>

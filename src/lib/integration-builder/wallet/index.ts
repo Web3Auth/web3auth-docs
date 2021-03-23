@@ -2,7 +2,7 @@ import { IntegrationBuilder, IntegrationStep } from "../interfaces";
 import STEPS from "./steps";
 
 const torusWalletIntegrationBuilder: IntegrationBuilder = {
-  displayName: "Torus Wallet",
+  displayName: "Wallet",
 
   options: {
     chain: {
@@ -79,11 +79,11 @@ const torusWalletIntegrationBuilder: IntegrationBuilder = {
     }
 
     return {
-      filenames: filenames.map((it) => `torus-wallet/${it}`),
+      filenames: filenames.map((it) => `wallet/${it}`),
       steps: steps.map((it) => ({
         ...it,
         pointer: it.pointer
-          ? { ...it.pointer, filename: `torus-wallet/${it.pointer.filename}` }
+          ? { ...it.pointer, filename: `wallet/${it.pointer.filename}` }
           : undefined,
       })),
     };
