@@ -85,23 +85,27 @@ const torusWalletIntegrationBuilder: IntegrationBuilder = {
       steps.push(
         {
           ...STEPS.installSDKWithScriptTags,
-          pointer: { filename: "web/index.html", range: "18" },
+          pointer: { filename: "web/index.html", range: "20" },
         },
         {
           ...STEPS.instantiateSDK,
-          pointer: { filename: "web/index.html", range: "24-27" },
+          pointer: { filename: "web/index.html", range: "27-28" },
         },
         {
           ...STEPS.triggerLogin,
-          pointer: { filename: "web/index.html", range: "39-52" },
+          pointer: { filename: "web/index.html", range: "51-67" },
         },
         {
           ...STEPS.getUserInfo,
-          pointer: { filename: "web/index.html", range: "28-35" },
+          pointer: { filename: "web/index.html", range: "32-33" },
+        },
+        {
+          ...STEPS.integrateWithWeb3,
+          pointer: { filename: "web/index.html", range: "43-47" },
         },
         {
           ...STEPS.logout,
-          pointer: { filename: "web/index.html", range: "56-65" },
+          pointer: { filename: "web/index.html", range: "71-82" },
         }
       );
     }
