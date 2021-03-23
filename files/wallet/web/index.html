@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Torus Wallet Integration</title>
+  </head>
+  <body>
+    <h1>Torus Wallet Integration</h1>
+    <div>
+      <p id="text">Loading...</p>
+      <p id="error"></p>
+      <button id="login">Login</button>
+      <button id="logout">Logout</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@toruslabs/torus-embed"></script>
+    <script>
+      (async function init() {
+        $("#login").hide();
+        $("#logout").hide();
+
+        const torus = new Torus();
+        window.torus = torus;
+
+        await torus.init();
+        try {
+          const user = await torus.getUserInfo();
+          $("#text").text("Logged in as " + user.name + ".");
+          $("#logout").show();
+        } catch (error) {
+          $("#text").text("Didn't log in.");
+          $("#login").show();
+        }
+      })();
+
+      $("#login").click(function (event) {
+        window.torus
+          .login()
+          .then(function () {
+            return window.torus.getUserInfo();
+          })
+          .then(function (user) {
+            $("#text").text("Logged in as " + user.name + ".");
+            $("#error").hide();
+            $("#logout").show();
+            $("#login").hide();
+          })
+          .catch(function (err) {
+            $("#error").text(err.message);
+          });
+      });
+
+      $("#logout").click(function (event) {
+        window.torus
+          .logout()
+          .then(function (res) {
+            $("#text").text("Logged out.");
+            $("#login").show();
+            $("#logout").hide();
+          })
+          .catch(function (err) {
+            $("#error").text(err.message);
+          });
+      });
+    </script>
+  </body>
+</html>

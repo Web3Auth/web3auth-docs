@@ -12,8 +12,8 @@ const torusWalletIntegrationBuilder: IntegrationBuilder = {
     },
     lang: {
       displayName: "Language/Framework",
-      default: "React",
-      choices: ["React", "Vue"],
+      default: "HTML",
+      choices: ["HTML", "React", "Vue"],
     },
   },
 
@@ -21,7 +21,11 @@ const torusWalletIntegrationBuilder: IntegrationBuilder = {
     const availableOptions: Record<string, string>[] = [];
     switch (optionKey) {
       case "chain":
-        availableOptions.push({ lang: "React" }, { lang: "Vue" });
+        availableOptions.push(
+          { lang: "HTML" },
+          { lang: "React" },
+          { lang: "Vue" }
+        );
         break;
       case "lang":
         availableOptions.push({ chain: "Ethereum" });
@@ -74,6 +78,22 @@ const torusWalletIntegrationBuilder: IntegrationBuilder = {
         {
           ...STEPS.integrateWithWeb3,
           pointer: { filename: "vue/components/Home.vue", range: "36-42" },
+        }
+      );
+    } else if (values.lang === "HTML") {
+      filenames.push("web/index.html");
+      steps.push(
+        {
+          ...STEPS.installSDKWithScriptTags,
+          pointer: { filename: "web/index.html", range: "18" },
+        },
+        {
+          ...STEPS.instantiateSDK,
+          pointer: { filename: "web/index.html", range: "24-27" },
+        },
+        {
+          ...STEPS.triggerLogin,
+          pointer: { filename: "web/index.html", range: "39-52" },
         }
       );
     }
