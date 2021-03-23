@@ -46,8 +46,8 @@ module.exports = {
           className: "navbar__button",
         },
         {
-          label: "GitHub",
-          href: githubRepoUrl,
+          label: "Guides",
+          to: "/guides",
           position: "left",
         },
         {
@@ -200,6 +200,7 @@ module.exports = {
     ],
   ],
   plugins: [
+    path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
     path.resolve(__dirname, "plugins", "docusaurus-plugin-mdx-components"),
     [
       path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"),
