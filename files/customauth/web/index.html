@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CustomAuth Integration</title>
+  </head>
+  <body>
+    <div>
+      <p id="text">Loading...</p>
+      <p id="error"></p>
+      <p id="public-address"></p>
+      <p id="private-key"></p>
+      <button id="login">Login</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@toruslabs/torus-direct-web-sdk@4.8.0/dist/directWebSdk.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.js"></script>
+    <script>
+      (async function init() {
+        $("#login").hide();
+
+        window.customauth = new DirectWebSdk.default({
+          baseUrl: `${location.origin}/auth`,
+          network: "testnet", // details for test net
+        });
+        window.customauth = customauth;
+
+        await window.customauth.init({ skipSw: false });
+
+        $("#text").text("Didn't log in.");
+        $("#login").show();
+      })();
+
+      $("#login").click(function (event) {
+        window.customauth
+          .triggerLogin({
+            typeOfLogin: "google",
+            clientId:
+              "221898609709-obfn3p63741l5333093430j3qeiinaa8.apps.googleusercontent.com",
+            verifier: "google-lrc",
+          })
+          .then(function (res) {
+            const userInfo = res.userInfo;
+            $("#text").text("Logged in as " + userInfo.name + ".");
+            $("#public-address").text("Public address: " + res.publicAddress + ".");
+            $("#private-key").text("Private key: " + res.privateKey + ".");
+            $("#error").hide();
+            $("#login").hide();
+          })
+          .catch(function (err) {
+            $("#error").text(err.message);
+          });
+      });
+    </script>
+  </body>
+</html>

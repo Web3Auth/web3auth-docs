@@ -12,8 +12,8 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
     },
     lang: {
       displayName: "Language/Framework",
-      default: "React",
-      choices: ["React", "Vue", "Android", "iOS"],
+      default: "HTML",
+      choices: ["HTML", "React", "Vue", "Android", "iOS"],
     },
   },
 
@@ -22,6 +22,7 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
     switch (optionKey) {
       case "chain":
         availableOptions.push(
+          { lang: "HTML" },
           { lang: "React" },
           { lang: "Vue" },
           { lang: "Android" },
@@ -43,14 +44,44 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
     const filenames: string[] = [];
     const steps: IntegrationStep[] = [];
 
-    if (values.lang === "React" || values.lang === "Vue") {
-      if (values.lang === "React") {
+    if (
+      values.lang === "HTML" ||
+      values.lang === "React" ||
+      values.lang === "Vue"
+    ) {
+      if (values.lang === "HTML") {
+        filenames.push("web/index.html");
+        steps.push(
+          {
+            ...STEPS.installWebSDK,
+            pointer: { filename: "web/index.html", range: "18" },
+          },
+          { ...STEPS.registerVerifier },
+          {
+            ...STEPS.instantiateWebSDK,
+            pointer: { filename: "web/index.html", range: "24-30" },
+          },
+          {
+            ...STEPS.serveWebSw,
+            pointer: { filename: "web/sw.js" },
+          },
+          {
+            ...STEPS.serveWebRedirect,
+            pointer: { filename: "web/redirect.html" },
+          },
+          {
+            ...STEPS.triggerWebLogin,
+            pointer: { filename: "web/index.html", range: "37-54" },
+          }
+        );
+      } else if (values.lang === "React") {
         filenames.push("react/App.js", "react/index.js");
         steps.push(
           {
             ...STEPS.installWebSDK,
             pointer: { filename: "react/App.js", range: "2" },
           },
+          { ...STEPS.registerVerifier },
           {
             ...STEPS.instantiateWebSDK,
             pointer: { filename: "react/App.js", range: "137-143" },
@@ -75,6 +106,7 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
             ...STEPS.installWebSDK,
             pointer: { filename: "vue/App.vue", range: "50" },
           },
+          { ...STEPS.registerVerifier },
           {
             ...STEPS.instantiateWebSDK,
             pointer: { filename: "vue/App.vue", range: "272-277" },
