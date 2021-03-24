@@ -33,7 +33,6 @@ module.exports = {
         },
         {
           "Developing with Torus Wallet": [
-            "wallet/developing-with-wallet/layer2",
             "wallet/developing-with-wallet/ganache",
             "wallet/developing-with-wallet/networklist",
           ],
@@ -63,8 +62,7 @@ module.exports = {
       type: "category",
       label: "CustomAuth",
       items: [
-        // "customauth/get-started",
-        "customauth/quick-start",
+        "customauth/get-started",
         "customauth/what-is-customauth",
         {
           Integeration: [
