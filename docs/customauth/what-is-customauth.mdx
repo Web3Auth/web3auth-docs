@@ -2,54 +2,39 @@
 title: What is CustomAuth?
 ---
 
-Distributed Key Generation as a Service.
+Do everything you can do with OpenLogin and Wallet in a fully customizable way. Built for developers whom want more control CustomAuth,
+gives the ability to build fully-customizable authentication experiences that leverage Torus' key infrastructure. Some highlgihts of CustomAuth include:
 
----
+- **SSO, passwordless, touch/faceID logins**: Almost all authentication flows are supported, a non comprehensive list can be found [here](supported-authenticators-verifiers)
+- **Cross-platform**: Web/js and native Andriod/Java, iOS/Swift support
+- **Blockchain agnostic**: hookup to almost all blockchains regardless of key type
+- **Full control over UI**: unlike the plug n play solutions, CustomAuth gives the developer full control of the UI - no more popups
+- **Custom login methods**: use existing and/or your own login system as authentication to the Torus Network
+- **Non-custodial key management and storage**: leverage on the Torus Network to store and retrieve keys for your users
 
-**Applications can directly interact with the**
-[**Torus Network**](../how-torus-works/system-architecture) **to assign, store
-and retrieve keys on the network - Distributed Key Generation as a Service**.
+:::info
+
+Head to the [developer dashboard](/TODO-verifier-dashboard-url) to setup your verifier
+
+:::
+
+## How it works?
+
+CustomAuth is used to directly interact with the
+[**Torus Network**](../how-torus-works/system-architecture) to assign, store
+and retrieve keys on the network.
 The integration is compatible with both web/native apps, applications get access
 to the OAuth scopes provided to them \(name/email from Google\) and there are no
 longer pop-ups - applications literally own the UX and can implement their own
-permissions structure.
-
-**Using DirectAuth allows you to manage an app-specific private key for your
-users, while storing it in the distributed Torus Network.** You can see a demo
-of this on the Torus Wallet**.** The fundamental flow for Torus sign-in is as
-follows:
-
-![Standard login with OAuth2 (Google, Facebook, Apple, Reddit, Discord, Twitch)](/contents/image.png)
-
-:::info
-
-DirectAuth implements an interaction flow highlighted
+permissions structure. CustomAuth implements an interaction flow highlighted
 [here](../how-torus-works/logins-key-assignments-and-retrievals).
-
-:::
 
 ![DirectAuth Architecture](/contents/directauth-overview.png)
 
-Just as how the Torus Wallet has a verifier script for each of the
+Behind the scenes, just as how the Torus Wallet has a verifier script for each of the
 authentication methods, this integration includes a deployment of a verifier
 script on the BFT layer that the nodes share for the application specifically.
-Keys which are generated through the DKG protocol are assigned to the verifier
-script, which shares are respectively retrieved through successful execution of
-the script. Whilst most integrations integrate different OAuths, the script is
+Whilst most integrations integrate different OAuths, the script is
 generalisable and can be used to combine multiple OAuths, signatures and other
 varied forms of attestation for a user. A list of verifiers can be found
 [here](supported-authenticators-verifiers).
-
-## What does this mean for my application?
-
-Using DirectAuth allows you to manage an app-specific private key for your
-users, while storing it in the distributed Torus Network. It allows you to
-control the user experience and interface for all user interactions, without
-having to rely on the Torus Wallet interface for user confirmations via popups.
-
-:::info
-
-Reach out to hello@tor.us or our [dev chat](https://t.me/torusdev) to get a
-test-net spun up to play with today.
-
-:::
