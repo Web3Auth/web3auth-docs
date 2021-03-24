@@ -164,7 +164,7 @@ export default function IntegrationBuilderPage({ files }) {
 
       const dis = stepEl.offsetTop - el.scrollTop;
       if (dis >= 200 && dis <= 300) {
-        setStepIndex(i);
+        onChangeStep(i);
         break;
       }
     }
