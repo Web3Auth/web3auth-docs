@@ -1,6 +1,12 @@
 import React from "react";
 import Link from "@docusaurus/Link";
-import { SiReact, SiVueDotJs, SiAndroid, SiApple } from "react-icons/si";
+import {
+  SiReact,
+  SiVueDotJs,
+  SiAndroid,
+  SiApple,
+  SiJavascript,
+} from "react-icons/si";
 import classNames from "classnames";
 import styles from "./styles.module.css";
 
@@ -8,56 +14,44 @@ export default function DirectAuthGetStartedCards() {
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.card}>
+        <Link
+          className={classNames(styles.card)}
+          to="/integration-builder?b=customauth&lang=HTML"
+        >
           <h3>
-            <SiReact className={styles.iconReact} /> DirectAuth + React
+            <SiJavascript className={styles.iconJs} /> CustomAuth + Web
           </h3>
-          <p>Integrate DirectAuth into your React app</p>
-          <Link
-            className={classNames(styles.button, styles.buttonReact)}
-            to="/integration-builder?b=customauth&lang=React"
-          >
-            Get Started
-          </Link>
-        </div>
-        <div className={styles.card}>
+          <p>Integrate CustomAuth into your Web app</p>
+        </Link>
+        <Link
+          className={classNames(styles.card)}
+          to="/integration-builder?b=customauth&lang=React"
+        >
           <h3>
-            <SiVueDotJs className={styles.iconVue} /> DirectAuth + Vue
+            <SiReact className={styles.iconReact} /> CustomAuth + React
           </h3>
-          <p>Integrate DirectAuth into your Vue app</p>
-          <Link
-            className={classNames(styles.button, styles.buttonVue)}
-            to="/integration-builder?b=customauth&lang=Vue"
-          >
-            Get Started
-          </Link>
-        </div>
+          <p>Integrate CustomAuth into your React app</p>
+        </Link>
       </div>
       <div className={styles.container}>
-        <div className={styles.card}>
+        <Link
+          className={classNames(styles.card)}
+          to="/integration-builder?b=customauth&lang=Android"
+        >
           <h3>
-            <SiAndroid className={styles.iconAndroid} /> DirectAuth + Android
+            <SiAndroid className={styles.iconAndroid} /> CustomAuth + Android
           </h3>
-          <p>Integrate DirectAuth into your Android app</p>
-          <Link
-            className={classNames(styles.button, styles.buttonAndroid)}
-            to="/integration-builder?b=customauth&lang=Android"
-          >
-            Get Started
-          </Link>
-        </div>
-        <div className={styles.card}>
+          <p>Integrate CustomAuth into your Android app</p>
+        </Link>
+        <Link
+          className={classNames(styles.card)}
+          to="/integration-builder?b=customauth&lang=iOS"
+        >
           <h3>
-            <SiApple className={styles.iconIos} /> DirectAuth + iOS
+            <SiApple className={styles.iconIos} /> CustomAuth + iOS
           </h3>
-          <p>Integrate DirectAuth into your iOS app</p>
-          <Link
-            className={classNames(styles.button, styles.buttonIos)}
-            to="/integration-builder?b=customauth&lang=iOS"
-          >
-            Get Started
-          </Link>
-        </div>
+          <p>Integrate CustomAuth into your iOS app</p>
+        </Link>
       </div>
     </>
   );
