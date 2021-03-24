@@ -1,6 +1,14 @@
-import React, { MouseEvent, useEffect, useMemo, useState } from "react";
+import React, {
+  MouseEvent,
+  UIEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { MDXProvider } from "@mdx-js/react";
 import Layout from "@theme/Layout";
 import IntegrationBuilderCodeView from "@theme/IntegrationBuilderCodeView";
+import MDXComponents from "@theme/MDXComponents";
 import classNames from "classnames";
 import builders from "../../lib/integration-builder";
 import styles from "./styles.module.css";
@@ -145,6 +153,23 @@ export default function IntegrationBuilderPage({ files }) {
     setStepIndex(index);
   };
 
+  const onScrollLeft = (e: UIEvent<HTMLDivElement>) => {
+    const el = e.target as HTMLDivElement;
+
+    const stepEls = el.getElementsByClassName(styles.stepContainer);
+
+    for (let i = 0; i < stepEls.length; i++) {
+      const stepEl = stepEls.item(i) as HTMLDivElement;
+      if (el.scrollTop > stepEl.offsetTop) continue;
+
+      const dis = stepEl.offsetTop - el.scrollTop;
+      if (dis >= 200 && dis <= 300) {
+        onChangeStep(i);
+        break;
+      }
+    }
+  };
+
   return (
     <Layout title="Integration Builder">
       <div className={styles.container}>
@@ -187,7 +212,7 @@ export default function IntegrationBuilderPage({ files }) {
           ))}
         </div>
         <div className={styles.cols}>
-          <div className={styles.leftCol}>
+          <div className={styles.leftCol} onScroll={onScrollLeft}>
             <header className={styles.heading}>
               <h1>{builder.displayName}</h1>
               <ul className="pills">
@@ -204,18 +229,23 @@ export default function IntegrationBuilderPage({ files }) {
                 ))}
               </ul>
             </header>
-            {steps.map((step, index) => (
-              <div
-                key={index}
-                className={classNames(styles.stepContainer, {
-                  [styles.stepSelected]: index === stepIndex,
-                })}
-                onClick={onChangeStep.bind(this, index)}
-              >
-                <p className={styles.stepHeader}>{step.title}</p>
-                <div className={styles.stepBody}>{step.content}</div>
-              </div>
-            ))}
+            <MDXProvider components={MDXComponents}>
+              {steps.map((step, index) => (
+                <div
+                  key={index}
+                  className={classNames(styles.stepContainer, {
+                    [styles.stepSelected]: index === stepIndex,
+                  })}
+                  onClick={onChangeStep.bind(this, index)}
+                >
+                  <p className={styles.stepHeader}>{step.title}</p>
+                  <div className={styles.stepBody}>{step.content}</div>
+                </div>
+              ))}
+            </MDXProvider>
+            <div style={{ height: "200px" }}>
+              {/* Dummy element to allow the last step visible in the scroll */}
+            </div>
           </div>
           <div className={styles.rightCol}>
             <IntegrationBuilderCodeView

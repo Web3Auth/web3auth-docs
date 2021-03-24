@@ -19,6 +19,16 @@ const getDisplayName = (filename: string): string => {
   return path.basename(filename);
 };
 
+const getLanguage = (filename: string): string => {
+  const ext = path.extname(filename).substr(1);
+
+  if (["jsx", "java", "swift", "ts", "tsx", "html", "css"].includes(ext))
+    return `language-${ext}`;
+  if (ext === "js" || ext === "vue") return "language-jsx";
+  if (ext === "gradle") return "language-groovy";
+  return undefined;
+};
+
 export default function IntegrationBuilderCodeView({
   selectedFilename,
   filenames,
@@ -55,7 +65,7 @@ export default function IntegrationBuilderCodeView({
       {/* @ts-ignore */}
       <animated.div className={styles.body} scrollTop={props.scroll}>
         <CodeBlock
-          className="language-jsx"
+          className={getLanguage(selectedFilename)}
           metastring={highlight ? `{${highlight}}` : undefined}
         >
           {fileContents[selectedFilename]}

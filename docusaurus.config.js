@@ -25,6 +25,9 @@ module.exports = {
       disableSwitch: true, // Set to "true" when Dark mode is ready
       respectPrefersColorScheme: false, // Set to "true" when Dark mode is ready
     },
+    prism: {
+      additionalLanguages: ["groovy", "java", "swift"],
+    },
     navbar: {
       title: "Documentation",
       logo: {
