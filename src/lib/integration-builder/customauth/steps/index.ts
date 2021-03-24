@@ -1,5 +1,6 @@
 // Web
 import * as installWebSDK from "./install-web-sdk.mdx";
+import * as registerVerifier from "./register-verifier.mdx";
 import * as instantiateWebSDK from "./instantiate-web-sdk.mdx";
 import * as serveWebSw from "./serve-web-sw.mdx";
 import * as serveWebRedirect from "./serve-web-redirect.mdx";
@@ -23,6 +24,7 @@ import { toSteps } from "../../utils";
 const STEPS = toSteps({
   // Web
   installWebSDK,
+  registerVerifier,
   instantiateWebSDK,
   serveWebSw,
   serveWebRedirect,
