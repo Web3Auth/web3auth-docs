@@ -6,7 +6,8 @@ module.exports = {
       type: "category",
       label: "OpenLogin",
       items: [
-        "open-login/quick-start",
+        "open-login/get-started",
+        "open-login/what-is-openlogin",
         {
           type: "category",
           label: "Guides",
@@ -64,18 +65,11 @@ module.exports = {
       items: [
         "customauth/get-started",
         "customauth/what-is-customauth",
+            "customauth/integrating-customauth",
+            "customauth/designing-your-key-management-architecture",
         {
-          Integeration: [
-            "customauth/integrating-customauth/README",
-            "customauth/integrating-customauth/designing-your-key-management-architecture",
-            "customauth/integrating-customauth/deploying-on-the-torus-network",
-            "customauth/integrating-customauth/integrate-with-different-networks",
-          ],
-        },
-        {
-          "Verifiers/Logins": [
+          "Logins (Verifiers)": [
             "customauth/supported-authenticators-verifiers",
-            "customauth/setting-up-verifiers-logins/README",
             "customauth/setting-up-verifiers-logins/setting-up-a-proxy-provider-auth0",
           ],
         },
@@ -89,9 +83,7 @@ module.exports = {
           ],
         },
         "customauth/linking-accounts",
-        "customauth/integration-guidelines",
         "customauth/redirects-and-service-workers",
-        "customauth/examples",
         "customauth/faq",
       ],
     },
