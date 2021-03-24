@@ -1,4 +1,10 @@
-import React, { MouseEvent, useEffect, useMemo, useState } from "react";
+import React, {
+  MouseEvent,
+  UIEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { MDXProvider } from "@mdx-js/react";
 import Layout from "@theme/Layout";
 import IntegrationBuilderCodeView from "@theme/IntegrationBuilderCodeView";
@@ -147,6 +153,23 @@ export default function IntegrationBuilderPage({ files }) {
     setStepIndex(index);
   };
 
+  const onScrollLeft = (e: UIEvent<HTMLDivElement>) => {
+    const el = e.target as HTMLDivElement;
+
+    const stepEls = el.getElementsByClassName(styles.stepContainer);
+
+    for (let i = 0; i < stepEls.length; i++) {
+      const stepEl = stepEls.item(i) as HTMLDivElement;
+      if (el.scrollTop > stepEl.offsetTop) continue;
+
+      const dis = stepEl.offsetTop - el.scrollTop;
+      if (dis >= 200 && dis <= 300) {
+        setStepIndex(i);
+        break;
+      }
+    }
+  };
+
   return (
     <Layout title="Integration Builder">
       <div className={styles.container}>
@@ -189,7 +212,7 @@ export default function IntegrationBuilderPage({ files }) {
           ))}
         </div>
         <div className={styles.cols}>
-          <div className={styles.leftCol}>
+          <div className={styles.leftCol} onScroll={onScrollLeft}>
             <header className={styles.heading}>
               <h1>{builder.displayName}</h1>
               <ul className="pills">
@@ -220,6 +243,9 @@ export default function IntegrationBuilderPage({ files }) {
                 </div>
               ))}
             </MDXProvider>
+            <div style={{ height: "200px" }}>
+              {/* Dummy element to allow the last step visible in the scroll */}
+            </div>
           </div>
           <div className={styles.rightCol}>
             <IntegrationBuilderCodeView
