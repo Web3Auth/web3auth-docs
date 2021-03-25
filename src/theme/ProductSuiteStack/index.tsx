@@ -23,7 +23,7 @@ export default function ProductSuiteStack() {
                 An SDK of authentication and key management products, powered by
                 a decentralized non-custodial PKI infrastructure that is
                 maintained by users themselves and large stakeholders in the
-                blockchain ecosystem
+                blockchain ecosystem.
               </p>
             </div>
           </div>
@@ -48,7 +48,7 @@ export default function ProductSuiteStack() {
               <p>
                 An authentication suite that combines the simplicity of
                 passwordless authentication with the security of non-custodial
-                PKI
+                PKI.
               </p>
               <ul>
                 <li>Passwordless, SSO, Face/TouchID Login</li>
@@ -121,7 +121,7 @@ export default function ProductSuiteStack() {
             <div className={styles.content}>
               <p>
                 Do everything you can do with OpenLogin and Wallet in a fully
-                customizable way
+                customizable way.
               </p>
               <ul>
                 <li>All logins and full UX control</li>
@@ -161,7 +161,7 @@ export default function ProductSuiteStack() {
                 infrastructure that is maintained by users themselves and large
                 stakeholders in the blockchain ecosystem. Keys (or user
                 accounts) are managed by multiple authentication factors,
-                threshold of which gives access to the account
+                threshold of which gives access to the account.
               </p>
               <ul>
                 <li>No central server, its decentralized</li>
