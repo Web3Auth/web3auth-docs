@@ -10,7 +10,7 @@ export default function TorusWalletGetStartedCards() {
         className={classNames(styles.card, styles.cardOne)}
         to="/integration-builder?b=wallet&lang=HTML"
       >
-        <p className={styles.headline}>Setup Google Login connected to Ethereum on the Web</p>
+        <p className={styles.headline}>SSO logins (e.g. Google, email passwordless) connected to Ethereum on the Web</p>
         <p className={styles.poweredBy}><span>Powered by</span><img src="/images/wallet-full-logo.svg" alt="Wallet" /></p>
       </Link>
       <Link
