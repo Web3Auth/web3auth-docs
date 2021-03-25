@@ -1,36 +1,25 @@
 import React from "react";
 import Link from "@docusaurus/Link";
-import { SiReact, SiVueDotJs } from "react-icons/si";
 import classNames from "classnames";
 import styles from "./styles.module.css";
 
 export default function TorusWalletGetStartedCards() {
   return (
     <div className={styles.container}>
-      <div className={styles.card}>
-        <h3>
-          <SiReact className={styles.iconReact} /> Torus Wallet + React
-        </h3>
-        <p>Integrate Torus Wallet into your React app</p>
-        <Link
-          className={classNames(styles.button, styles.buttonReact)}
-          to="/integration-builder?b=wallet&lang=React"
-        >
-          Get Started
-        </Link>
-      </div>
-      <div className={styles.card}>
-        <h3>
-          <SiVueDotJs className={styles.iconVue} /> Torus Wallet + Vue
-        </h3>
-        <p>Integrate Torus Wallet into your Vue app</p>
-        <Link
-          className={classNames(styles.button, styles.buttonVue)}
-          to="/integration-builder?b=wallet&lang=Vue"
-        >
-          Get Started
-        </Link>
-      </div>
+      <Link
+        className={classNames(styles.card, styles.cardOne)}
+        to="/integration-builder?b=wallet&lang=HTML"
+      >
+        <p className={styles.headline}>Setup Google Login connected to Ethereum on the Web</p>
+        <p className={styles.poweredBy}><span>Powered by</span><img src="/images/wallet-full-logo.svg" alt="Wallet" /></p>
+      </Link>
+      <Link
+        className={classNames(styles.card, styles.cardTwo)}
+        to="/integration-builder?b=wallet&lang=React"
+      >
+        <p className={styles.headline}>Integrate Wallet with your favorite web framework: React or Vue</p>
+        <p className={styles.poweredBy}><span>Powered by</span><img src="/images/wallet-full-logo.svg" alt="Wallet" /></p>
+      </Link>
     </div>
   );
 }
