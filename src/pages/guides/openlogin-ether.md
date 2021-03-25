@@ -27,13 +27,12 @@ We will be using plain html and jquery for this example so we just need to creat
 
 To start with using openlogin with a ethereum dapp , you need to install Openlogin and Web3 js sdk. You can fetch SDK files which are hosted over cdn using script tags in html file.
 
-This example will also be using some openlogin utility functions which you can also include openlogin-utils module using script tag and that's all we need.
+
 
 ```shell
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin@0.2.0/dist/openlogin.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin-utils@0.2.0/dist/openlogin-utils.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.js"></script>
 ```
 
@@ -56,7 +55,7 @@ $(document).ready(async function () {
       });
       await sdkInstance.init();
       if (sdkInstance.privKey) {
-        await renderUserAccount()
+        await connectWeb3()
       } else {
         $("#login").show();
       }
@@ -70,7 +69,7 @@ The code snippet given above is simply accessing OpenloginUtils and Openlogin Sd
 - `iframeUrl`: iframeUrl is the url of openlogin frontend where user will be redirected from app for authentication.
 
 
-After initializing openlogin sdk, above function checks if sdk instance has private key. If private key is available then it means that user is already authenticated and it renders user account details, we will cover `renderUserAccount` function in next step. Good news is that openlogin sdk persist user private key even after page reload so better User Experience.
+After initializing openlogin sdk, above function checks if sdk instance has private key. If private key is available then it means that user is already authenticated and it renders user account details using web3, we will cover `connectWeb3` function in next step. Good news is that openlogin sdk persist user private key even after page reload so better User Experience.
 
 
 ## Login user:
@@ -96,7 +95,7 @@ Once the sdk is initialized , you can allow user to login. You need to call logi
             return
         }
 
-        await renderUserAccount();
+        await connectWeb3();
         $("#error").hide();
         $("#login").hide();
     });
@@ -118,7 +117,7 @@ After calling `openlogin.login` and handling redirect result, your application w
 
 
 ```js
-    async function renderUserAccount(){
+    async function connectWeb3(){
         const INFURA_NODE_URL = "https://mainnet.infura.io/v3/<your-project-id>";
         const web3 = new window.Web3(
         new Web3.providers.HttpProvider(INFURA_NODE_URL)
