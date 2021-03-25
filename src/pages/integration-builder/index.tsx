@@ -23,8 +23,13 @@ const getDefaultBuilderOptions = (id: string) =>
     ])
   );
 
+const getWindowLocation = () => {
+  if (typeof window !== "undefined") return window.location.href;
+  return "http://localhost";
+};
+
 const getInitialBuilderOptions = () => {
-  const url = new URL(window.location.href);
+  const url = new URL(getWindowLocation());
 
   // Get builder id from URL
   const id = url.searchParams.get("b");
