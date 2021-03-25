@@ -38,7 +38,12 @@ export default function ProductSuiteStack() {
           className={classNames(styles.contentContainer, "anim-fade-in")}
         >
           <div>
-            <h1>Torus | OpenLogin</h1>
+            <h1 className="sr-only">Torus OpenLogin</h1>
+            <img
+              src="/images/openlogin-full-logo.svg"
+              alt="Torus OpenLogin"
+              height="60px"
+            />
             <div className={styles.content}>
               <p>
                 An authentication suite that combines the simplicity of
@@ -60,7 +65,7 @@ export default function ProductSuiteStack() {
           </div>
           <img
             src="/contents/stack-openlogin.png"
-            alt="OpenLogin"
+            alt="Torus OpenLogin"
             height={320}
           />
         </section>
@@ -73,7 +78,12 @@ export default function ProductSuiteStack() {
           className={classNames(styles.contentContainer, "anim-fade-in")}
         >
           <div>
-            <h1>Torus | Wallet</h1>
+            <h1 className="sr-only">Torus Wallet</h1>
+            <img
+              src="/images/wallet-full-logo.svg"
+              alt="Torus Wallet"
+              height="60px"
+            />
             <div className={styles.content}>
               <p>
                 Wallet uses the same OpenLogin flows and additionally provides a
@@ -91,7 +101,7 @@ export default function ProductSuiteStack() {
               </Link>
             </div>
           </div>
-          <img src="/contents/stack-wallet.png" alt="Wallet" height={320} />
+          <img src="/contents/stack-wallet.png" alt="Torus Wallet" height={320} />
         </section>
       );
       break;
@@ -102,7 +112,12 @@ export default function ProductSuiteStack() {
           className={classNames(styles.contentContainer, "anim-fade-in")}
         >
           <div>
-            <h1>Torus | CustomAuth</h1>
+            <h1 className="sr-only">Torus CustomAuth</h1>
+            <img
+              src="/images/customauth-full-logo.svg"
+              alt="Torus CustomAuth"
+              height="60px"
+            />
             <div className={styles.content}>
               <p>
                 Do everything you can do with OpenLogin and Wallet in a fully
@@ -121,7 +136,7 @@ export default function ProductSuiteStack() {
           </div>
           <img
             src="/contents/stack-customauth.png"
-            alt="CustomAuth"
+            alt="Torus CustomAuth"
             height={320}
           />
         </section>
@@ -134,7 +149,12 @@ export default function ProductSuiteStack() {
           className={classNames(styles.contentContainer, "anim-fade-in")}
         >
           <div>
-            <h1>Torus | Network</h1>
+            <h1 className="sr-only">Torus Network</h1>
+            <img
+              src="/images/network-full-logo.svg"
+              alt="Torus Network"
+              className={styles.networkLogo}
+            />
             <div className={styles.content}>
               <p>
                 The Torus Network is a decentralized non-custodial PKI
@@ -160,7 +180,7 @@ export default function ProductSuiteStack() {
               </Link>
             </div>
           </div>
-          <img src="/contents/stack-network.png" alt="Network" height={320} />
+          <img src="/contents/stack-network.png" alt="Torus Network" height={320} />
         </section>
       );
       break;
