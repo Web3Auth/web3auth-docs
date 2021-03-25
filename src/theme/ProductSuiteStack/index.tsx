@@ -53,7 +53,7 @@ export default function ProductSuiteStack() {
                 <li>Connect up to any blockchain</li>
               </ul>
               <hr />
-              <Link to="/open-login/quick-start" className={styles.link}>
+              <Link to="/open-login/get-started" className={styles.link}>
                 Get started
               </Link>
             </div>
@@ -86,7 +86,7 @@ export default function ProductSuiteStack() {
                 <li>Comes with fiat-to-crypto provider</li>
               </ul>
               <hr />
-              <Link to="/wallet/quick-start" className={styles.link}>
+              <Link to="/wallet/get-started" className={styles.link}>
                 Get started
               </Link>
             </div>
@@ -114,7 +114,7 @@ export default function ProductSuiteStack() {
                 <li>Leverage on Torus' key infrastructure</li>
               </ul>
               <hr />
-              <Link to="/customauth/quick-start" className={styles.link}>
+              <Link to="/customauth/get-started" className={styles.link}>
                 Get started
               </Link>
             </div>
