@@ -17,7 +17,7 @@ export default function TorusWalletGetStartedCards() {
         className={classNames(styles.card)}
         to="/integration-builder?b=wallet&lang=React"
       >
-        <p className={styles.headline}>Connect Wallet to your React/Vue application</p>
+        <p className={styles.headline}>Integrate Wallet with your favorite web framework: React or Vue</p>
         <p className={styles.poweredBy}><span>Powered by</span><img src="/images/wallet-full-logo.svg" alt="Wallet" /></p>
       </Link>
     </div>
