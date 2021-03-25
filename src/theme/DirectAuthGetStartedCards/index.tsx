@@ -9,7 +9,7 @@ export default function TorusWalletGetStartedCards() {
     <>
       <div className={styles.container}>
         <Link
-          className={classNames(styles.card)}
+          className={classNames(styles.card, styles.cardOne)}
           to="/integration-builder?b=customauth&lang=HTML"
         >
           <p className={styles.headline}>
@@ -22,7 +22,7 @@ export default function TorusWalletGetStartedCards() {
           </p>
         </Link>
         <Link
-          className={classNames(styles.card)}
+          className={classNames(styles.card, styles.cardTwo)}
           to="/integration-builder?b=customauth&lang=iOS"
         >
           <p className={styles.headline}>
