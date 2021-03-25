@@ -27,7 +27,7 @@ export default function TorusWalletGetStartedCards() {
         >
           <p className={styles.headline}>
             <SiApple className={classNames(styles.icon, styles.iconIos)} />
-            Setup fully-customizable Web3 authentication for your native Android/iOS app.
+            Setup fully-customizable Web3 authentication for your native Android/iOS app
           </p>
           <p className={styles.poweredBy}>
             <span>Powered by</span>
