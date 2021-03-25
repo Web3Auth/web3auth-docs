@@ -5,15 +5,7 @@ module.exports = {
     {
       type: "category",
       label: "OpenLogin",
-      items: [
-        "open-login/get-started",
-        "open-login/what-is-openlogin",
-        {
-          type: "category",
-          label: "Guides",
-          items: ["open-login/guides/how-to-build-x-with-openlogin"],
-        },
-      ],
+      items: ["open-login/get-started", "open-login/what-is-openlogin"],
     },
     {
       type: "category",
@@ -65,8 +57,8 @@ module.exports = {
       items: [
         "customauth/get-started",
         "customauth/what-is-customauth",
-            "customauth/integrating-customauth",
-            "customauth/designing-your-key-management-architecture",
+        "customauth/integrating-customauth",
+        "customauth/designing-your-key-management-architecture",
         {
           "Logins (Verifiers)": [
             "customauth/supported-authenticators-verifiers",
