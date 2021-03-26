@@ -37,7 +37,7 @@ module.exports = {
       items: [
         {
           label: "Dashboard",
-          href: "https://register.directauth.io", // TODO: DirectAuth or OpenLogin?
+          href: "https://developer.tor.us",
           target: "_self",
           position: "right",
           className: "navbar__button",
