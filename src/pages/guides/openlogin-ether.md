@@ -17,7 +17,7 @@ We will create an example app where user can login,check wallet address, balance
 
 
 
-You can find [the source code of this is example on Github](https://github.com/phuctm97/openlogin-react).
+You can find [the source code of this is example on Github](https://github.com/himanshuchawla009/openlogin-web-example).
 
 ## Let's get started with some code
 
@@ -25,7 +25,7 @@ We will be using plain html and jquery for this example so we just need to creat
 
 ### Installing depedencies
 
-To start with using openlogin with a ethereum dapp , you need to install Openlogin and Web3 js sdk. You can fetch SDK files which are hosted over cdn using script tags in html file.
+To start with using openlogin with a ethereum dapp , you need to install Openlogin and Web3 js sdk. You can fetch SDK files which are hosted over [cdn]("https://www.jsdelivr.com/package/npm/@toruslabs/openlogin") using script tags in html file.
 
 
 
@@ -36,7 +36,7 @@ To start with using openlogin with a ethereum dapp , you need to install Openlog
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.js"></script>
 ```
 
-Openlogin and web3 libraries are also available on npm and yarn.
+Openlogin and web3 libraries are also available on [npm](https://www.npmjs.com/package/@toruslabs/openlogin) and yarn.
 
 
 ## Initialize Openlogin sdk
@@ -105,7 +105,7 @@ Above code snippet triggers the openlogin sdk login functionality on click of.a 
 
 It first checks if user is already authenticated by looking for privKey on sdkinstance. If user is not authenticated then it calls `login` function with following options:-
 
-- `loginProvider` :- loginProvider is the authentication method which can be used for authenticating users. You can choose from a list of various login providers. (todo: which login providers we are supporting).
+- `loginProvider` :- loginProvider is the authentication method which can be used for authenticating users. You can choose from a list of various login providers.
 
 - `redirectUrl`: redirectUrl is the url of the page where user will be redirected after getting autheticated from openlogin frontend.
 
@@ -152,4 +152,4 @@ In order to logout user you needs to call logout function available on sdk insta
 ```
 
 ### DONE!!
-You can checkout example of this example app here. (todo: add example link)
+You can checkout example of this example app here.[the source code of this is example on Github](https://github.com/himanshuchawla009/openlogin-web-example).
