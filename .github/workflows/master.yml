@@ -30,13 +30,13 @@ jobs:
             ${{ runner.os }}-node-${{ env.NODE_VERSION }}-yarn-
       - run: yarn install --frozen-lockfile
       - run: yarn build
-      - uses: reggionick/s3-deploy@v3
+      - name: Deploy to S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --follow-symlinks --delete
         env:
+          SOURCE_DIR: build
+          AWS_REGION: ap-southeast-1
+          AWS_S3_BUCKET: docs.tor.us
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        with:
-          folder: build
-          bucket: docs.tor.us
-          bucket-region: ap-southeast-1
-          dist-id: E11JKICTZIXMQH
-          delete-removed: true
