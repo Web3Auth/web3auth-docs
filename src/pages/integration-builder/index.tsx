@@ -88,7 +88,12 @@ export default function IntegrationBuilderPage({ files }) {
   const [builderOptions, setBuilderOptions] = useState<{
     id: string;
     values: Record<string, string>;
-  }>(getInitialBuilderOptions());
+  }>({ id: "wallet", values: getDefaultBuilderOptions("wallet") });
+
+  useEffect(() => {
+    // Load initial builder options on mount and re-render.
+    setBuilderOptions(getInitialBuilderOptions());
+  }, []);
 
   const onChangeBuilder = (id: string) => {
     setBuilderOptions({
