@@ -14,8 +14,8 @@ module.exports = {
   tagline: "Flexible, Universal Key Management", // TODO: Confirm with content team
   url: "https://tor.us",
   baseUrl: "/",
-  onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "throw",
+  onBrokenLinks: "warn",
+  onBrokenMarkdownLinks: "warn",
   favicon: "images/favicon.ico",
   organizationName: githubOrg,
   projectName: githubRepo,
