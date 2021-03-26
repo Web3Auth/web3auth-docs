@@ -1,8 +1,6 @@
 name: master
 
-on:
-  push:
-    branches: [master]
+on: push
 
 env:
   NODE_VERSION: 14
@@ -32,12 +30,21 @@ jobs:
             ${{ runner.os }}-node-${{ env.NODE_VERSION }}-yarn-
       - run: yarn install --frozen-lockfile
       - run: yarn build
-      - uses: reggionick/s3-deploy@v3
+      - name: Deploy to S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --follow-symlinks --delete
         env:
+          SOURCE_DIR: build
+          AWS_S3_BUCKET: docs.tor.us
+          AWS_REGION: ap-southeast-1
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        with:
-          folder: build
-          bucket: docs.tor.us
-          dist-id: E11JKICTZIXMQH
-          delete-removed: true
+      - name: Invalidate CDN
+        uses: chetan/invalidate-cloudfront-action@master
+        env:
+          DISTRIBUTION: E11JKICTZIXMQH
+          PATHS: "/index.html"
+          AWS_REGION: us-east-2
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
