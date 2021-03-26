@@ -15,7 +15,7 @@ module.exports = (context, options) => ({
               getCacheLoader(isServer),
               getBabelLoader(isServer),
               require.resolve("@docusaurus/mdx-loader"),
-            ],
+            ].filter((it) => !!it),
           },
         ],
       },
