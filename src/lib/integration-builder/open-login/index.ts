@@ -14,8 +14,8 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
     },
     lang: {
       displayName: "Language/Framework",
-      default: "React",
-      choices: ["React", "Vue"],
+      default: "HTML",
+      choices: ["HTML"],
     },
   },
 
@@ -24,7 +24,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
     const availableOptions: Record<string, string>[] = [];
     switch (optionKey) {
       case "chain":
-        availableOptions.push({ lang: "React" }, { lang: "Vue" });
+        availableOptions.push({ lang: "HTML" });
         break;
       case "lang":
         availableOptions.push({ chain: "Ethereum" });
@@ -40,51 +40,36 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
     const filenames: string[] = [];
     const steps: IntegrationStep[] = [];
 
-    if (values.lang === "React") {
-      filenames.push("react/App.js", "react/index.js"); // Show code files in browsers
+    filenames.push("web/index.html"); // Show code files in browsers
 
-      // Add markdown steps
-      steps.push(
-        {
-          ...STEPS.step1,
-          pointer: { filename: "react/App.js", range: "7-9" }, // this step will point to react/App,js at lines 7-9
-        },
-        {
-          ...STEPS.step2,
-          pointer: { filename: "react/App.js", range: "11-13" },
-        },
-        {
-          ...STEPS.step3,
-          pointer: { filename: "react/App.js", range: "7-9" },
-        },
-        {
-          ...STEPS.step4,
-          pointer: { filename: "react/App.js", range: "11-13" },
-        }
-      );
-    } else if (values.lang === "Vue") {
-      filenames.push("vue/components/Home.vue", "vue/App.vue", "vue/main.js"); // Show code in browsers
-
-      // Add markdown steps
-      steps.push(
-        {
-          ...STEPS.step1,
-          pointer: { filename: "vue/App.vue", range: "9-11" },
-        },
-        {
-          ...STEPS.step2,
-          pointer: { filename: "vue/App.vue", range: "13-15" },
-        },
-        {
-          ...STEPS.step3,
-          pointer: { filename: "vue/App.vue", range: "9-11" },
-        },
-        {
-          ...STEPS.step4,
-          pointer: { filename: "vue/App.vue", range: "13-15" },
-        }
-      );
-    }
+    // Add markdown steps
+    steps.push(
+      {
+        ...STEPS.installSDK,
+        pointer: { filename: "web/index.html", range: "20" },
+      },
+      { ...STEPS.registerApp },
+      {
+        ...STEPS.instantiateSDK,
+        pointer: { filename: "web/index.html", range: "27-32" },
+      },
+      {
+        ...STEPS.retrievePrivateKey,
+        pointer: { filename: "web/index.html", range: "34-44" },
+      },
+      {
+        ...STEPS.triggerLogin,
+        pointer: { filename: "web/index.html", range: "58-61" },
+      },
+      {
+        ...STEPS.connectWithWeb3,
+        pointer: { filename: "web/index.html", range: "48-54" },
+      },
+      {
+        ...STEPS.logout,
+        pointer: { filename: "web/index.html", range: "64" },
+      }
+    );
 
     return {
       // Use files in `open-login` folders instead of root folder

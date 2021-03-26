@@ -14,7 +14,7 @@ export default function ProductSuiteGetStartedCards() {
         </p>
         <Link
           className={classNames(styles.button, styles.button3)}
-          to="/open-login/quick-start"
+          to="/open-login/get-started"
         >
           Get Started
         </Link>
@@ -28,7 +28,7 @@ export default function ProductSuiteGetStartedCards() {
         </p>
         <Link
           className={classNames(styles.button, styles.button1)}
-          to="/wallet/quick-start"
+          to="/wallet/get-started"
         >
           Get Started
         </Link>
@@ -38,7 +38,7 @@ export default function ProductSuiteGetStartedCards() {
         <p>Fully-whitelabeled UI/UX paired up to Torus PKI and auth</p>
         <Link
           className={classNames(styles.button, styles.button2)}
-          to="/customauth/quick-start"
+          to="/customauth/get-started"
         >
           Get Started
         </Link>

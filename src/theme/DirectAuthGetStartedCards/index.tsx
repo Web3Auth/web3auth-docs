@@ -1,56 +1,38 @@
 import React from "react";
 import Link from "@docusaurus/Link";
-import {
-  SiReact,
-  SiVueDotJs,
-  SiAndroid,
-  SiApple,
-  SiJavascript,
-} from "react-icons/si";
+import { SiAndroid, SiApple, SiJavascript } from "react-icons/si";
 import classNames from "classnames";
 import styles from "./styles.module.css";
 
-export default function DirectAuthGetStartedCards() {
+export default function TorusWalletGetStartedCards() {
   return (
     <>
       <div className={styles.container}>
         <Link
-          className={classNames(styles.card)}
+          className={classNames(styles.card, styles.cardOne)}
           to="/integration-builder?b=customauth&lang=HTML"
         >
-          <h3>
-            <SiJavascript className={styles.iconJs} /> CustomAuth + Web
-          </h3>
-          <p>Integrate CustomAuth into your Web app</p>
+          <p className={styles.headline}>
+            <SiJavascript className={classNames(styles.icon, styles.iconJs)} />
+            Setup fully-customizable Web3 SSO, passwordless, and TouchID login on the Web
+          </p>
+          <p className={styles.poweredBy}>
+            <span>Powered by</span>
+            <img src="/images/customauth-full-logo.svg" alt="CustomAuth" />
+          </p>
         </Link>
         <Link
-          className={classNames(styles.card)}
-          to="/integration-builder?b=customauth&lang=React"
-        >
-          <h3>
-            <SiReact className={styles.iconReact} /> CustomAuth + React
-          </h3>
-          <p>Integrate CustomAuth into your React app</p>
-        </Link>
-      </div>
-      <div className={styles.container}>
-        <Link
-          className={classNames(styles.card)}
-          to="/integration-builder?b=customauth&lang=Android"
-        >
-          <h3>
-            <SiAndroid className={styles.iconAndroid} /> CustomAuth + Android
-          </h3>
-          <p>Integrate CustomAuth into your Android app</p>
-        </Link>
-        <Link
-          className={classNames(styles.card)}
+          className={classNames(styles.card, styles.cardTwo)}
           to="/integration-builder?b=customauth&lang=iOS"
         >
-          <h3>
-            <SiApple className={styles.iconIos} /> CustomAuth + iOS
-          </h3>
-          <p>Integrate CustomAuth into your iOS app</p>
+          <p className={styles.headline}>
+            <SiApple className={classNames(styles.icon, styles.iconIos)} />
+            Setup fully-customizable Web3 authentication for your native Android/iOS app
+          </p>
+          <p className={styles.poweredBy}>
+            <span>Powered by</span>
+            <img src="/images/customauth-full-logo.svg" alt="CustomAuth" />
+          </p>
         </Link>
       </div>
     </>

@@ -23,7 +23,7 @@ export default function ProductSuiteStack() {
                 An SDK of authentication and key management products, powered by
                 a decentralized non-custodial PKI infrastructure that is
                 maintained by users themselves and large stakeholders in the
-                blockchain ecosystem
+                blockchain ecosystem.
               </p>
             </div>
           </div>
@@ -38,12 +38,17 @@ export default function ProductSuiteStack() {
           className={classNames(styles.contentContainer, "anim-fade-in")}
         >
           <div>
-            <h1>Torus | OpenLogin</h1>
+            <h1 className="sr-only">Torus OpenLogin</h1>
+            <img
+              src="/images/openlogin-full-logo.svg"
+              alt="Torus OpenLogin"
+              height="60px"
+            />
             <div className={styles.content}>
               <p>
                 An authentication suite that combines the simplicity of
                 passwordless authentication with the security of non-custodial
-                PKI
+                PKI.
               </p>
               <ul>
                 <li>Passwordless, SSO, Face/TouchID Login</li>
@@ -53,14 +58,14 @@ export default function ProductSuiteStack() {
                 <li>Connect up to any blockchain</li>
               </ul>
               <hr />
-              <Link to="/open-login/quick-start" className={styles.link}>
+              <Link to="/open-login/get-started" className={styles.link}>
                 Get started
               </Link>
             </div>
           </div>
           <img
             src="/contents/stack-openlogin.png"
-            alt="OpenLogin"
+            alt="Torus OpenLogin"
             height={320}
           />
         </section>
@@ -73,7 +78,12 @@ export default function ProductSuiteStack() {
           className={classNames(styles.contentContainer, "anim-fade-in")}
         >
           <div>
-            <h1>Torus | Wallet</h1>
+            <h1 className="sr-only">Torus Wallet</h1>
+            <img
+              src="/images/wallet-full-logo.svg"
+              alt="Torus Wallet"
+              height="60px"
+            />
             <div className={styles.content}>
               <p>
                 Wallet uses the same OpenLogin flows and additionally provides a
@@ -86,12 +96,12 @@ export default function ProductSuiteStack() {
                 <li>Comes with fiat-to-crypto provider</li>
               </ul>
               <hr />
-              <Link to="/wallet/quick-start" className={styles.link}>
+              <Link to="/wallet/get-started" className={styles.link}>
                 Get started
               </Link>
             </div>
           </div>
-          <img src="/contents/stack-wallet.png" alt="Wallet" height={320} />
+          <img src="/contents/stack-wallet.png" alt="Torus Wallet" height={320} />
         </section>
       );
       break;
@@ -102,11 +112,16 @@ export default function ProductSuiteStack() {
           className={classNames(styles.contentContainer, "anim-fade-in")}
         >
           <div>
-            <h1>Torus | CustomAuth</h1>
+            <h1 className="sr-only">Torus CustomAuth</h1>
+            <img
+              src="/images/customauth-full-logo.svg"
+              alt="Torus CustomAuth"
+              height="60px"
+            />
             <div className={styles.content}>
               <p>
                 Do everything you can do with OpenLogin and Wallet in a fully
-                customizable way
+                customizable way.
               </p>
               <ul>
                 <li>All logins and full UX control</li>
@@ -114,14 +129,14 @@ export default function ProductSuiteStack() {
                 <li>Leverage on Torus' key infrastructure</li>
               </ul>
               <hr />
-              <Link to="/customauth/quick-start" className={styles.link}>
+              <Link to="/customauth/get-started" className={styles.link}>
                 Get started
               </Link>
             </div>
           </div>
           <img
             src="/contents/stack-customauth.png"
-            alt="CustomAuth"
+            alt="Torus CustomAuth"
             height={320}
           />
         </section>
@@ -134,14 +149,19 @@ export default function ProductSuiteStack() {
           className={classNames(styles.contentContainer, "anim-fade-in")}
         >
           <div>
-            <h1>Torus | Network</h1>
+            <h1 className="sr-only">Torus Network</h1>
+            <img
+              src="/images/network-full-logo.svg"
+              alt="Torus Network"
+              className={styles.networkLogo}
+            />
             <div className={styles.content}>
               <p>
                 The Torus Network is a decentralized non-custodial PKI
                 infrastructure that is maintained by users themselves and large
                 stakeholders in the blockchain ecosystem. Keys (or user
                 accounts) are managed by multiple authentication factors,
-                threshold of which gives access to the account
+                threshold of which gives access to the account.
               </p>
               <ul>
                 <li>No central server, its decentralized</li>
@@ -160,7 +180,7 @@ export default function ProductSuiteStack() {
               </Link>
             </div>
           </div>
-          <img src="/contents/stack-network.png" alt="Network" height={320} />
+          <img src="/contents/stack-network.png" alt="Torus Network" height={320} />
         </section>
       );
       break;
