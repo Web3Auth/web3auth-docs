@@ -48,26 +48,29 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
         ...STEPS.installSDK,
         pointer: { filename: "web/index.html", range: "20" },
       },
-      { ...STEPS.registerApp },
+      {
+        ...STEPS.registerApp,
+        pointer: { filename: "web/index.html", range: "27-31" },
+      },
       {
         ...STEPS.instantiateSDK,
-        pointer: { filename: "web/index.html", range: "27-32" },
+        pointer: { filename: "web/index.html", range: "27-31" },
       },
       {
         ...STEPS.retrievePrivateKey,
-        pointer: { filename: "web/index.html", range: "34-44" },
+        pointer: { filename: "web/index.html", range: "33-43" },
       },
       {
         ...STEPS.triggerLogin,
-        pointer: { filename: "web/index.html", range: "58-61" },
+        pointer: { filename: "web/index.html", range: "55-56" },
       },
       {
         ...STEPS.connectWithWeb3,
-        pointer: { filename: "web/index.html", range: "48-54" },
+        pointer: { filename: "web/index.html", range: "46-52" },
       },
       {
         ...STEPS.logout,
-        pointer: { filename: "web/index.html", range: "64" },
+        pointer: { filename: "web/index.html", range: "59" },
       }
     );
 

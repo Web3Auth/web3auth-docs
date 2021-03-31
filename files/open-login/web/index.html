@@ -17,7 +17,7 @@
       <button id="logout">Logout</button>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin@0.2.0/dist/openlogin.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin@0.3.0/dist/openlogin.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.js"></script>
     <script>
       $(document).ready(async function init() {
@@ -25,8 +25,7 @@
         $("#logout").hide();
 
         window.openlogin = new Openlogin.default({
-          clientId:
-            "221898609709-obfn3p63741l5333093430j3qeiinaa8.apps.googleusercontent.com",
+          clientId: "YOUR CLIENT ID",
           iframeUrl: "http://beta.openlogin.com",
         });
         await window.openlogin.init();
@@ -37,28 +36,24 @@
             "Private key: " + window.openlogin.privKey + "."
           );
           $("#logout").show();
-          await connectWeb3();
+          await connectWeb3(window.openlogin.privKey);
         } else {
           $("#text").text("Didn't log in.");
           $("#login").show();
         }
       });
 
-      async function connectWeb3() {
+      async function connectWeb3(privKey) {
         const web3 = new Web3(window.openlogin.provider);
-        const address = await web3.eth.privateKeyToAccount(
-          window.openlogin.privKey
-        );
+        const address = await web3.eth.privateKeyToAccount(privKey);
         const balance = await web3.eth.getBalance(address);
         $("#address").text("Address: " + address + ".");
         $("#balance").text("Balance: " + balance + ".");
       }
 
       $("#login").click(async function (event) {
-        await openlogin.login({
-          loginProvider: "google",
-          redirectUrl: "http://localhost:3000",
-        });
+        const { privKey } = await openlogin.login();
+        await connectWeb3(privKey);
       });
       $("#logout").click(async function (event) {
         await openlogin.logout();
