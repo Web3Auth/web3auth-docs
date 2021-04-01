@@ -32,7 +32,7 @@ To start with using openlogin with a ethereum dapp , you need to install Openlog
 ```shell
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin@0.2.0/dist/openlogin.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin@0.3.7/dist/openlogin.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.js"></script>
 ```
 
@@ -46,7 +46,6 @@ Initialize the SDK after your application is mounted inside `$(document).ready` 
 ```js
 
 $(document).ready(async function () {
-      openloginUtils = window.OpenloginUtils;
       OpenLogin = window.Openlogin;
       sdkInstance = new OpenLogin.default({
           // client id can be anything for localhost
@@ -88,9 +87,6 @@ Once the sdk is initialized , you can allow user to login. You need to call logi
             await sdkInstance.login({
                 loginProvider: "google",
                 redirectUrl: `${window.origin}`,
-                originData: {
-                    [window.location.origin]: sig
-                }
             });
             return
         }
@@ -108,8 +104,6 @@ It first checks if user is already authenticated by looking for privKey on sdkin
 - `loginProvider` :- loginProvider is the authentication method which can be used for authenticating users. You can choose from a list of various login providers.
 
 - `redirectUrl`: redirectUrl is the url of the page where user will be redirected after getting autheticated from openlogin frontend.
-
-- `originData`: originData is data related to dapp which you want to send to openlogin while redirection. It must contains sig field while using openlogin with all domains except localhost. Sig is basically a signed message of your domain using your app private key.
 
 ## Use the private key with web3.js
 
@@ -152,4 +146,6 @@ In order to logout user you needs to call logout function available on sdk insta
 ```
 
 ### DONE!!
+You can use this example on localhost, in order to deploy your app you need to whitelist your domain at [developer dashboard](http://developer.tor.us/).
+
 You can checkout example of this example app here.[the source code of this is example on Github](https://github.com/himanshuchawla009/openlogin-web-example).
