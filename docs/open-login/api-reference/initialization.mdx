@@ -1,0 +1,102 @@
+---
+title: Initialization
+---
+
+Create and initialize a Openlogin instance
+
+---
+
+## `Openlogin`
+
+This is the main class of anything related to Openlogin
+Using ES6,
+
+```javascript
+import OpenLogin from "@toruslabs/openlogin";
+```
+
+Then, create a new instance of OpenLogin.
+
+```javascript
+const openlogin = new OpenLogin(options);
+```
+
+The OpenLogin constructor takes an object with `OpenLoginOptions` as input.
+
+**Parameters**
+
+- `options` - `OpenLoginOptions`: The options of the constructor
+  - `clientId` - `string` : Your project id which you can get from [developer dashboard](https://developer.tor.us/)
+  - `network` - `enum`: Environment to run openlogin (testnet, mainnet, development)
+  - `iframeUrl`- `string`: Url of openlogin iframeUrl, you can pass custom iframe url here else
+  it will be added based on network value.For testnet iframe url is `https://beta.openlogin.com`  and
+  for mainnet it is `https://manage.openlogin.com`. If you are passing valid network value then network value
+  will be given precedence over iframe url.
+
+  - `uxMode` - `enum`(optional): `popup` and `redirect` uxmode are supported. By default it is set to `redirect`
+
+**Returns**
+
+- `Object`: The openlogin instance with all its methods and events.
+
+**Reference**
+
+```javascript
+type OpenLoginOptions = {
+  clientId: string;
+  network: OPENLOGIN_NETWORK_TYPE;
+  iframeUrl?: string;
+  redirectUrl?: string;
+  loginUrl?: string;
+  webAuthnUrl?: string;
+  logoutUrl?: string;
+  uxMode?: UX_MODE_TYPE;
+  replaceUrlOnRedirect?: boolean;
+  originData?: OriginData;
+};
+
+const OPENLOGIN_NETWORK = {
+  MAINNET: "mainnet",
+  TESTNET: "testnet",
+  DEVELOPMENT: "development",
+};
+
+const UX_MODE = {
+  POPUP: "popup",
+  REDIRECT: "redirect",
+}
+
+type OriginData = {
+    [P in string]: string;
+};
+```
+
+**Example**
+
+```javascript
+const openlogin = new OpenLogin({
+  clientId: "YOUR_PROJECT_ID",
+  network: "testnet",
+   // default if network is testnet then default iframeUrl is https://beta.openlogin.com
+   // for mainnet it is https://manage.openlogin.com
+  iframeUrl: "https://beta.openlogin.com",
+  // url where user will be redirect with private key after login
+  redirectUrl: "https://example.com/redirect"
+  uxMode: "redirect" // default is redirect , popup mode coming soon.
+});
+```
+
+## `init`
+
+Initialize the OpenLogin object after creation. Init sync up the state of user login session in
+to openlogin class and it also injects a iframe in to DOM.
+If init will be called after user is logged in , it will add
+the user private key to privKey state variable of openlogin object.
+
+```javascript
+await openlogin.init();
+```
+
+**Returns**
+
+- `Promise<void>` : Returns a promise which resolves to void
