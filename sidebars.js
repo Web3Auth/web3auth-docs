@@ -5,7 +5,19 @@ module.exports = {
     {
       type: "category",
       label: "OpenLogin",
-      items: ["open-login/get-started", "open-login/what-is-openlogin"],
+      items: [
+        "open-login/get-started",
+        "open-login/what-is-openlogin",
+        {
+          "API Reference": [
+            "open-login/api-reference/installation",
+            "open-login/api-reference/initialization",
+            "open-login/api-reference/usage",
+
+          ],
+        },
+      ],
+
     },
     {
       type: "category",
