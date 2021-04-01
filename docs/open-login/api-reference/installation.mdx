@@ -8,15 +8,24 @@ import TabItem from "@theme/TabItem";
 
 ## Integrate via
 
-### npm or yarn
+### Script tag or npm/yarn
 
 <Tabs
-  defaultValue="npm"
+  defaultValue="cdn"
   values={[
+    { label: "script tag", value: "cdn" },
     { label: "npm", value: "npm" },
-    { label: "Yarn", value: "yarn" },
+    { label: "yarn", value: "yarn" },
   ]}
 >
+
+<TabItem value="cdn">
+
+```shell
+<script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin"></script>
+```
+</TabItem>
+
 <TabItem value="npm">
 
 ```shell
@@ -35,6 +44,9 @@ yarn add @toruslabs/openlogin
 
 </Tabs>
 
+The script tag creates a window.openlogin object, which you can initialize.
+
+
 <Tabs
   defaultValue="basic"
   values={[
@@ -47,7 +59,6 @@ yarn add @toruslabs/openlogin
 
 ```js
 import OpenLogin from "@toruslabs/openlogin";
-import Web3 from "web3";
 
 // clientId can be any string for localhost
 const openlogin = new OpenLogin({ clientId: "YOUR_PROJECT_ID", network: "testnet" });
@@ -69,27 +80,3 @@ if (openlogin.privKey) {
 </TabItem>
 
 </Tabs>
-
-### Script tag
-
-The code snippet below sets Torus Wallet as the default login method for a DApp,
-add one of the following `script` tags to end of `body` in your `index.html`.
-
-<Tabs
-  defaultValue="jsdelivr"
-  values={[
-    { label: "jsdelivr", value: "jsdelivr" }
-  ]}
->
-
-<TabItem value="jsdelivr">
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin"></script>
-```
-
-</TabItem>
-
-</Tabs>
-
-The script tag creates a `window.openlogin` object, which you can initialize.

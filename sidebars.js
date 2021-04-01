@@ -12,7 +12,7 @@ module.exports = {
           "API Reference": [
             "open-login/api-reference/installation",
             "open-login/api-reference/initialization",
-            "open-login/api-reference/account",
+            "open-login/api-reference/usage",
 
           ],
         },
