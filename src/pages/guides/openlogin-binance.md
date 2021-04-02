@@ -1,8 +1,8 @@
 ---
-title: How to Integrate OpenLogin and Polygon
+title: How to Integrate OpenLogin and Binance Smart Chain
 image: "/contents/openlogin-polygon.png"
-description: Learn to use OpenLogin to integrate your app with Polygon Network
-order: 5
+description: Learn to use OpenLogin to integrate your app with Binance Smart Chain
+order: 7
 ---
 
 import Tabs from "@theme/Tabs";
@@ -11,21 +11,19 @@ import TabItem from "@theme/TabItem";
 
 ## Introduction
 
-This tutorial will guide you over a basic example to integerate Openlogin authentication with polygon network (previously matic).
+This tutorial will guide you over a basic example to integerate Openlogin authentication with Binance Smart Chain.
 
-We will go through a react app where user can login,create polygon wallet address, fetch matic erc20 token balance and logout.
+We will go through a react app where user can login,create binance smart chain wallet, fetch account's balance and logout.
 
-
-You can find [the source code of this is example on Github](https://github.com/torusresearch/openlogin-polygon-example).
+You can find [the source code of this is example on Github](https://github.com/torusresearch/openlogin-binance-example).
 
 ## Let's get started with code by installing depedencies using npm
 
-To start with using openlogin with a polygon(matic) dapp , you need to install [Openlogin](https://www.npmjs.com/package/@toruslabs/openlogin) , [Web3.js](https://www.npmjs.com/package/web3) sdk and [@maticnetwork/maticjs`](https://www.npmjs.com/package/@maticnetwork/maticjs) sdk
+To start with using openlogin with a binance smart chain dapp , you need to install [Openlogin](https://www.npmjs.com/package/@toruslabs/openlogin) and [Web3.js](https://www.npmjs.com/package/web3) sdk.
 
 
 ```shell
     npm install --save @toruslabs/openlogin
-    npm install --save @maticnetwork/maticjs
     npm install --save web3
 ```
 
@@ -93,56 +91,32 @@ Checkout [api reference](https://docs.beta.tor.us/open-login/api-reference) for 
         loginProvider: "google",
         redirectUrl: `${window.origin}`,
       });
-      await getMaticAccountDetails(privKey);
+      await importUserAccount(privKey);
       setLoading(false)
     } catch (error) {
       console.log("error", error);
       setLoading(false)
-
     }
 
   }
 
 ```
 
-## Use the private key with @maticnetwork/maticjs
+## Use the private key with web3
 
 
-In the code snippet below  we are using user's private key with matic network , it connects with matic network , imports a account with private key and fetches imported account erc20 token balance from matic network.
+ Code snippet given below ,connects with binance test net using web3, imports a account with private key and fetches imported account balance from binance smart chain test network.
 
 
 ```js
 
-   const getMaticClient = useCallback(async(_network, _version) => {
-      const network = new Network(_network, _version);
-      console.log(network.Main.RPC, network.Matic.RPC)
-      const matic = new Matic({
-        network: _network,
-        version: _version,
-        parentProvider: new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/<your infura project id>"),
-        maticProvider: new Web3.providers.HttpProvider(network.Matic.RPC)
-      })
-      await matic.initialize()
-      return { matic, network }
-    },[]);
-
-  const getMaticAccountDetails = useCallback(async(privateKey) =>{
-      const { matic, network } = await getMaticClient("mainnet", "v1");
-      const tokenAddress = network.Matic.Contracts.Tokens.MaticToken
-      matic.setWallet(privateKey);
-
-      const account = matic.web3Client.web3.eth.accounts.privateKeyToAccount(privateKey);
-      let address = account.address;
-
-      const balance = await matic.balanceOfERC20(
-        address, //User address
-        tokenAddress, // Token address
-        {
-          parent: false
-        }
-      )
-      setUserAccountInfo({balance, address});
-    },[getMaticClient]);
+  async function importUserAccount(privateKey) {
+    const web3 = new Web3('https://bsc-dataseed1.binance.org:443');
+    const account = web3.eth.accounts.privateKeyToAccount(privateKey)
+    let balance = await web3.eth.getBalance(account.address);
+    let address = account.address;
+    setUserAccountInfo({balance, address});
+  }
 
 ```
 
@@ -164,4 +138,4 @@ In order to logout user you needs to call logout function available on sdk insta
 ### DONE!!
 You can use this example on localhost, in order to deploy your app you need to whitelist your domain at [developer dashboard](http://developer.tor.us/).
 
-You can checkout example of this example app here.[the source code of this is example on Github](https://github.com/torusresearch/openlogin-polygon-example).
+You can checkout example of this example app here.[the source code of this is example on Github](https://github.com/torusresearch/openlogin-binance-example).

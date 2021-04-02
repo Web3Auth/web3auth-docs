@@ -19,7 +19,7 @@ We will create an example app where user can login,check wallet address, balance
 
 You can find [the source code of this is example on Github](https://github.com/himanshuchawla009/openlogin-web-example).
 
-## Let's get started with some code
+## Let's get started with code
 
 We will be using plain html and jquery for this example so we just need to create a single html file for this simple example app.
 
@@ -61,7 +61,7 @@ $(document).ready(async function () {
 });
 ```
 
-The code snippet given above is simply accessing OpenloginUtils and Openlogin Sdk from global window object and then it creates a instance of openlogin sdk with two params ie `clientId` and `iframeUrl` and it initializes it using init function.
+The code snippet given above is creating Openlogin Sdk instance  with two params ie `clientId` and `iframeUrl` and it initializes it using init function. Init
 
 - `clientId`: clientId is a public id which is used to to identify your app. You can generate your client id using getting started guide with openlogin. For localhost you can use any static random string as client id.
 
@@ -73,7 +73,7 @@ After initializing openlogin sdk, above function checks if sdk instance has priv
 
 ## Login user:
 
-Once the sdk is initialized , you can allow user to login. You need to call login function availble on sdkInstance created in previous step.
+Once the sdk is initialized , you can allow user to login. You need to call login function available on sdkInstance created in previous step.
 
 ```js
     $("#login").click(async function (event) {
@@ -131,7 +131,7 @@ We are using infura nodes url in this example to access blockchain with web3 js.
 
 You can use any web3 function after this from sending ether to calling smart contract functions.
 
-## Logging out user:-
+## Log out hanlder:-
 
 In order to logout user you needs to call logout function available on sdk instance.Logout function will clears the sdk state and removes any access to private key on frontend. You can redirect user to the exit page after logout function returns.
 
