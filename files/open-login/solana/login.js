@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import OpenLogin from "@toruslabs/openlogin";
 import AccountInfo  from "../../components/AccountInfo";
 import { Account, Connection, clusterApiUrl } from "@solana/web3.js";
-import nacl from "tweetnacl";
+import { getED25519Key } from "@toruslabs/openlogin-utils";
 import * as bs58 from "bs58";
 
 import "./style.scss";
@@ -33,8 +33,8 @@ function Login() {
       await sdkInstance.init();
       if (sdkInstance.privKey) {
         const privateKey = sdkInstance.privKey;
-        const solanaPrivateKey = getSolanaPrivateKey(privateKey);
-        await getAccountInfo(solanaPrivateKey);
+        const secretKey = getSolanaPrivateKey(privateKey);
+        await getAccountInfo(secretKey);
       }
       setSdk(sdkInstance);
       setLoading(false);
@@ -42,15 +42,14 @@ function Login() {
     initializeOpenlogin();
   }, []);
 
-  const fromHexString = (hexString) => new Uint8Array(hexString.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)));
 
   const getSolanaPrivateKey = (openloginKey)=>{
-    const solanaPrivateKey = nacl.sign.keyPair.fromSeed(fromHexString(openloginKey.padStart(64, 0))).secretKey;
-    return solanaPrivateKey;
+    const  { sk } = getED25519Key(openloginKey);
+    return sk;
   }
 
-  const getAccountInfo = async(solanaPrivateKey) => {
-    const account = new Account(solanaPrivateKey);
+  const getAccountInfo = async(secretKey) => {
+    const account = new Account(secretKey);
     const accountInfo = await connection.getAccountInfo(account.publicKey);
     setPrivateKey(bs58.encode(account.secretKey));
     setUserAccount(account);

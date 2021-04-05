@@ -94,23 +94,23 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
         },
         {
           ...STEPS.instantiateSDK,
-          pointer: { filename: "solana/login.js", range: "28-33" },
+          pointer: { filename: "solana/login.js", range: "29-33" },
         },
         {
           ...STEPS.reactLogin,
-          pointer: { filename: "solana/login.js", range: "61-75" },
+          pointer: { filename: "solana/login.js", range: "60-74" },
         },
         {
           ...STEPS.generateSolanaKey,
-          pointer: { filename: "solana/login.js", range: "47-50" },
+          pointer: { filename: "solana/login.js", range: "46-49" },
         },
         {
           ...STEPS.useSolanaPrivateKey,
-          pointer: { filename: "solana/login.js", range: "52-59" },
+          pointer: { filename: "solana/login.js", range: "51-58" },
         },
         {
           ...STEPS.reactLogout,
-          pointer: { filename: "solana/login.js", range: "77-81" },
+          pointer: { filename: "solana/login.js", range: "76-80" },
         },
       );
 
