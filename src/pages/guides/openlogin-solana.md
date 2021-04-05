@@ -121,7 +121,7 @@ Checkout [api reference](https://docs.beta.tor.us/open-login/api-reference) for 
 
 ## Use the private key with solana/web3.js
 
-After login application will have access to the user's private key at `openlogin.privKey`. Before using this key with solana/web3.js, we just need to make this key compatible with solana. In the code snippet below `getED25519Key` which is imported from  `@toruslabs/openlogin-utils` library.
+After login application will have access to the user's private key at `openlogin.privKey`. Before using this key with solana/web3.js, we just need to make this key compatible with solana. In the code snippet below `getED25519Key` is imported from  `@toruslabs/openlogin-utils` library.
 
 Now we have a key which can be used use create a account using solana/web3.js. Functionality to generate solana account is implemented in `getAccountInfo` function which first creates a account by inputing the private key to Account class of solana/web3.js , creates a connection to solana blockchain and fetches account's balance from blockchain. You can use this private key to do anything like signing transactions and all the functionality supported by solana/web3.js.
 
