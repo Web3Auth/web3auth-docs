@@ -6,14 +6,10 @@ import Network from '@maticnetwork/meta/network';
 import AccountInfo  from "../../components/AccountInfo";
 import "./style.scss";
 
-
-function Login() {
-  const [loading, setLoading] = useState(false);
-  const [openlogin, setSdk] = useState(undefined);
-  const [walletInfo, setUserAccountInfo] = useState(null);
-
-
-  const getMaticClient = useCallback(async(_network, _version) => {
+const maticClient = {
+  _matic: null,
+  _network: null,
+  connect: async(_network, _version) => {
     const network = new Network(_network, _version);
     console.log(network.Main.RPC, network.Matic.RPC)
     const matic = new Matic({
@@ -23,11 +19,27 @@ function Login() {
       maticProvider: new Web3.providers.HttpProvider(network.Matic.RPC)
     })
     await matic.initialize()
+    maticClient._matic = matic;
+    maticClient._network = network;
     return { matic, network }
-  },[]);
+  },
+  getClient: async(_network, _version)=> {
+    if(maticClient._matic && maticClient._network) {
+      return { matic: maticClient._matic, network: maticClient._network}
+    }
+    return await maticClient.connect(_network, _version);
+  }
+}
+
+
+function Login() {
+  const [loading, setLoading] = useState(false);
+  const [openlogin, setSdk] = useState(undefined);
+  const [walletInfo, setUserAccountInfo] = useState(null);
 
   const getMaticAccountDetails = useCallback(async(privateKey) =>{
-    const { matic, network } = await getMaticClient("mainnet", "v1");
+    const { matic, network } =  await maticClient.getClient("mainnet","v1");
+
     const tokenAddress = network.Matic.Contracts.Tokens.MaticToken
     matic.setWallet(privateKey);
 
@@ -42,7 +54,7 @@ function Login() {
       }
     )
     setUserAccountInfo({balance, address});
-  },[getMaticClient]);
+  },[]);
 
   useEffect(() => {
     setLoading(true)
@@ -73,7 +85,9 @@ function Login() {
     } catch (error) {
       console.log("error", error);
       setLoading(false)
+
     }
+
   }
 
   const handleLogout = async () => {

@@ -13,15 +13,19 @@ import * as reactLogout from "./react-common/logout.mdx"
 //solana
 import * as generateSolanaKey from "./react-solana/generate-solana-key.mdx"
 import * as connectSolana from "./react-solana/connect-with-solWeb3.mdx"
+import * as useSolanaPrivateKey from "./react-solana/usingPrivateKey.mdx"
 
 // polygon
 import * as connectPolygon from "./react-polygon/connect-with-maticJs.mdx"
+import * as usePolygonPrivateKey from "./react-polygon/usingPrivateKey.mdx"
 
 // binance
 import * as connectBinance from "./react-binance/connect-with-binance.mdx"
+import * as useBinancePrivateKey from "./react-polygon/usingPrivateKey.mdx"
 
 // avalanche
 import * as connectAvalanche from "./react-avalanche/connect-with-avalanche.mdx"
+import * as useAvaxPrivateKey from "./react-avalanche/usingPrivateKey.mdx"
 
 import { toSteps } from "../../utils";
 
@@ -39,7 +43,11 @@ const STEPS = toSteps({
   connectSolana,
   connectPolygon,
   connectBinance,
-  connectAvalanche
+  connectAvalanche,
+  useAvaxPrivateKey,
+  useBinancePrivateKey,
+  useSolanaPrivateKey,
+  usePolygonPrivateKey
 });
 
 export default STEPS;

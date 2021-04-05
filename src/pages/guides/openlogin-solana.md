@@ -1,6 +1,6 @@
 ---
 title: How to integerate Openlogin with an Solana dapp.
-image: "/contents/openlogin-polygon.png"
+image: "/contents/Torus-Solana.png"
 description: Learn to use OpenLogin to integrate with solana/web3.js
 order: 6
 ---
@@ -29,6 +29,22 @@ To start with using openlogin with a solana dapp , you need to install [Openlogi
     npm install --save tweetnacl
 ```
 
+## Initialize solana web3 connection
+
+
+```js
+import { Connection, clusterApiUrl } from "@solana/web3.js";
+
+const networks = {
+  mainnet: { url: "https://solana-api.projectserum.com", displayName: "Mainnet Beta" },
+  devnet: { url: clusterApiUrl("devnet"), displayName: "Devnet" },
+  testnet: { url: clusterApiUrl("testnet"), displayName: "Testnet" },
+};
+
+const solanaNetwork = networks.devnet;
+const connection = new Connection(solanaNetwork.url);
+
+```
 ## Create and initialize openlogin instance
 
 Start with creating a instance of openlogin class and initialize it using `openlogin.init()` when application is mounted. After initialization it checks if sdk has private key then user is already logged in.

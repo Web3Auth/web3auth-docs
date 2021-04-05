@@ -89,8 +89,12 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
           ...STEPS.registerApp,
         },
         {
+          ...STEPS.connectSolana,
+          pointer: { filename: "solana/login.js", range: "10-17" },
+        },
+        {
           ...STEPS.instantiateSDK,
-          pointer: { filename: "solana/login.js", range: "28-32" },
+          pointer: { filename: "solana/login.js", range: "28-33" },
         },
         {
           ...STEPS.reactLogin,
@@ -98,11 +102,11 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
         },
         {
           ...STEPS.generateSolanaKey,
-          pointer: { filename: "solana/login.js", range: "46-49" },
+          pointer: { filename: "solana/login.js", range: "47-50" },
         },
         {
-          ...STEPS.connectSolana,
-          pointer: { filename: "solana/login.js", range: "51-59" },
+          ...STEPS.useSolanaPrivateKey,
+          pointer: { filename: "solana/login.js", range: "52-59" },
         },
         {
           ...STEPS.reactLogout,
@@ -123,20 +127,24 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
           ...STEPS.registerApp,
         },
         {
+          ...STEPS.connectPolygon,
+          pointer: { filename: "polygon/login.js", range: "12-20" },
+        },
+        {
           ...STEPS.instantiateSDK,
-          pointer: { filename: "polygon/login.js", range: "50-54" },
+          pointer: { filename: "polygon/login.js", range: "62-66" },
         },
         {
           ...STEPS.reactLogin,
-          pointer: { filename: "polygon/login.js", range: "64-77" },
+          pointer: { filename: "polygon/login.js", range: "76-91" },
         },
         {
-          ...STEPS.connectPolygon,
-          pointer: { filename: "polygon/login.js", range: "16-45" },
+          ...STEPS.usePolygonPrivateKey,
+          pointer: { filename: "polygon/login.js", range: "40-55" },
         },
         {
           ...STEPS.reactLogout,
-          pointer: { filename: "polygon/login.js", range: "79-83" },
+          pointer: { filename: "polygon/login.js", range: "93-97" },
         },
       );
 
@@ -153,16 +161,20 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
           ...STEPS.registerApp,
         },
         {
+          ...STEPS.connectBinance,
+          pointer: { filename: "binance/login.js", range: "6" },
+        },
+        {
           ...STEPS.instantiateSDK,
-          pointer: { filename: "binance/login.js", range: "14-18" },
+          pointer: { filename: "binance/login.js", range: "15-19" },
         },
         {
           ...STEPS.reactLogin,
-          pointer: { filename: "binance/login.js", range: "18-52" },
+          pointer: { filename: "binance/login.js", range: "38-52" },
         },
         {
-          ...STEPS.connectBinance,
-          pointer: { filename: "binance/login.js", range: "30-36" },
+          ...STEPS.useBinancePrivateKey,
+          pointer: { filename: "binance/login.js", range: "31-36" },
         },
         {
           ...STEPS.reactLogout,
@@ -183,20 +195,24 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
           ...STEPS.registerApp,
         },
         {
+          ...STEPS.connectAvalanche,
+          pointer: { filename: "avalanche/login.js", range: "7-8" },
+        },
+        {
           ...STEPS.instantiateSDK,
-          pointer: { filename: "avalanche/login.js", range: "14-18" },
+          pointer: { filename: "avalanche/login.js", range: "17-21" },
         },
         {
           ...STEPS.reactLogin,
-          pointer: { filename: "avalanche/login.js", range: "46-60" },
+          pointer: { filename: "avalanche/login.js", range: "47-61" },
         },
         {
-          ...STEPS.connectAvalanche,
-          pointer: { filename: "avalanche/login.js", range: "30-44" },
+          ...STEPS.useAvaxPrivateKey,
+          pointer: { filename: "avalanche/login.js", range: "33-45" },
         },
         {
           ...STEPS.reactLogout,
-          pointer: { filename: "avalanche/login.js", range: "62-66" },
+          pointer: { filename: "avalanche/login.js", range: "63-67" },
         },
       );
 

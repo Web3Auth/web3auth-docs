@@ -1,6 +1,6 @@
 ---
 title: How to Integrate OpenLogin and Avalanche
-image: "/contents/openlogin-polygon.png"
+image: "/contents/Torus-AVAX.png"
 description: Learn to use OpenLogin to integrate your app with Avalanche
 order: 8
 ---
@@ -27,6 +27,13 @@ To start with using openlogin with a avalanche dapp , you need to install [Openl
     npm install --save avalanche
 ```
 
+
+## Connect with avalanche testnet
+
+```js
+const myNetworkID = 5;
+const avalanche = new Avalanche("api.avax-test.network", 443, "https", myNetworkID);
+```
 
 ## Create and initialize openlogin instance
 

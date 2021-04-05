@@ -3,6 +3,7 @@ import OpenLogin from "@toruslabs/openlogin";
 import Web3 from "web3";
 import AccountInfo from "../../components/AccountInfo";
 import "./style.scss";
+const web3 = new Web3('https://data-seed-prebsc-1-s1.binance.org:8545/');
 
 function Login() {
   const [loading, setLoading] = useState(false);
@@ -28,7 +29,6 @@ function Login() {
 
 
   async function importUserAccount(privateKey) {
-    const web3 = new Web3('https://bsc-dataseed1.binance.org:443');
     const account = web3.eth.accounts.privateKeyToAccount(privateKey)
     let balance = await web3.eth.getBalance(account.address);
     let address = account.address;

@@ -13,7 +13,8 @@ const networks = {
   testnet: { url: clusterApiUrl("testnet"), displayName: "Testnet" },
 };
 
-const solanaNetwork = networks.mainnet;
+const solanaNetwork = networks.devnet;
+const connection = new Connection(solanaNetwork.url);
 
 function Login() {
   const [loading, setLoading] = useState(false);
@@ -33,7 +34,7 @@ function Login() {
       if (sdkInstance.privKey) {
         const privateKey = sdkInstance.privKey;
         const solanaPrivateKey = getSolanaPrivateKey(privateKey);
-        await getAccountInfo(solanaNetwork.url,solanaPrivateKey);
+        await getAccountInfo(solanaPrivateKey);
       }
       setSdk(sdkInstance);
       setLoading(false);
@@ -48,9 +49,8 @@ function Login() {
     return solanaPrivateKey;
   }
 
-  const getAccountInfo = async(connectionUrl, solanaPrivateKey) => {
+  const getAccountInfo = async(solanaPrivateKey) => {
     const account = new Account(solanaPrivateKey);
-    const connection = new Connection(connectionUrl);
     const accountInfo = await connection.getAccountInfo(account.publicKey);
     setPrivateKey(bs58.encode(account.secretKey));
     setUserAccount(account);
@@ -99,7 +99,7 @@ function Login() {
               account={account}
             /> :
             <div className="loginContainer">
-                <h1 style={{ textAlign: "center" }}>Openlogin x Polygon</h1>
+                <h1 style={{ textAlign: "center" }}>Openlogin x Solana</h1>
                 <div onClick={handleLogin} className="btn">
                   Login
                 </div>

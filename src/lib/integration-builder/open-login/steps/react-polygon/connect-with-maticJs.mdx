@@ -1,9 +1,17 @@
 ---
-title: Connecting with polygon network and using private key
+title: Connect with Polygon (matic network)
 ---
 
-After calling `openlogin.login`, your application will
-have access to the user's private key at `openlogin.privKey`.
+We are using `@maticnetwork/meta/network` npm library to connect with matic network.
 
-In this example, we are first connecting with matic network and then using private key to import a account
-and to fetch account's balance from blockchain.
+```js
+    const network = new Network(_network, _version);
+    console.log(network.Main.RPC, network.Matic.RPC)
+    const matic = new Matic({
+      network: _network,
+      version: _version,
+      parentProvider: new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/73d0b3b9a4b2499da81c71a2b2a473a9"),
+      maticProvider: new Web3.providers.HttpProvider(network.Matic.RPC)
+    })
+    await matic.initialize()
+```

@@ -1,21 +1,16 @@
-
 ---
-title: Connecting with binance smart chain and using private key
+title: Connect with Binance Smart Chain
 ---
 
-After calling `openlogin.login`, your application will
-have access to the user's private key at `openlogin.privKey`.
+Connect with binance smart chain using web3 library.
 
-In this example, we are first connecting with binance smart chain and
-using private key to import a account and to fetch account's balance
-from blockchain.
+- Testnet:-
 
 ```js
-  async function importUserAccount(privateKey) {
-    const web3 = new Web3('https://bsc-dataseed1.binance.org:443');
-    const account = web3.eth.accounts.privateKeyToAccount(privateKey)
-    let balance = await web3.eth.getBalance(account.address);
-    let address = account.address;
-    setUserAccountInfo({balance, address});
-  }
+  const web3 = new Web3('https://data-seed-prebsc-1-s1.binance.org:8545');
+```
+- Mainnet:-
+
+```js
+  const web3 = new Web3('https://bsc-dataseed1.binance.org:443');
 ```

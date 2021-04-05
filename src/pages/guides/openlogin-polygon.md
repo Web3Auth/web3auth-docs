@@ -29,6 +29,35 @@ To start with using openlogin with a polygon(matic) dapp , you need to install [
     npm install --save web3
 ```
 
+## Initialize matic web3 lib to connect with matic network
+
+```js
+
+const maticClient = {
+  _matic: null,
+  _network: null,
+  connect: async(_network, _version) => {
+    const network = new Network(_network, _version);
+    console.log(network.Main.RPC, network.Matic.RPC)
+    const matic = new Matic({
+      network: _network,
+      version: _version,
+      parentProvider: new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/73d0b3b9a4b2499da81c71a2b2a473a9"),
+      maticProvider: new Web3.providers.HttpProvider(network.Matic.RPC)
+    })
+    await matic.initialize()
+    maticClient._matic = matic;
+    maticClient._network = network;
+    return { matic, network }
+  },
+  getClient: async(_network, _version)=> {
+    if(maticClient._matic && maticClient._network) {
+      return { matic: maticClient._matic, network: maticClient._network}
+    }
+    return await maticClient.connect(_network, _version);
+  }
+}
+```
 
 ## Create and initialize openlogin instance
 
@@ -108,26 +137,13 @@ Checkout [api reference](https://docs.beta.tor.us/open-login/api-reference) for 
 ## Use the private key with @maticnetwork/maticjs
 
 
-In the code snippet below  we are using user's private key with matic network , it connects with matic network , imports a account with private key and fetches imported account erc20 token balance from matic network.
+In the code snippet below  we are using user's private key with matic network , it uses `matic` client which we connected earlier in this guide , imports a account with private key and fetches imported account erc20 token balance from matic network.
 
 
 ```js
 
-   const getMaticClient = useCallback(async(_network, _version) => {
-      const network = new Network(_network, _version);
-      console.log(network.Main.RPC, network.Matic.RPC)
-      const matic = new Matic({
-        network: _network,
-        version: _version,
-        parentProvider: new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/<your infura project id>"),
-        maticProvider: new Web3.providers.HttpProvider(network.Matic.RPC)
-      })
-      await matic.initialize()
-      return { matic, network }
-    },[]);
-
   const getMaticAccountDetails = useCallback(async(privateKey) =>{
-      const { matic, network } = await getMaticClient("mainnet", "v1");
+      const { matic, network } =  await maticClient.getClient("mainnet","v1");
       const tokenAddress = network.Matic.Contracts.Tokens.MaticToken
       matic.setWallet(privateKey);
 

@@ -4,6 +4,9 @@ import { Avalanche } from "avalanche"
 import AccountInfo from "../../components/AccountInfo";
 import "./style.scss";
 
+const myNetworkID = 5;
+const avalanche = new Avalanche("api.avax-test.network", 443, "https", myNetworkID);
+
 function Login() {
   const [loading, setLoading] = useState(false);
   const [openlogin, setSdk] = useState(undefined);
@@ -28,8 +31,6 @@ function Login() {
 
 
   async function importUserAccount(privateKey) {
-    const myNetworkID = 5;
-    const avalanche = new Avalanche("api.avax-test.network", 443, "https", myNetworkID);
     const xchain = avalanche.XChain(); //returns a reference to the X-Chain used by AvalancheJS
     const myKeychain = xchain.keyChain();
     const importedAccount = myKeychain.importKey(Buffer.from(privateKey,"hex")); // returns an instance of the KeyPair class

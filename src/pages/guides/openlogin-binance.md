@@ -1,6 +1,6 @@
 ---
 title: How to Integrate OpenLogin and Binance Smart Chain
-image: "/contents/openlogin-polygon.png"
+image: "/contents/Torus-BSC.png"
 description: Learn to use OpenLogin to integrate your app with Binance Smart Chain
 order: 7
 ---
@@ -27,7 +27,12 @@ To start with using openlogin with a binance smart chain dapp , you need to inst
     npm install --save web3
 ```
 
+## Initialize Web3 with binance test net:
 
+```js
+const web3 = new Web3('https://data-seed-prebsc-1-s1.binance.org:8545/');
+
+```
 ## Create and initialize openlogin instance
 
 Start with creating a instance of openlogin class and initialize it using `openlogin.init()` when application is mounted. After initialization it checks if sdk has private key then user is already logged in.
@@ -111,7 +116,6 @@ Checkout [api reference](https://docs.beta.tor.us/open-login/api-reference) for 
 ```js
 
   async function importUserAccount(privateKey) {
-    const web3 = new Web3('https://bsc-dataseed1.binance.org:443');
     const account = web3.eth.accounts.privateKeyToAccount(privateKey)
     let balance = await web3.eth.getBalance(account.address);
     let address = account.address;
