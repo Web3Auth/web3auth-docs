@@ -1,8 +1,8 @@
 ---
-title: How to Integrate OpenLogin and Polygon
-image: "/contents/openlogin-polygon.png"
-description: Learn to use OpenLogin to integrate your app with Polygon Network
-order: 5
+title: How to Integrate OpenLogin and Avalanche
+image: "/contents/Torus-AVAX.png"
+description: Learn to use OpenLogin to integrate your app with Avalanche
+order: 8
 ---
 
 import Tabs from "@theme/Tabs";
@@ -11,52 +11,28 @@ import TabItem from "@theme/TabItem";
 
 ## Introduction
 
-This tutorial will guide you over a basic example to integerate Openlogin authentication with polygon network (previously matic).
+This tutorial will guide you over a basic example to integerate Openlogin authentication with avalanche.
 
-We will go through a react app where user can login,create polygon wallet address, fetch matic erc20 token balance and logout.
+We will go through a react app where user can login,create avalanche account, fetch account's balance and logout.
 
-
-You can find [the source code of this is example on Github](https://github.com/torusresearch/openlogin-polygon-example).
+You can find [the source code of this is example on Github](https://github.com/torusresearch/openlogin-avalanche-example).
 
 ## Let's get started with code by installing depedencies using npm
 
-To start with using openlogin with a polygon(matic) dapp , you need to install [Openlogin](https://www.npmjs.com/package/@toruslabs/openlogin) , [Web3.js](https://www.npmjs.com/package/web3) sdk and [@maticnetwork/maticjs`](https://www.npmjs.com/package/@maticnetwork/maticjs) sdk
+To start with using openlogin with a avalanche dapp , you need to install [Openlogin](https://www.npmjs.com/package/@toruslabs/openlogin) and [avalanche](https://www.npmjs.com/package/avalanche) sdk.
 
 
 ```shell
     npm install --save @toruslabs/openlogin
-    npm install --save @maticnetwork/maticjs
-    npm install --save web3
+    npm install --save avalanche
 ```
 
-## Initialize matic web3 lib to connect with matic network
+
+## Connect with avalanche testnet
 
 ```js
-
-const maticClient = {
-  _matic: null,
-  _network: null,
-  connect: async(_network, _version) => {
-    const network = new Network(_network, _version);
-    console.log(network.Main.RPC, network.Matic.RPC)
-    const matic = new Matic({
-      network: _network,
-      version: _version,
-      parentProvider: new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/73d0b3b9a4b2499da81c71a2b2a473a9"),
-      maticProvider: new Web3.providers.HttpProvider(network.Matic.RPC)
-    })
-    await matic.initialize()
-    maticClient._matic = matic;
-    maticClient._network = network;
-    return { matic, network }
-  },
-  getClient: async(_network, _version)=> {
-    if(maticClient._matic && maticClient._network) {
-      return { matic: maticClient._matic, network: maticClient._network}
-    }
-    return await maticClient.connect(_network, _version);
-  }
-}
+const myNetworkID = 5;
+const avalanche = new Avalanche("api.avax-test.network", 443, "https", myNetworkID);
 ```
 
 ## Create and initialize openlogin instance
@@ -80,7 +56,7 @@ We are using two options while creating openlogin class instance:-
     async function initializeOpenlogin() {
       await sdkInstance.init();
       if (sdkInstance.privKey) {
-        // qpp has access ot private key now
+        // app has access to private key now
         ...
         ...
       }
@@ -122,43 +98,40 @@ Checkout [api reference](https://docs.beta.tor.us/open-login/api-reference) for 
         loginProvider: "google",
         redirectUrl: `${window.origin}`,
       });
-      await getMaticAccountDetails(privKey);
+      await importUserAccount(privKey);
       setLoading(false)
     } catch (error) {
       console.log("error", error);
       setLoading(false)
-
     }
 
   }
 
 ```
 
-## Use the private key with @maticnetwork/maticjs
+## Use the private key with web3
 
-
-In the code snippet below  we are using user's private key with matic network , it uses `matic` client which we connected earlier in this guide , imports a account with private key and fetches imported account erc20 token balance from matic network.
+ Cde snippet given below ,connects with avalanche test network using avalanche library, imports a account with private key and fetches imported account balance of some previously deployed test asset.
 
 
 ```js
 
-  const getMaticAccountDetails = useCallback(async(privateKey) =>{
-      const { matic, network } =  await maticClient.getClient("mainnet","v1");
-      const tokenAddress = network.Matic.Contracts.Tokens.MaticToken
-      matic.setWallet(privateKey);
+  async function importUserAccount(privateKey) {
+    const myNetworkID = 5;
+    const avalanche = new Avalanche("api.avax-test.network", 443, "https", myNetworkID);
+    const xchain = avalanche.XChain(); //returns a reference to the X-Chain used by AvalancheJS
+    const myKeychain = xchain.keyChain();
+    const importedAccount = myKeychain.importKey(Buffer.from(privateKey,"hex")); // returns an instance of the KeyPair class
+    let address = importedAccount.getAddressString()
+    const myAddresses = xchain.keyChain().getAddressStrings();
+    const u = await xchain.getUTXOs(myAddresses);
+    const utxos = u.utxos
+    const assetid = "8pfG5CTyL5KBVaKrEnCvNJR95dUWAKc1hrffcVxfgi8qGhqjm"; // random cb58 string
+    const mybalance = utxos.getBalance(myAddresses, assetid);
+    console.log(mybalance, address);
+    setUserAccountInfo({balance: mybalance.toNumber(), address})
+  }
 
-      const account = matic.web3Client.web3.eth.accounts.privateKeyToAccount(privateKey);
-      let address = account.address;
-
-      const balance = await matic.balanceOfERC20(
-        address, //User address
-        tokenAddress, // Token address
-        {
-          parent: false
-        }
-      )
-      setUserAccountInfo({balance, address});
-    },[getMaticClient]);
 
 ```
 
@@ -180,4 +153,4 @@ In order to logout user you needs to call logout function available on sdk insta
 ### DONE!!
 You can use this example on localhost, in order to deploy your app you need to whitelist your domain at [developer dashboard](http://developer.tor.us/).
 
-You can checkout example of this example app here.[the source code of this is example on Github](https://github.com/torusresearch/openlogin-polygon-example).
+You can checkout example of this example app here.[the source code of this is example on Github](https://github.com/torusresearch/openlogin-avalanche-example).

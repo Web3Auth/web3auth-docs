@@ -74,7 +74,7 @@ export default {
       privKey: "",
       verifier: {
         loginProvider: "google", // "facebook", "apple", "twitter", "reddit", etc. See full list of supported logins: https://docs.tor.us/direct-auth/supported-authenticators-verifiers
-        clientId: "Your social provider ID",
+        clientId: "YOUR PROJECT ID",
       }
     };
   },

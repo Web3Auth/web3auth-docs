@@ -1,8 +1,8 @@
 ---
-title: How to Integrate OpenLogin and Polygon
-image: "/contents/openlogin-polygon.png"
-description: Learn to use OpenLogin to integrate your app with Polygon Network
-order: 5
+title: How to integerate Openlogin with an Solana dapp.
+image: "/contents/Torus-Solana.png"
+description: Learn to use OpenLogin to integrate with solana/web3.js
+order: 6
 ---
 
 import Tabs from "@theme/Tabs";
@@ -11,54 +11,40 @@ import TabItem from "@theme/TabItem";
 
 ## Introduction
 
-This tutorial will guide you over a basic example to integerate Openlogin authentication with polygon network (previously matic).
+This tutorial will guide you over a basic example to integerate Openlogin authentication with solana blockchain.
 
-We will go through a react app where user can login,create polygon wallet address, fetch matic erc20 token balance and logout.
+We will create a example react app where user can login, create solana wallet address, checks wallet balance and logout.
 
 
-You can find [the source code of this is example on Github](https://github.com/torusresearch/openlogin-polygon-example).
+You can find [the source code of this is example on Github](https://github.com/torusresearch/openlogin-solana-example).
 
 ## Let's get started with code by installing depedencies using npm
 
-To start with using openlogin with a polygon(matic) dapp , you need to install [Openlogin](https://www.npmjs.com/package/@toruslabs/openlogin) , [Web3.js](https://www.npmjs.com/package/web3) sdk and [@maticnetwork/maticjs`](https://www.npmjs.com/package/@maticnetwork/maticjs) sdk
+To start with using openlogin with a solana dapp , you need to install [Openlogin](https://www.npmjs.com/package/@toruslabs/openlogin) , [Solana/Web3.js](https://solana-labs.github.io/solana-web3.js) sdk and tweetnacl library to derive solana compatible key from openlogin key.
 
 
 ```shell
     npm install --save @toruslabs/openlogin
-    npm install --save @maticnetwork/maticjs
-    npm install --save web3
+    npm install --save @solana/web3.js
+    npm install --save tweetnacl
 ```
 
-## Initialize matic web3 lib to connect with matic network
+## Initialize solana web3 connection
+
 
 ```js
+import { Connection, clusterApiUrl } from "@solana/web3.js";
 
-const maticClient = {
-  _matic: null,
-  _network: null,
-  connect: async(_network, _version) => {
-    const network = new Network(_network, _version);
-    console.log(network.Main.RPC, network.Matic.RPC)
-    const matic = new Matic({
-      network: _network,
-      version: _version,
-      parentProvider: new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/73d0b3b9a4b2499da81c71a2b2a473a9"),
-      maticProvider: new Web3.providers.HttpProvider(network.Matic.RPC)
-    })
-    await matic.initialize()
-    maticClient._matic = matic;
-    maticClient._network = network;
-    return { matic, network }
-  },
-  getClient: async(_network, _version)=> {
-    if(maticClient._matic && maticClient._network) {
-      return { matic: maticClient._matic, network: maticClient._network}
-    }
-    return await maticClient.connect(_network, _version);
-  }
-}
+const networks = {
+  mainnet: { url: "https://solana-api.projectserum.com", displayName: "Mainnet Beta" },
+  devnet: { url: clusterApiUrl("devnet"), displayName: "Devnet" },
+  testnet: { url: clusterApiUrl("testnet"), displayName: "Testnet" },
+};
+
+const solanaNetwork = networks.devnet;
+const connection = new Connection(solanaNetwork.url);
+
 ```
-
 ## Create and initialize openlogin instance
 
 Start with creating a instance of openlogin class and initialize it using `openlogin.init()` when application is mounted. After initialization it checks if sdk has private key then user is already logged in.
@@ -91,7 +77,6 @@ We are using two options while creating openlogin class instance:-
   }, []);
 
 ```
-
 
 ## Login
 
@@ -134,43 +119,46 @@ Checkout [api reference](https://docs.beta.tor.us/open-login/api-reference) for 
 
 ```
 
-## Use the private key with @maticnetwork/maticjs
 
+## Use the private key with solana/web3.js
 
-In the code snippet below  we are using user's private key with matic network , it uses `matic` client which we connected earlier in this guide , imports a account with private key and fetches imported account erc20 token balance from matic network.
+After login application will have access to the user's private key at `openlogin.privKey`. Before using this key with solana/web3.js, we just need to make this key compatible with solana. In the code snippet below `getSolanaPrivateKey` function does that by using tweetnacl library. Solana web3 js internally uses tweetnacl to generate key pairs , so we are also using tweetnacl in this example to derive solana key from openlogin key in this example.
+
+Now we have a key which can be used use create a account using solana/web3.js. Functionality to generate solana account is implemented in `getAccountInfo` function which first creates a account by inputing the private key to Account class of solana/web3.js , creates a connection to solana blockchain and fetches account's balance from blockchain. You can use this private key to do anything like signing transactions and all the functionality supported by solana/web3.js.
+
 
 
 ```js
+    const fromHexString = (hexString) => new Uint8Array(hexString.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)));
 
-  const getMaticAccountDetails = useCallback(async(privateKey) =>{
-      const { matic, network } =  await maticClient.getClient("mainnet","v1");
-      const tokenAddress = network.Matic.Contracts.Tokens.MaticToken
-      matic.setWallet(privateKey);
+    const getSolanaPrivateKey = (openloginKey)=>{
+            const solanaPrivateKey = nacl.sign.keyPair.fromSeed(fromHexString(openloginKey.padStart(64, 0))).secretKey;
+            return solanaPrivateKey;
+    }
+```
 
-      const account = matic.web3Client.web3.eth.accounts.privateKeyToAccount(privateKey);
-      let address = account.address;
+Now we have a solana compatible key which can be used with solana/web3.js. In this example we are using it to create a user account and to fetch user's account balance from blockchain.
 
-      const balance = await matic.balanceOfERC20(
-        address, //User address
-        tokenAddress, // Token address
-        {
-          parent: false
-        }
-      )
-      setUserAccountInfo({balance, address});
-    },[getMaticClient]);
-
+```js
+    const getAccountInfo = async(connectionUrl, solanaPrivateKey) => {
+        const account = new Account(solanaPrivateKey);
+        const connection = new Connection(connectionUrl);
+        const accountInfo = await connection.getAccountInfo(account.publicKey);
+        setPrivateKey(bs58.encode(account.secretKey));
+        setUserAccount(account);
+        setUserAccountInfo(accountInfo);
+        return accountInfo;
+    }
 ```
 
 
-## Log out hanlder:-
+## Logging out user:-
 
 In order to logout user you needs to call logout function available on sdk instance. Logout function will clears the sdk state and removes any access to private key on frontend.
-
  You can pass various other options in logout function like `fastLogin` , `redirectUrl` etc. To know more about that checkout [api reference](https://docs.beta.tor.us/open-login/api-reference)
 
 ```js
-  const handleLogout = async () => {
+ const handleLogout = async () => {
     setLoading(true)
     await openlogin.logout();
     setLoading(false)
@@ -180,4 +168,4 @@ In order to logout user you needs to call logout function available on sdk insta
 ### DONE!!
 You can use this example on localhost, in order to deploy your app you need to whitelist your domain at [developer dashboard](http://developer.tor.us/).
 
-You can checkout example of this example app here.[the source code of this is example on Github](https://github.com/torusresearch/openlogin-polygon-example).
+You can checkout example of this example app here.[the source code of this is example on Github](https://github.com/torusresearch/openlogin-solana-example).
