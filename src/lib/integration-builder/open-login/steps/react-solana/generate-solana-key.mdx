@@ -4,12 +4,12 @@ title: Get Solana secret key
 
 After login, application will have access to user's openlogin private key but before using it
 with solana/web3.js, we just need to make this key compatible with solana.
+`getED25519Key` function derives is Ed25519 key pair which is compatible with solana.
+
 
 ```js
-  const fromHexString = (hexString) => new Uint8Array(hexString.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)));
-
-  const getSolanaPrivateKey = (openloginKey)=>{
-    const solanaPrivateKey = nacl.sign.keyPair.fromSeed(fromHexString(openloginKey.padStart(64, 0))).secretKey;
-    return solanaPrivateKey;
+    const getSolanaPrivateKey = (openloginKey)=>{
+    const  { sk } = getED25519Key(openloginKey);
+    return sk;
   }
 ```

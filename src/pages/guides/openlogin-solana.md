@@ -20,13 +20,13 @@ You can find [the source code of this is example on Github](https://github.com/t
 
 ## Let's get started with code by installing depedencies using npm
 
-To start with using openlogin with a solana dapp , you need to install [Openlogin](https://www.npmjs.com/package/@toruslabs/openlogin) , [Solana/Web3.js](https://solana-labs.github.io/solana-web3.js) sdk and tweetnacl library to derive solana compatible key from openlogin key.
+To start with using openlogin with a solana dapp , you need to install [Openlogin](https://www.npmjs.com/package/@toruslabs/openlogin) , [Solana/Web3.js](https://solana-labs.github.io/solana-web3.js) sdk and  [@toruslabs/openlogin-utils](https://www.npmjs.com/package/@toruslabs/openlogin-utils) library to derive ED25519 key which is compatible with solana.
 
 
 ```shell
     npm install --save @toruslabs/openlogin
+    npm install --save @toruslabs/openlogin-utils
     npm install --save @solana/web3.js
-    npm install --save tweetnacl
 ```
 
 ## Initialize solana web3 connection
@@ -107,14 +107,13 @@ Checkout [api reference](https://docs.beta.tor.us/open-login/api-reference) for 
         loginProvider: "google",
         redirectUrl: `${window.origin}`,
       });
-      await getMaticAccountDetails(privKey);
+      const solanaPrivateKey = getSolanaPrivateKey(privKey);
+      await getAccountInfo(solanaNetwork.url,solanaPrivateKey);
       setLoading(false)
     } catch (error) {
       console.log("error", error);
       setLoading(false)
-
     }
-
   }
 
 ```
@@ -122,19 +121,17 @@ Checkout [api reference](https://docs.beta.tor.us/open-login/api-reference) for 
 
 ## Use the private key with solana/web3.js
 
-After login application will have access to the user's private key at `openlogin.privKey`. Before using this key with solana/web3.js, we just need to make this key compatible with solana. In the code snippet below `getSolanaPrivateKey` function does that by using tweetnacl library. Solana web3 js internally uses tweetnacl to generate key pairs , so we are also using tweetnacl in this example to derive solana key from openlogin key in this example.
+After login application will have access to the user's private key at `openlogin.privKey`. Before using this key with solana/web3.js, we just need to make this key compatible with solana. In the code snippet below `getED25519Key` which is imported from  `@toruslabs/openlogin-utils` library.
 
 Now we have a key which can be used use create a account using solana/web3.js. Functionality to generate solana account is implemented in `getAccountInfo` function which first creates a account by inputing the private key to Account class of solana/web3.js , creates a connection to solana blockchain and fetches account's balance from blockchain. You can use this private key to do anything like signing transactions and all the functionality supported by solana/web3.js.
 
 
 
 ```js
-    const fromHexString = (hexString) => new Uint8Array(hexString.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)));
-
     const getSolanaPrivateKey = (openloginKey)=>{
-            const solanaPrivateKey = nacl.sign.keyPair.fromSeed(fromHexString(openloginKey.padStart(64, 0))).secretKey;
-            return solanaPrivateKey;
-    }
+    const  { sk } = getED25519Key(openloginKey);
+    return sk;
+  }
 ```
 
 Now we have a solana compatible key which can be used with solana/web3.js. In this example we are using it to create a user account and to fetch user's account balance from blockchain.
