@@ -32,7 +32,7 @@ module.exports = {
       title: "Documentation",
       logo: {
         alt: "Torus's Logo",
-        src: "images/logo.svg",
+        src: "images/documentation-logo.svg",
       },
       items: [
         {
