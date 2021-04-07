@@ -17,11 +17,14 @@ const AVAILABLE_EXAMPLES = {
   "Avalanche": {
     langs: ["REACT"]
   },
+  "ZkSync": {
+    langs: ["REACT"]
+  },
 }
 
 const AVAILABLE_LANGS = {
   "REACT": {
-    examples: ["Solana","Polygon", "Binance Smart Chain", "Avalanche" ]
+    examples: ["Solana","Polygon", "Binance Smart Chain", "Avalanche", "ZkSync" ]
   },
   "HTML": {
     examples: ["Ethereum"]
@@ -37,7 +40,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
     chain: {
       displayName: "Blockchain",
       default: "Ethereum",
-      choices: ["Ethereum","Solana","Polygon", "Binance Smart Chain","Avalanche"],
+      choices: ["Ethereum","Solana","Polygon", "Binance Smart Chain","Avalanche","ZkSync"],
     },
     lang: {
       displayName: "Language/Framework",
@@ -213,6 +216,40 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
         {
           ...STEPS.reactLogout,
           pointer: { filename: "avalanche/login.js", range: "63-67" },
+        },
+      );
+
+
+    } else if(chain === "ZkSync" && lang === "REACT") {
+      filenames.push("zkSync/login.js");
+      // Add markdown steps
+      steps.push(
+        {
+          ...STEPS.installSDK,
+          pointer: { filename: "zkSync/login.js", range: "2" },
+        },
+        {
+          ...STEPS.registerApp,
+        },
+        {
+          ...STEPS.connectZkSync,
+          pointer: { filename: "zkSync/login.js", range: "8-38" },
+        },
+        {
+          ...STEPS.instantiateSDK,
+          pointer: { filename: "zkSync/login.js", range: "47-52" },
+        },
+        {
+          ...STEPS.reactLogin,
+          pointer: { filename: "zkSync/login.js", range: "80-93" },
+        },
+        {
+          ...STEPS.useZkSyncPrivateKey,
+          pointer: { filename: "zkSync/login.js", range: "63-78" },
+        },
+        {
+          ...STEPS.reactLogout,
+          pointer: { filename: "zkSync/login.js", range: "95-99" },
         },
       );
 

@@ -27,6 +27,11 @@ import * as useBinancePrivateKey from "./react-polygon/usingPrivateKey.mdx"
 import * as connectAvalanche from "./react-avalanche/connect-with-avalanche.mdx"
 import * as useAvaxPrivateKey from "./react-avalanche/usingPrivateKey.mdx"
 
+// zkSync
+import * as connectZkSync from "./react-zkSync/connect-with-zkSync.mdx"
+import * as useZkSyncPrivateKey from "./react-zkSync/importWallets.mdx"
+
+
 import { toSteps } from "../../utils";
 
 const STEPS = toSteps({
@@ -47,7 +52,9 @@ const STEPS = toSteps({
   useAvaxPrivateKey,
   useBinancePrivateKey,
   useSolanaPrivateKey,
-  usePolygonPrivateKey
+  usePolygonPrivateKey,
+  connectZkSync,
+  useZkSyncPrivateKey
 });
 
 export default STEPS;
