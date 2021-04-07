@@ -101,7 +101,11 @@ export default function ProductSuiteStack() {
               </Link>
             </div>
           </div>
-          <img src="/contents/stack-wallet.png" alt="Torus Wallet" height={320} />
+          <img
+            src="/contents/stack-wallet.png"
+            alt="Torus Wallet"
+            height={320}
+          />
         </section>
       );
       break;
@@ -180,7 +184,11 @@ export default function ProductSuiteStack() {
               </Link>
             </div>
           </div>
-          <img src="/contents/stack-network.png" alt="Torus Network" height={320} />
+          <img
+            src="/contents/stack-network.png"
+            alt="Torus Network"
+            height={320}
+          />
         </section>
       );
       break;
@@ -195,7 +203,7 @@ export default function ProductSuiteStack() {
         <div className={styles.tabSection}>
           <ul>
             <li
-              className={tab === "overview" && styles.selected}
+              className={tab === "overview" ? styles.selected : undefined}
               onClick={() => setTab("overview")}
             >
               Overview
@@ -206,13 +214,13 @@ export default function ProductSuiteStack() {
           <span>Plug n play</span>
           <ul>
             <li
-              className={tab === "openlogin" && styles.selected}
+              className={tab === "openlogin" ? styles.selected : undefined}
               onClick={() => setTab("openlogin")}
             >
               OpenLogin
             </li>
             <li
-              className={tab === "wallet" && styles.selected}
+              className={tab === "wallet" ? styles.selected : undefined}
               onClick={() => setTab("wallet")}
             >
               Wallet
@@ -223,7 +231,7 @@ export default function ProductSuiteStack() {
           <span>Full customization</span>
           <ul>
             <li
-              className={tab === "custom-auth" && styles.selected}
+              className={tab === "custom-auth" ? styles.selected : undefined}
               onClick={() => setTab("custom-auth")}
             >
               CustomAuth
@@ -234,7 +242,7 @@ export default function ProductSuiteStack() {
           <span>Infrastructure</span>
           <ul>
             <li
-              className={tab === "network" && styles.selected}
+              className={tab === "network" ? styles.selected : undefined}
               onClick={() => setTab("network")}
             >
               Network
