@@ -141,7 +141,7 @@ Checkout [api reference](https://docs.beta.tor.us/open-login/api-reference) for 
 
 ```
 
-## Use the private key with zkSync
+## Using private key to import zkSync signer wallet and eth wallet
 
 
 After calling `openlogin.login`, your application will

@@ -35,6 +35,13 @@ import * as depositWithdrawZkSync from "./react-zkSync/depositWithdrawEth.mdx"
 import * as getTestEthRinkebyZkSync from "./react-zkSync/getTestEth.mdx"
 
 
+// arbitrum
+import * as connectArbitrum from "./react-arbitrum/connect-with-arbitrum.mdx"
+import * as importArbitrumWallets from "./react-arbitrum/importWallets.mdx"
+import * as depositWithdrawArbitrum from "./react-arbitrum/depositWithdrawEth.mdx"
+import * as getTestEthKovan from "./react-arbitrum/getTestEth.mdx"
+
+
 import { toSteps } from "../../utils";
 
 const STEPS = toSteps({
@@ -60,7 +67,11 @@ const STEPS = toSteps({
   importZkSyncWallets,
   unlockZkSyncWallet,
   depositWithdrawZkSync,
-  getTestEthRinkebyZkSync
+  getTestEthRinkebyZkSync,
+  connectArbitrum,
+  importArbitrumWallets,
+  depositWithdrawArbitrum,
+  getTestEthKovan
 });
 
 export default STEPS;
