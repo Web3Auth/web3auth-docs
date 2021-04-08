@@ -233,23 +233,35 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
         },
         {
           ...STEPS.connectZkSync,
-          pointer: { filename: "zkSync/login.js", range: "8-38" },
+          pointer: { filename: "zkSync/login.js", range: "10-40" },
         },
         {
           ...STEPS.instantiateSDK,
-          pointer: { filename: "zkSync/login.js", range: "47-52" },
+          pointer: { filename: "zkSync/login.js", range: "52-57" },
         },
         {
           ...STEPS.reactLogin,
-          pointer: { filename: "zkSync/login.js", range: "80-93" },
+          pointer: { filename: "zkSync/login.js", range: "69-82" },
         },
         {
-          ...STEPS.useZkSyncPrivateKey,
-          pointer: { filename: "zkSync/login.js", range: "63-78" },
+          ...STEPS.importZkSyncWallets,
+          pointer: { filename: "zkSync/login.js", range: "84-94" },
+        },
+        {
+          ...STEPS.getTestEthRinkebyZkSync,
+          pointer: { filename: "zkSync/login.js" },
+        },
+        {
+          ...STEPS.unlockZkSyncWallet,
+          pointer: { filename: "zkSync/login.js", range: "124-148" },
+        },
+        {
+          ...STEPS.depositWithdrawZkSync,
+          pointer: { filename: "zkSync/login.js", range: "149-186" },
         },
         {
           ...STEPS.reactLogout,
-          pointer: { filename: "zkSync/login.js", range: "95-99" },
+          pointer: { filename: "zkSync/login.js", range: "201-205" },
         },
       );
 

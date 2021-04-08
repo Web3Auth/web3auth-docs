@@ -1,6 +1,6 @@
 ---
 title: How to Integrate OpenLogin and zkSync
-image: "/contents/openlogin-polygon.png"
+image: "/contents/Torus-zkSync.png"
 description: Learn to use OpenLogin to integrate your app with zkSync rollup
 order: 9
 ---
@@ -144,32 +144,96 @@ Checkout [api reference](https://docs.beta.tor.us/open-login/api-reference) for 
 ## Use the private key with zkSync
 
 
-In the code snippet below  we are using user's private key with zkSync sdk network , it uses `zkSync` operator which we connected earlier in this guide , imports a zkSync singer account with private key, imports a ethereum wallet and fetches imported account committed eth balance from zkSync.
+After calling `openlogin.login`, your application will
+have access to the user's private key at `openlogin.privKey`.
 
-You can read more on zkSync sdk [here](https://zksync.io/api/sdk/js/tutorial.html#connecting-to-zksync-network)
+In this example, we are  using private key derivef from openlogin
+to create an eth wallet and a zkSync wallet.
+
+After this we can use `syncWallet` to make transactions over ethereum and zkSync
+using `zkSync` sdk.
+
+You can read more about [zkSync sdk here](https://zksync.io/api/sdk/js/tutorial.html#creating-a-wallet)
 
 ```js
-   async function importWallets(privateKey){
     const syncProvider = await  zksyncConnector.getSyncClient();
     const ethProvider = zksyncConnector.getEthClient();
     const ethWallet = new ethers.Wallet(privateKey, ethProvider);
     // Derive zksync.Signer from ethereum wallet.
     const syncWallet = await zksync.Wallet.fromEthSigner(ethWallet, syncProvider);
-    const zkSyncCommitedBalance = 0;
-    const ethChainBalance = await ethWallet.getBalance();
-    setUserAccountInfo({
-      zkSyncBal: zkSyncCommitedBalance,
-      ethBal: ethChainBalance,
-      ethAddress: ethWallet.address,
-      zkSyncAddress: syncWallet.address(),
-      privateKey
-    })
-  }
-
 ```
 
 
-## Log out hanlder:-
+## Get ethereum testnet ether
+
+In the next step, we are going to unlock zkSync wallet which
+requires to make a transaction, so it is suggested to get test ether from
+[rinkeyby faucet](https://faucet.rinkeby.io/) before proceeding.
+
+
+
+## Unlock zkSync wallet
+
+To control assets in zkSync network, an account must register a separate public key once.
+
+```js
+
+    async function unlockZkSyncWallet(){
+    try {
+     if (!(await syncWallet.isSigningKeySet())) {
+       if ((await syncWallet.getAccountId()) === undefined) {
+         throw new Error("Unknown account");
+       }
+        // As any other kind of transaction, `ChangePubKey` transaction requires fee.
+        // User doesn't have (but can) to specify the fee amount. If omitted, library will query zkSync node for
+        // the lowest possible amount.
+       const changePubkey = await syncWallet.setSigningKey({ feeToken: 'ETH', ethAuthType: 'ECDSA' });
+
+       // Wait until the tx is committed
+       let receipt = await changePubkey.awaitReceipt();
+       console.log("Unlock account receipt", receipt)
+     } else {
+       console.log("Signing key already set: ", await syncWallet.getAccountId())
+     }
+    } catch (error) {
+     console.log("Error while unlock", error)
+    }
+
+   }
+
+```
+
+## Deposit eth to zkSync and withdraw eth from zkSync
+
+
+Up to this point , we have a zkSync wallet account generated using openlogin.
+
+Now we can make transactions using zkSync sdk. We will demonstrate `deposit` and
+`withdraw` eth functionality.
+
+We can deposit eth by using `syncWallet` which was generated after login with openlogin.
+Calling `depositToSyncFromEthereum` function of zkSync will trigger a blockchain transaction
+so make sure you have sufficient eth to pay tx fee as well.
+
+```js
+ const deposit = await syncWallet.depositToSyncFromEthereum({
+        depositTo: syncWallet.address(),
+        token: "ETH",
+        amount: ethers.utils.parseEther("0.04"),
+});
+```
+
+Similarly you can create a withdrawal request to withdraw eth from zkSync rollup contracts to ethereum.
+
+```js
+   const withdraw = await syncWallet.withdrawFromSyncToEthereum({
+        ethAddress: ethWallet.address,
+        token: "ETH",
+        amount: ethers.utils.parseEther("0.01"),
+    });
+```
+
+## Log out handler:-
 
 In order to logout user you needs to call logout function available on sdk instance. Logout function will clears the sdk state and removes any access to private key on frontend.
 
