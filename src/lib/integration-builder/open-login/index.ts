@@ -17,11 +17,17 @@ const AVAILABLE_EXAMPLES = {
   "Avalanche": {
     langs: ["REACT"]
   },
+  "ZkSync": {
+    langs: ["REACT"]
+  },
+  "Arbitrum": {
+    langs: ["REACT"]
+  },
 }
 
 const AVAILABLE_LANGS = {
   "REACT": {
-    examples: ["Solana","Polygon", "Binance Smart Chain", "Avalanche" ]
+    examples: ["Solana","Polygon", "Binance Smart Chain", "Avalanche", "ZkSync" ,"Arbitrum"]
   },
   "HTML": {
     examples: ["Ethereum"]
@@ -37,7 +43,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
     chain: {
       displayName: "Blockchain",
       default: "Ethereum",
-      choices: ["Ethereum","Solana","Polygon", "Binance Smart Chain","Avalanche"],
+      choices: ["Ethereum","Solana","Polygon", "Binance Smart Chain","Avalanche","ZkSync", "Arbitrum"],
     },
     lang: {
       displayName: "Language/Framework",
@@ -217,7 +223,97 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
       );
 
 
-    } else if(chain === "Ethereum" && lang === "HTML") {
+    } else if(chain === "ZkSync" && lang === "REACT") {
+      filenames.push("zkSync/login.js");
+      // Add markdown steps
+      steps.push(
+        {
+          ...STEPS.installSDK,
+          pointer: { filename: "zkSync/login.js", range: "2" },
+        },
+        {
+          ...STEPS.registerApp,
+        },
+        {
+          ...STEPS.connectZkSync,
+          pointer: { filename: "zkSync/login.js", range: "10-40" },
+        },
+        {
+          ...STEPS.instantiateSDK,
+          pointer: { filename: "zkSync/login.js", range: "52-57" },
+        },
+        {
+          ...STEPS.reactLogin,
+          pointer: { filename: "zkSync/login.js", range: "69-82" },
+        },
+        {
+          ...STEPS.importZkSyncWallets,
+          pointer: { filename: "zkSync/login.js", range: "84-94" },
+        },
+        {
+          ...STEPS.getTestEthRinkebyZkSync,
+          pointer: { filename: "zkSync/login.js" },
+        },
+        {
+          ...STEPS.unlockZkSyncWallet,
+          pointer: { filename: "zkSync/login.js", range: "124-148" },
+        },
+        {
+          ...STEPS.depositWithdrawZkSync,
+          pointer: { filename: "zkSync/login.js", range: "149-186" },
+        },
+        {
+          ...STEPS.reactLogout,
+          pointer: { filename: "zkSync/login.js", range: "201-205" },
+        },
+      );
+
+
+    }  else if(chain === "Arbitrum" && lang === "REACT") {
+      filenames.push("arbitrum/login.js");
+      filenames.push("arbitrum/accountInfo.js");
+
+      // Add markdown steps
+      steps.push(
+        {
+          ...STEPS.installSDK,
+          pointer: { filename: "arbitrum/login.js", range: "2" },
+        },
+        {
+          ...STEPS.registerApp,
+        },
+        {
+          ...STEPS.connectArbitrum,
+          pointer: { filename: "arbitrum/login.js", range: "9-17" },
+        },
+        {
+          ...STEPS.instantiateSDK,
+          pointer: { filename: "arbitrum/login.js", range: "27-31" },
+        },
+        {
+          ...STEPS.reactLogin,
+          pointer: { filename: "arbitrum/login.js", range: "42-54" },
+        },
+        {
+          ...STEPS.importArbitrumWallets,
+          pointer: { filename: "arbitrum/login.js", range: "56-61" },
+        },
+        {
+          ...STEPS.getTestEthKovan,
+          pointer: { filename: "arbitrum/login.js" },
+        },
+        {
+          ...STEPS.depositWithdrawArbitrum,
+          pointer: { filename: "arbitrum/accountInfo.js", range: "27-51" },
+        },
+        {
+          ...STEPS.reactLogout,
+          pointer: { filename: "arbitrum/login.js", range: "201-205" },
+        },
+      );
+
+
+    }  else if(chain === "Ethereum" && lang === "HTML") {
       filenames.push("web/index.html"); // Show code files in browsers
 
       // Add markdown steps
