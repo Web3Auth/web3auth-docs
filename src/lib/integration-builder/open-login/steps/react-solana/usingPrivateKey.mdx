@@ -2,12 +2,13 @@
 title: Using private key with solana/web3
 ---
 
-Now we have a solana compatible key which can be used with solana/web3.js.
+Now we have a solana compatible secret key which can be used with solana/web3.js
+to create user account, checking user balance , signing transactions and  so on.
 In this example we are using it to create a user account and to fetch
 user's account balance from blockchain.
 
 ```js
-   const getAccountInfo = async(solanaNetworkUrl, solanaPrivateKey) => {
+    const getAccountInfo = async(solanaNetworkUrl, solanaPrivateKey) => {
     const account = new Account(solanaPrivateKey);
     const accountInfo = await connection.getAccountInfo(account.publicKey);
     setPrivateKey(bs58.encode(account.secretKey));

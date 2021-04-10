@@ -85,6 +85,9 @@ will be called when user clicks login button.
 It will start the login flow for the user. Openlogin sdk provides two UX modes (ie POPUP and REDIRECT)
 for login flow. You can use either depends on your application UX  by setting up `uxMode` option in login function, default is `redirect`.
 
+> Note: `POPUP` mode is coming soon.
+
+
 In redirect mode user will be redirected completely out of app and will be redirected back to `redirectUrl` after successfull authentication, application will have access to private key as `openlogin.privKey` after intializing `openlogin` instance.
 
 

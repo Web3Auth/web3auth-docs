@@ -13,7 +13,7 @@ import TabItem from "@theme/TabItem";
 
 This tutorial will guide you over a basic example to integerate Openlogin authentication with zkSync.
 
-We will go through a react app where user can login,create zkSync wallet address,ether wallet, fetch committed eth balance from zkSync contracts and logout.
+We will go through a react app where user can login,create zkSync wallet address,ether wallet, fetch committed eth balance from zkSync account and logout.
 
 
 You can find [the source code of this is example on Github](https://github.com/torusresearch/openlogin-zkSync-example).
@@ -118,6 +118,9 @@ will be called when user clicks login button.
 
 It will start the login flow for the user. Openlogin sdk provides two UX modes (ie POPUP and REDIRECT)
 for login flow. You can use either depends on your application UX  by setting up `uxMode` option in login function, default is `redirect`.
+
+> Note: `POPUP` mode is coming soon.
+
 
 In redirect mode user will be redirected completely out of app and will be redirected back to `redirectUrl` after successfull authentication, application will have access to private key as `openlogin.privKey` after intializing `openlogin` instance.
 
@@ -232,7 +235,7 @@ so make sure you have sufficient eth to pay tx fee as well.
 });
 ```
 
-Similarly you can create a withdrawal request to withdraw eth from zkSync rollup contracts to ethereum.
+Similarly you can create a withdrawal request to withdraw eth from zkSync account back to ethereum.
 
 ```js
    const withdraw = await syncWallet.withdrawFromSyncToEthereum({
