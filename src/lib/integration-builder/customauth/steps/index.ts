@@ -5,6 +5,9 @@ import * as instantiateWebSDK from "./instantiate-web-sdk.mdx";
 import * as serveWebSw from "./serve-web-sw.mdx";
 import * as serveWebRedirect from "./serve-web-redirect.mdx";
 import * as triggerWebLogin from "./trigger-web-login.mdx";
+import * as connectWithSolana from "./connect-with-solana.mdx";
+import * as getSolanaKeys from "./get-solana-keys.mdx";
+import * as useSolanaKeys from "./use-solana-keys.mdx";
 
 // Android
 import * as addAndroidJitpack from "./add-android-jitpack.mdx";
@@ -29,6 +32,9 @@ const STEPS = toSteps({
   serveWebSw,
   serveWebRedirect,
   triggerWebLogin,
+  connectWithSolana,
+  getSolanaKeys,
+  useSolanaKeys,
 
   // Android
   addAndroidJitpack,
