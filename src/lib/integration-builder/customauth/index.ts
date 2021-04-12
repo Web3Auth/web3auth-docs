@@ -8,7 +8,7 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
     chain: {
       displayName: "Blockchain",
       default: "Ethereum",
-      choices: ["Ethereum"],
+      choices: ["Ethereum", "Solana"],
     },
     lang: {
       displayName: "Language/Framework",
@@ -21,18 +21,21 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
     const availableOptions: Record<string, string>[] = [];
     switch (optionKey) {
       case "chain":
-        availableOptions.push(
-          { lang: "HTML" },
-          { lang: "React" },
-          { lang: "Vue" },
-          { lang: "Android" },
-          { lang: "iOS" }
-        );
+        if (optionValue === "Ethereum")
+          availableOptions.push(
+            { lang: "HTML" },
+            { lang: "React" },
+            { lang: "Vue" },
+            { lang: "Android" },
+            { lang: "iOS" }
+          );
+        else {
+          availableOptions.push({ lang: "HTML" });
+        }
         break;
       case "lang":
         availableOptions.push({ chain: "Ethereum" });
-        // if (optionValue === "React" || optionValue === "Vue")
-        //   availableOptions.push({ chain: "Conflux" });
+        if (optionValue === "HTML") availableOptions.push({ chain: "Solana" });
         break;
       default:
         throw new Error(`Unknown option key ${JSON.stringify(optionKey)}`);
@@ -50,30 +53,69 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
       values.lang === "Vue"
     ) {
       if (values.lang === "HTML") {
-        filenames.push("web/index.html");
-        steps.push(
-          {
-            ...STEPS.installWebSDK,
-            pointer: { filename: "web/index.html", range: "18" },
-          },
-          { ...STEPS.registerVerifier },
-          {
-            ...STEPS.instantiateWebSDK,
-            pointer: { filename: "web/index.html", range: "24-30" },
-          },
-          {
-            ...STEPS.serveWebSw,
-            pointer: { filename: "web/sw.js" },
-          },
-          {
-            ...STEPS.serveWebRedirect,
-            pointer: { filename: "web/redirect.html" },
-          },
-          {
-            ...STEPS.triggerWebLogin,
-            pointer: { filename: "web/index.html", range: "37-54" },
-          }
-        );
+        if (values.chain === "Solana") {
+          filenames.push("web/solana/index.html");
+          steps.push(
+            {
+              ...STEPS.installWebSDK,
+              pointer: { filename: "web/solana/index.html", range: "18" },
+            },
+            { ...STEPS.registerVerifier },
+            {
+              ...STEPS.instantiateWebSDK,
+              pointer: { filename: "web/solana/index.html", range: "26-30" },
+            },
+            {
+              ...STEPS.serveWebSw,
+              pointer: { filename: "web/sw.js" },
+            },
+            {
+              ...STEPS.serveWebRedirect,
+              pointer: { filename: "web/redirect.html" },
+            },
+            {
+              ...STEPS.connectWithSolana,
+              pointer: { filename: "web/solana/index.html", range: "32-34" },
+            },
+            {
+              ...STEPS.triggerWebLogin,
+              pointer: { filename: "web/solana/index.html", range: "42-47" },
+            },
+            {
+              ...STEPS.getSolanaKeys,
+              pointer: { filename: "web/solana/index.html", range: "48-61" },
+            },
+            {
+              ...STEPS.useSolanaKeys,
+              pointer: { filename: "web/solana/index.html", range: "48-61" },
+            }
+          );
+        } else {
+          filenames.push("web/index.html");
+          steps.push(
+            {
+              ...STEPS.installWebSDK,
+              pointer: { filename: "web/index.html", range: "18" },
+            },
+            { ...STEPS.registerVerifier },
+            {
+              ...STEPS.instantiateWebSDK,
+              pointer: { filename: "web/index.html", range: "24-30" },
+            },
+            {
+              ...STEPS.serveWebSw,
+              pointer: { filename: "web/sw.js" },
+            },
+            {
+              ...STEPS.serveWebRedirect,
+              pointer: { filename: "web/redirect.html" },
+            },
+            {
+              ...STEPS.triggerWebLogin,
+              pointer: { filename: "web/index.html", range: "37-54" },
+            }
+          );
+        }
       } else if (values.lang === "React") {
         filenames.push("react/App.js", "react/index.js");
         steps.push(
