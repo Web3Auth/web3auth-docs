@@ -16,6 +16,16 @@ of the most popular web front-end library: React.
 
 You can find [the source code of this is example on Github](https://github.com/phuctm97/openlogin-react).
 
+
+## Register your OpenLogin application
+
+In order to use OpenLogin SDK, you'll need to create a project in
+[Developer Dashboard](https://developer.tor.us) and get your client ID.
+
+> App registration is not required for localhost development.
+
+
+
 ## Create your React app
 
 > Ignore this step if you're integrating into an existing React project.

@@ -17,16 +17,27 @@ We will go through a react app where user can login, create arbitrum wallet addr
 
 You can find [the source code of this is example on Github](https://github.com/torusresearch/openlogin-arbitrum-example).
 
+## Register your OpenLogin application
+
+In order to use OpenLogin SDK, you'll need to create a project in
+[Developer Dashboard](https://developer.tor.us) and get your client ID.
+
+> App registration is not required for localhost development.
+
+
+
 ## Let's get started with code by installing depedencies using npm
 
-To start with using openlogin with a arbitrum dapp , you need to install [Openlogin](https://www.npmjs.com/package/@toruslabs/openlogin) , [ethers js](https://www.npmjs.com/package/ethers) sdk and [token-bridge-sdk](https://www.npmjs.com/package/token-bridge-sdk) sdk
+To start with using openlogin with a arbitrum dapp , you need to install [Openlogin](https://www.npmjs.com/package/@toruslabs/openlogin) , [ethers js](https://www.npmjs.com/package/ethers) sdk, [token-bridge-sdk](https://www.npmjs.com/package/token-bridge-sdk) sdk and [arb-ts](https://www.npmjs.com/package/arb-ts) which is dependency of `token-bridge-sdk`
 
 
 ```shell
     npm install --save @toruslabs/openlogin
+    npm install --save arb-ts
     npm install --save token-bridge-sdk
     npm install --save ethers
 ```
+
 
 ## Connect with arbitrum kovan4 testnet node and ethereum kovan testnet node provider
 
@@ -65,7 +76,7 @@ We are using two options while creating openlogin class instance:-
     async function initializeOpenlogin() {
       await sdkInstance.init();
       if (sdkInstance.privKey) {
-        // qpp has access ot private key now
+        // app has access ot private key now
         ...
         ...
       }
@@ -84,11 +95,14 @@ Once the sdk is initialized , then `openlogin.login`
 will be called when user clicks login button.
 
 It will start the login flow for the user. Openlogin sdk provides two UX modes (ie POPUP and REDIRECT)
-for login flow. You can use either depends on your  by setting up `uxMode` option in login function, default is `redirect`.
+for login flow. You can use either depends on your application UX by setting up `uxMode` option in login function, default is `redirect`.
 
-In redirect mode user will be redirected completely out of app and will be redirect back to `redirectUrl` after successfull authentication and application will have access to private key as `openlogin.privKey` during sdk initialization on component mount. Code shown in previous step will handle this case.
+> Note: `POPUP` mode is coming soon.
 
-In PopUp mode, openlogin authenication window will be open as a popup and app will get privKey when  `openlogin.login` promise will resolve.
+
+In redirect mode user will be redirected completely out of app and will be redirected back to `redirectUrl` after successfull authentication, application will have access to private key as `openlogin.privKey` after intializing `openlogin` instance.
+
+In PopUp mode, openlogin authenication window will open as a popup and app will get private key when  `openlogin.login` promise will resolve.
 
 This example is compatible with both redirect and popup ux modes.
 
@@ -124,7 +138,7 @@ have access to the user's private key at `openlogin.privKey`.
 In this example, we are  using private key derived from openlogin
 to create an eth wallet and a arbitrum wallet.
 
-After this we can use generate a bridgeInstance `Bridge` to make transactions over ethereum and arbitrum
+After this we can use generate a bridgeInstance `Bridge` which is a contructor exported from `arb-ts` package to make transactions over ethereum and arbitrum
 using arbitrum's `token-bridge-sdk`.
 
 ```js
@@ -185,6 +199,4 @@ In order to logout user you needs to call logout function available on sdk insta
 ```
 
 ### DONE!!
-You can use this example on localhost, in order to deploy your app you need to whitelist your domain at [developer dashboard](http://developer.tor.us/).
-
-You can checkout example of this example app here.[the source code of this is example on Github](https://github.com/torusresearch/openlogin-arbitrum-example).
+> You can checkout example of this example app here.[the source code of this is example on Github](https://github.com/torusresearch/openlogin-arbitrum-example).

@@ -17,6 +17,15 @@ We will go through a react app where user can login,create avalanche account, fe
 
 You can find [the source code of this is example on Github](https://github.com/torusresearch/openlogin-avalanche-example).
 
+## Register your OpenLogin application
+
+In order to use OpenLogin SDK, you'll need to create a project in
+[Developer Dashboard](https://developer.tor.us) and get your client ID.
+
+
+> App registration is not required for localhost development.
+
+
 ## Let's get started with code by installing depedencies using npm
 
 To start with using openlogin with a avalanche dapp , you need to install [Openlogin](https://www.npmjs.com/package/@toruslabs/openlogin) and [avalanche](https://www.npmjs.com/package/avalanche) sdk.
@@ -75,11 +84,13 @@ Once the sdk is initialized , then `openlogin.login`
 will be called when user clicks login button.
 
 It will start the login flow for the user. Openlogin sdk provides two UX modes (ie POPUP and REDIRECT)
-for login flow. You can use either depends on your  by setting up `uxMode` option in login function, default is `redirect`.
+for login flow. You can use either depends on your application UX  by setting up `uxMode` option in login function, default is `redirect`.
 
-In redirect mode user will be redirected completely out of app and will be redirect back to `redirectUrl` after successfull authentication and application will have access to private key as `openlogin.privKey` during sdk initialization on component mount. Code shown in previous step will handle this case.
+> Note: `POPUP` mode is coming soon.
 
-In PopUp mode, openlogin authenication window will be open as a popup and app will get privKey when  `openlogin.login` promise will resolve.
+In redirect mode user will be redirected completely out of app and will be redirected back to `redirectUrl` after successfull authentication, application will have access to private key as `openlogin.privKey` after intializing `openlogin` instance.
+
+In PopUp mode, openlogin authenication window will open as a popup and app will get private key when  `openlogin.login` promise will resolve.
 
 This example is compatible with both redirect and popup ux modes.
 
@@ -151,6 +162,5 @@ In order to logout user you needs to call logout function available on sdk insta
 ```
 
 ### DONE!!
-You can use this example on localhost, in order to deploy your app you need to whitelist your domain at [developer dashboard](http://developer.tor.us/).
 
-You can checkout example of this example app here.[the source code of this is example on Github](https://github.com/torusresearch/openlogin-avalanche-example).
+> You can checkout example of this example app here.[the source code of this is example on Github](https://github.com/torusresearch/openlogin-avalanche-example).

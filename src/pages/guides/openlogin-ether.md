@@ -23,6 +23,17 @@ You can find [the source code of this is example on Github](https://github.com/h
 
 We will be using plain html and jquery for this example so we just need to create a single html file for this simple example app.
 
+
+## Register your OpenLogin application
+
+In order to use OpenLogin SDK, you'll need to create a project in
+[Developer Dashboard](https://developer.tor.us) and get your client ID.
+
+> App registration is not required for localhost development.
+
+
+
+
 ### Installing depedencies
 
 To start with using openlogin with a ethereum dapp , you need to install Openlogin and Web3 js sdk. You can fetch SDK files which are hosted over [cdn]("https://www.jsdelivr.com/package/npm/@toruslabs/openlogin") using script tags in html file.
@@ -146,6 +157,4 @@ In order to logout user you needs to call logout function available on sdk insta
 ```
 
 ### DONE!!
-You can use this example on localhost, in order to deploy your app you need to whitelist your domain at [developer dashboard](http://developer.tor.us/).
-
-You can checkout example of this example app here.[the source code of this is example on Github](https://github.com/himanshuchawla009/openlogin-web-example).
+> You can checkout example of this example app here.[the source code of this is example on Github](https://github.com/himanshuchawla009/openlogin-web-example).
