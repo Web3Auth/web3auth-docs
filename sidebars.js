@@ -95,13 +95,21 @@ module.exports = {
       type: "category",
       label: "How Torus works",
       items: [
-        "how-torus-works/system-architecture",
-        "how-torus-works/role-of-torus-nodes",
-        "how-torus-works/key-generation-and-resharing",
-        "how-torus-works/logins-key-assignments-and-retrievals",
-        "how-torus-works/wallet",
-        "how-torus-works/oauth2-vs-proxy-sign-in",
-        "how-torus-works/dkg-specification",
+        "how-torus-works/overview",
+        "how-torus-works/technical-architecture",
+        {
+        type: "category",
+        label: "Role of Torus nodes",
+        items:[
+          "how-torus-works/role-of-torus-nodes/overview",
+          "how-torus-works/role-of-torus-nodes/lifecycle",
+          "how-torus-works/role-of-torus-nodes/key-generation-and-resharing",
+        "how-torus-works/role-of-torus-nodes/logins-key-assignments-and-retrievals",
+        "how-torus-works/role-of-torus-nodes/oauth2-vs-proxy-sign-in",
+        "how-torus-works/role-of-torus-nodes/dkg-specification"
+      ],
+        },
+
         "how-torus-works/audits",
       ],
     },

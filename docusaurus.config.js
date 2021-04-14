@@ -7,6 +7,8 @@ const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
 const contactUrl = "https://tor.us/contact-us.html"; // TODO: Confirm with content team
 const mediumUrl = "https://medium.com/@TorusLabs";
+const remarkMath = require("remark-math");
+const rehypeKatex = require("rehype-katex");
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
@@ -189,6 +191,8 @@ module.exports = {
           routeBasePath: "/",
           editUrl: githubEditUrl,
           sidebarPath: require.resolve("./sidebars.js"),
+          remarkPlugins: [remarkMath],
+          rehypePlugins: [[rehypeKatex, {strict: false}]],
         },
         /** Uncomment to enable Blog features, see https://v2.docusaurus.io/docs/blog
         blog: {

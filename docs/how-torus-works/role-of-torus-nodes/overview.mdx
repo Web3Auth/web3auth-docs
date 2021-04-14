@@ -1,14 +1,12 @@
 ---
-title: Overview and Architecture
+title: Overview
 ---
 
-_This document serves primarily as a guide to Torus, and not as a technical
-specification. It may become outdated. For the latest and greatest, check out
-our_ [_open-source code_](https://github.com/torusresearch/)_. For a high-level
-intuitive overview also do checkout_
-[_DKGs and Torus_](https://medium.com/toruslabs/what-distributed-key-generation-is-866adc79620)_._
+Torus nodes run a Distributed Key Generation protocol amongst themselves to assign, store
+and return secrets/keys to users. In general within Torus Key Infrastructure, nodes manage
+a share retrieved via conventional OAuth flows.
 
-![Architecture](/contents/graph-6-final.png)
+<img  height="500" style={{display:"block","margin-bottom":"20px", "margin-top":"20px", "margin-left": "auto", "margin-right": "auto"}} src="/contents/tki-overview-architecture.png"/>
 
 The architecture consists of four parts:‌
 
@@ -16,6 +14,9 @@ The architecture consists of four parts:‌
 - A smart contract in charge of the management of nodes
 - A private BFT network between nodes
 - A front-end client/SDK that interacts with nodes
+
+![Architecture](/contents/graph-6-final.png)
+
 
 A smart contract is used for node discovery. Nodes are selected, operate for a
 fixed period, and generate a set of keys via DKG.‌
@@ -29,5 +30,4 @@ mapping. For returning users, nodes will look up their internal mapping and
 return that user's corresponding key share.‌
 
 The client then assembles these shares and reconstructs the users key in the
-front-end. This key is kept for the session and is not persisted in
-localstorage, or for native apps kept in memory for a session.
+front-end.

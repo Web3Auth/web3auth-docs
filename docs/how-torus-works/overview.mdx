@@ -1,0 +1,52 @@
+---
+title: Overview and Architecture
+---
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css" />
+
+Existing private key management solutions have come a long way in terms of user experience. However, many of these solutions make tradeoffs with reduced guarantees on custody and censorship-resistance. For example, password-manager key management solutions can restrict user access by refusing to return the encrypted key from their servers. Which then ultimately derives down to resorting to the usual approach of protecting private keys via redundant backups.
+
+Torus Key Infrastructure(TKI) leverages on variations of threshold key management to achieve a great user experience without sacrificing secuirty, while retaining end-user autonomy and control over the private key.
+
+TKI manages private keys using the user's device, private input, and/or OAuth authentication methods (i.e. Google, Passwordless, Reddit) via Torus nodes. As long as a user has access to 2 out of 3 (2/3) of these shares, they will be able to retrieve their private key.
+
+In this documentation we further describe the architecture of TKI and detail several core user flows for onboarding, key recovery, and device management.
+
+## Base Torus Key Infrastructure guarantees
+
+The user starts by generating a 2 out of 3 (2/3) Shamir Secret Sharing. This gives the user three shares: ShareA, ShareB, and ShareC.
+
+<img  height="500" style={{display:"block","margin-bottom":"20px", "margin-top":"20px", "margin-left": "auto", "margin-right": "auto"}} src="/contents/tki-overview-architecture.png"/>
+
+1. **ShareA is stored on the user's device**: Implementation is device and system specific. For example, on mobile devices, the share could be stored in device storage secured via biometrics.
+2. **ShareB is managed by a login service via node operators**: This share is further split amonst a network of nodes and retrieved via conventional authentication flows.
+3. **ShareC is a recovery share**: An extra share to be kept by the user, possibly kept on a seperate device, downloaded or based on user input with enough entropy (eg. password, security questions, hardware device etc.).
+
+Similar to existing 2FA systems, a user needs to prove ownership of at least 2 out of 3 (2/3) shares, in order to retrieve his private key. This initial setup provides several benefits.
+
+### Non-custodial
+
+Using TKI, the user is always in control of ownership and access to their cryptographic key pair. Login services only ever have access to one share, and thus it's not possible for the provider to retrieve the user's private key on their own.
+
+### Feels like Web 2.0 login flows
+
+On a day-to-day basis TKI allows access to a users key pair through flows indistinguishable from Web2.0 logins, contributing to greatly improving user experience and onboarding
+
+### Improvements to key recovery and redundancy
+
+In the event of a lost device/share, there is redundancy built into the share threshold such that a user can still recover their key. It is also possible to refresh shares such that lost shares are revoked.
+
+This is an improvement over writing down a seed phrase on a piece of paper, since losing the seed phrase gives complete access to the private key. Losing a share, however, is acceptable as long as the user does not lose more than one share without refreshing his existing shares.
+
+### Incremental security
+
+Users can increase security on their key by increasing the 2/3 threshold to a higher threshold. For example, a user can increase the threshold from 2/3 to 3/4 and add yet another authentication factor like a hardware device. This might be necessary if the user's has high amounts of cryptocurrency on his private key.
+
+
+### Chain/platform agnostic via native signatures
+
+TKI's resulting interface is a native cryptogrpahic key pair, making it compatible with almost all cryptogrpahic constructs on various platforms and ellpitic curves. Secret sharing and share refresh is also done completely off-chain, which makes TKI usable on blockchains with limited smart contract functionality.
+
+### Censorship resistant
+
+Using a 2/3 threshold also prevents censorship by the Torus nodes. In the case that the nodes refuse to return the user's private key even after the user has authenticated successfully, the user can still reconstruct their private key using ShareA (device share) and ShareC (recovery share).
