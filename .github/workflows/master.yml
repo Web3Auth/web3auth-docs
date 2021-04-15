@@ -33,12 +33,10 @@ jobs:
       - name: Deploy to S3
         if: github.ref == 'refs/heads/master'
         uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --follow-symlinks --delete
         env:
           SOURCE_DIR: build
           AWS_S3_BUCKET: docs.tor.us
-          AWS_REGION: ap-southeast-1
+          AWS_REGION: us-east-1
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Invalidate CDN
@@ -47,6 +45,6 @@ jobs:
         env:
           DISTRIBUTION: E11JKICTZIXMQH
           PATHS: "/index.html"
-          AWS_REGION: us-east-2
+          AWS_REGION: us-east-1
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
