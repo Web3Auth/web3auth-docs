@@ -27,7 +27,7 @@ export default function ProductSuiteStack() {
               </p>
             </div>
           </div>
-          <img src="/contents/stack-overview.png" alt="Overview" height={320} />
+          <img src="/contents/stack-overview-2.png" alt="Overview" height={360} />
         </section>
       );
       break;
@@ -64,9 +64,9 @@ export default function ProductSuiteStack() {
             </div>
           </div>
           <img
-            src="/contents/stack-openlogin.png"
+            src="/contents/stack-openlogin-2.png"
             alt="Torus OpenLogin"
-            height={320}
+            height={360}
           />
         </section>
       );
@@ -102,9 +102,9 @@ export default function ProductSuiteStack() {
             </div>
           </div>
           <img
-            src="/contents/stack-wallet.png"
+            src="/contents/stack-wallet-2.png"
             alt="Torus Wallet"
-            height={320}
+            height={360}
           />
         </section>
       );
@@ -139,9 +139,9 @@ export default function ProductSuiteStack() {
             </div>
           </div>
           <img
-            src="/contents/stack-customauth.png"
+            src="/contents/stack-customauth-2.png"
             alt="Torus CustomAuth"
-            height={320}
+            height={360}
           />
         </section>
       );
@@ -153,7 +153,7 @@ export default function ProductSuiteStack() {
           className={classNames(styles.contentContainer, "anim-fade-in")}
         >
           <div>
-            <h1 className="sr-only">Torus Network</h1>
+            <h1 className="sr-only">Torus Infrastructure</h1>
             <img
               src="/images/network-full-logo.svg"
               alt="Torus Network"
@@ -161,7 +161,7 @@ export default function ProductSuiteStack() {
             />
             <div className={styles.content}>
               <p>
-                The Torus Network is a decentralized non-custodial PKI
+                Torus Key Infrastructure is a decentralized non-custodial PKI
                 infrastructure that is maintained by users themselves and large
                 stakeholders in the blockchain ecosystem. Keys (or user
                 accounts) are managed by multiple authentication factors,
@@ -185,9 +185,9 @@ export default function ProductSuiteStack() {
             </div>
           </div>
           <img
-            src="/contents/stack-network.png"
+            src="/contents/stack-network-2.png"
             alt="Torus Network"
-            height={320}
+            height={360}
           />
         </section>
       );
@@ -245,7 +245,7 @@ export default function ProductSuiteStack() {
               className={tab === "network" ? styles.selected : undefined}
               onClick={() => setTab("network")}
             >
-              Network
+              Infrastructure
             </li>
           </ul>
         </div>
