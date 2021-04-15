@@ -6,27 +6,27 @@ const AVAILABLE_EXAMPLES = {
     langs: ["HTML"]
   },
    "Solana": {
-     langs: ["REACT"]
+     langs: ["React"]
    },
   "Polygon": {
-    langs: ["REACT"]
+    langs: ["React"]
   },
   "Binance Smart Chain": {
-    langs: ["REACT"]
+    langs: ["React"]
   },
   "Avalanche": {
-    langs: ["REACT"]
+    langs: ["React"]
   },
   "ZkSync": {
-    langs: ["REACT"]
+    langs: ["React"]
   },
   "Arbitrum": {
-    langs: ["REACT"]
+    langs: ["React"]
   },
 }
 
 const AVAILABLE_LANGS = {
-  "REACT": {
+  "React": {
     examples: ["Solana","Polygon", "Binance Smart Chain", "Avalanche", "ZkSync" ,"Arbitrum"]
   },
   "HTML": {
@@ -48,7 +48,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
     lang: {
       displayName: "Language/Framework",
       default: "HTML",
-      choices: ["HTML", "REACT"],
+      choices: ["HTML", "React"],
     },
   },
 
@@ -83,7 +83,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
     const filenames: string[] = [];
     const steps: IntegrationStep[] = [];
     const { chain, lang } = values;
-    if(chain === "Solana"  && lang === "REACT") {
+    if(chain === "Solana"  && lang === "React") {
       filenames.push("solana/login.js");
       // Add markdown steps
       steps.push(
@@ -121,7 +121,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
       );
 
 
-    } else if(chain === "Polygon" && lang === "REACT") {
+    } else if(chain === "Polygon" && lang === "React") {
       filenames.push("polygon/login.js");
       // Add markdown steps
       steps.push(
@@ -155,7 +155,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
       );
 
 
-    } else if(chain === "Binance Smart Chain" && lang === "REACT") {
+    } else if(chain === "Binance Smart Chain" && lang === "React") {
       filenames.push("binance/login.js");
       // Add markdown steps
       steps.push(
@@ -189,7 +189,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
       );
 
 
-    } else if(chain === "Avalanche" && lang === "REACT") {
+    } else if(chain === "Avalanche" && lang === "React") {
       filenames.push("avalanche/login.js");
       // Add markdown steps
       steps.push(
@@ -223,7 +223,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
       );
 
 
-    } else if(chain === "ZkSync" && lang === "REACT") {
+    } else if(chain === "ZkSync" && lang === "React") {
       filenames.push("zkSync/login.js");
       // Add markdown steps
       steps.push(
@@ -269,7 +269,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
       );
 
 
-    }  else if(chain === "Arbitrum" && lang === "REACT") {
+    }  else if(chain === "Arbitrum" && lang === "React") {
       filenames.push("arbitrum/login.js");
       filenames.push("arbitrum/accountInfo.js");
 
