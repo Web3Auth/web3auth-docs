@@ -2,37 +2,44 @@ import { IntegrationBuilder, IntegrationStep } from "../interfaces";
 import STEPS from "./steps";
 
 const AVAILABLE_EXAMPLES = {
-  "Ethereum": {
-    langs: ["HTML"]
+  Ethereum: {
+    langs: ["HTML"],
   },
-   "Solana": {
-     langs: ["React"]
-   },
-  "Polygon": {
-    langs: ["React"]
+  Solana: {
+    langs: ["React"],
+  },
+  Polygon: {
+    langs: ["React"],
   },
   "Binance Smart Chain": {
-    langs: ["React"]
+    langs: ["React"],
   },
-  "Avalanche": {
-    langs: ["React"]
+  Avalanche: {
+    langs: ["React"],
   },
-  "ZkSync": {
-    langs: ["React"]
+  ZkSync: {
+    langs: ["React"],
   },
-  "Arbitrum": {
-    langs: ["React"]
+  Arbitrum: {
+    langs: ["React"],
   },
-}
+};
 
 const AVAILABLE_LANGS = {
-  "React": {
-    examples: ["Solana","Polygon", "Binance Smart Chain", "Avalanche", "ZkSync" ,"Arbitrum"]
+  React: {
+    examples: [
+      "Solana",
+      "Polygon",
+      "Binance Smart Chain",
+      "Avalanche",
+      "ZkSync",
+      "Arbitrum",
+    ],
   },
-  "HTML": {
-    examples: ["Ethereum"]
- },
-}
+  HTML: {
+    examples: ["Ethereum"],
+  },
+};
 
 const openLoginIntegrationBuilder: IntegrationBuilder = {
   // Name of the integration builder
@@ -43,35 +50,47 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
     chain: {
       displayName: "Blockchain",
       default: "Ethereum",
-      choices: ["Ethereum","Solana","Polygon", "Binance Smart Chain","Avalanche","ZkSync", "Arbitrum"],
+      choices: [
+        "Ethereum",
+        "Solana",
+        "Polygon",
+        "Binance Smart Chain",
+        "Avalanche",
+        "ZkSync",
+        "Arbitrum",
+      ],
     },
-    lang: {
-      displayName: "Language/Framework",
-      default: "HTML",
-      choices: ["HTML", "React"],
-    },
+    // Hide Language/Framework for now
+    // lang: {
+    //   displayName: "Language/Framework",
+    //   default: "HTML",
+    //   choices: ["HTML", "React"],
+    // },
   },
 
   // Return available options when user selects a value,
   // .e.g there're integrations with Conflux for React and Vue, but not for Android
   getAvailableOptions(optionKey, optionValue) {
-    console.log("options", optionKey, optionValue)
+    console.log("options", optionKey, optionValue);
     const availableOptions: Record<string, string>[] = [];
     switch (optionKey) {
       case "chain":
         const availableChainLangs = AVAILABLE_EXAMPLES[optionValue].langs;
-        for(let i = 0; i < availableChainLangs.length; i++) {
-          let lang = availableChainLangs[i];
-          availableOptions.push({ lang });
-        }
-        break;
-      case "lang":
-        const availableLangExamples = AVAILABLE_LANGS[optionValue].examples;
-        for(let i = 0; i < availableLangExamples.length; i++) {
-          let example = availableLangExamples[i];
-          availableOptions.push({ chain: example });
-        }
-        break;
+        // Hide Language/Framework for now
+        // for(let i = 0; i < availableChainLangs.length; i++) {
+        //   let lang = availableChainLangs[i];
+        //   availableOptions.push({ lang });
+        // }
+        // break;
+        return [];
+      // Hide Language/Framework for now
+      // case "lang":
+      //   const availableLangExamples = AVAILABLE_LANGS[optionValue].examples;
+      //   for(let i = 0; i < availableLangExamples.length; i++) {
+      //     let example = availableLangExamples[i];
+      //     availableOptions.push({ chain: example });
+      //   }
+      //   break;
       default:
         throw new Error(`Unknown option key ${JSON.stringify(optionKey)}`);
     }
@@ -83,7 +102,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
     const filenames: string[] = [];
     const steps: IntegrationStep[] = [];
     const { chain, lang } = values;
-    if(chain === "Solana"  && lang === "React") {
+    if (chain === "Solana" /*&& lang === "React"*/) {
       filenames.push("solana/login.js");
       // Add markdown steps
       steps.push(
@@ -117,11 +136,9 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
         {
           ...STEPS.reactLogout,
           pointer: { filename: "solana/login.js", range: "76-80" },
-        },
+        }
       );
-
-
-    } else if(chain === "Polygon" && lang === "React") {
+    } else if (chain === "Polygon" /*&& lang === "React"*/) {
       filenames.push("polygon/login.js");
       // Add markdown steps
       steps.push(
@@ -151,11 +168,9 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
         {
           ...STEPS.reactLogout,
           pointer: { filename: "polygon/login.js", range: "93-97" },
-        },
+        }
       );
-
-
-    } else if(chain === "Binance Smart Chain" && lang === "React") {
+    } else if (chain === "Binance Smart Chain" /*&& lang === "React"*/) {
       filenames.push("binance/login.js");
       // Add markdown steps
       steps.push(
@@ -185,11 +200,9 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
         {
           ...STEPS.reactLogout,
           pointer: { filename: "binance/login.js", range: "54-58" },
-        },
+        }
       );
-
-
-    } else if(chain === "Avalanche" && lang === "React") {
+    } else if (chain === "Avalanche" /*&& lang === "React"*/) {
       filenames.push("avalanche/login.js");
       // Add markdown steps
       steps.push(
@@ -219,11 +232,9 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
         {
           ...STEPS.reactLogout,
           pointer: { filename: "avalanche/login.js", range: "63-67" },
-        },
+        }
       );
-
-
-    } else if(chain === "ZkSync" && lang === "React") {
+    } else if (chain === "ZkSync" /*&& lang === "React"*/) {
       filenames.push("zkSync/login.js");
       // Add markdown steps
       steps.push(
@@ -265,11 +276,9 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
         {
           ...STEPS.reactLogout,
           pointer: { filename: "zkSync/login.js", range: "201-205" },
-        },
+        }
       );
-
-
-    }  else if(chain === "Arbitrum" && lang === "React") {
+    } else if (chain === "Arbitrum" /*&& lang === "React"*/) {
       filenames.push("arbitrum/login.js");
       filenames.push("arbitrum/accountInfo.js");
 
@@ -309,11 +318,9 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
         {
           ...STEPS.reactLogout,
           pointer: { filename: "arbitrum/login.js", range: "201-205" },
-        },
+        }
       );
-
-
-    }  else if(chain === "Ethereum" && lang === "HTML") {
+    } else if (chain === "Ethereum" /*&& lang === "HTML"*/) {
       filenames.push("web/index.html"); // Show code files in browsers
 
       // Add markdown steps
@@ -348,7 +355,6 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
         }
       );
     }
-
 
     return {
       // Use files in `open-login` folders instead of root folder

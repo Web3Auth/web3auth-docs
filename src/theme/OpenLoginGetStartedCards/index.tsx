@@ -11,7 +11,7 @@ export default function OpenLoginGetStartedCards() {
       <div className={styles.container}>
         <Link
           className={classNames(styles.card, styles.cardOne)}
-          to="/integration-builder?b=open-login&lang=HTML"
+          to="/integration-builder/?b=open-login&chain=Ethereum"
         >
           <p className={styles.headline}>
             <SiEthereum fill="#3C3C3D" /> Setup SSO login connected with
@@ -24,7 +24,7 @@ export default function OpenLoginGetStartedCards() {
         </Link>
         <Link
           className={classNames(styles.card, styles.cardOne)}
-          to="/integration-builder?b=open-login&chain=Solana"
+          to="/integration-builder/?b=open-login&chain=Solana"
         >
           <p className={styles.headline}>
             <img src="/contents/solana-sol-logo.svg" height="16px" /> One-click
@@ -39,7 +39,7 @@ export default function OpenLoginGetStartedCards() {
       <div className={styles.container}>
         <Link
           className={classNames(styles.card, styles.cardOne)}
-          to="/integration-builder?b=open-login&chain=Binance%20Smart%20Chain"
+          to="/integration-builder/?b=open-login&chain=Binance%20Smart%20Chain"
         >
           <p className={styles.headline}>
             <img src="/contents/binance-coin-bnb-logo.svg" height="20px" />{" "}
@@ -52,7 +52,7 @@ export default function OpenLoginGetStartedCards() {
         </Link>
         <Link
           className={classNames(styles.card, styles.cardOne)}
-          to="/integration-builder?b=open-login&chain=Polygon"
+          to="/integration-builder/?b=open-login&chain=Polygon"
         >
           <p className={styles.headline}>
             <FaFingerprint /> Setup Touch/Face ID logins connected with Polygon
