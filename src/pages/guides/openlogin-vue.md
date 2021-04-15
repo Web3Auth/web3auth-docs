@@ -2,7 +2,7 @@
 title: How to Add OpenLogin to a Vue app
 image: "/contents/openlogin-vue.png"
 description: Learn to build a simple Vue app secured by OpenLogin.
-order: 2
+order: 11
 ---
 
 import Tabs from "@theme/Tabs";

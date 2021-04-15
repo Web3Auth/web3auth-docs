@@ -2,7 +2,7 @@
 title: How to Add OpenLogin to a React app
 image: "/contents/openlogin-react.png"
 description: Learn to build a simple React.js app secured by OpenLogin.
-order: 1
+order: 10
 ---
 
 import Tabs from "@theme/Tabs";
