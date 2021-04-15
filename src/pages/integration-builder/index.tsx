@@ -1,6 +1,7 @@
 import React, {
   MouseEvent,
   UIEvent,
+  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -10,6 +11,8 @@ import Layout from "@theme/Layout";
 import IntegrationBuilderCodeView from "@theme/IntegrationBuilderCodeView";
 import MDXComponents from "@theme/MDXComponents";
 import classNames from "classnames";
+import { AiOutlineCheck, AiOutlineLink } from "react-icons/ai";
+import copyToClipboard from "copy-to-clipboard";
 import builders from "../../lib/integration-builder";
 import styles from "./styles.module.css";
 
@@ -28,7 +31,12 @@ const getWindowLocation = () => {
   return "http://localhost";
 };
 
-const getInitialBuilderOptions = () => {
+interface BuilderOptions {
+  id: string;
+  values: Record<string, string>;
+}
+
+const getInitialBuilderOptions = (): BuilderOptions => {
   const url = new URL(getWindowLocation());
 
   // Get builder id from URL
@@ -82,6 +90,17 @@ const getInitialBuilderOptions = () => {
       ...availableValues[maxScoreIndex],
     },
   };
+};
+
+const getURLFromBuilderOptions = (opts: BuilderOptions): string => {
+  const url = new URL(getWindowLocation());
+  url.search = "";
+
+  url.searchParams.append("b", opts.id);
+  for (const [key, value] of Object.entries(opts.values))
+    url.searchParams.append(key, value);
+
+  return url.toString();
 };
 
 export default function IntegrationBuilderPage({ files }) {
@@ -152,7 +171,20 @@ export default function IntegrationBuilderPage({ files }) {
   useEffect(() => {
     // Update selected file when either integration changed
     setSelectedFilename(integration.filenames[0]);
+
+    // Update query params
+    history.pushState({}, "", getURLFromBuilderOptions(builderOptions));
   }, [integration]);
+
+  const [isLinkCopied, setLinkCopied] = useState(false);
+  const onClickCopyLink = useCallback(() => {
+    if (isLinkCopied) return;
+    copyToClipboard(getWindowLocation());
+    setLinkCopied(true);
+    setTimeout(() => {
+      setLinkCopied(false);
+    }, 3000);
+  }, [integration, isLinkCopied]);
 
   const steps = integration.steps;
   const [stepIndex, setStepIndex] = useState(0);
@@ -224,7 +256,29 @@ export default function IntegrationBuilderPage({ files }) {
         <div className={styles.cols}>
           <div className={styles.leftCol} onScroll={onScrollLeft}>
             <header className={styles.heading}>
-              <h1>{builder.displayName}</h1>
+              <div>
+                <h1>{builder.displayName}</h1>
+                <button
+                  title="Copy link to example"
+                  aria-label="Copy link to example"
+                  className={classNames(styles.copyButton, {
+                    [styles.copied]: isLinkCopied,
+                  })}
+                  onClick={onClickCopyLink}
+                >
+                  {isLinkCopied ? (
+                    <>
+                      Copied{" "}
+                      <AiOutlineCheck
+                        aria-hidden
+                        style={{ marginLeft: "4px" }}
+                      />
+                    </>
+                  ) : (
+                    <AiOutlineLink size="1.5em" aria-hidden />
+                  )}
+                </button>
+              </div>
               <ul className="pills">
                 {Object.entries(builders).map(([id, builder]) => (
                   <li
