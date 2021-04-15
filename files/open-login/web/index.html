@@ -18,7 +18,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin@0.3.0/dist/openlogin.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.js"></script>
+    <script src="https://cdn.ethers.io/scripts/ethers-v3.min.js"></script>
     <script>
       $(document).ready(async function init() {
         $("#login").hide();
@@ -43,10 +43,10 @@
         }
       });
 
-      async function connectWeb3(privKey) {
-        const web3 = new Web3(window.openlogin.provider);
-        const address = await web3.eth.privateKeyToAccount(privKey);
-        const balance = await web3.eth.getBalance(address);
+      async function connectEther(privKey) {
+        const wallet = new ethers.Wallet(privKey, ethers.getDefaultProvider());
+        const address = await wallet.getAddress();
+        const balance = await wallet.getBalance();
         $("#address").text("Address: " + address + ".");
         $("#balance").text("Balance: " + balance + ".");
       }
