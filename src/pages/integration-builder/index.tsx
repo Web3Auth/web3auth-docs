@@ -168,22 +168,30 @@ export default function IntegrationBuilderPage({ files }) {
     integration.filenames[0]
   );
 
+  const [isLinkCopied, setLinkCopied] = useState<NodeJS.Timeout>();
+
   useEffect(() => {
     // Update selected file when either integration changed
     setSelectedFilename(integration.filenames[0]);
+
+    // Clear copied
+    if (isLinkCopied) {
+      clearTimeout(isLinkCopied);
+      setLinkCopied(undefined);
+    }
 
     // Update query params
     history.pushState({}, "", getURLFromBuilderOptions(builderOptions));
   }, [integration]);
 
-  const [isLinkCopied, setLinkCopied] = useState(false);
   const onClickCopyLink = useCallback(() => {
     if (isLinkCopied) return;
     copyToClipboard(getWindowLocation());
-    setLinkCopied(true);
-    setTimeout(() => {
-      setLinkCopied(false);
+
+    const timeout = setTimeout(() => {
+      setLinkCopied(undefined);
     }, 3000);
+    setLinkCopied(timeout);
   }, [integration, isLinkCopied]);
 
   const steps = integration.steps;
