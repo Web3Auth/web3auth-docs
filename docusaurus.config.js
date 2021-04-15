@@ -54,6 +54,7 @@ module.exports = {
           label: "Guides",
           to: "/guides",
           position: "left",
+          className: "navbar__section-link"
         },
         {
           label: "Contact us",
