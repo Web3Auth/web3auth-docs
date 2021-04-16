@@ -43,7 +43,7 @@ To start with using openlogin with a ethereum dapp , you need to install Openlog
 ```shell
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin@0.3.7/dist/openlogin.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin@0"></script>
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.js"></script>
 ```
 
