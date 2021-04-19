@@ -16,15 +16,12 @@ of a Vue.js application.
 
 You can find [the source code of this is example on Github](https://github.com/torusresearch/OpenLoginSdk/tree/feat/example/example/vue-app).
 
-
 ## Register your OpenLogin application
 
 In order to use OpenLogin SDK, you'll need to create a project in
 [Developer Dashboard](https://developer.tor.us) and get your client ID.
 
 > App registration is not required for localhost development.
-
-
 
 ## Create your Vue app
 
@@ -64,12 +61,6 @@ yarn add @toruslabs/openlogin
 </TabItem>
 
 </Tabs>
-
-## Serve service worker
-
-Add this [service worker](https://github.com/torusresearch/torus-direct-web-sdk/blob/master/examples/react-app/public/serviceworker/sw.js) to `/public/serviceworker` directory in your project. This service worker will handle redirect result from OpenLogin website for you. If you're already using a service worker, please port over the fetch override.
-
-If you prefer not using service worker (your customers are using browsers that don't support service worker), you can add this [redirect.html](https://github.com/torusresearch/torus-direct-web-sdk/blob/master/examples/react-app/public/serviceworker/ridirect.html) to `/public` directory to achieve a similar result as using service worker.
 
 ## Initialize the SDK on your application's mounted event
 

@@ -127,23 +127,20 @@ In the given code snippet, `openlogin.login` function is getting called along wi
 Checkout [API Reference](/open-login/api-reference/usage) for other options available to pass in openlogin constructor and login function.
 
 ```js
-  async function handleLogin() {
-    setLoading(true)
-    try {
-      const privKey = await openlogin.login({
-        loginProvider: "google",
-        redirectUrl: `${window.origin}`,
-      });
-      await getMaticAccountDetails(privKey);
-      setLoading(false)
-    } catch (error) {
-      console.log("error", error);
-      setLoading(false)
-
-    }
-
+async function handleLogin() {
+  setLoading(true)
+  try {
+    const privKey = await openlogin.login({
+      loginProvider: "google",
+      redirectUrl: `${window.origin}`,
+    });
+    await getMaticAccountDetails(privKey);
+    setLoading(false)
+  } catch (error) {
+    console.log("error", error);
+    setLoading(false)
   }
-
+}
 ```
 
 ## Use the private key with @maticnetwork/maticjs
@@ -153,25 +150,23 @@ In the code snippet below  we are using user's private key with matic network , 
 
 
 ```js
+const getMaticAccountDetails = useCallback(async(privateKey) => {
+  const { matic, network } =  await maticClient.getClient("mainnet","v1");
+  const tokenAddress = network.Matic.Contracts.Tokens.MaticToken
+  matic.setWallet(privateKey);
 
-  const getMaticAccountDetails = useCallback(async(privateKey) =>{
-      const { matic, network } =  await maticClient.getClient("mainnet","v1");
-      const tokenAddress = network.Matic.Contracts.Tokens.MaticToken
-      matic.setWallet(privateKey);
+  const account = matic.web3Client.web3.eth.accounts.privateKeyToAccount(privateKey);
+  let address = account.address;
 
-      const account = matic.web3Client.web3.eth.accounts.privateKeyToAccount(privateKey);
-      let address = account.address;
-
-      const balance = await matic.balanceOfERC20(
-        address, //User address
-        tokenAddress, // Token address
-        {
-          parent: false
-        }
-      )
-      setUserAccountInfo({balance, address});
-    },[getMaticClient]);
-
+  const balance = await matic.balanceOfERC20(
+    address, //User address
+    tokenAddress, // Token address
+    {
+      parent: false
+    }
+  )
+  setUserAccountInfo({balance, address});
+}, [getMaticClient]);
 ```
 
 
@@ -182,11 +177,11 @@ In order to logout user you needs to call logout function available on sdk insta
  You can pass various other options in logout function like `fastLogin` , `redirectUrl` etc. To know more about that checkout [API Reference](/open-login/api-reference/usage).
 
 ```js
-  const handleLogout = async () => {
-    setLoading(true)
-    await openlogin.logout();
-    setLoading(false)
-  };
+const handleLogout = async () => {
+  setLoading(true)
+  await openlogin.logout();
+  setLoading(false)
+};
 ```
 
 ### DONE!!
