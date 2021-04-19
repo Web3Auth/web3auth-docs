@@ -93,24 +93,24 @@ module.exports = {
     },
     {
       type: "category",
-      label: "How Torus works",
+      label: "Torus Key Infrastructure",
       items: [
-        "how-torus-works/overview",
-        "how-torus-works/technical-architecture",
+        "key-infrastructure/overview",
+        "key-infrastructure/technical-architecture",
         {
         type: "category",
         label: "Role of Torus nodes",
         items:[
-          "how-torus-works/role-of-torus-nodes/overview",
-          "how-torus-works/role-of-torus-nodes/lifecycle",
-          "how-torus-works/role-of-torus-nodes/key-generation-and-resharing",
-        "how-torus-works/role-of-torus-nodes/logins-key-assignments-and-retrievals",
-        "how-torus-works/role-of-torus-nodes/oauth2-vs-proxy-sign-in",
-        "how-torus-works/role-of-torus-nodes/dkg-specification"
+          "key-infrastructure/role-of-torus-nodes/overview",
+          "key-infrastructure/role-of-torus-nodes/lifecycle",
+          "key-infrastructure/role-of-torus-nodes/key-generation-and-resharing",
+        "key-infrastructure/role-of-torus-nodes/logins-key-assignments-and-retrievals",
+        "key-infrastructure/role-of-torus-nodes/oauth2-vs-proxy-sign-in",
+        "key-infrastructure/role-of-torus-nodes/dkg-specification"
       ],
         },
 
-        "how-torus-works/audits",
+        "key-infrastructure/audits",
       ],
     },
     {
