@@ -32,12 +32,12 @@ In order to use OpenLogin SDK, you'll need to create a project in
 To start with using openlogin with a solana dapp , you need to install
 [Openlogin](https://www.npmjs.com/package/@toruslabs/openlogin) ,
 [Solana/Web3.js](https://solana-labs.github.io/solana-web3.js) sdk and
-[@toruslabs/openlogin-utils](https://www.npmjs.com/package/@toruslabs/openlogin-utils)
+[@toruslabs/openlogin-ed25519](https://www.npmjs.com/package/@toruslabs/openlogin-ed25519)
 library to derive ED25519 key which is compatible with solana.
 
 ```shell
 npm install --save @toruslabs/openlogin
-npm install --save @toruslabs/openlogin-utils
+npm install --save @toruslabs/openlogin-ed25519
 npm install --save @solana/web3.js
 ```
 
@@ -153,7 +153,7 @@ async function handleLogin() {
 After login application will have access to the user's private key at
 `openlogin.privKey`. Before using this key with solana/web3.js, we just need to
 make this key compatible with solana. In the code snippet below `getED25519Key`
-is imported from `@toruslabs/openlogin-utils` library.
+is imported from `@toruslabs/openlogin-ed25519` library.
 
 Now we have a key which can be used use create a account using solana/web3.js.
 Functionality to generate solana account is implemented in `getAccountInfo`
