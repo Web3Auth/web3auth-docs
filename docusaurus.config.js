@@ -54,7 +54,7 @@ module.exports = {
           label: "Guides",
           to: "/guides",
           position: "left",
-          className: "navbar__section-link"
+          className: "navbar__section-link",
         },
         {
           label: "Contact us",
@@ -183,6 +183,9 @@ module.exports = {
       },
       copyright: `© ${new Date().getFullYear()} Torus Labs Private Limited`,
     },
+    gtag: {
+      trackingID: "UA-126622802-2",
+    },
   },
   presets: [
     [
@@ -193,7 +196,7 @@ module.exports = {
           editUrl: githubEditUrl,
           sidebarPath: require.resolve("./sidebars.js"),
           remarkPlugins: [remarkMath],
-          rehypePlugins: [[rehypeKatex, {strict: false}]],
+          rehypePlugins: [[rehypeKatex, { strict: false }]],
         },
         /** Uncomment to enable Blog features, see https://v2.docusaurus.io/docs/blog
         blog: {
@@ -208,6 +211,7 @@ module.exports = {
     ],
   ],
   plugins: [
+    "@docusaurus/plugin-google-gtag",
     path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
     path.resolve(__dirname, "plugins", "docusaurus-plugin-mdx-components"),
     [
