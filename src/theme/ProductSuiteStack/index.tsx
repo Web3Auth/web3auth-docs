@@ -245,7 +245,7 @@ export default function ProductSuiteStack() {
               className={tab === "network" ? styles.selected : undefined}
               onClick={() => setTab("network")}
             >
-              Infrastructure
+              Torus Key Infrastructure
             </li>
           </ul>
         </div>
