@@ -211,7 +211,6 @@ module.exports = {
     ],
   ],
   plugins: [
-    "@docusaurus/plugin-google-gtag",
     path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
     path.resolve(__dirname, "plugins", "docusaurus-plugin-mdx-components"),
     [
