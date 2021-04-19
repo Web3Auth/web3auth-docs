@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import OpenLogin from "@toruslabs/openlogin";
 import AccountInfo  from "../../components/AccountInfo";
 import { Account, Connection, clusterApiUrl } from "@solana/web3.js";
-import { getED25519Key } from "@toruslabs/openlogin-utils";
+import { getED25519Key } from "@toruslabs/openlogin-ed25519";
 import * as bs58 from "bs58";
 
 import "./style.scss";
