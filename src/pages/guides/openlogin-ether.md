@@ -1,5 +1,5 @@
 ---
-title: How to integerate Openlogin with an Ethereum dapp.
+title: How to integerate Openlogin with an Ethereum dapp
 image: "/contents/openlogin-ether.png"
 description: Learn to use OpenLogin to integrate your app with Web3.js
 order: 4
@@ -31,20 +31,16 @@ In order to use OpenLogin SDK, you'll need to create a project in
 
 > App registration is not required for localhost development.
 
-
-
-
 ### Installing depedencies
 
-To start with using openlogin with a ethereum dapp , you need to install Openlogin and Web3 js sdk. You can fetch SDK files which are hosted over [cdn]("https://www.jsdelivr.com/package/npm/@toruslabs/openlogin") using script tags in html file.
+To start with using openlogin with a ethereum dapp , you need to install Openlogin and Web3 js sdk. You can fetch SDK files which are hosted over [CDN](https://www.jsdelivr.com/package/npm/@toruslabs/openlogin) using script tags in html file.
 
 
 
 ```shell
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin@0"></script>
-    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin@0"></script>
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.js"></script>
 ```
 
 Openlogin and web3 libraries are also available on [npm](https://www.npmjs.com/package/@toruslabs/openlogin) and yarn.
@@ -55,20 +51,19 @@ Openlogin and web3 libraries are also available on [npm](https://www.npmjs.com/p
 Initialize the SDK after your application is mounted inside `$(document).ready` callback.
 
 ```js
-
 $(document).ready(async function () {
-      OpenLogin = window.Openlogin;
-      sdkInstance = new OpenLogin.default({
-          // client id can be anything for localhost
-          clientId: "random_id" ,
-          iframeUrl: "https://beta.openlogin.com"
-      });
-      await sdkInstance.init();
-      if (sdkInstance.privKey) {
-        await connectWeb3()
-      } else {
-        $("#login").show();
-      }
+  OpenLogin = window.Openlogin;
+  sdkInstance = new OpenLogin.default({
+    // client id can be anything for localhost
+    clientId: "random_id" ,
+    iframeUrl: "https://beta.openlogin.com"
+  });
+  await sdkInstance.init();
+  if (sdkInstance.privKey) {
+    await connectWeb3()
+  } else {
+    $("#login").show();
+  }
 });
 ```
 
@@ -81,31 +76,30 @@ The code snippet given above is creating Openlogin Sdk instance  with two params
 
 After initializing openlogin sdk, above function checks if sdk instance has private key. If private key is available then it means that user is already authenticated and it renders user account details using web3, we will cover `connectWeb3` function in next step. Good news is that openlogin sdk persist user private key even after page reload so better User Experience.
 
-
-## Login user:
+## Login user
 
 Once the sdk is initialized , you can allow user to login. You need to call login function available on sdkInstance created in previous step.
 
 ```js
-    $("#login").click(async function (event) {
-        if (!sdkInstance.privKey) {
-            //signature  is not required for localhost
-            // but it is mandatory for running for running
-            // openlogin on any other domain.
-            // helper functions to  generate clientId and signature
-            // are given in this example (ie generateAppCreds and whitelistOrigin).
-            const sig = "";
-            await sdkInstance.login({
-                loginProvider: "google",
-                redirectUrl: `${window.origin}`,
-            });
-            return
-        }
+$("#login").click(async function (event) {
+    if (!sdkInstance.privKey) {
+        //signature  is not required for localhost
+        // but it is mandatory for running for running
+        // openlogin on any other domain.
+        // helper functions to  generate clientId and signature
+        // are given in this example (ie generateAppCreds and whitelistOrigin).
+        const sig = "";
+        await sdkInstance.login({
+            loginProvider: "google",
+            redirectUrl: `${window.origin}`,
+        });
+        return
+    }
 
-        await connectWeb3();
-        $("#error").hide();
-        $("#login").hide();
-    });
+    await connectWeb3();
+    $("#error").hide();
+    $("#login").hide();
+});
 ```
 
 Above code snippet triggers the openlogin sdk login functionality on click of.a button.
@@ -122,39 +116,38 @@ After calling `openlogin.login` and handling redirect result, your application w
 
 
 ```js
-    async function connectWeb3(){
-        const INFURA_NODE_URL = "https://mainnet.infura.io/v3/<your-project-id>";
-        const web3 = new window.Web3(
-        new Web3.providers.HttpProvider(INFURA_NODE_URL)
-        );
-        const account = web3.eth.accounts.privateKeyToAccount(sdkInstance.privKey);
-        const address = account.address;
-        const balance = await web3.eth.getBalance(address);
-        $("#public-address").text(`Public address: ${address} `);
-        $("#private-key").text(`Private key:  ${sdkInstance.privKey} `);
-        $("#account-bal").text(`Account balance: ${balance}`);
-        $("#logout").show("fadein");
-        $("#login").hide();
-    }
+async function connectWeb3(){
+    const INFURA_NODE_URL = "https://mainnet.infura.io/v3/<your-project-id>";
+    const web3 = new window.Web3(
+    new Web3.providers.HttpProvider(INFURA_NODE_URL)
+    );
+    const account = web3.eth.accounts.privateKeyToAccount(sdkInstance.privKey);
+    const address = account.address;
+    const balance = await web3.eth.getBalance(address);
+    $("#public-address").text(`Public address: ${address} `);
+    $("#private-key").text(`Private key:  ${sdkInstance.privKey} `);
+    $("#account-bal").text(`Account balance: ${balance}`);
+    $("#logout").show("fadein");
+    $("#login").hide();
+}
 ```
 
 We are using infura nodes url in this example to access blockchain with web3 js. However you can use any node url. After intializing the web3 http provider, it creates a eth account using the private key available on sdk instance, retrives the account address and balance.
 
 You can use any web3 function after this from sending ether to calling smart contract functions.
 
-## Log out hanlder:-
+## Log out handler
 
 In order to logout user you needs to call logout function available on sdk instance.Logout function will clears the sdk state and removes any access to private key on frontend. You can redirect user to the exit page after logout function returns.
 
-
 ```js
-  $("#logout").click(async function (event) {
-      $("#text").text("Logging out....")
-      $("#logout").hide();
-      await sdkInstance.logout();
-      window.location.reload();
-    });
+$("#logout").click(async function (event) {
+    $("#text").text("Logging out....")
+    $("#logout").hide();
+    await sdkInstance.logout();
+    window.location.reload();
+});
 ```
 
 ### DONE!!
-> You can checkout example of this example app here.[the source code of this is example on Github](https://github.com/himanshuchawla009/openlogin-web-example).
+> You can checkout [the source code of this example on Github](https://github.com/himanshuchawla009/openlogin-web-example).

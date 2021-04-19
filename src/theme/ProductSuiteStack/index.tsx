@@ -177,7 +177,7 @@ export default function ProductSuiteStack() {
               </ul>
               <hr />
               <Link
-                to="/how-torus-works/technical-architecture"
+                to="/key-infrastructure/technical-architecture"
                 className={styles.link}
               >
                 Learn more
@@ -245,7 +245,7 @@ export default function ProductSuiteStack() {
               className={tab === "network" ? styles.selected : undefined}
               onClick={() => setTab("network")}
             >
-              Infrastructure
+              Torus Key Infrastructure
             </li>
           </ul>
         </div>
