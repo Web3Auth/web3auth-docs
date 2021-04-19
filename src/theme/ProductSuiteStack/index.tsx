@@ -177,7 +177,7 @@ export default function ProductSuiteStack() {
               </ul>
               <hr />
               <Link
-                to="/how-torus-works/system-architecture"
+                to="/how-torus-works/technical-architecture"
                 className={styles.link}
               >
                 Learn more
