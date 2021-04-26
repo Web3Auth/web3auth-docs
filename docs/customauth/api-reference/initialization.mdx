@@ -1,0 +1,265 @@
+---
+title: Initialization
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Create and initialize a CustomAuth instance
+
+---
+
+## `CustomAuth`
+
+This is the main class of anything related to CustomAuth SDK Using ES6,
+
+```javascript
+import DirectWebSdk from "@toruslabs/torus-direct-web-sdk";
+```
+
+Then, create a new instance of Custom Auth.
+
+```javascript
+const torusdirectsdk = new DirectWebSdk(options);
+```
+
+The DirectWebSdk constructor takes an object with `DirectWebSDKArgs` as input.
+
+**Parameters**
+
+- `options` - `DirectWebSDKArgs`: The options of the constructor
+  - `baseUrl` - `string` : Redirect Uri for OAuth is `baseUrl+redirectPathName`
+    Torus Direct SDK installs a service worker to capture the auth redirect.
+    Usually, your app may have it's own service worker at the root. So, please
+    use `${location.origin}/auth`as baseUrl instead and use
+    `${location.origin}/auth/${redirectPathName}` as redirect Uri at the OAuth
+    registration page
+  - `network?` - `enum`: Torus Network to target options: `mainnet` | `testnet`
+    default: `mainnet`
+  - `proxyContractAddress?`- `string`: The contract address of the verifiers on
+    torus network mainnet: `0x638646503746d5456209e33a2ff5e3226d698bea` testnet:
+    `0x4023d2a0D330bF11426B12C6144Cfb96B7fa6183`. If not specified, default one
+    for the current network will be used
+  - `enableLogging?`- `boolean`: Whether to enable logging. `default: false`
+  - `redirectPathName?` - `string`: The path from which redirect.html is being
+    served. default: "redirect"
+  - `redirectToOpener?` - `boolean`: For chrome extensions, the general methods
+    for capturing auth redirects don't work. So, we redirect to the window which
+    opens the auth window. `default: false`
+  - `apiKey?` - `string`: API Key for torus to enable higher access limits
+  - `uxMode?` - `enum`: `popup` and `redirect` uxmode are supported. By default
+    it is set to `popup`
+  - `redirectParamsStorageMethod?` - `enum`: `localStorage` and `sessionStorage`
+    are supported. By default, it is set to localStorage. In redirect flow, some
+    params will be stored in localStorage for reuse at the end of the flow.
+  - `locationReplaceOnRedirect?` - `boolean`: Whether to replace the url
+    hash/query params from OAuth at the end of the redirect flow
+    `default: false`
+  - `popupFeatures?` - `DOMString`: Features of popup window. Please check
+    [here](https://developer.mozilla.org/en-US/docs/Web/API/Window/open#window_features)
+    for further documentation
+
+**Returns**
+
+- `Object`: The DirectWebSdk instance with all its methods and events.
+
+**Reference**
+
+```ts
+export interface DirectWebSDKArgs {
+  baseUrl: string;
+  network?: TORUS_NETWORK_TYPE;
+  proxyContractAddress?: string;
+  enableLogging?: boolean;
+  redirectToOpener?: boolean;
+  redirectPathName?: string;
+  apiKey?: string;
+  uxMode?: UX_MODE_TYPE;
+  redirectParamsStorageMethod?: REDIRECT_PARAMS_STORAGE_METHOD_TYPE;
+  locationReplaceOnRedirect?: boolean;
+  popupFeatures?: string;
+}
+
+export type TORUS_NETWORK_TYPE = typeof TORUS_NETWORK[keyof typeof TORUS_NETWORK];
+export const TORUS_NETWORK = {
+  TESTNET: "testnet",
+  MAINNET: "mainnet",
+} as const;
+
+export type UX_MODE_TYPE = typeof UX_MODE[keyof typeof UX_MODE];
+export const UX_MODE = {
+  POPUP: "popup",
+  REDIRECT: "redirect",
+} as const;
+
+export type REDIRECT_PARAMS_STORAGE_METHOD_TYPE = typeof REDIRECT_PARAMS_STORAGE_METHOD[keyof typeof REDIRECT_PARAMS_STORAGE_METHOD];
+export const REDIRECT_PARAMS_STORAGE_METHOD = {
+  LOCAL_STORAGE: "localStorage",
+  SESSION_STORAGE: "sessionStorage",
+};
+```
+
+**Example**
+
+<Tabs
+  defaultValue="redirect"
+  values={[
+    {label: 'Redirect', value: 'redirect'},
+    {label: 'Mainnet', value: 'mainnet'},
+    {label: 'Testnet', value: 'testnet'},
+    {label: 'Chrome Extension', value: 'chrome_extension'},
+  ]}>
+  <TabItem value="redirect">
+
+```ts
+// Say location.origin is example.com
+
+// Targets mainnet
+// Final redirect url is 'https://example.com/auth'
+
+const torusdirectsdk = new TorusDirectSdk({
+  baseUrl: `${location.origin}`,
+  redirectPathName: "auth",
+  uxMode: "redirect",
+});
+
+/*
+Register the final redirect url with OAuth client Don't forget to serve
+redirect.html from baseUrl which means
+'https://example.com/auth' should serve redirect.html present in the
+repo
+*/
+```
+
+  </TabItem>
+  <TabItem value="mainnet">
+
+```ts
+// Say location.origin is example.com
+
+// Targets mainnet
+// Final redirect url is 'https://example.com/auth/redirect'
+
+const torusdirectsdk = new TorusDirectSdk({
+  baseUrl: `${location.origin}/auth`,
+});
+
+/*
+Register the final redirect url with OAuth client Don't forget to serve sw.js
+and redirect.html from baseUrl which means 'https://example.com/auth/sw.js' and
+'https://example.com/auth/redirect' should serve redirect.html present in the
+repo
+*/
+```
+
+  </TabItem>
+  <TabItem value="testnet">
+
+```ts
+// Say location.origin is example.com
+
+// Targets testnet + custom path name
+// Final redirect url is 'https://example.com/auth/redirect.html'
+
+const torusdirectsdk = new TorusDirectSdk({
+  baseUrl: `${location.origin}/auth`,
+  enableLogging: true,
+  redirectPathName: "redirect.html", // details for test net
+  network: "testnet",
+  uxMode: "popup",
+});
+
+/*
+Register the final redirect url with OAuth client Don't forget to serve sw.js
+and redirect.html from baseUrl which means 'https://example.com/auth/sw.js' and
+'https://example.com/auth/redirect.html' should serve redirect.html present in
+the repo
+*/
+```
+
+  </TabItem>
+  <TabItem value="chrome_extension">
+
+```ts
+// Say location.origin is example.com
+
+// testnet + chrome extension
+// Final redirect url is 'https://example.com/auth/redirect'
+
+const torusdirectsdk = new TorusDirectSdk({
+  baseUrl: `${location.origin}/auth`,
+  enableLogging: true,
+  redirectToOpener: true,
+  // details for test net
+  network: "testnet", // details for test net
+});
+
+/*
+  Register the final redirect url with OAuth client
+  Don't forget to serve sw.js and redirect.html from baseUrl
+  which means 'https://example.com/auth/sw.js' and
+  'https://example.com/auth/redirect'
+  should serve redirect.html present in the repo
+*/
+```
+
+  </TabItem>
+</Tabs>
+
+## `init`
+
+Initializes the torus direct sdk and checks for the existence of service worker
+and redirect.html. Please make sure to serve both sw.js and redirect.html
+present in the sdk from baseUrl depending on the uxMode
+
+```ts
+await torusdirectsdk.init(options);
+```
+
+The DirectWebSdk `init` takes an object with `InitParams` as input.
+
+**Parameters**
+
+- `options` - `InitParams`: The options of the init function
+  - `skipSw` - `boolean` : skips the installation / check for service worker
+  - `skipInit` - `boolean` : skips the init function
+  - `skipPrefetch` - `boolean` : skips the prefetching of redirect url
+
+**Returns**
+
+- `Promise<void>` : Returns a promise which resolves to void
+
+**Reference**
+
+```ts
+export interface InitParams {
+  skipSw?: boolean;
+  skipInit?: boolean;
+  skipPrefetch?: boolean;
+}
+```
+
+**Example**
+
+<Tabs
+  defaultValue="check"
+  values={[
+    {label: 'Check All', value: 'check'},
+    {label: 'Skip service worker', value: 'skipSw'},
+  ]}>
+  <TabItem value="check">
+
+```ts
+await torusdirectsdk.init();
+```
+
+  </TabItem>
+
+  <TabItem>
+
+```ts
+await torusdirectsdk.init({ skipSw: true });
+```
+
+  </TabItem>
+</Tabs>

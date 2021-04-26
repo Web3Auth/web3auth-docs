@@ -70,6 +70,14 @@ module.exports = {
         "customauth/get-started",
         "customauth/what-is-customauth",
         "customauth/integrating-customauth",
+        {
+          "API Reference": [
+            "customauth/api-reference/installation",
+            "customauth/api-reference/initialization",
+            "customauth/api-reference/usage",
+
+          ],
+        },
         "customauth/designing-your-key-management-architecture",
         {
           "Logins (Verifiers)": [
