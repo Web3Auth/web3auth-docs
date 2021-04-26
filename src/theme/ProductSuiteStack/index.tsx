@@ -27,7 +27,11 @@ export default function ProductSuiteStack() {
               </p>
             </div>
           </div>
-          <img src="/contents/stack-overview-2.png" alt="Overview" height={360} />
+          <img
+            src="/contents/stack-overview-2.png"
+            alt="Overview"
+            height={360}
+          />
         </section>
       );
       break;
@@ -40,9 +44,13 @@ export default function ProductSuiteStack() {
           <div>
             <h1 className="sr-only">Torus OpenLogin</h1>
             <img
-              src="/images/openlogin-full-logo.svg"
+              src="/images/openlogin-full-logo-1.svg"
               alt="Torus OpenLogin"
-              height="60px"
+              style={{
+                marginTop: "16px",
+                marginBottom: "16px",
+              }}
+              height="29px"
             />
             <div className={styles.content}>
               <p>
