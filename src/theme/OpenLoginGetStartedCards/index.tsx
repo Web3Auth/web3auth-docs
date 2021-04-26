@@ -19,7 +19,7 @@ export default function OpenLoginGetStartedCards() {
           </p>
           <p className={styles.poweredBy}>
             <span>Powered by</span>
-            <img src="/images/openlogin-full-logo.svg" alt="OpenLogin" />
+            <img src="/images/openlogin-full-logo-1.svg" alt="OpenLogin" />
           </p>
         </Link>
         <Link
@@ -32,7 +32,7 @@ export default function OpenLoginGetStartedCards() {
           </p>
           <p className={styles.poweredBy}>
             <span>Powered by</span>
-            <img src="/images/openlogin-full-logo.svg" alt="OpenLogin" />
+            <img src="/images/openlogin-full-logo-1.svg" alt="OpenLogin" />
           </p>
         </Link>
       </div>
@@ -47,7 +47,7 @@ export default function OpenLoginGetStartedCards() {
           </p>
           <p className={styles.poweredBy}>
             <span>Powered by</span>
-            <img src="/images/openlogin-full-logo.svg" alt="OpenLogin" />
+            <img src="/images/openlogin-full-logo-1.svg" alt="OpenLogin" />
           </p>
         </Link>
         <Link
@@ -60,7 +60,7 @@ export default function OpenLoginGetStartedCards() {
           </p>
           <p className={styles.poweredBy}>
             <span>Powered by</span>
-            <img src="/images/openlogin-full-logo.svg" alt="OpenLogin" />
+            <img src="/images/openlogin-full-logo-1.svg" alt="OpenLogin" />
           </p>
         </Link>
       </div>
