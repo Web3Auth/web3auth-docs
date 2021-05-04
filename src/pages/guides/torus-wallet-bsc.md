@@ -1,8 +1,8 @@
 ---
-title: How to Integrate Torus Embed and Binance Smart Chain
+title: How to Integrate Torus Wallet and Binance Smart Chain
 image: "/contents/Torus-BSC.png"
 description:
-  Learn to use torus embed to integrate Torus Wallet with Binance Smart Chain
+  Learn to use Torus Wallet with Binance Smart Chain
 order: 10
 ---
 
@@ -12,15 +12,14 @@ import TabItem from "@theme/TabItem";
 
 ## Introduction
 
-This tutorial will guide you over a basic example to integerate torus wallet using
-torus embed with Binance Smart Chain.
+This tutorial will guide you over a basic example to integerate torus wallet with Binance Smart Chain.
 
 We will go through a simple html page app where user can login in to torus wallet, connect over binance smart chain and can sign a transactions using torus wallet.
 
 
 ## Let's get started with code by installing depedencies using npm
 
-To start with using torus embed with a binance smart chain dapp , you need to
+To start with using torus wallet with a binance smart chain dapp , you need to
 install torus-embed and web3. You can use popular package managers like yarn and npm
 to down them. In this guide we will load them over cdn script.
 
@@ -29,7 +28,7 @@ to down them. In this guide we will load them over cdn script.
    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.js"></script>
 ```
 
-## Initialize torus embed with binance test net:
+## Initialize torus wallet with binance test net:
 
 ```js
     const torus = new Torus({
@@ -54,11 +53,11 @@ to down them. In this guide we will load them over cdn script.
 ```
 
 In above code snippet, we are creating an instance of torus-embed and then initializing it with binance smart chain test node configuration.
-We can pass other configuration options while initializing for customizing torus embed interface. You can refer to torus-embed [api-reference](https://docs.tor.us/wallet/api-reference/class) to know more on that.
+We can pass other configuration options while initializing for customizing torus wallet interface. You can refer to torus-embed [api-reference](https://docs.tor.us/wallet/api-reference/class) to know more on that.
 
 ## Using torus web3 instance to fetch user account address and balance
 
-After initializing torus embed it provides us with a http provider which can be feeded in to web3 js to interact with binance smart chain.
+After initializing torus wallet it provides us with a http provider which can be feeded in to web3 js to interact with binance smart chain.
 
 It also provides us with an interface to access user login information like user's email , profile image etc.
 
@@ -77,14 +76,14 @@ It also provides us with an interface to access user login information like user
 
 Now we have access to a web3 instance using which we can do anything from signing transactions to accessing other methods of web3.
 
-Every time you will try to sign a transaction it will automatically open torus embed window for user where user can confirm transaction.
+Every time you will try to sign a transaction it will automatically open torus wallet window for user where user can confirm transaction.
 
 ```js
  window.web3.eth.getAccounts((error, accounts) => {
   if (error) throw error;
     const txnParams = {
         from: accounts[0],
-        to: accounts[1],
+        to: accounts[0], // any valid receiver address
         value: "0.1"
     }
   window.web3.eth.sendTransaction(txnParams, (error, txnHash) => {
@@ -96,11 +95,11 @@ Every time you will try to sign a transaction it will automatically open torus e
 
 
 ## Log out handler
-To logout user which means to clean up the web3 instance ,it simply requires you to call  `logout` function on torus embed instance
+To logout user which means to clean up the web3 instance ,it simply requires you to call  `logout` function on torus wallet instance
 
 ```js
    await window.torus.logout()
 ```
 
 ## DONE!!
-You can refer to api docs to explore more in to torus embed apis [here](https://docs.tor.us/wallet/api-reference/class)
+You can refer to api docs to explore more in to torus wallet apis [here](https://docs.tor.us/wallet/api-reference/class)
