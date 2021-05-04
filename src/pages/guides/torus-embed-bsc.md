@@ -84,7 +84,7 @@ Every time you will try to sign a transaction it will automatically open torus e
   if (error) throw error;
     const txnParams = {
         from: accounts[0],
-        to: accounts[1],
+        to: accounts[0], // any valid receiver address
         value: "0.1"
     }
   window.web3.eth.sendTransaction(txnParams, (error, txnHash) => {
