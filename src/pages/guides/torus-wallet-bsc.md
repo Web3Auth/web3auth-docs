@@ -55,9 +55,21 @@ to down them. In this guide we will load them over cdn script.
 In above code snippet, we are creating an instance of torus-embed and then initializing it with binance smart chain test node configuration.
 We can pass other configuration options while initializing for customizing torus wallet interface. You can refer to torus-embed [api-reference](https://docs.tor.us/wallet/api-reference/class) to know more on that.
 
+## Trigger user login
+
+Simply call torus.login to trigger user login wherever it makes sense in your application lifecycle:
+
+Calling login without any parameter will open a modal for user to select all supported logins:
+
+```
+  await window.torus.login();
+```
+
+See [api reference](https://docs.tor.us/wallet/api-reference/class) for more details.
+
 ## Using torus web3 instance to fetch user account address and balance
 
-After initializing torus wallet it provides us with a http provider which can be feeded in to web3 js to interact with binance smart chain.
+After login with torus wallet it provides us with a http provider as `torus.provider` which can be feeded in to web3 js to interact with binance smart chain.
 
 It also provides us with an interface to access user login information like user's email , profile image etc.
 
