@@ -108,7 +108,7 @@ function App() {
     try {
       const openlogin = new OpenLogin({
         clientId: VERIFIER.clientId,
-        iframeUrl: "http://beta.openlogin.com", // Beta version of OpenLogin
+        network: "testnet" // valid values (testnet or mainnet)
       });
       setOpenLogin(openlogin);
 

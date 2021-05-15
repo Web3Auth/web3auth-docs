@@ -56,7 +56,7 @@ $(document).ready(async function () {
   sdkInstance = new OpenLogin.default({
     // client id can be anything for localhost
     clientId: "random_id" ,
-    iframeUrl: "https://beta.openlogin.com"
+    network: "testnet" // valid values (testnet or mainnet)
   });
   await sdkInstance.init();
   if (sdkInstance.privKey) {
@@ -67,12 +67,11 @@ $(document).ready(async function () {
 });
 ```
 
-The code snippet given above is creating Openlogin Sdk instance  with two params ie `clientId` and `iframeUrl` and it initializes it using init function. Init
+The code snippet given above is creating Openlogin Sdk instance  with two params ie `clientId` and `network` and it initializes it using init function. Init
 
 - `clientId`: clientId is a public id which is used to to identify your app. You can generate your client id using getting started guide with openlogin. For localhost you can use any static random string as client id.
 
-- `iframeUrl`: iframeUrl is the url of openlogin frontend where user will be redirected from app for authentication.
-
+- `network`: network can be testnet or mainnet. For testing your dapp use testnet, for production use mainnet.
 
 After initializing openlogin sdk, above function checks if sdk instance has private key. If private key is available then it means that user is already authenticated and it renders user account details using web3, we will cover `connectWeb3` function in next step. Good news is that openlogin sdk persist user private key even after page reload so better User Experience.
 
