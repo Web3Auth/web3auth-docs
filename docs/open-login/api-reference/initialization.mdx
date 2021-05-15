@@ -28,9 +28,9 @@ The OpenLogin constructor takes an object with `OpenLoginOptions` as input.
 - `options` - `OpenLoginOptions`: The options of the constructor
   - `clientId` - `string` : Your project id which you can get from [developer dashboard](https://developer.tor.us/)
   - `network` - `enum`: Environment to run openlogin (testnet, mainnet, development)
-  - `iframeUrl`- `string`: Url of openlogin iframeUrl, you can pass custom iframe url here else
+  - `_iframeUrl`- `string`: Url of openlogin iframe, you can pass custom iframe url here else
   it will be added based on network value.For testnet iframe url is `https://beta.openlogin.com`  and
-  for mainnet it is `https://manage.openlogin.com`. If you are passing valid network value then network value
+  for mainnet it is `https://app.openlogin.com`. If you are passing valid  `network` value then network value
   will be given precedence over iframe url.
 
   - `uxMode` - `enum`(optional): `popup` and `redirect` uxmode are supported. By default it is set to `redirect`
@@ -45,7 +45,7 @@ The OpenLogin constructor takes an object with `OpenLoginOptions` as input.
 type OpenLoginOptions = {
   clientId: string;
   network: OPENLOGIN_NETWORK_TYPE;
-  iframeUrl?: string;
+  _iframeUrl?: string;
   redirectUrl?: string;
   loginUrl?: string;
   webAuthnUrl?: string;
@@ -77,12 +77,11 @@ type OriginData = {
 const openlogin = new OpenLogin({
   clientId: "YOUR_PROJECT_ID",
   network: "testnet",
-   // default if network is testnet then default iframeUrl is https://beta.openlogin.com
-   // for mainnet it is https://manage.openlogin.com
-  iframeUrl: "https://beta.openlogin.com",
-  // url where user will be redirect with private key after login
-  redirectUrl: "https://example.com/redirect"
-  uxMode: "redirect" // default is redirect , popup mode coming soon.
+  // if network is testnet then default iframeUrl is https://beta.openlogin.com
+  // for mainnet it is https://app.openlogin.com
+  //_iframeUrl: "https://beta.openlogin.com", // or you can directly specify iframeUrl of openlogin app
+  redirectUrl: "https://example.com/redirect" // your app url where user will be redirected
+  uxMode: "redirect" // default is redirect , popup mode is also supported
 });
 ```
 

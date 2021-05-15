@@ -92,7 +92,7 @@ export default {
     if(this.sdk) return;
     this.sdk = new OpenLogin({
       clientId: this.verifier.clientId,
-      iframeUrl: "http://beta.openlogin.com" // Beta version of OpenLogin
+       network: "testnet" // valid values (testnet or mainnet)
     });
 
     await this.sdk.init();
