@@ -83,6 +83,7 @@ module.exports = {
           "Logins (Verifiers)": [
             "customauth/supported-authenticators-verifiers",
             "customauth/setting-up-verifiers-logins/setting-up-a-proxy-provider-auth0",
+            "customauth/setting-up-verifiers-logins/creating-a-verifier-on-developer-dashboard",
           ],
         },
         {
