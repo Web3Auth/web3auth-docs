@@ -1,0 +1,39 @@
+---
+title: Creating a custom verifier on the developer dashboard
+---
+
+You can use your own login providers with Torus, using one of the custom login schemes (either via JWTs or ECDSA signatures). This way, your users can still use your existing login provider, with CustomAuth. The application should follow the JWT specification and use JWKS for signing whose public keys are exposed by an endpoint.
+
+Head over to [**developer dashboard**](https://developer.tor.us) to get started with creating a custom verifier.
+
+To create a custom verifier, you'll need
+
+1. Verifier ID
+2. JWK Endpoint
+3. JWT Validations
+
+## Verifier ID
+
+Verifier ID is the unique identifier to publicly represent a user on a verifier.
+
+e.g: email, sub etc.
+
+## JWK Endpoint
+
+An endpoint containing the JWKS used for signing.
+
+## JWT Validations
+
+These are the claims against which a JWT is validated.
+
+-  Token Audience ( <code>aud</code> ):
+
+The audience is your verifier's Applicaiton ID, assigned to your verifier on torus-network.
+The <code>aud</code> value is a case-sensitive string containing a StringOrURI value. Use of this claim is MANDATORY.
+
+-  Token Issuer ( <code>iss</code> ):
+
+The issuing authority of the token.
+The <code>iss</code> value is a case-sensitive string containing a StringOrURI value. Use of this claim is OPTIONAL.
+
+You can add upto 3 validations; including any custom claims like <code>email_verified</code> etc.
