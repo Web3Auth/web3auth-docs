@@ -82,7 +82,9 @@ await torus.init(params);
   - `integrity` - `IntegrityParams` \(optional\) : Enables optional integrity
     checking \(default is false\)
   - `loginConfig` - Array of login config items. Used to modify the default
-    logins/ add new logins. Read more on [Login Config](class.mdx#login-config).
+    logins/ add new logins. Read more on [Login Config](#loginconfig).
+  - `whiteLabel` - A configuration object to customize UI, branding, and
+    translations for your brand. Read more on [White label](#whitelabel).
 
 **Returns**
 
@@ -124,15 +126,15 @@ interface NetworkInterface {
   /**
    * Url of the block explorer
    */
-  blockExplorer?: string,
+  blockExplorer?: string;
   /**
    * Default currency ticker of the network (e.g: BNB)
    */
-  ticker?: string,
+  ticker?: string;
   /**
    * Name for currency ticker (e.g: `Binance Coin`)
    */
-  tickerName?: string,
+  tickerName?: string;
 }
 
 interface IntegrityParams {
@@ -281,6 +283,136 @@ await torus.init({
     },
   },
 });
+```
+
+## `whiteLabel`
+
+A configuration object to customize UI, branding, and translations for your
+brand.
+
+**Example**
+
+```js
+await torus.init({
+  whiteLabel: {
+    theme: {
+      isDark: false,
+      colors: {
+        torusBrand1: "#000000",
+        torusGray2: "#FBF7F3",
+      },
+    },
+    logoDark: "https://startrail.io/images/front/startrail-top__main.svg", // Dark logo for light background
+    logoLight: "https://images.toruswallet.io/startrail-logo-light.svg", // Light logo for dark background
+    topupHide: false,
+    featuredBillboardHide: true,
+    tncLink: {
+      en: "http://example.com/tnc/en",
+      ja: "http://example.com/tnc/ja",
+    },
+    privacyPolicy: {
+      en: "http://example.com/tnc/en",
+      ja: "http://example.com/tnc/ja",
+    },
+    contactLink: {
+      en: "http://example.com/tnc/en",
+      ja: "http://example.com/tnc/ja",
+    },
+    disclaimerHide: true,
+    defaultLanguage: "en",
+    customTranslations: {
+      en: {
+        login: {
+          acceptTerms: "By logging in, you accept Examples",
+          your: "Your",
+          digitalWallet: "digital wallet instantly",
+          buttonText: "Login with Startrail",
+        },
+        dappTransfer: {
+          data: "Data to sign",
+        },
+        dappPermission: {
+          permission: "Permission",
+          requestFrom: "Request from",
+          accessUserInfo:
+            "To access your Google Email Address, Profile Photo and Name",
+        },
+      },
+      ja: {
+        login: {
+          acceptTerms: "ログインすると、Examples を受け入れます",
+          your: "君の",
+          digitalWallet: "すぐにデジタルウォレット",
+          buttonText: "Startrailでログイン",
+        },
+        dappTransfer: {
+          data: "あなたがサインするデータ",
+        },
+        dappPermission: {
+          permission: "下記の内容を許可しますか",
+          requestFrom: "許可を求めているアプリケーション",
+          accessUserInfo: "受け取る情報: Googleメール、プロフィール写真、名前",
+        },
+      },
+    },
+  },
+  // Other options ...
+});
+```
+
+**Parameters**
+
+```ts
+interface WhiteLabelParams {
+  /**
+   * Whitelabel theme
+   */
+  theme: ThemeParams;
+  /**
+   * Logo URL to be used in light mode (dark logo)
+   */
+  logoDark: string;
+  /**
+   * Logo URL to be used in dark mode (light logo)
+   */
+  logoLight: string;
+  /**
+   * Default translation language to used.
+   * @default "en"
+   */
+  defaultLanguage: string;
+  /**
+   * Contact URL(s) (multiple languages are supported)
+   */
+  contactLink: {
+    [lang: string]: string;
+  };
+  /**
+   * Privacy Policy URL(s) (multiple languages are supported)
+   */
+  privacyPolicy: {
+    [lang: string]: string;
+  };
+  /**
+   * Custom translation texts, see example above for example custom translations
+   */
+  customTranslations: {
+    [lang: string]: any;
+  }
+}
+
+interface ThemeParams {
+  /**
+   * If true, enables dark mode
+   * Defaults to false
+   * @default false
+   */
+  isDark: boolean;
+  /**
+   * Colors object to customize colors in torus theme.
+   */
+  colors: any;
+}
 ```
 
 ## `cleanUp`
