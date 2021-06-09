@@ -10,7 +10,7 @@ import Tabs from "@theme/Tabs";
 
 import TabItem from "@theme/TabItem";
 
-## Instruction
+## Introduction
 
 This tutorial will show you how to customize Torus Wallet UI, branding, and
 translations to fit your brand. The example is written in React but similar
