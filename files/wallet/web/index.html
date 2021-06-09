@@ -27,7 +27,31 @@
         const torus = new Torus();
         window.torus = torus;
 
-        await torus.init();
+        await torus.init(/*
+        // (Optional) Initialization options
+        {
+          // Customize login providers
+          loginConfig: {
+            google: {
+              clientId: "<YOUR GOOGLE CLIENT ID>",
+              ...
+            }
+          },
+          // Customize brand logo, colors, and translations
+          whitelabel: {
+              theme: {
+              isDark: false,
+              colors: {
+                torusBrand1: "#000000",
+                torusGray2: "#FBF7F3",
+              },
+            },
+            logoDark: "https://startrail.io/images/front/startrail-top__main.svg", // Dark logo for light background
+            logoLight: "https://images.toruswallet.io/startrail-logo-light.svg", // Light logo for dark background
+          }
+        }
+        */);
+
         try {
           const user = await torus.getUserInfo();
           $("#text").text("Logged in as " + user.name + ".");
