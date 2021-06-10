@@ -3,7 +3,7 @@ title: Whitelabel Torus Wallet for Your Brand
 image: "/contents/openlogin-react.png"
 description:
   Customize Torus Wallet UI, branding, and translations to fit your brand
-order: 1
+order: 0
 ---
 
 import Tabs from "@theme/Tabs";
@@ -63,27 +63,15 @@ function App() {
           theme: {
             isDark: false,
             colors: {
-              torusBrand1: "#000000",
-              torusGray2: "#FBF7F3",
+              torusBrand1: "#282c34",
             },
           },
-          logoDark: "https://startrail.io/images/front/startrail-top__main.svg", // Dark logo for light background
-          logoLight: "https://images.toruswallet.io/startrail-logo-light.svg", // Light logo for dark background
-          tncLink: {
-            en: "http://example.com/tnc/en",
-            ja: "http://example.com/tnc/ja",
-          },
-          privacyPolicy: {
-            en: "http://example.com/tnc/en",
-            ja: "http://example.com/tnc/ja",
-          },
-          contactLink: {
-            en: "http://example.com/tnc/en",
-            ja: "http://example.com/tnc/ja",
-          },
-          disclaimerHide: true,
+          logoDark: "https://tkey.surge.sh/images/Device.svg", // Dark logo for light background
+          logoLight: "https://tkey.surge.sh/images/Device.svg", // Light logo for dark background
           topupHide: false,
           featuredBillboardHide: true,
+          disclaimerHide: true,
+          defaultLanguage: "en",
         },
       });
     })();
@@ -97,7 +85,7 @@ function App() {
 
 ### Brand logo and color
 
-To customize brand logo and color, use `logoDark`, `logoLight`, and `theme`:
+To customize brand logo and color, use `theme`, `logoDark`, and `logoLight`:
 
 ```js
 await torus.init({
@@ -105,48 +93,71 @@ await torus.init({
     theme: {
       isDark: false,
       colors: {
-        torusBrand1: "#000000",
-        torusGray2: "#FBF7F3",
+        torusBrand1: "#282c34",
       },
     },
-    logoDark: "https://startrail.io/images/front/startrail-top__main.svg", // Dark logo for light background
-    logoLight: "https://images.toruswallet.io/startrail-logo-light.svg", // Light logo for dark background
+    logoDark: "https://tkey.surge.sh/images/Device.svg", // Dark logo for light background
+    logoLight: "https://tkey.surge.sh/images/Device.svg", // Light logo for dark background
   },
   // ...
 });
 ```
 
-Example result of above configuration:
+- `theme.isDark`: default color mode of the Wallet
 
-![Image](/contents/whitelabel-1.png)
+- `theme.colors.torusBrand1`: color of icons, buttons, and texts.
 
-![Image](/contents/whitelabel-2.png)
+- `theme.logoDark` and `theme.logoLight`: logo variants for dark and light mode.
 
-### Change links and URLs
+**Example white-labelled UI**
 
-You can change different links and URLs in Torus Wallet by using `privacyPolicy`
-and `contactLink` options. You can configure for multiple languages, too:
+<figure>
+    <img src="/contents/whitelabel-popup.png"
+         alt="Popup" />
+    <figcaption style={{textAlign: "center"}}>Popup UI</figcaption>
+</figure>
+
+<figure>
+    <img src="/contents/whitelabel-wallet-light.png"
+         alt="Popup" />
+    <figcaption style={{textAlign: "center"}}>Wallet UI in Light mode</figcaption>
+</figure>
+
+<figure>
+    <img src="/contents/whitelabel-wallet-dark.png"
+         alt="Popup" />
+    <figcaption style={{textAlign: "center"}}>Wallet UI in Dark mode</figcaption>
+</figure>
+
+### Show/hide features
+
+You can turn on/off certain features by use `topupHide`,
+`featuredBillboardHide`, `disclaimerHide`. All features are enabled by default.
 
 ```js
 await torus.init({
   whiteLabel: {
-    privacyPolicy: {
-      en: "http://example.com/tnc/en",
-      ja: "http://example.com/tnc/ja",
-    },
-    contactLink: {
-      en: "http://example.com/tnc/en",
-      ja: "http://example.com/tnc/ja",
-    },
+    topupHide: false,
+    featuredBillboardHide: true,
+    disclaimerHide: true,
   },
   // ...
 });
 ```
 
-When user clicks on one of the links, they will be navigated to URLs that you
-configured:
+### Select default language
 
-![Image](/contents/whitelabel-3.png)
+Choose a default language to match your target users by setting
+`defaultLanguage`, default is `en`.
+
+```js
+await torus.init({
+  whiteLabel: {
+    defaultLanguage: "en",
+  },
+  // ...
+});
+```
 
 ### API Reference
 
