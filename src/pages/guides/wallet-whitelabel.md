@@ -1,6 +1,6 @@
 ---
 title: Whitelabel Torus Wallet for Your Brand
-image: "/contents/openlogin-react.png"
+image: "/contents/torus-whitelabel.png"
 description:
   Customize Torus Wallet UI, branding, and translations to fit your brand
 order: 0
