@@ -118,7 +118,7 @@ module.exports = {
         "key-infrastructure/role-of-torus-nodes/dkg-specification"
       ],
         },
-
+        "key-infrastructure/node-operators",
         "key-infrastructure/audits",
       ],
     },
