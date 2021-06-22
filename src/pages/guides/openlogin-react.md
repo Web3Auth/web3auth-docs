@@ -92,7 +92,7 @@ Initialize the SDK after your application is mounted using `useEffect` hook and 
 
 ```jsx
 const VERIFIER = {
-  loginProvider: "google", // "facebook", "apple", "twitter", "reddit", etc. See full list of supported logins: https://docs.tor.us/direct-auth/supported-authenticators-verifiers
+  loginProvider: "google", // "facebook", "apple", "twitter", "reddit", etc. See full list of supported logins: https://docs.tor.us/direct-auth/verifiers
   clientId: "YOUR PROJECT ID",
 }
 
