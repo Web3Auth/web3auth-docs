@@ -79,11 +79,11 @@ module.exports = {
           ],
         },
         "customauth/designing-your-key-management-architecture",
-        "customauth/verifiers",
         {
-          "Setting up Verifiers on Developer Dashboard": [
-            "customauth/setting-up-verifiers/seting-up-verifiers",
-            "customauth/setting-up-verifiers/custom-verifier",
+          "Logins (Verifiers)": [
+            "customauth/supported-authenticators-verifiers",
+            "customauth/setting-up-verifiers-logins/setting-up-a-proxy-provider-auth0",
+            "customauth/setting-up-verifiers-logins/creating-a-custom-verifier",
           ],
         },
         {
