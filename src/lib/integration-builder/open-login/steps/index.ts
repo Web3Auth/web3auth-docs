@@ -21,7 +21,7 @@ import * as usePolygonPrivateKey from "./react-polygon/usingPrivateKey.mdx"
 
 // binance
 import * as connectBinance from "./react-binance/connect-with-binance.mdx"
-import * as useBinancePrivateKey from "./react-polygon/usingPrivateKey.mdx"
+import * as useBinancePrivateKey from "./react-binance/usingPrivateKey.mdx"
 
 // avalanche
 import * as connectAvalanche from "./react-avalanche/connect-with-avalanche.mdx"
