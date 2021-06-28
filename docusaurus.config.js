@@ -186,6 +186,10 @@ module.exports = {
     gtag: {
       trackingID: "UA-126622802-2",
     },
+    algolia: {
+      apiKey: 'bfa3491434f947c6262b60ce9b66471c',
+      indexName: 'torus',
+    },
   },
   presets: [
     [
