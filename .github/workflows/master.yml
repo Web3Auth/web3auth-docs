@@ -20,25 +20,22 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ env.NODE_VERSION }}
-
-      - name: Get Yarn cache directory
-        id: get-yarn-cache-dir
-        run: echo "::set-output name=path::$(yarn cache dir)"
-
-      - name: Cache Yarn dependencies
+      - name: Get npm cache directory
+        id: npm-cache
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - name: Node dependency cache
         uses: actions/cache@v2
         with:
-          path: ${{ steps.get-yarn-cache-dir.outputs.path }}
-          key: "${{ runner.os }}-node-${{ env.NODE_VERSION }}-yarn-\
-            ${{ hashFiles('**/yarn.lock') }}"
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ matrix.os }}-node-${{ hashFiles('package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-${{ env.NODE_VERSION }}-yarn-
-
+            ${{ matrix.os }}-node-
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
-      - name: build
-        run: yarn build
+      - name: Generate build
+        run: npm run build
 
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@master
