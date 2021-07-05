@@ -28,7 +28,7 @@ module.exports = {
         {
           "API Reference": [
             "wallet/api-reference/installation",
-            "wallet/api-reference/class",
+            "wallet/api-reference/initialization",
             "wallet/api-reference/account",
             "wallet/api-reference/display",
             "wallet/api-reference/address-resolver",
