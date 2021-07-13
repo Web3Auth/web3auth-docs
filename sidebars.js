@@ -92,7 +92,7 @@ module.exports = {
             "customauth/compatibility-and-common-patterns/gasless-meta-transactions",
             "customauth/compatibility-and-common-patterns/scalability-layer2-solutions",
             "customauth/compatibility-and-common-patterns/password-manager-flow",
-            "customauth/compatibility-and-common-patterns/untitled",
+            "customauth/compatibility-and-common-patterns/tkey",
           ],
         },
         "customauth/linking-accounts",
