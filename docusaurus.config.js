@@ -187,8 +187,8 @@ module.exports = {
       trackingID: "UA-126622802-2",
     },
     algolia: {
-      apiKey: 'bfa3491434f947c6262b60ce9b66471c',
-      indexName: 'torus',
+      apiKey: "bfa3491434f947c6262b60ce9b66471c",
+      indexName: "torus",
     },
   },
   presets: [
@@ -221,5 +221,6 @@ module.exports = {
       path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"),
       { rootDir: "files" },
     ],
+    path.resolve(__dirname, "plugins", "node-polyfills"),
   ],
 };
