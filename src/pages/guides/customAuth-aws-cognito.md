@@ -73,23 +73,23 @@ Do the following steps in order to create your custom verifier:-
 
 3. Enter your custom verifier information as follows:-
 
- - Enter your unique verifier identifier, it will represent your application on torus network. You will need to use this value later while initializing your sdk.
+    - Enter your unique verifier identifier, it will represent your application on torus network. You will need to use this value later while initializing your sdk.
 
- - Select network option:-
-    - `'Testnet'`:- Select testnet for development mode. Your verifier will be deployed on ropsten testnet and torus test network.
-    - `'Mainnet'`:- Select mainnet for production mode. Your verifier will be deployed on ethereum mainnet and torus main network.
- - Select Verifier type as: "Custom"
+    - Select network option:-
+      - `'Testnet'`:- Select testnet for development mode. Your verifier will be deployed on ropsten testnet and torus test network.
+      - `'Mainnet'`:- Select mainnet for production mode. Your verifier will be deployed on ethereum mainnet and torus main network.
+    - Select Verifier type as: "Custom"
 
- - Enter JWT Verifier ID as : "email". You can also use "sub" as your jwt verifier id but then your user's will get diffrent private keys accross diffrent login providers even if they use same email address. You can set this field based on your application needs provided that it should be a unique identifier for user.
+    - Enter JWT Verifier ID as : "email". You can also use "sub" as your jwt verifier id but then your user's will get diffrent private keys accross diffrent login providers even if they use same email address. You can set this field based on your application needs provided that it should be a unique identifier for user.
 
- - Your JWK endpoint endpoint for aws cognito will look like this - `https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json` , get values of `region` and `userPoolId` from your aws cognito console.
+    - Your JWK endpoint endpoint for aws cognito will look like this - `https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json` , get values of `region` and `userPoolId` from your aws cognito console.
 
- - Enter JWT validation fields:-
-    - `iss`: It shoudl be `https://cognito-idp.{region}.amazonaws.com/{userPoolId}, replace region and userPoolId that we noted earlier while creating cognito user pool.
+    - Enter JWT validation fields:-
+      - `iss`: It shoudl be `https://cognito-idp.{region}.amazonaws.com/{userPoolId}, replace region and userPoolId that we noted earlier while creating cognito user pool.
 
-    - `aud`: It should be your client id that your noted earlier while creatin app client in aws cognito console.
+      - `aud`: It should be your client id that your noted earlier while creatin app client in aws cognito console.
 
-- Save you verifier and it will be deployed in 5-10 minutes.
+    - Save you verifier and it will be deployed in 5-10 minutes.
 
 
 ## Let's get started with code by installing depedency using npm
