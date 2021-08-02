@@ -2,7 +2,7 @@
 title: Custom Verifiers
 ---
 
-You can use your own login providers with Torus, using one of the custom login schemes (either via JWTs or RSA signatures). This way, your users can still use your existing login provider, with CustomAuth. The application should follow the JWT specification and use JWKS for signing whose public keys are exposed by an endpoint.
+You can use your own login providers with Torus, using one of the custom login schemes (either via RSA or ECDSA signatures). This way, your users can still use your existing login provider, with CustomAuth. The application should follow the JWT specification and use JWKS for signing whose public keys are exposed by an endpoint.
 
 Head over to [**developer dashboard**](https://developer.tor.us) to get started with creating a custom verifier.
 
@@ -24,8 +24,6 @@ e.g: email, sub etc.
 An endpoint containing the JWKS used for signing.
 
 > Output of jwk endpoint should contain same fields as the example given below.
-> `kid` field can be skipped if you are using single key for signing your JWTs.
-> If you are using multiple keys for signing then your jwt token must contain kid value of the key which is used to sign it.
 
 ```json
 {
