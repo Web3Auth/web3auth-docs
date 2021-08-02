@@ -2,7 +2,7 @@
 title: How to Integrate CustomAuth and apple logins
 image: "/contents/torus-apple.png"
 description: Learn to use CustomAuth with native apple logins.
-order: 10
+order: 12
 ---
 
 import Tabs from "@theme/Tabs";
@@ -17,10 +17,10 @@ logins, i.e., "Sign in with apple"
 You can find
 [the source code of this is example on Github](https://github.com/torusresearch/torus-apple-nativelogin-demo).
 
-## Register your OpenLogin application
+## Register your CustomAuth application
 
-In order to use OpenLogin SDK, you'll need to create a project in
-[Developer Dashboard](https://developer.tor.us) and get your client ID.
+In order to use Torus CustomAuth SDK, you'll need to create a project in
+[Developer Dashboard](https://developer.tor.us)
 
 1. Verifier type: "Custom"
 2. JWK endpoint - https://appleid.apple.com/auth/keys
