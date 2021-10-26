@@ -1,0 +1,38 @@
+---
+title: Gasless Transaction
+---
+
+Dapp can perform gasless transaction so that user can interact with without Sol
+
+---
+
+## `getGaslessPublicKey`
+
+Method to get Public Key of gasless dapp.
+
+**Example**
+
+Example how to get Public Key of gasless dapp and how to use it to send Transaction.
+
+```typescript
+    const network = "<NETWORK_URL>";
+    const connection = new Connection(network);t
+    const blockhash = (await connection.getRecentBlockhash("finalized")).blockhash;
+    const TransactionInstruction = SystemProgram.transfer({
+        fromPubkey: new PublicKey(publicKeys[0]),
+        toPubkey: new PublicKey(publicKeys[1]),
+        lamports: 0.1 * LAMPORTS_PER_SOL
+    });
+
+    const gaslessPublicKey = await torus.getGaslessPublicKey();
+    let transaction = new Transaction({
+            recentBlockhash: blockhash,
+            feePayer: new PublicKey(gaslessPublicKey)
+        }).add(TransactionInstruction);
+    const res_tx = await torus.sendTransaction(transaction);
+```
+
+**Reference**
+```typescript
+    getGaslessPublicKey(relay: string): Promise<string>;
+```
