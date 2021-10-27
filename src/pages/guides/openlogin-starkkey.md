@@ -1,6 +1,6 @@
 ---
 title: How to use Openlogin with Starkware.
-image: "/contents/Torus-Solana.png"
+image: "/contents/openlogin-starkware.png"
 description: Learn to use OpenLogin to integrate with Starkware
 order: 14
 ---
