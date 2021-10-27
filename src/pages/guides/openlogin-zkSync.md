@@ -116,18 +116,33 @@ useEffect(() => {
   initializeOpenlogin();
 }, []);
 ```
-
 ## Login
 
-Once the sdk is initialized , then `openlogin.login` will be called when user
-clicks login button.
+Once the sdk is initialized , then `openlogin.login` should be called when user
+clicks on login button.
 
-It will start the login flow for the user. Openlogin sdk provides two UX modes
-(ie POPUP and REDIRECT) for login flow. You can use either depends on your
+```js
+async function handleLogin() {
+    // privKey will be returned here only in case of popup mode or in case user is already logged in.
+    // for redirect mode login, private key will be returned as `openlogin.privKey` after openlogin
+    // is initialized using `init` function on successfully login redirect.
+    const privKey = await openlogin.login({
+        loginProvider: "google",
+        redirectUrl: `${window.origin}`,
+    });
+    return privKey
+}
+```
+
+Above code snippet will start the login flow for the user and redirect/popups openlogin authentication ui
+for user based on the ux mode specified.
+
+Openlogin sdk provides two UX modes (ie POPUP and REDIRECT) for login flow. You can use either depends on your
 application UX by setting up `uxMode` option in login function, default is
 `redirect`.
 
-> Note: `POPUP` mode is coming soon.
+> Note: in above function, privKey will be returned here only in case of popup ux mode or in case user is already logged in. For redirect mode login, private key will be returned as `openlogin.privKey` after openlogin is initialized using `init` function which should be  called redirect url page mount.
+
 
 In redirect mode user will be redirected completely out of app and will be
 redirected back to `redirectUrl` after successfull authentication, application
@@ -152,22 +167,6 @@ with two options:-
 Checkout [API Reference](/open-login/api-reference/usage) for
 other options available to pass in openlogin constructor and login function.
 
-```js
-async function handleLogin() {
-  setLoading(true);
-  try {
-    const privKey = await openlogin.login({
-      loginProvider: "google",
-      redirectUrl: `${window.origin}`,
-    });
-    setLoading(false);
-    importWallets(privKey);
-  } catch (error) {
-    console.log("error", error);
-    setLoading(false);
-  }
-}
-```
 
 ## Using private key to import zkSync signer wallet and eth wallet
 
