@@ -103,7 +103,7 @@ module.exports = {
         // {
         //   FAQ: ["solana-wallet/faq-1/developers", "solana-wallet/faq-1/users"],
         // },
-        "solana-wallet/integration-guidelines",
+        // "solana-wallet/integration-guidelines",
         // "solana-wallet/changelog",
       ],
     },
