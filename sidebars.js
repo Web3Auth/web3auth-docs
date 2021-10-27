@@ -65,6 +65,50 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Solana Wallet",
+      items: [
+        "solana-wallet/get-started",
+        "solana-wallet/what-is-wallet",
+        {
+          "API Reference": [
+            "solana-wallet/api-reference/installation",
+            "solana-wallet/api-reference/class",
+            "solana-wallet/api-reference/account",
+            "solana-wallet/api-reference/display",
+            // "solana-wallet/api-reference/address-resolver",
+            // "solana-wallet/api-reference/topup",
+            { "Solana API" : [
+              // "solana-wallet/api-reference/solana/solana-api",
+              "solana-wallet/api-reference/solana/send-transaction",
+              "solana-wallet/api-reference/solana/sign-transaction",
+              "solana-wallet/api-reference/solana/sign-message",
+              "solana-wallet/api-reference/solana/gasless-transaction",
+            ],
+          },
+          "solana-wallet/api-reference/solana-adapter"
+          ],
+        },
+        {
+          Features: [
+            "solana-wallet/features/accountrecovery",
+            // "solana-wallet/features/purchasecryptocurrency",
+            "solana-wallet/features/exportprivatekey",
+            // "solana-wallet/features/language",
+            // "solana-wallet/features/nameresolver",
+            "solana-wallet/features/themes",
+            "solana-wallet/features/pwa",
+            // "solana-wallet/features/whitelabeling",
+          ],
+        },
+        // {
+        //   FAQ: ["solana-wallet/faq-1/developers", "solana-wallet/faq-1/users"],
+        // },
+        // "solana-wallet/integration-guidelines",
+        // "solana-wallet/changelog",
+      ],
+    },
+    {
+      type: "category",
       label: "CustomAuth",
       items: [
         "customauth/get-started",
