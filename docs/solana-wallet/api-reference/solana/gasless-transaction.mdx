@@ -2,17 +2,15 @@
 title: Gasless Transaction
 ---
 
-Dapp can perform gasless transaction so that user can interact with without Sol
+Applications can pay for the transactions fees of behalf of their users. This allows users to execute transactions (exchanging NFTs, tokens, etc.) without holding SOL.
 
 ---
 
 ## `getGaslessPublicKey`
 
-Method to get Public Key of gasless dapp.
+Method to get the public key of feePayer. Please contact us on `hello@tor.us` to setup the necessary infrastructure.
 
 **Example**
-
-Example how to get Public Key of gasless dapp and how to use it to send Transaction.
 
 ```typescript
     const network = "<NETWORK_URL>";
@@ -24,7 +22,7 @@ Example how to get Public Key of gasless dapp and how to use it to send Transact
         lamports: 0.1 * LAMPORTS_PER_SOL
     });
 
-    const gaslessPublicKey = await torus.getGaslessPublicKey();
+    const gaslessPublicKey = await torus.getGaslessPublicKey(); // scoped to application
     let transaction = new Transaction({
             recentBlockhash: blockhash,
             feePayer: new PublicKey(gaslessPublicKey)
