@@ -14,14 +14,14 @@ import TabItem from "@theme/TabItem";
 
 This tutorial will guide you over a basic example to integerate torus solana wallet in dapp.
 
-We will go through a simple html typescript page app where user can login in to torus solana wallet and can sign a transactions.
+We will go through a simple html typescript page app where user can login to the wallet and can sign a transactions.
 
 
 ## Let's get started with code by installing depedencies using npm
 
-To start with using torus solana wallet with dapp, you need to
-install @toruslab/solana-embed. You can use popular package managers like yarn and npm
-to down them.
+To start using the wallet with a dapp, you need to
+install `@toruslab/solana-embed`. You can use popular package managers like yarn and npm
+to download them.
 
 <Tabs
   defaultValue="npm"
@@ -54,10 +54,10 @@ See [api reference](https://docs.tor.us/solana-wallet/api-reference/class) for m
 
 
 
-## Initialize torus instance and import solana sdk:
+## Initialize instance and import solana sdk:
 
 ```typescript
-  import {clusterA, Connection } from "@solana/web3.js";
+  import {clusterApi, Connection } from "@solana/web3.js";
 
   import Torus from "@toruslab/solana-embed";
   const torus = new Torus();
@@ -71,17 +71,16 @@ See [api reference](https://docs.tor.us/solana-wallet/api-reference/class) for m
 ```
 
 In above code snippet, we are creating an instance of solana-embed and then initializing it with `testing` enviroment which uses `solana testnet`.
-We can pass other configuration options while initializing for customizing torus wallet interface. You can refer to solana-embed [api-reference](https://docs.tor.us/solana-wallet/api-reference/class) to know more on that.
+We can pass other configuration options while initializing for customizing the wallet interface. You can refer to solana-embed [api-reference](https://docs.tor.us/solana-wallet/api-reference/class) to know more on that.
 
 
 ## Trigger user login
 
-Simply call torus.login to trigger user login wherever it makes sense in your application lifecycle
+Simply call `torus.login()` to trigger user login wherever it makes sense in your application lifecycle
 
 Calling login without any parameter will open a modal for user to select all supported logins.
 
-After successfull login, it will return array of public key.
-The first element of the array is the current wallet public key
+After successfull login, it will return array of public key. The first element of the array is the current wallet public key
 
 
 ```typescript
@@ -92,10 +91,9 @@ The first element of the array is the current wallet public key
 See [api reference](https://docs.tor.us/solana-wallet/api-reference/class) for more details.
 
 
-
 ## Using torus instance to fetch user account detail
 
-After login with torus wallet it provides us interfacet to interact with solana wallet
+After logging in,  wallet it provides us interface for interactions like signing transactions and messages.
 
 It also provides us with an interface to access user login information like user's email , profile image etc.
 
@@ -109,9 +107,9 @@ See [api reference](https://docs.tor.us/solana-wallet/api-reference/class) for m
 
 ## Using torus Solana API to send a transactions.
 
-Now we have instance using which we can do sending transaction, signing transactions and signing message.
+Using the `Torus` instance, dapps can call methods on the wallet.
 
-Every time you will try to sign a transaction it will automatically open torus wallet window for user where user can confirm transaction.
+Every time a user wants to sign a transaction, the wallet will open a confirmation window.
 
 ```typescript
 
@@ -137,9 +135,9 @@ See [sendTransaction api reference](https://docs.tor.us/solana-wallet/api-refere
 
 ## Using torus Solana API to send a gasless transactions.
 
-To send gasless transaction, first we need to get the feepayer's public key scoped to application.
+To send gasless transaction, first we need to get the feePayer's public key. This public key is scoped to every application.
 
-Then instantiate solana Transaction with the feepayer's public key and send it out using Torus sendTransaction api.
+Then instantiate a `Transaction` with the feePayer and send it out using Torus sendTransaction api.
 
 ```typescript
 
@@ -164,11 +162,11 @@ Then instantiate solana Transaction with the feepayer's public key and send it o
 See [getGaslessPublicKey api reference](https://docs.tor.us/solana-wallet/api-reference/solana/gasless-transaction) for more details.
 
 ## Log out handler
-To logout user, it simply requires you to call  `logout` function on torus wallet instance
+To logout user, it simply requires you to call a `logout` function on torus wallet instance
 
 ```typescript
    await torus.logout()
 ```
 
 ## DONE!!
-You can refer to api docs to explore more in to torus solana wallet apis [here](https://docs.tor.us/solana-wallet/api-reference/class)
+You can refer to API docs to explore more functionalities [here](https://docs.tor.us/solana-wallet/api-reference/class)
