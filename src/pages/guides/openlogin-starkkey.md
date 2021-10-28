@@ -15,7 +15,7 @@ This tutorial will guide you over a basic react app example to integerate Openlo
 authentication to derive stark curve friendly keys and use them for signing and verifying signed message.
 
 You can find
-[the source code of this is example on Github](https://github.com/torusresearch/OpenLoginSdk/blob/master/examples/react-example).
+[the source code of this is example on Github](https://github.com/torusresearch/OpenLoginSdk/blob/master/examples/starkware-react-example).
 
 ## Register your OpenLogin application
 
@@ -153,10 +153,16 @@ Now we have a starkware compatible key pair which will be use to sign and valida
 
 # Signing and validating a message with stark keys.
 
+In real usecase you should also deploy your account contract on starkware and initialize that contract with this public key.
+
+In this guide we are not doing any smart contract operation so we are not deploying any account contract and we are
+just using it for signing pedersen hashed random string inputs.
+
 In order to sign a message with stark keys we need to hash the message using pedersen hash function which is also
 available from `@toruslabs/openlogin-starkkey`.
 
 In code snippet below we are signing utf-8 string message by hashing with pedersen hash function in the units of 252 bits recursively and then signing it using `sign` method of `@toruslabs/openlogin-starkkey`.
+
 
 Note: The function `getPedersenHashRecursively` is for this guide demonstration purpose only, to know about message encoding for starkware messages refer to this link [here](https://docs.starkware.co/starkex-v3/starkex-deep-dive/message-encodings)
 
@@ -234,4 +240,5 @@ const handleLogout = async () => {
 ### DONE!!
 
 > You can checkout example of this example app
-> here.[the source code of this is example on Github](https://github.com/torusresearch/OpenLoginSdk/blob/master/examples/react-example).
+> here.[the source code of this is example on Github](https://github.com/torusresearch/OpenLoginSdk/blob/master/examples/starkware-react-example).
+> You can found a working demo application here:- https://openlogin-starkware.surge.sh
