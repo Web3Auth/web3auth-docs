@@ -1,5 +1,6 @@
 import { IntegrationBuilder, IntegrationStep } from "../interfaces";
 import STEPS from "./steps";
+import CommonSteps from "../common/steps";
 
 const directAuthIntegrationBuilder: IntegrationBuilder = {
   displayName: "CustomAuth",
@@ -8,7 +9,7 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
     chain: {
       displayName: "Blockchain",
       default: "Ethereum",
-      choices: ["Ethereum", "Solana"],
+      choices: ["Ethereum", "Solana", "Starkware"],
     },
     lang: {
       displayName: "Language/Framework",
@@ -29,6 +30,10 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
             { lang: "Android" },
             { lang: "iOS" }
           );
+        else if (optionValue === "Starkware")
+          availableOptions.push(
+            { lang: "React" },
+          );
         else {
           availableOptions.push({ lang: "HTML" });
         }
@@ -36,6 +41,7 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
       case "lang":
         availableOptions.push({ chain: "Ethereum" });
         if (optionValue === "HTML") availableOptions.push({ chain: "Solana" });
+        if (optionValue === "React") availableOptions.push({ chain: "Starkware" });
         break;
       default:
         throw new Error(`Unknown option key ${JSON.stringify(optionKey)}`);
@@ -117,30 +123,69 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
           );
         }
       } else if (values.lang === "React") {
-        filenames.push("react/App.js", "react/index.js");
-        steps.push(
-          {
-            ...STEPS.installWebSDK,
-            pointer: { filename: "react/App.js", range: "2" },
-          },
-          { ...STEPS.registerVerifier },
-          {
-            ...STEPS.instantiateWebSDK,
-            pointer: { filename: "react/App.js", range: "137-143" },
-          },
-          {
-            ...STEPS.serveWebSw,
-            pointer: { filename: "web/sw.js" },
-          },
-          {
-            ...STEPS.serveWebRedirect,
-            pointer: { filename: "web/redirect.html" },
-          },
-          {
-            ...STEPS.triggerWebLogin,
-            pointer: { filename: "react/App.js", range: "158-163" },
-          }
-        );
+        if (values.chain === "Ethereum") {
+          filenames.push("react/App.js", "react/index.js");
+          steps.push(
+            {
+              ...STEPS.installWebSDK,
+              pointer: { filename: "react/App.js", range: "2" },
+            },
+            { ...STEPS.registerVerifier },
+            {
+              ...STEPS.instantiateWebSDK,
+              pointer: { filename: "react/App.js", range: "137-143" },
+            },
+            {
+              ...STEPS.serveWebSw,
+              pointer: { filename: "web/sw.js" },
+            },
+            {
+              ...STEPS.serveWebRedirect,
+              pointer: { filename: "web/redirect.html" },
+            },
+            {
+              ...STEPS.triggerWebLogin,
+              pointer: { filename: "react/App.js", range: "158-163" },
+            }
+          );
+        } else if (values.chain === "Starkware") {
+          filenames.push("react/starkware/App.js");
+          steps.push(
+            {
+              ...STEPS.installWebSDK,
+              pointer: { filename: "react/starkware/App.js", range: "3" },
+            },
+            { ...STEPS.registerVerifier },
+            {
+              ...STEPS.instantiateWebSDK,
+              pointer: { filename: "react/starkware/App.js", range: "152-158" },
+            },
+            {
+              ...STEPS.serveWebSw,
+              pointer: { filename: "web/sw.js" },
+            },
+            {
+              ...STEPS.serveWebRedirect,
+              pointer: { filename: "web/redirect.html" },
+            },
+            {
+              ...STEPS.triggerWebLogin,
+              pointer: { filename: "react/starkware/App.js", range: "173-178" },
+            },
+            {
+              ...CommonSteps.getStarkKey,
+              pointer: { filename: "react/starkware/App.js", range: "213-216" },
+            },
+            {
+              ...CommonSteps.signMessageWithStarkKey,
+              pointer: { filename: "react/starkware/App.js", range: "255-269" },
+            },
+            {
+              ...CommonSteps.validateMessageWithStarkKey,
+              pointer: { filename: "react/starkware/App.js", range: "271-279" },
+            }
+          );
+        }
       } else {
         filenames.push("vue/App.vue", "vue/main.js");
         steps.push(
