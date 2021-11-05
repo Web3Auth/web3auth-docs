@@ -82,7 +82,7 @@ export default {
   methods: {
     async login() {
       await this.sdk.login({
-        loginProvider: verifier.loginProvider,
+        loginProvider: this.verifier.loginProvider,
         redirectUrl: "http://localhost:3000/redirect"
       });
       console.log("private key: ", this.sdk.privKey);
