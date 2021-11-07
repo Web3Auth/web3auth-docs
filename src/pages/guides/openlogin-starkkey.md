@@ -1,7 +1,7 @@
 ---
-title: How to use Openlogin with Starkware.
+title: How to use Openlogin with Starknet.
 image: "/contents/openlogin-starkware.png"
-description: Learn to use OpenLogin to integrate with Starkware
+description: Learn to use OpenLogin to integrate with Starknet
 order: 14
 ---
 
@@ -26,7 +26,7 @@ In order to use OpenLogin SDK, you'll need to create a project in
 
 ## Let's get started with code by installing depedencies using npm
 
-To start with using openlogin with starkware, you need to install
+To start with using openlogin with starknet, you need to install
 [Openlogin](https://www.npmjs.com/package/@toruslabs/openlogin) ,
 [Openlogin-Starkkey](https://www.npmjs.com/package/@toruslabs/openlogin-starkkey)
 
@@ -125,10 +125,10 @@ with two options:-
 Checkout [API Reference](/open-login/api-reference/usage) for
 other options available to pass in openlogin constructor and login function.
 
-## Use the openlogin private key to derive starkware key pair
+## Use the openlogin private key to derive starknet key pair
 
 After login, application will have access to the user's private key from`openlogin.privKey` instance variable.
-We cannot use this key with starkware ec curve specific signing functions,so we need to derive starkware compatible keys from `openlogin.privKey`.
+We cannot use this key with starknet ec curve specific signing functions,so we need to derive starknet compatible keys from `openlogin.privKey`.
 
 In the code snippet below `getStarkHDAccount` function creates a HD account from openlogin's key. It will return
 hex encoded private key and uncompressed stark public key.
@@ -142,14 +142,14 @@ keypairs for different networks. Refer to `STARKNET_NETWORKS` type for supported
     import { getStarkHDAccount, STARKNET_NETWORKS } from "@toruslabs/openlogin-starkkey";
     ...
     ...
-    const getStarkAccount = (index: number): { pubKey: string; privKey: string } => {
-        const account = getStarkHDAccount(openlogin.privKey, index, STARKNET_NETWORKS.testnet);
-        return account;
+    const getStarkAccount = (index: number): ec.KeyPair => {
+      const account = getStarkHDAccount(openlogin.privKey, index, STARKNET_NETWORKS.testnet);
+      return account;
     };
 
 ```
 
-Now we have a starkware compatible key pair which will be use to sign and validate a signed message in the next step.
+Now we have a starknet compatible key pair which will be use to sign and validate a signed message in the next step.
 
 # Signing and validating a message with stark keys.
 
@@ -169,14 +169,14 @@ Note: The function `getPedersenHashRecursively` is for this guide demonstration 
 
 ```js
 
-
- import { getStarkHDAccount, starkEc, sign, verify, pedersen, STARKNET_NETWORKS } from "@toruslabs/openlogin-starkkey";
+ import { getStarkHDAccount, starkEc, sign, verify, STARKNET_NETWORKS } from "@toruslabs/openlogin-starkkey";
  import { binaryToHex, binaryToUtf8, bufferToBinary, bufferToHex, hexToBinary } from "enc-utils";
+ import { pedersen } from "starknet";
 
-  /**
+   /**
    *
    * @param str utf 8 string to be signed
-   * @param prefix hex prefix padded to 252 bits (optional)
+   * @param prefix utf-8 prefix padded to 252 bits (optional)
    * @returns
    */
   const getPedersenHashRecursively = (str: string, prefix?: string): string => {
@@ -186,38 +186,236 @@ Note: The function `getPedersenHashRecursively` is for this guide demonstration 
     const rounds = Math.ceil(binaryStr.length / 252);
     if (rounds > 1) {
       const currentChunkHex = binaryToHex(binaryStr.substring(0, 252));
-      if (prefix) {
-        const hash = pedersen([prefix, currentChunkHex]);
-        const pendingStr = binaryToUtf8(binaryStr.substring(252));
-        return getPedersenHashRecursively(pendingStr.replace("\n", ""), hash);
-      }
-      // send again with default prefix,
-      // this prefix is only relevant for this example and
-      // has no relevance with starkware message encoding.
-      return getPedersenHashRecursively(str, binaryToHex(bufferToBinary(Buffer.from(TEST_MESSAGE_SUFFIX, "utf8")).padEnd(252, "0")));
+      const hash = pedersen([strToHex(TEST_MESSAGE_SUFFIX), new BN(currentChunkHex, "hex").toString(16)]);
+      const pendingStr = binaryToUtf8(binaryStr.substring(252));
+      return getPedersenHashRecursively(pendingStr.replace("\n", ""), hash);
     }
     const currentChunkHex = binaryToHex(binaryStr.padEnd(252, "0"));
-    return pedersen([prefix, currentChunkHex]);
+    return pedersen([utils.number.toBN(strToHex(TEST_MESSAGE_SUFFIX), "hex"), utils.number.toBN(currentChunkHex, "hex")]);
   };
 
-    // signing a pedersen hashed message with stark private key
-   const signMessageWithStarkKey = (message: string): ec.Signature => {
+
+  const signMessageWithStarkKey = (e: any) => {
+    e.preventDefault();
     const accIndex = 1;
-    const account = getStarkAccount(accIndex);
-    const keyPair = starkEc.keyFromPrivate(account.privKey);
+    const message = e.target[0].value;
+    const keyPair = getStarkAccount(accIndex);
     const hash = getPedersenHashRecursively(message);
-    const signedMesssage = sign(keyPair, hash);
-    return signedMessage
+    const signed = sign(keyPair, removeHexPrefix(hash));
+    printToConsole({
+      pedersenHash: hash,
+      info: `Message signed successfully: OPENLOGIN STARKWARE- ${message}`,
+      signedMesssage: signed,
+    });
   };
 
-   // validating a signed message using stark public key
-   const validateStarkMessage = (signedMessage: ec.Signature) => {
+  const validateStarkMessage = (e: any) => {
+    e.preventDefault();
     const signingAccountIndex = 1;
-    const account = getStarkAccount(signingAccountIndex);
-    const keyPair = starkEc.keyFromPublic(account.pubKey, "hex");
-    const hash = getPedersenHashRecursively(signingMessage);
-    const isVerified = verify(keyPair, hash, signedMessage as unknown as ec.Signature);
+    const originalMessage = e.target[0].value;
+    const signedMessage = JSON.parse(e.target[1].value) as ec.Signature;
+    if (!signedMessage.r || !signedMessage.s || signedMessage.recoveryParam === undefined) {
+      printToConsole("Invalid signature format");
+      return;
+    }
+    const finalSignature = {
+      r: new BN(signedMessage.r, "hex"),
+      s: new BN(signedMessage.s, "hex"),
+      recoveryParam: signedMessage.recoveryParam,
+    };
+    const keyPair = getStarkAccount(signingAccountIndex);
+    const hash = getPedersenHashRecursively(originalMessage);
+    const isVerified = verify(keyPair, removeHexPrefix(hash), finalSignature as unknown as ec.Signature);
     printToConsole(`Message is verified: ${isVerified}`);
+  };
+```
+
+## Deploying account contract with stark public key.
+
+In starknet account model is different from ethereum, unlike ethereum's externally owned accounts, in starknet every account is a contract and that contract forwards messages signed from the account's keypair to invoke specified destination contract address function.
+
+To begin with we need to can deploy a account contract and link it with starknet's keypair public key. In this guide we are using openzeppelin's implementation of account contract.
+
+Account deployment should/can be effectively done from backend code but here for demo purpose we are doing from frontend js only.
+
+Before deploying we need to compile our contract, you can follow this [tutorial](https://www.cairo-lang.org/docs/quickstart.html) to setup your cairo lang environment.
+
+We will be using a precompiled Account contract available [here](https://github.com/himanshuchawla009/cairo-contracts/blob/master/account_compiled.json) for this example.
+
+In given code snippet we are deploying Account contract and initializing with stark public key in the
+contract constructor.
+
+Note: This example uses starknet alpha3 account contract implementation, if you are using older Account
+contract, function signatures might be different for you.
+
+
+```ts
+import { getStarkHDAccount, STARKNET_NETWORKS, sign, verify } from "@toruslabs/openlogin-starkkey";
+import { binaryToHex, binaryToUtf8, bufferToBinary, bufferToHex, hexToBinary, removeHexPrefix } from "enc-utils";
+import type { ec } from "elliptic";
+import { deployContract, CompiledContract, waitForTx, Contract, Abi, utils, hashMessage, pedersen } from "starknet";
+import CompiledAccountContractAbi from "./contracts/account_abi.json";
+import { BN } from "bn.js";
+
+ useEffect(() => {
+    setLoading(true);
+    fetch("https://raw.githubusercontent.com/himanshuchawla009/cairo-contracts/master/account_compiled.json")
+      .then((response) => response.json())
+      .then((responseJson) => {
+        setCompiledAccountContract(responseJson);
+      })
+      .catch((error) => {
+        printToConsole(error);
+      });
+     ...
+     ...
+  }, []);
+  const deployAccountContract = async () => {
+    try {
+      if (!CompiledAccountContract) {
+        printToConsole("Compiled contract is not downloaded, plz try again");
+        return;
+      }
+      const accountIndex = 1;
+      const keyPair = getStarkAccount(accountIndex);
+      const compressedPubKey = keyPair.getPublic().getX().toString(16, 64);
+      const txRes = await deployContract(JSON.parse(JSON.stringify(CompiledAccountContract)) as CompiledContract, [
+        new BN(compressedPubKey, 16).toString(),
+      ]);
+      printToConsole("deployed account contract,", {
+        contractRes: txRes,
+        l2AccountAddress: txRes.address,
+        txStatusLink: `https://voyager.online/tx/${txRes.transaction_hash}`,
+      });
+      await waitForTx(txRes.transaction_hash);
+      printToConsole("successfully included in a block on l2", {
+        txStatusLink: `https://voyager.online/tx/${txRes.transaction_hash}`,
+      });
+    } catch (error) {
+      printToConsole(error);
+    }
+  };
+```
+
+## Initializing Account contract with contract address.
+
+After deploying account contract with public key we need to initialize the contract with account's address.
+
+Contract deployment response will return us the contract address as `txRes.address` in above code snippet,
+We need to initialize our contract with this address by calling initialize function of the contract.
+Similar to ethereum we need contract abi, address, method and calldata to invoke any function on starknet
+contract.
+
+Here is an example snippet to invoke initialize function with the contract address. After account contract will be initialized we will be able to call execute function of account contract which is basically used to forward messages to any contract on starknet. It acts as an gateway for your account to communicate with any other contract on starknet.
+
+Ideally you want to save this contract address and wallet public key mapping somewhere in your backend or any account registry contract on starknet. In this example we are not persisting it anywhere.
+
+
+```ts
+import { waitForTx, Contract, Abi, utils } from "starknet";
+import CompiledAccountContractAbi from "./contracts/account_abi.json";
+import { BN } from "bn.js";
+  const initializeAccountContract = async () => {
+    try {
+      if (!contractAddress) {
+        printToConsole("PLease input contract/account address");
+        return;
+      }
+      const contract = new Contract(CompiledAccountContractAbi as Abi[], contractAddress);
+
+      const txRes = await contract.invoke("initialize", {
+        _address: contractAddress,
+      });
+
+      printToConsole("deployed account contract,", {
+        contractRes: txRes,
+        txStatusLink: `https://voyager.online/tx/${txRes.transaction_hash}`,
+      });
+      await waitForTx(txRes.transaction_hash);
+      printToConsole("successfully included in a block", {
+        txStatusLink: `https://voyager.online/tx/${txRes.transaction_hash}`,
+      });
+    } catch (error) {
+      printToConsole(error);
+    }
+  };
+```
+
+## Execute signed message call on account contract
+
+Now we have our contract initialized, we can call execute function of contract which accepts following parameters:-
+
+- to: Address of the smart contract which want to sent this message to.
+- selector: Keccak hash of function name which want to invoke on smart contract.
+- calldata: Array of function args
+
+We will be using invoke function of starknet js lib to call execute function and we will be calling `set_public_key` function of same account that we just deployed earlier, we will set `to` param as address of same account contract.
+
+>>Note: this function is setting a new public key for the account that belong to account index 2
+  of this hd account, once this transaction is successful, you can only using account index 2 for
+  executing future transactions.
+
+```ts
+
+import { getStarkHDAccount, STARKNET_NETWORKS, sign, verify } from "@toruslabs/openlogin-starkkey";
+import { binaryToHex, binaryToUtf8, bufferToBinary, bufferToHex, hexToBinary, removeHexPrefix } from "enc-utils";
+import type { ec } from "elliptic";
+import { deployContract, CompiledContract, waitForTx, Contract, Abi, utils, hashMessage, pedersen } from "starknet";
+import CompiledAccountContractAbi from "./contracts/account_abi.json";
+import { BN } from "bn.js";
+
+  const updatePublickeyInContract = async () => {
+    try {
+      if (!contractAddress) {
+        printToConsole("PLease input contract/account address");
+        return;
+      }
+      const newAccountIndex = 3;
+      const keyPair = getStarkAccount(newAccountIndex);
+      const compressedPubKey = keyPair.getPublic().getX().toString(16, 64);
+      const account = new Contract(CompiledAccountContractAbi as Abi[], contractAddress);
+
+      const { res: nonceRes } = await account.call("get_nonce");
+      const msgHash = removeHexPrefix(
+        hashMessage(
+          contractAddress,
+          contractAddress,
+          utils.starknet.getSelectorFromName("set_public_key"),
+          [
+            new BN(compressedPubKey, 16).toString(),
+            // contractAddress,
+          ],
+          nonceRes.toString()
+        )
+      );
+
+      const signingAccountIndex = 1;
+      const signingKeyPair = getStarkAccount(signingAccountIndex);
+      // eslint-disable-next-line no-debugger
+      debugger;
+      const { r, s } = sign(signingKeyPair, msgHash);
+      const res = await account.invoke(
+        "execute",
+        {
+          to: contractAddress,
+          selector: utils.starknet.getSelectorFromName("set_public_key"),
+          calldata: [
+            new BN(compressedPubKey, 16).toString(),
+            // contractAddress,
+          ],
+        },
+        [utils.number.toHex(r), utils.number.toHex(s)]
+      );
+
+      printToConsole(res);
+      await waitForTx(res.transaction_hash);
+      printToConsole("transaction successfully included in a block", {
+        txStatusLink: `https://voyager.online/tx/${res.transaction_hash}`,
+      });
+    } catch (error) {
+      console.log(error);
+      printToConsole((error as Error).toString());
+    }
   };
 ```
 
