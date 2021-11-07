@@ -29,10 +29,13 @@ In order to use OpenLogin SDK, you'll need to create a project in
 To start with using openlogin with starknet, you need to install
 [Openlogin](https://www.npmjs.com/package/@toruslabs/openlogin) ,
 [Openlogin-Starkkey](https://www.npmjs.com/package/@toruslabs/openlogin-starkkey)
+[Starknet.js](https://www.npmjs.com/package/starknet)
 
 ```shell
 npm install --save @toruslabs/openlogin
 npm install --save @toruslabs/openlogin-starkkey
+npm install --save starknet
+
 ```
 
 
@@ -151,7 +154,7 @@ keypairs for different networks. Refer to `STARKNET_NETWORKS` type for supported
 
 Now we have a starknet compatible key pair which will be use to sign and validate a signed message in the next step.
 
-# Signing and validating a message with stark keys.
+## Signing and validating a message with stark keys.
 
 In real usecase you should also deploy your account contract on starkware and initialize that contract with this public key.
 
@@ -351,9 +354,9 @@ Now we have our contract initialized, we can call execute function of contract w
 
 We will be using invoke function of starknet js lib to call execute function and we will be calling `set_public_key` function of same account that we just deployed earlier, we will set `to` param as address of same account contract.
 
->>Note: this function is setting a new public key for the account that belong to account index 2
-  of this hd account, once this transaction is successful, you can only using account index 2 for
-  executing future transactions.
+> Note: While deployement we initialized this contract with account index 1 public key and now this function is setting a new public key in to this contract that belongs to account index 2
+of this hd account, once this transaction is successful, you can only using account index 2 for
+executing future transactions.
 
 ```ts
 
