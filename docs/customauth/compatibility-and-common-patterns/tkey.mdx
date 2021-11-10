@@ -24,7 +24,7 @@ tKey manages private keys using the user’s device, private input, and wallet s
 | `@tkey/share-serialization`    | [![npm version](https://img.shields.io/npm/v/@tkey/share-serialization/latest.svg)](https://www.npmjs.com/package/@tkey/share-serialization/v/latest)       | [![minzip](https://img.shields.io/bundlephobia/minzip/@tkey/share-serialization/latest.svg)](https://bundlephobia.com/result?p=@tkey/share-serialization@latest)       | Import/export a share from tKey                                       |
 | 🐉 **Torus**                   |
 | `@tkey/default`                | [![npm version](https://img.shields.io/npm/v/@tkey/default/latest.svg)](https://www.npmjs.com/package/@tkey/default/v/latest)                               | [![minzip](https://img.shields.io/bundlephobia/minzip/@tkey/default/latest.svg)](https://bundlephobia.com/result?p=@tkey/default@latest)                               | Bundles `Core` and `Modules` into one importable package                     |
-| `@tkey/service-provider-torus` | [![npm version](https://img.shields.io/npm/v/@tkey/service-provider-torus/latest.svg)](https://www.npmjs.com/package/@tkey/service-provider-torus/v/latest) | [![minzip](https://img.shields.io/bundlephobia/minzip/@tkey/service-provider-torus/latest.svg)](https://bundlephobia.com/result?p=@tkey/service-provider-torus@latest) | `@service-provider-base` with DirectAuth functionality                       |
+| `@tkey/service-provider-torus` | [![npm version](https://img.shields.io/npm/v/@tkey/service-provider-torus/latest.svg)](https://www.npmjs.com/package/@tkey/service-provider-torus/v/latest) | [![minzip](https://img.shields.io/bundlephobia/minzip/@tkey/service-provider-torus/latest.svg)](https://bundlephobia.com/result?p=@tkey/service-provider-torus@latest) | `@service-provider-base` with CustomAuth functionality                       |
 | `@tkey/storage-layer-torus`    | [![npm version](https://img.shields.io/npm/v/@tkey/storage-layer-torus/latest.svg)](https://www.npmjs.com/package/@tkey/storage-layer-torus/v/latest)       | [![minzip](https://img.shields.io/bundlephobia/minzip/@tkey/storage-layer-torus/latest.svg)](https://bundlephobia.com/result?p=@tkey/storage-layer-torus@latest)       | get/set metadata for various shares                                          |
 | 🐉 **Low-Level**               |
 | `@tkey/common-types`           | [![npm version](https://img.shields.io/npm/v/@tkey/common-types/latest.svg)](https://www.npmjs.com/package/@tkey/common-types/v/latest)                     | [![minzip](https://img.shields.io/bundlephobia/minzip/@tkey/common-types/latest.svg)](https://bundlephobia.com/result?p=@tkey/common-types@latest)                     | Shared [TypeScript](https://www.typescriptlang.org/) Types                   |
@@ -34,7 +34,7 @@ tKey manages private keys using the user’s device, private input, and wallet s
 
 ### Pre-cursors
 
-Before including the tKey SDK, we first need to setup [directAuth](https://github.com/torusresearch/torus-direct-web-sdk) for the Google logins etc... Below are several steps:
+Before including the tKey SDK, we first need to setup [CustomAuth](https://github.com/torusresearch/customauth) for the Google logins etc... Below are several steps:
 
 `npm i @tkey/default`
 
@@ -56,8 +56,8 @@ Packages who wish to use torus defaults can use `@tkey/default` to initialize
 import ThresholdKey from "@tkey/default";
 import WebStorageModule, { WEB_STORAGE_MODULE_NAME } from "@tkey/web-storage";
 
-// Torus service provider uses directAuth to fetch users private key from the set of Torus nodes. This private key is one of the share in TSS.
-// directAuth requires a deployment of a verifier with your clientId. Use developer.tor.us to create your verifier.
+// Torus service provider uses customAuth to fetch users private key from the set of Torus nodes. This private key is one of the share in TSS.
+// CustomAuth requires a deployment of a verifier with your clientId. Use developer.tor.us to create your verifier.
 // Can use ServiceProviderBase which takes private key as input instead
 const serviceProvider = new TorusServiceProvider({
   directParams: {

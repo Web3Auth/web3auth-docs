@@ -92,7 +92,7 @@ module.exports = {
             },
             {
               label: "CustomAuth",
-              href: "https://directauth.io",
+              href: "https://customauth.io",
             },
             {
               label: "OpenLogin",

@@ -1,5 +1,5 @@
 import React from "react";
-import TorusSdk from "@toruslabs/torus-direct-web-sdk";
+import TorusSdk from "@toruslabs/customauth";
 import "./App.css";
 
 const GOOGLE = "google";
