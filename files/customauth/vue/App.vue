@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import TorusSdk from "@toruslabs/torus-direct-web-sdk";
+import TorusSdk from "@toruslabs/customauth";
 const GOOGLE = "google";
 const FACEBOOK = "facebook";
 const REDDIT = "reddit";

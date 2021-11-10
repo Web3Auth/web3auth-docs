@@ -16,7 +16,7 @@ This tutorial will guide you on how to integrate CustomAuth with AWS cognito ser
 We will be authenticating users with google idp using aws cognito. However you can can enable other providers from aws cognito console based on your requirements.
 
 You can find
-[the source code of this is example on Github](https://github.com/torusresearch/torus-direct-web-sdk/tree/master/examples/vue-app).
+[the source code of this is example on Github](https://github.com/torusresearch/customauth/tree/master/examples/vue-app).
 
 ## Configuring Cognito user pool in aws cognito.
 
@@ -83,20 +83,20 @@ Do the following steps in order to create your custom verifier:-
 
 ## Let's get started with code by installing depedency using npm
 
-[TorusDirectWebSDK](https://www.npmjs.com/package/@toruslabs/torus-direct-web-sdk)
+[TorusDirectWebSDK](https://www.npmjs.com/package/@toruslabs/customauth)
 [JWTDecode](https://www.npmjs.com/package/jwt-decode)
 
 ```shell
-npm i @toruslabs/torus-direct-web-sdk --save
+npm i @toruslabs/customauth --save
 ```
 
 
 ## Login with Aws cognito hosted ui
 
-In order to login with aws cognito hosted ui, we just have to initialize torus `torus-direct-web-sdk` and call triggerLogin function as given in code snippet below.
+In order to login with aws cognito hosted ui, we just have to initialize torus `customauth` and call triggerLogin function as given in code snippet below.
 
 ```js
- import TorusSdk, { UX_MODE } from "@toruslabs/torus-direct-web-sdk";
+ import TorusSdk, { UX_MODE } from "@toruslabs/customauth";
  ...
  ...
   async mounted() {
