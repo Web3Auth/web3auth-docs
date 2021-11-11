@@ -76,7 +76,7 @@ module.exports = {
             "solana-wallet/api-reference/account",
             "solana-wallet/api-reference/display",
             // "solana-wallet/api-reference/address-resolver",
-            // "solana-wallet/api-reference/topup",
+            "solana-wallet/api-reference/topup",
             { "Solana API" : [
               // "solana-wallet/api-reference/solana/solana-api",
               "solana-wallet/api-reference/solana/send-transaction",
@@ -91,7 +91,7 @@ module.exports = {
         {
           Features: [
             "solana-wallet/features/accountrecovery",
-            // "solana-wallet/features/purchasecryptocurrency",
+            "solana-wallet/features/purchasecryptocurrency",
             "solana-wallet/features/exportprivatekey",
             // "solana-wallet/features/language",
             // "solana-wallet/features/nameresolver",
