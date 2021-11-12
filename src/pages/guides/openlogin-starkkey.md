@@ -156,11 +156,6 @@ Now we have a starknet compatible key pair which will be use to sign and validat
 
 ## Signing and validating a message with stark keys.
 
-In real usecase you should also deploy your account contract on starkware and initialize that contract with this public key.
-
-In this guide we are not doing any smart contract operation so we are not deploying any account contract and we are
-just using it for signing pedersen hashed random string inputs.
-
 In order to sign a message with stark keys we need to hash the message using pedersen hash function which is also
 available from `@toruslabs/openlogin-starkkey`.
 
@@ -245,7 +240,7 @@ Before deploying we need to compile our contract, you can follow this [tutorial]
 
 We will be using a precompiled Account contract available [here](https://github.com/himanshuchawla009/cairo-contracts/blob/master/account_compiled.json) for this example.
 
-In given code snippet we are deploying Account contract and initializing with stark public key in the
+In given code snippet we are deploying account contract and initializing it with stark public key in the
 contract constructor.
 
 Note: This example uses starknet alpha3 account contract implementation, if you are using older Account
@@ -354,7 +349,7 @@ Now we have our contract initialized, we can call execute function of contract w
 
 We will be using invoke function of starknet js lib to call execute function and we will be calling `set_public_key` function of same account that we just deployed earlier, we will set `to` param as address of same account contract.
 
-> Note: While deployement we initialized this contract with account index 1 public key and now this function is setting a new public key in to this contract that belongs to account index 2
+> Note: While deployment we initialized this contract with account index 1 public key and now this function is setting a new public key in to this contract that belongs to account index 2
 of this hd account, once this transaction is successful, you can only using account index 2 for
 executing future transactions.
 
