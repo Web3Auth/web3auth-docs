@@ -6,7 +6,7 @@ title: How Torus Works
 
 Existing private key management solutions have come a long way in terms of user experience. However, many of these solutions make tradeoffs with reduced guarantees on custody and censorship-resistance. For example, password-manager key management solutions can restrict user access by refusing to return the encrypted key from their servers. Which then ultimately derives down to resorting to the usual approach of protecting private keys via redundant backups.
 
-Torus Key Infrastructure(TKI) leverages on variations of threshold key management to achieve a great user experience without sacrificing secuirty, while retaining end-user autonomy and control over the private key.
+Torus Key Infrastructure(TKI) leverages on variations of threshold key management to achieve a great user experience without sacrificing security, while retaining end-user autonomy and control over the private key.
 
 TKI manages private keys using the user's device, private input, and/or OAuth authentication methods (i.e. Google, Passwordless, Reddit) via Torus nodes. As long as a user has access to 2 out of 3 (2/3) of these shares, they will be able to retrieve their private key.
 
@@ -19,8 +19,8 @@ The user starts by generating a 2 out of 3 (2/3) Shamir Secret Sharing. This giv
 <img  height="500" style={{display:"block","margin-bottom":"20px", "margin-top":"20px", "margin-left": "auto", "margin-right": "auto"}} src="/contents/tki-overview-architecture.png"/>
 
 1. **ShareA is stored on the user's device**: Implementation is device and system specific. For example, on mobile devices, the share could be stored in device storage secured via biometrics.
-2. **ShareB is managed by a login service via node operators**: This share is further split amonst a network of nodes and retrieved via conventional authentication flows.
-3. **ShareC is a recovery share**: An extra share to be kept by the user, possibly kept on a seperate device, downloaded or based on user input with enough entropy (eg. password, security questions, hardware device etc.).
+2. **ShareB is managed by a login service via node operators**: This share is further split amongst a network of nodes and retrieved via conventional authentication flows.
+3. **ShareC is a recovery share**: An extra share to be kept by the user, possibly kept on a separate device, downloaded or based on user input with enough entropy (eg. password, security questions, hardware device etc.).
 
 Similar to existing 2FA systems, a user needs to prove ownership of at least 2 out of 3 (2/3) shares, in order to retrieve his private key. This initial setup provides several benefits.
 
@@ -45,7 +45,7 @@ Users can increase security on their key by increasing the 2/3 threshold to a hi
 
 ### Chain/platform agnostic via native signatures
 
-TKI's resulting interface is a native cryptogrpahic key pair, making it compatible with almost all cryptogrpahic constructs on various platforms and ellpitic curves. Secret sharing and share refresh is also done completely off-chain, which makes TKI usable on blockchains with limited smart contract functionality.
+TKI's resulting interface is a native cryptographic key pair, making it compatible with almost all cryptographic constructs on various platforms and elliptic curves. Secret sharing and share refresh is also done completely off-chain, which makes TKI usable on blockchains with limited smart contract functionality.
 
 ### Censorship resistant
 
