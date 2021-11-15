@@ -443,4 +443,4 @@ const handleLogout = async () => {
 
 > You can checkout example of this example app
 > here.[the source code of this is example on Github](https://github.com/torusresearch/OpenLoginSdk/blob/master/examples/starkware-react-example).
-> You can found a working demo application here:- https://openlogin-starkware.surge.sh
+> You can found a working demo application here:- https://openlogin-starknet.surge.sh
