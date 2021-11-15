@@ -11,8 +11,14 @@ import TabItem from "@theme/TabItem";
 
 ## Introduction
 
-This tutorial will guide you over a basic react app example to integerate Openlogin
-authentication to derive stark curve friendly keys and use them for signing and verifying signed message.
+This tutorial will guide you with steps to integerate Openlogin
+authentication with Starknet in a react app.
+
+At the end of this guide you should be able to:-
+- Authenticate user with openlogin.
+- Derive starknet friendly keys from user's openlogin private key.
+- Signing and verifying arbitrary messages with stark keys.
+- Deploy contracts and sign transactions on starknet.
 
 You can find
 [the source code of this is example on Github](https://github.com/torusresearch/OpenLoginSdk/blob/master/examples/starkware-react-example).
@@ -138,7 +144,7 @@ hex encoded private key and uncompressed stark public key.
 
 You can pass account index to derive multiple keys deterministically from single openlogin's key.
 Also note that we are passing `STARKNET_NETWORKS.testnet` as a argument to this function, it will derive different
-keypairs for different networks. Refer to `STARKNET_NETWORKS` type for supported networks.
+key pairs for different networks. Refer to `STARKNET_NETWORKS` type for supported networks.
 
 
 ```js
@@ -232,18 +238,18 @@ Note: The function `getPedersenHashRecursively` is for this guide demonstration 
 
 In starknet account model is different from ethereum, unlike ethereum's externally owned accounts, in starknet every account is a contract and that contract forwards messages signed from the account's keypair to invoke specified destination contract address function.
 
-To begin with we need to can deploy a account contract and link it with starknet's keypair public key. In this guide we are using openzeppelin's implementation of account contract.
+To begin with we need to can deploy a account contract and link it with starknet's keypair public key. In this guide we are using open-zeppelin's implementation of account contract.
 
 Account deployment should/can be effectively done from backend code but here for demo purpose we are doing from frontend js only.
 
 Before deploying we need to compile our contract, you can follow this [tutorial](https://www.cairo-lang.org/docs/quickstart.html) to setup your cairo lang environment.
 
-We will be using a precompiled Account contract available [here](https://github.com/himanshuchawla009/cairo-contracts/blob/master/account_compiled.json) for this example.
+We will be using a pre-compiled Account contract available [here](https://github.com/himanshuchawla009/cairo-contracts/blob/master/account_compiled.json) for this example.
 
 In given code snippet we are deploying account contract and initializing it with stark public key in the
 contract constructor.
 
-Note: This example uses starknet alpha3 account contract implementation, if you are using older Account
+> Note: This example uses starknet alpha3 account contract implementation, if you are using older Account
 contract, function signatures might be different for you.
 
 
@@ -437,4 +443,4 @@ const handleLogout = async () => {
 
 > You can checkout example of this example app
 > here.[the source code of this is example on Github](https://github.com/torusresearch/OpenLoginSdk/blob/master/examples/starkware-react-example).
-> You can found a working demo application here:- https://openlogin-starkware.surge.sh
+> You can found a working demo application here:- https://openlogin-starknet.surge.sh
