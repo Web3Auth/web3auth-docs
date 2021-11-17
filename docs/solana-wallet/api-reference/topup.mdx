@@ -11,6 +11,8 @@ Cryptocurrency purchases through our fiat-to-crypto partners.
 Initiates a top up tx with the specified provider right from the dapp. Please
 refer below for supported values of params and providers
 
+*Currently only Ramp Network is supported.
+
 :::info
 
 Topup api doesn't require the user to be logged in with Torus
@@ -33,8 +35,10 @@ const paymentStatus = await torus.initiateTopup(provider, params);
   - `fiatValue` - `Number` \(optional\) : The fiat value. It must be between the
     max and min value supported by that provider
   - `selectedCryptoCurrency` - `string` \(optional\) : The crypto currency
-    supported. e.g.: "ETH". In case an unsupported crypto currency is specified,
+    supported. e.g.: "SOLANA_SOL". In case an unsupported crypto currency is specified,
     it throws
+  - `cryptoAmount` - `Number` \(optional\) : The crypto currency amount. Converted fiat value must be between the
+    max and min value supported by that provider
 
 **Returns**
 
@@ -45,23 +49,10 @@ const paymentStatus = await torus.initiateTopup(provider, params);
 
 ```javascript
 torus.paymentProviders = {
-  moonpay: {
-    minOrderValue: 24.99,
-    maxOrderValue: 2000,
-    validCurrencies: ["USD", "EUR", "GBP"],
-    validCryptoCurrencies: ["ETH", "DAI", "TUSD", "USDC", "USDT"],
-  },
-  wyre: {
-    minOrderValue: 20,
-    maxOrderValue: 250,
-    validCurrencies: ["USD"],
-    validCryptoCurrencies: ["ETH", "DAI", "USDC"],
-  },
   rampnetwork: {
     minOrderValue: 1,
-    maxOrderValue: 10000,
-    validCurrencies: ["GBP", "EUR"],
-    validCryptoCurrencies: ["ETH", "DAI", "USDC"],
+    maxOrderValue: 100,
+    validCryptoCurrencies: ["SOLANA_SOL", "SOLANA_USDC"],
   },
 };
 ```
@@ -72,21 +63,22 @@ interface PaymentParams {
   selectedCurrency?: string;
   fiatValue?: Number;
   selectedCryptoCurrency?: string;
+  crytoAmount?: Number;
 }
 ```
 
 **Examples**
 
 ```javascript
-const paymentStatus = await torus.initiateTopup("wyre");
+// Default using wallet selected address
+const paymentStatus = await torus.initiateTopup("rampnetwork");
 ```
 
 ```javascript
-const paymentStatus = await torus.initiateTopup("moonpay", {
+const paymentStatus = await torus.initiateTopup("rampnetwork", {
   selectedCurrency: "USD",
-  fiatValue: 50,
-  selectedCryptoCurrency: "ETH",
-  selectedAddress: "0xabc...",
+  selectedCryptoCurrency: "SOLANA_SOL",
+  selectedAddress: "< Recipient's Solana Public Key(base58) >",
 });
 ```
 
@@ -95,3 +87,6 @@ const paymentStatus = await torus.initiateTopup("rampnetwork", {
   selectedCurrency: "USD",
 });
 ```
+
+*Note - for Ramp Network selectedCurrency and fiatValue have to be used together.
+For more details please check Ramp Network documentation(https://docs.ramp.network/configuration#fiatcurrency-and-fiatvalue)

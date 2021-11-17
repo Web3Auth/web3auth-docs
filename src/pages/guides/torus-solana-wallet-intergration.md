@@ -161,6 +161,20 @@ Then instantiate a `Transaction` with the feePayer and send it out using Torus s
 
 See [getGaslessPublicKey api reference](https://docs.tor.us/solana-wallet/api-reference/solana/gasless-transaction) for more details.
 
+## Using Torus Solana Api to initiate top up.
+Currently Torus Solana Api only support top up from provider ramp network.
+
+
+```typescript
+  const paymentStatus = await torus.initateTopup("rampnetwork");
+
+  // topup with custom address
+  const paymentStatus = torus.initateTopup("rampnetwork", { selectedAddress : "< Recipient's Solana Public Key(base58) >"});
+
+```
+
+See [initateTopup api reference](https://docs.tor.us/solana-wallet/api-reference/topup) for more details.
+
 ## Log out handler
 To logout user, it simply requires you to call a `logout` function on torus wallet instance
 
