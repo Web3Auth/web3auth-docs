@@ -1,6 +1,6 @@
 ---
 title: How to use Openlogin with Starknet.
-image: "/contents/openlogin-starkware.png"
+image: "/contents/torus-starknet.png"
 description: Learn to use OpenLogin to integrate with Starknet
 order: 14
 ---
