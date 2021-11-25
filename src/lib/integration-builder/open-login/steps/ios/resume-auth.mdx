@@ -1,0 +1,20 @@
+---
+title: Resume auth from redirect
+---
+
+In order for the SDK to receive and process auth result from redirect, in your
+`App.swift` (or `AppDelegate.swift`), call `OpenLogin.resumeAuth` with the
+redirect URL.
+
+```swift
+@main
+struct MainApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView().onOpenURL { url in
+                OpenLogin.resumeAuth(url)
+            }
+        }
+    }
+}
+```

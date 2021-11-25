@@ -3,7 +3,7 @@ import STEPS from "./steps";
 
 const AVAILABLE_EXAMPLES = {
   Ethereum: {
-    langs: ["HTML", "Android"],
+    langs: ["HTML", "Android", "iOS"],
   },
   Solana: {
     langs: ["React"],
@@ -42,6 +42,9 @@ const AVAILABLE_LANGS = {
   Android: {
     examples: ["Ethereum"],
   },
+  iOS: {
+    examples: ["Ethereum"],
+  },
 };
 
 const openLoginIntegrationBuilder: IntegrationBuilder = {
@@ -66,7 +69,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
     lang: {
       displayName: "Language/Framework",
       default: "HTML",
-      choices: ["HTML", "React", "Android"],
+      choices: ["HTML", "React", "Android", "iOS"],
     },
   },
 
@@ -376,11 +379,34 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
           },
           {
             ...STEPS.androidInitialize,
-            pointer: { filename: "android/MainActivity.kt", range: "48-57,16-18" },
+            pointer: {
+              filename: "android/MainActivity.kt",
+              range: "48-57,16-18",
+            },
           },
           {
             ...STEPS.androidNextSteps,
           }
+        );
+      } else if (lang === "iOS") {
+        filenames.push("ios/OpenLogin.plist");
+        filenames.push("ios/ContentView.swift");
+        filenames.push("ios/MainApp.swift");
+        steps.push(
+          { ...STEPS.iosInstallation },
+          {
+            ...STEPS.iosConfigure,
+            pointer: { filename: "ios/OpenLogin.plist", range: "5-8" },
+          },
+          {
+            ...STEPS.iosAuth,
+            pointer: { filename: "ios/ContentView.swift", range: "8-24" },
+          },
+          {
+            ...STEPS.iosResumeAuth,
+            pointer: { filename: "ios/MainApp.swift", range: "9" },
+          },
+          { ...STEPS.iosNextSteps }
         );
       }
     }

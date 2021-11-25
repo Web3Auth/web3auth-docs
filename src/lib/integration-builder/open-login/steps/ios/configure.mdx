@@ -1,0 +1,33 @@
+---
+title: Configure OpenLogin project
+---
+
+In order to use OpenLogin you need to provide your OpenLogin **ClientId** and
+which **Network** to run it.
+
+Go to [Torus Developer](https://developer.tor.us), create or open an existing
+OpenLogin project and copy your project ID, which is the **ClientId**.
+
+<button
+  class="button button--primary"
+  style={{ marginBottom: 16 }}
+  onClick={() => (window.location = "https://developer.tor.us")}
+>
+  Go to Developer Dashboard
+</button>
+
+In your application bundle add a plist file named **OpenLogin.plist** with the
+following information:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>ClientId</key>
+  <string>YOUR_OPENLOGIN_CLIENT_ID</string>
+  <key>Network</key>
+  <string>mainnet | testnet</string>
+</dict>
+</plist>
+```
