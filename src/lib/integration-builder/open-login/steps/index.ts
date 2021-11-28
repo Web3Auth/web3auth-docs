@@ -42,6 +42,22 @@ import * as depositWithdrawArbitrum from "./react-arbitrum/depositWithdrawEth.md
 import * as getTestEthKovan from "./react-arbitrum/getTestEth.mdx"
 
 
+// android
+import * as androidAddToGradle from "./android/add-to-gradle.mdx"
+import * as androidCreateProject from "./android/create-project.mdx"
+import * as androidConfigureDeepLink from "./android/configure-deep-link.mdx"
+import * as androidInitialize from "./android/initialize.mdx"
+import * as androidNextSteps from "./android/next-steps.mdx"
+
+
+// ios
+import * as iosInstallation from "./ios/installation.mdx"
+import * as iosConfigure from "./ios/configure.mdx"
+import * as iosAuth from "./ios/auth.mdx"
+import * as iosResumeAuth from "./ios/resume-auth.mdx"
+import * as iosNextSteps from "./ios/next-steps.mdx"
+
+
 import { toSteps } from "../../utils";
 
 const STEPS = toSteps({
@@ -71,7 +87,17 @@ const STEPS = toSteps({
   connectArbitrum,
   importArbitrumWallets,
   depositWithdrawArbitrum,
-  getTestEthKovan
+  getTestEthKovan,
+  androidAddToGradle,
+  androidCreateProject,
+  androidConfigureDeepLink,
+  androidInitialize,
+  androidNextSteps,
+  iosInstallation,
+  iosConfigure,
+  iosAuth,
+  iosResumeAuth,
+  iosNextSteps
 });
 
 export default STEPS;

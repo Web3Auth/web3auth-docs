@@ -1,0 +1,55 @@
+---
+title: Initialize and handle OpenLogin events
+---
+
+In your sign-in activity', create an `OpenLogin` instance with your OpenLogin project's configurations and
+configure it like this:
+
+```kotlin
+class MainActivity : AppCompatActivity() {
+    // ...
+    lateinit var openlogin: OpenLogin
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        openlogin = OpenLogin(
+            this,
+            clientId = getString(R.string.openlogin_client_id),
+            network = OpenLogin.Network.MAINNET,
+            redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+        )
+
+        // Handle user signing in when app is not alive
+        openlogin.setResultUrl(intent?.data)
+
+        // ...
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        // Handle user signing in when app is active
+        openlogin.setResultUrl(intent?.data)
+
+        // ...
+    }
+
+    private fun onClickLogin() {
+        openlogin.login()
+    }
+
+    //...
+}
+```
+
+Make sure your sign-in activity `launchMode` is set to `singleTop` in your `AndroidManifest.xml`:
+
+```xml
+<activity
+    android:launchMode="singleTop"
+    android:name=".YourActivity">
+    // ...
+</activity>
+```

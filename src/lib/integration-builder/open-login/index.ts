@@ -3,7 +3,7 @@ import STEPS from "./steps";
 
 const AVAILABLE_EXAMPLES = {
   Ethereum: {
-    langs: ["HTML"],
+    langs: ["HTML", "Android", "iOS"],
   },
   Solana: {
     langs: ["React"],
@@ -39,6 +39,12 @@ const AVAILABLE_LANGS = {
   HTML: {
     examples: ["Ethereum"],
   },
+  Android: {
+    examples: ["Ethereum"],
+  },
+  iOS: {
+    examples: ["Ethereum"],
+  },
 };
 
 const openLoginIntegrationBuilder: IntegrationBuilder = {
@@ -60,12 +66,11 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
         "Arbitrum",
       ],
     },
-    // Hide Language/Framework for now
-    // lang: {
-    //   displayName: "Language/Framework",
-    //   default: "HTML",
-    //   choices: ["HTML", "React"],
-    // },
+    lang: {
+      displayName: "Language/Framework",
+      default: "HTML",
+      choices: ["HTML", "React", "Android", "iOS"],
+    },
   },
 
   // Return available options when user selects a value,
@@ -76,21 +81,18 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
     switch (optionKey) {
       case "chain":
         const availableChainLangs = AVAILABLE_EXAMPLES[optionValue].langs;
-        // Hide Language/Framework for now
-        // for(let i = 0; i < availableChainLangs.length; i++) {
-        //   let lang = availableChainLangs[i];
-        //   availableOptions.push({ lang });
-        // }
-        // break;
-        return [];
-      // Hide Language/Framework for now
-      // case "lang":
-      //   const availableLangExamples = AVAILABLE_LANGS[optionValue].examples;
-      //   for(let i = 0; i < availableLangExamples.length; i++) {
-      //     let example = availableLangExamples[i];
-      //     availableOptions.push({ chain: example });
-      //   }
-      //   break;
+        for (let i = 0; i < availableChainLangs.length; i++) {
+          let lang = availableChainLangs[i];
+          availableOptions.push({ lang });
+        }
+        break;
+      case "lang":
+        const availableLangExamples = AVAILABLE_LANGS[optionValue].examples;
+        for (let i = 0; i < availableLangExamples.length; i++) {
+          let example = availableLangExamples[i];
+          availableOptions.push({ chain: example });
+        }
+        break;
       default:
         throw new Error(`Unknown option key ${JSON.stringify(optionKey)}`);
     }
@@ -321,39 +323,92 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
         }
       );
     } else if (chain === "Ethereum" /*&& lang === "HTML"*/) {
-      filenames.push("web/index.html"); // Show code files in browsers
+      if (lang === "HTML" || lang === "React") {
+        filenames.push("web/index.html"); // Show code files in browsers
 
-      // Add markdown steps
-      steps.push(
-        {
-          ...STEPS.installSDK,
-          pointer: { filename: "web/index.html", range: "20" },
-        },
-        {
-          ...STEPS.registerApp,
-          pointer: { filename: "web/index.html", range: "27-31" },
-        },
-        {
-          ...STEPS.instantiateSDK,
-          pointer: { filename: "web/index.html", range: "27-31" },
-        },
-        {
-          ...STEPS.retrievePrivateKey,
-          pointer: { filename: "web/index.html", range: "33-43" },
-        },
-        {
-          ...STEPS.triggerLogin,
-          pointer: { filename: "web/index.html", range: "55-56" },
-        },
-        {
-          ...STEPS.connectWithWeb3,
-          pointer: { filename: "web/index.html", range: "46-52" },
-        },
-        {
-          ...STEPS.logout,
-          pointer: { filename: "web/index.html", range: "59" },
-        }
-      );
+        // Add markdown steps
+        steps.push(
+          {
+            ...STEPS.installSDK,
+            pointer: { filename: "web/index.html", range: "20" },
+          },
+          {
+            ...STEPS.registerApp,
+            pointer: { filename: "web/index.html", range: "27-31" },
+          },
+          {
+            ...STEPS.instantiateSDK,
+            pointer: { filename: "web/index.html", range: "27-31" },
+          },
+          {
+            ...STEPS.retrievePrivateKey,
+            pointer: { filename: "web/index.html", range: "33-43" },
+          },
+          {
+            ...STEPS.triggerLogin,
+            pointer: { filename: "web/index.html", range: "55-56" },
+          },
+          {
+            ...STEPS.connectWithWeb3,
+            pointer: { filename: "web/index.html", range: "46-52" },
+          },
+          {
+            ...STEPS.logout,
+            pointer: { filename: "web/index.html", range: "59" },
+          }
+        );
+      } else if (lang === "Android") {
+        filenames.push("android/build.gradle");
+        filenames.push("android/AndroidManifest.xml");
+        filenames.push("android/MainActivity.kt");
+        steps.push(
+          {
+            ...STEPS.androidAddToGradle,
+            pointer: { filename: "android/build.gradle", range: "47" },
+          },
+          {
+            ...STEPS.androidCreateProject,
+            pointer: { filename: "android/MainActivity.kt", range: "52" },
+          },
+          {
+            ...STEPS.androidConfigureDeepLink,
+            pointer: {
+              filename: "android/AndroidManifest.xml",
+              range: "16-43",
+            },
+          },
+          {
+            ...STEPS.androidInitialize,
+            pointer: {
+              filename: "android/MainActivity.kt",
+              range: "48-57,16-18",
+            },
+          },
+          {
+            ...STEPS.androidNextSteps,
+          }
+        );
+      } else if (lang === "iOS") {
+        filenames.push("ios/OpenLogin.plist");
+        filenames.push("ios/ContentView.swift");
+        filenames.push("ios/MainApp.swift");
+        steps.push(
+          { ...STEPS.iosInstallation },
+          {
+            ...STEPS.iosConfigure,
+            pointer: { filename: "ios/OpenLogin.plist", range: "5-8" },
+          },
+          {
+            ...STEPS.iosAuth,
+            pointer: { filename: "ios/ContentView.swift", range: "8-24" },
+          },
+          {
+            ...STEPS.iosResumeAuth,
+            pointer: { filename: "ios/MainApp.swift", range: "9" },
+          },
+          { ...STEPS.iosNextSteps }
+        );
+      }
     }
 
     return {
