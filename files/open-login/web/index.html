@@ -18,7 +18,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin@0"></script>
-    <script src="https://cdn.ethers.io/scripts/ethers-v3.min.js"></script>
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
     <script>
       $(document).ready(async function init() {
         $("#login").hide();
@@ -26,7 +26,8 @@
 
         window.openlogin = new Openlogin.default({
           clientId: "YOUR CLIENT ID",
-          network: "testnet" // valid values 'testnet' or 'mainnet'
+          network: "testnet", // valid values 'testnet' or 'mainnet'
+
         });
         await window.openlogin.init();
 
@@ -36,7 +37,7 @@
             "Private key: " + window.openlogin.privKey + "."
           );
           $("#logout").show();
-          await connectWeb3(window.openlogin.privKey);
+          await connectEther(window.openlogin.privKey);
         } else {
           $("#text").text("Didn't log in.");
           $("#login").show();
@@ -44,7 +45,7 @@
       });
 
       async function connectEther(privKey) {
-        const wallet = new ethers.Wallet(privKey, ethers.getDefaultProvider());
+        const wallet = new ethers.Wallet(`0x${privKey}`, ethers.getDefaultProvider());
         const address = await wallet.getAddress();
         const balance = await wallet.getBalance();
         $("#address").text("Address: " + address + ".");
@@ -53,7 +54,9 @@
 
       $("#login").click(async function (event) {
         const { privKey } = await openlogin.login();
-        await connectWeb3(privKey);
+        if (privKey) {
+          await connectEther(privKey);
+        }
       });
       $("#logout").click(async function (event) {
         await openlogin.logout();
