@@ -104,7 +104,7 @@ module.exports = {
             },
             {
               label: "Status",
-              href: "https://status.torusnode.com",
+              href: "https://torusstatus.com",
             },
             {
               label: "Support",
