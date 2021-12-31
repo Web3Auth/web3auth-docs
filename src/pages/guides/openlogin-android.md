@@ -1,9 +1,9 @@
 ---
-title: Get Started With OpenLogin Android SDK
+title: Plug n Play Web3Auth on Android (OpenLogin)
 image: "/contents/openlogin-android.jpg"
 description: Learn to integrate OpenLogin with Android native applications
 order: 20
-category: app
+category: walletAndApp
 ---
 
 import Tabs from "@theme/Tabs";
@@ -12,7 +12,7 @@ import TabItem from "@theme/TabItem";
 
 ## Introduction
 
-This tutorial will guide you to use [openlogin-android-sdk](https://github.com/torusresearch/openlogin-android-sdk) to integrate OpenLogin into your Android application.
+This tutorial will guide you to use [openlogin-android-sdk](https://github.com/torusresearch/openlogin-android-sdk) to integrate Web3Auth into your Android application. OpenLogin is Web3Auth's hosted auth solution.
 
 Source code of the example can also be found in the repository.
 
@@ -57,9 +57,9 @@ Open your app's `AndroidManifest.xml` file and add the following permission:
 
 ## Integrating
 
-### Configure an OpenLogin project
+### Configure an Plug n Play project
 
-Go to [Developer Dashboard](https://developer.tor.us), create or select an OpenLogin project:
+Go to [Developer Dashboard](https://developer.tor.us), create or select an Plug n Play project:
 
 - Add `{YOUR_APP_PACKAGE_NAME}://auth` to **Whitelist URLs**.
 

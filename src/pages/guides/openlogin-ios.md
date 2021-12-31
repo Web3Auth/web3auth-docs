@@ -3,7 +3,7 @@ title: Get Started With OpenLogin Swift SDK
 image: "/contents/openlogin-ios.jpg"
 description: Learn to integrate OpenLogin with iOS native applications
 order: 21
-category: app
+category: walletAndApp
 ---
 
 import Tabs from "@theme/Tabs";
