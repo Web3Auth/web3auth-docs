@@ -42,7 +42,7 @@ export default function GuidesPage({ guides }: Props) {
         <p>Quick-start with your usecase and stack</p>
         <hr />
       </header>
-      <header className={styles.header} id="apps-guide">
+      <header className={styles.header} id="apps">
         <h2>For apps</h2>
       </header>
 
@@ -59,7 +59,7 @@ export default function GuidesPage({ guides }: Props) {
         ))}
       </div>
 
-      <header className={styles.header} id="wallets-guide">
+      <header className={styles.header} id="wallets">
         <h2>For wallets</h2>
       </header>
       <div className={styles.container}>
@@ -74,7 +74,7 @@ export default function GuidesPage({ guides }: Props) {
         ))}
       </div>
 
-      <header className={styles.header} id="wallets-using-auth">
+      <header className={styles.header} id="auth">
         <h2>Using your own auth</h2>
       </header>
 
@@ -90,7 +90,7 @@ export default function GuidesPage({ guides }: Props) {
         ))}
       </div>
 
-      <header className={styles.header} id="blockchain-guide">
+      <header className={styles.header} id="blockchains">
         <h2>Blockchain guides</h2>
       </header>
 

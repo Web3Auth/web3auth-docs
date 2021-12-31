@@ -2,6 +2,7 @@
 module.exports = {
   docs: [
     "README",
+    "get-started",
     "what-is-web3auth",
     {
       type: "category",
