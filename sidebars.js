@@ -10,11 +10,11 @@ module.exports = {
       items: [
         {
           "Modal": [
-            "plug-n-play/api-reference/modal/usage",
+            "api-reference/modal/usage",
 
           ],
           "Core": [
-            "plug-n-play/api-reference/core/usage",
+            "api-reference/core/usage",
           ],
         },
       ],
