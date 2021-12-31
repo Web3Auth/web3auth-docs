@@ -6,7 +6,7 @@ import styles from "./styles.module.css";
 export default function Web3AuthCards() {
   return (
     <div className={styles.container}>
-      <Link to="/integration-builder/?b=wallet&lang=HTML"
+      <Link to="/guides#apps"
         className={classNames(styles.cardQuickStart, styles.cardQsWeb3)}
       >
         <img className={styles.mainIcon} src="/images/qs-apps.svg" alt="App" />
@@ -15,7 +15,7 @@ export default function Web3AuthCards() {
           Web and/or native mobile application that uses keys to connect to one or multiple blockchains.
         </p>
       </Link>
-      <Link to="/integration-builder/?b=wallet&lang=HTML"
+      <Link to="/guides#wallets"
         className={classNames(styles.cardQuickStart, styles.cardQsWallet)}
       >
         <img className={styles.mainIcon} src="/images/qs-wallet.svg" alt="Wallet" />
@@ -24,7 +24,7 @@ export default function Web3AuthCards() {
           An application that manages user keys, connecting to multiple dApps in different ecosystems.
         </p>
       </Link>
-      <Link to="/integration-builder/?b=wallet&lang=HTML"
+      <Link to="/guides#auth"
         className={classNames(styles.cardQuickStart, styles.cardQsPlugin)}
 
       >
