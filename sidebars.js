@@ -16,9 +16,29 @@ module.exports = {
           "Core": [
             "api-reference/core/usage",
           ],
+          "OpenLogin": [
+            {
+              "Web": [
+                "api-reference/openlogin/web/installation",
+                "api-reference/openlogin/web/initialization",
+                "api-reference/openlogin/web/usage"
+              ]
+            },
+            {
+              "iOS": [
+                "api-reference/openlogin/ios/installation",
+                "api-reference/openlogin/ios/usage"
+              ]
+            },
+            {
+              "Android": [
+                "api-reference/openlogin/android/installation",
+                "api-reference/openlogin/android/usage"
+              ]
+            }
+          ]
         },
       ],
-
     },
     // {
     //   type: "category",
