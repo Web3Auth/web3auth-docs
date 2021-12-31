@@ -3,6 +3,7 @@ title: Get Started With OpenLogin Android SDK
 image: "/contents/openlogin-android.jpg"
 description: Learn to integrate OpenLogin with Android native applications
 order: 20
+category: app
 ---
 
 import Tabs from "@theme/Tabs";

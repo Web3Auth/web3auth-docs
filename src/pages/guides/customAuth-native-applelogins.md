@@ -3,6 +3,7 @@ title: How to Integrate CustomAuth and apple logins
 image: "/contents/Torus-apple.png"
 description: Learn to use CustomAuth with native apple logins.
 order: 12
+category: auth
 ---
 
 import Tabs from "@theme/Tabs";

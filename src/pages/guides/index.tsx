@@ -12,14 +12,29 @@ interface Props {
       description: string;
       image: string;
       order: number;
+      category: string;
     }
   >;
 }
 
 export default function GuidesPage({ guides }: Props) {
-  const sortedGuides = Object.entries(guides).sort(
+  // const sortedGuides = Object.entries(guides).sort(
+  //   ([, a], [, b]) => a.order - b.order
+  // );
+
+  const appGuides = Object.entries(guides).sort(
     ([, a], [, b]) => a.order - b.order
-  );
+  ).filter(([,a])=> a.category === "app")
+  const walletGuides = Object.entries(guides).sort(
+    ([, a], [, b]) => a.order - b.order
+  ).filter(([,a])=> a.category === "wallet")
+  const authGuides = Object.entries(guides).sort(
+    ([, a], [, b]) => a.order - b.order
+  ).filter(([,a])=> a.category === "auth")
+  const miscGuides = Object.entries(guides).sort(
+    ([, a], [, b]) => a.order - b.order
+  ).filter(([,a])=> a.category === "misc")
+
   return (
     <Layout title="Guides">
       <header className={styles.header}>
@@ -27,28 +42,72 @@ export default function GuidesPage({ guides }: Props) {
         <p>A collection of {Object.keys(guides).length} posts</p>
         <hr />
       </header>
-      <div className={styles.container}>
-        {sortedGuides.map(([key, guide]) => (
-          <Link key={key} className={styles.article} to={`/guides/${key}`}>
-            <img src={guide.image} alt="Banner" />
-            <div className={styles.contentContainer}>
-              <h3>{guide.title}</h3>
-              <p>{guide.description}</p>
-            </div>
-          </Link>
-        ))}
-      </div>
       <header className={styles.header}>
-        <h2>For Wallets</h2>
-        <p>A collection of {Object.keys(guides).length} posts</p>
-        <hr />
+        <h2>For Apps</h2>
       </header>
 
+
+      <div className={styles.container}>
+        {appGuides.map(([key, guide]) => (
+            <Link key={key} className={styles.article} to={`/guides/${key}`}>
+              <img src={guide.image} alt="Banner" />
+              <div className={styles.contentContainer}>
+                <h3>{guide.title}</h3>
+                <p>{guide.description}</p>
+              </div>
+            </Link>
+        ))}
+      </div>
+
       <header className={styles.header}>
-        <h2>For Applications</h2>
-        <p>A collection of {Object.keys(guides).length} posts</p>
-        <hr />
+        <h2>For Wallets</h2>
       </header>
+      <div className={styles.container}>
+        {walletGuides.map(([key, guide]) => (
+            <Link key={key} className={styles.article} to={`/guides/${key}`}>
+              <img src={guide.image} alt="Banner" />
+              <div className={styles.contentContainer}>
+                <h3>{guide.title}</h3>
+                <p>{guide.description}</p>
+              </div>
+            </Link>
+        ))}
+      </div>
+
+      <header className={styles.header}>
+        <h2>Using your own auth</h2>
+      </header>
+
+      <div className={styles.container}>
+        {authGuides.map(([key, guide]) => (
+            <Link key={key} className={styles.article} to={`/guides/${key}`}>
+              <img src={guide.image} alt="Banner" />
+              <div className={styles.contentContainer}>
+                <h3>{guide.title}</h3>
+                <p>{guide.description}</p>
+              </div>
+            </Link>
+        ))}
+      </div>
+
+      <header className={styles.header}>
+        <h2>Blockchain guides</h2>
+      </header>
+
+      <div className={styles.container}>
+        {miscGuides.map(([key, guide]) => (
+            <Link key={key} className={styles.article} to={`/guides/${key}`}>
+              <img src={guide.image} alt="Banner" />
+              <div className={styles.contentContainer}>
+                <h3>{guide.title}</h3>
+                <p>{guide.description}</p>
+              </div>
+            </Link>
+        ))}
+      </div>
+
+
+
     </Layout>
   );
 }

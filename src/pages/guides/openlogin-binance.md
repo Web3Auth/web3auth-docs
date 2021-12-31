@@ -4,6 +4,7 @@ image: "/contents/Torus-BSC.png"
 description:
   Learn to use OpenLogin to integrate your app with Binance Smart Chain
 order: 7
+category: misc
 ---
 
 import Tabs from "@theme/Tabs";

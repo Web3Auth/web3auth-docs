@@ -3,6 +3,7 @@ title: How to integerate Openlogin with an Ethereum dapp
 image: "/contents/openlogin-ether.png"
 description: Learn to use OpenLogin to integrate your app with Web3.js
 order: 5
+category: misc
 ---
 
 import Tabs from "@theme/Tabs";
