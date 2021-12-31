@@ -43,7 +43,7 @@ export default function GuidesPage({ guides }: Props) {
         <hr />
       </header>
       <header className={styles.header}>
-        <h2>For Apps</h2>
+        <h2>For apps</h2>
       </header>
 
 
@@ -60,7 +60,7 @@ export default function GuidesPage({ guides }: Props) {
       </div>
 
       <header className={styles.header}>
-        <h2>For Wallets</h2>
+        <h2>For wallets</h2>
       </header>
       <div className={styles.container}>
         {walletGuides.map(([key, guide]) => (

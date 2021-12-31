@@ -6,40 +6,34 @@ import styles from "./styles.module.css";
 export default function Web3AuthCards() {
   return (
     <div className={styles.container}>
-      <div
+      <Link to="/integration-builder/?b=wallet&lang=HTML"
         className={classNames(styles.cardQuickStart, styles.cardQsWeb3)}
       >
         <img className={styles.mainIcon} src="/images/qs-apps.svg" alt="App" />
-        <p className={styles.headline}>Web 3 applications</p>
+        <p className={styles.headline}>Web3 dApp</p>
         <p className={styles.description}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod
+          Web and/or native mobile application that uses keys to connect to one or multiple blockchains.
         </p>
-        <Link className={styles.getStartedBtn} href="/integration-builder/?b=wallet&lang=HTML">Get started</Link>
-      </div>
-      <div
+      </Link>
+      <Link to="/integration-builder/?b=wallet&lang=HTML"
         className={classNames(styles.cardQuickStart, styles.cardQsWallet)}
       >
         <img className={styles.mainIcon} src="/images/qs-wallet.svg" alt="Wallet" />
         <p className={styles.headline}>Wallet</p>
         <p className={styles.description}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod
+          An application that manages user keys, connecting to multiple dApps in different ecosystems.
         </p>
-        <Link className={styles.getStartedBtn} href="/integration-builder/?b=wallet&lang=HTML">Get started</Link>
-      </div>
-      <div
+      </Link>
+      <Link to="/integration-builder/?b=wallet&lang=HTML"
         className={classNames(styles.cardQuickStart, styles.cardQsPlugin)}
 
       >
         <img className={styles.mainIcon} src="/images/qs-plugin.svg" alt="Plugin" />
         <p className={styles.headline}>Plugin your own auth</p>
         <p className={styles.description}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod
+          Have an existing userbase/auth you'd like to use? Plug them in with zero migration necessary.
         </p>
-        <Link className={styles.getStartedBtn} href="/integration-builder/?b=wallet&lang=HTML">Get started</Link>
-      </div>
+      </Link>
     </div>
   );
 }
