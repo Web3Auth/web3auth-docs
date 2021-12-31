@@ -6,9 +6,15 @@ hide_title: true
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
+
+## `Web3Auth`
+
+This package provides main class for using default web3auth modal. It is child class of `core` package.
+So you can still call all the functions available in `core` api reference.
+
 ## Integrate via
 
-### Script tag or npm/yarn
+### npm/yarn
 
 <Tabs
   defaultValue="npm"
@@ -38,15 +44,6 @@ yarn add @web3auth/web3auth
 </Tabs>
 
 
-<Tabs
-  defaultValue="basic"
-  values={[
-    { label: "Basic example", value: "basic" },
-  ]}
->
-
-
-<TabItem value="basic">
 
 ```js
 
@@ -73,11 +70,11 @@ yarn add @web3auth/web3auth
     subscribeAuthEvents(this.web3auth)
 
 
-    const login = () => {
-        // configure your adapter to add in modal
-        // if you are using modal in `DAPP` `authMode` then
-       // either customAuth or openlogin required to be configured.
-        const openloginAdapter = await getOpenloginAdapter({
+    const showModal = async () => {
+      // configure your adapter to add in modal
+      // if you are using modal in `DAPP` `authMode` then
+      // either customAuth or openlogin required to be configured.
+      const openloginAdapter = await getOpenloginAdapter({
         adapterSettings: {
             network: "testnet",
           /* client id is not required for localhost.
@@ -94,6 +91,24 @@ yarn add @web3auth/web3auth
 
 ```
 
-</TabItem>
+## `Class reference`
 
-</Tabs>
+```ts
+interface Web3AuthOptions {
+    chainNamespace: ChainNamespaceType;
+    chainId?: number;
+    authMode?: "DAPP" | "WALLET";
+}
+
+class Web3Auth extends Web3AuthCore {
+    loginModal: LoginModal;
+    private aggregatorModalConfig;
+    constructor(options: Web3AuthOptions);
+    initModal(params: {
+        modalConfig?: Record<WALLET_ADAPTER_TYPE, ModalConfig>;
+    }): Promise<void>;
+    connect(): void;
+    private initExternalWalletAdapters;
+    private subscribeToLoginModalEvents;
+}
+```

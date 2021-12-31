@@ -7,8 +7,6 @@ Using web3auth package
 
 ## `Web3Auth`
 
-This package provides main class for using default web3auth modal.
-
 You can install this package by following previous installation step.
 
 To start with using this package import `Web3Auth` class from  `@web3auth/web3auth`;
@@ -125,9 +123,9 @@ For ex: If you want to configure openlogin adapter, then call `getOpenloginAdapt
 
 > Note: You don't have to configure every adapter unless you want to override default configs for the adapter. Only those adapter which are marked as mandatory in above table are required to be configured always based on the `authMode` you are using.
 
-## `Showing Modal`
+## `Initializing Modal`
 
-After you are done with configuring your adapters, you can call show modal by calling `initModal` function of `web3auth`.
+After you are done with configuring your adapters, you can initialize modal by calling `initModal` function of `web3auth`.
 
 ```javascript
 await web3auth.initModal(options);
@@ -238,3 +236,30 @@ LoginConfig = Record<string, {
 ```
 
 </TabItem>
+
+
+## `Showing modal`
+
+After initializing you can show the modal by calling `connect` function on web3auth instance
+
+```javascript
+  await web3authCore.connect();
+```
+
+## `getUserInfo`
+
+You can get the information about connected user by calling `getUserInfo` function.
+
+> Note: This function will return information based on the connected adapter.
+
+```javascript
+  await web3authCore.logout();
+```
+
+## `logout`
+
+You can disconnect from connected wallet using `logout` function.
+
+```javascript
+  await web3authCore.logout();
+```

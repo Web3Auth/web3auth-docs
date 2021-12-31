@@ -2,49 +2,50 @@
 title: Usage
 ---
 
-Using web3auth package
+Using web3auth core package
 ---
 
-## `Web3Auth`
-
-This package provides main class for using default web3auth modal.
+## `Web3Auth Core`
 
 You can install this package by following previous installation step.
 
-To start with using this package import `Web3Auth` class from  `@web3auth/web3auth`;
+To start with using this package import `Web3AuthCore` class from  `@web3auth/core`;
 
 ```javascript
-import `Web3Auth` class from  `@web3auth/web3auth`;
+import {  Web3AuthCore } from "@web3auth/core";
 ```
 
-Then, create a new instance of web3auth.
+Then, create a new instance of web3auth core.
 
 ```javascript
-const web3auth = new Web3Auth(options);
+
+const web3authCore = new Web3AuthCore({
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: 3,
+})
+
 ```
 
-The Web3Auth constructor takes an object with `Web3AuthOptions` as input.
+The Web3Auth constructor takes an object with `Web3AuthCoreOptions` as input.
 
 **Parameters**
 
-- `options` - `Web3AuthOptions`: The options of the constructor
+- `options` - `Web3AuthCoreOptions`: The options of the constructor
 
 
 | Parameter | Type | Description |
 | -------- | -------- | -------- |
 | `chainNamespace`     | `enum`-  (`EIP155`,`SOLANA`)   |  Web3auth supports multiple chains i.e ethereum and solana currently, you need to specify chain namespace which you want to use while creating an instance of web3auth.     |
 | `chainId?`     | `number`     |      Numeric chainId for the chainNamespace being used, by default it will be mainnet id for the provided namespace.|
-| `authMode?`     | `enum` - (`DAPP`, `WALLET`)    | web3auth provides different adapters for different type of usages. If you are dapp and want to use external wallets like metamask, then you can use the `DAPP` authMode.If you are a wallet and only want to use you own wallet implementations along with customAuth or openlogin, then you should use `WALLET` authMode.    |
-
 
 **Returns**
 
-- `Object`: The web3auth instance with all its methods and events.
+- `Object`: The web3authCore instance with all its methods and events.
 
 **Reference**
 
 ```javascript
-interface Web3AuthOptions {
+interface Web3AuthCoreOptions {
   /**
    * The chain namespace to use. Currently only supports "EIP155" and "SOLANA".
    */
@@ -56,185 +57,103 @@ interface Web3AuthOptions {
    * @defaultValue mainnnet id of provided chainNamespace
    */
   chainId?: number;
-
-  /**
-   * web3auth instance provides different adapters for different type of usages. If you are dapp and want to
-   * use external wallets like metamask, then you can use the `DAPP` authMode.
-   * If you are a wallet and only want to use you own wallet implementations along with customAuth or openlogin,
-   * then you should use `WALLET` authMode.
-   *
-   * @defaultValue `DAPP`
-   */
-  authMode?: "DAPP" | "WALLET";
 }
 ```
 
 **Example**
 
 ```javascript
- // this instance will create DAPP based modal which
+ // this instance will create web3auth core instance which
  // uses ropsten network for all the adapters being passed
  // (unless overrided while configuring  adapters, each adapter can be configured
  //  to have its own chainConfig, otherwise each adapter
  //  will inherit chainConfig based on the chainNamespace and chainId passed in the
  //  instance).
-const web3auth = new Web3Auth({ chainNamespace: CHAIN_NAMESPACES.EIP155, chainId: 3, authMode: "DAPP" })
-
+const web3authCore = new Web3AuthCore({
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: 3,
+})
 ```
 
 ## `Configuring Adapters`
 
-- By default web3auth modal supports a set of default adapters depends of the `authMode` being used. Some adapters are configured by default and some must be configured by developer. For ex: Openlogin or customAuth requires some configuration which must be provided by developer, but torus wallet or metamask doesn't requires any such configuration so they can be used by default. However you can provide your own config for all adapters. Also some of the adapters are mandatory to be shown and hence requires configuration. For ex: Either of openlogin or customAuth is required to configured with both `DAPP` and `WALLET` auth mode.
+- In order to use web3auth core, you need to add adapters to it. You can get adapter instances from the methods available in this package.
+Table given below show the method to get each adapter. In each method you can pass configuration specific
+to the adapter.
 
-The table below summarizes all the available adapters along with the restrictions for each of them:-
+| Adapter              Configuration Method      |
+| ------------------ | -------------------------- |
+| `openlogin`        |  `getOpenloginAdapter`     |
+| `custom-auth`      |  `getCustomAuthAdapter`    |
+| `torus-evm`        |  `getTorusEvmAdapter`      |
+| `torus-solana`     |  `getTorusSolanaAdapter`   |
+| `metamask`         |  `getMetamaskAdapter`      |
+| `phantom`          |  `getPhantomAdapter`       |
+| `seedphrase`       |  `getSeedphraseAdapter`    |
+| `walletconnect-v1` |  `getWalletconnectV1Adapter`|
+| `walletconnect-v2` |  `getWalletconnectV2Adapter`|
 
+- After getting the adapter you can call `configureAdapter` function of the web3auth core instance to add the adapter in to core.
 
-
-| Adapter            | AuthMode         | Extra Config Required | ChainNamespace    |   Mandatory |  Configuration Method      |
-| ------------------ | ---------------- | --------------------- | ----------------- |  ---------  | ---------------------------|
-| `openlogin`        | `WALLET`, `DAPP` | `YES`                 | `EIP155`,`SOLANA` | YES`        |  `getOpenloginAdapter`     |
-| `custom-auth`      | `WALLET`, `DAPP` | `YES`                 | `EIP155`,`SOLANA` |`YES`        |  `getCustomAuthAdapter`    |
-| `torus-evm`        | `DAPP`           | `NO`                  | `EIP155`          | `NO`        |  `getTorusEvmAdapter`      |
-| `torus-solana`     | `DAPP`           | `NO`                  | `SOLANA`          | `NO`        |  `getTorusSolanaAdapter`   |
-| `metamask`         | `DAPP`           | `NO`                  | `EIP155`          | `NO`        |  `getMetamaskAdapter`      |
-| `phantom`          | `DAPP`           | `NO`                  | `SOLANA`          | `NO`        |  `getPhantomAdapter`       |
-| `seedphrase`       | `WALLET`         | `NO`                  | `EIP155`,`SOLANA` | `NO`        |  `getSeedphraseAdapter`    |
-| `walletconnect-v1` | `DAPP`           | `NO`                  | `EIP155`          | `NO`        |  `getWalletconnectV1Adapter`|
-| `walletconnect-v2` | `DAPP`           | `NO`                  | `MULTICHAIN`      | `NO`        |  `getWalletconnectV2Adapter`|
-
-
-- Api:- You can now configure adapters based on the rules given in table above using `configureAdapter` function from `web3auth class`.
-- To configure a adapter call the configuration method of the adapter and pass the returned `adapter` instance in `configureAdapter` function.
-
-For ex: If you want to configure openlogin adapter, then call `getOpenloginAdapter` along with the configuration and pass the retruned value of this function in to `web3auth.configureAdapter` as shown in example below.
+For ex:-
 
 ```ts
-   const openloginAdapter = await getOpenloginAdapter({
-         adapterSettings: {
-              network: "testnet",
-            /* client id is not required for localhost.
-            /* You can get your production openlogin's
-            /* client/project id from https://developer.tor.us
-            */
-              clientId: "localhost-id",
-              uxMode: "popup"
-        }})
+import { getOpenloginAdapter, Web3AuthCore, getTorusEvmAdapter } from "@web3auth/core";
 
-        web3auth.configureAdapter(openloginAdapter);
+const web3authCore = new Web3AuthCore({
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: 3,
+})
+
+// add your adapters
+const torusEvmAdapter = await getTorusEvmAdapter({});
+const openloginAdapter = await getOpenloginAdapter({ adapterSettings: {
+    network: "testnet",
+    clientId: "localhost-id",
+    uxMode: "popup"
+  }})
+
+web3authCore.configureAdapter(torusEvmAdapter)
+web3authCore.configureAdapter(openloginAdapter)
+
 ```
+## `Init`
 
-> Note: You don't have to configure every adapter unless you want to override default configs for the adapter. Only those adapter which are marked as mandatory in above table are required to be configured always based on the `authMode` you are using.
+After you are done with configuring your adapters, you can initialize all these adapter by calling `init` function of web3auth core instance.
 
-## `Showing Modal`
+This method will initialize all the adapter that you have configured.
 
-After you are done with configuring your adapters, you can call show modal by calling `initModal` function of `web3auth`.
+Note: In case initialization of any adapter fails it will not throw but simply allow you to connect with successfully initialized adapters.
 
 ```javascript
-await web3auth.initModal(options);
+  await web3auth.init();
 ```
 
-`web3auth.initModal` takes an options config object as input.
+## `Connecting with an adapter`
 
-**Parameters**
+After initializing you can login/connect with any adapter by calling `connectTo` function along with adapter name.
 
-- `options` - `{ modalConfig?: Record<WALLET_ADAPTER_TYPE, ModalConfig> }`: The options of the initModal
-
-- options object contains `modalConfig` field using which  you can configure the visibility of each adapter within the modal. Each modal config has following configuration.
-
-
-
-| Parameter | Type | Description |
-| -------- | -------- | -------- |
-| `showOnModal?` (default: true)    | `boolean`     |     Whether to show an adapter in modal or not. |
-| `showOnDesktop?`   (default: true)  | `boolean`     |     Whether to show an adapter in desktop or not. |
-| `showOnMobile?`   (default: true)  | `boolean`     |     Whether to show an adapter in mobile or not. |
-| `loginMethods?` | `LoginMethodConfig`     |    To configure visibility of each loginMethod within the adapter. |
-
-
-- Reference:-
-
-```ts
- interface BaseAdapterConfig {
-  showOnModal?: boolean;
-  showOnMobile?: boolean;
-  showOnDesktop?: boolean;
-}
-
-LoginConfig = Record<string, {
-    verifier: string;
-    /**
-     * The type of login. Refer to enum `LOGIN_TYPE`
-     */
-    typeOfLogin: TypeOfLogin;
-    /**
-     * Display Name. If not provided, we use the default for openlogin app
-     */
-    name: string;
-    /**
-     * Description for button. If provided, it renders as a full length button. else, icon button
-     */
-    description?: string;
-    /**
-     * Custom client_id. If not provided, we use the default for openlogin app
-     */
-    clientId?: string;
-    verifierSubIdentifier?: string;
-    /**
-     * Logo to be shown on mouse hover. If not provided, we use the default for openlogin app
-     */
-    logoHover?: string;
-    /**
-     * Logo to be shown on dark background (dark theme). If not provided, we use the default for openlogin app
-     */
-    logoLight?: string;
-    /**
-     * Logo to be shown on light background (light theme). If not provided, we use the default for openlogin app
-     */
-    logoDark?: string;
-    /**
-     * Show login button on the main list
-     */
-    mainOption?: boolean;
-    /**
-     * Whether to show the login button on modal or not
-     */
-    showOnModal?: boolean;
-    /**
-     * Whether to show the login button on desktop
-     */
-    showOnDesktop?: boolean;
-    /**
-     * Whether to show the login button on mobile
-     */
-    showOnMobile?: boolean;
-}>;
-
-    interface ModalConfig extends BaseAdapterConfig {
-      loginMethods?: LoginMethodConfig;
-    }
-```
-- `Promise<void>` : Returns a promise which resolves to void
-
-> Note: You cannot change visibility of mandatory adapters. For ex: Openlogin or CustomAuth
-
-<TabItem value="basic">
-
-```ts
-
-   await web3auth.initModal({
-      modalConfig: {
-        [WALLET_ADAPTERS.CUSTOM_AUTH]: {
-          loginMethods: {
-            "google": {
-              typeOfLogin: "google",
-              verifier: "google",
-              name: "google login",
-              logoDark: "url to your custom logo which will shown in dark mode",
-            }
-          }
-        }
-      }
-    });
+```javascript
+  // connect to any adapter by passing adapter name in connectTo function.
+  await web3authCore.connectTo(torusEvmAdapter.name);
 ```
 
-</TabItem>
+## `getUserInfo`
+
+You can get the information about connected user by calling `getUserInfo` function.
+
+> Note: This function will return information based on the connected adapter.
+
+```javascript
+  await web3authCore.logout();
+```
+
+
+
+## `logout`
+
+You can disconnect from connected wallet using `logout` function.
+
+```javascript
+  await web3authCore.logout();
+```
