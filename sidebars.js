@@ -166,6 +166,7 @@ module.exports = {
         "customauth/faq",
       ],
     },
+    "usecases",
     {
       type: "category",
       label: "Security & Key Infrastructure",
