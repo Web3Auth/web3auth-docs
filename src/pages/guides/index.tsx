@@ -59,8 +59,9 @@ export default function GuidesPage({ guides }: Props) {
         ))}
       </div>
 
+      <div id="wallet" style={{marginTop:"100px"}}></div>
       <header className={styles.header}>
-        <h2>For wallets</h2>
+        <h2  >For wallets</h2>
       </header>
       <div className={styles.container}>
         {walletGuides.map(([key, guide]) => (

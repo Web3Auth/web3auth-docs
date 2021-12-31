@@ -1,5 +1,5 @@
 ---
-title: Plug n Play Web3Auth on Android (OpenLogin)
+title: Plug n Play Web3Auth on Native Android (Java, OpenLogin)
 image: "/contents/openlogin-android.jpg"
 description: Learn to integrate OpenLogin with Android native applications
 order: 20
