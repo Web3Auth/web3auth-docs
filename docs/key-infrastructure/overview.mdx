@@ -1,22 +1,22 @@
 ---
-title: How Torus Works
+title: How Web3Auth works
 ---
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css" />
 
-Existing private key management solutions have come a long way in terms of user experience. However, many of these solutions make tradeoffs with reduced guarantees on custody and censorship-resistance. For example, password-manager key management solutions can restrict user access by refusing to return the encrypted key from their servers. Which then ultimately derives down to resorting to the usual approach of protecting private keys via redundant backups.
+Under the hood, Web3Auth's social logins are powered by Torus Key Infrastructure (tKey). Today's standard of key management is done via seed phrases, 12 or 24 word representations of keys that can be written down or stored in various ways. While technically simple, its far from perfect; new users take anywhere from 10-15 minutes more to onboard into any new application, [losses are rapmant](https://finance.yahoo.com/news/4-2-billion-lost-bitcoin-154948781.html#:~:text=Approximately%2020%25%20of%20all%20Bitcoins,billion%2C%20a%20new%20study%20says.) due to misplaced or compromised seed phrases, today's standard leaves much to be desired.
 
-Torus Key Infrastructure(TKI) leverages on variations of threshold key management to achieve a great user experience without sacrificing security, while retaining end-user autonomy and control over the private key.
+Torus Key Infrastructure(tKey) leverages on variations of threshold key management to achieve a great user experience without sacrificing security, while retaining end-user autonomy and control over the private key.
 
-TKI manages private keys using the user's device, private input, and/or OAuth authentication methods (i.e. Google, Passwordless, Reddit) via Torus nodes. As long as a user has access to 2 out of 3 (2/3) of these shares, they will be able to retrieve their private key.
+tKey manages private keys using the user's device, private input, and/or OAuth authentication methods (i.e. Google, Passwordless, Reddit) via Torus nodes. As long as a user has access to 2 out of 3 (2/3) of these shares, they will be able to retrieve their private key.
 
-In this documentation we further describe the architecture of TKI and detail several core user flows for onboarding, key recovery, and device management.
+In this documentation we further describe the architecture of tKey and detail several core user flows for onboarding, key recovery, and device management.
 
 ## Base Torus Key Infrastructure guarantees
 
 The user starts by generating a 2 out of 3 (2/3) Shamir Secret Sharing. This gives the user three shares: ShareA, ShareB, and ShareC.
 
-<img  height="500" style={{display:"block","margin-bottom":"20px", "margin-top":"20px", "margin-left": "auto", "margin-right": "auto"}} src="/contents/tki-overview-architecture.png"/>
+<img  height="500" style={{display:"block","margin-bottom":"20px", "margin-top":"20px", "margin-left": "auto", "margin-right": "auto"}} src="/contents/tKey-overview-architecture.png"/>
 
 1. **ShareA is stored on the user's device**: Implementation is device and system specific. For example, on mobile devices, the share could be stored in device storage secured via biometrics.
 2. **ShareB is managed by a login service via node operators**: This share is further split amongst a network of nodes and retrieved via conventional authentication flows.
@@ -26,11 +26,11 @@ Similar to existing 2FA systems, a user needs to prove ownership of at least 2 o
 
 ### Non-custodial
 
-Using TKI, the user is always in control of ownership and access to their cryptographic key pair. Login services only ever have access to one share, and thus it's not possible for the provider to retrieve the user's private key on their own.
+Using tKey, the user is always in control of ownership and access to their cryptographic key pair. Login services only ever have access to one share, and thus it's not possible for the provider to retrieve the user's private key on their own.
 
 ### Feels like Web 2.0 login flows
 
-On a day-to-day basis TKI allows access to a users key pair through flows indistinguishable from Web2.0 logins, contributing to greatly improving user experience and onboarding
+On a day-to-day basis tKey allows access to a users key pair through flows indistinguishable from Web2.0 logins, contributing to greatly improving user experience and onboarding
 
 ### Improvements to key recovery and redundancy
 
@@ -45,7 +45,7 @@ Users can increase security on their key by increasing the 2/3 threshold to a hi
 
 ### Chain/platform agnostic via native signatures
 
-TKI's resulting interface is a native cryptographic key pair, making it compatible with almost all cryptographic constructs on various platforms and elliptic curves. Secret sharing and share refresh is also done completely off-chain, which makes TKI usable on blockchains with limited smart contract functionality.
+tKey's resulting interface is a native cryptographic key pair, making it compatible with almost all cryptographic constructs on various platforms and elliptic curves. Secret sharing and share refresh is also done completely off-chain, which makes tKey usable on blockchains with limited smart contract functionality.
 
 ### Censorship resistant
 

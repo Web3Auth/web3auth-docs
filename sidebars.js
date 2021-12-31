@@ -2,114 +2,115 @@
 module.exports = {
   docs: [
     "README",
+    "what-is-web3auth",
     {
       type: "category",
-      label: "OpenLogin",
+      label: "Plug, Play & Whitelabel",
       items: [
-        "open-login/get-started",
-        "open-login/what-is-openlogin",
+        "plug-n-play/get-started",
+        "plug-n-play/what-is-openlogin",
         {
           "API Reference": [
-            "open-login/api-reference/installation",
-            "open-login/api-reference/initialization",
-            "open-login/api-reference/usage",
+            "plug-n-play/api-reference/installation",
+            "plug-n-play/api-reference/initialization",
+            "plug-n-play/api-reference/usage",
 
           ],
         },
       ],
 
     },
+    // {
+    //   type: "category",
+    //   label: "Wallet",
+    //   items: [
+    //     "wallet/get-started",
+    //     "wallet/what-is-wallet",
+    //     {
+    //       "API Reference": [
+    //         "wallet/api-reference/installation",
+    //         "wallet/api-reference/class",
+    //         "wallet/api-reference/account",
+    //         "wallet/api-reference/display",
+    //         "wallet/api-reference/address-resolver",
+    //         "wallet/api-reference/topup",
+    //         "wallet/api-reference/ethereum-api",
+    //       ],
+    //     },
+    //     {
+    //       "Developing with Torus Wallet": [
+    //         "wallet/developing-with-wallet/ganache",
+    //         "wallet/developing-with-wallet/networklist",
+    //       ],
+    //     },
+    //     {
+    //       Features: [
+    //         "wallet/features/layer2",
+    //         "wallet/features/accountrecovery",
+    //         "wallet/features/purchasecryptocurrency",
+    //         "wallet/features/erc721",
+    //         "wallet/features/exportprivatekey",
+    //         "wallet/features/language",
+    //         "wallet/features/nameresolver",
+    //         "wallet/features/themes",
+    //         "wallet/features/pwa",
+    //         "wallet/features/whitelabeling",
+    //       ],
+    //     },
+    //     {
+    //       FAQ: ["wallet/faq-1/developers", "wallet/faq-1/users"],
+    //     },
+    //     "wallet/integration-guidelines",
+    //     "wallet/changelog",
+    //   ],
+    // },
+    // {
+    //   type: "category",
+    //   label: "Solana Wallet",
+    //   items: [
+    //     "solana-wallet/get-started",
+    //     "solana-wallet/what-is-wallet",
+    //     {
+    //       "API Reference": [
+    //         "solana-wallet/api-reference/installation",
+    //         "solana-wallet/api-reference/class",
+    //         "solana-wallet/api-reference/account",
+    //         "solana-wallet/api-reference/display",
+    //         // "solana-wallet/api-reference/address-resolver",
+    //         "solana-wallet/api-reference/topup",
+    //         { "Solana API" : [
+    //           // "solana-wallet/api-reference/solana/solana-api",
+    //           "solana-wallet/api-reference/solana/send-transaction",
+    //           "solana-wallet/api-reference/solana/sign-transaction",
+    //           "solana-wallet/api-reference/solana/sign-message",
+    //           "solana-wallet/api-reference/solana/gasless-transaction",
+    //         ],
+    //       },
+    //       "solana-wallet/api-reference/solana-adapter"
+    //       ],
+    //     },
+    //     {
+    //       Features: [
+    //         "solana-wallet/features/accountrecovery",
+    //         "solana-wallet/features/purchasecryptocurrency",
+    //         "solana-wallet/features/exportprivatekey",
+    //         // "solana-wallet/features/language",
+    //         // "solana-wallet/features/nameresolver",
+    //         "solana-wallet/features/themes",
+    //         "solana-wallet/features/pwa",
+    //         // "solana-wallet/features/whitelabeling",
+    //       ],
+    //     },
+    //     // {
+    //     //   FAQ: ["solana-wallet/faq-1/developers", "solana-wallet/faq-1/users"],
+    //     // },
+    //     // "solana-wallet/integration-guidelines",
+    //     // "solana-wallet/changelog",
+    //   ],
+    // },
     {
       type: "category",
-      label: "Wallet",
-      items: [
-        "wallet/get-started",
-        "wallet/what-is-wallet",
-        {
-          "API Reference": [
-            "wallet/api-reference/installation",
-            "wallet/api-reference/class",
-            "wallet/api-reference/account",
-            "wallet/api-reference/display",
-            "wallet/api-reference/address-resolver",
-            "wallet/api-reference/topup",
-            "wallet/api-reference/ethereum-api",
-          ],
-        },
-        {
-          "Developing with Torus Wallet": [
-            "wallet/developing-with-wallet/ganache",
-            "wallet/developing-with-wallet/networklist",
-          ],
-        },
-        {
-          Features: [
-            "wallet/features/layer2",
-            "wallet/features/accountrecovery",
-            "wallet/features/purchasecryptocurrency",
-            "wallet/features/erc721",
-            "wallet/features/exportprivatekey",
-            "wallet/features/language",
-            "wallet/features/nameresolver",
-            "wallet/features/themes",
-            "wallet/features/pwa",
-            "wallet/features/whitelabeling",
-          ],
-        },
-        {
-          FAQ: ["wallet/faq-1/developers", "wallet/faq-1/users"],
-        },
-        "wallet/integration-guidelines",
-        "wallet/changelog",
-      ],
-    },
-    {
-      type: "category",
-      label: "Solana Wallet",
-      items: [
-        "solana-wallet/get-started",
-        "solana-wallet/what-is-wallet",
-        {
-          "API Reference": [
-            "solana-wallet/api-reference/installation",
-            "solana-wallet/api-reference/class",
-            "solana-wallet/api-reference/account",
-            "solana-wallet/api-reference/display",
-            // "solana-wallet/api-reference/address-resolver",
-            "solana-wallet/api-reference/topup",
-            { "Solana API" : [
-              // "solana-wallet/api-reference/solana/solana-api",
-              "solana-wallet/api-reference/solana/send-transaction",
-              "solana-wallet/api-reference/solana/sign-transaction",
-              "solana-wallet/api-reference/solana/sign-message",
-              "solana-wallet/api-reference/solana/gasless-transaction",
-            ],
-          },
-          "solana-wallet/api-reference/solana-adapter"
-          ],
-        },
-        {
-          Features: [
-            "solana-wallet/features/accountrecovery",
-            "solana-wallet/features/purchasecryptocurrency",
-            "solana-wallet/features/exportprivatekey",
-            // "solana-wallet/features/language",
-            // "solana-wallet/features/nameresolver",
-            "solana-wallet/features/themes",
-            "solana-wallet/features/pwa",
-            // "solana-wallet/features/whitelabeling",
-          ],
-        },
-        // {
-        //   FAQ: ["solana-wallet/faq-1/developers", "solana-wallet/faq-1/users"],
-        // },
-        // "solana-wallet/integration-guidelines",
-        // "solana-wallet/changelog",
-      ],
-    },
-    {
-      type: "category",
-      label: "CustomAuth",
+      label: "Using your own Auth",
       items: [
         "customauth/get-started",
         "customauth/what-is-customauth",
@@ -146,7 +147,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Torus Key Infrastructure",
+      label: "Security & Key Infrastructure",
       items: [
         "key-infrastructure/overview",
         "key-infrastructure/technical-architecture",
