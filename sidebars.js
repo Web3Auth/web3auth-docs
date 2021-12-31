@@ -10,14 +10,11 @@ module.exports = {
       items: [
         {
           "Modal": [
-            "api-reference/api-reference/modal/installation",
-            "api-reference/api-reference/modal/usage",
+            "api-reference/modal/usage",
 
           ],
           "Core": [
-            "api-reference/api-reference/core/installation",
-            "api-reference/api-reference/core/usage",
-
+            "api-reference/core/usage",
           ],
         },
       ],
