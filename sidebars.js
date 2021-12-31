@@ -7,7 +7,7 @@ module.exports = {
       type: "category",
       label: "Plug, Play & Whitelabel",
       items: [
-        "plug-n-play/get-started",
+        "plug-n-play/for-wallets",
         "plug-n-play/what-is-openlogin",
         {
           "API Reference": [

@@ -38,6 +38,17 @@ export default function GuidesPage({ guides }: Props) {
           </Link>
         ))}
       </div>
+      <header className={styles.header}>
+        <h2>For Wallets</h2>
+        <p>A collection of {Object.keys(guides).length} posts</p>
+        <hr />
+      </header>
+
+      <header className={styles.header}>
+        <h2>For Applications</h2>
+        <p>A collection of {Object.keys(guides).length} posts</p>
+        <hr />
+      </header>
     </Layout>
   );
 }
