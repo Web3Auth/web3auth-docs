@@ -6,9 +6,8 @@ module.exports = {
     "what-is-web3auth",
     {
       type: "category",
-      label: "Plug, Play & Whitelabel",
+      label: "API Reference",
       items: [
-        "plug-n-play/get-started",
         {
           "Modal": [
             "plug-n-play/api-reference/modal/usage",
@@ -16,30 +15,29 @@ module.exports = {
           ],
           "Core": [
             "plug-n-play/api-reference/core/usage",
-
           ],
         },
       ],
 
     },
-    {
-      type: "category",
-      label: "OpenLogin",
-      items: [
-        "plug-n-play/get-started",
-        "plug-n-play/for-wallets",
-        "plug-n-play/what-is-openlogin",
-        {
-          "API Reference": [
-            "plug-n-play/api-reference/installation",
-            "plug-n-play/api-reference/initialization",
-            "plug-n-play/api-reference/usage",
+    // {
+    //   type: "category",
+    //   label: "OpenLogin",
+    //   items: [
+    //     "plug-n-play/get-started",
+    //     "plug-n-play/for-wallets",
+    //     "plug-n-play/what-is-openlogin",
+    //     {
+    //       "API Reference": [
+    //         "plug-n-play/api-reference/installation",
+    //         "plug-n-play/api-reference/initialization",
+    //         "plug-n-play/api-reference/usage",
 
-          ],
-        },
-      ],
+    //       ],
+    //     },
+    //   ],
 
-    },
+    // },
     // {
     //   type: "category",
     //   label: "Wallet",
