@@ -7,6 +7,29 @@ module.exports = {
       type: "category",
       label: "Plug, Play & Whitelabel",
       items: [
+        "web3auth/get-started",
+        "web3auth/what-is-web3auth",
+        {
+          "Modal": [
+            "web3auth/modal/api-reference/installation",
+            "web3auth/modal/api-reference/initialization",
+            "web3auth/modal/api-reference/usage",
+
+          ],
+          "Core": [
+            "web3auth/core/api-reference/installation",
+            "web3auth/core/api-reference/initialization",
+            "web3auth/core/api-reference/usage",
+
+          ],
+        },
+      ],
+
+    },
+    {
+      type: "category",
+      label: "OpenLogin",
+      items: [
         "plug-n-play/get-started",
         "plug-n-play/what-is-openlogin",
         {
