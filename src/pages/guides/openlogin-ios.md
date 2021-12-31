@@ -1,5 +1,5 @@
 ---
-title: Get Started With OpenLogin Swift SDK
+title: Plug n Play Web3Auth on Native iOS (Swift, OpenLogin)
 image: "/contents/openlogin-ios.jpg"
 description: Learn to integrate OpenLogin with iOS native applications
 order: 21
@@ -12,7 +12,7 @@ import TabItem from "@theme/TabItem";
 
 ## Introduction
 
-This tutorial will guide you to use [openlogin-swift-sdk](https://github.com/torusresearch/openlogin-swift-sdk) to integrate OpenLogin into your iOS application.
+This tutorial will guide you to use [openlogin-swift-sdk](https://github.com/torusresearch/openlogin-swift-sdk) to integrate Web3Auth into your iOS application. OpenLogin is Web3Auth's hosted auth solution.
 
 Source code of the example can also be found in the repository.
 
@@ -70,7 +70,7 @@ import OpenLogin
 
 In order to use OpenLogin you need to provide your OpenLogin **ClientId** and which **Network** to run it.
 
-- Go to [Torus Developer](https://developer.tor.us), create or open an existing OpenLogin project and copy your project ID, which is the **ClientId**.
+- Go to [Torus Developer](https://developer.tor.us), create or open an existing Plug n Play project and copy your project ID, which is the **ClientId**.
 
 In your application bundle add a plist file named **OpenLogin.plist** with the following information:
 
