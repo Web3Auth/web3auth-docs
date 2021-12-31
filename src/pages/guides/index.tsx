@@ -53,7 +53,7 @@ export default function GuidesPage({ guides }: Props) {
               <img src={guide.image} alt="Banner" />
               <div className={styles.contentContainer}>
                 <h3>{guide.title}</h3>
-                <p>{guide.description}</p>
+                {/* <p>{guide.description}</p> */}
               </div>
             </Link>
         ))}
@@ -68,7 +68,7 @@ export default function GuidesPage({ guides }: Props) {
               <img src={guide.image} alt="Banner" />
               <div className={styles.contentContainer}>
                 <h3>{guide.title}</h3>
-                <p>{guide.description}</p>
+                {/* <p>{guide.description}</p> */}
               </div>
             </Link>
         ))}
@@ -84,7 +84,7 @@ export default function GuidesPage({ guides }: Props) {
               <img src={guide.image} alt="Banner" />
               <div className={styles.contentContainer}>
                 <h3>{guide.title}</h3>
-                <p>{guide.description}</p>
+                {/* <p>{guide.description}</p> */}
               </div>
             </Link>
         ))}
@@ -100,7 +100,7 @@ export default function GuidesPage({ guides }: Props) {
               <img src={guide.image} alt="Banner" />
               <div className={styles.contentContainer}>
                 <h3>{guide.title}</h3>
-                <p>{guide.description}</p>
+                {/* <p>{guide.description}</p> */}
               </div>
             </Link>
         ))}
