@@ -3,6 +3,7 @@ title: How to Integrate OpenLogin and Avalanche
 image: "/contents/Torus-AVAX.png"
 description: Learn to use OpenLogin to integrate your app with Avalanche
 order: 8
+category: misc
 ---
 
 import Tabs from "@theme/Tabs";

@@ -3,6 +3,7 @@ title: How to Integrate OpenLogin and zkSync
 image: "/contents/Torus-zkSync.png"
 description: Learn to use OpenLogin to integrate your app with zkSync rollup
 order: 9
+category: misc
 ---
 
 import Tabs from "@theme/Tabs";

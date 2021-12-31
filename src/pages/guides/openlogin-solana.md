@@ -3,6 +3,7 @@ title: How to integerate Openlogin with an Solana dapp.
 image: "/contents/Torus-Solana.png"
 description: Learn to use OpenLogin to integrate with solana/web3.js
 order: 6
+category: misc
 ---
 
 import Tabs from "@theme/Tabs";
