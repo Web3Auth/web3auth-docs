@@ -77,15 +77,15 @@ class MainActivity : AppCompatActivity() {
 Trigger login flow that shows a modal for user to select one of supported
 providers to login e.g. Google, Facebook, Twitter, Passwordless, etc
 
-| Parameter         | Type                                       | Mandatory | Description                                                                                                                                  |
-| ----------------- | ------------------------------------------ | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| loginProvider     | enum com.openlogin.core.OpenLogin.Provider | Yes       | Login provider `GOOGLE, FACEBOOK, REDDIT, DISCORD, TWITCH, APPLE, LINE, GITHUB, KAKAO, LINKEDIN, TWITTER, WEIBO, WECHAT, EMAIL_PASSWORDLESS` |
-| fastLogin         | Boolean?                                   | No        | default is `null`                                                                                                                            |
-| relogin           | Boolean?                                   | No        | default is `null`                                                                                                                            |
-| skipTKey          | Boolean?                                   | No        | default is `null`                                                                                                                            |
-| extraLoginOptions | Map<String, Any>?                          | No        | default is `null`                                                                                                                            |
-| redirectUrl       | android.net.Uri?                           | No        | default is `null`                                                                                                                            |
-| appState          | String?                                    | No        | default is `null`                                                                                                                            |
+| Parameter         | Type                                       | Mandatory | Description                                                                                                                                                                                                  |
+| ----------------- | ------------------------------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| loginProvider     | enum com.openlogin.core.OpenLogin.Provider | Yes       | Login provider, supported values are `GOOGLE, FACEBOOK, REDDIT, DISCORD, TWITCH, APPLE, LINE, GITHUB, KAKAO, LINKEDIN, TWITTER, WEIBO, WECHAT, EMAIL_PASSWORDLESS`                                           |
+| fastLogin         | Boolean?                                   | No        | If user was previously logged in to the same device and then setting fastLogin to true provides a way to login with webauthn directly without going through loginProvider authentication, default is `null`  |
+| relogin           | Boolean?                                   | No        | default is `null`                                                                                                                                                                                            |
+| skipTKey          | Boolean?                                   | No        | default is `null`                                                                                                                                                                                            |
+| extraLoginOptions | Map<String, Any>?                          | No        | You can pass various oauth supported options, default is `null`                                                                                                                                              |
+| redirectUrl       | android.net.Uri?                           | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                                  |
+| appState          | String?                                    | No        | appState can be used to keep track of the app state when user will be redirected to app after login, default is `null`                                                                                       |
 
 **Example**
 
@@ -118,9 +118,9 @@ Trigger logout flow
 
 | Parameter   | Type             | Mandatory | Description       |
 | ----------- | ---------------- | --------- | ----------------- |
-| fastLogin   | Boolean?         | No        | default is `null` |
-| redirectUrl | android.net.Uri? | No        | default is `null` |
-| appState    | String?          | No        | default is `null` |
+| fastLogin   | Boolean?         | No        | If fastLogin is passed as true then user can relogin again by just using webauthn url, else user will be completely logged out and has to go through loginProvider authentication. Default value is `null` |
+| redirectUrl | android.net.Uri? | No        | Url where user will be redirected after successfull logout. Default value is `null` |
+| appState    | String?          | No        | appState can be used to keep track of the app state when user will be redirected to app after logout. Default value is `null` |
 
 **Example**
 
