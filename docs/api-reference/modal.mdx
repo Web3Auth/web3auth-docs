@@ -1,5 +1,6 @@
 ---
-title: Usage
+title: Modal
+hide_title: true
 ---
 
 
@@ -14,8 +15,6 @@ So you can still call all the functions available in `core` api reference.
 ## `Installation`
 
 
-
-### npm/yarn
 
 <Tabs
   defaultValue="npm"
@@ -50,7 +49,11 @@ yarn add @web3auth/web3auth
 
     import { Web3Auth } from "@web3auth/web3auth";
 
-    const web3auth = new Web3Auth({ chainNamespace: CHAIN_NAMESPACES.EIP155, chainId: 3, authType: "DAPP" })
+    const web3auth = new Web3Auth({
+      chainNamespace: CHAIN_NAMESPACES.EIP155,
+      chainId: 3, authType: "DAPP",
+      clientId: "example-client-id", // get your client id from developer dashboard
+    })
 
     // subscribe to lifecycle events emitted by web3auth
     subscribeAuthEvents(web3auth: Web3AuthModal) {
@@ -71,23 +74,11 @@ yarn add @web3auth/web3auth
     subscribeAuthEvents(this.web3auth)
 
 
-    const showModal = async () => {
-      // configure your adapter to add in modal
-      // if you are using modal in `DAPP` `authMode` then
-      // either customAuth or openlogin required to be configured.
-      const openloginAdapter = await getOpenloginAdapter({
-        adapterSettings: {
-            network: "testnet",
-          /* client id is not required for localhost.
-          /* You can get your production openlogin's
-          /* client/project id from https://developer.tor.us
-          */
-            clientId: "localhost-id",
-            uxMode: "popup"
-      }})
-
-      web3auth.configureAdapter(openloginAdapter);
+    const initializeModal = async () => {
       await web3auth.initModal();
+    }
+    const showModal = async () => {
+      await web3auth.connect();
     }
 
 ```
@@ -95,10 +86,38 @@ yarn add @web3auth/web3auth
 ## `Class reference`
 
 ```ts
-interface Web3AuthOptions {
-    chainNamespace: ChainNamespaceType;
-    chainId?: number;
-    authMode?: "DAPP" | "WALLET";
+
+interface Web3AuthCoreOptions {
+  /**
+   * The chain namespace to use. Currently only supports "EIP155" and "SOLANA".
+   */
+  chainNamespace: ChainNamespaceType;
+  /**
+   * Numeric chainId for the chainNamespace being used, by default it will be mainnet id for the provided namespace..
+   * For ex: it will be ethereum mainnet `1` for "EIP155" and solana mainnet `1` for "SOLANA".
+   *
+   * @defaultValue mainnnet id of provided chainNamespace
+   */
+  chainId?: number;
+}
+
+interface Web3AuthOptions extends Web3AuthCoreOptions {
+  /**
+   * Client id for web3auth.
+   * You can obtain your client id from the web3auth developer dashboard.
+   * You can set any random string for this on localhost.
+   */
+  clientId: string;
+
+  /**
+   * web3auth instance provides different adapters for different type of usages. If you are dapp and want to
+   * use external wallets like metamask, then you can use the `DAPP` authMode.
+   * If you are a wallet and only want to use you own wallet implementations along with customAuth or openlogin,
+   * then you should use `WALLET` authMode.
+   *
+   * @defaultValue `DAPP`
+   */
+  authMode?: "DAPP" | "WALLET";
 }
 
 class Web3Auth extends Web3AuthCore {
@@ -138,6 +157,7 @@ The Web3Auth constructor takes an object with `Web3AuthOptions` as input.
 | Parameter | Type | Description |
 | -------- | -------- | -------- |
 | `chainNamespace`     | `enum`-  (`EIP155`,`SOLANA`)   |  Web3auth supports multiple chains i.e ethereum and solana currently, you need to specify chain namespace which you want to use while creating an instance of web3auth.     |
+| `clientId     | `string`     | Get your clientId from developer dashboard.|
 | `chainId?`     | `number`     |      Numeric chainId for the chainNamespace being used, by default it will be mainnet id for the provided namespace.|
 | `authMode?`     | `enum` - (`DAPP`, `WALLET`)    | web3auth provides different adapters for different type of usages. If you are dapp and want to use external wallets like metamask, then you can use the `DAPP` authMode.If you are a wallet and only want to use you own wallet implementations along with customAuth or openlogin, then you should use `WALLET` authMode.    |
 
@@ -183,29 +203,35 @@ interface Web3AuthOptions {
  //  to have its own chainConfig, otherwise each adapter
  //  will inherit chainConfig based on the chainNamespace and chainId passed in the
  //  instance).
-const web3auth = new Web3Auth({ chainNamespace: CHAIN_NAMESPACES.EIP155, chainId: 3, authMode: "DAPP" })
+const web3auth = new Web3Auth({
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  clientId: "example-client-id", // get your client id from developer dashboard
+  chainId: 3,
+  authMode: "DAPP"
+})
 
 ```
 
 ## `Configuring Adapters`
 
-- By default web3auth modal supports a set of default adapters depends of the `authMode` being used. Some adapters are configured by default and some must be configured by developer. For ex: Openlogin or customAuth requires some configuration which must be provided by developer, but torus wallet or metamask doesn't requires any such configuration so they can be used by default. However you can provide your own config for all adapters. Also some of the adapters are mandatory to be shown and hence requires configuration. For ex: Either of openlogin or customAuth is required to configured with both `DAPP` and `WALLET` auth mode.
+- By default Web3Auth's modal UI supports a set of default adapters depends of the `authMode` being used.
+By default, Web3Auth requires basic configuration client_id, and registering a redirect if you using CustomAuth adapter from the dashboard.
 
-The table below summarizes all the available adapters along with the restrictions for each of them:-
+The table below summarizes all the available adapters, their properties, and if they're default or not:-
 
 
 
-| Adapter            | AuthMode         | Extra Config Required | ChainNamespace    |   Mandatory |  Configuration Method      |
-| ------------------ | ---------------- | --------------------- | ----------------- |  ---------  | ---------------------------|
-| `openlogin`        | `WALLET`, `DAPP` | `YES`                 | `EIP155`,`SOLANA` | YES`        |  `getOpenloginAdapter`     |
-| `custom-auth`      | `WALLET`, `DAPP` | `YES`                 | `EIP155`,`SOLANA` |`YES`        |  `getCustomAuthAdapter`    |
-| `torus-evm`        | `DAPP`           | `NO`                  | `EIP155`          | `NO`        |  `getTorusEvmAdapter`      |
-| `torus-solana`     | `DAPP`           | `NO`                  | `SOLANA`          | `NO`        |  `getTorusSolanaAdapter`   |
-| `metamask`         | `DAPP`           | `NO`                  | `EIP155`          | `NO`        |  `getMetamaskAdapter`      |
-| `phantom`          | `DAPP`           | `NO`                  | `SOLANA`          | `NO`        |  `getPhantomAdapter`       |
-| `seedphrase`       | `WALLET`         | `NO`                  | `EIP155`,`SOLANA` | `NO`        |  `getSeedphraseAdapter`    |
-| `walletconnect-v1` | `DAPP`           | `NO`                  | `EIP155`          | `NO`        |  `getWalletconnectV1Adapter`|
-| `walletconnect-v2` | `DAPP`           | `NO`                  | `MULTICHAIN`      | `NO`        |  `getWalletconnectV2Adapter`|
+| Adapter            | AuthMode         | ChainNamespace    |   Default |  Configuration Method      |
+| ------------------ | ---------------- | ----------------- |  ---------  | ---------------------------|
+| `openlogin`        | `WALLET`, `DAPP`  | `EIP155`,`SOLANA` | `YES`        |  `getOpenloginAdapter`     |
+| `custom-auth`      | `WALLET`, `DAPP`  | `EIP155`,`SOLANA` |`NO`        |  `getCustomAuthAdapter`    |
+| `torus-evm`        | `DAPP`           | `EIP155`          | `YES`        |  `getTorusEvmAdapter`      |
+| `torus-solana`     | `DAPP`              | `SOLANA`          | `YES`        |  `getTorusSolanaAdapter`   |
+| `metamask`         | `DAPP`          | `EIP155`          | `YES`        |  `getMetamaskAdapter`      |
+| `phantom`          | `DAPP`             | `SOLANA`          | `YES`        |  `getPhantomAdapter`       |
+| `seedphrase`       | `WALLET`          | `EIP155`,`SOLANA` | `YES`        |  `getSeedphraseAdapter`    |
+| `walletconnect-v1` | `DAPP`            | `EIP155`          | `YES`        |  `getWalletconnectV1Adapter`|
+| `walletconnect-v2` (Coming Soon) | `DAPP`           | `MULTICHAIN`      | `NO`         |  `getWalletconnectV2Adapter`|
 
 
 - Api:- You can now configure adapters based on the rules given in table above using `configureAdapter` function from `web3auth class`.
@@ -228,7 +254,7 @@ For ex: If you want to configure openlogin adapter, then call `getOpenloginAdapt
         web3auth.configureAdapter(openloginAdapter);
 ```
 
-> Note: You don't have to configure every adapter unless you want to override default configs for the adapter. Only those adapter which are marked as mandatory in above table are required to be configured always based on the `authMode` you are using.
+> Note: You don't have to configure any default adapter unless you want to override default configs for the adapter. Only those adapter which are marked are non default in above table are required to be configured always based on the `authMode` you are using.
 
 ## `Initializing Modal`
 
@@ -320,7 +346,7 @@ LoginConfig = Record<string, {
 ```
 - `Promise<void>` : Returns a promise which resolves to void
 
-> Note: You cannot change visibility of mandatory adapters. For ex: Openlogin or CustomAuth
+> Note: You cannot change visibility of some required adapters. For ex: Openlogin or CustomAuth
 
 <TabItem value="basic">
 
@@ -360,7 +386,7 @@ You can get the information about connected user by calling `getUserInfo` functi
 > Note: This function will return information based on the connected adapter.
 
 ```javascript
-  await web3authCore.logout();
+  await web3authCore.getUserInfo();
 ```
 
 ## `logout`

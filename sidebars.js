@@ -8,15 +8,15 @@ module.exports = {
       type: "category",
       label: "API Reference",
       items: [
-        {
-          "Modal": [
-            "api-reference/modal/usage",
-
-          ],
-          "Core": [
-            "api-reference/core/usage",
-          ],
-          "OpenLogin": [
+          "api-reference/modal",
+          "api-reference/core",
+          "api-reference/adapter-config",
+          "api-reference/providers",
+          "api-reference/glossary",
+          {
+            type: "category",
+            label: "OpenLogin",
+            items: [
             {
               "Web": [
                 "api-reference/openlogin/web/installation",
@@ -25,13 +25,13 @@ module.exports = {
               ]
             },
             {
-              "iOS": [
+              "iOS (Swift)": [
                 "api-reference/openlogin/ios/installation",
                 "api-reference/openlogin/ios/usage"
               ]
             },
             {
-              "Android": [
+              "Android (Kotlin, Java) ": [
                 "api-reference/openlogin/android/installation",
                 "api-reference/openlogin/android/usage"
               ]
@@ -183,6 +183,7 @@ module.exports = {
         "customauth/faq",
       ],
     },
+    "usecases",
     {
       type: "category",
       label: "Security & Key Infrastructure",

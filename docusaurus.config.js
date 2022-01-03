@@ -33,7 +33,7 @@ module.exports = {
     navbar: {
       title: "Documentation",
       logo: {
-        alt: "Torus's Logo",
+        alt: "Web3Auth's Logo",
         src: "images/documentation-logo.svg",
       },
       items: [
