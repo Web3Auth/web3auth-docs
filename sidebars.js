@@ -8,15 +8,11 @@ module.exports = {
       type: "category",
       label: "API Reference",
       items: [
-        {
-          "Modal": [
-            "api-reference/modal/usage",
-
-          ],
-          "Core": [
-            "api-reference/core/usage",
-          ],
-        },
+          "api-reference/modal",
+          "api-reference/core",
+          "api-reference/adapter-config",
+          "api-reference/providers",
+          "api-reference/glossary"
       ],
 
     },
