@@ -1,6 +1,6 @@
 ---
 title: How to Integrate OpenLogin and Binance Smart Chain
-image: "/contents/Torus-BSC.png"
+image: "/contents/web3auth-bsc.png"
 description:
   Learn to use OpenLogin to integrate your app with Binance Smart Chain
 order: 7

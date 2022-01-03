@@ -1,6 +1,6 @@
 ---
 title: How to Integrate OpenLogin and zkSync
-image: "/contents/Torus-zkSync.png"
+image: "/contents/web3auth-zkSync.png"
 description: Learn to use OpenLogin to integrate your app with zkSync rollup
 order: 9
 category: misc

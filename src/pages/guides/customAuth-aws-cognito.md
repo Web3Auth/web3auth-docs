@@ -1,6 +1,6 @@
 ---
 title: How to Integrate Torus CustomAuth and AWS Cognito Hosted UI
-image: "/contents/TorusxAWSCognito.png"
+image: "/contents/web3auth-aws-cognito.png"
 description: Learn to use Torus CustomAuth with AWS Cognito Hosted UI.
 order: 13
 category: auth
