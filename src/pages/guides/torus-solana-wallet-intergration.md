@@ -1,6 +1,6 @@
 ---
 title: How to Integrate Torus Solana Wallet in Dapp
-image: "/contents/Torus-Solana.png"
+image: "/contents/web3auth-solana.png"
 description:
   Learn to integrate Torus Solana Wallet in Dapp
 order: 0

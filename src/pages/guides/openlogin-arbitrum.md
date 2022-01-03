@@ -1,6 +1,6 @@
 ---
 title: How to Integrate OpenLogin and Arbitrum
-image: "/contents/Torus-Arbitrum.png"
+image: "/contents/web3auth-arbitrum.png"
 description: Learn to use OpenLogin to integrate your dapp with arbitrum rollup
 order: 10
 category: misc

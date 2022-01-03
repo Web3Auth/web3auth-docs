@@ -1,6 +1,6 @@
 ---
 title: How to Integrate CustomAuth and apple logins
-image: "/contents/Torus-apple.png"
+image: "/contents/web3auth-apple.png"
 description: Learn to use CustomAuth with native apple logins.
 order: 12
 category: auth

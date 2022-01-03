@@ -1,6 +1,6 @@
 ---
 title: How to Integrate OpenLogin and Avalanche
-image: "/contents/Torus-AVAX.png"
+image: "/contents/web3auth-avax.png"
 description: Learn to use OpenLogin to integrate your app with Avalanche
 order: 8
 category: misc

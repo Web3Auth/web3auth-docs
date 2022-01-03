@@ -1,6 +1,6 @@
 ---
 title: Plug n Play Web3Auth on Native iOS (Swift, OpenLogin)
-image: "/contents/openlogin-ios.jpg"
+image: "/contents/openlogin-ios.png"
 description: Learn to integrate OpenLogin with iOS native applications
 order: 21
 category: walletAndApp
