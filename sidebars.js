@@ -12,9 +12,33 @@ module.exports = {
           "api-reference/core",
           "api-reference/adapter-config",
           "api-reference/providers",
-          "api-reference/glossary"
+          "api-reference/glossary",
+          {
+            type: "category",
+            label: "OpenLogin",
+            items: [
+            {
+              "Web": [
+                "api-reference/openlogin/web/installation",
+                "api-reference/openlogin/web/initialization",
+                "api-reference/openlogin/web/usage"
+              ]
+            },
+            {
+              "iOS (Swift)": [
+                "api-reference/openlogin/ios/installation",
+                "api-reference/openlogin/ios/usage"
+              ]
+            },
+            {
+              "Android (Kotlin, Java) ": [
+                "api-reference/openlogin/android/installation",
+                "api-reference/openlogin/android/usage"
+              ]
+            }
+          ]
+        },
       ],
-
     },
     // {
     //   type: "category",
