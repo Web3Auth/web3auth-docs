@@ -2,7 +2,7 @@ name: ci for documentation
 
 on:
   push:
-    branches: [master]
+    branches: [feat/hosting]
 
 env:
   FORCE_COLOR: 3
@@ -47,7 +47,7 @@ jobs:
         uses: jakejarvis/s3-sync-action@master
         env:
           SOURCE_DIR: build
-          AWS_S3_BUCKET: docs.tor.us
+          AWS_S3_BUCKET: docs.web3auth.io
           AWS_REGION: us-east-1
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -55,7 +55,7 @@ jobs:
       - name: Invalidate CDN
         uses: chetan/invalidate-cloudfront-action@master
         env:
-          DISTRIBUTION: E11JKICTZIXMQH
+          DISTRIBUTION: E399JT46MDK0ZA
           PATHS: "/index.html"
           AWS_REGION: us-east-1
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
