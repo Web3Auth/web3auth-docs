@@ -2,3 +2,20 @@
 title: Glossary
 hide_title: true
 ---
+
+
+- `Adapter`:- Adapter is a pluggable package which implements IAdapter interface for a wallet.
+  An adapter can be plugged in and out of web3auth modal. An adapter emits certain events like CONNECTED, CONNECTING and DISCONNECTED etc during login lifecycle of a user.
+Each adapter exposes provider on successful user login which can be used to invoke rpc calls on wallet and on connected blockchain.
+
+- `LoginMethod`:- A login method is unique type of login method provided by an adapter.
+    Certain adapters like CustomAuth and Openlogin provides various method to login from.
+    For ex: Google, Twitter etc. Visiblity of each login method is configurable.
+
+- `Provider`:- A provider is an wallet provider which is given by every adapter on successful user login. This provider can be used to make rpc calls to connected wallet/blockchain or by using suitable web3 library for the chain being used.
+
+- `Application Wallet`:- Currently web3auth supports two categories of wallet adapters i.e application wallets AKA IN_APP wallets and EXTERNAL wallets. Application wallets are those wallets which are scoped to dapp meaning that if you are doing login with same application wallet on different applications you will get different wallets (private keys). For ex: CustomAuth and Openlogin are application wallets.
+
+- `External Wallet`:- External wallet is the wallet which is global for all applications, no matter where you are doing login you will get same keys if same credentials are being provided. For ex: Metamask , Torus wallet, Phantom wallet etc are known as external wallets in web3auth.
+
+- `ChainNamespace`:- Web3auth supports multiple chains i.e ethereum and solana currently, you need to specify chain namespace which you want to use while creating an instance of web3authModal.
