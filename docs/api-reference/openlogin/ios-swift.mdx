@@ -1,8 +1,78 @@
 ---
-title: OpenLogin-Swift-SDK Usage
-sidebar_label: Usage
+title: OpenLogin-Swift-SDK
+sidebar_label: iOS (Swift)
 ---
-## OpenLogin module
+
+## Requirements
+
+- iOS 12+ (older version support coming soon)
+- Xcode 11.4+ / 12.x
+- Swift 4.x / 5.x
+
+## Installation
+
+If you are using the Swift Package Manager, open the following menu item in Xcode:
+
+- **File > Swift Packages > Add Package Dependency...**
+
+In the Choose Package Repository prompt add this url:
+
+```
+https://github.com/torusresearch/openlogin-swift-sdk
+```
+
+## Initialization
+Authentication with In-App Web-based Flow (iOS 12+):
+
+1. Import **OpenLogin** into your project.
+
+```swift
+import OpenLogin
+```
+
+2. Present the In-App Web-based Login modal.
+
+```swift
+ OpenLogin
+    .webAuth()
+    .start {
+        switch $0 {
+        case .success(let result):
+            print("""
+                Signed in successfully!
+                    Private key: \(result.privKey)
+                    User info:
+                        Name: \(result.userInfo.name)
+                        Profile image: \(result.userInfo.profileImage ?? "N/A")
+                        Type of login: \(result.userInfo.typeOfLogin)
+                """)
+        case .failure(let error):
+            print("Error: \(error)")
+        }
+    }
+```
+
+## Configuration
+
+In order to use OpenLogin you need to provide your OpenLogin **ClientId** and which **Network** to run it.
+
+Go to [Torus Developer](https://developer.tor.us), create or open an existing OpenLogin project and copy your project ID, which is the **ClientId**.
+
+In your application bundle add a plist file named **OpenLogin.plist** with the following information:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>ClientId</key>
+  <string>YOUR_OPENLOGIN_CLIENT_ID</string>
+  <key>Network</key>
+  <string>mainnet | testnet</string>
+</dict>
+</plist>
+```
+## OpenLogin module providers
 ### `webAuth(bundle)`
 OpenLogin component for authenticating with web-based flow. Parameters are loaded from the file `OpenLogin.plist` in your bundle with the following content
  ```
@@ -58,8 +128,7 @@ OpenLogin component for authenticating with web-based flow
 | clientId    | String       | Yes       | Your OpenLogin project ID                        |
 | network     | enum Network | Yes       | Network to run OpenLogin e.g. `mainnet, testnet` |
 
-## WebAuth module
-
+## WebAuth module providers
 ### `init(clientId, network)`
 Set clientId and network info for web-based authentication flow
 
@@ -74,7 +143,7 @@ Any on going WebAuth auth session will be automatically cancelled when starting 
 
 | Parameter   | Type         | Mandatory | Description                                      |
 | ----------- | ------------ | --------- | ------------------------------------------------ |
-| callback    | Callback     | Yes       | g called with the result of the WebAuth flow                        |
+| callback    | Callback     | Yes       | called with the result of the WebAuth flow                        |
 
 **Example**
 ```swift
