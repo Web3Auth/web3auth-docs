@@ -96,7 +96,7 @@ module.exports = {
             },
             {
               label: "tKey",
-              href: "https://hackmd.io/keVuRfrwSxygfyCfzsrQfw", // TODO: Confirm with content team
+              href: "https://tkey.io/",
             },
             {
               label: "Status",
