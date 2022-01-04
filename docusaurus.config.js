@@ -5,8 +5,8 @@ const githubRepo = "torus-documentation";
 const githubOrgUrl = `https://github.com/${githubOrg}`;
 const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
-const contactUrl = "https://tor.us/contact-us.html"; // TODO: Confirm with content team
-const mediumUrl = "https://medium.com/@TorusLabs";
+const contactUrl = "https://web3auth.io/contact-us.html"; // TODO: Confirm with content team
+const mediumUrl = "https://medium.com/web3auth";
 const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
 
@@ -39,7 +39,7 @@ module.exports = {
       items: [
         {
           label: "Dashboard",
-          href: "https://developer.tor.us",
+          href: "https://dashboard.web3auth.io",
           target: "_self",
           position: "right",
           className: "navbar__button",
@@ -71,24 +71,20 @@ module.exports = {
           items: [
             {
               label: "Torus Wallet",
-              href: "https://app.tor.us",
+              href: "https://toruswallet.io/",
             },
             {
               label: "OpenLogin",
               href: "https://openlogin.com", // TODO: beta.openlogin.com?
-            },
-            {
-              label: "Torus Extension (coming soon)",
-              href: "#", // TODO: Update later
-            },
+            }
           ],
         },
         {
           title: "Developers",
           items: [
             {
-              label: "Torus Embed",
-              href: "https://docs.tor.us/wallet/quick-start", // TODO: Update later
+              label: "Torus Wallet",
+              href: "https://toruswallet.io/",
             },
             {
               label: "CustomAuth",
@@ -96,7 +92,7 @@ module.exports = {
             },
             {
               label: "OpenLogin",
-              href: "https://openlogin.com", // TODO: beta.openlogin.com?
+              href: "https://openlogin.com",
             },
             {
               label: "tKey",
@@ -104,11 +100,11 @@ module.exports = {
             },
             {
               label: "Status",
-              href: "https://torusstatus.com",
+              href: "https://status.web3auth.io",
             },
             {
               label: "Support",
-              href: "https://t.me/torusdev",
+              href: "https://t.me/torusdev", //TODO
             },
           ],
         },
@@ -118,11 +114,11 @@ module.exports = {
           items: [
             {
               label: "Telegram",
-              href: "https://t.me/TorusLabs",
+              href: "https://t.me/web3auth",
             },
             {
               label: "Twitter",
-              href: "https://twitter.com/TorusLabs",
+              href: "https://twitter.com/web3auth",
             },
             {
               label: "Medium",
@@ -134,15 +130,15 @@ module.exports = {
             },
             {
               label: "Reddit",
-              href: "https://www.reddit.com/r/toruslabs",
+              href: "https://www.reddit.com/r/web3auth",
             },
             {
               label: "LinkedIn",
-              href: "https://www.linkedin.com/company/toruslabs",
+              href: "https://www.linkedin.com/company/web3auth",
             },
             {
               label: "YouTube",
-              href: "https://www.youtube.com/c/toruslabs",
+              href: "https://www.youtube.com/c/web3auth",
             },
           ],
         },
@@ -152,11 +148,11 @@ module.exports = {
           items: [
             {
               label: "About us",
-              to: "https://tor.us/about-us.html",
+              to: "https://web3auth.io/about-us.html",
             },
             {
               label: "Partners",
-              href: "https://tor.us/partners.html",
+              href: "https://web3auth.io/partners.html",
             },
             {
               label: "Career",
@@ -164,7 +160,7 @@ module.exports = {
             },
             {
               label: "Media kit",
-              href: "https://tor.us/media-kit.html",
+              href: "https://web3auth.io/media-kit.html",
             },
             {
               label: "Blog",
@@ -178,7 +174,7 @@ module.exports = {
         },
       ],
       logo: {
-        alt: "Torus's Logo",
+        alt: "Web3Auth's Logo",
         src: "images/logo.svg",
       },
       copyright: `© ${new Date().getFullYear()} Torus Labs Private Limited`,
