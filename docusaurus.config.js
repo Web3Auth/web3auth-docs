@@ -1,7 +1,7 @@
 const path = require("path");
 
-const githubOrg = "torusresearch";
-const githubRepo = "torus-documentation";
+const githubOrg = "web3auth";
+const githubRepo = "web3auth-docs";
 const githubOrgUrl = `https://github.com/${githubOrg}`;
 const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
@@ -14,7 +14,7 @@ const rehypeKatex = require("rehype-katex");
 module.exports = {
   title: "Documentation",
   tagline: "Flexible, Universal Key Management", // TODO: Confirm with content team
-  url: "https://tor.us",
+  url: "https://docs.web3auth.io",
   baseUrl: "/",
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
