@@ -5,7 +5,7 @@ sidebar_label: Android (Kotlin, Java)
 
 ## Requirements
 
-Android API version 21 or newer is required.
+Android API version 24 or newer is required.
 
 ## Installation
 
@@ -83,10 +83,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         openlogin = OpenLogin(
-            this,
-            clientId = getString(R.string.openlogin_client_id),
-            network = OpenLogin.Network.MAINNET,
-            redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+            OpenLoginOptions(
+                this,
+                clientId = getString(R.string.openlogin_client_id),
+                network = OpenLogin.Network.MAINNET,
+                redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+            )
         )
 
         // Handle user signing in when app is not alive
@@ -105,7 +107,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onClickLogin() {
-        openlogin.login()
+        val selectedLoginProvider = OpenLogin.Provider.GOOGLE   // Can be Google, Facebook, Twitch etc
+        openlogin.login(LoginParams(selectedLoginProvider))
     }
 
     //...
@@ -126,7 +129,8 @@ Make sure your sign-in activity `launchMode` is set to `singleTop` in your `Andr
 
 ### `OpenLogin Constructor`
 
-Construct and configure an OpenLogin instance
+The OpenLogin Constructor takes an object with `OpenLoginOptions` as input.
+Construct and configure an OpenLoginOptions instance
 
 | Parameter   | Type                                      | Mandatory | Description                                                                         |
 | ----------- | ----------------------------------------- | --------- | ----------------------------------------------------------------------------------- |
@@ -156,10 +160,12 @@ class MainActivity : AppCompatActivity() {
 
         // Configure OpenLogin
         openlogin = OpenLogin(
-            this,
-            clientId = getString(R.string.openlogin_project_id),
-            network = OpenLogin.Network.MAINNET,
-            redirectUrl = Uri.parse("torusapp://org.torusresearch.openloginexample/redirect"),
+            OpenLoginOptions(
+                this,
+                clientId = getString(R.string.openlogin_project_id),
+                network = OpenLogin.Network.MAINNET,
+                redirectUrl = Uri.parse("torusapp://org.torusresearch.openloginexample/redirect"),
+            )
         )
     }
     ...
@@ -196,12 +202,13 @@ class MainActivity : AppCompatActivity() {
 ### `login`
 
 Trigger login flow that shows a modal for user to select one of supported
-providers to login e.g. Google, Facebook, Twitter, Passwordless, etc
+providers to login e.g. Google, Facebook, Twitter, Passwordless, etc. login requires
+`LoginParams` as a required input.
+Construct and configure a LoginParams instance
 
 | Parameter         | Type                                       | Mandatory | Description                                                                                                                                                                                                  |
 | ----------------- | ------------------------------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | loginProvider     | enum com.openlogin.core.OpenLogin.Provider | Yes       | Login provider, supported values are `GOOGLE, FACEBOOK, REDDIT, DISCORD, TWITCH, APPLE, LINE, GITHUB, KAKAO, LINKEDIN, TWITTER, WEIBO, WECHAT, EMAIL_PASSWORDLESS`                                           |
-| fastLogin         | Boolean?                                   | No        | If user was previously logged in to the same device and then setting fastLogin to true provides a way to login with webauthn directly without going through loginProvider authentication, default is `null`  |
 | relogin           | Boolean?                                   | No        | default is `null`                                                                                                                                                                                            |
 | skipTKey          | Boolean?                                   | No        | default is `null`                                                                                                                                                                                            |
 | extraLoginOptions | Map<String, Any>?                          | No        | You can pass various oauth supported options, default is `null`                                                                                                                                              |
@@ -219,7 +226,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var openlogin: OpenLogin
 
     private fun signIn() {
-        openlogin.login(OpenLogin.Provider.GOOGLE)
+        openlogin.login(LoginParams(OpenLogin.Provider.GOOGLE))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -239,7 +246,6 @@ Trigger logout flow
 
 | Parameter   | Type             | Mandatory | Description       |
 | ----------- | ---------------- | --------- | ----------------- |
-| fastLogin   | Boolean?         | No        | If fastLogin is passed as true then user can relogin again by just using webauthn url, else user will be completely logged out and has to go through loginProvider authentication. Default value is `null` |
 | redirectUrl | android.net.Uri? | No        | Url where user will be redirected after successfull logout. Default value is `null` |
 | appState    | String?          | No        | appState can be used to keep track of the app state when user will be redirected to app after logout. Default value is `null` |
 
