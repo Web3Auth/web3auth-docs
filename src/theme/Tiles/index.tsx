@@ -27,7 +27,6 @@ export default function Tiles(props) {
               <Link
                 key={tile.key}
                 className={styles.tile}
-                target="_blank"
                 to={tile.path}
               >
                 <img
