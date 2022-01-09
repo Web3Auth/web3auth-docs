@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Torus is now Web3Auth</title>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=DM%20Sans:400" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="main-container">
+    <div>
+      <div class="rebranded-message">We have rebranded!</div>
+      <div class="rebranded-title">Torus is now Web3Auth</div>
+
+      <div style="margin-top: 56px;"></div>
+
+      <div class="rebrand-card">
+        <div class="rebrand-card__torus">
+          <img src="<%= BASE_URL %>error-pages/torus-logo-blue.svg" alt="torus-logo">
+        </div>
+        <div class="right-arrow-container">
+          <img src="<%= BASE_URL %>error-pages/right-arrow.svg" alt="arrow pointing right">
+        </div>
+        <div class="rebrand-card__web3auth">
+          <img src="<%= BASE_URL %>error-pages/web3auth.svg">
+        </div>
+      </div>
+
+      <div style="margin-top: 80px;"></div>
+
+      <div class="redirect-notice">
+        <div>You will be redirected to our new site in <span class="seconds">10s</span></div>
+        <div>
+          alternatively, <a href="https://docs.web3auth.io">click here to go to docs.web3auth.io
+            directly
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const $seconds = document.querySelector(".seconds");
+    let counter = 10;
+    const timer = setInterval(function () {
+      counter -= 1;
+      $seconds.innerText = `${counter}s`;
+      if (counter < 1) clearInterval(timer);
+    }, 1000)
+  </script>
+</body>
+<style>
+  body {
+    --font-header: Poppins, Arial, Helvetica, sans-serif;
+    --font-body: "DM Sans", Arial, Helvetica, sans-serif;
+    font-family: var(--font-body);
+    padding: 0 25px;
+    margin: 0;
+  }
+
+  .main-container {
+    text-align: center;
+    display: flex;
+    height: 100vh;
+    max-width: 655px;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .rebranded-message {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5em;
+    color: #808080;
+  }
+
+  .rebranded-title {
+    font-family: var(--font-header);
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.5em;
+    color: #0E2B4D;
+  }
+
+  .rebrand-card {
+    width: 100%;
+    background: #FFFFFF;
+    border: 1px solid #F3F3F4;
+    box-sizing: border-box;
+    box-shadow: 0px 14px 30px rgb(46 91 255 / 6%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 25px;
+  }
+
+  .rebrand-card__torus {
+    width: 26%;
+  }
+
+  .rebrand-card__torus img {
+    width: 100%;
+    height: auto;
+  }
+
+  .rebrand-card__web3auth {
+    width: 42%;
+  }
+
+  .rebrand-card__web3auth img {
+    width: 100%;
+    height: auto;
+  }
+
+  .redirect-notice {
+    font-family: var(--font-header);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.5em;
+    color: #808080;
+  }
+
+  .redirect-notice a {
+    text-decoration: none;
+  }
+
+  .right-arrow-container {
+    margin: 0 20px;
+    width: 24%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  .right-arrow-container img {
+    width: 100%;
+    animation: animate-arrow 1s ease-in-out infinite 0.2s;
+  }
+
+  @keyframes animate-arrow {
+    0% {
+      transform: translateX(-75%);
+    }
+
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  @media only screen and (min-width: 599px) {
+    body {
+      padding: 0 50px;
+    }
+
+    .rebranded-message {
+      font-size: 20px;
+    }
+
+    .rebranded-title {
+      font-size: 32px;
+    }
+
+    .rebrand-card {
+      padding: 80px 75px;
+    }
+
+    .redirect-notice {
+      font-size: 20px;
+    }
+  }
+</style>
+
+</html>
