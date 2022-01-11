@@ -1,5 +1,5 @@
 ---
-title: CustomAuth on Native iOS (Swift)
+title: How to Integrate CustomAuth and Native iOS (Swift)
 image: "/contents/openlogin-ios.png"
 description: Learn to integrate CustomAuth with iOS native applications
 order: 21
