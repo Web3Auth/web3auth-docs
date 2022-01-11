@@ -2,7 +2,7 @@
 module.exports = {
   docs: [
     "README",
-    // "get-started",
+    "get-started",
     "what-is-web3auth",
     {
       type: "category",
@@ -19,7 +19,14 @@ module.exports = {
               "api-reference/openlogin/ios-swift",
               "api-reference/openlogin/android"
             ]
-          }
+          },
+          {
+            "CustomAuth": [
+              "customauth/api-reference/installation",
+              "customauth/api-reference/initialization",
+              "customauth/api-reference/usage",
+            ],
+          },
       ],
     },
     // {
@@ -135,14 +142,6 @@ module.exports = {
         "customauth/get-started",
         "customauth/what-is-customauth",
         "customauth/integrating-customauth",
-        {
-          "API Reference": [
-            "customauth/api-reference/installation",
-            "customauth/api-reference/initialization",
-            "customauth/api-reference/usage",
-
-          ],
-        },
         "customauth/designing-your-key-management-architecture",
         "customauth/verifiers",
         {
@@ -151,15 +150,15 @@ module.exports = {
             "customauth/setting-up-verifiers/custom-verifier",
           ],
         },
-        {
-          "Compatiblity and common patterns": [
-            "customauth/compatibility-and-common-patterns/README",
-            "customauth/compatibility-and-common-patterns/gasless-meta-transactions",
-            "customauth/compatibility-and-common-patterns/scalability-layer2-solutions",
-            "customauth/compatibility-and-common-patterns/password-manager-flow",
-            "customauth/compatibility-and-common-patterns/tkey",
-          ],
-        },
+        // {
+        //   "Compatiblity and common patterns": [
+        //     "customauth/compatibility-and-common-patterns/README",
+        //     "customauth/compatibility-and-common-patterns/gasless-meta-transactions",
+        //     "customauth/compatibility-and-common-patterns/scalability-layer2-solutions",
+        //     "customauth/compatibility-and-common-patterns/password-manager-flow",
+        //     "customauth/compatibility-and-common-patterns/tkey",
+        //   ],
+        // },
         "customauth/linking-accounts",
         "customauth/redirects-and-service-workers",
         "customauth/faq",
