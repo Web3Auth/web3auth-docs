@@ -59,7 +59,7 @@ Open your app's `AndroidManifest.xml` file and add the following permission:
 
 ### Configure an Plug n Play project
 
-Go to [Developer Dashboard](https://developer.tor.us), create or select an Plug n Play project:
+Go to [Developer Dashboard](https://dashboard.web3auth.io), create or select an Plug n Play project:
 
 - Add `{YOUR_APP_PACKAGE_NAME}://auth` to **Whitelist URLs**.
 

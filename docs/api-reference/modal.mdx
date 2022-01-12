@@ -68,7 +68,7 @@ yarn add @web3auth/web3auth
         console.log("disconnected")
       })
       web3auth.on(BASE_ADAPTER_EVENTS.ERRORED, (error)=>{
-        console.log("errored", error)
+        console.log("error", error)
       })
     }
 
@@ -231,7 +231,7 @@ interface Web3AuthOptions {
 ```javascript
  // this instance will create DAPP based modal which
  // uses ropsten network for all the adapters being passed
- // (unless overrided while configuring  adapters, each adapter can be configured
+ // (unless override while configuring  adapters, each adapter can be configured
  //  to have its own chainConfig, otherwise each adapter
  //  will inherit chainConfig based on the chainNamespace and chainId passed in the
  //  constructor chainConfig).
@@ -270,7 +270,7 @@ The table below summarizes all the available adapters, their properties, and if 
 - To configure a adapter create the instance of adapter by using its corresponding package and pass the returned `adapter` instance in `configureAdapter` function.
 
 For ex: If you want to configure openlogin adapter, then call import `OpenloginAdapter` from ``@web3auth/openlogin-adapter` package,
-create an instance of the adapter along with the configuration and pass the retruned instance in to `web3auth.configureAdapter` as shown in example below.
+create an instance of the adapter along with the configuration and pass the returned instance in to `web3auth.configureAdapter` as shown in example below.
 
 ```ts
   import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -279,7 +279,7 @@ create an instance of the adapter along with the configuration and pass the retr
               network: "testnet",
             /* client id is not required for localhost.
             /* You can get your production openlogin's
-            /* client/project id from https://developer.tor.us
+            /* client/project id from https://dashboard.web3auth.io
             */
               clientId: "localhost-id",
               uxMode: "popup"

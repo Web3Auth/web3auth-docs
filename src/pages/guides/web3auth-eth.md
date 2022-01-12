@@ -1,9 +1,9 @@
 ---
-title: Getting started with Web3Auth
-image: "/contents/web3auth-getStarted.png"
-description: Installing and getting started with Web3Auth.
-order: 0
-category: app
+title: Using Web3Auth with Ethereum.
+image: "/contents/web3auth-eth.png"
+description: Using Web3Auth with Ethereum.
+order: 12
+category: misc
 ---
 
 import Tabs from "@theme/Tabs";
@@ -12,7 +12,7 @@ import TabItem from "@theme/TabItem";
 
 ## Introduction
 
-This guide is a hello world tutorial to get quickly familiar with Web3Auth.We will go through the use of Web3auth plug and play modal with minimal lines of code.
+This guide is a tutorial to go through the steps required for using ethereum blockchain in web3auth.
 
 ## Installation:-
 
@@ -23,17 +23,26 @@ Install Web3Auth sdk from npm to use and configure web3auth modal. We are also i
 
 ## Initialize web3auth instance
 
-We need `clientId` and `chainNamespace` to initialize web3auth class. You can get your `clientId` by registering your app on [developer dashboard](https://developer.web3auth.io), whereas `chainNamespace` signifies the type of chain you want to initialize web3auth with, currently it supports `eip155` for evm compatible chains and `solana` for solana blockchain.
+We need `clientId` and `chainNamespace` to initialize web3auth class. You can get your `clientId` by registering your app on [developer dashboard](https://developer.web3auth.io), whereas `chainNamespace` signifies the type of chain you want to initialize web3auth with, as we want to use `ethereum` which belongs to `eip155`, we have to set `eip155` as `chainNamespace` inside chainConfig. Other chainConfig fields are optional, by default it will connect to ethereum mainnet. If you want to connect with other network then default, then you can pass chainId of network in chainConfig if you are using any official ethereum testnet like rinkeby, ropsten etc, if you are connecting with some custom chainId except official testnets you have to pass entire chainConfig for that customNetwork.
 
 ```ts
     import { Web3Auth } from "@web3auth/web3auth";
-    import { CHAIN_NAMESPACES } from "@web3auth/base";
+    import { CHAIN_NAMESPACES, CustomChainConfig } from "@web3auth/base";
 
+    const ethChainConfig: CustomChainConfig = {
+        chainNamespace: CHAIN_NAMESPACES.EIP155,
+        chainId: "0x3",
+        rpcTarget: `https://ropsten.infura.io/v3/${YOUR_INFURA_ID}`,
+        displayName: "ropsten",
+        blockExplorer: "https://ropsten.etherscan.io/",
+        ticker: "ETH",
+        tickerName: "Ethereum",
+    };
     // We are initializing with EIP155 namespace which
     // will initialize the modal with ethereum mainnet
     // by default.
     const web3auth = new Web3Auth({
-        chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }
+        chainConfig: ethChainConfig
         clientId: "localhost-id" // get your clientId from https://developer.web3auth.io
     });
 
@@ -59,7 +68,8 @@ We can get notified by various events during user's login session by subscribing
         console.log("disconnected");
       });
       web3auth.on(ADAPTER_STATUS.ERRORED, (error) => {
-        console.log("some error or user have cancelled login request", error);
+        console.log("some
+ error or user have cancelled login request", error);
       });
     },
 
@@ -92,6 +102,24 @@ Once user is connected you can get the information available for authenticated u
 
 We can do sign transactions and make rpc calls to connected chain by using `provider` available on `web3auth` instance once user is logged in. Refer to documentation about `providers` to know more about the rpc calls available on provider for each `chainNamespace`.
 
+Here we will simply sign a transaction to send eth using web3auth provider which is fully compatible with web3 js library for ethereum blockchain.
+
+```ts
+import { SafeEventEmitterProvider } from "@web3auth/base";
+
+
+  try {
+    const web3 = new Web3(web3auth.provider);
+    const accounts = await web3.eth.getAccounts();
+    console.log("pubKey", accounts)
+    const txRes = await web3.eth.sendTransaction({ from: accounts[0], to: accounts[0], value: web3.utils.toWei("0.01") })
+    console.log("txRes", txRes)
+  } catch (error) {
+    console.log("error", error)
+  }
+
+```
+
 ## Logout
 
 At last we can also add function to logout user session.
@@ -103,7 +131,7 @@ Calling `logout` function will disconnect user session and it will emit `DISCONN
 
 ## Done
 
-You have completed this tutorial,you can refer to working code of this tutorial [here]("https://github.com/Web3Auth/Web3Auth/examples/vue-app/src/default/defaultModal.vue").
+You have completed this tutorial,you can refer to working code of this tutorial [here]("https://github.com/Web3Auth/Web3Auth/examples/vue-app/src/chains/ethereum.vue").
 
 <!-- From here you can proceed to guides about :-
 - Configuring web3auth modal to use or configure various login adapters and custom chain config
