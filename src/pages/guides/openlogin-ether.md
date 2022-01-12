@@ -28,7 +28,7 @@ We will be using plain html and jquery for this example so we just need to creat
 ## Register your OpenLogin application
 
 In order to use OpenLogin SDK, you'll need to create a project in
-[Developer Dashboard](https://developer.tor.us) and get your client ID.
+[Developer Dashboard](https://dashboard.web3auth.io) and get your client ID.
 
 > App registration is not required for localhost development.
 

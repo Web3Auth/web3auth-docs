@@ -2,8 +2,7 @@
 title: Adapter Configuration
 hide_title: true
 ---
-Web3auth by default contains a pre configured list of login adapters. It also provides flexibility to  add/remove adapters or to use some existing adapter with custom configuration. Process of adding a new adapter or configuring the adapter relies on same function i.e. `web3auth.configureAdapter`, this function takes a single argument of adapter's instance being used. Some helper functions to generate instance of each adapter with custom configuration are available in `@web3auth/core` package.
-
+Web3auth by default contains a pre configured list of login adapters. It also provides flexibility to  add/remove adapters or to use some existing adapter with custom configuration.
 This document act as a reference for configuring various adapters available in web3auth. Following is the list of available adapters,along with helper methods and configuration examples:-
 
 
@@ -11,12 +10,13 @@ This document act as a reference for configuring various adapters available in w
 --------
   - `Adapter Name`:- `Openlogin`
   - `Description`:- Openlogin Adapter allows user to login with openlogin. You can read more about openlogin's authentication [here](https://docs.tor.us/open-login/get-started).
-  - `Method`:- `getOpenloginAdapter`
+  - `Package name`:- `@web3auth/openlogin-adapter`
   - `Example`:-
   ```ts
      import `Web3Auth` class from  `@web3auth/web3auth`;
+     import { OpenloginAdapter } from `@web3auth/openlogin-adapter`;
      const web3auth = new Web3Auth(options);
-     const openloginAdapter = await getOpenloginAdapter({
+     const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
             network: "testnet",
             clientId: "localhost-id",
@@ -55,12 +55,13 @@ This document act as a reference for configuring various adapters available in w
 --------
   - `Adapter Name`:- `torus-evm`
   - `Description`:- Torus Wallet adapter allows to connect with torus wallet for evm chains. You can read more about torus wallet [here](https://docs.tor.us/wallet/get-started).
-  - `Method`:- `getTorusEvmAdapter`
+  - `Package name`:- `@web3auth/torus-evm-adapter`
   - `Example`:-
   ```ts
      import `Web3Auth` class from  `@web3auth/web3auth`;
+     import { TorusWalletAdapter } from '@web3auth/torus-evm-adapter'
      const web3auth = new Web3Auth(options);
-     const adapter = await getTorusEvmAdapter({
+     const adapter = new TorusWalletAdapter({
          adapterSettings: {
           buttonPosition: "bottom-left"
         },
@@ -107,12 +108,13 @@ This document act as a reference for configuring various adapters available in w
 --------
    - `Adapter Name`:- `torus-solana`
   - `Description`:- Torus solana adapter allows to connect with torus wallet for solana blockchain. You can read more about torus wallet [here](https://docs.tor.us/solana-wallet/get-started).
-  - `Method`:- `getTorusSolanaAdapter`
+  - `Package name`:- `@web3auth/torus-solana-adapter`
   - `Example`:-
   ```ts
      import `Web3Auth` class from  `@web3auth/web3auth`;
+     import { SolanaWalletAdapter } from '@web3auth/torus-solana-adapter'
      const web3auth = new Web3Auth(options);
-      const adapter = await getTorusSolanaAdapter({
+      const adapter = new SolanaWalletAdapter({
          adapterSettings: {
           modalZIndex: 99999
         },
@@ -159,12 +161,13 @@ This document act as a reference for configuring various adapters available in w
 --------
   - `Adapter Name`:- `metamask`
   - `Description`:- Metamask Adapter allows user to login with metamask wallet. You can read more about metamask wallet [here](https://docs.metamask.io/guide/).
-  - `Method`:- `getMetamaskAdapter`
+  - `Package name`:- `@web3auth/metamask-adapter`
   - `Example`:-
   ```ts
      import `Web3Auth` class from  `@web3auth/web3auth`;
+     import { MetamaskAdapter } from '@web3auth/metamask-adapter'
      const web3auth = new Web3Auth(options);
-     const adapter = await getMetamaskAdapter({
+     const adapter = new MetamaskAdapter({
           chainNamespace: CHAIN_NAMESPACES.EIP155,
           chainId: "0x3",
           rpcTarget: "https://ropsten.infura.io/v3/776218ac4734478c90191dde8cae483c",
@@ -195,12 +198,13 @@ This document act as a reference for configuring various adapters available in w
 --------
   - `Adapter Name`:- `phantom`
   - `Description`:- Phantom adapter allows you to connect with phantom wallet. You can read more about phantom wallet here.(https://docs.phantom.app/).
-  - `Method`:- `getPhantomAdapter`
+  - `Package name`:- `@web3auth/phantom-adapter`
   - `Example`:-
   ```ts
-     import `Web3Auth` class from  `@web3auth/web3auth`;
+     import `Web3Auth` class from  '@web3auth/web3auth';
+     import { PhantomAdapter } from '@web3auth/phantom-adapter';
      const web3auth = new Web3Auth(options);
-     const adapter = await getPhantomAdapter()
+     const adapter = new  PhantomAdapter()
      web3auth.configureAdapter(openloginAdapter);
   ```
 
@@ -211,12 +215,13 @@ This document act as a reference for configuring various adapters available in w
 --------
   - `Adapter Name`:- `wallet-connect-v1`
   - `Description`:- Wallet connect v1 adapter allows you login with wallet connect v1. You can read more about wallet connect [here](https://docs.walletconnect.com/).
-  - `Method`:- `getWalletConnectV1Adapter`
+  - `Package Name`:- `@web3auth/wallet-connect-v1-adapter`
   - `Example`:-
   ```ts
      import `Web3Auth` class from  `@web3auth/web3auth`;
+     import { WalletConnectV1Adapter } from '@web3auth/wallet-connect-v1-adapter';
      const web3auth = new Web3Auth(options);
-     const adapter = await getWalletConnectV1Adapter({
+     const adapter = new WalletConnectV1Adapter({
          adapterSettings: {
           infuraId:"YOUR_INFURA_ID"
         },

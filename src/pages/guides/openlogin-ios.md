@@ -70,7 +70,7 @@ import OpenLogin
 
 In order to use OpenLogin you need to provide your OpenLogin **ClientId** and which **Network** to run it.
 
-- Go to [Torus Developer](https://developer.tor.us), create or open an existing Plug n Play project and copy your project ID, which is the **ClientId**.
+- Go to [Torus Developer](https://dashboard.web3auth.io), create or open an existing Plug n Play project and copy your project ID, which is the **ClientId**.
 
 In your application bundle add a plist file named **OpenLogin.plist** with the following information:
 

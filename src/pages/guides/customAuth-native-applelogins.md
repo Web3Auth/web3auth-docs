@@ -21,7 +21,7 @@ You can find
 ## Register your CustomAuth application
 
 In order to use Torus CustomAuth SDK, you'll need to create a project in
-[Developer Dashboard](https://developer.tor.us)
+[Developer Dashboard](https://dashboard.web3auth.io)
 
 1. Verifier type: "Custom"
 2. JWK endpoint - https://appleid.apple.com/auth/keys
