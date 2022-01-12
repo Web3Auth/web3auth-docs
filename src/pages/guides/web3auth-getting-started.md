@@ -1,5 +1,5 @@
 ---
-title: Getting started with Web3Auth
+title: Getting started with Web3Auth (Web)
 image: "/contents/web3auth-getStarted.png"
 description: Installing and getting started with Web3Auth.
 order: 0
