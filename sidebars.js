@@ -53,7 +53,7 @@ module.exports = {
       label: "Security & Key Infrastructure",
       items: [
         "key-infrastructure/overview",
-        "key-infrastructure/technical-architecture",
+        // "key-infrastructure/technical-architecture",
       //   {
       //   type: "category",
       //   label: "Role of Torus nodes",
