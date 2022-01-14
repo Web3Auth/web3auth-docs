@@ -1,9 +1,9 @@
 ---
-title: Getting started with Web3Auth
-image: "/contents/web3auth-started.png"
+title: Getting started with Web3Auth (Web)
+image: "/contents/web3auth-getStarted.png"
 description: Installing and getting started with Web3Auth.
 order: 0
-category: app
+category: walletAndApp
 ---
 
 import Tabs from "@theme/Tabs";
