@@ -1,8 +1,9 @@
 ---
 title: How to Integrate OpenLogin and Avalanche
-image: "/contents/Torus-AVAX.png"
+image: "/contents/web3auth-avax.png"
 description: Learn to use OpenLogin to integrate your app with Avalanche
 order: 8
+category: misc
 ---
 
 import Tabs from "@theme/Tabs";
@@ -20,7 +21,7 @@ You can find [the source code of this is example on Github](https://github.com/t
 ## Register your OpenLogin application
 
 In order to use OpenLogin SDK, you'll need to create a project in
-[Developer Dashboard](https://developer.tor.us) and get your client ID.
+[Developer Dashboard](https://dashboard.web3auth.io) and get your client ID.
 
 
 > App registration is not required for localhost development.
@@ -50,7 +51,7 @@ Start with creating a instance of openlogin class and initialize it using `openl
 
 We are using two options while creating openlogin class instance:-
 
-- `clientId`: clientId is a public id which is used to to identify your app. You can generate your client id from [developer dashboard](http://developer.tor.us/). For localhost you can use any static random string as client id.
+- `clientId`: clientId is a public id which is used to to identify your app. You can generate your client id from [developer dashboard](http://dashboard.web3auth.io/). For localhost you can use any static random string as client id.
 
 - `network`: network can be `testnet` or `mainnet`.
 

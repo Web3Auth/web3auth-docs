@@ -2,149 +2,38 @@
 module.exports = {
   docs: [
     "README",
+    // "get-started",
+    "what-is-web3auth",
     {
       type: "category",
-      label: "Web3Auth",
+      label: "API Reference",
       items: [
-        "web3auth/get-started",
-        "web3auth/what-is-web3auth",
-        {
-          "Modal": [
-            "web3auth/modal/api-reference/installation",
-            "web3auth/modal/api-reference/initialization",
-            "web3auth/modal/api-reference/usage",
-
-          ],
-          "Core": [
-            "web3auth/core/api-reference/installation",
-            "web3auth/core/api-reference/initialization",
-            "web3auth/core/api-reference/usage",
-
-          ],
-        },
-      ],
-
-    },
-    {
-      type: "category",
-      label: "OpenLogin",
-      items: [
-        "open-login/get-started",
-        "open-login/what-is-openlogin",
-        {
-          "API Reference": [
-            "open-login/api-reference/installation",
-            "open-login/api-reference/initialization",
-            "open-login/api-reference/usage",
-
-          ],
-        },
-      ],
-
-    },
-    {
-      type: "category",
-      label: "Wallet",
-      items: [
-        "wallet/get-started",
-        "wallet/what-is-wallet",
-        {
-          "API Reference": [
-            "wallet/api-reference/installation",
-            "wallet/api-reference/class",
-            "wallet/api-reference/account",
-            "wallet/api-reference/display",
-            "wallet/api-reference/address-resolver",
-            "wallet/api-reference/topup",
-            "wallet/api-reference/ethereum-api",
-          ],
-        },
-        {
-          "Developing with Torus Wallet": [
-            "wallet/developing-with-wallet/ganache",
-            "wallet/developing-with-wallet/networklist",
-          ],
-        },
-        {
-          Features: [
-            "wallet/features/layer2",
-            "wallet/features/accountrecovery",
-            "wallet/features/purchasecryptocurrency",
-            "wallet/features/erc721",
-            "wallet/features/exportprivatekey",
-            "wallet/features/language",
-            "wallet/features/nameresolver",
-            "wallet/features/themes",
-            "wallet/features/pwa",
-            "wallet/features/whitelabeling",
-          ],
-        },
-        {
-          FAQ: ["wallet/faq-1/developers", "wallet/faq-1/users"],
-        },
-        "wallet/integration-guidelines",
-        "wallet/changelog",
-      ],
-    },
-    {
-      type: "category",
-      label: "Solana Wallet",
-      items: [
-        "solana-wallet/get-started",
-        "solana-wallet/what-is-wallet",
-        {
-          "API Reference": [
-            "solana-wallet/api-reference/installation",
-            "solana-wallet/api-reference/class",
-            "solana-wallet/api-reference/account",
-            "solana-wallet/api-reference/display",
-            // "solana-wallet/api-reference/address-resolver",
-            "solana-wallet/api-reference/topup",
-            { "Solana API" : [
-              // "solana-wallet/api-reference/solana/solana-api",
-              "solana-wallet/api-reference/solana/send-transaction",
-              "solana-wallet/api-reference/solana/sign-transaction",
-              "solana-wallet/api-reference/solana/sign-message",
-              "solana-wallet/api-reference/solana/gasless-transaction",
+          "api-reference/modal",
+          "api-reference/core",
+          "api-reference/adapter-config",
+          "api-reference/providers",
+          "api-reference/glossary",
+          {
+            "OpenLogin": [
+              "api-reference/openlogin/web",
+              "api-reference/openlogin/ios-swift",
+              "api-reference/openlogin/android"
+            ]
+          },
+          {
+            "CustomAuth": [
+              "api-reference/customauth/installation",
+              "api-reference/customauth/initialization",
+              "api-reference/customauth/usage",
             ],
           },
-          "solana-wallet/api-reference/solana-adapter"
-          ],
-        },
-        {
-          Features: [
-            "solana-wallet/features/accountrecovery",
-            "solana-wallet/features/purchasecryptocurrency",
-            "solana-wallet/features/exportprivatekey",
-            // "solana-wallet/features/language",
-            // "solana-wallet/features/nameresolver",
-            "solana-wallet/features/themes",
-            "solana-wallet/features/pwa",
-            // "solana-wallet/features/whitelabeling",
-          ],
-        },
-        // {
-        //   FAQ: ["solana-wallet/faq-1/developers", "solana-wallet/faq-1/users"],
-        // },
-        // "solana-wallet/integration-guidelines",
-        // "solana-wallet/changelog",
       ],
     },
     {
       type: "category",
-      label: "CustomAuth",
+      label: "Using your own auth",
       items: [
         "customauth/get-started",
-        "customauth/what-is-customauth",
-        "customauth/integrating-customauth",
-        {
-          "API Reference": [
-            "customauth/api-reference/installation",
-            "customauth/api-reference/initialization",
-            "customauth/api-reference/usage",
-
-          ],
-        },
         "customauth/designing-your-key-management-architecture",
         "customauth/verifiers",
         {
@@ -153,39 +42,31 @@ module.exports = {
             "customauth/setting-up-verifiers/custom-verifier",
           ],
         },
-        {
-          "Compatiblity and common patterns": [
-            "customauth/compatibility-and-common-patterns/README",
-            "customauth/compatibility-and-common-patterns/gasless-meta-transactions",
-            "customauth/compatibility-and-common-patterns/scalability-layer2-solutions",
-            "customauth/compatibility-and-common-patterns/password-manager-flow",
-            "customauth/compatibility-and-common-patterns/tkey",
-          ],
-        },
         "customauth/linking-accounts",
         "customauth/redirects-and-service-workers",
         "customauth/faq",
       ],
     },
+    "usecases",
     {
       type: "category",
-      label: "Torus Key Infrastructure",
+      label: "Security & Key Infrastructure",
       items: [
         "key-infrastructure/overview",
-        "key-infrastructure/technical-architecture",
-        {
-        type: "category",
-        label: "Role of Torus nodes",
-        items:[
-          "key-infrastructure/role-of-torus-nodes/overview",
-          "key-infrastructure/role-of-torus-nodes/lifecycle",
-          "key-infrastructure/role-of-torus-nodes/key-generation-and-resharing",
-        "key-infrastructure/role-of-torus-nodes/logins-key-assignments-and-retrievals",
-        "key-infrastructure/role-of-torus-nodes/oauth2-vs-proxy-sign-in",
-        "key-infrastructure/role-of-torus-nodes/dkg-specification"
-      ],
-        },
-        "key-infrastructure/node-operators",
+        // "key-infrastructure/technical-architecture",
+      //   {
+      //   type: "category",
+      //   label: "Role of Torus nodes",
+      //   items:[
+      //     "key-infrastructure/role-of-torus-nodes/overview",
+      //     "key-infrastructure/role-of-torus-nodes/lifecycle",
+      //     "key-infrastructure/role-of-torus-nodes/key-generation-and-resharing",
+      //   "key-infrastructure/role-of-torus-nodes/logins-key-assignments-and-retrievals",
+      //   "key-infrastructure/role-of-torus-nodes/oauth2-vs-proxy-sign-in",
+        // "key-infrastructure/role-of-torus-nodes/dkg-specification"
+      // ],
+      //   },
+        "key-infrastructure/powered-by-torus",
         "key-infrastructure/audits",
       ],
     },

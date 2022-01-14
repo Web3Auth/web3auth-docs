@@ -1,8 +1,9 @@
 ---
 title: How to Integrate Torus CustomAuth and AWS Cognito Hosted UI
-image: "/contents/TorusxAWSCognito.png"
+image: "/contents/web3auth-aws-cognito.png"
 description: Learn to use Torus CustomAuth with AWS Cognito Hosted UI.
 order: 13
+category: auth
 ---
 
 import Tabs from "@theme/Tabs";
@@ -52,7 +53,7 @@ domain in the `Authorized Javascript Origins` list and `<AWS_COGNITO_HOSTED_UI_D
 ## Register your Torus CustomAuth application
 
 In order to use Torus Custom SDK, you'll need to create a project in
-[Developer Dashboard](https://developer.tor.us).
+[Developer Dashboard](https://dashboard.web3auth.io).
 
 Do the following steps in order to create your custom verifier:-
 

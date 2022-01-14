@@ -1,0 +1,121 @@
+---
+title: Providers
+hide_title: true
+---
+
+---
+
+Each adapter in web3auth exposes a provider on successfull user authentication. This provider can be use to interact with wallet or connected chain using rpc calls. Currently web3auth supports providers for both evm and solana chains. This document act as a reference for various rpc calls available on each type of provider available in `web3auth`.
+
+ ## EIP155 chainNamespace Providers:-
+- If you are using `eip155` as chainNamespace while initializing `web3auth` then it will provide you with `eip1193` compatible provider
+
+- You can refer to various rpc calls available on this provider [here](https://eth.wiki/json-rpc/API#json-rpc-methods)
+
+- It also provides some data signing functions like `eth_signTypedData`, `eth_signTypedData3`, `eth_signTypedData4`.
+
+ ## Solana chainNamespace Providers:-
+- if you are using `solana` chainNamespace, it will provider you a provider with some custom rpc calls which are specific to `web3auth`.
+
+#### Various rpc methods available on solana provider are:-
+
+- `solana_requestAccounts`: This method is used fetch the address of connected account.
+    - Example
+    ```ts
+    import { SafeEventEmitterProvider } from "@web3auth/base";
+     async requestAccounts(): Promise<string[]> {
+    const accounts = await this.provider.request<string[]>({
+      method: "solana_requestAccounts",
+      params: {},
+    });
+    return accounts;
+  }
+    ```
+
+- `signTransaction`: This method is used to sign a single serialized transaction and it returns a signed `Transaction` object.
+
+    - Example:
+    ```ts
+     import type { Transaction } from "@solana/web3.js";
+    import { SafeEventEmitterProvider } from "@web3auth/base";
+     async signTransaction(transaction: Transaction): Promise<Transaction> {
+    const signedTransaction = (await this.provider.request({
+      method: "signTransaction",
+      params: {
+        message: bs58.encode(transaction.serializeMessage()),
+      },
+    })) as Transaction;
+    return signedTransaction;
+  }
+
+    ```
+
+- `signAllTransactions`:-  This method is used to sign a list of serialized transactions and it returns back list of signed of `Transaction` objects.
+
+    - Example:
+    ```ts
+    import type { Transaction } from "@solana/web3.js";
+    import { SafeEventEmitterProvider } from "@web3auth/base";
+
+    async signAllTransactions(provider: SafeEventEmitterProvider ,transactions: string[]): Promise<Transaction[]> {
+        const signedTransaction = (await provider.request({
+          method: "signAllTransactions",
+          params: {
+            message: transactions,
+          },
+        })) as Transaction[];
+        return signedTransaction;
+      }
+
+    ```
+
+- `signAndSendTransaction`: This function is used to sign and broadcast the transaction on chain. It returns the signature of broadcasted transaction.
+
+    - Example:
+    ```ts
+     import type { Transaction } from "@solana/web3.js";
+    import { SafeEventEmitterProvider } from "@web3auth/base";
+    async signAndSendTransaction(transaction: Transaction): Promise<{ signature: string }> {
+    const { signature } = await this.provider.request<{ signature: string }>({
+      method: "signAndSendTransaction",
+      params: {
+        message: bs58.encode(transaction.serializeMessage()),
+      },
+    });
+    return { signature };
+  }
+
+    ```
+
+- `signMessage`: This method is used sign any message from connected wallet.
+    - Example:-
+    ```ts
+    import { SafeEventEmitterProvider } from "@web3auth/base";
+
+      async signMessage(provider: SafeEventEmitterProvider ,data: Uint8Array): Promise<Uint8Array> {
+        const response = await provider.request<Uint8Array>({
+          method: "signMessage",
+          params: {
+            message: data,
+          },
+        });
+        return response as Uint8Array;
+      }
+
+    ```
+- `solanaPrivateKey`: This method is used to fetch the private key of logged in user. It is only available for `in-app` adapters like `customAuth` or `openlogin`.
+
+    - Example:-
+    ```ts
+
+        const privateKey = await provider.request<string>({
+          method: "solanaPrivateKey",
+          params: {},
+        });
+
+    ```
+
+#### Other default solana chain rpc methods:
+- All the rpc methods which are available by default on solana blockchain are also available on solana provider except for the case of `phantom` adapter they are not available.
+
+- You can refer to standard rpc calls for solana [here](https://docs.solana.com/developing/clients/jsonrpc-api)

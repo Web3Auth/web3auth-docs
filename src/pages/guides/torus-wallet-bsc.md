@@ -1,6 +1,6 @@
 ---
 title: How to Integrate Torus Wallet and Binance Smart Chain
-image: "/contents/Torus-BSC.png"
+image: "/contents/web3auth-bsc.png"
 description:
   Learn to use Torus Wallet with Binance Smart Chain
 order: 10

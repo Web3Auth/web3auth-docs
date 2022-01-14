@@ -1,0 +1,693 @@
+---
+title: Web
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+## Installation
+
+Integrate via script tag or npm/yarn
+
+<Tabs
+  defaultValue="cdn"
+  values={[
+    { label: "script tag", value: "cdn" },
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+
+<TabItem value="cdn">
+
+```shell
+<script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin@0"></script>
+```
+</TabItem>
+
+<TabItem value="npm">
+
+```shell
+npm i --save @toruslabs/openlogin
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @toruslabs/openlogin
+```
+
+</TabItem>
+
+</Tabs>
+
+The script tag creates a window.Openlogin object, which you can initialize.
+
+
+<Tabs
+  defaultValue="basic"
+  values={[
+    { label: "Basic example", value: "basic" },
+  ]}
+>
+
+
+<TabItem value="basic">
+
+```js
+import OpenLogin from "@toruslabs/openlogin";
+
+// clientId can be any string for localhost
+const openlogin = new OpenLogin({ clientId: "YOUR_PROJECT_ID", network: "testnet" });
+
+await openlogin.init();
+
+// if openlogin instance has private key then user is already logged in
+if (openlogin.privKey) {
+   console.log("User is already logged in. Private key: " + openlogin.privKey);
+} else {
+    await openlogin.login({
+        loginProvider: "google",
+        redirectUrl: "https://example.com/home",
+    });
+}
+
+```
+
+</TabItem>
+
+</Tabs>
+
+## Initialization
+
+This is the main class of anything related to Openlogin
+Using ES6,
+
+```javascript
+import OpenLogin from "@toruslabs/openlogin";
+```
+
+Then, create a new instance of OpenLogin.
+
+```javascript
+const openlogin = new OpenLogin(options);
+```
+
+The OpenLogin constructor takes an object with `OpenLoginOptions` as input.
+
+**Parameters**
+
+- `options` - `OpenLoginOptions`: The options of the constructor
+  - `clientId` - `string` : Your project id which you can get from [developer dashboard](https://dashboard.web3auth.io/)
+
+  - `network` - `enum`: Environment to run openlogin (testnet, mainnet, development)
+
+  - `_iframeUrl`- `string`: Url of openlogin iframe, you can pass custom iframe url here else
+  it will be added based on network value.For testnet iframe url is `https://beta.openlogin.com`  and
+  for mainnet it is `https://app.openlogin.com`. If you are passing valid  `network` value then network value
+  will be given precedence over iframe url.
+
+  - `uxMode` - `enum`(optional): `popup` and `redirect` uxmode are supported. By default it is set to `redirect`
+
+  - `loginConfig` -`LoginConfig`(optional):  LoginConfig allows you to specify custom loginConfig to customize visiblity of login modal
+  options and to specify your custom verifier for each login option.
+
+  - `whiteLabel`: `WhiteLabelData` (optional): Options for whitelabling default openlogin modal.
+  You can toggle theme and primary colors of login modal and openlogin verification screens by using WhiteLabelData.
+
+**Returns**
+
+- `Object`: The openlogin instance with all its methods and events.
+
+**Reference**
+
+```javascript
+type OpenLoginOptions = {
+  /**
+   * You can get your clientId/projectId by registering your
+   * dapp on {@link "https://dashboard.web3auth.io"| developer dashbaord}
+   */
+  clientId: string;
+
+  /**
+   * network specifies the openlogin iframe url url to be used.
+   *
+   * - `'mainnet'`: https://app.openlogin.com will be used which is the production version.
+   * - `'testnet'`: https://beta.openlogin.com will be used which is the beta version.
+   * - `'development'`: http://localhost:3000 will be used for development purpose.
+   */
+  network: OPENLOGIN_NETWORK_TYPE;
+
+  /**
+   * Setting no3PC forces openlogin to assume that third party cookies are blocked
+   * in the browser.
+   *
+   * @defaultValue false
+   * @remarks
+   * Only pass no3PC to `true` when you are sure that third party cookies are not
+   * supported. By default openlogin will self check third party cookies and proceed
+   * accordingly.
+   */
+  no3PC?: boolean;
+
+  /**
+   * redirectUrl is the dapp's url where user will be redirected after login.
+   *
+   * @remarks
+   * Register this url at {@link "https://dashboard.web3auth.io"| developer dashbaord}
+   * else initialization will give error.
+   */
+  redirectUrl?: string;
+
+  /**
+   * two uxModes are supported:-
+   * - `'POPUP'`: In this uxMode, a popup will be shown to user for login.
+   * - `'REDIRECT'`: In this uxMode, user will be redirected to a new window tab for login.
+   *
+   * @defaultValue `'POPUP'`
+   * @remarks
+   *
+   * Use of `'REDIRECT'` mode is recommended in browsers where popups might get blocked.
+   */
+  uxMode?: UX_MODE_TYPE;
+
+  /**
+   * replaceUrlOnRedirect removes the params from the redirected url after login
+   *
+   * @defaultValue true
+   */
+  replaceUrlOnRedirect?: boolean;
+
+  /**
+   * originData is used to verify the origin of dapp by iframe.
+   *
+   * @internal
+   * @remarks
+   * You don't have to pass originData explicitly if you have registered your dapp at
+   * {@link "https://dashboard.web3auth.io"| developer dashbaord}.
+   *
+   * originData contains a signature of dapp's origin url which is generated using
+   * project's secret.
+   */
+  originData?: OriginData;
+
+  /**
+   * loginConfig enables you to pass your own login verifiers configuration for various
+   * loginProviders.
+   *
+   * loginConfig is key value map where each key should be a valid loginProvider and value
+   * should be custom configuration for that loginProvider
+   *
+   * @remarks
+   * You can deploy your own verifiers from {@link "https://dashboard.web3auth.io"| developer dashbaord}
+   * to use here.
+   *
+   */
+  loginConfig?: LoginConfig;
+
+  /**
+   * _iframeUrl is for internal development use only and is used to override the
+   * `network` parameter.
+   * @internal
+   */
+  _iframeUrl?: string;
+  /**
+   * _startUrl is for internal development use only and is used specify authentication
+   * start url of iframe.
+   * @internal
+   */
+  _startUrl?: string;
+
+  /**
+   * _popupUrl is for internal development use only and is used specify url of popup window
+   * for popup uxMode.
+   * @internal
+   */
+  _popupUrl?: string;
+
+  /**
+   * options for whitelabling default openlogin modal.
+   */
+  whiteLabel?: WhiteLabelData;
+};
+
+type WhiteLabelData = {
+  /**
+   * App name to display in the UI
+   */
+  name?: string;
+  /**
+   * App logo to use in light mode
+   */
+  logoLight?: string;
+  /**
+   * App logo to use in dark mode
+   */
+  logoDark?: string;
+  /**
+   * Default language to use
+   *
+   * @defaultValue en
+   */
+  defaultLanguage?: string;
+  /**
+   * Whether to enable dark mode
+   *
+   * @defaultValue false
+   */
+  dark?: boolean;
+
+  /**
+   * Used to customize theme of the login modal with following options
+   * `'primary'` - To customize primary color of modal's content.
+   */
+  theme?: {
+    [P in string]: string;
+  };
+};
+
+const OPENLOGIN_NETWORK = {
+  MAINNET: "mainnet",
+  TESTNET: "testnet",
+  DEVELOPMENT: "development",
+};
+
+const UX_MODE = {
+  POPUP: "popup",
+  REDIRECT: "redirect",
+}
+
+type OriginData = {
+    [P in string]: string;
+};
+```
+
+**Example**
+
+```javascript
+const openlogin = new OpenLogin({
+  clientId: "YOUR_PROJECT_ID",
+  network: "testnet",
+  // if network is testnet then default iframeUrl is https://beta.openlogin.com
+  // for mainnet it is https://app.openlogin.com
+  //_iframeUrl: "https://beta.openlogin.com", // or you can directly specify iframeUrl of openlogin app
+  redirectUrl: "https://example.com/redirect" // your app url where user will be redirected
+  uxMode: "redirect" // default is redirect , popup mode is also supported
+});
+```
+
+### Using Custom login configuration
+
+
+By default , openlogin will use verifiers deployed by torus and will show all default available login options in login modal.
+If you want to customize the login modal or want to use your own login verifiers then you can use custom login configuration
+with openlogin.
+
+For ex: In code snippet below, we are customizing loginConfig to show only google and facebook as login options in default
+openlogin modal. Also you can pass your own verifiers in the configuration for any of the login providers.
+
+```javascript
+const openlogin = new OpenLogin({
+  // your clientId aka projectId , get it from https://dashboard.web3auth.io
+  // clientId is not required for localhost, you can set it to any string
+  // for development
+  clientId: YOUR_PROJECT_ID,
+  network: "testnet",
+  // you can pass login config to modify default
+  // login options in login modal, also you can pass
+  // your own verifiers.
+  loginConfig: {
+    google: {
+      verifier: "tkey-google-lrc",
+      name: "google",
+      typeOfLogin: "google",
+      showOnModal: true,
+      showOnDesktop: true,
+      showOnMobile: true,
+    },
+    facebook: {
+      verifier: "tkey-facebook-lrc",
+      name: "facebook",
+      typeOfLogin: "facebook",
+      showOnModal: true,
+      showOnDesktop: false,
+      showOnMobile: true,
+      mainOption: true,
+      description: "facebook social login",
+    },
+  },
+});
+```
+
+**Reference**
+```javascript
+
+type LoginConfig = Record<
+  string,
+  {
+    verifier: string;
+
+    /**
+     * The type of login. Refer to enum `LOGIN_TYPE`
+     */
+    typeOfLogin: TypeOfLogin;
+
+    /**
+     * Display Name. If not provided, we use the default for openlogin app
+     */
+    name: string;
+
+    /**
+     * Description for button. If provided, it renders as a full length button. else, icon button
+     */
+    description?: string;
+
+    /**
+     * Custom client_id. If not provided, we use the default for openlogin app
+     */
+    clientId?: string;
+
+    verifierSubIdentifier?: string;
+
+    /**
+     * Logo to be shown on mouse hover. If not provided, we use the default for openlogin app
+     */
+    logoHover?: string;
+
+    /**
+     * Logo to be shown on dark background (dark theme). If not provided, we use the default for openlogin app
+     */
+    logoLight?: string;
+
+    /**
+     * Logo to be shown on light background (light theme). If not provided, we use the default for openlogin app
+     */
+    logoDark?: string;
+
+    /**
+     * Show login button on the main list
+     */
+    mainOption?: boolean;
+
+    /**
+     * Whether to show the login button on modal or not
+     */
+    showOnModal?: boolean;
+
+    /**
+     * Whether to show the login button on desktop
+     */
+    showOnDesktop?: boolean;
+
+    /**
+     * Whether to show the login button on mobile
+     */
+    showOnMobile?: boolean;
+  }
+>;
+
+```
+
+### `init`
+
+Initialize the OpenLogin object after creation. Init sync up the state of user login session in
+to openlogin class and it also injects a iframe in to DOM.
+If init will be called after user is logged in , it will add
+the user private key to privKey state variable of openlogin object.
+
+```javascript
+await openlogin.init();
+```
+
+**Returns**
+
+- `Promise<void>` : Returns a promise which resolves to void
+
+
+## Providers
+
+### `login`
+Prompts or redirects the user to login based on the uxMode defined in the constructor.
+
+```javascript
+await openlogin.login(params);
+```
+
+**Parameters**
+
+- `params` - `LoginParams` \(optional\) : The login options. Used to specify a
+  type of login.
+
+  - `loginProvider` - `LOGIN_PROVIDER` : The loginProvider name. Supported loginProviders are can be of any value given in
+  LOGIN_PROVIDER. In future versions you  can pass custom loginProvider apart from options given LOGIN_PROVIDER.
+
+  - `fastLogin` - `boolean`(optional): If user was previously logged in to the same device and then setting
+    fastLogin to true provides a way to login with webauthn directly without going through loginProvider
+    authentication. By default it is false.
+
+  - `extraLoginOptions`: `ExtraLoginOptions`(optional): You can pass various oauth supported options in this object.
+
+  - `redirectUrl` : `string`(optional): Url where user will be redirected after successfull login. By default
+  user will be redirected to same page where login will be initiated.
+
+  - `appState`: `string`(optional): appState can be used to keep track of the app state when user will be redirected to app after login.
+
+**Returns**
+
+- `Promise<{privKey: string;}>;` : Returns a promise which resolves to the object containing dapp scoped private key of the user.
+
+**Reference**
+
+```typescript
+type LoginParams = BaseRedirectParams & {
+  loginProvider: string;
+  fastLogin?: boolean;
+  relogin?: boolean;
+  skipTKey?: boolean;
+  getWalletKey?: boolean;
+  extraLoginOptions?: ExtraLoginOptions;
+};
+
+type BaseRedirectParams = {
+  redirectUrl?: string;
+  appState?: string;
+};
+
+const LOGIN_PROVIDER: {
+    readonly GOOGLE: "google";
+    readonly FACEBOOK: "facebook";
+    readonly REDDIT: "reddit";
+    readonly DISCORD: "discord";
+    readonly TWITCH: "twitch";
+    readonly APPLE: "apple";
+    readonly LINE: "line";
+    readonly GITHUB: "github";
+    readonly KAKAO: "kakao";
+    readonly LINKEDIN: "linkedin";
+    readonly TWITTER: "twitter";
+    readonly WEIBO: "weibo";
+    readonly WECHAT: "wechat";
+    readonly EMAIL_PASSWORDLESS: "email_passwordless";
+    readonly WEBAUTHN: "webauthn";
+};
+export declare type LOGIN_PROVIDER_TYPE = typeof LOGIN_PROVIDER[keyof typeof LOGIN_PROVIDER];
+export declare type CUSTOM_LOGIN_PROVIDER_TYPE = string & {
+    toString?: (radix?: number) => string;
+};
+
+ interface BaseLoginOptions {
+    /**
+     * - `'page'`: displays the UI with a full page view
+     * - `'popup'`: displays the UI with a popup window
+     * - `'touch'`: displays the UI in a way that leverages a touch interface
+     * - `'wap'`: displays the UI with a "feature phone" type interface
+     */
+    display?: "page" | "popup" | "touch" | "wap" | string;
+    /**
+     * - `'none'`: do not prompt user for login or consent on reauthentication
+     * - `'login'`: prompt user for reauthentication
+     * - `'consent'`: prompt user for consent before processing request
+     * - `'select_account'`: prompt user to select an account
+     */
+    prompt?: "none" | "login" | "consent" | "select_account" | string;
+    /**
+     * Maximum allowable elasped time (in seconds) since authentication.
+     * If the last time the user authenticated is greater than this value,
+     * the user must be reauthenticated.
+     */
+    max_age?: string | number;
+    /**
+     * The space-separated list of language tags, ordered by preference.
+     * For example: `'fr-CA fr en'`.
+     */
+    ui_locales?: string;
+    /**
+     * Previously issued ID Token.
+     */
+    id_token_hint?: string;
+    /**
+     * The user's email address or other identifier. When your app knows
+     * which user is trying to authenticate, you can provide this parameter
+     * to pre-fill the email box or select the right session for sign-in.
+     *
+     * This currently only affects the classic Lock experience.
+     */
+    login_hint?: string;
+    acr_values?: string;
+    /**
+     * The default scope to be used on authentication requests.
+     * The defaultScope defined in the Auth0Client is included
+     * along with this scope
+     */
+    scope?: string;
+    /**
+     * The default audience to be used for requesting API access.
+     */
+    audience?: string;
+    /**
+     * The name of the connection configured for your application.
+     * If null, it will redirect to the Auth0 Login Page and show
+     * the Login Widget.
+     */
+    connection?: string;
+    /**
+     * If you need to send custom parameters to the Authorization Server,
+     * make sure to use the original parameter name.
+     */
+    [key: string]: unknown;
+}
+
+interface ExtraLoginOptions extends BaseLoginOptions {
+    /**
+     * Your Auth0 account domain such as `'example.auth0.com'`,
+     * `'example.eu.auth0.com'` or , `'example.mycompany.com'`
+     * (when using [custom domains](https://auth0.com/docs/custom-domains))
+     */
+    domain: string;
+    /**
+     * The Client ID found on your Application settings page
+     */
+    client_id?: string;
+    /**
+     * The default URL where Auth0 will redirect your browser to with
+     * the authentication result. It must be whitelisted in
+     * the "Allowed Callback URLs" field in your Auth0 Application's
+     * settings. If not provided here, it should be provided in the other
+     * methods that provide authentication.
+     */
+    redirect_uri?: string;
+    /**
+     * The value in seconds used to account for clock skew in JWT expirations.
+     * Typically, this value is no more than a minute or two at maximum.
+     * Defaults to 60s.
+     */
+    leeway?: number;
+    /**
+     * The field in jwt token which maps to verifier id
+     */
+    verifierIdField?: string;
+    /**
+     * Whether the verifier id field is case sensitive
+     * @default true
+     */
+    isVerifierIdCaseSensitive?: boolean;
+}
+
+```
+
+**Examples**
+
+```javascript
+const privKey = await openlogin.login();
+/*
+* Once user is loggedIn privKey will be available on all OpenLogin class instances.
+* If you need to get privKey on a different page. You can simply reinitialize openlogin instance
+* and get the  private key using privKey state variable of openlogin class. You don't need to
+* trigger login again.
+* For ex: await openlogin.init();
+* const privKey = openlogin.privKey;
+*/
+
+```
+
+```javascript
+const privKey = await openlogin.login({
+    extraLoginOptions: {
+      login_hint: email,
+    },
+    loginProvider: "email_passwordless",
+    redirectUrl: `https://example.com/redirect`,
+});
+```
+
+
+### `getUserInfo`
+
+To get logged in user's profile info use `getUserInfo` function
+
+```js
+  await openlogin.getUserInfo();
+```
+
+It will return the user info of following type:
+
+```typescript
+  type OpenloginUserInfo = {
+    email: string;
+    name: string;
+    profileImage: string;
+    aggregateVerifier: string;
+    verifier: string;
+    verifierId: string;
+    typeOfLogin: LOGIN_PROVIDER_TYPE | CUSTOM_LOGIN_PROVIDER_TYPE;
+  };
+```
+
+### `logout`
+
+Logs the user out of openlogin. Requires that a user is logged in already.
+
+```javascript
+await openlogin.logout(params);
+```
+
+**Parameters**
+
+- `params` - `Partial<BaseLogoutParams> & Partial<BaseRedirectParams>` \(optional\) : The logout options.
+  - `fastLogin` - `boolean`(optional): If fastLogin is passed as true then user can relogin again by just using
+  webauthn url, else user will be completely logged out and has to go through loginProvider authentication.
+
+  - `redirectUrl` : `string`(optional): Url where user will be redirected after successfull logout.
+
+  - `appState`: `string`(optional): appState can be used to keep track of the app state when user will be redirected to app after logout.
+
+
+**Reference**
+```typescript
+
+type BaseLogoutParams = {
+  clientId: string;
+  fastLogin: boolean;
+};
+
+type BaseRedirectParams = {
+  redirectUrl?: string;
+  appState?: string;
+};
+
+```
+**Returns**
+
+- `Promise<void>` : Returns a promise which resolves to void.
+
+**Examples**
+
+```javascript
+await openlogin.logout();
+```
+
+```javascript
+await openlogin.logout({ fastLogin: true });
+```

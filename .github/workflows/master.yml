@@ -2,7 +2,8 @@ name: ci for documentation
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
 
 env:
   FORCE_COLOR: 3
@@ -12,7 +13,7 @@ jobs:
     name: Build and Deploy
     strategy:
       matrix:
-        node: ["14.x"]
+        node: ["16.x"]
         os: [ubuntu-latest]
 
     runs-on: ${{ matrix.os }}
@@ -37,6 +38,7 @@ jobs:
           key: ${{ matrix.os }}-node-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ matrix.os }}-node-
+
       - name: Install dependencies
         run: npm ci
 
@@ -47,7 +49,7 @@ jobs:
         uses: jakejarvis/s3-sync-action@master
         env:
           SOURCE_DIR: build
-          AWS_S3_BUCKET: docs.tor.us
+          AWS_S3_BUCKET: docs.web3auth.io
           AWS_REGION: us-east-1
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -55,8 +57,8 @@ jobs:
       - name: Invalidate CDN
         uses: chetan/invalidate-cloudfront-action@master
         env:
-          DISTRIBUTION: E11JKICTZIXMQH
-          PATHS: "/index.html"
+          DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+          PATHS: "/*"
           AWS_REGION: us-east-1
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

@@ -3,16 +3,74 @@ title: Get Started
 hide_table_of_contents: true
 ---
 
-import GetStartedCards from "@theme/DirectAuthGetStartedCards";
+import Tiles from "@theme/Tiles";
 
-Do everything you can do with OpenLogin and Wallet in a fully customizable way.
-Built for developers who want more control, CustomAuth gives users the ability to build fully-customizable
-authentication experiences that leverage Torus' key infrastructure.
+To use your own auth with Web3Auth we use the CustomAuth SDK, integrating is actually relatively easy and can be done
+with not too much code.
+
+The steps for integration are:
+
+1. **[Designing your key management architecture](designing-your-key-management-architecture):** decide on which logins (verifiers) you'd like to implement, your authentication structure
+and more
+
+2. **Deploying a verifier on testnet via the [Web3Auth Dashboard](https://dashboard.web3auth.io)**: once you've designed your key management architecture
+for your app we can deploy your app-specific verifier scripts on the Torus Network. This would require you to similarly setup the different logins/auths you have chosen
+with the respective parties. For example with Goolge you need a clientID. Any generic OAuth follow the details (here)[/customauth/setting-up-verifiers/custom-verifier]
+
+<!-- This is done by submitting an append only transaction that
+creates the verifier scripts. These are highly limited in updatability thus most applications to test out the
+deployed scripts on testnet first. Once deployed, the application can then access and use these verifier scripts
+via one or more of our SDKs.  -->
+
+3. **Deploying to mainnet**: and finally once before entering production be sure to convert/deploy your verifier to mainnet [all deployments are done on the developer dashboard](https://dashboard.web3auth.io)
+
 
 - [Check out **Integrating CustomAuth**](integrating-customauth)
-- [Learn more about **What CustomAuth does for you?**](what-is-customauth)
-- [Head to **Developer Dashboard** to setup your verifier](https://developer.tor.us)
+<!-- - [Learn more about **What CustomAuth does for you?**](what-is-customauth) -->
+- [Head to **Developer Dashboard** to setup your verifier](https://dashboard.web3auth.io)
 
 Or start with one of our guides below:
 
-<GetStartedCards />
+
+export const tileGroupsData = [
+    {
+        // name: "Using Your Own Auth",
+        // description: "Do everything you can do with OpenLogin and Wallet in a fully customizable way",
+        tiles: [
+        {
+            key: "apple",
+            title: "Apple Login",
+            icon: "logo-apple.png",
+            path: "/guides/customauth-native-applelogins",
+        },
+        {
+            key: "aws-cognito",
+            icon: "logo-aws-cognito.png",
+            title: "AWS Cognito Hosted UI",
+            path: "/guides/customauth-aws-cognito",
+        },
+        ],
+    },
+]
+
+
+<Tiles tileGroups={tileGroupsData} />
+
+
+
+<!-- Depending on your application's platform we have different SDKs for integrating
+CustomAuth:
+
+- [WebSDK in Javascript](https://github.com/torusresearch/customauth)
+- [Android in Java SDK](https://github.com/torusresearch/torus-direct-android-sdk)
+- [IOS Swift SDK](https://github.com/torusresearch/torus-direct-swift-sdk)
+- [Native SDK in Java](https://github.com/torusresearch/torus-utils-java)
+- [React Native Sdk in Javascript](https://github.com/torusresearch/torus-direct-react-native-sdk)
+
+These SDKs implement interactions with the Torus Network which are detailed more
+closely
+[here](https://medium.com/toruslabs/key-assignments-resolution-and-retrieval-afb984500612)
+and
+[here](../../key-infrastructure/system-architecture#verifiers-and-key-retrieval).
+Each of the SDKs go into further detail with exact implementation details and
+example code within their readme's. -->

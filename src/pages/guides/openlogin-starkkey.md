@@ -1,8 +1,9 @@
 ---
 title: How to use Openlogin with Starknet.
-image: "/contents/torus-starknet.png"
+image: "/contents/web3auth-starknet.png"
 description: Learn to use OpenLogin to integrate with Starknet
 order: 14
+category: misc
 ---
 
 import Tabs from "@theme/Tabs";
@@ -26,7 +27,7 @@ You can find
 ## Register your OpenLogin application
 
 In order to use OpenLogin SDK, you'll need to create a project in
-[Developer Dashboard](https://developer.tor.us) and get your client ID.
+[Developer Dashboard](https://dashboard.web3auth.io) and get your client ID.
 
 > App registration is not required for localhost development.
 
@@ -55,7 +56,7 @@ We are using two options while creating openlogin class instance:-
 
 - `clientId`: clientId is a public id which is used to to identify your app. You
   can generate your client id from
-  [developer dashboard](http://developer.tor.us/). For localhost you can use any
+  [developer dashboard](http://dashboard.web3auth.io/). For localhost you can use any
   static random string as client id.
 
 - `network`: network can be `testnet` or `mainnet`.

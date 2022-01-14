@@ -1,8 +1,9 @@
 ---
 title: How to Integrate CustomAuth and apple logins
-image: "/contents/Torus-apple.png"
+image: "/contents/web3auth-apple.png"
 description: Learn to use CustomAuth with native apple logins.
 order: 12
+category: auth
 ---
 
 import Tabs from "@theme/Tabs";
@@ -20,7 +21,7 @@ You can find
 ## Register your CustomAuth application
 
 In order to use Torus CustomAuth SDK, you'll need to create a project in
-[Developer Dashboard](https://developer.tor.us)
+[Developer Dashboard](https://dashboard.web3auth.io)
 
 1. Verifier type: "Custom"
 2. JWK endpoint - https://appleid.apple.com/auth/keys
