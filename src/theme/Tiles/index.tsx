@@ -19,7 +19,7 @@ export default function Tiles(props) {
   return (
     <>
       {props.tileGroups.map((group: TileGroup) => (
-        <div className={styles.tileGroup}>
+        <div key={group.name} className={styles.tileGroup}>
           <h3>{group.name}</h3>
           <p>{group.description}</p>
           <div className={styles.tileGroupContent}>
