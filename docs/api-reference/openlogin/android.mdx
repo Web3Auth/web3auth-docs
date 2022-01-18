@@ -5,7 +5,7 @@ sidebar_label: Android (Kotlin, Java)
 
 ## Requirements
 
-Android API version 24 or newer is required.
+Android API version 21 or newer is required.
 
 ## Installation
 
@@ -27,12 +27,9 @@ Then, in your app-level `build.gradle` dependencies section, add the following:
 ```groovy
 dependencies {
     // ...
-    implementation 'org.torusresearch:openlogin-android-sdk:-SNAPSHOT'
+    implementation 'org.torusresearch:openlogin-android-sdk:1.0.0'
 }
 ```
-
-**Note**: This SDK is currently in beta, using `-SNAPSHOT` to make sure you receive latest updates
-and be aware that there may be breaking changes.
 
 ### Permissions
 
@@ -64,7 +61,10 @@ Open your app's `AndroidManifest.xml` file and add the following deep link inten
     <category android:name="android.intent.category.BROWSABLE" />
 
     <!-- Accept URIs: {YOUR_APP_PACKAGE_NAME}://* -->
-    <data android:scheme="{YOUR_APP_PACKAGE_NAME}" />
+    <data android:scheme="YOUR_APP_PACKAGE_NAME"
+            android:host="YOUR_APP_HOST" // torusapp
+            android:pathPattern="/*"
+            android:pathPrefix="YOUR_REDIRECT_PATH"/>  // /redirect
 </intent-filter>
 ```
 
@@ -108,7 +108,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun onClickLogin() {
         val selectedLoginProvider = OpenLogin.Provider.GOOGLE   // Can be Google, Facebook, Twitch etc
-        openlogin.login(LoginParams(selectedLoginProvider))
+        val loginCompletableFuture: CompletableFuture<OpenLoginResponse> = openlogin.login(LoginParams(selectedLoginProvider))
+
+        loginCompletableFuture.whenComplete { loginResponse, error ->
+            if (error == null) {
+                // render logged in UI
+            } else {
+                // render error UI
+            }
+
+        }
     }
 
     //...
@@ -226,7 +235,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var openlogin: OpenLogin
 
     private fun signIn() {
-        openlogin.login(LoginParams(OpenLogin.Provider.GOOGLE))
+
+        val selectedLoginProvider = OpenLogin.Provider.GOOGLE   // Can be Google, Facebook, Twitch etc
+        val loginCompletableFuture: CompletableFuture<OpenLoginResponse> = openlogin.login(LoginParams(selectedLoginProvider))
+
+        loginCompletableFuture.whenComplete { loginResponse, error ->
+            if (error == null) {
+                // render logged in UI
+            } else {
+                // render error UI
+            }
+
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -260,7 +280,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var openlogin: OpenLogin
 
     private fun signOut() {
-        openlogin.logout()
+        val logoutCompletableFuture =  openlogin.logout()
+        logoutCompletableFuture.whenComplete { _, error ->
+            if (error == null) {
+                // render logout UI
+            } else {
+                // render error UI
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -273,67 +300,3 @@ class MainActivity : AppCompatActivity() {
     ...
 }
 ```
-
-### `addAuthStateChangeListener`
-
-Register a handler that listens to authentication state change
-
-| Parameter               | Type                    | Mandatory | Description       |
-| ----------------------- | ----------------------- | --------- | ----------------- |
-| authStateChangeListener | AuthStateChangeListener | Yes       | default is `null` |
-
-**Example**
-
-```kotlin
-import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
-import com.openlogin.core.AuthStateChangeListener
-import com.openlogin.core.OpenLogin
-
-class MainActivity : AppCompatActivity() {
-    private lateinit var openlogin: OpenLogin
-
-    private val gson = Gson()
-
-    private fun reRender() {
-        val contentTextView = findViewById<TextView>(R.id.contentTextView)
-        val signInButton = findViewById<Button>(R.id.signInButton)
-        val signOutButton = findViewById<Button>(R.id.signOutButton)
-
-        val key = openlogin.state.privKey
-        val userInfo = openlogin.state.userInfo
-        if (key is String && key.isNotEmpty()) {
-            contentTextView.text = gson.toJson(openlogin.state)
-            contentTextView.visibility = View.VISIBLE
-            signInButton.visibility = View.GONE
-            signOutButton.visibility = View.VISIBLE
-        } else {
-            contentTextView.text = getString(R.string.not_logged_in)
-            contentTextView.visibility = View.GONE
-            signInButton.visibility = View.VISIBLE
-            signOutButton.visibility = View.GONE
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        ...
-        openlogin.addAuthStateChangeListener(AuthStateChangeListener {
-            reRender()
-        })
-        ...
-    }
-    ...
-}
-```
-
-### `removeAuthStateChangeListener`
-
-Degister a handler from listening to authentication state change
-
-| Parameter               | Type                    | Mandatory | Description       |
-| ----------------------- | ----------------------- | --------- | ----------------- |
-| authStateChangeListener | AuthStateChangeListener | Yes       | default is `null` |
