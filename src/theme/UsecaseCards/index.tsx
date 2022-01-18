@@ -41,7 +41,7 @@ export default function UsecaseCards() {
           Keplr has been using Web3Auth for one-step registration and logins straight into their Cosmos Extension Wallet. We are thrilled with their success and helping them build the easiest and secure wallet on the Cosmos Blockchain.
           </p>
           <div>
-              <a className={styles.footer} target="_blank" href="TODO">Learn more</a>
+              <a className={styles.footer} target="_blank" href="https://www.keplr.app/">Learn more</a>
           </div>
         </div>
 
@@ -68,7 +68,7 @@ export default function UsecaseCards() {
             Sequoia- Cryptos worth more than GDPs of nations are lost due to inefficient Private Key Management. Send in your wishes to these guys who want to make Cryptos accessible even to your Grandma!
           </p>
           <div>
-              <a className={styles.footer} target="_blank" href="TODO">Learn more</a>
+              <a className={styles.footer} target="_blank" href="https://www.featured.market/">Learn more</a>
           </div>
         </div>
       </div>
