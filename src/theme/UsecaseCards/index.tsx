@@ -8,24 +8,26 @@ export default function UsecaseCards() {
       {/* FIRST ROW */}
       <div className={styles.container}>
         <div className={classNames(styles.card, styles.cardOne)}>
-          <h6 className={styles.title}>Sky Weaver</h6>
-          <h5 className={styles.headline}>Seamless onboarding that scales</h5>
+          <h6 className={styles.title}>Skyweaver</h6>
+          <h5 className={styles.headline}>Web3 games that feels like Web2</h5>
           <p>
-          We onboard users in one-click with Torus Key Infrastructure. It allows us to focus on developing the game without worrying about key management.
+          We onboard users via the Sequence Wallet. Its social logins are powered by the Torus Network. There's no better way to plug in social auth into Web3 on a wallet
+          <i> - Peter Kieltyka, Co-founder</i>.
           </p>
           <div>
-              <a className={styles.footer} target="_blank" href="https://www.skyweaver.net/">Learn more</a>
+              <a className={styles.footer} target="_blank" href="https://medium.com/toruslabs/accelerating-blockchain-adoption-amongst-mainstream-users-with-skyweaver-1a0ea17b1e78">Learn more</a>
           </div>
         </div>
 
         <div className={classNames(styles.card, styles.cardOne)}>
-          <h6 className={styles.title}>Rarible</h6>
-          <h5 className={styles.headline}>NFT friendly</h5>
+          <h6 className={styles.title}>Kukai</h6>
+          <h5 className={styles.headline}>For the best NFT onboarding</h5>
           <p>
-          Torus wallet is easy to use for non-tech savvy NFT crowd. It reduces friction to create wallet and purchase an NFT.
+          Web3Auth is the easiest way for non-tech savvy users to onboard into a wallet, making it a great fit for the NFT ecosystem. It reduces friction, and increases conversion
+          <i> - Luis Gonzalez, Kukai/Tezos Commons</i>
           </p>
           <div>
-              <a className={styles.footer} target="_blank" href="https://wallet.kukai.app/account/tz2TztEbsVMoHGb4SkXV8QNt4JnxdiGe1A4p">Learn more</a>
+              <a className={styles.footer} target="_blank" href="https://medium.com/toruslabs/how-kukai-reached-a-million-user-logins-with-web3auth-sdk-58bdc08ca83d">Learn more</a>
           </div>
         </div>
       </div>
@@ -36,7 +38,7 @@ export default function UsecaseCards() {
           <h6 className={styles.title}>Keplr</h6>
           <h5 className={styles.headline}>Seamless onboarding that scales</h5>
           <p>
-          Keplr has been using #Web3Auth for one-step registration and logins straight into their Cosmos Extension Wallet. We are thrilled with their success and helping them build the easiest and secure wallet on the Cosmos Blockchain.
+          Keplr has been using Web3Auth for one-step registration and logins straight into their Cosmos Extension Wallet. We are thrilled with their success and helping them build the easiest and secure wallet on the Cosmos Blockchain.
           </p>
           <div>
               <a className={styles.footer} target="_blank" href="https://www.keplr.app/">Learn more</a>
@@ -45,13 +47,13 @@ export default function UsecaseCards() {
 
         <div className={classNames(styles.card, styles.cardOne)}>
           <h6 className={styles.title}>BEW</h6>
-          <h5 className={styles.headline}>Seamless onboarding that scales</h5>
+          <h5 className={styles.headline}>Web3Auth pave the way for crypto’s future</h5>
           <p>
-            TODO
-            ...<br/><br/><br/><br/>
+          See how Binance Extension Wallet removes seed phrases.
+          Web3Auth has allowed Binance Smart Chain users to seamlessly create and manage their extension wallets with their Social Accounts.
           </p>
           <div>
-              <a className={styles.footer} target="_blank" href="https://wallet.kukai.app/account/tz2TztEbsVMoHGb4SkXV8QNt4JnxdiGe1A4p">Learn more</a>
+              <a className={styles.footer} target="_blank" href="https://medium.com/toruslabs/how-binance-chain-extension-wallet-removes-seedphrases-with-web3auth-40cd527fcfaf">Learn more</a>
           </div>
         </div>
       </div>
@@ -66,7 +68,7 @@ export default function UsecaseCards() {
             Sequoia- Cryptos worth more than GDPs of nations are lost due to inefficient Private Key Management. Send in your wishes to these guys who want to make Cryptos accessible even to your Grandma!
           </p>
           <div>
-              <a className={styles.footer} target="_blank" href="https://wallet.kukai.app/account/tz2TztEbsVMoHGb4SkXV8QNt4JnxdiGe1A4p">Learn more</a>
+              <a className={styles.footer} target="_blank" href="https://www.featured.market/">Learn more</a>
           </div>
         </div>
       </div>
