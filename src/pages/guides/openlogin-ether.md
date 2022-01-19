@@ -400,7 +400,11 @@ export default Vue.extend({
 })
 ```
 
-Similarly you can call other rpc methods like `eth_signTypedData_v3`, `eth_signTypedData_v4`, `eth_sign` and call other standard functions using `this.ethereumPrivateKeyProvider._providerProxy` provider with web3.js or ethers.js
+:::info
+
+Refer to [`providers`](/api-reference/providers#eip1193-providers) documentation to know more about other rpc methods available on `this.ethereumPrivateKeyProvider._providerProxy` provider.
+
+:::
 ## Log out handler
 
 In order to logout user you needs to call logout function available on openlogin's instance. Logout function will clears the sdk state and removes any access to private key on frontend. You can redirect user to the exit page after logout function returns.

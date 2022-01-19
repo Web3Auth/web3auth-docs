@@ -209,6 +209,12 @@ import { SafeEventEmitterProvider } from "@web3auth/base";
   }
 ```
 
+:::info
+
+Refer to [`providers`](/api-reference/providers#eip1193-providers) documentation to know more about other rpc methods available on `web3auth.provider`.
+
+:::
+
 ## Logout
 
 At last we can also add function to logout user session.
