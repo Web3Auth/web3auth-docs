@@ -46,10 +46,37 @@ We need `clientId` and `chainNamespace` to initialize web3auth class. You can ge
         clientId: "localhost-id" // get your clientId from https://developer.web3auth.io
     });
 
-    await web3auth.initModal();
-
 ```
 
+## Initializing Web3Auth modal with default configuration
+`web3auth.initModal` function is used to initialize modal. It will initialize the modal with some default configured adapters (wallets) i.e  `openlogin`, `metamask`, `torus wallet` and `wallet connect`.
+
+```ts
+  // initializing the default modal
+  await web3auth.initModal();
+```
+
+## Initializing Web3Auth modal with only metamask and openlogin.
+
+If you want don't want to all default adapters then you can hide them as explained below.
+
+Code snippet given below will hide all the `torus wallet` and `wallet connect` adapters from modal and
+will only display `openlogin` and `metamask` wallet adapters in web3auth modal.
+
+```ts
+  import { EVM_ADAPTERS } from "@web3auth/base";
+  // initializing the modal with only openlogin and metamask
+  await web3auth.initModal({ modalConfig: {
+     [EVM_ADAPTERS.TORUS_EVM]: {
+          name: "torus wallet",
+          showOnModal: false,
+      },
+      [EVM_ADAPTERS.WALLET_CONNECT_V!]: {
+          name: "torus wallet",
+          showOnModal: false,
+      }
+  }});
+```
 ## Subscribe to login events
 
 We can get notified by various events during user's login session by subscribing to web3auth events. You can implement the logic of checking whether user is logged in or not based on these events. Below is the code snippet for subscribing to web3auth events.
@@ -98,9 +125,9 @@ Once user is connected you can get the information available for authenticated u
 > Note: You will get different information about user based on the login method used by user. For ex: if user authenticates using social logins then you will get name, email and profile image of user whereas if user is using some wallet like metamask to login then you will get only `ethereum` address of user.
 
 
-## Using provider to sign blockchain transactions
+## Using provider to sign eth transactions
 
-We can do sign transactions and make rpc calls to connected chain by using `provider` available on `web3auth` instance once user is logged in. Refer to documentation about `providers` to know more about the rpc calls available on provider for each `chainNamespace`.
+We can do sign transactions and make rpc calls to connected chain by using `provider` available on `web3auth` instance once user is logged in. This provider is `eip1193` compatible provider so you can functions like `eth_signTypedData_v3`, `eth_signTypedData_v4`, `eth_sign` and other standard functions by using `web3auth.provider` with web3.js or ethers.js
 
 Here we will simply sign a transaction to send eth using web3auth provider which is fully compatible with web3 js library for ethereum blockchain.
 
@@ -119,6 +146,74 @@ import { SafeEventEmitterProvider } from "@web3auth/base";
   }
 
 ```
+
+## Personal Sign
+
+```ts
+  import Web3 from "web3";
+
+  async personalSign() {
+    try {
+      const web3 = new Web3(web3auth.provider);
+
+      const fromAddress = (await web3.eth.getAccounts())[0];
+
+      const originalMessage = 'YOUR_MESSAGE';
+
+      const signedMessage = await web3.eth.personal.sign(originalMessage, fromAddress);
+
+    } catch (error) {
+      console.log("error", error)
+    }
+  }
+
+```
+
+## Sign Typed Data v1
+
+```ts
+  import Web3 from "web3";
+
+  async personalSign() {
+    try {
+      const web3 = new Web3(web3auth.provider);
+
+      // Get user's Ethereum public address
+      const fromAddress = (await web3.eth.getAccounts())[0];
+
+      const originalMessage = [
+        {
+          type: 'string',
+          name: 'fullName',
+          value: 'John Doe',
+        },
+        {
+          type: 'uint32',
+          name: 'userId',
+          value: '1234',
+        },
+      ];
+      const params = [originalMessage, fromAddress];
+      const method = 'eth_signTypedData';
+
+      const signedMessage = await web3.currentProvider.sendAsync({
+        id: 1,
+        method,
+        params,
+        fromAddress,
+      });
+
+    } catch (error) {
+      console.log("error", error)
+    }
+  }
+```
+
+:::info
+
+Refer to [`providers`](/api-reference/providers#eip1193-providers) documentation to know more about other rpc methods available on `web3auth.provider`.
+
+:::
 
 ## Logout
 
