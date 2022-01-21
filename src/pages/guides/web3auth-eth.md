@@ -10,18 +10,19 @@ import Tabs from "@theme/Tabs";
 
 import TabItem from "@theme/TabItem";
 
-## Introduction
+import InstallWeb3Auth from "../../../docs/common/web/code/web3auth/_install-evm.mdx";
+import InstantiateWeb3Auth from "../../../docs/common/web/code/web3auth/_instantiate-evm.mdx";
+import SubscribeEvents from "../../../docs/common/web/code/web3auth/_subscribe_events.mdx";
+import CommonSdkFunctions from "../../../docs/common/web/code/web3auth/_common-sdk-functions.mdx";
+import CommonChainFunctions from "../../../docs/common/web/code/web3auth/_common-eth-functions.mdx";
+
+## `Introduction`
 
 This guide is a tutorial to go through the steps required for using ethereum blockchain in web3auth.
 
-## Installation:-
+<InstallWeb3Auth/>
 
-Install Web3Auth sdk from npm to use and configure web3auth modal. We are also installing `@web3auth/base` package to get access to common types and interfaces for web3auth.
-
-> npm i --save @web3auth/web3auth
-> npm i --save @web3auth/base
-
-## Initialize web3auth instance
+## `Creating web3auth instance`
 
 We need `clientId` and `chainNamespace` to initialize web3auth class. You can get your `clientId` by registering your app on [developer dashboard](https://developer.web3auth.io), whereas `chainNamespace` signifies the type of chain you want to initialize web3auth with, as we want to use `ethereum` which belongs to `eip155`, we have to set `eip155` as `chainNamespace` inside chainConfig. Other chainConfig fields are optional, by default it will connect to ethereum mainnet. If you want to connect with other network then default, then you can pass chainId of network in chainConfig if you are using any official ethereum testnet like rinkeby, ropsten etc, if you are connecting with some custom chainId except official testnets you have to pass entire chainConfig for that customNetwork.
 
@@ -48,183 +49,23 @@ We need `clientId` and `chainNamespace` to initialize web3auth class. You can ge
 
 ```
 
-## Initializing Web3Auth modal with default configuration
-`web3auth.initModal` function is used to initialize modal. It will initialize the modal with some default configured adapters (wallets) i.e  `openlogin`, `metamask`, `torus wallet` and `wallet connect`.
+<SubscribeEvents/>
 
-```ts
-  // initializing the default modal
-  await web3auth.initModal();
-```
-
-## Initializing Web3Auth modal with only metamask and openlogin.
-
-If you want don't want to all default adapters then you can hide them as explained below.
-
-Code snippet given below will hide all the `torus wallet` and `wallet connect` adapters from modal and
-will only display `openlogin` and `metamask` wallet adapters in web3auth modal.
-
-```ts
-  import { EVM_ADAPTERS } from "@web3auth/base";
-  // initializing the modal with only openlogin and metamask
-  await web3auth.initModal({ modalConfig: {
-     [EVM_ADAPTERS.TORUS_EVM]: {
-          name: "torus wallet",
-          showOnModal: false,
-      },
-      [EVM_ADAPTERS.WALLET_CONNECT_V!]: {
-          name: "torus wallet",
-          showOnModal: false,
-      }
-  }});
-```
-## Subscribe to login events
-
-We can get notified by various events during user's login session by subscribing to web3auth events. You can implement the logic of checking whether user is logged in or not based on these events. Below is the code snippet for subscribing to web3auth events.
-
-```ts
-
-    subscribeAuthEvents(web3auth: Web3Auth) {
-      web3auth.on(ADAPTER_STATUS.CONNECTED, (data: CONNECTED_EVENT_DATA) => {
-        console.log("Yeah!, you are successfully logged in", data);
-
-      });
-      web3auth.on(ADAPTER_STATUS.CONNECTING, () => {
-        console.log("connecting");
-      });
-      web3auth.on(ADAPTER_STATUS.DISCONNECTED, () => {
-        console.log("disconnected");
-      });
-      web3auth.on(ADAPTER_STATUS.ERRORED, (error) => {
-        console.log("some
- error or user have cancelled login request", error);
-      });
-    },
-
-```
-
-## Display web3Auth modal and authenticate user
-
-So far we have successfully initialized `web3auth` sdk and subscribed to events.We just need to use `connect` function of `web3auth` instance to display modal and we will be notified under our subscribed events on any user interaction with the modal.
-
-Also after successful user login, web3auth instance will expose a provider under `web3auth.provider`  which we will use interact with blockchain and sign transactions.
-
-```ts
-  web3auth.connect();
-```
+<InstantiateWeb3Auth/>
 
 
+<CommonSdkFunctions/>
 
-## Get authenticated user info
-
-Once user is connected you can get the information available for authenticated user by calling `getUserInfo` function.
-
-```ts
-  const userInfo = await web3auth.getUserInfo();
-```
-
-> Note: You will get different information about user based on the login method used by user. For ex: if user authenticates using social logins then you will get name, email and profile image of user whereas if user is using some wallet like metamask to login then you will get only `ethereum` address of user.
-
-
-## Using provider to sign eth transactions
+## `Using provider to sign eth transactions`
 
 We can do sign transactions and make rpc calls to connected chain by using `provider` available on `web3auth` instance once user is logged in. This provider is `eip1193` compatible provider so you can functions like `eth_signTypedData_v3`, `eth_signTypedData_v4`, `eth_sign` and other standard functions by using `web3auth.provider` with web3.js or ethers.js
 
 Here we will simply sign a transaction to send eth using web3auth provider which is fully compatible with web3 js library for ethereum blockchain.
 
-```ts
-import { SafeEventEmitterProvider } from "@web3auth/base";
+<CommonChainFunctions/>
 
 
-  try {
-    const web3 = new Web3(web3auth.provider);
-    const accounts = await web3.eth.getAccounts();
-    console.log("pubKey", accounts)
-    const txRes = await web3.eth.sendTransaction({ from: accounts[0], to: accounts[0], value: web3.utils.toWei("0.01") })
-    console.log("txRes", txRes)
-  } catch (error) {
-    console.log("error", error)
-  }
-
-```
-
-## Personal Sign
-
-```ts
-  import Web3 from "web3";
-
-  async personalSign() {
-    try {
-      const web3 = new Web3(web3auth.provider);
-
-      const fromAddress = (await web3.eth.getAccounts())[0];
-
-      const originalMessage = 'YOUR_MESSAGE';
-
-      const signedMessage = await web3.eth.personal.sign(originalMessage, fromAddress);
-
-    } catch (error) {
-      console.log("error", error)
-    }
-  }
-
-```
-
-## Sign Typed Data v1
-
-```ts
-  import Web3 from "web3";
-
-  async personalSign() {
-    try {
-      const web3 = new Web3(web3auth.provider);
-
-      // Get user's Ethereum public address
-      const fromAddress = (await web3.eth.getAccounts())[0];
-
-      const originalMessage = [
-        {
-          type: 'string',
-          name: 'fullName',
-          value: 'John Doe',
-        },
-        {
-          type: 'uint32',
-          name: 'userId',
-          value: '1234',
-        },
-      ];
-      const params = [originalMessage, fromAddress];
-      const method = 'eth_signTypedData';
-
-      const signedMessage = await web3.currentProvider.sendAsync({
-        id: 1,
-        method,
-        params,
-        fromAddress,
-      });
-
-    } catch (error) {
-      console.log("error", error)
-    }
-  }
-```
-
-:::info
-
-Refer to [`providers`](/api-reference/providers#eip1193-providers) documentation to know more about other rpc methods available on `web3auth.provider`.
-
-:::
-
-## Logout
-
-At last we can also add function to logout user session.
-Calling `logout` function will disconnect user session and it will emit `DISCONNECTED` event on successful disconnection on web3auth instance.
-
-```ts
- await web3auth.logout();
-```
-
-## Done
+## `Done`
 
 You have completed this tutorial,you can refer to working code of this tutorial [here]("https://github.com/Web3Auth/Web3Auth/examples/vue-app/src/chains/ethereum.vue").
 

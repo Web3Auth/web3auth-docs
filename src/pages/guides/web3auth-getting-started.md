@@ -10,98 +10,50 @@ import Tabs from "@theme/Tabs";
 
 import TabItem from "@theme/TabItem";
 
-## Introduction
+
+import InstallWeb3Auth from "../../../docs/common/web/code/web3auth/_install.mdx";
+import InstantiateWeb3Auth from "../../../docs/common/web/code/web3auth/_instantiate-evm.mdx";
+import SubscribeEvents from "../../../docs/common/web/code/web3auth/_subscribe_events.mdx";
+import CommonSdkFunctions from "../../../docs/common/web/code/web3auth/_common-sdk-functions.mdx";
+import CommonChainFunctions from "../../../docs/common/web/code/web3auth/_common-eth-functions.mdx";
+
+
+## `Introduction`
 
 This guide is a hello world tutorial to get quickly familiar with Web3Auth.We will go through the use of Web3auth plug and play modal with minimal lines of code.
 
-## Installation:-
+<InstallWeb3Auth/>
 
-Install Web3Auth sdk from npm to use and configure web3auth modal. We are also installing `@web3auth/base` package to get access to common types and interfaces for web3auth.
 
-> npm i --save @web3auth/web3auth
-> npm i --save @web3auth/base
-
-## Initialize web3auth instance
+## `Create web3auth instance`
 
 We need `clientId` and `chainNamespace` to initialize web3auth class. You can get your `clientId` by registering your app on [developer dashboard](https://developer.web3auth.io), whereas `chainNamespace` signifies the type of chain you want to initialize web3auth with, currently it supports `eip155` for evm compatible chains and `solana` for solana blockchain.
 
 ```ts
-    import { Web3Auth } from "@web3auth/web3auth";
-    import { CHAIN_NAMESPACES } from "@web3auth/base";
+  import { Web3Auth } from "@web3auth/web3auth";
+  import { CHAIN_NAMESPACES } from "@web3auth/base";
 
-    // We are initializing with EIP155 namespace which
-    // will initialize the modal with ethereum mainnet
-    // by default.
-    const web3auth = new Web3Auth({
-        chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }
-        clientId: "localhost-id" // get your clientId from https://developer.web3auth.io
-    });
-
-    await web3auth.initModal();
-
+  // We are initializing with EIP155 namespace which
+  // will initialize the modal with ethereum mainnet
+  // by default.
+  const web3auth = new Web3Auth({
+      chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }
+      clientId: "localhost-id" // get your clientId from https://developer.web3auth.io
+  });
 ```
 
-## Subscribe to login events
-
-We can get notified by various events during user's login session by subscribing to web3auth events. You can implement the logic of checking whether user is logged in or not based on these events. Below is the code snippet for subscribing to web3auth events.
-
-```ts
-
-    subscribeAuthEvents(web3auth: Web3Auth) {
-      web3auth.on(ADAPTER_STATUS.CONNECTED, (data: CONNECTED_EVENT_DATA) => {
-        console.log("Yeah!, you are successfully logged in", data);
-
-      });
-      web3auth.on(ADAPTER_STATUS.CONNECTING, () => {
-        console.log("connecting");
-      });
-      web3auth.on(ADAPTER_STATUS.DISCONNECTED, () => {
-        console.log("disconnected");
-      });
-      web3auth.on(ADAPTER_STATUS.ERRORED, (error) => {
-        console.log("some error or user have cancelled login request", error);
-      });
-    },
-
-```
-
-## Display web3Auth modal and authenticate user
-
-So far we have successfully initialized `web3auth` sdk and subscribed to events.We just need to use `connect` function of `web3auth` instance to display modal and we will be notified under our subscribed events on any user interaction with the modal.
-
-Also after successful user login, web3auth instance will expose a provider under `web3auth.provider`  which we will use interact with blockchain and sign transactions.
-
-```ts
-  web3auth.connect();
-```
+<SubscribeEvents/>
 
 
+<InstantiateWeb3Auth description='With web3auth , you can either use pre configured adapter factory package corresponding to your chain namespace or you can add your own configuration to adapter by creating their instance and adding it to web3auth instance. Following are the examples of using adapter factories and custom configured adapters for ethereum. You can do the same for other supported chains by using the corresponding adapter factory. Read more about configuring adapters [here]("/api-reference/modal#configuring-adapters")'/>
 
-## Get authenticated user info
+<CommonSdkFunctions/>
 
-Once user is connected you can get the information available for authenticated user by calling `getUserInfo` function.
-
-```ts
-  const userInfo = await web3auth.getUserInfo();
-```
-
-> Note: You will get different information about user based on the login method used by user. For ex: if user authenticates using social logins then you will get name, email and profile image of user whereas if user is using some wallet like metamask to login then you will get only `ethereum` address of user.
-
-
-## Using provider to sign blockchain transactions
+## `Using provider to sign blockchain transactions`
 
 We can do sign transactions and make rpc calls to connected chain by using `provider` available on `web3auth` instance once user is logged in. Refer to documentation about `providers` to know more about the rpc calls available on provider for each `chainNamespace`.
 
-## Logout
-
-At last we can also add function to logout user session.
-Calling `logout` function will disconnect user session and it will emit `DISCONNECTED` event on successful disconnection on web3auth instance.
-
-```ts
- await web3auth.logout();
-```
-
-## Done
+## `Done`
 
 You have completed this tutorial,you can refer to working code of this tutorial [here]("https://github.com/Web3Auth/Web3Auth/examples/vue-app/src/default/defaultModal.vue").
 

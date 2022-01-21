@@ -8,6 +8,7 @@ hide_title: true
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import Web3AuthBasicExample from "../common/web/code/web3auth/_general-example.mdx"
 
 This package provides main class for using default web3auth modal. It is child class of `core` package.
 So you can still call all the functions available in `core` api reference.
@@ -43,46 +44,11 @@ yarn add @web3auth/web3auth
 
 </Tabs>
 
+## `Web3Auth Basic Example`
+
+<Web3AuthBasicExample/>
 
 
-```js
-
-    import { Web3Auth } from "@web3auth/web3auth";
-    import { CHAIN_NAMESPACES, CONNECTED_EVENT_DATA } from "@web3auth/base";
-
-    const web3auth = new Web3Auth({
-      chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155, chainId: "0x3" },
-      authType: "DAPP",
-      clientId: "example-client-id", // get your client id from developer dashboard
-    })
-
-    // subscribe to lifecycle events emitted by web3auth
-    subscribeAuthEvents(web3auth: Web3AuthModal) {
-      web3auth.on(ADAPTER_STATUS.CONNECTED, (data: CONNECTED_EVENT_DATA) => {
-       console.log("connected to wallet", data)
-      })
-      web3auth.on(BASE_ADAPTER_EVENTS.CONNECTING, ()=>{
-        console.log("connecting")
-      })
-      web3auth.on(BASE_ADAPTER_EVENTS.DISCONNECTED, ()=>{
-        console.log("disconnected")
-      })
-      web3auth.on(BASE_ADAPTER_EVENTS.ERRORED, (error)=>{
-        console.log("error", error)
-      })
-    }
-
-    subscribeAuthEvents(this.web3auth)
-
-
-    const initializeModal = async () => {
-      await web3auth.initModal();
-    }
-    const showModal = async () => {
-      await web3auth.connect();
-    }
-
-```
 
 ## `Class reference`
 
@@ -229,12 +195,6 @@ interface Web3AuthOptions {
 **Example**
 
 ```javascript
- // this instance will create DAPP based modal which
- // uses ropsten network for all the adapters being passed
- // (unless override while configuring  adapters, each adapter can be configured
- //  to have its own chainConfig, otherwise each adapter
- //  will inherit chainConfig based on the chainNamespace and chainId passed in the
- //  constructor chainConfig).
   const web3auth = new Web3Auth({
     chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155, chainId: "0x3" },
     authType: "DAPP",
@@ -246,35 +206,103 @@ interface Web3AuthOptions {
 
 ## `Configuring Adapters`
 
-- By default Web3Auth's modal UI supports a set of default adapters depends of the `authMode` being used.
-By default, Web3Auth requires basic configuration client_id, and registering a redirect if you using CustomAuth adapter from the dashboard.
-
-The table below summarizes all the available adapters, their properties, and if they're default or not:-
+- With web3auth , you can either use pre configured adapter factory package corresponding to your chain namespace or you can add your own configuration
+to adapter by creating their instance and adding it to web3auth instance.
 
 
+#### Using default adapter factories:-
 
-| Adapter            | AuthMode         | ChainNamespace    |   Default |  Package Name    |
-| ------------------ | ---------------- | ----------------- |  ---------  | ---------------------------|
-| `openlogin`        | `WALLET`, `DAPP`  | `EIP155`,`SOLANA` | `YES`        |  `@web3auth/openlogin-adapter`     |
-| `custom-auth`      | `WALLET`, `DAPP`  | `EIP155`,`SOLANA` |`NO`        |  `@web3auth/customauth-adapter`    |
-| `torus-evm`        | `DAPP`           | `EIP155`          | `YES`        |  `@web3auth/torus-evm-adapter`      |
-| `torus-solana`     | `DAPP`              | `SOLANA`          | `YES`        |  `@web3auth/torus-solana-adapter`   |
-| `metamask`         | `DAPP`          | `EIP155`          | `YES`        |  `@web3auth/metamask-adapter`      |
-| `phantom`          | `DAPP`             | `SOLANA`          | `YES`        |  `@web3auth/phantom-adapter`       |
-| `seedphrase`       | `WALLET`          | `EIP155`,`SOLANA` | `YES`        |  `coming soon..`    |
-| `walletconnect-v1` | `DAPP`            | `EIP155`          | `YES`        |  `@web3auth/wallet-connect-v1-adapter`|
-| `walletconnect-v2` (Coming Soon) | `DAPP`           | `MULTICHAIN`      | `NO`         |  `coming soon...`|
-
-
-- Api:- You can now configure adapters based on the rules given in table above.
-- To configure a adapter create the instance of adapter by using its corresponding package and pass the returned `adapter` instance in `configureAdapter` function.
-
-For ex: If you want to configure openlogin adapter, then call import `OpenloginAdapter` from ``@web3auth/openlogin-adapter` package,
-create an instance of the adapter along with the configuration and pass the returned instance in to `web3auth.configureAdapter` as shown in example below.
+- If you want to use web3auth in default mode then you can simply instance the corresponding adapter factory for your chain and add it to web3auth instance.
 
 ```ts
   import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-   const openloginAdapter = new OpenloginAdapter({
+  import { EvmAdapterFactory } from "@web3auth/evm-adapter-factory";
+
+  const web3auth = new Web3Auth({
+    chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155, chainId: "0x3" },
+    authType: "DAPP",
+    clientId: "example-client-id", // get your client id from developer dashboard
+  })
+
+  /**
+    * ⭐️  Here we are adding default adapters for evm chain available in `@web3auth/evm-adapter-factory` package.
+    * Refer to table below for evm-adapter-factory tab to know all the default adapters available in this factory.
+    * You can add other available default adapter factories for other chain namespaces like solana
+    * as `@web3auth/solana-adapter-factory`.
+    * If you want to add your custom adapters rather than default adapters from factory packages,
+    * you can refer to `Configuring Adapters` tab.
+    */
+  this.web3auth.addAdapterFactory(new EvmAdapterFactory());
+
+```
+
+#### Following are the adapter factories available for various chainNamespaces along with the default adapters which pre configured in those factories:-
+
+
+
+<Tabs
+  defaultValue="evm"
+  values={[
+    { label: "Evm Chain factory", value: "evm" },
+    { label: "Solana Chain factory", value: "solana" },
+  ]}
+>
+
+
+  <TabItem value="evm">
+
+  #### ChainNamespace:- `eip155`
+
+  #### Installation: `npm i --save @web3auth/evm-adapter-factory`
+
+  | Default Adapters          |
+  | ------------------ |
+  | `Openlogin`        |
+  | `Torus Wallet`        |
+  | `Metamask`        |
+  | `Wallet connect V1`        |
+
+
+  </TabItem>
+
+  <TabItem value="solana">
+
+
+  #### ChainNamespace:- `Solana`
+
+  #### Installation: `npm i --save @web3auth/solana-adapter-factory`
+
+
+  | Default Adapters          |
+  | ------------------ |
+  | `Openlogin`        |
+  | `Torus Solana Wallet`        |
+  | `Phantom Wallet`        |
+
+
+  </TabItem>
+
+</Tabs>
+
+----
+
+#### Configuring adapter from adapter's package:-
+
+- To configure a adapter create the instance of adapter by using its corresponding package and pass the returned `adapter` instance in `configureAdapter` function.
+
+  - For ex: If you want to configure openlogin adapter, then call import `OpenloginAdapter` from ``@web3auth/openlogin-adapter` package,
+  create an instance of the adapter along with the configuration and pass the returned instance in to `web3auth.configureAdapter` as shown in example below.
+
+```ts
+  import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+  const web3auth = new Web3Auth({
+    chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155, chainId: "0x3" },
+    authType: "DAPP",
+    clientId: "example-client-id", // get your client id from developer dashboard
+  })
+
+  const openloginAdapter = new OpenloginAdapter({
          adapterSettings: {
               network: "testnet",
             /* client id is not required for localhost.
@@ -285,10 +313,27 @@ create an instance of the adapter along with the configuration and pass the retu
               uxMode: "popup"
         }})
 
-        web3auth.configureAdapter(openloginAdapter);
+  web3auth.configureAdapter(openloginAdapter);
 ```
 
-> Note: You don't have to configure any default adapter unless you want to override default configs for the adapter. Only those adapter which are marked are non default in above table are required to be configured always based on the `authMode` you are using.
+
+#### The table below summarizes all the available adapters and their corresponding packages:-
+
+
+
+| Adapter            | AuthMode         | ChainNamespace    |   Package Name    |
+| ------------------ | ---------------- | ----------------- |  ---------------------------|
+| `openlogin`        | `WALLET`, `DAPP`  | `EIP155`,`SOLANA` |  `@web3auth/openlogin-adapter`     |
+| `custom-auth`      | `WALLET`, `DAPP`  | `EIP155`,`SOLANA` |`@web3auth/customauth-adapter`    |
+| `torus-evm`        | `DAPP`           | `EIP155`          | `@web3auth/torus-evm-adapter`      |
+| `torus-solana`     | `DAPP`              | `SOLANA`          | `@web3auth/torus-solana-adapter`   |
+| `metamask`         | `DAPP`          | `EIP155`          | `@web3auth/metamask-adapter`      |
+| `phantom`          | `DAPP`             | `SOLANA`          | `@web3auth/phantom-adapter`       |
+| `seedphrase`       | `WALLET`          | `EIP155`,`SOLANA` |  `coming soon..`    |
+| `walletconnect-v1` | `DAPP`            | `EIP155`          | `@web3auth/wallet-connect-v1-adapter`|
+| `walletconnect-v2` (Coming Soon) | `DAPP`           | `MULTICHAIN`      | `coming soon...`|
+
+
 
 ## `Initializing Modal`
 
