@@ -183,8 +183,9 @@ module.exports = {
       trackingID: "UA-126622802-2",
     },
     algolia: {
-      apiKey: "bfa3491434f947c6262b60ce9b66471c",
-      indexName: "torus",
+      appId: "6OF28D8CMV",
+      apiKey: "425a1e860cb4b9b4ce1f7d9b117c7a81",
+      indexName: "docs-web3auth",
     },
   },
   presets: [
