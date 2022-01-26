@@ -10,15 +10,18 @@ import Tabs from "@theme/Tabs";
 
 import TabItem from "@theme/TabItem";
 
-import InstallWeb3Auth from "../../../docs/common/web/code/web3auth/_install-evm.mdx";
+import InstallWeb3Auth from "../../../docs/common/web/code/web3auth/_install.mdx";
 import InstantiateWeb3Auth from "../../../docs/common/web/code/web3auth/_instantiate-evm.mdx";
 import SubscribeEvents from "../../../docs/common/web/code/web3auth/_subscribe_events.mdx";
 import CommonSdkFunctions from "../../../docs/common/web/code/web3auth/_common-sdk-functions.mdx";
 import CommonChainFunctions from "../../../docs/common/web/code/web3auth/_common-eth-functions.mdx";
+import RegisterApplication from "../../../docs/common/web/code/web3auth/_register-client_id.mdx";
 
 ## `Introduction`
 
 This guide is a tutorial to go through the steps required for using ethereum blockchain in web3auth.
+
+<RegisterApplication/>
 
 <InstallWeb3Auth/>
 
@@ -51,8 +54,35 @@ We need `clientId` and `chainNamespace` to initialize web3auth class. You can ge
 
 <SubscribeEvents/>
 
-<InstantiateWeb3Auth/>
+## Initializing Web3Auth modal with default configuration
+`web3auth.initModal` function is used to initialize modal. It will initialize the modal with some default configured adapters (wallets) i.e  `openlogin`, `metamask`, `torus wallet` and `wallet connect`.
 
+```ts
+  // initializing the default modal
+  await web3auth.initModal();
+```
+
+## Initializing Web3Auth modal with only metamask and openlogin.
+
+If you want don't want to all default adapters then you can hide them as explained below.
+
+Code snippet given below will hide all the `torus wallet` and `wallet connect` adapters from modal and
+will only display `openlogin` and `metamask` wallet adapters in web3auth modal.
+
+```ts
+  import { EVM_ADAPTERS } from "@web3auth/base";
+  // initializing the modal with only openlogin and metamask
+  await web3auth.initModal({ modalConfig: {
+     [EVM_ADAPTERS.TORUS_EVM]: {
+          name: "torus wallet",
+          showOnModal: false,
+      },
+      [EVM_ADAPTERS.WALLET_CONNECT_V!]: {
+          name: "torus wallet",
+          showOnModal: false,
+      }
+  }});
+```
 
 <CommonSdkFunctions/>
 

@@ -2,6 +2,10 @@ import Tabs from "@theme/Tabs";
 
 import TabItem from "@theme/TabItem";
 
+## `Configuring adapters for Web3AuthModal`
+
+<span>{ props.description ? props.description : "" } </span>
+
 <Tabs
   defaultValue="default"
   values={[
@@ -13,23 +17,9 @@ import TabItem from "@theme/TabItem";
 
 <TabItem value="default">
 
-```shell
-    npm i --save @web3auth/solana-adapter-factory
-```
 
 ```ts
     import { CHAIN_NAMESPACES, CONNECTED_EVENT_DATA } from "@web3auth/base";
-    import { EvmAdapterFactory } from "@web3auth/evm-adapter-factory";
-
-    /**
-     * ⭐️  Here we are adding default adapters for evm chain available in `@web3auth/evm-adapter-factory` package,
-     * which will add "openlogin", "torus wallet", "metamask" and "wallet-connect" adapters to modal.
-     * You can add other available default adapter factories for other chain namespaces like solana
-     * as `@web3auth/solana-adapter-factory`.
-     * If you want to add your custom adapters rather than default adapters from factory packages,
-     * you can refer to `Configuring Adapters` tab.
-     */
-    web3auth.addAdapterFactory(new EvmAdapterFactory());
 
     // ⭐️ initialize modal on page mount.
     const initializeModal = async () => {
@@ -43,33 +33,22 @@ import TabItem from "@theme/TabItem";
 
 <TabItem value="custom">
 
-  ```shell
-    npm i --save @web3auth/openlogin-adapter
-    npm i --save @web3auth/phantom-adapter
-    npm i --save @web3auth/torus-solana-adapter
-  ```
-
 ```ts
     import { CHAIN_NAMESPACES, CONNECTED_EVENT_DATA } from "@web3auth/base";
-    import { SolanaAdapterFactory } from "@web3auth/solana-adapter-factory";
     import { OpenloginAdapter, OpenloginLoginParams } from "@web3auth/openlogin-adapter";
     import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 
+    // pass your configuration here.
     const openloginAdapter = new OpenloginAdapter({
-          adapterSettings: {
-            network: "testnet",
-            clientId: config.clientId,
-            uxMode: "redirect",
-          },
+        adapterSettings: {
+          network: "testnet",
+          clientId: "YOUR WEB3AUTH CLIENT ID",
+          uxMode: "redirect",
+        },
      });
 
      // ⭐️ adding openlogin social logins to web3auth modal
     web3auth.configureAdapter(openloginAdapter);
-
-    // ⭐️ adding metamask adapter to web3auth modal
-    const metamaskAdapter = new MetamaskAdapter();
-    this.web3auth.configureAdapter(metamaskAdapter);
-
 
 
     // ⭐️ initialize modal on page mount.
@@ -77,8 +56,8 @@ import TabItem from "@theme/TabItem";
       subscribeAuthEvents(this.web3auth)
       await web3auth.initModal();
     }
-
 ```
 </TabItem>
 
 </Tabs>
+<br/>

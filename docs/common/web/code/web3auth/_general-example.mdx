@@ -16,23 +16,12 @@ import TabItem from "@theme/TabItem";
 ```ts {19}
     import { Web3Auth } from "@web3auth/web3auth";
     import { CHAIN_NAMESPACES, CONNECTED_EVENT_DATA } from "@web3auth/base";
-    import { EvmAdapterFactory } from "@web3auth/evm-adapter-factory";
 
     const web3auth = new Web3Auth({
       chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155, chainId: "0x3" },
       authType: "DAPP",
       clientId: "example-client-id", // get your client id from developer dashboard
     })
-
-    /**
-     * ⭐️  Here we are adding default adapters for evm chain available in `@web3auth/evm-adapter-factory` package,
-     * which will add "openlogin", "torus wallet", "metamask" and "wallet-connect" adapters to modal.
-     * You can add other available default adapter factories for other chain namespaces like solana
-     * as `@web3auth/solana-adapter-factory`.
-     * If you want to add your custom adapters rather than default adapters from factory packages,
-     * you can refer to `Configuring Adapters` tab.
-     */
-     web3auth.addAdapterFactory(new EvmAdapterFactory());
 
 
     // ⭐️ subscribe to lifecycle events emitted by web3auth
@@ -73,7 +62,6 @@ import TabItem from "@theme/TabItem";
 ```ts {22}
     import { Web3Auth } from "@web3auth/web3auth";
     import { CHAIN_NAMESPACES, CONNECTED_EVENT_DATA } from "@web3auth/base";
-    import { EvmAdapterFactory } from "@web3auth/evm-adapter-factory";
     import { OpenloginAdapter, OpenloginLoginParams } from "@web3auth/openlogin-adapter";
     import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 
@@ -131,3 +119,5 @@ import TabItem from "@theme/TabItem";
 </TabItem>
 
 </Tabs>
+
+<br/>

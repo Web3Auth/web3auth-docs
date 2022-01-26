@@ -11,16 +11,19 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
 
-import InstallWeb3Auth from "../../../docs/common/web/code/web3auth/_install-evm.mdx";
+import InstallWeb3Auth from "../../../docs/common/web/code/web3auth/_install.mdx";
 import InstantiateWeb3Auth from "../../../docs/common/web/code/web3auth/_instantiate-sol.mdx";
 import SubscribeEvents from "../../../docs/common/web/code/web3auth/_subscribe_events.mdx";
 import CommonSdkFunctions from "../../../docs/common/web/code/web3auth/_common-sdk-functions.mdx";
 import CommonChainFunctions from "../../../docs/common/web/code/web3auth/_common-sol-functions.mdx";
+import RegisterApplication from "../../../docs/common/web/code/web3auth/_register-client_id.mdx";
 
 
 ## `Introduction`
 
 This guide is a tutorial to go through the steps required for using solana blockchain in web3auth.
+
+<RegisterApplication/>
 
 <InstallWeb3Auth/>
 

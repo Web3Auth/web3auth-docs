@@ -16,13 +16,18 @@ import InstantiateWeb3Auth from "../../../docs/common/web/code/web3auth/_instant
 import SubscribeEvents from "../../../docs/common/web/code/web3auth/_subscribe_events.mdx";
 import CommonSdkFunctions from "../../../docs/common/web/code/web3auth/_common-sdk-functions.mdx";
 import CommonChainFunctions from "../../../docs/common/web/code/web3auth/_common-eth-functions.mdx";
+import RegisterApplication from "../../../docs/common/web/code/web3auth/_register-client_id.mdx";
 
 
 ## `Introduction`
 
 This guide is a hello world tutorial to get quickly familiar with Web3Auth.We will go through the use of Web3auth plug and play modal with minimal lines of code.
 
+<RegisterApplication/>
+
+
 <InstallWeb3Auth/>
+
 
 
 ## `Create web3auth instance`
@@ -41,17 +46,19 @@ We need `clientId` and `chainNamespace` to initialize web3auth class. You can ge
       clientId: "localhost-id" // get your clientId from https://developer.web3auth.io
   });
 ```
+<br/>
 
 <SubscribeEvents/>
 
 
-<InstantiateWeb3Auth description='With web3auth , you can either use pre configured adapter factory package corresponding to your chain namespace or you can add your own configuration to adapter by creating their instance and adding it to web3auth instance. Following are the examples of using adapter factories and custom configured adapters for ethereum. You can do the same for other supported chains by using the corresponding adapter factory. Read more about configuring adapters [here]("/api-reference/modal#configuring-adapters")'/>
+<InstantiateWeb3Auth description='With web3auth , you can either use pre configured adapters which come as default in web3auth package or you can configure adapters yourself with custom configuration. Example below shows both ways of instantiating web3auth modal.'/>
 
 <CommonSdkFunctions/>
 
 ## `Using provider to sign blockchain transactions`
 
 We can do sign transactions and make rpc calls to connected chain by using `provider` available on `web3auth` instance once user is logged in. Refer to documentation about `providers` to know more about the rpc calls available on provider for each `chainNamespace`.
+<br/>
 
 ## `Done`
 

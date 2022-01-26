@@ -8,6 +8,14 @@ Also after successful user login, web3auth instance will expose a provider under
   const provider = await web3auth.connect();
 ```
 
+<br/>
+
+:::info
+  `web3auth.connect` will not return provider if you are using `redirect` uxMode with openlogin or customauth adapter.
+  Pre configured openlogin adapter package uses popup uxMode which will always return the provider.
+:::
+
+<br/>
 
 ## `Get authenticated user info`
 
@@ -17,7 +25,13 @@ Once user is connected you can get the information available for authenticated u
   const userInfo = await web3auth.getUserInfo();
 ```
 
-> Note: You will get different information about user based on the login method used by user. For ex: if user authenticates using social logins then you will get name, email and profile image of user whereas if user is using some wallet like metamask to login then you will get only `ethereum` address of user.
+<br/>
+
+:::info
+You will get different information about user based on the login method used by user. For ex: if user authenticates using social logins then you will get name, email and profile image of user whereas if user is using some wallet like metamask to login then you will get only `ethereum` address of user.
+:::
+
+<br/>
 
 ## `Logout`
 
@@ -27,3 +41,5 @@ Calling `logout` function will disconnect user session and it will emit `DISCONN
 ```ts
  await web3auth.logout();
 ```
+
+<br/>
