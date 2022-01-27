@@ -29,6 +29,7 @@ module.exports = {
     },
     prism: {
       additionalLanguages: ["groovy", "java", "kotlin", "swift"],
+      theme: require('prism-react-renderer/themes/dracula'),
     },
     navbar: {
       title: "Documentation",
@@ -206,6 +207,7 @@ module.exports = {
         */
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
+
         },
       },
     ],
