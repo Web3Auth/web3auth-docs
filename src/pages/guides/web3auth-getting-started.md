@@ -43,7 +43,7 @@ We need `clientId` and `chainNamespace` to initialize web3auth class. You can ge
   // by default.
   const web3auth = new Web3Auth({
       chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 }
-      clientId: "localhost-id" // get your clientId from https://developer.web3auth.io
+      clientId: "YOUR_CLIENT_ID_HERE" // get your clientId from https://developer.web3auth.io
   });
 ```
 <br/>
@@ -62,7 +62,7 @@ We can do sign transactions and make rpc calls to connected chain by using `prov
 
 ## `Done`
 
-You have completed this tutorial,you can refer to working code of this tutorial [here]("https://github.com/Web3Auth/Web3Auth/examples/vue-app/src/default/defaultModal.vue").
+You have completed this tutorial,you can refer to working code of this tutorial [here](https://github.com/Web3Auth/Web3Auth/blob/master/examples/vue-app/src/default/defaultModal.vue).
 
 <!-- From here you can proceed to guides about :-
 - Configuring web3auth modal to use or configure various login adapters and custom chain config
