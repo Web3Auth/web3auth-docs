@@ -19,7 +19,7 @@ after user login as shown in code below.
 Example:-
 ```ts
    import { Web3Auth } from "@web3auth/web3auth";
-    import { CHAIN_NAMESPACES, CustomChainConfig } from "@web3auth/base";
+    import { CHAIN_NAMESPACES, CustomChainConfig, ADAPTER_EVENTS } from "@web3auth/base";
 
     // you can pass your own chain configs here
     // by default it will only chainId is required for supported networks such as [rinkeby, ropsten, goerli, kovan]
@@ -40,7 +40,7 @@ Example:-
         clientId: "localhost-id" // get your clientId from https://developer.web3auth.io
     });
     await web3auth.initModal();
-    web3auth.on(ADAPTER_STATUS.CONNECTED, (data: CONNECTED_EVENT_DATA) => {
+    web3auth.on(ADAPTER_EVENTS.CONNECTED, (data: CONNECTED_EVENT_DATA) => {
       console.log("Yeah!, you are successfully logged in", data);
       // On connection, you can use `web3auth.provider` as a EIP1193 provider with web3.js or ethers
       // as given in api reference below.
