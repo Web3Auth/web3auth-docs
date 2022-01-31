@@ -8,6 +8,7 @@ hide_title: true
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import BasicExample from "../common/web/code/web3auth/_general-example.mdx"
 
 This package provides main class for using default web3auth modal. It is child class of `core` package.
 So you can still call all the functions available in `core` api reference.
@@ -45,44 +46,11 @@ yarn add @web3auth/web3auth
 
 
 
-```js
+### `Basic Usage`
 
-    import { Web3Auth } from "@web3auth/web3auth";
-    import { CHAIN_NAMESPACES, CONNECTED_EVENT_DATA } from "@web3auth/base";
-
-    const web3auth = new Web3Auth({
-      chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155, chainId: "0x3" },
-      authType: "DAPP",
-      clientId: "example-client-id", // get your client id from developer dashboard
-    })
-
-    // subscribe to lifecycle events emitted by web3auth
-    subscribeAuthEvents(web3auth: Web3AuthModal) {
-      web3auth.on(ADAPTER_STATUS.CONNECTED, (data: CONNECTED_EVENT_DATA) => {
-       console.log("connected to wallet", data)
-      })
-      web3auth.on(BASE_ADAPTER_EVENTS.CONNECTING, ()=>{
-        console.log("connecting")
-      })
-      web3auth.on(BASE_ADAPTER_EVENTS.DISCONNECTED, ()=>{
-        console.log("disconnected")
-      })
-      web3auth.on(BASE_ADAPTER_EVENTS.ERRORED, (error)=>{
-        console.log("error", error)
-      })
-    }
-
-    subscribeAuthEvents(this.web3auth)
+<BasicExample/>
 
 
-    const initializeModal = async () => {
-      await web3auth.initModal();
-    }
-    const showModal = async () => {
-      await web3auth.connect();
-    }
-
-```
 
 ## `Class reference`
 
