@@ -18,7 +18,7 @@ import RegisterApplication from "../../../docs/common/web/code/web3auth/_registe
 This guide is a hello world tutorial to get quickly familiar with Web3Auth.We will go through the use of Web3auth plug and play modal with vanilla js and jquery.
 
 
-You can find working codepen and preview of this example [here]("https://codepen.io/him_chawla/pen/qBVarMj?editors=1010).
+You can find working codepen and preview of this example [here](https://codepen.io/him_chawla/pen/qBVarMj?editors=1010).
 
 <RegisterApplication/>
 
@@ -100,7 +100,7 @@ We can get notified with various events during user's login session by subscribi
 
 In the step 3, we will initialize the web3auth modal.
 
-With web3auth , you can either use pre configured adapters which come as default in web3auth package or you can configure adapters yourself with custom configuration. Example below initializes it with default adapters for the provided chainNamespace in step1. If you want to initialize with custom adapters refer to documentation [here]("/api-reference/modal#configuring-adapters").
+With web3auth , you can either use pre configured adapters which come as default in web3auth package or you can configure adapters yourself with custom configuration. Example below initializes it with default adapters for the provided chainNamespace in step1. If you want to initialize with custom adapters refer to documentation [here](/api-reference/modal#configuring-adapters).
 
 
 ```ts
@@ -239,4 +239,4 @@ At last we can also add function to logout user session. Calling logout function
 
 ## `Done`
 
-You have completed this tutorial,you can refer to working code of this tutorial [here]("https://github.com/Web3Auth/Web3Auth/tree/master/examples/getting-started").
+You have completed this tutorial,you can refer to working code of this tutorial [here](https://github.com/Web3Auth/Web3Auth/tree/master/examples/getting-started).
