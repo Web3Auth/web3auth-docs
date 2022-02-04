@@ -42,7 +42,7 @@ After adding given scripts in your html file,  web3auth cdn script will inject `
 
 In the step 1, we are creating instance of `Web3Auth` class inside on file load.
 
-We need `clientId` and `chainNamespace` to initialize web3auth class. You can get your `clientId` by registering your app on [developer dashboard](https://developer.web3auth.io), whereas `chainNamespace` signifies the type of chain you want to initialize web3auth with, currently it supports `eip155` for evm compatible chains and `solana` for solana blockchain.
+We need `clientId` and `chainNamespace` to initialize web3auth class. You can get your `clientId` by registering your app on [developer dashboard](https://dashboard.web3auth.io), whereas `chainNamespace` signifies the type of chain you want to initialize web3auth with, currently it supports `eip155` for evm compatible chains and `solana` for solana blockchain.
 
 
 
@@ -59,7 +59,7 @@ We need `clientId` and `chainNamespace` to initialize web3auth class. You can ge
         chainConfig: {
           chainNamespace: "eip155"
         },
-        clientId: "BBltSREZlcQaLvyLM5OUbv920WZtqeFQpxWwNRkrHSwmkpKTYmkgCgSirla6St5G1ioDKfL-hs48VodwiXzn73I" // get your clientId from https://developer.web3auth.io
+        clientId: "BBltSREZlcQaLvyLM5OUbv920WZtqeFQpxWwNRkrHSwmkpKTYmkgCgSirla6St5G1ioDKfL-hs48VodwiXzn73I" // get your clientId from https://dashboard.web3auth.io
       });
     })();
  </script>
