@@ -22,8 +22,9 @@ import TabItem from "@theme/TabItem";
 <TabItem value="cdn">
 
 ```shell
-<script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin@0"></script>
+<script src="https://cdn.jsdelivr.net/npm/@toruslabs/openlogin@1"></script>
 ```
+
 </TabItem>
 
 <TabItem value="npm">
@@ -46,7 +47,6 @@ yarn add @toruslabs/openlogin
 
 The script tag creates a window.Openlogin object, which you can initialize.
 
-
 <Tabs
   defaultValue="basic"
   values={[
@@ -54,27 +54,28 @@ The script tag creates a window.Openlogin object, which you can initialize.
   ]}
 >
 
-
 <TabItem value="basic">
 
 ```js
 import OpenLogin from "@toruslabs/openlogin";
 
 // clientId can be any string for localhost
-const openlogin = new OpenLogin({ clientId: "YOUR_PROJECT_ID", network: "testnet" });
+const openlogin = new OpenLogin({
+  clientId: "YOUR_PROJECT_ID",
+  network: "testnet",
+});
 
 await openlogin.init();
 
 // if openlogin instance has private key then user is already logged in
 if (openlogin.privKey) {
-   console.log("User is already logged in. Private key: " + openlogin.privKey);
+  console.log("User is already logged in. Private key: " + openlogin.privKey);
 } else {
-    await openlogin.login({
-        loginProvider: "google",
-        redirectUrl: "https://example.com/home",
-    });
+  await openlogin.login({
+    loginProvider: "google",
+    redirectUrl: "https://example.com/home",
+  });
 }
-
 ```
 
 </TabItem>
