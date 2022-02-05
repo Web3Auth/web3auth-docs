@@ -15,8 +15,7 @@ package to build your custom UI on top of web3auth.
   values={[
     { label: "npm", value: "npm" },
     { label: "yarn", value: "yarn" },
-  ]}
->
+  ]}>
 
 <TabItem value="npm">
 
@@ -50,11 +49,16 @@ const web3authCore = new Web3AuthCore({
 
 // add your adapters
 const torusEvmAdapter = await TorusWalletAdapter({});
-const openloginAdapter = await OpenloginAdapter({ adapterSettings: {
+const openloginAdapter = await OpenloginAdapter({
+  adapterSettings: {
     network: "testnet",
     clientId: "example-client-id",
-    uxMode: "popup"
-  }})
+    uxMode: "popup",
+  },
+  loginSettings: {
+    relogin: true,
+  }
+})
 
 web3authCore.configureAdapter(torusEvmAdapter)
 web3authCore.configureAdapter(openloginAdapter)
@@ -175,7 +179,11 @@ const openloginAdapter = await OpenloginAdapter({ adapterSettings: {
     network: "testnet",
     clientId: "example-client-id",
     uxMode: "popup"
-  }})
+  },
+  loginSettings: {
+    relogin: true,
+  }
+})
 
 web3authCore.configureAdapter(torusEvmAdapter)
 web3authCore.configureAdapter(openloginAdapter)
