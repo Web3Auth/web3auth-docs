@@ -16,10 +16,7 @@ module.exports = (context, options) => ({
     const fileContents = {};
 
     for (const filename of filenames) {
-      fileContents[filename] = await readFileAsync(
-        path.join(dir, filename),
-        "utf-8"
-      );
+      fileContents[filename] = await readFileAsync(path.join(dir, filename), "utf-8");
     }
     return fileContents;
   },

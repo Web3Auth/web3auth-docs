@@ -7,9 +7,7 @@ import OriginalMDXPage from "@theme-original/MDXPage";
 import classNames from "classnames";
 import styles from "./styles.module.css";
 
-export default function MDXPage(
-  props: React.ComponentProps<typeof OriginalMDXPage>
-) {
+export default function MDXPage(props: React.ComponentProps<typeof OriginalMDXPage>) {
   const { content: MDXPageContent } = props;
   const { frontMatter, metadata } = MDXPageContent;
   const { permalink } = metadata;
@@ -18,12 +16,7 @@ export default function MDXPage(
 
   const { title, description, image, wrapperClassName } = frontMatter;
   return (
-    <Layout
-      title={title}
-      description={description}
-      permalink={permalink}
-      wrapperClassName={wrapperClassName}
-    >
+    <Layout title={title} description={description} permalink={permalink} wrapperClassName={wrapperClassName}>
       <main>
         <div className="container container--fluid">
           <div className="margin-vert--lg padding-vert--lg">

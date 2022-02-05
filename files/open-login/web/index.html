@@ -32,9 +32,7 @@
 
         if (window.openlogin.privKey) {
           $("#text").text("Logged in.");
-          $("#private-key").text(
-            "Private key: " + window.openlogin.privKey + "."
-          );
+          $("#private-key").text("Private key: " + window.openlogin.privKey + ".");
           $("#logout").show();
           await connectEther(window.openlogin.privKey);
         } else {
@@ -44,10 +42,7 @@
       });
 
       async function connectEther(privKey) {
-        const wallet = new ethers.Wallet(
-          `0x${privKey}`,
-          ethers.getDefaultProvider()
-        );
+        const wallet = new ethers.Wallet(`0x${privKey}`, ethers.getDefaultProvider());
         const address = await wallet.getAddress();
         const balance = await wallet.getBalance();
         $("#address").text("Address: " + address + ".");

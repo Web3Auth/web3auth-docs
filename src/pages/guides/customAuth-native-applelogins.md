@@ -12,24 +12,20 @@ import TabItem from "@theme/TabItem";
 
 ## Introduction
 
-This tutorial will guide you on how to integrate CustomAuth with native apple
-logins, i.e., "Sign in with apple"
+This tutorial will guide you on how to integrate CustomAuth with native apple logins, i.e., "Sign in with apple"
 
-You can find
-[the source code of this is example on Github](https://github.com/torusresearch/torus-apple-nativelogin-demo).
+You can find [the source code of this is example on Github](https://github.com/torusresearch/torus-apple-nativelogin-demo).
 
 ## Register your CustomAuth application
 
-In order to use Torus CustomAuth SDK, you'll need to create a project in
-[Developer Dashboard](https://dashboard.web3auth.io)
+In order to use Torus CustomAuth SDK, you'll need to create a project in [Developer Dashboard](https://dashboard.web3auth.io)
 
 1. Verifier type: "Custom"
 2. JWK endpoint - https://appleid.apple.com/auth/keys
 
 ## Let's get started with code by installing depedency using SPM or Cocoapods
 
-[TorusDirectSwiftSDK](https://github.com/torusresearch/torus-direct-swift-sdk/)
-[JWTDecode](https://github.com/auth0/JWTDecode.swift)
+[TorusDirectSwiftSDK](https://github.com/torusresearch/torus-direct-swift-sdk/) [JWTDecode](https://github.com/auth0/JWTDecode.swift)
 
 ## Import SDKs
 

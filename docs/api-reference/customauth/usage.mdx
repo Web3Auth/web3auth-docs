@@ -15,9 +15,8 @@ import TabItem from "@theme/TabItem";
 - Listens on the redirected url
 - Returns the verifier scoped public private key pair + user info
 
-If your verifier is of normal type, use this method. If you wish to have account
-linking / multiple verifiers returning same keys (e.g.: passwordless and google
-logins returning the same key), use `triggerAggregateLogin` instead.
+If your verifier is of normal type, use this method. If you wish to have account linking / multiple verifiers returning same keys (e.g.: passwordless
+and google logins returning the same key), use `triggerAggregateLogin` instead.
 
 ```javascript
 await torusdirectsdk.triggerLogin(options);
@@ -29,45 +28,34 @@ options is an object of type `SubVerifierDetails` with the following parameters
 
 - `params` - `SubVerifierDetails` : The login options.
 
-  - `typeOfLogin` - `LOGIN_TYPE` : The type of login. Supported Login Types
-    include `google` | `facebook` | `reddit` | `discord` | `twitch` | `apple` |
-    `github` | `linkedin` | `twitter` | `weibo` | `line` | `email_password` |
-    `jwt`. For passwordless and other types of custom logins use `jwt`
+  - `typeOfLogin` - `LOGIN_TYPE` : The type of login. Supported Login Types include `google` | `facebook` | `reddit` | `discord` | `twitch` | `apple`
+    | `github` | `linkedin` | `twitter` | `weibo` | `line` | `email_password` | `jwt`. For passwordless and other types of custom logins use `jwt`
 
-  - `verifier` - `string`: A verifier is a unique identifier for your OAuth
-    registration on the torus network. The public/private keys generated for a
-    user are scoped to a verifier. Register your app
-    [here](https://dashboard.web3auth.io) to get your verifier today.
+  - `verifier` - `string`: A verifier is a unique identifier for your OAuth registration on the torus network. The public/private keys generated for a
+    user are scoped to a verifier. Register your app [here](https://dashboard.web3auth.io) to get your verifier today.
 
-  - `clientId`: `string`: clientId obtained from OAuth registration For native
-    logins, please use the one from OAuth registration. For proxy logins, please
-    use the clientId obtained from proxy provider
+  - `clientId`: `string`: clientId obtained from OAuth registration For native logins, please use the one from OAuth registration. For proxy logins,
+    please use the clientId obtained from proxy provider
 
   - `jwtParams?` : `Auth0ClientOptions`(optional): Details below
 
-  - `hash?`: `string`(optional): The location hash returned from OAuth login.
-    Useful in case the OAuth redirects to app with hash & query params
+  - `hash?`: `string`(optional): The location hash returned from OAuth login. Useful in case the OAuth redirects to app with hash & query params
 
-  - `queryParameters?`: `TorusGenericObject`(optional): Key value pairs of query
-    parameters returned from OAuth login. Useful in case the OAuth redirects to
-    app with hash & query params
+  - `queryParameters?`: `TorusGenericObject`(optional): Key value pairs of query parameters returned from OAuth login. Useful in case the OAuth
+    redirects to app with hash & query params
 
-  - `customState?`: `TorusGenericObject`(optional): Custom OAuth state
-    parameter. Useful for state management post redirect flow.
+  - `customState?`: `TorusGenericObject`(optional): Custom OAuth state parameter. Useful for state management post redirect flow.
 
 :::info
 
-In some cases (electron apps, chrome extensions), your app will be redirected to
-the redirect url with hash and query params from OAuth provider. To get torus
-key in such cases, please pass along those parameters into the sdk. Passing
-these will skip the login and return the torus result directly.
+In some cases (electron apps, chrome extensions), your app will be redirected to the redirect url with hash and query params from OAuth provider. To
+get torus key in such cases, please pass along those parameters into the sdk. Passing these will skip the login and return the torus result directly.
 
 :::
 
 **Returns**
 
-- `Promise<TorusLoginResponse>` : Returns a promise which resolves to the
-  `TorusLoginResponse` object
+- `Promise<TorusLoginResponse>` : Returns a promise which resolves to the `TorusLoginResponse` object
 
 **Reference**
 
@@ -372,10 +360,8 @@ const loginDetails = await torusdirectsdk.triggerLogin({
 - Listens on the redirected url
 - Returns the verifier scoped public private key pair + user info
 
-Use this if you wish to have account linking / multiple verifiers returning same
-keys (e.g.: passwordless and google logins returning the same key or google iOS,
-web, android clients to return the same key). Currently, only single_id_verifier
-is supported as aggregate verifier type
+Use this if you wish to have account linking / multiple verifiers returning same keys (e.g.: passwordless and google logins returning the same key or
+google iOS, web, android clients to return the same key). Currently, only single_id_verifier is supported as aggregate verifier type
 
 ```javascript
 await torusdirectsdk.triggerAggregateLogin(options);
@@ -383,27 +369,21 @@ await torusdirectsdk.triggerAggregateLogin(options);
 
 **Parameters**
 
-options is an object of type `AggregateLoginParams` with the following
-parameters
+options is an object of type `AggregateLoginParams` with the following parameters
 
 - `params` - `AggregateLoginParams` : The login options.
 
-  - `aggregateVerifierType` - `AGGREGATE_VERIFIER_TYPE` : Currently only
-    single_id_verifier is supported
+  - `aggregateVerifierType` - `AGGREGATE_VERIFIER_TYPE` : Currently only single_id_verifier is supported
 
-  - `verifierIdentifier` - `string`: A verifierIndentifier is a unique
-    identifier for your OAuth registration on the torus network. The
-    public/private keys generated for a user are scoped to a verifierIdentifier
-    for aggregate login. Register your app [here](https://dashboard.web3auth.io) to
-    get your verifier today.
+  - `verifierIdentifier` - `string`: A verifierIndentifier is a unique identifier for your OAuth registration on the torus network. The public/private
+    keys generated for a user are scoped to a verifierIdentifier for aggregate login. Register your app [here](https://dashboard.web3auth.io) to get
+    your verifier today.
 
-  - `subVerifierDetailsArray`- `SubVerifierDetails[]`: `SubVerifierDetails` is
-    the options parameter for triggerLogin
+  - `subVerifierDetailsArray`- `SubVerifierDetails[]`: `SubVerifierDetails` is the options parameter for triggerLogin
 
 **Returns**
 
-- `Promise<TorusAggregateLoginResponse>` : Returns a promise which resolves to
-  the `TorusAggregateLoginResponse` object
+- `Promise<TorusAggregateLoginResponse>` : Returns a promise which resolves to the `TorusAggregateLoginResponse` object
 
 **Reference**
 
@@ -420,8 +400,7 @@ export interface AggregateLoginParams {
   subVerifierDetailsArray: SubVerifierDetails[];
 }
 
-export type TorusAggregateLoginResponse = TorusAggregateVerifierResponse &
-  TorusKey;
+export type TorusAggregateLoginResponse = TorusAggregateVerifierResponse & TorusKey;
 
 export interface TorusAggregateVerifierResponse {
   userInfo: (TorusVerifierResponse & LoginWindowResponse)[];
@@ -575,24 +554,20 @@ const loginDetails = await torusdirectsdk.triggerAggregateLogin({
 
 ## `getRedirectResult`
 
-`getRedirectResult` gets the TorusKey result post redirect flow. This method
-should only be called at the end of the redirect flow.
+`getRedirectResult` gets the TorusKey result post redirect flow. This method should only be called at the end of the redirect flow.
 
 ```ts
 await torusdirectsdk.getRedirectResult(options);
 ```
 
-**Parameters** options is an object of type `RedirectResultParams` with the
-following parameters
+**Parameters** options is an object of type `RedirectResultParams` with the following parameters
 
 - `options` - `RedirectResultParams` : The redirect result options.
-  - `replaceUrl?` - `boolean` (optional) : Whether to clean the url of
-    hash/query params
+  - `replaceUrl?` - `boolean` (optional) : Whether to clean the url of hash/query params
 
 **Returns**
 
-- `Promise<RedirectResult>` : Returns a promise which resolves to the
-  `RedirectResult` object
+- `Promise<RedirectResult>` : Returns a promise which resolves to the `RedirectResult` object
 
 **Reference**
 
@@ -622,9 +597,8 @@ const torusRedirectResult = await torusdirectsdk.getRedirectResult();
 
 ## `getTorusKey`
 
-`getTorusKey` is a helper method which by passes the login flow and communicates
-directly with the torus nodes to return you the user's key. Use this if you have
-a custom login flow and wish to get just the user's key
+`getTorusKey` is a helper method which by passes the login flow and communicates directly with the torus nodes to return you the user's key. Use this
+if you have a custom login flow and wish to get just the user's key
 
 ```javascript
 await torusdirectsdk.getTorusKey(verifier: string,
@@ -636,28 +610,21 @@ await torusdirectsdk.getTorusKey(verifier: string,
 
 **Parameters**
 
-- `verifier` - `string` : A verifier is a unique identifier for your OAuth
-  registration on the torus network. The public/private keys generated for a
-  user are scoped to a verifier. Register your app
-  [here](https://dashboard.web3auth.io) to get your verifier today
+- `verifier` - `string` : A verifier is a unique identifier for your OAuth registration on the torus network. The public/private keys generated for a
+  user are scoped to a verifier. Register your app [here](https://dashboard.web3auth.io) to get your verifier today
 
-- `verifierId` - `string`: `verifierId` is the unique identifier to publicly
-  represent a user on a verifier. e.g: email, sub etc. other fields can be
+- `verifierId` - `string`: `verifierId` is the unique identifier to publicly represent a user on a verifier. e.g: email, sub etc. other fields can be
   classified as verifierId
 
-- `verifierParams`- `object`: As stated in the signature. Can contain other
-  fields which can be useful for aggregate logins
+- `verifierParams`- `object`: As stated in the signature. Can contain other fields which can be useful for aggregate logins
 
-- `idToken`- `string`: `idToken` or `accessToken` received from the OAuth
-  provider
+- `idToken`- `string`: `idToken` or `accessToken` received from the OAuth provider
 
-- `additionalParams`- `extraParams`: Any additional parameters you wish to send
-  to the torus nodes. useful for WebAuthn logins
+- `additionalParams`- `extraParams`: Any additional parameters you wish to send to the torus nodes. useful for WebAuthn logins
 
 **Returns**
 
-- `Promise<TorusKey>` : Returns a promise which resolves to the `TorusKey`
-  object
+- `Promise<TorusKey>` : Returns a promise which resolves to the `TorusKey` object
 
 **Reference**
 
@@ -672,46 +639,31 @@ export interface extraParams {
 
 ```ts
 // google
-const torusKey = await torusdirectsdk.getTorusKey(
-  "YOUR_GOOGLE_VERIFIER",
-  "USER_EMAIL",
-  { verifier_id: "USER_EMAIL" },
-  "USER_GOOGLE_ID_TOKEN"
-);
+const torusKey = await torusdirectsdk.getTorusKey("YOUR_GOOGLE_VERIFIER", "USER_EMAIL", { verifier_id: "USER_EMAIL" }, "USER_GOOGLE_ID_TOKEN");
 ```
 
 ## `getAggregateTorusKey`
 
-`getAggregateTorusKey` is a helper method which by passes the login flow and
-communicates directly with the torus nodes to return you the user's key. Use
-this if you have a custom aggregate login flow and wish to get just the user's
-key
+`getAggregateTorusKey` is a helper method which by passes the login flow and communicates directly with the torus nodes to return you the user's key.
+Use this if you have a custom aggregate login flow and wish to get just the user's key
 
 ```javascript
-await torusdirectsdk.getAggregateTorusKey(
-  (verifier: string),
-  (verifierId: string),
-  (subVerifierInfoArray: TorusSubVerifierInfo[])
-);
+await torusdirectsdk.getAggregateTorusKey((verifier: string), (verifierId: string), (subVerifierInfoArray: TorusSubVerifierInfo[]));
 ```
 
 **Parameters**
 
-- `verifier` - `string` : A verifier is a unique identifier for your OAuth
-  registration on the torus network. The public/private keys generated for a
-  user are scoped to a verifier. Register your app
-  [here](https://dashboard.web3auth.io) to get your verifier today
+- `verifier` - `string` : A verifier is a unique identifier for your OAuth registration on the torus network. The public/private keys generated for a
+  user are scoped to a verifier. Register your app [here](https://dashboard.web3auth.io) to get your verifier today
 
-- `verifierId` - `string`: `verifierId` is the unique identifier to publicly
-  represent a user on a verifier. e.g: email, sub etc. other fields can be
+- `verifierId` - `string`: `verifierId` is the unique identifier to publicly represent a user on a verifier. e.g: email, sub etc. other fields can be
   classified as verifierId
 
 - `subVerifierInfoArray`- `TorusSubVerifierInfo[]`: Refer below.
 
 **Returns**
 
-- `Promise<TorusKey>` : Returns a promise which resolves to the `TorusKey`
-  object
+- `Promise<TorusKey>` : Returns a promise which resolves to the `TorusKey` object
 
 **Reference**
 
@@ -728,14 +680,10 @@ export interface TorusSubVerifierInfo {
 
 ```ts
 // google
-const torusKey = await torusdirectsdk.getAggregateTorusKey(
-  "YOUR_AGGREGATE_VERIFIER",
-  "USER_EMAIL",
-  [
-    {
-      idToken: "OAUTH_ID_TOKEN",
-      verifier: "SUB_VERIFIER",
-    },
-  ]
-);
+const torusKey = await torusdirectsdk.getAggregateTorusKey("YOUR_AGGREGATE_VERIFIER", "USER_EMAIL", [
+  {
+    idToken: "OAUTH_ID_TOKEN",
+    verifier: "SUB_VERIFIER",
+  },
+]);
 ```

@@ -29,9 +29,7 @@
         });
         await window.customauth.init({ skipSw: false });
 
-        window.solana = new solanaWeb3.Connection(
-          solanaWeb3.clusterApiUrl("testnet")
-        );
+        window.solana = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("testnet"));
 
         $("#text").text("Didn't log in.");
         $("#login").show();
@@ -51,12 +49,8 @@
             const { sk } = OpenloginUtils.getED25519Key(res.privateKey);
             const account = new solanaWeb3.Account(sk);
 
-            $("#public-address").text(
-              "Public address: " + account.publicKey + "."
-            );
-            $("#private-key").text(
-              "Private key: " + bs58.encode(account.secretKey) + "."
-            );
+            $("#public-address").text("Public address: " + account.publicKey + ".");
+            $("#private-key").text("Private key: " + bs58.encode(account.secretKey) + ".");
             $("#error").hide();
             $("#login").hide();
           })

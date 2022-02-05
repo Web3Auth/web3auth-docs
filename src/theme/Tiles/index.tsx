@@ -24,16 +24,8 @@ export default function Tiles(props) {
           <p>{group.description}</p>
           <div className={styles.tileGroupContent}>
             {group.tiles.map((tile: Tile) => (
-              <Link
-                key={tile.key}
-                className={styles.tile}
-                to={tile.path}
-              >
-                <img
-                  className={styles.tileIcon}
-                  src={`/contents/${tile.icon}`}
-                  alt={tile.icon}
-                />
+              <Link key={tile.key} className={styles.tile} to={tile.path}>
+                <img className={styles.tileIcon} src={`/contents/${tile.icon}`} alt={tile.icon} />
                 <div className={styles.tileText}>{tile.title}</div>
               </Link>
             ))}

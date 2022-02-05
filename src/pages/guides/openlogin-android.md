@@ -12,7 +12,8 @@ import TabItem from "@theme/TabItem";
 
 ## Introduction
 
-This tutorial will guide you to use [openlogin-android-sdk](https://github.com/torusresearch/openlogin-android-sdk) to integrate Web3Auth into your Android application. OpenLogin is Web3Auth's hosted auth solution.
+This tutorial will guide you to use [openlogin-android-sdk](https://github.com/torusresearch/openlogin-android-sdk) to integrate Web3Auth into your
+Android application. OpenLogin is Web3Auth's hosted auth solution.
 
 Source code of the example can also be found in the repository.
 
@@ -44,8 +45,7 @@ dependencies {
 }
 ```
 
-**Note**: This SDK is currently in beta, using `-SNAPSHOT` to make sure you receive latest updates
-and be aware that there may be breaking changes.
+**Note**: This SDK is currently in beta, using `-SNAPSHOT` to make sure you receive latest updates and be aware that there may be breaking changes.
 
 ### Permissions
 
@@ -83,8 +83,7 @@ Open your app's `AndroidManifest.xml` file and add the following deep link inten
 
 ### Initialize OpenLogin
 
-In your sign-in activity', create an `OpenLogin` instance with your OpenLogin project's configurations and
-configure it like this:
+In your sign-in activity', create an `OpenLogin` instance with your OpenLogin project's configurations and configure it like this:
 
 ```kotlin
 class MainActivity : AppCompatActivity() {

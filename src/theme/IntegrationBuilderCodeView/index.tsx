@@ -22,8 +22,7 @@ const getDisplayName = (filename: string): string => {
 const getLanguage = (filename: string): string => {
   const ext = path.extname(filename).substr(1);
 
-  if (["jsx", "java", "swift", "ts", "tsx", "html", "css", "xml"].includes(ext))
-    return `language-${ext}`;
+  if (["jsx", "java", "swift", "ts", "tsx", "html", "css", "xml"].includes(ext)) return `language-${ext}`;
   if (ext === "js" || ext === "vue") return "language-jsx";
   if (ext === "gradle") return "language-groovy";
   if (ext === "kt") return "language-kotlin";
@@ -31,24 +30,14 @@ const getLanguage = (filename: string): string => {
   return undefined;
 };
 
-export default function IntegrationBuilderCodeView({
-  selectedFilename,
-  filenames,
-  fileContents,
-  highlight,
-  onClickFilename,
-}: Props) {
+export default function IntegrationBuilderCodeView({ selectedFilename, filenames, fileContents, highlight, onClickFilename }: Props) {
   const highlightLines = rangeParser(highlight || "0");
   const props = useSpring({ scroll: Math.max(highlightLines[0] * 22 - 64, 0) }); // 22 is line height, 64 is offset to scroll the line close to top
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <ul
-          className={classNames("tabs", styles.codeTabs)}
-          role="tablist"
-          aria-orientation="horizontal"
-        >
+        <ul className={classNames("tabs", styles.codeTabs)} role="tablist" aria-orientation="horizontal">
           {filenames.map((filename) => (
             <li
               key={filename}
@@ -66,10 +55,7 @@ export default function IntegrationBuilderCodeView({
       </div>
       {/* @ts-ignore */}
       <animated.div className={styles.body} scrollTop={props.scroll}>
-        <CodeBlock
-          className={getLanguage(selectedFilename)}
-          metastring={highlight ? `{${highlight}}` : undefined}
-        >
+        <CodeBlock className={getLanguage(selectedFilename)} metastring={highlight ? `{${highlight}}` : undefined}>
           {fileContents[selectedFilename]}
         </CodeBlock>
       </animated.div>

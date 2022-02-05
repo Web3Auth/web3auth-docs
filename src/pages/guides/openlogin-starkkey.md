@@ -12,10 +12,10 @@ import TabItem from "@theme/TabItem";
 
 ## Introduction
 
-This tutorial will guide you with steps to integerate Openlogin
-authentication with Starknet in a react app.
+This tutorial will guide you with steps to integerate Openlogin authentication with Starknet in a react app.
 
 At the end of this guide you should be able to:-
+
 - Authenticate user with openlogin.
 - Derive starknet friendly keys from user's openlogin private key.
 - Signing and verifying arbitrary messages with stark keys.
@@ -26,17 +26,14 @@ You can find
 
 ## Register your OpenLogin application
 
-In order to use OpenLogin SDK, you'll need to create a project in
-[Developer Dashboard](https://dashboard.web3auth.io) and get your client ID.
+In order to use OpenLogin SDK, you'll need to create a project in [Developer Dashboard](https://dashboard.web3auth.io) and get your client ID.
 
 > App registration is not required for localhost development.
 
 ## Let's get started with code by installing depedencies using npm
 
-To start with using openlogin with starknet, you need to install
-[Openlogin](https://www.npmjs.com/package/@toruslabs/openlogin) ,
-[Openlogin-Starkkey](https://www.npmjs.com/package/@toruslabs/openlogin-starkkey)
-[Starknet.js](https://www.npmjs.com/package/starknet)
+To start with using openlogin with starknet, you need to install [Openlogin](https://www.npmjs.com/package/@toruslabs/openlogin) ,
+[Openlogin-Starkkey](https://www.npmjs.com/package/@toruslabs/openlogin-starkkey) [Starknet.js](https://www.npmjs.com/package/starknet)
 
 ```shell
 npm install --save @toruslabs/openlogin
@@ -45,19 +42,15 @@ npm install --save starknet
 
 ```
 
-
 ## Create and initialize openlogin instance
 
-Start with creating a instance of openlogin class and initialize it using
-`openlogin.init()` when application is mounted. After initialization it checks
-if sdk has private key then user is already logged in.
+Start with creating a instance of openlogin class and initialize it using `openlogin.init()` when application is mounted. After initialization it
+checks if sdk has private key then user is already logged in.
 
 We are using two options while creating openlogin class instance:-
 
-- `clientId`: clientId is a public id which is used to to identify your app. You
-  can generate your client id from
-  [developer dashboard](http://dashboard.web3auth.io/). For localhost you can use any
-  static random string as client id.
+- `clientId`: clientId is a public id which is used to to identify your app. You can generate your client id from
+  [developer dashboard](http://dashboard.web3auth.io/). For localhost you can use any static random string as client id.
 
 - `network`: network can be `testnet` or `mainnet`.
 
@@ -84,69 +77,59 @@ useEffect(() => {
 
 ## Login
 
-Once the sdk is initialized , then `openlogin.login` should be called when user
-clicks on login button.
+Once the sdk is initialized , then `openlogin.login` should be called when user clicks on login button.
 
 ```js
 async function handleLogin() {
-    // privKey will be returned here only in case of popup mode or in case user is already logged in.
-    // for redirect mode login, private key will be returned as `openlogin.privKey` after openlogin
-    // is initialized using `init` function on successfully login redirect.
-    const privKey = await openlogin.login({
-        loginProvider: "google",
-        redirectUrl: `${window.origin}`,
-    });
-    return privKey
+  // privKey will be returned here only in case of popup mode or in case user is already logged in.
+  // for redirect mode login, private key will be returned as `openlogin.privKey` after openlogin
+  // is initialized using `init` function on successfully login redirect.
+  const privKey = await openlogin.login({
+    loginProvider: "google",
+    redirectUrl: `${window.origin}`,
+  });
+  return privKey;
 }
 ```
 
-Above code snippet will start the login flow for the user and redirect/popups openlogin authentication ui
-for user based on the ux mode specified.
+Above code snippet will start the login flow for the user and redirect/popups openlogin authentication ui for user based on the ux mode specified.
 
-Openlogin sdk provides two UX modes (ie POPUP and REDIRECT) for login flow. You can use either depends on your
-application UX by setting up `uxMode` option in login function, default is
-`redirect`.
+Openlogin sdk provides two UX modes (ie POPUP and REDIRECT) for login flow. You can use either depends on your application UX by setting up `uxMode`
+option in login function, default is `redirect`.
 
-> Note: in above function, privKey will be returned here only in case of popup ux mode or in case user is already logged in. For redirect mode login, private key will be returned as `openlogin.privKey` after openlogin is initialized using `init` function which should be  called redirect url page mount.
+> Note: in above function, privKey will be returned here only in case of popup ux mode or in case user is already logged in. For redirect mode login,
+> private key will be returned as `openlogin.privKey` after openlogin is initialized using `init` function which should be called redirect url page
+> mount.
 
-
-In redirect mode user will be redirected completely out of app and will be
-redirected back to `redirectUrl` after successful authentication, application
-will have access to private key as `openlogin.privKey` after initializing
-`openlogin` instance.
+In redirect mode user will be redirected completely out of app and will be redirected back to `redirectUrl` after successful authentication,
+application will have access to private key as `openlogin.privKey` after initializing `openlogin` instance.
 
 We recommend to use redirect mode because some browsers might block popup in some cases.
 
-In PopUp mode, openlogin authentication window will open as a popup and app will
-get private key when `openlogin.login` promise will resolve.
+In PopUp mode, openlogin authentication window will open as a popup and app will get private key when `openlogin.login` promise will resolve.
 
 This example is compatible with both redirect and popup ux modes.
 
-In the given code snippet, `openlogin.login` function is getting called along
-with two options:-
+In the given code snippet, `openlogin.login` function is getting called along with two options:-
 
-- `loginProvider`: It specifies the login method which will be used to
-  authenticate user. You can checkout
-  [API Reference](/open-login/api-reference/usage) to know
-  about all supported and custom login provider values.
+- `loginProvider`: It specifies the login method which will be used to authenticate user. You can checkout
+  [API Reference](/open-login/api-reference/usage) to know about all supported and custom login provider values.
 
 - `redirectUrl`: User will be redirected to redirectUrl after login.
 
-Checkout [API Reference](/open-login/api-reference/usage) for
-other options available to pass in openlogin constructor and login function.
+Checkout [API Reference](/open-login/api-reference/usage) for other options available to pass in openlogin constructor and login function.
 
 ## Use the openlogin private key to derive starknet key pair
 
-After login, application will have access to the user's private key from`openlogin.privKey` instance variable.
-We cannot use this key with starknet ec curve specific signing functions,so we need to derive starknet compatible keys from `openlogin.privKey`.
+After login, application will have access to the user's private key from`openlogin.privKey` instance variable. We cannot use this key with starknet ec
+curve specific signing functions,so we need to derive starknet compatible keys from `openlogin.privKey`.
 
-In the code snippet below `getStarkHDAccount` function creates a HD account from openlogin's key. It will return
-hex encoded private key and uncompressed stark public key.
+In the code snippet below `getStarkHDAccount` function creates a HD account from openlogin's key. It will return hex encoded private key and
+uncompressed stark public key.
 
-You can pass account index to derive multiple keys deterministically from single openlogin's key.
-Also note that we are passing `STARKNET_NETWORKS.testnet` as a argument to this function, it will derive different
-key pairs for different networks. Refer to `STARKNET_NETWORKS` type for supported networks.
-
+You can pass account index to derive multiple keys deterministically from single openlogin's key. Also note that we are passing
+`STARKNET_NETWORKS.testnet` as a argument to this function, it will derive different key pairs for different networks. Refer to `STARKNET_NETWORKS`
+type for supported networks.
 
 ```js
     import { getStarkHDAccount, STARKNET_NETWORKS } from "@toruslabs/openlogin-starkkey";
@@ -163,14 +146,14 @@ Now we have a starknet compatible key pair which will be use to sign and validat
 
 ## Signing and validating a message with stark keys.
 
-In order to sign a message with stark keys we need to hash the message using pedersen hash function which is also
-available from `@toruslabs/openlogin-starkkey`.
+In order to sign a message with stark keys we need to hash the message using pedersen hash function which is also available from
+`@toruslabs/openlogin-starkkey`.
 
-In code snippet below we are signing utf-8 string message by hashing with pedersen hash function in the units of 252 bits recursively and then signing it using `sign` method of `@toruslabs/openlogin-starkkey`.
+In code snippet below we are signing utf-8 string message by hashing with pedersen hash function in the units of 252 bits recursively and then signing
+it using `sign` method of `@toruslabs/openlogin-starkkey`.
 
-
-Note: The function `getPedersenHashRecursively` is for this guide demonstration purpose only, to know about message encoding for starkware messages refer to this link [here](https://docs.starkware.co/starkex-v3/starkex-deep-dive/message-encodings)
-
+Note: The function `getPedersenHashRecursively` is for this guide demonstration purpose only, to know about message encoding for starkware messages
+refer to this link [here](https://docs.starkware.co/starkex-v3/starkex-deep-dive/message-encodings)
 
 ```js
 
@@ -237,22 +220,24 @@ Note: The function `getPedersenHashRecursively` is for this guide demonstration 
 
 ## Deploying account contract with stark public key.
 
-In starknet account model is different from ethereum, unlike ethereum's externally owned accounts, in starknet every account is a contract and that contract forwards messages signed from the account's keypair to invoke specified destination contract address function.
+In starknet account model is different from ethereum, unlike ethereum's externally owned accounts, in starknet every account is a contract and that
+contract forwards messages signed from the account's keypair to invoke specified destination contract address function.
 
-To begin with we need to can deploy a account contract and link it with starknet's keypair public key. In this guide we are using open-zeppelin's implementation of account contract.
+To begin with we need to can deploy a account contract and link it with starknet's keypair public key. In this guide we are using open-zeppelin's
+implementation of account contract.
 
 Account deployment should/can be effectively done from backend code but here for demo purpose we are doing from frontend js only.
 
-Before deploying we need to compile our contract, you can follow this [tutorial](https://www.cairo-lang.org/docs/quickstart.html) to setup your cairo lang environment.
+Before deploying we need to compile our contract, you can follow this [tutorial](https://www.cairo-lang.org/docs/quickstart.html) to setup your cairo
+lang environment.
 
-We will be using a pre-compiled Account contract available [here](https://github.com/himanshuchawla009/cairo-contracts/blob/master/account_compiled.json) for this example.
+We will be using a pre-compiled Account contract available
+[here](https://github.com/himanshuchawla009/cairo-contracts/blob/master/account_compiled.json) for this example.
 
-In given code snippet we are deploying account contract and initializing it with stark public key in the
-contract constructor.
+In given code snippet we are deploying account contract and initializing it with stark public key in the contract constructor.
 
-> Note: This example uses starknet alpha3 account contract implementation, if you are using older Account
-contract, function signatures might be different for you.
-
+> Note: This example uses starknet alpha3 account contract implementation, if you are using older Account contract, function signatures might be
+> different for you.
 
 ```ts
 import { getStarkHDAccount, STARKNET_NETWORKS, sign, verify } from "@toruslabs/openlogin-starkkey";
@@ -306,44 +291,45 @@ import { BN } from "bn.js";
 
 After deploying account contract with public key we need to initialize the contract with account's address.
 
-Contract deployment response will return us the contract address as `txRes.address` in above code snippet,
-We need to initialize our contract with this address by calling initialize function of the contract.
-Similar to ethereum we need contract abi, address, method and calldata to invoke any function on starknet
-contract.
+Contract deployment response will return us the contract address as `txRes.address` in above code snippet, We need to initialize our contract with
+this address by calling initialize function of the contract. Similar to ethereum we need contract abi, address, method and calldata to invoke any
+function on starknet contract.
 
-Here is an example snippet to invoke initialize function with the contract address. After account contract will be initialized we will be able to call execute function of account contract which is basically used to forward messages to any contract on starknet. It acts as an gateway for your account to communicate with any other contract on starknet.
+Here is an example snippet to invoke initialize function with the contract address. After account contract will be initialized we will be able to call
+execute function of account contract which is basically used to forward messages to any contract on starknet. It acts as an gateway for your account
+to communicate with any other contract on starknet.
 
-Ideally you want to save this contract address and wallet public key mapping somewhere in your backend or any account registry contract on starknet. In this example we are not persisting it anywhere.
-
+Ideally you want to save this contract address and wallet public key mapping somewhere in your backend or any account registry contract on starknet.
+In this example we are not persisting it anywhere.
 
 ```ts
 import { waitForTx, Contract, Abi, utils } from "starknet";
 import CompiledAccountContractAbi from "./contracts/account_abi.json";
 import { BN } from "bn.js";
-  const initializeAccountContract = async () => {
-    try {
-      if (!contractAddress) {
-        printToConsole("PLease input contract/account address");
-        return;
-      }
-      const contract = new Contract(CompiledAccountContractAbi as Abi[], contractAddress);
-
-      const txRes = await contract.invoke("initialize", {
-        _address: contractAddress,
-      });
-
-      printToConsole("deployed account contract,", {
-        contractRes: txRes,
-        txStatusLink: `https://voyager.online/tx/${txRes.transaction_hash}`,
-      });
-      await waitForTx(txRes.transaction_hash);
-      printToConsole("successfully included in a block", {
-        txStatusLink: `https://voyager.online/tx/${txRes.transaction_hash}`,
-      });
-    } catch (error) {
-      printToConsole(error);
+const initializeAccountContract = async () => {
+  try {
+    if (!contractAddress) {
+      printToConsole("PLease input contract/account address");
+      return;
     }
-  };
+    const contract = new Contract(CompiledAccountContractAbi as Abi[], contractAddress);
+
+    const txRes = await contract.invoke("initialize", {
+      _address: contractAddress,
+    });
+
+    printToConsole("deployed account contract,", {
+      contractRes: txRes,
+      txStatusLink: `https://voyager.online/tx/${txRes.transaction_hash}`,
+    });
+    await waitForTx(txRes.transaction_hash);
+    printToConsole("successfully included in a block", {
+      txStatusLink: `https://voyager.online/tx/${txRes.transaction_hash}`,
+    });
+  } catch (error) {
+    printToConsole(error);
+  }
+};
 ```
 
 ## Execute signed message call on account contract
@@ -354,14 +340,14 @@ Now we have our contract initialized, we can call execute function of contract w
 - selector: Keccak hash of function name which want to invoke on smart contract.
 - calldata: Array of function args
 
-We will be using invoke function of starknet js lib to call execute function and we will be calling `set_public_key` function of same account that we just deployed earlier, we will set `to` param as address of same account contract.
+We will be using invoke function of starknet js lib to call execute function and we will be calling `set_public_key` function of same account that we
+just deployed earlier, we will set `to` param as address of same account contract.
 
-> Note: While deployment we initialized this contract with account index 1 public key and now this function is setting a new public key in to this contract that belongs to account index 2
-of this hd account, once this transaction is successful, you can only using account index 2 for
-executing future transactions.
+> Note: While deployment we initialized this contract with account index 1 public key and now this function is setting a new public key in to this
+> contract that belongs to account index 2 of this hd account, once this transaction is successful, you can only using account index 2 for executing
+> future transactions.
 
 ```ts
-
 import { getStarkHDAccount, STARKNET_NETWORKS, sign, verify } from "@toruslabs/openlogin-starkkey";
 import { binaryToHex, binaryToUtf8, bufferToBinary, bufferToHex, hexToBinary, removeHexPrefix } from "enc-utils";
 import type { ec } from "elliptic";
@@ -369,68 +355,66 @@ import { deployContract, CompiledContract, waitForTx, Contract, Abi, utils, hash
 import CompiledAccountContractAbi from "./contracts/account_abi.json";
 import { BN } from "bn.js";
 
-  const updatePublickeyInContract = async () => {
-    try {
-      if (!contractAddress) {
-        printToConsole("PLease input contract/account address");
-        return;
-      }
-      const newAccountIndex = 3;
-      const keyPair = getStarkAccount(newAccountIndex);
-      const compressedPubKey = keyPair.getPublic().getX().toString(16, 64);
-      const account = new Contract(CompiledAccountContractAbi as Abi[], contractAddress);
-
-      const { res: nonceRes } = await account.call("get_nonce");
-      const msgHash = removeHexPrefix(
-        hashMessage(
-          contractAddress,
-          contractAddress,
-          utils.starknet.getSelectorFromName("set_public_key"),
-          [
-            new BN(compressedPubKey, 16).toString(),
-            // contractAddress,
-          ],
-          nonceRes.toString()
-        )
-      );
-
-      const signingAccountIndex = 1;
-      const signingKeyPair = getStarkAccount(signingAccountIndex);
-      // eslint-disable-next-line no-debugger
-      debugger;
-      const { r, s } = sign(signingKeyPair, msgHash);
-      const res = await account.invoke(
-        "execute",
-        {
-          to: contractAddress,
-          selector: utils.starknet.getSelectorFromName("set_public_key"),
-          calldata: [
-            new BN(compressedPubKey, 16).toString(),
-            // contractAddress,
-          ],
-        },
-        [utils.number.toHex(r), utils.number.toHex(s)]
-      );
-
-      printToConsole(res);
-      await waitForTx(res.transaction_hash);
-      printToConsole("transaction successfully included in a block", {
-        txStatusLink: `https://voyager.online/tx/${res.transaction_hash}`,
-      });
-    } catch (error) {
-      console.log(error);
-      printToConsole((error as Error).toString());
+const updatePublickeyInContract = async () => {
+  try {
+    if (!contractAddress) {
+      printToConsole("PLease input contract/account address");
+      return;
     }
-  };
+    const newAccountIndex = 3;
+    const keyPair = getStarkAccount(newAccountIndex);
+    const compressedPubKey = keyPair.getPublic().getX().toString(16, 64);
+    const account = new Contract(CompiledAccountContractAbi as Abi[], contractAddress);
+
+    const { res: nonceRes } = await account.call("get_nonce");
+    const msgHash = removeHexPrefix(
+      hashMessage(
+        contractAddress,
+        contractAddress,
+        utils.starknet.getSelectorFromName("set_public_key"),
+        [
+          new BN(compressedPubKey, 16).toString(),
+          // contractAddress,
+        ],
+        nonceRes.toString()
+      )
+    );
+
+    const signingAccountIndex = 1;
+    const signingKeyPair = getStarkAccount(signingAccountIndex);
+    // eslint-disable-next-line no-debugger
+    debugger;
+    const { r, s } = sign(signingKeyPair, msgHash);
+    const res = await account.invoke(
+      "execute",
+      {
+        to: contractAddress,
+        selector: utils.starknet.getSelectorFromName("set_public_key"),
+        calldata: [
+          new BN(compressedPubKey, 16).toString(),
+          // contractAddress,
+        ],
+      },
+      [utils.number.toHex(r), utils.number.toHex(s)]
+    );
+
+    printToConsole(res);
+    await waitForTx(res.transaction_hash);
+    printToConsole("transaction successfully included in a block", {
+      txStatusLink: `https://voyager.online/tx/${res.transaction_hash}`,
+    });
+  } catch (error) {
+    console.log(error);
+    printToConsole((error as Error).toString());
+  }
+};
 ```
 
 ## Logging out user
 
-In order to logout user you needs to call logout function available on sdk
-instance. Logout function will clears the sdk state and removes any access to
-private key on frontend. You can pass various other options in logout function
-like `fastLogin` , `redirectUrl` etc. To know more about that checkout
-[API Reference](/open-login/api-reference/usage)
+In order to logout user you needs to call logout function available on sdk instance. Logout function will clears the sdk state and removes any access
+to private key on frontend. You can pass various other options in logout function like `fastLogin` , `redirectUrl` etc. To know more about that
+checkout [API Reference](/open-login/api-reference/usage)
 
 ```js
 const handleLogout = async () => {
@@ -443,5 +427,5 @@ const handleLogout = async () => {
 ### DONE!!
 
 > You can checkout example of this example app
-> here.[the source code of this is example on Github](https://github.com/torusresearch/OpenLoginSdk/blob/master/examples/starkware-react-example).
-> You can found a working demo application here:- https://openlogin-starknet.surge.sh
+> here.[the source code of this is example on Github](https://github.com/torusresearch/OpenLoginSdk/blob/master/examples/starkware-react-example). You
+> can found a working demo application here:- https://openlogin-starknet.surge.sh

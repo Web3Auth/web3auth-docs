@@ -11,11 +11,7 @@ module.exports = (context, options) => ({
           {
             test: /\.mdx$/,
             include: [path.resolve(context.siteDir, options.rootDir)],
-            use: [
-              getCacheLoader(isServer),
-              getBabelLoader(isServer),
-              require.resolve("@docusaurus/mdx-loader"),
-            ].filter((it) => !!it),
+            use: [getCacheLoader(isServer), getBabelLoader(isServer), require.resolve("@docusaurus/mdx-loader")].filter((it) => !!it),
           },
         ],
       },

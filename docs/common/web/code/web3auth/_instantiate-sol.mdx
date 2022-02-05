@@ -4,7 +4,7 @@ import TabItem from "@theme/TabItem";
 
 ## `Configuring adapters for Web3AuthModal`
 
-<span>{ props.description ? props.description : "" } </span>
+<span>{props.description ? props.description : ""} </span>
 
 <Tabs
   defaultValue="default"
@@ -14,19 +14,16 @@ import TabItem from "@theme/TabItem";
   ]}
 >
 
-
 <TabItem value="default">
 
-
 ```ts
-    import { CHAIN_NAMESPACES, CONNECTED_EVENT_DATA } from "@web3auth/base";
+import { CHAIN_NAMESPACES, CONNECTED_EVENT_DATA } from "@web3auth/base";
 
-    // ⭐️ initialize modal on page mount.
-    const initializeModal = async () => {
-      subscribeAuthEvents(this.web3auth)
-      await web3auth.initModal();
-    }
-
+// ⭐️ initialize modal on page mount.
+const initializeModal = async () => {
+  subscribeAuthEvents(this.web3auth);
+  await web3auth.initModal();
+};
 ```
 
 </TabItem>
@@ -34,29 +31,29 @@ import TabItem from "@theme/TabItem";
 <TabItem value="custom">
 
 ```ts
-    import { CHAIN_NAMESPACES, CONNECTED_EVENT_DATA } from "@web3auth/base";
-    import { OpenloginAdapter, OpenloginLoginParams } from "@web3auth/openlogin-adapter";
-    import { MetamaskAdapter } from "@web3auth/metamask-adapter";
+import { CHAIN_NAMESPACES, CONNECTED_EVENT_DATA } from "@web3auth/base";
+import { OpenloginAdapter, OpenloginLoginParams } from "@web3auth/openlogin-adapter";
+import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 
-    // pass your configuration here.
-    const openloginAdapter = new OpenloginAdapter({
-        adapterSettings: {
-          network: "testnet",
-          clientId: "YOUR WEB3AUTH CLIENT ID",
-          uxMode: "redirect",
-        },
-     });
+// pass your configuration here.
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    network: "testnet",
+    clientId: "YOUR WEB3AUTH CLIENT ID",
+    uxMode: "redirect",
+  },
+});
 
-     // ⭐️ adding openlogin social logins to web3auth modal
-    web3auth.configureAdapter(openloginAdapter);
+// ⭐️ adding openlogin social logins to web3auth modal
+web3auth.configureAdapter(openloginAdapter);
 
-
-    // ⭐️ initialize modal on page mount.
-    const initializeModal = async () => {
-      subscribeAuthEvents(this.web3auth)
-      await web3auth.initModal();
-    }
+// ⭐️ initialize modal on page mount.
+const initializeModal = async () => {
+  subscribeAuthEvents(this.web3auth);
+  await web3auth.initModal();
+};
 ```
+
 </TabItem>
 
 </Tabs>

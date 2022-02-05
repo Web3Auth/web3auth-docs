@@ -28,36 +28,23 @@ The DirectWebSdk constructor takes an object with `DirectWebSDKArgs` as input.
 **Parameters**
 
 - `options` - `DirectWebSDKArgs`: The options of the constructor
-  - `baseUrl` - `string` : Redirect Uri for OAuth is `baseUrl+redirectPathName`
-    Torus Direct SDK installs a service worker to capture the auth redirect.
-    Usually, your app may have it's own service worker at the root. So, please
-    use `${location.origin}/auth`as baseUrl instead and use
-    `${location.origin}/auth/${redirectPathName}` as redirect Uri at the OAuth
-    registration page
-  - `network?` - `enum`: Torus Network to target options: `mainnet` | `testnet`
-    default: `mainnet`
-  - `proxyContractAddress?`- `string`: The contract address of the verifiers on
-    torus network mainnet: `0x638646503746d5456209e33a2ff5e3226d698bea` testnet:
-    `0x4023d2a0D330bF11426B12C6144Cfb96B7fa6183`. If not specified, default one
-    for the current network will be used
+  - `baseUrl` - `string` : Redirect Uri for OAuth is `baseUrl+redirectPathName` Torus Direct SDK installs a service worker to capture the auth
+    redirect. Usually, your app may have it's own service worker at the root. So, please use `${location.origin}/auth`as baseUrl instead and use
+    `${location.origin}/auth/${redirectPathName}` as redirect Uri at the OAuth registration page
+  - `network?` - `enum`: Torus Network to target options: `mainnet` | `testnet` default: `mainnet`
+  - `proxyContractAddress?`- `string`: The contract address of the verifiers on torus network mainnet: `0x638646503746d5456209e33a2ff5e3226d698bea`
+    testnet: `0x4023d2a0D330bF11426B12C6144Cfb96B7fa6183`. If not specified, default one for the current network will be used
   - `enableLogging?`- `boolean`: Whether to enable logging. `default: false`
-  - `redirectPathName?` - `string`: The path from which redirect.html is being
-    served. default: "redirect"
-  - `redirectToOpener?` - `boolean`: For chrome extensions, the general methods
-    for capturing auth redirects don't work. So, we redirect to the window which
-    opens the auth window. `default: false`
+  - `redirectPathName?` - `string`: The path from which redirect.html is being served. default: "redirect"
+  - `redirectToOpener?` - `boolean`: For chrome extensions, the general methods for capturing auth redirects don't work. So, we redirect to the window
+    which opens the auth window. `default: false`
   - `apiKey?` - `string`: API Key for torus to enable higher access limits
-  - `uxMode?` - `enum`: `popup` and `redirect` uxmode are supported. By default
-    it is set to `popup`
-  - `redirectParamsStorageMethod?` - `enum`: `localStorage` and `sessionStorage`
-    are supported. By default, it is set to localStorage. In redirect flow, some
-    params will be stored in localStorage for reuse at the end of the flow.
-  - `locationReplaceOnRedirect?` - `boolean`: Whether to replace the url
-    hash/query params from OAuth at the end of the redirect flow
-    `default: false`
+  - `uxMode?` - `enum`: `popup` and `redirect` uxmode are supported. By default it is set to `popup`
+  - `redirectParamsStorageMethod?` - `enum`: `localStorage` and `sessionStorage` are supported. By default, it is set to localStorage. In redirect
+    flow, some params will be stored in localStorage for reuse at the end of the flow.
+  - `locationReplaceOnRedirect?` - `boolean`: Whether to replace the url hash/query params from OAuth at the end of the redirect flow `default: false`
   - `popupFeatures?` - `DOMString`: Features of popup window. Please check
-    [here](https://developer.mozilla.org/en-US/docs/Web/API/Window/open#window_features)
-    for further documentation
+    [here](https://developer.mozilla.org/en-US/docs/Web/API/Window/open#window_features) for further documentation
 
 **Returns**
 
@@ -208,9 +195,8 @@ const torusdirectsdk = new TorusDirectSdk({
 
 ## `init`
 
-Initializes the torus direct sdk and checks for the existence of service worker
-and redirect.html. Please make sure to serve both sw.js and redirect.html
-present in the sdk from baseUrl depending on the uxMode
+Initializes the torus direct sdk and checks for the existence of service worker and redirect.html. Please make sure to serve both sw.js and
+redirect.html present in the sdk from baseUrl depending on the uxMode
 
 ```ts
 await torusdirectsdk.init(options);

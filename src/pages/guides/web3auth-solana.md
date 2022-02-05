@@ -10,14 +10,12 @@ import Tabs from "@theme/Tabs";
 
 import TabItem from "@theme/TabItem";
 
-
-import InstallWeb3Auth from "../../../docs/common/web/code/web3auth/_install.mdx";
-import InstantiateWeb3Auth from "../../../docs/common/web/code/web3auth/_instantiate-sol.mdx";
-import SubscribeEvents from "../../../docs/common/web/code/web3auth/_subscribe_events.mdx";
-import CommonSdkFunctions from "../../../docs/common/web/code/web3auth/_common-sdk-functions.mdx";
-import CommonChainFunctions from "../../../docs/common/web/code/web3auth/_common-sol-functions.mdx";
-import RegisterApplication from "../../../docs/common/web/code/web3auth/_register-client_id.mdx";
-
+import InstallWeb3Auth from "../../../docs/common/web/code/web3auth/\_install.mdx"; import InstantiateWeb3Auth from
+"../../../docs/common/web/code/web3auth/\_instantiate-sol.mdx"; import SubscribeEvents from
+"../../../docs/common/web/code/web3auth/\_subscribe_events.mdx"; import CommonSdkFunctions from
+"../../../docs/common/web/code/web3auth/\_common-sdk-functions.mdx"; import CommonChainFunctions from
+"../../../docs/common/web/code/web3auth/\_common-sol-functions.mdx"; import RegisterApplication from
+"../../../docs/common/web/code/web3auth/\_register-client_id.mdx";
 
 ## `Introduction`
 
@@ -29,7 +27,12 @@ This guide is a tutorial to go through the steps required for using solana block
 
 ## `Create web3auth instance`
 
-We need `clientId` and `chainNamespace` to initialize web3auth class. You can get your `clientId` by registering your app on [developer dashboard](https://developer.web3auth.io), whereas `chainNamespace` signifies the type of chain you want to initialize web3auth with, as we want to use `solana` blockchain which belongs to `solana` chainNamespace, so we will set `solana` as  `chainNamespace` inside chainConfig. Other chainConfig fields are optional, by default it will connect to solana mainnet-beta. If you want to connect with other network, then you can pass chainId of network in chainConfig if you are using any official solana network like `testnet` or `devnet`. You can also pass your own custom chainConfig for these networks in web3auth constructor.
+We need `clientId` and `chainNamespace` to initialize web3auth class. You can get your `clientId` by registering your app on
+[developer dashboard](https://developer.web3auth.io), whereas `chainNamespace` signifies the type of chain you want to initialize web3auth with, as we
+want to use `solana` blockchain which belongs to `solana` chainNamespace, so we will set `solana` as `chainNamespace` inside chainConfig. Other
+chainConfig fields are optional, by default it will connect to solana mainnet-beta. If you want to connect with other network, then you can pass
+chainId of network in chainConfig if you are using any official solana network like `testnet` or `devnet`. You can also pass your own custom
+chainConfig for these networks in web3auth constructor.
 
 Following are chainIds for solana networks in web3auth:-
 
@@ -70,4 +73,5 @@ Following are chainIds for solana networks in web3auth:-
 
 ## `Done`
 
-You have completed this tutorial,you can refer to working code of this tutorial [here]("https://github.com/Web3Auth/Web3Auth/examples/vue-app/src/chains/solana.vue").
+You have completed this tutorial,you can refer to working code of this tutorial
+[here]("https://github.com/Web3Auth/Web3Auth/examples/vue-app/src/chains/solana.vue").

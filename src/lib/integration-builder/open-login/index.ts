@@ -27,14 +27,7 @@ const AVAILABLE_EXAMPLES = {
 
 const AVAILABLE_LANGS = {
   React: {
-    examples: [
-      "Solana",
-      "Polygon",
-      "Binance Smart Chain",
-      "Avalanche",
-      "ZkSync",
-      "Arbitrum",
-    ],
+    examples: ["Solana", "Polygon", "Binance Smart Chain", "Avalanche", "ZkSync", "Arbitrum"],
   },
   HTML: {
     examples: ["Ethereum"],
@@ -56,15 +49,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
     chain: {
       displayName: "Blockchain",
       default: "Ethereum",
-      choices: [
-        "Ethereum",
-        "Solana",
-        "Polygon",
-        "Binance Smart Chain",
-        "Avalanche",
-        "ZkSync",
-        "Arbitrum",
-      ],
+      choices: ["Ethereum", "Solana", "Polygon", "Binance Smart Chain", "Avalanche", "ZkSync", "Arbitrum"],
     },
     lang: {
       displayName: "Language/Framework",
@@ -416,9 +401,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
       filenames: filenames.map((it) => `open-login/${it}`),
       steps: steps.map((it) => ({
         ...it,
-        pointer: it.pointer
-          ? { ...it.pointer, filename: `open-login/${it.pointer.filename}` }
-          : undefined,
+        pointer: it.pointer ? { ...it.pointer, filename: `open-login/${it.pointer.filename}` } : undefined,
       })),
     };
   },

@@ -3,41 +3,23 @@
     <div>
       <span :style="{ marginRight: '20px' }">verifier:</span>
       <select v-model="selectedVerifier">
-        <option
-          :key="login"
-          v-for="login in Object.keys(verifierMap)"
-          :value="login"
-        >
+        <option :key="login" v-for="login in Object.keys(verifierMap)" :value="login">
           {{ verifierMap[login].name }}
         </option>
       </select>
     </div>
-    <div
-      :style="{ marginTop: '20px' }"
-      v-if="selectedVerifier === 'passwordless'"
-    >
+    <div :style="{ marginTop: '20px' }" v-if="selectedVerifier === 'passwordless'">
       <input type="email" v-model="loginHint" placeholder="Enter your email" />
     </div>
     <div :style="{ marginTop: '20px' }">
       <button @click="login">Login with Torus</button>
     </div>
-    <p>
-      Please note that the verifiers listed in the example have
-      http://localhost:3000/serviceworker/redirect configured as the redirect
-      uri.
-    </p>
+    <p>Please note that the verifiers listed in the example have http://localhost:3000/serviceworker/redirect configured as the redirect uri.</p>
     <p>If you use any other domains, they won't work.</p>
-    <p>
-      The verifiers listed here only work with the client id's specified in
-      example. Please don't edit them
-    </p>
-    <p>
-      The verifiers listed here are for example reference only. Please don't use
-      them for anything other than testing purposes.
-    </p>
+    <p>The verifiers listed here only work with the client id's specified in example. Please don't edit them</p>
+    <p>The verifiers listed here are for example reference only. Please don't use them for anything other than testing purposes.</p>
     <div>
-      Reach out to us at <a href="mailto:hello@tor.us">hello@tor.us</a> or
-      <a href="https://t.me/torusdev">telegram group</a> to get your verifier
+      Reach out to us at <a href="mailto:hello@tor.us">hello@tor.us</a> or <a href="https://t.me/torusdev">telegram group</a> to get your verifier
       deployed for your client id.
     </div>
     <div id="console">
@@ -76,8 +58,7 @@ export default {
         [GOOGLE]: {
           name: "Google",
           typeOfLogin: "google",
-          clientId:
-            "221898609709-obfn3p63741l5333093430j3qeiinaa8.apps.googleusercontent.com",
+          clientId: "221898609709-obfn3p63741l5333093430j3qeiinaa8.apps.googleusercontent.com",
           verifier: "google-lrc",
         },
         [FACEBOOK]: {
@@ -202,11 +183,8 @@ export default {
     async login(hash, queryParameters) {
       try {
         if (!this.torusdirectsdk) return;
-        const jwtParams =
-          this.loginToConnectionMap[this.selectedVerifier] || {};
-        const { typeOfLogin, clientId, verifier } = this.verifierMap[
-          this.selectedVerifier
-        ];
+        const jwtParams = this.loginToConnectionMap[this.selectedVerifier] || {};
+        const { typeOfLogin, clientId, verifier } = this.verifierMap[this.selectedVerifier];
         const loginDetails = await this.torusdirectsdk.triggerLogin({
           typeOfLogin,
           verifier,
@@ -221,8 +199,7 @@ export default {
       }
     },
     console(text) {
-      document.querySelector("#console>p").innerHTML =
-        typeof text === "object" ? JSON.stringify(text) : text;
+      document.querySelector("#console>p").innerHTML = typeof text === "object" ? JSON.stringify(text) : text;
     },
     handleRedirectParameters(hash, queryParameters) {
       const hashParameters = hash.split("&").reduce((result, item) => {
@@ -235,22 +212,10 @@ export default {
       let error = "";
       if (!queryParameters.preopenInstanceId) {
         if (Object.keys(hashParameters).length > 0 && hashParameters.state) {
-          instanceParameters =
-            JSON.parse(
-              atob(decodeURIComponent(decodeURIComponent(hashParameters.state)))
-            ) || {};
-          error =
-            hashParameters.error_description || hashParameters.error || error;
-        } else if (
-          Object.keys(queryParameters).length > 0 &&
-          queryParameters.state
-        ) {
-          instanceParameters =
-            JSON.parse(
-              atob(
-                decodeURIComponent(decodeURIComponent(queryParameters.state))
-              )
-            ) || {};
+          instanceParameters = JSON.parse(atob(decodeURIComponent(decodeURIComponent(hashParameters.state)))) || {};
+          error = hashParameters.error_description || hashParameters.error || error;
+        } else if (Object.keys(queryParameters).length > 0 && queryParameters.state) {
+          instanceParameters = JSON.parse(atob(decodeURIComponent(decodeURIComponent(queryParameters.state)))) || {};
           if (queryParameters.error) error = queryParameters.error;
         }
       }
@@ -265,10 +230,7 @@ export default {
       for (let key of url.searchParams.keys()) {
         queryParams[key] = url.searchParams.get(key);
       }
-      const { error, instanceParameters } = this.handleRedirectParameters(
-        hash,
-        queryParams
-      );
+      const { error, instanceParameters } = this.handleRedirectParameters(hash, queryParams);
       const torusdirectsdk = new TorusSdk({
         baseUrl: `${location.origin}/serviceworker`,
         enableLogging: true,
@@ -279,9 +241,7 @@ export default {
       if (hash) {
         if (error) throw new Error(error);
         const { verifier: returnedVerifier } = instanceParameters;
-        this.selectedVerifier = Object.keys(this.verifierMap).find(
-          (x) => this.verifierMap[x].verifier === returnedVerifier
-        );
+        this.selectedVerifier = Object.keys(this.verifierMap).find((x) => this.verifierMap[x].verifier === returnedVerifier);
         this.login(hash, queryParams);
       }
     } catch (error) {

@@ -21,11 +21,7 @@ const torusWalletIntegrationBuilder: IntegrationBuilder = {
     const availableOptions: Record<string, string>[] = [];
     switch (optionKey) {
       case "chain":
-        availableOptions.push(
-          { lang: "HTML" },
-          { lang: "React" },
-          { lang: "Vue" }
-        );
+        availableOptions.push({ lang: "HTML" }, { lang: "React" }, { lang: "Vue" });
         break;
       case "lang":
         availableOptions.push({ chain: "Ethereum" });
@@ -122,9 +118,7 @@ const torusWalletIntegrationBuilder: IntegrationBuilder = {
       filenames: filenames.map((it) => `wallet/${it}`),
       steps: steps.map((it) => ({
         ...it,
-        pointer: it.pointer
-          ? { ...it.pointer, filename: `wallet/${it.pointer.filename}` }
-          : undefined,
+        pointer: it.pointer ? { ...it.pointer, filename: `wallet/${it.pointer.filename}` } : undefined,
       })),
     };
   },

@@ -2,17 +2,15 @@
 title: Using private key  with binance smart chain
 ---
 
-After calling `openlogin.login`, your application will
-have access to the user's private key at `openlogin.privKey`.
+After calling `openlogin.login`, your application will have access to the user's private key at `openlogin.privKey`.
 
-In this example, we are using private key to import a account and to fetch account's balance
-from blockchain.
+In this example, we are using private key to import a account and to fetch account's balance from blockchain.
 
 ```js
-  async function importUserAccount(privateKey) {
-    const account = web3.eth.accounts.privateKeyToAccount(privateKey)
-    let balance = await web3.eth.getBalance(account.address);
-    let address = account.address;
-    setUserAccountInfo({balance, address});
-  }
+async function importUserAccount(privateKey) {
+  const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+  let balance = await web3.eth.getBalance(account.address);
+  let address = account.address;
+  setUserAccountInfo({ balance, address });
+}
 ```

@@ -101,28 +101,21 @@ The OpenLogin constructor takes an object with `OpenLoginOptions` as input.
 
 - `options` - `OpenLoginOptions`: The options of the constructor
 
-  - `clientId` - `string` : Your project id which you can get from
-    [developer dashboard](https://dashboard.web3auth.io/)
+  - `clientId` - `string` : Your project id which you can get from [developer dashboard](https://dashboard.web3auth.io/)
 
-  - `network` - `enum`: Environment to run openlogin (testnet, mainnet,
-    development)
+  - `network` - `enum`: Environment to run openlogin (testnet, mainnet, development)
 
-  - `_iframeUrl`- `string`: Url of openlogin iframe, you can pass custom iframe
-    url here else it will be added based on network value.For testnet iframe url
-    is `https://beta.openlogin.com` and for mainnet it is
-    `https://app.openlogin.com`. If you are passing valid `network` value then
+  - `_iframeUrl`- `string`: Url of openlogin iframe, you can pass custom iframe url here else it will be added based on network value.For testnet
+    iframe url is `https://beta.openlogin.com` and for mainnet it is `https://app.openlogin.com`. If you are passing valid `network` value then
     network value will be given precedence over iframe url.
 
-  - `uxMode` - `enum`(optional): `popup` and `redirect` uxmode are supported. By
-    default it is set to `redirect`
+  - `uxMode` - `enum`(optional): `popup` and `redirect` uxmode are supported. By default it is set to `redirect`
 
-  - `loginConfig` -`LoginConfig`(optional): LoginConfig allows you to specify
-    custom loginConfig to customize visiblity of login modal options and to
+  - `loginConfig` -`LoginConfig`(optional): LoginConfig allows you to specify custom loginConfig to customize visiblity of login modal options and to
     specify your custom verifier for each login option.
 
-  - `whiteLabel`: `WhiteLabelData` (optional): Options for whitelabling default
-    openlogin modal. You can toggle theme and primary colors of login modal and
-    openlogin verification screens by using WhiteLabelData.
+  - `whiteLabel`: `WhiteLabelData` (optional): Options for whitelabling default openlogin modal. You can toggle theme and primary colors of login
+    modal and openlogin verification screens by using WhiteLabelData.
 
 **Returns**
 
@@ -307,14 +300,11 @@ const openlogin = new OpenLogin({
 
 ### Using Custom login configuration
 
-By default , openlogin will use verifiers deployed by torus and will show all
-default available login options in login modal. If you want to customize the
-login modal or want to use your own login verifiers then you can use custom
-login configuration with openlogin.
+By default , openlogin will use verifiers deployed by torus and will show all default available login options in login modal. If you want to customize
+the login modal or want to use your own login verifiers then you can use custom login configuration with openlogin.
 
-For ex: In code snippet below, we are customizing loginConfig to show only
-google and facebook as login options in default openlogin modal. Also you can
-pass your own verifiers in the configuration for any of the login providers.
+For ex: In code snippet below, we are customizing loginConfig to show only google and facebook as login options in default openlogin modal. Also you
+can pass your own verifiers in the configuration for any of the login providers.
 
 ```javascript
 const openlogin = new OpenLogin({
@@ -419,10 +409,8 @@ type LoginConfig = Record<
 
 ### `init`
 
-Initialize the OpenLogin object after creation. Init sync up the state of user
-login session in to openlogin class and it also injects a iframe in to DOM. If
-init will be called after user is logged in , it will add the user private key
-to privKey state variable of openlogin object.
+Initialize the OpenLogin object after creation. Init sync up the state of user login session in to openlogin class and it also injects a iframe in to
+DOM. If init will be called after user is logged in , it will add the user private key to privKey state variable of openlogin object.
 
 ```javascript
 await openlogin.init();
@@ -436,8 +424,7 @@ await openlogin.init();
 
 ### `login`
 
-Prompts or redirects the user to login based on the uxMode defined in the
-constructor.
+Prompts or redirects the user to login based on the uxMode defined in the constructor.
 
 ```javascript
 await openlogin.login(params);
@@ -445,33 +432,24 @@ await openlogin.login(params);
 
 **Parameters**
 
-- `params` - `LoginParams` \(optional\) : The login options. Used to specify a
-  type of login.
+- `params` - `LoginParams` \(optional\) : The login options. Used to specify a type of login.
 
-  - `loginProvider` - `LOGIN_PROVIDER` : The loginProvider name. Supported
-    loginProviders are can be of any value given in LOGIN_PROVIDER. In future
-    versions you can pass custom loginProvider apart from options given
-    LOGIN_PROVIDER.
+  - `loginProvider` - `LOGIN_PROVIDER` : The loginProvider name. Supported loginProviders are can be of any value given in LOGIN_PROVIDER. In future
+    versions you can pass custom loginProvider apart from options given LOGIN_PROVIDER.
 
-  - `fastLogin` - `boolean`(optional): If user was previously logged in to the
-    same device and then setting fastLogin to true provides a way to login with
-    webauthn directly without going through loginProvider authentication. By
-    default it is false.
+  - `fastLogin` - `boolean`(optional): If user was previously logged in to the same device and then setting fastLogin to true provides a way to login
+    with webauthn directly without going through loginProvider authentication. By default it is false.
 
-  - `extraLoginOptions`: `ExtraLoginOptions`(optional): You can pass various
-    oauth supported options in this object.
+  - `extraLoginOptions`: `ExtraLoginOptions`(optional): You can pass various oauth supported options in this object.
 
-  - `redirectUrl` : `string`(optional): Url where user will be redirected after
-    successfull login. By default user will be redirected to same page where
-    login will be initiated.
+  - `redirectUrl` : `string`(optional): Url where user will be redirected after successfull login. By default user will be redirected to same page
+    where login will be initiated.
 
-  - `appState`: `string`(optional): appState can be used to keep track of the
-    app state when user will be redirected to app after login.
+  - `appState`: `string`(optional): appState can be used to keep track of the app state when user will be redirected to app after login.
 
 **Returns**
 
-- `Promise<{privKey: string;}>;` : Returns a promise which resolves to the
-  object containing dapp scoped private key of the user.
+- `Promise<{privKey: string;}>;` : Returns a promise which resolves to the object containing dapp scoped private key of the user.
 
 **Reference**
 
@@ -507,8 +485,7 @@ const LOGIN_PROVIDER: {
   readonly EMAIL_PASSWORDLESS: "email_passwordless";
   readonly WEBAUTHN: "webauthn";
 };
-export declare type LOGIN_PROVIDER_TYPE =
-  typeof LOGIN_PROVIDER[keyof typeof LOGIN_PROVIDER];
+export declare type LOGIN_PROVIDER_TYPE = typeof LOGIN_PROVIDER[keyof typeof LOGIN_PROVIDER];
 export declare type CUSTOM_LOGIN_PROVIDER_TYPE = string & {
   toString?: (radix?: number) => string;
 };
@@ -668,18 +645,14 @@ await openlogin.logout(params);
 
 **Parameters**
 
-- `params` - `Partial<BaseLogoutParams> & Partial<BaseRedirectParams>`
-  \(optional\) : The logout options.
+- `params` - `Partial<BaseLogoutParams> & Partial<BaseRedirectParams>` \(optional\) : The logout options.
 
-  - `fastLogin` - `boolean`(optional): If fastLogin is passed as true then user
-    can relogin again by just using webauthn url, else user will be completely
-    logged out and has to go through loginProvider authentication.
+  - `fastLogin` - `boolean`(optional): If fastLogin is passed as true then user can relogin again by just using webauthn url, else user will be
+    completely logged out and has to go through loginProvider authentication.
 
-  - `redirectUrl` : `string`(optional): Url where user will be redirected after
-    successfull logout.
+  - `redirectUrl` : `string`(optional): Url where user will be redirected after successfull logout.
 
-  - `appState`: `string`(optional): appState can be used to keep track of the
-    app state when user will be redirected to app after logout.
+  - `appState`: `string`(optional): appState can be used to keep track of the app state when user will be redirected to app after logout.
 
 **Reference**
 

@@ -12,7 +12,8 @@ import TabItem from "@theme/TabItem";
 
 ## Introduction
 
-This tutorial will guide you on how to integrate CustomAuth [customauth-android-sdk](https://github.com/torusresearch/customauth-android-sdk) with native android logins, i.e., "Sign in with google"
+This tutorial will guide you on how to integrate CustomAuth [customauth-android-sdk](https://github.com/torusresearch/customauth-android-sdk) with
+native android logins, i.e., "Sign in with google"
 
 ## Requirements
 
@@ -54,7 +55,6 @@ android.defaultConfig.manifestPlaceholders = [
 ]
 ```
 
-
 ## Permissions
 
 Open your app's `AndroidManifest.xml` file and add the following permission:
@@ -62,7 +62,6 @@ Open your app's `AndroidManifest.xml` file and add the following permission:
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
-
 
 ## Instantiate the SDK
 
@@ -85,6 +84,7 @@ CompletableFuture<TorusLoginResponse> response = this.torusSdk.triggerLogin(
   new SubVerifierDetails("google", "YOUR VERIFIER ID", "YOUR GOOGLE CLIENT ID"));
 
 ```
+
 ### Proguard
 
 No Proguard configuration is required. SDK will automatically append necessary rules to the project's proguard-rules.txt file.

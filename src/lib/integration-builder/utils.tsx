@@ -15,7 +15,5 @@ export function toStep(mod: Module): IntegrationStep {
 }
 
 export function toSteps<T extends { [key in keyof T]: Module }>(mods: T) {
-  return Object.fromEntries(
-    Object.entries(mods).map(([key, mod]) => [key, toStep(mod as Module)])
-  ) as { [key in keyof T]: IntegrationStep };
+  return Object.fromEntries(Object.entries(mods).map(([key, mod]) => [key, toStep(mod as Module)])) as { [key in keyof T]: IntegrationStep };
 }

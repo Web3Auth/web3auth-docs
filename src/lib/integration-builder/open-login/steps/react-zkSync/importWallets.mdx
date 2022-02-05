@@ -2,21 +2,18 @@
 title: Using private key to import zkSync signer wallet and eth wallet
 ---
 
-After calling `openlogin.login`, your application will
-have access to the user's private key at `openlogin.privKey`.
+After calling `openlogin.login`, your application will have access to the user's private key at `openlogin.privKey`.
 
-In this example, we are  using private key derived from openlogin
-to create an eth wallet and a zkSync wallet.
+In this example, we are using private key derived from openlogin to create an eth wallet and a zkSync wallet.
 
-After this we can use `syncWallet` to make transactions over ethereum and zkSync
-using `zkSync` sdk.
+After this we can use `syncWallet` to make transactions over ethereum and zkSync using `zkSync` sdk.
 
 You can read more about [zkSync sdk here](https://zksync.io/api/sdk/js/tutorial.html#creating-a-wallet)
 
 ```js
-    const syncProvider = await  zksyncConnector.getSyncClient();
-    const ethProvider = zksyncConnector.getEthClient();
-    const ethWallet = new ethers.Wallet(privateKey, ethProvider);
-    // Derive zksync.Signer from ethereum wallet.
-    const syncWallet = await zksync.Wallet.fromEthSigner(ethWallet, syncProvider);
+const syncProvider = await zksyncConnector.getSyncClient();
+const ethProvider = zksyncConnector.getEthClient();
+const ethWallet = new ethers.Wallet(privateKey, ethProvider);
+// Derive zksync.Signer from ethereum wallet.
+const syncWallet = await zksync.Wallet.fromEthSigner(ethWallet, syncProvider);
 ```

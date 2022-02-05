@@ -11,16 +11,13 @@ import TabItem from "@theme/TabItem";
 
 ## Instruction
 
-This tutorial will show you how to integrate OpenLogin authentication into one
-of the most popular web front-end library: React.
+This tutorial will show you how to integrate OpenLogin authentication into one of the most popular web front-end library: React.
 
 You can find [the source code of this is example on Github](https://github.com/phuctm97/openlogin-react).
 
-
 ## Register your OpenLogin application
 
-In order to use OpenLogin SDK, you'll need to create a project in
-[Developer Dashboard](https://dashboard.web3auth.io) and get your client ID.
+In order to use OpenLogin SDK, you'll need to create a project in [Developer Dashboard](https://dashboard.web3auth.io) and get your client ID.
 
 > App registration is not required for localhost development.
 
@@ -28,14 +25,9 @@ In order to use OpenLogin SDK, you'll need to create a project in
 
 > Ignore this step if you're integrating into an existing React project.
 
-<Tabs
-  defaultValue="npm"
-  values={[
-    { label: "npm", value: "npm" },
-    { label: "Yarn", value: "yarn" },
-  ]}
->
-<TabItem value="npm">
+<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}
+
+> <TabItem value="npm">
 
 ```shell
 npx create-react-app my-app
@@ -61,14 +53,9 @@ yarn start
 
 Install Torus OpenLogin SDK using either npm or yarn:
 
-<Tabs
-  defaultValue="npm"
-  values={[
-    { label: "npm", value: "npm" },
-    { label: "Yarn", value: "yarn" },
-  ]}
->
-<TabItem value="npm">
+<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}
+
+> <TabItem value="npm">
 
 ```shell
 npm i --save @toruslabs/openlogin
@@ -94,7 +81,7 @@ Initialize the SDK after your application is mounted using `useEffect` hook and 
 const VERIFIER = {
   loginProvider: "google", // "facebook", "apple", "twitter", "reddit", etc. See full list of supported logins: https://docs.tor.us/direct-auth/verifiers
   clientId: "YOUR PROJECT ID",
-}
+};
 
 function App() {
   const [isLoading, setLoading] = useState(true);
@@ -108,7 +95,7 @@ function App() {
     try {
       const openlogin = new OpenLogin({
         clientId: VERIFIER.clientId,
-        network: "testnet" // valid values (testnet or mainnet)
+        network: "testnet", // valid values (testnet or mainnet)
       });
       setOpenLogin(openlogin);
 
@@ -138,14 +125,15 @@ function App() {
     onMount();
   }, []);
 
-  if(isLoading) return <div>Loading...</div>;
-  return privKey ? (<div>Logged in: {privKey}</div>) : (<button onClick={onLogin}>Login</button>);
+  if (isLoading) return <div>Loading...</div>;
+  return privKey ? <div>Logged in: {privKey}</div> : <button onClick={onLogin}>Login</button>;
 }
 ```
 
 ## Use the private key
 
-After calling `openlogin.login` and handling redirect result, your application will have access to the user's private key at `openlogin.privKey`. You can use this private key to sign messages, generate public key to encrypt and decrypt data later, etc.
+After calling `openlogin.login` and handling redirect result, your application will have access to the user's private key at `openlogin.privKey`. You
+can use this private key to sign messages, generate public key to encrypt and decrypt data later, etc.
 
 ### Generate public key
 
@@ -165,19 +153,23 @@ This public key can be shared with everyone who wants to communicate with the us
 The private key can be used to sign data to indicate that a message is sent by the user.
 
 ```js
-eccrypto.sign(privateKey, msg).then(function(sig) {
+eccrypto.sign(privateKey, msg).then(function (sig) {
   console.log("Signature in DER format:", sig);
 });
 ```
 
 ### Verify signature
 
-Everyone with the user's public key can verify if the message is signed by the user. For example, on server side, you can verify a signed message as a way to authenticate the user:
+Everyone with the user's public key can verify if the message is signed by the user. For example, on server side, you can verify a signed message as a
+way to authenticate the user:
 
 ```js
-eccrypto.verify(publicKey, msg, sig).then(function() {
-  console.log("Signature is OK");
-}).catch(function() {
-  console.log("Signature is BAD");
-});
+eccrypto
+  .verify(publicKey, msg, sig)
+  .then(function () {
+    console.log("Signature is OK");
+  })
+  .catch(function () {
+    console.log("Signature is BAD");
+  });
 ```

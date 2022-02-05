@@ -14,16 +14,17 @@ import TabItem from "@theme/TabItem";
 
 This tutorial will guide you on how to integrate CustomAuth with AWS cognito service hosted ui.
 
-We will be authenticating users with google idp using aws cognito. However you can can enable other providers from aws cognito console based on your requirements.
+We will be authenticating users with google idp using aws cognito. However you can can enable other providers from aws cognito console based on your
+requirements.
 
-You can find
-[the source code of this is example on Github](https://github.com/torusresearch/customauth/tree/master/examples/vue-app).
+You can find [the source code of this is example on Github](https://github.com/torusresearch/customauth/tree/master/examples/vue-app).
 
 ## Configuring Cognito user pool in aws cognito.
 
 - Go to your aws account and open aws cognito service.
 
-- Create a new user pool by following this aws guide: `https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pool-as-user-directory.html`
+- Create a new user pool by following this aws guide:
+  `https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pool-as-user-directory.html`
 
 - Note down your `user pool id` and `region` after creating new pool.
 
@@ -33,14 +34,15 @@ You can find
 
 - Add a domain to your app's hosted ui in from `App integeration's domain name` section
 
-- Update app client settings for the new app client under `App client settings` tab to set desired oauth flows
-and redirect endpoints.
+- Update app client settings for the new app client under `App client settings` tab to set desired oauth flows and redirect endpoints.
 
 ## Configuring google login provider in aws cognito
-- Go to `identity providers` tab under federation tab and select google. It will require you to enter your google's app client id and secret which you can obtain here: `https://console.cloud.google.com/apis/dashboard`
 
-- While configuring your google app oauth client for web, make sure to enter your cognito hosted ui
-domain in the `Authorized Javascript Origins` list and `<AWS_COGNITO_HOSTED_UI_DOMAIN>/oauth2/idpresponse` end point in the Authorized redirect URIs list.
+- Go to `identity providers` tab under federation tab and select google. It will require you to enter your google's app client id and secret which you
+  can obtain here: `https://console.cloud.google.com/apis/dashboard`
+
+- While configuring your google app oauth client for web, make sure to enter your cognito hosted ui domain in the `Authorized Javascript Origins` list
+  and `<AWS_COGNITO_HOSTED_UI_DOMAIN>/oauth2/idpresponse` end point in the Authorized redirect URIs list.
 
 - Go back to your aws console and enter your google app client id and secret key.
 
@@ -52,49 +54,52 @@ domain in the `Authorized Javascript Origins` list and `<AWS_COGNITO_HOSTED_UI_D
 
 ## Register your Torus CustomAuth application
 
-In order to use Torus Custom SDK, you'll need to create a project in
-[Developer Dashboard](https://dashboard.web3auth.io).
+In order to use Torus Custom SDK, you'll need to create a project in [Developer Dashboard](https://dashboard.web3auth.io).
 
 Do the following steps in order to create your custom verifier:-
 
 1. Login in to developer dashboard, go to `Custom Auth` tab.
 
-2. Click on  create verifier button.
+2. Click on create verifier button.
 
 3. Enter your custom verifier information as follows:-
 
-    - Enter your unique verifier identifier, it will represent your application on torus network. You will need to use this value later while initializing your sdk.
+   - Enter your unique verifier identifier, it will represent your application on torus network. You will need to use this value later while
+     initializing your sdk.
 
-    - Select network option:-
-      - `'Testnet'`:- Select testnet for development mode. Your verifier will be deployed on ropsten testnet and torus test network.
-      - `'Mainnet'`:- Select mainnet for production mode. Your verifier will be deployed on ethereum mainnet and torus main network.
-    - Select Verifier type as: "Custom"
+   - Select network option:-
+     - `'Testnet'`:- Select testnet for development mode. Your verifier will be deployed on ropsten testnet and torus test network.
+     - `'Mainnet'`:- Select mainnet for production mode. Your verifier will be deployed on ethereum mainnet and torus main network.
+   - Select Verifier type as: "Custom"
 
-    - Enter JWT Verifier ID as : "email". You can also use "sub" as your jwt verifier id but if you are using multiple login providers then your users will get diffrent private keys accross diffrent login providers even if they use same email address as they will be assigned different ids by aws cognito. You can set this field based on your application needs provided that it should be a unique identifier for user.
+   - Enter JWT Verifier ID as : "email". You can also use "sub" as your jwt verifier id but if you are using multiple login providers then your users
+     will get diffrent private keys accross diffrent login providers even if they use same email address as they will be assigned different ids by aws
+     cognito. You can set this field based on your application needs provided that it should be a unique identifier for user.
 
-    - Your JWK endpoint endpoint for aws cognito will look like this - `https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json` , get values of `region` and `userPoolId` from your aws cognito console.
+   - Your JWK endpoint endpoint for aws cognito will look like this - `https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json`
+     , get values of `region` and `userPoolId` from your aws cognito console.
 
-    - Enter JWT validation fields:-
-      - `iss`: It shoudl be `https://cognito-idp.{region}.amazonaws.com/{userPoolId}, replace region and userPoolId that we noted earlier while creating cognito user pool.
+   - Enter JWT validation fields:-
 
-      - `aud`: It should be your client id that your noted earlier while creatin app client in aws cognito console.
+     - `iss`: It shoudl be `https://cognito-idp.{region}.amazonaws.com/{userPoolId}, replace region and userPoolId that we noted earlier while
+       creating cognito user pool.
 
-    - Save you verifier and it will be deployed in 5-10 minutes.
+     - `aud`: It should be your client id that your noted earlier while creatin app client in aws cognito console.
 
+   - Save you verifier and it will be deployed in 5-10 minutes.
 
 ## Let's get started with code by installing depedency using npm
 
-[TorusDirectWebSDK](https://www.npmjs.com/package/@toruslabs/customauth)
-[JWTDecode](https://www.npmjs.com/package/jwt-decode)
+[TorusDirectWebSDK](https://www.npmjs.com/package/@toruslabs/customauth) [JWTDecode](https://www.npmjs.com/package/jwt-decode)
 
 ```shell
 npm i @toruslabs/customauth --save
 ```
 
-
 ## Login with Aws cognito hosted ui
 
-In order to login with aws cognito hosted ui, we just have to initialize torus `customauth` and call triggerLogin function as given in code snippet below.
+In order to login with aws cognito hosted ui, we just have to initialize torus `customauth` and call triggerLogin function as given in code snippet
+below.
 
 ```js
  import TorusSdk, { UX_MODE } from "@toruslabs/customauth";
@@ -129,23 +134,21 @@ In order to login with aws cognito hosted ui, we just have to initialize torus `
 
 ## Handling login result:-
 
-In login code snippet, note that we are using redirect `uxMode` while initializing which means that user will
-be redirect to `redirectPathName` which is `auth` page in this example along with privateKey. You can get the result
-on auth page with a simple function call which is shown in code snippet below. However you can also use `POPUP` uxmode to get
-privateKey as a response to triggerLogin function.
-
+In login code snippet, note that we are using redirect `uxMode` while initializing which means that user will be redirect to `redirectPathName` which
+is `auth` page in this example along with privateKey. You can get the result on auth page with a simple function call which is shown in code snippet
+below. However you can also use `POPUP` uxmode to get privateKey as a response to triggerLogin function.
 
 - On auth page just calling `getRedirectResult` function will return the login result along with user's private key.
 
 ```js
-  const torusdirectsdk = new TorusSdk({
-    baseUrl: location.origin,
-    redirectPathName: "auth",
-    enableLogging: true,
-    uxMode: "redirect",
-    network: "testnet",
-  });
-  const loginResult = await torusdirectsdk.getRedirectResult();
+const torusdirectsdk = new TorusSdk({
+  baseUrl: location.origin,
+  redirectPathName: "auth",
+  enableLogging: true,
+  uxMode: "redirect",
+  network: "testnet",
+});
+const loginResult = await torusdirectsdk.getRedirectResult();
 ```
 
 ## Conclusion

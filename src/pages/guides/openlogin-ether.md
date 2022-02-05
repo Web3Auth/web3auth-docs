@@ -14,17 +14,13 @@ import TabItem from "@theme/TabItem";
 
 This tutorial will guide you over a basic example to integrate Openlogin authentication with ethereum seamlessly.
 
-We will create an example app where user will login in to dapp and trigger some blockchain/wallet calls using
-eip1193 provider.
-
-
+We will create an example app where user will login in to dapp and trigger some blockchain/wallet calls using eip1193 provider.
 
 You can find [the source code of this is example on Github](https://github.com/himanshuchawla009/openlogin-web-example).
 
 ## Register your OpenLogin application
 
-In order to use OpenLogin SDK, you'll need to create a project in
-[Developer Dashboard](https://dashboard.web3auth.io) and get your client ID.
+In order to use OpenLogin SDK, you'll need to create a project in [Developer Dashboard](https://dashboard.web3auth.io) and get your client ID.
 
 > App registration is not required for localhost development.
 
@@ -39,19 +35,15 @@ vue create hello-world
 ```
 
 ## Install dependencies
-We need to install `openlogin` sdk to authenticate user,`@web3auth/ethereum-provider` to create EIP1193 compatible
-provider using authenticated user's private key and `web3` to use ethereum-provider with.
+
+We need to install `openlogin` sdk to authenticate user,`@web3auth/ethereum-provider` to create EIP1193 compatible provider using authenticated user's
+private key and `web3` to use ethereum-provider with.
 
 Install dependencies either npm or yarn:
 
-<Tabs
-  defaultValue="npm"
-  values={[
-    { label: "npm", value: "npm" },
-    { label: "Yarn", value: "yarn" },
-  ]}
->
-<TabItem value="npm">
+<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}
+
+> <TabItem value="npm">
 
 ```shell
 npm i --save openlogin
@@ -119,15 +111,16 @@ export default Vue.extend({
 </script>
 ```
 
+The code snippet given above is creating Openlogin Sdk instance with two params ie `clientId` and `network` and it initializes it using init function.
+Init
 
-The code snippet given above is creating Openlogin Sdk instance  with two params ie `clientId` and `network` and it initializes it using init function. Init
-
-- `clientId`: clientId is a public id which is used to to identify your app. You can generate your client id using getting started guide with openlogin. For localhost you can use any static random string as client id.
+- `clientId`: clientId is a public id which is used to to identify your app. You can generate your client id using getting started guide with
+  openlogin. For localhost you can use any static random string as client id.
 
 - `network`: network can be testnet or mainnet. For testing your dapp use testnet, for production use mainnet.
 
-After initializing openlogin sdk, above function checks if sdk instance has private key. If private key is available then it means that user is already authenticated and we generate a provider using `setProvider` function
-which will be explained in next steps.
+After initializing openlogin sdk, above function checks if sdk instance has private key. If private key is available then it means that user is
+already authenticated and we generate a provider using `setProvider` function which will be explained in next steps.
 
 ## Login user
 
@@ -183,20 +176,24 @@ export default Vue.extend({
 
 ```
 
-Above code snippet triggers the openlogin sdk login functionality, which will open the default openlogin's modal.
-As we have passed `loginProvider` as empty string, if you don't want to open default openlogin's modal simply pass any `loginProvider` in `login` function params, then it will start authentication using provided loginProvider instead of showing modal to user for selecting loginProvider.
+Above code snippet triggers the openlogin sdk login functionality, which will open the default openlogin's modal. As we have passed `loginProvider` as
+empty string, if you don't want to open default openlogin's modal simply pass any `loginProvider` in `login` function params, then it will start
+authentication using provided loginProvider instead of showing modal to user for selecting loginProvider.
 
-It first checks if user is already authenticated by looking for privKey on `openlogin` instance. If user is not authenticated then it calls `login` function with following options:-
+It first checks if user is already authenticated by looking for privKey on `openlogin` instance. If user is not authenticated then it calls `login`
+function with following options:-
 
-- `loginProvider` :- loginProvider is the authentication method which can be used for authenticating users. You can choose from a list of various login providers.
+- `loginProvider` :- loginProvider is the authentication method which can be used for authenticating users. You can choose from a list of various
+  login providers.
 
 - `redirectUrl`: redirectUrl is the url of the page where user will be redirected after getting autheticated from openlogin frontend.
 
 ## Getting eip1193 provider from private key.
 
-After calling `openlogin.login`, your application will have access to the user's private key at `openlogin.privKey`. You can use this private key to generate a eip1193 provider using `@web3auth/ethereum-provider` package
-that we downloaded earlier. Following it code snippet of the `setProvider` function which creates a `eip1193` provider as a instance variable on `EthereumPrivateKeyProvider` class as `this.ethereumPrivateKeyProvider._providerProxy` and then we can use it with web3.js library.
-
+After calling `openlogin.login`, your application will have access to the user's private key at `openlogin.privKey`. You can use this private key to
+generate a eip1193 provider using `@web3auth/ethereum-provider` package that we downloaded earlier. Following it code snippet of the `setProvider`
+function which creates a `eip1193` provider as a instance variable on `EthereumPrivateKeyProvider` class as
+`this.ethereumPrivateKeyProvider._providerProxy` and then we can use it with web3.js library.
 
 ```js
     import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -239,16 +236,14 @@ that we downloaded earlier. Following it code snippet of the `setProvider` funct
 ## Initializing Provider
 
 ```ts
-
-import Web3 from 'web3';
+import Web3 from "web3";
 const web3 = new Web3(this.ethereumPrivateKeyProvider._providerProxy);
 ```
 
-
-
 ## Using provider to send eth transaction
 
-Now we have a eip1193 compatible provider i.e `this.ethereumPrivateKeyProvider._providerProxy` that we can use with web3 js to do transactions and make rpc calls to connected chain.
+Now we have a eip1193 compatible provider i.e `this.ethereumPrivateKeyProvider._providerProxy` that we can use with web3 js to do transactions and
+make rpc calls to connected chain.
 
 Here we will simply sign a transaction to send eth using web3auth provider which is fully compatible with web3 js library for ethereum blockchain.
 
@@ -279,16 +274,14 @@ export default Vue.extend({
         if (!this.ethereumPrivateKeyProvider?._providerProxy) throw new Error("provider not set");
         const web3 = new Web3(this.ethereumPrivateKeyProvider._providerProxy);
         const accounts = await web3.eth.getAccounts();
-        const txRes = await web3.eth.sendTransaction({ from: accounts[0], to: accounts[0], value: web3.utils.toWei("0.01") })
-        console.log("txRes", txRes)
+        const txRes = await web3.eth.sendTransaction({ from: accounts[0], to: accounts[0], value: web3.utils.toWei("0.01") });
+        console.log("txRes", txRes);
       } catch (error) {
-        console.log("error", error)
+        console.log("error", error);
       }
-    }
-  }
-
-})
-
+    },
+  },
+});
 ```
 
 ## Personal Sign
@@ -371,18 +364,18 @@ export default Vue.extend({
 
         const originalMessage = [
           {
-            type: 'string',
-            name: 'fullName',
-            value: 'John Doe',
+            type: "string",
+            name: "fullName",
+            value: "John Doe",
           },
           {
-            type: 'uint32',
-            name: 'userId',
-            value: '1234',
+            type: "uint32",
+            name: "userId",
+            value: "1234",
           },
         ];
         const params = [originalMessage, fromAddress];
-        const method = 'eth_signTypedData';
+        const method = "eth_signTypedData";
 
         const signedMessage = await web3.currentProvider.sendAsync({
           id: 1,
@@ -390,24 +383,25 @@ export default Vue.extend({
           params,
           fromAddress,
         });
-
       } catch (error) {
-        console.log("error", error)
+        console.log("error", error);
       }
-    }
-  }
-
-})
+    },
+  },
+});
 ```
 
 :::info
 
-Refer to [`providers`](/api-reference/providers#eip1193-providers) documentation to know more about other rpc methods available on `this.ethereumPrivateKeyProvider._providerProxy` provider.
+Refer to [`providers`](/api-reference/providers#eip1193-providers) documentation to know more about other rpc methods available on
+`this.ethereumPrivateKeyProvider._providerProxy` provider.
 
 :::
+
 ## Log out handler
 
-In order to logout user you needs to call logout function available on openlogin's instance. Logout function will clears the sdk state and removes any access to private key on frontend. You can redirect user to the exit page after logout function returns.
+In order to logout user you needs to call logout function available on openlogin's instance. Logout function will clears the sdk state and removes any
+access to private key on frontend. You can redirect user to the exit page after logout function returns.
 
 ```js
     async logout() {
@@ -419,4 +413,5 @@ In order to logout user you needs to call logout function available on openlogin
 ```
 
 ### DONE!!
+
 > You can find [the source code of this is example on Github](https://github.com/torusresearch/OpenLoginSdk/tree/feat/example/example/vue-app).

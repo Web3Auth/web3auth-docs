@@ -1,11 +1,4 @@
-import React, {
-  MouseEvent,
-  UIEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { MouseEvent, UIEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { MDXProvider } from "@mdx-js/react";
 import Layout from "@theme/Layout";
 import IntegrationBuilderCodeView from "@theme/IntegrationBuilderCodeView";
@@ -19,12 +12,7 @@ import styles from "./styles.module.css";
 const defaultBuilderId = "wallet";
 
 const getDefaultBuilderOptions = (id: string) =>
-  Object.fromEntries(
-    Object.entries(builders[id].options).map(([key, option]) => [
-      key,
-      option.default,
-    ])
-  );
+  Object.fromEntries(Object.entries(builders[id].options).map(([key, option]) => [key, option.default]));
 
 const getWindowLocation = () => {
   if (typeof window !== "undefined") return window.location.href;
@@ -64,18 +52,14 @@ const getInitialBuilderOptions = (): BuilderOptions => {
 
   // Find best matched options
   const queriedKey = queriedKeys[0];
-  const availableValues = builders[id].getAvailableOptions(
-    queriedKey,
-    queriedOptions[queriedKey]
-  );
+  const availableValues = builders[id].getAvailableOptions(queriedKey, queriedOptions[queriedKey]);
 
   let maxScore = 0;
   let maxScoreIndex = 0;
   for (let i = 0; i < availableValues.length; i++) {
     let score = 0;
     for (const comparingKey of Object.keys(availableValues[i])) {
-      if (queriedOptions[comparingKey] === availableValues[i][comparingKey])
-        score++;
+      if (queriedOptions[comparingKey] === availableValues[i][comparingKey]) score++;
     }
     if (score > maxScore) {
       maxScore = score;
@@ -97,8 +81,7 @@ const getURLFromBuilderOptions = (opts: BuilderOptions): string => {
   url.search = "";
 
   url.searchParams.append("b", opts.id);
-  for (const [key, value] of Object.entries(opts.values))
-    url.searchParams.append(key, value);
+  for (const [key, value] of Object.entries(opts.values)) url.searchParams.append(key, value);
 
   return url.toString();
 };
@@ -121,27 +104,19 @@ export default function IntegrationBuilderPage({ files }) {
     });
   };
 
-  const onChangeOptionValue = (
-    optionKey: string,
-    optionValue: string,
-    event: MouseEvent<HTMLAnchorElement>
-  ) => {
+  const onChangeOptionValue = (optionKey: string, optionValue: string, event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
 
     setBuilderOptions(({ id, values: currValues }) => {
       // Find best matched options
-      const availableValues = builders[id].getAvailableOptions(
-        optionKey,
-        optionValue
-      );
+      const availableValues = builders[id].getAvailableOptions(optionKey, optionValue);
 
       let maxScore = 0;
       let maxScoreIndex = 0;
       for (let i = 0; i < availableValues.length; i++) {
         let score = 0;
         for (const comparingKey of Object.keys(availableValues[i])) {
-          if (currValues[comparingKey] === availableValues[i][comparingKey])
-            score++;
+          if (currValues[comparingKey] === availableValues[i][comparingKey]) score++;
         }
         if (score > maxScore) {
           maxScore = score;
@@ -161,12 +136,8 @@ export default function IntegrationBuilderPage({ files }) {
 
   const builder = builders[builderOptions.id];
 
-  const integration = useMemo(() => builder.build(builderOptions.values), [
-    builderOptions,
-  ]);
-  const [selectedFilename, setSelectedFilename] = useState(
-    integration.filenames[0]
-  );
+  const integration = useMemo(() => builder.build(builderOptions.values), [builderOptions]);
+  const [selectedFilename, setSelectedFilename] = useState(integration.filenames[0]);
 
   const [isLinkCopied, setLinkCopied] = useState<NodeJS.Timeout>();
 
@@ -228,11 +199,7 @@ export default function IntegrationBuilderPage({ files }) {
             <div key={key} className={styles.optionContainer}>
               <span>{option.displayName}:</span>
               <div className="dropdown dropdown--hoverable">
-                <a
-                  className="navbar__link"
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                >
+                <a className="navbar__link" href="#" onClick={(e) => e.preventDefault()}>
                   {builderOptions.values[key]}
                 </a>
                 {option.choices.length > 1 && (
@@ -241,15 +208,7 @@ export default function IntegrationBuilderPage({ files }) {
                       (value) =>
                         value !== builderOptions.values[key] && (
                           <li key={value}>
-                            <a
-                              className="dropdown__link"
-                              href="#"
-                              onClick={onChangeOptionValue.bind(
-                                this,
-                                key,
-                                value
-                              )}
-                            >
+                            <a className="dropdown__link" href="#" onClick={onChangeOptionValue.bind(this, key, value)}>
                               {value}
                             </a>
                           </li>
@@ -276,11 +235,7 @@ export default function IntegrationBuilderPage({ files }) {
                 >
                   {isLinkCopied ? (
                     <>
-                      Copied{" "}
-                      <AiOutlineCheck
-                        aria-hidden
-                        style={{ marginLeft: "4px" }}
-                      />
+                      Copied <AiOutlineCheck aria-hidden style={{ marginLeft: "4px" }} />
                     </>
                   ) : (
                     <AiOutlineLink size="1.5em" aria-hidden />
@@ -315,23 +270,15 @@ export default function IntegrationBuilderPage({ files }) {
                 </div>
               ))}
             </MDXProvider>
-            <div style={{ height: "200px" }}>
-              {/* Dummy element to allow the last step visible in the scroll */}
-            </div>
+            <div style={{ height: "200px" }}>{/* Dummy element to allow the last step visible in the scroll */}</div>
           </div>
           <div className={styles.rightCol}>
             <IntegrationBuilderCodeView
               filenames={integration.filenames}
               fileContents={files}
-              highlight={
-                steps[stepIndex] &&
-                steps[stepIndex].pointer?.filename === selectedFilename &&
-                steps[stepIndex].pointer?.range
-              }
+              highlight={steps[stepIndex] && steps[stepIndex].pointer?.filename === selectedFilename && steps[stepIndex].pointer?.range}
               selectedFilename={selectedFilename}
-              onClickFilename={(filename: string) =>
-                setSelectedFilename(filename)
-              }
+              onClickFilename={(filename: string) => setSelectedFilename(filename)}
             />
           </div>
         </div>

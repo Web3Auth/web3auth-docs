@@ -31,8 +31,8 @@ The Torus constructor takes an object with `TorusCtorArgs` as input.
 **Parameters**
 
 - `options` - `TorusCtorArgs` \(optional\) : The options of the constructor
-  - `buttonPosition` - `enum` \(optional\) : The position of the Torus button.
-    Supported values are `top-left` `bottom-left` `top-right` `bottom-right`
+  - `buttonPosition` - `enum` \(optional\) : The position of the Torus button. Supported values are `top-left` `bottom-left` `top-right`
+    `bottom-right`
 
 **Returns**
 
@@ -68,26 +68,17 @@ await torus.init(params);
 
 **Parameters**
 
-- `params` - `TorusParams` \(optional\) : The parameters passed to initialize
-  Torus object
-  - `network` - `NetworkInterface` \(optional\) : The network options. Used for
-    setting a default network
-  - `buildEnv` - `enum` \(optional\): The build environment to use. Supported
-    values are `production` `development` `staging` `testing`
-  - `enableLogging` - `boolean` \(optional\) : Enables/disables logging. Useful
-    for debugging
+- `params` - `TorusParams` \(optional\) : The parameters passed to initialize Torus object
+  - `network` - `NetworkInterface` \(optional\) : The network options. Used for setting a default network
+  - `buildEnv` - `enum` \(optional\): The build environment to use. Supported values are `production` `development` `staging` `testing`
+  - `enableLogging` - `boolean` \(optional\) : Enables/disables logging. Useful for debugging
   - `showTorusButton` - `boolean` \(optional\) : Shows/Hides the Torus Button
-  - `enabledVerifiers` - `VerifierStatus` \(optional\) : Hides certain types of
-    logins \(default is true\)
-  - `integrity` - `IntegrityParams` \(optional\) : Enables optional integrity
-    checking \(default is false\)
-  - `loginConfig` - Array of login config items. Used to modify the default
-    logins/ add new logins. Read more on [Login Config](#loginconfig).
-  - `whiteLabel` - A configuration object to customize UI, branding, and
-    translations for your brand. Read more on [White label](#whitelabel).
-  - `useLocalStorage`-`boolean` \(optional\) : Prefers to use localStorage instead of sessionStorage for torus iframe.
-   Allows longer lived sessions. By default torus iframe uses sessionStorage. Set this param as `true` to use
-   localStorage.
+  - `enabledVerifiers` - `VerifierStatus` \(optional\) : Hides certain types of logins \(default is true\)
+  - `integrity` - `IntegrityParams` \(optional\) : Enables optional integrity checking \(default is false\)
+  - `loginConfig` - Array of login config items. Used to modify the default logins/ add new logins. Read more on [Login Config](#loginconfig).
+  - `whiteLabel` - A configuration object to customize UI, branding, and translations for your brand. Read more on [White label](#whitelabel).
+  - `useLocalStorage`-`boolean` \(optional\) : Prefers to use localStorage instead of sessionStorage for torus iframe. Allows longer lived sessions.
+    By default torus iframe uses sessionStorage. Set this param as `true` to use localStorage.
 
 **Returns**
 
@@ -262,15 +253,7 @@ interface ThemeParams {
   colors: Record<string, string>;
 }
 interface NetworkInterface {
-  host:
-    | "mainnet"
-    | "rinkeby"
-    | "ropsten"
-    | "kovan"
-    | "goerli"
-    | "localhost"
-    | "matic"
-    | string;
+  host: "mainnet" | "rinkeby" | "ropsten" | "kovan" | "goerli" | "localhost" | "matic" | string;
   chainId?: number;
   networkName?: string;
   /**
@@ -343,8 +326,7 @@ await torus.init({
 
 ## `loginConfig`
 
-Array of login config items. Used to modify the default logins/ add new logins
-under `torus.init`.
+Array of login config items. Used to modify the default logins/ add new logins under `torus.init`.
 
 ```javascript
 await torus.init({
@@ -356,27 +338,19 @@ await torus.init({
 
 **Parameters**
 
-- `loginConfig` - `LoginConfig` \(optional\) : Array of login configuration per
-  verifier
-  - `verifier` - Verifier provided by torus as a key or a [default verifier](https://github.com/torusresearch/torus-website/blob/develop/.env.production) used
-    by torus. You can also use your own dapp scoped verifier by creating a new verifier from [developer dashboard](https://dashboard.web3auth.io)
-    under custom auth section.
+- `loginConfig` - `LoginConfig` \(optional\) : Array of login configuration per verifier
+  - `verifier` - Verifier provided by torus as a key or a
+    [default verifier](https://github.com/torusresearch/torus-website/blob/develop/.env.production) used by torus. You can also use your own dapp
+    scoped verifier by creating a new verifier from [developer dashboard](https://dashboard.web3auth.io) under custom auth section.
 - `loginConfigItem` - `LoginConfigItem` : parameters per verifier
   - `typeOfLogin` - `LOGIN_TYPE`: The type of login
-  - `description` - `string` \(optional\) : Description for button. If provided,
-    it renders as a full length button. else, icon button
-  - `clientId` - `string` \(optional\) : Custom client_id. If not provided, we
-    use the default for torus app
-  - `logoHover` - `string` \(optional\) : Logo to be shown on mouse hover. If
-    not provided, we use the default for torus app
-  - `logoLight` - `string` \(optional\): Logo to be shown on dark background
-    \(dark theme\). If not provided, we use the default for torus app
-  - `logoDark` - `string` \(optional\): Logo to be shown on light background
-    \(light theme\). If not provided, we use the default for torus app
-  - `showOnModal` - `boolean` \(optional\): Whether to show the login button on
-    modal or not
-  - `jwtParameters` - `JwtParameters` \(optional\): Custom JWT parameters to
-    configure the login. Useful for Auth0 configuration
+  - `description` - `string` \(optional\) : Description for button. If provided, it renders as a full length button. else, icon button
+  - `clientId` - `string` \(optional\) : Custom client_id. If not provided, we use the default for torus app
+  - `logoHover` - `string` \(optional\) : Logo to be shown on mouse hover. If not provided, we use the default for torus app
+  - `logoLight` - `string` \(optional\): Logo to be shown on dark background \(dark theme\). If not provided, we use the default for torus app
+  - `logoDark` - `string` \(optional\): Logo to be shown on light background \(light theme\). If not provided, we use the default for torus app
+  - `showOnModal` - `boolean` \(optional\): Whether to show the login button on modal or not
+  - `jwtParameters` - `JwtParameters` \(optional\): Custom JWT parameters to configure the login. Useful for Auth0 configuration
 
 **Reference**
 
@@ -438,8 +412,7 @@ await torus.init({
 
 ## `whiteLabel`
 
-A configuration object to customize UI, branding, and translations for your
-brand.
+A configuration object to customize UI, branding, and translations for your brand.
 
 **Example**
 
@@ -519,8 +492,7 @@ interface ThemeParams {
 
 ## `cleanUp`
 
-This cleans up the iframe and buttons created by torus package. If the user is
-logged in, it logs him out first and then cleans up.
+This cleans up the iframe and buttons created by torus package. If the user is logged in, it logs him out first and then cleans up.
 
 ```javascript
 await torus.cleanUp();

@@ -11,15 +11,13 @@ import TabItem from "@theme/TabItem";
 
 ## Instruction
 
-This tutorial will show you how to integrate OpenLogin authentication into one
-of a Vue.js application.
+This tutorial will show you how to integrate OpenLogin authentication into one of a Vue.js application.
 
 You can find [the source code of this is example on Github](https://github.com/torusresearch/OpenLoginSdk/tree/feat/example/example/vue-app).
 
 ## Register your OpenLogin application
 
-In order to use OpenLogin SDK, you'll need to create a project in
-[Developer Dashboard](https://dashboard.web3auth.io) and get your client ID.
+In order to use OpenLogin SDK, you'll need to create a project in [Developer Dashboard](https://dashboard.web3auth.io) and get your client ID.
 
 > App registration is not required for localhost development.
 
@@ -37,14 +35,9 @@ vue create hello-world
 
 Install Torus OpenLogin SDK using either npm or yarn:
 
-<Tabs
-  defaultValue="npm"
-  values={[
-    { label: "npm", value: "npm" },
-    { label: "Yarn", value: "yarn" },
-  ]}
->
-<TabItem value="npm">
+<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}
+
+> <TabItem value="npm">
 
 ```shell
 npm i --save @toruslabs/openlogin
@@ -106,7 +99,8 @@ export default {
 
 ## Use the private key
 
-After calling `openlogin.login` and handling redirect result, your application will have access to the user's private key at `openlogin.privKey`. You can use this private key to sign messages, generate public key to encrypt and decrypt data later, etc.
+After calling `openlogin.login` and handling redirect result, your application will have access to the user's private key at `openlogin.privKey`. You
+can use this private key to sign messages, generate public key to encrypt and decrypt data later, etc.
 
 ### Generate public key
 
@@ -126,19 +120,23 @@ This public key can be shared with everyone who wants to communicate with the us
 The private key can be used to sign data to indicate that a message is sent by the user.
 
 ```js
-eccrypto.sign(privateKey, msg).then(function(sig) {
+eccrypto.sign(privateKey, msg).then(function (sig) {
   console.log("Signature in DER format:", sig);
 });
 ```
 
 ### Verify signature
 
-Everyone with the user's public key can verify if the message is signed by the user. For example, on server side, you can verify a signed message as a way to authenticate the user:
+Everyone with the user's public key can verify if the message is signed by the user. For example, on server side, you can verify a signed message as a
+way to authenticate the user:
 
 ```js
-eccrypto.verify(publicKey, msg, sig).then(function() {
-  console.log("Signature is OK");
-}).catch(function() {
-  console.log("Signature is BAD");
-});
+eccrypto
+  .verify(publicKey, msg, sig)
+  .then(function () {
+    console.log("Signature is OK");
+  })
+  .catch(function () {
+    console.log("Signature is BAD");
+  });
 ```

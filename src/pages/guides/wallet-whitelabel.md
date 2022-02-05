@@ -1,8 +1,7 @@
 ---
 title: Whitelabel Torus Wallet for Your Brand
 image: "/contents/torus-whitelabel.png"
-description:
-  Customize Torus Wallet UI, branding, and translations to fit your brand
+description: Customize Torus Wallet UI, branding, and translations to fit your brand
 order: 0
 ---
 
@@ -12,19 +11,16 @@ import TabItem from "@theme/TabItem";
 
 ## Introduction
 
-This tutorial will show you how to customize Torus Wallet UI, branding, and
-translations to fit your brand. The example is written in React but similar
-configuration can be applied for all-kind web applications.
+This tutorial will show you how to customize Torus Wallet UI, branding, and translations to fit your brand. The example is written in React but
+similar configuration can be applied for all-kind web applications.
 
-You can find
-[the source code of this is example on Github](https://github.com/phuctm97/torus-embed-react).
+You can find [the source code of this is example on Github](https://github.com/phuctm97/torus-embed-react).
 
 ## Install Torus Embed SDK
 
 Install Torus Embed SDK using either npm or yarn:
 
-<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label:
-"Yarn", value: "yarn" }, ]}>
+<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}>
 
 <TabItem value="npm">
 
@@ -46,11 +42,10 @@ yarn add @toruslabs/torus-embed
 
 ## Initialize the SDK on your application's mounted event
 
-Initialize the SDK after your application is mounted (using `useEffect` hook in
-React or `mounted` lifecycle function in Vue) by calling `torus.init()`.
+Initialize the SDK after your application is mounted (using `useEffect` hook in React or `mounted` lifecycle function in Vue) by calling
+`torus.init()`.
 
-Use `whiteLabel` option to add white-labeling configuration for your
-application.
+Use `whiteLabel` option to add white-labeling configuration for your application.
 
 ```jsx
 function App() {
@@ -131,8 +126,7 @@ await torus.init({
 
 ### Show/hide features
 
-You can turn on/off certain features by use `topupHide`,
-`featuredBillboardHide`, `disclaimerHide`. All features are enabled by default.
+You can turn on/off certain features by use `topupHide`, `featuredBillboardHide`, `disclaimerHide`. All features are enabled by default.
 
 ```js
 await torus.init({
@@ -147,8 +141,7 @@ await torus.init({
 
 ### Select default language
 
-Choose a default language to match your target users by setting
-`defaultLanguage`, default is `en`.
+Choose a default language to match your target users by setting `defaultLanguage`, default is `en`.
 
 ```js
 await torus.init({
@@ -161,5 +154,4 @@ await torus.init({
 
 ### API Reference
 
-See more details about white-labeling API at
-[API Reference](/wallet/api-reference/class#whitelabel).
+See more details about white-labeling API at [API Reference](/wallet/api-reference/class#whitelabel).

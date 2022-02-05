@@ -23,17 +23,8 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
     switch (optionKey) {
       case "chain":
         if (optionValue === "Ethereum")
-          availableOptions.push(
-            { lang: "HTML" },
-            { lang: "React" },
-            { lang: "Vue" },
-            { lang: "Android" },
-            { lang: "iOS" }
-          );
-        else if (optionValue === "Starkware")
-          availableOptions.push(
-            { lang: "React" },
-          );
+          availableOptions.push({ lang: "HTML" }, { lang: "React" }, { lang: "Vue" }, { lang: "Android" }, { lang: "iOS" });
+        else if (optionValue === "Starkware") availableOptions.push({ lang: "React" });
         else {
           availableOptions.push({ lang: "HTML" });
         }
@@ -53,11 +44,7 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
     const filenames: string[] = [];
     const steps: IntegrationStep[] = [];
 
-    if (
-      values.lang === "HTML" ||
-      values.lang === "React" ||
-      values.lang === "Vue"
-    ) {
+    if (values.lang === "HTML" || values.lang === "React" || values.lang === "Vue") {
       if (values.lang === "HTML") {
         if (values.chain === "Solana") {
           filenames.push("web/solana/index.html");
@@ -215,11 +202,7 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
 
       filenames.push("web/sw.js", "web/redirect.html");
     } else if (values.lang === "Android") {
-      filenames.push(
-        "android/build.gradle",
-        "android/app/build.gradle",
-        "android/app/MainActivity.java"
-      );
+      filenames.push("android/build.gradle", "android/app/build.gradle", "android/app/MainActivity.java");
       steps.push(
         {
           ...STEPS.addAndroidJitpack,
@@ -249,11 +232,7 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
         }
       );
     } else if (values.lang === "iOS") {
-      filenames.push(
-        "ios/Package.swift",
-        "ios/ContentView.swift",
-        "ios/SceneDelegate.swift"
-      );
+      filenames.push("ios/Package.swift", "ios/ContentView.swift", "ios/SceneDelegate.swift");
       steps.push(
         {
           ...STEPS.installSwiftPackage,
@@ -278,9 +257,7 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
       filenames: filenames.map((it) => `customauth/${it}`),
       steps: steps.map((it) => ({
         ...it,
-        pointer: it.pointer
-          ? { ...it.pointer, filename: `customauth/${it.pointer.filename}` }
-          : undefined,
+        pointer: it.pointer ? { ...it.pointer, filename: `customauth/${it.pointer.filename}` } : undefined,
       })),
     };
   },

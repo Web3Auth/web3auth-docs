@@ -29,7 +29,7 @@ module.exports = {
     },
     prism: {
       additionalLanguages: ["groovy", "java", "kotlin", "swift"],
-      theme: require('prism-react-renderer/themes/dracula'),
+      theme: require("prism-react-renderer/themes/dracula"),
     },
     navbar: {
       title: "Documentation",
@@ -77,7 +77,7 @@ module.exports = {
             {
               label: "OpenLogin",
               href: "https://openlogin.com", // TODO: beta.openlogin.com?
-            }
+            },
           ],
         },
         {
@@ -208,7 +208,6 @@ module.exports = {
         */
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
-
         },
       },
     ],
@@ -216,10 +215,7 @@ module.exports = {
   plugins: [
     path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
     path.resolve(__dirname, "plugins", "docusaurus-plugin-mdx-components"),
-    [
-      path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"),
-      { rootDir: "files" },
-    ],
+    [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: "files" }],
     path.resolve(__dirname, "plugins", "node-polyfills"),
   ],
 };

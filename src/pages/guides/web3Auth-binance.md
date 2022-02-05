@@ -8,14 +8,12 @@ category: misc
 
 import Tabs from "@theme/Tabs";
 
-import TabItem from "@theme/TabItem";
-import InstallWeb3Auth from "../../../docs/common/web/code/web3auth/_install.mdx";
-import InstantiateWeb3Auth from "../../../docs/common/web/code/web3auth/_instantiate-evm.mdx";
-import SubscribeEvents from "../../../docs/common/web/code/web3auth/_subscribe_events.mdx";
-import CommonSdkFunctions from "../../../docs/common/web/code/web3auth/_common-sdk-functions.mdx";
-import CommonChainFunctions from "../../../docs/common/web/code/web3auth/_common-eth-functions.mdx";
-import RegisterApplication from "../../../docs/common/web/code/web3auth/_register-client_id.mdx";
-
+import TabItem from "@theme/TabItem"; import InstallWeb3Auth from "../../../docs/common/web/code/web3auth/\_install.mdx"; import InstantiateWeb3Auth
+from "../../../docs/common/web/code/web3auth/\_instantiate-evm.mdx"; import SubscribeEvents from
+"../../../docs/common/web/code/web3auth/\_subscribe_events.mdx"; import CommonSdkFunctions from
+"../../../docs/common/web/code/web3auth/\_common-sdk-functions.mdx"; import CommonChainFunctions from
+"../../../docs/common/web/code/web3auth/\_common-eth-functions.mdx"; import RegisterApplication from
+"../../../docs/common/web/code/web3auth/\_register-client_id.mdx";
 
 ## `Introduction`
 
@@ -27,10 +25,11 @@ This guide is a tutorial to go through the steps required for using binance smar
 
 ## `Create web3auth instance`
 
-We need `clientId` and `chainConfig` to initialize web3auth class. You can get your `clientId` by registering your app on [developer dashboard](https://developer.web3auth.io), whereas `chainConfig` contains following fields:-
+We need `clientId` and `chainConfig` to initialize web3auth class. You can get your `clientId` by registering your app on
+[developer dashboard](https://developer.web3auth.io), whereas `chainConfig` contains following fields:-
 
-
- - `chainNamespace` : It  signifies the type of chain you want to initialize web3auth with, as we want to use `binance smart chain` which in an evm compatible chain,  so we can set `eip155` as `chainNamespace`.
+- `chainNamespace` : It signifies the type of chain you want to initialize web3auth with, as we want to use `binance smart chain` which in an evm
+  compatible chain, so we can set `eip155` as `chainNamespace`.
 
 - `chainId`:- ChainId of the network that you want to use. For binance mainnet `0x38` is chainId and for testnet `0x61` is chainId
 
@@ -41,7 +40,6 @@ We need `clientId` and `chainConfig` to initialize web3auth class. You can get y
 - `blockExplorer`:- Link to blockchain's block explorer.
 
 - `ticker`:- Native currency ticker for the chain. For ex: BNB
-
 
 ```ts
     import { Web3Auth } from "@web3auth/web3auth";
@@ -74,12 +72,15 @@ We need `clientId` and `chainConfig` to initialize web3auth class. You can get y
 
 ## `Using provider to sign blockchain transactions`
 
-We can do sign transactions and make rpc calls to connected chain by using `provider` available on `web3auth` instance once user is logged in. Refer to documentation about `providers` to know more about the rpc calls available on provider for each `chainNamespace`.
+We can do sign transactions and make rpc calls to connected chain by using `provider` available on `web3auth` instance once user is logged in. Refer
+to documentation about `providers` to know more about the rpc calls available on provider for each `chainNamespace`.
 
-Here we will simply sign a transaction to send eth using web3auth provider which is fully compatible with web3 js library for binance smart chain blockchain.
+Here we will simply sign a transaction to send eth using web3auth provider which is fully compatible with web3 js library for binance smart chain
+blockchain.
 
 <CommonChainFunctions/>
 
 ## `Done`
 
-You have completed this tutorial,you can refer to working code of this tutorial [here]("https://github.com/Web3Auth/Web3Auth/examples/vue-app/src/chains/binance.vue").
+You have completed this tutorial,you can refer to working code of this tutorial
+[here]("https://github.com/Web3Auth/Web3Auth/examples/vue-app/src/chains/binance.vue").

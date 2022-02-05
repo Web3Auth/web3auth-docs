@@ -12,10 +12,7 @@ export interface IntegrationBuilder {
     }
   >;
 
-  getAvailableOptions(
-    optionKey: string,
-    optionValue: string
-  ): Record<string, string>[];
+  getAvailableOptions(optionKey: string, optionValue: string): Record<string, string>[];
 
   build(values: Record<string, string>): Integration;
 }
