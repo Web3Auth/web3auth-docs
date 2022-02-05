@@ -25,9 +25,9 @@ In order to use OpenLogin SDK, you'll need to create a project in [Developer Das
 
 > Ignore this step if you're integrating into an existing React project.
 
-<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}
+<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}>
 
-> <TabItem value="npm">
+<TabItem value="npm">
 
 ```shell
 npx create-react-app my-app
@@ -53,9 +53,7 @@ yarn start
 
 Install Torus OpenLogin SDK using either npm or yarn:
 
-<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}
-
-> <TabItem value="npm">
+<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}> <TabItem value="npm">
 
 ```shell
 npm i --save @toruslabs/openlogin
@@ -78,6 +76,7 @@ yarn add @toruslabs/openlogin
 Initialize the SDK after your application is mounted using `useEffect` hook and call `openlogin.login` when user clicks login in your application.
 
 ```jsx
+import { useState } from "react";
 const VERIFIER = {
   loginProvider: "google", // "facebook", "apple", "twitter", "reddit", etc. See full list of supported logins: https://docs.tor.us/direct-auth/verifiers
   clientId: "YOUR PROJECT ID",

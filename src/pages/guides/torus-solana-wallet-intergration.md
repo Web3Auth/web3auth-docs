@@ -20,9 +20,9 @@ We will go through a simple html typescript page app where user can login to the
 To start using the wallet with a dapp, you need to install `@toruslab/solana-embed`. You can use popular package managers like yarn and npm to
 download them.
 
-<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}
+<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}>
 
-> <TabItem value="npm">
+<TabItem value="npm">
 
 ```shell
 npm i --save @toruslabs/solana-embed
@@ -44,10 +44,10 @@ See [api reference](https://docs.tor.us/solana-wallet/api-reference/class) for m
 
 ## Initialize instance and import solana sdk:
 
-```typescript
+```ts
 import { clusterApi, Connection } from "@solana/web3.js";
 
-import Torus from "@toruslab/solana-embed";
+import Torus from "@toruslabs/solana-embed";
 const torus = new Torus();
 
 await torus.init({
@@ -94,7 +94,7 @@ Using the `Torus` instance, dapps can call methods on the wallet.
 
 Every time a user wants to sign a transaction, the wallet will open a confirmation window.
 
-```typescript
+```ts
 const network = "";
 const connection = new Connection(network);
 const blockhash = (await conn.getRecentBlockhash("finalized")).blockhash;

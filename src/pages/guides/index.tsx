@@ -1,7 +1,6 @@
 import React from "react";
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
-import classNames from "classnames";
 import styles from "./styles.module.css";
 
 interface Props {

@@ -35,9 +35,9 @@ vue create hello-world
 
 Install Torus OpenLogin SDK using either npm or yarn:
 
-<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}
+<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}>
 
-> <TabItem value="npm">
+<TabItem value="npm">
 
 ```shell
 npm i --save @toruslabs/openlogin

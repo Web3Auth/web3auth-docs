@@ -41,22 +41,21 @@ private key and `web3` to use ethereum-provider with.
 
 Install dependencies either npm or yarn:
 
-<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}
+<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}>
 
-> <TabItem value="npm">
+<TabItem value="npm">
 
-```shell
+```sh
 npm i --save openlogin
 npm i --save web3
 npm i --save @web3auth/ethereum-provider
-
 ```
 
 </TabItem>
 
 <TabItem value="yarn">
 
-```shell
+```sh
 yarn add openlogin
 yarn add web3
 yarn add @web3auth/ethereum-provider
@@ -71,8 +70,10 @@ yarn add @web3auth/ethereum-provider
 Initialize the SDK on your application `mounted` lifecycle function:
 
 ```ts
-<script>
+import Vue from "vue";
 import OpenLogin from "openlogin";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
 const openlogin = new OpenLogin({
   // your clientId aka projectId , get it from https://developer.tor.us
   // clientId is not required for localhost, you can set it to any string
@@ -95,11 +96,10 @@ export default Vue.extend({
       loading: false,
       privKey: "",
       ethereumPrivateKeyProvider: null as EthereumPrivateKeyProvider | null,
-      openlogin: null as OpenLogin | null
+      openlogin: null as OpenLogin | null,
     };
   },
   async mounted() {
-
     await openlogin.init();
     this.privKey = openlogin.privKey;
     await this.setProvider(this.privKey);
@@ -108,7 +108,6 @@ export default Vue.extend({
     // your methods here
   },
 });
-</script>
 ```
 
 The code snippet given above is creating Openlogin Sdk instance with two params ie `clientId` and `network` and it initializes it using init function.
@@ -126,7 +125,9 @@ already authenticated and we generate a provider using `setProvider` function wh
 
 Once the sdk is initialized , you can allow user to login. You need to call login function available on sdkInstance created in previous step.
 
-```js
+```ts
+import Vue from "vue";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 export default Vue.extend({
   name: "App",
@@ -142,38 +143,37 @@ export default Vue.extend({
     // Initialize the SDK on your here
   },
   methods: {
-       async login() {
-          try {
-            // in popup mode (with third party cookies available) or if user is already logged in this function will
-            // return priv key , in redirect mode or if third party cookies are blocked then priv key be injected to
-            // sdk instance after calling init on redirect url page.
-            const privKey = await openlogin.login({
-              // pass empty string '' as loginProvider to open default torus modal
-              // with all default supported login providers or you can pass specific
-              // login provider from available list to set as default.
-              // for ex: google, facebook, twitter etc
-              loginProvider: "",
-              redirectUrl: `${window.origin}`,
-              relogin: true,
-              // you can pass standard oauth parameter in extralogin options
-              // for ex: in case of passwordless login, you have to pass user's email as login_hint
-              // and your app domain.
-              // extraLoginOptions: {
-              //   domain: 'www.yourapp.com',
-              //   login_hint: 'hello@yourapp.com',
-              // },
-            });
-            if (privKey) {
-              this.privKey = openlogin.privKey;
-              await this.setProvider(this.privKey);
-            }
-          } catch (error) {
-            console.log("error", error);
-          }
+    async login() {
+      try {
+        // in popup mode (with third party cookies available) or if user is already logged in this function will
+        // return priv key , in redirect mode or if third party cookies are blocked then priv key be injected to
+        // sdk instance after calling init on redirect url page.
+        const privKey = await openlogin.login({
+          // pass empty string '' as loginProvider to open default torus modal
+          // with all default supported login providers or you can pass specific
+          // login provider from available list to set as default.
+          // for ex: google, facebook, twitter etc
+          loginProvider: "",
+          redirectUrl: `${window.origin}`,
+          relogin: true,
+          // you can pass standard oauth parameter in extralogin options
+          // for ex: in case of passwordless login, you have to pass user's email as login_hint
+          // and your app domain.
+          // extraLoginOptions: {
+          //   domain: 'www.yourapp.com',
+          //   login_hint: 'hello@yourapp.com',
+          // },
+        });
+        if (privKey) {
+          this.privKey = openlogin.privKey;
+          await this.setProvider(this.privKey);
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
     },
   },
 });
-
 ```
 
 Above code snippet triggers the openlogin sdk login functionality, which will open the default openlogin's modal. As we have passed `loginProvider` as
@@ -195,42 +195,42 @@ generate a eip1193 provider using `@web3auth/ethereum-provider` package that we 
 function which creates a `eip1193` provider as a instance variable on `EthereumPrivateKeyProvider` class as
 `this.ethereumPrivateKeyProvider._providerProxy` and then we can use it with web3.js library.
 
-```js
-    import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-    export default Vue.extend({
-      name: "App",
-      data() {
-        return {
-          loading: false,
-          privKey: "",
-          eip1193Provider: null as SafeEventEmitterProvider | null,
-          ethereumPrivateKeyProvider: null as EthereumPrivateKeyProvider | null,
-          openlogin: null as OpenLogin | null,
-        };
-      },
-      methods: {
-          async setProvider(privKey: string) {
-            this.ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
-              config: {
-                // pass the chain config that you want to connect with
-                chainConfig: {
-                  chainId: "0x3",
-                  rpcTarget: `https://ropsten.infura.io/v3/${YOUR_INFURA_ID}`,
-                  displayName: "ropsten",
-                  blockExplorer: "https://ropsten.etherscan.io/",
-                  ticker: "ETH",
-                  tickerName: "Ethereum",
-                },
-              },
-            });
-            // pass user's private key here.
-            // after calling setupProvider, we can use`this.ethereumPrivateKeyProvider._providerProxy`
-            // as a eip1193 provider
-            await this.ethereumPrivateKeyProvider.setupProvider(privKey);
-
+```ts
+import Vue from "vue";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+export default Vue.extend({
+  name: "App",
+  data() {
+    return {
+      loading: false,
+      privKey: "",
+      eip1193Provider: null as SafeEventEmitterProvider | null,
+      ethereumPrivateKeyProvider: null as EthereumPrivateKeyProvider | null,
+      openlogin: null as OpenLogin | null,
+    };
+  },
+  methods: {
+    async setProvider(privKey: string) {
+      this.ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+        config: {
+          // pass the chain config that you want to connect with
+          chainConfig: {
+            chainId: "0x3",
+            rpcTarget: `https://ropsten.infura.io/v3/${YOUR_INFURA_ID}`,
+            displayName: "ropsten",
+            blockExplorer: "https://ropsten.etherscan.io/",
+            ticker: "ETH",
+            tickerName: "Ethereum",
+          },
         },
-      }
-    })
+      });
+      // pass user's private key here.
+      // after calling setupProvider, we can use`this.ethereumPrivateKeyProvider._providerProxy`
+      // as a eip1193 provider
+      await this.ethereumPrivateKeyProvider.setupProvider(privKey);
+    },
+  },
+});
 ```
 
 ## Initializing Provider
@@ -248,6 +248,7 @@ make rpc calls to connected chain.
 Here we will simply sign a transaction to send eth using web3auth provider which is fully compatible with web3 js library for ethereum blockchain.
 
 ```ts
+import Vue from "vue";
 import { SafeEventEmitterProvider } from "@web3auth/base";
 import Web3 from "web3";
 export default Vue.extend({
@@ -287,8 +288,10 @@ export default Vue.extend({
 ## Personal Sign
 
 ```ts
+import Vue from "vue";
 import { SafeEventEmitterProvider } from "@web3auth/base";
 import Web3 from "web3";
+
 export default Vue.extend({
   name: "App",
   data() {
@@ -321,17 +324,17 @@ export default Vue.extend({
         const signedMessage = await web3.eth.personal.sign(originalMessage, fromAddress);
 
       } catch (error) {
-        console.log("error", error)
+        console.error("error", error)
       }
     }
   }
-
 })
 ```
 
 ## Sign Typed Data v1
 
 ```ts
+import Vue from "vue";
 import { SafeEventEmitterProvider } from "@web3auth/base";
 import Web3 from "web3";
 export default Vue.extend({
@@ -403,13 +406,13 @@ Refer to [`providers`](/api-reference/providers#eip1193-providers) documentation
 In order to logout user you needs to call logout function available on openlogin's instance. Logout function will clears the sdk state and removes any
 access to private key on frontend. You can redirect user to the exit page after logout function returns.
 
-```js
-    async logout() {
-      if (!openlogin) throw new Error("OpenLogin is not initialized");
-      await openlogin.logout({});
-      this.privKey = openlogin.privKey;
-      this.ethereumPrivateKeyProvider = null;
-    },
+```ts
+async function logout() {
+  if (!openlogin) throw new Error("OpenLogin is not initialized");
+  await openlogin.logout({});
+  this.privKey = openlogin.privKey;
+  this.ethereumPrivateKeyProvider = null;
+}
 ```
 
 ### DONE!!

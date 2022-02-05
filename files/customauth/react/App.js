@@ -1,5 +1,5 @@
-import React from "react";
 import TorusSdk from "@toruslabs/customauth";
+import { Component } from "react";
 import "./App.css";
 
 const GOOGLE = "google";
@@ -120,7 +120,7 @@ const verifierMap = {
   },
 };
 
-class App extends React.Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {

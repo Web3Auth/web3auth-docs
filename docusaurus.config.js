@@ -180,9 +180,9 @@ module.exports = {
       },
       copyright: `© ${new Date().getFullYear()} Torus Labs Private Limited`,
     },
-    gtag: {
-      trackingID: "UA-126622802-2",
-    },
+    // gtag: {
+    //   trackingID: "UA-126622802-2",
+    // },
     algolia: {
       appId: "6OF28D8CMV",
       apiKey: "425a1e860cb4b9b4ce1f7d9b117c7a81",
@@ -208,6 +208,9 @@ module.exports = {
         */
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
+        },
+        gtag: {
+          trackingID: "UA-126622802-2",
         },
       },
     ],
