@@ -8,20 +8,21 @@ category: misc
 
 import Tabs from "@theme/Tabs";
 
-import TabItem from "@theme/TabItem"; import InstallWeb3Auth from "../../../docs/common/web/code/web3auth/\_install.mdx"; import InstantiateWeb3Auth
-from "../../../docs/common/web/code/web3auth/\_instantiate-evm.mdx"; import SubscribeEvents from
-"../../../docs/common/web/code/web3auth/\_subscribe_events.mdx"; import CommonSdkFunctions from
-"../../../docs/common/web/code/web3auth/\_common-sdk-functions.mdx"; import CommonChainFunctions from
-"../../../docs/common/web/code/web3auth/\_common-eth-functions.mdx"; import RegisterApplication from
-"../../../docs/common/web/code/web3auth/\_register-client_id.mdx";
+import TabItem from "@theme/TabItem";
+import InstallWeb3Auth from "../../../docs/common/web/code/web3auth/_install.mdx";
+import InstantiateWeb3Auth from "../../../docs/common/web/code/web3auth/_instantiate-evm.mdx";
+import SubscribeEvents from "../../../docs/common/web/code/web3auth/_subscribe_events.mdx";
+import CommonSdkFunctions from "../../../docs/common/web/code/web3auth/_common-sdk-functions.mdx";
+import CommonChainFunctions from "../../../docs/common/web/code/web3auth/_common-eth-functions.mdx";
+import RegisterApplication from "../../../docs/common/web/code/web3auth/_register-client_id.mdx";
 
 ## `Introduction`
 
 This guide is a tutorial to go through the steps required for using binance smart chain with web3auth.
 
-<RegisterApplication/>
+<RegisterApplication />
 
-<InstallWeb3Auth/>
+<InstallWeb3Auth />
 
 ## `Create web3auth instance`
 
@@ -42,33 +43,32 @@ We need `clientId` and `chainConfig` to initialize web3auth class. You can get y
 - `ticker`:- Native currency ticker for the chain. For ex: BNB
 
 ```ts
-    import { Web3Auth } from "@web3auth/web3auth";
-    import { CHAIN_NAMESPACES, CustomChainConfig } from "@web3auth/base";
+import { Web3Auth } from "@web3auth/web3auth";
+import { CHAIN_NAMESPACES, CustomChainConfig } from "@web3auth/base";
 
-   const binanceChainConfig: CustomChainConfig = {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    rpcTarget: "https://data-seed-prebsc-2-s3.binance.org:8545",
-    blockExplorer: "https://testnet.bscscan.com",
-    chainId: "0x61",
-    displayName: "Binance SmartChain Testnet",
-    ticker: "BNB",
-    tickerName: "BNB",
-    };
+const binanceChainConfig: CustomChainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  rpcTarget: "https://data-seed-prebsc-2-s3.binance.org:8545",
+  blockExplorer: "https://testnet.bscscan.com",
+  chainId: "0x61",
+  displayName: "Binance SmartChain Testnet",
+  ticker: "BNB",
+  tickerName: "BNB",
+};
 
-    const web3auth = new Web3Auth({
-        chainConfig: binanceChainConfig
-        clientId: "localhost-id" // get your clientId from https://developer.web3auth.io
-    });
+const web3auth = new Web3Auth({
+  chainConfig: binanceChainConfig,
+  clientId: "localhost-id", // get your clientId from https://developer.web3auth.io
+});
 
-    await web3auth.initModal();
-
+await web3auth.initModal();
 ```
 
-<SubscribeEvents/>
+<SubscribeEvents />
 
-<InstantiateWeb3Auth/>
+<InstantiateWeb3Auth />
 
-<CommonSdkFunctions/>
+<CommonSdkFunctions />
 
 ## `Using provider to sign blockchain transactions`
 
@@ -78,7 +78,7 @@ to documentation about `providers` to know more about the rpc calls available on
 Here we will simply sign a transaction to send eth using web3auth provider which is fully compatible with web3 js library for binance smart chain
 blockchain.
 
-<CommonChainFunctions/>
+<CommonChainFunctions />
 
 ## `Done`
 
