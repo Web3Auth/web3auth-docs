@@ -24,12 +24,15 @@ export default function GuidesPage({ guides }: Props) {
   const appGuides = Object.entries(guides)
     .sort(([, a], [, b]) => a.order - b.order)
     .filter(([, a]) => a.category === "app" || a.category === "walletAndApp");
+
   const walletGuides = Object.entries(guides)
     .sort(([, a], [, b]) => a.order - b.order)
     .filter(([, a]) => a.category === "wallet" || a.category === "walletAndApp");
+
   const authGuides = Object.entries(guides)
     .sort(([, a], [, b]) => a.order - b.order)
     .filter(([, a]) => a.category === "auth");
+
   const miscGuides = Object.entries(guides)
     .sort(([, a], [, b]) => a.order - b.order)
     .filter(([, a]) => a.category === "misc");
@@ -38,7 +41,7 @@ export default function GuidesPage({ guides }: Props) {
     <Layout title="Guides">
       <header className={styles.header}>
         <h1>Guides</h1>
-        <p>Quick-start with your usecase and stack</p>
+        <p>Quick-start with your use case and stack</p>
         <hr />
       </header>
       <header className={styles.header} id="apps">

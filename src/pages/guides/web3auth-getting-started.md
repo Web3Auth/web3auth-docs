@@ -10,7 +10,7 @@ import Tabs from "@theme/Tabs";
 
 import TabItem from "@theme/TabItem";
 
-import RegisterApplication from "../../../docs/common/web/code/web3auth/\_register-client_id.mdx";
+import RegisterApplication from "../../../docs/common/web/code/web3auth/_register-client_id.mdx";
 
 ## `Introduction`
 
@@ -19,7 +19,7 @@ and jquery.
 
 You can find working codepen and preview of this example [here](https://codepen.io/him_chawla/pen/qBVarMj?editors=1010).
 
-<RegisterApplication/>
+<RegisterApplication />
 
 ## `Installation`:-
 
@@ -33,7 +33,7 @@ After adding given scripts in your html file, web3auth cdn script will inject `W
   <script src="https://cdn.jsdelivr.net/npm/@web3auth/web3auth@0.2.2/dist/web3auth.umd.min.js"></script>
 ```
 
-<br/>
+<br />
 
 ## `Create web3auth instance`
 
@@ -63,7 +63,7 @@ currently it supports `eip155` for evm compatible chains and `solana` for solana
 
 ```
 
-<br/>
+<br />
 
 ## `Subscribe to Web3Auth lifecycle events`
 
@@ -79,26 +79,26 @@ user is logged in or not based on these events. Below is the code snippet for su
     const web3authSdk = window.Web3auth
     let web3AuthInstance = null;
 
-    function subscribeAuthEvents(web3auth: Web3Auth) {
-      web3auth.on(ADAPTER_EVENTS.CONNECTED, (data: CONNECTED_EVENT_DATA) => {
-        console.log("Yeah!, you are successfully logged in", data);
-      });
+    function subscribeAuthEvents(web3auth) {
+        web3auth.on("connected", (data) => {
+          console.log("Yeah!, you are successfully logged in", data);
+        });
 
-      web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
-        console.log("connecting");
-      });
+        web3auth.on("connecting", () => {
+          console.log("connecting");
+        });
 
-      web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
-        console.log("disconnected");
-      });
+        web3auth.on("disconnected", () => {
+          console.log("disconnected");
+        });
 
-      web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
-        console.log("some error or user have cancelled login request", error);
-      });
+        web3auth.on("errored", (error) => {
+            console.log("some error or user have cancelled login request", error);
+        });
 
-      web3auth.on(LOGIN_MODAL_EVENTS.MODAL_VISIBILITY, (isVisible) => {
-        console.log("modal visibility", isVisible);
-      });
+        web3auth.on("MODAL_VISIBILITY", (isVisible) => {
+            console.log("modal visibility", isVisible)
+        });
     }
 
     (async function init() {
@@ -116,7 +116,7 @@ user is logged in or not based on these events. Below is the code snippet for su
 
 ```
 
-<br/>
+<br />
 
 ## `Configuring Adapters and Initializing Modal`
 
@@ -149,7 +149,7 @@ custom adapters refer to documentation [here](/api-reference/modal#configuring-a
 
 ```
 
-<br/>
+<br />
 
 ## `Authenticating user`
 
@@ -253,7 +253,7 @@ successful disconnection on web3auth instance.
 
 ```
 
-<br/>
+<br />
 
 ## `Done`
 

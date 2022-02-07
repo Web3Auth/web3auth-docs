@@ -10,20 +10,20 @@ import Tabs from "@theme/Tabs";
 
 import TabItem from "@theme/TabItem";
 
-import InstallWeb3Auth from "../../../docs/common/web/code/web3auth/\_install.mdx"; import InstantiateWeb3Auth from
-"../../../docs/common/web/code/web3auth/\_instantiate-evm.mdx"; import SubscribeEvents from
-"../../../docs/common/web/code/web3auth/\_subscribe_events.mdx"; import CommonSdkFunctions from
-"../../../docs/common/web/code/web3auth/\_common-sdk-functions.mdx"; import CommonChainFunctions from
-"../../../docs/common/web/code/web3auth/\_common-eth-functions.mdx"; import RegisterApplication from
-"../../../docs/common/web/code/web3auth/\_register-client_id.mdx";
+import InstallWeb3Auth from "../../../docs/common/web/code/web3auth/_install.mdx";
+import InstantiateWeb3Auth from "../../../docs/common/web/code/web3auth/_instantiate-evm.mdx";
+import SubscribeEvents from "../../../docs/common/web/code/web3auth/_subscribe_events.mdx";
+import CommonSdkFunctions from "../../../docs/common/web/code/web3auth/_common-sdk-functions.mdx";
+import CommonChainFunctions from "../../../docs/common/web/code/web3auth/_common-eth-functions.mdx";
+import RegisterApplication from "../../../docs/common/web/code/web3auth/_register-client_id.mdx";
 
 ## `Introduction`
 
 This guide is a tutorial to go through the steps required for using ethereum blockchain in web3auth.
 
-<RegisterApplication/>
+<RegisterApplication />
 
-<InstallWeb3Auth/>
+<InstallWeb3Auth />
 
 ## `Creating web3auth instance`
 
@@ -57,7 +57,7 @@ official testnets you have to pass entire chainConfig for that customNetwork.
 
 ```
 
-<SubscribeEvents/>
+<SubscribeEvents />
 
 ## Initializing Web3Auth modal with default configuration
 
@@ -93,7 +93,7 @@ await web3auth.initModal({
 });
 ```
 
-<CommonSdkFunctions/>
+<CommonSdkFunctions />
 
 ## `Using provider to sign eth transactions`
 
@@ -103,12 +103,12 @@ functions by using `web3auth.provider` with web3.js or ethers.js
 
 Here we will simply sign a transaction to send eth using web3auth provider which is fully compatible with web3 js library for ethereum blockchain.
 
-<CommonChainFunctions/>
+<CommonChainFunctions />
 
 ## `Done`
 
 You have completed this tutorial,you can refer to working code of this tutorial
-[here]("https://github.com/Web3Auth/Web3Auth/examples/vue-app/src/chains/ethereum.vue").
+[here](https://github.com/Web3Auth/Web3Auth/examples/vue-app/src/chains/ethereum.vue).
 
 <!-- From here you can proceed to guides about :-
 - Configuring web3auth modal to use or configure various login adapters and custom chain config

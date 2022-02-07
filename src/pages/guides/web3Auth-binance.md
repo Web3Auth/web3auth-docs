@@ -83,4 +83,4 @@ blockchain.
 ## `Done`
 
 You have completed this tutorial,you can refer to working code of this tutorial
-[here]("https://github.com/Web3Auth/Web3Auth/examples/vue-app/src/chains/binance.vue").
+[here](https://github.com/Web3Auth/Web3Auth/examples/vue-app/src/chains/binance.vue).
