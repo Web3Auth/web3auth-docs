@@ -107,21 +107,18 @@ await torus.init({
 **Example white-labelled UI**
 
 <figure>
-    <img src="/contents/whitelabel-popup.png"
-         alt="Popup" />
-    <figcaption style={{textAlign: "center"}}>Popup UI</figcaption>
+  <img src="/contents/whitelabel-popup.png" alt="Popup" />
+  <figcaption style={{ textAlign: "center" }}>Popup UI</figcaption>
 </figure>
 
 <figure>
-    <img src="/contents/whitelabel-wallet-light.png"
-         alt="Popup" />
-    <figcaption style={{textAlign: "center"}}>Wallet UI in Light mode</figcaption>
+  <img src="/contents/whitelabel-wallet-light.png" alt="Popup" />
+  <figcaption style={{ textAlign: "center" }}>Wallet UI in Light mode</figcaption>
 </figure>
 
 <figure>
-    <img src="/contents/whitelabel-wallet-dark.png"
-         alt="Popup" />
-    <figcaption style={{textAlign: "center"}}>Wallet UI in Dark mode</figcaption>
+  <img src="/contents/whitelabel-wallet-dark.png" alt="Popup" />
+  <figcaption style={{ textAlign: "center" }}>Wallet UI in Dark mode</figcaption>
 </figure>
 
 ### Show/hide features

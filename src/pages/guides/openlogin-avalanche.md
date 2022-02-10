@@ -110,11 +110,12 @@ This example is compatible with both redirect and popup ux modes.
 In the given code snippet, `openlogin.login` function is getting called along with two options:-
 
 - `loginProvider`: It specifies the login method which will be used to authenticate user. You can checkout
-  [API Reference](/open-login/api-reference/usage) to know about all supported and custom login provider values.
+  [API Reference](https://docs.tor.us/open-login/api-reference/usage) to know about all supported and custom login provider values.
 
 - `redirectUrl`: User will be redirected to redirectUrl after login.
 
-Checkout [API Reference](/open-login/api-reference/usage) for other options available to pass in openlogin constructor and login function.
+Checkout [API Reference](https://docs.tor.us/open-login/api-reference/usage) for other options available to pass in openlogin constructor and login
+function.
 
 ## Use the private key with web3
 
@@ -145,7 +146,7 @@ In order to logout user you needs to call logout function available on sdk insta
 to private key on frontend.
 
 You can pass various other options in logout function like `fastLogin` , `redirectUrl` etc. To know more about that checkout
-[API Reference](/open-login/api-reference/usage)
+[API Reference](https://docs.tor.us/open-login/api-reference/usage)
 
 ```js
 const handleLogout = async () => {

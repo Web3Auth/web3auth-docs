@@ -3,6 +3,7 @@ title: How to Add OpenLogin to a React app
 image: "/contents/openlogin-react.png"
 description: Learn to build a simple React.js app secured by OpenLogin.
 order: 1
+category: misc
 ---
 
 import Tabs from "@theme/Tabs";
@@ -53,7 +54,9 @@ yarn start
 
 Install Torus OpenLogin SDK using either npm or yarn:
 
-<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}> <TabItem value="npm">
+<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "Yarn", value: "yarn" }, ]}>
+
+<TabItem value="npm">
 
 ```shell
 npm i --save @toruslabs/openlogin

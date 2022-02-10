@@ -10,20 +10,20 @@ import Tabs from "@theme/Tabs";
 
 import TabItem from "@theme/TabItem";
 
-import InstallWeb3Auth from "../../../docs/common/web/code/web3auth/\_install.mdx"; import InstantiateWeb3Auth from
-"../../../docs/common/web/code/web3auth/\_instantiate-evm.mdx"; import SubscribeEvents from
-"../../../docs/common/web/code/web3auth/\_subscribe_events.mdx"; import CommonSdkFunctions from
-"../../../docs/common/web/code/web3auth/\_common-sdk-functions.mdx"; import CommonChainFunctions from
-"../../../docs/common/web/code/web3auth/\_common-eth-functions.mdx"; import RegisterApplication from
-"../../../docs/common/web/code/web3auth/\_register-client_id.mdx";
+import InstallWeb3Auth from "../../../docs/common/web/code/web3auth/_install.mdx";
+import InstantiateWeb3Auth from "../../../docs/common/web/code/web3auth/_instantiate-evm.mdx";
+import SubscribeEvents from "../../../docs/common/web/code/web3auth/_subscribe_events.mdx";
+import CommonSdkFunctions from "../../../docs/common/web/code/web3auth/_common-sdk-functions.mdx";
+import CommonChainFunctions from "../../../docs/common/web/code/web3auth/_common-eth-functions.mdx";
+import RegisterApplication from "../../../docs/common/web/code/web3auth/_register-client_id.mdx";
 
 ## `Introduction`
 
 This guide is a tutorial to go through the steps required for using polygon (matic) chain with web3auth.
 
-<RegisterApplication/>
+<RegisterApplication />
 
-<InstallWeb3Auth/>
+<InstallWeb3Auth />
 
 ## `Create web3auth instance`
 
@@ -66,9 +66,9 @@ We need `clientId` and `chainConfig` to initialize web3auth class. You can get y
 ```
 
 <SubscribeEvents />
-<InstantiateWeb3Auth/>
+<InstantiateWeb3Auth />
 
-<CommonSdkFunctions/>
+<CommonSdkFunctions />
 
 ## `Using provider to sign blockchain transactions`
 
@@ -78,9 +78,9 @@ to documentation about `providers` to know more about the rpc calls available on
 Here we will simply sign a transaction to send eth using web3auth provider which is fully compatible with web3 js library for polygon/matic
 blockchain.
 
-<CommonChainFunctions/>
+<CommonChainFunctions />
 
 ## `Done`
 
 You have completed this tutorial,you can refer to working code of this tutorial
-[here]("https://github.com/Web3Auth/Web3Auth/examples/vue-app/src/chains/matic.vue").
+[here](https://github.com/Web3Auth/Web3Auth/examples/vue-app/src/chains/matic.vue).
