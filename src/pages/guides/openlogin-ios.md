@@ -48,9 +48,8 @@ import OpenLogin
 2. Present the In-App Web-based Login modal.
 
 ```swift
- OpenLogin
-    .webAuth()
-    .start {
+OpenLogin()
+    .login(provider: .GOOGLE) {
         switch $0 {
         case .success(let result):
             print("""
