@@ -6,7 +6,7 @@ const githubOrgUrl = `https://github.com/${githubOrg}`;
 const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
 const contactUrl = "https://web3auth.io/contact-us.html"; // TODO: Confirm with content team
-const mediumUrl = "https://medium.com/web3auth";
+const mediumUrl = "https://medium.com/toruslabs";
 const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
 
@@ -72,11 +72,11 @@ module.exports = {
           items: [
             {
               label: "Torus Wallet",
-              href: "https://toruswallet.io/",
+              href: "https://app.tor.us",
             },
             {
               label: "OpenLogin",
-              href: "https://openlogin.com", // TODO: beta.openlogin.com?
+              href: "https://app.openlogin.com",
             },
           ],
         },
@@ -105,7 +105,7 @@ module.exports = {
             },
             {
               label: "Support",
-              href: "https://t.me/torusdev", //TODO
+              href: "https://t.me/web3authdev",
             },
           ],
         },
@@ -139,7 +139,7 @@ module.exports = {
             },
             {
               label: "YouTube",
-              href: "https://www.youtube.com/c/web3auth",
+              href: "https://www.youtube.com/channel/UCFVwocOf8LjH0GTgX5gb5Tw",
             },
           ],
         },
