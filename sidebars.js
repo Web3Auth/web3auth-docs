@@ -11,6 +11,7 @@ module.exports = {
         "api-reference/modal",
         "api-reference/core",
         "api-reference/adapter-config",
+        "api-reference/whitelabel",
         "api-reference/providers",
         "api-reference/glossary",
         {
