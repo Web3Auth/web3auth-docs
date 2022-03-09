@@ -12,7 +12,7 @@ import TabItem from "@theme/TabItem";
 
 ## Introduction
 
-This tutorial will guide you to use [web3auth-android-sdk](https://github.com/torusresearch/openlogin-android-sdk) to integrate Web3Auth into your
+This tutorial will guide you to use [web3auth-android-sdk](https://github.com/torusresearch/web3auth-android-sdk) to integrate Web3Auth into your
 Android application.
 
 Source code of the example can also be found in the repository.
