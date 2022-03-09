@@ -41,7 +41,7 @@ Then, in your app-level `build.gradle` dependencies section, add the following:
 ```groovy
 dependencies {
     // ...
-    implementation 'org.torusresearch:openlogin-android-sdk:-SNAPSHOT'
+    implementation 'org.torusresearch:web3auth-android-sdk:-SNAPSHOT'
 }
 ```
 
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
 
         web3Auth = Web3Auth(
             Web3AuthOptions(context = this,
-                clientId = getString(R.string.openlogin_project_id),
+                clientId = getString(R.string.web3auth_project_id),
                 network = Web3Auth.Network.MAINNET,
                 redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
                 whiteLabel = WhiteLabelData(  // Optional param
