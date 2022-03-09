@@ -1,0 +1,286 @@
+---
+title: Whitelabel
+hide_title: true
+---
+
+## Whitelabel
+
+Web3Auth can be configured with applications branding to have a consistent user experience. It can be set while creating `Web3Auth`,
+`OpenloginAdapter`, and `Torus Wallet` instances.
+
+## `Web3Auth`
+
+---
+
+- `Example`:
+
+```ts
+  import `Web3Auth` class from  `@web3auth/web3auth`;
+  import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+  const web3auth = new Web3Auth({
+    // type UIConfig
+    uiConfig: {
+      appLogo: "https://images.web3auth.io/web3auth-logo-w.svg";
+      theme: "dark";
+      loginMethodsOrder: [];
+    },
+    chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+    clientId: "example-client-id",
+  });
+```
+
+- `Interface`:
+
+```ts
+export interface UIConfig {
+  /**
+   * Logo for your app.
+   */
+  appLogo?: string;
+  /**
+   * theme for the modal
+   *
+   * @defaultValue `light`
+   */
+  theme?: "light" | "dark";
+  /**
+   * order of how login methods are shown
+   *
+   * @defaultValue `["google", "facebook", "twitter", "reddit", "discord", "twitch", "apple", "line", "github", "kakao", "linkedin", "weibo", "wechat", "email_passwordless"]`
+   */
+  loginMethodsOrder?: string[];
+}
+```
+
+## `OpenLogin Adapter`
+
+---
+
+- `Example`:
+
+```ts
+  import `Web3Auth` class from  `@web3auth/web3auth`;
+  import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+  import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+  const web3auth = new Web3Auth({
+    chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+    clientId: "example-client-id",
+  });
+
+  const openloginAdapter = new OpenloginAdapter({
+    adapterSettings: {
+      network: this.network,
+      clientId,
+      // type WhiteLabelData
+      whiteLabel: {
+        dark: true,
+        theme: {
+          primary: "#FFA500",
+        },
+        defaultLanguage: "en",
+      },
+    },
+  });
+
+  this.web3auth.configureAdapter(openloginAdapter);
+```
+
+- `Interface`:
+
+```ts
+export declare type WhiteLabelData = {
+  /**
+   * Default language to use
+   * Currently supports "en", "de", "ja", "ko", "zh", "es"
+   *
+   * @defaultValue en
+   */
+  defaultLanguage?: string;
+  /**
+   * Whether to enable dark mode
+   *
+   * @defaultValue false
+   */
+  dark?: boolean;
+  /**
+   * Used to customize theme of the login modal with following options
+   * `'primary'` - To customize primary color of modal's content.
+   */
+  theme?: {
+    [P in string]: string;
+  };
+};
+```
+
+## `Torus Wallet Adapter`
+
+---
+
+- `Example`:
+
+```ts
+  import `Web3Auth` class from  `@web3auth/web3auth`;
+  import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
+  import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+  const web3auth = new Web3Auth({
+    chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+    clientId: "example-client-id",
+  });
+
+  const torusWalletAdapter = new TorusWalletAdapter({
+    initParams: {
+      // type WhiteLabelParams
+      whiteLabel: {
+        theme: {
+          isDark: true,
+          colors: {
+            torusBrand1: "#FFA500",
+          },
+        },
+        logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+        logoLight: "https://images.web3auth.io/web3auth-logo-w-light.svg",
+        topupHide: true,
+        featuredBillboardHide: true,
+        tncLink: {
+          en: "http://example.com/tnc/en",
+          ja: "http://example.com/tnc/ja",
+        },
+        privacyPolicy: {
+          en: "http://example.com/tnc/en",
+          ja: "http://example.com/tnc/ja",
+        },
+        contactLink: {
+          en: "http://example.com/tnc/en",
+          ja: "http://example.com/tnc/ja",
+        },
+        disclaimerHide: true,
+        defaultLanguage: "en",
+        customTranslations: {
+          en: {
+            login: {
+              acceptTerms: "By logging in, you accept Examples",
+              your: "Your",
+              digitalWallet: "digital wallet instantly",
+              buttonText: "Login with Dapp",
+            },
+            dappTransfer: {
+              data: "Data to sign",
+            },
+            dappPermission: {
+              permission: "Permission",
+              requestFrom: "Request from",
+              accessUserInfo: "To access your Google Email Address, Profile Photo and Name",
+            },
+          },
+        },
+      },
+    },
+  });
+
+  this.web3auth.configureAdapter(torusWalletAdapter);
+```
+
+- `Interface`:
+
+```ts
+export interface WhiteLabelParams {
+  /**
+   * Whitelabel theme
+   */
+  theme: ThemeParams;
+  /**
+   * Language of whitelabel.
+   *
+   * order of preference: Whitelabel language \> user language (in torus-website) \> browser language
+   */
+  defaultLanguage?: string;
+  /**
+   * Logo Url to be used in light mode (dark logo)
+   */
+  logoDark: string;
+  /**
+   * Logo Url to be used in dark mode (light logo)
+   */
+  logoLight: string;
+  /**
+   * Shows/hides topup option in torus-website/widget.
+   * Defaults to false
+   * @defaultValue false
+   */
+  topupHide?: boolean;
+  /**
+   * Shows/hides billboard in torus-website.
+   * Defaults to false
+   * @defaultValue false
+   */
+  featuredBillboardHide?: boolean;
+  /**
+   * Shows/hides disclaimers on login page. Only works if special logins are hidden
+   * Defaults to false
+   * @defaultValue false
+   */
+  disclaimerHide?: boolean;
+  /**
+   * Language specific link for terms and conditions on torus-website. See (examples/vue-app) to configure
+   */
+  tncLink?: LocaleLinks<string>;
+  /**
+   * Language specific link for privacy policy on torus-website. See (examples/vue-app) to configure
+   */
+  privacyPolicy?: LocaleLinks<string>;
+  /**
+   * Language specific link for privacy policy on torus-website. See (examples/vue-app) to configure
+   */
+  contactLink?: LocaleLinks<string>;
+  /**
+   * Custom translations. See (examples/vue-app) to configure
+   */
+  customTranslations?: LocaleLinks<unknown>;
+}
+
+export interface ThemeParams {
+  /**
+   * If true, enables dark mode
+   * Defaults to false
+   * @defaultValue false
+   */
+  isDark: boolean;
+  /**
+   * Colors object to customize colors in torus theme.
+   * `'torusBrand1'` - To customize primary color.
+   *
+   * Contact us for whitelabel. Example provided in `examples/vue-app`
+   */
+  colors: Record<string, string>;
+}
+
+export interface LocaleLinks<T> {
+  /**
+   * Item corresponding to english
+   */
+  en?: T;
+  /**
+   * Item corresponding to japanese
+   */
+  ja?: T;
+  /**
+   * Item corresponding to korean
+   */
+  ko?: T;
+  /**
+   * Item corresponding to german
+   */
+  de?: T;
+  /**
+   * Item corresponding to chinese (simplified)
+   */
+  zh?: T;
+  /**
+   * Item corresponding to spanish
+   */
+  es?: T;
+}
+```
