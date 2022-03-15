@@ -210,7 +210,8 @@ module.exports = {
           customCss: require.resolve("./src/css/custom.css"),
         },
         gtag: {
-          trackingID: "UA-126622802-2",
+          //
+          trackingID: "GTM-ML3T5M6",
         },
       },
     ],
