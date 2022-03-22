@@ -2,24 +2,48 @@
 module.exports = {
   docs: [
     "README",
-    "get-started",
-    "what-is-web3auth",
     {
       type: "category",
-      label: "API Reference",
+      label: "Overview",
       items: [
-        "api-reference/modal",
-        "api-reference/core",
-        "api-reference/adapter-config",
-        "api-reference/whitelabel",
-        "api-reference/providers",
-        "api-reference/glossary",
+        "overview/what-is-web3auth",
+        "overview/key-management-and-security",
+        "overview/release-notes",
+        "overview/audits",
+      ],
+    },
+    {
+      type: "category",
+      label: "Get Started",
+      items: [
+        "get-started/basic-installation",
         {
-          OpenLogin: ["api-reference/openlogin/web", "api-reference/openlogin/ios-swift", "api-reference/openlogin/android"],
+          type: 'link',
+          label: 'Quick Starts',
+          href: 'https://facebook.com',
         },
         {
-          CustomAuth: ["api-reference/customauth/installation", "api-reference/customauth/initialization", "api-reference/customauth/usage"],
+          type: 'link',
+          label: 'Demo Apps',
+          href: '../examples-and-usecases',
         },
+      ],
+    },
+    {
+      type: "category",
+      label: "Developing with Web3Auth",
+      items: [
+        "developing-with-web3auth/adapters-and-configuration",
+        "developing-with-web3auth/event-lifecycle",
+        "developing-with-web3auth/providers",
+        "developing-with-web3auth/verifiers",
+      ],
+    },
+    {
+      type: "category",
+      label: "Whitelabeling & Customisation",
+      items: [
+        "whitelabeling/adapters",
       ],
     },
     {
@@ -40,38 +64,66 @@ module.exports = {
         "customauth/faq",
       ],
     },
-    "usecases",
     {
       type: "category",
-      label: "Security & Key Infrastructure",
+      label: "API Reference",
       items: [
-        "key-infrastructure/overview",
-        // "key-infrastructure/technical-architecture",
-        //   {
-        //   type: "category",
-        //   label: "Role of Torus nodes",
-        //   items:[
-        //     "key-infrastructure/role-of-torus-nodes/overview",
-        //     "key-infrastructure/role-of-torus-nodes/lifecycle",
-        //     "key-infrastructure/role-of-torus-nodes/key-generation-and-resharing",
-        //   "key-infrastructure/role-of-torus-nodes/logins-key-assignments-and-retrievals",
-        //   "key-infrastructure/role-of-torus-nodes/oauth2-vs-proxy-sign-in",
-        // "key-infrastructure/role-of-torus-nodes/dkg-specification"
-        // ],
-        //   },
-        "key-infrastructure/powered-by-torus",
-        "key-infrastructure/audits",
+        "api-reference/modal",
+        "api-reference/core",
+        "api-reference/adapter-config",
+        "api-reference/whitelabel",
+        "api-reference/providers",
+        "api-reference/glossary",
+        {
+          OpenLogin: ["api-reference/openlogin/web", "api-reference/openlogin/ios-swift", "api-reference/openlogin/android"],
+        },
+        {
+          CustomAuth: ["api-reference/customauth/installation", "api-reference/customauth/initialization", "api-reference/customauth/usage"],
+        },
       ],
     },
+    "examples-and-usecases",
     {
       type: "category",
-      label: "Legal",
-      items: ["legal/terms-and-conditions", "legal/privacy-policy", "legal/cookie-policy"],
+      label: "Contribute",
+      items: ["contribute/open-source", "contribute/bug-bounty"],
     },
     {
-      type: "category",
-      label: "Contact",
-      items: ["contact/bug-bounty"],
+      type: 'category',
+      label: 'Quick Links',
+      collapsible: false,
+      items: [
+        {
+          type: 'link',
+          label: 'GitHub',
+          href: 'https://github.com/web3auth/web3auth',
+        },
+        {
+          type: 'link',
+          label: 'Support',
+          href: 'https://t.me/web3authdev',
+        },
+        {
+          type: 'link',
+          label: 'Discord',
+          href: 'https://discord.gg/web3auth',
+        },
+        {
+          type: 'link',
+          label: 'Dashboard',
+          href: 'https://dashboard.web3auth.io/',
+        },
+        {
+          type: 'link',
+          label: 'Schedule a Demo',
+          href: 'https://calendly.com/web3auth/meeting-with-web3auth',
+        },
+        {
+          type: 'link',
+          label: 'Status',
+          href: 'https://status.web3auth.io/',
+        },
+      ]
     },
   ],
 };
