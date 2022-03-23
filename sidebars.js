@@ -39,46 +39,26 @@ module.exports = {
         "developing-with-web3auth/verifiers",
       ],
     },
-    {
-      type: "category",
-      label: "Whitelabeling & Customisation",
-      items: [
-        "whitelabeling/adapters",
-      ],
-    },
-    {
-      type: "category",
-      label: "Using your own auth",
-      items: [
-        "customauth/get-started",
-        "customauth/designing-your-key-management-architecture",
-        "customauth/verifiers",
-        {
-          "Setting up Verifiers on Developer Dashboard": [
-            "customauth/setting-up-verifiers/seting-up-verifiers",
-            "customauth/setting-up-verifiers/custom-verifier",
-          ],
-        },
-        "customauth/linking-accounts",
-        "customauth/redirects-and-service-workers",
-        "customauth/faq",
-      ],
-    },
+    "whitelabeling",
+    "customauth",
     {
       type: "category",
       label: "API Reference",
       items: [
-        "api-reference/modal",
-        "api-reference/core",
-        "api-reference/adapter-config",
-        "api-reference/whitelabel",
-        "api-reference/providers",
-        "api-reference/glossary",
         {
-          OpenLogin: ["api-reference/openlogin/web", "api-reference/openlogin/ios-swift", "api-reference/openlogin/android"],
+          Web: ["api-reference/web/setting-up", "api-reference/web/plugnplay", "api-reference/web/customui", "api-reference/web/adapters", "api-reference/web/providers", "api-reference/web/customauth"],
         },
         {
-          CustomAuth: ["api-reference/customauth/installation", "api-reference/customauth/initialization", "api-reference/customauth/usage"],
+          Android: ["api-reference/android/setting-up", "api-reference/android/usage", "api-reference/android/whitelabel", "api-reference/android/customauth"],
+        },
+        {
+          iOS: ["api-reference/ios/setting-up", "api-reference/ios/usage", "api-reference/ios/whitelabel", "api-reference/ios/customauth"],
+        },
+        {
+          'React Native': ["api-reference/react-native/setting-up", "api-reference/react-native/usage", "api-reference/react-native/whitelabel", "api-reference/react-native/customauth"],
+        },
+        {
+          Flutter: ["api-reference/flutter/setting-up", "api-reference/flutter/usage", "api-reference/flutter/whitelabel", "api-reference/flutter/customauth"],
         },
       ],
     },
