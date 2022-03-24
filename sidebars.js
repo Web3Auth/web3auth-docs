@@ -46,7 +46,7 @@ module.exports = {
       label: "API Reference",
       items: [
         {
-          Web: ["api-reference/web/setting-up", "api-reference/web/plugnplay", "api-reference/web/customui", "api-reference/web/adapters", "api-reference/web/providers", "api-reference/web/customauth"],
+          Web: ["api-reference/web/choosesdk", "api-reference/web/plugnplay", "api-reference/web/customui", "api-reference/web/adapters", "api-reference/web/providers", "api-reference/web/customauth"],
         },
         {
           Android: ["api-reference/android/setting-up", "api-reference/android/usage", "api-reference/android/whitelabel", "api-reference/android/customauth"],
