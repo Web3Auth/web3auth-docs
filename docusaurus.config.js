@@ -139,7 +139,7 @@ module.exports = {
             },
             {
               label: "YouTube",
-              href: "https://www.youtube.com/channel/UCFVwocOf8LjH0GTgX5gb5Tw",
+              href: "https://www.youtube.com/c/web3auth",
             },
           ],
         },

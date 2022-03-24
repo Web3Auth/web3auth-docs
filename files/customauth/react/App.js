@@ -231,7 +231,7 @@ class App extends Component {
           <p>The verifiers listed here only work with the client id's specified in example. Please don't edit them</p>
           <p>The verifiers listed here are for example reference only. Please don't use them for anything other than testing purposes.</p>
           <div>
-            Reach out to us at <a href="mailto:hello@tor.us">hello@tor.us</a> or <a href="https://t.me/torusdev">telegram group</a> to get your
+            Reach out to us at <a href="mailto:hello@tor.us">hello@tor.us</a> or <a href="https://t.me/web3auth">telegram group</a> to get your
             verifier deployed for your client id.
           </div>
           <div id="console">
