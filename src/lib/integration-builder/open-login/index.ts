@@ -61,19 +61,19 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
   // Return available options when user selects a value,
   // .e.g there're integrations with Conflux for React and Vue, but not for Android
   getAvailableOptions(optionKey, optionValue) {
-    console.log("options", optionKey, optionValue);
+    // console.log("options", optionKey, optionValue);
     const availableOptions: Record<string, string>[] = [];
+    const availableLangExamples = AVAILABLE_LANGS[optionValue]?.examples;
+    const availableChainLangs = AVAILABLE_EXAMPLES[optionValue]?.langs;
     switch (optionKey) {
       case "chain":
-        const availableChainLangs = AVAILABLE_EXAMPLES[optionValue].langs;
-        for (let i = 0; i < availableChainLangs.length; i++) {
+        for (let i = 0; i < availableChainLangs.length; i += 1) {
           const lang = availableChainLangs[i];
           availableOptions.push({ lang });
         }
         break;
       case "lang":
-        const availableLangExamples = AVAILABLE_LANGS[optionValue].examples;
-        for (let i = 0; i < availableLangExamples.length; i++) {
+        for (let i = 0; i < availableLangExamples.length; i += 1) {
           const example = availableLangExamples[i];
           availableOptions.push({ chain: example });
         }

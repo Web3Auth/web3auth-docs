@@ -1,6 +1,5 @@
 import Link from "@docusaurus/Link";
 import classNames from "classnames";
-import React from "react";
 
 import styles from "./styles.module.css";
 

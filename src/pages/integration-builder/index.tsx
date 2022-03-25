@@ -57,10 +57,10 @@ const getInitialBuilderOptions = (): BuilderOptions => {
 
   let maxScore = 0;
   let maxScoreIndex = 0;
-  for (let i = 0; i < availableValues.length; i++) {
+  for (let i = 0; i < availableValues.length; i += 1) {
     let score = 0;
     for (const comparingKey of Object.keys(availableValues[i])) {
-      if (queriedOptions[comparingKey] === availableValues[i][comparingKey]) score++;
+      if (queriedOptions[comparingKey] === availableValues[i][comparingKey]) score += 1;
     }
     if (score > maxScore) {
       maxScore = score;
@@ -114,10 +114,10 @@ export default function IntegrationBuilderPage({ files }) {
 
       let maxScore = 0;
       let maxScoreIndex = 0;
-      for (let i = 0; i < availableValues.length; i++) {
+      for (let i = 0; i < availableValues.length; i += 1) {
         let score = 0;
         for (const comparingKey of Object.keys(availableValues[i])) {
-          if (currValues[comparingKey] === availableValues[i][comparingKey]) score++;
+          if (currValues[comparingKey] === availableValues[i][comparingKey]) score += 1;
         }
         if (score > maxScore) {
           maxScore = score;
@@ -140,7 +140,7 @@ export default function IntegrationBuilderPage({ files }) {
   const integration = useMemo(() => builder.build(builderOptions.values), [builderOptions]);
   const [selectedFilename, setSelectedFilename] = useState(integration.filenames[0]);
 
-  const [isLinkCopied, setLinkCopied] = useState<NodeJS.Timeout>();
+  const [isLinkCopied, setLinkCopied] = useState<number>();
 
   useEffect(() => {
     // Update selected file when either integration changed
@@ -160,7 +160,7 @@ export default function IntegrationBuilderPage({ files }) {
     if (isLinkCopied) return;
     copyToClipboard(getWindowLocation());
 
-    const timeout = setTimeout(() => {
+    const timeout = window.setTimeout(() => {
       setLinkCopied(undefined);
     }, 3000);
     setLinkCopied(timeout);
@@ -180,7 +180,7 @@ export default function IntegrationBuilderPage({ files }) {
 
     const stepEls = el.getElementsByClassName(styles.stepContainer);
 
-    for (let i = 0; i < stepEls.length; i++) {
+    for (let i = 0; i < stepEls.length; i += 1) {
       const stepEl = stepEls.item(i) as HTMLDivElement;
       if (el.scrollTop > stepEl.offsetTop) continue;
 
