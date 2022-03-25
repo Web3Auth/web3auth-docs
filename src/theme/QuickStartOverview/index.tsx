@@ -2,6 +2,10 @@ import Link from "@docusaurus/Link";
 import classNames from "classnames";
 
 import styles from "./styles.module.css";
+import Lottie from "react-lottie";
+import animationData from "../../../static/lottie/Hero.json";
+
+const defaultOptions = { loop: true, autoplay: true, animationData: animationData, rendererSettings: { preserveAspectRatio: "xMidYMid slice" } };
 
 export default function Web3AuthOverview() {
   return (
@@ -19,6 +23,7 @@ export default function Web3AuthOverview() {
             </Link>
           </div>
         </div>
+        <Lottie options={defaultOptions} height={300} width={350} />
       </div>
     </div>
   );
