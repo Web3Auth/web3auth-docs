@@ -9,14 +9,19 @@ module.exports = {
       collapsed: false,
       items: [
         "overview/what-is-web3auth",
-        "overview/how-web3auth-works",
+        "overview/technical-architecture",
         "overview/audits",
         {
           Legal: ["overview/legal/cookie-policy", "overview/legal/privacy-policy", "overview/legal/terms-and-conditions"],
         },
       ],
     },
-    "get-started",
+    {
+      type: "category",
+      label: "Get Started",
+      link: { type: 'doc', id: "get-started/get-started" },
+      items: ["get-started/quick-start", "get-started/understand-sdk"]
+    },
     {
       type: "category",
       label: "Developing with Web3Auth",
