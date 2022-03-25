@@ -1,6 +1,6 @@
+import CommonSteps from "../common/steps";
 import { IntegrationBuilder, IntegrationStep } from "../interfaces";
 import STEPS from "./steps";
-import CommonSteps from "../common/steps";
 
 const directAuthIntegrationBuilder: IntegrationBuilder = {
   displayName: "CustomAuth & Login UI",

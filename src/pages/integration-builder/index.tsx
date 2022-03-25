@@ -1,12 +1,13 @@
-import React, { MouseEvent, UIEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { MDXProvider } from "@mdx-js/react";
 import Layout from "@theme/Layout";
-import IntegrationBuilderCodeView from "@theme/IntegrationBuilderCodeView";
 import MDXComponents from "@theme/MDXComponents";
 import classNames from "classnames";
-import { AiOutlineCheck, AiOutlineLink } from "react-icons/ai";
 import copyToClipboard from "copy-to-clipboard";
+import { MouseEvent, UIEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { AiOutlineCheck, AiOutlineLink } from "react-icons/ai";
+
 import builders from "../../lib/integration-builder";
+import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
 import styles from "./styles.module.css";
 
 const defaultBuilderId = "wallet";
@@ -56,10 +57,10 @@ const getInitialBuilderOptions = (): BuilderOptions => {
 
   let maxScore = 0;
   let maxScoreIndex = 0;
-  for (let i = 0; i < availableValues.length; i++) {
+  for (let i = 0; i < availableValues.length; i += 1) {
     let score = 0;
     for (const comparingKey of Object.keys(availableValues[i])) {
-      if (queriedOptions[comparingKey] === availableValues[i][comparingKey]) score++;
+      if (queriedOptions[comparingKey] === availableValues[i][comparingKey]) score += 1;
     }
     if (score > maxScore) {
       maxScore = score;
@@ -86,7 +87,7 @@ const getURLFromBuilderOptions = (opts: BuilderOptions): string => {
   return url.toString();
 };
 
-export default function IntegrationBuilderPage({ files }) {
+export default function IntegrationBuilderPage({ files }: { files: Record<string, any> }) {
   const [builderOptions, setBuilderOptions] = useState<{
     id: string;
     values: Record<string, string>;
@@ -113,10 +114,10 @@ export default function IntegrationBuilderPage({ files }) {
 
       let maxScore = 0;
       let maxScoreIndex = 0;
-      for (let i = 0; i < availableValues.length; i++) {
+      for (let i = 0; i < availableValues.length; i += 1) {
         let score = 0;
         for (const comparingKey of Object.keys(availableValues[i])) {
-          if (currValues[comparingKey] === availableValues[i][comparingKey]) score++;
+          if (currValues[comparingKey] === availableValues[i][comparingKey]) score += 1;
         }
         if (score > maxScore) {
           maxScore = score;
@@ -139,7 +140,7 @@ export default function IntegrationBuilderPage({ files }) {
   const integration = useMemo(() => builder.build(builderOptions.values), [builderOptions]);
   const [selectedFilename, setSelectedFilename] = useState(integration.filenames[0]);
 
-  const [isLinkCopied, setLinkCopied] = useState<NodeJS.Timeout>();
+  const [isLinkCopied, setLinkCopied] = useState<number>();
 
   useEffect(() => {
     // Update selected file when either integration changed
@@ -159,17 +160,17 @@ export default function IntegrationBuilderPage({ files }) {
     if (isLinkCopied) return;
     copyToClipboard(getWindowLocation());
 
-    const timeout = setTimeout(() => {
+    const timeout = window.setTimeout(() => {
       setLinkCopied(undefined);
     }, 3000);
     setLinkCopied(timeout);
   }, [integration, isLinkCopied]);
 
-  const steps = integration.steps;
+  const { steps } = integration;
   const [stepIndex, setStepIndex] = useState(0);
 
   const onChangeStep = (index: number) => {
-    const pointer = steps[index].pointer;
+    const { pointer } = steps[index];
     if (pointer) setSelectedFilename(pointer.filename);
     setStepIndex(index);
   };
@@ -179,14 +180,14 @@ export default function IntegrationBuilderPage({ files }) {
 
     const stepEls = el.getElementsByClassName(styles.stepContainer);
 
-    for (let i = 0; i < stepEls.length; i++) {
+    for (let i = 0; i < stepEls.length; i += 1) {
       const stepEl = stepEls.item(i) as HTMLDivElement;
-      if (el.scrollTop > stepEl.offsetTop) continue;
-
-      const dis = stepEl.offsetTop - el.scrollTop;
-      if (dis >= 200 && dis <= 300) {
-        onChangeStep(i);
-        break;
+      if (el.scrollTop <= stepEl.offsetTop) {
+        const dis = stepEl.offsetTop - el.scrollTop;
+        if (dis >= 200 && dis <= 300) {
+          onChangeStep(i);
+          break;
+        }
       }
     }
   };
@@ -232,6 +233,7 @@ export default function IntegrationBuilderPage({ files }) {
                     [styles.copied]: isLinkCopied,
                   })}
                   onClick={onClickCopyLink}
+                  type="button"
                 >
                   {isLinkCopied ? (
                     <>
@@ -243,15 +245,17 @@ export default function IntegrationBuilderPage({ files }) {
                 </button>
               </div>
               <ul className="pills">
-                {Object.entries(builders).map(([id, builder]) => (
+                {Object.entries(builders).map(([id, builderx]) => (
                   <li
                     key={id}
                     className={classNames("pills__item", {
                       "pills__item--active": builderOptions.id === id,
                     })}
                     onClick={onChangeBuilder.bind(this, id)}
+                    onKeyDown={onChangeBuilder.bind(this, id)}
+                    role="menuitem"
                   >
-                    {builder.displayName}
+                    {builderx.displayName}
                   </li>
                 ))}
               </ul>
@@ -259,11 +263,14 @@ export default function IntegrationBuilderPage({ files }) {
             <MDXProvider components={MDXComponents}>
               {steps.map((step, index) => (
                 <div
-                  key={index}
+                  key={step.title}
                   className={classNames(styles.stepContainer, {
                     [styles.stepSelected]: index === stepIndex,
                   })}
                   onClick={onChangeStep.bind(this, index)}
+                  onKeyDown={onChangeStep.bind(this, index)}
+                  role="tab"
+                  tabIndex={index}
                 >
                   <p className={styles.stepHeader}>{step.title}</p>
                   <div className={styles.stepBody}>{step.content}</div>

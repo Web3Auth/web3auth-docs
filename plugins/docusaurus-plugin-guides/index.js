@@ -11,19 +11,20 @@ module.exports = (context, options) => ({
   name: "docusaurus-plugin-guides",
   getPathsToWatch() {
     const dir = path.resolve(context.siteDir, "src", "pages", "guides");
-    return [`${dir}/**/*.md`];
+    return [`${dir}/**/*.{md,mdx}`];
   },
   async loadContent() {
     const dir = path.resolve(context.siteDir, "src", "pages", "guides");
 
-    const filenames = await globAsync("**/*.md", { cwd: dir, nodir: true });
+    const filenames = await globAsync("**/*.{md,mdx}", { cwd: dir, nodir: true });
     const frontMatters = {};
 
     for (const filename of filenames) {
       const src = await readFileAsync(path.join(dir, filename), "utf-8");
       const { data } = matter(src);
-
-      const name = filename.substr(0, filename.length - 3); // Trim .md
+      const splits = filename.split(".");
+      splits.pop();
+      const name = splits.join("."); // Trim .md
       frontMatters[name] = data;
     }
 

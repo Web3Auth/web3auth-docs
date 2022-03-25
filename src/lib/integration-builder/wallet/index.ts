@@ -17,7 +17,7 @@ const torusWalletIntegrationBuilder: IntegrationBuilder = {
     },
   },
 
-  getAvailableOptions(optionKey, optionValue) {
+  getAvailableOptions(optionKey) {
     const availableOptions: Record<string, string>[] = [];
     switch (optionKey) {
       case "chain":

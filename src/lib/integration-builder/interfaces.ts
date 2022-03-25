@@ -1,4 +1,15 @@
-import React from "react";
+import { ReactNode } from "react";
+
+export interface IntegrationStep {
+  title: string;
+  content: ReactNode;
+  pointer?: { filename: string; range?: string };
+}
+
+export interface Integration {
+  filenames: string[];
+  steps: IntegrationStep[];
+}
 
 export interface IntegrationBuilder {
   displayName: string;
@@ -15,15 +26,4 @@ export interface IntegrationBuilder {
   getAvailableOptions(optionKey: string, optionValue: string): Record<string, string>[];
 
   build(values: Record<string, string>): Integration;
-}
-
-export interface IntegrationStep {
-  title: string;
-  content: React.ReactNode;
-  pointer?: { filename: string; range?: string };
-}
-
-export interface Integration {
-  filenames: string[];
-  steps: IntegrationStep[];
 }

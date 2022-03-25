@@ -1,13 +1,14 @@
-import React from "react";
 import { MDXProvider } from "@mdx-js/react";
 import Layout from "@theme/Layout";
 import MDXComponents from "@theme/MDXComponents";
 import TOC from "@theme/TOC";
 import OriginalMDXPage from "@theme-original/MDXPage";
 import classNames from "classnames";
+import { ComponentProps } from "react";
+
 import styles from "./styles.module.css";
 
-export default function MDXPage(props: React.ComponentProps<typeof OriginalMDXPage>) {
+export default function MDXPage(props: ComponentProps<typeof OriginalMDXPage>) {
   const { content: MDXPageContent } = props;
   const { frontMatter, metadata } = MDXPageContent;
   const { permalink } = metadata;

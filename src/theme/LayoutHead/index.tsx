@@ -1,8 +1,8 @@
-import React from "react";
 import Head from "@docusaurus/Head";
 import OriginalLayoutHead from "@theme-original/LayoutHead";
+import { ComponentProps } from "react";
 
-export default function LayoutHead(props: React.ComponentProps<typeof OriginalLayoutHead>) {
+export default function LayoutHead(props: ComponentProps<typeof OriginalLayoutHead>) {
   return (
     <>
       <Head>
