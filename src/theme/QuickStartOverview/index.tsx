@@ -1,6 +1,7 @@
-import React from "react";
 import Link from "@docusaurus/Link";
 import classNames from "classnames";
+import React from "react";
+
 import styles from "./styles.module.css";
 
 export default function Web3AuthOverview() {
@@ -9,7 +10,7 @@ export default function Web3AuthOverview() {
       <div className={classNames(styles.cardQuickStart)}>
         <div className={styles.content}>
           <p className={styles.headline}>Start building your dApp or Wallet</p>
-          <p className={styles.description}></p>
+          <p className={styles.description} />
 
           <div className={styles.btnContainer}>
             <Link to="https://docs.web3auth.io">

@@ -67,14 +67,14 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
       case "chain":
         const availableChainLangs = AVAILABLE_EXAMPLES[optionValue].langs;
         for (let i = 0; i < availableChainLangs.length; i++) {
-          let lang = availableChainLangs[i];
+          const lang = availableChainLangs[i];
           availableOptions.push({ lang });
         }
         break;
       case "lang":
         const availableLangExamples = AVAILABLE_LANGS[optionValue].examples;
         for (let i = 0; i < availableLangExamples.length; i++) {
-          let example = availableLangExamples[i];
+          const example = availableLangExamples[i];
           availableOptions.push({ chain: example });
         }
         break;
@@ -89,7 +89,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
     const filenames: string[] = [];
     const steps: IntegrationStep[] = [];
     const { chain, lang } = values;
-    if (chain === "Solana" /*&& lang === "React"*/) {
+    if (chain === "Solana" /* && lang === "React" */) {
       filenames.push("solana/login.js");
       // Add markdown steps
       steps.push(
@@ -125,7 +125,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
           pointer: { filename: "solana/login.js", range: "76-80" },
         }
       );
-    } else if (chain === "Polygon" /*&& lang === "React"*/) {
+    } else if (chain === "Polygon" /* && lang === "React" */) {
       filenames.push("polygon/login.js");
       // Add markdown steps
       steps.push(
@@ -157,7 +157,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
           pointer: { filename: "polygon/login.js", range: "93-97" },
         }
       );
-    } else if (chain === "Binance Smart Chain" /*&& lang === "React"*/) {
+    } else if (chain === "Binance Smart Chain" /* && lang === "React" */) {
       filenames.push("binance/login.js");
       // Add markdown steps
       steps.push(
@@ -189,7 +189,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
           pointer: { filename: "binance/login.js", range: "54-58" },
         }
       );
-    } else if (chain === "Avalanche" /*&& lang === "React"*/) {
+    } else if (chain === "Avalanche" /* && lang === "React" */) {
       filenames.push("avalanche/login.js");
       // Add markdown steps
       steps.push(
@@ -221,7 +221,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
           pointer: { filename: "avalanche/login.js", range: "63-67" },
         }
       );
-    } else if (chain === "ZkSync" /*&& lang === "React"*/) {
+    } else if (chain === "ZkSync" /* && lang === "React" */) {
       filenames.push("zkSync/login.js");
       // Add markdown steps
       steps.push(
@@ -265,7 +265,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
           pointer: { filename: "zkSync/login.js", range: "201-205" },
         }
       );
-    } else if (chain === "Arbitrum" /*&& lang === "React"*/) {
+    } else if (chain === "Arbitrum" /* && lang === "React" */) {
       filenames.push("arbitrum/login.js");
       filenames.push("arbitrum/accountInfo.js");
 
@@ -307,7 +307,7 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
           pointer: { filename: "arbitrum/login.js", range: "201-205" },
         }
       );
-    } else if (chain === "Ethereum" /*&& lang === "HTML"*/) {
+    } else if (chain === "Ethereum" /* && lang === "HTML" */) {
       if (lang === "HTML" || lang === "React") {
         filenames.push("web/index.html"); // Show code files in browsers
 

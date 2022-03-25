@@ -1,12 +1,13 @@
-import React, { MouseEvent, UIEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { MDXProvider } from "@mdx-js/react";
 import Layout from "@theme/Layout";
-import IntegrationBuilderCodeView from "@theme/IntegrationBuilderCodeView";
 import MDXComponents from "@theme/MDXComponents";
 import classNames from "classnames";
-import { AiOutlineCheck, AiOutlineLink } from "react-icons/ai";
 import copyToClipboard from "copy-to-clipboard";
+import { MouseEvent, UIEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { AiOutlineCheck, AiOutlineLink } from "react-icons/ai";
+
 import builders from "../../lib/integration-builder";
+import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
 import styles from "./styles.module.css";
 
 const defaultBuilderId = "wallet";
@@ -165,11 +166,11 @@ export default function IntegrationBuilderPage({ files }) {
     setLinkCopied(timeout);
   }, [integration, isLinkCopied]);
 
-  const steps = integration.steps;
+  const { steps } = integration;
   const [stepIndex, setStepIndex] = useState(0);
 
   const onChangeStep = (index: number) => {
-    const pointer = steps[index].pointer;
+    const { pointer } = steps[index];
     if (pointer) setSelectedFilename(pointer.filename);
     setStepIndex(index);
   };

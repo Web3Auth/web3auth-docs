@@ -1,9 +1,9 @@
-import React from "react";
 import Link from "@docusaurus/Link";
 import classNames from "classnames";
-import styles from "./styles.module.css";
-import { SiEthereum } from "react-icons/si";
 import { FaFingerprint } from "react-icons/fa";
+import { SiEthereum } from "react-icons/si";
+
+import styles from "./styles.module.css";
 
 export default function OpenLoginGetStartedCards() {
   return (

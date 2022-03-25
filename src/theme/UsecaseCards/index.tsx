@@ -1,5 +1,5 @@
-import React from "react";
 import classNames from "classnames";
+
 import styles from "./styles.module.css";
 
 export default function UsecaseCards() {
@@ -20,6 +20,7 @@ export default function UsecaseCards() {
               className={styles.footer}
               target="_blank"
               href="https://medium.com/toruslabs/accelerating-blockchain-adoption-amongst-mainstream-users-with-skyweaver-1a0ea17b1e78"
+              rel="noreferrer"
             >
               Learn more
             </a>
@@ -39,6 +40,7 @@ export default function UsecaseCards() {
               className={styles.footer}
               target="_blank"
               href="https://medium.com/toruslabs/how-kukai-reached-a-million-user-logins-with-web3auth-sdk-58bdc08ca83d"
+              rel="noreferrer"
             >
               Learn more
             </a>
@@ -56,7 +58,7 @@ export default function UsecaseCards() {
             success and helping them build the easiest and secure wallet on the Cosmos Blockchain.
           </p>
           <div>
-            <a className={styles.footer} target="_blank" href="https://www.keplr.app/">
+            <a className={styles.footer} target="_blank" href="https://www.keplr.app/" rel="noreferrer">
               Learn more
             </a>
           </div>
@@ -74,6 +76,7 @@ export default function UsecaseCards() {
               className={styles.footer}
               target="_blank"
               href="https://medium.com/toruslabs/how-binance-chain-extension-wallet-removes-seedphrases-with-web3auth-40cd527fcfaf"
+              rel="noreferrer"
             >
               Learn more
             </a>
@@ -93,7 +96,7 @@ export default function UsecaseCards() {
             your Grandma!
           </p>
           <div>
-            <a className={styles.footer} target="_blank" href="https://www.featured.market/">
+            <a className={styles.footer} target="_blank" href="https://www.featured.market/" rel="noreferrer">
               Learn more
             </a>
           </div>

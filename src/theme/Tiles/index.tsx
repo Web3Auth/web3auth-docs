@@ -1,6 +1,6 @@
-import React from "react";
-import styles from "./styles.module.css";
 import Link from "@docusaurus/Link";
+
+import styles from "./styles.module.css";
 
 export interface Tile {
   key: string;

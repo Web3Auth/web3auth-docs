@@ -1,7 +1,8 @@
-import React, { useState } from "react";
 import Link from "@docusaurus/Link";
-import styles from "./styles.module.css";
 import classNames from "classnames";
+import { useState } from "react";
+
+import styles from "./styles.module.css";
 
 export default function ProductSuiteStack() {
   const [tab, setTab] = useState<"overview" | "openlogin" | "wallet" | "custom-auth" | "network">("overview");

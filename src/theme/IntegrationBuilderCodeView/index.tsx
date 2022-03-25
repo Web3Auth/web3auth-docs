@@ -1,10 +1,10 @@
-import React from "react";
 import CodeBlock from "@theme/CodeBlock";
-import { FiFile } from "react-icons/fi";
-import { useSpring, animated } from "react-spring";
-import rangeParser from "parse-numeric-range";
 import classNames from "classnames";
+import rangeParser from "parse-numeric-range";
 import path from "path";
+import { FiFile } from "react-icons/fi";
+import { animated, useSpring } from "react-spring";
+
 import styles from "./styles.module.css";
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
   highlight?: string;
   selectedFilename: string;
   onClickFilename: (filename: string) => void;
+  scroll?: number;
 }
 
 const getDisplayName = (filename: string): string => {
@@ -46,6 +47,7 @@ export default function IntegrationBuilderCodeView({ selectedFilename, filenames
               })}
               role="tab"
               onClick={onClickFilename.bind(this, filename)}
+              onKeyDown={onClickFilename.bind(this, filename)}
             >
               <FiFile />
               <span>{getDisplayName(filename)}</span>
@@ -53,7 +55,6 @@ export default function IntegrationBuilderCodeView({ selectedFilename, filenames
           ))}
         </ul>
       </div>
-      {/* @ts-ignore */}
       <animated.div className={styles.body} scrollTop={props.scroll}>
         <CodeBlock className={getLanguage(selectedFilename)} metastring={highlight ? `{${highlight}}` : undefined}>
           {fileContents[selectedFilename]}
