@@ -93,7 +93,7 @@ export default function ProductSuiteStack() {
               <ul>
                 <li>All logins and full UX control</li>
                 <li>Fully-customizable authentication experiences</li>
-                <li>Leverage on Torus' key infrastructure</li>
+                <li>Leverage on Torus&apos; key infrastructure</li>
               </ul>
               <hr />
               <Link to="/customauth/get-started" className={styles.link}>
@@ -133,7 +133,7 @@ export default function ProductSuiteStack() {
       );
       break;
     default:
-      content = <></>;
+      content = null;
       break;
   }
 
@@ -142,7 +142,12 @@ export default function ProductSuiteStack() {
       <div className={styles.tabsContainer}>
         <div className={styles.tabSection}>
           <ul>
-            <li className={tab === "overview" ? styles.selected : undefined} onClick={() => setTab("overview")}>
+            <li
+              className={tab === "overview" ? styles.selected : undefined}
+              onClick={() => setTab("overview")}
+              onKeyDown={() => setTab("overview")}
+              role="tab"
+            >
               Overview
             </li>
           </ul>
@@ -150,10 +155,20 @@ export default function ProductSuiteStack() {
         <div className={styles.tabSection}>
           <span>Plug n play</span>
           <ul>
-            <li className={tab === "openlogin" ? styles.selected : undefined} onClick={() => setTab("openlogin")}>
+            <li
+              className={tab === "openlogin" ? styles.selected : undefined}
+              onClick={() => setTab("openlogin")}
+              role="tab"
+              onKeyDown={() => setTab("openlogin")}
+            >
               OpenLogin
             </li>
-            <li className={tab === "wallet" ? styles.selected : undefined} onClick={() => setTab("wallet")}>
+            <li
+              className={tab === "wallet" ? styles.selected : undefined}
+              role="tab"
+              onClick={() => setTab("wallet")}
+              onKeyDown={() => setTab("wallet")}
+            >
               Wallet
             </li>
           </ul>
@@ -161,7 +176,12 @@ export default function ProductSuiteStack() {
         <div className={styles.tabSection}>
           <span>Full customization</span>
           <ul>
-            <li className={tab === "custom-auth" ? styles.selected : undefined} onClick={() => setTab("custom-auth")}>
+            <li
+              className={tab === "custom-auth" ? styles.selected : undefined}
+              onClick={() => setTab("custom-auth")}
+              role="tab"
+              onKeyDown={() => setTab("custom-auth")}
+            >
               CustomAuth
             </li>
           </ul>
@@ -169,7 +189,12 @@ export default function ProductSuiteStack() {
         <div className={styles.tabSection}>
           <span>Infrastructure</span>
           <ul>
-            <li className={tab === "network" ? styles.selected : undefined} onClick={() => setTab("network")}>
+            <li
+              className={tab === "network" ? styles.selected : undefined}
+              onClick={() => setTab("network")}
+              onKeyDown={() => setTab("network")}
+              role="tab"
+            >
               Torus Key Infrastructure
             </li>
           </ul>

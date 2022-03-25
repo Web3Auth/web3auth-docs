@@ -13,7 +13,9 @@ export default function Web3AuthOverview() {
 
           <div className={styles.btnContainer}>
             <Link to="https://docs.web3auth.io">
-              <button className={classNames(styles.ctaBtn, styles.ctaBtnWhite)}>Start Building</button>
+              <button type="button" className={classNames(styles.ctaBtn, styles.ctaBtnWhite)}>
+                Start Building
+              </button>
             </Link>
           </div>
         </div>

@@ -11,8 +11,8 @@ export default function UsecaseCards() {
           <h6 className={styles.title}>Skyweaver</h6>
           <h5 className={styles.headline}>Web3 games that feels like Web2</h5>
           <p>
-            We onboard users via the Sequence Wallet. Its social logins are powered by the Torus Network. There's no better way to plug in social auth
-            into Web3 on a wallet
+            We onboard users via the Sequence Wallet. Its social logins are powered by the Torus Network. There&apos;s no better way to plug in social
+            auth into Web3 on a wallet
             <i> - Peter Kieltyka, Co-founder</i>.
           </p>
           <div>
@@ -90,10 +90,10 @@ export default function UsecaseCards() {
           <h6 className={styles.title}>Binance Featured Market</h6>
           <h5 className={styles.headline}>Seamless onboarding that scales</h5>
           <p>
-            Web3Auth - 2021 has been a challenging year full of opportunities for us. We're thrilled with the growth we've experienced, the
-            partnerships we've forged, and the friends we've made. 2022 is going to be our best year yet! Sequoia- Cryptos worth more than GDPs of
-            nations are lost due to inefficient Private Key Management. Send in your wishes to these guys who want to make Cryptos accessible even to
-            your Grandma!
+            Web3Auth - 2021 has been a challenging year full of opportunities for us. We&apos;re thrilled with the growth we&apos;ve experienced, the
+            partnerships we&apos;ve forged, and the friends we&apos;ve made. 2022 is going to be our best year yet! Sequoia- Cryptos worth more than
+            GDPs of nations are lost due to inefficient Private Key Management. Send in your wishes to these guys who want to make Cryptos accessible
+            even to your Grandma!
           </p>
           <div>
             <a className={styles.footer} target="_blank" href="https://www.featured.market/" rel="noreferrer">

@@ -87,7 +87,7 @@ const getURLFromBuilderOptions = (opts: BuilderOptions): string => {
   return url.toString();
 };
 
-export default function IntegrationBuilderPage({ files }) {
+export default function IntegrationBuilderPage({ files }: { files: Record<string, any> }) {
   const [builderOptions, setBuilderOptions] = useState<{
     id: string;
     values: Record<string, string>;
@@ -182,12 +182,12 @@ export default function IntegrationBuilderPage({ files }) {
 
     for (let i = 0; i < stepEls.length; i += 1) {
       const stepEl = stepEls.item(i) as HTMLDivElement;
-      if (el.scrollTop > stepEl.offsetTop) continue;
-
-      const dis = stepEl.offsetTop - el.scrollTop;
-      if (dis >= 200 && dis <= 300) {
-        onChangeStep(i);
-        break;
+      if (el.scrollTop <= stepEl.offsetTop) {
+        const dis = stepEl.offsetTop - el.scrollTop;
+        if (dis >= 200 && dis <= 300) {
+          onChangeStep(i);
+          break;
+        }
       }
     }
   };
@@ -233,6 +233,7 @@ export default function IntegrationBuilderPage({ files }) {
                     [styles.copied]: isLinkCopied,
                   })}
                   onClick={onClickCopyLink}
+                  type="button"
                 >
                   {isLinkCopied ? (
                     <>
@@ -244,15 +245,17 @@ export default function IntegrationBuilderPage({ files }) {
                 </button>
               </div>
               <ul className="pills">
-                {Object.entries(builders).map(([id, builder]) => (
+                {Object.entries(builders).map(([id, builderx]) => (
                   <li
                     key={id}
                     className={classNames("pills__item", {
                       "pills__item--active": builderOptions.id === id,
                     })}
                     onClick={onChangeBuilder.bind(this, id)}
+                    onKeyDown={onChangeBuilder.bind(this, id)}
+                    role="menuitem"
                   >
-                    {builder.displayName}
+                    {builderx.displayName}
                   </li>
                 ))}
               </ul>
@@ -260,11 +263,14 @@ export default function IntegrationBuilderPage({ files }) {
             <MDXProvider components={MDXComponents}>
               {steps.map((step, index) => (
                 <div
-                  key={index}
+                  key={step.title}
                   className={classNames(styles.stepContainer, {
                     [styles.stepSelected]: index === stepIndex,
                   })}
                   onClick={onChangeStep.bind(this, index)}
+                  onKeyDown={onChangeStep.bind(this, index)}
+                  role="tab"
+                  tabIndex={index}
                 >
                   <p className={styles.stepHeader}>{step.title}</p>
                   <div className={styles.stepBody}>{step.content}</div>
