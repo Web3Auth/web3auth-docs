@@ -3,7 +3,7 @@ import STEPS from "./steps";
 import CommonSteps from "../common/steps";
 
 const directAuthIntegrationBuilder: IntegrationBuilder = {
-  displayName: "CustomAuth",
+  displayName: "CustomAuth & Login UI",
 
   options: {
     chain: {

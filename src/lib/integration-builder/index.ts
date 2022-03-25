@@ -1,10 +1,10 @@
 import { IntegrationBuilder } from "./interfaces";
 import directAuthIntegrationBuilder from "./customauth";
 import torusWalletIntegrationBuilder from "./wallet";
-import openLoginIntegrationBuilder from "./open-login";
+import plugnplayIntegrationBuilder from "./plugnplay";
 
 const integrationBuilders: Record<string, IntegrationBuilder> = {
-  "open-login": openLoginIntegrationBuilder,
+  plugnplay: plugnplayIntegrationBuilder,
   wallet: torusWalletIntegrationBuilder,
   customauth: directAuthIntegrationBuilder,
 };
