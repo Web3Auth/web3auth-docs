@@ -5,6 +5,8 @@ module.exports = {
     {
       type: "category",
       label: "Overview",
+      collapsible: true,
+      collapsed: false,
       items: [
         "overview/what-is-web3auth",
         "overview/how-web3auth-works",
@@ -14,23 +16,7 @@ module.exports = {
         }
       ],
     },
-    {
-      type: "category",
-      label: "Get Started",
-      items: [
-        "get-started/basic-installation",
-        {
-          type: 'link',
-          label: 'Quick Start',
-          href: '../quickstart/',
-        },
-        {
-          type: 'link',
-          label: 'Demo Apps',
-          href: '../examples-and-usecases',
-        },
-      ],
-    },
+    "get-started",
     {
       type: "category",
       label: "Developing with Web3Auth",
@@ -40,16 +26,18 @@ module.exports = {
         "developing-with-web3auth/adapters-and-configuration",
         "developing-with-web3auth/event-lifecycle",
         {
-          "Connect with Blockchain": [
-            "developing-with-web3auth/connecting-blockchains/arbitrum",
-            "developing-with-web3auth/connecting-blockchains/avalanche",
-            "developing-with-web3auth/connecting-blockchains/binance",
-            "developing-with-web3auth/connecting-blockchains/ethereum",
-            "developing-with-web3auth/connecting-blockchains/polygon",
-            "developing-with-web3auth/connecting-blockchains/solana",
-            "developing-with-web3auth/connecting-blockchains/starknet",
-            "developing-with-web3auth/connecting-blockchains/zksync",
-            "developing-with-web3auth/connecting-blockchains/other-blockchains",
+          type: "category",
+          label: "Connect with Blockchain",
+          link: { type: "doc", id: "developing-with-web3auth/connect-blockchain/connect-blockchain" },
+          items: [
+            "developing-with-web3auth/connect-blockchain/arbitrum",
+            "developing-with-web3auth/connect-blockchain/avalanche",
+            "developing-with-web3auth/connect-blockchain/binance",
+            "developing-with-web3auth/connect-blockchain/ethereum",
+            "developing-with-web3auth/connect-blockchain/polygon",
+            "developing-with-web3auth/connect-blockchain/solana",
+            "developing-with-web3auth/connect-blockchain/starknet",
+            "developing-with-web3auth/connect-blockchain/zksync",
           ]
         },
         "developing-with-web3auth/verifiers",
@@ -60,6 +48,13 @@ module.exports = {
     {
       type: "category",
       label: "API Reference",
+      link: {
+        type: 'generated-index',
+        title: 'API Reference',
+        description: 'Explore the Web3Auth SDKs at a glance',
+        slug: '/category/api-reference',
+        keywords: ['api-reference'],
+      },
       items: [
         {
           Web: [
