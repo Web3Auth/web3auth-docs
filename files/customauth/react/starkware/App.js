@@ -133,7 +133,7 @@ interface IState {
   signedMessage?: ec.Signature | null;
 }
 
-interface IProps {}
+interface IProps { }
 
 class PopupMode extends React.Component<IProps, IState> {
   constructor(props: IProps) {
@@ -225,26 +225,26 @@ class PopupMode extends React.Component<IProps, IState> {
     return account;
   };
 
-   /**
-   *
-   * @param str utf 8 string to be signed
-   * @param prefix utf-8 prefix padded to 252 bits (optional)
-   * @returns
-   */
+  /**
+  *
+  * @param str utf 8 string to be signed
+  * @param prefix utf-8 prefix padded to 252 bits (optional)
+  * @returns
+  */
   getPedersenHashRecursively = (str: string, prefix?: string): string => {
-      const TEST_MESSAGE_SUFFIX = prefix || "OPENLOGIN STARKWARE-";
-      const x = Buffer.from(str, "utf8");
-      const binaryStr = hexToBinary(bufferToHex(x));
-      const rounds = Math.ceil(binaryStr.length / 252);
-      if (rounds > 1) {
-        const currentChunkHex = binaryToHex(binaryStr.substring(0, 252));
-        const hash = pedersen([strToHex(TEST_MESSAGE_SUFFIX), new BN(currentChunkHex, "hex").toString(16)]);
-        const pendingStr = binaryToUtf8(binaryStr.substring(252));
-        return getPedersenHashRecursively(pendingStr.replace("\n", ""), hash);
-      }
-      const currentChunkHex = binaryToHex(binaryStr.padEnd(252, "0"));
-      return pedersen([utils.number.toBN(strToHex(TEST_MESSAGE_SUFFIX), "hex"), utils.number.toBN(currentChunkHex, "hex")]);
-    };
+    const TEST_MESSAGE_SUFFIX = prefix || "OPENLOGIN STARKWARE-";
+    const x = Buffer.from(str, "utf8");
+    const binaryStr = hexToBinary(bufferToHex(x));
+    const rounds = Math.ceil(binaryStr.length / 252);
+    if (rounds > 1) {
+      const currentChunkHex = binaryToHex(binaryStr.substring(0, 252));
+      const hash = pedersen([strToHex(TEST_MESSAGE_SUFFIX), new BN(currentChunkHex, "hex").toString(16)]);
+      const pendingStr = binaryToUtf8(binaryStr.substring(252));
+      return getPedersenHashRecursively(pendingStr.replace("\n", ""), hash);
+    }
+    const currentChunkHex = binaryToHex(binaryStr.padEnd(252, "0"));
+    return pedersen([utils.number.toBN(strToHex(TEST_MESSAGE_SUFFIX), "hex"), utils.number.toBN(currentChunkHex, "hex")]);
+  };
 
 
   signMessageWithStarkKey = (e: any) => {
@@ -287,7 +287,7 @@ class PopupMode extends React.Component<IProps, IState> {
               <p>If you use any other domains, they won't work.</p>
               <p>The verifiers listed here are for example reference only. Please don't use them for anything other than testing purposes.</p>
               <div>
-                Reach out to us at <a href="mailto:hello@tor.us">hello@tor.us</a> or <a href="https://t.me/torusdev">telegram group</a> to get your
+                Reach out to us at <a href="mailto:hello@tor.us">hello@tor.us</a> or <a href="https://t.me/web3auth">telegram group</a> to get your
                 verifier deployed for your client id.
               </div>
             </div>

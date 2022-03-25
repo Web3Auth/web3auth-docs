@@ -19,7 +19,7 @@ import RegisterApplication from "../../../docs/common/web/code/web3auth/_registe
 
 ## `Introduction`
 
-This guide is a tutorial to go through the steps required for using solana blockchain in web3auth.
+This guide is a tutorial to go through the steps required for using solana blockchain in web3auth. To get started, you can follow the code at our [web3auth-solana-example](https://github.com/Web3Auth/web3auth-solana-example) repository as well.
 
 <RegisterApplication />
 
@@ -74,4 +74,4 @@ Following are chainIds for solana networks in web3auth:-
 ## `Done`
 
 You have completed this tutorial,you can refer to working code of this tutorial
-[here](https://github.com/Web3Auth/Web3Auth/examples/vue-app/src/chains/solana.vue).
+[here](https://github.com/Web3Auth/web3auth-solana-example).

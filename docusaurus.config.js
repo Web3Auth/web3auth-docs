@@ -139,7 +139,7 @@ module.exports = {
             },
             {
               label: "YouTube",
-              href: "https://www.youtube.com/channel/UCFVwocOf8LjH0GTgX5gb5Tw",
+              href: "https://www.youtube.com/c/web3auth",
             },
           ],
         },
@@ -210,7 +210,8 @@ module.exports = {
           customCss: require.resolve("./src/css/custom.css"),
         },
         gtag: {
-          trackingID: "UA-126622802-2",
+          //
+          trackingID: "GTM-ML3T5M6",
         },
       },
     ],
