@@ -62,14 +62,37 @@ module.exports = {
       },
       items: [
         {
-          Web: [
+          type: "category",
+          label: "Web",
+          items: [
             "api-reference/web/choosesdk",
             "api-reference/web/plugnplay",
             "api-reference/web/customui",
-            "api-reference/web/adapters",
-            "api-reference/web/providers",
+            {
+              type: "category",
+              label: "Adapters",
+              link: { type: 'doc', id: "api-reference/web/adapters/adapters" },
+              items: [
+                "api-reference/web/adapters/openlogin",
+                "api-reference/web/adapters/torus-evm",
+                "api-reference/web/adapters/torus-solana",
+                "api-reference/web/adapters/metamask",
+                "api-reference/web/adapters/phantom",
+                "api-reference/web/adapters/wallet-connect-v1",
+              ]
+            },
+            {
+              type: "category",
+              label: "Providers",
+              link: { type: 'doc', id: "api-reference/web/providers/providers" },
+              items: [
+                "api-reference/web/providers/evm",
+                "api-reference/web/providers/solana",
+              ]
+            },
+            ,
             "api-reference/web/customauth",
-          ],
+          ]
         },
         {
           Android: [
