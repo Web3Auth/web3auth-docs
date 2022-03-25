@@ -40,9 +40,9 @@ const AVAILABLE_LANGS = {
   },
 };
 
-const openLoginIntegrationBuilder: IntegrationBuilder = {
+const plugnplayIntegrationBuilder: IntegrationBuilder = {
   // Name of the integration builder
-  displayName: "OpenLogin",
+  displayName: "Plug n Play",
 
   // Options that will be displayed in the UI for selection
   options: {
@@ -407,4 +407,4 @@ const openLoginIntegrationBuilder: IntegrationBuilder = {
   },
 };
 
-export default openLoginIntegrationBuilder;
+export default plugnplayIntegrationBuilder;
