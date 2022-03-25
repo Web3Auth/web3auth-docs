@@ -1,0 +1,124 @@
+---
+title: Torus EVM
+hide_table_of_contents: true
+---
+
+## Understanding Adapters
+
+Adapters act as connectors between Web3Auth and the underlying wallet provider. For example, an adapter for connecting with torus wallet is available
+under web3auth as [@web3auth/torus-evm-adapter](https://npm.io/package/@web3auth/torus-evm-adapter). Every adapter follows a common interface which is
+required by Web3Auth to communicate with the wallet.
+
+Web3Auth by default contains a pre-configured list of login adapters. It also provides flexibility to add/remove adapters or to use some existing
+adapter with custom configurations. This document acts as a reference for configuring various adapters available in web3auth.
+
+To configure an adapter create an instance of the adapter by using its corresponding package and pass the returned adapter instance in the
+`configureAdapter` function. For example, if you want to configure openlogin adapter, then call
+`import OpenloginAdapter from @web3auth/openlogin-adapter` package, create an instance of the adapter along with the configuration and pass the
+returned instance to `web3auth.configureAdapter` as shown in the example below.
+
+```ts
+import { getOpenloginAdapter, Web3AuthCore, getTorusEvmAdapter } from "@web3auth/core";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
+
+const web3authCore = new Web3AuthCore({
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: 3,
+})
+
+// add your adapters
+const torusEvmAdapter = await TorusWalletAdapter({});
+const openloginAdapter = await OpenloginAdapter({ adapterSettings: {
+    network: "testnet",
+    clientId: "example-client-id",
+    uxMode: "popup"
+  },
+  loginSettings: {
+    relogin: true,
+  }
+})
+
+web3authCore.configureAdapter(torusEvmAdapter)
+web3authCore.configureAdapter(openloginAdapter)
+
+await web3authCore.init()
+
+// connect to any adapter by passing adapter name in connectTo function.
+// it will use google social login with openlogin's authentication
+await web3authCore.connectTo(openloginAdapter.name, { { loginProvider: "google" } });
+```
+
+## Currently Available Adapters
+
+By default Web3Auth's modal UI supports a set of default adapters depending on the `authMode` being used. By default, Web3Auth requires basic
+configuration `client_id`, and registering a redirect if you are using CustomAuth adapter from the dashboard.
+
+The table below summarizes all the available adapters and their properties
+
+| Adapter                          | AuthMode         | ChainNamespace    | Default | Package Name                                                                                        |
+| -------------------------------- | ---------------- | ----------------- | ------- | --------------------------------------------------------------------------------------------------- |
+| `openlogin`                      | `WALLET`, `DAPP` | `EIP155`,`SOLANA` | `YES`   | [`@web3auth/openlogin-adapter`](https://npm.io/package/@web3auth/openlogin-adapter)                 |
+| `custom-auth`                    | `WALLET`, `DAPP` | `EIP155`,`SOLANA` | `NO`    | [`@web3auth/customauth-adapter`](https://npm.io/package/@web3auth/customauth-adapter)               |
+| `torus-evm`                      | `DAPP`           | `EIP155`          | `YES`   | [`@web3auth/torus-evm-adapter`](https://npm.io/package/@web3auth/torus-evm-adapter)                 |
+| `torus-solana`                   | `DAPP`           | `SOLANA`          | `YES`   | [`@web3auth/torus-solana-adapter`](https://npm.io/package/@web3auth/torus-solana-adapter)           |
+| `metamask`                       | `DAPP`           | `EIP155`          | `YES`   | [`@web3auth/metamask-adapter`](https://npm.io/package/@web3auth/metamask-adapter)                   |
+| `phantom`                        | `DAPP`           | `SOLANA`          | `YES`   | [`@web3auth/phantom-adapter`](https://npm.io/package/@web3auth/phantom-adapter)                     |
+| `seedphrase`                     | `WALLET`         | `EIP155`,`SOLANA` | `YES`   | `coming soon..`                                                                                     |
+| `walletconnect-v1`               | `DAPP`           | `EIP155`          | `YES`   | [`@web3auth/wallet-connect-v1-adapter`](https://npm.io/package/@web3auth/wallet-connect-v1-adapter) |
+| `walletconnect-v2` (Coming Soon) | `DAPP`           | `MULTICHAIN`      | `NO`    | `coming soon...`                                                                                    |
+
+## Openlogin Adapter
+
+Openlogin Adapter allows user to login with openlogin. You can read more about openlogin's authentication
+[here](https://docs.tor.us/open-login/get-started).
+
+```ts
+import { OpenloginAdapter, OpenloginLoginParams } from "@web3auth/openlogin-adapter";
+import { MetamaskAdapter } from "@web3auth/metamask-adapter";
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    network: "testnet",
+    clientId: config.clientId,
+    uxMode: "redirect",
+  },
+  loginSettings: {
+    relogin: true,
+  },
+});
+// ⭐️ adding openlogin social logins to web3auth modal
+web3auth.configureAdapter(openloginAdapter);
+
+// ⭐️ adding metamask adapter to web3auth modal
+const metamaskAdapter = new MetamaskAdapter();
+this.web3auth.configureAdapter(metamaskAdapter);
+
+// ⭐️ initialize modal on page mount.
+const initializeModal = async () => {
+  subscribeAuthEvents(this.web3auth);
+  await web3auth.initModal();
+};
+```
+
+## Torus EVM Wallet Adapter
+
+Torus Wallet adapter allows to connect with torus wallet for evm chains. You can read more about torus wallet
+[here](https://docs.tor.us/wallet/get-started).
+
+## Torus Solana Wallet Adapter
+
+Torus solana adapter allows to connect with torus wallet for solana blockchain. You can read more about torus wallet
+[here](https://docs.tor.us/solana-wallet/get-started).
+
+## Metamask Wallet Adapter
+
+Metamask Adapter allows user to login with metamask wallet. You can read more about metamask wallet [here](https://docs.metamask.io/guide/).
+
+## Phantom Wallet Adapter
+
+Phantom adapter allows you to connect with phantom wallet. You can read more about phantom wallet [here](https://docs.phantom.app/).
+
+## Wallet Connect V1 adapter
+
+Wallet connect v1 adapter allows you login with wallet connect v1. You can read more about wallet connect [here](https://docs.walletconnect.com/).
