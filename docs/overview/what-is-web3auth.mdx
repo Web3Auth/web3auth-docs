@@ -3,48 +3,70 @@ title: What is Web3Auth?
 hide_table_of_contents: true
 ---
 
-Web3Auth is a pluggable auth suite for Web3 wallets and applications. It onboards both mainstream and crypto native users under a minute by providing
-experiences that they're most comfortable with. With support for all social logins, web & mobile native platforms, wallets and other key management
-methods, Web3Auth results in a standard **cryptographic key provider specific to the user and application**. To experience it for yourself check out
-some [examples](/usecases) or our [dashboard itself](https://dashboard.web3auth.io).
+Web3Auth is a pluggable auth suite for Web3 wallets and applications. It streamlines the onboarding of both mainstream and crypto native users under a
+minute by providing experiences that they're most comfortable with. With support for all social logins, web & mobile native platforms, wallets and
+other key management methods, Web3Auth results in a standard cryptographic key provider specific to the user and application.
+
+## What does Web3Auth do?
 
 <div style={{display: "flex", flexWrap: "wrap", gap: "10px"}}>
 <div style={{flexBasis: "50%", flexGrow: "10"}}>
-### With Web3Auth, wallets & applications get...
 
-#### Onboarding under a minute, for both mainstream and web3
+With Web3Auth integrated in your application, your user can sign up using the flow of their choice:
 
-Enable your application to provide familiar experiences to all users, boosting conversion rates by
-[as much as 54%](https://www.cio.com/article/234915/ditching-passwords-and-increasing-ecommerce-conversion-rates-by-54-2.html).
+- **Mainstream Social Account Logins, & Passwordless flows**: Users can register via Google, Twitter, GitHub, and any other OAuth providers of their
+  choice. Users can also register via a passwordless flow, where they can sign in a link sent to their email. This is enabled by the Torus Network's
+  key infrastructure [(tKey)](https://github.com/tkey/tkey). Know more about the key management and security of tkey and our infrastructure
+  [here](./key-management-and-security.mdx).
 
-- **Mainstream Social Account Logins, & Passwordless flows** - Users can register via Google, Twitter, Github, email verification, and countless more.
-- **Holistic Web3 Wallet/Key Management Support**: Empower users to use their wallet or key management of choice
+- **Holistic Web3 Wallet/Key Management Support**: Empower users to use their wallet or key management of choice. Using the Web3Auth suite, users can
+  use their existing wallet or key management of choice and hook it up with you application directly.
 
-#### Reduce loss & support tickets, provide an alternative to recovery/seed phrases
+## How can I use Web3Auth?
 
-Understanding and storing seed phrases take new users take anywhere from 10-15 minutes before any meaningful interaction with an app/wallet. Moreso
-quantifiably
-[losses are rapmant](https://finance.yahoo.com/news/4-2-billion-lost-bitcoin-154948781.html#:~:text=Approximately%2020%25%20of%20all%20Bitcoins,billion%2C%20a%20new%20study%20says.)
-in the crypto space with the incumbant standard of seed phrases. Provide an alternative, with Web3Auth's social logins that leverage on existing
-accounts and user devices to secure their key.
+Web3Auth comes with simple SDKs that can be integrated in multiple ways to provide the best experience for your users. We support all the available
+chains out there with special providers available for EVM and Solana.
 
-#### An easy or custom integration
+### Our SDKs
 
-- **Web and native mobile**: Web3Auth works both on web as well as mobile out of the box
-- **Whitelabel**: customize Web3Auth's UI such that it blends directly into your application
-- **Using your existing auth/userbase**: Plug in to your existing userbase or auth. Zero migration necessary.
-- **Non-custodial PKI**: with user flows that the mainstream user is familiar with
-- **Integrable in 5 minutes**: That’s it!
+- [JavaScript SDKs for Web](./api-reference/web/choosesdk.mdx)
+- [Native SDK for Android](./api-reference/android/setting-up.mdx)
+- [Native SDK for iOS](./api-reference/ios/setting-up.mdx)
+- [SDK for React Native](./api-reference/react-native/setting-up.mdx)
+- [SDK for Flutter](./api-reference/flutter/setting-up.mdx)
 
 </div>
 <div style={{flexBasis:"300px", flexGrow: "1", textAlign: "center" }} >
     <img src="/contents/web3auth-login-modal.png"/>
 </div>
 </div>
-<br />
+
+### Features
+
+- **Seemless Onboarding:** Our social login flows are indistinguishable from Web2.0 logins, contributing to greatly improved user experience and
+  onboarding.
+- **Non-custodial Public Key Infrastructure:** The user is always in control of ownership and access to their cryptographic key pair. Login services
+  only ever have access to one share, and thus it's not possible for the provider to retrieve the user's private key on their own.
+- **Whitelabel:** Customize Web3Auth's UI such that it blends directly into your application
+- **Web and native mobile:** Web3Auth works both on web as well as mobile out of the box, with native and hybrid applications supported.
+- **Using your existing auth/userbase:** Plug in to your existing userbase or auth. Zero migration necessary.
+- **Integrable in 5 minutes** - That’s it!
+
+## How does Web3Auth work?
+
+Under the hood, Web3Auth's social logins are powered by the Torus Network's key infrastructure (tKey). tKey leverages on variations of threshold key
+management to achieve a great user experience without sacrificing security, while retaining end-user autonomy and control over the private key. It
+manages private keys using the user's device, private input, and/or OAuth authentication methods (i.e. Google, Passwordless, Reddit) via Torus nodes.
+As long as a user has access to 2 out of 3 (2/3) of these shares, they will be able to retrieve their private key.
+
+Know more about the key management and security of tkey and our infrastructure [here](./key-management-and-security.mdx).
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src="/contents/keyshares.png" style={{ alignSelf: "center", maxWidth: "100%" }} />
+</div>
 
 :::info
 
-How are social logins non-custodial? See [**How keys are managed?**](/key-infrastructure/overview)
+How are social logins non-custodial? See [**How keys are managed?**](./how-web3auth-works)
 
 :::
