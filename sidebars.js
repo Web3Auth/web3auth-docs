@@ -7,9 +7,11 @@ module.exports = {
       label: "Overview",
       items: [
         "overview/what-is-web3auth",
-        "overview/key-management-and-security",
-        "overview/release-notes",
+        "overview/how-web3auth-works",
         "overview/audits",
+        {
+          Legal: ["overview/legal/cookie-policy", "overview/legal/privacy-policy", "overview/legal/terms-and-conditions"]
+        }
       ],
     },
     {
@@ -19,8 +21,8 @@ module.exports = {
         "get-started/basic-installation",
         {
           type: 'link',
-          label: 'Quick Starts',
-          href: 'https://facebook.com',
+          label: 'Quick Start',
+          href: '../quickstart/',
         },
         {
           type: 'link',
@@ -33,9 +35,23 @@ module.exports = {
       type: "category",
       label: "Developing with Web3Auth",
       items: [
+        "developing-with-web3auth/glossary",
+        "developing-with-web3auth/using-dashboard",
         "developing-with-web3auth/adapters-and-configuration",
         "developing-with-web3auth/event-lifecycle",
-        "developing-with-web3auth/providers",
+        {
+          "Connect with Blockchain": [
+            "developing-with-web3auth/connecting-blockchains/arbitrum",
+            "developing-with-web3auth/connecting-blockchains/avalanche",
+            "developing-with-web3auth/connecting-blockchains/binance",
+            "developing-with-web3auth/connecting-blockchains/ethereum",
+            "developing-with-web3auth/connecting-blockchains/polygon",
+            "developing-with-web3auth/connecting-blockchains/solana",
+            "developing-with-web3auth/connecting-blockchains/starknet",
+            "developing-with-web3auth/connecting-blockchains/zksync",
+            "developing-with-web3auth/connecting-blockchains/other-blockchains",
+          ]
+        },
         "developing-with-web3auth/verifiers",
       ],
     },
@@ -46,19 +62,46 @@ module.exports = {
       label: "API Reference",
       items: [
         {
-          Web: ["api-reference/web/choosesdk", "api-reference/web/plugnplay", "api-reference/web/customui", "api-reference/web/adapters", "api-reference/web/providers", "api-reference/web/customauth"],
+          Web: [
+            "api-reference/web/choosesdk",
+            "api-reference/web/plugnplay",
+            "api-reference/web/customui",
+            "api-reference/web/adapters",
+            "api-reference/web/providers",
+            "api-reference/web/customauth"
+          ],
         },
         {
-          Android: ["api-reference/android/setting-up", "api-reference/android/usage", "api-reference/android/whitelabel", "api-reference/android/customauth"],
+          Android: [
+            "api-reference/android/setting-up",
+            "api-reference/android/usage",
+            "api-reference/android/whitelabel",
+            "api-reference/android/customauth"
+          ],
         },
         {
-          iOS: ["api-reference/ios/setting-up", "api-reference/ios/usage", "api-reference/ios/whitelabel", "api-reference/ios/customauth"],
+          iOS: [
+            "api-reference/ios/setting-up",
+            "api-reference/ios/usage",
+            "api-reference/ios/whitelabel",
+            "api-reference/ios/customauth"
+          ],
         },
         {
-          'React Native': ["api-reference/react-native/setting-up", "api-reference/react-native/usage", "api-reference/react-native/whitelabel", "api-reference/react-native/customauth"],
+          'React Native': [
+            "api-reference/react-native/setting-up",
+            "api-reference/react-native/usage",
+            "api-reference/react-native/whitelabel",
+            "api-reference/react-native/customauth"
+          ],
         },
         {
-          Flutter: ["api-reference/flutter/setting-up", "api-reference/flutter/usage", "api-reference/flutter/whitelabel", "api-reference/flutter/customauth"],
+          Flutter: [
+            "api-reference/flutter/setting-up",
+            "api-reference/flutter/usage",
+            "api-reference/flutter/whitelabel",
+            "api-reference/flutter/customauth"
+          ],
         },
       ],
     },
