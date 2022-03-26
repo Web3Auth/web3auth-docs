@@ -11,9 +11,6 @@ module.exports = {
         "overview/what-is-web3auth",
         "overview/technical-architecture",
         "overview/audits",
-        {
-          Legal: ["overview/legal/cookie-policy", "overview/legal/privacy-policy", "overview/legal/terms-and-conditions"],
-        },
       ],
     },
     {
@@ -53,13 +50,7 @@ module.exports = {
     {
       type: "category",
       label: "API Reference",
-      link: {
-        type: "generated-index",
-        title: "API Reference",
-        description: "Explore the Web3Auth SDKs at a glance",
-        slug: "/category/api-reference",
-        keywords: ["api-reference"],
-      },
+      link: { type: 'doc', id: "api-reference/api-reference" },
       items: [
         {
           type: "category",
@@ -130,41 +121,39 @@ module.exports = {
       items: ["contribute/open-source", "contribute/bug-bounty"],
     },
     {
-      type: "category",
-      label: "Quick Links",
-      collapsible: false,
-      items: [
-        {
-          type: "link",
-          label: "GitHub",
-          href: "https://github.com/web3auth/web3auth",
-        },
-        {
-          type: "link",
-          label: "Support",
-          href: "https://t.me/web3authdev",
-        },
-        {
-          type: "link",
-          label: "Discord",
-          href: "https://discord.gg/web3auth",
-        },
-        {
-          type: "link",
-          label: "Dashboard",
-          href: "https://dashboard.web3auth.io/",
-        },
-        {
-          type: "link",
-          label: "Schedule a Demo",
-          href: "https://calendly.com/web3auth/meeting-with-web3auth",
-        },
-        {
-          type: "link",
-          label: "Status",
-          href: "https://status.web3auth.io/",
-        },
-      ],
+      Legal: ["legal/cookie-policy", "legal/privacy-policy", "legal/terms-and-conditions"],
+    },
+    { type: 'html', value: "<hr /><strong style='color: #606770'>Quick Links</strong>", defaultStyle: true, },
+
+    {
+      type: "link",
+      label: "GitHub",
+      href: "https://github.com/web3auth/web3auth",
+    },
+    {
+      type: "link",
+      label: "Support",
+      href: "https://t.me/web3authdev",
+    },
+    {
+      type: "link",
+      label: "Discord",
+      href: "https://discord.gg/web3auth",
+    },
+    {
+      type: "link",
+      label: "Dashboard",
+      href: "https://dashboard.web3auth.io/",
+    },
+    {
+      type: "link",
+      label: "Schedule a Demo",
+      href: "https://calendly.com/web3auth/meeting-with-web3auth",
+    },
+    {
+      type: "link",
+      label: "Status",
+      href: "https://status.web3auth.io/",
     },
   ],
 };
