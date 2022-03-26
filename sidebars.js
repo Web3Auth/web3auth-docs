@@ -17,31 +17,17 @@ module.exports = {
       type: "category",
       label: "Get Started",
       link: { type: 'doc', id: "get-started/get-started" },
-      items: ["get-started/quick-start", "get-started/understand-sdk"]
+      items: ["get-started/quickstart", "get-started/using-dashboard"]
     },
     {
       type: "category",
       label: "Developing with Web3Auth",
+      link: { type: 'doc', id: "developing-with-web3auth/glossary" },
       items: [
-        "developing-with-web3auth/glossary",
-        "developing-with-web3auth/using-dashboard",
-        "developing-with-web3auth/adapters-and-configuration",
+        "developing-with-web3auth/understand-sdk",
+        "developing-with-web3auth/adapters",
         "developing-with-web3auth/event-lifecycle",
-        {
-          type: "category",
-          label: "Connect with Blockchain",
-          link: { type: "doc", id: "developing-with-web3auth/connect-blockchain/connect-blockchain" },
-          items: [
-            "developing-with-web3auth/connect-blockchain/arbitrum",
-            "developing-with-web3auth/connect-blockchain/avalanche",
-            "developing-with-web3auth/connect-blockchain/binance",
-            "developing-with-web3auth/connect-blockchain/ethereum",
-            "developing-with-web3auth/connect-blockchain/polygon",
-            "developing-with-web3auth/connect-blockchain/solana",
-            "developing-with-web3auth/connect-blockchain/starknet",
-            "developing-with-web3auth/connect-blockchain/zksync",
-          ],
-        },
+        "developing-with-web3auth/connect-blockchain",
         "developing-with-web3auth/verifiers",
       ],
     },
