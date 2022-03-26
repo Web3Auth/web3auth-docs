@@ -1,4 +1,167 @@
 ---
-title: Solana
-hide_table_of_contents: true
+title: Solana Providers
+hide_table_of_contents: false
 ---
+
+---
+
+If you are using `solana` as `chainNamespace` while initializing `web3auth` then it it will provide you a provider with a Solana compatible provider
+with some custom rpc calls specific to `web3auth` as well.
+
+## Getting a provider from Web3Auth
+
+### Example
+
+### Initializing the provider
+
+## Getting a provider from private key.
+
+---
+
+### Example
+
+### Initializing the provider
+
+## Usage
+
+---
+
+Various rpc methods available on Solana Provider are as follows.
+
+### Get Connected User Account
+
+#### `solana_requestAccounts`
+
+This method is used fetch the address of connected account.
+
+#### Example
+
+```ts
+import { SafeEventEmitterProvider } from "@web3auth/base";
+
+async requestAccounts(): Promise<string[]> {
+    const accounts = await this.provider.request<string[]> ({
+        method: "solana_requestAccounts",
+        params: {},
+    });
+
+    return accounts;
+}
+```
+
+### Sign a Transaction
+
+#### `signTransaction`
+
+This method is used to sign a single serialized transaction and it returns a signed `Transaction` object.
+
+#### Example
+
+```ts
+import type { Transaction } from "@solana/web3.js";
+import { SafeEventEmitterProvider } from "@web3auth/base";
+
+async signTransaction(transaction: Transaction): Promise<Transaction> {
+    const signedTransaction = (await this.provider.request({
+        method: "signTransaction",
+        params: {
+            message: bs58.encode(transaction.serializeMessage()),
+        },
+    })) as Transaction;
+
+    return signedTransaction;
+}
+```
+
+### Sign all Transactions
+
+#### `signAllTransactions`
+
+This method is used to sign a list of serialized transactions and it returns back list of signed of `Transaction` objects.
+
+#### Example:
+
+```ts
+import type { Transaction } from "@solana/web3.js";
+import { SafeEventEmitterProvider } from "@web3auth/base";
+
+async signAllTransactions(provider: SafeEventEmitterProvider ,transactions: string[]): Promise<Transaction[]> {
+    const signedTransaction = (await provider.request({
+        method: "signAllTransactions",
+        params: {
+            message: transactions,
+        },
+    })) as Transaction[];
+
+    return signedTransaction;
+}
+```
+
+### Sign and Send a Transaction
+
+#### `signAndSendTransaction`
+
+This function is used to sign and broadcast the transaction on chain. It returns the signature of broadcasted transaction.
+
+#### Example:
+
+```ts
+import type { Transaction } from "@solana/web3.js";
+import { SafeEventEmitterProvider } from "@web3auth/base";
+
+async signAndSendTransaction(transaction: Transaction): Promise<{ signature: string }> {
+    const { signature } = await this.provider.request<{ signature: string }>({
+        method: "signAndSendTransaction",
+        params: {
+            message: bs58.encode(transaction.serializeMessage()),
+        },
+    });
+
+    return { signature };
+}
+```
+
+### Sign a Message
+
+#### `signMessage`
+
+This method is used sign any message from connected wallet.
+
+#### Example
+
+```ts
+import { SafeEventEmitterProvider } from "@web3auth/base";
+
+async signMessage(provider: SafeEventEmitterProvider ,data: Uint8Array): Promise<Uint8Array> {
+    const response = await provider.request<Uint8Array>({
+        method: "signMessage",
+        params: {
+            message: data,
+        },
+    });
+
+    return response as Uint8Array;
+}
+```
+
+### Fetch Connected User's Private Key
+
+#### `solanaPrivateKey`
+
+This method is used to fetch the private key of logged in user. It is only available for `in-app` adapters like `openlogin`.
+
+#### Example
+
+```ts
+const privateKey = await provider.request<string>({
+  method: "solanaPrivateKey",
+  params: {},
+});
+```
+
+### Other Default Solana Chain RPC Methods:
+
+- All the RPC methods which are available by default on Solana Blockchain are also available on the Solana Provider. Although, for the case of
+  `phantom` adapter they are not available.
+
+- You can refer to standard RPC calls for Solana [here](https://docs.solana.com/developing/clients/jsonrpc-api)
