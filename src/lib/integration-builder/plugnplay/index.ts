@@ -46,15 +46,15 @@ const plugnplayIntegrationBuilder: IntegrationBuilder = {
 
   // Options that will be displayed in the UI for selection
   options: {
-    chain: {
-      displayName: "Blockchain",
-      default: "Ethereum",
-      choices: ["Ethereum", "Solana", "Polygon", "Binance Smart Chain", "Avalanche", "ZkSync", "Arbitrum"],
-    },
     lang: {
       displayName: "Language/Framework",
       default: "HTML",
       choices: ["HTML", "React", "Android", "iOS"],
+    },
+    chain: {
+      displayName: "Blockchain",
+      default: "Ethereum",
+      choices: ["Ethereum", "Solana", "Polygon", "Binance Smart Chain", "Avalanche", "ZkSync", "Arbitrum"],
     },
   },
 
