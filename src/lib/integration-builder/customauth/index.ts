@@ -6,15 +6,15 @@ const directAuthIntegrationBuilder: IntegrationBuilder = {
   displayName: "Custom Auth & Login UI",
 
   options: {
-    chain: {
-      displayName: "Blockchain",
-      default: "Ethereum",
-      choices: ["Ethereum", "Solana", "Starkware"],
-    },
     lang: {
       displayName: "Language/Framework",
       default: "HTML",
       choices: ["HTML", "React", "Vue", "Android", "iOS"],
+    },
+    chain: {
+      displayName: "Blockchain",
+      default: "Ethereum",
+      choices: ["Ethereum", "Solana", "Starkware"],
     },
   },
 
