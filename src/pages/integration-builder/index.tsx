@@ -10,7 +10,7 @@ import builders from "../../lib/integration-builder";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
 import styles from "./styles.module.css";
 
-const defaultBuilderId = "wallet";
+const defaultBuilderId = "plugnplay";
 
 const getDefaultBuilderOptions = (id: string) =>
   Object.fromEntries(Object.entries(builders[id].options).map(([key, option]) => [key, option.default]));
@@ -91,7 +91,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
   const [builderOptions, setBuilderOptions] = useState<{
     id: string;
     values: Record<string, string>;
-  }>({ id: "wallet", values: getDefaultBuilderOptions("wallet") });
+  }>({ id: defaultBuilderId, values: getDefaultBuilderOptions(defaultBuilderId) });
 
   useEffect(() => {
     // Load initial builder options on mount and re-render.
