@@ -46,8 +46,8 @@ module.exports = {
           className: "navbar__button",
         },
         {
-          label: "Integration Builder",
-          to: "/integration-builder",
+          label: "Quick Start",
+          to: "/quick-start",
           position: "left",
           className: "navbar__button",
         },
