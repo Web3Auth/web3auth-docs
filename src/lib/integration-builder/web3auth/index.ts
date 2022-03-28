@@ -139,28 +139,28 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
         steps.push(
           {
             ...STEPS.installationWeb,
-            pointer: { filename: "web/index.html", range: "20" },
+            pointer: { filename: "web/index.html", range: "42" },
+          },
+          {
+            ...STEPS.registerApp,
+            pointer: { filename: "web/index.html", range: "53" },
+          },
+          {
+            ...STEPS.instantiate,
+            pointer: { filename: "web/index.html", range: "44-54" },
+          },
+          {
+            ...STEPS.subscribe,
+            pointer: { filename: "web/index.html", range: "72-91" },
+          },
+          {
+            ...STEPS.initialize,
+            pointer: { filename: "web/index.html", range: "58" },
+          },
+          {
+            ...STEPS.triggeringLogin,
+            pointer: { filename: "web/index.html", range: "96-102" },
           }
-          // {
-          //   ...STEPS.registerApp,
-          //   pointer: { filename: "web/index.html", range: "27-31" },
-          // },
-          // {
-          //   ...STEPS.instantiateSDK,
-          //   pointer: { filename: "web/index.html", range: "27-31" },
-          // },
-          // {
-          //   ...STEPS.retrievePrivateKey,
-          //   pointer: { filename: "web/index.html", range: "33-43" },
-          // },
-          // {
-          //   ...STEPS.triggerLogin,
-          //   pointer: { filename: "web/index.html", range: "55-56" },
-          // },
-          // {
-          //   ...STEPS.connectWithWeb3,
-          //   pointer: { filename: "web/index.html", range: "46-52" },
-          // },
           // {
           //   ...STEPS.logout,
           //   pointer: { filename: "web/index.html", range: "59" },
