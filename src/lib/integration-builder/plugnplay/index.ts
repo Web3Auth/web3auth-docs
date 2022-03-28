@@ -121,8 +121,8 @@ const plugnplayIntegrationBuilder: IntegrationBuilder = {
         // tip: need to restart docusaurus for changes to static file uploads
         switch (whitelabel) {
           default:
-            newFiles["open-login/web/index.html"] = replaceFileVariable(
-              newFiles["open-login/web/index.html"],
+            newFiles["web3auth/web/index.html"] = replaceFileVariable(
+              newFiles["web3auth/web/index.html"],
               "web3authConstructor",
               `{
               chainConfig: { chainNamespace: "eip155" },
@@ -172,11 +172,11 @@ const plugnplayIntegrationBuilder: IntegrationBuilder = {
 
     return {
       // Use files in `open-login` folders instead of root folder
-      filenames: filenames.map((it) => `open-login/${it}`),
+      filenames: filenames.map((it) => `web3auth/${it}`),
       files: newFiles,
       steps: steps.map((it) => ({
         ...it,
-        pointer: it.pointer ? { ...it.pointer, filename: `open-login/${it.pointer.filename}` } : undefined,
+        pointer: it.pointer ? { ...it.pointer, filename: `web3auth/${it.pointer.filename}` } : undefined,
       })),
     };
   },
