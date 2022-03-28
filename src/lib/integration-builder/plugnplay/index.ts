@@ -41,8 +41,8 @@ const AVAILABLE_LANGS = {
 };
 
 function replaceFileVariable(fileContent: string, variableName: string, replacement: string) {
-  var exp = `// REPLACE-${variableName}-`;
-  var re = new RegExp(exp, "g");
+  var exp = `\n *// REPLACE-${variableName}-\n *`;
+  var re = new RegExp(exp, "gm");
   return fileContent.replace(re, replacement);
 }
 
@@ -110,7 +110,7 @@ const plugnplayIntegrationBuilder: IntegrationBuilder = {
     const filenames: string[] = [];
     const newFiles = JSON.parse(JSON.stringify(files));
     const steps: IntegrationStep[] = [];
-    const { chain, lang } = values;
+    const { chain, lang, whitelabel } = values;
 
     switch (lang) {
       case "HTML":
@@ -118,7 +118,18 @@ const plugnplayIntegrationBuilder: IntegrationBuilder = {
         filenames.push("web/index.html"); // Show code files in browsers
 
         // variable replacements come here TEMPLATE /\/\/ REPLACE-.*-/g
-        newFiles["open-login/web/index.html"] = replaceFileVariable(newFiles["open-login/web/index.html"], "testVariable", "replacement");
+        // tip: need to restart docusaurus for changes to static file uploads
+        switch (whitelabel) {
+          default:
+            newFiles["open-login/web/index.html"] = replaceFileVariable(
+              newFiles["open-login/web/index.html"],
+              "web3authConstructor",
+              `{
+              chainConfig: { chainNamespace: "eip155" },
+              clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://developer.web3auth.io
+            }`
+            );
+        }
 
         // Add markdown steps
         steps.push(
