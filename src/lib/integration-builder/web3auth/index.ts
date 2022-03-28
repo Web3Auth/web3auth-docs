@@ -117,7 +117,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
       case "HTML":
         // STEMP 1 OF BUILDING A GUIDE
         // template filenames that your integration page will use
-        filenames.push("web/index.html"); // Show code files in browsers
+        filenames.push("web3auth/web/index.html"); // Show code files in browsers
 
         // STEP 2 variable replacements come here
         // TEMPLATE ON YOUR STATIC FILE IS /\/\/ REPLACE-.*-/g
@@ -140,31 +140,31 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
         steps.push(
           {
             ...STEPS.framework.HTML.installationWeb,
-            pointer: { filename: "web/index.html", range: "42" },
+            pointer: { filename: "web3auth/web/index.html", range: "42" },
           },
           {
             ...STEPS.framework.HTML.registerApp,
-            pointer: { filename: "web/index.html", range: "53" },
+            pointer: { filename: "web3auth/web/index.html", range: "53" },
           },
           {
             ...STEPS.framework.HTML.instantiate,
-            pointer: { filename: "web/index.html", range: "44-54" },
+            pointer: { filename: "web3auth/web/index.html", range: "44-54" },
           },
           {
             ...STEPS.framework.HTML.subscribe,
-            pointer: { filename: "web/index.html", range: "72-91" },
+            pointer: { filename: "web3auth/web/index.html", range: "72-91" },
           },
           {
             ...STEPS.framework.HTML.initialize,
-            pointer: { filename: "web/index.html", range: "58" },
+            pointer: { filename: "web3auth/web/index.html", range: "58" },
           },
           {
             ...STEPS.framework.HTML.triggeringLogin,
-            pointer: { filename: "web/index.html", range: "96-102" },
+            pointer: { filename: "web3auth/web/index.html", range: "96-102" },
           }
           // {
           //   ...STEPS.logout,
-          //   pointer: { filename: "web/index.html", range: "59" },
+          //   pointer: { filename: "web3auth/web/index.html", range: "59" },
           // }
         );
       default:
@@ -174,22 +174,22 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
     // Add blockchain steps and files here. After integration steps have been settled
     switch (chain) {
       case "Ethereum":
-        filenames.push("../eth/ethereum.js");
+        filenames.push("eth/ethereum.js");
 
         steps.push({
           ...STEPS.chains.ETH.initialize,
-          pointer: { filename: "../eth/ethereum.js", range: "2-5" },
+          pointer: { filename: "eth/ethereum.js", range: "2-5" },
         });
       default:
     }
 
     return {
       // Use files in `open-login` folders instead of root folder
-      filenames: filenames.map((it) => `web3auth/${it}`),
+      filenames: filenames.map((it) => `${it}`),
       files: newFiles,
       steps: steps.map((it) => ({
         ...it,
-        pointer: it.pointer ? { ...it.pointer, filename: `web3auth/${it.pointer.filename}` } : undefined,
+        pointer: it.pointer ? { ...it.pointer, filename: `${it.pointer.filename}` } : undefined,
       })),
     };
   },
