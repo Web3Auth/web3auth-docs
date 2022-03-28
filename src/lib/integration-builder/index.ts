@@ -1,10 +1,8 @@
-// import directAuthIntegrationBuilder from "./customauth";
 import { IntegrationBuilder } from "./interfaces";
-import plugnplayIntegrationBuilder from "./plugnplay";
+import web3authIntegrationBuilder from "./web3auth";
 
 const integrationBuilders: Record<string, IntegrationBuilder> = {
-  plugnplay: plugnplayIntegrationBuilder,
-  // customauth: directAuthIntegrationBuilder,
+  plugnplay: web3authIntegrationBuilder,
 };
 
 export * from "./interfaces";

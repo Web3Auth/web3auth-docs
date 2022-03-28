@@ -1,0 +1,18 @@
+---
+title: Connect with zkSync
+---
+
+We are using `zksync` js sdk to interact with zkSync l2 rollup on rinkeby test net and ethers js to create a ethereum provider.
+
+```js
+    _connectZkSync: async ()=>{
+     const syncProvider = await zksync.getDefaultProvider("rinkeby");
+     zksyncConnector._syncConn = syncProvider;
+     return syncProvider
+  },
+  _connectEth: async ()=>{
+    const ethersProvider = ethers.getDefaultProvider("https://rinkeby.infura.io/v3/<your project id>");
+    zksyncConnector._ethConn = ethersProvider;
+    return ethersProvider
+ },
+```
