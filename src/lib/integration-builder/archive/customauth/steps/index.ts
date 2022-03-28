@@ -1,5 +1,5 @@
 // Web
-import { toSteps } from "../../utils";
+import { toSteps } from "../../../utils";
 // Android
 import * as addAndroidJitpack from "./add-android-jitpack.mdx";
 import * as connectWithSolana from "./connect-with-solana.mdx";

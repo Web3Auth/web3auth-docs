@@ -46,9 +46,9 @@ function replaceFileVariable(fileContent: string, variableName: string, replacem
   return fileContent.replace(re, replacement);
 }
 
-const plugnplayIntegrationBuilder: IntegrationBuilder = {
+const web3authIntegrationBuilder: IntegrationBuilder = {
   // Name of the integration builder
-  displayName: "Plug n Play",
+  displayName: "Web3Auth",
 
   // Options that will be displayed in the UI for selection
   options: {
@@ -182,4 +182,4 @@ const plugnplayIntegrationBuilder: IntegrationBuilder = {
   },
 };
 
-export default plugnplayIntegrationBuilder;
+export default web3authIntegrationBuilder;
