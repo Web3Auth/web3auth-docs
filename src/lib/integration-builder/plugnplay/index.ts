@@ -102,14 +102,16 @@ const plugnplayIntegrationBuilder: IntegrationBuilder = {
   // Build integrations based on input values
   build(values: Record<string, string>, files: Record<string, string>) {
     const filenames: string[] = [];
-    const newFiles = files;
+    const newFiles = JSON.parse(JSON.stringify(files));
     const steps: IntegrationStep[] = [];
     const { chain, lang } = values;
 
     switch (lang) {
       case "HTML":
-        //
+        // template filenames that your integration page will use
         filenames.push("web/index.html"); // Show code files in browsers
+
+        // variable replacements come here
 
         // Add markdown steps
         steps.push(

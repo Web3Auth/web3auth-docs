@@ -282,7 +282,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
           <div className={styles.rightCol}>
             <IntegrationBuilderCodeView
               filenames={integration.filenames}
-              fileContents={files}
+              fileContents={integration.files}
               highlight={steps[stepIndex] && steps[stepIndex].pointer?.filename === selectedFilename && steps[stepIndex].pointer?.range}
               selectedFilename={selectedFilename}
               onClickFilename={(filename: string) => setSelectedFilename(filename)}
