@@ -114,10 +114,13 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
 
     switch (lang) {
       case "HTML":
+        // STEMP 1 OF BUILDING A GUIDE
         // template filenames that your integration page will use
         filenames.push("web/index.html"); // Show code files in browsers
 
-        // variable replacements come here TEMPLATE /\/\/ REPLACE-.*-/g
+        // STEP 2 variable replacements come here
+        // TEMPLATE ON YOUR STATIC FILE IS /\/\/ REPLACE-.*-/g
+        // OR // REPLACE-yourVariableHere-
         // tip: need to restart docusaurus for changes to static file uploads
         switch (whitelabel) {
           default:
@@ -131,6 +134,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
             );
         }
 
+        // STEP 3
         // Add markdown steps
         steps.push(
           {
@@ -165,6 +169,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
       default:
     }
 
+    // STEP 4
     // Add blockchain steps and files here. After integration steps have been settled
     switch (chain) {
       default:
