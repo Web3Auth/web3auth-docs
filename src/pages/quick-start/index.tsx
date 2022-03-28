@@ -137,7 +137,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
 
   const builder = builders[builderOptions.id];
 
-  const integration = useMemo(() => builder.build(builderOptions.values), [builderOptions]);
+  const integration = useMemo(() => builder.build(builderOptions.values, files), [builderOptions]);
   const [selectedFilename, setSelectedFilename] = useState(integration.filenames[0]);
 
   const [isLinkCopied, setLinkCopied] = useState<number>();

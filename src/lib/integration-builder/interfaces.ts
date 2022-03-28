@@ -8,6 +8,7 @@ export interface IntegrationStep {
 
 export interface Integration {
   filenames: string[];
+  files: Record<string, any>;
   steps: IntegrationStep[];
 }
 
@@ -25,5 +26,5 @@ export interface IntegrationBuilder {
 
   getAvailableOptions(optionKey: string, optionValue: string): Record<string, string>[];
 
-  build(values: Record<string, string>): Integration;
+  build(values: Record<string, string>, files: Record<string, any>): Integration;
 }
