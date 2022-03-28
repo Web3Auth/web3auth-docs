@@ -138,27 +138,27 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
         // Add markdown steps
         steps.push(
           {
-            ...STEPS.installationWeb,
+            ...STEPS.framework.HTML.installationWeb,
             pointer: { filename: "web/index.html", range: "42" },
           },
           {
-            ...STEPS.registerApp,
+            ...STEPS.framework.HTML.registerApp,
             pointer: { filename: "web/index.html", range: "53" },
           },
           {
-            ...STEPS.instantiate,
+            ...STEPS.framework.HTML.instantiate,
             pointer: { filename: "web/index.html", range: "44-54" },
           },
           {
-            ...STEPS.subscribe,
+            ...STEPS.framework.HTML.subscribe,
             pointer: { filename: "web/index.html", range: "72-91" },
           },
           {
-            ...STEPS.initialize,
+            ...STEPS.framework.HTML.initialize,
             pointer: { filename: "web/index.html", range: "58" },
           },
           {
-            ...STEPS.triggeringLogin,
+            ...STEPS.framework.HTML.triggeringLogin,
             pointer: { filename: "web/index.html", range: "96-102" },
           }
           // {
