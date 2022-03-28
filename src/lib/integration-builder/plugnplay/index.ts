@@ -40,6 +40,12 @@ const AVAILABLE_LANGS = {
   },
 };
 
+function replaceFileVariable(fileContent: string, variableName: string, replacement: string) {
+  var exp = `// REPLACE-${variableName}-`;
+  var re = new RegExp(exp, "g");
+  return fileContent.replace(re, replacement);
+}
+
 const plugnplayIntegrationBuilder: IntegrationBuilder = {
   // Name of the integration builder
   displayName: "Plug n Play",
@@ -111,8 +117,8 @@ const plugnplayIntegrationBuilder: IntegrationBuilder = {
         // template filenames that your integration page will use
         filenames.push("web/index.html"); // Show code files in browsers
 
-        // variable replacements come here
-
+        // variable replacements come here TEMPLATE /\/\/ REPLACE-.*-/g
+        newFiles["open-login/web/index.html"] = replaceFileVariable(newFiles["open-login/web/index.html"], "testVariable", "replacement");
 
         // Add markdown steps
         steps.push(

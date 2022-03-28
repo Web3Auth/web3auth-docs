@@ -8,7 +8,7 @@ export interface IntegrationStep {
 
 export interface Integration {
   filenames: string[];
-  files: Record<string, any>;
+  files: Record<string, string>;
   steps: IntegrationStep[];
 }
 
