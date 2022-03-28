@@ -1,3 +1,4 @@
+import { SiTeamspeak } from "react-icons/si";
 import { IntegrationBuilder, IntegrationStep } from "../interfaces";
 import STEPS from "./steps";
 
@@ -172,6 +173,13 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
     // STEP 4
     // Add blockchain steps and files here. After integration steps have been settled
     switch (chain) {
+      case "Ethereum":
+        filenames.push("../eth/ethereum.js");
+
+        steps.push({
+          ...STEPS.chains.ETH.initialize,
+          pointer: { filename: "../eth/ethereum.js", range: "2-5" },
+        });
       default:
     }
 
