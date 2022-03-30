@@ -2,3 +2,45 @@
 title: Whitelabeling
 hide_table_of_contents: true
 ---
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import BasicExample from "../../common/web/code/web3auth/_general-example.mdx";
+
+## WhiteLabel
+
+A configuration optional object to customize UI, branding, and translations for your brand. This  `WhiteLabelData` is initiated when we
+configure the Web3AuthOptions object.
+
+```kotlin
+    web3Auth = Web3Auth(
+            Web3AuthOptions(context = this,
+                clientId = getString(R.string.web3auth_project_id),
+                network = Web3Auth.Network.MAINNET,
+                redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+                whiteLabel = WhiteLabelData(  // Optional whitelabel object
+                    name = "Web3Auth Sample App",
+                    logoLight = null,
+                    logoDark = null,
+                    defaultLanguage = "en",
+                    dark = true,
+                    theme = hashMapOf(
+                        "primary" to "#123456"
+                    )
+                )
+            )
+        )
+```
+
+ Construct and configure the `WhiteLabelData` instance as
+
+
+| Parameter         | Type                        | Mandatory | Description                                                                                            |
+| ----------------- | --------------------------- | --------- | ----------------------------------------------------- |
+| name              | String?                     | No        | Name of your application                              |
+| logoLight         | String?                     | No        | Light logo for dark background                        |                                                                                                                          |
+| logoDark          | String?                     | No        | Dark logo for light background                        |                                                                            |
+| defaultLanguage   | String?                     | No        | Default translation language to used                  |
+| dark              | Boolean?                    | No        | If true, enables dark mode. Default is light mode     |
+| theme             | Map<String, Any>?           | No        | Whitelabel theme                                      |
