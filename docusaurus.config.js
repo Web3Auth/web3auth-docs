@@ -52,12 +52,6 @@ module.exports = {
           className: "navbar__button",
         },
         {
-          label: "Guides",
-          to: "/guides",
-          position: "left",
-          className: "navbar__button",
-        },
-        {
           label: "Contact us",
           href: contactUrl,
           position: "right",
