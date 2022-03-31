@@ -1,3 +1,191 @@
 ---
 title: Using the Dashboard
+hide_table_of_contents: false
 ---
+
+---
+
+This is a step by step guide to help you get started with using the Web3Auth dashboard.
+
+## Getting Started
+
+To get started, login with any of your social accounts on the [Web3Auth Dashboard](https://dashboard.web3auth.io/). Please note that this is login
+flow is using the Web3Auth login flow with a Customised UI. So essentially, we're creating a wallet for you. Your users will have a similar flow using
+your application integrated with Web3Auth.
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src="/dashboard/login.png" style={{ alignSelf: "center", maxWidth: "100%" }} />
+</div>
+<br />
+
+## Home
+
+---
+
+Once you've successfully logged in, you will see screen that looks like this:
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src="/dashboard/home.png" style={{ alignSelf: "center", maxWidth: "100%" }} />
+</div>
+<br />
+
+At a glance you can find the following here:
+
+### Overview
+
+- Documentation
+- Link to schedule a demo with the team for further information
+
+### Quick Start
+
+- Creating a Plug and Play project
+- Creating a verifier for Custom Authentication
+
+### Left Pane
+
+- Plug and Play Projects
+- Custom Authentication Verifiers
+- Torus Wallet Projects
+- Billing Section
+- Documentation Link
+- Chat Support
+
+### Bottomost Interactive Web3Auth Logo
+
+- Your wallet details and address
+- Value held in USD with Transfer and Add Money option
+- Open Wallet Toggle, which opens the Torus wallet in a new tab
+
+## Plug and Play
+
+---
+
+This is the Plug and Play section of the dashboard. It is where you can create a new Plug and Play project. Plug and Play refers to the customised UI
+that Web3Auth provides to integrate with your project, enabling you to seemless integrate Web3Auth without the need of designing the whole flow.
+
+The Dashboard will look something like this:
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src="/dashboard/plus_n_play.png" style={{ alignSelf: "center", maxWidth: "100%" }} />
+</div>
+<br />
+
+<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+  <div style={{ flexBasis: "30%", flexGrow: "10", justifyContent: "center" }}>
+    Here, I've already created a project called <strong>"Test Project"</strong>.
+    <br />
+    <br />
+    If you want to create a new project, just click on the Create Project tab on the right and you'll see a toggle similar to this, where you need to enter
+    your Project Name, and it's done!
+  </div>
+  <div style={{ flexBasis: "40%", flexGrow: "1", alignItems: "center", justifyContent: "center" }}>
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src="/dashboard/create_project.png" />
+  </div>
+</div>
+
+### Diving into a Web3Auth project
+
+A project contains the following:
+
+#### Client ID
+
+This is the unique identifier for your project. It is used to identify your project in the Web3Auth dashboard. You'll need this while initialising the
+Web3Auth SDK, within your app. This gets automatically generated once you create a project. Make sure to copy this value into your initialisation
+code.
+
+#### Client Secret
+
+This is the secret key that is used to authenticate your project. This also gets automatically generated once you create a project.
+
+#### Add a new whitelist URL
+
+This is the URL that you want to whitelist for your project. You'll need to whitelist the URLs from which you are making the calls for logging in your
+users and for making transactions.
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src="/dashboard/project_plug_n_play.png" style={{ alignSelf: "center", maxWidth: "100%" }} />
+</div>
+
+## Custom Authentication
+
+---
+
+This is the Custom Authentication section of the dashboard. It is where you can create a new Custom Authentication verifier.
+
+Custom Authentication refers to the capability of hooking up your own custom authentication flow with Web3Auth. This gives you the flexibility of
+using any authentication/ verification flow you want, providing us the verification token and the user details, and let Web3Auth do the rest.
+
+The Custom Authentication Dashboard looks something like this:
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src="/dashboard/custom_auth.png" style={{ alignSelf: "center", maxWidth: "100%" }} />
+</div>
+<br />
+
+To get started, you need to create a verifier to let user login with your custom authentication flow. Verifier scripts determine the access structure
+to your users keys and the set Verifier Scripts chosen determine which logins your application will ultimately use. You can read more about verifiers
+[here](../developing-with-web3auth/verifiers.mdx)
+
+### Creating a Verifier
+
+Once you click on the Create Verifier tab, you'll see a toggle similar to this:
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src="/dashboard/verifier.png" style={{ alignSelf: "center", maxWidth: "100%" }} />
+</div>
+<br />
+To create a verifier, you need to input the following details:
+
+#### Verifier identifier
+
+The identifier for your verifier. This is used to identify your verifier in the Web3Auth dashboard. You'll need this while initialising the
+Web3AuthCore SDK for setting up custom login.
+
+#### Select Network
+
+Select between testnet and mainnet. Make sure to always test your identifier in the testnet first before deploying it to the mainnet, to avoid
+unnecessary fees.
+
+#### Verifier Type
+
+Select the type of verifier you want to create. We've pre provided a few common flows you can choose from, but you can also choose `Custom` and
+provide all the JWT details.
+
+## Torus Wallet
+
+---
+
+This is the Torus Wallet section of the dashboard. It is where you can create a new Torus Wallet project. Torus Wallet refers to the wallet adapter
+that can be used to integrate with the Web3Auth SDK. You can read more about Torus Wallet [here](https://docs.tor.us/wallet/get-started)
+
+The Torus Wallet Dashboard looks something like this:
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src="/dashboard/torus_wallet.png" style={{ alignSelf: "center", maxWidth: "100%" }} />
+</div>
+<br />
+
+### Diving into a Torus Wallet project
+
+A project contains the following:
+
+#### Client ID
+
+This is the unique identifier for your project. You'll need this while initialising the Torus Wallet Adapter within the Web3Auth SDK. This gets
+automatically generated once you create a project. Make sure to copy this value into your initialisation code.
+
+#### Client Secret
+
+This is the secret key that is used to authenticate your project. This also gets automatically generated once you create a project.
+
+## Billing
+
+---
+
+This is the Billing section of the dashboard. It is where you can view your billing details. Here, you can track your **Monthly Active Users (MAUs)**,
+which is the unit on which you're charged a usage fees from Web3Auth. You can see our billing tiers and pricing
+[here](https://web3auth.io/pricing.html).
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src="/dashboard/billing.png" style={{ alignSelf: "center", maxWidth: "100%" }} />
+</div>

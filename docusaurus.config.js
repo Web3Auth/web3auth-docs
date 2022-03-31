@@ -41,7 +41,7 @@ module.exports = {
         {
           label: "Dashboard",
           href: "https://dashboard.web3auth.io",
-          target: "_self",
+          target: "_blank",
           position: "right",
           className: "navbar__button",
         },
