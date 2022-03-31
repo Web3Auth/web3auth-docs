@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 import styles from "./styles.module.css";
 import Lottie from "react-lottie";
-import animationData from "../../../static/lottie/Hero.json";
+import * as animationData from "/lottie/Hero.json";
 
 const defaultOptions = { loop: true, autoplay: true, animationData: animationData, rendererSettings: { preserveAspectRatio: "xMidYMid slice" } };
 
