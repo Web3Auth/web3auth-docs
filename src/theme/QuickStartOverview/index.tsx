@@ -11,20 +11,27 @@ export default function Web3AuthOverview() {
   return (
     <div className={styles.container}>
       <div className={classNames(styles.cardQuickStart)}>
-        <div className={styles.content}>
-          <p className={styles.headline}>Start building your dApp or Wallet</p>
-          <p className={styles.description} />
+        <p className={styles.headline}>Get started in seconds.</p>
+        <p className={styles.description}>Bootstrap your DApp and Wallet with our multi platform SDKs</p>
 
-          <div className={styles.btnContainer}>
-            <Link to="https://docs.web3auth.io">
+        <div className={styles.btnContainer}>
+          <div className={styles.btn}>
+            <Link to="/quick-start">
               <button type="button" className={classNames(styles.ctaBtn, styles.ctaBtnWhite)}>
-                Start Building
+                Quick Start
               </button>
             </Link>
-            <Lottie options={defaultOptions} height={300} width={350} />
+          </div>
+          <div className={styles.btn}>
+            <Link to="overview/what-is-web3auth">
+              <button type="button" className={classNames(styles.ctaBtn, styles.ctaBtnWhite)}>
+                Learn More
+              </button>
+            </Link>
           </div>
         </div>
       </div>
+      <Lottie options={defaultOptions} height={300} width={350} />
     </div>
   );
 }
