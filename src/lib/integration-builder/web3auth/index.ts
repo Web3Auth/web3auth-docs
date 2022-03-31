@@ -1,4 +1,3 @@
-import { SiTeamspeak } from "react-icons/si";
 import { IntegrationBuilder, IntegrationStep } from "../interfaces";
 import STEPS from "./steps";
 
@@ -7,7 +6,7 @@ const AVAILABLE_EXAMPLES = {
     langs: ["HTML", "Android", "iOS"],
   },
   Solana: {
-    langs: ["React"],
+    langs: ["HTML", "React"],
   },
   Polygon: {
     langs: ["React"],
@@ -31,7 +30,7 @@ const AVAILABLE_LANGS = {
     examples: ["Solana", "Polygon", "Binance Smart Chain", "Avalanche", "ZkSync", "Arbitrum"],
   },
   HTML: {
-    examples: ["Ethereum"],
+    examples: ["Ethereum", "Solana"],
   },
   Android: {
     examples: ["Ethereum"],
@@ -180,6 +179,15 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
           ...STEPS.chains.ETH.initialize,
           pointer: { filename: "eth/ethereum.js", range: "2-5" },
         });
+        break;
+      case "Solana":
+        filenames.push("sol/solana.ts");
+
+        steps.push({
+          ...STEPS.chains.SOL.initialize,
+          pointer: { filename: "sol/solana.ts" },
+        });
+        break;
       default:
     }
 
