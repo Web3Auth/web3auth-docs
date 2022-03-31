@@ -21,9 +21,9 @@ export default function Web3AuthOverview() {
                 Start Building
               </button>
             </Link>
+            <Lottie options={defaultOptions} height={300} width={350} />
           </div>
         </div>
-        <Lottie options={defaultOptions} height={300} width={350} />
       </div>
     </div>
   );

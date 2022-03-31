@@ -90,29 +90,29 @@ This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
 ```ts
 type CustomChainConfig = {
   chainNamespace: ChainNamespaceType;
-  /**
-   * The chain id of the chain
-   */
+  /*
+   The chain id of the chain
+  */
   chainId: string;
-  /**
-   * RPC target Url for the chain
-   */
+  /*
+   RPC target Url for the chain
+  */
   rpcTarget: string;
-  /**
-   * Display Name for the chain
-   */
+  /*
+   Display Name for the chain
+  */
   displayName: string;
-  /**
-   * Url of the block explorer
+  /*
+   Url of the block explorer
    */
   blockExplorer: string;
-  /**
-   * Default currency ticker of the network (e.g: ETH)
-   */
+  /*
+   Default currency ticker of the network (e.g: ETH)
+  */
   ticker: string;
-  /**
-   * Name for currency ticker (e.g: `Ethereum`)
-   */
+  /*
+   Name for currency ticker (e.g: `Ethereum`)
+  */
   tickerName: string;
 };
 ```
@@ -176,6 +176,8 @@ web3auth.configureAdapter(openloginAdapter);
 
 ### Initializing Modal
 
+#### `web3auth.initModal(options)`
+
 After you are done with configuring your adapters, you can initialize modal by calling `initModal` function of `web3auth`.
 
 ```javascript
@@ -211,49 +213,56 @@ following configurations:
 
   LoginConfig = Record<string, {
       verifier: string;
-      /**
-      * The type of login. Refer to enum `LOGIN_TYPE`
+      /*
+      The type of login.
+      Refer to enum `LOGIN_TYPE`.
       */
       typeOfLogin: TypeOfLogin;
-      /**
-      * Display Name. If not provided, we use the default for openlogin app
+      /*
+      Display Name.
+      If not provided, we use the default for openlogin app.
       */
       name: string;
-      /**
-      * Description for button. If provided, it renders as a full length button. else, icon button
+      /*
+      Description for button.
+      If provided, it renders as a full length button, else, icon button is rendered.
       */
       description?: string;
-      /**
-      * Custom client_id. If not provided, we use the default for openlogin app
+      /*
+      Custom client_id.
+      If not provided, we use the default for openlogin app.
       */
       clientId?: string;
       verifierSubIdentifier?: string;
-      /**
-      * Logo to be shown on mouse hover. If not provided, we use the default for openlogin app
+      /*
+      Logo to be shown on mouse hover.
+      If not provided, we use the default for openlogin app.
       */
       logoHover?: string;
-      /**
-      * Logo to be shown on dark background (dark theme). If not provided, we use the default for openlogin app
+      /*
+      Logo to be shown on dark background (dark theme).
+      If not provided, we use the default for openlogin app.
       */
       logoLight?: string;
-      /**
-      * Logo to be shown on light background (light theme). If not provided, we use the default for openlogin app
+      /*
+      Logo to be shown on light background (light theme).
+      If not provided, we use the default for openlogin app.
       */
       logoDark?: string;
-      /**
-      * Show login button on the main list
+      /*
+      Show login button on the main list.
       */
       mainOption?: boolean;
-      /**
-      * Whether to show the login button on modal or not
+      /*
+      Whether to show the login button on modal or not.
       */
       showOnModal?: boolean;
-      /**
-      * Whether to show the login button on desktop
+      /*
+      Whether to show the login button on desktop.
       */
       showOnDesktop?: boolean;
-      /**
-      * Whether to show the login button on mobile
+      /*
+      Whether to show the login button on mobile.
       */
       showOnMobile?: boolean;
   }>;
@@ -292,10 +301,12 @@ await web3auth.initModal({
 
 ### Showing the Modal
 
+#### `web3auth.connect()`
+
 After initializing you can show the modal by calling `connect` function on web3auth instance
 
 ```javascript
-await web3authCore.connect();
+await web3auth.connect();
 ```
 
 #### Returns
@@ -305,12 +316,14 @@ await web3authCore.connect();
 
 ### Get User's Information
 
+#### `web3auth.getUserInfo()`
+
 You can get the information about connected user by calling `getUserInfo` function.
 
 > Note: This function will return information based on the connected adapter.
 
 ```javascript
-await web3authCore.getUserInfo();
+await web3auth.getUserInfo();
 ```
 
 #### Returns
@@ -323,12 +336,14 @@ await web3authCore.getUserInfo();
 - **`verifierId`**: `string` - verifier id
 - **`typeOfLogin`**: `"google", "facebook", "twitter", "github", "linkedin"` - type of login
 
-### logout
+### Logging out the User
+
+#### `web3auth.logout()`
 
 You can disconnect from connected wallet using `logout` function.
 
 ```javascript
-await web3authCore.logout();
+await web3auth.logout();
 ```
 
 #### Returns
