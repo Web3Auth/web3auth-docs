@@ -58,7 +58,7 @@ export default function UsecaseCards() {
           <span>Flutter</span>
         </div>
         <div className={classNames(styles.card, styles.cardOne)}>
-          <h5 className={styles.title}>Examples and Usecases</h5>
+          <h5 className={styles.title}>Examples and Use Cases</h5>
           <h5 className={styles.headline}>Experience Web3Auth</h5>
           <span>Demo Apps</span>
           <br />
