@@ -178,7 +178,6 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                 </div>
               ))}
             </MDXProvider>
-            <div style={{ height: "200px" }}>{/* Dummy element to allow the last step visible in the scroll */}</div>
           </div>
           <div className={styles.rightCol}>
             <IntegrationBuilderCodeView
