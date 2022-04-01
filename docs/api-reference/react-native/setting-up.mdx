@@ -103,3 +103,83 @@ npx pod-install
 Register the URL scheme you intended to use for redirection into your Android `AndoidManifest.xml` (required) and iOS `Info.plist` (optional).
 
 ### [React Native SDK](https://github.com/torusresearch/openlogin-react-native-sdk)
+
+Install the React Native SDK by
+
+```sh
+npm install @web3auth/react-native-sdk
+```
+
+Perform the [Android integration steps](/api-reference/android/setting-up).
+
+Perform the [iOS integration steps](/api-reference/ios/setting-up).
+
+Nothing has to be done with the iOS `Info.plist` since the `redirectUrl` is fixed to be `\(bundleId)://auth`, and does not need to be added as a iOS
+Custom URL Scheme.
+
+For Android, the `redirectUrl` parameter is configurable, and has to be added into the `AndroidManifest.xml`.
+
+## Initialisation
+
+---
+
+Note that OpenLogin is the name of Web3Auth before the rebranding. We are currently working on rebranding our React Native offering.
+
+### Create a OpenLogin instance
+
+#### Bare React Native SDK
+
+```typescript
+import OpenloginReactNativeSdk, { LoginProvider, OpenloginNetwork } from "openlogin-react-native-sdk";
+
+await OpenloginReactNativeSdk.init({
+  // Your clientId obtained from Web3Auth dashboard.
+  clientId: "BKJ3HmEqVmMHbFeW6E-CVPmdnVrnPhdBEI82kxgBVJGtaS4XlylvAE-1gmsv_Fa1CDj-xIhvTf3Kgd6mTn8nJtw",
+  network: OpenloginNetwork.MAINNET,
+  // redirectUrl only applies for Android SDK, it is designated by iOS SDK in iOS, which is \(bundleId)://auth
+  redirectUrl: "com.example.openloginreactnativesdk://auth",
+});
+```
+
+#### Expo based SDK with bare or managed workflow
+
+```typescript
+import OpenLogin, { Network } from "openlogin-expo-sdk";
+const openlogin = new OpenLogin({
+  // Your clientId obtained from Web3Auth dashboard.
+  clientId: "BC5bANkU4-fil7C5s1uKzRfF0VGqbuaxDQiLnQ8WgF7SEA32lGegAhu7dk4dZf3Rk397blIvfWytXwsRvs9dOaQ",
+  network: Network.TESTNET,
+});
+```
+
+### OpenLoginOptions object
+
+The `init()` method on in the Bare React Native SDK amd the `OpenLogin` constructor in the Expo based SDK takes an `OpenLoginOptions` object as
+argument. The fields of such object are listed below.
+
+| Parameter   | Type                                | Mandatory                    | Description                                                                                                                                                                                             |
+| ----------- | ----------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| clientId    | String                              | Yes                          | Your Web3Auth project ID obtained from the Web3Auth dashboard                                                                                                                                           |
+| network     | enum of OpenloginNetwork or Network | Yes                          | Web3Auth network to run on, either MAINNET or TESTNET                                                                                                                                                   |
+| redirectUrl | String                              | Yes on bare React Native SDK | The redirectUrl that the Web3Auth login flow will use to redirect back to the app. It is not required to be specified in the Expo based SDK since it will be specified in the `login()` method as well. |
+
+## Example
+
+---
+
+```typescript
+import OpenloginReactNativeSdk, { LoginProvider, OpenloginNetwork } from "openlogin-react-native-sdk";
+
+React.useEffect(() => {
+  OpenloginReactNativeSdk.init({
+    // Your clientId obtained from OpenLogin dashboard.
+    clientId: "BKJ3HmEqVmMHbFeW6E-CVPmdnVrnPhdBEI82kxgBVJGtaS4XlylvAE-1gmsv_Fa1CDj-xIhvTf3Kgd6mTn8nJtw",
+    // TESTNET is currently broken on iOS.
+    network: OpenloginNetwork.MAINNET,
+    // redirectUrl only applies for Android SDK, it is designated by iOS SDK in iOS, which is \(bundleId)://auth
+    redirectUrl: "com.example.openloginreactnativesdk://auth",
+  })
+    .then((result) => console.log(`success: ${result}`))
+    .catch((err) => console.log(`error: ${err}`));
+}, []);
+```
