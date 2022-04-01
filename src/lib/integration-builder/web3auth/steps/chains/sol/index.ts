@@ -28,11 +28,11 @@ const chainSteps = {
     };`
       );
 
-    filenames.push("eth/ethereum.js");
+    filenames.push("sol/solana.ts");
 
     steps.push({
       ...STEPS.initialize,
-      pointer: { filename: "eth/ethereum.js", range: "10-18" },
+      pointer: { filename: "sol/solana.ts", range: "16-27" },
     });
 
     return { files: newFiles, steps, filenames };
