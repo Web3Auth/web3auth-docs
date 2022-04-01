@@ -36,12 +36,6 @@ const TOGGLE_CHOICES: DisplayChoice[] = [
   { key: "yes", displayName: "Yes" },
 ];
 
-function replaceFileVariable(fileContent: string, variableName: string, replacement: string) {
-  const exp = `\n *// REPLACE-${variableName}-\n *`;
-  const re = new RegExp(exp, "gm");
-  return fileContent.replace(re, replacement);
-}
-
 const web3authIntegrationBuilder: IntegrationBuilder = {
   // Name of the integration builder
   displayName: "Web3Auth",
@@ -85,107 +79,11 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
     const filenames: string[] = [];
     const newFiles = JSON.parse(JSON.stringify(files));
     const steps: IntegrationStep[] = [];
-    const { chain, lang, whitelabel } = values;
 
-    switch (lang) {
-      case "html":
-        // STEP 1 OF BUILDING A GUIDE
-        // template filenames that your integration page will use
-        filenames.push("web3auth/web/index.html"); // Show code files in browsers
+    console.log(values);
 
-        // STEP 2 variable replacements come here
-        // TEMPLATE ON YOUR STATIC FILE IS /\/\/ REPLACE-.*-/g
-        // OR // REPLACE-yourVariableHere-
-        // tip: need to restart docusaurus for changes to static file uploads
-        switch (chain) {
-          case "eth":
-            newFiles["web3auth/web/index.html"] = replaceFileVariable(
-              newFiles["web3auth/web/index.html"],
-              "const web3AuthCtorParams = {};",
-              `        const web3AuthCtorParams = {
-              chainConfig: { chainNamespace: "eip155" },
-              clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
-            };`
-            );
-            break;
-
-          case "sol":
-            newFiles["web3auth/web/index.html"] = replaceFileVariable(
-              newFiles["web3auth/web/index.html"],
-              "const web3AuthCtorParams = {};",
-              `        const web3AuthCtorParams = {
-              chainConfig: { chainNamespace: "solana" },
-              clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
-            };`
-            );
-            break;
-
-          default:
-            break;
-        }
-
-        // STEP 3
-        // Add markdown steps
-        steps.push(
-          {
-            ...STEPS.framework.HTML.installationWeb,
-            pointer: { filename: "web3auth/web/index.html", range: "174" },
-          },
-          {
-            ...STEPS.framework.HTML.registerApp,
-            pointer: { filename: "web3auth/web/index.html", range: "184" },
-          },
-          {
-            ...STEPS.framework.HTML.instantiate,
-            pointer: { filename: "web3auth/web/index.html", range: "182-186" },
-          },
-          {
-            ...STEPS.framework.HTML.subscribe,
-            pointer: { filename: "web3auth/web/index.html", range: "204-224" },
-          },
-          {
-            ...STEPS.framework.HTML.initialize,
-            pointer: { filename: "web3auth/web/index.html", range: "190" },
-          },
-          {
-            ...STEPS.framework.HTML.triggeringLogin,
-            pointer: { filename: "web3auth/web/index.html", range: "226-235" },
-          },
-          {
-            ...STEPS.framework.HTML.getUserInfo,
-            pointer: { filename: "web3auth/web/index.html", range: "247-253" },
-          },
-          {
-            ...STEPS.framework.HTML.logout,
-            pointer: { filename: "web3auth/web/index.html", range: "237-245" },
-          }
-        );
-        break;
-      default:
-        break;
-    }
-
-    // STEP 4
-    // Add blockchain steps and files here. After integration steps have been settled
-    switch (chain) {
-      case "eth":
-        filenames.push("eth/ethereum.js");
-
-        steps.push({
-          ...STEPS.chains.ETH.initialize,
-          pointer: { filename: "eth/ethereum.js", range: "10-18" },
-        });
-        break;
-      case "sol":
-        filenames.push("sol/solana.ts");
-
-        steps.push({
-          ...STEPS.chains.SOL.initialize,
-          pointer: { filename: "sol/solana.ts" },
-        });
-        break;
-      default:
-    }
+    STEPS.framework[values.lang].build({ ...values, filenames, files: newFiles, steps });
+    STEPS.chains[values.chain].build({ ...values, filenames, files: newFiles, steps });
 
     return {
       // Use files in `open-login` folders instead of root folder

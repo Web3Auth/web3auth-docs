@@ -1,10 +1,10 @@
 // web
-import ETH from "./eth";
-import SOL from "./sol";
+import eth from "./eth";
+import sol from "./sol";
 
 const STEPS = {
-  ETH,
-  SOL,
+  eth,
+  sol,
 };
 
 export default STEPS;

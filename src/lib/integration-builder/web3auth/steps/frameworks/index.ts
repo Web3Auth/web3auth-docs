@@ -1,8 +1,8 @@
 // web
-import HTML from "./html";
+import html from "./html";
 
 const STEPS = {
-  HTML,
+  html,
 };
 
 export default STEPS;
