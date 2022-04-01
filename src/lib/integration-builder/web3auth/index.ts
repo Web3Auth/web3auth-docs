@@ -3,7 +3,7 @@ import STEPS from "./steps";
 
 const AVAILABLE_EXAMPLES = {
   Ethereum: {
-    langs: ["HTML", "Android", "iOS"],
+    langs: ["HTML", "Android", "iOS", "VUE"],
   },
   Solana: {
     langs: ["HTML", "React"],
@@ -28,6 +28,9 @@ const AVAILABLE_EXAMPLES = {
 const AVAILABLE_LANGS = {
   React: {
     examples: ["Solana", "Polygon", "Binance Smart Chain", "Avalanche", "ZkSync", "Arbitrum"],
+  },
+  VUE: {
+    examples: ["Ethereum"],
   },
   HTML: {
     examples: ["Ethereum", "Solana"],
@@ -55,7 +58,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
     lang: {
       displayName: "Language/Framework",
       default: "HTML",
-      choices: ["HTML", "React", "Android", "iOS"],
+      choices: ["HTML", "React", "Android", "iOS", "VUE"],
     },
     chain: {
       displayName: "Blockchain",
@@ -131,6 +134,59 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
               chainConfig: { chainNamespace: "eip155" },
               clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://developer.web3auth.io
             }`
+            );
+        }
+
+        // STEP 3
+        // Add markdown steps
+        steps.push(
+          {
+            ...STEPS.framework.HTML.installationWeb,
+            pointer: { filename: "web3auth/web/index.html", range: "42" },
+          },
+          {
+            ...STEPS.framework.HTML.registerApp,
+            pointer: { filename: "web3auth/web/index.html", range: "53" },
+          },
+          {
+            ...STEPS.framework.HTML.instantiate,
+            pointer: { filename: "web3auth/web/index.html", range: "44-54" },
+          },
+          {
+            ...STEPS.framework.HTML.subscribe,
+            pointer: { filename: "web3auth/web/index.html", range: "72-91" },
+          },
+          {
+            ...STEPS.framework.HTML.initialize,
+            pointer: { filename: "web3auth/web/index.html", range: "58" },
+          },
+          {
+            ...STEPS.framework.HTML.triggeringLogin,
+            pointer: { filename: "web3auth/web/index.html", range: "96-102" },
+          }
+          // {
+          //   ...STEPS.logout,
+          //   pointer: { filename: "web3auth/web/index.html", range: "59" },
+          // }
+        );
+      case "Vue":
+        // STEMP 1 OF BUILDING A GUIDE
+        // template filenames that your integration page will use
+        filenames.push("web3auth/web/index.html"); // Show code files in browsers
+
+        // STEP 2 variable replacements come here
+        // TEMPLATE ON YOUR STATIC FILE IS /\/\/ REPLACE-.*-/g
+        // OR // REPLACE-yourVariableHere-
+        // tip: need to restart docusaurus for changes to static file uploads
+        switch (whitelabel) {
+          default:
+            newFiles["web3auth/web/index.html"] = replaceFileVariable(
+              newFiles["web3auth/web/index.html"],
+              "web3authConstructor",
+              `{
+                chainConfig: { chainNamespace: "eip155" },
+                clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://developer.web3auth.io
+              }`
             );
         }
 
