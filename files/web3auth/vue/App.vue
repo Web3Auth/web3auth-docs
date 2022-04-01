@@ -1,18 +1,18 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <Home title="Web3Auth + Vue.js" />
-  </div>
+  <img alt="Vue logo" src="./assets/logo.png" />
+  <Home msg="Welcome to Your Vue.js + TypeScript App" />
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import Home from "./components/Home.vue";
-export default {
+
+export default defineComponent({
   name: "App",
   components: {
     Home,
   },
-};
+});
 </script>
 
 <style>
