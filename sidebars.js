@@ -22,17 +22,20 @@ module.exports = {
     {
       type: "category",
       label: "Developing with Web3Auth",
-      link: { type: 'doc', id: "developing-with-web3auth/glossary" },
+      link: { type: 'doc', id: "developing-with-web3auth/developing-with-web3auth" },
       items: [
         "developing-with-web3auth/understand-sdk",
         "developing-with-web3auth/adapters",
-        "developing-with-web3auth/event-lifecycle",
         "developing-with-web3auth/connect-blockchain",
-        "developing-with-web3auth/verifiers",
+        "developing-with-web3auth/whitelabeling",
+        {
+          type: "category",
+          label: "Using Custom Authentication",
+          link: { type: 'doc', id: "developing-with-web3auth/customauth/customauth" },
+          items: ["developing-with-web3auth/customauth/verifiers"]
+        },
       ],
     },
-    "whitelabeling",
-    "customauth",
     {
       type: "category",
       label: "API Reference",
@@ -100,7 +103,7 @@ module.exports = {
         },
       ],
     },
-    "examples-and-usecases",
+    "examples",
     {
       type: "category",
       label: "Contribute",
