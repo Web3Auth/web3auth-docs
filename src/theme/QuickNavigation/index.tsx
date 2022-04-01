@@ -8,13 +8,11 @@ export default function UsecaseCards() {
       {/* FIRST ROW */}
       <div className={styles.container}>
         <div className={classNames(styles.card, styles.cardOne)}>
-          <h5 className={styles.title}>Web3auth Architecture</h5>
+          <h5 className={styles.title}>Overview</h5>
           <h5 className={styles.headline}>Learn about Web3auth</h5>
           <span>What is Web3Auth</span>
           <br />
-          <span>Key Management & Security</span>
-          <br />
-          <span>Release Notes</span>
+          <span>Technical Architecture</span>
           <br />
           <span>Audits</span>
         </div>
@@ -22,51 +20,33 @@ export default function UsecaseCards() {
         <div className={classNames(styles.card, styles.cardOne)}>
           <h5 className={styles.title}>Get Started</h5>
           <h5 className={styles.headline}>For beginners</h5>
-          <span>Basic Installation</span>
-          <br />
           <span>Quick Start</span>
           <br />
-          <span>Demo Apps</span>
+          <span>Using the Dashboard</span>
         </div>
 
         <div className={classNames(styles.card, styles.cardOne)}>
           <h5 className={styles.title}>Basic Concepts</h5>
-          <h5 className={styles.headline}>Understanding Web3Auth </h5>
-          <span>Adapters and Configuration</span>
+          <h5 className={styles.headline}>Developing with Web3Auth</h5>
+          <span>Glossary</span>
           <br />
-          <span>Understanding the Lifecycle</span>
+          <span>Understanding the SDKs</span>
           <br />
-          <span>Providers</span>
+          <span>Adapters</span>
           <br />
-          <span>Verifiers</span>
+          <span>Connecting your Blockchain</span>
+          <br />
+          <span>Whitelabel</span>
+          <br />
+          <span>Using Custom Authentication</span>
         </div>
       </div>
 
       {/* SECOND ROW */}
       <div className={styles.container}>
         <div className={classNames(styles.card, styles.cardOne)}>
-          <h5 className={styles.title}>Whitelabel & Customise</h5>
-          <h5 className={styles.headline}>Branding and UI</h5>
-          <span>What is Web3Auth</span>
-          <br />
-          <span>Key Management & Security</span>
-          <br />
-          <span>Release Notes</span>
-          <br />
-          <span>Audits</span>
-        </div>
-
-        <div className={classNames(styles.card, styles.cardOne)}>
-          <h5 className={styles.title}>Use your own auth</h5>
-          <h5 className={styles.headline}>Customised auth</h5>
-          <span>Choosing your Auth Scheme</span>
-          <br />
-          <span>Deploying your Verifiers</span>
-        </div>
-
-        <div className={classNames(styles.card, styles.cardOne)}>
           <h5 className={styles.title}>API Reference</h5>
-          <h5 className={styles.headline}>Some subtitle</h5>
+          <h5 className={styles.headline}>Deep dive into our SDKs</h5>
           <span>Web</span>
           <br />
           <span>Android</span>
@@ -77,30 +57,27 @@ export default function UsecaseCards() {
           <br />
           <span>Flutter</span>
         </div>
-      </div>
-
-      {/* THIRD ROW */}
-      <div className={styles.container}>
         <div className={classNames(styles.card, styles.cardOne)}>
-          <h5 className={styles.title}>Demo Apps</h5>
-          <h5 className={styles.headline}>Some subtitle</h5>
-          <span>Example 1</span>
+          <h5 className={styles.title}>Examples and Usecases</h5>
+          <h5 className={styles.headline}>Experience Web3Auth</h5>
+          <span>Demo Apps</span>
           <br />
-          <span>Example 2</span>
+          <span>Production Examples</span>
           <br />
-          <span>Example 3</span>
-          <br />
-          <span>Example 4</span>
+          <span>Examples Apps</span>
         </div>
 
         <div className={classNames(styles.card, styles.cardOne)}>
           <h5 className={styles.title}>Contribute to Web3Auth</h5>
-          <h5 className={styles.headline}>We are open-sourced</h5>
+          <h5 className={styles.headline}>We are open source!</h5>
           <span>Open Source</span>
           <br />
           <span>Bug Bounty</span>
         </div>
+      </div>
 
+      {/* THIRD ROW */}
+      <div className={styles.container}>
         <div className={classNames(styles.card, styles.cardOne)}>
           <h5 className={styles.title}>Contact us</h5>
           <h5 className={styles.headline}>Get help or troubleshoot</h5>
