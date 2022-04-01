@@ -20,6 +20,7 @@ export interface IntegrationBuilder {
     {
       displayName: string;
       default: string;
+      isToggle: boolean;
       choices: string[];
     }
   >;

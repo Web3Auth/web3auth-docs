@@ -55,26 +55,31 @@ const plugnplayIntegrationBuilder: IntegrationBuilder = {
     lang: {
       displayName: "Language/Framework",
       default: "HTML",
+      isToggle: false,
       choices: ["HTML", "React", "Android", "iOS"],
     },
     chain: {
       displayName: "Blockchain",
       default: "Ethereum",
+      isToggle: false,
       choices: ["Ethereum", "Solana", "Polygon", "Binance Smart Chain", "Avalanche", "ZkSync", "Arbitrum"],
     },
     customAuth: {
       displayName: "Custom Auth",
       default: "off",
+      isToggle: true,
       choices: ["on", "off"],
     },
     customLogin: {
       displayName: "Custom Login UI",
       default: "off",
+      isToggle: true,
       choices: ["on", "off"],
     },
     whitelabel: {
       displayName: "Whitelabel",
       default: "off",
+      isToggle: true,
       choices: ["on", "off"],
     },
   },

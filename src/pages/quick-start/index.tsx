@@ -108,9 +108,16 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
   const onChangeOptionValue = (optionKey: string, optionValue: string, event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
 
+    let finalOptionValue = optionValue;
+    if (builder.options[optionKey].isToggle) {
+      const el = event.target as HTMLInputElement;
+      finalOptionValue = el.checked ? "on" : "false";
+    }
+    console.log(builder.options, optionKey, finalOptionValue);
+
     setBuilderOptions(({ id, values: currValues }) => {
       // Find best matched options
-      const availableValues = builders[id].getAvailableOptions(optionKey, optionValue);
+      const availableValues = builders[id].getAvailableOptions(optionKey, finalOptionValue);
 
       let maxScore = 0;
       let maxScoreIndex = 0;
@@ -129,7 +136,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
         id,
         values: {
           ...availableValues[maxScoreIndex],
-          [optionKey]: optionValue,
+          [optionKey]: finalOptionValue,
         },
       };
     });
@@ -192,6 +199,15 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     }
   };
 
+  const handleOptionSwitch = (optionKey: string, event: MouseEvent<HTMLInputElement>) => {
+    const el = event.target as HTMLInputElement;
+    let value = "";
+    if (builder.options[optionKey].isToggle) {
+      console.log(builder.options);
+      console.log(el.checked, optionKey);
+    }
+  };
+
   return (
     <Layout title="Integration Builder">
       <div className={styles.container}>
@@ -200,22 +216,38 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
             <div key={key} className={styles.optionContainer}>
               <span>{option.displayName}:</span>
               <div className="dropdown dropdown--hoverable">
-                <a className="navbar__link" href="#" onClick={(e) => e.preventDefault()}>
-                  {builderOptions.values[key]}
-                </a>
-                {option.choices.length > 1 && (
-                  <ul className="dropdown__menu">
-                    {option.choices.map(
-                      (value) =>
-                        value !== builderOptions.values[key] && (
-                          <li key={value}>
-                            <a className="dropdown__link" href="#" onClick={onChangeOptionValue.bind(this, key, value)}>
-                              {value}
-                            </a>
-                          </li>
-                        )
-                    )}
-                  </ul>
+                {!option.isToggle && (
+                  <a className="navbar__link" href="#" onClick={(e) => e.preventDefault()}>
+                    {builderOptions.values[key]}
+                  </a>
+                )}
+                {option.isToggle ? (
+                  <div>
+                    <label className={styles.switch}>
+                      <input
+                        type="checkbox"
+                        value="on"
+                        checked={builderOptions.values[key] === "on"}
+                        onClick={onChangeOptionValue.bind(this, key, null)}
+                      />
+                      <span className={styles.slider}></span>
+                    </label>
+                  </div>
+                ) : (
+                  option.choices.length > 1 && (
+                    <ul className="dropdown__menu">
+                      {option.choices.map(
+                        (value) =>
+                          value !== builderOptions.values[key] && (
+                            <li key={value}>
+                              <a className="dropdown__link" href="#" onClick={onChangeOptionValue.bind(this, key, value)}>
+                                {value}
+                              </a>
+                            </li>
+                          )
+                      )}
+                    </ul>
+                  )
                 )}
               </div>
             </div>
