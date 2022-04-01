@@ -1,44 +1,40 @@
-import { IntegrationBuilder, IntegrationStep } from "../interfaces";
+import { DisplayChoice, IntegrationBuilder, IntegrationStep } from "../interfaces";
 import STEPS from "./steps";
 
-const AVAILABLE_EXAMPLES = {
-  Ethereum: {
-    langs: ["HTML", "Android", "iOS"],
-  },
-  Solana: {
-    langs: ["HTML", "React"],
-  },
-  Polygon: {
-    langs: ["React"],
-  },
-  "Binance Smart Chain": {
-    langs: ["React"],
-  },
-  Avalanche: {
-    langs: ["React"],
-  },
-  ZkSync: {
-    langs: ["React"],
-  },
-  Arbitrum: {
-    langs: ["React"],
-  },
-};
+const CHAINS: DisplayChoice[] = [
+  { key: "eth", displayName: "Ethereum" },
+  { key: "sol", displayName: "Solana" },
+  { key: "matic", displayName: "Polygon" },
+  { key: "bnb", displayName: "BNB Chain" },
+  { key: "avax", displayName: "Avalanche" },
+  { key: "zksync", displayName: "ZK Sync" },
+  { key: "arbitrum", displayName: "Arbitrum" },
+  { key: "luna", displayName: "Terra" },
+  { key: "xtz", displayName: "Tezos" },
+  { key: "dot", displayName: "Polkadot" },
+  { key: "near", displayName: "Near" },
+  { key: "klay", displayName: "Klaytn" },
+  { key: "optimism", displayName: "Optimism" },
+  { key: "starknet", displayName: "StarkNet" },
+  { key: "starkex", displayName: "StarkEx" },
+];
 
-const AVAILABLE_LANGS = {
-  React: {
-    examples: ["Solana", "Polygon", "Binance Smart Chain", "Avalanche", "ZkSync", "Arbitrum"],
-  },
-  HTML: {
-    examples: ["Ethereum", "Solana"],
-  },
-  Android: {
-    examples: ["Ethereum"],
-  },
-  iOS: {
-    examples: ["Ethereum"],
-  },
-};
+const LANGS: DisplayChoice[] = [
+  { key: "html", displayName: "HTML/JS" },
+  { key: "react", displayName: "React" },
+  { key: "vue", displayName: "Vue" },
+  { key: "next", displayName: "Next JS" },
+  { key: "angular", displayName: "Angular" },
+  { key: "android", displayName: "Android" },
+  { key: "ios", displayName: "iOS/Swift" },
+  { key: "react-native", displayName: "React Native" },
+  { key: "flutter", displayName: "Flutter" },
+];
+
+const TOGGLE_CHOICES: DisplayChoice[] = [
+  { key: "no", displayName: "No" },
+  { key: "yes", displayName: "Yes" },
+];
 
 function replaceFileVariable(fileContent: string, variableName: string, replacement: string) {
   const exp = `\n *// REPLACE-${variableName}-\n *`;
@@ -54,60 +50,34 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
   options: {
     lang: {
       displayName: "Language/Framework",
-      default: "HTML",
-      isToggle: false,
-      choices: ["HTML", "React", "Android", "iOS"],
+      default: LANGS[0].key,
+      type: "dropdown",
+      choices: LANGS,
     },
     chain: {
       displayName: "Blockchain",
-      default: "Ethereum",
-      isToggle: false,
-      choices: ["Ethereum", "Solana", "Polygon", "Binance Smart Chain", "Avalanche", "ZkSync", "Arbitrum"],
+      default: CHAINS[0].key,
+      type: "dropdown",
+      choices: CHAINS,
     },
-    customAuth: {
+    customAuthentication: {
       displayName: "Custom Authentication",
-      default: "off",
-      isToggle: true,
-      choices: ["on", "off"],
+      default: TOGGLE_CHOICES[0].key,
+      type: "toggle",
+      choices: TOGGLE_CHOICES,
     },
     customLogin: {
       displayName: "Custom Login UI",
-      default: "off",
-      isToggle: true,
-      choices: ["on", "off"],
+      default: TOGGLE_CHOICES[0].key,
+      type: "toggle",
+      choices: TOGGLE_CHOICES,
     },
     whitelabel: {
       displayName: "Whitelabel",
-      default: "on",
-      isToggle: true,
-      choices: ["on", "off"],
+      default: TOGGLE_CHOICES[0].key,
+      type: "toggle",
+      choices: TOGGLE_CHOICES,
     },
-  },
-
-  // Return available options when user selects a value,
-  // .e.g there're integrations with Conflux for React and Vue, but not for Android
-  getAvailableOptions(optionKey, optionValue) {
-    // console.log("options", optionKey, optionValue);
-    const availableOptions: Record<string, string>[] = [];
-    const availableLangExamples = AVAILABLE_LANGS[optionValue]?.examples;
-    const availableChainLangs = AVAILABLE_EXAMPLES[optionValue]?.langs;
-    switch (optionKey) {
-      case "chain":
-        for (let i = 0; i < availableChainLangs.length; i += 1) {
-          const lang = availableChainLangs[i];
-          availableOptions.push({ lang });
-        }
-        break;
-      case "lang":
-        for (let i = 0; i < availableLangExamples.length; i += 1) {
-          const example = availableLangExamples[i];
-          availableOptions.push({ chain: example });
-        }
-        break;
-      default:
-        throw new Error(`Unknown option key ${JSON.stringify(optionKey)}`);
-    }
-    return availableOptions;
   },
 
   // Build integrations based on input values
@@ -118,7 +88,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
     const { chain, lang, whitelabel } = values;
 
     switch (lang) {
-      case "HTML":
+      case "html":
         // STEP 1 OF BUILDING A GUIDE
         // template filenames that your integration page will use
         filenames.push("web3auth/web/index.html"); // Show code files in browsers
@@ -128,7 +98,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
         // OR // REPLACE-yourVariableHere-
         // tip: need to restart docusaurus for changes to static file uploads
         switch (chain) {
-          case "Ethereum":
+          case "eth":
             newFiles["web3auth/web/index.html"] = replaceFileVariable(
               newFiles["web3auth/web/index.html"],
               "const web3AuthCtorParams = {};",
@@ -139,7 +109,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
             );
             break;
 
-          case "Solana":
+          case "sol":
             newFiles["web3auth/web/index.html"] = replaceFileVariable(
               newFiles["web3auth/web/index.html"],
               "const web3AuthCtorParams = {};",
@@ -198,7 +168,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
     // STEP 4
     // Add blockchain steps and files here. After integration steps have been settled
     switch (chain) {
-      case "Ethereum":
+      case "eth":
         filenames.push("eth/ethereum.js");
 
         steps.push({
@@ -206,7 +176,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
           pointer: { filename: "eth/ethereum.js", range: "10-18" },
         });
         break;
-      case "Solana":
+      case "sol":
         filenames.push("sol/solana.ts");
 
         steps.push({
@@ -216,6 +186,8 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
         break;
       default:
     }
+
+    debugger;
 
     return {
       // Use files in `open-login` folders instead of root folder
