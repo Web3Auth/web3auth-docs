@@ -108,9 +108,9 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
               <span>{option.displayName}:</span>
               <div className="dropdown dropdown--hoverable">
                 {option.type === "dropdown" && (
-                  <a className="navbar__link" href="#" onClick={(e) => e.preventDefault()}>
+                  <span className={`navbar__link ${styles.w3DropdownLink}`} onClick={(e) => e.preventDefault()}>
                     {option.choices.find((x) => x.key === builderOptions[key])?.displayName || ""}
-                  </a>
+                  </span>
                 )}
                 {option.type === "toggle" ? (
                   <div>
@@ -121,7 +121,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                   </div>
                 ) : (
                   option.choices.length > 1 && (
-                    <ul className="dropdown__menu">
+                    <ul className={`dropdown__menu ${styles.w3DropdownMenu}`}>
                       {option.choices.map(
                         (value) =>
                           value.key !== builderOptions[key] && (
@@ -136,31 +136,31 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
               </div>
             </div>
           ))}
+
+          <div className={styles.copyContainer}>
+            <button
+              title="Copy link to example"
+              aria-label="Copy link to example"
+              className={classNames(styles.copyButton, {
+                [styles.copied]: isLinkCopied,
+              })}
+              onClick={onClickCopyLink}
+              type="button"
+            >
+              {isLinkCopied ? (
+                <>
+                  Copied <AiOutlineCheck aria-hidden style={{ marginLeft: "4px" }} />
+                </>
+              ) : (
+                <>
+                  <AiOutlineLink size="1.5em" aria-hidden />
+                </>
+              )}
+            </button>
+          </div>
         </div>
         <div className={styles.cols}>
           <div className={styles.leftCol} onScroll={onScrollLeft}>
-            <header className={styles.heading}>
-              <div>
-                <h1>{builder.displayName}</h1>
-                <button
-                  title="Copy link to example"
-                  aria-label="Copy link to example"
-                  className={classNames(styles.copyButton, {
-                    [styles.copied]: isLinkCopied,
-                  })}
-                  onClick={onClickCopyLink}
-                  type="button"
-                >
-                  {isLinkCopied ? (
-                    <>
-                      Copied <AiOutlineCheck aria-hidden style={{ marginLeft: "4px" }} />
-                    </>
-                  ) : (
-                    <AiOutlineLink size="1.5em" aria-hidden />
-                  )}
-                </button>
-              </div>
-            </header>
             <MDXProvider components={MDXComponents}>
               {steps.map((step, index) => (
                 <div
@@ -178,7 +178,6 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                 </div>
               ))}
             </MDXProvider>
-            <div style={{ height: "200px" }}>{/* Dummy element to allow the last step visible in the scroll */}</div>
           </div>
           <div className={styles.rightCol}>
             <IntegrationBuilderCodeView
