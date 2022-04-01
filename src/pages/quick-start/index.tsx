@@ -3,7 +3,7 @@ import Layout from "@theme/Layout";
 import MDXComponents from "@theme/MDXComponents";
 import classNames from "classnames";
 import copyToClipboard from "copy-to-clipboard";
-import { ChangeEvent, MouseEvent, UIEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, UIEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { AiOutlineCheck, AiOutlineLink } from "react-icons/ai";
 
 import builder from "../../lib/integration-builder";

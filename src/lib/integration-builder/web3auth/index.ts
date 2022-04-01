@@ -187,8 +187,6 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
       default:
     }
 
-    debugger;
-
     return {
       // Use files in `open-login` folders instead of root folder
       filenames: filenames.map((it) => `${it}`),
