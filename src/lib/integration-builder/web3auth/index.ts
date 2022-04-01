@@ -41,8 +41,8 @@ const AVAILABLE_LANGS = {
 };
 
 function replaceFileVariable(fileContent: string, variableName: string, replacement: string) {
-  var exp = `\n *// REPLACE-${variableName}-\n *`;
-  var re = new RegExp(exp, "gm");
+  const exp = `\n *// REPLACE-${variableName}-\n *`;
+  const re = new RegExp(exp, "gm");
   return fileContent.replace(re, replacement);
 }
 
@@ -63,7 +63,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
       choices: ["Ethereum", "Solana", "Polygon", "Binance Smart Chain", "Avalanche", "ZkSync", "Arbitrum"],
     },
     customAuth: {
-      displayName: "Custom Auth",
+      displayName: "Custom Authentication",
       default: "off",
       choices: ["on", "off"],
     },
@@ -114,7 +114,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
 
     switch (lang) {
       case "HTML":
-        // STEMP 1 OF BUILDING A GUIDE
+        // STEP 1 OF BUILDING A GUIDE
         // template filenames that your integration page will use
         filenames.push("web3auth/web/index.html"); // Show code files in browsers
 
@@ -122,16 +122,31 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
         // TEMPLATE ON YOUR STATIC FILE IS /\/\/ REPLACE-.*-/g
         // OR // REPLACE-yourVariableHere-
         // tip: need to restart docusaurus for changes to static file uploads
-        switch (whitelabel) {
-          default:
+        switch (chain) {
+          case "Ethereum":
             newFiles["web3auth/web/index.html"] = replaceFileVariable(
               newFiles["web3auth/web/index.html"],
-              "web3authConstructor",
-              `{
+              "const web3AuthCtorParams = {};",
+              `        const web3AuthCtorParams = {
               chainConfig: { chainNamespace: "eip155" },
-              clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://developer.web3auth.io
-            }`
+              clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
+            };`
             );
+            break;
+
+          case "Solana":
+            newFiles["web3auth/web/index.html"] = replaceFileVariable(
+              newFiles["web3auth/web/index.html"],
+              "const web3AuthCtorParams = {};",
+              `        const web3AuthCtorParams = {
+              chainConfig: { chainNamespace: "solana" },
+              clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
+            };`
+            );
+            break;
+
+          default:
+            break;
         }
 
         // STEP 3
@@ -139,34 +154,40 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
         steps.push(
           {
             ...STEPS.framework.HTML.installationWeb,
-            pointer: { filename: "web3auth/web/index.html", range: "42" },
+            pointer: { filename: "web3auth/web/index.html", range: "174" },
           },
           {
             ...STEPS.framework.HTML.registerApp,
-            pointer: { filename: "web3auth/web/index.html", range: "53" },
+            pointer: { filename: "web3auth/web/index.html", range: "184" },
           },
           {
             ...STEPS.framework.HTML.instantiate,
-            pointer: { filename: "web3auth/web/index.html", range: "44-54" },
+            pointer: { filename: "web3auth/web/index.html", range: "182-186" },
           },
           {
             ...STEPS.framework.HTML.subscribe,
-            pointer: { filename: "web3auth/web/index.html", range: "72-91" },
+            pointer: { filename: "web3auth/web/index.html", range: "204-224" },
           },
           {
             ...STEPS.framework.HTML.initialize,
-            pointer: { filename: "web3auth/web/index.html", range: "58" },
+            pointer: { filename: "web3auth/web/index.html", range: "190" },
           },
           {
             ...STEPS.framework.HTML.triggeringLogin,
-            pointer: { filename: "web3auth/web/index.html", range: "96-102" },
+            pointer: { filename: "web3auth/web/index.html", range: "226-235" },
+          },
+          {
+            ...STEPS.framework.HTML.getUserInfo,
+            pointer: { filename: "web3auth/web/index.html", range: "247-253" },
+          },
+          {
+            ...STEPS.framework.HTML.logout,
+            pointer: { filename: "web3auth/web/index.html", range: "237-245" },
           }
-          // {
-          //   ...STEPS.logout,
-          //   pointer: { filename: "web3auth/web/index.html", range: "59" },
-          // }
         );
+        break;
       default:
+        break;
     }
 
     // STEP 4
@@ -177,7 +198,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
 
         steps.push({
           ...STEPS.chains.ETH.initialize,
-          pointer: { filename: "eth/ethereum.js", range: "2-5" },
+          pointer: { filename: "eth/ethereum.js", range: "10-18" },
         });
         break;
       case "Solana":

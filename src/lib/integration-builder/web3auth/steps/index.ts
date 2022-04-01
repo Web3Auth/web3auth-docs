@@ -1,6 +1,6 @@
 // web
-import framework from "./frameworks";
 import chains from "./chains";
+import framework from "./frameworks";
 
 const STEPS = {
   framework,
