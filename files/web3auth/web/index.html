@@ -48,9 +48,8 @@
         $(".btn-logged-in").hide();
         $("#sign-tx").hide();
 
-        web3AuthInstance = new web3authSdk.Web3Auth(
-          // REPLACE-web3authConstructor-
-        );
+        web3AuthInstance = new web3authSdk.Web3Auth();
+        // REPLACE-web3authConstructor-
 
         subscribeAuthEvents(web3AuthInstance);
 
@@ -176,7 +175,6 @@
             value: web3.utils.toWei("0.01"),
           });
           $("#code").text(JSON.stringify(txRes));
-
         } catch (error) {
           console.error(error.message);
         }
@@ -195,7 +193,6 @@
             value: web3.utils.toWei("0.01"),
           });
           $("#code").text(JSON.stringify(txRes));
-
         } catch (error) {
           console.error(error.message);
         }

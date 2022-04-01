@@ -63,7 +63,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
       choices: ["Ethereum", "Solana", "Polygon", "Binance Smart Chain", "Avalanche", "ZkSync", "Arbitrum"],
     },
     customAuth: {
-      displayName: "Custom Auth",
+      displayName: "Custom Authentication",
       default: "off",
       choices: ["on", "off"],
     },
@@ -114,7 +114,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
 
     switch (lang) {
       case "HTML":
-        // STEMP 1 OF BUILDING A GUIDE
+        // STEP 1 OF BUILDING A GUIDE
         // template filenames that your integration page will use
         filenames.push("web3auth/web/index.html"); // Show code files in browsers
 
