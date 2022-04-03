@@ -1,9 +1,42 @@
-import { toSteps } from "../../../../utils";
-
+import { replaceFileVariable, toSteps } from "../../../../utils";
 import * as initialize from "./initializing.mdx";
 
 const STEPS = toSteps({
   initialize,
 });
 
-export default STEPS;
+const chainSteps = {
+  STEPS,
+  build({ filenames, files, steps, customLogin }) {
+    const newFiles = files;
+    if (customLogin === "no")
+      newFiles["web3auth/web/input.js"] = replaceFileVariable(
+        files["web3auth/web/input.js"],
+        "const web3AuthCtorParams = {};",
+        `        const web3AuthCtorParams = {
+      chainConfig: { chainNamespace: "solana" },
+      clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
+    };`
+      );
+    else
+      newFiles["web3auth/web/customInput.js"] = replaceFileVariable(
+        files["web3auth/web/customInput.js"],
+        "const web3AuthCtorParams = {};",
+        `        const web3AuthCtorParams = {
+      chainConfig: { chainNamespace: "solana" },
+      clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
+    };`
+      );
+
+    filenames.push("sol/solana.ts");
+
+    steps.push({
+      ...STEPS.initialize,
+      pointer: { filename: "sol/solana.ts", range: "16-27" },
+    });
+
+    return { files: newFiles, steps, filenames };
+  },
+};
+
+export default chainSteps;

@@ -12,6 +12,11 @@ export interface Integration {
   steps: IntegrationStep[];
 }
 
+export interface DisplayChoice {
+  key: string;
+  displayName: string;
+}
+
 export interface IntegrationBuilder {
   displayName: string;
 
@@ -20,11 +25,10 @@ export interface IntegrationBuilder {
     {
       displayName: string;
       default: string;
-      choices: string[];
+      type: "toggle" | "dropdown";
+      choices: DisplayChoice[];
     }
   >;
-
-  getAvailableOptions(optionKey: string, optionValue: string): Record<string, string>[];
 
   build(values: Record<string, string>, files: Record<string, any>): Integration;
 }

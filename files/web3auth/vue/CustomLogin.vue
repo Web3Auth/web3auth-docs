@@ -6,7 +6,10 @@
         fontSize: '12px',
       }"
     >
-      <button class="rpcBtn" v-if="!provider" @click="connect()" style="cursor: pointer">Connect</button>
+      <button class="rpcBtn" v-if="!provider && !loading" @click="connect()" style="cursor: pointer">Login With Google</button>
+      <button class="rpcBtn" v-if="!provider && !loading" @click="connectWithCustomVerifier()" style="cursor: pointer">
+        Login With Custom Verifier
+      </button>
       <button class="rpcBtn" v-if="provider" @click="logout()" style="cursor: pointer">Logout</button>
       <button class="rpcBtn" v-if="provider" @click="getUserInfo()" style="cursor: pointer">Get User Info</button>
       <button class="rpcBtn" v-if="provider" @click="getUserAccount()" style="cursor: pointer">Get User Account</button>
@@ -20,15 +23,10 @@
 <script lang="ts">
 import { ADAPTER_STATUS, CONNECTED_EVENT_DATA, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
-import { Web3Auth } from "@web3auth/web3auth";
+import { Web3AuthCore } from "@web3auth/core";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { ref, onMounted } from "vue";
-// REPLACE-web3authChainRpcImport-
-
-// REPLACE-web3authChainNamespace-
-
-// REPLACE-web3authConstructor-
-
-// REPLACE-web3authInit-
+import { getWalletProvider } from "../services/wallet-provider";
 
 export default {
   name: "Home",
@@ -40,17 +38,30 @@ export default {
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
     const provider = ref<SafeEventEmitterProvider | null>(null);
-
-    let web3auth = new Web3Auth(web3AuthCtorParams);
+    let web3auth = new Web3AuthCore({ chainConfig: { chainNamespace: "eip155" } });
     onMounted(async () => {
       try {
         loading.value = true;
-
-        web3auth = new Web3Auth(web3AuthCtorParams);
-
+        web3auth = new Web3AuthCore({ chainConfig: { chainNamespace: "eip155" } });
+        const clientId = "YOUR_CLIENT_ID";
+        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            clientId,
+            network: "testnet",
+            uxMode: "redirect",
+            loginConfig: {
+              jwt: {
+                name: "Custom Verifier Login",
+                verifier: process.env.VUE_APP_VERIFIER || "YOUR_VERIFIER_NAME",
+                typeOfLogin: "jwt",
+                clientId,
+              },
+            },
+          },
+        });
+        web3auth.configureAdapter(openloginAdapter);
         subscribeAuthEvents();
-
-        await web3auth.initModal(initParams);
+        await web3auth.init();
       } catch (error) {
         console.log("error", error);
         uiConsole("error", error);
@@ -81,7 +92,25 @@ export default {
     }
     async function connect() {
       try {
-        const web3authProvider = await web3auth.connect();
+        const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, { loginProvider: "google" });
+        provider.value = web3authProvider;
+      } catch (error) {
+        console.error(error);
+        uiConsole("error", error);
+      }
+    }
+    async function connectWithCustomVerifier() {
+      try {
+        const jwtToken = "YOUR_ID_TOKEN";
+        const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+          relogin: true,
+          loginProvider: "jwt",
+          extraLoginOptions: {
+            id_token: jwtToken,
+            domain: process.env.VUE_APP_DOMAIN,
+            verifierIdField: "sub",
+          },
+        });
         provider.value = web3authProvider;
       } catch (error) {
         console.error(error);
@@ -100,7 +129,7 @@ export default {
       if (!provider.value) {
         throw new Error("provider is not set");
       }
-      // REPLACE-web3authChainRpc-
+      const rpc = getWalletProvider("ethereum", provider.value);
       const userAccount = await rpc.getAccounts();
       uiConsole(userAccount);
     }
@@ -121,6 +150,7 @@ export default {
       subscribeAuthEvents,
       getUserInfo,
       getUserAccount,
+      connectWithCustomVerifier,
     };
   },
 };

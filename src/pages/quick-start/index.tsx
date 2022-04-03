@@ -3,141 +3,48 @@ import Layout from "@theme/Layout";
 import MDXComponents from "@theme/MDXComponents";
 import classNames from "classnames";
 import copyToClipboard from "copy-to-clipboard";
-import { MouseEvent, UIEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, UIEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { AiOutlineCheck, AiOutlineLink } from "react-icons/ai";
 
-import builders from "../../lib/integration-builder";
+import builder from "../../lib/integration-builder";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
 import styles from "./styles.module.css";
-
-const defaultBuilderId = "plugnplay";
-
-const getDefaultBuilderOptions = (id: string) =>
-  Object.fromEntries(Object.entries(builders[id].options).map(([key, option]) => [key, option.default]));
 
 const getWindowLocation = () => {
   if (typeof window !== "undefined") return window.location.href;
   return "http://localhost";
 };
 
-interface BuilderOptions {
-  id: string;
-  values: Record<string, string>;
-}
+const getDefaultBuilderOptions = () => Object.fromEntries(Object.entries(builder.options).map(([key, option]) => [key, option.default]));
 
-const getInitialBuilderOptions = (): BuilderOptions => {
-  const url = new URL(getWindowLocation());
-
-  // Get builder id from URL
-  const id = url.searchParams.get("b");
-  if (!builders[id])
-    return {
-      id: defaultBuilderId,
-      values: getDefaultBuilderOptions(defaultBuilderId),
-    };
-
-  // Read all applicable query options
-  const queriedOptions: Record<string, string> = {};
-  for (const opt of Object.keys(builders[id].options)) {
-    const value = url.searchParams.get(opt);
-    if (value) queriedOptions[opt] = value;
-  }
-
-  // Return default if no additional query is specified
-  const queriedKeys = Object.keys(queriedOptions);
-  if (queriedKeys.length === 0)
-    return {
-      id,
-      values: getDefaultBuilderOptions(id),
-    };
-
-  // Find best matched options
-  const queriedKey = queriedKeys[0];
-  const availableValues = builders[id].getAvailableOptions(queriedKey, queriedOptions[queriedKey]);
-
-  let maxScore = 0;
-  let maxScoreIndex = 0;
-  for (let i = 0; i < availableValues.length; i += 1) {
-    let score = 0;
-    for (const comparingKey of Object.keys(availableValues[i])) {
-      if (queriedOptions[comparingKey] === availableValues[i][comparingKey]) score += 1;
-    }
-    if (score > maxScore) {
-      maxScore = score;
-      maxScoreIndex = i;
-    }
-  }
-
-  return {
-    id,
-    values: {
-      [queriedKey]: queriedOptions[queriedKey],
-      ...availableValues[maxScoreIndex],
-    },
-  };
-};
-
-const getURLFromBuilderOptions = (opts: BuilderOptions): string => {
+const getURLFromBuilderOptions = (opts: Record<string, string>): string => {
   const url = new URL(getWindowLocation());
   url.search = "";
-
-  url.searchParams.append("b", opts.id);
-  for (const [key, value] of Object.entries(opts.values)) url.searchParams.append(key, value);
-
+  for (const [key, value] of Object.entries(opts)) url.searchParams.append(key, value);
   return url.toString();
 };
 
 export default function IntegrationBuilderPage({ files }: { files: Record<string, any> }) {
-  const [builderOptions, setBuilderOptions] = useState<{
-    id: string;
-    values: Record<string, string>;
-  }>({ id: defaultBuilderId, values: getDefaultBuilderOptions(defaultBuilderId) });
+  const [builderOptions, setBuilderOptions] = useState<Record<string, string>>(getDefaultBuilderOptions());
 
-  useEffect(() => {
-    // Load initial builder options on mount and re-render.
-    setBuilderOptions(getInitialBuilderOptions());
-  }, []);
+  const onChangeOptionValue = (optionKey: string, event: ChangeEvent<HTMLInputElement>) => {
+    const el = event.target as HTMLInputElement;
+    const finalOptionValue = el.checked ? "yes" : "no";
 
-  const onChangeBuilder = (id: string) => {
     setBuilderOptions({
-      id,
-      values: getDefaultBuilderOptions(id),
+      ...builderOptions,
+      [optionKey]: finalOptionValue,
     });
   };
 
-  const onChangeOptionValue = (optionKey: string, optionValue: string, event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-
-    setBuilderOptions(({ id, values: currValues }) => {
-      // Find best matched options
-      const availableValues = builders[id].getAvailableOptions(optionKey, optionValue);
-
-      let maxScore = 0;
-      let maxScoreIndex = 0;
-      for (let i = 0; i < availableValues.length; i += 1) {
-        let score = 0;
-        for (const comparingKey of Object.keys(availableValues[i])) {
-          if (currValues[comparingKey] === availableValues[i][comparingKey]) score += 1;
-        }
-        if (score > maxScore) {
-          maxScore = score;
-          maxScoreIndex = i;
-        }
-      }
-
-      return {
-        id,
-        values: {
-          ...availableValues[maxScoreIndex],
-          [optionKey]: optionValue,
-        },
-      };
+  const onChangeDropdown = (optionKey: string, optionValue: string) => {
+    setBuilderOptions({
+      ...builderOptions,
+      [optionKey]: optionValue,
     });
   };
 
-  const builder = builders[builderOptions.id];
-
-  const integration = useMemo(() => builder.build(builderOptions.values, files), [builderOptions]);
+  const integration = useMemo(() => builder.build(builderOptions, files), [builderOptions, files]);
   const [selectedFilename, setSelectedFilename] = useState(integration.filenames[0]);
 
   const [isLinkCopied, setLinkCopied] = useState<number>();
@@ -154,7 +61,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
 
     // Update query params
     history.pushState({}, "", getURLFromBuilderOptions(builderOptions));
-  }, [integration]);
+  }, [builderOptions, integration, isLinkCopied]);
 
   const onClickCopyLink = useCallback(() => {
     if (isLinkCopied) return;
@@ -164,7 +71,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
       setLinkCopied(undefined);
     }, 3000);
     setLinkCopied(timeout);
-  }, [integration, isLinkCopied]);
+  }, [isLinkCopied]);
 
   const { steps } = integration;
   const [stepIndex, setStepIndex] = useState(0);
@@ -200,66 +107,60 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
             <div key={key} className={styles.optionContainer}>
               <span>{option.displayName}:</span>
               <div className="dropdown dropdown--hoverable">
-                <a className="navbar__link" href="#" onClick={(e) => e.preventDefault()}>
-                  {builderOptions.values[key]}
-                </a>
-                {option.choices.length > 1 && (
-                  <ul className="dropdown__menu">
-                    {option.choices.map(
-                      (value) =>
-                        value !== builderOptions.values[key] && (
-                          <li key={value}>
-                            <a className="dropdown__link" href="#" onClick={onChangeOptionValue.bind(this, key, value)}>
-                              {value}
-                            </a>
-                          </li>
-                        )
-                    )}
-                  </ul>
+                {option.type === "dropdown" && (
+                  <span className={`navbar__link ${styles.w3DropdownLink}`} onClick={(e) => e.preventDefault()}>
+                    {option.choices.find((x) => x.key === builderOptions[key])?.displayName || ""}
+                  </span>
+                )}
+                {option.type === "toggle" ? (
+                  <div>
+                    <label className={styles.switch}>
+                      <input type="checkbox" checked={builderOptions[key] === "yes"} onChange={(e) => onChangeOptionValue(key, e)} />
+                      <span className={styles.slider} />
+                    </label>
+                  </div>
+                ) : (
+                  option.choices.length > 1 && (
+                    <ul className={`dropdown__menu ${styles.w3DropdownMenu}`}>
+                      {option.choices.map(
+                        (value) =>
+                          value.key !== builderOptions[key] && (
+                            <li key={value.key} onClick={(e) => onChangeDropdown(key, value.key)}>
+                              {value.displayName}
+                            </li>
+                          )
+                      )}
+                    </ul>
+                  )
                 )}
               </div>
             </div>
           ))}
+
+          <div className={styles.copyContainer}>
+            <button
+              title="Copy link to example"
+              aria-label="Copy link to example"
+              className={classNames(styles.copyButton, {
+                [styles.copied]: isLinkCopied,
+              })}
+              onClick={onClickCopyLink}
+              type="button"
+            >
+              {isLinkCopied ? (
+                <>
+                  Copied <AiOutlineCheck aria-hidden style={{ marginLeft: "4px" }} />
+                </>
+              ) : (
+                <>
+                  <AiOutlineLink size="1.5em" aria-hidden />
+                </>
+              )}
+            </button>
+          </div>
         </div>
         <div className={styles.cols}>
           <div className={styles.leftCol} onScroll={onScrollLeft}>
-            <header className={styles.heading}>
-              <div>
-                <h1>{builder.displayName}</h1>
-                <button
-                  title="Copy link to example"
-                  aria-label="Copy link to example"
-                  className={classNames(styles.copyButton, {
-                    [styles.copied]: isLinkCopied,
-                  })}
-                  onClick={onClickCopyLink}
-                  type="button"
-                >
-                  {isLinkCopied ? (
-                    <>
-                      Copied <AiOutlineCheck aria-hidden style={{ marginLeft: "4px" }} />
-                    </>
-                  ) : (
-                    <AiOutlineLink size="1.5em" aria-hidden />
-                  )}
-                </button>
-              </div>
-              <ul className="pills">
-                {Object.entries(builders).map(([id, builderx]) => (
-                  <li
-                    key={id}
-                    className={classNames("pills__item", {
-                      "pills__item--active": builderOptions.id === id,
-                    })}
-                    onClick={onChangeBuilder.bind(this, id)}
-                    onKeyDown={onChangeBuilder.bind(this, id)}
-                    role="menuitem"
-                  >
-                    {builderx.displayName}
-                  </li>
-                ))}
-              </ul>
-            </header>
             <MDXProvider components={MDXComponents}>
               {steps.map((step, index) => (
                 <div
@@ -277,7 +178,6 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                 </div>
               ))}
             </MDXProvider>
-            <div style={{ height: "200px" }}>{/* Dummy element to allow the last step visible in the scroll */}</div>
           </div>
           <div className={styles.rightCol}>
             <IntegrationBuilderCodeView

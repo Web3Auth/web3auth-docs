@@ -1,10 +1,10 @@
 // web
-import HTML from "./html";
-import VUE from "./vue";
+import html from "./html";
+import vue from "./vue";
 
 const STEPS = {
-  HTML,
-  VUE,
+  html,
+  vue,
 };
 
 export default STEPS;
