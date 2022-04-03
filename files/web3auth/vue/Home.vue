@@ -9,6 +9,7 @@
       <button class="rpcBtn" v-if="!provider" @click="connect()" style="cursor: pointer">Connect</button>
       <button class="rpcBtn" v-if="provider" @click="logout()" style="cursor: pointer">Logout</button>
       <button class="rpcBtn" v-if="provider" @click="getUserInfo()" style="cursor: pointer">Get User Info</button>
+      <button class="rpcBtn" v-if="provider" @click="getUserAccount()" style="cursor: pointer">Get User Account</button>
     </section>
     <div id="console" style="white-space: pre-line">
       <p style="white-space: pre-line"></p>
@@ -17,10 +18,11 @@
 </template>
 
 <script lang="ts">
-import { ADAPTER_STATUS, CONNECTED_EVENT_DATA } from "@web3auth/base";
+import { ADAPTER_STATUS, CONNECTED_EVENT_DATA, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
 import { Web3Auth } from "@web3auth/web3auth";
 import { ref, onMounted } from "vue";
+import { getWalletProvider } from "../services/wallet-provider";
 
 export default {
   name: "Home",
@@ -28,20 +30,40 @@ export default {
     msg: String,
   },
   setup() {
-    const loading = ref(false);
-    const loginButtonStatus = ref("");
-    const connecting = ref(false);
-    const provider = ref(undefined);
-    let web3auth = null;
+    const loading = ref<boolean>(false);
+    const loginButtonStatus = ref<string>("");
+    const connecting = ref<boolean>(false);
+    const provider = ref<SafeEventEmitterProvider | null>(null);
+    let web3auth = new Web3Auth({
+      clientId: "BOe7qrN4pt6HWTnfMTySpftXgfE2zWzytNIicoiQ3_kAT9SVsW8DqzcSZ5Y6ybfUO8cjU418NY7flP4GBbWXn2U",
+      chainConfig: { chainNamespace: "eip155" },
+    });
     onMounted(async () => {
       try {
         loading.value = true;
         web3auth = new Web3Auth({
           clientId: "BOe7qrN4pt6HWTnfMTySpftXgfE2zWzytNIicoiQ3_kAT9SVsW8DqzcSZ5Y6ybfUO8cjU418NY7flP4GBbWXn2U",
           chainConfig: { chainNamespace: "eip155" },
+          uiConfig: {
+            theme: "dark",
+            loginMethodsOrder: ["facebook", "twitter"],
+            appLogo: "",
+          },
         });
         subscribeAuthEvents();
-        await web3auth.initModal();
+        await web3auth.initModal({
+          modalConfig: {
+            [WALLET_ADAPTERS.OPENLOGIN]: {
+              label: "openlogin",
+              loginMethods: {
+                reddit: {
+                  showOnModal: false,
+                  name: "reddit",
+                },
+              },
+            },
+          },
+        });
       } catch (error) {
         console.log("error", error);
         uiConsole("error", error);
@@ -61,12 +83,12 @@ export default {
       });
       web3auth.on(ADAPTER_STATUS.DISCONNECTED, () => {
         uiConsole("disconnected");
-        provider.value = undefined;
+        provider.value = null;
       });
       web3auth.on(ADAPTER_STATUS.ERRORED, (error) => {
         uiConsole("errored", error);
       });
-      web3auth.on(LOGIN_MODAL_EVENTS.MODAL_VISIBILITY, (isVisible) => {
+      web3auth.on(LOGIN_MODAL_EVENTS.MODAL_VISIBILITY, (isVisible: boolean) => {
         connecting.value = isVisible;
       });
     }
@@ -81,11 +103,19 @@ export default {
     }
     async function logout() {
       await web3auth.logout();
-      provider.value = undefined;
+      provider.value = null;
     }
     async function getUserInfo() {
       const userInfo = await web3auth.getUserInfo();
       uiConsole(userInfo);
+    }
+    async function getUserAccount() {
+      if (!provider.value) {
+        throw new Error("provider is not set");
+      }
+      const rpc = getWalletProvider("ethereum", provider.value);
+      const userAccount = await rpc.getAccounts();
+      uiConsole(userAccount);
     }
     function uiConsole(...args: any[]): void {
       const el = document.querySelector("#console>p");
@@ -103,6 +133,7 @@ export default {
       logout,
       subscribeAuthEvents,
       getUserInfo,
+      getUserAccount,
     };
   },
 };
