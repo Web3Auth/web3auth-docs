@@ -1,34 +1,18 @@
 ---
-title: Technical Architecture
+title: Key Management and Security
 hide_table_of_contents: true
 ---
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css" />
-
 ---
-
-Web3Auth's social logins are powered by the Torus Network's key infrastructure (tKey). Today's standard of key management is done via seed phrases, 12
-or 24 word representations of keys that can be written down or stored in various ways. While technically simple, its far from perfect; new users take
-anywhere from 10-15 minutes more to onboard into any new application,
-[losses are rapmant](https://finance.yahoo.com/news/4-2-billion-lost-bitcoin-154948781.html#:~:text=Approximately%2020%25%20of%20all%20Bitcoins,billion%2C%20a%20new%20study%20says.)
-due to misplaced or compromised seed phrases, today's standard leaves much to be desired.
-
-tKey leverages on variations of threshold key management to achieve a great user experience without sacrificing security, while retaining end-user
-autonomy and control over the private key.
-
-tKey manages private keys using the user's device, private input, and/or OAuth authentication methods (i.e. Google, Passwordless, Reddit) via Torus
-nodes. As long as a user has access to 2 out of 3 (2/3) of these shares, they will be able to retrieve their private key.
 
 In this documentation we further describe the architecture of tKey and detail several core user flows for onboarding, key recovery, and device
 management.
 
 ## Base Torus Key Infrastructure guarantees
 
----
-
 The user starts by generating a 2 out of 3 (2/3) Shamir Secret Sharing. This gives the user three shares: ShareA, ShareB, and ShareC.
 
-<img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} src="/contents/tki-overview-architecture.png" />
+<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src="/contents/tki-overview-architecture.png" />
 
 1. **ShareA is stored on the user's device**: Implementation is device and system specific. For example, on mobile devices, the share could be stored
    in device storage secured via biometrics.
