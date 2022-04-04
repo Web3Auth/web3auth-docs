@@ -8,6 +8,7 @@ import * as logout from "./logout.mdx";
 import * as registerApp from "./register-app.mdx";
 import * as subscribe from "./subscribe.mdx";
 import * as triggeringLogin from "./triggering-login.mdx";
+import * as loginWithFirebaseAuth from "./login-with-firebase-auth.mdx";
 
 const STEPS = toSteps({
   installationWeb,
@@ -16,6 +17,7 @@ const STEPS = toSteps({
   subscribe,
   initialize,
   triggeringLogin,
+  loginWithFirebaseAuth,
   getUserInfo,
   logout,
 });
@@ -50,56 +52,61 @@ export const web3AuthParams = {
     }
 
     if (customAuthentication === "yes") {
-      // replace stuff in input.js
-    }
+      filenames.push("web3auth/react/custom-auth/App.tsx");
+      filenames.push("web3auth/react/custom-auth/package.json");
 
-    if (customLogin === "no") {
-      filenames.push("web3auth/react/App.tsx");
-      filenames.push("web3auth/web/input.js");
-      filenames.push("web3auth/react/package.json");
-
-      files["web3auth/react/App.tsx"] = replaceFileVariable(
-        files["web3auth/react/App.tsx"],
+      files["web3auth/react/custom-auth/App.tsx"] = replaceFileVariable(
+        files["web3auth/react/custom-auth/App.tsx"],
         "wallet-provider",
         `import { getAccounts, getBalance, sendTransaction, signMessage, signTransaction } from "./${walletProvider}";
-      `
+`
+      );
+
+      files["web3auth/react/custom-auth/App.tsx"] = replaceFileVariable(
+        files["web3auth/react/custom-auth/App.tsx"],
+        "chain-namespace",
+        `
+          chainConfig: { chainNamespace: ${chainNamespace} },
+        `
       );
 
       steps.push(
         {
           ...STEPS.installationWeb,
-          pointer: { filename: "web3auth/react/package.json", range: "6-7" },
+          pointer: { filename: "web3auth/react/custom-auth/package.json", range: "6-8" },
         },
         {
           ...STEPS.registerApp,
-          pointer: { filename: "web3auth/web/input.js", range: "4" },
+          pointer: { filename: "web3auth/react/custom-auth/App.tsx", range: "27" },
         },
         {
           ...STEPS.instantiate,
-          pointer: { filename: "web3auth/react/App.tsx", range: "15" },
+          pointer: { filename: "web3auth/react/custom-auth/App.tsx", range: "17-19" },
         },
         {
           ...STEPS.subscribe,
-          pointer: { filename: "web3auth/react/App.tsx", range: "24-41" },
+          pointer: { filename: "web3auth/react/custom-auth/App.tsx", range: "38-56" },
         },
         {
           ...STEPS.initialize,
-          pointer: { filename: "web3auth/react/App.tsx", range: "18" },
+          pointer: { filename: "web3auth/react/custom-auth/App.tsx", range: "23-30" },
         },
         {
-          ...STEPS.triggeringLogin,
-          pointer: { filename: "web3auth/react/App.tsx", range: "46-53" },
+          ...STEPS.loginWithFirebaseAuth,
+          pointer: { filename: "web3auth/react/custom-auth/App.tsx", range: "61-92" },
         },
         {
           ...STEPS.getUserInfo,
-          pointer: { filename: "web3auth/react/App.tsx", range: "55-62" },
+          pointer: { filename: "web3auth/react/custom-auth/App.tsx", range: "94-101" },
         },
         {
           ...STEPS.logout,
-          pointer: { filename: "web3auth/react/App.tsx", range: "64-71" },
+          pointer: { filename: "web3auth/react/custom-auth/App.tsx", range: "103-110" },
         }
       );
-    } else {
+    }
+
+    if (customLogin === "yes") {
       filenames.push("web3auth/react/custom-ui/App.tsx");
       filenames.push("web3auth/react/custom-ui/package.json");
 
@@ -150,6 +157,54 @@ export const web3AuthParams = {
         {
           ...STEPS.logout,
           pointer: { filename: "web3auth/react/custom-ui/App.tsx", range: "77-84" },
+        }
+      );
+    }
+
+    if (customLogin === "no" && customAuthentication === "no") {
+      filenames.push("web3auth/react/App.tsx");
+      filenames.push("web3auth/web/input.js");
+      filenames.push("web3auth/react/package.json");
+
+      files["web3auth/react/App.tsx"] = replaceFileVariable(
+        files["web3auth/react/App.tsx"],
+        "wallet-provider",
+        `import { getAccounts, getBalance, sendTransaction, signMessage, signTransaction } from "./${walletProvider}";
+      `
+      );
+
+      steps.push(
+        {
+          ...STEPS.installationWeb,
+          pointer: { filename: "web3auth/react/package.json", range: "6-7" },
+        },
+        {
+          ...STEPS.registerApp,
+          pointer: { filename: "web3auth/web/input.js", range: "4" },
+        },
+        {
+          ...STEPS.instantiate,
+          pointer: { filename: "web3auth/react/App.tsx", range: "15" },
+        },
+        {
+          ...STEPS.subscribe,
+          pointer: { filename: "web3auth/react/App.tsx", range: "24-41" },
+        },
+        {
+          ...STEPS.initialize,
+          pointer: { filename: "web3auth/react/App.tsx", range: "18" },
+        },
+        {
+          ...STEPS.triggeringLogin,
+          pointer: { filename: "web3auth/react/App.tsx", range: "46-53" },
+        },
+        {
+          ...STEPS.getUserInfo,
+          pointer: { filename: "web3auth/react/App.tsx", range: "55-62" },
+        },
+        {
+          ...STEPS.logout,
+          pointer: { filename: "web3auth/react/App.tsx", range: "64-71" },
         }
       );
     }
