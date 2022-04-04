@@ -12,19 +12,20 @@ export const getConstructorCode = (
 } => {
   const code = `
   const web3AuthCtorParams = {
-        clientId: "YOUR_CLIENT_ID",
+        clientId,
         chainConfig: { chainNamespace: chainNamespace },
         ${isWhiteLabled ? uiConfig : ""}
       };`;
   return {
     code,
-    offset: isWhiteLabled ? 5 : 2,
+    offset: isWhiteLabled ? 5 : 4,
   };
 };
 
 export const getInitCode = (isWhiteLabled: boolean) => {
   let code = `
-  const initParams = {}`;
+  const initParams = {}
+  `;
   if (isWhiteLabled) {
     code = `
     const initParams = {
@@ -91,10 +92,10 @@ export const getChainNamespace = (chain: "eth" | "sol") => {
   const code =
     chain === "eth"
       ? `
-  const chainNamespace = eip155
+  const chainNamespace = "eip155";
   `
       : `
-    const chainNamespace = solana
+    const chainNamespace = "solana";
   `;
   return {
     code,

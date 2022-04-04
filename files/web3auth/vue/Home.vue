@@ -18,11 +18,13 @@
 </template>
 
 <script lang="ts">
-import { ADAPTER_STATUS, CONNECTED_EVENT_DATA, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { ADAPTER_STATUS, CONNECTED_EVENT_DATA, SafeEventEmitterProvider } from "@web3auth/base";
 import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
 import { Web3Auth } from "@web3auth/web3auth";
 import { ref, onMounted } from "vue";
 // REPLACE-web3authChainRpcImport-
+
+const clientId = "YOUR_CLIENT_ID";
 
 // REPLACE-web3authChainNamespace-
 
