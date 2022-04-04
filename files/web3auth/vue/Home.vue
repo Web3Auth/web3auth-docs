@@ -22,15 +22,8 @@ import { ADAPTER_STATUS, CONNECTED_EVENT_DATA, SafeEventEmitterProvider } from "
 import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
 import { Web3Auth } from "@web3auth/web3auth";
 import { ref, onMounted } from "vue";
+import { web3AuthCtorParams, initParams } from "./input";
 // REPLACE-web3authChainRpcImport-
-
-const clientId = "YOUR_CLIENT_ID";
-
-// REPLACE-web3authChainNamespace-
-
-// REPLACE-web3authConstructor-
-
-// REPLACE-web3authInit-
 
 export default {
   name: "Home",
@@ -102,7 +95,7 @@ export default {
       if (!provider.value) {
         throw new Error("provider is not set");
       }
-      // REPLACE-web3authChainRpc-
+      const rpc = new RPC(provider.value);
       const userAccount = await rpc.getAccounts();
       uiConsole(userAccount);
     }

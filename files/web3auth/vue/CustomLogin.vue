@@ -7,9 +7,6 @@
       }"
     >
       <button class="rpcBtn" v-if="!provider && !loading" @click="connect()" style="cursor: pointer">Login With Google</button>
-      <button class="rpcBtn" v-if="!provider && !loading" @click="connectWithCustomVerifier()" style="cursor: pointer">
-        Login With Custom Verifier
-      </button>
       <button class="rpcBtn" v-if="provider" @click="logout()" style="cursor: pointer">Logout</button>
       <button class="rpcBtn" v-if="provider" @click="getUserInfo()" style="cursor: pointer">Get User Info</button>
       <button class="rpcBtn" v-if="provider" @click="getUserAccount()" style="cursor: pointer">Get User Account</button>
@@ -26,7 +23,9 @@ import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
 import { Web3AuthCore } from "@web3auth/core";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { ref, onMounted } from "vue";
-import { getWalletProvider } from "../services/wallet-provider";
+import { web3AuthCtorParams } from "./input";
+import { connectWithWeb3Auth } from "./Connect";
+// REPLACE-web3authChainRpcImport-
 
 export default {
   name: "Home",
@@ -38,7 +37,7 @@ export default {
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
     const provider = ref<SafeEventEmitterProvider | null>(null);
-    let web3auth = new Web3AuthCore({ chainConfig: { chainNamespace: "eip155" } });
+    let web3auth = new Web3AuthCore(web3AuthCtorParams);
     onMounted(async () => {
       try {
         loading.value = true;
@@ -92,25 +91,7 @@ export default {
     }
     async function connect() {
       try {
-        const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, { loginProvider: "google" });
-        provider.value = web3authProvider;
-      } catch (error) {
-        console.error(error);
-        uiConsole("error", error);
-      }
-    }
-    async function connectWithCustomVerifier() {
-      try {
-        const jwtToken = "YOUR_ID_TOKEN";
-        const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-          relogin: true,
-          loginProvider: "jwt",
-          extraLoginOptions: {
-            id_token: jwtToken,
-            domain: process.env.VUE_APP_DOMAIN,
-            verifierIdField: "sub",
-          },
-        });
+        const web3authProvider = await connectWithWeb3Auth(web3auth);
         provider.value = web3authProvider;
       } catch (error) {
         console.error(error);
@@ -129,7 +110,7 @@ export default {
       if (!provider.value) {
         throw new Error("provider is not set");
       }
-      const rpc = getWalletProvider("ethereum", provider.value);
+      const rpc = new RPC(provider.value);
       const userAccount = await rpc.getAccounts();
       uiConsole(userAccount);
     }
@@ -150,7 +131,6 @@ export default {
       subscribeAuthEvents,
       getUserInfo,
       getUserAccount,
-      connectWithCustomVerifier,
     };
   },
 };

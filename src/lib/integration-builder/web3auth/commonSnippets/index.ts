@@ -1,34 +1,46 @@
-const uiConfig = {
-  theme: "dark",
-  loginMethodsOrder: ["facebook", "twitter"],
-  appLogo: "https://your-logo-url.com",
-};
-
 export const getConstructorCode = (
   isWhiteLabled: boolean
 ): {
   code: string;
-  offset: number;
 } => {
-  const code = `
-  const web3AuthCtorParams = {
-        clientId,
-        chainConfig: { chainNamespace: chainNamespace },
-        ${isWhiteLabled ? uiConfig : ""}
-      };`;
+  let code = "";
+  if (isWhiteLabled) {
+    code = `
+      export const web3AuthCtorParams = {
+        chainConfig: { chainNamespace: "eip155" },
+        clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io,
+        uiConfig: {
+          theme: "dark",
+          loginMethodsOrder: ["facebook", "twitter"],
+          appLogo: "https://your-logo-url.com",
+        };
+      }
+    };`;
+  } else {
+    code = `
+        export const web3AuthCtorParams = {
+          clientId,
+          chainConfig: { chainNamespace: chainNamespace }
+        };`;
+  }
+
   return {
     code,
-    offset: isWhiteLabled ? 5 : 4,
   };
 };
 
-export const getInitCode = (isWhiteLabled: boolean) => {
+export const getInitCode = (
+  isWhiteLabled: boolean
+): {
+  code: string;
+} => {
   let code = `
-  const initParams = {}
+    export const initParams = {}
   `;
   if (isWhiteLabled) {
     code = `
-    const initParams = {
+
+    export const initParams = {
         modalConfig: {
           [WALLET_ADAPTERS.OPENLOGIN]: {
             label: "openlogin",
@@ -44,7 +56,6 @@ export const getInitCode = (isWhiteLabled: boolean) => {
   }
   return {
     code,
-    offset: isWhiteLabled ? 12 : 0,
   };
 };
 
@@ -52,43 +63,25 @@ export const getChainRpcImport = (
   chain: "eth" | "sol"
 ): {
   code: string;
-  offset: number;
 } => {
   let code = `
-    import EthereumRpc from "./ethereum";
+    import RPC from "./ethereum";
   `;
   if (chain === "sol") {
     code = `
-    import SolanaRpc from "./solana"
+    import RPC from "./solana"
   `;
   }
   return {
     code,
-    offset: 0,
   };
 };
 
-export const getChainRpc = (
+export const getChainNamespace = (
   chain: "eth" | "sol"
 ): {
   code: string;
-  offset: number;
 } => {
-  let code = `
-    const rpc = new EthereumRpc(web3auth.provider);
-  `;
-  if (chain === "sol") {
-    code = `
-    const rpc = new SolanaRpc(web3auth.provider);
-    `;
-  }
-  return {
-    code,
-    offset: 0,
-  };
-};
-
-export const getChainNamespace = (chain: "eth" | "sol") => {
   const code =
     chain === "eth"
       ? `
@@ -99,14 +92,70 @@ export const getChainNamespace = (chain: "eth" | "sol") => {
   `;
   return {
     code,
-    offset: 0,
+  };
+};
+
+export const getConnectCode = (
+  isCustomLogin: boolean,
+  isCustomVerifier: boolean
+): {
+  code: string;
+} => {
+  let code = ``;
+  if (isCustomVerifier) {
+    code = `
+      async function connectWithWeb3Auth(web3auth: Web3Auth): Promise<SafeEventEmitterProvider> {
+        try {
+          const jwtToken = "YOUR_ID_TOKEN";
+          const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+            relogin: true,
+            loginProvider: "jwt",
+            extraLoginOptions: {
+              id_token: jwtToken,
+              domain: process.env.VUE_APP_DOMAIN,
+              verifierIdField: "sub",
+            },
+          });
+          return web3authProvider;
+        } catch (error) {
+          console.error(error);
+        }
+      }`;
+  } else if (isCustomLogin) {
+    code = `
+        async function connectWithWeb3Auth(web3auth: Web3Auth): Promise<SafeEventEmitterProvider> {
+          try {
+            const jwtToken = "YOUR_ID_TOKEN";
+            const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+              relogin: true,
+              loginProvider: "google",
+            });
+            return web3authProvider;
+          } catch (error) {
+            console.error(error);
+          }
+        }`;
+  } else {
+    code = `
+        async function connectWithWeb3Auth(web3auth: Web3Auth): Promise<SafeEventEmitterProvider> {
+          try {
+            const web3authProvider = await web3auth.connect();
+            return web3authProvider;
+          } catch (error) {
+            console.error(error);
+          }
+        }`;
+  }
+  return {
+    code,
   };
 };
 
 export const PLACEHOLDERS = {
-  CONSTRUCTOR: "web3authConstructor",
-  INIT: "web3authInit",
+  CONSTRUCTOR: "const web3AuthCtorParams = {};",
+  INIT: "const web3AuthInitParams = {};",
   CHAIN_RPC: "web3authChainRpc",
+  CONNECT: "const web3AuthConnect = {};",
   CHAIN_RPC_IMPORT: "web3authChainRpcImport",
   CHAIN_NAMESPACE: "web3authChainNamespace",
 };
