@@ -9,7 +9,7 @@ module.exports = {
       collapsed: false,
       items: [
         "overview/what-is-web3auth",
-        "overview/web3auth-working",
+        "overview/how-web3auth-works",
         "overview/key-management",
         "overview/audits",
       ],

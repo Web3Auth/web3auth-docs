@@ -7,87 +7,126 @@ export default function UsecaseCards() {
     <>
       {/* FIRST ROW */}
       <div className={styles.container}>
-        <div className={classNames(styles.card, styles.cardOne)}>
+        <div className={classNames(styles.card)}>
           <h5 className={styles.title}>Overview</h5>
           <h5 className={styles.headline}>Learn about Web3auth</h5>
-          <span>What is Web3Auth</span>
+          <a href="/overview/what-is-web3auth" className={styles.link}>
+            What is Web3Auth?
+          </a>
           <br />
-          <span>Technical Architecture</span>
+          <a href="/overview/how-web3auth-works" className={styles.link}>
+            How Web3Auth Works?
+          </a>
           <br />
-          <span>Audits</span>
+          <a href="/overview/key-management" className={styles.link}>
+            Key Management and Security
+          </a>
+          <br />
+          <a href="/overview/audits" className={styles.link}>
+            Audits
+          </a>
         </div>
 
-        <div className={classNames(styles.card, styles.cardOne)}>
+        <div className={classNames(styles.card)}>
           <h5 className={styles.title}>Get Started</h5>
           <h5 className={styles.headline}>For beginners</h5>
-          <span>Quick Start</span>
+          <a href="/get-started/" className={styles.link}>
+            Getting Started
+          </a>
           <br />
-          <span>Using the Dashboard</span>
+          <a href="/get-started/quickstart" className={styles.link}>
+            Quick Start
+          </a>
+          <br />
+          <a href="/get-started/using-dashboard" className={styles.link}>
+            Using the Dashboard
+          </a>
         </div>
 
-        <div className={classNames(styles.card, styles.cardOne)}>
+        <div className={classNames(styles.card)}>
           <h5 className={styles.title}>Basic Concepts</h5>
           <h5 className={styles.headline}>Developing with Web3Auth</h5>
-          <span>Glossary</span>
+          <a href="/developing-with-web3auth/" className={styles.link}>
+            Development Terminologies
+          </a>
           <br />
-          <span>Understanding the SDKs</span>
+          <a href="/developing-with-web3auth/understand-sdk" className={styles.link}>
+            Understanding the SDKs
+          </a>
           <br />
-          <span>Adapters</span>
+          <a href="/developing-with-web3auth/adapters" className={styles.link}>
+            Adapters and Configuration
+          </a>
           <br />
-          <span>Connecting your Blockchain</span>
+          <a href="/developing-with-web3auth/connect-blockchain/" className={styles.link}>
+            Connect your Blockchain
+          </a>
           <br />
-          <span>Whitelabel</span>
+          <a href="/developing-with-web3auth/whitelabeling" className={styles.link}>
+            Whitelabeling
+          </a>
           <br />
-          <span>Using Custom Authentication</span>
+          <a href="/developing-with-web3auth/customauth/" className={styles.link}>
+            Using Custom Authentication
+          </a>
+          <br />
+          <a href="/developing-with-web3auth/customauth/verifiers" className={styles.link}>
+            Verifiers
+          </a>
         </div>
       </div>
 
       {/* SECOND ROW */}
       <div className={styles.container}>
-        <div className={classNames(styles.card, styles.cardOne)}>
+        <div className={classNames(styles.card)}>
           <h5 className={styles.title}>API Reference</h5>
           <h5 className={styles.headline}>Deep dive into our SDKs</h5>
-          <span>Web</span>
+          <a href="/api-reference/web/choosesdk" className={styles.link}>
+            Web
+          </a>
           <br />
-          <span>Android</span>
+          <a href="/api-reference/android/setting-up" className={styles.link}>
+            Android
+          </a>
           <br />
-          <span>iOS</span>
+          <a href="/api-reference/ios/setting-up" className={styles.link}>
+            iOS
+          </a>
           <br />
-          <span>React-Native</span>
+          <a href="/api-reference/react-native/setting-up" className={styles.link}>
+            React Native
+          </a>
           <br />
-          <span>Flutter</span>
+          <a href="/api-reference/flutter/setting-up" className={styles.link}>
+            Flutter
+          </a>
         </div>
-        <div className={classNames(styles.card, styles.cardOne)}>
+        <div className={classNames(styles.card)}>
           <h5 className={styles.title}>Examples and Use Cases</h5>
           <h5 className={styles.headline}>Experience Web3Auth</h5>
-          <span>Demo Apps</span>
+          <a href="/examples#try-out-a-demo-application" className={styles.link}>
+            Demo Apps
+          </a>
           <br />
-          <span>Production Examples</span>
+          <a href="/examples#production-examples" className={styles.link}>
+            Production Examples
+          </a>
           <br />
-          <span>Examples Apps</span>
+          <a href="/examples#explore-our-examples" className={styles.link}>
+            Example Applications for Reference
+          </a>
         </div>
 
-        <div className={classNames(styles.card, styles.cardOne)}>
+        <div className={classNames(styles.card)}>
           <h5 className={styles.title}>Contribute to Web3Auth</h5>
           <h5 className={styles.headline}>We are open source!</h5>
-          <span>Open Source</span>
+          <a href="/contribute/open-source" className={styles.link}>
+            Open Source
+          </a>
           <br />
-          <span>Bug Bounty</span>
-        </div>
-      </div>
-
-      {/* THIRD ROW */}
-      <div className={styles.container}>
-        <div className={classNames(styles.card, styles.cardOne)}>
-          <h5 className={styles.title}>Contact us</h5>
-          <h5 className={styles.headline}>Get help or troubleshoot</h5>
-          <span>Customer Support</span>
-          <br />
-          <span>Discord Community</span>
-          <br />
-          <span>Schedule a Demo</span>
-          <br />
-          <span>GitHub</span>
+          <a href="/contribute/bug-bounty" className={styles.link}>
+            Bug Bounty
+          </a>
         </div>
       </div>
     </>
