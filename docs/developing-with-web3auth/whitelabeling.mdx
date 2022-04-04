@@ -1,4 +1,239 @@
 ---
 title: Whitelabeling
-hide_table_of_contents: true
+hide_table_of_contents: false
 ---
+
+Web3Auth can be configured with applications branding to have a consistent user experience. It can be set while creating Web3Auth, Openlogin, and
+Torus Wallet instances.
+
+## Web3Auth
+
+Web3Auth modal is the UI that connects Dapp with all the Login Methods and Adapters that web3auth offers. Below are the things you can whitelabel.
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src="/contents/whitelabel-web3auth-modal.png" style={{ alignSelf: "center", maxWidth: "90%" }} />
+</div>
+
+<br />
+
+```ts
+import `Web3Auth` class from  `@web3auth/web3auth`;
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+const web3auth = new Web3Auth({
+    // type UIConfig
+    uiConfig: {
+        appLogo: "https://images.web3auth.io/web3auth-logo-w.svg";
+        theme: "dark";
+        loginMethodsOrder: ['facebook', 'google'];
+    },
+    chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+    clientId: "example-client-id",
+});
+```
+
+#### Theme `theme`
+
+Can be set to `dark` or `light` with default set to `light`
+
+#### App Logo `appLogo`
+
+A link to preferred logo and must be compatible with either light or dark mode. Default is https://images.web3auth.io/web3auth-logo.svg
+
+#### Login Methods Order `loginMethodsOrder`
+
+The list of login methods can also be reordered with this parameter. Those methods specified will be first on the list.
+
+## OpenLogin
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src="/contents/whitelabel-web3auth-modal-openlogin.png" style={{ alignSelf: "center", maxWidth: "400px" }} />
+</div>
+
+<br />
+
+Web3Auth's Social Logins and Email Login runs using OpenLogin. The whole OpenLogin user experience can also be whitelabeled using OpenLogin adapter
+settings.
+
+```ts
+import `Web3Auth` class from  `@web3auth/web3auth`;
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+const web3auth = new Web3Auth({
+    chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+    clientId: "example-client-id",
+});
+
+const openloginAdapter = new OpenloginAdapter({
+    adapterSettings: {
+        network: this.network,
+        clientId,
+        // type WhiteLabelData
+        whiteLabel: {
+            dark: true,
+            theme: {
+                primary: "#FFA500",
+            },
+            defaultLanguage: "en",
+        },
+    },
+});
+
+this.web3auth.configureAdapter(openloginAdapter);
+```
+
+#### Dark `dark`
+
+Can be set to `true` or `false` with default set to `false`
+
+Light
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src="/contents/whitelabel-web3auth-openlogin-light.png" style={{ alignSelf: "center", maxWidth: "90%" }} />
+</div>
+
+Dark
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src="/contents/whitelabel-web3auth-openlogin-dark.png" style={{ alignSelf: "center", maxWidth: "90%" }} />
+</div>
+
+#### Theme `theme`
+
+Theme is a record of colors which can be configured. As of, now only `primary` color can be set and has effect on OpenLogin screens (default primary
+color is `#0364FF`). Theme affects icons and links. Examples below.
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src="/contents/whitelabel-web3auth-openlogin-theme1.png" style={{ alignSelf: "center", maxWidth: "90%" }} />
+</div>
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src="/contents/whitelabel-web3auth-openlogin-theme2.png" style={{ alignSelf: "center", maxWidth: "90%" }} />
+</div>
+
+#### Default Language `defaultLanguage`
+
+Default language will set the language used on all OpenLogin screens. The languages supported are:
+
+- `en`: english (default)
+- `de`: german
+- `ja`: japanese
+- `ko`: korean
+- `zh`: mandarin
+- `es`: spanish
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src="/contents/whitelabel-web3auth-openlogin-language.png" style={{ alignSelf: "center", maxWidth: "90%" }} />
+</div>
+
+## Torus Wallet Adapter
+
+```ts
+import `Web3Auth` class from  `@web3auth/web3auth`;
+import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+const web3auth = new Web3Auth({
+    chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+    clientId: "example-client-id",
+});
+
+const torusWalletAdapter = new TorusWalletAdapter({
+    initParams: {
+        // type WhiteLabelParams
+        whiteLabel: {
+            theme: {
+                isDark: true,
+                colors: {
+                    torusBrand1: "#FFA500",
+                },
+            },
+            logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+            logoLight: "https://images.web3auth.io/web3auth-logo-w-light.svg",
+            topupHide: true,
+            featuredBillboardHide: true,
+            disclaimerHide: true,
+            defaultLanguage: "en",
+        },
+    },
+});
+
+this.web3auth.configureAdapter(torusWalletAdapter);
+```
+
+#### Theme `theme`
+
+- `isDark`: Set to `true` for dark mode (default `false`)
+- `colors`: Theme is a record of colors which can be configured. As of, now only `torusBrand1` color can be set and this refers to the primary color.
+
+#### Logo Dark `logoDark`
+
+App logo url to use in dark mode
+
+#### Logo Light `logoLight`
+
+App logo url to use in light mode
+
+#### Hide Topup `topupHide`
+
+Shows/hides Topup page in Torus Wallet
+
+#### Billboard `featuredBillboardHide`
+
+Shows/hides Billboard in Torus Wallet
+
+#### Disclaimer `disclaimerHide`
+
+Shows/hides disclaimers on login page. Only works if special logins are hidden.
+
+#### Language `defaultLanguage`
+
+Define preferred language. Possible values are:
+
+- `en`: english (default)
+- `de`: german
+- `ja`: japanese
+- `ko`: korean
+- `zh`: mandarin
+- `es`: spanish
+
+#### Login Modal
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "left" }}>
+  <img src="/contents/whitelabel-web3auth-wallet-modal1.png" style={{ alignSelf: "center", maxWidth: "60%" }} />
+</div>
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "left" }}>
+  <img src="/contents/whitelabel-web3auth-wallet-modal2.png" style={{ alignSelf: "center", maxWidth: "90%" }} />
+</div>
+
+#### Torus Widget
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "left" }}>
+  <img src="/contents/whitelabel-web3auth-wallet-widget1.png" style={{ alignSelf: "center", maxWidth: "60%" }} />
+</div>
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "left" }}>
+  <img src="/contents/whitelabel-web3auth-wallet-widget2.png" style={{ alignSelf: "center", maxWidth: "55%" }} />
+</div>
+
+#### Confirm Popup
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "left" }}>
+  <img src="/contents/whitelabel-web3auth-wallet-popup1.png" style={{ alignSelf: "center", maxWidth: "60%" }} />
+</div>
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "left" }}>
+  <img src="/contents/whitelabel-web3auth-wallet-popup2.png" style={{ alignSelf: "center", maxWidth: "45%" }} />
+</div>
+
+#### Wallet
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "left" }}>
+  <img src="/contents/whitelabel-web3auth-wallet-wallet1.png" style={{ alignSelf: "center", maxWidth: "80%" }} />
+</div>
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "left" }}>
+  <img src="/contents/whitelabel-web3auth-wallet-wallet2.png" style={{ alignSelf: "center", maxWidth: "76%" }} />
+</div>
