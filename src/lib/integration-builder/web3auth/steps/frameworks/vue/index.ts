@@ -52,6 +52,9 @@ const htmlSteps = {
     if (customLogin === "yes") {
       const connectRes = getConnectCode(true, false);
       newFiles["web3auth/vue/Connect.ts"] = replaceFileVariable(files["web3auth/vue/Connect.ts"], PLACEHOLDERS.CONNECT, connectRes.code);
+      // eslint-disable-next-line no-console
+      console.log("file", newFiles["web3auth/vue/Connect.ts"], connectRes.code);
+
       filenames.push("web3auth/vue/Connect.ts");
     }
 
@@ -86,7 +89,7 @@ const htmlSteps = {
           ...STEPS.triggeringLogin,
           pointer: {
             filename: "web3auth/vue/Connect.ts",
-            range: "1-10",
+            range: "1-16",
           },
         },
         {

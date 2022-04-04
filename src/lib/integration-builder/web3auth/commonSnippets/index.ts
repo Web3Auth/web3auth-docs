@@ -104,7 +104,7 @@ export const getConnectCode = (
   let code = ``;
   if (isCustomVerifier) {
     code = `
-      async function connectWithWeb3Auth(web3auth: Web3Auth): Promise<SafeEventEmitterProvider> {
+      export async function connectWithWeb3Auth(web3auth: Web3Auth): Promise<SafeEventEmitterProvider> {
         try {
           const jwtToken = "YOUR_ID_TOKEN";
           const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
@@ -123,7 +123,7 @@ export const getConnectCode = (
       }`;
   } else if (isCustomLogin) {
     code = `
-        async function connectWithWeb3Auth(web3auth: Web3Auth): Promise<SafeEventEmitterProvider> {
+        export async function connectWithWeb3Auth(web3auth: Web3Auth): Promise<SafeEventEmitterProvider> {
           try {
             const jwtToken = "YOUR_ID_TOKEN";
             const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
@@ -137,7 +137,7 @@ export const getConnectCode = (
         }`;
   } else {
     code = `
-        async function connectWithWeb3Auth(web3auth: Web3Auth): Promise<SafeEventEmitterProvider> {
+        export async function connectWithWeb3Auth(web3auth: Web3Auth): Promise<SafeEventEmitterProvider> {
           try {
             const web3authProvider = await web3auth.connect();
             return web3authProvider;
