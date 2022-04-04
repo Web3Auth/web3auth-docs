@@ -122,7 +122,7 @@ module.exports = {
     },
     {
       type: "link",
-      label: "Support",
+      label: "Support (Telegram)",
       href: "https://t.me/web3authdev",
     },
     {
