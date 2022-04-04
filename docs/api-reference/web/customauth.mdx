@@ -1,6 +1,350 @@
 ---
 title: Using Custom Authentication
-hide_table_of_contents: true
+hide_table_of_contents: false
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import BasicExample from "../../common/web/code/web3auth/_general-example.mdx";
+
+## [`@web3auth/core`](https://npmjs.com/package/@web3auth/core)
+
+This package provides core logic for handling adapters within Web3Auth. You should use this package to integrate your own authentication service with
+Web3Auth.
+
+## Installation
+
 ---
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+
+<TabItem value="npm">
+
+```shell
+npm i --save @web3auth/core
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @web3auth/core
+```
+
+</TabItem>
+
+</Tabs>
+
+## Initialisation
+
+---
+
+### Create a new instance of Web3Auth
+
+#### Import the `Web3AuthCore` class from `@web3auth/core`;
+
+```javascript
+import { Web3AuthCore } from "@web3auth/core";
+```
+
+#### Assign the `Web3Auth` class to a variable
+
+```javascript
+const web3auth = new Web3AuthCore(options);
+```
+
+This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
+
+#### Parameters
+
+- `options` - `Web3AuthOptions`: The options of the constructor
+
+| Parameter     | Type                                                                                                                | Description                                                                                                                                                                                                                                                                                         | Default                                              |
+| ------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `chainConfig` | [`Partial <CustomChainConfig> & Pick <CustomChainConfig, "chainNamespace">;`](#adding-a-custom-chain-configuration) | Custom chain configuration for `chainNamespace`.                                                                                                                                                                                                                                                    | mainnet config of provided `chainNamespace`          |
+| `clientId`    | `string`                                                                                                            | Client ID for web3auth. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).                                                                                                                                                                             | You can set any random string for this on localhost. |
+| `authMode`    | `enum` - (`DAPP`, `WALLET`)                                                                                         | Web3Auth instance provides different adapters for different type of usages. If you are a dapp and want to use external wallets like metamask, then you can use the `DAPP` authMode. If you are a wallet and only want to use you own wallet implementations, then you should use `WALLET` authMode. | `DAPP`                                               |
+
+#### Returns
+
+- `Object`: The web3auth instance with all its methods and events.
+
+#### Example
+
+```javascript
+/*
+This instance will create DAPP based modal which uses ropsten network for all
+the adapters being passed (unless override while configuring  adapters,
+each adapter can be configured to have its own chainConfig, otherwise each adapter
+will inherit chainConfig based on the chainNamespace and chainId passed in the
+constructor chainConfig).
+*/
+
+const web3authCore = new Web3AuthCore({
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155, chainId: "0x3" },
+  authMode: "DAPP",
+  clientId: "example-client-id", // get your client id from developer dashboard
+});
+```
+
+### Configuring Openlogin Adapter
+
+- Import the `OpenloginAdapter` from `@web3auth/openlogin-adapter` package
+- Create an instance of the adapter along with the configuration
+- Pass the returned instance in to `web3authCore.configureAdapter`
+
+Refer to the [Adapters documentation](./adapters/openlogin) to know more deeply about what adapters are available and how to configure them.
+
+#### Example
+
+```ts
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    network: "testnet",
+    clientId: "YOUR_CLIENT_ID",
+    uxMode: "redirect",
+    loginConfig: {
+      jwt: {
+        name: "Custom Firebase Login",
+        verifier: "YOUR_CUSTOM_AUTH_VERIFIER_ID",
+        typeOfLogin: "jwt",
+        clientId: "YOUR_CLIENT_ID",
+      },
+    },
+  },
+});
+web3authCore.configureAdapter(openloginAdapter);
+```
+
+### Subscribing the Lifecycle Events
+
+- `CONNECTED`: User is logged in and connected with the dApp
+- `CONNECTING`: User is connecting to the dApp/ login process is in progress
+- `DISCONNECTED`: User is logged out and disconnected from the dApp
+- `ERRORED`: There has been some error in connecting the user to the dApp
+
+#### Example
+
+```ts
+const subscribeAuthEvents = (web3authCore: Web3AuthCore) => {
+  // Can subscribe to all ADAPTER_EVENTS and LOGIN_MODAL_EVENTS
+  web3authCore.on(ADAPTER_EVENTS.CONNECTED, (data: unknown) => {
+    console.log("Yeah!, you are successfully logged in", data);
+  });
+
+  web3authCore.on(ADAPTER_EVENTS.CONNECTING, () => {
+    console.log("connecting");
+  });
+
+  web3authCore.on(ADAPTER_EVENTS.DISCONNECTED, () => {
+    console.log("disconnected");
+    setUser(null);
+  });
+
+  web3authCore.on(ADAPTER_EVENTS.ERRORED, (error) => {
+    console.error("some error or user has cancelled login request", error);
+  });
+};
+
+subscribeAuthEvents(web3authCore);
+```
+
+### Initialization
+
+#### `web3authCore.init()`
+
+After you are done with configuring your adapters, you can initialize all these adapter by calling init function of web3auth core instance.
+
+This method will initialize all the adapter that you have configured.
+
+:::note
+
+In case initialization of any adapter fails it will not throw but simply allow you to connect with successfully initialized adapters.
+
+:::
+
+```javascript
+await web3authCore.init();
+```
+
+## Usage
+
+---
+
+### Connecting to OpenLogin Adapter
+
+#### `web3authCore.connectTo(adapter, loginParams)`
+
+After initializing you can login/connect with any adapter by calling `connectTo` function along with adapter name.
+
+```javascript
+// connect to any adapter by passing adapter name in connectTo function.
+// connectTo has two parameters, first is adapter name and second is configuration specific to the adapter.
+connectTo<T>(walletName: WALLET_ADAPTER_TYPE, loginParams?: T): Promise<SafeEventEmitterProvider | null>;
+```
+
+#### Example
+
+```ts
+const provider = await web3authCore.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  relogin: true,
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    id_token: jwtToken,
+    domain: "YOUR_APP_DOMAIN",
+    verifierIdField: "sub",
+  },
+});
+```
+
+### Get User's Information
+
+#### `web3authCore.getUserInfo()`
+
+You can get the information about connected user by calling `getUserInfo` function.
+
+:::note
+
+This function will return information based on the connected adapter.
+
+:::
+
+```javascript
+await web3authCore.getUserInfo();
+```
+
+#### Returns
+
+- **`email`**: `string` - email of the connected user
+- **`name`**: `string` - name of the connected user
+- **`profileImage`**: `string` - profile image of the connected user
+- **`aggregateVerifier`**: `string` - aggregate verifier details
+- **`verifier`**: `"torus", "metamask", "trust", "openlogin"` - verifier details
+- **`verifierId`**: `string` - verifier id
+- **`typeOfLogin`**: `"google", "facebook", "twitter", "github", "linkedin"` - type of login
+
+### Logging out the User
+
+#### `web3authCore.logout()`
+
+You can disconnect from connected wallet using `logout` function.
+
+```javascript
+await web3authCore.logout();
+```
+
+#### Returns
+
+- `string` - status of wallet connection
+
+## Basic Usage
+
+---
+
+```ts
+import { Web3AuthCore } from "@web3auth/core";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const web3authCore = new Web3AuthCore({
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155, chainId: "0x3" },
+  authMode: "DAPP",
+  clientId: "YOUR_CLIENT_ID", // get your client id from developer dashboard
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    network: "testnet",
+    clientId: "YOUR_CLIENT_ID",
+    uxMode: "redirect",
+    loginConfig: {
+      jwt: {
+        name: "Custom Firebase Login",
+        verifier: "YOUR_CUSTOM_AUTH_VERIFIER_ID",
+        typeOfLogin: "jwt",
+        clientId: "YOUR_CLIENT_ID",
+      },
+    },
+  },
+});
+web3authCore.configureAdapter(openloginAdapter);
+
+const subscribeAuthEvents = (web3authCore: Web3AuthCore) => {
+  // Can subscribe to all ADAPTER_EVENTS and LOGIN_MODAL_EVENTS
+  web3authCore.on(ADAPTER_EVENTS.CONNECTED, (data: unknown) => {
+    console.log("Yeah!, you are successfully logged in", data);
+    setProvider(web3authCore.provider);
+  });
+
+  web3authCore.on(ADAPTER_EVENTS.CONNECTING, () => {
+    console.log("connecting");
+  });
+
+  web3authCore.on(ADAPTER_EVENTS.DISCONNECTED, () => {
+    console.log("disconnected");
+    setUser(null);
+  });
+
+  web3authCore.on(ADAPTER_EVENTS.ERRORED, (error) => {
+    console.error("some error or user has cancelled login request", error);
+  });
+};
+subscribeAuthEvents(web3authCore);
+
+await web3authCore.init();
+
+// connect to any adapter by passing adapter name in connectTo function.
+// it will use google social login with openlogin's authentication
+const provider = await web3authCore.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  relogin: true,
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    id_token: jwtToken,
+    domain: "YOUR_APP_DOMAIN",
+    verifierIdField: "sub",
+  },
+});
+
+// get user info
+await web3authCore.getUserInfo();
+
+// logout
+await web3authCore.logout();
+```
+
+## Class Interface
+
+---
+
+```ts
+class Web3AuthCore extends SafeEventEmitter {
+  readonly coreOptions: Web3AuthCoreOptions;
+  connectedAdapterName: string | null;
+  status: ADAPTER_STATUS_TYPE;
+  provider: SafeEventEmitterProvider | null;
+  cachedAdapter: string | null;
+  protected walletAdapters: Record<string, IAdapter<unknown>>;
+  constructor(options: Web3AuthCoreOptions);
+  init(): Promise<void>;
+  configureAdapter(adapter: IAdapter<unknown>): Web3AuthCore;
+  clearCache(): void;
+  /**
+   * Connect to a specific wallet adapter
+   * @param walletName - Key of the walletAdapter to use.
+   */
+  connectTo<T>(walletName: WALLET_ADAPTER_TYPE, loginParams?: T): Promise<void>;
+  logout(): Promise<void>;
+  getUserInfo(): Promise<Partial<UserInfo>>;
+  protected subscribeToAdapterEvents(walletAdapter: IAdapter<unknown>): void;
+  protected checkInitRequirements(): void;
+  private cacheWallet;
+}
+```
