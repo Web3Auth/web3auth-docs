@@ -32,11 +32,11 @@ const web3AuthCtorParams = {
 `
       );
 
-    filenames.push("eth/ethereum.js");
+    filenames.push("eth/ethereum.ts");
 
     steps.push({
       ...STEPS.initialize,
-      pointer: { filename: "eth/ethereum.js", range: "10-18" },
+      pointer: { filename: "eth/ethereum.ts", range: "7-18" },
     });
 
     return { files: newFiles, steps, filenames };

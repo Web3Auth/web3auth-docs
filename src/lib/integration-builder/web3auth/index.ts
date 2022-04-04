@@ -80,9 +80,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
     const newFiles = JSON.parse(JSON.stringify(files));
     const steps: IntegrationStep[] = [];
 
-    console.log(values);
-
-    STEPS.framework[values.lang].build({ ...values, filenames, files: newFiles, steps });
+    STEPS.framework[values.lang].build({ ...values, filenames, files: newFiles, steps, chain: values.chain });
     STEPS.chains[values.chain].build({ ...values, filenames, files: newFiles, steps });
 
     return {
