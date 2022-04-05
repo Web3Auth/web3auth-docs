@@ -1,6 +1,6 @@
 ---
 title: Usage
-hide_table_of_contents: true
+hide_table_of_contents: false
 ---
 
 ---
@@ -9,33 +9,23 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import BasicExample from "../../common/web/code/web3auth/_general-example.mdx";
 
+## Logging in a User
 
-## Different functions overview
-
-### login
-
-Trigger login flow that shows a modal for user to select one of supported providers to login e.g. Google, Facebook, Twitter, Passwordless, etc.
-
-### logout
-
-Trigger logout flow to logout a user
-
-
-## Login
+### `web3Auth.login(LoginParams)`
 
 Trigger login flow that shows a modal for user to select one of supported providers to login e.g. Google, Facebook, Twitter, Passwordless, etc. login
 requires `LoginParams` as a required input. Construct and configure a LoginParams instance
 
-
-| Parameter         | Type                                       | Mandatory | Description                                                                                                                                                        |
-| ----------------- | ------------------------------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| loginProvider     | enum com.web3auth.core.Web3Auth.Provider | Yes       | Login provider, supported values are `GOOGLE, FACEBOOK, REDDIT, DISCORD, TWITCH, APPLE, LINE, GITHUB, KAKAO, LINKEDIN, TWITTER, WEIBO, WECHAT, EMAIL_PASSWORDLESS` |
-| relogin           | Boolean?                                   | No        | default is `null`                                                                                                                                                  |
-| extraLoginOptions | Map<String, Any>?                          | No        | You can pass various oauth supported options, default is `null`                                                                                                    |
-| redirectUrl       | android.net.Uri?                           | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`        |
-| appState          | String?                                    | No        | appState can be used to keep track of the app state when user will be redirected to app after login, default is `null`
+| Parameter           | Type                                         | Mandatory | Description                                                                                                                                                                                  |
+| ------------------- | -------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginProvider`     | `enum` `com.web3auth.core.Web3Auth.Provider` | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS` |
+| `relogin`           | `Boolean`                                    | No        | default is `null`                                                                                                                                                                            |
+| `extraLoginOptions` | `Map<String, Any>`                           | No        | You can pass various oauth supported options, default is `null`                                                                                                                              |
+| `redirectUrl`       | `android.net.Uri`                            | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                  |
+| `appState`          | `String`                                     | No        | appState can be used to keep track of the app state when user will be redirected to app after login, default is `null`                                                                       |
 
 ### Sample Response
+
 ```javascript
 {
   "ed25519PrivKey": "666523652352635....",
@@ -88,14 +78,16 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
-## Logout
+## Logging out a user
 
-Trigger logout flow
+### `web3Auth.logout()`
 
-| Parameter   | Type             | Mandatory | Description                                                                                                                   |
-| ----------- | ---------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| redirectUrl | android.net.Uri? | No        | Url where user will be redirected after successfull logout. Default value is `null`                                           |
-| appState    | String?          | No        | appState can be used to keep track of the app state when user will be redirected to app after logout. Default value is `null` |
+Trigger logout flow. You can additionally pass on the following parameters:
+
+| Parameter     | Type             | Mandatory | Description                                                                                                                   |
+| ------------- | ---------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `redirectUrl` | android.net.Uri? | No        | Url where user will be redirected after successfull logout. Default value is `null`                                           |
+| `appState`    | String?          | No        | appState can be used to keep track of the app state when user will be redirected to app after logout. Default value is `null` |
 
 ### Sample Response
 
