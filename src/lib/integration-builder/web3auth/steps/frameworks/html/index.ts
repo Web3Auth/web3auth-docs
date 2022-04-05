@@ -42,7 +42,7 @@ const htmlSteps = {
         },
         {
           ...STEPS.registerApp,
-          pointer: { filename: "web3auth/web/input.js", range: "4" },
+          pointer: { filename: "web3auth/web/input.js", range: "3" },
         },
         {
           ...STEPS.instantiate,

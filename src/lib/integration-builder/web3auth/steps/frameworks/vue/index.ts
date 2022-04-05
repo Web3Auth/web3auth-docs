@@ -1,16 +1,16 @@
 import { replaceFileVariable, toSteps } from "../../../../utils";
 import { getChainRpcImport, getConnectCode, getConstructorCode, getInitCode, PLACEHOLDERS } from "../../../commonSnippets";
+import * as initialize from "../common/initializing.mdx";
+// web
+import * as installationWeb from "../common/installation.mdx";
+import * as instantiateCoreSdk from "../common/instantiateCoreSdk.mdx";
+import * as instantiate from "../common/instantiateSDK.mdx";
+import * as registerApp from "../common/register-app.mdx";
+import * as subscribe from "../common/subscribe.mdx";
+import * as triggeringLogin from "../common/triggering-login.mdx";
+import * as whiteLabeling from "../common/whitelabeling.mdx";
 import * as getUserInfo from "../html/get-user-info.mdx";
 import * as logout from "../html/logout.mdx";
-import * as initialize from "./initializing.mdx";
-// web
-import * as installationWeb from "./installation.mdx";
-import * as instantiateCoreSdk from "./instantiateCoreSdk.mdx";
-import * as instantiate from "./instantiateSDK.mdx";
-import * as registerApp from "./register-app.mdx";
-import * as subscribe from "./subscribe.mdx";
-import * as triggeringLogin from "./triggering-login.mdx";
-import * as whiteLabeling from "./whitelabeling.mdx";
 
 const STEPS = toSteps({
   installationWeb,
@@ -32,7 +32,7 @@ const htmlSteps = {
     console.log("chain", chain);
     const newFiles = files;
     // replace stuff in Home.vue
-    const { code } = getConstructorCode(whitelabel === "yes");
+    const { code } = getConstructorCode(whitelabel === "yes", chain);
 
     newFiles["web3auth/web/input.js"] = replaceFileVariable(files["web3auth/web/input.js"], PLACEHOLDERS.CONSTRUCTOR, code);
 
@@ -72,7 +72,7 @@ const htmlSteps = {
         },
         {
           ...STEPS.registerApp,
-          pointer: { filename: "web3auth/web/input.js", range: "4" },
+          pointer: { filename: "web3auth/web/input.js", range: "3" },
         },
         {
           ...STEPS.instantiateCoreSdk,
@@ -122,7 +122,7 @@ const htmlSteps = {
         },
         {
           ...STEPS.registerApp,
-          pointer: { filename: "web3auth/web/input.js", range: "4" },
+          pointer: { filename: "web3auth/web/input.js", range: "3" },
         }
       );
       if (whitelabel === "yes") {

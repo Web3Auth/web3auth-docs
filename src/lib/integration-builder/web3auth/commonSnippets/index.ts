@@ -1,14 +1,18 @@
 export const getConstructorCode = (
-  isWhiteLabled: boolean
+  isWhiteLabled: boolean,
+  chain: "eth" | "sol" | "matic" | "bnb" // todo: move to a type
 ): {
   code: string;
 } => {
+  let chainNamespace = "eip155";
+  if (chain === "sol") chainNamespace = "solana";
   let code = "";
   if (isWhiteLabled) {
     code = `
       export const web3AuthCtorParams = {
-        chainConfig: { chainNamespace: "eip155" },
         clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io,
+        chainConfig: { chainNamespace: "${chainNamespace}", chainId: "HEX_CHAIN_ID" //eg: "0x1"
+         },
         uiConfig: {
           theme: "dark",
           loginMethodsOrder: ["facebook", "twitter"],
@@ -20,7 +24,7 @@ export const getConstructorCode = (
     code = `
         export const web3AuthCtorParams = {
           clientId,
-          chainConfig: { chainNamespace: chainNamespace }
+          chainConfig: { chainNamespace:  "${chainNamespace}", chainId: "HEX_CHAIN_ID" }
         };`;
   }
 
