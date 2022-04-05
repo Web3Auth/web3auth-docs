@@ -23,7 +23,6 @@ module.exports = {
         "developing-with-web3auth/understand-sdk",
         "developing-with-web3auth/adapters",
         "developing-with-web3auth/connect-blockchain",
-        "developing-with-web3auth/whitelabeling",
         {
           type: "category",
           label: "Using Custom Authentication",
@@ -32,6 +31,7 @@ module.exports = {
         },
       ],
     },
+    "whitelabeling",
     {
       type: "category",
       label: "API Reference",
