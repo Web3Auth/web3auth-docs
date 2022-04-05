@@ -1,7 +1,8 @@
 ---
 title: Setting Up
-hide_table_of_contents: true
+hide_table_of_contents: false
 ---
+
 ---
 
 import Tabs from "@theme/Tabs";
@@ -10,37 +11,43 @@ import BasicExample from "../../common/web/code/web3auth/_general-example.mdx";
 
 ## Introduction
 
-This tutorial will guide you to use [openlogin-flutter-sdk](https://github.com/torusresearch/openlogin-flutter-sdk) to integrate Web3Auth into your
-application.
+For making hybrid iOS & Android applications using Flutter, we have the [web3auth-flutter-sdk](https://github.com/Web3Auth/web3auth-flutter-sdk) to
+integrate Web3Auth into your application.
 
-Source code of the example can also be found in the repository.
-
-
-## Requirements
+### Requirements
 
 Android API version 21 or newer.
 
 ## Installation
 
-```yml
+---
+
+Add `web3auth_flutter` as a dependency to your `pubspec.yaml`
+
+```yaml
 dependencies:
-  openlogin_flutter:
-    git: https://github.com/torusresearch/openlogin-flutter-sdk.git
+  web3auth_flutter:
+    git: https://github.com/torusresearch/web3auth-flutter-sdk.git
 ```
 
-Please refer to the native SDKs for platform-specific configuration.
+### Android
 
-- [Android SDK](https://github.com/torusresearch/openlogin-android-sdk)
-- [iOS SDK](https://github.com/torusresearch/openlogin-swift-sdk)
+- Perform the native [Android integration steps](/api-reference/android/setting-up).
+- For Android, the redirectUrl parameter is specificable, and has to be added into the AndroidManifest.xml.
 
-For iOS, the redirectUrl parameter is fixed, which is `\(bundleId)://auth`, and does not need to be added as a iOS Custom URL Scheme.
+### iOS
 
-For Android, the redirectUrl parameter is specificable, and has to be added into the AndroidManifest.xml.
+- Perform the native [iOS integration steps](/api-reference/ios/setting-up).
 
+- For iOS, the redirectUrl parameter is fixed, which is `\(bundleId)://auth`, and does not need to be added as a iOS Custom URL Scheme.
 
 ## Initialisation
 
-Initialise the Web3AuthFlutter plugin at the very beginning such as in the overriden initState function
+---
+
+### Using the `init()` function
+
+Initialise the Web3AuthFlutter plugin at the very beginning such as in the overriden `initState` function
 
 ```javascript
  @override
@@ -64,16 +71,13 @@ Initialise the Web3AuthFlutter plugin at the very beginning such as in the overr
 
 ```
 
-### Params for init
+### Params for the `init()` function
 
 Construct and configure the init function with the params as following
 
-| Parameter   | Type                                      | Mandatory | Description                                                                         |
-| ----------- | ----------------------------------------- | --------- | ----------------------------------------------------------------------------------- |
-| clientId    | String                                    | Yes       | Your Web3Auth project ID                                                           |
-| network     | Network                                   | Yes       | Network to run Web3Auth, either MAINNET or TESTNET or CYAN                                |
-| redirectUrl | android.net.Uri                           | No        | URL that Web3Auth will redirect API responses, default is `null`                   |
-| whiteLabel  | WhiteLabelData                            | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer WhiteLabel section for more info.     |
-
-
-
+| Parameter     | Type              | Mandatory | Description                                                                                                                         |
+| ------------- | ----------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`    | `String`          | Yes       | Your Web3Auth Client ID                                                                                                             |
+| `network`     | `Network`         | Yes       | Network to run Web3Auth, either `MAINNET`, `TESTNET` or `CYAN`                                                                      |
+| `redirectUrl` | `android.net.Uri` | No        | URL that Web3Auth will redirect API responses, default is `null`                                                                    |
+| `whiteLabel`  | `WhiteLabelData`  | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer WhiteLabel section for more info. |
