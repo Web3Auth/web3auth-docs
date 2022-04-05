@@ -1,33 +1,19 @@
 ---
 title: Usage
-hide_table_of_contents: true
+hide_table_of_contents: false
 ---
 
 ---
 
-## Aviliable methods
+## Logging in a User
 
----
-
-### `login()`
+### `Web3AuthReactNativeSdk.login({provider})`
 
 Trigger the login flow that navigate the user to a browser model that allows them to login with the selected login provider.
 
-### `logout()`
-
-Trigger the logout flow on Android. This is a no-op on iOS since the iOS SDK does not have logout imeplemnted for technical reasons.
-
-## Login
-
----
-
-Trigger the login flow that navigate the user to a browser model that allows them to login with the selected login provider.
-
-| Parameter     | Type                  | Mandatory                          | Description                                                                                                                                                                                           |
-| ------------- | --------------------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| provider      | enum of LoginProvider | Yes for bare React Native SDK only | Login provider, supported values are GOOGLE, FACEBOOK, REDDIT, DISCORD, TWITCH, APPLE, LINE, GITHUB, KAKAO, LINKEDIN, TWITTER, WEIBO, WECHAT, EMAIL_PASSWORDLESS, WEBAUTHN, JWT                       |
-| loginProvider | enum of LoginProvider | Yes for Expo based SDK only        | Login provider, supported values are GOOGLE, FACEBOOK, REDDIT, DISCORD, TWITCH, APPLE, LINE, GITHUB, KAKAO, LINKEDIN, TWITTER, WEIBO, WECHAT, EMAIL_PASSWORDLESS, WEBAUTHN, JWT                       |
-| redirectUrl   | String                | Yes on Expo based SDK only         | The redirectUrl that the Web3Auth login flow will use to redirect back to the app. It is not required to be specified in the bare React Native SDK since it will be specified in the `init()` method. |
+| Parameter  | Type                      | Mandatory | Description                                                                                                                                                                                                     |
+| ---------- | ------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `provider` | `enum` of `LoginProvider` | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`, `WEBAUTHN`, `JWT` |
 
 ### Sample Response
 
@@ -49,48 +35,28 @@ Trigger the login flow that navigate the user to a browser model that allows the
 
 ### Example
 
-#### Bare React Native SDK
-
 ```typescript
-const state = await OpenloginReactNativeSdk.login({
+const state = await Web3AuthReactNativeSdk.login({
   provider: LoginProvider.GOOGLE,
 });
 ```
 
-#### Expo based SDK
-
-```typescript
-const scheme = "openloginexposdkexampleexpo";
-
-const resolvedRedirectUrl =
-  Constants.appOwnership == AppOwnership.Expo || Constants.appOwnership == AppOwnership.Guest
-    ? new URL(Linking.createURL("openlogin", {}))
-    : new URL(Linking.createURL("openlogin", { scheme: scheme }));
-
-const state = await openlogin.login({
-  loginProvider: LoginProvider.GOOGLE,
-  redirectUrl: resolvedRedirectUrl,
-});
-```
-
-## Logout
+## Logging out a user
 
 ---
 
+### `Web3AuthReactNativeSdk.logout()`
+
+:::info
+
 Trigger the logout flow on Android. This is a no-op on iOS since the iOS SDK does not have logout imeplemnted for technical reasons.
+
+:::
 
 This method has no input and returns a `Promise` that resolves if the operation is successful, and rejects if the operation failed.
 
 ### Example
 
-#### Bare React Native SDK
-
 ```typescript
-await OpenloginReactNativeSdk.logout();
-```
-
-#### Expo based SDK
-
-```typescript
-await openlogin.logout();
+await Web3AuthReactNativeSdk.logout();
 ```
