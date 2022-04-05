@@ -45,12 +45,6 @@ yarn add @web3auth/web3auth
 
 </Tabs>
 
-## Configuration
-
----
-
-### Whitelabel
-
 ## Initialisation
 
 ---
@@ -134,6 +128,40 @@ const web3auth = new Web3Auth({
   clientId: "example-client-id", // get your client id from developer dashboard
 });
 ```
+
+### Whitelabel
+
+Add a `uiConfig` object to the `Web3AuthOptions` object passed to the constructor. This object contains the following properties:
+
+##### `theme`
+
+Can be set to `dark` or `light` with default set to `light`
+
+##### `appLogo`
+
+A link to preferred logo and must be compatible with either `light` or `dark` mode. Our default logo is
+[web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg)
+
+##### `loginMethodsOrder`
+
+The list of login methods can also be reordered with this parameter. Those methods specified will be first on the list.
+
+#### Example
+
+```ts
+const web3auth = new Web3Auth({
+    // type UIConfig
+    uiConfig: {
+        appLogo: "https://images.web3auth.io/web3auth-logo-w.svg";
+        theme: "dark";
+        loginMethodsOrder: ['facebook', 'google'];
+    },
+    chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+    clientId: "example-client-id",
+});
+```
+
+##### To know more in depth about how you can Whitelabel your application with Web3Auth, have a look at our [Whitelabeling Guide](/whitelabeling).
 
 ### Configuring Adapters
 
