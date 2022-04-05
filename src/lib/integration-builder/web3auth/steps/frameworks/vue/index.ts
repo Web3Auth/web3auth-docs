@@ -5,10 +5,12 @@ import * as logout from "../html/logout.mdx";
 import * as initialize from "./initializing.mdx";
 // web
 import * as installationWeb from "./installation.mdx";
+import * as instantiateCoreSdk from "./instantiateCoreSdk.mdx";
 import * as instantiate from "./instantiateSDK.mdx";
 import * as registerApp from "./register-app.mdx";
 import * as subscribe from "./subscribe.mdx";
 import * as triggeringLogin from "./triggering-login.mdx";
+import * as whiteLabeling from "./whitelabeling.mdx";
 
 const STEPS = toSteps({
   installationWeb,
@@ -19,6 +21,8 @@ const STEPS = toSteps({
   triggeringLogin,
   getUserInfo,
   logout,
+  whiteLabeling,
+  instantiateCoreSdk,
 });
 
 const htmlSteps = {
@@ -71,8 +75,8 @@ const htmlSteps = {
           pointer: { filename: "web3auth/web/input.js", range: "4" },
         },
         {
-          ...STEPS.instantiate,
-          pointer: { filename: "web3auth/vue/CustomLogin.vue", range: "43" },
+          ...STEPS.instantiateCoreSdk,
+          pointer: { filename: "web3auth/vue/CustomLogin.vue", range: "44" },
         },
         {
           ...STEPS.subscribe,
@@ -119,7 +123,15 @@ const htmlSteps = {
         {
           ...STEPS.registerApp,
           pointer: { filename: "web3auth/web/input.js", range: "4" },
-        },
+        }
+      );
+      if (whitelabel === "yes") {
+        steps.push({
+          ...STEPS.whiteLabeling,
+          pointer: { filename: "web3auth/web/input.js", range: "1-25" },
+        });
+      }
+      steps.push(
         {
           ...STEPS.instantiate,
           pointer: { filename: "web3auth/vue/Home.vue", range: "44" },
