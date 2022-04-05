@@ -33,3 +33,39 @@ the dApp instance locally. This private key can be utilised by the dApp to inter
 The small API surface also means Web3Auth is composable - you can combine it with a meta-transaction flows, multisigs, and other cryptographic
 protocols. It is easy to build on top of, and generally fits with most other technology stacks, including but not limited to; your flavour scalability
 solutions, meta transactions, smart contract wallets, different elliptic curve pairs and even RSA.
+
+By default Web3Auth providers exposes chain specific providers based on the chainConfig and chainNamespace field passed in constructor.
+
+Currently Web3Auth supports three chainNamespaces:-
+
+- `eip155`:- `eip155` chainNamespace will return a `EIP1193` compatible provider once user is logged in.
+- `solana`:- `solana` chainNamespace will return a provider with solana chain connection as described [here](/api-reference/web/providers/solana)
+- `other`:- If you want to use any other chain except Solana or EVM chains, for ex: Starknet. You can specify the value of `chainNamespace` field as
+  `other` in the `Web3Auth` sdk constructor,
+
+Example Below demonstrate usage of `other` chainNamespace and retreiving private key of logged in user:-
+
+```ts
+const web3auth = new Web3Auth({
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.OTHER },
+  clientId: "example-client-id",
+});
+
+//Assuming user is already logged in.
+async getPrivateKey() {
+    const privateKey = await web3auth.provider.request({
+        method: "private_key"
+    });
+    //Do something with privateKey
+}
+```
+
+:::info Note:
+
+On using `other` chainNamespace, the returned provider only exposed one rpc method (i.e 'private_key') to get the private key of logged in user.
+
+Also other chain config fields except `chainNamespace` are not required while using `other` chainNamespace.
+
+Currently only `OpenloginAdapter` is supported with `other` chainNamespace.
+
+:::
