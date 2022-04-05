@@ -1,14 +1,16 @@
 import { replaceFileVariable, toSteps } from "../../../../utils";
+import * as instantiateCoreSdk from "../common/instantiateCoreSdk.mdx";
+import * as whiteLabeling from "../common/whitelabeling.mdx";
 import * as getUserInfo from "./get-user-info.mdx";
 import * as initialize from "./initializing.mdx";
 // web
 import * as installationWeb from "./installation.mdx";
 import * as instantiate from "./instantiateSDK.mdx";
+import * as loginWithFirebaseAuth from "./login-with-firebase-auth.mdx";
 import * as logout from "./logout.mdx";
 import * as registerApp from "./register-app.mdx";
 import * as subscribe from "./subscribe.mdx";
 import * as triggeringLogin from "./triggering-login.mdx";
-import * as loginWithFirebaseAuth from "./login-with-firebase-auth.mdx";
 
 const STEPS = toSteps({
   installationWeb,
@@ -20,6 +22,8 @@ const STEPS = toSteps({
   loginWithFirebaseAuth,
   getUserInfo,
   logout,
+  instantiateCoreSdk,
+  whiteLabeling,
 });
 
 const reactSteps = {
@@ -80,7 +84,7 @@ export const web3AuthParams = {
           pointer: { filename: "web3auth/react/custom-auth/App.tsx", range: "27" },
         },
         {
-          ...STEPS.instantiate,
+          ...STEPS.instantiateCoreSdk,
           pointer: { filename: "web3auth/react/custom-auth/App.tsx", range: "17-19" },
         },
         {
@@ -135,7 +139,7 @@ export const web3AuthParams = {
           pointer: { filename: "web3auth/react/custom-ui/App.tsx", range: "23" },
         },
         {
-          ...STEPS.instantiate,
+          ...STEPS.instantiateCoreSdk,
           pointer: { filename: "web3auth/react/custom-ui/App.tsx", range: "15-17" },
         },
         {
@@ -180,8 +184,17 @@ export const web3AuthParams = {
         },
         {
           ...STEPS.registerApp,
-          pointer: { filename: "web3auth/web/input.js", range: "4" },
-        },
+          pointer: { filename: "web3auth/web/input.js", range: "3" },
+        }
+      );
+      if (whitelabel === "yes") {
+        steps.push({
+          ...STEPS.whiteLabeling,
+          pointer: { filename: "web3auth/web/input.js", range: "1-25" },
+        });
+      }
+
+      steps.push(
         {
           ...STEPS.instantiate,
           pointer: { filename: "web3auth/react/App.tsx", range: "15" },

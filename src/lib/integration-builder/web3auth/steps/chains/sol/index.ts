@@ -15,8 +15,9 @@ const chainSteps = {
         "const web3AuthCtorParams = {};",
         `
 const web3AuthCtorParams = {
-    chainConfig: { chainNamespace: "solana" },
     clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
+    chainConfig: { chainNamespace: "solana" },
+
 };
 `
       );
@@ -25,8 +26,9 @@ const web3AuthCtorParams = {
         files["web3auth/web/customInput.js"],
         "const web3AuthCtorParams = {};",
         `        const web3AuthCtorParams = {
-      chainConfig: { chainNamespace: "solana" },
-      clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
+          clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
+          chainConfig: { chainNamespace: "solana" },
+
     };`
       );
 

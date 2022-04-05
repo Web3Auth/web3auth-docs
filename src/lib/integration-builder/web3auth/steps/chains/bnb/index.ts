@@ -14,11 +14,19 @@ const chainSteps = {
         files["web3auth/web/input.js"],
         "const web3AuthCtorParams = {};",
         `
-          const web3AuthCtorParams = {
-              clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
-              chainConfig: { chainNamespace: "eip155" },
+    const web3AuthCtorParams = {
+      clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
+      chainConfig: {
+        chainNamespace: "eip155",
+        rpcTarget: "https://data-seed-prebsc-2-s3.binance.org:8545",
+        blockExplorer: "https://testnet.bscscan.com",
+        chainId: "0x61",
+        displayName: "Binance SmartChain Testnet",
+        ticker: "BNB",
+        tickerName: "BNB",
+    },
 
-          };
+};
 `
       );
     else
@@ -28,8 +36,15 @@ const chainSteps = {
         `
           const web3AuthCtorParams = {
               clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
-              chainConfig: { chainNamespace: "eip155" },
-
+              chainConfig: {
+                  chainNamespace: "eip155",
+                  rpcTarget: "https://data-seed-prebsc-2-s3.binance.org:8545",
+                  blockExplorer: "https://testnet.bscscan.com",
+                  chainId: "0x61",
+                  displayName: "Binance SmartChain Testnet",
+                  ticker: "BNB",
+                  tickerName: "BNB",
+              }
           };
         `
       );
