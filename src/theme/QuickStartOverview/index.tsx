@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import Link from "@docusaurus/Link";
 import classNames from "classnames";
 
@@ -7,7 +8,40 @@ import * as animationData from "/lottie/Hero.json";
 
 const defaultOptions = { loop: true, autoplay: true, animationData: animationData, rendererSettings: { preserveAspectRatio: "xMidYMid slice" } };
 
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height,
+  };
+}
+
+export function useWindowDimensions() {
+  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return windowDimensions;
+}
+
 export default function Web3AuthOverview() {
+  var { height, width } = useWindowDimensions();
+
+  if (width < 700) {
+    var animWidth = (4 * width) / 6;
+    var animHeight = (4 * width) / 7;
+  } else {
+    var animWidth = (width + height) / 6;
+    var animHeight = (width + height) / 7;
+  }
+
   return (
     <div className={styles.container}>
       <div className={classNames(styles.cardQuickStart)}>
@@ -31,7 +65,9 @@ export default function Web3AuthOverview() {
           </div>
         </div>
       </div>
-      <Lottie options={defaultOptions} height={300} width={350} />
+      <div className={styles.lottieContainer}>
+        <Lottie options={defaultOptions} height={animHeight} width={animWidth} />
+      </div>
     </div>
   );
 }
