@@ -82,12 +82,7 @@ module.exports = {
           "React Native": ["api-reference/react-native/setting-up", "api-reference/react-native/usage", "api-reference/react-native/whitelabel"],
         },
         {
-          Flutter: [
-            "api-reference/flutter/setting-up",
-            "api-reference/flutter/usage",
-            "api-reference/flutter/whitelabel",
-            "api-reference/flutter/customauth",
-          ],
+          Flutter: ["api-reference/flutter/setting-up", "api-reference/flutter/usage", "api-reference/flutter/whitelabel"],
         },
       ],
     },
