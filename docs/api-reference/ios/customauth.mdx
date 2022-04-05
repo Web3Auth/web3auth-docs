@@ -1,0 +1,37 @@
+---
+title: Using Custom Authentication
+hide_table_of_contents: true
+---
+
+## Introduction
+
+To use a custom login mechamism with the Web3Auth Swift SDK, for example to login using your own custom JWT issuer like Firebase, You can add the your
+confiuration to the `loginConfig` field of the `W3AInitParams` object. The `loginConfig` field is a key value map. The key should be one of the
+`Web3AuthProvider` in its string form, and the value should be a `W3ALoginConfig` struct instance.
+
+To use such custom login mechanism, first configure your own verifier in the Web3Auth Dashboard.
+
+Then, you should specify the details of your verifier in the `W3ALoginConfig` struct, the details of this struct are as follows.
+
+## `W3ALoginConfig` struct
+
+| Parameter               | Type               | Mandatory | Description                                                                                                                                                                                                                                                           |
+| ----------------------- | ------------------ | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `verifier`              | `String`           | Yes       | The name of the verifier which you have registered in Web3Auth Dashboard.                                                                                                                                                                                             |
+| `typeOfLogin`           | `enum TypeOfLogin` | Yes       | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose google, a google sign-in flow will be used. If you choose jwt, which you should be providing your own JWT token, no sign-in flow will be presented. |
+| `name`                  | `String`           | Yes       | Name of your verifier for display purpose.                                                                                                                                                                                                                            |
+| `description`           | `String`           | No        | Description of this login flow.                                                                                                                                                                                                                                       |
+| `clientId`              | `String`           | No        | The Web3Auth ClientId you want to use for this login provider.                                                                                                                                                                                                        |
+| `verifierSubIdentifier` | `String`           | No        | The name of the field in the JWT that should be used as the unique user ID of the JWT. Should be same as the one you used in the verifier config.                                                                                                                     |
+| `logoHover`             | `String`           | No        | Logo to be shown on mouse hover.                                                                                                                                                                                                                                      |
+| `logoLight`             | `String`           | No        | Logo to be shown on light background (light theme).                                                                                                                                                                                                                   |
+| `logoDark`              | `String`           | No        | Logo to be shown on dark background (dark theme).                                                                                                                                                                                                                     |
+| `mainOption`            | `Bool`             | No        | Show login button on the main list                                                                                                                                                                                                                                    |
+| `showOnModal`           | `Bool`             | No        | Whether to show the login button on modal or not                                                                                                                                                                                                                      |
+| `showOnDesktop`         | `Bool`             | No        | Whether to show the login button on desktop                                                                                                                                                                                                                           |
+| `showOnMobile`          | `Bool`             | No        | Whether to show the login button on mobile                                                                                                                                                                                                                            |
+
+## `ExtraLoginOptions` for special login methods
+
+- To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` field of the `extraLoginOptions`.
+- To use the `JWT` login, you need to put the jwt token into the `id_token` field of the `extraLoginOptions`.

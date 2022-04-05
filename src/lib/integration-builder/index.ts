@@ -1,14 +1,8 @@
 import { IntegrationBuilder } from "./interfaces";
-import directAuthIntegrationBuilder from "./customauth";
-import torusWalletIntegrationBuilder from "./wallet";
-import openLoginIntegrationBuilder from "./open-login";
+import web3authIntegrationBuilder from "./web3auth";
 
-const integrationBuilders: Record<string, IntegrationBuilder> = {
-  "open-login": openLoginIntegrationBuilder,
-  wallet: torusWalletIntegrationBuilder,
-  customauth: directAuthIntegrationBuilder,
-};
+const integrationBuilder: IntegrationBuilder = web3authIntegrationBuilder;
 
 export * from "./interfaces";
 
-export default integrationBuilders;
+export default integrationBuilder;

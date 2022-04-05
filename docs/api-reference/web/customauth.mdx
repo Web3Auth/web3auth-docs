@@ -1,0 +1,35 @@
+---
+title: Using Custom Authentication
+hide_table_of_contents: false
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import BasicExample from "../../common/web/code/web3auth/_general-example.mdx";
+
+For adding your own authentication, you have to first configure your verifiers in the Web3Auth Dashboard. Have a look at this documentation for
+configuring that first
+
+#### `web3authCore.connectTo(adapter, loginParams)`
+
+After initializing you can login/connect with any adapter by calling `connectTo` function along with adapter name.
+
+```javascript
+// connect to any adapter by passing adapter name in connectTo function.
+// connectTo has two parameters, first is adapter name and second is configuration specific to the adapter.
+connectTo<T>(walletName: WALLET_ADAPTER_TYPE, loginParams?: T): Promise<SafeEventEmitterProvider | null>;
+```
+
+#### Example
+
+```ts
+const provider = await web3authCore.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  relogin: true,
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    id_token: jwtToken,
+    domain: "YOUR_APP_DOMAIN",
+    verifierIdField: "sub",
+  },
+});
+```

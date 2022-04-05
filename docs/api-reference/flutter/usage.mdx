@@ -1,0 +1,92 @@
+---
+title: Usage
+hide_table_of_contents: false
+---
+
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import BasicExample from "../../common/web/code/web3auth/_general-example.mdx";
+
+## Logging in a User
+
+### `Web3AuthFlutter.login(PARAMS)`
+
+Trigger login flow that shows a modal for user to select one of supported providers to login e.g. Google, Facebook, Twitter, Passwordless, etc.
+
+Construct and configure `login` function with the params as following
+
+| Parameter           | Type                | Mandatory | Description                                                                                                                                                                                  |
+| ------------------- | ------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginProvider`     | `enum` `Provider`   | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS` |
+| `relogin`           | `Boolean`           | No        | default is `null`                                                                                                                                                                            |
+| `extraLoginOptions` | `Map<String, Any>`  | No        | You can pass various oauth supported options, default is `null`                                                                                                                              |
+| `redirectUrl`       | `ExtraLoginOptions` | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                  |
+| `appState`          | `String`            | No        | `appState` can be used to keep track of the app state when user will be redirected to app after login, default is `null`                                                                     |
+
+#### `ExtraLoginOptions`
+
+This is an optional param. Construct and configure ExtraLoginOptions with the params as following
+
+| Parameter                   | Type             | Mandatory |
+| --------------------------- | ---------------- | --------- |
+| `domain`                    | `String`         | No        |
+| `client_id`                 | `String`         | No        |
+| `leeway`                    | `String`         | No        |
+| `verifierIdField`           | `String`         | No        |
+| `isVerifierIdCaseSensitive` | `Bool`           | No        |
+| `display`                   | `enum` `Display` | No        |
+| `prompt`                    | `enum` `Prompt`  | No        |
+| `max_age`                   | `String`         | No        |
+| `ui_locales`                | `String`         | No        |
+| `id_token_hint`             | `String`         | No        |
+| `login_hint`                | `String`         | No        |
+| `acr_values`                | `String`         | No        |
+| `scope`                     | `String`         | No        |
+| `audience`                  | `String`         | No        |
+| `connection`                | `String`         | No        |
+| `state`                     | `String`         | No        |
+| `response_type`             | `String`         | No        |
+| `nonce`                     | `String`         | No        |
+| `redirect_uri`              | `String`         | No        |
+
+### Sample Response
+
+```javascript
+{
+  "ed25519PrivKey": "666523652352635....",
+  "privKey": "0ajjsdsd....",
+  "userInfo": {
+    "aggregateVerifier": "tkey-google",
+    "email": "john@gmail.com",
+    "name": "John Dash",
+    "profileImage": "https://lh3.googleusercontent.com/a/Ajjjsdsmdjmnm...",
+    "typeOfLogin": "google",
+    "verifier": "torus",
+    "verifierId": "john@gmail.com"
+  }
+}
+```
+
+### Example
+
+```javascript
+// Login
+final Web3AuthResponse response = await Web3AuthFlutter.login(provider: Provider.google);
+
+```
+
+## Logging out a user
+
+---
+
+### `Web3AuthFlutter.logout()`
+
+```javascript
+await Web3AuthFlutter.logout();
+```
+
+### Response
+
+A void object is returned on successfull logout otherwise an error is thrown

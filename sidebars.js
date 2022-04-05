@@ -2,76 +2,130 @@
 module.exports = {
   docs: [
     "README",
-    "get-started",
-    "what-is-web3auth",
+    {
+      type: "category",
+      label: "Overview",
+      collapsible: true,
+      collapsed: false,
+      items: ["overview/what-is-web3auth", "overview/how-web3auth-works", "overview/key-management", "overview/audits"],
+    },
+    {
+      type: "category",
+      label: "Get Started",
+      link: { type: "doc", id: "get-started/get-started" },
+      items: ["get-started/quickstart", "get-started/using-dashboard"],
+    },
+    {
+      type: "category",
+      label: "Developing with Web3Auth",
+      link: { type: "doc", id: "developing-with-web3auth/developing-with-web3auth" },
+      items: [
+        "developing-with-web3auth/understand-sdk",
+        "developing-with-web3auth/adapters",
+        "developing-with-web3auth/connect-blockchain",
+        {
+          type: "category",
+          label: "Using Custom Authentication",
+          link: { type: "doc", id: "developing-with-web3auth/customauth/customauth" },
+          items: ["developing-with-web3auth/customauth/verifiers"],
+        },
+      ],
+    },
+    "whitelabeling",
     {
       type: "category",
       label: "API Reference",
+      link: { type: "doc", id: "api-reference/api-reference" },
       items: [
-        "api-reference/modal",
-        "api-reference/core",
-        "api-reference/adapter-config",
-        "api-reference/whitelabel",
-        "api-reference/providers",
-        "api-reference/glossary",
         {
-          OpenLogin: ["api-reference/openlogin/web", "api-reference/openlogin/ios-swift", "api-reference/openlogin/android"],
-        },
-        {
-          CustomAuth: ["api-reference/customauth/installation", "api-reference/customauth/initialization", "api-reference/customauth/usage"],
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Using your own auth",
-      items: [
-        "customauth/get-started",
-        "customauth/designing-your-key-management-architecture",
-        "customauth/verifiers",
-        {
-          "Setting up Verifiers on Developer Dashboard": [
-            "customauth/setting-up-verifiers/seting-up-verifiers",
-            "customauth/setting-up-verifiers/custom-verifier",
+          type: "category",
+          label: "Web",
+          items: [
+            "api-reference/web/choosesdk",
+            "api-reference/web/plugnplay",
+            "api-reference/web/customui",
+            {
+              type: "category",
+              label: "Adapters",
+              link: { type: "doc", id: "api-reference/web/adapters/adapters" },
+              items: [
+                "api-reference/web/adapters/openlogin",
+                "api-reference/web/adapters/torus-evm",
+                "api-reference/web/adapters/torus-solana",
+                "api-reference/web/adapters/metamask",
+                "api-reference/web/adapters/phantom",
+                "api-reference/web/adapters/wallet-connect-v1",
+              ],
+            },
+            {
+              type: "category",
+              label: "Providers",
+              link: { type: "doc", id: "api-reference/web/providers/providers" },
+              items: ["api-reference/web/providers/evm", "api-reference/web/providers/solana"],
+            },
+            ,
+            "api-reference/web/customauth",
           ],
         },
-        "customauth/linking-accounts",
-        "customauth/redirects-and-service-workers",
-        "customauth/faq",
+        {
+          Android: [
+            "api-reference/android/setting-up",
+            "api-reference/android/usage",
+            "api-reference/android/whitelabel",
+            "api-reference/android/customauth",
+          ],
+        },
+        {
+          iOS: ["api-reference/ios/setting-up", "api-reference/ios/usage", "api-reference/ios/whitelabel", "api-reference/ios/customauth"],
+        },
+        {
+          "React Native": ["api-reference/react-native/setting-up", "api-reference/react-native/usage", "api-reference/react-native/whitelabel"],
+        },
+        {
+          Flutter: ["api-reference/flutter/setting-up", "api-reference/flutter/usage", "api-reference/flutter/whitelabel"],
+        },
       ],
     },
-    "usecases",
+    "examples",
     {
       type: "category",
-      label: "Security & Key Infrastructure",
-      items: [
-        "key-infrastructure/overview",
-        // "key-infrastructure/technical-architecture",
-        //   {
-        //   type: "category",
-        //   label: "Role of Torus nodes",
-        //   items:[
-        //     "key-infrastructure/role-of-torus-nodes/overview",
-        //     "key-infrastructure/role-of-torus-nodes/lifecycle",
-        //     "key-infrastructure/role-of-torus-nodes/key-generation-and-resharing",
-        //   "key-infrastructure/role-of-torus-nodes/logins-key-assignments-and-retrievals",
-        //   "key-infrastructure/role-of-torus-nodes/oauth2-vs-proxy-sign-in",
-        // "key-infrastructure/role-of-torus-nodes/dkg-specification"
-        // ],
-        //   },
-        "key-infrastructure/powered-by-torus",
-        "key-infrastructure/audits",
-      ],
+      label: "Contribute",
+      items: ["contribute/open-source", "contribute/bug-bounty"],
     },
     {
-      type: "category",
-      label: "Legal",
-      items: ["legal/terms-and-conditions", "legal/privacy-policy", "legal/cookie-policy"],
+      Legal: ["legal/cookie-policy", "legal/privacy-policy", "legal/terms-and-conditions"],
+    },
+    { type: "html", value: "<hr /><strong style='color: #606770'>Quick Links</strong>", defaultStyle: true },
+
+    {
+      type: "link",
+      label: "GitHub",
+      href: "https://github.com/web3auth/web3auth",
     },
     {
-      type: "category",
-      label: "Contact",
-      items: ["contact/bug-bounty"],
+      type: "link",
+      label: "Support (Telegram)",
+      href: "https://t.me/web3authdev",
+    },
+    {
+      type: "link",
+      label: "Discord",
+      href: "https://discord.gg/web3auth",
+    },
+    {
+      type: "link",
+      label: "Dashboard",
+      href: "https://dashboard.web3auth.io/",
+    },
+    {
+      type: "link",
+      label: "Schedule a Demo",
+      href: "https://calendly.com/web3auth/meeting-with-web3auth",
+    },
+    {
+      type: "link",
+      label: "Status",
+      href: "https://status.web3auth.io/",
     },
   ],
 };

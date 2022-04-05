@@ -1,0 +1,62 @@
+---
+title: Metamask Wallet Adapter
+hide_table_of_contents: false
+---
+
+---
+
+### Basic Details
+
+#### Adapter Name: `metamask`
+
+#### Package Name: `@web3auth/metamask-adapter`
+
+#### authMode: `DAPP`
+
+#### chainNamespace: `EIP155`
+
+#### Default: `YES`
+
+#### Description:
+
+Metamask Adapter allows user to login with metamask wallet. You can read more about metamask wallet [here](https://docs.metamask.io/guide/).
+
+### Interface
+
+---
+
+```ts
+interface MetamaskAdapterOptions {
+  chainConfig?: CustomChainConfig;
+}
+```
+
+### Params
+
+---
+
+| Parameter   | type                                       |
+| ----------- | ------------------------------------------ |
+| chainConfig | [CustomChainConfig](#common_configuration) |
+
+### Example
+
+---
+
+```ts
+   import `Web3Auth` class from  `@web3auth/web3auth`;
+   import { MetamaskAdapter } from '@web3auth/metamask-adapter'
+   const web3auth = new Web3Auth(options);
+   const adapter = new MetamaskAdapter({
+        chainNamespace: CHAIN_NAMESPACES.EIP155,
+        chainId: "0x3",
+        rpcTarget: "https://ropsten.infura.io/v3/776218ac4734478c90191dde8cae483c",
+        displayName: "ropsten",
+        blockExplorer: "https://ropsten.etherscan.io/",
+        ticker: "ETH",
+        tickerName: "Ethereum",
+      })
+
+  // it will add/update  the metamask adapter in to web3auth class
+  web3auth.configureAdapter(adapter);
+```

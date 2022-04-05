@@ -1,0 +1,84 @@
+---
+title: Usage
+hide_table_of_contents: false
+---
+
+---
+
+:::info
+
+`logout()` is not implemented in the iOS SDK because of platform limitations.
+
+:::
+
+## Logging in a User
+
+---
+
+### `login()`
+
+Trigger the login flow that navigate the user to a browser model that allows them to login with the selected login provider.
+
+| Parameter           | Type                      | Mandatory | Description                                                                                                                                                                                                                     |
+| ------------------- | ------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginProvider`     | `enum` `Web3AuthProvider` | Yes       | Login provider, supported values are `.GOOGLE`, `.FACEBOOK`, `.REDDIT`, `.DISCORD`, `.TWITCH`, `.APPLE`, `.LINE`, `.GITHUB`, `.KAKAO`, `.LINKEDIN`, `.TWITTER`, `.WEIBO`, `.WECHAT`, `.EMAIL_PASSWORDLESS`, `.WEBAUTHN`, `.JWT` |
+| `relogin`           | `Bool`                    | No        | Relogin configuration                                                                                                                                                                                                           |
+| `dappShare`         | `String`                  | No        | dappShare configuration                                                                                                                                                                                                         |
+| `extraLoginOptions` | `ExtraLoginOptions`       | No        | Extra login options to be passed to the sdk frontend. Will be described below.                                                                                                                                                  |
+| `redirectUrl`       | `String`                  | No        | redirectUrl to be passed to the sdk frontend. This field is for advanced usage only and should not be changed.                                                                                                                  |
+| `appState`          | `String`                  | No        | Application state. The same string will be returned in the                                                                                                                                                                      |
+
+### Definition of `ExtraLoginOptions`
+
+```swift
+public struct ExtraLoginOptions: Encodable {
+    let display: String?
+    let prompt: String?
+    let max_age: String?
+    let ui_locales: String?
+    let id_token_hint: String?
+    let login_hint: String?
+    let acr_values: String?
+    let scope: String?
+    let audience: String?
+    let connection: String?
+    let domain: String?
+    let client_id: String?
+    let redirect_uri: String?
+    let leeway: Int?
+    let verifierIdField: String?
+    let isVerifierIdCaseSensitive: Bool?
+}
+```
+
+### Sample Response
+
+```json
+{
+  "ed25519PrivKey": "666523652352635....",
+  "privKey": "0ajjsdsd....",
+  "userInfo": {
+    "aggregateVerifier": "tkey-google",
+    "email": "john@gmail.com",
+    "name": "John Dash",
+    "profileImage": "https://lh3.googleusercontent.com/a/Ajjjsdsmdjmnm...",
+    "typeOfLogin": "google",
+    "verifier": "torus",
+    "verifierId": "john@gmail.com"
+  }
+}
+```
+
+### Example
+
+```swift
+Web3Auth()
+    .login(W3ALoginParams(loginProvider: .GOOGLE)) {
+        switch $0 {
+        case .success(let result):
+            showResult(result: result)
+        case .failure(let error):
+            print("Error: \(error)")
+        }
+    }
+```

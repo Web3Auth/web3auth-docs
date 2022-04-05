@@ -1,6 +1,6 @@
-import React from "react";
-import styles from "./styles.module.css";
 import Link from "@docusaurus/Link";
+
+import styles from "./styles.module.css";
 
 export interface Tile {
   key: string;
@@ -15,10 +15,11 @@ export interface TileGroup {
   tiles: Tile[];
 }
 
-export default function Tiles(props) {
+export default function Tiles(props: { tileGroups: TileGroup[] }) {
+  const { tileGroups } = props;
   return (
     <>
-      {props.tileGroups.map((group: TileGroup) => (
+      {tileGroups.map((group: TileGroup) => (
         <div key={group.name} className={styles.tileGroup}>
           <h3>{group.name}</h3>
           <p>{group.description}</p>

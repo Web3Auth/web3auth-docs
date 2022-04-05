@@ -1,6 +1,6 @@
-import React from "react";
 import Link from "@docusaurus/Link";
 import classNames from "classnames";
+
 import styles from "./styles.module.css";
 
 export default function Web3AuthCards() {
@@ -19,7 +19,7 @@ export default function Web3AuthCards() {
       <Link to="/guides#auth" className={classNames(styles.cardQuickStart, styles.cardQsPlugin)}>
         <img className={styles.mainIcon} src="/images/qs-plugin.svg" alt="Plugin" />
         <p className={styles.headline}>Plugin your own auth</p>
-        <p className={styles.description}>Have an existing userbase/auth you'd like to use? Plug them in with zero migration necessary.</p>
+        <p className={styles.description}>Have an existing userbase/auth you&apos;d like to use? Plug them in with zero migration necessary.</p>
       </Link>
     </div>
   );

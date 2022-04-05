@@ -1,0 +1,60 @@
+---
+title: Connect your Blockchain
+---
+
+---
+
+Web3Auth is the frontend authentication system for your dApp. Once the user is authenticated, they can access the dApp, but still making a transaction
+requires making RPC calls to your blockchain, essentially a task you need to complete with a wallet. For this, Web3Auth has multiple
+[Adapters](../adapters) available which act as connectors between Web3Auth and the underlying wallet provider.
+
+## Using Web3Auth Providers
+
+---
+
+A provider is how libraries like web3 & ethers.js talk to the blockchain. Providers take JSON-RPC requests and return the response. This is normally
+done by submitting the request to an HTTP or IPC socket based server. Each adapter in Web3Auth exposes a Provider on successful user authentication.
+This provider can be use to interact with wallet or connected chain using RPC calls. Currently, Web3Auth supports providers for both EVM and Solana
+chains, which means that any EVM compatible chain & Solana can directly use our native providers can interact with the dApp. You can follow our API
+Reference to know more about how to use these providers with thier compatible adapters:
+
+- [EIP1193 (EVM) Providers](/api-reference/web/providers/evm)
+- [Solana Providers](/api-reference/web/providers/solana)
+
+## Web3Auth has multichain support
+
+---
+
+So, we have covered our existing wallet adapters and providers available. What if you want to use a different chain or a wallet?
+
+Here the ability of exposing the user private key comes in handy. Every SDK of Web3Auth has the functionality of exposing the user private key, within
+the dApp instance locally. This private key can be utilised by the dApp to interact with the chain.
+
+The small API surface also means Web3Auth is composable - you can combine it with a meta-transaction flows, multisigs, and other cryptographic
+protocols. It is easy to build on top of, and generally fits with most other technology stacks, including but not limited to; your flavour scalability
+solutions, meta transactions, smart contract wallets, different elliptic curve pairs and even RSA.
+
+Example below demonstrate usage of `other` chainNamespace and retreiving private key of logged in user.
+
+```ts
+const web3auth = new Web3Auth({
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.OTHER },
+  clientId: "example-client-id",
+});
+
+//Assuming user is already logged in.
+async getPrivateKey() {
+    const privateKey = await web3auth.provider.request({
+        method: "private_key"
+    });
+    //Do something with privateKey
+}
+```
+
+You can read more about this in our [**Provider API Reference**](/api-reference/web/providers)
+
+:::info Note
+
+Currently only `OpenloginAdapter` is supported with `other` chainNamespace.
+
+:::

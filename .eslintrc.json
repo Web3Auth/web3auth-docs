@@ -1,0 +1,38 @@
+{
+  "extends": ["plugin:markdown/recommended", "plugin:mdx/recommended", "@toruslabs/react"],
+  "parserOptions": {
+    "ecmaVersion": 11,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "react/jsx-props-no-spreading": 0,
+    "import/no-unresolved": [2, { "ignore": ["^@theme", "^@docusaurus", "^@site"] }]
+  },
+  "settings": {
+    "mdx/code-blocks": false
+  },
+  "globals": {
+    "JSX": true
+  },
+  "overrides": [
+    {
+      "files": ["*.mdx", "*.md"],
+      "parser": "eslint-mdx",
+      "parserOptions": {
+        "project": "./tsconfig.json",
+        "ecmaVersion": 11,
+        "sourceType": "module",
+        "extraFileExtensions": [".mdx"]
+      },
+      "rules": {
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx", ".mdx"] }],
+        "@typescript-eslint/return-await": 0,
+        "@typescript-eslint/no-throw-literal": 0,
+        "@typescript-eslint/no-implied-eval": 0,
+        "@typescript-eslint/dot-notation": 0,
+        "@typescript-eslint/naming-convention": 0
+      }
+    }
+  ]
+}

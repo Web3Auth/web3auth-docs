@@ -1,0 +1,355 @@
+---
+title: EIP1193 Providers
+hide_table_of_contents: false
+---
+
+---
+
+## Getting a provider from Web3Auth
+
+If you are using `eip155` as `chainNamespace` while initializing `web3auth`, it will provide you with an EIP1193 compatible provider as
+**`web3auth.provider`** after user login.
+
+### Example
+
+```ts
+import { Web3Auth } from "@web3auth/web3auth";
+import { CHAIN_NAMESPACES, CustomChainConfig, ADAPTER_EVENTS } from "@web3auth/base";
+
+/*
+you can pass your own chain configs here
+by default it will only chainId is required for supported networks
+such as [rinkeby, ropsten, goerli, kovan]
+*/
+
+const ethChainConfig: CustomChainConfig = {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x3",
+    rpcTarget: `https://ropsten.infura.io/v3/${YOUR_INFURA_ID}`,
+    displayName: "ropsten",
+    blockExplorer: "https://ropsten.etherscan.io/",
+    ticker: "ETH",
+    tickerName: "Ethereum",
+};
+
+/*
+We are initializing with EIP155 namespace which will initialize the
+modal with ethereum mainnet by default.
+*/
+
+const web3auth = new Web3Auth({
+    chainConfig: ethChainConfig
+    clientId: "localhost-id"
+});
+
+await web3auth.initModal();
+
+web3auth.on(ADAPTER_EVENTS.CONNECTED, (data: CONNECTED_EVENT_DATA) => {
+    console.log("Yeah!, you are successfully logged in", data);
+});
+
+web3auth.connect();
+
+```
+
+### Initializing the provider
+
+On connection, you can use `web3auth.provider` as a EIP1193 provider with web3.js or ethers library.
+
+```ts
+import Web3 from "web3";
+
+const web3 = new Web3(web3auth.provider);
+```
+
+## Getting a provider from private key.
+
+---
+
+`@web3auth/ethereum-provider` package can be used to get a EIP1193 compatible provider from any `secp512k1` private key. You can use this package with
+our SDKs, to get an EIP1193 provider from the logged-in user's private key.
+
+### Example
+
+```ts
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+/*
+privKey: any secp512k1 private key.
+*/
+
+async setProvider(privKey: string) {
+    this.ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+    config: {
+        /*
+        pass the chain config that you want to connect with
+        all chainConfig fields are required.
+        */
+        chainConfig: {
+        chainId: "0x3",
+        rpcTarget: `https://ropsten.infura.io/v3/${YOUR_INFURA_ID}`,
+        displayName: "ropsten",
+        blockExplorer: "https://ropsten.etherscan.io/",
+        ticker: "ETH",
+        tickerName: "Ethereum",
+        },
+    },
+    });
+    /*
+    pass user's private key here.
+    after calling setupProvider, we can use
+    this.ethereumPrivateKeyProvider._providerProxy as a eip1193 provider
+    */
+    const provider = await this.ethereumPrivateKeyProvider.setupProvider(privKey);
+}
+```
+
+### Initializing the provider
+
+```ts
+import Web3 from "web3";
+
+const web3 = new Web3(provider);
+```
+
+## Usage
+
+---
+
+Once you have setup the provider, you can use the standard functions in the web3 library to get user's account, perform transaction, sign a message
+etc. Here we have listed a few examples to help you get started there.
+
+### Get Connected User account
+
+#### `web3.eth.getAccounts()`
+
+This method is used fetch the address of connected account.
+
+```ts
+import Web3 from "web3";
+
+// refer to `Getting a provider with web3auth login.` section above
+// to know how `web3auth.provider` is initialized after user's login
+const web3 = new Web3(web3auth.provider);
+
+// Get user's Ethereum public address
+const address = (await web3.eth.getAccounts())[0];
+
+// Get user's balance in ether
+const balance = web3.utils.fromWei(
+  await web3.eth.getBalance(address) // Balance is in wei
+);
+```
+
+### Send Transaction
+
+#### `web3.eth.sendTransaction(object);`
+
+This function is used to broadcast a transaction on chain.
+
+```ts
+import Web3 from "web3";
+// refer to `Getting a provider with web3auth login.` section above
+// to know how `web3auth.provider` is initialized after user's login
+const web3 = new Web3(web3auth.provider);
+
+// Get user's Ethereum public address
+const fromAddress = (await web3.eth.getAccounts())[0];
+
+const destination = "0xE0cef4417a772512E6C95cEf366403839b0D6D6D";
+const amount = web3.utils.toWei(1); // Convert 1 ether to wei
+
+// Submit transaction to the blockchain and wait for it to be mined
+const receipt = await web3.eth.sendTransaction({
+  from: fromAddress,
+  to: destination,
+  value: amount,
+});
+```
+
+### Sign a message
+
+The following example shows how to sign different types of a messages with the connected user's private key.
+
+#### Personal Sign
+
+#### `web3.eth.personal.sign(originalMessage, fromAddress)`
+
+```ts
+import Web3 from "web3";
+
+// refer to `Getting a provider with web3auth login.` section above
+// to know how `web3auth.provider` is initialized after user's login
+const web3 = new Web3(web3auth.provider);
+
+// Get user's Ethereum public address
+const fromAddress = (await web3.eth.getAccounts())[0];
+
+const originalMessage = "YOUR_MESSAGE";
+
+const signedMessage = await web3.eth.personal.sign(originalMessage, fromAddress);
+```
+
+#### Sign Typed Data V1
+
+#### `eth_signTypedData`
+
+```ts
+import Web3 from "web3";
+
+// refer to `Getting a provider with web3auth login.` section above
+// to know how `web3auth.provider` is initialized after user's login
+const web3 = new Web3(web3auth.provider);
+
+// Get user's Ethereum public address
+const fromAddress = (await web3.eth.getAccounts())[0];
+
+const originalMessage = [
+  {
+    type: "string",
+    name: "fullName",
+    value: "John Doe",
+  },
+  {
+    type: "uint32",
+    name: "userId",
+    value: "1234",
+  },
+];
+const params = [originalMessage, fromAddress];
+const method = "eth_signTypedData";
+
+const signedMessage = await web3.currentProvider.sendAsync({
+  id: 1,
+  method,
+  params,
+  fromAddress,
+});
+```
+
+#### Sign Typed Data v3
+
+#### `eth_signTypedData_v3`
+
+```ts
+import Web3 from "web3";
+
+// refer to `Getting a provider with web3auth login.` section above
+// to know how `web3auth.provider` is initialized after user's login
+const web3 = new Web3(web3auth.provider);
+
+// Get user's Ethereum public address
+const fromAddress = (await web3.eth.getAccounts())[0];
+
+const originalMessage = {
+  types: {
+    EIP712Domain: [
+      {
+        name: "name",
+        type: "string",
+      },
+      {
+        name: "version",
+        type: "string",
+      },
+      {
+        name: "verifyingContract",
+        type: "address",
+      },
+    ],
+    Greeting: [
+      {
+        name: "contents",
+        type: "string",
+      },
+    ],
+  },
+  primaryType: "Greeting",
+  domain: {
+    name: "web3auth",
+    version: "1",
+    verifyingContract: "0xE0cef4417a772512E6C95cEf366403839b0D6D6D",
+  },
+  message: {
+    contents: "Hello, from web3auth!",
+  },
+};
+const params = [fromAddress, originalMessage];
+const method = "eth_signTypedData_v3";
+
+const signedMessage = await web3.currentProvider.sendAsync({
+  id: 1,
+  method,
+  params,
+  fromAddress,
+});
+```
+
+#### Sign Typed Data v4
+
+#### `eth_signTypedData_v4`
+
+```ts
+/*
+  Sign Typed Data v4 adds support for
+  arrays and recursive data types.
+
+  Otherwise, it works the same as Sign Typed Data v3.
+*/
+
+import Web3 from "web3";
+
+// refer to `Getting a provider with web3auth login.` section above
+// to know how `web3auth.provider` is initialized after user's login
+const web3 = new Web3(web3auth.provider);
+
+// Get user's Ethereum public address
+const fromAddress = (await web3.eth.getAccounts())[0];
+
+const originalMessage = {
+  types: {
+    EIP712Domain: [
+      {
+        name: "name",
+        type: "string",
+      },
+      {
+        name: "version",
+        type: "string",
+      },
+      {
+        name: "verifyingContract",
+        type: "address",
+      },
+    ],
+    Greeting: [
+      {
+        name: "contents",
+        type: "string",
+      },
+    ],
+  },
+  primaryType: "Greeting",
+  domain: {
+    name: "web3auth",
+    version: "1",
+    verifyingContract: "0xE0cef4417a772512E6C95cEf366403839b0D6D6D",
+  },
+  message: {
+    contents: "Hello, from web3auth!",
+  },
+};
+const params = [fromAddress, originalMessage];
+const method = "eth_signTypedData_v4";
+
+const signedMessage = await web3.currentProvider.sendAsync({
+  id: 1,
+  method,
+  params,
+  fromAddress,
+});
+```
+
+### Other Default Solana Chain RPC Methods:
+
+- You can refer to other read only calls available for this provider [here](https://eth.wiki/json-rpc/API#json-rpc-methods)

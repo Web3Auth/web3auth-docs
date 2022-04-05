@@ -1,4 +1,21 @@
-import React from "react";
+import { ReactNode } from "react";
+
+export interface IntegrationStep {
+  title: string;
+  content: ReactNode;
+  pointer?: { filename: string; range?: string };
+}
+
+export interface Integration {
+  filenames: string[];
+  files: Record<string, string>;
+  steps: IntegrationStep[];
+}
+
+export interface DisplayChoice {
+  key: string;
+  displayName: string;
+}
 
 export interface IntegrationBuilder {
   displayName: string;
@@ -8,22 +25,10 @@ export interface IntegrationBuilder {
     {
       displayName: string;
       default: string;
-      choices: string[];
+      type: "toggle" | "dropdown";
+      choices: DisplayChoice[];
     }
   >;
 
-  getAvailableOptions(optionKey: string, optionValue: string): Record<string, string>[];
-
-  build(values: Record<string, string>): Integration;
-}
-
-export interface IntegrationStep {
-  title: string;
-  content: React.ReactNode;
-  pointer?: { filename: string; range?: string };
-}
-
-export interface Integration {
-  filenames: string[];
-  steps: IntegrationStep[];
+  build(values: Record<string, string>, files: Record<string, any>): Integration;
 }

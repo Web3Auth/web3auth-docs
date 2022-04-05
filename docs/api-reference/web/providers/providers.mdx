@@ -1,0 +1,62 @@
+---
+title: Providers
+hide_table_of_contents: false
+---
+
+---
+
+A provider is how libraries like web3 & ethers.js talk to the blockchain. Providers take JSON-RPC requests and return the response. This is normally
+done by submitting the request to an HTTP or IPC socket based server. Each adapter in Web3Auth exposes a Provider on successful user authentication.
+This provider can be use to interact with wallet or connected chain using RPC calls.
+
+## Web3Auth has multichain support
+
+---
+
+By default Web3Auth providers exposes chain specific providers based on the chainConfig and chainNamespace field passed in constructor.
+
+Currently Web3Auth supports three chainNamespaces:
+
+### `eip155`
+
+`eip155` chainNamespace will return a `EIP1193` compatible provider once user is logged in.
+
+Read more about it in [**EIP1193 Providers**](/api-reference/web/providers/evm)
+
+### `solana`
+
+`solana` chainNamespace will return a provider with Solana chain connection.
+
+Read more about it in [**Solana Providers**](/api-reference/web/providers/solana)
+
+### `other`
+
+If you want to use any other chain except Solana or EVM chains, for ex: Starknet, you can specify the value of `chainNamespace` field as `other` in
+the `Web3Auth` SDK Constructor.
+
+Example below demonstrate usage of `other` chainNamespace and retreiving private key of logged in user.
+
+```ts
+const web3auth = new Web3Auth({
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.OTHER },
+  clientId: "example-client-id",
+});
+
+//Assuming user is already logged in.
+async getPrivateKey() {
+    const privateKey = await web3auth.provider.request({
+        method: "private_key"
+    });
+    //Do something with privateKey
+}
+```
+
+:::info Note
+
+- On using `other` chainNamespace, the returned provider only exposed one RPC method (i.e 'private_key') to get the private key of logged in user.
+
+- Other `chainConfig` fields except `chainNamespace` are not required while using `other` chainNamespace.
+
+- Currently only `OpenloginAdapter` is supported with `other` chainNamespace.
+
+:::

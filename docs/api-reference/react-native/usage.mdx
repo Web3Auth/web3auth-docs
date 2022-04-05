@@ -1,0 +1,62 @@
+---
+title: Usage
+hide_table_of_contents: false
+---
+
+---
+
+## Logging in a User
+
+### `Web3AuthReactNativeSdk.login({provider})`
+
+Trigger the login flow that navigate the user to a browser model that allows them to login with the selected login provider.
+
+| Parameter  | Type                      | Mandatory | Description                                                                                                                                                                                                     |
+| ---------- | ------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `provider` | `enum` of `LoginProvider` | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`, `WEBAUTHN`, `JWT` |
+
+### Sample Response
+
+```json
+{
+  "ed25519PrivKey": "666523652352635....",
+  "privKey": "0ajjsdsd....",
+  "userInfo": {
+    "aggregateVerifier": "tkey-google",
+    "email": "john@gmail.com",
+    "name": "John Dash",
+    "profileImage": "https://lh3.googleusercontent.com/a/Ajjjsdsmdjmnm...",
+    "typeOfLogin": "google",
+    "verifier": "torus",
+    "verifierId": "john@gmail.com"
+  }
+}
+```
+
+### Example
+
+```typescript
+const state = await Web3AuthReactNativeSdk.login({
+  provider: LoginProvider.GOOGLE,
+});
+```
+
+## Logging out a user
+
+---
+
+### `Web3AuthReactNativeSdk.logout()`
+
+:::info
+
+Trigger the logout flow on Android. This is a no-op on iOS since the iOS SDK does not have logout imeplemnted for technical reasons.
+
+:::
+
+This method has no input and returns a `Promise` that resolves if the operation is successful, and rejects if the operation failed.
+
+### Example
+
+```typescript
+await Web3AuthReactNativeSdk.logout();
+```
