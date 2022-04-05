@@ -7,23 +7,18 @@ module.exports = {
       label: "Overview",
       collapsible: true,
       collapsed: false,
-      items: [
-        "overview/what-is-web3auth",
-        "overview/how-web3auth-works",
-        "overview/key-management",
-        "overview/audits",
-      ],
+      items: ["overview/what-is-web3auth", "overview/how-web3auth-works", "overview/key-management", "overview/audits"],
     },
     {
       type: "category",
       label: "Get Started",
-      link: { type: 'doc', id: "get-started/get-started" },
-      items: ["get-started/quickstart", "get-started/using-dashboard"]
+      link: { type: "doc", id: "get-started/get-started" },
+      items: ["get-started/quickstart", "get-started/using-dashboard"],
     },
     {
       type: "category",
       label: "Developing with Web3Auth",
-      link: { type: 'doc', id: "developing-with-web3auth/developing-with-web3auth" },
+      link: { type: "doc", id: "developing-with-web3auth/developing-with-web3auth" },
       items: [
         "developing-with-web3auth/understand-sdk",
         "developing-with-web3auth/adapters",
@@ -32,15 +27,15 @@ module.exports = {
         {
           type: "category",
           label: "Using Custom Authentication",
-          link: { type: 'doc', id: "developing-with-web3auth/customauth/customauth" },
-          items: ["developing-with-web3auth/customauth/verifiers"]
+          link: { type: "doc", id: "developing-with-web3auth/customauth/customauth" },
+          items: ["developing-with-web3auth/customauth/verifiers"],
         },
       ],
     },
     {
       type: "category",
       label: "API Reference",
-      link: { type: 'doc', id: "api-reference/api-reference" },
+      link: { type: "doc", id: "api-reference/api-reference" },
       items: [
         {
           type: "category",
@@ -52,7 +47,7 @@ module.exports = {
             {
               type: "category",
               label: "Adapters",
-              link: { type: 'doc', id: "api-reference/web/adapters/adapters" },
+              link: { type: "doc", id: "api-reference/web/adapters/adapters" },
               items: [
                 "api-reference/web/adapters/openlogin",
                 "api-reference/web/adapters/torus-evm",
@@ -60,20 +55,17 @@ module.exports = {
                 "api-reference/web/adapters/metamask",
                 "api-reference/web/adapters/phantom",
                 "api-reference/web/adapters/wallet-connect-v1",
-              ]
+              ],
             },
             {
               type: "category",
               label: "Providers",
-              link: { type: 'doc', id: "api-reference/web/providers/providers" },
-              items: [
-                "api-reference/web/providers/evm",
-                "api-reference/web/providers/solana",
-              ]
+              link: { type: "doc", id: "api-reference/web/providers/providers" },
+              items: ["api-reference/web/providers/evm", "api-reference/web/providers/solana"],
             },
             ,
             "api-reference/web/customauth",
-          ]
+          ],
         },
         {
           Android: [
@@ -87,12 +79,7 @@ module.exports = {
           iOS: ["api-reference/ios/setting-up", "api-reference/ios/usage", "api-reference/ios/whitelabel", "api-reference/ios/customauth"],
         },
         {
-          "React Native": [
-            "api-reference/react-native/setting-up",
-            "api-reference/react-native/usage",
-            "api-reference/react-native/whitelabel",
-            "api-reference/react-native/customauth",
-          ],
+          "React Native": ["api-reference/react-native/setting-up", "api-reference/react-native/usage", "api-reference/react-native/whitelabel"],
         },
         {
           Flutter: [
@@ -113,7 +100,7 @@ module.exports = {
     {
       Legal: ["legal/cookie-policy", "legal/privacy-policy", "legal/terms-and-conditions"],
     },
-    { type: 'html', value: "<hr /><strong style='color: #606770'>Quick Links</strong>", defaultStyle: true, },
+    { type: "html", value: "<hr /><strong style='color: #606770'>Quick Links</strong>", defaultStyle: true },
 
     {
       type: "link",
