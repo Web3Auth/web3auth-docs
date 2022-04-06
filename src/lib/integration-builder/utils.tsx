@@ -28,12 +28,12 @@ export class ReplaceFileAggregator {
     // 2. line that this occurs on
     const contentByLine = fileContent.split(`\n`);
     let variableLine;
-    for (let i = 0; i < contentByLine.length; i++) {
+    for (let i = 0; i < contentByLine.length; i += 1) {
       if (contentByLine[i].includes(variableName)) {
         variableLine = i;
       }
     }
-    variableLine = variableLine + 1;
+    variableLine += 1;
     const exp = `\n *// REPLACE-${variableName}-\n *`;
     const re = new RegExp(exp, "gm");
 
@@ -42,23 +42,18 @@ export class ReplaceFileAggregator {
   }
 
   rangeOffsetEditor(pointer: { range: string; filename: string }) {
-    console.log("REPLACEMENT:", this.replacementOutcomes);
-    let numbersInRange = pointer.range.split("-");
-    console.log("FILENAME:", pointer.filename);
-    for (let x = 0; x < numbersInRange.length; x++) {
-      let actualNum = parseInt(numbersInRange[x]);
+    const numbersInRange = pointer.range.split("-");
+    for (let x = 0; x < numbersInRange.length; x += 1) {
+      let actualNum = parseInt(numbersInRange[x], 10);
       let offset = 0;
-      for (let i = 0; i < this.replacementOutcomes.length; i++) {
-        let mutatedActualNum = actualNum + offset;
-        console.log("MUTATEDNUM", mutatedActualNum);
-        console.log("this.replacementOutcomes[i].variableLine", this.replacementOutcomes[i].variableLine);
+      for (let i = 0; i < this.replacementOutcomes.length; i += 1) {
+        const mutatedActualNum = actualNum + offset;
         if (mutatedActualNum > this.replacementOutcomes[i].variableLine && this.replacementOutcomes[i].filename === pointer.filename) {
-          offset = offset + this.replacementOutcomes[i].replacementLineCount;
+          offset += this.replacementOutcomes[i].replacementLineCount;
         }
       }
-      actualNum = actualNum + offset;
+      actualNum += offset;
       numbersInRange[x] = actualNum.toString();
-      console.log("THISIS OFFSET:", offset);
     }
     return { range: numbersInRange.join("-"), filename: pointer.filename };
   }
