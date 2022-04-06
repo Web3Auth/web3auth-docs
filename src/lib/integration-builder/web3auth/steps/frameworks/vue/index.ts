@@ -1,4 +1,4 @@
-import { ReplaceFileAggregator, replaceFileVariable, toSteps } from "../../../../utils";
+import { ReplaceFileAggregator, toSteps } from "../../../../utils";
 import {
   getChainRpcImport,
   getConnectCode,
@@ -36,8 +36,6 @@ const STEPS = toSteps({
 const htmlSteps = {
   STEPS,
   build({ filenames, files, steps, whitelabel, customAuthentication, customLogin, chain }) {
-    // eslint-disable-next-line no-console
-    console.log("chain", chain);
     const newFiles = files;
     // replace stuff in Home.vue
     const { code } = getConstructorCode(whitelabel === "yes", chain);

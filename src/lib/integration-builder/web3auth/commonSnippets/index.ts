@@ -1,3 +1,8 @@
+const chainIdMap = {
+  eth: "0x1",
+  matic: "0x13881",
+  bnb: "0x38",
+};
 export const getConstructorCode = (
   isWhiteLabled: boolean,
   chain: "eth" | "sol" | "matic" | "bnb" // todo: move to a type
@@ -9,9 +14,9 @@ export const getConstructorCode = (
   let code = "";
   if (isWhiteLabled) {
     code = `
-      export const web3AuthCtorParams = {
+      const web3AuthCtorParams = {
         clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io,
-        chainConfig: { chainNamespace: "${chainNamespace}", chainId: "HEX_CHAIN_ID" //eg: "0x1"
+        chainConfig: { chainNamespace: "${chainNamespace}", chainId: "${chainIdMap[chain]}"
          },
         uiConfig: {
           theme: "dark",
@@ -23,9 +28,9 @@ export const getConstructorCode = (
     `;
   } else {
     code = `
-        export const web3AuthCtorParams = {
+        const web3AuthCtorParams = {
           clientId,
-          chainConfig: { chainNamespace:  "${chainNamespace}", chainId: "HEX_CHAIN_ID" }
+          chainConfig: { chainNamespace:  "${chainNamespace}", chainId:  ${chainIdMap[chain]} }
         };
       `;
   }
