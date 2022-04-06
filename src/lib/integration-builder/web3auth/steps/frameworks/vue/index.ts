@@ -79,54 +79,28 @@ const htmlSteps = {
     filenames.push("web3auth/vue/main.js");
     filenames.push("web3auth/vue/App.vue");
 
-    if (customAuthentication === "yes") {
-      const connectRes = getConnectCode(false, true);
-      newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/vue/CustomLogin.vue"],
-        "web3auth/vue/CustomLogin.vue",
-        PLACEHOLDERS.CONNECT,
-        connectRes.code
-      );
-      const openloginAdRes = getOpenloginAdapter(whitelabel === "yes", true, false);
-      newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/vue/CustomLogin.vue"],
-        "web3auth/vue/CustomLogin.vue",
-        PLACEHOLDERS.OPENLOGIN_CONFIGURE,
-        openloginAdRes.code
-      );
-      newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/vue/CustomLogin.vue"],
-        "web3auth/vue/CustomLogin.vue",
-        PLACEHOLDERS.CORE_CONSTRUCTOR,
-        coreConstructorCode.code
-      );
-    }
-
-    if (customLogin === "yes") {
-      const connectRes = getConnectCode(true, false);
-      newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/vue/CustomLogin.vue"],
-        "web3auth/vue/CustomLogin.vue",
-        PLACEHOLDERS.CONNECT,
-        connectRes.code
-      );
-
-      newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/vue/CustomLogin.vue"],
-        "web3auth/vue/CustomLogin.vue",
-        PLACEHOLDERS.CORE_CONSTRUCTOR,
-        coreConstructorCode.code
-      );
-      const openloginAdRes = getOpenloginAdapter(whitelabel === "yes", false, true);
-      newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/vue/CustomLogin.vue"],
-        "web3auth/vue/CustomLogin.vue",
-        PLACEHOLDERS.OPENLOGIN_CONFIGURE,
-        openloginAdRes.code
-      );
-    }
-
     if (customAuthentication === "yes" || customLogin === "yes") {
+      const connectRes = getConnectCode(customLogin === "yes", customAuthentication === "yes");
+
+      newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/vue/CustomLogin.vue"],
+        "web3auth/vue/CustomLogin.vue",
+        PLACEHOLDERS.CONNECT,
+        connectRes.code
+      );
+      const openloginAdRes = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes", customLogin === "yes");
+      newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/vue/CustomLogin.vue"],
+        "web3auth/vue/CustomLogin.vue",
+        PLACEHOLDERS.OPENLOGIN_CONFIGURE,
+        openloginAdRes.code
+      );
+      newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/vue/CustomLogin.vue"],
+        "web3auth/vue/CustomLogin.vue",
+        PLACEHOLDERS.CORE_CONSTRUCTOR,
+        coreConstructorCode.code
+      );
       filenames.push("web3auth/vue/CustomLogin.vue");
 
       steps.push(
@@ -147,7 +121,7 @@ const htmlSteps = {
       if (whitelabel === "yes") {
         steps.push({
           ...STEPS.whiteLabeling,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/vue/CustomLogin.vue", range: "37-39" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/vue/CustomLogin.vue", range: "44-47" }),
         });
       }
       steps.push(

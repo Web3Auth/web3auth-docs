@@ -16,12 +16,6 @@ const getWindowLocation = () => {
 };
 
 const getDefaultBuilderOptions = () => Object.fromEntries(Object.entries(builder.options).map(([key, option]) => [key, option.default]));
-const getDefaultToggleOptions = () =>
-  Object.fromEntries(
-    Object.entries(builder.options)
-      .filter(([_, option]) => option.type === "toggle")
-      .map(([key, option]) => [key, option.default])
-  );
 
 const getURLFromBuilderOptions = (opts: Record<string, string>): string => {
   const url = new URL(getWindowLocation());
@@ -39,7 +33,6 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
 
     setBuilderOptions({
       ...builderOptions,
-      ...getDefaultToggleOptions(),
       [optionKey]: finalOptionValue,
     });
   };
