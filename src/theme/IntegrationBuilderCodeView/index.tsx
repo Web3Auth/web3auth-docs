@@ -32,8 +32,6 @@ const getLanguage = (filename: string): string => {
 };
 
 export default function IntegrationBuilderCodeView({ selectedFilename, filenames, fileContents, highlight, onClickFilename }: Props) {
-  // eslint-disable-next-line no-console
-  console.log("highlight", highlight);
   const highlightLines = rangeParser(highlight || "0");
   const props = useSpring({ scroll: Math.max(highlightLines[0] * 22 - 64, 0) }); // 22 is line height, 64 is offset to scroll the line close to top
 
