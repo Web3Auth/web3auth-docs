@@ -19,13 +19,15 @@ export const getConstructorCode = (
           appLogo: "https://your-logo-url.com",
         };
       }
-    };`;
+    };
+    `;
   } else {
     code = `
         export const web3AuthCtorParams = {
           clientId,
           chainConfig: { chainNamespace:  "${chainNamespace}", chainId: "HEX_CHAIN_ID" }
-        };`;
+        };
+      `;
   }
 
   return {
@@ -108,55 +110,150 @@ export const getConnectCode = (
   let code = ``;
   if (isCustomVerifier) {
     code = `
-      export async function connectWithWeb3Auth(web3auth: Web3Auth): Promise<SafeEventEmitterProvider> {
-        try {
-          const jwtToken = "YOUR_ID_TOKEN";
-          const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-            relogin: true,
-            loginProvider: "jwt",
-            extraLoginOptions: {
-              id_token: jwtToken,
-              domain: process.env.VUE_APP_DOMAIN,
-              verifierIdField: "sub",
-            },
-          });
-          return web3authProvider;
-        } catch (error) {
-          console.error(error);
-        }
-      }`;
+      const jwtToken = "YOUR_ID_TOKEN";
+      const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+        relogin: true,
+        loginProvider: "jwt",
+        extraLoginOptions: {
+          id_token: jwtToken,
+          domain: process.env.VUE_APP_DOMAIN,
+          verifierIdField: "sub",
+        },
+      });
+      `;
   } else if (isCustomLogin) {
     code = `
-        export async function connectWithWeb3Auth(web3auth: Web3Auth): Promise<SafeEventEmitterProvider> {
-          try {
-            const jwtToken = "YOUR_ID_TOKEN";
-            const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-              relogin: true,
-              loginProvider: "google",
-            });
-            return web3authProvider;
-          } catch (error) {
-            console.error(error);
-          }
-        }`;
+    const jwtToken = "YOUR_ID_TOKEN";
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      relogin: true,
+      loginProvider: "google",
+    });
+       `;
   } else {
     code = `
-        export async function connectWithWeb3Auth(web3auth: Web3Auth): Promise<SafeEventEmitterProvider> {
-          try {
-            const web3authProvider = await web3auth.connect();
-            return web3authProvider;
-          } catch (error) {
-            console.error(error);
-          }
-        }`;
+        const web3authProvider = await web3auth.connect();
+        `;
   }
   return {
     code,
   };
 };
 
+export const getCoreConstructorCode = (
+  chain: "eth" | "sol" | "matic" | "bnb" // todo: move to a type
+): {
+  code: string;
+} => {
+  let chainNamespace = "eip155";
+  if (chain === "sol") chainNamespace = "solana";
+  const code = `
+  const web3AuthCoreCtorParams = {
+    clientId,
+    chainConfig: { chainNamespace:  "${chainNamespace}", chainId: "HEX_CHAIN_ID" }
+  };
+`;
+  return {
+    code,
+  };
+};
+
+export const getOpenloginAdapter = (
+  isWhiteLabled: boolean,
+  isCustomAuth: boolean,
+  isCustomLogin: boolean
+): {
+  code: string;
+} => {
+  let code = ``;
+
+  if (isCustomAuth) {
+    if (isWhiteLabled) {
+      code = `const openloginAdapter = new OpenloginAdapter({
+        adapterSettings: {
+          clientId,
+          network: "testnet",
+          uxMode: "redirect",
+          whitelabel: {
+            name: "Your app Name",
+            logoLight: "https://example-light-logo.com",
+            logoDark: "https://example-light-logo.com",
+            defaultLanguage: "en",
+            /**
+             * Whether to enable dark mode
+             *
+             * @defaultValue false
+             */
+            dark: true,
+          },
+          loginConfig: {
+            jwt: {
+              name: "Custom Verifier Login",
+              verifier: process.env.VUE_APP_VERIFIER || "YOUR_VERIFIER_NAME",
+              typeOfLogin: "jwt",
+              clientId,
+            },
+          },
+        },
+      });`;
+      return { code };
+    }
+    code = `const openloginAdapter = new OpenloginAdapter({
+        adapterSettings: {
+          clientId,
+          network: "testnet",
+          uxMode: "redirect",
+          loginConfig: {
+            jwt: {
+              name: "Custom Verifier Login",
+              verifier: process.env.VUE_APP_VERIFIER || "YOUR_VERIFIER_NAME",
+              typeOfLogin: "jwt",
+              clientId,
+            },
+          },
+        },
+      });`;
+    return { code };
+  }
+  if (isWhiteLabled) {
+    code = `const openloginAdapter = new OpenloginAdapter({
+        adapterSettings: {
+          clientId,
+          network: "testnet",
+          uxMode: "redirect",
+          whitelabel: {
+            name: "Your app Name",
+            logoLight: "https://example-light-logo.com",
+            logoDark: "https://example-light-logo.com",
+            defaultLanguage: "en",
+            /**
+             * Whether to enable dark mode
+             *
+             * @defaultValue false
+             */
+            dark: true,
+          }
+        },
+      });`;
+  } else {
+    code = `const openloginAdapter = new OpenloginAdapter({
+      adapterSettings: {
+        clientId,
+        network: "testnet",
+        uxMode: "redirect",
+      },
+    });`;
+  }
+
+  if (!isCustomLogin) {
+    code = `${code}
+    web3auth.configureAdapter(openloginAdapter);`;
+  }
+  return { code };
+};
 export const PLACEHOLDERS = {
   CONSTRUCTOR: "const web3AuthCtorParams = {};",
+  CORE_CONSTRUCTOR: "const web3AuthCoreCtorParams = {};",
+  OPENLOGIN_CONFIGURE: "const web3AuthOpenloginConfigure = {};",
   INIT: "const web3AuthInitParams = {};",
   CHAIN_RPC: "web3authChainRpc",
   CONNECT: "const web3AuthConnect = {};",

@@ -1,5 +1,13 @@
-import { replaceFileVariable, toSteps, ReplaceFileAggregator } from "../../../../utils";
-import { getChainRpcImport, getConnectCode, getConstructorCode, getInitCode, PLACEHOLDERS } from "../../../commonSnippets";
+import { ReplaceFileAggregator, replaceFileVariable, toSteps } from "../../../../utils";
+import {
+  getChainRpcImport,
+  getConnectCode,
+  getConstructorCode,
+  getCoreConstructorCode,
+  getInitCode,
+  getOpenloginAdapter,
+  PLACEHOLDERS,
+} from "../../../commonSnippets";
 import * as initialize from "../common/initializing.mdx";
 // web
 import * as installationWeb from "../common/installation.mdx";
@@ -34,21 +42,29 @@ const htmlSteps = {
     // replace stuff in Home.vue
     const { code } = getConstructorCode(whitelabel === "yes", chain);
 
-    let replacementAggregator = new ReplaceFileAggregator();
+    const replacementAggregator = new ReplaceFileAggregator();
 
-    newFiles["web3auth/web/input.js"] = replacementAggregator.replaceFileVariable(
-      files["web3auth/web/input.js"],
-      "web3auth/web/input.js",
+    newFiles["web3auth/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/vue/Home.vue"],
+      "web3auth/vue/Home.vue",
       PLACEHOLDERS.CONSTRUCTOR,
       code
     );
 
     const initRes = getInitCode(whitelabel === "yes");
-    newFiles["web3auth/web/input.js"] = replacementAggregator.replaceFileVariable(
-      files["web3auth/web/input.js"],
-      "web3auth/web/input.js",
+    newFiles["web3auth/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/vue/Home.vue"],
+      "web3auth/vue/Home.vue",
       PLACEHOLDERS.INIT,
       initRes.code
+    );
+
+    const openloginRes = getOpenloginAdapter(whitelabel === "yes", false, false);
+    newFiles["web3auth/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/vue/Home.vue"],
+      "web3auth/vue/Home.vue",
+      PLACEHOLDERS.OPENLOGIN_CONFIGURE,
+      openloginRes.code
     );
 
     const chainImportRes = getChainRpcImport(chain);
@@ -59,34 +75,57 @@ const htmlSteps = {
       chainImportRes.code
     );
 
+    const coreConstructorCode = getCoreConstructorCode(chain);
+
     filenames.push("web3auth/vue/package.json");
-    filenames.push("web3auth/web/input.js");
     filenames.push("web3auth/vue/main.js");
     filenames.push("web3auth/vue/App.vue");
 
     if (customAuthentication === "yes") {
       const connectRes = getConnectCode(false, true);
-      newFiles["web3auth/vue/Connect.ts"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/vue/Connect.ts"],
-        "web3auth/vue/Connect.ts",
+      newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/vue/CustomLogin.vue"],
+        "web3auth/vue/CustomLogin.vue",
         PLACEHOLDERS.CONNECT,
         connectRes.code
       );
-      filenames.push("web3auth/vue/Connect.ts");
+      const openloginAdRes = getOpenloginAdapter(whitelabel === "yes", true, false);
+      newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/vue/CustomLogin.vue"],
+        "web3auth/vue/CustomLogin.vue",
+        PLACEHOLDERS.OPENLOGIN_CONFIGURE,
+        openloginAdRes.code
+      );
+      newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/vue/CustomLogin.vue"],
+        "web3auth/vue/CustomLogin.vue",
+        PLACEHOLDERS.CORE_CONSTRUCTOR,
+        coreConstructorCode.code
+      );
     }
 
     if (customLogin === "yes") {
       const connectRes = getConnectCode(true, false);
-      newFiles["web3auth/vue/Connect.ts"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/vue/Connect.ts"],
-        "web3auth/vue/Connect.ts",
+      newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/vue/CustomLogin.vue"],
+        "web3auth/vue/CustomLogin.vue",
         PLACEHOLDERS.CONNECT,
         connectRes.code
       );
-      // eslint-disable-next-line no-console
-      console.log("file", newFiles["web3auth/vue/Connect.ts"], connectRes.code);
 
-      filenames.push("web3auth/vue/Connect.ts");
+      newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/vue/CustomLogin.vue"],
+        "web3auth/vue/CustomLogin.vue",
+        PLACEHOLDERS.CORE_CONSTRUCTOR,
+        coreConstructorCode.code
+      );
+      const openloginAdRes = getOpenloginAdapter(whitelabel === "yes", false, true);
+      newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/vue/CustomLogin.vue"],
+        "web3auth/vue/CustomLogin.vue",
+        PLACEHOLDERS.OPENLOGIN_CONFIGURE,
+        openloginAdRes.code
+      );
     }
 
     if (customAuthentication === "yes" || customLogin === "yes") {
@@ -99,42 +138,51 @@ const htmlSteps = {
         },
         {
           ...STEPS.registerApp,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/web/input.js", range: "3" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/vue/CustomLogin.vue", range: "36" }),
         },
         {
           ...STEPS.instantiateCoreSdk,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/vue/CustomLogin.vue", range: "44" }),
-        },
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/vue/CustomLogin.vue", range: "48" }),
+        }
+      );
+
+      if (whitelabel === "yes") {
+        steps.push({
+          ...STEPS.whiteLabeling,
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/vue/CustomLogin.vue", range: "37-39" }),
+        });
+      }
+      steps.push(
         {
           ...STEPS.subscribe,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/vue/CustomLogin.vue",
-            range: "71-90",
+            range: "61-80",
           }),
         },
         {
           ...STEPS.initialize,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/vue/CustomLogin.vue", range: "62" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/vue/CustomLogin.vue", range: "52" }),
         },
         {
           ...STEPS.triggeringLogin,
           pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "web3auth/vue/Connect.ts",
-            range: "1-16",
+            filename: "web3auth/vue/CustomLogin.vue",
+            range: "81-90",
           }),
         },
         {
           ...STEPS.getUserInfo,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/vue/CustomLogin.vue",
-            range: "104-107",
+            range: "95-98",
           }),
         },
         {
           ...STEPS.logout,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/vue/CustomLogin.vue",
-            range: "100-103",
+            range: "91-94",
           }),
         }
       );
@@ -149,50 +197,50 @@ const htmlSteps = {
         },
         {
           ...STEPS.registerApp,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/web/input.js", range: "3" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/vue/Home.vue", range: "37" }),
         }
       );
       if (whitelabel === "yes") {
         steps.push({
           ...STEPS.whiteLabeling,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/web/input.js", range: "1-25" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/vue/Home.vue", range: "40-42" }),
         });
       }
       steps.push(
         {
           ...STEPS.instantiate,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/vue/Home.vue", range: "44" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/vue/Home.vue", range: "48" }),
         },
         {
           ...STEPS.subscribe,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/vue/Home.vue",
-            range: "57-76",
+            range: "63-82",
           }),
         },
         {
           ...STEPS.initialize,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/vue/Home.vue", range: "48" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/vue/Home.vue", range: "54" }),
         },
         {
           ...STEPS.triggeringLogin,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/vue/Home.vue",
-            range: "77-85",
+            range: "83-91",
           }),
         },
         {
           ...STEPS.getUserInfo,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/vue/Home.vue",
-            range: "90-93",
+            range: "100-107",
           }),
         },
         {
           ...STEPS.logout,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/vue/Home.vue",
-            range: "86-89",
+            range: "92-99",
           }),
         }
       );

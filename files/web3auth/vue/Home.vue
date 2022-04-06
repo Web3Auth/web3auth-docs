@@ -22,7 +22,6 @@ import { ADAPTER_STATUS, CONNECTED_EVENT_DATA, SafeEventEmitterProvider } from "
 import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
 import { Web3Auth } from "@web3auth/web3auth";
 import { ref, onMounted } from "vue";
-import { web3AuthCtorParams, initParams } from "./input";
 // REPLACE-web3authChainRpcImport-
 
 export default {
@@ -35,6 +34,11 @@ export default {
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
     const provider = ref<SafeEventEmitterProvider | null>(null);
+    const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
+
+    // REPLACE-const web3AuthInitParams = {};-
+
+    // REPLACE-const web3AuthCtorParams = {};-
 
     let web3auth = new Web3Auth(web3AuthCtorParams);
     onMounted(async () => {
@@ -42,6 +46,8 @@ export default {
         loading.value = true;
 
         web3auth = new Web3Auth(web3AuthCtorParams);
+
+        // REPLACE-const web3AuthOpenloginConfigure = {};-
 
         subscribeAuthEvents();
 
