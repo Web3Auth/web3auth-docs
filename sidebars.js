@@ -7,7 +7,13 @@ module.exports = {
       label: "Overview",
       collapsible: true,
       collapsed: false,
-      items: ["overview/what-is-web3auth", "overview/how-web3auth-works", "overview/key-management", "overview/audits"],
+      items: [
+        "overview/what-is-web3auth",
+        "overview/how-web3auth-works",
+        "overview/key-management",
+        "overview/web3auth-vs-wallet",
+        "overview/audits",
+      ],
     },
     {
       type: "category",
