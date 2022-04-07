@@ -49,7 +49,7 @@ module.exports = {
           items: [
             "api-reference/web/choosesdk",
             "api-reference/web/plugnplay",
-            "api-reference/web/customui",
+            "api-reference/web/customloginui",
             {
               type: "category",
               label: "Adapters",
