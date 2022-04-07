@@ -11,7 +11,7 @@ module.exports = {
         "overview/what-is-web3auth",
         "overview/how-web3auth-works",
         "overview/key-management",
-        "overview/web3auth-vs-wallet",
+        "overview/web3auth-and-wallets",
         "overview/audits",
       ],
     },
