@@ -85,7 +85,7 @@ module.exports = {
           iOS: ["api-reference/ios/setting-up", "api-reference/ios/usage", "api-reference/ios/whitelabel", "api-reference/ios/customauth"],
         },
         {
-          "React Native": ["api-reference/react-native/setting-up", "api-reference/react-native/usage", "api-reference/react-native/whitelabel"],
+          "React Native": ["api-reference/react-native/choosesdk", "api-reference/react-native/setting-up", "api-reference/react-native/usage", "api-reference/react-native/whitelabel"],
         },
         {
           Flutter: ["api-reference/flutter/setting-up", "api-reference/flutter/usage", "api-reference/flutter/whitelabel"],
