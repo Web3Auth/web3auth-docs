@@ -20,12 +20,15 @@ const STEPS = toSteps({
 
 const reactSteps = {
   STEPS,
-  build({ filenames, files, steps, whitelabel, customAuthentication, customLogin, chain }) {
+  build({ filenames, files, steps, whitelabel, customAuthentication, dynamicConstructorParams, usingEmailPasswordless }) {
     filenames.push("web3auth/ios/Web3Auth.plist");
     filenames.push("web3auth/ios/ContentView.swift");
+    filenames.push("web3auth/ios/Podfile");
     steps.push(
       {
         ...STEPS.installationIOS,
+        // pointer: { filename: "web3auth/ios/Podfile", range: "7" },
+        pointer: { filename: "web3auth/ios/Web3Auth.plist", range: "7" },
       },
       {
         ...STEPS.registerApp,
