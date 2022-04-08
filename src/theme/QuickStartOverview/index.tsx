@@ -48,7 +48,7 @@ export default function Web3AuthOverview() {
     <div className={styles.container}>
       <div className={classNames(styles.cardQuickStart)}>
         <p className={styles.headline}>Get started in seconds.</p>
-        <p className={styles.description}>Bootstrap your DApp and Wallet with our multi platform SDKs</p>
+        <p className={styles.description}>Bootstrap your DApp or Wallet with our multi platform SDKs and connect to any blockchain</p>
 
         <div className={styles.btnContainer}>
           <div className={styles.btn}>
