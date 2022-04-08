@@ -25,8 +25,8 @@ module.exports = {
   themeConfig: {
     colorMode: {
       defaultMode: "light", // "light" | "dark"
-      disableSwitch: true, // Set to "true" when Dark mode is ready
-      respectPrefersColorScheme: false, // Set to "true" when Dark mode is ready
+      disableSwitch: false, // Set to "true" when Dark mode is ready
+      respectPrefersColorScheme: true, // Set to "true" when Dark mode is ready
     },
     prism: {
       additionalLanguages: ["groovy", "java", "kotlin", "swift"],
@@ -37,6 +37,7 @@ module.exports = {
       logo: {
         alt: "Web3Auth's Logo",
         src: "images/documentation-logo.svg",
+        srcDark: "images/documentation-logo-dark.svg",
         target: "_self",
       },
       items: [
