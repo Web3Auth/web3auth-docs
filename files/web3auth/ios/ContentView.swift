@@ -43,6 +43,29 @@ struct ContentView: View {
             
             Button(
                 action: {
+                    Web3Auth(
+                        W3AInitParams(
+                            clientId: "your-client-id",
+                            network: .mainnet
+                        )
+                    )
+                    .login(W3ALoginParams(loginProvider: .GOOGLE)) {
+                        switch $0 {
+                        case .success(let result):
+                            showResult(result: result)
+                        case .failure(let error):
+                            print("Error: \(error)")
+                        }
+                    }
+                },
+                label: {
+                    Text("Sign In with Google with Constructor Init Params")
+                        .padding()
+                }
+            )
+            
+            Button(
+                action: {
                     Web3Auth()
                         .login(W3ALoginParams(loginProvider: .APPLE)) {
                             switch $0 {
@@ -143,7 +166,7 @@ struct ContentView: View {
                         )
                     )
                     .login(W3ALoginParams(
-                        loginProvider: .GOOGLE,
+                        loginProvider: .JWT,
                         extraLoginOptions: ExtraLoginOptions(
                             display: nil,
                             prompt: nil,
@@ -174,6 +197,63 @@ struct ContentView: View {
                 },
                 label: {
                     Text("Sign In with Custom Authentication")
+                        .padding()
+                }
+            )
+            
+            Button(
+                action: {
+                    Web3Auth(
+                        W3AInitParams(
+                            clientId: "your-client-id",
+                            network: .testnet,
+                            loginConfig: [
+                                "jwt": W3ALoginConfig(
+                                    verifier: "your-verifier-id",
+                                    typeOfLogin: TypeOfLogin.jwt,
+                                    name: "display name",
+                                    verifierSubIdentifier: "sub"
+                                )
+                            ],
+                            whiteLabel: W3AWhiteLabelData(
+                                name: "Web3Auth Stub",
+                                dark: true,
+                                theme: ["primary": "#123456"]
+                            )
+                        )
+                    )
+                    .login(W3ALoginParams(
+                        loginProvider: .JWT,
+                        extraLoginOptions: ExtraLoginOptions(
+                            display: nil,
+                            prompt: nil,
+                            max_age: nil,
+                            ui_locales: nil,
+                            id_token_hint: nil,
+                            id_token: "jwt-id-token",
+                            login_hint: nil,
+                            acr_values: nil,
+                            scope: nil,
+                            audience: nil,
+                            connection: nil,
+                            domain: nil,
+                            client_id: nil,
+                            redirect_uri: nil,
+                            leeway: nil,
+                            verifierIdField: nil,
+                            isVerifierIdCaseSensitive: nil
+                        )
+                    )) {
+                        switch $0 {
+                        case .success(let result):
+                            showResult(result: result)
+                        case .failure(let error):
+                            print("Error: \(error)")
+                        }
+                    }
+                },
+                label: {
+                    Text("Sign In with Custom Authentication With Whitelabel")
                         .padding()
                 }
             )
