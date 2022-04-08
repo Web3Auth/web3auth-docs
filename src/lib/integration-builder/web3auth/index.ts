@@ -26,7 +26,7 @@ const LANGS: DisplayChoice[] = [
   // { key: "next", displayName: "Next JS" },
   // { key: "angular", displayName: "Angular" },
   // { key: "android", displayName: "Android" },
-  // { key: "ios", displayName: "iOS/Swift" },
+  { key: "ios", displayName: "iOS/Swift" },
   // { key: "react-native", displayName: "React Native" },
   // { key: "flutter", displayName: "Flutter" },
 ];
@@ -92,6 +92,27 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
           default: CHAINS[0].key,
           type: "dropdown",
           choices: CHAINS,
+        },
+      };
+    } else if (values.lang === "ios") {
+      this.options = {
+        lang: {
+          displayName: "Language/Framework",
+          default: LANGS[0].key,
+          type: "dropdown",
+          choices: LANGS,
+        },
+        customAuthentication: {
+          displayName: "Custom Authentication",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        whitelabel: {
+          displayName: "Whitelabel",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
         },
       };
     } else {
