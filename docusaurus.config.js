@@ -40,14 +40,19 @@ module.exports = {
       },
       items: [
         {
-          label: "Dashboard",
-          href: "https://dashboard.web3auth.io",
-          target: "_blank",
+          label: "Quick Start",
+          to: "/quick-start",
           position: "left",
         },
         {
-          label: "Quick Start",
-          to: "/quick-start",
+          label: "API Reference",
+          to: "/api-reference",
+          position: "left",
+        },
+        {
+          label: "Dashboard",
+          href: "https://dashboard.web3auth.io",
+          target: "_blank",
           position: "left",
         },
         {
