@@ -18,6 +18,10 @@ export default function UsecaseCards() {
             How Web3Auth Works?
           </a>
           <br />
+          <a href="./overview/web3auth-and-wallets" className={styles.link}>
+            Web3Auth and Wallets
+          </a>
+          <br />
           <a href="./overview/key-management" className={styles.link}>
             Key Management and Security
           </a>
