@@ -114,6 +114,18 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
           type: "toggle",
           choices: TOGGLE_CHOICES,
         },
+        dynamicConstructorParams: {
+          displayName: "Dynamic Constructor Params",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        usingEmailPasswordless: {
+          displayName: "Using Email Passwordless",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
       };
     } else {
       this.options = {
