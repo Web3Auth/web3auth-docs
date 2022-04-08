@@ -37,15 +37,18 @@ module.exports = {
       logo: {
         alt: "Web3Auth's Logo",
         src: "images/documentation-logo.svg",
+        target: "_self",
       },
       items: [
         {
           label: "Quick Start",
+          activeBasePath: "/quick-start",
           to: "/quick-start",
           position: "left",
         },
         {
           label: "API Reference",
+          activeBasePath: "/api-reference",
           to: "/api-reference",
           position: "left",
         },
