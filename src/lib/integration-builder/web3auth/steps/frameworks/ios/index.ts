@@ -27,8 +27,7 @@ const reactSteps = {
     steps.push(
       {
         ...STEPS.installationIOS,
-        // pointer: { filename: "web3auth/ios/Podfile", range: "7" },
-        pointer: { filename: "web3auth/ios/Web3Auth.plist", range: "7" },
+        pointer: { filename: "web3auth/ios/Podfile", range: "7" },
       },
       {
         ...STEPS.registerApp,
