@@ -43,19 +43,17 @@ module.exports = {
           label: "Dashboard",
           href: "https://dashboard.web3auth.io",
           target: "_blank",
-          position: "right",
-          className: "navbar__button",
+          position: "left",
         },
         {
           label: "Quick Start",
           to: "/quick-start",
           position: "left",
-          className: "navbar__button",
         },
         {
           label: "Schedule a Demo",
           href: contactUrl,
-          position: "right",
+          position: "left",
         },
         {
           position: "right",
