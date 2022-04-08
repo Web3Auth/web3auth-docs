@@ -18,6 +18,9 @@ const STEPS = toSteps({
   whiteLabeling,
 });
 
+// For iOS SDK, dynamicConstructorParams must be "yes" if whitelabel is "yes" or customAuthentication == "yes".
+// Will also need the ability to have whitelabel and customAuthentication being "yes" in the same time as well.
+
 const reactSteps = {
   STEPS,
   build({ filenames, files, steps, whitelabel, customAuthentication, dynamicConstructorParams, usingEmailPasswordless }) {
@@ -31,19 +34,39 @@ const reactSteps = {
       },
       {
         ...STEPS.registerApp,
+        pointer:
+          dynamicConstructorParams === "yes"
+            ? { filename: "web3auth/ios/Web3Auth.plist", range: "6" }
+            : { filename: "web3auth/ios/ContentView.swift", range: "48" },
       },
       {
         ...STEPS.instantiate,
+        pointer:
+          customAuthentication === "yes" && whitelabel === "yes"
+            ? { filename: "web3auth/ios/ContentView.swift", range: "206-224" }
+            : customAuthentication === "yes"
+            ? { filename: "web3auth/ios/ContentView.swift", range: "154-167" }
+            : whitelabel === "yes"
+            ? { filename: "web3auth/ios/ContentView.swift", range: "126-136" }
+            : dynamicConstructorParams
+            ? { filename: "web3auth/ios/ContentView.swift", range: "46-51" }
+            : { filename: "web3auth/ios/ContentView.swift", range: "10" },
       },
       customAuthentication === "yes"
         ? {
             ...STEPS.loginWithJwt,
+            pointer: { filename: "web3auth/ios/ContentView.swift", range: "168-189" },
           }
         : {
             ...STEPS.triggeringLogin,
+            pointer:
+              usingEmailPasswordless === "yes"
+                ? { filename: "web3auth/ios/ContentView.swift", range: "88-109" }
+                : { filename: "web3auth/ios/ContentView.swift", range: "11" },
           },
       {
         ...STEPS.getUserInfo,
+        pointer: { filename: "web3auth/ios/ContentView.swift", range: "270-273" },
       }
     );
     return { filenames, files, steps };
