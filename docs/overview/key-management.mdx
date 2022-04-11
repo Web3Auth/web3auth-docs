@@ -5,12 +5,14 @@ hide_table_of_contents: true
 
 ---
 
-In this documentation we further describe the architecture of tKey and detail several core user flows for onboarding, key recovery, and device
+In this documentation we further describe the architecture of Web3Auth and detail several core user flows for onboarding, key recovery, and device
 management.
 
-## Base Torus Key Infrastructure guarantees
+## Base Web3Auth Key Infrastructure guarantees
 
-The user starts by generating a 2 out of 3 (2/3) Shamir Secret Sharing. This gives the user three shares: ShareA, ShareB, and ShareC.
+With Web3Auth, users handle keys similar to a multi-factor account, where they use their OAuth login, devices and other factors to manage their key
+pairs. In this example the user starts by generating a 2 out of 3 (2/3) Shamir Secret Sharing. This gives the user three shares: ShareA, ShareB, and
+ShareC.
 
 <img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src="/contents/tki-overview-architecture.png" />
 
@@ -26,12 +28,12 @@ initial setup provides several benefits.
 
 ### Non-custodial
 
-Using tKey, the user is always in control of ownership and access to their cryptographic key pair. Login services only ever have access to one share,
-and thus it's not possible for the provider to retrieve the user's private key on their own.
+Using Web3Auth, the user is always in control of ownership and access to their cryptographic key pair. Login services only ever have access to one
+share, and thus it's not possible for the provider to retrieve the user's private key on their own.
 
 ### Feels like Web 2.0 login flows
 
-On a day-to-day basis tKey allows access to a users key pair through flows indistinguishable from Web2.0 logins, contributing to greatly improving
+On a day-to-day basis Web3Auth allows access to a users key pair through flows indistinguishable from Web2.0 logins, contributing to greatly improving
 user experience and onboarding
 
 ### Improvements to key recovery and redundancy
@@ -50,8 +52,8 @@ on his private key.
 
 ### Chain/platform agnostic via native signatures
 
-tKey's resulting interface is a native cryptographic key pair, making it compatible with almost all cryptographic constructs on various platforms and
-elliptic curves. Secret sharing and share refresh is also done completely off-chain, which makes tKey usable on blockchains with limited smart
+Web3Auth's resulting interface is a native cryptographic key pair, making it compatible with almost all cryptographic constructs on various platforms
+and elliptic curves. Secret sharing and share refresh is also done completely off-chain, which makes Web3Auth usable on blockchains with limited smart
 contract functionality.
 
 ### Censorship resistant
@@ -59,11 +61,11 @@ contract functionality.
 Using a 2/3 threshold also prevents censorship by the Torus nodes. In the case that the nodes refuse to return the user's private key even after the
 user has authenticated successfully, the user can still reconstruct their private key using ShareA (device share) and ShareC (recovery share).
 
-## Powered by the Torus Network
+## Powered by the Auth Network
 
 ---
 
-Web3Auth's social logins are powered by [the Torus Network](https://tor.us), an open-source, MPC key management network that splits and secures user
+Web3Auth's social logins are powered by [the Auth Network](https://tor.us), an open-source, MPC key management network that splits and secures user
 keys. Check out more about the tech [here](https://tor.us)
 
 Members of the Torus Network are validator nodes that operate the Distributed Key Generation, Proactive Secret Sharing and Key Assignment protocol,
@@ -71,30 +73,30 @@ and consist of geographically distributed and diverse businesses institutions. T
 create a simple key management store that empowers billions of people to leverage on the benefits of blockchain technology. Each Torus Node is
 represented on the Torus Network and governs its future.
 
-<div style={{display: "flex", flexWrap: "wrap", gap: "10px"}}>
-<div style={{flexBasis: "30%", flexGrow: "10"}}>
+<div class="text-image-column">
+<div style={{ flexGrow: "1" }}>
 In no particular order, current node operators are:
 
-1. Binance
-2. Ethereum Name Service
-3. Etherscan
-4. Polygon (MATIC)
-5. Zilliqa
-6. Tendermint
-7. Ontology
-8. SKALE
-9. Torus
+1.  Binance
+2.  Ethereum Name Service
+3.  Etherscan
+4.  Polygon (MATIC)
+5.  Zilliqa
+6.  Tendermint
+7.  Ontology
+8.  SKALE
+9.  Torus
 
 </div>
-<div style={{flexBasis:"30%", flexGrow: "1", alignItems: "center" }} >
-<img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src="/images/torus-network.png" />
+<div>
+<img style={{ maxHeight: "500px" }} src="/images/torus-network.png" />
 </div>
 </div>
 
-## Explore More
-
----
+:::info explore more
 
 - [Get more technical](https://docs.tor.us/key-infrastructure/technical-architecture)
-- Checkout the GitHub, [Key Infra](https://github.com/tkey/tkey), [Torus Network](https://github.com/torusresearch/torus-node)
+- Checkout our GitHub, [Key Infra](https://github.com/tkey/tkey), [Torus Network](https://github.com/torusresearch/torus-node)
 - [Ready to integrate?](/get-started)
+
+:::

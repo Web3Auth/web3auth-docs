@@ -8,60 +8,57 @@ hide_table_of_contents: true
 This page covers the different aspect of what happens when you use Web3Auth. It is a good idea to read this before you start using Web3Auth. This
 document will give you the user as well as the developer perspective on the architectural aspect of Web3Auth.
 
-## User Onboarding Journey
+## Replacing seedphrases with multi factor keys
 
 ---
 
-For the developer, the integration is as simple as just initialising the Web3Auth SDKs and setting up the required configuration. The SDK is
-integrated into either a website application or mobile/native app which embeds the login functionality. The developer can then use the SDK to
-authenticate users by calling the connect function. This function can be triggered by a simple login button or by a user action.
+Today's standard of key management is done via seed phrases, 12 or 24 word representations of keys that can be written down or stored in various ways.
+While technically simple, its far from perfect; new users take anywhere from 10-15 minutes more to onboard into any new application, losses are
+rapmant due to misplaced or compromised seed phrases, today's standard leaves much to be desired.
 
-##### On calling of the connect function,
+With Web3Auth, users handle keys similar to a multi-factor account, where they use their OAuth login, devices and other factors to manage their key
+pairs. The full cryptographic private keys of users are not recorded anywhere on the Key Infrastructure system, even on any of our database as well as
+participating nodes.
 
-- User is redirected to our portal (openlogin.com)
-- Our portal, openlogin.com, then handles the initial process of login
-- User is redirected to login/OAuth provider and carries out the auth process with respect to their auth provider
-- User is redirected back to our portal, which then handles the reconstruction of the user’s key
-- Finally, once the user is successfully authenticated, they are redirected back to application, with derived key specific to the application/wallet
+:::tip managing keys
 
-##### Here's a diagram showing this process:
+Know more about the [Key Management and Security of our Infrastructure](./key-management).
 
-<img style={{ display: "block", maxHeight: "700px", margin: "20px auto" }} src="/contents/web3auth-working.png" />
+:::
 
 ## High Level Architecture
 
 ---
 
-Under the hood, Web3Auth's social logins are powered by the Torus Network's key infrastructure (tKey). Today's standard of key management is done via
-seed phrases, 12 or 24 word representations of keys that can be written down or stored in various ways. While technically simple, its far from
-perfect; new users take anywhere from 10-15 minutes more to onboard into any new application, losses are rapmant due to misplaced or compromised seed
-phrases, today's standard leaves much to be desired.
-
-With this architecture, users handle keys similar to a multi-factor account, where they use their OAuth login, devices and other factors to manage
-their key pairs. The full cryptographic private keys of users are not recorded anywhere on the Torus Key Infrastructure system, even on any of our
-database as well as participating nodes.
+The Web3Auth SDK lives solely on the user/application’s front-end client and handles the interactions between OAuth providers and the Auth Network.
 
 ##### This diagram below, describes the relationship between the Web3Auth SDK and integrating application
 
 <img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src="/contents/web3auth-architecture.png" />
 
-As you can see, the SDK lives solely on the user/application’s front-end client and handles the interactions between OAuth providers, Auth Network,
-and the Torus backend.
+:::note
 
-Once the user is redirected to the login flow within openlogin.com, tKey and the Auth Network are used to reconstruct the user’s key pair. tKey
-leverages on variations of threshold key management to achieve a great user experience without sacrificing security, while retaining end-user autonomy
-and control over the private key. tKey manages private keys using the user's device, private input, and/or OAuth authentication methods (i.e. Google,
-Passwordless, Reddit) via Torus nodes. As long as a user has access to 2 out of 3 (2/3) of these shares, they will be able to retrieve their private
-key.
-
-##### This diagram below can help you understand how the keyshares are splitted and stored within different devices and the Auth Network:
-
-<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
-  <img src="/contents/keyshares.png" style={{ alignSelf: "center", maxWidth: "100%" }} />
-</div>
-
-:::info
-
-Know more about the key management and security of tkey and our infrastructure [here](./technical-architecture).
+As you can see, the integrated application or wallet ultimately ends up with a private key specific to their client ID. In this way, it is important
+to note that **Web3Auth is not a Wallet, it is Wallet Infrastructure that is plugged into dApps or Wallets.**
 
 :::
+
+For the developer, the integration is as simple as just initialising the Web3Auth SDKs and setting up the required configuration. The SDK is
+integrated into either a website application or mobile/native app which embeds the login functionality. The developer can then use the SDK to
+authenticate users by calling the connect function. This function can be triggered by a simple login button or by a user action.
+
+##### How Web3Auth interacts flow-wise with your wallet/application
+
+Once the user starts the process, they:
+
+1. User is redirected to our portal (openlogin.com)
+2. Our portal, openlogin.com, then handles the initial process of login
+3. User is redirected to login/OAuth provider and carries out the auth process with respect to their auth provider
+4. User is redirected back to our portal, which then handles the reconstruction of the user’s key
+5. Finally, once the user is successfully authenticated, they are redirected back to application, with derived key specific to the application/wallet
+
+##### Here's a diagram showing this process:
+
+<img style={{ display: "block", maxHeight: "700px", margin: "20px auto" }} src="/contents/web3auth-working.png" />
+
+<!-- ##### This diagram below can help you understand how the keyshares are splitted and stored within different devices and the Auth Network: -->

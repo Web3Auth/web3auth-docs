@@ -25,8 +25,8 @@ module.exports = {
   themeConfig: {
     colorMode: {
       defaultMode: "light", // "light" | "dark"
-      disableSwitch: true, // Set to "true" when Dark mode is ready
-      respectPrefersColorScheme: false, // Set to "true" when Dark mode is ready
+      disableSwitch: false, // Set to "true" when Dark mode is ready
+      respectPrefersColorScheme: true, // Set to "true" when Dark mode is ready
     },
     prism: {
       additionalLanguages: ["groovy", "java", "kotlin", "swift"],
@@ -37,25 +37,32 @@ module.exports = {
       logo: {
         alt: "Web3Auth's Logo",
         src: "images/documentation-logo.svg",
+        srcDark: "images/documentation-logo-dark.svg",
+        target: "_self",
       },
       items: [
+        {
+          label: "Quick Start",
+          activeBasePath: "/quick-start",
+          to: "/quick-start",
+          position: "left",
+        },
+        {
+          label: "API Reference",
+          activeBasePath: "/api-reference",
+          to: "/api-reference",
+          position: "left",
+        },
         {
           label: "Dashboard",
           href: "https://dashboard.web3auth.io",
           target: "_blank",
-          position: "right",
-          className: "navbar__button",
-        },
-        {
-          label: "Quick Start",
-          to: "/quick-start",
           position: "left",
-          className: "navbar__button",
         },
         {
           label: "Schedule a Demo",
           href: contactUrl,
-          position: "right",
+          position: "left",
         },
         {
           position: "right",
