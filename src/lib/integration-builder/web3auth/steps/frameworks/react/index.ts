@@ -61,6 +61,17 @@ const reactSteps = {
             };
 `
       );
+    } else {
+      newFiles["web3auth/web/input.js"] = replaceFileVariable(
+        files["web3auth/web/input.js"],
+        "const web3AuthCtorParams = {};",
+        `
+            export const web3AuthParams = {
+                chainConfig: { chainNamespace: "${chainNamespace}" },
+                clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
+            };
+`
+      );
     }
 
     if (chain === "starkex" || chain === "starknet") {

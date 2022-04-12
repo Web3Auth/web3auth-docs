@@ -2,7 +2,6 @@ import { replaceFileVariable, toSteps } from "../../../../utils";
 import * as whiteLabeling from "../../frameworks/common/whitelabeling.mdx";
 import * as getUserInfo from "../../frameworks/react/get-user-info.mdx";
 import * as initialize from "../../frameworks/react/initializing.mdx";
-import * as installationWeb from "../../frameworks/react/installation.mdx";
 import * as instantiate from "../../frameworks/react/instantiateSDK.mdx";
 import * as loginWithFirebaseAuth from "../../frameworks/react/login-with-firebase-auth.mdx";
 import * as logout from "../../frameworks/react/logout.mdx";
@@ -10,6 +9,7 @@ import * as registerApp from "../../frameworks/react/register-app.mdx";
 import * as subscribe from "../../frameworks/react/subscribe.mdx";
 import * as triggeringLogin from "../../frameworks/react/triggering-login.mdx";
 import * as initializeProvider from "./initializing.mdx";
+import * as installationWeb from "./installation.mdx";
 
 const STEPS = toSteps({
   initialize,
@@ -53,7 +53,7 @@ const chainSteps = {
         },
         {
           ...STEPS.registerApp,
-          pointer: { filename: "web3auth/web/input.js", range: "3" },
+          pointer: { filename: "web3auth/web/input.js", range: "4" },
         }
       );
       if (whitelabel === "yes") {
