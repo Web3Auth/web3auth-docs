@@ -9,6 +9,7 @@ import * as logout from "../../frameworks/react/logout.mdx";
 import * as registerApp from "../../frameworks/react/register-app.mdx";
 import * as subscribe from "../../frameworks/react/subscribe.mdx";
 import * as triggeringLogin from "../../frameworks/react/triggering-login.mdx";
+import * as initializeProvider from "./initializing.mdx";
 
 const STEPS = toSteps({
   initialize,
@@ -21,6 +22,7 @@ const STEPS = toSteps({
   logout,
   whiteLabeling,
   getUserInfo,
+  initializeProvider,
 });
 
 const chainSteps = {
@@ -92,7 +94,7 @@ const chainSteps = {
     filenames.push("starkex/starkex.ts");
 
     steps.push({
-      ...STEPS.initialize,
+      ...STEPS.initializeProvider,
       pointer: { filename: "starkex/starkex.ts", range: "17-43" },
     });
 
