@@ -16,7 +16,7 @@ const CHAINS: DisplayChoice[] = [
   // { key: "klay", displayName: "Klaytn" },
   // { key: "optimism", displayName: "Optimism" },
   // { key: "starknet", displayName: "StarkNet" },
-  // { key: "starkex", displayName: "StarkEx" },
+  { key: "starkex", displayName: "StarkEx" },
 ];
 
 const LANGS: DisplayChoice[] = [

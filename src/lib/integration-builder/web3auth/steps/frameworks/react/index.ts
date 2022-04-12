@@ -29,11 +29,16 @@ const STEPS = toSteps({
 const reactSteps = {
   STEPS,
   build({ filenames, files, steps, whitelabel, customAuthentication, customLogin, chain }) {
+    let fileRoute = "web3auth/react";
     let walletProvider = "ethereum";
     let chainNamespace = "eip155";
     if (chain === "sol") {
       walletProvider = "solana";
       chainNamespace = "solana";
+    }
+    if (chain === "starkex") {
+      fileRoute = "web3auth/react-starkex";
+      walletProvider = "starkex";
     }
 
     if (whitelabel === "yes") {
@@ -56,18 +61,18 @@ export const web3AuthParams = {
     }
 
     if (customAuthentication === "yes") {
-      filenames.push("web3auth/react/custom-auth/App.tsx");
-      filenames.push("web3auth/react/custom-auth/package.json");
+      filenames.push(`${fileRoute}/custom-auth/App.tsx`);
+      filenames.push(`${fileRoute}/custom-auth/package.json`);
 
-      files["web3auth/react/custom-auth/App.tsx"] = replaceFileVariable(
-        files["web3auth/react/custom-auth/App.tsx"],
+      files[`${fileRoute}/custom-auth/App.tsx`] = replaceFileVariable(
+        files[`${fileRoute}/custom-auth/App.tsx`],
         "wallet-provider",
         `import { getAccounts, getBalance, sendTransaction, signMessage, signTransaction } from "./${walletProvider}";
 `
       );
 
-      files["web3auth/react/custom-auth/App.tsx"] = replaceFileVariable(
-        files["web3auth/react/custom-auth/App.tsx"],
+      files[`${fileRoute}/custom-auth/App.tsx`] = replaceFileVariable(
+        files[`${fileRoute}/custom-auth/App.tsx`],
         "chain-namespace",
         `
           chainConfig: { chainNamespace: ${chainNamespace} },
@@ -77,52 +82,51 @@ export const web3AuthParams = {
       steps.push(
         {
           ...STEPS.installationWeb,
-          pointer: { filename: "web3auth/react/custom-auth/package.json", range: "6-8" },
+          pointer: { filename: `${fileRoute}/custom-auth/package.json`, range: chain === "starkex" ? "6-12" : "6-8" },
         },
         {
           ...STEPS.registerApp,
-          pointer: { filename: "web3auth/react/custom-auth/App.tsx", range: "27" },
+          pointer: { filename: `${fileRoute}/custom-auth/App.tsx`, range: "27" },
         },
         {
           ...STEPS.instantiateCoreSdk,
-          pointer: { filename: "web3auth/react/custom-auth/App.tsx", range: "17-19" },
+          pointer: { filename: `${fileRoute}/custom-auth/App.tsx`, range: "17-19" },
         },
         {
           ...STEPS.subscribe,
-          pointer: { filename: "web3auth/react/custom-auth/App.tsx", range: "38-56" },
+          pointer: { filename: `${fileRoute}/custom-auth/App.tsx`, range: "38-56" },
         },
         {
           ...STEPS.initialize,
-          pointer: { filename: "web3auth/react/custom-auth/App.tsx", range: "23-30" },
+          pointer: { filename: `${fileRoute}/custom-auth/App.tsx`, range: "23-30" },
         },
         {
           ...STEPS.loginWithFirebaseAuth,
-          pointer: { filename: "web3auth/react/custom-auth/App.tsx", range: "61-92" },
+          pointer: { filename: `${fileRoute}/custom-auth/App.tsx`, range: "61-92" },
         },
         {
           ...STEPS.getUserInfo,
-          pointer: { filename: "web3auth/react/custom-auth/App.tsx", range: "94-101" },
+          pointer: { filename: `${fileRoute}/custom-auth/App.tsx`, range: "94-101" },
         },
         {
           ...STEPS.logout,
-          pointer: { filename: "web3auth/react/custom-auth/App.tsx", range: "103-110" },
+          pointer: { filename: `${fileRoute}/custom-auth/App.tsx`, range: "103-110" },
         }
       );
     }
 
     if (customLogin === "yes") {
-      filenames.push("web3auth/react/custom-ui/App.tsx");
-      filenames.push("web3auth/react/custom-ui/package.json");
+      filenames.push(`${fileRoute}/custom-ui/App.tsx`);
+      filenames.push(`${fileRoute}/custom-ui/package.json`);
 
-      files["web3auth/react/custom-ui/App.tsx"] = replaceFileVariable(
-        files["web3auth/react/custom-ui/App.tsx"],
+      files[`${fileRoute}/custom-ui/App.tsx`] = replaceFileVariable(
+        files[`${fileRoute}/custom-ui/App.tsx`],
         "wallet-provider",
         `import { getAccounts, getBalance, sendTransaction, signMessage, signTransaction } from "./${walletProvider}";
 `
       );
-
-      files["web3auth/react/custom-ui/App.tsx"] = replaceFileVariable(
-        files["web3auth/react/custom-ui/App.tsx"],
+      files[`${fileRoute}/custom-ui/App.tsx`] = replaceFileVariable(
+        files[`${fileRoute}/custom-ui/App.tsx`],
         "chain-namespace",
         `
           chainConfig: { chainNamespace: ${chainNamespace} },
@@ -132,55 +136,60 @@ export const web3AuthParams = {
       steps.push(
         {
           ...STEPS.installationWeb,
-          pointer: { filename: "web3auth/react/custom-ui/package.json", range: "6-8" },
+          pointer: { filename: `${fileRoute}/custom-ui/package.json`, range: chain === "starkex" ? "6-12" : "6-8" },
         },
         {
           ...STEPS.registerApp,
-          pointer: { filename: "web3auth/react/custom-ui/App.tsx", range: "23" },
+          pointer: { filename: `${fileRoute}/custom-ui/App.tsx`, range: "23" },
         },
         {
           ...STEPS.instantiateCoreSdk,
-          pointer: { filename: "web3auth/react/custom-ui/App.tsx", range: "15-17" },
+          pointer: { filename: `${fileRoute}/custom-ui/App.tsx`, range: "15-17" },
         },
         {
           ...STEPS.subscribe,
-          pointer: { filename: "web3auth/react/custom-ui/App.tsx", range: "36-54" },
+          pointer: { filename: `${fileRoute}/custom-ui/App.tsx`, range: "36-54" },
         },
         {
           ...STEPS.initialize,
-          pointer: { filename: "web3auth/react/custom-ui/App.tsx", range: "21-28" },
+          pointer: { filename: `${fileRoute}/custom-ui/App.tsx`, range: "21-28" },
         },
         {
           ...STEPS.triggeringLogin,
-          pointer: { filename: "web3auth/react/custom-ui/App.tsx", range: "59-66" },
+          pointer: { filename: `${fileRoute}/custom-ui/App.tsx`, range: "59-66" },
         },
         {
           ...STEPS.getUserInfo,
-          pointer: { filename: "web3auth/react/custom-ui/App.tsx", range: "68-75" },
+          pointer: { filename: `${fileRoute}/custom-ui/App.tsx`, range: "68-75" },
         },
         {
           ...STEPS.logout,
-          pointer: { filename: "web3auth/react/custom-ui/App.tsx", range: "77-84" },
+          pointer: { filename: `${fileRoute}/custom-ui/App.tsx`, range: "77-84" },
         }
       );
     }
 
     if (customLogin === "no" && customAuthentication === "no") {
-      filenames.push("web3auth/react/App.tsx");
+      filenames.push(`${fileRoute}/App.tsx`);
       filenames.push("web3auth/web/input.js");
-      filenames.push("web3auth/react/package.json");
+      filenames.push(`${fileRoute}/package.json`);
 
-      files["web3auth/react/App.tsx"] = replaceFileVariable(
-        files["web3auth/react/App.tsx"],
+      let providerMethods = `getAccounts, getBalance, sendTransaction, signMessage, signTransaction`;
+      if (chain === "starkex") {
+        providerMethods = `getStarkHDAccount, onMintRequest, onDepositRequest, onWithdrawalRequest`;
+      }
+
+      files[`${fileRoute}/App.tsx`] = replaceFileVariable(
+        files[`${fileRoute}/App.tsx`],
         "wallet-provider",
-        `import { getAccounts, getBalance, sendTransaction, signMessage, signTransaction } from "./${walletProvider}";
+        `import { ${providerMethods} } from "./${walletProvider}";
       `
       );
 
       steps.push(
         {
           ...STEPS.installationWeb,
-          pointer: { filename: "web3auth/react/package.json", range: "6-7" },
+          pointer: { filename: `${fileRoute}/package.json`, range: "6-10" },
         },
         {
           ...STEPS.registerApp,
@@ -197,32 +206,32 @@ export const web3AuthParams = {
       steps.push(
         {
           ...STEPS.instantiate,
-          pointer: { filename: "web3auth/react/App.tsx", range: "15" },
+          pointer: { filename: `${fileRoute}/App.tsx`, range: "15" },
         },
         {
           ...STEPS.subscribe,
-          pointer: { filename: "web3auth/react/App.tsx", range: "24-41" },
+          pointer: { filename: `${fileRoute}/App.tsx`, range: "24-41" },
         },
         {
           ...STEPS.initialize,
-          pointer: { filename: "web3auth/react/App.tsx", range: "18" },
+          pointer: { filename: `${fileRoute}/App.tsx`, range: "18" },
         },
         {
           ...STEPS.triggeringLogin,
-          pointer: { filename: "web3auth/react/App.tsx", range: "46-53" },
+          pointer: { filename: `${fileRoute}/App.tsx`, range: "46-53" },
         },
         {
           ...STEPS.getUserInfo,
-          pointer: { filename: "web3auth/react/App.tsx", range: "55-62" },
+          pointer: { filename: `${fileRoute}/App.tsx`, range: "55-62" },
         },
         {
           ...STEPS.logout,
-          pointer: { filename: "web3auth/react/App.tsx", range: "64-71" },
+          pointer: { filename: `${fileRoute}/App.tsx`, range: "64-71" },
         }
       );
     }
 
-    filenames.push("web3auth/react/App.css");
+    filenames.push(`${fileRoute}/App.css`);
 
     return { filenames, files, steps };
   },
