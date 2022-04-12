@@ -29,6 +29,8 @@ const STEPS = toSteps({
 const reactSteps = {
   STEPS,
   build({ filenames, files, steps, whitelabel, customAuthentication, customLogin, chain }) {
+    const newFiles = files;
+
     let fileRoute = "web3auth/react";
     let walletProvider = "ethereum";
     let chainNamespace = "eip155";
@@ -43,19 +45,19 @@ const reactSteps = {
 
     if (whitelabel === "yes") {
       // replace stuff in input.js
-      files["web3auth/web/input.js"] = replaceFileVariable(
+      newFiles["web3auth/web/input.js"] = replaceFileVariable(
         files["web3auth/web/input.js"],
         "const web3AuthCtorParams = {};",
         `
-export const web3AuthParams = {
-    chainConfig: { chainNamespace: "${chainNamespace}" },
-    clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
-    uiConfig: {
-      appLogo: "https://cryptologos.cc/logos/pancakeswap-cake-logo.svg",
-      loginMethodsOrder: ["twitter", "facebook", "google"],
-      theme: "dark",
-    },
-};
+            export const web3AuthParams = {
+                chainConfig: { chainNamespace: "${chainNamespace}" },
+                clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
+                uiConfig: {
+                  appLogo: "https://cryptologos.cc/logos/pancakeswap-cake-logo.svg",
+                  loginMethodsOrder: ["twitter", "facebook", "google"],
+                  theme: "dark",
+                },
+            };
 `
       );
     }
@@ -64,14 +66,14 @@ export const web3AuthParams = {
       filenames.push(`${fileRoute}/custom-auth/App.tsx`);
       filenames.push(`${fileRoute}/custom-auth/package.json`);
 
-      files[`${fileRoute}/custom-auth/App.tsx`] = replaceFileVariable(
+      newFiles[`${fileRoute}/custom-auth/App.tsx`] = replaceFileVariable(
         files[`${fileRoute}/custom-auth/App.tsx`],
         "wallet-provider",
         `import { getAccounts, getBalance, sendTransaction, signMessage, signTransaction } from "./${walletProvider}";
 `
       );
 
-      files[`${fileRoute}/custom-auth/App.tsx`] = replaceFileVariable(
+      newFiles[`${fileRoute}/custom-auth/App.tsx`] = replaceFileVariable(
         files[`${fileRoute}/custom-auth/App.tsx`],
         "chain-namespace",
         `
@@ -119,13 +121,13 @@ export const web3AuthParams = {
       filenames.push(`${fileRoute}/custom-ui/App.tsx`);
       filenames.push(`${fileRoute}/custom-ui/package.json`);
 
-      files[`${fileRoute}/custom-ui/App.tsx`] = replaceFileVariable(
+      newFiles[`${fileRoute}/custom-ui/App.tsx`] = replaceFileVariable(
         files[`${fileRoute}/custom-ui/App.tsx`],
         "wallet-provider",
         `import { getAccounts, getBalance, sendTransaction, signMessage, signTransaction } from "./${walletProvider}";
 `
       );
-      files[`${fileRoute}/custom-ui/App.tsx`] = replaceFileVariable(
+      newFiles[`${fileRoute}/custom-ui/App.tsx`] = replaceFileVariable(
         files[`${fileRoute}/custom-ui/App.tsx`],
         "chain-namespace",
         `
@@ -179,7 +181,7 @@ export const web3AuthParams = {
         providerMethods = `getStarkHDAccount, onMintRequest, onDepositRequest, onWithdrawalRequest`;
       }
 
-      files[`${fileRoute}/App.tsx`] = replaceFileVariable(
+      newFiles[`${fileRoute}/App.tsx`] = replaceFileVariable(
         files[`${fileRoute}/App.tsx`],
         "wallet-provider",
         `import { ${providerMethods} } from "./${walletProvider}";

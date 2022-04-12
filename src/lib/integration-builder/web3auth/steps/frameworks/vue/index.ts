@@ -28,8 +28,6 @@ const STEPS = toSteps({
 const htmlSteps = {
   STEPS,
   build({ filenames, files, steps, whitelabel, customAuthentication, customLogin, chain }) {
-    // eslint-disable-next-line no-console
-    console.log("chain", chain);
     let fileRoute = "web3auth/vue";
     if (chain === "starkex") {
       fileRoute = "web3auth/vue-starkex";

@@ -76,10 +76,11 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
 
   // Build integrations based on input values
   build(values: Record<string, string>, files: Record<string, string>) {
+    const finalValues = values;
     const filenames: string[] = [];
     const newFiles = JSON.parse(JSON.stringify(files));
     const steps: IntegrationStep[] = [];
-    if (values.lang === "html") {
+    if (values.lang === "html" && values.chain !== "starkex") {
       this.options = {
         lang: {
           displayName: "Language/Framework",
@@ -92,6 +93,28 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
           default: CHAINS[0].key,
           type: "dropdown",
           choices: CHAINS,
+        },
+      };
+    } else if (values.chain === "starkex") {
+      finalValues.lang = "react";
+      this.options = {
+        lang: {
+          displayName: "Language/Framework",
+          default: "react",
+          type: "dropdown",
+          choices: [{ key: "react", displayName: "React" }],
+        },
+        chain: {
+          displayName: "Blockchain",
+          default: CHAINS[0].key,
+          type: "dropdown",
+          choices: CHAINS,
+        },
+        whitelabel: {
+          displayName: "Whitelabel",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
         },
       };
     } else {
@@ -129,8 +152,8 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
       };
     }
 
-    STEPS.framework[values.lang].build({ ...values, filenames, files: newFiles, steps, chain: values.chain });
-    STEPS.chains[values.chain].build({ ...values, filenames, files: newFiles, steps });
+    STEPS.framework[finalValues.lang].build({ ...finalValues, filenames, files: newFiles, steps, chain: finalValues.chain });
+    STEPS.chains[finalValues.chain].build({ ...finalValues, filenames, files: newFiles, steps });
 
     return {
       // Use files in `open-login` folders instead of root folder
