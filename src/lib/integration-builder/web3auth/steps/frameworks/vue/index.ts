@@ -28,8 +28,10 @@ const STEPS = toSteps({
 const htmlSteps = {
   STEPS,
   build({ filenames, files, steps, whitelabel, customAuthentication, customLogin, chain }) {
-    // eslint-disable-next-line no-console
-    console.log("chain", chain);
+    let fileRoute = "web3auth/vue";
+    if (chain === "starkex") {
+      fileRoute = "web3auth/vue-starkex";
+    }
     const newFiles = files;
     // replace stuff in Home.vue
     const { code } = getConstructorCode(whitelabel === "yes", chain);
@@ -40,9 +42,9 @@ const htmlSteps = {
     newFiles["web3auth/web/input.js"] = replaceFileVariable(files["web3auth/web/input.js"], PLACEHOLDERS.INIT, initRes.code);
 
     const chainImportRes = getChainRpcImport(chain);
-    newFiles["web3auth/vue/Home.vue"] = replaceFileVariable(files["web3auth/vue/Home.vue"], PLACEHOLDERS.CHAIN_RPC_IMPORT, chainImportRes.code);
+    newFiles[`${fileRoute}/Home.vue`] = replaceFileVariable(files[`${fileRoute}/Home.vue`], PLACEHOLDERS.CHAIN_RPC_IMPORT, chainImportRes.code);
 
-    filenames.push("web3auth/vue/package.json");
+    filenames.push(`${fileRoute}/package.json`);
     filenames.push("web3auth/web/input.js");
     filenames.push("web3auth/vue/main.js");
     filenames.push("web3auth/vue/App.vue");
@@ -63,12 +65,12 @@ const htmlSteps = {
     }
 
     if (customAuthentication === "yes" || customLogin === "yes") {
-      filenames.push("web3auth/vue/CustomLogin.vue");
+      filenames.push(`${fileRoute}/CustomLogin.vue`);
 
       steps.push(
         {
           ...STEPS.installationWeb,
-          pointer: { filename: "web3auth/vue/package.json", range: "11-12" },
+          pointer: { filename: `${fileRoute}/package.json`, range: chain === "starkex" ? "11-17" : "11-12" },
         },
         {
           ...STEPS.registerApp,
@@ -76,18 +78,18 @@ const htmlSteps = {
         },
         {
           ...STEPS.instantiateCoreSdk,
-          pointer: { filename: "web3auth/vue/CustomLogin.vue", range: "44" },
+          pointer: { filename: `${fileRoute}/CustomLogin.vue`, range: "44" },
         },
         {
           ...STEPS.subscribe,
           pointer: {
-            filename: "web3auth/vue/CustomLogin.vue",
+            filename: `${fileRoute}/CustomLogin.vue`,
             range: "71-90",
           },
         },
         {
           ...STEPS.initialize,
-          pointer: { filename: "web3auth/vue/CustomLogin.vue", range: "62" },
+          pointer: { filename: `${fileRoute}/CustomLogin.vue`, range: "62" },
         },
         {
           ...STEPS.triggeringLogin,
@@ -99,14 +101,14 @@ const htmlSteps = {
         {
           ...STEPS.getUserInfo,
           pointer: {
-            filename: "web3auth/vue/CustomLogin.vue",
+            filename: `${fileRoute}/CustomLogin.vue`,
             range: "104-107",
           },
         },
         {
           ...STEPS.logout,
           pointer: {
-            filename: "web3auth/vue/CustomLogin.vue",
+            filename: `${fileRoute}/CustomLogin.vue`,
             range: "100-103",
           },
         }
@@ -114,11 +116,11 @@ const htmlSteps = {
     }
 
     if (customAuthentication === "no" && customLogin === "no") {
-      filenames.push("web3auth/vue/Home.vue");
+      filenames.push(`${fileRoute}/Home.vue`);
       steps.push(
         {
           ...STEPS.installationWeb,
-          pointer: { filename: "web3auth/vue/package.json", range: "11-12" },
+          pointer: { filename: `${fileRoute}/package.json`, range: chain === "starkex" ? "11-17" : "11-12" },
         },
         {
           ...STEPS.registerApp,
@@ -134,37 +136,37 @@ const htmlSteps = {
       steps.push(
         {
           ...STEPS.instantiate,
-          pointer: { filename: "web3auth/vue/Home.vue", range: "44" },
+          pointer: { filename: `${fileRoute}/Home.vue`, range: "44" },
         },
         {
           ...STEPS.subscribe,
           pointer: {
-            filename: "web3auth/vue/Home.vue",
+            filename: `${fileRoute}/Home.vue`,
             range: "57-76",
           },
         },
         {
           ...STEPS.initialize,
-          pointer: { filename: "web3auth/vue/Home.vue", range: "48" },
+          pointer: { filename: `${fileRoute}/Home.vue`, range: "48" },
         },
         {
           ...STEPS.triggeringLogin,
           pointer: {
-            filename: "web3auth/vue/Home.vue",
+            filename: `${fileRoute}/Home.vue`,
             range: "77-85",
           },
         },
         {
           ...STEPS.getUserInfo,
           pointer: {
-            filename: "web3auth/vue/Home.vue",
+            filename: `${fileRoute}/Home.vue`,
             range: "90-93",
           },
         },
         {
           ...STEPS.logout,
           pointer: {
-            filename: "web3auth/vue/Home.vue",
+            filename: `${fileRoute}/Home.vue`,
             range: "86-89",
           },
         }
