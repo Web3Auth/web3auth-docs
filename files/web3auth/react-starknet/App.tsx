@@ -72,19 +72,11 @@ function App() {
   };
 
   const onGetStarkHDAccount = async () => {
-    await getStarkAccount();
+    await getStarkHDAccount();
   };
 
-  const onMintRequest = async () => {
-    await getMintRequest();
-  };
-
-  const onDepositRequest = async () => {
-    await getDepositRequest();
-  };
-
-  const onWithdrawalRequest = async () => {
-    await getWithdrawalRequest();
+  const onDeployAccount = async () => {
+    await deployAccount();
   };
 
   const loggedInView = (
@@ -95,14 +87,8 @@ function App() {
       <button onClick={onGetStarkHDAccount} className="card">
         Get Stark Accounts
       </button>
-      <button onClick={onMintRequest} className="card">
-        Mint Request
-      </button>
-      <button onClick={onDepositRequest} className="card">
-        Deposit Request
-      </button>
-      <button onClick={onWithdrawalRequest} className="card">
-        Withdraw Request
+      <button onClick={onDeployAccount} className="card">
+        Deploy Account
       </button>
       <button onClick={logout} className="card">
         Log Out
