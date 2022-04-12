@@ -24,39 +24,39 @@ const reactSteps = {
     steps.push(
       {
         ...STEPS.installationAndroid,
-        pointer: { filename: "web3auth/flutter/main.dart", range: "3" },
+        pointer: { filename: "web3auth/flutter/main.dart", range: "1" },
       },
       {
         ...STEPS.registerApp,
         pointer:
           dynamicConstructorParams === "yes"
-            ? { filename: "web3auth/flutter/main.dart", range: "3" }
-            : { filename: "web3auth/flutter/main.dart", range: "3" },
+            ? { filename: "web3auth/flutter/main.dart", range: "1" }
+            : { filename: "web3auth/flutter/main.dart", range: "1" },
       },
       {
         ...STEPS.instantiate,
         pointer:
           customAuthentication === "yes" && whitelabel === "yes"
-            ? { filename: "web3auth/flutter/main.dart", range: "3" }
+            ? { filename: "web3auth/flutter/main.dart", range: "29-40" }
             : customAuthentication === "yes"
-            ? { filename: "web3auth/flutter/main.dart", range: "3" }
+            ? { filename: "web3auth/flutter/main.dart", range: "29-40" }
             : whitelabel === "yes"
-            ? { filename: "web3auth/flutter/main.dart", range: "3" }
+            ? { filename: "web3auth/flutter/main.dart", range: "29-40" }
             : dynamicConstructorParams
-            ? { filename: "web3auth/flutter/main.dart", range: "3" }
-            : { filename: "web3auth/flutter/main.dart", range: "3" },
+            ? { filename: "web3auth/flutter/main.dart", range: "29-40" }
+            : { filename: "web3auth/flutter/main.dart", range: "29-40" },
       },
       customAuthentication === "yes"
         ? {
             ...STEPS.loginWithJwt,
-            pointer: { filename: "web3auth/flutter/main.dart", range: "3" },
+            pointer: { filename: "web3auth/flutter/main.dart", range: "85-100" },
           }
         : {
             ...STEPS.triggeringLogin,
             pointer:
               usingEmailPasswordless === "yes"
-                ? { filename: "web3auth/flutter/main.dart", range: "3" }
-                : { filename: "web3auth/flutter/main.dart", range: "3" },
+                ? { filename: "web3auth/flutter/main.dart", range: "85-100" }
+                : { filename: "web3auth/flutter/main.dart", range: "85-100" },
           },
 
     );

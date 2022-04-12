@@ -5,32 +5,28 @@ title: Installation
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-Android API version 21 or newer is required.
+For making hybrid iOS & Android applications using Flutter, we have the [web3auth-flutter-sdk](https://github.com/Web3Auth/web3auth-flutter-sdk) to
+integrate Web3Auth into your application.
 
-Install Web3Auth Android SDK using gradle:
+Android API version 21 or newer.
 
-In your project-level `build.gradle` file, add JitPack repository:
+---
 
-```groovy
-allprojects {
-    repositories {
-        // ...
-        maven { url "https://jitpack.io" }
-    }
-}
+Add `web3auth_flutter` as a dependency to your `pubspec.yaml`
+
+```yaml
+dependencies:
+  web3auth_flutter:
+    git: https://github.com/torusresearch/web3auth-flutter-sdk.git
 ```
 
-Then, in your app-level `build.gradle` dependencies section, add the following:
+### Android
 
-```groovy
-dependencies {
-    // ...
-    implementation 'org.torusresearch:web3auth-android-sdk:-SNAPSHOT'
-}
-```
+- Perform the native [Android integration steps](/api-reference/android/setting-up).
+- For Android, the redirectUrl parameter is specificable, and has to be added into the AndroidManifest.xml.
 
-Open your app's `AndroidManifest.xml` file and add the following permission:
+### iOS
 
-```xml
-<uses-permission android:name="android.permission.INTERNET" />
-```
+- Perform the native [iOS integration steps](/api-reference/ios/setting-up).
+
+- For iOS, the redirectUrl parameter is fixed, which is `\(bundleId)://auth`, and does not need to be added as a iOS Custom URL Scheme.
