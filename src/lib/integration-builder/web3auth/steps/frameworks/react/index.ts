@@ -31,7 +31,7 @@ const reactSteps = {
   build({ filenames, files, steps, whitelabel, customAuthentication, customLogin, chain }) {
     const newFiles = files;
 
-    let fileRoute = "web3auth/react";
+    const fileRoute = "web3auth/react";
     let walletProvider = "ethereum";
     let chainNamespace = "eip155";
     if (chain === "sol") {
@@ -39,9 +39,10 @@ const reactSteps = {
       chainNamespace = "solana";
     }
     if (chain === "starkex") {
-      fileRoute = "web3auth/react-starkex";
       walletProvider = "starkex";
+      chainNamespace = "other";
     }
+    filenames.push(`${fileRoute}/App.css`);
 
     if (whitelabel === "yes") {
       // replace stuff in input.js
@@ -60,6 +61,10 @@ const reactSteps = {
             };
 `
       );
+    }
+
+    if (chain === "starkex" || chain === "starknet") {
+      return { filenames, files, steps };
     }
 
     if (customAuthentication === "yes") {
@@ -232,8 +237,6 @@ const reactSteps = {
         }
       );
     }
-
-    filenames.push(`${fileRoute}/App.css`);
 
     return { filenames, files, steps };
   },

@@ -80,7 +80,9 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
     const filenames: string[] = [];
     const newFiles = JSON.parse(JSON.stringify(files));
     const steps: IntegrationStep[] = [];
-    if (values.lang === "html" && values.chain !== "starkex") {
+
+    // todo: cleanup this login in docs: 1.5
+    if (values.lang === "html" && values.chain !== "starkex" && values.chain !== "starknet") {
       this.options = {
         lang: {
           displayName: "Language/Framework",
@@ -95,7 +97,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
           choices: CHAINS,
         },
       };
-    } else if (values.chain === "starkex") {
+    } else if (values.chain === "starkex" || values.chain === "starknet") {
       finalValues.lang = "react";
       this.options = {
         lang: {
