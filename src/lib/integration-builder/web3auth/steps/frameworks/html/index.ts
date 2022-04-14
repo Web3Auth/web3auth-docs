@@ -22,14 +22,20 @@ const STEPS = toSteps({
 
 const htmlSteps = {
   STEPS,
-  build({ filenames, files, steps, whitelabel, customAuthentication, customLogin }) {
-    filenames.push("web3auth/web/index.html");
+  build({ filenames, files, steps, whitelabel, customAuthentication, customLogin, chain }) {
+    let fileRoute = "web3auth/web";
+
+    if (chain === "starkex") {
+      fileRoute = "web3auth/web-starkex";
+    }
+
+    filenames.push(`${fileRoute}/index.html`);
     filenames.push("web3auth/web/input.js");
 
     steps.push(
       {
         ...STEPS.installationWeb,
-        pointer: { filename: "web3auth/web/index.html", range: "43" },
+        pointer: { filename: `${fileRoute}/index.html`, range: "43" },
       },
       {
         ...STEPS.registerApp,
@@ -37,27 +43,27 @@ const htmlSteps = {
       },
       {
         ...STEPS.instantiate,
-        pointer: { filename: "web3auth/web/index.html", range: "52" },
+        pointer: { filename: `${fileRoute}/index.html`, range: "52" },
       },
       {
         ...STEPS.subscribe,
-        pointer: { filename: "web3auth/web/index.html", range: "70-90" },
+        pointer: { filename: `${fileRoute}/index.html`, range: "70-90" },
       },
       {
         ...STEPS.initialize,
-        pointer: { filename: "web3auth/web/index.html", range: "56" },
+        pointer: { filename: `${fileRoute}/index.html`, range: "56" },
       },
       {
         ...STEPS.triggeringLogin,
-        pointer: { filename: "web3auth/web/index.html", range: "92-101" },
+        pointer: { filename: `${fileRoute}/index.html`, range: "92-101" },
       },
       {
         ...STEPS.getUserInfo,
-        pointer: { filename: "web3auth/web/index.html", range: "113-120" },
+        pointer: { filename: `${fileRoute}/index.html`, range: "113-120" },
       },
       {
         ...STEPS.logout,
-        pointer: { filename: "web3auth/web/index.html", range: "103-111" },
+        pointer: { filename: `${fileRoute}/index.html`, range: "103-111" },
       }
     );
 

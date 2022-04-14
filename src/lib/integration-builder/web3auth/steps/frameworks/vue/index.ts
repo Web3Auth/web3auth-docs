@@ -161,7 +161,7 @@ const htmlSteps = {
     }
 
     if (customAuthentication === "no" && customLogin === "no") {
-      filenames.push("web3auth/vue/Home.vue");
+      filenames.push(`web3auth/vue/Home.vue`);
       steps.push(
         {
           ...STEPS.installationWeb,
