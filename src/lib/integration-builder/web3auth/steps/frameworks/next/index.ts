@@ -1,5 +1,12 @@
 import { ReplaceFileAggregator, toSteps } from "../../../../utils";
-import { getConstructorCode, PLACEHOLDERS } from "../../../commonSnippets";
+import {
+  getChainRpcImport,
+  getConnectCode,
+  getConstructorCode,
+  getCoreConstructorCode,
+  getOpenloginAdapter,
+  PLACEHOLDERS,
+} from "../../../commonSnippets";
 import * as instantiateCoreSdk from "../common/instantiateCoreSdk.mdx";
 import * as whiteLabeling from "../common/whitelabeling.mdx";
 import * as getUserInfo from "./get-user-info.mdx";
@@ -31,45 +38,45 @@ const nextjsSteps = {
   STEPS,
   build({ filenames, files, steps, whitelabel, customAuthentication, customLogin, chain }) {
     const newFiles = files;
-    // replace stuff in Home.vue
-    const { code } = getConstructorCode(whitelabel === "yes", chain);
-
     const replacementAggregator = new ReplaceFileAggregator();
 
-    newFiles["web3auth/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
-      files["web3auth/nextjs/App.tsx"],
-      "web3auth/nextjs/App.tsx",
-      PLACEHOLDERS.CONSTRUCTOR,
-      code
-    );
+    if (customLogin === "yes" || customAuthentication === "yes") {
+      const coreConstructorCode = getCoreConstructorCode(chain);
 
-    let walletProvider = "ethereum";
-    let chainNamespace = "eip155";
-    if (chain === "sol") {
-      walletProvider = "solana";
-      chainNamespace = "solana";
-    }
+      const connectRes = getConnectCode(customLogin === "yes", customAuthentication === "yes");
 
-    if (customAuthentication === "yes") {
+      newFiles["web3auth/nextjs/custom-auth/App.tsx"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/nextjs/custom-auth/App.tsx"],
+        "web3auth/nextjs/custom-auth/App.tsx",
+        PLACEHOLDERS.CONNECT,
+        connectRes.code
+      );
+
+      const openloginAdRes = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes", customLogin === "yes");
+      newFiles["web3auth/nextjs/custom-auth/App.tsx"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/nextjs/custom-auth/App.tsx"],
+        "web3auth/nextjs/custom-auth/App.tsx",
+        PLACEHOLDERS.OPENLOGIN_CONFIGURE,
+        openloginAdRes.code
+      );
+
+      newFiles["web3auth/nextjs/custom-auth/App.tsx"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/nextjs/custom-auth/App.tsx"],
+        "web3auth/nextjs/custom-auth/App.tsx",
+        PLACEHOLDERS.CORE_CONSTRUCTOR,
+        coreConstructorCode.code
+      );
+
+      const chainImportRes = getChainRpcImport(chain);
+      newFiles["web3auth/nextjs/custom-auth/App.tsx"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/nextjs/custom-auth/App.tsx"],
+        "web3auth/nextjs/custom-auth/App.tsx",
+        PLACEHOLDERS.CHAIN_RPC_IMPORT,
+        chainImportRes.code
+      );
+
       filenames.push("web3auth/nextjs/custom-auth/App.tsx");
       filenames.push("web3auth/nextjs/custom-auth/package.json");
-
-      newFiles["web3auth/nextjs/custom-auth/App.tsx"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/nextjs/custom-auth/App.tsx"],
-        "web3auth/nextjs/custom-auth/App.tsx",
-        "wallet-provider",
-        `import { getAccounts, getBalance, sendTransaction, signMessage, signTransaction } from "./${walletProvider}";
-`
-      );
-
-      newFiles["web3auth/nextjs/custom-auth/App.tsx"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/nextjs/custom-auth/App.tsx"],
-        "web3auth/nextjs/custom-auth/App.tsx",
-        "chain-namespace",
-        `
-          chainConfig: { chainNamespace: ${chainNamespace} },
-        `
-      );
 
       steps.push(
         {
@@ -78,103 +85,62 @@ const nextjsSteps = {
         },
         {
           ...STEPS.registerApp,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-auth/App.tsx", range: "27" }),
-        },
-        {
-          ...STEPS.instantiateCoreSdk,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-auth/App.tsx", range: "17-19" }),
-        },
-        {
-          ...STEPS.subscribe,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-auth/App.tsx", range: "38-56" }),
-        },
-        {
-          ...STEPS.initialize,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-auth/App.tsx", range: "23-30" }),
-        },
-        {
-          ...STEPS.loginWithFirebaseAuth,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-auth/App.tsx", range: "61-92" }),
-        },
-        {
-          ...STEPS.getUserInfo,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-auth/App.tsx", range: "94-101" }),
-        },
-        {
-          ...STEPS.logout,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-auth/App.tsx", range: "103-110" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-auth/App.tsx", range: "11" }),
         }
       );
-    }
-
-    if (customLogin === "yes") {
-      filenames.push("web3auth/nextjs/custom-ui/App.tsx");
-      filenames.push("web3auth/nextjs/custom-ui/package.json");
-
-      newFiles["web3auth/nextjs/custom-ui/App.tsx"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/nextjs/custom-ui/App.tsx"],
-        "web3auth/nextjs/custom-ui/App.tsx",
-        "wallet-provider",
-        `import { getAccounts, getBalance, sendTransaction, signMessage, signTransaction } from "./${walletProvider}";
-`
-      );
-
-      newFiles["web3auth/nextjs/custom-ui/App.tsx"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/nextjs/custom-ui/App.tsx"],
-        "web3auth/nextjs/custom-ui/App.tsx",
-        "chain-namespace",
-        `
-          chainConfig: { chainNamespace: ${chainNamespace} },
-        `
-      );
+      if (whitelabel === "yes") {
+        steps.push({
+          ...STEPS.whiteLabeling,
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-auth/App.tsx", range: "23-25" }),
+        });
+      }
 
       steps.push(
         {
-          ...STEPS.installationWeb,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-ui/package.json", range: "6-8" }),
-        },
-        {
-          ...STEPS.registerApp,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-ui/App.tsx", range: "23" }),
-        },
-        {
           ...STEPS.instantiateCoreSdk,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-ui/App.tsx", range: "15-17" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-auth/App.tsx", range: "20" }),
         },
         {
           ...STEPS.subscribe,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-ui/App.tsx", range: "36-54" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-auth/App.tsx", range: "34-52" }),
         },
         {
           ...STEPS.initialize,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-ui/App.tsx", range: "21-28" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-auth/App.tsx", range: "28" }),
         },
         {
           ...STEPS.triggeringLogin,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-ui/App.tsx", range: "59-66" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-auth/App.tsx", range: "57-66" }),
         },
         {
           ...STEPS.getUserInfo,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-ui/App.tsx", range: "68-75" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-auth/App.tsx", range: "68-75" }),
         },
         {
           ...STEPS.logout,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-ui/App.tsx", range: "77-84" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/nextjs/custom-auth/App.tsx", range: "77-84" }),
         }
       );
     }
 
     if (customLogin === "no" && customAuthentication === "no") {
-      filenames.push("web3auth/nextjs/App.tsx");
-      filenames.push("web3auth/web/input.js");
-      filenames.push("web3auth/nextjs/package.json");
+      const { code } = getConstructorCode(whitelabel === "yes", chain);
 
       newFiles["web3auth/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
         files["web3auth/nextjs/App.tsx"],
         "web3auth/nextjs/App.tsx",
-        "wallet-provider",
-        `import { getAccounts, getBalance, sendTransaction, signMessage, signTransaction } from "./${walletProvider}";
-      `
+        PLACEHOLDERS.CONSTRUCTOR,
+        code
+      );
+      filenames.push("web3auth/nextjs/App.tsx");
+      filenames.push("web3auth/nextjs/package.json");
+
+      const chainImportRes = getChainRpcImport(chain);
+      newFiles["web3auth/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/nextjs/App.tsx"],
+        "web3auth/nextjs/App.tsx",
+        PLACEHOLDERS.CHAIN_RPC_IMPORT,
+        chainImportRes.code
       );
 
       steps.push(

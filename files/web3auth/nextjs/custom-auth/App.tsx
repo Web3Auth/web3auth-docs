@@ -1,43 +1,28 @@
-import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { ADAPTER_EVENTS, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import type { Web3AuthCore } from "@web3auth/core";
-import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useEffect, useState } from "react";
 import "./App.css";
 
-// REPLACE-wallet-provider-
+// REPLACE-web3authChainRpcImport-
 
 function CustomAuth() {
   const [web3AuthInstance, setWeb3AuthInstance] = useState<Web3AuthCore | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
-
+  const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
   useEffect(() => {
     const init = async () => {
       try {
         const { Web3AuthCore } = await import("@web3auth/core");
         const { OpenloginAdapter } = await import("@web3auth/openlogin-adapter");
 
-        const web3AuthInstance = new Web3AuthCore({
-          // REPLACE-chain-namespace-
-        });
+        // REPLACE-const web3AuthCoreCtorParams = {};-
+
+        const web3AuthInstance = new Web3AuthCore(web3AuthCoreCtorParams);
 
         subscribeAuthEvents(web3AuthInstance);
 
-        const openloginAdapter = new OpenloginAdapter({
-          adapterSettings: {
-            network: "testnet",
-            uxMode: "redirect",
-            clientId: "YOUR_CLIENT_ID",
-            loginConfig: {
-              jwt: {
-                name: "Custom Firebase Login",
-                verifier: "web3auth-firebase-demo",
-                typeOfLogin: "jwt",
-                clientId: "YOUR_CLIENT_ID",
-              },
-            },
-          },
-        });
+        // REPLACE-const web3AuthOpenloginConfigure = {};-
+
         web3AuthInstance.configureAdapter(openloginAdapter);
         setWeb3AuthInstance(web3AuthInstance);
         await web3AuthInstance.init();
@@ -75,31 +60,9 @@ function CustomAuth() {
       return;
     }
 
-    const app = initializeApp({
-      apiKey: "AIzaSyCkbfXYqxw7ygo-XxfAt866Yja4jNs31Po",
-      authDomain: "web3auth-firebase.firebaseapp.com",
-      projectId: "web3auth-firebase",
-      storageBucket: "web3auth-firebase.appspot.com",
-      messagingSenderId: "707643268846",
-      appId: "1:707643268846:web:6d92e69726852a38e39dff",
-      measurementId: "G-V631CSBMVY",
-    });
-    const googleProvider = new GoogleAuthProvider();
-    const auth = getAuth(app);
-    const loginRes = await signInWithPopup(auth, googleProvider);
-    console.log("login details", loginRes);
-    const jwtToken = await loginRes.user.getIdToken(true);
-    console.log("idToken", jwtToken);
-    const provider = await web3AuthInstance.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-      relogin: true,
-      loginProvider: "google",
-      extraLoginOptions: {
-        id_token: jwtToken,
-        domain: process.env.REACT_APP_DOMAIN || "http://localhost:3000",
-        verifierIdField: "sub",
-      },
-    });
-    setProvider(provider);
+    // REPLACE-const web3AuthConnect = {};-
+
+    setProvider(web3authProvider);
   };
 
   const getUserInfo = async () => {
@@ -125,39 +88,9 @@ function CustomAuth() {
       console.log("provider not initialized yet");
       return;
     }
-    await getAccounts(provider);
-  };
-
-  const onGetBalance = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    await getBalance(provider);
-  };
-
-  const onSignMessage = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    await signMessage(provider);
-  };
-
-  const onSignTransaction = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    await signTransaction(provider);
-  };
-
-  const onSendTransaction = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    await sendTransaction(provider);
+    const rpc = new RPC(provider);
+    const userAccount = await rpc.getAccounts();
+    console.log("User account", userAccount);
   };
 
   const loggedInView = (
@@ -167,18 +100,6 @@ function CustomAuth() {
       </button>
       <button onClick={onGetAccounts} className="card">
         Get Accounts
-      </button>
-      <button onClick={onGetBalance} className="card">
-        Get Balance
-      </button>
-      <button onClick={onSignMessage} className="card">
-        Sign Message
-      </button>
-      <button onClick={onSignTransaction} className="card">
-        Sign Transaction
-      </button>
-      <button onClick={onSendTransaction} className="card">
-        Send Transaction
       </button>
       <button onClick={logout} className="card">
         Log Out

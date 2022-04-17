@@ -2,6 +2,7 @@ const chainIdMap = {
   eth: "0x1",
   matic: "0x13881",
   bnb: "0x38",
+  sola: "0x1",
 };
 export const getConstructorCode = (
   isWhiteLabled: boolean,
@@ -30,7 +31,7 @@ export const getConstructorCode = (
     code = `
         const web3AuthCtorParams = {
           clientId,
-          chainConfig: { chainNamespace:  "${chainNamespace}", chainId:  ${chainIdMap[chain]} }
+          chainConfig: { chainNamespace: "${chainNamespace}", chainId:  "${chainIdMap[chain]}" } }
         };
       `;
   }
@@ -121,7 +122,7 @@ export const getConnectCode = (
         loginProvider: "jwt",
         extraLoginOptions: {
           id_token: jwtToken,
-          domain: process.env.VUE_APP_DOMAIN,
+          domain: "YOUR_APP_DOMAIN",
           verifierIdField: "sub",
         },
       });
@@ -193,7 +194,7 @@ export const getOpenloginAdapter = (
           loginConfig: {
             jwt: {
               name: "Custom Verifier Login",
-              verifier: process.env.VUE_APP_VERIFIER || "YOUR_VERIFIER_NAME",
+              verifier: "YOUR_VERIFIER_NAME",
               typeOfLogin: "jwt",
               clientId,
             },
@@ -210,7 +211,7 @@ export const getOpenloginAdapter = (
           loginConfig: {
             jwt: {
               name: "Custom Verifier Login",
-              verifier: process.env.VUE_APP_VERIFIER || "YOUR_VERIFIER_NAME",
+              verifier: "YOUR_VERIFIER_NAME",
               typeOfLogin: "jwt",
               clientId,
             },

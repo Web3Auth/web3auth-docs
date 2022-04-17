@@ -3,7 +3,7 @@ import type { Web3Auth, Web3AuthOptions } from "@web3auth/web3auth";
 import { useEffect, useState } from "react";
 import "./App.css";
 
-// REPLACE-wallet-provider-
+// REPLACE-web3authChainRpcImport-
 
 function App() {
   const [web3AuthInstance, setWeb3AuthInstance] = useState<Web3Auth | null>(null);
@@ -78,39 +78,9 @@ function App() {
       console.log("provider not initialized yet");
       return;
     }
-    await getAccounts(provider);
-  };
-
-  const onGetBalance = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    await getBalance(provider);
-  };
-
-  const onSignMessage = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    await signMessage(provider);
-  };
-
-  const onSignTransaction = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    await signTransaction(provider);
-  };
-
-  const onSendTransaction = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    await sendTransaction(provider);
+    const rpc = new RPC(provider);
+    const userAccount = await rpc.getAccounts();
+    console.log("User account", userAccount);
   };
 
   const loggedInView = (
@@ -120,18 +90,6 @@ function App() {
       </button>
       <button onClick={onGetAccounts} className="card">
         Get Accounts
-      </button>
-      <button onClick={onGetBalance} className="card">
-        Get Balance
-      </button>
-      <button onClick={onSignMessage} className="card">
-        Sign Message
-      </button>
-      <button onClick={onSignTransaction} className="card">
-        Sign Transaction
-      </button>
-      <button onClick={onSendTransaction} className="card">
-        Send Transaction
       </button>
       <button onClick={logout} className="card">
         Log Out
