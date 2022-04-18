@@ -3,10 +3,13 @@ const chainIdMap = {
   matic: "0x13881",
   bnb: "0x38",
   sola: "0x1",
+  avax: "0x43114",
+  arbitrum: "0x42161",
+  optimism: "0x10",
 };
 export const getConstructorCode = (
   isWhiteLabled: boolean,
-  chain: "eth" | "sol" | "matic" | "bnb" // todo: move to a type
+  chain: "eth" | "sol" | "matic" | "bnb" | "avax" | "arbitrum" | "optimism" // todo: move to a type
 ): {
   code: string;
 } => {
@@ -146,7 +149,7 @@ export const getConnectCode = (
 };
 
 export const getCoreConstructorCode = (
-  chain: "eth" | "sol" | "matic" | "bnb" // todo: move to a type
+  chain: "eth" | "sol" | "matic" | "bnb" | "avax" | "arbitrum" | "optimism" // todo: move to a type
 ): {
   code: string;
 } => {

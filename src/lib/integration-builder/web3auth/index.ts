@@ -6,18 +6,12 @@ const CHAINS: DisplayChoice[] = [
   { key: "sol", displayName: "Solana" },
   { key: "matic", displayName: "Polygon" },
   { key: "bnb", displayName: "BNB Chain" },
-  // { key: "avax", displayName: "Avalanche" },
-  // { key: "zksync", displayName: "ZK Sync" },
-  // { key: "arbitrum", displayName: "Arbitrum" },
+  { key: "avax", displayName: "Avalanche" },
+  { key: "arbitrum", displayName: "Arbitrum" },
   // { key: "luna", displayName: "Terra" },
-  // { key: "xtz", displayName: "Tezos" },
-  // { key: "dot", displayName: "Polkadot" },
-  // { key: "near", displayName: "Near" },
-  // { key: "klay", displayName: "Klaytn" },
-  // { key: "optimism", displayName: "Optimism" },
+  { key: "optimism", displayName: "Optimism" },
+  // { key: "starkex", displayName: "StarkEx" },
   // { key: "starknet", displayName: "StarkNet" },
-  { key: "starkex", displayName: "StarkEx" },
-  { key: "starknet", displayName: "StarkNet" },
 ];
 
 const LANGS: DisplayChoice[] = [
@@ -28,7 +22,7 @@ const LANGS: DisplayChoice[] = [
   { key: "angular", displayName: "Angular" },
   { key: "android", displayName: "Android" },
   { key: "ios", displayName: "iOS/Swift" },
-  { key: "react-native", displayName: "React Native" },
+  // { key: "react-native", displayName: "React Native" },
   { key: "flutter", displayName: "Flutter" },
 ];
 
