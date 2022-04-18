@@ -75,9 +75,14 @@ const htmlSteps = {
 
     const coreConstructorCode = getCoreConstructorCode(chain);
 
-    filenames.push("web3auth/vue/package.json");
     filenames.push("web3auth/vue/main.js");
     filenames.push("web3auth/vue/App.vue");
+
+    if (chain === "starkex" || chain === "starknet") {
+      return { filenames, files, steps };
+    }
+
+    filenames.push("web3auth/vue/package.json");
 
     if (customAuthentication === "yes" || customLogin === "yes") {
       const connectRes = getConnectCode(customLogin === "yes", customAuthentication === "yes");
@@ -160,7 +165,7 @@ const htmlSteps = {
       );
     }
 
-    if (customAuthentication === "no" && customLogin === "no") {
+    if (customAuthentication !== "yes" && customLogin !== "yes") {
       filenames.push(`web3auth/vue/Home.vue`);
       steps.push(
         {

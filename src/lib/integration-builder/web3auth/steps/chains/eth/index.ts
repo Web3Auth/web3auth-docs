@@ -9,7 +9,7 @@ const chainSteps = {
   STEPS,
   build({ filenames, files, steps, customLogin }) {
     const newFiles = files;
-    if (customLogin === "no")
+    if (customLogin !== "yes")
       newFiles["web3auth/web/input.js"] = replaceFileVariable(
         files["web3auth/web/input.js"],
         "const web3AuthCtorParams = {};",

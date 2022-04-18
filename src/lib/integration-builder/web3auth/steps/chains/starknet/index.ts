@@ -32,7 +32,7 @@ const chainSteps = {
     const walletProvider = "starknet";
     const fileRoute = "web3auth/react-starknet";
 
-    if (customLogin === "no" && customAuthentication === "no") {
+    if (customLogin !== "yes" && customAuthentication !== "yes") {
       filenames.push(`${fileRoute}/App.tsx`);
       filenames.push("web3auth/web/input.js");
       filenames.push(`${fileRoute}/package.json`);

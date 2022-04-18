@@ -74,6 +74,9 @@ const reactSteps = {
       );
     }
 
+    // eslint-disable-next-line no-console
+    console.log("---chain", chain, customAuthentication, customAuthentication);
+
     if (chain === "starkex" || chain === "starknet") {
       return { filenames, files, steps };
     }
@@ -187,7 +190,7 @@ const reactSteps = {
       );
     }
 
-    if (customLogin === "no" && customAuthentication === "no") {
+    if (customLogin !== "yes" && customAuthentication !== "yes") {
       filenames.push(`${fileRoute}/App.tsx`);
       filenames.push("web3auth/web/input.js");
       filenames.push(`${fileRoute}/package.json`);
