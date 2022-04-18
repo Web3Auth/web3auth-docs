@@ -16,7 +16,8 @@ const CHAINS: DisplayChoice[] = [
   // { key: "klay", displayName: "Klaytn" },
   // { key: "optimism", displayName: "Optimism" },
   // { key: "starknet", displayName: "StarkNet" },
-  // { key: "starkex", displayName: "StarkEx" },
+  { key: "starkex", displayName: "StarkEx" },
+  { key: "starknet", displayName: "StarkNet" },
 ];
 
 const LANGS: DisplayChoice[] = [
@@ -27,7 +28,7 @@ const LANGS: DisplayChoice[] = [
   { key: "angular", displayName: "Angular" },
   { key: "android", displayName: "Android" },
   { key: "ios", displayName: "iOS/Swift" },
-  // { key: "react-native", displayName: "React Native" },
+  { key: "react-native", displayName: "React Native" },
   { key: "flutter", displayName: "Flutter" },
 ];
 
@@ -76,22 +77,31 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
 
   // Build integrations based on input values
   build(values: Record<string, string>, files: Record<string, string>) {
+    const finalValues = values;
     const filenames: string[] = [];
     const newFiles = JSON.parse(JSON.stringify(files));
     const steps: IntegrationStep[] = [];
-    if (values.lang === "html") {
+
+    if (values.chain === "starkex" || values.chain === "starknet") {
+      finalValues.lang = "react";
       this.options = {
         lang: {
           displayName: "Language/Framework",
-          default: LANGS[0].key,
+          default: "react",
           type: "dropdown",
-          choices: LANGS,
+          choices: [{ key: "react", displayName: "React" }],
         },
         chain: {
           displayName: "Blockchain",
           default: CHAINS[0].key,
           type: "dropdown",
           choices: CHAINS,
+        },
+        whitelabel: {
+          displayName: "Whitelabel",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
         },
       };
     } else if (values.lang === "ios") {
@@ -228,8 +238,8 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
       };
     }
 
-    STEPS.framework[values.lang].build({ ...values, filenames, files: newFiles, steps, chain: values.chain });
-    STEPS.chains[values.chain].build({ ...values, filenames, files: newFiles, steps });
+    STEPS.framework[finalValues.lang].build({ ...finalValues, filenames, files: newFiles, steps, chain: finalValues.chain });
+    STEPS.chains[finalValues.chain].build({ ...finalValues, filenames, files: newFiles, steps });
 
     return {
       // Use files in `open-login` folders instead of root folder

@@ -1,5 +1,5 @@
-import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import { Web3Auth } from "@web3auth/web3auth";
+import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { Web3AuthCore } from "@web3auth/core";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { useEffect, useState } from "react";
 import "./App.css";
@@ -7,30 +7,28 @@ import "./App.css";
 
 const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
 
-function App() {
-  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+function CustomUI() {
+  const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
 
   useEffect(() => {
     const init = async () => {
       try {
-        // REPLACE-const web3AuthInitParams = {};-
+        // REPLACE-const web3AuthCoreCtorParams = {};-
 
-        // REPLACE-const web3AuthCtorParams = {};-
-
-        const web3auth = new Web3Auth(web3AuthCtorParams);
+        const web3auth = new Web3AuthCore(web3AuthCtorParams);
 
         // REPLACE-const web3AuthOpenloginConfigure = {};-
-        web3auth.configureAdapter(openloginAdapter);
+
         subscribeAuthEvents(web3auth);
         setWeb3auth(web3auth);
-        await web3auth.initModal(initParams);
+        await web3auth.init();
       } catch (error) {
         console.error(error);
       }
     };
 
-    const subscribeAuthEvents = (web3auth: Web3Auth) => {
+    const subscribeAuthEvents = (web3auth: Web3AuthCore) => {
       // Can subscribe to all ADAPTER_EVENTS and LOGIN_MODAL_EVENTS
       web3auth.on(ADAPTER_EVENTS.CONNECTED, (data: unknown) => {
         console.log("Yeah!, you are successfully logged in", data);
@@ -58,8 +56,10 @@ function App() {
       console.log("web3auth not initialized yet");
       return;
     }
-    const provider = await web3auth.connect();
-    setProvider(provider);
+
+    // REPLACE-const web3AuthConnect = {};-
+
+    setProvider(web3authProvider);
   };
 
   const getUserInfo = async () => {
@@ -68,7 +68,7 @@ function App() {
       return;
     }
     const user = await web3auth.getUserInfo();
-    uiConsole(user);
+    console.log("User info", user);
   };
 
   const logout = async () => {
@@ -168,9 +168,11 @@ function App() {
   );
 
   const unloggedInView = (
-    <button onClick={login} className="card">
-      Login
-    </button>
+    <>
+      <button onClick={login} className="card">
+        Google Login
+      </button>
+    </>
   );
 
   return (
@@ -194,4 +196,4 @@ function App() {
   );
 }
 
-export default App;
+export default CustomUI;
