@@ -25,7 +25,7 @@ const LANGS: DisplayChoice[] = [
   { key: "react", displayName: "React" },
   { key: "vue", displayName: "Vue" },
   // { key: "next", displayName: "Next JS" },
-  // { key: "angular", displayName: "Angular" },
+  { key: "angular", displayName: "Angular" },
   // { key: "android", displayName: "Android" },
   // { key: "ios", displayName: "iOS/Swift" },
   // { key: "react-native", displayName: "React Native" },
