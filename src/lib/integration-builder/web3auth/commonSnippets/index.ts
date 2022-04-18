@@ -256,6 +256,38 @@ export const getOpenloginAdapter = (
   }
   return { code };
 };
+
+export const getScriptImportsCode = (
+  chain: "eth" | "sol",
+  customLogin
+): {
+  code: string;
+} => {
+  let code = "";
+  if (chain === "eth") {
+    code = `
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/${customLogin ? "core" : "web3auth"}@0/dist/${
+      customLogin ? "core" : "web3auth"
+    }.umd.min.js"></script>
+    <script src="./evm.js"></script>
+    `;
+  } else if (chain === "sol") {
+    code = `
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/${customLogin ? "core" : "web3auth"}@0/dist/${
+      customLogin ? "core" : "web3auth"
+    }.umd.min.js"></script>
+    <script src="https://unpkg.com/@solana/web3.js@1/lib/index.iife.min.js"></script>
+    <script src="https://bundle.run/buffer@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/solana-provider@0.9.0/dist/solanaProvider.umd.min.js"></script>
+    <script src="./sol.js"></script>
+    `;
+  }
+
+  return {
+    code,
+  };
+};
 export const PLACEHOLDERS = {
   CONSTRUCTOR: "const web3AuthCtorParams = {};",
   CORE_CONSTRUCTOR: "const web3AuthCoreCtorParams = {};",
@@ -265,4 +297,5 @@ export const PLACEHOLDERS = {
   CONNECT: "const web3AuthConnect = {};",
   CHAIN_RPC_IMPORT: "web3authChainRpcImport",
   CHAIN_NAMESPACE: "web3authChainNamespace",
+  SCRIPTS_IMPORT: "deps-import",
 };
