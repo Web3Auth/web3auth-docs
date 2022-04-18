@@ -1,4 +1,5 @@
 // web
+import angular from "./angular";
 import html from "./html";
 import next from "./next";
 import react from "./react";
@@ -9,6 +10,7 @@ const STEPS = {
   react,
   next,
   vue,
+  angular,
 };
 
 export default STEPS;

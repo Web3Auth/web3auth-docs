@@ -1,103 +1,103 @@
-import { replaceFileVariable, toSteps } from "../../../../utils";
-import * as whiteLabeling from "../../frameworks/common/whitelabeling.mdx";
-import * as getUserInfo from "../../frameworks/react/get-user-info.mdx";
-import * as initialize from "../../frameworks/react/initializing.mdx";
-import * as instantiate from "../../frameworks/react/instantiateSDK.mdx";
-import * as logout from "../../frameworks/react/logout.mdx";
-import * as registerApp from "../../frameworks/react/register-app.mdx";
-import * as subscribe from "../../frameworks/react/subscribe.mdx";
-import * as triggeringLogin from "../../frameworks/react/triggering-login.mdx";
-import * as initializeProvider from "./initializing.mdx";
-import * as installationWeb from "./installation.mdx";
+// import { replaceFileVariable, toSteps } from "../../../../utils";
+// import * as whiteLabeling from "../../frameworks/common/whitelabeling.mdx";
+// import * as getUserInfo from "../../frameworks/react/get-user-info.mdx";
+// import * as initialize from "../../frameworks/react/initializing.mdx";
+// import * as instantiate from "../../frameworks/react/instantiateSDK.mdx";
+// import * as logout from "../../frameworks/react/logout.mdx";
+// import * as registerApp from "../../frameworks/react/register-app.mdx";
+// import * as subscribe from "../../frameworks/react/subscribe.mdx";
+// import * as triggeringLogin from "../../frameworks/react/triggering-login.mdx";
+// import * as initializeProvider from "./initializing.mdx";
+// import * as installationWeb from "./installation.mdx";
 
-const STEPS = toSteps({
-  initialize,
-  installationWeb,
-  registerApp,
-  instantiate,
-  subscribe,
-  triggeringLogin,
-  logout,
-  whiteLabeling,
-  getUserInfo,
-  initializeProvider,
-});
+// const STEPS = toSteps({
+//   initialize,
+//   installationWeb,
+//   registerApp,
+//   instantiate,
+//   subscribe,
+//   triggeringLogin,
+//   logout,
+//   whiteLabeling,
+//   getUserInfo,
+//   initializeProvider,
+// });
 
-const chainSteps = {
-  STEPS,
-  build({ filenames, files, steps, customLogin, customAuthentication, whitelabel }) {
-    const newFiles = files;
-    const walletProvider = "starkex";
-    const fileRoute = "web3auth/react-starkex";
+// const chainSteps = {
+//   STEPS,
+//   build({ filenames, files, steps, customLogin, customAuthentication, whitelabel }) {
+//     const newFiles = files;
+//     const walletProvider = "starkex";
+//     const fileRoute = "web3auth/react-starkex";
 
-    if (customLogin === "no" && customAuthentication === "no") {
-      filenames.push(`${fileRoute}/App.tsx`);
-      filenames.push("web3auth/web/input.js");
-      filenames.push(`${fileRoute}/package.json`);
+//     if (customLogin === "no" && customAuthentication === "no") {
+//       filenames.push(`${fileRoute}/App.tsx`);
+//       filenames.push("web3auth/web/input.js");
+//       filenames.push(`${fileRoute}/package.json`);
 
-      const providerMethods = `getStarkHDAccount, onMintRequest, onDepositRequest, onWithdrawalRequest`;
+//       const providerMethods = `getStarkHDAccount, onMintRequest, onDepositRequest, onWithdrawalRequest`;
 
-      newFiles[`${fileRoute}/App.tsx`] = replaceFileVariable(
-        files[`${fileRoute}/App.tsx`],
-        "wallet-provider",
-        `import { ${providerMethods} } from "./${walletProvider}";
-      `
-      );
+//       newFiles[`${fileRoute}/App.tsx`] = replaceFileVariable(
+//         files[`${fileRoute}/App.tsx`],
+//         "wallet-provider",
+//         `import { ${providerMethods} } from "./${walletProvider}";
+//       `
+//       );
 
-      steps.push(
-        {
-          ...STEPS.installationWeb,
-          pointer: { filename: `${fileRoute}/package.json`, range: "6-10" },
-        },
-        {
-          ...STEPS.registerApp,
-          pointer: { filename: "web3auth/web/input.js", range: "4" },
-        }
-      );
-      if (whitelabel === "yes") {
-        steps.push({
-          ...STEPS.whiteLabeling,
-          pointer: { filename: "web3auth/web/input.js", range: "1-25" },
-        });
-      }
+//       steps.push(
+//         {
+//           ...STEPS.installationWeb,
+//           pointer: { filename: `${fileRoute}/package.json`, range: "6-10" },
+//         },
+//         {
+//           ...STEPS.registerApp,
+//           pointer: { filename: "web3auth/web/input.js", range: "4" },
+//         }
+//       );
+//       if (whitelabel === "yes") {
+//         steps.push({
+//           ...STEPS.whiteLabeling,
+//           pointer: { filename: "web3auth/web/input.js", range: "1-25" },
+//         });
+//       }
 
-      steps.push(
-        {
-          ...STEPS.instantiate,
-          pointer: { filename: `${fileRoute}/App.tsx`, range: "15" },
-        },
-        {
-          ...STEPS.subscribe,
-          pointer: { filename: `${fileRoute}/App.tsx`, range: "24-41" },
-        },
-        {
-          ...STEPS.initialize,
-          pointer: { filename: `${fileRoute}/App.tsx`, range: "18" },
-        },
-        {
-          ...STEPS.triggeringLogin,
-          pointer: { filename: `${fileRoute}/App.tsx`, range: "46-53" },
-        },
-        {
-          ...STEPS.getUserInfo,
-          pointer: { filename: `${fileRoute}/App.tsx`, range: "55-62" },
-        },
-        {
-          ...STEPS.logout,
-          pointer: { filename: `${fileRoute}/App.tsx`, range: "64-71" },
-        }
-      );
-    }
+//       steps.push(
+//         {
+//           ...STEPS.instantiate,
+//           pointer: { filename: `${fileRoute}/App.tsx`, range: "15" },
+//         },
+//         {
+//           ...STEPS.subscribe,
+//           pointer: { filename: `${fileRoute}/App.tsx`, range: "24-41" },
+//         },
+//         {
+//           ...STEPS.initialize,
+//           pointer: { filename: `${fileRoute}/App.tsx`, range: "18" },
+//         },
+//         {
+//           ...STEPS.triggeringLogin,
+//           pointer: { filename: `${fileRoute}/App.tsx`, range: "46-53" },
+//         },
+//         {
+//           ...STEPS.getUserInfo,
+//           pointer: { filename: `${fileRoute}/App.tsx`, range: "55-62" },
+//         },
+//         {
+//           ...STEPS.logout,
+//           pointer: { filename: `${fileRoute}/App.tsx`, range: "64-71" },
+//         }
+//       );
+//     }
 
-    filenames.push("starkex/starkex.ts");
+//     filenames.push("starkex/starkex.ts");
 
-    steps.push({
-      ...STEPS.initializeProvider,
-      pointer: { filename: "starkex/starkex.ts", range: "17-43" },
-    });
+//     steps.push({
+//       ...STEPS.initializeProvider,
+//       pointer: { filename: "starkex/starkex.ts", range: "17-43" },
+//     });
 
-    return { files: newFiles, steps, filenames };
-  },
-};
+//     return { files: newFiles, steps, filenames };
+//   },
+// };
 
-export default chainSteps;
+// export default chainSteps;
