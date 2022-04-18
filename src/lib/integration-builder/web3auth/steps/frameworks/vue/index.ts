@@ -37,49 +37,14 @@ const htmlSteps = {
   STEPS,
   build({ filenames, files, steps, whitelabel, customAuthentication, customLogin, chain }) {
     const newFiles = files;
-    // replace stuff in Home.vue
-    const { code } = getConstructorCode(whitelabel === "yes", chain);
-
     const replacementAggregator = new ReplaceFileAggregator();
-
-    newFiles["web3auth/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
-      files["web3auth/vue/Home.vue"],
-      "web3auth/vue/Home.vue",
-      PLACEHOLDERS.CONSTRUCTOR,
-      code
-    );
-
-    const initRes = getInitCode(whitelabel === "yes");
-    newFiles["web3auth/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
-      files["web3auth/vue/Home.vue"],
-      "web3auth/vue/Home.vue",
-      PLACEHOLDERS.INIT,
-      initRes.code
-    );
-
-    const openloginRes = getOpenloginAdapter(whitelabel === "yes", false, false);
-    newFiles["web3auth/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
-      files["web3auth/vue/Home.vue"],
-      "web3auth/vue/Home.vue",
-      PLACEHOLDERS.OPENLOGIN_CONFIGURE,
-      openloginRes.code
-    );
-
-    const chainImportRes = getChainRpcImport(chain);
-    newFiles["web3auth/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
-      files["web3auth/vue/Home.vue"],
-      "web3auth/vue/Home.vue",
-      PLACEHOLDERS.CHAIN_RPC_IMPORT,
-      chainImportRes.code
-    );
-
-    const coreConstructorCode = getCoreConstructorCode(chain);
 
     filenames.push("web3auth/vue/package.json");
     filenames.push("web3auth/vue/main.js");
     filenames.push("web3auth/vue/App.vue");
-
     if (customAuthentication === "yes" || customLogin === "yes") {
+      const coreConstructorCode = getCoreConstructorCode(chain);
+
       const connectRes = getConnectCode(customLogin === "yes", customAuthentication === "yes");
 
       newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
@@ -88,6 +53,7 @@ const htmlSteps = {
         PLACEHOLDERS.CONNECT,
         connectRes.code
       );
+
       const openloginAdRes = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes", customLogin === "yes");
       newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
         files["web3auth/vue/CustomLogin.vue"],
@@ -95,12 +61,22 @@ const htmlSteps = {
         PLACEHOLDERS.OPENLOGIN_CONFIGURE,
         openloginAdRes.code
       );
+
       newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
         files["web3auth/vue/CustomLogin.vue"],
         "web3auth/vue/CustomLogin.vue",
         PLACEHOLDERS.CORE_CONSTRUCTOR,
         coreConstructorCode.code
       );
+
+      const chainImportRes = getChainRpcImport(chain);
+      newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/vue/CustomLogin.vue"],
+        "web3auth/vue/CustomLogin.vue",
+        PLACEHOLDERS.CHAIN_RPC_IMPORT,
+        chainImportRes.code
+      );
+
       filenames.push("web3auth/vue/CustomLogin.vue");
 
       steps.push(
@@ -161,6 +137,40 @@ const htmlSteps = {
     }
 
     if (customAuthentication === "no" && customLogin === "no") {
+      // replace stuff in Home.vue
+      const { code } = getConstructorCode(whitelabel === "yes", chain);
+
+      newFiles["web3auth/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/vue/Home.vue"],
+        "web3auth/vue/Home.vue",
+        PLACEHOLDERS.CONSTRUCTOR,
+        code
+      );
+
+      const initRes = getInitCode(whitelabel === "yes");
+      newFiles["web3auth/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/vue/Home.vue"],
+        "web3auth/vue/Home.vue",
+        PLACEHOLDERS.INIT,
+        initRes.code
+      );
+
+      const openloginRes = getOpenloginAdapter(whitelabel === "yes", false, false);
+      newFiles["web3auth/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/vue/Home.vue"],
+        "web3auth/vue/Home.vue",
+        PLACEHOLDERS.OPENLOGIN_CONFIGURE,
+        openloginRes.code
+      );
+
+      const chainImportRes = getChainRpcImport(chain);
+      newFiles["web3auth/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
+        files["web3auth/vue/Home.vue"],
+        "web3auth/vue/Home.vue",
+        PLACEHOLDERS.CHAIN_RPC_IMPORT,
+        chainImportRes.code
+      );
+
       filenames.push(`web3auth/vue/Home.vue`);
       steps.push(
         {

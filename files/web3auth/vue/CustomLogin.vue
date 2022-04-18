@@ -22,6 +22,7 @@ import { ADAPTER_STATUS, CONNECTED_EVENT_DATA, SafeEventEmitterProvider, WALLET_
 import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
 import { Web3AuthCore } from "@web3auth/core";
 import { ref, onMounted } from "vue";
+// REPLACE-web3authChainRpcImport-
 
 export default {
   name: "Home",
