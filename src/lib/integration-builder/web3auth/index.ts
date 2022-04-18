@@ -26,10 +26,10 @@ const LANGS: DisplayChoice[] = [
   { key: "vue", displayName: "Vue" },
   { key: "next", displayName: "Next JS" },
   { key: "angular", displayName: "Angular" },
-  // { key: "android", displayName: "Android" },
-  // { key: "ios", displayName: "iOS/Swift" },
-  // { key: "react-native", displayName: "React Native" },
-  // { key: "flutter", displayName: "Flutter" },
+  { key: "android", displayName: "Android" },
+  { key: "ios", displayName: "iOS/Swift" },
+  { key: "react-native", displayName: "React Native" },
+  { key: "flutter", displayName: "Flutter" },
 ];
 
 const TOGGLE_CHOICES: DisplayChoice[] = [
@@ -99,6 +99,105 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
         },
         whitelabel: {
           displayName: "Whitelabel",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+      };
+    } else if (values.lang === "ios") {
+      this.options = {
+        lang: {
+          displayName: "Language/Framework",
+          default: LANGS[0].key,
+          type: "dropdown",
+          choices: LANGS,
+        },
+        customAuthentication: {
+          displayName: "Custom Authentication",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        whitelabel: {
+          displayName: "Whitelabel",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        dynamicConstructorParams: {
+          displayName: "Dynamic Constructor Params",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        usingEmailPasswordless: {
+          displayName: "Using Email Passwordless",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+      };
+    } else if (values.lang === "android") {
+      this.options = {
+        lang: {
+          displayName: "Language/Framework",
+          default: LANGS[0].key,
+          type: "dropdown",
+          choices: LANGS,
+        },
+        customAuthentication: {
+          displayName: "Custom Authentication",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        whitelabel: {
+          displayName: "Whitelabel",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        dynamicConstructorParams: {
+          displayName: "Dynamic Constructor Params",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        usingEmailPasswordless: {
+          displayName: "Using Email Passwordless",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+      };
+    } else if (values.lang === "flutter") {
+      this.options = {
+        lang: {
+          displayName: "Language/Framework",
+          default: LANGS[0].key,
+          type: "dropdown",
+          choices: LANGS,
+        },
+        customAuthentication: {
+          displayName: "Custom Authentication",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        whitelabel: {
+          displayName: "Whitelabel",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        dynamicConstructorParams: {
+          displayName: "Dynamic Constructor Params",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        usingEmailPasswordless: {
+          displayName: "Using Email Passwordless",
           default: TOGGLE_CHOICES[0].key,
           type: "toggle",
           choices: TOGGLE_CHOICES,
