@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ethereum Web3Auth Getting Started</title>
+    <title>Web3Auth Getting Started</title>
     <meta charset="UTF-8" />
-    <link rel="style" src="./style.css"></link>
+    <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
     <div class="container">
-      <h1 class="title"><a target="_blank" href="http://web3auth.io/">Web3Auth</a> ETH & JS Integration Example</h1>
+      <h1 class="title"><a target="_blank" href="http://web3auth.io/">Web3Auth</a> & JS Integration Example</h1>
       <!-- Logged In -->
       <div class="grid btn-logged-in">
         <button id="get-user-info" class="btn">Get User Info</button>
         <button id="get-accounts" class="btn">Get Accounts</button>
         <button id="get-balance" class="btn">Get Balance</button>
         <button id="sign-message" class="btn">Sign Message</button>
-        <button id="sign-tx" class="btn">Sign Transaction</button>
-        <button id="send-tx" class="btn">Send Transaction</button>
 
         <button id="logout" class="btn">Logout</button>
 
@@ -32,24 +30,33 @@
       <footer class="footer">
         <a href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/getting-started" target="_blank" rel="noopener noreferrer">
           Source code
-          <img class="logo" src="https://images.web3auth.io/login-github.svg" />
+          <img class="logo" src="/github-logo.png" />
         </a>
       </footer>
     </div>
 
-    <script src="./inputs.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1/dist/web3.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/web3auth@0/dist/web3auth.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/openlogin-adapter@0/dist/openloginAdapter.umd.min.js"></script>
+
+    // REPLACE-deps-import-
+
     <script>
       const web3authSdk = window.Web3auth;
       let web3AuthInstance = null;
+      const OpenloginAdapter = window.OpenloginAdapter;
 
       (async function init() {
+        console.log("rpc", rpc);
         $(".btn-logged-in").hide();
         $("#sign-tx").hide();
 
+        const clientId = "YOUR_CLIENT_ID_HERE"; // get your clientId from https://developer.web3auth.io
+
+        // REPLACE-const web3AuthCtorParams = {};-
+
         web3AuthInstance = new web3authSdk.Web3Auth(web3AuthCtorParams);
+
+        // REPLACE-const web3AuthOpenloginConfigure = {};-
 
         subscribeAuthEvents(web3AuthInstance);
 
@@ -114,6 +121,33 @@
         try {
           const user = await web3AuthInstance.getUserInfo();
           $("#code").text(JSON.stringify(user || {}, null, 2));
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#get-accounts").click(async function (event) {
+        try {
+          const accounts = await rpc.getAccounts(web3AuthInstance.provider);
+          $("#code").text(JSON.stringify(["accounts", accounts], null, 2));
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#get-balance").click(async function (event) {
+        try {
+          const balance = await rpc.getBalance(web3AuthInstance.provider);
+          $("#code").text(JSON.stringify(["balance", balance], null, 2));
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#sign-message").click(async function (event) {
+        try {
+          const signedMsg = await rpc.signMessage(web3AuthInstance.provider);
+          $("#code").text(JSON.stringify(["signed message", signedMsg], null, 2));
         } catch (error) {
           console.error(error.message);
         }

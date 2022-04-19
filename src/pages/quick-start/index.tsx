@@ -152,9 +152,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                   Copied <AiOutlineCheck aria-hidden style={{ marginLeft: "4px" }} />
                 </>
               ) : (
-                <>
-                  <AiOutlineLink size="1.5em" aria-hidden />
-                </>
+                <AiOutlineLink size="1.5em" aria-hidden />
               )}
             </button>
           </div>

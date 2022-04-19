@@ -2,10 +2,14 @@ const chainIdMap = {
   eth: "0x1",
   matic: "0x13881",
   bnb: "0x38",
+  sola: "0x1",
+  avax: "0x43114",
+  arbitrum: "0x42161",
+  optimism: "0x10",
 };
 export const getConstructorCode = (
   isWhiteLabled: boolean,
-  chain: "eth" | "sol" | "matic" | "bnb" // todo: move to a type
+  chain: "eth" | "sol" | "matic" | "bnb" | "avax" | "arbitrum" | "optimism" // todo: move to a type
 ): {
   code: string;
 } => {
@@ -30,7 +34,7 @@ export const getConstructorCode = (
     code = `
         const web3AuthCtorParams = {
           clientId,
-          chainConfig: { chainNamespace:  "${chainNamespace}", chainId:  ${chainIdMap[chain]} }
+          chainConfig: { chainNamespace: "${chainNamespace}", chainId:  "${chainIdMap[chain]}" } }
         };
       `;
   }
@@ -121,7 +125,7 @@ export const getConnectCode = (
         loginProvider: "jwt",
         extraLoginOptions: {
           id_token: jwtToken,
-          domain: process.env.VUE_APP_DOMAIN,
+          domain: "YOUR_APP_DOMAIN",
           verifierIdField: "sub",
         },
       });
@@ -145,7 +149,7 @@ export const getConnectCode = (
 };
 
 export const getCoreConstructorCode = (
-  chain: "eth" | "sol" | "matic" | "bnb" // todo: move to a type
+  chain: "eth" | "sol" | "matic" | "bnb" | "avax" | "arbitrum" | "optimism" // todo: move to a type
 ): {
   code: string;
 } => {
@@ -193,7 +197,7 @@ export const getOpenloginAdapter = (
           loginConfig: {
             jwt: {
               name: "Custom Verifier Login",
-              verifier: process.env.VUE_APP_VERIFIER || "YOUR_VERIFIER_NAME",
+              verifier: "YOUR_VERIFIER_NAME",
               typeOfLogin: "jwt",
               clientId,
             },
@@ -210,7 +214,7 @@ export const getOpenloginAdapter = (
           loginConfig: {
             jwt: {
               name: "Custom Verifier Login",
-              verifier: process.env.VUE_APP_VERIFIER || "YOUR_VERIFIER_NAME",
+              verifier: "YOUR_VERIFIER_NAME",
               typeOfLogin: "jwt",
               clientId,
             },
@@ -255,6 +259,38 @@ export const getOpenloginAdapter = (
   }
   return { code };
 };
+
+export const getScriptImportsCode = (
+  chain: "eth" | "sol",
+  customLogin
+): {
+  code: string;
+} => {
+  let code = "";
+  if (chain === "eth") {
+    code = `
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/${customLogin ? "core" : "web3auth"}@0/dist/${
+      customLogin ? "core" : "web3auth"
+    }.umd.min.js"></script>
+    <script src="./evm.js"></script>
+    `;
+  } else if (chain === "sol") {
+    code = `
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/${customLogin ? "core" : "web3auth"}@0/dist/${
+      customLogin ? "core" : "web3auth"
+    }.umd.min.js"></script>
+    <script src="https://unpkg.com/@solana/web3.js@1/lib/index.iife.min.js"></script>
+    <script src="https://bundle.run/buffer@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/solana-provider@0.9.0/dist/solanaProvider.umd.min.js"></script>
+    <script src="./sol.js"></script>
+    `;
+  }
+
+  return {
+    code,
+  };
+};
 export const PLACEHOLDERS = {
   CONSTRUCTOR: "const web3AuthCtorParams = {};",
   CORE_CONSTRUCTOR: "const web3AuthCoreCtorParams = {};",
@@ -264,4 +300,5 @@ export const PLACEHOLDERS = {
   CONNECT: "const web3AuthConnect = {};",
   CHAIN_RPC_IMPORT: "web3authChainRpcImport",
   CHAIN_NAMESPACE: "web3authChainNamespace",
+  SCRIPTS_IMPORT: "deps-import",
 };

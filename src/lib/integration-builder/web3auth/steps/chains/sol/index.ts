@@ -1,4 +1,4 @@
-import { replaceFileVariable, toSteps } from "../../../../utils";
+import { toSteps } from "../../../../utils";
 import * as initialize from "./initializing.mdx";
 
 const STEPS = toSteps({
@@ -7,37 +7,24 @@ const STEPS = toSteps({
 
 const chainSteps = {
   STEPS,
-  build({ filenames, files, steps, customLogin }) {
+  build({ filenames, files, steps, lang }) {
     const newFiles = files;
-    if (customLogin !== "yes")
-      newFiles["web3auth/web/input.js"] = replaceFileVariable(
-        files["web3auth/web/input.js"],
-        "const web3AuthCtorParams = {};",
-        `
-const web3AuthCtorParams = {
-    clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
-    chainConfig: { chainNamespace: "solana" },
 
-};
-`
-      );
-    else
-      newFiles["web3auth/web/customInput.js"] = replaceFileVariable(
-        files["web3auth/web/customInput.js"],
-        "const web3AuthCtorParams = {};",
-        `        const web3AuthCtorParams = {
-          clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io
-          chainConfig: { chainNamespace: "solana" },
+    if (lang === "html") {
+      filenames.push("sol/solana.js");
 
-    };`
-      );
+      steps.push({
+        ...STEPS.initialize,
+        pointer: { filename: "sol/solana.js", range: "7-13" },
+      });
+    } else {
+      filenames.push("sol/solana.ts");
 
-    filenames.push("sol/solana.ts");
-
-    steps.push({
-      ...STEPS.initialize,
-      pointer: { filename: "sol/solana.ts", range: "16-27" },
-    });
+      steps.push({
+        ...STEPS.initialize,
+        pointer: { filename: "sol/solana.ts", range: "16-27" },
+      });
+    }
 
     return { files: newFiles, steps, filenames };
   },
