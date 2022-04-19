@@ -1,6 +1,15 @@
+const chainIdMap = {
+  eth: "0x1",
+  matic: "0x13881",
+  bnb: "0x38",
+  sola: "0x1",
+  avax: "0x43114",
+  arbitrum: "0x42161",
+  optimism: "0x10",
+};
 export const getConstructorCode = (
   isWhiteLabled: boolean,
-  chain: "eth" | "sol" | "matic" | "bnb" // todo: move to a type
+  chain: "eth" | "sol" | "matic" | "bnb" | "avax" | "arbitrum" | "optimism" // todo: move to a type
 ): {
   code: string;
 } => {
@@ -9,9 +18,9 @@ export const getConstructorCode = (
   let code = "";
   if (isWhiteLabled) {
     code = `
-      export const web3AuthCtorParams = {
+      const web3AuthCtorParams = {
         clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io,
-        chainConfig: { chainNamespace: "${chainNamespace}", chainId: "HEX_CHAIN_ID" //eg: "0x1"
+        chainConfig: { chainNamespace: "${chainNamespace}", chainId: "${chainIdMap[chain]}"
          },
         uiConfig: {
           theme: "dark",
@@ -19,13 +28,15 @@ export const getConstructorCode = (
           appLogo: "https://your-logo-url.com",
         };
       }
-    };`;
+    };
+    `;
   } else {
     code = `
-        export const web3AuthCtorParams = {
+        const web3AuthCtorParams = {
           clientId,
-          chainConfig: { chainNamespace:  "${chainNamespace}", chainId: "HEX_CHAIN_ID" }
-        };`;
+          chainConfig: { chainNamespace: "${chainNamespace}", chainId:  "${chainIdMap[chain]}" } }
+        };
+      `;
   }
 
   return {
@@ -108,58 +119,186 @@ export const getConnectCode = (
   let code = ``;
   if (isCustomVerifier) {
     code = `
-      export async function connectWithWeb3Auth(web3auth: Web3Auth): Promise<SafeEventEmitterProvider> {
-        try {
-          const jwtToken = "YOUR_ID_TOKEN";
-          const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-            relogin: true,
-            loginProvider: "jwt",
-            extraLoginOptions: {
-              id_token: jwtToken,
-              domain: process.env.VUE_APP_DOMAIN,
-              verifierIdField: "sub",
-            },
-          });
-          return web3authProvider;
-        } catch (error) {
-          console.error(error);
-        }
-      }`;
+      const jwtToken = "YOUR_ID_TOKEN";
+      const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+        relogin: true,
+        loginProvider: "jwt",
+        extraLoginOptions: {
+          id_token: jwtToken,
+          domain: "YOUR_APP_DOMAIN",
+          verifierIdField: "sub",
+        },
+      });
+      `;
   } else if (isCustomLogin) {
     code = `
-        export async function connectWithWeb3Auth(web3auth: Web3Auth): Promise<SafeEventEmitterProvider> {
-          try {
-            const jwtToken = "YOUR_ID_TOKEN";
-            const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-              relogin: true,
-              loginProvider: "google",
-            });
-            return web3authProvider;
-          } catch (error) {
-            console.error(error);
-          }
-        }`;
+    const jwtToken = "YOUR_ID_TOKEN";
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      relogin: true,
+      loginProvider: "google",
+    });
+       `;
   } else {
     code = `
-        export async function connectWithWeb3Auth(web3auth: Web3Auth): Promise<SafeEventEmitterProvider> {
-          try {
-            const web3authProvider = await web3auth.connect();
-            return web3authProvider;
-          } catch (error) {
-            console.error(error);
-          }
-        }`;
+        const web3authProvider = await web3auth.connect();
+        `;
   }
   return {
     code,
   };
 };
 
+export const getCoreConstructorCode = (
+  chain: "eth" | "sol" | "matic" | "bnb" | "avax" | "arbitrum" | "optimism" // todo: move to a type
+): {
+  code: string;
+} => {
+  let chainNamespace = "eip155";
+  if (chain === "sol") chainNamespace = "solana";
+  const code = `
+  const web3AuthCoreCtorParams = {
+    clientId,
+    chainConfig: { chainNamespace:  "${chainNamespace}", chainId: "HEX_CHAIN_ID" }
+  };
+`;
+  return {
+    code,
+  };
+};
+
+export const getOpenloginAdapter = (
+  isWhiteLabled: boolean,
+  isCustomAuth: boolean,
+  isCustomLogin: boolean
+): {
+  code: string;
+} => {
+  let code = ``;
+
+  if (isCustomAuth) {
+    if (isWhiteLabled) {
+      code = `const openloginAdapter = new OpenloginAdapter({
+        adapterSettings: {
+          clientId,
+          network: "testnet",
+          uxMode: "redirect",
+          whitelabel: {
+            name: "Your app Name",
+            logoLight: "https://example-light-logo.com",
+            logoDark: "https://example-light-logo.com",
+            defaultLanguage: "en",
+            /**
+             * Whether to enable dark mode
+             *
+             * @defaultValue false
+             */
+            dark: true,
+          },
+          loginConfig: {
+            jwt: {
+              name: "Custom Verifier Login",
+              verifier: "YOUR_VERIFIER_NAME",
+              typeOfLogin: "jwt",
+              clientId,
+            },
+          },
+        },
+      });`;
+      return { code };
+    }
+    code = `const openloginAdapter = new OpenloginAdapter({
+        adapterSettings: {
+          clientId,
+          network: "testnet",
+          uxMode: "redirect",
+          loginConfig: {
+            jwt: {
+              name: "Custom Verifier Login",
+              verifier: "YOUR_VERIFIER_NAME",
+              typeOfLogin: "jwt",
+              clientId,
+            },
+          },
+        },
+      });`;
+    return { code };
+  }
+  if (isWhiteLabled) {
+    code = `const openloginAdapter = new OpenloginAdapter({
+        adapterSettings: {
+          clientId,
+          network: "testnet",
+          uxMode: "redirect",
+          whitelabel: {
+            name: "Your app Name",
+            logoLight: "https://example-light-logo.com",
+            logoDark: "https://example-light-logo.com",
+            defaultLanguage: "en",
+            /**
+             * Whether to enable dark mode
+             *
+             * @defaultValue false
+             */
+            dark: true,
+          }
+        },
+      });`;
+  } else {
+    code = `const openloginAdapter = new OpenloginAdapter({
+      adapterSettings: {
+        clientId,
+        network: "testnet",
+        uxMode: "redirect",
+      },
+    });`;
+  }
+
+  if (!isCustomLogin) {
+    code = `${code}
+    web3auth.configureAdapter(openloginAdapter);`;
+  }
+  return { code };
+};
+
+export const getScriptImportsCode = (
+  chain: "eth" | "sol",
+  customLogin
+): {
+  code: string;
+} => {
+  let code = "";
+  if (chain === "eth") {
+    code = `
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/${customLogin ? "core" : "web3auth"}@0/dist/${
+      customLogin ? "core" : "web3auth"
+    }.umd.min.js"></script>
+    <script src="./evm.js"></script>
+    `;
+  } else if (chain === "sol") {
+    code = `
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/${customLogin ? "core" : "web3auth"}@0/dist/${
+      customLogin ? "core" : "web3auth"
+    }.umd.min.js"></script>
+    <script src="https://unpkg.com/@solana/web3.js@1/lib/index.iife.min.js"></script>
+    <script src="https://bundle.run/buffer@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/solana-provider@0.9.0/dist/solanaProvider.umd.min.js"></script>
+    <script src="./sol.js"></script>
+    `;
+  }
+
+  return {
+    code,
+  };
+};
 export const PLACEHOLDERS = {
   CONSTRUCTOR: "const web3AuthCtorParams = {};",
+  CORE_CONSTRUCTOR: "const web3AuthCoreCtorParams = {};",
+  OPENLOGIN_CONFIGURE: "const web3AuthOpenloginConfigure = {};",
   INIT: "const web3AuthInitParams = {};",
   CHAIN_RPC: "web3authChainRpc",
   CONNECT: "const web3AuthConnect = {};",
   CHAIN_RPC_IMPORT: "web3authChainRpcImport",
   CHAIN_NAMESPACE: "web3authChainNamespace",
+  SCRIPTS_IMPORT: "deps-import",
 };

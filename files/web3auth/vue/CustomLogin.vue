@@ -21,10 +21,7 @@
 import { ADAPTER_STATUS, CONNECTED_EVENT_DATA, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
 import { Web3AuthCore } from "@web3auth/core";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { ref, onMounted } from "vue";
-import { web3AuthCtorParams } from "./input";
-import { connectWithWeb3Auth } from "./Connect";
 // REPLACE-web3authChainRpcImport-
 
 export default {
@@ -37,27 +34,20 @@ export default {
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
     const provider = ref<SafeEventEmitterProvider | null>(null);
+    const clientId = "YOUR_CLIENT_ID";
+
+    // REPLACE-const web3AuthCoreCtorParams = {};-
+
     let web3auth = new Web3AuthCore(web3AuthCtorParams);
+
     onMounted(async () => {
       try {
         loading.value = true;
-        web3auth = new Web3AuthCore({ chainConfig: { chainNamespace: "eip155" } });
-        const clientId = "YOUR_CLIENT_ID";
-        const openloginAdapter = new OpenloginAdapter({
-          adapterSettings: {
-            clientId,
-            network: "testnet",
-            uxMode: "redirect",
-            loginConfig: {
-              jwt: {
-                name: "Custom Verifier Login",
-                verifier: process.env.VUE_APP_VERIFIER || "YOUR_VERIFIER_NAME",
-                typeOfLogin: "jwt",
-                clientId,
-              },
-            },
-          },
-        });
+
+        // REPLACE-const web3AuthOpenloginConfigure = {};-
+
+        web3auth = new Web3AuthCore(web3AuthCoreCtorParams);
+
         web3auth.configureAdapter(openloginAdapter);
         subscribeAuthEvents();
         await web3auth.init();
@@ -91,7 +81,8 @@ export default {
     }
     async function connect() {
       try {
-        const web3authProvider = await connectWithWeb3Auth(web3auth);
+        // REPLACE-const web3AuthConnect = {};-
+
         provider.value = web3authProvider;
       } catch (error) {
         console.error(error);

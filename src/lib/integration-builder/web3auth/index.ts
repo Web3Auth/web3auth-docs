@@ -6,30 +6,24 @@ const CHAINS: DisplayChoice[] = [
   { key: "sol", displayName: "Solana" },
   { key: "matic", displayName: "Polygon" },
   { key: "bnb", displayName: "BNB Chain" },
-  // { key: "avax", displayName: "Avalanche" },
-  // { key: "zksync", displayName: "ZK Sync" },
-  // { key: "arbitrum", displayName: "Arbitrum" },
+  { key: "avax", displayName: "Avalanche" },
+  { key: "arbitrum", displayName: "Arbitrum" },
   // { key: "luna", displayName: "Terra" },
-  // { key: "xtz", displayName: "Tezos" },
-  // { key: "dot", displayName: "Polkadot" },
-  // { key: "near", displayName: "Near" },
-  // { key: "klay", displayName: "Klaytn" },
-  // { key: "optimism", displayName: "Optimism" },
+  { key: "optimism", displayName: "Optimism" },
+  // { key: "starkex", displayName: "StarkEx" },
   // { key: "starknet", displayName: "StarkNet" },
-  { key: "starkex", displayName: "StarkEx" },
-  { key: "starknet", displayName: "StarkNet" },
 ];
 
 const LANGS: DisplayChoice[] = [
   { key: "html", displayName: "HTML/JS" },
   { key: "react", displayName: "React" },
   { key: "vue", displayName: "Vue" },
-  // { key: "next", displayName: "Next JS" },
-  // { key: "angular", displayName: "Angular" },
-  // { key: "android", displayName: "Android" },
-  // { key: "ios", displayName: "iOS/Swift" },
+  { key: "next", displayName: "Next JS" },
+  { key: "angular", displayName: "Angular" },
+  { key: "android", displayName: "Android" },
+  { key: "ios", displayName: "iOS/Swift" },
   // { key: "react-native", displayName: "React Native" },
-  // { key: "flutter", displayName: "Flutter" },
+  { key: "flutter", displayName: "Flutter" },
 ];
 
 const TOGGLE_CHOICES: DisplayChoice[] = [
@@ -82,23 +76,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
     const newFiles = JSON.parse(JSON.stringify(files));
     const steps: IntegrationStep[] = [];
 
-    // todo: cleanup this login in docs: 1.5
-    if (values.lang === "html" && values.chain !== "starkex" && values.chain !== "starknet") {
-      this.options = {
-        lang: {
-          displayName: "Language/Framework",
-          default: LANGS[0].key,
-          type: "dropdown",
-          choices: LANGS,
-        },
-        chain: {
-          displayName: "Blockchain",
-          default: CHAINS[0].key,
-          type: "dropdown",
-          choices: CHAINS,
-        },
-      };
-    } else if (values.chain === "starkex" || values.chain === "starknet") {
+    if (values.chain === "starkex" || values.chain === "starknet") {
       finalValues.lang = "react";
       this.options = {
         lang: {
@@ -115,6 +93,105 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
         },
         whitelabel: {
           displayName: "Whitelabel",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+      };
+    } else if (values.lang === "ios") {
+      this.options = {
+        lang: {
+          displayName: "Language/Framework",
+          default: LANGS[0].key,
+          type: "dropdown",
+          choices: LANGS,
+        },
+        customAuthentication: {
+          displayName: "Custom Authentication",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        whitelabel: {
+          displayName: "Whitelabel",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        dynamicConstructorParams: {
+          displayName: "Dynamic Constructor Params",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        usingEmailPasswordless: {
+          displayName: "Using Email Passwordless",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+      };
+    } else if (values.lang === "android") {
+      this.options = {
+        lang: {
+          displayName: "Language/Framework",
+          default: LANGS[0].key,
+          type: "dropdown",
+          choices: LANGS,
+        },
+        customAuthentication: {
+          displayName: "Custom Authentication",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        whitelabel: {
+          displayName: "Whitelabel",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        dynamicConstructorParams: {
+          displayName: "Dynamic Constructor Params",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        usingEmailPasswordless: {
+          displayName: "Using Email Passwordless",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+      };
+    } else if (values.lang === "flutter") {
+      this.options = {
+        lang: {
+          displayName: "Language/Framework",
+          default: LANGS[0].key,
+          type: "dropdown",
+          choices: LANGS,
+        },
+        customAuthentication: {
+          displayName: "Custom Authentication",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        whitelabel: {
+          displayName: "Whitelabel",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        dynamicConstructorParams: {
+          displayName: "Dynamic Constructor Params",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        usingEmailPasswordless: {
+          displayName: "Using Email Passwordless",
           default: TOGGLE_CHOICES[0].key,
           type: "toggle",
           choices: TOGGLE_CHOICES,

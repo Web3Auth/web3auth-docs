@@ -15,23 +15,7 @@ const getWindowLocation = () => {
   return "http://localhost";
 };
 
-const getDefaultBuilderOptions = () => {
-  const defaultOpts = Object.fromEntries(Object.entries(builder.options).map(([key, option]) => [key, option.default]));
-  const url = new URL(getWindowLocation());
-
-  const urlOpts = {};
-  url.searchParams.forEach((value, key) => {
-    urlOpts[key] = value;
-  });
-
-  return { ...defaultOpts, ...urlOpts };
-};
-const getDefaultToggleOptions = () =>
-  Object.fromEntries(
-    Object.entries(builder.options)
-      .filter(([_, option]) => option.type === "toggle")
-      .map(([key, option]) => [key, option.default])
-  );
+const getDefaultBuilderOptions = () => Object.fromEntries(Object.entries(builder.options).map(([key, option]) => [key, option.default]));
 
 const getURLFromBuilderOptions = (opts: Record<string, string>): string => {
   const url = new URL(getWindowLocation());
@@ -49,7 +33,6 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
 
     setBuilderOptions({
       ...builderOptions,
-      ...getDefaultToggleOptions(),
       [optionKey]: finalOptionValue,
     });
   };
@@ -169,9 +152,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                   Copied <AiOutlineCheck aria-hidden style={{ marginLeft: "4px" }} />
                 </>
               ) : (
-                <>
-                  <AiOutlineLink size="1.5em" aria-hidden />
-                </>
+                <AiOutlineLink size="1.5em" aria-hidden />
               )}
             </button>
           </div>
