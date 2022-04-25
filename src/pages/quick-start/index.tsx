@@ -15,8 +15,17 @@ const getWindowLocation = () => {
   return "http://localhost";
 };
 
-const getDefaultBuilderOptions = () => Object.fromEntries(Object.entries(builder.options).map(([key, option]) => [key, option.default]));
+const getDefaultBuilderOptions = () => {
+  const defaultOpts = Object.fromEntries(Object.entries(builder.options).map(([key, option]) => [key, option.default]));
+  const url = new URL(getWindowLocation());
 
+  const urlOpts = {};
+  url.searchParams.forEach((value, key) => {
+    urlOpts[key] = value;
+  });
+
+  return { ...defaultOpts, ...urlOpts };
+};
 const getURLFromBuilderOptions = (opts: Record<string, string>): string => {
   const url = new URL(getWindowLocation());
   url.search = "";

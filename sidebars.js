@@ -29,13 +29,13 @@ module.exports = {
         "developing-with-web3auth/understand-sdk",
         "developing-with-web3auth/adapters",
         "developing-with-web3auth/connect-blockchain",
-        {
-          type: "category",
-          label: "Using Custom Authentication",
-          link: { type: "doc", id: "developing-with-web3auth/customauth/customauth" },
-          items: ["developing-with-web3auth/customauth/verifiers"],
-        },
       ],
+    },
+    {
+      type: "category",
+      label: "Using Custom Authentication",
+      link: { type: "doc", id: "customauth/customauth" },
+      items: ["customauth/verifiers"],
     },
     "whitelabeling",
     {
