@@ -19,7 +19,7 @@ module.exports = {
       type: "category",
       label: "Get Started",
       link: { type: "doc", id: "get-started/get-started" },
-      items: ["get-started/quickstart", "get-started/using-dashboard"],
+      items: ["get-started/get-started", "get-started/quickstart", "get-started/using-dashboard"],
     },
     {
       type: "category",
@@ -29,6 +29,7 @@ module.exports = {
         "developing-with-web3auth/understand-sdk",
         "developing-with-web3auth/adapters",
         "developing-with-web3auth/connect-blockchain",
+        "developing-with-web3auth/developing-with-web3auth",
       ],
     },
     {
