@@ -45,6 +45,10 @@ const reactSteps = {
 
     const replacementAggregator = new ReplaceFileAggregator();
 
+    if (["starkex", "starknet"].includes(chain)) {
+      return { filenames, files, steps };
+    }
+
     newFiles["web3auth/react/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["web3auth/react/App.tsx"],
       "web3auth/react/App.tsx",

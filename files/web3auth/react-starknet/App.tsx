@@ -1,42 +1,51 @@
-import { ADAPTER_EVENTS, SafeEventEmitterProvider } from "@web3auth/base";
-import { Web3Auth, Web3AuthOptions } from "@web3auth/web3auth";
+import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { Web3Auth } from "@web3auth/web3auth";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { useEffect, useState } from "react";
 import "./App.css";
-import { web3AuthParams } from "./input";
+// REPLACE-web3authChainRpcImport-
 
-// REPLACE-wallet-provider-
+const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
 
 function App() {
-  const [web3AuthInstance, setWeb3AuthInstance] = useState<Web3Auth | null>(null);
+  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
 
   useEffect(() => {
     const init = async () => {
       try {
-        const web3AuthInstance = new Web3Auth(web3AuthParams as Web3AuthOptions);
-        subscribeAuthEvents(web3AuthInstance);
-        setWeb3AuthInstance(web3AuthInstance);
-        await web3AuthInstance.initModal();
+        // REPLACE-const web3AuthInitParams = {};-
+
+        // REPLACE-const web3AuthCtorParams = {};-
+
+        const web3auth = new Web3Auth(web3AuthCtorParams);
+
+        // REPLACE-const web3AuthOpenloginConfigure = {};-
+        web3auth.configureAdapter(openloginAdapter);
+        subscribeAuthEvents(web3auth);
+        setWeb3auth(web3auth);
+        await web3auth.initModal(initParams);
       } catch (error) {
         console.error(error);
       }
     };
 
-    const subscribeAuthEvents = (web3AuthInstance: Web3Auth) => {
+    const subscribeAuthEvents = (web3auth: Web3Auth) => {
       // Can subscribe to all ADAPTER_EVENTS and LOGIN_MODAL_EVENTS
-      web3AuthInstance.on(ADAPTER_EVENTS.CONNECTED, (data: unknown) => {
+      web3auth.on(ADAPTER_EVENTS.CONNECTED, (data: unknown) => {
         console.log("Yeah!, you are successfully logged in", data);
+        setProvider(web3auth.provider);
       });
 
-      web3AuthInstance.on(ADAPTER_EVENTS.CONNECTING, () => {
+      web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
         console.log("connecting");
       });
 
-      web3AuthInstance.on(ADAPTER_EVENTS.DISCONNECTED, () => {
+      web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
         console.log("disconnected");
       });
 
-      web3AuthInstance.on(ADAPTER_EVENTS.ERRORED, (error) => {
+      web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
         console.error("some error or user has cancelled login request", error);
       });
     };
@@ -45,29 +54,29 @@ function App() {
   }, []);
 
   const login = async () => {
-    if (!web3AuthInstance) {
+    if (!web3auth) {
       console.log("web3auth not initialized yet");
       return;
     }
-    const provider = await web3AuthInstance.connect();
+    const provider = await web3auth.connect();
     setProvider(provider);
   };
 
   const getUserInfo = async () => {
-    if (!web3AuthInstance) {
+    if (!web3auth) {
       console.log("web3auth not initialized yet");
       return;
     }
-    const user = await web3AuthInstance.getUserInfo();
-    console.log("User info", user);
+    const user = await web3auth.getUserInfo();
+    uiConsole(user);
   };
 
   const logout = async () => {
-    if (!web3AuthInstance) {
+    if (!web3auth) {
       console.log("web3auth not initialized yet");
       return;
     }
-    await web3AuthInstance.logout();
+    await web3auth.logout();
     setProvider(null);
   };
 
@@ -78,6 +87,13 @@ function App() {
   const onDeployAccount = async () => {
     await deployAccount();
   };
+
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+  }
 
   const loggedInView = (
     <>
@@ -93,6 +109,10 @@ function App() {
       <button onClick={logout} className="card">
         Log Out
       </button>
+
+      <div id="console" style={{ whiteSpace: "pre-line" }}>
+        <p style={{ whiteSpace: "pre-line" }}></p>
+      </div>
     </>
   );
 

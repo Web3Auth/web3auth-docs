@@ -6,13 +6,11 @@
         fontSize: '12px',
       }"
     >
-      <button class="rpcBtn" v-if="!provider && !loading" @click="connect()" style="cursor: pointer">Login With Google</button>
+      <button class="rpcBtn" v-if="!provider" @click="connect()" style="cursor: pointer">Connect</button>
       <button class="rpcBtn" v-if="provider" @click="logout()" style="cursor: pointer">Logout</button>
       <button class="rpcBtn" v-if="provider" @click="getUserInfo()" style="cursor: pointer">Get User Info</button>
       <button class="rpcBtn" v-if="provider" @click="onGetStarkHDAccount()" style="cursor: pointer">Get Stark Accounts</button>
-      <button class="rpcBtn" v-if="provider" @click="onMintRequest()" style="cursor: pointer">Mint Request</button>
-      <button class="rpcBtn" v-if="provider" @click="onDepositRequest()" style="cursor: pointer">Deposit Request</button>
-      <button class="rpcBtn" v-if="provider" @click="onWithdrawalRequest()" style="cursor: pointer">Withdraw Request</button>
+      <button class="rpcBtn" v-if="provider" @click="onDeployAccount()" style="cursor: pointer">Deploy Account</button>
     </section>
     <div id="console" style="white-space: pre-line">
       <p style="white-space: pre-line"></p>
@@ -21,13 +19,10 @@
 </template>
 
 <script lang="ts">
-import { ADAPTER_STATUS, CONNECTED_EVENT_DATA, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { ADAPTER_STATUS, CONNECTED_EVENT_DATA, SafeEventEmitterProvider } from "@web3auth/base";
 import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
-import { Web3AuthCore } from "@web3auth/core";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { Web3Auth } from "@web3auth/web3auth";
 import { ref, onMounted } from "vue";
-import { web3AuthCtorParams } from "./input";
-import { connectWithWeb3Auth } from "./Connect";
 // REPLACE-web3authChainRpcImport-
 
 export default {
@@ -40,30 +35,24 @@ export default {
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
     const provider = ref<SafeEventEmitterProvider | null>(null);
-    let web3auth = new Web3AuthCore(web3AuthCtorParams);
+    const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
+
+    // REPLACE-const web3AuthInitParams = {};-
+
+    // REPLACE-const web3AuthCtorParams = {};-
+
+    let web3auth = new Web3Auth(web3AuthCtorParams);
     onMounted(async () => {
       try {
         loading.value = true;
-        web3auth = new Web3AuthCore({ chainConfig: { chainNamespace: "eip155" } });
-        const clientId = "YOUR_CLIENT_ID";
-        const openloginAdapter = new OpenloginAdapter({
-          adapterSettings: {
-            clientId,
-            network: "testnet",
-            uxMode: "redirect",
-            loginConfig: {
-              jwt: {
-                name: "Custom Verifier Login",
-                verifier: process.env.VUE_APP_VERIFIER || "YOUR_VERIFIER_NAME",
-                typeOfLogin: "jwt",
-                clientId,
-              },
-            },
-          },
-        });
-        web3auth.configureAdapter(openloginAdapter);
+
+        web3auth = new Web3Auth(web3AuthCtorParams);
+
+        // REPLACE-const web3AuthOpenloginConfigure = {};-
+
         subscribeAuthEvents();
-        await web3auth.init();
+
+        await web3auth.initModal(initParams);
       } catch (error) {
         console.log("error", error);
         uiConsole("error", error);
@@ -94,7 +83,7 @@ export default {
     }
     async function connect() {
       try {
-        const web3authProvider = await connectWithWeb3Auth(web3auth);
+        const web3authProvider = await web3auth.connect();
         provider.value = web3authProvider;
       } catch (error) {
         console.error(error);
@@ -110,21 +99,13 @@ export default {
       uiConsole(userInfo);
     }
 
-    const onGetStarkHDAccount = async () => {
+    async function onGetStarkHDAccount() {
       await getStarkHDAccount();
-    };
+    }
 
-    const onMintRequest = async () => {
-      await getMintRequest();
-    };
-
-    const onDepositRequest = async () => {
-      await getDepositRequest();
-    };
-
-    const onWithdrawalRequest = async () => {
-      await getWithdrawalRequest();
-    };
+    async function onDeployAccount() {
+      await deployAccount();
+    }
 
     function uiConsole(...args: any[]): void {
       const el = document.querySelector("#console>p");
@@ -143,9 +124,7 @@ export default {
       subscribeAuthEvents,
       getUserInfo,
       onGetStarkHDAccount,
-      onMintRequest,
-      onDepositRequest,
-      onWithdrawalRequest,
+      onDeployAccount,
     };
   },
 };

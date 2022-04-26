@@ -39,9 +39,14 @@ const htmlSteps = {
     const newFiles = files;
     const replacementAggregator = new ReplaceFileAggregator();
 
-    filenames.push("web3auth/vue/package.json");
     filenames.push("web3auth/vue/main.js");
     filenames.push("web3auth/vue/App.vue");
+
+    if (["starkex", "starknet"].includes(chain)) {
+      return { filenames, files, steps };
+    }
+
+    filenames.push("web3auth/vue/package.json");
     if (customAuthentication === "yes" || customLogin === "yes") {
       const coreConstructorCode = getCoreConstructorCode(chain);
 

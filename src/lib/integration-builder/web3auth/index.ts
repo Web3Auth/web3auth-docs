@@ -10,8 +10,8 @@ const CHAINS: DisplayChoice[] = [
   { key: "arbitrum", displayName: "Arbitrum" },
   // { key: "luna", displayName: "Terra" },
   { key: "optimism", displayName: "Optimism" },
-  // { key: "starkex", displayName: "StarkEx" },
-  // { key: "starknet", displayName: "StarkNet" },
+  { key: "starkex", displayName: "StarkEx" },
+  { key: "starknet", displayName: "StarkNet" },
 ];
 
 const LANGS: DisplayChoice[] = [
@@ -77,13 +77,16 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
     const steps: IntegrationStep[] = [];
 
     if (values.chain === "starkex" || values.chain === "starknet") {
-      finalValues.lang = "react";
+      finalValues.lang = ["react", "vue"].includes(values.lang) ? values.lang : "react";
       this.options = {
         lang: {
           displayName: "Language/Framework",
           default: "react",
           type: "dropdown",
-          choices: [{ key: "react", displayName: "React" }],
+          choices: [
+            { key: "react", displayName: "React" },
+            { key: "vue", displayName: "Vue" },
+          ],
         },
         chain: {
           displayName: "Blockchain",
@@ -233,7 +236,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
     }
 
     STEPS.framework[finalValues.lang].build({ ...finalValues, filenames, files: newFiles, steps, chain: finalValues.chain });
-    STEPS.chains[finalValues.chain].build({ ...finalValues, filenames, files: newFiles, steps });
+    STEPS.chains[finalValues.chain].build({ ...finalValues, filenames, files: newFiles, steps, lang: finalValues.lang });
 
     return {
       // Use files in `open-login` folders instead of root folder
