@@ -80,7 +80,7 @@ export const getChainRpcImport = (
   code: string;
 } => {
   let code = `
-    import RPC from "./ethereum";
+    import RPC from "./evm";
   `;
   if (chain === "sol") {
     code = `
