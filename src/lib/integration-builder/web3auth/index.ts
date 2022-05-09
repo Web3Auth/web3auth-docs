@@ -1,7 +1,7 @@
 import { DisplayChoice, IntegrationBuilder, IntegrationStep } from "../interfaces";
 import STEPS from "./steps";
 
-const CHAINS: DisplayChoice[] = [
+export const CHAINS: DisplayChoice[] = [
   { key: "eth", displayName: "Ethereum" },
   { key: "sol", displayName: "Solana" },
   { key: "matic", displayName: "Polygon" },
@@ -14,7 +14,7 @@ const CHAINS: DisplayChoice[] = [
   { key: "starknet", displayName: "StarkNet" },
 ];
 
-const LANGS: DisplayChoice[] = [
+export const LANGS: DisplayChoice[] = [
   { key: "html", displayName: "HTML/JS" },
   { key: "react", displayName: "React" },
   { key: "vue", displayName: "Vue" },
@@ -26,7 +26,7 @@ const LANGS: DisplayChoice[] = [
   { key: "flutter", displayName: "Flutter" },
 ];
 
-const TOGGLE_CHOICES: DisplayChoice[] = [
+export const TOGGLE_CHOICES: DisplayChoice[] = [
   { key: "no", displayName: "No" },
   { key: "yes", displayName: "Yes" },
 ];
@@ -73,6 +73,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
   build(values: Record<string, string>, files: Record<string, string>) {
     const finalValues = values;
     const filenames: string[] = [];
+    debugger;
     const newFiles = JSON.parse(JSON.stringify(files));
     const steps: IntegrationStep[] = [];
 
