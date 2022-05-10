@@ -2,10 +2,19 @@ const chainIdMap = {
   eth: "0x1",
   matic: "0x13881",
   bnb: "0x38",
-  sola: "0x1",
+  sol: "0x1",
   avax: "0x43114",
   arbitrum: "0x42161",
   optimism: "0x10",
+};
+const rpcTargetMap = {
+  eth: "https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+  matic: "https://rpc-mumbai.maticvigil.com",
+  bnb: "https://data-seed-prebsc-1-s1.binance.org:8545/",
+  sol: "https://ssc-dao.genesysgo.net",
+  avax: "https://api.avax-test.network/ext/bc/C/rpc",
+  arbitrum: "https://rinkeby.arbitrum.io/rpc",
+  optimism: "https://optimism-kovan.infura.io/v3/",
 };
 export const getConstructorCode = (
   isWhiteLabled: boolean,
@@ -18,25 +27,29 @@ export const getConstructorCode = (
   let code = "";
   if (isWhiteLabled) {
     code = `
-      const web3AuthCtorParams = {
-        clientId: "YOUR_CLIENT_ID_HERE", // get your clientId from https://dashboard.web3auth.io,
-        chainConfig: { chainNamespace: "${chainNamespace}", chainId: "${chainIdMap[chain]}"
-         },
-        uiConfig: {
-          theme: "dark",
-          loginMethodsOrder: ["facebook", "twitter"],
-          appLogo: "https://your-logo-url.com",
-        };
-      }
-    };
-    `;
+        const web3AuthCtorParams = {
+          clientId,
+          chainConfig: {
+            chainNamespace: "${chainNamespace}",
+            chainId: "${chainIdMap[chain]}",
+            rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
+          },
+          uiConfig: {
+            theme: "dark",
+            loginMethodsOrder: ["facebook", "twitter"],
+            appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+          }
+        }`;
   } else {
     code = `
         const web3AuthCtorParams = {
           clientId,
-          chainConfig: { chainNamespace: "${chainNamespace}", chainId:  "${chainIdMap[chain]}" } }
-        };
-      `;
+          chainConfig: {
+            chainNamespace: "${chainNamespace}",
+            chainId:  "${chainIdMap[chain]}",
+            rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
+          }
+        }`;
   }
 
   return {
@@ -80,7 +93,7 @@ export const getChainRpcImport = (
   code: string;
 } => {
   let code = `
-    import RPC from "./ethereum";
+    import RPC from "./evm";
   `;
   if (chain === "sol") {
     code = `
@@ -177,23 +190,19 @@ export const getOpenloginAdapter = (
 
   if (isCustomAuth) {
     if (isWhiteLabled) {
-      code = `const openloginAdapter = new OpenloginAdapter({
-        adapterSettings: {
+      code = `
+          const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
           clientId,
           network: "testnet",
           uxMode: "redirect",
           whitelabel: {
             name: "Your app Name",
-            logoLight: "https://example-light-logo.com",
-            logoDark: "https://example-light-logo.com",
-            defaultLanguage: "en",
-            /**
-             * Whether to enable dark mode
-             *
-             * @defaultValue false
-             */
-            dark: true,
-          },
+              logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+              logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              defaultLanguage: "en",
+              dark: true, // whether to enable dark mode. defaultValue: false
+            },
           loginConfig: {
             jwt: {
               name: "Custom Verifier Login",
@@ -206,7 +215,8 @@ export const getOpenloginAdapter = (
       });`;
       return { code };
     }
-    code = `const openloginAdapter = new OpenloginAdapter({
+    code = `
+        const openloginAdapter = new OpenloginAdapter({
         adapterSettings: {
           clientId,
           network: "testnet",
@@ -224,25 +234,20 @@ export const getOpenloginAdapter = (
     return { code };
   }
   if (isWhiteLabled) {
-    code = `const openloginAdapter = new OpenloginAdapter({
-        adapterSettings: {
-          clientId,
-          network: "testnet",
-          uxMode: "redirect",
-          whitelabel: {
-            name: "Your app Name",
-            logoLight: "https://example-light-logo.com",
-            logoDark: "https://example-light-logo.com",
-            defaultLanguage: "en",
-            /**
-             * Whether to enable dark mode
-             *
-             * @defaultValue false
-             */
-            dark: true,
-          }
-        },
-      });`;
+    code = `        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            clientId,
+            network: "testnet",
+            uxMode: "redirect",
+            whitelabel: {
+              name: "Your app Name",
+              logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+              logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+              defaultLanguage: "en",
+              dark: true, // whether to enable dark mode. defaultValue: false
+            }
+          },
+        });`;
   } else {
     code = `const openloginAdapter = new OpenloginAdapter({
       adapterSettings: {
@@ -255,7 +260,7 @@ export const getOpenloginAdapter = (
 
   if (!isCustomLogin) {
     code = `${code}
-    web3auth.configureAdapter(openloginAdapter);`;
+        web3auth.configureAdapter(openloginAdapter);`;
   }
   return { code };
 };
@@ -281,9 +286,9 @@ export const getScriptImportsCode = (
       customLogin ? "core" : "web3auth"
     }.umd.min.js"></script>
     <script src="https://unpkg.com/@solana/web3.js@1/lib/index.iife.min.js"></script>
-    <script src="https://bundle.run/buffer@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/buffer@6"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/solana-provider@0.9.0/dist/solanaProvider.umd.min.js"></script>
-    <script src="./sol.js"></script>
+    <script src="./solana.js"></script>
     `;
   }
 

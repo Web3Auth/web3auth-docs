@@ -17,10 +17,8 @@ import * as registerApp from "../common/register-app.mdx";
 import * as subscribe from "../common/subscribe.mdx";
 import * as triggeringLogin from "../common/triggering-login.mdx";
 import * as whiteLabeling from "../common/whitelabeling.mdx";
-import * as getUserInfo from "../html/get-user-info.mdx";
-import * as logout from "../html/logout.mdx";
-
-// import * as getUserInfo from "./get-user-info.mdx";
+import * as usingW3AFunctions from "../common/using-w3a-functions.mdx";
+import * as logout from "../common/logout.mdx";
 
 const STEPS = toSteps({
   installationWeb,
@@ -30,7 +28,7 @@ const STEPS = toSteps({
   initialize,
   triggeringLogin,
   // loginWithFirebaseAuth,
-  getUserInfo,
+  usingW3AFunctions,
   logout,
   instantiateCoreSdk,
   whiteLabeling,
@@ -149,7 +147,7 @@ const reactSteps = {
           }),
         },
         {
-          ...STEPS.getUserInfo,
+          ...STEPS.usingW3AFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/react/custom/App.tsx",
             range: "65-72",
@@ -215,7 +213,7 @@ const reactSteps = {
           }),
         },
         {
-          ...STEPS.getUserInfo,
+          ...STEPS.usingW3AFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/react/App.tsx",
             range: "65-72",
