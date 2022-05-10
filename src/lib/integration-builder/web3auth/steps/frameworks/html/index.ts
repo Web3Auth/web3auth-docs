@@ -9,12 +9,12 @@ import {
 } from "../../../commonSnippets";
 import * as instantiateCoreSdk from "../common/instantiateCoreSdk.mdx";
 import * as whiteLabeling from "../common/whitelabeling.mdx";
-import * as getUserInfo from "./get-user-info.mdx";
+import * as usingW3AFunctions from "../common/using-w3a-functions.mdx";
 import * as initialize from "./initializing.mdx";
 // web
 import * as installationWeb from "./installation.mdx";
 import * as instantiate from "./instantiateSDK.mdx";
-import * as logout from "./logout.mdx";
+import * as logout from "../common/logout.mdx";
 import * as registerApp from "./register-app.mdx";
 import * as subscribe from "./subscribe.mdx";
 import * as triggeringLogin from "./triggering-login.mdx";
@@ -26,7 +26,7 @@ const STEPS = toSteps({
   subscribe,
   initialize,
   triggeringLogin,
-  getUserInfo,
+  usingW3AFunctions,
   logout,
   whiteLabeling,
   instantiateCoreSdk,
@@ -117,7 +117,7 @@ const htmlSteps = {
           }),
         },
         {
-          ...STEPS.getUserInfo,
+          ...STEPS.usingW3AFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/web/custom.html",
             range: "120-127",
@@ -164,54 +164,54 @@ const htmlSteps = {
       steps.push(
         {
           ...STEPS.installationWeb,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/web/index.html", range: "39-42" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/web/index.html", range: "37-41" }),
         },
         {
           ...STEPS.registerApp,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/web/index.html", range: "53" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/web/index.html", range: "52" }),
+        },
+        {
+          ...STEPS.instantiate,
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/web/index.html", range: "54-56" }),
         }
       );
       if (whitelabel === "yes") {
         steps.push({
           ...STEPS.whiteLabeling,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/web/index.html", range: "58-60" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/web/index.html", range: "57-59" }),
         });
       }
       steps.push(
         {
-          ...STEPS.instantiate,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/web/index.html", range: "57" }),
+          ...STEPS.initialize,
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/web/index.html", range: "62" }),
         },
         {
           ...STEPS.subscribe,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/web/index.html",
-            range: "77-97",
+            range: "76-96",
           }),
-        },
-        {
-          ...STEPS.initialize,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/web/index.html", range: "63" }),
         },
         {
           ...STEPS.triggeringLogin,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/web/index.html",
-            range: "99-108",
+            range: "98-107",
           }),
         },
         {
-          ...STEPS.getUserInfo,
+          ...STEPS.usingW3AFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/web/index.html",
-            range: "120-127",
+            range: "119-153",
           }),
         },
         {
           ...STEPS.logout,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/web/index.html",
-            range: "110-118",
+            range: "109-117",
           }),
         }
       );
