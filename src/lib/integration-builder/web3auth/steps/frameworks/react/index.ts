@@ -165,6 +165,9 @@ const reactSteps = {
 
     if (customAuthentication === "no" && customLogin === "no") {
       filenames.push(`web3auth/react/App.tsx`);
+      filenames.push(`web3auth/react/App.css`);
+      filenames.push(`web3auth/react/index.tsx`);
+      filenames.push(`web3auth/react/config-overrides.js`);
       const chainImportRes = getChainRpcImport(chain);
       newFiles["web3auth/react/App.tsx"] = replacementAggregator.replaceFileVariable(
         files["web3auth/react/App.tsx"],
