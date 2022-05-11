@@ -93,7 +93,14 @@ module.exports = {
         },
       ],
     },
-    "examples",
+    {
+      type: "category",
+      label: "Examples",
+      link: { type: "doc", id: "examples/examples" },
+      items: [
+        "examples/productionexamples",
+      ],
+    },
     {
       type: "category",
       label: "Contribute",
