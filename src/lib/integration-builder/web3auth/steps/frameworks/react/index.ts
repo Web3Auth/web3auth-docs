@@ -11,6 +11,7 @@ import {
 import * as initialize from "../common/initializing.mdx";
 // web
 import * as installationWeb from "../common/installation.mdx";
+import * as buildingApp from "../react/buildingApp.mdx";
 import * as instantiateCoreSdk from "../common/instantiateCoreSdk.mdx";
 import * as instantiate from "../common/instantiateSDK.mdx";
 import * as registerApp from "../common/register-app.mdx";
@@ -32,6 +33,7 @@ const STEPS = toSteps({
   logout,
   instantiateCoreSdk,
   whiteLabeling,
+  buildingApp,
 });
 
 const reactSteps = {
@@ -165,6 +167,9 @@ const reactSteps = {
 
     if (customAuthentication === "no" && customLogin === "no") {
       filenames.push(`web3auth/react/App.tsx`);
+      filenames.push(`web3auth/react/App.css`);
+      filenames.push(`web3auth/react/index.tsx`);
+      filenames.push(`web3auth/react/config-overrides.js`);
       const chainImportRes = getChainRpcImport(chain);
       newFiles["web3auth/react/App.tsx"] = replacementAggregator.replaceFileVariable(
         files["web3auth/react/App.tsx"],
@@ -174,6 +179,10 @@ const reactSteps = {
       );
 
       steps.push(
+        {
+          ...STEPS.buildingApp,
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/react/index.tsx", range: "1-11" }),
+        },
         {
           ...STEPS.installationWeb,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/react/package.json", range: "6-7" }),

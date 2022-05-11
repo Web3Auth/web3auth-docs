@@ -22,15 +22,15 @@ export const getConstructorCode = (
 ): {
   code: string;
 } => {
-  let chainNamespace = "eip155";
-  if (chain === "sol") chainNamespace = "solana";
+  let chainNamespace = "CHAIN_NAMESPACES.EIP155";
+  if (chain === "sol") chainNamespace = "CHAIN_NAMESPACES.SOLANA";
   let code = "";
   if (isWhiteLabled) {
     code = `
         const web3AuthCtorParams = {
           clientId,
           chainConfig: {
-            chainNamespace: "${chainNamespace}",
+            chainNamespace: ${chainNamespace},
             chainId: "${chainIdMap[chain]}",
             rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
           },
@@ -45,7 +45,7 @@ export const getConstructorCode = (
         const web3AuthCtorParams = {
           clientId,
           chainConfig: {
-            chainNamespace: "${chainNamespace}",
+            chainNamespace: ${chainNamespace},
             chainId:  "${chainIdMap[chain]}",
             rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
           }
@@ -63,12 +63,12 @@ export const getInitCode = (
   code: string;
 } => {
   let code = `
-    export const initParams = {}
+    const initParams = {}
   `;
   if (isWhiteLabled) {
     code = `
 
-    export const initParams = {
+    const initParams = {
         modalConfig: {
           [WALLET_ADAPTERS.OPENLOGIN]: {
             label: "openlogin",
@@ -97,8 +97,7 @@ export const getChainRpcImport = (
   `;
   if (chain === "sol") {
     code = `
-    import RPC from "./solana"
-  `;
+import RPC from "./solana"`;
   }
   return {
     code,
