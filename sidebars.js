@@ -19,7 +19,7 @@ module.exports = {
       type: "category",
       label: "Get Started",
       link: { type: "doc", id: "get-started/get-started" },
-      items: ["get-started/quickstart", "get-started/using-dashboard"],
+      items: ["get-started/get-started", "get-started/quickstart", "get-started/using-dashboard"],
     },
     {
       type: "category",
@@ -29,6 +29,7 @@ module.exports = {
         "developing-with-web3auth/understand-sdk",
         "developing-with-web3auth/adapters",
         "developing-with-web3auth/connect-blockchain",
+        "developing-with-web3auth/developing-with-web3auth",
       ],
     },
     {
@@ -52,6 +53,18 @@ module.exports = {
             "api-reference/web/customloginui",
             {
               type: "category",
+              label: "Providers",
+              link: { type: "doc", id: "api-reference/web/providers/providers" },
+              items: ["api-reference/web/providers/evm", "api-reference/web/providers/solana"],
+            },
+            {
+              type: "category",
+              label: "Plugins",
+              link: { type: "doc", id: "api-reference/web/plugins/plugins" },
+              items: ["api-reference/web/plugins/torusevmwalletplugin", "api-reference/web/plugins/torussolanawalletplugin"],
+            },
+            {
+              type: "category",
               label: "Adapters",
               link: { type: "doc", id: "api-reference/web/adapters/adapters" },
               items: [
@@ -62,12 +75,6 @@ module.exports = {
                 "api-reference/web/adapters/phantom",
                 "api-reference/web/adapters/wallet-connect-v1",
               ],
-            },
-            {
-              type: "category",
-              label: "Providers",
-              link: { type: "doc", id: "api-reference/web/providers/providers" },
-              items: ["api-reference/web/providers/evm", "api-reference/web/providers/solana"],
             },
             ,
             "api-reference/web/customauth",
@@ -92,7 +99,14 @@ module.exports = {
         },
       ],
     },
-    "examples",
+    {
+      type: "category",
+      label: "Examples",
+      link: { type: "doc", id: "examples/examples" },
+      items: [
+        "examples/productionexamples",
+      ],
+    },
     {
       type: "category",
       label: "Contribute",

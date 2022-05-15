@@ -21,7 +21,7 @@ function App() {
         const web3auth = new Web3Auth(web3AuthCtorParams);
 
         // REPLACE-const web3AuthOpenloginConfigure = {};-
-        web3auth.configureAdapter(openloginAdapter);
+
         subscribeAuthEvents(web3auth);
         setWeb3auth(web3auth);
         await web3auth.initModal(initParams);
@@ -178,7 +178,7 @@ function App() {
       <h1 className="title">
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth
-        </a>{" "}
+        </a>
         & ReactJS Example
       </h1>
 
@@ -186,8 +186,7 @@ function App() {
 
       <footer className="footer">
         <a href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/react-app" target="_blank" rel="noopener noreferrer">
-          Source code {"  "}
-          <img className="logo" src="/images/github-logo.png" alt="github-logo" />
+          Source code
         </a>
       </footer>
     </div>
