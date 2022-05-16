@@ -8,7 +8,6 @@ export const CHAINS: DisplayChoice[] = [
   { key: "bnb", displayName: "BNB Chain" },
   { key: "avax", displayName: "Avalanche" },
   { key: "arbitrum", displayName: "Arbitrum" },
-  // { key: "luna", displayName: "Terra" },
   { key: "optimism", displayName: "Optimism" },
   { key: "starkex", displayName: "StarkEx" },
   { key: "starknet", displayName: "StarkNet" },
@@ -77,7 +76,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
     const newFiles = JSON.parse(JSON.stringify(files));
     const steps: IntegrationStep[] = [];
 
-    if (values.chain === "starkex" || values.chain === "starknet") {
+    if (values.chain === "starknet") {
       finalValues.lang = ["react", "vue"].includes(values.lang) ? values.lang : "react";
       this.options = {
         lang: {

@@ -6,6 +6,9 @@ import {
   getCoreConstructorCode,
   getInitCode,
   getOpenloginAdapter,
+  getRPCFunctions,
+  getRPCFunctionsUIButtonsReact,
+  getReactPackageJson,
   PLACEHOLDERS,
 } from "../../../commonSnippets";
 import * as initialize from "../common/initializing.mdx";
@@ -45,7 +48,7 @@ const reactSteps = {
 
     const replacementAggregator = new ReplaceFileAggregator();
 
-    if (["starkex", "starknet"].includes(chain)) {
+    if (["starknet"].includes(chain)) {
       return { filenames, files, steps };
     }
 
@@ -70,6 +73,30 @@ const reactSteps = {
       "web3auth/react/App.tsx",
       PLACEHOLDERS.OPENLOGIN_CONFIGURE,
       openloginRes.code
+    );
+
+    const rpcFunctions = getRPCFunctions(chain);
+    newFiles["web3auth/react/App.tsx"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/react/App.tsx"],
+      "web3auth/react/App.tsx",
+      PLACEHOLDERS.RPC_FUNCTIONS,
+      rpcFunctions.code
+    );
+
+    const reactPackageJson = getRPCFunctionsUIButtonsReact(chain);
+    newFiles["web3auth/react/App.tsx"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/react/App.tsx"],
+      "web3auth/react/App.tsx",
+      PLACEHOLDERS.RPC_FUNCTIONS_REACT_BUTTONS,
+      reactPackageJson.code
+    );
+
+    const rpcFunctionsUIButtonsReact = getReactPackageJson(chain);
+    newFiles["web3auth/react/package.json"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/react/package.json"],
+      "web3auth/react/package.json",
+      PLACEHOLDERS.REACT_PACKAGE_JSON,
+      rpcFunctionsUIButtonsReact.code
     );
 
     filenames.push("web3auth/react/package.json");

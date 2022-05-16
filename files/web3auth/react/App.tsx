@@ -80,55 +80,7 @@ function App() {
     setProvider(null);
   };
 
-  const getAccounts = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const userAccount = await rpc.getAccounts();
-    uiConsole(userAccount);
-  };
-
-  const getBalance = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const balance = await rpc.getBalance();
-    uiConsole(balance);
-  };
-
-  const signMessage = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const result = await rpc.signMessage();
-    uiConsole(result);
-  };
-
-  const signTransaction = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const result = await rpc.signTransaction();
-    uiConsole(result);
-  };
-
-  const sendTransaction = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const result = await rpc.signAndSendTransaction();
-    uiConsole(result);
-  };
+// REPLACE-rpcFunctionsImport-
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
@@ -142,21 +94,8 @@ function App() {
       <button onClick={getUserInfo} className="card">
         Get User Info
       </button>
-      <button onClick={getAccounts} className="card">
-        Get Accounts
-      </button>
-      <button onClick={getBalance} className="card">
-        Get Balance
-      </button>
-      <button onClick={signMessage} className="card">
-        Sign Message
-      </button>
-      <button onClick={signTransaction} className="card">
-        Sign Transaction
-      </button>
-      <button onClick={sendTransaction} className="card">
-        Send Transaction
-      </button>
+// REPLACE-rpcFunctionsUIButtonsReactImport-
+
       <button onClick={logout} className="card">
         Log Out
       </button>

@@ -6,6 +6,7 @@ const chainIdMap = {
   avax: "0x43114",
   arbitrum: "0x42161",
   optimism: "0x10",
+  starkex: "0x1",
 };
 const rpcTargetMap = {
   eth: "https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
@@ -15,10 +16,11 @@ const rpcTargetMap = {
   avax: "https://api.avax-test.network/ext/bc/C/rpc",
   arbitrum: "https://rinkeby.arbitrum.io/rpc",
   optimism: "https://optimism-kovan.infura.io/v3/",
+  starkex: "https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
 };
 export const getConstructorCode = (
   isWhiteLabled: boolean,
-  chain: "eth" | "sol" | "matic" | "bnb" | "avax" | "arbitrum" | "optimism" // todo: move to a type
+  chain: "eth" | "sol" | "matic" | "bnb" | "avax" | "arbitrum" | "optimism" | "starkex" // todo: move to a type
 ): {
   code: string;
 } => {
@@ -88,16 +90,19 @@ export const getInitCode = (
 };
 
 export const getChainRpcImport = (
-  chain: "eth" | "sol"
+  chain: "eth" | "sol" | "starkex"
 ): {
   code: string;
 } => {
   let code = `
-    import RPC from "./evm";
-  `;
+import RPC from "./evm";`;
   if (chain === "sol") {
     code = `
-import RPC from "./solana"`;
+import RPC from "./solana";`;
+  }
+  if (chain === "starkex") {
+    code = `
+import RPC from "./starkex";`;
   }
   return {
     code,
@@ -161,7 +166,7 @@ export const getConnectCode = (
 };
 
 export const getCoreConstructorCode = (
-  chain: "eth" | "sol" | "matic" | "bnb" | "avax" | "arbitrum" | "optimism" // todo: move to a type
+  chain: "eth" | "sol" | "matic" | "bnb" | "avax" | "arbitrum" | "optimism" | "starkex" // todo: move to a type
 ): {
   code: string;
 } => {
@@ -295,6 +300,162 @@ export const getScriptImportsCode = (
     code,
   };
 };
+
+export const getRPCFunctions = (
+  chain: "eth" | "sol" | "starkex"
+): {
+  code: string;
+} => {
+  let code = `
+  const getAccounts = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const userAccount = await rpc.getAccounts();
+    uiConsole(userAccount);
+  };
+
+  const getBalance = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const balance = await rpc.getBalance();
+    uiConsole(balance);
+  };
+
+  const signMessage = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const result = await rpc.signMessage();
+    uiConsole(result);
+  };
+
+  const signTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const result = await rpc.signTransaction();
+    uiConsole(result);
+  };
+
+  const sendTransaction = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const result = await rpc.signAndSendTransaction();
+    uiConsole(result);
+  };
+`;
+  if (chain === "starkex") {
+    code = `
+  const onGetStarkHDAccount = async () => {
+    const RPC = new StarkExRPC(provider as SafeEventEmitterProvider);
+    const starkaccounts = await RPC.getStarkAccount();
+    uiConsole(starkaccounts);
+  };
+
+  const onMintRequest = async () => {
+    const RPC = new StarkExRPC(provider as SafeEventEmitterProvider);
+    const request = await RPC.onMintRequest();
+    uiConsole(request);
+  };
+
+  const onDepositRequest = async () => {
+    const RPC = new StarkExRPC(provider as SafeEventEmitterProvider);
+    const request = await RPC.onDepositRequest();
+    uiConsole(request);
+  };
+
+  const onWithdrawalRequest = async () => {
+    const RPC = new StarkExRPC(provider as SafeEventEmitterProvider);
+    const request = await RPC.onWithdrawalRequest();
+    uiConsole(request);
+  };
+`;
+  }
+  return {
+    code,
+  };
+};
+
+export const getRPCFunctionsUIButtonsReact = (
+  chain: "eth" | "sol" | "starkex"
+): {
+  code: string;
+} => {
+  let code = `
+      <button onClick={getAccounts} className="card">
+        Get Accounts
+      </button>
+      <button onClick={getBalance} className="card">
+        Get Balance
+      </button>
+      <button onClick={signMessage} className="card">
+        Sign Message
+      </button>
+      <button onClick={signTransaction} className="card">
+        Sign Transaction
+      </button>
+      <button onClick={sendTransaction} className="card">
+        Send Transaction
+      </button>
+`;
+  if (chain === "starkex") {
+    code = `
+      <button onClick={onGetStarkHDAccount} className="card">
+        Get Stark Accounts
+      </button>
+      <button onClick={onMintRequest} className="card">
+        Mint Request
+      </button>
+      <button onClick={onDepositRequest} className="card">
+        Deposit Request
+      </button>
+      <button onClick={onWithdrawalRequest} className="card">
+        Withdraw Request
+      </button>`;
+  }
+  return {
+    code,
+  };
+};
+
+export const getReactPackageJson = (
+  chain: "eth" | "sol" | "starkex"
+): {
+  code: string;
+} => {
+  let code = `
+    "@web3auth/ethereum-provider": "^0.7.0",
+    "web3": "^1.7.0",`;
+  if (chain === "sol") {
+    code = `
+    "@web3auth/solana-provider": "^0.7.0",
+    "@solana/web3.js": "^1.36.0",`;
+  }
+  if (chain === "starkex") {
+    code = `
+    "@starkware-industries/starkex-js": "0.0.6",
+    "@toruslabs/starkware-crypto": "^1.1.0",
+    "bn.js": "^5.2.0",
+    "elliptic": "^6.5.4",`;
+  }
+  return {
+    code,
+  };
+};
+
 export const PLACEHOLDERS = {
   CONSTRUCTOR: "const web3AuthCtorParams = {};",
   CORE_CONSTRUCTOR: "const web3AuthCoreCtorParams = {};",
@@ -305,4 +466,7 @@ export const PLACEHOLDERS = {
   CHAIN_RPC_IMPORT: "web3authChainRpcImport",
   CHAIN_NAMESPACE: "web3authChainNamespace",
   SCRIPTS_IMPORT: "deps-import",
+  RPC_FUNCTIONS: "rpcFunctionsImport",
+  RPC_FUNCTIONS_REACT_BUTTONS: "rpcFunctionsUIButtonsReactImport",
+  REACT_PACKAGE_JSON: "reactPackageJsonImport",
 };
