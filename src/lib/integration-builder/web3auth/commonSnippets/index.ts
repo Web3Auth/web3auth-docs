@@ -9,14 +9,14 @@ const chainIdMap = {
   starkex: "0x1",
 };
 const rpcTargetMap = {
-  eth: "https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+  eth: "https://ropsten.infura.io/v3/",
   matic: "https://rpc-mumbai.maticvigil.com",
   bnb: "https://data-seed-prebsc-1-s1.binance.org:8545/",
   sol: "https://ssc-dao.genesysgo.net",
   avax: "https://api.avax-test.network/ext/bc/C/rpc",
   arbitrum: "https://rinkeby.arbitrum.io/rpc",
   optimism: "https://optimism-kovan.infura.io/v3/",
-  starkex: "https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+  starkex: "https://ropsten.infura.io/v3/",
 };
 export const getConstructorCode = (
   isWhiteLabled: boolean,
