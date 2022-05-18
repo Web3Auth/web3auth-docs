@@ -35,7 +35,7 @@ const STEPS = toSteps({
 
 const htmlSteps = {
   STEPS,
-  build({ filenames, files, steps, whitelabel, customAuthentication, customLogin, chain }) {
+  build({ filenames, files, steps, whitelabel, customAuthentication, chain }) {
     const newFiles = files;
     const replacementAggregator = new ReplaceFileAggregator();
 
@@ -47,10 +47,10 @@ const htmlSteps = {
     }
 
     filenames.push("web3auth/vue/package.json");
-    if (customAuthentication === "yes" || customLogin === "yes") {
+    if (customAuthentication === "yes") {
       const coreConstructorCode = getCoreConstructorCode(chain);
 
-      const connectRes = getConnectCode(customLogin === "yes", customAuthentication === "yes");
+      const connectRes = getConnectCode(customAuthentication === "yes");
 
       newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
         files["web3auth/vue/CustomLogin.vue"],
@@ -59,7 +59,7 @@ const htmlSteps = {
         connectRes.code
       );
 
-      const openloginAdRes = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes", customLogin === "yes");
+      const openloginAdRes = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes");
       newFiles["web3auth/vue/CustomLogin.vue"] = replacementAggregator.replaceFileVariable(
         files["web3auth/vue/CustomLogin.vue"],
         "web3auth/vue/CustomLogin.vue",
@@ -141,7 +141,7 @@ const htmlSteps = {
       );
     }
 
-    if (customAuthentication === "no" && customLogin === "no") {
+    if (customAuthentication === "no") {
       // replace stuff in Home.vue
       const { code } = getConstructorCode(whitelabel === "yes", chain);
 

@@ -36,7 +36,7 @@ const STEPS = toSteps({
 
 const angularSteps = {
   STEPS,
-  build({ filenames, files, steps, whitelabel, customAuthentication, customLogin, chain }) {
+  build({ filenames, files, steps, whitelabel, customAuthentication, chain }) {
     const newFiles = files;
 
     const { code } = getConstructorCode(whitelabel === "yes", chain);
@@ -68,7 +68,7 @@ const angularSteps = {
 
     filenames.push("web3auth/angular/package.json");
 
-    if (customAuthentication === "yes" || customLogin === "yes") {
+    if (customAuthentication === "yes") {
       const chainImportRes = getChainRpcImport(chain);
       newFiles["web3auth/angular/custom/app.component.ts"] = replacementAggregator.replaceFileVariable(
         files["web3auth/angular/custom/app.component.ts"],
@@ -77,7 +77,7 @@ const angularSteps = {
         chainImportRes.code
       );
 
-      const connectRes = getConnectCode(customLogin === "yes", customAuthentication === "yes");
+      const connectRes = getConnectCode(customAuthentication === "yes");
       newFiles["web3auth/angular/custom/app.component.ts"] = replacementAggregator.replaceFileVariable(
         files["web3auth/angular/custom/app.component.ts"],
         "web3auth/angular/custom/app.component.ts",
@@ -85,7 +85,7 @@ const angularSteps = {
         connectRes.code
       );
 
-      const openloginAdRes = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes", customLogin === "yes");
+      const openloginAdRes = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes");
       newFiles["web3auth/angular/custom/app.component.ts"] = replacementAggregator.replaceFileVariable(
         files["web3auth/angular/custom/app.component.ts"],
         "web3auth/angular/custom/app.component.ts",
@@ -159,7 +159,7 @@ const angularSteps = {
       );
     }
 
-    if (customAuthentication === "no" && customLogin === "no") {
+    if (customAuthentication === "no") {
       filenames.push(`web3auth/angular/app.component.ts`);
       const chainImportRes = getChainRpcImport(chain);
       newFiles["web3auth/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(

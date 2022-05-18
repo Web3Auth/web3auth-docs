@@ -128,13 +128,12 @@ export const getChainNamespace = (
 };
 
 export const getConnectCode = (
-  isCustomLogin: boolean,
-  isCustomVerifier: boolean
+  isCustomAuth: boolean
 ): {
   code: string;
 } => {
   let code = ``;
-  if (isCustomVerifier) {
+  if (isCustomAuth) {
     code = `
       const jwtToken = "YOUR_ID_TOKEN";
       const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
@@ -147,14 +146,6 @@ export const getConnectCode = (
         },
       });
       `;
-  } else if (isCustomLogin) {
-    code = `
-    const jwtToken = "YOUR_ID_TOKEN";
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-      relogin: true,
-      loginProvider: "google",
-    });
-       `;
   } else {
     code = `
         const web3authProvider = await web3auth.connect();
@@ -185,8 +176,7 @@ export const getCoreConstructorCode = (
 
 export const getOpenloginAdapter = (
   isWhiteLabled: boolean,
-  isCustomAuth: boolean,
-  isCustomLogin: boolean
+  isCustomAuth: boolean
 ): {
   code: string;
 } => {
@@ -209,7 +199,7 @@ export const getOpenloginAdapter = (
             },
           loginConfig: {
             jwt: {
-              name: "Custom Verifier Login",
+              name: "Custom Auth Login",
               verifier: "YOUR_VERIFIER_NAME",
               typeOfLogin: "jwt",
               clientId,
@@ -227,7 +217,7 @@ export const getOpenloginAdapter = (
           uxMode: "redirect",
           loginConfig: {
             jwt: {
-              name: "Custom Verifier Login",
+              name: "Custom Auth Login",
               verifier: "YOUR_VERIFIER_NAME",
               typeOfLogin: "jwt",
               clientId,
@@ -261,17 +251,12 @@ export const getOpenloginAdapter = (
       },
     });`;
   }
-
-  if (!isCustomLogin) {
-    code = `${code}
-        web3auth.configureAdapter(openloginAdapter);`;
-  }
   return { code };
 };
 
 export const getScriptImportsCode = (
   chain: "eth" | "sol",
-  customLogin
+  customAuth
 ): {
   code: string;
 } => {
@@ -279,15 +264,15 @@ export const getScriptImportsCode = (
   if (chain === "eth") {
     code = `
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1/dist/web3.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/${customLogin ? "core" : "web3auth"}@0/dist/${
-      customLogin ? "core" : "web3auth"
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/${customAuth ? "core" : "web3auth"}@0/dist/${
+      customAuth ? "core" : "web3auth"
     }.umd.min.js"></script>
     <script src="./evm.js"></script>
     `;
   } else if (chain === "sol") {
     code = `
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/${customLogin ? "core" : "web3auth"}@0/dist/${
-      customLogin ? "core" : "web3auth"
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/${customAuth ? "core" : "web3auth"}@0/dist/${
+      customAuth ? "core" : "web3auth"
     }.umd.min.js"></script>
     <script src="https://unpkg.com/@solana/web3.js@1/lib/index.iife.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/buffer@6"></script>

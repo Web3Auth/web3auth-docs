@@ -36,14 +36,14 @@ const STEPS = toSteps({
 
 const nextjsSteps = {
   STEPS,
-  build({ filenames, files, steps, whitelabel, customAuthentication, customLogin, chain }) {
+  build({ filenames, files, steps, whitelabel, customAuthentication, chain }) {
     const newFiles = files;
     const replacementAggregator = new ReplaceFileAggregator();
 
-    if (customLogin === "yes" || customAuthentication === "yes") {
+    if (customAuthentication === "yes") {
       const coreConstructorCode = getCoreConstructorCode(chain);
 
-      const connectRes = getConnectCode(customLogin === "yes", customAuthentication === "yes");
+      const connectRes = getConnectCode(customAuthentication === "yes");
 
       newFiles["web3auth/nextjs/custom-auth/App.tsx"] = replacementAggregator.replaceFileVariable(
         files["web3auth/nextjs/custom-auth/App.tsx"],
@@ -52,7 +52,7 @@ const nextjsSteps = {
         connectRes.code
       );
 
-      const openloginAdRes = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes", customLogin === "yes");
+      const openloginAdRes = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes");
       newFiles["web3auth/nextjs/custom-auth/App.tsx"] = replacementAggregator.replaceFileVariable(
         files["web3auth/nextjs/custom-auth/App.tsx"],
         "web3auth/nextjs/custom-auth/App.tsx",
@@ -123,7 +123,7 @@ const nextjsSteps = {
       );
     }
 
-    if (customLogin === "no" && customAuthentication === "no") {
+    if (customAuthentication === "no") {
       const { code } = getConstructorCode(whitelabel === "yes", chain);
 
       newFiles["web3auth/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
