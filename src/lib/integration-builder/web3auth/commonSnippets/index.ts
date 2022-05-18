@@ -156,24 +156,6 @@ export const getConnectCode = (
   };
 };
 
-export const getCoreConstructorCode = (
-  chain: "eth" | "sol" | "matic" | "bnb" | "avax" | "arbitrum" | "optimism" | "starkex" // todo: move to a type
-): {
-  code: string;
-} => {
-  let chainNamespace = "eip155";
-  if (chain === "sol") chainNamespace = "solana";
-  const code = `
-  const web3AuthCoreCtorParams = {
-    clientId,
-    chainConfig: { chainNamespace:  "${chainNamespace}", chainId: "HEX_CHAIN_ID" }
-  };
-`;
-  return {
-    code,
-  };
-};
-
 export const getOpenloginAdapter = (
   isWhiteLabled: boolean,
   isCustomAuth: boolean
@@ -190,7 +172,7 @@ export const getOpenloginAdapter = (
           clientId,
           network: "testnet",
           uxMode: "redirect",
-          whitelabel: {
+          whiteLabel: {
             name: "Your app Name",
               logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
               logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
@@ -200,13 +182,14 @@ export const getOpenloginAdapter = (
           loginConfig: {
             jwt: {
               name: "Custom Auth Login",
-              verifier: "YOUR_VERIFIER_NAME",
-              typeOfLogin: "jwt",
-              clientId,
+              verifier: "YOUR_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
+              typeOfLogin: "jwt", // Pass on the login provider of the verifier you've created
+              clientId, // Pass on the clientId of the login provider here - Please note this differs from the Web3Auth ClientID. This is the JWT Client ID
             },
           },
         },
-      });`;
+      });
+      web3auth.configureAdapter(openloginAdapter);`;
       return { code };
     }
     code = `
@@ -224,7 +207,8 @@ export const getOpenloginAdapter = (
             },
           },
         },
-      });`;
+      });
+      web3auth.configureAdapter(openloginAdapter);`;
     return { code };
   }
   if (isWhiteLabled) {
@@ -233,7 +217,7 @@ export const getOpenloginAdapter = (
             clientId,
             network: "testnet",
             uxMode: "redirect",
-            whitelabel: {
+            whiteLabel: {
               name: "Your app Name",
               logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
               logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
@@ -241,7 +225,8 @@ export const getOpenloginAdapter = (
               dark: true, // whether to enable dark mode. defaultValue: false
             }
           },
-        });`;
+        });
+        web3auth.configureAdapter(openloginAdapter);`;
   } else {
     code = `const openloginAdapter = new OpenloginAdapter({
       adapterSettings: {
@@ -249,7 +234,8 @@ export const getOpenloginAdapter = (
         network: "testnet",
         uxMode: "redirect",
       },
-    });`;
+    });
+    web3auth.configureAdapter(openloginAdapter);`;
   }
   return { code };
 };
@@ -345,26 +331,26 @@ export const getRPCFunctions = (
   if (chain === "starkex") {
     code = `
   const onGetStarkHDAccount = async () => {
-    const RPC = new StarkExRPC(provider as SafeEventEmitterProvider);
-    const starkaccounts = await RPC.getStarkAccount();
+    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const starkaccounts = await rpc.getStarkAccount();
     uiConsole(starkaccounts);
   };
 
   const onMintRequest = async () => {
-    const RPC = new StarkExRPC(provider as SafeEventEmitterProvider);
-    const request = await RPC.onMintRequest();
+    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const request = await rpc.onMintRequest();
     uiConsole(request);
   };
 
   const onDepositRequest = async () => {
-    const RPC = new StarkExRPC(provider as SafeEventEmitterProvider);
-    const request = await RPC.onDepositRequest();
+    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const request = await rpc.onDepositRequest();
     uiConsole(request);
   };
 
   const onWithdrawalRequest = async () => {
-    const RPC = new StarkExRPC(provider as SafeEventEmitterProvider);
-    const request = await RPC.onWithdrawalRequest();
+    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const request = await rpc.onWithdrawalRequest();
     uiConsole(request);
   };
 `;
@@ -443,7 +429,6 @@ export const getReactPackageJson = (
 
 export const PLACEHOLDERS = {
   CONSTRUCTOR: "const web3AuthCtorParams = {};",
-  CORE_CONSTRUCTOR: "const web3AuthCoreCtorParams = {};",
   OPENLOGIN_CONFIGURE: "const web3AuthOpenloginConfigure = {};",
   INIT: "const web3AuthInitParams = {};",
   CHAIN_RPC: "web3authChainRpc",

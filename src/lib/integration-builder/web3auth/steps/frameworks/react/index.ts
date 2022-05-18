@@ -3,7 +3,6 @@ import {
   getChainRpcImport,
   getConnectCode,
   getConstructorCode,
-  getCoreConstructorCode,
   getInitCode,
   getOpenloginAdapter,
   getRPCFunctions,
@@ -157,11 +156,11 @@ const reactSteps = {
       openloginAdRes.code
     );
 
-    const coreConstructorCode = getCoreConstructorCode(chain);
+    const coreConstructorCode = getConstructorCode(whitelabel === "yes", chain);
     newFiles["web3auth/react/custom/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["web3auth/react/custom/App.tsx"],
       "web3auth/react/custom/App.tsx",
-      PLACEHOLDERS.CORE_CONSTRUCTOR,
+      PLACEHOLDERS.CONSTRUCTOR,
       coreConstructorCode.code
     );
 

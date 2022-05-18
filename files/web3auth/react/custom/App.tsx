@@ -14,7 +14,7 @@ function CustomUI() {
   useEffect(() => {
     const init = async () => {
       try {
-        // REPLACE-const web3AuthCoreCtorParams = {};-
+        // REPLACE-const web3AuthCtorParams = {};-
 
         const web3auth = new Web3AuthCore(web3AuthCtorParams);
 
@@ -68,7 +68,7 @@ function CustomUI() {
       return;
     }
     const user = await web3auth.getUserInfo();
-    console.log("User info", user);
+    uiConsole(user);
   };
 
   const logout = async () => {
@@ -110,7 +110,7 @@ function CustomUI() {
   const unloggedInView = (
     <>
       <button onClick={login} className="card">
-        Google Login
+        Login
       </button>
     </>
   );
@@ -128,8 +128,7 @@ function CustomUI() {
 
       <footer className="footer">
         <a href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/react-app" target="_blank" rel="noopener noreferrer">
-          Source code {"  "}
-          <img className="logo" src="/images/github-logo.png" alt="github-logo" />
+          Source code
         </a>
       </footer>
     </div>
