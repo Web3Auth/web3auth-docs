@@ -102,7 +102,7 @@ const reactSteps = {
     newFiles["web3auth/react/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["web3auth/react/App.tsx"],
       "web3auth/react/App.tsx",
-      PLACEHOLDERS.RPC_FUNCTIONS_REACT_BUTTONS,
+      PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
       rpcFunctionsUIButtonsReact.code
     );
 
@@ -128,7 +128,7 @@ const reactSteps = {
     newFiles["web3auth/react/custom/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["web3auth/react/custom/App.tsx"],
       "web3auth/react/custom/App.tsx",
-      PLACEHOLDERS.RPC_FUNCTIONS_REACT_BUTTONS,
+      PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
       rpcFunctionsUIButtonsReactCustom.code
     );
 

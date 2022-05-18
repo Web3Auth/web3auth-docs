@@ -437,6 +437,6 @@ export const PLACEHOLDERS = {
   CHAIN_NAMESPACE: "web3authChainNamespace",
   SCRIPTS_IMPORT: "deps-import",
   RPC_FUNCTIONS: "rpcFunctionsImport",
-  RPC_FUNCTIONS_REACT_BUTTONS: "rpcFunctionsUIButtonsReactImport",
+  RPC_FUNCTIONS_BUTTONS: "rpcFunctionsUIButtonsImport",
   REACT_PACKAGE_JSON: "reactPackageJsonImport",
 };

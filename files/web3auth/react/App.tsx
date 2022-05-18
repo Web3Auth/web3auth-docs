@@ -94,7 +94,7 @@ function App() {
       <button onClick={getUserInfo} className="card">
         Get User Info
       </button>
-// REPLACE-rpcFunctionsUIButtonsReactImport-
+// REPLACE-rpcFunctionsUIButtonsImport-
 
       <button onClick={logout} className="card">
         Log Out
