@@ -12,9 +12,7 @@
       <!-- Logged In -->
       <div class="grid btn-logged-in">
         <button id="get-user-info" class="btn">Get User Info</button>
-        <button id="get-accounts" class="btn">Get Accounts</button>
-        <button id="get-balance" class="btn">Get Balance</button>
-        <button id="sign-message" class="btn">Sign Message</button>
+        // REPLACE-rpcFunctionsUIButtonsImport-
 
         <button id="logout" class="btn">Logout</button>
 
@@ -124,33 +122,7 @@
           console.error(error.message);
         }
       });
-
-      $("#get-accounts").click(async function (event) {
-        try {
-          const accounts = await rpc.getAccounts(web3auth.provider);
-          $("#code").text(JSON.stringify(["accounts", accounts], null, 2));
-        } catch (error) {
-          console.error(error.message);
-        }
-      });
-
-      $("#get-balance").click(async function (event) {
-        try {
-          const balance = await rpc.getBalance(web3auth.provider);
-          $("#code").text(JSON.stringify(["balance", balance], null, 2));
-        } catch (error) {
-          console.error(error.message);
-        }
-      });
-
-      $("#sign-message").click(async function (event) {
-        try {
-          const signedMsg = await rpc.signMessage(web3auth.provider);
-          $("#code").text(JSON.stringify(["signed message", signedMsg], null, 2));
-        } catch (error) {
-          console.error(error.message);
-        }
-      });
+      // REPLACE-rpcFunctionsImport-
     </script>
   </body>
 </html>

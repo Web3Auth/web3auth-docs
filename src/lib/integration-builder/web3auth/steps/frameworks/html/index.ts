@@ -1,8 +1,9 @@
 import { ReplaceFileAggregator, toSteps } from "../../../../utils";
 import {
-  getConnectCode,
-  getConstructorCode,
-  getCoreConstructorCode,
+  getConnectCodeHTML,
+  getConstructorCodeHTML,
+  getRPCFunctionsHTML,
+  getRPCFunctionsUIButtonsHTML,
   getOpenloginAdapter,
   getScriptImportsCode,
   PLACEHOLDERS,
@@ -34,46 +35,98 @@ const STEPS = toSteps({
 
 const htmlSteps = {
   STEPS,
-  build({ filenames, files, steps, whitelabel, customAuthentication, customLogin, chain }) {
+  build({ filenames, files, steps, whitelabel, customAuthentication, chain }) {
     const newFiles = files;
 
     const replacementAggregator = new ReplaceFileAggregator();
 
-    if (customAuthentication === "yes" || customLogin === "yes") {
-      const coreConstructorCode = getCoreConstructorCode(chain);
+    const ConstructorCode = getConstructorCodeHTML(whitelabel === "yes", chain);
+    const openloginRes = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes");
+    const chainScriptsImportRes = getScriptImportsCode(chain, customAuthentication === "yes");
+    const connectRes = getConnectCodeHTML(customAuthentication === "yes");
+    const getRPCFunctionRes = getRPCFunctionsHTML(chain);
+    const getRPCFunctionUIButtonsRes = getRPCFunctionsUIButtonsHTML(chain);
 
-      const connectRes = getConnectCode(customLogin === "yes", customAuthentication === "yes");
+    //index.html replacements
+    newFiles["web3auth/web/index.html"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/web/index.html"],
+      "web3auth/web/index.html",
+      PLACEHOLDERS.CONSTRUCTOR,
+      ConstructorCode.code
+    );
 
-      newFiles["web3auth/web/custom.html"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/web/custom.html"],
-        "web3auth/web/custom.html",
-        PLACEHOLDERS.CONNECT,
-        connectRes.code
-      );
+    newFiles["web3auth/web/index.html"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/web/index.html"],
+      "web3auth/web/index.html",
+      PLACEHOLDERS.OPENLOGIN_CONFIGURE,
+      openloginRes.code
+    );
 
-      const openloginAdRes = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes", customLogin === "yes");
-      newFiles["web3auth/web/custom.html"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/web/custom.html"],
-        "web3auth/web/custom.html",
-        PLACEHOLDERS.OPENLOGIN_CONFIGURE,
-        openloginAdRes.code
-      );
+    newFiles["web3auth/web/index.html"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/web/index.html"],
+      "web3auth/web/index.html",
+      PLACEHOLDERS.SCRIPTS_IMPORT,
+      chainScriptsImportRes.code
+    );
 
-      newFiles["web3auth/web/custom.html"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/web/custom.html"],
-        "web3auth/web/custom.html",
-        PLACEHOLDERS.CORE_CONSTRUCTOR,
-        coreConstructorCode.code
-      );
+    newFiles["web3auth/web/index.html"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/web/index.html"],
+      "web3auth/web/index.html",
+      PLACEHOLDERS.RPC_FUNCTIONS,
+      getRPCFunctionRes.code
+    );
 
-      const chainScriptsImportRes = getScriptImportsCode(chain, true);
-      newFiles["web3auth/web/custom.html"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/web/custom.html"],
-        "web3auth/web/custom.html",
-        PLACEHOLDERS.SCRIPTS_IMPORT,
-        chainScriptsImportRes.code
-      );
+    newFiles["web3auth/web/index.html"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/web/index.html"],
+      "web3auth/web/index.html",
+      PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
+      getRPCFunctionUIButtonsRes.code
+    );
 
+    // custom.html replacements
+    newFiles["web3auth/web/custom.html"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/web/custom.html"],
+      "web3auth/web/custom.html",
+      PLACEHOLDERS.CONNECT,
+      connectRes.code
+    );
+
+    newFiles["web3auth/web/custom.html"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/web/custom.html"],
+      "web3auth/web/custom.html",
+      PLACEHOLDERS.OPENLOGIN_CONFIGURE,
+      openloginRes.code
+    );
+
+    newFiles["web3auth/web/custom.html"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/web/custom.html"],
+      "web3auth/web/custom.html",
+      PLACEHOLDERS.CONSTRUCTOR,
+      ConstructorCode.code
+    );
+
+    newFiles["web3auth/web/custom.html"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/web/custom.html"],
+      "web3auth/web/custom.html",
+      PLACEHOLDERS.SCRIPTS_IMPORT,
+      chainScriptsImportRes.code
+    );
+
+    newFiles["web3auth/web/custom.html"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/web/custom.html"],
+      "web3auth/web/custom.html",
+      PLACEHOLDERS.RPC_FUNCTIONS,
+      getRPCFunctionRes.code
+    );
+
+    newFiles["web3auth/web/custom.html"] = replacementAggregator.replaceFileVariable(
+      files["web3auth/web/custom.html"],
+      "web3auth/web/custom.html",
+      PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
+      getRPCFunctionUIButtonsRes.code
+    );
+
+    if (customAuthentication === "yes") {
       filenames.push("web3auth/web/custom.html");
 
       steps.push(
@@ -132,34 +185,7 @@ const htmlSteps = {
         }
       );
     }
-    if (customAuthentication === "no" && customLogin === "no") {
-      const { code } = getConstructorCode(whitelabel === "yes", chain);
-
-      newFiles["web3auth/web/index.html"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/web/index.html"],
-        "web3auth/web/index.html",
-        PLACEHOLDERS.CONSTRUCTOR,
-        code
-      );
-
-      if (whitelabel === "yes") {
-        const openloginRes = getOpenloginAdapter(whitelabel === "yes", false, false);
-        newFiles["web3auth/web/index.html"] = replacementAggregator.replaceFileVariable(
-          files["web3auth/web/index.html"],
-          "web3auth/web/index.html",
-          PLACEHOLDERS.OPENLOGIN_CONFIGURE,
-          openloginRes.code
-        );
-      }
-
-      const chainScriptsImportRes = getScriptImportsCode(chain, false);
-      newFiles["web3auth/web/index.html"] = replacementAggregator.replaceFileVariable(
-        files["web3auth/web/index.html"],
-        "web3auth/web/index.html",
-        PLACEHOLDERS.SCRIPTS_IMPORT,
-        chainScriptsImportRes.code
-      );
-
+    if (customAuthentication === "no") {
       filenames.push(`web3auth/web/index.html`);
       steps.push(
         {

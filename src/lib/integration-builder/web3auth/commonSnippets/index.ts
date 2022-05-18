@@ -20,7 +20,7 @@ const rpcTargetMap = {
 };
 export const getConstructorCode = (
   isWhiteLabled: boolean,
-  chain: "eth" | "sol" | "matic" | "bnb" | "avax" | "arbitrum" | "optimism" | "starkex" // todo: move to a type
+  chain: "eth" | "sol"
 ): {
   code: string;
 } => {
@@ -359,6 +359,179 @@ export const getRPCFunctions = (
     code,
   };
 };
+
+// HTML Functions
+
+export const getRPCFunctionsHTML = (
+  chain: "eth" | "sol" | "starkex"
+): {
+  code: string;
+} => {
+  let code = `
+  $("#get-accounts").click(async function (event) {
+    try {
+      const accounts = await rpc.getAccounts(web3auth.provider);
+      $("#code").text(JSON.stringify(["accounts", accounts], null, 2));
+    } catch (error) {
+      console.error(error.message);
+    }
+  });
+
+  $("#get-balance").click(async function (event) {
+    try {
+      const balance = await rpc.getBalance(web3auth.provider);
+      $("#code").text(JSON.stringify(["balance", balance], null, 2));
+    } catch (error) {
+      console.error(error.message);
+    }
+  });
+
+  $("#sign-message").click(async function (event) {
+    try {
+      const signedMsg = await rpc.signMessage(web3auth.provider);
+      $("#code").text(JSON.stringify(["signed message", signedMsg], null, 2));
+    } catch (error) {
+      console.error(error.message);
+    }
+  });`;
+  if (chain === "starkex") {
+    code = `
+    $("#get-stark-hd-account").click(async function (event) {
+      try {
+        const accounts = await rpc.onGetStarkHDAccount(web3auth.provider);
+        $("#code").text(JSON.stringify(["accounts", accounts], null, 2));
+      } catch (error) {
+        console.error(error.message);
+      }
+    });
+
+    $("#on-mint-request").click(async function (event) {
+      try {
+        const balance = await rpc.onMintRequest(web3auth.provider);
+        $("#code").text(JSON.stringify(["balance", balance], null, 2));
+      } catch (error) {
+        console.error(error.message);
+      }
+    });
+
+    $("#on-deposit-request").click(async function (event) {
+      try {
+        const signedMsg = await rpc.onDepositRequest(web3auth.provider);
+        $("#code").text(JSON.stringify(["signed message", signedMsg], null, 2));
+      } catch (error) {
+        console.error(error.message);
+      }
+    });
+
+    $("#on-withdrawal-request").click(async function (event) {
+      try {
+        const balance = await rpc.onWithdrawalRequest(web3auth.provider);
+        $("#code").text(JSON.stringify(["balance", balance], null, 2));
+      } catch (error) {
+        console.error(error.message);
+      }
+    });
+    `;
+  }
+  return {
+    code,
+  };
+};
+
+export const getConnectCodeHTML = (
+  isCustomAuth: boolean
+): {
+  code: string;
+} => {
+  let code = ``;
+  if (isCustomAuth) {
+    code = `
+      const jwtToken = "YOUR_ID_TOKEN";
+      const web3authProvider = await web3auth.connectTo("openlogin", {
+        relogin: true,
+        loginProvider: "jwt",
+        extraLoginOptions: {
+          id_token: jwtToken,
+          domain: "YOUR_APP_DOMAIN",
+          verifierIdField: "sub",
+        },
+      });
+      `;
+  } else {
+    code = `
+        const web3authProvider = await web3auth.connect();
+        `;
+  }
+  return {
+    code,
+  };
+};
+
+export const getRPCFunctionsUIButtonsHTML = (
+  chain: "eth" | "sol" | "starkex"
+): {
+  code: string;
+} => {
+  let code = `
+        <button id="get-accounts" class="btn">Get Accounts</button>
+        <button id="get-balance" class="btn">Get Balance</button>
+        <button id="sign-message" class="btn">Sign Message</button>
+    `;
+  if (chain === "starkex") {
+    code = `
+        <button id="get-stark-hd-account" class="btn">Get Stark Accounts</button>
+        <button id="on-mint-request" class="btn">Mint Request</button>
+        <button id="on-deposit-request" class="btn">Deposit Request</button>;
+        <button id="on-withdrawal-request" class="btn">Withdrawal Request</button>;
+    `;
+  }
+  return {
+    code,
+  };
+};
+
+export const getConstructorCodeHTML = (
+  isWhiteLabled: boolean,
+  chain: "eth" | "sol"
+): {
+  code: string;
+} => {
+  let chainNamespace = "eip155";
+  if (chain === "sol") chainNamespace = "solana";
+  let code = "";
+  if (isWhiteLabled) {
+    code = `
+        const web3AuthCtorParams = {
+          clientId,
+          chainConfig: {
+            chainNamespace: "${chainNamespace}",
+            chainId: "${chainIdMap[chain]}",
+            rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
+          },
+          uiConfig: {
+            theme: "dark",
+            loginMethodsOrder: ["facebook", "twitter"],
+            appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+          }
+        }`;
+  } else {
+    code = `
+        const web3AuthCtorParams = {
+          clientId,
+          chainConfig: {
+            chainNamespace: "${chainNamespace}",
+            chainId:  "${chainIdMap[chain]}",
+            rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
+          }
+        }`;
+  }
+
+  return {
+    code,
+  };
+};
+
+// React Functions
 
 export const getRPCFunctionsUIButtonsReact = (
   chain: "eth" | "sol" | "starkex"
