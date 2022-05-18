@@ -8,7 +8,7 @@ import * as registerApp from "../../frameworks/common/register-app.mdx";
 import * as subscribe from "../../frameworks/common/subscribe.mdx";
 import * as triggeringLogin from "../../frameworks/common/triggering-login.mdx";
 import * as whiteLabeling from "../../frameworks/common/whitelabeling.mdx";
-import * as usingW3AFunctions from "../../frameworks/common/using-w3a-functions.mdx";
+import * as usingRPCFunctions from "../../frameworks/common/using-rpc-functions.mdx";
 import * as logout from "../../frameworks/common/logout.mdx";
 import * as initializeProvider from "./initializing.mdx";
 import * as installationWeb from "./installation.mdx";
@@ -23,7 +23,7 @@ const STEPS = toSteps({
   instantiateCoreSdk,
   logout,
   whiteLabeling,
-  usingW3AFunctions,
+  usingRPCFunctions,
   initializeProvider,
 });
 
@@ -103,7 +103,7 @@ const chainSteps = {
           }),
         },
         {
-          ...STEPS.usingW3AFunctions,
+          ...STEPS.usingRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: `${reactFileRoute}/App.tsx`,
             range: "65-72",
@@ -177,7 +177,7 @@ const chainSteps = {
             pointer: { filename: `${vueFileRoute}/Home.vue`, range: "108-116" },
           },
           {
-            ...STEPS.usingW3AFunctions,
+            ...STEPS.usingRPCFunctions,
             pointer: { filename: `${vueFileRoute}/Home.vue`, range: "121-123" },
           },
           {
@@ -204,7 +204,7 @@ const chainSteps = {
             pointer: { filename: `${vueFileRoute}/Home.vue`, range: "89-97" },
           },
           {
-            ...STEPS.usingW3AFunctions,
+            ...STEPS.usingRPCFunctions,
             pointer: { filename: `${vueFileRoute}/Home.vue`, range: "102-105" },
           },
           {

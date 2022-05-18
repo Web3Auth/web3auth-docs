@@ -17,7 +17,7 @@ import * as registerApp from "../common/register-app.mdx";
 import * as subscribe from "../common/subscribe.mdx";
 import * as triggeringLogin from "../common/triggering-login.mdx";
 import * as whiteLabeling from "../common/whitelabeling.mdx";
-import * as usingW3AFunctions from "../common/using-w3a-functions.mdx";
+import * as usingRPCFunctions from "../common/using-rpc-functions.mdx";
 import * as logout from "../common/logout.mdx";
 
 const STEPS = toSteps({
@@ -28,7 +28,7 @@ const STEPS = toSteps({
   initialize,
   triggeringLogin,
   // loginWithFirebaseAuth,
-  usingW3AFunctions,
+  usingRPCFunctions,
   logout,
   instantiateCoreSdk,
   whiteLabeling,
@@ -143,7 +143,7 @@ const angularSteps = {
           }),
         },
         {
-          ...STEPS.usingW3AFunctions,
+          ...STEPS.usingRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/angular/custom/app.component.ts",
             range: "73-80",
@@ -209,7 +209,7 @@ const angularSteps = {
           }),
         },
         {
-          ...STEPS.usingW3AFunctions,
+          ...STEPS.usingRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/angular/app.component.ts",
             range: "72-79",

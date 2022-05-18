@@ -17,7 +17,7 @@ import * as registerApp from "../common/register-app.mdx";
 import * as subscribe from "../common/subscribe.mdx";
 import * as triggeringLogin from "../common/triggering-login.mdx";
 import * as whiteLabeling from "../common/whitelabeling.mdx";
-import * as usingW3AFunctions from "../common/using-w3a-functions.mdx";
+import * as usingRPCFunctions from "../common/using-rpc-functions.mdx";
 import * as logout from "../common/logout.mdx";
 
 const STEPS = toSteps({
@@ -27,7 +27,7 @@ const STEPS = toSteps({
   subscribe,
   initialize,
   triggeringLogin,
-  usingW3AFunctions,
+  usingRPCFunctions,
   logout,
   whiteLabeling,
   instantiateCoreSdk,
@@ -125,7 +125,7 @@ const htmlSteps = {
           }),
         },
         {
-          ...STEPS.usingW3AFunctions,
+          ...STEPS.usingRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/vue/CustomLogin.vue",
             range: "95-98",
@@ -217,7 +217,7 @@ const htmlSteps = {
           }),
         },
         {
-          ...STEPS.usingW3AFunctions,
+          ...STEPS.usingRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/vue/Home.vue",
             range: "100-107",

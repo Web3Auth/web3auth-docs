@@ -9,7 +9,7 @@ import {
 } from "../../../commonSnippets";
 import * as instantiateCoreSdk from "../common/instantiateCoreSdk.mdx";
 import * as whiteLabeling from "../common/whitelabeling.mdx";
-import * as usingW3AFunctions from "../common/using-w3a-functions.mdx";
+import * as usingRPCFunctions from "../common/using-rpc-functions.mdx";
 import * as initialize from "./initializing.mdx";
 // web
 import * as installationWeb from "./installation.mdx";
@@ -26,7 +26,7 @@ const STEPS = toSteps({
   subscribe,
   initialize,
   triggeringLogin,
-  usingW3AFunctions,
+  usingRPCFunctions,
   logout,
   whiteLabeling,
   instantiateCoreSdk,
@@ -117,7 +117,7 @@ const htmlSteps = {
           }),
         },
         {
-          ...STEPS.usingW3AFunctions,
+          ...STEPS.usingRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/web/custom.html",
             range: "120-127",
@@ -201,7 +201,7 @@ const htmlSteps = {
           }),
         },
         {
-          ...STEPS.usingW3AFunctions,
+          ...STEPS.usingRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "web3auth/web/index.html",
             range: "119-153",
