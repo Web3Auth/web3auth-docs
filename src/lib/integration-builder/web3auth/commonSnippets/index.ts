@@ -6,7 +6,6 @@ const chainIdMap = {
   avax: "0x43114",
   arbitrum: "0x42161",
   optimism: "0x10",
-  starkex: "0x1",
 };
 const rpcTargetMap = {
   eth: "https://ropsten.infura.io/v3/",
@@ -16,11 +15,10 @@ const rpcTargetMap = {
   avax: "https://api.avax-test.network/ext/bc/C/rpc",
   arbitrum: "https://rinkeby.arbitrum.io/rpc",
   optimism: "https://optimism-kovan.infura.io/v3/",
-  starkex: "https://ropsten.infura.io/v3/",
 };
 export const getConstructorCode = (
   isWhiteLabled: boolean,
-  chain: "eth" | "sol"
+  chain: "eth" | "sol" | "starkex" | "starknet"
 ): {
   code: string;
 } => {
@@ -52,6 +50,30 @@ export const getConstructorCode = (
             rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
           }
         }`;
+  }
+  if (chain === "starkex" || chain === "starknet") {
+    if (isWhiteLabled) {
+      code = `
+          const web3AuthCtorParams = {
+            clientId,
+            chainConfig: {
+              chainNamespace: CHAIN_NAMESPACES.OTHER,
+            },
+            uiConfig: {
+              theme: "dark",
+              loginMethodsOrder: ["facebook", "twitter"],
+              appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+            }
+          }`;
+    } else {
+      code = `
+          const web3AuthCtorParams = {
+            clientId,
+            chainConfig: {
+              chainNamespace: CHAIN_NAMESPACES.OTHER,
+            }
+          }`;
+    }
   }
 
   return {
@@ -90,7 +112,7 @@ export const getInitCode = (
 };
 
 export const getChainRpcImport = (
-  chain: "eth" | "sol" | "starkex"
+  chain: "eth" | "sol" | "starkex" | "starknet"
 ): {
   code: string;
 } => {
@@ -103,6 +125,10 @@ import RPC from "./solana";`;
   if (chain === "starkex") {
     code = `
 import RPC from "./starkex";`;
+  }
+  if (chain === "starknet") {
+    code = `
+import RPC from "./starknet";`;
   }
   return {
     code,
@@ -273,7 +299,7 @@ export const getScriptImportsCode = (
 };
 
 export const getRPCFunctions = (
-  chain: "eth" | "sol" | "starkex"
+  chain: "eth" | "sol" | "starkex" | "starknet"
 ): {
   code: string;
 } => {
@@ -355,6 +381,21 @@ export const getRPCFunctions = (
   };
 `;
   }
+  if (chain === "starknet") {
+    code = `
+  const onGetStarkHDAccount = async () => {
+    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const starkaccounts = await rpc.getStarkAccount();
+    uiConsole(starkaccounts);
+  };
+
+  const onDeployAccount = async () => {
+    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const deployaccount =  await rpc.deployAccount();
+    uiConsole(deployaccount);
+  };
+`;
+  }
   return {
     code,
   };
@@ -363,7 +404,7 @@ export const getRPCFunctions = (
 // HTML Functions
 
 export const getRPCFunctionsHTML = (
-  chain: "eth" | "sol" | "starkex"
+  chain: "eth" | "sol" | "starkex" | "starknet"
 ): {
   code: string;
 } => {
@@ -412,26 +453,27 @@ export const getRPCFunctionsHTML = (
       } catch (error) {
         console.error(error.message);
       }
-    });
+    });`;
+  }
+  if (chain === "starknet") {
+    code = `
+      $("#get-stark-hd-account").click(async function (event) {
+        try {
+          const accounts = await rpc.getStarkAccount(web3auth.provider);
+          $("#code").text(JSON.stringify(["accounts", accounts], null, 2));
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
 
-    $("#on-deposit-request").click(async function (event) {
-      try {
-        const signedMsg = await rpc.onDepositRequest(web3auth.provider);
-        $("#code").text(JSON.stringify(["signed message", signedMsg], null, 2));
-      } catch (error) {
-        console.error(error.message);
-      }
-    });
-
-    $("#on-withdrawal-request").click(async function (event) {
-      try {
-        const balance = await rpc.onWithdrawalRequest(web3auth.provider);
-        $("#code").text(JSON.stringify(["balance", balance], null, 2));
-      } catch (error) {
-        console.error(error.message);
-      }
-    });
-    `;
+      $("#on-deploy-account").click(async function (event) {
+        try {
+          const balance = await rpc.deployAccount(web3auth.provider);
+          $("#code").text(JSON.stringify(["balance", balance], null, 2));
+        } catch (error) {
+          console.error(error.message);
+        }
+      });`;
   }
   return {
     code,
@@ -468,7 +510,7 @@ export const getConnectCodeHTML = (
 };
 
 export const getRPCFunctionsUIButtonsHTML = (
-  chain: "eth" | "sol" | "starkex"
+  chain: "eth" | "sol" | "starkex" | "starknet"
 ): {
   code: string;
 } => {
@@ -485,6 +527,12 @@ export const getRPCFunctionsUIButtonsHTML = (
         <button id="on-withdrawal-request" class="btn">Withdrawal Request</button>;
     `;
   }
+  if (chain === "starknet") {
+    code = `
+        <button id="get-stark-hd-account" class="btn">Get Stark Accounts</button>
+        <button id="on-deploy-account" class="btn">Mint Request</button>
+    `;
+  }
   return {
     code,
   };
@@ -492,7 +540,7 @@ export const getRPCFunctionsUIButtonsHTML = (
 
 export const getConstructorCodeHTML = (
   isWhiteLabled: boolean,
-  chain: "eth" | "sol"
+  chain: "eth" | "sol" | "starkex" | "starknet"
 ): {
   code: string;
 } => {
@@ -525,6 +573,30 @@ export const getConstructorCodeHTML = (
           }
         }`;
   }
+  if (chain === "starkex" || chain === "starknet") {
+    if (isWhiteLabled) {
+      code = `
+          const web3AuthCtorParams = {
+            clientId,
+            chainConfig: {
+              chainNamespace: "other",
+            },
+            uiConfig: {
+              theme: "dark",
+              loginMethodsOrder: ["facebook", "twitter"],
+              appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+            }
+          }`;
+    } else {
+      code = `
+          const web3AuthCtorParams = {
+            clientId,
+            chainConfig: {
+              chainNamespace: "other",
+            }
+          }`;
+    }
+  }
 
   return {
     code,
@@ -534,7 +606,7 @@ export const getConstructorCodeHTML = (
 // React Functions
 
 export const getRPCFunctionsUIButtonsReact = (
-  chain: "eth" | "sol" | "starkex"
+  chain: "eth" | "sol" | "starkex" | "starknet"
 ): {
   code: string;
 } => {
@@ -570,30 +642,49 @@ export const getRPCFunctionsUIButtonsReact = (
         Withdraw Request
       </button>`;
   }
+  if (chain === "starknet") {
+    code = `
+      <button onClick={onGetStarkHDAccount} className="card">
+        Get Stark Accounts
+      </button>
+      <button onClick={onDeployAccount} className="card">
+        Deploy Account
+      </button>`;
+  }
   return {
     code,
   };
 };
 
 export const getReactPackageJson = (
-  chain: "eth" | "sol" | "starkex"
+  chain: "eth" | "sol" | "starkex" | "starknet"
 ): {
   code: string;
 } => {
   let code = `
-    "@web3auth/ethereum-provider": "^0.7.0",
+    "@web3auth/ethereum-provider": "^0.9.4",
     "web3": "^1.7.0",`;
   if (chain === "sol") {
     code = `
-    "@web3auth/solana-provider": "^0.7.0",
+    "@web3auth/openlogin-adapter": "^0.9.4",
+    "@web3auth/solana-provider": "^0.9.4",
     "@solana/web3.js": "^1.36.0",`;
   }
   if (chain === "starkex") {
     code = `
+    "@web3auth/openlogin-adapter": "^0.9.4",
     "@starkware-industries/starkex-js": "0.0.6",
     "@toruslabs/starkware-crypto": "^1.1.0",
     "bn.js": "^5.2.0",
     "elliptic": "^6.5.4",`;
+  }
+  if (chain === "starknet") {
+    code = `
+    "@toruslabs/openlogin-starkkey": "^1.7.0",
+    "bn.js": "^5.2.0",
+    "elliptic": "^6.5.4",
+    "starknet": "^3.11.0",
+    "web3": "^1.7.0",`;
   }
   return {
     code,

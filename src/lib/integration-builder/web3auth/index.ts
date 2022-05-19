@@ -70,32 +70,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
     const newFiles = JSON.parse(JSON.stringify(files));
     const steps: IntegrationStep[] = [];
 
-    if (values.chain === "starknet") {
-      finalValues.lang = ["react", "vue"].includes(values.lang) ? values.lang : "react";
-      this.options = {
-        lang: {
-          displayName: "Language/Framework",
-          default: "react",
-          type: "dropdown",
-          choices: [
-            { key: "react", displayName: "React" },
-            { key: "vue", displayName: "Vue" },
-          ],
-        },
-        chain: {
-          displayName: "Blockchain",
-          default: CHAINS[0].key,
-          type: "dropdown",
-          choices: CHAINS,
-        },
-        whitelabel: {
-          displayName: "Whitelabel",
-          default: TOGGLE_CHOICES[0].key,
-          type: "toggle",
-          choices: TOGGLE_CHOICES,
-        },
-      };
-    } else if (values.lang === "android" || values.lang === "ios" || values.lang === "flutter") {
+    if (values.lang === "android" || values.lang === "ios" || values.lang === "flutter") {
       this.options = {
         lang: {
           displayName: "Language/Framework",

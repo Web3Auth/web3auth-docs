@@ -3,8 +3,7 @@ import { Web3Auth } from "@web3auth/web3auth";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { useEffect, useState } from "react";
 import "./App.css";
-// REPLACE-web3authChainRpcImport-
-
+import RPC from "./starknet";
 const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
 
 function App() {
@@ -14,14 +13,23 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        // REPLACE-const web3AuthInitParams = {};-
+    const initParams = {}
 
-        // REPLACE-const web3AuthCtorParams = {};-
-
+          const web3AuthCtorParams = {
+            clientId,
+            chainConfig: {
+              chainNamespace: CHAIN_NAMESPACES.OTHER,
+            }
+          }
         const web3auth = new Web3Auth(web3AuthCtorParams);
-
-        // REPLACE-const web3AuthOpenloginConfigure = {};-
-
+const openloginAdapter = new OpenloginAdapter({
+      adapterSettings: {
+        clientId,
+        network: "testnet",
+        uxMode: "redirect",
+      },
+    });
+    web3auth.configureAdapter(openloginAdapter);
         subscribeAuthEvents(web3auth);
         setWeb3auth(web3auth);
         await web3auth.initModal(initParams);
@@ -80,7 +88,17 @@ function App() {
     setProvider(null);
   };
 
-// REPLACE-rpcFunctionsImport-
+  const onGetStarkHDAccount = async () => {
+    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const starkaccounts = await rpc.getStarkAccount();
+    uiConsole(starkaccounts);
+  };
+
+  const onDeployAccount = async () => {
+    const rpc = new RPC(provider as SafeEventEmitterProvider);
+    const deployaccount =  await rpc.deployAccount();
+    uiConsole(deployaccount);
+  };
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
@@ -94,8 +112,12 @@ function App() {
       <button onClick={getUserInfo} className="card">
         Get User Info
       </button>
-// REPLACE-rpcFunctionsUIButtonsImport-
-
+      <button onClick={onGetStarkHDAccount} className="card">
+        Get Stark Accounts
+      </button>
+      <button onClick={onDeployAccount} className="card">
+        Deploy Account
+      </button>
       <button onClick={logout} className="card">
         Log Out
       </button>

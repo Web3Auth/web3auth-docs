@@ -1,8 +1,8 @@
-import { ReplaceFileAggregator, toSteps } from "../../../../utils";
-import * as initializeProvider from "./initializing.mdx";
+import { toSteps } from "../../../../utils";
+import * as initialize from "./initializing.mdx";
 
 const STEPS = toSteps({
-  initializeProvider,
+  initialize,
 });
 
 const chainSteps = {
@@ -13,7 +13,7 @@ const chainSteps = {
     filenames.push("starkex/starkex.ts");
 
     steps.push({
-      ...STEPS.initializeProvider,
+      ...STEPS.initialize,
       pointer: { filename: "starkex/starkex.ts", range: "17-43" },
     });
 

@@ -51,11 +51,8 @@ const reactSteps = {
 
     const replacementAggregator = new ReplaceFileAggregator();
 
-    if (["starknet"].includes(chain)) {
-      return { filenames, files, steps };
-    }
     filenames.push("web3auth/react/package.json");
-    filenames.push(`web3auth/react/index.tsx`);
+    filenames.push("web3auth/react/index.tsx");
 
     const reactPackageJson = getReactPackageJson(chain);
     newFiles["web3auth/react/package.json"] = replacementAggregator.replaceFileVariable(
@@ -82,7 +79,7 @@ const reactSteps = {
       initRes.code
     );
 
-    const openloginRes = getOpenloginAdapter(whitelabel === "yes", false, false);
+    const openloginRes = getOpenloginAdapter(whitelabel === "yes", false);
     newFiles["web3auth/react/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["web3auth/react/App.tsx"],
       "web3auth/react/App.tsx",
@@ -170,7 +167,7 @@ const reactSteps = {
     });
 
     if (customAuthentication === "no") {
-      filenames.push(`web3auth/react/App.tsx`);
+      filenames.push("web3auth/react/App.tsx");
 
       steps.push(
         {
@@ -302,8 +299,12 @@ const reactSteps = {
       );
     }
 
-    filenames.push(`web3auth/react/App.css`);
-    filenames.push(`web3auth/react/config-overrides.js`);
+    filenames.push("web3auth/react/App.css");
+    if (chain === "starknet") {
+      filenames.push("web3auth/react/starknet/config-overrides.js");
+    } else {
+      filenames.push("web3auth/react/config-overrides.js");
+    }
 
     return { filenames, files, steps };
   },
