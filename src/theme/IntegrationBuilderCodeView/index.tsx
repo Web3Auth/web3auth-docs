@@ -36,7 +36,6 @@ const getLanguage = (filename: string): string => {
 export default function IntegrationBuilderCodeView({ selectedFilename, filenames, fileContents, highlight, onClickFilename }: Props) {
   const highlightLines = rangeParser(highlight || "0");
   const props = useSpring({ scroll: Math.max(highlightLines[0] * 22 - 64, 0) }); // 22 is line height, 64 is offset to scroll the line close to top
-
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -52,7 +51,7 @@ export default function IntegrationBuilderCodeView({ selectedFilename, filenames
               onKeyDown={onClickFilename.bind(this, filename)}
             >
               <FiFile />
-              <span>{getDisplayName(filename)}</span>
+              <span>{getDisplayName(filename.replace("-", "-\u2060"))}</span>
             </li>
           ))}
         </ul>
