@@ -47,8 +47,6 @@ const reactSteps = {
   build({ filenames, files, steps, whitelabel, customAuthentication, chain }) {
     const newFiles = files;
 
-    const { code } = getConstructorCode(whitelabel === "yes", chain);
-
     const replacementAggregator = new ReplaceFileAggregator();
 
     filenames.push("web3auth/react/package.json");
@@ -63,12 +61,13 @@ const reactSteps = {
     );
 
     //Plug n Play Replacements
+    const ConstructorCode = getConstructorCode(whitelabel === "yes", chain);
 
     newFiles["web3auth/react/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["web3auth/react/App.tsx"],
       "web3auth/react/App.tsx",
       PLACEHOLDERS.CONSTRUCTOR,
-      code
+      ConstructorCode.code
     );
 
     const initRes = getInitCode(whitelabel === "yes");
