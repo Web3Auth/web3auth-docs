@@ -10,12 +10,21 @@ const chainSteps = {
   build({ filenames, files, steps, lang }) {
     const newFiles = files;
 
-    filenames.push("starkex/starkex.ts");
+    if (lang === "html") {
+      filenames.push("starkex/starkex.js");
 
-    steps.push({
-      ...STEPS.initialize,
-      pointer: { filename: "starkex/starkex.ts", range: "17-43" },
-    });
+      steps.push({
+        ...STEPS.initialize,
+        pointer: { filename: "starkex/starkex.js", range: "17-43" },
+      });
+    } else {
+      filenames.push("starkex/starkex.ts");
+
+      steps.push({
+        ...STEPS.initialize,
+        pointer: { filename: "starkex/starkex.ts", range: "17-43" },
+      });
+    }
 
     return { files: newFiles, steps, filenames };
   },

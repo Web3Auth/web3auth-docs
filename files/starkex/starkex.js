@@ -1,53 +1,43 @@
-import type { SafeEventEmitterProvider } from "@web3auth/base";
-import { ec as elliptic } from "elliptic";
-// @ts-ignore
-import StarkExAPI from "@starkware-industries/starkex-js/dist/browser";
-import { grindKey, ec as starkEc } from "@toruslabs/starkware-crypto";
-import BN from "bn.js";
-
-const starkExAPI = new StarkExAPI({
-  endpoint: "https://gw.playground-v2.starkex.co",
-});
-
-export default class StarkExRpc {
-  private provider: SafeEventEmitterProvider;
-
-  constructor(provider: SafeEventEmitterProvider) {
-    this.provider = provider;
-  }
-
-  getStarkHDAccount = async (): Promise<elliptic.KeyPair | undefined> => {
-    const account = await this.getStarkAccount();
+const rpc = (() => {
+  /**
+   *
+   * @param {*} provider - provider received from Web3Auth login.
+   */
+  const getStarkHDAccount = async (provider) => {
+    const account = await getStarkAccount(provider);
     return account;
   };
 
-  getStarkAccount = async (): Promise<elliptic.KeyPair | undefined> => {
-    try {
-      const starkEcOrder = starkEc.n;
-      const provider = this.provider;
-      const privKey = await provider.request({ method: "eth_private_key" });
-      const account = starkEc.keyFromPrivate(grindKey(privKey as string, starkEcOrder as BN), "hex");
-      return account;
-    } catch (error: unknown) {
-      console.error((error as Error).message);
-      throw error;
-    }
+  /**
+   *
+   * @param {*} provider - provider received from Web3Auth login.
+   */
+  const getStarkAccount = async (provider) => {
+    const starkEc = StarkwareCrypto.ec
+    const starkEcOrder = starkEc.n;
+    const privKey = await provider.request({ method: "eth_private_key" });
+    const account = starkEc.keyFromPrivate(StarkwareCrypto.grindKey(privKey, starkEcOrder), "hex");
+    return account;
   };
 
-  getStarkKey = async (): Promise<string | undefined> => {
-    try {
-      const account = await this.getStarkAccount();
-      return account?.getPrivate("hex");
-    } catch (error: unknown) {
-      console.error((error as Error).message);
-      throw error;
-    }
+
+  /**
+   *
+   * @param {*} provider - provider received from Web3Auth login.
+   */
+  const getStarkKey = async (provider) => {
+    const account = await getStarkAccount(provider);
+    return account?.getPrivate("hex");
   };
 
-  onMintRequest = async (): Promise<any> => {
+  /**
+   *
+   * @param {*} provider - provider received from Web3Auth login.
+   */
+  const onMintRequest = async (provider, starkExAPI) => {
     try {
       const txId = await starkExAPI.gateway.getFirstUnusedTxId();
-      const starkKey = await this.getStarkKey();
+      const starkKey = await getStarkKey(provider);
 
       const request = {
         txId,
@@ -58,16 +48,22 @@ export default class StarkExRpc {
       };
       const response = await starkExAPI.gateway.mint(request);
       return response;
-    } catch (error: unknown) {
-      console.error((error as Error).message);
+    } catch (error) {
+      console.error(error.message);
       throw error;
     }
   };
 
-  onDepositRequest = async () => {
+
+
+  /**
+   *
+   * @param {*} provider - provider received from Web3Auth login.
+   */
+  const onDepositRequest = async (provider, starkExAPI) => {
     try {
       const txId = await starkExAPI.gateway.getFirstUnusedTxId();
-      const starkKey = await this.getStarkKey();
+      const starkKey = await getStarkKey(provider);
       const request = {
         txId,
         amount: 8,
@@ -77,16 +73,20 @@ export default class StarkExRpc {
       };
       const response = await starkExAPI.gateway.deposit(request);
       return response;
-    } catch (error: unknown) {
-      console.error((error as Error).message);
+    } catch (error) {
+      console.error(error.message);
       throw error;
     }
   };
 
-  onWithdrawalRequest = async (): Promise<any> => {
+  /**
+   *
+   * @param {*} provider - provider received from Web3Auth login.
+   */
+  const onWithdrawalRequest = async (provider, starkExAPI) => {
     try {
       const txId = await starkExAPI.gateway.getFirstUnusedTxId();
-      const starkKey = await this.getStarkKey();
+      const starkKey = await getStarkKey(provider);
       const request = {
         txId,
         amount: 8,
@@ -96,9 +96,18 @@ export default class StarkExRpc {
       };
       const response = await starkExAPI.gateway.withdrawal(request);
       return response;
-    } catch (error: unknown) {
-      console.error((error as Error).message);
+    } catch (error) {
+      console.error(error.message);
       throw error;
     }
   };
-}
+
+  return {
+    getStarkHDAccount,
+    getStarkAccount,
+    getStarkKey,
+    onMintRequest,
+    onDepositRequest,
+    onWithdrawalRequest
+  }
+})()

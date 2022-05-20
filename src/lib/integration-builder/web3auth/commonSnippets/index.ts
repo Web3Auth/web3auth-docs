@@ -267,7 +267,7 @@ export const getOpenloginAdapter = (
 };
 
 export const getScriptImportsCode = (
-  chain: "eth" | "sol",
+  chain: "eth" | "sol" | "starkex" | "starknet",
   customAuth
 ): {
   code: string;
@@ -290,6 +290,16 @@ export const getScriptImportsCode = (
     <script src="https://cdn.jsdelivr.net/npm/buffer@6"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/solana-provider@0.9.0/dist/solanaProvider.umd.min.js"></script>
     <script src="./solana.js"></script>
+    `;
+  } else if (chain === "starkex") {
+    code = `
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/${customAuth ? "core" : "web3auth"}@0/dist/${
+      customAuth ? "core" : "web3auth"
+    }.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@toruslabs/starkware-crypto@1.1.0/dist/starkwareCrypto.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@starkware-industries/starkex-js@0.0.6/dist/browser.min.js"></script>
+    <script src="./starkex.js"></script>
     `;
   }
 
@@ -437,19 +447,37 @@ export const getRPCFunctionsHTML = (
   });`;
   if (chain === "starkex") {
     code = `
-    $("#get-stark-hd-account").click(async function (event) {
+    $("#get-stark-accounts").click(async function (event) {
       try {
-        const accounts = await rpc.onGetStarkHDAccount(web3auth.provider);
+        const accounts = await rpc.getStarkAccount(web3auth.provider);
         $("#code").text(JSON.stringify(["accounts", accounts], null, 2));
       } catch (error) {
         console.error(error.message);
       }
     });
 
-    $("#on-mint-request").click(async function (event) {
+    $("#mint-request").click(async function (event) {
       try {
-        const balance = await rpc.onMintRequest(web3auth.provider);
-        $("#code").text(JSON.stringify(["balance", balance], null, 2));
+        const response = await rpc.onMintRequest(web3auth.provider, starkExAPI);
+        $("#code").text(JSON.stringify(["mint-request", response], null, 2));
+      } catch (error) {
+        console.error(error.message);
+      }
+    });
+
+    $("#deposit-request").click(async function (event) {
+      try {
+        const response = await rpc.onDepositRequest(web3auth.provider, starkExAPI);
+        $("#code").text(JSON.stringify(["deposit-request", response], null, 2));
+      } catch (error) {
+        console.error(error.message);
+      }
+    });
+
+    $("#withdraw-request").click(async function (event) {
+      try {
+        const response = await rpc.onWithdrawalRequest(web3auth.provider, starkExAPI);
+        $("#code").text(JSON.stringify(["withdraw-request", response], null, 2));
       } catch (error) {
         console.error(error.message);
       }
@@ -521,10 +549,10 @@ export const getRPCFunctionsUIButtonsHTML = (
     `;
   if (chain === "starkex") {
     code = `
-        <button id="get-stark-hd-account" class="btn">Get Stark Accounts</button>
-        <button id="on-mint-request" class="btn">Mint Request</button>
-        <button id="on-deposit-request" class="btn">Deposit Request</button>;
-        <button id="on-withdrawal-request" class="btn">Withdrawal Request</button>;
+        <button id="get-stark-accounts" class="btn">Get Stark Accounts</button>
+        <button id="mint-request" class="btn">Mint Request</button>
+        <button id="deposit-request" class="btn">Deposit Request</button>
+        <button id="withdraw-request" class="btn">Withdraw Request</button>
     `;
   }
   if (chain === "starknet") {
@@ -573,7 +601,37 @@ export const getConstructorCodeHTML = (
           }
         }`;
   }
-  if (chain === "starkex" || chain === "starknet") {
+  if (chain === "starkex") {
+    if (isWhiteLabled) {
+      code = `
+          starkExAPI = new StarkExAPI({
+            endpoint: "https://gw.playground-v2.starkex.co",
+          });
+          const web3AuthCtorParams = {
+            clientId,
+            chainConfig: {
+              chainNamespace: "eip155",
+            },
+            uiConfig: {
+              theme: "dark",
+              loginMethodsOrder: ["facebook", "twitter"],
+              appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+            }
+          }`;
+    } else {
+      code = `
+          starkExAPI = new StarkExAPI({
+            endpoint: "https://gw.playground-v2.starkex.co",
+          });
+          const web3AuthCtorParams = {
+            clientId,
+            chainConfig: {
+              chainNamespace: "other",
+            }
+          }`;
+    }
+  }
+  if (chain === "starknet") {
     if (isWhiteLabled) {
       code = `
           const web3AuthCtorParams = {
