@@ -13,8 +13,7 @@ export default class EthereumRpc {
       const accounts = await web3.eth.getAccounts();
       return accounts;
     } catch (error: unknown) {
-      console.error((error as Error).message);
-      throw error;
+      return error as string[];
     }
   }
 
@@ -25,8 +24,7 @@ export default class EthereumRpc {
       const balance = await web3.eth.getBalance(accounts[0]);
       return balance;
     } catch (error) {
-      console.error((error as Error).message);
-      throw error;
+      return error as string;
     }
   }
 
@@ -49,8 +47,7 @@ export default class EthereumRpc {
         }
       );
     } catch (error) {
-      console.error((error as Error).message);
-      throw error;
+      return error as string;
     }
   }
 
@@ -65,8 +62,7 @@ export default class EthereumRpc {
       });
       return txRes.raw;
     } catch (error) {
-      console.error((error as Error).message);
-      throw error;
+      return error as string;
     }
   }
 
@@ -82,8 +78,7 @@ export default class EthereumRpc {
       });
       return txRes.transactionHash;
     } catch (error) {
-      console.error((error as Error).message);
-      throw error;
+      return error as string;
     }
   }
 }

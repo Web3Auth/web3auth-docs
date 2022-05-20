@@ -18,8 +18,7 @@ export default class EthereumRpc {
       const accounts = await web3.eth.getAccounts();
       return accounts;
     } catch (error: unknown) {
-      console.error((error as Error).message);
-      throw error;
+      return error as string[];
     }
   }
 
@@ -31,8 +30,7 @@ export default class EthereumRpc {
       const account = starkEc.keyFromPrivate(grindKey(privKey as string, starkEcOrder as BN), "hex");
       return account;
     } catch (error: unknown) {
-      console.error((error as Error).message);
-      throw error;
+      return error as string;
     }
   };
 
@@ -41,8 +39,7 @@ export default class EthereumRpc {
       const account = await this.getStarkAccount();
       return account?.getPrivate("hex");
     } catch (error: unknown) {
-      console.error((error as Error).message);
-      throw error;
+      return error as string;
     }
   };
 
@@ -57,9 +54,7 @@ export default class EthereumRpc {
         return response;
       }
     } catch (error: unknown) {
-      console.log(error);
-      console.error((error as Error).message);
-      throw error;
+      return error as string;
     }
   };
 }

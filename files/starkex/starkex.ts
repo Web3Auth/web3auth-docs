@@ -29,8 +29,7 @@ export default class StarkExRpc {
       const account = starkEc.keyFromPrivate(grindKey(privKey as string, starkEcOrder as BN), "hex");
       return account;
     } catch (error: unknown) {
-      console.error((error as Error).message);
-      throw error;
+      return error as string;
     }
   };
 
@@ -39,8 +38,7 @@ export default class StarkExRpc {
       const account = await this.getStarkAccount();
       return account?.getPrivate("hex");
     } catch (error: unknown) {
-      console.error((error as Error).message);
-      throw error;
+      return error as string;
     }
   };
 
@@ -59,8 +57,7 @@ export default class StarkExRpc {
       const response = await starkExAPI.gateway.mint(request);
       return response;
     } catch (error: unknown) {
-      console.error((error as Error).message);
-      throw error;
+      return error as string;
     }
   };
 
@@ -78,8 +75,7 @@ export default class StarkExRpc {
       const response = await starkExAPI.gateway.deposit(request);
       return response;
     } catch (error: unknown) {
-      console.error((error as Error).message);
-      throw error;
+      return error as string;
     }
   };
 
@@ -97,8 +93,7 @@ export default class StarkExRpc {
       const response = await starkExAPI.gateway.withdrawal(request);
       return response;
     } catch (error: unknown) {
-      console.error((error as Error).message);
-      throw error;
+      return error as string;
     }
   };
 }

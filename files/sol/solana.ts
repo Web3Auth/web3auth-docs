@@ -16,8 +16,7 @@ export default class SolanaRpc {
       const acc = await solanaWallet.requestAccounts();
       return acc;
     } catch (error) {
-      console.error("Error", JSON.stringify(error));
-      return [];
+      return error as string[];
     }
   };
 
@@ -29,8 +28,9 @@ export default class SolanaRpc {
 
       const accounts = await solanaWallet.requestAccounts();
       const balance = await conn.getBalance(new PublicKey(accounts[0]));
+      return balance.toString();
     } catch (error) {
-      console.error("Error", JSON.stringify(error));
+      return error.toString();
     }
   };
 
@@ -39,8 +39,9 @@ export default class SolanaRpc {
       const solanaWallet = new SolanaWallet(this.provider);
       const msg = Buffer.from("Test Signing Message ", "utf8");
       const res = await solanaWallet.signMessage(msg);
+      return res.toString();
     } catch (error) {
-      console.error("Error", JSON.stringify(error));
+      return error.toString();
     }
   };
 
@@ -61,8 +62,7 @@ export default class SolanaRpc {
       const { signature } = await solanaWallet.signAndSendTransaction(transaction);
       return signature;
     } catch (error) {
-      console.error("Error", JSON.stringify(error));
-      throw error;
+      return error as string;
     }
   };
 
@@ -83,8 +83,7 @@ export default class SolanaRpc {
       const signedTx = await solanaWallet.signTransaction(transaction);
       return signedTx.signature?.toString() || "";
     } catch (error) {
-      console.error("Error", JSON.stringify(error));
-      throw error;
+      return error as string;
     }
   };
 }
