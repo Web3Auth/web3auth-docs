@@ -1,7 +1,7 @@
 // web
 import angular from "./angular";
 import html from "./html";
-import next from "./next";
+import next from "./nextjs";
 import react from "./react";
 import vue from "./vue";
 import ios from "./ios";

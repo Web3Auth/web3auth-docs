@@ -1,52 +1,49 @@
-import { ADAPTER_EVENTS, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
-import type { Web3AuthCore } from "@web3auth/core";
+import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { Web3AuthCore } from "@web3auth/core";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { useEffect, useState } from "react";
 import "./App.css";
-
 // REPLACE-web3authChainRpcImport-
 
-function CustomAuth() {
-  const [web3AuthInstance, setWeb3AuthInstance] = useState<Web3AuthCore | null>(null);
+const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
+
+function CustomUI() {
+  const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null);
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
-  const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
+
   useEffect(() => {
     const init = async () => {
       try {
-        const { Web3AuthCore } = await import("@web3auth/core");
-        const { OpenloginAdapter } = await import("@web3auth/openlogin-adapter");
+        // REPLACE-const web3AuthCtorParams = {};-
 
-        // REPLACE-const web3AuthCoreCtorParams = {};-
-
-        const web3AuthInstance = new Web3AuthCore(web3AuthCoreCtorParams);
-
-        subscribeAuthEvents(web3AuthInstance);
+        const web3auth = new Web3AuthCore(web3AuthCtorParams);
 
         // REPLACE-const web3AuthOpenloginConfigure = {};-
 
-        web3AuthInstance.configureAdapter(openloginAdapter);
-        setWeb3AuthInstance(web3AuthInstance);
-        await web3AuthInstance.init();
+        subscribeAuthEvents(web3auth);
+        setWeb3auth(web3auth);
+        await web3auth.init();
       } catch (error) {
         console.error(error);
       }
     };
 
-    const subscribeAuthEvents = (web3AuthInstance: Web3AuthCore) => {
+    const subscribeAuthEvents = (web3auth: Web3AuthCore) => {
       // Can subscribe to all ADAPTER_EVENTS and LOGIN_MODAL_EVENTS
-      web3AuthInstance.on(ADAPTER_EVENTS.CONNECTED, (data: unknown) => {
+      web3auth.on(ADAPTER_EVENTS.CONNECTED, (data: unknown) => {
         console.log("Yeah!, you are successfully logged in", data);
-        setProvider(web3AuthInstance.provider);
+        setProvider(web3auth.provider);
       });
 
-      web3AuthInstance.on(ADAPTER_EVENTS.CONNECTING, () => {
+      web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
         console.log("connecting");
       });
 
-      web3AuthInstance.on(ADAPTER_EVENTS.DISCONNECTED, () => {
+      web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
         console.log("disconnected");
       });
 
-      web3AuthInstance.on(ADAPTER_EVENTS.ERRORED, (error) => {
+      web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
         console.error("some error or user has cancelled login request", error);
       });
     };
@@ -55,7 +52,7 @@ function CustomAuth() {
   }, []);
 
   const login = async () => {
-    if (!web3AuthInstance) {
+    if (!web3auth) {
       console.log("web3auth not initialized yet");
       return;
     }
@@ -66,51 +63,54 @@ function CustomAuth() {
   };
 
   const getUserInfo = async () => {
-    if (!web3AuthInstance) {
+    if (!web3auth) {
       console.log("web3auth not initialized yet");
       return;
     }
-    const user = await web3AuthInstance.getUserInfo();
-    console.log("User info", user);
+    const user = await web3auth.getUserInfo();
+    uiConsole(user);
   };
 
   const logout = async () => {
-    if (!web3AuthInstance) {
+    if (!web3auth) {
       console.log("web3auth not initialized yet");
       return;
     }
-    await web3AuthInstance.logout();
+    await web3auth.logout();
     setProvider(null);
   };
 
-  const onGetAccounts = async () => {
-    if (!provider) {
-      console.log("provider not initialized yet");
-      return;
+// REPLACE-rpcFunctionsImport-
+
+
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
     }
-    const rpc = new RPC(provider);
-    const userAccount = await rpc.getAccounts();
-    console.log("User account", userAccount);
-  };
+  }
 
   const loggedInView = (
     <>
       <button onClick={getUserInfo} className="card">
         Get User Info
       </button>
-      <button onClick={onGetAccounts} className="card">
-        Get Accounts
-      </button>
+      // REPLACE-rpcFunctionsUIButtonsImport-
+
       <button onClick={logout} className="card">
         Log Out
       </button>
+
+      <div id="console" style={{ whiteSpace: "pre-line" }}>
+        <p style={{ whiteSpace: "pre-line" }}></p>
+      </div>
     </>
   );
 
   const unloggedInView = (
     <>
-      <button onClick={() => login()} className="card">
-        Google Login
+      <button onClick={login} className="card">
+        Login
       </button>
     </>
   );
@@ -128,12 +128,11 @@ function CustomAuth() {
 
       <footer className="footer">
         <a href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/react-app" target="_blank" rel="noopener noreferrer">
-          Source code {"  "}
-          <img className="logo" src="/images/github-logo.png" alt="github-logo" />
+          Source code
         </a>
       </footer>
     </div>
   );
 }
 
-export default CustomAuth;
+export default CustomUI;
