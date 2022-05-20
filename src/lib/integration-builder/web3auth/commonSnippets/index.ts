@@ -724,13 +724,11 @@ export const getReactPackageJson = (
     "web3": "^1.7.0",`;
   if (chain === "sol") {
     code = `
-    "@web3auth/openlogin-adapter": "^0.9.4",
     "@web3auth/solana-provider": "^0.9.4",
     "@solana/web3.js": "^1.36.0",`;
   }
   if (chain === "starkex") {
     code = `
-    "@web3auth/openlogin-adapter": "^0.9.4",
     "@starkware-industries/starkex-js": "0.0.6",
     "@toruslabs/starkware-crypto": "^1.1.0",
     "bn.js": "^5.2.0",
