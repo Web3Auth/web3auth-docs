@@ -76,6 +76,7 @@ module.exports = {
       appId: "6OF28D8CMV",
       apiKey: "425a1e860cb4b9b4ce1f7d9b117c7a81",
       indexName: "docs-web3auth",
+      schedule: 'every 1 day at 3:00 pm',
     },
   },
   presets: [
