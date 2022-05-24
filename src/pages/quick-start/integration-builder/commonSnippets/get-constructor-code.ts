@@ -29,52 +29,57 @@ export const getConstructorCode = (
   let code = "";
   if (isWhiteLabled) {
     code = `
-          const web3AuthCtorParams = {
-            clientId,
-            chainConfig: {
-              chainNamespace: ${chainNamespace},
-              chainId: "${chainIdMap[chain]}",
-              rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
-            },
-            uiConfig: {
-              theme: "dark",
-              loginMethodsOrder: ["facebook", "twitter"],
-              appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
-            }
-          }`;
+    const web3AuthCtorParams = {
+      clientId,
+      chainConfig: {
+        chainNamespace: ${chainNamespace},
+        chainId: "${chainIdMap[chain]}",
+        rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
+      },
+      uiConfig: {
+        theme: "dark",
+        loginMethodsOrder: ["facebook", "twitter"],
+        appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+      }
+    }
+    const web3auth = new Web3Auth(web3AuthCtorParams);`;
   } else {
     code = `
-          const web3AuthCtorParams = {
-            clientId,
-            chainConfig: {
-              chainNamespace: ${chainNamespace},
-              chainId:  "${chainIdMap[chain]}",
-              rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
-            }
-          }`;
+    const web3AuthCtorParams = {
+      clientId,
+      chainConfig: {
+        chainNamespace: ${chainNamespace},
+        chainId:  "${chainIdMap[chain]}",
+        rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
+      }
+    }
+    const web3auth = new Web3Auth(web3AuthCtorParams);`;
   }
   if (chain === "starkex" || chain === "starknet") {
     if (isWhiteLabled) {
       code = `
-            const web3AuthCtorParams = {
-              clientId,
-              chainConfig: {
-                chainNamespace: CHAIN_NAMESPACES.OTHER,
-              },
-              uiConfig: {
-                theme: "dark",
-                loginMethodsOrder: ["facebook", "twitter"],
-                appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
-              }
-            }`;
+    const web3AuthCtorParams = {
+      clientId,
+      chainConfig: {
+        chainNamespace: CHAIN_NAMESPACES.OTHER,
+      },
+      uiConfig: {
+        theme: "dark",
+        loginMethodsOrder: ["facebook", "twitter"],
+        appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+      }
+    }
+    const web3auth = new Web3Auth(web3AuthCtorParams);
+    `;
     } else {
       code = `
-            const web3AuthCtorParams = {
-              clientId,
-              chainConfig: {
-                chainNamespace: CHAIN_NAMESPACES.OTHER,
-              }
-            }`;
+    const web3AuthCtorParams = {
+      clientId,
+      chainConfig: {
+        chainNamespace: CHAIN_NAMESPACES.OTHER,
+      }
+    }
+    const web3auth = new Web3Auth(web3AuthCtorParams);`;
     }
   }
 
@@ -106,7 +111,8 @@ export const getConstructorCodeHTML = (
               loginMethodsOrder: ["facebook", "twitter"],
               appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
             }
-          }`;
+          }
+          const web3auth = new Web3Auth(web3AuthCtorParams);`;
   } else {
     code = `
           const web3AuthCtorParams = {
@@ -116,7 +122,8 @@ export const getConstructorCodeHTML = (
               chainId:  "${chainIdMap[chain]}",
               rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
             }
-          }`;
+          }
+          const web3auth = new Web3Auth(web3AuthCtorParams);`;
   }
   if (chain === "starkex") {
     if (isWhiteLabled) {
@@ -134,7 +141,8 @@ export const getConstructorCodeHTML = (
                 loginMethodsOrder: ["facebook", "twitter"],
                 appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
               }
-            }`;
+            }
+            const web3auth = new Web3Auth(web3AuthCtorParams);`;
     } else {
       code = `
             starkExAPI = new StarkExAPI({
@@ -145,7 +153,8 @@ export const getConstructorCodeHTML = (
               chainConfig: {
                 chainNamespace: "other",
               }
-            }`;
+            }
+            const web3auth = new Web3Auth(web3AuthCtorParams);`;
     }
   }
   if (chain === "starknet") {
@@ -161,7 +170,8 @@ export const getConstructorCodeHTML = (
                 loginMethodsOrder: ["facebook", "twitter"],
                 appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
               }
-            }`;
+            }
+            const web3auth = new Web3Auth(web3AuthCtorParams);`;
     } else {
       code = `
             const web3AuthCtorParams = {
@@ -169,7 +179,8 @@ export const getConstructorCodeHTML = (
               chainConfig: {
                 chainNamespace: "other",
               }
-            }`;
+            }
+            const web3auth = new Web3Auth(web3AuthCtorParams);`;
     }
   }
 

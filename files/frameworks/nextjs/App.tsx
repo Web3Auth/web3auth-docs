@@ -14,11 +14,9 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-          // REPLACE-const web3AuthInitParams = {};-
+        // REPLACE-const web3AuthInitParams = {};-
 
         // REPLACE-const web3AuthCtorParams = {};-
-
-        const web3auth = new Web3Auth(web3AuthCtorParams);
 
         // REPLACE-const web3AuthOpenloginConfigure = {};-
 

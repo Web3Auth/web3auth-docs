@@ -16,19 +16,17 @@ function App() {
       try {
           // REPLACE-const web3AuthInitParams = {};-
 
-        // REPLACE-const web3AuthCtorParams = {};-
+          // REPLACE-const web3AuthCtorParams = {};-
 
-        const web3auth = new Web3Auth(web3AuthCtorParams);
+          // REPLACE-const web3AuthOpenloginConfigure = {};-
 
-        // REPLACE-const web3AuthOpenloginConfigure = {};-
-
-        subscribeAuthEvents(web3auth);
-        setWeb3auth(web3auth);
-        await web3auth.initModal(initParams);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+          subscribeAuthEvents(web3auth);
+          setWeb3auth(web3auth);
+          await web3auth.initModal(initParams);
+        } catch (error) {
+          console.error(error);
+        }
+      };
 
     const subscribeAuthEvents = (web3auth: Web3Auth) => {
       // Can subscribe to all ADAPTER_EVENTS and LOGIN_MODAL_EVENTS

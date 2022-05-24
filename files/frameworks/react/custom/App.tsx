@@ -14,15 +14,15 @@ function CustomUI() {
   useEffect(() => {
     const init = async () => {
       try {
-        // REPLACE-const web3AuthCtorParams = {};-
+        // REPLACE-const web3AuthInitParams = {};-
 
-        const web3auth = new Web3AuthCore(web3AuthCtorParams);
+        // REPLACE-const web3AuthCtorParams = {};-
 
         // REPLACE-const web3AuthOpenloginConfigure = {};-
 
         subscribeAuthEvents(web3auth);
         setWeb3auth(web3auth);
-        await web3auth.init();
+        await web3auth.initModal(initParams);
       } catch (error) {
         console.error(error);
       }
