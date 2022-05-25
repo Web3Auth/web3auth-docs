@@ -12,8 +12,8 @@ import {
 } from "../../../commonSnippets";
 import * as initialize from "../common/initializing.mdx";
 // web
-import * as installation from "./installation.mdx";
-import * as installationCustom from "./installationCustom.mdx";
+import * as installation from "../common/installation.mdx";
+import * as installationCustom from "../common/installationCustom.mdx";
 import * as buildingApp from "./buildingApp.mdx";
 import * as instantiateCoreSdk from "../common/instantiateCoreSdk.mdx";
 import * as getUserInfo from "../common/getUserInfo.mdx";
