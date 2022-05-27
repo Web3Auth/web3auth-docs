@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { ADAPTER_EVENTS, SafeEventEmitterProvider } from "@web3auth/base";
+import { ADAPTER_EVENTS, SafeEventEmitterProvider, CHAIN_NAMESPACES } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { Web3Auth } from "@web3auth/web3auth";
 // REPLACE-web3authChainRpcImport-
@@ -25,7 +25,6 @@ export class AppComponent {
     this.web3auth = new Web3Auth(web3AuthCtorParams);
 
     // REPLACE-const web3AuthOpenloginConfigure = {};-
-    this.web3auth.configureAdapter(openloginAdapter);
     this.subscribeAuthEvents(this.web3auth);
     await this.web3auth.initModal(initParams);
     this.isModalLoaded = true;
