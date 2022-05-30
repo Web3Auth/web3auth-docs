@@ -23,7 +23,7 @@ import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { Web3Auth } from "@web3auth/web3auth";
 import { ref, onMounted } from "vue";
-import RPC from "./evm";
+// REPLACE-web3authChainRpcImport-
 
 export default {
   name: "Home",
@@ -37,33 +37,17 @@ export default {
     const provider = ref<SafeEventEmitterProvider | null>(null);
     const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
 
-    const initParams = {};
+    // REPLACE-const web3AuthCoreCtorParams = {};-
 
-    const web3AuthCtorParams = {
-      clientId,
-      chainConfig: {
-        chainNamespace: CHAIN_NAMESPACES.EIP155,
-        chainId: "0x1",
-        rpcTarget: "https://mainnet.infura.io/v3/7f513826728a4361845254ab179f607e", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
-      },
-    };
-    let web3auth = new Web3Auth(web3AuthCtorParams);
     onMounted(async () => {
       try {
         loading.value = true;
 
-        web3auth = new Web3Auth(web3AuthCtorParams);
-        const openloginAdapter = new OpenloginAdapter({
-          adapterSettings: {
-            clientId,
-            network: "testnet",
-            uxMode: "redirect",
-          },
-        });
-        web3auth.configureAdapter(openloginAdapter);
-        subscribeAuthEvents();
+        // REPLACE-const web3AuthOpenloginConfigure = {};-
 
-        await web3auth.initModal(initParams);
+        web3auth = new Web3Auth(web3AuthCtorParams);
+
+        // REPLACE-const web3AuthInitParams = {};-
       } catch (error) {
         console.log("error", error);
         uiConsole("error", error);
@@ -72,29 +56,9 @@ export default {
       }
     });
 
-    function subscribeAuthEvents() {
-      web3auth.on(ADAPTER_STATUS.CONNECTED, async (data: CONNECTED_EVENT_DATA) => {
-        uiConsole("connected to wallet", data);
-        provider.value = web3auth.provider;
-      });
-      web3auth.on(ADAPTER_STATUS.CONNECTING, () => {
-        uiConsole("connecting");
-        connecting.value = true;
-      });
-      web3auth.on(ADAPTER_STATUS.DISCONNECTED, () => {
-        uiConsole("disconnected");
-        provider.value = null;
-      });
-      web3auth.on(ADAPTER_STATUS.ERRORED, (error) => {
-        uiConsole("errored", error);
-      });
-      web3auth.on(LOGIN_MODAL_EVENTS.MODAL_VISIBILITY, (isVisible: boolean) => {
-        connecting.value = isVisible;
-      });
-    }
     async function connect() {
       try {
-        const web3authProvider = await web3auth.connect();
+        // REPLACE-const web3AuthConnect = {};-
         provider.value = web3authProvider;
       } catch (error) {
         console.error(error);

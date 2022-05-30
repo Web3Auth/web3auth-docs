@@ -38,8 +38,6 @@ export default {
 
     // REPLACE-const web3AuthCoreCtorParams = {};-
 
-    let web3auth = new Web3AuthCore(web3AuthCtorParams);
-
     onMounted(async () => {
       try {
         loading.value = true;
@@ -48,9 +46,7 @@ export default {
 
         web3auth = new Web3AuthCore(web3AuthCoreCtorParams);
 
-        web3auth.configureAdapter(openloginAdapter);
-        subscribeAuthEvents();
-        await web3auth.init();
+        // REPLACE-const web3AuthInitParams = {};-
       } catch (error) {
         console.log("error", error);
         uiConsole("error", error);
@@ -59,26 +55,6 @@ export default {
       }
     });
 
-    function subscribeAuthEvents() {
-      web3auth.on(ADAPTER_STATUS.CONNECTED, async (data: CONNECTED_EVENT_DATA) => {
-        uiConsole("connected to wallet", data);
-        provider.value = web3auth.provider;
-      });
-      web3auth.on(ADAPTER_STATUS.CONNECTING, () => {
-        uiConsole("connecting");
-        connecting.value = true;
-      });
-      web3auth.on(ADAPTER_STATUS.DISCONNECTED, () => {
-        uiConsole("disconnected");
-        provider.value = null;
-      });
-      web3auth.on(ADAPTER_STATUS.ERRORED, (error) => {
-        uiConsole("errored", error);
-      });
-      web3auth.on(LOGIN_MODAL_EVENTS.MODAL_VISIBILITY, (isVisible: boolean) => {
-        connecting.value = isVisible;
-      });
-    }
     async function connect() {
       try {
         // REPLACE-const web3AuthConnect = {};-

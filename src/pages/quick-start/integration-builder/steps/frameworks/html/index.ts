@@ -2,6 +2,7 @@ import { ReplaceFileAggregator, toSteps } from "../../../utils";
 import {
   getConnectCodeHTML,
   getConstructorCodeHTML,
+  getInitCode,
   getRPCFunctionsHTML,
   getRPCFunctionsUIButtonsHTML,
   getOpenloginAdapter,
@@ -17,14 +18,12 @@ import * as installationWeb from "./installation.mdx";
 import * as instantiate from "./instantiateSDK.mdx";
 import * as logout from "../common/logout.mdx";
 import * as registerApp from "./register-app.mdx";
-import * as subscribe from "./subscribe.mdx";
 import * as triggeringLogin from "./triggering-login.mdx";
 
 const STEPS = toSteps({
   installationWeb,
   registerApp,
   instantiate,
-  subscribe,
   initialize,
   triggeringLogin,
   usingRPCFunctions,
@@ -46,6 +45,7 @@ const htmlSteps = {
     const connectRes = getConnectCodeHTML(customAuthentication === "yes");
     const getRPCFunctionRes = getRPCFunctionsHTML(chain);
     const getRPCFunctionUIButtonsRes = getRPCFunctionsUIButtonsHTML(chain);
+    const initRes = getInitCode(whitelabel === "yes", customAuthentication === "yes");
 
     //index.html replacements
     newFiles["frameworks/web/index.html"] = replacementAggregator.replaceFileVariable(
@@ -83,103 +83,110 @@ const htmlSteps = {
       getRPCFunctionUIButtonsRes.code
     );
 
-    // custom.html replacements
-    newFiles["frameworks/web/custom.html"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/web/custom.html"],
-      "frameworks/web/custom.html",
+    newFiles["frameworks/web/index.html"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/web/index.html"],
+      "frameworks/web/index.html",
+      PLACEHOLDERS.INIT,
+      initRes.code
+    );
+
+    // custom/index.html replacements
+    newFiles["frameworks/web/custom/index.html"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/web/custom/index.html"],
+      "frameworks/web/custom/index.html",
       PLACEHOLDERS.CONNECT,
       connectRes.code
     );
 
-    newFiles["frameworks/web/custom.html"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/web/custom.html"],
-      "frameworks/web/custom.html",
+    newFiles["frameworks/web/custom/index.html"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/web/custom/index.html"],
+      "frameworks/web/custom/index.html",
       PLACEHOLDERS.OPENLOGIN_CONFIGURE,
       openloginRes.code
     );
 
-    newFiles["frameworks/web/custom.html"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/web/custom.html"],
-      "frameworks/web/custom.html",
+    newFiles["frameworks/web/custom/index.html"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/web/custom/index.html"],
+      "frameworks/web/custom/index.html",
       PLACEHOLDERS.CONSTRUCTOR,
       ConstructorCode.code
     );
 
-    newFiles["frameworks/web/custom.html"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/web/custom.html"],
-      "frameworks/web/custom.html",
+    newFiles["frameworks/web/custom/index.html"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/web/custom/index.html"],
+      "frameworks/web/custom/index.html",
       PLACEHOLDERS.SCRIPTS_IMPORT,
       chainScriptsImportRes.code
     );
 
-    newFiles["frameworks/web/custom.html"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/web/custom.html"],
-      "frameworks/web/custom.html",
+    newFiles["frameworks/web/custom/index.html"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/web/custom/index.html"],
+      "frameworks/web/custom/index.html",
       PLACEHOLDERS.RPC_FUNCTIONS,
       getRPCFunctionRes.code
     );
 
-    newFiles["frameworks/web/custom.html"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/web/custom.html"],
-      "frameworks/web/custom.html",
+    newFiles["frameworks/web/custom/index.html"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/web/custom/index.html"],
+      "frameworks/web/custom/index.html",
       PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
       getRPCFunctionUIButtonsRes.code
     );
 
+    newFiles["frameworks/web/custom/index.html"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/web/custom/index.html"],
+      "frameworks/web/custom/index.html",
+      PLACEHOLDERS.INIT,
+      initRes.code
+    );
+
     if (customAuthentication === "yes") {
-      filenames.push("frameworks/web/custom.html");
+      filenames.push("frameworks/web/custom/index.html");
 
       steps.push(
         {
           ...STEPS.installationWeb,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/web/custom.html", range: "40-42" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/web/custom/index.html", range: "40-42" }),
         },
         {
           ...STEPS.registerApp,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/web/custom.html", range: "53" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/web/custom/index.html", range: "53" }),
         },
         {
           ...STEPS.instantiateCoreSdk,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/web/custom.html", range: "57" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/web/custom/index.html", range: "57" }),
         }
       );
 
       if (whitelabel === "yes") {
         steps.push({
           ...STEPS.whiteLabeling,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/web/custom.html", range: "58-60" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/web/custom/index.html", range: "58-60" }),
         });
       }
       steps.push(
         {
-          ...STEPS.subscribe,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "frameworks/web/custom.html",
-            range: "77-97",
-          }),
-        },
-        {
           ...STEPS.initialize,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/web/custom.html", range: "63" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/web/custom/index.html", range: "63" }),
         },
         {
           ...STEPS.triggeringLogin,
           pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "frameworks/web/custom.html",
+            filename: "frameworks/web/custom/index.html",
             range: "99-108",
           }),
         },
         {
           ...STEPS.usingRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "frameworks/web/custom.html",
+            filename: "frameworks/web/custom/index.html",
             range: "120-127",
           }),
         },
         {
           ...STEPS.logout,
           pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "frameworks/web/custom.html",
+            filename: "frameworks/web/custom/index.html",
             range: "110-118",
           }),
         }
@@ -211,13 +218,6 @@ const htmlSteps = {
         {
           ...STEPS.initialize,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/web/index.html", range: "62" }),
-        },
-        {
-          ...STEPS.subscribe,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "frameworks/web/index.html",
-            range: "76-96",
-          }),
         },
         {
           ...STEPS.triggeringLogin,

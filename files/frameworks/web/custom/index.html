@@ -53,9 +53,7 @@
 
         // REPLACE-const web3AuthOpenloginConfigure = {};-
 
-        subscribeAuthEvents(web3auth);
-
-        await web3auth.init();
+        // REPLACE-const web3AuthInitParams = {};-
         console.log("web3auth", web3auth, web3auth.provider);
         if (web3auth.provider) {
           $(".btn-logged-in").show();
@@ -68,28 +66,6 @@
           $(".btn-logged-in").hide();
         }
       })();
-
-      function subscribeAuthEvents(web3auth) {
-        web3auth.on("connected", (data) => {
-          console.log("Yeah!, you are successfully logged in", data);
-        });
-
-        web3auth.on("connecting", () => {
-          console.log("connecting");
-        });
-
-        web3auth.on("disconnected", () => {
-          console.log("disconnected");
-        });
-
-        web3auth.on("errored", (error) => {
-          console.log("some error or user have cancelled login request", error);
-        });
-
-        web3auth.on("MODAL_VISIBILITY", (isVisible) => {
-          console.log("modal visibility", isVisible);
-        });
-      }
 
       $("#login").click(async function (event) {
         try {

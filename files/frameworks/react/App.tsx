@@ -14,39 +14,17 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-          // REPLACE-const web3AuthInitParams = {};-
-
           // REPLACE-const web3AuthCtorParams = {};-
 
           // REPLACE-const web3AuthOpenloginConfigure = {};-
 
-          subscribeAuthEvents(web3auth);
           setWeb3auth(web3auth);
-          await web3auth.initModal(initParams);
+          // REPLACE-const web3AuthInitParams = {};-
+
         } catch (error) {
           console.error(error);
         }
       };
-
-    const subscribeAuthEvents = (web3auth: Web3Auth) => {
-      // Can subscribe to all ADAPTER_EVENTS and LOGIN_MODAL_EVENTS
-      web3auth.on(ADAPTER_EVENTS.CONNECTED, (data: unknown) => {
-        console.log("Yeah!, you are successfully logged in", data);
-        setProvider(web3auth.provider);
-      });
-
-      web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
-        console.log("connecting");
-      });
-
-      web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
-        console.log("disconnected");
-      });
-
-      web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
-        console.error("some error or user has cancelled login request", error);
-      });
-    };
 
     init();
   }, []);

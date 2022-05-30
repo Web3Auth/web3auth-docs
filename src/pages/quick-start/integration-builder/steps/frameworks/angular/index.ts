@@ -14,7 +14,6 @@ import * as installationWeb from "../common/installation.mdx";
 import * as instantiateCoreSdk from "../common/instantiateCoreSdk.mdx";
 import * as instantiate from "../common/instantiateSDK.mdx";
 import * as registerApp from "../common/register-app.mdx";
-import * as subscribe from "../common/subscribe.mdx";
 import * as triggeringLogin from "../common/triggering-login.mdx";
 import * as whiteLabeling from "../common/whitelabeling.mdx";
 import * as usingRPCFunctions from "../common/using-rpc-functions.mdx";
@@ -24,7 +23,6 @@ const STEPS = toSteps({
   installationWeb,
   registerApp,
   instantiate,
-  subscribe,
   initialize,
   triggeringLogin,
   // loginWithFirebaseAuth,
@@ -50,10 +48,16 @@ const angularSteps = {
       code
     );
 
-    const initRes = getInitCode(whitelabel === "yes");
+    const initRes = getInitCode(whitelabel === "yes", customAuthentication === "yes");
     newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
       files["frameworks/angular/app.component.ts"],
       "frameworks/angular/app.component.ts",
+      PLACEHOLDERS.INIT,
+      initRes.code
+    );
+    newFiles["frameworks/angular/custom/app.component.ts"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/angular/custom/app.component.ts"],
+      "frameworks/angular/custom/app.component.ts",
       PLACEHOLDERS.INIT,
       initRes.code
     );
@@ -125,13 +129,6 @@ const angularSteps = {
       }
       steps.push(
         {
-          ...STEPS.subscribe,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "frameworks/angular/custom/app.component.ts",
-            range: "33-50",
-          }),
-        },
-        {
           ...STEPS.initialize,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/angular/custom/app.component.ts", range: "29" }),
         },
@@ -189,13 +186,6 @@ const angularSteps = {
         {
           ...STEPS.instantiate,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/angular/app.component.ts", range: "25" }),
-        },
-        {
-          ...STEPS.subscribe,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "frameworks/angular/app.component.ts",
-            range: "34-51",
-          }),
         },
         {
           ...STEPS.initialize,

@@ -19,7 +19,6 @@ import * as instantiateCoreSdk from "../common/instantiateCoreSdk.mdx";
 import * as getUserInfo from "../common/getUserInfo.mdx";
 import * as instantiate from "../common/instantiateSDK.mdx";
 import * as registerApp from "../common/register-app.mdx";
-import * as subscribe from "../common/subscribe.mdx";
 import * as triggeringLogin from "../common/triggering-login.mdx";
 import * as whiteLabeling from "../common/whitelabeling.mdx";
 import * as usingRPCFunctions from "../common/using-rpc-functions.mdx";
@@ -31,7 +30,6 @@ const STEPS = toSteps({
   registerApp,
   getUserInfo,
   instantiate,
-  subscribe,
   initialize,
   triggeringLogin,
   // loginWithFirebaseAuth,
@@ -70,10 +68,16 @@ const nextjsSteps = {
       ConstructorCode.code
     );
 
-    const initRes = getInitCode(whitelabel === "yes");
+    const initRes = getInitCode(whitelabel === "yes", customAuthentication === "yes");
     newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["frameworks/nextjs/App.tsx"],
       "frameworks/nextjs/App.tsx",
+      PLACEHOLDERS.INIT,
+      initRes.code
+    );
+    newFiles["frameworks/nextjs/custom/App.tsx"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/nextjs/custom/App.tsx"],
+      "frameworks/nextjs/custom/App.tsx",
       PLACEHOLDERS.INIT,
       initRes.code
     );
@@ -190,13 +194,6 @@ const nextjsSteps = {
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/nextjs/App.tsx", range: "21" }),
         },
         {
-          ...STEPS.subscribe,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "frameworks/nextjs/App.tsx",
-            range: "33-51",
-          }),
-        },
-        {
           ...STEPS.initialize,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/nextjs/App.tsx", range: "27" }),
         },
@@ -256,13 +253,6 @@ const nextjsSteps = {
         });
       }
       steps.push(
-        {
-          ...STEPS.subscribe,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "frameworks/nextjs/custom/App.tsx",
-            range: "31-49",
-          }),
-        },
         {
           ...STEPS.initialize,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/nextjs/custom/App.tsx", range: "25" }),

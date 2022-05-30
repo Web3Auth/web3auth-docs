@@ -18,35 +18,13 @@ export class AppComponent {
   isModalLoaded = false;
 
   async ngOnInit() {
-    // REPLACE-const web3AuthInitParams = {};-
-
     // REPLACE-const web3AuthCtorParams = {};-
 
     this.web3auth = new Web3Auth(web3AuthCtorParams);
 
     // REPLACE-const web3AuthOpenloginConfigure = {};-
-    this.subscribeAuthEvents(this.web3auth);
-    await this.web3auth.initModal(initParams);
+    // REPLACE-const web3AuthInitParams = {};-
     this.isModalLoaded = true;
-  }
-
-  subscribeAuthEvents(web3auth: Web3Auth) {
-    web3auth.on(ADAPTER_EVENTS.CONNECTED, (data) => {
-      console.log("Yeah!, you are successfully logged in", data);
-      this.provider = web3auth.provider;
-    });
-
-    web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
-      console.log("connecting");
-    });
-
-    web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
-      console.log("disconnected");
-    });
-
-    web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
-      console.log("some error or user have cancelled login request", error);
-    });
   }
 
   async login() {

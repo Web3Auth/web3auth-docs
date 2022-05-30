@@ -71,15 +71,7 @@ export const getOpenloginAdapter = (
       });
     web3auth.configureAdapter(openloginAdapter);`;
   } else {
-    code = `
-      const openloginAdapter = new OpenloginAdapter({
-        adapterSettings: {
-          clientId,
-          network: "testnet",
-          uxMode: "redirect",
-        },
-      });
-      web3auth.configureAdapter(openloginAdapter);`;
+    code = ``;
   }
   return { code };
 };

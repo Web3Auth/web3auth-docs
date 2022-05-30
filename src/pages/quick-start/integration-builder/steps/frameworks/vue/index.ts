@@ -14,7 +14,6 @@ import * as installationWeb from "../common/installation.mdx";
 import * as instantiateCoreSdk from "../common/instantiateCoreSdk.mdx";
 import * as instantiate from "../common/instantiateSDK.mdx";
 import * as registerApp from "../common/register-app.mdx";
-import * as subscribe from "../common/subscribe.mdx";
 import * as triggeringLogin from "../common/triggering-login.mdx";
 import * as whiteLabeling from "../common/whitelabeling.mdx";
 import * as usingRPCFunctions from "../common/using-rpc-functions.mdx";
@@ -24,7 +23,6 @@ const STEPS = toSteps({
   installationWeb,
   registerApp,
   instantiate,
-  subscribe,
   initialize,
   triggeringLogin,
   usingRPCFunctions,
@@ -107,13 +105,6 @@ const htmlSteps = {
       }
       steps.push(
         {
-          ...STEPS.subscribe,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "frameworks/vue/CustomLogin.vue",
-            range: "61-80",
-          }),
-        },
-        {
           ...STEPS.initialize,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/vue/CustomLogin.vue", range: "52" }),
         },
@@ -152,10 +143,16 @@ const htmlSteps = {
         code
       );
 
-      const initRes = getInitCode(whitelabel === "yes");
+      const initRes = getInitCode(whitelabel === "yes", customAuthentication === "yes");
       newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
         files["frameworks/vue/Home.vue"],
         "frameworks/vue/Home.vue",
+        PLACEHOLDERS.INIT,
+        initRes.code
+      );
+      newFiles["frameworks/vue/custom/Home.vue"] = replacementAggregator.replaceFileVariable(
+        files["frameworks/vue/custom/Home.vue"],
+        "frameworks/vue/custom/Home.vue",
         PLACEHOLDERS.INIT,
         initRes.code
       );
@@ -197,13 +194,6 @@ const htmlSteps = {
         {
           ...STEPS.instantiate,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/vue/Home.vue", range: "48" }),
-        },
-        {
-          ...STEPS.subscribe,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "frameworks/vue/Home.vue",
-            range: "63-82",
-          }),
         },
         {
           ...STEPS.initialize,
