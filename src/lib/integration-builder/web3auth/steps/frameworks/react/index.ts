@@ -189,7 +189,7 @@ const reactSteps = {
         },
         {
           ...STEPS.registerApp,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/react/App.tsx", range: "8" }),
+          pointer: replacementAggregator.pointerRange(files["web3auth/react/App.tsx"], { filename: "web3auth/react/App.tsx", variableName: "RegisterApp" }),
         }
       );
       if (whitelabel === "yes") {

@@ -5,7 +5,9 @@ import { useEffect, useState } from "react";
 import "./App.css";
 // REPLACE-web3authChainRpcImport-
 
+// START - RegisterApp
 const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
+// END
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
