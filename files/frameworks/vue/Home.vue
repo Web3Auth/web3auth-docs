@@ -18,11 +18,12 @@
 </template>
 
 <script lang="ts">
-import { ADAPTER_STATUS, CONNECTED_EVENT_DATA, SafeEventEmitterProvider } from "@web3auth/base";
+import { ADAPTER_STATUS, CONNECTED_EVENT_DATA, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { Web3Auth } from "@web3auth/web3auth";
 import { ref, onMounted } from "vue";
-// REPLACE-web3authChainRpcImport-
+import RPC from "./evm";
 
 export default {
   name: "Home",
@@ -36,19 +37,30 @@ export default {
     const provider = ref<SafeEventEmitterProvider | null>(null);
     const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
 
-    // REPLACE-const web3AuthInitParams = {};-
+    const initParams = {};
 
-    // REPLACE-const web3AuthCtorParams = {};-
-
+    const web3AuthCtorParams = {
+      clientId,
+      chainConfig: {
+        chainNamespace: CHAIN_NAMESPACES.EIP155,
+        chainId: "0x1",
+        rpcTarget: "https://mainnet.infura.io/v3/7f513826728a4361845254ab179f607e", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
+      },
+    };
     let web3auth = new Web3Auth(web3AuthCtorParams);
     onMounted(async () => {
       try {
         loading.value = true;
 
         web3auth = new Web3Auth(web3AuthCtorParams);
-
-        // REPLACE-const web3AuthOpenloginConfigure = {};-
-
+        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            clientId,
+            network: "testnet",
+            uxMode: "redirect",
+          },
+        });
+        web3auth.configureAdapter(openloginAdapter);
         subscribeAuthEvents();
 
         await web3auth.initModal(initParams);
