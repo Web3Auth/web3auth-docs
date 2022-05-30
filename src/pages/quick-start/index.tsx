@@ -188,6 +188,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
           </div>
           <div className={styles.rightCol}>
             <IntegrationBuilderCodeView
+              builderOptions={builderOptions}
               filenames={integration.filenames}
               fileContents={integration.files}
               highlight={steps[stepIndex] && steps[stepIndex].pointer?.filename === selectedFilename && steps[stepIndex].pointer?.range}

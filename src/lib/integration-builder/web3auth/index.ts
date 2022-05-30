@@ -1,5 +1,7 @@
+// import BUILDERS from "../../builder";
 import { DisplayChoice, IntegrationBuilder, IntegrationStep } from "../interfaces";
 import STEPS from "./steps";
+// import STEPS from "./steps";
 
 const CHAINS: DisplayChoice[] = [
   { key: "eth", displayName: "Ethereum" },
@@ -63,6 +65,12 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
     },
     whitelabel: {
       displayName: "Whitelabel",
+      default: TOGGLE_CHOICES[0].key,
+      type: "toggle",
+      choices: TOGGLE_CHOICES,
+    },
+    preview: {
+      displayName: "Preview",
       default: TOGGLE_CHOICES[0].key,
       type: "toggle",
       choices: TOGGLE_CHOICES,
@@ -232,12 +240,18 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
           type: "toggle",
           choices: TOGGLE_CHOICES,
         },
+        preview: {
+          displayName: "Preview",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
       };
     }
 
     STEPS.framework[finalValues.lang].build({ ...finalValues, filenames, files: newFiles, steps, chain: finalValues.chain });
     STEPS.chains[finalValues.chain].build({ ...finalValues, filenames, files: newFiles, steps, lang: finalValues.lang });
-
+    // BUILDERS[finalValues.lang].build({ ...finalValues, filenames, files: newFiles, steps });
     return {
       // Use files in `open-login` folders instead of root folder
       filenames: filenames.map((it) => `${it}`),
