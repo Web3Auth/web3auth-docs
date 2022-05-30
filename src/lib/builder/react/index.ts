@@ -18,6 +18,7 @@ export class ReactBuilderManager extends BaseBuilderManager {
   ): any[] {
     const orderedSteps = [];
 
+    // sort out order of steps.
     orderedSteps.push({
       ...[integratedSteps.INSTALLATION],
       pointer: this.getPointer(stepInstances[STEPS.INSTALLATION], aggregator),
@@ -26,6 +27,7 @@ export class ReactBuilderManager extends BaseBuilderManager {
   }
 
   initializeSteps() {
+    // define instances of your steps.
     const stepInstances: Record<StepType, IBuilderStep> = {};
     const step = new Installation();
     step.init(this.config);

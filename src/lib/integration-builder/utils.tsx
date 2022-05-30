@@ -58,16 +58,19 @@ export class ReplaceFileAggregator {
     return { range: numbersInRange.join("-"), filename: pointer.filename };
   }
 
+  // eslint-disable-next-line class-methods-use-this
   pointerRange(fileContent: string, pointer: { variableName: string; filename: string }) {
-    let start = 0, end = 0;
+    let start = 0;
+    let end = 0;
     const contentByLine = fileContent.split(`\n`);
     for (let i = 0; i < contentByLine.length; i += 1) {
       if (contentByLine[i].includes(pointer.variableName)) {
         start = i + 2;
-        continue;
       }
-      if (start > 0 && contentByLine[i].includes("END")) { // We can name this anything else as well
+      if (start > 0 && contentByLine[i].includes("END")) {
+        // We can name this anything else as well
         end = i;
+        break;
       }
     }
     return { range: `${start}-${end}`, filename: pointer.filename };

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 // REPLACE-web3authChainRpcImport-
 
-// START - RegisterApp
+// START-RegisterApp
 const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
 // END
 
@@ -18,13 +18,19 @@ function App() {
       try {
         // REPLACE-const web3AuthInitParams = {};-
 
+        // START-Instantiate
+
         // REPLACE-const web3AuthCtorParams = {};-
 
         const web3auth = new Web3Auth(web3AuthCtorParams);
 
+        // END
+
         // REPLACE-const web3AuthOpenloginConfigure = {};-
 
+        // START-Subscribe
         subscribeAuthEvents(web3auth);
+        //END
         setWeb3auth(web3auth);
         await web3auth.initModal(initParams);
       } catch (error) {

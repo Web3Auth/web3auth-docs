@@ -11,15 +11,15 @@ import {
 import * as initialize from "../common/initializing.mdx";
 // web
 import * as installationWeb from "../common/installation.mdx";
-import * as buildingApp from "../react/buildingApp.mdx";
 import * as instantiateCoreSdk from "../common/instantiateCoreSdk.mdx";
 import * as instantiate from "../common/instantiateSDK.mdx";
+import * as logout from "../common/logout.mdx";
 import * as registerApp from "../common/register-app.mdx";
 import * as subscribe from "../common/subscribe.mdx";
 import * as triggeringLogin from "../common/triggering-login.mdx";
-import * as whiteLabeling from "../common/whitelabeling.mdx";
 import * as usingW3AFunctions from "../common/using-w3a-functions.mdx";
-import * as logout from "../common/logout.mdx";
+import * as whiteLabeling from "../common/whitelabeling.mdx";
+import * as buildingApp from "./buildingApp.mdx";
 
 const STEPS = toSteps({
   installationWeb,
@@ -189,7 +189,10 @@ const reactSteps = {
         },
         {
           ...STEPS.registerApp,
-          pointer: replacementAggregator.pointerRange(files["web3auth/react/App.tsx"], { filename: "web3auth/react/App.tsx", variableName: "RegisterApp" }),
+          pointer: replacementAggregator.pointerRange(files["web3auth/react/App.tsx"], {
+            filename: "web3auth/react/App.tsx",
+            variableName: "START-RegisterApp",
+          }),
         }
       );
       if (whitelabel === "yes") {
@@ -201,13 +204,16 @@ const reactSteps = {
       steps.push(
         {
           ...STEPS.instantiate,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "web3auth/react/App.tsx", range: "21" }),
+          pointer: replacementAggregator.pointerRange(files["web3auth/react/App.tsx"], {
+            filename: "web3auth/react/App.tsx",
+            variableName: "START-Instantiate",
+          }),
         },
         {
           ...STEPS.subscribe,
-          pointer: replacementAggregator.rangeOffsetEditor({
+          pointer: replacementAggregator.pointerRange(files["web3auth/react/App.tsx"], {
             filename: "web3auth/react/App.tsx",
-            range: "33-51",
+            variableName: "START-Subscribe",
           }),
         },
         {
