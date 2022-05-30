@@ -2,7 +2,7 @@ import React from "react";
 
 import { IntegrationStep } from "./interfaces";
 
-interface Module {
+export interface Module {
   default: React.FC<any>;
   frontMatter: Record<string, any>;
 }

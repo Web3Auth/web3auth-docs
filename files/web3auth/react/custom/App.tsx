@@ -14,8 +14,9 @@ function CustomUI() {
   useEffect(() => {
     const init = async () => {
       try {
+        // Start STEP 1
         // REPLACE-const web3AuthCoreCtorParams = {};-
-
+        // Start STEP 1
         const web3auth = new Web3AuthCore(web3AuthCtorParams);
 
         // REPLACE-const web3AuthOpenloginConfigure = {};-
