@@ -1,0 +1,768 @@
+---
+title: Using Auth0 with Web3Auth
+hide_table_of_contents: false
+---
+
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+This guide will cover the basics of how to set up your Web3Auth SDK and Auth0 account for the integration and provide you with the links on how to
+develop a basic web application on the blockchain of your choice. Before starting, you can try the integration in our example
+[here](https://demo-auth0.web3auth.io).
+
+## How it works?
+
+---
+
+When integrating Web3Auth with Auth0 the flow looks something like this:
+
+<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src="/contents/auth0-flow.png" />
+
+- When a user logs in with Auth0, Auth0 sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
+
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
+  easy onboarding for your user to the application.
+
+## Prerequisites
+
+---
+
+- A basic knowledge of JavaScript is required to use Web3Auth SDK for Web apps.
+
+- For the Web3Auth Mobile SDKs, you have a choice between iOS, Android, React Native & Flutter. Please refer to the
+  [Web3Auth API Reference](https://docs.web3auth.io/api-reference) for more information.
+
+- Create an Auth0 tenant and configure a Single Page Web Application (SPA for Web) or Native (for Mobile) from
+  [Auth0 Console](https://manage.auth0.com/).
+
+  - Please note that Regular Web Applications are also supported, however for the guide here, we’re preferring SPA since its implicit flow doesn’t
+    require an application to host a server. You can navigate to the [additional section](#code-flow-with-rwa) below which talks about the code flow
+    with RWA.
+
+- Create an account on the [Web3Auth Dashboard](https://dashboard.web3auth.io)
+
+## Setting Up
+
+---
+
+### Setting up your Auth0 Tenant
+
+- Add the following redirect URLs for your app to the Allowed Web Origins field when configuring your Auth0 Application.
+  - Additional to your own redirect URLs for the application, please add
+    - [https://beta.openlogin.com/auth](https://beta.openlogin.com/auth) (for Web3Auth testnet used in demo applications) and
+    - [https://app.openlogin.com/auth](https://app.openlogin.com/auth) (for Web3Auth mainnet used in production applications).
+- You will require `domain` and `clientId` of the newly created application which you can copy from [Auth0 Console](https://manage.auth0.com/).
+
+### Setting up your Web3Auth Dashboard
+
+- Create a Project from the **Plug and Play** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).
+
+  <img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src="/contents/auth0-guide-01.png" />
+
+  - Enter your desired Project name
+  - Select the blockchain(s) you'll be building this project on. For interoperability with Torus Wallet, you've an option of allowing user's private
+    key to be used in other application using Torus Wallet. We currently have this option across `EVM` and `Solana` and `Casper` blockchains.
+
+    <img float="left" style={{ display: "block", maxHeight: "400px", margin: "20px auto" }} src="/contents/auth0-guide-02.png" />
+
+  - Finally, once you create the project, you've the option to whitelist your URLs for the project. Please whitelist the domains where you project
+    will be hosted.
+    <img style={{ display: "block", maxHeight: "400px", margin: "20px auto" }} src="/contents/auth0-guide-03.png" />
+
+- Create a Verifier from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
+  configuration:
+
+  - Choose a name of your choice for the verifier identifier.
+  - Select verifier type as Auth0
+  - Choose your Authentication Type as the Auth Provider you've selected.
+  - Paste the `clientId` and `domain` from the Auth0 SPA you create in the above steps. This will be used to validate the JWT token issued by Auth0.
+    <img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} src="/contents/auth0-guide-04.png" />
+
+- You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+
+## Using the Web3Auth SDK
+
+---
+
+To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
+SDKs, please have a look at this [documentation page](/developing-with-web3auth/understand-sdk).
+
+For this guide here, we will be talking through the [Web3Auth Plug and Play SDK](/api-reference/web/plugnplay) and using the
+[OpenLogin Provider](/api-reference/web/adapters/openlogin) alongside it to enable Custom Authentication through Auth0.
+
+### Setting up your base React project for using Web3 libraries:
+
+To setup this project locally, create a new react project using the following command:
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+<TabItem value="npm">
+
+```shell
+npx create-react-app auth0-app --template typescript
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```shell
+yarn create react-app auth0-app --template typescript
+```
+
+</TabItem>
+
+</Tabs>
+
+Once your project is created, follow the following steps to setup the repository properly
+
+- You'll be facing some error with Webpack 5, once we install the dependencies for interacting with the blockchain. This is because certain packages
+  are not available in the browser environment, and we need to polyfill them manually.
+
+  - To fix this, first install react-app-rewired and the missing modules
+
+<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "yarn", value: "yarn" }, ]}>
+<TabItem value="npm">
+
+```shell
+npm install --save-dev react-app-rewired crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```shell
+yarn add --dev react-app-rewired process crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer
+```
+
+</TabItem>
+</Tabs>
+
+- Add a `config-overrides.js` file to the root folder of your project and copy the following code to the `config-overrides.js` file:
+
+```js
+const webpack = require("webpack");
+
+module.exports = function override(config) {
+  const fallback = config.resolve.fallback || {};
+  Object.assign(fallback, {
+    crypto: require.resolve("crypto-browserify"),
+    stream: require.resolve("stream-browserify"),
+    assert: require.resolve("assert"),
+    http: require.resolve("stream-http"),
+    https: require.resolve("https-browserify"),
+    os: require.resolve("os-browserify"),
+    url: require.resolve("url"),
+  });
+  config.resolve.fallback = fallback;
+  config.plugins = (config.plugins || []).concat([
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+      Buffer: ["buffer", "Buffer"],
+    }),
+  ]);
+  config.ignoreWarnings = [/Failed to parse source map/];
+  return config;
+};
+```
+
+- Finally, within your `package.json` change the scripts field for start, build and test. Instead of `react-scripts` replace it with
+  `react-app-rewired`. It should look something like this:
+
+```json
+"scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+},
+```
+
+Now, you're all set and ready for installing the dependencies.
+
+### Installation
+
+For this project, you need to add the following Web3Auth dependencies to your package.json
+
+#### Web3Auth Dependencies
+
+##### `@web3auth/web3auth`
+
+This is the main **Plug and Play** package that contains the Web3Auth SDK with a login UI, giving you a simple way of implementing Web3Auth within
+your interface.
+
+<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "yarn", value: "yarn" }, ]}>
+<TabItem value="npm">
+
+```shell
+npm install --save @web3auth/web3auth
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```shell
+yarn add @web3auth/web3auth
+```
+
+</TabItem>
+</Tabs>
+
+##### `@web3auth/openlogin-adapter`
+
+For using Custom Authentication, we need to use the **OpenLogin Adapter**, where we can initialise the authentication details.
+
+<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "yarn", value: "yarn" }, ]}>
+<TabItem value="npm">
+
+```shell
+npm install --save @web3auth/openlogin-adapter
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```shell
+yarn add @web3auth/openlogin-adapter
+```
+
+</TabItem>
+</Tabs>
+
+##### `@web3auth/base`
+
+Since we're using typescript, we need the **`@web3auth/base`** package to provide types of the different variables we'll be using throughout the app
+building process. This reduces errors to a very large extent.
+
+<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "yarn", value: "yarn" }, ]}>
+<TabItem value="npm">
+
+```shell
+npm install --save @web3auth/base
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```shell
+yarn add @web3auth/base
+```
+
+</TabItem>
+</Tabs>
+
+#### Web3 Libraries
+
+##### `web3`/ `ethers`/ `@solana/web3.js`
+
+According to your preference, you can choose to install the `web3` or `ethers` libraries, to talk to the EVM compatible blockchains under the hood.
+For Solana, `@solana/web3.js` is the recommended choice.
+
+We'll be using `web3` for this guide.
+
+<Tabs defaultValue="npm" values={[ { label: "npm", value: "npm" }, { label: "yarn", value: "yarn" }, ]}>
+<TabItem value="npm">
+
+```shell
+npm install --save @web3
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```shell
+yarn add @web3
+```
+
+</TabItem>
+</Tabs>
+
+### Initialisation
+
+Once installed, your Web3Auth application needs to be initialized. Initialisation is a multi step process where we add all the config details for
+Web3Auth and OpenloginAdapter. Please make sure all of this is happening when the component mounts in your application using `useEffect` hook. This
+makes sure that Web3Auth is initialised when your application starts up.
+
+#### Importing the packages
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { WALLET_ADAPTERS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+```
+
+Alongside the `Web3Auth` and `OpenloginAdapter` you need the abovementioned packages from `@web3auth/base` for different initialisations mentioned
+further in this guide.
+
+#### Setting up the Web3Auth SDK
+
+```js
+const web3auth = new Web3Auth({
+  clientId: "YOUR-WEB3AUTH-CLIENT-ID",
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x1",
+  },
+});
+```
+
+Here, we're using the `chainConfig` property to set the chainId and chainNamespace. The `chainId` and `chainNamespace` are the id and the namespace
+respectively of the chain you're connecting to. We've initialised them for EVM for this guide. You can find the list of available providers
+[here](http://localhost:3000/api-reference/web/providers/) to select from.
+
+Additionally, sometimes you might face clogging in the network, due to the fact that the test network is a bit clogged at that point. To avoid this,
+we can use the property `rpcTarget` and pass over the url of the node you want to connect to.
+
+#### Initialising the Openlogin Adapter
+
+```js
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId: "YOUR-WEB3AUTH-CLIENT-ID",
+    network: "testnet",
+    uxMode: "popup",
+    loginConfig: {
+      jwt: {
+        name: "Name of your choice",
+        verifier: "YOUR-VERIFIER-NAME-ON-WEB3AUTH-DASHBOARD",
+        typeOfLogin: "jwt",
+        clientId: "YOUR-CLIENTID-ON-AUTH0-DASHBOARD",
+      },
+    },
+  },
+});
+
+web3auth.configureAdapter(openloginAdapter);
+```
+
+Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom Auth `verifierName` and Auth0 `clientId` in the
+loginConfig object. This makes sure that the Openlogin Adapter can connect to the correct verifier and Auth0 server.
+
+#### Initialising the Web3Auth SDK
+
+```js
+await web3auth.initModal();
+```
+
+#### Initialising on Mobile Platforms
+
+- For Mobile, depending on the platform, there will be different steps to initialize the SDK. Refer to the respective Mobile SDKs,
+  - [Android](https://docs.web3auth.io/api-reference/android/setting-up)
+  - [iOS](https://docs.web3auth.io/api-reference/ios/setting-up)
+  - [Flutter](https://docs.web3auth.io/api-reference/flutter/setting-up)
+  - [React Native](https://docs.web3auth.io/api-reference/react-native/setting-up).
+
+### Authentication
+
+#### Logging in
+
+Once initialized, you can use the `connectTo()` function to authenticate the user when they click the login button.
+
+```js
+await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  relogin: true,
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    domain: "https://YOUR-AUTH0-DOMAIN",
+    verifierIdField: "sub",
+  },
+});
+```
+
+When connecting, your `connectTo` function takes the arguments for the adapter you want to connect to and the options for the login. The major thing
+to note here is the `domain` option in the `extraLoginOptions` object. This is the domain of your Auth0 tenant so that you can be redirected to login
+there directly from the Web3Auth SDK.
+
+#### Getting the User Profile
+
+```js
+const user = await web3auth.getUserInfo();
+console.log("User info", user);
+```
+
+Using the `getUserInfo` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
+network, but are fetched from the JWT token you received from Auth0 and lives in the frontend context.
+
+#### Logging out
+
+```js
+await web3auth.logout();
+```
+
+Logging out your user is as simple as calling the `logout` function.
+
+### Interacting with the Blockchain
+
+So if you have completed this far, it means that you have successfully authenticated your user. Now, you can use the provider returned by Web3Auth as
+`web3auth.provider` to interact with your blockchain. You can use the [Provider SDKs](https://docs.web3auth.io/api-reference/web/providers/) to
+perform RPC Calls to your blockchain.
+
+Web3Auth is chain agnostic, ie. depending on whatever blockchain or layer-2 you use, Web3Auth can easily support that. Web3Auth0 has native providers
+for EVM and Solana blockchains and for others, you can get the private key in the user scope and make RPC calls. For standardising the type of
+provider, Web3Auth Base provides a `SafeEventEmitterProvider` from which you can create your own provider.
+
+- [Ethereum Provider](https://docs.web3auth.io/api-reference/web/providers/evm) gives you the capability of making RPC calls to the EVM compatible
+  blockchains.
+- [Solana Provider](https://docs.web3auth.io/api-reference/web/providers/solana) gives you the capability of making RPC calls to the Solana
+  blockchain.
+- If you want to use any other chain except Solana or EVM chains, for ex: Starknet, you can specify the value of `chainNamespace` field as other in
+  the Web3Auth SDK Constructor. Refer to: [Using other blockchains](https://docs.web3auth.io/api-reference/web/providers/#other)
+
+## Additional Reading: Setup Custom Authentication using Auth0 RWA
+
+---
+
+### Understanding the difference between SPA and RWA Flows
+
+In the SPA flow, the frontend gets the JWT `id_token` from Auth0 directly. This flow is leveraged by the Web3Auth SDK, which handles all the callbacks
+by itself and the user just needs to setup the `OpenloginAdapter` and connect to the Web3Auth SDK, adding in the Auth0 `client_id` in it. Hence, this
+is the implicit flow and is the most suitable flow for setting up your authentication via Auth0 and Web3Auth.
+
+In the RWA flow, you have to spin up a server on your own where you'll receive the authorisation code from Auth0. For Web3Auth, still require an
+`id_token` to be sent to the OpenloginAdapter to log the user in the frontend context. This is where you need to make another call from the backend
+server to Auth0 to get the `id_token` and pass it over to your frontend where you can send it to the Web3Auth SDK.
+
+### Setting up your application with RWA Flow
+
+- In addition to the steps above, setup your Auth0 RWA on dashboard and add callback URLs for both your backend and frontend
+- On the frontend, you login button should hit on the following URL
+
+```url
+https://{YOUR_DOMAIN_URL}/authorize?scope=openid&response_type=code&client_id={YOUR_AUTH0_CLIENT_ID&redirect_uri={YOUR_BACKEND_SERVER_WHICH_WILL_GET_JWT_TOKEN_FROM_AUTH0}&state=STATE
+```
+
+- This is where the user is redirected to a login screen by Auth0.
+- On successful login, the user will be redirected to your backend server with authorization `code` as a query parameter.
+- In the backend server, you can use the `code` to get the `id_token` from Auth0 and redirect the user to the frontend with `id_token` as a query
+  parameter
+
+```js
+app.get('/callback', (req, res) => {
+  var options = {
+    method: 'POST',
+    url: 'https://{YOUR_DOMAIN_URL}/oauth/token',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    form:{
+      grant_type: 'authorization_code',
+      client_id: 'AUTH0_CLIENT_ID',
+      client_secret: 'AUTH0_CLIENT_SECRET',
+      code: req.query.code, // the authorisation code you got from auth0
+      redirect_uri: 'https://{YOUR_FRONTEND_URL}',
+      scope: "openid profile email"
+    }
+   };
+
+   var id_token = "";
+
+   request(options, function (error, response, data) {
+    id_token = JSON.parse(data)["id_token"];
+    redirect_url = "http://{YOUR_FRONTEND_URL}?token=%22+id_token; // Redirection URL to frontend with `id_token` as a query parameter
+    res.redirect(redirect_url);
+  });
+})
+```
+
+- In the frontend, pass on this `id_token` to the Web3Auth SDK to authenticate the user
+
+```js
+await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  relogin: true,
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    id_token: "YOUR_ID_TOKEN_FETCHED_FROM_BACKEND_SERVER",
+    domain: "https://YOUR-AUTH0-DOMAIN",
+    verifierIdField: "sub",
+  },
+});
+```
+
+## Try our Demo Application and Example Code
+
+---
+
+Try our [Demo Application](https://demo-auth0.web3auth.io/) with Web3Auth & Auth0 integration. It works for either Ethereum, Solana or Polygon. It
+also works for both the flows, ie. SPA and RWA. The code for the Demo application can also be found in the
+[Web3Auth Auth0 Example](https://github.com/Web3Auth/Web3Auth/tree/master/examples/auth0-react-example). Check it out and try running it locally
+yourself!
+
+For the application we've built in this example, refer to this code below:
+
+<Tabs defaultValue="App.tsx" values={
+  [
+    { label: "App.tsx", value: "App.tsx" },
+    { label: "evm.ts", value: "evm.ts" },
+  ]
+  }>
+<TabItem value="App.tsx">
+
+```js
+import { useEffect, useState } from "react";
+import { Web3Auth } from "@web3auth/web3auth";
+import { WALLET_ADAPTERS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import RPC from "./evm";
+
+const clientId = "BDzbs6kQhq9pbuZlk_-oDnmVKl-pd8xFADhc9w4A5HdhCTbGX26DgCiWO03raOLe9ZNkiekJ29NFQ7gpSrzkTlg";
+
+function App() {
+  const [web3auth, setWeb3Auth] = (useState < Web3Auth) | (null > null);
+  const [provider, setProvider] = (useState < SafeEventEmitterProvider) | (null > null);
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const web3auth = new Web3Auth({
+          clientId,
+          chainConfig: {
+            chainNamespace: CHAIN_NAMESPACES.EIP155,
+            chainId: "0x1",
+          },
+        });
+        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            clientId,
+            network: "testnet",
+            uxMode: "popup",
+            loginConfig: {
+              jwt: {
+                name: "Auth0 Login",
+                verifier: "auth0-project",
+                typeOfLogin: "jwt",
+                clientId: "4Yt9XbUpS73p6WB04rL4q5ejSdYNV9H8",
+              },
+            },
+          },
+        });
+
+        web3auth.configureAdapter(openloginAdapter);
+        setWeb3Auth(web3auth);
+        await web3auth.initModal();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    init();
+  }, []);
+
+  const login = async () => {
+    if (!web3auth) {
+      console.log("web3auth not initialized yet");
+      return;
+    }
+    const web3AuthProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      relogin: true,
+      loginProvider: "jwt",
+      extraLoginOptions: {
+        domain: "https://yash-test-web3auth.us.auth0.com",
+        verifierIdField: "sub",
+      },
+    });
+
+    setProvider(web3AuthProvider);
+  };
+
+  const getUserInfo = async () => {
+    if (!web3auth) {
+      console.log("web3auth not initialized yet");
+      return;
+    }
+    const user = await web3auth.getUserInfo();
+    console.log("User info", user);
+  };
+
+  const logout = async () => {
+    if (!web3auth) {
+      console.log("web3auth not initialized yet");
+      return;
+    }
+    await web3auth.logout();
+    setProvider(null);
+  };
+
+  const getAccounts = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const userAccount = await rpc.getAccounts();
+    console.log(userAccount);
+  };
+
+  const getBalance = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const balance = await rpc.getBalance();
+    console.log(balance);
+  };
+
+  const signMessage = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const result = await rpc.signMessage();
+    console.log(result);
+  };
+
+  const signTransaction = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const result = await rpc.signTransaction();
+    console.log(result);
+  };
+
+  const sendTransaction = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const result = await rpc.signAndSendTransaction();
+    console.log(result);
+  };
+
+  return (
+    <div>
+      {!provider ? (
+        <div>
+          <button onClick={login}>Log In</button>
+          <button onClick={logout}>Log Out</button>
+        </div>
+      ) : (
+        <div>
+          <button onClick={getUserInfo}>Get User Info</button>
+          <button onClick={getAccounts}>getAccounts</button>
+          <button onClick={getBalance}>getBalance</button>
+          <button onClick={signMessage}>signMessage</button>
+          <button onClick={signTransaction}>signTransaction</button>
+          <button onClick={sendTransaction}>sendTransaction</button>
+          <button onClick={logout}>Log Out</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
+```
+
+</TabItem>
+<TabItem value="evm.ts">
+
+```js
+import type { SafeEventEmitterProvider } from "@web3auth/base";
+import Web3 from "web3";
+
+export default class EthereumRpc {
+  private provider: SafeEventEmitterProvider;
+
+  constructor(provider: SafeEventEmitterProvider) {
+    this.provider = provider;
+  }
+  async getAccounts(): Promise<string[]> {
+    try {
+      const web3 = new Web3(this.provider as any);
+      const accounts = await web3.eth.getAccounts();
+      return accounts;
+    } catch (error: unknown) {
+      console.error((error as Error).message);
+      throw error;
+    }
+  }
+
+  async getBalance(): Promise<string> {
+    try {
+      const web3 = new Web3(this.provider as any);
+      const accounts = await web3.eth.getAccounts();
+      const balance = await web3.eth.getBalance(accounts[0]);
+      return balance;
+    } catch (error) {
+      console.error((error as Error).message);
+      throw error;
+    }
+  }
+
+  async signMessage() {
+    try {
+      const web3 = new Web3(this.provider as any);
+      const accounts = await web3.eth.getAccounts();
+      const message = "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad";
+      (web3.currentProvider as any)?.send(
+        {
+          method: "eth_sign",
+          params: [accounts[0], message],
+          from: accounts[0],
+        },
+        (err: Error, result: any) => {
+          if (err) {
+            return console.error(err);
+          }
+          return result;
+        }
+      );
+    } catch (error) {
+      console.error((error as Error).message);
+      throw error;
+    }
+  }
+
+  async signTransaction(): Promise<string> {
+    try {
+      const web3 = new Web3(this.provider as any);
+      const accounts = await web3.eth.getAccounts();
+      const txRes = await web3.eth.signTransaction({
+        from: accounts[0],
+        to: accounts[0],
+        value: web3.utils.toWei("0.01"),
+      });
+      return txRes.raw;
+    } catch (error) {
+      console.error((error as Error).message);
+      throw error;
+    }
+  }
+
+  async signAndSendTransaction(): Promise<string> {
+    try {
+      const web3 = new Web3(this.provider as any);
+      const accounts = await web3.eth.getAccounts();
+
+      const txRes = await web3.eth.sendTransaction({
+        from: accounts[0],
+        to: accounts[0],
+        value: web3.utils.toWei("0.01"),
+      });
+      return txRes.transactionHash;
+    } catch (error) {
+      console.error((error as Error).message);
+      throw error;
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Web3Auth Quick Starts
+
+Still looking for a quick way to get started?
+
+Follow the steps for setting up above and try one of our
+[quick-starts](https://docs.web3auth.io/quick-start?lang=react&chain=eth&customAuthentication=yes&customLogin=no&whitelabel=no) for your respective
+framework.

@@ -36,7 +36,7 @@ module.exports = {
       type: "category",
       label: "Using Custom Authentication",
       link: { type: "doc", id: "customauth/customauth" },
-      items: ["customauth/verifiers"],
+      items: ["customauth/verifiers", "customauth/auth0"],
     },
     "whitelabeling",
     {
