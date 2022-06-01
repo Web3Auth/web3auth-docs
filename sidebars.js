@@ -38,6 +38,7 @@ module.exports = {
       link: { type: "doc", id: "customauth/customauth" },
       items: ["customauth/verifiers", "customauth/auth0"],
     },
+    "interoperability",
     "whitelabeling",
     {
       type: "category",

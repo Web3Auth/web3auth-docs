@@ -1,0 +1,101 @@
+---
+title: Interoperability
+hide_table_of_contents: false
+---
+
+---
+
+One of the most exciting features of Web3Auth is around its interoperability with Torus Wallet. This means that the private key generated within your
+application with Web3Auth can be used to sign transactions within Torus Wallet on other applications. This enables a dApp to choose if they want to
+give the user the flexibility of moving funds around using Torus wallet, without the headache of making the flows for it themselves. Additionally, to
+further improve the interoperability, a user can connect to other wallets and dApps using WalletConnect flow within Torus Wallet.
+
+For interoperability to work, there are two flows that a dApp can implement:
+
+- Using Web3Auth Dashboard Toggles - Preferred Method
+- Using Torus Wallet Plugin within your Web3Auth Instance
+
+## Using Web3Auth Dashboard Toggles
+
+---
+
+Within the Web3Auth Dashboard, while setting up a new Plug and Play project, or editing an existing one, you have the option to configure
+interoperability with Torus Wallet. To enable it, you need to do the following steps:
+
+- Create a new/ edit your existing Plug and Play project
+
+  <img style={{ display: "block", maxHeight: "400px", margin: "20px auto" }} alt="" src="/contents/interoperability/dashboard-create-pnp-1.png" />
+
+<div className="text-image-column">
+  <div>
+    <ul>
+      <li>
+        Select the chain you want your dApp to interact with. For interoperability, you have the option between <code>EVM based chains</code>,{" "}
+        <code>Solana</code> &<code>Casper</code>.
+      </li>
+    </ul>
+  </div>
+  <div>
+    <img style={{ minWidth: "200px", maxWidth: "250px" }} alt="" src="/contents/interoperability/dashboard-create-pnp-3.png" />
+  </div>
+</div>
+
+- Once you have selected one of the chains supported by Torus Wallet, you can now select the option `Allow user's private key usage in given wallets:`
+  to enable interoperable flow with the Torus Wallets. These wallets can be accessed on the following domains:
+
+<div className="text-image-column">
+  <div>
+    <ul>
+      <ul>
+        <li>
+          <b>EVM Wallet</b> - https://app.tor.us
+        </li>
+        <li>
+          <b>Solana Wallet</b> - https://solana.tor.us
+        </li>
+        <li>
+          <b>Casper Wallet</b> - https://casper.tor.us
+        </li>
+      </ul>
+    </ul>
+  </div>
+  <div>
+    <img style={{ minWidth: "300px", maxWidth: "350px" }} alt="" src="/contents/interoperability/dashboard-create-pnp-4.png" />
+  </div>
+</div>
+<br />
+
+And you're done! Now, your user can use their Web3Auth private key from your application to sign transactions within Torus Wallet.
+
+### Flow for the user in Torus Wallet
+
+- Once you have enabled the interoperability flow, you user can navigate to the respective Torus Wallet app ([EVM](https://app.tor.us),
+  [Solana](https://solana.tor.us) or [Casper](https://casper.tor.us)).
+- To access their key inside Torus Wallet, your user needs to log into Torus Wallet using the same authentication method they used for your
+  application.
+  <img style={{ display: "block", maxHeight: "400px", margin: "20px auto" }} alt="" src="/contents/interoperability/torus-wallet-login-1.png" />
+- Once logged in, you user will be able to access the desired private key within while logging in and inside the Torus Wallet application.
+  - In the screenshots below, the `Project Name` for application (demo-app.web3auth.io) using Web3Auth is `Ahash`.
+
+<div className="text-image-column">
+  <div>
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} alt="" src="/contents/interoperability/torus-wallet-login-2.png" />
+  </div>
+  <div>
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} alt="" src="/contents/interoperability/torus-wallet-login-3.png" />
+  </div>
+</div>
+
+### Interoperability with Torus Wallet Plugins
+
+Web3Auth supports UI plugins for Torus Wallet operations, helping you with flows to add funds, manage transactions and much more. This helps you avoid
+making wallet flows within your application. Additionally, these plugins give you the advantage of using the same key from Web3Auth across multiple
+applications. This is done by injecting a provider of the Torus Wallet UI into your dApp and making the calls directly through it, hence handling the
+flows through the Torus Wallet.
+
+Currently, the following plugins are supported:
+
+- [Torus EVM Wallet UI Plugin](/api-reference/web/plugins/torussolanawalletplugin)
+- [Torus Solana Wallet UI Plugin](/api-reference/web/plugins/torusevmwalletplugin)
+
+Read more about them in the [Plugins API Reference](/api-reference/web/plugins).
