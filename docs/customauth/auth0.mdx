@@ -29,19 +29,19 @@ When integrating Web3Auth with Auth0 the flow looks something like this:
 
 ---
 
-- A basic knowledge of JavaScript is required to use Web3Auth SDK for Web apps.
+- For Web Apps: A basic knowledge of JavaScript is required to use Web3Auth SDK.
 
-- For the Web3Auth Mobile SDKs, you have a choice between iOS, Android, React Native & Flutter. Please refer to the
-  [Web3Auth API Reference](https://docs.web3auth.io/api-reference) for more information.
+- For Mobile Apps: For the Web3Auth Mobile SDKs, you have a choice between iOS, Android, React Native & Flutter. Please refer to the
+  [Web3Auth API Reference](/api-reference) for more information.
 
 - Create an Auth0 tenant and configure a Single Page Web Application (SPA for Web) or Native (for Mobile) from
   [Auth0 Console](https://manage.auth0.com/).
 
   - Please note that Regular Web Applications are also supported, however for the guide here, we’re preferring SPA since its implicit flow doesn’t
-    require an application to host a server. You can navigate to the [additional section](#code-flow-with-rwa) below which talks about the code flow
-    with RWA.
+    require an application to host a server. You can navigate to the
+    [additional section](#additional-reading-setup-custom-authentication-using-auth0-rwa) below which talks about the code flow with RWA.
 
-- Create an account on the [Web3Auth Dashboard](https://dashboard.web3auth.io)
+- Create a Web3Auth account on the [Web3Auth Dashboard](https://dashboard.web3auth.io)
 
 ## Setting Up
 
@@ -49,8 +49,8 @@ When integrating Web3Auth with Auth0 the flow looks something like this:
 
 ### Setting up your Auth0 Tenant
 
-- Add the following redirect URLs for your app to the Allowed Web Origins field when configuring your Auth0 Application.
-  - Additional to your own redirect URLs for the application, please add
+- Add the following URLs for your app to the Allowed Web Origins field when configuring your Auth0 Application.
+  - Additional to your own URLs for the application, please add
     - [https://beta.openlogin.com/auth](https://beta.openlogin.com/auth) (for Web3Auth testnet used in demo applications) and
     - [https://app.openlogin.com/auth](https://app.openlogin.com/auth) (for Web3Auth mainnet used in production applications).
 - You will require `domain` and `clientId` of the newly created application which you can copy from [Auth0 Console](https://manage.auth0.com/).
@@ -62,12 +62,12 @@ When integrating Web3Auth with Auth0 the flow looks something like this:
   <img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src="/contents/auth0-guide-01.png" />
 
   - Enter your desired Project name
-  - Select the blockchain(s) you'll be building this project on. For interoperability with Torus Wallet, you've an option of allowing user's private
-    key to be used in other application using Torus Wallet. We currently have this option across `EVM` and `Solana` and `Casper` blockchains.
+  - Select the blockchain(s) you'll be building this project on. For interoperability with Torus Wallet, you've an option of allowing the user's
+    private key to be used in other applications using Torus Wallet. We currently have this option across `EVM` and `Solana` and `Casper` blockchains.
 
     <img float="left" style={{ display: "block", maxHeight: "400px", margin: "20px auto" }} src="/contents/auth0-guide-02.png" />
 
-  - Finally, once you create the project, you've the option to whitelist your URLs for the project. Please whitelist the domains where you project
+  - Finally, once you create the project, you've the option to whitelist your URLs for the project. Please whitelist the domains where your project
     will be hosted.
     <img style={{ display: "block", maxHeight: "400px", margin: "20px auto" }} src="/contents/auth0-guide-03.png" />
 
@@ -94,7 +94,7 @@ For this guide here, we will be talking through the [Web3Auth Plug and Play SDK]
 
 ### Setting up your base React project for using Web3 libraries:
 
-To setup this project locally, create a new react project using the following command:
+If you're starting from scratch, to setup this project locally, create a new react project using the following command:
 
 ```shell
 npx create-react-app auth0-app --template typescript
@@ -268,10 +268,10 @@ await web3auth.initModal();
 #### Initialising on Mobile Platforms
 
 - For Mobile, depending on the platform, there will be different steps to initialize the SDK. Refer to the respective Mobile SDKs,
-  - [Android](https://docs.web3auth.io/api-reference/android/setting-up)
-  - [iOS](https://docs.web3auth.io/api-reference/ios/setting-up)
-  - [Flutter](https://docs.web3auth.io/api-reference/flutter/setting-up)
-  - [React Native](https://docs.web3auth.io/api-reference/react-native/setting-up).
+  - [Android](/api-reference/android/setting-up)
+  - [iOS](/api-reference/ios/setting-up)
+  - [Flutter](/api-reference/flutter/setting-up)
+  - [React Native](/api-reference/react-native/setting-up).
 
 ### Authentication
 
@@ -315,19 +315,17 @@ Logging out your user is as simple as calling the `logout` function.
 ### Interacting with the Blockchain
 
 So if you have completed this far, it means that you have successfully authenticated your user. Now, you can use the provider returned by Web3Auth as
-`web3auth.provider` to interact with your blockchain. You can use the [Provider SDKs](https://docs.web3auth.io/api-reference/web/providers/) to
-perform RPC Calls to your blockchain.
+`web3auth.provider` to interact with your blockchain. You can use the [Provider SDKs](/api-reference/web/providers/) to perform RPC Calls to your
+blockchain.
 
 Web3Auth is chain agnostic, ie. depending on whatever blockchain or layer-2 you use, Web3Auth can easily support that. Web3Auth0 has native providers
 for EVM and Solana blockchains and for others, you can get the private key in the user scope and make RPC calls. For standardising the type of
 provider, Web3Auth Base provides a `SafeEventEmitterProvider` from which you can create your own provider.
 
-- [Ethereum Provider](https://docs.web3auth.io/api-reference/web/providers/evm) gives you the capability of making RPC calls to the EVM compatible
-  blockchains.
-- [Solana Provider](https://docs.web3auth.io/api-reference/web/providers/solana) gives you the capability of making RPC calls to the Solana
-  blockchain.
+- [Ethereum Provider](/api-reference/web/providers/evm) gives you the capability of making RPC calls to the EVM compatible blockchains.
+- [Solana Provider](/api-reference/web/providers/solana) gives you the capability of making RPC calls to the Solana blockchain.
 - If you want to use any other chain except Solana or EVM chains, for ex: Starknet, you can specify the value of `chainNamespace` field as other in
-  the Web3Auth SDK Constructor. Refer to: [Using other blockchains](https://docs.web3auth.io/api-reference/web/providers/#other)
+  the Web3Auth SDK Constructor. Refer to: [Using other blockchains](/api-reference/web/providers/#other)
 
 ## Additional Reading: Setup Custom Authentication using Auth0 RWA
 
@@ -679,5 +677,4 @@ export default class EthereumRpc {
 Still looking for a quick way to get started?
 
 Follow the steps for setting up above and try one of our
-[quick-starts](https://docs.web3auth.io/quick-start?lang=react&chain=eth&customAuthentication=yes&customLogin=no&whitelabel=no) for your respective
-framework.
+[quick-starts](/quick-start?lang=react&chain=eth&customAuthentication=yes&customLogin=no&whitelabel=no) for your respective framework.
