@@ -50,7 +50,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
       choices: CHAINS,
     },
     customAuthentication: {
-      displayName: "Custom Authentication & Login UI",
+      displayName: "Custom Authentication",
       default: TOGGLE_CHOICES[0].key,
       type: "toggle",
       choices: TOGGLE_CHOICES,
@@ -118,7 +118,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
           choices: CHAINS,
         },
         customAuthentication: {
-          displayName: "Custom Authentication & Login UI",
+          displayName: "Custom Authentication",
           default: TOGGLE_CHOICES[0].key,
           type: "toggle",
           choices: TOGGLE_CHOICES,
