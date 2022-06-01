@@ -93,10 +93,11 @@ module.exports = {
         },
         {
           "React Native": [
-            "api-reference/react-native/choose-workflows",
             "api-reference/react-native/setting-up",
             "api-reference/react-native/usage",
             "api-reference/react-native/whitelabel",
+            "api-reference/react-native/customauth",
+            "api-reference/react-native/choose-workflows",
           ],
         },
         {
