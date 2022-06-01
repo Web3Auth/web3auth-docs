@@ -5,15 +5,6 @@ hide_table_of_contents: false
 
 ---
 
-:::tip
-
-For making hybrid iOS & Android applications using React Native, we have the
-[`web3auth-react-native-sdk`](https://github.com/Web3Auth/web3auth-react-native-sdk) & the
-[`openlogin-expo-sdk`](https://github.com/torusresearch/openlogin-expo-sdk) to integrate Web3Auth into your application. Please have a look at the
-[Choosing between SDKs](./choosesdk) page before getting started.
-
-:::
-
 ## Installation
 
 ---
@@ -26,42 +17,52 @@ For making hybrid iOS & Android applications using React Native, we have the
 npm install @web3auth/react-native-sdk
 ```
 
-#### Android
+We will also require a `WebBrowser` implementation to allow our JS-based SDK to interact with the native APIs, and there are different extra
+installation steps depending on whether you are using the bare workflow or managed workflow. Please refer to
+[Choosing between workflows](./choose-workflows) to pick the correct implementation.
+
+Before starting, please make sure that you have registered your `redirectUrl` in the [Web3Auth dashboard](https://dashboard.web3auth.io/).
+
+#### Bare workflow
+
+When using our SDK with a bare workflow React Native app, you have to install a `WebBrowser` implementation made by us.
+
+```sh
+npm install @toruslabs/react-native-web-browser
+```
+
+##### Android
 
 - Perform the native [Android integration steps](/api-reference/android/setting-up).
 - For Android, the `redirectUrl` parameter is configurable, and has to be added into the `AndroidManifest.xml`.
 
-#### iOS
+##### iOS
 
 - Perform the native [iOS integration steps](/api-reference/ios/setting-up).
 
-- Nothing has to be done with the iOS `Info.plist` since the `redirectUrl` is fixed to be `\(bundleId)://auth`, and does not need to be added as a iOS
-  Custom URL Scheme.
+- You may add the `redirectUrl` to your iOS `Info.plist`, but it is not required.
 
 ##### Register the URL scheme you intended to use for redirection
 
 - Android `AndoidManifest.xml` (required)
 - iOS `Info.plist` (optional)
 
-### Openlogin Expo SDK
+:::tip
 
-Note that OpenLogin is the name of Web3Auth before the rebranding. We are currently working on rebranding our Expo offering.
+You may refer to [this example app](https://github.com/torusresearch/openlogin-expo-sdk-bare-demo-2) for more details.
 
-#### Using a Managed Workflow
+:::
 
-#### [`openlogin-expo-sdk`](https://github.com/torusresearch/openlogin-expo-sdk)
+#### Managed Workflow
 
-##### Install the `expo-web-browser` package
+When using our SDK with a Expo-based React Native app (aka managed workflow, you have to install the `expo-web-browser` package as a `WebBrowser`
+implementation.)
 
 ```sh
 expo install expo-web-browser
 ```
 
-##### Install the npm package
-
-```sh
-npm install openlogin-expo-sdk
-```
+##### Adding URL scheme
 
 To allow the Expo based SDK to work with exported Expo Android apps, you need to add the designated scheme into `app.json`
 
@@ -75,41 +76,7 @@ To allow the Expo based SDK to work with exported Expo Android apps, you need to
 
 :::tip
 
-You may refer to [this example app](https://github.com/torusresearch/openlogin-expo-sdk/tree/master/openlogin-expo-sdk-example-expo) for more details.
-
-:::
-
-#### Using a Bare Workflow
-
-#### [`openlogin-expo-bare-sample`](https://github.com/torusresearch/openlogin-expo-bare-sample)
-
-Follow the instructions on the [Expo Documentation](https://docs.expo.dev/bare/installing-expo-modules/) to install the Expo SDK into your bare React
-Native app.
-
-##### Install the `expo-web-browser` package
-
-```sh
-expo install expo-web-browser
-```
-
-Follow the extra instructions in [Expo Documentation](https://github.com/expo/expo/tree/main/packages/expo-web-browser) for installing the
-`expo-web-browser` package.
-
-##### Install the Expo based SDK
-
-```sh
-npm install openlogin-expo-sdk
-```
-
-##### If you are using iOS, install the iOS dependecies
-
-```sh
-npx pod-install
-```
-
-:::tip
-
-Register the URL scheme you intended to use for redirection into your Android `AndoidManifest.xml` (required) and iOS `Info.plist` (optional).
+You may refer to [this example app](https://github.com/Web3Auth/web3auth-react-native-sdk/tree/master/example) for more details.
 
 :::
 
@@ -117,61 +84,49 @@ Register the URL scheme you intended to use for redirection into your Android `A
 
 ---
 
-### Create an instance
-
-#### Web3Auth React Native SDK using the `init()` function
+### Importing a `WebBrowser` implementation
 
 ```typescript
-import Web3AuthReactNativeSdk, { LoginProvider, Web3AuthNetwork } from "web3auth-react-native-sdk";
-
-await Web3AuthReactNativeSdk.init({
-  // Your clientId obtained from Web3Auth dashboard.
-  clientId: "BKJ3HmEqVmMHbFeW6E-CVPmdnVrnPhdBEI82kxgBVJGtaS4XlylvAE-1gmsv_Fa1CDj-xIhvTf3Kgd6mTn8nJtw",
-  network: Web3AuthNetwork.MAINNET,
-  // redirectUrl only applies for Android SDK, it is designated by iOS SDK in iOS, which is \(bundleId)://auth
-  redirectUrl: "com.example.web3authreactnativesdk://auth",
-});
+import * as WebBrowser from "@toruslabs/react-native-web-browser";
+// or  import * as WebBrowser from "expo-web-browser"; (for expo)
 ```
 
-#### Expo based SDK with bare or managed workflow
+### Create an instance
 
 ```typescript
-import OpenLogin, { Network } from "openlogin-expo-sdk";
-const openlogin = new OpenLogin({
+import Web3Auth from "@web3auth/react-native-sdk";
+
+const web3auth = new Web3Auth(WebBrowser, {
   // Your clientId obtained from Web3Auth dashboard.
   clientId: "BC5bANkU4-fil7C5s1uKzRfF0VGqbuaxDQiLnQ8WgF7SEA32lGegAhu7dk4dZf3Rk397blIvfWytXwsRvs9dOaQ",
   network: Network.TESTNET,
 });
 ```
 
-#### `Web3AuthOptions` // `OpenLoginOptions` object
+#### `SdkInitParams` object
 
-The `init()` method on in the Bare React Native SDK and the `OpenLogin` constructor in the Expo based SDK take an `OpenLoginOptions` or
-`Web3AuthOptions` object respectively as an argument. The fields of such object are listed below.
+The `Web3Auth` constructor in the React Native SDK take an `SdkInitParams` object respectively as an argument. The fields of such object are listed
+below.
 
-| Parameter   | Type                               | Mandatory                    | Description                                                                                                                                                                                     |
-| ----------- | ---------------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| clientId    | String                             | Yes                          | Your Web3Auth project ID obtained from the Web3Auth dashboard                                                                                                                                   |
-| network     | enum of Web3AuthNetwork or Network | Yes                          | Web3Auth network to run on, either MAINNET or TESTNET                                                                                                                                           |
-| redirectUrl | String                             | Yes on bare React Native SDK | The redirectUrl that the Web3Auth login flow will use to redirect back to the app. It is not required to be specified in the Expo based SDK since it will be specified in the `login()` method. |
+| Parameter   | Type                           | Mandatory | Description                                                                                                                                                                                     |
+| ----------- | ------------------------------ | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| clientId    | String                         | Yes       | Your Web3Auth project ID obtained from the Web3Auth dashboard                                                                                                                                   |
+| network     | enum of OPENLOGIN_NETWORK_TYPE | Yes       | Web3Auth network to run on, either CYAN, MAINNET or TESTNET                                                                                                                                     |
+| redirectUrl | String                         | Yes       | The redirectUrl that the Web3Auth login flow will use to redirect back to the app. It is not required to be specified in the Expo based SDK since it will be specified in the `login()` method. |
+| loginConfig | LoginConfig                    | No        | A configuration optional object to customize login flow.                                                                                                                                        |
+| whiteLabel  | WhiteLabelData                 | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer to the WhiteLabeling section for more info.                                                   |
+| sdkUrl      | String                         | No        | The url to the SDK frontend, should not need any changes normally.                                                                                                                              |
 
 ## Example
 
 ---
 
 ```typescript
-import Web3AuthReactNativeSdk, { LoginProvider, Web3AuthNetwork } from "web3auth-react-native-sdk";
+import * as WebBrowser from "@toruslabs/react-native-web-browser";
+// or  import * as WebBrowser from "expo-web-browser"; (for expo)
 
-React.useEffect(() => {
-  Web3AuthReactNativeSdk.init({
-    // Your clientId obtained from Web3Auth dashboard.
-    clientId: "BKJ3HmEqVmMHbFeW6E-CVPmdnVrnPhdBEI82kxgBVJGtaS4XlylvAE-1gmsv_Fa1CDj-xIhvTf3Kgd6mTn8nJtw",
-    // TESTNET is currently broken on iOS.
-    network: Web3AuthNetwork.MAINNET,
-    // redirectUrl only applies for Android SDK, it is designated by iOS SDK in iOS, which is \(bundleId)://auth
-    redirectUrl: "com.example.web3authreactnativesdk://auth",
-  })
-    .then((result) => console.log(`success: ${result}`))
-    .catch((err) => console.log(`error: ${err}`));
-}, []);
+const web3auth = new Web3Auth(WebBrowser, {
+  clientId: "BC5bANkU4-fil7C5s1uKzRfF0VGqbuaxDQiLnQ8WgF7SEA32lGegAhu7dk4dZf3Rk397blIvfWytXwsRvs9dOaQ",
+  network: Network.TESTNET,
+});
 ```
