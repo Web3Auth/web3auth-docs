@@ -118,6 +118,9 @@ module.exports = {
       items: ["contribute/open-source", "contribute/bug-bounty"],
     },
     {
+      Troubleshooting: ["troubleshooting/webpack-issues"],
+    },
+    {
       Legal: ["legal/cookie-policy", "legal/privacy-policy", "legal/terms-and-conditions"],
     },
     { type: "html", value: "<hr /><strong style='color: #606770'>Quick Links</strong>", defaultStyle: true },
