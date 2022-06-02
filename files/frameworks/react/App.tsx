@@ -1,9 +1,7 @@
-import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import { Web3Auth } from "@web3auth/web3auth";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { useEffect, useState } from "react";
-import "./App.css";
 // REPLACE-web3authChainRpcImport-
+
+import "./App.css";
 
 const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
 

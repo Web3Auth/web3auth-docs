@@ -1,6 +1,6 @@
 import { chainIdMap, rpcTargetMap } from "./maps";
 
-export const getConstructorCode = (chain: "sol" | "starkex" | "starknet", isWhiteLabled: boolean) => {
+export const getConstructorCodeHTML = (chain: "sol" | "starkex" | "starknet", isWhiteLabled: boolean) => {
   let chainDetails = ``;
   let uiConfig = ``;
 
@@ -15,15 +15,15 @@ export const getConstructorCode = (chain: "sol" | "starkex" | "starknet", isWhit
 
   if (chain === "sol") {
     chainDetails = `
-          chainNamespace: CHAIN_NAMESPACES.SOLANA,
+          chainNamespace: "solana",
           chainId: "${chainIdMap[chain]}",
           // rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app`;
   } else if (chain === "starkex" || chain === "starknet") {
     chainDetails = `
-          chainNamespace: CHAIN_NAMESPACES.OTHER,`;
+          chainNamespace: "other",`;
   } else {
     chainDetails = `
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          chainNamespace: "eip155",
           chainId: "${chainIdMap[chain]}",
           // rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app`;
   }

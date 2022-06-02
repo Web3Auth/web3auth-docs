@@ -1,10 +1,10 @@
 import {
-  getChainRpcImport,
   getConnectCode,
   getConstructorCode,
   getInitCode,
+  getModuleImport,
   getOpenloginAdapter,
-  getReactPackageJson,
+  getPackageJson,
   getRPCFunctions,
   getRPCFunctionsUIButtonsReact,
   PLACEHOLDERS,
@@ -43,28 +43,28 @@ const htmlSteps = {
     filenames.push("frameworks/vue/vue.config.js");
     filenames.push("frameworks/vue/App.vue");
 
-    const vuePackageJson = getReactPackageJson(chain);
+    const PackageJson = getPackageJson(chain, whitelabel === "yes", customAuthentication === "yes");
     newFiles["frameworks/vue/package.json"] = replacementAggregator.replaceFileVariable(
       files["frameworks/vue/package.json"],
       "frameworks/vue/package.json",
       PLACEHOLDERS.REACT_PACKAGE_JSON,
-      vuePackageJson.code
+      PackageJson
     );
 
-    const ConstructorCode = getConstructorCode(whitelabel === "yes", chain);
+    const ConstructorCode = getConstructorCode(chain, whitelabel === "yes");
     newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
       files["frameworks/vue/Home.vue"],
       "frameworks/vue/Home.vue",
       PLACEHOLDERS.CONSTRUCTOR,
-      ConstructorCode.code
+      ConstructorCode
     );
 
-    const initRes = getInitCode(whitelabel === "yes", customAuthentication === "yes");
+    const InitCode = getInitCode(whitelabel === "yes");
     newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
       files["frameworks/vue/Home.vue"],
       "frameworks/vue/Home.vue",
       PLACEHOLDERS.INIT,
-      initRes.code
+      InitCode
     );
 
     const openloginRes = getOpenloginAdapter(whitelabel === "yes", false);
@@ -72,7 +72,7 @@ const htmlSteps = {
       files["frameworks/vue/Home.vue"],
       "frameworks/vue/Home.vue",
       PLACEHOLDERS.OPENLOGIN_CONFIGURE,
-      openloginRes.code
+      openloginRes
     );
 
     const rpcFunctions = getRPCFunctions(chain);
@@ -80,7 +80,7 @@ const htmlSteps = {
       files["frameworks/vue/Home.vue"],
       "frameworks/vue/Home.vue",
       PLACEHOLDERS.RPC_FUNCTIONS,
-      rpcFunctions.code
+      rpcFunctions
     );
 
     const rpcFunctionsUIButtonsReact = getRPCFunctionsUIButtonsReact(chain);
@@ -88,15 +88,15 @@ const htmlSteps = {
       files["frameworks/vue/Home.vue"],
       "frameworks/vue/Home.vue",
       PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
-      rpcFunctionsUIButtonsReact.code
+      rpcFunctionsUIButtonsReact
     );
 
-    const chainImportRes = getChainRpcImport(chain);
+    const ModuleImport = getModuleImport(chain, whitelabel === "yes", customAuthentication === "yes");
     newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
       files["frameworks/vue/Home.vue"],
       "frameworks/vue/Home.vue",
       PLACEHOLDERS.CHAIN_RPC_IMPORT,
-      chainImportRes.code
+      ModuleImport
     );
 
     const connectRes = getConnectCode(customAuthentication === "yes");
@@ -104,7 +104,7 @@ const htmlSteps = {
       files["frameworks/vue/Home.vue"],
       "frameworks/vue/Home.vue",
       PLACEHOLDERS.CONNECT,
-      connectRes.code
+      connectRes
     );
 
     filenames.push(`frameworks/vue/Home.vue`);

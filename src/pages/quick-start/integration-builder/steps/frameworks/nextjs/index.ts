@@ -1,10 +1,10 @@
 import {
-  getChainRpcImport,
   getConnectCode,
   getConstructorCode,
   getInitCode,
+  getModuleImport,
   getOpenloginAdapter,
-  getReactPackageJson,
+  getPackageJson,
   getRPCFunctions,
   getRPCFunctionsUIButtonsReact,
   PLACEHOLDERS,
@@ -32,7 +32,6 @@ const STEPS = toSteps({
   instantiate,
   initialize,
   triggeringLogin,
-  // loginWithFirebaseAuth,
   usingRPCFunctions,
   logout,
   instantiateCoreSdk,
@@ -47,71 +46,68 @@ const nextjsSteps = {
 
     const replacementAggregator = new ReplaceFileAggregator();
 
-    filenames.push("frameworks/nextjs/package.json");
-    filenames.push("frameworks/nextjs/index.tsx");
-
-    const nextPackageJson = getReactPackageJson(chain);
-    newFiles["frameworks/nextjs/package.json"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/nextjs/package.json"],
-      "frameworks/nextjs/package.json",
-      PLACEHOLDERS.REACT_PACKAGE_JSON,
-      nextPackageJson.code
-    );
-
-    const ConstructorCode = getConstructorCode(whitelabel === "yes", chain);
-    newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/nextjs/App.tsx"],
-      "frameworks/nextjs/App.tsx",
-      PLACEHOLDERS.CONSTRUCTOR,
-      ConstructorCode.code
-    );
-
-    const initRes = getInitCode(whitelabel === "yes", customAuthentication === "yes");
-    newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/nextjs/App.tsx"],
-      "frameworks/nextjs/App.tsx",
-      PLACEHOLDERS.INIT,
-      initRes.code
-    );
-
-    const openloginRes = getOpenloginAdapter(whitelabel === "yes", false);
-    newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/nextjs/App.tsx"],
-      "frameworks/nextjs/App.tsx",
-      PLACEHOLDERS.OPENLOGIN_CONFIGURE,
-      openloginRes.code
-    );
-
-    const rpcFunctions = getRPCFunctions(chain);
-    newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/nextjs/App.tsx"],
-      "frameworks/nextjs/App.tsx",
-      PLACEHOLDERS.RPC_FUNCTIONS,
-      rpcFunctions.code
-    );
-
-    const rpcFunctionsUIButtonsNext = getRPCFunctionsUIButtonsReact(chain);
-    newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/nextjs/App.tsx"],
-      "frameworks/nextjs/App.tsx",
-      PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
-      rpcFunctionsUIButtonsNext.code
-    );
-
-    const chainImportRes = getChainRpcImport(chain);
-    newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/nextjs/App.tsx"],
-      "frameworks/nextjs/App.tsx",
-      PLACEHOLDERS.CHAIN_RPC_IMPORT,
-      chainImportRes.code
-    );
-
-    const connectRes = getConnectCode(customAuthentication === "yes");
+    const ConnectCode = getConnectCode(customAuthentication === "yes");
     newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["frameworks/nextjs/App.tsx"],
       "frameworks/nextjs/App.tsx",
       PLACEHOLDERS.CONNECT,
-      connectRes.code
+      ConnectCode
+    );
+
+    const ConstructorCode = getConstructorCode(chain, whitelabel === "yes");
+    newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/nextjs/App.tsx"],
+      "frameworks/nextjs/App.tsx",
+      PLACEHOLDERS.CONSTRUCTOR,
+      ConstructorCode
+    );
+
+    const InitCode = getInitCode(whitelabel === "yes");
+    newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/nextjs/App.tsx"],
+      "frameworks/nextjs/App.tsx",
+      PLACEHOLDERS.INIT,
+      InitCode
+    );
+
+    const ModuleImport = getModuleImport(chain, whitelabel === "yes", customAuthentication === "yes");
+    newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/nextjs/App.tsx"],
+      "frameworks/nextjs/App.tsx",
+      PLACEHOLDERS.CHAIN_RPC_IMPORT,
+      ModuleImport
+    );
+
+    const OpenloginAdapter = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes");
+    newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/nextjs/App.tsx"],
+      "frameworks/nextjs/App.tsx",
+      PLACEHOLDERS.OPENLOGIN_CONFIGURE,
+      OpenloginAdapter
+    );
+
+    const PackageJson = getPackageJson(chain, whitelabel === "yes", customAuthentication === "yes");
+    newFiles["frameworks/nextjs/package.json"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/nextjs/package.json"],
+      "frameworks/nextjs/package.json",
+      PLACEHOLDERS.REACT_PACKAGE_JSON,
+      PackageJson
+    );
+
+    const RPCFunctions = getRPCFunctions(chain);
+    newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/nextjs/App.tsx"],
+      "frameworks/nextjs/App.tsx",
+      PLACEHOLDERS.RPC_FUNCTIONS,
+      RPCFunctions
+    );
+
+    const RPCFunctionsUIButtonsReact = getRPCFunctionsUIButtonsReact(chain);
+    newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/nextjs/App.tsx"],
+      "frameworks/nextjs/App.tsx",
+      PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
+      RPCFunctionsUIButtonsReact
     );
 
     steps.push({
@@ -120,6 +116,9 @@ const nextjsSteps = {
     });
 
     filenames.push("frameworks/nextjs/App.tsx");
+    filenames.push("frameworks/nextjs/package.json");
+    filenames.push("frameworks/nextjs/index.tsx");
+    filenames.push("frameworks/nextjs/global.css");
 
     steps.push(
       {
@@ -175,8 +174,6 @@ const nextjsSteps = {
         }),
       }
     );
-
-    filenames.push("frameworks/nextjs/global.css");
 
     return { filenames, files, steps };
   },

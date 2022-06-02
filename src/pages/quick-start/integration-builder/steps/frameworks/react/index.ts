@@ -1,10 +1,10 @@
 import {
-  getChainRpcImport,
   getConnectCode,
   getConstructorCode,
   getInitCode,
+  getModuleImport,
   getOpenloginAdapter,
-  getReactPackageJson,
+  getPackageJson,
   getRPCFunctions,
   getRPCFunctionsUIButtonsReact,
   PLACEHOLDERS,
@@ -46,81 +46,85 @@ const reactSteps = {
 
     const replacementAggregator = new ReplaceFileAggregator();
 
-    filenames.push("frameworks/react/package.json");
-    filenames.push("frameworks/react/index.tsx");
-
-    const reactPackageJson = getReactPackageJson(chain);
-    newFiles["frameworks/react/package.json"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/react/package.json"],
-      "frameworks/react/package.json",
-      PLACEHOLDERS.REACT_PACKAGE_JSON,
-      reactPackageJson.code
-    );
-
-    const ConstructorCode = getConstructorCode(whitelabel === "yes", chain);
-    newFiles["frameworks/react/App.tsx"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/react/App.tsx"],
-      "frameworks/react/App.tsx",
-      PLACEHOLDERS.CONSTRUCTOR,
-      ConstructorCode.code
-    );
-
-    const initRes = getInitCode(whitelabel === "yes", customAuthentication === "yes");
-    newFiles["frameworks/react/App.tsx"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/react/App.tsx"],
-      "frameworks/react/App.tsx",
-      PLACEHOLDERS.INIT,
-      initRes.code
-    );
-
-    const openloginRes = getOpenloginAdapter(whitelabel === "yes", false);
-    newFiles["frameworks/react/App.tsx"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/react/App.tsx"],
-      "frameworks/react/App.tsx",
-      PLACEHOLDERS.OPENLOGIN_CONFIGURE,
-      openloginRes.code
-    );
-
-    const rpcFunctions = getRPCFunctions(chain);
-    newFiles["frameworks/react/App.tsx"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/react/App.tsx"],
-      "frameworks/react/App.tsx",
-      PLACEHOLDERS.RPC_FUNCTIONS,
-      rpcFunctions.code
-    );
-
-    const rpcFunctionsUIButtonsReact = getRPCFunctionsUIButtonsReact(chain);
-    newFiles["frameworks/react/App.tsx"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/react/App.tsx"],
-      "frameworks/react/App.tsx",
-      PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
-      rpcFunctionsUIButtonsReact.code
-    );
-
-    const chainImportRes = getChainRpcImport(chain);
-    newFiles["frameworks/react/App.tsx"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/react/App.tsx"],
-      "frameworks/react/App.tsx",
-      PLACEHOLDERS.CHAIN_RPC_IMPORT,
-      chainImportRes.code
-    );
-
-    const connectRes = getConnectCode(customAuthentication === "yes");
+    const ConnectCode = getConnectCode(customAuthentication === "yes");
     newFiles["frameworks/react/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["frameworks/react/App.tsx"],
       "frameworks/react/App.tsx",
       PLACEHOLDERS.CONNECT,
-      connectRes.code
+      ConnectCode
     );
 
-    steps.push({
-      ...STEPS.buildingApp,
-      pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react/index.tsx", range: "1-11" }),
-    });
+    const ConstructorCode = getConstructorCode(chain, whitelabel === "yes");
+    newFiles["frameworks/react/App.tsx"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/react/App.tsx"],
+      "frameworks/react/App.tsx",
+      PLACEHOLDERS.CONSTRUCTOR,
+      ConstructorCode
+    );
+
+    const InitCode = getInitCode(whitelabel === "yes");
+    newFiles["frameworks/react/App.tsx"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/react/App.tsx"],
+      "frameworks/react/App.tsx",
+      PLACEHOLDERS.INIT,
+      InitCode
+    );
+
+    const ModuleImport = getModuleImport(chain, whitelabel === "yes", customAuthentication === "yes");
+    newFiles["frameworks/react/App.tsx"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/react/App.tsx"],
+      "frameworks/react/App.tsx",
+      PLACEHOLDERS.CHAIN_RPC_IMPORT,
+      ModuleImport
+    );
+
+    const OpenloginAdapter = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes");
+    newFiles["frameworks/react/App.tsx"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/react/App.tsx"],
+      "frameworks/react/App.tsx",
+      PLACEHOLDERS.OPENLOGIN_CONFIGURE,
+      OpenloginAdapter
+    );
+
+    const PackageJson = getPackageJson(chain, whitelabel === "yes", customAuthentication === "yes");
+    newFiles["frameworks/react/package.json"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/react/package.json"],
+      "frameworks/react/package.json",
+      PLACEHOLDERS.REACT_PACKAGE_JSON,
+      PackageJson
+    );
+
+    const RPCFunctions = getRPCFunctions(chain);
+    newFiles["frameworks/react/App.tsx"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/react/App.tsx"],
+      "frameworks/react/App.tsx",
+      PLACEHOLDERS.RPC_FUNCTIONS,
+      RPCFunctions
+    );
+
+    const RPCFunctionsUIButtonsReact = getRPCFunctionsUIButtonsReact(chain);
+    newFiles["frameworks/react/App.tsx"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/react/App.tsx"],
+      "frameworks/react/App.tsx",
+      PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
+      RPCFunctionsUIButtonsReact
+    );
 
     filenames.push("frameworks/react/App.tsx");
+    filenames.push("frameworks/react/package.json");
+    filenames.push("frameworks/react/App.css");
+    filenames.push("frameworks/react/index.tsx");
+    if (chain === "starknet") {
+      filenames.push("frameworks/react/starknet/config-overrides.js");
+    } else {
+      filenames.push("frameworks/react/config-overrides.js");
+    }
 
     steps.push(
+      {
+        ...STEPS.buildingApp,
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react/index.tsx", range: "1-11" }),
+      },
       {
         ...STEPS.installation,
         pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react/package.json", range: "6-11" }),
@@ -174,13 +178,6 @@ const reactSteps = {
         }),
       }
     );
-
-    filenames.push("frameworks/react/App.css");
-    if (chain === "starknet") {
-      filenames.push("frameworks/react/starknet/config-overrides.js");
-    } else {
-      filenames.push("frameworks/react/config-overrides.js");
-    }
 
     return { filenames, files, steps };
   },

@@ -1,4 +1,14 @@
-import { getChainRpcImport, getConnectCode, getConstructorCode, getInitCode, getOpenloginAdapter, PLACEHOLDERS } from "../../../commonSnippets";
+import {
+  getConnectCode,
+  getConstructorCode,
+  getInitCode,
+  getModuleImport,
+  getOpenloginAdapter,
+  getPackageJson,
+  getRPCFunctions,
+  getRPCFunctionsUIButtonsReact,
+  PLACEHOLDERS,
+} from "../../../commonSnippets";
 import { ReplaceFileAggregator, toSteps } from "../../../utils";
 import * as initialize from "../common/initializing.mdx";
 // web
@@ -29,25 +39,24 @@ const angularSteps = {
   build({ filenames, files, steps, whitelabel, customAuthentication, chain }) {
     const newFiles = files;
 
-    const { code } = getConstructorCode(whitelabel === "yes", chain);
-
     const replacementAggregator = new ReplaceFileAggregator();
 
     filenames.push("frameworks/angular/package.json");
 
+    const ConstructorCode = getConstructorCode(chain, whitelabel === "yes");
     newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
       files["frameworks/angular/app.component.ts"],
       "frameworks/angular/app.component.ts",
       PLACEHOLDERS.CONSTRUCTOR,
-      code
+      ConstructorCode
     );
 
-    const initRes = getInitCode(whitelabel === "yes", customAuthentication === "yes");
+    const initRes = getInitCode(whitelabel === "yes");
     newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
       files["frameworks/angular/app.component.ts"],
       "frameworks/angular/app.component.ts",
       PLACEHOLDERS.INIT,
-      initRes.code
+      initRes
     );
 
     const openloginRes = getOpenloginAdapter(whitelabel === "yes", false);
@@ -55,7 +64,7 @@ const angularSteps = {
       files["frameworks/angular/app.component.ts"],
       "frameworks/angular/app.component.ts",
       PLACEHOLDERS.OPENLOGIN_CONFIGURE,
-      openloginRes.code
+      openloginRes
     );
 
     const connectRes = getConnectCode(customAuthentication === "yes");
@@ -63,16 +72,16 @@ const angularSteps = {
       files["frameworks/angular/app.component.ts"],
       "frameworks/angular/app.component.ts",
       PLACEHOLDERS.CONNECT,
-      connectRes.code
+      connectRes
     );
 
     filenames.push(`frameworks/angular/app.component.ts`);
-    const chainImportRes = getChainRpcImport(chain);
+    const ModuleImport = getModuleImport(chain, whitelabel === "yes", customAuthentication === "yes");
     newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
       files["frameworks/angular/app.component.ts"],
       "frameworks/angular/app.component.ts",
       PLACEHOLDERS.CHAIN_RPC_IMPORT,
-      chainImportRes.code
+      ModuleImport
     );
 
     steps.push(
