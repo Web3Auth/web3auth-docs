@@ -6,7 +6,7 @@ import {
   getOpenloginAdapter,
   getPackageJson,
   getRPCFunctions,
-  getRPCFunctionsUIButtonsReact,
+  getRPCFunctionsButtonsReact,
   PLACEHOLDERS,
 } from "../../../commonSnippets";
 import { ReplaceFileAggregator, toSteps } from "../../../utils";
@@ -50,7 +50,7 @@ const nextjsSteps = {
     newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["frameworks/nextjs/App.tsx"],
       "frameworks/nextjs/App.tsx",
-      PLACEHOLDERS.CONNECT,
+      PLACEHOLDERS.CONNECT_CODE,
       ConnectCode
     );
 
@@ -58,7 +58,7 @@ const nextjsSteps = {
     newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["frameworks/nextjs/App.tsx"],
       "frameworks/nextjs/App.tsx",
-      PLACEHOLDERS.CONSTRUCTOR,
+      PLACEHOLDERS.CONSTRUCTOR_CODE,
       ConstructorCode
     );
 
@@ -66,7 +66,7 @@ const nextjsSteps = {
     newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["frameworks/nextjs/App.tsx"],
       "frameworks/nextjs/App.tsx",
-      PLACEHOLDERS.INIT,
+      PLACEHOLDERS.INIT_CODE,
       InitCode
     );
 
@@ -74,7 +74,7 @@ const nextjsSteps = {
     newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["frameworks/nextjs/App.tsx"],
       "frameworks/nextjs/App.tsx",
-      PLACEHOLDERS.CHAIN_RPC_IMPORT,
+      PLACEHOLDERS.MODULE_IMPORT,
       ModuleImport
     );
 
@@ -82,7 +82,7 @@ const nextjsSteps = {
     newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["frameworks/nextjs/App.tsx"],
       "frameworks/nextjs/App.tsx",
-      PLACEHOLDERS.OPENLOGIN_CONFIGURE,
+      PLACEHOLDERS.OPENLOGIN_ADAPTER,
       OpenloginAdapter
     );
 
@@ -102,12 +102,12 @@ const nextjsSteps = {
       RPCFunctions
     );
 
-    const RPCFunctionsUIButtonsReact = getRPCFunctionsUIButtonsReact(chain);
+    const RPCFunctionsButtonsReact = getRPCFunctionsButtonsReact(chain);
     newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["frameworks/nextjs/App.tsx"],
       "frameworks/nextjs/App.tsx",
       PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
-      RPCFunctionsUIButtonsReact
+      RPCFunctionsButtonsReact
     );
 
     steps.push({

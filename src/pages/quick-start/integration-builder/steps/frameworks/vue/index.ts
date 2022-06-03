@@ -6,7 +6,7 @@ import {
   getOpenloginAdapter,
   getPackageJson,
   getRPCFunctions,
-  getRPCFunctionsUIButtonsVue,
+  getRPCFunctionsButtonsVue,
   PLACEHOLDERS,
 } from "../../../commonSnippets";
 import { ReplaceFileAggregator, toSteps } from "../../../utils";
@@ -43,7 +43,7 @@ const htmlSteps = {
     newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
       files["frameworks/vue/Home.vue"],
       "frameworks/vue/Home.vue",
-      PLACEHOLDERS.CONNECT,
+      PLACEHOLDERS.CONNECT_CODE,
       ConnectCode
     );
 
@@ -51,7 +51,7 @@ const htmlSteps = {
     newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
       files["frameworks/vue/Home.vue"],
       "frameworks/vue/Home.vue",
-      PLACEHOLDERS.CONSTRUCTOR,
+      PLACEHOLDERS.CONSTRUCTOR_CODE,
       ConstructorCode
     );
 
@@ -59,7 +59,7 @@ const htmlSteps = {
     newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
       files["frameworks/vue/Home.vue"],
       "frameworks/vue/Home.vue",
-      PLACEHOLDERS.INIT,
+      PLACEHOLDERS.INIT_CODE,
       InitCode
     );
 
@@ -67,7 +67,7 @@ const htmlSteps = {
     newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
       files["frameworks/vue/Home.vue"],
       "frameworks/vue/Home.vue",
-      PLACEHOLDERS.CHAIN_RPC_IMPORT,
+      PLACEHOLDERS.MODULE_IMPORT,
       ModuleImport
     );
 
@@ -75,7 +75,7 @@ const htmlSteps = {
     newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
       files["frameworks/vue/Home.vue"],
       "frameworks/vue/Home.vue",
-      PLACEHOLDERS.OPENLOGIN_CONFIGURE,
+      PLACEHOLDERS.OPENLOGIN_ADAPTER,
       OpenloginAdapter
     );
 
@@ -95,12 +95,12 @@ const htmlSteps = {
       RPCFunctions
     );
 
-    const RPCFunctionsUIButtonsVue = getRPCFunctionsUIButtonsVue(chain);
+    const RPCFunctionsButtonsVue = getRPCFunctionsButtonsVue(chain);
     newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
       files["frameworks/vue/Home.vue"],
       "frameworks/vue/Home.vue",
       PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
-      RPCFunctionsUIButtonsVue
+      RPCFunctionsButtonsVue
     );
 
     filenames.push(`frameworks/vue/Home.vue`);

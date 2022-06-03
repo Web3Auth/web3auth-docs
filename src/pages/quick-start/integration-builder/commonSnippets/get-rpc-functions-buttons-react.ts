@@ -1,4 +1,4 @@
-export const getRPCFunctionsUIButtonsReact = (chain: "eth" | "sol" | "starkex" | "starknet") => {
+export const getRPCFunctionsButtonsReact = (chain: "eth" | "sol" | "starkex" | "starknet") => {
   let code = `
         <button onClick={getAccounts} className="card">
           Get Accounts

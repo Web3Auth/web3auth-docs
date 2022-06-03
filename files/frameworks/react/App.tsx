@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// REPLACE-web3authChainRpcImport-
+// REPLACE-getModuleImport-
 
 import "./App.css";
 
@@ -12,12 +12,14 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-          // REPLACE-const web3AuthCtorParams = {};-
+          // REPLACE-getConstructorCode-
 
-          // REPLACE-const web3AuthOpenloginConfigure = {};-
+
+          // REPLACE-getOpenloginAdapter-
 
           setWeb3auth(web3auth);
-          // REPLACE-const web3AuthInitParams = {};-
+
+          // REPLACE-getInitCode-
 
         } catch (error) {
           console.error(error);
@@ -32,7 +34,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    // REPLACE-const web3AuthConnect = {};-
+    // REPLACE-getConnectCode-
 
     setProvider(web3authProvider);
   };
@@ -55,7 +57,7 @@ function App() {
     setProvider(null);
   };
 
-// REPLACE-rpcFunctionsImport-
+// REPLACE-getRPCFunctions-
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
@@ -69,7 +71,7 @@ function App() {
       <button onClick={getUserInfo} className="card">
         Get User Info
       </button>
-      // REPLACE-rpcFunctionsUIButtonsImport-
+      // REPLACE-getRPCFunctionsButtons-
 
       <button onClick={logout} className="card">
         Log Out

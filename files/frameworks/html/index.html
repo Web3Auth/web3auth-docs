@@ -12,7 +12,7 @@
       <!-- Logged In -->
       <div class="grid btn-logged-in">
         <button id="get-user-info" class="btn">Get User Info</button>
-        // REPLACE-rpcFunctionsUIButtonsImport-
+        // REPLACE-getRPCFunctionsButtons-
 
         <button id="logout" class="btn">Logout</button>
 
@@ -34,7 +34,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/buffer@6"></script>
-    // REPLACE-deps-import-
+    // REPLACE-getScriptImport-
 
     <script>
       const web3authSdk = window.Web3auth;
@@ -48,11 +48,11 @@
 
         const clientId = "YOUR_CLIENT_ID_HERE"; // get your clientId from https://dashboard.web3auth.io
 
-        // REPLACE-const web3AuthCtorParams = {};-
+        // REPLACE-getConstructorCode-
 
-        // REPLACE-const web3AuthOpenloginConfigure = {};-
+        // REPLACE-getOpenloginAdapter-
 
-        // REPLACE-const web3AuthInitParams = {};-
+        // REPLACE-getInitCode-
 
         console.log("web3auth", web3auth, web3auth.provider);
         if (web3auth.provider) {
@@ -69,20 +69,11 @@
 
       $("#login").click(async function (event) {
         try {
-          const provider = await web3auth.connect();
+          // REPLACE-getConnectCode-
+
           console.log("provider after login", provider);
           $(".btn-logged-out").hide();
           $(".btn-logged-in").show();
-        } catch (error) {
-          console.error(error.message);
-        }
-      });
-
-      $("#logout").click(async function (event) {
-        try {
-          await web3auth.logout();
-          $(".btn-logged-in").hide();
-          $(".btn-logged-out").show();
         } catch (error) {
           console.error(error.message);
         }
@@ -96,7 +87,18 @@
           console.error(error.message);
         }
       });
-      // REPLACE-rpcFunctionsImport-
+
+      // REPLACE-getRPCFunctions-
+
+      $("#logout").click(async function (event) {
+        try {
+          await web3auth.logout();
+          $(".btn-logged-in").hide();
+          $(".btn-logged-out").show();
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
     </script>
   </body>
 </html>

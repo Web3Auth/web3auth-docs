@@ -6,7 +6,7 @@ import {
   getOpenloginAdapter,
   getPackageJson,
   getRPCFunctionsAngular,
-  getRPCFunctionsUIButtonsAngular,
+  getRPCFunctionsButtonsAngular,
   PLACEHOLDERS,
 } from "../../../commonSnippets";
 import { ReplaceFileAggregator, toSteps } from "../../../utils";
@@ -45,7 +45,7 @@ const angularSteps = {
     newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
       files["frameworks/angular/app.component.ts"],
       "frameworks/angular/app.component.ts",
-      PLACEHOLDERS.CONNECT,
+      PLACEHOLDERS.CONNECT_CODE,
       ConnectCode
     );
 
@@ -53,7 +53,7 @@ const angularSteps = {
     newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
       files["frameworks/angular/app.component.ts"],
       "frameworks/angular/app.component.ts",
-      PLACEHOLDERS.CONSTRUCTOR,
+      PLACEHOLDERS.CONSTRUCTOR_CODE,
       ConstructorCode
     );
 
@@ -61,7 +61,7 @@ const angularSteps = {
     newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
       files["frameworks/angular/app.component.ts"],
       "frameworks/angular/app.component.ts",
-      PLACEHOLDERS.INIT,
+      PLACEHOLDERS.INIT_CODE,
       InitCode
     );
 
@@ -69,7 +69,7 @@ const angularSteps = {
     newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
       files["frameworks/angular/app.component.ts"],
       "frameworks/angular/app.component.ts",
-      PLACEHOLDERS.CHAIN_RPC_IMPORT,
+      PLACEHOLDERS.MODULE_IMPORT,
       ModuleImport
     );
 
@@ -77,7 +77,7 @@ const angularSteps = {
     newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
       files["frameworks/angular/app.component.ts"],
       "frameworks/angular/app.component.ts",
-      PLACEHOLDERS.OPENLOGIN_CONFIGURE,
+      PLACEHOLDERS.OPENLOGIN_ADAPTER,
       OpenloginAdapter
     );
 
@@ -97,12 +97,12 @@ const angularSteps = {
       RPCFunctionsAngular
     );
 
-    const RPCFunctionsUIButtonsAngular = getRPCFunctionsUIButtonsAngular(chain);
+    const RPCFunctionsButtonsAngular = getRPCFunctionsButtonsAngular(chain);
     newFiles["frameworks/angular/app.component.html"] = replacementAggregator.replaceFileVariable(
       files["frameworks/angular/app.component.html"],
       "frameworks/angular/app.component.html",
       PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
-      RPCFunctionsUIButtonsAngular
+      RPCFunctionsButtonsAngular
     );
 
     filenames.push(`frameworks/angular/app.component.ts`);

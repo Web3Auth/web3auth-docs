@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-// REPLACE-web3authChainRpcImport-
+// REPLACE-getModuleImport-
 
 const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
 
@@ -15,13 +15,13 @@ export class AppComponent {
     isModalLoaded = false;
 
     async ngOnInit() {
-      // REPLACE-const web3AuthCtorParams = {};-
+      // REPLACE-getConstructorCode-
 
 
-      // REPLACE-const web3AuthOpenloginConfigure = {};-
+      // REPLACE-getOpenloginAdapter-
 
 
-      // REPLACE-const web3AuthInitParams = {};-
+      // REPLACE-getInitCode-
 
 
       this.isModalLoaded = true;
@@ -33,7 +33,7 @@ export class AppComponent {
       return;
     }
     const web3auth = this.web3auth;
-      // REPLACE-const web3AuthConnect = {};-
+    // REPLACE-getConnectCode-
 
     this.provider = web3authProvider;
     this.uiConsole("logged in");
@@ -48,7 +48,7 @@ export class AppComponent {
       this.uiConsole(user);
     };
 
-  // REPLACE-rpcFunctionsImport-
+  // REPLACE-getRPCFunctions-
 
 
     logout = async () => {

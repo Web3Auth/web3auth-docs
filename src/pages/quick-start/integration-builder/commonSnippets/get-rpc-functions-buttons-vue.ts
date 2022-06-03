@@ -1,4 +1,4 @@
-export const getRPCFunctionsUIButtonsVue = (chain: "eth" | "sol" | "starkex" | "starknet") => {
+export const getRPCFunctionsButtonsVue = (chain: "eth" | "sol" | "starkex" | "starknet") => {
   let code = `
       <button class="rpcBtn" v-if="provider" @click="getAccounts" style="cursor: pointer">Get Accounts</button>
       <button class="rpcBtn" v-if="provider" @click="getBalance" style="cursor: pointer">Get Balance</button>

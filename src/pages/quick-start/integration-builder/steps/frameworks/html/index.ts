@@ -4,7 +4,7 @@ import {
   getInitCode,
   getOpenloginAdapter,
   getRPCFunctionsHTML,
-  getRPCFunctionsUIButtonsHTML,
+  getRPCFunctionsButtonsHTML,
   getScriptImport,
   PLACEHOLDERS,
 } from "../../../commonSnippets";
@@ -39,27 +39,27 @@ const htmlSteps = {
 
     const replacementAggregator = new ReplaceFileAggregator();
 
-    const ConstructorCodeHTML = getConstructorCodeHTML(chain, whitelabel === "yes");
-    newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/html/index.html"],
-      "frameworks/html/index.html",
-      PLACEHOLDERS.CONSTRUCTOR,
-      ConstructorCodeHTML
-    );
-
     const ConnectCodeHTML = getConnectCodeHTML(customAuthentication === "yes");
     newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
       files["frameworks/html/index.html"],
       "frameworks/html/index.html",
-      PLACEHOLDERS.CONNECT,
+      PLACEHOLDERS.CONNECT_CODE,
       ConnectCodeHTML
+    );
+
+    const ConstructorCodeHTML = getConstructorCodeHTML(chain, whitelabel === "yes");
+    newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/html/index.html"],
+      "frameworks/html/index.html",
+      PLACEHOLDERS.CONSTRUCTOR_CODE,
+      ConstructorCodeHTML
     );
 
     const InitCode = getInitCode(whitelabel === "yes");
     newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
       files["frameworks/html/index.html"],
       "frameworks/html/index.html",
-      PLACEHOLDERS.INIT,
+      PLACEHOLDERS.INIT_CODE,
       InitCode
     );
 
@@ -67,7 +67,7 @@ const htmlSteps = {
     newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
       files["frameworks/html/index.html"],
       "frameworks/html/index.html",
-      PLACEHOLDERS.OPENLOGIN_CONFIGURE,
+      PLACEHOLDERS.OPENLOGIN_ADAPTER,
       OpenloginAdapter
     );
 
@@ -79,19 +79,19 @@ const htmlSteps = {
       RPCFunctionsHTML
     );
 
-    const RPCFunctionsUIButtonsHTML = getRPCFunctionsUIButtonsHTML(chain);
+    const RPCFunctionsButtonsHTML = getRPCFunctionsButtonsHTML(chain);
     newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
       files["frameworks/html/index.html"],
       "frameworks/html/index.html",
       PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
-      RPCFunctionsUIButtonsHTML
+      RPCFunctionsButtonsHTML
     );
 
     const ScriptImport = getScriptImport(chain, whitelabel === "yes", customAuthentication === "yes");
     newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
       files["frameworks/html/index.html"],
       "frameworks/html/index.html",
-      PLACEHOLDERS.SCRIPTS_IMPORT,
+      PLACEHOLDERS.SCRIPT_IMPORT,
       ScriptImport
     );
 

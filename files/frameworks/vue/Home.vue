@@ -5,7 +5,7 @@
       <button class="rpcBtn" v-if="!provider" @click="login" style="cursor: pointer">Login</button>
 
       <button class="rpcBtn" v-if="provider" @click="getUserInfo" style="cursor: pointer">Get User Info</button>
-      // REPLACE-rpcFunctionsUIButtonsImport-
+      // REPLACE-getRPCFunctionsButtons-
 
       <button class="rpcBtn" v-if="provider" @click="logout" style="cursor: pointer">Logout</button>
     </section>
@@ -18,7 +18,7 @@
 <script lang="ts">
 
 import { ref, onMounted } from "vue";
-// REPLACE-web3authChainRpcImport-
+// REPLACE-getModuleImport-
 
 
 export default {
@@ -37,13 +37,13 @@ export default {
       try {
         loading.value = true;
 
-        // REPLACE-const web3AuthCtorParams = {};-
+        // REPLACE-getConstructorCode-
 
 
-        // REPLACE-const web3AuthOpenloginConfigure = {};-
+        // REPLACE-getOpenloginAdapter-
 
 
-        // REPLACE-const web3AuthInitParams = {};-
+        // REPLACE-getInitCode-
 
 
       } catch (error) {
@@ -59,7 +59,7 @@ export default {
         uiConsole("web3auth not initialized yet");
         return;
       }
-      // REPLACE-const web3AuthConnect = {};-
+      // REPLACE-getConnectCode-
 
       provider.value = web3authProvider;
     };
@@ -82,7 +82,7 @@ export default {
       provider.value = null;
     };
 
-    // REPLACE-rpcFunctionsImport-
+    // REPLACE-getRPCFunctions-
 
     function uiConsole(...args: any[]): void {
       const el = document.querySelector("#console>p");

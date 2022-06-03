@@ -1,4 +1,4 @@
-export const getRPCFunctionsUIButtonsHTML = (chain: "eth" | "sol" | "starkex" | "starknet") => {
+export const getRPCFunctionsButtonsHTML = (chain: "eth" | "sol" | "starkex" | "starknet") => {
   let code = `
           <button id="get-accounts" class="btn">Get Accounts</button>
           <button id="get-balance" class="btn">Get Balance</button>
