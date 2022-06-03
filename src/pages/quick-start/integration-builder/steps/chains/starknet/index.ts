@@ -10,12 +10,12 @@ const chainSteps = {
   build({ filenames, files, steps, lang }) {
     const newFiles = files;
 
-    filenames.push("chains/starknet/starknet.ts");
+    filenames.push("chains/starknet/starknet.js");
     filenames.push("chains/starknet/ArgentAccount.json");
 
     steps.push({
       ...STEPS.initialize,
-      pointer: { filename: "chains/starknet/starknet.ts", range: "30-51" },
+      pointer: { filename: "chains/starknet/starknet.js", range: "30-51" },
     });
 
     return { files: newFiles, steps, filenames };

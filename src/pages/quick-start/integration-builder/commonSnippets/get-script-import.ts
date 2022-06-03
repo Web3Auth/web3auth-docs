@@ -19,6 +19,13 @@ export const getScriptImport = (chain: "eth" | "sol" | "starkex" | "starknet", i
     <script src="https://cdn.jsdelivr.net/npm/@starkware-industries/starkex-js@0.0.6/dist/browser.min.js"></script>
     <script src="./starkex.js"></script>`;
       break;
+    case "starknet":
+      code += `
+      <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1/dist/web3.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@toruslabs/starkware-crypto@1.1.0/dist/starkwareCrypto.umd.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/starknet@3.9.0/dist/index.min.js"></script>
+      <script src="./starknet.js"></script>`;
+      break;
     default:
       code += `
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1/dist/web3.min.js"></script>

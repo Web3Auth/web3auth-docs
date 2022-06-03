@@ -14,8 +14,8 @@ export const getRPCFunctionsUIButtonsHTML = (chain: "eth" | "sol" | "starkex" | 
   }
   if (chain === "starknet") {
     code = `
-          <button id="get-stark-hd-account" class="btn">Get Stark Accounts</button>
-          <button id="on-deploy-account" class="btn">Mint Request</button>
+          <button id="get-stark-accounts" class="btn">Get Stark Accounts</button>
+          <button id="deploy-account" class="btn">Deploy Account</button>
       `;
   }
   return code;

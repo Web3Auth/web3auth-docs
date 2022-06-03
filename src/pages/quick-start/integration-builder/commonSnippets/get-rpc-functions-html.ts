@@ -66,23 +66,24 @@ export const getRPCFunctionsHTML = (chain: "eth" | "sol" | "starkex" | "starknet
   }
   if (chain === "starknet") {
     code = `
-        $("#get-stark-hd-account").click(async function (event) {
-          try {
-            const accounts = await rpc.getStarkAccount(web3auth.provider);
-            $("#code").text(JSON.stringify(["accounts", accounts], null, 2));
-          } catch (error) {
-            console.error(error.message);
-          }
-        });
+      $("#get-stark-accounts").click(async function (event) {
+        try {
+          console.log(web3auth.provider);
+          const accounts = await rpc.getStarkAccount(web3auth.provider);
+          $("#code").text(JSON.stringify(["account", accounts], null, 2));
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
 
-        $("#on-deploy-account").click(async function (event) {
-          try {
-            const balance = await rpc.deployAccount(web3auth.provider);
-            $("#code").text(JSON.stringify(["balance", balance], null, 2));
-          } catch (error) {
-            console.error(error.message);
-          }
-        });`;
+      $("#deploy-account").click(async function (event) {
+        try {
+          const response = await rpc.deployAccount(web3auth.provider, starknet.provider);
+          $("#code").text(JSON.stringify(response));
+        } catch (error) {
+          console.error(error.message);
+        }
+      });`;
   }
   return code;
 };
