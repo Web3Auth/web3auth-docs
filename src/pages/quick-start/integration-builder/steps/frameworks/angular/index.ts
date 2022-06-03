@@ -5,8 +5,8 @@ import {
   getModuleImport,
   getOpenloginAdapter,
   getPackageJson,
-  getRPCFunctions,
-  getRPCFunctionsUIButtonsReact,
+  getRPCFunctionsAngular,
+  getRPCFunctionsUIButtonsAngular,
   PLACEHOLDERS,
 } from "../../../commonSnippets";
 import { ReplaceFileAggregator, toSteps } from "../../../utils";
@@ -41,7 +41,13 @@ const angularSteps = {
 
     const replacementAggregator = new ReplaceFileAggregator();
 
-    filenames.push("frameworks/angular/package.json");
+    const ConnectCode = getConnectCode(customAuthentication === "yes");
+    newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/angular/app.component.ts"],
+      "frameworks/angular/app.component.ts",
+      PLACEHOLDERS.CONNECT,
+      ConnectCode
+    );
 
     const ConstructorCode = getConstructorCode(chain, whitelabel === "yes");
     newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
@@ -51,37 +57,28 @@ const angularSteps = {
       ConstructorCode
     );
 
-    const initRes = getInitCode(whitelabel === "yes");
+    const InitCode = getInitCode(whitelabel === "yes");
     newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
       files["frameworks/angular/app.component.ts"],
       "frameworks/angular/app.component.ts",
       PLACEHOLDERS.INIT,
-      initRes
+      InitCode
     );
 
-    const openloginRes = getOpenloginAdapter(whitelabel === "yes", false);
-    newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/angular/app.component.ts"],
-      "frameworks/angular/app.component.ts",
-      PLACEHOLDERS.OPENLOGIN_CONFIGURE,
-      openloginRes
-    );
-
-    const connectRes = getConnectCode(customAuthentication === "yes");
-    newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/angular/app.component.ts"],
-      "frameworks/angular/app.component.ts",
-      PLACEHOLDERS.CONNECT,
-      connectRes
-    );
-
-    filenames.push(`frameworks/angular/app.component.ts`);
     const ModuleImport = getModuleImport(chain, whitelabel === "yes", customAuthentication === "yes");
     newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
       files["frameworks/angular/app.component.ts"],
       "frameworks/angular/app.component.ts",
       PLACEHOLDERS.CHAIN_RPC_IMPORT,
       ModuleImport
+    );
+
+    const OpenloginAdapter = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes");
+    newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/angular/app.component.ts"],
+      "frameworks/angular/app.component.ts",
+      PLACEHOLDERS.OPENLOGIN_CONFIGURE,
+      OpenloginAdapter
     );
 
     const PackageJson = getPackageJson(chain, whitelabel === "yes", customAuthentication === "yes");
@@ -91,6 +88,31 @@ const angularSteps = {
       PLACEHOLDERS.PACKAGE_JSON,
       PackageJson
     );
+
+    const RPCFunctionsAngular = getRPCFunctionsAngular(chain);
+    newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/angular/app.component.ts"],
+      "frameworks/angular/app.component.ts",
+      PLACEHOLDERS.RPC_FUNCTIONS,
+      RPCFunctionsAngular
+    );
+
+    const RPCFunctionsUIButtonsAngular = getRPCFunctionsUIButtonsAngular(chain);
+    newFiles["frameworks/angular/app.component.html"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/angular/app.component.html"],
+      "frameworks/angular/app.component.html",
+      PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
+      RPCFunctionsUIButtonsAngular
+    );
+
+    filenames.push(`frameworks/angular/app.component.ts`);
+    filenames.push("frameworks/angular/package.json");
+    filenames.push("frameworks/angular/app.component.html");
+    filenames.push("frameworks/angular/app.component.css");
+    filenames.push("frameworks/angular/app.module.ts");
+    filenames.push("frameworks/angular/angular.json");
+    filenames.push("frameworks/angular/polyfills.ts");
+    filenames.push("frameworks/angular/tsconfig.json");
 
     steps.push(
       {
@@ -139,10 +161,6 @@ const angularSteps = {
         }),
       }
     );
-
-    filenames.push("frameworks/angular/app.component.html");
-    filenames.push("frameworks/angular/app.component.css");
-    filenames.push("frameworks/angular/app.module.ts");
 
     return { filenames, files, steps };
   },

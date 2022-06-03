@@ -1,116 +1,116 @@
-export const getRPCFunctions = (chain: "eth" | "sol" | "starkex" | "starknet") => {
+export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "starknet") => {
   let code = `
-    const getAccounts = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
+    getAccounts = async () => {
+      if (!this.provider) {
+        this.uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider);
       const userAccount = await rpc.getAccounts();
-      uiConsole(userAccount);
+      this.uiConsole(userAccount);
     };
 
-    const getBalance = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
+    getBalance = async () => {
+      if (!this.provider) {
+        this.uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider);
       const balance = await rpc.getBalance();
-      uiConsole(balance);
+      this.uiConsole(balance);
     };
 
-    const signMessage = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
+    signMessage = async () => {
+      if (!this.provider) {
+        this.uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider);
       const result = await rpc.signMessage();
-      uiConsole(result);
+      this.uiConsole(result);
     };
 
-    const signTransaction = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
+    signTransaction = async () => {
+      if (!this.provider) {
+        this.uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider);
       const result = await rpc.signTransaction();
-      uiConsole(result);
+      this.uiConsole(result);
     };
 
-    const sendTransaction = async () => {
-      if (!provider) {
-        uiConsole("provider not initialized yet");
+    sendTransaction = async () => {
+      if (!this.provider) {
+        this.uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider);
       const result = await rpc.signAndSendTransaction();
-      uiConsole(result);
+      this.uiConsole(result);
     };`;
   if (chain === "starkex") {
     code = `
-    const onGetStarkHDAccount = async () => {
+    onGetStarkHDAccount = async () => {
       if (!this.provider) {
         this.uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);
       const starkaccounts = await rpc.getStarkAccount();
-      uiConsole(starkaccounts);
+      this.uiConsole(starkaccounts);
     };
 
-    const onMintRequest = async () => {
+    onMintRequest = async () => {
       if (!this.provider) {
         this.uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);
       const request = await rpc.onMintRequest();
-      uiConsole(request);
+      this.uiConsole(request);
     };
 
-    const onDepositRequest = async () => {
+    onDepositRequest = async () => {
       if (!this.provider) {
         this.uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);
       const request = await rpc.onDepositRequest();
-      uiConsole(request);
+      this.uiConsole(request);
     };
 
-    const onWithdrawalRequest = async () => {
+    onWithdrawalRequest = async () => {
       if (!this.provider) {
         this.uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);
       const request = await rpc.onWithdrawalRequest();
-      uiConsole(request);
+      this.uiConsole(request);
     };`;
   }
   if (chain === "starknet") {
     code = `
-    const onGetStarkHDAccount = async () => {
+    onGetStarkHDAccount = async () => {
       if (!this.provider) {
         this.uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);
       const starkaccounts = await rpc.getStarkAccount();
-      uiConsole(starkaccounts);
+      this.uiConsole(starkaccounts);
     };
 
-    const onDeployAccount = async () => {
+    onDeployAccount = async () => {
       if (!this.provider) {
         this.uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);
       const deployaccount =  await rpc.deployAccount();
-      uiConsole(deployaccount);
+      this.uiConsole(deployaccount);
     };`;
   }
   return code;

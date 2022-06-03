@@ -71,7 +71,7 @@ const htmlSteps = {
       ModuleImport
     );
 
-    const OpenloginAdapter = getOpenloginAdapter(whitelabel === "yes", false);
+    const OpenloginAdapter = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes");
     newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
       files["frameworks/vue/Home.vue"],
       "frameworks/vue/Home.vue",

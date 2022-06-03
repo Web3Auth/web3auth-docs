@@ -1,6 +1,7 @@
 export const getOpenloginAdapter = (isWhiteLabled: boolean, isCustomAuth: boolean) => {
   let whitelabel = ``;
   let loginConfig = ``;
+  let code = ``;
 
   if (isWhiteLabled) {
     whitelabel = `
@@ -25,7 +26,8 @@ export const getOpenloginAdapter = (isWhiteLabled: boolean, isCustomAuth: boolea
           },`;
   }
 
-  const code = `
+  if (isWhiteLabled || isCustomAuth) {
+    code = `
       const openloginAdapter = new OpenloginAdapter({
         adapterSettings: {
           clientId,
@@ -34,6 +36,7 @@ export const getOpenloginAdapter = (isWhiteLabled: boolean, isCustomAuth: boolea
         },
       });
       web3auth.configureAdapter(openloginAdapter);`;
+  }
 
   return code;
 };
