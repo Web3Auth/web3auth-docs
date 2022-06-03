@@ -73,9 +73,9 @@ module.exports = {
       ],
     },
     algolia: {
-      appId: "WN257ROTM9",
-      apiKey: "966467ec3d9b7371038f8183ccb9d2e2",
-      indexName: "web3auth-docs",
+      appId: "6OF28D8CMV",
+      apiKey: "425a1e860cb4b9b4ce1f7d9b117c7a81",
+      indexName: "docs-web3auth",
       schedule: 'every 1 day at 3:00 pm',
     },
   },
