@@ -1,15 +1,13 @@
 <template>
   <div id="app">
     <h2>Web3Auth X Vue.js</h2>
-    <section
-      :style="{
-        fontSize: '12px',
-      }"
-    >
-      <button class="rpcBtn" v-if="!provider" @click="connect()" style="cursor: pointer">Connect</button>
-      <button class="rpcBtn" v-if="provider" @click="logout()" style="cursor: pointer">Logout</button>
-      <button class="rpcBtn" v-if="provider" @click="getUserInfo()" style="cursor: pointer">Get User Info</button>
-      <button class="rpcBtn" v-if="provider" @click="getUserAccount()" style="cursor: pointer">Get User Account</button>
+    <section style="{ fontSize: '12px' }">
+      <button class="rpcBtn" v-if="!provider" @click="login" style="cursor: pointer">Login</button>
+
+      <button class="rpcBtn" v-if="provider" @click="getUserInfo" style="cursor: pointer">Get User Info</button>
+      // REPLACE-rpcFunctionsUIButtonsImport-
+
+      <button class="rpcBtn" v-if="provider" @click="logout" style="cursor: pointer">Logout</button>
     </section>
     <div id="console" style="white-space: pre-line">
       <p style="white-space: pre-line"></p>
@@ -18,12 +16,10 @@
 </template>
 
 <script lang="ts">
-import { ADAPTER_STATUS, CONNECTED_EVENT_DATA, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { Web3Auth } from "@web3auth/web3auth";
+
 import { ref, onMounted } from "vue";
 // REPLACE-web3authChainRpcImport-
+
 
 export default {
   name: "Home",
@@ -37,50 +33,57 @@ export default {
     const provider = ref<SafeEventEmitterProvider | null>(null);
     const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
 
-    // REPLACE-const web3AuthCoreCtorParams = {};-
-
     onMounted(async () => {
       try {
         loading.value = true;
 
+        // REPLACE-const web3AuthCtorParams = {};-
+
+
         // REPLACE-const web3AuthOpenloginConfigure = {};-
 
-        web3auth = new Web3Auth(web3AuthCtorParams);
 
         // REPLACE-const web3AuthInitParams = {};-
+
+
       } catch (error) {
-        console.log("error", error);
+        uiConsole("error", error);
         uiConsole("error", error);
       } finally {
         loading.value = false;
       }
     });
 
-    async function connect() {
-      try {
-        // REPLACE-const web3AuthConnect = {};-
-        provider.value = web3authProvider;
-      } catch (error) {
-        console.error(error);
-        uiConsole("error", error);
+    const login = async () => {
+      if (!web3auth) {
+        uiConsole("web3auth not initialized yet");
+        return;
       }
-    }
-    async function logout() {
+      // REPLACE-const web3AuthConnect = {};-
+
+      provider.value = web3authProvider;
+    };
+
+    const getUserInfo = async () => {
+      if (!web3auth) {
+        uiConsole("web3auth not initialized yet");
+        return;
+      }
+      const user = await web3auth.getUserInfo();
+      uiConsole(user);
+    };
+
+    const logout = async () => {
+      if (!web3auth) {
+        uiConsole("web3auth not initialized yet");
+        return;
+      }
       await web3auth.logout();
       provider.value = null;
-    }
-    async function getUserInfo() {
-      const userInfo = await web3auth.getUserInfo();
-      uiConsole(userInfo);
-    }
-    async function getUserAccount() {
-      if (!provider.value) {
-        throw new Error("provider is not set");
-      }
-      const rpc = new RPC(provider.value);
-      const userAccount = await rpc.getAccounts();
-      uiConsole(userAccount);
-    }
+    };
+
+    // REPLACE-rpcFunctionsImport-
+
     function uiConsole(...args: any[]): void {
       const el = document.querySelector("#console>p");
       if (el) {

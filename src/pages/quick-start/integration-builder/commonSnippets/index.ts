@@ -10,5 +10,6 @@ export * from "./get-rpc-functions";
 export * from "./get-rpc-functions-html";
 export * from "./get-rpc-functions-ui-buttons-html";
 export * from "./get-rpc-functions-ui-buttons-react";
+export * from "./get-rpc-functions-ui-buttons-vue";
 export * from "./get-script-import";
 export * from "./placeholders";

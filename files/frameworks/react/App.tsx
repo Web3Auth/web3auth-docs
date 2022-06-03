@@ -29,16 +29,17 @@ function App() {
 
   const login = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      uiConsole("web3auth not initialized yet");
       return;
     }
-    const provider = await web3auth.connect();
-    setProvider(provider);
+    // REPLACE-const web3AuthConnect = {};-
+
+    setProvider(web3authProvider);
   };
 
   const getUserInfo = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      uiConsole("web3auth not initialized yet");
       return;
     }
     const user = await web3auth.getUserInfo();
@@ -47,7 +48,7 @@ function App() {
 
   const logout = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      uiConsole("web3auth not initialized yet");
       return;
     }
     await web3auth.logout();

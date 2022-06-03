@@ -6,7 +6,7 @@ import {
   getOpenloginAdapter,
   getPackageJson,
   getRPCFunctions,
-  getRPCFunctionsUIButtonsReact,
+  getRPCFunctionsUIButtonsVue,
   PLACEHOLDERS,
 } from "../../../commonSnippets";
 import { ReplaceFileAggregator, toSteps } from "../../../utils";
@@ -39,16 +39,12 @@ const htmlSteps = {
     const newFiles = files;
     const replacementAggregator = new ReplaceFileAggregator();
 
-    filenames.push("frameworks/vue/package.json");
-    filenames.push("frameworks/vue/vue.config.js");
-    filenames.push("frameworks/vue/App.vue");
-
-    const PackageJson = getPackageJson(chain, whitelabel === "yes", customAuthentication === "yes");
-    newFiles["frameworks/vue/package.json"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/vue/package.json"],
-      "frameworks/vue/package.json",
-      PLACEHOLDERS.PACKAGE_JSON,
-      PackageJson
+    const ConnectCode = getConnectCode(customAuthentication === "yes");
+    newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/vue/Home.vue"],
+      "frameworks/vue/Home.vue",
+      PLACEHOLDERS.CONNECT,
+      ConnectCode
     );
 
     const ConstructorCode = getConstructorCode(chain, whitelabel === "yes");
@@ -67,30 +63,6 @@ const htmlSteps = {
       InitCode
     );
 
-    const openloginRes = getOpenloginAdapter(whitelabel === "yes", false);
-    newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/vue/Home.vue"],
-      "frameworks/vue/Home.vue",
-      PLACEHOLDERS.OPENLOGIN_CONFIGURE,
-      openloginRes
-    );
-
-    const rpcFunctions = getRPCFunctions(chain);
-    newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/vue/Home.vue"],
-      "frameworks/vue/Home.vue",
-      PLACEHOLDERS.RPC_FUNCTIONS,
-      rpcFunctions
-    );
-
-    const rpcFunctionsUIButtonsReact = getRPCFunctionsUIButtonsReact(chain);
-    newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/vue/Home.vue"],
-      "frameworks/vue/Home.vue",
-      PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
-      rpcFunctionsUIButtonsReact
-    );
-
     const ModuleImport = getModuleImport(chain, whitelabel === "yes", customAuthentication === "yes");
     newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
       files["frameworks/vue/Home.vue"],
@@ -99,15 +71,43 @@ const htmlSteps = {
       ModuleImport
     );
 
-    const connectRes = getConnectCode(customAuthentication === "yes");
+    const OpenloginAdapter = getOpenloginAdapter(whitelabel === "yes", false);
     newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
       files["frameworks/vue/Home.vue"],
       "frameworks/vue/Home.vue",
-      PLACEHOLDERS.CONNECT,
-      connectRes
+      PLACEHOLDERS.OPENLOGIN_CONFIGURE,
+      OpenloginAdapter
+    );
+
+    const PackageJson = getPackageJson(chain, whitelabel === "yes", customAuthentication === "yes");
+    newFiles["frameworks/vue/package.json"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/vue/package.json"],
+      "frameworks/vue/package.json",
+      PLACEHOLDERS.PACKAGE_JSON,
+      PackageJson
+    );
+
+    const RPCFunctions = getRPCFunctions(chain);
+    newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/vue/Home.vue"],
+      "frameworks/vue/Home.vue",
+      PLACEHOLDERS.RPC_FUNCTIONS,
+      RPCFunctions
+    );
+
+    const RPCFunctionsUIButtonsVue = getRPCFunctionsUIButtonsVue(chain);
+    newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/vue/Home.vue"],
+      "frameworks/vue/Home.vue",
+      PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
+      RPCFunctionsUIButtonsVue
     );
 
     filenames.push(`frameworks/vue/Home.vue`);
+    filenames.push("frameworks/vue/package.json");
+    filenames.push("frameworks/vue/App.vue");
+    filenames.push("frameworks/vue/vue.config.js");
+
     steps.push(
       {
         ...STEPS.installationWeb,

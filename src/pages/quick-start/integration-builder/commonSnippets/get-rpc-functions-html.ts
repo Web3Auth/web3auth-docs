@@ -68,7 +68,6 @@ export const getRPCFunctionsHTML = (chain: "eth" | "sol" | "starkex" | "starknet
     code = `
       $("#get-stark-accounts").click(async function (event) {
         try {
-          console.log(web3auth.provider);
           const accounts = await rpc.getStarkAccount(web3auth.provider);
           $("#code").text(JSON.stringify(["account", accounts], null, 2));
         } catch (error) {

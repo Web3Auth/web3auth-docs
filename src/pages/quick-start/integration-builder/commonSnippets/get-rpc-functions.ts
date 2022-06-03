@@ -2,7 +2,7 @@ export const getRPCFunctions = (chain: "eth" | "sol" | "starkex" | "starknet") =
   let code = `
     const getAccounts = async () => {
       if (!provider) {
-        console.log("provider not initialized yet");
+        uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider);
@@ -12,7 +12,7 @@ export const getRPCFunctions = (chain: "eth" | "sol" | "starkex" | "starknet") =
 
     const getBalance = async () => {
       if (!provider) {
-        console.log("provider not initialized yet");
+        uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider);
@@ -22,7 +22,7 @@ export const getRPCFunctions = (chain: "eth" | "sol" | "starkex" | "starknet") =
 
     const signMessage = async () => {
       if (!provider) {
-        console.log("provider not initialized yet");
+        uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider);
@@ -42,14 +42,13 @@ export const getRPCFunctions = (chain: "eth" | "sol" | "starkex" | "starknet") =
 
     const sendTransaction = async () => {
       if (!provider) {
-        console.log("provider not initialized yet");
+        uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider);
       const result = await rpc.signAndSendTransaction();
       uiConsole(result);
-    };
-  `;
+    };`;
   if (chain === "starkex") {
     code = `
     const onGetStarkHDAccount = async () => {
@@ -74,8 +73,7 @@ export const getRPCFunctions = (chain: "eth" | "sol" | "starkex" | "starknet") =
       const rpc = new RPC(provider as SafeEventEmitterProvider);
       const request = await rpc.onWithdrawalRequest();
       uiConsole(request);
-    };
-  `;
+    };`;
   }
   if (chain === "starknet") {
     code = `
@@ -89,8 +87,7 @@ export const getRPCFunctions = (chain: "eth" | "sol" | "starkex" | "starknet") =
       const rpc = new RPC(provider as SafeEventEmitterProvider);
       const deployaccount =  await rpc.deployAccount();
       uiConsole(deployaccount);
-    };
-  `;
+    };`;
   }
   return code;
 };
