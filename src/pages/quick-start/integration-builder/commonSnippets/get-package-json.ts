@@ -1,16 +1,16 @@
 export const getPackageJson = (chain: "eth" | "sol" | "starkex" | "starknet", isWhiteLabled: boolean, isCustomAuth: boolean) => {
   let code = `
-    "@web3auth/base": "^0.9.4",
-    "@web3auth/web3auth": "^0.9.4",`;
+    "@web3auth/base": "^1.0.0",
+    "@web3auth/web3auth": "^1.0.0",`;
 
   if (isWhiteLabled || isCustomAuth) {
     code += `
-    "@web3auth/openlogin-adapter": "^0.9.4",`;
+    "@web3auth/openlogin-adapter": "^1.0.0",`;
   }
   switch (chain) {
     case "sol":
       code += `
-    "@web3auth/solana-provider": "^0.9.4",
+    "@web3auth/solana-provider": "^1.0.0",
     "@solana/web3.js": "^1.36.0",`;
       break;
 
@@ -33,7 +33,7 @@ export const getPackageJson = (chain: "eth" | "sol" | "starkex" | "starknet", is
 
     default:
       code += `
-    "@web3auth/ethereum-provider": "^0.9.4",
+    "@web3auth/ethereum-provider": "^^1.0.0",
     "web3": "^1.7.0",`;
   }
 

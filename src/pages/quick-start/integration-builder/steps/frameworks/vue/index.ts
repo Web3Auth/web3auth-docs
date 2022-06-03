@@ -47,7 +47,7 @@ const htmlSteps = {
     newFiles["frameworks/vue/package.json"] = replacementAggregator.replaceFileVariable(
       files["frameworks/vue/package.json"],
       "frameworks/vue/package.json",
-      PLACEHOLDERS.REACT_PACKAGE_JSON,
+      PLACEHOLDERS.PACKAGE_JSON,
       PackageJson
     );
 

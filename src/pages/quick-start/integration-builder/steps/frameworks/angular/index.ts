@@ -84,6 +84,14 @@ const angularSteps = {
       ModuleImport
     );
 
+    const PackageJson = getPackageJson(chain, whitelabel === "yes", customAuthentication === "yes");
+    newFiles["frameworks/angular/package.json"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/angular/package.json"],
+      "frameworks/angular/package.json",
+      PLACEHOLDERS.PACKAGE_JSON,
+      PackageJson
+    );
+
     steps.push(
       {
         ...STEPS.installationWeb,

@@ -90,7 +90,7 @@ const reactSteps = {
     newFiles["frameworks/react/package.json"] = replacementAggregator.replaceFileVariable(
       files["frameworks/react/package.json"],
       "frameworks/react/package.json",
-      PLACEHOLDERS.REACT_PACKAGE_JSON,
+      PLACEHOLDERS.PACKAGE_JSON,
       PackageJson
     );
 

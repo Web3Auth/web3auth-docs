@@ -9,5 +9,5 @@ export const PLACEHOLDERS = {
   SCRIPTS_IMPORT: "deps-import",
   RPC_FUNCTIONS: "rpcFunctionsImport",
   RPC_FUNCTIONS_BUTTONS: "rpcFunctionsUIButtonsImport",
-  REACT_PACKAGE_JSON: "reactPackageJsonImport",
+  PACKAGE_JSON: "PackageJsonImport",
 };
