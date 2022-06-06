@@ -1,0 +1,14 @@
+---
+title: Interacting with the StarkEx Layer 2
+---
+
+Once a user logs in, the Web3Auth SDK returns a provider. Even though StarkEx is a layer 2 on Ethereum, it is currently not EVM compatible. Hence to
+use it, one cannot use the native `EIP1193` provider that Web3Auth gives for EVM blockchains. Hence we need to directly use the private key to make
+the calls here.
+
+Using the function, `getPrivateKey()` from Web3Auth provider, the application can have access to the user's private key. However, we cannot use this
+key with StarkEx EC Curve specific signing functions, hence, we first derive the Stark Key using the `getStarkKey()` function.
+
+On the underhood, it uses the `getStarkAccount()` function, which creates a HD account from web3auth's key. It will return a `hex` encoded private key
+and uncompressed stark public key. You can pass account index to derive multiple keys deterministically from single web3auth's key. We can generate
+starkKey from this and use on StarkEx transactions.

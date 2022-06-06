@@ -5,7 +5,7 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
         this.uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider);
+      const rpc = new RPC(this.provider);
       const userAccount = await rpc.getAccounts();
       this.uiConsole(userAccount);
     };
@@ -15,7 +15,7 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
         this.uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider);
+      const rpc = new RPC(this.provider);
       const balance = await rpc.getBalance();
       this.uiConsole(balance);
     };
@@ -25,7 +25,7 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
         this.uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider);
+      const rpc = new RPC(this.provider);
       const result = await rpc.signMessage();
       this.uiConsole(result);
     };
@@ -35,7 +35,7 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
         this.uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider);
+      const rpc = new RPC(this.provider);
       const result = await rpc.signTransaction();
       this.uiConsole(result);
     };
@@ -45,7 +45,7 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
         this.uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider);
+      const rpc = new RPC(this.provider);
       const result = await rpc.signAndSendTransaction();
       this.uiConsole(result);
     };`;
@@ -56,7 +56,7 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
         this.uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const rpc = new RPC(this.provider as SafeEventEmitterProvider);
       const starkaccounts = await rpc.getStarkAccount();
       this.uiConsole(starkaccounts);
     };
@@ -66,7 +66,7 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
         this.uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const rpc = new RPC(this.provider as SafeEventEmitterProvider);
       const request = await rpc.onMintRequest();
       this.uiConsole(request);
     };
@@ -76,7 +76,7 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
         this.uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const rpc = new RPC(this.provider as SafeEventEmitterProvider);
       const request = await rpc.onDepositRequest();
       this.uiConsole(request);
     };
@@ -86,7 +86,7 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
         this.uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const rpc = new RPC(this.provider as SafeEventEmitterProvider);
       const request = await rpc.onWithdrawalRequest();
       this.uiConsole(request);
     };`;
@@ -98,7 +98,7 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
         this.uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const rpc = new RPC(this.provider as SafeEventEmitterProvider);
       const starkaccounts = await rpc.getStarkAccount();
       this.uiConsole(starkaccounts);
     };
@@ -108,7 +108,7 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
         this.uiConsole("provider not initialized yet");
         return;
       }
-      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const rpc = new RPC(this.provider as SafeEventEmitterProvider);
       const deployaccount =  await rpc.deployAccount();
       this.uiConsole(deployaccount);
     };`;

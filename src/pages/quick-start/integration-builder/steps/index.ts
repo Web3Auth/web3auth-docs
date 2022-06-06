@@ -1,6 +1,5 @@
 import { DisplayChoice, IntegrationBuilder, IntegrationStep } from "../interfaces";
 import frameworks from "./frameworks/index";
-import chains from "./chains/index";
 
 export const CHAINS: DisplayChoice[] = [
   { key: "eth", displayName: "Ethereum" },
@@ -133,7 +132,6 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
     }
 
     frameworks[finalValues.lang].build({ ...finalValues, filenames, files: newFiles, steps, chain: finalValues.chain });
-    chains[finalValues.chain].build({ ...finalValues, filenames, files: newFiles, steps, lang: finalValues.lang });
 
     return {
       // Use files in `open-login` folders instead of root folder

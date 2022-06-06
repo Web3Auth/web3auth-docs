@@ -11,12 +11,10 @@ export const getConnectCodeHTML = (isCustomAuth: boolean) => {
             domain: "YOUR_APP_DOMAIN",
             verifierIdField: "sub",
           },
-        });
-        `;
+        });`;
   } else {
     code = `
-          const web3authProvider = await web3auth.connect();
-          `;
+          const web3authProvider = await web3auth.connect();`;
   }
   return code;
 };

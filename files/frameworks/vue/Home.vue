@@ -2,12 +2,11 @@
   <div id="app">
     <h2>Web3Auth X Vue.js</h2>
     <section style="{ fontSize: '12px' }">
-      <button class="rpcBtn" v-if="!provider" @click="login" style="cursor: pointer">Login</button>
-
-      <button class="rpcBtn" v-if="provider" @click="getUserInfo" style="cursor: pointer">Get User Info</button>
+      <button class="rpcBtn" @click="login" style="cursor: pointer">Login</button>
+      <button class="rpcBtn" @click="getUserInfo" style="cursor: pointer">Get User Info</button>
       // REPLACE-getRPCFunctionsButtons-
 
-      <button class="rpcBtn" v-if="provider" @click="logout" style="cursor: pointer">Logout</button>
+      <button class="rpcBtn" @click="logout" style="cursor: pointer">Logout</button>
     </section>
     <div id="console" style="white-space: pre-line">
       <p style="white-space: pre-line"></p>
@@ -30,15 +29,15 @@ export default {
     const loading = ref<boolean>(false);
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
-    const provider = ref<SafeEventEmitterProvider | null>(null);
+    let provider = ref<SafeEventEmitterProvider | any>(null);
     const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
+
+    // REPLACE-getConstructorCode-
+
 
     onMounted(async () => {
       try {
         loading.value = true;
-
-        // REPLACE-getConstructorCode-
-
 
         // REPLACE-getOpenloginAdapter-
 
@@ -61,7 +60,7 @@ export default {
       }
       // REPLACE-getConnectCode-
 
-      provider.value = web3authProvider;
+      provider = web3authProvider;
     };
 
     const getUserInfo = async () => {
@@ -79,7 +78,7 @@ export default {
         return;
       }
       await web3auth.logout();
-      provider.value = null;
+      provider = null;
     };
 
     // REPLACE-getRPCFunctions-
@@ -96,11 +95,14 @@ export default {
       connecting,
       provider,
       web3auth,
-      connect,
+      login,
       logout,
-      subscribeAuthEvents,
       getUserInfo,
-      getUserAccount,
+      getAccounts,
+      getBalance,
+      signMessage,
+      signTransaction,
+      sendTransaction
     };
   },
 };

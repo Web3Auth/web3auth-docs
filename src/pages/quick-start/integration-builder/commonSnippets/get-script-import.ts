@@ -8,7 +8,7 @@ export const getScriptImport = (chain: "eth" | "sol" | "starkex" | "starknet", i
   switch (chain) {
     case "sol":
       code += `
-    <script src="https://unpkg.com/@solana/web3.js@1/lib/index.iife.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.43.5/lib/index.iife.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/solana-provider@0.9.0/dist/solanaProvider.umd.min.js"></script>
     <script src="./solana.js"></script>`;
       break;
@@ -21,10 +21,10 @@ export const getScriptImport = (chain: "eth" | "sol" | "starkex" | "starknet", i
       break;
     case "starknet":
       code += `
-      <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1/dist/web3.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/@toruslabs/starkware-crypto@1.1.0/dist/starkwareCrypto.umd.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/starknet@3.9.0/dist/index.min.js"></script>
-      <script src="./starknet.js"></script>`;
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@toruslabs/starkware-crypto@1.1.0/dist/starkwareCrypto.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/starknet@3.9.0/dist/index.min.js"></script>
+    <script src="./starknet.js"></script>`;
       break;
     default:
       code += `

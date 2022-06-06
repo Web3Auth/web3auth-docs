@@ -12,19 +12,21 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
+
           // REPLACE-getConstructorCode-
 
 
           // REPLACE-getOpenloginAdapter-
 
-          setWeb3auth(web3auth);
+      setWeb3auth(web3auth);
 
           // REPLACE-getInitCode-
 
-        } catch (error) {
-          console.error(error);
-        }
-      };
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
     init();
   }, []);
@@ -58,6 +60,7 @@ function App() {
   };
 
 // REPLACE-getRPCFunctions-
+
 
   function uiConsole(...args: any[]): void {
     const el = document.querySelector("#console>p");
