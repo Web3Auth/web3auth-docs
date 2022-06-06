@@ -33,7 +33,7 @@ export const getPackageJson = (chain: "eth" | "sol" | "starkex" | "starknet", is
 
     default:
       code += `
-    "@web3auth/ethereum-provider": "^^1.0.0",
+    "@web3auth/ethereum-provider": "^1.0.0",
     "web3": "^1.7.0",`;
   }
 

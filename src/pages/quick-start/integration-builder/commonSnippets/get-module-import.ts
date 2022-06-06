@@ -1,7 +1,7 @@
 export const getModuleImport = (chain: "eth" | "sol" | "starkex" | "starknet", isWhiteLabled: boolean, isCustomAuth: boolean) => {
   let code = `
 import { Web3Auth } from "@web3auth/web3auth";
-import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";`;
+import { WALLET_ADAPTERS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";`;
 
   if (isWhiteLabled || isCustomAuth) {
     code += `
