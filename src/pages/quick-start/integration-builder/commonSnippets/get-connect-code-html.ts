@@ -3,7 +3,7 @@ export const getConnectCodeHTML = (isCustomAuth: boolean) => {
   if (isCustomAuth) {
     code = `
         const jwtToken = "YOUR_ID_TOKEN";
-        const web3authProvider = await web3auth.connect("openlogin", {
+        const web3authProvider = await web3auth.connectTo("openlogin", {
           relogin: true,
           loginProvider: "jwt",
           extraLoginOptions: {
