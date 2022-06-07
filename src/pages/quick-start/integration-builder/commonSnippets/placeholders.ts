@@ -7,5 +7,6 @@ export const PLACEHOLDERS = {
   PACKAGE_JSON: "getPackageJson",
   RPC_FUNCTIONS: "getRPCFunctions",
   RPC_FUNCTIONS_BUTTONS: "getRPCFunctionsButtons",
+  RPC_FUNCTIONS_RETURNS_VUE: "getRPCFunctionsReturnsVue",
   SCRIPT_IMPORT: "getScriptImport",
 };

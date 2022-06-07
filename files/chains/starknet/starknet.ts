@@ -5,6 +5,7 @@ import type { SafeEventEmitterProvider } from "@web3auth/base";
 import { ec as elliptic } from "elliptic";
 import { AddTransactionResponse, defaultProvider } from "starknet";
 
+// @ts-ignore
 import CompiledAccountContractAbi from "./ArgentAccount.json";
 
 export default class StarkNetRpc {

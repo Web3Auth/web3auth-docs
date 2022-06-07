@@ -98,11 +98,8 @@ export default {
       login,
       logout,
       getUserInfo,
-      getAccounts,
-      getBalance,
-      signMessage,
-      signTransaction,
-      sendTransaction
+      // REPLACE-getRPCFunctionsReturnsVue-
+
     };
   },
 };

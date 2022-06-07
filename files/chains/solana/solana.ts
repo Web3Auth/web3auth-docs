@@ -20,7 +20,7 @@ export default class SolanaRpc {
     }
   };
 
-  getBalance = async (): Promise<void> => {
+  getBalance = async (): Promise<string> => {
     try {
       const solanaWallet = new SolanaWallet(this.provider);
       const connectionConfig = await solanaWallet.request<CustomChainConfig>({ method: "solana_provider_config", params: [] });
@@ -30,18 +30,18 @@ export default class SolanaRpc {
       const balance = await conn.getBalance(new PublicKey(accounts[0]));
       return balance.toString();
     } catch (error) {
-      return error.toString();
+      return error as string;
     }
   };
 
-  signMessage = async (): Promise<void> => {
+  signMessage = async (): Promise<string> => {
     try {
       const solanaWallet = new SolanaWallet(this.provider);
       const msg = Buffer.from("Test Signing Message ", "utf8");
       const res = await solanaWallet.signMessage(msg);
       return res.toString();
     } catch (error) {
-      return error.toString();
+      return error as string;
     }
   };
 

@@ -7,6 +7,7 @@ import {
   getPackageJson,
   getRPCFunctions,
   getRPCFunctionsButtonsVue,
+  getRPCFunctionsReturnsVue,
   PLACEHOLDERS,
 } from "../../../commonSnippets";
 import { ReplaceFileAggregator, toSteps } from "../../../utils";
@@ -130,6 +131,14 @@ const htmlSteps = {
       "frameworks/vue/Home.vue",
       PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
       RPCFunctionsButtonsVue
+    );
+
+    const RPCFunctionsReturnsVue = getRPCFunctionsReturnsVue(chain);
+    newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
+      files["frameworks/vue/Home.vue"],
+      "frameworks/vue/Home.vue",
+      PLACEHOLDERS.RPC_FUNCTIONS_RETURNS_VUE,
+      RPCFunctionsReturnsVue
     );
 
     filenames.push(`frameworks/vue/Home.vue`);
