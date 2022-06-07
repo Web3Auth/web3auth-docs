@@ -9,11 +9,11 @@ export const chainIdMap = {
 };
 
 export const rpcTargetMap = {
-  eth: "https://ropsten.infura.io/v3/",
-  matic: "https://rpc-mumbai.maticvigil.com",
-  bnb: "https://data-seed-prebsc-1-s1.binance.org:8545/",
-  sol: "https://ssc-dao.genesysgo.net",
-  avax: "https://api.avax-test.network/ext/bc/C/rpc",
-  arbitrum: "https://rinkeby.arbitrum.io/rpc",
-  optimism: "https://optimism-kovan.infura.io/v3/",
+  eth: "https://rpc.ankr.com/eth",
+  matic: "https://polygon-rpc.com",
+  bnb: "https://bsc-dataseed.binance.org/",
+  sol: "https://rpc.ankr.com/solana",
+  avax: "https://api.avax.network/ext/bc/C/rpc",
+  arbitrum: "https://rpc.ankr.com/arbitrum",
+  optimism: "https://mainnet.optimism.io",
 };
