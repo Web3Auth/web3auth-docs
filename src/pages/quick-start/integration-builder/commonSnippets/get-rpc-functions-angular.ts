@@ -51,7 +51,7 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
     };`;
   if (chain === "starkex") {
     code = `
-    onGetStarkHDAccount = async () => {
+    onGetStarkAccount = async () => {
       if (!this.provider) {
         this.uiConsole("provider not initialized yet");
         return;
@@ -59,6 +59,16 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
       const rpc = new RPC(this.provider as SafeEventEmitterProvider);
       const starkaccounts = await rpc.getStarkAccount();
       this.uiConsole(starkaccounts);
+    };
+
+    getStarkKey = async () => {
+      if (!this.provider) {
+        this.uiConsole("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+      const starkKey =  await rpc.getStarkKey();
+      uiConsole(starkKey);
     };
 
     onMintRequest = async () => {
@@ -93,7 +103,7 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
   }
   if (chain === "starknet") {
     code = `
-    onGetStarkHDAccount = async () => {
+    onGetStarkAccount = async () => {
       if (!this.provider) {
         this.uiConsole("provider not initialized yet");
         return;
@@ -101,6 +111,16 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
       const rpc = new RPC(this.provider as SafeEventEmitterProvider);
       const starkaccounts = await rpc.getStarkAccount();
       this.uiConsole(starkaccounts);
+    };
+
+    getStarkKey = async () => {
+      if (!this.provider) {
+        this.uiConsole("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+      const starkKey =  await rpc.getStarkKey();
+      uiConsole(starkKey);
     };
 
     onDeployAccount = async () => {

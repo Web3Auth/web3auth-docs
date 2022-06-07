@@ -51,9 +51,9 @@ export const getRPCFunctions = (chain: "eth" | "sol" | "starkex" | "starknet") =
     };`;
   if (chain === "starkex") {
     code = `
-    const onGetStarkHDAccount = async () => {
-      if (!this.provider) {
-        this.uiConsole("provider not initialized yet");
+    const onGetStarkAccount = async () => {
+      if (!provider) {
+        uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);
@@ -61,9 +61,19 @@ export const getRPCFunctions = (chain: "eth" | "sol" | "starkex" | "starknet") =
       uiConsole(starkaccounts);
     };
 
+    const getStarkKey = async () => {
+      if (!provider) {
+        uiConsole("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const starkKey =  await rpc.getStarkKey();
+      uiConsole(starkKey);
+    };
+
     const onMintRequest = async () => {
-      if (!this.provider) {
-        this.uiConsole("provider not initialized yet");
+      if (!provider) {
+        uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);
@@ -72,8 +82,8 @@ export const getRPCFunctions = (chain: "eth" | "sol" | "starkex" | "starknet") =
     };
 
     const onDepositRequest = async () => {
-      if (!this.provider) {
-        this.uiConsole("provider not initialized yet");
+      if (!provider) {
+        uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);
@@ -82,8 +92,8 @@ export const getRPCFunctions = (chain: "eth" | "sol" | "starkex" | "starknet") =
     };
 
     const onWithdrawalRequest = async () => {
-      if (!this.provider) {
-        this.uiConsole("provider not initialized yet");
+      if (!provider) {
+        uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);
@@ -93,9 +103,9 @@ export const getRPCFunctions = (chain: "eth" | "sol" | "starkex" | "starknet") =
   }
   if (chain === "starknet") {
     code = `
-    const onGetStarkHDAccount = async () => {
-      if (!this.provider) {
-        this.uiConsole("provider not initialized yet");
+    const onGetStarkAccount = async () => {
+      if (!provider) {
+        uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);
@@ -103,9 +113,19 @@ export const getRPCFunctions = (chain: "eth" | "sol" | "starkex" | "starknet") =
       uiConsole(starkaccounts);
     };
 
+    const getStarkKey = async () => {
+      if (!provider) {
+        uiConsole("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(provider as SafeEventEmitterProvider);
+      const starkKey =  await rpc.getStarkKey();
+      uiConsole(starkKey);
+    };
+
     const onDeployAccount = async () => {
-      if (!this.provider) {
-        this.uiConsole("provider not initialized yet");
+      if (!provider) {
+        uiConsole("provider not initialized yet");
         return;
       }
       const rpc = new RPC(provider as SafeEventEmitterProvider);

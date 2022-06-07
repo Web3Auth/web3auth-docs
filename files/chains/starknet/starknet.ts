@@ -1,35 +1,24 @@
-import { ec as starkEc, grindKey } from "@starkware-industries/starkware-crypto-utils";
+// @ts-ignore
+import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import type { SafeEventEmitterProvider } from "@web3auth/base";
-import BN from "bn.js";
+// @ts-ignore
 import { ec as elliptic } from "elliptic";
-import { AddTransactionResponse, CompiledContract, defaultProvider } from "starknet";
-import Web3 from "web3";
+import { AddTransactionResponse, defaultProvider } from "starknet";
 
 import CompiledAccountContractAbi from "./ArgentAccount.json";
 
-export default class EthereumRpc {
+export default class StarkNetRpc {
   private provider: SafeEventEmitterProvider;
 
   constructor(provider: SafeEventEmitterProvider) {
     this.provider = provider;
   }
 
-  async getAccounts(): Promise<string[]> {
-    try {
-      const web3 = new Web3(this.provider as any);
-      const accounts = await web3.eth.getAccounts();
-      return accounts;
-    } catch (error: unknown) {
-      return error as string[];
-    }
-  }
-
   getStarkAccount = async (): Promise<elliptic.KeyPair | undefined> => {
     try {
-      const starkEcOrder = starkEc.n;
-      const { provider } = this;
-      const privKey = await provider.request({ method: "private_key" });
-      const account = starkEc.keyFromPrivate(grindKey(privKey as string, starkEcOrder as BN), "hex");
+      const privateKey = await this.provider.request({ method: "private_key" });
+      const keyPair = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
+      const account = starkwareCrypto.ec.keyFromPublic(keyPair.getPublic(true, "hex"), "hex");
       return account;
     } catch (error: unknown) {
       return error as string;
@@ -39,24 +28,26 @@ export default class EthereumRpc {
   getStarkKey = async (): Promise<string | undefined> => {
     try {
       const account = await this.getStarkAccount();
-      return account?.getPrivate("hex");
+      const publicKeyX = account.pub.getX().toString("hex");
+      return publicKeyX;
     } catch (error: unknown) {
       return error as string;
     }
   };
 
-  deployAccount = async (): Promise<AddTransactionResponse | undefined> => {
+  deployAccount = async (): Promise<AddTransactionResponse | string | undefined> => {
     try {
       const account = await this.getStarkAccount();
       if (account) {
         const contract = JSON.parse(JSON.stringify(CompiledAccountContractAbi));
         const response = await defaultProvider.deployContract({
-          contract: contract,
+          contract,
         });
         return response;
       }
     } catch (error: unknown) {
       return error as string;
     }
+    return undefined;
   };
 }

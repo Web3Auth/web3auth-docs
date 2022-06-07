@@ -18,8 +18,11 @@ export const getRPCFunctionsButtonsReact = (chain: "eth" | "sol" | "starkex" | "
   `;
   if (chain === "starkex") {
     code = `
-        <button onClick={onGetStarkHDAccount} className="card">
+        <button onClick={onGetStarkAccount} className="card">
           Get Stark Accounts
+        </button>
+        <button onClick={getStarkKey} className="card">
+          Get Stark Key
         </button>
         <button onClick={onMintRequest} className="card">
           Mint Request
@@ -33,8 +36,11 @@ export const getRPCFunctionsButtonsReact = (chain: "eth" | "sol" | "starkex" | "
   }
   if (chain === "starknet") {
     code = `
-        <button onClick={onGetStarkHDAccount} className="card">
+        <button onClick={onGetStarkAccount} className="card">
           Get Stark Accounts
+        </button>
+        <button onClick={getStarkKey} className="card">
+          Get Stark Key
         </button>
         <button onClick={onDeployAccount} className="card">
           Deploy Account

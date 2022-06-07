@@ -135,12 +135,25 @@ const reactSteps = {
 
     filenames.push("frameworks/react/App.tsx");
     filenames.push("frameworks/react/package.json");
-    filenames.push("frameworks/react/App.css");
-    if (chain === "starknet") {
-      filenames.push("frameworks/react/starknet/config-overrides.js");
-    } else {
-      filenames.push("frameworks/react/config-overrides.js");
+    switch (chain) {
+      case "sol":
+        filenames.push("chains/solana/solana.ts");
+        filenames.push("frameworks/react/config-overrides.js");
+        break;
+      case "starkex":
+        filenames.push("chains/starkex/starkex.ts");
+        filenames.push("frameworks/react/config-overrides.js");
+        break;
+      case "starknet":
+        filenames.push("chains/starknet/starknet.ts");
+        filenames.push("chains/starknet/ArgentAccount.json");
+        filenames.push("frameworks/react/starknet/config-overrides.js");
+        break;
+      default:
+        filenames.push("chains/evm/evm.ts");
+        filenames.push("frameworks/react/config-overrides.js");
     }
+    filenames.push("frameworks/react/App.css");
 
     steps.push(
       {
@@ -155,28 +168,24 @@ const reactSteps = {
 
     switch (chain) {
       case "sol":
-        filenames.push("chains/solana/solana.ts");
         steps.push({
           ...STEPS.installationSolana,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/solana/solana.ts", range: "1-4" }),
         });
         break;
       case "starkex":
-        filenames.push("chains/starkex/starkex.ts");
         steps.push({
           ...STEPS.installationStarkEx,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starkex/starkex.ts", range: "1-6" }),
         });
         break;
       case "starknet":
-        filenames.push("chains/starknet/starknet.ts");
         steps.push({
           ...STEPS.installationStarkNet,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starknet/starknet.ts", range: "1-7" }),
         });
         break;
       default:
-        filenames.push("chains/evm/evm.ts");
         steps.push({
           ...STEPS.installationEVM,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/evm/evm.ts", range: "1-2" }),

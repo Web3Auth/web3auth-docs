@@ -144,14 +144,15 @@ const angularSteps = {
         break;
       case "starknet":
         filenames.push("chains/starknet/starknet.ts");
+        filenames.push("chains/starknet/ArgentAccount.json");
         break;
       default:
         filenames.push("chains/evm/evm.ts");
     }
     filenames.push("frameworks/angular/app.component.html");
-    filenames.push("frameworks/angular/app.component.css");
     filenames.push("frameworks/angular/polyfills.ts");
     filenames.push("frameworks/angular/tsconfig.json");
+    filenames.push("frameworks/angular/app.component.css");
 
     steps.push(
       {

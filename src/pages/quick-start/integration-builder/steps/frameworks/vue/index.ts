@@ -134,8 +134,22 @@ const htmlSteps = {
 
     filenames.push(`frameworks/vue/Home.vue`);
     filenames.push("frameworks/vue/package.json");
-    filenames.push("frameworks/vue/App.vue");
+    switch (chain) {
+      case "sol":
+        filenames.push("chains/solana/solana.ts");
+        break;
+      case "starkex":
+        filenames.push("chains/starkex/starkex.ts");
+        break;
+      case "starknet":
+        filenames.push("chains/starknet/starknet.ts");
+        filenames.push("chains/starknet/ArgentAccount.json");
+        break;
+      default:
+        filenames.push("chains/evm/evm.ts");
+    }
     filenames.push("frameworks/vue/vue.config.js");
+    filenames.push("frameworks/vue/App.vue");
 
     steps.push(
       {
@@ -150,28 +164,24 @@ const htmlSteps = {
 
     switch (chain) {
       case "sol":
-        filenames.push("chains/solana/solana.ts");
         steps.push({
           ...STEPS.installationSolana,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/solana/solana.ts", range: "1-4" }),
         });
         break;
       case "starkex":
-        filenames.push("chains/starkex/starkex.ts");
         steps.push({
           ...STEPS.installationStarkEx,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starkex/starkex.ts", range: "1-6" }),
         });
         break;
       case "starknet":
-        filenames.push("chains/starknet/starknet.ts");
         steps.push({
           ...STEPS.installationStarkNet,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starknet/starknet.ts", range: "1-7" }),
         });
         break;
       default:
-        filenames.push("chains/evm/evm.ts");
         steps.push({
           ...STEPS.installationEVM,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/evm/evm.ts", range: "1-2" }),

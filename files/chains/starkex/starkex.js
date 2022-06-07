@@ -1,23 +1,22 @@
 const rpc = (() => {
-  /**
-   *
-   * @param {*} provider - provider received from Web3Auth login.
-   */
-  const getStarkHDAccount = async (provider) => {
-    const account = await getStarkAccount(provider);
-    return account;
-  };
 
   /**
    *
    * @param {*} provider - provider received from Web3Auth login.
    */
   const getStarkAccount = async (provider) => {
-    const starkEc = StarkwareCrypto.ec
-    const starkEcOrder = starkEc.n;
-    const privKey = await provider.request({ method: "private_key" });
-    const account = starkEc.keyFromPrivate(StarkwareCrypto.grindKey(privKey, starkEcOrder), "hex");
-    return account;
+    try {
+      const privateKey = await provider.request({ method: "private_key" });
+      const keyPair = starkwareCrypto.ec.keyFromPrivate(privateKey, 'hex');
+      const account = starkwareCrypto.ec.keyFromPublic(
+        keyPair.getPublic(true, 'hex'),
+        'hex'
+      );
+      return account;
+    } catch (error) {
+      console.error(error.message);
+      throw error;
+    }
   };
 
 
@@ -26,8 +25,13 @@ const rpc = (() => {
    * @param {*} provider - provider received from Web3Auth login.
    */
   const getStarkKey = async (provider) => {
-    const account = await getStarkAccount(provider);
-    return account?.getPrivate("hex");
+    try {
+      const account = await getStarkAccount(provider);
+      return account.pub.getX().toString("hex");
+    } catch (error) {
+      console.error(error.message);
+      throw error;
+    }
   };
 
   /**
@@ -103,7 +107,6 @@ const rpc = (() => {
   };
 
   return {
-    getStarkHDAccount,
     getStarkAccount,
     getStarkKey,
     onMintRequest,

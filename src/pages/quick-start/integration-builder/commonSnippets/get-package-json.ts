@@ -18,14 +18,12 @@ export const getPackageJson = (chain: "eth" | "sol" | "starkex" | "starknet", is
       code += `
     "@starkware-industries/starkex-js": "0.0.6",
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
-    "bn.js": "^5.2.0",
     "elliptic": "^6.5.4",`;
       break;
 
     case "starknet":
       code += `
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
-    "bn.js": "^5.2.0",
     "elliptic": "^6.5.4",
     "starknet": "^3.11.0",
     "web3": "^1.7.0",`;

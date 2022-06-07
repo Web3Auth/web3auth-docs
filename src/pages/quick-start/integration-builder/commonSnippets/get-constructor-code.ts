@@ -20,12 +20,13 @@ export const getConstructorCode = (chain: "sol" | "starkex" | "starknet", isWhit
           // rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app`;
   } else if (chain === "starkex" || chain === "starknet") {
     chainDetails = `
-          chainNamespace: CHAIN_NAMESPACES.OTHER,`;
+          chainNamespace: CHAIN_NAMESPACES.OTHER,
+          rpcTarget: "https://rpc.ankr.com/eth_goerli", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app`;
   } else {
     chainDetails = `
           chainNamespace: CHAIN_NAMESPACES.EIP155,
           chainId: "${chainIdMap[chain]}",
-          // rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app`;
+          // rpcTarget: "${rpcTargetMap[chain]}", // This is the mainnet RPC we have added, please pass on your own endpoint while creating an app`;
   }
 
   const code = `

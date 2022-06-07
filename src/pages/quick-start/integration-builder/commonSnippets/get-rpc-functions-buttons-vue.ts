@@ -7,14 +7,16 @@ export const getRPCFunctionsButtonsVue = (chain: "eth" | "sol" | "starkex" | "st
       <button class="rpcBtn" @click="sendTransaction" style="cursor: pointer">Send Transaction</button>`;
   if (chain === "starkex") {
     code = `
-      <button class="rpcBtn" @click="onGetStarkHDAccount" style="cursor: pointer">Get Stark Accounts</button>
+      <button class="rpcBtn" @click="onGetStarkAccount" style="cursor: pointer">Get Stark Accounts</button>
+      <button class="rpcBtn" @click="getStarkKey"  style="cursor: pointer">Get Stark Key</button>
       <button class="rpcBtn" @click="onMintRequest" style="cursor: pointer">Mint Request</button>
       <button class="rpcBtn" @click="onDepositRequest" style="cursor: pointer">Deposit Request</button>
       <button class="rpcBtn" @click="onWithdrawalRequest" style="cursor: pointer">Withdraw Request</button>`;
   }
   if (chain === "starknet") {
     code = `
-      <button class="rpcBtn" @click="onGetStarkHDAccount" style="cursor: pointer">Get Stark Accounts</button>
+      <button class="rpcBtn" @click="onGetStarkAccount" style="cursor: pointer">Get Stark Accounts</button>
+      <button class="rpcBtn" @click="getStarkKey"  style="cursor: pointer">Get Stark Key</button>
       <button class="rpcBtn" @click="onDeployAccount" style="cursor: pointer">Deploy Account</button>`;
   }
   return code;

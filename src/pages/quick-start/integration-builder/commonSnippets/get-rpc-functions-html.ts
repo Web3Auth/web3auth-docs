@@ -37,6 +37,15 @@ export const getRPCFunctionsHTML = (chain: "eth" | "sol" | "starkex" | "starknet
         }
       });
 
+      $("#get-stark-key").click(async function (event) {
+        try {
+          const starkKey = await rpc.getStarkKey(web3auth.provider);
+          $("#code").text(JSON.stringify(["starkKey", starkKey], null, 2));
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
       $("#mint-request").click(async function (event) {
         try {
           const response = await rpc.onMintRequest(web3auth.provider, starkExAPI);
@@ -70,6 +79,15 @@ export const getRPCFunctionsHTML = (chain: "eth" | "sol" | "starkex" | "starknet
         try {
           const accounts = await rpc.getStarkAccount(web3auth.provider);
           $("#code").text(JSON.stringify(["account", accounts], null, 2));
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#get-stark-key").click(async function (event) {
+        try {
+          const starkKey = await rpc.getStarkKey(web3auth.provider);
+          $("#code").text(JSON.stringify(["starkKey", starkKey], null, 2));
         } catch (error) {
           console.error(error.message);
         }

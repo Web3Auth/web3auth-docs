@@ -7,16 +7,17 @@ export const getRPCFunctionsButtonsAngular = (chain: "eth" | "sol" | "starkex" |
       <button class="card card-small" (click)="sendTransaction">Send Transaction</button>`;
   if (chain === "starkex") {
     code = `
-      <button class="card card-small" (click)="onGetStarkHDAccount">Get Stark Accounts</button>
+      <button class="card card-small" (click)="onGetStarkAccount">Get Stark Accounts</button>
+      <button class="card card-small" (click)="getStarkKey">Get Stark Key</button>
       <button class="card card-small" (click)="onMintRequest">Mint Request</button>
       <button class="card card-small" (click)="onDepositRequest">Deposit Request</button>
       <button class="card card-small" (click)="onWithdrawalRequest">Withdraw Request</button>`;
   }
   if (chain === "starknet") {
     code = `
-      <button class="card card-small" (click)="onGetStarkHDAccount">Get Stark Accounts</button>
-      <button class="card card-small" (click)="onDeployAccount">Deploy Account</button>
-      <button class="card card-small" (click)="onDepositRequest">Deposit Request</button>`;
+      <button class="card card-small" (click)="onGetStarkAccount">Get Stark Accounts</button>
+      <button class="card card-small" (click)="getStarkKey">Get Stark Key</button>
+      <button class="card card-small" (click)="onDeployAccount">Deploy Account</button>`;
   }
   return code;
 };

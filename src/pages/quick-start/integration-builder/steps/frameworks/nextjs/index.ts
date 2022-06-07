@@ -133,6 +133,20 @@ const nextjsSteps = {
 
     filenames.push("frameworks/nextjs/App.tsx");
     filenames.push("frameworks/nextjs/package.json");
+    switch (chain) {
+      case "sol":
+        filenames.push("chains/solana/solana.ts");
+        break;
+      case "starkex":
+        filenames.push("chains/starkex/starkex.ts");
+        break;
+      case "starknet":
+        filenames.push("chains/starknet/starknet.ts");
+        filenames.push("chains/starknet/ArgentAccount.json");
+        break;
+      default:
+        filenames.push("chains/evm/evm.ts");
+    }
     filenames.push("frameworks/nextjs/index.tsx");
     filenames.push("frameworks/nextjs/global.css");
 
@@ -143,28 +157,24 @@ const nextjsSteps = {
 
     switch (chain) {
       case "sol":
-        filenames.push("chains/solana/solana.ts");
         steps.push({
           ...STEPS.installationSolana,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/solana/solana.ts", range: "1-4" }),
         });
         break;
       case "starkex":
-        filenames.push("chains/starkex/starkex.ts");
         steps.push({
           ...STEPS.installationStarkEx,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starkex/starkex.ts", range: "1-6" }),
         });
         break;
       case "starknet":
-        filenames.push("chains/starknet/starknet.ts");
         steps.push({
           ...STEPS.installationStarkNet,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starknet/starknet.ts", range: "1-7" }),
         });
         break;
       default:
-        filenames.push("chains/evm/evm.ts");
         steps.push({
           ...STEPS.installationEVM,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/evm/evm.ts", range: "1-2" }),

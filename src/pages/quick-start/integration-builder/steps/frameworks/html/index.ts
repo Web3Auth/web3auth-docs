@@ -123,6 +123,21 @@ const htmlSteps = {
     );
 
     filenames.push(`frameworks/html/index.html`);
+    switch (chain) {
+      case "sol":
+        filenames.push("chains/solana/solana.js");
+        break;
+      case "starkex":
+        filenames.push("chains/starkex/starkex.js");
+        break;
+      case "starknet":
+        filenames.push("chains/starknet/starknet.js");
+        filenames.push("chains/starknet/ArgentAccount.json");
+        break;
+      default:
+        filenames.push("chains/evm/evm.js");
+        break;
+    }
     filenames.push("frameworks/html/style.css");
 
     steps.push({
@@ -205,7 +220,6 @@ const htmlSteps = {
 
     switch (chain) {
       case "sol":
-        filenames.push("chains/solana/solana.js");
         steps.push({
           ...STEPS.solanaRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
@@ -215,7 +229,6 @@ const htmlSteps = {
         });
         break;
       case "starkex":
-        filenames.push("chains/starkex/starkex.js");
         steps.push({
           ...STEPS.starkExRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
@@ -225,7 +238,6 @@ const htmlSteps = {
         });
         break;
       case "starknet":
-        filenames.push("chains/starknet/starknet.js");
         steps.push({
           ...STEPS.starkNetRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
@@ -235,7 +247,6 @@ const htmlSteps = {
         });
         break;
       default:
-        filenames.push("chains/evm/evm.js");
         steps.push({
           ...STEPS.evmRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({

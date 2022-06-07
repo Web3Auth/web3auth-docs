@@ -5,10 +5,12 @@ const rpc = (() => {
      */
     const getStarkAccount = async (provider) => {
         try {
-            const starkEc = StarkwareCrypto.ec
-            const starkEcOrder = starkEc.n;
-            const privKey = await provider.request({ method: "private_key" });
-            const account = starkEc.keyFromPrivate(StarkwareCrypto.grindKey(privKey, starkEcOrder), "hex");
+            const privateKey = await provider.request({ method: "private_key" });
+            const keyPair = starkwareCrypto.ec.keyFromPrivate(privateKey, 'hex');
+            const account = starkwareCrypto.ec.keyFromPublic(
+                keyPair.getPublic(true, 'hex'),
+                'hex'
+            );
             return account;
         } catch (error) {
             console.error(error.message);
@@ -23,7 +25,7 @@ const rpc = (() => {
     const getStarkKey = async (provider) => {
         try {
             const account = await getStarkAccount(provider);
-            return account?.getPrivate("hex");
+            return account.pub.getX().toString("hex");
         } catch (error) {
             console.error(error.message);
             throw error;
