@@ -31,7 +31,7 @@ import * as evmRPCFunctions from "../common/rpcFunctions/evmRPCFunctions.mdx";
 import * as solanaRPCFunctions from "../common/rpcFunctions/solanaRPCFunctions.mdx";
 import * as starkExRPCFunctions from "../common/rpcFunctions/starkExRPCFunctions.mdx";
 import * as starkNetRPCFunctions from "../common/rpcFunctions/starkNetRPCFunctions.mdx";
-import * as whiteLabeling from "../common/whiteLabeling.mdx";
+import * as whiteLabeling from "../common/whitelabeling.mdx";
 import * as buildingApp from "./buildingApp.mdx";
 
 const STEPS = toSteps({
