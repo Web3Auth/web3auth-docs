@@ -1,8 +1,8 @@
 import {
   getConnectCodeHTML,
   getConstructorCodeHTML,
-  getInitCode,
-  getOpenloginAdapter,
+  getInitCodeHTML,
+  getOpenloginAdapterHTML,
   getRPCFunctionsButtonsHTML,
   getRPCFunctionsHTML,
   getScriptImport,
@@ -82,20 +82,20 @@ const htmlSteps = {
       ConstructorCodeHTML
     );
 
-    const InitCode = getInitCode(whitelabel === "yes");
+    const InitCodeHTML = getInitCodeHTML(whitelabel === "yes");
     newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
       files["frameworks/html/index.html"],
       "frameworks/html/index.html",
       PLACEHOLDERS.INIT_CODE,
-      InitCode
+      InitCodeHTML
     );
 
-    const OpenloginAdapter = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes");
+    const OpenloginAdapterHTML = getOpenloginAdapterHTML(whitelabel === "yes", customAuthentication === "yes");
     newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
       files["frameworks/html/index.html"],
       "frameworks/html/index.html",
       PLACEHOLDERS.OPENLOGIN_ADAPTER,
-      OpenloginAdapter
+      OpenloginAdapterHTML
     );
 
     const RPCFunctionsHTML = getRPCFunctionsHTML(chain);

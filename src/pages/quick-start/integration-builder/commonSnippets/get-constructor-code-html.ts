@@ -17,7 +17,7 @@ export const getConstructorCodeHTML = (chain: "sol" | "starkex" | "starknet", is
     chainDetails = `
           chainNamespace: "solana",
           chainId: "${chainIdMap[chain]}",
-          // rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app`;
+          rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app`;
   } else if (chain === "starkex" || chain === "starknet") {
     chainDetails = `
           chainNamespace: "other",`;
@@ -25,11 +25,11 @@ export const getConstructorCodeHTML = (chain: "sol" | "starkex" | "starknet", is
     chainDetails = `
           chainNamespace: "eip155",
           chainId: "${chainIdMap[chain]}",
-          // rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app`;
+          rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app`;
   }
 
   const code = `
-      const web3auth = new Web3Auth({
+      web3auth = new window.Web3auth.Web3Auth({
         clientId,
         chainConfig: {${chainDetails}
         },${uiConfig}
