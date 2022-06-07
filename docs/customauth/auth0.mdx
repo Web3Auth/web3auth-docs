@@ -226,10 +226,10 @@ await web3auth.initModal();
 
 #### Logging in
 
-Once initialized, you can use the `connect()` function to authenticate the user when they click the login button.
+Once initialized, you can use the `connectTo()` function to authenticate the user when they click the login button.
 
 ```js
-await web3auth.connect(WALLET_ADAPTERS.OPENLOGIN, {
+await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   relogin: true,
   loginProvider: "jwt",
   extraLoginOptions: {
@@ -239,8 +239,8 @@ await web3auth.connect(WALLET_ADAPTERS.OPENLOGIN, {
 });
 ```
 
-When connecting, your `connect` function takes the arguments for the adapter you want to connect to and the options for the login. The major thing to
-note here is the `domain` option in the `extraLoginOptions` object. This is the domain of your Auth0 tenant so that you can be redirected to login
+When connecting, your `connectTo` function takes the arguments for the adapter you want to connect to and the options for the login. The major thing
+to note here is the `domain` option in the `extraLoginOptions` object. This is the domain of your Auth0 tenant so that you can be redirected to login
 there directly from the Web3Auth SDK.
 
 #### Getting the User Profile
@@ -333,7 +333,7 @@ app.get('/callback', (req, res) => {
 - In the frontend, pass on this `id_token` to the Web3Auth SDK to authenticate the user
 
 ```js
-await web3auth.connect(WALLET_ADAPTERS.OPENLOGIN, {
+await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   relogin: true,
   loginProvider: "jwt",
   extraLoginOptions: {
@@ -418,7 +418,7 @@ function App() {
       console.log("web3auth not initialized yet");
       return;
     }
-    const web3AuthProvider = await web3auth.connect(WALLET_ADAPTERS.OPENLOGIN, {
+    const web3AuthProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
       relogin: true,
       loginProvider: "jwt",
       extraLoginOptions: {
