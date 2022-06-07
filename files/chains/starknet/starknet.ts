@@ -1,10 +1,11 @@
+import { ec as starkEc, grindKey } from "@starkware-industries/starkware-crypto-utils";
 import type { SafeEventEmitterProvider } from "@web3auth/base";
-import Web3 from "web3";
-import { AddTransactionResponse, CompiledContract, defaultProvider } from "starknet";
-import CompiledAccountContractAbi from "./ArgentAccount.json";
 import BN from "bn.js";
 import { ec as elliptic } from "elliptic";
-import { grindKey, ec as starkEc } from "@toruslabs/starkware-crypto";
+import { AddTransactionResponse, CompiledContract, defaultProvider } from "starknet";
+import Web3 from "web3";
+
+import CompiledAccountContractAbi from "./ArgentAccount.json";
 
 export default class EthereumRpc {
   private provider: SafeEventEmitterProvider;
@@ -12,6 +13,7 @@ export default class EthereumRpc {
   constructor(provider: SafeEventEmitterProvider) {
     this.provider = provider;
   }
+
   async getAccounts(): Promise<string[]> {
     try {
       const web3 = new Web3(this.provider as any);
@@ -25,7 +27,7 @@ export default class EthereumRpc {
   getStarkAccount = async (): Promise<elliptic.KeyPair | undefined> => {
     try {
       const starkEcOrder = starkEc.n;
-      const provider = this.provider;
+      const { provider } = this;
       const privKey = await provider.request({ method: "private_key" });
       const account = starkEc.keyFromPrivate(grindKey(privKey as string, starkEcOrder as BN), "hex");
       return account;

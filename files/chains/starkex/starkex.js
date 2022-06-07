@@ -15,7 +15,7 @@ const rpc = (() => {
   const getStarkAccount = async (provider) => {
     const starkEc = StarkwareCrypto.ec
     const starkEcOrder = starkEc.n;
-    const privKey = await provider.request({ method: "eth_private_key" });
+    const privKey = await provider.request({ method: "private_key" });
     const account = starkEc.keyFromPrivate(StarkwareCrypto.grindKey(privKey, starkEcOrder), "hex");
     return account;
   };

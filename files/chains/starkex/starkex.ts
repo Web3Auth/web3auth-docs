@@ -1,9 +1,8 @@
-import type { SafeEventEmitterProvider } from "@web3auth/base";
-import { ec as elliptic } from "elliptic";
-// @ts-ignore
 import StarkExAPI from "@starkware-industries/starkex-js/dist/browser";
-import { grindKey, ec as starkEc } from "@toruslabs/starkware-crypto";
+import { ec as starkEc, grindKey } from "@starkware-industries/starkware-crypto-utils";
+import type { SafeEventEmitterProvider } from "@web3auth/base";
 import BN from "bn.js";
+import { ec as elliptic } from "elliptic";
 
 const starkExAPI = new StarkExAPI({
   endpoint: "https://gw.playground-v2.starkex.co",
@@ -25,7 +24,7 @@ export default class StarkExRpc {
     try {
       const starkEcOrder = starkEc.n;
       const provider = this.provider;
-      const privKey = await provider.request({ method: "eth_private_key" });
+      const privKey = await provider.request({ method: "private_key" });
       const account = starkEc.keyFromPrivate(grindKey(privKey as string, starkEcOrder as BN), "hex");
       return account;
     } catch (error: unknown) {
