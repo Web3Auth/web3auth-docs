@@ -89,6 +89,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     const { pointer } = steps[index];
     if (pointer) setSelectedFilename(pointer.filename);
     setStepIndex(index);
+    window.location.hash = `#step-${index}`;
   };
 
   const onScrollLeft = (e: UIEvent<HTMLDivElement>) => {
@@ -179,6 +180,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                   onKeyDown={onChangeStep.bind(this, index)}
                   role="tab"
                   tabIndex={index}
+                  id={`step-${index}`}
                 >
                   <p className={styles.stepHeader}>{step.title}</p>
                   <div className={styles.stepBody}>{step.content}</div>
