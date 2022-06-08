@@ -29,7 +29,7 @@ module.exports = {
       respectPrefersColorScheme: true, // Set to "true" when Dark mode is ready
     },
     prism: {
-      additionalLanguages: ["groovy", "java", "kotlin", "swift"],
+      additionalLanguages: ["groovy", "java", "kotlin", "swift", "dart"],
       theme: require("prism-react-renderer/themes/dracula"),
     },
     navbar: {
@@ -100,7 +100,6 @@ module.exports = {
     ],
   ],
   plugins: [
-    path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
     [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: "files" }],
     path.resolve(__dirname, "plugins", "node-polyfills"),
   ],
