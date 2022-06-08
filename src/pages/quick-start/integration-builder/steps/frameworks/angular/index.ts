@@ -1,5 +1,4 @@
 import {
-  getConnectCode,
   getConstructorCode,
   getInitCode,
   getModuleImport,
@@ -24,7 +23,6 @@ import * as installationStarkNet from "../common/installation/installationStarkN
 import * as instantiateSDK from "../common/instantiateSDK.mdx";
 import * as instantiateSDKWhitelabeled from "../common/instantiateSDKWhitelabeled.mdx";
 import * as login from "../common/login.mdx";
-import * as loginCustom from "../common/loginCustom.mdx";
 import * as logout from "../common/logout.mdx";
 import * as registerApp from "../common/registerApp.mdx";
 import * as evmRPCFunctions from "../common/rpcFunctions/evmRPCFunctions.mdx";
@@ -53,7 +51,6 @@ const STEPS = toSteps({
   customAuthenticationStep,
   initialize,
   login,
-  loginCustom,
   getUserInfo,
   evmRPCFunctions,
   solanaRPCFunctions,
@@ -68,14 +65,6 @@ const angularSteps = {
     const newFiles = files;
 
     const replacementAggregator = new ReplaceFileAggregator();
-
-    const ConnectCode = getConnectCode(customAuthentication === "yes");
-    newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/angular/app.component.ts"],
-      "frameworks/angular/app.component.ts",
-      PLACEHOLDERS.CONNECT_CODE,
-      ConnectCode
-    );
 
     const ConstructorCode = getConstructorCode(chain, whitelabel === "yes");
     newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
@@ -245,36 +234,26 @@ const angularSteps = {
       });
     }
 
-    steps.push({
-      ...STEPS.initialize,
-      pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/angular/app.component.ts", range: "24-25" }),
-    });
-
-    if (customAuthentication === "yes") {
-      steps.push({
-        ...STEPS.loginCustom,
-        pointer: replacementAggregator.rangeOffsetEditor({
-          filename: "frameworks/angular/app.component.ts",
-          range: "36-37",
-        }),
-      });
-    } else {
-      steps.push({
+    steps.push(
+      {
+        ...STEPS.initialize,
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/angular/app.component.ts", range: "24-25" }),
+      },
+      {
         ...STEPS.login,
         pointer: replacementAggregator.rangeOffsetEditor({
           filename: "frameworks/angular/app.component.ts",
           range: "36-37",
         }),
-      });
-    }
-
-    steps.push({
-      ...STEPS.getUserInfo,
-      pointer: replacementAggregator.rangeOffsetEditor({
-        filename: "frameworks/angular/app.component.ts",
-        range: "42-49",
-      }),
-    });
+      },
+      {
+        ...STEPS.getUserInfo,
+        pointer: replacementAggregator.rangeOffsetEditor({
+          filename: "frameworks/angular/app.component.ts",
+          range: "42-49",
+        }),
+      }
+    );
 
     switch (chain) {
       case "sol":

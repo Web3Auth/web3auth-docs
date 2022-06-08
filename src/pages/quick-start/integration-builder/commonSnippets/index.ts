@@ -1,5 +1,3 @@
-export * from "./get-connect-code";
-export * from "./get-connect-code-html";
 export * from "./get-constructor-code";
 export * from "./get-constructor-code-html";
 export * from "./get-init-code";

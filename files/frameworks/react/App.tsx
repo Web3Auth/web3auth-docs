@@ -36,8 +36,7 @@ function App() {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    // REPLACE-getConnectCode-
-
+    const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
   };
 

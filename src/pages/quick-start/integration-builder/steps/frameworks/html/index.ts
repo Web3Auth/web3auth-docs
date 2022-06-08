@@ -1,5 +1,4 @@
 import {
-  getConnectCodeHTML,
   getConstructorCodeHTML,
   getInitCodeHTML,
   getOpenloginAdapterHTML,
@@ -21,7 +20,6 @@ import * as installationStarkNet from "../common/installation/installationStarkN
 import * as instantiateSDK from "../common/instantiateSDK.mdx";
 import * as instantiateSDKWhitelabeled from "../common/instantiateSDKWhitelabeled.mdx";
 import * as login from "../common/login.mdx";
-import * as loginCustom from "../common/loginCustom.mdx";
 import * as logout from "../common/logout.mdx";
 import * as registerApp from "../common/registerApp.mdx";
 import * as evmRPCFunctions from "../common/rpcFunctions/evmRPCFunctions.mdx";
@@ -50,7 +48,6 @@ const STEPS = toSteps({
   customAuthenticationStep,
   initialize,
   login,
-  loginCustom,
   getUserInfo,
   evmRPCFunctions,
   solanaRPCFunctions,
@@ -65,14 +62,6 @@ const htmlSteps = {
     const newFiles = files;
 
     const replacementAggregator = new ReplaceFileAggregator();
-
-    const ConnectCodeHTML = getConnectCodeHTML(customAuthentication === "yes");
-    newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/html/index.html"],
-      "frameworks/html/index.html",
-      PLACEHOLDERS.CONNECT_CODE,
-      ConnectCodeHTML
-    );
 
     const ConstructorCodeHTML = getConstructorCodeHTML(chain, whitelabel === "yes");
     newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
@@ -187,36 +176,26 @@ const htmlSteps = {
       });
     }
 
-    steps.push({
-      ...STEPS.initialize,
-      pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "54-55" }),
-    });
-
-    if (customAuthentication === "yes") {
-      steps.push({
-        ...STEPS.loginCustom,
-        pointer: replacementAggregator.rangeOffsetEditor({
-          filename: "frameworks/html/index.html",
-          range: "70-71",
-        }),
-      });
-    } else {
-      steps.push({
+    steps.push(
+      {
+        ...STEPS.initialize,
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "54-55" }),
+      },
+      {
         ...STEPS.login,
         pointer: replacementAggregator.rangeOffsetEditor({
           filename: "frameworks/html/index.html",
           range: "70-71",
         }),
-      });
-    }
-
-    steps.push({
-      ...STEPS.getUserInfo,
-      pointer: replacementAggregator.rangeOffsetEditor({
-        filename: "frameworks/html/index.html",
-        range: "80-87",
-      }),
-    });
+      },
+      {
+        ...STEPS.getUserInfo,
+        pointer: replacementAggregator.rangeOffsetEditor({
+          filename: "frameworks/html/index.html",
+          range: "80-87",
+        }),
+      }
+    );
 
     switch (chain) {
       case "sol":

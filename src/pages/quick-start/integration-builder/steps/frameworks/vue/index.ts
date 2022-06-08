@@ -1,5 +1,4 @@
 import {
-  getConnectCode,
   getConstructorCode,
   getInitCode,
   getModuleImport,
@@ -25,7 +24,6 @@ import * as installationStarkNet from "../common/installation/installationStarkN
 import * as instantiateSDK from "../common/instantiateSDK.mdx";
 import * as instantiateSDKWhitelabeled from "../common/instantiateSDKWhitelabeled.mdx";
 import * as login from "../common/login.mdx";
-import * as loginCustom from "../common/loginCustom.mdx";
 import * as logout from "../common/logout.mdx";
 import * as registerApp from "../common/registerApp.mdx";
 import * as evmRPCFunctions from "../common/rpcFunctions/evmRPCFunctions.mdx";
@@ -54,7 +52,6 @@ const STEPS = toSteps({
   customAuthenticationStep,
   initialize,
   login,
-  loginCustom,
   getUserInfo,
   evmRPCFunctions,
   solanaRPCFunctions,
@@ -68,14 +65,6 @@ const htmlSteps = {
   build({ filenames, files, steps, whitelabel, customAuthentication, chain }) {
     const newFiles = files;
     const replacementAggregator = new ReplaceFileAggregator();
-
-    const ConnectCode = getConnectCode(customAuthentication === "yes");
-    newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/vue/Home.vue"],
-      "frameworks/vue/Home.vue",
-      PLACEHOLDERS.CONNECT_CODE,
-      ConnectCode
-    );
 
     const ConstructorCode = getConstructorCode(chain, whitelabel === "yes");
     newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
@@ -251,36 +240,26 @@ const htmlSteps = {
       });
     }
 
-    steps.push({
-      ...STEPS.initialize,
-      pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/vue/Home.vue", range: "45-46" }),
-    });
-
-    if (customAuthentication === "yes") {
-      steps.push({
-        ...STEPS.loginCustom,
-        pointer: replacementAggregator.rangeOffsetEditor({
-          filename: "frameworks/vue/Home.vue",
-          range: "61-62",
-        }),
-      });
-    } else {
-      steps.push({
+    steps.push(
+      {
+        ...STEPS.initialize,
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/vue/Home.vue", range: "45-46" }),
+      },
+      {
         ...STEPS.login,
         pointer: replacementAggregator.rangeOffsetEditor({
           filename: "frameworks/vue/Home.vue",
           range: "61-62",
         }),
-      });
-    }
-
-    steps.push({
-      ...STEPS.getUserInfo,
-      pointer: replacementAggregator.rangeOffsetEditor({
-        filename: "frameworks/vue/Home.vue",
-        range: "66-73",
-      }),
-    });
+      },
+      {
+        ...STEPS.getUserInfo,
+        pointer: replacementAggregator.rangeOffsetEditor({
+          filename: "frameworks/vue/Home.vue",
+          range: "66-73",
+        }),
+      }
+    );
 
     switch (chain) {
       case "sol":

@@ -58,9 +58,7 @@ export default {
         uiConsole("web3auth not initialized yet");
         return;
       }
-      // REPLACE-getConnectCode-
-
-      provider = web3authProvider;
+      provider = await web3auth.connect();
     };
 
     const getUserInfo = async () => {

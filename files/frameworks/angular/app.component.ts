@@ -33,9 +33,7 @@ export class AppComponent {
       return;
     }
     const web3auth = this.web3auth;
-    // REPLACE-getConnectCode-
-
-    this.provider = web3authProvider;
+    this.provider = await web3auth.connect();
     this.uiConsole("logged in");
     };
 
