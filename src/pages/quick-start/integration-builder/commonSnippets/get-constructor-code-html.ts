@@ -8,7 +8,7 @@ export const getConstructorCodeHTML = (chain: "sol" | "starkex" | "starknet", is
     uiConfig = `
         uiConfig: {
           theme: "dark",
-          loginMethodsOrder: ["facebook", "twitter"],
+          loginMethodsOrder: ["facebook", "google"],
           appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
         }`;
   }
