@@ -20,8 +20,7 @@ export const getConstructorCodeAngular = (chain: "sol" | "starkex" | "starknet",
           rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app`;
   } else if (chain === "starkex" || chain === "starknet") {
     chainDetails = `
-          chainNamespace: CHAIN_NAMESPACES.OTHER,
-          rpcTarget: "https://rpc.ankr.com/eth_goerli", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app`;
+          chainNamespace: CHAIN_NAMESPACES.OTHER`;
   } else {
     chainDetails = `
           chainNamespace: CHAIN_NAMESPACES.EIP155,
