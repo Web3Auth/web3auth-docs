@@ -249,14 +249,14 @@ const htmlSteps = {
         ...STEPS.login,
         pointer: replacementAggregator.rangeOffsetEditor({
           filename: "frameworks/vue/Home.vue",
-          range: "61-62",
+          range: "61",
         }),
       },
       {
         ...STEPS.getUserInfo,
         pointer: replacementAggregator.rangeOffsetEditor({
           filename: "frameworks/vue/Home.vue",
-          range: "66-73",
+          range: "69",
         }),
       }
     );
@@ -304,7 +304,7 @@ const htmlSteps = {
       ...STEPS.logout,
       pointer: replacementAggregator.rangeOffsetEditor({
         filename: "frameworks/vue/Home.vue",
-        range: "75-82",
+        range: "78",
       }),
     });
 

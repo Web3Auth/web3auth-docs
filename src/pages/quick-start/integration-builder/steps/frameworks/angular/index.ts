@@ -243,14 +243,14 @@ const angularSteps = {
         ...STEPS.login,
         pointer: replacementAggregator.rangeOffsetEditor({
           filename: "frameworks/angular/app.component.ts",
-          range: "36-37",
+          range: "36",
         }),
       },
       {
         ...STEPS.getUserInfo,
         pointer: replacementAggregator.rangeOffsetEditor({
           filename: "frameworks/angular/app.component.ts",
-          range: "42-49",
+          range: "45",
         }),
       }
     );
@@ -298,7 +298,7 @@ const angularSteps = {
       ...STEPS.logout,
       pointer: replacementAggregator.rangeOffsetEditor({
         filename: "frameworks/angular/app.component.ts",
-        range: "54-62",
+        range: "57",
       }),
     });
 

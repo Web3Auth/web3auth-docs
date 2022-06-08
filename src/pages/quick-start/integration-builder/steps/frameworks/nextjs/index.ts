@@ -233,14 +233,14 @@ const nextjsSteps = {
         ...STEPS.login,
         pointer: replacementAggregator.rangeOffsetEditor({
           filename: "frameworks/nextjs/App.tsx",
-          range: "37-38",
+          range: "37",
         }),
       },
       {
         ...STEPS.getUserInfo,
         pointer: replacementAggregator.rangeOffsetEditor({
           filename: "frameworks/nextjs/App.tsx",
-          range: "42-49",
+          range: "46",
         }),
       }
     );
@@ -288,7 +288,7 @@ const nextjsSteps = {
       ...STEPS.logout,
       pointer: replacementAggregator.rangeOffsetEditor({
         filename: "frameworks/nextjs/App.tsx",
-        range: "51-58",
+        range: "55",
       }),
     });
 

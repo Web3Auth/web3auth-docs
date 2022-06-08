@@ -148,51 +148,51 @@ const htmlSteps = {
 
     steps.push({
       ...STEPS.registerApp,
-      pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "48" }),
+      pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "47" }),
     });
 
     if (whitelabel === "yes") {
       steps.push(
         {
           ...STEPS.instantiateSDKWhitelabeled,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "50-51" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "49-50" }),
         },
         {
           ...STEPS.whiteLabeling,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "52-53" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "51-52" }),
         }
       );
     } else {
       steps.push({
         ...STEPS.instantiateSDK,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "50-51" }),
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "49-50" }),
       });
     }
 
     if (customAuthentication === "yes") {
       steps.push({
         ...STEPS.customAuthenticationStep,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "52-53" }),
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "51-52" }),
       });
     }
 
     steps.push(
       {
         ...STEPS.initialize,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "54-55" }),
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "53-54" }),
       },
       {
         ...STEPS.login,
         pointer: replacementAggregator.rangeOffsetEditor({
           filename: "frameworks/html/index.html",
-          range: "70-71",
+          range: "69",
         }),
       },
       {
         ...STEPS.getUserInfo,
         pointer: replacementAggregator.rangeOffsetEditor({
           filename: "frameworks/html/index.html",
-          range: "80-87",
+          range: "79",
         }),
       }
     );
@@ -240,7 +240,7 @@ const htmlSteps = {
       ...STEPS.logout,
       pointer: replacementAggregator.rangeOffsetEditor({
         filename: "frameworks/html/index.html",
-        range: "91-99",
+        range: "90",
       }),
     });
 

@@ -244,14 +244,14 @@ const reactSteps = {
         ...STEPS.login,
         pointer: replacementAggregator.rangeOffsetEditor({
           filename: "frameworks/react/App.tsx",
-          range: "39-41",
+          range: "39",
         }),
       },
       {
         ...STEPS.getUserInfo,
         pointer: replacementAggregator.rangeOffsetEditor({
           filename: "frameworks/react/App.tsx",
-          range: "44-51",
+          range: "48",
         }),
       }
     );
@@ -299,7 +299,7 @@ const reactSteps = {
       ...STEPS.logout,
       pointer: replacementAggregator.rangeOffsetEditor({
         filename: "frameworks/react/App.tsx",
-        range: "53-60",
+        range: "57",
       }),
     });
 
