@@ -14,8 +14,8 @@ export const CHAINS: DisplayChoice[] = [
 ];
 
 export const LANGS: DisplayChoice[] = [
-  { key: "html", displayName: "HTML/JS" },
   { key: "react", displayName: "React" },
+  { key: "html", displayName: "HTML/JS" },
   { key: "vue", displayName: "Vue" },
   { key: "next", displayName: "Next JS" },
   { key: "angular", displayName: "Angular" },
