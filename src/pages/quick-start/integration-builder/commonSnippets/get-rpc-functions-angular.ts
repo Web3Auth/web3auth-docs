@@ -68,7 +68,7 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
       }
       const rpc = new RPC(this.provider as SafeEventEmitterProvider);
       const starkKey =  await rpc.getStarkKey();
-      uiConsole(starkKey);
+      this.uiConsole(starkKey);
     };
 
     onMintRequest = async () => {
@@ -120,7 +120,7 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
       }
       const rpc = new RPC(this.provider as SafeEventEmitterProvider);
       const starkKey =  await rpc.getStarkKey();
-      uiConsole(starkKey);
+      this.uiConsole(starkKey);
     };
 
     onDeployAccount = async () => {

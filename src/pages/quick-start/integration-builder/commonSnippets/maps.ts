@@ -1,11 +1,11 @@
 export const chainIdMap = {
   eth: "0x1",
-  matic: "0x137",
-  bnb: "0x56",
+  matic: "0x89",
+  bnb: "0x38",
   sol: "0x1",
-  avax: "0x43114",
-  arbitrum: "0x42161",
-  optimism: "0x10",
+  avax: "0xA86A",
+  arbitrum: "0xA4B1",
+  optimism: "0xA",
 };
 
 export const rpcTargetMap = {

@@ -1,5 +1,5 @@
 import {
-  getConstructorCode,
+  getConstructorCodeAngular,
   getInitCode,
   getModuleImport,
   getOpenloginAdapter,
@@ -66,12 +66,12 @@ const angularSteps = {
 
     const replacementAggregator = new ReplaceFileAggregator();
 
-    const ConstructorCode = getConstructorCode(chain, whitelabel === "yes");
+    const ConstructorCodeAngular = getConstructorCodeAngular(chain, whitelabel === "yes");
     newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
       files["frameworks/angular/app.component.ts"],
       "frameworks/angular/app.component.ts",
       PLACEHOLDERS.CONSTRUCTOR_CODE,
-      ConstructorCode
+      ConstructorCodeAngular
     );
 
     const InitCode = getInitCode(whitelabel === "yes");

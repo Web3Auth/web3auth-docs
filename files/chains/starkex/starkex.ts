@@ -17,14 +17,14 @@ export default class StarkExRpc {
     this.provider = provider;
   }
 
-  getStarkAccount = async (): Promise<elliptic.KeyPair | undefined> => {
+  getStarkAccount = async (): Promise<any> => {
     try {
       const privateKey = await this.provider.request({ method: "private_key" });
       const keyPair = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
       const account = starkwareCrypto.ec.keyFromPublic(keyPair.getPublic(true, "hex"), "hex");
       return account;
-    } catch (error: unknown) {
-      return error as string;
+    } catch (error) {
+      return error;
     }
   };
 
@@ -33,7 +33,7 @@ export default class StarkExRpc {
       const account = await this.getStarkAccount();
       const publicKeyX = account.pub.getX().toString("hex");
       return publicKeyX;
-    } catch (error: unknown) {
+    } catch (error) {
       return error as string;
     }
   };
@@ -52,7 +52,7 @@ export default class StarkExRpc {
       };
       const response = await starkExAPI.gateway.mint(request);
       return response;
-    } catch (error: unknown) {
+    } catch (error) {
       return error as string;
     }
   };
@@ -70,7 +70,7 @@ export default class StarkExRpc {
       };
       const response = await starkExAPI.gateway.deposit(request);
       return response;
-    } catch (error: unknown) {
+    } catch (error) {
       return error as string;
     }
   };
@@ -88,7 +88,7 @@ export default class StarkExRpc {
       };
       const response = await starkExAPI.gateway.withdrawal(request);
       return response;
-    } catch (error: unknown) {
+    } catch (error) {
       return error as string;
     }
   };

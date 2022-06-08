@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 // REPLACE-getModuleImport-
 
-import "./App.css";
 
 const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
 

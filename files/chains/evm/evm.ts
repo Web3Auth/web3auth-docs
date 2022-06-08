@@ -49,6 +49,7 @@ export default class EthereumRpc {
     } catch (error) {
       return error as string;
     }
+    return;
   }
 
   async signTransaction(): Promise<string> {
