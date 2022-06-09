@@ -110,7 +110,7 @@ module.exports = {
       type: "category",
       label: "Examples",
       link: { type: "doc", id: "examples/examples" },
-      items: ["examples/productionexamples"],
+      items: ["examples/demo", "examples/productionexamples"],
     },
     {
       type: "category",
