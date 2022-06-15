@@ -47,11 +47,9 @@ For Auth0 RWA, we need an additional backend server to communicate with Auth0. T
 
 - Create a Web3Auth account on the [Web3Auth Dashboard](https://dashboard.web3auth.io)
 
-## Setting Up
+## Setup
 
----
-
-### Setting up your Auth0 Tenant
+### Setup your Auth0 Tenant
 
 - Add the following URLs for your app to the Allowed Web Origins field when configuring your Auth0 Application.
   - Additional to your own URLs for the application, please add
@@ -59,7 +57,7 @@ For Auth0 RWA, we need an additional backend server to communicate with Auth0. T
     - [https://app.openlogin.com/auth](https://app.openlogin.com/auth) (for Web3Auth mainnet used in production applications).
 - You will require `domain` and `clientId` of the newly created application which you can copy from [Auth0 Console](https://manage.auth0.com/).
 
-### Setting up your Web3Auth Dashboard
+### Setup your Web3Auth Dashboard
 
 - Create a Project from the **Plug and Play** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).
 
@@ -113,7 +111,7 @@ For this project, you need to add the following Web3Auth dependencies to your pa
 This is the main **Core** package that contains the Web3Auth SDK.
 
 ```shell
-npm install --save @web3auth/web3auth
+npm install --save @web3auth/core
 ```
 
 ##### `@web3auth/openlogin-adapter`
@@ -146,7 +144,7 @@ We'll be using `web3` for this guide.
 npm install --save @web3
 ```
 
-### Initialisation
+## Initialization
 
 Once installed, your Web3Auth application needs to be initialized. Initialisation is a multi step process where we add all the config details for
 Web3Auth and OpenloginAdapter. Please make sure all of this is happening when the component mounts in your application using `useEffect` hook. This
@@ -155,8 +153,8 @@ makes sure that Web3Auth is initialised when your application starts up.
 #### Importing the packages
 
 ```js
-import { Web3Auth } from "@web3auth/core";
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { Web3AuthCore } from "@web3auth/core";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 ```
 
@@ -166,8 +164,10 @@ further in this guide.
 #### Setting up the Web3Auth SDK
 
 ```js
-const web3auth = new Web3Auth({
-  clientId: "YOUR-WEB3AUTH-CLIENT-ID",
+import { Web3AuthCore } from "@web3auth/core";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+const web3auth = new Web3AuthCore({
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x1",
@@ -210,7 +210,7 @@ loginConfig object. This makes sure that the Openlogin Adapter can connect to th
 #### Initialising the Web3Auth SDK
 
 ```js
-await web3auth.initModal();
+await web3auth.init();
 ```
 
 #### Initialising on Mobile Platforms
@@ -228,11 +228,13 @@ await web3auth.initModal();
 Once initialized, you can use the `connectTo()` function to authenticate the user when they click the login button.
 
 ```js
+import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
+
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   relogin: true,
   loginProvider: "jwt",
   extraLoginOptions: {
-    domain: "https://YOUR-AUTH0-DOMAIN",
+    domain: "https://YOUR-AUTH0-DOMAIN", // Please append "https://" before your domain
     verifierIdField: "sub",
   },
 });
@@ -240,9 +242,9 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 
 When connecting, your `connectTo` function takes the arguments for the adapter you want to connect to and the options for the login. The major thing
 to note here is the `domain` option in the `extraLoginOptions` object. This is the domain of your Auth0 tenant so that you can be redirected to login
-there directly from the Web3Auth SDK.
+there directly from the Web3Auth Core SDK.
 
-#### Getting the User Profile
+### Get the User Profile
 
 ```js
 const user = await web3auth.getUserInfo();
@@ -252,7 +254,7 @@ console.log("User info", user);
 Using the `getUserInfo` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
 network, but are fetched from the JWT token you received from Auth0 and lives in the frontend context.
 
-#### Logging out
+### Logout
 
 ```js
 await web3auth.logout();
