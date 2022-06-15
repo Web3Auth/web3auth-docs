@@ -47,7 +47,8 @@ module.exports = {
           position: "left",
         },
         {
-          label: "API Reference",
+          label: "SDK/ API Reference",
+          activeBasePath: "/api-reference",
           to: "/api-reference",
           position: "left",
         },
