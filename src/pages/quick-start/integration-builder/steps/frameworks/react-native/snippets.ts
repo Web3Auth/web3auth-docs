@@ -3,35 +3,35 @@ export function getConstructorCode(isWhitelabeled: boolean, isCustomAuth: boolea
   let customAuthCode: string = "";
   if (isWhitelabeled) {
     whitelabelCode = `
-      whiteLabel: {
-        name: "YOUR_APP_NAME",
-        logoLight: "URL_TO_APP_LOGO_FOR_LIGHT_THEME",
-        logoDark: "URL_TO_APP_LOGO_FOR_DARK_THEME",
-        defaultLanguage: "en", // or other language
-        dark: true // or false,
-        theme: {},
-      },
+        whiteLabel: {
+          name: "YOUR_APP_NAME",
+          logoLight: "URL_TO_APP_LOGO_FOR_LIGHT_THEME",
+          logoDark: "URL_TO_APP_LOGO_FOR_DARK_THEME",
+          defaultLanguage: "en", // or other language
+          dark: true // or false,
+          theme: {},
+        },
     `;
   }
   if (isCustomAuth) {
     customAuthCode = `
-      loginConfig: {
-        jwt: {
-          name: "BRAND_NAME",
-          verifier: "VERIFIER_NAME",
-          typeOfLogin: "jwt",
-          clientId: "CLIENT_ID"
+        loginConfig: {
+          jwt: {
+            name: "BRAND_NAME",
+            verifier: "VERIFIER_NAME",
+            typeOfLogin: "jwt",
+            clientId: "CLIENT_ID"
+          },
         },
-      },
     `;
   }
   return `
-    const web3auth = new Web3Auth(WebBrowser, {
-      clientId: "CLIENT_ID",
-      network: OPENLOGIN_NETWORK.TESTNET, // or other networks
+      const web3auth = new Web3Auth(WebBrowser, {
+        clientId: "CLIENT_ID",
+        network: OPENLOGIN_NETWORK.TESTNET, // or other networks
 ${whitelabelCode}
 ${customAuthCode}
-    });
+      });
     `;
 }
 
@@ -90,9 +90,10 @@ const resolvedRedirectUrl =
   if (mode === "bare") {
     return "const resolvedRedirectUrl = `${scheme}://openlogin`;";
   }
+  throw new Error("invalid mode");
 }
 
-export function getInitCode(isCustomAuth: boolean): string {
+export function getInitCode(isCustomAuth: boolean, isEmailPasswordless: boolean): string {
   let customAuthCode: string = "";
   if (isCustomAuth) {
     customAuthCode = `
@@ -100,6 +101,12 @@ export function getInitCode(isCustomAuth: boolean): string {
           domain: "any_nonempty_string",
           verifierIdField: "sub",
           id_token: "JWT_TOKEN",
+        },
+    `;
+  } else if (isEmailPasswordless) {
+    customAuthCode = `
+        extraLoginOptions: {
+          login_hint: "email@example.com",
         },
     `;
   }
