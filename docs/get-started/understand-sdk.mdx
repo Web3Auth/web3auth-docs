@@ -140,3 +140,60 @@ Since the Flutter SDKs don't have provider packages, they expose the private key
 which you can easily invoke RPC calls on wallet and on connected blockchain.
 
 :::
+
+While going through the documentation and API reference, we will be using the following terminology throughout:
+
+### Adapters
+
+Adapters act as connectors between Web3Auth and the underlying wallet provider. For example, an adapter for connecting with torus wallet is available
+under web3auth as [@web3auth/torus-evm-adapter](https://npmjs.com/package/@web3auth/torus-evm-adapter). Every adapter follows a common interface which
+is required by Web3Auth to communicate with the wallet.
+
+You can know more about Adapters [here](./adapters).
+
+### Custom Authentication
+
+Custom Authentication is a way to authenticate users with your own custom authentication service. For example, you can use a custom authentication
+service like Firebase or Auth0 for providing the Web2 authentication aspect which can be passed on to Web3Auth via Verifiers and Web3Auth will proceed
+with the process from there.
+
+You can know more about Custom Authentication flow [here](./customauth).
+
+#### Verifiers
+
+A verifier is a unique identifier for your OAuth registration on the torus network. The Public/private keys generated for a user are scoped to a
+verifier. The Custom Authentication flow deploys a Verifier Script determining the access structure to your users keys and which logins your
+application will ultimately use. You can use your own login providers, using one of the custom login schemes (either via RSA or ECDSA signatures). The
+application should follow the JWT specification and use JWKS for signing whose public keys are exposed by an endpoint.
+
+Understand verifiers more in depth [here](./customauth/verifiers).
+
+#### OAuth Access/ JWT Tokens
+
+An OAuth Access Token is a string that the OAuth client uses to make requests to the resource server. JWT or
+[JSON Web Tokens](https://auth0.com/learn/json-web-tokens/) is a token format which defines a compact and self-contained mechanism for transmitting
+data between parties in a way that can be verified and trusted because it is digitally signed. JWTs are used as OAuth 2.0 Bearer Tokens to encode all
+relevant parts of an access token into the access token itself instead of having to store them in a database.
+
+### Custom Login UI
+
+Custom Login UI refers to the SDKs which provide the facility of using your own frontend login triggers/ UI elements within your application and use
+the Web3Auth technology as a trigger to authenticate the users. Please note that this is different from Whitelabeling since the further login
+processes will follow the same Web3Auth UI Elements.
+
+Know more about which SDKs support what [here](./understand-sdk).
+
+### Whitelabel
+
+Whitelabeling enables you to customise the whole Web3Auth SDK elements according to your application needs. For example, you can choose to use your
+own Plug and Play UI, logging screen animations, Custom Login UI etc. and have a consistent user experience throughout.
+
+Know more about whitelabeling your application [here](../whitelabeling)
+
+### Providers
+
+A provider is how libraries like web3 & ethers.js talk to the blockchain. Providers take JSON-RPC requests and return the response. This is normally
+done by submitting the request to an HTTP or IPC socket based server. Each adapter in web3auth exposes a provider on successful user authentication.
+This provider can be use to interact with wallet or connected chain using rpc calls.
+
+Know more about providers [here](./connect-blockchain)

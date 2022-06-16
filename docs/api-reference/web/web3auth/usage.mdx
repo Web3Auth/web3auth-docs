@@ -1,0 +1,66 @@
+---
+title: Usage
+hide_table_of_contents: false
+displayed_sidebar: apiReference
+---
+
+---
+
+import BasicExample from "../../../common-snippets/_general-example.mdx";
+
+### Showing the Modal
+
+#### `web3auth.connect()`
+
+After initializing you can show the modal by calling `connect` function on web3auth instance
+
+```javascript
+await web3auth.connect();
+```
+
+#### Returns
+
+- `string` - status of wallet connection
+- `object` - adapter configuration details
+
+### Get User's Information
+
+#### `web3auth.getUserInfo()`
+
+You can get the information about connected user by calling `getUserInfo` function.
+
+> Note: This function will return information based on the connected adapter.
+
+```javascript
+await web3auth.getUserInfo();
+```
+
+#### Returns
+
+- **`email`**: `string` - email of the connected user
+- **`name`**: `string` - name of the connected user
+- **`profileImage`**: `string` - profile image of the connected user
+- **`aggregateVerifier`**: `string` - aggregate verifier details
+- **`verifier`**: `"torus", "metamask", "trust", "openlogin"` - verifier details
+- **`verifierId`**: `string` - verifier id
+- **`typeOfLogin`**: `"google", "facebook", "twitter", "github", "linkedin"` - type of login
+
+### Logging out the User
+
+#### `web3auth.logout()`
+
+You can disconnect from connected wallet using `logout` function.
+
+```javascript
+await web3auth.logout();
+```
+
+#### Returns
+
+- `string` - status of wallet connection
+
+## Basic Usage
+
+---
+
+<BasicExample />
