@@ -42,9 +42,9 @@ module.exports = {
       },
       items: [
         {
-          label: "Quick Start",
-          activeBasePath: "/quick-start",
-          to: "/quick-start",
+          label: "Integration Builder",
+          activeBasePath: "/integration-builder",
+          to: "/integration-builder",
           position: "left",
         },
         {
