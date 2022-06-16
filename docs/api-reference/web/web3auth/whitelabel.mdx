@@ -1,0 +1,328 @@
+---
+title: Whitelabel
+hide_table_of_contents: false
+displayed_sidebar: apiReference
+---
+
+---
+
+### Create a new instance of Web3Auth
+
+#### Import the `Web3Auth` class from `@web3auth/web3auth`
+
+```javascript
+import `Web3Auth` from `@web3auth/web3auth`;
+```
+
+#### Assign the `Web3Auth` class to a variable
+
+```javascript
+const web3auth = new Web3Auth(options);
+```
+
+This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
+
+#### Parameters
+
+- `options` - `Web3AuthOptions`: The options of the constructor
+
+| Parameter     | Type                                                                                                                | Description                                                                                                                                                                                                                                                                                         | Default                                              |
+| ------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `chainConfig` | [`Partial <CustomChainConfig> & Pick <CustomChainConfig, "chainNamespace">;`](#adding-a-custom-chain-configuration) | Custom chain configuration for `chainNamespace`.                                                                                                                                                                                                                                                    | mainnet config of provided `chainNamespace`          |
+| `clientId`    | `string`                                                                                                            | Client ID for web3auth. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).                                                                                                                                                                             | You can set any random string for this on localhost. |
+| `authMode`    | `enum` - (`DAPP`, `WALLET`)                                                                                         | Web3Auth instance provides different adapters for different type of usages. If you are a dapp and want to use external wallets like metamask, then you can use the `DAPP` authMode. If you are a wallet and only want to use you own wallet implementations, then you should use `WALLET` authMode. | `DAPP`                                               |
+
+#### Returns
+
+- `Object`: The web3auth instance with all its methods and events.
+
+#### Adding a Custom Chain Configuration
+
+```ts
+type CustomChainConfig = {
+  chainNamespace: ChainNamespaceType;
+  /*
+   The chain id of the chain
+  */
+  chainId: string;
+  /*
+   RPC target Url for the chain
+  */
+  rpcTarget: string;
+  /*
+   Display Name for the chain
+  */
+  displayName: string;
+  /*
+   Url of the block explorer
+   */
+  blockExplorer: string;
+  /*
+   Default currency ticker of the network (e.g: ETH)
+  */
+  ticker: string;
+  /*
+   Name for currency ticker (e.g: `Ethereum`)
+  */
+  tickerName: string;
+};
+```
+
+#### Example
+
+```javascript
+/*
+This instance will create DAPP based modal which uses ropsten network for all
+the adapters being passed (unless override while configuring  adapters,
+each adapter can be configured to have its own chainConfig, otherwise each adapter
+will inherit chainConfig based on the chainNamespace and chainId passed in the
+constructor chainConfig).
+*/
+
+const web3auth = new Web3Auth({
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155, chainId: "0x3" },
+  authMode: "DAPP",
+  clientId: "example-client-id", // get your client id from developer dashboard
+});
+```
+
+### Whitelabel
+
+Add a `uiConfig` object to the `Web3AuthOptions` object passed to the constructor. This object contains the following properties:
+
+##### `theme`
+
+Can be set to `dark` or `light` with default set to `light`
+
+##### `appLogo`
+
+A link to preferred logo and must be compatible with either `light` or `dark` mode. Our default logo is
+[web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg)
+
+##### `loginMethodsOrder`
+
+The list of login methods can also be reordered with this parameter. Those methods specified will be first on the list.
+
+#### Example
+
+```ts
+const web3auth = new Web3Auth({
+    // type UIConfig
+    uiConfig: {
+        appLogo: "https://images.web3auth.io/web3auth-logo-w.svg";
+        theme: "dark";
+        loginMethodsOrder: ['facebook', 'google'];
+    },
+    chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+    clientId: "example-client-id",
+});
+```
+
+##### To know more in depth about how you can Whitelabel your application with Web3Auth, have a look at our [Whitelabeling Guide](/whitelabeling).
+
+### Configuring Adapters
+
+Web3Auth's modal UI supports a set of default adapters depends of the `authMode` being used. By default, Web3Auth requires basic configuration
+`clientId`, and registering a redirect if you using custom authentication.
+
+To configure an adapter, create the instance of adapter by using its corresponding package and pass the returned `adapter` instance in
+`configureAdapter` function.
+
+> Note: You don't have to configure any default adapter unless you want to override default configs for the adapter. Only those adapter which are
+> marked are non default [in this table on the Adapters Documentation](./adapters#currently-available-adapters) are required to be configured always
+> based on the `authMode` you are using.
+
+#### Refer to the [Adapters documentation](./adapters) to know more deeply about what adapters are available and how to configure them.
+
+#### Example
+
+If you want to configure the openlogin adapter
+
+- Import the `OpenloginAdapter` from `@web3auth/openlogin-adapter` package
+- Create an instance of the adapter along with the configuration
+- Pass the returned instance in to `web3auth.configureAdapter`
+
+```ts
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const openloginAdapter = await OpenloginAdapter({
+  adapterSettings: {
+    network: "testnet",
+    clientId: "example-client-id",
+    uxMode: "popup",
+  },
+  loginSettings: {
+    relogin: true,
+  },
+});
+
+web3auth.configureAdapter(openloginAdapter);
+```
+
+### Subscribing the Lifecycle Events
+
+- `CONNECTED`: User is logged in and connected with the dApp
+- `CONNECTING`: User is connecting to the dApp/ login process is in progress
+- `DISCONNECTED`: User is logged out and disconnected from the dApp
+- `ERRORED`: There has been some error in connecting the user to the dApp
+- `MODAL_VISIBILITY`: Indicates whether the modal is visible or not
+
+#### Example
+
+```ts
+import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
+import { ADAPTER_EVENTS } from "@web3auth/base";
+
+// ⭐️ subscribe to lifecycle events emitted by web3auth
+const subscribeAuthEvents = (web3auth: Web3Auth) => {
+  web3auth.on(ADAPTER_EVENTS.CONNECTED, (data: CONNECTED_EVENT_DATA) => {
+    console.log("connected to wallet", data);
+    // web3auth.provider will be available here after user is connected
+  });
+  web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
+    console.log("connecting");
+  });
+  web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
+    console.log("disconnected");
+  });
+  web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
+    console.log("error", error);
+  });
+  web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
+    console.log("error", error);
+  });
+  // emitted when modal visibility changes.
+  web3auth.on(LOGIN_MODAL_EVENTS.MODAL_VISIBILITY, (isVisible) => {
+    console.log("is modal visible", isVisible);
+  });
+};
+```
+
+### Initializing Modal
+
+#### `web3auth.initModal(options)`
+
+After you are done with configuring your adapters, you can initialize modal by calling `initModal` function of `web3auth`.
+
+```javascript
+await web3auth.initModal(options);
+```
+
+#### Parameters
+
+The `web3auth.initModal` takes an `options` config object as input.
+
+```
+options: { modalConfig: Record<WALLET_ADAPTER_TYPE, ModalConfig> }
+```
+
+`options` object contains a `modalConfig` field using which you can configure the visibility of each adapter within the modal. Each modal config has
+following configurations:
+
+| Parameter       | Type                | Description                                                     | Default |
+| --------------- | ------------------- | --------------------------------------------------------------- | ------- |
+| `showOnModal`   | `boolean`           | Whether to show an adapter in modal or not.                     | true    |
+| `showOnDesktop` | `boolean`           | Whether to show an adapter in desktop or not.                   | true    |
+| `showOnMobile`  | `boolean`           | Whether to show an adapter in mobile or not.                    | true    |
+| `loginMethods`  | `LoginMethodConfig` | To configure visibility of each loginMethod within the adapter. |         |
+
+#### Reference:-
+
+```ts
+ interface BaseAdapterConfig {
+  showOnModal?: boolean;
+  showOnMobile?: boolean;
+  showOnDesktop?: boolean;
+}
+
+  LoginConfig = Record<string, {
+      verifier: string;
+      /*
+      The type of login.
+      Refer to enum `LOGIN_TYPE`.
+      */
+      typeOfLogin: TypeOfLogin;
+      /*
+      Display Name.
+      If not provided, we use the default for openlogin app.
+      */
+      name: string;
+      /*
+      Description for button.
+      If provided, it renders as a full length button, else, icon button is rendered.
+      */
+      description?: string;
+      /*
+      Custom client_id.
+      If not provided, we use the default for openlogin app.
+      */
+      clientId?: string;
+      verifierSubIdentifier?: string;
+      /*
+      Logo to be shown on mouse hover.
+      If not provided, we use the default for openlogin app.
+      */
+      logoHover?: string;
+      /*
+      Logo to be shown on dark background (dark theme).
+      If not provided, we use the default for openlogin app.
+      */
+      logoLight?: string;
+      /*
+      Logo to be shown on light background (light theme).
+      If not provided, we use the default for openlogin app.
+      */
+      logoDark?: string;
+      /*
+      Show login button on the main list.
+      */
+      mainOption?: boolean;
+      /*
+      Whether to show the login button on modal or not.
+      */
+      showOnModal?: boolean;
+      /*
+      Whether to show the login button on desktop.
+      */
+      showOnDesktop?: boolean;
+      /*
+      Whether to show the login button on mobile.
+      */
+      showOnMobile?: boolean;
+  }>;
+
+  interface ModalConfig extends BaseAdapterConfig {
+    loginMethods?: LoginMethodConfig;
+  }
+```
+
+#### Returns
+
+`Promise<void>` : Returns a promise which resolves to void
+
+#### Example
+
+- Example below shows how to configure the Web3Auth modal to customize social login buttons.
+
+```ts
+await web3auth.initModal({
+  modalConfig: {
+    [WALLET_ADAPTERS.OPENLOGIN]: {
+      loginMethods: {
+        google: {
+          typeOfLogin: "google",
+          verifier: "google",
+          name: "google login",
+          logoDark: "url to your custom logo which will shown in dark mode",
+        },
+        facebook: {
+          // it will hide the facebook option from the Web3Auth modal.
+          showOnModal: false,
+        },
+      },
+      // setting it to false will hide all social login methods from modal.
+      showOnModal: true,
+    },
+  },
+});
+```

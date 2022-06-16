@@ -10,8 +10,31 @@ module.exports = {
       items: [
         "overview/what-is-web3auth",
         "overview/how-web3auth-works",
+        "overview/web3auth-vs-wallets",
         "overview/key-management",
-        "overview/web3auth-and-wallets",
+        {
+          type: "category",
+          label: "Technical Architecture",
+          link: { type: "doc", id: "overview/technical-architecture/technical-architecture" },
+          items: [
+            {
+              type: "category",
+              label: "Role of Nodes",
+              link: { type: "doc", id: "overview/technical-architecture/role-of-nodes/role-of-nodes" },
+              items: [
+                "overview/technical-architecture/role-of-nodes/lifecycle",
+                "overview/technical-architecture/role-of-nodes/key-generation",
+                "overview/technical-architecture/role-of-nodes/logins-key-assignment",
+                "overview/technical-architecture/role-of-nodes/oauth2-vs-proxy-signin",
+                {
+                  type: "link",
+                  label: "DKG Technical Specification",
+                  href: "https://github.com/torusresearch/audit/blob/master/Torus_DKG_Technical_Specification.pdf",
+                },
+              ]
+            },
+          ]
+        },
         "overview/audits",
       ],
     },
@@ -20,28 +43,14 @@ module.exports = {
       label: "Get Started",
       link: { type: "doc", id: "get-started/get-started" },
       items: [
-        "get-started/quickstart",
-        "get-started/glossary",
+        "get-started/quick-start",
         "get-started/understand-sdk",
+        {
+          type: "link",
+          label: "SDK/ API Reference",
+          href: "/api-reference",
+        },
       ]
-    },
-    "using-dashboard",
-    "adapters",
-    "connect-blockchain",
-    {
-      type: "category",
-      label: "Using Custom Authentication",
-      link: { type: "doc", id: "customauth/customauth" },
-      items: [
-        "customauth/verifiers",
-        "customauth/auth0"],
-    },
-    "interoperability",
-    "whitelabeling",
-    {
-      type: "link",
-      label: "SDK/ API Reference",
-      href: "/api-reference",
     },
     {
       type: "category",
@@ -51,6 +60,71 @@ module.exports = {
         "examples/demo",
         "examples/productionexamples"],
     },
+    "self-host",
+    {
+      type: "category",
+      label: "Developer Dashboard",
+      link: { type: "doc", id: "developer-dashboard/developer-dashboard" },
+      items: [
+        "developer-dashboard/get-client-id",
+        "developer-dashboard/enable-interoperability",
+        "developer-dashboard/setup-custom-authentication",
+      ],
+    },
+    {
+      type: "category",
+      label: "Connect a Blockchain",
+      link: { type: "doc", id: "connect-blockchain/connect-blockchain" },
+      items: [
+        {
+          "EVM Based Chains": [
+            "connect-blockchain/evm/ethereum",
+            "connect-blockchain/evm/polygon",
+            "connect-blockchain/evm/bnb",
+            "connect-blockchain/evm/avalanche",
+            "connect-blockchain/evm/arbitrum",
+            "connect-blockchain/evm/optimism",
+          ]
+        },
+        "connect-blockchain/solana",
+        "connect-blockchain/starkex",
+        "connect-blockchain/starknet",
+      ],
+    },
+    {
+      type: "category",
+      label: "Using Custom Authentication",
+      link: { type: "doc", id: "custom-authentication/custom-authentication" },
+      items: [
+        "custom-authentication/verifiers",
+        "custom-authentication/aggregate-verifiers",
+        "custom-authentication/backup-share-for-mobile",
+        "custom-authentication/auth0"
+      ],
+    },
+    {
+      type: "category",
+      label: "Whitelabel",
+      link: { type: "doc", id: "whitelabel/whitelabel" },
+      items: [
+        "whitelabel/login-modal",
+        "whitelabel/user-flow-screens",
+        "whitelabel/torus-wallet-plugin",
+      ],
+    },
+    "interoperability",
+    "server-side-verification",
+    "connect-external-wallets",
+    {
+      type: "link",
+      label: "SDK/ API Reference",
+      href: "/api-reference",
+    },
+    {
+      Troubleshooting: [
+        "troubleshooting/webpack-issues"
+      ],
+    },
     {
       type: "category",
       label: "Contribute",
@@ -59,18 +133,18 @@ module.exports = {
         "contribute/bug-bounty"],
     },
     {
-      Troubleshooting: [
-        "troubleshooting/webpack-issues"
-      ],
-    },
-    {
       Legal: [
         "legal/cookie-policy",
         "legal/privacy-policy",
         "legal/terms-and-conditions"
       ],
     },
-    { type: "html", value: "<hr /><strong style='color: #606770'>Quick Links</strong>", defaultStyle: true },
+    {
+      type: "html",
+      value: "<hr /><strong style='color: #606770'>Quick Links</strong>",
+      className: 'sidebar-title',
+      defaultStyle: true
+    },
 
     {
       type: "link",
@@ -105,26 +179,56 @@ module.exports = {
   ],
   apiReference:
     [
-      { type: "html", value: "<strong style='color: #606770'>Web3Auth Plug and Play</strong>", defaultStyle: true },
-
+      {
+        type: "doc",
+        label: "Introduction",
+        id: "api-reference/api-reference",
+      },
       {
         type: "category",
         label: "Web",
+        link: { type: "doc", id: "api-reference/web/web" },
         items: [
-          "api-reference/web/choosesdk",
-          "api-reference/web/plugnplay",
-          "api-reference/web/customloginui",
+          {
+            type: "category",
+            label: "@web3auth/web3auth",
+            link: { type: "doc", id: "api-reference/web/web3auth/web3auth" },
+            items: [
+              "api-reference/web/web3auth/initialize",
+              "api-reference/web/web3auth/whitelabel",
+              "api-reference/web/web3auth/custom-authentication",
+              "api-reference/web/web3auth/usage",
+            ],
+          },
+          {
+            type: "category",
+            label: "@web3auth/core",
+            link: { type: "doc", id: "api-reference/web/core/core" },
+            items: [
+              "api-reference/web/core/initialize",
+              "api-reference/web/core/whitelabel",
+              "api-reference/web/core/custom-authentication",
+              "api-reference/web/core/usage",
+            ],
+          },
           {
             type: "category",
             label: "Providers",
             link: { type: "doc", id: "api-reference/web/providers/providers" },
-            items: ["api-reference/web/providers/evm", "api-reference/web/providers/solana"],
+            items: [
+              "api-reference/web/providers/evm",
+              "api-reference/web/providers/solana",
+              "api-reference/web/providers/other"
+            ],
           },
           {
             type: "category",
             label: "Plugins",
             link: { type: "doc", id: "api-reference/web/plugins/plugins" },
-            items: ["api-reference/web/plugins/torusevmwalletplugin", "api-reference/web/plugins/torussolanawalletplugin"],
+            items: [
+              "api-reference/web/plugins/torusevmwalletplugin",
+              "api-reference/web/plugins/torussolanawalletplugin"
+            ],
           },
           {
             type: "category",
@@ -139,44 +243,71 @@ module.exports = {
               "api-reference/web/adapters/wallet-connect-v1",
             ],
           },
-          ,
-          "api-reference/web/customauth",
         ],
       },
       {
-        Android: [
-          "api-reference/android/setting-up",
-          "api-reference/android/usage",
+        type: "category",
+        label: "Android",
+        link: { type: "doc", id: "api-reference/android/android" },
+        items: [
+          "api-reference/android/initialize",
           "api-reference/android/whitelabel",
-          "api-reference/android/customauth",
+          "api-reference/android/custom-authentication",
+          "api-reference/android/dapp-share",
+          "api-reference/android/usage",
         ],
       },
       {
-        iOS: [
-          "api-reference/ios/setting-up",
-          "api-reference/ios/usage",
+        type: "category",
+        label: "iOS",
+        link: { type: "doc", id: "api-reference/ios/ios" },
+        items: [
+          "api-reference/ios/initialize",
           "api-reference/ios/whitelabel",
-          "api-reference/ios/customauth"],
-      },
-      {
-        "React Native": [
-          "api-reference/react-native/choose-workflows",
-          "api-reference/react-native/setting-up",
-          "api-reference/react-native/usage",
-          "api-reference/react-native/whitelabel",
-          "api-reference/react-native/customauth",
+          "api-reference/ios/custom-authentication",
+          "api-reference/ios/dapp-share",
+          "api-reference/ios/usage",
         ],
       },
       {
-        Flutter: [
-          "api-reference/flutter/setting-up",
-          "api-reference/flutter/usage",
-          "api-reference/flutter/whitelabel"],
+        type: "category",
+        label: "React Native",
+        link: { type: "doc", id: "api-reference/react-native/react-native" },
+        items: [
+          "api-reference/react-native/initialize",
+          "api-reference/react-native/whitelabel",
+          "api-reference/react-native/custom-authentication",
+          "api-reference/react-native/dapp-share",
+          "api-reference/react-native/usage",
+        ],
       },
-      { type: "html", value: "<strong style='color: #606770'>Web3Auth Self Hosting</strong>", defaultStyle: true },
-
-      { type: "html", value: "<hr /><strong style='color: #606770'>Quick Links</strong>", defaultStyle: true },
-
+      {
+        type: "category",
+        label: "Flutter",
+        link: { type: "doc", id: "api-reference/flutter/flutter" },
+        items: [
+          "api-reference/flutter/initialize",
+          "api-reference/flutter/whitelabel",
+          "api-reference/flutter/custom-authentication",
+          "api-reference/flutter/dapp-share",
+          "api-reference/flutter/usage",
+        ],
+      },
+      {
+        type: "category",
+        label: "Web3Auth Self Host",
+        link: { type: "doc", id: "api-reference/self-host/self-host" },
+        items: [
+          "api-reference/self-host/initialize",
+          "api-reference/self-host/usage",
+        ],
+      },
+      {
+        type: "html",
+        value: "<hr /><strong style='color: #606770'>Quick Links</strong>",
+        className: 'sidebar-title',
+        defaultStyle: true
+      },
       {
         type: "link",
         label: "GitHub",

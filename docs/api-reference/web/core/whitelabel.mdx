@@ -1,0 +1,158 @@
+---
+title: Whitelabel
+hide_table_of_contents: false
+displayed_sidebar: apiReference
+---
+
+---
+
+### Create a new instance of Web3Auth
+
+#### Import the `Web3AuthCore` class from `@web3auth/core`;
+
+```javascript
+import { Web3AuthCore } from "@web3auth/core";
+```
+
+#### Assign the `Web3Auth` class to a variable
+
+```javascript
+const web3auth = new Web3AuthCore(options);
+```
+
+This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
+
+#### Parameters
+
+- `options` - `Web3AuthOptions`: The options of the constructor
+
+| Parameter     | Type                                                                                                                | Description                                                                                                                                                                                                                                                                                         | Default                                              |
+| ------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `chainConfig` | [`Partial <CustomChainConfig> & Pick <CustomChainConfig, "chainNamespace">;`](#adding-a-custom-chain-configuration) | Custom chain configuration for `chainNamespace`.                                                                                                                                                                                                                                                    | mainnet config of provided `chainNamespace`          |
+| `clientId`    | `string`                                                                                                            | Client ID for web3auth. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).                                                                                                                                                                             | You can set any random string for this on localhost. |
+| `authMode`    | `enum` - (`DAPP`, `WALLET`)                                                                                         | Web3Auth instance provides different adapters for different type of usages. If you are a dapp and want to use external wallets like metamask, then you can use the `DAPP` authMode. If you are a wallet and only want to use you own wallet implementations, then you should use `WALLET` authMode. | `DAPP`                                               |
+
+#### Returns
+
+- `Object`: The web3auth instance with all its methods and events.
+
+#### Adding a Custom Chain Configuration
+
+```ts
+type CustomChainConfig = {
+  chainNamespace: ChainNamespaceType;
+  /*
+   The chain id of the chain
+  */
+  chainId: string;
+  /*
+   RPC target Url for the chain
+  */
+  rpcTarget: string;
+  /*
+   Display Name for the chain
+  */
+  displayName: string;
+  /*
+   Url of the block explorer
+   */
+  blockExplorer: string;
+  /*
+   Default currency ticker of the network (e.g: ETH)
+  */
+  ticker: string;
+  /*
+   Name for currency ticker (e.g: `Ethereum`)
+  */
+  tickerName: string;
+};
+```
+
+#### Example
+
+```javascript
+/*
+This instance will create DAPP based modal which uses ropsten network for all
+the adapters being passed (unless override while configuring  adapters,
+each adapter can be configured to have its own chainConfig, otherwise each adapter
+will inherit chainConfig based on the chainNamespace and chainId passed in the
+constructor chainConfig).
+*/
+
+const web3authCore = new Web3AuthCore({
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155, chainId: "0x3" },
+  authMode: "DAPP",
+  clientId: "example-client-id", // get your client id from developer dashboard
+});
+```
+
+### Configuring Adapters
+
+Web3Auth's modal UI supports a set of default adapters depends of the `authMode` being used. By default, Web3Auth requires basic configuration
+`clientId`, and registering a redirect if you using custom authentication.
+
+To configure an adapter, create the instance of adapter by using its corresponding package and pass the returned `adapter` instance in
+`configureAdapter` function.
+
+> Note: You don't have to configure any default adapter unless you want to override default configs for the adapter. Only those adapter which are
+> marked are non default [in this table on the Adapters Documentation](./adapters#currently-available-adapters) are required to be configured always
+> based on the `authMode` you are using.
+
+#### Refer to the [Adapters documentation](./adapters) to know more deeply about what adapters are available and how to configure them.
+
+#### Example
+
+If you want to configure the openlogin adapter
+
+- Import the `OpenloginAdapter` from `@web3auth/openlogin-adapter` package
+- Create an instance of the adapter along with the configuration
+- Pass the returned instance in to `web3auth.configureAdapter`
+
+```ts
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const openloginAdapter = await OpenloginAdapter({
+  adapterSettings: {
+    network: "testnet",
+    clientId: "example-client-id",
+    uxMode: "popup",
+  },
+  loginSettings: {
+    relogin: true,
+  },
+});
+
+web3authCore.configureAdapter(openloginAdapter);
+```
+
+### Whitelabel
+
+Since you're using Custom UI, you don't need to add any default UI. You can add your own UI for the login flow. That being said, you have the ability
+to configure the adapters and whitelabel them according to your needs.
+
+To know more in depth about how you can Whitelabel your application with Web3Auth, have a look at our [**Whitelabeling Guide**](/whitelabeling).
+
+### Subscribing the Lifecycle Events
+
+- `CONNECTED`: User is logged in and connected with the dApp
+- `CONNECTING`: User is connecting to the dApp/ login process is in progress
+- `DISCONNECTED`: User is logged out and disconnected from the dApp
+- `ERRORED`: There has been some error in connecting the user to the dApp
+
+### Initialization
+
+#### `web3authCore.init()`
+
+After you are done with configuring your adapters, you can initialize all these adapter by calling init function of web3auth core instance.
+
+This method will initialize all the adapter that you have configured.
+
+:::note
+
+In case initialization of any adapter fails it will not throw but simply allow you to connect with successfully initialized adapters.
+
+:::
+
+```javascript
+await web3authCore.init();
+```
