@@ -24,8 +24,8 @@ module.exports = (context, options) => ({
     const { createData, addRoute } = actions;
     const files = await createData("files.json", JSON.stringify(content));
     addRoute({
-      path: "/docs/quick-start",
-      component: "@site/src/pages/quick-start",
+      path: "/integration-builder",
+      component: "@site/src/pages/integration-builder",
       modules: {
         files,
       },
