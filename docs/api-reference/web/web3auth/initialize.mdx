@@ -1,53 +1,8 @@
 ---
-title: Plug n Play
+title: Initialize
 hide_table_of_contents: false
 displayed_sidebar: apiReference
 ---
-
----
-
-import TabItem from "@theme/TabItem";
-import Tabs from "@theme/Tabs";
-
-import BasicExample from "../../common-snippets/_general-example.mdx";
-
-## [`@web3auth/web3auth`](https://npmjs.com/package/@web3auth/web3auth)
-
-This package provides main class for using default web3auth modal. It is a child class of `@web3auth/core` package. So you can still call all the
-functions available in the `@web3auth/core` api reference. The package includes all of our packages and gives you a simple way of implementing
-Web3Auth within your interface.
-
-## Installation
-
----
-
-<Tabs
-  defaultValue="npm"
-  values={[
-    { label: "npm", value: "npm" },
-    { label: "yarn", value: "yarn" },
-  ]}
->
-
-<TabItem value="npm">
-
-```shell
-npm i --save @web3auth/web3auth
-```
-
-</TabItem>
-
-<TabItem value="yarn">
-
-```shell
-yarn add @web3auth/web3auth
-```
-
-</TabItem>
-
-</Tabs>
-
-## Initialisation
 
 ---
 
@@ -195,6 +150,9 @@ const openloginAdapter = await OpenloginAdapter({
     network: "testnet",
     clientId: "example-client-id",
     uxMode: "popup",
+  },
+  loginSettings: {
+    relogin: true,
   },
 });
 
@@ -368,108 +326,3 @@ await web3auth.initModal({
   },
 });
 ```
-
-## Usage
-
----
-
-### Showing the Modal
-
-#### `web3auth.connect()`
-
-After initializing you can show the modal by calling `connect` function on web3auth instance
-
-```javascript
-await web3auth.connect();
-```
-
-#### Returns
-
-- `string` - status of wallet connection
-- `object` - adapter configuration details
-
-### Get User's Information
-
-#### `web3auth.getUserInfo()`
-
-You can get the information about connected user by calling `getUserInfo` function.
-
-> Note: This function will return information based on the connected adapter.
-
-```javascript
-await web3auth.getUserInfo();
-```
-
-#### Returns
-
-- **`email`**: `string` - email of the connected user
-- **`name`**: `string` - name of the connected user
-- **`profileImage`**: `string` - profile image of the connected user
-- **`aggregateVerifier`**: `string` - aggregate verifier details
-- **`verifier`**: `"torus", "metamask", "trust", "openlogin"` - verifier details
-- **`verifierId`**: `string` - verifier id
-- **`typeOfLogin`**: `"google", "facebook", "twitter", "github", "linkedin"` - type of login
-- **`dappShare`**: `string` - If you are using a Custom Verifier, you can get a dapp share after successful login. (dappShare is a 24 word seed
-  phrase). This share can act as a replacement to your user's device share.
-- **`idToken`**: `string` - JWT token (Note: This is issued by Web3Auth and is not bound to your OAuth provider)
-
-### Logging out the User
-
-#### `web3auth.logout()`
-
-You can disconnect from connected wallet using `logout` function.
-
-```javascript
-await web3auth.logout();
-```
-
-#### Returns
-
-- `string` - status of wallet connection
-
-## Basic Usage
-
----
-
-<BasicExample />
-
-## Authenticating Users
-
----
-
-As a dApp you might want to authenticate a Web3Auth user in your backend.
-
-Web3Auth returns a [idToken](/api-reference/web/plugnplay#web3authgetuserinfo) in the [userInfo](/api-reference/web/plugnplay#web3authgetuserinfo)
-which you can use to authenticate the user in the backend.
-
-By default Web3Auth returns a `idToken` which contains the `public_key` in `secp256k1` form.
-
-If you want to encode the public_key in `ed25519` format then you have to pass the `curve` parameter in OpenloginAdapter.
-
-Eg :-
-
-```javascript
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    network: "testnet",
-    clientId: config.clientId,
-    uxMode: "redirect",
-  },
-  loginSettings: {
-    relogin: true,
-    curve: "ed25519", // allowed values "secp256k1" (default) or "ed25519"
-  },
-});
-```
-
-:::info
-
-[Know more about idToken](/authenticating-users/social-login-users#sample-idtoken-payload)
-
-:::
-
-:::info
-
-[Verifying the JWT Token obtained in userInfo](/authenticating-users/social-login-users#sample-idtoken-payload)
-
-:::
