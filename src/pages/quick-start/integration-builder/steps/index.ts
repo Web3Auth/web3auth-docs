@@ -172,7 +172,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
           choices: TOGGLE_CHOICES,
         },
         mode: {
-          displayName: "React Native Workflow",
+          displayName: "Workflow",
           default: RN_MODE_CHOICES[0].key,
           type: "dropdown",
           choices: RN_MODE_CHOICES,
