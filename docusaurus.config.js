@@ -54,13 +54,19 @@ module.exports = {
           position: "left",
         },
         {
+          label: "Guides",
+          activeBasePath: "/guides",
+          to: "/guides",
+          position: "left",
+        },
+        {
           label: "Dashboard",
           href: "https://dashboard.web3auth.io",
           target: "_blank",
           position: "left",
         },
         {
-          label: "Schedule a Demo",
+          label: "Enterprise Demo",
           href: contactUrl,
           position: "left",
         },
@@ -100,6 +106,7 @@ module.exports = {
     ],
   ],
   plugins: [
+    path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
     [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: "files" }],
     path.resolve(__dirname, "plugins", "node-polyfills"),
   ],

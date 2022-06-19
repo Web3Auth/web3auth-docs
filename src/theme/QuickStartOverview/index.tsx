@@ -54,7 +54,7 @@ export default function Web3AuthOverview() {
 
         <div className={styles.btnContainer}>
           <div className={styles.btn}>
-            <Link to="/get-started/quickstart">
+            <Link to="/get-started/quick-start">
               <button type="button" className={classNames(styles.ctaBtn, styles.ctaBtnWhite)}>
                 Quick Start
               </button>
