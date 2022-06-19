@@ -1,4 +1,53 @@
 /** @type {import('@docusaurus/plugin-content-docs/lib/types').Sidebars} */
+const quicklinks = [
+  {
+    type: "html",
+    value: "<hr /><strong style='color: #606770'>Quick Links</strong>",
+    className: 'sidebar-title',
+    defaultStyle: true
+  },
+  {
+    type: "link",
+    label: "Integration Builder",
+    href: "/integration-builder",
+  },
+  {
+    type: "link",
+    label: "Guides",
+    href: "/guides",
+  },
+  {
+    type: "link",
+    label: "GitHub",
+    href: "https://github.com/web3auth/web3auth",
+  },
+  {
+    type: "link",
+    label: "Support (Telegram)",
+    href: "https://t.me/web3authdev",
+  },
+  {
+    type: "link",
+    label: "Discord",
+    href: "https://discord.gg/web3auth",
+  },
+  {
+    type: "link",
+    label: "Dashboard",
+    href: "https://dashboard.web3auth.io/",
+  },
+  {
+    type: "link",
+    label: "Schedule a Demo",
+    href: "https://calendly.com/web3auth/meeting-with-web3auth",
+  },
+  {
+    type: "link",
+    label: "Status",
+    href: "https://status.web3auth.io/",
+  },
+]
+
 module.exports = {
   docs: [
     "README",
@@ -11,31 +60,38 @@ module.exports = {
         "overview/what-is-web3auth",
         "overview/how-web3auth-works",
         "overview/web3auth-vs-wallets",
-        "overview/key-management",
         {
           type: "category",
-          label: "Technical Architecture",
-          link: { type: "doc", id: "overview/technical-architecture/technical-architecture" },
+          label: "Key Management",
+          link: { type: "doc", id: "overview/key-management" },
           items: [
             {
               type: "category",
-              label: "Role of Nodes",
-              link: { type: "doc", id: "overview/technical-architecture/role-of-nodes/role-of-nodes" },
+              label: "Technical Architecture",
+              link: { type: "doc", id: "overview/technical-architecture/technical-architecture" },
               items: [
-                "overview/technical-architecture/role-of-nodes/lifecycle",
-                "overview/technical-architecture/role-of-nodes/key-generation",
-                "overview/technical-architecture/role-of-nodes/logins-key-assignment",
-                "overview/technical-architecture/role-of-nodes/oauth2-vs-proxy-signin",
                 {
-                  type: "link",
-                  label: "DKG Technical Specification",
-                  href: "https://github.com/torusresearch/audit/blob/master/Torus_DKG_Technical_Specification.pdf",
+                  type: "category",
+                  label: "Role of Nodes",
+                  link: { type: "doc", id: "overview/technical-architecture/role-of-nodes/role-of-nodes" },
+                  items: [
+                    "overview/technical-architecture/role-of-nodes/lifecycle",
+                    "overview/technical-architecture/role-of-nodes/key-generation",
+                    "overview/technical-architecture/role-of-nodes/logins-key-assignment",
+                    "overview/technical-architecture/role-of-nodes/oauth2-vs-proxy-signin",
+                    {
+                      type: "link",
+                      label: "DKG Technical Specification",
+                      href: "https://github.com/torusresearch/audit/blob/master/Torus_DKG_Technical_Specification.pdf",
+                    },
+                  ]
                 },
+                "overview/audits",
               ]
             },
-          ]
+          ],
         },
-        "overview/audits",
+
       ],
     },
     {
@@ -50,6 +106,16 @@ module.exports = {
           label: "SDK/ API Reference",
           href: "/api-reference",
         },
+        {
+          type: "category",
+          label: "Developer Dashboard",
+          link: { type: "doc", id: "developer-dashboard/developer-dashboard" },
+          items: [
+            "developer-dashboard/get-client-id",
+            "developer-dashboard/enable-interoperability",
+            "developer-dashboard/setup-custom-authentication",
+          ],
+        },
       ]
     },
     {
@@ -63,23 +129,25 @@ module.exports = {
       label: "Examples",
       link: { type: "doc", id: "examples/examples" },
       items: [
+        {
+          type: "link",
+          label: "Integration Builder",
+          href: "/integration-builder"
+        },
         "examples/demo",
-        "examples/productionexamples"],
+        "examples/productionexamples",
+        {
+          type: "link",
+          label: "Guides",
+          href: "/guides"
+        },
+      ]
     },
-    "self-host",
+    "self-hosting",
+
     {
       type: "category",
-      label: "Developer Dashboard",
-      link: { type: "doc", id: "developer-dashboard/developer-dashboard" },
-      items: [
-        "developer-dashboard/get-client-id",
-        "developer-dashboard/enable-interoperability",
-        "developer-dashboard/setup-custom-authentication",
-      ],
-    },
-    {
-      type: "category",
-      label: "Connect a Blockchain",
+      label: "Connect Blockchain",
       link: { type: "doc", id: "connect-blockchain/connect-blockchain" },
       items: [
         {
@@ -99,7 +167,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Using Custom Authentication",
+      label: "Custom Authentication",
       link: { type: "doc", id: "custom-authentication/custom-authentication" },
       items: [
         "custom-authentication/verifiers",
@@ -122,9 +190,10 @@ module.exports = {
     "server-side-verification",
     "connect-external-wallets",
     {
-      type: "link",
-      label: "SDK/ API Reference",
-      href: "/api-reference",
+      type: "html",
+      value: "<hr /><strong style='color: #606770'>Additional Reading</strong>",
+      className: 'sidebar-title',
+      defaultStyle: true
     },
     {
       Troubleshooting: [
@@ -146,42 +215,11 @@ module.exports = {
       ],
     },
     {
-      type: "html",
-      value: "<hr /><strong style='color: #606770'>Quick Links</strong>",
-      className: 'sidebar-title',
-      defaultStyle: true
-    },
-
-    {
       type: "link",
-      label: "GitHub",
-      href: "https://github.com/web3auth/web3auth",
+      label: "SDK/ API Reference",
+      href: "/api-reference",
     },
-    {
-      type: "link",
-      label: "Support (Telegram)",
-      href: "https://t.me/web3authdev",
-    },
-    {
-      type: "link",
-      label: "Discord",
-      href: "https://discord.gg/web3auth",
-    },
-    {
-      type: "link",
-      label: "Dashboard",
-      href: "https://dashboard.web3auth.io/",
-    },
-    {
-      type: "link",
-      label: "Schedule a Demo",
-      href: "https://calendly.com/web3auth/meeting-with-web3auth",
-    },
-    {
-      type: "link",
-      label: "Status",
-      href: "https://status.web3auth.io/",
-    },
+    ...quicklinks,
   ],
   apiReference:
     [
@@ -308,41 +346,6 @@ module.exports = {
           "api-reference/self-host/usage",
         ],
       },
-      {
-        type: "html",
-        value: "<hr /><strong style='color: #606770'>Quick Links</strong>",
-        className: 'sidebar-title',
-        defaultStyle: true
-      },
-      {
-        type: "link",
-        label: "GitHub",
-        href: "https://github.com/web3auth/web3auth",
-      },
-      {
-        type: "link",
-        label: "Support (Telegram)",
-        href: "https://t.me/web3authdev",
-      },
-      {
-        type: "link",
-        label: "Discord",
-        href: "https://discord.gg/web3auth",
-      },
-      {
-        type: "link",
-        label: "Dashboard",
-        href: "https://dashboard.web3auth.io/",
-      },
-      {
-        type: "link",
-        label: "Schedule a Demo",
-        href: "https://calendly.com/web3auth/meeting-with-web3auth",
-      },
-      {
-        type: "link",
-        label: "Status",
-        href: "https://status.web3auth.io/",
-      },
+      ...quicklinks,
     ],
 };
