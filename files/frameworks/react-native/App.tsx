@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 // REPLACE-getModuleImport-
 
 const scheme = "web3authrnsample"; // Or your desired app redirection scheme
