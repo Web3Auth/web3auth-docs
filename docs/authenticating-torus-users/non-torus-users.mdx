@@ -1,0 +1,71 @@
+---
+title: Non-Torus Users
+hide_table_of_contents: true
+id: non-torus-users
+---
+
+#### Getting SIWWeb3Message from the AuthJS Backend
+
+For a user on `Ethereum` mainnet with the address `0x00C02Bad...` who wants to authenticate from `https://login.xyz/login`.
+
+Note: Message fields are similar to [EIP-4361: Sign in with Ethereum](https://docs.login.xyz/general-information/siwe-overview/eip-4361#specification)
+. The `nonce` field here is ignored and can be any random string.
+
+##### POST /siww/get
+
+```json
+{
+  "network": "ethereum", // Valid networks: ethereum, solana, starkware
+  "header": {
+    "t": "eip191"
+  },
+  "payload": {
+    "domain": "localhost:3000",
+    "uri": "http://localhost:3000/login",
+    "address": "0x00C02Bad...",
+    "chainId": 1,
+    "version": "1",
+    "nonce": "does-not-matter-here",
+    "issuedAt": "2022-01-27T17:09:38.578Z"
+  }
+}
+```
+
+> Code: `200 OK`
+
+```json
+{
+  "success": true,
+  "challenge": "<SIWE message>"
+}
+```
+
+#### Verify signed challenge
+
+> Verifies the signed challenge message.
+
+> Returns a JWT that can be used as authentication method
+
+#### POST /siww/verify
+
+```json
+{
+  "message": "localhost:3000 wants you to...", // The original challenge message from 'Get challenge message' endpoint
+  "signature": {
+    "s": "304402203a5b354ebc147...",
+    "t": "eip191"
+  },
+  "network": "ethereum"
+}
+```
+
+Note: Signature format depends on network. Solana uses base58, the rest uses hex
+
+> Code: `200 OK`
+
+```json
+{
+  "success": true,
+  "token": "eyJhbGciOiJFUz..." // JWT token
+}
+```

@@ -1,0 +1,57 @@
+---
+title: Torus Users
+hide_table_of_contents: true
+id: torus-users
+---
+
+#### Getting the Challenge from the AuthJS Backend
+
+For a user that signed up with `Google` with the email `hello@tor.us`, with the share `0xBEEF4321...` wanting to receive a challenge on app scoped key
+`0x1234C0DE...`
+
+##### POST /challenge/get
+
+```json
+{
+  "verifier": "google",
+  "verifier_id": "hello@tor.us",
+  "oauth_pub_key": "0xBEEF4321...",
+  "app_scoped_pubkey": "0x1234C0DE...",
+  "network": "mainnet"
+}
+```
+
+> Code: `200 OK`
+
+```json
+{
+  "success": true,
+  "challenge": "message-to-be-signed-0000"
+}
+```
+
+#### Verify signed challenge
+
+> Verifies the signed challenge message.
+
+> Returns a JWT that can be used as authentication method
+
+#### POST /challenge/verify
+
+```json
+{
+  "verifier": "google",
+  "verifier_id": "hello@tor.us",
+  "oauth_pub_key": "0xBEEF4321...",
+  "signature": "304402203a5b354ebc147..." // Hex encoded signature
+}
+```
+
+> Code: `200 OK`
+
+```json
+{
+  "success": true,
+  "token": "eyJhbGciOiJFUz..." // JWT token
+}
+```
