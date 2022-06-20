@@ -112,7 +112,8 @@ module.exports = {
       link: { type: "doc", id: "authenticating-torus-users/authjs" },
       items: ["authenticating-torus-users/authjs", "authenticating-torus-users/torus-users", "authenticating-torus-users/non-torus-users"],
     },
-    "examples",
+    {
+      type: "category",
       label: "Examples",
       link: { type: "doc", id: "examples/examples" },
       items: ["examples/demo", "examples/productionexamples"],

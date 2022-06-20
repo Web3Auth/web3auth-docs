@@ -21,6 +21,22 @@ For a user that signed up with `Google` with the email `hello@tor.us`, with the 
 }
 ```
 
+##### Challenge Generation
+
+1. Store the following data in a database / cache
+
+   key : `${oauth_pub_key}_REGISTER`, value : `app_scoped_pubkey`
+
+2. challenge = randomNonce + app_scoped_pubkey + timestamp
+
+3. Store the following data in a database / cache
+
+   key: `${oauth_pub_key}_CHALLENGE`, value: `challenge`, timeout: `60`
+
+4. Return challenge
+
+##### Response
+
 > Code: `200 OK`
 
 ```json
@@ -32,9 +48,31 @@ For a user that signed up with `Google` with the email `hello@tor.us`, with the 
 
 #### Verify signed challenge
 
-> Verifies the signed challenge message.
+1. Get the challenge from the database using the key : `${oauth_pub_key}_CHALLENGE`. If the verify function is called after 60 seconds, the challenge
+   doesn't exist as it is removed from the database due to the timeout set.
 
-> Returns a JWT that can be used as authentication method
+2. Verify the signature against the challenge obtained in step 1 using the `oauth_pub_key`
+
+3. Get the app_scoped_pubkey from the database using the key : `${oauth_pub_key}_REGISTER`
+
+4. Create a payload for JWT
+
+```javascript
+{
+  wallets: [
+    {
+      publicKey: oauth_pub_key,
+      type: "oauth_public_key",
+    },
+    {
+      publicKey: app_scoped_pubkey,
+      type: "web3auth",
+    },
+  ],
+}
+```
+
+5. Returns a JWT (using the above payload). This JWT can be used as authentication method.
 
 #### POST https://auth-js-backend.tor.us/challenge/verify
 
