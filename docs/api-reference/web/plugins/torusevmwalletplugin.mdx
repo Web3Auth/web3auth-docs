@@ -1,0 +1,133 @@
+---
+title: Torus EVM Wallet UI Plugin
+hide_table_of_contents: false
+---
+
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Torus EVM Wallet UI Plugin helps you get the functionalities of the Torus EVM Wallet into your Web3Auth Instance. It helps you use your Web3Auth key
+in the Torus EVM Wallet, making it easier for your end user to make transactions, add money into their wallet and even use it across different
+applications using Torus Wallet.
+
+After initialisation, this plugin you a provider from the Torus EVM Wallet, injecting the Torus Wallet UI into your dApp and helping you make the
+wallet calls directly through it without the need of making your own wallet UI flow.
+
+In this section we'll explore more about how you can use the Torus EVM Wallet UI Plugin for your dApp.
+
+## Installation
+
+---
+
+#### [`@web3auth/torus-wallet-connector-plugin`](https://www.npmjs.com/package/@web3auth/torus-wallet-connector-plugin)
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+
+<TabItem value="npm">
+
+```shell
+npm i --save @web3auth/torus-wallet-connector-plugin
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @web3auth/torus-wallet-connector-plugin
+```
+
+</TabItem>
+
+</Tabs>
+
+## Initialisation
+
+---
+
+Import the `TorusWalletConnectorPlugin` class from `@web3auth/torus-wallet-connector-plugin`;
+
+```javascript
+import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
+```
+
+### Assign the `torusPlugin` class to a variable
+
+After creating your Web3Auth instance, you need to initialise the Torus Wallet UI Plugin and add it to a class for further usage.
+
+```javascript
+const torusPlugin = new TorusWalletConnectorPlugin(options);
+```
+
+This constructor takes an objects with `torusWalletOpts` & `walletInitOptions` as input.
+
+#### Parameters
+
+`torusWalletOpts`:
+
+| Parameter        | Type                   | Description                                                                                                                                                               | Default       |
+| ---------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `buttonPosition` | `BUTTON_POSITION_TYPE` | Allows you to define the position of the Torus Wallet Modal Iframe within the application. You can choose between "top-left", "top-right", "bottom-right" & "bottom-left" | "bottom-left" |
+| `modalZIndex`    | `number`               | Helps you define the z-index value of the modal and iframe                                                                                                                | 99999         |
+
+`walletInitOptions`:
+
+| Parameter          | Type               | Required | Description                                                                                                                                                                            | Default |
+| ------------------ | ------------------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `whiteLabel`       | `WhiteLabelParams` | Yes      | Params to enable whitelabelling of torus website and widget. Know more about whitelabeling options for Torus Wallet [here](https://docs.tor.us/wallet/api-reference/class#whitelabel). | N/A     |
+| `showTorusButton`  | `boolean`          | No       | Determines whether to show/hide torus widget.                                                                                                                                          | `true`  |
+| `useWalletConnect` | `boolean`          | No       | Setting `useWalletConnect` to true allows to display wallet connect qr scanner from torus-embed.                                                                                       | `false` |
+
+For additional information on the init options for Torus Wallet, please check the
+[Torus Wallet documentation](https://docs.tor.us/wallet/api-reference/class#init)
+
+#### Returns
+
+### Add the `torusPlugin` class to your Web3Auth instance
+
+After initialising the `torusPlugin`, use the `addPlugin()` function to your Web3Auth instance, you can use the Torus Wallet UI Plugin for your dApp.
+
+```
+await web3AuthInstance.addPlugin(torusPlugin);
+```
+
+#### Example
+
+```javascript
+const web3AuthInstance = new Web3Auth({
+  chainConfig: currentChainConfig,
+  clientId, // get your client id from https://dashboard.web3auth.io,
+});
+const torusPlugin = new TorusWalletConnectorPlugin({
+  torusWalletOpts: {},
+  walletInitOptions: {
+    whiteLabel: {
+      theme: { isDark: true, colors: { primary: "#00a8ff" } },
+      logoDark: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+      logoLight: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+    },
+    useWalletConnect: true,
+    enableLogging: true,
+  },
+});
+await web3AuthInstance.addPlugin(torusPlugin);
+```
+
+## Using the Torus EVM Wallet Provider
+
+As soon as you add the `torusPlugin` class to your Web3Auth instance, you have access to the Torus Wallet Provider. You can use this provider to
+access the Torus Wallet UI within your dApp and make RPC calls through that. To use the provider, use the following command:
+
+```
+setWalletProvider((torusPlugin?.proxyProvider as SafeEventEmitterProvider) || web3auth?.provider);
+```
+
+#### Know more about how to use the [Torus EVM Wallet Provider](https://docs.tor.us/wallet/api-reference/ethereum-api#provider)

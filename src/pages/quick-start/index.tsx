@@ -6,7 +6,7 @@ import copyToClipboard from "copy-to-clipboard";
 import { ChangeEvent, UIEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { AiOutlineCheck, AiOutlineLink } from "react-icons/ai";
 
-import builder from "../../lib/integration-builder";
+import builder from "./integration-builder";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
 import styles from "./styles.module.css";
 
@@ -89,6 +89,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     const { pointer } = steps[index];
     if (pointer) setSelectedFilename(pointer.filename);
     setStepIndex(index);
+    window.location.hash = `#step-${index}`;
   };
 
   const onScrollLeft = (e: UIEvent<HTMLDivElement>) => {
@@ -179,6 +180,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                   onKeyDown={onChangeStep.bind(this, index)}
                   role="tab"
                   tabIndex={index}
+                  id={`step-${index}`}
                 >
                   <p className={styles.stepHeader}>{step.title}</p>
                   <div className={styles.stepBody}>{step.content}</div>

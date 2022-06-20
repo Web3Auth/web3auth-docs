@@ -36,8 +36,9 @@ module.exports = {
       type: "category",
       label: "Using Custom Authentication",
       link: { type: "doc", id: "customauth/customauth" },
-      items: ["customauth/verifiers"],
+      items: ["customauth/verifiers", "customauth/auth0"],
     },
+    "interoperability",
     "whitelabeling",
     {
       type: "category",
@@ -53,6 +54,18 @@ module.exports = {
             "api-reference/web/customloginui",
             {
               type: "category",
+              label: "Providers",
+              link: { type: "doc", id: "api-reference/web/providers/providers" },
+              items: ["api-reference/web/providers/evm", "api-reference/web/providers/solana"],
+            },
+            {
+              type: "category",
+              label: "Plugins",
+              link: { type: "doc", id: "api-reference/web/plugins/plugins" },
+              items: ["api-reference/web/plugins/torusevmwalletplugin", "api-reference/web/plugins/torussolanawalletplugin"],
+            },
+            {
+              type: "category",
               label: "Adapters",
               link: { type: "doc", id: "api-reference/web/adapters/adapters" },
               items: [
@@ -63,12 +76,6 @@ module.exports = {
                 "api-reference/web/adapters/phantom",
                 "api-reference/web/adapters/wallet-connect-v1",
               ],
-            },
-            {
-              type: "category",
-              label: "Providers",
-              link: { type: "doc", id: "api-reference/web/providers/providers" },
-              items: ["api-reference/web/providers/evm", "api-reference/web/providers/solana"],
             },
             ,
             "api-reference/web/customauth",
@@ -87,10 +94,11 @@ module.exports = {
         },
         {
           "React Native": [
-            "api-reference/react-native/choosesdk",
+            "api-reference/react-native/choose-workflows",
             "api-reference/react-native/setting-up",
             "api-reference/react-native/usage",
             "api-reference/react-native/whitelabel",
+            "api-reference/react-native/customauth",
           ],
         },
         {
@@ -105,10 +113,17 @@ module.exports = {
       items: ["authenticating-torus-users/authjs", "authenticating-torus-users/torus-users", "authenticating-torus-users/non-torus-users"],
     },
     "examples",
+      label: "Examples",
+      link: { type: "doc", id: "examples/examples" },
+      items: ["examples/demo", "examples/productionexamples"],
+    },
     {
       type: "category",
       label: "Contribute",
       items: ["contribute/open-source", "contribute/bug-bounty"],
+    },
+    {
+      Troubleshooting: ["troubleshooting/webpack-issues"],
     },
     {
       Legal: ["legal/cookie-policy", "legal/privacy-policy", "legal/terms-and-conditions"],

@@ -1,9 +1,5 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import Lottie from "react-lottie";
-import animationData from "../../../static/lottie/modalanim.json";
-
-const defaultOptions = { loop: true, autoplay: true, animationData: animationData, rendererSettings: { preserveAspectRatio: "xMidYMid slice" } };
+import { Player } from "@lottiefiles/react-lottie-player";
+import { useEffect, useState } from "react";
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -31,18 +27,23 @@ export function useWindowDimensions() {
 }
 
 export default function ModalAnim() {
-  var { width } = useWindowDimensions();
+  const { width } = useWindowDimensions();
+  let style = {};
 
   if (width > 500) {
-    width = 400;
+    style = {
+      width: 400,
+    };
   }
   if (width < 500) {
-    width = width - 50;
+    style = {
+      width: width - 50,
+    };
   }
 
   return (
     <div>
-      <Lottie options={defaultOptions} height={width} width={width} />
+      <Player loop autoplay controls={false} src="/lottie/modalanim.json" style={style} />
     </div>
   );
 }

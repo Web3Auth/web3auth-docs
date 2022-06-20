@@ -23,18 +23,19 @@ const getDisplayName = (filename: string): string => {
 const getLanguage = (filename: string): string => {
   const ext = path.extname(filename).substr(1);
 
-  if (["jsx", "java", "swift", "ts", "tsx", "html", "css", "xml"].includes(ext)) return `language-${ext}`;
-  if (ext === "js" || ext === "vue") return "language-jsx";
+  if (["jsx", "java", "swift", "ts", "tsx", "html", "css", "xml", "dart", "json"].includes(ext)) return `language-${ext}`;
+  if (ext === "js") return "language-jsx";
+  if (ext === "vue") return "language-ts";
   if (ext === "gradle") return "language-groovy";
   if (ext === "kt") return "language-kotlin";
   if (ext === "plist") return "language-xml";
+  if (ext === "") return "language-shell";
   return undefined;
 };
 
 export default function IntegrationBuilderCodeView({ selectedFilename, filenames, fileContents, highlight, onClickFilename }: Props) {
   const highlightLines = rangeParser(highlight || "0");
   const props = useSpring({ scroll: Math.max(highlightLines[0] * 22 - 64, 0) }); // 22 is line height, 64 is offset to scroll the line close to top
-
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -50,7 +51,7 @@ export default function IntegrationBuilderCodeView({ selectedFilename, filenames
               onKeyDown={onClickFilename.bind(this, filename)}
             >
               <FiFile />
-              <span>{getDisplayName(filename)}</span>
+              <span>{getDisplayName(filename.replace("-", "-\u2060"))}</span>
             </li>
           ))}
         </ul>

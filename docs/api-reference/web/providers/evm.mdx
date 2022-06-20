@@ -1,5 +1,5 @@
 ---
-title: EIP1193 Providers
+title: EIP1193 Provider
 hide_table_of_contents: false
 ---
 
@@ -350,6 +350,23 @@ const signedMessage = await web3.currentProvider.sendAsync({
 });
 ```
 
-### Other Default Solana Chain RPC Methods:
+### Fetch Connected User's Private Key
+
+#### `eth_private_key`
+
+This method is used to fetch the private key of logged in user. It is only available for `in-app` adapters like `openlogin`.
+
+```ts
+
+//Assuming user is already logged in.
+async getPrivateKey() {
+    const privateKey = await web3auth.provider.request({
+        method: "eth_private_key"
+    });
+    //Do something with privateKey
+}
+```
+
+### Other Default Ethereum/Polygon/Binance and other evm compatible chains RPC Methods:
 
 - You can refer to other read only calls available for this provider [here](https://eth.wiki/json-rpc/API#json-rpc-methods)

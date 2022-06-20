@@ -29,7 +29,7 @@ module.exports = {
       respectPrefersColorScheme: true, // Set to "true" when Dark mode is ready
     },
     prism: {
-      additionalLanguages: ["groovy", "java", "kotlin", "swift"],
+      additionalLanguages: ["groovy", "java", "kotlin", "swift", "dart"],
       theme: require("prism-react-renderer/themes/dracula"),
     },
     navbar: {
@@ -76,6 +76,7 @@ module.exports = {
       appId: "6OF28D8CMV",
       apiKey: "425a1e860cb4b9b4ce1f7d9b117c7a81",
       indexName: "docs-web3auth",
+      schedule: 'every 1 day at 3:00 pm',
     },
   },
   presets: [
@@ -99,7 +100,6 @@ module.exports = {
     ],
   ],
   plugins: [
-    path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
     [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: "files" }],
     path.resolve(__dirname, "plugins", "node-polyfills"),
   ],

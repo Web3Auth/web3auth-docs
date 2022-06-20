@@ -44,21 +44,6 @@ export default function UsecaseCards() {
       {/* SECOND ROW */}
       <div className={styles.container}>
         <div className={classNames(styles.card)}>
-          <h3 className={styles.title}>World Wrestling Entertainment (WWE)</h3>
-          <h4 className={styles.headline}>Web3Auth as the NFT Platform Onboarding</h4>
-          <p>
-            For a smooth onboarding experience of mainstream users, WWE is using Web3Auth's Plug and Play Modal, white labelled for their platform.
-            This is an awesome example of how Web3Auth's quick integration can be added to platforms that work on scale, and have the same experience
-            throughout the onboarding process.
-          </p>
-          <div>
-            <a className={styles.footer} target="_blank" href="https://www.wwemoonsault.com/" rel="noreferrer">
-              Buy your favourite Wrestling NFT
-            </a>
-          </div>
-        </div>
-
-        <div className={classNames(styles.card)}>
           <h3 className={styles.title}>100 Thieves</h3>
           <h4 className={styles.headline}>Web3Auth's Modal for NFT Airdrops</h4>
           <p>
@@ -71,10 +56,6 @@ export default function UsecaseCards() {
             </a>
           </div>
         </div>
-      </div>
-
-      {/* THRID ROW */}
-      <div className={styles.container}>
         <div className={classNames(styles.card)}>
           <h3 className={styles.title}>Kepler</h3>
           <h4 className={styles.headline}>Web3Auth as the entry point for inter-chain transactions</h4>
@@ -89,7 +70,10 @@ export default function UsecaseCards() {
             </a>
           </div>
         </div>
+      </div>
 
+      {/* THRID ROW */}
+      <div className={styles.container}>
         <div className={classNames(styles.card)}>
           <h3 className={styles.title}>Kash</h3>
           <h4 className={styles.headline}>Using Web3Auth on a multi chain DeFi platform</h4>

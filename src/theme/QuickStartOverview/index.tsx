@@ -1,12 +1,9 @@
-import { useState, useEffect } from "react";
 import Link from "@docusaurus/Link";
+import { Player } from "@lottiefiles/react-lottie-player";
 import classNames from "classnames";
+import { useEffect, useState } from "react";
 
 import styles from "./styles.module.css";
-import Lottie from "react-lottie";
-import * as animationData from "/lottie/Hero.json";
-
-const defaultOptions = { loop: true, autoplay: true, animationData: animationData, rendererSettings: { preserveAspectRatio: "xMidYMid slice" } };
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -34,14 +31,19 @@ export function useWindowDimensions() {
 }
 
 export default function Web3AuthOverview() {
-  var { height, width } = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
+  let style = {};
 
   if (width < 700) {
-    var animWidth = (4 * width) / 6;
-    var animHeight = (4 * width) / 7;
+    style = {
+      height: (4 * width) / 7,
+      width: (4 * width) / 6,
+    };
   } else {
-    var animWidth = (width + height) / 6;
-    var animHeight = (width + height) / 7;
+    style = {
+      height: (width + height) / 7,
+      width: (width + height) / 6,
+    };
   }
 
   return (
@@ -68,7 +70,7 @@ export default function Web3AuthOverview() {
         </div>
       </div>
       <div className={styles.lottieContainer}>
-        <Lottie options={defaultOptions} height={animHeight} width={animWidth} />
+        <Player loop autoplay controls={false} src="/lottie/Hero.json" style={style} />
       </div>
     </div>
   );
