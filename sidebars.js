@@ -108,6 +108,12 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Authenticating Users",
+      link: { type: "doc", id: "authenticating-users/overview" },
+      items: ["authenticating-users/overview", "authenticating-users/social-login-users", "authenticating-users/external-wallets"],
+    },
+    {
+      type: "category",
       label: "Examples",
       link: { type: "doc", id: "examples/examples" },
       items: ["examples/demo", "examples/productionexamples"],

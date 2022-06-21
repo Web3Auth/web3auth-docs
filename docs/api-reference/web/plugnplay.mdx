@@ -408,6 +408,9 @@ await web3auth.getUserInfo();
 - **`verifier`**: `"torus", "metamask", "trust", "openlogin"` - verifier details
 - **`verifierId`**: `string` - verifier id
 - **`typeOfLogin`**: `"google", "facebook", "twitter", "github", "linkedin"` - type of login
+- **`dappShare`**: `string` - If you are using a Custom Verifier, you can get a dapp share after successful login. (dappShare is a 24 word seed
+  phrase). This share can act as a replacement to your user's device share.
+- **`idToken`**: `string` - JWT token (Note: This is issued by Web3Auth and is not bound to your OAuth provider)
 
 ### Logging out the User
 
@@ -428,3 +431,44 @@ await web3auth.logout();
 ---
 
 <BasicExample />
+
+## Authenticating Users
+
+---
+
+As a dApp you might want to authenticate a Web3Auth user in your backend.
+
+Web3Auth returns a [idToken](/api-reference/web/plugnplay#web3authgetuserinfo) in the [userInfo](/api-reference/web/plugnplay#web3authgetuserinfo)
+which you can use to authenticate the user in the backend.
+
+By default Web3Auth returns a `idToken` which contains the `public_key` in `secp256k1` form.
+
+If you want to encode the public_key in `ed25519` format then you have to pass the `curve` parameter in OpenloginAdapter.
+
+Eg :-
+
+```javascript
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    network: "testnet",
+    clientId: config.clientId,
+    uxMode: "redirect",
+  },
+  loginSettings: {
+    relogin: true,
+    curve: "ed25519", // allowed values "secp256k1" (default) or "ed25519"
+  },
+});
+```
+
+:::info
+
+[Know more about idToken](/authenticating-users/social-login-users#sample-idtoken-payload)
+
+:::
+
+:::info
+
+[Verifying the JWT Token obtained in userInfo](/authenticating-users/social-login-users#sample-idtoken-payload)
+
+:::
