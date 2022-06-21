@@ -108,14 +108,9 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Authenticating Torus Users",
-      link: { type: "doc", id: "authenticating-torus-users/authjs" },
-      items: [
-        "authenticating-torus-users/authjs",
-        "authenticating-torus-users/torus-users",
-        "authenticating-torus-users/non-torus-users",
-        "authenticating-torus-users/verifying-jwt",
-      ],
+      label: "Authenticating Users",
+      link: { type: "doc", id: "authenticating-users/overview" },
+      items: ["authenticating-users/overview", "authenticating-users/social-login-users", "authenticating-users/external-wallets"],
     },
     {
       type: "category",
