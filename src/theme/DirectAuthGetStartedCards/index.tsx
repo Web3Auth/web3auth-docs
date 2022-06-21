@@ -1,4 +1,5 @@
 import Link from "@docusaurus/Link";
+import Image1 from "@site/static/images/customauth-full-logo.svg";
 import classNames from "classnames";
 import { SiApple, SiJavascript } from "react-icons/si";
 
@@ -14,7 +15,7 @@ export default function TorusWalletGetStartedCards() {
         </p>
         <p className={styles.poweredBy}>
           <span>Powered by</span>
-          <img src="/images/customauth-full-logo.svg" alt="CustomAuth" />
+          <img src={Image1} alt="CustomAuth" />
         </p>
       </Link>
       <Link className={classNames(styles.card, styles.cardTwo)} to="/quick-start/?b=customauth&lang=iOS">
@@ -24,7 +25,7 @@ export default function TorusWalletGetStartedCards() {
         </p>
         <p className={styles.poweredBy}>
           <span>Powered by</span>
-          <img src="/images/customauth-full-logo.svg" alt="CustomAuth" />
+          <img src={Image1} alt="CustomAuth" />
         </p>
       </Link>
     </div>

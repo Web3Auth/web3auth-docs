@@ -1,3 +1,4 @@
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useEffect, useState } from "react";
 
@@ -43,7 +44,7 @@ export default function ModalAnim() {
 
   return (
     <div>
-      <Player loop autoplay controls={false} src="/lottie/modalanim.json" style={style} />
+      <Player loop autoplay controls={false} src={useBaseUrl("/lottie/modalanim.json")} style={style} />
     </div>
   );
 }

@@ -43,13 +43,11 @@ module.exports = {
       items: [
         {
           label: "Quick Start",
-          activeBasePath: "/quick-start",
           to: "/quick-start",
           position: "left",
         },
         {
           label: "API Reference",
-          activeBasePath: "/api-reference",
           to: "/api-reference",
           position: "left",
         },

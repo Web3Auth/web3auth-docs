@@ -1,4 +1,5 @@
 import Link from "@docusaurus/Link";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import { Player } from "@lottiefiles/react-lottie-player";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
@@ -70,7 +71,7 @@ export default function Web3AuthOverview() {
         </div>
       </div>
       <div className={styles.lottieContainer}>
-        <Player loop autoplay controls={false} src="/lottie/Hero.json" style={style} />
+        <Player loop autoplay controls={false} src={useBaseUrl("/lottie/Hero.json")} style={style} />
       </div>
     </div>
   );

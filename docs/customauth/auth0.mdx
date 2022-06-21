@@ -7,6 +7,9 @@ hide_table_of_contents: false
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import Image1 from "@site/static/contents/auth0/auth0-w3adashboard-01.png";
+import Image2 from "@site/static/contents/auth0/auth0-w3adashboard-02.png";
+import Image3 from "@site/static/contents/auth0/auth0-w3adashboard-03.png";
 
 This guide will cover the basics of how to set up your Web3Auth SDK and Auth0 account for the integration and provide you with the links on how to
 develop a basic web application on the blockchain of your choice. Before starting, you can try the integration in our example
@@ -61,7 +64,7 @@ For Auth0 RWA, we need an additional backend server to communicate with Auth0. T
 
 - Create a Project from the **Plug and Play** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).
 
-  <img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src="/contents/auth0/auth0-w3adashboard-01.png" />
+  <img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={Image1} />
 
   - Enter your desired Project name
   - Select the blockchain(s) you'll be building this project on. For interoperability with Torus Wallet, you've an option of allowing the user's
@@ -69,7 +72,7 @@ For Auth0 RWA, we need an additional backend server to communicate with Auth0. T
 
   - Finally, once you create the project, you've the option to whitelist your URLs for the project. Please whitelist the domains where your project
     will be hosted.
-    <img style={{ display: "block", maxHeight: "400px", margin: "20px auto" }} src="/contents/auth0/auth0-w3adashboard-02.png" />
+    <img style={{ display: "block", maxHeight: "400px", margin: "20px auto" }} src={Image2} />
 
 - Create a Verifier from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
   configuration:
@@ -78,7 +81,7 @@ For Auth0 RWA, we need an additional backend server to communicate with Auth0. T
   - Select verifier type as Auth0
   - Choose your Authentication Type as the Auth Provider you've selected.
   - Paste the `clientId` and `domain` from the Auth0 SPA you create in the above steps. This will be used to validate the JWT token issued by Auth0.
-    <img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} src="/contents/auth0/auth0-w3adashboard-03.png" />
+    <img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} src={Image3} />
 
 - You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
 
@@ -231,7 +234,6 @@ Once initialized, you can use the `connectTo()` function to authenticate the use
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-  relogin: true,
   loginProvider: "jwt",
   extraLoginOptions: {
     domain: "https://YOUR-AUTH0-DOMAIN", // Please append "https://" before your domain
@@ -335,7 +337,6 @@ app.get('/callback', (req, res) => {
 
 ```js
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-  relogin: true,
   loginProvider: "jwt",
   extraLoginOptions: {
     id_token: "YOUR_ID_TOKEN_FETCHED_FROM_BACKEND_SERVER",
@@ -420,7 +421,6 @@ function App() {
       return;
     }
     const web3AuthProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-      relogin: true,
       loginProvider: "jwt",
       extraLoginOptions: {
         domain: "https://yash-test-web3auth.us.auth0.com",

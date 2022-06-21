@@ -34,7 +34,7 @@ module.exports = (context, options) => ({
     const { createData, addRoute } = actions;
     const guides = await createData("guides.json", JSON.stringify(content));
     addRoute({
-      path: "/guides",
+      path: "/docs/guides",
       exact: true,
       component: "@site/src/pages/guides",
       modules: { guides },
