@@ -18,13 +18,31 @@ id: verifying-jwt
 {
   "keys": [
     {
-      "alg": "EC",
+      "kty": "EC",
       "crv": "P-256",
-      "x": "MKBCTNIcKUSDii11ySs3526iDZ8AiTo7Tu6KPAqv7D4",
-      "y": "4Etl6SRW2YiLUrN5vfvVHuhp7x8PxltmWWlbbM4IFyM",
+      "x": "JQBpb4rBEDZWaRN_2nekaSMlesVTFwuiQ7DN2BV0fxo",
+      "y": "6Gdq4uOjlDa4hAftMRx22fTnP-jLv5tfsFZqKoWCHsk",
+      "kid": "G6-iP7C_4NdppFwiEuckNCU_etFIVBBxxt4UH9cB9G0",
       "use": "sig",
-      "kid": "1"
+      "alg": "ES256"
     }
   ]
+}
+```
+
+### Verifying the JWT using the JWK
+
+```javascript
+const jwks = jose.createRemoteJWKSet(new URL("https://auth-js-backend.tor.us/jwks"));
+const jwtDecoded = await jose.jwtVerify(jwtToken, jwks, { algorithms: ["ES256"] });
+
+// Incase of Torus Users
+if ((jwtDecoded.payload as any).wallets[0].publicKey === oauth_pub_key) {
+  // Verified
+}
+
+// Incase of Non-Torus Users
+if ((jwtDecoded.payload as any).wallets[0].ethereum === ethereum_address) {
+  // Verified
 }
 ```
