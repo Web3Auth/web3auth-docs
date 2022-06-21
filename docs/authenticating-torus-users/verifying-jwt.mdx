@@ -33,6 +33,8 @@ id: verifying-jwt
 ### Verifying the JWT using the JWK
 
 ```javascript
+import * as jose from "jose"
+
 const jwks = jose.createRemoteJWKSet(new URL("https://auth-js-backend.tor.us/jwks"));
 const jwtDecoded = await jose.jwtVerify(jwtToken, jwks, { algorithms: ["ES256"] });
 
