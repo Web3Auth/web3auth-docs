@@ -1,4 +1,13 @@
 import Link from "@docusaurus/Link";
+import Image7 from "@site/static/contents/stack-customauth-2.png";
+import Image9 from "@site/static/contents/stack-network-2.png";
+import Image3 from "@site/static/contents/stack-openlogin-2.png";
+import Image1 from "@site/static/contents/stack-overview-2.png";
+import Image5 from "@site/static/contents/stack-wallet-2.png";
+import Image6 from "@site/static/images/customauth-full-logo.svg";
+import Image8 from "@site/static/images/network-full-logo.svg";
+import Image2 from "@site/static/images/openlogin-full-logo-1.svg";
+import Image4 from "@site/static/images/wallet-full-logo.svg";
 import classNames from "classnames";
 import { useState } from "react";
 
@@ -21,7 +30,7 @@ export default function ProductSuiteStack() {
               </p>
             </div>
           </div>
-          <img src="/contents/stack-overview-2.png" alt="Overview" height={360} />
+          <img src={Image1} alt="Overview" height={360} />
         </section>
       );
       break;
@@ -31,7 +40,7 @@ export default function ProductSuiteStack() {
           <div>
             <h1 className="sr-only">Torus OpenLogin</h1>
             <img
-              src="/images/openlogin-full-logo-1.svg"
+              src={Image2}
               alt="Torus OpenLogin"
               style={{
                 marginTop: "16px",
@@ -52,7 +61,7 @@ export default function ProductSuiteStack() {
               </Link>
             </div>
           </div>
-          <img src="/contents/stack-openlogin-2.png" alt="Torus OpenLogin" height={360} />
+          <img src={Image3} alt="Torus OpenLogin" height={360} />
         </section>
       );
       break;
@@ -61,7 +70,7 @@ export default function ProductSuiteStack() {
         <section key="wallet" className={classNames(styles.contentContainer, "anim-fade-in")}>
           <div>
             <h1 className="sr-only">Torus Wallet</h1>
-            <img src="/images/wallet-full-logo.svg" alt="Torus Wallet" height="60px" />
+            <img src={Image4} alt="Torus Wallet" height="60px" />
             <div className={styles.content}>
               <p>
                 Wallet uses the same OpenLogin flows and additionally provides a direct connection to Ethereum and other blockchains via a metamask
@@ -78,7 +87,7 @@ export default function ProductSuiteStack() {
               </Link>
             </div>
           </div>
-          <img src="/contents/stack-wallet-2.png" alt="Torus Wallet" height={360} />
+          <img src={Image5} alt="Torus Wallet" height={360} />
         </section>
       );
       break;
@@ -87,7 +96,7 @@ export default function ProductSuiteStack() {
         <section key="custom-auth" className={classNames(styles.contentContainer, "anim-fade-in")}>
           <div>
             <h1 className="sr-only">Torus CustomAuth</h1>
-            <img src="/images/customauth-full-logo.svg" alt="Torus CustomAuth" height="60px" />
+            <img src={Image6} alt="Torus CustomAuth" height="60px" />
             <div className={styles.content}>
               <p>Do everything you can do with OpenLogin and Wallet in a fully customizable way.</p>
               <ul>
@@ -101,7 +110,7 @@ export default function ProductSuiteStack() {
               </Link>
             </div>
           </div>
-          <img src="/contents/stack-customauth-2.png" alt="Torus CustomAuth" height={360} />
+          <img src={Image7} alt="Torus CustomAuth" height={360} />
         </section>
       );
       break;
@@ -110,7 +119,7 @@ export default function ProductSuiteStack() {
         <section key="network" className={classNames(styles.contentContainer, "anim-fade-in")}>
           <div>
             <h1 className="sr-only">Torus Infrastructure</h1>
-            <img src="/images/network-full-logo.svg" alt="Torus Network" className={styles.networkLogo} />
+            <img src={Image8} alt="Torus Network" className={styles.networkLogo} />
             <div className={styles.content}>
               <p>
                 Torus Key Infrastructure is a decentralized non-custodial PKI infrastructure that is maintained by users themselves and large
@@ -128,7 +137,7 @@ export default function ProductSuiteStack() {
               </Link>
             </div>
           </div>
-          <img src="/contents/stack-network-2.png" alt="Torus Network" height={360} />
+          <img src={Image9} alt="Torus Network" height={360} />
         </section>
       );
       break;

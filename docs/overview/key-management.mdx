@@ -3,6 +3,9 @@ title: Key Management and Security
 hide_table_of_contents: true
 ---
 
+import Image1 from "@site/static/contents/tki-overview-architecture.png";
+import Image2 from "@site/static/images/torus-network.png";
+
 ---
 
 In this documentation we further describe the architecture of Web3Auth and detail several core user flows for onboarding, key recovery, and device
@@ -14,7 +17,7 @@ With Web3Auth, users handle keys similar to a multi-factor account, where they u
 pairs. In this example the user starts by generating a 2 out of 3 (2/3) Shamir Secret Sharing. This gives the user three shares: ShareA, ShareB, and
 ShareC.
 
-<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src="/contents/tki-overview-architecture.png" />
+<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={Image1} />
 
 1. **ShareA is stored on the user's device**: Implementation is device and system specific. For example, on mobile devices, the share could be stored
    in device storage secured via biometrics.
@@ -58,8 +61,9 @@ contract functionality.
 
 ### Censorship resistant
 
-Using a 2/3 threshold also prevents censorship by the Torus nodes. In the case that the nodes refuse to return the share of the user's private key even after the
-user has authenticated successfully, the user can still reconstruct their private key using ShareA (device share) and ShareC (recovery share).
+Using a 2/3 threshold also prevents censorship by the Torus nodes. In the case that the nodes refuse to return the share of the user's private key
+even after the user has authenticated successfully, the user can still reconstruct their private key using ShareA (device share) and ShareC (recovery
+share).
 
 ## Powered by the Auth Network
 
@@ -89,7 +93,7 @@ In no particular order, current node operators are:
 
 </div>
 <div>
-<img style={{ maxHeight: "500px" }} src="/images/torus-network.png" />
+<img style={{ maxHeight: "500px" }} src={Image2} />
 </div>
 </div>
 
