@@ -6,8 +6,8 @@ import copyToClipboard from "copy-to-clipboard";
 import { ChangeEvent, UIEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { AiOutlineCheck, AiOutlineLink } from "react-icons/ai";
 
-import builder from "./integration-builder";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
+import builder from "./integration-builder";
 import styles from "./styles.module.css";
 
 const getWindowLocation = () => {
