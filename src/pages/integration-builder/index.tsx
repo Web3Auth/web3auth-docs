@@ -8,7 +8,6 @@ import { AiOutlineCheck, AiOutlineLink } from "react-icons/ai";
 
 import builder from "./builder";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
-import builder from "./integration-builder";
 import styles from "./styles.module.css";
 
 const getWindowLocation = () => {

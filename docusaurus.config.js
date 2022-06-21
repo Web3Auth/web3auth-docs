@@ -43,13 +43,11 @@ module.exports = {
       items: [
         {
           label: "Integration Builder",
-          activeBasePath: "/integration-builder",
           to: "/integration-builder",
           position: "left",
         },
         {
           label: "SDK/ API Reference",
-          activeBasePath: "/api-reference",
           to: "/api-reference",
           position: "left",
         },
