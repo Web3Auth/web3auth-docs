@@ -15,8 +15,8 @@ const rehypeKatex = require("rehype-katex");
 module.exports = {
   title: "Documentation",
   tagline: "Flexible, Universal Key Management", // TODO: Confirm with content team
-  url: "https://docs.web3auth.io",
-  baseUrl: "/",
+  url: "https://web3auth.io",
+  baseUrl: "/docs/",
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   favicon: "images/favicon.ico",
@@ -76,7 +76,7 @@ module.exports = {
       appId: "6OF28D8CMV",
       apiKey: "425a1e860cb4b9b4ce1f7d9b117c7a81",
       indexName: "docs-web3auth",
-      schedule: 'every 1 day at 3:00 pm',
+      schedule: "every 1 day at 3:00 pm",
     },
   },
   presets: [
