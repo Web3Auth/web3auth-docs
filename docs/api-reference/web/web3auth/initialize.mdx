@@ -8,13 +8,15 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
 import UIConfig from "./references/_ui-config.mdx";
+import UIConfigWhitelabelExample from "./references/_ui-config-whitelabel-example.mdx";
 import Web3AuthOptions from "./references/_web3auth-options.mdx";
 import ChainConfig from "./references/_chain-config.mdx";
 import SubscribeEvents from "./references/_subscribe-events.mdx";
 import ExternalWalletAdapters from "./references/_external-wallet-adapters.mdx";
 import OpenloginAdapter from "./references/_openlogin-adapter.mdx";
+import CustomAuthenticationExample from "./references/_custom-authentication-example.mdx";
 import ModalConfig from "./references/_modal-config.mdx";
-import LoginMethods from "./references/_openlogin-adapter.mdx";
+import InitModalConfigExample from "./references/_init-modal-config-example.mdx";
 
 ---
 
@@ -88,21 +90,7 @@ with Web3Auth Plug and Play SDK, have a look at our [Whitelabeling API Reference
 
 <TabItem value="whitelabel">
 
-```javascript
-const web3auth = new Web3Auth({
-  clientId,
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth", // This is the mainnet RPC we have added, please pass on your own endpoint while creating an app
-  },
-  uiConfig: {
-    theme: "dark",
-    loginMethodsOrder: ["facebook", "google"],
-    appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
-  },
-});
-```
+<UIConfigWhitelabelExample />
 
 </TabItem>
 
@@ -144,6 +132,31 @@ required to be configured always based on the `authMode` you are using.
 ### Configuring Openlogin Adapter
 
 <OpenloginAdapter />
+
+#### Custom Authentication
+
+##### `loginConfig`
+
+With the Web3Auth Plug and Play SDK, you have the option to configure logins using your own authentication services corresponding to the different
+login options available in the modal. For adding your own authentication, you have to first configure your verifiers in the Web3Auth Dashboard. Have a
+look at our [Custom Authentication Documentation](/docs/custom-authentication/) for configuring that first.
+
+Custom Authentication in Web3Auth is supported by the Openlogin Adapter, which is the default adapter for the Web3Auth SDK. For this, you need to
+configure the `loginConfig` parameter in the `openlogin-adapter` package.
+
+:::tip
+
+Refer to the [Custom Authentication Documentation](./custom-authentication) for more information.
+
+:::
+
+##### Example
+
+Since we're using the `@web3auth/web3auth`, ie. the Plug and Play SDK, the `loginConfig` should be corresponding to the socials mentioned in the
+modal. Here, we're customising Google and Facebook to be custom verified, rest all other socials will be default. You can customise other social
+logins or remove them using the whitelabeling option.
+
+<CustomAuthenticationExample />
 
 ### Configuring External Wallet Adapters
 
@@ -194,27 +207,7 @@ config has following configurations:
 
 <TabItem value="with-config">
 
-```javascript
-await web3auth.initModal({
-  modalConfig: {
-    [WALLET_ADAPTERS.OPENLOGIN]: {
-      label: "openlogin",
-      loginMethods: {
-        google: {
-          name: "google login",
-          logoDark: "url to your custom logo which will shown in dark mode",
-        },
-        facebook: {
-          // it will hide the facebook option from the Web3Auth modal.
-          showOnModal: false,
-        },
-      },
-      // setting it to false will hide all social login methods from modal.
-      showOnModal: true,
-    },
-  },
-});
-```
+<InitModalConfigExample />
 
 </TabItem>
 

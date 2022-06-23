@@ -1,3 +1,5 @@
+import OpenloginWhiteLabelExample from "./_openlogin-whitelabel-example.mdx";
+
 The default adapter of Web3Auth is the [`openlogin-adapter`](../openlogin). This adapter is a wrapper around the [`openlogin`](../openlogin) library
 from Web3Auth and enables the social login features. For customising features of the main Web3Auth flow, like [Whitelabel](./whitelabel),
 [Custom Authentication](./custom-authentication), etc. you need to customise the Openlogin Adapter.
@@ -7,58 +9,6 @@ from Web3Auth and enables the social login features. For customising features of
 Checkout the [`openlogin-adapter`](../openlogin) API Reference for more details on different configurations you can pass for customisations.
 
 :::
-
-#### Custom Authentication
-
-##### `loginConfig`
-
-With the Web3Auth Plug and Play SDK, you have the option to configure logins using your own authentication services corresponding to the different
-login options available in the modal. For adding your own authentication, you have to first configure your verifiers in the Web3Auth Dashboard. Have a
-look at our [Custom Authentication Documentation](/docs/custom-authentication/) for configuring that first.
-
-Custom Authentication in Web3Auth is supported by the Openlogin Adapter, which is the default adapter for the Web3Auth SDK. For this, you need to
-configure the `loginConfig` parameter in the `openlogin-adapter` package.
-
-:::tip
-
-Refer to the [Custom Authentication Documentation](./custom-authentication) for more information.
-
-:::
-
-##### Example
-
-Since we're using the `@web3auth/web3auth`, ie. the Plug and Play SDK, the `loginConfig` should be corresponding to the socials mentioned in the
-modal. Here, we're customising Google and Facebook to be custom verified, rest all other socials will be default. You can customise other social
-logins or remove them using the whitelabeling option.
-
-```javascript
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    clientId, // Web3Auth Client ID
-    network: "testnet",
-    uxMode: "redirect",
-    loginConfig: {
-      // Add login configs corresponding to the providers on modal
-      // Google login
-      google: {
-        name: "Custom Auth Login",
-        verifier: "YOUR_GOOGLE_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
-        typeOfLogin: "google", // Pass on the login provider of the verifier you've created
-        clientId: "GOOGLE_CLIENT_ID.apps.googleusercontent.com", // Pass on the clientId of the login provider here - Please note this differs from the Web3Auth ClientID. This is the JWT Client ID
-      },
-      // Facebook login
-      facebook: {
-        name: "Custom Auth Login",
-        verifier: "YOUR_FACEBOOK_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
-        typeOfLogin: "facebook", // Pass on the login provider of the verifier you've created
-        clientId: "FACEBOOK_CLIENT_ID_1234567890", // Pass on the clientId of the login provider here - Please note this differs from the Web3Auth ClientID. This is the JWT Client ID
-      },
-      // Add other login providers here
-    },
-  },
-});
-web3auth.configureAdapter(openloginAdapter);
-```
 
 #### Whitelabeling
 
@@ -76,20 +26,4 @@ with Web3Auth Plug and Play SDK, have a look at our [Whitelabeling API Reference
 
 ##### Example
 
-```javascript
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    clientId, // Web3Auth Client ID
-    network: "testnet",
-    uxMode: "redirect",
-    whiteLabel: {
-      name: "Your app Name",
-      logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-      logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
-      defaultLanguage: "en",
-      dark: true, // whether to enable dark mode. defaultValue: false
-    },
-  },
-});
-web3auth.configureAdapter(openloginAdapter);
-```
+<OpenloginWhiteLabelExample />
