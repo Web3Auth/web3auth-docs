@@ -213,8 +213,8 @@ module.exports = {
             label: "Plugins",
             link: { type: "doc", id: "api-reference/web/plugins/plugins" },
             items: [
-              "api-reference/web/plugins/torusevmwalletplugin",
-              "api-reference/web/plugins/torussolanawalletplugin"
+              "api-reference/web/plugins/torus-wallet",
+              "api-reference/web/plugins/solana-wallet"
             ],
           },
           {
