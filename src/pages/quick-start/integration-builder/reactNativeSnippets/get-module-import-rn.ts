@@ -30,10 +30,10 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import * as WebBrowser from 'react-native-web-browser';
+import * as WebBrowser from '@toruslabs/react-native-web-browser';
 import Web3Auth, {
   LOGIN_PROVIDER,
   OPENLOGIN_NETWORK,
-} from 'web3auth-react-native-sdk';
+} from '@web3auth/react-native-sdk';
     `;
 };

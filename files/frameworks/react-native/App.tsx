@@ -11,7 +11,9 @@ export default function App() {
   const login = async () => {
     try {
       // REPLACE-getConstructorCode-
+
       // REPLACE-getInitCode-
+
       setKey(state.privKey || "no key");
     } catch (e) {
       console.error(e);

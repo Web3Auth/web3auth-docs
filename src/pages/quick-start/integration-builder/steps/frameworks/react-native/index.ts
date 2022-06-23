@@ -6,16 +6,20 @@ import * as instantiate from "./instantiateSDK.mdx";
 import * as triggeringLogin from "./triggering-login.mdx";
 import * as loginWithJwt from "./login-with-jwt.mdx";
 import * as whiteLabeling from "./whitelabeling.mdx";
+import * as platformSetup from "./platform-setup.mdx";
+import * as installWebBrowser from "./installWebBrowser.mdx";
 import { PLACEHOLDERS } from "../../../commonSnippets";
 import { getConstructorCodeRN, getInitCodeRN, getModuleImportRN, getResolvedRedirectUrl } from "../../../reactNativeSnippets";
 
 const STEPS = toSteps({
   installation,
+  installWebBrowser,
   registerApp,
   instantiate,
   triggeringLogin,
   loginWithJwt,
   whiteLabeling,
+  platformSetup,
 });
 
 const reactSteps = {
@@ -60,25 +64,100 @@ const reactSteps = {
 
     filenames.push(FILENAME_APP_TSX);
 
+    const isExpo = mode === "expo";
+    const isUsingEmailPasswordless = usingEmailPasswordless === "yes";
+    const isCustomAuth = customAuthentication === "yes";
+    const isWhitelabel = whitelabel === "yes";
+
+    if (isExpo) {
+      newFiles["frameworks/react-native/package.expo.json"] = replacementAggregator.replaceFileVariable(
+        files["frameworks/react-native/package.expo.json"],
+        "frameworks/react-native/package.json",
+        "dummy",
+        "dummy"
+      );
+    } else {
+      newFiles["frameworks/react-native/package.bare.json"] = replacementAggregator.replaceFileVariable(
+        files["frameworks/react-native/package.bare.json"],
+        "frameworks/react-native/package.json",
+        "dummy",
+        "dummy"
+      );
+    }
+
+    filenames.push("frameworks/react-native/package.json");
+    if (isExpo) {
+      filenames.push("frameworks/react-native/package.expo.json");
+    } else {
+      filenames.push("frameworks/react-native/package.bare.json");
+    }
+
+    if (isExpo) {
+      filenames.push("frameworks/react-native/app.json");
+    } else {
+      filenames.push("frameworks/react-native/AndroidManifest.xml");
+    }
+
     steps.push(
-      {
-        ...STEPS.installation,
-      },
+      ...(isExpo
+        ? [
+            {
+              ...STEPS.installation,
+              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/package.expo.json", range: "23" }),
+            },
+          ]
+        : [
+            {
+              ...STEPS.installation,
+              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/package.bare.json", range: "16" }),
+            },
+          ]),
+
+      ...(isExpo
+        ? [
+            {
+              ...STEPS.installWebBrowser,
+              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/package.expo.json", range: "35" }),
+            },
+          ]
+        : [
+            {
+              ...STEPS.installWebBrowser,
+              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/package.bare.json", range: "15" }),
+            },
+          ]),
+      ...(isExpo
+        ? [
+            {
+              ...STEPS.platformSetup,
+              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/app.json", range: "8" }),
+            },
+          ]
+        : [
+            {
+              ...STEPS.platformSetup,
+              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/AndroidManifest.xml", range: "24-32" }),
+            },
+          ]),
       {
         ...STEPS.registerApp,
       },
       {
         ...STEPS.instantiate,
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/App.tsx", range: "13-14" }),
       },
       {
-        ...STEPS.triggeringLogin,
+        ...(isCustomAuth ? STEPS.loginWithJwt : STEPS.triggeringLogin),
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/App.tsx", range: "15-16" }),
       },
-      {
-        ...STEPS.loginWithJwt,
-      },
-      {
-        ...STEPS.whiteLabeling,
-      }
+      ...(isWhitelabel
+        ? [
+            {
+              ...STEPS.whiteLabeling,
+              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/App.tsx", range: "13-14" }),
+            },
+          ]
+        : [])
     );
 
     return { filenames, files, steps };
