@@ -1,0 +1,136 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+`modalConfig: { ADAPTER : { params } }`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter        | Type      | Description                                   | Default                                     | Optional |
+| ---------------- | --------- | --------------------------------------------- | ------------------------------------------- | -------- |
+| `label`          | `string`  | Label of the adapter you want to configure    | NA - _identifier for corresponding adapter_ | No       |
+| `showOnModal?`   | `boolean` | Whether to show an adapter in modal or not.   | true                                        | Yes      |
+| `showOnDesktop?` | `boolean` | Whether to show an adapter in desktop or not. | true                                        | Yes      |
+| `showOnMobile?`  | `boolean` | Whether to show an adapter in mobile or not.  | true                                        | Yes      |
+
+Additionally, to configure the Openlogin Adapter's each login method, we have the `loginMethods?` parameter.
+
+| Parameter       | Type                | Description                                                                    | Default                                     | Optional |
+| --------------- | ------------------- | ------------------------------------------------------------------------------ | ------------------------------------------- | -------- |
+| `loginMethods?` | `LoginMethodConfig` | To configure visibility of each social login method for the openlogin adapter. | Default `LoginMethod` for each social login | Yes      |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+initModal(params?: {
+    modalConfig?: Record<WALLET_ADAPTER_TYPE, ModalConfig>;
+}): Promise<void>;
+
+export interface ModalConfig extends BaseAdapterConfig {
+    loginMethods?: LoginMethodConfig;
+}
+
+export interface BaseAdapterConfig {
+    label: string;
+    showOnModal?: boolean;
+    showOnMobile?: boolean;
+    showOnDesktop?: boolean;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+`loginMethods: { label: { params } }`
+
+In `loginMethods`, you can configure the visibility of each social login method for the openlogin adapter. The social login is corresponded by the
+`label` parameter. Below is the table indicating the different `params` available for customization.
+
+For `labels` you can choose between these options: `google`, `facebook`, `twitter`, `reddit`, `discord`, `twitch`, `apple`, `line`, `github`, `kakao`,
+`linkedin`, `weibo`, `wechat`, `email_passwordless`
+
+`params`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type Declaration", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter        | Type      | Description                                                                                | Default                   | Optional |
+| ---------------- | --------- | ------------------------------------------------------------------------------------------ | ------------------------- | -------- |
+| `name`           | `string`  | Display Name                                                                               | Default for Openlogin App | Yes      |
+| `description?`   | `string`  | Description for button. If provided, it renders as a full length button. else, icon button | Just an icon rendered     | Yes      |
+| `logoHover?`     | `string`  | Logo to be shown on mouse hover                                                            | Default for Openlogin App | Yes      |
+| `logoLight?`     | `string`  | Logo to be shown on dark background (dark theme)                                           | Default for Openlogin App | Yes      |
+| `logoDark?`      | `string`  | Logo to be shown on light background (light theme)                                         | Default for Openlogin App | Yes      |
+| `mainOption?`    | `boolean` | Show login button on the main list                                                         | Default for Openlogin App | Yes      |
+| `showOnModal?`   | `string`  | Whether to show the login button on modal or not                                           | Default for Openlogin App | Yes      |
+| `showOnDesktop?` | `string`  | Whether to show the login button on desktop                                                | Default for Openlogin App | Yes      |
+| `showOnMobile?`  | `string`  | Whether to show the login button on mobile                                                 | Default for Openlogin App | Yes      |
+
+</TabItem>
+
+<TabItem value="type">
+
+```ts
+declare type LoginMethodConfig = Record<
+  string,
+  {
+    /**
+     * Display Name. If not provided, we use the default for openlogin app
+     */
+    name: string;
+    /**
+     * Description for button. If provided, it renders as a full length button. else, icon button
+     */
+    description?: string;
+    /**
+     * Logo to be shown on mouse hover. If not provided, we use the default for openlogin app
+     */
+    logoHover?: string;
+    /**
+     * Logo to be shown on dark background (dark theme). If not provided, we use the default for openlogin app
+     */
+    logoLight?: string;
+    /**
+     * Logo to be shown on light background (light theme). If not provided, we use the default for openlogin app
+     */
+    logoDark?: string;
+    /**
+     * Show login button on the main list
+     */
+    mainOption?: boolean;
+    /**
+     * Whether to show the login button on modal or not
+     */
+    showOnModal?: boolean;
+    /**
+     * Whether to show the login button on desktop
+     */
+    showOnDesktop?: boolean;
+    /**
+     * Whether to show the login button on mobile
+     */
+    showOnMobile?: boolean;
+  }
+>;
+```
+
+</TabItem>
+
+</Tabs>

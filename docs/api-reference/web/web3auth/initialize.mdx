@@ -7,6 +7,15 @@ displayed_sidebar: apiReference
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
+import UIConfig from "./references/_ui-config.mdx";
+import Web3AuthOptions from "./references/_web3auth-options.mdx";
+import ChainConfig from "./references/_chain-config.mdx";
+import SubscribeEvents from "./references/_subscribe-events.mdx";
+import ExternalWalletAdapters from "./references/_external-wallet-adapters.mdx";
+import OpenloginAdapter from "./references/_openlogin-adapter.mdx";
+import ModalConfig from "./references/_modal-config.mdx";
+import LoginMethods from "./references/_openlogin-adapter.mdx";
+
 ---
 
 After Installation, the next step to use Web3Auth is to Initialize the SDK. However, the Initialization is a three step process, ie.
@@ -40,217 +49,28 @@ This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
 
 #### `Web3AuthOptions`
 
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
-
-<TabItem value="table">
-
-| Parameter               | Type                                                                         | Description                                                                                                                                                                                                                                                                                         | Optional                   | Default                    |
-| ----------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | -------------------------- |
-| `chainConfig`           | Partial `<CustomChainConfig>` & Pick `<CustomChainConfig, "chainNamespace">` | Custom configuration for your preferred blockchain. Read more about it [here](#chainconfig).                                                                                                                                                                                                        | No                         |
-| `clientId`              | `string`                                                                     | Client ID for web3auth. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).                                                                                                                                                                             | No / Optional in localhost |
-| `authMode?`             | `enum` - (`DAPP`, `WALLET`)                                                  | Web3Auth instance provides different adapters for different type of usages. If you are a dapp and want to use external wallets like metamask, then you can use the `DAPP` authMode. If you are a wallet and only want to use you own wallet implementations, then you should use `WALLET` authMode. | Yes `                      | `DAPP`                     |
-| `uiConfig?`             | `UIConfig`                                                                   | Configuration for whitelabeling the Modal UI display properties. Read more about it [here](#uiconfig)                                                                                                                                                                                               | Yes                        | Predefined `UIConfig` used |
-| `displayErrorsOnModal?` | `boolean`                                                                    | Whether to show errors on Web3Auth modal.                                                                                                                                                                                                                                                           | Yes                        | `true`                     |
-| `enableLogging?`        | `boolean`                                                                    | Setting to true will enable logs                                                                                                                                                                                                                                                                    | Yes                        | `false`                    |
-| `storageKey?`           | `enum` - (`session`, `local`)                                                | Setting to "local" will persist social login session across browser tabs.                                                                                                                                                                                                                           | Yes                        | `local`                    |
-
-</TabItem>
-
-<TabItem value="interface">
-
-```ts
-interface Web3AuthOptions extends Web3AuthCoreOptions {
-  /**
-   * Client id for web3auth.
-   * You can obtain your client id from the web3auth developer dashboard.
-   * You can set any random string for this on localhost.
-   */
-  clientId: string;
-  /**
-   * web3auth instance provides different adapters for different type of usages. If you are dapp and want to
-   * use external wallets like metamask, then you can use the `DAPP` authMode.
-   * If you are a wallet and only want to use you own wallet implementations along with openlogin,
-   * then you should use `WALLET` authMode.
-   *
-   * @defaultValue `DAPP`
-   */
-  authMode?: "DAPP" | "WALLET";
-  /**
-   * Config for configuring modal ui display properties
-   */
-  uiConfig?: UIConfig;
-  /**
-   * Whether to show errors on Web3Auth modal.
-   *
-   * @defaultValue `true`
-   */
-  displayErrorsOnModal?: boolean;
-}
-
-interface Web3AuthCoreOptions {
-  /**
-   * custom chain configuration for chainNamespace
-   *
-   * @defaultValue mainnet config of provided chainNamespace
-   */
-  chainConfig: Partial<CustomChainConfig> & Pick<CustomChainConfig, "chainNamespace">;
-  /**
-   * setting to true will enable logs
-   *
-   * @defaultValue false
-   */
-  enableLogging?: boolean;
-  /**
-   * setting to "local" will persist social login session accross browser tabs.
-   *
-   * @defaultValue "local"
-   */
-  storageKey?: "session" | "local";
-}
-```
-
-</TabItem>
-
-</Tabs>
+<Web3AuthOptions />
 
 ### Adding a Custom Chain Configuration
 
 #### `chainConfig`
 
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Type Declarations", value: "type" },
-  ]}
->
+<ChainConfig />
 
-<TabItem value="table">
+### Whitelabeling
 
-| Parameter        | Type                                                                                                                                                                                                                       | Description                                                                                                                                                                                                                                           | Optional                                       |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| `chainNamespace` | <ul><li>**`string`** - (Choose between `eip155`, `solana` & `other`)</li> **or** <li>**`ChainNamespaceType`** - (Choose between `CHAIN_NAMESPACES.EIP155`, `CHAIN_NAMESPACES.SOLANA` & `CHAIN_NAMESPACES.OTHER`)</li></ul> | The namespace of your preferred chain. Checkout [Providers API Reference](../providers) for understanding RPC Calls.                                                                                                                                  | No                                             |
-| `chainId`        | `string`                                                                                                                                                                                                                   | The chain id of the selected blockchain in `hex`                                                                                                                                                                                                      | No                                             |
-| `rpcTarget`      | `string`                                                                                                                                                                                                                   | <ul><li>RPC Target URL for the selected `chainNamespace` & `chainId`.</li><li> We provide a default RPC Target for certain blockchains, but due to congestion it might be slow hence it is recommended to provide your own RPC Target URL.)</li></ul> | Yes, but for unknown blockchains, it is needed |
-| `displayName`    | `string`                                                                                                                                                                                                                   | Display Name for the chain                                                                                                                                                                                                                            | Yes                                            |
-| `blockExplorer`  | `string`                                                                                                                                                                                                                   | Url of the block explorer                                                                                                                                                                                                                             | Yes                                            |
-| `ticker`         | `string`                                                                                                                                                                                                                   | Default currency ticker of the network (e.g: `ETH`)                                                                                                                                                                                                   | Yes                                            |
-| `tickerName`     | `string`                                                                                                                                                                                                                   | Name for currency ticker (e.g: `Ethereum`)                                                                                                                                                                                                            | Yes                                            |
-
-</TabItem>
-
-<TabItem value="type">
-
-```ts
-declare const CHAIN_NAMESPACES: {
-  readonly EIP155: "eip155";
-  readonly SOLANA: "solana";
-  readonly OTHER: "other";
-};
-
-declare type ChainNamespaceType = typeof CHAIN_NAMESPACES[keyof typeof CHAIN_NAMESPACES];
-declare type CustomChainConfig = {
-  chainNamespace: ChainNamespaceType;
-  /**
-   * The chain id of the chain
-   */
-  chainId: string;
-  /**
-   * RPC target Url for the chain
-   */
-  rpcTarget: string;
-  /**
-   * Display Name for the chain
-   */
-  displayName: string;
-  /**
-   * Url of the block explorer
-   */
-  blockExplorer: string;
-  /**
-   * Default currency ticker of the network (e.g: ETH)
-   */
-  ticker: string;
-  /**
-   * Name for currency ticker (e.g: `Ethereum`)
-   */
-  tickerName: string;
-};
-```
-
-</TabItem>
-
-</Tabs>
-
-### Whitelabel
-
-For Whitelabeling, there are three different aspects available for you.
-
-- **Within the `uiConfig` parameter, you can configure the Web3Auth Modal according to your application's requirements.**
-- For customising the redirect screens while logging in and constructing the key, you need to pass on `whiteLabel` configurations to the
-  [`openlogin-adapter`](../openlogin).
-- Change the visibility and order of methods appearing in Web3Auth modal by passing the [`modalConfig`](#modalconfig) in [`initModal`](#initmodal)
-  function, while initializing the SDK.
-
-#### `uiConfig`
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
-
-<TabItem value="table">
-
-| Parameter            | Type                       | Description                                                                                                             | Optional | Default                                                                                                                                                     |
-| -------------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `appLogo?`           | `string`                   | A link to preferred logo.                                                                                               | Yes      | [`web3auth-logo.svg`](https://images.web3auth.io/web3auth-logo.svg)                                                                                         |
-| `theme?`             | `enum` - (`light`, `dark`) | Theme for the modal, can be set to light or dark.                                                                       | Yes      | `light`                                                                                                                                                     |
-| `loginMethodsOrder?` | `string[]`                 | The list of login methods can also be reordered with this parameter. Those methods specified will be first on the list. | Yes      | `["google", "facebook", "twitter", "reddit", "discord", "twitch", "apple", "line", "github", "kakao", "linkedin", "weibo", "wechat", "email_passwordless"]` |
-
-</TabItem>
-
-<TabItem value="interface">
-
-```ts
-interface UIConfig {
-  /**
-   * Logo for your app.
-   */
-  appLogo?: string;
-  /**
-   * theme for the modal
-   *
-   * @defaultValue `light`
-   */
-  theme?: "light" | "dark";
-  /**
-   * order of how login methods are shown
-   *
-   * @defaultValue `["google", "facebook", "twitter", "reddit", "discord", "twitch", "apple", "line", "github", "kakao", "linkedin", "weibo", "wechat", "email_passwordless"]`
-   */
-  loginMethodsOrder?: string[];
-}
-```
-
-</TabItem>
-
-</Tabs>
+Within the `uiConfig` parameter, you can configure the Web3Auth Modal according to your application's requirements.
 
 :::tip
 
-To know more in depth about how you can Whitelabel your application with Web3Auth Plug and Play SDK, have a look at our
-[Whitelabeling API Reference](./whitelabel).
+This is just one of the aspects of whitelabeling you can achieve with Web3Auth. To know more in depth about how you can Whitelabel your application
+with Web3Auth Plug and Play SDK, have a look at our [Whitelabeling API Reference](./whitelabel).
 
 :::
+
+#### `uiConfig`
+
+<UIConfig />
 
 ### Returns
 
@@ -323,282 +143,15 @@ required to be configured always based on the `authMode` you are using.
 
 ### Configuring Openlogin Adapter
 
-The default adapter of Web3Auth is the [`openlogin-adapter`](../openlogin). This adapter is a wrapper around the [`openlogin`](../openlogin) library
-from Web3Auth and enables the social login features. For customising features of the main Web3Auth flow, like [Whitelabel](./whitelabel),
-[Custom Authentication](./custom-authentication), etc. you need to customise the Openlogin Adapter.
-
-:::tip
-
-Checkout the [`openlogin-adapter`](../openlogin) API Reference for more details on different configurations you can pass for customisations.
-
-:::
-
-#### Custom Authentication
-
-##### `loginConfig`
-
-With the Web3Auth Plug and Play SDK, you have the option to configure logins using your own authentication services corresponding to the different
-login options available in the modal. For adding your own authentication, you have to first configure your verifiers in the Web3Auth Dashboard. Have a
-look at our [Custom Authentication Documentation](/docs/custom-authentication/) for configuring that first.
-
-Custom Authentication in Web3Auth is supported by the Openlogin Adapter, which is the default adapter for the Web3Auth SDK. For this, you need to
-configure the `loginConfig` parameter in the `openlogin-adapter` package.
-
-:::tip
-
-Refer to the [Custom Authentication Documentation](./custom-authentication) for more information.
-
-:::
-
-##### Example
-
-Since we're using the `@web3auth/web3auth`, ie. the Plug and Play SDK, the `loginConfig` should be corresponding to the socials mentioned in the
-modal. Here, we're customising Google and Facebook to be custom verified, rest all other socials will be default. You can customise other social
-logins or remove them using the whitelabeling option.
-
-```javascript
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    clientId, // Web3Auth Client ID
-    network: "testnet",
-    uxMode: "redirect",
-    loginConfig: {
-      // Add login configs corresponding to the providers on modal
-      // Google login
-      google: {
-        name: "Custom Auth Login",
-        verifier: "YOUR_GOOGLE_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
-        typeOfLogin: "google", // Pass on the login provider of the verifier you've created
-        clientId: "GOOGLE_CLIENT_ID.apps.googleusercontent.com", // Pass on the clientId of the login provider here - Please note this differs from the Web3Auth ClientID. This is the JWT Client ID
-      },
-      // Facebook login
-      facebook: {
-        name: "Custom Auth Login",
-        verifier: "YOUR_FACEBOOK_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
-        typeOfLogin: "facebook", // Pass on the login provider of the verifier you've created
-        clientId: "FACEBOOK_CLIENT_ID_1234567890", // Pass on the clientId of the login provider here - Please note this differs from the Web3Auth ClientID. This is the JWT Client ID
-      },
-      // Add other login providers here
-    },
-  },
-});
-web3auth.configureAdapter(openloginAdapter);
-```
-
-#### Whitelabeling
-
-##### `whiteLabel`
-
-For Whitelabeling, there are three different aspects available for you.
-
-- Within the [uiConfig parameter](#uiconfig), you can configure the Web3Auth Modal according to your application's requirements. As mentioned above in
-  [this section](#whitelabel).
-- **For customising the redirect screens while logging in and constructing the key, you need to pass on whiteLabel configurations to the
-  [`openlogin-adapter`](../openlogin).**
-- Change the visibility and order of methods appearing in Web3Auth modal by passing the [`modalConfig`](#modalconfig) in [`initModal`](#initmodal)
-  function, while initializing the SDK.
-
-:::tip
-
-To know more in depth about how you can Whitelabel your application with Web3Auth Plug and Play SDK, have a look at our
-[Whitelabeling API Reference](./whitelabel).
-
-:::
-
-##### Example
-
-```javascript
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    clientId, // Web3Auth Client ID
-    network: "testnet",
-    uxMode: "redirect",
-    whiteLabel: {
-      name: "Your app Name",
-      logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
-      logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
-      defaultLanguage: "en",
-      dark: true, // whether to enable dark mode. defaultValue: false
-    },
-  },
-});
-web3auth.configureAdapter(openloginAdapter);
-```
+<OpenloginAdapter />
 
 ### Configuring External Wallet Adapters
 
-#### `configureAdapter(ADAPTER)`
-
-To configure an adapter, create the instance of adapter by using its corresponding package and pass the returned `adapter` instance in
-`configureAdapter` function.
-
-:::tip
-
-Refer to the [Adapters documentation](../adapters) to know more deeply about what adapters are available and how to configure them.
-
-:::
-
-#### Example
-
-If you want to configure the Torus EVM Wallet Adapter
-
-- Import the `TorusWalletAdapter` from `@web3auth/torus-evm-adapter` package
-- Create an instance of the adapter along with the configuration
-- Pass the returned instance in to `web3auth.configureAdapter`
-
-```javascript
-import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
-
-const torusAdapter = new TorusWalletAdapter({
-  adapterSettings: {
-    buttonPosition: "bottom-left",
-  },
-  loginSettings: {
-    verifier: "google",
-  },
-  initParams: {
-    buildEnv: "testing",
-  },
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth", // This is the mainnet RPC we have added, please pass on your own endpoint while creating an app
-    displayName: "Ethereum Mainnet",
-    blockExplorer: "https://etherscan.io/",
-    ticker: "ETH",
-    tickerName: "Ethereum",
-  },
-});
-
-web3auth.configureAdapter(torusAdapter);
-```
+<ExternalWalletAdapters />
 
 ### Subscribing the Lifecycle Events
 
-#### `on(EVENT, CALLBACK)`
-
-Subscribing to events help you trigger responses based on the status of the connection of the user. An adapter emits certain events like `CONNECTED`,
-`CONNECTING` and `DISCONNECTED` etc during login lifecycle of a user. For example, you can use this to show an error message, if the user is not
-connected to the network. Generally, this is not a required step and should be done only if needed in particular cases.
-
-:::note
-
-If you're using the `uxMode: "redirect"` option within your [`openlogin-adapter`](../openlogin) configuration, you need to subscribe to the event to
-handle the logging in implicitly. This is because, when redirected to a different application, the app state is not updated as per the login status.
-Using a lifecycle method to check this, one can easily handle the login status within the constructor function.
-
-:::
-
-Web3Auth provides the following lifecycle event to check the login status:
-
-#### Adapter Events
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Type Declarations", value: "type" },
-  ]}
->
-
-<TabItem value="table">
-
-| Event                  | Trigger with `@web3auth/base` package | Trigger without package  | Description                                                  |
-| ---------------------- | ------------------------------------- | ------------------------ | ------------------------------------------------------------ |
-| `ADAPTER_DATA_UPDATED` | `ADAPTER_EVENTS.ADAPTER_DATA_UPDATED` | `"adapter_data_updated"` | Adapter data is updated within the dApp                      |
-| `NOT_READY`            | `ADAPTER_EVENTS.NOT_READY`            | `"not_ready"`            | Adapter is not yet ready for login                           |
-| `READY`                | `ADAPTER_EVENTS.READY`                | `"ready"`                | Adapter is ready for login                                   |
-| `CONNECTING`           | `ADAPTER_EVENTS.CONNECTING`           | `"connecting"`           | User is logged in and connected with the dApp                |
-| `CONNECTED`            | `ADAPTER_EVENTS.CONNECTED`            | `"connected"`            | User is connecting to the dApp/ login process is in progress |
-| `DISCONNECTED`         | `ADAPTER_EVENTS.DISCONNECTED`         | `"disconnected"`         | User is logged out and disconnected from the dApp            |
-| `ERRORED`              | `ADAPTER_EVENTS.ERRORED`              | `"errored"`              | There has been some error in connecting the user to the dApp |
-
-</TabItem>
-
-<TabItem value="type">
-
-```ts
-declare const ADAPTER_EVENTS: {
-  readonly ADAPTER_DATA_UPDATED: "adapter_data_updated";
-  readonly NOT_READY: "not_ready";
-  readonly READY: "ready";
-  readonly CONNECTING: "connecting";
-  readonly CONNECTED: "connected";
-  readonly DISCONNECTED: "disconnected";
-  readonly ERRORED: "errored";
-};
-```
-
-</TabItem>
-
-</Tabs>
-
-#### Login Modal Events
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
-
-<TabItem value="table">
-
-| Event                   | Trigger with `@web3auth/ui` package        | Trigger without package   | Description                                   |
-| ----------------------- | ------------------------------------------ | ------------------------- | --------------------------------------------- |
-| `INIT_EXTERNAL_WALLETS` | `LOGIN_MODAL_EVENTS.INIT_EXTERNAL_WALLETS` | `"INIT_EXTERNAL_WALLETS"` | External Wallet are initialised               |
-| `LOGIN`                 | `LOGIN_MODAL_EVENTS.LOGIN`                 | `"LOGIN"`                 | Login is triggered                            |
-| `DISCONNECT`            | `LOGIN_MODAL_EVENTS.DISCONNECT`            | `"DISCONNECT"`            | Disconnection is triggered                    |
-| `MODAL_VISIBILITY`      | `LOGIN_MODAL_EVENTS.MODAL_VISIBILITY`      | `"MODAL_VISIBILITY"`      | Indicates whether the modal is visible or not |
-
-</TabItem>
-
-<TabItem value="interface">
-
-```ts
-declare const LOGIN_MODAL_EVENTS: {
-  readonly INIT_EXTERNAL_WALLETS: "INIT_EXTERNAL_WALLETS";
-  readonly LOGIN: "LOGIN";
-  readonly DISCONNECT: "DISCONNECT";
-  readonly MODAL_VISIBILITY: "MODAL_VISIBILITY";
-};
-```
-
-</TabItem>
-
-</Tabs>
-
-#### Example
-
-```ts
-import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
-import { ADAPTER_EVENTS } from "@web3auth/base";
-
-// subscribe to lifecycle events emitted by web3auth
-const subscribeAuthEvents = (web3auth: Web3Auth) => {
-  web3auth.on(ADAPTER_EVENTS.CONNECTED, (data: CONNECTED_EVENT_DATA) => {
-    console.log("connected to wallet", data);
-    // web3auth.provider will be available here after user is connected
-  });
-  web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
-    console.log("connecting");
-  });
-  web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
-    console.log("disconnected");
-  });
-  web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
-    console.log("error", error);
-  });
-  web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
-    console.log("error", error);
-  });
-  // emitted when modal visibility changes.
-  web3auth.on(LOGIN_MODAL_EVENTS.MODAL_VISIBILITY, (isVisible) => {
-    console.log("is modal visible", isVisible);
-  });
-};
-```
+<SubscribeEvents />
 
 ## Initializing Modal
 
@@ -612,7 +165,7 @@ This is done by calling `initModal` function of the `web3auth` instance we creat
 await web3auth.initModal(params);
 ```
 
-#### Parameters
+### Parameters
 
 The `web3auth.initModal` takes an **optional** `params` config object as input.
 
@@ -627,141 +180,9 @@ config has following configurations:
 
 ##### `modalConfig`
 
-`modalConfig: { ADAPTER : { params } }`
+<ModalConfig />
 
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
-
-<TabItem value="table">
-
-| Parameter        | Type      | Description                                   | Default                                     | Optional |
-| ---------------- | --------- | --------------------------------------------- | ------------------------------------------- | -------- |
-| `label`          | `string`  | Label of the adapter you want to configure    | NA - _identifier for corresponding adapter_ | No       |
-| `showOnModal?`   | `boolean` | Whether to show an adapter in modal or not.   | true                                        | Yes      |
-| `showOnDesktop?` | `boolean` | Whether to show an adapter in desktop or not. | true                                        | Yes      |
-| `showOnMobile?`  | `boolean` | Whether to show an adapter in mobile or not.  | true                                        | Yes      |
-
-Additionally, to configure the Openlogin Adapter's each login method, we have the `loginMethods?` parameter.
-
-| Parameter       | Type                | Description                                                                    | Default                                     | Optional |
-| --------------- | ------------------- | ------------------------------------------------------------------------------ | ------------------------------------------- | -------- |
-| `loginMethods?` | `LoginMethodConfig` | To configure visibility of each social login method for the openlogin adapter. | Default `LoginMethod` for each social login | Yes      |
-
-</TabItem>
-
-<TabItem value="interface">
-
-```ts
-initModal(params?: {
-    modalConfig?: Record<WALLET_ADAPTER_TYPE, ModalConfig>;
-}): Promise<void>;
-
-export interface ModalConfig extends BaseAdapterConfig {
-    loginMethods?: LoginMethodConfig;
-}
-
-export interface BaseAdapterConfig {
-    label: string;
-    showOnModal?: boolean;
-    showOnMobile?: boolean;
-    showOnDesktop?: boolean;
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-`loginMethods: { label: { params } }`
-
-In loginMethods, you can configure the visibility of each social login method for the openlogin adapter. The social login is corresponded by the
-`label` parameter. Below is the table indicating the different `params` available for customization.
-
-For `labels` you can choose between these options: `google`, `facebook`, `twitter`, `reddit`, `discord`, `twitch`, `apple`, `line`, `github`, `kakao`,
-`linkedin`, `weibo`, `wechat`, `email_passwordless`
-
-`params`
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Type Declaration", value: "type" },
-  ]}
->
-
-<TabItem value="table">
-
-| Parameter        | Type      | Description                                                                                | Default                   | Optional |
-| ---------------- | --------- | ------------------------------------------------------------------------------------------ | ------------------------- | -------- |
-| `name`           | `string`  | Display Name                                                                               | Default for Openlogin App | Yes      |
-| `description?`   | `string`  | Description for button. If provided, it renders as a full length button. else, icon button | Just an icon rendered     | Yes      |
-| `logoHover?`     | `string`  | Logo to be shown on mouse hover                                                            | Default for Openlogin App | Yes      |
-| `logoLight?`     | `string`  | Logo to be shown on dark background (dark theme)                                           | Default for Openlogin App | Yes      |
-| `logoDark?`      | `string`  | Logo to be shown on light background (light theme)                                         | Default for Openlogin App | Yes      |
-| `mainOption?`    | `boolean` | Show login button on the main list                                                         | Default for Openlogin App | Yes      |
-| `showOnModal?`   | `string`  | Whether to show the login button on modal or not                                           | Default for Openlogin App | Yes      |
-| `showOnDesktop?` | `string`  | Whether to show the login button on desktop                                                | Default for Openlogin App | Yes      |
-| `showOnMobile?`  | `string`  | Whether to show the login button on mobile                                                 | Default for Openlogin App | Yes      |
-
-</TabItem>
-
-<TabItem value="type">
-
-```ts
-declare type LoginMethodConfig = Record<
-  string,
-  {
-    /**
-     * Display Name. If not provided, we use the default for openlogin app
-     */
-    name: string;
-    /**
-     * Description for button. If provided, it renders as a full length button. else, icon button
-     */
-    description?: string;
-    /**
-     * Logo to be shown on mouse hover. If not provided, we use the default for openlogin app
-     */
-    logoHover?: string;
-    /**
-     * Logo to be shown on dark background (dark theme). If not provided, we use the default for openlogin app
-     */
-    logoLight?: string;
-    /**
-     * Logo to be shown on light background (light theme). If not provided, we use the default for openlogin app
-     */
-    logoDark?: string;
-    /**
-     * Show login button on the main list
-     */
-    mainOption?: boolean;
-    /**
-     * Whether to show the login button on modal or not
-     */
-    showOnModal?: boolean;
-    /**
-     * Whether to show the login button on desktop
-     */
-    showOnDesktop?: boolean;
-    /**
-     * Whether to show the login button on mobile
-     */
-    showOnMobile?: boolean;
-  }
->;
-```
-
-</TabItem>
-
-</Tabs>
-
-#### Example
+### Example
 
 <Tabs
   defaultValue="with-config"
