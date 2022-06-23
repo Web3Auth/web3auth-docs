@@ -235,6 +235,7 @@ module.exports = {
               "api-reference/web/core/usage",
             ],
           },
+          "api-reference/web/openlogin",
           {
             type: "category",
             label: "Providers",
@@ -259,7 +260,6 @@ module.exports = {
             label: "Adapters",
             link: { type: "doc", id: "api-reference/web/adapters/adapters" },
             items: [
-              "api-reference/web/adapters/openlogin",
               "api-reference/web/adapters/torus-evm",
               "api-reference/web/adapters/torus-solana",
               "api-reference/web/adapters/metamask",
