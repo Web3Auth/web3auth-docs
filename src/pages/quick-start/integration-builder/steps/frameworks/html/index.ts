@@ -1,12 +1,4 @@
-import {
-  getConstructorCodeHTML,
-  getInitCodeHTML,
-  getOpenloginAdapterHTML,
-  getRPCFunctionsButtonsHTML,
-  getRPCFunctionsHTML,
-  getScriptImport,
-  PLACEHOLDERS,
-} from "../../../commonSnippets";
+import { getConstructorCodeHTML, getInitCodeHTML, getOpenloginAdapterHTML, getScriptImport, PLACEHOLDERS } from "../../../commonSnippets";
 import { ReplaceFileAggregator, toSteps } from "../../../utils";
 import * as customAuthenticationStep from "../common/customAuthenticationStep.mdx";
 import * as getUserInfo from "../common/getUserInfo.mdx";
@@ -87,22 +79,6 @@ const htmlSteps = {
       OpenloginAdapterHTML
     );
 
-    const RPCFunctionsHTML = getRPCFunctionsHTML(chain);
-    newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/html/index.html"],
-      "frameworks/html/index.html",
-      PLACEHOLDERS.RPC_FUNCTIONS,
-      RPCFunctionsHTML
-    );
-
-    const RPCFunctionsButtonsHTML = getRPCFunctionsButtonsHTML(chain);
-    newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/html/index.html"],
-      "frameworks/html/index.html",
-      PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
-      RPCFunctionsButtonsHTML
-    );
-
     const ScriptImport = getScriptImport(chain, whitelabel === "yes", customAuthentication === "yes");
     newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
       files["frameworks/html/index.html"],
@@ -115,13 +91,6 @@ const htmlSteps = {
     switch (chain) {
       case "sol":
         filenames.push("chains/solana/solana.js");
-        break;
-      case "starkex":
-        filenames.push("chains/starkex/starkex.js");
-        break;
-      case "starknet":
-        filenames.push("chains/starknet/starknet.js");
-        filenames.push("chains/starknet/ArgentAccount.json");
         break;
       default:
         filenames.push("chains/evm/evm.js");

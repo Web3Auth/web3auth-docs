@@ -13,12 +13,22 @@ export const CHAINS: DisplayChoice[] = [
   { key: "starknet", displayName: "StarkNet" },
 ];
 
+export const CHAINS_HTML: DisplayChoice[] = [
+  { key: "eth", displayName: "Ethereum" },
+  { key: "sol", displayName: "Solana" },
+  { key: "matic", displayName: "Polygon" },
+  { key: "bnb", displayName: "BNB Chain" },
+  { key: "avax", displayName: "Avalanche" },
+  { key: "arbitrum", displayName: "Arbitrum" },
+  { key: "optimism", displayName: "Optimism" },
+];
+
 export const LANGS: DisplayChoice[] = [
   { key: "react", displayName: "React" },
-  { key: "html", displayName: "HTML/JS" },
-  { key: "vue", displayName: "Vue" },
   { key: "next", displayName: "Next JS" },
+  { key: "vue", displayName: "Vue" },
   { key: "angular", displayName: "Angular" },
+  { key: "html", displayName: "HTML/JS" },
   { key: "android", displayName: "Android" },
   { key: "ios", displayName: "iOS/Swift" },
   // { key: "react-native", displayName: "React Native" },
@@ -97,6 +107,33 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
         },
         usingEmailPasswordless: {
           displayName: "Using Email Passwordless",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+      };
+    } else if (values.lang === "html") {
+      this.options = {
+        lang: {
+          displayName: "Language/Framework",
+          default: LANGS[0].key,
+          type: "dropdown",
+          choices: LANGS,
+        },
+        chain: {
+          displayName: "Blockchain",
+          default: CHAINS_HTML[0].key,
+          type: "dropdown",
+          choices: CHAINS_HTML,
+        },
+        customAuthentication: {
+          displayName: "Custom Authentication",
+          default: TOGGLE_CHOICES[0].key,
+          type: "toggle",
+          choices: TOGGLE_CHOICES,
+        },
+        whitelabel: {
+          displayName: "Whitelabel",
           default: TOGGLE_CHOICES[0].key,
           type: "toggle",
           choices: TOGGLE_CHOICES,
