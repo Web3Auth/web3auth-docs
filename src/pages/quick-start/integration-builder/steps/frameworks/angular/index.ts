@@ -171,19 +171,19 @@ const angularSteps = {
       case "starkex":
         steps.push({
           ...STEPS.installationStarkEx,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starkex/starkex.ts", range: "1-6" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starkex/starkex.ts", range: "1-7" }),
         });
         break;
       case "starknet":
         steps.push({
           ...STEPS.installationStarkNet,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starknet/starknet.ts", range: "1-7" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starknet/starknet.ts", range: "1-9" }),
         });
         break;
       case "tezos":
         steps.push({
           ...STEPS.installationTezos,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/tezos/tezos.ts", range: "2-6" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/tezos/tezos.ts", range: "1-6" }),
         });
         break;
       default:
@@ -283,7 +283,7 @@ const angularSteps = {
           ...STEPS.starkExRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "chains/starkex/starkex.ts",
-            range: "24-34",
+            range: "20-39",
           }),
         });
         break;
@@ -292,7 +292,7 @@ const angularSteps = {
           ...STEPS.starkNetRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "chains/starknet/starknet.ts",
-            range: "25-35",
+            range: "18-37",
           }),
         });
         break;

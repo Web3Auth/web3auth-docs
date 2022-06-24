@@ -106,62 +106,62 @@ const htmlSteps = {
     if (customAuthentication === "yes" || whitelabel === "yes") {
       steps.push({
         ...STEPS.installationCustom,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "35-38" }),
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "37-41" }),
       });
     } else {
       steps.push({
         ...STEPS.installation,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "35-38" }),
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "37-41" }),
       });
     }
 
     steps.push({
       ...STEPS.registerApp,
-      pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "47" }),
+      pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "49" }),
     });
 
     if (whitelabel === "yes") {
       steps.push(
         {
           ...STEPS.instantiateSDKWhitelabeled,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "49-50" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "51-52" }),
         },
         {
           ...STEPS.whiteLabeling,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "51-52" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "53-54" }),
         }
       );
     } else {
       steps.push({
         ...STEPS.instantiateSDK,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "49-50" }),
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "51-52" }),
       });
     }
 
     if (customAuthentication === "yes") {
       steps.push({
         ...STEPS.customAuthenticationStep,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "51-52" }),
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "53-54" }),
       });
     }
 
     steps.push(
       {
         ...STEPS.initialize,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "53-54" }),
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "55-56" }),
       },
       {
         ...STEPS.login,
         pointer: replacementAggregator.rangeOffsetEditor({
           filename: "frameworks/html/index.html",
-          range: "69",
+          range: "69-77",
         }),
       },
       {
         ...STEPS.getUserInfo,
         pointer: replacementAggregator.rangeOffsetEditor({
           filename: "frameworks/html/index.html",
-          range: "79",
+          range: "79-86",
         }),
       }
     );
@@ -173,24 +173,6 @@ const htmlSteps = {
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "chains/solana/solana.js",
             range: "71-84",
-          }),
-        });
-        break;
-      case "starkex":
-        steps.push({
-          ...STEPS.starkExRPCFunctions,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "chains/starkex/starkex.js",
-            range: "15-21",
-          }),
-        });
-        break;
-      case "starknet":
-        steps.push({
-          ...STEPS.starkNetRPCFunctions,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "chains/starknet/starknet.js",
-            range: "6-17",
           }),
         });
         break;
@@ -209,7 +191,7 @@ const htmlSteps = {
       ...STEPS.logout,
       pointer: replacementAggregator.rangeOffsetEditor({
         filename: "frameworks/html/index.html",
-        range: "90",
+        range: "115-123",
       }),
     });
 
