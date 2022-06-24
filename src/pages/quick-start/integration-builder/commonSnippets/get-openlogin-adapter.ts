@@ -1,4 +1,4 @@
-export const getOpenloginAdapter = (isWhiteLabled: boolean, isCustomAuth: boolean) => {
+export const getOpenloginAdapter = (chain: "eth" | "sol" | "starkex" | "starknet" | "tezos", isWhiteLabled: boolean, isCustomAuth: boolean) => {
   let whitelabel = ``;
   let loginConfig = ``;
   let code = ``;
@@ -36,13 +36,13 @@ export const getOpenloginAdapter = (isWhiteLabled: boolean, isCustomAuth: boolea
           },`;
   }
 
-  if (isWhiteLabled || isCustomAuth) {
+  if (isWhiteLabled || isCustomAuth || chain === "starkex" || chain === "starknet" || chain === "tezos") {
     code = `
       const openloginAdapter = new OpenloginAdapter({
         adapterSettings: {
           clientId,
           network: "testnet",
-          uxMode: "redirect", ${whitelabel} ${loginConfig}
+          uxMode: "popup", ${whitelabel} ${loginConfig}
         },
       });
       web3auth.configureAdapter(openloginAdapter);`;

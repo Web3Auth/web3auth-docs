@@ -42,7 +42,7 @@ export const getOpenloginAdapterHTML = (isWhiteLabled: boolean, isCustomAuth: bo
         adapterSettings: {
           clientId,
           network: "testnet",
-          uxMode: "redirect", ${whitelabel} ${loginConfig}
+          uxMode: "popup", ${whitelabel} ${loginConfig}
         },
       });
       web3auth.configureAdapter(openloginAdapter);`;

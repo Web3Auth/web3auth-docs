@@ -1,4 +1,4 @@
-export const getRPCFunctionsButtonsAngular = (chain: "eth" | "sol" | "starkex" | "starknet") => {
+export const getRPCFunctionsButtonsAngular = (chain: "eth" | "sol" | "starkex" | "starknet" | "tezos") => {
   let code = `
       <button class="card card-small" (click)="getAccounts()">Get Accounts</button>
       <button class="card card-small" (click)="getBalance()">Get Balance</button>
@@ -18,6 +18,14 @@ export const getRPCFunctionsButtonsAngular = (chain: "eth" | "sol" | "starkex" |
       <button class="card card-small" (click)="onGetStarkAccount()">Get Stark Accounts</button>
       <button class="card card-small" (click)="getStarkKey()">Get Stark Key</button>
       <button class="card card-small" (click)="onDeployAccount()">Deploy Account</button>`;
+  }
+  if (chain === "tezos") {
+    code = `
+      <button class="card card-small" (click)="onGetTezosKeyPair()">Get Tezos Key</button>
+      <button class="card card-small" (click)="getAccounts()">Get Accounts</button>
+      <button class="card card-small" (click)="getBalance()">Get Balance</button>
+      <button class="card card-small" (click)="signMessage()">Sign Message</button>
+      <button class="card card-small" (click)="signAndSendTransaction()">Sign and Send Transaction</button>`;
   }
   return code;
 };

@@ -29,21 +29,21 @@ export class AppComponent {
 
     login = async () => {
     if (!this.web3auth) {
-      this.uiConsole("web3auth not initialized yet");
+      console.log("web3auth not initialized yet");
       return;
     }
     const web3auth = this.web3auth;
     this.provider = await web3auth.connect();
-    this.uiConsole("logged in");
+    console.log("logged in");
     };
 
     getUserInfo = async () => {
       if (!this.web3auth) {
-        this.uiConsole("web3auth not initialized yet");
+        console.log("web3auth not initialized yet");
         return;
       }
       const user = await this.web3auth.getUserInfo();
-      this.uiConsole(user);
+      console.log(user);
     };
 
   // REPLACE-getRPCFunctions-
@@ -51,18 +51,11 @@ export class AppComponent {
 
     logout = async () => {
       if (!this.web3auth) {
-        this.uiConsole("web3auth not initialized yet");
+        console.log("web3auth not initialized yet");
         return;
       }
       await this.web3auth.logout();
       this.provider = null;
-      this.uiConsole("logged out");
-    };
-
-    uiConsole(...args: unknown[]): void {
-      const el = document.querySelector("#console-ui>p");
-      if (el) {
-        el.innerHTML = JSON.stringify(args || {}, null, 2);
-      }
+      console.log("logged out");
     };
 }

@@ -12,7 +12,9 @@
       <!-- Logged In -->
       <div class="grid btn-logged-in">
         <button id="get-user-info" class="btn">Get User Info</button>
-        // REPLACE-getRPCFunctionsButtons-
+        <button id="get-accounts" class="btn">Get Accounts</button>
+        <button id="get-balance" class="btn">Get Balance</button>
+        <button id="sign-message" class="btn">Sign Message</button>
 
         <button id="logout" class="btn">Logout</button>
 
@@ -77,13 +79,38 @@
       $("#get-user-info").click(async function (event) {
         try {
           const user = await web3auth.getUserInfo();
-          $("#code").text(JSON.stringify(user || {}, null, 2));
+          console.log(user);
         } catch (error) {
           console.error(error.message);
         }
       });
 
-      // REPLACE-getRPCFunctions-
+      $("#get-accounts").click(async function (event) {
+        try {
+          const accounts = await rpc.getAccounts(web3auth.provider);
+          console.log(accounts);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#get-balance").click(async function (event) {
+        try {
+          const balance = await rpc.getBalance(web3auth.provider);
+          console.log(balance);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#sign-message").click(async function (event) {
+        try {
+          const signedMsg = await rpc.signMessage(web3auth.provider);
+          console.log(signedMsg);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
 
       $("#logout").click(async function (event) {
         try {
