@@ -53,10 +53,10 @@ yarn add @web3auth/solana-wallet-connector-plugin
 
 ---
 
-Import the `TorusWalletConnectorPlugin` class from `@web3auth/torus-wallet-connector-plugin`;
+Import the `SolanaWalletConnectorPlugin` class from `@web3auth/solana-wallet-connector-plugin`;
 
 ```javascript
-import { TorusWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-plugin";
+import { SolanaWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-plugin";
 ```
 
 ### Assign the `torusPlugin` class to a variable
@@ -64,7 +64,10 @@ import { TorusWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-pl
 After creating your Web3Auth instance, you need to initialise the Torus Wallet UI Plugin and add it to a class for further usage.
 
 ```javascript
-const torusPlugin = new TorusWalletConnectorPlugin(options);
+const torusPlugin = new SolanaWalletConnectorPlugin(torusWalletOpts: {},
+  walletInitOptions: {
+    enableLogging: true,
+  },);
 ```
 
 This constructor takes an objects with `torusWalletOpts` & `walletInitOptions` as input.
@@ -80,14 +83,12 @@ This constructor takes an objects with `torusWalletOpts` & `walletInitOptions` a
 
 `walletInitOptions`:
 
-| Parameter          | Type               | Required | Description                                                                                                                                                                            | Default |
-| ------------------ | ------------------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `whiteLabel`       | `WhiteLabelParams` | Yes      | Params to enable whitelabelling of torus website and widget. Know more about whitelabeling options for Torus Wallet [here](https://docs.tor.us/wallet/api-reference/class#whitelabel). | N/A     |
-| `showTorusButton`  | `boolean`          | No       | Determines whether to show/hide torus widget.                                                                                                                                          | `true`  |
-| `useWalletConnect` | `boolean`          | No       | Setting `useWalletConnect` to true allows to display wallet connect qr scanner from torus-embed.                                                                                       | `false` |
+| Parameter         | Type      | Required | Description                                   | Default |
+| ----------------- | --------- | -------- | --------------------------------------------- | ------- |
+| `showTorusButton` | `boolean` | No       | Determines whether to show/hide torus widget. | `true`  |
 
 For additional information on the init options for Torus Wallet, please check the
-[Torus Wallet documentation](https://docs.tor.us/solana-wallet/api-reference/class#init)
+[Torus Solana Wallet documentation](https://docs.tor.us/solana-wallet/api-reference/class#init)
 
 #### Returns
 
@@ -106,15 +107,9 @@ const web3AuthInstance = new Web3Auth({
   chainConfig: currentChainConfig,
   clientId, // get your client id from https://dashboard.web3auth.io,
 });
-const torusPlugin = new TorusWalletConnectorPlugin({
+const torusPlugin = new SolanaWalletConnectorPlugin({
   torusWalletOpts: {},
   walletInitOptions: {
-    whiteLabel: {
-      theme: { isDark: true, colors: { primary: "#00a8ff" } },
-      logoDark: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-      logoLight: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-    },
-    useWalletConnect: true,
     enableLogging: true,
   },
 });
@@ -126,8 +121,23 @@ await web3AuthInstance.addPlugin(torusPlugin);
 As soon as you add the `torusPlugin` class to your Web3Auth instance, you have access to the Torus Wallet Provider. You can use this provider to
 access the Torus Wallet UI within your dApp and make RPC calls through that. To use the provider, use the following command:
 
-```
-setWalletProvider((torusPlugin?.proxyProvider as SafeEventEmitterProvider) || web3auth?.provider);
+#### Example
+
+```javascript
+const blockhash = (await conn.getRecentBlockhash("finalized")).blockhash;
+const TransactionInstruction = SystemProgram.transfer({
+  fromPubkey: new PublicKey(publicKeys[0]),
+  toPubkey: new PublicKey(publicKeys[1]),
+  lamports: 0.1 * LAMPORTS_PER_SOL,
+});
+const transaction = new Transaction({
+  recentBlockhash: blockhash,
+  feePayer: new PublicKey(publicKeys[0]),
+}).add(TransactionInstruction);
+
+// torusWalletInstance will be available on torusPlugin once user is logged in.
+// this will show transaction confirmation popup.
+const res = await torusPlugin.torusWalletInstance.sendTransaction(transaction);
 ```
 
-#### Know more about how to use the [Torus Solana Wallet Provider](https://docs.tor.us/solana-wallet/api-reference/solana/send-transaction)
+#### Know more about how to use the [Torus Solana Wallet Instance and provider](https://docs.tor.us/solana-wallet/api-reference/solana/send-transaction)
