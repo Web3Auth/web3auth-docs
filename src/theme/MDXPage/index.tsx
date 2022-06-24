@@ -13,32 +13,36 @@ export default function MDXPage(props: ComponentProps<typeof OriginalMDXPage>) {
   const { frontMatter, metadata } = MDXPageContent;
   const { permalink } = metadata;
 
-  if (!permalink.startsWith("/guides/")) return <OriginalMDXPage {...props} />;
+  if (!permalink.startsWith("/docs/guides/")) return <OriginalMDXPage {...props} />;
 
-  const { title, description, image, wrapperClassName } = frontMatter;
+  const { title, description, image, tag, author, date, wrapperClassName } = frontMatter;
   return (
-    <Layout title={title} description={description} permalink={permalink} wrapperClassName={wrapperClassName}>
+    <Layout title={title} description={description} wrapperClassName={wrapperClassName}>
       <main>
-        <div className="container container--fluid">
-          <div className="margin-vert--lg padding-vert--lg">
-            <div className="row">
-              <div className="col col--8 col--offset-2">
-                <div className={classNames("container", styles.container)}>
+        <div className="margin-vert--lg padding-vert--lg">
+          <div className="row">
+            <div className="col col--7 col--offset-2">
+              <div className={classNames("container", styles.container)}>
+                <div className={styles.titleContainer}>
+                  <img className={styles.cover} src={image} alt="Cover" />
                   <div className={styles.titleContainer}>
-                    <img className={styles.cover} src={image} alt="Cover" />
+                    <span className={styles.tag}>{tag}</span>
                     <h1 className={styles.title}>{title}</h1>
+                    <span className={styles.date}>
+                      {author} | {date}
+                    </span>
                   </div>
-                  <MDXProvider components={MDXComponents}>
-                    <MDXPageContent />
-                  </MDXProvider>
                 </div>
+                <MDXProvider components={MDXComponents}>
+                  <MDXPageContent />
+                </MDXProvider>
               </div>
-              {MDXPageContent.toc && (
-                <div className="col col--2">
-                  <TOC toc={MDXPageContent.toc} />
-                </div>
-              )}
             </div>
+            {MDXPageContent.toc && (
+              <div className="col col--3" style={{ paddingRight: "30px" }}>
+                <TOC toc={MDXPageContent.toc} />
+              </div>
+            )}
           </div>
         </div>
       </main>
