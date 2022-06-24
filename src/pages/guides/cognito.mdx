@@ -923,6 +923,15 @@ Solana, and Casper blockchains and also supports other chains by getting the pri
 
 ### Get User Accounts
 
+<Tabs
+defaultValue="web3"
+values={[
+  { label: "Web3", value: "web3" },
+  { label: "Ethers.js", value: "ethers.js" },
+]}
+>
+<TabItem value="web3">
+
 ```js
 const getAccounts = async () => {
   if (!provider) {
@@ -935,7 +944,36 @@ const getAccounts = async () => {
 }
 ```
 
+  </TabItem>
+<TabItem value="ethers.js">
+
+```js
+const getAccounts = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const provider = new ethers.providers.Web3Provider(provider as any);
+  const signer = provider.getSigner();
+  const userAccounts = await signer.getAddress();
+  uiConsole(userAccounts)
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 ### View User Balance
+
+<Tabs
+defaultValue="web3"
+values={[
+  { label: "Web3", value: "web3" },
+  { label: "Ethers.js", value: "ethers.js" },
+]}
+>
+<TabItem value="web3">
 
 ```js
 const getBalance = async () => {
@@ -950,7 +988,37 @@ const getBalance = async () => {
 }
 ```
 
+  </TabItem>
+<TabItem value="ethers.js">
+
+```js
+const getBalance = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const provider = new ethers.providers.Web3Provider(provider as any);
+  const signer = provider.getSigner();
+  const address = await signer.getAddress();
+  const balance = await provider.getBalance(address)
+  uiConsole(ethers.utils.formatEther(balance) + ' ETH')
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 ### Sign Message
+
+<Tabs
+defaultValue="web3"
+values={[
+  { label: "Web3", value: "web3" },
+  { label: "Ethers.js", value: "ethers.js" },
+]}
+>
+<TabItem value="web3">
 
 ```js
 const signMessage = async () => {
@@ -981,7 +1049,52 @@ const signMessage = async () => {
 }
 ```
 
+  </TabItem>
+<TabItem value="ethers.js">
+
+```js
+const signMessage = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const provider = new ethers.providers.Web3Provider(provider as any);
+  const signer = provider.getSigner();
+  const fromAddress = await signer.getAddress();
+
+  const message =
+    '0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad'
+
+  ;(signer.provider as any)?.send(
+    {
+      method: 'eth_sign',
+      params: [fromAddress, message],
+      from: fromAddress,
+    },
+    (err: Error, result: any) => {
+      if (err) {
+        return console.error(err)
+      }
+      uiConsole(result)
+    },
+  )
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 ### Sign Transaction
+
+<Tabs
+defaultValue="web3"
+values={[
+  { label: "Web3", value: "web3" },
+  { label: "Ethers.js", value: "ethers.js" },
+]}
+>
+<TabItem value="web3">
 
 ```js
 const signTransaction = async () => {
@@ -1000,7 +1113,41 @@ const signTransaction = async () => {
 }
 ```
 
+  </TabItem>
+<TabItem value="ethers.js">
+
+```js
+const signTransaction = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const provider = new ethers.providers.Web3Provider(provider as any);
+  const signer = provider.getSigner();
+  const address = await signer.getAddress();
+  const txRes = await signer.signTransaction({
+    from: accounts,
+    to: accounts,
+    value: ethers.utils.formatEther('0.01'),
+  })
+  uiConsole(txRes.raw)
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 ### Sign and Send Transaction
+
+<Tabs
+defaultValue="web3"
+values={[
+  { label: "Web3", value: "web3" },
+  { label: "Ethers.js", value: "ethers.js" },
+]}
+>
+<TabItem value="web3">
 
 ```js
 const sendTransaction = async () => {
@@ -1019,6 +1166,32 @@ const sendTransaction = async () => {
   uiConsole(txRes.transactionHash)
 }
 ```
+
+  </TabItem>
+<TabItem value="ethers.js">
+
+```js
+const sendTransaction = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const provider = new ethers.providers.Web3Provider(provider as any);
+  const signer = provider.getSigner();
+  const address = await signer.getAddress();
+
+  const txRes = await signer.sendTransaction({
+    from: address,
+    to: address,
+    value: web3.utils.toWei('0.0001'),
+  })
+  uiConsole(txRes.transactionHash)
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Example code
 
