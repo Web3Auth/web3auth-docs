@@ -1,7 +1,6 @@
-import React from "react";
-import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
-import classNames from "classnames";
+import Layout from "@theme/Layout";
+
 import styles from "./styles.module.css";
 
 interface Props {
@@ -11,15 +10,16 @@ interface Props {
       title: string;
       description: string;
       image: string;
+      tag: string;
+      date: string;
+      author: string;
       order: number;
     }
   >;
 }
 
 export default function GuidesPage({ guides }: Props) {
-  const sortedGuides = Object.entries(guides).sort(
-    ([, a], [, b]) => a.order - b.order
-  );
+  const sortedGuides = Object.entries(guides).sort(([, a], [, b]) => a.order - b.order);
   return (
     <Layout title="Guides">
       <header className={styles.header}>
@@ -32,8 +32,12 @@ export default function GuidesPage({ guides }: Props) {
           <Link key={key} className={styles.article} to={`/guides/${key}`}>
             <img src={guide.image} alt="Banner" />
             <div className={styles.contentContainer}>
+              <span className={styles.tag}>{guide.tag}</span>
               <h3>{guide.title}</h3>
               <p>{guide.description}</p>
+              <span className={styles.date}>
+                {guide.author} | {guide.date}
+              </span>
             </div>
           </Link>
         ))}
