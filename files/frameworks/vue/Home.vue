@@ -46,8 +46,8 @@ export default {
 
 
       } catch (error) {
-        uiConsole("error", error);
-        uiConsole("error", error);
+        console.log("error", error);
+        console.log("error", error);
       } finally {
         loading.value = false;
       }
@@ -55,7 +55,7 @@ export default {
 
     const login = async () => {
       if (!web3auth) {
-        uiConsole("web3auth not initialized yet");
+        console.log("web3auth not initialized yet");
         return;
       }
       provider = await web3auth.connect();
@@ -63,16 +63,16 @@ export default {
 
     const getUserInfo = async () => {
       if (!web3auth) {
-        uiConsole("web3auth not initialized yet");
+        console.log("web3auth not initialized yet");
         return;
       }
       const user = await web3auth.getUserInfo();
-      uiConsole(user);
+      console.log(user);
     };
 
     const logout = async () => {
       if (!web3auth) {
-        uiConsole("web3auth not initialized yet");
+        console.log("web3auth not initialized yet");
         return;
       }
       await web3auth.logout();
@@ -81,12 +81,6 @@ export default {
 
     // REPLACE-getRPCFunctions-
 
-    function uiConsole(...args: any[]): void {
-      const el = document.querySelector("#console>p");
-      if (el) {
-        el.innerHTML = JSON.stringify(args || {}, null, 2);
-      }
-    }
     return {
       loading,
       loginButtonStatus,

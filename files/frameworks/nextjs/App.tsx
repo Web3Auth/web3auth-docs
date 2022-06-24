@@ -30,7 +30,7 @@ function App() {
 
   const login = async () => {
     if (!web3auth) {
-      uiConsole("web3auth not initialized yet");
+      console.log("web3auth not initialized yet");
       return;
     }
     const web3authProvider = await web3auth.connect();
@@ -43,7 +43,7 @@ function App() {
       return;
     }
     const user = await web3auth.getUserInfo();
-    uiConsole(user);
+    console.log(user);
   };
 
   const logout = async () => {
@@ -56,13 +56,6 @@ function App() {
   };
 
 // REPLACE-getRPCFunctions-
-
-  function uiConsole(...args: any[]): void {
-    const el = document.querySelector("#console>p");
-    if (el) {
-      el.innerHTML = JSON.stringify(args || {}, null, 2);
-    }
-  }
 
   const loggedInView = (
     <>

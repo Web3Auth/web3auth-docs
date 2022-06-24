@@ -79,7 +79,7 @@
       $("#get-user-info").click(async function (event) {
         try {
           const user = await web3auth.getUserInfo();
-          $("#code").text(JSON.stringify(user || {}, null, 2));
+          console.log(user);
         } catch (error) {
           console.error(error.message);
         }
@@ -88,7 +88,7 @@
       $("#get-accounts").click(async function (event) {
         try {
           const accounts = await rpc.getAccounts(web3auth.provider);
-          $("#code").text(JSON.stringify(["accounts", accounts], null, 2));
+          console.log(accounts);
         } catch (error) {
           console.error(error.message);
         }
@@ -97,7 +97,7 @@
       $("#get-balance").click(async function (event) {
         try {
           const balance = await rpc.getBalance(web3auth.provider);
-          $("#code").text(JSON.stringify(["balance", balance], null, 2));
+          console.log(balance);
         } catch (error) {
           console.error(error.message);
         }
@@ -106,7 +106,7 @@
       $("#sign-message").click(async function (event) {
         try {
           const signedMsg = await rpc.signMessage(web3auth.provider);
-          $("#code").text(JSON.stringify(["signed message", signedMsg], null, 2));
+          console.log(signedMsg);
         } catch (error) {
           console.error(error.message);
         }
