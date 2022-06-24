@@ -94,7 +94,7 @@ const angularSteps = {
       ModuleImport
     );
 
-    const OpenloginAdapter = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes");
+    const OpenloginAdapter = getOpenloginAdapter(chain, whitelabel === "yes", customAuthentication === "yes");
     newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
       files["frameworks/angular/app.component.ts"],
       "frameworks/angular/app.component.ts",
@@ -193,7 +193,7 @@ const angularSteps = {
         });
     }
 
-    if (customAuthentication === "yes" || whitelabel === "yes") {
+    if (customAuthentication === "yes" || whitelabel === "yes" || chain === "starkex" || chain === "starknet" || chain === "tezos") {
       steps.push(
         {
           ...STEPS.installationCustom,

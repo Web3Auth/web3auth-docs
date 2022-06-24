@@ -92,7 +92,7 @@ const nextjsSteps = {
       ModuleImport
     );
 
-    const OpenloginAdapter = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes");
+    const OpenloginAdapter = getOpenloginAdapter(chain, whitelabel === "yes", customAuthentication === "yes");
     newFiles["frameworks/nextjs/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["frameworks/nextjs/App.tsx"],
       "frameworks/nextjs/App.tsx",
@@ -183,7 +183,7 @@ const nextjsSteps = {
         });
     }
 
-    if (customAuthentication === "yes" || whitelabel === "yes") {
+    if (customAuthentication === "yes" || whitelabel === "yes" || chain === "starkex" || chain === "starknet" || chain === "tezos") {
       steps.push(
         {
           ...STEPS.installationCustom,

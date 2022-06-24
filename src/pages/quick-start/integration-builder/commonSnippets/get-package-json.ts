@@ -3,7 +3,6 @@ export const getPackageJson = (chain: "eth" | "sol" | "starkex" | "starknet" | "
     "@web3auth/base": "^1.1.0",
     "@web3auth/web3auth": "^1.1.0",`;
 
-  if (isWhiteLabled || isCustomAuth) {
   if (isWhiteLabled || isCustomAuth || chain === "starkex" || chain === "starknet" || chain === "tezos") {
     code += `
     "@web3auth/openlogin-adapter": "^1.1.0",`;

@@ -2,7 +2,7 @@ export const getModuleImport = (chain: "eth" | "sol" | "starkex" | "starknet" | 
   let code = `
 import { Web3Auth } from "@web3auth/web3auth";`;
 
-  if (isWhiteLabled || isCustomAuth) {
+  if (isWhiteLabled || isCustomAuth || chain === "starkex" || chain === "starknet" || chain === "tezos") {
     code += `
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";`;

@@ -94,7 +94,7 @@ const htmlSteps = {
       ModuleImport
     );
 
-    const OpenloginAdapter = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes");
+    const OpenloginAdapter = getOpenloginAdapter(chain, whitelabel === "yes", customAuthentication === "yes");
     newFiles["frameworks/vue/Home.vue"] = replacementAggregator.replaceFileVariable(
       files["frameworks/vue/Home.vue"],
       "frameworks/vue/Home.vue",
@@ -199,7 +199,7 @@ const htmlSteps = {
         });
     }
 
-    if (customAuthentication === "yes" || whitelabel === "yes") {
+    if (customAuthentication === "yes" || whitelabel === "yes" || chain === "starkex" || chain === "starknet" || chain === "tezos") {
       steps.push(
         {
           ...STEPS.installationCustom,

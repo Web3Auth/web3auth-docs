@@ -94,7 +94,7 @@ const reactSteps = {
       ModuleImport
     );
 
-    const OpenloginAdapter = getOpenloginAdapter(whitelabel === "yes", customAuthentication === "yes");
+    const OpenloginAdapter = getOpenloginAdapter(chain, whitelabel === "yes", customAuthentication === "yes");
     newFiles["frameworks/react/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["frameworks/react/App.tsx"],
       "frameworks/react/App.tsx",
@@ -195,7 +195,7 @@ const reactSteps = {
         });
     }
 
-    if (customAuthentication === "yes" || whitelabel === "yes") {
+    if (customAuthentication === "yes" || whitelabel === "yes" || chain === "starkex" || chain === "starknet" || chain === "tezos") {
       steps.push(
         {
           ...STEPS.installationCustom,
