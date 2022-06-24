@@ -1,4 +1,4 @@
-export const getModuleImport = (chain: "eth" | "sol" | "starkex" | "starknet", isWhiteLabled: boolean, isCustomAuth: boolean) => {
+export const getModuleImport = (chain: "eth" | "sol" | "starkex" | "starknet" | "tezos", isWhiteLabled: boolean, isCustomAuth: boolean) => {
   let code = `
 import { Web3Auth } from "@web3auth/web3auth";`;
 
@@ -23,6 +23,10 @@ import RPC from "./starkex";`;
     case "starknet":
       code += `
 import RPC from "./starknet";`;
+      break;
+    case "tezos":
+      code += `
+import RPC from "./tezos";`;
       break;
     default:
       code += `

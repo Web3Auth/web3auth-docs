@@ -1,4 +1,4 @@
-export const getRPCFunctionsReturnsVue = (chain: "eth" | "sol" | "starkex" | "starknet") => {
+export const getRPCFunctionsReturnsVue = (chain: "eth" | "sol" | "starkex" | "starknet" | "tezos") => {
   let code = `
       getAccounts,
       getBalance,
@@ -18,6 +18,14 @@ export const getRPCFunctionsReturnsVue = (chain: "eth" | "sol" | "starkex" | "st
       onGetStarkAccount,
       getStarkKey,
       onDeployAccount`;
+  }
+  if (chain === "tezos") {
+    code = `
+      onGetTezosKeyPair,
+      getAccounts,
+      getBalance,
+      signMessage,
+      signAndSendTransaction`;
   }
   return code;
 };

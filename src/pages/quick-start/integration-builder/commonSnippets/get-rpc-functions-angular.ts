@@ -1,4 +1,4 @@
-export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "starknet") => {
+export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "starknet" | "tezos") => {
   let code = `
     getAccounts = async () => {
       if (!this.provider) {
@@ -131,6 +131,58 @@ export const getRPCFunctionsAngular = (chain: "eth" | "sol" | "starkex" | "stark
       const rpc = new RPC(this.provider as SafeEventEmitterProvider);
       const deployaccount =  await rpc.deployAccount();
       this.uiConsole(deployaccount);
+    };`;
+  }
+  if (chain === "tezos") {
+    code = `
+    onGetTezosKeyPair = async () => {
+      if (!this.provider) {
+        this.uiConsole("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(this.provider as SafeEventEmitterProvider);
+      const tezosKey = await rpc.getTezosKeyPair();
+      this.uiConsole(tezosKey);
+    };
+
+    getAccounts = async () => {
+      if (!this.provider) {
+        this.uiConsole("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(this.provider);
+      const userAccount = await rpc.getAccounts();
+      this.uiConsole(userAccount);
+    };
+
+    getBalance = async () => {
+      if (!this.provider) {
+        this.uiConsole("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(this.provider);
+      const balance = await rpc.getBalance();
+      this.uiConsole(balance);
+    };
+
+    signMessage = async () => {
+      if (!this.provider) {
+        this.uiConsole("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(this.provider);
+      const result = await rpc.signMessage();
+      this.uiConsole(result);
+    };
+
+    signAndSendTransaction = async () => {
+      if (!this.provider) {
+        this.uiConsole("provider not initialized yet");
+        return;
+      }
+      const rpc = new RPC(this.provider);
+      const result = await rpc.signAndSendTransaction();
+      this.uiConsole(result);
     };`;
   }
   return code;

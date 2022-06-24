@@ -20,6 +20,7 @@ import * as installationEVM from "../common/installation/installationEVM.mdx";
 import * as installationSolana from "../common/installation/installationSolana.mdx";
 import * as installationStarkEx from "../common/installation/installationStarkEx.mdx";
 import * as installationStarkNet from "../common/installation/installationStarkNet.mdx";
+import * as installationTezos from "../common/installation/installationTezos.mdx";
 import * as instantiateSDK from "../common/instantiateSDK.mdx";
 import * as instantiateSDKWhitelabeled from "../common/instantiateSDKWhitelabeled.mdx";
 import * as login from "../common/login.mdx";
@@ -29,6 +30,7 @@ import * as evmRPCFunctions from "../common/rpcFunctions/evmRPCFunctions.mdx";
 import * as solanaRPCFunctions from "../common/rpcFunctions/solanaRPCFunctions.mdx";
 import * as starkExRPCFunctions from "../common/rpcFunctions/starkExRPCFunctions.mdx";
 import * as starkNetRPCFunctions from "../common/rpcFunctions/starkNetRPCFunctions.mdx";
+import * as tezosRPCFunctions from "../common/rpcFunctions/tezosRPCFunctions.mdx";
 import * as whiteLabeling from "../common/whitelabeling.mdx";
 import * as buildingApp from "./buildingApp.mdx";
 
@@ -37,6 +39,7 @@ const STEPS = toSteps({
   installationSolana,
   installationStarkEx,
   installationStarkNet,
+  installationTezos,
   installationEVM,
   installation,
   installationCustom,
@@ -54,6 +57,7 @@ const STEPS = toSteps({
   solanaRPCFunctions,
   starkExRPCFunctions,
   starkNetRPCFunctions,
+  tezosRPCFunctions,
   logout,
 });
 
@@ -133,6 +137,9 @@ const nextjsSteps = {
         filenames.push("chains/starknet/starknet.ts");
         filenames.push("chains/starknet/ArgentAccount.json");
         break;
+      case "tezos":
+        filenames.push("chains/tezos/tezos.ts");
+        break;
       default:
         filenames.push("chains/evm/evm.ts");
     }
@@ -161,6 +168,12 @@ const nextjsSteps = {
         steps.push({
           ...STEPS.installationStarkNet,
           pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starknet/starknet.ts", range: "1-7" }),
+        });
+        break;
+      case "tezos":
+        steps.push({
+          ...STEPS.installationTezos,
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/tezos/tezos.ts", range: "2-6" }),
         });
         break;
       default:
@@ -270,6 +283,15 @@ const nextjsSteps = {
           pointer: replacementAggregator.rangeOffsetEditor({
             filename: "chains/starknet/starknet.ts",
             range: "25-35",
+          }),
+        });
+        break;
+      case "tezos":
+        steps.push({
+          ...STEPS.tezosRPCFunctions,
+          pointer: replacementAggregator.rangeOffsetEditor({
+            filename: "chains/tezos/tezos.ts",
+            range: "17-26",
           }),
         });
         break;

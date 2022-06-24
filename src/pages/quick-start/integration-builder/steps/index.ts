@@ -11,6 +11,7 @@ export const CHAINS: DisplayChoice[] = [
   { key: "optimism", displayName: "Optimism" },
   { key: "starkex", displayName: "StarkEx" },
   { key: "starknet", displayName: "StarkNet" },
+  { key: "tezos", displayName: "Tezos" },
 ];
 
 export const CHAINS_HTML: DisplayChoice[] = [

@@ -1,4 +1,4 @@
-export const getRPCFunctionsButtonsVue = (chain: "eth" | "sol" | "starkex" | "starknet") => {
+export const getRPCFunctionsButtonsVue = (chain: "eth" | "sol" | "starkex" | "starknet" | "tezos") => {
   let code = `
       <button class="rpcBtn" @click="getAccounts" style="cursor: pointer">Get Accounts</button>
       <button class="rpcBtn" @click="getBalance" style="cursor: pointer">Get Balance</button>
@@ -18,6 +18,14 @@ export const getRPCFunctionsButtonsVue = (chain: "eth" | "sol" | "starkex" | "st
       <button class="rpcBtn" @click="onGetStarkAccount" style="cursor: pointer">Get Stark Accounts</button>
       <button class="rpcBtn" @click="getStarkKey"  style="cursor: pointer">Get Stark Key</button>
       <button class="rpcBtn" @click="onDeployAccount" style="cursor: pointer">Deploy Account</button>`;
+  }
+  if (chain === "tezos") {
+    code = `
+      <button class="rpcBtn" @click="onGetTezosKeyPair" style="cursor: pointer">Get Tezos Key</button>
+      <button class="rpcBtn" @click="getAccounts" style="cursor: pointer">Get Accounts</button>
+      <button class="rpcBtn" @click="getBalance" style="cursor: pointer">Get Balance</button>
+      <button class="rpcBtn" @click="signMessage" style="cursor: pointer">Sign Message</button>
+      <button class="rpcBtn" @click="signAndSendTransaction" style="cursor: pointer">Sign and Send Transaction</button>`;
   }
   return code;
 };
