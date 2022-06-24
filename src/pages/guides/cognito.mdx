@@ -1,0 +1,1033 @@
+---
+title: Using AWS Cognito with Web3Auth
+image: "/contents/guides/banners/cognito-banner.png"
+description: Learn to use Web3Auth with AWS Cognito.
+order: 2
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+// import Image1 from "@site/static/contents/guides/auth0/auth0-w3adashboard-01.png";
+// import Image2 from "@site/static/contents/guides/auth0/auth0-w3adashboard-02.png";
+// import Image3 from "@site/static/contents/guides/auth0/auth0-w3adashboard-03.png";
+
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <meta charSet="utf-8" />
+  <meta property="og:site_name" content="Web3Auth" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="photo" />
+  <meta name="twitter:site" content="@Web3Auth" />
+  <meta name="twitter:creator" content="@Web3Auth" />x
+  <meta property="og:image" content="/contents/guides/banners/auth0-banner.png" />
+  <meta name="description" content="Learn how to use Web3Auth with Auth0 in your React Application." />
+  <meta property="og:title" content="How to Plug the Magic Loqin Form into Webflow" />
+  <meta property="og:description" content="Learn how to use Web3Auth with Auth0 in your React Application." />
+  <meta property="og:url" content="https://docs.web3auth.io/guides/auth0" />
+  <meta name="keywords" content="web3auth, auth0, auth0 authentication, authentication, auth, web3" />
+</head>
+
+This guide will cover the basics of how to set up your Web3Auth SDK and AWS Cognito for the integration and provide you with the links on how to
+develop a basic web application on the Ethereum blockchain.
+
+## Quick Start
+
+```bash
+git clone https://github.com/Web3Auth/examples.git
+cd cognito-react-example
+npm install
+npm run start
+```
+
+## How it works?
+
+---
+
+When integrating Web3Auth with AWS Cognito the Implicit flow looks something like this:
+
+> Only recommended for Single Page Applications.
+
+![AWS Cognito - Implicit Flow](/contents/guides/cognito/cognito-implicit-flow.png)
+
+For Authorization code flow, you will need an additional backend server to communicate with AWS Cognito to get the `id_token` in exchange of
+`authorization_code` received. The flow with Web3Auth looks something like this:
+
+> Using an additional backend server or applications with client and server.
+
+![AWS Cognito - Authorization Code Flow](/contents/guides/cognito/cognito-authz-code-flow.png)
+
+## Prerequisites
+
+---
+
+- A basic knowledge of JavaScript is required to use Web3Auth SDK.
+
+- [Node](https://nodejs.org/en/download/) & npm installed to use `create-react-app`.
+
+- An [AWS](https://aws.amazon.com/console) account.
+
+- A [Google Developer](https://console.developers.google.com) account.
+
+- Create a Web3Auth account on the [Web3Auth Dashboard](https://dashboard.web3auth.io)
+
+## Setup
+
+---
+
+### Setup your AWS Cognito
+
+- Go to your AWS account and go to [AWS Cognito](https://console.aws.amazon.com/cognito/home) console. And Create a new user pool by following
+  [this AWS Console guide](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-console.html).
+
+- Note down the `userPoolId` and `region` after creating the new user pool.
+
+- Add a new app client to the user pool from App clients tab under General settings of your pool settings. Note down the `App client id` for this app
+  client, that looks something like `3j2tXXXXkkff5ajpn`. We will use this as the `aud` value for the JWT validation field.
+
+  ![AWS Cognito - Create app client](/contents/guides/cognito/cognito-create-app-client.png)
+
+- Add a domain to your AWS Cognito App from `App integration > Domain name` section.
+
+- We will use Google login as Identity provider in AWS Cognito for this guide.
+
+  - Obtain the OAuth `Client ID` and `Client Secret` from your [Google Developer dashboard](https://console.developers.google.com). Follow Google’s
+    instructions to [set up an OAuth 2.0 App](https://support.google.com/cloud/answer/6158849?hl=en).
+
+  - While configuring your Google OAuth 2.0 client for web, make sure to enter
+    - `<AWS_COGNITO_DOMAIN>` in the `Authorized Javascript Origins list` and,
+    - `<AWS_COGNITO_DOMAIN>/oauth2/idpresponse` in the Authorized redirect URIs list.
+
+- Let's configure Google login in AWS Cognito.
+
+  - Go to identity providers tab under federation tab and select Google.
+  - It will require you to enter your Google app's `Client ID` and `Client Secret` which you get in the above steps.
+    - Paste `Client ID` in the Google app ID field.
+    - Paste `Client Secret` in the App secret field.
+    - Type `profile email openid` in the Authorize scope field.
+      ![AWS Cognito - Google Login Identity configuration](/contents/guides/cognito/cognito-google-identity.png)
+    - Your Google login provider is configured, you can enable it in your App client settings under App Integration settings of your pool settings.
+      ![AWS Cognito - Enable Google Identity](/contents/guides/cognito/cognito-enable-google-identity.png)
+    - **Map email from Google attribute to user pool attribute**.
+      - In the Amazon Cognito console, choose Manage user pools, and then choose your user pool.
+      - In the left navigation pane, under Federation, choose `Attribute mapping`.
+      - On the attribute mapping page, choose the `Google` tab.
+      - Next to the Google attribute named `email`, select the Capture check box.
+      - Next to email, for User pool attribute, choose `Email` from the list.
+      - Choose Save changes.
+
+- Update App client settings to set the desired OAuth flow and redirect endpoints. For this guide, we will be using the _Implicit OAuth flow_.
+
+  - Click on `App client settings` under **App integration**.
+  - Callback URL(s): `http://localhost:3000/callback, https://beta.openlogin.com/auth`
+  - Sign out URL(s): `http://localhost:3000`
+    - Additional to your own URLs for the application, please add
+      - [https://beta.openlogin.com/auth](https://beta.openlogin.com/auth) (for Web3Auth testnet used in demo applications) and
+      - [https://app.openlogin.com/auth](https://app.openlogin.com/auth) (for Web3Auth mainnet used in production applications).
+  - OAuth2.0
+    - Select [x] `Implicit grant` from **Allowed OAuth Flows**
+    - Select [x] `email` `openid` `profile` from **Allowed OAuth Scopes**
+      ![AWS Cognito - App Client Settings Final](/contents/guides/cognito/cognito-final-app-client-settings.png)
+  - **Save Changes** and your Cognito app is configured to use Web3Auth.
+
+- Now lets configure Web3Auth using AWS Cognito app details.
+
+### Setup your Web3Auth Dashboard
+
+- Create a Project from the **Plug and Play** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).
+
+  ![Plug n Play Project Creation on Web3Auth Dashboard](/contents/guides/set-up-web3auth-dashboard/plugnplay-project.png)
+
+  - Enter your desired Project name
+  - Select the blockchain(s) you'll be building this project on. For interoperability with Torus Wallet, you've an option of allowing the user's
+    private key to be used in other applications using Torus Wallet. We currently have this option across `EVM` and `Solana` and `Casper` blockchains.
+
+  - Finally, once you create the project, you've the option to whitelist your URLs for the project. Please whitelist the domains where your project
+    will be hosted.
+
+    ![Plug n Play Project - Whitelist](/contents/guides/set-up-web3auth-dashboard/plugnplay-whitelist.png)
+
+- Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
+  configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. aws-cognito-verifier`
+  - Select environment:
+    - `Testnet`: A safe space to test changes before releasing them to production. You are required to have an existing testnet project with the same
+      project name before being able to make it live on mainnet.
+    - Mainnet: A production space for your end-users. Please ensure that your app is ready to go live when you choose this environment. **Ideal if
+      you're expecting less than 10000 MAUs.**
+    - Cyan: A production space for your end-users. Please ensure that your app is ready to go live when you choose this environment. **Ideal if you're
+      expecting more than 10000 MAUs.**
+  - Select `Custom` from the **Login Provider**.
+  - Select `Email` for the **JWT Verifier ID**. You can also use sub as your jwt verifier id but if you are using multiple login providers then your
+    users will get diffrent private keys accross diffrent login providers even if they use same email address as they will be assigned different ids
+    by aws cognito. You can set this field based on your application needs provided that it should be a unique identifier for user.
+  - Your JWK endpoint endpoint for aws cognito will look something like this:
+    `https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json`. Get the `region` and `userPoolId` value from your AWS Cognito
+    console.
+  - JWT validation fields:
+    - iss: `https://cognito-idp.{region}.amazonaws.com/{userPoolId}`, get the `region` and `userPoolId` value from your AWS Cognito console.
+    - aud: `App client id` from AWS Cognito console.
+  - Click on `Create` button to create your verifier. It may take up to 10 minutes to deploy verifier on _testnet_. You'll receive an email once it's
+    complete.
+
+  ![Custom Authentication - Create AWS Cognito Verifier](/contents/guides/cognito/cognito-create-verifier.png)
+
+- You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+
+## Create React App
+
+### create-react-app
+
+Let's create a new react project using the following command:
+
+<Tabs
+defaultValue="npm"
+values={[
+  { label: "npm", value: "npm" },
+  { label: "yarn", value: "yarn" },
+]}
+>
+<TabItem value="npm">
+
+```shell
+npx create-react-app my-app --template typescript
+```
+
+  </TabItem>
+<TabItem value="yarn">
+
+```shell
+yarn create react-app my-app --template typescript
+```
+
+</TabItem>
+
+</Tabs>
+
+> Further, replace the contents of the `src/App.tsx` & `src/App.css` files with the below codes.
+
+<Tabs
+defaultValue="App.tsx"
+values={[
+  { label: "App.tsx", value: "App.tsx" },
+  { label: "App.css", value: "App.css" },
+]}
+>
+<TabItem value="App.tsx">
+
+```js
+import {useEffect, useState} from 'react'
+import {Web3AuthCore} from '@web3auth/core'
+import {
+  WALLET_ADAPTERS,
+  CHAIN_NAMESPACES,
+  SafeEventEmitterProvider,
+} from '@web3auth/base'
+import {OpenloginAdapter} from '@web3auth/openlogin-adapter'
+import Web3 from 'web3'
+import './App.css'
+
+const clientId =
+  'BBWLCT1dIp57_-rJQwfMTTWqZgncOKu56b1TSqyLptpwSKrEndkCerKzgJ7aZ87_jviI5oLUJVCt-_mTqBJUSyQ' // get from https://dashboard.web3auth.io
+
+function App() {
+  const [web3auth, setWeb3auth] = useState<Web3AuthCore | null>(null)
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+    null,
+  )
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const web3auth = new Web3AuthCore({
+          chainConfig: {
+            chainNamespace: CHAIN_NAMESPACES.EIP155,
+            chainId: '0x3',
+          },
+        })
+
+        const openloginAdapter = new OpenloginAdapter({
+          adapterSettings: {
+            clientId,
+            network: 'testnet',
+            uxMode: 'popup',
+            loginConfig: {
+              jwt: {
+                name: 'Custom AWS Cognito Login via Google',
+                verifier: 'web3auth-cognito-google-testnet',
+                typeOfLogin: 'jwt',
+                clientId: '2upuksfh6n0n5c0nciirc1bdrv', //use your app client id you will get from aws cognito app
+              },
+            },
+          },
+        })
+        web3auth.configureAdapter(openloginAdapter)
+        setWeb3auth(web3auth)
+
+        await web3auth.init()
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    init()
+  }, [])
+
+  const login = async () => {
+    if (!web3auth) {
+      uiConsole('web3auth not initialized yet')
+      return
+    }
+    const web3authProvider = await web3auth.connectTo(
+      WALLET_ADAPTERS.OPENLOGIN,
+      {
+        relogin: true,
+        loginProvider: 'jwt',
+        extraLoginOptions: {
+          domain: 'https://shahbaz-web3auth.auth.ap-south-1.amazoncognito.com',
+          verifierIdField: 'email',
+          response_type: 'token',
+          scope: 'email profile openid',
+        },
+      },
+    )
+    setProvider(web3authProvider)
+  }
+
+  const getUserInfo = async () => {
+    if (!web3auth) {
+      uiConsole('web3auth not initialized yet')
+      return
+    }
+    const user = await web3auth.getUserInfo()
+    uiConsole(user)
+  }
+
+  const logout = async () => {
+    if (!web3auth) {
+      uiConsole('web3auth not initialized yet')
+      return
+    }
+    await web3auth.logout()
+    setProvider(null)
+  }
+
+  const getAccounts = async () => {
+    if (!provider) {
+      uiConsole('provider not initialized yet')
+      return
+    }
+    const web3 = new Web3(provider as any)
+    const userAccounts = await web3.eth.getAccounts()
+    uiConsole(userAccounts)
+  }
+
+  const getBalance = async () => {
+    if (!provider) {
+      uiConsole('provider not initialized yet')
+      return
+    }
+    const web3 = new Web3(provider as any)
+    const accounts = await web3.eth.getAccounts()
+    const balance = await web3.eth.getBalance(accounts[0])
+    uiConsole(web3.utils.fromWei(balance) + ' ETH')
+  }
+
+  const signMessage = async () => {
+    if (!provider) {
+      uiConsole('provider not initialized yet')
+      return
+    }
+    const web3 = new Web3(provider as any)
+    // Get user's Ethereum public address
+    const fromAddress = (await web3.eth.getAccounts())[0]
+
+    const message =
+      '0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad'
+
+    ;(web3.currentProvider as any)?.send(
+      {
+        method: 'eth_sign',
+        params: [fromAddress, message],
+        from: fromAddress,
+      },
+      (err: Error, result: any) => {
+        if (err) {
+          return console.error(err)
+        }
+        uiConsole(result)
+      },
+    )
+  }
+
+  const signTransaction = async () => {
+    if (!provider) {
+      uiConsole('provider not initialized yet')
+      return
+    }
+    const web3 = new Web3(provider as any)
+    const accounts = await web3.eth.getAccounts()
+    const txRes = await web3.eth.signTransaction({
+      from: accounts[0],
+      to: accounts[0],
+      value: web3.utils.toWei('0.01'),
+    })
+    uiConsole(txRes.raw)
+  }
+
+  const sendTransaction = async () => {
+    if (!provider) {
+      uiConsole('provider not initialized yet')
+      return
+    }
+    const web3 = new Web3(provider as any)
+    const accounts = await web3.eth.getAccounts()
+
+    const txRes = await web3.eth.sendTransaction({
+      from: accounts[0],
+      to: accounts[0],
+      value: web3.utils.toWei('0.0001'),
+    })
+    uiConsole(txRes.transactionHash)
+  }
+
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector('#console>p')
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2)
+    }
+  }
+
+  const loginView = (
+    <>
+      <div className="flex-container">
+        <div>
+          <button onClick={getUserInfo} className="card">
+            Get User Info
+          </button>
+        </div>
+        <div>
+          <button onClick={getAccounts} className="card">
+            Get Accounts
+          </button>
+        </div>
+        <div>
+          <button onClick={getBalance} className="card">
+            Get Balance
+          </button>
+        </div>
+        <div>
+          <button onClick={signMessage} className="card">
+            Sign Message
+          </button>
+        </div>
+        <div>
+          <button onClick={signTransaction} className="card">
+            Sign Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={sendTransaction} className="card">
+            Send Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={logout} className="card">
+            Log Out
+          </button>
+        </div>
+      </div>
+
+      <div id="console" style={{whiteSpace: 'pre-line'}}>
+        <p style={{whiteSpace: 'pre-line'}}></p>
+      </div>
+    </>
+  )
+
+  const logoutView = (
+    <button onClick={login} className="card">
+      Login
+    </button>
+  )
+
+  return (
+    <div className="container">
+      <h1 className="title">
+        <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
+          Web3Auth
+        </a>{' '}
+        & ReactJS Example using AWS Cognito
+      </h1>
+
+      <div className="grid">{provider ? loginView : logoutView}</div>
+
+      <footer className="footer">
+        <a
+          href="https://github.com/Web3Auth/examples/tree/master/cognito-react-example"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Source code
+        </a>
+        <a
+          href="https://faucet.egorfine.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Ropsten Faucet
+        </a>
+      </footer>
+    </div>
+  )
+}
+
+export default App
+
+```
+
+  </TabItem>
+<TabItem value="App.css">
+
+```css
+.container {
+  width: 60%;
+  margin: auto;
+  padding: 0;
+}
+
+.main {
+  min-height: 100vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  line-height: 1.15;
+  font-size: 3rem;
+  text-align: center;
+  margin: 50px;
+}
+
+.title a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.grid {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card {
+  margin: 0.5rem;
+  padding: 0.7rem;
+  text-align: center;
+  color: #0070f3;
+  background-color: #fafafa;
+  text-decoration: none;
+  border: 1px solid #0070f3;
+  border-radius: 10px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  width: 100%;
+}
+
+.card:hover,
+.card:focus,
+.card:active {
+  cursor: pointer;
+  background-color: #f1f1f1;
+}
+
+.footer {
+  display: flex;
+  flex: 1;
+  padding: 2rem 0;
+  border-top: 1px solid #eaeaea;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10rem;
+}
+
+.footer a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.logo {
+  height: 1.5rem;
+  margin-left: 0.5rem;
+}
+
+@media (max-width: 1200px) {
+  .container {
+    width: 100%;
+  }
+}
+
+.flex-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.flex-container > div {
+  width: 100px;
+  margin: 10px;
+  text-align: center;
+  line-height: 75px;
+  font-size: 30px;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Troubleshoot webpack5 issue
+
+While using create-react-app, you may run into issues building. This is because NodeJS polyfills are not included in the latest version of webpack 5.
+To solve this, please have a look at this [troubleshooting page](https://docs.web3auth.io/troubleshooting/webpack-issues) where we have added the
+resolution.
+
+For a quick fix here,
+
+- Add the `config-overrides.js` file to the root folder of your project.
+
+- Replace the file `package.json` in the root folder.
+
+<Tabs
+defaultValue="config-overrides.js"
+values={[
+  { label: "config-overrides.js", value: "config-overrides.js" },
+  { label: "package.json", value: "package.json" },
+]}
+>
+<TabItem value="config-overrides.js">
+
+```js
+const webpack = require("webpack");
+
+module.exports = function override(config) {
+  const fallback = config.resolve.fallback || {};
+  Object.assign(fallback, {
+    crypto: require.resolve("crypto-browserify"),
+    stream: require.resolve("stream-browserify"),
+    assert: require.resolve("assert"),
+    http: require.resolve("stream-http"),
+    https: require.resolve("https-browserify"),
+    os: require.resolve("os-browserify"),
+    url: require.resolve("url"),
+  });
+  config.resolve.fallback = fallback;
+  config.plugins = (config.plugins || []).concat([
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+      Buffer: ["buffer", "Buffer"],
+    }),
+  ]);
+  config.ignoreWarnings = [/Failed to parse source map/];
+  return config;
+};
+```
+
+  </TabItem>
+<TabItem value="package.json">
+
+```json
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.11.38",
+    "@types/react": "^18.0.12",
+    "@types/react-dom": "^18.0.5",
+    "@web3auth/base": "^1.0.0",
+    "@web3auth/web3auth": "^1.0.0",
+    "@web3auth/ethereum-provider": "^1.0.0",
+    "web3": "^1.7.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.7.3",
+    "web-vitals": "^2.1.4"
+  },
+  "eslintConfig": {
+    "extends": ["react-app", "react-app/jest"]
+  },
+  "browserslist": {
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+  },
+  "devDependencies": {
+    "assert": "^2.0.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "url": "^0.11.0"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+  }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Run the app
+
+```shell
+npm install # since we changed the package.json and created a new file config-overrides.js
+npm start # starts the application on localhost:3000
+```
+
+![Open Application - React Cognito App Demo](/contents/guides/cognito/cognito-react-login.gif)
+
+## Using the Web3Auth SDK
+
+### Install Web3Auth
+
+Install Web3Auth using either [npm](https://www.npmjs.com/package/@web3auth/web3auth) or [yarn](https://yarnpkg.com/package/@web3auth/web3auth):
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+<TabItem value="npm">
+
+```shell
+npm install --save @web3auth/core @web3auth/base @web3auth/openlogin-adapter
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @web3auth/core @web3auth/base @web3auth/openlogin-adapter
+```
+
+</TabItem>
+
+</Tabs>
+
+[![Npm package monthly downloads](https://badgen.net/npm/dm/@web3auth/web3auth)](https://www.npmjs.com/package/@web3auth/web3auth)
+[![](https://data.jsdelivr.com/v1/package/npm/@web3auth/web3auth/badge)](https://www.jsdelivr.com/package/npm/@web3auth/web3auth)
+
+**`@web3auth/core`**
+
+This package provides the core logic for handling adapters within web3auth. This package acts as a manager for all the adapters. You should use this
+package to build your custom login UI on top of web3auth.
+
+**`@web3auth/openlogin-adapter`**
+
+For using Custom Authentication & Whitelabeling, we need to use the OpenLogin Adapter, where we can initialise the authentication details and add
+customisations in the login UI.
+
+**`@web3auth/base`**
+
+Since we're using typescript, we need the base package to provide types of the different variables we'll be using throughout the app building process.
+This reduces errors to a very large extent.
+
+### Install EVM Chain Libraries
+
+Install EVM Chain Integration libraries using either [npm](https://www.npmjs.com/package/@web3auth/ethereum-provider) or
+[yarn](https://yarnpkg.com/package/@web3auth/ethereum-provider):
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+<TabItem value="npm">
+
+```shell
+npm install --save web3 @web3auth/ethereum-provider
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add web3 @web3auth/ethereum-provider
+```
+
+</TabItem>
+
+</Tabs>
+
+**`@web3auth/ethereum-provider`**
+
+`@web3auth/ethereum-provider` package can be used to get a EIP1193 compatible provider from any `secp512k1` private key. You can use this package with
+our SDKs, to get an EIP1193 provider from the logged-in user's private key.
+
+This example initailizes `Web3` library. You can do similar calls with `Ethers.js` as well.
+
+### Initialize Web3Auth Instance
+
+#### Import Modules into your project
+
+Import the `Web3AuthCore`, `OpenloginAdapter` & `Web3` Modules into your project.
+
+```js
+import { Web3AuthCore } from "@web3auth/core";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { WALLET_ADAPTERS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import Web3 from "web3";
+```
+
+#### Create the Web3AuthCore instance
+
+It's time to create an instance of the `Web3AuthCore` in the project.
+
+We need `clientId` and `chainNamespace` to initialize web3auth class. You can get your `clientId` from registering (above), whereas `chainNamespace`
+signifies the type of chain you want to initialize web3auth with, which will depend on the blockchain you've selected here.
+
+> There might be cases you will be getting an JSON-RPC error, which comes from the overloading of the test node server mentioned in this example. In
+> that case, we recommend you to pass on your own node server in the `rpcTarget` value, which can be easily created by using a service like
+> [Infura](https://infura.io/), [Quicknode](https://www.quicknode.com/) etc.
+
+```js
+const web3auth = new Web3AuthCore({
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x3", // "ropsten", change this to "0x1" for Ethereum mainnet.
+  },
+});
+```
+
+#### Custom Authentication (OpenLoginApadpter)
+
+Custom Authentication is a way to authenticate users with your own custom authentication service like Auth0, Firebase Authentication, AWS Cognito etc.
+
+For enabling this, you need to [Create a Verifier](/customauth/verifiers) from the **Custom Auth** section of the
+[Web3Auth Developer Dashboard](https://dashboard.web3auth.io/home/customauth) which we already set up above.
+
+```js
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId,
+    network: "testnet", // when deploying this on production, change this to either `mainner` or `cyan`.
+    uxMode: "popup",
+    loginConfig: {
+      jwt: {
+        name: "Custom AWS Cognito Login via Google",
+        verifier: "web3auth-cognito-google-testnet", // change this with your verifier
+        typeOfLogin: "jwt",
+        clientId: "2upuksfh6n0n5c0nciirc1bdrv", // change this with your app client id you got from AWS Cognito App
+      },
+    },
+  },
+});
+
+web3auth.configureAdapter(openloginAdapter);
+```
+
+#### Initializing
+
+Finally, it is time to initialise the SDK within your application.
+
+```js
+await web3auth.init();
+```
+
+<!-- ### Authentication -->
+
+### Login
+
+After initializing you can login/connect with any adapter by calling `connectTo` function along with adapter name.
+
+```js
+const login = async () => {
+  if (!web3auth) {
+    uiConsole("web3auth not initialized yet");
+    return;
+  }
+  const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    relogin: true,
+    loginProvider: "jwt",
+    extraLoginOptions: {
+      domain: "https://shahbaz-web3auth.auth.ap-south-1.amazoncognito.com",
+      verifierIdField: "email",
+      response_type: "token",
+      scope: "email profile openid",
+    },
+  });
+  setProvider(web3authProvider);
+};
+```
+
+### Get the User Profile
+
+Once logged in, Web3Auth instance returns you some information about your logged in user. This is fetched directly from the JWT token and Web3Auth
+doesn't store this info anywhere. Hence, this information in available in social logins only after the user has logged into your application.
+
+> Know more about the [`getUserInfo()` function](/api-reference/web/plugnplay#get-users-information).
+
+```js
+const getUserInfo = async () => {
+  if (!web3auth) {
+    uiConsole("web3auth not initialized yet");
+    return;
+  }
+  const user = await web3auth.getUserInfo();
+  uiConsole(user);
+};
+```
+
+### Logout
+
+You can logout a user and disconnect from connected wallet using `web3auth.logout()` function.
+
+```js
+const logout = async () => {
+  if (!web3auth) {
+    uiConsole("web3auth not initialized yet");
+    return;
+  }
+  await web3auth.logout();
+  setProvider(null);
+};
+```
+
+## Interacting with Blockchain
+
+Web3Auth is chain agnostic, ie. whatever blockchain or layer-2 you use, Web3Auth can easily support that. Web3Auth has native providers for EVM,
+Solana, and Casper blockchains and also supports other chains by getting the private key in the user scope and making RPC calls.
+
+### Get User Accounts
+
+```js
+const getAccounts = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const web3 = new Web3(provider as any)
+  const userAccounts = await web3.eth.getAccounts()
+  uiConsole(userAccounts)
+}
+```
+
+### View User Balance
+
+```js
+const getBalance = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const web3 = new Web3(provider as any)
+  const accounts = await web3.eth.getAccounts()
+  const balance = await web3.eth.getBalance(accounts[0])
+  uiConsole(web3.utils.fromWei(balance) + ' ETH')
+}
+```
+
+### Sign Message
+
+```js
+const signMessage = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const web3 = new Web3(provider as any)
+  // Get user's Ethereum public address
+  const fromAddress = (await web3.eth.getAccounts())[0]
+
+  const message =
+    '0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad'
+
+  ;(web3.currentProvider as any)?.send(
+    {
+      method: 'eth_sign',
+      params: [fromAddress, message],
+      from: fromAddress,
+    },
+    (err: Error, result: any) => {
+      if (err) {
+        return console.error(err)
+      }
+      uiConsole(result)
+    },
+  )
+}
+```
+
+### Sign Transaction
+
+```js
+const signTransaction = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const web3 = new Web3(provider as any)
+  const accounts = await web3.eth.getAccounts()
+  const txRes = await web3.eth.signTransaction({
+    from: accounts[0],
+    to: accounts[0],
+    value: web3.utils.toWei('0.01'),
+  })
+  uiConsole(txRes.raw)
+}
+```
+
+### Sign and Send Transaction
+
+```js
+const sendTransaction = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const web3 = new Web3(provider as any)
+  const accounts = await web3.eth.getAccounts()
+
+  const txRes = await web3.eth.sendTransaction({
+    from: accounts[0],
+    to: accounts[0],
+    value: web3.utils.toWei('0.0001'),
+  })
+  uiConsole(txRes.transactionHash)
+}
+```
+
+## Example code
+
+The code for this demo application can also be found in the
+[Web3Auth Cognito Example](https://github.com/Web3Auth/examples/tree/main/cognito-react-example). Check it out and try running it locally yourself!
+
+## Web3Auth Quick Starts
+
+Still looking for a quick way to get started?
+
+Follow the steps for setting up above and try one of our
+[quick-starts](/integration-builder?lang=react&chain=eth&customAuthentication=yes&customLogin=no&whitelabel=no) for your respective framework.
