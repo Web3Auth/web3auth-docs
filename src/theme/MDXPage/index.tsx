@@ -29,9 +29,14 @@ export default function MDXPage(props: ComponentProps<typeof OriginalMDXPage>) {
                     <span className={styles.type}>{type}</span>
                     <h1 className={styles.title}>{title}</h1>
                     <span>
-                      {tags.map((item, index) => (
-                        <code className={styles.tag}>{item}</code>
-                      ))}
+                      {tags &&
+                        tags.map((item) => {
+                          return (
+                            <code key={item} className={styles.tag}>
+                              {item}
+                            </code>
+                          );
+                        })}
                     </span>
                     <span className={styles.date}>
                       {author} | {date}
