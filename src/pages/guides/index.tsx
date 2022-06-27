@@ -36,17 +36,22 @@ export default function GuidesPage({ guides }: Props) {
               <span className={styles.type}>{guide.type}</span>
               <h3>{guide.title}</h3>
               <p>{guide.description}</p>
-              {guide.tags.map((item, index) => {
-                if (index === guide.tags.length - 1) {
+              {guide.tags &&
+                guide.tags.map((item, index) => {
+                  if (index === guide.tags.length - 1) {
+                    return (
+                      <span key={item}>
+                        <code className={styles.tag}>{item}</code>
+                        <br />
+                      </span>
+                    );
+                  }
                   return (
-                    <span>
-                      <code className={styles.tag}>{item}</code>
-                      <br />
-                    </span>
+                    <code key={item} className={styles.tag}>
+                      {item}
+                    </code>
                   );
-                }
-                return <code className={styles.tag}>{item}</code>;
-              })}
+                })}
               <span className={styles.date}>
                 {guide.author} | {guide.date}
               </span>
