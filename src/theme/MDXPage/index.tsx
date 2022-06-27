@@ -15,7 +15,7 @@ export default function MDXPage(props: ComponentProps<typeof OriginalMDXPage>) {
 
   if (!permalink.startsWith("/docs/guides/")) return <OriginalMDXPage {...props} />;
 
-  const { title, description, image, tag, author, date, wrapperClassName } = frontMatter;
+  const { title, image, description, type, tags, author, date, wrapperClassName } = frontMatter;
   return (
     <Layout title={title} description={description} wrapperClassName={wrapperClassName}>
       <main>
@@ -26,8 +26,13 @@ export default function MDXPage(props: ComponentProps<typeof OriginalMDXPage>) {
                 <div className={styles.titleContainer}>
                   <img className={styles.cover} src={image} alt="Cover" />
                   <div className={styles.titleContainer}>
-                    <span className={styles.tag}>{tag}</span>
+                    <span className={styles.type}>{type}</span>
                     <h1 className={styles.title}>{title}</h1>
+                    <span>
+                      {tags.map((item, index) => (
+                        <code className={styles.tag}>{item}</code>
+                      ))}
+                    </span>
                     <span className={styles.date}>
                       {author} | {date}
                     </span>
