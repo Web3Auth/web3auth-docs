@@ -1,18 +1,38 @@
 ---
 title: Using Auth0 with Web3Auth
-hide_table_of_contents: false
----
-
+image: "/docs/contents/guides/banners/auth0-banner.png"
+description: Learn how to use Web3Auth with Auth0 in your React Application.
+type: guide
+tags: [ethereum, web3auth, auth0, react]
+date: 25th May 2022
+author: Yashovardhan Agrawal
+order: 1
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import Image1 from "@site/static/contents/auth0/auth0-w3adashboard-01.png";
-import Image2 from "@site/static/contents/auth0/auth0-w3adashboard-02.png";
-import Image3 from "@site/static/contents/auth0/auth0-w3adashboard-03.png";
+import Image1 from "@site/static/contents/guides/auth0/auth0-w3adashboard-01.png";
+import Image2 from "@site/static/contents/guides/auth0/auth0-w3adashboard-02.png";
+import Image3 from "@site/static/contents/guides/auth0/auth0-w3adashboard-03.png";
+
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <meta charSet="utf-8" />
+  <meta property="og:site_name" content="Web3Auth" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="photo" />
+  <meta name="twitter:site" content="@Web3Auth" />
+  <meta name="twitter:creator" content="@Web3Auth" />x
+  <meta property="og:image" content="/contents/guides/banners/auth0-banner.png" />
+  <meta name="description" content="Learn how to use Web3Auth with Auth0 in your React Application." />
+  <meta property="og:title" content="How to Plug the Magic Loqin Form into Webflow" />
+  <meta property="og:description" content="Learn how to use Web3Auth with Auth0 in your React Application." />
+  <meta property="og:url" content="https://docs.web3auth.io/guides/auth0" />
+  <meta name="keywords" content="web3auth, auth0, auth0 authentication, authentication, auth, web3" />
+</head>
 
 This guide will cover the basics of how to set up your Web3Auth SDK and Auth0 account for the integration and provide you with the links on how to
-develop a basic web application on the blockchain of your choice. Before starting, you can try the integration in our example
+develop a basic web application on the blockchain of your choice. Before starting, you can try the demo integration in our example
 [here](https://demo-auth0.web3auth.io).
 
 ## How it works?
@@ -21,11 +41,11 @@ develop a basic web application on the blockchain of your choice. Before startin
 
 When integrating Web3Auth with Auth0 SPA the flow looks something like this:
 
-![](/contents/auth0/auth0-spa-flow.png)
+![Auth0 SPA Flow](/contents/guides/auth0/auth0-spa-flow.png)
 
 For Auth0 RWA, we need an additional backend server to communicate with Auth0. The flow for RWA with Web3Auth looks something like this:
 
-![](/contents/auth0/auth0-rwa-flow.png)
+![Auth0 RWA Flow](/contents/guides/auth0/auth0-rwa-flow.png)
 
 - When a user logs in with Auth0, Auth0 sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
 
@@ -44,21 +64,28 @@ For Auth0 RWA, we need an additional backend server to communicate with Auth0. T
 - Create an Auth0 tenant and configure a Single Page Web Application (SPA for Web) or Native (for Mobile) from
   [Auth0 Console](https://manage.auth0.com/).
 
-  - Please note that Regular Web Applications are also supported, however for the guide here, we’re preferring SPA since its implicit flow doesn’t
-    require an application to host a server. You can navigate to the
-    [additional section](#additional-reading-setup-custom-authentication-using-auth0-rwa) below which talks about the code flow with RWA.
+  - Please note that Regular Web Applications are also supported, however for this guide, we’re preferring SPA since its implicit flow doesn’t require
+    an application to host a server. You can navigate to the [additional section](#additional-reading-setup-custom-authentication-using-auth0-rwa)
+    below which talks about the code flow with RWA.
 
 - Create a Web3Auth account on the [Web3Auth Dashboard](https://dashboard.web3auth.io)
 
 ## Setup
 
+---
+
 ### Setup your Auth0 Tenant
 
 - Add the following URLs for your app to the Allowed Web Origins field when configuring your Auth0 Application.
+
   - Additional to your own URLs for the application, please add
     - [https://beta.openlogin.com/auth](https://beta.openlogin.com/auth) (for Web3Auth testnet used in demo applications) and
     - [https://app.openlogin.com/auth](https://app.openlogin.com/auth) (for Web3Auth mainnet used in production applications).
+
+  ![Add Callback URL to Auth0 Dashboard](/contents/guides/auth0/auth0-callback-url.png)
+
 - You will require `domain` and `clientId` of the newly created application which you can copy from [Auth0 Console](https://manage.auth0.com/).
+  ![Domain and Client ID from Auth0 Dashboard](/contents/guides/auth0/auth0-guide-clientid.png)
 
 ### Setup your Web3Auth Dashboard
 
@@ -78,7 +105,7 @@ For Auth0 RWA, we need an additional backend server to communicate with Auth0. T
   configuration:
 
   - Choose a name of your choice for the verifier identifier.
-  - Select verifier type as Auth0
+  - Select verifier type as `Auth0`
   - Choose your Authentication Type as the Auth Provider you've selected.
   - Paste the `clientId` and `domain` from the Auth0 SPA you create in the above steps. This will be used to validate the JWT token issued by Auth0.
     <img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} src={Image3} />
@@ -95,7 +122,7 @@ SDKs, please have a look at this [documentation page](/developing-with-web3auth/
 For this guide here, we will be talking through the [Web3Auth Core SDK](/api-reference/web/core) and using the
 [OpenLogin Provider](/api-reference/web/adapters/openlogin) alongside it to enable Custom Authentication through Auth0.
 
-### Setting up your base project for using Web3 libraries:​
+#### Setting up your base project for using Web3 libraries:​
 
 If you are starting from scratch, to set up this project locally, you will need to create a base Web application, where you can install the required
 dependencies. However, while working with Web3, there are a few base libraries, which need additional configuration. This is because certain packages
@@ -147,7 +174,7 @@ We'll be using `web3` for this guide.
 npm install --save @web3
 ```
 
-## Initialization
+### Initialization
 
 Once installed, your Web3Auth application needs to be initialized. Initialisation is a multi step process where we add all the config details for
 Web3Auth and OpenloginAdapter. Please make sure all of this is happening when the component mounts in your application using `useEffect` hook. This
@@ -354,8 +381,6 @@ Try our [Demo Application](https://demo-auth0.web3auth.io/) with Web3Auth & Auth
 also works for both the flows, ie. SPA and RWA. The code for the Demo application can also be found in the
 [Web3Auth Auth0 Example](https://github.com/Web3Auth/Web3Auth/tree/master/examples/auth0-react-example). Check it out and try running it locally
 yourself!
-
-For the application we've built in this example, refer to this code below:
 
 <Tabs defaultValue="App.tsx" values={
   [
