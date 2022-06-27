@@ -1,0 +1,225 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+So if you have completed this far, it means that you have successfully authenticated your user. Now, you can use the provider returned by Web3Auth as
+`web3auth.provider` to interact with your blockchain. You can use the [Provider SDKs](/api-reference/web/providers/) to perform RPC Calls to your
+blockchain.
+
+Web3Auth is chain agnostic, ie. depending on whatever blockchain or layer-2 you use, Web3Auth can easily support that. Web3Auth has native providers
+for EVM and Solana blockchains and for others, you can get the private key in the user scope and make RPC calls. For standardising the type of
+provider, Web3Auth Base provides a `SafeEventEmitterProvider` from which you can create your own provider.
+
+- [Ethereum Provider](/api-reference/web/providers/evm) gives you the capability of making RPC calls to the EVM compatible blockchains.
+- [Solana Provider](/api-reference/web/providers/solana) gives you the capability of making RPC calls to the Solana blockchain.
+- If you want to use any other chain except Solana or EVM chains, for ex: Starknet, you can specify the value of `chainNamespace` field as other in
+  the Web3Auth SDK Constructor. Refer to: [Using other blockchains](/api-reference/web/providers/#other)
+
+### Get User Accounts
+
+<Tabs
+defaultValue="web3"
+values={[
+  { label: "Web3", value: "web3" },
+  { label: "Ethers.js", value: "ethers.js" },
+]}
+>
+<TabItem value="web3">
+
+```js
+const getAccounts = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const web3 = new Web3(provider as any)
+  const userAccounts = await web3.eth.getAccounts()
+  uiConsole(userAccounts)
+}
+```
+
+  </TabItem>
+<TabItem value="ethers.js">
+
+```js
+const getAccounts = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const provider = new ethers.providers.Web3Provider(provider as any);
+  const signer = provider.getSigner();
+  const userAccounts = await signer.getAddress();
+  uiConsole(userAccounts)
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### View User Balance
+
+<Tabs
+defaultValue="web3"
+values={[
+  { label: "Web3", value: "web3" },
+  { label: "Ethers.js", value: "ethers.js" },
+]}
+>
+<TabItem value="web3">
+
+```js
+const getBalance = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const web3 = new Web3(provider as any)
+  const accounts = await web3.eth.getAccounts()
+  const balance = await web3.eth.getBalance(accounts[0])
+  uiConsole(web3.utils.fromWei(balance) + ' ETH')
+}
+```
+
+  </TabItem>
+<TabItem value="ethers.js">
+
+```js
+const getBalance = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const provider = new ethers.providers.Web3Provider(this.provider as any)
+  const signer = provider.getSigner()
+  const account = await signer.getAddress()
+  // Get user's balance in ether
+  const balance = ethers.utils.formatEther(
+    await provider.getBalance(account), // Balance is in wei
+  )
+  uiConsole(balance + ' ETH')
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Sign Message
+
+<Tabs
+defaultValue="web3"
+values={[
+  { label: "Web3", value: "web3" },
+  { label: "Ethers.js", value: "ethers.js" },
+]}
+>
+<TabItem value="web3">
+
+```js
+const signMessage = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const web3 = new Web3(provider as any)
+  // Get user's Ethereum public address
+  const fromAddress = (await web3.eth.getAccounts())[0]
+
+  const message =
+    '0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad'
+
+  ;(web3.currentProvider as any)?.send(
+    {
+      method: 'eth_sign',
+      params: [fromAddress, message],
+      from: fromAddress,
+    },
+    (err: Error, result: any) => {
+      if (err) {
+        return console.error(err)
+      }
+      uiConsole(result)
+    },
+  )
+}
+```
+
+  </TabItem>
+<TabItem value="ethers.js">
+
+```js
+const signMessage = async () => {
+  if (!provider) {
+    uiConsole("provider not initialized yet");
+    return;
+  }
+  const provider = new ethers.providers.Web3Provider(provider);
+  const signer = provider.getSigner();
+
+  const originalMessage = "YOUR_ORIGINAL_MESSAGE";
+
+  const signedMessage = await signer.signMessage(originalMessage);
+  uiConsole(signedMessage);
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+### Send Transaction
+
+<Tabs
+defaultValue="web3"
+values={[
+  { label: "Web3", value: "web3" },
+  { label: "Ethers.js", value: "ethers.js" },
+]}
+>
+<TabItem value="web3">
+
+```js
+const sendTransaction = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const web3 = new Web3(provider as any)
+  const accounts = await web3.eth.getAccounts()
+
+  const txRes = await web3.eth.sendTransaction({
+    from: accounts[0],
+    to: accounts[0],
+    value: web3.utils.toWei('0.0001'),
+  })
+  uiConsole(txRes.transactionHash)
+}
+```
+
+  </TabItem>
+<TabItem value="ethers.js">
+
+```js
+const sendTransaction = async () => {
+  if (!provider) {
+    uiConsole("provider not initialized yet");
+    return;
+  }
+  const provider = new ethers.providers.Web3Provider(provider);
+  const signer = provider.getSigner();
+  const address = await signer.getAddress();
+
+  const tx = await signer.sendTransaction({
+    to: address,
+    value: ethers.utils.parseEther("0.0001"),
+  });
+  const receipt = await tx.wait();
+
+  uiConsole(receipt.transactionHash);
+};
+```
+
+</TabItem>
+
+</Tabs>

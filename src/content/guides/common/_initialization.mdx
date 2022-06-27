@@ -1,0 +1,35 @@
+Once installed, your Web3Auth application needs to be initialized. Initialisation is a multi step process where we add all the config details for
+Web3Auth and OpenloginAdapter. Please make sure all of this is happening when the component mounts in your application using `useEffect` hook. This
+makes sure that Web3Auth is initialised when your application starts up.
+
+#### Importing the packages
+
+```js
+import { WALLET_ADAPTERS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { Web3AuthCore } from "@web3auth/core";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+```
+
+Alongside the `Web3Auth` and `OpenloginAdapter` you need the above mentioned packages from `@web3auth/base` for different initialisations mentioned
+further in this guide.
+
+#### Setting up the Web3Auth SDK
+
+```js
+import { Web3AuthCore } from "@web3auth/core";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+const web3auth = new Web3AuthCore({
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155, // SOLANA, OTHER
+    chainId: "0x1",
+  },
+});
+```
+
+Here, we're using the `chainConfig` property to set the chainId and chainNamespace. The `chainId` and `chainNamespace` are the id and the namespace
+respectively of the chain you're connecting to. We've initialised them for EVM for this guide. You can find the list of available providers
+[here](http://localhost:3000/api-reference/web/providers/) to select from.
+
+Additionally, sometimes you might face clogging in the network, due to the fact that the test network is a bit clogged at that point. To avoid this,
+we can use the property `rpcTarget` and pass over the url of the node you want to connect to.
