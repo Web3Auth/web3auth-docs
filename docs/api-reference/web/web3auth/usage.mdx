@@ -4,13 +4,29 @@ hide_table_of_contents: false
 displayed_sidebar: apiReference
 ---
 
+import GetUserInfo from "../common/_get-user-info.mdx";
+import LogOut from "../common/_logout.mdx";
+import ConnectBlockchain from "../common/_connect-blockchain.mdx";
+
 ---
 
-### Showing the Modal
+Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users. Further, you can use the native provider given
+by Web3Auth to connect the users to the respective blockchain network.
 
-#### `web3auth.connect()`
+Natively, the instance of `Web3Auth` _(referred to as `web3auth` in our examples)_ returns the following functions:
 
-After initializing you can show the modal by calling `connect` function on web3auth instance
+- `connect()` - Showing the Modal and Logging in the User
+- `getUserInfo()` - Getting the User's Information
+- `logout()` - Logging out the User
+
+## Logging in the User
+
+---
+
+#### `connect()`
+
+You can show the modal in the browser by calling `connect()` function on `web3auth` instance. Your user can choose their preferred login method and
+access your application.
 
 ```javascript
 await web3auth.connect();
@@ -18,45 +34,35 @@ await web3auth.connect();
 
 #### Returns
 
-- `string` - status of wallet connection
-- `object` - adapter configuration details
-
-### Get User's Information
-
-#### `web3auth.getUserInfo()`
-
-You can get the information about connected user by calling `getUserInfo` function.
-
-> Note: This function will return information based on the connected adapter.
-
-```javascript
-await web3auth.getUserInfo();
+```ts
+connect(): Promise<SafeEventEmitterProvider | null>;
 ```
 
-#### Returns
+On successful connection, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
+corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
 
-- **`email`**: `string` - email of the connected user
-- **`name`**: `string` - name of the connected user
-- **`profileImage`**: `string` - profile image of the connected user
-- **`aggregateVerifier`**: `string` - aggregate verifier details
-- **`verifier`**: `"torus", "metamask", "trust", "openlogin"` - verifier details
-- **`verifierId`**: `string` - verifier id
-- **`typeOfLogin`**: `"google", "facebook", "twitter", "github", "linkedin"` - type of login
+:::tip
 
-### Logging out the User
+Read more about connecting your users with the selected blockchain in the [Providers API Reference](../providers).
 
-#### `web3auth.logout()`
+:::
 
-You can disconnect from connected wallet using `logout` function.
+On unsuccessful login, this function will return a `null` value.
 
-```javascript
-await web3auth.logout();
-```
-
-#### Returns
-
-- `string` - status of wallet connection
-
-## Basic Usage
+## Get User's Information
 
 ---
+
+<GetUserInfo />
+
+## Logging out the User
+
+---
+
+<LogOut />
+
+## Connecting to a Blockchain
+
+---
+
+<ConnectBlockchain />
