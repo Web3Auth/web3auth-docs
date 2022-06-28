@@ -1,0 +1,67 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+#### `getUserInfo()`
+
+You can get the information about connected user by calling `getUserInfo()` function.
+
+:::note
+
+This function will only return information based on the connected adapter. These details are not stored anywhere and are fetched from the adapter
+during the connection and remain in the session.
+
+:::
+
+```javascript
+await web3auth.getUserInfo();
+```
+
+#### Returns
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type Declarations", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Variable            | Type     | Description                                                                                                                                                                                 |
+| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `email`             | `string` | Email of the connected user                                                                                                                                                                 |
+| `name`              | `string` | Name of the connected user                                                                                                                                                                  |
+| `profileImage`      | `string` | Profile image of the connected user                                                                                                                                                         |
+| `aggregateVerifier` | `string` | Details of the aggregate verifier - if present                                                                                                                                              |
+| `verifier`          | `string` | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                                                                                                          |
+| `verifierId`        | `string` | Verifier ID - if custom authentication is enabled, it will show the verifier identifier you set on dashboard                                                                                |
+| `typeOfLogin`       | `string` | Type of login done by the user (like `google`, `facebook`, `twitter`, `github`, etc.)                                                                                                       |
+| `dappShare`         | `string` | If you are using a Custom Verifier, you can get a dapp share after successful login. (dappShare is a 24 word seed phrase). This share can act as a replacement to your user's device share. |
+| `idToken`           | `string` | WT token (Note: This is issued by Web3Auth and is not bound to your OAuth provider)                                                                                                         |
+
+</TabItem>
+
+<TabItem value="type">
+
+`getUserInfo(): Promise<Partial<UserInfo>>;`
+
+```ts
+declare type UserInfo = OpenloginUserInfo;
+
+declare type OpenloginUserInfo = {
+  email: string;
+  name: string;
+  profileImage: string;
+  aggregateVerifier: string;
+  verifier: string;
+  verifierId: string;
+  typeOfLogin: LOGIN_PROVIDER_TYPE | CUSTOM_LOGIN_PROVIDER_TYPE;
+  dappShare?: string;
+  idToken?: string;
+};
+```
+
+</TabItem>
+
+</Tabs>

@@ -59,46 +59,9 @@ declare const ADAPTER_EVENTS: {
 
 </Tabs>
 
-#### Login Modal Events
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
-
-<TabItem value="table">
-
-| Event                   | Trigger with `@web3auth/ui` package        | Trigger without package   | Description                                   |
-| ----------------------- | ------------------------------------------ | ------------------------- | --------------------------------------------- |
-| `INIT_EXTERNAL_WALLETS` | `LOGIN_MODAL_EVENTS.INIT_EXTERNAL_WALLETS` | `"INIT_EXTERNAL_WALLETS"` | External Wallet are initialised               |
-| `LOGIN`                 | `LOGIN_MODAL_EVENTS.LOGIN`                 | `"LOGIN"`                 | Login is triggered                            |
-| `DISCONNECT`            | `LOGIN_MODAL_EVENTS.DISCONNECT`            | `"DISCONNECT"`            | Disconnection is triggered                    |
-| `MODAL_VISIBILITY`      | `LOGIN_MODAL_EVENTS.MODAL_VISIBILITY`      | `"MODAL_VISIBILITY"`      | Indicates whether the modal is visible or not |
-
-</TabItem>
-
-<TabItem value="interface">
+##### Example
 
 ```ts
-declare const LOGIN_MODAL_EVENTS: {
-  readonly INIT_EXTERNAL_WALLETS: "INIT_EXTERNAL_WALLETS";
-  readonly LOGIN: "LOGIN";
-  readonly DISCONNECT: "DISCONNECT";
-  readonly MODAL_VISIBILITY: "MODAL_VISIBILITY";
-};
-```
-
-</TabItem>
-
-</Tabs>
-
-#### Example
-
-```ts
-import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
 import { ADAPTER_EVENTS } from "@web3auth/base";
 
 // subscribe to lifecycle events emitted by web3auth
@@ -118,10 +81,6 @@ const subscribeAuthEvents = (web3auth: Web3Auth) => {
   });
   web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
     console.log("error", error);
-  });
-  // emitted when modal visibility changes.
-  web3auth.on(LOGIN_MODAL_EVENTS.MODAL_VISIBILITY, (isVisible) => {
-    console.log("is modal visible", isVisible);
   });
 };
 ```

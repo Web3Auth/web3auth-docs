@@ -1,8 +1,6 @@
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-`modalConfig: { ADAPTER : { params } }`
-
 <Tabs
   defaultValue="table"
   values={[
@@ -12,6 +10,8 @@ import Tabs from "@theme/Tabs";
 >
 
 <TabItem value="table">
+
+`modalConfig: { ADAPTER : { params } }`
 
 | Parameter        | Type      | Description                                   | Default                                     | Optional |
 | ---------------- | --------- | --------------------------------------------- | ------------------------------------------- | -------- |
@@ -35,11 +35,11 @@ initModal(params?: {
     modalConfig?: Record<WALLET_ADAPTER_TYPE, ModalConfig>;
 }): Promise<void>;
 
-export interface ModalConfig extends BaseAdapterConfig {
+interface ModalConfig extends BaseAdapterConfig {
     loginMethods?: LoginMethodConfig;
 }
 
-export interface BaseAdapterConfig {
+interface BaseAdapterConfig {
     label: string;
     showOnModal?: boolean;
     showOnMobile?: boolean;
@@ -59,8 +59,6 @@ In `loginMethods`, you can configure the visibility of each social login method 
 For `labels` you can choose between these options: `google`, `facebook`, `twitter`, `reddit`, `discord`, `twitch`, `apple`, `line`, `github`, `kakao`,
 `linkedin`, `weibo`, `wechat`, `email_passwordless`
 
-`params`
-
 <Tabs
   defaultValue="table"
   values={[
@@ -70,18 +68,19 @@ For `labels` you can choose between these options: `google`, `facebook`, `twitte
 >
 
 <TabItem value="table">
+`params`
 
-| Parameter        | Type      | Description                                                                                | Default                   | Optional |
-| ---------------- | --------- | ------------------------------------------------------------------------------------------ | ------------------------- | -------- |
-| `name`           | `string`  | Display Name                                                                               | Default for Openlogin App | Yes      |
-| `description?`   | `string`  | Description for button. If provided, it renders as a full length button. else, icon button | Just an icon rendered     | Yes      |
-| `logoHover?`     | `string`  | Logo to be shown on mouse hover                                                            | Default for Openlogin App | Yes      |
-| `logoLight?`     | `string`  | Logo to be shown on dark background (dark theme)                                           | Default for Openlogin App | Yes      |
-| `logoDark?`      | `string`  | Logo to be shown on light background (light theme)                                         | Default for Openlogin App | Yes      |
-| `mainOption?`    | `boolean` | Show login button on the main list                                                         | Default for Openlogin App | Yes      |
-| `showOnModal?`   | `string`  | Whether to show the login button on modal or not                                           | Default for Openlogin App | Yes      |
-| `showOnDesktop?` | `string`  | Whether to show the login button on desktop                                                | Default for Openlogin App | Yes      |
-| `showOnMobile?`  | `string`  | Whether to show the login button on mobile                                                 | Default for Openlogin App | Yes      |
+| Parameter        | Type      | Description                                                                                | Default                                                           | Optional |
+| ---------------- | --------- | ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- | -------- |
+| `name`           | `string`  | Display Name                                                                               | Default for Openlogin App                                         | Yes      |
+| `description?`   | `string`  | Description for button. If provided, it renders as a full length button. else, icon button | Just an icon rendered                                             | Yes      |
+| `logoHover?`     | `string`  | Logo to be shown on mouse hover                                                            | [web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg) | Yes      |
+| `logoLight?`     | `string`  | Logo to be shown on dark background (dark theme)                                           | [web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg) | Yes      |
+| `logoDark?`      | `string`  | Logo to be shown on light background (light theme)                                         | [web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg) | Yes      |
+| `mainOption?`    | `boolean` | Show login button on the main list                                                         | Default for Openlogin App                                         | Yes      |
+| `showOnModal?`   | `string`  | Whether to show the login button on modal or not                                           | Default for Openlogin App                                         | Yes      |
+| `showOnDesktop?` | `string`  | Whether to show the login button on desktop                                                | Default for Openlogin App                                         | Yes      |
+| `showOnMobile?`  | `string`  | Whether to show the login button on mobile                                                 | Default for Openlogin App                                         | Yes      |
 
 </TabItem>
 
