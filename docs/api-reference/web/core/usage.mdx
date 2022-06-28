@@ -4,126 +4,84 @@ hide_table_of_contents: false
 displayed_sidebar: apiReference
 ---
 
+import ConnectBlockchain from "../common/_connect-blockchain.mdx";
+import ConnectTo from "../common/_connect-to.mdx";
+import ConnectToExample from "../common/_connect-to-example.mdx";
+import ExtraLoginOptions from "../common/_extra-login-options.mdx";
+import GetUserInfo from "../common/_get-user-info.mdx";
+import LogOut from "../common/_logout.mdx";
+import OpenloginLoginParams from "../common/_openlogin-login-params.mdx";
+import WalletAdapters from "../common/_wallet-adapters.mdx";
+
 ---
 
-### Connecting with an Adapter
+Once you've installed and successfully initialized `Web3AuthCore`, you can use it to authenticate your users. Further, you can use the native provider
+given by `Web3AuthCore` to connect the users to the respective blockchain network.
 
-#### `web3authCore.connectTo(adapter, loginParams)`
+Natively, the instance of `Web3AuthCore` _(referred to as `web3auth` in our examples)_ returns the following functions:
 
-After initializing you can login/connect with any adapter by calling `connectTo` function along with adapter name.
+- `connectTo()` - Logging in the User with the given Wallet Adapter and respective Login Parameters
+- `getUserInfo()` - Getting the User's Information
+- `logout()` - Logging out the User
 
-```javascript
-// connect to any adapter by passing adapter name in connectTo function.
-// connectTo has two parameters, first is adapter name and second is configuration specific to the adapter.
-await web3authCore.connectTo(torusEvmAdapter.name);
+## Logging in the User
+
+---
+
+<ConnectTo />
+
+#### `walletName`
+
+<WalletAdapters />
+
+#### `loginParams`
+
+The `loginParams` are specific for each and every function. Please refer to the [Adapters API Reference](../adapters) to know more about the login
+parameters specific to each wallet adapter.
+
+For `openlogin-adapter` which enables the social logins, you can reference to the following `loginParams`.
+
+<OpenloginLoginParams />
+
+Further, for Custom Authentication, `ExtraLoginOptions` can be used to pass the standard oauth login options.
+
+<ExtraLoginOptions />
+
+#### Returns
+
+```ts
+connectTo<T>(walletName: WALLET_ADAPTER_TYPE, loginParams?: T): Promise<SafeEventEmitterProvider | null>;
 ```
 
-The second parameter is optional and can be used to pass configuration specific to the adapter, which can be used for
-[custom authentication](./customauth) with Web3Auth.
+#### Example
 
-### Get User's Information
+<ConnectToExample />
 
-#### `web3authCore.getUserInfo()`
+On successful connection, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
+corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
 
-You can get the information about connected user by calling `getUserInfo` function.
+:::tip
 
-:::note
-
-This function will return information based on the connected adapter.
+Read more about connecting your users with the selected blockchain in the [Providers API Reference](../providers).
 
 :::
 
-```javascript
-await web3authCore.getUserInfo();
-```
+On unsuccessful login, this function will return a `null` value.
 
-#### Returns
-
-- **`email`**: `string` - email of the connected user
-- **`name`**: `string` - name of the connected user
-- **`profileImage`**: `string` - profile image of the connected user
-- **`aggregateVerifier`**: `string` - aggregate verifier details
-- **`verifier`**: `"torus", "metamask", "trust", "openlogin"` - verifier details
-- **`verifierId`**: `string` - verifier id
-- **`typeOfLogin`**: `"google", "facebook", "twitter", "github", "linkedin"` - type of login
-
-### Logging out the User
-
-#### `web3authCore.logout()`
-
-You can disconnect from connected wallet using `logout` function.
-
-```javascript
-await web3authCore.logout();
-```
-
-#### Returns
-
-- `string` - status of wallet connection
-
-## Basic Usage
+## Get User's Information
 
 ---
 
-```ts
-import { getOpenloginAdapter, Web3AuthCore, getTorusEvmAdapter } from "@web3auth/core";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
+<GetUserInfo />
 
-const web3authCore = new Web3AuthCore({
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: 3,
-})
-
-// add your adapters
-const torusEvmAdapter = await TorusWalletAdapter({});
-const openloginAdapter = await OpenloginAdapter({
-  adapterSettings: {
-    network: "testnet",
-    clientId: "example-client-id",
-    uxMode: "popup",
-  },
-  loginSettings: {
-    relogin: true,
-  }
-})
-
-web3authCore.configureAdapter(torusEvmAdapter)
-web3authCore.configureAdapter(openloginAdapter)
-
-await web3authCore.init()
-
-// connect to any adapter by passing adapter name in connectTo function.
-// it will use google social login with openlogin's authentication
-await web3authCore.connectTo(openloginAdapter.name, { { loginProvider: "google" } });
-
-```
-
-## Class Interface
+## Logging out the User
 
 ---
 
-```ts
-class Web3AuthCore extends SafeEventEmitter {
-  readonly coreOptions: Web3AuthCoreOptions;
-  connectedAdapterName: string | null;
-  status: ADAPTER_STATUS_TYPE;
-  provider: SafeEventEmitterProvider | null;
-  cachedAdapter: string | null;
-  protected walletAdapters: Record<string, IAdapter<unknown>>;
-  constructor(options: Web3AuthCoreOptions);
-  init(): Promise<void>;
-  configureAdapter(adapter: IAdapter<unknown>): Web3AuthCore;
-  clearCache(): void;
-  /**
-   * Connect to a specific wallet adapter
-   * @param walletName - Key of the walletAdapter to use.
-   */
-  connectTo<T>(walletName: WALLET_ADAPTER_TYPE, loginParams?: T): Promise<void>;
-  logout(): Promise<void>;
-  getUserInfo(): Promise<Partial<UserInfo>>;
-  protected subscribeToAdapterEvents(walletAdapter: IAdapter<unknown>): void;
-  protected checkInitRequirements(): void;
-  private cacheWallet;
-}
-```
+<LogOut />
+
+## Connecting to a Blockchain
+
+---
+
+<ConnectBlockchain />
