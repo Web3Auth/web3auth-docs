@@ -2,3 +2,68 @@
 title: Arbitrum
 hide_table_of_contents: false
 ---
+
+## Installation
+
+Via Web3Auth SDK, you can interact with [Arbitrum](https://arbitrum.io/). Arbitrum is EVM compatible so you can directly follow the
+[Ethereum installation](./ethereum).
+
+## Configure Arbitrum
+
+### Mainnet
+
+Mainnet Block Explorer URL: https://arbiscan.io/
+
+:::note
+
+Arbitrum One is in mainnet Beta, which currently includes administrative controls. Learn more
+[here](https://developer.offchainlabs.com/docs/mainnet#some-words-of-caution).
+
+:::
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import Web3 from "web3";
+
+const web3auth = new Web3AuthCore({
+  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "EIP155",
+    chainId: "0x42161",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+### Testnet
+
+Testnet Block Explorer URL: https://kovan-optimistic.etherscan.io
+
+:::note
+
+Arbitrum One is in mainnet Beta, which currently includes administrative controls. Learn more
+[here](https://developer.offchainlabs.com/docs/mainnet#some-words-of-caution).
+
+:::
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import Web3 from "web3";
+
+const web3auth = new Web3AuthCore({
+  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "EIP155",
+    chainId: "0x421611",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
