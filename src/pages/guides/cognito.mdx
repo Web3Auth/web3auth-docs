@@ -5,18 +5,22 @@ description: Learn how to use Web3Auth with AWS Cognito in your React Applicatio
 type: guide
 tags: [ethereum, web3auth, cognito, react]
 date: 25th June 2022
-author: Mohammad Shahbaz Alam
+author: Web3Auth Team
 order: 2
 ---
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-import SetupWeb3AuthDashboard from "../../content/guides/common/_setup_web3auth_dashboard.mdx";
-import SetupBaseProject from "../../content/guides/common/_setup_base_project.mdx";
-import Installation from "../../content/guides/common/_installation.mdx";
-import Initialization from "../../content/guides/common/_initialization.mdx";
-import InteractingWithBlockchain from "../../content/guides/common/_interacting_with_blockchain.mdx";
+import SetupWeb3AuthDashboard from "../guides-common/_setup-web3auth-dashboard.mdx";
+import SetupBaseProject from "../guides-common/_setup-base-project.mdx";
+import Installation from "../guides-common/_installation.mdx";
+import Web3AuthPrerequisites from "../guides-common/_web3auth-prerequisites.mdx";
+import InitializationIntro from "../guides-common/_initialization-intro.mdx";
+import InitializationWeb3Auth from "../guides-common/_initialization-web3auth.mdx";
+import InstantiationWeb3Auth from "../guides-common/_instantiation-web3auth.mdx";
+import InteractingWithBlockchain from "../guides-common/_interacting-with-blockchain.mdx";
+import OpenloginConfigCode from "../guides-common/_openlogin-config-code.mdx";
 
 <head>
   <meta name="viewport" content="width=device-width" />
@@ -51,28 +55,24 @@ npm run start
 ---
 
 <Tabs
-defaultValue="SPA"
+defaultValue="implicit"
 values={[
-  { label: "SPA", value: "SPA" },
-  { label: "RWA", value: "RWA" },
+  { label: "Implicit Flow", value: "implicit" },
+  { label: "Authorization Code Flow", value: "authcode" },
 ]}
 >
-<TabItem value="SPA">
+<TabItem value="implicit">
 
 When integrating Web3Auth with AWS Cognito the Implicit flow looks something like this:
 
-> Recommended for Single Page Applications(SPA).
-
-![AWS Cognito - Implicit Flow](/contents/guides/cognito/cognito-spa.png)
+![AWS Cognito - Implicit Flow](/contents/guides/cognito/cognito-implicit.png)
 
 </TabItem>
-<TabItem value="RWA">
+<TabItem value="authcode">
 
 When integrating Web3Auth with AWS Cognito the Authorization code flow looks something like this:
 
-> Regular Web Applications (RWA)
-
-![AWS Cognito - Authorization Code Flow](/contents/guides/cognito/cognito-rwa.png)
+![AWS Cognito - Authorization Code Flow](/contents/guides/cognito/cognito-authcode.png)
 
 For Authorization code flow, you will need an additional backend server to communicate with AWS Cognito to get the `id_token` in exchange of
 `authorization_code` received.
@@ -90,18 +90,11 @@ For Authorization code flow, you will need an additional backend server to commu
 
 ---
 
-- For Web Apps: A basic knowledge of JavaScript is required to use Web3Auth SDK.
-
-- For Mobile Apps: For the Web3Auth Mobile SDKs, you have a choice between iOS, Android, React Native & Flutter. Please refer to the
-  [Web3Auth API Reference](/api-reference) for more information.
-
-- [Node](https://nodejs.org/en/download/) & npm installed to use `create-react-app`.
+<Web3AuthPrerequisites />
 
 - An [AWS](https://aws.amazon.com/console) account to create AWS Cognito User Poll.
 
 - A [Google Developer](https://console.developers.google.com) account to be used as Identity provider for AWS Cognito.
-
-- Create a Web3Auth account on the [Web3Auth Dashboard](https://dashboard.web3auth.io)
 
 ## Setup
 
@@ -195,7 +188,7 @@ For Authorization code flow, you will need an additional backend server to commu
 To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
 SDKs, please have a look at this [documentation page](/developing-with-web3auth/understand-sdk).
 
-For this guide here, we will be talking through the [Web3Auth Core SDK](/api-reference/web/core) and using the
+For this guide here, we will be talking through the [Web3Auth Plug and Play Core SDK](/api-reference/web/core) and using the
 [OpenLogin Provider](/api-reference/web/adapters/openlogin) alongside it to enable Custom Authentication through AWS Cognito.
 
 <SetupBaseProject />
@@ -206,46 +199,24 @@ For this guide here, we will be talking through the [Web3Auth Core SDK](/api-ref
 
 ### Initialization
 
-<Initialization />
+<InitializationIntro />
 
-#### Custom Authentication (OpenLoginApadpter)
+For this guide, we're only focusing on the Instantiation, Configuration for the Openlogin Adapter (the default adapter that enables social logins) and
+Initialization of the Web3Auth SDK. To know more about the other things you can do with Web3Auth, checkout our
+[API Reference](/api-reference/web/core).
 
-```js
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    clientId: "YOUR-WEB3AUTH-CLIENT-ID",
-    network: "testnet",
-    uxMode: "popup",
-    loginConfig: {
-      jwt: {
-        name: "Name of your choice",
-        verifier: "YOUR-VERIFIER-NAME-ON-WEB3AUTH-DASHBOARD",
-        typeOfLogin: "jwt",
-        clientId: "YOUR-CLIENTID-FROM-AWS-COGNITO-DASHBOARD",
-      },
-    },
-  },
-});
+#### Instantiating Web3Auth
 
-web3auth.configureAdapter(openloginAdapter);
-```
+<InstantiationWeb3Auth />
+
+#### Initialising the Openlogin Adapter
+
+<OpenloginConfigCode />
 
 Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom Auth `verifierName` and AWS Cognito `clientId` in
 the loginConfig object. This makes sure that the Openlogin Adapter can connect to the correct verifier and AWS Cognito server.
 
-#### Initialising the Web3Auth SDK
-
-```js
-await web3auth.init();
-```
-
-#### Initialising on Mobile Platforms
-
-- For Mobile, depending on the platform, there will be different steps to initialize the SDK. Refer to the respective Mobile SDKs,
-  - [Android](/api-reference/android/setting-up)
-  - [iOS](/api-reference/ios/setting-up)
-  - [Flutter](/api-reference/flutter/setting-up)
-  - [React Native](/api-reference/react-native/setting-up).
+<InitializationWeb3Auth />
 
 ### Authentication
 
@@ -270,7 +241,7 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 
 When connecting, your `connectTo` function takes the arguments for the adapter you want to connect to and the options for the login. The major thing
 to note here is the `domain` option in the `extraLoginOptions` object. This is the domain of your AWS Cognito pool so that you can be redirected to
-login there directly from the Web3Auth Core SDK.
+login there directly from the Web3Auth Plug and Play Core SDK.
 
 ### Get the User Profile
 
@@ -290,7 +261,7 @@ await web3auth.logout();
 
 Logging out your user is as simple as calling the `logout` function.
 
-> Note: Currently, Web3AuthCore SDK doesn't log out a user from AWS Cognito, so you can try calling this below endpoint to log out a user.
+> Note: Currently, Web3Auth Plug and Play SDKs don't log out a user from AWS Cognito, so you can try calling this below endpoint to log out a user.
 
 ```js
 window.open("

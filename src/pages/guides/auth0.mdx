@@ -5,7 +5,7 @@ description: Learn how to use Web3Auth with Auth0 in your React Application.
 type: guide
 tags: [ethereum, web3auth, auth0, react]
 date: 25th May 2022
-author: Yashovardhan Agrawal
+author: Web3Auth Team
 order: 1
 ---
 
@@ -14,11 +14,15 @@ import TabItem from "@theme/TabItem";
 
 import Image3 from "@site/static/contents/guides/auth0/auth0-w3adashboard-03.png";
 
-import SetupWeb3AuthDashboard from "../../content/guides/common/_setup_web3auth_dashboard.mdx";
-import SetupBaseProject from "../../content/guides/common/_setup_base_project.mdx";
-import Installation from "../../content/guides/common/_installation.mdx";
-import Initialization from "../../content/guides/common/_initialization.mdx";
-import InteractingWithBlockchain from "../../content/guides/common/_interacting_with_blockchain.mdx";
+import SetupWeb3AuthDashboard from "../guides-common/_setup-web3auth-dashboard.mdx";
+import SetupBaseProject from "../guides-common/_setup-base-project.mdx";
+import Installation from "../guides-common/_installation.mdx";
+import Web3AuthPrerequisites from "../guides-common/_web3auth-prerequisites.mdx";
+import InitializationIntro from "../guides-common/_initialization-intro.mdx";
+import InitializationWeb3Auth from "../guides-common/_initialization-web3auth.mdx";
+import InstantiationWeb3Auth from "../guides-common/_instantiation-web3auth.mdx";
+import InteractingWithBlockchain from "../guides-common/_interacting-with-blockchain.mdx";
+import OpenloginConfigCode from "../guides-common/_openlogin-config-code.mdx";
 
 <head>
   <meta name="viewport" content="width=device-width" />
@@ -42,6 +46,8 @@ develop a basic web application on the blockchain of your choice. Before startin
 
 ## Quick Start
 
+---
+
 ```bash
 git clone https://github.com/Web3Auth/examples.git
 cd auth0-react-example
@@ -54,26 +60,22 @@ npm run start
 ---
 
 <Tabs
-defaultValue="SPA"
+defaultValue="spa"
 values={[
-  { label: "SPA", value: "SPA" },
-  { label: "RWA", value: "RWA" },
+  { label: "Single Page Applications (SPA) Flow", value: "spa" },
+  { label: "Regular Web Applications (RWA) Flow", value: "rwa" },
 ]}
 >
-<TabItem value="SPA">
+<TabItem value="spa">
 
 When integrating Web3Auth with Auth0 SPA the flow looks something like this:
-
-> Recommended for Single Page Applications(SPA).
 
 ![Auth0 SPA Flow](/contents/guides/auth0/auth0-spa-flow.png)
 
 </TabItem>
-<TabItem value="RWA">
+<TabItem value="rwa">
 
-> Regular Web Applications (RWA)
-
-For Auth0 RWA, we need an additional backend server to communicate with Auth0. The flow for RWA with Web3Auth looks something like this:
+When integrating Web3Auth with Auth0 RWA, we need an additional backend server to communicate with Auth0. The flow looks something like this:
 
 ![Auth0 RWA Flow](/contents/guides/auth0/auth0-rwa-flow.png)
 
@@ -90,19 +92,14 @@ For Auth0 RWA, we need an additional backend server to communicate with Auth0. T
 
 ---
 
-- For Web Apps: A basic knowledge of JavaScript is required to use Web3Auth SDK.
-
-- For Mobile Apps: For the Web3Auth Mobile SDKs, you have a choice between iOS, Android, React Native & Flutter. Please refer to the
-  [Web3Auth API Reference](/api-reference) for more information.
+<Web3AuthPrerequisites />
 
 - Create an Auth0 tenant and configure a Single Page Web Application (SPA for Web) or Native (for Mobile) from
   [Auth0 Console](https://manage.auth0.com/).
 
-  - Please note that Regular Web Applications are also supported, however for this guide, we’re preferring SPA since its implicit flow doesn’t require
-    an application to host a server. You can navigate to the [additional section](#additional-reading-setup-custom-authentication-using-auth0-rwa)
-    below which talks about the code flow with RWA.
-
-- Create a Web3Auth account on the [Web3Auth Dashboard](https://dashboard.web3auth.io)
+  - Please note that Regular Web Applications are also supported as mentioned in the flows above. However for this guide, we’re preferring SPA since
+    its implicit flow doesn’t require an application to host a backend server. You can navigate to the
+    [additional section](#additional-reading-setup-custom-authentication-using-auth0-rwa) below which talks about the code flow with RWA.
 
 ## Setup
 
@@ -143,10 +140,10 @@ For Auth0 RWA, we need an additional backend server to communicate with Auth0. T
 ---
 
 To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
-SDKs, please have a look at this [documentation page](/developing-with-web3auth/understand-sdk).
+SDKs, please have a look at this [documentation page](/get-started/understand-sdk).
 
-For this guide here, we will be talking through the [Web3Auth Core SDK](/api-reference/web/core) and using the
-[OpenLogin Provider](/api-reference/web/adapters/openlogin) alongside it to enable Custom Authentication through Auth0.
+For this guide here, we will be talking through the [Web3Auth Plug and Play Core SDK](/api-reference/web/core) and using the
+[OpenLogin Provider](/api-reference/web/openlogin) alongside it to enable Custom Authentication through Auth0.
 
 <SetupBaseProject />
 
@@ -156,46 +153,24 @@ For this guide here, we will be talking through the [Web3Auth Core SDK](/api-ref
 
 ### Initialization
 
-<Initialization />
+<InitializationIntro />
+
+For this guide, we're only focusing on the Instantiation, Configuration for the Openlogin Adapter (the default adapter that enables social logins) and
+Initialization of the Web3Auth SDK. To know more about the other things you can do with Web3Auth, checkout our
+[API Reference](/api-reference/web/core).
+
+#### Instantiating Web3Auth
+
+<InstantiationWeb3Auth />
 
 #### Initialising the Openlogin Adapter
 
-```js
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    clientId: "YOUR-WEB3AUTH-CLIENT-ID",
-    network: "testnet",
-    uxMode: "popup",
-    loginConfig: {
-      jwt: {
-        name: "Name of your choice",
-        verifier: "YOUR-VERIFIER-NAME-ON-WEB3AUTH-DASHBOARD",
-        typeOfLogin: "jwt",
-        clientId: "YOUR-CLIENTID-ON-AUTH0-DASHBOARD",
-      },
-    },
-  },
-});
-
-web3auth.configureAdapter(openloginAdapter);
-```
+<OpenloginConfigCode />
 
 Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom Auth `verifierName` and Auth0 `clientId` in the
 loginConfig object. This makes sure that the Openlogin Adapter can connect to the correct verifier and Auth0 server.
 
-#### Initialising the Web3Auth SDK
-
-```js
-await web3auth.init();
-```
-
-#### Initialising on Mobile Platforms
-
-- For Mobile, depending on the platform, there will be different steps to initialize the SDK. Refer to the respective Mobile SDKs,
-  - [Android](/api-reference/android/setting-up)
-  - [iOS](/api-reference/ios/setting-up)
-  - [Flutter](/api-reference/flutter/setting-up)
-  - [React Native](/api-reference/react-native/setting-up).
+<InitializationWeb3Auth />
 
 ### Authentication
 
@@ -217,7 +192,7 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 
 When connecting, your `connectTo` function takes the arguments for the adapter you want to connect to and the options for the login. The major thing
 to note here is the `domain` option in the `extraLoginOptions` object. This is the domain of your Auth0 tenant so that you can be redirected to login
-there directly from the Web3Auth Core SDK.
+there directly from the Web3Auth Plug and Play Core SDK.
 
 ### Get the User Profile
 
@@ -227,7 +202,7 @@ console.log("User info", user);
 ```
 
 Using the `getUserInfo` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
-network, but are fetched from the JWT token you received from Auth0 and lives in the frontend context.
+network, but are fetched from the id_token you received from Auth0 and lives in the frontend context.
 
 ### Logout
 
@@ -237,7 +212,9 @@ await web3auth.logout();
 
 Logging out your user is as simple as calling the `logout` function.
 
-### Interacting with the Blockchain
+## Interacting with the Blockchain
+
+---
 
 <InteractingWithBlockchain />
 
@@ -245,7 +222,7 @@ Logging out your user is as simple as calling the `logout` function.
 
 ---
 
-### Understanding the difference between SPA and RWA Flows
+### Difference between SPA and RWA
 
 In the SPA flow, the frontend gets the JWT `id_token` from Auth0 directly. This flow is leveraged by the Web3Auth SDK, which handles all the callbacks
 by itself and the user just needs to setup the `OpenloginAdapter` and connect to the Web3Auth SDK, adding in the Auth0 `client_id` in it. Hence, this
@@ -314,5 +291,4 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 
 Try our [Demo Application](https://demo-auth0.web3auth.io/) with Web3Auth & Auth0 integration. It works for either Ethereum, Solana or Polygon. It
 also works for both the flows, ie. SPA and RWA. The code for the Demo application can also be found in the
-[Web3Auth Auth0 Example](https://github.com/Web3Auth/Web3Auth/tree/master/examples/auth0-react-example). Check it out and try running it locally
-yourself!
+[Web3Auth Auth0 Example](https://github.com/Web3Auth/examples/tree/main/auth0-react-example). Check it out and try running it locally yourself!
