@@ -7,26 +7,30 @@ displayed_sidebar: apiReference
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-import UIConfig from "./references/_ui-config.mdx";
-import UIConfigWhitelabelExample from "./references/_ui-config-whitelabel-example.mdx";
-import Web3AuthOptions from "./references/_web3auth-options.mdx";
-import ChainConfig from "./references/_chain-config.mdx";
-import SubscribeEvents from "./references/_subscribe-events.mdx";
-import ExternalWalletAdapters from "./references/_external-wallet-adapters.mdx";
-import OpenloginAdapter from "./references/_openlogin-adapter.mdx";
-import CustomAuthenticationExample from "./references/_custom-authentication-example.mdx";
-import ModalConfig from "./references/_modal-config.mdx";
-import InitModalConfigExample from "./references/_init-modal-config-example.mdx";
+import UIConfig from "../common/_ui-config.mdx";
+import UIConfigWhitelabelExample from "../common/_ui-config-whitelabel-example.mdx";
+import Web3AuthOptions from "../common/_web3auth-options.mdx";
+import ChainConfig from "../common/_chain-config.mdx";
+import SubscribeEvents from "../common/_subscribe-events.mdx";
+import ExternalWalletAdapters from "../common/_external-wallet-adapters.mdx";
+import OpenloginAdapterIntro from "../common/_openlogin-adapter-intro.mdx";
+import CustomAuthenticationWeb3AuthExample from "../common/_custom-authentication-web3auth-example.mdx";
+import PluginsIntro from "../common/_plugins-intro.mdx";
+import PluginsExample from "../common/_plugins-example.mdx";
+import ModalConfig from "../common/_modal-config.mdx";
+import InitModalConfigExample from "../common/_init-modal-config-example.mdx";
 
 ---
 
-After Installation, the next step to use Web3Auth is to Initialize the SDK. However, the Initialization is a three step process, ie.
+After Installation, the next step to use Web3Auth is to Initialize the SDK. However, the Initialization is a two step process, with additional two
+steps for customisations, ie.
 
 - [Instantiation of Web3Auth](#instantiating-web3auth)
 - [Configuration of Adapters](#configuring-adapters) _(optional)_
+- [Configuration of Plugins](#configuring-plugins) _(optional)_
 - [Initialization of Modal](#initializing-modal)
 
-Please note that these are the most critical steps where you need to pass on different parameters according to the preferences of your project.
+Please note that these are the most critical steps where you need to pass on different parameters according to the pcommon of your project.
 Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customise your Web3Auth Instance.
 
 ## Instantiating Web3Auth
@@ -36,7 +40,7 @@ Additionally, Whitelabeling and Custom Authentication have to be configured with
 #### Import the `Web3Auth` class from `@web3auth/web3auth`
 
 ```javascript
-import `Web3Auth` from `@web3auth/web3auth`;
+import Web3Auth from "@web3auth/web3auth";
 ```
 
 #### Assign the `Web3Auth` class to a variable
@@ -66,7 +70,7 @@ Within the `uiConfig` parameter, you can configure the Web3Auth Modal according 
 :::tip
 
 This is just one of the aspects of whitelabeling you can achieve with Web3Auth. To know more in depth about how you can Whitelabel your application
-with Web3Auth Plug and Play SDK, have a look at our [Whitelabeling API Reference](./whitelabel).
+with Web3Auth Plug and Play UI SDK, have a look at our [Whitelabeling API Reference](./whitelabel).
 
 :::
 
@@ -131,32 +135,15 @@ required to be configured always based on the `authMode` you are using.
 
 ### Configuring Openlogin Adapter
 
-<OpenloginAdapter />
-
-#### Custom Authentication
-
-##### `loginConfig`
-
-With the Web3Auth Plug and Play SDK, you have the option to configure logins using your own authentication services corresponding to the different
-login options available in the modal. For adding your own authentication, you have to first configure your verifiers in the Web3Auth Dashboard. Have a
-look at our [Custom Authentication Documentation](/docs/custom-authentication/) for configuring that first.
-
-Custom Authentication in Web3Auth is supported by the Openlogin Adapter, which is the default adapter for the Web3Auth SDK. For this, you need to
-configure the `loginConfig` parameter in the `openlogin-adapter` package.
-
-:::tip
-
-Refer to the [Custom Authentication Documentation](./custom-authentication) for more information.
-
-:::
+<OpenloginAdapterIntro />
 
 ##### Example
 
-Since we're using the `@web3auth/web3auth`, ie. the Plug and Play SDK, the `loginConfig` should be corresponding to the socials mentioned in the
+Since we're using the `@web3auth/web3auth`, ie. the Plug and Play UI SDK, the `loginConfig` should be corresponding to the socials mentioned in the
 modal. Here, we're customising Google and Facebook to be custom verified, rest all other socials will be default. You can customise other social
 logins or remove them using the whitelabeling option.
 
-<CustomAuthenticationExample />
+<CustomAuthenticationWeb3AuthExample />
 
 ### Configuring External Wallet Adapters
 
@@ -165,6 +152,66 @@ logins or remove them using the whitelabeling option.
 ### Subscribing the Lifecycle Events
 
 <SubscribeEvents />
+
+#### Login Modal Events
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Event                   | Trigger with `@web3auth/ui` package        | Trigger without package   | Description                                   |
+| ----------------------- | ------------------------------------------ | ------------------------- | --------------------------------------------- |
+| `INIT_EXTERNAL_WALLETS` | `LOGIN_MODAL_EVENTS.INIT_EXTERNAL_WALLETS` | `"INIT_EXTERNAL_WALLETS"` | External Wallet are initialised               |
+| `LOGIN`                 | `LOGIN_MODAL_EVENTS.LOGIN`                 | `"LOGIN"`                 | Login is triggered                            |
+| `DISCONNECT`            | `LOGIN_MODAL_EVENTS.DISCONNECT`            | `"DISCONNECT"`            | Disconnection is triggered                    |
+| `MODAL_VISIBILITY`      | `LOGIN_MODAL_EVENTS.MODAL_VISIBILITY`      | `"MODAL_VISIBILITY"`      | Indicates whether the modal is visible or not |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+declare const LOGIN_MODAL_EVENTS: {
+  readonly INIT_EXTERNAL_WALLETS: "INIT_EXTERNAL_WALLETS";
+  readonly LOGIN: "LOGIN";
+  readonly DISCONNECT: "DISCONNECT";
+  readonly MODAL_VISIBILITY: "MODAL_VISIBILITY";
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+##### Example
+
+```ts
+import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
+
+// subscribe to lifecycle events emitted by web3auth
+const subscribeAuthEvents = (web3auth: Web3Auth) => {
+  // emitted when modal visibility changes.
+  web3auth.on(LOGIN_MODAL_EVENTS.MODAL_VISIBILITY, (isVisible) => {
+    console.log("is modal visible", isVisible);
+  });
+};
+```
+
+## Configuring Plugins
+
+---
+
+<PluginsIntro />
+
+### Example
+
+<PluginsExample />
 
 ## Initializing Modal
 
