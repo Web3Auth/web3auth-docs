@@ -105,14 +105,9 @@ import * as jose from "jose"
 
 const jwks = jose.createRemoteJWKSet(new URL("https://auth-js-backend.tor.us/jwks"));
 const jwtDecoded = await jose.jwtVerify(jwtToken, jwks, { algorithms: ["ES256"] });
-
-// Incase of Torus Users
-if ((jwtDecoded.payload as any).wallets[0].publicKey === oauth_pub_key) {
-  // Verified
-}
-
+const publicAddress = "ethereum, solana, starkware address"
 // Incase of Non-Torus Users
-if ((jwtDecoded.payload as any).wallets[0].ethereum === ethereum_address) {
+if ((jwtDecoded.payload as any).wallets[0].address === publicAddress) {
   // Verified
 }
 ```
