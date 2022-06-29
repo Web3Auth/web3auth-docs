@@ -7,6 +7,7 @@ import vue from "./vue";
 import ios from "./ios";
 import android from "./android";
 import flutter from "./flutter";
+import react_native from "./react-native";
 
 const frameworks = {
   html,
@@ -17,6 +18,7 @@ const frameworks = {
   android,
   flutter,
   angular,
+  "react-native": react_native,
 };
 
 export default frameworks;

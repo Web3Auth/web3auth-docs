@@ -8,4 +8,5 @@ export const PLACEHOLDERS = {
   RPC_FUNCTIONS_BUTTONS: "getRPCFunctionsButtons",
   RPC_FUNCTIONS_RETURNS_VUE: "getRPCFunctionsReturnsVue",
   SCRIPT_IMPORT: "getScriptImport",
+  RN_RESOLVED_REDIRECT_URL: "getRNResolvedRedirectUrl",
 };
