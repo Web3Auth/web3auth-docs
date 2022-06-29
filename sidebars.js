@@ -210,120 +210,145 @@ module.exports = {
       },
       {
         type: "category",
-        label: "Web",
-        link: { type: "doc", id: "api-reference/web/web" },
+        label: "Web3Auth Plug and Play",
+        collapsible: false,
         items: [
           {
             type: "category",
-            label: "@web3auth/web3auth",
-            link: { type: "doc", id: "api-reference/web/web3auth/web3auth" },
+            label: "Web",
+            link: { type: "doc", id: "api-reference/web/web" },
             items: [
-              "api-reference/web/web3auth/initialize",
-              "api-reference/web/web3auth/whitelabel",
-              "api-reference/web/web3auth/custom-authentication",
-              "api-reference/web/web3auth/usage",
+              {
+                type: "category",
+                label: "@web3auth/web3auth",
+                link: { type: "doc", id: "api-reference/web/web3auth/web3auth" },
+                items: [
+                  "api-reference/web/web3auth/initialize",
+                  "api-reference/web/web3auth/whitelabel",
+                  "api-reference/web/web3auth/custom-authentication",
+                  "api-reference/web/web3auth/usage",
+                ],
+              },
+              {
+                type: "category",
+                label: "@web3auth/core",
+                link: { type: "doc", id: "api-reference/web/core/core" },
+                items: [
+                  "api-reference/web/core/initialize",
+                  "api-reference/web/core/whitelabel",
+                  "api-reference/web/core/custom-authentication",
+                  "api-reference/web/core/usage",
+                ],
+              },
+              "api-reference/web/openlogin",
+              {
+                type: "category",
+                label: "Providers",
+                link: { type: "doc", id: "api-reference/web/providers/providers" },
+                items: [
+                  "api-reference/web/providers/evm",
+                  "api-reference/web/providers/solana",
+                  "api-reference/web/providers/other"
+                ],
+              },
+              {
+                type: "category",
+                label: "Plugins",
+                link: { type: "doc", id: "api-reference/web/plugins/plugins" },
+                items: [
+                  "api-reference/web/plugins/torus-wallet",
+                  "api-reference/web/plugins/solana-wallet"
+                ],
+              },
+              {
+                type: "category",
+                label: "Adapters",
+                link: { type: "doc", id: "api-reference/web/adapters/adapters" },
+                items: [
+                  "api-reference/web/adapters/torus-evm",
+                  "api-reference/web/adapters/torus-solana",
+                  "api-reference/web/adapters/metamask",
+                  "api-reference/web/adapters/phantom",
+                  "api-reference/web/adapters/wallet-connect-v1",
+                  "api-reference/web/adapters/coinbase-adapter",
+                  "api-reference/web/adapters/slope-adapter",
+                  "api-reference/web/adapters/solflare-adapter",
+                  "api-reference/web/adapters/sollet-adapter",
+                ],
+              },
             ],
           },
           {
             type: "category",
-            label: "@web3auth/core",
-            link: { type: "doc", id: "api-reference/web/core/core" },
+            label: "Android",
+            link: { type: "doc", id: "api-reference/android/android" },
             items: [
-              "api-reference/web/core/initialize",
-              "api-reference/web/core/whitelabel",
-              "api-reference/web/core/custom-authentication",
-              "api-reference/web/core/usage",
-            ],
-          },
-          "api-reference/web/openlogin",
-          {
-            type: "category",
-            label: "Providers",
-            link: { type: "doc", id: "api-reference/web/providers/providers" },
-            items: [
-              "api-reference/web/providers/evm",
-              "api-reference/web/providers/solana",
-              "api-reference/web/providers/other"
+              "api-reference/android/initialize",
+              "api-reference/android/whitelabel",
+              "api-reference/android/custom-authentication",
+              "api-reference/android/dapp-share",
+              "api-reference/android/usage",
             ],
           },
           {
             type: "category",
-            label: "Plugins",
-            link: { type: "doc", id: "api-reference/web/plugins/plugins" },
+            label: "iOS",
+            link: { type: "doc", id: "api-reference/ios/ios" },
             items: [
-              "api-reference/web/plugins/torus-wallet",
-              "api-reference/web/plugins/solana-wallet"
+              "api-reference/ios/initialize",
+              "api-reference/ios/whitelabel",
+              "api-reference/ios/custom-authentication",
+              "api-reference/ios/dapp-share",
+              "api-reference/ios/usage",
             ],
           },
           {
             type: "category",
-            label: "Adapters",
-            link: { type: "doc", id: "api-reference/web/adapters/adapters" },
+            label: "React Native",
+            link: { type: "doc", id: "api-reference/react-native/react-native" },
             items: [
-              "api-reference/web/adapters/torus-evm",
-              "api-reference/web/adapters/torus-solana",
-              "api-reference/web/adapters/metamask",
-              "api-reference/web/adapters/phantom",
-              "api-reference/web/adapters/wallet-connect-v1",
-              "api-reference/web/adapters/coinbase",
-              "api-reference/web/adapters/slope",
-              "api-reference/web/adapters/solflare",
-              "api-reference/web/adapters/sollet",
+              "api-reference/react-native/initialize",
+              "api-reference/react-native/whitelabel",
+              "api-reference/react-native/custom-authentication",
+              "api-reference/react-native/dapp-share",
+              "api-reference/react-native/usage",
             ],
           },
-        ],
-      },
-      {
-        type: "category",
-        label: "Android",
-        link: { type: "doc", id: "api-reference/android/android" },
-        items: [
-          "api-reference/android/initialize",
-          "api-reference/android/whitelabel",
-          "api-reference/android/custom-authentication",
-          "api-reference/android/usage",
-        ],
-      },
-      {
-        type: "category",
-        label: "iOS",
-        link: { type: "doc", id: "api-reference/ios/ios" },
-        items: [
-          "api-reference/ios/initialize",
-          "api-reference/ios/whitelabel",
-          "api-reference/ios/custom-authentication",
-          "api-reference/ios/usage",
-        ],
-      },
-      {
-        type: "category",
-        label: "React Native",
-        link: { type: "doc", id: "api-reference/react-native/react-native" },
-        items: [
-          "api-reference/react-native/initialize",
-          "api-reference/react-native/whitelabel",
-          "api-reference/react-native/custom-authentication",
-          "api-reference/react-native/usage",
-        ],
-      },
-      {
-        type: "category",
-        label: "Flutter",
-        link: { type: "doc", id: "api-reference/flutter/flutter" },
-        items: [
-          "api-reference/flutter/initialize",
-          "api-reference/flutter/whitelabel",
-          "api-reference/flutter/custom-authentication",
-          "api-reference/flutter/usage",
-        ],
+          {
+            type: "category",
+            label: "Flutter",
+            link: { type: "doc", id: "api-reference/flutter/flutter" },
+            items: [
+              "api-reference/flutter/initialize",
+              "api-reference/flutter/whitelabel",
+              "api-reference/flutter/custom-authentication",
+              "api-reference/flutter/dapp-share",
+              "api-reference/flutter/usage",
+            ],
+          },]
       },
       {
         type: "category",
         label: "Web3Auth Self Host",
-        link: { type: "doc", id: "api-reference/self-host/self-host" },
+        collapsible: false,
         items: [
-          "api-reference/self-host/initialize",
-          "api-reference/self-host/usage",
+          {
+            type: "category",
+            label: "Web",
+            link: { type: "doc", id: "api-reference/self-host/web/web" },
+            items: [
+              "api-reference/self-host/web/initialize",
+              "api-reference/self-host/web/usage"
+            ],
+          },
+          {
+            type: "category",
+            label: "Modules",
+            link: { type: "doc", id: "api-reference/self-host/modules/modules" },
+            items: [
+
+            ],
+          },
         ],
       },
       ...quicklinks,
