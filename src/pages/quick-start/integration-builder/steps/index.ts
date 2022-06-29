@@ -130,7 +130,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
           displayName: "Blockchain",
           default: CHAINS_HTML[0].key,
           type: "dropdown",
-          choices: CHAINS,
+          choices: CHAINS_HTML,
         },
         customAuthentication: {
           displayName: "Custom Authentication",
