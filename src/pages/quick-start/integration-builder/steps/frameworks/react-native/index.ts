@@ -1,15 +1,14 @@
-import { ReplaceFileAggregator, replaceFileVariable, toSteps } from "../../../utils";
-
-import * as installation from "./installation.mdx";
-import * as registerApp from "./register-app.mdx";
-import * as instantiate from "./instantiateSDK.mdx";
-import * as triggeringLogin from "./triggering-login.mdx";
-import * as loginWithJwt from "./login-with-jwt.mdx";
-import * as whiteLabeling from "./whitelabeling.mdx";
-import * as platformSetup from "./platform-setup.mdx";
-import * as installWebBrowser from "./installWebBrowser.mdx";
 import { PLACEHOLDERS } from "../../../commonSnippets";
 import { getConstructorCodeRN, getInitCodeRN, getModuleImportRN, getResolvedRedirectUrl } from "../../../reactNativeSnippets";
+import { ReplaceFileAggregator, toSteps } from "../../../utils";
+import * as installation from "./installation.mdx";
+import * as installWebBrowser from "./installWebBrowser.mdx";
+import * as instantiate from "./instantiateSDK.mdx";
+import * as loginWithJwt from "./login-with-jwt.mdx";
+import * as platformSetup from "./platform-setup.mdx";
+import * as registerApp from "./register-app.mdx";
+import * as triggeringLogin from "./triggering-login.mdx";
+import * as whiteLabeling from "./whitelabeling.mdx";
 
 const STEPS = toSteps({
   installation,
@@ -65,31 +64,13 @@ const reactSteps = {
     filenames.push(FILENAME_APP_TSX);
 
     const isExpo = mode === "expo";
-    const isUsingEmailPasswordless = usingEmailPasswordless === "yes";
     const isCustomAuth = customAuthentication === "yes";
     const isWhitelabel = whitelabel === "yes";
 
     if (isExpo) {
-      newFiles["frameworks/react-native/package.expo.json"] = replacementAggregator.replaceFileVariable(
-        files["frameworks/react-native/package.expo.json"],
-        "frameworks/react-native/package.json",
-        "dummy",
-        "dummy"
-      );
+      filenames.push("frameworks/react-native/expo/package.json");
     } else {
-      newFiles["frameworks/react-native/package.bare.json"] = replacementAggregator.replaceFileVariable(
-        files["frameworks/react-native/package.bare.json"],
-        "frameworks/react-native/package.json",
-        "dummy",
-        "dummy"
-      );
-    }
-
-    filenames.push("frameworks/react-native/package.json");
-    if (isExpo) {
-      filenames.push("frameworks/react-native/package.expo.json");
-    } else {
-      filenames.push("frameworks/react-native/package.bare.json");
+      filenames.push("frameworks/react-native/package.json");
     }
 
     if (isExpo) {
@@ -103,13 +84,13 @@ const reactSteps = {
         ? [
             {
               ...STEPS.installation,
-              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/package.expo.json", range: "23" }),
+              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/expo/package.json", range: "23" }),
             },
           ]
         : [
             {
               ...STEPS.installation,
-              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/package.bare.json", range: "16" }),
+              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/package.json", range: "16" }),
             },
           ]),
 
@@ -117,13 +98,13 @@ const reactSteps = {
         ? [
             {
               ...STEPS.installWebBrowser,
-              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/package.expo.json", range: "35" }),
+              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/expo/package.json", range: "35" }),
             },
           ]
         : [
             {
               ...STEPS.installWebBrowser,
-              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/package.bare.json", range: "15" }),
+              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/package.json", range: "15" }),
             },
           ]),
       ...(isExpo
