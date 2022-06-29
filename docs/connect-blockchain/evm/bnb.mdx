@@ -1,4 +1,56 @@
 ---
-title: BNB Chain
+title: Integrate with the BNB (Binance) Blockchain with Web3Auth
+sidebar_label: BNB Chain (Binance)
 hide_table_of_contents: false
 ---
+
+## Installation
+
+Via Web3Auth SDK, you can interact with [BNB Chain](https://www.bnbchain.org/en/smartChain). BNB Chain (Binance Smart Chain) is EVM compatible so you
+can directly follow the [Ethereum installation](./ethereum).
+
+## Configure BNB Chain
+
+### Mainnet
+
+Mainnet Block Explorer URL: https://bscscan.com
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import Web3 from "web3";
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "EIP155",
+    chainId: "0x56", // BNB Chain chain id
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+### Testnet
+
+Testnet Block Explorer URL: https://testnet.bscscan.com
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import Web3 from "web3";
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "EIP155",
+    chainId: "0x97", // BNB Chain chain id
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```

@@ -136,6 +136,7 @@ module.exports = {
         "connect-blockchain/solana",
         "connect-blockchain/starkex",
         "connect-blockchain/starknet",
+        "connect-blockchain/tezos",
       ],
     },
     {
@@ -165,16 +166,16 @@ module.exports = {
         {
           type: "link",
           label: "Integration Builder",
-          href: "/integration-builder"
+          href: "/integration-builder",
         },
         "examples/demo",
         "examples/productionexamples",
         {
           type: "link",
           label: "Guides",
-          href: "/guides"
+          href: "/guides",
         },
-      ]
+      ],
     },
     "connect-external-wallets",
     {
