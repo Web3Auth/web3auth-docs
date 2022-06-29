@@ -1,7 +1,7 @@
 ---
 title: Using AWS Cognito with Web3Auth
 image: "/docs/contents/guides/banners/cognito-banner.png"
-description: Learn how to use Web3Auth with AWS Cognito in your React Application.
+description: Learn how to use Web3Auth with AWS Cognito in your Modern Applications.
 type: guide
 tags: [ethereum, web3auth, cognito, react]
 date: 25th June 2022
@@ -228,10 +228,9 @@ Once initialized, you can use the `connectTo()` function to authenticate the use
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-  relogin: true,
   loginProvider: "jwt",
   extraLoginOptions: {
-    domain: "YOUR-COGNITO-DOMAIN/oauth",
+    domain: "https://YOUR-AWS-COGNITO-DOMAIN",
     verifierIdField: "email",
     response_type: "token",
     scope: "email profile openid",
@@ -275,6 +274,81 @@ window.open("
 ### Interacting with Blockchain
 
 <InteractingWithBlockchain />
+
+## Additional Reading: Setup Custom Authentication using AWS Cognito Authorization code flow
+
+---
+
+### Difference between Implicit and Authorization code flow
+
+In the **Implicit** flow, the frontend gets the JWT `id_token` from AWS Cognito directly. This flow is leveraged by the Web3Auth SDK, which handles
+all the callbacks by itself and the user just needs to setup the `OpenloginAdapter` and connect to the Web3Auth SDK, adding in the AWS Cognito
+`client_id` in it. Hence, this is the implicit flow and is the most suitable flow for setting up your authentication via AWS Cognito and Web3Auth.
+
+In the **Authorization code** flow, you have to spin up a server on your own where you'll receive the `authorisation code` from AWS Cognito. For
+Web3Auth, still require an `id_token` to be sent to the OpenloginAdapter to log the user in the frontend context. This is where you need to make
+another call from the backend server to AWS Cognito to get the `id_token` and pass it over to your frontend where you can send it to the Web3Auth SDK.
+
+### Setting up your application with Authorization code Flow
+
+- In addition to the steps above, select `Authorization code grant` from **Allowed OAuth Flows** on your AWS Cognito Console's App client settings
+  page and add callback URLs for both your backend and frontend
+- On the frontend, your login button should hit on the following URL
+
+```url
+https://{YOUR_DOMAIN}.auth.{region}.amazoncognito.com/oauth2/authorize?
+  response_type=code&
+  client_id={CLIENT_ID_FROM_AWS}&
+  redirect_uri=https://{YOUR_APP}/redirect_uri&
+  state=STATE&
+  scope=openid+profile+aws.cognito.signin.user.admin
+```
+
+- This is where the user is redirected to a login screen by AWS Cognito.
+- On successful login, the user will be redirected to your backend server with authorization `code` as a query parameter.
+- In the backend server, you can use the `code` to get the `id_token` from AWS Cognito and redirect the user to the frontend with `id_token` as a
+  query parameter
+
+```js
+app.get('/callback', (req, res) => {
+  var options = {
+    method: 'POST',
+    url: 'https://{YOUR_DOMAIN}.auth.{REGION}.amazoncognito.com/oauth2/token',
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Basic ' + Buffer.from(CLIENT_ID_FROM_AWS + ':' + CLIENT_SECRET_FROM_AWS).toString('base64')
+     },
+    form:{
+      grant_type: 'authorization_code',
+      client_id: 'CLIENT_ID_FROM_AWS',
+      code: req.query.code, // the authorisation code you got from AWS Cognito
+      redirect_uri: 'https://{YOUR_FRONTEND_URL}',
+    }
+   };
+
+   var id_token = "";
+
+   request(options, function (error, response, data) {
+    id_token = JSON.parse(data)["id_token"];
+    redirect_url = "http://{YOUR_FRONTEND_URL}?token=%22+id_token;
+    // Redirection URL to frontend with `id_token` as a query parameter
+    res.redirect(redirect_url);
+  });
+})
+```
+
+- In the frontend, pass on this `id_token` to the Web3Auth SDK to authenticate the user
+
+```js
+await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    id_token: "YOUR_ID_TOKEN_FETCHED_FROM_BACKEND_SERVER",
+    domain: "https://YOUR-AWS-COGNITO-DOMAIN",
+    verifierIdField: "sub",
+  },
+});
+```
 
 ## Example code
 

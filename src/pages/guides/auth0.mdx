@@ -1,7 +1,7 @@
 ---
 title: Using Auth0 with Web3Auth
 image: "/docs/contents/guides/banners/auth0-banner.png"
-description: Learn how to use Web3Auth with Auth0 in your React Application.
+description: Learn how to use Web3Auth with Auth0 in your Modern Applications.
 type: guide
 tags: [ethereum, web3auth, auth0, react]
 date: 25th May 2022
@@ -235,7 +235,7 @@ server to Auth0 to get the `id_token` and pass it over to your frontend where yo
 ### Setting up your application with RWA Flow
 
 - In addition to the steps above, setup your Auth0 RWA on dashboard and add callback URLs for both your backend and frontend
-- On the frontend, you login button should hit on the following URL
+- On the frontend, your login button should hit on the following URL
 
 ```url
 https://{YOUR_DOMAIN_URL}/authorize?scope=openid&response_type=code&client_id={YOUR_AUTH0_CLIENT_ID&redirect_uri={YOUR_BACKEND_SERVER_WHICH_WILL_GET_JWT_TOKEN_FROM_AUTH0}&state=STATE
@@ -266,7 +266,8 @@ app.get('/callback', (req, res) => {
 
    request(options, function (error, response, data) {
     id_token = JSON.parse(data)["id_token"];
-    redirect_url = "http://{YOUR_FRONTEND_URL}?token=%22+id_token; // Redirection URL to frontend with `id_token` as a query parameter
+    redirect_url = "http://{YOUR_FRONTEND_URL}?token=%22+id_token;
+    // Redirection URL to frontend with `id_token` as a query parameter
     res.redirect(redirect_url);
   });
 })
