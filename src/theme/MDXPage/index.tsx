@@ -19,40 +19,42 @@ export default function MDXPage(props: ComponentProps<typeof OriginalMDXPage>) {
   return (
     <Layout title={title} description={description} wrapperClassName={wrapperClassName}>
       <main>
-        <div className="margin-vert--lg padding-vert--lg">
-          <div className="row">
-            <div className="col col--7 col--offset-2">
-              <div className={classNames("container", styles.container)}>
-                <div className={styles.titleContainer}>
-                  <img className={styles.cover} src={image} alt="Cover" />
+        <div className="container">
+          <div className="margin-vert--lg padding-vert--lg">
+            <div className="row">
+              <div className="col col--8 col--offset-1">
+                <div className={classNames("container", styles.container)}>
                   <div className={styles.titleContainer}>
-                    <span className={styles.type}>{type}</span>
-                    <h1 className={styles.title}>{title}</h1>
-                    <span>
-                      {tags &&
-                        tags.map((item) => {
-                          return (
-                            <code key={item} className={styles.tag}>
-                              {item}
-                            </code>
-                          );
-                        })}
-                    </span>
-                    <span className={styles.date}>
-                      {author} | {date}
-                    </span>
+                    <img className={styles.cover} src={image} alt="Cover" />
+                    <div className={styles.titleContainer}>
+                      <span className={styles.type}>{type}</span>
+                      <h1 className={styles.title}>{title}</h1>
+                      <span>
+                        {tags &&
+                          tags.map((item) => {
+                            return (
+                              <code key={item} className={styles.tag}>
+                                {item}
+                              </code>
+                            );
+                          })}
+                      </span>
+                      <span className={styles.date}>
+                        {author} | {date}
+                      </span>
+                    </div>
                   </div>
+                  <MDXProvider components={MDXComponents}>
+                    <MDXPageContent />
+                  </MDXProvider>
                 </div>
-                <MDXProvider components={MDXComponents}>
-                  <MDXPageContent />
-                </MDXProvider>
               </div>
+              {MDXPageContent.toc && (
+                <div className="col col--3" style={{ paddingRight: "30px" }}>
+                  <TOC toc={MDXPageContent.toc} />
+                </div>
+              )}
             </div>
-            {MDXPageContent.toc && (
-              <div className="col col--3" style={{ paddingRight: "30px" }}>
-                <TOC toc={MDXPageContent.toc} />
-              </div>
-            )}
           </div>
         </div>
       </main>
