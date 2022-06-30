@@ -124,7 +124,9 @@ module.exports = {
       link: { type: "doc", id: "connect-blockchain/connect-blockchain" },
       items: [
         {
-          "EVM Based Chains": [
+          type: "category",
+          label: "EVM Based Chains",
+          items: [
             "connect-blockchain/evm/ethereum",
             "connect-blockchain/evm/polygon",
             "connect-blockchain/evm/bnb",
@@ -132,6 +134,8 @@ module.exports = {
             "connect-blockchain/evm/arbitrum",
             "connect-blockchain/evm/optimism",
           ],
+          collapsible: true,
+          collapsed: false,
         },
         "connect-blockchain/solana",
         "connect-blockchain/starkex",
