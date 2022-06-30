@@ -332,23 +332,27 @@ module.exports = {
         label: "Web3Auth Self Host",
         collapsible: false,
         items: [
-          {
-            type: "category",
-            label: "Web",
-            link: { type: "doc", id: "api-reference/self-host/web/web" },
-            items: [
-              "api-reference/self-host/web/initialize",
-              "api-reference/self-host/web/usage"
-            ],
-          },
+
+          "api-reference/self-host/introduction",
+          "api-reference/self-host/installation",
+          "api-reference/self-host/initialization",
+          "api-reference/self-host/service-provider",
           {
             type: "category",
             label: "Modules",
             link: { type: "doc", id: "api-reference/self-host/modules/modules" },
             items: [
-
+              "api-reference/self-host/modules/chrome-storage",
+              "api-reference/self-host/modules/web-storage",
+              "api-reference/self-host/modules/security-questions",
+              "api-reference/self-host/modules/share-transfer",
+              "api-reference/self-host/modules/seed-phrase",
+              "api-reference/self-host/modules/private-keys",
+              "api-reference/self-host/modules/share-serialization",
             ],
           },
+          "api-reference/self-host/usage",
+
         ],
       },
       ...quicklinks,

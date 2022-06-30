@@ -1,0 +1,144 @@
+---
+title: Installation
+hide_table_of_contents: false
+displayed_sidebar: apiReference
+---
+
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+import ModulesDescription from "./common/_modules-description.mdx";
+
+While installing Web3Auth Self Host, you have two options.
+
+- [Standard Installation](#standard-installation): Get yourself started with all the available Tkey SDKs & Modules and configure your application
+  accordingly.
+- [Custom Installation](#custom-installation): Pick and choose the Tkey SDKs & Modules you want to use for your implementation.
+
+## Standard Installation
+
+---
+
+For the standard installation, we recommend installing the `tkey/default` SDK. This package contains all the needed functionalities of the `tkey` SDK.
+Within one bundle you can import all the needed SDKs and get started with working on your Web3Auth Self Host implementation.
+
+### [`@tkey/default`](https://www.npmjs.com/package/@tkey/default)
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+
+<TabItem value="npm">
+
+```shell
+npm install --save @tkey/default
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @tkey/default
+```
+
+</TabItem>
+
+</Tabs>
+
+## Custom Installation
+
+---
+
+For the standard installation, you can pick and choose the SDKs and Modules you want to include. To start off, you need to install the `tkey/core`
+SDK. This SDK is needed for setting up the basic functionality, ie. generating a `tkey`.
+
+### [`@tkey/core`](https://www.npmjs.com/package/@tkey/core)
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+
+<TabItem value="npm">
+
+```shell
+npm install --save @tkey/core
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @tkey/core
+```
+
+</TabItem>
+
+</Tabs>
+
+### Adding a Service Provider
+
+For generating a [**Share B**](./introduction), ie. the private key share managed by a wallet service provider via their own authentication flows, you
+need to install one of the following packages:
+
+- [`@tkey/service-provider-torus`](service-provider#base-service-provider)
+- [`@tkey/service-provider-base`](service-provider#torus-service-provider)
+
+### Adding a Storage Layer
+
+A storage layer is needed to store and recall the metadata information of the shares generated so as to be able to recover the private key from the
+tkeys generated. For this we use the `@tkey/storage-layer-torus` SDK, giving you the ability to get and set the Metadata for the various shares
+generated. You can read about how it works from the [Initialization API Reference](./initialization).
+
+#### [`@tkey/storage-layer-torus`](https://www.npmjs.com/package/@tkey/storage-layer-torus)
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+
+<TabItem value="npm">
+
+```shell
+npm install --save @tkey/storage-layer-torus
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @tkey/storage-layer-torus
+```
+
+</TabItem>
+
+</Tabs>
+
+### Adding Modules
+
+<ModulesDescription />
+
+## Troubleshooting
+
+---
+
+### Webpack 5 Issues
+
+With the latest version of webpack, you might face issues mentioning that certain dependencies are missing. These dependencies need to be polyfilled
+in your application and your app needs to be reconfigured to use them while building. Checkout out our
+[dedicated guide](/troubleshooting/webpack-issues) for fixing it, if you're facing this problem.

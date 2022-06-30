@@ -1,0 +1,95 @@
+---
+title: Introduction
+hide_table_of_contents: false
+displayed_sidebar: apiReference
+---
+
+# Web3Auth Self Host SDKs
+
+If you want a more customised integration with Web3Auth, you have the option to try out `tkey` SDK, which is one of the core infrastructural component
+of Web3Auth. `tkey` stands for Threshold Key, which refers to the key share generated using threshold cryptography.
+
+The `tkey` manages private keys by generating shares of it using Shamir Secret Sharing. The user starts by generating (client-side) a 2 out of 3 (2/3)
+Shamir secret sharing. This gives the user three shares: ShareA, ShareB, and ShareC.
+
+- **ShareA** is stored on the user’s device: Implementation is device and system specific. For example, on mobile devices, the share could be stored
+  in device storage secured via biometrics.
+- **ShareB** is managed by a service provider: This share is kept and managed by a wallet service provider via their own authentication flows.
+- **ShareC** is a recovery share: An extra share to be kept by the user, possibly kept on a seperate device, downloaded or based on user input with
+  enough entropy (eg. password, security questions, hardware device etc.).
+
+Similar to existing 2FA systems, a user needs to prove ownership of at least 2 out of 3 (2/3) shares, in order to retrieve his private key.
+
+:::tip
+
+This setup can be further customised using the `tkey` SDK according to your own needs. To know more about how our infrastructure works, checkout our
+[Key Management Documentation](/overview/key-management)
+
+:::
+
+:::caution
+
+Since this setup is being hosted on your own servers, we cannot guarantee the total self-custodiality of the users' keys. The server configuration
+will decide the custodiality of the users' keys. If you want to use a true self custodial setup without any hassle from your side, we will recommend
+you to use our [Plug and Play SDKs](/api-reference/web/) rather.
+
+:::
+
+## Tkey Default SDK
+
+---
+
+### [`@tkey/default`](https://www.npmjs.com/package/@tkey/default)
+
+This package contains all the needed functionalities of the `tkey` SDK. Within one bundle you can import all the needed SDKs and get started with
+working on your Web3Auth Self Host implementation.
+
+:::tip
+
+Head on to the [`@tkey/default` API Reference](./tkey) section to get started.
+
+:::
+
+## Other Tkey SDKs
+
+---
+
+- **Torus Service Provider [`@tkey/service-provider-torus`](https://www.npmjs.com/package/@tkey/service-provider-torus):** Implements Torus's Custom
+  Auth SDK as a service provider for providing the **Share B** of the user, using their social login accounts.
+
+- **Torus Storage Layer[`@tkey/storage-layer-torus`](https://www.npmjs.com/package/@tkey/storage-layer-torus):** Gives you the ability to get/set the
+  Metadata for the various shares generated.
+
+### Modules
+
+- **Chrome Storage Module [`@tkey/chrome-storage`](https://www.npmjs.com/package/@tkey/chrome-storage):** Adds the capability to add or remove a share
+  from the chrome extension storage.
+
+- **Web Storage Module [`@tkey/web-storage`](https://www.npmjs.com/package/@tkey/web-storage):** Adds the capability to add or remove a share from the
+  local and file storage.
+
+- **Security Questions Module [`@tkey/security-questions`](https://www.npmjs.com/package/@tkey/security-questions):** Adds the capability to add or
+  remove a security question and password as a share.
+
+- **Share Transfer Module [`@tkey/share-transfer`](https://www.npmjs.com/package/@tkey/share-transfer):** Adds the capability to transfer a share to
+  another device.
+
+- **Seed Phrase Module [`@tkey/seed-phrase`](https://www.npmjs.com/package/@tkey/seed-phrase):** Adds the capability to store and use seedphrases on
+  the metadata.
+
+- **Private Keys Module [`@tkey/private-keys`](https://www.npmjs.com/package/@tkey/private-keys):** Adds the capability to store extra private keys on
+  the metadata
+
+- **Share Serialization Module [`@tkey/share-serialization`](https://www.npmjs.com/package/@tkey/share-serialization):** Adds the capability to
+  import/ export a share from `tkey`
+
+### Base SDKs
+
+- **Tkey Core [`@tkey/core`](https://www.npmjs.com/package/@tkey/core):** The Core SDK that gives you the functionality to generate a `tkey`.
+
+- **Base Service Provider [`@tkey/service-provider-base`](https://www.npmjs.com/package/@tkey/service-provider-base):** The Base SDK that accepts a
+  private key which can be used to create one of the shares the tkey. This package has been extended to include the Custom Auth SDK as a service
+  provider within the [`@tkey/service-provider-torus`](https://www.npmjs.com/package/@tkey/service-provider-torus) SDK.
+
+- **Tkey Common Types [`@tkey/common-types`](https://www.npmjs.com/package/@tkey/common-types):** SDK containing the common Typescript types used
+  while configuring `tkey`.
