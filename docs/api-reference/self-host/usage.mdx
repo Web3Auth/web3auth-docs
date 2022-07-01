@@ -30,6 +30,7 @@ Natively, the instance of `ThresholdKey` _(referred to as `tkey` in our examples
 <TabItem value="class">
 
 ```ts
+// ALL UNDERSCORES DONT NEED
 class ThresholdKey implements ITKey {
   modules: ModuleMap;
   enableLogging: boolean;
@@ -44,12 +45,12 @@ class ThresholdKey implements ITKey {
   _refreshMiddleware: RefreshMiddlewareMap;
   _reconstructKeyMiddleware: ReconstructKeyMiddlewareMap;
   _shareSerializationMiddleware: ShareSerializationMiddleware;
-  storeDeviceShare: (deviceShareStore: ShareStore, customDeviceInfo?: StringifiedType) => Promise<void>;
-  haveWriteMetadataLock: string;
+  storeDeviceShare: (deviceShareStore: ShareStore, customDeviceInfo?: StringifiedType) => Promise<void>; // Call to trigger module to store shares
+  {/* haveWriteMetadataLock: string;  */}
   constructor(args?: TKeyArgs);
   static fromJSON(value: StringifiedType, args: TKeyArgs): Promise<ThresholdKey>;
   getStorageLayer(): IStorageLayer;
-  getMetadata(): IMetadata;
+  {/* getMetadata(): IMetadata; */}
   initialize(params?: {
     withShare?: ShareStore;
     importKey?: BN;
@@ -64,13 +65,13 @@ class ThresholdKey implements ITKey {
    * @param shareStore - share to start of with
    * @param polyID - if specified, polyID to refresh to if it exists
    */
-  catchupToLatestShare(params: {
+  {/* catchupToLatestShare(params: {
     shareStore: ShareStore;
     polyID?: PolynomialID;
     includeLocalMetadataTransitions?: boolean;
-  }): Promise<CatchupToLatestShareResult>;
+  }): Promise<CatchupToLatestShareResult>; */}
   reconstructKey(_reconstructKeyMiddleware?: boolean): Promise<ReconstructedKeyResult>;
-  reconstructLatestPoly(): Polynomial;
+  {/* reconstructLatestPoly(): Polynomial; */}
   deleteShare(shareIndex: BNString): Promise<DeleteShareResult>;
   generateNewShare(): Promise<GenerateNewShareResult>;
   _refreshShares(threshold: number, newShareIndexes: Array<string>, previousPolyID: PolynomialID): Promise<RefreshSharesResult>;
@@ -85,34 +86,34 @@ class ThresholdKey implements ITKey {
     importedKey?: BN;
     delete1OutOf1?: boolean;
   }): Promise<InitializeNewKeyResult>;
-  addLocalMetadataTransitions(params: {
+  {/* addLocalMetadataTransitions(params: {
     input: LocalTransitionData;
     serviceProvider?: IServiceProvider;
     privKey?: Array<BN>;
     acquireLock?: boolean;
-  }): Promise<void>;
+  }): Promise<void>; */} // I THINK
   syncLocalMetadataTransitions(): Promise<void>;
-  updateSDK(params?: { withShare?: ShareStore }): Promise<ThresholdKey>;
-  inputShareStore(shareStore: ShareStore): void;
+  {/* updateSDK(params?: { withShare?: ShareStore }): Promise<ThresholdKey>; */}
+  {/* inputShareStore(shareStore: ShareStore): void; */}
   inputShareStoreSafe(shareStore: ShareStore, autoUpdateMetadata?: boolean): Promise<void>;
   outputShareStore(shareIndex: BNString, polyID?: string): ShareStore;
   _setKey(privKey: BN): void;
-  getCurrentShareIndexes(): string[];
+  {/* getCurrentShareIndexes(): string[]; */}
   getKeyDetails(): KeyDetails;
-  generateAuthMetadata(params: { input: Metadata[] }): AuthMetadata[];
-  setAuthMetadata(params: { input: Metadata; serviceProvider?: IServiceProvider; privKey?: BN }): Promise<{
+  {/* generateAuthMetadata(params: { input: Metadata[] }): AuthMetadata[]; */}
+  {/* setAuthMetadata(params: { input: Metadata; serviceProvider?: IServiceProvider; privKey?: BN }): Promise<{
     message: string;
-  }>;
-  setAuthMetadataBulk(params: { input: Metadata[]; serviceProvider?: IServiceProvider; privKey?: BN[] }): Promise<void>;
-  getAuthMetadata(params: { serviceProvider?: IServiceProvider; privKey?: BN; includeLocalMetadataTransitions?: boolean }): Promise<Metadata>;
-  getGenericMetadataWithTransitionStates(params: {
+  }>; */}
+  {/* setAuthMetadataBulk(params: { input: Metadata[]; serviceProvider?: IServiceProvider; privKey?: BN[] }): Promise<void>;
+  getAuthMetadata(params: { serviceProvider?: IServiceProvider; privKey?: BN; includeLocalMetadataTransitions?: boolean }): Promise<Metadata>; */}
+  {/* getGenericMetadataWithTransitionStates(params: {
     fromJSONConstructor: FromJSONConstructor;
     serviceProvider?: IServiceProvider;
     privKey?: BN;
     includeLocalMetadataTransitions?: boolean;
     _localMetadataTransitions?: LocalMetadataTransitions;
-  }): Promise<unknown>;
-  acquireWriteMetadataLock(): Promise<number>;
+  }): Promise<unknown>; */}
+  {/* acquireWriteMetadataLock(): Promise<number>;
   releaseWriteMetadataLock(): Promise<void>;
   _syncShareMetadata(adjustScopedStore?: (ss: unknown) => unknown): Promise<void>;
   syncMultipleShareMetadata(shares: Array<BN>, adjustScopedStore?: (ss: unknown) => unknown): Promise<void>;
@@ -125,14 +126,14 @@ class ThresholdKey implements ITKey {
     serialize: (share: BN, type: string) => Promise<unknown>,
     deserialize: (serializedShare: unknown, type: string) => Promise<BN>
   ): void;
-  _setDeviceStorage(storeDeviceStorage: (deviceShareStore: ShareStore) => Promise<void>): void;
+  _setDeviceStorage(storeDeviceStorage: (deviceShareStore: ShareStore) => Promise<void>): void; */}
   addShareDescription(shareIndex: string, description: string, updateMetadata?: boolean): Promise<void>;
   deleteShareDescription(shareIndex: string, description: string, updateMetadata?: boolean): Promise<void>;
   updateShareDescription(shareIndex: string, oldDescription: string, newDescription: string, updateMetadata?: boolean): Promise<void>;
-  encrypt(data: Buffer): Promise<EncryptedMessage>;
+  {/* encrypt(data: Buffer): Promise<EncryptedMessage>;
   decrypt(encryptedMessage: EncryptedMessage): Promise<Buffer>;
   _setTKeyStoreItem(moduleName: string, data: TkeyStoreItemType): Promise<void>;
-  _deleteTKeyStoreItem(moduleName: string, id: string): Promise<void>;
+  _deleteTKeyStoreItem(moduleName: string, id: string): Promise<void>; */}
   getTKeyStore(moduleName: string): Promise<TkeyStoreItemType[]>;
   getTKeyStoreItem(moduleName: string, id: string): Promise<TkeyStoreItemType>;
   outputShare(shareIndex: BNString, type?: string): Promise<unknown>;

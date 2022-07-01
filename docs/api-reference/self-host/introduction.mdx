@@ -6,15 +6,15 @@ displayed_sidebar: apiReference
 
 # Web3Auth Self Host SDKs
 
-If you want a more customised integration with Web3Auth, you have the option to try out `tkey` SDK, which is one of the core infrastructural component
-of Web3Auth. `tkey` stands for Threshold Key, which refers to the key share generated using threshold cryptography.
+If you want to self-host Web3Auth, you have the option to try out our UI-less SDK, `tKey`, which is the underlying SDK used to implement Web3Auth Plug
+n Play. `tKey` stands for Threshold Key, which refers to the management keys & shares generated using threshold cryptography.
 
-The `tkey` manages private keys by generating shares of it using Shamir Secret Sharing. The user starts by generating (client-side) a 2 out of 3 (2/3)
-Shamir secret sharing. This gives the user three shares: ShareA, ShareB, and ShareC.
+The `tKey` SDK manages private keys by generating shares of it using Shamir Secret Sharing. For example, for a 2 out of 3 (2/3) setup, we give the
+user three shares: ShareA, ShareB, and ShareC.
 
 - **ShareA** is stored on the user’s device: Implementation is device and system specific. For example, on mobile devices, the share could be stored
   in device storage secured via biometrics.
-- **ShareB** is managed by a service provider: This share is kept and managed by a wallet service provider via their own authentication flows.
+- **ShareB** is managed and split across Web3Auth's Auth Network, accessed by an OAuth login provider that a user owns.
 - **ShareC** is a recovery share: An extra share to be kept by the user, possibly kept on a seperate device, downloaded or based on user input with
   enough entropy (eg. password, security questions, hardware device etc.).
 
@@ -22,16 +22,15 @@ Similar to existing 2FA systems, a user needs to prove ownership of at least 2 o
 
 :::tip
 
-This setup can be further customised using the `tkey` SDK according to your own needs. To know more about how our infrastructure works, checkout our
-[Key Management Documentation](/overview/key-management)
+This setup can be further customised using the `tKey` SDK according to your own needs, for example 3/n flows or starting out with 2/2. To know more
+about how our infrastructure works, checkout our [Key Management Documentation](/overview/key-management)
 
 :::
 
 :::caution
 
-Since this setup is being hosted on your own servers, we cannot guarantee the total self-custodiality of the users' keys. The server configuration
-will decide the custodiality of the users' keys. If you want to use a true self custodial setup without any hassle from your side, we will recommend
-you to use our [Plug and Play SDKs](/api-reference/web/) rather.
+Applications/wallets must take care to ensure that `tKey` is implemented soley on the client-side for it to be non-custodial for users. Implementation
+time is longer with `tKey`, if you need a faster and easier integration use the [Web3Auth Plug and Play SDKs](/api-reference/web/).
 
 :::
 
