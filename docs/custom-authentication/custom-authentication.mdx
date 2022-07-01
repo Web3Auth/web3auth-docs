@@ -5,9 +5,9 @@ hide_table_of_contents: false
 
 import Image1 from "@site/static/dashboard/verifier.png";
 
-Custom Authentication is a way to authenticate users with your own custom authentication service. For example, you can use a custom authentication
-service like Firebase or Auth0 for providing the Web2 authentication aspect which can be passed on to Web3Auth via Verifiers and Web3Auth will proceed
-with the process from there.
+Custom Authentication refers to the capability of hooking up your own custom authentication flow with Web3Auth. This gives you the flexibility of
+using any authentication / verification flow you want, providing us the verification token and the user details, and let Web3Auth do the rest,
+generating a private key for the user, in a self custodial way, resulting in easy onboarding for your users to the dApp.
 
 Using your own authentication service with Web3Auth is one of the best utlisation of our platform. When building a production application, we
 recommend you to prefer this approach rather than relying on the default authentication provided by Web3Auth. There are multiple upsides to it:
@@ -19,40 +19,44 @@ recommend you to prefer this approach rather than relying on the default authent
 - You can **migrate your existing users into the new flow with Web3Auth**, without them needing to create new accounts according to our flow. Again,
   just pass on the verification token, we'll create a wallet for them instantly for you!
 
-This guide will further explain how you can utilise Web3Auth to create your custom authentication reference.
-
-# Get Started
+## Get Started
 
 ---
 
-Using your own authentication service with Web3Auth is actually relatively easy and can be done with not too much code. To get started,
+Using your own authentication service with Web3Auth is actually relatively easy and can be done with not too much code.
 
-- **Design your Key Management Architecture to decide on which logins ([verifiers](./verifiers)) you'd like to implement, your authentication
-  structure and more.**
+To get started,
 
-:::tip
+- **Design your Key Management Architecture to decide on which logins ([verifiers](./verifiers)) you'd like to implement, authentication structure and
+  more.**
 
-**Here are a couple of questions that might help you there:**
+  :::tip
 
-**Which logins should my application support?**
+  **Here are a couple of FAQs that might help you:**
 
-You can select from this [list](./verifiers) or use your own Custom Verifier. There are some nuances with certain login providers, so don't hesitate
-to get in touch.
+  - **Which logins should my application support?**
 
-**Should different logins lead to the same key?**
+    - You can select from [this list](./verifiers#supported-logins) or use your own custom authentication. There are some nuances with certain login
+      providers, so don't hesitate to get in touch with us.
 
-You can choose to connect logins with the same verifierID. For example if a user uses generic email logins and a gmail login to login on different
-occasions he/she can still retrieve the same key. This can only be done on logins which share a common unique identifier for a user. Read more about
-[aggregating logins](./verifiers).
+  - **Should different logins lead to the same key?**
 
-:::
+    - You can choose to connect logins with the same `Verifier ID`. For example if a user uses generic email logins and a gmail login to login on
+      different occasions he/she can still retrieve the same key. This can only be done on logins which share a common unique identifier for a user.
 
-- **Create your verifier on testnet on the [Web3Auth Dashboard](https://dashboard.web3auth.io).** This would require you to similarly setup the
-  different logins/auths you have chosen with the respective parties. For example, with Google you need a `clientID`. Any generic OAuth follow the
-  details (here)[./verifiers]The process is fairly strightforward and you can view it [here](/get-started/using-dashboard#creating-a-verifier).
-- **Make sure to convert/ deploy your verifier to mainnet, before entering into production.**
+      Read more about aggregating logins [here](./verifiers#aggregating-loginsverifiers).
 
-# Setting up Verifiers on the Developer Dashboard
+  :::
+
+- **Create your verifier on the [Web3Auth Dashboard](https://dashboard.web3auth.io).**
+
+  This would require you to setup the different logins/auths you have chosen with the respective parties. For example, with Google you'll need a
+  `Client ID` and with Facebook, you'll need both the `Client ID` and `Client Secret`. For all supported login providers, see
+  [here](./verifiers#supported-logins).
+
+- **Make sure to convert / deploy your verifier to mainnet for production.**
+
+## Setting up Verifiers on the Developer Dashboard
 
 ---
 
@@ -65,52 +69,52 @@ on the `Create Verifier` button, you'll see a toggle similar to this:
 <br />
 To create a verifier, you need to input the following details:
 
-## Verifier identifier
-
----
+### Verifier identifier
 
 The identifier for your verifier. This is used to identify your verifier in the Web3Auth dashboard. You'll need this while initialising the
 Web3AuthCore SDK for setting up custom login.
 
-## Select Network
-
----
+### Select Network
 
 Select between `testnet` and `mainnet`. `testnet` is a sandbox environment for developers to experiment. People usually test and finish their
 integration here. `mainnet` is production environment for scalable applications.
 
-## Verifier Type
-
----
+### Verifier Type
 
 Select the type of verifier you want to create. Here are the different kind of login providers that we currently support:
 
-### Native Providers
+## Suported Login Providers
+
+### Social Providers
 
 Native providers allow you to register your app directly with [implicit grant support ](https://oauth.net/2/grant-types/implicit/)and use them with
-Torus. The following are the supported native providers and instructions on how to set up an application with them.
+Web3Auth. The following are the supported native providers and instructions on how to set up an application with them.
 
 - [Google](https://support.google.com/googleapi/answer/6158849)
 - [Facebook](https://developers.facebook.com/docs/apps)
-- [Reddit](https://github.com/reddit-archive/reddit/wiki/oauth2)
-- [Discord](https://discord.com/developers/docs/topics/oauth2)
 - [Twitch](https://dev.twitch.tv/docs/authentication/#registration)
+- [Discord](https://discord.com/developers/docs/topics/oauth2)
 
-For native providers, you'll need the client ID / app ID to create a verifier.
+For native providers, you'll need the Client ID / App ID to create a verifier.
 
-### Proxy Providers
+### Login Providers
 
-Proxy providers enable you to use some non-implicit type logins. \(e.g: Twitter, Apple, GitHub, LinkedIn, Email-Password, Magic link, WeChat etc.\)
-and require you to register an app with them.
+Login providers enable you to use some implicit and authorization code flow logins. You could also use social providers on top of Login providers to
+select other Social providers (e.g: Twitter, Apple, GitHub, LinkedIn, WeChat etc.) that are not natively suported by us. This will require you to
+register an app with them.
 
-Some examples of proxy providers:
+Login providers directly supporte through Web3Auth Dashboard:
 
 - [Auth0](https://auth0.com/docs/connections)
-- [Okta](https://developer.okta.com/docs/concepts/social-login/)
-- [Cognito](https://aws.amazon.com/cognito/getting-started/)
-- or any custom OAuth2 compliant login provider
 
-### Custom Verifiers
+Other Login providers that are supported, but through [Custom Authentication Providers](./#custom-authentication-providers)
+
+- [Okta](https://developer.okta.com/docs/concepts/social-login/)
+- [AWS Cognito](https://aws.amazon.com/cognito/getting-started/)
+- [Firebase](https://cloud.google.com/firestore/docs/client/get-firebase)
+- or any OAuth2 compliant login provider
+
+### Custom Authentication Providers
 
 You can use your own login providers with Web3Auth, using one of the custom login schemes (either via RSA or ECDSA signatures). This way, your users
 can still use your existing login provider. The application should follow the JWT specification and use JWKS for signing whose public keys are exposed
