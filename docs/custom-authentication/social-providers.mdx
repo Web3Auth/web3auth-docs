@@ -1,0 +1,255 @@
+---
+title: Social Providers
+---
+
+Social providers allow you to register your app directly with [implicit grant support ](https://oauth.net/2/grant-types/implicit/)and use them with
+the Web3Auth SDK.
+
+For social providers, you'll also need to set up an application with them to get the Client ID / App ID to use Custom Authentication.
+
+## Google
+
+### Create a Google app
+
+### Set up Google Custom Authentication
+
+1. Create a verifier for your Google application by selecting `Google` as the Login provider from this modal.
+   ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
+2. Paste the **Client ID** from the Google App(above) to the `Client ID` field and click on Create.
+   ![Google Client ID on Web3Auth Dashboard](/dashboard/verifiers/google-verifier.png)
+
+### Example
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const clientId = "YOUR_CLIENT_ID";
+// get it from https://dashboard.web3auth.io by creating a Plug n Play project.
+
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig: {
+    chainNamespace: "EIP155",
+    chainId: "0x3",
+  },
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId,
+    network: "testnet",
+    uxMode: "popup",
+    loginConfig: {
+      // Google login
+      google: {
+        name: "Custom Auth Login",
+        verifier: "YOUR_GOOGLE_VERIFIER_NAME", // Pass the Verifier name here
+        typeOfLogin: "google", // Pass on the login provider of the verifier you've created
+        clientId: "GOOGLE_CLIENT_ID.apps.googleusercontent.com", // Pass on the Google `Client ID` here
+      },
+    },
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+
+// Initialize Modal
+await web3auth.initModal();
+
+// Login with Google
+await web3auth.connect();
+```
+
+## Facebook
+
+### Create a Facebook app
+
+### Set up Facebook Custom Authentication
+
+1. Create a verifier for your Facebook application by selecting `Facebook` as the Login provider from this modal.
+   ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
+2. Paste the **Client ID** from the Facebook App(above) to the `Client ID` field and click on Create.
+   ![Facebook Client ID on Web3Auth Dashboard](/dashboard/verifiers/facebook-verifier.png)
+
+### Example
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const clientId = "YOUR_CLIENT_ID";
+// get it from https://dashboard.web3auth.io by creating a Plug n Play project.
+
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig: {
+    chainNamespace: "EIP155",
+    chainId: "0x3",
+  },
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId,
+    network: "testnet",
+    uxMode: "popup",
+    loginConfig: {
+      // Facebook login
+      facebook: {
+        name: "Custom Auth Login",
+        verifier: "YOUR_FACEBOOK_VERIFIER_NAME", // Pass the Verifier name here
+        typeOfLogin: "facebook", // Pass on the login provider of the verifier you've created
+        clientId: "FACEBOOK_CLIENT_ID_1234567890", // Pass on the Facebook `Client ID` here
+      },
+    },
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+
+// Initialize Modal
+await web3auth.initModal();
+
+// Login with Facebook
+await web3auth.connect();
+```
+
+## Twitch
+
+### Create a Twitch app
+
+1. Follow Twitch's [registration instructions](https://dev.twitch.tv/docs/authentication/#registration) to
+   [register your app](https://dev.twitch.tv/console/apps/create)
+
+2. Paste the following as Redirect URI into the "OAuth Redirect URLs" field.
+
+   - https://beta.openlogin.com/auth (for Web3Auth testnet used in demo applications)
+
+   - https://app.openlogin.com/auth (for Web3Auth mainnet used in production applications)
+
+   ![Twitch OAuth2.0 App Dashboard](/contents/social-providers/twitch/twitch-app.png)
+
+3. After creation of your Twitch app, click **Manage**
+
+   ![Twitch OAuth2.0 App Manage](/contents/social-providers/twitch/twitch-manage.png)
+
+4. Obtain the **Client ID**
+
+   ![Twitch OAuth2.0 App Manage](/contents/social-providers/twitch/twitch-client-id.png)
+
+### Set up Twitch Custom Authentication
+
+1. Create a verifier for your Twitch application by selecting `Twitch` as the Login provider from this modal.
+   ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
+2. Paste the **Client ID** from the Twitch App(above) to the `Client ID` field and click on Create.
+   ![Twitch Client ID on Web3Auth Dashboard](/dashboard/verifiers/twitch-verifier.png)
+
+### Example
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const clientId = "YOUR_CLIENT_ID";
+// get it from https://dashboard.web3auth.io by creating a Plug n Play project.
+
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig: {
+    chainNamespace: "EIP155",
+    chainId: "0x3",
+  },
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId,
+    network: "testnet",
+    uxMode: "popup",
+    loginConfig: {
+      // Twitch login
+      twitch: {
+        name: "Custom Auth Login",
+        verifier: "YOUR_TWITCH_VERIFIER_NAME", // Pass the Verifier name here
+        typeOfLogin: "twitch", // Pass on the login provider of the verifier you've created
+        clientId: "TWITCH_CLIENT_ID_1234567890", // Pass on the Twitch `Client ID` here
+      },
+    },
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+
+// Initialize Modal
+await web3auth.initModal();
+
+// Login with Twitch
+await web3auth.connect();
+```
+
+## Discord
+
+### Create a Discord app
+
+1. Create a Discord [API application](https://discord.com/developers/applications).
+
+2. Navigate to **OAuth2** from the sidebar, and paste the following as Redirect URI into the "Redirect URI" field.
+
+   - https://beta.openlogin.com/auth (for Web3Auth testnet used in demo applications)
+
+   - https://app.openlogin.com/auth (for Web3Auth mainnet used in production applications)
+
+   ![Discord OAuth2.0 App Dashboard](/contents/social-providers/discord/discord-redirect-uri.png)
+
+3. Don't forget to save your changes!
+
+4. Next, obtain the **"Client ID"** from here. We will use this in our Web3Auth Dashboard.
+
+   ![Discord OAuth2.0 App Client ID and Secret](/contents/social-providers/discord/discord-clientid-secret.png)
+
+### Set up Discord Custom Authentication
+
+1. Create a verifier for your Discord application by selecting `Discord` as the Login provider from this modal.
+   ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
+2. Paste the **Client ID** from the Discord App(above) to the `Client ID` field and click on Create.
+   ![Discord Client ID on Web3Auth Dashboard](/dashboard/verifiers/discord-verifier.png)
+
+### Example
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const clientId = "YOUR_CLIENT_ID";
+// get it from https://dashboard.web3auth.io by creating a Plug n Play project.
+
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig: {
+    chainNamespace: "EIP155",
+    chainId: "0x3",
+  },
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId,
+    network: "testnet",
+    uxMode: "popup",
+    loginConfig: {
+      // Discord login
+      discord: {
+        name: "Custom Auth Login",
+        verifier: "YOUR_DISCORD_VERIFIER_NAME", // Pass the Verifier name here
+        typeOfLogin: "discord", // Pass on the login provider of the verifier you've created
+        clientId: "DISCORD_CLIENT_ID_1234567890", // Pass on the Discord `Client ID` here
+      },
+    },
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+
+// Initialize Modal
+await web3auth.initModal();
+
+// Login with Discord
+await web3auth.connect();
+```
