@@ -7,185 +7,40 @@ displayed_sidebar: apiReference
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-import ServiceProviderTorusExample from "./common/_service-provider-torus-example.mdx";
-import ServiceProviderBaseExample from "./common/_service-provider-base-example.mdx";
+import ServiceProviderExample from "./common/_service-provider-example.mdx";
+import ServiceProviderArg from "./common/_service-provider-arg.mdx";
+import ServiceProviderReturn from "./common/_service-provider-return.mdx";
+import TriggerLoginExample from "./common/_trigger-login-example.mdx";
+import InitParams from "./common/_init-params.mdx";
+import SubVerifierDetails from "./common/_sub-verifier-details.mdx";
+import TorusLoginResponse from "./common/_torus-login-response.mdx";
 
 Service Provider in `tKey` is used for generating a [**Share B**](./introduction), ie. the private key share managed by a wallet service provider via
 their own authentication flows. This share in the Web3Auth Plug and Play setup generally refers to the social login aspect, where we associate a
 private key share with the social login of the user, enabling the seemless login experience.
 
-In the Web3Auth Self Host setup, you have the option to whether use your own wallet and link their login to the Share B (using
-[`@tkey/service-provider-base`](#tkeyservice-provider-base)), or use the Torus Service Provider
-([`@tkey/service-provider-torus`](#tkeyservice-provider-torus)), which is basically using Torus's Custom Auth SDK in the background, enabling you to
-associate the social login of the user as one of the shares.
+In the Web3Auth Self Host setup, you can use the Web3Auth Service Provider (`@tkey/service-provider-torus`), which is basically implements Web3Auth's
+Social Login feature as a service provider, enabling you to associate the social login of the user as one of the shares.
 
-## Base Service Provider
+:::note
 
----
+For enabling this, you need [Create a Verifier](/custom-authentication/verifiers) from the **Custom Auth** section of the
+[Web3Auth Developer Dashboard](https://dashboard.web3auth.io/home/customauth) with your desired configuration.
 
-#### [`@tkey/service-provider-base`](https://npmjs.com/package/@tkey/service-provider-base)
+:::
 
-The Base Service Provider SDK accepts a private key which can be used to create one of the shares the tkey. You can generate a private key from any
-wallet and pass it over to this SDK for creating one of the shares.
+:::tip
 
-### Installation
+If you want to know more about setting up a verifier and how to use it, please refer to the
+[Custom Authentication Documentation](/custom-authentication).
 
-<Tabs
-  defaultValue="npm"
-  values={[
-    { label: "npm", value: "npm" },
-    { label: "yarn", value: "yarn" },
-  ]}
->
+:::
 
-<TabItem value="npm">
-
-```shell
-npm install --save @tkey/service-provider-base
-```
-
-</TabItem>
-
-<TabItem value="yarn">
-
-```shell
-yarn add @tkey/service-provider-base
-```
-
-</TabItem>
-
-</Tabs>
-
-### Initialization
-
-##### Import the `ServiceProviderBase` class from `@tkey/service-provider-base`
-
-```javascript
-import ServiceProviderBase from "@tkey/service-provider-base";
-```
-
-##### Assign the `ServiceProviderBase` class to a variable
-
-```javascript
-const serviceProvider = new ServiceProviderBase({ ServiceProviderArgs });
-```
-
-#### Parameters
-
-##### `ServiceProviderArgs`
-
-This `ServiceProviderBase` constructor takes an object with `ServiceProviderArgs` as input. It contains the following parameters:
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
-
-<TabItem value="table">
-
-</TabItem>
-
-<TabItem value="interface">
-
-```ts
-export interface ServiceProviderArgs {
-  enableLogging?: boolean;
-  postboxKey?: string;
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-#### Returns
-
-The `ServiceProviderBase` class returns an object with the following properties:
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Class Reference", value: "class" },
-  ]}
->
-
-<TabItem value="table">
-
-</TabItem>
-
-<TabItem value="class">
-
-```ts
-declare class ServiceProviderBase implements IServiceProvider {
-  enableLogging: boolean;
-  postboxKey: BN;
-  serviceProviderName: string;
-  constructor({ enableLogging, postboxKey }: ServiceProviderArgs);
-  static fromJSON(value: StringifiedType): IServiceProvider;
-  encrypt(msg: Buffer): Promise<EncryptedMessage>;
-  decrypt(msg: EncryptedMessage): Promise<Buffer>;
-  retrievePubKeyPoint(): curve.base.BasePoint;
-  retrievePubKey(type: PubKeyType): Buffer;
-  sign(msg: BNString): string;
-  toJSON(): StringifiedType;
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-#### Example
-
-<ServiceProviderBaseExample />
-
-### Usage
-
-With the Base Service Provider, you've access to the following functions:
-
-#### Encrypting a Private Key
-
-##### `encrypt(msg)`
-
-`msg`: The private key in `Buffer` to encrypt.
-
-##### Return
-
-`msg` in `EncryptedMessage` format.
-
-```ts
-interface EncryptedMessage {
-  ciphertext: string;
-  ephemPublicKey: string;
-  iv: string;
-  mac: string;
-}
-```
-
-#### Decrypting a Private Key
-
-##### `decrypt(msg)`
-
-`msg`: The private key in `EncryptedMessage` to decrypt.
-
-##### Return
-
-`msg` in `Buffer` format.
-
-## Torus Service Provider
+## Installation
 
 ---
 
 #### [`@tkey/service-provider-torus`](https://npmjs.com/package/@tkey/service-provider-torus)
-
-The Torus Service Provider SDK gives you the ability to use the Custom Auth SDK from Torus as a service provider for providing the **Share B** of the
-user, using their social login accounts.
-
-### Installation
 
 <Tabs
   defaultValue="npm"
@@ -213,281 +68,76 @@ yarn add @tkey/service-provider-torus
 
 </Tabs>
 
-### Instantiation
+## Instantiation
 
-##### Import the `TorusServiceProvider` class from `@tkey/service-provider-torus`
+---
+
+#### Import the `TorusServiceProvider` class from `@tkey/service-provider-torus`
 
 ```javascript
 import TorusServiceProvider from "@tkey/service-provider-torus";
 ```
 
-##### Assign the `TorusServiceProvider` class to a variable
+#### Assign the `TorusServiceProvider` class to a variable
 
 ```javascript
 const serviceProvider = new TorusServiceProvider({ TorusServiceProviderArgs });
 ```
 
-#### Parameters
+### Parameters
 
-##### `TorusServiceProviderArgs`
+#### `TorusServiceProviderArgs`
 
-This `TorusServiceProvider` constructor takes an object with `TorusServiceProviderArgs` as input. It contains the following parameters:
+<ServiceProviderArg />
 
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
+### Service Worker
 
-<TabItem value="table">
+Web3Auth Direct SDK installs a service worker relative to baseUrl to capture the auth redirect at `redirectPathName` path.
 
-</TabItem>
+:::info example
 
-<TabItem value="interface">
+While using serviceworker if baseUrl is `http://localhost:3000/serviceworker` and `redirectPathName` is `redirect` (which is default) then user will
+be redirected to `http://localhost:3000/serviceworker/redirect` page after login where service worker will capture the results and send it back to
+original window where login was initiated.
 
-```ts
-export interface TorusServiceProviderArgs extends ServiceProviderArgs {
-  directParams: CustomAuthArgs;
-}
-export interface ServiceProviderArgs {
-  enableLogging?: boolean;
-  postboxKey?: string;
-}
-```
+:::
 
-</TabItem>
+:::note
 
-</Tabs>
+Using serviceworker is optional, you can skip it by passing `skipSw` param in init function.
 
-##### `directParams`
+:::
 
-The `directParams` object is the mandatory object needed to be passed within the `TorusServiceProvider` constructor. It contains the following
-parameters:
+Use of serviceworker is recommended if you are using `popup` uxMode or for browsers where service workers are not supported or if you wish to not use
+service workers, create and serve redirect page (i.e `redirect.html` file which is available in serviceworker folder of this package).
 
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
+In `redirect` uxMode, you don't have to use serviceworker or `redirect.html` file. You can get login result by calling `getRedirectResult` on
+redirected page mount.
 
-<TabItem value="table">
+:::info example
 
-</TabItem>
+if baseUrl is `http://localhost:3000` and `redirectPathName` is `auth` then user will be redirected to `http://localhost:3000/auth` page after login
+where you can get login result by calling `getRedirectResult` on redirected page mount.
 
-<TabItem value="interface">
+:::
 
-`directParams: CustomAuthArgs;`
-
-```ts
-export interface CustomAuthArgs {
-  /**
-   * baseUrl , along with redirectPathName is used to construct the uri of page
-   * where user will be redirected after login.
-   *
-   * @remarks
-   * Redirect Uri for OAuth is `baseUrl`+`redirectPathName` which means
-   * that you must specify `baseUrl`+`redirectPathName` as redirect_uri at verifier's
-   * interface.
-   *
-   * Torus Direct SDK installs a service worker relative to baseUrl to capture
-   * the auth redirect at `redirectPathName` path.
-   *
-   * For ex: While using serviceworker if baseUrl is "http://localhost:3000/serviceworker" and
-   * redirectPathName is 'redirect' (which is default)
-   * then user will be redirected to http://localhost:3000/serviceworker/redirect page after login
-   * where service worker will capture the results and send it back to original window where login
-   * was initiated.
-   *
-   * Using serviceworker is optional, you can skip it by passing `skipSw` param
-   * in init function
-   *
-   * Use of serviceworker is recommended if you are using popup uxMode or
-   * for browsers where service workers are not supported or if you wish to not use
-   * service workers, create and serve redirect page (i.e redirect.html file which is
-   * available in serviceworker folder of this package)
-   *
-   * In redirect uxMode, you don't have to use serviceworker or redirect.html file.
-   * You can get login result by calling `getRedirectResult` on redirected page mount.
-   *
-   * For ex: if baseUrl is "http://localhost:3000" and `redirectPathName` is 'auth'
-   * then user will be redirected to http://localhost:3000/auth page after login
-   * where you can get login result by calling `getRedirectResult` on redirected page mount.
-   *
-   * Please refer to examples https://github.com/torusresearch/customauth/tree/master/examples
-   * for more understanding.
-   *
-   */
-  baseUrl: string;
-  /**
-   * Specify a custom metadata host
-   * @defaultValue https://metadata.tor.us
-   */
-  metadataUrl?: string;
-  /**
-   * Torus Network to target options: mainnet | testnet | cyan
-   * @defaultValue mainnet
-   */
-  network?: TORUS_NETWORK_TYPE;
-  /**
-   * Network Url to read blockchain data from (eg: infura url)
-   */
-  networkUrl?: string;
-  /**
-   * This option is used to specify whether to enable logging
-   *
-   * @defaultValue false
-   */
-  enableLogging?: boolean;
-  /**
-   * Use one key features
-   *
-   * @defaultValue false
-   */
-  enableOneKey?: boolean;
-  /**
-   * For chrome extensions, the general methods for capturing auth redirects don't work.
-   * So, we redirect to the window which opens the auth window.
-   *
-   * @defaultValue false
-   */
-  redirectToOpener?: boolean;
-  /**
-   * This option is used to specify the url path where user will be
-   * redirected after login. Redirect Uri for OAuth is baseUrl/redirectPathName.
-   *
-   *
-   * @defaultValue redirect
-   *
-   * @remarks
-   * At verifier's interface (where you obtain client id), please use baseUrl/redirectPathName
-   * as the redirect_uri
-   *
-   * Torus Direct SDK installs a service worker relative to baseUrl to capture
-   * the auth redirect at `redirectPathName` path.
-   *
-   * For ex: While using serviceworker if `baseUrl` is "http://localhost:3000/serviceworker" and
-   * `redirectPathName` is 'redirect' (which is default)
-   * then user will be redirected to http://localhost:3000/serviceworker/redirect page after login
-   * where service worker will capture the results and send it back to original window where login
-   * was initiated.
-   *
-   * For browsers where service workers are not supported or if you wish to not use
-   * service workers,create and serve redirect page (i.e redirect.html file which is
-   * available in serviceworker folder of this package)
-   *
-   * If you are using redirect uxMode, you can get the results directly on your `redirectPathName`
-   * path using `getRedirectResult` function.
-   *
-   * For ex: if baseUrl is "http://localhost:3000" and `redirectPathName` is 'auth'
-   * then user will be redirected to http://localhost:3000/auth page after login
-   * where you can get login result by calling `getRedirectResult` on redirected page mount.
-   *
-   * Please refer to examples https://github.com/torusresearch/customauth/tree/master/examples
-   * for more understanding.
-   *
-   */
-  redirectPathName?: string;
-  /**
-   * API Key for torus to enable higher access limits
-   *
-   */
-  apiKey?: string;
-  /**
-   * Two uxModes are supported:-
-   * - `'popup'`: In this uxMode, a popup will be shown to user for login.
-   * - `'redirect'`: In this uxMode, user will be redirected to a new window tab for login.
-   *
-   * @defaultValue `'popup'`
-   * @remarks
-   *
-   * Use of `'REDIRECT'` mode is recommended in browsers where popups might get blocked.
-   */
-  uxMode?: UX_MODE_TYPE;
-  /**
-   * Whether to replace the url hash/query params from OAuth at the end of the redirect flow
-   *
-   * @defaultValue false
-   */
-  locationReplaceOnRedirect?: boolean;
-  /**
-   * Features of popup window. Please check https://developer.mozilla.org/en-US/docs/Web/API/Window/open#window_features
-   * for further documentation.
-   */
-  popupFeatures?: string;
-  /**
-   * Specify a custom storage server url
-   * @defaultValue https://broadcast-server.tor.us
-   */
-  storageServerUrl?: string;
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-#### Returns
+### Returns
 
 The `TorusServiceProvider` class returns an object with the following properties:
 
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Class Reference", value: "class" },
-  ]}
->
-
-<TabItem value="table">
-
-</TabItem>
-
-<TabItem value="class">
-
-```ts
-declare class TorusServiceProvider extends ServiceProviderBase {
-  directWeb: CustomAuth;
-  singleLoginKey: BN;
-  directParams: CustomAuthArgs;
-  constructor({ enableLogging, postboxKey, directParams }: TorusServiceProviderArgs);
-  static fromJSON(value: StringifiedType): TorusServiceProvider;
-  init(params: InitParams): Promise<void>;
-  triggerLogin(params: SubVerifierDetails): Promise<TorusLoginResponse>;
-  triggerAggregateLogin(params: AggregateLoginParams): Promise<TorusAggregateLoginResponse>;
-  triggerHybridAggregateLogin(params: HybridAggregateLoginParams): Promise<TorusHybridAggregateLoginResponse>;
-  toJSON(): StringifiedType;
-}
-
-declare class ServiceProviderBase implements IServiceProvider {
-  enableLogging: boolean;
-  postboxKey: BN;
-  serviceProviderName: string;
-  constructor({ enableLogging, postboxKey }: ServiceProviderArgs);
-  static fromJSON(value: StringifiedType): IServiceProvider;
-  encrypt(msg: Buffer): Promise<EncryptedMessage>;
-  decrypt(msg: EncryptedMessage): Promise<Buffer>;
-  retrievePubKeyPoint(): curve.base.BasePoint;
-  retrievePubKey(type: PubKeyType): Buffer;
-  sign(msg: BNString): string;
-  toJSON(): StringifiedType;
-}
-```
-
-</TabItem>
-
-</Tabs>
+<ServiceProviderReturn />
 
 #### Example
 
-<ServiceProviderTorusExample />
+<ServiceProviderExample />
 
-### Initialization
+## Initialization
 
-If you're using the Torus Service Provider, you need to initialize it within your constructor function so as to use it while logging your user in
+---
+
+#### `init()`
+
+If you're using the Web3Auth Service Provider, you need to initialize it within your constructor function so as to use it while logging your user in
 through the social accounts. This is done by calling the `init()` function within the `tKey` instance's `serviceProvider` property.
 
 ```javascript
@@ -498,233 +148,51 @@ await (tKey.serviceProvider as TorusServiceProvider).init(initParams);
 
 The `init` function in TorusServiceProvider accepts the following parameters:
 
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
+<InitParams />
 
-<TabItem value="table">
-
-</TabItem>
-
-<TabItem value="interface">
-
-```ts
-interface InitParams {
-  /**
-   * skips the installation / check for service worker
-   * @defaultValue false
-   */
-  skipSw?: boolean;
-  /**
-   * skips the init function
-   * @defaultValue false
-   */
-  skipInit?: boolean;
-  /**
-   * skips the prefetching of redirect url
-   * @defaultValue false
-   *
-   */
-  skipPrefetch?: boolean;
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-#### Example
+### Example
 
 ```js
 await (tKey.serviceProvider as TorusServiceProvider).init({ skipSw: false });
 ```
 
-### Triggering Login
+## Triggering Login
 
-Once you have initialised the Torus Service Provider, you're ready to trigger the login process. This is a needed step since this will generate a
-private key which will be needed by the TKey to generate it's share. This is done by calling the `triggerLogin()` function within the `tKey`
+---
+
+#### `triggerLogin()`
+
+Once you have initialised the Web3Auth Service Provider, you're ready to trigger the login process. This is a needed step since this will generate a
+private key which will be needed by the tKey to generate it's share. This is done by calling the `triggerLogin()` function within the `tKey`
 instance's `serviceProvider` property.
 
 ```javascript
 await (tKey.serviceProvider as TorusServiceProvider).triggerLogin(SubVerifierDetails)
 ```
 
-#### `SubVerifierDetails`
+<SubVerifierDetails />
 
-The `triggerLogin` function in `TorusServiceProvider` accepts the following parameters:
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
-
-<TabItem value="table">
-
-</TabItem>
-
-<TabItem value="interface">
-
-```ts
-interface SubVerifierDetails {
-  typeOfLogin: LOGIN_TYPE;
-  verifier: string;
-  clientId: string;
-  jwtParams?: Auth0ClientOptions;
-  hash?: string;
-  queryParameters?: TorusGenericObject;
-  customState?: TorusGenericObject;
-}
-
-interface Auth0ClientOptions extends BaseLoginOptions {
-  /**
-   * Your Auth0 account domain such as `'example.auth0.com'`,
-   * `'example.eu.auth0.com'` or , `'example.mycompany.com'`
-   * (when using [custom domains](https://auth0.com/docs/custom-domains))
-   */
-  domain: string;
-  /**
-   * The Client ID found on your Application settings page
-   */
-  client_id?: string;
-  /**
-   * The default URL where Auth0 will redirect your browser to with
-   * the authentication result. It must be whitelisted in
-   * the "Allowed Callback URLs" field in your Auth0 Application's
-   * settings. If not provided here, it should be provided in the other
-   * methods that provide authentication.
-   */
-  redirect_uri?: string;
-  /**
-   * The value in seconds used to account for clock skew in JWT expirations.
-   * Typically, this value is no more than a minute or two at maximum.
-   * Defaults to 60s.
-   */
-  leeway?: number;
-  /**
-   * The field in jwt token which maps to verifier id
-   */
-  verifierIdField?: string;
-  /**
-   * Whether the verifier id field is case sensitive
-   * @defaultValue true
-   */
-  isVerifierIdCaseSensitive?: boolean;
-  id_token?: string;
-  access_token?: string;
-  /**
-   * The route for user info endpoint. This will be padded to domain
-   * @defaultValue userinfo
-   * */
-  user_info_route?: string;
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-#### Returns
+### Returns
 
 ```ts
 triggerLogin(params: SubVerifierDetails): Promise<TorusLoginResponse>;
 ```
 
-#### `TorusLoginResponse`
+<TorusLoginResponse />
 
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
+### Example
 
-<TabItem value="table">
+<TriggerLoginExample />
 
-</TabItem>
+## Trigger Login using an Aggregate Verifier
 
-<TabItem value="interface">
+---
 
-```ts
-export declare type TorusLoginResponse = TorusSingleVerifierResponse & TorusKey;
-export interface TorusSingleVerifierResponse {
-  userInfo: TorusVerifierResponse & LoginWindowResponse;
-}
-export interface LoginWindowResponse {
-  accessToken: string;
-  idToken?: string;
-  ref?: string;
-  extraParams?: string;
-  extraParamsPassed?: string;
-  state: TorusGenericObject;
-}
-export interface TorusVerifierResponse {
-  email: string;
-  name: string;
-  profileImage: string;
-  aggregateVerifier?: string;
-  verifier: string;
-  verifierId: string;
-  typeOfLogin: LOGIN_TYPE;
-  ref?: string;
-  registerOnly?: boolean;
-  extraVerifierParams?: WebAuthnExtraParams;
-}
+#### `triggerAggregateLogin()`
+
+```javascript
+await (tKey.serviceProvider as TorusServiceProvider).triggerAggregateLogin(AggregateLoginParams)
 ```
-
-</TabItem>
-
-</Tabs>
-
-#### `TorusKey`
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
-
-<TabItem value="table">
-
-</TabItem>
-
-<TabItem value="interface">
-
-```ts
-export interface TorusKey extends TorusKeyPub {
-  publicAddress: string;
-  privateKey: string;
-  metadataNonce: string;
-  typeOfUser: "v1" | "v2";
-}
-export interface TorusKeyPub {
-  pubKey?: {
-    pub_key_X: string;
-    pub_key_Y: string;
-  };
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-### Usage
-
-Except for `triggerLogin`, with the Torus Service Provider, you've access to the following functions:
-
-#### Trigger Login using an Aggregate Verifier
-
-##### `triggerAggregateLogin(AggregateLoginParams)`
 
 Takes in the aggregate verifier details as `AggregateLoginParams`.
 
@@ -736,13 +204,17 @@ interface AggregateLoginParams {
 }
 ```
 
-##### Return
+### Return
 
 Similar Return as [`triggerLogin`](#torusloginresponse), but for the Aggregate Verifier
 
-#### Trigger Login using an Hybrid Aggregate Verifier
+## Trigger Login using an Hybrid Aggregate Verifier
 
-##### `triggerHybridAggregateLogin(HybridAggregateLoginParams)`
+#### `triggerHybridAggregateLogin()`
+
+```javascript
+await (tKey.serviceProvider as TorusServiceProvider).triggerHybridAggregateLogin(HybridAggregateLoginParams)
+```
 
 Takes in the aggregate verifier details as `HybridAggregateLoginParams`.
 
@@ -753,38 +225,9 @@ export interface HybridAggregateLoginParams {
 }
 ```
 
-##### Return
+### Return
 
 Returns an object containing
 
 1. `singleLogin`: [`TorusLoginResponse`](#torusloginresponse)
 2. `aggregateLogins`: [`TorusKey[]`](#toruskey)
-
-#### Encrypting a Private Key
-
-##### `encrypt(msg)`
-
-`msg`: The private key in `Buffer` to encrypt.
-
-##### Return
-
-`msg` in `EncryptedMessage` format.
-
-```ts
-interface EncryptedMessage {
-  ciphertext: string;
-  ephemPublicKey: string;
-  iv: string;
-  mac: string;
-}
-```
-
-#### Decrypting a Private Key
-
-##### `decrypt(msg)`
-
-`msg`: The private key in `EncryptedMessage` to decrypt.
-
-##### Return
-
-`msg` in `Buffer` format.

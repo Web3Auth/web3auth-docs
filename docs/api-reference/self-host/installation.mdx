@@ -13,9 +13,9 @@ import ModulesDescription from "./common/_modules-description.mdx";
 
 While installing Web3Auth Self Host, you have two options.
 
-- [Standard Installation](#standard-installation): Get yourself started with all the available Tkey SDKs & Modules and configure your application
+- [Standard Installation](#standard-installation): Get yourself started with all the available tKey SDKs & Modules and configure your application
   accordingly.
-- [Custom Installation](#custom-installation): Pick and choose the Tkey SDKs & Modules you want to use for your implementation.
+- [Custom Installation](#custom-installation): Pick and choose the tKey SDKs & Modules you want to use for your implementation.
 
 ## Standard Installation
 
@@ -89,17 +89,46 @@ yarn add @tkey/core
 
 ### Adding a Service Provider
 
-For generating a [**Share B**](./introduction), ie. the private key share managed by a wallet service provider via their own authentication flows, you
-need to install one of the following packages:
+Service Provider in `tKey` is used for generating a [**Share B**](./introduction), ie. the private key share managed by a wallet service provider via
+their own authentication flows. This share in the Web3Auth Plug and Play setup generally refers to the social login aspect, where we associate a
+private key share with the social login of the user, enabling the seemless login experience.
 
-- [`@tkey/service-provider-torus`](service-provider#base-service-provider)
-- [`@tkey/service-provider-base`](service-provider#torus-service-provider)
+In the Web3Auth Self Host setup, you can use the Web3Auth Service Provider (`@tkey/service-provider-torus`), which is basically implements Web3Auth's
+Social Login feature as a service provider, enabling you to associate the social login of the user as one of the shares.
+
+#### [`@tkey/service-provider-torus`](https://npmjs.com/package/@tkey/service-provider-torus)
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+
+<TabItem value="npm">
+
+```shell
+npm install --save @tkey/service-provider-torus
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @tkey/service-provider-torus
+```
+
+</TabItem>
+
+</Tabs>
 
 ### Adding a Storage Layer
 
 A storage layer is needed to store and recall the metadata information of the shares generated so as to be able to recover the private key from the
 tkeys generated. For this we use the `@tkey/storage-layer-torus` SDK, giving you the ability to get and set the Metadata for the various shares
-generated. You can read about how it works from the [Initialization API Reference](./initialization).
+generated.
 
 #### [`@tkey/storage-layer-torus`](https://www.npmjs.com/package/@tkey/storage-layer-torus)
 

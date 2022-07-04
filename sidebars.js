@@ -337,6 +337,7 @@ module.exports = {
           "api-reference/self-host/installation",
           "api-reference/self-host/initialization",
           "api-reference/self-host/service-provider",
+          "api-reference/self-host/storage-layer",
           {
             type: "category",
             label: "Modules",
