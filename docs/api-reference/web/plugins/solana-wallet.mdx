@@ -4,12 +4,16 @@ hide_table_of_contents: false
 displayed_sidebar: apiReference
 ---
 
-# [`@web3auth/solana-wallet-connector-plugin`](https://npmjs.com/package/@web3auth/solana-wallet-connector-plugin)
+# Solana Wallet Connector Plugin
 
 ---
 
+## [`@web3auth/solana-wallet-connector-plugin`](https://npmjs.com/package/@web3auth/solana-wallet-connector-plugin)
+
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+
+import PluginConfig from "../common/_plugin-config.mdx";
 
 Torus Solana Wallet UI Plugin helps you get the functionalities of the Torus Solana Wallet into your Web3Auth Instance. It helps you use your Web3Auth
 key in the Torus Solana Wallet, making it easier for your end user to make transactions, add money into their wallet and even use it across different
@@ -77,23 +81,14 @@ This constructor takes an objects with `torusWalletOpts` & `walletInitOptions` a
 
 #### Parameters
 
-`torusWalletOpts`:
+<PluginConfig />
 
-| Parameter        | Type                   | Description                                                                                                                                                               | Default       |
-| ---------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `buttonPosition` | `BUTTON_POSITION_TYPE` | Allows you to define the position of the Torus Wallet Modal Iframe within the application. You can choose between "top-left", "top-right", "bottom-right" & "bottom-left" | "bottom-left" |
-| `modalZIndex`    | `number`               | Helps you define the z-index value of the modal and iframe                                                                                                                | 99999         |
-
-`walletInitOptions`:
-
-| Parameter         | Type      | Required | Description                                   | Default |
-| ----------------- | --------- | -------- | --------------------------------------------- | ------- |
-| `showTorusButton` | `boolean` | No       | Determines whether to show/hide torus widget. | `true`  |
+:::note
 
 For additional information on the init options for Torus Wallet, please check the
 [Torus Solana Wallet documentation](https://docs.tor.us/solana-wallet/api-reference/class#init)
 
-#### Returns
+:::
 
 ### Add the `torusPlugin` class to your Web3Auth instance
 
@@ -103,20 +98,19 @@ After initialising the `torusPlugin`, use the `addPlugin()` function to your Web
 await web3AuthInstance.addPlugin(torusPlugin);
 ```
 
-#### Example
+### Example
 
 ```javascript
-const web3AuthInstance = new Web3Auth({
-  chainConfig: currentChainConfig,
-  clientId, // get your client id from https://dashboard.web3auth.io,
-});
+import { SolanaWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-plugin";
+
 const torusPlugin = new SolanaWalletConnectorPlugin({
   torusWalletOpts: {},
   walletInitOptions: {
+    useWalletConnect: true,
     enableLogging: true,
   },
 });
-await web3AuthInstance.addPlugin(torusPlugin);
+await web3auth.addPlugin(torusPlugin);
 ```
 
 ## Using the Torus Solana Wallet Provider
