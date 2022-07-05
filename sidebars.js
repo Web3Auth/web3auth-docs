@@ -123,7 +123,19 @@ module.exports = {
       link: { type: "doc", id: "custom-authentication/custom-authentication" },
       items: [
         "custom-authentication/create-verifiers",
-        "custom-authentication/social-providers",
+        {
+          type: "category",
+          label: "Social Providers",
+          link: { type: "doc", id: "custom-authentication/social-providers/social-providers" },
+          items: [
+            "custom-authentication/social-providers/google",
+            "custom-authentication/social-providers/facebook",
+            "custom-authentication/social-providers/twitch",
+            "custom-authentication/social-providers/discord",
+          ],
+          collapsible: true,
+          collapsed: false,
+        },
         "custom-authentication/federated-identity-providers",
         "custom-authentication/byo-jwt-providers",
         "custom-authentication/backup-share-for-mobile",

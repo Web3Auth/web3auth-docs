@@ -1,0 +1,58 @@
+---
+title: Facebook Social Login with Web3Auth
+sidebar_label: Facebook
+hide_table_of_contents: false
+---
+
+## Facebook
+
+### Create a Facebook app
+
+### Set up Facebook Custom Authentication
+
+1. Create a verifier for your Facebook application by selecting `Facebook` as the Login provider from this modal.
+   ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
+2. Paste the **Client ID** from the Facebook App(above) to the `Client ID` field and click on Create.
+   ![Facebook Client ID on Web3Auth Dashboard](/dashboard/verifiers/facebook-verifier.png)
+
+### Example
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const clientId = "YOUR_CLIENT_ID";
+// get it from https://dashboard.web3auth.io by creating a Plug n Play project.
+
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig: {
+    chainNamespace: "EIP155",
+    chainId: "0x3",
+  },
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId,
+    network: "testnet",
+    uxMode: "popup",
+    loginConfig: {
+      // Facebook login
+      facebook: {
+        name: "Custom Auth Login",
+        verifier: "YOUR_FACEBOOK_VERIFIER_NAME", // Pass the Verifier name here
+        typeOfLogin: "facebook", // Pass on the login provider of the verifier you've created
+        clientId: "FACEBOOK_CLIENT_ID_1234567890", // Pass on the Facebook `Client ID` here
+      },
+    },
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+
+// Initialize Modal
+await web3auth.initModal();
+
+// Login with Facebook
+await web3auth.connect();
+```

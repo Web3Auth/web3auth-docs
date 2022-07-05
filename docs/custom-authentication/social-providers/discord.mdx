@@ -1,0 +1,74 @@
+---
+title: Discord Social Login with Web3Auth
+sidebar_label: Discord
+hide_table_of_contents: false
+---
+
+## Discord
+
+### Create a Discord app
+
+1. Create a Discord [API application](https://discord.com/developers/applications).
+
+2. Navigate to **OAuth2** from the sidebar, and paste the following as Redirect URI into the "Redirect URI" field.
+
+   - https://beta.openlogin.com/auth (for Web3Auth testnet used in demo applications)
+
+   - https://app.openlogin.com/auth (for Web3Auth mainnet used in production applications)
+
+   ![Discord OAuth2.0 App Dashboard](/contents/social-providers/discord/discord-redirect-uri.png)
+
+3. Don't forget to save your changes!
+
+4. Next, obtain the **"Client ID"** from here. We will use this in our Web3Auth Dashboard.
+
+   ![Discord OAuth2.0 App Client ID and Secret](/contents/social-providers/discord/discord-clientid-secret.png)
+
+### Set up Discord Custom Authentication
+
+1. Create a verifier for your Discord application by selecting `Discord` as the Login provider from this modal.
+   ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
+2. Paste the **Client ID** from the Discord App(above) to the `Client ID` field and click on Create.
+   ![Discord Client ID on Web3Auth Dashboard](/dashboard/verifiers/discord-verifier.png)
+
+### Example
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const clientId = "YOUR_CLIENT_ID";
+// get it from https://dashboard.web3auth.io by creating a Plug n Play project.
+
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig: {
+    chainNamespace: "EIP155",
+    chainId: "0x3",
+  },
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId,
+    network: "testnet",
+    uxMode: "popup",
+    loginConfig: {
+      // Discord login
+      discord: {
+        name: "Custom Auth Login",
+        verifier: "YOUR_DISCORD_VERIFIER_NAME", // Pass the Verifier name here
+        typeOfLogin: "discord", // Pass on the login provider of the verifier you've created
+        clientId: "DISCORD_CLIENT_ID_1234567890", // Pass on the Discord `Client ID` here
+      },
+    },
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+
+// Initialize Modal
+await web3auth.initModal();
+
+// Login with Discord
+await web3auth.connect();
+```

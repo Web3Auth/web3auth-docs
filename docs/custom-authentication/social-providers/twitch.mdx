@@ -1,0 +1,77 @@
+---
+title: Twitch Social Login with Web3Auth
+sidebar_label: Twitch
+hide_table_of_contents: false
+---
+
+## Twitch
+
+### Create a Twitch app
+
+1. Follow Twitch's [registration instructions](https://dev.twitch.tv/docs/authentication/#registration) to
+   [register your app](https://dev.twitch.tv/console/apps/create)
+
+2. Paste the following as Redirect URI into the "OAuth Redirect URLs" field.
+
+   - https://beta.openlogin.com/auth (for Web3Auth testnet used in demo applications)
+
+   - https://app.openlogin.com/auth (for Web3Auth mainnet used in production applications)
+
+   ![Twitch OAuth2.0 App Dashboard](/contents/social-providers/twitch/twitch-app.png)
+
+3. After creation of your Twitch app, click **Manage**
+
+   ![Twitch OAuth2.0 App Manage](/contents/social-providers/twitch/twitch-manage.png)
+
+4. Obtain the **Client ID**
+
+   ![Twitch OAuth2.0 App Manage](/contents/social-providers/twitch/twitch-client-id.png)
+
+### Set up Twitch Custom Authentication
+
+1. Create a verifier for your Twitch application by selecting `Twitch` as the Login provider from this modal.
+   ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
+2. Paste the **Client ID** from the Twitch App(above) to the `Client ID` field and click on Create.
+   ![Twitch Client ID on Web3Auth Dashboard](/dashboard/verifiers/twitch-verifier.png)
+
+### Example
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const clientId = "YOUR_CLIENT_ID";
+// get it from https://dashboard.web3auth.io by creating a Plug n Play project.
+
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig: {
+    chainNamespace: "EIP155",
+    chainId: "0x3",
+  },
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId,
+    network: "testnet",
+    uxMode: "popup",
+    loginConfig: {
+      // Twitch login
+      twitch: {
+        name: "Custom Auth Login",
+        verifier: "YOUR_TWITCH_VERIFIER_NAME", // Pass the Verifier name here
+        typeOfLogin: "twitch", // Pass on the login provider of the verifier you've created
+        clientId: "TWITCH_CLIENT_ID_1234567890", // Pass on the Twitch `Client ID` here
+      },
+    },
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+
+// Initialize Modal
+await web3auth.initModal();
+
+// Login with Twitch
+await web3auth.connect();
+```

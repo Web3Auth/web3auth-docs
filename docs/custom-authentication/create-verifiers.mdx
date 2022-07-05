@@ -15,7 +15,9 @@ The Custom Authentication Dashboard looks something like this:
 
 <br />
 
-## Creating a Verifier
+## Create Verifier
+
+---
 
 Once you click on the `Create Verifier` button, you'll see a toggle similar to this:
 
@@ -58,7 +60,22 @@ details.
 
 - [Custom JWT](./byo-jwt-providers)
 
-## Can XXXX authenticator/login be supported?
+### Can XXXX authenticator/login be supported?
 
 The list above isn't comprehensive to all the logins that our system is capable of supporting, if you'd like support for a particular login system do
 send your query over to hello@web3auth.io.
+
+## Aggregate Verifiers
+
+---
+
+It is possible to combine these attestation methods in AND/OR ways. For example you could combine a Google AND Discord login to access a key or vice
+versa can be done for Google OR Discord. For these aggregate verifiers, its important to note that a user's `Verifier ID` must be known ahead of time,
+as keys in Web3Auth are append only. Meaning to assign to a key of a user with the aggregate verifier, Google OR Discord, we must know the user's
+gmail account and discord account ahead of time.
+
+This disadvantage can be subverted if the two attestation methods share the same `Verifier ID`. For example, Auth0 generic email logins OR Google
+logins both use email accounts as the `Verifier ID`, as such the Verifier ID can me shared amonst the two. This is referred to as a Single ID
+Verifier.
+
+Reach out to us on our [telegram group](https://t.me/web3auth) to learn more, or to get your aggregate verifier deployed on our testnet.
