@@ -1,0 +1,66 @@
+---
+title: Error 429 (Infura RPC Endpoint)
+hide_table_of_contents: false
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import Error429 from "@site/static/images/error-429.png";
+
+---
+
+While setting up Web3Auth, there might be cases you will be getting an JSON-RPC error, which comes from the overloading of our test node server.
+
+The error might look something like this:
+
+<img style={{ display: "block", maxHeight: "400px", marginBottom: "20px" }} src={Error429} />
+
+In that case, we recommend you to pass on your own node server in the `rpcTarget` value while Instantiating Web3Auth, which can be easily created by
+using a service like [Infura](https://infura.io/dashboard), [Quicknode](https://www.quicknode.com/endpoints) etc.
+
+## For EVM Based Chains
+
+---
+
+Other than creating your own node server, for testing purposes, you can use any of the available RPC URLs for any of the EVM Chains you're using.
+These RPCs can be found on [Chainlist](https://chainlist.org/).
+
+### Example
+
+```javascript
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+});
+```
+
+## For Solana Blockchain
+
+---
+
+[Quicknode](https://www.quicknode.com/endpoints) can help you create your own node server. Also, Ankr has a
+[public Solana RPC](https://www.ankr.com/protocol/public/solana/) available which you can use for testing purposes as mentioned below:
+
+### Example
+
+```javascript
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.SOLANA,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+});
+```
+
+## For Other Blockchains
+
+---
+
+You don't need to pass any chainConfig other than `chainNamespace`. You can easily export the private key from Web3Auth in the user scope and use it
+for making your custom RPC Calls.
