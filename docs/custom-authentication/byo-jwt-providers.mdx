@@ -7,7 +7,9 @@ still use your existing login provider.
 
 The application should follow the JWT specification and use JWKS for signing the JWT, whose public keys are exposed by an endpoint.
 
-### Set up Custom JWT Verifier
+## Set up Custom JWT Verifier
+
+---
 
 ![Custom JWT Provider on Web3Auth Dashboard](/dashboard/verifiers/custom-jwt-verifier.png)
 
@@ -71,6 +73,22 @@ To create a custom verifier for your JWT Providers, you'll need
 
 ## Using `jsonwebtoken`
 
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<Tabs
+defaultValue="rsa"
+values={[
+  { label: "RSA", value: "rsa" },
+  { label: "ECDSA", value: "ecdsa" },
+]}
+>
+<TabItem value="rsa">
+
+### Using RSA for JWT Signing
+
 ```js
 // Step 1. npm init -y
 // Step 2. npm install jsonwebtoken
@@ -81,14 +99,15 @@ import fs from "fs";
 var privateKey = fs.readFileSync("privateKey.pem");
 // openssl rsa -in privateKey.pem -pubout -out publicKey.pem
 var publicKey = fs.readFileSync("publicKey.pem");
+// https://my-authz-server/.well-known/jwks.json -> publicKey to be used in Custom Authentication as JWK Endpoint.
 
 var token = jwt.sign(
   {
     sub: "Custom JWT for Web3Auth Custom Auth",
     name: "Mohammad Shahbaz Alam",
     email: "shahbaz@web3auth.io",
-    aud: "https://web3auth.com", // -> to be used in Custom Authentication as JWT Field
-    iss: "https://web3auth.com", // -> to be used in Custom Authentication as JWT Field
+    aud: "urn:my-resource-server", // -> to be used in Custom Authentication as JWT Field
+    iss: "https://my-authz-server", // -> to be used in Custom Authentication as JWT Field
     iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000) + 60 * 60,
   },
@@ -108,12 +127,148 @@ console.log(decoded);
 // openssl rsa -in privateKey.pem -pubout -out publicKey.pem
 // This is the public key used to verify the JWT. This is the key that is exposed to the user.
 // Store it in gist, public folder or somewhere else that is accessible to the public.
-// Step 6. open terminal inside the vscode and type
-// node index.js
+// like this enpoint: https://my-authz-server/.well-known/jwks.json
+// Step 6. Configure the JWT Verifier in Web3Auth Dashboard as per the above feilds of JWT.
 ```
+
+</TabItem>
+<TabItem value="ecdsa">
+
+### Using ECDSA for JWT Signing
+
+```js
+// Step 1. npm init -y
+// Step 2. npm install jsonwebtoken
+// Step 3. create an index.js file and paste the below code
+import jwt from "jsonwebtoken";
+import fs from "fs";
+// openssl ecparam -name secp256k1 -genkey -noout -out ec-secp256k1-privateKey.pem
+var privateKey = fs.readFileSync("ec-secp256k1-privateKey.pem");
+// openssl ec -in ec-secp256k1-privateKey.pem -pubout -out ec-secp256k1-publicKey.pem
+var publicKey = fs.readFileSync("ec-secp256k1-publicKey.pem");
+// https://my-authz-server/.well-known/jwks.json -> publicKey to be used in Custom Authentication as JWK Endpoint.
+
+var token = jwt.sign(
+  {
+    sub: "Custom JWT(ECDSA) for Web3Auth Custom Auth",
+    name: "Mohammad Shahbaz Alam",
+    email: "shahbaz@web3auth.io",
+    aud: "urn:my-resource-server", // -> to be used in Custom Authentication as JWT Field
+    iss: "https://my-authz-server", // -> to be used in Custom Authentication as JWT Field
+    iat: Math.floor(Date.now() / 1000),
+    exp: Math.floor(Date.now() / 1000) + 60 * 60,
+  },
+  privateKey,
+  { algorithm: "ECDSA" }
+);
+
+console.log(token);
+
+var decoded = jwt.verify(token, publicKey);
+console.log(decoded);
+
+// Step 4. open terminal inside the vscode and type
+// openssl ecparam -name secp256k1 -genkey -noout -out ec-secp256k1-privateKey.pem
+// This is the private key used to sign the JWT.
+// Step 5. inside the vscode terminal type
+// openssl ec -in ec-secp256k1-privateKey.pem -pubout -out ec-secp256k1-publicKey.pem
+// This is the public key used to verify the JWT. This is the key that is exposed to the user.
+// Store it in gist, public folder or somewhere else that is accessible to the public.
+// like this enpoint: https://my-authz-server/.well-known/jwks.json
+// Step 6. Configure the JWT Verifier in Web3Auth Dashboard as per the above feilds of JWT.
+```
+
+</TabItem>
+
+</Tabs>
+
+See [this](./byo-jwt-providers#filled-custom-jwt-verifier) to setup the customer jwt verifier using the above JWT data on Web3Auth Dashboard.
 
 ## Using `jose`
 
+---
+
+```js
+// Step 1. npm install jose
+// Step 2. create an index.js file and paste the below code
+import * as jose from "jose";
+import fs from "fs";
+// openssl genrsa -out privateKey.pem 512
+var privateKey = fs.readFileSync("privateKey.pem");
+// openssl rsa -in privateKey.pem -pubout -out publicKey.pem
+var publicKey = fs.readFileSync("publicKey.pem");
+// https://my-authz-server/.well-known/jwks.json -> to be used in Custom Authentication as JWK Endpoint.
+
+// Signing the JWT
+const jwt = await new jose.SignJWT({ "urn:example:claim": true })
+  .setProtectedHeader({ alg: "RS256" })
+  .setIssuedAt()
+  .setIssuer("https://my-authz-server")
+  .setAudience("urn:my-resource-server")
+  .setExpirationTime("2h")
+  .sign(privateKey);
+
+console.log(jwt);
+
+// Verifying the JWT using Remote JWK Set.
+// This is just to show how the Verify works, look above to set-up custom jwt verifier on the Web3Auth Dashboard.
+const JWKS = jose.createRemoteJWKSet(new URL("https://my-authz-server/.well-known/jwks.json"));
+
+const { payload, protectedHeader } = await jose.jwtVerify(jwt, JWKS, {
+  issuer: "https://my-authz-server",
+  audience: "urn:my-resource-server",
+});
+
+console.log(protectedHeader);
+console.log(payload);
+```
+
+See [this](./byo-jwt-providers#filled-custom-jwt-verifier) to setup the customer jwt verifier using the above JWT data on Web3Auth Dashboard.
+
 ## Using `passport-jwt`
 
-## Using `ECDSA`
+---
+
+`jwks-rsa - Passport Example`
+
+The `jwks-rsa` library provides a small helper that makes it easy to configure `passport-jwt` with the `RS256` algorithm. Using `passportJwtSecret`
+you can generate a secret provider that will provide the right signing key to `passport-jwt` based on the `kid` in the JWT header.
+
+```js
+const Express = require('express');
+const passport = require('passport');
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+const jwksRsa = require('jwks-rsa');
+
+...
+// Initialize the app.
+const app = new Express();
+
+passport.use(
+  new JwtStrategy({
+    // Dynamically provide a signing key based on the kid in the header and the signing keys provided by the JWKS endpoint.
+    secretOrKeyProvider: jwksRsa.passportJwtSecret({
+      cache: true,
+      rateLimit: true,
+      jwksRequestsPerMinute: 5,
+      jwksUri: `https://my-authz-server/.well-known/jwks.json`
+    }),
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+
+    // Validate the audience and the issuer.
+    audience: 'urn:my-resource-server',
+    issuer: 'https://my-authz-server',
+    algorithms: ['RS256']
+  },
+  verify)
+);
+
+app.use(passport.initialize());
+```
+
+See [this](./byo-jwt-providers#filled-custom-jwt-verifier) to setup the customer jwt verifier using the above JWT data on Web3Auth Dashboard.
+
+## Filled Custom JWT Verifier
+
+![Custom JSON Web Token Provider on Web3Auth Dashboard](/dashboard/verifiers/custom-jsonwebtoken-verifier.png)
