@@ -1,31 +1,31 @@
 ---
-title: metamask-adapter
+title: slope-adapter
 hide_table_of_contents: false
 displayed_sidebar: apiReference
 ---
 
-# Metamask Adapter
+# Slope Adapter
 
 ---
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-## [`@web3auth/metamask-adapter`](https://npmjs.com/package/@web3auth/metamask-adapter)
+## [`@web3auth/slope-adapter`](https://npmjs.com/package/@web3auth/slope-adapter)
 
-Metamask Adapter allows user to login with metamask wallet. You can read more about metamask wallet [here](https://docs.metamask.io/guide/).
+Slope adapter allows you to connect with slope wallet. You can read more about slope wallet here.(https://docs.slope.app/).
 
 ## Basic Details
 
 ---
 
-#### Adapter Name: `metamask`
+#### Adapter Name: `slope`
 
-#### Package Name: [`@web3auth/metamask-adapter`](https://npmjs.com/package/@web3auth/metamask-adapter)
+#### Package Name: [`@web3auth/slope-adapter`](https://npmjs.com/package/@web3auth/slope-adapter)
 
 #### authMode: `DAPP`
 
-#### chainNamespace: `EIP155`
+#### chainNamespace: `SOLANA`
 
 #### Default: `YES`
 
@@ -44,7 +44,7 @@ Metamask Adapter allows user to login with metamask wallet. You can read more ab
 <TabItem value="npm">
 
 ```shell
-npm install --save @web3auth/metamask-adapter
+npm install --save @web3auth/slope-adapter
 ```
 
 </TabItem>
@@ -52,7 +52,7 @@ npm install --save @web3auth/metamask-adapter
 <TabItem value="yarn">
 
 ```shell
-yarn add @web3auth/metamask-adapter
+yarn add @web3auth/slope-adapter
 ```
 
 </TabItem>
@@ -73,16 +73,16 @@ yarn add @web3auth/metamask-adapter
 
 <TabItem value="table">
 
-| Parameter     | type                |
-| ------------- | ------------------- |
-| `chainConfig` | `CustomChainConfig` |
+| Parameter   | type              |
+| ----------- | ----------------- |
+| chainConfig | CustomChainConfig |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```ts
-interface MetamaskAdapterOptions {
+interface SlopeAdapterOptions {
   chainConfig?: CustomChainConfig;
 }
 ```
@@ -112,17 +112,7 @@ Read more about it in their respective sections:
 ---
 
 ```ts
-import { MetamaskAdapter } from "@web3auth/metamask-adapter";
-const metamaskAdapter = new MetamaskAdapter({
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x3",
-  rpcTarget: "https://ropsten.infura.io/v3/776218ac4734478c90191dde8cae483c",
-  displayName: "ropsten",
-  blockExplorer: "https://ropsten.etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-});
-
-// it will add/update  the metamask adapter in to web3auth class
-web3auth.configureAdapter(metamaskAdapter);
+import { SlopeAdapter } from "@web3auth/slope-adapter";
+const slopeAdapter = new SlopeAdapter();
+web3auth.configureAdapter(slopeAdapter);
 ```

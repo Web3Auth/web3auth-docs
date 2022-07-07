@@ -1,18 +1,28 @@
 ---
 title: torus-evm-adapter
-hide_table_of_contents: true
+hide_table_of_contents: false
 displayed_sidebar: apiReference
 ---
 
-# [`@web3auth/torus-evm-adapter`](https://npmjs.com/package/@web3auth/torus-evm-adapter)
+# Torus EVM Adapter
 
 ---
 
-### Basic Details
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+## [`@web3auth/torus-evm-adapter`](https://npmjs.com/package/@web3auth/torus-evm-adapter)
+
+Torus Wallet adapter allows to connect with torus wallet for evm chains. You can read more about torus wallet
+[here](https://docs.tor.us/wallet/get-started).
+
+## Basic Details
+
+---
 
 #### Adapter Name: `torus-evm`
 
-#### Package Name: `@web3auth/torus-evm-adapter`
+#### Package Name: [`@web3auth/torus-evm-adapter`](https://npmjs.com/package/@web3auth/torus-evm-adapter)
 
 #### authMode: `DAPP`
 
@@ -20,14 +30,60 @@ displayed_sidebar: apiReference
 
 #### Default: `YES`
 
-#### Description:
-
-Torus Wallet adapter allows to connect with torus wallet for evm chains. You can read more about torus wallet
-[here](https://docs.tor.us/wallet/get-started).
-
-### Interface
+## Installation
 
 ---
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+
+<TabItem value="npm">
+
+```shell
+npm install --save @web3auth/torus-evm-adapter
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @web3auth/torus-evm-adapter
+```
+
+</TabItem>
+
+</Tabs>
+
+## Parameters
+
+---
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter         | type                                                                              |
+| ----------------- | --------------------------------------------------------------------------------- |
+| `chainConfig`     | `CustomChainConfig`                                                               |
+| `adapterSettings` | [`TorusCtorArgs`](https://docs.tor.us/wallet/api-reference/class)                 |
+| `loginSettings`   | [`LoginParams`](https://docs.tor.us/wallet/api-reference/class)                   |
+| `initParams`      | [`Omit <TorusParams, "network">`](https://docs.tor.us/wallet/api-reference/class) |
+
+</TabItem>
+
+<TabItem value="interface">
 
 ```ts
 // refer to https://docs.tor.us/wallet/api-reference/class to know more about interface field types
@@ -39,54 +95,54 @@ interface TorusWalletOptions {
 }
 ```
 
-### Params
+</TabItem>
 
----
+</Tabs>
 
-| Parameter       | type                                                                            |
-| --------------- | ------------------------------------------------------------------------------- |
-| chainConfig     | [CustomChainConfig](#common_configuration)                                      |
-| adapterSettings | [TorusCtorArgs](https://docs.tor.us/wallet/api-reference/class)                 |
-| loginSettings   | [LoginParams](https://docs.tor.us/wallet/api-reference/class)                   |
-| initParams      | [Omit <TorusParams, "network">](https://docs.tor.us/wallet/api-reference/class) |
+### Custom Chain Config
 
-### Whitelabeling
+#### `chainConfig`
 
----
+:::caution
 
-The Torus Wallet user experience can be whitelabeled using Torus Wallet Adapter settings.
+While you can pass your `chainConfig` to `OpenloginAdapter`, it is not required since you can directly pass it over to the `Web3Auth`/ `Web3AuthCore`
+configuration while instantiating it.
 
-##### To know more in depth about how you can Whitelabel your application with Web3Auth, have a look at our [Whitelabeling Guide](/whitelabeling).
+Read more about it in their respective sections:
 
-### Example
+- [`web3auth/web3auth`](./web3auth/initialize#adding-a-custom-chain-configuration)
+- [`web3auth/core`](./core/initialize#adding-a-custom-chain-configuration)
+
+:::
+
+## Example
 
 ---
 
 ```ts
-   import `Web3Auth` class from  `@web3auth/web3auth`;
-   import { TorusWalletAdapter } from '@web3auth/torus-evm-adapter'
-   const web3auth = new Web3Auth(options);
-   const adapter = new TorusWalletAdapter({
-       adapterSettings: {
-        buttonPosition: "bottom-left"
-      },
-      loginSettings: {
-        verifier: "google"
-      },
-      initParams: {
-        buildEnv: "testing"
-      },
-      chainConfig:{
-        chainNamespace: CHAIN_NAMESPACES.EIP155,
-        chainId: "0x3",
-        rpcTarget: "https://ropsten.infura.io/v3/776218ac4734478c90191dde8cae483c",
-        displayName: "ropsten",
-        blockExplorer: "https://ropsten.etherscan.io/",
-        ticker: "ETH",
-        tickerName: "Ethereum",
-      }
-  })
+import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 
-  // it will add/update  the torus-evm adapter in to web3auth class
-  web3auth.configureAdapter(adapter);
+const torusWalletAdapter = new TorusWalletAdapter({
+  adapterSettings: {
+    buttonPosition: "bottom-left",
+  },
+  loginSettings: {
+    verifier: "google",
+  },
+  initParams: {
+    buildEnv: "testing",
+  },
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x3",
+    rpcTarget: "https://ropsten.infura.io/v3/776218ac4734478c90191dde8cae483c",
+    displayName: "ropsten",
+    blockExplorer: "https://ropsten.etherscan.io/",
+    ticker: "ETH",
+    tickerName: "Ethereum",
+  },
+});
+
+// it will add/update  the torus-evm adapter in to web3auth class
+web3auth.configureAdapter(torusWalletAdapter);
 ```
