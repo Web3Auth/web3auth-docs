@@ -1,23 +1,160 @@
 ---
-title: Choosing between workflows
+title: Web3Auth React Native SDK
 hide_table_of_contents: false
 displayed_sidebar: apiReference
 ---
 
 ---
 
-## Requirements
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+For using Web3Auth in React Native, Web3Auth provides an [React Native SDK](https://github.com/Web3Auth/web3auth-react-native-sdk), written in
+TypeScript. The Web3Auth React Native SDK is a client-side library you can use with your React Native app to authenticate users using Web3Auth. It
+returns a private key generated in a non custodial way on successful authentication of the user. This authentication can be achieved by using any of
+the social logins Web3Auth provides or using a custom authentication flow of your choice.
+
+Source code of the example can be found in [here](https://github.com/Web3Auth/web3auth-react-native-sdk/tree/master/example).
+
+### Requirements
 
 - For iOS, only iOS 12+ supported since we requires
   [ASWebAuthenticationSession](https://developer.apple.com/documentation/authenticationservices/aswebauthenticationsession).
 
 - For Android, Custom Tab support is required.
 
-## Bare vs Managed Workflows
+## Selecting your Workflow
 
 ---
 
-- By a bare workflow, we mean that your React Native or Expo app is entirely built on your own machine. You can customize your app with Swift/Kotlin
-  native modules.
-- By a managed workflow, we mean that your Expo app is built on your Expo's cloud, so you don't have control over the native modules used in the app.
-- You can read more about different workflows in the [Expo documentation](https://docs.expo.dev/introduction/managed-vs-bare/).
+In React Native, you have the choice to use one of the following workflows:
+
+- Bare Workflow: Your React Native app is entirely built on your own machine. You can customize your app with Swift/Kotlin native modules.
+- Expo Managed Workflow: Your React Native Expo app is built on your Expo's cloud, so you don't have control over the native modules used in the app.
+
+:::tip
+
+You can read more about different workflows in the [Expo documentation](https://docs.expo.dev/introduction/managed-vs-bare/).
+
+:::
+
+## Installation
+
+---
+
+#### [`web3auth-react-native-sdk`](https://github.com/web3auth/web3auth-react-native-sdk)
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+
+<TabItem value="npm">
+
+```shell
+npm install --save @web3auth/react-native-sdk
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @web3auth/react-native-sdk
+```
+
+</TabItem>
+
+</Tabs>
+
+We will also require a `WebBrowser` implementation to allow our JS-based SDK to interact with the native APIs, and there are different extra
+installation steps depending on whether you are using the bare workflow or managed workflow. Please refer to
+[Choosing between workflows](./choose-workflows) to pick the correct implementation.
+
+Before starting, please make sure that you have registered your `redirectUrl` in the [Web3Auth dashboard](https://dashboard.web3auth.io/).
+
+## Bare workflow Configuration
+
+---
+
+When using our SDK with a bare workflow React Native app, you have to install a `WebBrowser` implementation made by us.
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+
+<TabItem value="npm">
+
+```shell
+npm install --save @toruslabs/react-native-web-browser
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @toruslabs/react-native-web-browser
+```
+
+</TabItem>
+
+</Tabs>
+
+### Android
+
+- Perform the native [Android integration steps](/api-reference/android/setting-up).
+- For Android, the `redirectUrl` parameter is configurable, and has to be added into the `AndroidManifest.xml`.
+
+### iOS
+
+- Perform the native [iOS integration steps](/api-reference/ios/setting-up).
+
+- You may add the `redirectUrl` to your iOS `Info.plist`, but it is not required.
+
+#### Register the URL scheme you intended to use for redirection
+
+- Android `AndoidManifest.xml` (required)
+- iOS `Info.plist` (optional)
+
+:::tip
+
+You may refer to [this example app](https://github.com/torusresearch/openlogin-expo-sdk-bare-demo-2) for more details.
+
+:::
+
+## Managed Workflow Configuration
+
+---
+
+When using our SDK with a Expo-based React Native app (aka managed workflow, you have to install the `expo-web-browser` package as a `WebBrowser`
+implementation.)
+
+```shell
+expo install expo-web-browser
+```
+
+#### Adding URL scheme
+
+To allow the Expo based SDK to work with exported Expo Android apps, you need to add the designated scheme into `app.json`
+
+```json
+{
+  "expo": {
+    "scheme": "openloginexposdkexampleexpo"
+  }
+}
+```
+
+:::tip
+
+You may refer to [this example app](https://github.com/Web3Auth/web3auth-react-native-sdk/tree/master/example) for more details.
+
+:::
