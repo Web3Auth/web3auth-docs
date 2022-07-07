@@ -1,4 +1,158 @@
 ---
 title: Torus Wallet Plugin
-hide_table_of_contents: true
+hide_table_of_contents: false
 ---
+
+import Image8 from "@site/static/contents/whitelabel-web3auth-wallet-popup1.png";
+import Image9 from "@site/static/contents/whitelabel-web3auth-wallet-popup2.png";
+import Image11 from "@site/static/contents/whitelabel-web3auth-wallet-widget2.png";
+import Image10 from "@site/static/contents/whitelabel-web3auth-wallet-widget1.png";
+import Image12 from "@site/static/contents/whitelabel-web3auth-wallet-wallet1.png";
+import Image13 from "@site/static/contents/whitelabel-web3auth-wallet-wallet2.png";
+import Image14 from "@site/static/contents/whitelabel-web3auth-wallet-modal1.png";
+import Image15 from "@site/static/contents/whitelabel-web3auth-wallet-modal2.png";
+
+The Torus Wallet user experience can be whitelabeled using `TorusWalletAdapter` settings.
+
+## Arguments
+
+---
+
+`new TorusWalletAdapter({initParams: {whiteLabel: {...}}})`
+
+| Parameter for `whiteLabel` | Type      | Options                                                                                                                                   |
+| -------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `theme`                    | `object`  | Can be set to `dark` or `light` with default to `light` .                                                                                 |
+| `theme` -> `isDark`        | `boolean` | Set to `true` for dark mode (default `false`)                                                                                             |
+| `theme` -> `colors`        | `object`  | Theme is a record of colors which can be configured. As of, now only `torusBrand1` color can be set and this refers to the primary color. |
+| `logoDark`                 | `string`  | The URL of the dark mode logo.                                                                                                            |
+| `logoLight`                | `string`  | The URL of the light mode logo.                                                                                                           |
+| `topupHide`                | `boolean` | Hide the topup button.                                                                                                                    |
+| `featuredBillboardHide`    | `boolean` | Hide the featured billboard.                                                                                                              |
+| `disclaimerHide`           | `boolean` | Hide the disclaimer.                                                                                                                      |
+| `defaultLanguage`          | `string`  | The default language of the wallet. The supported languages are: `en`, `de`, `ja`, `ko`, `zh`, `es`.                                      |
+
+## General Config
+
+---
+
+#### `theme`
+
+- `isDark`: Set to `true` for dark mode (default `false`)
+- `colors`: Theme is a record of colors which can be configured. As of, now only `torusBrand1` color can be set and this refers to the primary color.
+
+#### `logoDark`
+
+App logo url to use in dark mode
+
+#### `logoLight`
+
+App logo url to use in light mode
+
+#### `defaultLanguage`
+
+Define preferred language. Possible values are:
+
+- `en`: english (default)
+- `de`: german
+- `ja`: japanese
+- `ko`: korean
+- `zh`: mandarin
+- `es`: spanish
+
+### Screenshot for Reference
+
+##### Confirm Popup
+
+<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+  <div style={{ flexBasis: "30%", flexGrow: "1", alignItems: "center" }}>
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image8} />
+  </div>
+  <div style={{ flexBasis: "15%", flexGrow: "1", alignItems: "center" }}>
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image9} />
+  </div>
+</div>
+
+##### Widget
+
+<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+  <div style={{ flexBasis: "30%", flexGrow: "1", alignItems: "center" }}>
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image10} />
+  </div>
+  <div style={{ flexBasis: "30%", flexGrow: "1", alignItems: "center" }}>
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image11} />
+  </div>
+</div>
+
+## Torus Wallet
+
+---
+
+#### Hide Topup `topupHide`
+
+Shows/hides Topup page in Torus Wallet
+
+#### Billboard `featuredBillboardHide`
+
+Shows/hides Billboard in Torus Wallet
+
+<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+  <div style={{ flexBasis: "50%", flexGrow: "1", alignItems: "center" }}>
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image12} />
+  </div>
+  <div style={{ flexBasis: "50%", flexGrow: "1", alignItems: "center" }}>
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image13} />
+  </div>
+</div>
+
+## Login Modal
+
+---
+
+#### Disclaimer `disclaimerHide`
+
+Shows/hides disclaimers on login page. Only works if special logins are hidden.
+
+<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+  <div style={{ flexBasis: "15%", flexGrow: "1", alignItems: "center" }}>
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image14} />
+  </div>
+  <div style={{ flexBasis: "30%", flexGrow: "1", alignItems: "center" }}>
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image15} />
+  </div>
+</div>
+
+## Example
+
+---
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+const web3auth = new Web3Auth({
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+  clientId: "example-client-id",
+});
+
+const torusWalletAdapter = new TorusWalletAdapter({
+  initParams: {
+    // type WhiteLabelParams
+    whiteLabel: {
+      theme: {
+        isDark: true,
+        colors: { torusBrand1: "#FFA500" },
+      },
+      logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+      logoLight: "https://images.web3auth.io/web3auth-logo-w-light.svg",
+      topupHide: true,
+      featuredBillboardHide: true,
+      disclaimerHide: true,
+      defaultLanguage: "en",
+    },
+  },
+});
+
+web3auth.configureAdapter(torusWalletAdapter);
+```
