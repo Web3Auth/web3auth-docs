@@ -107,11 +107,11 @@ This OpenloginAdapter constructor takes an object with `OpenloginAdapterOptions`
 
 <TabItem value="table">
 
-| Parameter       | type                                    |
-| --------------- | --------------------------------------- |
-| chainConfig     | [CustomChainConfig](#customchainconfig) |
-| adapterSettings | [OpenLoginOptions](#openloginoptions)   |
-| loginSettings   | [LoginSettings](#loginsettings)         |
+| Parameter          | type                                    |
+| ------------------ | --------------------------------------- |
+| `chainConfig?`     | [CustomChainConfig](#customchainconfig) |
+| `adapterSettings?` | [OpenLoginOptions](#openloginoptions)   |
+| `loginSettings?`   | [LoginSettings](#loginsettings)         |
 
 </TabItem>
 
@@ -133,7 +133,17 @@ interface OpenloginAdapterOptions {
 
 #### `chainConfig`
 
-<ChainConfig />
+:::caution
+
+While you can pass your `chainConfig` to `OpenloginAdapter`, it is not required since you can directly pass it over to the `Web3Auth`/ `Web3AuthCore`
+configuration while instantiating it.
+
+Read more about it in their respective sections:
+
+- [`web3auth/web3auth`](./web3auth/initialize#adding-a-custom-chain-configuration)
+- [`web3auth/core`](./core/initialize#adding-a-custom-chain-configuration)
+
+:::
 
 ### Openlogin Adapter Settings
 
@@ -144,6 +154,15 @@ interface OpenloginAdapterOptions {
 ### Login Settings
 
 #### `loginSettings`
+
+:::caution
+
+While you can pass your `chainConfig` to `OpenloginAdapter`, it is not required for `web3auth/core` ie. The Web3Auth Plug and Play Core package, since
+you can directly pass `loginParams` over to the `connectTo` function.
+
+Read more about how to pass `loginParams` to `connectTo` in its respective section: [`web3auth/core`](./core/usage#logging-in-the-user)
+
+:::
 
 <OpenloginLoginParams />
 
@@ -165,11 +184,23 @@ You can set the `mfaLevel` within the `loginSettings` to customize when mfa scre
 
 ### Example
 
+#### `web3auth/web3auth`
+
 ```js
 const openloginAdapter = new OpenloginAdapter({
   loginSettings: {
     mfaLevel: "mandatory",
   },
+});
+```
+
+#### `web3auth/core`
+
+```js
+import { WALLET_ADAPTERS } from "@web3auth/base";
+
+await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  mfaLevel: “default”,
 });
 ```
 
@@ -285,6 +316,9 @@ const openloginAdapter = new OpenloginAdapter({
       },
       // Add other login providers here
     },
+  },
+  loginSettings: {
+    mfaLevel: "mandatory",
   },
 });
 web3auth.configureAdapter(openloginAdapter);
