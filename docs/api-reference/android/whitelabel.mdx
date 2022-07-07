@@ -1,6 +1,6 @@
 ---
 title: Whitelabel
-hide_table_of_contents: true
+hide_table_of_contents: false
 displayed_sidebar: apiReference
 ---
 
@@ -25,27 +25,26 @@ Construct and configure the `WhiteLabelData` object as
 | `dark`            | `Boolean`          | No        | If true, enables dark mode. Default is light mode |
 | `theme`           | `Map<String, Any>` | No        | Whitelabel theme                                  |
 
-### Example
+## Example
 
 ```kotlin
 web3Auth = Web3Auth (
-    Web3AuthOptions (
-        context = this,
-        clientId = getString (R.string.web3auth_project_id),
-        network = Web3Auth.Network.MAINNET,
-        redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
-        whiteLabel = WhiteLabelData ( // Optional whitelabel object
-            name = "Web3Auth Sample App",
-            logoLight = null,
-            logoDark = null,
-            defaultLanguage = "en",
-            dark = true,
-            theme = hashMapOf (
-                "primary" to "#123456"
-            )
-        )
+  Web3AuthOptions (
+    context = this,
+    clientId = getString (R.string.web3auth_project_id),
+    network = Web3Auth.Network.MAINNET,
+    redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
+    // Optional whitelabel object
+    whiteLabel = WhiteLabelData (
+      name = "Web3Auth Sample App",
+      logoLight = null,
+      logoDark = null,
+      defaultLanguage = "en",
+      dark = true,
+      theme = hashMapOf (
+        "primary" to "#123456"
+      )
     )
+  )
 )
 ```
-
-##### To know more in depth about how you can Whitelabel your application with Web3Auth, have a look at our [Whitelabeling Guide](/whitelabeling).

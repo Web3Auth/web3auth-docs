@@ -6,52 +6,19 @@ displayed_sidebar: apiReference
 
 ---
 
-## Introduction
+After Installation, the next step to use Web3Auth is to Initialize the SDK. However, the Initialization can be done in 2 ways,
 
-For native iOS we have the [web3auth-swift-sdk](https://github.com/torusresearch/web3auth-swift-sdk) to integrate Web3Auth into your Android
-application.
+- [With `Web3Auth.plist`](#with-web3authplist)
+- [Without `Web3Auth.plist`](#without-web3authplist)
 
-Source code of the example can be found in [this repository](https://github.com/Web3Auth/web3auth-swift-sample).
+Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
+Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customise your Web3Auth Instance.
 
-### Requirements
-
-- iOS 12+
-- Xcode 11.4+ / 12.x
-- Swift 4.x / 5.x
-
-## Installation
+## With `Web3Auth.plist`
 
 ---
 
-### Swift Package Manager
-
-If you are using the Swift Package Manager, open the following menu item in Xcode:
-
-`File > Swift Packages > Add Package Dependency`
-
-In the Choose Package Repository prompt add this url:
-
-```
-https://github.com/web3auth/web3auth-swift-sdk
-```
-
-### Cocoapods
-
-```sh
-pod install Web3Auth
-```
-
-## Configuration
-
----
-
-In order to use Web3Auth you need to provide your Web3Auth `ClientId` and which `Network` to run it.
-
-- Go to [Web3Auth Developer Dashboard](https://dashboard.web3auth.io), create or open an existing Web3Auth project and copy your Client ID, which is
-  the `ClientId`.
-- Whitelist `\(bundleId)://auth` in the developer dashboard. This step is mandatory for the redirect to work.
-
-### Setup `Web3Auth.plist` (optional)
+### Setup `Web3Auth.plist`
 
 In your application bundle add a plist file named `Web3Auth.plist` with the following information:
 
@@ -68,15 +35,7 @@ In your application bundle add a plist file named `Web3Auth.plist` with the foll
 </plist>
 ```
 
-## Initialisation
-
----
-
-### Create a Web3Auth instance
-
-#### With Web3Auth.plist
-
-If you have a Web3Auth.plist and you have specified your Web3Auth configuration there, you can simply construct your Web3Auth instance with
+When you have a Web3Auth.plist and you have specified your Web3Auth configuration there, you can simply construct your Web3Auth instance with
 
 ```swift
 import Web3Auth
@@ -84,7 +43,9 @@ import Web3Auth
 let web3auth = Web3Auth()
 ```
 
-#### Without Web3Auth.plist
+## Without `Web3Auth.plist`
+
+---
 
 If you don't have a Web3Auth.plist or want to use optional configurtion parameters, you can construct the Web3Auth instance with
 
@@ -92,14 +53,14 @@ If you don't have a Web3Auth.plist or want to use optional configurtion paramete
 import Web3Auth
 
 let web3auth = Web3Auth(W3AInitParams(
-    clientId: "<your clientId>",
-    network: .MAINNET,
-    sdkUrl: ...,
-    redirectUrl: ...,
-    loginConfig: [
-        "google": W3ALoginConfig(...),
-    ],
-    whiteLabel: W3AWhiteLabelData(...)
+  clientId: "<your clientId>",
+  network: .MAINNET,
+  sdkUrl: ...,
+  redirectUrl: ...,
+  loginConfig: [
+    "google": W3ALoginConfig(...),
+  ],
+  whiteLabel: W3AWhiteLabelData(...)
 ))
 ```
 
@@ -107,11 +68,11 @@ let web3auth = Web3Auth(W3AInitParams(
 
 The `Web3Auth` constructor takes an object called `W3AInitParams` as input. The below are the aviliable fields of the `W3AInitParams` object.
 
-| Parameter   | Type                        | Mandatory | Description                                                                                                                                   |
-| ----------- | --------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| clientId    | String                      | Yes       | Your Web3Auth project ID                                                                                                                      |
-| network     | Network                     | Yes       | Web3Auth Network to run the authentication on, either `.mainnet` or `.testnet` or `.cyan`                                                     |
-| sdkUrl      | URL                         | No        | Web3Auth sdk frontned to be used. This field is for advanced usage only and should not be changed.                                            |
-| redirectUrl | String                      | No        | redirectUrl to be passed to the sdk frontend. This field is for advanced usage only and should not be changed.                                |
-| whiteLabel  | W3AWhiteLabelData           | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer to the WhiteLabeling section for more info. |
-| loginConfig | `[String : W3ALoginConfig]` | No        | A configuration optional object to customize login flow.                                                                                      |
+| Parameter     | Type                        | Mandatory | Description                                                                                                                                   |
+| ------------- | --------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`    | String                      | Yes       | Your Web3Auth project ID                                                                                                                      |
+| `network`     | Network                     | Yes       | Web3Auth Network to run the authentication on, either `.mainnet` or `.testnet` or `.cyan`                                                     |
+| `sdkUrl`      | URL                         | No        | Web3Auth sdk frontned to be used. This field is for advanced usage only and should not be changed.                                            |
+| `redirectUrl` | String                      | No        | redirectUrl to be passed to the sdk frontend. This field is for advanced usage only and should not be changed.                                |
+| `whiteLabel`  | W3AWhiteLabelData           | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer to the WhiteLabeling section for more info. |
+| `loginConfig` | `[String : W3ALoginConfig]` | No        | A configuration optional object to customize login flow.                                                                                      |
