@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import Link from "@docusaurus/Link";
 
 import styles from "./styles.module.css";
 
@@ -7,10 +8,12 @@ export default function UsecaseCards() {
     <>
       {/* FIRST ROW */}
       <div className={styles.container}>
-        <div className={classNames(styles.card)}>
-          <h3 className={styles.title}>Binance Extension Wallet</h3>
+        <Link className={classNames(styles.card)} to="https://chrome.google.com/webstore/detail/binance-wallet/fhbohimaelbohpjbbldcngcnapndodjp">
+          <h3 className={styles.title}>
+            <strong>Binance Extension Wallet</strong>
+          </h3>
           <h4 className={styles.headline}>Using Web3Auth within a Chrome Extension Wallet</h4>
-          <p>
+          <p className={styles.description}>
             With the Binance Chain browser extension you can send and receive funds on Binance Chain, Binance Smart Chain and Ethereum, and
             cross-chain transfers between both of Binance’s blockchains, all with the login flow of Web3Auth, customised for Binance.
           </p>
@@ -21,13 +24,15 @@ export default function UsecaseCards() {
               href="https://chrome.google.com/webstore/detail/binance-wallet/fhbohimaelbohpjbbldcngcnapndodjp"
               rel="noreferrer"
             >
-              Download the Extension
+              Download the Extension →
             </a>
           </div>
-        </div>
+        </Link>
 
-        <div className={classNames(styles.card)}>
-          <h3 className={styles.title}>Skyweaver</h3>
+        <Link className={classNames(styles.card)} to="https://play.skyweaver.net/">
+          <h3 className={styles.title}>
+            <strong>Skyweaver</strong>
+          </h3>
           <h4 className={styles.headline}>Web3Auth Custom Authentication for on-chain Games</h4>
           <p>
             Skyweaver, using their Sequence Multi-Key Wallet, have made one of the most interesting use cases of Web3Auth's Custom Authentication
@@ -35,16 +40,18 @@ export default function UsecaseCards() {
           </p>
           <div>
             <a className={styles.footer} target="_blank" href="https://play.skyweaver.net/" rel="noreferrer">
-              Try being a gamer once
+              Try being a gamer once →
             </a>
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* SECOND ROW */}
       <div className={styles.container}>
-        <div className={classNames(styles.card)}>
-          <h3 className={styles.title}>100 Thieves</h3>
+        <Link className={classNames(styles.card)} to="https://collect.100thieves.com/">
+          <h3 className={styles.title}>
+            <strong>100 Thieves</strong>
+          </h3>
           <h4 className={styles.headline}>Web3Auth's Modal for NFT Airdrops</h4>
           <p>
             Looking for an example of how a quick integration of Web3Auth can look like for your dApp? 100 Thieves is using Web3Auth's Plug and Play
@@ -52,12 +59,14 @@ export default function UsecaseCards() {
           </p>
           <div>
             <a className={styles.footer} target="_blank" href="https://collect.100thieves.com/" rel="noreferrer">
-              Collect the 100 Thieves chain
+              Collect the 100 Thieves chain →
             </a>
           </div>
-        </div>
-        <div className={classNames(styles.card)}>
-          <h3 className={styles.title}>Kepler</h3>
+        </Link>
+        <Link className={classNames(styles.card)} to="https://www.keplr.app/">
+          <h3 className={styles.title}>
+            <strong>Kepler</strong>
+          </h3>
           <h4 className={styles.headline}>Web3Auth as the entry point for inter-chain transactions</h4>
           <p>
             Kepler is an excellent example of an Inter-chain Chrome Extension Wallet, using Web3Auth as their social login architecture. With the
@@ -66,16 +75,18 @@ export default function UsecaseCards() {
           </p>
           <div>
             <a className={styles.footer} target="_blank" href="https://www.keplr.app/" rel="noreferrer">
-              Download the Extension
+              Download the Extension →
             </a>
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* THRID ROW */}
       <div className={styles.container}>
-        <div className={classNames(styles.card)}>
-          <h3 className={styles.title}>Kash</h3>
+        <Link className={classNames(styles.card)} to="https://app.kash.io/">
+          <h3 className={styles.title}>
+            <strong>Kash</strong>
+          </h3>
           <h4 className={styles.headline}>Using Web3Auth on a multi chain DeFi platform</h4>
           <p>
             Kash is one of our hands down favourite integrations. They built an excellent UI using our Custom Login UI SDK and their DeFi platform
@@ -84,10 +95,10 @@ export default function UsecaseCards() {
           </p>
           <div>
             <a className={styles.footer} target="_blank" href="https://app.kash.io/" rel="noreferrer">
-              Just experience this
+              Just experience this →
             </a>
           </div>
-        </div>
+        </Link>
       </div>
     </>
   );
