@@ -2,11 +2,106 @@
 title: Connect your Blockchain
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 ---
 
-Web3Auth is the frontend authentication system for your dApp. Once the user is authenticated, they can access the dApp, but still making a transaction
-requires making RPC calls to your blockchain, essentially a task you need to complete with a wallet. For this, Web3Auth has multiple
-[Adapters](./adapters) available which act as connectors between Web3Auth and the underlying wallet provider.
+Web3Auth is the frontend authentication system for your dApp. Once the user is authenticated, the Web3Auth SDK returns a provider. Using this provider
+we can sign transactions and make RPC calls to any blockchain.
+
+<Tabs
+defaultValue="EVM"
+values={[
+  { label: "EVM", value: "EVM" },
+  { label: "SOLANA", value: "SOLANA" },
+  { label: "OTHER", value: "OTHER" },
+]}
+>
+<TabItem value="EVM">
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import Web3 from "web3";
+
+const web3auth = new Web3Auth({
+  clientId, // get from https://dashboard.web3auth.io
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+  },
+});
+
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const web3 = new Web3(web3authProvider);
+const userAccounts = await web3.eth.getAccounts();
+conosle.log(userAccounts);
+```
+
+</TabItem>
+<TabItem value="SOLANA">
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { SolanaWallet } from "@web3auth/solana-provider";
+
+const web3auth = new Web3Auth({
+  clientId, // get from https://dashboard.web3auth.io
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.SOLANA,
+  },
+});
+
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const solanaWallet = new SolanaWallet(web3authProvider);
+const userAccounts = await solanaWallet.requestAccounts();
+conosle.log(userAccounts);
+```
+
+</TabItem>
+<TabItem value="OTHER">
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const web3auth = new Web3Auth({
+  clientId, // get from https://dashboard.web3auth.io
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.OTHER,
+  },
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId, // get from https://dashboard.web3auth.io
+    network: "testnet",
+    uxMode: "popup",
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+async getPrivateKey() {
+  const privateKey = await web3authProvider.request({
+      method: "private_key"
+  });
+    //Fetch Address with privateKey
+}
+
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Using Web3Auth Providers
 
@@ -14,12 +109,13 @@ requires making RPC calls to your blockchain, essentially a task you need to com
 
 A provider is how libraries like web3 & ethers.js talk to the blockchain. Providers take JSON-RPC requests and return the response. This is normally
 done by submitting the request to an HTTP or IPC socket based server. Each adapter in Web3Auth exposes a Provider on successful user authentication.
-This provider can be use to interact with wallet or connected chain using RPC calls. Currently, Web3Auth supports providers for both EVM and Solana
-chains, which means that any EVM compatible chain & Solana can directly use our native providers can interact with the dApp. You can follow our API
-Reference to know more about how to use these providers with thier compatible adapters:
+This provider can be use to interact with wallet or connected chain using RPC calls. Currently, Web3Auth supports providers for both **EVM** and
+**Solana** chains, which means that any EVM compatible chain & Solana can directly use our native providers to interact with the dApp. You can follow
+our API Reference to know more about how to use these providers with thier compatible adapters:
 
 - [EIP1193 (EVM) Providers](/api-reference/web/providers/evm)
 - [Solana Providers](/api-reference/web/providers/solana)
+- [Other Providers](/api-reference/web/providers/other)
 
 ## Web3Auth has multichain support
 

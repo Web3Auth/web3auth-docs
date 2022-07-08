@@ -1,4 +1,124 @@
 ---
-title: StarkNet
+title: Integrate with the StarkNet Blockchain with Web3Auth
+sidebar_label: StarkNet
 hide_table_of_contents: false
 ---
+
+import GetUserInfoSnippet from "@site/docs/common-snippets/_get-userinfo.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+## Installation
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "NPM", value: "npm" },
+    { label: "Yarn", value: "yarn" }
+]}>
+
+<TabItem value="npm">
+
+```shell
+npm install --save web3 starknet elliptic bn.js @starkware-industries/starkware-crypto-utils
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```shell
+yarn add web3 starknet elliptic bn.js @starkware-industries/starkware-crypto-utils
+```
+
+</TabItem>
+
+</Tabs>
+
+## Initializing Provider
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "OTHER", // for all non EVM and SOLANA chains, use "OTHER"
+  },
+});
+
+// "OTHER" is supported through @web3auth/openlogin-adapter package.
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId,
+    network: "testnet",
+    uxMode: "popup",
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+
+await web3auth.initModal();
+
+const web3authProvider = web3auth.connect(); // web3auth.provider
+```
+
+## Get User Info
+
+<GetUserInfoSnippet />
+
+## Get Account and Key
+
+Once a user logs in, the Web3Auth SDK returns a provider. Even though StarkNet is a layer 2 on Ethereum, it is not EVM compatible. Hence to use it,
+one cannot use the native `EIP1193` provider that Web3Auth gives for EVM blockchains. Hence we need to directly use the private key to make the calls
+here.
+
+Using the function, `web3auth.provider.request({method: "private_key"})` from Web3Auth provider, the application can have access to the user's private
+key. However, we cannot use this key with StarkNet EC Curve specific signing functions, hence, we first derive the Stark Key using the `getStarkKey()`
+function.
+
+On the underhood, it uses the `starkwareCrypto.ec.keyFromPrivate()` function, where we pass our Private key with the `hex` argument, since it is hex
+encoded. Further we get the public key from this using the `starkwareCrypto.ec.keyFromPublic()` function, and we take its X-coordinate using
+`.pub.getX()` which is our `starkKey`. We use this `starkKey` on StarkNet transactions.
+
+For the `deployAccount()`, we use the file `ArgentAccount.json` which given us the ABI of the compiled contract. We use that contract in starknet's
+`defaultProvider.deployContract()` function to deploy the contract.
+
+[Get ArgentAccount.json from this gist.](https://gist.githubusercontent.com/yashovardhan/27e622a0f8de5acb3686674cd10fe0c8/raw/c1b2f70996083d2c3e85330464f71735aecf58a8/ArgentAccount.json)
+
+```js
+import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
+import { ec as elliptic } from "elliptic";
+/*
+  Use code from the above Initializing Provider here
+*/
+
+// web3authProvider is web3auth.provider from above
+const privateKey = await web3authProvider.request({ method: "private_key" });
+const keyPair = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
+// get the account address from the public key
+const account = starkwareCrypto.ec.keyFromPublic(keyPair.getPublic(true, "hex"), "hex");
+
+// Use this key for the StarkNet transactions
+const startKey = account.pub.getX().toString("hex");
+```
+
+## Deploy Account
+
+```js
+import { AddTransactionResponse, defaultProvider } from "starknet";
+import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
+import { ec as elliptic } from "elliptic";
+import CompiledAccountContractAbi from "./ArgentAccount.json";
+/*
+  Use code from the above Initializing Provider here
+*/
+
+// web3authProvider is web3auth.provider from above
+const privateKey = await web3authProvider.request({ method: "private_key" });
+const keyPair = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
+// get the account address from the public key
+const account = starkwareCrypto.ec.keyFromPublic(keyPair.getPublic(true, "hex"), "hex");
+
+const contract = JSON.parse(JSON.stringify(CompiledAccountContractAbi));
+const response = await defaultProvider.deployContract({ contract });
+```
