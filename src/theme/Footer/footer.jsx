@@ -1,19 +1,48 @@
-import React from "react";
 import Logo from "@site/static/images/logo.svg";
+import Discord from "@site/static/images/social/discord.svg";
+import GitHub from "@site/static/images/social/github.svg";
+import LinkedIn from "@site/static/images/social/linkedin.svg";
+import Medium from "@site/static/images/social/medium.svg";
+import Telegram from "@site/static/images/social/telegram.svg";
+import Twitter from "@site/static/images/social/twitter.svg";
+import YouTube from "@site/static/images/social/youtube.svg";
 
-export default function App() {
+export default function FooterComponent() {
   if (window.location.pathname.startsWith("/docs/integration-builder")) return <div />;
 
   return (
     <footer class="footer" style={{ color: "#415875" }}>
       <div class="container container--fluid">
         <div class="row footer__links" style={{ paddingBottom: 82, borderBottomStyle: "solid", borderBottomColor: "#E7E7E7" }}>
-          <div class="col col--3">
+          <div class="col col--3" style={{ padding: 10, paddingTop: 0 }}>
             <Logo style={{ width: 145 }} />
             <p>Web3Auth is where passwordless auth meets non-custodial key infrastructure for Web3 apps and wallets.</p>
+            <div style={{ flexDirection: "row" }}>
+              <a href="/docs/api-reference/web/">
+                <Telegram />
+              </a>
+              <a href="/docs/api-reference/web/" style={{ marginLeft: 8 }}>
+                <Twitter />
+              </a>
+              <a href="/docs/api-reference/web/" style={{ marginLeft: 8 }}>
+                <Medium />
+              </a>
+              <a href="/docs/api-reference/web/" style={{ marginLeft: 8 }}>
+                <GitHub />
+              </a>
+              <a href="/docs/api-reference/web/" style={{ marginLeft: 8 }}>
+                <LinkedIn />
+              </a>
+              <a href="/docs/api-reference/web/" style={{ marginLeft: 8 }}>
+                <YouTube />
+              </a>
+              <a href="/docs/api-reference/web/" style={{ marginLeft: 8 }}>
+                <Discord />
+              </a>
+            </div>
           </div>
           <div class="col col--1"></div>
-          <div class="col col--2">
+          <div class="col col--2" style={{ padding: 10 }}>
             <div class="footer__item">
               <strong>Product</strong>
             </div>
@@ -43,7 +72,7 @@ export default function App() {
               </a>
             </div>
           </div>
-          <div class="col col--2">
+          <div class="col col--2" style={{ padding: 10 }}>
             <div class="footer__item">
               <strong>Developer</strong>
             </div>
@@ -73,7 +102,7 @@ export default function App() {
               </a>
             </div>
           </div>
-          <div class="col col--2">
+          <div class="col col--2" style={{ padding: 10 }}>
             <div class="footer__item">
               <strong>Company</strong>
             </div>
@@ -103,7 +132,7 @@ export default function App() {
               </a>
             </div>
           </div>
-          <div class="col col--2">
+          <div class="col col--2" style={{ padding: 10 }}>
             <div class="footer__item">
               <strong>Community</strong>
             </div>
