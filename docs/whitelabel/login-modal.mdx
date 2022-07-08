@@ -1,4 +1,71 @@
 ---
 title: Login Modal
-hide_table_of_contents: true
+hide_table_of_contents: false
 ---
+
+import Image1 from "@site/static/contents/whitelabel-web3auth-modal.png";
+
+Web3Auth Plug and Play Modal is the UI that connects your dApp with all the Login Methods and Adapters that Web3Auth offers.
+
+## Arguments
+
+---
+
+`new Web3Auth({clientId, chainConfig, uiConfig?})`
+
+Below are the parameters you can pass on to the `uiConfig` option to whitelabel your instance.
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src={Image1} style={{ alignSelf: "center", maxWidth: "90%" }} alt="UIConfig arguments" />
+</div>
+
+| Parameter for `uiConfig` | Type     | Options                                                                                                                                                                   |
+| ------------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `theme`                  | `string` | Can be set to `dark` or `light` with default to `light` .                                                                                                                 |
+| `appLogo`                | `string` | A link to preferred logo and must be compatible with either `light` or `dark` mode. Our default logo is [web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg) |
+| `loginMethodsOrder`      | `array`  | The list of login methods can be reordered with this parameter. Methods specified will be first on the list. e.g. `['facebook', 'google']`                                |
+
+## Example
+
+---
+
+### Web
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+const web3auth = new Web3Auth({
+  // type uiConfig
+  uiConfig: {
+    appLogo: "https://images.web3auth.io/web3auth-logo-w.svg";
+    theme: "dark";
+    loginMethodsOrder: ['facebook', 'google'];
+  },
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+  clientId: "example-client-id",
+});
+```
+
+### Android
+
+```kotlin
+web3Auth = Web3Auth (
+  Web3AuthOptions (
+    context = this,
+    clientId = getString (R.string.web3auth_project_id),
+    network = Web3Auth.Network.MAINNET,
+    redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
+    whiteLabel = WhiteLabelData ( // Optional whitelabel object
+      name = "Web3Auth Sample App",
+      logoLight = null,
+      logoDark = null,
+      defaultLanguage = "en",
+      dark = true,
+      theme = hashMapOf (
+          "primary" to "#123456"
+      )
+    )
+  )
+)
+```
