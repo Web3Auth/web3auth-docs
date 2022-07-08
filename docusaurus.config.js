@@ -23,6 +23,11 @@ module.exports = {
   organizationName: githubOrg,
   projectName: githubRepo,
   themeConfig: {
+    docs: {
+      sidebar: {
+        autoCollapseCategories: true,
+      },
+    },
     colorMode: {
       defaultMode: "light", // "light" | "dark"
       disableSwitch: false, // Set to "true" when Dark mode is ready
