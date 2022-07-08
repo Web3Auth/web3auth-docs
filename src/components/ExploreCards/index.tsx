@@ -8,7 +8,7 @@ import Guide from "@site/static/contents/icons/guide.svg";
 export default function QuickNavigation() {
   return (
     <div>
-      <h2>
+      <h2 className={styles.heading}>
         <strong>Start with Web3Auth</strong>
       </h2>
       <div className={styles.container}>
