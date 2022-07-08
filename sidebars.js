@@ -16,22 +16,22 @@ module.exports = {
         {
           type: "category",
           label: "Key Management",
-          link: { type: "doc", id: "overview/key-management" },
+          link: { type: "doc", id: "overview/key-management/key-management" },
           items: [
             {
               type: "category",
               label: "Technical Architecture",
-              link: { type: "doc", id: "overview/technical-architecture/technical-architecture" },
+              link: { type: "doc", id: "overview/key-management/technical-architecture/technical-architecture" },
               items: [
                 {
                   type: "category",
                   label: "Role of Nodes",
-                  link: { type: "doc", id: "overview/technical-architecture/role-of-nodes/role-of-nodes" },
+                  link: { type: "doc", id: "overview/key-management/technical-architecture/role-of-nodes/role-of-nodes" },
                   items: [
-                    "overview/technical-architecture/role-of-nodes/lifecycle",
-                    "overview/technical-architecture/role-of-nodes/key-generation",
-                    "overview/technical-architecture/role-of-nodes/logins-key-assignment",
-                    "overview/technical-architecture/role-of-nodes/oauth2-vs-proxy-signin",
+                    "overview/key-management/technical-architecture/role-of-nodes/lifecycle",
+                    "overview/key-management/technical-architecture/role-of-nodes/key-generation",
+                    "overview/key-management/technical-architecture/role-of-nodes/logins-key-assignment",
+                    "overview/key-management/technical-architecture/role-of-nodes/oauth2-vs-proxy-signin",
                     {
                       type: "link",
                       label: "DKG Technical Specification",
@@ -39,9 +39,9 @@ module.exports = {
                     },
                   ],
                 },
-                "overview/audits",
               ],
             },
+            "overview/key-management/audits",
           ],
         },
       ],
