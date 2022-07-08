@@ -2,6 +2,8 @@ import React from "react";
 import Logo from "@site/static/images/logo.svg";
 
 export default function App() {
+  if (window.location.pathname.startsWith("/docs/integration-builder")) return <div />;
+
   return (
     <footer class="footer" style={{ color: "#415875" }}>
       <div class="container container--fluid">
