@@ -6,22 +6,20 @@ hide_table_of_contents: true
 import Image1 from "@site/static/contents/web3auth-architecture.png";
 import Image2 from "@site/static/contents/web3auth-working.png";
 
----
+This page covers the different aspects of what happens when you use Web3Auth. This document will give you the user and the developer perspective on
+the architectural aspect of Web3Auth. It is a good idea to read this before you start using Web3Auth.
 
-This page covers the different aspect of what happens when you use Web3Auth. It is a good idea to read this before you start using Web3Auth. This
-document will give you the user as well as the developer perspective on the architectural aspect of Web3Auth.
-
-## Replacing seedphrases with multi factor keys
+## Replacing Seed Phrases with Multi Factor Keys
 
 ---
 
-Today's standard of key management is done via seed phrases, 12 or 24 word representations of keys that can be written down or stored in various ways.
-While technically simple, its far from perfect; new users take anywhere from 10-15 minutes more to onboard into any new application, losses are
-rapmant due to misplaced or compromised seed phrases, today's standard leaves much to be desired.
+Today's Key Management standard is done via seed phrases, 12 or 24 word representations of keys that can be written down or stored in various ways.
+While technically simple, it's far from perfect; new users take anywhere from 10-15 minutes to onboard into any new application, losses are rampant
+due to misplaced or compromised seed phrases, and today's standard leaves much to be desired.
 
-With Web3Auth, users handle keys similar to a multi-factor account, where they use their OAuth login, devices and other factors to manage their key
-pairs. The full cryptographic private keys of users are not recorded anywhere on the Key Infrastructure system, even on any of our database as well as
-participating nodes.
+With Web3Auth, users handle keys similar to a multi-factor account, where they use their OAuth login, devices, and other factors to manage their key
+pairs. The full cryptographic private keys of users are not recorded anywhere on the Key Infrastructure system, even on any of our databases as well
+as participating nodes.
 
 :::tip managing keys
 
@@ -37,7 +35,11 @@ The Web3Auth SDK lives solely on the user/application’s front-end client and h
 
 ##### This diagram below, describes the relationship between the Web3Auth SDK and integrating application
 
-<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={Image1} />
+<img
+  style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
+  src={Image1}
+  alt="This diagram describes the relationship between the Web3Auth SDK and integrating application"
+/>
 
 :::note
 
@@ -52,16 +54,21 @@ authenticate users by calling the connect function. This function can be trigger
 
 ##### How Web3Auth interacts flow-wise with your wallet/application
 
-Once the user starts the process, they:
+Once the user starts the process:
 
-1. User is redirected to our portal (openlogin.com)
-2. Our portal, openlogin.com, then handles the initial process of login
-3. User is redirected to login/OAuth provider and carries out the auth process with respect to their auth provider
+1. User is redirected to our portal (app.openlogin.com)
+2. Our portal, app.openlogin.com, then handles the initial process of login
+3. User is redirected to login/OAuth provider and carries out the authentication process with respect to their auth provider
 4. User is redirected back to our portal, which then handles the reconstruction of the user’s key
 5. Finally, once the user is successfully authenticated, they are redirected back to application, with derived key specific to the application/wallet
 
 ##### Here's a diagram showing this process:
 
-<img style={{ display: "block", maxHeight: "700px", margin: "20px auto" }} src={Image2} />
+<img
+  style={{ display: "block", maxHeight: "700px", margin: "20px auto" }}
+  src={Image2}
+  alt="This diagram shows how the keyshares are splitted and stored within different devices and the Auth Network
+"
+/>
 
 <!-- ##### This diagram below can help you understand how the keyshares are splitted and stored within different devices and the Auth Network: -->
