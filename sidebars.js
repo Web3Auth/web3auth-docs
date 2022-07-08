@@ -1,15 +1,19 @@
 /** @type {import('@docusaurus/plugin-content-docs/lib/types').Sidebars} */
-const quicklinks = [
+const additionalReading = [
   {
     type: "html",
-    value: "<hr /><strong style='color: #606770'>Quick Links</strong>",
+    value: "<hr /><strong style='color: #606770'>Additional Reading</strong>",
     className: "sidebar-title",
     defaultStyle: true,
   },
   {
-    type: "link",
-    label: "Integration Builder",
-    href: "/integration-builder",
+    Troubleshooting: ["troubleshooting/webpack-issues"],
+  },
+  {
+    type: "category",
+    label: "Contribute",
+    link: { type: "doc", id: "contribute/contribute" },
+    items: ["contribute/bug-bounty"],
   },
   {
     type: "link",
@@ -18,33 +22,8 @@ const quicklinks = [
   },
   {
     type: "link",
-    label: "GitHub",
-    href: "https://github.com/web3auth/web3auth",
-  },
-  {
-    type: "link",
-    label: "Support (Telegram)",
-    href: "https://t.me/web3authdev",
-  },
-  {
-    type: "link",
-    label: "Discord",
-    href: "https://discord.gg/web3auth",
-  },
-  {
-    type: "link",
-    label: "Dashboard",
-    href: "https://dashboard.web3auth.io/",
-  },
-  {
-    type: "link",
-    label: "Schedule a Demo",
-    href: "https://calendly.com/web3auth/meeting-with-web3auth",
-  },
-  {
-    type: "link",
-    label: "Status",
-    href: "https://status.web3auth.io/",
+    label: "SDK/ API Reference",
+    href: "/api-reference",
   },
 ];
 
@@ -177,29 +156,7 @@ module.exports = {
       ]
     },
     "connect-external-wallets",
-    {
-      type: "html",
-      value: "<hr /><strong style='color: #606770'>Additional Reading</strong>",
-      className: "sidebar-title",
-      defaultStyle: true,
-    },
-    {
-      Troubleshooting: ["troubleshooting/webpack-issues"],
-    },
-    {
-      type: "category",
-      label: "Contribute",
-      items: ["contribute/open-source", "contribute/bug-bounty"],
-    },
-    {
-      Legal: ["legal/cookie-policy", "legal/privacy-policy", "legal/terms-and-conditions"],
-    },
-    {
-      type: "link",
-      label: "SDK/ API Reference",
-      href: "/api-reference",
-    },
-    ...quicklinks,
+    ...additionalReading
   ],
   apiReference: [
     {
@@ -315,6 +272,6 @@ module.exports = {
       link: { type: "doc", id: "api-reference/self-host/self-host" },
       items: ["api-reference/self-host/initialize", "api-reference/self-host/usage"],
     },
-    ...quicklinks,
+    ...additionalReading
   ],
 };
