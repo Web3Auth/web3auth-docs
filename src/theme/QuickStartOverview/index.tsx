@@ -1,6 +1,4 @@
 import Link from "@docusaurus/Link";
-import useBaseUrl from "@docusaurus/useBaseUrl";
-import { Player } from "@lottiefiles/react-lottie-player";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 
@@ -32,46 +30,24 @@ export function useWindowDimensions() {
 }
 
 export default function Web3AuthOverview() {
-  const { height, width } = useWindowDimensions();
-  let style = {};
-
-  if (width < 700) {
-    style = {
-      height: (4 * width) / 7,
-      width: (4 * width) / 6,
-    };
-  } else {
-    style = {
-      height: (width + height) / 7,
-      width: (width + height) / 6,
-    };
-  }
-
   return (
     <div className={styles.container}>
-      <div className={classNames(styles.cardQuickStart)}>
-        <p className={styles.headline}>Get started in seconds.</p>
-        <p className={styles.description}>Bootstrap your DApp or Wallet with our multi platform SDKs and connect to any blockchain</p>
+      <div className="row">
+        <div className={classNames("col col--7", classNames(styles.cardQuickStart))}>
+          <p className={styles.headline}>Get started in seconds.</p>
+          <p className={styles.description}>Bootstrap your DApp or Wallet with our multi platform SDKs and connect to any blockchain</p>
 
-        <div className={styles.btnContainer}>
-          <div className={styles.btn}>
-            <Link to="/get-started/quick-start">
-              <button type="button" className={classNames(styles.ctaBtn, styles.ctaBtnWhite)}>
-                Quick Start
-              </button>
-            </Link>
-          </div>
-          <div className={styles.btn}>
-            <Link to="overview/what-is-web3auth">
-              <button type="button" className={classNames(styles.ctaBtn, styles.ctaBtnWhite)}>
-                Learn More
-              </button>
-            </Link>
+          <div className={styles.btnContainer}>
+            <div className={styles.btn}>
+              <Link to="/get-started/quick-start">
+                <button type="button" className={classNames(styles.ctaBtn, styles.ctaBtnWhite)}>
+                  Quick Start
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
-      <div className={styles.lottieContainer}>
-        <Player loop autoplay controls={false} src={useBaseUrl("/lottie/Hero.json")} style={style} />
+        <div className={classNames("col col--5", styles.modalContainer)} />
       </div>
     </div>
   );
