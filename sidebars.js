@@ -121,7 +121,25 @@ module.exports = {
       type: "category",
       label: "Custom Authentication",
       link: { type: "doc", id: "custom-authentication/custom-authentication" },
-      items: ["custom-authentication/verifiers", "custom-authentication/aggregate-verifiers", "custom-authentication/backup-share-for-mobile"],
+      items: [
+        "custom-authentication/create-verifiers",
+        {
+          type: "category",
+          label: "Social Providers",
+          link: { type: "doc", id: "custom-authentication/social-providers/social-providers" },
+          items: [
+            "custom-authentication/social-providers/google",
+            "custom-authentication/social-providers/facebook",
+            "custom-authentication/social-providers/twitch",
+            "custom-authentication/social-providers/discord",
+          ],
+          collapsible: true,
+          collapsed: false,
+        },
+        "custom-authentication/federated-identity-providers",
+        "custom-authentication/byo-jwt-providers",
+        "custom-authentication/backup-share-for-mobile",
+      ],
     },
     {
       type: "category",
@@ -144,16 +162,16 @@ module.exports = {
         {
           type: "link",
           label: "Integration Builder",
-          href: "/integration-builder"
+          href: "/integration-builder",
         },
         "examples/demo",
         "examples/productionexamples",
         {
           type: "link",
           label: "Guides",
-          href: "/guides"
+          href: "/guides",
         },
-      ]
+      ],
     },
     "connect-external-wallets",
     ...additionalReading
