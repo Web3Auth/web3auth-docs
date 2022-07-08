@@ -13,7 +13,7 @@ export default function MDXPage(props: ComponentProps<typeof OriginalMDXPage>) {
   const { frontMatter, metadata } = MDXPageContent;
   const { permalink } = metadata;
 
-  if (!permalink.startsWith("/docs/guides/")) return <OriginalMDXPage {...props} style={{ marginLeft: 30, marginRight: 30 }} />;
+  if (!permalink.startsWith("/docs/guides/")) return <OriginalMDXPage {...props} />;
 
   const { title, image, description, type, tags, author, date, wrapperClassName } = frontMatter;
   return (
