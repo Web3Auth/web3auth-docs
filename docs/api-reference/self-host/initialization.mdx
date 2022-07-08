@@ -1,0 +1,177 @@
+---
+title: Initialization
+hide_table_of_contents: false
+displayed_sidebar: apiReference
+---
+
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import ServiceProviderExample from "./common/_service-provider-example.mdx";
+import StorageLayerExample from "./common/_storage-layer-example.mdx";
+import ModulesDescription from "./common/_modules-description.mdx";
+import ModulesExample from "./common/_modules-example.mdx";
+import TKeyArgs from "./common/_tkey-args.mdx";
+import TKeyInstanceExample from "./common/_tkey-instance-example.mdx";
+import TkeyInitParams from "./common/_tkey-init-params.mdx";
+import TriggerLoginExample from "./common/_trigger-login-example.mdx";
+
+After Installation, the next step to use Web3Auth Self Host is to Initialize the SDK.
+
+The Initialization takes a few steps, which basically involve initiating the SDK and setting up the service provider, storage layer and modules.
+
+- [Configuration of Service Provider](#configuring-service-provider) _(recommended for social login shares)_
+- [Configuration of Storage Layer](#configuring-storage-layer) _(optional)_
+- [Configuration of Modules](#configuring-modules) _(optional)_
+- **[Instantiation of tKey](#instantiating-tkey)**
+- [Initialization of Service Provider](#initializing-service-provider) _(recommended for social login shares)_
+- [Triggering Login using Service Provider](#triggering-login-using-service-provider) _(recommended for social login shares)_
+- **[Initialization of tKey](#initializing-tkey)**
+
+Please note that these are the most critical steps where you need to pass on different parameters according to the pcommon of your project.
+Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customise your Web3Auth Instance.
+
+## Configuring Service Provider
+
+---
+
+Service Provider in `tKey` is used for generating a [**Share B**](./introduction), ie. the private key share managed by a wallet service provider via
+their own authentication flows. This share in the Web3Auth Plug and Play setup generally refers to the social login aspect, where we associate a
+private key share with the social login of the user, enabling the seemless login experience.
+
+In the Web3Auth Self Host setup, you can use the Web3Auth Service Provider (`@tkey/service-provider-torus`), which is basically implements Web3Auth's
+Social Login feature as a service provider, enabling you to associate the social login of the user as one of the shares.
+
+#### [`@tkey/service-provider-torus`](https://npmjs.com/package/@tkey/service-provider-torus)
+
+:::tip
+
+Have a look at the [Service Provider Reference](./service-provider) to know more about the Web3Auth Service Provider and its configuration.
+
+:::
+
+### Example
+
+<ServiceProviderExample />
+
+## Configuring Storage Layer
+
+---
+
+A storage layer is needed to store and recall the metadata information of the shares generated so as to be able to recover the private key from the
+tKeys generated. For this we use the `@tkey/storage-layer-torus` SDK, which gives you the ability to get and set the Metadata for the various shares
+generated.
+
+#### [`@tkey/storage-layer-torus`](./installation#tkeystorage-layer-torus)
+
+:::tip
+
+Have a look at the [Storage Layer Reference](./storage-layer) to know more about the Web3Auth Storage Layer and its configuration.
+
+:::
+
+### Example
+
+<StorageLayerExample />
+
+## Configuring Modules
+
+---
+
+<ModulesDescription />
+
+### Example
+
+<ModulesExample />
+
+## Instantiating tKey
+
+---
+
+#### Import the `ThresholdKey` class from `@tkey/core`
+
+```javascript
+import ThresholdKey from "@tkey/core";
+```
+
+#### Assign the `ThresholdKey` class to a variable
+
+```javascript
+const tKey = new ThresholdKey(TKeyArgs);
+```
+
+This ThresholdKey constructor takes an object with `TKeyArgs` as input.
+
+### Parameters
+
+<TKeyArgs />
+
+### Example
+
+<TKeyInstanceExample />
+
+## Initializing Service Provider
+
+---
+
+:::note
+
+This step is mandatory if you're using the Web3Auth Service Provider and have instantiated it as [mentioned above](#torus-service-provider). If not,
+feel free to ignore this step, but make sure to instantiate your preferred wallet so that while logging in and generating tKey, you can pass over the
+private key to the base service provider.
+
+:::
+
+If you're using the Web3Auth Service Provider, you need to initialize it within your constructor function so as to use it while logging your user in
+through the social accounts. This is done by calling the `init()` function within the `tKey` instance's `serviceProvider` property.
+
+:::tip
+
+Checkout the [Service Provider Reference](./service-provider#initialization-1) to know more about `init()` and its configuration.
+
+:::
+
+### Example
+
+```js
+await (tKey.serviceProvider as TorusServiceProvider).init({ skipSw: false });
+```
+
+## Triggering Login using Service Provider
+
+---
+
+Once you have initialised the Web3Auth Service Provider, you're ready to trigger the login process. This is a needed step since this will generate a
+private key which will be needed by the tKey to generate it's share. This is done by calling the `triggerLogin()` function within the `tKey`
+instance's `serviceProvider` property.
+
+:::tip
+
+Checkout the [Service Provider Reference](./service-provider#triggering-login) to know more about `triggerLogin()` and its configuration.
+
+:::
+
+### Example
+
+<TriggerLoginExample />
+
+## Initializing tKey
+
+---
+
+Once you have triggered the login process, you're ready to initialize the tKey. This will generate you a Threshold Key corresponding to your login
+provider.
+
+```ts
+tKey.initialize(params?);
+```
+
+<TkeyInitParams />
+
+### Example
+
+```js
+await tKey.initialize();
+```

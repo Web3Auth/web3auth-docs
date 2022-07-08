@@ -1,126 +1,175 @@
 ---
 title: Usage
-hide_table_of_contents: false
+hide_table_of_contents: true
 displayed_sidebar: apiReference
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 ---
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
+Once you've installed and successfully initialized tKey and a service provider, you can use it to authenticate your users and generate their tKey
+share. Further, you can use a variety of functions exposed by the tKey SDK, its modules and the service provider itself to manage different aspects of
+your users' authentication needs.
 
-## Logging in a User
+Natively, the instance of `ThresholdKey` _(referred to as `tkey` in our examples)_ returns the following functions:
 
-### `web3Auth.login(LoginParams)`
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class Reference", value: "class" },
+  ]}
+>
 
-Trigger login flow that shows a modal for user to select one of supported providers to login e.g. Google, Facebook, Twitter, Passwordless, etc. login
-requires `LoginParams` as a required input. Construct and configure a LoginParams instance
+<TabItem value="table">
 
-| Parameter           | Type                                         | Mandatory | Description                                                                                                                                                                                  |
-| ------------------- | -------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginProvider`     | `enum` `com.web3auth.core.Web3Auth.Provider` | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS` |
-| `relogin`           | `Boolean`                                    | No        | default is `null`                                                                                                                                                                            |
-| `extraLoginOptions` | `Map<String, Any>`                           | No        | You can pass various oauth supported options, default is `null`                                                                                                                              |
-| `redirectUrl`       | `android.net.Uri`                            | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                  |
-| `appState`          | `String`                                     | No        | appState can be used to keep track of the app state when user will be redirected to app after login, default is `null`                                                                       |
+| Function                       | Description                                                                         | Arguments                                                                                      | Return                   |
+| ------------------------------ | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------ |
+| `storeDeviceShare`             | Call to trigger module to store shares                                              | `deviceShareStore: ShareStore, customDeviceInfo?: StringifiedType`                             | `void`                   |
+| `initialize`                   | Initialize tKey                                                                     | `params`                                                                                       | `KeyDetails`             |
+| `reconstructKey`               | Reconstruct Private Key                                                             | `_reconstructKeyMiddleware?: boolean`                                                          | `ReconstructedKeyResult` |
+| `deleteShare`                  | Delete a share                                                                      | `shareIndex: BNString`                                                                         | `DeleteShareResult`      |
+| `generateNewShare`             | Generate a new share                                                                | `void`                                                                                         | `GenerateNewShareResult` |
+| `syncLocalMetadataTransitions` | Used when manualSync is enabled. Sync the local metadata transitions to the server. | `void`                                                                                         | `void`                   |
+| `inputShareStoreSafe`          | Input a share store into the tKey                                                   | `shareStore: ShareStore, autoUpdateMetadata?: boolean`                                         | `void`                   |
+| `outputShareStore`             | Output a share store from the tKey                                                  | `shareIndex: BNString, polyID?: string`                                                        | `ShareStore`             |
+| `getKeyDetails`                | Get the key details                                                                 | `void`                                                                                         | `KeyDetails`             |
+| `addShareDescription`          | Add a description to a share                                                        | `shareIndex: string, description: string, updateMetadata?: boolean`                            | `void`                   |
+| `deleteShareDescription`       | Delete a description from a share                                                   | `shareIndex: string, description: string, updateMetadata?: boolean`                            | `void`                   |
+| `updateShareDescription`       | Update a description from a share                                                   | `shareIndex: string, oldDescription: string, newDescription: string, updateMetadata?: boolean` | `void`                   |
+| `getTKeyStore`                 | Get a tKey store                                                                    | `moduleName: string`                                                                           | `TkeyStoreItemType[]`    |
+| `getTKeyStoreItem`             | Get a tKey store item                                                               | `moduleName: string, id: string`                                                               | `TkeyStoreItemType`      |
+| `outputShare`                  | Output a share                                                                      | `shareIndex: BNString, type?: string`                                                          | `unknown`                |
+| `inputShare`                   | Input a share                                                                       | `share: unknown, type?: string`                                                                | `void`                   |
+| `toJSON`                       | Convert the tKey to JSON                                                            | `void`                                                                                         | `StringifiedType`        |
+| `getApi`                       | Get the tKey API                                                                    | `void`                                                                                         | `ITKeyApi`               |
 
-### Sample Response
+</TabItem>
 
-```javascript
-{
-  "ed25519PrivKey": "666523652352635....",
-  "privKey": "0ajjsdsd....",
-  "userInfo": {
-    "aggregateVerifier": "tkey-google",
-    "email": "john@gmail.com",
-    "name": "John Dash",
-    "profileImage": "https://lh3.googleusercontent.com/a/Ajjjsdsmdjmnm...",
-    "typeOfLogin": "google",
-    "verifier": "torus",
-    "verifierId": "john@gmail.com"
-  }
+<TabItem value="class">
+
+```ts
+class ThresholdKey implements ITKey {
+  modules: ModuleMap;
+  enableLogging: boolean;
+  serviceProvider: IServiceProvider;
+  storageLayer: IStorageLayer;
+  shares: ShareStorePolyIDShareIndexMap;
+  privKey: BN;
+  lastFetchedCloudMetadata: Metadata;
+  metadata: Metadata;
+  manualSync: boolean;
+  private setModuleReferences;
+  private initializeModules;
+  storeDeviceShare: (deviceShareStore: ShareStore, customDeviceInfo?: StringifiedType) => Promise<void>; // Call to trigger module to store shares
+  constructor(args?: TKeyArgs);
+  static fromJSON(value: StringifiedType, args: TKeyArgs): Promise<ThresholdKey>;
+  getStorageLayer(): IStorageLayer;
+  initialize(params?: {
+    withShare?: ShareStore;
+    importKey?: BN;
+    neverInitializeNewKey?: boolean;
+    transitionMetadata?: Metadata;
+    previouslyFetchedCloudMetadata?: Metadata;
+    previousLocalMetadataTransitions?: LocalMetadataTransitions;
+    delete1OutOf1?: boolean;
+  }): Promise<KeyDetails>;
+
+  reconstructKey(_reconstructKeyMiddleware?: boolean): Promise<ReconstructedKeyResult>;
+  deleteShare(shareIndex: BNString): Promise<DeleteShareResult>;
+  generateNewShare(): Promise<GenerateNewShareResult>;
+  syncLocalMetadataTransitions(): Promise<void>;
+  inputShareStoreSafe(shareStore: ShareStore, autoUpdateMetadata?: boolean): Promise<void>;
+  outputShareStore(shareIndex: BNString, polyID?: string): ShareStore;
+  getKeyDetails(): KeyDetails;
+  addShareDescription(shareIndex: string, description: string, updateMetadata?: boolean): Promise<void>;
+  deleteShareDescription(shareIndex: string, description: string, updateMetadata?: boolean): Promise<void>;
+  updateShareDescription(shareIndex: string, oldDescription: string, newDescription: string, updateMetadata?: boolean): Promise<void>;
+  getTKeyStore(moduleName: string): Promise<TkeyStoreItemType[]>;
+  getTKeyStoreItem(moduleName: string, id: string): Promise<TkeyStoreItemType>;
+  outputShare(shareIndex: BNString, type?: string): Promise<unknown>;
+  inputShare(share: unknown, type?: string): Promise<void>;
+  toJSON(): StringifiedType;
+  getApi(): ITKeyApi;
+
+  _refreshShares(threshold: number, newShareIndexes: Array<string>, previousPolyID: PolynomialID): Promise<RefreshSharesResult>;
+  _initializeNewKey({
+    determinedShare,
+    initializeModules,
+    importedKey,
+    delete1OutOf1,
+  }?: {
+    determinedShare?: BN;
+    initializeModules?: boolean;
+    importedKey?: BN;
+    delete1OutOf1?: boolean;
+  }): Promise<InitializeNewKeyResult>;
+  _setKey(privKey: BN): void;
+
+  * reconstructLatestPoly(): Polynomial; *
+  * updateSDK(params?: { withShare?: ShareStore }): Promise<ThresholdKey>; *
+  * inputShareStore(shareStore: ShareStore): void; *
+  * addLocalMetadataTransitions(params: {
+    input: LocalTransitionData;
+    serviceProvider?: IServiceProvider;
+    privKey?: Array<BN>;
+    acquireLock?: boolean;
+  }): Promise<void>; *
+   /**
+   * catchupToLatestShare recursively loops fetches metadata of the provided share and checks if there is an encrypted share for it.
+   * @param shareStore - share to start of with
+   * @param polyID - if specified, polyID to refresh to if it exists
+   */
+  * catchupToLatestShare(params: {
+    shareStore: ShareStore;
+    polyID?: PolynomialID;
+    includeLocalMetadataTransitions?: boolean;
+  }): Promise<CatchupToLatestShareResult>; *
+    * getMetadata(): IMetadata; *
+
+    * getCurrentShareIndexes(): string[]; *
+  * haveWriteMetadataLock: string;  *
+
+  * generateAuthMetadata(params: { input: Metadata[] }): AuthMetadata[]; *
+  * setAuthMetadata(params: { input: Metadata; serviceProvider?: IServiceProvider; privKey?: BN }): Promise<{
+    message: string;
+  }>; *
+  * setAuthMetadataBulk(params: { input: Metadata[]; serviceProvider?: IServiceProvider; privKey?: BN[] }): Promise<void>;
+  getAuthMetadata(params: { serviceProvider?: IServiceProvider; privKey?: BN; includeLocalMetadataTransitions?: boolean }): Promise<Metadata>; *
+  * getGenericMetadataWithTransitionStates(params: {
+    fromJSONConstructor: FromJSONConstructor;
+    serviceProvider?: IServiceProvider;
+    privKey?: BN;
+    includeLocalMetadataTransitions?: boolean;
+    _localMetadataTransitions?: LocalMetadataTransitions;
+  }): Promise<unknown>; *
+  * acquireWriteMetadataLock(): Promise<number>;
+  releaseWriteMetadataLock(): Promise<void>;
+  _syncShareMetadata(adjustScopedStore?: (ss: unknown) => unknown): Promise<void>;
+  syncMultipleShareMetadata(shares: Array<BN>, adjustScopedStore?: (ss: unknown) => unknown): Promise<void>;
+  _addRefreshMiddleware(
+    moduleName: string,
+    middleware: (generalStore: unknown, oldShareStores: ShareStoreMap, newShareStores: ShareStoreMap) => unknown
+  ): void;
+  _addReconstructKeyMiddleware(moduleName: string, middleware: () => Promise<Array<BN>>): void;
+  _addShareSerializationMiddleware(
+    serialize: (share: BN, type: string) => Promise<unknown>,
+    deserialize: (serializedShare: unknown, type: string) => Promise<BN>
+  ): void;
+  _setDeviceStorage(storeDeviceStorage: (deviceShareStore: ShareStore) => Promise<void>): void; *
+  * encrypt(data: Buffer): Promise<EncryptedMessage>;
+  decrypt(encryptedMessage: EncryptedMessage): Promise<Buffer>;
+  _setTKeyStoreItem(moduleName: string, data: TkeyStoreItemType): Promise<void>;
+  _deleteTKeyStoreItem(moduleName: string, id: string): Promise<void>; *
+  _localMetadataTransitions: LocalMetadataTransitions;
+  _refreshMiddleware: RefreshMiddlewareMap;
+  _reconstructKeyMiddleware: ReconstructKeyMiddlewareMap;
+  _shareSerializationMiddleware: ShareSerializationMiddleware;
 }
 ```
 
-### Example
+</TabItem>
 
-```kotlin
-import android.widget.Button
-import com.web3auth.core.Web3Auth
-import android.os.Bundle
-
-class MainActivity : AppCompatActivity() {
-    private lateinit var web3Auth: Web3Auth
-
-    private fun signIn() {
-
-        val selectedLoginProvider = Web3Auth.Provider.GOOGLE   // Can be Google, Facebook, Twitch etc
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider))
-
-        loginCompletableFuture.whenComplete { loginResponse, error ->
-            if (error == null) {
-                // render logged in UI
-            } else {
-                // render error UI
-            }
-
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        ...
-        // Setup UI and event handlers
-        val signInButton = findViewById<Button>(R.id.signInButton)
-        signInButton.setOnClickListener { signIn() }
-        ...
-    }
-    ...
-}
-```
-
-## Logging out a user
-
-### `web3Auth.logout()`
-
-Trigger logout flow. You can additionally pass on the following parameters:
-
-| Parameter     | Type             | Mandatory | Description                                                                                                                   |
-| ------------- | ---------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `redirectUrl` | android.net.Uri? | No        | Url where user will be redirected after successfull logout. Default value is `null`                                           |
-| `appState`    | String?          | No        | appState can be used to keep track of the app state when user will be redirected to app after logout. Default value is `null` |
-
-### Sample Response
-
-A completable future containing void object is returned on successfull logout otherwise an error response is returned
-
-### Example
-
-```kotlin
-import android.widget.Button
-import com.web3auth.core.Web3Auth
-import android.os.Bundle
-
-class MainActivity : AppCompatActivity() {
-    private lateinit var web3Auth: Web3Auth
-
-    private fun signOut() {
-        val logoutCompletableFuture =  web3Auth.logout()
-        logoutCompletableFuture.whenComplete { _, error ->
-            if (error == null) {
-                // render logout UI
-            } else {
-                // render error UI
-            }
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        ...
-        // Setup UI and event handlers
-        val signOutButton = findViewById<Button>(R.id.signOutButton)
-        signOutButton.setOnClickListener { signOut() }
-        ...
-    }
-    ...
-}
-```
+</Tabs>

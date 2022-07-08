@@ -1,0 +1,45 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+#### `params`
+
+The `initialize` function accepts the following optional parameters:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type Declaration", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                           | Type                       | Description                                                                                                                                              | Required |
+| ----------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `withShare?`                        | `ShareStore`               | Initialise tkey with a share store                                                                                                                       | No       |
+| `importKey?`                        | `BN`                       | Import a key into tkey                                                                                                                                   | No       |
+| `neverInitializeNewKey?`            | `boolean`                  | Never initialise a new key if the shares are already formed                                                                                              | No       |
+| `transitionMetadata?`               | `Metadata`                 | If we've been provided with transition metadata we use that as the current metadata instead as we want to maintain state before and after serialization. | No       |
+| `previouslyFetchedCloudMetadata?`   | `Metadata`                 | Pass the previous cloud metadata                                                                                                                         | No       |
+| `previousLocalMetadataTransitions?` | `LocalMetadataTransitions` | Pass the previous transition metadata                                                                                                                    | No       |
+
+</TabItem>
+
+<TabItem value="type">
+
+```ts
+initialize(params?: {
+    withShare?: ShareStore;
+    importKey?: BN;
+    neverInitializeNewKey?: boolean;
+    transitionMetadata?: Metadata;
+    previouslyFetchedCloudMetadata?: Metadata;
+    previousLocalMetadataTransitions?: LocalMetadataTransitions;
+    delete1OutOf1?: boolean;
+}): Promise<KeyDetails>;
+```
+
+</TabItem>
+
+</Tabs>
