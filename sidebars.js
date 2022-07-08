@@ -1,31 +1,5 @@
 /** @type {import('@docusaurus/plugin-content-docs/lib/types').Sidebars} */
-const additionalReading = [
-  {
-    type: "html",
-    value: "<hr /><strong style='color: #606770'>Additional Reading</strong>",
-    className: "sidebar-title",
-    defaultStyle: true,
-  },
-  {
-    Troubleshooting: ["troubleshooting/webpack-issues"],
-  },
-  {
-    type: "category",
-    label: "Contribute",
-    link: { type: "doc", id: "contribute/contribute" },
-    items: ["contribute/bug-bounty"],
-  },
-  {
-    type: "link",
-    label: "Guides",
-    href: "/guides",
-  },
-  {
-    type: "link",
-    label: "SDK/ API Reference",
-    href: "/api-reference",
-  },
-];
+
 
 module.exports = {
   docs: [
@@ -138,7 +112,6 @@ module.exports = {
         },
         "custom-authentication/federated-identity-providers",
         "custom-authentication/byo-jwt-providers",
-        "custom-authentication/backup-share-for-mobile",
       ],
     },
     {
@@ -174,7 +147,31 @@ module.exports = {
       ],
     },
     "connect-external-wallets",
-    ...additionalReading
+    {
+      type: "html",
+      value: "<hr /><strong style='color: #606770'>Additional Reading</strong>",
+      className: "sidebar-title",
+      defaultStyle: true,
+    },
+    {
+      Troubleshooting: ["troubleshooting/error-429", "troubleshooting/webpack-issues"],
+    },
+    {
+      type: "category",
+      label: "Contribute",
+      link: { type: "doc", id: "contribute/contribute" },
+      items: ["contribute/bug-bounty"],
+    },
+    {
+      type: "link",
+      label: "Guides",
+      href: "/guides",
+    },
+    {
+      type: "link",
+      label: "SDK/ API Reference",
+      href: "/api-reference",
+    },
   ],
   apiReference: [
     {
@@ -290,6 +287,19 @@ module.exports = {
       link: { type: "doc", id: "api-reference/self-host/self-host" },
       items: ["api-reference/self-host/initialize", "api-reference/self-host/usage"],
     },
-    ...additionalReading
+    {
+      type: "html",
+      value: "<hr /><strong style='color: #606770'>Additional Reading</strong>",
+      className: "sidebar-title",
+      defaultStyle: true,
+    },
+    {
+      Troubleshooting: ["troubleshooting/error-429", "troubleshooting/webpack-issues"],
+    },
+    {
+      type: "link",
+      label: "Guides",
+      href: "/guides",
+    },
   ],
 };
