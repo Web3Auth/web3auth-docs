@@ -52,7 +52,7 @@ module.exports = {
           position: "left",
         },
         {
-          label: "SDK/ API Reference",
+          label: "SDKs",
           to: "/api-reference",
           position: "left",
         },
@@ -60,12 +60,6 @@ module.exports = {
           label: "Guides",
           activeBasePath: "/guides",
           to: "/guides",
-          position: "left",
-        },
-        {
-          label: "Dashboard",
-          href: "https://dashboard.web3auth.io",
-          target: "_blank",
           position: "left",
         },
         {
@@ -79,6 +73,21 @@ module.exports = {
           className: "navbar-github-link",
           "aria-label": "GitHub repository",
         },
+        {
+          type: 'search',
+          position: 'right',
+        },
+        {
+          type: 'html',
+          position: 'right',
+          className: "navbar-button",
+          value: '<a href="https://dashboard.web3auth.io/"><strong class="navbar-button-text">Developer Dashboard</strong></a>',
+        },
+        {
+          type: 'html',
+          position: 'right',
+          value: '<div></div>',
+        }
       ],
     },
     algolia: {

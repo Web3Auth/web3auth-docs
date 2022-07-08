@@ -9,7 +9,7 @@ import SelfHost from "@site/static/contents/icons/self-host.svg";
 export default function QuickNavigation() {
   return (
     <div>
-      <h2>
+      <h2 className={styles.heading}>
         <strong>Explore our SDKs</strong>
       </h2>
       <div className={styles.container}>

@@ -6,7 +6,7 @@ import UsecaseCards from "@theme/UsecaseCards";
 export default function QuickNavigation() {
   return (
     <div>
-      <h2>
+      <h2 className={styles.heading}>
         <strong>See how others use us</strong>
       </h2>
       <p>

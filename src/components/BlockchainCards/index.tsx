@@ -77,7 +77,7 @@ export const tileGroupsData = [
 export default function QuickNavigation() {
   return (
     <div>
-      <h2>
+      <h2 className={styles.heading}>
         <strong>Build on any Blockchain</strong>
       </h2>
       <Tiles tileGroups={tileGroupsData} />
