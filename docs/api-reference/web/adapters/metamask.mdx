@@ -97,7 +97,7 @@ interface MetamaskAdapterOptions {
 
 :::caution
 
-While you can pass your `chainConfig`, it is not required since you can directly pass it over to the `Web3Auth`/ `Web3AuthCore` configuration while
+While you can pass your `chainConfig`, it is not required since you can directly pass it over to `Web3Auth`/ `Web3AuthCore` configuration while
 instantiating it.
 
 Read more about it in their respective sections:
@@ -107,21 +107,19 @@ Read more about it in their respective sections:
 
 :::
 
+:::warning
+
+If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` passed over to the `Web3Auth`/ `Web3AuthCore` constuctor.
+
+:::
+
 ## Example
 
 ---
 
 ```ts
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
-const metamaskAdapter = new MetamaskAdapter({
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x3",
-  rpcTarget: "https://ropsten.infura.io/v3/776218ac4734478c90191dde8cae483c",
-  displayName: "ropsten",
-  blockExplorer: "https://ropsten.etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-});
+const metamaskAdapter = new MetamaskAdapter();
 
 // it will add/update  the metamask adapter in to web3auth class
 web3auth.configureAdapter(metamaskAdapter);
