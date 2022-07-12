@@ -87,7 +87,7 @@ module.exports = {
       label: "Custom Authentication",
       link: { type: "doc", id: "custom-authentication/custom-authentication" },
       items: [
-        "custom-authentication/create-verifiers",
+        "custom-authentication/verifiers",
         {
           type: "category",
           label: "Social Providers",

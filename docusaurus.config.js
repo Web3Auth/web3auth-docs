@@ -121,5 +121,61 @@ module.exports = {
     path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
     [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: "files" }],
     path.resolve(__dirname, "plugins", "node-polyfills"),
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          // /docs/oldDoc -> /docs/newDoc
+          {
+            to: '/docs/authenticating-users/overview',
+            from: '/docs/server-side-verification/',
+          },
+          {
+            to: '/docs/examples/demo',
+            from: '/docs/examples',
+          },
+          {
+            to: '/docs/examples/productionexamples',
+            from: '/docs/examples/liveexamples',
+          },
+          {
+            to: '/docs/developing-with-web3auth/adapters',
+            from: '/docs/connect-external-wallets',
+          },
+          {
+            to: '/docs/developing-with-web3auth/understand-sdk',
+            from: '/docs/quick-start',
+          },
+          {
+            to: '/docs/developing-with-web3auth/',
+            from: '/docs/quick-start/',
+          },
+
+        ],
+        createRedirects(existingPath) {
+          if (existingPath.includes('/customauth')) {
+            return [
+              existingPath.replace('/customauth', '/custom-authentication'),
+            ];
+          }
+          if (existingPath.includes('/quickstart')) {
+            return [
+              existingPath.replace('/quickstart', '/quick-start'),
+            ];
+          }
+          if (existingPath.includes('/whitelabeling')) {
+            return [
+              existingPath.replace('/whitelabeling', '/whitelabel'),
+            ];
+          }
+          if (existingPath.includes('/authenticating-users')) {
+            return [
+              existingPath.replace('/authenticating-users', '/server-side-verification'),
+            ];
+          }
+          return undefined; // Return a falsy value: no redirect created
+        },
+      },
+    ],
   ],
 };
