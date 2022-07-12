@@ -11,7 +11,7 @@ module.exports = {
       items: [
         "overview/what-is-web3auth",
         "overview/how-web3auth-works",
-        "overview/web3auth-vs-wallets",
+        "overview/web3auth-and-wallets",
         {
           type: "category",
           label: "Key Management",
@@ -50,11 +50,7 @@ module.exports = {
       type: "category",
       label: "Developer Dashboard",
       link: { type: "doc", id: "developer-dashboard/developer-dashboard" },
-      items: [
-        "developer-dashboard/get-client-id",
-        "developer-dashboard/enable-interoperability",
-        "developer-dashboard/setup-custom-authentication",
-      ],
+      items: ["developer-dashboard/get-client-id", "developer-dashboard/enable-interoperability", "developer-dashboard/setup-custom-authentication"],
     },
     "self-hosting",
     {
@@ -123,7 +119,6 @@ module.exports = {
       label: "Examples",
       link: { type: "doc", id: "examples/examples" },
       items: [
-
         "examples/liveexamples",
         {
           type: "link",
@@ -164,154 +159,121 @@ module.exports = {
       href: "/sdk",
     },
   ],
-  sdk:
-    [
-      {
-        type: "doc",
-        label: "Introduction",
-        id: "sdk/sdk",
-      },
-      {
-        type: "category",
-        label: "Web3Auth Plug and Play",
-        collapsible: false,
-        items: [
-          {
-            type: "category",
-            label: "Web",
-            link: { type: "doc", id: "sdk/web/web" },
-            items: [
-              {
-                type: "category",
-                label: "@web3auth/web3auth",
-                link: { type: "doc", id: "sdk/web/web3auth/web3auth" },
-                items: [
-                  "sdk/web/web3auth/initialize",
-                  "sdk/web/web3auth/whitelabel",
-                  "sdk/web/web3auth/custom-authentication",
-                  "sdk/web/web3auth/usage",
-                ],
-              },
-              {
-                type: "category",
-                label: "@web3auth/core",
-                link: { type: "doc", id: "sdk/web/core/core" },
-                items: [
-                  "sdk/web/core/initialize",
-                  "sdk/web/core/whitelabel",
-                  "sdk/web/core/custom-authentication",
-                  "sdk/web/core/usage",
-                ],
-              },
-              "sdk/web/openlogin",
-              {
-                type: "category",
-                label: "Providers",
-                link: { type: "doc", id: "sdk/web/providers/providers" },
-                items: [
-                  "sdk/web/providers/evm",
-                  "sdk/web/providers/solana",
-                  "sdk/web/providers/other"
-                ],
-              },
-              {
-                type: "category",
-                label: "Plugins",
-                link: { type: "doc", id: "sdk/web/plugins/plugins" },
-                items: [
-                  "sdk/web/plugins/torus-wallet",
-                  "sdk/web/plugins/solana-wallet"
-                ],
-              },
-              {
-                type: "category",
-                label: "Adapters",
-                link: { type: "doc", id: "sdk/web/adapters/adapters" },
-                items: [
-                  "sdk/web/adapters/torus-evm",
-                  "sdk/web/adapters/torus-solana",
-                  "sdk/web/adapters/metamask",
-                  "sdk/web/adapters/phantom",
-                  "sdk/web/adapters/wallet-connect-v1",
-                  "sdk/web/adapters/coinbase",
-                  "sdk/web/adapters/slope",
-                  "sdk/web/adapters/solflare",
-                  "sdk/web/adapters/sollet",
-                ],
-              },
-            ],
-          },
-          {
-            type: "category",
-            label: "Android",
-            link: { type: "doc", id: "sdk/android/android" },
-            items: [
-              "sdk/android/initialize",
-              "sdk/android/whitelabel",
-              "sdk/android/custom-authentication",
-              "sdk/android/usage",
-            ],
-          },
-          {
-            type: "category",
-            label: "iOS",
-            link: { type: "doc", id: "sdk/ios/ios" },
-            items: [
-              "sdk/ios/initialize",
-              "sdk/ios/whitelabel",
-              "sdk/ios/custom-authentication",
-              "sdk/ios/usage",
-            ],
-          },
-          {
-            type: "category",
-            label: "React Native",
-            link: { type: "doc", id: "sdk/react-native/react-native" },
-            items: [
-              "sdk/react-native/initialize",
-              "sdk/react-native/whitelabel",
-              "sdk/react-native/custom-authentication",
-              "sdk/react-native/usage",
-            ],
-          },
-          {
-            type: "category",
-            label: "Flutter",
-            link: { type: "doc", id: "sdk/flutter/flutter" },
-            items: [
-              "sdk/flutter/initialize",
-              "sdk/flutter/whitelabel",
-              "sdk/flutter/custom-authentication",
-              "sdk/flutter/usage",
-            ],
-          },]
-      },
-      {
-        type: "category",
-        label: "Web3Auth Self Host",
-        collapsible: false,
-        items: [
-          "sdk/self-host/installation",
-          "sdk/self-host/initialization",
-          "sdk/self-host/service-provider",
-          "sdk/self-host/storage-layer",
-          {
-            type: "category",
-            label: "Modules",
-            link: { type: "doc", id: "sdk/self-host/modules/modules" },
-            items: [
-              "sdk/self-host/modules/chrome-storage",
-              "sdk/self-host/modules/web-storage",
-              "sdk/self-host/modules/security-questions",
-              "sdk/self-host/modules/share-transfer",
-              "sdk/self-host/modules/seed-phrase",
-              "sdk/self-host/modules/private-keys",
-              "sdk/self-host/modules/share-serialization",
-            ],
-          },
-          "sdk/self-host/usage",
-
-        ],
-      },
-    ],
+  sdk: [
+    {
+      type: "doc",
+      label: "Introduction",
+      id: "sdk/sdk",
+    },
+    {
+      type: "category",
+      label: "Web3Auth Plug and Play",
+      collapsible: false,
+      items: [
+        {
+          type: "category",
+          label: "Web",
+          link: { type: "doc", id: "sdk/web/web" },
+          items: [
+            {
+              type: "category",
+              label: "@web3auth/web3auth",
+              link: { type: "doc", id: "sdk/web/web3auth/web3auth" },
+              items: [
+                "sdk/web/web3auth/initialize",
+                "sdk/web/web3auth/whitelabel",
+                "sdk/web/web3auth/custom-authentication",
+                "sdk/web/web3auth/usage",
+              ],
+            },
+            {
+              type: "category",
+              label: "@web3auth/core",
+              link: { type: "doc", id: "sdk/web/core/core" },
+              items: ["sdk/web/core/initialize", "sdk/web/core/whitelabel", "sdk/web/core/custom-authentication", "sdk/web/core/usage"],
+            },
+            "sdk/web/openlogin",
+            {
+              type: "category",
+              label: "Providers",
+              link: { type: "doc", id: "sdk/web/providers/providers" },
+              items: ["sdk/web/providers/evm", "sdk/web/providers/solana", "sdk/web/providers/other"],
+            },
+            {
+              type: "category",
+              label: "Plugins",
+              link: { type: "doc", id: "sdk/web/plugins/plugins" },
+              items: ["sdk/web/plugins/torus-wallet", "sdk/web/plugins/solana-wallet"],
+            },
+            {
+              type: "category",
+              label: "Adapters",
+              link: { type: "doc", id: "sdk/web/adapters/adapters" },
+              items: [
+                "sdk/web/adapters/torus-evm",
+                "sdk/web/adapters/torus-solana",
+                "sdk/web/adapters/metamask",
+                "sdk/web/adapters/phantom",
+                "sdk/web/adapters/wallet-connect-v1",
+                "sdk/web/adapters/coinbase",
+                "sdk/web/adapters/slope",
+                "sdk/web/adapters/solflare",
+                "sdk/web/adapters/sollet",
+              ],
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Android",
+          link: { type: "doc", id: "sdk/android/android" },
+          items: ["sdk/android/initialize", "sdk/android/whitelabel", "sdk/android/custom-authentication", "sdk/android/usage"],
+        },
+        {
+          type: "category",
+          label: "iOS",
+          link: { type: "doc", id: "sdk/ios/ios" },
+          items: ["sdk/ios/initialize", "sdk/ios/whitelabel", "sdk/ios/custom-authentication", "sdk/ios/usage"],
+        },
+        {
+          type: "category",
+          label: "React Native",
+          link: { type: "doc", id: "sdk/react-native/react-native" },
+          items: ["sdk/react-native/initialize", "sdk/react-native/whitelabel", "sdk/react-native/custom-authentication", "sdk/react-native/usage"],
+        },
+        {
+          type: "category",
+          label: "Flutter",
+          link: { type: "doc", id: "sdk/flutter/flutter" },
+          items: ["sdk/flutter/initialize", "sdk/flutter/whitelabel", "sdk/flutter/custom-authentication", "sdk/flutter/usage"],
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Web3Auth Self Host",
+      collapsible: false,
+      items: [
+        "sdk/self-host/installation",
+        "sdk/self-host/initialization",
+        "sdk/self-host/service-provider",
+        "sdk/self-host/storage-layer",
+        {
+          type: "category",
+          label: "Modules",
+          link: { type: "doc", id: "sdk/self-host/modules/modules" },
+          items: [
+            "sdk/self-host/modules/chrome-storage",
+            "sdk/self-host/modules/web-storage",
+            "sdk/self-host/modules/security-questions",
+            "sdk/self-host/modules/share-transfer",
+            "sdk/self-host/modules/seed-phrase",
+            "sdk/self-host/modules/private-keys",
+            "sdk/self-host/modules/share-serialization",
+          ],
+        },
+        "sdk/self-host/usage",
+      ],
+    },
+  ],
 };
