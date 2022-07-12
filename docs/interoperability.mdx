@@ -13,15 +13,57 @@ import TorusWalletLogin from "@site/static/contents/interoperability/torus-walle
 import TorusWalletLogin3 from "@site/static/contents/interoperability/torus-wallet-login-3.png";
 import Image1 from "@site/static/contents/interoperability/torus-wallet-login-1.png";
 
-One of the most exciting features of Web3Auth is around its interoperability with Torus Wallet. This means that the private key generated within your
-application with Web3Auth can be used to sign transactions within Torus Wallet on other applications. This enables a dApp to choose if they want to
-give the user the flexibility of moving funds around using Torus wallet, without the headache of making the flows for it themselves. Additionally, to
-further improve the interoperability, a user can connect to other wallets and dApps using WalletConnect flow within Torus Wallet.
+One of the most exciting features of Web3Auth is around its interoperability with Wallet Connect and Torus Wallet. This means that the private key
+generated within your application with Web3Auth can be used to sign transactions within any application using Wallet Connect or Torus Wallet for their
+login flow. This enables a dApp to choose if they want to give the user the flexibility of moving funds around, without the headache of making the
+flows for it themselves.
 
 For interoperability to work, there are two flows that a dApp can implement:
 
-- Using Web3Auth Dashboard Toggles - Preferred Method
-- Using Torus Wallet Plugin within your Web3Auth Instance
+- Interoperability with Plugins (WalletConnect & Torus Wallet)
+- Using Web3Auth Dashboard Toggles (No code way to enable interoperability with Torus Wallet)
+
+## Interoperability with Plugins (WalletConnect & Torus Wallet)
+
+---
+
+Web3Auth supports UI plugins for Torus Wallet operations, helping you with flows to add funds, manage transactions and much more. This helps you avoid
+making wallet flows within your application. Additionally, these plugins give you the advantage of using the same key from Web3Auth across multiple
+applications using Torus Wallet and Wallet Connect.
+
+You can natively within your application, use the Wallet Connect function after adding in the Torus Wallet plugin. This triggers the scan QR Code flow
+of Wallet Connect to help you connect to the application.
+
+:::info
+
+Currently, the following plugins are supported:
+
+- [Torus EVM Wallet UI Plugin](/sdk/web/plugins/torusevmwalletplugin)
+- [Torus Solana Wallet UI Plugin](/sdk/web/plugins/torussolanawalletplugin)
+
+Read more about them in the [Plugins SDK Reference](/sdk/web/plugins).
+
+:::
+
+#### Example
+
+```js
+import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
+
+const torusPlugin = new TorusWalletConnectorPlugin({
+  torusWalletOpts: {},
+  walletInitOptions: {
+    whiteLabel: {
+      theme: { isDark: true, colors: { primary: "#00a8ff" } },
+      logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+      logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+    },
+    useWalletConnect: true,
+    enableLogging: true,
+  },
+});
+await web3auth.addPlugin(torusPlugin);
+```
 
 ## Using Web3Auth Dashboard Toggles
 
@@ -93,17 +135,3 @@ And you're done! Now, your user can use their Web3Auth private key from your app
     <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} alt="" src={TorusWalletLogin3} />
   </div>
 </div>
-
-### Interoperability with Torus Wallet Plugins
-
-Web3Auth supports UI plugins for Torus Wallet operations, helping you with flows to add funds, manage transactions and much more. This helps you avoid
-making wallet flows within your application. Additionally, these plugins give you the advantage of using the same key from Web3Auth across multiple
-applications. This is done by injecting a provider of the Torus Wallet UI into your dApp and making the calls directly through it, hence handling the
-flows through the Torus Wallet.
-
-Currently, the following plugins are supported:
-
-- [Torus EVM Wallet UI Plugin](/sdk/web/plugins/torusevmwalletplugin)
-- [Torus Solana Wallet UI Plugin](/sdk/web/plugins/torussolanawalletplugin)
-
-Read more about them in the [Plugins SDK Reference](/sdk/web/plugins).
