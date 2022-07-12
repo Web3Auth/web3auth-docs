@@ -1,0 +1,47 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter            | Type                       | Description                                                                                                             | Optional | Default                                                                                                                                                     |
+| -------------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `appLogo?`           | `string`                   | A link to preferred logo.                                                                                               | Yes      | [`web3auth-logo.svg`](https://images.web3auth.io/web3auth-logo.svg)                                                                                         |
+| `theme?`             | `enum` - (`light`, `dark`) | Theme for the modal, can be set to light or dark.                                                                       | Yes      | `light`                                                                                                                                                     |
+| `loginMethodsOrder?` | `string[]`                 | The list of login methods can also be reordered with this parameter. Those methods specified will be first on the list. | Yes      | `["google", "facebook", "twitter", "reddit", "discord", "twitch", "apple", "line", "github", "kakao", "linkedin", "weibo", "wechat", "email_passwordless"]` |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+interface UIConfig {
+  /**
+   * Logo for your app.
+   */
+  appLogo?: string;
+  /**
+   * theme for the modal
+   *
+   * @defaultValue `light`
+   */
+  theme?: "light" | "dark";
+  /**
+   * order of how login methods are shown
+   *
+   * @defaultValue `["google", "facebook", "twitter", "reddit", "discord", "twitch", "apple", "line", "github", "kakao", "linkedin", "weibo", "wechat", "email_passwordless"]`
+   */
+  loginMethodsOrder?: string[];
+}
+```
+
+</TabItem>
+
+</Tabs>

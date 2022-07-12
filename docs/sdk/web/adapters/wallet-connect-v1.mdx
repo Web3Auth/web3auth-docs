@@ -1,0 +1,132 @@
+---
+title: wallet-connect-v1-adapter
+
+displayed_sidebar: sdk
+---
+
+# WalletConnect v1 Adapter
+
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+## [`@web3auth/wallet-connect-v1-adapter`](https://npmjs.com/package/@web3auth/wallet-connect-v1-adapter)
+
+Wallet connect v1 adapter allows you login with wallet connect v1. You can read more about wallet connect [here](https://docs.walletconnect.com/).
+
+## Basic Details
+
+---
+
+#### Adapter Name: `wallet-connect-v1`
+
+#### Package Name: [`@web3auth/wallet-connect-v1-adapter`](https://npmjs.com/package/@web3auth/wallet-connect-v1-adapter)
+
+#### authMode: `DAPP`
+
+#### chainNamespace: `EIP155`
+
+#### Default: `YES`
+
+## Installation
+
+---
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+
+<TabItem value="npm">
+
+```shell
+npm install --save @web3auth/wallet-connect-v1-adapter
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @web3auth/wallet-connect-v1-adapter
+```
+
+</TabItem>
+
+</Tabs>
+
+## Arguments
+
+---
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter         | type                                                                                                           |
+| ----------------- | -------------------------------------------------------------------------------------------------------------- |
+| `chainConfig`     | `CustomChainConfig`                                                                                            |
+| `adapterSettings` | [`IWalletConnectProviderOptions`](https://docs.walletconnect.com/quick-start/dapps/client#initiate-connection) |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+interface WalletConnectV1AdapterOptions {
+  adapterSettings?: IWalletConnectProviderOptions;
+  chainConfig?: CustomChainConfig;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Custom Chain Config
+
+#### `chainConfig`
+
+:::caution
+
+While you can pass your `chainConfig`, it is not required since you can directly pass it over to the `Web3Auth`/ `Web3AuthCore` configuration while
+instantiating it.
+
+Read more about it in their respective sections:
+
+- [`web3auth/web3auth`](./web3auth/initialize#adding-a-custom-chain-configuration)
+- [`web3auth/core`](./core/initialize#adding-a-custom-chain-configuration)
+
+:::
+
+:::warning
+
+If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` passed over to the `Web3Auth`/ `Web3AuthCore` constructor.
+
+:::
+
+## Example
+
+---
+
+```ts
+import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
+
+const walletConnectV1Adapter = new WalletConnectV1Adapter({
+  adapterSettings: {
+    infuraId: "YOUR_INFURA_ID",
+  },
+});
+
+web3auth.configureAdapter(walletConnectV1Adapter);
+```

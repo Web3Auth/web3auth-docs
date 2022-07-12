@@ -1,0 +1,124 @@
+---
+title: Web3Auth JavaScript SDKs
+
+displayed_sidebar: sdk
+---
+
+---
+
+For using Web3Auth in the web, you have two choices of SDKs to get started with.
+
+- **Web3Auth Plug and Play UI SDK [`@web3auth/web3auth`](./web3auth/):** A simple and easy to use SDK that will give you a simple modular way of
+  implementing Web3Auth directly within your application. You can use the pre-configured Web3Auth Modal UI and whitelabel it according to your needs.
+
+- **Web3Auth Plug and Play Core SDK [`@web3auth/core`](./core):** The core module implemeting all the Web3Auth features you need and giving you the
+  flexibilty of using your own UI with the Web3Auth SDK working in the backend.
+
+## Web3Auth Plug and Play UI SDK
+
+---
+
+### [`@web3auth/web3auth`](./web3auth)
+
+This package provides main class for using default Web3Auth Modal. The package includes all of our packages and gives you a simple way of implementing
+Web3Auth within your interface. Additionally, it is a child class of [`@web3auth/core`](./core) package. Hence, you can still call all the functions
+available in the [`@web3auth/core`](./core) package.
+
+:::tip
+
+Head on to the [`@web3auth/web3auth` SDK Reference](./web3auth) section to get started.
+
+:::
+
+## Web3Auth Plug and Play Core SDK
+
+---
+
+### [`@web3auth/core`](./core)
+
+This package provides the core logic for handling adapters within Web3auth. This package acts as a manager for all the wallet adapters we offer. You
+should use this package to build your custom login UI on top of Web3Auth. The SDK size for this is comparatively smaller than the Plug and Play UI
+SDK, since it doesn't have the Web3Auth Modal UI within it.
+
+:::tip
+
+Head on to the [`web3auth/core` SDK Reference](./core) to get started.
+
+:::
+
+## Provider packages
+
+---
+
+For making RPC calls within your dApp, Web3Auth exposes a respective providers for different chains. This provider can be used to interact with the
+connected chain using exposed functions within the provider. Currently Web3Auth supports providers for both EVM and Solana chains. For other chains,
+one can easily get the private key from the Web3Auth SDK.
+
+:::tip
+
+Checkout the [Providers SDK Reference](./providers) to learn more.
+
+- [For EVM based Chains `@web3auth/ethereum-provider`](./providers/evm)
+- [For Solana Blockchain `@web3auth/solana-provider`](./providers/solana)
+- [Default Provider for all other Blockchains](./providers/other)
+
+:::
+
+## Plugin packages
+
+Plugins extend the functionality of Web3Auth, helping you to add more features to your application. These features can be used to extend the UI
+functionalities, making your Web3Auth instance more interoperable, adding wallet features and a lot more!
+
+Currently, we support UI plugins for wallet operations, helping you with flows to add funds, manage transactions, provide wallet UI and much more.
+This helps you avoid making wallet flows within your application. Additionally, for interoperability with multiple applications, these packages give
+you the advantage of using the same key from Web3Auth across multiple applications.
+
+:::tip
+
+Checkout the [Plugins SDK Reference](./plugins) to learn more.
+
+- [`@web3auth/torus-wallet-connector-plugin`](./plugins/torus-wallet)
+- [`@web3auth/solana-wallet-connector-plugin`](./plugins/solana-wallet)
+
+:::
+
+## Adapter packages
+
+---
+
+Adapter acts as a connector between the Web3Auth and an underlying wallet provider. For logging a user in through socials, Web3Auth uses the default
+[`openlogin-adapter`](./adapters/openlogin). For the rest of the external wallets, every adapter follows a common interface which is required by
+Web3Auth to communicate with the wallet.
+
+:::tip
+
+Checkout the [Adapters SDK Reference](./adapters) to learn more.
+
+Currently we have the following adapters available for utilisation:
+
+- [`@web3auth/openlogin-adapter`](./openlogin) _**- default** (Enables social logins)_
+- [`@web3auth/torus-evm-adapter`](./adapters/torus-evm)
+- [`@web3auth/torus-solana-adapter`](./adapters/torus-solana)
+- [`@web3auth/metamask-adapter`](./adapters/metamask)
+- [`@web3auth/phantom-adapter`](./adapters/phantom)
+- [`@web3auth/wallet-connect-v1-adapter`](./adapters/wallet-connect-v1)
+- [`@web3auth/coinbase-adapter`](./adapters/coinbase-adapter)
+- [`@web3auth/slope-adapter`](./adapters/slope-adapter)
+- [`@web3auth/solflare-adapter`](./adapters/solflare-adapter)
+- [`@web3auth/sollet-adapter`](./adapters/sollet-connect-v1)
+
+:::
+
+## Other Packages
+
+---
+
+### [`@web3auth/base`](https://npmjs.com/package/@web3auth/base)
+
+This package gives access to common types and interfaces for Web3Auth. This comes in handy by providing you a standard way of importing the values you
+need to work with the SDKs. We highly recommend using it while working with Typescript.
+
+### [`@web3auth/ui`](https://npmjs.com/package/@web3auth/ui)
+
+This package includes the default Web3Auth modal UI for modular access within the Plug n Play SDK. It is included as a dependency in our Plug n Play
+SDK.

@@ -1,0 +1,49 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+#### `TKeyArgs`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type Declaration", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter           | Type               | Description                                                                                                                                      | Required |
+| ------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
+| `enableLogging?`    | `boolean`          | This option is used to specify whether to enable logging.                                                                                        | No       |
+| `modules?`          | `ModuleMap`        | An object mapping the modules needed to be configured with their instances within the app                                                        | No       |
+| `serviceProvider?`  | `IServiceProvider` | Takes in the Service Provider Instance                                                                                                           | No       |
+| `storageLayer?`     | `IServiceProvider` | Takes in the Service Provider Instance                                                                                                           | No       |
+| `serviceProvider?`  | `IStorageLayer`    | Takes in the Storage Layer Instance                                                                                                              | No       |
+| `directParams?`     | `CustomAuthArgs`   | Optional, you can pass the `directParams` from Web3Auth Service Provider here as well.                                                           | No       |
+| `manualSync?`       | `boolean`          | Helps you turn on manual sync, which helps you configure Tkey to not contant the server for every request. You can sync as per your convenience. | No       |
+| `serverTimeOffset?` | `number`           | Time offset for letting user connect to metadata server                                                                                          | No       |
+
+</TabItem>
+
+<TabItem value="type">
+
+```ts
+declare type TKeyArgs = {
+  enableLogging?: boolean;
+  modules?: ModuleMap; // pass over the modules you want to use
+  serviceProvider?: IServiceProvider; // pass over the service provider variable you instantiated
+  storageLayer?: IStorageLayer; // pass over the storage layer variable you instantiated
+  directParams?: CustomAuthArgs; // optional, but you can pass the directParams from Web3Auth Service Provider here as well.
+  manualSync?: boolean;
+  serverTimeOffset?: number;
+};
+
+export declare type ModuleMap = {
+  [moduleName: string]: IModule;
+};
+```
+
+</TabItem>
+
+</Tabs>

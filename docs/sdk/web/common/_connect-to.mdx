@@ -1,0 +1,39 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+### `connectTo()`
+
+To login a user in the Web3Auth Plug and Play Core SDK, you need to call `connectTo()` function. This function helps you customise the login process
+according to your own needs, by taking in a containing the following parameters:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Function Definition", value: "definition" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Variable      | Type                  | Description                                             | Required |
+| ------------- | --------------------- | ------------------------------------------------------- | -------- |
+| `walletName`  | `WALLET_ADAPTER_TYPE` | Wallet Adapter you want to use for logging in your user | Yes      |
+| `loginParams` | `object`              | Login Parameters specific to your wallet adapter        | No       |
+
+</TabItem>
+
+<TabItem value="definition">
+
+```ts
+async connectTo<T>(walletName: WALLET_ADAPTER_TYPE, loginParams?: T): Promise<SafeEventEmitterProvider | null> {
+  if (!this.walletAdapters[walletName])
+    throw WalletInitializationError.notFound(`Please add wallet adapter for ${walletName} wallet, before connecting`);
+  const provider = await this.walletAdapters[walletName].connect(loginParams);
+  return provider;
+}
+```
+
+</TabItem>
+
+</Tabs>

@@ -1,0 +1,233 @@
+---
+title: Service Provider
+
+displayed_sidebar: sdk
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import ServiceProviderExample from "./common/_service-provider-example.mdx";
+import ServiceProviderArg from "./common/_service-provider-arg.mdx";
+import ServiceProviderReturn from "./common/_service-provider-return.mdx";
+import TriggerLoginExample from "./common/_trigger-login-example.mdx";
+import InitParams from "./common/_init-params.mdx";
+import SubVerifierDetails from "./common/_sub-verifier-details.mdx";
+import TorusLoginResponse from "./common/_torus-login-response.mdx";
+
+Service Provider in `tKey` is used for generating a [**Share B**](./introduction), ie. the private key share managed by a wallet service provider via
+their own authentication flows. This share in the Web3Auth Plug and Play setup generally refers to the social login aspect, where we associate a
+private key share with the social login of the user, enabling the seemless login experience.
+
+In the Web3Auth Self Host setup, you can use the Web3Auth Service Provider (`@tkey/service-provider-torus`), which is basically implements Web3Auth's
+Social Login feature as a service provider, enabling you to associate the social login of the user as one of the shares.
+
+:::note
+
+For enabling this, you need [Create a Verifier](/custom-authentication/verifiers) from the **Custom Auth** section of the
+[Web3Auth Developer Dashboard](https://dashboard.web3auth.io/home/customauth) with your desired configuration.
+
+:::
+
+:::tip
+
+If you want to know more about setting up a verifier and how to use it, please refer to the
+[Custom Authentication Documentation](/custom-authentication).
+
+:::
+
+## Installation
+
+---
+
+#### [`@tkey/service-provider-torus`](https://npmjs.com/package/@tkey/service-provider-torus)
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+
+<TabItem value="npm">
+
+```shell
+npm install --save @tkey/service-provider-torus
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @tkey/service-provider-torus
+```
+
+</TabItem>
+
+</Tabs>
+
+## Instantiation
+
+---
+
+#### Import the `TorusServiceProvider` class from `@tkey/service-provider-torus`
+
+```javascript
+import TorusServiceProvider from "@tkey/service-provider-torus";
+```
+
+#### Assign the `TorusServiceProvider` class to a variable
+
+```javascript
+const serviceProvider = new TorusServiceProvider({ TorusServiceProviderArgs });
+```
+
+### Parameters
+
+#### `TorusServiceProviderArgs`
+
+<ServiceProviderArg />
+
+### Service Worker
+
+Web3Auth Direct SDK installs a service worker relative to baseUrl to capture the auth redirect at `redirectPathName` path.
+
+:::info example
+
+While using serviceworker if baseUrl is `http://localhost:3000/serviceworker` and `redirectPathName` is `redirect` (which is default) then user will
+be redirected to `http://localhost:3000/serviceworker/redirect` page after login where service worker will capture the results and send it back to
+original window where login was initiated.
+
+:::
+
+:::note
+
+Using serviceworker is optional, you can skip it by passing `skipSw` param in init function.
+
+:::
+
+Use of serviceworker is recommended if you are using `popup` uxMode or for browsers where service workers are not supported or if you wish to not use
+service workers, create and serve redirect page (i.e `redirect.html` file which is available in serviceworker folder of this package).
+
+In `redirect` uxMode, you don't have to use serviceworker or `redirect.html` file. You can get login result by calling `getRedirectResult` on
+redirected page mount.
+
+:::info example
+
+if baseUrl is `http://localhost:3000` and `redirectPathName` is `auth` then user will be redirected to `http://localhost:3000/auth` page after login
+where you can get login result by calling `getRedirectResult` on redirected page mount.
+
+:::
+
+### Returns
+
+The `TorusServiceProvider` class returns an object with the following properties:
+
+<ServiceProviderReturn />
+
+#### Example
+
+<ServiceProviderExample />
+
+## Initialization
+
+---
+
+#### `init()`
+
+If you're using the Web3Auth Service Provider, you need to initialize it within your constructor function so as to use it while logging your user in
+through the social accounts. This is done by calling the `init()` function within the `tKey` instance's `serviceProvider` property.
+
+```javascript
+await (tKey.serviceProvider as TorusServiceProvider).init(initParams);
+```
+
+#### `initParams`
+
+The `init` function in TorusServiceProvider accepts the following parameters:
+
+<InitParams />
+
+### Example
+
+```js
+await (tKey.serviceProvider as TorusServiceProvider).init({ skipSw: false });
+```
+
+## Triggering Login
+
+---
+
+#### `triggerLogin()`
+
+Once you have initialised the Web3Auth Service Provider, you're ready to trigger the login process. This is a needed step since this will generate a
+private key which will be needed by the tKey to generate it's share. This is done by calling the `triggerLogin()` function within the `tKey`
+instance's `serviceProvider` property.
+
+```javascript
+await (tKey.serviceProvider as TorusServiceProvider).triggerLogin(SubVerifierDetails)
+```
+
+<SubVerifierDetails />
+
+### Returns
+
+```ts
+triggerLogin(params: SubVerifierDetails): Promise<TorusLoginResponse>;
+```
+
+<TorusLoginResponse />
+
+### Example
+
+<TriggerLoginExample />
+
+## Trigger Login using an Aggregate Verifier
+
+---
+
+#### `triggerAggregateLogin()`
+
+```javascript
+await (tKey.serviceProvider as TorusServiceProvider).triggerAggregateLogin(AggregateLoginParams)
+```
+
+Takes in the aggregate verifier details as `AggregateLoginParams`.
+
+```ts
+interface AggregateLoginParams {
+  aggregateVerifierType: AGGREGATE_VERIFIER_TYPE;
+  verifierIdentifier: string;
+  subVerifierDetailsArray: SubVerifierDetails[];
+}
+```
+
+### Return
+
+Similar Return as [`triggerLogin`](#torusloginresponse), but for the Aggregate Verifier
+
+## Trigger Login using an Hybrid Aggregate Verifier
+
+#### `triggerHybridAggregateLogin()`
+
+```javascript
+await (tKey.serviceProvider as TorusServiceProvider).triggerHybridAggregateLogin(HybridAggregateLoginParams)
+```
+
+Takes in the aggregate verifier details as `HybridAggregateLoginParams`.
+
+```ts
+export interface HybridAggregateLoginParams {
+  singleLogin: SubVerifierDetails;
+  aggregateLoginParams: AggregateLoginParams;
+}
+```
+
+### Return
+
+Returns an object containing
+
+1. `singleLogin`: [`TorusLoginResponse`](#torusloginresponse)
+2. `aggregateLogins`: [`TorusKey[]`](#toruskey)

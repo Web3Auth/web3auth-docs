@@ -1,0 +1,68 @@
+---
+title: Usage
+
+displayed_sidebar: sdk
+---
+
+import GetUserInfo from "../common/_get-user-info.mdx";
+import LogOut from "../common/_logout.mdx";
+import ConnectBlockchain from "../common/_connect-blockchain.mdx";
+
+---
+
+Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users. Further, you can use the native provider given
+by Web3Auth to connect the users to the respective blockchain network.
+
+Natively, the instance of `Web3Auth` _(referred to as `web3auth` in our examples)_ returns the following functions:
+
+- `connect()` - Showing the Modal and Logging in the User
+- `getUserInfo()` - Getting the User's Information
+- `logout()` - Logging out the User
+
+## Logging in the User
+
+---
+
+#### `connect()`
+
+You can show the modal in the browser by calling `connect()` function on `web3auth` instance. Your user can choose their preferred login method and
+access your application.
+
+```javascript
+await web3auth.connect();
+```
+
+#### Returns
+
+```ts
+connect(): Promise<SafeEventEmitterProvider | null>;
+```
+
+On successful connection, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
+corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
+
+:::tip
+
+Read more about connecting your users with the selected blockchain in the [Providers SDK Reference](../providers).
+
+:::
+
+On unsuccessful login, this function will return a `null` value.
+
+## Get User's Information
+
+---
+
+<GetUserInfo />
+
+## Logging out the User
+
+---
+
+<LogOut />
+
+## Connecting to a Blockchain
+
+---
+
+<ConnectBlockchain />
