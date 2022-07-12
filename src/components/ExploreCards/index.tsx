@@ -2,6 +2,8 @@ import classNames from "classnames";
 import Link from "@docusaurus/Link";
 import styles from "./styles.module.css";
 import Build from "@site/static/contents/icons/build.svg";
+import Whitelabel from "@site/static/contents/icons/whitelabel.svg";
+import CustomAuthentication from "@site/static/contents/icons/custom-authentication.svg";
 import Customize from "@site/static/contents/icons/customize.svg";
 import Guide from "@site/static/contents/icons/guide.svg";
 
@@ -17,7 +19,7 @@ export default function QuickNavigation() {
           <h5 className={styles.title}>
             <strong>Start Building</strong>
           </h5>
-          <p>Start building your Web3Auth Integration instantly through our uniquely designed integration builder.</p>
+          <p>Integrate instantly through our uniquely designed Integration Builder.</p>
           <div>
             <a className={styles.footer} href="/docs/integration-builder">
               Explore Integration Builder →
@@ -25,28 +27,28 @@ export default function QuickNavigation() {
           </div>
         </Link>
 
-        <Link className={classNames(styles.card)} to="/docs/sdk">
-          <Customize className={styles.cardIcon} />
+        <Link className={classNames(styles.card)} to="/docs/whitelabel">
+          <Whitelabel className={styles.cardIcon} />
           <h5 className={styles.title}>
-            <strong>Customise</strong>
+            <strong>Whitelabel</strong>
           </h5>
-          <p>We have a wide range of options to choose, from fully Whitelabeled, to Custom Authentication in the Blockchain of your choice.</p>
+          <p>Make Web3Auth your own with a wide range of Whitelabeling options.</p>
           <div>
-            <a className={styles.footer} href="/docs/sdk">
-              See our SDK Reference →
+            <a className={styles.footer} href="/docs/whitelabel">
+              Checkout Whitelabel Page→
             </a>
           </div>
         </Link>
 
-        <Link className={classNames(styles.card)} to="/docs/guides">
-          <Guide className={styles.cardIcon} />
+        <Link className={classNames(styles.card)} to="/docs/connect-blockchain/">
+          <CustomAuthentication className={styles.cardIcon} />
           <h5 className={styles.title}>
-            <strong>Guides</strong>
+            <strong>Custom Authentication</strong>
           </h5>
-          <p>Looking for an end to end understanding of the Web3Auth integration? Our guides are the solution for you.</p>
+          <p>Use your own social login and generate a non custodial private key with Web3Auth.</p>
           <div>
-            <a className={styles.footer} href="/docs/guides">
-              Have a quick look →
+            <a className={styles.footer} href="/docs/connect-blockchain/">
+              Turn to Custom Authentication →
             </a>
           </div>
         </Link>
