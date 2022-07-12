@@ -291,8 +291,6 @@ module.exports = {
         label: "Web3Auth Self Host",
         collapsible: false,
         items: [
-
-          "sdk/self-host/introduction",
           "sdk/self-host/installation",
           "sdk/self-host/initialization",
           "sdk/self-host/service-provider",

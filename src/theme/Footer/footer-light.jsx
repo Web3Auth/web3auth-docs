@@ -50,7 +50,7 @@ export default function FooterComponent() {
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/sdk/self-host/introduction">
+              <a className="footer__link-item" href="/docs/sdk/self-host/installation">
                 Self-hosted
               </a>
             </div>
