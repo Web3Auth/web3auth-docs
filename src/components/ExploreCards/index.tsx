@@ -12,7 +12,7 @@ export default function QuickNavigation() {
         <strong>Start with Web3Auth</strong>
       </h2>
       <div className={styles.container}>
-        <Link className={classNames(styles.card)} to="/docs/integration-builder">
+        <Link className={classNames(styles.card)} to="/docs/quick-start">
           <div>
             <Build className={styles.cardIcon} />
             <h5 className={styles.title}>
@@ -21,8 +21,8 @@ export default function QuickNavigation() {
           </div>
           <p>Integrate instantly through our uniquely designed Integration Builder.</p>
 
-          <a className={styles.footer} href="/docs/integration-builder">
-            Explore Integration Builder →
+          <a className={styles.footer} href="/docs/quick-start">
+            Explore Quick Start →
           </a>
         </Link>
 
