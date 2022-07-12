@@ -54,7 +54,7 @@ export default function QuickNavigation() {
       </div>
 
       <div className={styles.container}>
-        <Link className={classNames(styles.card)} to="./sdk/self-host/">
+        <Link className={classNames(styles.card)} to="./sdk/self-host/introduction">
           <div className={styles.cardContainer}>
             <SelfHost className={classNames(styles.cardIcon)} />
             <div className={classNames(styles.cardContent)}>
