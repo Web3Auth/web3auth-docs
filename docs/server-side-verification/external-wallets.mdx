@@ -5,14 +5,26 @@ id: external-wallets
 displayed_sidebar: docs
 ---
 
-#### Getting SIWWeb3Message from the AuthJS Backend
+---
+
+For connecting External Wallets with the Server Side Verification Flow, we have the `Auth.js` SDK aka Sign-in with Web3. This way, while connecting
+with your own wallet provider, you can use the Sign-in with Web3 (SIWW) to generate a jwt token for your user to authenticate them on the client side.
+Checkout the full documentation of [Sign-in with Web3](https://siww.web3auth.io/).
+
+## Getting SIWWeb3Message from the AuthJS Backend
+
+---
 
 For a user on `Ethereum` mainnet with the address `0x00C02Bad...` who wants to authenticate from `http://localhost:3000/login`.
 
-Note: Message fields are similar to [EIP-4361: Sign in with Ethereum](https://docs.login.xyz/general-information/siwe-overview/eip-4361#specification)
-. The `nonce` field here is ignored and can be any random string.
+:::note
 
-##### POST https://auth-js-backend.tor.us/siww/get
+Message fields are similar to [EIP-4361: Sign in with Ethereum](https://docs.login.xyz/general-information/siwe-overview/eip-4361#specification) . The
+`nonce` field here is ignored and can be any random string.
+
+:::
+
+#### `POST` https://auth-js-backend.tor.us/siww/get
 
 ```json
 {
@@ -41,13 +53,14 @@ Note: Message fields are similar to [EIP-4361: Sign in with Ethereum](https://do
 }
 ```
 
-#### Verify signed challenge
+## Verify signed challenge
 
-> Verifies the signed challenge message.
+---
 
-> Returns a JWT that can be used as authentication method
+- Verifies the signed challenge message.
+- Returns a JWT that can be used as authentication method
 
-#### POST https://auth-js-backend.tor.us/siww/verify
+#### `POST` https://auth-js-backend.tor.us/siww/verify
 
 ```json
 {
@@ -60,7 +73,11 @@ Note: Message fields are similar to [EIP-4361: Sign in with Ethereum](https://do
 }
 ```
 
-Note: Signature format depends on network. Solana uses base58, the rest uses hex
+:::note
+
+Signature format depends on network. Solana uses base58, the rest uses hex
+
+:::
 
 > Code: `200 OK`
 
@@ -73,13 +90,15 @@ Note: Signature format depends on network. Solana uses base58, the rest uses hex
 
 ## Verifying JWT
 
+---
+
 ### Get JWK
 
 > Retrieves the JWK set used to sign the issued JWTs
 
-##### GET https://auth-js-backend.tor.us/jwks
+#### `GET` https://auth-js-backend.tor.us/jwks
 
-##### Success Response Examples
+#### Success Response Examples
 
 > Code: `200 OK`
 

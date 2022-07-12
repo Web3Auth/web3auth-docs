@@ -112,7 +112,25 @@ module.exports = {
       type: "category",
       label: "Server Side Verification",
       link: { type: "doc", id: "server-side-verification/server-side-verification" },
-      items: ["server-side-verification/social-login-users", "server-side-verification/external-wallets"],
+      items: [
+        "server-side-verification/social-login-users",
+        "server-side-verification/external-wallets",
+        {
+          type: "link",
+          label: "Sign in with Web3",
+          href: "https://siww.web3auth.io/",
+        },
+        {
+          type: "link",
+          label: "Sign in with Solana",
+          href: "https://siws.web3auth.io/",
+        },
+        {
+          type: "link",
+          label: "Sign in with Starkware",
+          href: "https://siwst.web3auth.io/",
+        },
+      ],
     },
     {
       type: "category",
@@ -190,7 +208,12 @@ module.exports = {
               type: "category",
               label: "@web3auth/core",
               link: { type: "doc", id: "sdk/web/core/core" },
-              items: ["sdk/web/core/initialize", "sdk/web/core/whitelabel", "sdk/web/core/custom-authentication", "sdk/web/core/usage"],
+              items: [
+                "sdk/web/core/initialize",
+                "sdk/web/core/whitelabel",
+                "sdk/web/core/custom-authentication",
+                "sdk/web/core/usage"
+              ],
             },
             "sdk/web/openlogin",
             {
@@ -274,6 +297,32 @@ module.exports = {
         },
         "sdk/self-host/usage",
       ],
+    },
+    {
+      type: "html",
+      value: "<hr /><strong style='color: #606770'>Additional Reading</strong>",
+      className: "sidebar-title",
+      defaultStyle: true,
+    },
+    {
+      type: "link",
+      label: "Troubleshooting",
+      href: "/docs/troubleshooting/webpack-issues",
+    },
+    {
+      type: "link",
+      label: "Server Side Verification",
+      href: "/docs/server-side-verification/",
+    },
+    {
+      type: "link",
+      label: "Guides",
+      href: "/guides",
+    },
+    {
+      type: "link",
+      label: "SDK Reference",
+      href: "/sdk",
     },
   ],
 };
