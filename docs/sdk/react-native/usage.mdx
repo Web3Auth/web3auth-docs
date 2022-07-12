@@ -1,0 +1,75 @@
+---
+title: Usage
+hide_table_of_contents: false
+displayed_sidebar: sdk
+---
+
+---
+
+## Logging in a User
+
+### `login()`
+
+Trigger the login flow that navigate the user to a browser model that allows them to login with the selected login provider.
+
+| Parameter         | Type                          | Mandatory | Description                                                                                                                                                                                         |
+| ----------------- | ----------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| loginProvider     | LOGIN_PROVIDER_TYPE or String | No        | Login provider to be used, will show a web-based page allowing user to pick their own loginProvider if not specified.                                                                               |
+| redirectUrl       | String                        | Yes       | The redirectUrl that the Web3Auth login flow will use to redirect back to the app. Setting `redirectUrl` here can override the settings in `SdkInitParams`.                                         |
+| appState          | String                        | No        | Any custom state you wish to pass along. This will be returned to you post redirect. Use this to store data that you want to be available to the dapp after login.                                  |
+| relogin           | boolean                       | No        | Setting relogin to `true` will force user to relogin when login method is called even if user is already logged in. By default login method call skips login process if user is already logged in.  |
+| mfaLevel          | MfaLevelType                  | No        | You can set the `mfaLevel` to customize when mfa screen should be shown to user.                                                                                                                    |
+| dappShare         | String                        | No        | Custom Logins can get a dapp share returned to them post successful login. This is useful if the dapps want to use this share to allow users to login seamlessly dappShare is a 24 word seed phrase |
+| extraLoginOptions | ExtraLoginOptions             | No        | can be used to pass standard oauth login options to loginProvider                                                                                                                                   |
+
+### Sample Response
+
+```json
+{
+  "ed25519PrivKey": "666523652352635....",
+  "privKey": "0ajjsdsd....",
+  "userInfo": {
+    "aggregateVerifier": "tkey-google",
+    "email": "john@gmail.com",
+    "name": "John Dash",
+    "profileImage": "https://lh3.googleusercontent.com/a/Ajjjsdsmdjmnm...",
+    "typeOfLogin": "google",
+    "verifier": "torus",
+    "verifierId": "john@gmail.com",
+    "dappShare": "<24 words seed phrase>", // will be sent only incase of custom verifiers
+    "idToken": "<jwtToken issued by Web3Auth>"
+  }
+}
+```
+
+### Example
+
+```typescript
+const state = await web3auth.login({
+  loginProvider: LoginProvider.GOOGLE,
+  redirectUrl: resolvedRedirectUrl,
+});
+```
+
+## Logging out a user
+
+---
+
+### `logout()`
+
+:::info
+
+Trigger the logout flow. It is not adviced to be used in iOS since it will trigger a system dialog that ask if users want to allow a Login operation.
+
+:::
+
+This method has no input and returns a `Promise` that resolves if the operation is successful, and rejects if the operation failed.
+
+### Example
+
+```typescript
+const state = await web3auth.login({
+  loginProvider: LoginProvider.GOOGLE,
+  redirectUrl: resolvedRedirectUrl,
+});
+```

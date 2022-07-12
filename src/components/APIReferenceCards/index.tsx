@@ -13,7 +13,7 @@ export default function QuickNavigation() {
         <strong>Explore our SDKs</strong>
       </h2>
       <div className={styles.container}>
-        <Link className={classNames(styles.card)} to="./api-reference/web">
+        <Link className={classNames(styles.card)} to="./sdk/web">
           <div className={styles.cardContainer}>
             <Web className={classNames(styles.cardIcon)} />
             <div className={classNames(styles.cardContent)}>
@@ -26,7 +26,7 @@ export default function QuickNavigation() {
           </div>
         </Link>
 
-        <Link className={classNames(styles.card)} to="./api-reference/android">
+        <Link className={classNames(styles.card)} to="./sdk/android">
           <div className={styles.cardContainer}>
             <Mobile className={classNames(styles.cardIcon)} />
             <div className={classNames(styles.cardContent)}>
@@ -39,7 +39,7 @@ export default function QuickNavigation() {
           </div>
         </Link>
 
-        {/**<Link className={classNames(styles.card)} to="./api-reference/unity">
+        {/**<Link className={classNames(styles.card)} to="./sdk/unity">
           <div className={styles.cardContainer}>
             <Gaming className={classNames(styles.cardIcon)} />
             <div className={classNames(styles.cardContent)}>
@@ -54,7 +54,7 @@ export default function QuickNavigation() {
       </div>
 
       <div className={styles.container}>
-        <Link className={classNames(styles.card)} to="./api-reference/self-host">
+        <Link className={classNames(styles.card)} to="./sdk/self-host">
           <div className={styles.cardContainer}>
             <SelfHost className={classNames(styles.cardIcon)} />
             <div className={classNames(styles.cardContent)}>

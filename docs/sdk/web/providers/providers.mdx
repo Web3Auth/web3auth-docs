@@ -1,0 +1,145 @@
+---
+title: Providers
+hide_table_of_contents: false
+displayed_sidebar: sdk
+---
+
+---
+
+When connecting your application with a blockchain network, you have multiple options from Web3Auth. Web3Auth, across all blockchain networks,
+provider you the choice to export your private key, which can be used further to connect to the blockchain network. However, to make it easier for
+developers to connect to a few common networks, we also expose certain `provider` packages for EVM compatible chains and Solana Blockchain. Providers
+take JSON-RPC requests and return the response. This is normally done by submitting the request to an HTTP or IPC socket based server.
+
+Each adapter in Web3Auth exposes a Provider on successful user authentication. This provider can be use to interact with wallet or connected chain
+using RPC calls. By default Web3Auth providers exposes chain specific providers based on the `chainConfig` and `chainNamespace` field passed in the
+constructor.
+
+Currently Web3Auth supports three chainNamespaces:
+
+- `eip155`: EVM Compatible Chains
+- `solana`: Solana Blockchain
+- `other`: Other Blockchains
+
+## EVM Compatible Chains
+
+---
+
+`chainNamespace: "eip155"` will return a `EIP1193` compatible provider once user is logged in. Chains like Ethereum, Binance, Polygon, Arbitrum, etc.
+are `EIP1193` compliant.
+
+Read more about it in [**EVM Provider**](./evm)
+
+## Solana Blockchain
+
+---
+
+`chainNamespace: "solana"` will return a provider with Solana chain connection.
+
+Read more about it in [**Solana Provider**](./solana)
+
+## Other Blockchains
+
+---
+
+If you want to use any other chain except Solana or EVM chains, for ex: Tezos, you can specify the value of `chainNamespace: "other"`.
+
+Read more about it in [**Other Provider**](./other)
+
+## Exporting Web3Auth Private Key
+
+---
+
+Web3Auth gives you the option to export your users' private key. This can be used to connect directly to the blockchain network and interact with it.
+
+### Examples
+
+#### Ethereum Private Key
+
+Example below demonstrate usage of `eip155` chainNamespace and retreiving ethereum private key of logged in user.
+
+```ts
+const web3auth = new Web3Auth({
+  chainConfig: { chainNamespace: "eip155" },
+  clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
+});
+
+//Assuming user is already logged in.
+async getPrivateKey() {
+    const privateKey = await web3auth.provider.request({
+        method: "eth_private_key"
+    });
+    //Do something with privateKey
+}
+```
+
+#### Solana Private Key
+
+Example below demonstrate usage of `solana` chainNamespace and retreiving private key of logged in user.
+
+```ts
+const web3auth = new Web3Auth({
+  chainConfig: { chainNamespace: "solana" },
+  clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
+});
+
+//Assuming user is already logged in.
+async getPrivateKey() {
+    const privateKey = await web3auth.provider.request({
+        method: "solanaPrivateKey",
+        params: {},
+    });
+    //Do something with privateKey
+}
+```
+
+#### General Private Key
+
+Example below demonstrate usage of `other` chainNamespace and retreiving private key of logged in user.
+
+```ts
+const web3auth = new Web3Auth({
+  chainConfig: { chainNamespace: "other" },
+  clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
+});
+
+//Assuming user is already logged in.
+async getPrivateKey() {
+    const privateKey = await web3auth.provider.request({
+        method: "private_key"
+    });
+    //Do something with privateKey
+}
+```
+
+## Standard Type for Web3Auth Provider
+
+---
+
+For facilitating this flow, Web3Auth exposes a `SafeEventEmitterProvider` which is a provider type helping you make standardized RPC calls to a
+blockchain.
+
+This provider contains two functions, `send` and `request`. You can find its type reference below:
+
+```ts
+export interface SafeEventEmitterProvider extends SafeEventEmitter {
+  sendAsync: <T, U>(req: JRPCRequest<T>) => Promise<U>;
+  send: <T, U>(req: JRPCRequest<T>, callback: SendCallBack<U>) => void;
+  request: <T>(args: RequestArguments) => Promise<Maybe<T>>;
+}
+
+export interface JRPCRequest<T> extends JRPCBase {
+  method: string;
+  params?: T;
+}
+export interface JRPCBase {
+  jsonrpc?: JRPCVersion;
+  id?: JRPCId;
+}
+export declare type JRPCVersion = "2.0";
+export declare type JRPCId = number | string | void;
+export interface RequestArguments {
+  method: string;
+  params?: unknown[] | object;
+}
+```

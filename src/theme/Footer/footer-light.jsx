@@ -16,25 +16,25 @@ export default function FooterComponent() {
             <Logo style={{ width: 145 }} />
             <p>Web3Auth is where passwordless auth meets non-custodial key infrastructure for Web3 apps and wallets.</p>
             <div style={{ flexDirection: "row" }}>
-              <a href="/docs/api-reference/web/">
+              <a href="/docs/sdk/web/">
                 <Telegram />
               </a>
-              <a href="/docs/api-reference/web/" style={{ marginLeft: 8 }}>
+              <a href="/docs/sdk/web/" style={{ marginLeft: 8 }}>
                 <Twitter />
               </a>
-              <a href="/docs/api-reference/web/" style={{ marginLeft: 8 }}>
+              <a href="/docs/sdk/web/" style={{ marginLeft: 8 }}>
                 <Medium />
               </a>
-              <a href="/docs/api-reference/web/" style={{ marginLeft: 8 }}>
+              <a href="/docs/sdk/web/" style={{ marginLeft: 8 }}>
                 <GitHub />
               </a>
-              <a href="/docs/api-reference/web/" style={{ marginLeft: 8 }}>
+              <a href="/docs/sdk/web/" style={{ marginLeft: 8 }}>
                 <LinkedIn />
               </a>
-              <a href="/docs/api-reference/web/" style={{ marginLeft: 8 }}>
+              <a href="/docs/sdk/web/" style={{ marginLeft: 8 }}>
                 <YouTube />
               </a>
-              <a href="/docs/api-reference/web/" style={{ marginLeft: 8 }}>
+              <a href="/docs/sdk/web/" style={{ marginLeft: 8 }}>
                 <Discord />
               </a>
             </div>
@@ -45,12 +45,12 @@ export default function FooterComponent() {
               <strong>Product</strong>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/api-reference/web/">
+              <a className="footer__link-item" href="/docs/sdk/web/">
                 Plug n Play
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/api-reference/self-host/introduction">
+              <a className="footer__link-item" href="/docs/sdk/self-host/introduction">
                 Self-hosted
               </a>
             </div>
@@ -85,8 +85,8 @@ export default function FooterComponent() {
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/api-reference">
-                API Reference
+              <a className="footer__link-item" href="/docs/sdk">
+                SDK Reference
               </a>
             </div>
             <div className="footer__item">

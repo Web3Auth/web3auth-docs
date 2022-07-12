@@ -53,7 +53,7 @@ module.exports = {
         },
         {
           label: "SDKs",
-          to: "/api-reference",
+          to: "/sdk",
           position: "left",
         },
         {
@@ -150,6 +150,38 @@ module.exports = {
             to: '/docs/developing-with-web3auth/',
             from: '/docs/quick-start/',
           },
+          {
+            to: '/docs/api-reference/web/choosesdk/',
+            from: '/docs/sdk/web/',
+          },
+          {
+            to: '/docs/api-reference/web/plugnplay',
+            from: '/docs/sdk/web/web3auth/',
+          },
+          {
+            to: '/docs/api-reference/web/customloginui',
+            from: '/docs/sdk/web/core/',
+          },
+          {
+            to: '/docs/api-reference/android/setting-up',
+            from: '/docs/sdk/android/',
+          },
+          {
+            to: '/docs/api-reference/ios/setting-up',
+            from: '/docs/sdk/ios/',
+          },
+          {
+            to: '/docs/api-reference/flutter/setting-up',
+            from: '/docs/sdk/flutter/',
+          },
+          {
+            to: '/docs/api-reference/react-native/choose-workflows',
+            from: '/docs/sdk/react-native/',
+          },
+          {
+            to: '/docs/customauth/auth0',
+            from: '/docs/guides/auth0',
+          },
 
         ],
         createRedirects(existingPath) {
@@ -171,6 +203,11 @@ module.exports = {
           if (existingPath.includes('/authenticating-users')) {
             return [
               existingPath.replace('/authenticating-users', '/server-side-verification'),
+            ];
+          }
+          if (existingPath.includes('/api-reference')) {
+            return [
+              existingPath.replace('/api-reference', '/sdk'),
             ];
           }
           return undefined; // Return a falsy value: no redirect created
