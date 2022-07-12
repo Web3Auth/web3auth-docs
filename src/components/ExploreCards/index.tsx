@@ -30,7 +30,7 @@ export default function QuickNavigation() {
           <h5 className={styles.title}>
             <strong>Customise</strong>
           </h5>
-          <p>We have a wide range of options to choose, from fully Whitelabeled, Custom Authentication in the Blockchain of your choice.</p>
+          <p>We have a wide range of options to choose, from fully Whitelabeled, to Custom Authentication in the Blockchain of your choice.</p>
           <div>
             <a className={styles.footer} href="/docs/api-reference">
               See our API Reference →
