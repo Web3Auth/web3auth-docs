@@ -1,5 +1,5 @@
 ---
-title: Integrate with the Solana Blockchain with Web3Auth
+title: Integrate Web3Auth with the Solana Blockchain
 sidebar_label: Solana
 
 displayed_sidebar: docs
@@ -17,8 +17,8 @@ To interact with the Solana blockchain, you can use [@solana/web3.js](https://so
 <Tabs
   defaultValue="npm"
   values={[
-    { label: "NPM", value: "npm" },
-    { label: "Yarn", value: "yarn" },
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
     { label: "CDN", value: "cdn" },
   ]}
 >
@@ -48,27 +48,49 @@ yarn add @solana/web3.js @web3auth/solana-provider
 
 ## Initializing Provider
 
-Using `solana` as `chainNamespace` while initializing `web3auth` will provide a `Solana` compatible provider as **`web3auth.provider`** after
+Using `solana` as `chainNamespace` while initializing `web3auth` will provide a `solana` compatible provider as **`web3auth.provider`** after
 successful authentication.
 
 <Tabs
-  defaultValue="ts"
+  defaultValue="es"
   values={[
-    { label: "ES Modules/TypeScript", value: "ts" },
+    { label: "ES Modules", value: "es" },
+    { label: "TypeScript", value: "ts" },
     { label: "CommonJS", value: "js" },
   ]}
 >
-<TabItem value="ts">
+<TabItem value="es">
 
 ```js
 import { Web3Auth } from "@web3auth/web3auth";
 import { SolanaWallet } from "@web3auth/solana-provider";
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
   chainConfig: {
-    chainNamespace: "SOLANA",
+    chainNamespace: "solana",
+    chainId: "0x1",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = web3auth.connect();
+
+const solanaWallet = new SolanaWallet(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="ts">
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { SolanaWallet } from "@web3auth/solana-provider";
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.SOLANA,
     chainId: "0x1",
   },
 });
@@ -85,12 +107,11 @@ const solanaWallet = new SolanaWallet(web3authProvider); // web3auth.provider
 ```js
 const { Web3Auth } = require("@web3auth/web3auth");
 const { SolanaWallet } = require("@web3auth/solana-provider");
-const { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } = require("@solana/web3.js");
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
   chainConfig: {
-    chainNamespace: "SOLANA",
+    chainNamespace: "solana",
     chainId: "0x1",
   },
 });
@@ -111,22 +132,13 @@ const solanaWallet = new SolanaWallet(web3authProvider); // web3auth.provider
 ## Get Account and Balance
 
 ```js
-import { Web3Auth } from "@web3auth/web3auth";
-import { SolanaWallet } from "@web3auth/solana-provider";
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
-const web3auth = new Web3Auth({
-  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "SOLANA",
-    chainId: "0x1",
-  },
-});
-await web3auth.initModal();
+/*
+  Use code from the above Initializing Provider here
+*/
 
-const web3authProvider = web3auth.connect();
-
-const solanaWallet = new SolanaWallet(web3authProvider); // web3auth.provider
+// solanaWallet is from above
 
 // Get user's Solana public address
 const accounts = await solanaWallet.requestAccounts();
@@ -145,23 +157,13 @@ const balance = await conn.getBalance(new PublicKey(accounts[0]));
 ## Sign a Transaction
 
 ```js
-import { Web3Auth } from "@web3auth/web3auth";
-import { SolanaWallet } from "@web3auth/solana-provider";
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
-const web3auth = new Web3Auth({
-  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "SOLANA",
-    chainId: "0x1",
-  },
-});
-await web3auth.initModal();
+/*
+  Use code from the above Initializing Provider here
+*/
 
-const web3authProvider = web3auth.connect();
-
-const solanaWallet = new SolanaWallet(web3authProvider); // web3auth.provider
-
+// solanaWallet is from above
 const connectionConfig = await solanaWallet.request({
   method: "solana_provider_config",
   params: [],
@@ -188,23 +190,13 @@ console.log(signedTx.signature);
 ## Sign all Transactions
 
 ```js
-import { Web3Auth } from "@web3auth/web3auth";
-import { SolanaWallet } from "@web3auth/solana-provider";
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
-const web3auth = new Web3Auth({
-  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "SOLANA",
-    chainId: "0x1",
-  },
-});
-await web3auth.initModal();
+/*
+  Use code from the above Initializing Provider here
+*/
 
-const web3authProvider = web3auth.connect();
-
-const solanaWallet = new SolanaWallet(web3authProvider); // web3auth.provider
-
+// solanaWallet is from above
 const connectionConfig = await solanaWallet.request({
   method: "solana_provider_config",
   params: [],
@@ -231,23 +223,13 @@ console.log(signedTx.signature);
 ## Sign and Send a Transaction
 
 ```js
-import { Web3Auth } from "@web3auth/web3auth";
-import { SolanaWallet } from "@web3auth/solana-provider";
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
-const web3auth = new Web3Auth({
-  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "SOLANA",
-    chainId: "0x1",
-  },
-});
-await web3auth.initModal();
+/*
+  Use code from the above Initializing Provider here
+*/
 
-const web3authProvider = web3auth.connect();
-
-const solanaWallet = new SolanaWallet(web3authProvider); // web3auth.provider
-
+// solanaWallet is from above
 const connectionConfig = await solanaWallet.request({
   method: "solana_provider_config",
   params: [],
@@ -272,23 +254,13 @@ const { signature } = await solanaWallet.signAndSendTransaction(transaction);
 ## Sign Message
 
 ```js
-import { Web3Auth } from "@web3auth/web3auth";
-import { SolanaWallet } from "@web3auth/solana-provider";
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
-const web3auth = new Web3Auth({
-  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "SOLANA",
-    chainId: "0x1",
-  },
-});
-await web3auth.initModal();
+/*
+  Use code from the above Initializing Provider here
+*/
 
-const web3authProvider = web3auth.connect();
-
-const solanaWallet = new SolanaWallet(web3authProvider); // web3auth.provider
-
+// solanaWallet is from above
 const msg = Buffer.from("Test Signing Message ", "utf8");
 const result = await solanaWallet.signMessage(msg);
 console.log(result.toString());
@@ -301,10 +273,10 @@ console.log(result.toString());
 ```js
 //Assuming user is already logged in.
 async getPrivateKey() {
-    const privateKey = await web3auth.provider.request({
-        method: "solanaPrivateKey"
-    });
-    //Do something with privateKey
+  const privateKey = await web3auth.provider.request({
+    method: "solanaPrivateKey"
+  });
+  //Do something with privateKey
 }
 ```
 
@@ -321,26 +293,26 @@ privKey: any secp512k1 private key.
 */
 
 async setProvider(privKey: string) {
-    this.PrivateKeyProvider = new PrivateKeyWallet({
-    config: {
-        /*
-        pass the chain config that you want to connect with
-        all chainConfig fields are required.
-        */
-        chainConfig: {
-        chainId: "0x1",
-        rpcTarget: "https://ssc-dao.genesysgo.net", // This is the testnet RPC, please pass your own endpoint while creating an app
-        displayName: "solana",
-        ticker: "SOL",
-        tickerName: "Solana",
-        },
-    },
-    });
+  this.PrivateKeyProvider = new PrivateKeyWallet({
+  config: {
     /*
-    pass user's private key here.
-    after calling setupProvider, we can use
-    this.PrivateKeyProvider._providerProxy as a solana provider
+    pass the chain config that you want to connect with
+    all chainConfig fields are required.
     */
-    const provider = await this.PrivateKeyProvider.solanaPrivateKey(privKey);
+    chainConfig: {
+    chainId: "0x1",
+    rpcTarget: "https://ssc-dao.genesysgo.net", // This is the testnet RPC, please pass your own endpoint while creating an app
+    displayName: "solana",
+    ticker: "SOL",
+    tickerName: "solana",
+    },
+  },
+  });
+  /*
+  pass user's private key here.
+  after calling setupProvider, we can use
+  this.PrivateKeyProvider._providerProxy as a solana provider
+  */
+  const provider = await this.PrivateKeyProvider.solanaPrivateKey(privKey);
 }
 ```
