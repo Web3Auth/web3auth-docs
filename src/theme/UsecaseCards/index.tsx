@@ -14,8 +14,8 @@ export default function UsecaseCards() {
           </h3>
           <h4 className={styles.headline}>Using Web3Auth within a Chrome Extension Wallet</h4>
           <p className={styles.description}>
-            With the Binance Chain browser extension you can send and receive funds on Binance Chain, Binance Smart Chain and Ethereum, and
-            cross-chain transfers between both of Binance’s blockchains, all with the login flow of Web3Auth, customised for Binance.
+            With the Binance Chain browser extension you can send and receive funds on Binance Chain and Ethereum, and cross-chain transfers between
+            both of Binance’s blockchains, all with the login flow of Web3Auth, customised for Binance.
           </p>
           <div>
             <a
@@ -33,7 +33,7 @@ export default function UsecaseCards() {
           <h3 className={styles.title}>
             <strong>Skyweaver</strong>
           </h3>
-          <h4 className={styles.headline}>Web3Auth Custom Authentication for on-chain Games</h4>
+          <h4 className={styles.headline}>Web3Auth's Custom Authentication for on-chain Games</h4>
           <p>
             Skyweaver, using their Sequence Multi-Key Wallet, have made one of the most interesting use cases of Web3Auth's Custom Authentication
             solution on Polygon L2. This combination gives players the best user experience, security and access control to their wallets.
@@ -54,8 +54,8 @@ export default function UsecaseCards() {
           </h3>
           <h4 className={styles.headline}>Web3Auth's Modal for NFT Airdrops</h4>
           <p>
-            Looking for an example of how a quick integration of Web3Auth can look like for your dApp? 100 Thieves is using Web3Auth's Plug and Play
-            SDK on their website to onboard new mainstream users and aspiring NFT collectors using a simple integration you can add in 30 mins!
+            100 Thieves is using Web3Auth's Plug and Play SDK on their website to onboard thousands of mainstream users and aspiring NFT collectors
+            using an out-of-the-box Modal provided by Web3Auth, that you can add too, in less than 30 mins!
           </p>
           <div>
             <a className={styles.footer} target="_blank" href="https://collect.100thieves.com/" rel="noreferrer">
@@ -89,9 +89,8 @@ export default function UsecaseCards() {
           </h3>
           <h4 className={styles.headline}>Using Web3Auth on a multi chain DeFi platform</h4>
           <p>
-            Kash is one of our hands down favourite integrations. They built an excellent UI using our Custom Login UI SDK and their DeFi platform
-            integration creates an ethereum and terra address with just a simple click. We just love demoing Kash at every demo interaction. Make sure
-            you experience it as well!
+            Kash built an excellent UI using our Web3Auth Plug and Play Core SDK and their DeFi platform integration creates an Ethereum and Terra
+            address with just a simple click.
           </p>
           <div>
             <a className={styles.footer} target="_blank" href="https://app.kash.io/" rel="noreferrer">
