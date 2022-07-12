@@ -13,7 +13,7 @@ export const tileGroupsData = [
         key: "ethereum",
         title: "Ethereum",
         icon: "logo-ethereum.png",
-        path: "./connect-blockchain/evm/ethereum",
+        path: "./connect-blockchain/ethereum",
       },
       {
         key: "solana",
@@ -25,32 +25,32 @@ export const tileGroupsData = [
         key: "polygon",
         title: "Polygon",
         icon: "logo-polygon.png",
-        path: "./connect-blockchain/evm/polygon",
+        path: "./connect-blockchain/polygon",
       },
       {
         key: "bnb",
         title: "BNB Chain (Binance)",
         icon: "logo-binance.png",
-        path: "./connect-blockchain/evm/bnb",
+        path: "./connect-blockchain/bnb",
       },
 
       {
         key: "avalanche",
         title: "Avalanche",
         icon: "logo-avalanche.png",
-        path: "./connect-blockchain/evm/avalanche",
+        path: "./connect-blockchain/avalanche",
       },
       {
         key: "arbitrum",
         title: "Arbitrum",
         icon: "logo-arbitrum.png",
-        path: "./connect-blockchain/evm/arbitrum",
+        path: "./connect-blockchain/arbitrum",
       },
       {
         key: "optimism",
         title: "Optimism",
         icon: "logo-optimism.png",
-        path: "./connect-blockchain/evm/optimism",
+        path: "./connect-blockchain/optimism",
       },
       {
         key: "starkex",
