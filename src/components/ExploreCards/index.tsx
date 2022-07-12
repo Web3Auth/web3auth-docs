@@ -38,14 +38,14 @@ export default function QuickNavigation() {
           </div>
         </Link>
 
-        <Link className={classNames(styles.card)} to="/docs/connect-blockchain/">
+        <Link className={classNames(styles.card)} to="/docs/custom-authentication/">
           <CustomAuthentication className={styles.cardIcon} />
           <h5 className={styles.title}>
             <strong>Custom Authentication</strong>
           </h5>
           <p>Use your own social login and generate a non custodial private key with Web3Auth.</p>
           <div>
-            <a className={styles.footer} href="/docs/connect-blockchain/">
+            <a className={styles.footer} href="/docs/custom-authentication/">
               Turn to Custom Authentication →
             </a>
           </div>
