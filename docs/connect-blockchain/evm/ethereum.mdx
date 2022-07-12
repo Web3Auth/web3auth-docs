@@ -5,6 +5,7 @@ sidebar_label: Ethereum
 displayed_sidebar: docs
 ---
 
+import InstallationSnippet from "@site/docs/common-snippets/_evm-installation.mdx";
 import GetUserInfoSnippet from "@site/docs/common-snippets/_get-userinfo.mdx";
 import GetAccountAndBalanceSnippet from "@site/docs/common-snippets/_evm-get-account-n-balance.mdx";
 import SendTransactionSnippet from "@site/docs/common-snippets/_evm-send-transaction.mdx";
@@ -26,87 +27,16 @@ import Tabs from "@theme/Tabs";
 To interact with the Ethereum blockchain, you can use either [web3.js](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html) or
 [ethers.js](https://docs.ethers.io/v5/getting-started/) libraries with Web3Auth.
 
-<Tabs
-  defaultValue="web3"
-  values={[
-    { label: "web3.js", value: "web3" },
-    { label: "ethers.js", value: "ethers" },
-  ]}
->
-<TabItem value="web3">
-
-<Tabs
-  defaultValue="npm"
-  values={[
-    { label: "npm", value: "npm" },
-    { label: "yarn", value: "yarn" },
-    { label: "CDN", value: "cdn" },
-  ]}
->
-<TabItem value="npm">
-
-```shell
-npm install --save web3
-```
-
-</TabItem>
-<TabItem value="yarn">
-
-```shell
-yarn add web3
-```
-
-</TabItem>
-<TabItem value="cdn">
-
-```shell
-<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-```
-
-</TabItem>
-</Tabs>
-
-</TabItem>
-<TabItem value="ethers">
-
-<Tabs
-  defaultValue="npm"
-  values={[
-    { label: "npm", value: "npm" },
-    { label: "yarn", value: "yarn" },
-    { label: "CDN", value: "cdn" },
-  ]}
->
-<TabItem value="npm">
-
-```shell
-npm install --save ethers
-```
-
-</TabItem>
-<TabItem value="yarn">
-
-```shell
-yarn add ethers
-```
-
-</TabItem>
-<TabItem value="cdn">
-
-```shell
-<script src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
-```
-
-</TabItem>
-</Tabs>
-
-</TabItem>
-</Tabs>
+<InstallationSnippet />
 
 ## Initializing Provider
 
 Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an `EIP1193` compatible provider as **`web3auth.provider`** after
 successful authentication.
+
+### Mainnet
+
+Mainnet Block Explorer URL: https://etherscan.io
 
 <Tabs
   defaultValue="web3"
@@ -270,6 +200,26 @@ const provider = new ethers.providers.Web3Provider(web3authProvider); // web3aut
 
 </TabItem>
 </Tabs>
+
+### Testnet
+
+- Ropsten Block Explorer URL: https://ropsten.etherscan.io -- `chainId: "0x3"`
+- Rinkeby Block Explorer URL: https://rinkeby.etherscan.io -- `chainId: "0x4"`
+- Goerli Block Explorer URL: https://goerli.etherscan.io -- `chainId: "0x5"`
+
+```js
+/*
+Simply change the chainId feild of `chainConfig` to `0x13881` (testnet)
+*/
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x3", // ropsten, hex of 3
+  },
+});
+```
 
 ## Get User Info
 

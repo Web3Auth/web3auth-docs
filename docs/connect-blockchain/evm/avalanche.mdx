@@ -5,16 +5,57 @@ sidebar_label: Avalanche
 displayed_sidebar: docs
 ---
 
+import InstallationSnippet from "@site/docs/common-snippets/_evm-installation.mdx";
+import GetUserInfoSnippet from "@site/docs/common-snippets/_get-userinfo.mdx";
+import GetAccountAndBalanceSnippet from "@site/docs/common-snippets/_evm-get-account-n-balance.mdx";
+import SendTransactionSnippet from "@site/docs/common-snippets/_evm-send-transaction.mdx";
+import SignPersonalMessageSnippet from "@site/docs/common-snippets/_evm-sign-message-personal-sign.mdx";
+import SignTypedDataV1Snippet from "@site/docs/common-snippets/_evm-sign-message-v1.mdx";
+import SignTypedDataV3Snippet from "@site/docs/common-snippets/_evm-sign-message-v3.mdx";
+import SignTypedDataV4Snippet from "@site/docs/common-snippets/_evm-sign-message-v4.mdx";
+import SmartContractSoliditySnippet from "@site/docs/common-snippets/_smart-contract-solidity.mdx";
+import DeployContractSolidityDeploySnippet from "@site/docs/common-snippets/_smart-contract-solidity-deploy.mdx";
+import DeployContractSolidityReadSnippet from "@site/docs/common-snippets/_smart-contract-solidity-read.mdx";
+import DeployContractSolidityWriteSnippet from "@site/docs/common-snippets/_smart-contract-solidity-write.mdx";
+import FetchUserPrivateKeySnippet from "@site/docs/common-snippets/_evm-fetch-user-private-key.mdx";
+import GetProviderFromPrivateKeySnippet from "@site/docs/common-snippets/_evm-get-provider-from-private-key.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+Via Web3Auth SDK, you can interact with [Avalanche](https://www.avalabs.org) to get access to your `account`, fetch `balance`, `sign message`,
+`send transaction`, and even `read` and `write` from the contract.
+
 ## Installation
 
-Via Web3Auth SDK, you can interact with [Avalanche](https://www.avalabs.org). Avalanche(C-Chain) is EVM compatible so you can directly follow the
-[Ethereum installation](./ethereum).
+To interact with the Avalanche C-Chain blockchain, you can use either [web3.js](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html) or
+[ethers.js](https://docs.ethers.io/v5/getting-started/) libraries with Web3Auth.
 
-## Configure Avalanche C-Chain
+<InstallationSnippet />
+
+## Initializing Provider (Avalanche C-Chain)
 
 ### Mainnet
 
-Mainnet Block Explorer URL: https://explorer.avax.network/
+Mainnet Block Explorer URL: https://explorer.avax.network
+
+<Tabs
+  defaultValue="web3"
+  values={[
+    { label: "web3.js", value: "web3" },
+    { label: "ethers.js", value: "ethers" },
+  ]}
+>
+<TabItem value="web3">
+
+<Tabs
+  defaultValue="es"
+  values={[
+    { label: "ES Modules", value: "es" },
+    { label: "TypeScript", value: "ts" },
+    { label: "CommonJS", value: "js" },
+  ]}
+>
+<TabItem value="es">
 
 ```js
 import { Web3Auth } from "@web3auth/web3auth";
@@ -34,19 +75,19 @@ const web3authProvider = web3auth.connect();
 const web3 = new Web3(web3authProvider); // web3auth.provider
 ```
 
-### Testnet
-
-Testnet Block Explorer URL: https://explorer.avax-test.network/
+</TabItem>
+<TabItem value="ts">
 
 ```js
 import { Web3Auth } from "@web3auth/web3auth";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
 import Web3 from "web3";
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
   chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0xA869", // hex of 43113
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0xA86A", // hex of 43114
   },
 });
 await web3auth.initModal();
@@ -55,3 +96,179 @@ const web3authProvider = web3auth.connect();
 
 const web3 = new Web3(web3authProvider); // web3auth.provider
 ```
+
+</TabItem>
+<TabItem value="js">
+
+```js
+const { Web3Auth } = require("@web3auth/web3auth");
+const Web3 = require("web3");
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0xA86A", // hex of 43114
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+<TabItem value="ethers">
+
+<Tabs
+  defaultValue="es"
+  values={[
+    { label: "ES Modules", value: "es" },
+    { label: "TypeScript", value: "ts" },
+    { label: "CommonJS", value: "js" },
+  ]}
+>
+<TabItem value="es">
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { ethers } from "ethers";
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0xA86A", // hex of 43114
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="ts">
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { ethers } from "ethers";
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0xA86A", // hex of 43114
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="js">
+
+```js
+const { Web3Auth } = require("@web3auth/web3auth");
+const ethers = require("ethers");
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0xA86A", // hex of 43114
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+</Tabs>
+
+### Testnet
+
+Testnet Block Explorer URL: https://explorer.avax-test.network/
+
+```js
+/*
+Simply change the chainId feild of `chainConfig` to `0x13881` (testnet)
+*/
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0xA869", // hex of 43113
+  },
+});
+```
+
+## Get User Info
+
+<GetUserInfoSnippet />
+
+## Get Account and Balance
+
+<GetAccountAndBalanceSnippet />
+
+## Send Transaction
+
+<SendTransactionSnippet />
+
+## Sign Message
+
+### Personal Sign
+
+<SignPersonalMessageSnippet />
+
+### Sign Typed Data v1
+
+<SignTypedDataV1Snippet />
+
+### Sign Typed Data v3
+
+<SignTypedDataV3Snippet />
+
+### Sign Typed Data v4
+
+<SignTypedDataV4Snippet />
+
+## Smart Contract
+
+<SmartContractSoliditySnippet />
+
+### Deploy Contract
+
+<DeployContractSolidityDeploySnippet />
+
+### Read From Contract
+
+<DeployContractSolidityReadSnippet />
+
+### Write to Contract
+
+<DeployContractSolidityWriteSnippet />
+
+## Fetch User's Private Key
+
+<FetchUserPrivateKeySnippet />
+
+## Getting a provider from private key.
+
+<GetProviderFromPrivateKeySnippet />
