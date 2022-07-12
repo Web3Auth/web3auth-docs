@@ -1,6 +1,5 @@
 /** @type {import('@docusaurus/plugin-content-docs/lib/types').Sidebars} */
 
-
 module.exports = {
   docs: [
     "README",
@@ -52,7 +51,6 @@ module.exports = {
       link: { type: "doc", id: "get-started/get-started" },
       items: [
         "get-started/quick-start",
-        "get-started/understand-sdk",
         {
           type: "link",
           label: "SDK/ API Reference",
