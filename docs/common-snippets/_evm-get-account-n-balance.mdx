@@ -1,0 +1,52 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<Tabs
+defaultValue="web3"
+values={[
+  { label: "web3.js", value: "web3" },
+  { label: "ethers.js", value: "ethers.js" },
+]}
+>
+<TabItem value="web3">
+
+```js
+/*
+  Use code from the above Initializing Provider here
+*/
+
+// web3 is const web3 = new Web3(web3authProvider); from above.
+
+// Get user's Ethereum public address
+const address = (await web3.eth.getAccounts())[0];
+
+// Get user's balance in ether
+const balance = web3.utils.fromWei(
+  await web3.eth.getBalance(address) // Balance is in wei
+);
+```
+
+  </TabItem>
+<TabItem value="ethers.js">
+
+```js
+/*
+  Use code from the above Initializing Provider here
+*/
+
+// provider is const provider = new ethers.providers.Web3Provider(web3authProvider); from above.
+
+const signer = provider.getSigner();
+
+// Get user's Ethereum public address
+const address = await signer.getAddress();
+
+// Get user's balance in ether
+const balance = ethers.utils.formatEther(
+  await provider.getBalance(userAddress) // Balance is in wei
+);
+```
+
+</TabItem>
+
+</Tabs>
