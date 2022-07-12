@@ -4,8 +4,6 @@ import styles from "./styles.module.css";
 import Build from "@site/static/contents/icons/build.svg";
 import Whitelabel from "@site/static/contents/icons/whitelabel.svg";
 import CustomAuthentication from "@site/static/contents/icons/custom-authentication.svg";
-import Customize from "@site/static/contents/icons/customize.svg";
-import Guide from "@site/static/contents/icons/guide.svg";
 
 export default function QuickNavigation() {
   return (

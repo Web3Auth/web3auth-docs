@@ -125,66 +125,69 @@ module.exports = {
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [
-          // /docs/oldDoc -> /docs/newDoc
           {
-            to: '/docs/authenticating-users/overview',
-            from: '/docs/server-side-verification/',
+            from: '/docs/authenticating-users/overview',
+            to: '/docs/server-side-verification/',
           },
           {
-            to: '/docs/examples/demo',
-            from: '/docs/examples',
+            from: '/docs/examples/demo',
+            to: '/docs/examples',
           },
           {
-            to: '/docs/examples/productionexamples',
-            from: '/docs/examples/liveexamples',
+            from: '/docs/examples/productionexamples',
+            to: '/docs/examples/liveexamples',
           },
           {
-            to: '/docs/developing-with-web3auth/adapters',
-            from: '/docs/connect-external-wallets',
+            from: '/docs/developing-with-web3auth/adapters',
+            to: '/docs/connect-external-wallets',
           },
           {
-            to: '/docs/developing-with-web3auth/understand-sdk',
-            from: '/docs/quick-start',
+            from: '/docs/developing-with-web3auth/understand-sdk',
+            to: '/docs/quick-start',
           },
           {
-            to: '/docs/developing-with-web3auth/',
-            from: '/docs/quick-start/',
+            from: '/docs/developing-with-web3auth/',
+            to: '/docs/quick-start/',
           },
           {
-            to: '/docs/api-reference/web/choosesdk/',
-            from: '/docs/sdk/web/',
+            from: '/docs/api-reference/web/choosesdk/',
+            to: '/docs/sdk/web/',
           },
           {
-            to: '/docs/api-reference/web/plugnplay',
-            from: '/docs/sdk/web/web3auth/',
+            from: '/docs/api-reference/web/plugnplay',
+            to: '/docs/sdk/web/web3auth/',
           },
           {
-            to: '/docs/api-reference/web/customloginui',
-            from: '/docs/sdk/web/core/',
+            from: '/docs/api-reference/web/customloginui',
+            to: '/docs/sdk/web/core/',
           },
           {
-            to: '/docs/api-reference/android/setting-up',
-            from: '/docs/sdk/android/',
+            from: '/docs/api-reference/android/setting-up',
+            to: '/docs/sdk/android/',
           },
           {
-            to: '/docs/api-reference/ios/setting-up',
-            from: '/docs/sdk/ios/',
+            from: '/docs/api-reference/ios/setting-up',
+            to: '/docs/sdk/ios/',
           },
           {
-            to: '/docs/api-reference/flutter/setting-up',
-            from: '/docs/sdk/flutter/',
+            from: '/docs/api-reference/flutter/setting-up',
+            to: '/docs/sdk/flutter/',
           },
           {
-            to: '/docs/api-reference/react-native/choose-workflows',
-            from: '/docs/sdk/react-native/',
+            from: '/docs/api-reference/react-native/choose-workflows',
+            to: '/docs/sdk/react-native/',
           },
           {
-            to: '/docs/customauth/auth0',
-            from: '/docs/guides/auth0',
+            from: '/docs/customauth/auth0',
+            to: '/docs/guides/auth0',
           },
           {
-            to: '/docs/sdk/self-host/',
-            from: '/docs/sdk/self-host/introduction',
+            from: '/docs/sdk/self-host/',
+            to: '/docs/sdk/self-host/installation',
+          },
+          {
+            from: '/docs/self-host/',
+            to: '/docs/self-hosting',
           },
 
         ],
