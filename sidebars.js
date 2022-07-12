@@ -45,27 +45,15 @@ module.exports = {
         },
       ],
     },
+    "quick-start",
     {
       type: "category",
-      label: "Get Started",
-      link: { type: "doc", id: "get-started/get-started" },
+      label: "Developer Dashboard",
+      link: { type: "doc", id: "developer-dashboard/developer-dashboard" },
       items: [
-        "get-started/quick-start",
-        {
-          type: "link",
-          label: "SDK/ API Reference",
-          href: "/api-reference",
-        },
-        {
-          type: "category",
-          label: "Developer Dashboard",
-          link: { type: "doc", id: "developer-dashboard/developer-dashboard" },
-          items: [
-            "developer-dashboard/get-client-id",
-            "developer-dashboard/enable-interoperability",
-            "developer-dashboard/setup-custom-authentication",
-          ],
-        },
+        "developer-dashboard/get-client-id",
+        "developer-dashboard/enable-interoperability",
+        "developer-dashboard/setup-custom-authentication",
       ],
     },
     "self-hosting",
@@ -135,13 +123,13 @@ module.exports = {
       label: "Examples",
       link: { type: "doc", id: "examples/examples" },
       items: [
+
+        "examples/liveexamples",
         {
           type: "link",
           label: "Integration Builder",
           href: "/integration-builder",
         },
-        "examples/demo",
-        "examples/productionexamples",
         {
           type: "link",
           label: "Guides",
