@@ -182,6 +182,10 @@ module.exports = {
             to: '/docs/customauth/auth0',
             from: '/docs/guides/auth0',
           },
+          {
+            to: '/docs/sdk/self-host/',
+            from: '/docs/sdk/self-host/introduction',
+          },
 
         ],
         createRedirects(existingPath) {
