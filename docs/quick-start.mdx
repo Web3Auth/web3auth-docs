@@ -4,19 +4,153 @@ title: Quick Start
 displayed_sidebar: docs
 ---
 
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
 import Tiles from "@theme/Tiles";
+import Image5 from "@site/static/dashboard/project_plug_n_play.png";
+
+This document is your quick start guide to integrating Web3Auth into your wallet/dapp. Integrating Web3Auth is easy and you have multiple ways to do
+it according to your preference:
+
+- You can start by [Integrating a basic Web3Auth Modal](#integrate-web3auth-in-4-simple-steps) into your application and further customize it to your
+  needs.
+
+- You also have the choice to check out our [Integration Builder](/docs/integration-builder), which helps you develop a quick start boilerplate
+  application within seconds.
+
+- Further, you can checkout our [Guides](/docs/guides) and tutorials around [Connecting your Blockchain](/docs/connect-blockchain/) and
+  [Custom Authentication](/docs/custom-authentication/) to make Web3Auth suit your needs.
+
+- Side note: if you're a pro developer, just hop on to our [SDK Reference](/docs/sdk) and get started!
+
+## Integrate Web3Auth in 4 Simple Steps
+
+---
+
+Integrating Web3Auth into your project is as simple as following the basic 4 steps written below.
+
+### 1. Install Web3Auth
+
+Import the Web3Auth package in your project. If you're using any other platform, check our respective [SDK Reference](/docs/sdk).
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+
+<TabItem value="npm">
+
+```shell
+npm install --save @web3auth/web3auth
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @web3auth/web3auth
+```
+
+</TabItem>
+
+</Tabs>
+
+### 2. Get your Client ID from Web3Auth Dashboard
+
+Hop on to the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new project. Use the Client ID of the project to start your
+integration.
+
+<img src={Image5} style={{ alignSelf: "center", maxWidth: "100%" }} />
+
+### 3. Initialize Web3Auth for your preferred blockchain
+
+Web3Auth needs to initialise as soon as your app loads up to enable the user to log in. Preferably done within a constructor, initialisation is the
+step where you can pass on all the configurations for Web3Auth you want. A simple integration for Ethereum and Solana blockchains will look like this:
+
+<Tabs
+  defaultValue="ethereum"
+  values={[
+    { label: "Ethereum", value: "ethereum" },
+    { label: "Solana", value: "solana" },
+  ]}
+>
+
+<TabItem value="ethereum">
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+
+//Initialize within your constructor
+const web3auth = new Web3Auth({
+  clientId: "", // Get your Client ID from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1",
+  },
+});
+
+await web3auth.initModal();
+```
+
+</TabItem>
+
+<TabItem value="solana">
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+
+//Initialize within your constructor
+const web3auth = new Web3Auth({
+  clientId: "", // Get your Client ID from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "solana",
+    chainId: "0x1",
+  },
+});
+
+await web3auth.initModal();
+```
+
+</TabItem>
+
+</Tabs>
+
+### 4. Login your User
+
+Once you're done initialising, just create a button that triggers to open the login modal for the user on their request. Logging in is as easy as:
+
+```js
+await web3auth.connect();
+```
+
+:::caution
+
+If you're new to Web3 development, you might be facing certain issues with Webpack while configuring your application. Please refer to our
+[Webpack Issues Troubleshooting Guide](/docs/troubleshooting/webpack-issues) for more information.
+
+:::
+
+## Using the Integration Builder
+
+### Select your Language/ Framework
+
+<Tiles tileGroups={tileGroupsData1} />
+
+### Connect with Blockchains of your choice
+
+<Tiles tileGroups={tileGroupsData3} />
 
 export const tileGroupsData1 = [
   {
     name: "",
     description: "",
     tiles: [
-      {
-        key: "web",
-        title: "HTML / JavaScript",
-        icon: "logo-js.png",
-        path: "/integration-builder?lang=html&chain=eth&customAuthentication=no&customLogin=no&whitelabel=no",
-      },
       {
         key: "react",
         title: "React",
@@ -40,6 +174,12 @@ export const tileGroupsData1 = [
         title: "Angular",
         icon: "logo-angular.png",
         path: "/integration-builder?lang=angular&chain=eth&customAuthentication=no&customLogin=no&whitelabel=no",
+      },
+      {
+        key: "web",
+        title: "HTML / JavaScript",
+        icon: "logo-js.png",
+        path: "/integration-builder?lang=html&chain=eth&customAuthentication=no&customLogin=no&whitelabel=no",
       },
       {
         key: "android",
@@ -188,27 +328,3 @@ export const tileGroupsData3 = [
     ],
   },
 ];
-
-### Select your Language/ Framework
-
----
-
-**We currently support the following platforms and frameworks**
-
-<Tiles tileGroups={tileGroupsData1} />
-
-### Use a Custom Authentication and Login UI for your application
-
----
-
-**Have a more customised experience with Web3Auth by using your own authentication service, while customising the Login UI according to your needs**
-
-<Tiles tileGroups={tileGroupsData2} />
-
-### Connect with Blockchains
-
----
-
-**Hook your app up to any blockchain regardless of key type. Here are a few examples:**
-
-<Tiles tileGroups={tileGroupsData3} />
