@@ -1,0 +1,133 @@
+---
+title: Initialize
+
+displayed_sidebar: sdk
+---
+
+---
+
+After Installation, the next step to use Web3Auth is to Initialize the SDK. However, the Initialization is a two step process,
+
+- [Creating a Web3Auth Instance](#create-web3auth-instance)
+- [Setting a Result URL](#set-result-url)
+
+Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
+Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customise your Web3Auth Instance.
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+## Create Web3Auth Instance
+
+---
+
+In your sign-in activity, create a `Web3Auth` instance with your Web3Auth project's configurations and configure it like this:
+
+```kotlin
+web3Auth = Web3Auth(Web3AuthOptions)
+```
+
+### Arguments
+
+#### `Web3AuthOptions`
+
+The Web3Auth Constructor takes an object with `Web3AuthOptions` as input. Construct and configure an Web3AuthOptions instance
+
+| Parameter   | Type                                    | Mandatory | Description                                                                                                                         |
+| ----------- | --------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| context     | android.content.Context                 | Yes       | Android context to launch Web-based authentication, usually is the current activity                                                 |
+| clientId    | String                                  | Yes       | Your Web3Auth project ID                                                                                                            |
+| network     | enum com.web3auth.core.Web3Auth.Network | Yes       | Network to run Web3Auth, either MAINNET or TESTNET or CYAN                                                                          |
+| redirectUrl | android.net.Uri                         | No        | URL that Web3Auth will redirect API responses, default is `null`                                                                    |
+| whiteLabel  | WhiteLabelData                          | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer WhiteLabel section for more info. |
+
+```kotlin
+web3Auth = Web3Auth(
+  Web3AuthOptions(context = this,
+    clientId = getString(R.string.web3auth_project_id), // pass over your Web3Auth Client ID from Developer Dashboard
+    network = Web3Auth.Network.MAINNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN)
+    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"), // your app's redirect URL
+    // Optional parameters
+    whiteLabel = WhiteLabelData(
+      "Web3Auth Sample App", null, null, "en", true,
+      hashMapOf(
+        "primary" to "#123456"
+      )
+    )
+  )
+)
+
+// Handle user signing in when app is not alive
+web3Auth.setResultUrl(intent?.data)
+```
+
+## Set Result URL
+
+---
+
+```kotlin
+override fun onNewIntent(intent: Intent?) {
+  super.onNewIntent(intent)
+
+  // Handle user signing in when app is active
+  web3Auth.setResultUrl(intent?.data)
+
+  // ...
+}
+```
+
+## Example
+
+```kotlin
+class MainActivity : AppCompatActivity() {
+  // ...
+  private lateinit var web3Auth: Web3Auth
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+
+    web3Auth = Web3Auth(
+      Web3AuthOptions(context = this,
+        clientId = getString(R.string.web3auth_project_id),
+        network = Web3Auth.Network.MAINNET,
+        redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+        whiteLabel = WhiteLabelData(  // Optional param
+          "Web3Auth Sample App", null, null, "en", true,
+          hashMapOf(
+            "primary" to "#123456"
+          )
+        )
+      )
+    )
+
+    // Handle user signing in when app is not alive
+    web3Auth.setResultUrl(intent?.data)
+
+    // ...
+  }
+
+  override fun onNewIntent(intent: Intent?) {
+    super.onNewIntent(intent)
+
+    // Handle user signing in when app is active
+    web3Auth.setResultUrl(intent?.data)
+
+    // ...
+  }
+
+  private fun onClickLogin() {
+    val selectedLoginProvider = Provider.GOOGLE   // Can be Google, Facebook, Twitch etc
+    val loginCompletableFuture: CompletableFuture<State> = web3Auth.login(LoginParams(selectedLoginProvider))
+
+    loginCompletableFuture.whenComplete { state, error ->
+      if (error == null) {
+        // render logged in UI
+      } else {
+        // render login error UI
+      }
+    }
+  }
+  //...
+}
+```

@@ -1,0 +1,56 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class Reference", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                       | Params Type                  | Description                                               |
+| ------------------------------- | ---------------------------- | --------------------------------------------------------- |
+| `init()`                        | `InitParams`                 | Function to initialise Service Provider                   |
+| `triggerLogin()`                | `SubVerifierDetails`         | Triggers login using a verifier                           |
+| `triggerAggregateLogin()`       | `AggregateLoginParams`       | Triggers login using a aggregate verifier                 |
+| `triggerHybridAggregateLogin()` | `HybridAggregateLoginParams` | Triggers login using both verifier and aggregate verifier |
+
+</TabItem>
+
+<TabItem value="class">
+
+```ts
+declare class TorusServiceProvider extends ServiceProviderBase {
+  directWeb: CustomAuth;
+  singleLoginKey: BN;
+  directParams: CustomAuthArgs;
+  constructor({ enableLogging, postboxKey, directParams }: TorusServiceProviderArgs);
+  static fromJSON(value: StringifiedType): TorusServiceProvider;
+  init(params: InitParams): Promise<void>;
+  triggerLogin(params: SubVerifierDetails): Promise<TorusLoginResponse>;
+  triggerAggregateLogin(params: AggregateLoginParams): Promise<TorusAggregateLoginResponse>;
+  triggerHybridAggregateLogin(params: HybridAggregateLoginParams): Promise<TorusHybridAggregateLoginResponse>;
+  toJSON(): StringifiedType;
+}
+
+declare class ServiceProviderBase implements IServiceProvider {
+  enableLogging: boolean;
+  postboxKey: BN;
+  serviceProviderName: string;
+  constructor({ enableLogging, postboxKey }: ServiceProviderArgs);
+  static fromJSON(value: StringifiedType): IServiceProvider;
+  encrypt(msg: Buffer): Promise<EncryptedMessage>;
+  decrypt(msg: EncryptedMessage): Promise<Buffer>;
+  retrievePubKeyPoint(): curve.base.BasePoint;
+  retrievePubKey(type: PubKeyType): Buffer;
+  sign(msg: BNString): string;
+  toJSON(): StringifiedType;
+}
+```
+
+</TabItem>
+
+</Tabs>

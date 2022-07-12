@@ -1,0 +1,108 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+#### `TorusLoginResponse`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter             | Type                  | Description                                   |
+| --------------------- | --------------------- | --------------------------------------------- |
+| `accessToken`         | `string`              | User Access Token                             |
+| `idToken?`            | `string`              | User `id_token`                               |
+| `ref?`                | `string`              | User refs                                     |
+| `extraParams?`        | `string`              | Any extra parameters                          |
+| `email`               | `string`              | User Email ID                                 |
+| `name`                | `string`              | User Name                                     |
+| `profileImage`        | `string`              | User Profile Image                            |
+| `aggregateVerifier?`  | `string`              | Aggregate Verifier Details                    |
+| `verifier`            | `string`              | Verifier Details                              |
+| `verifierId`          | `string`              | Verifier ID                                   |
+| `typeOfLogin`         | `LOGIN_TYPE`          | Type of Social Login                          |
+| `extraVerifierParams` | `WebAuthnExtraParams` | Extra Verifier Parameters related to WebAuthn |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+export declare type TorusLoginResponse = TorusSingleVerifierResponse & TorusKey;
+export interface TorusSingleVerifierResponse {
+  userInfo: TorusVerifierResponse & LoginWindowResponse;
+}
+export interface LoginWindowResponse {
+  accessToken: string;
+  idToken?: string;
+  ref?: string;
+  extraParams?: string;
+  extraParamsPassed?: string;
+  state: TorusGenericObject;
+}
+export interface TorusVerifierResponse {
+  email: string;
+  name: string;
+  profileImage: string;
+  aggregateVerifier?: string;
+  verifier: string;
+  verifierId: string;
+  typeOfLogin: LOGIN_TYPE;
+  ref?: string;
+  registerOnly?: boolean;
+  extraVerifierParams?: WebAuthnExtraParams;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+#### `TorusKey`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter       | Type               | Description                        |
+| --------------- | ------------------ | ---------------------------------- |
+| `publicAddress` | `string`           | User Public Address                |
+| `privateKey`    | `string`           | User Private Key                   |
+| `metadataNonce` | `string`           | Metadata Nonce related to the user |
+| `typeOfUser`    | `enum("v1", "v2")` | User if `v1` or `v2`               |
+| `pub_key_X`     | `enum("v1", "v2")` | X coordinate of Public Key         |
+| `pub_key_Y`     | `enum("v1", "v2")` | Y coordinate of Public Key         |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+export interface TorusKey extends TorusKeyPub {
+  publicAddress: string;
+  privateKey: string;
+  metadataNonce: string;
+  typeOfUser: "v1" | "v2";
+}
+export interface TorusKeyPub {
+  pubKey?: {
+    pub_key_X: string;
+    pub_key_Y: string;
+  };
+}
+```
+
+</TabItem>
+
+</Tabs>

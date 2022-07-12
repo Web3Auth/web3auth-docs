@@ -1,0 +1,221 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+This `TorusServiceProvider` constructor takes an object with `TorusServiceProviderArgs` as input. It contains the following parameters:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter        | Type             | Description                                               | Required |
+| ---------------- | ---------------- | --------------------------------------------------------- | -------- |
+| `directParams`   | `CustomAuthArgs` | Arguments for configuring social login provider           | Yes      |
+| `enableLogging?` | `boolean`        | This option is used to specify whether to enable logging. | No       |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+export interface TorusServiceProviderArgs extends ServiceProviderArgs {
+  directParams: CustomAuthArgs;
+}
+export interface ServiceProviderArgs {
+  enableLogging?: boolean;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+#### `directParams`
+
+The `directParams` object is the mandatory object needed to be passed within the `TorusServiceProvider` constructor. It contains the following
+parameters:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                    | Type                 | Description                                                                                                                                                                                                                                                                                       | Default Value                     | Required |
+| ---------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- | -------- |
+| `baseUrl`                    | `string`             | Redirect Uri for OAuth is `baseUrl`+`redirectPathName` which means that you must specify `baseUrl`+`redirectPathName` as redirect_uri at verifier's interface.                                                                                                                                    |                                   | Yes      |
+| `metadataUrl?`               | `string`             | Specify a custom metadata host.                                                                                                                                                                                                                                                                   | `https://metadata.tor.us`         | No       |
+| `network`                    | `TORUS_NETWORK_TYPE` | Auth Network to target options: mainnet, testnet & cyan.                                                                                                                                                                                                                                          | `mainnet`                         | No       |
+| `networkUrl`                 | `string`             | Network Url to read blockchain data from (eg: infura url)                                                                                                                                                                                                                                         |                                   | No       |
+| `enableLogging?`             | `boolean`            | This option is used to specify whether to enable logging.                                                                                                                                                                                                                                         | `false`                           | No       |
+| `enableOneKey?`              | `boolean`            | Use one key features.                                                                                                                                                                                                                                                                             | `false`                           | No       |
+| `redirectToOpener?`          | `boolean`            | For chrome extensions, the general methods for capturing auth redirects don't work. So, we redirect to the window which opens the auth window.                                                                                                                                                    | `false`                           | No       |
+| `redirectPathName?`          | `string`             | This option is used to specify the url path where user will be redirected after login. Redirect Uri for OAuth is baseUrl/redirectPathName. At verifier's interface, please use baseUrl/redirectPathName as the redirect_uri.                                                                      | `redirect`                        | No       |
+| `apiKey?`                    | `string`             | API Key for Web3Auth to enable higher access limits                                                                                                                                                                                                                                               |                                   | No       |
+| `uxMode?`                    | `UX_MODE_TYPE`       | Two uxModes are supported: <ul><li>`'popup'`: In this uxMode, a popup will be shown to user for login.</li><li>`'redirect'`: In this uxMode, user will be redirected to a new window tab for login.</li></ul> Use of `'REDIRECT'` mode is recommended in browsers where popups might get blocked. | `popup`                           | No       |
+| `locationReplaceOnRedirect?` | `boolean`            | Whether to replace the url hash/query params from OAuth at the end of the redirect flow                                                                                                                                                                                                           | `false`                           | No       |
+| `popupFeatures?`             | `string`             | Features of popup window. Please check https://developer.mozilla.org/en-US/docs/Web/API/Window/open#window_features for further documentation.                                                                                                                                                    |                                   | No       |
+| `storageServerUrl?`          | `string`             | Specify a custom storage server url                                                                                                                                                                                                                                                               | `https://broadcast-server.tor.us` | No       |
+
+</TabItem>
+
+<TabItem value="interface">
+
+`directParams: CustomAuthArgs;`
+
+```ts
+export interface CustomAuthArgs {
+  /**
+   * baseUrl , along with redirectPathName is used to construct the uri of page
+   * where user will be redirected after login.
+   *
+   * @remarks
+   * Redirect Uri for OAuth is `baseUrl`+`redirectPathName` which means
+   * that you must specify `baseUrl`+`redirectPathName` as redirect_uri at verifier's
+   * interface.
+   *
+   * Web3Auth Direct SDK installs a service worker relative to baseUrl to capture
+   * the auth redirect at `redirectPathName` path.
+   *
+   * For ex: While using serviceworker if baseUrl is "http://localhost:3000/serviceworker" and
+   * redirectPathName is 'redirect' (which is default)
+   * then user will be redirected to http://localhost:3000/serviceworker/redirect page after login
+   * where service worker will capture the results and send it back to original window where login
+   * was initiated.
+   *
+   * Using serviceworker is optional, you can skip it by passing `skipSw` param
+   * in init function
+   *
+   * Use of serviceworker is recommended if you are using popup uxMode or
+   * for browsers where service workers are not supported or if you wish to not use
+   * service workers, create and serve redirect page (i.e redirect.html file which is
+   * available in serviceworker folder of this package)
+   *
+   * In redirect uxMode, you don't have to use serviceworker or redirect.html file.
+   * You can get login result by calling `getRedirectResult` on redirected page mount.
+   *
+   * For ex: if baseUrl is "http://localhost:3000" and `redirectPathName` is 'auth'
+   * then user will be redirected to http://localhost:3000/auth page after login
+   * where you can get login result by calling `getRedirectResult` on redirected page mount.
+   *
+   * Please refer to examples https://github.com/torusresearch/customauth/tree/master/examples
+   * for more understanding.
+   *
+   */
+  baseUrl: string;
+  /**
+   * Specify a custom metadata host
+   * @defaultValue https://metadata.tor.us
+   */
+  metadataUrl?: string;
+  /**
+   * Auth Network to target options: mainnet | testnet | cyan
+   * @defaultValue mainnet
+   */
+  network?: TORUS_NETWORK_TYPE;
+  /**
+   * Network Url to read blockchain data from (eg: infura url)
+   */
+  networkUrl?: string;
+  /**
+   * This option is used to specify whether to enable logging
+   *
+   * @defaultValue false
+   */
+  enableLogging?: boolean;
+  /**
+   * Use one key features
+   *
+   * @defaultValue false
+   */
+  enableOneKey?: boolean;
+  /**
+   * For chrome extensions, the general methods for capturing auth redirects don't work.
+   * So, we redirect to the window which opens the auth window.
+   *
+   * @defaultValue false
+   */
+  redirectToOpener?: boolean;
+  /**
+   * This option is used to specify the url path where user will be
+   * redirected after login. Redirect Uri for OAuth is baseUrl/redirectPathName.
+   *
+   *
+   * @defaultValue redirect
+   *
+   * @remarks
+   * At verifier's interface (where you obtain client id), please use baseUrl/redirectPathName
+   * as the redirect_uri
+   *
+   * Web3Auth Direct SDK installs a service worker relative to baseUrl to capture
+   * the auth redirect at `redirectPathName` path.
+   *
+   * For ex: While using serviceworker if `baseUrl` is "http://localhost:3000/serviceworker" and
+   * `redirectPathName` is 'redirect' (which is default)
+   * then user will be redirected to http://localhost:3000/serviceworker/redirect page after login
+   * where service worker will capture the results and send it back to original window where login
+   * was initiated.
+   *
+   * For browsers where service workers are not supported or if you wish to not use
+   * service workers,create and serve redirect page (i.e redirect.html file which is
+   * available in serviceworker folder of this package)
+   *
+   * If you are using redirect uxMode, you can get the results directly on your `redirectPathName`
+   * path using `getRedirectResult` function.
+   *
+   * For ex: if baseUrl is "http://localhost:3000" and `redirectPathName` is 'auth'
+   * then user will be redirected to http://localhost:3000/auth page after login
+   * where you can get login result by calling `getRedirectResult` on redirected page mount.
+   *
+   * Please refer to examples https://github.com/torusresearch/customauth/tree/master/examples
+   * for more understanding.
+   *
+   */
+  redirectPathName?: string;
+  /**
+   * API Key for Web3Auth to enable higher access limits
+   *
+   */
+  apiKey?: string;
+  /**
+   * Two uxModes are supported:-
+   * - `'popup'`: In this uxMode, a popup will be shown to user for login.
+   * - `'redirect'`: In this uxMode, user will be redirected to a new window tab for login.
+   *
+   * @defaultValue `'popup'`
+   * @remarks
+   *
+   * Use of `'REDIRECT'` mode is recommended in browsers where popups might get blocked.
+   */
+  uxMode?: UX_MODE_TYPE;
+  /**
+   * Whether to replace the url hash/query params from OAuth at the end of the redirect flow
+   *
+   * @defaultValue false
+   */
+  locationReplaceOnRedirect?: boolean;
+  /**
+   * Features of popup window. Please check https://developer.mozilla.org/en-US/docs/Web/API/Window/open#window_features
+   * for further documentation.
+   */
+  popupFeatures?: string;
+  /**
+   * Specify a custom storage server url
+   * @defaultValue https://broadcast-server.tor.us
+   */
+  storageServerUrl?: string;
+}
+```
+
+</TabItem>
+
+</Tabs>

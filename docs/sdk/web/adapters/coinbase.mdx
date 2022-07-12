@@ -1,0 +1,131 @@
+---
+title: coinbase-adapter
+
+displayed_sidebar: sdk
+---
+
+# Coinbase Adapter
+
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+## [`@web3auth/coinbase-adapter`](https://npmjs.com/package/@web3auth/coinbase-adapter)
+
+Coinbase adapter allows you to connect with coinbase wallet. You can read more about coinbase wallet
+here.(https://docs.cloud.coinbase.com/wallet-sdk/docs).
+
+## Basic Details
+
+---
+
+#### Adapter Name: `coinbase`
+
+#### Package Name: [`@web3auth/coinbase-adapter`](https://npmjs.com/package/@web3auth/coinbase-adapter)
+
+#### authMode: `DAPP`
+
+#### chainNamespace: `EIP155`
+
+#### Default: `YES`
+
+## Installation
+
+---
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+
+<TabItem value="npm">
+
+```shell
+npm install --save @web3auth/coinbase-adapter
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @web3auth/coinbase-adapter
+```
+
+</TabItem>
+
+</Tabs>
+
+## Arguments
+
+---
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter          | type                       |
+| ------------------ | -------------------------- |
+| `chainConfig?`     | `CustomChainConfig`        |
+| `adapterSettings?` | `CoinbaseWalletSDKOptions` |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+interface CoinbaseAdapterOptions {
+  chainConfig?: CustomChainConfig;
+  adapterSettings?: CoinbaseWalletSDKOptions;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Custom Chain Config
+
+#### `chainConfig`
+
+:::caution
+
+While you can pass your `chainConfig`, it is not required since you can directly pass it over to the `Web3Auth`/ `Web3AuthCore` configuration while
+instantiating it.
+
+Read more about it in their respective sections:
+
+- [`web3auth/web3auth`](./web3auth/initialize#adding-a-custom-chain-configuration)
+- [`web3auth/core`](./core/initialize#adding-a-custom-chain-configuration)
+
+:::
+
+:::warning
+
+If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` passed over to the `Web3Auth`/ `Web3AuthCore` constructor.
+
+:::
+
+#### `CoinbaseWalletSDKOptions`
+
+Checkout the [Coinbase Wallet SDK Documentation](https://docs.cloud.coinbase.com/wallet-sdk/docs/initializing#initializing) for these options.
+
+## Example
+
+---
+
+```ts
+import { CoinbaseAdapter } from "@web3auth/coinbase-adapter";
+const coinbaseAdapter = new CoinbaseAdapter();
+web3auth.configureAdapter(coinbaseAdapter);
+```

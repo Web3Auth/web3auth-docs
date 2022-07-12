@@ -1,0 +1,79 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+#### `whiteLabel?: WhiteLabelData;`
+
+The whitelabel parameter takes `WhitelabelData` as input. The `WhitelabelData` object takes the following parameters:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+`WhiteLabelData`
+
+| Parameter          | Type                         | Description                                                                                                                                                                                        | Default                                                           | Optional |
+| ------------------ | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | -------- |
+| `name?`            | `string`                     | App name to display in the UI                                                                                                                                                                      | Your Website URL                                                  | Yes      |
+| `logoLight?`       | `string`                     | Logo to be shown on dark background (dark theme)                                                                                                                                                   | [web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg) | Yes      |
+| `logoDark?`        | `string`                     | Logo to be shown on light background (light theme)                                                                                                                                                 | [web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg) | Yes      |
+| `defaultLanguage?` | `string`                     | Default Language to use. <br/> Choose between: <ul><li>`en` - English</li><li>`de` - German</li><li>`ja` - Japanese</li><li>`ko` - Korean</li><li>`zh` - Mandarin</li><li>`es` - Spanish</li></ul> | en - English                                                      | Yes      |
+| `dark?`            | `boolean`                    | Whether to enable dark mode                                                                                                                                                                        | `false`                                                           | Yes      |
+| `theme?`           | `{ [P in string]: string; }` | Used to customize theme of the login modal with following options <br /> `'primary'` - To customize primary color of modal's content                                                               | `#0364FF`                                                         | Yes      |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+export declare type WhiteLabelData = {
+  /**
+   * App name to display in the UI
+   */
+  name?: string;
+  /**
+   * App logo to use in light mode
+   */
+  logoLight?: string;
+  /**
+   * App logo to use in dark mode
+   */
+  logoDark?: string;
+  /**
+   * Default language to use
+   *
+   * Options
+   * en - English
+   * de - German
+   * ja - Japanese
+   * ko - Korean
+   * zh - Mandarin
+   * es - Spanish
+   *
+   * @defaultValue en
+   */
+  defaultLanguage?: string;
+  /**
+   * Whether to enable dark mode
+   *
+   * @defaultValue false
+   */
+  dark?: boolean;
+  /**
+   * Used to customize theme of the login modal with following options
+   * `'primary'` - To customize primary color of modal's content.
+   */
+  theme?: {
+    [P in string]: string;
+  };
+};
+```
+
+</TabItem>
+
+</Tabs>

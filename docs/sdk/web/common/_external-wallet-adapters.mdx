@@ -1,0 +1,48 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+#### `configureAdapter(ADAPTER)`
+
+To configure an adapter, create the instance of adapter by using its corresponding package and pass the returned `adapter` instance in
+`configureAdapter` function.
+
+:::tip
+
+Refer to the [Adapters documentation](../adapters) to know more deeply about what adapters are available and how to configure them.
+
+:::
+
+#### Example
+
+If you want to configure the Torus EVM Wallet Adapter
+
+- Import the `TorusWalletAdapter` from `@web3auth/torus-evm-adapter` package
+- Create an instance of the adapter along with the configuration
+- Pass the returned instance in to `web3auth.configureAdapter`
+
+```javascript
+import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
+
+const torusAdapter = new TorusWalletAdapter({
+  adapterSettings: {
+    buttonPosition: "bottom-left",
+  },
+  loginSettings: {
+    verifier: "google",
+  },
+  initParams: {
+    buildEnv: "testing",
+  },
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth", // This is the mainnet RPC we have added, please pass on your own endpoint while creating an app
+    displayName: "Ethereum Mainnet",
+    blockExplorer: "https://etherscan.io/",
+    ticker: "ETH",
+    tickerName: "Ethereum",
+  },
+});
+
+web3auth.configureAdapter(torusAdapter);
+```

@@ -1,0 +1,146 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+While initializing the plugin, you need to pass on the following parameters to the constructor:
+
+##### `whiteLabel`
+
+As you can see, the `whiteLabel` parameter is a required parameter within the plugin. This is because this plugin needs you to incorporate basic
+whitelabel to avoid showing the Torus Wallet branding on your website.
+
+The `whiteLabel` parameter takes `WhiteLabelParams` object as input which contains the following parameters:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                | Type                                                                                                   | Required | Description                                                                                                                                                                                                                                 | Default                                                                                          |
+| ------------------------ | ------------------------------------------------------------------------------------------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `theme`                  | `ThemeParams` <br /> (contains two params, `isDark: boolean` & <br/> `colors: Record<string, string>`) | Yes      | Params to customise the theme for the wallet embed. You can enable darkMode and use the colours of your choice for the modal.                                                                                                               | N/A                                                                                              |
+| `logoDark`               | `string`                                                                                               | Yes      | Logo to be shown on dark background (dark theme)                                                                                                                                                                                            | N/A                                                                                              |
+| `logoLight`              | `string`                                                                                               | Yes      | Logo to be shown on light background (light theme)                                                                                                                                                                                          | N/A                                                                                              |
+| `defaultLanguage?`       | `string`                                                                                               | No       | Language of whitelabel                                                                                                                                                                                                                      | Order of preference: Whitelabel language \> user language (in torus-website) \> browser language |
+| `topupHide?`             | `boolean`                                                                                              | No       | Shows/hides topup option in torus-website/widget.                                                                                                                                                                                           | false                                                                                            |
+| `featuredBillboardHide?` | `boolean`                                                                                              | No       | Shows/hides billboard in torus-website.                                                                                                                                                                                                     | false                                                                                            |
+| `disclaimerHide?`        | `boolean`                                                                                              | No       | Shows/hides disclaimers on login page. Only works if special logins are hidden                                                                                                                                                              | false                                                                                            |
+| `tncLink?`               | `string`                                                                                               | No       | Language specific link for terms and conditions on torus-website. <br/> Choose between: <ul><li>`en` - English</li><li>`de` - German</li><li>`ja` - Japanese</li><li>`ko` - Korean</li><li>`zh` - Mandarin</li><li>`es` - Spanish</li></ul> | en - English                                                                                     |
+| `privacyPolicy?`         | `string`                                                                                               | No       | Language specific link for privacy policy on torus-website.                                                                                                                                                                                 | en - English                                                                                     |
+| `contactLink?`           | `string`                                                                                               | No       | Language specific link for contact links on torus-website.                                                                                                                                                                                  | en - English                                                                                     |
+| `customTranslations?`    | `string`                                                                                               | No       | Custom translations.                                                                                                                                                                                                                        | en - English                                                                                     |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+interface WhiteLabelParams {
+  /**
+   * Whitelabel theme
+   */
+  theme: ThemeParams;
+  /**
+   * Language of whitelabel.
+   *
+   * order of preference: Whitelabel language \> user language (in torus-website) \> browser language
+   */
+  defaultLanguage?: string;
+  /**
+   * Logo Url to be used in light mode (dark logo)
+   */
+  logoDark: string;
+  /**
+   * Logo Url to be used in dark mode (light logo)
+   */
+  logoLight: string;
+  /**
+   * Shows/hides topup option in torus-website/widget.
+   * Defaults to false
+   * @defaultValue false
+   */
+  topupHide?: boolean;
+  /**
+   * Shows/hides billboard in torus-website.
+   * Defaults to false
+   * @defaultValue false
+   */
+  featuredBillboardHide?: boolean;
+  /**
+   * Shows/hides disclaimers on login page. Only works if special logins are hidden
+   * Defaults to false
+   * @defaultValue false
+   */
+  disclaimerHide?: boolean;
+  /**
+   * Language specific link for terms and conditions on torus-website. See (examples/vue-app) to configure
+   */
+  tncLink?: LocaleLinks<string>;
+  /**
+   * Language specific link for privacy policy on torus-website. See (examples/vue-app) to configure
+   */
+  privacyPolicy?: LocaleLinks<string>;
+  /**
+   * Language specific link for privacy policy on torus-website. See (examples/vue-app) to configure
+   */
+  contactLink?: LocaleLinks<string>;
+  /**
+   * Custom translations. See (examples/vue-app) to configure
+   */
+  customTranslations?: LocaleLinks<unknown>;
+}
+
+interface ThemeParams {
+  /**
+   * If true, enables dark mode
+   * Defaults to false
+   * @defaultValue false
+   */
+  isDark: boolean;
+  /**
+   * Colors object to customize colors in torus theme.
+   *
+   * Contact us for whitelabel. Example provided in `examples/vue-app`
+   */
+  colors: Record<string, string>;
+}
+
+type Record<K extends keyof any, T> = {
+  [P in K]: T;
+};
+
+export interface LocaleLinks<T> {
+  /**
+   * Item corresponding to english
+   */
+  en?: T;
+  /**
+   * Item corresponding to japanese
+   */
+  ja?: T;
+  /**
+   * Item corresponding to korean
+   */
+  ko?: T;
+  /**
+   * Item corresponding to german
+   */
+  de?: T;
+  /**
+   * Item corresponding to chinese (simplified)
+   */
+  zh?: T;
+  /**
+   * Item corresponding to spanish
+   */
+  es?: T;
+}
+```
+
+</TabItem>
+
+</Tabs>

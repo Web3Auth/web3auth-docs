@@ -1,0 +1,124 @@
+---
+title: slope-adapter
+
+displayed_sidebar: sdk
+---
+
+# Slope Adapter
+
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+## [`@web3auth/slope-adapter`](https://npmjs.com/package/@web3auth/slope-adapter)
+
+Slope adapter allows you to connect with slope wallet. You can read more about slope wallet here.(https://docs.slope.app/).
+
+## Basic Details
+
+---
+
+#### Adapter Name: `slope`
+
+#### Package Name: [`@web3auth/slope-adapter`](https://npmjs.com/package/@web3auth/slope-adapter)
+
+#### authMode: `DAPP`
+
+#### chainNamespace: `SOLANA`
+
+#### Default: `YES`
+
+## Installation
+
+---
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+
+<TabItem value="npm">
+
+```shell
+npm install --save @web3auth/slope-adapter
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @web3auth/slope-adapter
+```
+
+</TabItem>
+
+</Tabs>
+
+## Arguments
+
+---
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter   | type              |
+| ----------- | ----------------- |
+| chainConfig | CustomChainConfig |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+interface SlopeAdapterOptions {
+  chainConfig?: CustomChainConfig;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Custom Chain Config
+
+#### `chainConfig`
+
+:::caution
+
+While you can pass your `chainConfig`, it is not required since you can directly pass it over to the `Web3Auth`/ `Web3AuthCore` configuration while
+instantiating it.
+
+Read more about it in their respective sections:
+
+- [`web3auth/web3auth`](./web3auth/initialize#adding-a-custom-chain-configuration)
+- [`web3auth/core`](./core/initialize#adding-a-custom-chain-configuration)
+
+:::
+
+:::warning
+
+If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` passed over to the `Web3Auth`/ `Web3AuthCore` constructor.
+
+:::
+
+## Example
+
+---
+
+```ts
+import { SlopeAdapter } from "@web3auth/slope-adapter";
+const slopeAdapter = new SlopeAdapter();
+web3auth.configureAdapter(slopeAdapter);
+```

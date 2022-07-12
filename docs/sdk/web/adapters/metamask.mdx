@@ -1,0 +1,126 @@
+---
+title: metamask-adapter
+
+displayed_sidebar: sdk
+---
+
+# Metamask Adapter
+
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+## [`@web3auth/metamask-adapter`](https://npmjs.com/package/@web3auth/metamask-adapter)
+
+Metamask Adapter allows user to login with metamask wallet. You can read more about metamask wallet [here](https://docs.metamask.io/guide/).
+
+## Basic Details
+
+---
+
+#### Adapter Name: `metamask`
+
+#### Package Name: [`@web3auth/metamask-adapter`](https://npmjs.com/package/@web3auth/metamask-adapter)
+
+#### authMode: `DAPP`
+
+#### chainNamespace: `EIP155`
+
+#### Default: `YES`
+
+## Installation
+
+---
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+
+<TabItem value="npm">
+
+```shell
+npm install --save @web3auth/metamask-adapter
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @web3auth/metamask-adapter
+```
+
+</TabItem>
+
+</Tabs>
+
+## Arguments
+
+---
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter     | type                |
+| ------------- | ------------------- |
+| `chainConfig` | `CustomChainConfig` |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+interface MetamaskAdapterOptions {
+  chainConfig?: CustomChainConfig;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Custom Chain Config
+
+#### `chainConfig`
+
+:::caution
+
+While you can pass your `chainConfig`, it is not required since you can directly pass it over to `Web3Auth`/ `Web3AuthCore` configuration while
+instantiating it.
+
+Read more about it in their respective sections:
+
+- [`web3auth/web3auth`](./web3auth/initialize#adding-a-custom-chain-configuration)
+- [`web3auth/core`](./core/initialize#adding-a-custom-chain-configuration)
+
+:::
+
+:::warning
+
+If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` passed over to the `Web3Auth`/ `Web3AuthCore` constructor.
+
+:::
+
+## Example
+
+---
+
+```ts
+import { MetamaskAdapter } from "@web3auth/metamask-adapter";
+const metamaskAdapter = new MetamaskAdapter();
+
+// it will add/update  the metamask adapter in to web3auth class
+web3auth.configureAdapter(metamaskAdapter);
+```
