@@ -80,8 +80,7 @@ module.exports = {
         {
           type: "html",
           position: "right",
-          className: "navbar-button",
-          value: '<a href="https://dashboard.web3auth.io/" target="_blank"><strong class="navbar-button-text">Dashboard</strong></a>',
+          value: '<a href="https://dashboard.web3auth.io/" target="_blank" class="navbar-button"><strong class="navbar-button-text">Dashboard</strong></a>',
         },
         {
           type: "html",
