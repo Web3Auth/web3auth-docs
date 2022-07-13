@@ -74,20 +74,20 @@ module.exports = {
           "aria-label": "GitHub repository",
         },
         {
-          type: 'search',
-          position: 'right',
+          type: "search",
+          position: "right",
         },
         {
-          type: 'html',
-          position: 'right',
+          type: "html",
+          position: "right",
           className: "navbar-button",
           value: '<a href="https://dashboard.web3auth.io/" target="_blank"><strong class="navbar-button-text">Dashboard</strong></a>',
         },
         {
-          type: 'html',
-          position: 'right',
-          value: '<div></div>',
-        }
+          type: "html",
+          position: "right",
+          value: "<div></div>",
+        },
       ],
     },
     algolia: {
@@ -122,100 +122,89 @@ module.exports = {
     [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: "files" }],
     path.resolve(__dirname, "plugins", "node-polyfills"),
     [
-      '@docusaurus/plugin-client-redirects',
+      "@docusaurus/plugin-client-redirects",
       {
         redirects: [
           {
-            from: '/docs/authenticating-users/overview',
-            to: '/docs/server-side-verification/',
+            from: "/authenticating-users/overview",
+            to: "/server-side-verification/",
           },
           {
-            from: '/docs/examples/demo',
-            to: '/docs/examples',
+            from: "/examples/demo",
+            to: "/examples/",
           },
           {
-            from: '/docs/examples/productionexamples',
-            to: '/docs/examples/liveexamples',
+            from: "/examples/productionexamples",
+            to: "/examples/liveexamples",
           },
           {
-            from: '/docs/developing-with-web3auth/adapters',
-            to: '/docs/connect-external-wallets',
+            from: "/developing-with-web3auth/adapters",
+            to: "/connect-external-wallets",
           },
           {
-            from: '/docs/developing-with-web3auth/understand-sdk',
-            to: '/docs/quick-start',
+            from: "/developing-with-web3auth/understand-sdk",
+            to: "/quick-start",
           },
           {
-            from: '/docs/developing-with-web3auth/',
-            to: '/docs/quick-start/',
+            from: "/developing-with-web3auth/",
+            to: "/quick-start",
           },
           {
-            from: '/docs/api-reference/web/choosesdk/',
-            to: '/docs/sdk/web/',
+            from: "/api-reference/web/choosesdk/",
+            to: "/sdk/web/",
           },
           {
-            from: '/docs/api-reference/web/plugnplay',
-            to: '/docs/sdk/web/web3auth/',
+            from: "/api-reference/web/plugnplay",
+            to: "/sdk/web/web3auth/",
           },
           {
-            from: '/docs/api-reference/web/customloginui',
-            to: '/docs/sdk/web/core/',
+            from: "/api-reference/web/customloginui",
+            to: "/sdk/web/core/",
           },
           {
-            from: '/docs/api-reference/android/setting-up',
-            to: '/docs/sdk/android/',
+            from: "/api-reference/android/setting-up",
+            to: "/sdk/android/",
           },
           {
-            from: '/docs/api-reference/ios/setting-up',
-            to: '/docs/sdk/ios/',
+            from: "/api-reference/ios/setting-up",
+            to: "/sdk/ios/",
           },
           {
-            from: '/docs/api-reference/flutter/setting-up',
-            to: '/docs/sdk/flutter/',
+            from: "/api-reference/flutter/setting-up",
+            to: "/sdk/flutter/",
           },
           {
-            from: '/docs/api-reference/react-native/choose-workflows',
-            to: '/docs/sdk/react-native/',
+            from: "/api-reference/react-native/choose-workflows",
+            to: "/sdk/react-native/",
           },
           {
-            from: '/docs/customauth/auth0',
-            to: '/docs/guides/auth0',
+            from: "/customauth/auth0",
+            to: "/guides/auth0",
           },
           {
-            from: '/docs/sdk/self-host/',
-            to: '/docs/sdk/self-host/installation',
+            from: "/sdk/self-host/",
+            to: "/sdk/self-host/installation",
           },
           {
-            from: '/docs/self-host/',
-            to: '/docs/self-hosting',
+            from: "/self-host/",
+            to: "/self-hosting",
           },
-
         ],
         createRedirects(existingPath) {
-          if (existingPath.includes('/customauth')) {
-            return [
-              existingPath.replace('/customauth', '/custom-authentication'),
-            ];
+          if (existingPath.includes("/customauth")) {
+            return [existingPath.replace("/customauth", "/custom-authentication")];
           }
-          if (existingPath.includes('/quickstart')) {
-            return [
-              existingPath.replace('/quickstart', '/quick-start'),
-            ];
+          if (existingPath.includes("/quickstart")) {
+            return [existingPath.replace("/quickstart", "/quick-start")];
           }
-          if (existingPath.includes('/whitelabeling')) {
-            return [
-              existingPath.replace('/whitelabeling', '/whitelabel'),
-            ];
+          if (existingPath.includes("/whitelabeling")) {
+            return [existingPath.replace("/whitelabeling", "/whitelabel")];
           }
-          if (existingPath.includes('/authenticating-users')) {
-            return [
-              existingPath.replace('/authenticating-users', '/server-side-verification'),
-            ];
+          if (existingPath.includes("/authenticating-users")) {
+            return [existingPath.replace("/authenticating-users", "/server-side-verification")];
           }
-          if (existingPath.includes('/api-reference')) {
-            return [
-              existingPath.replace('/api-reference', '/sdk'),
-            ];
+          if (existingPath.includes("/api-reference")) {
+            return [existingPath.replace("/api-reference", "/sdk")];
           }
           return undefined; // Return a falsy value: no redirect created
         },

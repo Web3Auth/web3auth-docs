@@ -1,20 +1,20 @@
-import React from 'react';
-import {
-  splitNavbarItems,
-  useNavbarMobileSidebar,
-  useThemeConfig,
-} from '@docusaurus/theme-common';
-import NavbarItem from '@theme/NavbarItem';
-import NavbarColorModeToggle from '@theme/Navbar/ColorModeToggle';
-import SearchBar from '@theme/SearchBar';
-import NavbarMobileSidebarToggle from '@theme/Navbar/MobileSidebar/Toggle';
-import NavbarLogo from '@theme/Navbar/Logo';
-import NavbarSearch from '@theme/Navbar/Search';
-import styles from './styles.module.css';
+import { useThemeConfig } from "@docusaurus/theme-common";
+// @ts-ignore
+import { splitNavbarItems, useNavbarMobileSidebar } from "@docusaurus/theme-common/internal";
+import NavbarColorModeToggle from "@theme/Navbar/ColorModeToggle";
+import NavbarLogo from "@theme/Navbar/Logo";
+import NavbarMobileSidebarToggle from "@theme/Navbar/MobileSidebar/Toggle";
+import NavbarSearch from "@theme/Navbar/Search";
+import NavbarItem from "@theme/NavbarItem";
+import SearchBar from "@theme/SearchBar";
+
+import styles from "./styles.module.css";
+
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
   return useThemeConfig().navbar.items;
 }
+
 function NavbarItems({ items }) {
   return (
     <>
@@ -24,6 +24,7 @@ function NavbarItems({ items }) {
     </>
   );
 }
+
 function NavbarContentLayout({ left, right }) {
   return (
     <div className="navbar__inner">
@@ -36,7 +37,7 @@ export default function NavbarContent() {
   const mobileSidebar = useNavbarMobileSidebar();
   const items = useNavbarItems();
   const [leftItems, rightItems] = splitNavbarItems(items);
-  const searchBarItem = items.find((item) => item.type === 'search');
+  const searchBarItem = items.find((item) => item.type === "search");
   return (
     <NavbarContentLayout
       left={

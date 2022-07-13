@@ -1,5 +1,6 @@
-import React from 'react';
-export default function IconLightMode(props) {
+import { Props } from "@theme/Icon/LightMode";
+
+export default function IconLightMode(props: Props): JSX.Element {
   return (
     <svg viewBox="0 0 24 24" width={24} height={24} {...props} style={{ color: "rgb(124,140,161)" }}>
       <path

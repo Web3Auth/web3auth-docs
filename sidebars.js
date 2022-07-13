@@ -1,5 +1,4 @@
 /** @type {import('@docusaurus/plugin-content-docs/lib/types').Sidebars} */
-
 module.exports = {
   docs: [
     "README",
@@ -198,23 +197,13 @@ module.exports = {
           type: "category",
           label: "@web3auth/web3auth",
           link: { type: "doc", id: "sdk/web/web3auth/web3auth" },
-          items: [
-            "sdk/web/web3auth/initialize",
-            "sdk/web/web3auth/whitelabel",
-            "sdk/web/web3auth/custom-authentication",
-            "sdk/web/web3auth/usage",
-          ],
+          items: ["sdk/web/web3auth/initialize", "sdk/web/web3auth/whitelabel", "sdk/web/web3auth/custom-authentication", "sdk/web/web3auth/usage"],
         },
         {
           type: "category",
           label: "@web3auth/core",
           link: { type: "doc", id: "sdk/web/core/core" },
-          items: [
-            "sdk/web/core/initialize",
-            "sdk/web/core/whitelabel",
-            "sdk/web/core/custom-authentication",
-            "sdk/web/core/usage"
-          ],
+          items: ["sdk/web/core/initialize", "sdk/web/core/whitelabel", "sdk/web/core/custom-authentication", "sdk/web/core/usage"],
         },
         "sdk/web/openlogin",
         {
@@ -296,7 +285,6 @@ module.exports = {
       ],
     },
     "sdk/self-host/usage",
-
 
     {
       type: "html",
