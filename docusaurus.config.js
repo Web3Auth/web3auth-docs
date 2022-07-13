@@ -189,13 +189,14 @@ module.exports = {
             from: "/self-host/",
             to: "/self-hosting",
           },
+          {
+            from: "/quickstart",
+            to: "/quick-start",
+          }
         ],
         createRedirects(existingPath) {
           if (existingPath.includes("/customauth")) {
             return [existingPath.replace("/customauth", "/custom-authentication")];
-          }
-          if (existingPath.includes("/quickstart")) {
-            return [existingPath.replace("/quickstart", "/quick-start")];
           }
           if (existingPath.includes("/whitelabeling")) {
             return [existingPath.replace("/whitelabeling", "/whitelabel")];

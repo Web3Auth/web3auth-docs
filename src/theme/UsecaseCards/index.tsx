@@ -18,14 +18,14 @@ export default function UsecaseCards() {
             both of Binance’s blockchains, all with the login flow of Web3Auth, customised for Binance.
           </p>
           <div>
-            <a
+            <span
               className={styles.footer}
               target="_blank"
               href="https://chrome.google.com/webstore/detail/binance-wallet/fhbohimaelbohpjbbldcngcnapndodjp"
               rel="noreferrer"
             >
               Download the Extension →
-            </a>
+            </span>
           </div>
         </Link>
 
@@ -39,9 +39,9 @@ export default function UsecaseCards() {
             solution on Polygon L2. This combination gives players the best user experience, security and access control to their wallets.
           </p>
           <div>
-            <a className={styles.footer} target="_blank" href="https://play.skyweaver.net/" rel="noreferrer">
+            <span className={styles.footer} target="_blank" href="https://play.skyweaver.net/" rel="noreferrer">
               Try being a gamer once →
-            </a>
+            </span>
           </div>
         </Link>
       </div>
@@ -58,9 +58,9 @@ export default function UsecaseCards() {
             using an out-of-the-box Modal provided by Web3Auth, that you can add too, in less than 30 mins!
           </p>
           <div>
-            <a className={styles.footer} target="_blank" href="https://collect.100thieves.com/" rel="noreferrer">
+            <span className={styles.footer} target="_blank" href="https://collect.100thieves.com/" rel="noreferrer">
               Collect the 100 Thieves chain →
-            </a>
+            </span>
           </div>
         </Link>
         <Link className={classNames(styles.card)} to="https://www.keplr.app/">
@@ -74,9 +74,9 @@ export default function UsecaseCards() {
             handle all the transactions required for the dApp.
           </p>
           <div>
-            <a className={styles.footer} target="_blank" href="https://www.keplr.app/" rel="noreferrer">
+            <span className={styles.footer} target="_blank" href="https://www.keplr.app/" rel="noreferrer">
               Download the Extension →
-            </a>
+            </span>
           </div>
         </Link>
       </div>
@@ -93,9 +93,9 @@ export default function UsecaseCards() {
             address with just a simple click.
           </p>
           <div>
-            <a className={styles.footer} target="_blank" href="https://app.kash.io/" rel="noreferrer">
+            <span className={styles.footer} target="_blank" href="https://app.kash.io/" rel="noreferrer">
               Just experience this →
-            </a>
+            </span>
           </div>
         </Link>
       </div>

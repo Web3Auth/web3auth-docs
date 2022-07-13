@@ -1,6 +1,4 @@
-import { useThemeConfig } from "@docusaurus/theme-common";
-// @ts-ignore
-import { splitNavbarItems, useNavbarMobileSidebar } from "@docusaurus/theme-common/internal";
+import { splitNavbarItems, useNavbarMobileSidebar, useThemeConfig } from "@docusaurus/theme-common";
 import NavbarColorModeToggle from "@theme/Navbar/ColorModeToggle";
 import NavbarLogo from "@theme/Navbar/Logo";
 import NavbarMobileSidebarToggle from "@theme/Navbar/MobileSidebar/Toggle";
@@ -14,8 +12,7 @@ function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
   return useThemeConfig().navbar.items;
 }
-
-function NavbarItems({ items }) {
+function NavbarItems({ items }): JSX.Element {
   return (
     <>
       {items.map((item, i) => (
@@ -24,7 +21,6 @@ function NavbarItems({ items }) {
     </>
   );
 }
-
 function NavbarContentLayout({ left, right }) {
   return (
     <div className="navbar__inner">
