@@ -1,4 +1,4 @@
-import type { Props } from "@theme/IconDarkMode";
+import type { Props } from "@theme/Icon/DarkMode";
 
 export default function IconDarkMode(props: Props): JSX.Element {
   return (

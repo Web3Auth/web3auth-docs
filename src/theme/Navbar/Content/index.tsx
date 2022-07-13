@@ -1,18 +1,18 @@
-import { splitNavbarItems, useNavbarMobileSidebar, useThemeConfig } from "@docusaurus/theme-common";
-import NavbarColorModeToggle from "@theme/Navbar/ColorModeToggle";
-import NavbarLogo from "@theme/Navbar/Logo";
-import NavbarMobileSidebarToggle from "@theme/Navbar/MobileSidebar/Toggle";
-import NavbarSearch from "@theme/Navbar/Search";
+import React from "react";
+import { useThemeConfig } from "@docusaurus/theme-common";
+import { splitNavbarItems, useNavbarMobileSidebar } from "@docusaurus/theme-common/internal";
 import NavbarItem from "@theme/NavbarItem";
+import NavbarColorModeToggle from "@theme/Navbar/ColorModeToggle";
 import SearchBar from "@theme/SearchBar";
-
+import NavbarMobileSidebarToggle from "@theme/Navbar/MobileSidebar/Toggle";
+import NavbarLogo from "@theme/Navbar/Logo";
+import NavbarSearch from "@theme/Navbar/Search";
 import styles from "./styles.module.css";
-
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
   return useThemeConfig().navbar.items;
 }
-function NavbarItems({ items }): JSX.Element {
+function NavbarItems({ items }) {
   return (
     <>
       {items.map((item, i) => (
@@ -29,7 +29,7 @@ function NavbarContentLayout({ left, right }) {
     </div>
   );
 }
-export default function NavbarContent() {
+export default function NavbarContent(): JSX.Element {
   const mobileSidebar = useNavbarMobileSidebar();
   const items = useNavbarItems();
   const [leftItems, rightItems] = splitNavbarItems(items);

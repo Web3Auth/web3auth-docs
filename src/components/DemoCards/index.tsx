@@ -1,7 +1,7 @@
 import classNames from "classnames";
 
 import styles from "./styles.module.css";
-import UsecaseCards from "@theme/UsecaseCards";
+import UsecaseCards from "../UsecaseCards";
 
 export default function QuickNavigation() {
   return (
