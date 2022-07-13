@@ -192,20 +192,36 @@ module.exports = {
           {
             from: "/quickstart",
             to: "/quick-start",
-          }
+          },
+          {
+            from: "/customauth",
+            to: "/custom-authentication/",
+          },
+          {
+            from: "/whitelabeling",
+            to: "/whitelabel/",
+          },
+          {
+            from: "/authenticating-users/",
+            to: "/server-side-verification/",
+          },
+          {
+            from: "/api-reference/",
+            to: "/sdk/",
+          },
         ],
         createRedirects(existingPath) {
-          if (existingPath.includes("/customauth")) {
-            return [existingPath.replace("/customauth", "/custom-authentication")];
+          if (existingPath.includes("/customauth/")) {
+            return [existingPath.replace("/customauth", "/custom-authentication/")];
           }
-          if (existingPath.includes("/whitelabeling")) {
-            return [existingPath.replace("/whitelabeling", "/whitelabel")];
+          if (existingPath.includes("/whitelabeling/")) {
+            return [existingPath.replace("/whitelabeling/", "/whitelabel/")];
           }
-          if (existingPath.includes("/authenticating-users")) {
-            return [existingPath.replace("/authenticating-users", "/server-side-verification")];
+          if (existingPath.includes("/authenticating-users/")) {
+            return [existingPath.replace("/authenticating-users/", "/server-side-verification/")];
           }
-          if (existingPath.includes("/api-reference")) {
-            return [existingPath.replace("/api-reference", "/sdk")];
+          if (existingPath.includes("/api-reference/")) {
+            return [existingPath.replace("/api-reference/", "/sdk/")];
           }
           return undefined; // Return a falsy value: no redirect created
         },
