@@ -1,55 +1,48 @@
 ---
-title: Integrate Web3Auth with the Arbitrum Blockchain
-sidebar_label: Arbitrum
-image: "/docs/contents/guides/banners/arbitrum.png"
+title: Integrate Web3Auth with the Cronos Blockchain
+sidebar_label: Cronos
+image: "/docs/contents/guides/banners/cronos.png"
 displayed_sidebar: docs
 ---
 
-import InstallationSnippet from "@site/src/common/docs/_evm-installation.mdx";
-import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
-import GetAccountAndBalanceSnippet from "@site/src/common/docs/_evm-get-account-n-balance.mdx";
-import SendTransactionSnippet from "@site/src/common/docs/_evm-send-transaction.mdx";
-import SignPersonalMessageSnippet from "@site/src/common/docs/_evm-sign-message-personal-sign.mdx";
-import SignTypedDataV1Snippet from "@site/src/common/docs/_evm-sign-message-v1.mdx";
-import SignTypedDataV3Snippet from "@site/src/common/docs/_evm-sign-message-v3.mdx";
-import SignTypedDataV4Snippet from "@site/src/common/docs/_evm-sign-message-v4.mdx";
-import SmartContractSoliditySnippet from "@site/src/common/docs/_smart-contract-solidity.mdx";
-import DeployContractSolidityDeploySnippet from "@site/src/common/docs/_smart-contract-solidity-deploy.mdx";
-import DeployContractSolidityReadSnippet from "@site/src/common/docs/_smart-contract-solidity-read.mdx";
-import DeployContractSolidityWriteSnippet from "@site/src/common/docs/_smart-contract-solidity-write.mdx";
-import FetchUserPrivateKeySnippet from "@site/src/common/docs/_evm-fetch-user-private-key.mdx";
-import GetProviderFromPrivateKeySnippet from "@site/src/common/docs/_evm-get-provider-from-private-key.mdx";
+import InstallationSnippet from "@site/docs/common-snippets/_evm-installation.mdx";
+import GetUserInfoSnippet from "@site/docs/common-snippets/_get-userinfo.mdx";
+import GetAccountAndBalanceSnippet from "@site/docs/common-snippets/_evm-get-account-n-balance.mdx";
+import SendTransactionSnippet from "@site/docs/common-snippets/_evm-cronos-send-transaction.mdx";
+import SignPersonalMessageSnippet from "@site/docs/common-snippets/_evm-sign-message-personal-sign.mdx";
+import SignTypedDataV1Snippet from "@site/docs/common-snippets/_evm-sign-message-v1.mdx";
+import SignTypedDataV3Snippet from "@site/docs/common-snippets/_evm-sign-message-v3.mdx";
+import SignTypedDataV4Snippet from "@site/docs/common-snippets/_evm-sign-message-v4.mdx";
+import SmartContractSoliditySnippet from "@site/docs/common-snippets/_smart-contract-solidity.mdx";
+import DeployContractSolidityDeploySnippet from "@site/docs/common-snippets/_smart-contract-solidity-deploy.mdx";
+import DeployContractSolidityReadSnippet from "@site/docs/common-snippets/_smart-contract-solidity-read.mdx";
+import DeployContractSolidityWriteSnippet from "@site/docs/common-snippets/_smart-contract-solidity-write.mdx";
+import FetchUserPrivateKeySnippet from "@site/docs/common-snippets/_evm-fetch-user-private-key.mdx";
+import GetProviderFromPrivateKeySnippet from "@site/docs/common-snippets/_evm-cronos-get-provider-from-private-key.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
 ---
 
-Via Web3Auth SDK, you can interact with [Arbitrum](https://arbitrum.io/) to get access to your `account`, fetch `balance`, `sign message`,
+Via Web3Auth SDK, you can interact with [Cronos](https://cronos.org) to get access to your `account`, fetch `balance`, `sign message`,
 `send transaction`, and even `read` and `write` from the contract.
 
 ## Installation
 
 ---
 
-To interact with the Arbitrum blockchain, you can use either [web3.js](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html) or
+To interact with the Cronos blockchain, you can use either [web3.js](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html) or
 [ethers.js](https://docs.ethers.io/v5/getting-started/) libraries with Web3Auth.
 
 <InstallationSnippet />
 
-## Initializing Provider (Arbitrum)
+## Initializing Provider (Cronos)
 
 ---
 
 ### Mainnet
 
-Mainnet Block Explorer URL: https://arbiscan.io
-
-:::note
-
-Arbitrum One is in mainnet Beta, which currently includes administrative controls. Learn more
-[here](https://developer.offchainlabs.com/docs/mainnet#some-words-of-caution).
-
-:::
+Mainnet Block Explorer URL: https://cronoscan.com
 
 <Tabs
   defaultValue="web3"
@@ -78,7 +71,7 @@ const web3auth = new Web3Auth({
   clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: "eip155",
-    chainId: "0xA4B1", // hex of 42161
+    chainId: "0x19", // hex of 25, cronos mainnet
   },
 });
 await web3auth.initModal();
@@ -100,7 +93,7 @@ const web3auth = new Web3Auth({
   clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0xA4B1", // hex of 42161
+    chainId: "0x19", // hex of 25, cronos mainnet
   },
 });
 await web3auth.initModal();
@@ -121,7 +114,7 @@ const web3auth = new Web3Auth({
   clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: "eip155",
-    chainId: "0xA4B1", // hex of 42161
+    chainId: "0x19", // hex of 25, cronos mainnet
   },
 });
 await web3auth.initModal();
@@ -155,7 +148,7 @@ const web3auth = new Web3Auth({
   clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: "eip155",
-    chainId: "0xA4B1", // hex of 42161
+    chainId: "0x19", // hex of 25, cronos mainnet
   },
 });
 await web3auth.initModal();
@@ -177,7 +170,7 @@ const web3auth = new Web3Auth({
   clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0xA4B1", // hex of 42161
+    chainId: "0x19", // hex of 25, cronos mainnet
   },
 });
 await web3auth.initModal();
@@ -198,7 +191,7 @@ const web3auth = new Web3Auth({
   clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: "eip155",
-    chainId: "0xA4B1", // hex of 42161
+    chainId: "0x19", // hex of 25, cronos mainnet
   },
 });
 await web3auth.initModal();
@@ -216,25 +209,18 @@ const provider = new ethers.providers.Web3Provider(web3authProvider); // web3aut
 
 ### Testnet
 
-Testnet Block Explorer URL: https://testnet.arbiscan.io
-
-:::note
-
-Arbitrum One is in mainnet Beta, which currently includes administrative controls. Learn more
-[here](https://developer.offchainlabs.com/docs/mainnet#some-words-of-caution).
-
-:::
+Testnet Block Explorer URL: https://testnet.cronoscan.com
 
 ```js
 /*
-Simply change the chainId feild of `chainConfig` to `0x13881` (testnet)
+Simply change the chainId feild of `chainConfig` to `0x152` (testnet)
 */
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_CLIENT_ID", // get it from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: "eip155",
-    chainId: "0x66EEB", // hex of 421611
+    chainId: "0x152", // hex of 338, cronos testnet
   },
 });
 ```

@@ -70,6 +70,12 @@ export const tileGroupsData = [
         icon: "logo-tezos.png",
         path: "./connect-blockchain/tezos",
       },
+      {
+        key: "cronos",
+        title: "Cronos",
+        icon: "logo-cronos.png",
+        path: "./connect-blockchain/cronos",
+      },
     ],
   },
 ];

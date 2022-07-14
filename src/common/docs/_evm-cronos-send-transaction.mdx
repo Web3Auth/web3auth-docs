@@ -1,0 +1,64 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<Tabs
+  defaultValue="web3"
+  values={[
+    { label: "web3.js", value: "web3" },
+    { label: "ethers.js", value: "ethers" },
+  ]}
+>
+<TabItem value="web3">
+
+```js
+/*
+  Use code from the above Initializing Provider here
+*/
+
+// web3 is const web3 = new Web3(web3authProvider); from above.
+
+// Get user's Ethereum public address
+const fromAddress = (await web3.eth.getAccounts())[0];
+
+const destination = "0x7aFac68875d2841dc16F1730Fba43974060b907A";
+const amount = web3.utils.toWei(1); // Convert 1 ether to wei
+
+// Submit transaction to the blockchain and wait for it to be mined
+const receipt = await web3.eth.sendTransaction({
+  from: fromAddress,
+  to: destination,
+  value: amount,
+  maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
+  maxFeePerGas: "6000000000000", // Max fee per gas
+});
+```
+
+</TabItem>
+<TabItem value="ethers">
+
+```js
+/*
+  Use code from the above Initializing Provider here
+*/
+
+// provider is const provider = new ethers.providers.Web3Provider(web3authProvider); from above.
+
+const signer = provider.getSigner();
+
+const destination = "0x7aFac68875d2841dc16F1730Fba43974060b907A";
+const amount = ethers.utils.parseEther("1.0"); // Convert 1 ether to wei
+
+// Submit transaction to the blockchain
+const tx = await signer.sendTransaction({
+  to: destination,
+  value: amount,
+  maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
+  maxFeePerGas: "6000000000000", // Max fee per gas
+});
+
+// Wait for transaction to be mined
+const receipt = await tx.wait();
+```
+
+</TabItem>
+</Tabs>

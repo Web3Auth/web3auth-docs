@@ -299,6 +299,19 @@ export default function GuidesPage({ guides }: Props) {
             <span className={styles.date}>Web3Auth Team | 25th May 2022</span>
           </div>
         </Link>
+        <Link className={styles.article} to="/docs/connect-blockchain/cronos">
+          <img src="/docs/contents/guides/banners/cronos.png" alt="Banner cronos" />
+          <div className={styles.contentContainer}>
+            <span className={styles.type}>REFERENCE</span>
+            <h3>Integrate Web3Auth with the Cronos Blockchain</h3>
+            <p>Learn how to integrate Web3Auth with the Cronos Blockchain</p>
+            <code className={styles.tag}>cronos</code>
+            <code className={styles.tag}>blockchain</code>
+            <code className={styles.tag}>web3auth</code>
+            <br />
+            <span className={styles.date}>Web3Auth Team | 25th May 2022</span>
+          </div>
+        </Link>
       </div>
     </Layout>
   );
