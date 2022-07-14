@@ -22,6 +22,18 @@ export const tileGroupsData = [
         path: "./connect-blockchain/solana",
       },
       {
+        key: "starkex",
+        title: "StarkEx",
+        icon: "logo-starkex.png",
+        path: "./connect-blockchain/starkex",
+      },
+      {
+        key: "starknet",
+        title: "StarkNet",
+        icon: "logo-starknet.png",
+        path: "./connect-blockchain/starknet",
+      },
+      {
         key: "polygon",
         title: "Polygon",
         icon: "logo-polygon.png",
@@ -52,18 +64,7 @@ export const tileGroupsData = [
         icon: "logo-optimism.png",
         path: "./connect-blockchain/optimism",
       },
-      {
-        key: "starkex",
-        title: "StarkEx",
-        icon: "logo-starkex.png",
-        path: "./connect-blockchain/starkex",
-      },
-      {
-        key: "starknet",
-        title: "StarkNet",
-        icon: "logo-starknet.png",
-        path: "./connect-blockchain/starknet",
-      },
+
       {
         key: "tezos",
         title: "Tezos",
