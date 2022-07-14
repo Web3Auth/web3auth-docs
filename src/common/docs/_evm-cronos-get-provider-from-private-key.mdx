@@ -1,0 +1,35 @@
+`@web3auth/ethereum-provider` package can be used to get a **EIP1193** compatible provider from any **`secp512k1`** private key. You can use this
+package with our SDKs, to get an EIP1193 provider from the logged-in user's private key.
+
+```js
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+/*
+privKey: any secp512k1 private key.
+*/
+
+async setProvider(privKey: string) {
+  this.ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+  config: {
+    /*
+    pass the chain config that you want to connect with
+    all chainConfig fields are required.
+    */
+    chainConfig: {
+    chainId: "0x19",
+    rpcTarget: `https://evm.cronos.org`,
+    displayName: "Cronos",
+    blockExplorer: "https://cronoscan.com",
+    ticker: "CRO",
+    tickerName: "Cronos",
+    },
+  },
+  });
+  /*
+  pass user's private key here.
+  after calling setupProvider, we can use
+  this.ethereumPrivateKeyProvider._providerProxy as a eip1193 provider
+  */
+  const provider = await this.ethereumPrivateKeyProvider.setupProvider(privKey);
+}
+```
