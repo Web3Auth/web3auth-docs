@@ -379,8 +379,8 @@ export default function GuidesPage({ guides }: Props) {
           <img src="/docs/contents/guides/banners/moonriver.png" alt="Banner moonriver" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
-            <h3>Integrate Web3Auth with the Moonbeam Blockchain</h3>
-            <p>Learn how to add a non custodial social login to the Moonbeam Blockchain</p>
+            <h3>Integrate Web3Auth with the Moonriver Blockchain</h3>
+            <p>Learn how to add a non custodial social login to the Moonriver Blockchain</p>
             <code className={styles.tag}>moonriver</code>
             <code className={styles.tag}>blockchain</code>
             <code className={styles.tag}>web3auth</code>

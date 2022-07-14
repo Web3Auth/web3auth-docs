@@ -96,6 +96,12 @@ export const tileGroupsData = [
         path: "./connect-blockchain/moonbeam",
       },
       {
+        key: "moonriver",
+        title: "Moonriver",
+        icon: "logo-moonriver.png",
+        path: "./connect-blockchain/moonriver",
+      },
+      {
         key: "klaytn",
         title: "Klaytn",
         icon: "logo-klaytn.png",
