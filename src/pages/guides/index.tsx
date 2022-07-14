@@ -48,7 +48,7 @@ export default function GuidesPage({ guides }: Props) {
       </head>
       <header className={styles.header}>
         <h1>Guides</h1>
-        <p>A collection of {Object.keys(guides).length + 24} posts</p>
+        <p>A collection of {Object.keys(guides).length + 25} posts</p>
         <hr />
       </header>
       <div className={styles.container}>
@@ -368,6 +368,20 @@ export default function GuidesPage({ guides }: Props) {
             <h3>Integrate Web3Auth with the Moonbeam Blockchain</h3>
             <p>Learn how to add a non custodial social login to the Moonbeam Blockchain</p>
             <code className={styles.tag}>moonbeam</code>
+            <code className={styles.tag}>blockchain</code>
+            <code className={styles.tag}>web3auth</code>
+            <br />
+            <span className={styles.date}>Web3Auth Team | 25th May 2022</span>
+          </div>
+        </Link>
+
+        <Link className={styles.article} to="/docs/connect-blockchain/moonriver">
+          <img src="/docs/contents/guides/banners/moonriver.png" alt="Banner moonriver" />
+          <div className={styles.contentContainer}>
+            <span className={styles.type}>REFERENCE</span>
+            <h3>Integrate Web3Auth with the Moonbeam Blockchain</h3>
+            <p>Learn how to add a non custodial social login to the Moonbeam Blockchain</p>
+            <code className={styles.tag}>moonriver</code>
             <code className={styles.tag}>blockchain</code>
             <code className={styles.tag}>web3auth</code>
             <br />

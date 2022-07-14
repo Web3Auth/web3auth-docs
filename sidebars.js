@@ -71,6 +71,7 @@ module.exports = {
             "connect-blockchain/harmony",
             "connect-blockchain/celo",
             "connect-blockchain/moonbeam",
+            "connect-blockchain/moonriver",
             "connect-blockchain/klaytn",
           ],
           collapsible: true,
