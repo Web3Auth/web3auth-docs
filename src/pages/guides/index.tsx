@@ -47,7 +47,7 @@ export default function GuidesPage({ guides }: Props) {
       </head>
       <header className={styles.header}>
         <h1>Guides</h1>
-        <p>A collection of {Object.keys(guides).length + 19} posts</p>
+        <p>A collection of {Object.keys(guides).length + 24} posts</p>
         <hr />
       </header>
       <div className={styles.container}>
@@ -328,6 +328,58 @@ export default function GuidesPage({ guides }: Props) {
             <h3>Integrate Web3Auth with the Cronos Blockchain</h3>
             <p>Learn how to integrate Web3Auth with the Cronos Blockchain</p>
             <code className={styles.tag}>cronos</code>
+            <code className={styles.tag}>blockchain</code>
+            <code className={styles.tag}>web3auth</code>
+            <br />
+            <span className={styles.date}>Web3Auth Team | 25th May 2022</span>
+          </div>
+        </Link>
+        <Link className={styles.article} to="/docs/connect-blockchain/harmony">
+          <img src="/docs/contents/guides/banners/harmony.png" alt="Banner harmony" />
+          <div className={styles.contentContainer}>
+            <span className={styles.type}>REFERENCE</span>
+            <h3>Integrate Web3Auth with the Harmony Blockchain</h3>
+            <p>Learn how to integrate Web3Auth with the Harmony Blockchain</p>
+            <code className={styles.tag}>harmony</code>
+            <code className={styles.tag}>blockchain</code>
+            <code className={styles.tag}>web3auth</code>
+            <br />
+            <span className={styles.date}>Web3Auth Team | 25th May 2022</span>
+          </div>
+        </Link>
+        <Link className={styles.article} to="/docs/connect-blockchain/celo">
+          <img src="/docs/contents/guides/banners/celo.png" alt="Banner celo" />
+          <div className={styles.contentContainer}>
+            <span className={styles.type}>REFERENCE</span>
+            <h3>Integrate Web3Auth with the Celo Blockchain</h3>
+            <p>Learn how to integrate Web3Auth with the Celo Blockchain</p>
+            <code className={styles.tag}>celo</code>
+            <code className={styles.tag}>blockchain</code>
+            <code className={styles.tag}>web3auth</code>
+            <br />
+            <span className={styles.date}>Web3Auth Team | 25th May 2022</span>
+          </div>
+        </Link>
+        <Link className={styles.article} to="/docs/connect-blockchain/moonbeam">
+          <img src="/docs/contents/guides/banners/moonbeam.png" alt="Banner moonbeam" />
+          <div className={styles.contentContainer}>
+            <span className={styles.type}>REFERENCE</span>
+            <h3>Integrate Web3Auth with the Moonbeam Blockchain</h3>
+            <p>Learn how to integrate Web3Auth with the Moonbeam Blockchain</p>
+            <code className={styles.tag}>moonbeam</code>
+            <code className={styles.tag}>blockchain</code>
+            <code className={styles.tag}>web3auth</code>
+            <br />
+            <span className={styles.date}>Web3Auth Team | 25th May 2022</span>
+          </div>
+        </Link>
+        <Link className={styles.article} to="/docs/connect-blockchain/klaytn">
+          <img src="/docs/contents/guides/banners/klaytn.png" alt="Banner klaytn" />
+          <div className={styles.contentContainer}>
+            <span className={styles.type}>REFERENCE</span>
+            <h3>Integrate Web3Auth with the Klaytn Blockchain</h3>
+            <p>Learn how to integrate Web3Auth with the Klaytn Blockchain</p>
+            <code className={styles.tag}>klaytn</code>
             <code className={styles.tag}>blockchain</code>
             <code className={styles.tag}>web3auth</code>
             <br />

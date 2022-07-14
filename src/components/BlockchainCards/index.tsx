@@ -76,6 +76,30 @@ export const tileGroupsData = [
         icon: "logo-cronos.png",
         path: "./connect-blockchain/cronos",
       },
+      {
+        key: "harmony",
+        title: "Harmony",
+        icon: "logo-harmony.png",
+        path: "./connect-blockchain/harmony",
+      },
+      {
+        key: "celo",
+        title: "Celo",
+        icon: "logo-celo.png",
+        path: "./connect-blockchain/celo",
+      },
+      {
+        key: "moonbeam",
+        title: "Moonbeam",
+        icon: "logo-moonbeam.png",
+        path: "./connect-blockchain/moonbeam",
+      },
+      {
+        key: "klaytn",
+        title: "Klaytn",
+        icon: "logo-klaytn.png",
+        path: "./connect-blockchain/klaytn",
+      },
     ],
   },
 ];
