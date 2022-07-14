@@ -16,12 +16,12 @@ export const getConstructorCodeHTML = (chain: "sol", isWhiteLabled: boolean) => 
   if (chain === "sol") {
     chainDetails = `
           chainNamespace: "solana",
-          rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app`;
+          rpcTarget: "${rpcTargetMap[chain]}", // This is the public RPC we have added, please pass on your own endpoint while creating an app`;
   } else {
     chainDetails = `
           chainNamespace: "eip155",
           chainId: "${chainIdMap[chain]}",
-          rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app`;
+          rpcTarget: "${rpcTargetMap[chain]}", // This is the public RPC we have added, please pass on your own endpoint while creating an app`;
   }
 
   const code = `
