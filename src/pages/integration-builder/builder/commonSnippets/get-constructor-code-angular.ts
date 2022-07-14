@@ -16,7 +16,6 @@ export const getConstructorCodeAngular = (chain: "sol" | "starkex" | "starknet" 
   if (chain === "sol") {
     chainDetails = `
           chainNamespace: CHAIN_NAMESPACES.SOLANA,
-          chainId: "${chainIdMap[chain]}",
           rpcTarget: "${rpcTargetMap[chain]}", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app`;
   } else if (chain === "starkex" || chain === "starknet" || chain === "tezos") {
     chainDetails = `
