@@ -26,7 +26,11 @@ const contractAddress = "0x1dce94bb358785c2fa27b74551f8aea24d3d0afe";
 const contract = new web3.eth.Contract(JSON.parse(contractABI), contractAddress);
 
 // Send transaction to smart contract to update message and wait to finish
-const receipt = await contract.methods.update("NEW_MESSAGE").send({ from: fromAddress });
+const receipt = await contract.methods.update("NEW_MESSAGE").send({
+  from: fromAddress,
+  maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
+  maxFeePerGas: "6000000000000", // Max fee per gas
+});
 ```
 
 </TabItem>

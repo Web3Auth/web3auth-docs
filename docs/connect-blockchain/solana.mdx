@@ -1,8 +1,9 @@
 ---
 title: Integrate Web3Auth with the Solana Blockchain
 sidebar_label: Solana
-
+image: "/docs/contents/guides/banners/solana.png"
 displayed_sidebar: docs
+keywords: [solana, web3auth, authentication, blockchain]
 ---
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
@@ -295,44 +296,5 @@ async getPrivateKey() {
     method: "solanaPrivateKey"
   });
   //Do something with privateKey
-}
-```
-
-## Getting a provider from private key.
-
----
-
-`@web3auth/solana-provider` package can be used to get a **Solana** compatible provider. You can use this package with our SDKs, to get a Solana
-provider from the logged-in user's private key.
-
-```js
-import { PrivateKeyWallet } from "@web3auth/solana-provider";
-
-/*
-privKey: any secp512k1 private key.
-*/
-
-async setProvider(privKey: string) {
-  this.PrivateKeyProvider = new PrivateKeyWallet({
-  config: {
-    /*
-    pass the chain config that you want to connect with
-    all chainConfig fields are required.
-    */
-    chainConfig: {
-    chainId: "0x1",
-    rpcTarget: "https://ssc-dao.genesysgo.net", // This is the testnet RPC, please pass your own endpoint while creating an app
-    displayName: "solana",
-    ticker: "SOL",
-    tickerName: "solana",
-    },
-  },
-  });
-  /*
-  pass user's private key here.
-  after calling setupProvider, we can use
-  this.PrivateKeyProvider._providerProxy as a solana provider
-  */
-  const provider = await this.PrivateKeyProvider.solanaPrivateKey(privKey);
 }
 ```

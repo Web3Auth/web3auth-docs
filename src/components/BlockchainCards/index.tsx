@@ -22,6 +22,18 @@ export const tileGroupsData = [
         path: "./connect-blockchain/solana",
       },
       {
+        key: "starkex",
+        title: "StarkEx",
+        icon: "logo-starkex.png",
+        path: "./connect-blockchain/starkex",
+      },
+      {
+        key: "starknet",
+        title: "StarkNet",
+        icon: "logo-starknet.png",
+        path: "./connect-blockchain/starknet",
+      },
+      {
         key: "polygon",
         title: "Polygon",
         icon: "logo-polygon.png",
@@ -52,23 +64,42 @@ export const tileGroupsData = [
         icon: "logo-optimism.png",
         path: "./connect-blockchain/optimism",
       },
-      {
-        key: "starkex",
-        title: "StarkEx",
-        icon: "logo-starkex.png",
-        path: "./connect-blockchain/starkex",
-      },
-      {
-        key: "starknet",
-        title: "StarkNet",
-        icon: "logo-starknet.png",
-        path: "./connect-blockchain/starknet",
-      },
+
       {
         key: "tezos",
         title: "Tezos",
         icon: "logo-tezos.png",
         path: "./connect-blockchain/tezos",
+      },
+      {
+        key: "cronos",
+        title: "Cronos",
+        icon: "logo-cronos.png",
+        path: "./connect-blockchain/cronos",
+      },
+      {
+        key: "harmony",
+        title: "Harmony",
+        icon: "logo-harmony.png",
+        path: "./connect-blockchain/harmony",
+      },
+      {
+        key: "celo",
+        title: "Celo",
+        icon: "logo-celo.png",
+        path: "./connect-blockchain/celo",
+      },
+      {
+        key: "moonbeam",
+        title: "Moonbeam",
+        icon: "logo-moonbeam.png",
+        path: "./connect-blockchain/moonbeam",
+      },
+      {
+        key: "klaytn",
+        title: "Klaytn",
+        icon: "logo-klaytn.png",
+        path: "./connect-blockchain/klaytn",
       },
     ],
   },
