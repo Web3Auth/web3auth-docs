@@ -1,15 +1,26 @@
 import classNames from "classnames";
 import Link from "@docusaurus/Link";
+import { useColorMode } from "@docusaurus/theme-common";
 
 import styles from "./styles.module.css";
 
+import BEW from "@site/static/contents/logo-bew.png";
+import SkyweaverDark from "@site/static/contents/logo-skyweaver-dark.png";
+import SkyweaverLight from "@site/static/contents/logo-skyweaver-light.png";
+import ThievesDark from "@site/static/contents/logo-100thieves-dark.png";
+import ThievesLight from "@site/static/contents/logo-100thieves-light.png";
+import Kash from "@site/static/contents/logo-kash.png";
+import Keplr from "@site/static/contents/logo-keplr.png";
+
 export default function UsecaseCards() {
+  const { colorMode } = useColorMode();
   return (
     <>
       {/* FIRST ROW */}
       <div className={styles.container}>
         <Link className={classNames(styles.card)} to="https://chrome.google.com/webstore/detail/binance-wallet/fhbohimaelbohpjbbldcngcnapndodjp">
           <div>
+            <img className={styles.logo} src={BEW} alt="Binance Wallet" />
             <h3 className={styles.title}>
               <strong>Binance Extension Wallet</strong>
             </h3>
@@ -31,6 +42,11 @@ export default function UsecaseCards() {
 
         <Link className={classNames(styles.card)} to="https://play.skyweaver.net/">
           <div>
+            {colorMode === "dark" ? (
+              <img className={styles.logo} src={SkyweaverDark} alt="Skyweaver" />
+            ) : (
+              <img className={styles.logo} src={SkyweaverLight} alt="Skyweaver" />
+            )}
             <h3 className={styles.title}>
               <strong>Skyweaver</strong>
             </h3>
@@ -50,6 +66,11 @@ export default function UsecaseCards() {
       <div className={styles.container}>
         <Link className={classNames(styles.card)} to="https://collect.100thieves.com/">
           <div>
+            {colorMode === "dark" ? (
+              <img className={styles.logo} src={ThievesDark} alt="100Thieves" />
+            ) : (
+              <img className={styles.logo} src={ThievesLight} alt="100Thieves" />
+            )}
             <h3 className={styles.title}>
               <strong>100 Thieves</strong>
             </h3>
@@ -65,13 +86,14 @@ export default function UsecaseCards() {
         </Link>
         <Link className={classNames(styles.card)} to="https://www.keplr.app/">
           <div>
+            <img className={styles.logo} src={Keplr} alt="Keplr" />
             <h3 className={styles.title}>
-              <strong>Kepler</strong>
+              <strong>Keplr</strong>
             </h3>
             <h4 className={styles.headline}>Web3Auth as the entry point for inter-chain transactions</h4>
             <p>
-              Kepler is an excellent example of an Inter-chain Chrome Extension Wallet, using Web3Auth as their social login architecture. With the
-              flexibility of Web3Auth, with just a social login, Kepler is generating a series of addresses across multiple EVM chains, and is able to
+              Keplr is an excellent example of an Inter-chain Chrome Extension Wallet, using Web3Auth as their social login architecture. With the
+              flexibility of Web3Auth, with just a social login, Keplr is generating a series of addresses across multiple EVM chains, and is able to
               handle all the transactions required for the dApp.
             </p>
           </div>
@@ -85,6 +107,7 @@ export default function UsecaseCards() {
       <div className={styles.container}>
         <Link className={classNames(styles.card)} to="https://app.kash.io/">
           <div>
+            <img className={styles.logo} src={Kash} alt="Kash" />
             <h3 className={styles.title}>
               <strong>Kash</strong>
             </h3>
