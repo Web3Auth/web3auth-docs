@@ -29,12 +29,12 @@ export default function GuidesPage({ guides }: Props) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@Web3Auth" />
         <meta name="twitter:creator" content="@Web3Auth" />
-        <meta property="og:image" content="../../../static/images/docs-meta-cards/documentation-card.png" />
+        <meta property="og:image" content="https://web3auth.io/docs/images/docs-meta-cards/guides-card.png" />
         <meta
           name="description"
           content="Web3Auth is simple, non-custodial auth infrastructure that enables Web3 wallets and applications to provide seamless user logins for both mainstream and native Web3 users."
         />
-        <meta property="og:title" content="Web3Auth | Auth infrastructure for Web3.0 wallets and applications" />
+        <meta property="og:title" content="Guides - Web3Auth | Auth infrastructure for Web3.0 wallets and applications" />
         <meta
           property="og:description"
           content="Web3Auth is simple, non-custodial auth infrastructure that enables Web3 wallets and applications to provide seamless user logins for both mainstream and native Web3 users."
