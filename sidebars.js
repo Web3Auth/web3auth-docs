@@ -67,6 +67,7 @@ module.exports = {
             "connect-blockchain/avalanche",
             "connect-blockchain/arbitrum",
             "connect-blockchain/optimism",
+            "connect-blockchain/cronos",
           ],
           collapsible: true,
           collapsed: false,
@@ -75,7 +76,6 @@ module.exports = {
         "connect-blockchain/starkex",
         "connect-blockchain/starknet",
         "connect-blockchain/tezos",
-        "connect-blockchain/cronos",
       ],
     },
     {
