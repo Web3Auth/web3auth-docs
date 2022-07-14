@@ -111,6 +111,28 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
 
   return (
     <Layout title="Integration Builder">
+      <head>
+        <meta property="og:site_name" content="Web3Auth" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@Web3Auth" />
+        <meta name="twitter:creator" content="@Web3Auth" />
+        <meta property="og:image" content="/docs/images/docs-meta-cards/integration-builder-card.png" />
+        <meta
+          name="description"
+          content="Web3Auth is simple, non-custodial auth infrastructure that enables Web3 wallets and applications to provide seamless user logins for both mainstream and native Web3 users."
+        />
+        <meta property="og:title" content="Web3Auth | Auth infrastructure for Web3.0 wallets and applications" />
+        <meta
+          property="og:description"
+          content="Web3Auth is simple, non-custodial auth infrastructure that enables Web3 wallets and applications to provide seamless user logins for both mainstream and native Web3 users."
+        />
+        <meta property="og:url" content="https://web3auth.io/docs/integration-builder" />
+        <meta
+          name="keywords"
+          content="web3auth, blockchain, web3, web3.js, ethers.js, solana, ethereum, passwordless, passwordless magic link, multi party computation, tkey, torus, web3 auth, auth, quickstart. quick start, integration builder"
+        />
+      </head>
       <div className={styles.container}>
         <div className={styles.optionsPane}>
           {Object.entries(builder.options).map(([key, option]) => (
