@@ -4,13 +4,18 @@ import frameworks from "./frameworks/index";
 export const CHAINS: DisplayChoice[] = [
   { key: "eth", displayName: "Ethereum" },
   { key: "sol", displayName: "Solana" },
+  { key: "starkex", displayName: "StarkEx" },
+  { key: "starknet", displayName: "StarkNet" },
   { key: "matic", displayName: "Polygon" },
   { key: "bnb", displayName: "BNB Chain" },
   { key: "avax", displayName: "Avalanche" },
   { key: "arbitrum", displayName: "Arbitrum" },
   { key: "optimism", displayName: "Optimism" },
-  { key: "starkex", displayName: "StarkEx" },
-  { key: "starknet", displayName: "StarkNet" },
+  { key: "cronos", displayName: "Cronos" },
+  { key: "harmony", displayName: "Harmony" },
+  { key: "celo", displayName: "Celo" },
+  { key: "moonbeam", displayName: "Moonbeam" },
+  { key: "moonriver", displayName: "Moonriver" },
   { key: "tezos", displayName: "Tezos" },
 ];
 
@@ -22,6 +27,11 @@ export const CHAINS_HTML: DisplayChoice[] = [
   { key: "avax", displayName: "Avalanche" },
   { key: "arbitrum", displayName: "Arbitrum" },
   { key: "optimism", displayName: "Optimism" },
+  { key: "cronos", displayName: "Cronos" },
+  { key: "harmony", displayName: "Harmony" },
+  { key: "celo", displayName: "Celo" },
+  { key: "moonbeam", displayName: "Moonbeam" },
+  { key: "moonriver", displayName: "Moonriver" },
 ];
 
 export const LANGS: DisplayChoice[] = [
