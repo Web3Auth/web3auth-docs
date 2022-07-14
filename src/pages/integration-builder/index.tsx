@@ -10,6 +10,8 @@ import builder from "./builder";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
 import styles from "./styles.module.css";
 
+import IntegrationBuilderMetaCard from "@site/static/images/docs-meta-cards/integration-builder-card.png";
+
 const getWindowLocation = () => {
   if (typeof window !== "undefined") return window.location.href;
   return "http://localhost";
@@ -117,7 +119,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@Web3Auth" />
         <meta name="twitter:creator" content="@Web3Auth" />
-        <meta property="og:image" content="/docs/images/docs-meta-cards/integration-builder-card.png" />
+        <meta property="og:image" content={IntegrationBuilderMetaCard} />
         <meta
           name="description"
           content="Web3Auth is simple, non-custodial auth infrastructure that enables Web3 wallets and applications to provide seamless user logins for both mainstream and native Web3 users."

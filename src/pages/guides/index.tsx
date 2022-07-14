@@ -2,6 +2,7 @@ import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
 
 import styles from "./styles.module.css";
+import GuidesMetaCard from "@site/static/images/docs-meta-cards/guides-card.png";
 
 interface Props {
   guides: Record<
@@ -29,7 +30,7 @@ export default function GuidesPage({ guides }: Props) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@Web3Auth" />
         <meta name="twitter:creator" content="@Web3Auth" />
-        <meta property="og:image" content="/docs/images/docs-meta-cards/guides-card.png" />
+        <meta property="og:image" content={GuidesMetaCard} />
         <meta
           name="description"
           content="Web3Auth is simple, non-custodial auth infrastructure that enables Web3 wallets and applications to provide seamless user logins for both mainstream and native Web3 users."
