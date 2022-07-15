@@ -163,7 +163,7 @@ module.exports = {
       defaultStyle: true,
     },
     {
-      Troubleshooting: ["troubleshooting/error-429", "troubleshooting/webpack-issues"],
+      Troubleshooting: ["troubleshooting/error-429", "troubleshooting/webpack-issues", "troubleshooting/jwt-errors"],
     },
     {
       type: "category",

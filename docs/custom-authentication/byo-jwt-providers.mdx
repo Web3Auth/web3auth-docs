@@ -8,7 +8,7 @@ displayed_sidebar: docs
 Bring your own login providers with Web3Auth, using one of the custom login schemes (either via RSA or ECDSA signatures). This way, your users can
 still use your existing login provider.
 
-:::caution
+:::info
 
 For a Custom JWT based authentication services you need to use the [`Web3Auth Plug and Play Core SDK`](/sdk/web/core/), since the Web3Auth Modal will
 only help you configure the social logins present within the Modal UI.
@@ -16,6 +16,12 @@ only help you configure the social logins present within the Modal UI.
 :::
 
 The application should follow the JWT specification and use JWKS for signing the JWT, whose public keys are exposed by an endpoint.
+
+:::caution
+
+**Facing issue with JWTs?** Checkout [this Troubleshoot page](/docs/troubleshooting/jwt-errors).
+
+:::
 
 ## Set up Custom JWT Verifier
 
@@ -75,9 +81,9 @@ To create a custom verifier for your JWT Providers, you'll need
 
    You can add upto 3 validations; including any custom claims like `email_verified` etc.
 
-   :::note
+   :::caution
 
-   Your jwt token payload data must contain `iat` field.
+   - Your JWT token header must contain the `kid` field and the payload data must contain `iat` field.
 
    :::
 
