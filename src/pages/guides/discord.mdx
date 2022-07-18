@@ -1,12 +1,12 @@
 ---
-title: Using Google with Web3Auth Core
-image: "/docs/contents/guides/banners/google.svg"
-description: Learn how to use Web3Auth Core for Google Custom Authentication.
+title: Using Discord with Web3Auth Core
+image: "/docs/contents/guides/banners/discord.svg"
+description: Learn how to use Web3Auth Core for Discord Custom Authentication.
 type: guide
-tags: [ethereum, web3auth, web3auth core, react, google]
+tags: [ethereum, web3auth, web3auth core, react, discord]
 date: 18th July 2022
 author: Web3Auth Team
-order: 3
+order: 5
 ---
 
 import TabItem from "@theme/TabItem";
@@ -20,7 +20,7 @@ import InitializationIntro from "@site/src/common/guides/_initialization-intro.m
 import InitializationWeb3Auth from "@site/src/common/guides/_initialization-web3auth.mdx";
 import InstantiationWeb3Auth from "@site/src/common/guides/_instantiation-web3auth.mdx";
 import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
-import OpenloginConfigCodeGoogle from "@site/src/common/guides/_openlogin-config-code-google.mdx";
+import OpenloginConfigCodeDiscord from "@site/src/common/guides/_openlogin-config-code-discord.mdx";
 
 <head>
   <meta property="og:site_name" content="Web3Auth" />
@@ -28,24 +28,24 @@ import OpenloginConfigCodeGoogle from "@site/src/common/guides/_openlogin-config
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@Web3Auth" />
   <meta name="twitter:creator" content="@Web3Auth" />
-  <meta property="og:image" content="https://web3auth.io/docs/contents/guides/banners/google.svg" />
-  <meta name="description" content="Learn how to use Web3Auth Core for Google Custom Authentication." />
-  <meta property="og:title" content="Using Google Login with Web3Auth Core" />
-  <meta property="og:description" content="Learn how to use Web3Auth Core for Google Custom Authentication." />
-  <meta property="og:url" content="https://web3auth.io/docs/guides/google" />
-  <meta name="keywords" content="web3auth, google, google authentication, authentication, auth, web3" />
+  <meta property="og:image" content="https://web3auth.io/docs/contents/guides/banners/discord.svg" />
+  <meta name="description" content="Learn how to use Web3Auth Core for Discord Custom Authentication." />
+  <meta property="og:title" content="Using Discord Login with Web3Auth Core" />
+  <meta property="og:description" content="Learn how to use Web3Auth Core for Discord Custom Authentication." />
+  <meta property="og:url" content="https://web3auth.io/docs/guides/discord" />
+  <meta name="keywords" content="web3auth, discord, discord authentication, authentication, auth, web3" />
 </head>
 
-This guide will cover the basics of how to set up your Web3Auth SDK and Google Login for the custom authentication and provide you the steps on how to
-develop a basic web application on the Ethereum blockchain.
+This guide will cover the basics of how to set up your Web3Auth SDK and Discord Login for the custom authentication and provide you the steps on how
+to develop a basic web application on the Ethereum blockchain.
 
-**Live Demo:** https://web3auth-core-google-demo.vercel.app
+**Live Demo:** https://web3auth-core-discord-demo.vercel.app
 
 ## Quick Start
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd google-core-react-example
+cd discord-core-react-example
 npm install
 npm run start
 ```
@@ -54,11 +54,11 @@ npm run start
 
 ---
 
-When integrating Web3Auth with Google Login the flow looks something like this:
+When integrating Web3Auth with Discord Login the flow looks something like this:
 
-![Web3Auth Core - Google Login Flow](/images/implicit-flow.svg)
+![Web3Auth Core - Discord Login Flow](/images/implicit-flow.svg)
 
-- When a user logs in with `Google`, Google sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
+- When a user logs in with `Discord`, Discord sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
 
 - Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
   easy onboarding for your user to the application.
@@ -69,24 +69,29 @@ When integrating Web3Auth with Google Login the flow looks something like this:
 
 <Web3AuthPrerequisites />
 
-- A [Google Developer](https://console.developers.google.com) account to be used as Login provider for Web3Auth Custom Authentication.
+- A [Discord Developer](https://dev.discord.tv/console/apps/create) account to be used as Login provider for Web3Auth Custom Authentication.
 
 ## Setup
 
 ---
 
-### Setup your Google App
+### Setup your Discord App
 
-1. Follow Google’s instructions to [set up an OAuth 2.0 app.](https://support.google.com/cloud/answer/6158849?hl=en)
-2. Paste the following as Redirect URI into the "Authorized redirect URIs" field.
+1. Create a Discord [API application](https://discord.com/developers/applications).
+
+2. Navigate to **OAuth2** from the sidebar, and paste the following as Redirect URI into the "Redirect URI" field.
 
    - https://beta.openlogin.com/auth (for Web3Auth testnet used in demo applications)
 
    - https://app.openlogin.com/auth (for Web3Auth mainnet used in production applications)
 
-   ![Google OAuth2.0 App Dashboard](/contents/social-providers/google/google-app-redirect-uri.png)
+   ![Discord OAuth2.0 App Dashboard](/contents/social-providers/discord/discord-redirect-uri.png)
 
-3. Obtain the OAuth `Client ID` from your [App on the Google Developer dashboard](https://console.developers.google.com/)
+3. Don't forget to save your changes!
+
+4. Next, obtain the **"Client ID"** from here. We will use this in our Web3Auth Dashboard.
+
+   ![Discord OAuth2.0 App Client ID and Secret](/contents/social-providers/discord/discord-clientid-secret.png)
 
 ### Setup your Web3Auth Dashboard
 
@@ -95,11 +100,12 @@ When integrating Web3Auth with Google Login the flow looks something like this:
 - Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
   configuration:
 
-  - Choose a name of your choice for the verifier identifier. `eg. google-core-verifier`
+  - Choose a name of your choice for the verifier identifier. `eg. discord-core-verifier`
   - Select environment: `testnet`, `mainnet` or `cyan` as per your requirement.
-  - Select `Google` from the **Login Provider**. ![Google - Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
-  - Paste the **Client ID** from the Google App(above) to the `Client ID` field.
-    ![Google Client ID on Web3Auth Dashboard](/dashboard/verifiers/google-verifier.png)
+  - Select `Discord` from the **Login Provider**.
+    ![Discord - Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
+  - Paste the **Client ID** from the Discord App(above) to the `Client ID` field.
+    ![Discord Client ID on Web3Auth Dashboard](/dashboard/verifiers/discord-verifier.png)
   - Click on `Create` button to create your verifier. It may take up to 10 minutes to deploy verifier on _testnet_. You'll receive an email once it's
     complete.
 
@@ -113,7 +119,7 @@ To use the Web3Auth SDK, you need to add the dependency of the respective platfo
 SDKs, please have a look at this [documentation page](/docs/sdk).
 
 For this guide here, we will be talking through the [Web3Auth Plug and Play Core SDK](/sdk/web/core) and using the
-[OpenLogin Provider](/sdk/web/openlogin) alongside it to enable Custom Authentication through Google Login.
+[OpenLogin Provider](/sdk/web/openlogin) alongside it to enable Custom Authentication through Twitch Login.
 
 <SetupBaseProject />
 
@@ -134,7 +140,7 @@ Initialization of the Web3Auth SDK. To know more about the other things you can 
 
 #### Initialising the Openlogin Adapter
 
-<OpenloginConfigCodeGoogle />
+<OpenloginConfigCodeDiscord />
 
 Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom Auth `verifierName` and AWS Cognito `clientId` in
 the loginConfig object. This makes sure that the Openlogin Adapter can connect to the correct verifier and AWS Cognito server.
@@ -151,7 +157,7 @@ Once initialized, you can use the `connectTo()` function to authenticate the use
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-  loginProvider: "google",
+  loginProvider: "discord",
 });
 ```
 
@@ -182,5 +188,5 @@ Logging out your user is as simple as calling the `logout` function.
 ## Example code
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth Core Google Login Example](https://github.com/Web3Auth/examples/tree/main/google-core-react-example). Check it out and try running it
+[Web3Auth Core Discord Login Example](https://github.com/Web3Auth/examples/tree/main/discord-core-react-example). Check it out and try running it
 locally yourself!
