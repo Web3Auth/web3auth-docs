@@ -19,6 +19,7 @@ module.exports = {
   baseUrl: "/docs/",
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
+  onDuplicateRoutes: "warn",
   favicon: "images/favicon.ico",
   organizationName: githubOrg,
   projectName: githubRepo,
@@ -80,7 +81,8 @@ module.exports = {
         {
           type: "html",
           position: "right",
-          value: '<a href="https://dashboard.web3auth.io/" target="_blank" class="navbar-button"><strong class="navbar-button-text">Dashboard</strong></a>',
+          value:
+            '<a href="https://dashboard.web3auth.io/" target="_blank" class="navbar-button"><strong class="navbar-button-text">Dashboard</strong></a>',
         },
         {
           type: "html",
