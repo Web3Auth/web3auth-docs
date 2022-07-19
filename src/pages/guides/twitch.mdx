@@ -1,0 +1,193 @@
+---
+title: Using Twitch with Web3Auth
+image: "/docs/contents/guides/banners/twitch.svg"
+description: Learn how to use Web3Auth Plug and Play Core SDK for Twitch Custom Authentication.
+type: guide
+tags: [ethereum, web3auth core, twitch]
+date: 18th July 2022
+author: Web3Auth Team
+order: 5
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
+import Installation from "@site/src/common/guides/_installation.mdx";
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import InitializationIntro from "@site/src/common/guides/_initialization-intro.mdx";
+import InitializationWeb3Auth from "@site/src/common/guides/_initialization-web3auth.mdx";
+import InstantiationWeb3Auth from "@site/src/common/guides/_instantiation-web3auth.mdx";
+import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
+import OpenloginConfigCodeTwitch from "@site/src/common/guides/_openlogin-config-code-twitch.mdx";
+
+<head>
+  <meta property="og:site_name" content="Web3Auth" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@Web3Auth" />
+  <meta name="twitter:creator" content="@Web3Auth" />
+  <meta property="og:image" content="https://web3auth.io/docs/contents/guides/banners/twitch.svg" />
+  <meta name="description" content="Learn how to use Web3Auth Core for Twitch Custom Authentication." />
+  <meta property="og:title" content="Using Twitch Login with Web3Auth Core" />
+  <meta property="og:description" content="Learn how to use Web3Auth Core for Twitch Custom Authentication." />
+  <meta property="og:url" content="https://web3auth.io/docs/guides/twitch" />
+  <meta name="keywords" content="web3auth, twitch, twitch authentication, authentication, auth, web3" />
+</head>
+
+This guide will cover the basics of how to set up your Web3Auth SDK and Twitch Login for the custom authentication and provide you the steps on how to
+develop a basic web application on the Ethereum blockchain.
+
+**Live Demo:** https://web3auth-core-twitch-demo.vercel.app
+
+## Quick Start
+
+```bash
+git clone https://github.com/Web3Auth/examples.git
+cd twitch-core-react-example
+npm install
+npm run start
+```
+
+## How it works?
+
+---
+
+When integrating Web3Auth with Twitch Login the flow looks something like this:
+
+![Web3Auth Core - Twitch Login Flow](/images/implicit-flow.svg)
+
+- When a user logs in with `Twitch`, Twitch sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
+
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
+  easy onboarding for your user to the application.
+
+## Prerequisites
+
+---
+
+<Web3AuthPrerequisites />
+
+- A [Twitch Developer](https://dev.twitch.tv/console/apps/create) account to be used as Login provider for Web3Auth Custom Authentication.
+
+## Setup
+
+---
+
+### Setup your Twitch App
+
+1. Follow Twitch's [registration instructions](https://dev.twitch.tv/docs/authentication/#registration) to (register your
+   app)[https://dev.twitch.tv/console/apps/create].
+2. Paste the following as Redirect URI into the "OAuth Redirect URLs" field.
+
+   - https://beta.openlogin.com/auth (for Web3Auth testnet used in demo applications)
+
+   - https://app.openlogin.com/auth (for Web3Auth mainnet used in production applications)
+
+   ![Twitch OAuth2.0 App Dashboard](/contents/social-providers/twitch/twitch-app.png)
+
+3. After creation of your Twitch app, click **Manage**
+
+   ![Twitch OAuth2.0 App Manage](/contents/social-providers/twitch/twitch-manage.png)
+
+4. Obtain the **Client ID**
+
+   ![Twitch OAuth2.0 App Manage](/contents/social-providers/twitch/twitch-client-id.png)
+
+### Setup your Web3Auth Dashboard
+
+<SetupWeb3AuthDashboard />
+
+- Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
+  configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. twitch-core-verifier`
+  - Select environment: `testnet`, `mainnet` or `cyan` as per your requirement.
+  - Select `Twitch` from the **Login Provider**. ![Twitch - Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
+  - Paste the **Client ID** from the Twitch App(above) to the `Client ID` field.
+    ![Twitch Client ID on Web3Auth Dashboard](/dashboard/verifiers/twitch-verifier.png)
+  - Click on `Create` button to create your verifier. It may take up to 10 minutes to deploy verifier on _testnet_. You'll receive an email once it's
+    complete.
+
+- You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+
+## Using the Web3Auth SDK
+
+---
+
+To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
+SDKs, please have a look at this [documentation page](/docs/sdk).
+
+For this guide here, we will be talking through the [Web3Auth Plug and Play Core SDK](/sdk/web/core) and using the
+[OpenLogin Provider](/sdk/web/openlogin) alongside it to enable Custom Authentication through Twitch Login.
+
+<SetupBaseProject />
+
+### Installation
+
+<Installation />
+
+### Initialization
+
+<InitializationIntro />
+
+For this guide, we're only focusing on the Instantiation, Configuration for the Openlogin Adapter (the default adapter that enables social logins) and
+Initialization of the Web3Auth SDK. To know more about the other things you can do with Web3Auth, checkout our [SDK Reference](/sdk/web/core).
+
+#### Instantiating Web3Auth
+
+<InstantiationWeb3Auth />
+
+#### Initialising the Openlogin Adapter
+
+<OpenloginConfigCodeTwitch />
+
+Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom Auth `verifierName` and AWS Cognito `clientId` in
+the loginConfig object. This makes sure that the Openlogin Adapter can connect to the correct verifier and AWS Cognito server.
+
+<InitializationWeb3Auth />
+
+### Authentication
+
+#### Logging in
+
+Once initialized, you can use the `connectTo()` function to authenticate the user when they click the login button.
+
+```js
+import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
+
+await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "twitch",
+});
+```
+
+When connecting, your `connectTo` function takes the arguments for the adapter you want to connect to and the `loginProvider` for the login.
+
+### Get the User Profile
+
+```js
+const user = await web3auth.getUserInfo();
+console.log("User info", user);
+```
+
+Using the `getUserInfo` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
+network, but are fetched from the id_token you received from AWS Cognito and lives in the frontend context.
+
+### Logout
+
+```js
+await web3auth.logout();
+```
+
+Logging out your user is as simple as calling the `logout` function.
+
+### Interacting with Blockchain
+
+<InteractingWithBlockchain />
+
+## Example code
+
+The code for the application we developed in this guide can be found in the
+[Web3Auth Core Twitch Login Example](https://github.com/Web3Auth/examples/tree/main/twitch-core-react-example). Check it out and try running it
+locally yourself!

@@ -81,7 +81,7 @@ export default function GuidesPage({ guides }: Props) {
           </Link>
         ))}
         <Link className={styles.article} to="/docs/integration-builder?lang=react&chain=eth&customAuthentication=no&whitelabel=no">
-          <img src="/docs/contents/guides/banners/react.png" alt="Banner" />
+          <img src="/docs/contents/guides/banners/react.svg" alt="Banner" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>INTEGRATION BUILDER</span>
             <h3>How to Implement Web3Auth in a React Application</h3>
@@ -93,7 +93,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/integration-builder?lang=next&chain=eth&customAuthentication=no&whitelabel=no">
-          <img src="/docs/contents/guides/banners/nextjs.png" alt="Banner" />
+          <img src="/docs/contents/guides/banners/nextjs.svg" alt="Banner" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>INTEGRATION BUILDER</span>
             <h3>How to Implement Web3Auth in a Next.js Application</h3>
@@ -105,7 +105,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/integration-builder?lang=angular&chain=eth&customAuthentication=no&whitelabel=no">
-          <img src="/docs/contents/guides/banners/angular.png" alt="Banner" />
+          <img src="/docs/contents/guides/banners/angular.svg" alt="Banner" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>INTEGRATION BUILDER</span>
             <h3>How to Implement Web3Auth in a Angular Application</h3>
@@ -117,7 +117,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/integration-builder?lang=html&chain=eth&customAuthentication=no&whitelabel=no">
-          <img src="/docs/contents/guides/banners/htmljs.png" alt="Banner" />
+          <img src="/docs/contents/guides/banners/htmljs.svg" alt="Banner" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>INTEGRATION BUILDER</span>
             <h3>How to Implement Web3Auth in a HTML/JS Application</h3>
@@ -131,7 +131,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/integration-builder?lang=vue&chain=eth&customAuthentication=no&whitelabel=no">
-          <img src="/docs/contents/guides/banners/vue.png" alt="Banner" />
+          <img src="/docs/contents/guides/banners/vue.svg" alt="Banner" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>INTEGRATION BUILDER</span>
             <h3>How to Implement Web3Auth in a Vue.js Application</h3>
@@ -143,7 +143,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/integration-builder?lang=android&chain=eth&customAuthentication=no&whitelabel=no">
-          <img src="/docs/contents/guides/banners/android.png" alt="Banner" />
+          <img src="/docs/contents/guides/banners/android.svg" alt="Banner" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>INTEGRATION BUILDER</span>
             <h3>How to Implement Web3Auth in an Android Application</h3>
@@ -155,7 +155,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/integration-builder?lang=ios&chain=eth&customAuthentication=no&whitelabel=no">
-          <img src="/docs/contents/guides/banners/ios-swift.png" alt="Banner" />
+          <img src="/docs/contents/guides/banners/ios-swift.svg" alt="Banner" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>INTEGRATION BUILDER</span>
             <h3>How to Implement Web3Auth in an iOS/Swift Application</h3>
@@ -168,7 +168,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/integration-builder?lang=flutter&chain=eth&customAuthentication=no&whitelabel=no">
-          <img src="/docs/contents/guides/banners/flutter.png" alt="Banner" />
+          <img src="/docs/contents/guides/banners/flutter.svg" alt="Banner" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>INTEGRATION BUILDER</span>
             <h3>How to Implement Web3Auth in a Flutter Application</h3>
@@ -180,7 +180,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/integration-builder?lang=react-native&chain=eth&customAuthentication=no&whitelabel=no">
-          <img src="/docs/contents/guides/banners/react-native.png" alt="Banner" />
+          <img src="/docs/contents/guides/banners/react-native.svg" alt="Banner" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>INTEGRATION BUILDER</span>
             <h3>How to Implement Web3Auth in a React Native Application</h3>
@@ -192,7 +192,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/connect-blockchain/ethereum">
-          <img src="/docs/contents/guides/banners/ethereum.png" alt="Banner ethereum" />
+          <img src="/docs/contents/guides/banners/ethereum.svg" alt="Banner ethereum" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
             <h3>Integrate Web3Auth with the Ethereum Blockchain</h3>
@@ -205,7 +205,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/connect-blockchain/solana">
-          <img src="/docs/contents/guides/banners/solana.png" alt="Banner solana" />
+          <img src="/docs/contents/guides/banners/solana.svg" alt="Banner solana" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
             <h3>Integrate Web3Auth with the Solana Blockchain</h3>
@@ -218,7 +218,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/connect-blockchain/starkex">
-          <img src="/docs/contents/guides/banners/starkex.png" alt="Banner starkex" />
+          <img src="/docs/contents/guides/banners/starkex.svg" alt="Banner starkex" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
             <h3>Integrate Web3Auth with the StarkEx Blockchain</h3>
@@ -231,7 +231,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/connect-blockchain/starknet">
-          <img src="/docs/contents/guides/banners/starknet.png" alt="Banner starknet" />
+          <img src="/docs/contents/guides/banners/starknet.svg" alt="Banner starknet" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
             <h3>Integrate Web3Auth with the StarkNet Blockchain</h3>
@@ -244,7 +244,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/connect-blockchain/polygon">
-          <img src="/docs/contents/guides/banners/polygon.png" alt="Banner polygon" />
+          <img src="/docs/contents/guides/banners/polygon.svg" alt="Banner polygon" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
             <h3>Integrate Web3Auth with the Polygon Blockchain</h3>
@@ -257,7 +257,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/connect-blockchain/tezos">
-          <img src="/docs/contents/guides/banners/tezos.png" alt="Banner tezos" />
+          <img src="/docs/contents/guides/banners/tezos.svg" alt="Banner tezos" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
             <h3>Integrate Web3Auth with the Tezos Blockchain</h3>
@@ -270,7 +270,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/connect-blockchain/avalanche">
-          <img src="/docs/contents/guides/banners/avalanche.png" alt="Banner avalanche" />
+          <img src="/docs/contents/guides/banners/avalanche.svg" alt="Banner avalanche" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
             <h3>Integrate Web3Auth with the Avalanche Blockchain</h3>
@@ -283,7 +283,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/connect-blockchain/bnb">
-          <img src="/docs/contents/guides/banners/binance.png" alt="Banner binance" />
+          <img src="/docs/contents/guides/banners/binance.svg" alt="Banner binance" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
             <h3>Integrate Web3Auth with the Binance Blockchain</h3>
@@ -296,7 +296,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/connect-blockchain/optimism">
-          <img src="/docs/contents/guides/banners/optimism.png" alt="Banner optimism" />
+          <img src="/docs/contents/guides/banners/optimism.svg" alt="Banner optimism" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
             <h3>Integrate Web3Auth with the Optimism Blockchain</h3>
@@ -309,7 +309,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/connect-blockchain/arbitrum">
-          <img src="/docs/contents/guides/banners/arbitrum.png" alt="Banner arbitrum" />
+          <img src="/docs/contents/guides/banners/arbitrum.svg" alt="Banner arbitrum" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
             <h3>Integrate Web3Auth with the Arbitrum Blockchain</h3>
@@ -322,7 +322,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/connect-blockchain/cronos">
-          <img src="/docs/contents/guides/banners/cronos.png" alt="Banner cronos" />
+          <img src="/docs/contents/guides/banners/cronos.svg" alt="Banner cronos" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
             <h3>Integrate Web3Auth with the Cronos Blockchain</h3>
@@ -335,7 +335,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/connect-blockchain/harmony">
-          <img src="/docs/contents/guides/banners/harmony.png" alt="Banner harmony" />
+          <img src="/docs/contents/guides/banners/harmony.svg" alt="Banner harmony" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
             <h3>Integrate Web3Auth with the Harmony Blockchain</h3>
@@ -348,7 +348,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/connect-blockchain/celo">
-          <img src="/docs/contents/guides/banners/celo.png" alt="Banner celo" />
+          <img src="/docs/contents/guides/banners/celo.svg" alt="Banner celo" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
             <h3>Integrate Web3Auth with the Celo Blockchain</h3>
@@ -361,7 +361,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/connect-blockchain/moonbeam">
-          <img src="/docs/contents/guides/banners/moonbeam.png" alt="Banner moonbeam" />
+          <img src="/docs/contents/guides/banners/moonbeam.svg" alt="Banner moonbeam" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
             <h3>Integrate Web3Auth with the Moonbeam Blockchain</h3>
@@ -375,7 +375,7 @@ export default function GuidesPage({ guides }: Props) {
         </Link>
 
         <Link className={styles.article} to="/docs/connect-blockchain/moonriver">
-          <img src="/docs/contents/guides/banners/moonriver.png" alt="Banner moonriver" />
+          <img src="/docs/contents/guides/banners/moonriver.svg" alt="Banner moonriver" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
             <h3>Integrate Web3Auth with the Moonriver Blockchain</h3>
@@ -388,7 +388,7 @@ export default function GuidesPage({ guides }: Props) {
           </div>
         </Link>
         <Link className={styles.article} to="/docs/connect-blockchain/klaytn">
-          <img src="/docs/contents/guides/banners/klaytn.png" alt="Banner klaytn" />
+          <img src="/docs/contents/guides/banners/klaytn.svg" alt="Banner klaytn" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>REFERENCE</span>
             <h3>Integrate Web3Auth with the Klaytn Blockchain</h3>
