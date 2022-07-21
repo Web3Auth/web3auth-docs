@@ -1,19 +1,22 @@
 export const getRPCFunctionsButtonsReact = (chain: "eth" | "sol" | "starkex" | "starknet" | "tezos") => {
   let code = `
+      <button onClick={getChainId} className="card">
+        Get Chain ID
+      </button>
       <button onClick={getAccounts} className="card">
         Get Accounts
       </button>
       <button onClick={getBalance} className="card">
         Get Balance
       </button>
+      <button onClick={sendTransaction} className="card">
+        Send Transaction
+      </button>
       <button onClick={signMessage} className="card">
         Sign Message
       </button>
-      <button onClick={signTransaction} className="card">
-        Sign Transaction
-      </button>
-      <button onClick={sendTransaction} className="card">
-        Send Transaction
+      <button onClick={getPrivateKey} className="card">
+        Get Private Key
       </button>`;
 
   if (chain === "starkex") {

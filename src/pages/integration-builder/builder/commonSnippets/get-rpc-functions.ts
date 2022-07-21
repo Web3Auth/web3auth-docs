@@ -1,16 +1,25 @@
 export const getRPCFunctions = (chain: "eth" | "sol" | "starkex" | "starknet" | "tezos") => {
   let code = `
-  const getAccounts = async () => {
+  getChainId = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
-    const userAccount = await rpc.getAccounts();
-    console.log(userAccount);
+    const chainId = await rpc.getChainId();
+    console.log(chainId);
+  };
+  getAccounts = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const address = await rpc.getAccounts();
+    console.log(address);
   };
 
-  const getBalance = async () => {
+  getBalance = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
       return;
@@ -20,34 +29,34 @@ export const getRPCFunctions = (chain: "eth" | "sol" | "starkex" | "starknet" | 
     console.log(balance);
   };
 
-  const signMessage = async () => {
+  sendTransaction = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
-    const result = await rpc.signMessage();
-    console.log(result);
+    const receipt = await rpc.sendTransaction();
+    console.log(receipt);
   };
 
-  const signTransaction = async () => {
+  signMessage = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
-    const result = await rpc.signTransaction();
-    console.log(result);
+    const signedMessage = await rpc.signMessage();
+    console.log(signedMessage);
   };
 
-  const sendTransaction = async () => {
+  getPrivateKey = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
       return;
     }
     const rpc = new RPC(provider);
-    const result = await rpc.signAndSendTransaction();
-    console.log(result);
+    const privateKey = await rpc.getPrivateKey();
+    console.log(privateKey);
   };`;
   if (chain === "starkex") {
     code = `
