@@ -26,9 +26,9 @@ export default function GuidesPage({ guides }: Props) {
     <Layout title="Guides">
       <SEO
         title="Guides"
-        description="Web3Auth is simple, non-custodial auth infrastructure that enables Web3 wallets and applications to provide seamless user logins for both mainstream and native Web3 users."
+        description="Guides | Web3Auth is simple, non-custodial auth infrastructure that enables Web3 wallets and applications to provide seamless user logins for both mainstream and native Web3 users."
         image="https://web3auth.io/docs/images/docs-meta-cards/guides-card.png"
-        url="https://web3auth.io/docs/guides"
+        slug="/guides"
       />
 
       <header className={styles.header}>

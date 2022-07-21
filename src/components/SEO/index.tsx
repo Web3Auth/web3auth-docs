@@ -1,6 +1,6 @@
 export default function SEO(props) {
   // eslint-disable-next-line react/prop-types
-  const { title, description, image, url } = props;
+  const { title, description, image, slug } = props;
 
   return (
     <head>
@@ -17,7 +17,7 @@ export default function SEO(props) {
       {/* Facebook Meta Tags  */}
       <meta property="og:site_name" content="Web3Auth" />
       <meta property="og:type" content="website" />
-      {url ? <meta property="og:url" content={url} /> : <meta property="og:url" content="https://web3auth.io/docs" />}
+      {slug ? <meta property="og:url" content={`https://web3auth.io/docs${slug}`} /> : <meta property="og:url" content="https://web3auth.io/docs" />}
       {title ? <meta property="og:title" content={title} /> : <meta property="og:title" content="Documentation | Web3Auth" />}
       {description ? (
         <meta property="og:description" content={description} />
