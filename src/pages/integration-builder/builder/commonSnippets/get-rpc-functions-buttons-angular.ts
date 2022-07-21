@@ -1,10 +1,11 @@
 export const getRPCFunctionsButtonsAngular = (chain: "eth" | "sol" | "starkex" | "starknet" | "tezos") => {
   let code = `
+      <button class="card card-small" (click)="getChainId()">Get Chain ID</button>
       <button class="card card-small" (click)="getAccounts()">Get Accounts</button>
       <button class="card card-small" (click)="getBalance()">Get Balance</button>
+      <button class="card card-small" (click)="sendTransaction()">Send Transaction</button>
       <button class="card card-small" (click)="signMessage()">Sign Message</button>
-      <button class="card card-small" (click)="signTransaction()">Sign Transaction</button>
-      <button class="card card-small" (click)="sendTransaction()">Send Transaction</button>`;
+      <button class="card card-small" (click)="getPrivateKey()">Get Private Key</button>`;
   if (chain === "starkex") {
     code = `
       <button class="card card-small" (click)="onGetStarkAccount()">Get Stark Accounts</button>

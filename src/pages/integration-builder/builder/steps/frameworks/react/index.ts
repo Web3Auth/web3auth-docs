@@ -65,7 +65,7 @@ const STEPS = toSteps({
 
 const reactSteps = {
   STEPS,
-  build({ filenames, files, steps, whitelabel, customAuthentication, chain }) {
+  build({ filenames, files, steps, whitelabel, customAuthentication, chain, evmFramework }) {
     const newFiles = files;
 
     const replacementAggregator = new ReplaceFileAggregator();
@@ -86,7 +86,7 @@ const reactSteps = {
       InitCode
     );
 
-    const ModuleImport = getModuleImport(chain, whitelabel === "yes", customAuthentication === "yes");
+    const ModuleImport = getModuleImport(chain, whitelabel === "yes", customAuthentication === "yes", evmFramework);
     newFiles["frameworks/react/App.tsx"] = replacementAggregator.replaceFileVariable(
       files["frameworks/react/App.tsx"],
       "frameworks/react/App.tsx",
@@ -102,7 +102,7 @@ const reactSteps = {
       OpenloginAdapter
     );
 
-    const PackageJson = getPackageJson(chain, whitelabel === "yes", customAuthentication === "yes");
+    const PackageJson = getPackageJson(chain, whitelabel === "yes", customAuthentication === "yes", evmFramework);
     newFiles["frameworks/react/package.json"] = replacementAggregator.replaceFileVariable(
       files["frameworks/react/package.json"],
       "frameworks/react/package.json",
@@ -130,24 +130,24 @@ const reactSteps = {
     filenames.push("frameworks/react/package.json");
     switch (chain) {
       case "sol":
-        filenames.push("chains/solana/solana.ts");
+        filenames.push("chains/solana/solanaRPC.ts");
         filenames.push("frameworks/react/config-overrides.js");
         break;
       case "starkex":
-        filenames.push("chains/starkex/starkex.ts");
+        filenames.push("chains/starkex/starkexRPC.ts");
         filenames.push("frameworks/react/config-overrides.js");
         break;
       case "starknet":
-        filenames.push("chains/starknet/starknet.ts");
+        filenames.push("chains/starknet/starknetRPC.ts");
         filenames.push("chains/starknet/ArgentAccount.json");
         filenames.push("frameworks/react/starknet/config-overrides.js");
         break;
       case "tezos":
-        filenames.push("chains/tezos/tezos.ts");
+        filenames.push("chains/tezos/tezosRPC.ts");
         filenames.push("frameworks/react/config-overrides.js");
         break;
       default:
-        filenames.push("chains/evm/evm.ts");
+        filenames.push(evmFramework === "ethers" ? "chains/evm/ethersRPC.ts" : "chains/evm/web3RPC.ts");
         filenames.push("frameworks/react/config-overrides.js");
     }
     filenames.push("frameworks/react/App.css");
@@ -167,32 +167,36 @@ const reactSteps = {
       case "sol":
         steps.push({
           ...STEPS.installationSolana,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/solana/solana.ts", range: "1-4" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/solana/solanaRPC.ts", range: "1-4" }),
         });
         break;
       case "starkex":
         steps.push({
           ...STEPS.installationStarkEx,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starkex/starkex.ts", range: "1-7" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starkex/starkexRPC.ts", range: "1-7" }),
         });
         break;
       case "starknet":
         steps.push({
           ...STEPS.installationStarkNet,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starknet/starknet.ts", range: "1-9" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starknet/starknetRPC.ts", range: "1-9" }),
         });
         break;
       case "tezos":
         steps.push({
           ...STEPS.installationTezos,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/tezos/tezos.ts", range: "1-6" }),
+          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/tezos/tezosRPC.ts", range: "1-6" }),
         });
         break;
       default:
         steps.push({
           ...STEPS.installationEVM,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/evm/evm.ts", range: "1-2" }),
+          pointer: replacementAggregator.rangeOffsetEditor({
+            filename: evmFramework === "ethers" ? "chains/evm/ethersRPC.ts" : "chains/evm/web3RPC.ts",
+            range: "1-2",
+          }),
         });
+        filenames.push();
     }
 
     if (customAuthentication === "yes" || whitelabel === "yes" || chain === "starkex" || chain === "starknet" || chain === "tezos") {
@@ -275,7 +279,7 @@ const reactSteps = {
         steps.push({
           ...STEPS.solanaRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "chains/solana/solana.ts",
+            filename: "chains/solana/solanaRPC.ts",
             range: "13-21",
           }),
         });
@@ -284,7 +288,7 @@ const reactSteps = {
         steps.push({
           ...STEPS.starkExRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "chains/starkex/starkex.ts",
+            filename: "chains/starkex/starkexRPC.ts",
             range: "20-39",
           }),
         });
@@ -293,7 +297,7 @@ const reactSteps = {
         steps.push({
           ...STEPS.starkNetRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "chains/starknet/starknet.ts",
+            filename: "chains/starknet/starknetRPC.ts",
             range: "18-37",
           }),
         });
@@ -302,19 +306,29 @@ const reactSteps = {
         steps.push({
           ...STEPS.tezosRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "chains/tezos/tezos.ts",
+            filename: "chains/tezos/tezosRPC.ts",
             range: "17-26",
           }),
         });
         break;
       default:
-        steps.push({
-          ...STEPS.evmRPCFunctions,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "chains/evm/evm.ts",
-            range: "10-18",
-          }),
-        });
+        if (evmFramework === "ethers") {
+          steps.push({
+            ...STEPS.evmRPCFunctions,
+            pointer: replacementAggregator.rangeOffsetEditor({
+              filename: evmFramework === "ethers" ? "chains/evm/ethersRPC.ts" : "chains/evm/web3RPC.ts",
+              range: "10-18",
+            }),
+          });
+        } else {
+          steps.push({
+            ...STEPS.evmRPCFunctions,
+            pointer: replacementAggregator.rangeOffsetEditor({
+              filename: "chains/evm/web3RPC.ts",
+              range: "10-18",
+            }),
+          });
+        }
         break;
     }
 

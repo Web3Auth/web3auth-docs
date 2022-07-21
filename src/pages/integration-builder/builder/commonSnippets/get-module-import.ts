@@ -1,4 +1,9 @@
-export const getModuleImport = (chain: "eth" | "sol" | "starkex" | "starknet" | "tezos", isWhiteLabled: boolean, isCustomAuth: boolean) => {
+export const getModuleImport = (
+  chain: "eth" | "sol" | "starkex" | "starknet" | "tezos",
+  isWhiteLabled: boolean,
+  isCustomAuth: boolean,
+  evmFramework: "web3" | "ethers"
+) => {
   let code = `
 import { Web3Auth } from "@web3auth/web3auth";`;
 
@@ -14,23 +19,28 @@ import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";`;
   switch (chain) {
     case "sol":
       code += `
-import RPC from "./solana";`;
+import RPC from "./solanaRPC";`;
       break;
     case "starkex":
       code += `
-import RPC from "./starkex";`;
+import RPC from "./starkexRPC";`;
       break;
     case "starknet":
       code += `
-import RPC from "./starknet";`;
+import RPC from "./starknetRPC";`;
       break;
     case "tezos":
       code += `
-import RPC from "./tezos";`;
+import RPC from "./tezosRPC";`;
       break;
     default:
-      code += `
-import RPC from "./evm";`;
+      if (evmFramework === "ethers") {
+        code += `
+import RPC from "./ethersRPC";`;
+      } else {
+        code += `
+import RPC from "./web3RPC";`;
+      }
   }
   return code;
 };
