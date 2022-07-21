@@ -1,4 +1,4 @@
-export const getRPCFunctionsButtonsVue = (chain: "eth" | "sol" | "starkex" | "starknet" | "tezos") => {
+export const getRPCFunctionsButtonsVue = (chain: "sol" | "starkex" | "starknet" | "tezos") => {
   let code = `
       <button class="rpcBtn" @click="getChainId" style="cursor: pointer">Get Chain ID</button>
       <button class="rpcBtn" @click="getAccounts" style="cursor: pointer">Get Accounts</button>
@@ -6,6 +6,14 @@ export const getRPCFunctionsButtonsVue = (chain: "eth" | "sol" | "starkex" | "st
       <button class="rpcBtn" @click="sendTransaction" style="cursor: pointer">Send Transaction</button>
       <button class="rpcBtn" @click="signMessage" style="cursor: pointer">Sign Message</button>
       <button class="rpcBtn" @click="getPrivateKey" style="cursor: pointer">Get Private Key</button>`;
+  if (chain === "sol") {
+    code = `
+      <button class="rpcBtn" @click="getAccounts" style="cursor: pointer">Get Accounts</button>
+      <button class="rpcBtn" @click="getBalance" style="cursor: pointer">Get Balance</button>
+      <button class="rpcBtn" @click="sendTransaction" style="cursor: pointer">Send Transaction</button>
+      <button class="rpcBtn" @click="signMessage" style="cursor: pointer">Sign Message</button>
+      <button class="rpcBtn" @click="getPrivateKey" style="cursor: pointer">Get Private Key</button>`;
+  }
   if (chain === "starkex") {
     code = `
       <button class="rpcBtn" @click="onGetStarkAccount" style="cursor: pointer">Get Stark Accounts</button>
