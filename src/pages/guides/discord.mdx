@@ -190,3 +190,20 @@ Logging out your user is as simple as calling the `logout` function.
 The code for the application we developed in this guide can be found in the
 [Web3Auth Core Discord Login Example](https://github.com/Web3Auth/examples/tree/main/discord-core-react-example). Check it out and try running it
 locally yourself!
+
+## Troubleshoot
+
+---
+
+### Duplicate token found
+
+:::caution
+
+Receiving `Could not get result from torus nodes Duplicate token found` error when using Custom verifier for Discord?
+
+- This is because Discord issues the same token for 30 mins.
+- We revoke it for you for default verifiers( such as when using Web3Auth Modal `@webauth/web3auth`).
+- But when using Custom Verifier for Discord, the integrating dApps have to revoke the token themself before attempting the next login by using
+  discord clientId and secret to revoke the token.
+
+:::
