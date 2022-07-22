@@ -16,26 +16,26 @@ export default function FooterComponent() {
             <Logo style={{ width: 145 }} />
             <p>Web3Auth is where passwordless auth meets non-custodial key infrastructure for Web3 apps and wallets.</p>
             <div style={{ flexDirection: "row" }}>
-              <a href="https://t.me/web3auth" style={{ marginRight: 8 }}>
-                <Telegram />
+              <a href="https://github.com/web3auth/web3auth/discussions" style={{ marginRight: 8 }}>
+                <GitHub />
               </a>
               <a href="https://twitter.com/web3auth" style={{ marginRight: 8 }}>
                 <Twitter />
               </a>
+              <a href="http://discord.gg/web3auth">
+                <Discord />
+              </a>
               <a href="https://medium.com/toruslabs" style={{ marginRight: 8 }}>
                 <Medium />
-              </a>
-              <a href="https://github.com/web3auth" style={{ marginRight: 8 }}>
-                <GitHub />
-              </a>
-              <a href="https://www.linkedin.com/company/web3auth" style={{ marginRight: 8 }}>
-                <LinkedIn />
               </a>
               <a href="https://youtube.com/c/web3auth" style={{ marginRight: 8 }}>
                 <YouTube />
               </a>
-              <a href="http://discord.gg/web3auth">
-                <Discord />
+              <a href="https://t.me/web3auth" style={{ marginRight: 8 }}>
+                <Telegram />
+              </a>
+              <a href="https://www.linkedin.com/company/web3auth" style={{ marginRight: 8 }}>
+                <LinkedIn />
               </a>
             </div>
           </div>
@@ -135,8 +135,8 @@ export default function FooterComponent() {
               <strong>Community</strong>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="https://t.me/web3authdev" target="_blank" rel="noreferrer">
-                Telegram Developer
+              <a className="footer__link-item" href="https://github.com/web3auth/web3auth/discussions" target="_blank" rel="noreferrer">
+                Web3Auth Discussions Board
               </a>
             </div>
             <div className="footer__item">
