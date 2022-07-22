@@ -5,7 +5,8 @@ import * as getUserInfo from "../common/getUserInfo.mdx";
 import * as importModules from "../common/importModules.mdx";
 import * as importModulesCustom from "../common/importModulesCustom.mdx";
 import * as initialize from "../common/initialize.mdx";
-import * as installationEVM from "../common/installation/installationEVM.mdx";
+import * as installationEthers from "../common/installation/installationEthers.mdx";
+import * as installationWeb3 from "../common/installation/installationWeb3.mdx";
 import * as installationSolana from "../common/installation/installationSolana.mdx";
 import * as installationStarkEx from "../common/installation/installationStarkEx.mdx";
 import * as installationStarkNet from "../common/installation/installationStarkNet.mdx";
@@ -28,7 +29,8 @@ const STEPS = toSteps({
   installationSolana,
   installationStarkEx,
   installationStarkNet,
-  installationEVM,
+  installationEthers,
+  installationWeb3,
   installation,
   installationCustom,
   importModules,

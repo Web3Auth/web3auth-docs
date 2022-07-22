@@ -16,7 +16,8 @@ import * as importModulesCustom from "../common/importModulesCustom.mdx";
 import * as initialize from "../common/initialize.mdx";
 import * as installation from "../common/installation/installation.mdx";
 import * as installationCustom from "../common/installation/installationCustom.mdx";
-import * as installationEVM from "../common/installation/installationEVM.mdx";
+import * as installationEthers from "../common/installation/installationEthers.mdx";
+import * as installationWeb3 from "../common/installation/installationWeb3.mdx";
 import * as installationSolana from "../common/installation/installationSolana.mdx";
 import * as installationStarkEx from "../common/installation/installationStarkEx.mdx";
 import * as installationStarkNet from "../common/installation/installationStarkNet.mdx";
@@ -42,7 +43,8 @@ const STEPS = toSteps({
   installationStarkEx,
   installationStarkNet,
   installationTezos,
-  installationEVM,
+  installationEthers,
+  installationWeb3,
   installation,
   installationCustom,
   importModules,
@@ -189,13 +191,23 @@ const reactSteps = {
         });
         break;
       default:
-        steps.push({
-          ...STEPS.installationEVM,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: evmFramework === "ethers" ? "chains/evm/ethersRPC.ts" : "chains/evm/web3RPC.ts",
-            range: "1-2",
-          }),
-        });
+        if (evmFramework === "ethers") {
+          steps.push({
+            ...STEPS.installationEthers,
+            pointer: replacementAggregator.rangeOffsetEditor({
+              filename: "chains/evm/ethersRPC.ts",
+              range: "1-2",
+            }),
+          });
+        } else {
+          steps.push({
+            ...STEPS.installationWeb3,
+            pointer: replacementAggregator.rangeOffsetEditor({
+              filename: "chains/evm/web3RPC.ts",
+              range: "1-2",
+            }),
+          });
+        }
         filenames.push();
     }
 
@@ -312,23 +324,13 @@ const reactSteps = {
         });
         break;
       default:
-        if (evmFramework === "ethers") {
-          steps.push({
-            ...STEPS.evmRPCFunctions,
-            pointer: replacementAggregator.rangeOffsetEditor({
-              filename: evmFramework === "ethers" ? "chains/evm/ethersRPC.ts" : "chains/evm/web3RPC.ts",
-              range: "10-18",
-            }),
-          });
-        } else {
-          steps.push({
-            ...STEPS.evmRPCFunctions,
-            pointer: replacementAggregator.rangeOffsetEditor({
-              filename: "chains/evm/web3RPC.ts",
-              range: "10-18",
-            }),
-          });
-        }
+        steps.push({
+          ...STEPS.evmRPCFunctions,
+          pointer: replacementAggregator.rangeOffsetEditor({
+            filename: evmFramework === "ethers" ? "chains/evm/ethersRPC.ts" : "chains/evm/web3RPC.ts",
+            range: "10-18",
+          }),
+        });
         break;
     }
 
