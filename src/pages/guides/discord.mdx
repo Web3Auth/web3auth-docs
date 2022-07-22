@@ -207,3 +207,21 @@ Receiving `Could not get result from torus nodes Duplicate token found` error wh
   discord clientId and secret to revoke the token.
 
 :::
+
+Here's the sample code to revoke the token:
+
+```js
+const axios = require("axios").default;
+const FormData = require("form-data");
+
+const { DISCORD_CLIENT_SECRET, DISCORD_CLIENT_ID } = process.env;
+const { token } = req.body;
+const formData = new FormData();
+formData.append("token", token);
+await axios.post("https://discord.com/api/oauth2/token/revoke", formData, {
+  headers: {
+    ...formData.getHeaders(),
+    Authorization: `Basic ${Buffer.from(`${DISCORD_CLIENT_ID}:${DISCORD_CLIENT_SECRET}`, "binary").toString("base64")}`,
+  },
+});
+```
