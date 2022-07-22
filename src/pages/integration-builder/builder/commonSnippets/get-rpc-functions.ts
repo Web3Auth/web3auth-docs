@@ -1,6 +1,6 @@
 export const getRPCFunctions = (chain: "sol" | "starkex" | "starknet" | "tezos") => {
   let code = `
-  getChainId = async () => {
+  const getChainId = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
       return;
@@ -9,7 +9,7 @@ export const getRPCFunctions = (chain: "sol" | "starkex" | "starknet" | "tezos")
     const chainId = await rpc.getChainId();
     console.log(chainId);
   };
-  getAccounts = async () => {
+  const getAccounts = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
       return;
@@ -19,7 +19,7 @@ export const getRPCFunctions = (chain: "sol" | "starkex" | "starknet" | "tezos")
     console.log(address);
   };
 
-  getBalance = async () => {
+  const getBalance = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
       return;
@@ -29,7 +29,7 @@ export const getRPCFunctions = (chain: "sol" | "starkex" | "starknet" | "tezos")
     console.log(balance);
   };
 
-  sendTransaction = async () => {
+  const sendTransaction = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
       return;
@@ -39,7 +39,7 @@ export const getRPCFunctions = (chain: "sol" | "starkex" | "starknet" | "tezos")
     console.log(receipt);
   };
 
-  signMessage = async () => {
+  const signMessage = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
       return;
@@ -49,7 +49,7 @@ export const getRPCFunctions = (chain: "sol" | "starkex" | "starknet" | "tezos")
     console.log(signedMessage);
   };
 
-  getPrivateKey = async () => {
+  const getPrivateKey = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
       return;
@@ -60,7 +60,7 @@ export const getRPCFunctions = (chain: "sol" | "starkex" | "starknet" | "tezos")
   };`;
   if (chain === "sol") {
     code = `
-  getAccounts = async () => {
+  const getAccounts = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
       return;
@@ -70,7 +70,7 @@ export const getRPCFunctions = (chain: "sol" | "starkex" | "starknet" | "tezos")
     console.log(address);
   };
 
-  getBalance = async () => {
+  const getBalance = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
       return;
@@ -80,7 +80,7 @@ export const getRPCFunctions = (chain: "sol" | "starkex" | "starknet" | "tezos")
     console.log(balance);
   };
 
-  sendTransaction = async () => {
+  const sendTransaction = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
       return;
@@ -90,7 +90,7 @@ export const getRPCFunctions = (chain: "sol" | "starkex" | "starknet" | "tezos")
     console.log(receipt);
   };
 
-  signMessage = async () => {
+  const signMessage = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
       return;
@@ -100,7 +100,7 @@ export const getRPCFunctions = (chain: "sol" | "starkex" | "starknet" | "tezos")
     console.log(signedMessage);
   };
 
-  getPrivateKey = async () => {
+  const getPrivateKey = async () => {
     if (!provider) {
       console.log("provider not initialized yet");
       return;
