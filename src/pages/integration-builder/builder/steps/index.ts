@@ -66,7 +66,56 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
   displayName: "Web3Auth",
 
   // Options that will be displayed in the UI for selection
-  options: {},
+  options: {
+    lang: {
+      displayName: "Language/Framework",
+      default: LANGS[0].key,
+      type: "dropdown",
+      choices: LANGS,
+    },
+    chain: {
+      displayName: "Blockchain",
+      default: CHAINS[0].key,
+      type: "dropdown",
+      choices: CHAINS,
+    },
+    customAuthentication: {
+      displayName: "Custom Authentication",
+      default: TOGGLE_CHOICES[0].key,
+      type: "toggle",
+      choices: TOGGLE_CHOICES,
+    },
+    whitelabel: {
+      displayName: "Whitelabel",
+      default: TOGGLE_CHOICES[0].key,
+      type: "toggle",
+      choices: TOGGLE_CHOICES,
+    },
+    dynamicConstructorParams: {
+      displayName: "Dynamic Constructor Params",
+      default: TOGGLE_CHOICES[0].key,
+      type: "toggle",
+      choices: TOGGLE_CHOICES,
+    },
+    usingEmailPasswordless: {
+      displayName: "Using Email Passwordless",
+      default: TOGGLE_CHOICES[0].key,
+      type: "toggle",
+      choices: TOGGLE_CHOICES,
+    },
+    rnWorkflowMode: {
+      displayName: "Workflow",
+      default: RN_MODE_CHOICES[0].key,
+      type: "dropdown",
+      choices: RN_MODE_CHOICES,
+    },
+    evmFramework: {
+      displayName: "EVM Chain Framework",
+      default: EVM_FRAMEWORK_CHOICES[0].key,
+      type: "dropdown",
+      choices: EVM_FRAMEWORK_CHOICES,
+    },
+  },
 
   // Build integrations based on input values
   build(values: Record<string, string>, files: Record<string, string>) {
@@ -138,23 +187,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
       },
     };
 
-    if (values.lang === "android" || values.lang === "ios" || values.lang === "flutter") {
-      this.options = {
-        ...this.options,
-        dynamicConstructorParams: {
-          displayName: "Dynamic Constructor Params",
-          default: TOGGLE_CHOICES[0].key,
-          type: "toggle",
-          choices: TOGGLE_CHOICES,
-        },
-        usingEmailPasswordless: {
-          displayName: "Using Email Passwordless",
-          default: TOGGLE_CHOICES[0].key,
-          type: "toggle",
-          choices: TOGGLE_CHOICES,
-        },
-      };
-    } else if (values.lang === "react-native") {
+    if (values.lang in Mobile) {
       this.options = {
         ...this.options,
         usingEmailPasswordless: {
@@ -163,13 +196,29 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
           type: "toggle",
           choices: TOGGLE_CHOICES,
         },
-        mode: {
-          displayName: "Workflow",
-          default: RN_MODE_CHOICES[0].key,
-          type: "dropdown",
-          choices: RN_MODE_CHOICES,
-        },
       };
+
+      if (values.lang === "react-native") {
+        this.options = {
+          ...this.options,
+          rnWorkflowMode: {
+            displayName: "Workflow",
+            default: RN_MODE_CHOICES[0].key,
+            type: "dropdown",
+            choices: RN_MODE_CHOICES,
+          },
+        };
+      } else {
+        this.options = {
+          ...this.options,
+          dynamicConstructorParams: {
+            displayName: "Dynamic Constructor Params",
+            default: TOGGLE_CHOICES[0].key,
+            type: "toggle",
+            choices: TOGGLE_CHOICES,
+          },
+        };
+      }
     }
 
     this.options = {
