@@ -16,6 +16,7 @@ export const getConstructorCode = (chain: "sol" | "starkex" | "starknet" | "tezo
   if (chain === "sol") {
     chainDetails = `
           chainNamespace: CHAIN_NAMESPACES.SOLANA,
+          chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
           rpcTarget: "${rpcTargetMap[chain]}", // This is the public RPC we have added, please pass on your own endpoint while creating an app`;
   } else if (chain === "starkex" || chain === "starknet" || chain === "tezos") {
     chainDetails = `

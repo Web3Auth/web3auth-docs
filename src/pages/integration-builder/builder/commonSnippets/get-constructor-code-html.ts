@@ -16,6 +16,7 @@ export const getConstructorCodeHTML = (chain: "sol", isWhiteLabled: boolean) => 
   if (chain === "sol") {
     chainDetails = `
           chainNamespace: "solana",
+          chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
           rpcTarget: "${rpcTargetMap[chain]}", // This is the public RPC we have added, please pass on your own endpoint while creating an app`;
   } else {
     chainDetails = `
