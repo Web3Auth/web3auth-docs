@@ -4,7 +4,7 @@ const githubOrg = "web3auth";
 const githubRepo = "web3auth-docs";
 const githubOrgUrl = `https://github.com/${githubOrg}`;
 const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
-const githubCoreRepoUrl = `${githubOrgUrl}/${githubOrg}`;
+const githubDiscussionsUrl = `${githubOrgUrl}/${githubOrg}/discussions`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
 const contactUrl = "https://calendly.com/web3auth/meeting-with-web3auth";
 const mediumUrl = "https://medium.com/toruslabs";
@@ -70,7 +70,7 @@ module.exports = {
         },
         {
           position: "right",
-          href: githubCoreRepoUrl,
+          href: githubDiscussionsUrl,
           className: "navbar-github-link",
           "aria-label": "GitHub repository",
         },

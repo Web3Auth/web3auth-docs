@@ -6,6 +6,12 @@ export const chainIdMap = {
   avax: "0xA86A",
   arbitrum: "0xA4B1",
   optimism: "0xA",
+  cronos: "0x19",
+  harmony: "0x63564c40",
+  celo: "0xa4ec",
+  moonbeam: "0x504",
+  moonriver: "Ox505",
+  klatyn: "0x2019",
 };
 
 export const rpcTargetMap = {
@@ -16,4 +22,10 @@ export const rpcTargetMap = {
   avax: "api.avax.network/ext/bc/C/rpc",
   arbitrum: "https://arb1.arbitrum.io/rpc",
   optimism: "https://mainnet.optimism.io",
+  cronos: "https://evm.cronos.org",
+  harmony: "https://rpc.ankr.com/harmony",
+  celo: "https://rpc.ankr.com/celo",
+  moonbeam: "https://rpc.ankr.com/moonbeam",
+  moonriver: "https://moonriver.public.blastapi.io",
+  klatyn: "https://public-node-api.klaytnapi.com/v1/cypress",
 };

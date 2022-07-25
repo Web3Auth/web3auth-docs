@@ -5,7 +5,8 @@ import * as getUserInfo from "../common/getUserInfo.mdx";
 import * as importModules from "../common/importModules.mdx";
 import * as importModulesCustom from "../common/importModulesCustom.mdx";
 import * as initialize from "../common/initialize.mdx";
-import * as installationEVM from "../common/installation/installationEVM.mdx";
+import * as installationEthers from "../common/installation/installationEthers.mdx";
+import * as installationWeb3 from "../common/installation/installationWeb3.mdx";
 import * as installationSolana from "../common/installation/installationSolana.mdx";
 import * as installationStarkEx from "../common/installation/installationStarkEx.mdx";
 import * as installationStarkNet from "../common/installation/installationStarkNet.mdx";
@@ -28,7 +29,8 @@ const STEPS = toSteps({
   installationSolana,
   installationStarkEx,
   installationStarkNet,
-  installationEVM,
+  installationEthers,
+  installationWeb3,
   installation,
   installationCustom,
   importModules,
@@ -50,7 +52,7 @@ const STEPS = toSteps({
 
 const htmlSteps = {
   STEPS,
-  build({ filenames, files, steps, whitelabel, customAuthentication, chain }) {
+  build({ filenames, files, steps, whitelabel, customAuthentication, chain, evmFramework }) {
     const newFiles = files;
 
     const replacementAggregator = new ReplaceFileAggregator();
@@ -79,7 +81,7 @@ const htmlSteps = {
       OpenloginAdapterHTML
     );
 
-    const ScriptImport = getScriptImport(chain, whitelabel === "yes", customAuthentication === "yes");
+    const ScriptImport = getScriptImport(chain, whitelabel === "yes", customAuthentication === "yes", evmFramework);
     newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
       files["frameworks/html/index.html"],
       "frameworks/html/index.html",
@@ -90,10 +92,10 @@ const htmlSteps = {
     filenames.push(`frameworks/html/index.html`);
     switch (chain) {
       case "sol":
-        filenames.push("chains/solana/solana.js");
+        filenames.push("chains/solana/solanaRPC.js");
         break;
       default:
-        filenames.push("chains/evm/evm.js");
+        filenames.push(evmFramework === "ethers" ? "chains/evm/ethersRPC.js" : "chains/evm/web3RPC.js");
         break;
     }
     filenames.push("frameworks/html/style.css");
@@ -171,7 +173,7 @@ const htmlSteps = {
         steps.push({
           ...STEPS.solanaRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "chains/solana/solana.js",
+            filename: "chains/solana/solanaRPC.js",
             range: "71-84",
           }),
         });
@@ -180,7 +182,7 @@ const htmlSteps = {
         steps.push({
           ...STEPS.evmRPCFunctions,
           pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "chains/evm/evm.js",
+            filename: evmFramework === "ethers" ? "chains/evm/ethersRPC.js" : "chains/evm/web3RPC.js",
             range: "22-43",
           }),
         });

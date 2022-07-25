@@ -1,10 +1,19 @@
-export const getRPCFunctionsReturnsVue = (chain: "eth" | "sol" | "starkex" | "starknet" | "tezos") => {
+export const getRPCFunctionsReturnsVue = (chain: "sol" | "starkex" | "starknet" | "tezos") => {
   let code = `
+      getChainId,
       getAccounts,
       getBalance,
+      sendTransaction,
       signMessage,
-      signTransaction,
-      sendTransaction`;
+      getPrivateKey`;
+  if (chain === "sol") {
+    code = `
+      getAccounts,
+      getBalance,
+      sendTransaction,
+      signMessage,
+      getPrivateKey`;
+  }
   if (chain === "starkex") {
     code = `
       onGetStarkAccount,
