@@ -104,6 +104,7 @@ module.exports = {
       {
         docs: {
           routeBasePath: "/",
+          breadcrumbs: false,
           editUrl: githubEditUrl,
           sidebarPath: require.resolve("./sidebars.js"),
           remarkPlugins: [remarkMath],
