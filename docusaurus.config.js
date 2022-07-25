@@ -30,9 +30,9 @@ module.exports = {
       },
     },
     colorMode: {
-      defaultMode: "light", // "light" | "dark"
-      disableSwitch: false, // Set to "true" when Dark mode is ready
-      respectPrefersColorScheme: true, // Set to "true" when Dark mode is ready
+      defaultMode: "light",
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
     },
     prism: {
       additionalLanguages: ["groovy", "java", "kotlin", "swift", "dart"],
@@ -151,34 +151,6 @@ module.exports = {
             to: "/quick-start",
           },
           {
-            from: "/api-reference/web/choosesdk/",
-            to: "/sdk/web/",
-          },
-          {
-            from: "/api-reference/web/plugnplay",
-            to: "/sdk/web/web3auth/",
-          },
-          {
-            from: "/api-reference/web/customloginui",
-            to: "/sdk/web/core/",
-          },
-          {
-            from: "/api-reference/android/setting-up",
-            to: "/sdk/android/",
-          },
-          {
-            from: "/api-reference/ios/setting-up",
-            to: "/sdk/ios/",
-          },
-          {
-            from: "/api-reference/flutter/setting-up",
-            to: "/sdk/flutter/",
-          },
-          {
-            from: "/api-reference/react-native/choose-workflows",
-            to: "/sdk/react-native/",
-          },
-          {
             from: "/customauth/auth0",
             to: "/guides/auth0",
           },
@@ -210,22 +182,83 @@ module.exports = {
             from: "/api-reference/",
             to: "/sdk/",
           },
+          {
+            from: "/api-reference/web/choosesdk/",
+            to: "/sdk/web/",
+          },
+          {
+            from: "/api-reference/web/plugnplay",
+            to: "/sdk/web/web3auth/",
+          },
+          {
+            from: "/api-reference/web/customloginui",
+            to: "/sdk/web/core/",
+          },
+          {
+            from: "/api-reference/android/setting-up",
+            to: "/sdk/android/",
+          },
+          {
+            from: "/api-reference/ios/setting-up",
+            to: "/sdk/ios/",
+          },
+          {
+            from: "/api-reference/flutter/setting-up",
+            to: "/sdk/flutter/",
+          },
+          {
+            from: "/api-reference/react-native/choose-workflows",
+            to: "/sdk/react-native/",
+          },
+          {
+            from: "/customauth/verifiers",
+            to: "/custom-authentication/verifiers",
+          },
+          {
+            from: "/api-reference/web/",
+            to: "/sdk/web/",
+          },
+          {
+            from: "/api-reference/android/",
+            to: "/sdk/android/",
+          },
+          {
+            from: "/api-reference/ios/",
+            to: "/sdk/ios/",
+          },
+          {
+            from: "/api-reference/react-native/",
+            to: "/sdk/react-native/",
+          },
+          {
+            from: "/api-reference/flutter/",
+            to: "/sdk/flutter/",
+          },
+          {
+            from: "/api-reference/react-native/chooseworkflows",
+            to: "/sdk/react-native/",
+          },
+          {
+            from: "/api-reference/web/customauth",
+            to: "/sdk/web/core/custom-authentication",
+          },
+          {
+            from: "/api-reference/web/plugins",
+            to: "/sdk/web/plugins/",
+          },
+          {
+            from: "/api-reference/web/adapters",
+            to: "/sdk/web/adapters/",
+          },
+          {
+            from: "/authenticating-users/external-wallets",
+            to: "/server-side-verification/external-wallets",
+          },
+          {
+            from: "/authenticating-users/social-login-users",
+            to: "/server-side-verification/social-login-users",
+          },
         ],
-        createRedirects(existingPath) {
-          if (existingPath.includes("/customauth/")) {
-            return [existingPath.replace("/customauth", "/custom-authentication/")];
-          }
-          if (existingPath.includes("/whitelabeling/")) {
-            return [existingPath.replace("/whitelabeling/", "/whitelabel/")];
-          }
-          if (existingPath.includes("/authenticating-users/")) {
-            return [existingPath.replace("/authenticating-users/", "/server-side-verification/")];
-          }
-          if (existingPath.includes("/api-reference/")) {
-            return [existingPath.replace("/api-reference/", "/sdk/")];
-          }
-          return undefined; // Return a falsy value: no redirect created
-        },
       },
     ],
   ],
