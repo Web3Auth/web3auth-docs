@@ -23,7 +23,7 @@ const STEPS = toSteps({
 
 const reactSteps = {
   STEPS,
-  build({ filenames, files, steps, whitelabel, customAuthentication, usingEmailPasswordless, mode }) {
+  build({ filenames, files, steps, whitelabel, customAuthentication, usingEmailPasswordless, rnWorkflowMode }) {
     const newFiles = files;
     const replacementAggregator = new ReplaceFileAggregator();
 
@@ -45,7 +45,7 @@ const reactSteps = {
       InitCodeRN
     );
 
-    const ModuleImportRN = getModuleImportRN(mode);
+    const ModuleImportRN = getModuleImportRN(rnWorkflowMode);
     newFiles[FILENAME_APP_TSX] = replacementAggregator.replaceFileVariable(
       files[FILENAME_APP_TSX],
       FILENAME_APP_TSX,
@@ -53,7 +53,7 @@ const reactSteps = {
       ModuleImportRN
     );
 
-    const ResolvedRedirectUrl = getResolvedRedirectUrl(mode);
+    const ResolvedRedirectUrl = getResolvedRedirectUrl(rnWorkflowMode);
     newFiles[FILENAME_APP_TSX] = replacementAggregator.replaceFileVariable(
       files[FILENAME_APP_TSX],
       FILENAME_APP_TSX,
@@ -63,7 +63,7 @@ const reactSteps = {
 
     filenames.push(FILENAME_APP_TSX);
 
-    const isExpo = mode === "expo";
+    const isExpo = rnWorkflowMode === "expo";
     const isCustomAuth = customAuthentication === "yes";
     const isWhitelabel = whitelabel === "yes";
 
