@@ -1,9 +1,6 @@
 export const getInitCodeHTML = (isWhiteLabled: boolean) => {
   let code = `
-      await web3auth.initModal();
-      if (web3auth.provider) {
-        setProvider(web3auth.provider);
-      }`;
+      await web3auth.initModal();`;
   if (isWhiteLabled) {
     code = `
       await web3auth.initModal({
@@ -18,10 +15,7 @@ export const getInitCodeHTML = (isWhiteLabled: boolean) => {
             },
           },
         },
-      });
-      if (web3auth.provider) {
-        setProvider(web3auth.provider);
-      }`;
+      });`;
   }
   return code;
 };

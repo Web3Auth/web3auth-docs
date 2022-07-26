@@ -44,7 +44,9 @@ export default {
 
         // REPLACE-getInitCode-
 
-
+        if (web3auth.provider) {
+          provider = web3auth.provider;
+        };
       } catch (error) {
         console.log("error", error);
         console.log("error", error);

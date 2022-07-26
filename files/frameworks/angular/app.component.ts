@@ -23,7 +23,9 @@ export class AppComponent {
 
       // REPLACE-getInitCode-
 
-
+      if (web3auth.provider) {
+        this.provider = web3auth.provider;
+      }
       this.isModalLoaded = true;
     }
 

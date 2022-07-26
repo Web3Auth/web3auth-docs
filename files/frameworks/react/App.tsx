@@ -22,7 +22,9 @@ function App() {
 
           // REPLACE-getInitCode-
 
-
+        if (web3auth.provider) {
+          setProvider(web3auth.provider);
+        };
       } catch (error) {
         console.error(error);
       }
