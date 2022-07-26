@@ -103,10 +103,28 @@
         }
       });
 
+      $("#send-transaction").click(async function (event) {
+        try {
+          const receipt = await rpc.sendTransaction(web3auth.provider);
+          console.log(receipt);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
       $("#sign-message").click(async function (event) {
         try {
           const signedMsg = await rpc.signMessage(web3auth.provider);
           console.log(signedMsg);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#get-private-key").click(async function (event) {
+        try {
+          const privateKey = await rpc.getPrivateKey(web3auth.provider);
+          console.log(privateKey);
         } catch (error) {
           console.error(error.message);
         }

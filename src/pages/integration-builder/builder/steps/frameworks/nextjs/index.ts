@@ -146,7 +146,7 @@ const nextjsSteps = {
         filenames.push(evmFramework === "ethers" ? "chains/evm/ethersRPC.ts" : "chains/evm/web3RPC.ts");
     }
     filenames.push("frameworks/nextjs/index.tsx");
-    filenames.push("frameworks/nextjs/global.css");
+    filenames.push("frameworks/nextjs/globals.css");
 
     steps.push({
       ...STEPS.buildingApp,
