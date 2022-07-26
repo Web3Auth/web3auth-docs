@@ -8,9 +8,8 @@ const rpc = (() => {
     const ethersProvider = new ethers.providers.Web3Provider(provider);
 
     // Get the connected Chain's ID
-    const chainId = await ethersProvider.getNetwork();
-
-    return chainId.toString();
+    const networkDetails = await ethersProvider.getNetwork();
+    return networkDetails.chainId;
   };
 
   const getAccounts = async (provider) => {
@@ -42,10 +41,10 @@ const rpc = (() => {
     const ethersProvider = new ethers.providers.Web3Provider(provider);
     const signer = ethersProvider.getSigner();
 
-    const destination = "0x7aFac68875d2841dc16F1730Fba43974060b907A";
+    const destination = "0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56";
 
     // Convert 1 ether to wei
-    const amount = ethers.utils.parseEther("1.0");
+    const amount = ethers.utils.parseEther("0.001");
 
     // Submit transaction to the blockchain
     const tx = await signer.sendTransaction({

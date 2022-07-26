@@ -46,7 +46,7 @@ const rpc = (() => {
     const destination = "0x7aFac68875d2841dc16F1730Fba43974060b907A";
 
     // Convert 1 ether to wei
-    const amount = web3.utils.toWei(1);
+    const amount = web3.utils.toWei(0.001);
 
     // Submit transaction to the blockchain and wait for it to be mined
     const receipt = await web3.eth.sendTransaction({

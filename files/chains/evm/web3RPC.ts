@@ -21,7 +21,7 @@ export default class EthereumRpc {
     }
   }
 
-  async getAccounts(): Promise<string[]> {
+  async getAccounts(): Promise<any> {
     try {
       const web3 = new Web3(this.provider as any);
 
@@ -30,7 +30,7 @@ export default class EthereumRpc {
 
       return address;
     } catch (error) {
-      return error as string[];
+      return error;
     }
   }
 
@@ -52,16 +52,16 @@ export default class EthereumRpc {
     }
   }
 
-  async sendTransaction(): Promise<string> {
+  async sendTransaction(): Promise<any> {
     try {
       const web3 = new Web3(this.provider as any);
 
       // Get user's Ethereum public address
       const fromAddress = (await web3.eth.getAccounts())[0];
 
-      const destination = "0x7aFac68875d2841dc16F1730Fba43974060b907A";
+      const destination = fromAddress;
 
-      const amount = web3.utils.toWei(1); // Convert 1 ether to wei
+      const amount = web3.utils.toWei("0.001"); // Convert 1 ether to wei
 
       // Submit transaction to the blockchain and wait for it to be mined
       const receipt = await web3.eth.sendTransaction({
@@ -88,7 +88,11 @@ export default class EthereumRpc {
       const originalMessage = "YOUR_MESSAGE";
 
       // Sign the message
-      const signedMessage = await web3.eth.personal.sign(originalMessage, fromAddress);
+      const signedMessage = await web3.eth.personal.sign(
+        originalMessage,
+        fromAddress,
+        "test password!" // configure your own password here.
+      );
 
       return signedMessage;
     } catch (error) {
@@ -96,7 +100,7 @@ export default class EthereumRpc {
     }
   }
 
-  async getPrivateKey(): Promise<string> {
+  async getPrivateKey(): Promise<any> {
     try {
       const privateKey = await this.provider.request({
         method: "eth_private_key",
