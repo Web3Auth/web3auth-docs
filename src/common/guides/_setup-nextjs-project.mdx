@@ -1,0 +1,69 @@
+#### Install the JWT library to decode the idToken
+
+```bash
+npm install jose --save
+```
+
+> Note: We are using `jose` JWT library in this example, but feel free to use other JWT libraries.
+
+#### Creating an API endpoint to validate the idToken
+
+Update the `pages/api/hello.ts` file to include the following code:
+
+```ts
+// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import type { NextApiRequest, NextApiResponse } from "next";
+import * as jose from "jose";
+
+type Data = {
+  name: string;
+};
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
+  try {
+    const idToken = req.headers.authorization?.split(" ")[1] || "";
+    const app_pub_key = req.body.appPubKey;
+    const jwks = jose.createRemoteJWKSet(new URL("https://api.openlogin.com/jwks"));
+    const jwtDecoded = await jose.jwtVerify(idToken, jwks, {
+      algorithms: ["ES256"],
+    });
+
+    if ((jwtDecoded.payload as any).wallets[0].public_key == app_pub_key) {
+      // Verified
+      console.log("Validation Success");
+      res.status(200).json({ name: "Validation Success" });
+    } else {
+      res.status(200).json({ name: "Validation" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+```
+
+Once your API endpoint is ready, you can validate the idToken from frontend with the following code:
+
+```ts
+const user = await web3auth.getUserInfo();
+
+// parse the idToken from the user object
+const base64Url = user?.idToken.split(".")[1];
+const base64 = base64Url.replace("-", "+").replace("_", "/");
+const parsedToken = JSON.parse(window.atob(base64));
+
+// Validate idToken with server
+const res = await fetch("/api/hello", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + user.idToken,
+  },
+  body: JSON.stringify({ appPubKey: parsedToken.wallets[0].public_key }),
+});
+if (res.status === 200) {
+  console.log("JWT Verification is Successful");
+  // allow login
+} else {
+  console.log("JWT Verification Failed");
+}
+```

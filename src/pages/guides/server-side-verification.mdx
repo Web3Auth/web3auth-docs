@@ -1,12 +1,12 @@
 ---
-title: Using Facebook with Web3Auth
-image: "/docs/contents/guides/banners/facebook.svg"
-description: Learn how to use Web3Auth Plug and Play Core SDK  for Facebook Custom Authentication.
+title: Using Server Side Verification with Web3Auth
+image: "/docs/contents/guides/banners/ssv.svg"
+description: Learn how to use Web3Auth Server Side Verification inside a Next.js application.
 type: guide
-tags: [ethereum, web3auth core, facebook]
-date: 18th July 2022
+tags: [ethereum, web3auth core, google, next.js, server side verification]
+date: 26th July 2022
 author: Web3Auth Team
-order: 7
+order: 3
 ---
 
 import TabItem from "@theme/TabItem";
@@ -16,44 +16,44 @@ import SEO from "@site/src/components/SEO";
 
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
 import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
+import SetupNextjsProject from "@site/src/common/guides/_setup-nextjs-project.mdx";
 import Installation from "@site/src/common/guides/_installation.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
 import InitializationIntro from "@site/src/common/guides/_initialization-intro.mdx";
 import InitializationWeb3Auth from "@site/src/common/guides/_initialization-web3auth.mdx";
 import InstantiationWeb3Auth from "@site/src/common/guides/_instantiation-web3auth.mdx";
 import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
-import OpenloginConfigCodeFacebook from "@site/src/common/guides/_openlogin-config-code-facebook.mdx";
+import OpenloginConfigCodeGoogle from "@site/src/common/guides/_openlogin-config-code-google.mdx";
 
 <SEO
-  title="Using Facebook with Web3Auth"
-  description="Learn how to use Web3Auth Plug and Play Core SDK  for Facebook Custom Authentication."
-  image="https://web3auth.io/docs/contents/guides/banners/facebook.svg"
-  slug="/guides/facebook"
+  title="Using Google with Web3Auth"
+  description="Learn how to use Web3Auth Plug and Play Core SDK  for Google Custom Authentication."
+  image="https://web3auth.io/docs/contents/guides/banners/ssv.svg"
+  slug="/guides/server-side-verification"
 />
 
-This guide will cover the basics of how to set up your Web3Auth SDK and Facebook Login for the custom authentication and provide you the steps on how
-to develop a basic web application on the Ethereum blockchain.
+This guide will cover the basics of how to use Web3Auth's Server Side Verification at your backend to verify the `idToken` received.
 
-**Live Demo:** https://web3auth-core-facebook-demo.vercel.app
+**Live Demo:** https://web3auth-ssv-demo.vercel.app
 
 ## Quick Start
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd facebook-core-react-example
+cd ssv-nextjs-example
 npm install
-npm run start
+npm run dev
 ```
 
 ## How it works?
 
 ---
 
-When integrating Web3Auth with Facebook Login the flow looks something like this:
+When integrating Web3Auth with Google Login the flow looks something like this:
 
-![Web3Auth Core - Facebook Login Flow](/images/implicit-flow.svg)
+![Web3Auth Core - Google Login Flow](/images/implicit-flow.svg)
 
-- When a user logs in with `Facebook`, Facebook sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
+- When a user logs in with `Google`, Google sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
 
 - Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
   easy onboarding for your user to the application.
@@ -64,35 +64,24 @@ When integrating Web3Auth with Facebook Login the flow looks something like this
 
 <Web3AuthPrerequisites />
 
-- A [Facebook Developer](https://developers.facebook.com/docs/development/create-an-app) account to be used as Login provider for Web3Auth Custom
-  Authentication.
+- A [Google Developer](https://console.developers.google.com) account to be used as Login provider for Web3Auth Custom Authentication.
 
 ## Setup
 
 ---
 
-### Setup your Facebook App
+### Setup your Google App
 
-1. Follow Facebook's instruction to [create a new app](https://developers.facebook.com/docs/development/create-an-app).
-2. When creating an app, make sure to select `Consumer` from this screen to use Facebook Login.
-   ![Facebook OAuth2.0 App Dashboard](/contents/social-providers/facebook/facebook-app.png)
-
-3. On the next screen, you'll be presented with different products you can integrate into your Facebook app. Click **"Set Up"** in the card
-   representing the **Facebook Login** capability.
-
-   ![Facebook OAuth2.0 App Dashboard](/contents/social-providers/facebook/facebook-login-setup.png)
-
-4. Paste the following as Redirect URI into the "Valid OAuth Redirect URIs" field.
+1. Follow Google’s instructions to [set up an OAuth 2.0 app.](https://support.google.com/cloud/answer/6158849?hl=en)
+2. Paste the following as Redirect URI into the "Authorized redirect URIs" field.
 
    - https://beta.openlogin.com/auth (for Web3Auth testnet used in demo applications)
 
    - https://app.openlogin.com/auth (for Web3Auth mainnet used in production applications)
 
-   ![Facebook OAuth2.0 App Dashboard](/contents/social-providers/facebook/facebook-login-settings-oauth.png)
+   ![Google OAuth2.0 App Dashboard](/contents/social-providers/google/google-app-redirect-uri.png)
 
-5. Obtain the "App ID" and "App Secret" from the **Settings > Basic** screen.
-
-   ![Facebook OAuth2.0 App Dashboard](/contents/social-providers/facebook/facebook-app-id-secret.png)
+3. Obtain the OAuth `Client ID` from your [App on the Google Developer dashboard](https://console.developers.google.com/)
 
 ### Setup your Web3Auth Dashboard
 
@@ -101,16 +90,19 @@ When integrating Web3Auth with Facebook Login the flow looks something like this
 - Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
   configuration:
 
-  - Choose a name of your choice for the verifier identifier. `eg. facebook-core-verifier`
+  - Choose a name of your choice for the verifier identifier. `eg. google-core-verifier`
   - Select environment: `testnet`, `mainnet` or `cyan` as per your requirement.
-  - Select `Facebook` from the **Login Provider**.
-    ![Facebook - Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
-  - Paste the **App ID** and **App Secret** from the Facebook App(above) to the `Client ID` and `Client Secret` field respectively.
-    ![Facebook Client ID on Web3Auth Dashboard](/dashboard/verifiers/facebook-verifier.png)
+  - Select `Google` from the **Login Provider**. ![Google - Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
+  - Paste the **Client ID** from the Google App(above) to the `Client ID` field.
+    ![Google Client ID on Web3Auth Dashboard](/dashboard/verifiers/google-verifier.png)
   - Click on `Create` button to create your verifier. It may take up to 10 minutes to deploy verifier on _testnet_. You'll receive an email once it's
     complete.
 
 - You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+
+### Setup your Next.js Project
+
+<SetupNextjsProject />
 
 ## Using the Web3Auth SDK
 
@@ -120,7 +112,7 @@ To use the Web3Auth SDK, you need to add the dependency of the respective platfo
 SDKs, please have a look at this [documentation page](/docs/sdk).
 
 For this guide here, we will be talking through the [Web3Auth Plug and Play Core SDK](/sdk/web/core) and using the
-[OpenLogin Provider](/sdk/web/openlogin) alongside it to enable Custom Authentication through Facebook Login.
+[OpenLogin Provider](/sdk/web/openlogin) alongside it to enable Custom Authentication through Google Login.
 
 <SetupBaseProject />
 
@@ -141,7 +133,7 @@ Initialization of the Web3Auth SDK. To know more about the other things you can 
 
 #### Initialising the Openlogin Adapter
 
-<OpenloginConfigCodeFacebook />
+<OpenloginConfigCodeGoogle />
 
 Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom Auth `verifierName` and AWS Cognito `clientId` in
 the loginConfig object. This makes sure that the Openlogin Adapter can connect to the correct verifier and AWS Cognito server.
@@ -158,7 +150,7 @@ Once initialized, you can use the `connectTo()` function to authenticate the use
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-  loginProvider: "facebook",
+  loginProvider: "google",
 });
 ```
 
@@ -189,5 +181,5 @@ Logging out your user is as simple as calling the `logout` function.
 ## Example code
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth Core Facebook Login Example](https://github.com/Web3Auth/examples/tree/main/facebook-core-react-example). Check it out and try running it
+[Web3Auth Core Google Login Example](https://github.com/Web3Auth/examples/tree/main/google-core-react-example). Check it out and try running it
 locally yourself!
