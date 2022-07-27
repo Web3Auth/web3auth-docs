@@ -32,9 +32,10 @@ import OpenloginConfigCodeGoogle from "@site/src/common/guides/_openlogin-config
   slug="/guides/server-side-verification"
 />
 
-This guide will cover the basics of how to use Web3Auth's Server Side Verification at your backend to verify the `idToken` received.
+This guide will cover the basics of how to use Web3Auth's Server Side Verification to verify the `idToken` received in the `web3auth.getUserInfo()`
+method of Web3Auth.
 
-**Live Demo:** https://web3auth-ssv-demo.vercel.app
+**Live Demo:** [in testing]
 
 ## Quick Start
 
@@ -44,19 +45,6 @@ cd ssv-nextjs-example
 npm install
 npm run dev
 ```
-
-## How it works?
-
----
-
-When integrating Web3Auth with Google Login the flow looks something like this:
-
-![Web3Auth Core - Google Login Flow](/images/implicit-flow.svg)
-
-- When a user logs in with `Google`, Google sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
-
-- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
-  easy onboarding for your user to the application.
 
 ## Prerequisites
 
@@ -90,7 +78,7 @@ When integrating Web3Auth with Google Login the flow looks something like this:
 - Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
   configuration:
 
-  - Choose a name of your choice for the verifier identifier. `eg. google-core-verifier`
+  - Choose a name of your choice for the verifier identifier. `eg. google-core-verifier-ssv`
   - Select environment: `testnet`, `mainnet` or `cyan` as per your requirement.
   - Select `Google` from the **Login Provider**. ![Google - Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
   - Paste the **Client ID** from the Google App(above) to the `Client ID` field.
