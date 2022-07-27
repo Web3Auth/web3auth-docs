@@ -1,9 +1,9 @@
-//@ts-ignore
-import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
-import { SafeEventEmitterProvider } from "@web3auth/base";
+// @ts-ignore
+import { InMemorySigner } from "@taquito/signer";
 import { TezosToolkit } from "@taquito/taquito";
 import { hex2buf } from "@taquito/utils";
-import { InMemorySigner } from "@taquito/signer";
+import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
+import { SafeEventEmitterProvider } from "@web3auth/base";
 
 const tezos = new TezosToolkit("https://ithacanet.ecadinfra.com");
 
@@ -20,8 +20,7 @@ export default class TezosRpc {
       const keyPair = tezosCrypto.utils.seedToKeyPair(hex2buf(privateKey));
       return keyPair;
     } catch (error) {
-      console.error(error);
-      return null;
+      return error;
     }
   };
 
@@ -38,7 +37,7 @@ export default class TezosRpc {
       const keyPair = await this.getTezosKeyPair();
       return keyPair?.pkh;
     } catch (error) {
-      console.error("Error", error);
+      return error;
     }
   };
 
@@ -49,7 +48,7 @@ export default class TezosRpc {
       const balance = await tezos.tz.getBalance(keyPair?.pkh as string);
       return balance;
     } catch (error) {
-      console.error("Error", error);
+      return error;
     }
   };
 
@@ -62,7 +61,7 @@ export default class TezosRpc {
       const signature = await signer.sign(message);
       return signature;
     } catch (error) {
-      console.error("error", error);
+      return error;
     }
   };
 
@@ -89,7 +88,7 @@ export default class TezosRpc {
       const txRes = await op.confirmation();
       return txRes;
     } catch (error) {
-      console.error("error", error);
+      return error;
     }
   };
 }
