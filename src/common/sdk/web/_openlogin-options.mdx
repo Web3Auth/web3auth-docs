@@ -17,7 +17,6 @@ import Tabs from "@theme/Tabs";
 | ----------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------- |
 | `clientId`              | `string`                              | Client ID for web3auth. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).                                                                                                                                                                                                                                   | Yes      | N/A           |
 | `network`               | `enum` (`testnet`, `mainnet`, `cyan`) | Network specifies the openlogin iframe url url to be used. <ul><li>`'mainnet'`: https://app.openlogin.com will be used which is the production version.</li><li>`'cyan'`: https://cyan.openlogin.com will be used which is the production cyan version.</li><li>`'testnet'`: https://beta.openlogin.com will be used which is the beta version.</li></ul> | Yes      | N/A           |
-| `no3PC?`                | `boolean`                             | Setting no3PC forces openlogin to assume that third party cookies are blocked in the browser. Only pass no3PC to `true` when you are sure that third party cookies are not supported. By default openlogin will self check third party cookies and proceed accordingly.                                                                                   | No       | `false`       |
 | `redirectUrl?`          | `string`                              | redirectUrl is the dapp's url where user will be redirected after login. Register this url on the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) else initialization will give error.                                                                                                                                                     | No       | N/A           |
 | `uxMode?`               | `enum` (`popup` and `redirect` )      | Two uxModes are supported: <ul><li> `'POPUP'`: In this uxMode, a popup will be shown to user for login.</li><li>`'REDIRECT'`: In this uxMode, user will be redirected to a new window tab for login.</li></ul>                                                                                                                                            | No       | `'POPUP'`     |
 | `replaceUrlOnRedirect?` | `boolean`                             | replaceUrlOnRedirect removes the params from the redirected url after login                                                                                                                                                                                                                                                                               | No       | `true`        |
@@ -52,14 +51,6 @@ export declare type OpenLoginOptions = {
    * Only pass no3PC to `true` when you are sure that third party cookies are not
    * supported. By default openlogin will self check third party cookies and proceed
    * accordingly.
-   */
-  no3PC?: boolean;
-  /**
-   * redirectUrl is the dapp's url where user will be redirected after login.
-   *
-   * @remarks
-   * Register this url at {@link "https://dashboard.web3auth.io"| developer dashboard}
-   * else initialization will give error.
    */
   redirectUrl?: string;
   /**
