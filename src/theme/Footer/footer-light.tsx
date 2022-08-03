@@ -22,7 +22,7 @@ export default function FooterComponent() {
               <a href="https://twitter.com/web3auth" style={{ marginRight: 8 }}>
                 <Twitter />
               </a>
-              <a href="http://discord.gg/web3auth">
+              <a href="http://discord.gg/web3auth" style={{ marginRight: 8 }}>
                 <Discord />
               </a>
               <a href="https://medium.com/toruslabs" style={{ marginRight: 8 }}>
