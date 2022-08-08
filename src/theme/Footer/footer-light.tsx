@@ -16,12 +16,7 @@ export default function FooterComponent() {
             <Logo style={{ width: 145 }} />
             <p>Web3Auth is where passwordless auth meets non-custodial key infrastructure for Web3 apps and wallets.</p>
             <div style={{ flexDirection: "row" }}>
-              <a
-                href="https://github.com/orgs/Web3Auth/discussions?discussions_q=sort%3Atop"
-                style={{ marginRight: 8 }}
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a href="https://web3auth.io/discussions" style={{ marginRight: 8 }} target="_blank" rel="noreferrer">
                 <GitHub />
               </a>
               <a href="https://twitter.com/web3auth" style={{ marginRight: 8 }} target="_blank" rel="noreferrer">
@@ -140,12 +135,7 @@ export default function FooterComponent() {
               <strong>Community</strong>
             </div>
             <div className="footer__item">
-              <a
-                className="footer__link-item"
-                href="https://github.com/web3auth/web3auth/discussions?discussions_q=sort%3Atop"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a className="footer__link-item" href="https://web3auth.io/discussions" target="_blank" rel="noreferrer">
                 Web3Auth Discussions Board
               </a>
             </div>
