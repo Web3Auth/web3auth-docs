@@ -28,13 +28,15 @@ A sample code to get started can be found in [here](https://github.com/Web3Auth/
 
 ### Add Web3Auth to Gradle
 
-In your project-level `build.gradle` file, add JitPack repository:
+In your project-level `settings.gradle` file, add JitPack repository:
 
 ```groovy
-allprojects {
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        // ...
-        maven { url "https://jitpack.io" }
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" } // <-- Add this line
     }
 }
 ```
@@ -44,7 +46,7 @@ Then, in your app-level `build.gradle` dependencies section, add the following:
 ```groovy
 dependencies {
     // ...
-    implementation 'org.torusresearch:web3auth-android-sdk:-SNAPSHOT'
+    implementation 'org.torusresearch:web3auth-android-sdk:2.4.0'
 }
 ```
 
@@ -55,6 +57,8 @@ Open your app's `AndroidManifest.xml` file and add the following permission:
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
+
+> Note: The `<uses-permission>` element must be a direct child of the `<manifest>` root element
 
 ## Configuration
 
