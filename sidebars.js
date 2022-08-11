@@ -246,7 +246,7 @@ module.exports = {
       type: "category",
       label: "Android",
       link: { type: "doc", id: "sdk/android/android" },
-      items: ["sdk/android/initialize", "sdk/android/whitelabel", "sdk/android/custom-authentication", "sdk/android/usage"],
+      items: ["sdk/android/initialize", "sdk/android/whitelabel", "sdk/android/custom-authentication", "sdk/android/mfa", "sdk/android/usage"],
     },
     {
       type: "category",
