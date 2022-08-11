@@ -5,6 +5,9 @@ displayed_sidebar: sdk
 description: "Android SDK - Whitelabel | Documentation - Web3Auth"
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 ---
 
 `whiteLabel`
@@ -16,6 +19,16 @@ Object called `whiteLabel`. This parameter takes another object called `WhiteLab
 
 `WhiteLabelData`
 
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
 | Parameter         | Type               | Mandatory | Description                                       |
 | ----------------- | ------------------ | --------- | ------------------------------------------------- |
 | `name`            | `String`           | No        | Name of your application                          |
@@ -24,6 +37,25 @@ Object called `whiteLabel`. This parameter takes another object called `WhiteLab
 | `defaultLanguage` | `String`           | No        | Default translation language to be used           |
 | `dark`            | `Boolean`          | No        | If true, enables dark mode. Default is light mode |
 | `theme`           | `Map<String, Any>` | No        | Whitelabel theme                                  |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```kotlin
+data class WhiteLabelData (
+  private var name : String? = null,
+  private var logoLight : String? = null,
+  private var logoDark : String? = null,
+  private var defaultLanguage : String? = "en",
+  private var dark : Boolean? = false,
+  private var theme : HashMap<String, String>? = null
+)
+```
+
+</TabItem>
+
+</Tabs>
 
 ### Example
 

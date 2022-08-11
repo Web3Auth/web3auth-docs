@@ -5,6 +5,9 @@ displayed_sidebar: sdk
 description: "Android SDK - Initialize | Documentation - Web3Auth"
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 ---
 
 After Installation, the next step to using Web3Auth is to Initialize the SDK.
@@ -33,6 +36,16 @@ web3Auth = Web3Auth(Web3AuthOptions)
 
 The Web3Auth Constructor takes an object with `Web3AuthOptions` as input.
 
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
 | Parameter   | Type                                    | Mandatory | Description                                                                                                                                         |
 | ----------- | --------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | context     | android.content.Context                 | Yes       | Android context to launch Web-based authentication, usually is the current activity                                                                 |
@@ -41,6 +54,28 @@ The Web3Auth Constructor takes an object with `Web3AuthOptions` as input.
 | redirectUrl | android.net.Uri                         | No        | URL that Web3Auth will redirect API responses, default is `null`                                                                                    |
 | whiteLabel  | WhiteLabelData                          | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer [WhiteLabel](./whitelabel) section for more info. |
 | loginConfig | LoginConfigItem                         | No        | A configuration optional object to use custom authentication. Refer [Custom Authentication](./custom-authentication) for more info.                 |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```kotlin
+data class Web3AuthOptions (
+  val context: Context,
+  val clientId: String,
+  val network: Web3Auth.Network,
+  val redirectUrl: Uri? = null,
+  val sdkUrl: String = "https://sdk.openlogin.com",
+  val whiteLabel: WhiteLabelData? = null,
+  val loginConfig: HashMap<String, LoginConfigItem>? = null,
+)
+```
+
+</TabItem>
+
+</Tabs>
+
+### Instance
 
 ```kotlin
 web3Auth = Web3Auth(
