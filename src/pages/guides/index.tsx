@@ -177,6 +177,19 @@ export default function GuidesPage({ guides }: Props) {
             <span className={styles.date}>Web3Auth Team | 25th May 2022</span>
           </div>
         </Link>
+        <Link className={styles.article} to="/docs/custom-authentication/byo-jwt-providers">
+          <img src="/docs/contents/guides/banners/jwt.svg" alt="Banner jwt" />
+          <div className={styles.contentContainer}>
+            <span className={styles.type}>REFERENCE</span>
+            <h3>Login with Web3Auth using your own JWT Token</h3>
+            <p>Learn how to authenticate a user with Web3Auth using your own JWT Token</p>
+            <code className={styles.tag}>JWT</code>
+            <code className={styles.tag}>custom authentication</code>
+            <code className={styles.tag}>web3auth</code>
+            <br />
+            <span className={styles.date}>Web3Auth Team | 25th May 2022</span>
+          </div>
+        </Link>
         <Link className={styles.article} to="/docs/connect-blockchain/ethereum">
           <img src="/docs/contents/guides/banners/ethereum.svg" alt="Banner ethereum" />
           <div className={styles.contentContainer}>
