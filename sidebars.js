@@ -113,6 +113,7 @@ module.exports = {
       items: ["whitelabel/login-modal", "whitelabel/user-flow-screens", "whitelabel/torus-wallet-plugin"],
     },
     "interoperability",
+    "dapp-share",
     {
       type: "category",
       label: "Server Side Verification",
@@ -180,6 +181,9 @@ module.exports = {
       type: "link",
       label: "SDK Reference",
       href: "/sdk",
+    },
+    {
+      Legal: ["legal/cookie-policy", "legal/privacy-policy", "legal/terms-and-conditions"],
     },
   ],
   sdk: [
