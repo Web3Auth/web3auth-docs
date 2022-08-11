@@ -69,24 +69,35 @@ To create a custom verifier for your JWT Providers, you'll need
 
 3. **JWT Validations**
 
-   These are the claims against which a JWT is validated.
-
-   - Token Audience ( `aud` ):
-
-     The audience is your verifier's Applicaiton ID, assigned to your verifier on torus-network. The `aud` value is a case-sensitive string containing
-     a StringOrURI value. Use of this claim is MANDATORY.
-
-   - Token Issuer ( `iss` ):
-
-     The issuing authority of the token. The `iss` value is a case-sensitive string containing a StringOrURI value. Use of this claim is OPTIONAL.
-
-   You can add upto 3 validations; including any custom claims like `email_verified` etc.
-
    :::caution
 
    - Your JWT token header must contain the `kid` field and the payload data must contain `iat` field.
 
    :::
+
+   You can add up to 3 validation fields, including any claims like `aud`, `sub`, `iss`, `email_verified` etc. These are the claims against which a
+   JWT is validated.
+
+   Here are a couple of examples to be used in validation:
+
+   - Token Audience ( `aud` ):
+
+     The "aud" (audience) claim identifies the recipients for which the JWT is intended. Each principal intended to process the JWT MUST identify
+     itself with a value in the audience claim. If the principal processing the claim does not identify itself with a value in the "aud" claim when
+     this claim is present, then the JWT will be rejected. The `aud` value is a case-sensitive string containing a StringOrURI value. The
+     interpretation of audience values is generally application specific.
+
+   - Token Issuer ( `iss` ):
+
+     The issuing authority of the token. The `iss` value is a case-sensitive string containing a StringOrURI value. Use of this claim is OPTIONAL.
+
+   - Token Subject ( `sub` ):
+
+     The subject of the token. The `sub` value is a case-sensitive string containing a StringOrURI value. Use of this claim is OPTIONAL.
+
+   - Token Email Verified ( `email_verified` ):
+
+     The email verified claim is a boolean value that indicates whether the email address has been verified.
 
 ## Using `jsonwebtoken`
 
@@ -129,7 +140,7 @@ var token = jwt.sign(
     exp: Math.floor(Date.now() / 1000) + 60 * 60,
   },
   privateKey,
-  { algorithm: "RS256" }
+  { algorithm: "RS256", kid: "1bb9605c36e{your_kid}69386830202b2d" }
 );
 
 console.log(token);
@@ -176,7 +187,7 @@ var token = jwt.sign(
     exp: Math.floor(Date.now() / 1000) + 60 * 60,
   },
   privateKey,
-  { algorithm: "ECDSA" }
+  { algorithm: "ECDSA", kid: "1bb9605c36e{your_kid}69386830202b2d" }
 );
 
 console.log(token);
@@ -201,6 +212,18 @@ console.log(decoded);
 
 See [this](./byo-jwt-providers#filled-custom-jwt-verifier) to setup the customer jwt verifier using the above JWT data on Web3Auth Dashboard.
 
+### Login with JWT (idToken - jsonwebtoken)
+
+```js
+await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    id_token: "YOUR_GENERATED_ID_TOKEN",
+    verifierIdField: "sub", // sub, email, or custom
+  },
+});
+```
+
 ## Using `jose`
 
 ---
@@ -218,7 +241,7 @@ var publicKey = fs.readFileSync("publicKey.pem");
 
 // Signing the JWT
 const jwt = await new jose.SignJWT({ "urn:example:claim": true })
-  .setProtectedHeader({ alg: "RS256" })
+  .setProtectedHeader({ alg: "RS256", kid: "1bb9605c36e{your_kid}69386830202b2d" })
   .setIssuedAt()
   .setIssuer("https://my-authz-server")
   .setAudience("urn:my-resource-server")
@@ -241,6 +264,18 @@ console.log(payload);
 ```
 
 See [this](./byo-jwt-providers#filled-custom-jwt-verifier) to setup the customer jwt verifier using the above JWT data on Web3Auth Dashboard.
+
+### Login with JWT (idToken - jose)
+
+```js
+await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    id_token: "YOUR_GENERATED_ID_TOKEN",
+    verifierIdField: "sub", // sub, email, or custom
+  },
+});
+```
 
 ## Using `passport-jwt`
 
@@ -285,6 +320,18 @@ app.use(passport.initialize());
 ```
 
 See [this](./byo-jwt-providers#filled-custom-jwt-verifier) to setup the customer jwt verifier using the above JWT data on Web3Auth Dashboard.
+
+### Login with JWT (idToken - passport-jwt)
+
+```js
+await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    id_token: "YOUR_GENERATED_ID_TOKEN",
+    verifierIdField: "sub", // sub, email, or custom
+  },
+});
+```
 
 ## Filled Custom JWT Verifier
 
