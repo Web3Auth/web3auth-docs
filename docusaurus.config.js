@@ -144,6 +144,10 @@ module.exports = {
             to: "/connect-external-wallets",
           },
           {
+            from: "/get-started",
+            to: "/quick-start",
+          },
+          {
             from: "/developing-with-web3auth/understand-sdk",
             to: "/quick-start",
           },
