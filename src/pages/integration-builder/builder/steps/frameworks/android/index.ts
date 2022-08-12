@@ -1,38 +1,36 @@
-import { replaceFileVariable, toSteps } from "../../../utils";
-
-import * as installationAndroid from "./installation.mdx";
-import * as installationBuildGradle from "./install-build-gradle.mdx";
+import { toSteps } from "../../../utils";
+import * as configureDeepLink from "./configure-deeplink.mdx";
 import * as installationAppManifest from "./install-app-manifest.mdx";
-import * as registerApp from "./register-app.mdx";
-import * as singleTop from "./singleTop.mdx";
+import * as installationBuildGradle from "./install-build-gradle.mdx";
+import * as installationAndroid from "./installation.mdx";
 import * as instantiate from "./instantiateSDK.mdx";
+import * as registerApp from "./register-app.mdx";
 import * as setResultURL from "./setResultURL.mdx";
+import * as singleTop from "./singleTop.mdx";
 import * as triggeringLogin from "./triggering-login.mdx";
 import * as triggeringLogout from "./triggering-logout.mdx";
-import * as loginWithJwt from "./login-with-jwt.mdx";
-import * as whiteLabeling from "../common/whitelabeling.mdx";
 
 const STEPS = toSteps({
   installationAndroid,
   installationBuildGradle,
   installationAppManifest,
   registerApp,
+  configureDeepLink,
   singleTop,
   instantiate,
   setResultURL,
   triggeringLogin,
   triggeringLogout,
-  loginWithJwt,
-  whiteLabeling,
 });
 
 const reactSteps = {
   STEPS,
-  build({ filenames, files, steps, whitelabel, customAuthentication, dynamicConstructorParams, usingEmailPasswordless }) {
+  build({ filenames, files, steps, whitelabel, customAuthentication, MFA, dAppShare }) {
     filenames.push("frameworks/android/MainActivity.kt");
     filenames.push("frameworks/android/AndroidManifest.xml");
     filenames.push("frameworks/android/build.gradle");
     filenames.push("frameworks/android/settings.gradle");
+    filenames.push("frameworks/android/strings.xml");
     steps.push(
       {
         ...STEPS.installationAndroid,
@@ -48,11 +46,15 @@ const reactSteps = {
       },
       {
         ...STEPS.registerApp,
+        pointer: { filename: "frameworks/android/strings.xml", range: "3" },
+      },
+      {
+        ...STEPS.configureDeepLink,
         pointer: { filename: "frameworks/android/AndroidManifest.xml", range: "27-35" },
       },
       {
         ...STEPS.singleTop,
-        pointer: { filename: "frameworks/android/AndroidManifest.xml", range: "19" },
+        pointer: { filename: "frameworks/android/AndroidManifest.xml", range: "18" },
       },
       {
         ...STEPS.instantiate,
