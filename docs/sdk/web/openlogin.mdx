@@ -163,6 +163,8 @@ Read more about it in their respective sections:
 While you can pass your `chainConfig` to `OpenloginAdapter`, it is not required for `web3auth/core` ie. The Web3Auth Plug and Play Core package, since
 you can directly pass `loginParams` over to the `connectTo` function.
 
+Either way, both of these methods will work the same. Please note that the `connectTo` function params will override the `OpenloginAdapter` settings.
+
 Read more about how to pass `loginParams` to `connectTo` in its respective section: [`web3auth/core`](./core/usage#logging-in-the-user)
 
 :::
@@ -187,23 +189,11 @@ You can set the `mfaLevel` within the `loginSettings` to customize when mfa scre
 
 ### Example
 
-#### `web3auth/web3auth`
-
 ```js
 const openloginAdapter = new OpenloginAdapter({
   loginSettings: {
     mfaLevel: "mandatory",
   },
-});
-```
-
-#### `web3auth/core`
-
-```js
-import { WALLET_ADAPTERS } from "@web3auth/base";
-
-await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-  mfaLevel: “default”,
 });
 ```
 

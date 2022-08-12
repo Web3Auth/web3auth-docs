@@ -113,6 +113,7 @@ module.exports = {
       items: ["whitelabel/login-modal", "whitelabel/user-flow-screens", "whitelabel/torus-wallet-plugin"],
     },
     "interoperability",
+    "dapp-share",
     {
       type: "category",
       label: "Server Side Verification",
@@ -181,6 +182,9 @@ module.exports = {
       label: "SDK Reference",
       href: "/sdk",
     },
+    {
+      Legal: ["legal/cookie-policy", "legal/privacy-policy", "legal/terms-and-conditions"],
+    },
   ],
   sdk: [
     {
@@ -203,13 +207,13 @@ module.exports = {
           type: "category",
           label: "@web3auth/web3auth",
           link: { type: "doc", id: "sdk/web/web3auth/web3auth" },
-          items: ["sdk/web/web3auth/initialize", "sdk/web/web3auth/whitelabel", "sdk/web/web3auth/custom-authentication", "sdk/web/web3auth/usage"],
+          items: ["sdk/web/web3auth/initialize", "sdk/web/web3auth/whitelabel", "sdk/web/web3auth/custom-authentication", "sdk/web/web3auth/multi-factor-authentication", "sdk/web/web3auth/usage"],
         },
         {
           type: "category",
           label: "@web3auth/core",
           link: { type: "doc", id: "sdk/web/core/core" },
-          items: ["sdk/web/core/initialize", "sdk/web/core/whitelabel", "sdk/web/core/custom-authentication", "sdk/web/core/usage"],
+          items: ["sdk/web/core/initialize", "sdk/web/core/whitelabel", "sdk/web/core/custom-authentication", "sdk/web/core/multi-factor-authentication", "sdk/web/core/usage"],
         },
         "sdk/web/openlogin",
         {
