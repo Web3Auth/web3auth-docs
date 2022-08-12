@@ -1,4 +1,6 @@
-import { toSteps } from "../../../utils";
+import { getConstructorCodeAndroid, getLoginCodeAndroid } from "../../../androidSnippets";
+import { PLACEHOLDERS } from "../../../commonSnippets";
+import { ReplaceFileAggregator, toSteps } from "../../../utils";
 import * as configureDeepLink from "./configure-deeplink.mdx";
 import * as installationAppManifest from "./install-app-manifest.mdx";
 import * as installationBuildGradle from "./install-build-gradle.mdx";
@@ -25,12 +27,35 @@ const STEPS = toSteps({
 
 const reactSteps = {
   STEPS,
-  build({ filenames, files, steps, whitelabel, customAuthentication, MFA, dAppShare }) {
-    filenames.push("frameworks/android/MainActivity.kt");
+  build({ filenames, files, steps, whitelabel, customAuthentication, mfa, dAppShare }) {
+    const newFiles = files;
+    const replacementAggregator = new ReplaceFileAggregator();
+
+    const FILENAME_MAINACTIVITY = "frameworks/android/MainActivity.kt";
+
+    const ConstructorCodeAndroid = getConstructorCodeAndroid(whitelabel === "yes", customAuthentication === "yes");
+    newFiles[FILENAME_MAINACTIVITY] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_MAINACTIVITY],
+      FILENAME_MAINACTIVITY,
+      PLACEHOLDERS.CONSTRUCTOR_CODE,
+      ConstructorCodeAndroid
+    );
+
+    const LoginCodeAndroid = getLoginCodeAndroid(mfa === "yes", dAppShare === "yes");
+    newFiles[FILENAME_MAINACTIVITY] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_MAINACTIVITY],
+      FILENAME_MAINACTIVITY,
+      PLACEHOLDERS.ANDROID_LOGIN_CONFIG,
+      LoginCodeAndroid
+    );
+
+    filenames.push(FILENAME_MAINACTIVITY);
+
     filenames.push("frameworks/android/AndroidManifest.xml");
     filenames.push("frameworks/android/build.gradle");
     filenames.push("frameworks/android/settings.gradle");
     filenames.push("frameworks/android/strings.xml");
+
     steps.push(
       {
         ...STEPS.installationAndroid,

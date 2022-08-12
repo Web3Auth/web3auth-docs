@@ -27,14 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        web3Auth = Web3Auth(
-            Web3AuthOptions(
-                context = this,
-                clientId = getString(R.string.web3auth_project_id),
-                network = Web3Auth.Network.TESTNET, // MAINNET, TESTNET or CYAN
-                redirectUrl = Uri.parse("com.web3auth.app://auth")
-            )
-        )
+        // REPLACE-getConstructorCode-
 
         // Handle user signing in when app is not alive
         web3Auth.setResultUrl(intent?.data)
@@ -58,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun signIn() {
         val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider))
+        // REPLACE-getAndroidLoginConfig-
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
