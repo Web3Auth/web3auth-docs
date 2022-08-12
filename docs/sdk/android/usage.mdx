@@ -7,6 +7,8 @@ description: "Android SDK - Usage | Documentation - Web3Auth"
 
 ---
 
+Web3Auth's Android SDK is a set of libraries and tools that allow you to easily integrate Web3 with Android applications.
+
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
@@ -16,8 +18,22 @@ import Tabs from "@theme/Tabs";
 
 ### `web3Auth.login(LoginParams)`
 
-Trigger login flow that shows a modal for user to select one of supported providers to login e.g. Google, Facebook, Twitter, Passwordless, etc. login
-requires `LoginParams` as a required input. Construct and configure a LoginParams instance
+Trigger login flow with the selected provider from the list of providers available under `com.web3auth.core.Web3Auth.Provider` such as GOOGLE,
+FACEBOOK, TWITTER, EMAIL_PASSWORDLESS, etc. `web3Auth.login()` requires `LoginParams` as a required input.
+
+#### Arguments
+
+`LoginParams`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
 
 | Parameter           | Type                                         | Mandatory | Description                                                                                                                                                                                  |
 | ------------------- | -------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -25,6 +41,30 @@ requires `LoginParams` as a required input. Construct and configure a LoginParam
 | `extraLoginOptions` | `Map<String, Any>`                           | No        | You can pass various oauth supported options, default is `null`                                                                                                                              |
 | `redirectUrl`       | `android.net.Uri`                            | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                  |
 | `appState`          | `String`                                     | No        | appState can be used to keep track of the app state when user will be redirected to app after login, default is `null`                                                                       |
+| `mfaLevel`          | `Map<String, Any>`                           | No        | MFA level can be used to pass 2FA screen shown during login, default is `mfaLevel.DEFAULT`, shown every 3rd login.                                                                           |
+| `dappShare`         | `String`                                     | No        | Dapp share can be used to pass dapp share url, default is `null`                                                                                                                             |
+| `curve`             | `Map<String, Any>`                           | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum                                                                                                   |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```kotlin
+data class LoginParams (
+	val loginProvider: Provider,
+	val dappShare: String? = null,
+	val extraLoginOptions: ExtraLoginOptions? = null,
+	val redirectUrl: Uri? = null,
+	val appState: String? = null,
+	val mfaLevel: MFALevel? = null,
+	val sessionTime: Int? = null,
+	val curve: Curve? = null
+)
+```
+
+</TabItem>
+
+</Tabs>
 
 ### Sample Response
 
@@ -41,7 +81,9 @@ requires `LoginParams` as a required input. Construct and configure a LoginParam
     "verifier": "torus",
     "verifierId": "john@gmail.com",
     "dappShare": "<24 words seed phrase>", // will be sent only incase of custom verifiers
-    "idToken": "<jwtToken issued by Web3Auth>"
+    "idToken": "<jwtToken issued by Web3Auth>",
+    "oAuthIdToken": "<idToken(JWT) issued by OAuth Provider>", // will be sent only incase of custom verifiers
+    "oAuthAccessToken": "<accessToken issued by OAuth Provider>", // will be sent only incase of custom verifiers
   }
 }
 ```
@@ -58,7 +100,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun signIn() {
 
-        val selectedLoginProvider = Web3Auth.Provider.GOOGLE   // Can be Google, Facebook, Twitch etc
+        val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
@@ -79,6 +121,48 @@ class MainActivity : AppCompatActivity() {
         ...
     }
     ...
+}
+```
+
+## Selecting Curve
+
+---
+
+The `web3Auth.login()` method accepts a `curve` parameter. This parameter can be used to select the elliptic curve to use for the signature.
+
+```kotlin
+web3Auth.login(LoginParams(selectedLoginProvider, curve = Curve.SECP256K1)) // Can be ED25519, SECP256K1
+```
+
+### Example
+
+```kotlin
+import android.widget.Button
+import com.web3auth.core.Web3Auth
+import android.os.Bundle
+
+class MainActivity : AppCompatActivity() {
+	private lateinit var web3Auth: Web3Auth
+	private fun signIn() {
+		val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
+		val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, curve = Curve.SECP256K1))
+		loginCompletableFuture.whenComplete { loginResponse, error ->
+			if (error == null) {
+				// render logged in UI
+			} else {
+				// render error UI
+			}
+
+		}
+	}
+	override fun onCreate(savedInstanceState: Bundle?) {
+			...
+			// Setup UI and event handlers
+			val signInButton = findViewById<Button>(R.id.signInButton)
+			signInButton.setOnClickListener { signIn() }
+			...
+	}
+	...
 }
 ```
 

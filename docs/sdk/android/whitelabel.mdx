@@ -5,28 +5,59 @@ displayed_sidebar: sdk
 description: "Android SDK - Whitelabel | Documentation - Web3Auth"
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 ---
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
+`whiteLabel`
 
-## `whiteLabel`
+For defining custom UI, branding, and translations for your brand app, you just need to specify an additional parameter within the `Web3AuthOptions`
+Object called `whiteLabel`. This parameter takes another object called `WhiteLabelData`.
 
-For defining custom UI, branding, and translations for your brand app, you just need to define an additional parameter within the `Web3AuthOptions`
-Object called `whiteLabel`. This parameter takes an additional object called `WhiteLabelData`.
+### Arguments
 
-Construct and configure the `WhiteLabelData` object as
+`WhiteLabelData`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
 
 | Parameter         | Type               | Mandatory | Description                                       |
 | ----------------- | ------------------ | --------- | ------------------------------------------------- |
 | `name`            | `String`           | No        | Name of your application                          |
 | `logoLight`       | `String`           | No        | Light logo for dark background                    |
 | `logoDark`        | `String`           | No        | Dark logo for light background                    |
-| `defaultLanguage` | `String`           | No        | Default translation language to used              |
+| `defaultLanguage` | `String`           | No        | Default translation language to be used           |
 | `dark`            | `Boolean`          | No        | If true, enables dark mode. Default is light mode |
 | `theme`           | `Map<String, Any>` | No        | Whitelabel theme                                  |
 
-## Example
+</TabItem>
+
+<TabItem value="interface">
+
+```kotlin
+data class WhiteLabelData (
+  private var name : String? = null,
+  private var logoLight : String? = null,
+  private var logoDark : String? = null,
+  private var defaultLanguage : String? = "en",
+  private var dark : Boolean? = false,
+  private var theme : HashMap<String, String>? = null
+)
+```
+
+</TabItem>
+
+</Tabs>
+
+### Example
 
 ```kotlin
 web3Auth = Web3Auth (

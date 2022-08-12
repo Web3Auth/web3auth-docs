@@ -7,10 +7,10 @@ description: "Android SDK | Documentation - Web3Auth"
 
 ---
 
-For using Web3Auth in natively in Android, Web3Auth provides an [Android SDK](https://github.com/Web3Auth/web3auth-android-sdk), written in Kotlin.
-The Web3Auth Android SDK is a client-side library you can use with your Android app to authenticate users using Web3Auth. It returns a private key
-generated in a non custodial way on successful authentication of the user. This authentication can be achieved by using any of the social logins
-Web3Auth provides or using a custom authentication flow of your choice.
+The Web3Auth [Android SDK](https://github.com/Web3Auth/web3auth-android-sdk) is a client-side library you can use with your Android app to
+authenticate users using Web3Auth. For using Web3Auth natively in Android, Web3Auth provides an Android SDK written in _Kotlin_. It returns a private
+key generated in a non-custodial way on successful user authentication. This authentication can be achieved by using any social login options that
+Web3Auth supports or using a custom authentication flow of your choice.
 
 ### Requirements
 
@@ -18,7 +18,7 @@ Android API version 21 or newer.
 
 :::tip
 
-A sample code to get started can be found in [here](https://github.com/Web3Auth/web3auth-android-sdk/tree/master/app).
+Get started with a sample app code, found [here](https://github.com/Web3Auth/web3auth-android-sdk/tree/master/app).
 
 :::
 
@@ -28,13 +28,15 @@ A sample code to get started can be found in [here](https://github.com/Web3Auth/
 
 ### Add Web3Auth to Gradle
 
-In your project-level `build.gradle` file, add JitPack repository:
+In your project-level `settings.gradle` file, add JitPack repository:
 
 ```groovy
-allprojects {
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        // ...
-        maven { url "https://jitpack.io" }
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" } // <-- Add this line
     }
 }
 ```
@@ -44,7 +46,7 @@ Then, in your app-level `build.gradle` dependencies section, add the following:
 ```groovy
 dependencies {
     // ...
-    implementation 'org.torusresearch:web3auth-android-sdk:-SNAPSHOT'
+    implementation 'org.torusresearch:web3auth-android-sdk:2.4.0'
 }
 ```
 
@@ -55,6 +57,8 @@ Open your app's `AndroidManifest.xml` file and add the following permission:
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
+
+> Note: The `<uses-permission>` element must be a direct child of the `<manifest>` root element
 
 ## Configuration
 
@@ -84,7 +88,7 @@ Open your app's `AndroidManifest.xml` file and add the following deep link inten
 </intent-filter>
 ```
 
-Make sure your sign-in activity launchMode is set to singleTop in your `AndroidManifest.xml`
+Make sure your sign-in activity launchMode is set to **singleTop** in your `AndroidManifest.xml`
 
 ```xml
 <activity

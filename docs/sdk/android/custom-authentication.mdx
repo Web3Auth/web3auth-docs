@@ -1,26 +1,48 @@
 ---
-title: Using Custom Authentication - Android
+title: Using Custom Authentication in Android SDK
 sidebar_label: Using Custom Authentication
 displayed_sidebar: sdk
 description: "Android SDK - Using Custom Authentication | Documentation - Web3Auth"
 ---
 
----
-
-import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-
-## Introduction
+import Tabs from "@theme/Tabs";
 
 ---
 
-To use a custom login mechamism with the Web3Auth Android SDK, for example to login using your own custom JWT issuer like Firebase, You can add the
-your confiuration to the `loginConfig` field of the `Web3AuthOptions` object. The `loginConfig` field is a key value map. The key should be one of the
-`Web3AuthProvider` in its string form, and the value should be a `LoginConfigItem` struct instance.
+This is a document to use a custom login mechanism with the Web3Auth Android SDK. For example, to login using your own custom JWT issuers like Auth0,
+AWS Cognito, or Firebase. You can add the your configuration to the `loginConfig` field of the `Web3AuthOptions` object.
 
-To use such custom login mechanism, first configure your own verifier in the Web3Auth Dashboard.
+The `loginConfig` field is a key value map. The key should be one of the `Web3AuthProvider` in its string form, and the value should be a
+`LoginConfigItem` struct instance.
+
+First, configure your own verifier in the Web3Auth Dashboard to use custom authentication.
+
+:::tip
+
+Check out how to create [Custom Verifier](/docs/custom-authentication/verifiers) on Web3Auth Dashboard.
+
+:::
 
 Then, you should specify the details of your verifier in the `LoginConfigItem` struct, the details of this struct are as follows.
+
+## `LoginConfigItem`
+
+---
+
+### Arguments
+
+`LoginConfigItem`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
 
 | Parameter             | Type         | Mandatory | Description                                                                                                                                                                                                                                                           |
 | --------------------- | ------------ | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -38,9 +60,152 @@ Then, you should specify the details of your verifier in the `LoginConfigItem` s
 | showOnDesktop         | Boolean?     | No        | Whether to show the login button on desktop                                                                                                                                                                                                                           |
 | showOnMobile          | Boolean?     | No        | Whether to show the login button on mobile                                                                                                                                                                                                                            |
 
+</TabItem>
+
+<TabItem value="interface">
+
+```kotlin
+data class LoginConfigItem(
+  private var verifier: String,
+  private var typeOfLogin: TypeOfLogin,
+  private var name: String,
+  private var description: String? = null,
+  private var clientId: String? = null,
+  private var verifierSubIdentifier: String? = null,
+  private var logoHover: String? = null,
+  private var logoLight: String? = null,
+  private var logoDark: String? = null,
+  private var mainOption: Boolean? = false,
+  private var showOnModal: Boolean? = true,
+  private var showOnDesktop: Boolean? = true,
+  private var showOnMobile: Boolean? = true,
+)
+```
+
+</TabItem>
+
+</Tabs>
+
+### Example
+
+```kotlin
+web3Auth = Web3Auth (
+  Web3AuthOptions (
+    context = this,
+    clientId = getString (R.string.web3auth_project_id),
+    network = Web3Auth.Network.MAINNET,
+    redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
+    // Optional loginConfig object
+    loginConfig = mapOf (
+      Web3AuthProvider.GOOGLE to LoginConfigItem (
+        verifier = "google",
+        typeOfLogin = TypeOfLogin.GOOGLE,
+        name = "Google",
+        description = "Login with Google",
+        clientId = getString (R.string.web3auth_google_client_id),
+        verifierSubIdentifier = "sub",
+        logoHover = "https://www.gstatic.com/images/branding/product/1x/google_48dp.png",
+        logoLight = "https://www.gstatic.com/images/branding/product/1x/google_48dp.png",
+        logoDark = "https://www.gstatic.com/images/branding/product/1x/google_48dp.png",
+        mainOption = true,
+        showOnModal = true,
+        showOnDesktop = true,
+        showOnMobile = true
+      ),
+      Web3AuthProvider.AWS_COGNITO to LoginConfigItem (
+        verifier = "aws-cognito",
+        typeOfLogin = TypeOfLogin.JWT,
+        name = "AWS Cognito",
+        description = "Login with AWS Cognito",
+        clientId = getString (R.string.web3auth_aws_cognito_client_id),
+        verifierSubIdentifier = "sub",
+        logoHover = "https://www.gstatic.com/images/branding/product/1x/google_48dp.png",
+        logoLight = "https://www.gstatic.com/images/branding/product/1x/google_48dp.png",
+        logoDark = "https://www.gstatic.com/images/branding/product/1x/google_48dp.png",
+        mainOption = true,
+        showOnModal = true,
+        showOnDesktop = true,
+        showOnMobile = true
+      )
+    )
+
+  )
+)
+```
+
 ## `ExtraLoginOptions` for special login methods
 
 ---
 
 - To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` field of the `extraLoginOptions`.
 - To use the `JWT` login, you need to put the jwt token into the `id_token` field of the `extraLoginOptions`.
+
+### Arguments
+
+`ExtraLoginOptions`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                 | Type                     | Mandatory | Description                                           |
+| ------------------------- | ------------------------ | --------- | ----------------------------------------------------- |
+| additionalParams          | HashMap<String, String>? | No        | additionalParams                                      |
+| domain                    | String?                  | No        | Domain of the app                                     |
+| client_id                 | String?                  | No        | client_id from Web3Auth Dashboard                     |
+| leeway                    | String?                  | No        | leeway                                                |
+| verifierIdField           | String?                  | No        | verifierIdField                                       |
+| isVerifierIdCaseSensitive | Boolean?                 | No        | Boolean to confirm the case sensitivity of VerifierId |
+| display                   | Display?                 | No        | Display                                               |
+| prompt                    | Prompt?                  | No        | Prompt                                                |
+| max_age                   | String?                  | No        | max_age                                               |
+| ui_locales                | String?                  | No        | ui_locales to be shown on the modal                   |
+| id_token_hint             | String?                  | No        | id_token_hint                                         |
+| login_hint                | String?                  | No        | login_hint used for EMAIL_PASSWORDLESS                |
+| acr_values                | String?                  | No        | acc_values                                            |
+| scope                     | String?                  | No        | scope                                                 |
+| audience                  | String?                  | No        | audience                                              |
+| connection                | String?                  | No        | connection                                            |
+| state                     | String?                  | No        | state                                                 |
+| response_type             | String?                  | No        | response_type                                         |
+| nonce                     | String?                  | No        | nonce                                                 |
+| redirect_uri              | String?                  | No        | redirect_uri                                          |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```kotlin
+data class ExtraLoginOptions(
+    private var additionalParams : HashMap<String, String>? = null,
+    private var domain : String? = null,
+    private var client_id : String? = null,
+    private var leeway : String? = null,
+    private var verifierIdField : String? =null,
+    private var isVerifierIdCaseSensitive : Boolean? = null,
+    private var display : Display? = null,
+    private var prompt : Prompt? = null,
+    private var max_age : String? = null,
+    private var ui_locales : String? = null,
+    private var id_token_hint : String? = null,
+    private var login_hint : String? = null,
+    private var acr_values : String? = null,
+    private var scope : String? = null,
+    private var audience : String? = null,
+    private var connection : String? = null,
+    private var state : String? = null,
+    private var response_type : String? = null,
+    private var nonce : String? = null,
+    private var redirect_uri : String? = null
+)
+```
+
+</TabItem>
+
+</Tabs>
