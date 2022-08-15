@@ -12,7 +12,7 @@ export const getConstructorCodeAndroid = (isWhitelabeled: boolean, isCustomAuth:
                   theme = hashMapOf (
                     "primary" to "#123456"
                   )
-                )`;
+                ),`;
   }
   if (isCustomAuth) {
     customAuthCode = `
@@ -40,7 +40,7 @@ export const getConstructorCodeAndroid = (isWhitelabeled: boolean, isCustomAuth:
                 context = this,
                 clientId = getString(R.string.web3auth_project_id),
                 network = Web3Auth.Network.TESTNET, // MAINNET, TESTNET or CYAN
-                redirectUrl = Uri.parse("com.web3auth.app://auth")${whitelabelCode}${customAuthCode}
+                redirectUrl = Uri.parse("com.web3auth.app://auth"),${whitelabelCode}${customAuthCode}
             )
         )`;
 };
