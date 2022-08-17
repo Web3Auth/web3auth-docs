@@ -36,15 +36,15 @@ FACEBOOK, TWITTER, EMAIL_PASSWORDLESS, etc. `web3Auth.login()` requires `LoginPa
 
 <TabItem value="table">
 
-| Parameter           | Type                                         | Mandatory | Description                                                                                                                                                                                  |
-| ------------------- | -------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginProvider`     | `enum` `com.web3auth.core.Web3Auth.Provider` | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS` |
-| `extraLoginOptions` | `Map<String, Any>`                           | No        | You can pass various oauth supported options, default is `null`                                                                                                                              |
-| `redirectUrl`       | `android.net.Uri`                            | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                  |
-| `appState`          | `String`                                     | No        | appState can be used to keep track of the app state when user will be redirected to app after login, default is `null`                                                                       |
-| `mfaLevel`          | `Map<String, Any>`                           | No        | MFA level can be used to pass 2FA screen shown during login, default is `mfaLevel.DEFAULT`, shown every 3rd login.                                                                           |
-| `dappShare`         | `String`                                     | No        | Dapp share can be used to pass dapp share url, default is `null`                                                                                                                             |
-| `curve`             | `Map<String, Any>`                           | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum                                                                                                   |
+| Parameter           | Type                                         | Mandatory | Description                                                                                                                                                                                         |
+| ------------------- | -------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginProvider`     | `enum` `com.web3auth.core.Web3Auth.Provider` | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`, `JWT` |
+| `extraLoginOptions` | `Map<String, Any>`                           | No        | You can pass various oauth supported options, default is `null`                                                                                                                                     |
+| `redirectUrl`       | `android.net.Uri`                            | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                         |
+| `appState`          | `String`                                     | No        | appState can be used to keep track of the app state when user will be redirected to app after login, default is `null`                                                                              |
+| `mfaLevel`          | `Map<String, Any>`                           | No        | MFA level can be used to pass 2FA screen shown during login, default is `mfaLevel.DEFAULT`, shown every 3rd login.                                                                                  |
+| `dappShare`         | `String`                                     | No        | Dapp share can be used to pass dapp share url, default is `null`                                                                                                                                    |
+| `curve`             | `Map<String, Any>`                           | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum                                                                                                          |
 
 </TabItem>
 
@@ -73,6 +73,20 @@ data class LoginParams (
 
 ### Example
 
+<Tabs
+  defaultValue="google"
+  values={[
+    { label: "Google", value: "google" },
+    { label: "Facebook", value: "facebook" },
+    { label: "Discord", value: "discord" },
+    { label: "Twitch", value: "twitch" },
+    { label: "Email Passwordless", value: "email_passwordless" },
+    { label: "JWT", value: "jwt" },
+  ]}
+>
+
+<TabItem value="google">
+
 ```kotlin
 import android.widget.Button
 import com.web3auth.core.Web3Auth
@@ -83,7 +97,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun signIn() {
 
-        val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
+        val selectedLoginProvider = Provider.GOOGLE   // Can be REDDIT, TWITTER, GITHUB etc.
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
@@ -107,6 +121,202 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
+</TabItem>
+
+<TabItem value="facebook">
+
+```kotlin
+import android.widget.Button
+import com.web3auth.core.Web3Auth
+import android.os.Bundle
+
+class MainActivity : AppCompatActivity() {
+    private lateinit var web3Auth: Web3Auth
+
+    private fun signIn() {
+
+        val selectedLoginProvider = Provider.FACEBOOK   // Can be APPLE, LINE, KAKAO, LINKEDIN etc.
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider))
+
+        loginCompletableFuture.whenComplete { loginResponse, error ->
+            if (error == null) {
+                // render logged in UI
+            } else {
+                // render error UI
+            }
+
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ...
+        // Setup UI and event handlers
+        val signInButton = findViewById<Button>(R.id.signInButton)
+        signInButton.setOnClickListener { signIn() }
+        ...
+    }
+    ...
+}
+```
+
+</TabItem>
+
+<TabItem value="discord">
+
+```kotlin
+import android.widget.Button
+import com.web3auth.core.Web3Auth
+import android.os.Bundle
+
+class MainActivity : AppCompatActivity() {
+    private lateinit var web3Auth: Web3Auth
+
+    private fun signIn() {
+
+        val selectedLoginProvider = Provider.DISCORD   // Can be WECHAT, WEIBO, LINE etc.
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider))
+
+        loginCompletableFuture.whenComplete { loginResponse, error ->
+            if (error == null) {
+                // render logged in UI
+            } else {
+                // render error UI
+            }
+
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ...
+        // Setup UI and event handlers
+        val signInButton = findViewById<Button>(R.id.signInButton)
+        signInButton.setOnClickListener { signIn() }
+        ...
+    }
+    ...
+}
+```
+
+</TabItem>
+
+<TabItem value="twitch">
+
+```kotlin
+import android.widget.Button
+import com.web3auth.core.Web3Auth
+import android.os.Bundle
+
+class MainActivity : AppCompatActivity() {
+    private lateinit var web3Auth: Web3Auth
+
+    private fun signIn() {
+
+        val selectedLoginProvider = Provider.TWITCH   // Can be GOOGLE, FACEBOOK, TWITCH etc.
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider))
+
+        loginCompletableFuture.whenComplete { loginResponse, error ->
+            if (error == null) {
+                // render logged in UI
+            } else {
+                // render error UI
+            }
+
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ...
+        // Setup UI and event handlers
+        val signInButton = findViewById<Button>(R.id.signInButton)
+        signInButton.setOnClickListener { signIn() }
+        ...
+    }
+    ...
+}
+```
+
+</TabItem>
+
+<TabItem value="email_passwordless">
+
+```kotlin
+import android.widget.Button
+import com.web3auth.core.Web3Auth
+import android.os.Bundle
+
+class MainActivity : AppCompatActivity() {
+    private lateinit var web3Auth: Web3Auth
+
+    private fun signIn() {
+
+        val selectedLoginProvider = Provider.EMAIL_PASSWORDLESS
+        // extraLoginOptions = ExtraLoginOptions(login_hint = "email address")
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")))
+
+        loginCompletableFuture.whenComplete { loginResponse, error ->
+            if (error == null) {
+                // render logged in UI
+            } else {
+                // render error UI
+            }
+
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ...
+        // Setup UI and event handlers
+        val signInButton = findViewById<Button>(R.id.signInButton)
+        signInButton.setOnClickListener { signIn() }
+        ...
+    }
+    ...
+}
+```
+
+</TabItem>
+
+<TabItem value="jwt">
+
+```kotlin
+import android.widget.Button
+import com.web3auth.core.Web3Auth
+import android.os.Bundle
+
+class MainActivity : AppCompatActivity() {
+    private lateinit var web3Auth: Web3Auth
+
+    private fun signIn() {
+
+        val selectedLoginProvider = Provider.JWT
+        // extraLoginOptions = ExtraLoginOptions(id_token_hint = "jwt_token")
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(id_token_hint = "your_jwt_token")))
+        // Use this for login with your generated JWT token, please refer to https://web3auth.io/docs/custom-authentication/byo-jwt-providers to learn more
+        loginCompletableFuture.whenComplete { loginResponse, error ->
+            if (error == null) {
+                // render logged in UI
+            } else {
+                // render error UI
+            }
+
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ...
+        // Setup UI and event handlers
+        val signInButton = findViewById<Button>(R.id.signInButton)
+        signInButton.setOnClickListener { signIn() }
+        ...
+    }
+    ...
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 ## Selecting Curve
 
 ---
@@ -119,35 +329,93 @@ web3Auth.login(LoginParams(selectedLoginProvider, curve = Curve.SECP256K1)) // C
 
 ### Example
 
+<Tabs
+  defaultValue="secp256k1"
+  values={[
+    { label: "SECP256K1", value: "secp256k1" },
+    { label: "ED25519", value: "ed25519" },
+  ]}
+>
+
+<TabItem value="secp256k1">
+
 ```kotlin
 import android.widget.Button
 import com.web3auth.core.Web3Auth
 import android.os.Bundle
 
 class MainActivity : AppCompatActivity() {
-	private lateinit var web3Auth: Web3Auth
-	private fun signIn() {
-		val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
-		val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, curve = Curve.SECP256K1))
-		loginCompletableFuture.whenComplete { loginResponse, error ->
-			if (error == null) {
-				// render logged in UI
-			} else {
-				// render error UI
-			}
+    private lateinit var web3Auth: Web3Auth
 
-		}
-	}
-	override fun onCreate(savedInstanceState: Bundle?) {
-			...
-			// Setup UI and event handlers
-			val signInButton = findViewById<Button>(R.id.signInButton)
-			signInButton.setOnClickListener { signIn() }
-			...
-	}
-	...
+    private fun signIn() {
+
+        val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, curve = Curve.SECP256K1))
+
+        loginCompletableFuture.whenComplete { loginResponse, error ->
+            if (error == null) {
+                // render logged in UI
+            } else {
+                // render error UI
+            }
+
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ...
+        // Setup UI and event handlers
+        val signInButton = findViewById<Button>(R.id.signInButton)
+        signInButton.setOnClickListener { signIn() }
+        ...
+    }
+    ...
 }
+
 ```
+
+</TabItem>
+
+<TabItem value="ed25519">
+
+```kotlin
+import android.widget.Button
+import com.web3auth.core.Web3Auth
+import android.os.Bundle
+
+class MainActivity : AppCompatActivity() { private lateinit var web3Auth: Web3Auth
+
+    private fun signIn() {
+
+        val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, curve = Curve.ED25519))
+
+        loginCompletableFuture.whenComplete { loginResponse, error ->
+            if (error == null) {
+                // render logged in UI
+            } else {
+                // render error UI
+            }
+
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ...
+        // Setup UI and event handlers
+        val signInButton = findViewById<Button>(R.id.signInButton)
+        signInButton.setOnClickListener { signIn() }
+        ...
+    }
+    ...
+
+}
+
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Logging out a user
 
@@ -196,4 +464,8 @@ class MainActivity : AppCompatActivity() {
     }
     ...
 }
+```
+
+```
+
 ```
