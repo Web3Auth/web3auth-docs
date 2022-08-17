@@ -4,35 +4,24 @@ export const getConstructorCodeAndroid = (isWhitelabeled: boolean, isCustomAuth:
   if (isWhitelabeled) {
     whitelabelCode = `
                 whiteLabel = WhiteLabelData (
-                  name = "Web3Auth Sample App",
+                  name = "Web3Auth Whitelabel App",
                   logoLight = null,
                   logoDark = null,
                   defaultLanguage = "en",
                   dark = true,
                   theme = hashMapOf (
-                    "primary" to "#123456"
+                    "primary" to "#229954"
                   )
                 ),`;
   }
   if (isCustomAuth) {
     customAuthCode = `
-                loginConfig = mapOf (
-                  Web3AuthProvider.GOOGLE to LoginConfigItem (
-                    verifier = "google",
-                    typeOfLogin = TypeOfLogin.GOOGLE,
-                    name = "Google",
-                    description = "Login with Google",
-                    clientId = getString (R.string.web3auth_google_client_id),
-                    verifierSubIdentifier = "sub",
-                    logoHover = "https://www.gstatic.com/images/branding/product/1x/google_48dp.png",
-                    logoLight = "https://www.gstatic.com/images/branding/product/1x/google_48dp.png",
-                    logoDark = "https://www.gstatic.com/images/branding/product/1x/google_48dp.png",
-                    mainOption = true,
-                    showOnModal = true,
-                    showOnDesktop = true,
-                    showOnMobile = true
-                  )
-                )`;
+                loginConfig = hashMapOf("google" to LoginConfigItem(
+                  verifier = "web3auth-core-google", // get it from web3auth dashboard
+                  typeOfLogin = TypeOfLogin.GOOGLE,
+                  name = "Custom Google Login",
+                  clientId = getString(R.string.web3auth_google_client_id) // google's client id
+                ))`;
   }
   return `
         web3Auth = Web3Auth(

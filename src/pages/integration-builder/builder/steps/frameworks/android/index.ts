@@ -1,6 +1,10 @@
 import { getConstructorCodeAndroid, getLoginCodeAndroid } from "../../../androidSnippets";
 import { PLACEHOLDERS } from "../../../commonSnippets";
 import { ReplaceFileAggregator, toSteps } from "../../../utils";
+import * as whiteLabeling from "./whitelabeling.mdx";
+import * as CustomAuthentication from "./custom-authentication.mdx";
+import * as multiFactorAuthentication from "./mfa.mdx";
+import * as dappShare from "./dapp-share.mdx";
 import * as configureDeepLink from "./configure-deeplink.mdx";
 import * as installationAppManifest from "./install-app-manifest.mdx";
 import * as installationBuildGradle from "./install-build-gradle.mdx";
@@ -23,6 +27,10 @@ const STEPS = toSteps({
   setResultURL,
   triggeringLogin,
   triggeringLogout,
+  whiteLabeling,
+  CustomAuthentication,
+  multiFactorAuthentication,
+  dappShare,
 });
 
 const reactSteps = {
@@ -55,6 +63,7 @@ const reactSteps = {
     filenames.push("frameworks/android/build.gradle");
     filenames.push("frameworks/android/settings.gradle");
     filenames.push("frameworks/android/strings.xml");
+    filenames.push("frameworks/android/activity_main.xml");
 
     steps.push(
       {
@@ -83,19 +92,45 @@ const reactSteps = {
       },
       {
         ...STEPS.instantiate,
-        pointer: { filename: "frameworks/android/MainActivity.kt", range: "30-40" },
-      },
+        pointer: { filename: "frameworks/android/MainActivity.kt", range: "30-39" },
+      }
+    );
+    if (whitelabel === "yes") {
+      steps.push({
+        ...STEPS.whiteLabeling,
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/android/MainActivity.kt", range: "30-53" }),
+      });
+    }
+    if (customAuthentication === "yes") {
+      steps.push({
+        ...STEPS.CustomAuthentication,
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/android/MainActivity.kt", range: "30-53" }),
+      });
+    }
+    if (mfa === "yes") {
+      steps.push({
+        ...STEPS.multiFactorAuthentication,
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/android/MainActivity.kt", range: "54" }),
+      });
+    }
+    if (dAppShare === "yes") {
+      steps.push({
+        ...STEPS.dappShare,
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/android/MainActivity.kt", range: "54" }),
+      });
+    }
+    steps.push(
       {
         ...STEPS.setResultURL,
-        pointer: { filename: "frameworks/android/MainActivity.kt", range: "52-57" },
+        pointer: { filename: "frameworks/android/MainActivity.kt", range: "51-56" },
       },
       {
         ...STEPS.triggeringLogin,
-        pointer: { filename: "frameworks/android/MainActivity.kt", range: "59-70" },
+        pointer: { filename: "frameworks/android/MainActivity.kt", range: "58-69" },
       },
       {
         ...STEPS.triggeringLogout,
-        pointer: { filename: "frameworks/android/MainActivity.kt", range: "72-82" },
+        pointer: { filename: "frameworks/android/MainActivity.kt", range: "71-81" },
       }
     );
     return { filenames, files, steps };
