@@ -98,25 +98,25 @@ const reactSteps = {
     if (whitelabel === "yes") {
       steps.push({
         ...STEPS.whiteLabeling,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/android/MainActivity.kt", range: "30-53" }),
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/android/MainActivity.kt", range: "30-31" }),
       });
     }
     if (customAuthentication === "yes") {
       steps.push({
         ...STEPS.CustomAuthentication,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/android/MainActivity.kt", range: "30-53" }),
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/android/MainActivity.kt", range: "30-31" }),
       });
     }
     if (mfa === "yes") {
       steps.push({
         ...STEPS.multiFactorAuthentication,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/android/MainActivity.kt", range: "54" }),
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/android/MainActivity.kt", range: "59-60" }),
       });
     }
     if (dAppShare === "yes") {
       steps.push({
         ...STEPS.dappShare,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/android/MainActivity.kt", range: "54" }),
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/android/MainActivity.kt", range: "59-60" }),
       });
     }
     steps.push(
@@ -126,11 +126,11 @@ const reactSteps = {
       },
       {
         ...STEPS.triggeringLogin,
-        pointer: { filename: "frameworks/android/MainActivity.kt", range: "58-69" },
+        pointer: { filename: "frameworks/android/MainActivity.kt", range: "63-79" },
       },
       {
         ...STEPS.triggeringLogout,
-        pointer: { filename: "frameworks/android/MainActivity.kt", range: "71-81" },
+        pointer: { filename: "frameworks/android/MainActivity.kt", range: "81-91" },
       }
     );
     return { filenames, files, steps };

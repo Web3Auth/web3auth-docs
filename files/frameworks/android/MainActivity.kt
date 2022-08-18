@@ -49,6 +49,11 @@ class MainActivity : AppCompatActivity() {
         web3Auth.setResultUrl(intent?.data)
     }
 
+    private fun getDappShare(): String {
+        val dAppShare = "afford join neutral spoon bike glue ahead floor giant match primary style cycle front address gossip embark rose boy muscle tuition melt left question"
+        return dAppShare;
+    }
+
     private fun signIn() {
         val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
         // REPLACE-getAndroidLoginConfig-
