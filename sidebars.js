@@ -143,6 +143,7 @@ module.exports = {
       label: "Examples",
       link: { type: "doc", id: "examples/examples" },
       items: [
+        "examples/demo",
         "examples/liveexamples",
         {
           type: "link",
