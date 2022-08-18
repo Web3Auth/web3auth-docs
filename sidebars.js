@@ -282,7 +282,14 @@ module.exports = {
       type: "category",
       label: "React Native",
       link: { type: "doc", id: "sdk/react-native/react-native" },
-      items: ["sdk/react-native/initialize", "sdk/react-native/whitelabel", "sdk/react-native/custom-authentication", "sdk/react-native/usage"],
+      items: [
+        "sdk/react-native/initialize",
+        "sdk/react-native/whitelabel",
+        "sdk/react-native/custom-authentication",
+        "sdk/react-native/mfa",
+        "sdk/react-native/dapp-share",
+        "sdk/react-native/usage",
+      ],
     },
     {
       type: "category",
