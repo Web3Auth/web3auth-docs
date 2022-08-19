@@ -4,6 +4,9 @@ displayed_sidebar: docs
 description: "Social Login Users | Documentation - Web3Auth"
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 # Social Login Users using Openlogin Adapter
 
 ---
@@ -118,17 +121,36 @@ Inorder to verify the JWT token you need the compressed app_pub_key (derived fro
 
 <TabItem value="Frontend">
 
-```javascript
-// Incase of ed25519 curve
+```typescript
+// Incase of ed25519 curve, get the app_pub_key
 import { getED25519Key } from "@toruslabs/openlogin-ed25519";
-const app_scoped_privkey = "app scoped private key";
+const app_scoped_privkey = await web3auth.provider?.request({
+  method: "solanaPrivateKey",
+});
 const ed25519Key = getED25519Key(Buffer.from(app_scoped_privkey.padStart(64, "0"), "hex"));
 const app_pub_key = ed25519Key.pk.toString("hex");
 
-// Incase of secp256k1 curve
+// Incase of secp256k1 curve, get the app_pub_key
 import { getPublicCompressed } from "@toruslabs/eccrypto";
-const app_scoped_privkey = "app scoped private key";
+const app_scoped_privkey = await web3auth.provider?.request({
+  method: "eth_private_key", // use "private_key" for other non-evm chains
+});
 const app_pub_key = getPublicCompressed(Buffer.from(app_scoped_privkey.padStart(64, "0"), "hex")).toString("hex");
+
+{
+  /* Assuming use is logged in, get the userInfo containtaing idToken */
+}
+const user = await web3auth.getUserInfo();
+
+// Validate idToken at your backend server
+const res = await fetch("/api/validate", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + user.idToken,
+  },
+  body: JSON.stringify({ appPubKey: app_pub_key }),
+});
 ```
 
 </TabItem>
@@ -136,15 +158,23 @@ const app_pub_key = getPublicCompressed(Buffer.from(app_scoped_privkey.padStart(
 <TabItem value="Backend">
 
 ```javascript
-// JWT verification using JWK
+// JWT verification using JWKS
 
 import * as jose from "jose"
-const app_pub_key = "obtained from the frontend"
-const idToken = "obtained from the frontend"
+
+// passed from the frontend in the Authorization header
+const idToken = req.headers.authorization?.split(' ')[1];
+
+// passed from the frontend in the request body
+const app_pub_key = req.body.appPubKey;
+
 const jwks = jose.createRemoteJWKSet(new URL("https://api.openlogin.com/jwks"));
 const jwtDecoded = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] });
 if ((jwtDecoded.payload as any).wallets[0].public_key === app_pub_key) {
   // Verified
+  res.status(200).json({name: 'Verification Successful'})
+} else {
+  res.status(400).json({name: 'Verification Failed'})
 }
 ```
 
@@ -160,7 +190,7 @@ if ((jwtDecoded.payload as any).wallets[0].public_key === app_pub_key) {
 
 By default Web3Auth returns a `idToken` which contains the `public_key` in `secp256k1` form.
 
-If you want to encode the public_key in ed25519 format then you have to pass the curve parameter in OpenloginAdapter as:
+If you want to encode the public_key in `ed25519`` format then you have to pass the curve parameter in OpenloginAdapter as:
 
 ```js
 const openloginAdapter = new OpenloginAdapter({
