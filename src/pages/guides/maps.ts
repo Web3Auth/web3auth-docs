@@ -71,7 +71,7 @@ export const integrationBuilderMap = [
   {
     title: "How to Implement Web3Auth in an Android Application",
     description: "Learn how to add a non custodial web3 login to an Android Applications using Web3Auth.",
-    image: "/docs/contents/guides/banners/angular.svg",
+    image: "/docs/contents/guides/banners/android.svg",
     type: "INTEGRATION BUILDER",
     tags: ["android", "web3auth", "mobile"],
     date: "25th May 2022",
