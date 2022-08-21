@@ -107,7 +107,10 @@ module.exports = {
           breadcrumbs: false,
           editUrl: githubEditUrl,
           sidebarPath: require.resolve("./sidebars.js"),
-          remarkPlugins: [remarkMath],
+          remarkPlugins: [
+            remarkMath,
+            [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }]
+          ],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
         },
         theme: {
@@ -116,6 +119,9 @@ module.exports = {
         gtag: {
           trackingID: "GTM-ML3T5M6",
         },
+        pages: {
+          remarkPlugins: [require('@docusaurus/remark-plugin-npm2yarn')],
+        }
       },
     ],
   ],
