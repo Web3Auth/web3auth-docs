@@ -12,7 +12,7 @@ const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
-module.exports = {
+const config = {
   title: "Documentation",
   tagline: "Flexible, Universal Key Management", // TODO: Confirm with content team
   url: "https://web3auth.io",
@@ -36,7 +36,6 @@ module.exports = {
     },
     prism: {
       additionalLanguages: ["groovy", "java", "kotlin", "swift", "dart"],
-      theme: require("prism-react-renderer/themes/dracula"),
     },
     navbar: {
       title: "Documentation",
@@ -274,3 +273,19 @@ module.exports = {
     ],
   ],
 };
+
+async function createConfig() {
+
+  const lightTheme = (await import('./src/components/prismLight.mjs')).default;
+  const darkTheme = (await import('./src/components/prismDark.mjs')).default;
+
+  // @ts-expect-error: we know it exists, right
+  config.themeConfig.prism.theme = lightTheme;
+  // @ts-expect-error: we know it exists, right
+  config.themeConfig.prism.darkTheme = darkTheme;
+  // @ts-expect-error: we know it exists, right
+
+  return config;
+}
+
+module.exports = createConfig;
