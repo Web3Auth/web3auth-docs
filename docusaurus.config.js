@@ -20,6 +20,7 @@ module.exports = {
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   onDuplicateRoutes: "warn",
+  themes: ['@docusaurus/theme-live-codeblock'],
   favicon: "images/favicon.ico",
   organizationName: githubOrg,
   projectName: githubRepo,
