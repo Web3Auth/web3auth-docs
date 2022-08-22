@@ -256,11 +256,16 @@ export default function GuidesPage({ guides }: Props) {
                       </div>
                     );
                   }
-                  return (
-                    <div key={tag} className={styles.tag} onClick={() => setShowModal(true)}>
-                      {tag}
-                    </div>
-                  );
+                })}
+              {guide.tags &&
+                guide.tags.map((tag) => {
+                  if (!tags.includes(tag)) {
+                    return (
+                      <div key={tag} className={styles.tag} onClick={() => setShowModal(true)}>
+                        {tag}
+                      </div>
+                    );
+                  }
                 })}
             </div>
             <span className={styles.date}>
@@ -289,11 +294,16 @@ export default function GuidesPage({ guides }: Props) {
                       </div>
                     );
                   }
-                  return (
-                    <div key={tag} className={styles.tag} onClick={() => setShowModal(true)}>
-                      {tag}
-                    </div>
-                  );
+                })}
+              {item.tags &&
+                item.tags.map((tag) => {
+                  if (!tags.includes(tag)) {
+                    return (
+                      <div key={tag} className={styles.tag} onClick={() => setShowModal(true)}>
+                        {tag}
+                      </div>
+                    );
+                  }
                 })}
             </div>
             <span className={styles.date}>
@@ -322,11 +332,16 @@ export default function GuidesPage({ guides }: Props) {
                       </div>
                     );
                   }
-                  return (
-                    <div key={tag} className={styles.tag} onClick={() => setShowModal(true)}>
-                      {tag}
-                    </div>
-                  );
+                })}
+              {item.tags &&
+                item.tags.map((tag) => {
+                  if (!tags.includes(tag)) {
+                    return (
+                      <div key={tag} className={styles.tag} onClick={() => setShowModal(true)}>
+                        {tag}
+                      </div>
+                    );
+                  }
                 })}
             </div>
             <span className={styles.date}>
