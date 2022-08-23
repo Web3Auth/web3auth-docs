@@ -25,14 +25,11 @@ If you are using `chainNamespace: "other"` while initializing `Web3Auth` or `Web
 
 ```ts
 import { Web3Auth } from "@web3auth/web3auth";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 
-
-const chainConfig: CustomChainConfig = ;
-
 /*
-We are initializing with SOLANA namespace which will initialize the
-modal with ethereum mainnet by default.
+Currently only `OpenloginAdapter` is supported with `other` chainNamespace.
 */
 
 const web3auth = new Web3Auth({
@@ -45,8 +42,17 @@ const web3auth = new Web3Auth({
         ticker: "XTZ",
         tickerName: "tezos",
     }
-    clientId: "localhost-id" // add your client id from the dashboard
+    clientId: "localhost-id" // get it from https://dashboard.web3auth.io
 });
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId, // get it from https://dashboard.web3auth.io
+    network: "testnet",
+    uxMode: "popup",
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
 
 await web3auth.initModal();
 
