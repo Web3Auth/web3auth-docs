@@ -200,11 +200,9 @@ makes sure that the Openlogin Adapter can connect to the correct verifier and Fi
 
 ### Authentication
 
-#### Logging in
-
 Login is a two step process:
 
-1. Firstly we will login with **Firebase(Google)** to get the `idToken`.
+1. Firstly, we will login with **Firebase(Google)** to get the `idToken`.
 2. Next, we will pass the received `idToken` to **web3auth** to login via Web3Auth SDK to generate the public-private key pair for easier onboarding
    to Web3.
 
@@ -231,6 +229,8 @@ const loginRes = await signInWithGoogle();
 const idToken = await loginRes.user.getIdToken(true);
 console.log("idToken", idToken); // this idToken will be passed to web3auth
 ```
+
+##### Login with Web3Auth
 
 Once initialized, and `idToken` is obtained from **Firebase**, you can use the `connectTo()` function to authenticate the user with Web3Auth.
 
@@ -261,7 +261,7 @@ console.log("idToken", token.idToken);
 If you wish to onboard users via **External Wallets** (such as Metamask, Torus Wallet etc), you can use `authenticateUser()` of Web3Auth SDK. This
 will return a `idToken` containing the following details:
 
-#### idToken(Payload) Received for External Wallets
+###### idToken(Payload) Received for External Wallets
 
 ```json
 {
