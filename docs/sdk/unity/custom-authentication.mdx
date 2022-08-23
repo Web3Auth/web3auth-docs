@@ -1,0 +1,242 @@
+---
+title: Using Custom Authentication in Unity SDK
+sidebar_label: Custom Authentication
+displayed_sidebar: sdk
+description: "Unity SDK - Using Custom Authentication | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+---
+
+Custom Authentication is a way to authenticate users with your own custom authentication service. For example, while authenticating with Google, you
+have the ability to use your own Google Client ID and Dashboard to authenticate users directly. To login using your own custom JWT issuers like Auth0,
+AWS Cognito, or Firebase, you can add the your configuration to the `loginConfig` field of the `Web3AuthOptions` class.
+
+The `loginConfig` field is a key value map. The key should be one of the `Web3AuthProvider` in its string form, and the value should be a
+`LoginConfigItem` struct instance.
+
+First, configure your own verifier in the Web3Auth Dashboard to use custom authentication.
+
+:::tip
+
+Check out how to create [Custom Verifier](/docs/custom-authentication/verifiers) on Web3Auth Dashboard.
+
+:::
+
+Then, you should specify the details of your verifier in the `LoginConfigItem` struct, the details of this struct are as follows.
+
+## `LoginConfigItem`
+
+---
+
+### Arguments
+
+#### `LoginConfigItem`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter             | Type                | Mandatory | Description                                                                                                                                                                                                                                                           |
+| --------------------- | ------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| verifier              | String              | Yes       | The name of the verifier which you have registered on the Web3Auth Dashboard.                                                                                                                                                                                         |
+| typeOfLogin           | Enum`<TypeOfLogin>` | Yes       | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose google, a google sign-in flow will be used. If you choose jwt, which you should be providing your own JWT token, no sign-in flow will be presented. |
+| name                  | String              | Yes       | Name of your verifier for display purpose.                                                                                                                                                                                                                            |
+| description           | String?             | No        | Description of this login flow.                                                                                                                                                                                                                                       |
+| clientId              | String?             | No        | The Client Id of the login provider. e.g. Google's Client ID                                                                                                                                                                                                          |
+| verifierSubIdentifier | String?             | No        | The name of the field in the JWT that should be used as the unique user ID of the JWT. Should be same as the one you used                                                                                                                                             |
+| logoHover             | String?             | No        | Logo to be shown on mouse hover.                                                                                                                                                                                                                                      |
+| logoLight             | String?             | No        | Light logo for dark background                                                                                                                                                                                                                                        |
+| logoDark              | String?             | No        | Dark logo for light background                                                                                                                                                                                                                                        |
+| mainOption            | Boolean?            | No        | Show login button on the main list                                                                                                                                                                                                                                    |
+| showOnModal           | Boolean?            | No        | Whether to show the login button on modal or not                                                                                                                                                                                                                      |
+| showOnDesktop         | Boolean?            | No        | Whether to show the login button on desktop                                                                                                                                                                                                                           |
+| showOnMobile          | Boolean?            | No        | Whether to show the login button on mobile                                                                                                                                                                                                                            |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```csharp
+public class LoginConfigItem {
+  public string verifier { get; set; }
+  public TypeOfLogin typeOfLogin { get; set; }
+  public string name { get; set; }
+  public string description { get; set; }
+  public string clientId { get; set; }
+  public string verifierSubIdentifier { get; set; }
+  public string logoHover { get; set; }
+  public string logoLight { get; set; }
+  public string logoDark { get; set; }
+  public bool mainOption { get; set; } = false;
+  public bool showOnModal { get; set; } = true;
+  public bool showOnDesktop { get; set; } = true;
+  public bool showOnMobile { get; set; } = true;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+#### `TypeOfLogin`
+
+```csharp
+public enum TypeOfLogin
+{
+  [EnumMember(Value = "google")]
+  GOOGLE,
+  [EnumMember(Value = "facebook")]
+  FACEBOOK,
+  [EnumMember(Value = "reddit")]
+  REDDIT,
+  [EnumMember(Value = "discord")]
+  DISCORD,
+  [EnumMember(Value = "twitch")]
+  TWITCH,
+  [EnumMember(Value = "apple")]
+  APPLE,
+  [EnumMember(Value = "line")]
+  LINE,
+  [EnumMember(Value = "github")]
+  GITHUB,
+  [EnumMember(Value = "kakao")]
+  KAKAO,
+  [EnumMember(Value = "linkedin")]
+  LINKEDIN,
+  [EnumMember(Value = "twitter")]
+  TWITTER,
+  [EnumMember(Value = "weibo")]
+  WEIBO,
+  [EnumMember(Value = "wechat")]
+  WECHAT,
+  [EnumMember(Value = "email_passwordless")]
+  EMAIL_PASSWORDLESS,
+  [EnumMember(Value = "email_password")]
+  EMAIL_PASSWORD,
+  [EnumMember(Value = "jwt")]
+  JWT
+}
+```
+
+### Example
+
+<Tabs
+  defaultValue="google"
+  values={[
+    { label: "Google", value: "google" },
+    { label: "Facebook", value: "facebook" },
+  ]}
+>
+
+<TabItem value="google">
+
+```csharp
+void Start()
+{
+  web3Auth = GetComponent<Web3Auth>();
+  web3Auth.setOptions(new Web3AuthOptions()
+  {
+    redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
+    clientId = "BAwFgL-r7wzQKmtcdiz2uHJKNZdK7gzEf2q-m55xfzSZOw8jLOyIi4AVvvzaEQO5nv2dFLEmf9LBkF8kaq3aErg",
+    network = Web3Auth.Network.TESTNET,
+    // highlight-start
+    // Optional loginConfig object
+    loginConfig = new LoginConfigItem()
+    {
+      verifier = "verifier-name", // get it from web3auth dashboard
+      typeOfLogin = TypeOfLogin.GOOGLE,
+      name = "Custom Google Login",
+      clientId = getString(R.string.web3auth_google_client_id) // google's client id
+    }
+    // highlight-end
+  });
+}
+```
+
+</TabItem>
+
+<TabItem value="facebook">
+
+```kotlin
+void Start()
+{
+  web3Auth = GetComponent<Web3Auth>();
+  web3Auth.setOptions(new Web3AuthOptions()
+  {
+    redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
+    clientId = "BAwFgL-r7wzQKmtcdiz2uHJKNZdK7gzEf2q-m55xfzSZOw8jLOyIi4AVvvzaEQO5nv2dFLEmf9LBkF8kaq3aErg",
+    network = Web3Auth.Network.TESTNET,
+    // highlight-start
+    // Optional loginConfig object
+    loginConfig = new LoginConfigItem()
+    {
+      verifier = "verifier-name", // get it from web3auth dashboard
+      typeOfLogin = TypeOfLogin.FACEBOOK,
+      name = "Custom Facebook Login",
+      clientId = getString(R.string.web3auth_facebook_client_id) // facebook's client id
+    }
+    // highlight-end
+  });
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+:::note
+
+- dApp Share is only returned for the Custom Authentication verifiers.
+- Also, 2FA should be enabled for the account using it. Use `mfaLevel = MFALevel.MANDATORY` in the `LoginParams` during login. See **[MFA](./mfa)**
+  for more details.
+
+:::
+
+## `ExtraLoginOptions` for special login methods
+
+---
+
+- To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` field of the `extraLoginOptions`.
+
+  ```csharp
+  public void login()
+  {
+    var selectedProvider = Provider.EMAIL_PASSWORDLESS;
+    var options = new LoginParams()
+    {
+      loginProvider = selectedProvider,
+      extraLoginOptions = new ExtraLoginOptions()
+      {
+          login_hint = "hello@web3auth.io"
+      }
+    };
+    web3Auth.login(options);
+  }
+  ```
+
+- To use the `JWT` login, you need to put the jwt token into the `id_token_hint` field of the `extraLoginOptions`.
+
+  ```csharp
+  public void login()
+  {
+    var selectedProvider = Provider.JWT;
+    var options = new LoginParams()
+    {
+      loginProvider = selectedProvider,
+      extraLoginOptions = new ExtraLoginOptions()
+      {
+        id_token_hint = "your_jwt_token"
+      }
+    };
+      web3Auth.login(options);
+  }
+  ```

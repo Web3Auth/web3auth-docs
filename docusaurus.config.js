@@ -35,7 +35,7 @@ const config = {
       respectPrefersColorScheme: true,
     },
     prism: {
-      additionalLanguages: ["groovy", "java", "kotlin", "swift", "dart"],
+      additionalLanguages: ["groovy", "java", "kotlin", "swift", "dart", "csharp"],
     },
     navbar: {
       title: "Documentation",
