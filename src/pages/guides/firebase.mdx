@@ -217,7 +217,6 @@ const signInWithGoogle = async (): Promise<UserCredential> => {
     const auth = getAuth(app);
     const googleProvider = new GoogleAuthProvider();
     const res = await signInWithPopup(auth, googleProvider);
-    console.log(res);
     return res;
   } catch (err) {
     console.error(err);
@@ -226,8 +225,7 @@ const signInWithGoogle = async (): Promise<UserCredential> => {
 };
 
 const loginRes = await signInWithGoogle();
-const idToken = await loginRes.user.getIdToken(true);
-console.log("idToken", idToken); // this idToken will be passed to web3auth
+const idToken = await loginRes.user.getIdToken(true); // this idToken will be passed to web3auth
 ```
 
 ##### Login with Web3Auth
