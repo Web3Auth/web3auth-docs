@@ -121,7 +121,7 @@ export const integrationBuilderMap = [
     description: "Learn how to add a non custodial web3 login to an iOS/Swift Applications using Web3Auth.",
     image: "/docs/contents/guides/banners/ios-swift.svg",
     type: "INTEGRATION BUILDER",
-    tags: ["mobile", "ios", "mobile", "whitelabel", "custom authentication", "dapp share"],
+    tags: ["mobile", "ios", "whitelabel", "custom authentication", "dapp share"],
     date: "25th May 2022",
     author: "Web3Auth Team",
     link: "/docs/integration-builder?lang=ios&chain=eth&customAuthentication=no&whitelabel=no",

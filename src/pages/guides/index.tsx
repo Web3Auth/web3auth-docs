@@ -11,12 +11,15 @@ import SEO from "../../components/SEO";
 import styles from "./styles.module.css";
 
 export default function GuidesPage({ guides }: Props) {
+  const completeGuides = Object.entries(guides).sort(([, a], [, b]) => a.order - b.order);
+  const completeIntegrationBuilderMap = integrationBuilderMap;
+  const completeReferenceMap = referenceMap;
   const [searchInput, setSearchInput] = useState<string | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [tags, setTags] = useState<string[]>([]);
-  const [sortedGuides, setSortedGuides] = useState<any>(Object.entries(guides).sort(([, a], [, b]) => a.order - b.order));
-  const [sortedIntegrationBuilderMap, setSortedIntegrationBuilderMap] = useState<any>(integrationBuilderMap);
-  const [sortedReferenceMap, setSortedReferenceMap] = useState<any>(referenceMap);
+  const [sortedGuides, setSortedGuides] = useState<any>(completeGuides);
+  const [sortedIntegrationBuilderMap, setSortedIntegrationBuilderMap] = useState<any>(completeIntegrationBuilderMap);
+  const [sortedReferenceMap, setSortedReferenceMap] = useState<any>(completeReferenceMap);
 
   function filterByTags() {
     if (tags.length === 0) {
@@ -52,33 +55,32 @@ export default function GuidesPage({ guides }: Props) {
 
   function onChangeSearch(input) {
     setSearchInput(input);
+    const inputKeywords = input.trim().split(" ");
     if (input === "") {
       filterByTags();
     } else {
-      setSortedGuides(
-        sortedGuides.filter(
-          ([, guide]) =>
-            guide.title.toLowerCase().includes(input.toLowerCase()) ||
-            guide.description.toLowerCase().includes(input.toLowerCase()) ||
-            guide.tags.map((tag) => tag.includes(input.toLowerCase())).includes(true)
-        )
+      const finalSortedGuide = completeGuides.filter(
+        ([, guide]) =>
+          inputKeywords.every((item) => guide.title.toLowerCase().includes(item.toLowerCase())) ||
+          inputKeywords.every((item) => guide.description.toLowerCase().includes(item.toLowerCase())) ||
+          inputKeywords.every((item) => guide.tags.map((tag) => tag.includes(item.toLowerCase())).includes(true))
       );
-      setSortedIntegrationBuilderMap(
-        sortedIntegrationBuilderMap.filter(
-          (item) =>
-            item.title.toLowerCase().includes(input.toLowerCase()) ||
-            item.description.toLowerCase().includes(input.toLowerCase()) ||
-            item.tags.map((tag) => tag.includes(input.toLowerCase())).includes(true)
-        )
+      const finalSortedIntegrationBuilderMap = completeIntegrationBuilderMap.filter(
+        (item) =>
+          inputKeywords.every((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
+          inputKeywords.every((key) => item.description.toLowerCase().includes(key.toLowerCase())) ||
+          inputKeywords.every((key) => item.tags.map((tag) => tag.includes(key.toLowerCase())).includes(true))
       );
-      setSortedReferenceMap(
-        sortedReferenceMap.filter(
-          (item) =>
-            item.title.toLowerCase().includes(input.toLowerCase()) ||
-            item.description.toLowerCase().includes(input.toLowerCase()) ||
-            item.tags.map((tag) => tag.includes(input.toLowerCase())).includes(true)
-        )
+      const finalSortedReferenceMap = completeReferenceMap.filter(
+        (item) =>
+          inputKeywords.every((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
+          inputKeywords.every((key) => item.description.toLowerCase().includes(key.toLowerCase())) ||
+          inputKeywords.every((key) => item.tags.map((tag) => tag.includes(key.toLowerCase())).includes(true))
       );
+
+      setSortedGuides(finalSortedGuide);
+      setSortedIntegrationBuilderMap(finalSortedIntegrationBuilderMap);
+      setSortedReferenceMap(finalSortedReferenceMap);
     }
   }
 
