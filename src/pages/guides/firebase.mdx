@@ -136,7 +136,7 @@ When integrating Web3Auth with Firebase, the login flow looks something like thi
   - Click on `Create` button to create your verifier. It may take up to 10 minutes to deploy verifier on _testnet_. You'll receive an email once it's
     complete.
 
-  ![Custom Authentication - Create AWS Cognito Verifier](/contents/guides/firebase/firebase-custom-verifier.png)
+  ![Custom Authentication - Create Firebase Verifier](/contents/guides/firebase/firebase-custom-verifier.png)
 
 - You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
 
@@ -148,7 +148,7 @@ To use the Web3Auth SDK, you need to add the dependency of the respective platfo
 SDKs, please have a look at this [documentation page](/sdk).
 
 For this guide here, we will be talking through the [Web3Auth Plug and Play Core SDK](/sdk/web/core) and using the
-[OpenLogin Provider](/sdk/web/openlogin) alongside it to enable Custom Authentication through AWS Cognito.
+[OpenLogin Provider](/sdk/web/openlogin) alongside it to enable Custom Authentication through Firebase.
 
 <SetupBaseProject />
 
@@ -247,7 +247,7 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 });
 ```
 
-When connecting, your `connectTo` function takes the arguments for the adapter you want to connect to and the options for the login. The major thing
+When connecting, your `connectTo` function takes the arguments for the adapter you want to connect to and the options for the login. Few major things
 to note here is the `idToken` and `domain` option in the `extraLoginOptions` object. This is the idToken received from Firebase SDK and domain is your
 application domain so that you can be redirected after login from the Web3Auth Plug and Play Core SDK.
 
