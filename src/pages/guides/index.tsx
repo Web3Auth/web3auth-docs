@@ -130,7 +130,7 @@ export default function GuidesPage({ guides }: Props) {
         <div className={styles.tagContainer}>
           {article.tags &&
             article.tags.map((tag) => {
-              if (tags.includes(tag) || tag === searchInput) {
+              if (tags.includes(tag) || searchInput.split(" ").includes(tag)) {
                 return (
                   <div key={tag} className={styles.tagActive} onClick={() => setShowModal(true)}>
                     {tag}
@@ -141,7 +141,7 @@ export default function GuidesPage({ guides }: Props) {
             })}
           {article.tags &&
             article.tags.map((tag) => {
-              if (!tags.includes(tag)) {
+              if (!(tags.includes(tag) || searchInput.split(" ").includes(tag))) {
                 return (
                   <div key={tag} className={styles.tag} onClick={() => setShowModal(true)}>
                     {tag}
