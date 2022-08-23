@@ -11,9 +11,9 @@ import Tabs from "@theme/Tabs";
 
 ---
 
-Once the user is logged in using social logins, an `idToken` can be obtained from the `userInfo`.
+Once the user is logged in using social logins, an `idToken` can be obtained either from the `userInfo()` or the `authenticateUser()` of web3auth.
 
-Refer to the following sections to know how to get the `userInfo` across different Plug and Play SDKs.
+Refer to the following sections to know more on how to get the `idToken` across different Plug and Play SDKs.
 
 import Tiles from "@theme/Tiles";
 
@@ -57,6 +57,38 @@ export const tileGroupsData = [
 ];
 
 <Tiles tileGroups={tileGroupsData} />
+
+## Get idToken
+
+### `getUserInfo`
+
+```js
+await web3auth.getUserInfo();
+```
+
+#### Returns
+
+```json
+{
+  // ... other properties
+  "idToken": "<jwtToken issued by Web3Auth>"
+  // ... other properties
+}
+```
+
+### `authenticateUser`
+
+```js
+await web3auth.authenticateUser();
+```
+
+#### Returns
+
+```json
+{
+  "idToken": "<jwtToken issued by Web3Auth>"
+}
+```
 
 ### Sample `idToken` payload
 
@@ -102,7 +134,8 @@ export const tileGroupsData = [
 
 ---
 
-Inorder to verify the JWT token you need the compressed app_pub_key (derived from app_scoped_privkey) and the `idToken` obtained from the `userInfo`
+Inorder to verify the JWT token you need the compressed app_pub_key (derived from app_scoped_privkey) and the `idToken` obtained from the `userInfo()`
+or `authenticateUser()`.
 
 :::info
 
@@ -142,12 +175,19 @@ const app_pub_key = getPublicCompressed(Buffer.from(app_scoped_privkey.padStart(
 }
 const user = await web3auth.getUserInfo();
 
+{
+  /*
+OR
+const token = await web3auth.authenticateUser();
+ */
+}
+
 // Validate idToken at your backend server
 const res = await fetch("/api/validate", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    Authorization: "Bearer " + user.idToken,
+    Authorization: "Bearer " + user.idToken, // or token.idToken
   },
   body: JSON.stringify({ appPubKey: app_pub_key }),
 });
