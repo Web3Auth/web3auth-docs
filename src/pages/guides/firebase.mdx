@@ -249,33 +249,6 @@ When connecting, your `connectTo` function takes the arguments for the adapter y
 to note here is the `idToken` and `domain` option in the `extraLoginOptions` object. This is the idToken received from Firebase SDK and domain is your
 application domain so that you can be redirected after login from the Web3Auth Plug and Play Core SDK.
 
-### Authenticate External Wallet Users
-
-```js
-const token = await web3auth.authenticateUser();
-console.log("idToken", token.idToken);
-```
-
-If you wish to onboard users via **External Wallets** (such as Metamask, Torus Wallet etc), you can use `authenticateUser()` of Web3Auth SDK. This
-will return a `idToken` containing the following details:
-
-###### idToken(Payload) Received for External Wallets
-
-```json
-{
-  "iat": 1661241339,
-  "issuer": "metamask",
-  "audience": "web3auth-eth-react-demo.vercel.app",
-  "wallets": [
-    {
-      "address": "0x032ce04186f175317a3948583a37590f2199f81f",
-      "type": "ethereum"
-    }
-  ],
-  "exp": 1661327739
-}
-```
-
 ### Get the User Profile
 
 ```js
