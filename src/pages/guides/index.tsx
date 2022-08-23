@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -11,34 +12,38 @@ import SEO from "../../components/SEO";
 import styles from "./styles.module.css";
 
 export default function GuidesPage({ guides }: Props) {
-  const completeGuides = Object.entries(guides).sort(([, a], [, b]) => a.order - b.order);
+  const completeGuides = Object.entries(guides).map(([key, value]) => {
+    return { ...value, link: `/guides/${key}` };
+  });
   const completeIntegrationBuilderMap = integrationBuilderMap;
   const completeReferenceMap = referenceMap;
-  const [searchInput, setSearchInput] = useState<string | null>(null);
+  const [searchInput, setSearchInput] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [tags, setTags] = useState<string[]>([]);
-  const [sortedGuides, setSortedGuides] = useState<any>(completeGuides);
-  const [sortedIntegrationBuilderMap, setSortedIntegrationBuilderMap] = useState<any>(completeIntegrationBuilderMap);
-  const [sortedReferenceMap, setSortedReferenceMap] = useState<any>(completeReferenceMap);
+  const [sortedGuides, setSortedGuides] = useState<any>(completeGuides.sort((a, b) => a.order - b.order));
+  const [sortedIntegrationBuilderMap, setSortedIntegrationBuilderMap] = useState<any>(
+    completeIntegrationBuilderMap.sort((a, b) => a.order - b.order)
+  );
+  const [sortedReferenceMap, setSortedReferenceMap] = useState<any>(completeReferenceMap.sort((a, b) => a.order - b.order));
 
   function filterByTags() {
     if (tags.length === 0) {
-      setSortedGuides(Object.entries(guides).sort(([, a], [, b]) => a.order - b.order));
+      setSortedGuides(completeGuides.sort((a, b) => a.order - b.order));
       setSortedIntegrationBuilderMap(integrationBuilderMap);
       setSortedReferenceMap(referenceMap);
     } else {
       setSortedGuides(
-        Object.entries(guides).filter(([, guide]) => {
-          return tags.some((tag) => guide.tags.includes(tag));
+        completeGuides.filter((item) => {
+          return tags.some((tag) => item.tags.includes(tag));
         })
       );
       setSortedIntegrationBuilderMap(
-        integrationBuilderMap.filter((item) => {
+        completeIntegrationBuilderMap.filter((item) => {
           return tags.some((tag) => item.tags.includes(tag));
         })
       );
       setSortedReferenceMap(
-        referenceMap.filter((item) => {
+        completeReferenceMap.filter((item) => {
           return tags.some((tag) => item.tags.includes(tag));
         })
       );
@@ -53,17 +58,44 @@ export default function GuidesPage({ guides }: Props) {
     }
   }
 
+  function highlightSearchText(text) {
+    if (searchInput === "") {
+      return text;
+    }
+    let inputKeywords = searchInput.split(" ");
+    inputKeywords = inputKeywords.filter((keyword) => keyword !== "");
+    const keywords = inputKeywords
+      .map((keyword) => {
+        return `(${keyword})`;
+      })
+      .join("|");
+    const regex = new RegExp(keywords, "gi");
+    const matches = text.match(regex);
+    const parts = text.split(regex);
+    if (matches) {
+      return (
+        <span>
+          {parts.filter(String).map((part, i) => {
+            return regex.test(part) ? <mark key={i}>{part}</mark> : <span key={i}>{part}</span>;
+          })}
+        </span>
+      );
+    }
+    return text;
+  }
+
   function onChangeSearch(input) {
     setSearchInput(input);
+
     const inputKeywords = input.trim().split(" ");
     if (input === "") {
       filterByTags();
     } else {
       const finalSortedGuide = completeGuides.filter(
-        ([, guide]) =>
-          inputKeywords.every((item) => guide.title.toLowerCase().includes(item.toLowerCase())) ||
-          inputKeywords.every((item) => guide.description.toLowerCase().includes(item.toLowerCase())) ||
-          inputKeywords.every((item) => guide.tags.map((tag) => tag.includes(item.toLowerCase())).includes(true))
+        (item) =>
+          inputKeywords.every((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
+          inputKeywords.every((key) => item.description.toLowerCase().includes(key.toLowerCase())) ||
+          inputKeywords.every((key) => item.tags.map((tag) => tag.includes(key.toLowerCase())).includes(true))
       );
       const finalSortedIntegrationBuilderMap = completeIntegrationBuilderMap.filter(
         (item) =>
@@ -82,6 +114,48 @@ export default function GuidesPage({ guides }: Props) {
       setSortedIntegrationBuilderMap(finalSortedIntegrationBuilderMap);
       setSortedReferenceMap(finalSortedReferenceMap);
     }
+  }
+
+  function renderArticle(article) {
+    return (
+      <div key={article.link} className={styles.article}>
+        <Link to={article.link} className={styles.articleContent}>
+          <img src={article.image} alt="Banner" />
+          <div className={styles.contentContainer}>
+            <span className={styles.type}>{article.type}</span>
+            <h3>{highlightSearchText(article.title)}</h3>
+            <p>{highlightSearchText(article.description)}</p>
+          </div>
+        </Link>
+        <div className={styles.tagContainer}>
+          {article.tags &&
+            article.tags.map((tag) => {
+              if (tags.includes(tag) || tag === searchInput) {
+                return (
+                  <div key={tag} className={styles.tagActive} onClick={() => setShowModal(true)}>
+                    {tag}
+                  </div>
+                );
+              }
+              return null;
+            })}
+          {article.tags &&
+            article.tags.map((tag) => {
+              if (!tags.includes(tag)) {
+                return (
+                  <div key={tag} className={styles.tag} onClick={() => setShowModal(true)}>
+                    {tag}
+                  </div>
+                );
+              }
+              return null;
+            })}
+        </div>
+        <span className={styles.date}>
+          {article.author} | {article.date}
+        </span>
+      </div>
+    );
   }
 
   return (
@@ -115,7 +189,7 @@ export default function GuidesPage({ guides }: Props) {
               className={styles.searchTerm}
             />
             {(searchInput && (
-              <button onClick={() => setSearchInput("")} className={styles.searchClearButton} type="button">
+              <button onClick={() => onChangeSearch("")} className={styles.searchClearButton} type="button">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M18.8702 6.54951L13.3932 11.9734L19.9528 18.5331C20.0032 18.5835 20.032 18.7 19.9398 18.832L18.8318 19.94C18.6997 20.0323 18.5832 20.0035 18.5328 19.9531L17.4502 18.8705L12.0263 13.3934L5.46663 19.9531C5.41628 20.0035 5.29978 20.0323 5.16769 19.94L4.05969 18.832C3.96743 18.7 3.99626 18.5835 4.04662 18.5331L10.6062 11.9736L4.04637 5.46666C3.99617 5.41617 3.96758 5.29984 4.05969 5.16797L5.16769 4.05997C5.29978 3.9677 5.41628 3.99654 5.46663 4.04689L12.0262 10.6064L18.5331 4.04666C18.5836 3.99645 18.6999 3.96785 18.8318 4.05997L19.9398 5.16797C20.032 5.30006 20.0032 5.41655 19.9528 5.46691L18.8702 6.54951Z"
@@ -238,119 +312,9 @@ export default function GuidesPage({ guides }: Props) {
             <p>No Results</p>
           </div>
         )}
-        {sortedGuides.map(([key, guide]) => (
-          <div key={key} className={styles.article}>
-            <Link to={`/guides/${key}`} className={styles.articleContent}>
-              <img src={guide.image} alt="Banner" />
-              <div className={styles.contentContainer}>
-                <span className={styles.type}>{guide.type}</span>
-                <h3>{guide.title}</h3>
-                <p>{guide.description}</p>
-              </div>
-            </Link>
-            <div className={styles.tagContainer}>
-              {guide.tags &&
-                guide.tags.map((tag) => {
-                  if (tags.includes(tag)) {
-                    return (
-                      <div key={tag} className={styles.tagActive} onClick={() => setShowModal(true)}>
-                        {tag}
-                      </div>
-                    );
-                  }
-                })}
-              {guide.tags &&
-                guide.tags.map((tag) => {
-                  if (!tags.includes(tag)) {
-                    return (
-                      <div key={tag} className={styles.tag} onClick={() => setShowModal(true)}>
-                        {tag}
-                      </div>
-                    );
-                  }
-                })}
-            </div>
-            <span className={styles.date}>
-              {guide.author} | {guide.date}
-            </span>
-          </div>
-        ))}
-
-        {sortedIntegrationBuilderMap.map((item) => (
-          <div key={item.link} className={styles.article}>
-            <Link to={item.link} className={styles.articleContent}>
-              <img src={item.image} alt="Banner" />
-              <div className={styles.contentContainer}>
-                <span className={styles.type}>{item.type}</span>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </div>
-            </Link>
-            <div className={styles.tagContainer}>
-              {item.tags &&
-                item.tags.map((tag) => {
-                  if (tags.includes(tag)) {
-                    return (
-                      <div key={tag} className={styles.tagActive} onClick={() => setShowModal(true)}>
-                        {tag}
-                      </div>
-                    );
-                  }
-                })}
-              {item.tags &&
-                item.tags.map((tag) => {
-                  if (!tags.includes(tag)) {
-                    return (
-                      <div key={tag} className={styles.tag} onClick={() => setShowModal(true)}>
-                        {tag}
-                      </div>
-                    );
-                  }
-                })}
-            </div>
-            <span className={styles.date}>
-              {item.author} | {item.date}
-            </span>
-          </div>
-        ))}
-
-        {sortedReferenceMap.map((item) => (
-          <div key={item.link} className={styles.article}>
-            <Link to={item.link} className={styles.articleContent}>
-              <img src={item.image} alt="Banner" />
-              <div className={styles.contentContainer}>
-                <span className={styles.type}>{item.type}</span>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </div>
-            </Link>
-            <div className={styles.tagContainer}>
-              {item.tags &&
-                item.tags.map((tag) => {
-                  if (tags.includes(tag)) {
-                    return (
-                      <div key={tag} className={styles.tagActive} onClick={() => setShowModal(true)}>
-                        {tag}
-                      </div>
-                    );
-                  }
-                })}
-              {item.tags &&
-                item.tags.map((tag) => {
-                  if (!tags.includes(tag)) {
-                    return (
-                      <div key={tag} className={styles.tag} onClick={() => setShowModal(true)}>
-                        {tag}
-                      </div>
-                    );
-                  }
-                })}
-            </div>
-            <span className={styles.date}>
-              {item.author} | {item.date}
-            </span>
-          </div>
-        ))}
+        {sortedGuides.map((guide) => renderArticle(guide))}
+        {sortedIntegrationBuilderMap.map((item) => renderArticle(item))}
+        {sortedReferenceMap.map((reference) => renderArticle(reference))}
       </div>
     </Layout>
   );

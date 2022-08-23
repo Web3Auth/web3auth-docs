@@ -38,6 +38,7 @@ export const integrationBuilderMap = [
     tags: ["web", "react", "@web3auth/web3auth", "whitelabel", "custom authentication", "solana", "starkex", "starknet", ...EVMBlockchains, "tezos"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/integration-builder?lang=react&chain=eth&customAuthentication=no&whitelabel=no",
   },
   {
@@ -59,6 +60,7 @@ export const integrationBuilderMap = [
     ],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/integration-builder?lang=next&chain=eth&customAuthentication=no&whitelabel=no",
   },
   {
@@ -80,6 +82,7 @@ export const integrationBuilderMap = [
     ],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/integration-builder?lang=angular&chain=eth&customAuthentication=no&whitelabel=no",
   },
 
@@ -91,6 +94,7 @@ export const integrationBuilderMap = [
     tags: ["web", "html/js", "@web3auth/web3auth", "whitelabel", "custom authentication", ...EVMBlockchains],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/integration-builder?lang=html&chain=eth&customAuthentication=no&whitelabel=no",
   },
 
@@ -102,6 +106,7 @@ export const integrationBuilderMap = [
     tags: ["web", "vue", "@web3auth/web3auth", "whitelabel", "custom authentication", "solana", "starkex", "starknet", ...EVMBlockchains, "tezos"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/integration-builder?lang=vue&chain=eth&customAuthentication=no&whitelabel=no",
   },
 
@@ -113,6 +118,7 @@ export const integrationBuilderMap = [
     tags: ["mobile", "android", "whitelabel", "custom authentication", "dapp share"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/integration-builder?lang=android&chain=eth&customAuthentication=no&whitelabel=no",
   },
 
@@ -124,6 +130,7 @@ export const integrationBuilderMap = [
     tags: ["mobile", "ios", "whitelabel", "custom authentication", "dapp share"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/integration-builder?lang=ios&chain=eth&customAuthentication=no&whitelabel=no",
   },
 
@@ -135,6 +142,7 @@ export const integrationBuilderMap = [
     tags: ["mobile", "flutter", "whitelabel", "custom authentication", "dapp share"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/integration-builder?lang=flutter&chain=eth&customAuthentication=no&whitelabel=no",
   },
 
@@ -146,6 +154,7 @@ export const integrationBuilderMap = [
     tags: ["mobile", "react native", "whitelabel", "custom authentication", "dapp share"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/integration-builder?lang=react-native&chain=eth&customAuthentication=no&whitelabel=no",
   },
 ];
@@ -159,6 +168,7 @@ export const referenceMap = [
     tags: ["jwt", "custom authentication", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/custom-authentication/byo-jwt-providers",
   },
   {
@@ -169,6 +179,7 @@ export const referenceMap = [
     tags: ["ethereum", "evm", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/connect-blockchain/ethereum",
   },
   {
@@ -179,6 +190,7 @@ export const referenceMap = [
     tags: ["solana", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/connect-blockchain/solana",
   },
   {
@@ -189,6 +201,7 @@ export const referenceMap = [
     tags: ["starkex", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/connect-blockchain/starkex",
   },
 
@@ -200,6 +213,7 @@ export const referenceMap = [
     tags: ["starknet", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/connect-blockchain/starknet",
   },
   {
@@ -210,6 +224,7 @@ export const referenceMap = [
     tags: ["polygon", "evm", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/connect-blockchain/polygon",
   },
   {
@@ -220,6 +235,7 @@ export const referenceMap = [
     tags: ["tezos", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/connect-blockchain/tezos",
   },
   {
@@ -230,6 +246,7 @@ export const referenceMap = [
     tags: ["avalanche", "evm", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/connect-blockchain/avalanche",
   },
 
@@ -241,6 +258,7 @@ export const referenceMap = [
     tags: ["binance", "bnb", "evm", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/connect-blockchain/bnb",
   },
 
@@ -252,6 +270,7 @@ export const referenceMap = [
     tags: ["optimism", "evm", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/connect-blockchain/optimism",
   },
 
@@ -263,6 +282,7 @@ export const referenceMap = [
     tags: ["arbitrum", "evm", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/connect-blockchain/arbitrum",
   },
 
@@ -274,6 +294,7 @@ export const referenceMap = [
     tags: ["cronos", "evm", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/connect-blockchain/cronos",
   },
 
@@ -285,6 +306,7 @@ export const referenceMap = [
     tags: ["harmony", "evm", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/connect-blockchain/harmony",
   },
 
@@ -296,6 +318,7 @@ export const referenceMap = [
     tags: ["celo", "evm", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/connect-blockchain/celo",
   },
 
@@ -307,6 +330,7 @@ export const referenceMap = [
     tags: ["moonbeam", "evm", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/connect-blockchain/moonbeam",
   },
 
@@ -318,6 +342,7 @@ export const referenceMap = [
     tags: ["moonriver", "evm", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/connect-blockchain/moonriver",
   },
 
@@ -329,6 +354,7 @@ export const referenceMap = [
     tags: ["kalytn", "evm", "@web3auth/web3auth", "@web3auth/core"],
     date: "25th May 2022",
     author: "Web3Auth Team",
+    order: 1,
     link: "/docs/connect-blockchain/klaytn",
   },
 ];
