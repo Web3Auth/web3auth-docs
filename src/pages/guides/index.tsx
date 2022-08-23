@@ -88,27 +88,20 @@ export default function GuidesPage({ guides }: Props) {
     setSearchInput(input);
 
     const inputKeywords = input.trim().split(" ");
+
+    function searchFilter(item) {
+      return (
+        inputKeywords.every((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
+        inputKeywords.every((key) => item.description.toLowerCase().includes(key.toLowerCase())) ||
+        inputKeywords.every((key) => item.tags.map((tag) => tag.includes(key.toLowerCase())).includes(true))
+      );
+    }
     if (input === "") {
       filterByTags();
     } else {
-      const finalSortedGuide = completeGuides.filter(
-        (item) =>
-          inputKeywords.every((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
-          inputKeywords.every((key) => item.description.toLowerCase().includes(key.toLowerCase())) ||
-          inputKeywords.every((key) => item.tags.map((tag) => tag.includes(key.toLowerCase())).includes(true))
-      );
-      const finalSortedIntegrationBuilderMap = completeIntegrationBuilderMap.filter(
-        (item) =>
-          inputKeywords.every((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
-          inputKeywords.every((key) => item.description.toLowerCase().includes(key.toLowerCase())) ||
-          inputKeywords.every((key) => item.tags.map((tag) => tag.includes(key.toLowerCase())).includes(true))
-      );
-      const finalSortedReferenceMap = completeReferenceMap.filter(
-        (item) =>
-          inputKeywords.every((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
-          inputKeywords.every((key) => item.description.toLowerCase().includes(key.toLowerCase())) ||
-          inputKeywords.every((key) => item.tags.map((tag) => tag.includes(key.toLowerCase())).includes(true))
-      );
+      const finalSortedGuide = completeGuides.filter((item) => searchFilter(item));
+      const finalSortedIntegrationBuilderMap = completeIntegrationBuilderMap.filter((item) => searchFilter(item));
+      const finalSortedReferenceMap = completeReferenceMap.filter((item) => searchFilter(item));
 
       setSortedGuides(finalSortedGuide);
       setSortedIntegrationBuilderMap(finalSortedIntegrationBuilderMap);
