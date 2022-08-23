@@ -30,6 +30,14 @@ const web3auth = new Web3Auth({
   clientId, // get from https://dashboard.web3auth.io
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "Ethereum Mainnet",
+    blockExplorer: "https://etherscan.io/",
+    ticker: "ETH",
+    tickerName: "Ethereum",
   },
 });
 
@@ -54,6 +62,11 @@ const web3auth = new Web3Auth({
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.SOLANA,
     chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+    rpcTarget: "https://rpc.ankr.com/solana",
+    displayName: "Solana Mainnet",
+    blockExplorer: "https://explorer.solana.com",
+    ticker: "SOL",
+    tickerName: "Solana Token",
   },
 });
 
@@ -76,8 +89,14 @@ import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 const web3auth = new Web3Auth({
   clientId, // get from https://dashboard.web3auth.io
   chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.OTHER,
-  },
+      /*
+      you can pass your own chain configs here
+      */
+      chainNamespace: CHAIN_NAMESPACES.OTHER,
+      displayName: "Tezos",
+      ticker: "XTZ",
+      tickerName: "tezos",
+    }
 });
 
 const openloginAdapter = new OpenloginAdapter({
