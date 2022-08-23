@@ -1,0 +1,314 @@
+---
+title: Using Firebase with Web3Auth
+image: "/docs/contents/guides/banners/firebase.svg"
+description: Learn how to use Web3Auth Plug and Play Core SDK with Firebase
+type: guide
+tags: [web, "@web3auth/core", firebase, custom authentication, react, ethereum]
+date: 23rd August 2022
+author: Web3Auth Team
+order: 2
+---
+
+import InitializationIntro from "@site/src/common/guides/_initialization-intro.mdx";
+import InitializationWeb3Auth from "@site/src/common/guides/_initialization-web3auth.mdx";
+import InstallationWithFirebase from "@site/src/common/guides/_installation-firebase.mdx";
+import InstantiationWeb3Auth from "@site/src/common/guides/_instantiation-web3auth.mdx";
+import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
+import OpenloginConfigCodeFirebase from "@site/src/common/guides/_openlogin-config-code-firebase.mdx";
+import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Using Firebase with Web3Auth"
+  description="Learn how to use Web3Auth Plug and Play Core SDK with Firebase"
+  image="https://web3auth.io/docs/contents/guides/banners/firebase.svg"
+  slug="/guides/firebase"
+/>
+
+This guide will cover the basics of how to set up your Web3Auth SDK and Firebase for the integration and provide you with the links on how to develop
+a basic web application on the Ethereum blockchain.
+
+**Live Demo:** https://web3auth-core-firebase-demo.vercel.app
+
+## Quick Start
+
+```bash
+git clone https://github.com/Web3Auth/examples.git
+cd web-core-sdk/custom-authentication/firebase-react-core-example
+npm install
+npm run start
+```
+
+## How it works?
+
+---
+
+When integrating Web3Auth with Firebase, the login flow looks something like this:
+
+![Web3Auth Core - Firebase (Google) Login Flow](/images/implicit-flow.svg)
+
+- When a user logs in with `Firebase`, Firebase sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
+
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
+  easy onboarding for your user to the application.
+
+## Prerequisites
+
+---
+
+<Web3AuthPrerequisites />
+
+- A [Firebase](https://console.firebase.google.com) account to be used as Federated Identity Provider.
+
+- A [Google Developer](https://console.developers.google.com) account to be used as Identity provider for Firebase.
+
+## Setup
+
+---
+
+### Setup your Firebase Project
+
+- Go to your [Firebase console](https://console.firebase.google.com) and create a Web App. Follow
+  [this guide](https://firebase.google.com/docs/web/setup) on how to setup your Firebase Web App project.
+
+###### Create a Firebase Project
+
+- Create a new project by clicking on **Add project** or use your existing project from [Firebase console](https://console.firebase.google.com).
+
+  ![Firebase Project - Set up 1](/contents/guides/firebase/firebase-setup-project-1.svg)
+
+- Give your project a name and click on **Continue**
+
+  ![Firebase Project - Set up 2](/contents/guides/firebase/firebase-setup-project-2.svg)
+
+- Finally, click on **Create Project**
+
+  ![Firebase Project - Set up 3](/contents/guides/firebase/firebase-setup-project-3.svg)
+
+###### Select Authentication Provider
+
+- Once the project is created. Set up _authentication_ by clicking on the **Authentication** card from the home screen of your project or choose
+  _Authentication_ under **Build** from the left sidebar.
+
+  ![Firebase Project - Set up auth 1](/contents/guides/firebase/firebase-setup-auth-1.svg)
+
+- From **Sign-in method** tab, select any provider you wish to enanle. For the purpose of this guide, we'll be enabling **Google**.
+
+  ![Firebase Project - Set up auth 2](/contents/guides/firebase/firebase-setup-auth-2.svg)
+
+- Finally, toggle the **enable** button and click on **Save**
+
+  ![Firebase Project - Set up auth 3](/contents/guides/firebase/firebase-setup-auth-3.svg)
+
+###### Configure Firebase for Web
+
+- Once the project is created and authentication is configured. Let's use Firebase for Web by clicking on the `</>` button on the home screen of your
+  project.
+
+  ![Firebase Project - Set up web 1](/contents/guides/firebase/firebase-setup-web-1.svg)
+
+- In the next screen, enter the **App nickname** and click on **Register** button to register the app for Web.
+
+  ![Firebase Project - Set up web 2](/contents/guides/firebase/firebase-setup-web-2.svg)
+
+- Next screen shows ways to add **Firebase** to your application. We will be using the confi from here later in the guide. Please keep a note of the
+  `firebaseConfig` object.
+
+  ![Firebase Project - Set up web 3](/contents/guides/firebase/firebase-setup-web-3.svg)
+
+### Setup your Web3Auth Dashboard
+
+<SetupWeb3AuthDashboard />
+
+- Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
+  configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. w3a-firebase-verifier`
+  - Select environment: `testnet`, `mainnet` or `cyan` as per your requirement.
+  - Select `Custom` from the **Login Provider**.
+  - Select `Sub` for the **JWT Verifier ID**.
+  - Enter `https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com` as the JWK endpoint for Firebase's idToken.
+  - JWT validation fields:
+    - iss: `https://securetoken.google.com/<firebase-project-id>`.
+    - aud: `<firebase-project-id>`
+  - Click on `Create` button to create your verifier. It may take up to 10 minutes to deploy verifier on _testnet_. You'll receive an email once it's
+    complete.
+
+  ![Custom Authentication - Create AWS Cognito Verifier](/contents/guides/firebase/firebase-custom-verifier.png)
+
+- You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+
+## Using the Web3Auth SDK with Firebase
+
+---
+
+To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
+SDKs, please have a look at this [documentation page](/sdk).
+
+For this guide here, we will be talking through the [Web3Auth Plug and Play Core SDK](/sdk/web/core) and using the
+[OpenLogin Provider](/sdk/web/openlogin) alongside it to enable Custom Authentication through AWS Cognito.
+
+<SetupBaseProject />
+
+### Installation
+
+<InstallationWithFirebase />
+
+### Initialization
+
+<InitializationIntro />
+
+For this guide, we're only focusing on the Instantiation, Configuration for the Openlogin Adapter (the default adapter that enables social logins) and
+Initialization of the Web3Auth SDK. To know more about the other things you can do with Web3Auth, checkout our [SDK Reference](/sdk/web/core).
+
+#### Instantiating Web3Auth
+
+<InstantiationWeb3Auth />
+
+##### Initialize Firebase with Firebase configuration
+
+```js
+// Import the functions you need from the SDK
+import { initializeApp } from "firebase/app";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDEfyUmXDhgGWibRUro2EBoX8-TtBKMYyA",
+  authDomain: "web3auth-x-firebase-demo-e3332.firebaseapp.com",
+  projectId: "web3auth-x-firebase-demo-e3332",
+  storageBucket: "web3auth-x-firebase-demo-e3332.appspot.com",
+  messagingSenderId: "108145034076",
+  appId: "1:108145034076:web:3ff4c0088ec4c311b17799",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+```
+
+Import `initializeApp` from the Firebase SDK and use the firebaseConfig obtained above to initialize the Firebase web app.
+
+#### Initialising the Openlogin Adapter
+
+<OpenloginConfigCodeFirebase />
+
+Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom Auth `verifierName` in the loginConfig object. This
+makes sure that the Openlogin Adapter can connect to the correct verifier and Firebase server.
+
+<InitializationWeb3Auth />
+
+### Authentication
+
+#### Logging in
+
+Login is a two step process:
+
+1. Firstly we will login with **Firebase(Google)** to get the `idToken`.
+2. Next, we will pass the received `idToken` to **web3auth** to login via Web3Auth SDK to generate the public-private key pair for easier onboarding
+   to Web3.
+
+##### Login with Firebase
+
+```js
+import { GoogleAuthProvider, getAuth, signInWithPopup, UserCredential } from "firebase/auth";
+
+const signInWithGoogle = async (): Promise<UserCredential> => {
+  try {
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider();
+    const res = await signInWithPopup(auth, googleProvider);
+    console.log(res);
+    return res;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+const loginRes = await signInWithGoogle();
+const idToken = await loginRes.user.getIdToken(true);
+console.log("idToken", idToken); // this idToken will be passed to web3auth
+```
+
+Once initialized, and `idToken` is obtained from **Firebase**, you can use the `connectTo()` function to authenticate the user with Web3Auth.
+
+```js
+import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
+
+await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    id_token: idToken,
+    verifierIdField: "sub", // same as your JWT Verifier ID
+    domain: "https://YOUR-APPLICATION-DOMAIN" || "http://localhost:3000",
+  },
+});
+```
+
+When connecting, your `connectTo` function takes the arguments for the adapter you want to connect to and the options for the login. The major thing
+to note here is the `idToken` and `domain` option in the `extraLoginOptions` object. This is the idToken received from Firebase SDK and domain is your
+application domain so that you can be redirected after login from the Web3Auth Plug and Play Core SDK.
+
+### Authenticate External Wallet Users
+
+```js
+const token = await web3auth.authenticateUser();
+console.log("idToken", token.idToken);
+```
+
+If you wish to onboard users via **External Wallets** (such as Metamask, Torus Wallet etc), you can use `authenticateUser()` of Web3Auth SDK. This
+will return a `idToken` containing the following details:
+
+#### idToken(Payload) Received for External Wallets
+
+```json
+{
+  "iat": 1661241339,
+  "issuer": "metamask",
+  "audience": "web3auth-eth-react-demo.vercel.app",
+  "wallets": [
+    {
+      "address": "0x032ce04186f175317a3948583a37590f2199f81f",
+      "type": "ethereum"
+    }
+  ],
+  "exp": 1661327739
+}
+```
+
+### Get the User Profile
+
+```js
+const user = await web3auth.getUserInfo();
+console.log("User info", user);
+```
+
+Using the `getUserInfo` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
+network, but are fetched from the id_token you received from Firebase and lives in the frontend context.
+
+### Logout
+
+Logging out your user is as simple as calling the `logout` function.
+
+```js
+await web3auth.logout();
+```
+
+### Interacting with Blockchain
+
+<InteractingWithBlockchain />
+
+## Example code
+
+Try our [Demo Application](https://demo-firebase.web3auth.io/) with Web3Auth & Firebase integration. It works for either Ethereum, Solana or Polygon.
+The source code for the demo application is available [here](https://github.com/Web3Auth/Web3Auth/tree/master/demo/firebase-react-app).
+
+The code for the application we developed in this guide can be found in the
+[Web3Auth Firebase Example](https://github.com/Web3Auth/examples/tree/main/web-core-sdk/custom-authentication/firebase-react-core-example). Check it
+out and try running it locally yourself!
+
+## Questions?
+
+Ask us on [Web3Auth's Github Discussion Board](https://web3auth.io/discussions)
