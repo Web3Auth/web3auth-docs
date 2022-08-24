@@ -1,0 +1,67 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+#### `authenticateUser()`
+
+You can get the `idToken` from Web3Auth by calling `authenticateUser()` function.
+
+:::note
+
+This function will only return information based on the connected adapter. These details are not stored anywhere and are fetched from the adapter
+during the connection and remain in the session.
+
+:::
+
+```javascript
+await web3auth.authenticateUser();
+```
+
+#### Returns
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type Declarations", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter  | Type     | Description                                                                                                                                                                                             |
+| ---------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `iat`      | `number` | The "iat" (issued at) claim identifies the time at which the JWT was issued.                                                                                                                            |
+| `audience` | `string` | The "audience" claim identifies the recipients that the JWT is intended for. (Here, it's `website's url`)                                                                                               |
+| `issuer`   | `string` | The "issuer" claim identifies who issued the JWT. <br/> Here, issuer could be `torus-evm`, `torus-solana`, `metamask`, `phantom`, `walletconnect-v1`, `coinbase`, `slope`, `solflare`, `sollet`         |
+| `wallets`  | `array`  | list of wallets for which this token is issued: <ul><li>`address` : Wallet public address</li><li>`type` Network Type such as "ethereum", "solana" or "starkware" incase of external wallets </li></ul> |
+
+</TabItem>
+
+<TabItem value="type">
+
+`authenticateUser(): Promise<UserAuthInfo>`
+
+```ts
+export type UserAuthInfo = { idToken: string };
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Sample Response
+
+```json
+{
+  "iat": 1661158877,
+  "issuer": "<issuer-name>",
+  "audience": "https://requesting.website",
+  "wallets": [
+    {
+      "address": "0x809d4310d578649d8539e718030ee11e603ee8f3",
+      "type": "ethereum"
+    }
+  ],
+  "exp": 1661245277
+}
+```
