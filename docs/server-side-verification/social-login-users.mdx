@@ -134,25 +134,17 @@ await web3auth.authenticateUser();
 
 ---
 
-Inorder to verify the JWT token you need the compressed app_pub_key (derived from app_scoped_privkey) and the `idToken` obtained from the `userInfo()`
-or `authenticateUser()`.
+In order to verify the JWT Token(`idToken`) you need the compressed **app_pub_key** (derived from _**app_scoped_privkey**_) and the `idToken` obtained
+from the `userInfo()` or `authenticateUser()`.
 
 :::info
 
 - App scoped private key will be obtained from the frontend once the user is logged in.
-- Public Key derivation depends on the curve (refer to the code snippets above)
+- Public Key derivation depends on the curve (refer to the code snippets above).
 
 :::
 
-<Tabs
-  defaultValue="Frontend"
-  values={[
-    { label: "Frontend", value: "Frontend" },
-    { label: "Backend", value: "Backend" },
-  ]}
->
-
-<TabItem value="Frontend">
+### Getting `app_pub_key` and `idToken` in Frontend
 
 ```typescript
 // Incase of ed25519 curve, get the app_pub_key
@@ -170,17 +162,14 @@ const app_scoped_privkey = await web3auth.provider?.request({
 });
 const app_pub_key = getPublicCompressed(Buffer.from(app_scoped_privkey.padStart(64, "0"), "hex")).toString("hex");
 
-{
-  /* Assuming use is logged in, get the userInfo containtaing idToken */
-}
+/* Assuming use is logged in, get the userInfo containtaing idToken */
+
 const user = await web3auth.getUserInfo();
 
-{
-  /*
+/*
 OR
 const token = await web3auth.authenticateUser();
  */
-}
 
 // Validate idToken at your backend server
 const res = await fetch("/api/validate", {
@@ -193,9 +182,7 @@ const res = await fetch("/api/validate", {
 });
 ```
 
-</TabItem>
-
-<TabItem value="Backend">
+### Verifying `idToken` in Backend
 
 ```javascript
 // JWT verification using JWKS
@@ -218,19 +205,17 @@ if ((jwtDecoded.payload as any).wallets[0].public_key === app_pub_key) {
 }
 ```
 
-</TabItem>
-
-</Tabs>
-
-<br />
-
 ## Changing the Public Key Curve
 
 ---
 
-By default Web3Auth returns a `idToken` which contains the `public_key` in `secp256k1` form.
+:::info
 
-If you want to encode the public_key in `ed25519`` format then you have to pass the curve parameter in OpenloginAdapter as:
+By default Web3Auth returns an `idToken` which contains the `public_key` in `secp256k1` form.
+
+:::
+
+If you want to encode the public_key in `ed25519` format then you have to pass the curve parameter in OpenloginAdapter as:
 
 ```js
 const openloginAdapter = new OpenloginAdapter({
