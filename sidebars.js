@@ -306,6 +306,7 @@ module.exports = {
         "sdk/unity/whitelabel",
         "sdk/unity/custom-authentication",
         "sdk/unity/mfa",
+        "sdk/unity/dapp-share",
         "sdk/unity/usage",
       ],
     },
