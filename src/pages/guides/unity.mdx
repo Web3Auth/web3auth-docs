@@ -1,0 +1,360 @@
+---
+title: Using Web3Auth Unity SDK
+image: "/docs/contents/guides/banners/unity.svg"
+description: Learn how to use Web3Auth SDK in your Unity app
+type: guide
+tags: [gaming, unity, whitelabel, custom authentication, dapp share]
+date: 12th Aug 2022
+author: Web3Auth Team
+order: 4
+---
+
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import UnityResponse from "@site/src/common/sdk/unity/_response.mdx";
+import SEO from "@site/src/components/SEO";
+import deepLinkGenerator from "@site/static/contents/sdk/unity/deepLinkGenerator.png";
+import web3authCS from "@site/static/contents/sdk/unity/web3authCS.png";
+
+<SEO
+  title="Using Web3Auth Unity SDK"
+  description="Learn how to use Web3Auth SDK in your Unity application"
+  image="https://web3auth.io/docs/contents/guides/banners/unity.svg"
+  slug="/guides/unity"
+/>
+
+This guide will cover the basics of how to use the Web3Auth Unity SDK in your preferred platform. Before starting you can try out the sample
+application as mentioned in quick start.
+
+## Quick Start
+
+```bash
+git clone https://github.com/Web3Auth/examples.git
+cd unity
+# Open in Unity Hub
+```
+
+## How it works?
+
+---
+
+When integrating Web3Auth Unity SDK with Social Login the flow looks something like this:
+
+![Web3Auth Core - Social Login Flow](/images/implicit-flow.svg)
+
+- When a user logs in with a login provider like `Google`, it sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login
+  function.
+
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
+  easy onboarding for your user to the application.
+
+## Prerequisites
+
+---
+
+<Web3AuthPrerequisites />
+
+- Unity Editor 2019.4.9f1 or greater
+
+- .Net Framework 4.x
+
+## Setup
+
+---
+
+### Setup your Web3Auth Dashboard
+
+<SetupWeb3AuthDashboard />
+
+- Add `{{SCHEMA}}://{YOUR_APP_PACKAGE_NAME}://auth` to **Whitelist URLs** feild of the Web3Auth Dashboard.
+
+- Copy the `Client ID` for usage later.
+
+## Using the Web3Auth SDK
+
+---
+
+To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
+SDKs, please have a look at this [documentation page](/docs/sdk).
+
+For this guide here, we will be talking through the [Web3Auth Unity SDK](/sdk/unity).
+
+### Installation
+
+Download [.unitypackage](https://github.com/Web3Auth/web3auth-unity-sdk/releases/tag/Web3Auth-Unity-SDK) from our latest release and import the
+package file into your existing Unity3D project.
+
+:::caution
+
+You may encounter errors when importing this package into your existing project.
+
+`The type or namespace name 'Newtonsoft' could not be found (are you missing a using directive or an assembly reference?)`
+
+To fix this problem you need to add the following line into dependencies object which is inside the `Packages/manifest.json` file.
+
+```json title="/Packages/manifest.json"
+"com.unity.nuget.newtonsoft-json": "2.0.0"
+```
+
+:::
+
+### Configure Deep Link (for Android and iOS)
+
+Unity SDK works on unity deep linking features to redirect the callback from Web3Auth. Before building the application for Android/IOS you need to
+register the redirect_uri which can be done easily by the tool provided inside the SDK. To achieve that, you need to follow the steps mentioned below.
+
+- Open deep link generator tool provided by Web3Auth Unity SDK from `Window > Web3Auth > Deep Link Generator`
+
+  <img src={deepLinkGenerator} style={{ alignSelf: "center", maxWidth: "100%" }} />
+
+- Enter the `redirect_url` `{{SCHEMA}}://{YOUR_APP_PACKAGE_NAME}://auth` and click generate.
+
+:::tip
+
+We're using `torusapp://com.torus.Web3AuthUnity/auth` as the `redirect_url` in our example just to give you a reference on how your app's
+`redirect_url` should look like.
+
+:::
+
+## Initialization
+
+---
+
+After Installation, the next step to using Web3Auth is to Initialize the SDK.
+
+However, Initialization is a two-step process:
+
+1. [Creating a Web3Auth Instance](#create-web3auth-instance)
+2. [Setting up Web3Auth Options](#setting-up-web3auth-options)
+
+Please note that these are the most critical steps where you must pass on different parameters according to the preference of your project.
+Additionally, You must configure Whitelabeling and Custom Authentication within this step if you wish to customize your Web3Auth Instance.
+
+### Create Web3Auth Instance
+
+Attach a `Web3Auth.cs` script to your game object where you are planning to write your authentication code.
+
+:::tip
+
+You can refer to following sample file on how your boilerplate script should look like:
+
+```csharp title="/Assets/Web3Auth.cs"
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using Newtonsoft.Json;
+
+public class Web3Auth : MonoBehaviour
+{
+  // Start is called before the first frame update
+  void Start() {}
+  public void login() {}
+  private void onLogin(Web3AuthResponse response) {}
+  public void logout() {}
+  private void onLogout() {}
+}
+```
+
+:::
+
+Within your script, import the `Web3Auth` component in your class.
+
+```csharp
+Web3Auth web3Auth;
+```
+
+Next create an instance within your `Start()` function by creating an instance of the component you just imported.
+
+```csharp
+web3Auth = GetComponent<Web3Auth>();
+```
+
+### Setting up Web3Auth Options
+
+After instantiation, within your `Start()` function, set up the Web3Auth Options as follows:
+
+```csharp
+web3Auth.setOptions(new Web3AuthOptions()
+{
+  redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
+  clientId = "BAwFgL-r7wzQKmtcdiz2uHJKNZdK7gzEf2q-m55xfzSZOw8jLOyIi4AVvvzaEQO5nv2dFLEmf9LBkF8kaq3aErg",
+  network = Web3Auth.Network.TESTNET,
+});
+```
+
+:::tip
+
+You can also configure your `client_id`, `redirect_url` and `network` within the script setting in Unity Editor. It will look something like this:
+
+<img src={web3authCS} style={{ alignSelf: "center", maxWidth: "100%" }} />
+
+:::
+
+## Authentication
+
+---
+
+Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users.
+
+### Logging in
+
+The `web3Auth.login(LoginParams)` function helps your user to trigger the login process. The login flow will be triggered based on the selected
+provider.
+
+```csharp
+public void login()
+{
+    var selectedProvider = Provider.GOOGLE;
+    var options = new LoginParams()
+    {
+        loginProvider = selectedProvider
+    };
+    web3Auth.login(options);
+}
+```
+
+When connecting, the `login` function takes the LoginParams arguments for the login. See the [LoginParams](/docs/sdk/unity/usage#arguments) for more
+details.
+
+#### Sample loginResponse
+
+<UnityResponse />
+
+### Get the User Profile
+
+You can associate a function to be triggerred on successful login. This function will receive the user's profile as a parameter.
+
+```csharp
+void Start()
+{
+    web3Auth = GetComponent<Web3Auth>();
+    web3Auth.setOptions(new Web3AuthOptions()
+    {
+
+    });
+    // highlight-next-line
+    web3Auth.onLogin += onLogin;
+}
+//highlight-start
+private void onLogin(Web3AuthResponse response)
+{
+    // Functions to be called after logging in your user
+}
+//highlight-end
+```
+
+Using the `web3Auth.login` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
+network.
+
+If you wish you **[add Multi Factor Authentication](/docs/sdk/unity/mfa)**, **[use dApp Share](/docs/sdk/unity/dapp-share)** or
+**[select Curve](/docs/sdk/unity/usage#selecting-curve)** for your Unity Game, read the linked documentation.
+
+- [Multi Factor Authentication](/docs/sdk/unity/mfa)
+- [Using dApp Share](/docs/sdk/unity/dapp-share)
+- [Selecting Curve](/docs/sdk/unity/usage#selecting-curve)
+
+### Logout
+
+Logging out your user is as simple as calling the `web3Auth.logout()` function.
+
+```csharp
+public void logout()
+{
+    web3Auth.logout();
+    Debug.Log("Logged out!");
+}
+```
+
+:::tip
+
+Additionally you can associate a function to be triggerred on successful logout.
+
+```csharp
+void Start()
+{
+    web3Auth = GetComponent<Web3Auth>();
+    web3Auth.setOptions(new Web3AuthOptions()
+    {
+
+    });
+    // highlight-next-line
+    web3Auth.onLogout += onLogout;
+}
+//highlight-start
+private void onLogout()
+{
+    // Functions to be called after user logs out
+}
+//highlight-end
+```
+
+:::
+
+## Example code
+
+The code for the application we developed in this guide can be found in the
+[Web3Auth Unity Example](https://github.com/Web3Auth/examples/tree/main/unity). Check it out and try running it locally yourself!
+
+For your reference, here's the Web3Auth.cs file we developed during the course of this guide.
+
+```csharp title="/Assets/Web3Auth.cs"
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using Newtonsoft.Json;
+
+public class Web3custom : MonoBehaviour
+{
+    Web3Auth web3Auth;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        web3Auth = GetComponent<Web3Auth>();
+        web3Auth.setOptions(new Web3AuthOptions()
+        {
+            redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
+            clientId = "BAwFgL-r7wzQKmtcdiz2uHJKNZdK7gzEf2q-m55xfzSZOw8jLOyIi4AVvvzaEQO5nv2dFLEmf9LBkF8kaq3aErg",
+            network = Web3Auth.Network.TESTNET,
+        });
+        web3Auth.onLogin += onLogin;
+        web3Auth.onLogout += onLogout;
+    }
+
+    public void login()
+    {
+        var selectedProvider = Provider.GOOGLE;
+        var options = new LoginParams()
+        {
+            loginProvider = selectedProvider
+        };
+        web3Auth.login(options);
+    }
+
+    private void onLogin(Web3AuthResponse response)
+    {
+        var userInfo = JsonConvert.SerializeObject(response.userInfo, Formatting.Indented);
+        Debug.Log(userInfo);
+    }
+
+    public void logout()
+    {
+        web3Auth.logout();
+    }
+
+    private void onLogout()
+    {
+        Debug.Log("Logged out!");
+
+    }
+}
+
+```
+
+## Questions?
+
+#### Ask us on [Web3Auth's Github Discussion Board](https://web3auth.io/discussions)

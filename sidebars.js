@@ -298,6 +298,19 @@ module.exports = {
       items: ["sdk/flutter/initialize", "sdk/flutter/whitelabel", "sdk/flutter/custom-authentication", "sdk/flutter/usage"],
     },
     {
+      type: "category",
+      label: "Unity",
+      link: { type: "doc", id: "sdk/unity/unity" },
+      items: [
+        "sdk/unity/initialize",
+        "sdk/unity/whitelabel",
+        "sdk/unity/custom-authentication",
+        "sdk/unity/mfa",
+        "sdk/unity/dapp-share",
+        "sdk/unity/usage",
+      ],
+    },
+    {
       type: "html",
       value: "<hr style='background-color:#7c8ca1'/><strong style='color: #7c8ca1'>Web3Auth Self Host</strong>",
       className: "sidebar-title",
