@@ -7,13 +7,25 @@ description: "Creating Verifiers on the Web3Auth Dashboard | Documentation - Web
 
 ---
 
-A verifier is a unique identifier for your OAuth registration on the torus network. You'll need to create a verifier to let user login with your
-custom authentication flow. The Public/Private keys generated for a user are scoped to a verifier. Verifier scripts determine the access structure to
-your users keys and the set Verifier Scripts chosen determine which logins your application will ultimately use.
+#### What is a Verifier?
 
-You can read more about verifiers [here](https://medium.com/toruslabs/key-assignments-resolution-and-retrieval-afb984500612).
+A verifier is a piece of information about the OAuth provider being used by the application, which is queried by web3auth auth network nodes from a
+smart contract deployed on the Ethereum blockchain to verify the JWT token.
 
-The Custom Authentication Dashboard looks something like this:
+There are two types of `Verifiers`:
+
+1. `Default Verifiers`: These are the verifiers associated with OAuth providers which are owned and managed by web3auth's account.
+2. `Custom Verifiers`: If you want to manage your OAuth providers yourself or to use some Federated Identity Providers like Auth0, Firebase, AWS
+   Cognito, Okta etc, you'll have to create a verifier on the Web3Auth's dashboard.
+
+You'll need to create a verifier to let the user login with your custom authentication flow. The Public/Private keys generated for a user are scoped
+to a verifier. Verifier scripts determine the access structure to your user's keys, and the set Verifier scripts are chosen to determine which logins
+your application will ultimately use.
+
+You can read more about verifiers [in this blog post](https://medium.com/toruslabs/key-assignments-resolution-and-retrieval-afb984500612) or
+[in this GitHub discussion](https://github.com/orgs/Web3Auth/discussions/427#discussioncomment-3442052).
+
+The `Custom Auth` Dashboard looks something like this:
 
 ![Custom Authentication Dashboard](/dashboard/custom_auth.png)
 

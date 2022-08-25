@@ -165,7 +165,12 @@ module.exports = {
       defaultStyle: true,
     },
     {
-      Troubleshooting: ["troubleshooting/error-429", "troubleshooting/webpack-issues", "troubleshooting/jwt-errors"],
+      Troubleshooting: [
+        "troubleshooting/error-429",
+        "troubleshooting/webpack-issues",
+        "troubleshooting/jwt-errors",
+        "troubleshooting/different-wallet-address-issue",
+      ],
     },
     {
       type: "category",
