@@ -91,12 +91,6 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
       type: "toggle",
       choices: TOGGLE_CHOICES,
     },
-    dAppShare: {
-      displayName: "dApp Share",
-      default: TOGGLE_CHOICES[0].key,
-      type: "toggle",
-      choices: TOGGLE_CHOICES,
-    },
     mfaParams: {
       displayName: "MFA",
       default: TOGGLE_CHOICES[0].key,
@@ -219,12 +213,6 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
           ...this.options,
           mfa: {
             displayName: "Multi Factor Authentication",
-            default: TOGGLE_CHOICES[0].key,
-            type: "toggle",
-            choices: TOGGLE_CHOICES,
-          },
-          dAppShare: {
-            displayName: "dApp Share",
             default: TOGGLE_CHOICES[0].key,
             type: "toggle",
             choices: TOGGLE_CHOICES,

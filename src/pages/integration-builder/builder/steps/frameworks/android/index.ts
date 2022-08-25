@@ -4,7 +4,6 @@ import { ReplaceFileAggregator, toSteps } from "../../../utils";
 import * as whiteLabeling from "./whitelabeling.mdx";
 import * as CustomAuthentication from "./custom-authentication.mdx";
 import * as multiFactorAuthentication from "./mfa.mdx";
-import * as dappShare from "./dapp-share.mdx";
 import * as configureDeepLink from "./configure-deeplink.mdx";
 import * as installationAppManifest from "./install-app-manifest.mdx";
 import * as installationBuildGradle from "./install-build-gradle.mdx";
@@ -30,12 +29,11 @@ const STEPS = toSteps({
   whiteLabeling,
   CustomAuthentication,
   multiFactorAuthentication,
-  dappShare,
 });
 
 const reactSteps = {
   STEPS,
-  build({ filenames, files, steps, whitelabel, customAuthentication, mfa, dAppShare }) {
+  build({ filenames, files, steps, whitelabel, customAuthentication, mfa }) {
     const newFiles = files;
     const replacementAggregator = new ReplaceFileAggregator();
 
@@ -49,7 +47,7 @@ const reactSteps = {
       ConstructorCodeAndroid
     );
 
-    const LoginCodeAndroid = getLoginCodeAndroid(mfa === "yes", dAppShare === "yes");
+    const LoginCodeAndroid = getLoginCodeAndroid(mfa === "yes");
     newFiles[FILENAME_MAINACTIVITY] = replacementAggregator.replaceFileVariable(
       files[FILENAME_MAINACTIVITY],
       FILENAME_MAINACTIVITY,
@@ -110,13 +108,7 @@ const reactSteps = {
     if (mfa === "yes") {
       steps.push({
         ...STEPS.multiFactorAuthentication,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/android/MainActivity.kt", range: "59-60" }),
-      });
-    }
-    if (dAppShare === "yes") {
-      steps.push({
-        ...STEPS.dappShare,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/android/MainActivity.kt", range: "59-60" }),
+        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/android/MainActivity.kt", range: "54-55" }),
       });
     }
     steps.push(
@@ -126,11 +118,11 @@ const reactSteps = {
       },
       {
         ...STEPS.triggeringLogin,
-        pointer: { filename: "frameworks/android/MainActivity.kt", range: "63-79" },
+        pointer: { filename: "frameworks/android/MainActivity.kt", range: "58-74" },
       },
       {
         ...STEPS.triggeringLogout,
-        pointer: { filename: "frameworks/android/MainActivity.kt", range: "81-91" },
+        pointer: { filename: "frameworks/android/MainActivity.kt", range: "76-86" },
       }
     );
     return { filenames, files, steps };
