@@ -91,8 +91,8 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
       type: "toggle",
       choices: TOGGLE_CHOICES,
     },
-    dynamicConstructorParams: {
-      displayName: "Dynamic Constructor Params",
+    mfaParams: {
+      displayName: "MFA",
       default: TOGGLE_CHOICES[0].key,
       type: "toggle",
       choices: TOGGLE_CHOICES,
@@ -188,15 +188,15 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
     };
 
     if (values.lang in Mobile) {
-      this.options = {
-        ...this.options,
-        usingEmailPasswordless: {
-          displayName: "Using Email Passwordless",
-          default: TOGGLE_CHOICES[0].key,
-          type: "toggle",
-          choices: TOGGLE_CHOICES,
-        },
-      };
+      // this.options = {
+      //   ...this.options,
+      //   usingEmailPasswordless: {
+      //     displayName: "Using Email Passwordless",
+      //     default: TOGGLE_CHOICES[0].key,
+      //     type: "toggle",
+      //     choices: TOGGLE_CHOICES,
+      //   },
+      // };
 
       if (values.lang === "react-native") {
         this.options = {
@@ -211,8 +211,8 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
       } else {
         this.options = {
           ...this.options,
-          dynamicConstructorParams: {
-            displayName: "Dynamic Constructor Params",
+          mfa: {
+            displayName: "Multi Factor Authentication",
             default: TOGGLE_CHOICES[0].key,
             type: "toggle",
             choices: TOGGLE_CHOICES,
