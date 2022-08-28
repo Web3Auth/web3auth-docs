@@ -10,6 +10,5 @@ export const getLoginCodeAndroid = (isMFA: boolean) => {
               LoginParams(
                   selectedLoginProvider${mfaCode}
               )
-          )
-  `;
+          )`;
 };
