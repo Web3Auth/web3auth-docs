@@ -1,0 +1,127 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+While initializing the plugin, you need to pass on the following parameters to the constructor:
+
+##### `whiteLabel`
+
+As you can see, the `whiteLabel` parameter is a required parameter within the plugin. This is because this plugin needs you to incorporate basic
+whitelabel to avoid showing the Torus Wallet branding on your website.
+
+The `whiteLabel` parameter takes `WhiteLabelParams` object as input which contains the following parameters:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter             | Type                                                                                                   | Required | Description                                                                                                                   | Default                                                                                          |
+| --------------------- | ------------------------------------------------------------------------------------------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `name`                | `string`                                                                                               | No       | App name to display in the UI                                                                                                 | N/A                                                                                              |
+| `url`                 | `string`                                                                                               | No       | App url                                                                                                                       | N/A                                                                                              |
+| `theme`               | `ThemeParams` <br /> (contains two params, `isDark: boolean` & <br/> `colors: Record<string, string>`) | Yes      | Params to customise the theme for the wallet embed. You can enable darkMode and use the colours of your choice for the modal. | N/A                                                                                              |
+| `defaultLanguage?`    | `string`                                                                                               | No       | Language of whitelabel                                                                                                        | Order of preference: Whitelabel language \> user language (in torus-website) \> browser language |
+| `logoDark`            | `string`                                                                                               | Yes      | Logo to be shown on dark background (dark theme)                                                                              | N/A                                                                                              |
+| `logoLight`           | `string`                                                                                               | Yes      | Logo to be shown on light background (light theme)                                                                            | N/A                                                                                              |
+| `topupHide?`          | `boolean`                                                                                              | No       | Shows/hides topup option in torus-website/widget.                                                                             | false                                                                                            |
+| `customTranslations?` | `string`                                                                                               | No       | Custom translations.                                                                                                          | en - English                                                                                     |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+export interface WhiteLabelParams {
+  /**
+   * App name to display in the UI
+   */
+  name?: string;
+  /**
+   * App url
+   */
+  url?: string;
+  /**
+   * Whitelabel theme
+   */
+  theme: ThemeParams;
+  /**
+   * Language of whitelabel.
+   *
+   * order of preference: Whitelabel language \> user language (in torus-website) \> browser language
+   */
+  defaultLanguage?: string;
+  /**
+   * Logo Url to be used in light mode (dark logo)
+   */
+  logoDark: string;
+  /**
+   * Logo Url to be used in dark mode (light logo)
+   */
+  logoLight: string;
+  /**
+   * Shows/hides topup option in torus-website/widget.
+   * Defaults to false
+   * @defaultValue false
+   */
+  topupHide?: boolean;
+  /**
+   * Custom translations. See (examples/vue-app) to configure
+   */
+  customTranslations?: LocaleLinks<unknown>;
+}
+
+interface ThemeParams {
+  /**
+   * If true, enables dark mode
+   * Defaults to false
+   * @defaultValue false
+   */
+  isDark: boolean;
+  /**
+   * Colors object to customize colors in torus theme.
+   *
+   * Contact us for whitelabel. Example provided in `examples/vue-app`
+   */
+  colors: Record<string, string>;
+}
+
+type Record<K extends keyof any, T> = {
+  [P in K]: T;
+};
+
+export interface LocaleLinks<T> {
+  /**
+   * Item corresponding to english
+   */
+  en?: T;
+  /**
+   * Item corresponding to japanese
+   */
+  ja?: T;
+  /**
+   * Item corresponding to korean
+   */
+  ko?: T;
+  /**
+   * Item corresponding to german
+   */
+  de?: T;
+  /**
+   * Item corresponding to chinese (simplified)
+   */
+  zh?: T;
+  /**
+   * Item corresponding to spanish
+   */
+  es?: T;
+}
+```
+
+</TabItem>
+
+</Tabs>
