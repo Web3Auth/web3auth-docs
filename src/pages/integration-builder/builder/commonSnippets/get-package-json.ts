@@ -1,3 +1,5 @@
+import { openloginAdapterVersion, web3authVersion } from "../../../../common/versions.mdx";
+
 export const getPackageJson = (
   chain: "eth" | "sol" | "starkex" | "starknet" | "tezos",
   isWhiteLabled: boolean,
@@ -5,17 +7,17 @@ export const getPackageJson = (
   evmFramework: "ethers"
 ) => {
   let code = `
-    "@web3auth/base": "^1.1.1",
-    "@web3auth/web3auth": "^1.1.1",`;
+    "@web3auth/base": "^${web3authVersion}",
+    "@web3auth/web3auth": "^${web3authVersion}",`;
 
   if (isWhiteLabled || isCustomAuth || chain === "starkex" || chain === "starknet" || chain === "tezos") {
     code += `
-    "@web3auth/openlogin-adapter": "^1.1.1",`;
+    "@web3auth/openlogin-adapter": "^${openloginAdapterVersion}",`;
   }
   switch (chain) {
     case "sol":
       code += `
-    "@web3auth/solana-provider": "^1.1.1",
+    "@web3auth/solana-provider": "^${web3authVersion}",
     "@solana/web3.js": "^1.36.0",`;
       break;
 
