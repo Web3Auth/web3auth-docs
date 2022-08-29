@@ -11,11 +11,12 @@ import Tabs from "@theme/Tabs";
 
 <TabItem value="table">
 
-| Parameter        | Type                                                                         | Description                                                                                  | Optional | Default |
-| ---------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------- | ------- |
-| `chainConfig`    | Partial `<CustomChainConfig>` & Pick `<CustomChainConfig, "chainNamespace">` | Custom configuration for your preferred blockchain. Read more about it [here](#chainconfig). | No       |
-| `enableLogging?` | `boolean`                                                                    | Setting to true will enable logs                                                             | Yes      | `false` |
-| `storageKey?`    | `enum` - (`session`, `local`)                                                | Setting to "local" will persist social login session across browser tabs.                    | Yes      | `local` |
+| Parameter        | Type                                                                         | Description                                                                                                             | Optional                   | Default |
+| ---------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | -------------------------- | ------- |
+| `chainConfig`    | Partial `<CustomChainConfig>` & Pick `<CustomChainConfig, "chainNamespace">` | Custom configuration for your preferred blockchain. Read more about it [here](#chainconfig).                            | No                         |
+| `clientId`       | `string`                                                                     | Client ID for web3auth. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/). | No / Optional in localhost |
+| `enableLogging?` | `boolean`                                                                    | Setting to true will enable logs                                                                                        | Yes                        | `false` |
+| `storageKey?`    | `enum` - (`session`, `local`)                                                | Setting to "local" will persist social login session across browser tabs.                                               | Yes                        | `local` |
 
 </TabItem>
 
@@ -23,6 +24,12 @@ import Tabs from "@theme/Tabs";
 
 ```ts
 interface Web3AuthCoreOptions {
+  /**
+   * Client id for web3auth.
+   * You can obtain your client id from the web3auth developer dashboard.
+   * You can set any random string for this on localhost.
+   */
+  clientId: string;
   /**
    * custom chain configuration for chainNamespace
    *

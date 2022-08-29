@@ -52,9 +52,10 @@ npm install --save @web3auth/solflare-adapter
 
 <TabItem value="table">
 
-| Parameter   | type              |
-| ----------- | ----------------- |
-| chainConfig | CustomChainConfig |
+| Parameter          | type                     |
+| ------------------ | ------------------------ |
+| `chainConfig`      | `CustomChainConfig`      |
+| `adapterSettings?` | `SolflareAdapterOptions` |
 
 </TabItem>
 
@@ -98,6 +99,10 @@ If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` pass
 
 ```ts
 import { SolflareAdapter } from "@web3auth/solflare-adapter";
-const phantomAdapter = new SolflareAdapter();
+const phantomAdapter = new SolflareAdapter({
+  adapterSettings: {
+    clientId: "YOUR_CLIENT_ID",
+  },
+});
 web3auth.configureAdapter(phantomAdapter);
 ```
