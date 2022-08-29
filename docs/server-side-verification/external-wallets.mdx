@@ -98,7 +98,7 @@ const idToken = req.headers.authorization?.split(' ')[1];
 const publicAddress = req.body.public_address;
 
 // Get the JWK set used to sign the JWT issued by Web3Auth
-const jwks = jose.createRemoteJWKSet(new URL("https://auth-js-backend.tor.us/jwks"));
+const jwks = jose.createRemoteJWKSet(new URL("https://authjs.web3auth.io/jwks"));
 
 // Verify the JWT using Web3Auth's JWKS
 const jwtDecoded = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] });
