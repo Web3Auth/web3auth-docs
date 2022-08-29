@@ -6,133 +6,110 @@ description: "External Wallets | Documentation - Web3Auth"
 
 ---
 
-For connecting External Wallets with the Server Side Verification Flow, we have the `Auth.js` SDK aka Sign-in with Web3. This way, while connecting
-with your own wallet provider, you can use the Sign-in with Web3 (SIWW) to generate a jwt token for your user to authenticate them on the client side.
-Checkout the full documentation of [Sign-in with Web3](https://siww.web3auth.io/).
+Web3Auth's SDK has abstracted the Server Side Verification Flow that was present in `Auth.js` SDK aka Sign-in with Web3 to allow External Wallet users
+to login smoothly and allowing dApps to verify the JWT Token(`idToken`) using Web3Auth's JWKS endpoint.
 
-## Getting SIWWeb3Message from the AuthJS Backend
+> If you're still looking for the old flow, visit [Sign-in with Web3](https://siww.web3auth.io/).
+
+## Get idToken
+
+After a user is logged in using one of the supported [Wallets](/docs/sdk/web/adapters/#currently-available-adapters). One can obtain the `idToken` by
+calling `web3auth.authenticateUser()` of Web3Auth.
+
+### `authenticateUser`
+
+```js
+await web3auth.authenticateUser();
+```
+
+#### Returns
+
+```json
+{
+  "idToken": "<jwtToken issued by Web3Auth>"
+}
+```
+
+### Sample `idToken` payload
 
 ---
 
-For a user on `Ethereum` mainnet with the address `0x00C02Bad...` who wants to authenticate from `http://localhost:3000/login`.
-
-:::note
-
-Message fields are similar to [EIP-4361: Sign in with Ethereum](https://docs.login.xyz/general-information/siwe-overview/eip-4361#specification) . The
-`nonce` field here is ignored and can be any random string.
-
-:::
-
-#### `POST` https://auth-js-backend.tor.us/siww/get
-
 ```json
 {
-  "network": "ethereum", // Valid networks: ethereum, solana, starkware
-  "header": {
-    "t": "eip191"
-  },
-  "payload": {
-    "domain": "localhost:3000",
-    "uri": "http://localhost:3000/login",
-    "address": "0x00C02Bad...",
-    "chainId": 1,
-    "version": "1",
-    "nonce": "does-not-matter-here",
-    "issuedAt": "2022-01-27T17:09:38.578Z"
-  }
-}
-```
-
-> Code: `200 OK`
-
-```json
-{
-  "success": true,
-  "challenge": "<SIWE message>"
-}
-```
-
-## Verify signed challenge
-
----
-
-- Verifies the signed challenge message.
-- Returns a JWT that can be used as authentication method
-
-#### `POST` https://auth-js-backend.tor.us/siww/verify
-
-```json
-{
-  "message": "localhost:3000 wants you to...", // The original challenge message from 'Get challenge message' endpoint
-  "signature": {
-    "s": "304402203a5b354ebc147...",
-    "t": "eip191"
-  },
-  "network": "ethereum"
-}
-```
-
-:::info
-
-Signature format depends on network. Solana uses `base58`, the rest use `hex`
-
-:::
-
-:::note
-
-The signed challenge is valid for only `120s`.
-
-:::
-
-> Code: `200 OK`
-
-```json
-{
-  "success": true,
-  "token": "eyJhbGciOiJFUz..." // JWT token
-}
-```
-
-## Verifying JWT
-
----
-
-### Get JWK
-
-> Retrieves the JWK set used to sign the issued JWTs
-
-#### `GET` https://auth-js-backend.tor.us/jwks
-
-#### Success Response Examples
-
-> Code: `200 OK`
-
-```json
-{
-  "keys": [
+  "iat": 1661158877,
+  "issuer": "<issuer-name>",
+  "audience": "https://requesting.website",
+  "wallets": [
     {
-      "kty": "EC",
-      "crv": "P-256",
-      "x": "JQBpb4rBEDZWaRN_2nekaSMlesVTFwuiQ7DN2BV0fxo",
-      "y": "6Gdq4uOjlDa4hAftMRx22fTnP-jLv5tfsFZqKoWCHsk",
-      "kid": "G6-iP7C_4NdppFwiEuckNCU_etFIVBBxxt4UH9cB9G0",
-      "use": "sig",
-      "alg": "ES256"
+      "address": "0x809d4310d578649d8539e718030ee11e603ee8f3",
+      "type": "ethereum"
     }
-  ]
+  ],
+  "exp": 1661245277
 }
 ```
 
-### Verifying the JWT using the JWK
+| Parameter  | Type     | Description                                                                                                                                                                                             |
+| ---------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `iat`      | `number` | The "iat" (issued at) claim identifies the time at which the JWT was issued.                                                                                                                            |
+| `audience` | `string` | The "audience" claim identifies the recipients that the JWT is intended for. (Here, it's `website's url`)                                                                                               |
+| `issuer`   | `string` | The "issuer" claim identifies who issued the JWT. <br/> Here, issuer could be `torus-evm`, `torus-solana`, `metamask`, `phantom`, `walletconnect-v1`, `coinbase`, `slope`, `solflare`, `sollet`         |
+| `wallets`  | `array`  | list of wallets for which this token is issued: <ul><li>`address` : Wallet public address</li><li>`type` Network Type such as "ethereum", "solana" or "starkware" incase of external wallets </li></ul> |
+
+## Verifying JWT Token (idToken)
+
+---
+
+In order to verify the JWT Token(`idToken`) you need the wallet's `address` and the `idToken` obtained from the `authenticateUser()`.
+
+### Getting `address` and `idToken` in Frontend
+
+```typescript
+// Get user's Ethereum public address
+const address = (await web3.eth.getAccounts())[0];
+// Get user's Solana public address
+const address = await solanaWallet.requestAccounts();
+
+// For other chains, please refer to https://web3auth.io/docs/connect-blockchain/
+
+/* Assuming user is logged in, get the token containtaing idToken */
+const token = await web3auth.authenticateUser();
+
+// Verify idToken at your backend server
+const res = await fetch("/api/verify", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + token.idToken,
+  },
+  body: JSON.stringify({ public_address: address }),
+});
+```
+
+### Verifying `idToken` in Backend
 
 ```javascript
 import * as jose from "jose"
 
+// passed from the frontend in the Authorization header
+const idToken = req.headers.authorization?.split(' ')[1];
+
+// passed from the frontend in the request body
+const publicAddress = req.body.public_address;
+
+// Get the JWK set used to sign the JWT issued by Web3Auth
 const jwks = jose.createRemoteJWKSet(new URL("https://auth-js-backend.tor.us/jwks"));
-const jwtDecoded = await jose.jwtVerify(jwtToken, jwks, { algorithms: ["ES256"] });
-const publicAddress = "ethereum, solana, starkware address"
+
+// Verify the JWT using Web3Auth's JWKS
+const jwtDecoded = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] });
+
 // Incase of Non-Torus Users
+// Checking Wallet's `publicAddress` against the decoded JWT wallet's address
 if ((jwtDecoded.payload as any).wallets[0].address === publicAddress) {
   // Verified
+  res.status(200).json({name: 'Verification Successful'})
+} else {
+  res.status(400).json({name: 'Verification Failed'})
 }
+
 ```

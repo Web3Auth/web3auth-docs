@@ -4,20 +4,9 @@ displayed_sidebar: docs
 description: "Social Login Users | Documentation - Web3Auth"
 ---
 
-import TabItem from "@theme/TabItem";
-import Tabs from "@theme/Tabs";
-
-# Social Login Users using Openlogin Adapter
-
----
-
-Once the user is logged in using social logins, an `idToken` can be obtained from the `userInfo`.
-
-Refer to the following sections to know how to get the `userInfo` across different Plug and Play SDKs.
-
 import Tiles from "@theme/Tiles";
 
-export const tileGroupsData = [
+export const getUserInfoData = [
   {
     name: "",
     description: "",
@@ -56,7 +45,56 @@ export const tileGroupsData = [
   },
 ];
 
-<Tiles tileGroups={tileGroupsData} />
+export const getAuthenticateUserData = [
+  {
+    name: "",
+    description: "",
+    tiles: [
+      {
+        key: "web",
+        title: "Web",
+        icon: "logo-js.png",
+        path: "/docs/sdk/web/web3auth/usage#get-idtoken",
+      },
+    ],
+  },
+];
+
+## Get idToken
+
+### `getUserInfo`
+
+```js
+await web3auth.getUserInfo();
+```
+
+#### Returns
+
+```json
+{
+  // ... other properties
+  "idToken": "<jwtToken issued by Web3Auth>"
+  // ... other properties
+}
+```
+
+<Tiles tileGroups={getUserInfoData} />
+
+### `authenticateUser`
+
+```js
+await web3auth.authenticateUser();
+```
+
+#### Returns
+
+```json
+{
+  "idToken": "<jwtToken issued by Web3Auth>"
+}
+```
+
+<Tiles tileGroups={getAuthenticateUserData} />
 
 ### Sample `idToken` payload
 
@@ -86,40 +124,33 @@ export const tileGroupsData = [
 
 | Parameter           | Type     | Description                                                                                                                                                                                                                                                                                                                                                |
 | ------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `iat`               | `number` | issued at                                                                                                                                                                                                                                                                                                                                                  |
-| `aud`               | `string` | audience (dapp client_id)                                                                                                                                                                                                                                                                                                                                  |
-| `iss`               | `string` | issuer of the token (in this case Web3Auth)                                                                                                                                                                                                                                                                                                                |
-| `email`             | `string` | email address of the user (optional)                                                                                                                                                                                                                                                                                                                       |
-| `name`              | `string` | name of the user (optional)                                                                                                                                                                                                                                                                                                                                |
-| `profileImage`      | `string` | profile image of the user (optional)                                                                                                                                                                                                                                                                                                                       |
-| `verifier`          | `string` | web3auth's verifier used while user login                                                                                                                                                                                                                                                                                                                  |
-| `verifierId`        | `string` | unique user id given by oauth login provider                                                                                                                                                                                                                                                                                                               |
-| `aggregateVerifier` | `string` | name of the verifier if you are using a single id verifier (aggregateVerifier) (optional)                                                                                                                                                                                                                                                                  |
-| `exp`               | `number` | expiration time                                                                                                                                                                                                                                                                                                                                            |
+| `iat`               | `number` | The "iat" (issued at) claim identifies the time at which the JWT was issued.                                                                                                                                                                                                                                                                               |
+| `aud`               | `string` | The "aud" (audience) claim identifies the recipients that the JWT is intended for. (Here, it's the dapp `client_id`)                                                                                                                                                                                                                                       |
+| `iss`               | `string` | The "iss" (issuer) claim identifies who issued the JWT. (Here, it's Web3Auth `https://api.openlogin.com/`)                                                                                                                                                                                                                                                 |
+| `email`             | `string` | The email address of the user (optional)                                                                                                                                                                                                                                                                                                                   |
+| `name`              | `string` | The name of the user (optional)                                                                                                                                                                                                                                                                                                                            |
+| `profileImage`      | `string` | The profile image of the user (optional)                                                                                                                                                                                                                                                                                                                   |
+| `verifier`          | `string` | Web3auth's verifier used while user login                                                                                                                                                                                                                                                                                                                  |
+| `verifierId`        | `string` | Unique user id given by OAuth login provider                                                                                                                                                                                                                                                                                                               |
+| `aggregateVerifier` | `string` | Name of the verifier if you are using a single id verifier (aggregateVerifier) (optional)                                                                                                                                                                                                                                                                  |
+| `exp`               | `number` | The "exp" (expiration time) claim identifies the expiration time on or after which the _JWT MUST NOT be accepted for processing_.                                                                                                                                                                                                                          |
 | `wallets`           | `array`  | list of wallets for which this token is issued: <ul><li>`curve` "secp256k1" (default) or "ed25519" <br/> You can specify which curve you want use for the encoded public key in the login parameters<br/></li><li>`type` "web3auth_key" incase of social logins</li><li>`public_key` compressed public key derived based on the specified curve </li></ul> |
 
 ## Verifying JWT Token (idToken)
 
 ---
 
-Inorder to verify the JWT token you need the compressed app_pub_key (derived from app_scoped_privkey) and the `idToken` obtained from the `userInfo`
+In order to verify the JWT Token(`idToken`) you need the compressed **app_pub_key** (derived from _**app_scoped_privkey**_) and the `idToken` obtained
+from the `userInfo()` or `authenticateUser()`.
 
 :::info
 
 - App scoped private key will be obtained from the frontend once the user is logged in.
-- Public Key derivation depends on the curve (refer to the code snippets above)
+- Public Key derivation depends on the curve (refer to the code snippets above).
 
 :::
 
-<Tabs
-  defaultValue="Frontend"
-  values={[
-    { label: "Frontend", value: "Frontend" },
-    { label: "Backend", value: "Backend" },
-  ]}
->
-
-<TabItem value="Frontend">
+### Getting `app_pub_key` and `idToken` in Frontend
 
 ```typescript
 // Incase of ed25519 curve, get the app_pub_key
@@ -137,25 +168,26 @@ const app_scoped_privkey = await web3auth.provider?.request({
 });
 const app_pub_key = getPublicCompressed(Buffer.from(app_scoped_privkey.padStart(64, "0"), "hex")).toString("hex");
 
-{
-  /* Assuming use is logged in, get the userInfo containtaing idToken */
-}
+/* Assuming user is logged in, get the userInfo containtaing idToken */
 const user = await web3auth.getUserInfo();
 
-// Validate idToken at your backend server
-const res = await fetch("/api/validate", {
+/*
+OR
+const token = await web3auth.authenticateUser();
+ */
+
+// Verify idToken at your backend server
+const res = await fetch("/api/verify", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    Authorization: "Bearer " + user.idToken,
+    Authorization: "Bearer " + user.idToken, // or token.idToken
   },
   body: JSON.stringify({ appPubKey: app_pub_key }),
 });
 ```
 
-</TabItem>
-
-<TabItem value="Backend">
+### Verifying `idToken` in Backend
 
 ```javascript
 // JWT verification using JWKS
@@ -168,8 +200,13 @@ const idToken = req.headers.authorization?.split(' ')[1];
 // passed from the frontend in the request body
 const app_pub_key = req.body.appPubKey;
 
+// Get the JWK set used to sign the JWT issued by Web3Auth
 const jwks = jose.createRemoteJWKSet(new URL("https://api.openlogin.com/jwks"));
+
+// Verify the JWT using Web3Auth's JWKS
 const jwtDecoded = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] });
+
+// Checking `app_pub_key` against the decoded JWT wallet's public_key
 if ((jwtDecoded.payload as any).wallets[0].public_key === app_pub_key) {
   // Verified
   res.status(200).json({name: 'Verification Successful'})
@@ -178,19 +215,17 @@ if ((jwtDecoded.payload as any).wallets[0].public_key === app_pub_key) {
 }
 ```
 
-</TabItem>
-
-</Tabs>
-
-<br />
-
 ## Changing the Public Key Curve
 
 ---
 
-By default Web3Auth returns a `idToken` which contains the `public_key` in `secp256k1` form.
+:::info
 
-If you want to encode the public_key in `ed25519`` format then you have to pass the curve parameter in OpenloginAdapter as:
+By default Web3Auth returns an `idToken` which contains the `public_key` in `secp256k1` form.
+
+:::
+
+If you want to encode the public_key in `ed25519` format then you have to pass the curve parameter in OpenloginAdapter as:
 
 ```js
 const openloginAdapter = new OpenloginAdapter({
