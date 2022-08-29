@@ -11,15 +11,15 @@ description: "Web Plugin - Solana Wallet | Documentation - Web3Auth"
 
 ## [`@web3auth/solana-wallet-connector-plugin`](https://npmjs.com/package/@web3auth/solana-wallet-connector-plugin)
 
-import PluginConfig from "@site/src/common/sdk/web/_plugin-config.mdx";
-import PluginWhitelabelConfig from "@site/src/common/sdk/web/_plugin-whitelabel-config.mdx";
+import PluginConfig from "@site/src/common/sdk/web/_solana-plugin-config.mdx";
+import PluginWhitelabelConfig from "@site/src/common/sdk/web/_solana-plugin-whitelabel-config.mdx";
 
 Torus Solana Wallet UI Plugin helps you get the functionalities of the Torus Solana Wallet into your Web3Auth Instance. It helps you use your Web3Auth
 key in the Torus Solana Wallet, making it easier for your end user to make transactions, add money into their wallet and even use it across different
 applications using Torus Wallet.
 
-After initialisation, this plugin you a provider from the Torus Solana Wallet, injecting the Torus Wallet UI into your dApp and helping you make the
-wallet calls directly through it without the need of making your own wallet UI flow.
+After initialisation, this plugin gives you a provider from the Torus Solana Wallet, injecting the Torus Wallet UI into your dApp and helping you make
+the wallet calls directly through it without the need of making your own wallet UI flow.
 
 In this section we'll explore more about how you can use the Torus Solana Wallet UI Plugin for your dApp.
 
@@ -37,7 +37,7 @@ npm i --save @web3auth/solana-wallet-connector-plugin
 
 ---
 
-Import the `SolanaWalletConnectorPlugin` class from `@web3auth/solana-wallet-connector-plugin`;
+Import the `SolanaWalletConnectorPlugin` class from `@web3auth/solana-wallet-connector-plugin`.
 
 ```javascript
 import { SolanaWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-plugin";
@@ -63,8 +63,8 @@ This constructor takes an objects with `torusWalletOpts` & `walletInitOptions` a
 
 :::info
 
-For additional information on the init options for Torus Wallet, please check the
-[Torus Solana Wallet documentation](https://docs.tor.us/solana-wallet/sdk/class#init)
+For additional information on the init options for Torus - Solana Wallet, please check the
+[Torus Solana Wallet documentation](https://docs.tor.us/solana-wallet/api-reference/class#init)
 
 :::
 
@@ -90,6 +90,7 @@ const torusPlugin = new SolanaWalletConnectorPlugin({
       logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
       logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
       topupHide: true,
+      defaultLanguage: "en",
     },
     useWalletConnect: true,
     enableLogging: true,
@@ -101,7 +102,7 @@ await web3auth.addPlugin(torusPlugin);
 ## Using the Torus Solana Wallet Provider
 
 As soon as you add the `torusPlugin` class to your Web3Auth instance, you have access to the Torus Wallet Provider. You can use this provider to
-access the Torus Wallet UI within your dApp and make RPC calls through that. To use the provider, use the following command:
+access the Torus Solana Wallet UI within your dApp and make RPC calls through that. To use the provider, use the following command:
 
 #### Example
 
@@ -122,4 +123,4 @@ const transaction = new Transaction({
 const res = await torusPlugin.torusWalletInstance.sendTransaction(transaction);
 ```
 
-#### Know more about how to use the [Torus Solana Wallet Instance and provider](https://docs.tor.us/solana-wallet/sdk/solana/send-transaction)
+#### Know more about how to use the [Torus Solana Wallet Instance and provider](https://docs.tor.us/solana-wallet/api-reference/solana/send-transaction)
