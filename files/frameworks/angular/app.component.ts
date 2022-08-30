@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 // REPLACE-getModuleImport-
 
-const clientId = "YOUR_CLIENT_ID"; // get from https://dashboard.web3auth.io
+const clientId = "YOUR_WEB3AUTH_CLIENT_ID"; // get from https://dashboard.web3auth.io
 
 @Component({
   selector: "app-root",
