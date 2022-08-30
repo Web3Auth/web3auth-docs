@@ -52,10 +52,10 @@ npm install --save @web3auth/phantom-adapter
 
 <TabItem value="table">
 
-| Parameter          | type                    |
-| ------------------ | ----------------------- |
-| `chainConfig`      | `CustomChainConfig`     |
-| `adapterSettings?` | `PhantomAdapterOptions` |
+| Parameter     | type                |
+| ------------- | ------------------- |
+| `chainConfig` | `CustomChainConfig` |
+| `clientId?`   | `string`            |
 
 </TabItem>
 
@@ -64,6 +64,7 @@ npm install --save @web3auth/phantom-adapter
 ```ts
 interface PhantomAdapterOptions {
   chainConfig?: CustomChainConfig;
+  clientId?: string;
 }
 ```
 
@@ -100,9 +101,7 @@ If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` pass
 ```ts
 import { PhantomAdapter } from "@web3auth/phantom-adapter";
 const phantomAdapter = new PhantomAdapter({
-  adapterSettings: {
-    clientId: "YOUR_CLIENT_ID",
-  },
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
 });
 web3auth.configureAdapter(phantomAdapter);
 ```
