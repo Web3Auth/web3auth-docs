@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.web3auth.app">
+    //HIGHLIGHTSTART-installationAppManifest
     <uses-permission android:name="android.permission.INTERNET" />
+    //HIGHLIGHTEND-installationAppManifest
 
     <application
         android:allowBackup="true"
@@ -15,7 +17,9 @@
         android:theme="@style/Theme.Web3AuthDemoApp"
         tools:targetApi="31">
         <activity
+            //HIGHLIGHTSTART-singleTop
             android:launchMode="singleTop"
+            //HIGHLIGHTEND-singleTop
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -23,7 +27,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
+            //HIGHLIGHTSTART-configureDeepLink
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -33,6 +37,7 @@
                 <!-- Accept URIs: {YOUR_APP_PACKAGE_NAME}://* -->
                 <data android:scheme="com.web3auth.app" />
             </intent-filter>
+            //HIGHLIGHTEND-configureDeepLink
         </activity>
     </application>
 

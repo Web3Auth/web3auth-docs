@@ -3,6 +3,7 @@ export const getConstructorCodeAndroid = (isWhitelabeled: boolean, isCustomAuth:
   let customAuthCode = "";
   if (isWhitelabeled) {
     whitelabelCode = `
+                //HIGHLIGHTSTART-whiteLabeling
                 whiteLabel = WhiteLabelData (
                   name = "Web3Auth Whitelabel App",
                   logoLight = null,
@@ -12,16 +13,19 @@ export const getConstructorCodeAndroid = (isWhitelabeled: boolean, isCustomAuth:
                   theme = hashMapOf (
                     "primary" to "#229954"
                   )
-                ),`;
+                ),
+                //HIGHLIGHTEND-whiteLabeling`;
   }
   if (isCustomAuth) {
     customAuthCode = `
+               //HIGHLIGHTSTART-CustomAuthentication
                 loginConfig = hashMapOf("google" to LoginConfigItem(
                   verifier = "web3auth-core-google", // get it from web3auth dashboard
                   typeOfLogin = TypeOfLogin.GOOGLE,
                   name = "Custom Google Login",
                   clientId = getString(R.string.web3auth_google_client_id) // google's client id
-                ))`;
+                ))
+                //HIGHLIGHTEND-CustomAuthentication`;
   }
   return `
         web3Auth = Web3Auth(

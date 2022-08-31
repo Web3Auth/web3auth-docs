@@ -60,6 +60,14 @@ const reactSteps = {
       LoginCodeAndroid
     );
 
+    filenames.push(FILENAME_MAINACTIVITY);
+
+    filenames.push(FILENAME_ANDROIDMANIFEST);
+    filenames.push(FILENAME_BUILDGRADLE);
+    filenames.push(FILENAME_SETTINGSGRADLE);
+    filenames.push(FILENAME_STRINGS);
+    filenames.push(FILENAME_ACTIVITY_MAIN_XML);
+
     steps.push(
       {
         ...STEPS.installationAndroid,
@@ -122,13 +130,6 @@ const reactSteps = {
         pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "triggeringLogout"),
       }
     );
-
-    filenames.push(FILENAME_MAINACTIVITY);
-    filenames.push(FILENAME_ANDROIDMANIFEST);
-    filenames.push(FILENAME_BUILDGRADLE);
-    filenames.push(FILENAME_SETTINGSGRADLE);
-    filenames.push(FILENAME_STRINGS);
-    filenames.push(FILENAME_ACTIVITY_MAIN_XML);
     return { filenames, files, steps };
   },
 };

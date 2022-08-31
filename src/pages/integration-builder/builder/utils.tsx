@@ -41,6 +41,26 @@ export class ReplaceFileAggregator {
     return fileContent.replace(re, replacement);
   }
 
+  highlightRange(
+    filename: string,
+    fileContent: string,
+    variableName: string
+  ): { range: string; filename: string; fileContent: string; variableName: string } {
+    const contentByLine = fileContent.split(`\n`);
+    const startLine = [];
+    const endLine = [];
+    for (let i = 0; i < contentByLine.length; i += 1) {
+      if (contentByLine[i].includes(`HIGHLIGHTSTART-${variableName}`)) {
+        startLine.push(i);
+      }
+      if (contentByLine[i].includes(`HIGHLIGHTEND-${variableName}`)) {
+        endLine.push(i);
+      }
+    }
+
+    return { range: `${startLine[0]}-${endLine[0]}`, filename, fileContent, variableName };
+  }
+
   rangeOffsetEditor(pointer: { range: string; filename: string }) {
     const numbersInRange = pointer.range.split("-");
     for (let x = 0; x < numbersInRange.length; x += 1) {

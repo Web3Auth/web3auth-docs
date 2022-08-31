@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 import { MDXProvider } from "@mdx-js/react";
 import Layout from "@theme/Layout";
 import MDXComponents from "@theme/MDXComponents";
@@ -34,6 +35,43 @@ const getURLFromBuilderOptions = (opts: Record<string, string>): string => {
   return url.toString();
 };
 
+function highlightStart(fileContent: string, variableName: string): string {
+  const contentByLine = fileContent.split(`\n`);
+  for (let i = 0; i < contentByLine.length; i += 1) {
+    if (contentByLine[i].includes(`HIGHLIGHTSTART-${variableName}`)) {
+      contentByLine[i] = "// highlight-start";
+    }
+  }
+  return contentByLine.join("\n");
+}
+
+function highlightEnd(fileContent: string, variableName: string): string {
+  const contentByLine = fileContent.split(`\n`);
+  for (let i = 0; i < contentByLine.length; i += 1) {
+    if (contentByLine[i].includes(`HIGHLIGHTEND-${variableName}`)) {
+      contentByLine[i] = "// highlight-end";
+    }
+  }
+  return contentByLine.join("\n");
+}
+
+function removeHighlightCode(fileContent: string): string {
+  // 2. line that this occurs on
+  const contentByLine = fileContent.split(`\n`);
+  for (let i = 0; i < contentByLine.length; i += 1) {
+    if (contentByLine[i].includes("HIGHLIGHT")) {
+      contentByLine.splice(i, 1);
+    }
+  }
+  return contentByLine.join("\n");
+}
+
+function highlightSection(fileContent: string, variableName: string): string {
+  const highlightStartFile = highlightStart(fileContent, variableName);
+  const highlightedFile = highlightEnd(highlightStartFile, variableName);
+  return removeHighlightCode(highlightedFile);
+}
+
 export default function IntegrationBuilderPage({ files }: { files: Record<string, any> }) {
   const [builderOptions, setBuilderOptions] = useState<Record<string, string>>(getDefaultBuilderOptions());
 
@@ -62,7 +100,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
   useEffect(() => {
     // Update selected file when either integration changed
     setSelectedFilename(integration.filenames[0]);
-
+    onChangeStep(0);
     // Clear copied
     if (isLinkCopied) {
       clearTimeout(isLinkCopied);
@@ -88,7 +126,17 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
 
   const onChangeStep = (index: number) => {
     const { pointer } = steps[index];
-    if (pointer) setSelectedFilename(pointer.filename);
+    if (pointer) {
+      setSelectedFilename(pointer.filename);
+      // console.log({ fileContent: pointer.fileContent, filename: pointer.filename, variableName: pointer.variableName });
+      const highlightedFile = highlightSection(pointer.fileContent, pointer.variableName);
+      for (let i = 0; i < integration.filenames.length; i++) {
+        if (integration.filenames[i] === pointer.filename) {
+          integration.files[integration.filenames[i]] = highlightedFile;
+        }
+        integration.files[integration.filenames[i]] = removeHighlightCode(integration.files[integration.filenames[i]]);
+      }
+    }
     setStepIndex(index);
     window.location.hash = `#step-${index}`;
   };

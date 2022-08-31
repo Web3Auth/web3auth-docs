@@ -2,7 +2,9 @@ export const getLoginCodeAndroid = (isMFA: boolean) => {
   let mfaCode = "";
   if (isMFA) {
     mfaCode = `,
-                  mfaLevel = MFALevel.MANDATORY`;
+                  //HIGHLIGHTSTART-multiFactorAuthentication
+                  mfaLevel = MFALevel.MANDATORY
+                  //HIGHLIGHTEND-multiFactorAuthentication`;
   }
   return `
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =

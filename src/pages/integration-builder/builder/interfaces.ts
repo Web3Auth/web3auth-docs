@@ -3,7 +3,12 @@ import { ReactNode } from "react";
 export interface IntegrationStep {
   title: string;
   content: ReactNode;
-  pointer?: { filename: string; range?: string };
+  pointer?: {
+    filename: string;
+    variableName: string;
+    fileContent: string;
+    range: string;
+  };
 }
 
 export interface Integration {

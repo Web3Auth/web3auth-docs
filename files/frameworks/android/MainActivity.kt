@@ -27,10 +27,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //HIGHLIGHTSTART-instantiate
         // REPLACE-getConstructorCode-
 
+        //HIGHLIGHTEND-instantiate
+
+        //HIGHLIGHTSTART-setResultURL
         // Handle user signing in when app is not alive
         web3Auth.setResultUrl(intent?.data)
+        //HIGHLIGHTEND-setResultURL
 
         // Setup UI and event handlers
         val signInButton = findViewById<Button>(R.id.signInButton)
@@ -41,17 +46,22 @@ class MainActivity : AppCompatActivity() {
 
         reRender(Web3AuthResponse())
     }
-
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
+        //HIGHLIGHTSTART-setResultURL
         // Handle user signing in when app is active
         web3Auth.setResultUrl(intent?.data)
+        //HIGHLIGHTEND-setResultURL
+
     }
 
     private fun signIn() {
+        //HIGHLIGHTSTART-triggeringLogin
         val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
         // REPLACE-getAndroidLoginConfig-
+
+        //HIGHLIGHTEND-triggeringLogin
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
@@ -63,7 +73,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signOut() {
+        //HIGHLIGHTSTART-triggeringLogout
         val logoutCompletableFuture =  web3Auth.logout()
+        //HIGHLIGHTEND-triggeringLogout
         logoutCompletableFuture.whenComplete { _, error ->
             if (error == null) {
                 reRender(Web3AuthResponse())
