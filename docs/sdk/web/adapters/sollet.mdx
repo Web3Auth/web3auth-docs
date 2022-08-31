@@ -59,6 +59,7 @@ npm install --save @web3auth/sollet-adapter
 | -------------- | ------------------- |
 | `chainConfig?` | `CustomChainConfig` |
 | `provider?`    | `string`            |
+| `clientId?`    | `string`            |
 
 </TabItem>
 
@@ -72,6 +73,7 @@ export declare class SolletWebAdapter extends BaseSolletAdapter {
 export interface SolletAdapterOptions {
   chainConfig?: CustomChainConfig;
   provider?: string;
+  clientId?: string;
 }
 export declare class BaseSolletAdapter extends BaseAdapter<void> {
   readonly name: string;
@@ -128,7 +130,9 @@ If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` pass
 
 ```ts
 import { SolletWebAdapter } from "@web3auth/sollet-adapter";
-const solletWebAdapter = new SolletWebAdapter();
+const solletWebAdapter = new SolletWebAdapter({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+});
 web3auth.configureAdapter(solletWebAdapter);
 ```
 
@@ -140,6 +144,8 @@ web3auth.configureAdapter(solletWebAdapter);
 
 ```ts
 import { SolletExtensionAdapter } from "@web3auth/sollet-adapter";
-const solletExtensionAdapter = new SolletExtensionAdapter();
+const solletExtensionAdapter = new SolletExtensionAdapter({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+});
 web3auth.configureAdapter(solletExtensionAdapter);
 ```

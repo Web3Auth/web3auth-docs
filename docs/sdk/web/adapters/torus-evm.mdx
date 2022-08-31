@@ -59,6 +59,7 @@ npm install --save @web3auth/torus-evm-adapter
 | `adapterSettings` | [`TorusCtorArgs`](https://docs.tor.us/wallet/sdk/class)                 |
 | `loginSettings`   | [`LoginParams`](https://docs.tor.us/wallet/sdk/class)                   |
 | `initParams`      | [`Omit <TorusParams, "network">`](https://docs.tor.us/wallet/sdk/class) |
+| `clientId?`       | `string`                                                                |
 
 </TabItem>
 
@@ -71,6 +72,7 @@ interface TorusWalletOptions {
   loginSettings?: LoginParams;
   initParams?: Omit<TorusParams, "network">;
   chainConfig?: CustomChainConfig;
+  clientId?: string;
 }
 ```
 
@@ -126,6 +128,7 @@ const torusWalletAdapter = new TorusWalletAdapter({
     ticker: "ETH",
     tickerName: "Ethereum",
   },
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
 });
 
 // it will add/update  the torus-evm adapter in to web3auth class

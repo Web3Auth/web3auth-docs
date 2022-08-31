@@ -52,9 +52,10 @@ npm install --save @web3auth/metamask-adapter
 
 <TabItem value="table">
 
-| Parameter     | type                |
-| ------------- | ------------------- |
-| `chainConfig` | `CustomChainConfig` |
+| Parameter      | type                |
+| -------------- | ------------------- |
+| `chainConfig?` | `CustomChainConfig` |
+| `clientId?`    | `string`            |
 
 </TabItem>
 
@@ -63,6 +64,7 @@ npm install --save @web3auth/metamask-adapter
 ```ts
 interface MetamaskAdapterOptions {
   chainConfig?: CustomChainConfig;
+  clientId?: string;
 }
 ```
 
@@ -98,7 +100,9 @@ If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` pass
 
 ```ts
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
-const metamaskAdapter = new MetamaskAdapter();
+const metamaskAdapter = new MetamaskAdapter({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+});
 
 // it will add/update  the metamask adapter in to web3auth class
 web3auth.configureAdapter(metamaskAdapter);

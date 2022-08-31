@@ -15,7 +15,7 @@ import Tabs from "@theme/Tabs";
 
 | Variable                | Type                                  | Description                                                                                                                                                                                                                                                                                                                                               | Required | Default Value |
 | ----------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------- |
-| `clientId`              | `string`                              | Client ID for web3auth. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).                                                                                                                                                                                                                                   | Yes      | N/A           |
+| `clientId?`             | `string`                              | Client ID for web3auth. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/). Not required if you're passing the clientId in the web3auth core constructor.                                                                                                                                                     | No       | N/A           |
 | `network`               | `enum` (`testnet`, `mainnet`, `cyan`) | Network specifies the openlogin iframe url url to be used. <ul><li>`'mainnet'`: https://app.openlogin.com will be used which is the production version.</li><li>`'cyan'`: https://cyan.openlogin.com will be used which is the production cyan version.</li><li>`'testnet'`: https://beta.openlogin.com will be used which is the beta version.</li></ul> | Yes      | N/A           |
 | `redirectUrl?`          | `string`                              | redirectUrl is the dapp's url where user will be redirected after login. Register this url on the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) else initialization will give error.                                                                                                                                                     | No       | N/A           |
 | `uxMode?`               | `enum` (`popup` and `redirect` )      | Two uxModes are supported: <ul><li> `'POPUP'`: In this uxMode, a popup will be shown to user for login.</li><li>`'REDIRECT'`: In this uxMode, user will be redirected to a new window tab for login.</li></ul>                                                                                                                                            | No       | `'POPUP'`     |
@@ -32,8 +32,9 @@ export declare type OpenLoginOptions = {
   /**
    * You can get your clientId/projectId by registering your
    * dapp on {@link "https://dashboard.web3auth.io"| developer dashboard}
+   * Not required if you're passing the clientId in the web3auth core constructor.
    */
-  clientId: string;
+  clientId?: string;
   /**
    * network specifies the openlogin iframe url url to be used.
    *
