@@ -44,6 +44,7 @@ export const LANGS: DisplayChoice[] = [
   { key: "ios", displayName: "iOS/Swift" },
   { key: "react-native", displayName: "React Native" },
   { key: "flutter", displayName: "Flutter" },
+  { key: "unity", displayName: "Unity" },
 ];
 
 export const TOGGLE_CHOICES: DisplayChoice[] = [
@@ -141,6 +142,7 @@ const web3authIntegrationBuilder: IntegrationBuilder = {
       "ios",
       "react-native",
       "flutter",
+      "unity",
     }
     this.options = {
       lang: {
