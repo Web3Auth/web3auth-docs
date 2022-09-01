@@ -36,23 +36,9 @@ export default function SEO(props) {
       {slug ? <meta property="og:url" content={`https://web3auth.io/docs${slug}`} /> : <meta property="og:url" content="https://web3auth.io/docs" />}
 
       {image ? (
-        <>
-          <meta property="og:image" content={image} />
-          <meta property="og:image:secure_url" content={image} />
-          <meta property="og:image:type" content="image/png" />
-          <meta property="og:image:width" content="400" />
-          <meta property="og:image:height" content="300" />
-          <meta property="og:image:alt" content="Web3Auth Banner Image" />
-        </>
+        <meta property="og:image" content={image} />
       ) : (
-        <>
-          <meta property="og:image" content="http://web3auth.io/docs/images/docs-meta-cards/documentation-card.png" />
-          <meta property="og:image:secure_url" content="https://web3auth.io/docs/images/docs-meta-cards/documentation-card.png" />
-          <meta property="og:image:type" content="image/png" />
-          <meta property="og:image:width" content="400" />
-          <meta property="og:image:height" content="300" />
-          <meta property="og:image:alt" content="Web3Auth Banner Image" />
-        </>
+        <meta property="og:image" content="http://web3auth.io/docs/images/docs-meta-cards/documentation-card.png" />
       )}
 
       {/* Twitter Meta Tags */}
@@ -68,12 +54,12 @@ export default function SEO(props) {
           name="twitter:description"
           content="Web3Auth is simple, non-custodial auth infrastructure that enables Web3 wallets and applications to provide seamless user logins for both mainstream and native Web3 users."
         />
-      )}
+      )} */}
       {image ? (
         <meta name="twitter:image" content={image} />
       ) : (
         <meta name="twitter:image" content="http://web3auth.io/docs/images/docs-meta-cards/documentation-card.png" />
-      )} */}
+      )}
 
       {/* Google / Search Engine Tags */}
       {title ? <meta itemProp="name" content={title} /> : <meta itemProp="name" content="Documentation | Web3Auth" />}
