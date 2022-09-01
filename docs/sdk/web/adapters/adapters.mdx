@@ -9,13 +9,18 @@ description: "Web Adapters  | Documentation - Web3Auth"
 
 ## Understanding Adapters
 
-Adapter is a pluggable package which implements `IAdapter` interface for a wallet. An adapter can be plugged in and out of web3auth modal. An adapter
-emits certain events like `CONNECTED`, `CONNECTING` and `DISCONNECTED` etc during login lifecycle of a user. Each adapter exposes provider on
-successful user login which can be used to invoke RPC calls on wallet and on connected blockchain.
+---
 
-Web3Auth by default contains a pre-configured list of login adapters. It also provides flexibility to add/remove adapters or to use some existing
-adapter with custom configurations. To configure an adapter create an instance of the adapter by using its corresponding package and pass the returned
-adapter instance in the `configureAdapter` function.
+Adapters are essentially connectors between Web3Auth and the underlying wallet provider. For example, an adapter for connecting with torus wallet is
+available under web3auth as [@web3auth/torus-evm-adapter](/sdk/web/adapters/torus-evm). Every adapter follows a common interface which is required by
+Web3Auth to communicate with the wallet.
+
+An adapter emits certain events like `CONNECTED`, `CONNECTING` and `DISCONNECTED` etc during login lifecycle of a user. Each adapter exposes provider
+on successful user login which can be used to invoke RPC calls on wallet and on connected blockchain.
+
+Hence, adapters are needed to connect your Web3Auth instance to a wallet provider. Web3Auth by default contains a pre-configured list of login
+adapters. It also provides flexibility to add/remove adapters or to use some existing adapter with custom configurations. To configure an adapter
+create an instance of the adapter by using its corresponding package and pass the returned adapter instance in the `configureAdapter` function.
 
 For example, to configure openlogin adapter,
 
@@ -37,7 +42,7 @@ const openloginAdapter = await OpenloginAdapter({
 web3auth.configureAdapter(openloginAdapter);
 ```
 
-## Currently Available Adapters
+## Currently Available Wallet Adapters
 
 ---
 
@@ -76,7 +81,7 @@ Currently Web3Auth supports two categories of wallet adapters:
 
 - External wallet are those which are global for all applications. No matter where you are logging in, you will get same keys if same credentials are
   being provided.
-- `metamask`, `phantom` and `walletconnect-v1` are External Wallets in Web3Auth.
+- `metamask`, `phantom` and `walletconnect-v1`, `coinbase`, `slope`, `solflare`, `sollet` are External Wallets in Web3Auth.
 
 ## Common Configuration Interfaces
 
