@@ -23,7 +23,7 @@ const getDisplayName = (filename: string): string => {
 const getLanguage = (filename: string): string => {
   const ext = path.extname(filename).substr(1);
 
-  if (["jsx", "java", "swift", "ts", "tsx", "html", "css", "xml", "dart", "json"].includes(ext)) return `language-${ext}`;
+  if (["jsx", "java", "swift", "ts", "tsx", "html", "css", "xml", "dart", "json", "cs"].includes(ext)) return `language-${ext}`;
   if (ext === "js") return "language-jsx";
   if (ext === "vue") return "language-ts";
   if (ext === "gradle") return "language-groovy";
