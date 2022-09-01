@@ -1,10 +1,12 @@
+import Head from "@docusaurus/Head";
+
 export default function SEO(props) {
   // eslint-disable-next-line react/prop-types
   const { title, description, image, slug } = props;
 
   return (
-    <head>
-      {title ? <title>{title} | Web3Auth</title> : <title>Documentation | Web3Auth</title>}
+    <Head>
+      {title ? <title>{title} | Web3Auth Guides</title> : <title>Documentation | Web3Auth</title>}
       {description ? (
         <meta name="description" content={description} />
       ) : (
@@ -72,6 +74,6 @@ export default function SEO(props) {
       ) : (
         <meta itemProp="image" content="http://web3auth.io/docs/images/docs-meta-cards/documentation-card.png" />
       )}
-    </head>
+    </Head>
   );
 }
