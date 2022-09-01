@@ -76,15 +76,16 @@ function highlightSection(fileContent: string, variableName: string): string {
 function setHighlight(index: number, integration) {
   const { pointer } = integration.steps[index];
   if (pointer) {
-    const highlightedFile = highlightSection(pointer.fileContent, pointer.variableName);
     for (let i = 0; i < integration.filenames.length; i++) {
       if (integration.filenames[i] === pointer.filename) {
-        integration.files[integration.filenames[i]] = highlightedFile;
+        integration.files[integration.filenames[i]] = highlightSection(
+          pointer.fileContent || integration.files[integration.filenames[i]],
+          pointer.variableName
+        );
       }
       integration.files[integration.filenames[i]] = removeHighlightCode(integration.files[integration.filenames[i]]);
     }
   }
-  return integration;
 }
 
 export default function IntegrationBuilderPage({ files }: { files: Record<string, any> }) {
@@ -107,7 +108,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     });
   };
 
-  let integration = useMemo(() => builder.build(builderOptions, files), [builderOptions, files]);
+  const integration = useMemo(() => builder.build(builderOptions, files), [builderOptions, files]);
   const [selectedFilename, setSelectedFilename] = useState(integration.filenames[0]);
 
   const [isLinkCopied, setLinkCopied] = useState<number>();
@@ -141,7 +142,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
 
   const onChangeStep = (index: number) => {
     setSelectedFilename(steps[index].pointer.filename);
-    integration = setHighlight(index, integration);
+    setHighlight(index, integration);
     setStepIndex(index);
     window.location.hash = `#step-${index}`;
   };
