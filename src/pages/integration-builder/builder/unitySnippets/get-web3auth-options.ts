@@ -2,7 +2,7 @@ export const getWeb3AuthOptions = (isWhitelabeled: boolean, isCustomAuth: boolea
   let whitelabelCode = "";
   let customAuthCode = "";
   if (isWhitelabeled) {
-    whitelabelCode = `
+    whitelabelCode = `,
             whiteLabel = new WhiteLabelData() {
                 name = "Web3Auth Sample App",
                 logoLight = null,
@@ -18,7 +18,7 @@ export const getWeb3AuthOptions = (isWhitelabeled: boolean, isCustomAuth: boolea
             }`;
   }
   if (isCustomAuth) {
-    customAuthCode = `
+    customAuthCode = `,
             loginConfig = new LoginConfigItem()
             {
                 verifier = "verifier-name", // get it from web3auth dashboard
@@ -30,5 +30,5 @@ export const getWeb3AuthOptions = (isWhitelabeled: boolean, isCustomAuth: boolea
   return `
             redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
             clientId = "BAwFgL-r7wzQKmtcdiz2uHJKNZdK7gzEf2q-m55xfzSZOw8jLOyIi4AVvvzaEQO5nv2dFLEmf9LBkF8kaq3aErg",
-            network = Web3Auth.Network.TESTNET,${whitelabelCode}${customAuthCode}`;
+            network = Web3Auth.Network.TESTNET${whitelabelCode}${customAuthCode}`;
 };
