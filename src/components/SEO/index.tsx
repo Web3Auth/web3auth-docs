@@ -76,6 +76,8 @@ export default function SEO(props) {
       ) : (
         <meta itemProp="image" content="http://web3auth.io/docs/images/docs-meta-cards/documentation-card.png" />
       )}
+
+      <meta name="author" content="Web3Auth" />
     </Head>
   );
 }
