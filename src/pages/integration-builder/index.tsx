@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-plusplus */
 import { MDXProvider } from "@mdx-js/react";
 import Layout from "@theme/Layout";
@@ -72,6 +73,20 @@ function highlightSection(fileContent: string, variableName: string): string {
   return removeHighlightCode(highlightedFile);
 }
 
+function setHighlight(index: number, integration) {
+  const { pointer } = integration.steps[index];
+  if (pointer) {
+    const highlightedFile = highlightSection(pointer.fileContent, pointer.variableName);
+    for (let i = 0; i < integration.filenames.length; i++) {
+      if (integration.filenames[i] === pointer.filename) {
+        integration.files[integration.filenames[i]] = highlightedFile;
+      }
+      integration.files[integration.filenames[i]] = removeHighlightCode(integration.files[integration.filenames[i]]);
+    }
+  }
+  return integration;
+}
+
 export default function IntegrationBuilderPage({ files }: { files: Record<string, any> }) {
   const [builderOptions, setBuilderOptions] = useState<Record<string, string>>(getDefaultBuilderOptions());
 
@@ -92,15 +107,15 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     });
   };
 
-  const integration = useMemo(() => builder.build(builderOptions, files), [builderOptions, files]);
+  let integration = useMemo(() => builder.build(builderOptions, files), [builderOptions, files]);
   const [selectedFilename, setSelectedFilename] = useState(integration.filenames[0]);
 
   const [isLinkCopied, setLinkCopied] = useState<number>();
 
   useEffect(() => {
     // Update selected file when either integration changed
-    setSelectedFilename(integration.filenames[0]);
-    onChangeStep(0);
+    setSelectedFilename(integration.steps[0].pointer.filename);
+    setHighlight(0, integration);
     // Clear copied
     if (isLinkCopied) {
       clearTimeout(isLinkCopied);
@@ -125,18 +140,8 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
   const [stepIndex, setStepIndex] = useState(0);
 
   const onChangeStep = (index: number) => {
-    const { pointer } = steps[index];
-    if (pointer) {
-      setSelectedFilename(pointer.filename);
-      // console.log({ fileContent: pointer.fileContent, filename: pointer.filename, variableName: pointer.variableName });
-      const highlightedFile = highlightSection(pointer.fileContent, pointer.variableName);
-      for (let i = 0; i < integration.filenames.length; i++) {
-        if (integration.filenames[i] === pointer.filename) {
-          integration.files[integration.filenames[i]] = highlightedFile;
-        }
-        integration.files[integration.filenames[i]] = removeHighlightCode(integration.files[integration.filenames[i]]);
-      }
-    }
+    setSelectedFilename(steps[index].pointer.filename);
+    integration = setHighlight(index, integration);
     setStepIndex(index);
     window.location.hash = `#step-${index}`;
   };
