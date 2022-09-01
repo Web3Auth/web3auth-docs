@@ -6,7 +6,7 @@ export default function SEO(props) {
 
   return (
     <Head>
-      {title ? <title>{title} | Web3Auth Guides</title> : <title>Documentation | Web3Auth</title>}
+      {title ? <title>{title} | Web3Auth </title> : <title>Documentation | Web3Auth</title>}
       {description ? (
         <meta name="description" content={description} />
       ) : (
@@ -16,10 +16,14 @@ export default function SEO(props) {
         />
       )}
 
-      {/* Facebook Meta Tags  */}
+      <meta
+        name="keywords"
+        content="web3auth, blockchain, web3, web3.js, ethers.js, solana, ethereum, passwordless, passwordless magic link, multi party computation, tkey, torus, web3 auth, auth"
+      />
+
+      {/* Open Graph Meta Tags  */}
       <meta property="og:site_name" content="Web3Auth" />
       <meta property="og:type" content="website" />
-      {slug ? <meta property="og:url" content={`https://web3auth.io/docs${slug}`} /> : <meta property="og:url" content="https://web3auth.io/docs" />}
       {title ? <meta property="og:title" content={title} /> : <meta property="og:title" content="Documentation | Web3Auth" />}
       {description ? (
         <meta property="og:description" content={description} />
@@ -29,22 +33,34 @@ export default function SEO(props) {
           content="Web3Auth is simple, non-custodial auth infrastructure that enables Web3 wallets and applications to provide seamless user logins for both mainstream and native Web3 users."
         />
       )}
+      {slug ? <meta property="og:url" content={`https://web3auth.io/docs${slug}`} /> : <meta property="og:url" content="https://web3auth.io/docs" />}
+
       {image ? (
-        <meta property="og:image" content={image} />
+        <>
+          <meta property="og:image" content={image} />
+          <meta property="og:image:secure_url" content={image} />
+          <meta property="og:image:type" content="image/png" />
+          <meta property="og:image:width" content="400" />
+          <meta property="og:image:height" content="300" />
+          <meta property="og:image:alt" content="Web3Auth Banner Image" />
+        </>
       ) : (
-        <meta property="og:image" content="http://web3auth.io/docs/images/docs-meta-cards/documentation-card.png" />
+        <>
+          <meta property="og:image" content="http://web3auth.io/docs/images/docs-meta-cards/documentation-card.png" />
+          <meta property="og:image:secure_url" content="https://web3auth.io/docs/images/docs-meta-cards/documentation-card.png" />
+          <meta property="og:image:type" content="image/png" />
+          <meta property="og:image:width" content="400" />
+          <meta property="og:image:height" content="300" />
+          <meta property="og:image:alt" content="Web3Auth Banner Image" />
+        </>
       )}
-      <meta
-        name="keywords"
-        content="web3auth, blockchain, web3, web3.js, ethers.js, solana, ethereum, passwordless, passwordless magic link, multi party computation, tkey, torus, web3 auth, auth"
-      />
 
       {/* Twitter Meta Tags */}
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@Web3Auth" />
       <meta name="twitter:creator" content="@Web3Auth" />
-      {title ? <meta name="twitter:title" content={title} /> : <meta name="twitter:title" content="Documentation | Web3Auth" />}
+      {/* {title ? <meta name="twitter:title" content={title} /> : <meta name="twitter:title" content="Documentation | Web3Auth" />}
       {description ? (
         <meta name="twitter:description" content={description} />
       ) : (
@@ -57,7 +73,7 @@ export default function SEO(props) {
         <meta name="twitter:image" content={image} />
       ) : (
         <meta name="twitter:image" content="http://web3auth.io/docs/images/docs-meta-cards/documentation-card.png" />
-      )}
+      )} */}
 
       {/* Google / Search Engine Tags */}
       {title ? <meta itemProp="name" content={title} /> : <meta itemProp="name" content="Documentation | Web3Auth" />}
