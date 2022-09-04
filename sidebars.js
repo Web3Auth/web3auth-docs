@@ -11,6 +11,7 @@ module.exports = {
         "overview/what-is-web3auth",
         "overview/how-web3auth-works",
         "overview/web3auth-and-wallets",
+        "overview/user-flow",
         {
           type: "category",
           label: "Key Management",
