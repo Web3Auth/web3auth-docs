@@ -5,10 +5,14 @@ displayed_sidebar: docs
 description: "User Flow Screens | Documentation - Web3Auth"
 ---
 
+import OpenloginWhiteLabelConfig from "@site/src/common/sdk/web/_openlogin-whitelabel-config.mdx";
+import OpenloginWhiteLabelExample from "@site/src/common/sdk/web/_openlogin-whitelabel-example.mdx";
 import Image2 from "@site/static/contents/whitelabel-web3auth-modal-openlogin.png";
 import Image4 from "@site/static/contents/whitelabel-web3auth-openlogin-dark.png";
 import Image7 from "@site/static/contents/whitelabel-web3auth-openlogin-language.png";
 import Image3 from "@site/static/contents/whitelabel-web3auth-openlogin-light.png";
+import Image9 from "@site/static/contents/whitelabel-web3auth-openlogin-logo-dark.png";
+import Image8 from "@site/static/contents/whitelabel-web3auth-openlogin-logo-light.png";
 import Image5 from "@site/static/contents/whitelabel-web3auth-openlogin-theme1.png";
 import Image6 from "@site/static/contents/whitelabel-web3auth-openlogin-theme2.png";
 
@@ -23,54 +27,44 @@ Web3Auth's Social Logins and Email Login runs using the OpenLogin Flow. The whol
 
 ---
 
-`new OpenloginAdapter({network, clientId, whiteLabel?})`
+<OpenloginWhiteLabelConfig />
 
-Below are the parameters you can pass on to the `whiteLabel` option to whitelabel your instance.
+### `name`
 
-| Parameter for `whiteLabel` | Type      | Options                                                                                                                                                                                                      |
-| -------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `dark`                     | `boolean` | Can be set to `true` or `false` with default set to `false`.                                                                                                                                                 |
-| `theme`                    | `object`  | Theme is a record of colors which can be configured. As of, now only `primary` color can be set and has effect on OpenLogin screens (default primary color is `#0364FF`). Theme affects the icons and links. |
-| `defaultLanguage`          | `string`  | Default language will set the language used on all OpenLogin screens. The supported languages are: `en`, `de`, `ja`, `ko`, `zh`, `es`.                                                                       |
-
-### `dark`
-
-Can be set to `true` or `false` with default set to `false`.
-
-<br />
+The name of the application. This will be displayed in the key reconstruction page.
 
 <div className="text-image-column">
   <div>
     <h4>
-      For Light: <code>dark: false</code>
+      Standard screen <strong>without</strong> any change
     </h4>
-    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image3} alt="light theme" />
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image5} alt="Standard screen without any change" />
   </div>
   <div>
     <h4>
-      For Dark: <code>dark: true</code>
+      Name changed to <code>Formidable Duo</code>
     </h4>
-    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image4} alt="dark theme" />
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image6} alt="Name changed to Formidable Duo" />
   </div>
 </div>
-
 <br />
 
-### `theme`
+### `logoLight` & `logoDark`
 
-Theme is a record of colors which can be configured. As of, now only `primary` color can be set and has effect on OpenLogin screens (default primary
-color is `#0364FF`). Theme affects icons and links. Examples below.
+The logo of the application. Displayed in dark and light mode respectively. This will be displayed in the key reconstruction page.
 
 <div className="text-image-column">
   <div>
-    <img
-      style={{ display: "block", maxHeight: "500px", alignSelf: "center" }}
-      src={Image5}
-      alt="Theme is a record of colors which can be configured."
-    />
+    <h4>
+      <code>logoLight</code> on dark mode
+    </h4>
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image8} alt="logoLight on dark mode" />
   </div>
   <div>
-    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image6} alt="Theme affects icons and links." />
+    <h4>
+      <code>logoDark</code> on light mode
+    </h4>
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image9} alt="logoDark on light mode" />
   </div>
 </div>
 <br />
@@ -108,34 +102,56 @@ Default language will set the language used on all OpenLogin screens. The suppor
 </div>
 <br />
 
+### `dark`
+
+Can be set to `true` or `false` with default set to `false`.
+
+<br />
+
+<div className="text-image-column">
+  <div>
+    <h4>
+      For Light: <code>dark: false</code>
+    </h4>
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image3} alt="light theme" />
+  </div>
+  <div>
+    <h4>
+      For Dark: <code>dark: true</code>
+    </h4>
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image4} alt="dark theme" />
+  </div>
+</div>
+
+<br />
+
+### `theme`
+
+Theme is a record of colors which can be configured. As of, now only `primary` color can be set and has effect on OpenLogin screens (default primary
+color is `#0364FF`). Theme affects icons and links. Examples below.
+
+<div className="text-image-column">
+  <div>
+    <h4>
+      Standard color <code>#0364FF</code>
+    </h4>
+    <img
+      style={{ display: "block", maxHeight: "500px", alignSelf: "center" }}
+      src={Image5}
+      alt="Theme is a record of colors which can be configured."
+    />
+  </div>
+  <div>
+    <h4>
+      Color changed to <code>#D72F7A</code>
+    </h4>
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image6} alt="Theme affects icons and links." />
+  </div>
+</div>
+<br />
+
 ## Example
 
 ---
 
-```js
-import { Web3Auth } from "@web3auth/web3auth";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
-
-const web3auth = new Web3Auth({
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-  },
-  clientId: "example-client-id",
-});
-
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    network: "testnet", // "testnet", "mainnet" or "cyan"
-    clientId: "example-client-id",
-    // type WhiteLabelData
-    whiteLabel: {
-      dark: true, // true or false
-      theme: { primary: "#FFA500" },
-      defaultLanguage: "en",
-    },
-  },
-});
-
-web3auth.configureAdapter(openloginAdapter);
-```
+<OpenloginWhiteLabelExample />
