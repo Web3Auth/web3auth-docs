@@ -10,7 +10,9 @@ module.exports = {
       items: [
         "overview/what-is-web3auth",
         "overview/how-web3auth-works",
-        "overview/web3auth-and-wallets",
+        "overview/web3auth-for-wallets",
+        "overview/web3auth-for-dapps",
+        "overview/user-flow",
         {
           type: "category",
           label: "Key Management",
