@@ -10,4 +10,15 @@ const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
     scope: "email profile openid",
   },
 });
+
+// or Login using JWT,
+// either obtained from Firebase, Okta, Auth0 or bring your OWN JWT.
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    id_token: "idToken", // in JWT Format
+    verifierIdField: "sub", // same as your JWT Verifier ID
+    domain: "https://YOUR-APPLICATION-DOMAIN" || "http://localhost:3000",
+  },
+});
 ```

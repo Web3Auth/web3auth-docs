@@ -198,7 +198,7 @@ web3auth.login({
   loginProvider: LoginProvider.JWT,
   redirectUrl: resolvedRedirectUrl,
   extraLoginOptions: {
-    id_token_hint: "your JWT token",
+    id_token: "your JWT token",
   },
 });
 ```
@@ -224,7 +224,7 @@ web3auth.login({
 | prompt                    | Prompt?  | No        | Prompt                                                |
 | max_age                   | String?  | No        | max_age                                               |
 | ui_locales                | String?  | No        | ui_locales to be shown on the modal                   |
-| id_token_hint             | String?  | No        | JWT token passed to authenticate with web3auth        |
+| id_token                  | String?  | No        | JWT token passed to authenticate with web3auth        |
 | login_hint                | String?  | No        | Email used for EMAIL_PASSWORDLESS                     |
 | acr_values                | String?  | No        | acc_values                                            |
 | scope                     | String?  | No        | scope                                                 |
@@ -280,6 +280,7 @@ export interface BaseLoginOptions {
    * This currently only affects the classic Lock experience.
    */
   login_hint?: string;
+  id_token?: string;
   acr_values?: string;
   /**
    * The default scope to be used on authentication requests.

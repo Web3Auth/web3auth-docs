@@ -98,7 +98,8 @@ class MainActivity : AppCompatActivity() {
     private fun signIn() {
 
         val selectedLoginProvider = Provider.GOOGLE   // Can be REDDIT, TWITTER, GITHUB etc.
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider))
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+            web3Auth.login(LoginParams(selectedLoginProvider))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
@@ -136,7 +137,8 @@ class MainActivity : AppCompatActivity() {
     private fun signIn() {
 
         val selectedLoginProvider = Provider.FACEBOOK   // Can be APPLE, LINE, KAKAO, LINKEDIN etc.
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider))
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+            web3Auth.login(LoginParams(selectedLoginProvider))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
@@ -174,7 +176,8 @@ class MainActivity : AppCompatActivity() {
     private fun signIn() {
 
         val selectedLoginProvider = Provider.DISCORD   // Can be WECHAT, WEIBO, LINE etc.
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider))
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+            web3Auth.login(LoginParams(selectedLoginProvider))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
@@ -212,7 +215,8 @@ class MainActivity : AppCompatActivity() {
     private fun signIn() {
 
         val selectedLoginProvider = Provider.TWITCH   // Can be GOOGLE, FACEBOOK, TWITCH etc.
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider))
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+            web3Auth.login(LoginParams(selectedLoginProvider))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
@@ -251,7 +255,9 @@ class MainActivity : AppCompatActivity() {
 
         val selectedLoginProvider = Provider.EMAIL_PASSWORDLESS
         // extraLoginOptions = ExtraLoginOptions(login_hint = "email address")
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")))
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+            web3Auth.login(LoginParams(selectedLoginProvider,
+                extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
@@ -289,8 +295,10 @@ class MainActivity : AppCompatActivity() {
     private fun signIn() {
 
         val selectedLoginProvider = Provider.JWT
-        // extraLoginOptions = ExtraLoginOptions(id_token_hint = "jwt_token")
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(id_token_hint = "your_jwt_token")))
+        // extraLoginOptions = ExtraLoginOptions(id_token = "jwt_token")
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+            web3Auth.login(LoginParams(selectedLoginProvider,
+                extraLoginOptions = ExtraLoginOptions(id_token = "your_jwt_token")))
         // Use this for login with your generated JWT token, please refer to https://web3auth.io/docs/custom-authentication/byo-jwt-providers to learn more
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
@@ -324,7 +332,8 @@ class MainActivity : AppCompatActivity() {
 `ExtraLoginOptions`
 
 ```kotlin
-web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(id_token_hint = "your_jwt_token")))
+web3Auth.login(LoginParams(selectedLoginProvider,
+    extraLoginOptions = ExtraLoginOptions(id_token = "your_jwt_token")))
 ```
 
 <Tabs
@@ -349,7 +358,7 @@ web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLogin
 | prompt                    | Prompt?                  | No        | Prompt                                                |
 | max_age                   | String?                  | No        | max_age                                               |
 | ui_locales                | String?                  | No        | ui_locales to be shown on the modal                   |
-| id_token_hint             | String?                  | No        | JWT token passed to authenticate with web3auth        |
+| id_token                  | String?                  | No        | JWT token passed to authenticate with web3auth        |
 | login_hint                | String?                  | No        | Email used for EMAIL_PASSWORDLESS                     |
 | acr_values                | String?                  | No        | acc_values                                            |
 | scope                     | String?                  | No        | scope                                                 |
@@ -376,7 +385,7 @@ data class ExtraLoginOptions(
     private var prompt : Prompt? = null,
     private var max_age : String? = null,
     private var ui_locales : String? = null,
-    private var id_token_hint : String? = null,
+    private var id_token : String? = null,
     private var login_hint : String? = null,
     private var acr_values : String? = null,
     private var scope : String? = null,

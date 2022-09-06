@@ -169,7 +169,7 @@ LoginParams() { selectedLoginProvider, extraLoginOptions = ExtraLoginOptions() }
 | prompt                    | `Prompt`                     | No        | Prompt                                                |
 | max_age                   | `string`                     | No        | max_age                                               |
 | ui_locales                | `string`                     | No        | ui_locales to be shown on the modal                   |
-| id_token_hint             | `string`                     | No        | JWT token passed to authenticate with web3auth        |
+| id_token                  | `string`                     | No        | JWT token passed to authenticate with web3auth        |
 | login_hint                | `string`                     | No        | Email used for EMAIL_PASSWORDLESS                     |
 | acr_values                | `string`                     | No        | acc_values                                            |
 | scope                     | `string`                     | No        | scope                                                 |
@@ -198,6 +198,7 @@ public class ExtraLoginOptions {
     public string ui_locales { get; set; }
     public string id_token_hint { get; set; }
     public string login_hint { get; set; }
+    public string id_token { get; set; }
     public string acr_values { get; set; }
     public string scope { get; set; }
     public string audience { get; set; }
@@ -380,7 +381,7 @@ public void login()
         loginProvider = selectedProvider,
         extraLoginOptions = new ExtraLoginOptions()
         {
-            id_token_hint = "your_jwt_token"
+            id_token = "your_jwt_token"
         }
     };
     web3Auth.login(options);
