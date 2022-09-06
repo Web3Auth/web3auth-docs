@@ -158,12 +158,16 @@ web3Auth = Web3Auth (
 
   ```kotlin
 
-  val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")))
+  val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+    web3Auth.login(LoginParams(selectedLoginProvider,
+      extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")))
   ```
 
-- To use the `JWT` login, you need to put the jwt token into the `id_token_hint` field of the `extraLoginOptions`.
+- To use the `JWT` login, you need to put the jwt token into the `id_token` field of the `extraLoginOptions`.
 
   ```kotlin
 
-    val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(id_token_hint = "your_jwt_token")))
+  val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+    web3Auth.login(LoginParams(selectedLoginProvider,
+      extraLoginOptions = ExtraLoginOptions(id_token = "your_jwt_token")))
   ```

@@ -22,7 +22,7 @@ import Tabs from "@theme/Tabs";
 | `verifierIdField?`           | `string`             | The field in jwt token which maps to verifier id                                                                                                                                                                                                                                                 | No       |
 | `isVerifierIdCaseSensitive?` | `boolean`            | Whether the verifier id field is case sensitive. **Default Value:** `true`                                                                                                                                                                                                                       | No       |
 | `max_age?`                   | `string` or `number` | Maximum allowable elapsed time (in seconds) since authentication. If the last time the user authenticated is greater than this value, the user must be re-authenticated.                                                                                                                         | No       |
-| `id_token_hint?`             | `string`             | Previously issues `id_token`                                                                                                                                                                                                                                                                     | No       |
+| `id_token?`                  | `string`             | Pass your own generated or obtained `id_token` to login using JWT.                                                                                                                                                                                                                               | No       |
 | `login_hint?`                | `string`             | The user's email address or other identifier. When your app knows which user is trying to authenticate, you can provide this parameter to pre-fill the email box or select the right session for sign-in.                                                                                        | No       |
 | `scope?`                     | `string`             | The default scope to be used on authentication requests. The defaultScope defined in the Auth0Client is included along with this scope.                                                                                                                                                          | No       |
 | `audience?`                  | `string`             | The default audience to be used for requesting API access.                                                                                                                                                                                                                                       | No       |
@@ -111,6 +111,7 @@ export interface BaseLoginOptions {
    * This currently only affects the classic Lock experience.
    */
   login_hint?: string;
+  id_token?: string;
   acr_values?: string;
   /**
    * The default scope to be used on authentication requests.
