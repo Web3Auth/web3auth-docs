@@ -5,12 +5,77 @@ displayed_sidebar: sdk
 description: "Flutter SDK - Initialization | Documentation - Web3Auth"
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 ---
 
 After Installation, the next step to use Web3Auth is to Initialize the SDK. This can be achieved by using the `init()` function.
 
 Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
 Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customise your Web3Auth Instance.
+
+## Arguments
+
+---
+
+Construct and configure the init function with the params as following
+
+`Web3AuthOptions`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter     | Type                                                                     | Mandatory | Description                                                                                                                         |
+| ------------- | ------------------------------------------------------------------------ | --------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`    | `String`                                                                 | Yes       | Your Web3Auth Client ID                                                                                                             |
+| `network`     | `Network`                                                                | Yes       | Network to run Web3Auth, either `MAINNET`, `TESTNET` or `CYAN`                                                                      |
+| `redirectUrl` | [Uri class](https://api.dart.dev/stable/2.18.0/dart-core/Uri-class.html) | No        | URL that Web3Auth will redirect API responses, default is `null`                                                                    |
+| `whiteLabel`  | `WhiteLabelData`                                                         | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer WhiteLabel section for more info. |
+| `loginConfig` | `HashMap<String, LoginConfigItem>`                                       | No        | Login config object                                                                                                                 |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```dart
+class Web3AuthOptions {
+  final String clientId;
+  final Network network;
+  final Uri? redirectUrl;
+  final WhiteLabelData? whiteLabel;
+  final HashMap<String, LoginConfigItem>? loginConfig;
+
+  Web3AuthOptions({
+    required this.clientId,
+    required this.network,
+    this.redirectUrl,
+    this.whiteLabel,
+    this.loginConfig,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'clientId': clientId,
+      'network': network.name,
+      'redirectUrl': redirectUrl?.toString(),
+      'whiteLabel': whiteLabel?.toJson(),
+      'loginConfig': loginConfig,
+    };
+  }
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Using the `init()` function
 
@@ -29,26 +94,21 @@ Future<void> initPlatformState() async {
   HashMap themeMap = new HashMap<String, String>();
   themeMap['primary'] = "#fff000";
 
-  await Web3AuthFlutter.init(
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
     clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
-    network: Network.mainnet,
-    redirectUri: 'org.torusresearch.flutter.web3authexample://auth',
-    whiteLabelData: WhiteLabelData(
-      dark: true, name: "Web3Auth Flutter App", theme: themeMap
-    )
-  );
+    network: Network.cyan,
+    redirectUri: redirectUrl,
+  ));
 }
+
+final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(loginProvider: Provider.google));
 ```
-
-## Arguments
-
----
-
-Construct and configure the init function with the params as following
-
-| Parameter     | Type              | Mandatory | Description                                                                                                                         |
-| ------------- | ----------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `clientId`    | `String`          | Yes       | Your Web3Auth Client ID                                                                                                             |
-| `network`     | `Network`         | Yes       | Network to run Web3Auth, either `MAINNET`, `TESTNET` or `CYAN`                                                                      |
-| `redirectUrl` | `android.net.Uri` | No        | URL that Web3Auth will redirect API responses, default is `null`                                                                    |
-| `whiteLabel`  | `WhiteLabelData`  | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer WhiteLabel section for more info. |

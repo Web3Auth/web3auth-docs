@@ -5,33 +5,29 @@ displayed_sidebar: sdk
 description: "Flutter SDK - Whitelabel | Documentation - Web3Auth"
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 ---
 
-## `whiteLabelData`
+`whiteLabel`
 
 A configuration optional object to customize UI, branding, and translations for your brand. This `WhiteLabelData` is initiated when we configure init
 function.
 
-```dart
-Future<void> initPlatformState() async {
-  HashMap themeMap = new HashMap<String, String>();
-  themeMap['primary'] = "#fff000";
+### Arguments
 
-  await Web3AuthFlutter.init(
-    clientId:
-        'BPcJHn_y62h5k9v33TzTSPQiHJZuOGwQdjOanCC7-GKgelSYz1PYPoU7LIJqix3CGFHLF7IEIvsfQhBF_rx9rUw',
-    network: Network.mainnet,
-    redirectUri: 'org.torusresearch.flutter.web3authexample://auth',
-    whiteLabelData: WhiteLabelData(
-      dark: true, name: "Web3Auth Flutter App", theme: themeMap
-    )
-  );
-}
-```
+`WhiteLabelData`
 
-## Arguments
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
 
-Construct and configure the `WhiteLabelData` instance as
+<TabItem value="table">
 
 | Parameter         | Type               | Mandatory | Description                                       |
 | ----------------- | ------------------ | --------- | ------------------------------------------------- |
@@ -41,3 +37,76 @@ Construct and configure the `WhiteLabelData` instance as
 | `defaultLanguage` | `String`           | No        | Default translation language to used              |
 | `dark`            | `Boolean`          | No        | If true, enables dark mode. Default is light mode |
 | `theme`           | `Map<String, Any>` | No        | Whitelabel theme                                  |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```dart
+class WhiteLabelData {
+  final String? name;
+  final String? logoLight;
+  final String? logoDark;
+  final String? defaultLanguage;
+  final bool? dark;
+  final HashMap? theme;
+
+  WhiteLabelData(
+      {this.name,
+      this.logoLight,
+      this.logoDark,
+      this.defaultLanguage,
+      this.dark,
+      this.theme});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'logoLight': logoLight,
+      'logoDark': logoDark,
+      'defaultLanguage': defaultLanguage,
+      'dark': dark,
+      'theme': theme
+    };
+  }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+## Example
+
+```dart
+@override
+void initState() {
+  super.initState();
+  initPlatformState();
+}
+
+Future<void> initPlatformState() async {
+  HashMap themeMap = new HashMap<String, String>();
+  themeMap['primary'] = "#fff000";
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
+    network: Network.cyan,
+    redirectUri: redirectUrl,
+    whiteLabelData: WhiteLabelData(
+      dark: true, name: "Web3Auth Flutter App", theme: themeMap
+    )
+  ));
+}
+
+final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(loginProvider: Provider.google));
+```

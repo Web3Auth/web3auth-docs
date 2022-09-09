@@ -302,7 +302,14 @@ module.exports = {
       type: "category",
       label: "Flutter",
       link: { type: "doc", id: "sdk/flutter/flutter" },
-      items: ["sdk/flutter/initialize", "sdk/flutter/whitelabel", "sdk/flutter/custom-authentication", "sdk/flutter/usage"],
+      items: [
+        "sdk/flutter/initialize",
+        "sdk/flutter/whitelabel",
+        "sdk/flutter/custom-authentication",
+        "sdk/flutter/mfa",
+        "sdk/flutter/dapp-share",
+        "sdk/flutter/usage",
+      ],
     },
     {
       type: "category",

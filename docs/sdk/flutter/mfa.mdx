@@ -1,0 +1,64 @@
+---
+title: Multi Factor Authentication in Flutter SDK
+sidebar_label: Multi Factor Authentication
+displayed_sidebar: sdk
+description: "Flutter SDK - Multi Factor Authentication | Documentation - Web3Auth"
+---
+
+---
+
+The Multi Factor Authentication feature refers to the ability of the user to create a backup share (recovery phrase). This helps them login into a new
+device and also to recover their account if they lose their original device.
+
+You can set the mfaLevel within the `loginParams` to customize when mfa screen should be shown to user. It currently accepts 4 values:
+
+- **`default`** - Setting the mfaLevel to default will present the MFA screen to user on every third login. `mfaLevel: MFALevel.DEFAULT`
+- **`optional`** - Setting mfaLevel to optional will present the MFA screen to user on every login but user will have the option to skip it.
+  `mfaLevel: MFALevel.OPTIONAL`
+- **`mandatory`** - Setting mfaLevel to mandatory will make it mandatory for user to setup MFA after login. `mfaLevel: MFALevel.MANDATORY`
+- **`none`** - Setting mfaLevel to none will skip the mfa setup screen totally. `mfaLevel: MFALevel.NONE`
+
+```dart
+Web3AuthFlutter.login(LoginParams(
+      loginProvider: Provider.google,
+      mfaLevel: MFALevel.NONE,
+));
+```
+
+### Example
+
+```dart
+@override
+void initState() {
+  super.initState();
+  initPlatformState();
+}
+
+Future<void> initPlatformState() async {
+  HashMap themeMap = new HashMap<String, String>();
+  themeMap['primary'] = "#fff000";
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
+    network: Network.cyan,
+    redirectUri: redirectUrl,
+    whiteLabelData: WhiteLabelData(
+      dark: true, name: "Web3Auth Flutter App", theme: themeMap
+    )
+  ));
+}
+
+final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
+      loginProvider: Provider.google,
+      mfaLevel: MFALevel.NONE,
+));
+```
