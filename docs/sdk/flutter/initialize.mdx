@@ -90,6 +90,7 @@ void initState() {
   initPlatformState();
 }
 
+// Initialization
 Future<void> initPlatformState() async {
   HashMap themeMap = new HashMap<String, String>();
   themeMap['primary'] = "#fff000";
@@ -102,13 +103,12 @@ Future<void> initPlatformState() async {
   } else {
     throw UnKnownException('Unknown platform');
   }
-
+  // highlight-start
   await Web3AuthFlutter.init(Web3AuthOptions(
     clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
     network: Network.cyan,
     redirectUri: redirectUrl,
   ));
+  // highlight-end
 }
-
-final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(loginProvider: Provider.google));
 ```

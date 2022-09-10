@@ -64,6 +64,7 @@ After a successful login from a user, the user details are returned as a respons
     "typeOfLogin": "google",
     "verifier": "torus",
     "verifierId": "john@gmail.com",
+    // highlight-next-line
     "dappShare": "<24 words seed phrase>", // will be sent only incase of custom verifiers
     "idToken": "<jwtToken issued by Web3Auth>",
     "oAuthIdToken": "<idToken(JWT) issued by OAuth Provider>", // will be sent only incase of custom verifiers
@@ -90,8 +91,9 @@ has to use the custom authentication feature of Web3Auth. Also, the dApp Share i
 
 ```dart
 final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
-      loginProvider: Provider.google,
-      dappShare: "<24 words seed phrase>"
+  loginProvider: Provider.google,
+  // highlight-next-line
+  dappShare: "<24 words seed phrase>"
 ));
 ```
 
@@ -128,7 +130,8 @@ Future<void> initPlatformState() async {
 }
 
 final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
-      loginProvider: Provider.google,
-      dappShare: "<24 words seed phrase>"
+  loginProvider: Provider.google,
+  // highlight-next-line
+  dappShare: "<24 words seed phrase>"
 ));
 ```

@@ -29,14 +29,14 @@ function.
 
 <TabItem value="table">
 
-| Parameter         | Type               | Mandatory | Description                                       |
-| ----------------- | ------------------ | --------- | ------------------------------------------------- |
-| `name`            | `String`           | No        | Name of your application                          |
-| `logoLight`       | `String`           | No        | Light logo for dark background                    |
-| `logoDark`        | `String`           | No        | Dark logo for light background                    |
-| `defaultLanguage` | `String`           | No        | Default translation language to used              |
-| `dark`            | `Boolean`          | No        | If true, enables dark mode. Default is light mode |
-| `theme`           | `Map<String, Any>` | No        | Whitelabel theme                                  |
+| Parameter         | Type                   | Mandatory | Description                                       |
+| ----------------- | ---------------------- | --------- | ------------------------------------------------- |
+| `name`            | `String`               | No        | Name of your application                          |
+| `logoLight`       | `String`               | No        | Light logo for dark background                    |
+| `logoDark`        | `String`               | No        | Dark logo for light background                    |
+| `defaultLanguage` | `String`               | No        | Default translation language to used              |
+| `dark`            | `Boolean`              | No        | If true, enables dark mode. Default is light mode |
+| `theme`           | `HashMap<String, Any>` | No        | Whitelabel theme                                  |
 
 </TabItem>
 
@@ -102,11 +102,16 @@ Future<void> initPlatformState() async {
     clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
     network: Network.cyan,
     redirectUri: redirectUrl,
+    // highlight-start
     whiteLabelData: WhiteLabelData(
       dark: true, name: "Web3Auth Flutter App", theme: themeMap
     )
+    // highlight-end
   ));
 }
 
-final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(loginProvider: Provider.google));
+// Login
+final Web3AuthResponse response = await Web3AuthFlutter.login(
+  LoginParams(loginProvider: Provider.google)
+  );
 ```

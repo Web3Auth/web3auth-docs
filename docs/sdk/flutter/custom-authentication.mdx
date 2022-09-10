@@ -142,6 +142,16 @@ Future<void> initPlatformState() async {
   HashMap themeMap = new HashMap<String, String>();
   themeMap['primary'] = "#fff000";
 
+  // highlight-start
+  HashMap loginConfig = new HashMap<String, LoginConfigItem>();
+  loginConfig['google'] = LoginConfigItem({
+    verifier: "verifier-name", // get it from web3auth dashboard
+    typeOfLogin: TypeOfLogin.google,
+    name: "Custom Google Login",
+    clientId: "google_client_id" // google's client id
+  });
+  // highlight-end
+
   Uri redirectUrl;
   if (Platform.isAndroid) {
     redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
@@ -158,16 +168,16 @@ Future<void> initPlatformState() async {
     whiteLabelData: WhiteLabelData(
       dark: true, name: "Web3Auth Flutter App", theme: themeMap
     ),
-    loginConfig: Map("google" to LoginConfigItem)(
-      verifier: "verifier-name", // get it from web3auth dashboard
-      typeOfLogin: TypeOfLogin.google,
-      name: "Custom Google Login",
-      clientId: "google_client_id" // google's client id
-    ))
+    // highlight-next-line
+    loginConfig: loginConfig
   ));
 }
 
-final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(loginProvider: Provider.google));
+// Login
+final Web3AuthResponse response = await Web3AuthFlutter.login(
+  // highlight-next-line
+  LoginParams(loginProvider: Provider.google)
+  );
 ```
 
 </TabItem>
@@ -185,6 +195,16 @@ Future<void> initPlatformState() async {
   HashMap themeMap = new HashMap<String, String>();
   themeMap['primary'] = "#fff000";
 
+  // highlight-start
+  HashMap loginConfig = new HashMap<String, LoginConfigItem>();
+  loginConfig['google'] = LoginConfigItem({
+    verifier: "verifier-name", // get it from web3auth dashboard
+    typeOfLogin: TypeOfLogin.facebook,
+    name: "Custom Facebook Login",
+    clientId: "facebook_client_id" // facebook's client id
+  });
+  // highlight-end
+
   Uri redirectUrl;
   if (Platform.isAndroid) {
     redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
@@ -201,16 +221,16 @@ Future<void> initPlatformState() async {
     whiteLabelData: WhiteLabelData(
       dark: true, name: "Web3Auth Flutter App", theme: themeMap
     ),
-    loginConfig: Map("facebook" to LoginConfigItem)(
-      verifier: "verifier-name", // get it from web3auth dashboard
-      typeOfLogin: TypeOfLogin.facebook,
-      name: "Custom Facebook Login",
-      clientId: "facebook_client_id" // facebook's client id
-    ))
+    // highlight-next-line
+    loginConfig: loginConfig
   ));
 }
 
-final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(loginProvider: Provider.facebook));
+// Login
+final Web3AuthResponse response = await Web3AuthFlutter.login(
+  // highlight-next-line
+  LoginParams(loginProvider: Provider.facebook)
+  );
 ```
 
 </TabItem>
@@ -234,6 +254,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(loginP
   ```dart
   final Web3AuthResponse response = await Web3AuthFlutter.login(
     LoginParams(loginProvider: Provider.email_passwordless,
+    // highlight-next-line
       extraLoginOptions: ExtraLoginOptions(login_hint = "hello@web3auth.io")));
   ```
 
@@ -242,5 +263,6 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(loginP
   ```dart
   final Web3AuthResponse response = await Web3AuthFlutter.login(
     LoginParams(loginProvider: Provider.jwt,
+    // highlight-next-line
       extraLoginOptions: ExtraLoginOptions(id_token = "your_jwt_token")));
   ```

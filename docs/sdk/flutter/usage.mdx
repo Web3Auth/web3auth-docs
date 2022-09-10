@@ -5,50 +5,85 @@ displayed_sidebar: sdk
 description: "Flutter SDK - Usage | Documentation - Web3Auth"
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 ---
 
 import FlutterResponse from "@site/src/common/sdk/flutter/_response.mdx";
 
 ## Logging in a User
 
-### `Web3AuthFlutter.login(PARAMS)`
+### `Web3AuthFlutter.login(LoginParams)`
 
-Trigger login flow that shows a modal for user to select one of supported providers to login e.g. Google, Facebook, Twitter, Passwordless, etc.
+Trigger login flow with the selected provider from the list of providers available such as GOOGLE, FACEBOOK, TWITTER, EMAIL_PASSWORDLESS, etc.
+`web3Auth.login()` requires `LoginParams` as a required input.
 
-Construct and configure `login` function with the params as following
+#### Arguments
+
+`LoginParams`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
 
 | Parameter           | Type                | Mandatory | Description                                                                                                                                                                                  |
 | ------------------- | ------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `loginProvider`     | `enum` `Provider`   | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS` |
-| `extraLoginOptions` | `Map<String, Any>`  | No        | You can pass various oauth supported options, default is `null`                                                                                                                              |
+| `extraLoginOptions` | `ExtraLoginOptions` | No        | You can pass various oauth supported options, default is `null`                                                                                                                              |
 | `redirectUrl`       | `ExtraLoginOptions` | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                  |
 | `appState`          | `String`            | No        | `appState` can be used to keep track of the app state when user will be redirected to app after login, default is `null`                                                                     |
+| `mfaLevel`          | `Map<String, Any>`  | No        | MFA level can be used to pass 2FA screen shown during login, default is `mfaLevel.DEFAULT`, shown every 3rd login.                                                                           |
+| `dappShare`         | `String`            | No        | Dapp share can be used to pass dapp share url, default is `null`                                                                                                                             |
+| `curve`             | `Map<String, Any>`  | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum                                                                                                   |
 
-#### `ExtraLoginOptions`
+</TabItem>
 
-This is an optional param. Construct and configure ExtraLoginOptions with the params as following
+<TabItem value="interface">
 
-| Parameter                   | Type             | Mandatory |
-| --------------------------- | ---------------- | --------- |
-| `domain`                    | `String`         | No        |
-| `client_id`                 | `String`         | No        |
-| `leeway`                    | `String`         | No        |
-| `verifierIdField`           | `String`         | No        |
-| `isVerifierIdCaseSensitive` | `Bool`           | No        |
-| `display`                   | `enum` `Display` | No        |
-| `prompt`                    | `enum` `Prompt`  | No        |
-| `max_age`                   | `String`         | No        |
-| `ui_locales`                | `String`         | No        |
-| `id_token`                  | `String`         | No        |
-| `login_hint`                | `String`         | No        |
-| `acr_values`                | `String`         | No        |
-| `scope`                     | `String`         | No        |
-| `audience`                  | `String`         | No        |
-| `connection`                | `String`         | No        |
-| `state`                     | `String`         | No        |
-| `response_type`             | `String`         | No        |
-| `nonce`                     | `String`         | No        |
-| `redirect_uri`              | `String`         | No        |
+```dart
+class LoginParams {
+  final Provider loginProvider;
+  final String? dappShare;
+  final int? sessionTime;
+  final Curve? curve;
+  final ExtraLoginOptions? extraLoginOptions;
+  final Uri? redirectUrl;
+  final String? appState;
+  final MFALevel? mfaLevel;
+
+  LoginParams(
+      {required this.loginProvider,
+      this.dappShare,
+      this.sessionTime,
+      this.curve,
+      this.extraLoginOptions,
+      this.redirectUrl,
+      this.appState,
+      this.mfaLevel});
+
+  Map<String, dynamic> toJson() => {
+        "loginProvider": loginProvider.name,
+        "dappShare": dappShare,
+        "sessionTime": sessionTime,
+        "curve": curve?.name,
+        "extraLoginOptions": extraLoginOptions?.toJson(),
+        "redirectUrl": redirectUrl?.toString(),
+        "appState": appState,
+        "mfaLevel": mfaLevel?.type,
+      };
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 ### Sample Response
 
@@ -56,10 +91,498 @@ This is an optional param. Construct and configure ExtraLoginOptions with the pa
 
 ### Example
 
+<Tabs
+  defaultValue="google"
+  values={[
+    { label: "Google", value: "google" },
+    { label: "Facebook", value: "facebook" },
+    { label: "Discord", value: "discord" },
+    { label: "Twitch", value: "twitch" },
+    { label: "Email Passwordless", value: "email_passwordless" },
+    { label: "JWT", value: "jwt" },
+  ]}
+>
+
+<TabItem value="google">
+
 ```dart
+@override
+void initState() {
+  super.initState();
+  initPlatformState();
+}
+
+Future<void> initPlatformState() async {
+  HashMap themeMap = new HashMap<String, String>();
+  themeMap['primary'] = "#fff000";
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
+    network: Network.cyan,
+    redirectUri: redirectUrl,
+    whiteLabelData: WhiteLabelData(
+      dark: true, name: "Web3Auth Flutter App", theme: themeMap
+    )
+  ));
+}
+
 // Login
-final Web3AuthResponse response = await Web3AuthFlutter.login(provider: Provider.google);
+final Web3AuthResponse response = await Web3AuthFlutter.login(
+  // highlight-next-line
+  LoginParams(loginProvider: Provider.google)
+  );
 ```
+
+</TabItem>
+
+<TabItem value="facebook">
+
+```dart
+@override
+void initState() {
+  super.initState();
+  initPlatformState();
+}
+
+Future<void> initPlatformState() async {
+  HashMap themeMap = new HashMap<String, String>();
+  themeMap['primary'] = "#fff000";
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
+    network: Network.cyan,
+    redirectUri: redirectUrl,
+    whiteLabelData: WhiteLabelData(
+      dark: true, name: "Web3Auth Flutter App", theme: themeMap
+    )
+  ));
+}
+
+// Login
+final Web3AuthResponse response = await Web3AuthFlutter.login(
+  // highlight-next-line
+  LoginParams(loginProvider: Provider.facebook)
+  );
+```
+
+</TabItem>
+
+<TabItem value="discord">
+
+```dart
+@override
+void initState() {
+  super.initState();
+  initPlatformState();
+}
+
+Future<void> initPlatformState() async {
+  HashMap themeMap = new HashMap<String, String>();
+  themeMap['primary'] = "#fff000";
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
+    network: Network.cyan,
+    redirectUri: redirectUrl,
+    whiteLabelData: WhiteLabelData(
+      dark: true, name: "Web3Auth Flutter App", theme: themeMap
+    )
+  ));
+}
+
+// Login
+final Web3AuthResponse response = await Web3AuthFlutter.login(
+  // highlight-next-line
+  LoginParams(loginProvider: Provider.discord)
+  );
+```
+
+</TabItem>
+
+<TabItem value="twitch">
+
+```dart
+@override
+void initState() {
+  super.initState();
+  initPlatformState();
+}
+
+Future<void> initPlatformState() async {
+  HashMap themeMap = new HashMap<String, String>();
+  themeMap['primary'] = "#fff000";
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
+    network: Network.cyan,
+    redirectUri: redirectUrl,
+    whiteLabelData: WhiteLabelData(
+      dark: true, name: "Web3Auth Flutter App", theme: themeMap
+    )
+  ));
+}
+
+// Login
+final Web3AuthResponse response = await Web3AuthFlutter.login(
+  // highlight-next-line
+  LoginParams(loginProvider: Provider.twitch)
+  );
+```
+
+</TabItem>
+
+<TabItem value="email_passwordless">
+
+```dart
+@override
+void initState() {
+  super.initState();
+  initPlatformState();
+}
+
+Future<void> initPlatformState() async {
+  HashMap themeMap = new HashMap<String, String>();
+  themeMap['primary'] = "#fff000";
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
+    network: Network.cyan,
+    redirectUri: redirectUrl,
+    whiteLabelData: WhiteLabelData(
+      dark: true, name: "Web3Auth Flutter App", theme: themeMap
+    )
+  ));
+}
+
+// Login
+final Web3AuthResponse response = await Web3AuthFlutter.login(
+  // highlight-start
+    LoginParams(loginProvider: Provider.email_passwordless,
+      extraLoginOptions: ExtraLoginOptions(login_hint = "hello@web3auth.io")));
+  // highlight-end
+```
+
+</TabItem>
+
+<TabItem value="jwt">
+
+```dart
+@override
+void initState() {
+  super.initState();
+  initPlatformState();
+}
+
+Future<void> initPlatformState() async {
+  HashMap themeMap = new HashMap<String, String>();
+  themeMap['primary'] = "#fff000";
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
+    network: Network.cyan,
+    redirectUri: redirectUrl,
+    whiteLabelData: WhiteLabelData(
+      dark: true, name: "Web3Auth Flutter App", theme: themeMap
+    )
+  ));
+}
+
+// Login
+final Web3AuthResponse response = await Web3AuthFlutter.login(
+    // highlight-start
+  LoginParams(loginProvider: Provider.jwt,
+    extraLoginOptions: ExtraLoginOptions(id_token = "your_jwt_token")));
+    // highlight-end
+```
+
+</TabItem>
+
+</Tabs>
+
+## ExtraLoginOptions
+
+### Arguments
+
+`ExtraLoginOptions`
+
+```kotlin
+web3Auth.login(LoginParams(selectedLoginProvider,
+    extraLoginOptions = ExtraLoginOptions(id_token = "your_jwt_token")))
+```
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                 | Type                     | Mandatory | Description                                           |
+| ------------------------- | ------------------------ | --------- | ----------------------------------------------------- |
+| additionalParams          | HashMap<String, String>? | No        | additionalParams                                      |
+| domain                    | String?                  | No        | Domain of the app                                     |
+| client_id                 | String?                  | No        | client_id from Web3Auth Dashboard                     |
+| leeway                    | String?                  | No        | leeway                                                |
+| verifierIdField           | String?                  | No        | verifierIdField                                       |
+| isVerifierIdCaseSensitive | Boolean?                 | No        | Boolean to confirm the case sensitivity of VerifierId |
+| display                   | Display?                 | No        | Display                                               |
+| prompt                    | Prompt?                  | No        | Prompt                                                |
+| max_age                   | String?                  | No        | max_age                                               |
+| ui_locales                | String?                  | No        | ui_locales to be shown on the modal                   |
+| id_token                  | String?                  | No        | JWT token passed to authenticate with web3auth        |
+| login_hint                | String?                  | No        | Email used for EMAIL_PASSWORDLESS                     |
+| acr_values                | String?                  | No        | acc_values                                            |
+| scope                     | String?                  | No        | scope                                                 |
+| audience                  | String?                  | No        | audience                                              |
+| connection                | String?                  | No        | connection                                            |
+| state                     | String?                  | No        | state                                                 |
+| response_type             | String?                  | No        | response_type                                         |
+| nonce                     | String?                  | No        | nonce                                                 |
+| redirect_uri              | String?                  | No        | redirect_uri                                          |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```dart
+class ExtraLoginOptions {
+  final Map? additionalParams;
+  final String? domain;
+  final String? client_id;
+  final String? leeway;
+  final String? verifierIdField;
+  final bool? isVerifierIdCaseSensitive;
+  final Display? display;
+  final Prompt? prompt;
+  final String? max_age;
+  final String? ui_locales;
+  final String? id_token_hint;
+  final String? login_hint;
+  final String? acr_values;
+  final String? scope;
+  final String? audience;
+  final String? connection;
+  final String? state;
+  final String? response_type;
+  final String? nonce;
+  final String? redirect_uri;
+
+  ExtraLoginOptions(
+      {this.additionalParams = const {},
+      this.domain,
+      this.client_id,
+      this.leeway,
+      this.verifierIdField,
+      this.isVerifierIdCaseSensitive,
+      this.display,
+      this.prompt,
+      this.max_age,
+      this.ui_locales,
+      this.id_token_hint,
+      this.login_hint,
+      this.acr_values,
+      this.scope,
+      this.audience,
+      this.connection,
+      this.state,
+      this.response_type,
+      this.nonce,
+      this.redirect_uri});
+
+  Map<String, dynamic> toJson() => {
+        "additionalParams": additionalParams,
+        "domain": domain,
+        "client_id": client_id,
+        "leeway": leeway,
+        "verifierIdField": verifierIdField,
+        "isVerifierIdCaseSensitive": isVerifierIdCaseSensitive,
+        "display": display?.name,
+        "prompt": prompt?.name,
+        "max_age": max_age,
+        "ui_locales": ui_locales,
+        "id_token_hint": id_token_hint,
+        "login_hint": login_hint,
+        "acr_values": acr_values,
+        "scope": scope,
+        "audience": audience,
+        "connection": connection,
+        "state": state,
+        "response_type": response_type,
+        "nonce": nonce,
+        "redirect_uri": redirect_uri,
+      };
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+## Selecting Curve
+
+---
+
+The `Web3AuthFlutter.login(LoginParams)` method accepts a `curve` parameter. This parameter can be used to select the elliptic curve to use for the
+signature.
+
+```dart
+final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
+  loginProvider: Provider.google,
+  // highlight-next-line
+  curve: Curve.secp256k1 // Can be ed25519, secp256k1
+));
+```
+
+### Example
+
+<Tabs
+  defaultValue="secp256k1"
+  values={[
+    { label: "SECP256K1", value: "secp256k1" },
+    { label: "ED25519", value: "ed25519" },
+  ]}
+>
+
+<TabItem value="secp256k1">
+
+```dart
+@override
+void initState() {
+  super.initState();
+  initPlatformState();
+}
+
+Future<void> initPlatformState() async {
+  HashMap themeMap = new HashMap<String, String>();
+  themeMap['primary'] = "#fff000";
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
+    network: Network.cyan,
+    redirectUri: redirectUrl,
+    whiteLabelData: WhiteLabelData(
+      dark: true, name: "Web3Auth Flutter App", theme: themeMap
+    )
+  ));
+}
+
+final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
+  loginProvider: Provider.google,
+  // highlight-next-line
+  curve: Curve.secp256k1 // Can be ed25519, secp256k1
+));
+```
+
+</TabItem>
+
+<TabItem value="ed25519">
+
+```dart
+@override
+void initState() {
+  super.initState();
+  initPlatformState();
+}
+
+Future<void> initPlatformState() async {
+  HashMap themeMap = new HashMap<String, String>();
+  themeMap['primary'] = "#fff000";
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
+    network: Network.cyan,
+    redirectUri: redirectUrl,
+    whiteLabelData: WhiteLabelData(
+      dark: true, name: "Web3Auth Flutter App", theme: themeMap
+    )
+  ));
+}
+
+final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
+  loginProvider: Provider.google,
+  // highlight-next-line
+  curve: Curve.ed25519 // Can be ed25519, secp256k1
+));
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Logging out a user
 
