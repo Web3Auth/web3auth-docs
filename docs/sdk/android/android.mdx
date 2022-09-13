@@ -36,6 +36,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // highlight-next-line
         maven { url "https://jitpack.io" } // <-- Add this line
     }
 }
@@ -46,7 +47,8 @@ Then, in your app-level `build.gradle` dependencies section, add the following:
 ```groovy
 dependencies {
     // ...
-    implementation 'org.torusresearch:web3auth-android-sdk:2.4.0'
+    // highlight-next-line
+    implementation 'org.torusresearch:web3auth-android-sdk:2.5.0'
 }
 ```
 
@@ -55,6 +57,7 @@ dependencies {
 Open your app's `AndroidManifest.xml` file and add the following permission:
 
 ```xml
+// highlight-next-line
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 
@@ -84,6 +87,7 @@ Open your app's `AndroidManifest.xml` file and add the following deep link inten
   <category android:name="android.intent.category.BROWSABLE" />
 
   <!-- Accept URIs: {YOUR_APP_PACKAGE_NAME}://* -->
+  // highlight-next-line
   <data android:scheme="{YOUR_APP_PACKAGE_NAME}" />
 </intent-filter>
 ```
@@ -92,6 +96,7 @@ Make sure your sign-in activity launchMode is set to **singleTop** in your `Andr
 
 ```xml
 <activity
+  // highlight-next-line
   android:launchMode="singleTop"
   android:name=".YourActivity">
   // ...

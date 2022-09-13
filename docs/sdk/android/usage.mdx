@@ -96,9 +96,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var web3Auth: Web3Auth
 
     private fun signIn() {
-
-        val selectedLoginProvider = Provider.GOOGLE   // Can be REDDIT, TWITTER, GITHUB etc.
+        // highlight-next-line
+        val selectedLoginProvider = Provider.GOOGLE
+        // Can be REDDIT, TWITTER, GITHUB etc.
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+            // highlight-next-line
             web3Auth.login(LoginParams(selectedLoginProvider))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
@@ -135,9 +137,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var web3Auth: Web3Auth
 
     private fun signIn() {
-
-        val selectedLoginProvider = Provider.FACEBOOK   // Can be APPLE, LINE, KAKAO, LINKEDIN etc.
+        // highlight-next-line
+        val selectedLoginProvider = Provider.FACEBOOK
+        // Can be APPLE, LINE, KAKAO, LINKEDIN etc.
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+            // highlight-next-line
             web3Auth.login(LoginParams(selectedLoginProvider))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
@@ -174,9 +178,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var web3Auth: Web3Auth
 
     private fun signIn() {
-
-        val selectedLoginProvider = Provider.DISCORD   // Can be WECHAT, WEIBO, LINE etc.
+        // highlight-next-line
+        val selectedLoginProvider = Provider.DISCORD
+        // Can be WECHAT, WEIBO, LINE etc.
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+            // highlight-next-line
             web3Auth.login(LoginParams(selectedLoginProvider))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
@@ -213,9 +219,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var web3Auth: Web3Auth
 
     private fun signIn() {
-
-        val selectedLoginProvider = Provider.TWITCH   // Can be GOOGLE, FACEBOOK, TWITCH etc.
+        // highlight-next-line
+        val selectedLoginProvider = Provider.TWITCH
+        // Can be GOOGLE, FACEBOOK, TWITCH etc.
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+            // highlight-next-line
             web3Auth.login(LoginParams(selectedLoginProvider))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
@@ -252,12 +260,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var web3Auth: Web3Auth
 
     private fun signIn() {
-
+        // highlight-next-line
         val selectedLoginProvider = Provider.EMAIL_PASSWORDLESS
         // extraLoginOptions = ExtraLoginOptions(login_hint = "email address")
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+            // highlight-start
             web3Auth.login(LoginParams(selectedLoginProvider,
                 extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")))
+            // highlight-end
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
@@ -293,13 +303,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var web3Auth: Web3Auth
 
     private fun signIn() {
-
+        // highlight-next-line
         val selectedLoginProvider = Provider.JWT
         // extraLoginOptions = ExtraLoginOptions(id_token = "jwt_token")
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+            // highlight-start
             web3Auth.login(LoginParams(selectedLoginProvider,
-                extraLoginOptions = ExtraLoginOptions(id_token = "your_jwt_token")))
-        // Use this for login with your generated JWT token, please refer to https://web3auth.io/docs/custom-authentication/byo-jwt-providers to learn more
+                extraLoginOptions = ExtraLoginOptions(
+                    additionalParams = hashMapOf ("id_token" to "your_jwt_token")
+                )))
+            // highlight-end
+        // Use this for login with your generated JWT token,
+        // please refer to https://web3auth.io/docs/custom-authentication/byo-jwt-providers to learn more
+
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
                 // render logged in UI
@@ -333,7 +349,7 @@ class MainActivity : AppCompatActivity() {
 
 ```kotlin
 web3Auth.login(LoginParams(selectedLoginProvider,
-    extraLoginOptions = ExtraLoginOptions(id_token = "your_jwt_token")))
+    extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")))
 ```
 
 <Tabs
@@ -346,28 +362,28 @@ web3Auth.login(LoginParams(selectedLoginProvider,
 
 <TabItem value="table">
 
-| Parameter                 | Type                     | Mandatory | Description                                           |
-| ------------------------- | ------------------------ | --------- | ----------------------------------------------------- |
-| additionalParams          | HashMap<String, String>? | No        | additionalParams                                      |
-| domain                    | String?                  | No        | Domain of the app                                     |
-| client_id                 | String?                  | No        | client_id from Web3Auth Dashboard                     |
-| leeway                    | String?                  | No        | leeway                                                |
-| verifierIdField           | String?                  | No        | verifierIdField                                       |
-| isVerifierIdCaseSensitive | Boolean?                 | No        | Boolean to confirm the case sensitivity of VerifierId |
-| display                   | Display?                 | No        | Display                                               |
-| prompt                    | Prompt?                  | No        | Prompt                                                |
-| max_age                   | String?                  | No        | max_age                                               |
-| ui_locales                | String?                  | No        | ui_locales to be shown on the modal                   |
-| id_token                  | String?                  | No        | JWT token passed to authenticate with web3auth        |
-| login_hint                | String?                  | No        | Email used for EMAIL_PASSWORDLESS                     |
-| acr_values                | String?                  | No        | acc_values                                            |
-| scope                     | String?                  | No        | scope                                                 |
-| audience                  | String?                  | No        | audience                                              |
-| connection                | String?                  | No        | connection                                            |
-| state                     | String?                  | No        | state                                                 |
-| response_type             | String?                  | No        | response_type                                         |
-| nonce                     | String?                  | No        | nonce                                                 |
-| redirect_uri              | String?                  | No        | redirect_uri                                          |
+| Parameter                 | Type                     | Mandatory | Description                                                       |
+| ------------------------- | ------------------------ | --------- | ----------------------------------------------------------------- |
+| additionalParams          | HashMap<String, String>? | No        | additionalParams, use id_token(JWT) to authenticate with web3auth |
+| domain                    | String?                  | No        | Domain of the app                                                 |
+| client_id                 | String?                  | No        | client_id from Web3Auth Dashboard                                 |
+| leeway                    | String?                  | No        | leeway                                                            |
+| verifierIdField           | String?                  | No        | verifierIdField                                                   |
+| isVerifierIdCaseSensitive | Boolean?                 | No        | Boolean to confirm the case sensitivity of VerifierId             |
+| display                   | Display?                 | No        | Display                                                           |
+| prompt                    | Prompt?                  | No        | Prompt                                                            |
+| max_age                   | String?                  | No        | max_age                                                           |
+| ui_locales                | String?                  | No        | ui_locales to be shown on the modal                               |
+| id_token_hint             | String?                  | No        | Previously issued ID Token.                                       |
+| login_hint                | String?                  | No        | Email used for EMAIL_PASSWORDLESS                                 |
+| acr_values                | String?                  | No        | acc_values                                                        |
+| scope                     | String?                  | No        | scope                                                             |
+| audience                  | String?                  | No        | audience                                                          |
+| connection                | String?                  | No        | connection                                                        |
+| state                     | String?                  | No        | state                                                             |
+| response_type             | String?                  | No        | response_type                                                     |
+| nonce                     | String?                  | No        | nonce                                                             |
+| redirect_uri              | String?                  | No        | redirect_uri                                                      |
 
 </TabItem>
 
@@ -385,7 +401,7 @@ data class ExtraLoginOptions(
     private var prompt : Prompt? = null,
     private var max_age : String? = null,
     private var ui_locales : String? = null,
-    private var id_token : String? = null,
+    private var id_token_hint : String? = null,
     private var login_hint : String? = null,
     private var acr_values : String? = null,
     private var scope : String? = null,
@@ -435,8 +451,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun signIn() {
 
-        val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, curve = Curve.SECP256K1))
+        val selectedLoginProvider = Provider.GOOGLE
+        // Can be GOOGLE, FACEBOOK, TWITCH etc.
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+            web3Auth.login(LoginParams(selectedLoginProvider,
+                // highlight-next-line
+                curve = Curve.SECP256K1))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
@@ -473,8 +493,12 @@ class MainActivity : AppCompatActivity() { private lateinit var web3Auth: Web3Au
 
     private fun signIn() {
 
-        val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, curve = Curve.ED25519))
+        val selectedLoginProvider = Provider.GOOGLE
+        // Can be GOOGLE, FACEBOOK, TWITCH etc.
+        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+            web3Auth.login(LoginParams(selectedLoginProvider,
+                // highlight-next-line
+                curve = Curve.ED25519))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
@@ -531,6 +555,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var web3Auth: Web3Auth
 
     private fun signOut() {
+        // highlight-next-line
         val logoutCompletableFuture =  web3Auth.logout()
         logoutCompletableFuture.whenComplete { _, error ->
             if (error == null) {

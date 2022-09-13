@@ -102,8 +102,12 @@ import android.os.Bundle
 class MainActivity : AppCompatActivity() {
 	private lateinit var web3Auth: Web3Auth
 	private fun signIn() {
-		val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
-		val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, dappShare = "<24 words seed phrase>"))
+		val selectedLoginProvider = Provider.GOOGLE
+		// Can be GOOGLE, FACEBOOK, TWITCH etc.
+		val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+				web3Auth.login(LoginParams(selectedLoginProvider,
+						// highlight-next-line
+						dappShare = "<24 words seed phrase>"))
 		loginCompletableFuture.whenComplete { loginResponse, error ->
 			if (error == null) {
 				// render logged in UI
