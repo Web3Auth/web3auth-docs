@@ -1,9 +1,10 @@
 import 'dart:collection';
-
-import 'package:flutter/material.dart';
+import 'dart:io';
 import 'dart:async';
-
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:web3auth_flutter/enums.dart';
+import 'package:web3auth_flutter/input.dart';
+import 'package:web3auth_flutter/output.dart';
 import 'package:web3auth_flutter/web3auth_flutter.dart';
 
 void main() {
@@ -27,17 +28,34 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    HashMap themeMap = new HashMap<String, String>();
-    themeMap['primary'] = "#fff000";
+    HashMap themeMap = HashMap<String, String>();
+    themeMap['primary'] = "#229954";
 
-    await Web3AuthFlutter.init(
+    HashMap loginConfig = new HashMap<String, LoginConfigItem>();
+    loginConfig['google'] = LoginConfigItem({
+      verifier: "verifier-name", // get it from web3auth dashboard
+      typeOfLogin: TypeOfLogin.google,
+      name: "Custom Google Login",
+      clientId: "google_client_id" // google's client id
+    });
+
+    Uri redirectUrl;
+    if (Platform.isAndroid) {
+      redirectUrl = Uri.parse('w3a://com.example.w3aflutter/auth');
+    } else if (Platform.isIOS) {
+      redirectUrl = Uri.parse('w3a://com.example.w3aflutter');
+    } else {
+      throw UnKnownException('Unknown platform');
+    }
+
+    await Web3AuthFlutter.init(Web3AuthOptions(
         clientId:
-            'BPcJHn_y62h5k9v33TzTSPQiHJZuOGwQdjOanCC7-GKgelSYz1PYPoU7LIJqix3CGFHLF7IEIvsfQhBF_rx9rUw',
-        network: Network.mainnet,
-        redirectUri: 'org.torusresearch.flutter.web3authexample://auth',
-        whiteLabelData: WhiteLabelData(
+            'BHZPoRIHdrfrdXj5E8G5Y72LGnh7L8UFuM8O0KrZSOs4T8lgiZnebB5Oc6cbgYSo3qSz7WBZXIs8fs6jgZqFFgw',
+        network: Network.testnet,
+        redirectUrl: redirectUrl,
+        whiteLabel: WhiteLabelData(
             dark: true, name: "Web3Auth Flutter App", theme: themeMap),
-    );
+        loginConfig: loginConfig));
   }
 
   @override
@@ -45,31 +63,33 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Torus Web3Auth Example'),
+          title: const Text('Web3Auth x Flutter Example'),
         ),
         body: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Text('Login with'),
             ),
             ElevatedButton(
-                onPressed: _login(_withGoogle), child: Text('Google')),
+                onPressed: _login(_withGoogle), child: const Text('Google')),
             ElevatedButton(
-                onPressed: _login(_withFacebook), child: Text('Facebook')),
+                onPressed: _login(_withFacebook),
+                child: const Text('Facebook')),
             ElevatedButton(
-                onPressed: _login(_withReddit), child: Text('Reddit ')),
+                onPressed: _login(_withEmailPasswordless),
+                child: const Text('Email Passwordless')),
             ElevatedButton(
-                onPressed: _login(_withDiscord), child: Text('Discord')),
+                onPressed: _login(_withDiscord), child: const Text('Discord')),
             Visibility(
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       primary: Colors.red // This is what you need!
                       ),
                   onPressed: _logout(),
-                  child: Text('Logout')),
+                  child: const Text('Logout')),
               visible: logoutVisible,
             ),
             Padding(
@@ -115,18 +135,24 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<Web3AuthResponse> _withGoogle() {
-    return Web3AuthFlutter.login(provider: Provider.google);
+    return Web3AuthFlutter.login(LoginParams(
+      loginProvider: Provider.google,
+      mfaLevel: MFALevel.DEFAULT,
+    ));
   }
 
   Future<Web3AuthResponse> _withFacebook() {
-    return Web3AuthFlutter.login(provider: Provider.facebook);
+    return Web3AuthFlutter.login(LoginParams(loginProvider: Provider.facebook));
   }
 
-  Future<Web3AuthResponse> _withReddit() {
-    return Web3AuthFlutter.login(provider: Provider.reddit);
+  Future<Web3AuthResponse> _withEmailPasswordless() {
+    return Web3AuthFlutter.login(LoginParams(
+        loginProvider: Provider.email_passwordless,
+        extraLoginOptions:
+            ExtraLoginOptions(login_hint: "shahbaz@web3auth.io")));
   }
 
   Future<Web3AuthResponse> _withDiscord() {
-    return Web3AuthFlutter.login(provider: Provider.discord);
+    return Web3AuthFlutter.login(LoginParams(loginProvider: Provider.discord));
   }
 }
