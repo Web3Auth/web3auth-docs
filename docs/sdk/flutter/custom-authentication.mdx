@@ -255,14 +255,20 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
   final Web3AuthResponse response = await Web3AuthFlutter.login(
     LoginParams(loginProvider: Provider.email_passwordless,
     // highlight-next-line
-      extraLoginOptions: ExtraLoginOptions(login_hint = "hello@web3auth.io")));
+      extraLoginOptions: ExtraLoginOptions(login_hint: "hello@web3auth.io")));
   ```
 
 - To use the `JWT` login, you need to put the jwt token into the `id_token` field of the `extraLoginOptions`.
 
   ```dart
+  // highlight-start
+  HashMap idToken = new HashMap<String, String>();
+  idToken['id_token'] = "your_id_token";
+  // highlight-end
+
   final Web3AuthResponse response = await Web3AuthFlutter.login(
+    // highlight-start
     LoginParams(loginProvider: Provider.jwt,
-    // highlight-next-line
-      extraLoginOptions: ExtraLoginOptions(id_token = "your_jwt_token")));
+      extraLoginOptions: ExtraLoginOptions(additionalParams: idToken)));
+    // highlight-end
   ```

@@ -303,7 +303,7 @@ Future<void> initPlatformState() async {
 final Web3AuthResponse response = await Web3AuthFlutter.login(
   // highlight-start
     LoginParams(loginProvider: Provider.email_passwordless,
-      extraLoginOptions: ExtraLoginOptions(login_hint = "hello@web3auth.io")));
+      extraLoginOptions: ExtraLoginOptions(login_hint: "hello@web3auth.io")));
   // highlight-end
 ```
 
@@ -321,6 +321,11 @@ void initState() {
 Future<void> initPlatformState() async {
   HashMap themeMap = new HashMap<String, String>();
   themeMap['primary'] = "#fff000";
+
+  // highlight-start
+  HashMap idToken = new HashMap<String, String>();
+  idToken['id_token'] = "your_id_token";
+  // highlight-end
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -344,8 +349,8 @@ Future<void> initPlatformState() async {
 // Login
 final Web3AuthResponse response = await Web3AuthFlutter.login(
     // highlight-start
-  LoginParams(loginProvider: Provider.jwt,
-    extraLoginOptions: ExtraLoginOptions(id_token = "your_jwt_token")));
+    LoginParams(loginProvider: Provider.jwt,
+      extraLoginOptions: ExtraLoginOptions(additionalParams: idToken)));
     // highlight-end
 ```
 
@@ -361,7 +366,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 ```kotlin
 web3Auth.login(LoginParams(selectedLoginProvider,
-    extraLoginOptions = ExtraLoginOptions(id_token = "your_jwt_token")))
+    extraLoginOptions = ExtraLoginOptions(login_hint: "hello@web3auth.io")))
 ```
 
 <Tabs
@@ -374,28 +379,28 @@ web3Auth.login(LoginParams(selectedLoginProvider,
 
 <TabItem value="table">
 
-| Parameter                 | Type                     | Mandatory | Description                                           |
-| ------------------------- | ------------------------ | --------- | ----------------------------------------------------- |
-| additionalParams          | HashMap<String, String>? | No        | additionalParams                                      |
-| domain                    | String?                  | No        | Domain of the app                                     |
-| client_id                 | String?                  | No        | client_id from Web3Auth Dashboard                     |
-| leeway                    | String?                  | No        | leeway                                                |
-| verifierIdField           | String?                  | No        | verifierIdField                                       |
-| isVerifierIdCaseSensitive | Boolean?                 | No        | Boolean to confirm the case sensitivity of VerifierId |
-| display                   | Display?                 | No        | Display                                               |
-| prompt                    | Prompt?                  | No        | Prompt                                                |
-| max_age                   | String?                  | No        | max_age                                               |
-| ui_locales                | String?                  | No        | ui_locales to be shown on the modal                   |
-| id_token                  | String?                  | No        | JWT token passed to authenticate with web3auth        |
-| login_hint                | String?                  | No        | Email used for EMAIL_PASSWORDLESS                     |
-| acr_values                | String?                  | No        | acc_values                                            |
-| scope                     | String?                  | No        | scope                                                 |
-| audience                  | String?                  | No        | audience                                              |
-| connection                | String?                  | No        | connection                                            |
-| state                     | String?                  | No        | state                                                 |
-| response_type             | String?                  | No        | response_type                                         |
-| nonce                     | String?                  | No        | nonce                                                 |
-| redirect_uri              | String?                  | No        | redirect_uri                                          |
+| Parameter                 | Type                     | Mandatory | Description                                                       |
+| ------------------------- | ------------------------ | --------- | ----------------------------------------------------------------- |
+| additionalParams          | HashMap<String, String>? | No        | additionalParams, use id_token(JWT) to authenticate with web3auth |
+| domain                    | String?                  | No        | Domain of the app                                                 |
+| client_id                 | String?                  | No        | client_id from Web3Auth Dashboard                                 |
+| leeway                    | String?                  | No        | leeway                                                            |
+| verifierIdField           | String?                  | No        | verifierIdField                                                   |
+| isVerifierIdCaseSensitive | Boolean?                 | No        | Boolean to confirm the case sensitivity of VerifierId             |
+| display                   | Display?                 | No        | Display                                                           |
+| prompt                    | Prompt?                  | No        | Prompt                                                            |
+| max_age                   | String?                  | No        | max_age                                                           |
+| ui_locales                | String?                  | No        | ui_locales to be shown on the modal                               |
+| id_token_hint             | String?                  | No        | Previously issued ID Token.                                       |
+| login_hint                | String?                  | No        | Email used for EMAIL_PASSWORDLESS                                 |
+| acr_values                | String?                  | No        | acc_values                                                        |
+| scope                     | String?                  | No        | scope                                                             |
+| audience                  | String?                  | No        | audience                                                          |
+| connection                | String?                  | No        | connection                                                        |
+| state                     | String?                  | No        | state                                                             |
+| response_type             | String?                  | No        | response_type                                                     |
+| nonce                     | String?                  | No        | nonce                                                             |
+| redirect_uri              | String?                  | No        | redirect_uri                                                      |
 
 </TabItem>
 
