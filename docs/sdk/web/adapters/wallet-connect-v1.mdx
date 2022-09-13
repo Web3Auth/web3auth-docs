@@ -52,11 +52,12 @@ npm install --save @web3auth/wallet-connect-v1-adapter
 
 <TabItem value="table">
 
-| Parameter         | type                                                                                                           |
-| ----------------- | -------------------------------------------------------------------------------------------------------------- |
-| `chainConfig`     | `CustomChainConfig`                                                                                            |
-| `adapterSettings` | [`IWalletConnectProviderOptions`](https://docs.walletconnect.com/quick-start/dapps/client#initiate-connection) |
-| `clientId?`       | `string`                                                                                                       |
+| Parameter          | type                |
+| ------------------ | ------------------- |
+| `adapterSettings?` | `IAdapterSettings`  |
+| `chainConfig?`     | `CustomChainConfig` |
+| `sessionTime?`     | `number`            |
+| `clientId?`        | `string`            |
 
 </TabItem>
 
@@ -64,8 +65,9 @@ npm install --save @web3auth/wallet-connect-v1-adapter
 
 ```ts
 interface WalletConnectV1AdapterOptions {
-  adapterSettings?: IWalletConnectProviderOptions;
+  adapterSettings?: IAdapterSettings;
   chainConfig?: CustomChainConfig;
+  sessionTime?: number;
   clientId?: string;
 }
 ```
@@ -80,8 +82,8 @@ interface WalletConnectV1AdapterOptions {
 
 :::caution
 
-While you can pass your `chainConfig`, it is not required since you can directly pass it over to the `Web3Auth`/ `Web3AuthCore` configuration while
-instantiating it.
+While you can pass your `chainConfig` here, but it is not required since you can directly pass it over to the `Web3Auth`/ `Web3AuthCore` configuration
+while instantiating it.
 
 Read more about it in their respective sections:
 
@@ -92,9 +94,43 @@ Read more about it in their respective sections:
 
 :::warning
 
-If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` passed over to the `Web3Auth`/ `Web3AuthCore` constructor.
+If you pass `chainConfig` in an Adapter, it overwrites the `chainConfig` passed over to the `Web3Auth`/ `Web3AuthCore` constructor.
 
 :::
+
+### IAdapter Settings
+
+#### `adapterSettings`
+
+```ts
+interface IAdapterSettings extends IWalletConnectOptions {
+  skipNetworkSwitching?: boolean;
+  networkSwitchModal?: INetworkSwitch;
+}
+
+interface IWalletConnectOptions {
+  bridge?: string;
+  uri?: string;
+  storageId?: string;
+  signingMethods?: string[];
+  session?: IWalletConnectSession;
+  storage?: ISessionStorage;
+  clientMeta?: IClientMeta;
+  qrcodeModal?: IQRCodeModal;
+  qrcodeModalOptions?: IQRCodeModalOptions;
+}
+
+interface IQRCodeModal {
+  open(uri: string, cb: any, opts?: any): void;
+  close(): void;
+}
+
+interface IQRCodeModalOptions {
+  registryUrl?: string;
+  mobileLinks?: string[];
+  desktopLinks?: string[];
+}
+```
 
 ## Example
 
@@ -105,7 +141,8 @@ import { WalletConnectV1Adapter } from "@web3auth/wallet-connect-v1-adapter";
 
 const walletConnectV1Adapter = new WalletConnectV1Adapter({
   adapterSettings: {
-    infuraId: "YOUR_INFURA_ID",
+    bridge: "https://bridge.walletconnect.org",
+    qrcodeModal: IQRCodeModal.open(),
   },
   clientId: "YOUR_WEB3AUTH_CLIENT_ID",
 });
