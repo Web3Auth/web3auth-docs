@@ -106,12 +106,14 @@ web3Auth = Web3Auth (
     network = Web3Auth.Network.MAINNET,
     redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
     // Optional loginConfig object
+    // highlight-start
     loginConfig = hashMapOf("google" to LoginConfigItem(
       verifier = "verifier-name", // get it from web3auth dashboard
       typeOfLogin = TypeOfLogin.GOOGLE,
       name = "Custom Google Login",
       clientId = getString(R.string.web3auth_google_client_id) // google's client id
     ))
+    // highlight-end
   )
 )
 ```
@@ -128,12 +130,14 @@ web3Auth = Web3Auth (
     network = Web3Auth.Network.MAINNET,
     redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
     // Optional loginConfig object
+    // highlight-start
     loginConfig = hashMapOf("facebook" to LoginConfigItem(
       verifier = "verifier-name", // get it from web3auth dashboard
       typeOfLogin = TypeOfLogin.FACEBOOK,
       name = "Custom Facebook Login",
       clientId = getString(R.string.web3auth_facebook_client_id) // facebook's client id
     ))
+    // highlight-end
   )
 )
 ```
@@ -160,14 +164,19 @@ web3Auth = Web3Auth (
 
   val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
     web3Auth.login(LoginParams(selectedLoginProvider,
+      // highlight-next-line
       extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")))
   ```
 
-- To use the `JWT` login, you need to put the jwt token into the `id_token` field of the `extraLoginOptions`.
+- To use the `JWT` login, you need to put the jwt token into the `additionalParams` field of the `extraLoginOptions` as _HashMap_.
 
   ```kotlin
 
   val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
     web3Auth.login(LoginParams(selectedLoginProvider,
-      extraLoginOptions = ExtraLoginOptions(id_token = "your_jwt_token")))
+      // highlight-start
+      extraLoginOptions = ExtraLoginOptions(
+        additionalParams = hashMapOf ("id_token" to "your_jwt_token")
+      )))
+      // highlight-end
   ```
