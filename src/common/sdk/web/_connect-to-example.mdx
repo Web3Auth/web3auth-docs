@@ -1,24 +1,144 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<Tabs
+  defaultValue="jwt"
+  values={[
+    { label: "JWT", value: "jwt" },
+    { label: "Google", value: "google" },
+    { label: "Facebook", value: "facebook" },
+    { label: "Discord", value: "discord" },
+    { label: "Twitter", value: "twitter" },
+    { label: "Reddit", value: "reddit" },
+    { label: "Twitch", value: "twitch" },
+    { label: "Apple", value: "apple" },
+    { label: "GitHub", value: "github" },
+    { label: "LinkedIn", value: "linkedin" },
+  ]}
+>
+
+<TabItem value="jwt">
+
 ```ts
-import { WALLET_ADAPTERS } from "@web3auth/base";
-
-const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-  loginProvider: "jwt",
-  extraLoginOptions: {
-    domain: "YOUR-LOGIN-PROVIDER-DOMAIN",
-    verifierIdField: "sub",
-    response_type: "token",
-    scope: "email profile openid",
-  },
-});
-
-// or Login using JWT,
-// either obtained from Firebase, Okta, Auth0 or bring your OWN JWT.
+// Login using JWT, either obtained from Firebase, Okta, Auth0 or bring your own JWT.
 const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {
     id_token: "idToken", // in JWT Format
     verifierIdField: "sub", // same as your JWT Verifier ID
-    domain: "https://YOUR-APPLICATION-DOMAIN" || "http://localhost:3000",
+    domain: "https://YOUR-APPLICATION-DOMAIN" || "http://localhost:3000", // your login application domain
   },
 });
 ```
+
+</TabItem>
+
+<TabItem value="google">
+
+```ts
+import { WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "google",
+});
+```
+
+</TabItem>
+
+<TabItem value="facebook">
+
+```ts
+import { WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "facebook",
+});
+```
+
+</TabItem>
+
+<TabItem value="discord">
+
+```ts
+import { WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "discord",
+});
+```
+
+</TabItem>
+
+<TabItem value="twitter">
+
+```ts
+import { WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "twitter",
+});
+```
+
+</TabItem>
+
+<TabItem value="reddit">
+
+```ts
+import { WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "reddit",
+});
+```
+
+</TabItem>
+
+<TabItem value="twitch">
+
+```ts
+import { WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "twitch",
+});
+```
+
+</TabItem>
+
+<TabItem value="apple">
+
+```ts
+import { WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "apple",
+});
+```
+
+</TabItem>
+
+<TabItem value="github">
+
+```ts
+import { WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "github",
+});
+```
+
+</TabItem>
+
+<TabItem value="linkedin">
+
+```ts
+import { WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "linkedin",
+});
+```
+
+</TabItem>
+
+</Tabs>

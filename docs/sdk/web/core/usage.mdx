@@ -9,8 +9,8 @@ import ConnectBlockchain from "@site/src/common/sdk/web/_connect-blockchain.mdx"
 import ConnectTo from "@site/src/common/sdk/web/_connect-to.mdx";
 import ConnectToExample from "@site/src/common/sdk/web/_connect-to-example.mdx";
 import ExtraLoginOptions from "@site/src/common/sdk/web/_extra-login-options.mdx";
-import GetUserInfo from "@site/src/common/sdk/web/_get-user-info.mdx";
 import GetIdTokenInfo from "@site/src/common/sdk/web/_get-idtoken-info.mdx";
+import GetUserInfo from "@site/src/common/sdk/web/_get-user-info.mdx";
 import LogOut from "@site/src/common/sdk/web/_logout.mdx";
 import OpenloginLoginParams from "@site/src/common/sdk/web/_openlogin-login-params.mdx";
 import WalletAdapters from "@site/src/common/sdk/web/_wallet-adapters.mdx";
@@ -33,6 +33,35 @@ Natively, the instance of `Web3AuthCore` _(referred to as `web3auth` in our exam
 
 <ConnectTo />
 
+#### Returns
+
+```ts
+connectTo<T>(walletName: WALLET_ADAPTER_TYPE, loginParams?: T): Promise<SafeEventEmitterProvider | null>;
+```
+
+On unsuccessful login, this function will return a `null` value.
+
+#### Example
+
+:::tip
+
+You can use the `connectTo()` function to connect to the custom authentication verifiers you might have deployed on the Web3Auth Dashboard, as well as
+the default ones that Web3Auth provides. For the default verifiers, you don't need to provide any additional parameters, just pass on the login
+provider type.
+
+:::
+
+<ConnectToExample />
+
+On successful connection, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
+corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
+
+:::tip
+
+Read more about connecting your users with the selected blockchain in the [Providers SDK Reference](/sdk/web/providers).
+
+:::
+
 #### `walletName`
 
 <WalletAdapters />
@@ -49,27 +78,6 @@ For `openlogin-adapter` which enables the social logins, you can reference to th
 Further, for Custom Authentication, `ExtraLoginOptions` can be used to pass the standard oauth login options.
 
 <ExtraLoginOptions />
-
-#### Returns
-
-```ts
-connectTo<T>(walletName: WALLET_ADAPTER_TYPE, loginParams?: T): Promise<SafeEventEmitterProvider | null>;
-```
-
-#### Example
-
-<ConnectToExample />
-
-On successful connection, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
-corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
-
-:::tip
-
-Read more about connecting your users with the selected blockchain in the [Providers SDK Reference](/sdk/web/providers).
-
-:::
-
-On unsuccessful login, this function will return a `null` value.
 
 ## Get User's Information
 
