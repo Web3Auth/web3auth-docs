@@ -48,9 +48,9 @@ await web3auth.initModal();
 web3auth.connect();
 ```
 
-### Initialize
+## Initializing the provider
 
-On connection, you can use `web3auth.provider` as an EIP1193 provider with web3.js or ethers library.
+On connection, you can use `web3auth.provider` as an EIP1193 provider with `web3.js` or `ethers` library.
 
 <Tabs
   defaultValue="web3"
@@ -111,7 +111,7 @@ etc. Here we have listed a few examples to help you get started.
 
 :::
 
-### Get Connected User account
+### Get User account and Balance
 
 #### `web3.eth.getAccounts()`
 
@@ -349,13 +349,12 @@ const signedMessage = await web3.currentProvider.sendAsync({
 This method is used to fetch the private key of logged in user. It is only available for `in-app` adapters like `openlogin`.
 
 ```ts
-
 //Assuming user is already logged in.
 async getPrivateKey() {
-    const privateKey = await web3auth.provider.request({
-        method: "eth_private_key"
-    });
-    //Do something with privateKey
+  const privateKey = await web3auth.provider.request({
+    method: "eth_private_key"
+  });
+  //Do something with privateKey
 }
 ```
 
@@ -378,27 +377,27 @@ privKey: any secp512k1 private key.
 */
 
 async setProvider(privKey: string) {
-    this.ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+  this.ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
     config: {
-        /*
-        pass the chain config that you want to connect with
-        all chainConfig fields are required.
-        */
-        chainConfig: {
+      /*
+      pass the chain config that you want to connect with
+      all chainConfig fields are required.
+      */
+      chainConfig: {
         chainId: "0x3",
         rpcTarget: `https://ropsten.infura.io/v3/${YOUR_INFURA_ID}`,
         displayName: "ropsten",
         blockExplorer: "https://ropsten.etherscan.io/",
         ticker: "ETH",
         tickerName: "Ethereum",
-        },
+      },
     },
-    });
-    /*
-    pass user's private key here.
-    after calling setupProvider, we can use
-    this.ethereumPrivateKeyProvider._providerProxy as a eip1193 provider
-    */
-    const provider = await this.ethereumPrivateKeyProvider.setupProvider(privKey);
+  });
+  /*
+  pass user's private key here.
+  after calling setupProvider, we can use
+  this.ethereumPrivateKeyProvider.setupProvider as a eip1193 provider
+  */
+  const provider = await this.ethereumPrivateKeyProvider.setupProvider(privKey);
 }
 ```

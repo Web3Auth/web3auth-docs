@@ -25,11 +25,11 @@ modal with solana mainnet by default.
 const web3auth = new Web3Auth({
   chainConfig: {
     /*
-       you can pass your own chain configs here\
+       you can pass your own chain configs here
     */
     chainNamespace: CHAIN_NAMESPACES.SOLANA,
     chainId: "0x1",  // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-    rpcTarget: `https://rpc.ankr.com/solana`,
+    rpcTarget: "https://rpc.ankr.com/solana",
     displayName: "solana",
     ticker: "SOL",
     tickerName: "solana",
@@ -46,7 +46,8 @@ web3auth.connect();
 
 ---
 
-On connection, you can use `web3auth.provider` as a solana provider with `@web3auth/solana-provider`
+On connection, you can use `web3auth.provider` as a solana provider with `@web3auth/solana-provider` along with
+[@solana/web3.js](https://solana-labs.github.io/solana-web3.js/) library.
 
 ```ts
 import { SolanaWallet } from "@web3auth/solana-provider";
@@ -54,20 +55,12 @@ import { SolanaWallet } from "@web3auth/solana-provider";
 const solanaWallet = new SolanaWallet(web3Auth.provider);
 ```
 
-### Initializing the provider
-
-```ts
-import solanaProvider from "solanaProvider";
-
-const solanaWallet = new SolanaProvider.SolanaWallet(provider);
-```
-
 ## Usage
 
 ---
 
-Once you have setup the provider, you can use the standard functions in the solana/web3.js library to get user's account, perform transaction, sign a
-message etc. Here we have listed a few examples to help you get started there:
+Once you have setup the provider, you can use the standard functions in the `solana/web3.js` library to get user's account, perform transaction, sign
+a message etc. Here we have listed a few examples to help you get started there:
 
 :::info
 
@@ -78,7 +71,7 @@ You can refer to standard RPC calls for Solana [here](https://docs.solana.com/de
 
 :::
 
-### Get Connected User Account
+### Get User Account and Balance
 
 #### `solana_requestAccounts`
 
@@ -87,14 +80,23 @@ This method is used fetch the address of connected account.
 #### Example
 
 ```ts
-async requestAccounts(): Promise<string[]> {
-    const accounts = await this.provider.request<string[]> ({
-        method: "solana_requestAccounts",
-        params: {},
-    });
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import { SolanaWallet } from "@web3auth/solana-provider";
 
-    return accounts;
-}
+const solanaWallet = new SolanaWallet(web3Auth.provider);
+
+// Get user's Solana public address
+const accounts = await solanaWallet.requestAccounts();
+
+const connectionConfig = await solanaWallet.request({
+  method: "solana_provider_config",
+  params: [],
+});
+
+const connection = new Connection(connectionConfig.rpcTarget);
+
+// Fetch the balance for the specified public key
+const balance = await connection.getBalance(new PublicKey(accounts[0]));
 ```
 
 ### Sign a Transaction
@@ -106,18 +108,32 @@ This method is used to sign a single serialized transaction and it returns a sig
 #### Example
 
 ```ts
-import type { Transaction } from "@solana/web3.js";
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import { SolanaWallet } from "@web3auth/solana-provider";
 
-async signTransaction(transaction: Transaction): Promise<Transaction> {
-    const signedTransaction = (await this.provider.request({
-        method: "signTransaction",
-        params: {
-            message: bs58.encode(transaction.serializeMessage()),
-        },
-    })) as Transaction;
+const solanaWallet = new SolanaWallet(web3Auth.provider);
 
-    return signedTransaction;
-}
+const connectionConfig = await solanaWallet.request({
+  method: "solana_provider_config",
+  params: [],
+});
+
+const connection = new Connection(connectionConfig.rpcTarget);
+
+const accounts = await solanaWallet.requestAccounts();
+const blockhash = (await connection.getRecentBlockhash("finalized")).blockhash;
+const TransactionInstruction = SystemProgram.transfer({
+  fromPubkey: new PublicKey(accounts[0]),
+  toPubkey: new PublicKey(accounts[0]),
+  lamports: 0.01 * LAMPORTS_PER_SOL,
+});
+const transaction = new Transaction({
+  recentBlockhash: blockhash,
+  feePayer: new PublicKey(pubKey[0]),
+}).add(TransactionInstruction);
+
+const signedTx = await solanaWallet.signTransaction(transaction);
+console.log(signedTx.signature);
 ```
 
 ### Sign all Transactions
@@ -129,19 +145,32 @@ This method is used to sign a list of serialized transactions and it returns bac
 #### Example:
 
 ```ts
-import type { Transaction } from "@solana/web3.js";
-import { SafeEventEmitterProvider } from "@web3auth/base";
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import { SolanaWallet } from "@web3auth/solana-provider";
 
-async signAllTransactions(provider: SafeEventEmitterProvider ,transactions: string[]): Promise<Transaction[]> {
-    const signedTransaction = (await provider.request({
-        method: "signAllTransactions",
-        params: {
-            message: transactions,
-        },
-    })) as Transaction[];
+const solanaWallet = new SolanaWallet(web3Auth.provider);
 
-    return signedTransaction;
-}
+const connectionConfig = await solanaWallet.request({
+  method: "solana_provider_config",
+  params: [],
+});
+
+const connection = new Connection(connectionConfig.rpcTarget);
+
+const accounts = await solanaWallet.requestAccounts();
+const blockhash = (await connection.getRecentBlockhash("finalized")).blockhash;
+const TransactionInstruction = SystemProgram.transfer({
+  fromPubkey: new PublicKey(accounts[0]),
+  toPubkey: new PublicKey(accounts[0]),
+  lamports: 0.01 * LAMPORTS_PER_SOL,
+});
+const transaction = new Transaction({
+  recentBlockhash: blockhash,
+  feePayer: new PublicKey(pubKey[0]),
+}).add(TransactionInstruction);
+
+const signedTx = await solanaWallet.signAllTransactions(transaction);
+console.log(signedTx.signature);
 ```
 
 ### Sign and Send a Transaction
@@ -153,18 +182,30 @@ This function is used to sign and broadcast the transaction on chain. It returns
 #### Example:
 
 ```ts
-import type { Transaction } from "@solana/web3.js";
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import { SolanaWallet } from "@web3auth/solana-provider";
 
-async signAndSendTransaction(transaction: Transaction): Promise<{ signature: string }> {
-    const { signature } = await this.provider.request<{ signature: string }>({
-        method: "signAndSendTransaction",
-        params: {
-            message: bs58.encode(transaction.serializeMessage()),
-        },
-    });
+const solanaWallet = new SolanaWallet(web3Auth.provider);
 
-    return { signature };
-}
+const connectionConfig = await solanaWallet.request({
+  method: "solana_provider_config",
+  params: [],
+});
+
+const connection = new Connection(connectionConfig.rpcTarget);
+
+const accounts = await solanaWallet.requestAccounts();
+const blockhash = (await connection.getRecentBlockhash("finalized")).blockhash;
+const TransactionInstruction = SystemProgram.transfer({
+  fromPubkey: new PublicKey(accounts[0]),
+  toPubkey: new PublicKey(accounts[0]),
+  lamports: 0.01 * LAMPORTS_PER_SOL,
+});
+const transaction = new Transaction({
+  recentBlockhash: blockhash,
+  feePayer: new PublicKey(pubKey[0]),
+}).add(TransactionInstruction);
+const { signature } = await solanaWallet.signAndSendTransaction(transaction);
 ```
 
 ### Sign a Message
@@ -176,21 +217,17 @@ This method is used sign any message from connected wallet.
 #### Example
 
 ```ts
-import { SafeEventEmitterProvider } from "@web3auth/base";
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import { SolanaWallet } from "@web3auth/solana-provider";
 
-async signMessage(provider: SafeEventEmitterProvider ,data: Uint8Array): Promise<Uint8Array> {
-    const response = await provider.request<Uint8Array>({
-        method: "signMessage",
-        params: {
-            message: data,
-        },
-    });
+const solanaWallet = new SolanaWallet(web3Auth.provider);
 
-    return response as Uint8Array;
-}
+const msg = Buffer.from("Test Signing Message ", "utf8");
+const result = await solanaWallet.signMessage(msg);
+console.log(result.toString());
 ```
 
-### Fetch Connected User's Private Key
+### Fetch User's Private Key
 
 #### `solanaPrivateKey`
 
@@ -199,10 +236,13 @@ This method is used to fetch the private key of logged in user. It is only avail
 #### Example
 
 ```ts
-const privateKey = await provider.request<string>({
-  method: "solanaPrivateKey",
-  params: {},
-});
+//Assuming user is already logged in.
+async getPrivateKey() {
+  const privateKey = await web3auth.provider.request({
+    method: "solanaPrivateKey"
+  });
+  //Do something with privateKey
+}
 ```
 
 ## Additional Reading
@@ -211,38 +251,40 @@ const privateKey = await provider.request<string>({
 
 ### Getting a provider from any `secp512k1` private key.
 
-`@web3auth/solana-provider` package can be used to get a EIP1193 compatible provider from any `secp512k1` private key. You can use this package with
-our SDKs, to get an EIP1193 provider from the logged-in user's private key.
+`@web3auth/solana-provider` package can be used to get a solana compatible provider from any `secp512k1` private key. You can use this package with
+our SDKs to get an solana provider from the logged-in user's private key.
 
 #### Example
 
 ```ts
-import { PrivateKeyWallet } from "@web3auth/solana-provider";
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 
 /*
 privKey: any secp512k1 private key.
 */
 
 async setProvider(privKey: string) {
-    this.PrivateKeyProvider = new PrivateKeyWallet({
-    config: {
-        /*
-        pass the chain config that you want to connect with
-        all chainConfig fields are required.
-        */
-        chainConfig: {
-        rpcTarget: "https://ssc-dao.genesysgo.net", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
-        displayName: "solana",
-        ticker: "SOL",
-        tickerName: "Solana",
-        },
-    },
-    });
-    /*
-    pass user's private key here.
-    after calling setupProvider, we can use
-    this.ethereumPrivateKeyProvider._providerProxy as a eip1193 provider
-    */
-    const provider = await this.PrivateKeyProvider.solanaPrivateKey(privKey);
+	this.solanaPrivateKeyProvider = new SolanaPrivateKeyProvider({
+		config: {
+			/*
+			pass the chain config that you want to connect with
+			all chainConfig fields are required.
+			*/
+			chainConfig: {
+				chainId: "0x3",
+				rpcTarget: "https://ssc-dao.genesysgo.net", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
+				displayName: "solana",
+				blockExplorer: "https://explorer.solana.com/",
+				ticker: "SOL",
+				tickerName: "Solana",
+			},
+		},
+	});
+	/*
+	pass user's private key here.
+	after calling setupProvider, we can use
+	this.solanaPrivateKeyProvider.setupProvider as a ed25519 provider
+	*/
+	const provider = await this.solanaPrivateKeyProvider.setupProvider(privKey);
 }
 ```
