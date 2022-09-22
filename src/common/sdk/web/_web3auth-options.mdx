@@ -20,6 +20,7 @@ import Tabs from "@theme/Tabs";
 | `displayErrorsOnModal?` | `boolean`                                                                    | Whether to show errors on Web3Auth modal.                                                                                                                                                                                                                                                           | Yes      | `true`                     |
 | `enableLogging?`        | `boolean`                                                                    | Setting to true will enable logs                                                                                                                                                                                                                                                                    | Yes      | `false`                    |
 | `storageKey?`           | `enum` - (`session`, `local`)                                                | Setting to "local" will persist social login session across browser tabs.                                                                                                                                                                                                                           | Yes      | `local`                    |
+| `sessionTime?`          | `number`                                                                     | sessionTime (in seconds) for idToken issued by Web3Auth for server side verification. Note: max value can be 7 days (86400 \* 7) and min can be 1 day (86400)                                                                                                                                       | Yes      | `86400`                    |
 
 </TabItem>
 
@@ -73,6 +74,13 @@ interface Web3AuthCoreOptions {
    * @defaultValue "local"
    */
   storageKey?: "session" | "local";
+  /**
+   * sessionTime (in seconds) for idToken issued by Web3Auth for server side verification.
+   * @defaultValue 86400
+   *
+   * Note: max value can be 7 days (86400 * 7) and min can be  1 day (86400)
+   */
+  sessionTime?: number;
 }
 ```
 
