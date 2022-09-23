@@ -27,7 +27,7 @@ Trigger login flow with the selected provider from the list of providers availab
   defaultValue="table"
   values={[
     { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
+    { label: "Class", value: "class" },
   ]}
 >
 
@@ -45,7 +45,7 @@ Trigger login flow with the selected provider from the list of providers availab
 
 </TabItem>
 
-<TabItem value="interface">
+<TabItem value="class">
 
 ```dart
 class LoginParams {
@@ -106,33 +106,28 @@ class LoginParams {
 <TabItem value="google">
 
 ```dart
-@override
-void initState() {
-  super.initState();
-  initPlatformState();
-}
-
 Future<void> initPlatformState() async {
-  HashMap themeMap = new HashMap<String, String>();
-  themeMap['primary'] = "#fff000";
+  HashMap themeMap = HashMap<String, String>();
+  themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
-    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
   } else if (Platform.isIOS) {
-    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+    redirectUrl = Uri.parse('{bundleId}://openlogin');
+    // com.example.w3aflutter://openlogin
   } else {
     throw UnKnownException('Unknown platform');
   }
 
   await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
-    network: Network.cyan,
-    redirectUri: redirectUrl,
-    whiteLabelData: WhiteLabelData(
-      dark: true, name: "Web3Auth Flutter App", theme: themeMap
-    )
-  ));
+    clientId: '{WEB3AUTH_CLIENT_ID}',
+    network: Network.testnet,
+    redirectUrl: redirectUrl,
+    whiteLabel: WhiteLabelData(
+        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
+    ));
 }
 
 // Login
@@ -147,33 +142,28 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 <TabItem value="facebook">
 
 ```dart
-@override
-void initState() {
-  super.initState();
-  initPlatformState();
-}
-
 Future<void> initPlatformState() async {
-  HashMap themeMap = new HashMap<String, String>();
-  themeMap['primary'] = "#fff000";
+  HashMap themeMap = HashMap<String, String>();
+  themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
-    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
   } else if (Platform.isIOS) {
-    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+    redirectUrl = Uri.parse('{bundleId}://openlogin');
+    // com.example.w3aflutter://openlogin
   } else {
     throw UnKnownException('Unknown platform');
   }
 
   await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
-    network: Network.cyan,
-    redirectUri: redirectUrl,
-    whiteLabelData: WhiteLabelData(
-      dark: true, name: "Web3Auth Flutter App", theme: themeMap
-    )
-  ));
+    clientId: '{WEB3AUTH_CLIENT_ID}',
+    network: Network.testnet,
+    redirectUrl: redirectUrl,
+    whiteLabel: WhiteLabelData(
+        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
+    ));
 }
 
 // Login
@@ -188,33 +178,28 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 <TabItem value="discord">
 
 ```dart
-@override
-void initState() {
-  super.initState();
-  initPlatformState();
-}
-
 Future<void> initPlatformState() async {
-  HashMap themeMap = new HashMap<String, String>();
-  themeMap['primary'] = "#fff000";
+  HashMap themeMap = HashMap<String, String>();
+  themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
-    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
   } else if (Platform.isIOS) {
-    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+    redirectUrl = Uri.parse('{bundleId}://openlogin');
+    // com.example.w3aflutter://openlogin
   } else {
     throw UnKnownException('Unknown platform');
   }
 
   await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
-    network: Network.cyan,
-    redirectUri: redirectUrl,
-    whiteLabelData: WhiteLabelData(
-      dark: true, name: "Web3Auth Flutter App", theme: themeMap
-    )
-  ));
+    clientId: '{WEB3AUTH_CLIENT_ID}',
+    network: Network.testnet,
+    redirectUrl: redirectUrl,
+    whiteLabel: WhiteLabelData(
+        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
+    ));
 }
 
 // Login
@@ -229,33 +214,28 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 <TabItem value="twitch">
 
 ```dart
-@override
-void initState() {
-  super.initState();
-  initPlatformState();
-}
-
 Future<void> initPlatformState() async {
-  HashMap themeMap = new HashMap<String, String>();
-  themeMap['primary'] = "#fff000";
+  HashMap themeMap = HashMap<String, String>();
+  themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
-    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
   } else if (Platform.isIOS) {
-    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+    redirectUrl = Uri.parse('{bundleId}://openlogin');
+    // com.example.w3aflutter://openlogin
   } else {
     throw UnKnownException('Unknown platform');
   }
 
   await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
-    network: Network.cyan,
-    redirectUri: redirectUrl,
-    whiteLabelData: WhiteLabelData(
-      dark: true, name: "Web3Auth Flutter App", theme: themeMap
-    )
-  ));
+    clientId: '{WEB3AUTH_CLIENT_ID}',
+    network: Network.testnet,
+    redirectUrl: redirectUrl,
+    whiteLabel: WhiteLabelData(
+        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
+    ));
 }
 
 // Login
@@ -270,33 +250,28 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 <TabItem value="email_passwordless">
 
 ```dart
-@override
-void initState() {
-  super.initState();
-  initPlatformState();
-}
-
 Future<void> initPlatformState() async {
-  HashMap themeMap = new HashMap<String, String>();
-  themeMap['primary'] = "#fff000";
+  HashMap themeMap = HashMap<String, String>();
+  themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
-    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
   } else if (Platform.isIOS) {
-    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+    redirectUrl = Uri.parse('{bundleId}://openlogin');
+    // com.example.w3aflutter://openlogin
   } else {
     throw UnKnownException('Unknown platform');
   }
 
   await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
-    network: Network.cyan,
-    redirectUri: redirectUrl,
-    whiteLabelData: WhiteLabelData(
-      dark: true, name: "Web3Auth Flutter App", theme: themeMap
-    )
-  ));
+    clientId: '{WEB3AUTH_CLIENT_ID}',
+    network: Network.testnet,
+    redirectUrl: redirectUrl,
+    whiteLabel: WhiteLabelData(
+        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
+    ));
 }
 
 // Login
@@ -312,15 +287,9 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 <TabItem value="jwt">
 
 ```dart
-@override
-void initState() {
-  super.initState();
-  initPlatformState();
-}
-
 Future<void> initPlatformState() async {
-  HashMap themeMap = new HashMap<String, String>();
-  themeMap['primary'] = "#fff000";
+  HashMap themeMap = HashMap<String, String>();
+  themeMap['primary'] = "#229954";
 
   // highlight-start
   HashMap idToken = new HashMap<String, String>();
@@ -329,21 +298,22 @@ Future<void> initPlatformState() async {
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
-    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
   } else if (Platform.isIOS) {
-    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+    redirectUrl = Uri.parse('{bundleId}://openlogin');
+    // com.example.w3aflutter://openlogin
   } else {
     throw UnKnownException('Unknown platform');
   }
 
   await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
-    network: Network.cyan,
-    redirectUri: redirectUrl,
-    whiteLabelData: WhiteLabelData(
-      dark: true, name: "Web3Auth Flutter App", theme: themeMap
-    )
-  ));
+    clientId: '{WEB3AUTH_CLIENT_ID}',
+    network: Network.testnet,
+    redirectUrl: redirectUrl,
+    whiteLabel: WhiteLabelData(
+        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
+    ));
 }
 
 // Login
@@ -373,7 +343,7 @@ web3Auth.login(LoginParams(selectedLoginProvider,
   defaultValue="table"
   values={[
     { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
+    { label: "Class", value: "class" },
   ]}
 >
 
@@ -404,7 +374,7 @@ web3Auth.login(LoginParams(selectedLoginProvider,
 
 </TabItem>
 
-<TabItem value="interface">
+<TabItem value="class">
 
 ```dart
 class ExtraLoginOptions {
@@ -508,33 +478,28 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
 <TabItem value="secp256k1">
 
 ```dart
-@override
-void initState() {
-  super.initState();
-  initPlatformState();
-}
-
 Future<void> initPlatformState() async {
-  HashMap themeMap = new HashMap<String, String>();
-  themeMap['primary'] = "#fff000";
+  HashMap themeMap = HashMap<String, String>();
+  themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
-    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
   } else if (Platform.isIOS) {
-    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+    redirectUrl = Uri.parse('{bundleId}://openlogin');
+    // com.example.w3aflutter://openlogin
   } else {
     throw UnKnownException('Unknown platform');
   }
 
   await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
-    network: Network.cyan,
-    redirectUri: redirectUrl,
-    whiteLabelData: WhiteLabelData(
-      dark: true, name: "Web3Auth Flutter App", theme: themeMap
-    )
-  ));
+    clientId: '{WEB3AUTH_CLIENT_ID}',
+    network: Network.testnet,
+    redirectUrl: redirectUrl,
+    whiteLabel: WhiteLabelData(
+        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
+    ));
 }
 
 final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
@@ -549,33 +514,28 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
 <TabItem value="ed25519">
 
 ```dart
-@override
-void initState() {
-  super.initState();
-  initPlatformState();
-}
-
 Future<void> initPlatformState() async {
-  HashMap themeMap = new HashMap<String, String>();
-  themeMap['primary'] = "#fff000";
+  HashMap themeMap = HashMap<String, String>();
+  themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
-    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample/auth');
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
   } else if (Platform.isIOS) {
-    redirectUrl = Uri.parse('torusapp://org.torusresearch.flutter.web3authexample');
+    redirectUrl = Uri.parse('{bundleId}://openlogin');
+    // com.example.w3aflutter://openlogin
   } else {
     throw UnKnownException('Unknown platform');
   }
 
   await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
-    network: Network.cyan,
-    redirectUri: redirectUrl,
-    whiteLabelData: WhiteLabelData(
-      dark: true, name: "Web3Auth Flutter App", theme: themeMap
-    )
-  ));
+    clientId: '{WEB3AUTH_CLIENT_ID}',
+    network: Network.testnet,
+    redirectUrl: redirectUrl,
+    whiteLabel: WhiteLabelData(
+        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
+    ));
 }
 
 final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
@@ -602,3 +562,9 @@ await Web3AuthFlutter.logout();
 ### Response
 
 A void object is returned on successfull logout otherwise an error is thrown
+
+:::tip
+
+See the code for the sample app [here](https://github.com/Web3Auth/examples/tree/main/flutter).
+
+:::
