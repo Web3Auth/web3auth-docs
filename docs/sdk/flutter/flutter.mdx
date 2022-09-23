@@ -5,9 +5,12 @@ displayed_sidebar: sdk
 description: "Flutter SDK | Documentation - Web3Auth"
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 ---
 
-For using Web3Auth in Flutter, Web3Auth provides an [Flutter SDK](https://github.com/Web3Auth/web3auth-flutter-sdk), written in Dart. The Web3Auth
+For using Web3Auth in Flutter, Web3Auth provides a [Flutter SDK](https://github.com/Web3Auth/web3auth-flutter-sdk), written in Dart. The Web3Auth
 Flutter SDK is a client-side library you can use with your Flutter app to authenticate users using Web3Auth. It returns a private key generated in a
 non custodial way on successful authentication of the user. This authentication can be achieved by using any of the social logins Web3Auth provides or
 using a custom authentication flow of your choice.
@@ -16,7 +19,18 @@ Source code of the example can be found in [here](https://github.com/Web3Auth/we
 
 ### Requirements
 
-Android API version 21 or newer.
+- **Android** API version 21 or newer.
+- For Android build: `compileSdkVersion` needs to be 32. Check `android/app/build.gradle` in your Flutter project to change it.
+- **iOS** 12+
+- Xcode 11.4+ / 12.x
+- Swift 4.x / 5.x
+- For iOS build: `platform :ios` needs to be 13.0. Check `ios/Podfile` in your Flutter project to change it.
+
+:::tip
+
+Get started with a sample app code, found [here](https://github.com/Web3Auth/examples/tree/main/flutter).
+
+:::
 
 ## Installation
 
@@ -26,17 +40,135 @@ Add `web3auth_flutter` as a dependency to your `pubspec.yaml`
 
 ```yaml
 dependencies:
-  web3auth_flutter:
-    git: https://github.com/torusresearch/web3auth-flutter-sdk.git
+  web3auth_flutter: ^1.0.1
 ```
 
-### Android
+or
 
-- Perform the native [Android integration steps](/sdk/android#installation).
-- For Android, the `redirectUrl` parameter is **specificable**, and has to be added into the `AndroidManifest.xml`.
+```sh
+flutter pub add web3auth_flutter
+```
 
-### iOS
+<Tabs
+  defaultValue="android"
+  values={[
+    { label: "Android", value: "android" },
+    { label: "iOS", value: "ios" },
+  ]}
+>
 
-- Perform the native [iOS integration steps](/sdk/ios#installation).
+<TabItem value="android">
 
-- For iOS, the `redirectUrl` parameter is **fixed**, which is `\(bundleId)://auth`, and does not need to be added as a iOS Custom URL Scheme.
+## Android
+
+### Add Web3Auth to Gradle
+
+In your project-level `settings.gradle` or `build.gradle` file, add JitPack repository:
+
+```groovy
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        // highlight-next-line
+        maven { url "https://jitpack.io" } // <-- Add this line
+    }
+}
+```
+
+Then, in your app-level `build.gradle` dependencies section, add the following:
+
+```groovy
+dependencies {
+    // highlight-next-line
+    implementation 'org.torusresearch:web3auth-android-sdk:2.5.0'
+}
+```
+
+#### Permissions
+
+Open your app's `AndroidManifest.xml` file and add the following permission:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+```
+
+> Note: The `<uses-permission>` element must be a direct child of the `<manifest>` root element.
+
+### Configuration
+
+#### Configure a Plug n Play project
+
+- Go to [Developer Dashboard](https://dashboard.web3auth.io/), create or select a Web3Auth project:
+
+- Add `{SCHEME}://{YOUR_APP_PACKAGE_NAME}/auth` to **Whitelist URLs**. eg. `w3a://com.example.w3aflutter/auth`
+
+- Copy the `Client ID` for usage later.
+
+#### Configure Deep Link
+
+Open your app's `AndroidManifest.xml` file and add the following deep link intent filter to your sign-in activity:
+
+```xml
+<intent-filter>
+  <action android:name="android.intent.action.VIEW" />
+
+  <category android:name="android.intent.category.DEFAULT" />
+  <category android:name="android.intent.category.BROWSABLE" />
+
+  // highlight-next-line
+  <data android:scheme="{scheme}" android:host="{YOUR_APP_PACKAGE_NAME}" android:path="/auth" />
+  <!-- Accept URIs: w3a://com.example.w3aflutter/auth -->
+</intent-filter>
+```
+
+Make sure your sign-in activity launchMode is set to **singleTop** in your `AndroidManifest.xml`
+
+```xml
+<activity
+// highlight-next-line
+  android:launchMode="singleTop"
+  android:name=".YourActivity">
+  // ...
+</activity>
+```
+
+</TabItem>
+
+<TabItem value="ios">
+
+## iOS
+
+### Swift Package Manager
+
+If you are using the Swift Package Manager, open the following menu item in Xcode:
+
+`File > Swift Packages > Add Package Dependency`
+
+In the Choose Package Repository prompt add this url:
+
+```
+https://github.com/web3auth/web3auth-swift-sdk
+```
+
+#### Cocoapods
+
+```sh
+pod install Web3Auth
+```
+
+### Configuration
+
+---
+
+In order to use Web3Auth you need to provide your Web3Auth `ClientId` and which `Network` to run it.
+
+- Go to [Web3Auth Developer Dashboard](https://dashboard.web3auth.io), create or open an existing Web3Auth project and copy your Client ID, which is
+  the `ClientId`.
+- Whitelist `{bundleId}://openlogin` eg. `com.example.w3aflutter://openlogin` in the developer dashboard. **This step is mandatory for the redirect to
+  work.**
+
+</TabItem>
+
+</Tabs>
