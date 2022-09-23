@@ -10,4 +10,5 @@ export const PLACEHOLDERS = {
   SCRIPT_IMPORT: "getScriptImport",
   RN_RESOLVED_REDIRECT_URL: "getRNResolvedRedirectUrl",
   ANDROID_LOGIN_CONFIG: "getAndroidLoginConfig",
+  FLUTTER_LOGIN_CONFIG: "getFlutterLoginConfig",
 };
