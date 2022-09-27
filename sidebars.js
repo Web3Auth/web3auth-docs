@@ -82,6 +82,7 @@ module.exports = {
         "connect-blockchain/solana",
         "connect-blockchain/starkex",
         "connect-blockchain/starknet",
+        "connect-blockchain/near",
         "connect-blockchain/tezos",
       ],
     },
