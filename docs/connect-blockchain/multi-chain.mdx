@@ -1,0 +1,287 @@
+---
+title: Integrate Web3Auth with Multiple Chains!!
+sidebar_label: Multichain
+image: "/docs/contents/guides/banners/ethereum.png"
+displayed_sidebar: docs
+keywords: [multichain, web3auth, authentication, blockchain]
+description: "Integrate Web3Auth with the Multiple Blockchains | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+---
+
+Via Web3Auth SDK, you can make your application compatible with multiple blockchains, making your dapp more accessible to a wider audience of users.
+Web3Auth SDK supports the following blockchains:
+
+- Ethereum and all other EVM compatible chains
+- Solana
+- StarkEx and StarkNet
+- Tezos
+
+## Installation
+
+---
+
+To interact with the Ethereum blockchain and other EVMs, you can use either [web3.js](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html) or
+[ethers.js](https://docs.ethers.io/v5/getting-started/) libraries with Web3Auth. For changing the chains you will require to add different RPC URLs in
+the Ethereum provider.
+
+To interact with the Solana blockchain, you can use [@solana/web3.js](https://solana-labs.github.io/solana-web3.js/) library with Web3Auth along with
+`@web3auth/solana-provider` package.
+
+For Tezos, we will be requiring the [taquito](https://tezostaquito.io/) library to create the Tezos address and interact with the Tezos blockchain.
+
+For StarkEx and StarkNet, we will be relying on
+[@starkware-industries/starkware-crypto-utils](https://www.npmjs.com/package/@starkware-industries/starkware-crypto-utils) package to handle the
+StarkEx and StarkNet address creation.
+
+## Initializing Provider
+
+---
+
+### For Ethereum and Other EVM Compatible Chains
+
+Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an `EIP1193` compatible provider as **`web3auth.provider`** after
+successful authentication.
+
+<Tabs
+  defaultValue="es"
+  values={[
+    { label: "ES Modules", value: "es" },
+    { label: "TypeScript", value: "ts" },
+    { label: "CommonJS", value: "js" },
+  ]}
+>
+<TabItem value="es">
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import Web3 from "web3";
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x3",
+  },
+});
+await web3auth.initModal();
+const provider = web3auth.provider;
+```
+
+</TabItem>
+<TabItem value="ts">
+
+```js
+import { Web3Auth } from "@web3auth/web3auth";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import Web3 from "web3";
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x3",
+  },
+});
+await web3auth.initModal();
+const provider = web3auth.provider;
+```
+
+</TabItem>
+<TabItem value="js">
+
+```js
+const { Web3Auth } = require("@web3auth/web3auth");
+const Web3 = require("web3");
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1",
+  },
+});
+await web3auth.initModal();
+const provider = web3auth.provider;
+```
+
+</TabItem>
+</Tabs>
+
+For other EVM chains, we need to request the provider for eth_private_key. We call the special EthereumPrivateKeyProvider to get the address on
+different chains.
+
+<Tabs
+  defaultValue="polygon"
+  values={[
+    { label: "Polygon", value: "polygon" },
+    { label: "Binance Smart Chain", value: "bsc" },
+]}>
+
+<TabItem value="polygon">
+
+```js
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const privateKey = provider.request({ method: "eth_privateKey" });
+const polygonPrivateKeyProvider = new EthereumPrivateKeyProvider({
+      config: {
+        chainConfig: {
+          chainId: "0x13881",
+          rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
+          displayName: "Polygon Mumbai",
+          blockExplorer: "https://mumbai.polygonscan.com/",
+          ticker: "MATIC",
+          tickerName: "MATIC",
+        },
+      },
+    });
+await polygonPrivateKeyProvider.setupProvider(privateKey);
+const web3 = new Web3(polygonPrivateKeyProvider.provider as any);
+const address = (await web3.eth.getAccounts())[0];
+```
+
+</TabItem>
+<TabItem value="bsc">
+
+```js
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const privateKey = provider.request({ method: "eth_privateKey" });
+const bnbPrivateKeyProvider = new EthereumPrivateKeyProvider({
+      config: {
+        chainConfig: {
+          chainId: "0x38",
+          rpcTarget: "https://rpc.ankr.com/bsc",
+          displayName: "Binance SmartChain Mainnet",
+          blockExplorer: "https://bscscan.com/",
+          ticker: "BNB",
+          tickerName: "BNB",
+        },
+      },
+    });
+await bnbPrivateKeyProvider.setupProvider(privateKey);
+const web3 = new Web3(bnbPrivateKeyProvider.provider as any);
+const address = (await web3.eth.getAccounts())[0];
+
+```
+
+</TabItem>
+
+</Tabs>
+
+### Solana
+
+We will be using the initialized provider and some more libraries to get the Solana Keypair.
+
+```js
+import {
+  SolanaPrivateKeyProvider,
+  SolanaWallet,
+} from "@web3auth/solana-provider";
+
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const privateKey = provider.request({ method: "eth_privateKey" });
+const { getED25519Key } = await import("@toruslabs/openlogin-ed25519");
+const ed25519key = getED25519Key(privateKey).sk.toString("hex");
+
+// Get user's Solana's public address
+const solanaPrivateKeyProvider = new SolanaPrivateKeyProvider({
+    config: {
+    chainConfig: {
+        chainId: "0x3",
+        rpcTarget: "https://ssc-dao.genesysgo.net",
+        displayName: "Solana Mainnet",
+        blockExplorer: "https://explorer.solana.com/",
+        ticker: "SOL",
+        tickerName: "Solana",
+    },
+    },
+});
+await solanaPrivateKeyProvider.setupProvider(ed25519key);
+console.log(solanaPrivateKeyProvider.provider);
+
+const solanaWallet = new SolanaWallet(
+    solanaPrivateKeyProvider.provider as any
+);
+const solana_address = await solanaWallet.requestAccounts();
+const solana_address_one = solana_address[0];
+
+```
+
+### Tezos
+
+We will be using the initialized provider and some more libraries to get the Tezos Keypair.
+
+```js
+import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
+import { hex2buf } from "@taquito/utils";
+
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const privateKey = provider.request({ method: "eth_privateKey" });
+const keyPairTezos = tezosCrypto.utils.seedToKeyPair(hex2buf(privateKey));
+const address = keyPairTezos?.pkh;
+```
+
+### Starkware
+
+We will be using the initialized provider and some more libraries to get the StarkEx Keypair.
+
+<Tabs
+  defaultValue="starkex"
+  values={[
+    { label: "StarkEx", value: "starkex" },
+    { label: "StarkNet", value: "starknet" },
+  ]}
+>
+
+<TabItem value="starkex">
+
+```js
+import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
+
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const privateKey = provider.request({ method: "eth_privateKey" });
+const keyPairStarkEx = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
+const starkex_account = starkwareCrypto.ec.keyFromPublic(keyPairStarkEx.getPublic(true, "hex"), "hex");
+const address = starkex_account.pub.getX().toString("hex");
+```
+
+</TabItem>
+<TabItem value="starknet">
+
+```js
+import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
+
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const privateKey = provider.request({ method: "eth_privateKey" });
+const keyPairStarkNet = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
+const starknet_account = starkwareCrypto.ec.keyFromPublic(keyPairStarkNet.getPublic(true, "hex"), "hex");
+const address = starknet_account.pub.getX().toString("hex");
+```
+
+</TabItem>
+</Tabs>
