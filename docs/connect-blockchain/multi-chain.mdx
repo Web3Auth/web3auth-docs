@@ -20,28 +20,9 @@ Web3Auth SDK supports the following blockchains:
 - StarkEx and StarkNet
 - Tezos
 
-## Installation
-
----
-
-To interact with the Ethereum blockchain and other EVMs, you can use either [web3.js](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html) or
-[ethers.js](https://docs.ethers.io/v5/getting-started/) libraries with Web3Auth. For changing the chains you will require to add different RPC URLs in
-the Ethereum provider.
-
-To interact with the Solana blockchain, you can use [@solana/web3.js](https://solana-labs.github.io/solana-web3.js/) library with Web3Auth along with
-`@web3auth/solana-provider` package.
-
-For Tezos, we will be requiring the [taquito](https://tezostaquito.io/) library to create the Tezos address and interact with the Tezos blockchain.
-
-For StarkEx and StarkNet, we will be relying on
-[@starkware-industries/starkware-crypto-utils](https://www.npmjs.com/package/@starkware-industries/starkware-crypto-utils) package to handle the
-StarkEx and StarkNet address creation.
-
 ## Initializing Provider
 
 ---
-
-### For Ethereum and Other EVM Compatible Chains
 
 Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an `EIP1193` compatible provider as **`web3auth.provider`** after
 successful authentication.
@@ -111,14 +92,23 @@ const provider = web3auth.provider;
 </TabItem>
 </Tabs>
 
-For other EVM chains, we need to request the provider for eth_private_key. We call the special EthereumPrivateKeyProvider to get the address on
-different chains.
+### For Ethereum and Other EVM Compatible Chains
+
+For EVM chains, we will be creating a provider where you just input the chain ids and RPC URLs to get different providers for different chains.
+Web3Auth SDK makes it easier to manage multiple chains by providing a modular infrastructure.
+
+To interact with the Ethereum blockchain and other EVMs, you can use either [web3.js](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html) or
+[ethers.js](https://docs.ethers.io/v5/getting-started/) libraries with Web3Auth. For changing the chains you will require to add different RPC URLs in
+the Ethereum provider.
 
 <Tabs
   defaultValue="polygon"
   values={[
     { label: "Polygon", value: "polygon" },
     { label: "Binance Smart Chain", value: "bsc" },
+    {label: "Avalanche", value: "avalanche"},
+    {label: "Cronos", value: "cronos"},
+    {label: "Any EVM Compatible Chain", value: "evm"}
 ]}>
 
 <TabItem value="polygon">
@@ -136,6 +126,8 @@ const polygonPrivateKeyProvider = new EthereumPrivateKeyProvider({
         chainConfig: {
           chainId: "0x13881",
           rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
+          // Avoid using public rpcTarget in production.
+          // Use services like Infura, Quicknode etc
           displayName: "Polygon Mumbai",
           blockExplorer: "https://mumbai.polygonscan.com/",
           ticker: "MATIC",
@@ -164,6 +156,8 @@ const bnbPrivateKeyProvider = new EthereumPrivateKeyProvider({
         chainConfig: {
           chainId: "0x38",
           rpcTarget: "https://rpc.ankr.com/bsc",
+          // Avoid using public rpcTarget in production.
+          // Use services like Infura, Quicknode etc
           displayName: "Binance SmartChain Mainnet",
           blockExplorer: "https://bscscan.com/",
           ticker: "BNB",
@@ -178,12 +172,106 @@ const address = (await web3.eth.getAccounts())[0];
 ```
 
 </TabItem>
+<TabItem value="avalanche">
+
+```js
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const privateKey = provider.request({ method: "eth_privateKey" });
+const avaxPrivateKeyProvider = new EthereumPrivateKeyProvider({
+      config: {
+        chainConfig: {
+          chainId: "0xA86A",
+          rpcTarget: "https://rpc.ankr.com/avalanche-c",
+          // Avoid using public rpcTarget in production.
+          // Use services like Infura, Quicknode etc
+          displayName: "Avalanche C-Chain Mainnet",
+          blockExplorer: "https://subnets.avax.network/c-chain",
+          ticker: "AVAX",
+          tickerName: "AVAX",
+        },
+      },
+    });
+await avaxPrivateKeyProvider.setupProvider(privateKey);
+const web3 = new Web3(avaxPrivateKeyProvider.provider as any);
+const address = (await web3.eth.getAccounts())[0];
+
+```
+
+</TabItem>
+<TabItem value="cronos">
+
+```js
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const privateKey = provider.request({ method: "eth_privateKey" });
+const cronosPrivateKeyProvider = new EthereumPrivateKeyProvider({
+      config: {
+        chainConfig: {
+          chainId: "0x19",
+          rpcTarget: "https://rpc.cronos.org",
+          // Avoid using public rpcTarget in production.
+          // Use services like Infura, Quicknode etc
+          displayName: "Cronos Mainnet",
+          blockExplorer: "https://cronoscan.com/",
+          ticker: "CRO",
+          tickerName: "CRO",
+        },
+      },
+    });
+await cronosPrivateKeyProvider.setupProvider(privateKey);
+const web3 = new Web3(cronosPrivateKeyProvider.provider as any);
+const address = (await web3.eth.getAccounts())[0];
+
+```
+
+</TabItem>
+<TabItem value="evm">
+
+```js
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const privateKey = provider.request({ method: "eth_privateKey" });
+const PrivateKeyProvider = new EthereumPrivateKeyProvider({
+      config: {
+        chainConfig: {
+          chainId: "YOUR_CHAIN_ID",
+          rpcTarget: "YOUR_RPC_URL",
+          // Avoid using public rpcTarget in production.
+          // Use services like Infura, Quicknode etc
+          displayName: "YOUR_CHAIN_NAME",
+          blockExplorer: "YOUR_BLOCK_EXPLORER_URL",
+          ticker: "YOUR_TICKER", // eg: MATIC, BNB, AVAX, CRO
+          tickerName: "YOUR_TICKER_NAME", // eg: MATIC, BNB, AVAX, CRO
+        },
+      },
+    });
+await PrivateKeyProvider.setupProvider(privateKey);
+const web3 = new Web3(PrivateKeyProvider.provider as any);
+const address = (await web3.eth.getAccounts())[0];
+
+```
+
+</TabItem>
 
 </Tabs>
 
 ### Solana
 
-We will be using the initialized provider and some more libraries to get the Solana Keypair.
+To interact with the Solana blockchain, you can use [@solana/web3.js](https://solana-labs.github.io/solana-web3.js/) library with Web3Auth along with
+`@web3auth/solana-provider` package.
 
 ```js
 import {
@@ -225,7 +313,7 @@ const solana_address_one = solana_address[0];
 
 ### Tezos
 
-We will be using the initialized provider and some more libraries to get the Tezos Keypair.
+For Tezos, we will be requiring the [taquito](https://tezostaquito.io/) library to create the Tezos address and interact with the Tezos blockchain.
 
 ```js
 import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
@@ -242,7 +330,9 @@ const address = keyPairTezos?.pkh;
 
 ### Starkware
 
-We will be using the initialized provider and some more libraries to get the StarkEx Keypair.
+For StarkEx and StarkNet, we will pass in the privateKey and will be using
+[@starkware-industries/starkware-crypto-utils](https://www.npmjs.com/package/@starkware-industries/starkware-crypto-utils) package to handle the
+StarkEx and StarkNet address creation.
 
 <Tabs
   defaultValue="starkex"
@@ -284,4 +374,5 @@ const address = starknet_account.pub.getX().toString("hex");
 ```
 
 </TabItem>
+
 </Tabs>
