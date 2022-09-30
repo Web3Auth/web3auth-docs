@@ -1,0 +1,158 @@
+---
+title: "@web3auth/web3auth-wagmi-connector"
+sidebar_label: "Wagmi Connector"
+displayed_sidebar: sdk
+description: "@web3auth/web3auth-wagmi-connector package | Documentation - Web3Auth"
+---
+
+# Web3Auth Wagmi Connector
+
+---
+
+## [`@web3auth/web3auth-wagmi-connector`](https://npmjs.com/package/@web3auth/web3auth-wagmi-connector)
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+**wagmi** is a collection of React Hooks containing everything you need to start working with Ethereum. `@web3auth/web3auth-wagmi-connector` is a
+connector for the popular [wagmi](https://github.com/tmm/wagmi) library built on top of the [@web3auth/web3auth](https://github.com/web3auth/web3auth)
+package.
+
+It can be used to initialize a [wagmi client](https://wagmi.sh/docs/client) that will seemlessly manage the interaction(wallet connection state and
+configuration, such as: auto-connection, connectors, and ethers providers) of your dApp with Web3Auth.
+
+:::tip DEMO
+
+Checkout the [demo app](https://github.com/Web3Auth/web3auth-wagmi-connector/tree/master/examples/demo) to see how wagmi works with Web3Auth.
+
+:::
+
+## Installation
+
+---
+
+```bash npm2yarn
+npm install --save @web3auth/web3auth-wagmi-connector
+```
+
+## Initialization
+
+---
+
+### Import the `Web3AuthConnector` class from `@web3auth/web3auth-wagmi-connector`
+
+```js
+import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
+```
+
+#### Assign the `Web3AuthConnector` class to a variable
+
+After creating your Web3Auth instance, you need to initialise the Torus Wallet UI Plugin and add it to a class for further usage.
+
+```javascript
+const connector = new Web3AuthConnector(chains?, options);
+```
+
+### Arguments
+
+---
+
+#### `web3AuthOptions: Options`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter        | type                   |
+| ---------------- | ---------------------- |
+| `clientId?`      | `string`               |
+| `chainId?`       | `string`               |
+| `network?`       | `string`               |
+| `enableLogging?` | `boolean`              |
+| `storageKey?`    | `"session" or "local"` |
+| `uiConfig`       | UIConfig               |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+interface Options extends OpenLoginOptions {
+  /**
+   * Web3Auth Client Id, you can obtain this from the web3auth developer dashboard by visiting
+   * https://dashboard.web3auth.io
+   */
+  clientId: string;
+
+  /**
+   * ChainId in hex/number that you want to connect with.
+   */
+  chainId?: string;
+  /**
+   * setting to true will enable logs
+   *
+   * @defaultValue false
+   */
+  enableLogging?: boolean;
+  /**
+   * setting to "local" will persist social login session accross browser tabs.
+   *
+   * @defaultValue "local"
+   */
+  storageKey?: "session" | "local";
+
+  /**
+   * Config for configuring modal ui display properties
+   */
+  uiConfig?: UIConfig;
+
+  /**
+   * Whether to show errors on Web3Auth modal.
+   *
+   * @defaultValue `true`
+   */
+  displayErrorsOnModal?: boolean;
+
+  socialLoginConfig: Pick<OpenloginLoginParams, "dappShare" | "appState" | "mfaLevel" | "sessionTime">;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Example
+
+Here is an example of a wagmi client using both the `Web3AuthConnector` and the default `InjectedConnector` respectively.
+
+```js
+import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
+import { chain, configureChains, createClient } from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { publicProvider } from "wagmi/providers/public";
+
+const { chains, provider } = configureChains([chain.mainnet, chain.polygon], [publicProvider()]);
+
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors: [
+    new Web3AuthConnector({
+      chains,
+      options: {
+        enableLogging: true,
+        clientId: "YOUR_CLIENT_ID", // Get your own client id from https://dashboard.web3auth.io
+        network: "testnet", // web3auth network, "mainnet", "cyan", or "aqua"
+        chainId: "0x1", // chainId that you want to connect with
+      },
+    }),
+    new InjectedConnector({ chains }),
+  ],
+  provider,
+});
+```

@@ -264,6 +264,7 @@ module.exports = {
             "sdk/web/adapters/sollet",
           ],
         },
+        "sdk/web/wagmi-connector",
       ],
     },
     {
