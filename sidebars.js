@@ -220,6 +220,7 @@ module.exports = {
             "sdk/web/web3auth/whitelabel",
             "sdk/web/web3auth/custom-authentication",
             "sdk/web/web3auth/multi-factor-authentication",
+            "sdk/web/web3auth/wagmi-connector",
             "sdk/web/web3auth/usage",
           ],
         },
