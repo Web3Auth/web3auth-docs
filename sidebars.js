@@ -83,6 +83,7 @@ module.exports = {
         "connect-blockchain/starkex",
         "connect-blockchain/starknet",
         "connect-blockchain/tezos",
+        "connect-blockchain/algorand",
       ],
     },
     {
