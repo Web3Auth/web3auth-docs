@@ -249,7 +249,6 @@ export const referenceMap = [
     order: 1,
     link: "/docs/connect-blockchain/avalanche",
   },
-
   {
     title: "Integrate Web3Auth with the Binance Blockchain",
     description: "Learn how to add a non custodial social login to the Binance Blockchain",
@@ -261,7 +260,6 @@ export const referenceMap = [
     order: 1,
     link: "/docs/connect-blockchain/bnb",
   },
-
   {
     title: "Integrate Web3Auth with the Optimism Blockchain",
     description: "Learn how to add a non custodial social login to the Optimism Blockchain",
@@ -273,7 +271,6 @@ export const referenceMap = [
     order: 1,
     link: "/docs/connect-blockchain/optimism",
   },
-
   {
     title: "Integrate Web3Auth with the Arbitrum Blockchain",
     description: "Learn how to add a non custodial social login to the Arbitrum Blockchain",
@@ -285,7 +282,6 @@ export const referenceMap = [
     order: 1,
     link: "/docs/connect-blockchain/arbitrum",
   },
-
   {
     title: "Integrate Web3Auth with the Cronos Blockchain",
     description: "Learn how to add a non custodial social login to the Cronos Blockchain",
@@ -297,7 +293,6 @@ export const referenceMap = [
     order: 1,
     link: "/docs/connect-blockchain/cronos",
   },
-
   {
     title: "Integrate Web3Auth with the Harmony Blockchain",
     description: "Learn how to add a non custodial social login to the Harmony Blockchain",
@@ -309,7 +304,6 @@ export const referenceMap = [
     order: 1,
     link: "/docs/connect-blockchain/harmony",
   },
-
   {
     title: "Integrate Web3Auth with the Celo Blockchain",
     description: "Learn how to add a non custodial social login to the Celo Blockchain",
@@ -321,7 +315,6 @@ export const referenceMap = [
     order: 1,
     link: "/docs/connect-blockchain/celo",
   },
-
   {
     title: "Integrate Web3Auth with the Moonbeam Blockchain",
     description: "Learn how to add a non custodial social login to the Moonbeam Blockchain",
@@ -333,7 +326,6 @@ export const referenceMap = [
     order: 1,
     link: "/docs/connect-blockchain/moonbeam",
   },
-
   {
     title: "Integrate Web3Auth with the Moonriver Blockchain",
     description: "Learn how to add a non custodial social login to the Moonriver Blockchain",
@@ -345,7 +337,6 @@ export const referenceMap = [
     order: 1,
     link: "/docs/connect-blockchain/moonriver",
   },
-
   {
     title: "Integrate Web3Auth with the Klaytn Blockchain",
     description: "Learn how to add a non custodial social login to the Klaytn Blockchain",
@@ -356,6 +347,17 @@ export const referenceMap = [
     author: "Web3Auth Team",
     order: 1,
     link: "/docs/connect-blockchain/klaytn",
+  },
+  {
+    title: "Integrate Web3Auth with the Algorand Blockchain",
+    description: "Learn how to add a non custodial social login to the Algorand Blockchain",
+    image: "/docs/contents/guides/banners/algorand.png",
+    type: "REFERENCE",
+    tags: ["algorand", "@web3auth/web3auth", "@web3auth/core"],
+    date: "3rd Oct 2022",
+    author: "Web3Auth Team",
+    order: 1,
+    link: "/docs/connect-blockchain/algorand",
   },
 ];
 
@@ -494,6 +496,10 @@ export const blockchainMap = [
   {
     title: "Tezos",
     tag: "tezos",
+  },
+  {
+    title: "Algorand",
+    tag: "algorand",
   },
 ];
 export const platformMap = [
