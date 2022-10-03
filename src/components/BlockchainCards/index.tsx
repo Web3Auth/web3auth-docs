@@ -107,6 +107,12 @@ export const tileGroupsData = [
         icon: "logo-klaytn.png",
         path: "./connect-blockchain/klaytn",
       },
+      {
+        key: "algorand",
+        title: "Algorand",
+        icon: "logo-algorand.png",
+        path: "./connect-blockchain/algorand",
+      },
     ],
   },
 ];

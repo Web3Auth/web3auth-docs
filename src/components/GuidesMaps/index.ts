@@ -353,7 +353,7 @@ export const referenceMap = [
     description: "Learn how to add a non custodial social login to the Algorand Blockchain",
     image: "/docs/contents/guides/banners/algorand.png",
     type: "REFERENCE",
-    tags: ["algorand", "evm", "@web3auth/web3auth", "@web3auth/core"],
+    tags: ["algorand", "@web3auth/web3auth", "@web3auth/core"],
     date: "3rd Oct 2022",
     author: "Web3Auth Team",
     order: 1,
@@ -496,6 +496,10 @@ export const blockchainMap = [
   {
     title: "Tezos",
     tag: "tezos",
+  },
+  {
+    title: "Algorand",
+    tag: "algorand",
   },
 ];
 export const platformMap = [
