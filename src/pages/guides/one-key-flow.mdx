@@ -1,0 +1,407 @@
+---
+title: Using Web3Auth One Key Flow
+image: "/docs/contents/guides/banners/firebase.png"
+description: Learn how to use Web3Auth One Key Flow to authenticate users with Firebase.
+type: guide
+tags: [web, one key flow, "@web3auth/core", firebase, custom authentication, react, ethereum]
+date: 23rd August 2022
+author: Web3Auth Team
+order: 2
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import InitializationIntro from "@site/src/common/guides/_initialization-intro.mdx";
+import InitializationWeb3Auth from "@site/src/common/guides/_initialization-web3auth.mdx";
+import InstallationWithOneKeyFlowFirebase from "@site/src/common/guides/_installation-one-key-flow-firebase.mdx";
+import InstantiationWeb3Auth from "@site/src/common/guides/_instantiation-web3auth.mdx";
+import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
+import OpenloginConfigCodeFirebase from "@site/src/common/guides/_openlogin-config-code-firebase.mdx";
+import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Using Web3Auth One Key Flow"
+  description="Learn how to use Web3Auth One Key Flow to authenticate users with Firebase."
+  image="https://web3auth.io/docs/contents/guides/banners/firebase.png"
+  slug="/guides/one-key-flow"
+/>
+
+This guide will cover the basics of how to set up your Web3Auth SDK as a One Key Flow and Firebase for authenticating your users via a single page.
+For this particular guider we are using Firebase as our authentication provider, but <b>you can use any provider you want</b>. This particular user
+flow allows a much simpler and more streamlined experience for your users.
+
+## Quick Start
+
+```bash
+git clone https://github.com/Web3Auth/examples.git
+cd web-core-sdk/one-key-flow
+npm install
+npm run start
+```
+
+## How it works?
+
+---
+
+For understanding how the private key generation works using Firebase as a provider, you can refer to this guide
+[here](/guides/firebase#how-it-works). This particular guide focuses on how we use Torus libraries to create a better user experience and generate the
+private key without redirecting the user.
+
+![Web3Auth Core - One Key Flow](/images/one-key-flow.png)
+
+- Once the social login is successful, depending on if the user has enabled MultiFactor Authentication(MFA) or not, the key is generated.
+- If the user has enabled MFA, the private key can be generated simply via Web3Auth Login.
+- If the user has not enabled MFA, we use the `@toruslabs/torus.js` library to get the details of the nodes and create the private key via fetching
+  for the shares from the nodes. This process can be used in the backend to generate the keys but once the MFA is enabled, the user input will be
+  required to generate the key.
+
+## Prerequisites
+
+---
+
+<Web3AuthPrerequisites />
+
+- A [Firebase](https://console.firebase.google.com) account to be used as Federated Identity Provider.
+
+- A [Google Developer](https://console.developers.google.com) account to be used as Identity provider for Firebase.
+
+## Setup
+
+---
+
+### Setup your Firebase Project
+
+- Go to your [Firebase console](https://console.firebase.google.com) and create a Web App. Follow
+  [this guide](https://firebase.google.com/docs/web/setup) on how to setup your Firebase Web App project.
+
+###### Create a Firebase Project
+
+- Create a new project by clicking on **Add project** or use your existing project from [Firebase console](https://console.firebase.google.com).
+
+  ![Firebase Project - Set up 1](/contents/guides/firebase/firebase-setup-project-1.svg)
+
+- Give your project a name and click on **Continue**
+
+  ![Firebase Project - Set up 2](/contents/guides/firebase/firebase-setup-project-2.svg)
+
+- Finally, click on **Create Project**
+
+  ![Firebase Project - Set up 3](/contents/guides/firebase/firebase-setup-project-3.svg)
+
+###### Select Authentication Provider
+
+- Once the project is created. Set up _authentication_ by clicking on the **Authentication** card from the home screen of your project or choose
+  _Authentication_ under **Build** from the left sidebar.
+
+  ![Firebase Project - Set up auth 1](/contents/guides/firebase/firebase-setup-auth-1.svg)
+
+- From **Sign-in method** tab, select any provider you wish to enanle. For the purpose of this guide, we'll be enabling **Google**.
+
+  ![Firebase Project - Set up auth 2](/contents/guides/firebase/firebase-setup-auth-2.svg)
+
+- Finally, toggle the **enable** button and click on **Save**
+
+  ![Firebase Project - Set up auth 3](/contents/guides/firebase/firebase-setup-auth-3.svg)
+
+###### Configure Firebase for Web
+
+- Once the project is created and authentication is configured. Let's use Firebase for Web by clicking on the `</>` button on the home screen of your
+  project.
+
+  ![Firebase Project - Set up web 1](/contents/guides/firebase/firebase-setup-web-1.svg)
+
+- In the next screen, enter the **App nickname** and click on **Register** button to register the app for Web.
+
+  ![Firebase Project - Set up web 2](/contents/guides/firebase/firebase-setup-web-2.svg)
+
+- Next screen shows ways to add **Firebase** to your application. We will be using the config from here later in the guide. Please keep a note of the
+  `firebaseConfig` object.
+
+  ![Firebase Project - Set up web 3](/contents/guides/firebase/firebase-setup-web-3.svg)
+
+### Setup your Web3Auth Dashboard
+
+<SetupWeb3AuthDashboard />
+
+- Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
+  configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. w3a-firebase-verifier`
+  - Select environment: `testnet`, `mainnet` or `cyan` as per your requirement.
+  - Select `Custom` from the **Login Provider**.
+  - Select `Sub` for the **JWT Verifier ID**.
+  - Enter `https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com` as the JWK endpoint for Firebase's idToken.
+  - JWT validation fields:
+    - iss: `https://securetoken.google.com/<firebase-project-id>`.
+    - aud: `<firebase-project-id>`
+  - Click on `Create` button to create your verifier. It may take up to 10 minutes to deploy verifier on _testnet_. You'll receive an email once it's
+    complete.
+
+  ![Custom Authentication - Create Firebase Verifier](/contents/guides/firebase/firebase-custom-verifier.png)
+
+- You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+
+## Using the Web3Auth SDK with Firebase
+
+---
+
+To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
+SDKs, please have a look at this [documentation page](/sdk).
+
+For this guide here, we will be talking through the [Web3Auth Plug and Play Core SDK](/sdk/web/core) and using it with Torus libraries to create an
+interface where the user can generate the private key without redirecting the user. As we are using Firebase we need to use the Firebase SDK.
+
+<SetupBaseProject />
+
+### Installation
+
+<InstallationWithOneKeyFlowFirebase />
+
+### Initialization
+
+<InitializationIntro />
+
+For this guide, we are focussing on the additional Torus libraries which are used alongside Firebase to create the one key flow.
+
+#### Instantiating Web3Auth
+
+<InstantiationWeb3Auth />
+
+#### Initialising the Openlogin Adapter
+
+```js
+const openloginAdapter = new OpenloginAdapter({
+  loginSettings: {
+    mfaLevel: "default",
+  },
+  adapterSettings: {
+    network: "testnet",
+    uxMode: "redirect",
+    loginConfig: {
+      jwt: {
+        name: "Web3Auth One Key Login Flow",
+        verifier,
+        typeOfLogin: "jwt",
+        clientId,
+      },
+    },
+  },
+});
+```
+
+Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom Auth `verifierName` in the loginConfig object.
+
+<InitializationWeb3Auth />
+
+##### Instantiating Torus for One Key Flow
+
+```js
+// Importing the packages
+import Torus from "@toruslabs/torus.js";
+import NodeDetailManager from "@toruslabs/fetch-node-details";
+import { subkey } from "@toruslabs/openlogin-subkey";
+```
+
+The above packages will help us fetching the node details and creating the private key.
+
+```js
+import Torus from "@toruslabs/torus.js";
+import NodeDetailManager from "@toruslabs/fetch-node-details";
+import { subkey } from "@toruslabs/openlogin-subkey";
+// Configurations for the network
+const TORUS_NETWORK = {
+  TESTNET: "testnet",
+  MAINNET: "mainnet",
+  CYAN: "cyan",
+};
+
+export const CONTRACT_MAP = {
+  [TORUS_NETWORK.MAINNET]: NodeDetailManager.PROXY_ADDRESS_MAINNET,
+  [TORUS_NETWORK.TESTNET]: NodeDetailManager.PROXY_ADDRESS_ROPSTEN,
+  [TORUS_NETWORK.CYAN]: NodeDetailManager.PROXY_ADDRESS_POLYGON,
+};
+
+export const NETWORK_MAP = {
+  [TORUS_NETWORK.MAINNET]: "https://rpc.ankr.com/eth",
+  [TORUS_NETWORK.TESTNET]: "https://rpc.ankr.com/eth_ropsten",
+  [TORUS_NETWORK.CYAN]: "https://rpc.ankr.com/polygon",
+};
+
+const network = NETWORK_MAP[TORUS_NETWORK.TESTNET];
+
+// Initializing the Torus instance
+
+const torus = new Torus({
+  enableOneKey: true,
+  network,
+});
+
+const nodeDetailManager = new NodeDetailManager({ network, proxyAddress: CONTRACT_MAP[TORUS_NETWORK.TESTNET] });
+```
+
+##### Initialize Firebase with Firebase configuration
+
+```js
+// Import the functions you need from the SDK
+import { initializeApp } from "firebase/app";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDEfyUmXDhgGWibRUro2EBoX8-TtBKMYyA",
+  authDomain: "web3auth-x-firebase-demo-e3332.firebaseapp.com",
+  projectId: "web3auth-x-firebase-demo-e3332",
+  storageBucket: "web3auth-x-firebase-demo-e3332.appspot.com",
+  messagingSenderId: "108145034076",
+  appId: "1:108145034076:web:3ff4c0088ec4c311b17799",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+```
+
+Import `initializeApp` from the Firebase SDK and use the firebaseConfig obtained above to initialize the Firebase web app.
+
+### Authentication
+
+Login is a two step process:
+
+1. Firstly, we will login with **Firebase(Google)** to get the `idToken`.
+2. Next, we will pass the received `idToken` to a parse function to check the parameters of the user. We will then fetch the details of the nodes
+   shares on the Torus Network. If the user hasn't enabled one key login, we login using Torus libraries, else we pass the token to Web3Auth SDK to
+   generate the keypair.
+
+##### Login with Firebase
+
+```js
+import { GoogleAuthProvider, getAuth, signInWithPopup, UserCredential } from "firebase/auth";
+
+const signInWithGoogle = async (): Promise<UserCredential> => {
+  try {
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider();
+    const res = await signInWithPopup(auth, googleProvider);
+    return res;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+const loginRes = await signInWithGoogle();
+const idToken = await loginRes.user.getIdToken(true); // this idToken will be passed to web3auth
+```
+
+##### Login with Torus/Web3Auth
+
+Once initialized, and `idToken` is obtained from **Firebase**, we need to parse the `idToken` to check the parameters of the user.
+
+```js
+// creating a parsing token function
+const parseToken = (token: any) => {
+  const base64Url = idToken?.split(".")[1];
+  const base64 = base64Url?.replace("-", "+").replace("_", "/");
+  return JSON.parse(window.atob(base64 || ""));
+};
+
+const { sub } = parseToken(idToken);
+
+// get details of the node shares on the torus network
+
+const { torusNodeEndpoints, torusNodePub, torusIndexes } = await nodeDetailManager.getNodeDetails({ verifier, verifierId: sub });
+const userDetails = await torus.getUserTypeAndAddress(torusNodeEndpoints, torusNodePub, { verifier, verifierId: sub }, true);
+```
+
+Now we check if the user has enabled one key login and accordingly make calls to the Torus libraries or Web3Auth SDK.
+
+```js
+// check if the user hasn't enabled one key login
+if (userDetails.typeOfUser === "v2" && !userDetails.upgraded) {
+  // if YES, login directly with the torus libraries within your app
+  const keyDetails = await torus.retrieveShares(torusNodeEndpoints, torusIndexes, verifier, { verifier_id: sub }, idToken, {});
+  // use the private key to get the provider
+  const finalPrivKey = subkey(keyDetails.privKey.padStart(64, "0"), Buffer.from(clientId, "base64")).padStart(64, "0");
+  const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+    config: {
+      chainConfig,
+    },
+  });
+  await ethereumPrivateKeyProvider.setupProvider(finalPrivKey);
+} else {
+  // if NO, login with web3auth
+  const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+    loginProvider: "jwt",
+    extraLoginOptions: {
+      id_token: idToken,
+      verifierIdField: "sub",
+      domain: "http://localhost:3000",
+    },
+  });
+}
+```
+
+When connecting using Torus, your `retrieveShares` functions takes various arguements to fetch details from the Torus network. We retrieve the shares
+and use `subkey` to create the final private key for the user. Subkey package is required to make sure user will get same key even after enabling mfa.
+We then use the `ethereumPrivateKeyProvider` to get the provider.
+
+When connecting using Web3Auth, your `connectTo` function takes the arguments for the adapter you want to connect to and the options for the login.
+Few major things to note here is the `idToken` and `domain` option in the `extraLoginOptions` object. This is the idToken received from Firebase SDK
+and domain is your application domain so that you can be redirected after login from the Web3Auth Plug and Play Core SDK.
+
+### Get the User Profile
+
+<Tabs
+defaultValue="mfa"
+values={[
+  { label: "MFA Enabled", value: "mfa" },
+  { label:"MFA Disabled", value:"mfa-disabled" },
+]}
+>
+
+<TabItem value="mfa">
+
+```js
+const user = await web3auth.getUserInfo();
+console.log("User info", user);
+```
+
+</TabItem>
+
+<TabItem value="mfa-disabled">
+
+```js
+NEED TO ADD THIS
+```
+
+</TabItem>
+
+</Tabs>
+
+Depending if the user has enabled MFA or not the functions to get the user profile will be different. If the user has enabled MFA, you can use the
+`getUserInfo` function to get the user profile.
+
+### Logout
+
+Logging out your user is as simple as calling the `logout` function.
+
+```js
+await web3auth.logout();
+```
+
+### Interacting with Blockchain
+
+<InteractingWithBlockchain />
+
+## Example code
+
+The code for the application we developed in this guide can be found in the
+[Web3Auth Firebase Example](https://github.com/Web3Auth/examples/tree/main/web-core-sdk/one-key-flow). Check it out and try running it locally
+yourself!
+
+## Questions?
+
+Ask us on [Web3Auth's Github Discussion Board](https://web3auth.io/discussions)
