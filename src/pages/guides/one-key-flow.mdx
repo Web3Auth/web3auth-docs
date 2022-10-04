@@ -1,10 +1,10 @@
 ---
 title: Using Web3Auth One Key Flow
-image: "/docs/contents/guides/banners/firebase.png"
+image: "/docs/contents/guides/banners/one-key-flow.png"
 description: Learn how to use Web3Auth One Key Flow to authenticate users with Firebase.
 type: guide
 tags: [web, one key flow, "@web3auth/core", firebase, custom authentication, react, ethereum]
-date: 23rd August 2022
+date: 4th October 2022
 author: Web3Auth Team
 order: 2
 ---
@@ -388,9 +388,32 @@ Depending if the user has enabled MFA or not the functions to get the user profi
 
 Logging out your user is as simple as calling the `logout` function.
 
+<Tabs
+defaultValue="mfa"
+values={[
+  { label: "MFA Enabled", value: "mfa" },
+  { label:"MFA Disabled", value:"mfa-disabled" },
+]}
+>
+
+<TabItem value="mfa">
+
 ```js
 await web3auth.logout();
 ```
+
+</TabItem>
+
+<TabItem value="mfa-disabled">
+
+```js
+// Just Reload the page
+window.location.reload();
+```
+
+</TabItem>
+
+</Tabs>
 
 ### Interacting with Blockchain
 
