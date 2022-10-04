@@ -4,21 +4,10 @@ import TabItem from "@theme/TabItem";
 For this project, you need to add the following Web3Auth dependencies to your package.json
 
 ```shell
-npm install --save @web3auth/core @web3auth/openlogin-adapter @web3auth/base @toruslabs/torus.js @toruslabs/openlogin-subkey @toruslabs/fetch-node-details web3 firebase
+npm install --save @web3auth/core @web3auth/openlogin-adapter @web3auth/base @toruslabs/torus.js @toruslabs/openlogin-subkey @toruslabs/fetch-node-details web3
 ```
 
 #### Understanding the Dependencies
-
-<Tabs
-defaultValue="web3auth"
-values={[
-  { label: "Web3Auth Dependencies", value: "web3auth" },
-  { label:"Torus Dependencies", value:"torus" },
-  { label: "Web3 Libraries", value: "web3" },
-  { label: "Firebase SDK", value: "firebase" },
-]}
->
-<TabItem value="web3auth">
 
 #### Web3Auth Dependencies
 
@@ -47,14 +36,15 @@ building process. This reduces errors to a very large extent.
 npm install --save @web3auth/base
 ```
 
-</TabItem>
-<TabItem value="torus">
-
 #### Web3 Libraries
 
 ##### `@toruslabs/torus.js`
 
-This is the JS utility library for Torus that we can use to make calls to the Torus Network.
+This is the JS utility library for Torus that we can use to make calls to the Torus Network. This library handles these checks and allows you to query
+the Torus network easily through these APIs:
+
+- retrieveShares
+- getUserTypeAndAddress
 
 ```shell
 npm install --save @toruslabs/torus.js
@@ -62,8 +52,8 @@ npm install --save @toruslabs/torus.js
 
 ##### `@toruslabs/openlogin-subkey`
 
-This is a helper library that helps with the generation of app-scoped keys. We will use this library to generate the private key from the custom
-authentication token.
+This is a helper library that helps with the generation of app-scoped keys. Subkey package is required to make sure user will get same key even after
+enabling MFA.
 
 ```shell
 npm install --save @toruslabs/openlogin-subkey
@@ -77,9 +67,6 @@ This package is used to fetch details of the Torus node that we will be using fo
 npm install --save @toruslabs/fetch-node-details
 ```
 
-</TabItem>
-<TabItem value="web3">
-
 #### Web3 Libraries
 
 ##### `web3`/ `ethers`/ `@solana/web3.js`
@@ -92,22 +79,3 @@ We'll be using `web3` for this guide.
 ```shell
 npm install --save web3
 ```
-
-</TabItem>
-
-<TabItem value="firebase">
-
-#### Firebase SDK
-
-##### `firebase`
-
-We will be installing `firebase` to enable Firebase auth in our application. If you're already using npm and a module bundler such as webpack or
-Rollup, you can run the following command to install the latest SDK:
-
-```shell
-npm install --save firebase
-```
-
-</TabItem>
-
-</Tabs>
