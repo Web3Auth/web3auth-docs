@@ -111,7 +111,93 @@ SDKs, please have a look at this [documentation page](/sdk).
 For this guide here, we will be talking through the [Web3Auth Plug and Play Core SDK](/sdk/web/core) and using it with Torus libraries to create an
 interface where the user can generate the private key without redirecting the user.
 
-<SetupBaseProject />
+Setting up your base project for using Web3 libraries: If you are starting from scratch, to set up this project locally, you will need to create a
+base Web application, where you can install the required dependencies. However, while working with Web3, there are a few base libraries, which need
+additional configuration. This is because certain packages are not available in the browser environment, and we need to polyfill them manually.
+
+#### create-react-app
+
+If you are using `create-react-app` version >= 5 you may run into issues building. The issue can be resolved following the instructions below:
+
+#### Solution
+
+- Install `react-app-rewired` and the missing modules into your application
+
+```bash npm2yarn
+npm install --save-dev react-app-rewired crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process
+```
+
+- Create `config-overrides.js` in the root of your project folder with the content:
+
+```js
+const webpack = require("webpack");
+
+module.exports = function override(config) {
+  const fallback = config.resolve.fallback || {};
+  Object.assign(fallback, {
+    crypto: require.resolve("crypto-browserify"),
+    stream: require.resolve("stream-browserify"),
+    assert: require.resolve("assert"),
+    http: require.resolve("stream-http"),
+    https: require.resolve("https-browserify"),
+    os: require.resolve("os-browserify"),
+    url: require.resolve("url"),
+  });
+  config.module.rules.unshift({
+    test: /\.m?js$/,
+    resolve: {
+      fullySpecified: false, // disable the behavior
+    },
+  });
+  config.resolve.fallback = fallback;
+  config.plugins = (config.plugins || []).concat([
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+      Buffer: ["buffer", "Buffer"],
+    }),
+  ]);
+  config.ignoreWarnings = [/Failed to parse source map/];
+  return config;
+};
+```
+
+- Within `package.json` change the scripts field for start, build and test. Instead of `react-scripts` replace it with `react-app-rewired`
+
+<Tabs
+  defaultValue="after"
+  values={[
+    { label: "before", value: "before" },
+    { label: "after", value: "after" },
+]}
+>
+
+<TabItem value="before">
+
+```typescript
+"scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+},
+```
+
+</TabItem>
+
+<TabItem value="after">
+
+```typescript
+"scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+},
+```
+
+</TabItem>
+
+</Tabs>
 
 ### Installation
 
