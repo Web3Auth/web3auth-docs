@@ -1,7 +1,7 @@
 ---
-title: Using Web3Auth One Key Flow
+title: Using Web3Auth without redirect
 image: "/docs/contents/guides/banners/one-key-flow.png"
-description: Learn how to use Web3Auth One Key Flow to authenticate users with Firebase.
+description: Learn how to use Web3Auth to authenticate users without redirecting.
 type: guide
 tags: [web, one key flow, "@web3auth/core", custom authentication, react, ethereum]
 date: 4th October 2022
@@ -30,8 +30,15 @@ import SEO from "@site/src/components/SEO";
   slug="/guides/one-key-flow"
 />
 
-This guide will cover the basics of how to set up your Web3Auth SDK as a One Key Flow and Firebase for authenticating your users via a single page.
-For this particular guider we are using Firebase as our authentication provider, but <b>you can use any provider you want</b>. This particular user
+## Introduction
+
+Adding Web3Auth Plug and Play SDKs to your application is a great way to authenticate users and generating their private key. The users are redirected
+to OpenLogin where they can sign in with their favourite social login or a custom JWT provider and then redirected back to your application.
+
+However, there are cases where you may want to use Web3Auth without redirecting the user to a new page. This guide will cover a way to authenticate
+users without redirecting them to a new page.
+
+For this particular guide we are using Firebase as our authentication provider, but <b>you can use any provider you want</b>. This particular user
 flow allows a much simpler and more streamlined experience for your users.
 
 ## Quick Start
@@ -101,7 +108,7 @@ Below are the steps to setup Firebase as JWT Provider. The same steps can be fol
 
 - You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
 
-## Using the Web3Auth SDK with One Key Flow
+## Using the Web3Auth SDK without redirecting
 
 ---
 
@@ -205,7 +212,16 @@ module.exports = function override(config) {
 
 ### Initialization
 
-<InitializationIntro />
+Once installed, your Web3Auth application needs to be initialized. Initialization is a 4 step process where we add all the config details for
+Web3Auth:
+
+1. Instantiation
+2. Configuration of Adapters
+3. Initialization of the Web3Auth
+4. Initialization of the Torus
+
+Please make sure all of this is happening in your application constructor. This makes sure that Web3Auth is initialised when your application starts
+up.
 
 For this guide, we are focussing on the additional Torus libraries which are used alongside Firebase to create the one key flow.
 
@@ -239,7 +255,7 @@ Here, you need to pass over your Web3Auth `clientId` in the adapterSettings obje
 
 <InitializationWeb3Auth />
 
-##### Instantiating Torus for One Key Flow
+##### Initialising Torus
 
 ```js
 // Importing the packages
@@ -286,7 +302,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-import { GoogleAuthProvider, getAuth, signInWithPopup, UserCredential } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, signInWithPopup, UserCredential, User } from "firebase/auth";
 
 const signInWithGoogle = async (): Promise<UserCredential> => {
   try {
@@ -313,6 +329,7 @@ Once initialized, and `idToken` is obtained from **Firebase**, we need to parse 
 
 ```js
 // creating a parsing token function
+// this is a generic function which can parse tokens from any JWT token provider
 const parseToken = (token: any) => {
   const base64Url = idToken?.split(".")[1];
   const base64 = base64Url?.replace("-", "+").replace("_", "/");
@@ -372,6 +389,27 @@ const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 When connecting using Web3Auth, your `connectTo` function takes the arguments for the adapter you want to connect to and the options for the login.
 Few major things to note here is the `idToken` and `domain` option in the `extraLoginOptions` object. This is the idToken received from Firebase SDK
 and domain is your application domain so that you can be redirected after login from the Web3Auth Plug and Play Core SDK.
+
+#### How to enable Multi Factor Authentication(MFA) for your users
+
+Currently, if MFA is disabled we can generate the private key of the user in the backend using the Torus libraries and then pass it to the frontend.
+If the MFA is enabled for the user, the user input will be required to generate the private key and then the user will be able to login.
+
+The following code snippet depicts how to enable MFA for users while using Firebase as the JWT provider.
+
+```js
+// getting the current user id token
+const auth = getAuth(app);
+const user = auth.currentUser;
+const idToken = await user.getIdToken(true);
+
+// login with mfa interface to enable mfa.
+
+const userInfo =  // NEED TO ADD THIS
+
+```
+
+You cannot deactive MFA for a user once its activated.
 
 ### Get the User Profile
 
@@ -441,7 +479,63 @@ window.location.reload();
 
 ### Interacting with Blockchain
 
-<InteractingWithBlockchain />
+So if you have completed this far, it means that you have successfully authenticated your user. Now, you can use the provider returned by Web3Auth as
+`web3auth.provider` to interact with your blockchain. You can use the [Provider SDKs](/sdk/web/providers/) to perform RPC Calls to your blockchain.
+
+Web3Auth is chain agnostic, ie. depending on whatever blockchain or layer-2 you use, Web3Auth can easily support that. Web3Auth has native providers
+for EVM and Solana blockchains and for others, you can get the private key in the user scope and make RPC calls. For standardising the type of
+provider, Web3Auth Base provides a `SafeEventEmitterProvider` from which you can create your own provider.
+
+- [Ethereum Provider](/sdk/web/providers/evm) gives you the capability of making RPC calls to the EVM compatible blockchains.
+- [Solana Provider](/sdk/web/providers/solana) gives you the capability of making RPC calls to the Solana blockchain.
+- If you want to use any other chain except Solana or EVM chains, for ex: Starknet, you can specify the value of `chainNamespace` field as other in
+  the Web3Auth SDK Constructor. Refer to: [Using other blockchains](/sdk/web/providers/other)
+
+### Get User Accounts
+
+<Tabs
+defaultValue="web3"
+values={[
+  { label: "Web3", value: "web3" },
+  { label: "Ethers.js", value: "ethers.js" },
+]}
+>
+<TabItem value="web3">
+
+```js
+const getAccounts = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const web3 = new Web3(provider as any)
+  const userAccounts = await web3.eth.getAccounts()
+  uiConsole(userAccounts)
+}
+```
+
+  </TabItem>
+<TabItem value="ethers.js">
+
+```js
+const getAccounts = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const provider = new ethers.providers.Web3Provider(provider as any);
+  const signer = provider.getSigner();
+  const userAccounts = await signer.getAddress();
+  uiConsole(userAccounts)
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+There are a lot of other functions that you can perform with the provider. You can refer to these
+[documentation](/docs/connect-blockchain/ethereum#get-user-info) to get more information about the functions you can perform with the provider.
 
 ## Example code
 
