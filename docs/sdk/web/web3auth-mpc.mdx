@@ -1,5 +1,5 @@
 ---
-title: "web3auth-mpc:alpha"
+title: "web3auth-mpc: alpha (α)"
 displayed_sidebar: sdk
 description: "@web3auth-mpc/web3auth package | Documentation - Web3Auth"
 ---
@@ -13,7 +13,7 @@ network is a new paradigm that can provide numerous benefits, especially in term
 
 :::tip demo
 
-Vist https://demo-mpc.web3auth.io to test the Web3Auth's MPC.
+Visit https://demo-mpc.web3auth.io to see Web3Auth's MPC in action.
 
 :::
 
@@ -41,7 +41,7 @@ import { Web3Auth } from "@web3auth-mpc/web3auth";
 Some other helper libraries too:
 
 ```js
-import { keccak256, safeatob } from "@toruslabs/openlogin-utils";
+import { safeatob } from "@toruslabs/openlogin-utils";
 import { post } from "@toruslabs/http-helpers";
 import BN from "bn.js";
 import { io, Socket } from "socket.io-client";
@@ -71,7 +71,7 @@ The following are the React specific code. Please update/adjust based on your la
 
 ```js
 const getPublicKeyFromTSSShare = async (tssShare: string, signatures: string[]): Promise<string> => {
-  // check if TSS is available
+  // checks whether TSS is available or not
   if (!tssShare || !Array.isArray(signatures) || signatures.length === 0) {
     throw new Error("tssShare or signatures not available");
   }
@@ -118,7 +118,6 @@ const getPublicKeyFromTSSShare = async (tssShare: string, signatures: string[]):
     return delta;
   };
 
-  // TODO: extend
   const localIndex = 1;
   const remoteIndex = 0;
   const parties = [0, 1];
@@ -195,9 +194,7 @@ const setupTSS = async (tssShare: string, pubKey: string, verifierName: string, 
   };
 
   const base64Share = Buffer.from(parsedTSSShare.share.padStart(64, "0"), "hex").toString("base64");
-  // TODO: extend
   const localIndex = 1;
-  const remoteIndex = 0;
   const parties = [0, 1];
 
   return new Client(`${verifierName}~${verifierId}:${Date.now()}`, localIndex, parties, endpoints, sockets, base64Share, pubKey, true, tssImportURL);
@@ -275,9 +272,6 @@ useEffect(() => {
       const generatePrecompute = async () => {
         if (!getTSSData) {
           throw new Error("tssShare and signatures are not defined");
-        }
-        if (!provider) {
-        	throw new Error("not initialized");
         }
         const { aggregateVerifier: verifierName, verifierId } =
           await web3auth.getUserInfo();
