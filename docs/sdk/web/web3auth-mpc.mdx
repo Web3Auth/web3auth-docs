@@ -1,0 +1,580 @@
+---
+title: "web3auth-mpc:alpha"
+displayed_sidebar: sdk
+description: "@web3auth-mpc/web3auth package | Documentation - Web3Auth"
+---
+
+# Getting started with Web3Auth's MPC
+
+Web3Auth provides MPC (Multi-Party Computation)-based threshold signature schemes.
+
+The Threshold Signature Scheme (TSS) is a cryptographic primitive for distributed key generation and signing. The use of TSS in Web3Auth's Auth
+network is a new paradigm that can provide numerous benefits, especially in terms of security.
+
+:::tip demo
+
+Vist https://demo-mpc.web3auth.io to test the Web3Auth's MPC.
+
+:::
+
+## Installation
+
+---
+
+```bash npm2yarn
+npm install --save @toruslabs/tss-client @toruslabs/tss-lib @web3auth-mpc/openlogin-adapter @web3auth-mpc/web3auth
+```
+
+## Instantiation
+
+---
+
+### Import the following packages
+
+```js
+import { Client } from "@toruslabs/tss-client";
+import * as tss from "@toruslabs/tss-lib";
+import { OpenloginAdapter } from "@web3auth-mpc/openlogin-adapter";
+import { Web3Auth } from "@web3auth-mpc/web3auth";
+```
+
+Some other helper libraries too:
+
+```js
+import { keccak256, safeatob } from "@toruslabs/openlogin-utils";
+import { post } from "@toruslabs/http-helpers";
+import BN from "bn.js";
+import { io, Socket } from "socket.io-client";
+import { ec as EC } from "elliptic";
+const ec = new EC("secp256k1");
+```
+
+### TSS Endpoint and ImportURL
+
+```js
+const tssServerEndpoint = "https://swaraj-test-coordinator-1.k8.authnetwork.dev/tss";
+const tssImportURL = "https://cloudflare-ipfs.com/ipfs/QmWxSMacBkunyAcKkjuDTU9yCady62n3VGW2gcUEcHg6Vh";
+const clientId = "BBP_6GOu3EJGGws9yd8wY_xFT0jZIWmiLMpqrEMx36jlM61K9XRnNLnnvEtGpF-RhXJDGMJjL-I-wTi13RcBBOo"; // Change this with your Client ID from https://dashboard.web3auth.io
+```
+
+## TSS Functions
+
+---
+
+:::note
+
+The following are the React specific code. Please update/adjust based on your lang/framework.
+
+:::
+
+### `getPublicKeyFromTSSShare`
+
+```js
+const getPublicKeyFromTSSShare = async (tssShare: string, signatures: string[]): Promise<string> => {
+  // check if TSS is available
+  if (!tssShare || !Array.isArray(signatures) || signatures.length === 0) {
+    throw new Error("tssShare or signatures not available");
+  }
+  const parsedTSSShare = {
+    share: tssShare.split("-")[0].split(":")[1],
+    index: tssShare.split("-")[1].split(":")[1],
+  };
+
+  const parsedSignatures = signatures.map(s => JSON.parse(s));
+  const chosenSignature =
+    parsedSignatures[Math.floor(Math.random() * parsedSignatures.length)];
+  const { verifier_name: verifierName, verifier_id: verifierId } = JSON.parse(
+    safeatob(chosenSignature.data),
+  );
+  if (!verifierName || !verifierId) {
+    throw new Error("verifier_name and verifier_id must be specified");
+  }
+
+  const { share_pub_x: sharePubX, share_pub_y: sharePubY } = await post<{
+    // eslint-disable-next-line camelcase
+    share_pub_x: string;
+    // eslint-disable-next-line camelcase
+    share_pub_y: string;
+  }>(`${tssServerEndpoint}/getOrCreateTSSPub`, {
+    verifier_name: verifierName,
+    verifier_id: verifierId,
+  });
+
+  const getLagrangeCoeff = (partyIndexes: BN[], partyIndex: BN): BN => {
+    let upper = new BN(1);
+    let lower = new BN(1);
+    for (let i = 0; i < partyIndexes.length; i += 1) {
+      const otherPartyIndex = partyIndexes[i];
+      if (!partyIndex.eq(otherPartyIndex)) {
+        upper = upper.mul(otherPartyIndex.neg());
+        upper = upper.umod(ec.curve.n);
+        let temp = partyIndex.sub(otherPartyIndex);
+        temp = temp.umod(ec.curve.n);
+        lower = lower.mul(temp).umod(ec.curve.n);
+      }
+    }
+
+    const delta = upper.mul(lower.invm(ec.curve.n)).umod(ec.curve.n);
+    return delta;
+  };
+
+  // TODO: extend
+  const localIndex = 1;
+  const remoteIndex = 0;
+  const parties = [0, 1];
+  const pubKeyPoint = ec
+    .keyFromPublic({ x: sharePubX, y: sharePubY })
+    .getPublic()
+    .mul(
+      getLagrangeCoeff(
+        parties.map(p => new BN(p + 1)),
+        new BN(remoteIndex + 1),
+      ),
+    )
+    .add(
+      ec
+        .keyFromPrivate(
+          Buffer.from(parsedTSSShare.share.padStart(64, "0"), "hex"),
+        )
+        .getPublic()
+        .mul(
+          getLagrangeCoeff(
+            parties.map(p => new BN(p + 1)),
+            new BN(localIndex + 1),
+          ),
+        ),
+    );
+  const pubKeyX = pubKeyPoint.getX().toString(16, 64);
+  const pubKeyY = pubKeyPoint.getY().toString(16, 64);
+  const pubKeyHex = `${pubKeyX}${pubKeyY}`;
+  const pubKey = Buffer.from(pubKeyHex, "hex").toString("base64");
+
+  return pubKey;
+};
+```
+
+### `createSockets`
+
+```js
+const createSockets = async (wsEndpoints: (string | null | undefined)[]): Promise<(Socket | null)[]> => {
+  const sockets = wsEndpoints.map((wsEndpoint) => {
+    if (wsEndpoint === null || wsEndpoint === undefined) {
+      return null;
+    }
+    const origin = new URL(wsEndpoint).origin;
+    const path = `${new URL(wsEndpoint).pathname}/socket.io/`;
+    return io(origin, { path });
+  });
+
+  await new Promise((resolve) => {
+    const timer = setInterval(() => {
+      for (let i = 0; i < sockets.length; i++) {
+        const socket = sockets[i];
+        if (socket === null) continue;
+        if (!socket.id) return;
+      }
+      clearInterval(timer);
+      resolve(true);
+    }, 500);
+  });
+
+  return sockets;
+};
+```
+
+### `setupTSS`
+
+```js
+const setupTSS = async (tssShare: string, pubKey: string, verifierName: string, verifierId: string): Promise<any> => {
+  const endpoints = [tssServerEndpoint, null];
+  const wsEndpoints = [tssServerEndpoint, null];
+  const sockets = await createSockets(wsEndpoints);
+  const parsedTSSShare = {
+    share: tssShare.split("-")[0].split(":")[1],
+    index: tssShare.split("-")[1].split(":")[1],
+  };
+
+  const base64Share = Buffer.from(parsedTSSShare.share.padStart(64, "0"), "hex").toString("base64");
+  // TODO: extend
+  const localIndex = 1;
+  const remoteIndex = 0;
+  const parties = [0, 1];
+
+  return new Client(`${verifierName}~${verifierId}:${Date.now()}`, localIndex, parties, endpoints, sockets, base64Share, pubKey, true, tssImportURL);
+};
+```
+
+### onMount/useEffect
+
+```js
+useEffect(() => {
+  const init = async () => {
+    try {
+      const web3auth = new Web3Auth({
+        clientId,
+        uiConfig: {
+          appLogo: "https://images.web3auth.io/web3auth-logo-w.svg",
+          theme: "light",
+        },
+        chainConfig: {
+          chainNamespace: "eip155",
+          chainId: "0x1",
+          rpcTarget: "https://rpc.ankr.com/eth",
+        },
+      });
+
+      let getTSSData: () => Promise<{
+        tssShare: string;
+        signatures: string[];
+      }>;
+
+      const tssGetPublic = async () => {
+        if (!getTSSData) {
+          throw new Error("tssShare / sigs are undefined");
+        }
+        const { tssShare, signatures } = await getTSSData();
+        const pubKey = await getPublicKeyFromTSSShare(tssShare, signatures);
+        return Buffer.from(pubKey, "base64");
+      };
+
+      const clients: { client: any; allocated: boolean }[] = [];
+
+      const tssSign = async (msgHash: Buffer) => {
+        // For now, we are calling generatePrecompute() here.
+        // But it would be best to call generatePrecompute() before making a transaction.
+        generatePrecompute();
+        const finalHash = `0x${msgHash.toString("hex")}`;
+        let foundClient = null;
+
+        while (!foundClient) {
+          for (let i = 0; i < clients.length; i++) {
+            const client = clients[i];
+            if (!client.allocated) {
+              client.allocated = true;
+              foundClient = client;
+            }
+          }
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+        await foundClient.client;
+        await tss.default(tssImportURL);
+        const { r, s, recoveryParam } = await foundClient.client.sign(
+          tss as any,
+          Buffer.from(msgHash).toString("base64"),
+          true,
+          "",
+          "keccak256",
+        );
+        return {
+          v: recoveryParam + 27,
+          r: Buffer.from(r.toString("hex"), "hex"),
+          s: Buffer.from(s.toString("hex"), "hex"),
+        };
+      };
+
+      const generatePrecompute = async () => {
+        if (!getTSSData) {
+          throw new Error("tssShare and signatures are not defined");
+        }
+        if (!provider) {
+        	throw new Error("not initialized");
+        }
+        const { aggregateVerifier: verifierName, verifierId } =
+          await web3auth.getUserInfo();
+        if (!verifierName || !verifierId) {
+          throw new Error("not logged in, verifier or verifierId undefined");
+        }
+
+        const { tssShare } = await getTSSData();
+        const pubKey = (await tssGetPublic()).toString("base64");
+        const client = await setupTSS(
+          tssShare,
+          pubKey,
+          verifierName,
+          verifierId,
+        );
+        await tss.default(tssImportURL);
+        client.precompute(tss as any);
+        await client.ready;
+        clients.push({ client, allocated: false });
+      };
+
+      const openloginAdapter = new OpenloginAdapter({
+        loginSettings: {
+          mfaLevel: "mandatory",
+        },
+        tssSettings: {
+          useTSS: true,
+          tssGetPublic,
+          tssSign,
+          tssDataCallback: async tssDataReader => {
+            getTSSData = tssDataReader;
+          },
+        },
+        adapterSettings: {
+          _iframeUrl: "https://mpc-beta.openlogin.com",
+          network: "development",
+          clientId,
+        },
+      });
+      (window as any).openloginAdapter = openloginAdapter;
+
+      web3auth.configureAdapter(openloginAdapter);
+
+      await web3auth.initModal({
+        modalConfig: {
+          "torus-evm": {
+            label: "Torus Wallet",
+            showOnModal: false,
+          },
+          metamask: {
+            label: "Metamask",
+            showOnModal: false,
+          },
+          "wallet-connect-v1": {
+            label: "Wallet Connect",
+            showOnModal: false,
+          },
+        },
+      });
+      setWeb3auth(web3auth);
+
+      if (web3auth.provider) {
+        setProvider(web3auth.provider);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  init();
+}, []);
+```
+
+## Interacting with the Blockchain
+
+---
+
+All of your blockchain transaction calls remains same but with Web3Auth MPC's security and faster speed.
+
+:::note checkout-difference
+
+To see the difference from the current standard, please checkout https://mpc-compare.web3auth.io
+
+:::
+
+So if you have completed this far, it means that you have successfully authenticated your user. Now, you can use the provider returned by Web3Auth as
+`web3auth.provider` to interact with your blockchain.
+
+### Get User Accounts
+
+<Tabs
+defaultValue="web3"
+values={[
+  { label: "Web3", value: "web3" },
+  { label: "Ethers.js", value: "ethers.js" },
+]}
+>
+<TabItem value="web3">
+
+```js
+const getAccounts = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const web3 = new Web3(provider as any)
+  const userAccounts = await web3.eth.getAccounts()
+  uiConsole(userAccounts)
+}
+```
+
+  </TabItem>
+<TabItem value="ethers.js">
+
+```js
+const getAccounts = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const provider = new ethers.providers.Web3Provider(provider as any);
+  const signer = provider.getSigner();
+  const userAccounts = await signer.getAddress();
+  uiConsole(userAccounts)
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### View User Balance
+
+<Tabs
+defaultValue="web3"
+values={[
+  { label: "Web3", value: "web3" },
+  { label: "Ethers.js", value: "ethers.js" },
+]}
+>
+<TabItem value="web3">
+
+```js
+const getBalance = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const web3 = new Web3(provider as any)
+  const accounts = await web3.eth.getAccounts()
+  const balance = await web3.eth.getBalance(accounts[0])
+  uiConsole(web3.utils.fromWei(balance) + ' ETH')
+}
+```
+
+  </TabItem>
+<TabItem value="ethers.js">
+
+```js
+const getBalance = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const provider = new ethers.providers.Web3Provider(this.provider as any)
+  const signer = provider.getSigner()
+  const account = await signer.getAddress()
+  // Get user's balance in ether
+  const balance = ethers.utils.formatEther(
+    await provider.getBalance(account), // Balance is in wei
+  )
+  uiConsole(balance + ' ETH')
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Sign Message
+
+<Tabs
+defaultValue="web3"
+values={[
+  { label: "Web3", value: "web3" },
+  { label: "Ethers.js", value: "ethers.js" },
+]}
+>
+<TabItem value="web3">
+
+```js
+const signMessage = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const web3 = new Web3(provider as any)
+  // Get user's Ethereum public address
+  const fromAddress = (await web3.eth.getAccounts())[0]
+
+  const message =
+    '0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad'
+
+  ;(web3.currentProvider as any)?.send(
+    {
+      method: 'eth_sign',
+      params: [fromAddress, message],
+      from: fromAddress,
+    },
+    (err: Error, result: any) => {
+      if (err) {
+        return console.error(err)
+      }
+      uiConsole(result)
+    },
+  )
+}
+```
+
+  </TabItem>
+<TabItem value="ethers.js">
+
+```js
+const signMessage = async () => {
+  if (!provider) {
+    uiConsole("provider not initialized yet");
+    return;
+  }
+  const provider = new ethers.providers.Web3Provider(provider);
+  const signer = provider.getSigner();
+
+  const originalMessage = "YOUR_ORIGINAL_MESSAGE";
+
+  const signedMessage = await signer.signMessage(originalMessage);
+  uiConsole(signedMessage);
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+### Send Transaction
+
+<Tabs
+defaultValue="web3"
+values={[
+  { label: "Web3", value: "web3" },
+  { label: "Ethers.js", value: "ethers.js" },
+]}
+>
+<TabItem value="web3">
+
+```js
+const sendTransaction = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const web3 = new Web3(provider as any)
+  const accounts = await web3.eth.getAccounts()
+
+  const txRes = await web3.eth.sendTransaction({
+    from: accounts[0],
+    to: accounts[0],
+    value: web3.utils.toWei('0.0001'),
+  })
+  uiConsole(txRes.transactionHash)
+}
+```
+
+  </TabItem>
+<TabItem value="ethers.js">
+
+```js
+const sendTransaction = async () => {
+  if (!provider) {
+    uiConsole("provider not initialized yet");
+    return;
+  }
+  const provider = new ethers.providers.Web3Provider(provider);
+  const signer = provider.getSigner();
+  const address = await signer.getAddress();
+
+  const tx = await signer.sendTransaction({
+    to: address,
+    value: ethers.utils.parseEther("0.0001"),
+  });
+  const receipt = await tx.wait();
+
+  uiConsole(receipt.transactionHash);
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+## Questions?
+
+Ask us on [Web3Auth's Github Discussion Board](https://web3auth.io/discussions) and add the `MPC` tag to your question.
