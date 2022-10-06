@@ -238,6 +238,7 @@ module.exports = {
           ],
         },
         "sdk/web/openlogin",
+        "sdk/web/web3auth-mpc",
         {
           type: "category",
           label: "Providers",
