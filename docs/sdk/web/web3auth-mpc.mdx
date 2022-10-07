@@ -22,7 +22,7 @@ Visit https://demo-mpc.web3auth.io to see Web3Auth's MPC in action.
 ---
 
 ```bash npm2yarn
-npm install --save @web3auth-mpc/web3auth @web3auth-mpc/openlogin-adapter @web3auth-mpc/base @toruslabs/tss-client @toruslabs/openlogin-utils @toruslabs/tss-lib @toruslabs/http-helpers
+npm install --save @web3auth-mpc/web3auth @web3auth-mpc/openlogin-adapter @web3auth-mpc/base torus-mpc
 ```
 
 ## Instantiation
@@ -31,327 +31,13 @@ npm install --save @web3auth-mpc/web3auth @web3auth-mpc/openlogin-adapter @web3a
 
 ### Import the following packages
 
-Import the following `@web3auth-mpc` packages into your projects.
+Import the following `@web3auth-mpc` and `torus-mpc` packages into your project.
 
 ```js
 import { Web3Auth } from "@web3auth-mpc/web3auth";
 import { OpenloginAdapter } from "@web3auth-mpc/openlogin-adapter";
 import { SafeEventEmitterProvider } from "@web3auth-mpc/base";
-```
-
-Some other helper libraries that's needed for now to work with MPC:
-
-:::info
-
-Web3Auth's MPC is in it's alpha(α) state.
-
-:::
-
-Create a new file named `mpc.ts` and add the followings to it. Later we will import some of these functions to our `App.tsx`.
-
-```js
-import { safeatob } from "@toruslabs/openlogin-utils";
-import { Client } from "@toruslabs/tss-client";
-import { io, Socket } from "socket.io-client";
-import * as tss from "@toruslabs/tss-lib";
-import { post } from "@toruslabs/http-helpers";
-import BN from "bn.js";
-import { ecrecover, pubToAddress } from "ethereumjs-util";
-//@ts-ignore
-import { ec as EC } from "elliptic";
-const ec = new EC("secp256k1");
-```
-
-### TSS Endpoint and ImportURL
-
-```js
-const tssServerEndpoint = "https://load-test-1.k8.authnetwork.dev/tss";
-const tssImportURL = "https://scripts.toruswallet.io/tss-lib.wasm";
-const clients: { client: any, allocated: boolean }[] = [];
-
-const clientId = "BBP_6GOu3EJGGws9yd8wY_xFT0jZIWmiLMpqrEMx36jlM61K9XRnNLnnvEtGpF-RhXJDGMJjL-I-wTi13RcBBOo";
-// Change this with your Client ID from https://dashboard.web3auth.io
-```
-
-Currently, to work with our MPC alpha SDK, you'll need to use these. In future, things will move in the frontend SDK itself for a smoother developer
-experience.
-
-Here, simply change the `clientId` with your project's Client Id from [Web3Auth's dashboard](https://dashboard.web3auth.io).
-
-## TSS Functions
-
----
-
-:::note
-
-The following are the React specific code. Please update/adjust based on your lang/framework.
-
-:::
-
-### `createSockets`
-
-```js
-const createSockets = async (wsEndpoints: (string | null | undefined)[]): Promise<(Socket | null)[]> => {
-  const sockets = wsEndpoints.map((wsEndpoint) => {
-    if (wsEndpoint === null || wsEndpoint === undefined) {
-      return null;
-    }
-    const origin = new URL(wsEndpoint).origin;
-    const path = `${new URL(wsEndpoint).pathname}/socket.io/`;
-    return io(origin, { path });
-  });
-
-  await new Promise((resolve) => {
-    const timer = setInterval(() => {
-      for (let i = 0; i < sockets.length; i++) {
-        const socket = sockets[i];
-        if (socket === null) continue;
-        if (!socket.id) return;
-      }
-      clearInterval(timer);
-      resolve(true);
-    }, 500);
-  });
-
-  return sockets;
-};
-```
-
-### `setupTSS`
-
-```js
-export async function setupTSS(tssShare: string, pubKey: string, verifierName: string, verifierId: string): Promise<any> {
-  const endpoints = [tssServerEndpoint, null];
-  const wsEndpoints = [tssServerEndpoint, null];
-  const sockets = await createSockets(wsEndpoints);
-  const parsedTSSShare = {
-    share: tssShare.split("-")[0].split(":")[1],
-    index: tssShare.split("-")[1].split(":")[1],
-  };
-
-  const base64Share = Buffer.from(parsedTSSShare.share.padStart(64, "0"), "hex").toString("base64");
-  const localIndex = 1;
-  const remoteIndex = 0;
-  const parties = [0, 1];
-
-  return new Client(`${verifierName}~${verifierId}:${Date.now()}`, localIndex, parties, endpoints, sockets, base64Share, pubKey, true, tssImportURL);
-}
-```
-
-### `tssDataCallback`
-
-```js
-let getTSSData: () => Promise<{
-  tssShare: string,
-  signatures: string[],
-  verifierName: string,
-  verifierId: string,
-}>;
-
-export async function tssDataCallback(
-  tssDataReader: () => Promise<{
-    tssShare: string,
-    signatures: string[],
-    verifierName: string,
-    verifierId: string,
-  }>
-) {
-  getTSSData = tssDataReader;
-}
-```
-
-### `tssGetPublic`
-
-```js
-export async function tssGetPublic() {
-  if (!getTSSData) {
-    throw new Error("tssShare / sigs are undefined");
-  }
-  const { tssShare, signatures } = await getTSSData();
-  const pubKey = await getPublicKeyFromTSSShare(tssShare, signatures);
-  return Buffer.from(pubKey, "base64");
-}
-```
-
-### `getPublicKeyFromTSSShare`
-
-```js
-export async function getPublicKeyFromTSSShare(
-	tssShare: string,
-	signatures: string[],
-): Promise<string> {
-	// checks whether TSS is available or not
-	if (!tssShare || !Array.isArray(signatures) || signatures.length === 0) {
-		throw new Error("tssShare or signatures not available");
-	}
-	const parsedTSSShare = {
-		share: tssShare.split("-")[0].split(":")[1],
-		index: tssShare.split("-")[1].split(":")[1],
-	};
-
-	const parsedSignatures = signatures.map(s => JSON.parse(s));
-	const chosenSignature =
-		parsedSignatures[Math.floor(Math.random() * parsedSignatures.length)];
-	const { verifier_name: verifierName, verifier_id: verifierId } = JSON.parse(
-		safeatob(chosenSignature.data),
-	);
-	if (!verifierName || !verifierId) {
-		throw new Error("verifier_name and verifier_id must be specified");
-	}
-
-	const { share_pub_x: sharePubX, share_pub_y: sharePubY } = await post<{
-		// eslint-disable-next-line camelcase
-		share_pub_x: string;
-		// eslint-disable-next-line camelcase
-		share_pub_y: string;
-	}>(`${tssServerEndpoint}/getOrCreateTSSPub`, {
-		verifier_name: verifierName,
-		verifier_id: verifierId,
-	});
-
-	const getLagrangeCoeff = (partyIndexes: BN[], partyIndex: BN): BN => {
-		let upper = new BN(1);
-		let lower = new BN(1);
-		for (let i = 0; i < partyIndexes.length; i += 1) {
-			const otherPartyIndex = partyIndexes[i];
-			if (!partyIndex.eq(otherPartyIndex)) {
-				upper = upper.mul(otherPartyIndex.neg());
-				upper = upper.umod(ec.curve.n);
-				let temp = partyIndex.sub(otherPartyIndex);
-				temp = temp.umod(ec.curve.n);
-				lower = lower.mul(temp).umod(ec.curve.n);
-			}
-		}
-
-		const delta = upper.mul(lower.invm(ec.curve.n)).umod(ec.curve.n);
-		return delta;
-	};
-
-	const localIndex = 1;
-	const remoteIndex = 0;
-	const parties = [0, 1];
-	const pubKeyPoint = ec
-		.keyFromPublic({ x: sharePubX, y: sharePubY })
-		.getPublic()
-		.mul(
-			getLagrangeCoeff(
-				parties.map(p => new BN(p + 1)),
-				new BN(remoteIndex + 1),
-			),
-		)
-		.add(
-			ec
-				.keyFromPrivate(
-					Buffer.from(parsedTSSShare.share.padStart(64, "0"), "hex"),
-				)
-				.getPublic()
-				.mul(
-					getLagrangeCoeff(
-						parties.map(p => new BN(p + 1)),
-						new BN(localIndex + 1),
-					),
-				),
-		);
-	const pubKeyX = pubKeyPoint.getX().toString(16, 64);
-	const pubKeyY = pubKeyPoint.getY().toString(16, 64);
-	const pubKeyHex = `${pubKeyX}${pubKeyY}`;
-	const pubKey = Buffer.from(pubKeyHex, "hex").toString("base64");
-
-	return pubKey;
-}
-```
-
-### `generatePrecompute`
-
-```js
-export async function generatePrecompute() {
-	if (!getTSSData) {
-		throw new Error("tssShare and signatures are not defined");
-	}
-	const { verifierName, verifierId } = await getTSSData();
-	if (!verifierName || !verifierId) {
-		throw new Error("not logged in, verifier or verifierId undefined");
-	}
-
-	const { tssShare } = await getTSSData();
-	const pubKey = (await tssGetPublic()).toString("base64");
-	const client = await setupTSS(tssShare, pubKey, verifierName, verifierId);
-	await tss.default(tssImportURL);
-	client.precompute(tss as any);
-	await client.ready();
-	clients.push({ client, allocated: false });
-}
-```
-
-:::note
-
-It is recommended to call `generatePrecompute()` before making a transaction to achieve faster signing.
-
-:::
-
-### `tssSign`
-
-```js
-export async function tssSign(msgHash: Buffer) {
-  // For now, we are calling generatePrecompute() here.
-  // But it would be best to call generatePrecompute() before making a transaction.
-	generatePrecompute();
-	const finalHash = `0x${msgHash.toString("hex")}`;
-	console.log(finalHash);
-	let foundClient = null;
-
-	while (!foundClient) {
-		for (let i = 0; i < clients.length; i++) {
-			const client = clients[i];
-			if (!client.allocated) {
-				client.allocated = true;
-				foundClient = client;
-			}
-		}
-		await new Promise(resolve => setTimeout(resolve, 100));
-	}
-	await foundClient.client.ready();
-	await tss.default(tssImportURL);
-	let { r, s, recoveryParam } = await foundClient.client.sign(
-		tss as any,
-		Buffer.from(msgHash).toString("base64"),
-		true,
-		"",
-		"keccak256",
-	);
-	if (
-		new BN(s.toString("hex"), "hex").gte(
-			ec.curve.n.div(new BN(2).add(new BN(1))),
-		)
-	) {
-		console.log("flipping!!");
-		s = s.neg().umod(ec.curve.n);
-		recoveryParam ^= 1;
-	}
-	const recoveredPub = ecrecover(
-		msgHash,
-		recoveryParam + 27,
-		Buffer.from(r.toString("hex"), "hex"),
-		Buffer.from(s.toString("hex"), "hex"),
-	);
-	const recoveredAddr = pubToAddress(
-		Buffer.from(recoveredPub.toString("hex"), "hex"),
-	);
-	console.log("recoveredAddr", recoveredAddr.toString("hex"));
-	return {
-		v: recoveryParam + 27,
-		r: Buffer.from(r.toString("hex"), "hex"),
-		s: Buffer.from(s.toString("hex"), "hex"),
-	};
-}
-```
-
-## Web3Auth MPC
-
-To your `App.tsx`, import the `tssDataCallback`, `tssGetPublic`, and `tssSign` function.
-
-```js
-import { tssDataCallback, tssGetPublic, tssSign } from "./mpc";
+import { tssDataCallback, tssGetPublic, tssSign, generatePrecompute } from "torus-mpc";
 ```
 
 ### useEffect
@@ -435,8 +121,25 @@ You can show the modal in the browser by calling `connect()` function on `web3au
 access your application.
 
 ```js
-await web3auth.connect();
+const login = async () => {
+  if (!web3auth) {
+    uiConsole("web3auth not initialized yet");
+    return;
+  }
+  const web3authProvider = await web3auth.connect();
+  setProvider(web3authProvider);
+  generatePrecompute(); // <-- So one precompute would be available to your users.
+};
 ```
+
+:::note
+
+For now, `tssSign` of `torus-mpc` package calls `generatePrecompute()` automatically, so you don't have to.
+
+But it is recommended to call `generatePrecompute()` before making a transaction to achieve faster signing. One `generatePrecompute()` call could be
+done after a succesfull authentication of user.
+
+:::
 
 :::success example-code
 
