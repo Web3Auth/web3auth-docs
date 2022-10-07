@@ -1,0 +1,619 @@
+---
+title: Using Web3Auth without MFA with future compatibility
+image: "/docs/contents/guides/banners/one-key-flow.png"
+description: Learn how to control web3auth's mfa login user experience.
+type: guide
+tags: [web, one key flow, "@web3auth/core", custom authentication, react, ethereum]
+date: 4th October 2022
+author: Web3Auth Team
+order: 2
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import InitializationIntro from "@site/src/common/guides/_initialization-intro.mdx";
+import InitializationWeb3Auth from "@site/src/common/guides/_initialization-web3auth.mdx";
+import InstallationWithOneKeyFlowFirebase from "@site/src/common/guides/_installation-one-key-flow.mdx";
+import InstantiationWeb3Auth from "@site/src/common/guides/_instantiation-web3auth.mdx";
+import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
+import OpenloginConfigCodeFirebase from "@site/src/common/guides/_openlogin-config-code-firebase.mdx";
+import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Using Web3Auth without MFA with future compatibility"
+  description="Learn how to control web3auth's mfa login user experience."
+  image="https://web3auth.io/docs/contents/guides/banners/firebase.png"
+  slug="/guides/one-key-flow"
+/>
+
+## Introduction
+
+Adding Web3Auth Plug and Play SDKs to your application is a great way to authenticate users and reconstruct their private key and in order to
+reconstruct the key, Web3Auth SDK redirect users to a Web3Auth hosted screen (i.e http://app.openlogin.com). This is great for most use cases, but
+sometimes you may want to customize the authentication flow such that you can have more control the UI and UX of the authentication process (i.e to
+avoid the redirection to openlogin hosted screens). In this guide, we will show you how to use one of such flow to authenticate users without
+redirecting to a Web3Auth hosted screen.
+
+So before we get started, let's take a look at the what is the general authentication flow in web3auth:-
+
+When a user logs in with Web3Auth, a user's account can be in two states:-
+
+- Account Without MFA:- When User logs in with only social login and key is secured by web3auth network.
+- Account With MFA:- When User enables mfa by adding other shares like password, backup share and device share etc to the existing account.
+
+By default, to reconstruct the key in both states, web3auth sdk redirects user to http://app.openlogin.com where all the computation to reconstruct
+the key is done. The advantage of this approach is that it makes is easy for applications to integrate web3auth sdk without having to worry about the
+key reconstruction process. But sometimes applications wants to reconstruct the key in their own application context and this is where the
+authentication flow described in this guide comes in.
+
+Currently there are two ways to achieve this:
+
+- First is by using the self hosted approach where both states of user's accounts are handled by the application itself.
+
+- The second approach is an hybrid approach where the user's account state without mfa is handled by application and the account state with mfa is
+  handled by web3auth sdk by redirecting to openlogin.
+
+In this guide we will be looking at second approach, if you are curious about first approach you can have a look at our self hosted docs
+[here](/self-hosting).
+
+:::info
+
+We will refer this approach as `One Key Flow` in upcoming sections.
+
+:::
+
+## Quick Start
+
+If you want to check what the end result of this guide will look like, you can clone the example project from our github repo and run it as described
+below
+
+```bash
+git clone https://github.com/Web3Auth/examples.git
+cd examples/web-core-sdk/one-key-flow
+npm install
+npm run start
+```
+
+## How it works?
+
+---
+
+![Web3Auth Core - One Key Flow](/images/one-key-flow.png)
+
+Refer to the flow chart above to understand how the One Key Flow works:-
+
+- First step for the application is to get user authenticated by social login and get the user's idToken.
+
+- Once the social login is successful, depending on if the user has enabled Multi Factor Authentication(MFA) or not, the key is generated.
+
+- If the user has not enabled MFA, we use the `@toruslabs/torus.js` library to retrieve the shares of the private key from the Web3Auth auth network
+  nodes and then reconstruct the private key.
+
+- If the user has enabled MFA, the private key can be reconstruct simply via Web3Auth Login using Web3Auth SDK by redirecting user to
+  app.openlogin.com.
+
+Also it is upto application whether they want to give option to enable MFA in application, if you don't want to give option to enable MFA in
+application you can skip the parts of this guide where we are explain about enabling MFA in application. But the good part is that this is totally
+future compatible, if you want to enable MFA in application in future you can do easily by just adding few lines of code.
+
+## Prerequisites
+
+---
+
+- You should know how Web3Auth works. You can read about it [here](/overview/how-web3auth-works)
+
+- You should know how to create a basic application on Web3Auth by following this [quck-start](https://web3auth.io/docs/quick-start).
+
+- We will be using react.js in this app, so basic knowledge of react is expected to follow the guide.
+
+- A [Firebase](https://console.firebase.google.com) account to be used as Federated Identity Provider.
+
+- A [Google Developer](https://console.developers.google.com) account to be used as Identity provider for Firebase.
+
+## Setup
+
+---
+
+### Setup your JWT provider
+
+- One key flow will work with any JWT provider. For this particular guide we will use Firebase as our JWT provider.
+- You can follow the [Firebase guide](/guides/firebase#setup-your-firebase-project) to setup Firebase.
+
+### Setup your Web3Auth Dashboard
+
+<SetupWeb3AuthDashboard />
+
+Below are the steps to setup Firebase as JWT Provider. The same steps can be followed for any other JWT provider.
+
+- Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
+  configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. w3a-firebase-verifier`
+  - Select environment: `testnet`, `mainnet` or `cyan` as per your requirement.
+  - Select `Custom` from the **Login Provider**.
+  - Select `Sub` for the **JWT Verifier ID**.
+  - Enter `https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com` as the JWK endpoint for Firebase's idToken.
+  - JWT validation fields:
+    - iss: `https://securetoken.google.com/<firebase-project-id>`.
+    - aud: `<firebase-project-id>`
+  - Click on `Create` button to create your verifier. It may take up to 10 minutes to deploy verifier on _testnet_. You'll receive an email once it's
+    complete.
+
+  ![Custom Authentication - Create Firebase Verifier](/contents/guides/firebase/firebase-custom-verifier.png)
+
+- You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+
+### Setting up react project.
+
+- You can simply setup react project using `create-react-app`.
+
+  ###### Webpack 5 polyfill issues
+
+  If you are using `create-react-app` version >= 5 you may run into issues building. Those issues can be resolved by following the troubleshooting
+  guide given [here](/troubleshooting/webpack-issues)
+
+## Dependencies
+
+<InstallationWithOneKeyFlowFirebase />
+
+## Implementing User Login.
+
+Doing user login with one key flow consists of following steps:-
+
+- Authenticate user with social login provider.
+- Checking if user's mfa is enabled.
+- If mfa is not enabled, then login with `@toruslabs/torus.js` sdk.
+- If mfa is enabled, then login with `@web3auth/core` sdk.
+
+### Authenticate user with social login provider.
+
+In this guide we are using firebase to authenticate user's Identity and get the idToken. You can use any other social login provider as well.
+
+Following is the code snippet to authenticate user with firebase and get the idToken.
+
+```js
+// Import the functions you need from the SDK
+import { initializeApp } from "firebase/app";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDEfyUmXDhgGWibRUro2EBoX8-TtBKMYyA",
+  authDomain: "web3auth-x-firebase-demo-e3332.firebaseapp.com",
+  projectId: "web3auth-x-firebase-demo-e3332",
+  storageBucket: "web3auth-x-firebase-demo-e3332.appspot.com",
+  messagingSenderId: "108145034076",
+  appId: "1:108145034076:web:3ff4c0088ec4c311b17799",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+import { GoogleAuthProvider, getAuth, signInWithPopup, UserCredential, User } from "firebase/auth";
+
+const signInWithGoogle = async (): Promise<UserCredential> => {
+  try {
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider();
+    const res = await signInWithPopup(auth, googleProvider);
+    return res;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+// Calling the signInWithGoogle function to get the token id
+
+const loginRes = await signInWithGoogle();
+const idToken = await loginRes.user.getIdToken(true); // this idToken will be passed to web3auth
+```
+
+### Checking if user's mfa is enabled.
+
+Now we have idToken and login response from firebase which will give user user's id. We will use these two fields to check whether user has already
+enabled mfa of not.
+
+Before checking whether mfa is enabled or not we need to initalize web3auth network libs as shown in code snippet below:-
+
+```js
+
+import Torus from "@toruslabs/torus.js";
+import NodeDetailManager from "@toruslabs/fetch-node-details";
+
+// Configurations for the network
+// NOTE: change it to ethereum mainnet url when you switch to production
+const network = "https://rpc.ankr.com/eth_ropsten",
+
+// Initializing the Torus instance
+
+const torus = new Torus({
+  enableOneKey: true,
+  network,
+});
+
+// Initializing the NodeDetailManager instance for Ropsten Testnet
+// NOTE: change proxyAddress to `NodeDetailManager.PROXY_ADDRESS_MAINNET` when you switch to production
+const nodeDetailManager = new NodeDetailManager({ network, proxyAddress: NodeDetailManager.PROXY_ADDRESS_ROPSTEN });
+
+```
+
+Now we can check whether user has enabled mfa or not by calling the `isMfaEnabled` function which is implemented below.
+
+If this function returns true than mfa is enabled and else not.
+
+```js
+//initialize torus packages here as described in previous steps
+...
+...
+...
+
+const verifier = "YOUR_VERIFIER_NAME"; // verifier that you created earlier from web3auth dashboard.
+const verifierId = loginRes.user.uid; // user's id from firebase login response or this can be any unique user's id like email etc.
+const isMfaEnabled = () => {
+  const { torusNodeEndpoints, torusNodePub, torusIndexes } = await nodeDetailManager.getNodeDetails({ verifier, verifierId });
+  const userDetails = await torus.getUserTypeAndAddress(torusNodeEndpoints, torusNodePub, { verifier, verifierId }, true);
+  // Now we check if the user has enabled mfa or not.
+  // if !userDetails.upgraded then mfa is not enabled.
+  if (userDetails.typeOfUser === "v2" && !userDetails.upgraded) {
+    return false
+  } else {
+    return true
+  }
+}
+```
+
+## Implementing login without mfa.
+
+If user's mfa is not enabled than we can simply login with `@toruslabs/torus.js` sdk by calling the `retrieveShares` function which will fetch the
+user's shares from the web3auth network nodes and reconstruct the key.
+
+After we get reconstruct the key from shares we derive a subkey, this subkey make sures that user's key will remain same before and after enabling
+mfa. Note that this function takes `idToken` as a parameter which is the idToken that we got from firebase.
+
+:::info
+
+Make sure that this `idToken` you are passing in `retrieveShares` function is a freshly issued token while calling this function in case you getting
+the token from your own backend rather than firebase.
+
+:::
+
+```js
+import { subkey } from "@toruslabs/openlogin-subkey"
+
+//initialize torus packages here as described in previous steps
+...
+...
+...
+
+const verifier = "YOUR_VERIFIER_NAME"; // verifier that you created earlier from web3auth dashboard.
+const verifierId = loginRes.user.uid; // user's id from firebase login response or this can be any unique user's id like email etc.
+const idToken = "YOUR_ID_TOKEN"; // idToken from firebase login response or from your own backend.
+
+const chainConfig = {
+    chainId: "0x3",
+    rpcTarget: "https://rpc.ankr.com/eth_ropsten",
+    displayName: "Ropsten Testnet",
+    blockExplorer: "https://ropsten.etherscan.io/",
+    ticker: "ETH",
+    tickerName: "Ethereum",
+  };
+
+// torus is initialized in code snippet above
+// if YES, login directly with the torus libraries within your app
+const keyDetails = await torus.retrieveShares(torusNodeEndpoints, torusIndexes, verifier, { verifier_id: verifierId }, idToken, {});
+// use the private key to get the provider
+const finalPrivKey = subkey(keyDetails.privKey.padStart(64, "0"), Buffer.from(clientId, "base64")).padStart(64, "0");
+const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+  config: {
+    chainConfig,
+  },
+});
+const blockchainProvider = await ethereumPrivateKeyProvider.setupProvider(finalPrivKey);
+```
+
+Refer to [this file](https://github.com/Web3Auth/examples/blob/main/web-core-sdk/one-key-flow/src/loginWithoutMfa.ts) for a reference implementation
+of login without mfa flow.
+
+At this point your application has successfully authenticated user with web3auth and you can use the `blockchainProvider` to interact with blockchain.
+
+Now if you want to know about how to login with mfa or upgrade user account to mfa you can refer to next section else you can skip to the section
+[here](/guides/one-key-flow#interacting-with-blockchain) to know about how to user blockchain provider.
+
+:::warning
+
+Note if you will use above code snippet after user enables mfa it will result in a different account. So always make sure to check whether user's mfa
+is enabled or not before calling the `retrieveShares` function.
+
+If mfa is enabled use the flow which is described in next section.
+
+:::
+
+## Implementing login with mfa.
+
+If user's mfa is enabled than we can simply login with `@web3auth/core` sdk.
+
+Here are the steps required to login with mfa:-
+
+#### Instantiate Web3Auth sdk
+
+```js
+import { Web3AuthCore } from "@web3auth/core";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155, // SOLANA, OTHER
+  chainId: "0x3",
+  rpcTarget: "https://rpc.ankr.com/eth_ropsten",
+  displayName: "Ropsten Testnet",
+  blockExplorer: "https://ropsten.etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+const web3auth = new Web3AuthCore({
+  chainConfig,
+});
+```
+
+#### Initialising the Openlogin Adapter
+
+```js
+const verifier = "YOUR_VERIFIER_NAME"; // verifier that you created earlier from web3auth dashboard.
+const openloginAdapter = new OpenloginAdapter({
+  loginSettings: {
+    mfaLevel: "mandatory",
+  },
+  adapterSettings: {
+    network: "testnet",
+    uxMode: "redirect",
+    loginConfig: {
+      jwt: {
+        name: "Web3Auth One Key Login Flow",
+        verifier,
+        typeOfLogin: "jwt",
+        clientId,
+      },
+    },
+  },
+});
+```
+
+Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom Auth `verifierName` in the loginConfig object. To
+know more about openloginAdapterParams refer to docs [here](/sdk/web/openlogin#web3authopenlogin-adapter)
+
+#### Initialising the Web3Auth SDK
+
+```js
+await web3auth.init();
+```
+
+#### Login with MFA
+
+```js
+const idToken = "YOUR_ID_TOKEN"; // idToken from firebase login response or from your own backend.
+// if NO, login with web3auth
+const blockchainProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    id_token: idToken,
+    verifierIdField: "sub",
+    domain: window.location.origin,
+  },
+});
+```
+
+When connecting using Web3Auth sdk, `connectTo` function takes the arguments for the adapter you want to connect to and the options for the login. Few
+major things to note here is the `idToken` and `verifierIdField` option in the `extraLoginOptions` object. This is the idToken received from Firebase
+SDK and `verifierIdField` is the name of the field in idToken which contains value of user's id and this field is also defined while creating verifier
+in web3auth's dashboard.
+
+Once connectTo function will resolve, it will return a blockchain provider same as the one we got in login without mfa. We will use this blockchain
+provider to fetch user's balance from blockchain.
+
+Refer to [this file](https://github.com/Web3Auth/examples/blob/main/web-core-sdk/one-key-flow/src/loginWithMfa.ts) for a reference implementation of
+login without mfa flow.
+
+:::info
+
+Mfa cannot be disabled after user enables it.
+
+:::
+
+## How to enable Multi Factor Authentication(MFA) for your users
+
+So far we have seen how to login with mfa and without mfa. But there might be a case in your application where you want user to start without mfa for
+easy onboarding and later you want your users to enable mfa for enhance security.
+
+The process to enable mfa is quite simple as described in code snippet below but the caveat is the once user enables mfa, user won't be able to
+disable it so make sure your login screen it flexible enough to cater both with and without mfa flows if you are giving this option in your
+application.
+
+The following code snippet depicts how to enable MFA for users while using Firebase as the JWT provider.
+
+```js
+import { initializeApp } from "firebase/app";
+import {
+    getAuth
+} from "firebase/auth";
+const firebaseConfig = {
+  //...Your firebase config
+}
+const app = initializeApp(firebaseConfig);
+
+// initialize web3auth sdk here as described in login with mfa step
+
+...
+...
+...
+
+
+const enableMfa = async () => {
+    // refer to above steps to know about isMfaEnabled function
+    const isMfaEnabled = await isMfaEnabled();
+    if (isMfaEnabled) {
+      throw new Error("Mfa already enabled");
+    }
+
+     const auth = getAuth(app);
+    const user =  auth.currentUser;
+     // user
+    const idToken = await user.getIdToken(true);
+
+     // web3auth instance must be initialized before calling this function
+     // as decribed in login with mfa flow above
+    const blockchainProvider = await web3auth.connectTo(
+      WALLET_ADAPTERS.OPENLOGIN,
+      {
+        loginProvider: "jwt",
+        extraLoginOptions: {
+          id_token: idToken,
+          verifierIdField: "sub",
+          domain: window.location.origin
+        },
+      }
+    );
+    return blockchainProvider;
+};
+```
+
+Note: You cannot deactive MFA for a user once its activated.
+
+## Get the User Profile
+
+Depending upon if the user has enabled MFA or not, we can get the user profile from the provider.
+
+<Tabs
+defaultValue="mfa"
+values={[
+  { label: "MFA Enabled", value: "mfa" },
+  { label:"MFA Disabled", value:"mfa-disabled" },
+]}
+>
+
+<TabItem value="mfa">
+
+```js
+const user = await web3auth.getUserInfo();
+console.log("User info", user);
+```
+
+</TabItem>
+
+<TabItem value="mfa-disabled">
+
+```js
+const user = parse(idToken);
+console.log("User info", user);
+```
+
+</TabItem>
+
+</Tabs>
+
+Depending if the user has enabled MFA or not the functions to get the user profile will be different. If the user has enabled MFA, you can use the
+`getUserInfo` function to get the user profile.
+
+## Logout
+
+Logging out your user is as simple as calling the `logout` function.
+
+<Tabs
+defaultValue="mfa"
+values={[
+  { label: "MFA Enabled", value: "mfa" },
+  { label:"MFA Disabled", value:"mfa-disabled" },
+]}
+>
+
+<TabItem value="mfa">
+
+```js
+await web3auth.logout();
+```
+
+</TabItem>
+
+<TabItem value="mfa-disabled">
+
+```js
+// Just Reload the page
+window.location.reload();
+```
+
+</TabItem>
+
+</Tabs>
+
+## Interacting with Blockchain
+
+So if you have completed this far, it means that you have successfully authenticated your user. Now, you can use the `blockchainProvider` returned
+from login with or without mfa flows to interact with your blockchain. You can use the [Provider SDKs](/sdk/web/providers/) to perform RPC Calls to
+your blockchain.
+
+Web3Auth is chain agnostic, ie. depending on whatever blockchain or layer-2 you use, Web3Auth can easily support that. Web3Auth has native providers
+for EVM and Solana blockchains and for others, you can get the private key in the user scope and make RPC calls. For standardising the type of
+provider, Web3Auth Base provides a `SafeEventEmitterProvider` from which you can create your own provider.
+
+- [Ethereum Provider](/sdk/web/providers/evm) gives you the capability of making RPC calls to the EVM compatible blockchains.
+- [Solana Provider](/sdk/web/providers/solana) gives you the capability of making RPC calls to the Solana blockchain.
+- If you want to use any other chain except Solana or EVM chains, for ex: Starknet, you can specify the value of `chainNamespace` field as other in
+  the Web3Auth SDK Constructor. Refer to: [Using other blockchains](/sdk/web/providers/other)
+
+### Get User Accounts
+
+<Tabs
+defaultValue="web3"
+values={[
+  { label: "Web3", value: "web3" },
+  { label: "Ethers.js", value: "ethers.js" },
+]}
+>
+<TabItem value="web3">
+
+```js
+const getAccounts = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const web3 = new Web3(provider as any)
+  const userAccounts = await web3.eth.getAccounts()
+  uiConsole(userAccounts)
+}
+```
+
+  </TabItem>
+<TabItem value="ethers.js">
+
+```js
+const getAccounts = async () => {
+  if (!provider) {
+    uiConsole('provider not initialized yet')
+    return
+  }
+  const provider = new ethers.providers.Web3Provider(provider as any);
+  const signer = provider.getSigner();
+  const userAccounts = await signer.getAddress();
+  uiConsole(userAccounts)
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+There are a lot of other functions that you can perform with the provider. You can refer to these
+[documentation](/docs/connect-blockchain/ethereum#get-user-info) to get more information about the functions you can perform with the provider.
+
+### Example code
+
+The code for the application we developed in this guide can be found in the
+[Web3Auth One Key Flow Example](https://github.com/Web3Auth/examples/tree/main/web-core-sdk/one-key-flow). Check it out and try running it locally
+yourself!
+
+## Questions?
+
+Ask us on [Web3Auth's Github Discussion Board](https://web3auth.io/discussions)
