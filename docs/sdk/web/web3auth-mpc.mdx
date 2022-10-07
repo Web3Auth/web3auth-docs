@@ -163,13 +163,13 @@ export async function tssDataCallback(
 ### `tssGetPublic`
 
 ```js
-xport async function tssGetPublic() {
-	if (!getTSSData) {
-		throw new Error("tssShare / sigs are undefined");
-	}
-	const { tssShare, signatures } = await getTSSData();
-	const pubKey = await getPublicKeyFromTSSShare(tssShare, signatures);
-	return Buffer.from(pubKey, "base64");
+export async function tssGetPublic() {
+  if (!getTSSData) {
+    throw new Error("tssShare / sigs are undefined");
+  }
+  const { tssShare, signatures } = await getTSSData();
+  const pubKey = await getPublicKeyFromTSSShare(tssShare, signatures);
+  return Buffer.from(pubKey, "base64");
 }
 ```
 
@@ -443,6 +443,14 @@ await web3auth.connect();
 Checkout https://github.com/torusresearch/w3a-mpc-demo
 
 :::
+
+#### Quick Start
+
+```bash
+git clone https://github.com/torusresearch/w3a-mpc-demo.git
+cd w3a-mpc-demo
+yarn && yarn start
+```
 
 ## Interacting with the Blockchain
 
