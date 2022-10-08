@@ -4,7 +4,7 @@ image: "/docs/contents/guides/banners/mpc.png"
 description: Learn how to use Web3Auth MPC α (Alpha) SDK in your React Application
 type: guide
 tags: [web, "@web3auth/web3auth", mpc, google, whitelabel, react, ethereum]
-date: 10th Aug 2022
+date: 7th Oct 2022
 author: Web3Auth Team
 order: 1
 ---
@@ -50,8 +50,8 @@ npm start
 With the Web3Auth infrastructure, your key is divided into multiple parts and stored across your devices and our Auth Network. This is done to ensure
 that your key is never stored in a single place and is always available to you. While in the traditional Web3Auth SDK, your key was dynamically
 reconstructed in the frontend using threshold signatures, with the new Web3Auth MPC (Multi Party Computation) architecture, it is never reconstructed.
-Instead, these partial keys stored all across the different locations and your device are used to make partial signatures for your message/
-transaction. These are finally returned to the frontend where using TSS (Threshold Signature Scheme) these signatures are combined to make a final
+Instead, these partial keys are stored all across the different locations, and your device is used to make partial signatures for your message/
+transaction. These are finally returned to the frontend where using TSS (Threshold Signature Scheme), these signatures are combined to make a final
 signature. You can use this finally signed message/transaction to make a transaction on the blockchain.
 
 The Threshold Signature Scheme (TSS) is a cryptographic primitive for distributed key generation and signing. The use of TSS in Web3Auth's Auth
@@ -59,7 +59,7 @@ network is a new paradigm that can provide numerous benefits, especially in term
 
 You can have a look at how we devide the private key here:
 
-<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={Image1} />
+<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={Image1} alt="Web3Auth Key Re-construction" />
 
 Please note that in MPC there is no key reconstruction at all. For this guide here, we will be talking through the
 [Web3Auth MPC α (Alpha) SDK](/sdk/web/web3auth-mpc) and showing you a basic example of how to use it.
@@ -76,8 +76,8 @@ Please note that in MPC there is no key reconstruction at all. For this guide he
 
 <SetupBaseProject />
 
-For this guide, we'll be using a React application to demostrate how the Web3Auth MPC α (Alpha) SDK works. You can use any other framework of your
-choice using any of the other Web3Auth Guides/ Examples are accordingly just modify the functions to make it work.
+For this guide, we'll be using a React application to demonstrate how the Web3Auth MPC α (Alpha) SDK works. You can use any other framework of your
+choice using any other Web3Auth [Guides](./) / [Examples](/docs/examples). Just modify the functions to make it work.
 
 ## Installation
 
@@ -176,8 +176,9 @@ const web3auth = new Web3Auth({
 
 Few things to note here:
 
-1. Multi Factor Authentication needs to be mandatory, this is done to ensure that the user has a backup of their key in case they lose their device.
-   Please note that the email flow might be buggy right now, you can directly copy the backup phrase and save it somewhere for testing purposes.
+1. **Multi Factor Authentication needs to be mandatory**, this is done to ensure that the user has a backup of their key in case they lose their
+   device. Please note that the email flow might be buggy right now, you can directly copy the backup phrase and save it somewhere for testing
+   purposes.
 2. We have a new config called `tssSettings`, these are specifically for the TSS implementation. You can directly pass over the functions imported
    from `torus-mpc` here.
 3. In the `adapterSettings`, make sure the network is `development` and `_iframeUrl` is set to `https://mpc-beta.openlogin.com`. This basically points
