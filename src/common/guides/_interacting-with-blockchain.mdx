@@ -27,12 +27,12 @@ values={[
 ```js
 const getAccounts = async () => {
   if (!provider) {
-    uiConsole('provider not initialized yet')
-    return
+    console.log("provider not initialized yet");
+    return;
   }
-  const web3 = new Web3(provider as any)
-  const userAccounts = await web3.eth.getAccounts()
-  uiConsole(userAccounts)
+  const web3 = new Web3(provider as any);
+  const userAccounts = await web3.eth.getAccounts();
+  console.log(userAccounts);
 }
 ```
 
@@ -42,13 +42,13 @@ const getAccounts = async () => {
 ```js
 const getAccounts = async () => {
   if (!provider) {
-    uiConsole('provider not initialized yet')
-    return
+    console.log("provider not initialized yet");
+    return;
   }
   const provider = new ethers.providers.Web3Provider(provider as any);
   const signer = provider.getSigner();
   const userAccounts = await signer.getAddress();
-  uiConsole(userAccounts)
+  console.log(userAccounts);
 }
 ```
 
@@ -70,13 +70,13 @@ values={[
 ```js
 const getBalance = async () => {
   if (!provider) {
-    uiConsole('provider not initialized yet')
-    return
+    console.log("provider not initialized yet");
+    return;
   }
-  const web3 = new Web3(provider as any)
-  const accounts = await web3.eth.getAccounts()
-  const balance = await web3.eth.getBalance(accounts[0])
-  uiConsole(web3.utils.fromWei(balance) + ' ETH')
+  const web3 = new Web3(provider as any);
+  const accounts = await web3.eth.getAccounts();
+  const balance = await web3.eth.getBalance(accounts[0]);
+  console.log(web3.utils.fromWei(balance));
 }
 ```
 
@@ -86,17 +86,17 @@ const getBalance = async () => {
 ```js
 const getBalance = async () => {
   if (!provider) {
-    uiConsole('provider not initialized yet')
-    return
+    console.log("provider not initialized yet");
+    return;
   }
-  const provider = new ethers.providers.Web3Provider(this.provider as any)
-  const signer = provider.getSigner()
-  const account = await signer.getAddress()
+  const provider = new ethers.providers.Web3Provider(this.provider as any);
+  const signer = provider.getSigner();
+  const account = await signer.getAddress();
   // Get user's balance in ether
   const balance = ethers.utils.formatEther(
     await provider.getBalance(account), // Balance is in wei
-  )
-  uiConsole(balance + ' ETH')
+  );
+  console.log(balance);
 }
 ```
 
@@ -118,29 +118,31 @@ values={[
 ```js
 const signMessage = async () => {
   if (!provider) {
-    uiConsole('provider not initialized yet')
-    return
+    console.log("provider not initialized yet");
+    return;
   }
-  const web3 = new Web3(provider as any)
+  const web3 = new Web3(provider as any);
   // Get user's Ethereum public address
-  const fromAddress = (await web3.eth.getAccounts())[0]
+  const account = (await web3.eth.getAccounts())[0];
 
-  const message =
-    '0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad'
+  // Message
+  const message = "Hello MPC, Bye Bye SeedPhrase";
 
-  ;(web3.currentProvider as any)?.send(
+  const typedMessage = [
     {
-      method: 'eth_sign',
-      params: [fromAddress, message],
-      from: fromAddress,
+      type: "string",
+      name: "message",
+      value: message,
     },
-    (err: Error, result: any) => {
-      if (err) {
-        return console.error(err)
-      }
-      uiConsole(result)
-    },
-  )
+  ];
+  const params = [JSON.stringify(typedMessage), account];
+  const method = "eth_signTypedData";
+
+  const signedMessage = await this.provider.request({
+    method,
+    params,
+  });
+  console.log(signedMessage);
 }
 ```
 
@@ -150,16 +152,16 @@ const signMessage = async () => {
 ```js
 const signMessage = async () => {
   if (!provider) {
-    uiConsole("provider not initialized yet");
+    console.log("provider not initialized yet");
     return;
   }
   const provider = new ethers.providers.Web3Provider(provider);
   const signer = provider.getSigner();
 
-  const originalMessage = "YOUR_ORIGINAL_MESSAGE";
+  const originalMessage = "Hello MPC, Bye Bye SeedPhrase";
 
   const signedMessage = await signer.signMessage(originalMessage);
-  uiConsole(signedMessage);
+  console.log(signedMessage);
 };
 ```
 
@@ -181,18 +183,19 @@ values={[
 ```js
 const sendTransaction = async () => {
   if (!provider) {
-    uiConsole('provider not initialized yet')
-    return
+    console.log("provider not initialized yet");
+    return;
   }
-  const web3 = new Web3(provider as any)
-  const accounts = await web3.eth.getAccounts()
+  const web3 = new Web3(provider as any);
+  const accounts = await web3.eth.getAccounts();
 
   const txRes = await web3.eth.sendTransaction({
     from: accounts[0],
     to: accounts[0],
     value: web3.utils.toWei('0.0001'),
-  })
-  uiConsole(txRes.transactionHash)
+    chainId: 1, // change it to your specific chain id.
+  });
+  console.log(txRes.transactionHash);
 }
 ```
 
@@ -202,7 +205,7 @@ const sendTransaction = async () => {
 ```js
 const sendTransaction = async () => {
   if (!provider) {
-    uiConsole("provider not initialized yet");
+    console.log("provider not initialized yet");
     return;
   }
   const provider = new ethers.providers.Web3Provider(provider);
@@ -212,10 +215,11 @@ const sendTransaction = async () => {
   const tx = await signer.sendTransaction({
     to: address,
     value: ethers.utils.parseEther("0.0001"),
+    chainId: 1, // change it to your specific chain id.
   });
   const receipt = await tx.wait();
 
-  uiConsole(receipt.transactionHash);
+  console.log(receipt.transactionHash);
 };
 ```
 
