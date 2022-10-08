@@ -370,7 +370,18 @@ export const featuresMap = [
     title: "Web3Auth Plug and Play Core",
     tag: "@web3auth/core",
   },
-
+  {
+    title: "Web3Auth MPC",
+    tag: "mpc",
+  },
+  {
+    title: "Web3Auth Self Host",
+    tag: "self host",
+  },
+  {
+    title: "One Key Flow",
+    tag: "one key flow",
+  },
   {
     title: "Custom Authentication",
     tag: "custom authentication",
@@ -386,10 +397,6 @@ export const featuresMap = [
   {
     title: "Server Side Verification",
     tag: "server side verification",
-  },
-  {
-    title: "Web3Auth Self Host",
-    tag: "self host",
   },
 ];
 
