@@ -1,12 +1,17 @@
 ---
-title: "web3auth-mpc: alpha (α)"
+title: "@web3auth-mpc/web3auth (α)"
 displayed_sidebar: sdk
 description: "@web3auth-mpc/web3auth package | Documentation - Web3Auth"
 ---
 
-# Getting started with Web3Auth's MPC
+# Web3Auth MPC SDK (Alpha)
 
-Web3Auth provides MPC (Multi-Party Computation)-based threshold signature schemes.
+---
+
+In the traditional Web3Auth SDK, your key was dynamically reconstructed in the frontend using threshold signatures. However, with the new Web3Auth MPC
+(Multi Party Computation) architecture, it is never reconstructed. Instead, these partial keys are used to make partial signatures for your message/
+transaction. These are finally returned to the frontend where using TSS (Threshold Signature Scheme), these signatures are combined to make a final
+signature. You can use this finally signed message/transaction to make a transaction on the blockchain.
 
 The Threshold Signature Scheme (TSS) is a cryptographic primitive for distributed key generation and signing. The use of TSS in Web3Auth's Auth
 network is a new paradigm that can provide numerous benefits, especially in terms of security.
@@ -17,383 +22,54 @@ Visit https://demo-mpc.web3auth.io to see Web3Auth's MPC in action.
 
 :::
 
-:::note
+:::info checkout the integration guide
 
 Make sure to checkout our [guide](/guides/mpc) for quick and easy integration for the new Web3Auth's MPC α Alpha SDK.
 
 :::
 
-## Installation
+## Understanding the SDKs
 
 ---
+
+### `@web3auth-mpc/web3auth`
+
+This is the core Web3Auth package with the Modal UI that contains the main Web3Auth MPC SDK.
 
 ```bash npm2yarn
-npm install --save @web3auth-mpc/web3auth @web3auth-mpc/openlogin-adapter @web3auth-mpc/base torus-mpc
+npm install --save @web3auth-mpc/web3auth
 ```
 
-## Instantiation
+### `@web3auth-mpc/openlogin-adapter`
 
----
+Openlogin adapter helps you to integrate social logins into your Web3Auth instance. The MPC Openlogin adapter also contains the TSS settings, which
+are needed to make the TSS signatures.
 
-### Import the following packages
-
-Import the following `@web3auth-mpc` and `torus-mpc` packages into your project.
-
-```js
-import { Web3Auth } from "@web3auth-mpc/web3auth";
-import { OpenloginAdapter } from "@web3auth-mpc/openlogin-adapter";
-import { SafeEventEmitterProvider } from "@web3auth-mpc/base";
-import { tssDataCallback, tssGetPublic, tssSign, generatePrecompute } from "torus-mpc";
+```bash npm2yarn
+npm install --save @web3auth-mpc/openlogin-adapter
 ```
 
-### useEffect
+### `@web3auth-mpc/base`
 
-Next, add the following useEffect to your `App.tsx` file.
+The base package contains the base types that are used in the Web3Auth SDK. This is done to make sure your types remains constant throughout the SDK
+usage.
 
-```js
-useEffect(() => {
-  const init = async () => {
-    try {
-      const web3auth = new Web3Auth({
-        clientId,
-        uiConfig: {
-          appLogo: "https://images.web3auth.io/web3auth-logo-w.svg",
-          theme: "light",
-          loginMethodsOrder: ["twitter", "google"],
-        },
-        chainConfig: {
-          chainNamespace: "eip155",
-          chainId: "0x5",
-          rpcTarget: "https://rpc.ankr.com/eth_goerli",
-          displayName: "Goerli Testnet",
-          blockExplorer: "https://goerli.etherscan.io/",
-          ticker: "ETH",
-          tickerName: "Ethereum",
-        },
-        enableLogging: true,
-      });
-
-      const openloginAdapter = new OpenloginAdapter({
-        loginSettings: {
-          mfaLevel: "mandatory",
-        },
-        tssSettings: {
-          useTSS: true,
-          tssGetPublic,
-          tssSign,
-          tssDataCallback,
-        },
-        adapterSettings: {
-          _iframeUrl: "https://mpc-beta.openlogin.com",
-          network: "development",
-          clientId,
-        },
-      });
-      (window as any).openloginAdapter = openloginAdapter;
-
-      web3auth.configureAdapter(openloginAdapter);
-      await web3auth.initModal({
-        modalConfig: {
-          "torus-evm": {
-            label: "Torus Wallet",
-            showOnModal: false,
-          },
-          metamask: {
-            label: "Metamask",
-            showOnModal: false,
-          },
-          "wallet-connect-v1": {
-            label: "Wallet Connect",
-            showOnModal: false,
-          },
-        },
-      });
-      setWeb3auth(web3auth);
-
-      if (web3auth.provider) {
-        setProvider(web3auth.provider);
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
-  init();
-}, []);
+```bash npm2yarn
+npm install --save @web3auth-mpc/base
 ```
 
-### Login
+### `torus-mpc`
 
-You can show the modal in the browser by calling `connect()` function on `web3auth` instance. Your user can choose their preferred login method and
-access your application.
+This package contains the needed TSS functions for the Web3Auth MPC implementation. These functions are needed to be passed into the Openlogin
+Adapter. Particularly, this package contains the following functions:
 
-```js
-const login = async () => {
-  if (!web3auth) {
-    console.log("web3auth not initialized yet");
-    return;
-  }
-  const web3authProvider = await web3auth.connect();
-  setProvider(web3authProvider);
-  generatePrecompute(); // <-- So one precompute would be available to your users.
-};
-```
+- tssDataCallback
+- tssGetPublic
+- tssSign
+- generatePrecompute
 
-:::note
+:::info checkout the integration guide
 
-For now, `tssSign` of `torus-mpc` package calls `generatePrecompute()` automatically, so you don't have to.
-
-But it is recommended to call `generatePrecompute()` before making a transaction to achieve faster signing. One `generatePrecompute()` call could be
-done after a succesfull authentication of user.
+Make sure to checkout our [guide](/guides/mpc) for quick and easy integration for the new Web3Auth's MPC α Alpha SDK.
 
 :::
-
-:::success example-code
-
-Checkout https://github.com/torusresearch/w3a-mpc-demo
-
-:::
-
-#### Quick Start
-
-```bash
-git clone https://github.com/torusresearch/w3a-mpc-demo.git
-cd w3a-mpc-demo
-yarn && yarn start
-```
-
-## Interacting with the Blockchain
-
----
-
-All of your blockchain transaction calls remains same but with Web3Auth MPC's enhanced security and faster speed.
-
-:::note checkout-difference
-
-To see the difference from the current standard, please checkout https://mpc-compare.web3auth.io
-
-:::
-
-So if you have completed this far, it means that you have successfully authenticated your user. Now, you can use the provider returned by Web3Auth as
-`web3auth.provider` to interact with your blockchain.
-
-### Get User Accounts
-
-<Tabs
-defaultValue="web3"
-values={[
-  { label: "Web3", value: "web3" },
-  { label: "Ethers.js", value: "ethers.js" },
-]}
->
-<TabItem value="web3">
-
-```js
-const getAccounts = async () => {
-  if (!provider) {
-    console.log("provider not initialized yet")
-    return
-  }
-  const web3 = new Web3(provider as any)
-  const userAccounts = await web3.eth.getAccounts()
-  console.log(userAccounts)
-}
-```
-
-  </TabItem>
-<TabItem value="ethers.js">
-
-```js
-const getAccounts = async () => {
-  if (!provider) {
-    console.log("provider not initialized yet")
-    return
-  }
-  const provider = new ethers.providers.Web3Provider(provider as any);
-  const signer = provider.getSigner();
-  const userAccounts = await signer.getAddress();
-  console.log(userAccounts)
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-### View User Balance
-
-<Tabs
-defaultValue="web3"
-values={[
-  { label: "Web3", value: "web3" },
-  { label: "Ethers.js", value: "ethers.js" },
-]}
->
-<TabItem value="web3">
-
-```js
-const getBalance = async () => {
-  if (!provider) {
-    console.log("provider not initialized yet")
-    return
-  }
-  const web3 = new Web3(provider as any)
-  const accounts = await web3.eth.getAccounts()
-  const balance = await web3.eth.getBalance(accounts[0])
-  console.log(web3.utils.fromWei(balance) + ' ETH')
-}
-```
-
-  </TabItem>
-<TabItem value="ethers.js">
-
-```js
-const getBalance = async () => {
-  if (!provider) {
-    console.log("provider not initialized yet")
-    return
-  }
-  const provider = new ethers.providers.Web3Provider(this.provider as any)
-  const signer = provider.getSigner()
-  const account = await signer.getAddress()
-  // Get user's balance in ether
-  const balance = ethers.utils.formatEther(
-    await provider.getBalance(account), // Balance is in wei
-  )
-  console.log(balance + ' ETH')
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-### Sign Message
-
-<Tabs
-defaultValue="web3"
-values={[
-  { label: "Web3", value: "web3" },
-  { label: "Ethers.js", value: "ethers.js" },
-]}
->
-<TabItem value="web3">
-
-```js
-const signMessage = async () => {
-  if (!provider) {
-    console.log("provider not initialized yet")
-    return
-  }
-  const web3 = new Web3(provider as any)
-  // Get user's Ethereum public address
-  const account = (await web3.eth.getAccounts())[0];
-
-  // Message
-  const message = "Hello MPC, Bye Bye SeedPhrase";
-
-  const typedMessage = [
-    {
-      type: "string",
-      name: "message",
-      value: message,
-    },
-  ];
-  const params = [JSON.stringify(typedMessage), account];
-  const method = "eth_signTypedData";
-
-  const signedMessage = await this.provider.request({
-    method,
-    params,
-  });
-  console.log(signedMessage)
-}
-```
-
-  </TabItem>
-<TabItem value="ethers.js">
-
-```js
-const signMessage = async () => {
-  if (!provider) {
-    console.log("provider not initialized yet");
-    return;
-  }
-  const provider = new ethers.providers.Web3Provider(provider);
-  const signer = provider.getSigner();
-
-  const originalMessage = "Hello MPC, Bye Bye SeedPhrase";
-
-  const signedMessage = await signer.signMessage(originalMessage);
-  console.log(signedMessage);
-};
-```
-
-</TabItem>
-
-</Tabs>
-
-### Send Transaction
-
-<Tabs
-defaultValue="web3"
-values={[
-  { label: "Web3", value: "web3" },
-  { label: "Ethers.js", value: "ethers.js" },
-]}
->
-<TabItem value="web3">
-
-```js
-const sendTransaction = async () => {
-  if (!provider) {
-    console.log("provider not initialized yet");
-    return
-  }
-  const web3 = new Web3(provider as any);
-  // Get user's Ethereum public address
-  const fromAddress = (await web3.eth.getAccounts())[0];
-  const destination = fromAddress;
-
-  const amount = web3.utils.toWei("0.001"); // Convert 1 ether to wei
-
-  // Submit transaction to the blockchain and wait for it to be mined
-  const receipt = await web3.eth.sendTransaction({
-    from: fromAddress,
-    to: destination,
-    value: amount,
-    chainId: 5,
-  });
-  console.log(receipt);
-}
-```
-
-  </TabItem>
-<TabItem value="ethers.js">
-
-```js
-const sendTransaction = async () => {
-  if (!provider) {
-    console.log("provider not initialized yet");
-    return;
-  }
-  const provider = new ethers.providers.Web3Provider(provider);
-  const signer = provider.getSigner();
-  const address = await signer.getAddress();
-
-  const tx = await signer.sendTransaction({
-    to: address,
-    value: ethers.utils.parseEther("0.0001"),
-  });
-  const receipt = await tx.wait();
-
-  console.log(receipt.transactionHash);
-};
-```
-
-</TabItem>
-
-</Tabs>
-
-## Questions?
-
-Ask us on [Web3Auth's Github Discussion Board](https://web3auth.io/discussions) and add the `MPC` tag to your question.
