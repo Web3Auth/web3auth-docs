@@ -1,0 +1,387 @@
+---
+title: Using Web3Auth MPC α (Alpha) SDK
+image: "/docs/contents/guides/banners/mpc.png"
+description: Learn how to use Web3Auth MPC α (Alpha) SDK in your React Application
+type: guide
+tags: [web, "@web3auth/web3auth", mpc, google, whitelabel, react, ethereum]
+date: 7th Oct 2022
+author: Web3Auth Team
+order: 1
+---
+
+import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
+import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import SEO from "@site/src/components/SEO";
+import Image1 from "@site/static/contents/tkey-overview-architecture.png";
+
+<SEO
+  title="Using Web3Auth MPC α (Alpha) SDK"
+  description="Learn how to use Web3Auth MPC α (Alpha) SDK in your React Application."
+  image="https://web3auth.io/docs/contents/guides/banners/mpc.png"
+  slug="/guides/mpc"
+/>
+
+This guide will help you make a react application using Web3Auth MPC α (Alpha) SDK, covering the basic functionality on how to use it. For a detailed
+reference, you can refer to the [Web3Auth MPC SDK Reference](/sdk/web/web3auth-mpc).
+
+**Live Demo:** https://demo-mpc.web3auth.io
+
+## Quick Start
+
+```bash
+git clone https://github.com/torusresearch/w3a-mpc-demo.git
+npm install
+npm start
+```
+
+## Prerequisites
+
+---
+
+- A basic knowledge of JavaScript and React.
+- Ideal to have a knowledge about Web3 and making RPC Calls.
+- Create a Web3Auth account on the [Web3Auth Dashboard](https://dashboard.web3auth.io/)
+
+## Understanding the Web3Auth MPC α (Alpha) SDK
+
+---
+
+With the Web3Auth infrastructure, your key is divided into multiple parts and stored across your devices and our Auth Network. This is done to ensure
+that your key is never stored in a single place and is always available to you. While in the traditional Web3Auth SDK, your key was dynamically
+reconstructed in the frontend using threshold signatures, with the new Web3Auth MPC (Multi Party Computation) architecture, it is never reconstructed.
+Instead, these partial keys are stored all across the different locations, and your device is used to make partial signatures for your message/
+transaction. These are finally returned to the frontend where using TSS (Threshold Signature Scheme), these signatures are combined to make a final
+signature. You can use this finally signed message/transaction to make a transaction on the blockchain.
+
+The Threshold Signature Scheme (TSS) is a cryptographic primitive for distributed key generation and signing. The use of TSS in Web3Auth's Auth
+network is a new paradigm that can provide numerous benefits, especially in terms of security.
+
+You can have a look at how we devide the private key here:
+
+<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={Image1} alt="Web3Auth Key Re-construction" />
+
+Please note that in MPC there is no key reconstruction at all. For this guide here, we will be talking through the
+[Web3Auth MPC α (Alpha) SDK](/sdk/web/web3auth-mpc) and showing you a basic example of how to use it.
+
+## Setup
+
+---
+
+### Setup your Web3Auth Dashboard
+
+<SetupWeb3AuthDashboard />
+
+### Setup your Base Project
+
+<SetupBaseProject />
+
+For this guide, we'll be using a React application to demonstrate how the Web3Auth MPC α (Alpha) SDK works. You can use any other framework of your
+choice using any other Web3Auth [Guides](./) / [Examples](/docs/examples). Just modify the functions to make it work.
+
+## Installation
+
+---
+
+We have published our MPC enabled SDKs under a different package name. These are ultimately the same packages but available in a different package for
+the alpha release. Ultimately these will be merged into the main Web3Auth SDK. You can download the following SDKs to get started.
+
+```bash npm2yarn
+npm install --save @web3auth-mpc/web3auth @web3auth-mpc/openlogin-adapter @web3auth-mpc/base torus-mpc
+```
+
+### Understanding the Dependencies
+
+##### `@web3auth-mpc/web3auth`
+
+This is the core Web3Auth package with the Modal UI that contains the main Web3Auth MPC SDK.
+
+```bash npm2yarn
+npm install --save @web3auth-mpc/web3auth
+```
+
+##### `@web3auth-mpc/openlogin-adapter`
+
+Openlogin adapter helps you to integrate social logins into your Web3Auth instance. The MPC Openlogin adapter also contains the TSS settings, which
+are needed to make the TSS signatures.
+
+```bash npm2yarn
+npm install --save @web3auth-mpc/openlogin-adapter
+```
+
+##### `@web3auth-mpc/base`
+
+The base package contains the base types that are used in the Web3Auth SDK. This is done to make sure your types remains constant throughout the SDK
+usage.
+
+```bash npm2yarn
+npm install --save @web3auth-mpc/base
+```
+
+#### `torus-mpc`
+
+This package contains the needed TSS functions for the Web3Auth MPC implementation. These functions are needed to be passed into the Openlogin
+Adapter.
+
+## Initialization
+
+---
+
+After Installation, the next step to use Web3Auth MPC SDK is to initialize it.
+
+The Initialization takes a few steps, which basically involves importing & instantiating the packages and then initialising them to be used in your
+application.
+
+1. Import the Web3Auth packages
+2. Instantiate the packages
+3. Initialize the Web3Auth SDK
+
+Please note that these are the most critical steps where you need to pass on different parameters according to your project. For the sake of this
+guide, we will be using the following code for initialization:
+
+### Import the following packages
+
+Import the following `@web3auth-mpc` and `torus-mpc` packages into your project.
+
+```js
+import { Web3Auth } from "@web3auth-mpc/web3auth";
+import { OpenloginAdapter } from "@web3auth-mpc/openlogin-adapter";
+import { SafeEventEmitterProvider } from "@web3auth-mpc/base";
+import { tssDataCallback, tssGetPublic, tssSign, generatePrecompute } from "torus-mpc";
+```
+
+### Instantiate the packages
+
+Ideally the instantiation and initialisation should be done with the constructor of the application. For this guide, we'll be instantiating these in
+the `useEffect` function of React.
+
+#### Instantiate Web3Auth
+
+```js
+const web3auth = new Web3Auth({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Client ID from your Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x5",
+    rpcTarget: "https://rpc.ankr.com/eth_goerli",
+    displayName: "Goerli Testnet",
+    blockExplorer: "https://goerli.etherscan.io/",
+    ticker: "ETH",
+    tickerName: "Ethereum",
+  },
+});
+```
+
+#### Instantiate Openlogin Adapter
+
+Few things to note here:
+
+1. **Multi Factor Authentication needs to be mandatory**, this is done to ensure that the user has a backup of their key in case they lose their
+   device. Please note that the email flow might be buggy right now, you can directly copy the backup phrase and save it somewhere for testing
+   purposes.
+2. We have a new config called `tssSettings`, these are specifically for the TSS implementation. You can directly pass over the functions imported
+   from `torus-mpc` here.
+3. In the `adapterSettings`, make sure the network is `development` and `_iframeUrl` is set to `https://mpc-beta.openlogin.com`. This basically points
+   to our beta network containing TSS implementation.
+
+```js
+const openloginAdapter = new OpenloginAdapter({
+  // Multi Factor Authentication has to be mandatory
+  loginSettings: {
+    mfaLevel: "mandatory",
+  },
+  // TSS Settings needed for TSS implementation
+  tssSettings: {
+    useTSS: true,
+    tssGetPublic,
+    tssSign,
+    tssDataCallback,
+  },
+  adapterSettings: {
+    // points to the beta mpc network containing TSS implementation
+    _iframeUrl: "https://mpc-beta.openlogin.com",
+    // network has to be development
+    network: "development",
+    clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Client ID from your Web3Auth Dashboard
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+```
+
+### Initialising Web3Auth
+
+For initialising, you need to directly call the `initModal` function of the Web3Auth instance. This function takes in a few parameters, which are
+generally not needed for a basic implementation, however for this alpha you need to pass them over. These configurations basically remove the external
+wallet adapters from the Web3Auth Modal. This is because the current alpha doesn't support external wallets as of now. We'll add that iteratively in
+the future.
+
+```js
+await web3auth.initModal({
+  // config to remove the external wallet adapters
+  modalConfig: {
+    "torus-evm": {
+      label: "Torus Wallet",
+      showOnModal: false,
+    },
+    metamask: {
+      label: "Metamask",
+      showOnModal: false,
+    },
+    "wallet-connect-v1": {
+      label: "Wallet Connect",
+      showOnModal: false,
+    },
+  },
+});
+```
+
+### Putting it all together
+
+The initialisation portion is one of the most important aspects of using Web3Auth. The following code snippet shows the complete initialization code
+for React. We're using the `useEffect` hook to initialise the Web3Auth SDK, this is because ideally the whole initialisation should happen within the
+constructor of your framework.
+
+```js
+const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+		null,
+	);
+useEffect(() => {
+  const init = async () => {
+    try {
+      const web3auth = new Web3Auth({
+        clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Client ID from your Web3Auth Dashboard
+        // Additional uiConfig for Whitelabeling can be passed here
+        uiConfig: {
+          appLogo: "https://images.web3auth.io/web3auth-logo-w.svg",
+          theme: "light",
+          loginMethodsOrder: ["twitter", "google"],
+        },
+        chainConfig: {
+          chainNamespace: "eip155",
+          chainId: "0x5",
+          rpcTarget: "https://rpc.ankr.com/eth_goerli",
+          displayName: "Goerli Testnet",
+          blockExplorer: "https://goerli.etherscan.io/",
+          ticker: "ETH",
+          tickerName: "Ethereum",
+        },
+        enableLogging: true,
+      });
+
+      const openloginAdapter = new OpenloginAdapter({
+        // Multi Factor Authentication has to be mandatory
+        loginSettings: {
+          mfaLevel: "mandatory",
+        },
+        // TSS Settings needed for TSS implementation
+        tssSettings: {
+          useTSS: true,
+          tssGetPublic,
+          tssSign,
+          tssDataCallback,
+        },
+        adapterSettings: {
+          // points to the beta mpc network containing TSS implementation
+          _iframeUrl: "https://mpc-beta.openlogin.com",
+          // network has to be development
+          network: "development",
+          clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Client ID from your Web3Auth Dashboard
+        },
+      });
+      web3auth.configureAdapter(openloginAdapter);
+      // config to remove the external wallet adapters
+      await web3auth.initModal({
+        modalConfig: {
+          "torus-evm": {
+            label: "Torus Wallet",
+            showOnModal: false,
+          },
+          metamask: {
+            label: "Metamask",
+            showOnModal: false,
+          },
+          "wallet-connect-v1": {
+            label: "Wallet Connect",
+            showOnModal: false,
+          },
+        },
+      });
+      setWeb3auth(web3auth);
+
+      if (web3auth.provider) {
+        setProvider(web3auth.provider);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  init();
+}, []);
+```
+
+## Authentication
+
+#### Logging in
+
+You can show the modal in the browser by calling `connect()` function on `web3auth` instance. Your user can choose their preferred login method and
+access your application.
+
+```js
+const login = async () => {
+  if (!web3auth) {
+    uiConsole("web3auth not initialized yet");
+    return;
+  }
+  const web3authProvider = await web3auth.connect();
+  setProvider(web3authProvider);
+  generatePrecompute(); // <-- So one precompute would be available to your users.
+};
+```
+
+:::note
+
+MPC Signing has two parts, generating the pre compute and the actual signing process. The pre compute takes up the maximum time of both the functions
+and can be called in advance for more prompt signing.
+
+For now, `tssSign` of `torus-mpc` package calls `generatePrecompute()` automatically, so you don't have to.
+
+But it is recommended to call `generatePrecompute()` before making a transaction to achieve faster signing. One `generatePrecompute()` call could be
+done after a succesfull authentication of user.
+
+:::
+
+### Get the User Profile
+
+```js
+const user = await web3auth.getUserInfo();
+console.log("User info", user);
+```
+
+Using the `getUserInfo` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
+network, but are fetched from the id_token you received from Auth0 and lives in the frontend context.
+
+### Logout
+
+```js
+await web3auth.logout();
+```
+
+Logging out your user is as simple as calling the `logout` function.
+
+## Interacting with the Blockchain
+
+---
+
+<InteractingWithBlockchain />
+
+## Try our Demo Application and Example Code
+
+Try our [Demo Application](https://demo-mpc.web3auth.io/) with Web3Auth MPC Signing Flow.
+
+The code for the application we developed in this guide can be found in the [Web3Auth MPC Example](https://github.com/torusresearch/w3a-mpc-demo).
+Check it out and try running it locally yourself!
+
+## Questions?
+
+Ask us on [Web3Auth's Github Discussion Board](https://web3auth.io/discussions)
