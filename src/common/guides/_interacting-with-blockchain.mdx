@@ -169,6 +169,27 @@ const signMessage = async () => {
 
 </Tabs>
 
+### Sign Transaction
+
+```js
+const signTransaction = async () => {
+  if (!provider) {
+    console.log("provider not initialized yet");
+    return;
+  }
+  const web3 = new Web3(provider as any);
+  const accounts = await web3.eth.getAccounts();
+
+  const txRes = await web3.eth.signTransaction({
+    from: accounts[0],
+    to: accounts[0],
+    value: web3.utils.toWei('0.0001'),
+    chainId: 1, // change it to your specific chain id.
+  });
+  console.log(txRes.transactionHash);
+}
+```
+
 ### Send Transaction
 
 <Tabs
