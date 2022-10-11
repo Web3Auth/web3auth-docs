@@ -51,13 +51,17 @@ export default class SolanaRpc {
       const conn = new Connection(connectionConfig.rpcTarget);
 
       const pubKey = await solanaWallet.requestAccounts();
-      const { blockhash } = await conn.getRecentBlockhash("finalized");
+      const block = await conn.getLatestBlockhash("finalized");
       const TransactionInstruction = SystemProgram.transfer({
         fromPubkey: new PublicKey(pubKey[0]),
         toPubkey: new PublicKey(pubKey[0]),
         lamports: 0.01 * LAMPORTS_PER_SOL,
       });
-      const transaction = new Transaction({ recentBlockhash: blockhash, feePayer: new PublicKey(pubKey[0]) }).add(TransactionInstruction);
+      const transaction = new Transaction({
+        blockhash: block.blockhash,
+        lastValidBlockHeight: block.lastValidBlockHeight,
+        feePayer: new PublicKey(pubKey[0]),
+      }).add(TransactionInstruction);
       const { signature } = await solanaWallet.signAndSendTransaction(transaction);
       return signature;
     } catch (error) {
@@ -72,13 +76,17 @@ export default class SolanaRpc {
       const conn = new Connection(connectionConfig.rpcTarget);
 
       const pubKey = await solanaWallet.requestAccounts();
-      const { blockhash } = await conn.getRecentBlockhash("finalized");
+      const block = await conn.getLatestBlockhash("finalized");
       const TransactionInstruction = SystemProgram.transfer({
         fromPubkey: new PublicKey(pubKey[0]),
         toPubkey: new PublicKey(pubKey[0]),
         lamports: 0.01 * LAMPORTS_PER_SOL,
       });
-      const transaction = new Transaction({ recentBlockhash: blockhash, feePayer: new PublicKey(pubKey[0]) }).add(TransactionInstruction);
+      const transaction = new Transaction({
+        blockhash: block.blockhash,
+        lastValidBlockHeight: block.lastValidBlockHeight,
+        feePayer: new PublicKey(pubKey[0]),
+      }).add(TransactionInstruction);
       const signedTx = await solanaWallet.signTransaction(transaction);
       return signedTx.signature?.toString() || "";
     } catch (error) {

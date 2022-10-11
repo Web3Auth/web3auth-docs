@@ -15,6 +15,8 @@
         <button id="get-accounts" class="btn">Get Accounts</button>
         <button id="get-balance" class="btn">Get Balance</button>
         <button id="sign-message" class="btn">Sign Message</button>
+        <button id="sign-transaction" class="btn">Sign Transaction</button>
+        <button id="send-transaction" class="btn">Send Transaction</button>
 
         <button id="logout" class="btn">Logout</button>
 
@@ -106,6 +108,15 @@
       $("#send-transaction").click(async function (event) {
         try {
           const receipt = await rpc.sendTransaction(web3auth.provider);
+          console.log(receipt);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+
+      $("#sign-transaction").click(async function (event) {
+        try {
+          const receipt = await rpc.signTransaction(web3auth.provider);
           console.log(receipt);
         } catch (error) {
           console.error(error.message);

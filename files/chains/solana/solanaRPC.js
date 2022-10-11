@@ -45,17 +45,49 @@ const rpc = (() => {
         });
         const connection = new Connection(connectionConfig.rpcTarget);
 
-        const blockhash = (await connection.getRecentBlockhash("finalized")).blockhash;
+        const block = await connection.getLatestBlockhash("finalized");
         const TransactionInstruction = SystemProgram.transfer({
-            fromPubkey: new solanaWallet.PublicKey(accounts[0]),
-            toPubkey: new solanaWallet.PublicKey("oWvBmHCj6m8ZWtypYko8cRVVnn7jQRpSZjKpYBeESxu"),
-            lamports: 0.01 * LAMPORTS_PER_SOL,
+          fromPubkey: new PublicKey(accounts[0]),
+          toPubkey: new PublicKey(accounts[0]),
+          lamports: 0.01 * LAMPORTS_PER_SOL,
         });
-        const transaction = new Transaction({ recentBlockhash: blockhash, feePayer: new PublicKey(accounts[0]) }).add(TransactionInstruction);
+        const transaction = new Transaction({
+          blockhash: block.blockhash,
+          lastValidBlockHeight: block.lastValidBlockHeight,
+          feePayer: new PublicKey(accounts[0]),
+        }).add(TransactionInstruction);
 
         const signedTx = await solanaWallet.signTransaction(transaction);
         return signedTx.signature;
     };
+
+    const sendTransaction = async (provider) => {
+      const solanaWallet = new SolanaProvider.SolanaWallet(provider);
+
+      // Get user's Solana public address
+      const accounts = await solanaWallet.requestAccounts();
+
+      const connectionConfig = await solanaWallet.request({
+          method: "solana_provider_config",
+          params: [],
+      });
+      const connection = new Connection(connectionConfig.rpcTarget);
+
+      const block = await connection.getLatestBlockhash("finalized");
+      const TransactionInstruction = SystemProgram.transfer({
+        fromPubkey: new PublicKey(accounts[0]),
+        toPubkey: new PublicKey(accounts[0]),
+        lamports: 0.01 * LAMPORTS_PER_SOL,
+      });
+      const transaction = new Transaction({
+        blockhash: block.blockhash,
+        lastValidBlockHeight: block.lastValidBlockHeight,
+        feePayer: new PublicKey(accounts[0]),
+      }).add(TransactionInstruction);
+
+      const signedTx = await solanaWallet.signAndSendTransaction(transaction);
+      return signedTx.signature;
+  };
 
 
     const signMessage = async (provider) => {
@@ -80,7 +112,7 @@ const rpc = (() => {
         getBalance,
         signTransaction,
         signMessage,
-        signTransaction,
+        sendTransaction,
         getPrivateKey
     }
 })()
