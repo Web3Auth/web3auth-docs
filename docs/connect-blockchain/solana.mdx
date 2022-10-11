@@ -202,15 +202,16 @@ const connectionConfig = await solanaWallet.request({
 const connection = new Connection(connectionConfig.rpcTarget);
 
 const accounts = await solanaWallet.requestAccounts();
-const blockhash = (await connection.getRecentBlockhash("finalized")).blockhash;
+const block = await connection.getLatestBlockhash("finalized");
 const TransactionInstruction = SystemProgram.transfer({
   fromPubkey: new PublicKey(accounts[0]),
   toPubkey: new PublicKey(accounts[0]),
   lamports: 0.01 * LAMPORTS_PER_SOL,
 });
 const transaction = new Transaction({
-  recentBlockhash: blockhash,
-  feePayer: new PublicKey(pubKey[0]),
+  blockhash: block.blockhash,
+  lastValidBlockHeight: block.lastValidBlockHeight,
+  feePayer: new PublicKey(accounts[0]),
 }).add(TransactionInstruction);
 
 const signedTx = await solanaWallet.signTransaction(transaction);
@@ -237,19 +238,33 @@ const connectionConfig = await solanaWallet.request({
 const connection = new Connection(connectionConfig.rpcTarget);
 
 const accounts = await solanaWallet.requestAccounts();
-const blockhash = (await connection.getRecentBlockhash("finalized")).blockhash;
+const block = await connection.getLatestBlockhash("finalized");
+// Transaction 1
 const TransactionInstruction = SystemProgram.transfer({
   fromPubkey: new PublicKey(accounts[0]),
   toPubkey: new PublicKey(accounts[0]),
   lamports: 0.01 * LAMPORTS_PER_SOL,
 });
 const transaction = new Transaction({
-  recentBlockhash: blockhash,
-  feePayer: new PublicKey(pubKey[0]),
+  blockhash: block.blockhash,
+  lastValidBlockHeight: block.lastValidBlockHeight,
+  feePayer: new PublicKey(accounts[0]),
 }).add(TransactionInstruction);
 
-const signedTx = await solanaWallet.signAllTransactions(transaction);
-console.log(signedTx.signature);
+// Transaction 2
+const TransactionInstruction2 = SystemProgram.transfer({
+  fromPubkey: new PublicKey(accounts[0]),
+  toPubkey: new PublicKey(accounts[0]),
+  lamports: 0.0001 * LAMPORTS_PER_SOL,
+});
+const transaction2 = new Transaction({
+  blockhash: block.blockhash,
+  lastValidBlockHeight: block.lastValidBlockHeight,
+  feePayer: new PublicKey(accounts[0]),
+}).add(TransactionInstruction2);
+
+const signedTx = await solanaWallet.signAllTransactions([transaction, transaction2]);
+console.log(signedTx);
 ```
 
 ## Sign and Send a Transaction
@@ -272,15 +287,16 @@ const connectionConfig = await solanaWallet.request({
 const connection = new Connection(connectionConfig.rpcTarget);
 
 const accounts = await solanaWallet.requestAccounts();
-const blockhash = (await connection.getRecentBlockhash("finalized")).blockhash;
+const block = await connection.getLatestBlockhash("finalized");
 const TransactionInstruction = SystemProgram.transfer({
   fromPubkey: new PublicKey(accounts[0]),
   toPubkey: new PublicKey(accounts[0]),
   lamports: 0.01 * LAMPORTS_PER_SOL,
 });
 const transaction = new Transaction({
-  recentBlockhash: blockhash,
-  feePayer: new PublicKey(pubKey[0]),
+  blockhash: block.blockhash,
+  lastValidBlockHeight: block.lastValidBlockHeight,
+  feePayer: new PublicKey(accounts[0]),
 }).add(TransactionInstruction);
 const { signature } = await solanaWallet.signAndSendTransaction(transaction);
 ```
@@ -297,7 +313,7 @@ import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } f
 */
 
 // solanaWallet is from above
-const msg = Buffer.from("Test Signing Message ", "utf8");
+const msg = Buffer.from("Test Signing Message", "utf8");
 const result = await solanaWallet.signMessage(msg);
 console.log(result.toString());
 ```
