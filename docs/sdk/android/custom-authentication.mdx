@@ -20,11 +20,11 @@ First, configure your own verifier in the Web3Auth Dashboard to use custom authe
 
 :::tip
 
-Check out how to create [Custom Verifier](/docs/custom-authentication/verifiers) on Web3Auth Dashboard.
+Check out how to create a **[Custom Verifier](/docs/custom-authentication/verifiers)** on Web3Auth Dashboard.
 
 :::
 
-Then, you should specify the details of your verifier in the `LoginConfigItem` struct, the details of this struct are as follows.
+Then, you should specify the details of your verifier in the `LoginConfigItem` struct, the details of this struct are as follows:
 
 ## `LoginConfigItem`
 
@@ -93,6 +93,7 @@ data class LoginConfigItem(
   values={[
     { label: "Google", value: "google" },
     { label: "Facebook", value: "facebook" },
+    { label: "JWT", value: "jwt" },
   ]}
 >
 
@@ -144,6 +145,30 @@ web3Auth = Web3Auth (
 
 </TabItem>
 
+<TabItem value="jwt">
+
+```kotlin
+web3Auth = Web3Auth (
+  Web3AuthOptions (
+    context = this,
+    clientId = getString (R.string.web3auth_project_id),
+    network = Web3Auth.Network.MAINNET,
+    redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
+    // Optional loginConfig object
+    // highlight-start
+    loginConfig = hashMapOf("jwt" to LoginConfigItem(
+      verifier = "verifier-name", // get it from web3auth dashboard
+      typeOfLogin = TypeOfLogin.JWT,
+      name = "Custom JWT Login",
+      clientId = getString (R.string.web3auth_project_id) // web3auth's client id
+    ))
+    // highlight-end
+  )
+)
+```
+
+</TabItem>
+
 </Tabs>
 
 :::note
@@ -161,22 +186,24 @@ web3Auth = Web3Auth (
 - To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` field of the `extraLoginOptions`.
 
   ```kotlin
-
   val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
     web3Auth.login(LoginParams(selectedLoginProvider,
       // highlight-next-line
       extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")))
   ```
 
-- To use the `JWT` login, you need to put the jwt token into the `additionalParams` field of the `extraLoginOptions` as _HashMap_.
+- To use the `JWT` login, you need to put the jwt token into the `login_hint` field of the `extraLoginOptions`.
 
   ```kotlin
-
   val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
     web3Auth.login(LoginParams(selectedLoginProvider,
       // highlight-start
       extraLoginOptions = ExtraLoginOptions(
-        additionalParams = hashMapOf ("id_token" to "your_jwt_token")
-      )))
+        domain: "your-domain",
+        id_token = "your_jwt_token"
+      )
       // highlight-end
+    ))
   ```
+
+  > Note: You should specify a `domain` here. It can be anything. But failing to pass the domain here, will result in **_"Invalid params"_** error.
