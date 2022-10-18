@@ -141,7 +141,7 @@ var token = jwt.sign(
     exp: Math.floor(Date.now() / 1000) + 60 * 60,
   },
   privateKey,
-  { algorithm: "RS256", kid: "1bb9605c36e{your_kid}69386830202b2d" }
+  { algorithm: "RS256", keyid: "1bb9605c36e{your_kid}69386830202b2d" } // <-- This has to be present in the JWKS endpoint.
 );
 
 console.log(token);
@@ -188,7 +188,7 @@ var token = jwt.sign(
     exp: Math.floor(Date.now() / 1000) + 60 * 60,
   },
   privateKey,
-  { algorithm: "ECDSA", kid: "1bb9605c36e{your_kid}69386830202b2d" }
+  { algorithm: "ECDSA", keyid: "1bb9605c36e{your_kid}69386830202b2d" }
 );
 
 console.log(token);
