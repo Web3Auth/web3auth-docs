@@ -249,10 +249,10 @@ async getPrivateKey() {
 
 ---
 
-### Getting a provider from any `secp256k1` private key.
+### Getting a provider from any `ed25519` private key.
 
-`@web3auth/solana-provider` package can be used to get a solana compatible provider from any `secp256k1` private key. You can use this package with
-our SDKs to get an solana provider from the logged-in user's private key.
+`@web3auth/solana-provider` package can be used to get a solana compatible provider from any `ed25519` private key. You can use this package with our
+SDKs to get an solana provider from the logged-in user's private key.
 
 #### Example
 
@@ -260,31 +260,57 @@ our SDKs to get an solana provider from the logged-in user's private key.
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 
 /*
-privKey: any secp256k1 private key.
+ed25519key: any ed25519 private key.
 */
 
-async setProvider(privKey: string) {
-	this.solanaPrivateKeyProvider = new SolanaPrivateKeyProvider({
-		config: {
-			/*
-			pass the chain config that you want to connect with
-			all chainConfig fields are required.
-			*/
-			chainConfig: {
-				chainId: "0x3",
-				rpcTarget: "https://ssc-dao.genesysgo.net", // This is the testnet RPC we have added, please pass on your own endpoint while creating an app
-				displayName: "solana",
-				blockExplorer: "https://explorer.solana.com/",
-				ticker: "SOL",
-				tickerName: "Solana",
-			},
-		},
-	});
-	/*
-	pass user's private key here.
-	after calling setupProvider, we can use
-	this.solanaPrivateKeyProvider.setupProvider as a ed25519 provider
-	*/
-	const provider = await this.solanaPrivateKeyProvider.setupProvider(privKey);
-}
+// Get user's Solana's public address
+const solanaPrivateKeyProvider = new SolanaPrivateKeyProvider({
+  config: {
+    chainConfig: {
+      chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+      rpcTarget: "https://rpc.ankr.com/solana",
+      displayName: "Solana Mainnet",
+      blockExplorer: "https://explorer.solana.com/",
+      ticker: "SOL",
+      tickerName: "Solana",
+    },
+  },
+});
+await solanaPrivateKeyProvider.setupProvider(ed25519key);
+console.log(solanaPrivateKeyProvider.provider);
+```
+
+### Getting a provider from any `secp256k1` private key.
+
+Web3Auth by default returns an `secp256k1` private key. However, for Solana, you need an `ed25519` key. We have made some additional libraries to help
+you convert this `secp256k1` key to `ed25519` key. Further you can utlise the same to get a Solana Provider.
+
+#### Example
+
+```ts
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+import { getED25519Key } from "@toruslabs/openlogin-ed25519";
+
+/*
+privateKey: any secp256k1 private key.
+*/
+
+const ed25519key = getED25519Key(privateKey).sk.toString("hex");
+
+// Get user's Solana's public address
+const solanaPrivateKeyProvider = new SolanaPrivateKeyProvider({
+  config: {
+    chainConfig: {
+      chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+      rpcTarget: "https://rpc.ankr.com/solana",
+      displayName: "Solana Mainnet",
+      blockExplorer: "https://explorer.solana.com/",
+      ticker: "SOL",
+      tickerName: "Solana",
+    },
+  },
+});
+
+await solanaPrivateKeyProvider.setupProvider(ed25519key);
+console.log(solanaPrivateKeyProvider.provider);
 ```
