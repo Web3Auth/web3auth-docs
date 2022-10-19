@@ -215,26 +215,27 @@ const web3auth = new Web3Auth(WebBrowser, {
   });
   ```
 
-- To use the `JWT` login, you need to put the jwt token into the `additionalParams` field of the `extraLoginOptions`.
+- To use the `JWT` login, you need to put the jwt token into the `id_token` field of the `extraLoginOptions`, additionally, you need to pass over the
+  `domain` field as well, which is mandatory. If you don't have a domain, just passover a string in that field.
 
   ```tsx
   const web3auth = new Web3Auth(WebBrowser, {
-  clientId: "YOUR_CLIENT_ID", // web3auth's client id
-  network: Network.TESTNET,
-  loginConfig: {
-    jwt: {
-      verifier: "verifier-name", // get it from web3auth dashboard
-      typeOfLogin: TypeOfLogin.JWT,
-      name: "Custom Login with JWT",
-      clientId: "YOUR_CLIENT_ID", // web3auth's client id
+    clientId: "YOUR_CLIENT_ID", // web3auth's client id
+    network: Network.TESTNET,
+    loginConfig: {
+      jwt: {
+        verifier: "verifier-name", // get it from web3auth dashboard
+        typeOfLogin: TypeOfLogin.JWT,
+        name: "Custom Login with JWT",
+        clientId: "YOUR_CLIENT_ID", // web3auth's client id
+      },
     },
-  },
   });
   web3auth.login({
     loginProvider: LoginProvider.JWT,
     redirectUrl: resolvedRedirectUrl,
     extraLoginOptions: {
-      domain: "YOUR_DOMAIN", // domain of your app backend
+      domain: "example.com", // domain of your app backend
       id_token: "your JWT token",
     },
   });
