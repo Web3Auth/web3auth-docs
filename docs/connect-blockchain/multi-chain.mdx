@@ -19,6 +19,7 @@ Web3Auth SDK supports the following blockchains:
 - Solana
 - StarkEx and StarkNet
 - Tezos
+- Algorand
 
 ## Initializing Provider
 
@@ -376,3 +377,21 @@ const address = starknet_account.pub.getX().toString("hex");
 </TabItem>
 
 </Tabs>
+
+### Algorand
+
+For Algorand, we will pass in the privateKey and will be using [algosdk](https://www.npmjs.com/package/algosdk) package to handle the Algorand address
+creation.
+
+```js
+import algosdk from "algosdk";
+
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const privateKey = provider.request({ method: "eth_privateKey" });
+const passphrase = algosdk.secretKeyToMnemonic(Buffer.from(privateKey, "hex"));
+const keyPair = algosdk.mnemonicToSecretKey(passphrase);
+const address = keyPair.addr;
+```
