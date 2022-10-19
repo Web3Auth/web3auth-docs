@@ -107,7 +107,7 @@ class LoginParams {
 
 ```dart
 Future<void> initPlatformState() async {
-  HashMap themeMap = HashMap<String, String>();
+  final themeMap = HashMap<String, String>();
   themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
@@ -143,7 +143,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 ```dart
 Future<void> initPlatformState() async {
-  HashMap themeMap = HashMap<String, String>();
+  final themeMap = HashMap<String, String>();
   themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
@@ -179,7 +179,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 ```dart
 Future<void> initPlatformState() async {
-  HashMap themeMap = HashMap<String, String>();
+  final themeMap = HashMap<String, String>();
   themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
@@ -215,7 +215,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 ```dart
 Future<void> initPlatformState() async {
-  HashMap themeMap = HashMap<String, String>();
+  final themeMap = HashMap<String, String>();
   themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
@@ -251,7 +251,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 ```dart
 Future<void> initPlatformState() async {
-  HashMap themeMap = HashMap<String, String>();
+  final themeMap = HashMap<String, String>();
   themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
@@ -288,12 +288,17 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 ```dart
 Future<void> initPlatformState() async {
-  HashMap themeMap = HashMap<String, String>();
+  final themeMap = HashMap<String, String>();
   themeMap['primary'] = "#229954";
 
   // highlight-start
-  HashMap idToken = new HashMap<String, String>();
-  idToken['id_token'] = "your_id_token";
+  final loginConfig = new HashMap<String, LoginConfigItem>();
+  loginConfig['jwt'] = LoginConfigItem(
+    verifier: "verifier-name", // get it from web3auth dashboard
+    typeOfLogin: TypeOfLogin.jwt,
+    name: "Custom JWT Login",
+    clientId: "web3auth_client_id" // web3auth's plug and play client id
+  );
   // highlight-end
 
   Uri redirectUrl;
@@ -312,16 +317,23 @@ Future<void> initPlatformState() async {
     network: Network.testnet,
     redirectUrl: redirectUrl,
     whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
+        dark: true, name: "Web3Auth Flutter App", theme: themeMap),
+    // highlight-next-line
+    loginConfig: loginConfig
     ));
 }
 
 // Login
 final Web3AuthResponse response = await Web3AuthFlutter.login(
+  LoginParams(
     // highlight-start
-    LoginParams(loginProvider: Provider.jwt,
-      extraLoginOptions: ExtraLoginOptions(additionalParams: idToken)));
+    loginProvider: Provider.jwt,
+    extraLoginOptions: ExtraLoginOptions(
+      id_token: "{YOUR_JWT_TOKEN}", domain: "{YOUR-DOMAIN}"
+    )
     // highlight-end
+  )
+);
 ```
 
 </TabItem>
@@ -479,7 +491,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
 
 ```dart
 Future<void> initPlatformState() async {
-  HashMap themeMap = HashMap<String, String>();
+  final themeMap = HashMap<String, String>();
   themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
@@ -515,7 +527,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
 
 ```dart
 Future<void> initPlatformState() async {
-  HashMap themeMap = HashMap<String, String>();
+  final themeMap = HashMap<String, String>();
   themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
@@ -563,8 +575,8 @@ await Web3AuthFlutter.logout();
 
 A void object is returned on successfull logout otherwise an error is thrown
 
-:::tip
+:::tip sample-app
 
-See the code for the sample app [here](https://github.com/Web3Auth/examples/tree/main/flutter).
+Get started with a sample app found [here](https://github.com/Web3Auth/web3auth-flutter-sdk/tree/master/example).
 
 :::
