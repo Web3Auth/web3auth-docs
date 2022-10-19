@@ -85,8 +85,6 @@ Initialise the `Web3AuthFlutter` plugin at the very beginning such as in the ove
 
 ```dart
 Future<void> initPlatformState() async {
-  HashMap themeMap = HashMap<String, String>();
-  themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -103,9 +101,7 @@ Future<void> initPlatformState() async {
   await Web3AuthFlutter.init(Web3AuthOptions(
     clientId: '{WEB3AUTH_CLIENT_ID}',
     network: Network.testnet,
-    redirectUrl: redirectUrl,
-    whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
+    redirectUrl: redirectUrl
     ));
    // highlight-end
 }
