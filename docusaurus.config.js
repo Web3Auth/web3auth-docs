@@ -268,6 +268,10 @@ const config = {
             from: "/authenticating-users/social-login-users",
             to: "/server-side-verification/social-login-users",
           },
+          {
+            from: "/overview/web3auth-and-wallets",
+            to: "/overview/web3auth-for-wallets",
+          }
         ],
       },
     ],
