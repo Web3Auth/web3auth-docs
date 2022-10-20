@@ -1,7 +1,7 @@
 ---
 title: Integrate Web3Auth with Multiple Chains!!
 sidebar_label: Multichain
-image: "/docs/contents/guides/banners/ethereum.png"
+image: "/docs/contents/guides/banners/multichain.png"
 displayed_sidebar: docs
 keywords: [multichain, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Multiple Blockchains | Documentation - Web3Auth"
@@ -279,13 +279,13 @@ import {
   SolanaPrivateKeyProvider,
   SolanaWallet,
 } from "@web3auth/solana-provider";
+import { getED25519Key } from "@toruslabs/openlogin-ed25519";
 
 /*
   Use code from the above Initializing Provider here
 */
 
 const privateKey = provider.request({ method: "eth_privateKey" });
-const { getED25519Key } = await import("@toruslabs/openlogin-ed25519");
 const ed25519key = getED25519Key(privateKey).sk.toString("hex");
 
 // Get user's Solana's public address

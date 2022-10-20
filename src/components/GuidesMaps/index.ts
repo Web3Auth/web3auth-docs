@@ -172,6 +172,17 @@ export const referenceMap = [
     link: "/docs/custom-authentication/byo-jwt-providers",
   },
   {
+    title: "Integrate Web3Auth with Multiple Chains!!",
+    description: "Learn how to interact with multiple chains using Web3Auth",
+    image: "/docs/contents/guides/banners/multichain.png",
+    type: "REFERENCE",
+    tags: ["multichain", "@web3auth/web3auth", "@web3auth/core"],
+    date: "20th Oct 2022",
+    author: "Web3Auth Team",
+    order: 1,
+    link: "/docs/connect-blockchain/multi-chain",
+  },
+  {
     title: "Integrate Web3Auth with the Ethereum Blockchain",
     description: "Learn how to add a non custodial social login to the Ethereum Blockchain",
     image: "/docs/contents/guides/banners/ethereum.svg",
