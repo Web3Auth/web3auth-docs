@@ -134,10 +134,6 @@ const config = {
             to: "/server-side-verification/",
           },
           {
-            from: "/examples/demo",
-            to: "/examples/",
-          },
-          {
             from: "/examples/productionexamples",
             to: "/examples/liveexamples",
           },
@@ -160,10 +156,6 @@ const config = {
           {
             from: "/customauth/auth0",
             to: "/guides/auth0",
-          },
-          {
-            from: "/sdk/self-host/",
-            to: "/sdk/self-host/installation",
           },
           {
             from: "/self-host/",
@@ -272,6 +264,30 @@ const config = {
           {
             from: "/sdk/web/web3auth",
             to: "/sdk/web/modal/",
+          },
+          {
+            from: "/sdk/web/web3auth/initialize",
+            to: "/sdk/web/modal/initialize",
+          },
+          {
+            from: "/sdk/web/web3auth/whitelabel",
+            to: "/sdk/web/modal/whitelabel",
+          },
+          {
+            from: "/sdk/web/web3auth/custom-authentication",
+            to: "/sdk/web/modal/custom-authentication",
+          },
+          {
+            from: "/sdk/web/web3auth/multi-factor-authentication",
+            to: "/sdk/web/modal/multi-factor-authentication",
+          },
+          {
+            from: "/sdk/web/web3auth/wagmi-connector",
+            to: "/sdk/web/modal/wagmi-connector",
+          },
+          {
+            from: "/sdk/web/web3auth/usage",
+            to: "/sdk/web/modal/usage",
           },
         ],
       },

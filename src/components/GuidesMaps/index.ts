@@ -352,7 +352,7 @@ export const referenceMap = [
 
 export const featuresMap = [
   {
-    title: "Web3Auth Plug and Play UI",
+    title: "Web3Auth Plug and Play Modal",
     tag: "@web3auth/modal",
   },
   {
