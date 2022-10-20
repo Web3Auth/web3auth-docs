@@ -271,7 +271,7 @@ const config = {
           },
           {
             from: "/sdk/web/web3auth",
-            to: "/sdk/web/modal",
+            to: "/sdk/web/modal/",
           },
         ],
       },
