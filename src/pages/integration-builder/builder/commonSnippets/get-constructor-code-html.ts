@@ -26,7 +26,7 @@ export const getConstructorCodeHTML = (chain: "sol", isWhiteLabled: boolean) => 
   }
 
   const code = `
-      web3auth = new window.Web3auth.Web3Auth({
+      web3auth = new window.Modal.Web3Auth({
         clientId,
         chainConfig: {${chainDetails}
         },${uiConfig}
