@@ -3,7 +3,7 @@ title: Using Auth0 with Web3Auth
 image: "/docs/contents/guides/banners/auth0.png"
 description: Learn how to use Web3Auth Plug and Play Core SDK with Auth0
 type: guide
-tags: [web, "@web3auth/core", auth0, custom authentication, react, ethereum, sms, email, sms passwordless, email passwordless, passwordless]
+tags: [web, "@web3auth/core", auth0, custom authentication, react, ethereum, sms, email, sms passwordless, email passwordless, passwordless, sms otp]
 date: 25th May 2022
 author: Web3Auth Team
 order: 2
@@ -95,7 +95,6 @@ When integrating Web3Auth with Auth0 RWA, we need an additional backend server t
     its implicit flow doesn’t require an application to host a backend server. You can navigate to the
     [additional section](#additional-reading-setup-custom-authentication-using-auth0-rwa) below which talks about the code flow with RWA.
 
-
 ## Setup your Auth0 Tenant
 
 - Add the following URLs for your app to the Allowed Web Origins field when configuring your Auth0 Application.
@@ -112,7 +111,7 @@ When integrating Web3Auth with Auth0 RWA, we need an additional backend server t
 ### Enable Social login
 
 - Enable `Google` or other social provider on the `Authentication > Social` page of your Auth0 Dashboard.
-![Auth0 Dashboard to enable Social logins](/contents/guides/auth0/auth0-social-logins.png)
+  ![Auth0 Dashboard to enable Social logins](/contents/guides/auth0/auth0-social-logins.png)
 - Vist https://auth0.com/learn/social-login to learn more.
 
 ### Enable SMS Passwordless
@@ -124,20 +123,21 @@ If you want to implement SMS Passwordless, then this section is for you. Else yo
 :::
 
 - Enable `SMS` on the `Authentication > Passwordless` page of your Auth0 Dashboard.
-![Auth0 Dashboard to enable SMS Passwordless Option](/contents/guides/auth0/auth0-passwordless.png)
+  ![Auth0 Dashboard to enable SMS Passwordless Option](/contents/guides/auth0/auth0-passwordless.png)
 - Under `Settings` tab, add your `Twilio SID` and `Twilio AuthToken`.
-![Auth0 Dashboard to enable SMS Passwordless | Setup](/contents/guides/auth0/auth0-sms-passwordless-1.png)
+  ![Auth0 Dashboard to enable SMS Passwordless | Setup](/contents/guides/auth0/auth0-sms-passwordless-1.png)
 - Also, update the `From` number on the same page, and click on the `Save` button.
 - Next, enable your application under `Applications` tab, and click on the `Save` button.
-![Auth0 Dashboard to enable SMS Passwordless | Enable App](/contents/guides/auth0/auth0-sms-passwordless-2.png)
+  ![Auth0 Dashboard to enable SMS Passwordless | Enable App](/contents/guides/auth0/auth0-sms-passwordless-2.png)
 - You can test sending a SMS from the `Try` tab. Once, a SMS comes with OTP, it means it has been successfully configured.
 
 ##### Update Lockscreen for SMS Passwordless
 
 :::info update-lock-screen
 
-If you're to use SMS Passwordless, please **[visit here to setup the Lock
-Screen of Auth0](https://auth0.com/docs/authenticate/passwordless/implement-login/universal-login)**  from your Auth0 Dashboard.
+If you're to use SMS Passwordless, please
+**[visit here to setup the Lock Screen of Auth0](https://auth0.com/docs/authenticate/passwordless/implement-login/universal-login)** from your Auth0
+Dashboard.
 
 :::
 
@@ -150,19 +150,20 @@ If you want to implement Email Passwordless, then this section is for you. Else 
 :::
 
 - Enable `Email` on the `Authentication > Passwordless` page of your Auth0 Dashboard.
-![Auth0 Dashboard to enable Email Passwordless Option](/contents/guides/auth0/auth0-passwordless.png)
+  ![Auth0 Dashboard to enable Email Passwordless Option](/contents/guides/auth0/auth0-passwordless.png)
 - Under `Settings` tab, update `From` and `Subject` based on your need and click on the `Save` button.
-![Auth0 Dashboard to enable Email Passwordless | Setup](/contents/guides/auth0/auth0-email-passwordless-1.png)
+  ![Auth0 Dashboard to enable Email Passwordless | Setup](/contents/guides/auth0/auth0-email-passwordless-1.png)
 - Next, enable your application under `Applications` tab, and click on the `Save` button.
-![Auth0 Dashboard to enable Email Passwordless | Enable App](/contents/guides/auth0/auth0-email-passwordless-2.png)
+  ![Auth0 Dashboard to enable Email Passwordless | Enable App](/contents/guides/auth0/auth0-email-passwordless-2.png)
 - You can test sending an Email from the `Try` tab. Once, an Email comes with OTP/Link, it means it has been successfully configured.
 
 ##### Update Lockscreen for Email Passwordless
 
 :::info update-lock-screen
 
-If you're to use Email Passwordless, please **[visit here to setup the Lock
-Screen of Auth0](https://auth0.com/docs/authenticate/passwordless/implement-login/universal-login)**  from your Auth0 Dashboard.
+If you're to use Email Passwordless, please
+**[visit here to setup the Lock Screen of Auth0](https://auth0.com/docs/authenticate/passwordless/implement-login/universal-login)** from your Auth0
+Dashboard.
 
 :::
 
@@ -172,15 +173,15 @@ Screen of Auth0](https://auth0.com/docs/authenticate/passwordless/implement-logi
 
 ### Create Social Verifiers
 
-- Create a Verifier from the **Custom Auth** Section of the [Developer Dashboard](https://dashboard.web3auth.io/) with the following
-  configuration:
+- Create a Verifier from the **Custom Auth** Section of the [Developer Dashboard](https://dashboard.web3auth.io/) with the following configuration:
 
   - Choose a name of your choice for the verifier identifier. `eg. auth0-project`
   - Select `Auth0` from the **Login Provider**.
   - Choose your Authentication Type from `eg. Google, Twitter, Github etc..` to be the Auth provider.
-  - Paste the `Client ID` and `Auth0 Domain` from the Auth0 SPA you created in the above steps. This will be used to validate the JWT token issued by Auth0.
-  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once it's
-    complete.
+  - Paste the `Client ID` and `Auth0 Domain` from the Auth0 SPA you created in the above steps. This will be used to validate the JWT token issued by
+    Auth0.
+  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once
+    it's complete.
     <img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} src={ImageVerifer} />
 
   > You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
@@ -193,18 +194,18 @@ If you want to implement SMS Passwordless, then this section is for you. Else yo
 
 :::
 
-- Create a Verifier from the **Custom Auth** Section of the [Developer Dashboard](https://dashboard.web3auth.io/) with the following
-  configuration:
+- Create a Verifier from the **Custom Auth** Section of the [Developer Dashboard](https://dashboard.web3auth.io/) with the following configuration:
 
   - Choose a name of your choice for the verifier identifier. `eg. auth0-sms-passwordless`
   - Select `Custom` from the **Login Provider**.
   - Choose `Custom` for the `JWT Verifier ID` and type `name`.
-  - Enter `https://{YOUR-DOMAIN}.auth0.com/.well-known/jwks.json` as your `JWKS Endpoint`. This will be used to validate the JWT token issued by Auth0.
+  - Enter `https://{YOUR-DOMAIN}.auth0.com/.well-known/jwks.json` as your `JWKS Endpoint`. This will be used to validate the JWT token issued by
+    Auth0.
   - JWT validation fields:
     - iss: `https://{YOUR-DOMAIN}.auth0.com`
     - aud: `{AUTH0-CLIENT-ID}`
-  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once it's
-    complete.
+  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once
+    it's complete.
     <img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} src={ImageSMSVerifer} />
 
   > You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
@@ -217,15 +218,15 @@ If you want to implement Email Passwordless, then this section is for you. Else 
 
 :::
 
-- Create a Verifier from the **Custom Auth** Section of the [Developer Dashboard](https://dashboard.web3auth.io/) with the following
-  configuration:
+- Create a Verifier from the **Custom Auth** Section of the [Developer Dashboard](https://dashboard.web3auth.io/) with the following configuration:
 
   - Choose a name of your choice for the verifier identifier. `eg. auth0-email-passwordless`
   - Select `Auth0` from the **Login Provider**.
   - Choose your Authentication Type as `Passwordless` to use Auth0's Email Passwordless.
-  - Paste the `Client ID` and `Auth0 Domain` from the Auth0 SPA you created in the above steps. This will be used to validate the JWT token issued by Auth0.
-  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once it's
-    complete.
+  - Paste the `Client ID` and `Auth0 Domain` from the Auth0 SPA you created in the above steps. This will be used to validate the JWT token issued by
+    Auth0.
+  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once
+    it's complete.
     <img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} src={ImageEmailVerifer} />
 
   > You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.

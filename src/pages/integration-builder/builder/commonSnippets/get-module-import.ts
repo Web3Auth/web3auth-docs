@@ -5,7 +5,7 @@ export const getModuleImport = (
   evmFramework: "web3" | "ethers"
 ) => {
   let code = `
-import { Web3Auth } from "@web3auth/web3auth";`;
+import { Web3Auth } from "@web3auth/modal";`;
 
   if (isWhiteLabled || isCustomAuth || chain === "starkex" || chain === "starknet" || chain === "tezos") {
     code += `

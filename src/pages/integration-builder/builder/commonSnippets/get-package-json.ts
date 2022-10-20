@@ -8,7 +8,7 @@ export const getPackageJson = (
 ) => {
   let code = `
     "@web3auth/base": "^${web3authVersion}",
-    "@web3auth/web3auth": "^${web3authVersion}",`;
+    "@web3auth/modal": "^${web3authVersion}",`;
 
   if (isWhiteLabled || isCustomAuth || chain === "starkex" || chain === "starknet" || chain === "tezos") {
     code += `

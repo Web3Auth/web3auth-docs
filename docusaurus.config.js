@@ -106,10 +106,7 @@ const config = {
           breadcrumbs: false,
           editUrl: githubEditUrl,
           sidebarPath: require.resolve("./sidebars.js"),
-          remarkPlugins: [
-            remarkMath,
-            [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }]
-          ],
+          remarkPlugins: [remarkMath, [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
         },
         theme: {
@@ -119,8 +116,8 @@ const config = {
           trackingID: "GTM-ML3T5M6",
         },
         pages: {
-          remarkPlugins: [require('@docusaurus/remark-plugin-npm2yarn')],
-        }
+          remarkPlugins: [require("@docusaurus/remark-plugin-npm2yarn")],
+        },
       },
     ],
   ],
@@ -198,7 +195,7 @@ const config = {
           },
           {
             from: "/api-reference/web/plugnplay",
-            to: "/sdk/web/web3auth/",
+            to: "/sdk/web/modal/",
           },
           {
             from: "/api-reference/web/customloginui",
@@ -271,7 +268,11 @@ const config = {
           {
             from: "/overview/web3auth-and-wallets",
             to: "/overview/web3auth-for-wallets",
-          }
+          },
+          {
+            from: "/sdk/web/web3auth",
+            to: "/sdk/web/modal",
+          },
         ],
       },
     ],
@@ -279,9 +280,8 @@ const config = {
 };
 
 async function createConfig() {
-
-  const lightTheme = (await import('./src/components/prismLight.mjs')).default;
-  const darkTheme = (await import('./src/components/prismDark.mjs')).default;
+  const lightTheme = (await import("./src/components/prismLight.mjs")).default;
+  const darkTheme = (await import("./src/components/prismDark.mjs")).default;
 
   // @ts-expect-error: we know it exists, right
   config.themeConfig.prism.theme = lightTheme;

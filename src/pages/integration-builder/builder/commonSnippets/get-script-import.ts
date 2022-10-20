@@ -1,6 +1,6 @@
 export const getScriptImport = (chain: "sol", isWhiteLabled: boolean, isCustomAuth: boolean, evmFramework: "ethers") => {
   let code = `
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/web3auth@1.1.1/dist/web3auth.umd.min.js"></script>`;
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal"></script>`;
   if (isWhiteLabled || isCustomAuth) {
     code += `
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/openlogin-adapter@1.1.1/dist/openloginAdapter.umd.min.js"></script>`;

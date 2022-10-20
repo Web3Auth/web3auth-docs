@@ -13,10 +13,10 @@ While initializing the plugin, you need to pass on the following parameters to t
 
 <TabItem value="table">
 
-| Parameter           | Type                                                               | Description                                                               | Optional |
-| ------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------- | -------- |
-| `torusWalletOpts?`  | `TorusCtorArgs`                                                    | Configuration options for Torus Wallet                                    | Yes      |
-| `walletInitOptions` | `Partial<TorusParams> & Required<Pick<TorusParams, "whiteLabel">>` | Parameters to customise your Torus Wallet Embed UI within the application | No       |
+| Parameter           | Type                                                               | Description                                                               | Mandatory |
+| ------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------- | --------- |
+| `torusWalletOpts?`  | `TorusCtorArgs`                                                    | Configuration options for Torus Wallet                                    | No        |
+| `walletInitOptions` | `Partial<TorusParams> & Required<Pick<TorusParams, "whiteLabel">>` | Parameters to customise your Torus Wallet Embed UI within the application | Yes       |
 
 </TabItem>
 
@@ -50,12 +50,12 @@ as input which contains the following parameters:
 
 `TorusCtorArgs`
 
-| Parameter         | Type                                                              | Description                                                                            | Default Value | Optional |
-| ----------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ------------- | -------- |
-| `buttonPosition?` | `enum` - (`bottom-left`, `top-left`, `bottom-right`, `top-right`) | Determines where the torus widget is visible on the page.                              | `bottom-left` | Yes      |
-| `modalZIndex?`    | `number`                                                          | Z-index of the modal and iframe                                                        | `99999`       | Yes      |
-| `buttonSize`      | `number`                                                          | Size of the widget button                                                              | `56`          | Yes      |
-| `apiKey?`         | `string`                                                          | Torus Wallet API Key - Get it from [Web3Auth Dashboard](https://dashboard.web3auth.io) |               | Yes      |
+| Parameter         | Type                                                              | Description                                                                            | Default Value | Mandatory |
+| ----------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ------------- | --------- |
+| `buttonPosition?` | `enum` - (`bottom-left`, `top-left`, `bottom-right`, `top-right`) | Determines where the torus widget is visible on the page.                              | `bottom-left` | No        |
+| `modalZIndex?`    | `number`                                                          | Z-index of the modal and iframe                                                        | `99999`       | No        |
+| `buttonSize`      | `number`                                                          | Size of the widget button                                                              | `56`          | No        |
+| `apiKey?`         | `string`                                                          | Torus Wallet API Key - Get it from [Web3Auth Dashboard](https://dashboard.web3auth.io) |               | No        |
 
 </TabItem>
 
@@ -120,11 +120,11 @@ Out of those mentioned parameters, the following 3 parameters are important for 
 
 `TorusParams`
 
-| Parameter          | Type               | Required | Description                                                                                                                                                                  | Default |
-| ------------------ | ------------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `whiteLabel`       | `WhiteLabelParams` | Yes      | Params to enable whitelabelling of torus website and widget. Know more about whitelabeling options for Torus Wallet [here](https://docs.tor.us/wallet/sdk/class#whitelabel). | N/A     |
-| `showTorusButton`  | `boolean`          | No       | Determines whether to show/hide torus widget.                                                                                                                                | `true`  |
-| `useWalletConnect` | `boolean`          | No       | Setting `useWalletConnect` to true allows to display wallet connect qr scanner from torus-embed.                                                                             | `false` |
+| Parameter          | Type               | Mandatory | Description                                                                                                                                                                  | Default |
+| ------------------ | ------------------ | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `whiteLabel`       | `WhiteLabelParams` | Yes       | Params to enable whitelabelling of torus website and widget. Know more about whitelabeling options for Torus Wallet [here](https://docs.tor.us/wallet/sdk/class#whitelabel). | N/A     |
+| `showTorusButton`  | `boolean`          | No        | Determines whether to show/hide torus widget.                                                                                                                                | `true`  |
+| `useWalletConnect` | `boolean`          | No        | Setting `useWalletConnect` to true allows to display wallet connect qr scanner from torus-embed.                                                                             | `false` |
 
 </TabItem>
 

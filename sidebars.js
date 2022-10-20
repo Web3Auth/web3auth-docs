@@ -215,15 +215,15 @@ module.exports = {
       items: [
         {
           type: "category",
-          label: "@web3auth/web3auth",
-          link: { type: "doc", id: "sdk/web/web3auth/web3auth" },
+          label: "@web3auth/modal",
+          link: { type: "doc", id: "sdk/web/modal/modal" },
           items: [
-            "sdk/web/web3auth/initialize",
-            "sdk/web/web3auth/whitelabel",
-            "sdk/web/web3auth/custom-authentication",
-            "sdk/web/web3auth/multi-factor-authentication",
-            "sdk/web/web3auth/wagmi-connector",
-            "sdk/web/web3auth/usage",
+            "sdk/web/modal/initialize",
+            "sdk/web/modal/whitelabel",
+            "sdk/web/modal/custom-authentication",
+            "sdk/web/modal/multi-factor-authentication",
+            "sdk/web/modal/wagmi-connector",
+            "sdk/web/modal/usage",
           ],
         },
         {
