@@ -59,6 +59,7 @@ module.exports = {
       label: "Connect Blockchain",
       link: { type: "doc", id: "connect-blockchain/connect-blockchain" },
       items: [
+        "connect-blockchain/multi-chain",
         {
           type: "category",
           label: "EVM Based Chains",
