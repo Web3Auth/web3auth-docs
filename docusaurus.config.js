@@ -158,10 +158,6 @@ const config = {
             to: "/guides/auth0",
           },
           {
-            from: "/sdk/self-host/",
-            to: "/sdk/self-host/installation",
-          },
-          {
             from: "/sdk/web/web3auth/usage",
             to: "/sdk/web/modal/usage",
           },
