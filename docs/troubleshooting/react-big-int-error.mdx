@@ -1,0 +1,35 @@
+---
+title: Big Int error in React production build.
+sidebar_label: Big Int React Error
+image: "/docs/images/docs-meta-cards/troubleshoot-card.png"
+displayed_sidebar: docs
+description: "Getting a 'Cannot convert BigInt value to a number' error in your React production build? Here's how to fix it."
+---
+
+---
+
+While creating a production build for your React app and hosting it, you might encounter the following error:
+
+> Uncaught TypeError: Cannot convert a BigInt value to a number
+
+This error is caused by the fact that the production build of React is not specified the versions of the browsers. This can be solved by adding the
+following lines to the `package.json` file:
+
+```json title="package.json"
+"browserslist": {
+    "production": [
+      "chrome >= 67",
+      "edge >= 79",
+      "firefox >= 68",
+      "opera >= 54",
+      "safari >= 14"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+```
+
+After adding the above lines, create the production build again and you should be good to go.
