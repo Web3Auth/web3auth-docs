@@ -8,12 +8,14 @@ description: "Getting a 'Cannot convert BigInt value to a number' error in your 
 
 ---
 
-While creating a production build for your React app and hosting it, you might encounter the following error:
+While developing your React app with `@web3auth/modal`, there might be a case where the application is working fine in development mode but when you
+build the app for production, you get the following error:
 
 > Uncaught TypeError: Cannot convert a BigInt value to a number
 
-This error is caused by the fact that the production build of React is not specified the versions of the browsers. This can be solved by adding the
-following lines to the `package.json` file:
+This error is caused by the fact that the production build of React is not specified the versions of the browsers. Due to this the production build of
+React uses the default browserlist configuration which might lead to the above error. This can be solved by adding the following lines to the
+`package.json` file:
 
 ```json title="package.json"
 "browserslist": {
@@ -32,4 +34,5 @@ following lines to the `package.json` file:
   }
 ```
 
-After adding the above lines, create the production build again and you should be good to go.
+By adding these lines, you are telling the Javascript bundlers to use specific versions of the browsers for the production build. After adding the
+above lines, create the production build again and you should be good to go.
