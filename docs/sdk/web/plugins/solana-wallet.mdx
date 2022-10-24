@@ -30,7 +30,7 @@ In this section we'll explore more about how you can use the Torus Solana Wallet
 #### [`@web3auth/solana-wallet-connector-plugin`](https://www.npmjs.com/package/@web3auth/solana-wallet-connector-plugin)
 
 ```bash npm2yarn
-npm i --save @web3auth/solana-wallet-connector-plugin
+npm install --save @web3auth/solana-wallet-connector-plugin
 ```
 
 ## Initialisation
@@ -121,6 +121,40 @@ const transaction = new Transaction({
 // torusWalletInstance will be available on torusPlugin once user is logged in.
 // this will show transaction confirmation popup.
 const res = await torusPlugin.torusWalletInstance.sendTransaction(transaction);
+```
+
+## Additional Reading
+
+---
+
+### Initialiazing the Torus Solana Wallet UI Plugin with a custom provider
+
+You can also initialize the Torus Solana Wallet UI Plugin with a custom provider. If your dApp is already initiating another provider, you can use
+that provider to initialize the Torus Solana Wallet UI Plugin. This way it will be easier for you to use the Torus Solana Wallet UI Plugin with your
+dApp.
+
+#### Example
+
+```ts
+import { SolanaWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-plugin";
+
+const torusPlugin = new SolanaWalletConnectorPlugin({
+  torusWalletOpts: {},
+  walletInitOptions: {
+    whiteLabel: {
+      name: "Whitelabel Demo",
+      theme: { isDark: true, colors: { torusBrand1: "#00a8ff" } },
+      logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+      logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+      topupHide: true,
+      defaultLanguage: "en",
+    },
+    useWalletConnect: true,
+    enableLogging: true,
+  },
+});
+
+torusPlugin.initWithProvider(YOUR_CUSTOM_PROVIDER, userInfo);
 ```
 
 #### Know more about how to use the [Torus Solana Wallet Instance and provider](https://docs.tor.us/solana-wallet/api-reference/solana/send-transaction)
