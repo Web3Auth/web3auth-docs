@@ -174,6 +174,7 @@ module.exports = {
         "troubleshooting/webpack-issues",
         "troubleshooting/jwt-errors",
         "troubleshooting/different-wallet-address-issue",
+        "troubleshooting/react-big-int-error",
       ],
     },
     {
