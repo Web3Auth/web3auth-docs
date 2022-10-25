@@ -224,7 +224,7 @@ login(provider: .EMAIL_PASSWORDLESS)
 
 </Tabs>
 
-### Storing the Session and Web3AuthState
+## Session Management
 
 Session Management is a major update released recently to enhance security. While logging in, we manage the logins via Session IDs and not store the
 private keys in the local storage. We use these session ids for creating a Web3AuthState which will be used to keep track of the user state. This way,
@@ -246,7 +246,51 @@ await MainActor.run(body: {
 
 ```
 
-### Definition of `ExtraLoginOptions`
+## ExtraLoginOptions
+
+### Arguments
+
+`ExtraLoginOptions`
+
+```swift
+Web3Auth.login(W3ALoginParams(
+	provider = selectedLoginProvider,
+    extraLoginOptions = ExtraLoginOptions(login_hint: "hello@web3auth.io")))
+```
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                 | Type     | Mandatory | Description                                           |
+| ------------------------- | -------- | --------- | ----------------------------------------------------- |
+| domain                    | String?  | No        | Domain of the app                                     |
+| client_id                 | String?  | No        | client_id from Web3Auth Dashboard                     |
+| leeway                    | Int?     | No        | leeway                                                |
+| verifierIdField           | String?  | No        | verifierIdField                                       |
+| isVerifierIdCaseSensitive | Boolean? | No        | Boolean to confirm the case sensitivity of VerifierId |
+| display                   | Display? | No        | Display                                               |
+| prompt                    | Prompt?  | No        | Prompt                                                |
+| max_age                   | String?  | No        | max_age                                               |
+| ui_locales                | String?  | No        | ui_locales to be shown on the modal                   |
+| id_token_hint             | String?  | No        | Previously issued ID Token.                           |
+| id_token                  | String?  | No        | JWT (ID Token) to be passed for Login.                |
+| login_hint                | String?  | No        | Email used for EMAIL_PASSWORDLESS                     |
+| acr_values                | String?  | No        | acc_values                                            |
+| scope                     | String?  | No        | scope                                                 |
+| audience                  | String?  | No        | audience                                              |
+| connection                | String?  | No        | connection                                            |
+| redirect_uri              | String?  | No        | redirect_uri                                          |
+
+</TabItem>
+
+<TabItem value="class">
 
 ```swift
 public struct ExtraLoginOptions: Encodable {
@@ -270,6 +314,93 @@ public struct ExtraLoginOptions: Encodable {
 }
 ```
 
+</TabItem>
+
+</Tabs>
+
+## Selecting Curve
+
+---
+
+The `Web3Auth().login(W3ALoginParams)` method accepts a `curve` parameter. This parameter can be used to select the elliptic curve to use for the
+signature.
+
+```swift
+let result = try await Web3Auth().login(
+	W3ALoginParams(
+		loginProvider: provider,
+		 curve: SUPPORTED_KEY_CURVES.SECP256K1
+	))
+```
+
+### Example
+
+<Tabs
+  defaultValue="secp256k1"
+  values={[
+    { label: "SECP256K1", value: "secp256k1" },
+    { label: "ED25519", value: "ed25519" },
+  ]}
+>
+
+<TabItem value="secp256k1">
+
+```swift
+
+func login(provider: Web3AuthProvider) {
+	Task {
+		do {
+			let result = try await Web3Auth().login(W3ALoginParams(
+				loginProvider: provider,
+				// highlight-next-line
+				curve: SUPPORTED_KEY_CURVES.SECP256K1
+				))
+			await MainActor.run(body: {
+				user = result
+				loggedIn = true
+			})
+		} catch {
+			print("Error")
+		}
+	}
+}
+
+login(provider: .GOOGLE)
+
+```
+
+</TabItem>
+
+<TabItem value="ed25519">
+
+```swift
+
+func login(provider: Web3AuthProvider) {
+	Task {
+		do {
+			let result = try await Web3Auth().login(W3ALoginParams(
+				loginProvider: provider,
+				// highlight-next-line
+				curve: SUPPORTED_KEY_CURVES.ED25519
+				))
+			await MainActor.run(body: {
+				user = result
+				loggedIn = true
+			})
+		} catch {
+			print("Error")
+		}
+	}
+}
+
+login(provider: .GOOGLE)
+
+```
+
+</TabItem>
+
+</Tabs>
+
 ## Logging out a user
 
 ---
@@ -278,6 +409,8 @@ public struct ExtraLoginOptions: Encodable {
 
 This method will logout the user and remove the session id from the device. The user will need to login again to use the dApp next time the dApp is
 opened.
+
+### Example
 
 ```swift
 await Web3Auth().logout()
