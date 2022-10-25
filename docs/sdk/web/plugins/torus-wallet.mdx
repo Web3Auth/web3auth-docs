@@ -31,7 +31,7 @@ In this section we'll explore more about how you can use the Torus EVM Wallet UI
 #### [`@web3auth/torus-wallet-connector-plugin`](https://www.npmjs.com/package/@web3auth/torus-wallet-connector-plugin)
 
 ```bash npm2yarn
-npm i --save @web3auth/torus-wallet-connector-plugin
+npm install --save @web3auth/torus-wallet-connector-plugin
 ```
 
 ## Initialisation
@@ -85,6 +85,38 @@ access the Torus Wallet UI within your dApp and make RPC calls through that. To 
 
 ```
 setWalletProvider((torusPlugin?.proxyProvider as SafeEventEmitterProvider) || web3auth?.provider);
+```
+
+## Additional Reading
+
+---
+
+### Initialiazing the Torus Plugin with a custom provider
+
+You can also initialize the Torus Wallet UI Plugin with a custom provider. If your dApp is already initiating another provider, you can use that
+provider to initialize the Torus Wallet UI Plugin. This way it will be easier for you to use the Torus Wallet UI Plugin with your dApp.
+
+#### Example
+
+```ts
+import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
+
+const torusPlugin = new TorusWalletConnectorPlugin({
+  torusWalletOpts: {
+    buttonPosition: "bottom-left",
+  },
+  walletInitOptions: {
+    whiteLabel: {
+      theme: { isDark: true, colors: { primary: "#00a8ff" } },
+      logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+      logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+    },
+    useWalletConnect: true,
+    enableLogging: true,
+  },
+});
+
+torusPlugin.initWithProvider(YOUR_CUSTOM_PROVIDER, userInfo);
 ```
 
 #### Know more about how to use the [Torus EVM Wallet Provider](https://docs.tor.us/wallet/api-reference/ethereum-api#provider)
