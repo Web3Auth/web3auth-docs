@@ -7,13 +7,10 @@ description: "iOS SDK - Usage | Documentation - Web3Auth"
 
 import IosResponse from "@site/src/common/sdk/ios/_response.mdx";
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 ---
-
-:::info
-
-`logout()` is not implemented in the iOS SDK because of platform limitations.
-
-:::
 
 ## Logging in a User
 
@@ -21,15 +18,227 @@ import IosResponse from "@site/src/common/sdk/ios/_response.mdx";
 
 ### `login()`
 
-Trigger the login flow that navigate the user to a browser model that allows them to login with the selected login provider.
+Trigger login flow with that will naviget the user to a browser model that will allow the user to login to the service. You can pass in the the
+supported providers to the login method for specific social logins such as Google, Apple, Facebook, etc and also do whitelabel login.
+`Web3Auth.login()` takes in `W3ALoginParams` as a required input.
 
-| Parameter           | Type                      | Mandatory | Description                                                                                                                                                                                                                     |
-| ------------------- | ------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginProvider`     | `enum` `Web3AuthProvider` | Yes       | Login provider, supported values are `.GOOGLE`, `.FACEBOOK`, `.REDDIT`, `.DISCORD`, `.TWITCH`, `.APPLE`, `.LINE`, `.GITHUB`, `.KAKAO`, `.LINKEDIN`, `.TWITTER`, `.WEIBO`, `.WECHAT`, `.EMAIL_PASSWORDLESS`, `.WEBAUTHN`, `.JWT` |
-| `dappShare`         | `String`                  | No        | dappShare configuration                                                                                                                                                                                                         |
-| `extraLoginOptions` | `ExtraLoginOptions`       | No        | Extra login options to be passed to the sdk frontend. Will be described below.                                                                                                                                                  |
-| `redirectUrl`       | `String`                  | No        | redirectUrl to be passed to the sdk frontend. This field is for advanced usage only and should not be changed.                                                                                                                  |
-| `appState`          | `String`                  | No        | Application state. The same string will be returned in the                                                                                                                                                                      |
+#### Arguments
+
+`W3ALoginParams` - The login parameters
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter           | Type                | Mandatory | Description                                                                                                                                                                                       |
+| ------------------- | ------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginProvider`     | `String` `Provider` | No        | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `GITHUB`, `LINKEDIN`, `TWITTER`, `WEIBO`, `LINE`, `EMAIL_PASSWORD`, `EMAIL_PASSWORDLESS`,`JWT` |
+| `extraLoginOptions` | `ExtraLoginOptions` | No        | You can pass various oauth supported options, default is `nil`                                                                                                                                    |
+| `redirectUrl`       | `String`            | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `nil`                                        |
+| `appState`          | `String`            | No        | `appState` can be used to keep track of the app state when user will be redirected to app after login, default is `nil`                                                                           |
+| `mfaLevel`          | `enum`              | No        | MFA level can be used to pass 2FA screen shown during login, default is `nil`, shown every 3rd login.                                                                                             |
+| `dappShare`         | `String`            | No        | Dapp share can be used to pass dapp share url, default is `nil`                                                                                                                                   |
+| `curve`             | `enum`              | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum, default is `SECP256K1`.                                                                               |
+
+</TabItem>
+
+<TabItem value="class">
+
+```swift
+public struct W3ALoginParams: Codable {
+    public init() {
+        loginProvider = nil
+        dappShare = nil
+        extraLoginOptions = nil
+        redirectUrl = nil
+        appState = nil
+        mfaLevel = nil
+        sessionTime = 86400
+        curve = .SECP256K1
+    }
+
+    let loginProvider: String?
+    var dappShare: String?
+    let extraLoginOptions: ExtraLoginOptions?
+    let redirectUrl: String?
+    let appState: String?
+    let mfaLevel: MFALevel?
+    let sessionTime: Int
+    let curve: SUPPORTED_KEY_CURVES
+}
+
+```
+
+</TabItem>
+
+</Tabs>
+
+### Sample Response
+
+Something something
+
+### Example
+
+<Tabs
+  defaultValue="google"
+  values={[
+    { label: "Google", value: "google" },
+    { label: "Facebook", value: "facebook" },
+    { label: "Discord", value: "discord" },
+    { label: "Twitch", value: "twitch" },
+    { label: "Email Passwordless", value: "email_passwordless" }
+  ]}
+>
+
+<TabItem value="google">
+
+```swift
+func login(provider: Web3AuthProvider) {
+    Task {
+        do {
+            let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
+            await MainActor.run(body: {
+                user = result
+                loggedIn = true
+            })
+
+        } catch {
+            print("Error")
+        }
+    }
+}
+// highlight-next-line
+login(provider: .GOOGLE)
+
+```
+
+</TabItem>
+
+<TabItem value="facebook">
+
+```swift
+func login(provider: Web3AuthProvider) {
+    Task {
+        do {
+            let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
+            await MainActor.run(body: {
+                user = result
+                loggedIn = true
+            })
+
+        } catch {
+            print("Error")
+        }
+    }
+}
+// highlight-next-line
+login(provider: .FACEBOOK)
+
+```
+
+</TabItem>
+
+<TabItem value="discord">
+
+```swift
+func login(provider: Web3AuthProvider) {
+    Task {
+        do {
+            let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
+            await MainActor.run(body: {
+                user = result
+                loggedIn = true
+            })
+
+        } catch {
+            print("Error")
+        }
+    }
+}
+// highlight-next-line
+login(provider: .DISCORD)
+
+```
+
+</TabItem>
+
+<TabItem value="twitch">
+
+```swift
+func login(provider: Web3AuthProvider) {
+    Task {
+        do {
+            let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
+            await MainActor.run(body: {
+                user = result
+                loggedIn = true
+            })
+
+        } catch {
+            print("Error")
+        }
+    }
+}
+// highlight-next-line
+login(provider: .TWITCH)
+
+```
+
+</TabItem>
+
+<TabItem value="email_passwordless">
+
+```swift
+func login(provider: Web3AuthProvider) {
+    Task {
+        do {
+            let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
+            await MainActor.run(body: {
+                user = result
+                loggedIn = true
+            })
+
+        } catch {
+            print("Error")
+        }
+    }
+}
+// highlight-next-line
+login(provider: .EMAIL_PASSWORDLESS)
+
+```
+
+</TabItem>
+
+</Tabs>
+
+### Storing the Session and Web3AuthState
+
+Whist logging in we are managing the logins via Session IDs and not storing the private keys in the local storage. This is a major update which we
+released recently to enhance the security. We use these session ids for creating a Web3AuthState which will be used to keep track of the user state.
+This way the user doesn't need to login everytime the app is opened.
+
+The dApp can directly make a check if the user is logged in or not via checking for this Web3AuthState with the following code snippet.
+
+### Example
+
+```swift
+
+guard web3Auth == nil else { return }
+await MainActor.run(body: {
+    if self.web3Auth?.state != nil {
+        user = web3Auth?.state
+        loggedIn = true
+    }
+})
+
+```
 
 ### Definition of `ExtraLoginOptions`
 
@@ -40,8 +249,8 @@ public struct ExtraLoginOptions: Encodable {
     let max_age: String?
     let ui_locales: String?
     let id_token_hint: String?
-    let login_hint: String?
     let id_token: String?
+    let login_hint: String?
     let acr_values: String?
     let scope: String?
     let audience: String?
@@ -55,20 +264,15 @@ public struct ExtraLoginOptions: Encodable {
 }
 ```
 
-### Sample Response
+## Logging out a user
 
-<IosResponse />
+---
 
-### Example
+### `Web3Auth().logout()`
+
+This method will logout the user and remove the session id from the device. The user will need to login again to use the dApp next time the dApp is
+opened.
 
 ```swift
-Web3Auth()
-    .login(W3ALoginParams(loginProvider: .GOOGLE)) {
-        switch $0 {
-        case .success(let result):
-            showResult(result: result)
-        case .failure(let error):
-            print("Error: \(error)")
-        }
-    }
+await Web3Auth().logout()
 ```
