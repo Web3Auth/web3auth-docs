@@ -186,10 +186,6 @@ const config = {
             to: "/sdk/web/modal/",
           },
           {
-            from: "/sdk/web/web3auth/",
-            to: "/sdk/web/modal/",
-          },
-          {
             from: "/self-host/",
             to: "/self-hosting",
           },
@@ -292,34 +288,6 @@ const config = {
           {
             from: "/overview/web3auth-and-wallets",
             to: "/overview/web3auth-for-wallets",
-          },
-          {
-            from: "/sdk/web/web3auth",
-            to: "/sdk/web/modal/",
-          },
-          {
-            from: "/sdk/web/web3auth/initialize",
-            to: "/sdk/web/modal/initialize",
-          },
-          {
-            from: "/sdk/web/web3auth/whitelabel",
-            to: "/sdk/web/modal/whitelabel",
-          },
-          {
-            from: "/sdk/web/web3auth/custom-authentication",
-            to: "/sdk/web/modal/custom-authentication",
-          },
-          {
-            from: "/sdk/web/web3auth/multi-factor-authentication",
-            to: "/sdk/web/modal/multi-factor-authentication",
-          },
-          {
-            from: "/sdk/web/web3auth/wagmi-connector",
-            to: "/sdk/web/modal/wagmi-connector",
-          },
-          {
-            from: "/sdk/web/web3auth/usage",
-            to: "/sdk/web/modal/usage",
           },
         ],
       },
