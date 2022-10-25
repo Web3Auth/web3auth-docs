@@ -14,17 +14,15 @@ import Tabs from "@theme/Tabs";
 
 ## Logging in a User
 
----
-
 ### `login()`
 
-Trigger login flow with that will naviget the user to a browser model that will allow the user to login to the service. You can pass in the the
-supported providers to the login method for specific social logins such as Google, Apple, Facebook, etc and also do whitelabel login.
-`Web3Auth.login()` takes in `W3ALoginParams` as a required input.
+Trigger login flow will navigate the user to a browser model allowing the user to login into the service. You can pass in the supported providers to
+the login method for specific social logins such as Google, Apple, Facebook, etc., and do whitelabel login. `Web3Auth.login()` takes in
+`W3ALoginParams` as a required input.
 
 #### Arguments
 
-`W3ALoginParams` - The login parameters
+`W3ALoginParams`
 
 <Tabs
   defaultValue="table"
@@ -52,27 +50,26 @@ supported providers to the login method for specific social logins such as Googl
 
 ```swift
 public struct W3ALoginParams: Codable {
-    public init() {
-        loginProvider = nil
-        dappShare = nil
-        extraLoginOptions = nil
-        redirectUrl = nil
-        appState = nil
-        mfaLevel = nil
-        sessionTime = 86400
-        curve = .SECP256K1
-    }
+	public init() {
+		loginProvider = nil
+		dappShare = nil
+		extraLoginOptions = nil
+		redirectUrl = nil
+		appState = nil
+		mfaLevel = nil
+		sessionTime = 86400
+		curve = .SECP256K1
+	}
 
-    let loginProvider: String?
-    var dappShare: String?
-    let extraLoginOptions: ExtraLoginOptions?
-    let redirectUrl: String?
-    let appState: String?
-    let mfaLevel: MFALevel?
-    let sessionTime: Int
-    let curve: SUPPORTED_KEY_CURVES
+	let loginProvider: String?
+	var dappShare: String?
+	let extraLoginOptions: ExtraLoginOptions?
+	let redirectUrl: String?
+	let appState: String?
+	let mfaLevel: MFALevel?
+	let sessionTime: Int
+	let curve: SUPPORTED_KEY_CURVES
 }
-
 ```
 
 </TabItem>
@@ -81,7 +78,26 @@ public struct W3ALoginParams: Codable {
 
 ### Sample Response
 
-Something something
+```json
+{
+  "ed25519PrivKey": "666523652352635....",
+  "privKey": "0ajjsdsd....",
+  "userInfo": {
+    "aggregateVerifier": "tkey-google",
+    "email": "john@gmail.com",
+    "name": "John Dash",
+    "profileImage": "https://lh3.googleusercontent.com/a/Ajjjsdsmdjmnm...",
+    "typeOfLogin": "google",
+    "verifier": "torus",
+    "verifierId": "john@gmail.com",
+    "dappShare": "<24 words seed phrase>", // will be sent only incase of custom verifiers
+    "idToken": "<jwtToken issued by Web3Auth>",
+    "oAuthIdToken": "<jwtToken issued by OAuth Provider>", // will be sent only incase of custom verifiers
+    "oAuthAccessToken": "<accessToken issued by OAuth Provider>" // will be sent only incase of custom verifiers
+  },
+  "sessionId": "468f67d70.......dad5cea3f133"
+}
+```
 
 ### Example
 
@@ -100,22 +116,20 @@ Something something
 
 ```swift
 func login(provider: Web3AuthProvider) {
-    Task {
-        do {
-            let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
-            await MainActor.run(body: {
-                user = result
-                loggedIn = true
-            })
-
-        } catch {
-            print("Error")
-        }
-    }
+	Task {
+		do {
+			let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
+			await MainActor.run(body: {
+				user = result
+				loggedIn = true
+			})
+		} catch {
+			print("Error")
+		}
+	}
 }
 // highlight-next-line
 login(provider: .GOOGLE)
-
 ```
 
 </TabItem>
@@ -124,22 +138,20 @@ login(provider: .GOOGLE)
 
 ```swift
 func login(provider: Web3AuthProvider) {
-    Task {
-        do {
-            let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
-            await MainActor.run(body: {
-                user = result
-                loggedIn = true
-            })
-
-        } catch {
-            print("Error")
-        }
-    }
+	Task {
+		do {
+			let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
+			await MainActor.run(body: {
+				user = result
+				loggedIn = true
+			})
+		} catch {
+			print("Error")
+		}
+	}
 }
 // highlight-next-line
 login(provider: .FACEBOOK)
-
 ```
 
 </TabItem>
@@ -148,22 +160,20 @@ login(provider: .FACEBOOK)
 
 ```swift
 func login(provider: Web3AuthProvider) {
-    Task {
-        do {
-            let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
-            await MainActor.run(body: {
-                user = result
-                loggedIn = true
-            })
-
-        } catch {
-            print("Error")
-        }
-    }
+	Task {
+		do {
+			let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
+			await MainActor.run(body: {
+				user = result
+				loggedIn = true
+			})
+		} catch {
+			print("Error")
+		}
+	}
 }
 // highlight-next-line
 login(provider: .DISCORD)
-
 ```
 
 </TabItem>
@@ -172,22 +182,20 @@ login(provider: .DISCORD)
 
 ```swift
 func login(provider: Web3AuthProvider) {
-    Task {
-        do {
-            let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
-            await MainActor.run(body: {
-                user = result
-                loggedIn = true
-            })
-
-        } catch {
-            print("Error")
-        }
-    }
+	Task {
+		do {
+			let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
+			await MainActor.run(body: {
+				user = result
+				loggedIn = true
+			})
+		} catch {
+			print("Error")
+		}
+	}
 }
 // highlight-next-line
 login(provider: .TWITCH)
-
 ```
 
 </TabItem>
@@ -196,22 +204,20 @@ login(provider: .TWITCH)
 
 ```swift
 func login(provider: Web3AuthProvider) {
-    Task {
-        do {
-            let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
-            await MainActor.run(body: {
-                user = result
-                loggedIn = true
-            })
-
-        } catch {
-            print("Error")
-        }
-    }
+	Task {
+		do {
+			let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
+			await MainActor.run(body: {
+				user = result
+				loggedIn = true
+			})
+		} catch {
+			print("Error")
+		}
+	}
 }
 // highlight-next-line
 login(provider: .EMAIL_PASSWORDLESS)
-
 ```
 
 </TabItem>
@@ -220,11 +226,11 @@ login(provider: .EMAIL_PASSWORDLESS)
 
 ### Storing the Session and Web3AuthState
 
-Whist logging in we are managing the logins via Session IDs and not storing the private keys in the local storage. This is a major update which we
-released recently to enhance the security. We use these session ids for creating a Web3AuthState which will be used to keep track of the user state.
-This way the user doesn't need to login everytime the app is opened.
+Session Management is a major update released recently to enhance security. While logging in, we manage the logins via Session IDs and not store the
+private keys in the local storage. We use these session ids for creating a Web3AuthState which will be used to keep track of the user state. This way,
+the user only needs to login sometimes the app is opened.
 
-The dApp can directly make a check if the user is logged in or not via checking for this Web3AuthState with the following code snippet.
+The dApp can directly check if the user is logged in or not by checking for this Web3AuthState with the following code snippet.
 
 ### Example
 
