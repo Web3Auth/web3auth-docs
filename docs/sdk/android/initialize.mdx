@@ -101,6 +101,24 @@ Add the below line to your `app/res/values/strings.xml` file:
 </resources>
 ```
 
+### Session Management
+
+The Session Management feature allows you to check the existing sessions with Web3Auth. The `sessionResponse()` will allow users to remain
+authenticated with Web3Auth for up to 1 day default, or a maximum of 7 days, or until they logout or session data is cleared.
+
+```kotlin
+// Call sessionResponse() in onCreate() to check for any existing session.
+val sessionResponse: CompletableFuture<Web3AuthResponse> = web3Auth.sessionResponse()
+sessionResponse.whenComplete { loginResponse, error ->
+    if (error == null) {
+        reRender(loginResponse)
+    } else {
+        Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
+        // Ideally, you should initiate the login function here.
+    }
+}
+```
+
 ## Set Result URL
 
 ---
@@ -136,6 +154,17 @@ class MainActivity : AppCompatActivity() {
     // Handle user signing in when app is not alive
     web3Auth.setResultUrl(intent?.data)
 
+    // Calls sessionResponse() to check for any existing session.
+    val sessionResponse: CompletableFuture<Web3AuthResponse> = web3Auth.sessionResponse()
+    sessionResponse.whenComplete { loginResponse, error ->
+        if (error == null) {
+            reRender(loginResponse)
+        } else {
+            Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
+            // Ideally, you should initiate the login function here.
+        }
+    }
+
     // Setup UI and event handlers
     val signInButton = findViewById<Button>(R.id.signInButton)
     signInButton.setOnClickListener { signIn() }
@@ -165,3 +194,9 @@ class MainActivity : AppCompatActivity() {
   //...
 }
 ```
+
+:::tip sample app
+
+Get started with a sample app found [here](https://github.com/Web3Auth/web3auth-android-sdk/tree/master/app).
+
+:::
