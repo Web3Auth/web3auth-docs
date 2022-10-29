@@ -8,6 +8,7 @@ struct ContentView: View {
             Button(
                 action: {
                     Web3Auth()
+                        // HIGHLIGHTSTART-triggeringLogin
                         .login(W3ALoginParams()) {
                             switch $0 {
                             case .success(let result):
@@ -16,13 +17,14 @@ struct ContentView: View {
                                 print("Error: \(error)")
                             }
                         }
+                        // HIGHLIGHTEND-triggeringLogin
                 },
                 label: {
                     Text("Sign In")
                         .padding()
                 }
             )
-            
+
             Button(
                 action: {
                     Web3Auth()
@@ -40,7 +42,7 @@ struct ContentView: View {
                         .padding()
                 }
             )
-            
+
             Button(
                 action: {
                     Web3Auth(
@@ -63,7 +65,7 @@ struct ContentView: View {
                         .padding()
                 }
             )
-            
+
             Button(
                 action: {
                     Web3Auth()
@@ -81,7 +83,7 @@ struct ContentView: View {
                         .padding()
                 }
             )
-            
+
             Button(
                 action: {
                     Web3Auth()
@@ -120,7 +122,7 @@ struct ContentView: View {
                         .padding()
                 }
             )
-            
+
             Button(
                 action: {
                     Web3Auth(
@@ -148,7 +150,7 @@ struct ContentView: View {
                         .padding()
                 }
             )
-            
+
             Button(
                 action: {
                     Web3Auth(
@@ -200,9 +202,10 @@ struct ContentView: View {
                         .padding()
                 }
             )
-            
+
             Button(
                 action: {
+                    // HIGHLIGHTSTART-instantiate
                     Web3Auth(
                         W3AInitParams(
                             clientId: "your-client-id",
@@ -222,6 +225,8 @@ struct ContentView: View {
                             )
                         )
                     )
+                    // HIGHLIGHTEND-instantiate
+                    // HIGHLIGHTSTART-loginWithJwt
                     .login(W3ALoginParams(
                         loginProvider: .JWT,
                         extraLoginOptions: ExtraLoginOptions(
@@ -243,7 +248,9 @@ struct ContentView: View {
                             verifierIdField: nil,
                             isVerifierIdCaseSensitive: nil
                         )
-                    )) {
+                    )
+                    // HIGHLIGHTEND-loginWithJwt
+                     {
                         switch $0 {
                         case .success(let result):
                             showResult(result: result)
@@ -257,20 +264,22 @@ struct ContentView: View {
                         .padding()
                 }
             )
-            
+
             Text(text).foregroundColor(.white)
         }
     }
-    
+
     func showResult(result: Web3AuthState) {
         print("""
         Signed in successfully!
             Private key: \(result.privKey)
             Ed25519 Private key: \(result.ed25519PrivKey)
+            // HIGHLIGHTSTART-getUserInfo
             User info:
                 Name: \(result.userInfo.name)
                 Profile image: \(result.userInfo.profileImage ?? "N/A")
                 Type of login: \(result.userInfo.typeOfLogin)
+            // HIGHLIGHTEND-getUserInfo
         """)
         text = """
         Signed in successfully!

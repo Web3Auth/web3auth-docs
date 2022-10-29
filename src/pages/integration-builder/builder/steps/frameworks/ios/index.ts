@@ -1,12 +1,11 @@
-import { replaceFileVariable, toSteps } from "../../../utils";
-
-import * as installationIOS from "./installation.mdx";
-import * as registerApp from "./register-app.mdx";
-import * as instantiate from "./instantiateSDK.mdx";
-import * as triggeringLogin from "./triggering-login.mdx";
-import * as loginWithJwt from "./login-with-jwt.mdx";
-import * as getUserInfo from "./get-user-info.mdx";
+import { ReplaceFileAggregator, toSteps } from "../../../utils";
 import * as whiteLabeling from "../common/whitelabeling.mdx";
+import * as getUserInfo from "./get-user-info.mdx";
+import * as installationIOS from "./installation.mdx";
+import * as instantiate from "./instantiateSDK.mdx";
+import * as loginWithJwt from "./login-with-jwt.mdx";
+import * as registerApp from "./register-app.mdx";
+import * as triggeringLogin from "./triggering-login.mdx";
 
 const STEPS = toSteps({
   installationIOS,
@@ -24,49 +23,42 @@ const STEPS = toSteps({
 const reactSteps = {
   STEPS,
   build({ filenames, files, steps, whitelabel, customAuthentication, dynamicConstructorParams, usingEmailPasswordless }) {
-    filenames.push("frameworks/ios/Web3Auth.plist");
-    filenames.push("frameworks/ios/ContentView.swift");
-    filenames.push("frameworks/ios/Podfile");
+    const replacementAggregator = new ReplaceFileAggregator();
+
+    const FILENAME_WEB3AUTH_PLIST = "frameworks/ios/Web3Auth.plist";
+    const FILENAME_CONTENTVIEW = "frameworks/ios/ContentView.swift";
+    const FILENAME_PODFILE = "frameworks/ios/Podfile";
+
+    filenames.push(FILENAME_WEB3AUTH_PLIST);
+    filenames.push(FILENAME_CONTENTVIEW);
+    filenames.push(FILENAME_PODFILE);
+
     steps.push(
       {
         ...STEPS.installationIOS,
-        pointer: { filename: "frameworks/ios/Podfile", range: "7" },
+        pointer: replacementAggregator.highlightRange(FILENAME_PODFILE, files[FILENAME_PODFILE], "installationIOS"),
       },
       {
         ...STEPS.registerApp,
-        pointer:
-          dynamicConstructorParams === "yes"
-            ? { filename: "frameworks/ios/Web3Auth.plist", range: "6" }
-            : { filename: "frameworks/ios/ContentView.swift", range: "48" },
+        pointer: replacementAggregator.highlightRange(FILENAME_WEB3AUTH_PLIST, files[FILENAME_WEB3AUTH_PLIST], "registerApp"),
       },
       {
         ...STEPS.instantiate,
-        pointer:
-          customAuthentication === "yes" && whitelabel === "yes"
-            ? { filename: "frameworks/ios/ContentView.swift", range: "206-224" }
-            : customAuthentication === "yes"
-            ? { filename: "frameworks/ios/ContentView.swift", range: "154-167" }
-            : whitelabel === "yes"
-            ? { filename: "frameworks/ios/ContentView.swift", range: "126-136" }
-            : dynamicConstructorParams
-            ? { filename: "frameworks/ios/ContentView.swift", range: "46-51" }
-            : { filename: "frameworks/ios/ContentView.swift", range: "10" },
+        pointer: replacementAggregator.highlightRange(FILENAME_CONTENTVIEW, files[FILENAME_CONTENTVIEW], "instantiate"),
       },
       customAuthentication === "yes"
         ? {
             ...STEPS.loginWithJwt,
-            pointer: { filename: "frameworks/ios/ContentView.swift", range: "168-189" },
+            pointer: replacementAggregator.highlightRange(FILENAME_CONTENTVIEW, files[FILENAME_CONTENTVIEW], "loginWithJwt"),
           }
         : {
             ...STEPS.triggeringLogin,
-            pointer:
-              usingEmailPasswordless === "yes"
-                ? { filename: "frameworks/ios/ContentView.swift", range: "88-109" }
-                : { filename: "frameworks/ios/ContentView.swift", range: "11" },
+            pointer: replacementAggregator.highlightRange(FILENAME_CONTENTVIEW, files[FILENAME_CONTENTVIEW], "triggeringLogin"),
           },
+
       {
         ...STEPS.getUserInfo,
-        pointer: { filename: "frameworks/ios/ContentView.swift", range: "270-273" },
+        pointer: replacementAggregator.highlightRange(FILENAME_CONTENTVIEW, files[FILENAME_CONTENTVIEW], "getUserInfo"),
       }
     );
     return { filenames, files, steps };
