@@ -17,11 +17,11 @@ import * as initialize from "../common/initialize.mdx";
 import * as installation from "../common/installation/installation.mdx";
 import * as installationCustom from "../common/installation/installationCustom.mdx";
 import * as installationEthers from "../common/installation/installationEthers.mdx";
-import * as installationWeb3 from "../common/installation/installationWeb3.mdx";
 import * as installationSolana from "../common/installation/installationSolana.mdx";
 import * as installationStarkEx from "../common/installation/installationStarkEx.mdx";
 import * as installationStarkNet from "../common/installation/installationStarkNet.mdx";
 import * as installationTezos from "../common/installation/installationTezos.mdx";
+import * as installationWeb3 from "../common/installation/installationWeb3.mdx";
 import * as instantiateSDK from "../common/instantiateSDK.mdx";
 import * as instantiateSDKWhitelabeled from "../common/instantiateSDKWhitelabeled.mdx";
 import * as login from "../common/login.mdx";
@@ -72,94 +72,103 @@ const angularSteps = {
 
     const replacementAggregator = new ReplaceFileAggregator();
 
+    const FILENAME_APP_HTML = "frameworks/angular/app.component.html";
+    const FILENAME_POLYFILLS = "frameworks/angular/polyfills.ts";
+    const FILENAME_TSCONFIG = "frameworks/angular/tsconfig.json";
+    const FILENAME_APP_CSS = "frameworks/angular/app.component.css";
+    const FILENAME_APP_TS = "frameworks/angular/app.component.ts";
+    const FILENAME_PACKAGE_JSON = "frameworks/angular/package.json";
+    const FILENAME_SOLANARPC = "chains/solana/solanaRPC.ts";
+    const FILENAME_STARKEXRPC = "chains/starkex/starkexRPC.ts";
+    const FILENAME_STARKNETRPC = "chains/starknet/starknetRPC.ts";
+    const FILENAME_TEZOSRPC = "chains/tezos/tezosRPC.ts";
+    const FILENAME_WEB3RPC = "chains/evm/web3RPC.ts";
+    const FILENAME_ETHERSRPC = "chains/evm/ethersRPC.ts";
+    const FILENAME_ARGENT_ACCOUNT = "chains/starknet/ArgentAccount.json";
+
     const ConstructorCodeAngular = getConstructorCodeAngular(chain, whitelabel === "yes");
-    newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/angular/app.component.ts"],
-      "frameworks/angular/app.component.ts",
+    newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_APP_TS],
+      FILENAME_APP_TS,
       PLACEHOLDERS.CONSTRUCTOR_CODE,
       ConstructorCodeAngular
     );
 
     const InitCode = getInitCode(whitelabel === "yes");
-    newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/angular/app.component.ts"],
-      "frameworks/angular/app.component.ts",
-      PLACEHOLDERS.INIT_CODE,
-      InitCode
-    );
+    newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(files[FILENAME_APP_TS], FILENAME_APP_TS, PLACEHOLDERS.INIT_CODE, InitCode);
 
     const ModuleImport = getModuleImport(chain, whitelabel === "yes", customAuthentication === "yes", evmFramework);
-    newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/angular/app.component.ts"],
-      "frameworks/angular/app.component.ts",
+    newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_APP_TS],
+      FILENAME_APP_TS,
       PLACEHOLDERS.MODULE_IMPORT,
       ModuleImport
     );
 
     const OpenloginAdapter = getOpenloginAdapter(chain, whitelabel === "yes", customAuthentication === "yes");
-    newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/angular/app.component.ts"],
-      "frameworks/angular/app.component.ts",
+    newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_APP_TS],
+      FILENAME_APP_TS,
       PLACEHOLDERS.OPENLOGIN_ADAPTER,
       OpenloginAdapter
     );
 
     const PackageJson = getPackageJson(chain, whitelabel === "yes", customAuthentication === "yes", evmFramework);
-    newFiles["frameworks/angular/package.json"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/angular/package.json"],
-      "frameworks/angular/package.json",
+    newFiles[FILENAME_PACKAGE_JSON] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_PACKAGE_JSON],
+      FILENAME_PACKAGE_JSON,
       PLACEHOLDERS.PACKAGE_JSON,
       PackageJson
     );
 
     const RPCFunctionsAngular = getRPCFunctionsAngular(chain);
-    newFiles["frameworks/angular/app.component.ts"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/angular/app.component.ts"],
-      "frameworks/angular/app.component.ts",
+    newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_APP_TS],
+      FILENAME_APP_TS,
       PLACEHOLDERS.RPC_FUNCTIONS,
       RPCFunctionsAngular
     );
 
     const RPCFunctionsButtonsAngular = getRPCFunctionsButtonsAngular(chain);
-    newFiles["frameworks/angular/app.component.html"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/angular/app.component.html"],
-      "frameworks/angular/app.component.html",
+    newFiles[FILENAME_APP_HTML] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_APP_HTML],
+      FILENAME_APP_HTML,
       PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
       RPCFunctionsButtonsAngular
     );
 
     filenames.push(`frameworks/angular/app.component.ts`);
-    filenames.push("frameworks/angular/package.json");
+    filenames.push(FILENAME_PACKAGE_JSON);
     switch (chain) {
       case "sol":
-        filenames.push("chains/solana/solanaRPC.ts");
+        filenames.push(FILENAME_SOLANARPC);
         break;
       case "starkex":
-        filenames.push("chains/starkex/starkexRPC.ts");
+        filenames.push(FILENAME_STARKEXRPC);
         break;
       case "starknet":
-        filenames.push("chains/starknet/starknetRPC.ts");
-        filenames.push("chains/starknet/ArgentAccount.json");
+        filenames.push(FILENAME_STARKNETRPC);
+        filenames.push(FILENAME_ARGENT_ACCOUNT);
         break;
       case "tezos":
-        filenames.push("chains/tezos/tezosRPC.ts");
+        filenames.push(FILENAME_TEZOSRPC);
         break;
       default:
-        filenames.push(evmFramework === "ethers" ? "chains/evm/ethersRPC.ts" : "chains/evm/web3RPC.ts");
+        filenames.push(evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC);
     }
-    filenames.push("frameworks/angular/app.component.html");
-    filenames.push("frameworks/angular/polyfills.ts");
-    filenames.push("frameworks/angular/tsconfig.json");
-    filenames.push("frameworks/angular/app.component.css");
+    filenames.push(FILENAME_APP_HTML);
+    filenames.push(FILENAME_POLYFILLS);
+    filenames.push(FILENAME_TSCONFIG);
+    filenames.push(FILENAME_APP_CSS);
 
     steps.push(
       {
         ...STEPS.buildingApp,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/angular/app.component.ts", range: "1-2" }),
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "buildingApp"),
       },
       {
         ...STEPS.webpackIssues,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/angular/tsconfig.json", range: "26-33" }),
+        pointer: replacementAggregator.highlightRange(FILENAME_TSCONFIG, files[FILENAME_TSCONFIG], "webpackIssues"),
       }
     );
 
@@ -167,119 +176,86 @@ const angularSteps = {
       case "sol":
         steps.push({
           ...STEPS.installationSolana,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/solana/solanaRPC.ts", range: "1-4" }),
+          pointer: replacementAggregator.highlightRange(FILENAME_SOLANARPC, files[FILENAME_SOLANARPC], "installationSolana"),
         });
         break;
       case "starkex":
         steps.push({
           ...STEPS.installationStarkEx,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starkex/starkexRPC.ts", range: "1-7" }),
+          pointer: replacementAggregator.highlightRange(FILENAME_STARKEXRPC, files[FILENAME_STARKEXRPC], "installationStarkEx"),
         });
         break;
       case "starknet":
         steps.push({
           ...STEPS.installationStarkNet,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/starknet/starknetRPC.ts", range: "1-9" }),
+          pointer: replacementAggregator.highlightRange(FILENAME_STARKNETRPC, files[FILENAME_STARKNETRPC], "installationStarkNet"),
         });
         break;
       case "tezos":
         steps.push({
           ...STEPS.installationTezos,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "chains/tezos/tezosRPC.ts", range: "1-6" }),
+          pointer: replacementAggregator.highlightRange(FILENAME_TEZOSRPC, files[FILENAME_TEZOSRPC], "installationTezos"),
         });
         break;
       default:
         if (evmFramework === "ethers") {
           steps.push({
             ...STEPS.installationEthers,
-            pointer: replacementAggregator.rangeOffsetEditor({
-              filename: "chains/evm/ethersRPC.ts",
-              range: "1-2",
-            }),
+            pointer: replacementAggregator.highlightRange(FILENAME_ETHERSRPC, files[FILENAME_ETHERSRPC], "installationEthers"),
           });
         } else {
           steps.push({
             ...STEPS.installationWeb3,
-            pointer: replacementAggregator.rangeOffsetEditor({
-              filename: "chains/evm/web3RPC.ts",
-              range: "1-2",
-            }),
+            pointer: replacementAggregator.highlightRange(FILENAME_WEB3RPC, files[FILENAME_WEB3RPC], "installationWeb3"),
           });
         }
     }
 
-    if (customAuthentication === "yes" || whitelabel === "yes" || chain === "starkex" || chain === "starknet" || chain === "tezos") {
-      steps.push(
-        {
-          ...STEPS.installationCustom,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/angular/package.json", range: "21-22" }),
-        },
-        {
-          ...STEPS.importModulesCustom,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/angular/app.component.ts", range: "2-3" }),
-        }
-      );
-    } else {
-      steps.push(
-        {
-          ...STEPS.installation,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/angular/package.json", range: "21-22" }),
-        },
-        {
-          ...STEPS.importModules,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/angular/app.component.ts", range: "2-3" }),
-        }
-      );
-    }
-
-    steps.push({
-      ...STEPS.registerApp,
-      pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/angular/app.component.ts", range: "4" }),
-    });
+    steps.push(
+      {
+        ...STEPS.installation,
+        pointer: replacementAggregator.highlightRange(FILENAME_PACKAGE_JSON, files[FILENAME_PACKAGE_JSON], "installation"),
+      },
+      {
+        ...STEPS.importModules,
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "importModules"),
+      },
+      {
+        ...STEPS.registerApp,
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "registerApp"),
+      },
+      {
+        ...STEPS.instantiateSDK,
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "instantiateSDK"),
+      }
+    );
 
     if (whitelabel === "yes") {
-      steps.push(
-        {
-          ...STEPS.instantiateSDKWhitelabeled,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/angular/app.component.ts", range: "18-19" }),
-        },
-        {
-          ...STEPS.whiteLabeling,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/angular/app.component.ts", range: "21-22" }),
-        }
-      );
-    } else {
       steps.push({
-        ...STEPS.instantiateSDK,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/angular/app.component.ts", range: "18-19" }),
+        ...STEPS.whiteLabeling,
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "whiteLabeling"),
       });
     }
 
     if (customAuthentication === "yes") {
       steps.push({
         ...STEPS.customAuthenticationStep,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/angular/app.component.ts", range: "21-22" }),
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "customAuthenticationStep"),
       });
     }
 
     steps.push(
       {
         ...STEPS.initialize,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/angular/app.component.ts", range: "24-25" }),
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "initialize"),
       },
       {
         ...STEPS.login,
-        pointer: replacementAggregator.rangeOffsetEditor({
-          filename: "frameworks/angular/app.component.ts",
-          range: "36",
-        }),
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "login"),
       },
       {
         ...STEPS.getUserInfo,
-        pointer: replacementAggregator.rangeOffsetEditor({
-          filename: "frameworks/angular/app.component.ts",
-          range: "45",
-        }),
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "getUserInfo"),
       }
     );
 
@@ -287,56 +263,42 @@ const angularSteps = {
       case "sol":
         steps.push({
           ...STEPS.solanaRPCFunctions,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "chains/solana/solanaRPC.ts",
-            range: "13-21",
-          }),
+          pointer: replacementAggregator.highlightRange(FILENAME_SOLANARPC, files[FILENAME_SOLANARPC], "solanaRPCFunctions"),
         });
         break;
       case "starkex":
         steps.push({
           ...STEPS.starkExRPCFunctions,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "chains/starkex/starkexRPC.ts",
-            range: "20-39",
-          }),
+          pointer: replacementAggregator.highlightRange(FILENAME_STARKEXRPC, files[FILENAME_STARKEXRPC], "starkExRPCFunctions"),
         });
         break;
       case "starknet":
         steps.push({
           ...STEPS.starkNetRPCFunctions,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "chains/starknet/starknetRPC.ts",
-            range: "18-37",
-          }),
+          pointer: replacementAggregator.highlightRange(FILENAME_STARKNETRPC, files[FILENAME_STARKNETRPC], "starkNetRPCFunctions"),
         });
         break;
       case "tezos":
         steps.push({
           ...STEPS.tezosRPCFunctions,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "chains/tezos/tezosRPC.ts",
-            range: "17-26",
-          }),
+          pointer: replacementAggregator.highlightRange(FILENAME_TEZOSRPC, files[FILENAME_TEZOSRPC], "tezosRPCFunctions"),
         });
         break;
       default:
         steps.push({
           ...STEPS.evmRPCFunctions,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: evmFramework === "ethers" ? "chains/evm/ethersRPC.ts" : "chains/evm/web3RPC.ts",
-            range: "10-18",
-          }),
+          pointer: replacementAggregator.highlightRange(
+            evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC,
+            files[evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC],
+            "evmRPCFunctions"
+          ),
         });
         break;
     }
 
     steps.push({
       ...STEPS.logout,
-      pointer: replacementAggregator.rangeOffsetEditor({
-        filename: "frameworks/angular/app.component.ts",
-        range: "57",
-      }),
+      pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "logout"),
     });
 
     return { filenames, files, steps };
