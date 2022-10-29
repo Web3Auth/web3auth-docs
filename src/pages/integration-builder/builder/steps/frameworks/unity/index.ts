@@ -53,47 +53,47 @@ const unitySteps = {
     steps.push(
       {
         ...STEPS.installation,
-        pointer: { filename: FILENAME_MANIFEST, range: "7" },
+        pointer: replacementAggregator.highlightRange(FILENAME_MANIFEST, files[FILENAME_MANIFEST], "installation"),
       },
       {
         ...STEPS.registerApp,
-        pointer: { filename: FILENAME_WEB3AUTH, range: "19" },
+        pointer: replacementAggregator.highlightRange(FILENAME_WEB3AUTH, files[FILENAME_WEB3AUTH], "registerApp"),
       },
       {
         ...STEPS.instantiate,
-        pointer: { filename: FILENAME_WEB3AUTH, range: "16-21" },
+        pointer: replacementAggregator.highlightRange(FILENAME_WEB3AUTH, files[FILENAME_WEB3AUTH], "instantiate"),
       }
     );
     if (whitelabel === "yes") {
       steps.push({
         ...STEPS.whiteLabeling,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: FILENAME_WEB3AUTH, range: "16-21" }),
+        pointer: replacementAggregator.highlightRange(FILENAME_WEB3AUTH, files[FILENAME_WEB3AUTH], "whiteLabeling"),
       });
     }
     if (customAuthentication === "yes") {
       steps.push({
         ...STEPS.CustomAuthentication,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: FILENAME_WEB3AUTH, range: "16-21" }),
+        pointer: replacementAggregator.highlightRange(FILENAME_WEB3AUTH, files[FILENAME_WEB3AUTH], "CustomAuthentication"),
       });
     }
     if (mfa === "yes") {
       steps.push({
         ...STEPS.multiFactorAuthentication,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: FILENAME_WEB3AUTH, range: "30-33" }),
+        pointer: replacementAggregator.highlightRange(FILENAME_WEB3AUTH, files[FILENAME_WEB3AUTH], "multiFactorAuthentication"),
       });
     }
     steps.push(
       {
         ...STEPS.triggeringLogin,
-        pointer: { filename: FILENAME_WEB3AUTH, range: "30-33" },
+        pointer: replacementAggregator.highlightRange(FILENAME_WEB3AUTH, files[FILENAME_WEB3AUTH], "triggeringLogin"),
       },
       {
         ...STEPS.getUserInfo,
-        pointer: { filename: FILENAME_WEB3AUTH, range: "38-42" },
+        pointer: replacementAggregator.highlightRange(FILENAME_WEB3AUTH, files[FILENAME_WEB3AUTH], "getUserInfo"),
       },
       {
         ...STEPS.triggeringLogout,
-        pointer: { filename: FILENAME_WEB3AUTH, range: "44-47" },
+        pointer: replacementAggregator.highlightRange(FILENAME_WEB3AUTH, files[FILENAME_WEB3AUTH], "triggeringLogout"),
       }
     );
     return { filenames, files, steps };

@@ -3,7 +3,9 @@ export const getLoginCode = (isMFA: boolean, isCurve?: boolean) => {
   let curveCode = "";
   if (isMFA) {
     mfaCode = `
-            mfaLevel = MFALevel.MANDATORY`;
+            // HIGHLIGHTSTART-multiFactorAuthentication
+            mfaLevel = MFALevel.MANDATORY
+            // HIGHLIGHTEND-multiFactorAuthentication`;
   }
   if (isCurve) {
     curveCode = `,
