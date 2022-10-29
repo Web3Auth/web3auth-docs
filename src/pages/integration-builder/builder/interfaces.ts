@@ -35,5 +35,5 @@ export interface IntegrationBuilder {
     }
   >;
 
-  build(values: Record<string, string>, files: Record<string, any>): Integration;
+  build(values: Record<string, string>, files: Record<string, any>, stepIndex: number): Integration;
 }
