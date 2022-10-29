@@ -5,25 +5,30 @@ const rpc = (() => {
    */
 
   const getChainId = async (provider) => {
+    // HIGHLIGHTSTART-evmRPCFunctions
     const web3 = new Web3(provider);
 
     // Get the connected Chain's ID
     const chainId = await web3.eth.getChainId();
+    // HIGHLIGHTEND-evmRPCFunctions
 
     return chainId.toString();
   };
 
   const getAccounts = async (provider) => {
+    // HIGHLIGHTSTART-evmRPCFunctions
     const web3 = new Web3(provider);
 
     // Get user's Ethereum public address
     const address = (await web3.eth.getAccounts())[0];
+    // HIGHLIGHTEND-evmRPCFunctions
 
     return address;
 
   };
 
   const getBalance = async (provider) => {
+    // HIGHLIGHTSTART-evmRPCFunctions
     const web3 = new Web3(provider);
 
     // Get user's Ethereum public address
@@ -33,11 +38,13 @@ const rpc = (() => {
     const balance = web3.utils.fromWei(
       await web3.eth.getBalance(address) // Balance is in wei
     );
+    // HIGHLIGHTEND-evmRPCFunctions
 
     return balance;
   };
 
   const sendTransaction = async (provider) => {
+    // HIGHLIGHTSTART-evmRPCFunctions
     const web3 = new Web3(provider);
 
     // Get user's Ethereum public address
@@ -56,11 +63,13 @@ const rpc = (() => {
       maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
       maxFeePerGas: "6000000000000", // Max fee per gas
     });
+    // HIGHLIGHTEND-evmRPCFunctions
 
     return receipt;
   }
 
   const signMessage = async (provider) => {
+    // HIGHLIGHTSTART-evmRPCFunctions
     const web3 = new Web3(provider);
 
     // Get user's Ethereum public address
@@ -75,9 +84,11 @@ const rpc = (() => {
   };
 
   const getPrivateKey = async (provider) => {
+    // HIGHLIGHTSTART-evmRPCFunctions
     const privateKey = await provider.request({
       method: "eth_private_key",
     });
+    // HIGHLIGHTEND-evmRPCFunctions
 
     return privateKey;
   }

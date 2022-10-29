@@ -6,11 +6,13 @@ export const getConstructorCodeHTML = (chain: "sol", isWhiteLabled: boolean) => 
 
   if (isWhiteLabled) {
     uiConfig = `
+        // HIGHLIGHTSTART-whiteLabeling
         uiConfig: {
           theme: "dark",
           loginMethodsOrder: ["facebook", "google"],
           appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
-        }`;
+        }
+        // HIGHLIGHTEND-whiteLabeling`;
   }
 
   if (chain === "sol") {
@@ -26,11 +28,13 @@ export const getConstructorCodeHTML = (chain: "sol", isWhiteLabled: boolean) => 
   }
 
   const code = `
+      // HIGHLIGHTSTART-instantiateSDK
       web3auth = new window.Modal.Web3Auth({
         clientId,
         chainConfig: {${chainDetails}
         },${uiConfig}
-      });`;
+      });
+      // HIGHLIGHTEND-instantiateSDK`;
 
   return code;
 };

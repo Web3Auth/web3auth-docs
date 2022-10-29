@@ -6,10 +6,10 @@ import * as importModules from "../common/importModules.mdx";
 import * as importModulesCustom from "../common/importModulesCustom.mdx";
 import * as initialize from "../common/initialize.mdx";
 import * as installationEthers from "../common/installation/installationEthers.mdx";
-import * as installationWeb3 from "../common/installation/installationWeb3.mdx";
 import * as installationSolana from "../common/installation/installationSolana.mdx";
 import * as installationStarkEx from "../common/installation/installationStarkEx.mdx";
 import * as installationStarkNet from "../common/installation/installationStarkNet.mdx";
+import * as installationWeb3 from "../common/installation/installationWeb3.mdx";
 import * as instantiateSDK from "../common/instantiateSDK.mdx";
 import * as instantiateSDKWhitelabeled from "../common/instantiateSDKWhitelabeled.mdx";
 import * as login from "../common/login.mdx";
@@ -57,114 +57,101 @@ const htmlSteps = {
 
     const replacementAggregator = new ReplaceFileAggregator();
 
+    const FILENAME_INDEX_HTML = "frameworks/html/index.html";
+    const FILENAME_STYLE_CSS = "frameworks/html/style.css";
+    const FILENAME_SOLANARPC = "chains/solana/solanaRPC.js";
+    const FILENAME_WEB3RPC = "chains/evm/web3RPC.js";
+    const FILENAME_ETHERSRPC = "chains/evm/ethersRPC.js";
+
     const ConstructorCodeHTML = getConstructorCodeHTML(chain, whitelabel === "yes");
-    newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/html/index.html"],
-      "frameworks/html/index.html",
+    newFiles[FILENAME_INDEX_HTML] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_INDEX_HTML],
+      FILENAME_INDEX_HTML,
       PLACEHOLDERS.CONSTRUCTOR_CODE,
       ConstructorCodeHTML
     );
 
     const InitCodeHTML = getInitCodeHTML(whitelabel === "yes");
-    newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/html/index.html"],
-      "frameworks/html/index.html",
+    newFiles[FILENAME_INDEX_HTML] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_INDEX_HTML],
+      FILENAME_INDEX_HTML,
       PLACEHOLDERS.INIT_CODE,
       InitCodeHTML
     );
 
     const OpenloginAdapterHTML = getOpenloginAdapterHTML(whitelabel === "yes", customAuthentication === "yes");
-    newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/html/index.html"],
-      "frameworks/html/index.html",
+    newFiles[FILENAME_INDEX_HTML] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_INDEX_HTML],
+      FILENAME_INDEX_HTML,
       PLACEHOLDERS.OPENLOGIN_ADAPTER,
       OpenloginAdapterHTML
     );
 
     const ScriptImport = getScriptImport(chain, whitelabel === "yes", customAuthentication === "yes", evmFramework);
-    newFiles["frameworks/html/index.html"] = replacementAggregator.replaceFileVariable(
-      files["frameworks/html/index.html"],
-      "frameworks/html/index.html",
+    newFiles[FILENAME_INDEX_HTML] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_INDEX_HTML],
+      FILENAME_INDEX_HTML,
       PLACEHOLDERS.SCRIPT_IMPORT,
       ScriptImport
     );
 
-    filenames.push(`frameworks/html/index.html`);
+    filenames.push(FILENAME_INDEX_HTML);
     switch (chain) {
       case "sol":
-        filenames.push("chains/solana/solanaRPC.js");
+        filenames.push(FILENAME_SOLANARPC);
         break;
       default:
-        filenames.push(evmFramework === "ethers" ? "chains/evm/ethersRPC.js" : "chains/evm/web3RPC.js");
+        filenames.push(evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC);
         break;
     }
-    filenames.push("frameworks/html/style.css");
+    filenames.push(FILENAME_STYLE_CSS);
 
     steps.push({
       ...STEPS.usingQuickStart,
-      pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "1-2" }),
+      pointer: replacementAggregator.highlightRange(FILENAME_INDEX_HTML, files[FILENAME_INDEX_HTML], "usingQuickStart"),
     });
 
-    if (customAuthentication === "yes" || whitelabel === "yes") {
-      steps.push({
-        ...STEPS.installationCustom,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "37-41" }),
-      });
-    } else {
-      steps.push({
+    steps.push(
+      {
         ...STEPS.installation,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "37-41" }),
-      });
-    }
-
-    steps.push({
-      ...STEPS.registerApp,
-      pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "49" }),
-    });
+        pointer: replacementAggregator.highlightRange(FILENAME_INDEX_HTML, files[FILENAME_INDEX_HTML], "installation"),
+      },
+      {
+        ...STEPS.registerApp,
+        pointer: replacementAggregator.highlightRange(FILENAME_INDEX_HTML, files[FILENAME_INDEX_HTML], "registerApp"),
+      },
+      {
+        ...STEPS.instantiateSDK,
+        pointer: replacementAggregator.highlightRange(FILENAME_INDEX_HTML, files[FILENAME_INDEX_HTML], "instantiateSDK"),
+      }
+    );
 
     if (whitelabel === "yes") {
-      steps.push(
-        {
-          ...STEPS.instantiateSDKWhitelabeled,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "51-52" }),
-        },
-        {
-          ...STEPS.whiteLabeling,
-          pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "53-54" }),
-        }
-      );
-    } else {
       steps.push({
-        ...STEPS.instantiateSDK,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "51-52" }),
+        ...STEPS.whiteLabeling,
+        pointer: replacementAggregator.highlightRange(FILENAME_INDEX_HTML, files[FILENAME_INDEX_HTML], "whiteLabeling"),
       });
     }
 
     if (customAuthentication === "yes") {
       steps.push({
         ...STEPS.customAuthenticationStep,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "53-54" }),
+        pointer: replacementAggregator.highlightRange(FILENAME_INDEX_HTML, files[FILENAME_INDEX_HTML], "customAuthenticationStep"),
       });
     }
 
     steps.push(
       {
         ...STEPS.initialize,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/html/index.html", range: "55-56" }),
+        pointer: replacementAggregator.highlightRange(FILENAME_INDEX_HTML, files[FILENAME_INDEX_HTML], "initialize"),
       },
       {
         ...STEPS.login,
-        pointer: replacementAggregator.rangeOffsetEditor({
-          filename: "frameworks/html/index.html",
-          range: "69-77",
-        }),
+        pointer: replacementAggregator.highlightRange(FILENAME_INDEX_HTML, files[FILENAME_INDEX_HTML], "login"),
       },
       {
         ...STEPS.getUserInfo,
-        pointer: replacementAggregator.rangeOffsetEditor({
-          filename: "frameworks/html/index.html",
-          range: "79-86",
-        }),
+        pointer: replacementAggregator.highlightRange(FILENAME_INDEX_HTML, files[FILENAME_INDEX_HTML], "getUserInfo"),
       }
     );
 
@@ -172,29 +159,24 @@ const htmlSteps = {
       case "sol":
         steps.push({
           ...STEPS.solanaRPCFunctions,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: "chains/solana/solanaRPC.js",
-            range: "71-84",
-          }),
+          pointer: replacementAggregator.highlightRange(FILENAME_SOLANARPC, files[FILENAME_SOLANARPC], "solanaRPCFunctions"),
         });
         break;
       default:
         steps.push({
           ...STEPS.evmRPCFunctions,
-          pointer: replacementAggregator.rangeOffsetEditor({
-            filename: evmFramework === "ethers" ? "chains/evm/ethersRPC.js" : "chains/evm/web3RPC.js",
-            range: "22-43",
-          }),
+          pointer: replacementAggregator.highlightRange(
+            evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC,
+            files[evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC],
+            "evmRPCFunctions"
+          ),
         });
         break;
     }
 
     steps.push({
       ...STEPS.logout,
-      pointer: replacementAggregator.rangeOffsetEditor({
-        filename: "frameworks/html/index.html",
-        range: "115-123",
-      }),
+      pointer: replacementAggregator.highlightRange(FILENAME_INDEX_HTML, files[FILENAME_INDEX_HTML], "logout"),
     });
 
     return { filenames, files, steps };

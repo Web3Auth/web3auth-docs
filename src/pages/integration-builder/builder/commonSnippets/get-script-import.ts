@@ -1,5 +1,6 @@
 export const getScriptImport = (chain: "sol", isWhiteLabled: boolean, isCustomAuth: boolean, evmFramework: "ethers") => {
   let code = `
+    // HIGHLIGHTSTART-installation
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal"></script>`;
   if (isWhiteLabled || isCustomAuth) {
     code += `
@@ -24,6 +25,9 @@ export const getScriptImport = (chain: "sol", isWhiteLabled: boolean, isCustomAu
       }
       break;
   }
+
+  code += `
+    // HIGHLIGHTEND-installation`;
 
   return code;
 };
