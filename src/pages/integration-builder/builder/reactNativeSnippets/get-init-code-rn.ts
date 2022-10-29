@@ -2,11 +2,13 @@ export const getInitCodeRN = (isCustomAuth: boolean, isEmailPasswordless: boolea
   let customAuthCode = "";
   if (isCustomAuth) {
     customAuthCode = `
+          // HIGHLIGHTSTART-loginWithJwt
           extraLoginOptions: {
             domain: "any_nonempty_string",
             verifierIdField: "sub",
             id_token: "JWT_TOKEN",
           },
+          // HIGHLIGHTEND-loginWithJwt
       `;
   } else if (isEmailPasswordless) {
     customAuthCode = `
@@ -16,10 +18,12 @@ export const getInitCodeRN = (isCustomAuth: boolean, isEmailPasswordless: boolea
       `;
   }
   return `
+        // HIGHLIGHTSTART-triggeringLogin
         const state = await web3auth.login({
           loginProvider: LOGIN_PROVIDER.GOOGLE,
           redirectUrl: resolvedRedirectUrl,
   ${customAuthCode}
         });
+        // HIGHLIGHTEND-triggeringLogin
       `;
 };

@@ -28,7 +28,10 @@ const reactSteps = {
     const replacementAggregator = new ReplaceFileAggregator();
 
     const FILENAME_APP_TSX = "frameworks/react-native/App.tsx";
-
+    const FILENAME_EXPO_PACKAGE_JSON = "frameworks/react-native/expo/package.json";
+    const FILENAME_BARE_PACKAGE_JSON = "frameworks/react-native/package.json";
+    const FILENAME_APP_JSON = "frameworks/react-native/app.json";
+    const FILENAME_ANDROID_MANIFEST = "frameworks/react-native/AndroidManifest.xml";
     const ConstructorCodeRN = getConstructorCodeRN(whitelabel === "yes", customAuthentication === "yes");
     newFiles[FILENAME_APP_TSX] = replacementAggregator.replaceFileVariable(
       files[FILENAME_APP_TSX],
@@ -68,15 +71,15 @@ const reactSteps = {
     const isWhitelabel = whitelabel === "yes";
 
     if (isExpo) {
-      filenames.push("frameworks/react-native/expo/package.json");
+      filenames.push(FILENAME_EXPO_PACKAGE_JSON);
     } else {
-      filenames.push("frameworks/react-native/package.json");
+      filenames.push(FILENAME_BARE_PACKAGE_JSON);
     }
 
     if (isExpo) {
-      filenames.push("frameworks/react-native/app.json");
+      filenames.push(FILENAME_APP_JSON);
     } else {
-      filenames.push("frameworks/react-native/AndroidManifest.xml");
+      filenames.push(FILENAME_ANDROID_MANIFEST);
     }
 
     steps.push(
@@ -84,13 +87,13 @@ const reactSteps = {
         ? [
             {
               ...STEPS.installation,
-              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/expo/package.json", range: "23" }),
+              pointer: replacementAggregator.highlightRange(FILENAME_EXPO_PACKAGE_JSON, files[FILENAME_EXPO_PACKAGE_JSON], "installation"),
             },
           ]
         : [
             {
               ...STEPS.installation,
-              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/package.json", range: "16" }),
+              pointer: replacementAggregator.highlightRange(FILENAME_BARE_PACKAGE_JSON, files[FILENAME_BARE_PACKAGE_JSON], "installation"),
             },
           ]),
 
@@ -98,44 +101,45 @@ const reactSteps = {
         ? [
             {
               ...STEPS.installWebBrowser,
-              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/expo/package.json", range: "35" }),
+              pointer: replacementAggregator.highlightRange(FILENAME_EXPO_PACKAGE_JSON, files[FILENAME_EXPO_PACKAGE_JSON], "installWebBrowser"),
             },
           ]
         : [
             {
               ...STEPS.installWebBrowser,
-              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/package.json", range: "15" }),
+              pointer: replacementAggregator.highlightRange(FILENAME_BARE_PACKAGE_JSON, files[FILENAME_BARE_PACKAGE_JSON], "installWebBrowser"),
             },
           ]),
       ...(isExpo
         ? [
             {
               ...STEPS.platformSetup,
-              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/app.json", range: "8" }),
+              pointer: replacementAggregator.highlightRange(FILENAME_APP_JSON, files[FILENAME_APP_JSON], "platformSetup"),
             },
           ]
         : [
             {
               ...STEPS.platformSetup,
-              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/AndroidManifest.xml", range: "24-32" }),
+              pointer: replacementAggregator.highlightRange(FILENAME_ANDROID_MANIFEST, files[FILENAME_ANDROID_MANIFEST], "platformSetup"),
             },
           ]),
       {
         ...STEPS.registerApp,
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "registerApp"),
       },
       {
         ...STEPS.instantiate,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/App.tsx", range: "13-14" }),
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "instantiate"),
       },
       {
         ...(isCustomAuth ? STEPS.loginWithJwt : STEPS.triggeringLogin),
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/App.tsx", range: "15-16" }),
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], isCustomAuth ? "loginWithJwt" : "triggeringLogin"),
       },
       ...(isWhitelabel
         ? [
             {
               ...STEPS.whiteLabeling,
-              pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/react-native/App.tsx", range: "13-14" }),
+              pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "whiteLabeling"),
             },
           ]
         : [])

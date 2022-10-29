@@ -3,6 +3,7 @@ export const getConstructorCodeRN = (isWhitelabeled: boolean, isCustomAuth: bool
   let customAuthCode = "";
   if (isWhitelabeled) {
     whitelabelCode = `
+          // HIGHLIGHTSTART-whiteLabeling
           whiteLabel: {
             name: "YOUR_APP_NAME",
             logoLight: "URL_TO_APP_LOGO_FOR_LIGHT_THEME",
@@ -11,10 +12,12 @@ export const getConstructorCodeRN = (isWhitelabeled: boolean, isCustomAuth: bool
             dark: true // or false,
             theme: {},
           },
+          // HIGHLIGHTEND-whiteLabeling
       `;
   }
   if (isCustomAuth) {
     customAuthCode = `
+          // HIGHLIGHTSTART-loginWithJwt
           loginConfig: {
             jwt: {
               name: "BRAND_NAME",
@@ -23,14 +26,18 @@ export const getConstructorCodeRN = (isWhitelabeled: boolean, isCustomAuth: bool
               clientId: "CLIENT_ID"
             },
           },
+          // HIGHLIGHTEND-loginWithJwt
       `;
   }
   return `
+        // HIGHLIGHTSTART-instantiate
         const web3auth = new Web3Auth(WebBrowser, {
+          // HIGHLIGHTSTART-registerApp
           clientId: "CLIENT_ID",
+          // HIGHLIGHTEND-registerApp
           network: OPENLOGIN_NETWORK.TESTNET, // or other networks
   ${whitelabelCode}
   ${customAuthCode}
         });
-      `;
+      // HIGHLIGHTEND-instantiate`;
 };
