@@ -377,15 +377,15 @@ privKey: any secp256k1 private key.
 */
 
 async setProvider(privKey: string) {
-  this.ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+  const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
     config: {
       /*
       pass the chain config that you want to connect with
       all chainConfig fields are required.
       */
       chainConfig: {
-        chainId: "0x3",
-        rpcTarget: `https://ropsten.infura.io/v3/${YOUR_INFURA_ID}`,
+        chainId: "0x1",
+        rpcTarget: `https://rpc.ankr.com/eth`,
         displayName: "ropsten",
         blockExplorer: "https://ropsten.etherscan.io/",
         ticker: "ETH",
@@ -396,8 +396,8 @@ async setProvider(privKey: string) {
   /*
   pass user's private key here.
   after calling setupProvider, we can use
-  this.ethereumPrivateKeyProvider.setupProvider as a eip1193 provider
   */
-  const provider = await this.ethereumPrivateKeyProvider.setupProvider(privKey);
+  await ethereumPrivateKeyProvider.setupProvider(privKey);
+  console.log(ethereumPrivateKeyProvider.provider);
 }
 ```
