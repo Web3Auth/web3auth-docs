@@ -1,10 +1,16 @@
-//@ts-ignore
+// @ts-ignore
+// HIGHLIGHTSTART-installationStarkEx
 import StarkExAPI from "@starkware-industries/starkex-js/dist/browser";
-//@ts-ignore
+// HIGHLIGHTEND-installationStarkEx
+// @ts-ignore
+// HIGHLIGHTSTART-installationStarkEx
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
+// HIGHLIGHTEND-installationStarkEx
 import type { SafeEventEmitterProvider } from "@web3auth/base";
-//@ts-ignore
+// @ts-ignore
+// HIGHLIGHTSTART-installationStarkEx
 import { ec as elliptic } from "elliptic";
+// HIGHLIGHTEND-installationStarkEx
 
 const starkExAPI = new StarkExAPI({
   endpoint: "https://gw.playground-v2.starkex.co",
@@ -19,9 +25,11 @@ export default class StarkExRpc {
 
   getStarkAccount = async (): Promise<any> => {
     try {
+      // HIGHLIGHTSTART-starkExRPCFunctions
       const privateKey = await this.provider.request({ method: "private_key" });
       const keyPair = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
       const account = starkwareCrypto.ec.keyFromPublic(keyPair.getPublic(true, "hex"), "hex");
+      // HIGHLIGHTEND-starkExRPCFunctions
       return account;
     } catch (error) {
       return error;
@@ -30,8 +38,10 @@ export default class StarkExRpc {
 
   getStarkKey = async (): Promise<string | undefined> => {
     try {
+      // HIGHLIGHTSTART-starkExRPCFunctions
       const account = await this.getStarkAccount();
       const publicKeyX = account.pub.getX().toString("hex");
+      // HIGHLIGHTEND-starkExRPCFunctions
       return publicKeyX;
     } catch (error) {
       return error as string;
@@ -40,6 +50,7 @@ export default class StarkExRpc {
 
   onMintRequest = async (): Promise<any> => {
     try {
+      // HIGHLIGHTSTART-starkExRPCFunctions
       const txId = await starkExAPI.gateway.getFirstUnusedTxId();
       const starkKey = await this.getStarkKey();
 
@@ -51,6 +62,7 @@ export default class StarkExRpc {
         starkKey: `0x${starkKey}`,
       };
       const response = await starkExAPI.gateway.mint(request);
+      // HIGHLIGHTEND-starkExRPCFunctions
       return response;
     } catch (error) {
       return error as string;
@@ -59,6 +71,7 @@ export default class StarkExRpc {
 
   onDepositRequest = async () => {
     try {
+      // HIGHLIGHTSTART-starkExRPCFunctions
       const txId = await starkExAPI.gateway.getFirstUnusedTxId();
       const starkKey = await this.getStarkKey();
       const request = {
@@ -69,6 +82,7 @@ export default class StarkExRpc {
         vaultId: 1924014660,
       };
       const response = await starkExAPI.gateway.deposit(request);
+      // HIGHLIGHTEND-starkExRPCFunctions
       return response;
     } catch (error) {
       return error as string;
@@ -77,6 +91,7 @@ export default class StarkExRpc {
 
   onWithdrawalRequest = async (): Promise<any> => {
     try {
+      // HIGHLIGHTSTART-starkExRPCFunctions
       const txId = await starkExAPI.gateway.getFirstUnusedTxId();
       const starkKey = await this.getStarkKey();
       const request = {
@@ -87,6 +102,7 @@ export default class StarkExRpc {
         vaultId: 612008755,
       };
       const response = await starkExAPI.gateway.withdrawal(request);
+      // HIGHLIGHTEND-starkExRPCFunctions
       return response;
     } catch (error) {
       return error as string;

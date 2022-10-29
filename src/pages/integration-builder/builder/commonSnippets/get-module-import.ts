@@ -5,6 +5,7 @@ export const getModuleImport = (
   evmFramework: "web3" | "ethers"
 ) => {
   let code = `
+// HIGHLIGHTSTART-importModules
 import { Web3Auth } from "@web3auth/modal";`;
 
   if (isWhiteLabled || isCustomAuth || chain === "starkex" || chain === "starknet" || chain === "tezos") {
@@ -42,5 +43,8 @@ import RPC from "./ethersRPC";`;
 import RPC from "./web3RPC";`;
       }
   }
+
+  code += `
+// HIGHLIGHTEND-importModules`;
   return code;
 };

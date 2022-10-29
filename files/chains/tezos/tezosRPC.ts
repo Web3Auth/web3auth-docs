@@ -1,8 +1,10 @@
 // @ts-ignore
+// HIGHLIGHTSTART-installationTezos
 import { InMemorySigner } from "@taquito/signer";
 import { TezosToolkit } from "@taquito/taquito";
 import { hex2buf } from "@taquito/utils";
 import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
+// HIGHLIGHTEND-installationTezos
 import { SafeEventEmitterProvider } from "@web3auth/base";
 
 const tezos = new TezosToolkit("https://ithacanet.ecadinfra.com");
@@ -16,8 +18,11 @@ export default class TezosRpc {
 
   getTezosKeyPair = async (): Promise<any> => {
     try {
+      // HIGHLIGHTSTART-tezosRPCFunctions
       const privateKey = (await this.provider.request({ method: "private_key" })) as string;
       const keyPair = tezosCrypto.utils.seedToKeyPair(hex2buf(privateKey));
+      // HIGHLIGHTEND-tezosRPCFunctions
+
       return keyPair;
     } catch (error) {
       return error;
@@ -27,14 +32,18 @@ export default class TezosRpc {
   // List of available RPC Nodes -- https://tezostaquito.io/docs/rpc_nodes
 
   setProvider = async () => {
+    // HIGHLIGHTSTART-tezosRPCFunctions
     const keyPair = await this.getTezosKeyPair();
     // use TacoInfra's RemoteSigner for better security on mainnet..
     tezos.setSignerProvider(await InMemorySigner.fromSecretKey(keyPair?.sk as string));
+    // HIGHLIGHTEND-tezosRPCFunctions
   };
 
   getAccounts = async () => {
     try {
+      // HIGHLIGHTSTART-tezosRPCFunctions
       const keyPair = await this.getTezosKeyPair();
+      // HIGHLIGHTEND-tezosRPCFunctions
       return keyPair?.pkh;
     } catch (error) {
       return error;
@@ -43,9 +52,11 @@ export default class TezosRpc {
 
   getBalance = async () => {
     try {
+      // HIGHLIGHTSTART-tezosRPCFunctions
       const keyPair = await this.getTezosKeyPair();
       // keyPair.pkh is the account address.
       const balance = await tezos.tz.getBalance(keyPair?.pkh as string);
+      // HIGHLIGHTEND-tezosRPCFunctions
       return balance;
     } catch (error) {
       return error;
@@ -54,11 +65,13 @@ export default class TezosRpc {
 
   signMessage = async () => {
     try {
+      // HIGHLIGHTSTART-tezosRPCFunctions
       // Reference: https://tezostaquito.io/docs/signing
       const keyPair = await this.getTezosKeyPair();
       const signer = new InMemorySigner(keyPair.sk);
       const message = "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad";
       const signature = await signer.sign(message);
+      // HIGHLIGHTEND-tezosRPCFunctions
       return signature;
     } catch (error) {
       return error;
@@ -67,6 +80,7 @@ export default class TezosRpc {
 
   signAndSendTransaction = async () => {
     try {
+      // HIGHLIGHTSTART-tezosRPCFunctions
       await this.setProvider();
       // example address.
       const address = "tz1dHzQTA4PGBk2igZ3kBrDsVXuvHdN8kvTQ";
@@ -86,6 +100,7 @@ export default class TezosRpc {
         .send();
 
       const txRes = await op.confirmation();
+      // HIGHLIGHTEND-tezosRPCFunctions
       return txRes;
     } catch (error) {
       return error;

@@ -1,5 +1,7 @@
 import type { SafeEventEmitterProvider } from "@web3auth/base";
+// HIGHLIGHTSTART-installationEthers
 import { ethers } from "ethers";
+// HIGHLIGHTEND-installationEthers
 
 export default class EthereumRpc {
   private provider: SafeEventEmitterProvider;
@@ -10,9 +12,11 @@ export default class EthereumRpc {
 
   async getChainId(): Promise<any> {
     try {
+      // HIGHLIGHTSTART-evmRPCFunctions
       const ethersProvider = new ethers.providers.Web3Provider(this.provider);
       // Get the connected Chain's ID
       const networkDetails = await ethersProvider.getNetwork();
+      // HIGHLIGHTEND-evmRPCFunctions
       return networkDetails.chainId;
     } catch (error) {
       return error;
@@ -21,11 +25,13 @@ export default class EthereumRpc {
 
   async getAccounts(): Promise<any> {
     try {
+      // HIGHLIGHTSTART-evmRPCFunctions
       const ethersProvider = new ethers.providers.Web3Provider(this.provider);
       const signer = ethersProvider.getSigner();
 
       // Get user's Ethereum public address
       const address = await signer.getAddress();
+      // HIGHLIGHTEND-evmRPCFunctions
 
       return address;
     } catch (error) {
@@ -35,6 +41,7 @@ export default class EthereumRpc {
 
   async getBalance(): Promise<string> {
     try {
+      // HIGHLIGHTSTART-evmRPCFunctions
       const ethersProvider = new ethers.providers.Web3Provider(this.provider);
       const signer = ethersProvider.getSigner();
 
@@ -45,6 +52,7 @@ export default class EthereumRpc {
       const balance = ethers.utils.formatEther(
         await ethersProvider.getBalance(address) // Balance is in wei
       );
+      // HIGHLIGHTEND-evmRPCFunctions
 
       return balance;
     } catch (error) {
@@ -54,6 +62,7 @@ export default class EthereumRpc {
 
   async sendTransaction(): Promise<any> {
     try {
+      // HIGHLIGHTSTART-evmRPCFunctions
       const ethersProvider = new ethers.providers.Web3Provider(this.provider);
       const signer = ethersProvider.getSigner();
 
@@ -72,6 +81,7 @@ export default class EthereumRpc {
 
       // Wait for transaction to be mined
       const receipt = await tx.wait();
+      // HIGHLIGHTEND-evmRPCFunctions
 
       return receipt;
     } catch (error) {
@@ -81,6 +91,7 @@ export default class EthereumRpc {
 
   async signMessage() {
     try {
+      // HIGHLIGHTSTART-evmRPCFunctions
       const ethersProvider = new ethers.providers.Web3Provider(this.provider);
       const signer = ethersProvider.getSigner();
 
@@ -88,6 +99,7 @@ export default class EthereumRpc {
 
       // Sign the message
       const signedMessage = await signer.signMessage(originalMessage);
+      // HIGHLIGHTEND-evmRPCFunctions
 
       return signedMessage;
     } catch (error) {
@@ -97,9 +109,11 @@ export default class EthereumRpc {
 
   async getPrivateKey(): Promise<any> {
     try {
+      // HIGHLIGHTSTART-evmRPCFunctions
       const privateKey = await this.provider.request({
         method: "eth_private_key",
       });
+      // HIGHLIGHTEND-evmRPCFunctions
 
       return privateKey;
     } catch (error) {

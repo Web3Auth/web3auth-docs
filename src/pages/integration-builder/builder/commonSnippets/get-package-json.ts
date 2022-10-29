@@ -7,6 +7,7 @@ export const getPackageJson = (
   evmFramework: "ethers"
 ) => {
   let code = `
+    // HIGHLIGHTSTART-installation
     "@web3auth/base": "^${web3authVersion}",
     "@web3auth/modal": "^${web3authVersion}",`;
 
@@ -53,6 +54,8 @@ export const getPackageJson = (
     "web3": "^1.7.0",`;
       }
   }
+  code += `
+    // HIGHLIGHTEND-installation`;
 
   return code;
 };

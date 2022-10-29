@@ -6,11 +6,13 @@ export const getConstructorCode = (chain: "sol" | "starkex" | "starknet" | "tezo
 
   if (isWhiteLabled) {
     uiConfig = `
+        // HIGHLIGHTSTART-whiteLabeling
         uiConfig: {
           theme: "dark",
           loginMethodsOrder: ["facebook", "google"],
           appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
-        }`;
+        }
+        // HIGHLIGHTEND-whiteLabeling`;
   }
 
   if (chain === "sol") {
@@ -29,11 +31,13 @@ export const getConstructorCode = (chain: "sol" | "starkex" | "starknet" | "tezo
   }
 
   const code = `
+      // HIGHLIGHTSTART-instantiateSDK
       const web3auth = new Web3Auth({
         clientId,
         chainConfig: {${chainDetails}
         },${uiConfig}
-      });`;
+      });
+      // HIGHLIGHTEND-instantiateSDK`;
 
   return code;
 };
