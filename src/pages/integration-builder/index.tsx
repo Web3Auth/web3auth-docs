@@ -27,10 +27,11 @@ const getDefaultBuilderOptions = () => {
 
   return { ...defaultOpts, ...urlOpts };
 };
-const getURLFromBuilderOptions = (opts: Record<string, string>): string => {
+const getURLFromBuilderOptions = (opts: Record<string, string>, stepIndex): string => {
   const url = new URL(getWindowLocation());
   url.search = "";
   for (const [key, value] of Object.entries(opts)) url.searchParams.append(key, value);
+  url.searchParams.append("stepIndex", stepIndex.toString());
   return url.toString();
 };
 
@@ -53,7 +54,8 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
       [optionKey]: optionValue,
     });
   };
-  const [stepIndex, setStepIndex] = useState(0);
+  const url = new URL(getWindowLocation());
+  const [stepIndex, setStepIndex] = useState(parseInt(url.searchParams.get("stepIndex") || "0", 10));
 
   const integration = useMemo(() => builder.build(builderOptions, files, stepIndex), [builderOptions, files, stepIndex]);
   const [selectedFilename, setSelectedFilename] = useState(integration.filenames[0]);
@@ -63,6 +65,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
   useEffect(() => {
     // Update selected file when either integration changed
     setSelectedFilename(integration.steps[stepIndex].pointer.filename);
+    window.location.href = `#step-${stepIndex}`;
     // Clear copied
     if (isLinkCopied) {
       clearTimeout(isLinkCopied);
@@ -70,8 +73,8 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     }
 
     // Update query params
-    history.pushState({}, "", getURLFromBuilderOptions(builderOptions));
-  }, [builderOptions, integration, isLinkCopied]);
+    history.pushState({}, "", getURLFromBuilderOptions(builderOptions, stepIndex));
+  }, [builderOptions, integration, isLinkCopied, stepIndex]);
 
   const onClickCopyLink = useCallback(() => {
     if (isLinkCopied) return;
@@ -88,7 +91,6 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
   const onChangeStep = (index: number) => {
     setSelectedFilename(steps[index].pointer.filename);
     setStepIndex(index);
-    window.location.hash = `#step-${index}`;
   };
 
   const onScrollLeft = (e: UIEvent<HTMLDivElement>) => {
