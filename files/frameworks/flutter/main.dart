@@ -7,7 +7,10 @@ import 'package:web3auth_flutter/input.dart';
 import 'package:web3auth_flutter/output.dart';
 import 'dart:async';
 
+// HIGHLIGHTSTART-installationFlutter
 import 'package:web3auth_flutter/web3auth_flutter.dart';
+// HIGHLIGHTEND-installationFlutter
+
 
 void main() {
   runApp(MyApp());
@@ -38,6 +41,7 @@ class _MyAppState extends State<MyApp> {
     HashMap themeMap = HashMap<String, String>();
     themeMap['primary'] = "#229954";
 
+    // HIGHLIGHTSTART-customAuthn
     // custom authentication with google
     HashMap loginConfig = new HashMap<String, LoginConfigItem>();
     loginConfig['google'] = LoginConfigItem({
@@ -46,6 +50,7 @@ class _MyAppState extends State<MyApp> {
       name: "Custom Google Login",
       clientId: "google_client_id" // google's client id
     });
+    // HIGHLIGHTEND-customAuthn
 
     Uri redirectUrl;
     if (Platform.isAndroid) {
@@ -182,7 +187,9 @@ class _MyAppState extends State<MyApp> {
           _result = '';
           logoutVisible = false;
         });
+        // HIGHLIGHTSTART-triggeringLogout
         await Web3AuthFlutter.logout();
+        // HIGHLIGHTEND-triggeringLogout
       } on UserCancelledException {
         print("User cancelled.");
       } on UnKnownException {

@@ -52,43 +52,43 @@ const reactSteps = {
     steps.push(
       {
         ...STEPS.installationFlutter,
-        pointer: { filename: "frameworks/flutter/main.dart", range: "4-7" },
+        pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "installationFlutter"),
       },
       {
         ...STEPS.registerApp,
-        pointer: { filename: "frameworks/flutter/main.dart", range: "51-52" },
+        pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "registerApp"),
       },
       {
         ...STEPS.instantiate,
-        pointer: { filename: "frameworks/flutter/main.dart", range: "41-57" },
+        pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "instantiate"),
       }
     );
     if (customAuthentication === "yes") {
       steps.push({
         ...STEPS.customAuthn,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/flutter/main.dart", range: "59-60" }),
+        pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "customAuthn"),
       });
     }
     if (whitelabel === "yes") {
       steps.push({
         ...STEPS.whiteLabeling,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/flutter/main.dart", range: "59-60" }),
+        pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "whiteLabeling"),
       });
     }
     if (mfa === "yes") {
       steps.push({
         ...STEPS.multiFactorAuthentication,
-        pointer: replacementAggregator.rangeOffsetEditor({ filename: "frameworks/flutter/main.dart", range: "195-196" }),
+        pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "multiFactorAuthentication"),
       });
     }
     steps.push(
       {
         ...STEPS.triggeringLogin,
-        pointer: { filename: "frameworks/flutter/main.dart", range: "192-194" },
+        pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "triggeringLogin"),
       },
       {
         ...STEPS.triggeringLogout,
-        pointer: { filename: "frameworks/flutter/main.dart", range: "182" },
+        pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "triggeringLogout"),
       }
     );
     return { filenames, files, steps };
