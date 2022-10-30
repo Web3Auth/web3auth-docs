@@ -1,5 +1,5 @@
+import * as whiteLabeling from "../../../commonSteps/whitelabeling.mdx";
 import { toSteps } from "../../../utils";
-import * as whiteLabeling from "../../common/whitelabeling.mdx";
 import * as customAuthn from "./custom-authentication.mdx";
 import * as installationFlutter from "./installation.mdx";
 import * as instantiate from "./instantiateSDK.mdx";
