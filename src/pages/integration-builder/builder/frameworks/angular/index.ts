@@ -1,15 +1,14 @@
 import {
-  getConstructorCode,
+  getConstructorCodeAngular,
   getInitCode,
   getModuleImport,
   getOpenloginAdapter,
   getPackageJson,
-  getRPCFunctions,
-  getRPCFunctionsButtonsVue,
-  getRPCFunctionsReturnsVue,
+  getRPCFunctionsAngular,
+  getRPCFunctionsButtonsAngular,
   PLACEHOLDERS,
-} from "../../../commonSnippets";
-import { ReplaceFileAggregator, toSteps } from "../../../utils";
+} from "../../commonSnippets";
+import { ReplaceFileAggregator, toSteps } from "../../utils";
 import * as customAuthenticationStep from "../common/customAuthenticationStep.mdx";
 import * as getUserInfo from "../common/getUserInfo.mdx";
 import * as importModules from "../common/importModules.mdx";
@@ -66,16 +65,19 @@ const STEPS = toSteps({
   logout,
 });
 
-const htmlSteps = {
+const angularSteps = {
   STEPS,
   build({ filenames, files, steps, whitelabel, customAuthentication, chain, evmFramework }) {
     const newFiles = files;
+
     const replacementAggregator = new ReplaceFileAggregator();
 
-    const FILENAME_VUE_CONFIG = "frameworks/vue/vue.config.js";
-    const FILENAME_APP_VUE = "frameworks/vue/App.vue";
-    const FILENAME_HOME_VUE = "frameworks/vue/Home.vue";
-    const FILENAME_PACKAGE_JSON = "frameworks/vue/package.json";
+    const FILENAME_APP_HTML = "frameworks/angular/app.component.html";
+    const FILENAME_POLYFILLS = "frameworks/angular/polyfills.ts";
+    const FILENAME_TSCONFIG = "frameworks/angular/tsconfig.json";
+    const FILENAME_APP_CSS = "frameworks/angular/app.component.css";
+    const FILENAME_APP_TS = "frameworks/angular/app.component.ts";
+    const FILENAME_PACKAGE_JSON = "frameworks/angular/package.json";
     const FILENAME_SOLANARPC = "chains/solana/solanaRPC.ts";
     const FILENAME_STARKEXRPC = "chains/starkex/starkexRPC.ts";
     const FILENAME_STARKNETRPC = "chains/starknet/starknetRPC.ts";
@@ -84,34 +86,29 @@ const htmlSteps = {
     const FILENAME_ETHERSRPC = "chains/evm/ethersRPC.ts";
     const FILENAME_ARGENT_ACCOUNT = "chains/starknet/ArgentAccount.json";
 
-    const ConstructorCode = getConstructorCode(chain, whitelabel === "yes");
-    newFiles[FILENAME_HOME_VUE] = replacementAggregator.replaceFileVariable(
-      files[FILENAME_HOME_VUE],
-      FILENAME_HOME_VUE,
+    const ConstructorCodeAngular = getConstructorCodeAngular(chain, whitelabel === "yes");
+    newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_APP_TS],
+      FILENAME_APP_TS,
       PLACEHOLDERS.CONSTRUCTOR_CODE,
-      ConstructorCode
+      ConstructorCodeAngular
     );
 
     const InitCode = getInitCode(whitelabel === "yes");
-    newFiles[FILENAME_HOME_VUE] = replacementAggregator.replaceFileVariable(
-      files[FILENAME_HOME_VUE],
-      FILENAME_HOME_VUE,
-      PLACEHOLDERS.INIT_CODE,
-      InitCode
-    );
+    newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(files[FILENAME_APP_TS], FILENAME_APP_TS, PLACEHOLDERS.INIT_CODE, InitCode);
 
     const ModuleImport = getModuleImport(chain, whitelabel === "yes", customAuthentication === "yes", evmFramework);
-    newFiles[FILENAME_HOME_VUE] = replacementAggregator.replaceFileVariable(
-      files[FILENAME_HOME_VUE],
-      FILENAME_HOME_VUE,
+    newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_APP_TS],
+      FILENAME_APP_TS,
       PLACEHOLDERS.MODULE_IMPORT,
       ModuleImport
     );
 
     const OpenloginAdapter = getOpenloginAdapter(chain, whitelabel === "yes", customAuthentication === "yes");
-    newFiles[FILENAME_HOME_VUE] = replacementAggregator.replaceFileVariable(
-      files[FILENAME_HOME_VUE],
-      FILENAME_HOME_VUE,
+    newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_APP_TS],
+      FILENAME_APP_TS,
       PLACEHOLDERS.OPENLOGIN_ADAPTER,
       OpenloginAdapter
     );
@@ -124,31 +121,23 @@ const htmlSteps = {
       PackageJson
     );
 
-    const RPCFunctions = getRPCFunctions(chain);
-    newFiles[FILENAME_HOME_VUE] = replacementAggregator.replaceFileVariable(
-      files[FILENAME_HOME_VUE],
-      FILENAME_HOME_VUE,
+    const RPCFunctionsAngular = getRPCFunctionsAngular(chain);
+    newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_APP_TS],
+      FILENAME_APP_TS,
       PLACEHOLDERS.RPC_FUNCTIONS,
-      RPCFunctions
+      RPCFunctionsAngular
     );
 
-    const RPCFunctionsButtonsVue = getRPCFunctionsButtonsVue(chain);
-    newFiles[FILENAME_HOME_VUE] = replacementAggregator.replaceFileVariable(
-      files[FILENAME_HOME_VUE],
-      FILENAME_HOME_VUE,
+    const RPCFunctionsButtonsAngular = getRPCFunctionsButtonsAngular(chain);
+    newFiles[FILENAME_APP_HTML] = replacementAggregator.replaceFileVariable(
+      files[FILENAME_APP_HTML],
+      FILENAME_APP_HTML,
       PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
-      RPCFunctionsButtonsVue
+      RPCFunctionsButtonsAngular
     );
 
-    const RPCFunctionsReturnsVue = getRPCFunctionsReturnsVue(chain);
-    newFiles[FILENAME_HOME_VUE] = replacementAggregator.replaceFileVariable(
-      files[FILENAME_HOME_VUE],
-      FILENAME_HOME_VUE,
-      PLACEHOLDERS.RPC_FUNCTIONS_RETURNS_VUE,
-      RPCFunctionsReturnsVue
-    );
-
-    filenames.push(`frameworks/vue/Home.vue`);
+    filenames.push(`frameworks/angular/app.component.ts`);
     filenames.push(FILENAME_PACKAGE_JSON);
     switch (chain) {
       case "sol":
@@ -167,17 +156,19 @@ const htmlSteps = {
       default:
         filenames.push(evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC);
     }
-    filenames.push(FILENAME_VUE_CONFIG);
-    filenames.push(FILENAME_APP_VUE);
+    filenames.push(FILENAME_APP_HTML);
+    filenames.push(FILENAME_POLYFILLS);
+    filenames.push(FILENAME_TSCONFIG);
+    filenames.push(FILENAME_APP_CSS);
 
     steps.push(
       {
         ...STEPS.buildingApp,
-        pointer: replacementAggregator.highlightRange(FILENAME_HOME_VUE, files[FILENAME_HOME_VUE], "buildingApp"),
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "buildingApp"),
       },
       {
         ...STEPS.webpackIssues,
-        pointer: replacementAggregator.highlightRange(FILENAME_VUE_CONFIG, files[FILENAME_VUE_CONFIG], "webpackIssues"),
+        pointer: replacementAggregator.highlightRange(FILENAME_TSCONFIG, files[FILENAME_TSCONFIG], "webpackIssues"),
       }
     );
 
@@ -227,44 +218,44 @@ const htmlSteps = {
       },
       {
         ...STEPS.importModules,
-        pointer: replacementAggregator.highlightRange(FILENAME_HOME_VUE, files[FILENAME_HOME_VUE], "importModules"),
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "importModules"),
       },
       {
         ...STEPS.registerApp,
-        pointer: replacementAggregator.highlightRange(FILENAME_HOME_VUE, files[FILENAME_HOME_VUE], "registerApp"),
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "registerApp"),
       },
       {
         ...STEPS.instantiateSDK,
-        pointer: replacementAggregator.highlightRange(FILENAME_HOME_VUE, files[FILENAME_HOME_VUE], "instantiateSDK"),
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "instantiateSDK"),
       }
     );
 
     if (whitelabel === "yes") {
       steps.push({
         ...STEPS.whiteLabeling,
-        pointer: replacementAggregator.highlightRange(FILENAME_HOME_VUE, files[FILENAME_HOME_VUE], "whiteLabeling"),
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "whiteLabeling"),
       });
     }
 
     if (customAuthentication === "yes") {
       steps.push({
         ...STEPS.customAuthenticationStep,
-        pointer: replacementAggregator.highlightRange(FILENAME_HOME_VUE, files[FILENAME_HOME_VUE], "customAuthenticationStep"),
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "customAuthenticationStep"),
       });
     }
 
     steps.push(
       {
         ...STEPS.initialize,
-        pointer: replacementAggregator.highlightRange(FILENAME_HOME_VUE, files[FILENAME_HOME_VUE], "initialize"),
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "initialize"),
       },
       {
         ...STEPS.login,
-        pointer: replacementAggregator.highlightRange(FILENAME_HOME_VUE, files[FILENAME_HOME_VUE], "login"),
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "login"),
       },
       {
         ...STEPS.getUserInfo,
-        pointer: replacementAggregator.highlightRange(FILENAME_HOME_VUE, files[FILENAME_HOME_VUE], "getUserInfo"),
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "getUserInfo"),
       }
     );
 
@@ -307,11 +298,11 @@ const htmlSteps = {
 
     steps.push({
       ...STEPS.logout,
-      pointer: replacementAggregator.highlightRange(FILENAME_HOME_VUE, files[FILENAME_HOME_VUE], "logout"),
+      pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "logout"),
     });
 
     return { filenames, files, steps };
   },
 };
 
-export default htmlSteps;
+export default angularSteps;

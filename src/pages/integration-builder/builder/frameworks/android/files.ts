@@ -1,4 +1,4 @@
-import { PLACEHOLDERS } from "../../../commonSnippets";
+import { PLACEHOLDERS } from "../../commonSnippets";
 import { FILENAME_MAINACTIVITY } from "./filenames";
 import { getConstructorCodeAndroid, getLoginCodeAndroid } from "./replacementCode";
 

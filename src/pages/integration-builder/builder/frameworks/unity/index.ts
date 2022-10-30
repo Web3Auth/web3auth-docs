@@ -1,5 +1,5 @@
-import { getLoginCode, getWeb3AuthOptions, PLACEHOLDERS } from "../../../unitySnippets";
-import { ReplaceFileAggregator, toSteps } from "../../../utils";
+import { getLoginCode, getWeb3AuthOptions, PLACEHOLDERS } from "../../unitySnippets";
+import { ReplaceFileAggregator, toSteps } from "../../utils";
 import * as CustomAuthentication from "./customAuthentication.mdx";
 import * as getUserInfo from "./getUserInfo.mdx";
 import * as installation from "./installation.mdx";

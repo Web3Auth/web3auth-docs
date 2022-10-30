@@ -7,8 +7,8 @@ import {
   getRPCFunctions,
   getRPCFunctionsButtonsReact,
   PLACEHOLDERS,
-} from "../../../commonSnippets";
-import { ReplaceFileAggregator, toSteps } from "../../../utils";
+} from "../../commonSnippets";
+import { ReplaceFileAggregator, toSteps } from "../../utils";
 import * as customAuthenticationStep from "../common/customAuthenticationStep.mdx";
 import * as getUserInfo from "../common/getUserInfo.mdx";
 import * as importModules from "../common/importModules.mdx";

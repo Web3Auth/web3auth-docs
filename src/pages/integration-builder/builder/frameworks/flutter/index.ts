@@ -1,6 +1,6 @@
-import { PLACEHOLDERS } from "../../../commonSnippets";
-import { getConstructorCodeFlutter, getLoginCodeFlutter } from "../../../flutterSnippets";
-import { ReplaceFileAggregator, toSteps } from "../../../utils";
+import { PLACEHOLDERS } from "../../commonSnippets";
+import { getConstructorCodeFlutter, getLoginCodeFlutter } from "../../flutterSnippets";
+import { ReplaceFileAggregator, toSteps } from "../../utils";
 import * as whiteLabeling from "../common/whitelabeling.mdx";
 import * as customAuthn from "./custom-authentication.mdx";
 import * as installationFlutter from "./installation.mdx";

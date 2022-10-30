@@ -1,4 +1,4 @@
-import { ReplaceFileAggregator, toSteps } from "../../../utils";
+import { ReplaceFileAggregator, toSteps } from "../../utils";
 import * as whiteLabeling from "../common/whitelabeling.mdx";
 import * as getUserInfo from "./get-user-info.mdx";
 import * as installationIOS from "./installation.mdx";

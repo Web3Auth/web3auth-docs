@@ -1,4 +1,4 @@
-import { toSteps } from "../../../../utils";
+import { toSteps } from "../../../utils";
 import * as configureDeepLink from "./configure-deeplink.mdx";
 import * as CustomAuthentication from "./custom-authentication.mdx";
 import * as installationAppManifest from "./install-app-manifest.mdx";

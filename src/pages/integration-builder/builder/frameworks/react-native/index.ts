@@ -1,6 +1,6 @@
-import { PLACEHOLDERS } from "../../../commonSnippets";
-import { getConstructorCodeRN, getInitCodeRN, getModuleImportRN, getResolvedRedirectUrl } from "../../../reactNativeSnippets";
-import { ReplaceFileAggregator, toSteps } from "../../../utils";
+import { PLACEHOLDERS } from "../../commonSnippets";
+import { getConstructorCodeRN, getInitCodeRN, getModuleImportRN, getResolvedRedirectUrl } from "../../reactNativeSnippets";
+import { ReplaceFileAggregator, toSteps } from "../../utils";
 import * as installation from "./installation.mdx";
 import * as installWebBrowser from "./installWebBrowser.mdx";
 import * as instantiate from "./instantiateSDK.mdx";

@@ -1,4 +1,4 @@
-import { ReplaceFileAggregator } from "../../../utils";
+import { ReplaceFileAggregator } from "../../utils";
 import getFileNames from "./filenames";
 import getUpdatedFiles from "./files";
 import getSteps from "./steps";
