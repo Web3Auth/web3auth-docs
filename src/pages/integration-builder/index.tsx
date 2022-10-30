@@ -65,11 +65,6 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
   useEffect(() => {
     // Update selected file when either integration changed
     setSelectedFilename(integration.steps[stepIndex].pointer.filename);
-    // Clear copied
-    if (isLinkCopied) {
-      clearTimeout(isLinkCopied);
-      setLinkCopied(undefined);
-    }
 
     // Update query params
     // eslint-disable-next-line no-restricted-globals
@@ -78,7 +73,12 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
 
   useEffect(() => {
     window.location.href = `#step-${stepIndex}`;
-  }, []);
+    // Clear copied
+    if (isLinkCopied) {
+      clearTimeout(isLinkCopied);
+      setLinkCopied(undefined);
+    }
+  }, [isLinkCopied, stepIndex]);
 
   const onClickCopyLink = useCallback(() => {
     if (isLinkCopied) return;
