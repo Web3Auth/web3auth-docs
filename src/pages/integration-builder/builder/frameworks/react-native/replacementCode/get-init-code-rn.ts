@@ -1,4 +1,4 @@
-export const getInitCodeRN = (isCustomAuth: boolean, isEmailPasswordless: boolean) => {
+export const getInitCodeRN = (isCustomAuth: boolean) => {
   let customAuthCode = "";
   if (isCustomAuth) {
     customAuthCode = `
@@ -9,12 +9,6 @@ export const getInitCodeRN = (isCustomAuth: boolean, isEmailPasswordless: boolea
             id_token: "JWT_TOKEN",
           },
           // HIGHLIGHTEND-loginWithJwt
-      `;
-  } else if (isEmailPasswordless) {
-    customAuthCode = `
-          extraLoginOptions: {
-            login_hint: "email@example.com",
-          },
       `;
   }
   return `
