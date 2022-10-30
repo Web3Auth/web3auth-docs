@@ -4,7 +4,7 @@ import getSteps from "./steps";
 // For iOS SDK, dynamicConstructorParams must be "yes" if whitelabel is "yes" or customAuthentication == "yes".
 // Will also need the ability to have whitelabel and customAuthentication being "yes" in the same time as well.
 
-const reactSteps = {
+const framework = {
   build({ filenames, files, steps, whitelabel, customAuthentication }) {
     const replacementAggregator = new ReplaceFileAggregator();
     getSteps(steps, files, replacementAggregator, whitelabel, customAuthentication);
@@ -14,4 +14,4 @@ const reactSteps = {
   },
 };
 
-export default reactSteps;
+export default framework;

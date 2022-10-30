@@ -3,7 +3,7 @@ import getFileNames from "./filenames";
 import getUpdatedFiles from "./files";
 import getSteps from "./steps";
 
-const android = {
+const framework = {
   build({ filenames, files, steps, whitelabel, customAuthentication, mfa }) {
     const replacementAggregator = new ReplaceFileAggregator();
     getUpdatedFiles(files, whitelabel, customAuthentication, mfa, replacementAggregator);
@@ -14,4 +14,4 @@ const android = {
   },
 };
 
-export default android;
+export default framework;

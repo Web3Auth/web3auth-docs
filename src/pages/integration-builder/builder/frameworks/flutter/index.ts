@@ -3,7 +3,7 @@ import getFileNames from "./filenames";
 import getUpdatedFiles from "./files";
 import getSteps from "./steps";
 
-const flutter = {
+const framework = {
   build({ filenames, files, steps, whitelabel, customAuthentication, mfa }) {
     const replacementAggregator = new ReplaceFileAggregator();
     getUpdatedFiles(files, whitelabel, customAuthentication, mfa, replacementAggregator);
@@ -14,4 +14,4 @@ const flutter = {
   },
 };
 
-export default flutter;
+export default framework;
