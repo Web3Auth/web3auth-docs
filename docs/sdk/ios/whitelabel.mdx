@@ -5,8 +5,27 @@ displayed_sidebar: sdk
 description: "iOS SDK - Whitelabel | Documentation - Web3Auth"
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+---
+
 For defining custom UI, branding, and translations for your brand app, you just need to define an optional object called `W3AWhiteLabelData`. This
 `W3AWhiteLabelData` is initiated when we configure the `W3AInitParams` object.
+
+### Arguments
+
+`W3AWhiteLabelData`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
 
 | Parameter         | Type               | Mandatory | Description                                       |
 | ----------------- | ------------------ | --------- | ------------------------------------------------- |
@@ -16,3 +35,36 @@ For defining custom UI, branding, and translations for your brand app, you just 
 | `defaultLanguage` | `String`           | No        | Default translation language to used              |
 | `dark`            | `Bool`             | No        | If true, enables dark mode. Default is light mode |
 | `theme`           | `[String, String]` | No        | Whitelabel theme                                  |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```swift
+public struct W3AWhiteLabelData: Codable {
+    let name: String?
+    let logoLight: String?
+    let logoDark: String?
+    let defaultLanguage: String?
+    let dark: Bool?
+    let theme: [String: String]?
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Example
+
+```swift
+web3Auth = await Web3Auth(
+          W3AInitParams(
+            clientId:"YOUR_CLIENT_ID",
+            network: .testnet,
+            // highlight-start
+            whiteLabel: W3AWhiteLabelData(
+              name: "Web3Auth Stub", dark: true, theme: ["primary": "#123456"])
+            ))
+            // highlight-end
+```
