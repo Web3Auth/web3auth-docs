@@ -1,8 +1,10 @@
 /* eslint-disable camelcase */
-import { DisplayChoice, IntegrationBuilder, IntegrationStep } from "../interfaces";
+import { IntegrationBuilder, IntegrationStep } from "../interfaces";
 import android from "./android";
 import angular from "./angular";
+import { CHAINS, CHAINS_HTML, EVM, EVM_FRAMEWORK_CHOICES, LANGS, MOBILE, RN_MODE_CHOICES, TOGGLE_CHOICES } from "./choices";
 import flutter from "./flutter";
+import highlight from "./highlight";
 import html from "./html";
 import ios from "./ios";
 import next from "./nextjs";
@@ -23,118 +25,6 @@ const frameworks = {
   "react-native": react_native,
   unity,
 };
-
-function highlightStart(fileContent: string, variableName: string): string {
-  const contentByLine = fileContent.split(`\n`);
-  for (let i = 0; i < contentByLine.length; i += 1) {
-    if (contentByLine[i].includes(`HIGHLIGHTSTART-${variableName}`)) {
-      contentByLine[i] = "// highlight-start";
-    }
-  }
-  return contentByLine.join("\n");
-}
-function highlightEnd(fileContent: string, variableName: string): string {
-  const contentByLine = fileContent.split(`\n`);
-  for (let i = 0; i < contentByLine.length; i += 1) {
-    if (contentByLine[i].includes(`HIGHLIGHTEND-${variableName}`)) {
-      contentByLine[i] = "// highlight-end";
-    }
-  }
-  return contentByLine.join("\n");
-}
-
-function removeHighlightCode(fileContent: string): string {
-  // 2. line that this occurs on
-  const contentByLine = fileContent.split(`\n`);
-  for (let i = 0; i < contentByLine.length; i += 1) {
-    if (contentByLine[i].includes("HIGHLIGHT")) {
-      contentByLine.splice(i, 1);
-    }
-  }
-  return contentByLine.join("\n");
-}
-
-function highlightSection(fileContent: string, variableName: string): string {
-  const highlightStartFile = highlightStart(fileContent, variableName);
-  const highlightedFile = highlightEnd(highlightStartFile, variableName);
-  return removeHighlightCode(highlightedFile);
-}
-
-function setHighlight(stepIndex, filenames, files, steps) {
-  const { pointer } = steps[stepIndex];
-  const newFiles = files;
-  if (pointer) {
-    for (let i = 0; i < filenames.length; i++) {
-      if (filenames[i] === pointer.filename) {
-        newFiles[filenames[i]] = highlightSection(pointer.fileContent || files[filenames[i]], pointer.variableName);
-      }
-      newFiles[filenames[i]] = removeHighlightCode(files[filenames[i]]);
-    }
-  }
-
-  return newFiles;
-}
-
-export const CHAINS: DisplayChoice[] = [
-  { key: "eth", displayName: "Ethereum" },
-  { key: "sol", displayName: "Solana" },
-  { key: "starkex", displayName: "StarkEx" },
-  { key: "starknet", displayName: "StarkNet" },
-  { key: "matic", displayName: "Polygon" },
-  { key: "bnb", displayName: "BNB Chain" },
-  { key: "avax", displayName: "Avalanche" },
-  { key: "arbitrum", displayName: "Arbitrum" },
-  { key: "optimism", displayName: "Optimism" },
-  { key: "cronos", displayName: "Cronos" },
-  { key: "harmony", displayName: "Harmony" },
-  { key: "celo", displayName: "Celo" },
-  { key: "moonbeam", displayName: "Moonbeam" },
-  { key: "moonriver", displayName: "Moonriver" },
-  { key: "tezos", displayName: "Tezos" },
-];
-
-export const CHAINS_HTML: DisplayChoice[] = [
-  { key: "eth", displayName: "Ethereum" },
-  { key: "sol", displayName: "Solana" },
-  { key: "matic", displayName: "Polygon" },
-  { key: "bnb", displayName: "BNB Chain" },
-  { key: "avax", displayName: "Avalanche" },
-  { key: "arbitrum", displayName: "Arbitrum" },
-  { key: "optimism", displayName: "Optimism" },
-  { key: "cronos", displayName: "Cronos" },
-  { key: "harmony", displayName: "Harmony" },
-  { key: "celo", displayName: "Celo" },
-  { key: "moonbeam", displayName: "Moonbeam" },
-  { key: "moonriver", displayName: "Moonriver" },
-];
-
-export const LANGS: DisplayChoice[] = [
-  { key: "react", displayName: "React" },
-  { key: "next", displayName: "Next JS" },
-  { key: "vue", displayName: "Vue" },
-  { key: "angular", displayName: "Angular" },
-  { key: "html", displayName: "HTML/JS" },
-  { key: "android", displayName: "Android" },
-  { key: "ios", displayName: "iOS/Swift" },
-  { key: "react-native", displayName: "React Native" },
-  { key: "flutter", displayName: "Flutter" },
-  { key: "unity", displayName: "Unity" },
-];
-
-export const TOGGLE_CHOICES: DisplayChoice[] = [
-  { key: "no", displayName: "No" },
-  { key: "yes", displayName: "Yes" },
-];
-
-export const EVM_FRAMEWORK_CHOICES: DisplayChoice[] = [
-  { key: "web3", displayName: "web3.js" },
-  { key: "ethers", displayName: "ethers" },
-];
-
-export const RN_MODE_CHOICES: DisplayChoice[] = [
-  { key: "expo", displayName: "Expo" },
-  { key: "bare", displayName: "Bare React Native" },
-];
 
 const builder: IntegrationBuilder = {
   // Name of the integration builder
@@ -199,26 +89,7 @@ const builder: IntegrationBuilder = {
     const filenames: string[] = [];
     const newFiles = JSON.parse(JSON.stringify(files));
     const steps: IntegrationStep[] = [];
-    enum EVM {
-      "eth",
-      "matic",
-      "bnb",
-      "avax",
-      "arbitrum",
-      "optimism",
-      "cronos",
-      "harmony",
-      "celo",
-      "moonbeam",
-      "moonriver",
-    }
-    enum Mobile {
-      "android",
-      "ios",
-      "react-native",
-      "flutter",
-      "unity",
-    }
+
     this.options = {
       lang: {
         displayName: "Language/Framework",
@@ -237,7 +108,7 @@ const builder: IntegrationBuilder = {
           choices: CHAINS_HTML,
         },
       };
-    } else if (!(values.lang in Mobile)) {
+    } else if (!(values.lang in MOBILE)) {
       this.options = {
         ...this.options,
         chain: {
@@ -264,7 +135,7 @@ const builder: IntegrationBuilder = {
       },
     };
 
-    if (values.lang in Mobile) {
+    if (values.lang in MOBILE) {
       // this.options = {
       //   ...this.options,
       //   usingEmailPasswordless: {
@@ -313,7 +184,7 @@ const builder: IntegrationBuilder = {
         choices: TOGGLE_CHOICES,
       },
     };
-    if (values.chain in EVM && !(values.lang in Mobile)) {
+    if (values.chain in EVM && !(values.lang in MOBILE)) {
       this.options = {
         ...this.options,
         evmFramework: {
@@ -327,7 +198,7 @@ const builder: IntegrationBuilder = {
 
     frameworks[finalValues.lang].build({ ...finalValues, filenames, files: newFiles, steps, chain: finalValues.chain });
 
-    const highlightedFiles = setHighlight(stepIndex, filenames, newFiles, steps);
+    const highlightedFiles = highlight(stepIndex, filenames, newFiles, steps);
 
     return {
       // Use files in `open-login` folders instead of root folder
