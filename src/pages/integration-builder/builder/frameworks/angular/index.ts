@@ -1,13 +1,4 @@
-import {
-  getConstructorCodeAngular,
-  getInitCode,
-  getModuleImport,
-  getOpenloginAdapter,
-  getPackageJson,
-  getRPCFunctionsAngular,
-  getRPCFunctionsButtonsAngular,
-  PLACEHOLDERS,
-} from "../../commonCode";
+import { getInitCode, getModuleImport, getOpenloginAdapter, getPackageJson, PLACEHOLDERS } from "../../commonCode";
 import * as customAuthenticationStep from "../../commonSteps/customAuthenticationStep.mdx";
 import * as getUserInfo from "../../commonSteps/getUserInfo.mdx";
 import * as importModules from "../../commonSteps/importModules.mdx";
@@ -34,6 +25,7 @@ import * as tezosRPCFunctions from "../../commonSteps/rpcFunctions/tezosRPCFunct
 import * as whiteLabeling from "../../commonSteps/whitelabeling.mdx";
 import { ReplaceFileAggregator, toSteps } from "../../utils";
 import * as buildingApp from "./buildingApp.mdx";
+import { getConstructorCodeAngular, getRPCFunctionsAngular, getRPCFunctionsButtonsAngular } from "./replacementCode";
 import * as webpackIssues from "./webpackIssues.mdx";
 
 const STEPS = toSteps({

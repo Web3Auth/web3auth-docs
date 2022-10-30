@@ -5,8 +5,6 @@ import {
   getOpenloginAdapter,
   getPackageJson,
   getRPCFunctions,
-  getRPCFunctionsButtonsVue,
-  getRPCFunctionsReturnsVue,
   PLACEHOLDERS,
 } from "../../commonCode";
 import * as customAuthenticationStep from "../../commonSteps/customAuthenticationStep.mdx";
@@ -35,6 +33,7 @@ import * as tezosRPCFunctions from "../../commonSteps/rpcFunctions/tezosRPCFunct
 import * as whiteLabeling from "../../commonSteps/whitelabeling.mdx";
 import { ReplaceFileAggregator, toSteps } from "../../utils";
 import * as buildingApp from "./buildingApp.mdx";
+import { getRPCFunctionsButtonsVue, getRPCFunctionsReturnsVue } from "./replacementCode";
 import * as webpackIssues from "./webpackIssues.mdx";
 
 const STEPS = toSteps({

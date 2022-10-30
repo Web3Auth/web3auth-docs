@@ -1,4 +1,4 @@
-import { getConstructorCodeHTML, getInitCodeHTML, getOpenloginAdapterHTML, getScriptImport, PLACEHOLDERS } from "../../commonCode";
+import { PLACEHOLDERS } from "../../commonCode";
 import * as customAuthenticationStep from "../../commonSteps/customAuthenticationStep.mdx";
 import * as getUserInfo from "../../commonSteps/getUserInfo.mdx";
 import * as importModules from "../../commonSteps/importModules.mdx";
@@ -22,6 +22,7 @@ import * as whiteLabeling from "../../commonSteps/whitelabeling.mdx";
 import { ReplaceFileAggregator, toSteps } from "../../utils";
 import * as installation from "./installation.mdx";
 import * as installationCustom from "./installationCustom.mdx";
+import { getConstructorCodeHTML, getInitCodeHTML, getOpenloginAdapterHTML, getScriptImport } from "./replacementCode";
 import * as usingQuickStart from "./usingQuickStart.mdx";
 
 const STEPS = toSteps({

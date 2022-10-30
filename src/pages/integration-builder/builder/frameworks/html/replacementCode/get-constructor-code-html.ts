@@ -1,4 +1,4 @@
-import { chainIdMap, rpcTargetMap } from "./maps";
+import { chainIdMap, rpcTargetMap } from "../../../commonCode/maps";
 
 export const getConstructorCodeHTML = (chain: "sol", isWhiteLabled: boolean) => {
   let chainDetails = ``;
