@@ -1,4 +1,4 @@
-import { openloginAdapterVersion, web3authModalVersion } from "../../../../common/versions.mdx";
+import { openloginAdapterVersion, web3authModalVersion } from "../../../common/versions.mdx";
 
 export const getPackageJson = (
   chain: "eth" | "sol" | "starkex" | "starknet" | "tezos",

@@ -3,7 +3,7 @@ import getFileNames from "./filenames";
 import getUpdatedFiles from "./files";
 import getSteps from "./steps";
 
-const htmlSteps = {
+const framework = {
   build({ filenames, files, steps, whitelabel, customAuthentication, chain, evmFramework }) {
     const replacementAggregator = new ReplaceFileAggregator();
 
@@ -15,4 +15,4 @@ const htmlSteps = {
   },
 };
 
-export default htmlSteps;
+export default framework;
