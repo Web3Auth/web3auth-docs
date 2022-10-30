@@ -1,4 +1,4 @@
-import { PLACEHOLDERS } from "../../commonSnippets";
+import { PLACEHOLDERS } from "../../commonCode";
 import { FILENAME_APP_TSX } from "./filenames";
 import { getConstructorCodeRN, getInitCodeRN, getModuleImportRN, getResolvedRedirectUrl } from "./replacementCode";
 

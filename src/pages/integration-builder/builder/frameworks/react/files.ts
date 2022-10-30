@@ -7,7 +7,7 @@ import {
   getRPCFunctions,
   getRPCFunctionsButtonsReact,
   PLACEHOLDERS,
-} from "../../commonSnippets";
+} from "../../commonCode";
 import { FILENAME_APP_TSX, FILENAME_PACKAGE_JSON } from "./filenames";
 
 export default function getUpdatedFiles(files, whitelabel, customAuthentication, chain, evmFramework, replacementAggregator) {

@@ -7,7 +7,7 @@ import {
   getRPCFunctions,
   getRPCFunctionsButtonsReact,
   PLACEHOLDERS,
-} from "../../commonSnippets";
+} from "../../commonCode";
 import * as customAuthenticationStep from "../../commonSteps/customAuthenticationStep.mdx";
 import * as getUserInfo from "../../commonSteps/getUserInfo.mdx";
 import * as importModules from "../../commonSteps/importModules.mdx";

@@ -1,4 +1,4 @@
-import { PLACEHOLDERS } from "../../commonSnippets";
+import { PLACEHOLDERS } from "../../commonCode";
 import { FILENAME_WEB3AUTH } from "./filenames";
 import { getLoginCode, getWeb3AuthOptions } from "./replacementCode";
 

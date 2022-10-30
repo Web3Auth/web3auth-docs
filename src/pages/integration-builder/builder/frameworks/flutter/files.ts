@@ -1,4 +1,4 @@
-import { PLACEHOLDERS } from "../../commonSnippets";
+import { PLACEHOLDERS } from "../../commonCode";
 import { FILENAME_MAINACTIVITY } from "./filenames";
 import { getConstructorCodeFlutter, getLoginCodeFlutter } from "./replacementCode";
 

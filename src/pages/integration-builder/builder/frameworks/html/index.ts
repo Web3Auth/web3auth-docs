@@ -1,4 +1,4 @@
-import { getConstructorCodeHTML, getInitCodeHTML, getOpenloginAdapterHTML, getScriptImport, PLACEHOLDERS } from "../../commonSnippets";
+import { getConstructorCodeHTML, getInitCodeHTML, getOpenloginAdapterHTML, getScriptImport, PLACEHOLDERS } from "../../commonCode";
 import * as customAuthenticationStep from "../../commonSteps/customAuthenticationStep.mdx";
 import * as getUserInfo from "../../commonSteps/getUserInfo.mdx";
 import * as importModules from "../../commonSteps/importModules.mdx";
