@@ -1,0 +1,76 @@
+---
+title: Multi Factor Authentication in iOS SDK
+sidebar_label: Multi Factor Authentication
+displayed_sidebar: sdk
+description: "iOS SDK - Multi Factor Authentication | Documentation - Web3Auth"
+---
+
+---
+
+The Multi Factor Authentication feature refers to the ability of the user to create a backup share (recovery phrase). This helps them login into a new
+device and also to recover their account if they lose their original device.
+
+You can set the mfaLevel within the `loginParams` to customize when mfa screen should be shown to user. It currently accepts 4 values:
+
+- **`default`** - Setting the mfaLevel to default will present the MFA screen to user on every third login. `mfaLevel = MFALevel.DEFAULT`
+- **`optional`** - Setting mfaLevel to optional will present the MFA screen to user on every login but user will have the option to skip it.
+  `mfaLevel = MFALevel.OPTIONAL`
+- **`mandatory`** - Setting mfaLevel to mandatory will make it mandatory for user to setup MFA after login. `mfaLevel = MFALevel.MANDATORY`
+- **`none`** - Setting mfaLevel to none will skip the mfa setup screen totally. `mfaLevel = MFALevel.NONE`
+
+```swift
+Web3Auth().login(W3ALoginParams(loginProvider: provider, mfaLevel = MFALevel.MANDATORY))
+```
+
+### Example
+
+```swift
+import Foundation
+import Web3Auth
+
+class ViewModel: ObservableObject {
+    var web3Auth: Web3Auth?
+    @Published var loggedIn: Bool = false
+    @Published var user: Web3AuthState?
+    @Published var isLoading = false
+    @Published var navigationTitle: String = ""
+
+    func setup() async {
+        guard web3Auth == nil else { return }
+        await MainActor.run(body: {
+            isLoading = true
+            navigationTitle = "Loading"
+        })
+        web3Auth = await Web3Auth()
+        await MainActor.run(body: {
+            if self.web3Auth?.state != nil {
+                user = web3Auth?.state
+                loggedIn = true
+            }
+            isLoading = false
+            navigationTitle = loggedIn ? "UserInfo" : "SignIn"
+        })
+    }
+
+    func login(provider: Web3AuthProvider) {
+        Task {
+            do {
+                let result = try await Web3Auth().login(
+					W3ALoginParams(
+						loginProvider: provider, // can be .GOOGLE, .FACEBOOK, .APPLE etc
+						// highlight-next-line
+                        mfaLevel: MFALevel.MANDATORY
+					))
+                await MainActor.run(body: {
+                    user = result
+                    loggedIn = true
+                })
+
+            } catch {
+                print("Error")
+            }
+        }
+    }
+}
+
+```

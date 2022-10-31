@@ -109,7 +109,8 @@ public struct W3ALoginParams: Codable {
     { label: "Facebook", value: "facebook" },
     { label: "Discord", value: "discord" },
     { label: "Twitch", value: "twitch" },
-    { label: "Email Passwordless", value: "email_passwordless" }
+    { label: "Email Passwordless", value: "email_passwordless" },
+	{ label: "JWT", value: "jwt" }
   ]}
 >
 
@@ -223,6 +224,31 @@ login(provider: .EMAIL_PASSWORDLESS)
 
 </TabItem>
 
+<TabItem value="jwt">
+
+```swift
+func login(provider: Web3AuthProvider) {
+	Task {
+		do {
+			let result = try await Web3Auth().login(W3ALoginParams(selectedLoginProvider,
+      		// highlight-next-line
+      		extraLoginOptions: .init(domain:"your-domain", id_token: "your_jwt_token")
+  			))
+			await MainActor.run(body: {
+				user = result
+				loggedIn = true
+			})
+		} catch {
+			print("Error")
+		}
+	}
+}
+// highlight-next-line
+login(provider: .JWT)
+```
+
+</TabItem>
+
 </Tabs>
 
 ## ExtraLoginOptions
@@ -241,7 +267,7 @@ Web3Auth.login(W3ALoginParams(
   defaultValue="table"
   values={[
     { label: "Table", value: "table" },
-    { label: "Class", value: "class" },
+    { label: "Struct", value: "struct" },
   ]}
 >
 
@@ -269,7 +295,7 @@ Web3Auth.login(W3ALoginParams(
 
 </TabItem>
 
-<TabItem value="class">
+<TabItem value="struct">
 
 ```swift
 public struct ExtraLoginOptions: Encodable {

@@ -288,7 +288,7 @@ module.exports = {
       type: "category",
       label: "iOS",
       link: { type: "doc", id: "sdk/ios/ios" },
-      items: ["sdk/ios/initialize", "sdk/ios/whitelabel", "sdk/ios/custom-authentication", "sdk/ios/usage"],
+      items: ["sdk/ios/initialize", "sdk/ios/whitelabel", "sdk/ios/custom-authentication", "sdk/ios/mfa", "sdk/ios/dapp-share", "sdk/ios/usage"],
     },
     {
       type: "category",
