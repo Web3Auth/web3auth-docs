@@ -1,5 +1,7 @@
 import type { SafeEventEmitterProvider } from "@web3auth/base";
+// HIGHLIGHTSTART-installationWeb3
 import Web3 from "web3";
+// HIGHLIGHTEND-installationWeb3
 
 export default class EthereumRpc {
   private provider: SafeEventEmitterProvider;
@@ -10,10 +12,12 @@ export default class EthereumRpc {
 
   async getChainId(): Promise<string> {
     try {
+      // HIGHLIGHTSTART-evmRPCFunctions
       const web3 = new Web3(this.provider as any);
 
       // Get the connected Chain's ID
       const chainId = await web3.eth.getChainId();
+      // HIGHLIGHTEND-evmRPCFunctions
 
       return chainId.toString();
     } catch (error) {
@@ -23,10 +27,12 @@ export default class EthereumRpc {
 
   async getAccounts(): Promise<any> {
     try {
+      // HIGHLIGHTSTART-evmRPCFunctions
       const web3 = new Web3(this.provider as any);
 
       // Get user's Ethereum public address
       const address = (await web3.eth.getAccounts())[0];
+      // HIGHLIGHTEND-evmRPCFunctions
 
       return address;
     } catch (error) {
@@ -36,6 +42,7 @@ export default class EthereumRpc {
 
   async getBalance(): Promise<string> {
     try {
+      // HIGHLIGHTSTART-evmRPCFunctions
       const web3 = new Web3(this.provider as any);
 
       // Get user's Ethereum public address
@@ -45,6 +52,7 @@ export default class EthereumRpc {
       const balance = web3.utils.fromWei(
         await web3.eth.getBalance(address) // Balance is in wei
       );
+      // HIGHLIGHTEND-evmRPCFunctions
 
       return balance;
     } catch (error) {
@@ -54,6 +62,7 @@ export default class EthereumRpc {
 
   async sendTransaction(): Promise<any> {
     try {
+      // HIGHLIGHTSTART-evmRPCFunctions
       const web3 = new Web3(this.provider as any);
 
       // Get user's Ethereum public address
@@ -71,6 +80,7 @@ export default class EthereumRpc {
         maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
         maxFeePerGas: "6000000000000", // Max fee per gas
       });
+      // HIGHLIGHTEND-evmRPCFunctions
 
       return receipt;
     } catch (error) {
@@ -80,6 +90,7 @@ export default class EthereumRpc {
 
   async signMessage() {
     try {
+      // HIGHLIGHTSTART-evmRPCFunctions
       const web3 = new Web3(this.provider as any);
 
       // Get user's Ethereum public address
@@ -93,6 +104,7 @@ export default class EthereumRpc {
         fromAddress,
         "test password!" // configure your own password here.
       );
+      // HIGHLIGHTEND-evmRPCFunctions
 
       return signedMessage;
     } catch (error) {
@@ -102,9 +114,11 @@ export default class EthereumRpc {
 
   async getPrivateKey(): Promise<any> {
     try {
+      // HIGHLIGHTSTART-evmRPCFunctions
       const privateKey = await this.provider.request({
         method: "eth_private_key",
       });
+      // HIGHLIGHTEND-evmRPCFunctions
 
       return privateKey;
     } catch (error) {

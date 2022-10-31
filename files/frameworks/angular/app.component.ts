@@ -1,7 +1,11 @@
+// HIGHLIGHTSTART-buildingApp
 import { Component } from "@angular/core";
+// HIGHLIGHTEND-buildingApp
 // REPLACE-getModuleImport-
 
+// HIGHLIGHTSTART-registerApp
 const clientId = "YOUR_WEB3AUTH_CLIENT_ID"; // get from https://dashboard.web3auth.io
+// HIGHLIGHTEND-registerApp
 
 @Component({
   selector: "app-root",
@@ -29,6 +33,7 @@ export class AppComponent {
       this.isModalLoaded = true;
     }
 
+    // HIGHLIGHTSTART-login
     login = async () => {
     if (!this.web3auth) {
       console.log("web3auth not initialized yet");
@@ -38,7 +43,9 @@ export class AppComponent {
     this.provider = await web3auth.connect();
     console.log("logged in");
     };
+    // HIGHLIGHTEND-login
 
+    // HIGHLIGHTSTART-getUserInfo
     getUserInfo = async () => {
       if (!this.web3auth) {
         console.log("web3auth not initialized yet");
@@ -47,10 +54,9 @@ export class AppComponent {
       const user = await this.web3auth.getUserInfo();
       console.log(user);
     };
+    // HIGHLIGHTEND-getUserInfo
 
-  // REPLACE-getRPCFunctions-
-
-
+    // HIGHLIGHTSTART-logout
     logout = async () => {
       if (!this.web3auth) {
         console.log("web3auth not initialized yet");
@@ -60,4 +66,8 @@ export class AppComponent {
       this.provider = null;
       console.log("logged out");
     };
+    // HIGHLIGHTEND-logout
+
+    // REPLACE-getRPCFunctions-
+
 }

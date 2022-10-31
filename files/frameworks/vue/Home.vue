@@ -16,7 +16,9 @@
 
 <script lang="ts">
 
+// HIGHLIGHTSTART-buildingApp
 import { ref, onMounted } from "vue";
+// HIGHLIGHTEND-buildingApp
 // REPLACE-getModuleImport-
 
 
@@ -30,7 +32,10 @@ export default {
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
     let provider = ref<SafeEventEmitterProvider | any>(null);
+
+    // HIGHLIGHTSTART-registerApp
     const clientId = "YOUR_WEB3AUTH_CLIENT_ID"; // get from https://dashboard.web3auth.io
+    // HIGHLIGHTEND-registerApp
 
     // REPLACE-getConstructorCode-
 
@@ -55,6 +60,7 @@ export default {
       }
     });
 
+    // HIGHLIGHTSTART-login
     const login = async () => {
       if (!web3auth) {
         console.log("web3auth not initialized yet");
@@ -62,7 +68,9 @@ export default {
       }
       provider = await web3auth.connect();
     };
+    // HIGHLIGHTEND-login
 
+    // HIGHLIGHTSTART-getUserInfo
     const getUserInfo = async () => {
       if (!web3auth) {
         console.log("web3auth not initialized yet");
@@ -71,7 +79,9 @@ export default {
       const user = await web3auth.getUserInfo();
       console.log(user);
     };
+    // HIGHLIGHTEND-getUserInfo
 
+    // HIGHLIGHTSTART-logout
     const logout = async () => {
       if (!web3auth) {
         console.log("web3auth not initialized yet");
@@ -80,6 +90,7 @@ export default {
       await web3auth.logout();
       provider = null;
     };
+    // HIGHLIGHTEND-logout
 
     // REPLACE-getRPCFunctions-
 

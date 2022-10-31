@@ -1,8 +1,11 @@
+// HIGHLIGHTSTART-buildingApp
 import { useEffect, useState } from "react";
+// HIGHLIGHTEND-buildingApp
 // REPLACE-getModuleImport-
 
-
+// HIGHLIGHTSTART-registerApp
 const clientId = "YOUR_WEB3AUTH_CLIENT_ID"; // get from https://dashboard.web3auth.io
+// HIGHLIGHTEND-registerApp
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
@@ -30,6 +33,7 @@ function App() {
       init();
   }, []);
 
+  // HIGHLIGHTSTART-login
   const login = async () => {
     if (!web3auth) {
       console.log("web3auth not initialized yet");
@@ -38,7 +42,9 @@ function App() {
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
   };
+  // HIGHLIGHTEND-login
 
+  // HIGHLIGHTSTART-getUserInfo
   const getUserInfo = async () => {
     if (!web3auth) {
       console.log("web3auth not initialized yet");
@@ -47,7 +53,9 @@ function App() {
     const user = await web3auth.getUserInfo();
     console.log(user);
   };
+  // HIGHLIGHTEND-getUserInfo
 
+  // HIGHLIGHTSTART-logout
   const logout = async () => {
     if (!web3auth) {
       console.log("web3auth not initialized yet");
@@ -56,6 +64,7 @@ function App() {
     await web3auth.logout();
     setProvider(null);
   };
+  // HIGHLIGHTEND-logout
 
 // REPLACE-getRPCFunctions-
 

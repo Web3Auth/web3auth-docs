@@ -27,10 +27,11 @@ const getDefaultBuilderOptions = () => {
 
   return { ...defaultOpts, ...urlOpts };
 };
-const getURLFromBuilderOptions = (opts: Record<string, string>): string => {
+const getURLFromBuilderOptions = (opts: Record<string, string>, stepIndex): string => {
   const url = new URL(getWindowLocation());
   url.search = "";
   for (const [key, value] of Object.entries(opts)) url.searchParams.append(key, value);
+  url.searchParams.append("stepIndex", stepIndex.toString());
   return url.toString();
 };
 
@@ -53,25 +54,33 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
       [optionKey]: optionValue,
     });
   };
+  const url = new URL(getWindowLocation());
+  const [stepIndex, setStepIndex] = useState(parseInt(url.searchParams.get("stepIndex") || "0", 10));
 
-  const integration = useMemo(() => builder.build(builderOptions, files), [builderOptions, files]);
+  const integration = useMemo(() => builder.build(builderOptions, files, stepIndex), [builderOptions, files, stepIndex]);
   const [selectedFilename, setSelectedFilename] = useState(integration.filenames[0]);
 
   const [isLinkCopied, setLinkCopied] = useState<number>();
 
   useEffect(() => {
     // Update selected file when either integration changed
-    setSelectedFilename(integration.filenames[0]);
+    setSelectedFilename(integration.steps[stepIndex].pointer.filename);
 
     // Clear copied
     if (isLinkCopied) {
       clearTimeout(isLinkCopied);
       setLinkCopied(undefined);
     }
-
     // Update query params
-    history.pushState({}, "", getURLFromBuilderOptions(builderOptions));
-  }, [builderOptions, integration, isLinkCopied]);
+    // eslint-disable-next-line no-restricted-globals
+    history.pushState({}, "", getURLFromBuilderOptions(builderOptions, stepIndex));
+  }, [builderOptions, integration, stepIndex, isLinkCopied]);
+
+  useEffect(() => {
+    if (stepIndex > 0) {
+      window.location.href = `#step-${stepIndex}`;
+    }
+  }, [stepIndex]);
 
   const onClickCopyLink = useCallback(() => {
     if (isLinkCopied) return;
@@ -84,13 +93,10 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
   }, [isLinkCopied]);
 
   const { steps } = integration;
-  const [stepIndex, setStepIndex] = useState(0);
 
   const onChangeStep = (index: number) => {
-    const { pointer } = steps[index];
-    if (pointer) setSelectedFilename(pointer.filename);
+    setSelectedFilename(steps[index].pointer.filename);
     setStepIndex(index);
-    window.location.hash = `#step-${index}`;
   };
 
   const onScrollLeft = (e: UIEvent<HTMLDivElement>) => {
