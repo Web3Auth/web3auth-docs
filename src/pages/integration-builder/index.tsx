@@ -66,19 +66,21 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     // Update selected file when either integration changed
     setSelectedFilename(integration.steps[stepIndex].pointer.filename);
 
-    // Update query params
-    // eslint-disable-next-line no-restricted-globals
-    history.pushState({}, "", getURLFromBuilderOptions(builderOptions, stepIndex));
-  }, [builderOptions, integration, isLinkCopied, stepIndex]);
-
-  useEffect(() => {
-    window.location.href = `#step-${stepIndex}`;
     // Clear copied
     if (isLinkCopied) {
       clearTimeout(isLinkCopied);
       setLinkCopied(undefined);
     }
-  }, [isLinkCopied, stepIndex]);
+    // Update query params
+    // eslint-disable-next-line no-restricted-globals
+    history.pushState({}, "", getURLFromBuilderOptions(builderOptions, stepIndex));
+  }, [builderOptions, integration, stepIndex, isLinkCopied]);
+
+  useEffect(() => {
+    if (stepIndex > 0) {
+      window.location.href = `#step-${stepIndex}`;
+    }
+  }, [stepIndex]);
 
   const onClickCopyLink = useCallback(() => {
     if (isLinkCopied) return;
