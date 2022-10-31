@@ -1,16 +1,22 @@
+import { openloginAdapterVersion, web3authModalVersion, web3authSolanaProviderVersion } from "../../../../../common/versions";
+
 export const getScriptImport = (chain: "sol", isWhiteLabled: boolean, isCustomAuth: boolean, evmFramework: "ethers") => {
+  const openloginAdapterScript = `https://cdn.jsdelivr.net/npm/@web3auth/openlogin-adapter@${openloginAdapterVersion}/dist/openloginAdapter.umd.min.js`;
+  const web3authModalScript = `https://cdn.jsdelivr.net/npm/@web3auth/modal@${web3authModalVersion}/dist/modal.umd.min.js`;
+  const web3authSolanaProviderScript = `https://cdn.jsdelivr.net/npm/@web3auth/solana-provider@${web3authSolanaProviderVersion}/dist/solanaProvider.umd.min.js`;
+
   let code = `
     // HIGHLIGHTSTART-installation
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal"></script>`;
+    <script src="${web3authModalScript}"></script>`;
   if (isWhiteLabled || isCustomAuth) {
     code += `
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/openlogin-adapter@1.1.1/dist/openloginAdapter.umd.min.js"></script>`;
+    <script src="${openloginAdapterScript}"></script>`;
   }
   switch (chain) {
     case "sol":
       code += `
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.43.5/lib/index.iife.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/solana-provider@1.1.1/dist/solanaProvider.umd.min.js"></script>
+    <script src="${web3authSolanaProviderScript}"></script>
     <script src="./solanaRPC.js"></script>`;
       break;
     default:

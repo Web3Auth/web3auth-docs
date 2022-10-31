@@ -1,4 +1,4 @@
-import { openloginAdapterVersion, web3authModalVersion } from "../../../common/versions.mdx";
+import { openloginAdapterVersion, web3authBaseVersion, web3authModalVersion, web3authSolanaProviderVersion } from "../../../common/versions";
 
 export const getPackageJson = (
   chain: "eth" | "sol" | "starkex" | "starknet" | "tezos",
@@ -8,7 +8,7 @@ export const getPackageJson = (
 ) => {
   let code = `
     // HIGHLIGHTSTART-installation
-    "@web3auth/base": "^${web3authModalVersion}",
+    "@web3auth/base": "^${web3authBaseVersion}",
     "@web3auth/modal": "^${web3authModalVersion}",`;
 
   if (isWhiteLabled || isCustomAuth || chain === "starkex" || chain === "starknet" || chain === "tezos") {
@@ -18,7 +18,7 @@ export const getPackageJson = (
   switch (chain) {
     case "sol":
       code += `
-    "@web3auth/solana-provider": "^${web3authModalVersion}",
+    "@web3auth/solana-provider": "^${web3authSolanaProviderVersion}",
     "@solana/web3.js": "^1.36.0",`;
       break;
 
