@@ -106,9 +106,12 @@ web3Auth = await Web3Auth(
             network: .testnet,
             // highlight-start
             loginConfig: [
-                verifier:"verifier_name", // get it from web3auth dashboard
+              Web3AuthProvider.JWT.rawValue: .init(
+                verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard
                 typeOfLogin: TypeOfLogin.google,
-                name: "Custom Google Login"
+                name: "Custom Google Login",
+                clientId: "YOUR_GOOGLE_CLIENT_ID",
+              )
             ]
             // highlight-end
 ```
@@ -124,9 +127,12 @@ web3Auth = await Web3Auth(
             network: .testnet,
             // highlight-start
             loginConfig: [
-                verifier:"verifier_name", // get it from web3auth dashboard
+              Web3AuthProvider.JWT.rawValue: .init(
+                verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard
                 typeOfLogin: TypeOfLogin.facebook,
-                name: "Custom Facebook Login"
+                name: "Custom Facebook Login",
+                clientId: "YOUR_FACEBOOK_CLIENT_ID",
+              )
             ]
             // highlight-end
 ```
@@ -142,9 +148,12 @@ web3Auth = await Web3Auth(
             network: .testnet,
             // highlight-start
             loginConfig: [
-                verifier:"verifier_name", // get it from web3auth dashboard
+              Web3AuthProvider.JWT.rawValue: .init(
+                verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard
                 typeOfLogin: TypeOfLogin.jwt,
-                name: "Custom JWT Login"
+                name: "Custom JWT Login",
+                clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from web3auth dashboard
+              )
             ]
             // highlight-end
 ```
@@ -163,7 +172,7 @@ web3Auth = await Web3Auth(
   let result  =
     await Web3Auth().login(W3ALoginParams(selectedLoginProvider,
         // highlight-next-line
-        extraLoginOptions = ExtraLoginOptions(loginHint: "hello@web3auth.io")
+        extraLoginOptions: .init(loginHint: "hello@web3auth.io")
     ))
   ```
 
@@ -173,10 +182,7 @@ web3Auth = await Web3Auth(
   let result  =
   await Web3Auth().login(W3ALoginParams(selectedLoginProvider,
       // highlight-next-line
-      extraLoginOptions = ExtraLoginOptions(
-        domain: "your-domain",
-        idToken: "your-jwt-token"
-      )
+      extraLoginOptions: .init(domain:"your-domain", idToken: "your_jwt_token")
   ))
   ```
 
