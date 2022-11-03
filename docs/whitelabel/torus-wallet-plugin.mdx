@@ -1,5 +1,5 @@
 ---
-title: Torus Wallet Plugin
+title: Torus Wallets
 image: "/docs/images/docs-meta-cards/documentation-card.png"
 displayed_sidebar: docs
 description: " Torus Wallet Plugin | Documentation - Web3Auth"
@@ -14,13 +14,15 @@ import Image13 from "@site/static/contents/whitelabel-web3auth-wallet-wallet2.pn
 import Image10 from "@site/static/contents/whitelabel-web3auth-wallet-widget1.png";
 import Image11 from "@site/static/contents/whitelabel-web3auth-wallet-widget2.png";
 
-The Torus Wallet user experience can be whitelabeled using `TorusWalletAdapter` settings.
+The Torus Wallets user experience can be whitelabeled using `TorusWalletAdapter` & `SolanaWalletAdapter` settings.
 
 ## Arguments
 
 ---
 
 `new TorusWalletAdapter({initParams: {whiteLabel: {...}}})`
+
+`new SolanaWalletAdapter({initParams: {whiteLabel: {...}}})`
 
 | Parameter for `whiteLabel` | Type      | Options                                                                                                                                   |
 | -------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
@@ -68,10 +70,10 @@ Define preferred language. Possible values are:
 
 <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
   <div style={{ flexBasis: "30%", flexGrow: "1", alignItems: "center" }}>
-    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image8} />
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image8} alt="confirm pop" />
   </div>
   <div style={{ flexBasis: "15%", flexGrow: "1", alignItems: "center" }}>
-    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image9} />
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image9} alt="confirm pop dark" />
   </div>
 </div>
 
@@ -79,10 +81,10 @@ Define preferred language. Possible values are:
 
 <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
   <div style={{ flexBasis: "30%", flexGrow: "1", alignItems: "center" }}>
-    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image10} />
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image10} alt="widget" />
   </div>
   <div style={{ flexBasis: "30%", flexGrow: "1", alignItems: "center" }}>
-    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image11} />
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image11} alt="widget dark" />
   </div>
 </div>
 
@@ -100,10 +102,10 @@ Shows/hides Billboard in Torus Wallet
 
 <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
   <div style={{ flexBasis: "50%", flexGrow: "1", alignItems: "center" }}>
-    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image12} />
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image12} alt="Billboard" />
   </div>
   <div style={{ flexBasis: "50%", flexGrow: "1", alignItems: "center" }}>
-    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image13} />
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image13} alt="Billboard dark" />
   </div>
 </div>
 
@@ -117,16 +119,18 @@ Shows/hides disclaimers on login page. Only works if special logins are hidden.
 
 <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
   <div style={{ flexBasis: "15%", flexGrow: "1", alignItems: "center" }}>
-    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image14} />
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image14} alt="Disclaimer hide" />
   </div>
   <div style={{ flexBasis: "30%", flexGrow: "1", alignItems: "center" }}>
-    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image15} />
+    <img style={{ display: "block", maxHeight: "500px", alignSelf: "center" }} src={Image15} alt="Disclaimer hide dark" />
   </div>
 </div>
 
 ## Example
 
 ---
+
+### `TorusWalletAdapter`
 
 ```js
 import { Web3Auth } from "@web3auth/modal";
@@ -157,4 +161,37 @@ const torusWalletAdapter = new TorusWalletAdapter({
 });
 
 web3auth.configureAdapter(torusWalletAdapter);
+```
+
+### `SolanaWalletAdapter`
+
+```js
+import { Web3Auth } from "@web3auth/modal";
+import { SolanaWalletAdapter } from "@web3auth/torus-solana-adapter";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+const web3auth = new Web3Auth({
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+  clientId: "example-client-id",
+});
+
+const solanaWalletAdapter = new SolanaWalletAdapter({
+  initParams: {
+    // type WhiteLabelParams
+    whiteLabel: {
+      theme: {
+        isDark: true,
+        colors: { torusBrand1: "#FFA500" },
+      },
+      logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+      logoLight: "https://images.web3auth.io/web3auth-logo-w-light.svg",
+      topupHide: true,
+      featuredBillboardHide: true,
+      disclaimerHide: true,
+      defaultLanguage: "en",
+    },
+  },
+});
+
+web3auth.configureAdapter(solanaWalletAdapter);
 ```
