@@ -23,11 +23,12 @@ Below are the parameters you can pass on to the `uiConfig` option to whitelabel 
   <img src={Image1} style={{ alignSelf: "center", maxWidth: "90%" }} alt="UIConfig arguments" />
 </div>
 
-| Parameter for `uiConfig` | Type     | Options                                                                                                                                                                   |
-| ------------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `theme`                  | `string` | Can be set to `dark` or `light` with default to `light` .                                                                                                                 |
-| `appLogo`                | `string` | A link to preferred logo and must be compatible with either `light` or `dark` mode. Our default logo is [web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg) |
-| `loginMethodsOrder`      | `array`  | The list of login methods can be reordered with this parameter. Methods specified will be first on the list. e.g. `['facebook', 'google']`                                |
+| Parameter for `uiConfig` | Type     | Options                                                                                                                                                                        |
+| ------------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `theme?`                 | `string` | Can be set to `dark` or `light` with default to `light`.                                                                                                                       |
+| `appLogo?`               | `string` | A link to your preferred logo and must be compatible with either `light` or `dark` mode. Our default logo is [web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg) |
+| `loginMethodsOrder?`     | `array`  | The list of login methods can be reordered with this parameter. Methods specified will be first on the list. e.g. `['facebook', 'google']`                                     |
+| `defaultLanguage?`       | `string` | The language that will be used by web3auth Modal. [`en`: english, `de`: german, `ja`: japanese, `ko`: korean, `zh`: mandarin, `es`: spanish]                                   |
 
 ## Example
 
@@ -41,11 +42,14 @@ import { CHAIN_NAMESPACES } from "@web3auth/base";
 
 const web3auth = new Web3Auth({
   // type uiConfig
+  // highlight-start
   uiConfig: {
     appLogo: "https://images.web3auth.io/web3auth-logo-w.svg",
     theme: "dark",
     loginMethodsOrder: ["facebook", "google"],
+    defaultLanguage: "en",
   },
+  // highlight-end
   chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
   clientId: "example-client-id",
 });
@@ -60,16 +64,128 @@ web3Auth = Web3Auth (
     clientId = getString (R.string.web3auth_project_id),
     network = Web3Auth.Network.MAINNET,
     redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
-    whiteLabel = WhiteLabelData ( // Optional whitelabel object
-      name = "Web3Auth Sample App",
-      logoLight = null,
-      logoDark = null,
+    // Optional whitelabel object
+    // highlight-start
+    whiteLabel = WhiteLabelData (
+      name = "Web3Auth Android Sample App",
+      logoLight = "https://images.web3auth.io/web3auth-logo-w.svg",
+      logoDark = "https://images.web3auth.io/web3auth-logo-w.svg",
       defaultLanguage = "en",
       dark = true,
       theme = hashMapOf (
-          "primary" to "#123456"
+        "primary" to "#229954"
       )
     )
+    // highlight-end
   )
 )
+```
+
+### iOS
+
+```swift
+web3Auth = await Web3Auth(
+  W3AInitParams(
+    clientId:"YOUR_WEB3AUTH_CLIENT_ID",
+    network: .testnet,
+    // highlight-start
+    whiteLabel: W3AWhiteLabelData(
+      name: "Web3Auth iOS Sample App",
+      logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
+      logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+      defaultLanguage: "en",
+      dark: true,
+      theme: ["primary": "#123456"])
+    ))
+    // highlight-end
+```
+
+### React Native
+
+```tsx
+import * as WebBrowser from "@toruslabs/react-native-web-browser";
+// or  import * as WebBrowser from "expo-web-browser"; // (for expo)
+
+const web3auth = new Web3Auth(WebBrowser, {
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  network: Network.TESTNET,
+  // highlight-start
+  whiteLabel: {
+    name: "Web3Auth ReactNative Sample App",
+    logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
+    logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+    defaultLanguage: "en",
+    dark: true,
+    theme: {
+      primary: "#cddc39",
+    },
+  },
+  // highlight-end
+});
+```
+
+### Flutter
+
+```dart
+Future<void> initPlatformState() async {
+  final themeMap = HashMap<String, String>();
+  // highlight-next-line
+  themeMap['primary'] = "#229954";
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('{bundleId}://openlogin');
+    // com.example.w3aflutter://openlogin
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId: '{WEB3AUTH_CLIENT_ID}',
+    network: Network.testnet,
+    redirectUrl: redirectUrl,
+    // highlight-start
+    whiteLabel: WhiteLabelData(
+      name: "Web3Auth Flutter App",
+      logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
+      logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+      defaultLanguage: "en",
+      dark: true,
+      theme: themeMap)
+    ));
+    // highlight-end
+}
+```
+
+### Unity
+
+```csharp
+void Start()
+{
+  web3Auth = GetComponent<Web3Auth>();
+  web3Auth.setOptions(new Web3AuthOptions()
+  {
+    redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
+    clientId = "BAwFgL-r7wzQKmtcdiz2uHJKNZdK7gzEf2q-m55xfzSZOw8jLOyIi4AVvvzaEQO5nv2dFLEmf9LBkF8kaq3aErg",
+    network = Web3Auth.Network.TESTNET,
+    // highlight-start
+    whiteLabel = new WhiteLabelData() {
+      name = "Web3Auth Sample App",
+      logoLight = "https://images.web3auth.io/web3auth-logo-w.svg",
+      logoDark = "https://images.web3auth.io/web3auth-logo-w.svg",
+      defaultLanguage = "en",
+      dark = true,
+      theme = new Dictionary < string, string > {
+        {
+          "primary",
+          "#123456"
+        }
+      }
+    }
+    // highlight-end
+  });
+}
 ```
