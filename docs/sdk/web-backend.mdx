@@ -1,0 +1,260 @@
+---
+title: "@web3auth/web3auth-backend"
+displayed_sidebar: sdk
+description: "@web3auth/web3auth-backend package | Documentation - Web3Auth"
+---
+
+import ChainConfig from "@site/src/common/sdk/web/_chain-config.mdx";
+import Web3AuthOptions from "@site/src/common/sdk/web/_web3authcore-options.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+---
+
+## [`@web3auth/web3auth-backend`](https://npmjs.com/package/@web3auth/web3auth-backend)
+
+Web3Auth Backend is a simple and easy to use SDK to be used in your Node.js backend to get the same experience of Web3Auth frontend SDKs. One thing to
+note here is that, with this you get semi-custodiality.
+
+## Installation
+
+---
+
+```bash npm2yarn
+npm install --save @web3auth/web3auth-backend
+```
+
+After Installation, the next step to use Web3Auth in backend is to Initialize the SDK.
+
+## Instantiating Web3Auth Backend
+
+---
+
+#### Import the `Web3Auth` class from `@web3auth/web3auth-backend`
+
+```javascript
+import Web3Auth from "@web3auth/web3auth-backend";
+```
+
+#### Assign the `Web3Auth` class to a variable
+
+```javascript
+const web3auth = new Web3Auth(Web3AuthOptions);
+```
+
+This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
+
+### Arguments
+
+#### `Web3AuthOptions`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter        | Type                                                                         | Description                                                                                                             | Mandatory | Default |
+| ---------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | --------- | ------- |
+| `clientId`       | `string`                                                                     | Client ID for web3auth. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/). | Yes       |
+| `chainConfig`    | Partial `<CustomChainConfig>` & Pick `<CustomChainConfig, "chainNamespace">` | Custom configuration for your preferred blockchain. Read more about it [here](#chainconfig).                            | Yes       |
+| `enableLogging?` | `boolean`                                                                    | Setting to true will enable logs                                                                                        | No        | `false` |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+interface Web3AuthOptions {
+  /**
+   * Client id for web3auth.
+   * You can obtain your client id from the web3auth developer dashboard.
+   * You can set any random string for this on localhost.
+   */
+  clientId: string;
+  /**
+   * custom chain configuration for chainNamespace
+   *
+   * @defaultValue mainnet config of provided chainNamespace
+   */
+  chainConfig: Partial<CustomChainConfig> & Pick<CustomChainConfig, "chainNamespace">;
+  /**
+   * setting to true will enable logs
+   *
+   * @defaultValue false
+   */
+  enableLogging?: boolean;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Adding a Custom Chain Configuration
+
+#### `chainConfig`
+
+<ChainConfig />
+
+### Returns
+
+- `Object`: The web3auth instance with all its methods and events.
+
+### Example
+
+```javascript
+const web3auth = new Web3Auth({
+  clientId: "", // Get your Client ID from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1",
+  },
+});
+```
+
+## Initializing Web3Auth
+
+#### `init()`
+
+The final step in the whole initialization process is the initialize the `Web3Auth` instance, ie. `web3auth` in our case.
+
+This is done by calling `init` function of the `web3auth` instance we created above.
+
+```javascript
+await web3auth.init();
+```
+
+## Logging in your User
+
+`connect()`
+
+To login a user in the Web3Auth Backend SDK, you need to call `connect()` function.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Function Definition", value: "definition" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Variable      | Type     | Description      | Mandatory |
+| ------------- | -------- | ---------------- | --------- |
+| `loginParams` | `object` | Login Parameters | Yes       |
+
+</TabItem>
+
+<TabItem value="definition">
+
+```ts
+async connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null> {
+    if (!this.torusUtils || !this.nodeDetailManager || !this.privKeyProvider) throw new Error("Please call init first");
+    const { verifier, verifierId, idToken, subVerifierInfoArray } = loginParams;
+    const verifierDetails = { verifier, verifierId };
+
+    const { torusNodeEndpoints, torusIndexes, torusNodePub } = await this.nodeDetailManager.getNodeDetails(verifierDetails);
+
+    // does the key assign
+    const pubDetails = await this.torusUtils.getUserTypeAndAddress(torusNodeEndpoints, torusNodePub, verifierDetails, true);
+
+    if (pubDetails.typeOfUser === "v1" || pubDetails.upgraded) {
+      throw new Error("User has already enabled mfa, please use the @web3auth/web3auth-web sdk for login with mfa");
+    }
+
+    let finalIdToken = idToken;
+    let finalVerifierParams = { verifier_id: verifierId };
+    if (subVerifierInfoArray && subVerifierInfoArray?.length > 0) {
+      const aggregateVerifierParams: AggregateVerifierParams = { verify_params: [], sub_verifier_ids: [], verifier_id: "" };
+      const aggregateIdTokenSeeds = [];
+      for (let index = 0; index < subVerifierInfoArray.length; index += 1) {
+        const userInfo = subVerifierInfoArray[index];
+        aggregateVerifierParams.verify_params.push({ verifier_id: verifierId, idtoken: userInfo.idToken });
+        aggregateVerifierParams.sub_verifier_ids.push(userInfo.verifier);
+        aggregateIdTokenSeeds.push(userInfo.idToken);
+      }
+      aggregateIdTokenSeeds.sort();
+      finalIdToken = keccak256(aggregateIdTokenSeeds.join(String.fromCharCode(29))).slice(2);
+      aggregateVerifierParams.verifier_id = verifierId;
+      finalVerifierParams = aggregateVerifierParams;
+    }
+
+    const retrieveSharesResponse = await this.torusUtils.retrieveShares(
+      torusNodeEndpoints,
+      torusIndexes,
+      verifier,
+      finalVerifierParams,
+      finalIdToken
+    );
+    const finalKey = subkey(retrieveSharesResponse.privKey.padStart(64, "0"), Buffer.from(this.options.clientId, "base64"));
+    await this.privKeyProvider.setupProvider(finalKey.padStart(64, "0"));
+    return this.privKeyProvider.provider;
+  }
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Returns
+
+```js
+connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null>
+```
+
+On successful connection, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
+corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
+
+On unsuccessful login, this function will return a `null` value.
+
+#### `connect(loginParams: LoginParams)`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter               | Type                     | Description                                                                                                  | Mandatory |
+| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------ | --------- |
+| `verifier`              | `string`                 | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                           | Yes       |
+| `verifierId`            | `string`                 | Verifier ID - if custom authentication is enabled, it will show the verifier identifier you set on dashboard | Yes       |
+| `idToken`               | `string`                 | JWT token                                                                                                    | Yes       |
+| `subVerifierInfoArray?` | `TorusSubVerifierInfo[]` | Sub verifier info                                                                                            | No        |
+
+</TabItem>
+
+<TabItem value="type">
+
+```javascript
+export type LoginParams = {
+  verifier: string,
+  verifierId: string,
+  idToken: string,
+  subVerifierInfoArray?: TorusSubVerifierInfo[],
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+### Example
+
+```js
+await web3auth.connect({
+  verifier: "verifier-name",
+  verifierId: "verifier-Id",
+  idToken: "JWT Token",
+});
+```

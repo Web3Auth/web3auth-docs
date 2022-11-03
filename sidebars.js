@@ -330,6 +330,11 @@ module.exports = {
       ],
     },
     {
+      type: "doc",
+      label: "Node.js Backend",
+      id: "sdk/web-backend",
+    },
+    {
       type: "html",
       value: "<hr style='background-color:#7c8ca1'/><strong style='color: #7c8ca1'>Web3Auth Self Host</strong>",
       className: "sidebar-title",
