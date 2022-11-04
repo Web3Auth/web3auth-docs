@@ -33,7 +33,7 @@ After Installation, the next step to use Web3Auth in backend is to Initialize th
 #### Import the `Web3Auth` class from `@web3auth/node-sdk`
 
 ```javascript
-import Web3Auth from "@web3auth/node-sdk";
+const { Web3Auth } = require("@web3auth/node-sdk");
 ```
 
 #### Assign the `Web3Auth` class to a variable
@@ -113,6 +113,7 @@ const web3auth = new Web3Auth({
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
   },
 });
 ```
@@ -126,7 +127,8 @@ The final step in the whole initialization process is the initialize the `Web3Au
 This is done by calling `init` function of the `web3auth` instance we created above.
 
 ```javascript
-await web3auth.init();
+web3auth.init({ network: "testnet" });
+// Available {network: "testnet", "mainnet", "cyan", "aqua"}
 ```
 
 ## Logging in your User
@@ -225,12 +227,12 @@ On unsuccessful login, this function will return a `null` value.
 
 <TabItem value="table">
 
-| Parameter               | Type                     | Description                                                                                                  | Mandatory |
-| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------ | --------- |
-| `verifier`              | `string`                 | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                           | Yes       |
-| `verifierId`            | `string`                 | Verifier ID - if custom authentication is enabled, it will show the verifier identifier you set on dashboard | Yes       |
-| `idToken`               | `string`                 | JWT token                                                                                                    | Yes       |
-| `subVerifierInfoArray?` | `TorusSubVerifierInfo[]` | Sub verifier info                                                                                            | No        |
+| Parameter               | Type                     | Description                                                                                                         | Mandatory |
+| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- | --------- |
+| `verifier`              | `string`                 | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                                  | Yes       |
+| `verifierId`            | `string`                 | Verifier ID - if custom authentication is enabled, it will show the verifier identifier you set on dashboard        | Yes       |
+| `idToken`               | `string`                 | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. | Yes       |
+| `subVerifierInfoArray?` | `TorusSubVerifierInfo[]` | Sub verifier info                                                                                                   | No        |
 
 </TabItem>
 
@@ -253,8 +255,36 @@ export type LoginParams = {
 
 ```js
 await web3auth.connect({
-  verifier: "verifier-name",
+  verifier: "verifier-name", // verifier has to match the network passed in init().
   verifierId: "verifier-Id",
   idToken: "JWT Token",
 });
+```
+
+## Node JS Example
+
+```js
+const { Web3Auth } = require("@web3auth/node-sdk");
+
+const web3auth = new Web3Auth({
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth",
+  },
+});
+
+web3auth.init({ network: "testnet" });
+
+const connect = async () => {
+  const provider = await web3auth.connect({
+    verifier: "verifier-name",
+    verifierId: "verifier-Id",
+    idToken: "JWT Token",
+  });
+  const privateKey = await provider.request({ method: "eth_private_key" });
+  console.log("ETH Private Key", privateKey);
+};
+connect();
 ```
