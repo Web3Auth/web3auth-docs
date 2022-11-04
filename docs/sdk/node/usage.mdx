@@ -1,135 +1,12 @@
 ---
-title: "@web3auth/node-sdk"
+title: "Usage of Node.js SDK"
+sidebar_label: "Usage"
 displayed_sidebar: sdk
-description: "@web3auth/node-sdk package | Documentation - Web3Auth"
+description: "Usage of Node.js SDK | Documentation - Web3Auth"
 ---
 
-import ChainConfig from "@site/src/common/sdk/web/_chain-config.mdx";
-import Web3AuthOptions from "@site/src/common/sdk/web/_web3authcore-options.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
-
----
-
-## [`@web3auth/node-sdk`](https://npmjs.com/package/@web3auth/node-sdk)
-
-Web3Auth's `@web3auth/node-sdk` backend SDK is a simple and easy to use SDK to be used in your Node.js backend to get the same experience of Web3Auth
-frontend SDKs. One thing to note here is that, with this you get semi-custodiality.
-
-## Installation
-
----
-
-```bash npm2yarn
-npm install --save @web3auth/node-sdk
-```
-
-After Installation, the next step to use Web3Auth in backend is to Initialize the SDK.
-
-## Instantiating Web3Auth Backend
-
----
-
-#### Import the `Web3Auth` class from `@web3auth/node-sdk`
-
-```javascript
-const { Web3Auth } = require("@web3auth/node-sdk");
-```
-
-#### Assign the `Web3Auth` class to a variable
-
-```javascript
-const web3auth = new Web3Auth(Web3AuthOptions);
-```
-
-This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
-
-### Arguments
-
-#### `Web3AuthOptions`
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
-
-<TabItem value="table">
-
-| Parameter        | Type                                                                         | Description                                                                                                             | Mandatory | Default |
-| ---------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | --------- | ------- |
-| `clientId`       | `string`                                                                     | Client ID for web3auth. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/). | Yes       |
-| `chainConfig`    | Partial `<CustomChainConfig>` & Pick `<CustomChainConfig, "chainNamespace">` | Custom configuration for your preferred blockchain. Read more about it [here](#chainconfig).                            | Yes       |
-| `enableLogging?` | `boolean`                                                                    | Setting to true will enable logs                                                                                        | No        | `false` |
-
-</TabItem>
-
-<TabItem value="interface">
-
-```ts
-interface Web3AuthOptions {
-  /**
-   * Client id for web3auth.
-   * You can obtain your client id from the web3auth developer dashboard.
-   * You can set any random string for this on localhost.
-   */
-  clientId: string;
-  /**
-   * custom chain configuration for chainNamespace
-   *
-   * @defaultValue mainnet config of provided chainNamespace
-   */
-  chainConfig: Partial<CustomChainConfig> & Pick<CustomChainConfig, "chainNamespace">;
-  /**
-   * setting to true will enable logs
-   *
-   * @defaultValue false
-   */
-  enableLogging?: boolean;
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-### Adding a Custom Chain Configuration
-
-#### `chainConfig`
-
-<ChainConfig />
-
-### Returns
-
-- `Object`: The web3auth instance with all its methods and events.
-
-### Example
-
-```javascript
-const web3auth = new Web3Auth({
-  clientId: "", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
-  },
-});
-```
-
-## Initializing Web3Auth
-
-#### `init()`
-
-The final step in the whole initialization process is the initialize the `Web3Auth` instance, ie. `web3auth` in our case.
-
-This is done by calling `init` function of the `web3auth` instance we created above.
-
-```javascript
-web3auth.init({ network: "testnet" });
-// Available {network: "testnet", "mainnet", "cyan", "aqua"}
-```
 
 ## Logging in your User
 
@@ -217,6 +94,8 @@ On unsuccessful login, this function will return a `null` value.
 
 #### `connect(loginParams: LoginParams)`
 
+`LoginParams`
+
 <Tabs
   defaultValue="table"
   values={[
@@ -255,11 +134,19 @@ export type LoginParams = {
 
 ```js
 await web3auth.connect({
-  verifier: "verifier-name", // verifier has to match the network passed in init().
-  verifierId: "verifier-Id",
-  idToken: "JWT Token",
+  verifier: "verifier-name", // replace with your verifier name, and it has to be on the same network passed in init().
+  verifierId: "verifier-Id", // replace with your verifier id(sub or email), setup while creating the verifier on Web3Auth's Dashboard
+  idToken: "JWT Token", // replace with your newly created unused JWT Token.
 });
 ```
+
+`@web3auth/node-sdk` SDK only works for those users who have **not enabled MFA**.
+
+:::danger MFA enabled users
+
+For MFA enabled users, you'll see `Error("User has already enabled mfa, please use the @webauth/webauth-web sdk for login with mfa");`
+
+:::
 
 ## Node JS Example
 
@@ -271,7 +158,7 @@ const web3auth = new Web3Auth({
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth",
+    rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
   },
 });
 
@@ -279,9 +166,9 @@ web3auth.init({ network: "testnet" });
 
 const connect = async () => {
   const provider = await web3auth.connect({
-    verifier: "verifier-name",
-    verifierId: "verifier-Id",
-    idToken: "JWT Token",
+    verifier: "verifier-name", // replace with your verifier name, and it has to be on the same network passed in init().
+    verifierId: "verifier-Id", // replace with your verifier id(sub or email), setup while creating the verifier on Web3Auth's Dashboard
+    idToken: "JWT Token", // replace with your newly created unused JWT Token.
   });
   const privateKey = await provider.request({ method: "eth_private_key" });
   console.log("ETH Private Key", privateKey);

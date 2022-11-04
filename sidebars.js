@@ -330,9 +330,10 @@ module.exports = {
       ],
     },
     {
-      type: "doc",
-      label: "Node.js Backend",
-      id: "sdk/web-backend",
+      type: "category",
+      label: "Node.js",
+      link: { type: "doc", id: "sdk/node/node" },
+      items: ["sdk/node/initialize", "sdk/node/authentication", "sdk/node/usage"],
     },
     {
       type: "html",
