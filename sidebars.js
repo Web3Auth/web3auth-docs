@@ -62,14 +62,14 @@ module.exports = {
         "connect-blockchain/multi-chain",
         {
           type: "category",
+          label: "Ethereum",
+          link: { type: "doc", id: "connect-blockchain/ethereum/ethereum" },
+          items: ["connect-blockchain/ethereum/javascript", "connect-blockchain/ethereum/flutter"],
+        },
+        {
+          type: "category",
           label: "EVM Based Chains",
           items: [
-            {
-              type: "category",
-              label: "Ethereum",
-              link: { type: "doc", id: "connect-blockchain/ethereum/ethereum" },
-              items: ["connect-blockchain/ethereum/javascript", "connect-blockchain/ethereum/flutter"],
-            },
             "connect-blockchain/polygon",
             "connect-blockchain/bnb",
             "connect-blockchain/avalanche",
