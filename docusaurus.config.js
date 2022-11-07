@@ -289,6 +289,10 @@ const config = {
             from: "/overview/web3auth-and-wallets",
             to: "/overview/web3auth-for-wallets",
           },
+          {
+            from: "/sdk/web-backend",
+            to: "/sdk/node",
+          },
         ],
       },
     ],

@@ -1,0 +1,168 @@
+---
+title: "Initialize Node.js SDK"
+sidebar_label: "Initialize"
+displayed_sidebar: sdk
+description: "Initialize Node.js SDK | Documentation - Web3Auth"
+---
+
+import ChainConfig from "@site/src/common/sdk/web/_chain-config.mdx";
+import Web3AuthOptions from "@site/src/common/sdk/web/_web3authcore-options.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+---
+
+After Installation, the next step to use Web3Auth Node.js SDK is to Initialize the SDK.
+
+However, the Initialization is a two step process, ie.
+
+- [Instantiation of Web3Auth](#instantiating-web3auth)
+- [Initialization of Web3Auth](#initializing-web3auth)
+
+## Instantiating Web3Auth
+
+---
+
+#### Import the `Web3Auth` class from `@web3auth/node-sdk`
+
+```javascript
+const { Web3Auth } = require("@web3auth/node-sdk");
+```
+
+#### Assign the `Web3Auth` class to a variable
+
+```javascript
+const web3auth = new Web3Auth(Web3AuthOptions);
+```
+
+This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
+
+### Arguments
+
+#### `Web3AuthOptions`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter        | Type                                                                         | Description                                                                                                         | Mandatory |
+| ---------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------- |
+| `clientId`       | `string`                                                                     | Web3Auth Client ID. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/). | Yes       |
+| `chainConfig`    | Partial `<CustomChainConfig>` & Pick `<CustomChainConfig, "chainNamespace">` | Custom configuration for your preferred blockchain. Read more about it [here](#chainconfig).                        | Yes       |
+| `enableLogging?` | `boolean`                                                                    | Setting it to true will enable logs.                                                                                | No        |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+interface Web3AuthOptions {
+  /**
+   * Client id for web3auth.
+   * You can obtain your client id from the web3auth developer dashboard.
+   * You can set any random string for this on localhost.
+   */
+  clientId: string;
+  /**
+   * custom chain configuration for chainNamespace
+   *
+   * @defaultValue mainnet config of provided chainNamespace
+   */
+  chainConfig: Partial<CustomChainConfig> & Pick<CustomChainConfig, "chainNamespace">;
+  /**
+   * setting to true will enable logs
+   *
+   * @defaultValue false
+   */
+  enableLogging?: boolean;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Adding a Custom Chain Configuration
+
+#### `chainConfig`
+
+<ChainConfig />
+
+### Returns
+
+- `Object`: The web3auth instance with all its methods and events.
+
+### Example
+
+<Tabs
+  defaultValue="eth"
+  values={[
+    { label: "ETH", value: "eth" },
+    { label: "Solana", value: "solana" },
+    { label: "Other Chains", value: "other" },
+  ]}
+>
+
+<TabItem value="eth">
+
+```javascript
+const web3auth = new Web3Auth({
+  clientId: "", // Get your Client ID from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
+  },
+});
+```
+
+</TabItem>
+
+<TabItem value="solana">
+
+```javascript
+const web3auth = new Web3Auth({
+  clientId: "", // Get your Client ID from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "solana",
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/solana", // needed for non-other chains
+  },
+});
+```
+
+</TabItem>
+
+<TabItem value="other">
+
+```javascript
+const web3auth = new Web3Auth({
+  clientId: "", // Get your Client ID from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "other",
+  },
+});
+```
+
+</TabItem>
+</Tabs>
+
+## Initializing Web3Auth
+
+#### `init()`
+
+The final step in the initialization process is to initialize the `Web3Auth` instance, ie. `web3auth` in our case.
+
+This is done by calling `init()` function of the `web3auth` instance we created above with a network type matching the `Verifier` network. **_Default
+network is "mainnet"._**
+
+```javascript
+web3auth.init({ network: "testnet" });
+// Available networks are "testnet", "mainnet", "cyan", "aqua".
+```

@@ -330,6 +330,12 @@ module.exports = {
       ],
     },
     {
+      type: "category",
+      label: "Node.js",
+      link: { type: "doc", id: "sdk/node/node" },
+      items: ["sdk/node/initialize", "sdk/node/authentication", "sdk/node/usage"],
+    },
+    {
       type: "html",
       value: "<hr style='background-color:#7c8ca1'/><strong style='color: #7c8ca1'>Web3Auth Self Host</strong>",
       className: "sidebar-title",
