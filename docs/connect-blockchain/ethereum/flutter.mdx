@@ -12,17 +12,26 @@ description: "Integrate Web3Auth with the Ethereum Blockchain in Flutter | Docum
 Via Web3Auth Flutter SDK, you can interact with [Ethereum](https://ethereum.org/) to get access to user's `account`, fetch `balance`,
 `sign transaction`, `send transaction`, and even `read` from and `write` to the smart contract.
 
+:::note
+
+We have made this for `Ethereum` but can work with all other evm chains similarly. Also for other blockchains, we don't have examples but we do
+support it in Mobile SDKs.
+
+:::
+
 ## Installation
 
 ---
 
-To interact with the Ethereum blockchain in Flutter, you can use [web3dart](https://pub.dev/packages/web3dart) package with Web3Auth.
+To interact with the Ethereum blockchain in Flutter, you can use any compatible package, but we're using [web3dart](https://pub.dev/packages/web3dart)
+to demonstrate how to make blockchain calls using it with Web3Auth.
 
 ```dart
 flutter pub add web3dart shared_preferences
 ```
 
-> Note: We will also be using `shared_preferences` package to share `privateKey` at various places in codes below.
+> Note: We will also be using `shared_preferences` package to share `privateKey`, used for making credentials for `web3dart`, at various places in the
+> codes below.
 
 ## Initialize
 
@@ -37,11 +46,13 @@ Mainnet Block Explorer URL: https://etherscan.io
 
 ```dart
 import 'package:flutter/material.dart';
+// highlight-next-line
 import 'package:web3auth_flutter/web3auth_flutter.dart';
 import 'package:web3auth_flutter/enums.dart';
 import 'package:web3auth_flutter/input.dart';
 import 'package:web3auth_flutter/output.dart';
 import 'package:http/http.dart';
+// highlight-next-line
 import 'package:web3dart/web3dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -56,6 +67,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  // highlight-next-line
   String rpcUrl = 'https://rpc.ankr.com/eth';
 
   @override
@@ -76,10 +88,12 @@ class _MyAppState extends State<MyApp> {
       throw UnKnownException('Unknown platform');
     }
 
+    // highlight-start
     await Web3AuthFlutter.init(Web3AuthOptions(
         clientId: 'WEB3AUTH_CLIENT_ID_FROM_DASHBOARD',
         network: Network.testnet,
-        redirectUrl: redirectUrl,));
+        redirectUrl: redirectUrl));
+    // highlight-end
   }
 
   @override
@@ -91,8 +105,6 @@ class _MyAppState extends State<MyApp> {
 
 ### Testnet
 
-- Ropsten Block Explorer URL: https://ropsten.etherscan.io -- `chainId: "0x3"`
-- Rinkeby Block Explorer URL: https://rinkeby.etherscan.io -- `chainId: "0x4"`
 - Goerli Block Explorer URL: https://goerli.etherscan.io -- `chainId: "0x5"`
 
 ```js
@@ -116,12 +128,17 @@ String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
               // Get Account
               ElevatedButton(
                 onPressed: () async {
+                  // highlight-start
+                  // Upon ligin, gets the UserInfo along with priavteKey.
                   final response = await Web3AuthFlutter.login(
                     LoginParams(loginProvider: Provider.google)
                     );
+                  debugPrint("UserInfo, ${response?.userinfo?.toString()}");
+                  // highlight-end
                   final prefs = await SharedPreferences.getInstance();
+                  // highlight-next-line
                   await prefs.setString('privateKey', response?.privKey.toString());
-                  debugPrint("UserInfo, ${response.toString()}");
+                  // Setting the privateKey to shared_preferences
                 },
                 child: const Text('Login'),
               ),
@@ -147,9 +164,11 @@ String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
               // Get Account
               ElevatedButton(
                 onPressed: () async {
+                  // highlight-start
                   final credentials = EthPrivateKey.fromHex(privateKey);
                   final address = credentials.address;
                   debugPrint("Account, ${address.hexEip55}");
+                  // highlight-end
                 },
                 child: const Text('Get Address'),
               ),
@@ -173,6 +192,7 @@ String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
               // Get Balance
               ElevatedButton(
                 onPressed: () async {
+                  // highlight-start
                   final prefs = await SharedPreferences.getInstance();
                   final privateKey = prefs.getString('privateKey') ?? '0';
                   final credentials = EthPrivateKey.fromHex(privateKey);
@@ -181,6 +201,7 @@ String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
                   final address = credentials.address;
                   final balance = await client.getBalance(address);
                   debugPrint("Balance, ${balance}");
+                  // highlight-end
                 },
                 child: const Text('Get Balance'),
               ),
@@ -211,6 +232,7 @@ String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
                   final client = Web3Client(rpcUrl, Client());
                   final credentials = EthPrivateKey.fromHex(privateKey);
                   final address = credentials.address;
+                  // highlight-start
                   final receipt = await client.sendTransaction(
                       credentials,
                       Transaction(
@@ -218,10 +240,11 @@ String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
                         to: EthereumAddress.fromHex(
                             '0x809D4310d578649D8539e718030EE11e603Ee8f3'),
                         value: EtherAmount.fromUnitAndValue(
-                            EtherUnit.gwei, 5000000), // 0.005 ETH
+                            EtherUnit.gwei, 50000000), // 0.05 ETH
                       ),
                       chainId: 5); // change chainId as per your chain.
                   debugPrint("Receipt, ${receipt}");
+                  // highlight-end
                 },
                 child: const Text('Send Transaction'),
               ),
@@ -252,6 +275,7 @@ String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
                   final client = Web3Client(rpcUrl, Client());
                   final credentials = EthPrivateKey.fromHex(privateKey);
                   final address = credentials.address;
+                  // highlight-start
                   final receipt = await client.signTransaction(
                       credentials,
                       Transaction(
@@ -259,12 +283,13 @@ String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
                         to: EthereumAddress.fromHex(
                             '0x809D4310d578649D8539e718030EE11e603Ee8f3'),
                         value: EtherAmount.fromUnitAndValue(
-                            EtherUnit.gwei, 5000000), // 0.005 ETH
+                            EtherUnit.gwei, 50000000), // 0.05 ETH
                       ),
                       chainId: 5); // change chainId as per your chain.
                   debugPrint("Receipt, ${receipt}");
+                  // highlight-end
                 },
-                child: const Text('Send Transaction'),
+                child: const Text('Sign Transaction'),
               ),
             ])));
   }
