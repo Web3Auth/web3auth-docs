@@ -8,7 +8,18 @@ description: "Usage of Node.js SDK | Documentation - Web3Auth"
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
+---
+
+Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users. Further, you can use the native provider given
+by Web3Auth to connect the users to the respective blockchain network.
+
+Natively, the instance of Web3Auth (referred to as web3auth in our examples) returns the following functions:
+
+- `connect()` - Logs in the User using the `verifier`, `verifierId` & `idToken`.
+
 ## Logging in your User
+
+---
 
 `connect()`
 
@@ -87,7 +98,7 @@ async connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null
 connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null>
 ```
 
-On successful connection, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
+On successful login, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
 corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
 
 On unsuccessful login, this function will return a `null` value.
@@ -149,6 +160,8 @@ For MFA enabled users, you'll see `Error("User has already enabled mfa, please u
 :::
 
 ## Node JS Example
+
+---
 
 ```js
 const { Web3Auth } = require("@web3auth/node-sdk");

@@ -100,6 +100,17 @@ interface Web3AuthOptions {
 
 ### Example
 
+<Tabs
+  defaultValue="eth"
+  values={[
+    { label: "ETH", value: "eth" },
+    { label: "Solana", value: "solana" },
+    { label: "Other Chains", value: "other" },
+  ]}
+>
+
+<TabItem value="eth">
+
 ```javascript
 const web3auth = new Web3Auth({
   clientId: "", // Get your Client ID from Web3Auth Dashboard
@@ -111,13 +122,44 @@ const web3auth = new Web3Auth({
 });
 ```
 
+</TabItem>
+
+<TabItem value="solana">
+
+```javascript
+const web3auth = new Web3Auth({
+  clientId: "", // Get your Client ID from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "solana",
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/solana", // needed for non-other chains
+  },
+});
+```
+
+</TabItem>
+
+<TabItem value="other">
+
+```javascript
+const web3auth = new Web3Auth({
+  clientId: "", // Get your Client ID from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "other",
+  },
+});
+```
+
+</TabItem>
+</Tabs>
+
 ## Initializing Web3Auth
 
 #### `init()`
 
 The final step in the initialization process is to initialize the `Web3Auth` instance, ie. `web3auth` in our case.
 
-This is done by calling `init()` function of the `web3auth` instance we created above with a network type matching the verifer's network. **_Default
+This is done by calling `init()` function of the `web3auth` instance we created above with a network type matching the `Verifier` network. **_Default
 network is "mainnet"._**
 
 ```javascript
