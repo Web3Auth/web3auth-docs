@@ -1,5 +1,5 @@
 ---
-title: Using Web3Auth without MFA with future compatibility
+title: Web3Auth One Key Flow without Redirect
 image: "/docs/contents/guides/banners/one-key-flow.png"
 description: Learn how to control web3auth's mfa login user experience.
 type: guide
@@ -65,7 +65,7 @@ below.
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd examples/web-core-sdk/one-key-flow
+cd examples/web-core-sdk/one-key-flow/single-page-example
 npm install
 npm run start
 ```
@@ -80,8 +80,8 @@ Refer to the flow chart above to understand how the `One Key Flow` works:
 
 - The first step for the application is to get the user authenticated by social login and get the user's idToken.
 - Once the social login is successful, depending on if the user has enabled **Multi Factor Authentication(MFA)** or not, the key is generated.
-- If the user has not enabled MFA, we use the `@toruslabs/torus.js` library to retrieve the private key shares from the Web3Auth auth network nodes
-  and reconstruct the private key.
+- If the user has not enabled MFA, we use the `@web3auth/node-sdk` library to retrieve the private key shares from the Web3Auth auth network nodes and
+  reconstruct the private key.
 - If the user has enabled MFA, the private key can be reconstructed simply via Web3Auth Login using Web3Auth SDK by redirecting the user to
   `app.openlogin.com`.
 
@@ -151,7 +151,7 @@ Doing user login with one key flow consists of following steps:
 
 - Authenticate user with social login provider.
 - Checking if user's mfa is enabled.
-- If mfa is not enabled, then login with `@toruslabs/torus.js` sdk.
+- If mfa is not enabled, then login with `@web3auth/node-sdk` sdk.
 - If mfa is enabled, then login with `@web3auth/core` sdk.
 
 ### Authenticate user with social login provider.
@@ -197,125 +197,61 @@ const loginRes = await signInWithGoogle();
 const idToken = await loginRes.user.getIdToken(true); // this idToken will be passed to web3auth
 ```
 
-### Checking whether user's MFA is enabled.
+### Checking if user's MFA is enabled and implementing login.
 
 Now we have `idToken` and login response from firebase, which will give the user's detail. We will use these two fields to check whether a user has
 already enabled MFA or not.
 
-Before checking whether MFA is enabled or not, we need to initialize web3auth network libs as shown in the code snippet below:
-
-```js
-
-import Torus from "@toruslabs/torus.js";
-import NodeDetailManager from "@toruslabs/fetch-node-details";
-
-// Configurations for the network
-// NOTE: change it to ethereum mainnet url when you switch to production
-const network = "https://rpc.ankr.com/eth_ropsten",
-
-// Initializing the Torus instance
-
-const torus = new Torus({
-  enableOneKey: true,
-  network,
-});
-
-// Initializing the NodeDetailManager instance for Ropsten Testnet
-// NOTE: change proxyAddress to `NodeDetailManager.PROXY_ADDRESS_MAINNET` when you switch to production
-const nodeDetailManager = new NodeDetailManager({ network, proxyAddress: NodeDetailManager.PROXY_ADDRESS_ROPSTEN });
-
-```
-
-Now we can check whether the user has enabled MFA by calling the isMfaEnabled function implemented below. If this function returns true, then MFA is
-enabled; else not.
-
-```js
-//initialize torus packages here as described in previous steps
-// ...
-// ...
-// ...
-
-const verifier = "YOUR_VERIFIER_NAME"; // verifier that you created earlier from web3auth dashboard.
-const verifierId = loginRes.user.uid; // user's id from firebase login response or this can be any unique user's id like email etc.
-const isMfaEnabled = () => {
-  const { torusNodeEndpoints, torusNodePub, torusIndexes } = await nodeDetailManager.getNodeDetails({ verifier, verifierId });
-  const userDetails = await torus.getUserTypeAndAddress(torusNodeEndpoints, torusNodePub, { verifier, verifierId }, true);
-  // Now we check if the user has enabled mfa or not.
-  // if !userDetails.upgraded then mfa is not enabled.
-  if (userDetails.typeOfUser === "v2" && !userDetails.upgraded) {
-    return false
-  } else {
-    return true
-  }
-}
-```
-
-## Implementing login without MFA.
-
-If the user's MFA is not enabled, then we can log in with `@toruslabs/torus.js` SDK by calling the `retrieveShares` function, which will fetch the
-user's shares from the web3auth network nodes and reconstruct the key.
-
-After we reconstruct the key from shares, we derive a subkey. This subkey ensures that the user's key will remain the same before and after enabling
-MFA. Note that this function takes idToken as a parameter which is the `idToken` we got from Firebase.
+The check can be made by calling the `connect` method of `@web3auth/node-sdk`. This method will throw an error if the user has already enabled MFA.
+Note that this function takes idToken as a parameter which is the `idToken` we got from Firebase.
 
 :::info
 
-Ensure that the `idToken` passed to the `retrieveShares()` is a newly issued Token(JWT).
+Ensure that the `idToken` passed to the `connect()` is a newly issued Token(JWT).
 
 :::
 
 ```js
-import { subkey } from "@toruslabs/openlogin-subkey";
-
-//initialize torus packages here as described in previous steps
-// ...
-// ...
-// ...
+import { Web3Auth } from "@web3auth/node-sdk";
 
 const verifier = "YOUR_VERIFIER_NAME"; // verifier that you created earlier from web3auth dashboard.
 const verifierId = loginRes.user.uid; // user's id from firebase login response or this can be any unique user's id like email etc.
 const idToken = "YOUR_ID_TOKEN"; // idToken from firebase login response or from your own backend.
 
-const chainConfig = {
-  chainId: "0x3",
-  rpcTarget: "https://rpc.ankr.com/eth_ropsten",
-  displayName: "Ropsten Testnet",
-  blockExplorer: "https://ropsten.etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-};
-
-// torus is initialized in code snippet above
-// if YES, login directly with the torus libraries within your app
-const keyDetails = await torus.retrieveShares(torusNodeEndpoints, torusIndexes, verifier, { verifier_id: verifierId }, idToken, {});
-// use the private key to get the provider
-const finalPrivKey = subkey(keyDetails.privKey.padStart(64, "0"), Buffer.from(clientId, "base64")).padStart(64, "0");
-const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
-  config: {
-    chainConfig,
+const web3auth = new Web3Auth({
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
   },
 });
-const blockchainProvider = await ethereumPrivateKeyProvider.setupProvider(finalPrivKey);
-```
 
-Refer to this file for login without MFA flow.
+await web3auth.init({
+  network: "testnet",
+});
+
+const blockchainProvider = await web3auth?.connect({
+  verifier,
+  verifierId: sub,
+  idToken,
+});
+```
 
 At this point, your application has successfully authenticated the user with web3auth, and you can use the `blockchainProvider` to interact with the
 blockchain.
 
-Now, if you want to know how to login with MFA or upgrade your user's account to MFA, you can refer to the next section. Otherwise, you can skip to
-the section [here](/guides/one-key-flow#interacting-with-blockchain) to learn how to use blockchain providers.
-
 :::warning
 
-Note if you will use the above code snippet. After the user enables MFA, it will result in a different account. So always make sure to check whether
-the user's MFA is enabled or not before calling the `retrieveShares()`.
-
-If MFA is enabled, use the flow described in the next section.
+Note if you will use the above code snippet. The `connect()` method will throw an error if the user has already enabled MFA. If MFA is enabled, use
+the flow described in the next section.
 
 :::
 
-## Implementing login with MFA.
+Now, if you want to know how to login with MFA or upgrade your user's account to MFA, you can refer to the next section. Otherwise, you can skip to
+the section [here](/guides/one-key-flow#interacting-with-blockchain) to learn how to use blockchain providers.
+
+### Implementing login with MFA.
 
 If the user's MFA is enabled, we can simply login with `@web3auth/core` SDK.
 
@@ -416,6 +352,7 @@ application.
 The following code snippet depicts how to enable MFA for users while using Firebase as the JWT provider.
 
 ```js
+import { WALLET_ADAPTERS } from "@web3auth/base";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 const firebaseConfig = {
@@ -430,12 +367,6 @@ const app = initializeApp(firebaseConfig);
 // ...
 
 const enableMfa = async () => {
-  // refer to above steps to know about isMfaEnabled function
-  const isMfaEnabled = await isMfaEnabled();
-  if (isMfaEnabled) {
-    throw new Error("Mfa already enabled");
-  }
-
   const auth = getAuth(app);
   const user = auth.currentUser;
   // user
