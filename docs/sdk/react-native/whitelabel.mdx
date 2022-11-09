@@ -84,13 +84,28 @@ export type WhiteLabelData = {
 
 ### Example
 
+<Tabs
+  defaultValue="expo"
+  values={[
+    { label: "Expo Managed Workflow", value: "expo" },
+    { label: "Bare React Native Workflow", value: "bare" },
+  ]}
+>
+
+<TabItem value="expo">
+
 ```tsx
-import * as WebBrowser from "@toruslabs/react-native-web-browser";
-// or  import * as WebBrowser from "expo-web-browser"; (for expo)
+import * as WebBrowser from "expo-web-browser";
+import Web3Auth, {
+  LOGIN_PROVIDER,
+  OPENLOGIN_NETWORK,
+} from "@web3auth/react-native-sdk";
+
+const clientId = 'YOUR WEB3AUTH CLIENT ID';
 
 const web3auth = new Web3Auth(WebBrowser, {
-  clientId: "BC5bANkU4-fil7C5s1uKzRfF0VGqbuaxDQiLnQ8WgF7SEA32lGegAhu7dk4dZf3Rk397blIvfWytXwsRvs9dOaQ",
-  network: Network.TESTNET,
+  clientId,
+  network: OPENLOGIN_NETWORK.TESTNET, // or other networks
   whiteLabel: {
     name: "My App",
     logoLight: "https://web3auth.io/images/logo-light.png",
@@ -103,3 +118,35 @@ const web3auth = new Web3Auth(WebBrowser, {
   },
 });
 ```
+
+</TabItem>
+
+<TabItem value="bare">
+
+```tsx
+import * as WebBrowser from "@toruslabs/react-native-web-browser";
+import Web3Auth, {
+  LOGIN_PROVIDER,
+  OPENLOGIN_NETWORK,
+} from "@web3auth/react-native-sdk";
+
+const clientId = 'YOUR WEB3AUTH CLIENT ID';
+
+const web3auth = new Web3Auth(WebBrowser, {
+  clientId,
+  network: OPENLOGIN_NETWORK.TESTNET, // or other networks
+  whiteLabel: {
+    name: "My App",
+    logoLight: "https://web3auth.io/images/logo-light.png",
+    logoDark: "https://web3auth.io/images/logo-dark.png",
+    defaultLanguage: "en",
+    dark: true,
+    theme: {
+      primary: "#cddc39",
+    },
+  },
+});
+```
+
+</TabItem>
+</Tabs>

@@ -1,5 +1,5 @@
 ---
-title: Using Custom Authentication in React Native SDK
+title: Custom Authentication in React Native SDK
 sidebar_label: Custom Authentication
 displayed_sidebar: sdk
 description: "React Native SDK - Using Custom Authentication  | Documentation - Web3Auth"
@@ -10,15 +10,24 @@ import Tabs from "@theme/Tabs";
 
 ---
 
-To use a custom login mechamism with the Web3Auth React Native SDK, for example to login using your own custom JWT issuer like Firebase, You can add
-the your confiuration to the `loginConfig` field of the `SdkInitParams` object. The `loginConfig` field is a key value map. The key should be one of
-the `LOGIN_PROVIDER` in its string form, and the value should be a JS Object specified below.
+Custom Authentication is a way to authenticate users with your own custom authentication service. For example, while authenticating with Google, you
+have the ability to use your own Google Client ID and Dashboard to authenticate users directly. To login using your own custom JWT issuers like Auth0,
+AWS Cognito, or Firebase, you can add the your configuration to the `loginConfig` field of the `SdkInitParams` object. The `loginConfig` field is a
+key value map. The key should be one of the `LOGIN_PROVIDER` in its string form, and the value should be a JS Object specified below.
 
 First, configure your own verifier in the Web3Auth Dashboard to use custom authentication.
 
 :::tip
 
 Check out how to create [Custom Verifier](/docs/custom-authentication/verifiers) on Web3Auth Dashboard.
+
+:::
+
+:::info using dapp share
+
+- dApp Share is only returned for the Custom verifiers.
+- Also, 2FA should be enabled for the account using it. Use `mfaLevel = MFALevel.MANDATORY` in the `LoginParams` during login. See **[MFA](./mfa)**
+  for more details.
 
 :::
 
@@ -135,6 +144,46 @@ export type LoginConfig = Record<
 
 </Tabs>
 
+### `typeOfLogin`
+
+```ts
+export type TypeOfLogin =
+  | "google"
+  | "facebook"
+  | "reddit"
+  | "discord"
+  | "twitch"
+  | "apple"
+  | "github"
+  | "linkedin"
+  | "twitter"
+  | "weibo"
+  | "line"
+  | "email_password"
+  | "passwordless"
+  | "jwt"
+  | "webauthn";
+
+export const LOGIN_PROVIDER = {
+  GOOGLE: "google",
+  FACEBOOK: "facebook",
+  REDDIT: "reddit",
+  DISCORD: "discord",
+  TWITCH: "twitch",
+  APPLE: "apple",
+  LINE: "line",
+  GITHUB: "github",
+  KAKAO: "kakao",
+  LINKEDIN: "linkedin",
+  TWITTER: "twitter",
+  WEIBO: "weibo",
+  WECHAT: "wechat",
+  EMAIL_PASSWORDLESS: "email_passwordless",
+  WEBAUTHN: "webauthn",
+  JWT: "jwt",
+} as const;
+```
+
 ### Example
 
 <Tabs
@@ -191,52 +240,234 @@ const web3auth = new Web3Auth(WebBrowser, {
 
 </Tabs>
 
-:::note
-
-- dApp Share is only returned for the Custom verifiers.
-- Also, 2FA should be enabled for the account using it. Use `mfaLevel = MFALevel.MANDATORY` in the `LoginParams` during login. See **[MFA](./mfa)**
-  for more details.
-
-:::
-
 ## `ExtraLoginOptions` for special login methods
 
 ---
 
-- To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` field of the `extraLoginOptions`.
+Additional to the `LoginConfig` you can pass extra options to the `login` function to configure the login flow for cases requiring additional info for
+enabling login. The `ExtraLoginOptions` accepts the following parameters:
 
-  ```tsx
-  web3auth.login({
-    loginProvider: LoginProvider.EMAIL_PASSWORDLESS,
-    redirectUrl: resolvedRedirectUrl,
-    extraLoginOptions: {
-      login_hint: "hello@web3auth.io",
-    },
-  });
-  ```
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
 
-- To use the `JWT` login, you need to put the jwt token into the `id_token` field of the `extraLoginOptions`, additionally, you need to pass over the
-  `domain` field as well, which is mandatory. If you don't have a domain, just passover a string in that field.
+<TabItem value="table">
 
-  ```tsx
-  const web3auth = new Web3Auth(WebBrowser, {
-    clientId: "YOUR_CLIENT_ID", // web3auth's client id
-    network: Network.TESTNET,
-    loginConfig: {
-      jwt: {
-        verifier: "verifier-name", // get it from web3auth dashboard
-        typeOfLogin: TypeOfLogin.JWT,
-        name: "Custom Login with JWT",
-        clientId: "YOUR_CLIENT_ID", // web3auth's client id
-      },
+| Parameter                   | Type      | Description                                                                                                                                  |
+| --------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `domain`                    | `string`  | Your Auth0 account domain such as `example.auth0.com` or `example.mycompany.com` etc. **Use any random string in case of custom JWT login.** |
+| `client_id`                 | `string`  | The Client ID found on your Auth0 Application settings page. **Use web3auth client id in case of custom JWT login.**                         |
+| `redirect_uri`              | `string`  | The default URL where Auth0 will redirect your browser to with the authentication result.                                                    |
+| `leeway`                    | `number`  | The value in seconds used to account for clock skew in JWT expirations.                                                                      |
+| `verifierIdField`           | `string`  | The field in jwt token which maps to verifier id.                                                                                            |
+| `isVerifierIdCaseSensitive` | `boolean` | Whether the verifier id field is case sensitive. Defaults to `true`                                                                          |
+
+</TabItem>
+
+<TabItem value="interface">
+  <Tabs
+  defaultValue="extra"
+  values={[
+    { label: "ExtraLoginOptions", value: "extra" },
+    { label: "BaseLoginOptions", value: "base" },
+  ]}
+>
+
+<TabItem value="extra">
+
+```ts
+export interface ExtraLoginOptions extends BaseLoginOptions {
+  /**
+   * Your Auth0 account domain such as `'example.auth0.com'`,
+   * `'example.eu.auth0.com'` or , `'example.mycompany.com'`
+   * (when using [custom domains](https://auth0.com/docs/custom-domains))
+   */
+  domain?: string;
+  /**
+   * The Client ID found on your Application settings page
+   */
+  client_id?: string;
+  /**
+   * The default URL where Auth0 will redirect your browser to with
+   * the authentication result. It must be whitelisted in
+   * the "Allowed Callback URLs" field in your Auth0 Application's
+   * settings. If not provided here, it should be provided in the other
+   * methods that provide authentication.
+   */
+  redirect_uri?: string;
+  /**
+   * The value in seconds used to account for clock skew in JWT expirations.
+   * Typically, this value is no more than a minute or two at maximum.
+   * Defaults to 60s.
+   */
+  leeway?: number;
+  /**
+   * The field in jwt token which maps to verifier id
+   */
+  verifierIdField?: string;
+  /**
+   * Whether the verifier id field is case sensitive
+   * @defaultValue true
+   */
+  isVerifierIdCaseSensitive?: boolean;
+}
+```
+
+</TabItem>
+
+<TabItem value="base">
+
+```ts
+export interface BaseLoginOptions {
+  /**
+   * If you need to send custom parameters to the Authorization Server,
+   * make sure to use the original parameter name.
+   */
+  [key: string]: unknown;
+  /**
+   * - `'page'`: displays the UI with a full page view
+   * - `'popup'`: displays the UI with a popup window
+   * - `'touch'`: displays the UI in a way that leverages a touch interface
+   * - `'wap'`: displays the UI with a "feature phone" type interface
+   */
+  display?: "page" | "popup" | "touch" | "wap" | string;
+  /**
+   * - `'none'`: do not prompt user for login or consent on re-authentication
+   * - `'login'`: prompt user for re-authentication
+   * - `'consent'`: prompt user for consent before processing request
+   * - `'select_account'`: prompt user to select an account
+   */
+  prompt?: "none" | "login" | "consent" | "select_account" | string;
+  /**
+   * Maximum allowable elapsed time (in seconds) since authentication.
+   * If the last time the user authenticated is greater than this value,
+   * the user must be re-authenticated.
+   */
+  max_age?: string | number;
+  /**
+   * The space-separated list of language tags, ordered by preference.
+   * For example: `'fr-CA fr en'`.
+   */
+  ui_locales?: string;
+  /**
+   * Previously issued ID Token.
+   */
+  id_token_hint?: string;
+  /**
+   * The user's email address or other identifier. When your app knows
+   * which user is trying to authenticate, you can provide this parameter
+   * to pre-fill the email box or select the right session for sign-in.
+   *
+   * This currently only affects the classic Lock experience.
+   */
+  login_hint?: string;
+  acr_values?: string;
+  /**
+   * The default scope to be used on authentication requests.
+   * The defaultScope defined in the Auth0Client is included
+   * along with this scope
+   */
+  scope?: string;
+  /**
+   * The default audience to be used for requesting API access.
+   */
+  audience?: string;
+  /**
+   * The name of the connection configured for your application.
+   * If null, it will redirect to the Auth0 Login Page and show
+   * the Login Widget.
+   */
+  connection?: string;
+}
+```
+
+</TabItem>
+</Tabs>
+</TabItem>
+</Tabs>
+
+### Using Auth0 Login
+
+Auth0 has a special login flow, called the SPA flow. This flow requires a `client_id` and `domain` to be passed, and Web3Auth will get the JWT
+`id_token` from Auth0 directly. You can pass these configurations in the `ExtraLoginOptions` object in the login function.
+
+```tsx
+const web3auth = new Web3Auth(WebBrowser, {
+  clientId: "YOUR_CLIENT_ID", // web3auth's client id
+  network: OPENLOGIN_NETWORK.TESTNET, // or other networks
+  //highlight-start
+  loginConfig: {
+    jwt: {
+      verifier: "verifier-name", // get it from web3auth dashboard for auth0 configuration
+      typeOfLogin: "jwt",
+      name: "Auth0 Login",
+      clientId: "your auth0 client id", // get it from auth0 dashboard
     },
-  });
-  web3auth.login({
-    loginProvider: LoginProvider.JWT,
-    redirectUrl: resolvedRedirectUrl,
-    extraLoginOptions: {
-      domain: "example.com", // domain of your app backend
-      id_token: "your JWT token",
+  },
+  //highlight-end
+});
+web3auth.login({
+  loginProvider: LOGIN_PROVIDER.JWT,
+  redirectUrl: resolvedRedirectUrl, // redirect url after login
+  //highlight-start
+  extraLoginOptions: {
+    domain: "example.com", // domain of your auth0 app
+    verifierIdField: "sub", // The field in jwt token which maps to verifier id.
+  },
+  //highlight-end
+});
+```
+
+### Custom JWT Login
+
+If you're using any other provider like Firebase/ AWS Cognito or deploying your own Custom JWT server, you need to put the jwt token into the
+`id_token` field of the `extraLoginOptions`, additionally, you need to pass over the `domain` field as well, which is mandatory. If you don't have a
+domain, just passover a string in that field.
+
+```tsx
+const web3auth = new Web3Auth(WebBrowser, {
+  clientId: "YOUR_CLIENT_ID", // web3auth's client id
+  network: Network.TESTNET,
+  //highlight-start
+  loginConfig: {
+    jwt: {
+      verifier: "verifier-name", // get it from web3auth dashboard
+      typeOfLogin: TypeOfLogin.JWT,
+      name: "Custom Login with JWT",
+      clientId: "YOUR_CLIENT_ID", // web3auth's client id
     },
-  });
-  ```
+  },
+  //highlight-end
+});
+web3auth.login({
+  loginProvider: LoginProvider.JWT,
+  redirectUrl: resolvedRedirectUrl, // redirect url after login
+  //highlight-start
+  extraLoginOptions: {
+    domain: "example.com", // domain of your app backend or any random string
+    id_token: "your JWT id token",
+    verifierIdField: "sub", // auth0 generally uses sub as unique identifier
+  },
+  //highlight-end
+});
+```
+
+### Email Passwordless
+
+To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` field of the `extraLoginOptions`.
+
+```tsx
+web3auth.login({
+  loginProvider: LoginProvider.EMAIL_PASSWORDLESS,
+  redirectUrl: resolvedRedirectUrl,
+  //highlight-start
+  extraLoginOptions: {
+    login_hint: "hello@web3auth.io",
+  },
+  //highlight-end
+});
+```

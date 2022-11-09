@@ -1,13 +1,16 @@
 ---
-title: Initialize React Native
+title: Initialize React Native SDK
 sidebar_label: Initialize
 displayed_sidebar: sdk
 description: "React Native SDK - Initialization  | Documentation - Web3Auth"
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 ---
 
-After Installation, the next step to use Web3Auth is to Initialize the SDK. However, the Initialization is a two step process,
+After Installation, the next step to use Web3Auth is to Initialize the SDK. The Initialization is a two step process,
 
 - [Importing Required Packages](#importing-required-packages)
 - [Instantiating Web3Auth](#instantiating-web3auth)
@@ -19,25 +22,43 @@ Additionally, Whitelabeling and Custom Authentication have to be configured with
 
 ---
 
+### Importing `Web3Auth`
+
+You may also import additional types from the SDK to help in the development process.
+
+```typescript
+import Web3Auth, {
+  LOGIN_PROVIDER,
+  OPENLOGIN_NETWORK,
+} from "@web3auth/react-native-sdk";
+```
+
 ### Importing a `WebBrowser` implementation
 
-##### Bare Workflow
+<Tabs
+  defaultValue="expo"
+  values={[
+    { label: "Expo Managed Workflow", value: "expo" },
+    { label: "Bare React Native Workflow", value: "bare" },
+  ]}
+>
+
+<TabItem value="expo">
+
+```typescript
+import * as WebBrowser from "expo-web-browser";
+```
+
+</TabItem>
+
+<TabItem value="bare">
 
 ```typescript
 import * as WebBrowser from "@toruslabs/react-native-web-browser";
 ```
 
-##### Expo Managed Workflow
-
-```typescript
-import * as WebBrowser from "expo-web-browser"; (for expo)
-```
-
-### Importing `Web3Auth`
-
-```typescript
-import Web3Auth from "@web3auth/react-native-sdk";
-```
+</TabItem>
+</Tabs>
 
 ## Instantiating Web3Auth
 
@@ -52,25 +73,186 @@ const web3auth = new Web3Auth(WebBrowser, SdkInitParams);
 The `Web3Auth` constructor in the React Native SDK take an `SdkInitParams` object respectively as an argument. The fields of such object are listed
 below.
 
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
 | Parameter   | Type                           | Mandatory | Description                                                                                                                                                                                     |
 | ----------- | ------------------------------ | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | clientId    | String                         | Yes       | Your Web3Auth project ID obtained from the Web3Auth dashboard                                                                                                                                   |
-| network     | enum of OPENLOGIN_NETWORK_TYPE | Yes       | Web3Auth network to run on, either CYAN, MAINNET or TESTNET                                                                                                                                     |
-| redirectUrl | String                         | No        | The redirectUrl that the Web3Auth login flow will use to redirect back to the app. It is not required to be specified in the Expo based SDK since it will be specified in the `login()` method. |
+| network     | Choose between `mainnet`, `cyan`, `testnet` | Yes       | Web3Auth network to run on, either CYAN, MAINNET or TESTNET                                                                                                                                     |
+| redirectUrl | String                         | No        | The redirectUrl that the Web3Auth login flow will use to redirect back to the app.  |
 | loginConfig | LoginConfig                    | No        | A configuration optional object to customize login flow.                                                                                                                                        |
 | whiteLabel  | WhiteLabelData                 | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer to the WhiteLabeling section for more info.                                                   |
 | sdkUrl      | String                         | No        | The url to the SDK frontend, should not need any changes normally.                                                                                                                              |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```
+export type SdkInitParams = {
+  /**
+   * You can get your clientId/projectId by registering your
+   * dapp on {@link "https://developer.tor.us"| developer dashbaord}
+   */
+  clientId: string;
+  /**
+   * network specifies the specific web3auth network to be used.
+   *
+   * - `'mainnet'`: https://app.openlogin.com will be used which is the production version.
+   * - `'cyan'`: https://cyan.openlogin.com will be used which is the production cyan version.
+   * - `'testnet'`: https://beta.openlogin.com will be used which is the beta version.
+   */
+  network: OPENLOGIN_NETWORK_TYPE;
+  /**
+   * redirectUrl is the dapp's url where user will be redirected after login.
+   *
+   * @remarks
+   * Register this url at {@link "https://developer.tor.us"| developer dashbaord}
+   * else initialization will give error.
+   */
+  redirectUrl?: string;
+  /**
+   * loginConfig enables you to pass your own login verifiers configuration for various
+   * loginProviders.
+   *
+   * loginConfig is key value map where each key should be a valid loginProvider and value
+   * should be custom configuration for that loginProvider
+   *
+   * @remarks
+   * You can deploy your own verifiers from {@link "https://developer.tor.us"| developer dashbaord}
+   * to use here.
+   *
+   */
+  loginConfig?: LoginConfig;
+  /**
+   * options for whitelabling default openlogin modal.
+   */
+  whiteLabel?: WhiteLabelData;
+  /**
+   * sdkUrl is the url to the sdk frontend, should not need any changes normally.
+   */
+  sdkUrl?: string;
+};
+```
+
+</TabItem>
+
+</Tabs>
+
 
 ## Example
 
 ---
 
-```typescript
-import * as WebBrowser from "@toruslabs/react-native-web-browser";
-// or  import * as WebBrowser from "expo-web-browser"; (for expo)
+<Tabs
+  defaultValue="expo"
+  values={[
+    { label: "Expo General", value: "expo" },
+    { label: "Bare General", value: "bare" },
+    { label: "Expo Custom Auth", value: "expocustom" },
+    { label: "Bare Custom Auth", value: "barecustom" },
+  ]}
+>
+
+<TabItem value="expo">
+
+```js
+import * as WebBrowser from "expo-web-browser";
+import Web3Auth, {
+  LOGIN_PROVIDER,
+  OPENLOGIN_NETWORK,
+} from "@web3auth/react-native-sdk";
+
+const clientId = 'YOUR WEB3AUTH CLIENT ID';
 
 const web3auth = new Web3Auth(WebBrowser, {
-  clientId: "BC5bANkU4-fil7C5s1uKzRfF0VGqbuaxDQiLnQ8WgF7SEA32lGegAhu7dk4dZf3Rk397blIvfWytXwsRvs9dOaQ",
-  network: Network.TESTNET,
+  clientId,
+  network: OPENLOGIN_NETWORK.TESTNET, // or other networks
 });
 ```
+
+</TabItem>
+
+<TabItem value="bare">
+
+```js
+import * as WebBrowser from "@toruslabs/react-native-web-browser";
+import Web3Auth, {
+  LOGIN_PROVIDER,
+  OPENLOGIN_NETWORK,
+} from "@web3auth/react-native-sdk";
+
+const clientId = 'YOUR WEB3AUTH CLIENT ID';
+
+const web3auth = new Web3Auth(WebBrowser, {
+  clientId,
+  network: OPENLOGIN_NETWORK.TESTNET, // or other networks
+});
+```
+
+</TabItem>
+
+<TabItem value="expocustom">
+
+```js
+import * as WebBrowser from "expo-web-browser";
+import Web3Auth, {
+  LOGIN_PROVIDER,
+  OPENLOGIN_NETWORK,
+} from "@web3auth/react-native-sdk";
+
+const clientId = 'YOUR WEB3AUTH CLIENT ID';
+
+const web3auth = new Web3Auth(WebBrowser, {
+  clientId,
+  network: OPENLOGIN_NETWORK.TESTNET, // or other networks
+  loginConfig: {
+    jwt: {
+      name: "Web3Auth-Auth0-JWT",
+      verifier: "web3auth-auth0-example",
+      typeOfLogin: "jwt",
+      clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT",
+    },
+  },
+});
+```
+
+
+</TabItem>
+
+<TabItem value="barecustom">
+
+```js
+import * as WebBrowser from "@toruslabs/react-native-web-browser";
+import Web3Auth, {
+  LOGIN_PROVIDER,
+  OPENLOGIN_NETWORK,
+} from "@web3auth/react-native-sdk";
+
+const clientId = 'YOUR WEB3AUTH CLIENT ID';
+
+const web3auth = new Web3Auth(WebBrowser, {
+  clientId,
+  network: OPENLOGIN_NETWORK.TESTNET, // or other networks
+  loginConfig: {
+    jwt: {
+      name: "Web3Auth-Auth0-JWT",
+      verifier: "web3auth-auth0-example",
+      typeOfLogin: "jwt",
+      clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT",
+    },
+  },
+});
+```
+
+
+</TabItem>
+</Tabs>
