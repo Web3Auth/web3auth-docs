@@ -20,7 +20,15 @@ Firstly, configure your own verifier in the Web3Auth Dashboard to use custom aut
 
 :::tip Create Custom Verifier
 
-Learn how to create a **[Custom Verifier](/docs/custom-authentication/verifiers)** on the Web3Auth Dashboard.
+Check out how to create a **[Custom Verifier](/docs/custom-authentication/verifiers)** on the Web3Auth Dashboard.
+
+:::
+
+:::info using dapp share
+
+- dApp Share is only returned for the Custom verifiers.
+- Also, 2FA should be enabled for the account using it. Use `mfaLevel = MFALevel.MANDATORY` in the `LoginParams` during login. See **[MFA](./mfa)**
+  for more details.
 
 :::
 
@@ -98,7 +106,7 @@ class LoginConfigItem {
   Map<String, dynamic> toJson() {
     return {
       'verifier': verifier,
-      'typeOfLogin': typeOfLogin.toString(),
+      'typeOfLogin': typeOfLogin.name,
       'name': name,
       'description': description,
       'clientId': clientId,
@@ -118,6 +126,29 @@ class LoginConfigItem {
 </TabItem>
 
 </Tabs>
+
+### `typeOfLogin`
+
+```dart
+enum TypeOfLogin {
+  google,
+  facebook,
+  reddit,
+  discord,
+  twitch,
+  github,
+  apple,
+  kakao,
+  linkedin,
+  twitter,
+  weibo,
+  wechat,
+  line,
+  email_passwordless,
+  email_password,
+  jwt
+}
+```
 
 ### Example
 
@@ -282,40 +313,258 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 </Tabs>
 
-:::note
-
-- dApp Share is only returned for the Custom verifiers.
-- Also, 2FA should be enabled for the account using it. Use `mfaLevel: MFALevel.MANDATORY` in the `LoginParams` during login. See **[MFA](./mfa)** for
-  more details.
-
-:::
-
 ## `ExtraLoginOptions` for special login methods
 
 ---
 
-- To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` field of the `extraLoginOptions`.
+Additional to the `LoginConfig` you can pass extra options to the `login` function to configure the login flow for cases requiring additional info for
+enabling login. The `ExtraLoginOptions` accepts the following parameters:
 
-  ```dart
-  final Web3AuthResponse response = await Web3AuthFlutter.login(
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                   | Type      | Description                                                                                                                                  |
+| --------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `domain`                    | `string`  | Your Auth0 account domain such as `example.auth0.com` or `example.mycompany.com` etc. **Use any random string in case of custom JWT login.** |
+| `client_id`                 | `string`  | The Client ID found on your Auth0 Application settings page. **Use web3auth client id in case of custom JWT login.**                         |
+| `redirect_uri`              | `string`  | The default URL where Auth0 will redirect your browser to with the authentication result.                                                    |
+| `leeway`                    | `number`  | The value in seconds used to account for clock skew in JWT expirations.                                                                      |
+| `verifierIdField`           | `string`  | The field in jwt token which maps to verifier id.                                                                                            |
+| `isVerifierIdCaseSensitive` | `boolean` | Whether the verifier id field is case sensitive. Defaults to `true`                                                                          |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```dart
+class ExtraLoginOptions {
+  final Map? additionalParams;
+  final String? domain;
+  final String? client_id;
+  final String? leeway;
+  final String? verifierIdField;
+  final bool? isVerifierIdCaseSensitive;
+  final Display? display;
+  final Prompt? prompt;
+  final String? max_age;
+  final String? ui_locales;
+  final String? id_token_hint;
+  final String? id_token;
+  final String? login_hint;
+  final String? acr_values;
+  final String? scope;
+  final String? audience;
+  final String? connection;
+  final String? state;
+  final String? response_type;
+  final String? nonce;
+  final String? redirect_uri;
+
+  ExtraLoginOptions(
+      {this.additionalParams = const {},
+      this.domain,
+      this.client_id,
+      this.leeway,
+      this.verifierIdField,
+      this.isVerifierIdCaseSensitive,
+      this.display,
+      this.prompt,
+      this.max_age,
+      this.ui_locales,
+      this.id_token_hint,
+      this.id_token,
+      this.login_hint,
+      this.acr_values,
+      this.scope,
+      this.audience,
+      this.connection,
+      this.state,
+      this.response_type,
+      this.nonce,
+      this.redirect_uri});
+
+  Map<String, dynamic> toJson() => {
+        "additionalParams": additionalParams,
+        "domain": domain,
+        "client_id": client_id,
+        "leeway": leeway,
+        "verifierIdField": verifierIdField,
+        "isVerifierIdCaseSensitive": isVerifierIdCaseSensitive,
+        "display": display?.name,
+        "prompt": prompt?.name,
+        "max_age": max_age,
+        "ui_locales": ui_locales,
+        "id_token_hint": id_token_hint,
+        "id_token": id_token,
+        "login_hint": login_hint,
+        "acr_values": acr_values,
+        "scope": scope,
+        "audience": audience,
+        "connection": connection,
+        "state": state,
+        "response_type": response_type,
+        "nonce": nonce,
+        "redirect_uri": redirect_uri,
+      };
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Using Auth0 Login
+
+Auth0 has a special login flow, called the SPA flow. This flow requires a `client_id` and `domain` to be passed, and Web3Auth will get the JWT
+`id_token` from Auth0 directly. You can pass these configurations in the `ExtraLoginOptions` object in the login function.
+
+```dart
+Future<void> initPlatformState() async {
+  final themeMap = HashMap<String, String>();
+  themeMap['primary'] = "#229954";
+
+  // highlight-start
+  final loginConfig = new HashMap<String, LoginConfigItem>();
+  loginConfig['jwt'] = LoginConfigItem(
+    verifier: "verifier-name", // get it from web3auth dashboard for auth0 configuration
+    typeOfLogin: TypeOfLogin.jwt,
+    name: "Auth0 Login",
+    clientId: "auth0_client_id" // get it from auth0 dashboard
+  );
+  // highlight-end
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('{bundleId}://openlogin');
+    // com.example.w3aflutter://openlogin
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId: '{WEB3AUTH_CLIENT_ID}',
+    network: Network.testnet,
+    redirectUrl: redirectUrl,
+    whiteLabel: WhiteLabelData(
+        dark: true, name: "Web3Auth Flutter App", theme: themeMap),
+    // highlight-next-line
+    loginConfig: loginConfig
+    ));
+}
+
+// Login
+final Web3AuthResponse response = await Web3AuthFlutter.login(
+  LoginParams(
+    // highlight-start
+    loginProvider: Provider.jwt,
+    extraLoginOptions: ExtraLoginOptions(
+      domain: "https://username.us.auth0.com", // domain of your auth0 app
+      verifierIdField: "sub", // The field in jwt token which maps to verifier id.
+    )
+    // highlight-end
+  )
+);
+```
+
+### Custom JWT Login
+
+If you're using any other provider like Firebase/ AWS Cognito or deploying your own Custom JWT server, you need to put the jwt token into the
+`id_token` field of the `extraLoginOptions`, additionally, you need to pass over the `domain` field as well, which is mandatory. If you don't have a
+domain, just passover a string in that field.
+
+```dart
+Future<void> initPlatformState() async {
+  final themeMap = HashMap<String, String>();
+  themeMap['primary'] = "#229954";
+
+  // highlight-start
+  final loginConfig = new HashMap<String, LoginConfigItem>();
+  loginConfig['jwt'] = LoginConfigItem(
+    verifier: "verifier-name", // get it from web3auth dashboard
+    typeOfLogin: TypeOfLogin.jwt,
+    name: "Custom JWT Login",
+    clientId: "web3auth_client_id" // web3auth's plug and play client id
+  );
+  // highlight-end
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('{bundleId}://openlogin');
+    // com.example.w3aflutter://openlogin
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId: '{WEB3AUTH_CLIENT_ID}',
+    network: Network.testnet,
+    redirectUrl: redirectUrl,
+    whiteLabel: WhiteLabelData(
+        dark: true, name: "Web3Auth Flutter App", theme: themeMap),
+    // highlight-next-line
+    loginConfig: loginConfig
+    ));
+}
+
+// Login
+final Web3AuthResponse response = await Web3AuthFlutter.login(
+  LoginParams(
+    // highlight-start
+    loginProvider: Provider.jwt,
+    extraLoginOptions: ExtraLoginOptions(\
+      domain: "example.com", // domain of your app backedn or any random string
+      id_token: "{YOUR_JWT_TOKEN}",
+    )
+    // highlight-end
+  )
+);
+```
+
+### Email Passwordless
+
+To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` field of the `extraLoginOptions`.
+
+```kotlin
+Future<void> initPlatformState() async {
+  final themeMap = HashMap<String, String>();
+  themeMap['primary'] = "#229954";
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('{bundleId}://openlogin');
+    // com.example.w3aflutter://openlogin
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId: '{WEB3AUTH_CLIENT_ID}',
+    network: Network.testnet,
+    redirectUrl: redirectUrl,
+    whiteLabel: WhiteLabelData(
+        dark: true, name: "Web3Auth Flutter App", theme: themeMap),
+    ));
+}
+
+// Login
+final Web3AuthResponse response = await Web3AuthFlutter.login(
     LoginParams(loginProvider: Provider.email_passwordless,
     // highlight-next-line
       extraLoginOptions: ExtraLoginOptions(login_hint: "hello@web3auth.io")));
-  ```
-
-- To use the `JWT` login, you need to put the jwt token into the `id_token` field of the `extraLoginOptions`.
-
-  ```dart
-  final Web3AuthResponse response = await Web3AuthFlutter.login(
-    LoginParams(
-      // highlight-start
-      loginProvider: Provider.jwt,
-      extraLoginOptions: ExtraLoginOptions(
-        id_token: "{YOUR_JWT_TOKEN}", domain: "{YOUR-DOMAIN}"
-      )
-      // highlight-end
-    )
-  );
-  ```
-
-  > Note: You should specify a `domain` here. It can be anything. But failing to pass the domain here, will result in **_"Invalid params"_** error.
+```
