@@ -25,6 +25,8 @@ import Tabs from "@theme/Tabs";
 
 ## Introduction
 
+---
+
 Adding Web3Auth Plug and Play SDKs to your application is a great way to authenticate users and reconstruct their private key, and to reconstruct the
 key, Web3Auth SDK redirects users to a Web3Auth hosted screen (i.e. http://app.openlogin.com). This flow is great for most use cases. Still, sometimes
 you may want to customize the authentication flow such that you can have more control over the UI and UX of the authentication process (i.e. to avoid
@@ -59,6 +61,8 @@ We will refer this approach as `One Key Flow` in the upcoming sections.
 :::
 
 ## Quick Start
+
+---
 
 If you want to check what the result of this guide will look like, you can clone the example project from our GitHub repo and run it as described
 below.
@@ -143,9 +147,13 @@ Below are the steps to setup Firebase as JWT Provider. The same steps can be fol
 
 ## Dependencies
 
+---
+
 <InstallationWithOneKeyFlowFirebase />
 
 ## Implementing User Login.
+
+---
 
 Doing user login with one key flow consists of following steps:
 
@@ -231,14 +239,14 @@ await web3auth.init({
   network: "testnet",
 });
 
-const blockchainProvider = await web3auth?.connect({
+const web3AuthProvider = await web3auth?.connect({
   verifier,
   verifierId: sub,
   idToken,
 });
 ```
 
-At this point, your application has successfully authenticated the user with web3auth, and you can use the `blockchainProvider` to interact with the
+At this point, your application has successfully authenticated the user with web3auth, and you can use the `web3AuthProvider` to interact with the
 blockchain.
 
 :::caution
@@ -314,7 +322,7 @@ await web3auth.init();
 ```js
 const idToken = "YOUR_ID_TOKEN"; // idToken from firebase login response or from your own backend.
 // if NO, login with web3auth
-const blockchainProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+const web3AuthProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {
     id_token: idToken,
@@ -341,6 +349,8 @@ Once enabled by the User, MFA cannot be disabled.
 :::
 
 ## How to enable Multi Factor Authentication(MFA) for your users
+
+---
 
 So far, we have seen how to login with MFA and without MFA. But there might be a case in your application where you want the user to start without MFA
 for easy onboarding. Later, you want your users to enable MFA to enhance security.
@@ -374,15 +384,16 @@ const enableMfa = async () => {
 
   // web3auth instance must be initialized before calling this function
   // as decribed in login with mfa flow above
-  const blockchainProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  const web3AuthProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
     loginProvider: "jwt",
     extraLoginOptions: {
       id_token: idToken,
       verifierIdField: "sub",
       domain: window.location.origin,
     },
+    mfaLevel: "optional",
   });
-  return blockchainProvider;
+  return web3AuthProvider;
 };
 ```
 
@@ -393,6 +404,8 @@ Once enabled by the User, MFA cannot be disabled.
 :::
 
 ## Get the User Profile
+
+---
 
 Depending upon if the user has enabled MFA or not, we can get the user profile from the provider.
 
@@ -429,6 +442,8 @@ Depending if the user has enabled MFA or not the functions to get the user profi
 
 ## Logout
 
+---
+
 Logging out your user is as simple as calling the `logout` function.
 
 <Tabs
@@ -449,10 +464,10 @@ await web3auth.logout();
 
 <TabItem value="mfa-disabled">
 
-Just reload the page.
+Set the provider to null. This will log out the user.
 
 ```js
-window.location.reload();
+setProvider(null);
 ```
 
 </TabItem>
