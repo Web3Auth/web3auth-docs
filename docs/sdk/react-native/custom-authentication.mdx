@@ -19,7 +19,7 @@ First, configure your own verifier in the Web3Auth Dashboard to use custom authe
 
 :::tip
 
-Check out how to create [Custom Verifier](/docs/custom-authentication/verifiers) on Web3Auth Dashboard.
+Check out how to create **[Custom Verifier](/docs/custom-authentication/verifiers)** on Web3Auth Dashboard.
 
 :::
 
@@ -191,6 +191,7 @@ export const LOGIN_PROVIDER = {
   values={[
     { label: "Google", value: "google" },
     { label: "Facebook", value: "facebook" },
+    { label: "JWT", value: "jwt" },
   ]}
 >
 
@@ -203,6 +204,7 @@ import * as WebBrowser from "@toruslabs/react-native-web-browser";
 const web3auth = new Web3Auth(WebBrowser, {
   clientId: "BC5bANkU4-fil7C5s1uKzRfF0VGqbuaxDQiLnQ8WgF7SEA32lGegAhu7dk4dZf3Rk397blIvfWytXwsRvs9dOaQ",
   network: Network.TESTNET,
+  // highlight-start
   loginConfig: {
     google: {
       verifier: "verifier-name", // get it from web3auth dashboard
@@ -211,6 +213,7 @@ const web3auth = new Web3Auth(WebBrowser, {
       clientId: "google_client_id", // google's client id
     },
   },
+  // highlight-end
 });
 ```
 
@@ -225,6 +228,7 @@ import * as WebBrowser from "@toruslabs/react-native-web-browser";
 const web3auth = new Web3Auth(WebBrowser, {
   clientId: "BC5bANkU4-fil7C5s1uKzRfF0VGqbuaxDQiLnQ8WgF7SEA32lGegAhu7dk4dZf3Rk397blIvfWytXwsRvs9dOaQ",
   network: Network.TESTNET,
+  // highlight-start
   loginConfig: {
     facebook: {
       verifier: "verifier-name", // get it from web3auth dashboard
@@ -233,6 +237,31 @@ const web3auth = new Web3Auth(WebBrowser, {
       clientId: "facebook_client_id", // facebook's client id
     },
   },
+  // highlight-end
+});
+```
+
+</TabItem>
+
+<TabItem value="jwt">
+
+```tsx
+import * as WebBrowser from "@toruslabs/react-native-web-browser";
+// or  import * as WebBrowser from "expo-web-browser"; (for expo)
+
+const web3auth = new Web3Auth(WebBrowser, {
+  clientId: "BC5bANkU4-fil7C5s1uKzRfF0VGqbuaxDQiLnQ8WgF7SEA32lGegAhu7dk4dZf3Rk397blIvfWytXwsRvs9dOaQ",
+  network: Network.TESTNET,
+  // highlight-start
+  loginConfig: {
+    jwt: {
+      verifier: "verifier-name", // get it from web3auth dashboard
+      typeOfLogin: TypeOfLogin.JWT,
+      name: "Custom Login with JWT",
+      clientId: "web3auth's client id", // web3auth's client id
+    },
+  },
+  // highlight-end
 });
 ```
 
