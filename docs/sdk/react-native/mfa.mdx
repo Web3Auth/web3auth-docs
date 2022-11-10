@@ -19,19 +19,23 @@ You can set the mfaLevel within the `web3auth.login()` to customize when mfa scr
 - **`none`** - Setting mfaLevel to none will skip the mfa setup screen totally. `mfaLevel = MFALevel.NONE`
 
 ```tsx
-web3auth.login({
-  loginProvider: LoginProvider.GOOGLE,
-  redirectUrl: resolvedRedirectUrl,
-  mfaLevel: MFALevel.MANDATORY,
-});
+export const MFA_LEVELS = {
+  DEFAULT: "default",
+  OPTIONAL: "optional",
+  MANDATORY: "mandatory",
+  NONE: "none",
+};
 ```
 
-### Example
+## Example
+
+---
 
 ```tsx
 const state = await web3auth.login({
   loginProvider: LoginProvider.GOOGLE,
   redirectUrl: resolvedRedirectUrl,
+  // highlight-next-line
   mfaLevel: MFALevel.MANDATORY, // MFALevel.DEFAULT, MFALevel.OPTIONAL, MFALevel.MANDATORY, MFALevel.NONE
 });
 ```
