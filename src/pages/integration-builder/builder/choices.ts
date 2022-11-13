@@ -80,17 +80,17 @@ export const LANGS: DisplayChoice[] = [
   { key: "unity", displayName: "Unity" },
 ];
 
-export const TOGGLE_CHOICES: DisplayChoice[] = [
+export const TOGGLE: DisplayChoice[] = [
   { key: "no", displayName: "No" },
   { key: "yes", displayName: "Yes" },
 ];
 
-export const EVM_FRAMEWORK_CHOICES: DisplayChoice[] = [
+export const EVM_FRAMEWORK: DisplayChoice[] = [
   { key: "web3", displayName: "web3.js" },
   { key: "ethers", displayName: "ethers" },
 ];
 
-export const RN_MODE_CHOICES: DisplayChoice[] = [
+export const RN_MODE: DisplayChoice[] = [
   { key: "expo", displayName: "Expo" },
   { key: "bare", displayName: "Bare React Native" },
 ];

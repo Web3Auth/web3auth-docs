@@ -2,7 +2,7 @@
 import { IntegrationBuilder, IntegrationStep } from "../interfaces";
 import android from "./android";
 import angular from "./angular";
-import { CHAINS, CHAINS_HTML, EVM, EVM_FRAMEWORK_CHOICES, LANGS, MOBILE, RN_MODE_CHOICES, TOGGLE_CHOICES } from "./choices";
+import { CHAINS, CHAINS_HTML, EVM, EVM_FRAMEWORK, LANGS, MOBILE, RN_MODE, TOGGLE } from "./choices";
 import flutter from "./flutter";
 import highlight from "./highlight";
 import html from "./html";
@@ -46,39 +46,39 @@ const builder: IntegrationBuilder = {
     },
     customAuthentication: {
       displayName: "Custom Authentication",
-      default: TOGGLE_CHOICES[0].key,
+      default: TOGGLE[0].key,
       type: "toggle",
-      choices: TOGGLE_CHOICES,
+      choices: TOGGLE,
     },
     whitelabel: {
       displayName: "Whitelabel",
-      default: TOGGLE_CHOICES[0].key,
+      default: TOGGLE[0].key,
       type: "toggle",
-      choices: TOGGLE_CHOICES,
+      choices: TOGGLE,
     },
     mfaParams: {
       displayName: "MFA",
-      default: TOGGLE_CHOICES[0].key,
+      default: TOGGLE[0].key,
       type: "toggle",
-      choices: TOGGLE_CHOICES,
+      choices: TOGGLE,
     },
     usingEmailPasswordless: {
       displayName: "Using Email Passwordless",
-      default: TOGGLE_CHOICES[0].key,
+      default: TOGGLE[0].key,
       type: "toggle",
-      choices: TOGGLE_CHOICES,
+      choices: TOGGLE,
     },
     rnWorkflowMode: {
       displayName: "Workflow",
-      default: RN_MODE_CHOICES[0].key,
+      default: RN_MODE[0].key,
       type: "dropdown",
-      choices: RN_MODE_CHOICES,
+      choices: RN_MODE,
     },
     evmFramework: {
       displayName: "EVM Chain Framework",
-      default: EVM_FRAMEWORK_CHOICES[0].key,
+      default: EVM_FRAMEWORK[0].key,
       type: "dropdown",
-      choices: EVM_FRAMEWORK_CHOICES,
+      choices: EVM_FRAMEWORK,
     },
   },
 
@@ -123,15 +123,15 @@ const builder: IntegrationBuilder = {
       ...this.options,
       customAuthentication: {
         displayName: "Custom Authentication",
-        default: TOGGLE_CHOICES[0].key,
+        default: TOGGLE[0].key,
         type: "toggle",
-        choices: TOGGLE_CHOICES,
+        choices: TOGGLE,
       },
       whitelabel: {
         displayName: "Whitelabel",
-        default: TOGGLE_CHOICES[0].key,
+        default: TOGGLE[0].key,
         type: "toggle",
-        choices: TOGGLE_CHOICES,
+        choices: TOGGLE,
       },
     };
 
@@ -140,9 +140,9 @@ const builder: IntegrationBuilder = {
       //   ...this.options,
       //   usingEmailPasswordless: {
       //     displayName: "Using Email Passwordless",
-      //     default: TOGGLE_CHOICES[0].key,
+      //     default: TOGGLE[0].key,
       //     type: "toggle",
-      //     choices: TOGGLE_CHOICES,
+      //     choices: TOGGLE,
       //   },
       // };
 
@@ -151,9 +151,9 @@ const builder: IntegrationBuilder = {
           ...this.options,
           rnWorkflowMode: {
             displayName: "Workflow",
-            default: RN_MODE_CHOICES[0].key,
+            default: RN_MODE[0].key,
             type: "dropdown",
-            choices: RN_MODE_CHOICES,
+            choices: RN_MODE,
           },
         };
       } else {
@@ -161,9 +161,9 @@ const builder: IntegrationBuilder = {
           ...this.options,
           mfa: {
             displayName: "Multi Factor Authentication",
-            default: TOGGLE_CHOICES[0].key,
+            default: TOGGLE[0].key,
             type: "toggle",
-            choices: TOGGLE_CHOICES,
+            choices: TOGGLE,
           },
         };
       }
@@ -173,15 +173,15 @@ const builder: IntegrationBuilder = {
       ...this.options,
       customAuthentication: {
         displayName: "Custom Authentication",
-        default: TOGGLE_CHOICES[0].key,
+        default: TOGGLE[0].key,
         type: "toggle",
-        choices: TOGGLE_CHOICES,
+        choices: TOGGLE,
       },
       whitelabel: {
         displayName: "Whitelabel",
-        default: TOGGLE_CHOICES[0].key,
+        default: TOGGLE[0].key,
         type: "toggle",
-        choices: TOGGLE_CHOICES,
+        choices: TOGGLE,
       },
     };
     if (values.chain in EVM && !(values.lang in MOBILE)) {
@@ -189,9 +189,9 @@ const builder: IntegrationBuilder = {
         ...this.options,
         evmFramework: {
           displayName: "EVM Chain Framework",
-          default: EVM_FRAMEWORK_CHOICES[0].key,
+          default: EVM_FRAMEWORK[0].key,
           type: "dropdown",
-          choices: EVM_FRAMEWORK_CHOICES,
+          choices: EVM_FRAMEWORK,
         },
       };
     }
