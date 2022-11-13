@@ -1,36 +1,70 @@
 import { DisplayChoice } from "../interfaces";
 
+export const ETH = "ETH";
+export const SOL = "SOL";
+export const STARKEX = "STARKEX";
+export const STARKNET = "STARKNET";
+export const MATIC = "MATIC";
+export const BNB = "BNB";
+export const AVAX = "AVAX";
+export const ARB = "ARB";
+export const OP = "OP";
+export const CRO = "CRO";
+export const ONE = "ONE";
+export const CELO = "CELO";
+export const GLMR = "GLMR";
+export const MOVR = "MOVR";
+export const KLAY = "KLAY";
+export const TEZOS = "TEZOS";
+
+export enum EVM {
+  "ETH",
+  "MATIC",
+  "BNB",
+  "AVAX",
+  "ARB",
+  "OP",
+  "CRO",
+  "ONE",
+  "CELO",
+  "GLMR",
+  "MOVR",
+  "KLAY",
+}
+
 export const CHAINS: DisplayChoice[] = [
-  { key: "eth", displayName: "Ethereum" },
-  { key: "sol", displayName: "Solana" },
-  { key: "starkex", displayName: "StarkEx" },
-  { key: "starknet", displayName: "StarkNet" },
-  { key: "matic", displayName: "Polygon" },
-  { key: "bnb", displayName: "BNB Chain" },
-  { key: "avax", displayName: "Avalanche" },
-  { key: "arbitrum", displayName: "Arbitrum" },
-  { key: "optimism", displayName: "Optimism" },
-  { key: "cronos", displayName: "Cronos" },
-  { key: "harmony", displayName: "Harmony" },
-  { key: "celo", displayName: "Celo" },
-  { key: "moonbeam", displayName: "Moonbeam" },
-  { key: "moonriver", displayName: "Moonriver" },
-  { key: "tezos", displayName: "Tezos" },
+  { key: ETH, displayName: "Ethereum" },
+  { key: SOL, displayName: "Solana" },
+  { key: STARKEX, displayName: "StarkEx" },
+  { key: STARKNET, displayName: "StarkNet" },
+  { key: MATIC, displayName: "Polygon" },
+  { key: BNB, displayName: "BNB Chain" },
+  { key: AVAX, displayName: "Avalanche" },
+  { key: ARB, displayName: "Arbitrum" },
+  { key: OP, displayName: "Optimism" },
+  { key: CRO, displayName: "Cronos" },
+  { key: ONE, displayName: "Harmony" },
+  { key: CELO, displayName: "Celo" },
+  { key: GLMR, displayName: "Moonbeam" },
+  { key: MOVR, displayName: "Moonriver" },
+  { key: KLAY, displayName: "Klaytn" },
+  { key: TEZOS, displayName: "Tezos" },
 ];
 
 export const CHAINS_HTML: DisplayChoice[] = [
-  { key: "eth", displayName: "Ethereum" },
-  { key: "sol", displayName: "Solana" },
-  { key: "matic", displayName: "Polygon" },
-  { key: "bnb", displayName: "BNB Chain" },
-  { key: "avax", displayName: "Avalanche" },
-  { key: "arbitrum", displayName: "Arbitrum" },
-  { key: "optimism", displayName: "Optimism" },
-  { key: "cronos", displayName: "Cronos" },
-  { key: "harmony", displayName: "Harmony" },
-  { key: "celo", displayName: "Celo" },
-  { key: "moonbeam", displayName: "Moonbeam" },
-  { key: "moonriver", displayName: "Moonriver" },
+  { key: ETH, displayName: "Ethereum" },
+  { key: SOL, displayName: "Solana" },
+  { key: MATIC, displayName: "Polygon" },
+  { key: BNB, displayName: "BNB Chain" },
+  { key: AVAX, displayName: "Avalanche" },
+  { key: ARB, displayName: "Arbitrum" },
+  { key: OP, displayName: "Optimism" },
+  { key: CRO, displayName: "Cronos" },
+  { key: ONE, displayName: "Harmony" },
+  { key: CELO, displayName: "Celo" },
+  { key: GLMR, displayName: "Moonbeam" },
+  { key: MOVR, displayName: "Moonriver" },
+  { key: KLAY, displayName: "Klaytn" },
 ];
 
 export const LANGS: DisplayChoice[] = [
@@ -61,19 +95,6 @@ export const RN_MODE_CHOICES: DisplayChoice[] = [
   { key: "bare", displayName: "Bare React Native" },
 ];
 
-export enum EVM {
-  "eth",
-  "matic",
-  "bnb",
-  "avax",
-  "arbitrum",
-  "optimism",
-  "cronos",
-  "harmony",
-  "celo",
-  "moonbeam",
-  "moonriver",
-}
 export enum MOBILE {
   "android",
   "ios",

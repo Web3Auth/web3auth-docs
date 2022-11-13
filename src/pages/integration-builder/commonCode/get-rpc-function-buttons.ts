@@ -1,4 +1,6 @@
-export const getRPCFunctionsButtonsReact = (chain: "sol" | "starkex" | "starknet" | "tezos") => {
+import { SOL, STARKEX, STARKNET, TEZOS } from "../builder/choices";
+
+export const getRPCFunctionsButtonsReact = (chain: string) => {
   let code = `
       <button onClick={getChainId} className="card">
         Get Chain ID
@@ -19,7 +21,7 @@ export const getRPCFunctionsButtonsReact = (chain: "sol" | "starkex" | "starknet
         Get Private Key
       </button>`;
 
-  if (chain === "sol") {
+  if (chain === SOL) {
     code = `
       <button onClick={getAccounts} className="card">
         Get Accounts
@@ -38,7 +40,7 @@ export const getRPCFunctionsButtonsReact = (chain: "sol" | "starkex" | "starknet
       </button>`;
   }
 
-  if (chain === "starkex") {
+  if (chain === STARKEX) {
     code = `
       <button onClick={onGetStarkAccount} className="card">
         Get Stark Accounts
@@ -57,7 +59,7 @@ export const getRPCFunctionsButtonsReact = (chain: "sol" | "starkex" | "starknet
       </button>`;
   }
 
-  if (chain === "starknet") {
+  if (chain === STARKNET) {
     code = `
       <button onClick={onGetStarkAccount} className="card">
         Get Stark Accounts
@@ -70,7 +72,7 @@ export const getRPCFunctionsButtonsReact = (chain: "sol" | "starkex" | "starknet
       </button>`;
   }
 
-  if (chain === "tezos") {
+  if (chain === TEZOS) {
     code = `
       <button onClick={onGetTezosKeyPair} className="card">
         Get Tezos Key Pair

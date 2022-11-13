@@ -1,4 +1,6 @@
-export const getRPCFunctionsReturnsVue = (chain: "sol" | "starkex" | "starknet" | "tezos") => {
+import { SOL, STARKEX, STARKNET, TEZOS } from "../../choices";
+
+export const getRPCFunctionsReturnsVue = (chain: string) => {
   let code = `
       getChainId,
       getAccounts,
@@ -6,7 +8,7 @@ export const getRPCFunctionsReturnsVue = (chain: "sol" | "starkex" | "starknet" 
       sendTransaction,
       signMessage,
       getPrivateKey`;
-  if (chain === "sol") {
+  if (chain === SOL) {
     code = `
       getAccounts,
       getBalance,
@@ -14,7 +16,7 @@ export const getRPCFunctionsReturnsVue = (chain: "sol" | "starkex" | "starknet" 
       signMessage,
       getPrivateKey`;
   }
-  if (chain === "starkex") {
+  if (chain === STARKEX) {
     code = `
       onGetStarkAccount,
       getStarkKey,
@@ -22,13 +24,13 @@ export const getRPCFunctionsReturnsVue = (chain: "sol" | "starkex" | "starknet" 
       onDepositRequest,
       onWithdrawalRequest`;
   }
-  if (chain === "starknet") {
+  if (chain === STARKNET) {
     code = `
       onGetStarkAccount,
       getStarkKey,
       onDeployAccount`;
   }
-  if (chain === "tezos") {
+  if (chain === TEZOS) {
     code = `
       onGetTezosKeyPair,
       getAccounts,

@@ -1,14 +1,11 @@
-export const getModuleImport = (
-  chain: "eth" | "sol" | "starkex" | "starknet" | "tezos",
-  isWhiteLabled: boolean,
-  isCustomAuth: boolean,
-  evmFramework: "web3" | "ethers"
-) => {
+import { SOL, STARKEX, STARKNET, TEZOS } from "../builder/choices";
+
+export const getModuleImport = (chain: string, isWhiteLabled: boolean, isCustomAuth: boolean, evmFramework: "web3" | "ethers") => {
   let code = `
 // HIGHLIGHTSTART-importModules
 import { Web3Auth } from "@web3auth/modal";`;
 
-  if (isWhiteLabled || isCustomAuth || chain === "starkex" || chain === "starknet" || chain === "tezos") {
+  if (isWhiteLabled || isCustomAuth || chain === STARKEX || chain === STARKNET || chain === TEZOS) {
     code += `
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";`;
@@ -18,19 +15,19 @@ import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";`;
   }
 
   switch (chain) {
-    case "sol":
+    case SOL:
       code += `
 import RPC from "./solanaRPC";`;
       break;
-    case "starkex":
+    case STARKEX:
       code += `
 import RPC from "./starkexRPC";`;
       break;
-    case "starknet":
+    case STARKNET:
       code += `
 import RPC from "./starknetRPC";`;
       break;
-    case "tezos":
+    case TEZOS:
       code += `
 import RPC from "./tezosRPC";`;
       break;

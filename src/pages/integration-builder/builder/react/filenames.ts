@@ -1,3 +1,5 @@
+import { SOL, STARKEX, STARKNET, TEZOS } from "../choices";
+
 export const FILENAME_APP_TSX = "frameworks/react/App.tsx";
 export const FILENAME_APP_CSS = "frameworks/react/App.css";
 export const FILENAME_PACKAGE_JSON = "frameworks/react/package.json";
@@ -15,20 +17,20 @@ export default function getFileNames(filenames, chain, evmFramework) {
   filenames.push(FILENAME_APP_TSX);
   filenames.push(FILENAME_PACKAGE_JSON);
   switch (chain) {
-    case "sol":
+    case SOL:
       filenames.push(FILENAME_SOLANARPC);
       filenames.push(FILENAME_CONFIG_OVERRIDES);
       break;
-    case "starkex":
+    case STARKEX:
       filenames.push(FILENAME_STARKEXRPC);
       filenames.push(FILENAME_CONFIG_OVERRIDES);
       break;
-    case "starknet":
+    case STARKNET:
       filenames.push(FILENAME_STARKNETRPC);
       filenames.push(FILENAME_ARGENT_ACCOUNT);
       filenames.push(FILENAME_STARKNET_CONFIG_OVERRIDES);
       break;
-    case "tezos":
+    case TEZOS:
       filenames.push(FILENAME_TEZOSRPC);
       filenames.push(FILENAME_CONFIG_OVERRIDES);
       break;

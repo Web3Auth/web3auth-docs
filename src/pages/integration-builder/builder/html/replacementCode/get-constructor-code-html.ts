@@ -1,6 +1,7 @@
 import { chainIdMap, rpcTargetMap } from "../../../commonCode/maps";
+import { SOL } from "../../choices";
 
-export const getConstructorCodeHTML = (chain: "sol", isWhiteLabled: boolean) => {
+export const getConstructorCodeHTML = (chain: string, isWhiteLabled: boolean) => {
   let chainDetails = ``;
   let uiConfig = ``;
 
@@ -15,7 +16,7 @@ export const getConstructorCodeHTML = (chain: "sol", isWhiteLabled: boolean) => 
         // HIGHLIGHTEND-whiteLabeling`;
   }
 
-  if (chain === "sol") {
+  if (chain === SOL) {
     chainDetails = `
           chainNamespace: "solana",
           chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet

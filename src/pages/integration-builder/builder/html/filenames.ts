@@ -1,3 +1,5 @@
+import { SOL } from "../choices";
+
 export const FILENAME_INDEX_HTML = "frameworks/html/index.html";
 export const FILENAME_STYLE_CSS = "frameworks/html/style.css";
 export const FILENAME_SOLANARPC = "chains/solana/solanaRPC.js";
@@ -7,7 +9,7 @@ export const FILENAME_ETHERSRPC = "chains/evm/ethersRPC.js";
 export default function getFileNames(filenames, chain, evmFramework) {
   filenames.push(FILENAME_INDEX_HTML);
   switch (chain) {
-    case "sol":
+    case SOL:
       filenames.push(FILENAME_SOLANARPC);
       break;
     default:

@@ -1,6 +1,7 @@
 import { openloginAdapterVersion, web3authModalVersion, web3authSolanaProviderVersion } from "../../../../../common/versions";
+import { SOL } from "../../choices";
 
-export const getScriptImport = (chain: "sol", isWhiteLabled: boolean, isCustomAuth: boolean, evmFramework: "ethers") => {
+export const getScriptImport = (chain: string, isWhiteLabled: boolean, isCustomAuth: boolean, evmFramework: "ethers") => {
   const openloginAdapterScript = `https://cdn.jsdelivr.net/npm/@web3auth/openlogin-adapter@${openloginAdapterVersion}/dist/openloginAdapter.umd.min.js`;
   const web3authModalScript = `https://cdn.jsdelivr.net/npm/@web3auth/modal@${web3authModalVersion}/dist/modal.umd.min.js`;
   const web3authSolanaProviderScript = `https://cdn.jsdelivr.net/npm/@web3auth/solana-provider@${web3authSolanaProviderVersion}/dist/solanaProvider.umd.min.js`;
@@ -13,7 +14,7 @@ export const getScriptImport = (chain: "sol", isWhiteLabled: boolean, isCustomAu
     <script src="${openloginAdapterScript}"></script>`;
   }
   switch (chain) {
-    case "sol":
+    case SOL:
       code += `
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.43.5/lib/index.iife.min.js"></script>
     <script src="${web3authSolanaProviderScript}"></script>

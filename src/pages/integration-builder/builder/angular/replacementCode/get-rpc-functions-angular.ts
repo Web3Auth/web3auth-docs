@@ -1,4 +1,6 @@
-export const getRPCFunctionsAngular = (chain: "sol" | "starkex" | "starknet" | "tezos") => {
+import { SOL, STARKEX, STARKNET, TEZOS } from "../../choices";
+
+export const getRPCFunctionsAngular = (chain: string) => {
   let code = `
     getChainId = async () => {
       if (!this.provider) {
@@ -58,7 +60,7 @@ export const getRPCFunctionsAngular = (chain: "sol" | "starkex" | "starknet" | "
       const privateKey = await rpc.getPrivateKey();
       console.log(privateKey);
     };`;
-  if (chain === "sol") {
+  if (chain === SOL) {
     code = `
     getAccounts = async () => {
       if (!this.provider) {
@@ -110,7 +112,7 @@ export const getRPCFunctionsAngular = (chain: "sol" | "starkex" | "starknet" | "
       console.log(privateKey);
     };`;
   }
-  if (chain === "starkex") {
+  if (chain === STARKEX) {
     code = `
     onGetStarkAccount = async () => {
       if (!this.provider) {
@@ -162,7 +164,7 @@ export const getRPCFunctionsAngular = (chain: "sol" | "starkex" | "starknet" | "
       console.log(request);
     };`;
   }
-  if (chain === "starknet") {
+  if (chain === STARKNET) {
     code = `
     onGetStarkAccount = async () => {
       if (!this.provider) {
@@ -194,7 +196,7 @@ export const getRPCFunctionsAngular = (chain: "sol" | "starkex" | "starknet" | "
       console.log(deployaccount);
     };`;
   }
-  if (chain === "tezos") {
+  if (chain === TEZOS) {
     code = `
     onGetTezosKeyPair = async () => {
       if (!this.provider) {

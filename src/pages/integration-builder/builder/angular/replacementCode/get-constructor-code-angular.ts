@@ -1,6 +1,7 @@
 import { chainIdMap, rpcTargetMap } from "../../../commonCode";
+import { SOL, STARKEX, STARKNET, TEZOS } from "../../choices";
 
-export const getConstructorCodeAngular = (chain: "sol" | "starkex" | "starknet" | "tezos", isWhiteLabled: boolean) => {
+export const getConstructorCodeAngular = (chain: string, isWhiteLabled: boolean) => {
   let chainDetails = ``;
   let uiConfig = ``;
 
@@ -15,12 +16,12 @@ export const getConstructorCodeAngular = (chain: "sol" | "starkex" | "starknet" 
         // HIGHLIGHTEND-whiteLabeling`;
   }
 
-  if (chain === "sol") {
+  if (chain === SOL) {
     chainDetails = `
           chainNamespace: CHAIN_NAMESPACES.SOLANA,
           chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
           rpcTarget: "${rpcTargetMap[chain]}", // This is the public RPC we have added, please pass on your own endpoint while creating an app`;
-  } else if (chain === "starkex" || chain === "starknet" || chain === "tezos") {
+  } else if (chain === STARKEX || chain === STARKNET || chain === TEZOS) {
     chainDetails = `
           chainNamespace: CHAIN_NAMESPACES.OTHER`;
   } else {
