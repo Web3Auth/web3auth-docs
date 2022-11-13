@@ -63,6 +63,14 @@ export const CHAINS: DisplayChoice[] = [
   { key: TEZOS, displayName: "Tezos" },
 ];
 
+export const WEB3 = "WEB3";
+export const ETHERS = "ETHERS";
+
+export const EVM_FRAMEWORK: DisplayChoice[] = [
+  { key: WEB3, displayName: "web3.js" },
+  { key: ETHERS, displayName: "ethers" },
+];
+
 // Platform choices
 
 export const REACT = "REACT";
@@ -111,10 +119,6 @@ export const TOGGLE: DisplayChoice[] = [
   { key: "yes", displayName: "Yes" },
 ];
 
-export const EVM_FRAMEWORK: DisplayChoice[] = [
-  { key: "web3", displayName: "web3.js" },
-  { key: "ethers", displayName: "ethers" },
-];
 
 export const RN_MODE: DisplayChoice[] = [
   { key: "expo", displayName: "Expo" },
