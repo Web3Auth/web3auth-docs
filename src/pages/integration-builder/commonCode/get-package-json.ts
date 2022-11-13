@@ -1,5 +1,5 @@
 import { openloginAdapterVersion, web3authBaseVersion, web3authModalVersion, web3authSolanaProviderVersion } from "../../../common/versions";
-import { SOL, STARKEX, STARKNET, TEZOS } from "../builder/choices";
+import { OTHER_CHAINS, SOL, STARKEX, STARKNET, TEZOS } from "../builder/choices";
 
 export const getPackageJson = (chain: string, isWhiteLabled: boolean, isCustomAuth: boolean, evmFramework: "ethers") => {
   let code = `
@@ -7,7 +7,7 @@ export const getPackageJson = (chain: string, isWhiteLabled: boolean, isCustomAu
     "@web3auth/base": "^${web3authBaseVersion}",
     "@web3auth/modal": "^${web3authModalVersion}",`;
 
-  if (isWhiteLabled || isCustomAuth || chain === STARKEX || chain === STARKNET || chain === TEZOS) {
+  if (isWhiteLabled || isCustomAuth || chain in OTHER_CHAINS) {
     code += `
     "@web3auth/openlogin-adapter": "^${openloginAdapterVersion}",`;
   }

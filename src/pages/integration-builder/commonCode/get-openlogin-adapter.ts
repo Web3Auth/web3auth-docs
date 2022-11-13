@@ -1,4 +1,4 @@
-import { STARKEX, STARKNET, TEZOS } from "../builder/choices";
+import { OTHER_CHAINS } from "../builder/choices";
 
 export const getOpenloginAdapter = (chain: string, isWhiteLabled: boolean, isCustomAuth: boolean) => {
   let whitelabel = ``;
@@ -42,7 +42,7 @@ export const getOpenloginAdapter = (chain: string, isWhiteLabled: boolean, isCus
           // HIGHLIGHTEND-customAuthenticationStep`;
   }
 
-  if (isWhiteLabled || isCustomAuth || chain === STARKEX || chain === STARKNET || chain === TEZOS) {
+  if (isWhiteLabled || isCustomAuth || chain in OTHER_CHAINS) {
     code = `
       const openloginAdapter = new OpenloginAdapter({
         adapterSettings: {

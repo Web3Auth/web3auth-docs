@@ -50,6 +50,11 @@ export const CHAINS: DisplayChoice[] = [
   { key: KLAY, displayName: "Klaytn" },
   { key: TEZOS, displayName: "Tezos" },
 ];
+export enum OTHER_CHAINS {
+  "STARKEX",
+  "STARKNET",
+  "TEZOS",
+}
 
 export const CHAINS_HTML: DisplayChoice[] = [
   { key: ETH, displayName: "Ethereum" },
