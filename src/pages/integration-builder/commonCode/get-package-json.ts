@@ -1,7 +1,7 @@
 import { openloginAdapterVersion, web3authBaseVersion, web3authModalVersion, web3authSolanaProviderVersion } from "../../../common/versions";
-import { OTHER_CHAINS, SOL, STARKEX, STARKNET, TEZOS } from "../builder/choices";
+import { ETHERS, OTHER_CHAINS, SOL, STARKEX, STARKNET, TEZOS } from "../builder/choices";
 
-export const getPackageJson = (chain: string, isWhiteLabled: boolean, isCustomAuth: boolean, evmFramework: "ethers") => {
+export const getPackageJson = (chain: string, isWhiteLabled: boolean, isCustomAuth: boolean, evmFramework: string) => {
   let code = `
     // HIGHLIGHTSTART-installation
     "@web3auth/base": "^${web3authBaseVersion}",
@@ -42,7 +42,7 @@ export const getPackageJson = (chain: string, isWhiteLabled: boolean, isCustomAu
       break;
 
     default:
-      if (evmFramework === "ethers") {
+      if (evmFramework === ETHERS) {
         code += `
     "ethers": "^5.6.9",`;
       } else {

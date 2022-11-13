@@ -1,4 +1,4 @@
-import { SOL, STARKEX, STARKNET, TEZOS } from "../choices";
+import { ETHERS, SOL, STARKEX, STARKNET, TEZOS } from "../choices";
 import {
   FILENAME_APP_TSX,
   FILENAME_ETHERSRPC,
@@ -49,7 +49,7 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
       });
       break;
     default:
-      if (evmFramework === "ethers") {
+      if (evmFramework === ETHERS) {
         steps.push({
           ...STEPS.installationEthers,
           pointer: replacementAggregator.highlightRange(FILENAME_ETHERSRPC, files[FILENAME_ETHERSRPC], "installationEthers"),
@@ -138,8 +138,8 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
       steps.push({
         ...STEPS.evmRPCFunctions,
         pointer: replacementAggregator.highlightRange(
-          evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC,
-          files[evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC],
+          evmFramework === ETHERS ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC,
+          files[evmFramework === ETHERS ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC],
           "evmRPCFunctions"
         ),
       });

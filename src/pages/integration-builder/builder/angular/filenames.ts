@@ -1,4 +1,4 @@
-import { SOL, STARKEX, STARKNET, TEZOS } from "../choices";
+import { ETHERS, SOL, STARKEX, STARKNET, TEZOS } from "../choices";
 
 export const FILENAME_APP_HTML = "frameworks/angular/app.component.html";
 export const FILENAME_POLYFILLS = "frameworks/angular/polyfills.ts";
@@ -30,7 +30,7 @@ export default function getFileNames(filenames, chain, evmFramework) {
       filenames.push(FILENAME_TEZOSRPC);
       break;
     default:
-      filenames.push(evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC);
+      filenames.push(evmFramework === ETHERS ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC);
   }
   filenames.push(FILENAME_APP_HTML, FILENAME_POLYFILLS, FILENAME_TSCONFIG, FILENAME_APP_CSS);
 }

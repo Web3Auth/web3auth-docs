@@ -1,6 +1,6 @@
-import { OTHER_CHAINS, SOL, STARKEX, STARKNET, TEZOS } from "../builder/choices";
+import { ETHERS, OTHER_CHAINS, SOL, STARKEX, STARKNET, TEZOS } from "../builder/choices";
 
-export const getModuleImport = (chain: string, isWhiteLabled: boolean, isCustomAuth: boolean, evmFramework: "web3" | "ethers") => {
+export const getModuleImport = (chain: string, isWhiteLabled: boolean, isCustomAuth: boolean, evmFramework: string) => {
   let code = `
 // HIGHLIGHTSTART-importModules
 import { Web3Auth } from "@web3auth/modal";`;
@@ -32,7 +32,7 @@ import RPC from "./starknetRPC";`;
 import RPC from "./tezosRPC";`;
       break;
     default:
-      if (evmFramework === "ethers") {
+      if (evmFramework === ETHERS) {
         code += `
 import RPC from "./ethersRPC";`;
       } else {

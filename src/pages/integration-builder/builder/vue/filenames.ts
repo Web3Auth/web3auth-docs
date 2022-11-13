@@ -1,4 +1,4 @@
-import { SOL, STARKEX, STARKNET, TEZOS } from "../choices";
+import { ETHERS, SOL, STARKEX, STARKNET, TEZOS } from "../choices";
 
 export const FILENAME_VUE_CONFIG = "frameworks/vue/vue.config.js";
 export const FILENAME_APP_VUE = "frameworks/vue/App.vue";
@@ -30,7 +30,7 @@ export default function getFileNames(filenames, chain, evmFramework) {
       filenames.push(FILENAME_TEZOSRPC);
       break;
     default:
-      filenames.push(evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC);
+      filenames.push(evmFramework === ETHERS ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC);
   }
   filenames.push(FILENAME_VUE_CONFIG);
   filenames.push(FILENAME_APP_VUE);

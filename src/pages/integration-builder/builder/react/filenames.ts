@@ -1,4 +1,4 @@
-import { SOL, STARKEX, STARKNET, TEZOS } from "../choices";
+import { ETHERS, SOL, STARKEX, STARKNET, TEZOS } from "../choices";
 
 export const FILENAME_APP_TSX = "frameworks/react/App.tsx";
 export const FILENAME_APP_CSS = "frameworks/react/App.css";
@@ -35,7 +35,7 @@ export default function getFileNames(filenames, chain, evmFramework) {
       filenames.push(FILENAME_CONFIG_OVERRIDES);
       break;
     default:
-      filenames.push(evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC);
+      filenames.push(evmFramework === ETHERS ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC);
       filenames.push(FILENAME_CONFIG_OVERRIDES);
   }
   filenames.push(FILENAME_APP_CSS);
