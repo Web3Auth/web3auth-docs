@@ -113,6 +113,12 @@ export const tileGroupsData = [
         icon: "logo-algorand.png",
         path: "./connect-blockchain/algorand",
       },
+      {
+        key: "immutablex",
+        title: "ImmutableX",
+        icon: "logo-immutablex.png",
+        path: "./connect-blockchain/immutablex",
+      },
     ],
   },
 ];

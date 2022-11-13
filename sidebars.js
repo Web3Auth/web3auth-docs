@@ -81,6 +81,7 @@ module.exports = {
             "connect-blockchain/moonbeam",
             "connect-blockchain/moonriver",
             "connect-blockchain/klaytn",
+            "connect-blockchain/immutablex",
           ],
           collapsible: true,
           collapsed: false,

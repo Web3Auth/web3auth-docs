@@ -348,6 +348,17 @@ export const referenceMap = [
     order: 1,
     link: "/docs/connect-blockchain/algorand",
   },
+  {
+    title: "Integrate Web3Auth with the ImmutableX Blockchain",
+    description: "Learn how to add a non custodial social login to the ImmutableX Blockchain",
+    image: "/docs/contents/guides/banners/immutablex.png",
+    type: "REFERENCE",
+    tags: ["immutablex", "@web3auth/modal", "@web3auth/core"],
+    date: "3rd Oct 2022",
+    author: "Web3Auth Team",
+    order: 1,
+    link: "/docs/connect-blockchain/immutablex",
+  },
 ];
 
 export const featuresMap = [
