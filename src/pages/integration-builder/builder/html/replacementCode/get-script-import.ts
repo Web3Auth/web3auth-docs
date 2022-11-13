@@ -1,7 +1,7 @@
 import { openloginAdapterVersion, web3authModalVersion, web3authSolanaProviderVersion } from "../../../../../common/versions";
-import { SOL } from "../../choices";
+import { ETHERS, SOL } from "../../choices";
 
-export const getScriptImport = (chain: string, isWhiteLabled: boolean, isCustomAuth: boolean, evmFramework: "ethers") => {
+export const getScriptImport = (chain: string, isWhiteLabled: boolean, isCustomAuth: boolean, evmFramework: string) => {
   const openloginAdapterScript = `https://cdn.jsdelivr.net/npm/@web3auth/openlogin-adapter@${openloginAdapterVersion}/dist/openloginAdapter.umd.min.js`;
   const web3authModalScript = `https://cdn.jsdelivr.net/npm/@web3auth/modal@${web3authModalVersion}/dist/modal.umd.min.js`;
   const web3authSolanaProviderScript = `https://cdn.jsdelivr.net/npm/@web3auth/solana-provider@${web3authSolanaProviderVersion}/dist/solanaProvider.umd.min.js`;
@@ -21,7 +21,7 @@ export const getScriptImport = (chain: string, isWhiteLabled: boolean, isCustomA
     <script src="./solanaRPC.js"></script>`;
       break;
     default:
-      if (evmFramework === "ethers") {
+      if (evmFramework === ETHERS) {
         code += `
     <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
     <script src="./ethersRPC.js"></script>`;

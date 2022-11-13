@@ -1,4 +1,4 @@
-import { SOL } from "../choices";
+import { ETHERS, SOL } from "../choices";
 
 export const FILENAME_INDEX_HTML = "frameworks/html/index.html";
 export const FILENAME_STYLE_CSS = "frameworks/html/style.css";
@@ -13,7 +13,7 @@ export default function getFileNames(filenames, chain, evmFramework) {
       filenames.push(FILENAME_SOLANARPC);
       break;
     default:
-      filenames.push(evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC);
+      filenames.push(evmFramework === ETHERS ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC);
       break;
   }
   filenames.push(FILENAME_STYLE_CSS);

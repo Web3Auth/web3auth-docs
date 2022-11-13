@@ -1,4 +1,4 @@
-import { SOL } from "../choices";
+import { ETHERS, SOL } from "../choices";
 import { FILENAME_ETHERSRPC, FILENAME_INDEX_HTML, FILENAME_SOLANARPC, FILENAME_WEB3RPC } from "./filenames";
 import STEPS from "./stepContent";
 
@@ -63,8 +63,8 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
       steps.push({
         ...STEPS.evmRPCFunctions,
         pointer: replacementAggregator.highlightRange(
-          evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC,
-          files[evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC],
+          evmFramework === ETHERS ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC,
+          files[evmFramework === ETHERS ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC],
           "evmRPCFunctions"
         ),
       });

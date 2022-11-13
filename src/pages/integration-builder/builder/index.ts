@@ -2,7 +2,7 @@
 import { IntegrationBuilder, IntegrationStep } from "../interfaces";
 import android from "./android";
 import angular from "./angular";
-import { CHAINS, CHAINS_HTML, EVM, EVM_FRAMEWORK, LANGS, MOBILE, RN_MODE, TOGGLE } from "./choices";
+import { CHAINS, CHAINS_HTML, EVM, EVM_FRAMEWORK, LANGS, MOBILE, RN_MODE, TOGGLE, AUTH_PROVIDERS } from "./choices";
 import flutter from "./flutter";
 import highlight from "./highlight";
 import html from "./html";
@@ -44,11 +44,11 @@ const builder: IntegrationBuilder = {
       type: "dropdown",
       choices: CHAINS,
     },
-    customAuthentication: {
-      displayName: "Custom Authentication",
+    customAuth: {
+      displayName: "Custom Auth",
       default: TOGGLE[0].key,
-      type: "toggle",
-      choices: TOGGLE,
+      type: "dropdown",
+      choices: AUTH_PROVIDERS,
     },
     whitelabel: {
       displayName: "Whitelabel",
