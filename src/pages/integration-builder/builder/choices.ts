@@ -112,23 +112,56 @@ export const RN_MODE: DisplayChoice[] = [
   { key: "EXPO", displayName: "Expo Managed" },
   { key: "BARE_RN", displayName: "Bare React Native" },
 ];
+
+// Auth Choices
+
+export const GOOGLE = "GOOGLE";
+export const FACEBOOK = "FACEBOOK";
+export const REDDIT = "REDDIT";
+export const DISCORD = "DISCORD";
+export const TWITCH = "TWITCH";
+export const APPLE = "APPLE";
+export const GITHUB = "GITHUB";
+export const LINKEDIN = "LINKEDIN";
+export const TWITTER = "TWITTER";
+export const WEIBO = "WEIBO";
+export const LINE = "LINE";
+export const EMAIL_PASSWORD = "EMAIL_PASSWORD";
+export const PASSWORDLESS = "PASSWORDLESS";
+export const JWT = "JWT";
+
+export const AUTH_PROVIDERS: DisplayChoice[] = [
+  { key: GOOGLE, displayName: "Google" },
+  { key: FACEBOOK, displayName: "Facebook" },
+  { key: REDDIT, displayName: "Reddit" },
+  { key: DISCORD, displayName: "Discord" },
+  { key: TWITCH, displayName: "Twitch" },
+  { key: APPLE, displayName: "Apple" },
+  { key: GITHUB, displayName: "Github" },
+  { key: LINKEDIN, displayName: "Linkedin" },
+  { key: TWITTER, displayName: "Twitter" },
+  { key: WEIBO, displayName: "Weibo" },
+  { key: LINE, displayName: "Line" },
+  { key: EMAIL_PASSWORD, displayName: "Email Password" },
+  { key: PASSWORDLESS, displayName: "Passwordless" },
+  { key: JWT, displayName: "Custom JWT" },
 ];
+
+// Misc choices
 
 export const TOGGLE: DisplayChoice[] = [
   { key: "no", displayName: "No" },
   { key: "yes", displayName: "Yes" },
 ];
 
+export const DEFAULT = "DEFAULT";
+export const OPTIONAL = "OPTIONAL";
+export const MANDATORY = "MANDATORY";
+export const NONE = "NONE";
 
-export const RN_MODE: DisplayChoice[] = [
-  { key: "expo", displayName: "Expo" },
-  { key: "bare", displayName: "Bare React Native" },
+export const MFA: DisplayChoice[] = [
+  { key: DEFAULT, displayName: "Default" },
+  { key: OPTIONAL, displayName: "Optional" },
+  { key: MANDATORY, displayName: "Mandatory" },
+  { key: NONE, displayName: "None" },
 ];
-
-export enum MOBILE {
-  "android",
-  "ios",
-  "react-native",
-  "flutter",
-  "unity",
-}
