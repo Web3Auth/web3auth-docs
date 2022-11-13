@@ -1,35 +1,31 @@
 import { openloginAdapterVersion, web3authBaseVersion, web3authModalVersion, web3authSolanaProviderVersion } from "../../../common/versions";
+import { SOL, STARKEX, STARKNET, TEZOS } from "../builder/choices";
 
-export const getPackageJson = (
-  chain: "eth" | "sol" | "starkex" | "starknet" | "tezos",
-  isWhiteLabled: boolean,
-  isCustomAuth: boolean,
-  evmFramework: "ethers"
-) => {
+export const getPackageJson = (chain: string, isWhiteLabled: boolean, isCustomAuth: boolean, evmFramework: "ethers") => {
   let code = `
     // HIGHLIGHTSTART-installation
     "@web3auth/base": "^${web3authBaseVersion}",
     "@web3auth/modal": "^${web3authModalVersion}",`;
 
-  if (isWhiteLabled || isCustomAuth || chain === "starkex" || chain === "starknet" || chain === "tezos") {
+  if (isWhiteLabled || isCustomAuth || chain === STARKEX || chain === STARKNET || chain === TEZOS) {
     code += `
     "@web3auth/openlogin-adapter": "^${openloginAdapterVersion}",`;
   }
   switch (chain) {
-    case "sol":
+    case SOL:
       code += `
     "@web3auth/solana-provider": "^${web3authSolanaProviderVersion}",
     "@solana/web3.js": "^1.36.0",`;
       break;
 
-    case "starkex":
+    case STARKEX:
       code += `
     "@starkware-industries/starkex-js": "0.0.6",
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
     "elliptic": "^6.5.4",`;
       break;
 
-    case "starknet":
+    case STARKNET:
       code += `
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
     "elliptic": "^6.5.4",
@@ -37,7 +33,7 @@ export const getPackageJson = (
     "web3": "^1.7.0",`;
       break;
 
-    case "tezos":
+    case TEZOS:
       code += `
     "@taquito/signer": "^13.0.0",
     "@taquito/taquito": "^13.0.0",

@@ -1,3 +1,4 @@
+import { SOL, STARKEX, STARKNET, TEZOS } from "../choices";
 import {
   FILENAME_APP_TS,
   FILENAME_ETHERSRPC,
@@ -24,25 +25,25 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
   );
 
   switch (chain) {
-    case "sol":
+    case SOL:
       steps.push({
         ...STEPS.installationSolana,
         pointer: replacementAggregator.highlightRange(FILENAME_SOLANARPC, files[FILENAME_SOLANARPC], "installationSolana"),
       });
       break;
-    case "starkex":
+    case STARKEX:
       steps.push({
         ...STEPS.installationStarkEx,
         pointer: replacementAggregator.highlightRange(FILENAME_STARKEXRPC, files[FILENAME_STARKEXRPC], "installationStarkEx"),
       });
       break;
-    case "starknet":
+    case STARKNET:
       steps.push({
         ...STEPS.installationStarkNet,
         pointer: replacementAggregator.highlightRange(FILENAME_STARKNETRPC, files[FILENAME_STARKNETRPC], "installationStarkNet"),
       });
       break;
-    case "tezos":
+    case TEZOS:
       steps.push({
         ...STEPS.installationTezos,
         pointer: replacementAggregator.highlightRange(FILENAME_TEZOSRPC, files[FILENAME_TEZOSRPC], "installationTezos"),
@@ -111,25 +112,25 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
   );
 
   switch (chain) {
-    case "sol":
+    case SOL:
       steps.push({
         ...STEPS.solanaRPCFunctions,
         pointer: replacementAggregator.highlightRange(FILENAME_SOLANARPC, files[FILENAME_SOLANARPC], "solanaRPCFunctions"),
       });
       break;
-    case "starkex":
+    case STARKEX:
       steps.push({
         ...STEPS.starkExRPCFunctions,
         pointer: replacementAggregator.highlightRange(FILENAME_STARKEXRPC, files[FILENAME_STARKEXRPC], "starkExRPCFunctions"),
       });
       break;
-    case "starknet":
+    case STARKNET:
       steps.push({
         ...STEPS.starkNetRPCFunctions,
         pointer: replacementAggregator.highlightRange(FILENAME_STARKNETRPC, files[FILENAME_STARKNETRPC], "starkNetRPCFunctions"),
       });
       break;
-    case "tezos":
+    case TEZOS:
       steps.push({
         ...STEPS.tezosRPCFunctions,
         pointer: replacementAggregator.highlightRange(FILENAME_TEZOSRPC, files[FILENAME_TEZOSRPC], "tezosRPCFunctions"),

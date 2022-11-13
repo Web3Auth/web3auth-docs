@@ -1,3 +1,4 @@
+import { SOL } from "../choices";
 import { FILENAME_ETHERSRPC, FILENAME_INDEX_HTML, FILENAME_SOLANARPC, FILENAME_WEB3RPC } from "./filenames";
 import STEPS from "./stepContent";
 
@@ -52,7 +53,7 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
   );
 
   switch (chain) {
-    case "sol":
+    case SOL:
       steps.push({
         ...STEPS.solanaRPCFunctions,
         pointer: replacementAggregator.highlightRange(FILENAME_SOLANARPC, files[FILENAME_SOLANARPC], "solanaRPCFunctions"),
