@@ -1,5 +1,7 @@
 import { DisplayChoice } from "../interfaces";
 
+// Blockchain choices
+
 export const ETH = "ETH";
 export const SOL = "SOL";
 export const STARKEX = "STARKEX";
@@ -32,24 +34,6 @@ export enum EVM {
   "KLAY",
 }
 
-export const CHAINS: DisplayChoice[] = [
-  { key: ETH, displayName: "Ethereum" },
-  { key: SOL, displayName: "Solana" },
-  { key: STARKEX, displayName: "StarkEx" },
-  { key: STARKNET, displayName: "StarkNet" },
-  { key: MATIC, displayName: "Polygon" },
-  { key: BNB, displayName: "BNB Chain" },
-  { key: AVAX, displayName: "Avalanche" },
-  { key: ARB, displayName: "Arbitrum" },
-  { key: OP, displayName: "Optimism" },
-  { key: CRO, displayName: "Cronos" },
-  { key: ONE, displayName: "Harmony" },
-  { key: CELO, displayName: "Celo" },
-  { key: GLMR, displayName: "Moonbeam" },
-  { key: MOVR, displayName: "Moonriver" },
-  { key: KLAY, displayName: "Klaytn" },
-  { key: TEZOS, displayName: "Tezos" },
-];
 export enum OTHER_CHAINS {
   "STARKEX",
   "STARKNET",
@@ -72,6 +56,12 @@ export const CHAINS_HTML: DisplayChoice[] = [
   { key: KLAY, displayName: "Klaytn" },
 ];
 
+export const CHAINS: DisplayChoice[] = [
+  ...CHAINS_HTML,
+  { key: STARKEX, displayName: "StarkEx" },
+  { key: STARKNET, displayName: "StarkNet" },
+  { key: TEZOS, displayName: "Tezos" },
+];
 export const LANGS: DisplayChoice[] = [
   { key: "react", displayName: "React" },
   { key: "next", displayName: "Next JS" },
