@@ -14,16 +14,16 @@ import unity from "./unity";
 import vue from "./vue";
 
 const frameworks = {
-  html,
-  react,
-  next,
-  vue,
-  ios,
-  android,
-  flutter,
-  angular,
-  "react-native": react_native,
-  unity,
+  HTML: html,
+  REACT: react,
+  NEXT: next,
+  VUE: vue,
+  IOS: ios,
+  ANDROID: android,
+  FLUTTER: flutter,
+  ANGULAR: angular,
+  REACT_NATIVE: react_native,
+  UNITY: unity,
 };
 
 const builder: IntegrationBuilder = {

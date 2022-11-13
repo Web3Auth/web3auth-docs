@@ -1,3 +1,5 @@
+import { EXPO } from "../choices";
+
 export const FILENAME_APP_TSX = "frameworks/react-native/App.tsx";
 export const FILENAME_EXPO_PACKAGE_JSON = "frameworks/react-native/expo/package.json";
 export const FILENAME_BARE_PACKAGE_JSON = "frameworks/react-native/package.json";
@@ -7,17 +9,11 @@ export const FILENAME_ANDROID_MANIFEST = "frameworks/react-native/AndroidManifes
 export default function getFileNames(filenames, rnWorkflowMode) {
   filenames.push(FILENAME_APP_TSX);
 
-  const isExpo = rnWorkflowMode === "expo";
-
-  if (isExpo) {
+  if (rnWorkflowMode === EXPO) {
     filenames.push(FILENAME_EXPO_PACKAGE_JSON);
-  } else {
-    filenames.push(FILENAME_BARE_PACKAGE_JSON);
-  }
-
-  if (isExpo) {
     filenames.push(FILENAME_APP_JSON);
   } else {
+    filenames.push(FILENAME_BARE_PACKAGE_JSON);
     filenames.push(FILENAME_ANDROID_MANIFEST);
   }
 }

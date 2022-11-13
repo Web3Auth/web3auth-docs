@@ -1,5 +1,7 @@
-export const getModuleImportRN = (mode: "expo" | "bare") => {
-  if (mode === "expo") {
+import { EXPO } from "../../choices";
+
+export const getModuleImportRN = (mode: string) => {
+  if (mode === EXPO) {
     return `
 import { StyleSheet, Text, View, Button } from "react-native";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";

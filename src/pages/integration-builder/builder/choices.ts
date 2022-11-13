@@ -62,17 +62,48 @@ export const CHAINS: DisplayChoice[] = [
   { key: STARKNET, displayName: "StarkNet" },
   { key: TEZOS, displayName: "Tezos" },
 ];
+
+// Platform choices
+
+export const REACT = "REACT";
+export const NEXT = "NEXT";
+export const VUE = "VUE";
+export const ANGULAR = "ANGULAR";
+export const HTML = "HTML";
+export const ANDROID = "ANDROID";
+export const IOS = "IOS";
+export const REACT_NATIVE = "REACT_NATIVE";
+export const FLUTTER = "FLUTTER";
+export const UNITY = "UNITY";
+
 export const LANGS: DisplayChoice[] = [
-  { key: "react", displayName: "React" },
-  { key: "next", displayName: "Next JS" },
-  { key: "vue", displayName: "Vue" },
-  { key: "angular", displayName: "Angular" },
-  { key: "html", displayName: "HTML/JS" },
-  { key: "android", displayName: "Android" },
-  { key: "ios", displayName: "iOS/Swift" },
-  { key: "react-native", displayName: "React Native" },
-  { key: "flutter", displayName: "Flutter" },
-  { key: "unity", displayName: "Unity" },
+  { key: REACT, displayName: "React" },
+  { key: NEXT, displayName: "Next JS" },
+  { key: VUE, displayName: "Vue" },
+  { key: ANGULAR, displayName: "Angular" },
+  { key: HTML, displayName: "HTML/JS" },
+  { key: ANDROID, displayName: "Android" },
+  { key: IOS, displayName: "iOS/Swift" },
+  { key: REACT_NATIVE, displayName: "React Native" },
+  { key: FLUTTER, displayName: "Flutter" },
+  { key: UNITY, displayName: "Unity" },
+];
+
+export enum MOBILE {
+  "ANDROID",
+  "IOS",
+  "REACT_NATIVE",
+  "FLUTTER",
+  "UNITY",
+}
+
+export const EXPO = "EXPO";
+export const BARE_RN = "BARE_RN";
+
+export const RN_MODE: DisplayChoice[] = [
+  { key: "EXPO", displayName: "Expo Managed" },
+  { key: "BARE_RN", displayName: "Bare React Native" },
+];
 ];
 
 export const TOGGLE: DisplayChoice[] = [
