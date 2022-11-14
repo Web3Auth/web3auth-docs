@@ -1,11 +1,12 @@
 import { PLACEHOLDERS } from "../../commonCode";
+import { YES } from "../choices";
 import { FILENAME_INDEX_HTML } from "./filenames";
 import { getConstructorCodeHTML, getInitCodeHTML, getOpenloginAdapterHTML, getScriptImport } from "./replacementCode";
 
 export default function getUpdatedFiles(files, whitelabel, customAuth, chain, evmFramework, replacementAggregator) {
   const newFiles = files;
 
-  const ConstructorCodeHTML = getConstructorCodeHTML(chain, whitelabel === "yes");
+  const ConstructorCodeHTML = getConstructorCodeHTML(chain, whitelabel === YES);
   newFiles[FILENAME_INDEX_HTML] = replacementAggregator.replaceFileVariable(
     files[FILENAME_INDEX_HTML],
     FILENAME_INDEX_HTML,
@@ -13,7 +14,7 @@ export default function getUpdatedFiles(files, whitelabel, customAuth, chain, ev
     ConstructorCodeHTML
   );
 
-  const InitCodeHTML = getInitCodeHTML(whitelabel === "yes");
+  const InitCodeHTML = getInitCodeHTML(whitelabel === YES);
   newFiles[FILENAME_INDEX_HTML] = replacementAggregator.replaceFileVariable(
     files[FILENAME_INDEX_HTML],
     FILENAME_INDEX_HTML,
@@ -21,7 +22,7 @@ export default function getUpdatedFiles(files, whitelabel, customAuth, chain, ev
     InitCodeHTML
   );
 
-  const OpenloginAdapterHTML = getOpenloginAdapterHTML(whitelabel === "yes", customAuth === "yes");
+  const OpenloginAdapterHTML = getOpenloginAdapterHTML(whitelabel === YES, customAuth === YES);
   newFiles[FILENAME_INDEX_HTML] = replacementAggregator.replaceFileVariable(
     files[FILENAME_INDEX_HTML],
     FILENAME_INDEX_HTML,
@@ -29,7 +30,7 @@ export default function getUpdatedFiles(files, whitelabel, customAuth, chain, ev
     OpenloginAdapterHTML
   );
 
-  const ScriptImport = getScriptImport(chain, whitelabel === "yes", customAuth === "yes", evmFramework);
+  const ScriptImport = getScriptImport(chain, whitelabel === YES, customAuth === YES, evmFramework);
   newFiles[FILENAME_INDEX_HTML] = replacementAggregator.replaceFileVariable(
     files[FILENAME_INDEX_HTML],
     FILENAME_INDEX_HTML,

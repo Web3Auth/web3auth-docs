@@ -10,6 +10,7 @@ import { AiOutlineCheck, AiOutlineLink } from "react-icons/ai";
 import SEO from "../../components/SEO";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
 import builder from "./builder";
+import { NO, YES } from "./builder/choices";
 import styles from "./styles.module.css";
 
 const getWindowLocation = () => {
@@ -41,7 +42,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
 
   const onChangeOptionValue = (optionKey: string, event: ChangeEvent<HTMLInputElement>) => {
     const el = event.target as HTMLInputElement;
-    const finalOptionValue = el.checked ? "yes" : "no";
+    const finalOptionValue = el.checked ? YES : NO;
 
     setBuilderOptions({
       ...builderOptions,
@@ -151,7 +152,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                 {option.type === "toggle" ? (
                   <div>
                     <label className={styles.switch}>
-                      <input type="checkbox" checked={builderOptions[key] === "yes"} onChange={(e) => onChangeOptionValue(key, e)} />
+                      <input type="checkbox" checked={builderOptions[key] === YES} onChange={(e) => onChangeOptionValue(key, e)} />
                       <span className={styles.slider} />
                     </label>
                   </div>

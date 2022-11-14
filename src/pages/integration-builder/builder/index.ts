@@ -18,6 +18,7 @@ import {
   REACT_NATIVE,
   RN_MODE,
   TOGGLE,
+  YES,
 } from "./choices";
 import flutter from "./flutter";
 import highlight from "./highlight";
@@ -198,7 +199,7 @@ const builder: IntegrationBuilder = {
           choices: CUSTOM_AUTH_MOBILE,
         },
       };
-    } else if (finalValues.useModal !== "yes") {
+    } else if (finalValues.useModal !== YES) {
       this.options = {
         ...this.options,
         customAuth: {
