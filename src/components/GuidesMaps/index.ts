@@ -354,7 +354,7 @@ export const referenceMap = [
     image: "/docs/contents/guides/banners/immutablex.png",
     type: "REFERENCE",
     tags: ["immutablex", "@web3auth/modal", "@web3auth/core"],
-    date: "3rd Oct 2022",
+    date: "14th Nov 2022",
     author: "Web3Auth Team",
     order: 1,
     link: "/docs/connect-blockchain/immutablex",
