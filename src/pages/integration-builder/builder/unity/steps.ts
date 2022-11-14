@@ -1,7 +1,7 @@
 import { FILENAME_MANIFEST, FILENAME_WEB3AUTH } from "./filenames";
 import STEPS from "./stepContent";
 
-export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuthentication, mfa) {
+export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth, mfa) {
   steps.push(
     {
       ...STEPS.installation,
@@ -22,7 +22,7 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
       pointer: replacementAggregator.highlightRange(FILENAME_WEB3AUTH, files[FILENAME_WEB3AUTH], "whiteLabeling"),
     });
   }
-  if (customAuthentication === "yes") {
+  if (customAuth === "yes") {
     steps.push({
       ...STEPS.CustomAuthentication,
       pointer: replacementAggregator.highlightRange(FILENAME_WEB3AUTH, files[FILENAME_WEB3AUTH], "CustomAuthentication"),

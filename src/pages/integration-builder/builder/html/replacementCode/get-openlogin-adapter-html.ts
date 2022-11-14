@@ -18,7 +18,7 @@ export const getOpenloginAdapterHTML = (isWhiteLabled: boolean, isCustomAuth: bo
 
   if (isCustomAuth) {
     loginConfig = `
-          // HIGHLIGHTSTART-customAuthenticationStep
+          // HIGHLIGHTSTART-customAuthStep
           loginConfig: {
             // Add login configs corresponding to the providers on modal
             // Google login
@@ -37,7 +37,7 @@ export const getOpenloginAdapterHTML = (isWhiteLabled: boolean, isCustomAuth: bo
             },
             // Add other login providers here
           },
-          // HIGHLIGHTEND-customAuthenticationStep`;
+          // HIGHLIGHTEND-customAuthStep`;
   }
 
   if (isWhiteLabled || isCustomAuth) {

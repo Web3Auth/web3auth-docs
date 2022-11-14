@@ -129,8 +129,10 @@ export const LINE = "LINE";
 export const EMAIL_PASSWORD = "EMAIL_PASSWORD";
 export const PASSWORDLESS = "PASSWORDLESS";
 export const JWT = "JWT";
+export const NONE = "NONE";
 
 export const AUTH_PROVIDERS: DisplayChoice[] = [
+  { key: NONE, displayName: "None" },
   { key: GOOGLE, displayName: "Google" },
   { key: FACEBOOK, displayName: "Facebook" },
   { key: REDDIT, displayName: "Reddit" },
@@ -149,6 +151,9 @@ export const AUTH_PROVIDERS: DisplayChoice[] = [
 
 // Misc choices
 
+export const NO = "NO";
+export const YES = "YES";
+
 export const TOGGLE: DisplayChoice[] = [
   { key: "no", displayName: "No" },
   { key: "yes", displayName: "Yes" },
@@ -157,7 +162,6 @@ export const TOGGLE: DisplayChoice[] = [
 export const DEFAULT = "DEFAULT";
 export const OPTIONAL = "OPTIONAL";
 export const MANDATORY = "MANDATORY";
-export const NONE = "NONE";
 
 export const MFA: DisplayChoice[] = [
   { key: DEFAULT, displayName: "Default" },

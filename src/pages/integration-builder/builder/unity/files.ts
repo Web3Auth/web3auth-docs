@@ -2,10 +2,10 @@ import { PLACEHOLDERS } from "../../commonCode";
 import { FILENAME_WEB3AUTH } from "./filenames";
 import { getLoginCode, getWeb3AuthOptions } from "./replacementCode";
 
-export default function getUpdatedFiles(files, whitelabel, customAuthentication, mfa, replacementAggregator) {
+export default function getUpdatedFiles(files, whitelabel, customAuth, mfa, replacementAggregator) {
   const newFiles = files;
 
-  const Web3AuthOptions = getWeb3AuthOptions(whitelabel === "yes", customAuthentication === "yes");
+  const Web3AuthOptions = getWeb3AuthOptions(whitelabel === "yes", customAuth === "yes");
   newFiles[FILENAME_WEB3AUTH] = replacementAggregator.replaceFileVariable(
     files[FILENAME_WEB3AUTH],
     FILENAME_WEB3AUTH,

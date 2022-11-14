@@ -1,4 +1,4 @@
-import * as customAuthenticationStep from "../../../commonSteps/customAuthenticationStep.mdx";
+import * as customAuthStep from "../../../commonSteps/customAuthStep.mdx";
 import * as getUserInfo from "../../../commonSteps/getUserInfo.mdx";
 import * as importModules from "../../../commonSteps/importModules.mdx";
 import * as importModulesCustom from "../../../commonSteps/importModulesCustom.mdx";
@@ -38,7 +38,7 @@ const STEPS = toSteps({
   instantiateSDK,
   instantiateSDKWhitelabeled,
   whiteLabeling,
-  customAuthenticationStep,
+  customAuthStep,
   initialize,
   login,
   getUserInfo,

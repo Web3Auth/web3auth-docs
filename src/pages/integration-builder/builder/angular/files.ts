@@ -2,7 +2,7 @@ import { getInitCode, getModuleImport, getOpenloginAdapter, getPackageJson, PLAC
 import { FILENAME_APP_HTML, FILENAME_APP_TS, FILENAME_PACKAGE_JSON } from "./filenames";
 import { getConstructorCodeAngular, getRPCFunctionsAngular, getRPCFunctionsButtonsAngular } from "./replacementCode";
 
-export default function getUpdatedFiles(files, whitelabel, customAuthentication, chain, evmFramework, replacementAggregator) {
+export default function getUpdatedFiles(files, whitelabel, customAuth, chain, evmFramework, replacementAggregator) {
   const newFiles = files;
 
   const ConstructorCodeAngular = getConstructorCodeAngular(chain, whitelabel === "yes");
@@ -16,7 +16,7 @@ export default function getUpdatedFiles(files, whitelabel, customAuthentication,
   const InitCode = getInitCode(whitelabel === "yes");
   newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(files[FILENAME_APP_TS], FILENAME_APP_TS, PLACEHOLDERS.INIT_CODE, InitCode);
 
-  const ModuleImport = getModuleImport(chain, whitelabel === "yes", customAuthentication === "yes", evmFramework);
+  const ModuleImport = getModuleImport(chain, whitelabel === "yes", customAuth === "yes", evmFramework);
   newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(
     files[FILENAME_APP_TS],
     FILENAME_APP_TS,
@@ -24,7 +24,7 @@ export default function getUpdatedFiles(files, whitelabel, customAuthentication,
     ModuleImport
   );
 
-  const OpenloginAdapter = getOpenloginAdapter(chain, whitelabel === "yes", customAuthentication === "yes");
+  const OpenloginAdapter = getOpenloginAdapter(chain, whitelabel === "yes", customAuth === "yes");
   newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(
     files[FILENAME_APP_TS],
     FILENAME_APP_TS,
@@ -32,7 +32,7 @@ export default function getUpdatedFiles(files, whitelabel, customAuthentication,
     OpenloginAdapter
   );
 
-  const PackageJson = getPackageJson(chain, whitelabel === "yes", customAuthentication === "yes", evmFramework);
+  const PackageJson = getPackageJson(chain, whitelabel === "yes", customAuth === "yes", evmFramework);
   newFiles[FILENAME_PACKAGE_JSON] = replacementAggregator.replaceFileVariable(
     files[FILENAME_PACKAGE_JSON],
     FILENAME_PACKAGE_JSON,

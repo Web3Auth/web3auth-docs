@@ -2,7 +2,7 @@ import { PLACEHOLDERS } from "../../commonCode";
 import { FILENAME_INDEX_HTML } from "./filenames";
 import { getConstructorCodeHTML, getInitCodeHTML, getOpenloginAdapterHTML, getScriptImport } from "./replacementCode";
 
-export default function getUpdatedFiles(files, whitelabel, customAuthentication, chain, evmFramework, replacementAggregator) {
+export default function getUpdatedFiles(files, whitelabel, customAuth, chain, evmFramework, replacementAggregator) {
   const newFiles = files;
 
   const ConstructorCodeHTML = getConstructorCodeHTML(chain, whitelabel === "yes");
@@ -21,7 +21,7 @@ export default function getUpdatedFiles(files, whitelabel, customAuthentication,
     InitCodeHTML
   );
 
-  const OpenloginAdapterHTML = getOpenloginAdapterHTML(whitelabel === "yes", customAuthentication === "yes");
+  const OpenloginAdapterHTML = getOpenloginAdapterHTML(whitelabel === "yes", customAuth === "yes");
   newFiles[FILENAME_INDEX_HTML] = replacementAggregator.replaceFileVariable(
     files[FILENAME_INDEX_HTML],
     FILENAME_INDEX_HTML,
@@ -29,7 +29,7 @@ export default function getUpdatedFiles(files, whitelabel, customAuthentication,
     OpenloginAdapterHTML
   );
 
-  const ScriptImport = getScriptImport(chain, whitelabel === "yes", customAuthentication === "yes", evmFramework);
+  const ScriptImport = getScriptImport(chain, whitelabel === "yes", customAuth === "yes", evmFramework);
   newFiles[FILENAME_INDEX_HTML] = replacementAggregator.replaceFileVariable(
     files[FILENAME_INDEX_HTML],
     FILENAME_INDEX_HTML,

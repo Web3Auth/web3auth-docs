@@ -20,7 +20,7 @@ export const getOpenloginAdapter = (chain: string, isWhiteLabled: boolean, isCus
 
   if (isCustomAuth) {
     loginConfig = `
-          // HIGHLIGHTSTART-customAuthenticationStep
+          // HIGHLIGHTSTART-customAuthStep
           loginConfig: {
             // Add login configs corresponding to the providers on modal
             // Google login
@@ -39,7 +39,7 @@ export const getOpenloginAdapter = (chain: string, isWhiteLabled: boolean, isCus
             },
             // Add other login providers here
           },
-          // HIGHLIGHTEND-customAuthenticationStep`;
+          // HIGHLIGHTEND-customAuthStep`;
   }
 
   if (isWhiteLabled || isCustomAuth || chain in OTHER_CHAINS) {

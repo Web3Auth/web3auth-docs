@@ -11,7 +11,7 @@ import {
 } from "./filenames";
 import STEPS from "./stepContent";
 
-export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuthentication, evmFramework, chain) {
+export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth, evmFramework, chain) {
   steps.push({
     ...STEPS.buildingApp,
     pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "buildingApp"),
@@ -82,10 +82,10 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
     });
   }
 
-  if (customAuthentication === "yes") {
+  if (customAuth === "yes") {
     steps.push({
-      ...STEPS.customAuthenticationStep,
-      pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "customAuthenticationStep"),
+      ...STEPS.customAuthStep,
+      pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "customAuthStep"),
     });
   }
 

@@ -1,7 +1,7 @@
 import { FILENAME_ANDROIDMANIFEST, FILENAME_BUILDGRADLE, FILENAME_MAINACTIVITY, FILENAME_SETTINGSGRADLE, FILENAME_STRINGS } from "./filenames";
 import STEPS from "./stepContent";
 
-export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuthentication, mfa) {
+export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth, mfa) {
   steps.push(
     {
       ...STEPS.installationAndroid,
@@ -38,7 +38,7 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "whiteLabeling"),
     });
   }
-  if (customAuthentication === "yes") {
+  if (customAuth === "yes") {
     steps.push({
       ...STEPS.CustomAuthentication,
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "CustomAuthentication"),
