@@ -154,12 +154,12 @@ export const CUSTOM_AUTH_MOBILE: DisplayChoice[] = [...CUSTOM_AUTH, { key: JWT, 
 
 // Misc choices
 
-export const NO = "NO";
 export const YES = "YES";
+export const NO = "NO";
 
 export const TOGGLE: DisplayChoice[] = [
-  { key: "no", displayName: "No" },
-  { key: "yes", displayName: "Yes" },
+  { key: NO, displayName: "No" },
+  { key: YES, displayName: "Yes" },
 ];
 
 export const DEFAULT = "DEFAULT";

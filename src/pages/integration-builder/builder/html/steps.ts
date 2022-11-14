@@ -1,4 +1,4 @@
-import { ETHERS, SOL } from "../choices";
+import { ETHERS, SOL, YES } from "../choices";
 import { FILENAME_ETHERSRPC, FILENAME_INDEX_HTML, FILENAME_SOLANARPC, FILENAME_WEB3RPC } from "./filenames";
 import STEPS from "./stepContent";
 
@@ -23,14 +23,14 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
     }
   );
 
-  if (whitelabel === "yes") {
+  if (whitelabel === YES) {
     steps.push({
       ...STEPS.whiteLabeling,
       pointer: replacementAggregator.highlightRange(FILENAME_INDEX_HTML, files[FILENAME_INDEX_HTML], "whiteLabeling"),
     });
   }
 
-  if (customAuth === "yes") {
+  if (customAuth === YES) {
     steps.push({
       ...STEPS.customAuthStep,
       pointer: replacementAggregator.highlightRange(FILENAME_INDEX_HTML, files[FILENAME_INDEX_HTML], "customAuthStep"),

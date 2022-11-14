@@ -1,11 +1,12 @@
 import { PLACEHOLDERS } from "../../commonCode";
+import { YES } from "../choices";
 import { FILENAME_APP_TSX } from "./filenames";
 import { getConstructorCodeRN, getInitCodeRN, getModuleImportRN, getResolvedRedirectUrl } from "./replacementCode";
 
 export default function getUpdatedFiles(files, whitelabel, customAuth, rnWorkflowMode, replacementAggregator) {
   const newFiles = files;
 
-  const ConstructorCodeRN = getConstructorCodeRN(whitelabel === "yes", customAuth === "yes");
+  const ConstructorCodeRN = getConstructorCodeRN(whitelabel === YES, customAuth === YES);
   newFiles[FILENAME_APP_TSX] = replacementAggregator.replaceFileVariable(
     files[FILENAME_APP_TSX],
     FILENAME_APP_TSX,
@@ -13,7 +14,7 @@ export default function getUpdatedFiles(files, whitelabel, customAuth, rnWorkflo
     ConstructorCodeRN
   );
 
-  const InitCodeRN = getInitCodeRN(customAuth === "yes");
+  const InitCodeRN = getInitCodeRN(customAuth === YES);
   newFiles[FILENAME_APP_TSX] = replacementAggregator.replaceFileVariable(
     files[FILENAME_APP_TSX],
     FILENAME_APP_TSX,

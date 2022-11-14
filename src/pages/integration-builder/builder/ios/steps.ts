@@ -1,3 +1,4 @@
+import { YES } from "../choices";
 import { FILENAME_CONTENTVIEW, FILENAME_PODFILE, FILENAME_WEB3AUTH_PLIST } from "./filenames";
 import STEPS from "./stepContent";
 
@@ -15,7 +16,7 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
       ...STEPS.instantiate,
       pointer: replacementAggregator.highlightRange(FILENAME_CONTENTVIEW, files[FILENAME_CONTENTVIEW], "instantiate"),
     },
-    customAuth === "yes"
+    customAuth === YES
       ? {
           ...STEPS.loginWithJwt,
           pointer: replacementAggregator.highlightRange(FILENAME_CONTENTVIEW, files[FILENAME_CONTENTVIEW], "loginWithJwt"),

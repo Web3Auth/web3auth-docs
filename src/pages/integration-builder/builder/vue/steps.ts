@@ -1,4 +1,4 @@
-import { ETHERS, SOL, STARKEX, STARKNET, TEZOS } from "../choices";
+import { ETHERS, SOL, STARKEX, STARKNET, TEZOS, YES } from "../choices";
 import {
   FILENAME_ETHERSRPC,
   FILENAME_HOME_VUE,
@@ -82,14 +82,14 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
     }
   );
 
-  if (whitelabel === "yes") {
+  if (whitelabel === YES) {
     steps.push({
       ...STEPS.whiteLabeling,
       pointer: replacementAggregator.highlightRange(FILENAME_HOME_VUE, files[FILENAME_HOME_VUE], "whiteLabeling"),
     });
   }
 
-  if (customAuth === "yes") {
+  if (customAuth === YES) {
     steps.push({
       ...STEPS.customAuthStep,
       pointer: replacementAggregator.highlightRange(FILENAME_HOME_VUE, files[FILENAME_HOME_VUE], "customAuthStep"),

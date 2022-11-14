@@ -1,3 +1,4 @@
+import { YES } from "../choices";
 import { FILENAME_MANIFEST, FILENAME_WEB3AUTH } from "./filenames";
 import STEPS from "./stepContent";
 
@@ -16,19 +17,19 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
       pointer: replacementAggregator.highlightRange(FILENAME_WEB3AUTH, files[FILENAME_WEB3AUTH], "instantiate"),
     }
   );
-  if (whitelabel === "yes") {
+  if (whitelabel === YES) {
     steps.push({
       ...STEPS.whiteLabeling,
       pointer: replacementAggregator.highlightRange(FILENAME_WEB3AUTH, files[FILENAME_WEB3AUTH], "whiteLabeling"),
     });
   }
-  if (customAuth === "yes") {
+  if (customAuth === YES) {
     steps.push({
       ...STEPS.CustomAuthentication,
       pointer: replacementAggregator.highlightRange(FILENAME_WEB3AUTH, files[FILENAME_WEB3AUTH], "CustomAuthentication"),
     });
   }
-  if (mfa === "yes") {
+  if (mfa === YES) {
     steps.push({
       ...STEPS.multiFactorAuthentication,
       pointer: replacementAggregator.highlightRange(FILENAME_WEB3AUTH, files[FILENAME_WEB3AUTH], "multiFactorAuthentication"),

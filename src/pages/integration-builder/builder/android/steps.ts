@@ -1,3 +1,4 @@
+import { YES } from "../choices";
 import { FILENAME_ANDROIDMANIFEST, FILENAME_BUILDGRADLE, FILENAME_MAINACTIVITY, FILENAME_SETTINGSGRADLE, FILENAME_STRINGS } from "./filenames";
 import STEPS from "./stepContent";
 
@@ -32,19 +33,19 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "instantiate"),
     }
   );
-  if (whitelabel === "yes") {
+  if (whitelabel === YES) {
     steps.push({
       ...STEPS.whiteLabeling,
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "whiteLabeling"),
     });
   }
-  if (customAuth === "yes") {
+  if (customAuth === YES) {
     steps.push({
       ...STEPS.CustomAuthentication,
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "CustomAuthentication"),
     });
   }
-  if (mfa === "yes") {
+  if (mfa === YES) {
     steps.push({
       ...STEPS.multiFactorAuthentication,
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "multiFactorAuthentication"),
