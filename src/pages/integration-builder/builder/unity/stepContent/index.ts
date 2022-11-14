@@ -1,5 +1,5 @@
 import { toSteps } from "../../../utils";
-import * as CustomAuthentication from "./customAuthentication.mdx";
+import * as CustomAuthentication from "./customAuth.mdx";
 import * as getUserInfo from "./getUserInfo.mdx";
 import * as installation from "./installation.mdx";
 import * as instantiate from "./instantiateSDK.mdx";

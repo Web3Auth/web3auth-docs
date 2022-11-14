@@ -2,7 +2,7 @@ import { ETHERS, SOL } from "../choices";
 import { FILENAME_ETHERSRPC, FILENAME_INDEX_HTML, FILENAME_SOLANARPC, FILENAME_WEB3RPC } from "./filenames";
 import STEPS from "./stepContent";
 
-export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuthentication, evmFramework, chain) {
+export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth, evmFramework, chain) {
   steps.push({
     ...STEPS.usingQuickStart,
     pointer: replacementAggregator.highlightRange(FILENAME_INDEX_HTML, files[FILENAME_INDEX_HTML], "usingQuickStart"),
@@ -30,10 +30,10 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
     });
   }
 
-  if (customAuthentication === "yes") {
+  if (customAuth === "yes") {
     steps.push({
-      ...STEPS.customAuthenticationStep,
-      pointer: replacementAggregator.highlightRange(FILENAME_INDEX_HTML, files[FILENAME_INDEX_HTML], "customAuthenticationStep"),
+      ...STEPS.customAuthStep,
+      pointer: replacementAggregator.highlightRange(FILENAME_INDEX_HTML, files[FILENAME_INDEX_HTML], "customAuthStep"),
     });
   }
 

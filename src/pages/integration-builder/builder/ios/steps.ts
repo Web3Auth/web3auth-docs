@@ -1,7 +1,7 @@
 import { FILENAME_CONTENTVIEW, FILENAME_PODFILE, FILENAME_WEB3AUTH_PLIST } from "./filenames";
 import STEPS from "./stepContent";
 
-export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuthentication) {
+export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth) {
   steps.push(
     {
       ...STEPS.installationIOS,
@@ -15,7 +15,7 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
       ...STEPS.instantiate,
       pointer: replacementAggregator.highlightRange(FILENAME_CONTENTVIEW, files[FILENAME_CONTENTVIEW], "instantiate"),
     },
-    customAuthentication === "yes"
+    customAuth === "yes"
       ? {
           ...STEPS.loginWithJwt,
           pointer: replacementAggregator.highlightRange(FILENAME_CONTENTVIEW, files[FILENAME_CONTENTVIEW], "loginWithJwt"),
