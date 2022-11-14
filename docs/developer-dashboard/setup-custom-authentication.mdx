@@ -5,46 +5,72 @@ displayed_sidebar: docs
 description: "Setup Custom Authentication | Documentation - Web3Auth"
 ---
 
-import Image6 from "@site/static/dashboard/custom_auth.png";
-import Image7 from "@site/static/dashboard/verifier.png";
+This is the Custom Authentication section of the dashboard. It is where you can create a new Custom Authentication Verifier.
 
-This is the Custom Authentication section of the dashboard. It is where you can create a new Custom Authentication verifier.
+But before understanding about custom authentication, let us see **What is a Verifier?**
 
-Custom Authentication refers to the capability of hooking up your own custom authentication flow with Web3Auth. This gives you the flexibility of
-using any authentication/ verification flow you want, providing us the verification token and the user details, and let Web3Auth do the rest.
+A verifier is a piece of information about the OAuth provider being used by the application, which is queried by web3auth auth network nodes from a
+smart contract deployed on the Ethereum blockchain to verify the JWT token.
 
-The Custom Authentication Dashboard looks something like this:
+There are two types of `Verifiers` at Web3Auth:
 
-<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
-  <img src={Image6} style={{ alignSelf: "center", maxWidth: "100%" }} />
-</div>
-<br />
+1. `Default Verifiers`: These are the verifiers associated with OAuth providers(Google, Facebook, Apple etc) which are owned and managed by Web3Auth's
+   account.
+2. `Custom Verifiers`: If you want to manage your OAuth providers(Google, Facebook, Apple etc) yourself or to use some Federated Identity Providers
+   like Auth0, Firebase, AWS Cognito, Okta etc, or even your Custom JWT Authentication, you'll need to create a verifier on the Web3Auth's dashboard.
 
-To get started, you need to create a verifier to let user login with your custom authentication flow. Verifier scripts determine the access structure
-to your users keys and the set Verifier Scripts chosen determine which logins your application will ultimately use. You can read more about verifiers
-[here](/custom-authentication/verifiers.mdx)
+`Custom Verifier` is needed to let the user login with your custom authentication flow. The Public/Private keys generated for a user are scoped to a
+verifier. Verifier scripts determine the access structure to your user's keys, and the set Verifier scripts are chosen to determine which logins your
+application will ultimately use.
 
-## Creating a Verifier
+You can read more about verifiers [in this blog post](https://medium.com/toruslabs/key-assignments-resolution-and-retrieval-afb984500612) or
+[in this GitHub discussion](https://github.com/orgs/Web3Auth/discussions/427#discussioncomment-3442052).
 
-Once you click on the Create Verifier button, you'll see a toggle similar to this:
+The `Custom Auth` Dashboard looks something like this:
 
-<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
-  <img src={Image7} style={{ alignSelf: "center", maxWidth: "100%" }} />
-</div>
-<br />
+![Custom Authentication Dashboard](/dashboard/custom_auth.png)
+
+## Create Verifier
+
+---
+
+Once you click on the `Create Verifier` button, you'll see a toggle similar to this:
+
+![Verifier Modal on Web3Auth Dashboard](/dashboard/verifiers/verifier-modal.png)
+
 To create a verifier, you need to input the following details:
 
 ### Verifier identifier
 
 The identifier for your verifier. This is used to identify your verifier in the Web3Auth dashboard. You'll need this while initialising the
-Web3AuthCore SDK for setting up custom login.
+`Web3Auth`/`Web3AuthCore` SDK for setting up the custom authentication.
 
-### Select Network
+### Select Environment
 
-Select between `testnet` and `mainnet`. `testnet` is a sandbox environment for developers to experiment. People usually test and finish their
-integration here. `mainnet` is production environment for scalable applications.
+Select between `testnet`, `mainnet`, and `cyan`.
 
-### Verifier Type
+- `testnet` is a sandbox environment for developers to experiment. People usually test and finish their integration here.
+- `mainnet` & `cyan` is the production environment for scalable applications.
 
-Select the type of verifier you want to create. We've pre provided a few common flows you can choose from, but you can also choose `Custom` and
-provide all the JWT details.
+### Login Provider
+
+Select the Login Provider from the list to create a verifier of that type.
+
+The following are the list we have on our Dashboard, if something you're loooking is not available in the list, choose `Custom` and provide the JWT
+details.
+
+![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
+
+**Login Providers Setup**
+
+- [Google](/custom-authentication/social-providers/google)
+
+- [Facebook](/custom-authentication/social-providers/facebook)
+
+- [Twitch](/custom-authentication/social-providers/twitch)
+
+- [Discord](/custom-authentication/social-providers/discord)
+
+- [Auth0](/custom-authentication/federated-identity-providers#auth0)
+
+- [Custom JWT](/custom-authentication/byo-jwt-providers)
