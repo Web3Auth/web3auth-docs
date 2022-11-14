@@ -18,7 +18,7 @@ defaultValue="EVM"
 values={[
   { label: "EVM", value: "EVM" },
   { label: "Solana", value: "solana" },
-  { label: "Other", value: "other" },
+  { label: "Other Chains", value: "other" },
 ]}
 >
 <TabItem value="EVM">
@@ -31,14 +31,14 @@ const web3auth = new Web3Auth({
   clientId, // get from https://dashboard.web3auth.io
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth",
+    chainId: "0x1", // EVM chain's Chain ID
+    rpcTarget: "https://rpc.ankr.com/eth", // EVM chain's RPC endpoint
     // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Ethereum Mainnet",
-    blockExplorer: "https://etherscan.io/",
-    ticker: "ETH",
-    tickerName: "Ethereum",
+    // Use services like Infura, Quicknode, Alchemy, Ankr etc.
+    displayName: "Ethereum Mainnet", // EVM chain's Name
+    blockExplorer: "https://etherscan.io/", // EVM chain's Blockexplorer
+    ticker: "ETH", // EVM chain's Ticker
+    tickerName: "Ethereum", // EVM chain's Ticker Name
   },
 });
 
@@ -144,25 +144,31 @@ can follow our API Reference to know more about how to use these providers with 
 
 ---
 
-Web3Auth providers give you a standard way of interacting with the blockchain. However, alongside that, it is recommended to use JSON RPC APIs, which help you connect to the blockchain without the need to run your own instance/ nodes. There are many services which offer a web API for accessing different blockchains:
+Web3Auth providers give you a standard way of interacting with the blockchain. However, alongside that, it is recommended to use JSON RPC APIs, which
+help you connect to the blockchain without the need to run your own instance/ nodes. There are many services which offer a web API for accessing
+different blockchains:
 
 #### Infura
 
-[Infura](https://infura.io) is the leading platform for Ethereum infrastructure. It provides a gateway to the Ethereum network, allowing developers to build and scale decentralized applications without having to run their own infrastructure. Most of the Web3Auth backend infrastructure runs on Infura APIs.
+[Infura](https://infura.io) is the leading platform for Ethereum infrastructure. It provides a gateway to the Ethereum network, allowing developers to
+build and scale decentralized applications without having to run their own infrastructure. Most of the Web3Auth backend infrastructure runs on Infura
+APIs.
 
 #### Quicknode
 
-[Quicknode](https://www.quicknode.com/) is a managed blockchain node service that provides high-performance access to 15+ blockchains, including Ethereum, Gnosis (xDAI), Polygon, Binance Smart Chain, Avalanche, Fantom, Solana, Optimism, Arbitrum (+Nova), Algorand, Harmony, Celo, Terra and Bitcoin networks. They're the biggest node providers for the Solana Ecosystem, and our major partners for Solana infrastructure.
+[Quicknode](https://www.quicknode.com/) is a managed blockchain node service that provides high-performance access to 15+ blockchains, including
+Ethereum, Gnosis (xDAI), Polygon, Binance Smart Chain, Avalanche, Fantom, Solana, Optimism, Arbitrum (+Nova), Algorand, Harmony, Celo, Terra and
+Bitcoin networks. They're the biggest node providers for the Solana Ecosystem, and our major partners for Solana infrastructure.
 
 #### Alchemy
 
-As a developer platform, [Alchemy](https://www.alchemy.com/) provides a suite of developer toolings and abstractions including JSON RPC APIs across all major chains, an ethers.js SDK, and a library of [enhanced APIs](https://docs.alchemy.com/reference/enhanced-apis-overview) like their NFT APIs.
+As a developer platform, [Alchemy](https://www.alchemy.com/) provides a suite of developer toolings and abstractions including JSON RPC APIs across
+all major chains, an ethers.js SDK, and a library of [enhanced APIs](https://docs.alchemy.com/reference/enhanced-apis-overview) like their NFT APIs.
 
 #### Ankr
 
-[Ankr](https://www.ankr.com/) is a decentralized cloud computing platform that provides a full suite of infrastructure services for blockchain developers. Most of the examples in our documentation use Ankr's Public JSON RPC APIs, to help you kickstart.
-
-
+[Ankr](https://www.ankr.com/) is a decentralized cloud computing platform that provides a full suite of infrastructure services for blockchain
+developers. Most of the examples in our documentation use Ankr's Public JSON RPC APIs, to help you kickstart.
 
 ## Web3Auth has multichain support
 
