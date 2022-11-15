@@ -1,0 +1,271 @@
+---
+title: Integrate Web3Auth with the Ethereum Blockchain in Android
+sidebar_label: Android
+image: "/docs/contents/guides/banners/ethereum.png"
+displayed_sidebar: docs
+keywords: [android, ethereum, web3auth, authentication, blockchain]
+description: "Integrate Web3Auth with the Ethereum Blockchain in Android | Documentation - Web3Auth"
+---
+
+---
+
+Via Web3Auth Flutter SDK, you can interact with [Ethereum](https://ethereum.org/) to get access to user's `account`, fetch `balance`, `sign message`,
+and `send transaction`.
+
+:::note
+
+We have made this for `Ethereum` but can work with all other evm chains similarly. Also for other blockchains, we don't have examples but we do
+support it in Mobile SDKs.
+
+:::
+
+## Installation
+
+---
+
+To interact with the Ethereum blockchain in Android, you can use any compatible package, but we're using [web3j](https://github.com/web3j/web3j) to
+demonstrate how to make blockchain calls using it with Web3Auth.
+
+In your **app-level** `build.gradle`'s dependencies section, add the following:
+
+```js
+dependencies {
+  // ...
+  implementation 'org.web3j:core:4.8.7-android'
+}
+```
+
+## Initialize
+
+---
+
+The `rpcUrl` used will determine the chain specific details. We have documentated for `ETH Mainnet`, to configure it with other EVM Chains, simply
+change the rpcUrl to it's corresponding chain.
+
+### Mainnet
+
+- Mainnet Block Explorer URL: https://etherscan.io -- `chainId: "1"`
+- Polygon Block Explorer URL: https://polygonscan.com -- `chainId: "137"`
+
+```js
+private val rpcUrl = 'https://rpc.ankr.com/eth_goerli'; // Ethereum Mainnet
+private val rpcUrl = "https://rpc.ankr.com/polygon_mumbai" // Polygon Mainnet
+```
+
+```kotlin
+class MainActivity : AppCompatActivity() {
+  // highlight-start
+  private lateinit var web3Auth: Web3Auth
+  private lateinit var sessionId: String // <-- Stores the Web3Auth's sessionId.
+  private lateinit var web3: Web3j
+  private lateinit var credentials: Credentials
+  private val rpcUrl = "https://rpc.ankr.com/eth" // RPC URL of the Chain
+  // highlight-end
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+
+    web3Auth = Web3Auth(
+      Web3AuthOptions(context = this,
+        clientId = getString(R.string.web3auth_project_id),
+        network = Web3Auth.Network.MAINNET,
+        redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth")
+      )
+    )
+
+    // Handle user signing in when app is not alive
+    web3Auth.setResultUrl(intent?.data)
+
+    // Calls sessionResponse() to check for any existing session.
+    val sessionResponse: CompletableFuture<Web3AuthResponse> = web3Auth.sessionResponse()
+    sessionResponse.whenComplete { loginResponse, error ->
+        if (error == null) {
+            // Sets the sessionId, credentials and Web3j instance.
+            // highlight-start
+            sessionId = loginResponse.sessionId.toString()
+            credentials = Credentials.create(sessionId)
+            web3 = Web3j.build(HttpService(rpcUrl))
+            // highlight-end
+            reRender(loginResponse)
+        } else {
+            Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
+            // Ideally, you should initiate the login function here.
+        }
+    }
+
+    // Setup UI and event handlers
+    val signInButton = findViewById<Button>(R.id.signInButton)
+    signInButton.setOnClickListener { signIn() }
+  }
+
+  override fun onNewIntent(intent: Intent?) {
+    super.onNewIntent(intent)
+
+    // Handle user signing in when app is active
+    web3Auth.setResultUrl(intent?.data)
+  }
+
+  private fun signIn() {
+    val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
+    val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+            web3Auth.login(LoginParams(selectedLoginProvider))
+
+    loginCompletableFuture.whenComplete { loginResponse, error ->
+      if (error == null) {
+        // render logged in UI
+        println(loginResponse)
+        // highlight-start
+        // Set the sessionId from Web3Auth in App State
+        // This will be used when making blockchain calls with Web3j
+        sessionId = loginResponse.sessionId.toString()
+        // Sets the credentials and Web3j instance.
+        credentials = Credentials.create(sessionId)
+        web3 = Web3j.build(HttpService(rpcUrl))
+        // highlight-end
+      } else {
+        // render error UI
+      }
+    }
+  }
+  //...
+}
+```
+
+### Testnet
+
+- Goerli Block Explorer URL: https://goerli.etherscan.io -- `chainId: "5"`
+- Polygon Mumbai Block Explorer URL: https://mumbai.polygonscan.com -- `chainId: "80001"`
+
+```js
+private val rpcUrl = 'https://rpc.ankr.com/eth_goerli'; // Goerli Testnet
+private val rpcUrl = "https://rpc.ankr.com/polygon_mumbai" // Polygon Testnet
+```
+
+## Get User Info
+
+---
+
+```kotlin
+
+private fun signIn() {
+  val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
+  val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+          web3Auth.login(LoginParams(selectedLoginProvider))
+
+  loginCompletableFuture.whenComplete { loginResponse, error ->
+    if (error == null) {
+      // render logged in UI with User's Info
+      // highlight-next-line
+      println(loginResponse.userInfo)
+      // Set the sessionId from Web3Auth in App State
+      // This will be used when making blockchain calls with Web3j
+      sessionId = loginResponse.sessionId.toString()
+      // Sets the credentials and Web3j instance.
+      credentials = Credentials.create(sessionId)
+      web3 = Web3j.build(HttpService(rpcUrl))
+    } else {
+      // render error UI
+    }
+  }
+}
+
+```
+
+## Get Account
+
+---
+
+```kotlin
+private fun getAddress(): String {
+  println("Address:, ${credentials.address}")
+  // highlight-next-line
+  return credentials.address
+}
+
+// Setup UI and event handlers
+val getBalanceButton = findViewById<Button>(R.id.getBalanceButton)
+getBalanceButton.setOnClickListener { getAddress() }
+```
+
+## Get Balance
+
+---
+
+```kotlin
+private fun getBalance(): BigInteger? {
+  val publicAddress = credentials.address
+  val ethBalance: EthGetBalance = web3.ethGetBalance(publicAddress, DefaultBlockParameterName.LATEST).sendAsync().get()
+  println("Balance: ${ethBalance.balance}")
+  // highlight-next-line
+  return ethBalance.balance
+}
+
+// Setup UI and event handlers
+val getBalanceButton = findViewById<Button>(R.id.getBalanceButton)
+getBalanceButton.setOnClickListener { getBalance() }
+```
+
+## Sign Message
+
+---
+
+```kotlin
+private fun signMessage(message: String): String {
+  val hashedData = Hash.sha3(message.toByteArray(StandardCharsets.UTF_8))
+  val signature = Sign.signMessage(hashedData, credentials.ecKeyPair)
+  val r = Numeric.toHexString(signature.r)
+  val s = Numeric.toHexString(signature.s).substring(2)
+  val v = Numeric.toHexString(signature.v).substring(2)
+  // highlight-next-line
+  val signHash = StringBuilder(r).append(s).append(v).toString()
+  println("Signed Hash: $signHash")
+  return signHash
+}
+
+// Setup UI and event handlers
+val signMessageButton = findViewById<Button>(R.id.signMessageButton)
+signMessageButton.setOnClickListener { signMessage() }
+```
+
+## Send Transaction
+
+---
+
+```kotlin
+private fun sendTransaction(amount: Double, recipientAddress: String): String? {
+  val ethGetTransactionCount: EthGetTransactionCount = web3.ethGetTransactionCount(credentials.address, DefaultBlockParameterName.LATEST).sendAsync().get()
+  val nonce: BigInteger = ethGetTransactionCount.transactionCount
+  val value: BigInteger = Convert.toWei(amount.toString(), Convert.Unit.ETHER).toBigInteger()
+  val gasLimit: BigInteger = BigInteger.valueOf(21000)
+  val chainId: EthChainId = web3.ethChainId().sendAsync().get()
+
+  // Raw Transaction
+  val rawTransaction: RawTransaction = RawTransaction.createTransaction(
+    chainId.chainId.toLong(),
+    nonce,
+    gasLimit,
+    recipientAddress,
+    value,
+    "",
+    BigInteger.valueOf(5000000000),
+    BigInteger.valueOf(6000000000000)
+  )
+
+  val signedMessage: ByteArray = TransactionEncoder.signMessage(rawTransaction, credentials)
+  val hexValue: String = Numeric.toHexString(signedMessage)
+  // highlight-next-line
+  val ethSendTransaction: EthSendTransaction = web3.ethSendRawTransaction(hexValue).sendAsync().get()
+  return if(ethSendTransaction.error != null) {
+    println("Tx Error: ${ethSendTransaction.error.message}")
+    ethSendTransaction.error.message
+  } else {
+    println("Tx Hash: ${ethSendTransaction.transactionHash}")
+    ethSendTransaction.transactionHash
+  }
+}
+
+// Setup UI and event handlers
+val sendTransactionButton = findViewById<Button>(R.id.sendTransactionButton)
+sendTransactionButton.setOnClickListener { sendTransaction() }
+```

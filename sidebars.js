@@ -64,7 +64,7 @@ module.exports = {
           type: "category",
           label: "Ethereum",
           link: { type: "doc", id: "connect-blockchain/ethereum/ethereum" },
-          items: ["connect-blockchain/ethereum/javascript", "connect-blockchain/ethereum/flutter"],
+          items: ["connect-blockchain/ethereum/javascript", "connect-blockchain/ethereum/flutter", "connect-blockchain/ethereum/android"],
         },
         {
           type: "category",
