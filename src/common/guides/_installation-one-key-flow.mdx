@@ -1,17 +1,35 @@
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
-
-You will need to install the following dependencies in order to get started with the project. If you only want to add login without mfa flow to your
-application you can skip installation of dependencies required for login with mfa.
+You will need to install dependencies given below to get started with the project. Description about each dependency is given below. If you only want
+to add login without mfa flow to your application you can skip installation of dependencies required for login with mfa.
 
 #### Dependencies Required for login without mfa:-
 
-##### `@web3auth/node-sdk`
+##### `@toruslabs/torus.js`
 
-This is our new node sdk which will help you to integrate login without mfa flow in your application.
+This is the JS utility library for Torus that we can use to make calls to the Torus Network. This library handles these checks and allows you to query
+the Torus network easily through these APIs:
+
+- retrieveShares
+- getUserTypeAndAddress
 
 ```shell
-npm install --save @web3auth/node-sdk
+npm install --save @toruslabs/torus.js
+```
+
+##### `@toruslabs/openlogin-subkey`
+
+This is a helper library that helps with the generation of app-scoped keys. Subkey package is required to make sure user will get same key even after
+enabling MFA.
+
+```shell
+npm install --save @toruslabs/openlogin-subkey
+```
+
+##### `@toruslabs/fetch-node-details`
+
+This package is used to fetch details of the Torus node that we will be using for authentication.
+
+```shell
+npm install --save @toruslabs/fetch-node-details
 ```
 
 #### Dependencies Required only login with mfa:-
@@ -43,35 +61,13 @@ npm install --save @web3auth/base
 
 #### Web3 Libraries to interact with the blockchain
 
-##### `web3` / `ethers`
+##### `web3`
 
 According to your preference, you can choose to install the `web3` or `ethers` libraries, to talk to the EVM compatible blockchains under the hood.
 For Solana, `@solana/web3.js` is the recommended choice.
 
-We'll be having code snippets from `web3` and `ethers` in the documentation, so you can choose the one that suits you the best.
-
-<Tabs
-defaultValue="web3"
-values={[
-  { label: "Web3", value: "web3" },
-  { label:"Ethers", value:"ethers" },
-]}
->
-
-<TabItem value="web3">
+We'll be using `web3` for this guide.
 
 ```shell
 npm install --save web3
 ```
-
-</TabItem>
-
-<TabItem value="ethers">
-
-```shell
-npm install --save ethers
-```
-
-</TabItem>
-
-</Tabs>
