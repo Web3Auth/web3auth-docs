@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { MDXProvider } from "@mdx-js/react";
 import Layout from "@theme/Layout";
 import MDXComponents from "@theme/MDXComponents";
@@ -54,6 +55,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
       [optionKey]: optionValue,
     });
   };
+
   const url = new URL(getWindowLocation());
   const [stepIndex, setStepIndex] = useState(parseInt(url.searchParams.get("stepIndex") || "0", 10));
 
@@ -71,6 +73,17 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
       clearTimeout(isLinkCopied);
       setLinkCopied(undefined);
     }
+
+    for (const optionKey in builderOptions) {
+      if (builder.options[optionKey]) {
+        const check = builder.options[optionKey].choices.flatMap((choice) => choice.key);
+        if (!check.includes(builderOptions[optionKey])) {
+          const option = Object.fromEntries(Object.entries(builder.options).map(([key, option]) => [key, option.default]));
+          onChangeDropdown(optionKey, option[optionKey]);
+        }
+      }
+    }
+
     // Update query params
     // eslint-disable-next-line no-restricted-globals
     history.pushState({}, "", getURLFromBuilderOptions(builderOptions, stepIndex));
