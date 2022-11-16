@@ -175,6 +175,7 @@ module.exports = {
     },
     {
       Troubleshooting: [
+        "troubleshooting/sdk-errors-warnings",
         "troubleshooting/error-429",
         "troubleshooting/webpack-issues",
         "troubleshooting/jwt-errors",

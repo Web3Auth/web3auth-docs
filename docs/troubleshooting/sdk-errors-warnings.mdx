@@ -1,0 +1,86 @@
+---
+title: SDK Errors & Warnings
+image: "/docs/images/docs-meta-cards/troubleshoot-card.png"
+displayed_sidebar: docs
+description: "SDK Errors & Warnings | Documentation - Web3Auth"
+---
+
+## WalletInitializationError
+
+| Code   | Message                                   |
+| ------ | ----------------------------------------- |
+| `5001` | Wallet is not found                       |
+| `5002` | Wallet is not installed                   |
+| `5003` | Wallet is not ready yet                   |
+| `5004` | Wallet window is blocked                  |
+| `5005` | Wallet window has been closed by the user |
+| `5006` | Incompatible chain namespace provided     |
+| `5007` | Adapter has already been included         |
+| `5008` | Invalid provider Config                   |
+| `5009` | Provider is not ready yet                 |
+| `5010` | Failed to connect with rpc url            |
+| `5011` | Invalid params passed in                  |
+| `5013` | Invalid network provided                  |
+
+## WalletLoginError
+
+| Code   | Message                                  |
+| ------ | ---------------------------------------- |
+| `5111` | Failed to connect with wallet            |
+| `5112` | Failed to disconnect from wallet         |
+| `5113` | Wallet is not connected                  |
+| `5114` | Wallet popup has been closed by the user |
+
+## JSON RPC Errors
+
+<!---
+  JSON RPC Errors
+  https://www.jsonrpc.org/specification#error_object
+-->
+
+| Code             | Message            | Description                                                                                                                                             |
+| ---------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| -32700           | `Parse Error`      | Invalid JSON was received by the server. An error occurred on the server while parsing the JSON text.                                                   |
+| -32600           | `Invalid Request`  | The JSON sent is not a valid Request object.                                                                                                            |
+| -32601           | `Method Not Found` | The method does not exist / is not available.                                                                                                           |
+| -32602           | `Invalid Params`   | Invalid method parameter(s).                                                                                                                            |
+| -32603           | `Internal Error`   | Internal JSON-RPC error. These can manifest as different generic issues (i.e.: attempting to access a protected endpoint before the user is logged in). |
+| -32000 to -32099 | `Server Error`     | Reserved for implementation-defined server-errors.                                                                                                      |
+
+## Torus/SolanaWalletPluginError
+
+| Code   | Message                                                                                                                       |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| `5210` | Torus Wallet Plugin is not initialized.                                                                                       |
+| `5211` | Web3Auth is connected to unsupported adapter. Torus wallet connector plugin requires web3auth connected to openlogin adapter. |
+| `5212` | Provider is required.                                                                                                         |
+| `5213` | Web3Auth instance is required while initialization.                                                                           |
+| `5214` | Web3Auth is not connected.                                                                                                    |
+| `5215` | UserInfo is required.                                                                                                         |
+| `5216` | Plugin is already initialized.                                                                                                |
+| `5217` | Torus wallet instance is not set.                                                                                             |
+
+## @web3auth/node-sdk
+
+### Constructor Errors
+
+- chainNamespace is required
+- Please provide a valid clientId in constructor
+- chainId is required for non-OTHER chainNamespace
+- rpcTarget is required for non-OTHER chainNamespace
+
+### Initialization Errors
+
+- chainConfig is required for Solana in constructor
+- chainConfig is required for EVM chain in constructor
+- Invalid chainNamespace: ${this.currentChainNamespace} found while connecting to wallet
+
+### Connect Errors
+
+- User has already enabled mfa, please use the @web3auth/web3auth-web sdk for login with mfa
+
+Some other errors could be found during it's implementations are:
+
+- Error: node results do not match at first lookup ("code":-32602, "message": "Input error", "data": "Verifier not supported"
+- Error: Error occurred while verifying paramsencoding/hex: invalid byte: U+0079 'y'
+- Error: Duplicate token found ( returned when using a used id_token )
