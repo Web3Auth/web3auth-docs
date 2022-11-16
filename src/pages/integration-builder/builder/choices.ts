@@ -56,6 +56,21 @@ export const CHAINS_HTML: DisplayChoice[] = [
   { key: KLAY, displayName: "Klaytn" },
 ];
 
+export const CHAINS_MOBILE: DisplayChoice[] = [
+  { key: ETH, displayName: "Ethereum" },
+  { key: MATIC, displayName: "Polygon" },
+  { key: BNB, displayName: "BNB Chain" },
+  { key: AVAX, displayName: "Avalanche" },
+  { key: ARB, displayName: "Arbitrum" },
+  { key: OP, displayName: "Optimism" },
+  { key: CRO, displayName: "Cronos" },
+  { key: ONE, displayName: "Harmony" },
+  { key: CELO, displayName: "Celo" },
+  { key: GLMR, displayName: "Moonbeam" },
+  { key: MOVR, displayName: "Moonriver" },
+  { key: KLAY, displayName: "Klaytn" },
+];
+
 export const CHAINS: DisplayChoice[] = [
   ...CHAINS_HTML,
   { key: STARKEX, displayName: "StarkEx" },
@@ -83,6 +98,7 @@ export const IOS = "IOS";
 export const REACT_NATIVE = "REACT_NATIVE";
 export const FLUTTER = "FLUTTER";
 export const UNITY = "UNITY";
+export const UNREAL = "UNREAL";
 
 export const LANGS: DisplayChoice[] = [
   { key: REACT, displayName: "React" },
@@ -102,52 +118,39 @@ export enum MOBILE {
   "IOS",
   "REACT_NATIVE",
   "FLUTTER",
+}
+
+export enum GAMING {
   "UNITY",
+  "UNREAL",
 }
 
 export const EXPO = "EXPO";
 export const BARE_RN = "BARE_RN";
 
 export const RN_MODE: DisplayChoice[] = [
-  { key: "EXPO", displayName: "Expo Managed" },
-  { key: "BARE_RN", displayName: "Bare React Native" },
+  { key: "EXPO", displayName: "Expo" },
+  { key: "BARE_RN", displayName: "Bare RN" },
 ];
 
 // Auth Choices
 
+export const NONE = "NONE";
 export const GOOGLE = "GOOGLE";
 export const FACEBOOK = "FACEBOOK";
-export const REDDIT = "REDDIT";
 export const DISCORD = "DISCORD";
 export const TWITCH = "TWITCH";
-export const APPLE = "APPLE";
-export const GITHUB = "GITHUB";
-export const LINKEDIN = "LINKEDIN";
-export const TWITTER = "TWITTER";
-export const WEIBO = "WEIBO";
-export const LINE = "LINE";
-export const EMAIL_PASSWORD = "EMAIL_PASSWORD";
-export const PASSWORDLESS = "PASSWORDLESS";
 export const JWT = "JWT";
-export const NONE = "NONE";
 
-export const AUTH_PROVIDERS: DisplayChoice[] = [
+export const CUSTOM_AUTH: DisplayChoice[] = [
   { key: NONE, displayName: "None" },
   { key: GOOGLE, displayName: "Google" },
   { key: FACEBOOK, displayName: "Facebook" },
-  { key: REDDIT, displayName: "Reddit" },
   { key: DISCORD, displayName: "Discord" },
   { key: TWITCH, displayName: "Twitch" },
-  { key: APPLE, displayName: "Apple" },
-  { key: GITHUB, displayName: "Github" },
-  { key: LINKEDIN, displayName: "Linkedin" },
-  { key: TWITTER, displayName: "Twitter" },
-  { key: WEIBO, displayName: "Weibo" },
-  { key: LINE, displayName: "Line" },
-  { key: EMAIL_PASSWORD, displayName: "Email Password" },
-  { key: PASSWORDLESS, displayName: "Passwordless" },
-  { key: JWT, displayName: "Custom JWT" },
 ];
+
+export const CUSTOM_AUTH_MOBILE: DisplayChoice[] = [...CUSTOM_AUTH, { key: JWT, displayName: "Custom JWT" }];
 
 // Misc choices
 
