@@ -71,6 +71,7 @@ module.exports = {
             "connect-blockchain/ethereum/flutter",
           ],
         },
+        "connect-blockchain/solana",
         {
           type: "category",
           label: "EVM Based Chains",
@@ -86,7 +87,6 @@ module.exports = {
             "connect-blockchain/moonbeam",
             "connect-blockchain/moonriver",
             "connect-blockchain/klaytn",
-            "connect-blockchain/immutablex",
           ],
           collapsible: true,
           collapsed: false,
@@ -95,11 +95,11 @@ module.exports = {
           type: "category",
           label: "Non EVM Chains",
           items: [
-            "connect-blockchain/solana",
             "connect-blockchain/starkex",
             "connect-blockchain/starknet",
             "connect-blockchain/tezos",
             "connect-blockchain/algorand",
+            "connect-blockchain/immutablex",
           ],
           collapsible: true,
           collapsed: false,
