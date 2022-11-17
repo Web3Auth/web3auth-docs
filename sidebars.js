@@ -67,6 +67,7 @@ module.exports = {
           items: [
             "connect-blockchain/ethereum/web",
             "connect-blockchain/ethereum/android",
+            "connect-blockchain/ethereum/react-native",
             "connect-blockchain/ethereum/flutter",
           ],
         },
