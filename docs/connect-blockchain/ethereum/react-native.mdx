@@ -1,0 +1,173 @@
+---
+title: Integrate Web3Auth with the Ethereum Blockchain in React Native
+sidebar_label: React Native
+image: "/docs/contents/guides/banners/ethereum.png"
+displayed_sidebar: docs
+keywords: [flutter, ethereum, web3auth, authentication, blockchain]
+description: "Integrate Web3Auth with the Ethereum Blockchain in Flutter | Documentation - Web3Auth"
+---
+
+---
+
+While using the Web3Auth React Native SDK, you get the private key within the user scope. This private key can interact with
+[Ethereum](https://ethereum.org/) to make any blockchain calls, like getting user's `account`, fetch `balance`, `sign transaction`,
+`send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a few here for getting you started quickly on that.
+
+:::info
+
+We have made this reference for `Ethereum`, however this can work with all other EVM compatible chains similarly.
+
+:::
+
+:::note
+
+For other blockchains, the implementation flow remains similar with the corresponding packages available from their side to make the respective
+blockchain calls.
+
+:::
+
+## Installation
+
+---
+
+To interact with the Ethereum blockchain in React Native, you can use any [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible package like
+[`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html), [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. This might
+include some extra setup from the package's side for adding supported shims and make it work in the native platforms.
+
+In this reference, we're using `ethers.js` to demonstrate how to make blockchain calls using it with Web3Auth.
+
+- Install the `ethers.js` package using `npm` or `yarn`:
+
+```bash npm2yarn
+npm install shims
+```
+
+- Import the packages and shims into your codebase:
+
+```js
+// Import the required shims
+//highlight-next-line
+import "ethers/dist/shims.js";
+
+// Import the ethers library
+//highlight-next-line
+import { ethers } from "ethers";
+```
+
+:::info
+
+We have followed [this guide](https://docs.ethers.io/v4/cookbook-react.html) to set up the `ethers.js` package in React Native.
+
+:::
+
+## Initialize
+
+---
+
+The `providerUrl` used will determine the chain specific details. We have documentated for `ETH Mainnet`, to configure it with other EVM Chains,
+simply change the rpcUrl to it's corresponding chain.
+
+### Mainnet
+
+Mainnet Block Explorer URL: https://etherscan.io -- `chainId: "1"`
+
+```js
+import "@ethersproject/shims";
+import { ethers } from "ethers";
+import { Buffer } from "buffer";
+global.Buffer = global.Buffer || Buffer;
+
+const providerUrl = "https://rpc.ankr.com/eth"; // Or your desired RPC Provider url
+```
+
+### Testnet
+
+- Goerli Block Explorer URL: https://goerli.etherscan.io -- `chainId: "5"`
+
+```js
+const providerUrl = "https://rpc.ankr.com/eth_goerli"; // Or your desired RPC Provider url
+```
+
+## Get User Info
+
+---
+
+You get the user information after a successful login returned from the `login` method. The `userInfo` object contains the user information, whereas
+the `privKey` object contains the private key which can be used to make blockchain calls.
+
+```js
+// Follow the login flow from the Web3Auth React Native SDK
+const web3auth = new Web3Auth(WebBrowser, {
+  clientId,
+  network: OPENLOGIN_NETWORK.TESTNET, // MAINNET or CYAN
+});
+const info = await web3auth.login({
+  loginProvider: LOGIN_PROVIDER.JWT,
+  redirectUrl: resolvedRedirectUrl,
+});
+
+//highlight-start
+const info = info.userInfo; // User Information
+const key = info.privKey; // User's Private Key
+//highlight-end
+```
+
+## Get Account
+
+---
+
+```js
+const wallet = new ethers.Wallet(key);
+// Get user's Ethereum public address
+//highlight-next-line
+const address = await wallet.address;
+```
+
+## Get Balance
+
+```js
+const ethersProvider = ethers.getDefaultProvider(providerUrl);
+const wallet = new ethers.Wallet(key, ethersProvider);
+// Get user's balance in ether
+//highlight-next-line
+const balance = await wallet.getBalance();
+```
+
+## Send Transaction
+
+---
+
+```js
+const ethersProvider = ethers.getDefaultProvider(providerUrl);
+const wallet = new ethers.Wallet(key, ethersProvider);
+
+const destination = "0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56";
+
+// Convert 1 ether to wei
+const amount = ethers.utils.parseEther("0.001");
+
+// Submit transaction to the blockchain
+//highlight-start
+const tx = await wallet.sendTransaction({
+  to: destination,
+  value: amount,
+  maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
+  maxFeePerGas: "6000000000000", // Max fee per gas
+});
+//highlight-end
+```
+
+## Sign a message
+
+---
+
+```js
+const ethersProvider = ethers.getDefaultProvider(providerUrl);
+const wallet = new ethers.Wallet(key, ethersProvider);
+
+const originalMessage = "YOUR_MESSAGE";
+
+// Sign the message
+//highlight-next-line
+const signedMessage = await wallet.signMessage(originalMessage);
+```

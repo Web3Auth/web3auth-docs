@@ -1,5 +1,5 @@
 ---
-title: Integrate Web3Auth with Multiple Chains!!
+title: Integrate Web3Auth with Multiple Chains
 sidebar_label: Multichain
 image: "/docs/contents/guides/banners/multichain.png"
 displayed_sidebar: docs
@@ -12,21 +12,27 @@ import Tabs from "@theme/Tabs";
 
 ---
 
-Via Web3Auth SDK, you can make your application compatible with multiple blockchains, making your dapp more accessible to a wider audience of users.
-Web3Auth SDK supports the following blockchains:
+**The Web3Auth Web SDK supports all blockchains following the `secp256k1` & `ed25519` curves**. This is because Web3Auth focuses of generating keys
+non custodially, and using the finally generated key one can use the corresponding libraries of the blockchain to make calls like getting user's
+`account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract, etc.
 
-- Ethereum and all other EVM compatible chains
-- Solana
-- StarkEx and StarkNet
-- Tezos
-- Algorand
+Not just that, you can connect multiple chains at once and use them simultaneously. We have highlighted a few methods for a few chains here for
+getting you started quickly on that.
+
+:::note
+
+This reference is for the `Web`, however, you can use all the blockchains on `Android`, `iOS`, `React Native`, `Flutter`, & `Unity` as well. Please
+follow our reference for [Ethereum](/connect-blockchain/ethereum/), and similarly use corresponding blockchain libraries that support the platforms to
+use the private key and make blockchain calls accordingly.
+
+:::
 
 ## Initializing Provider
 
 ---
 
-Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an `EIP1193` compatible provider as **`web3auth.provider`** after
-successful authentication.
+Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible
+provider as **`web3auth.provider`** after successful authentication.
 
 <Tabs
   defaultValue="es"
@@ -46,7 +52,7 @@ const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: "eip155",
-    chainId: "0x3",
+    chainId: "0x1",
   },
 });
 await web3auth.initModal();
@@ -65,7 +71,7 @@ const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x3",
+    chainId: "0x1",
   },
 });
 await web3auth.initModal();
@@ -292,7 +298,7 @@ const ed25519key = getED25519Key(privateKey).sk.toString("hex");
 const solanaPrivateKeyProvider = new SolanaPrivateKeyProvider({
     config: {
     chainConfig: {
-        chainId: "0x3",
+        chainId: "0x1",
         rpcTarget: "https://ssc-dao.genesysgo.net",
         displayName: "Solana Mainnet",
         blockExplorer: "https://explorer.solana.com/",
