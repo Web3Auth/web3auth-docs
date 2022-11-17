@@ -62,17 +62,13 @@ export default class SolanaRpc {
       const conn = new Connection(connectionConfig.rpcTarget);
 
       const pubKey = await solanaWallet.requestAccounts();
-      const block = await conn.getLatestBlockhash("finalized");
+      const { blockhash } = await conn.getRecentBlockhash("finalized");
       const TransactionInstruction = SystemProgram.transfer({
         fromPubkey: new PublicKey(pubKey[0]),
         toPubkey: new PublicKey(pubKey[0]),
         lamports: 0.01 * LAMPORTS_PER_SOL,
       });
-      const transaction = new Transaction({
-        blockhash: block.blockhash,
-        lastValidBlockHeight: block.lastValidBlockHeight,
-        feePayer: new PublicKey(pubKey[0]),
-      }).add(TransactionInstruction);
+      const transaction = new Transaction({ recentBlockhash: blockhash, feePayer: new PublicKey(pubKey[0]) }).add(TransactionInstruction);
       const { signature } = await solanaWallet.signAndSendTransaction(transaction);
       // HIGHLIGHTEND-solanaRPCFunctions
       return signature;
@@ -89,17 +85,13 @@ export default class SolanaRpc {
       const conn = new Connection(connectionConfig.rpcTarget);
 
       const pubKey = await solanaWallet.requestAccounts();
-      const block = await conn.getLatestBlockhash("finalized");
+      const { blockhash } = await conn.getRecentBlockhash("finalized");
       const TransactionInstruction = SystemProgram.transfer({
         fromPubkey: new PublicKey(pubKey[0]),
         toPubkey: new PublicKey(pubKey[0]),
         lamports: 0.01 * LAMPORTS_PER_SOL,
       });
-      const transaction = new Transaction({
-        blockhash: block.blockhash,
-        lastValidBlockHeight: block.lastValidBlockHeight,
-        feePayer: new PublicKey(pubKey[0]),
-      }).add(TransactionInstruction);
+      const transaction = new Transaction({ recentBlockhash: blockhash, feePayer: new PublicKey(pubKey[0]) }).add(TransactionInstruction);
       const signedTx = await solanaWallet.signTransaction(transaction);
       // HIGHLIGHTEND-solanaRPCFunctions
       return signedTx.signature?.toString() || "";
