@@ -9,6 +9,18 @@ description: "SDK Errors & Warnings | Documentation - Web3Auth"
 
 `@web3auth/modal`, `@web3auth/core`, and other frontend SDKs, including mobiles.
 
+### General Errors
+
+| Code                      | Message                                             | Description                                                                                                                                                |
+| ------------------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TPC_NOT_SUPPORTED`       | Unable to detect device share.                      | This may be due to browser security settings. Adjust your current browser settings from 'Strict' to 'Moderate'. Alternatively, login via a Chrome Browser. |
+| `NETWORK_RESPONSE_FAILED` | Unable to detect login share from the Auth Network. | This may be due to slow internet connection. Check your internet speed and try again.                                                                      |
+| `DUPLICATE_TOKEN_FOUND`   | Unable to verify.                                   | This may be due to invalid login. Kindly log out of your social login provider on your current browser and login again.                                    |
+| `BUSY_NETWORK`            | Unable to connect to Auth Network.                  | The Network may be congested. Please try again in 5 minutes.                                                                                               |
+| `KEY_ASSIGN_FAILED`       | A key has not been assigned to you.                 | This might be due to communication with the Auth Network Nodes. Kindly relogin to try again. If problem persists, please Contact Support.                  |
+| `VERIFIER_NOT_SUPPORTED`  | Verifier not supported.                             | Kindly ensure you have a live verifier on the right network (Testnet/Mainnet). Set up / Check verifier status here: https://dashboard.web3auth.io          |
+| `DEFAULT`                 | There seems to be some bug in the code.             | Please contact support to fix this.                                                                                                                        |
+
 ### WalletInitializationError
 
 | Code   | Message                                   | Description                                                                |
@@ -100,3 +112,36 @@ Some other errors could be found during `@web3auth/node-sdk` implementations:
 | node results do not match at first lookup | Verifier not supported                      |
 | Error occurred while verifying params     | Invalid parameter was passed.               |
 | Duplicate token found                     | An already used (JWT)`id_token` was passed. |
+
+## Web3Auth `tKey` SDK
+
+`@tkey/default`
+
+| Code   | Message                                                                                                         |
+| ------ | --------------------------------------------------------------------------------------------------------------- |
+| `1001` | Unable to delete service provider share                                                                         |
+| `1002` | Wrong share index                                                                                               |
+| `1003` | Unable to updateSDK                                                                                             |
+| `1101` | metadata not found, SDK likely not initialized                                                                  |
+| `1102` | getMetadata errored                                                                                             |
+| `1103` | setMetadata errored                                                                                             |
+| `1104` | previouslyFetchedCloudMetadata provided in initialization is outdated                                           |
+| `1105` | previouslyFetchedCloudMetadata.nonce should never be higher than the latestShareDetails, please contact support |
+| `1201` | Invalid tkeyStore                                                                                               |
+| `1202` | Encryption failed                                                                                               |
+| `1203` | Decryption failed                                                                                               |
+| `1301` | Private key not available. Please reconstruct key first                                                         |
+| `1302` | Unable to reconstruct                                                                                           |
+| `1303` | reconstructed key is not pub key                                                                                |
+| `1304` | Share found in unexpected polynomial                                                                            |
+| `1305` | Input is not supported                                                                                          |
+| `1306` | no encrypted share store for share exists                                                                       |
+| `1307` | Share doesn't exist                                                                                             |
+| `1308` | Share was deleted                                                                                               |
+| `1401` | Unable to acquire lock                                                                                          |
+| `1402` | Unable to release lock                                                                                          |
+| `1501` | privkey unavailable                                                                                             |
+| `1502` | metadata pubkey unavailable                                                                                     |
+| `1503` | getAuthMetadata errored                                                                                         |
+| `1504` | setAuthMetadata errored                                                                                         |
+| `1601` | delete1OutOf1 requires manualSync=true                                                                          |
