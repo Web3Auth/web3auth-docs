@@ -174,7 +174,10 @@ module.exports = {
       defaultStyle: true,
     },
     {
-      Troubleshooting: [
+      type: "category",
+      label: "Troubleshooting",
+      link: { type: "doc", id: "troubleshooting/troubleshooting" },
+      items: [
         "troubleshooting/sdk-errors-warnings",
         "troubleshooting/error-429",
         "troubleshooting/webpack-issues",
@@ -377,7 +380,7 @@ module.exports = {
     {
       type: "link",
       label: "Troubleshooting",
-      href: "/docs/troubleshooting/webpack-issues",
+      href: "/docs/troubleshooting",
     },
     {
       type: "link",
