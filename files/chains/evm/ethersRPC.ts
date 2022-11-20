@@ -17,6 +17,7 @@ export default class EthereumRpc {
       // Get the connected Chain's ID
       const networkDetails = await ethersProvider.getNetwork();
       // HIGHLIGHTEND-evmRPCFunctions
+
       return networkDetails.chainId;
     } catch (error) {
       return error;
