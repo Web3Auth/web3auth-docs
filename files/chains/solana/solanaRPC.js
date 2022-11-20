@@ -1,92 +1,106 @@
 const rpc = (() => {
+	/**
+	 *
+	 * @param {*} provider - provider received from Web3Auth login.
+	 */
 
-    /**
-     *
-     * @param {*} provider - provider received from Web3Auth login.
-     */
-
-    const getAccounts = async (provider) => {
+	const getAccounts = async provider => {
         // HIGHLIGHTSTART-solanaRPCFunctions
-        const solanaWallet = new SolanaWallet(this.provider);
-        // Get user's Solana public address
-        const acc = await solanaWallet.requestAccounts();
+		const solanaWallet = new SolanaProvider.SolanaWallet(provider);
+
+		// Get user's Solana public address
+		const accounts = await solanaWallet.requestAccounts();
         // HIGHLIGHTEND-solanaRPCFunctions
-        return acc;
-    };
 
-    const getBalance = async (provider) => {
+		return accounts;
+	};
+
+	const getBalance = async provider => {
         // HIGHLIGHTSTART-solanaRPCFunctions
-        const solanaWallet = new SolanaWallet(this.provider);
-        const connectionConfig = await solanaWallet.request<CustomChainConfig>({ method: "solana_provider_config", params: [] });
-        const conn = new Connection(connectionConfig.rpcTarget);
-        const accounts = await solanaWallet.requestAccounts();
-        // Fetch the balance for the specified public key
-        const balance = await conn.getBalance(new PublicKey(accounts[0]));
+		const solanaWallet = new SolanaProvider.SolanaWallet(provider);
+
+		// Get user's Solana public address
+		const accounts = await solanaWallet.requestAccounts();
+
+		const connectionConfig = await solanaWallet.request({
+			method: 'solana_provider_config',
+			params: [],
+		});
+
+		const connection = new solanaWeb3.Connection(connectionConfig.rpcTarget);
+
+		// Fetch the balance for the specified public key
+		const balance = await connection.getBalance(
+			new solanaWeb3.PublicKey(accounts[0]),
+		);
         // HIGHLIGHTEND-solanaRPCFunctions
-        return balance;
-    };
 
-    const signMessage = async (provider) => {
+		return balance;
+	};
+
+	const sendTransaction = async provider => {
         // HIGHLIGHTSTART-solanaRPCFunctions
-        const solanaWallet = new SolanaWallet(this.provider);
-        const msg = Buffer.from("Test Signing Message ", "utf8");
-        const res = await solanaWallet.signMessage(msg);
+		const solanaWallet = new SolanaProvider.SolanaWallet(provider);
+
+		// Get user's Solana public address
+		const accounts = await solanaWallet.requestAccounts();
+
+		const connectionConfig = await solanaWallet.request({
+			method: 'solana_provider_config',
+			params: [],
+		});
+
+		const connection = new solanaWeb3.Connection(connectionConfig.rpcTarget);
+
+		const block = await connection.getLatestBlockhash('finalized');
+
+		const TransactionInstruction = solanaWeb3.SystemProgram.transfer({
+			fromPubkey: new solanaWeb3.PublicKey(accounts[0]),
+			toPubkey: new solanaWeb3.PublicKey(accounts[0]),
+			lamports: 0.01 * solanaWeb3.LAMPORTS_PER_SOL,
+		});
+
+		const transaction = new solanaWeb3.Transaction({
+			blockhash: block.blockhash,
+			lastValidBlockHeight: block.lastValidBlockHeight,
+			feePayer: new solanaWeb3.PublicKey(accounts[0]),
+		}).add(TransactionInstruction);
+
+		const { signature } = await solanaWallet.signAndSendTransaction(
+			transaction,
+		);
         // HIGHLIGHTEND-solanaRPCFunctions
-        return result
-    };
 
-    const sendTransaction = async (provider) => {
+		return signature.toString();
+	};
+
+	const signMessage = async provider => {
         // HIGHLIGHTSTART-solanaRPCFunctions
-        const solanaWallet = new SolanaWallet(this.provider);
-        const connectionConfig = await solanaWallet.request<CustomChainConfig>({ method: "solana_provider_config", params: [] });
-        const conn = new Connection(connectionConfig.rpcTarget);
+		const solanaWallet = new SolanaProvider.SolanaWallet(provider);
 
-        const pubKey = await solanaWallet.requestAccounts();
-        const { blockhash } = await conn.getRecentBlockhash("finalized");
-        const TransactionInstruction = SystemProgram.transfer({
-            fromPubkey: new PublicKey(pubKey[0]),
-            toPubkey: new PublicKey(pubKey[0]),
-            lamports: 0.01 * LAMPORTS_PER_SOL,
-        });
-        const transaction = new Transaction({ recentBlockhash: blockhash, feePayer: new PublicKey(pubKey[0]) }).add(TransactionInstruction);
-        const { signature } = await solanaWallet.signAndSendTransaction(transaction);
+		const msg = Buffer.from('Test Signing Message ', 'utf8');
+
+		const result = await solanaWallet.signMessage(msg);
         // HIGHLIGHTEND-solanaRPCFunctions
-        return signedTx.signature;
-    };
 
-    const signTransaction = async (provider) => {
-        // HIGHLIGHTSTART-solanaRPCFunctions
-        const solanaWallet = new SolanaWallet(this.provider);
-        const connectionConfig = await solanaWallet.request<CustomChainConfig>({ method: "solana_provider_config", params: [] });
-        const conn = new Connection(connectionConfig.rpcTarget);
-        const pubKey = await solanaWallet.requestAccounts();
-        const { blockhash } = await conn.getRecentBlockhash("finalized");
-        const TransactionInstruction = SystemProgram.transfer({
-            fromPubkey: new PublicKey(pubKey[0]),
-            toPubkey: new PublicKey(pubKey[0]),
-            lamports: 0.01 * LAMPORTS_PER_SOL,
-        });
-        const transaction = new Transaction({ recentBlockhash: blockhash, feePayer: new PublicKey(pubKey[0]) }).add(TransactionInstruction);
-        const signedTx = await solanaWallet.signTransaction(transaction);
-        // HIGHLIGHTEND-solanaRPCFunctions
-        return signedTx.signature;
-    };
+		return result;
+	};
 
-    const getPrivateKey = async (provider) => {
+	const getPrivateKey = async provider => {
         // HIGHLIGHTSTART-solanaRPCFunctions
-        const privateKey = await provider.request({
+		const privateKey = await provider.request({
 			method: 'solanaPrivateKey',
 		});
         // HIGHLIGHTEND-solanaRPCFunctions
-        return privateKey;
-    }
 
-    return {
-        getAccounts,
-        getBalance,
-        signTransaction,
-        signMessage,
-        sendTransaction,
-        getPrivateKey
-    }
-})()
+		return privateKey;
+	};
+
+	return {
+		getAccounts,
+		getBalance,
+		signMessage,
+		sendTransaction,
+		getPrivateKey,
+	};
+})();
