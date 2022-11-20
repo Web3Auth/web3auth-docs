@@ -141,6 +141,7 @@ export const FACEBOOK = "FACEBOOK";
 export const DISCORD = "DISCORD";
 export const TWITCH = "TWITCH";
 export const JWT = "JWT";
+export const AUTH0 = "AUTH0";
 
 export const CUSTOM_AUTH: DisplayChoice[] = [
   { key: NONE, displayName: "None" },
@@ -150,7 +151,7 @@ export const CUSTOM_AUTH: DisplayChoice[] = [
   { key: TWITCH, displayName: "Twitch" },
 ];
 
-export const CUSTOM_AUTH_MOBILE: DisplayChoice[] = [...CUSTOM_AUTH, { key: JWT, displayName: "Custom JWT" }];
+export const CUSTOM_AUTH_MOBILE: DisplayChoice[] = [...CUSTOM_AUTH, { key: AUTH0, displayName: "Auth0" }, { key: JWT, displayName: "JWT" }];
 
 // Misc choices
 
