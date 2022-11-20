@@ -1,13 +1,17 @@
-// @ts-ignore
 // HIGHLIGHTSTART-installationTezos
-import { InMemorySigner } from "@taquito/signer";
-import { TezosToolkit } from "@taquito/taquito";
-import { hex2buf } from "@taquito/utils";
+//@ts-ignore
 import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
 // HIGHLIGHTEND-installationTezos
 import { SafeEventEmitterProvider } from "@web3auth/base";
+// HIGHLIGHTSTART-installationTezos
+import { TezosToolkit } from "@taquito/taquito";
+import { hex2buf } from "@taquito/utils";
+import { InMemorySigner } from "@taquito/signer";
+// HIGHLIGHTEND-installationTezos
 
-const tezos = new TezosToolkit("https://ithacanet.ecadinfra.com");
+// HIGHLIGHTSTART-tezosRPCFunctions
+const tezos = new TezosToolkit("https://rpc.tzbeta.net/");
+// HIGHLIGHTEND-tezosRPCFunctions
 
 export default class TezosRpc {
   private provider: SafeEventEmitterProvider;
@@ -25,7 +29,8 @@ export default class TezosRpc {
 
       return keyPair;
     } catch (error) {
-      return error;
+      console.error(error);
+      return null;
     }
   };
 
@@ -44,9 +49,10 @@ export default class TezosRpc {
       // HIGHLIGHTSTART-tezosRPCFunctions
       const keyPair = await this.getTezosKeyPair();
       // HIGHLIGHTEND-tezosRPCFunctions
+
       return keyPair?.pkh;
     } catch (error) {
-      return error;
+      console.error("Error", error);
     }
   };
 
@@ -57,6 +63,7 @@ export default class TezosRpc {
       // keyPair.pkh is the account address.
       const balance = await tezos.tz.getBalance(keyPair?.pkh as string);
       // HIGHLIGHTEND-tezosRPCFunctions
+
       return balance;
     } catch (error) {
       return error;
@@ -65,13 +72,13 @@ export default class TezosRpc {
 
   signMessage = async () => {
     try {
-      // HIGHLIGHTSTART-tezosRPCFunctions
       // Reference: https://tezostaquito.io/docs/signing
       const keyPair = await this.getTezosKeyPair();
       const signer = new InMemorySigner(keyPair.sk);
       const message = "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad";
       const signature = await signer.sign(message);
       // HIGHLIGHTEND-tezosRPCFunctions
+
       return signature;
     } catch (error) {
       return error;
@@ -101,6 +108,7 @@ export default class TezosRpc {
 
       const txRes = await op.confirmation();
       // HIGHLIGHTEND-tezosRPCFunctions
+
       return txRes;
     } catch (error) {
       return error;
