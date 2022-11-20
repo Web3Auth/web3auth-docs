@@ -11,6 +11,7 @@ const rpc = (() => {
     // Get the connected Chain's ID
     const networkDetails = await ethersProvider.getNetwork();
     // HIGHLIGHTEND-evmRPCFunctions
+
     return networkDetails.chainId;
   };
 
