@@ -25,6 +25,7 @@ export default class SolanaRpc {
       const solanaWallet = new SolanaWallet(this.provider);
       const acc = await solanaWallet.requestAccounts()
       // HIGHLIGHTEND-solanaRPCFunctions
+
       return acc;
     } catch (error) {
       return error as string[];
@@ -44,6 +45,7 @@ export default class SolanaRpc {
       const accounts = await solanaWallet.requestAccounts();
       const balance = await conn.getBalance(new PublicKey(accounts[0]));
       // HIGHLIGHTEND-solanaRPCFunctions
+
       return balance.toString();
     } catch (error) {
       return error as string;
@@ -57,6 +59,7 @@ export default class SolanaRpc {
       const msg = Buffer.from("Test Signing Message ", "utf8");
       const res = await solanaWallet.signMessage(msg);
       // HIGHLIGHTEND-solanaRPCFunctions
+
       return res.toString();
     } catch (error) {
       return error as string;
@@ -124,6 +127,7 @@ export default class SolanaRpc {
       }).add(TransactionInstruction);
       const signedTx = await solanaWallet.signTransaction(transaction);
       // HIGHLIGHTEND-solanaRPCFunctions
+
       return signedTx.signature?.toString() || "";
     } catch (error) {
       return error as string;
