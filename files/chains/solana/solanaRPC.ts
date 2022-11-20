@@ -1,5 +1,11 @@
 // HIGHLIGHTSTART-installationSolana
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import {
+  Connection,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 // HIGHLIGHTEND-installationSolana
 import { CustomChainConfig, SafeEventEmitterProvider } from "@web3auth/base";
 // HIGHLIGHTSTART-installationSolana
@@ -17,7 +23,7 @@ export default class SolanaRpc {
     try {
       // HIGHLIGHTSTART-solanaRPCFunctions
       const solanaWallet = new SolanaWallet(this.provider);
-      const acc = await solanaWallet.requestAccounts();
+      const acc = await solanaWallet.requestAccounts()
       // HIGHLIGHTEND-solanaRPCFunctions
       return acc;
     } catch (error) {
@@ -29,7 +35,10 @@ export default class SolanaRpc {
     try {
       // HIGHLIGHTSTART-solanaRPCFunctions
       const solanaWallet = new SolanaWallet(this.provider);
-      const connectionConfig = await solanaWallet.request<CustomChainConfig>({ method: "solana_provider_config", params: [] });
+      const connectionConfig = await solanaWallet.request<CustomChainConfig>({
+        method: "solana_provider_config",
+        params: [],
+      });
       const conn = new Connection(connectionConfig.rpcTarget);
 
       const accounts = await solanaWallet.requestAccounts();
@@ -58,19 +67,34 @@ export default class SolanaRpc {
     try {
       // HIGHLIGHTSTART-solanaRPCFunctions
       const solanaWallet = new SolanaWallet(this.provider);
-      const connectionConfig = await solanaWallet.request<CustomChainConfig>({ method: "solana_provider_config", params: [] });
-      const conn = new Connection(connectionConfig.rpcTarget);
 
-      const pubKey = await solanaWallet.requestAccounts();
-      const { blockhash } = await conn.getRecentBlockhash("finalized");
+      const accounts = await solanaWallet.requestAccounts();
+
+      const connectionConfig = await solanaWallet.request<CustomChainConfig>({
+        method: "solana_provider_config",
+        params: [],
+      });
+      const connection = new Connection(connectionConfig.rpcTarget);
+
+      const block = await connection.getLatestBlockhash("finalized");
+
       const TransactionInstruction = SystemProgram.transfer({
-        fromPubkey: new PublicKey(pubKey[0]),
-        toPubkey: new PublicKey(pubKey[0]),
+        fromPubkey: new PublicKey(accounts[0]),
+        toPubkey: new PublicKey(accounts[0]),
         lamports: 0.01 * LAMPORTS_PER_SOL,
       });
-      const transaction = new Transaction({ recentBlockhash: blockhash, feePayer: new PublicKey(pubKey[0]) }).add(TransactionInstruction);
-      const { signature } = await solanaWallet.signAndSendTransaction(transaction);
+
+      const transaction = new Transaction({
+        blockhash: block.blockhash,
+        lastValidBlockHeight: block.lastValidBlockHeight,
+        feePayer: new PublicKey(accounts[0]),
+      }).add(TransactionInstruction);
+
+      const { signature } = await solanaWallet.signAndSendTransaction(
+        transaction
+      );
       // HIGHLIGHTEND-solanaRPCFunctions
+
       return signature;
     } catch (error) {
       return error as string;
@@ -81,7 +105,10 @@ export default class SolanaRpc {
     try {
       // HIGHLIGHTSTART-solanaRPCFunctions
       const solanaWallet = new SolanaWallet(this.provider);
-      const connectionConfig = await solanaWallet.request<CustomChainConfig>({ method: "solana_provider_config", params: [] });
+      const connectionConfig = await solanaWallet.request<CustomChainConfig>({
+        method: "solana_provider_config",
+        params: [],
+      });
       const conn = new Connection(connectionConfig.rpcTarget);
 
       const pubKey = await solanaWallet.requestAccounts();
@@ -91,7 +118,10 @@ export default class SolanaRpc {
         toPubkey: new PublicKey(pubKey[0]),
         lamports: 0.01 * LAMPORTS_PER_SOL,
       });
-      const transaction = new Transaction({ recentBlockhash: blockhash, feePayer: new PublicKey(pubKey[0]) }).add(TransactionInstruction);
+      const transaction = new Transaction({
+        recentBlockhash: blockhash,
+        feePayer: new PublicKey(pubKey[0]),
+      }).add(TransactionInstruction);
       const signedTx = await solanaWallet.signTransaction(transaction);
       // HIGHLIGHTEND-solanaRPCFunctions
       return signedTx.signature?.toString() || "";
