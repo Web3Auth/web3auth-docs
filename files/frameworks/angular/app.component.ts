@@ -14,7 +14,7 @@ const clientId = "YOUR_WEB3AUTH_CLIENT_ID"; // get from https://dashboard.web3au
 })
 export class AppComponent {
     title = "angular-app";
-    web3auth: Web3Auth | null = null;
+    // REPLACE-getWeb3AuthState-
     provider: SafeEventEmitterProvider | null = null;
     isModalLoaded = false;
 
@@ -40,7 +40,7 @@ export class AppComponent {
       return;
     }
     const web3auth = this.web3auth;
-    this.provider = await web3auth.connect();
+    // REPLACE-getLoginCode-
     console.log("logged in");
     };
     // HIGHLIGHTEND-login

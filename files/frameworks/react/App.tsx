@@ -10,24 +10,22 @@ const clientId = "YOUR_WEB3AUTH_CLIENT_ID"; // get from https://dashboard.web3au
 // HIGHLIGHTEND-registerApp
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+  // REPLACE-getWeb3AuthState-
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
 
   useEffect(() => {
     const init = async () => {
       try {
+        // REPLACE-getConstructorCode-
 
-          // REPLACE-getConstructorCode-
+        // REPLACE-getOpenloginAdapter-
 
+        setWeb3auth(web3auth);
 
-          // REPLACE-getOpenloginAdapter-
-
-      setWeb3auth(web3auth);
-
-          // REPLACE-getInitCode-
+        // REPLACE-getInitCode-
 
         if (web3auth.provider) {
-          setProvider(web3auth.provider);
+            setProvider(web3auth.provider);
         };
       } catch (error) {
         console.error(error);
@@ -43,7 +41,7 @@ function App() {
       console.log("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connect();
+    // REPLACE-getLoginCode-
     setProvider(web3authProvider);
   };
   // HIGHLIGHTEND-login
