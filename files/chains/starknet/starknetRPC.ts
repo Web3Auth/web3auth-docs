@@ -3,14 +3,10 @@
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 // HIGHLIGHTEND-installationStarkNet
 import type { SafeEventEmitterProvider } from "@web3auth/base";
-// @ts-ignore
 // HIGHLIGHTSTART-installationStarkNet
-import { ec as elliptic } from "elliptic";
-import { AddTransactionResponse, defaultProvider } from "starknet";
+import { defaultProvider } from "starknet";
 
-// HIGHLIGHTEND-installationStarkNet
 // @ts-ignore
-// HIGHLIGHTSTART-installationStarkNet
 import CompiledAccountContractAbi from "./ArgentAccount.json";
 // HIGHLIGHTEND-installationStarkNet
 
@@ -48,7 +44,7 @@ export default class StarkNetRpc {
     }
   };
 
-  deployAccount = async (): Promise<AddTransactionResponse | string | undefined> => {
+  deployAccount = async (): Promise<string | any> => {
     try {
       // HIGHLIGHTSTART-starkNetRPCFunctions
       const account = await this.getStarkAccount();
@@ -56,8 +52,9 @@ export default class StarkNetRpc {
         const contract = JSON.parse(JSON.stringify(CompiledAccountContractAbi));
         const response = await defaultProvider.deployContract({
           contract,
-        });
-        // HIGHLIGHTEND-starkNetRPCFunctions
+      });
+      // HIGHLIGHTEND-starkNetRPCFunctions
+
         return response;
       }
     } catch (error) {
