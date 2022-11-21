@@ -81,7 +81,7 @@ export const CHAINS: DisplayChoice[] = [
 export const WEB3 = "WEB3";
 export const ETHERS = "ETHERS";
 
-export const EVM_FRAMEWORK: DisplayChoice[] = [
+export const EVM_LIBRARY: DisplayChoice[] = [
   { key: WEB3, displayName: "web3.js" },
   { key: ETHERS, displayName: "ethers" },
 ];
