@@ -1,12 +1,12 @@
-import { getInitCode, getModuleImport, getOpenloginAdapter, getPackageJson, PLACEHOLDERS } from "../../commonCode";
+import { getInitCode, getLoginCode, getModuleImport, getOpenloginAdapter, getPackageJson, PLACEHOLDERS } from "../../commonCode";
 import { YES } from "../choices";
 import { FILENAME_APP_HTML, FILENAME_APP_TS, FILENAME_PACKAGE_JSON } from "./filenames";
-import { getConstructorCodeAngular, getRPCFunctionsAngular, getRPCFunctionsButtonsAngular } from "./replacementCode";
+import { getConstructorCodeAngular, getRPCFunctionsAngular, getRPCFunctionsButtonsAngular, getWeb3AuthStateAngular } from "./replacementCode";
 
-export default function getUpdatedFiles(files, whitelabel, customAuth, chain, evmFramework, replacementAggregator) {
+export default function getUpdatedFiles(files, chain, evmFramework, customAuth, mfa, whitelabel, useModal, replacementAggregator) {
   const newFiles = files;
 
-  const ConstructorCodeAngular = getConstructorCodeAngular(chain, whitelabel === YES);
+  const ConstructorCodeAngular = getConstructorCodeAngular(chain, whitelabel === YES, useModal === YES);
   newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(
     files[FILENAME_APP_TS],
     FILENAME_APP_TS,
@@ -14,10 +14,13 @@ export default function getUpdatedFiles(files, whitelabel, customAuth, chain, ev
     ConstructorCodeAngular
   );
 
-  const InitCode = getInitCode(whitelabel === YES);
+  const InitCode = getInitCode(whitelabel === YES, useModal === YES);
   newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(files[FILENAME_APP_TS], FILENAME_APP_TS, PLACEHOLDERS.INIT_CODE, InitCode);
 
-  const ModuleImport = getModuleImport(chain, whitelabel === YES, customAuth === YES, evmFramework);
+  const LoginCode = getLoginCode(useModal === YES, customAuth, mfa);
+  newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(files[FILENAME_APP_TS], FILENAME_APP_TS, PLACEHOLDERS.LOGIN_CODE, LoginCode);
+
+  const ModuleImport = getModuleImport(chain, whitelabel === YES, customAuth, evmFramework, useModal === YES);
   newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(
     files[FILENAME_APP_TS],
     FILENAME_APP_TS,
@@ -25,7 +28,7 @@ export default function getUpdatedFiles(files, whitelabel, customAuth, chain, ev
     ModuleImport
   );
 
-  const OpenloginAdapter = getOpenloginAdapter(chain, whitelabel === YES, customAuth === YES);
+  const OpenloginAdapter = getOpenloginAdapter(chain, whitelabel === YES, customAuth, useModal === YES, mfa);
   newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(
     files[FILENAME_APP_TS],
     FILENAME_APP_TS,
@@ -33,7 +36,7 @@ export default function getUpdatedFiles(files, whitelabel, customAuth, chain, ev
     OpenloginAdapter
   );
 
-  const PackageJson = getPackageJson(chain, whitelabel === YES, customAuth === YES, evmFramework);
+  const PackageJson = getPackageJson(chain, whitelabel === YES, customAuth, evmFramework, useModal === YES);
   newFiles[FILENAME_PACKAGE_JSON] = replacementAggregator.replaceFileVariable(
     files[FILENAME_PACKAGE_JSON],
     FILENAME_PACKAGE_JSON,
@@ -55,5 +58,13 @@ export default function getUpdatedFiles(files, whitelabel, customAuth, chain, ev
     FILENAME_APP_HTML,
     PLACEHOLDERS.RPC_FUNCTIONS_BUTTONS,
     RPCFunctionsButtonsAngular
+  );
+
+  const Web3AuthStateAngular = getWeb3AuthStateAngular(useModal === YES);
+  newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(
+    files[FILENAME_APP_TS],
+    FILENAME_APP_TS,
+    PLACEHOLDERS.WEB3AUTH_STATE,
+    Web3AuthStateAngular
   );
 }

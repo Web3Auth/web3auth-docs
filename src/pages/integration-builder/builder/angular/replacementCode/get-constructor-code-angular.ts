@@ -1,20 +1,8 @@
 import { chainIdMap, rpcTargetMap } from "../../../commonCode";
 import { OTHER_CHAINS, SOL } from "../../choices";
 
-export const getConstructorCodeAngular = (chain: string, isWhiteLabled: boolean) => {
+export const getConstructorCodeAngular = (chain: string, whitelabel: boolean, useModal: boolean) => {
   let chainDetails = ``;
-  let uiConfig = ``;
-
-  if (isWhiteLabled) {
-    uiConfig = `
-        // HIGHLIGHTSTART-whiteLabeling
-        uiConfig: {
-          theme: "dark",
-          loginMethodsOrder: ["facebook", "google"],
-          appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
-        }
-        // HIGHLIGHTEND-whiteLabeling`;
-  }
 
   if (chain === SOL) {
     chainDetails = `
@@ -31,15 +19,40 @@ export const getConstructorCodeAngular = (chain: string, isWhiteLabled: boolean)
           rpcTarget: "${rpcTargetMap[chain]}", // This is the public RPC we have added, please pass on your own endpoint while creating an app`;
   }
 
-  const code = `
-      // HIGHLIGHTSTART-instantiateSDK
-      this.web3auth = new Web3Auth({
-        clientId,
-        chainConfig: {${chainDetails}
-        },${uiConfig}
-      });
-      const web3auth = this.web3auth;
-      // HIGHLIGHTEND-instantiateSDK`;
+  if (useModal) {
+    let uiConfig = ``;
 
+    if (whitelabel) {
+      uiConfig = `
+          // HIGHLIGHTSTART-whiteLabeling
+          uiConfig: {
+            theme: "dark",
+            loginMethodsOrder: ["facebook", "google"],
+            appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+          }
+          // HIGHLIGHTEND-whiteLabeling`;
+    }
+
+    const code = `
+        // HIGHLIGHTSTART-instantiateSDK
+        this.web3auth = new Web3Auth({
+          clientId,
+          chainConfig: {${chainDetails}
+          },${uiConfig}
+        });
+        const web3auth = this.web3auth;
+        // HIGHLIGHTEND-instantiateSDK`;
+
+    return code;
+  }
+
+  const code = `
+        // HIGHLIGHTSTART-instantiateSDK
+        this.web3auth = new Web3AuthCore({
+          clientId,
+          chainConfig: {${chainDetails}
+          },
+        });
+        // HIGHLIGHTEND-instantiateSDK`;
   return code;
 };
