@@ -154,7 +154,6 @@ export const getOpenloginAdapter = (chain: string, whitelabel: boolean, customAu
     code = `
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
-            clientId,
             network: "cyan",
             uxMode: "popup",
           }, ${mfaLevel} ${whiteLabelCode} ${loginConfig}
