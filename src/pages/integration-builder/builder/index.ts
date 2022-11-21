@@ -9,7 +9,7 @@ import {
   CUSTOM_AUTH,
   CUSTOM_AUTH_MOBILE,
   EVM,
-  EVM_FRAMEWORK,
+  EVM_LIBRARY,
   GAMING,
   HTML,
   LANGS,
@@ -62,10 +62,10 @@ const builder: IntegrationBuilder = {
       choices: CHAINS,
     },
     evmFramework: {
-      displayName: "EVM Framework",
-      default: EVM_FRAMEWORK[0].key,
+      displayName: "EVM Library",
+      default: EVM_LIBRARY[0].key,
       type: "dropdown",
-      choices: EVM_FRAMEWORK,
+      choices: EVM_LIBRARY,
     },
     customAuth: {
       displayName: "Custom Auth",
@@ -167,10 +167,10 @@ const builder: IntegrationBuilder = {
       this.options = {
         ...this.options,
         evmFramework: {
-          displayName: "EVM Framework",
-          default: EVM_FRAMEWORK[0].key,
+          displayName: "EVM Library",
+          default: EVM_LIBRARY[0].key,
           type: "dropdown",
-          choices: EVM_FRAMEWORK,
+          choices: EVM_LIBRARY,
         },
       };
     }
