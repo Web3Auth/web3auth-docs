@@ -1,11 +1,18 @@
-import { ETHERS, OTHER_CHAINS, SOL, STARKEX, STARKNET, TEZOS } from "../builder/choices";
+import { ETHERS, NONE, OTHER_CHAINS, SOL, STARKEX, STARKNET, TEZOS } from "../builder/choices";
 
-export const getModuleImport = (chain: string, isWhiteLabled: boolean, isCustomAuth: boolean, evmFramework: string) => {
-  let code = `
+export const getModuleImport = (chain: string, whitelabel: boolean, customAuth: string, evmFramework: string, useModal: boolean) => {
+  let code = ``;
+  if (useModal) {
+    code += `
 // HIGHLIGHTSTART-importModules
 import { Web3Auth } from "@web3auth/modal";`;
+  } else {
+    code += `
+// HIGHLIGHTSTART-importModules
+import { Web3AuthCore } from "@web3auth/core";`;
+  }
 
-  if (isWhiteLabled || isCustomAuth || chain in OTHER_CHAINS) {
+  if (whitelabel || customAuth !== NONE || chain in OTHER_CHAINS) {
     code += `
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";`;

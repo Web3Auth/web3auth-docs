@@ -73,17 +73,23 @@ const builder: IntegrationBuilder = {
       type: "dropdown",
       choices: CUSTOM_AUTH,
     },
+    mfa: {
+      displayName: "MFA",
+      default: MFA[0].key,
+      type: "dropdown",
+      choices: MFA,
+    },
     whitelabel: {
       displayName: "Whitelabel",
       default: TOGGLE[0].key,
       type: "toggle",
       choices: TOGGLE,
     },
-    mfa: {
-      displayName: "MFA",
-      default: MFA[0].key,
-      type: "dropdown",
-      choices: MFA,
+    useModal: {
+      displayName: "Use W3A Modal",
+      default: TOGGLE[0].key,
+      type: "toggle",
+      choices: TOGGLE,
     },
     dAppShare: {
       displayName: "dApp Share",
@@ -102,12 +108,6 @@ const builder: IntegrationBuilder = {
       default: RN_MODE[0].key,
       type: "dropdown",
       choices: RN_MODE,
-    },
-    useModal: {
-      displayName: "Use W3A Modal",
-      default: TOGGLE[0].key,
-      type: "toggle",
-      choices: TOGGLE,
     },
   },
 

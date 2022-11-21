@@ -1,13 +1,26 @@
-import { openloginAdapterVersion, web3authBaseVersion, web3authModalVersion, web3authSolanaProviderVersion } from "../../../common/versions";
+import {
+  openloginAdapterVersion,
+  web3authBaseVersion,
+  web3authCoreVersion,
+  web3authModalVersion,
+  web3authSolanaProviderVersion,
+} from "../../../common/versions";
 import { ETHERS, OTHER_CHAINS, SOL, STARKEX, STARKNET, TEZOS } from "../builder/choices";
 
-export const getPackageJson = (chain: string, isWhiteLabled: boolean, isCustomAuth: boolean, evmFramework: string) => {
+export const getPackageJson = (chain: string, whitelabel: boolean, customAuth: boolean, evmFramework: string, useModal: boolean) => {
   let code = `
     // HIGHLIGHTSTART-installation
-    "@web3auth/base": "^${web3authBaseVersion}",
-    "@web3auth/modal": "^${web3authModalVersion}",`;
+    "@web3auth/base": "^${web3authBaseVersion}",`;
 
-  if (isWhiteLabled || isCustomAuth || chain in OTHER_CHAINS) {
+  if (useModal) {
+    code += `
+    "@web3auth/modal": "^${web3authModalVersion}",`;
+  } else {
+    code += `
+    "@web3auth/core": "^${web3authCoreVersion}",`;
+  }
+
+  if (whitelabel || customAuth || chain in OTHER_CHAINS) {
     code += `
     "@web3auth/openlogin-adapter": "^${openloginAdapterVersion}",`;
   }
@@ -15,12 +28,12 @@ export const getPackageJson = (chain: string, isWhiteLabled: boolean, isCustomAu
     case SOL:
       code += `
     "@web3auth/solana-provider": "^${web3authSolanaProviderVersion}",
-    "@solana/web3.js": "^1.36.0",`;
+    "@solana/web3.js": "^1.66.1",`;
       break;
 
     case STARKEX:
       code += `
-    "@starkware-industries/starkex-js": "0.0.6",
+    "@starkware-industries/starkex-js": "0.1.0",
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
     "elliptic": "^6.5.4",`;
       break;
@@ -29,8 +42,8 @@ export const getPackageJson = (chain: string, isWhiteLabled: boolean, isCustomAu
       code += `
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
     "elliptic": "^6.5.4",
-    "starknet": "^3.11.0",
-    "web3": "^1.7.0",`;
+    "starknet": "^4.4.2",
+    "web3": "^1.8.0",`;
       break;
 
     case TEZOS:
@@ -44,10 +57,10 @@ export const getPackageJson = (chain: string, isWhiteLabled: boolean, isCustomAu
     default:
       if (evmFramework === ETHERS) {
         code += `
-    "ethers": "^5.6.9",`;
+    "ethers": "^5.7.2",`;
       } else {
         code += `
-    "web3": "^1.7.0",`;
+    "web3": "^1.8.0",`;
       }
   }
   code += `
