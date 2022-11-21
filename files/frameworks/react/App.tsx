@@ -113,8 +113,8 @@ function App() {
             Log Out
           </button>
         </div>
-
       </div>
+
       <div id="console" style={{ whiteSpace: "pre-line" }}>
         <p style={{ whiteSpace: "pre-line" }}></p>
       </div>
