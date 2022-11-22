@@ -191,6 +191,7 @@ module.exports = {
       Troubleshooting: [
         "troubleshooting/error-429",
         "troubleshooting/webpack-issues",
+        "troubleshooting/nodejs-polyfill-issues",
         "troubleshooting/jwt-errors",
         "troubleshooting/different-wallet-address-issue",
         "troubleshooting/react-big-int-error",
