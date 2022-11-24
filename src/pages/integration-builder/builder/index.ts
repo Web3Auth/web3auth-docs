@@ -91,12 +91,6 @@ const builder: IntegrationBuilder = {
       type: "toggle",
       choices: TOGGLE,
     },
-    dAppShare: {
-      displayName: "dApp Share",
-      default: TOGGLE[0].key,
-      type: "toggle",
-      choices: TOGGLE,
-    },
     sessionManagement: {
       displayName: "Session Management",
       default: TOGGLE[0].key,
@@ -253,12 +247,6 @@ const builder: IntegrationBuilder = {
     if (finalValues.lang in MOBILE) {
       this.options = {
         ...this.options,
-        dAppShare: {
-          displayName: "dApp Share",
-          default: TOGGLE[0].key,
-          type: "toggle",
-          choices: TOGGLE,
-        },
         sessionManagement: {
           displayName: "Session Management",
           default: TOGGLE[0].key,

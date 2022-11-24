@@ -4,7 +4,7 @@ export const getLoginCode = (useModal: boolean, customAuth: string, mfa: string)
   if (useModal) {
     const code = `
     // HIGHLIGHTSTART-login
-    await web3auth.connect();
+    const web3authProvider = await web3auth.connect();
     // HIGHLIGHTEND-login`;
     return code;
   }
@@ -72,7 +72,7 @@ export const getLoginCode = (useModal: boolean, customAuth: string, mfa: string)
 
   const code = `
     // HIGHLIGHTSTART-login
-    await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {${mfaLevel}${loginProvider}
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {${mfaLevel}${loginProvider}
     });
     // HIGHLIGHTEND-login`;
   return code;
