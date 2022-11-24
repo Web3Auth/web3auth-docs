@@ -97,7 +97,7 @@ const builder: IntegrationBuilder = {
       type: "toggle",
       choices: TOGGLE,
     },
-    rnWorkflow: {
+    rnMode: {
       displayName: "Workflow",
       default: RN_MODE[0].key,
       type: "dropdown",
@@ -173,7 +173,7 @@ const builder: IntegrationBuilder = {
     if (finalValues.lang === REACT_NATIVE) {
       this.options = {
         ...this.options,
-        rnWorkflow: {
+        rnMode: {
           displayName: "Workflow",
           default: RN_MODE[0].key,
           type: "dropdown",
@@ -244,7 +244,7 @@ const builder: IntegrationBuilder = {
       };
     }
 
-    if (finalValues.lang in MOBILE) {
+    if (finalValues.lang in MOBILE && finalValues.lang !== REACT_NATIVE) {
       this.options = {
         ...this.options,
         sessionManagement: {

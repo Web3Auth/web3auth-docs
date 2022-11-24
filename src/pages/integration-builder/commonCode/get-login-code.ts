@@ -14,42 +14,54 @@ export const getLoginCode = (useModal: boolean, customAuth: string, mfa: string)
 
   if (customAuth === GOOGLE) {
     loginProvider = `
-      loginProvider: "google",`;
+      // HIGHLIGHTSTART-customAuthStep
+      loginProvider: "google",
+      // HIGHLIGHTEND-customAuthStep`;
   }
 
   if (customAuth === FACEBOOK) {
     loginProvider = `
-      loginProvider: "facebook",`;
+      // HIGHLIGHTSTART-customAuthStep
+      loginProvider: "facebook",
+      // HIGHLIGHTEND-customAuthStep`;
   }
 
   if (customAuth === DISCORD) {
     loginProvider = `
-      loginProvider: "discord",`;
+      // HIGHLIGHTSTART-customAuthStep
+      loginProvider: "discord",
+      // HIGHLIGHTEND-customAuthStep`;
   }
 
   if (customAuth === TWITCH) {
     loginProvider = `
-      loginProvider: "twitch",`;
+      // HIGHLIGHTSTART-customAuthStep
+      loginProvider: "twitch",
+      // HIGHLIGHTEND-customAuthStep`;
   }
 
   if (customAuth === AUTH0) {
     loginProvider = `
+      // HIGHLIGHTSTART-customAuthStep
       // Auth0 login works with JWT loginProvider
       loginProvider: "jwt",
       extraLoginOptions: {
           domain: "https://YOUR-AUTH0-DOMAIN", // Please append "https://" before your domain
           verifierIdField: "sub", // For SMS & Email Passwordless, use "name" as verifierIdField
-      },`;
+      },
+      // HIGHLIGHTEND-customAuthStep`;
   }
 
   if (customAuth === JWT) {
     loginProvider = `
+      // HIGHLIGHTSTART-customAuthStep
       loginProvider: "jwt",
       extraLoginOptions: {
           id_token: "YOUR_JWT_ID_TOKEN", // Please replace with your JWT ID token, generated within the last 1 minute
           verifierIdField: 'sub', // same as your JWT Verifier ID on dashboard
           domain: "https://YOUR-APPLICATION-DOMAIN" || "http://localhost:3000", // your application domain or any random string
-      },`;
+      },
+      // HIGHLIGHTEND-customAuthStep`;
   }
 
   let mfaLevel = `

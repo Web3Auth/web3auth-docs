@@ -2,8 +2,8 @@ import { EXPO, YES } from "../choices";
 import { FILENAME_ANDROID_MANIFEST, FILENAME_APP_JSON, FILENAME_APP_TSX, FILENAME_BARE_PACKAGE_JSON, FILENAME_EXPO_PACKAGE_JSON } from "./filenames";
 import STEPS from "./stepContent";
 
-export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth, rnWorkflowMode) {
-  const isExpo = rnWorkflowMode === EXPO;
+export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth, rnMode) {
+  const isExpo = rnMode === EXPO;
   const isCustomAuth = customAuth === YES;
   const isWhitelabel = whitelabel === YES;
   steps.push(

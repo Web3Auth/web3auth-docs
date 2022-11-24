@@ -1,43 +1,129 @@
-export const getConstructorCodeRN = (isWhitelabeled: boolean, isCustomAuth: boolean) => {
-  let whitelabelCode = "";
-  let customAuthCode = "";
-  if (isWhitelabeled) {
-    whitelabelCode = `
-          // HIGHLIGHTSTART-whiteLabeling
-          whiteLabel: {
-            name: "YOUR_APP_NAME",
-            logoLight: "URL_TO_APP_LOGO_FOR_LIGHT_THEME",
-            logoDark: "URL_TO_APP_LOGO_FOR_DARK_THEME",
-            defaultLanguage: "en", // or other language
-            dark: true // or false,
-            theme: {},
-          },
-          // HIGHLIGHTEND-whiteLabeling
-      `;
+import { AUTH0, DISCORD, FACEBOOK, GOOGLE, JWT, NONE, TWITCH } from "../../choices";
+
+export const getConstructorCodeRN = (whitelabel: boolean, customAuth: string) => {
+  let whiteLabelCode = ``;
+  let loginConfig = ``;
+  let code = ``;
+
+  if (whitelabel) {
+    whiteLabelCode = `
+        // HIGHLIGHTSTART-whiteLabeling
+        whiteLabel: {
+          name: "Your app Name",
+          logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+          logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+          defaultLanguage: "en",
+          dark: true, // whether to enable dark mode. defaultValue: false
+        },
+        // HIGHLIGHTEND-whiteLabeling`;
   }
-  if (isCustomAuth) {
-    customAuthCode = `
-          // HIGHLIGHTSTART-loginWithJwt
-          loginConfig: {
-            jwt: {
-              name: "BRAND_NAME",
-              verifier: "VERIFIER_NAME",
-              typeOfLogin: "jwt",
-              clientId: "CLIENT_ID"
-            },
+
+  if (customAuth === GOOGLE) {
+    loginConfig = `
+        // HIGHLIGHTSTART-customAuthStep
+        loginConfig: {
+          // Add login configs corresponding to the provider
+          // Google login
+          google: {
+            name: "Google Login", // The desired name you want to show on the login button
+            verifier: "YOUR_GOOGLE_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
+            typeOfLogin: "google", // Pass on the login provider of the verifier you've created
+            clientId: "GOOGLE_CLIENT_ID.apps.googleusercontent.com", // use your app client id you got from google
           },
-          // HIGHLIGHTEND-loginWithJwt
-      `;
+          // Add other login providers here
+        },
+        // HIGHLIGHTEND-customAuthStep`;
   }
-  return `
-        // HIGHLIGHTSTART-instantiate
-        const web3auth = new Web3Auth(WebBrowser, {
-          // HIGHLIGHTSTART-registerApp
-          clientId: "CLIENT_ID",
-          // HIGHLIGHTEND-registerApp
-          network: OPENLOGIN_NETWORK.TESTNET, // or other networks
-  ${whitelabelCode}
-  ${customAuthCode}
-        });
-      // HIGHLIGHTEND-instantiate`;
+
+  if (customAuth === FACEBOOK) {
+    loginConfig = `
+        // HIGHLIGHTSTART-customAuthStep
+        loginConfig: {
+          // Add login configs corresponding to the provider
+          // Facebook login
+          facebook: {
+            name: "Facebook Login", // The desired name you want to show on the login button
+            verifier: "YOUR_FACEBOOK_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
+            typeOfLogin: "facebook", // Pass on the login provider of the verifier you've created
+            clientId: "FACEBOOK_CLIENT_ID_1234567890123456", // use your app client id you got from facebook
+          },
+          // Add other login providers here
+        },
+        // HIGHLIGHTEND-customAuthStep`;
+  }
+
+  if (customAuth === DISCORD) {
+    loginConfig = `
+        // HIGHLIGHTSTART-customAuthStep
+        loginConfig: {
+          // Add login configs corresponding to the provider
+          // Discord login
+          discord: {
+            name: "Discord Login", // The desired name you want to show on the login button
+            verifier: "YOUR_DISCORD_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
+            typeOfLogin: "discord",
+            clientId: "DISCORD_CLIENT_ID_123456789012345678", // use your app client id you got from discord
+          },
+          // Add other login providers here
+        },
+        // HIGHLIGHTEND-customAuthStep`;
+  }
+
+  if (customAuth === TWITCH) {
+    loginConfig = `
+        // HIGHLIGHTSTART-customAuthStep
+        loginConfig: {
+          // Add login configs corresponding to the provider
+          // Discord login
+          twitch: {
+            name: "Twitch Login", // The desired name you want to show on the login button
+            verifier: "YOUR_TWITCH_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
+            typeOfLogin: "twitch",
+            clientId: "TWITCH_CLIENT_ID_abcdefghi1jk2lm3n4567opq8r9s0t", // use your app client id you got from twitch
+          },
+          // Add other login providers here
+        },
+        // HIGHLIGHTEND-customAuthStep`;
+  }
+
+  if (customAuth === AUTH0) {
+    loginConfig = `
+        // HIGHLIGHTSTART-customAuthStep
+        loginConfig: {
+          // Add login configs corresponding to the provider
+          // Auth0 login works with jwt login config
+          jwt: {
+            name: "Auth0 Provider Login", // The desired name you want to show on the login button
+            verifier: "YOUR_AUTH0_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
+            typeOfLogin: "jwt",
+            clientId: "AUTH0_CLIENT_ID_123ABcdefg4HiJKlMno4P5QR6stUvWXY", // use your app client id you got from auth0
+          },
+          // Add other login providers here
+        },
+        // HIGHLIGHTEND-customAuthStep`;
+  }
+
+  if (customAuth === JWT) {
+    loginConfig = `
+        // HIGHLIGHTSTART-customAuthStep
+        loginConfig: {
+          // Add login configs corresponding to the provider
+          // For firebase/ cognito & other providers, you need to pass the JWT token
+          // JWT login
+          jwt: {
+            name: "JWT Provider Login", // The desired name you want to show on the login button
+            verifier: "YOUR_JWT_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
+            typeOfLogin: "jwt",
+            clientId: "any_random_string", // you can put in any random string here
+          },
+          // Add other login providers here
+        },
+        // HIGHLIGHTEND-customAuthStep`;
+  }
+
+  if (whitelabel || customAuth !== NONE) {
+    code = `${whiteLabelCode}${loginConfig}`;
+  }
+
+  return code;
 };
