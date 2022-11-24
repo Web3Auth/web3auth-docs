@@ -82,4 +82,97 @@ The `loginConfig` parameter of `adapterSettings` in `openlogin-adapter` contains
 Since we're using the `@web3auth/modal` ie. the Plug and Play Modal SDK, the `loginConfig` should be corresponding to the socials mentioned in the
 modal. Here, we're customising Google and Facebook to be custom verified, rest all other socials will be default.
 
-<CustomAuthenticationWeb3AuthExample />
+<Tabs
+  defaultValue="google"
+  values={[
+    { label: "Google", value: "google" },
+    { label: "Facebook", value: "facebook" },
+    { label: "JWT", value: "jwt" },
+  ]}
+>
+
+<TabItem value="google">
+
+```tsx
+import OpenloginAdapter from "@web3auth/openlogin-adapter";
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId, //Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
+    network: "testnet",
+    uxMode: "popup",
+    // highlight-start
+    loginConfig: {
+      // Google login
+      google: {
+        name: "Custom Login with Google",
+        verifier: "YOUR_GOOGLE_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
+        typeOfLogin: "google", // Pass on the login provider of the verifier you've created
+        clientId: "GOOGLE_CLIENT_ID.apps.googleusercontent.com", // Pass on the clientId of the login provider here - Please note this differs from the Web3Auth ClientID. This is the JWT Client ID
+      },
+    },
+    // highlight-end
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+```
+
+</TabItem>
+
+<TabItem value="facebook">
+
+```tsx
+import OpenloginAdapter from "@web3auth/openlogin-adapter";
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId, //Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
+    network: "testnet",
+    uxMode: "popup",
+    // highlight-start
+    loginConfig: {
+      // Facebook login
+      facebook: {
+        name: "Custom Login with Facebook",
+        verifier: "YOUR_FACEBOOK_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
+        typeOfLogin: "facebook", // Pass on the login provider of the verifier you've created
+        clientId: "FACEBOOK_CLIENT_ID_1234567890", // Pass on the clientId of the login provider here - Please note this differs from the Web3Auth ClientID. This is the JWT Client ID
+      },
+    },
+    // highlight-end
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+```
+
+</TabItem>
+
+<TabItem value="jwt">
+
+```tsx
+import OpenloginAdapter from "@web3auth/openlogin-adapter";
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId, //Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
+    network: "testnet",
+    uxMode: "popup",
+    // highlight-start
+    loginConfig: {
+      // JWT login
+      jwt: {
+        name: "Custom JWT Login",
+        verifier: "web3auth-core-custom-jwt",
+        typeOfLogin: "jwt",
+        clientId,
+      },
+    },
+    // highlight-end
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+```
+
+</TabItem>
+
+</Tabs>
