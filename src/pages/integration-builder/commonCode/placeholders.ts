@@ -15,4 +15,5 @@ export const PLACEHOLDERS = {
   FLUTTER_LOGIN_CONFIG: "getFlutterLoginConfig",
   WEB3AUTH_OPTIONS: "Web3AuthOptions",
   LOGIN_CONFIG: "LoginParams",
+  EVM_PROVIDER: "EVMProvider",
 };

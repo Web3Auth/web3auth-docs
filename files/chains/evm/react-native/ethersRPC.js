@@ -5,8 +5,8 @@ import {Buffer} from 'buffer';
 global.Buffer = global.Buffer || Buffer;
 // HIGHLIGHTEND-installationEthers
 
-// HIGHLIGHTSTART-evmRPCFunctions
-const providerUrl = 'https://rpc.ankr.com/eth'; // Or your desired provider url
+// REPLACE-EVMProvider-
+
 
 const getChainId = async () => {
   try {

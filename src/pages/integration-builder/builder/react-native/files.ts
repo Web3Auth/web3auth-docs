@@ -1,12 +1,12 @@
 import { PLACEHOLDERS } from "../../commonCode";
 import { YES } from "../choices";
-import { FILENAME_APP_TSX } from "./filenames";
-import { getConstructorCodeRN, getInitCodeRN, getModuleImportRN, getResolvedRedirectUrl } from "./replacementCode";
+import { FILENAME_APP_TSX, FILENAME_ETHERS_JS } from "./filenames";
+import { getConstructorCodeRN, getEVMProvider, getLoginCodeRN, getModuleImportRN, getResolvedRedirectUrl } from "./replacementCode";
 
-export default function getUpdatedFiles(files, whitelabel, customAuth, rnWorkflowMode, replacementAggregator) {
+export default function getUpdatedFiles(chain, customAuth, mfa, rnMode, whitelabel, files, replacementAggregator) {
   const newFiles = files;
 
-  const ConstructorCodeRN = getConstructorCodeRN(whitelabel === YES, customAuth === YES);
+  const ConstructorCodeRN = getConstructorCodeRN(whitelabel === YES, customAuth);
   newFiles[FILENAME_APP_TSX] = replacementAggregator.replaceFileVariable(
     files[FILENAME_APP_TSX],
     FILENAME_APP_TSX,
@@ -14,15 +14,23 @@ export default function getUpdatedFiles(files, whitelabel, customAuth, rnWorkflo
     ConstructorCodeRN
   );
 
-  const InitCodeRN = getInitCodeRN(customAuth === YES);
+  const EVMProvider = getEVMProvider(chain);
+  newFiles[FILENAME_ETHERS_JS] = replacementAggregator.replaceFileVariable(
+    files[FILENAME_ETHERS_JS],
+    FILENAME_ETHERS_JS,
+    PLACEHOLDERS.EVM_PROVIDER,
+    EVMProvider
+  );
+
+  const LoginCodeRN = getLoginCodeRN(customAuth, mfa);
   newFiles[FILENAME_APP_TSX] = replacementAggregator.replaceFileVariable(
     files[FILENAME_APP_TSX],
     FILENAME_APP_TSX,
-    PLACEHOLDERS.INIT_CODE,
-    InitCodeRN
+    PLACEHOLDERS.LOGIN_CODE,
+    LoginCodeRN
   );
 
-  const ModuleImportRN = getModuleImportRN(rnWorkflowMode);
+  const ModuleImportRN = getModuleImportRN(rnMode);
   newFiles[FILENAME_APP_TSX] = replacementAggregator.replaceFileVariable(
     files[FILENAME_APP_TSX],
     FILENAME_APP_TSX,
@@ -30,7 +38,7 @@ export default function getUpdatedFiles(files, whitelabel, customAuth, rnWorkflo
     ModuleImportRN
   );
 
-  const ResolvedRedirectUrl = getResolvedRedirectUrl(rnWorkflowMode);
+  const ResolvedRedirectUrl = getResolvedRedirectUrl(rnMode);
   newFiles[FILENAME_APP_TSX] = replacementAggregator.replaceFileVariable(
     files[FILENAME_APP_TSX],
     FILENAME_APP_TSX,
