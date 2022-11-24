@@ -9,12 +9,12 @@ import {
 } from "../../commonCode";
 import { YES } from "../choices";
 import { FILENAME_HOME_VUE, FILENAME_PACKAGE_JSON } from "./filenames";
-import { getRPCFunctionsButtonsVue, getRPCFunctionsReturnsVue } from "./replacementCode";
+import { getLoginCodeVue, getRPCFunctionsButtonsVue, getRPCFunctionsReturnsVue } from "./replacementCode";
 
-export default function getUpdatedFiles(files, whitelabel, customAuth, chain, evmFramework, replacementAggregator) {
+export default function getUpdatedFiles(files, chain, evmFramework, customAuth, mfa, whitelabel, useModal, replacementAggregator) {
   const newFiles = files;
 
-  const ConstructorCode = getConstructorCode(chain, whitelabel === YES);
+  const ConstructorCode = getConstructorCode(chain, whitelabel === YES, useModal === YES);
   newFiles[FILENAME_HOME_VUE] = replacementAggregator.replaceFileVariable(
     files[FILENAME_HOME_VUE],
     FILENAME_HOME_VUE,
@@ -22,7 +22,7 @@ export default function getUpdatedFiles(files, whitelabel, customAuth, chain, ev
     ConstructorCode
   );
 
-  const InitCode = getInitCode(whitelabel === YES);
+  const InitCode = getInitCode(whitelabel === YES, useModal === YES);
   newFiles[FILENAME_HOME_VUE] = replacementAggregator.replaceFileVariable(
     files[FILENAME_HOME_VUE],
     FILENAME_HOME_VUE,
@@ -30,7 +30,15 @@ export default function getUpdatedFiles(files, whitelabel, customAuth, chain, ev
     InitCode
   );
 
-  const ModuleImport = getModuleImport(chain, whitelabel === YES, customAuth === YES, evmFramework);
+  const LoginCodeVue = getLoginCodeVue(useModal === YES, customAuth, mfa);
+  newFiles[FILENAME_HOME_VUE] = replacementAggregator.replaceFileVariable(
+    files[FILENAME_HOME_VUE],
+    FILENAME_HOME_VUE,
+    PLACEHOLDERS.LOGIN_CODE,
+    LoginCodeVue
+  );
+
+  const ModuleImport = getModuleImport(chain, whitelabel === YES, customAuth, evmFramework, useModal === YES);
   newFiles[FILENAME_HOME_VUE] = replacementAggregator.replaceFileVariable(
     files[FILENAME_HOME_VUE],
     FILENAME_HOME_VUE,
@@ -38,7 +46,7 @@ export default function getUpdatedFiles(files, whitelabel, customAuth, chain, ev
     ModuleImport
   );
 
-  const OpenloginAdapter = getOpenloginAdapter(chain, whitelabel === YES, customAuth === YES);
+  const OpenloginAdapter = getOpenloginAdapter(chain, whitelabel === YES, customAuth, useModal === YES, mfa);
   newFiles[FILENAME_HOME_VUE] = replacementAggregator.replaceFileVariable(
     files[FILENAME_HOME_VUE],
     FILENAME_HOME_VUE,
@@ -46,7 +54,7 @@ export default function getUpdatedFiles(files, whitelabel, customAuth, chain, ev
     OpenloginAdapter
   );
 
-  const PackageJson = getPackageJson(chain, whitelabel === YES, customAuth === YES, evmFramework);
+  const PackageJson = getPackageJson(chain, whitelabel === YES, customAuth, evmFramework, useModal === YES);
   newFiles[FILENAME_PACKAGE_JSON] = replacementAggregator.replaceFileVariable(
     files[FILENAME_PACKAGE_JSON],
     FILENAME_PACKAGE_JSON,
