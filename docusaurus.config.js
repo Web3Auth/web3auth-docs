@@ -15,7 +15,7 @@ const config = {
   title: "Documentation",
   tagline: "Flexible, Universal Key Management", // TODO: Confirm with content team
   url: "https://web3auth.io",
-  baseUrl: process.env.baseUrl || "/docs/",
+  baseUrl: process.env.REACT_APP_BASE_URL || "/docs/",
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   onDuplicateRoutes: "warn",
@@ -95,6 +95,9 @@ const config = {
       indexName: "docs-web3auth",
       schedule: "every 1 day at 3:00 pm",
     },
+    customFields: {
+      baseUrl: process.env.REACT_APP_BASE_URL || "/docs/",
+    }
   },
   presets: [
     [
