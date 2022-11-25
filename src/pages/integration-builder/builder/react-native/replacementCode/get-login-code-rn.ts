@@ -51,7 +51,6 @@ export const getLoginCodeRN = (customAuth: string, mfa: string) => {
         extraLoginOptions: {
             id_token: "YOUR_JWT_ID_TOKEN", // Please replace with your JWT ID token, generated within the last 1 minute
             verifierIdField: 'sub', // same as your JWT Verifier ID on dashboard
-            domain: "https://YOUR-APPLICATION-DOMAIN" || "http://localhost:3000", // your application domain or any random string
         },
         // HIGHLIGHTEND-customAuthStep`;
   }
