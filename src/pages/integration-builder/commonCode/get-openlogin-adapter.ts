@@ -122,7 +122,6 @@ export const getOpenloginAdapter = (chain: string, whitelabel: boolean, customAu
             // Add login configs corresponding to the provider
             // Auth0 login works with jwt login config
             jwt: {
-              name: "Auth0 Provider Login", // The desired name you want to show on the login button
               verifier: "YOUR_AUTH0_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
               typeOfLogin: "jwt",
               clientId: "AUTH0_CLIENT_ID_123ABcdefg4HiJKlMno4P5QR6stUvWXY", // use your app client id you got from auth0
@@ -140,10 +139,8 @@ export const getOpenloginAdapter = (chain: string, whitelabel: boolean, customAu
             // For firebase/ cognito & other providers, you need to pass the JWT token
             // JWT login
             jwt: {
-              name: "JWT Provider Login", // The desired name you want to show on the login button
               verifier: "YOUR_JWT_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
               typeOfLogin: "jwt",
-              clientId: "any_random_string", // you can put in any random string here
             },
             // Add other login providers here
           },
