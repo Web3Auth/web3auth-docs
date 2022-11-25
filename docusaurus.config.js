@@ -1,5 +1,5 @@
 const path = require("path");
-
+require('dotenv').config()
 const githubOrg = "web3auth";
 const githubRepo = "web3auth-docs";
 const githubOrgUrl = `https://github.com/${githubOrg}`;
@@ -7,7 +7,6 @@ const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
 const githubDiscussionsUrl = `${githubOrgUrl}/${githubOrg}/discussions`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
 const contactUrl = "https://calendly.com/web3auth/meeting-with-web3auth";
-const mediumUrl = "https://medium.com/toruslabs";
 const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
 
