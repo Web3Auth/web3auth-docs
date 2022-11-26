@@ -390,12 +390,12 @@ module.exports = {
     {
       type: "link",
       label: "Troubleshooting",
-      href: "/docs/troubleshooting/webpack-issues",
+      href: (process.env.REACT_APP_BASE_URL || "/docs/") + "troubleshooting/webpack-issues",
     },
     {
       type: "link",
       label: "Server Side Verification",
-      href: "/docs/server-side-verification/",
+      href: (process.env.REACT_APP_BASE_URL || "/docs/") + "server-side-verification/",
     },
     {
       type: "link",
