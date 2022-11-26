@@ -64,8 +64,14 @@ module.exports = {
           type: "category",
           label: "Ethereum",
           link: { type: "doc", id: "connect-blockchain/ethereum/ethereum" },
-          items: ["connect-blockchain/ethereum/javascript", "connect-blockchain/ethereum/flutter", "connect-blockchain/ethereum/android"],
+          items: [
+            "connect-blockchain/ethereum/web",
+            "connect-blockchain/ethereum/android",
+            "connect-blockchain/ethereum/react-native",
+            "connect-blockchain/ethereum/flutter",
+          ],
         },
+        "connect-blockchain/solana",
         {
           type: "category",
           label: "EVM Based Chains",
@@ -85,11 +91,19 @@ module.exports = {
           collapsible: true,
           collapsed: false,
         },
-        "connect-blockchain/solana",
-        "connect-blockchain/starkex",
-        "connect-blockchain/starknet",
-        "connect-blockchain/tezos",
-        "connect-blockchain/algorand",
+        {
+          type: "category",
+          label: "Non EVM Chains",
+          items: [
+            "connect-blockchain/starkex",
+            "connect-blockchain/starknet",
+            "connect-blockchain/tezos",
+            "connect-blockchain/algorand",
+            "connect-blockchain/immutablex",
+          ],
+          collapsible: true,
+          collapsed: false,
+        },
       ],
     },
     {
@@ -380,12 +394,12 @@ module.exports = {
     {
       type: "link",
       label: "Troubleshooting",
-      href: "/docs/troubleshooting",
+      href: (process.env.REACT_APP_BASE_URL || "/docs/") + "troubleshooting/webpack-issues",
     },
     {
       type: "link",
       label: "Server Side Verification",
-      href: "/docs/server-side-verification/",
+      href: (process.env.REACT_APP_BASE_URL || "/docs/") + "server-side-verification/",
     },
     {
       type: "link",

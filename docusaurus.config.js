@@ -1,5 +1,5 @@
 const path = require("path");
-
+require('dotenv').config()
 const githubOrg = "web3auth";
 const githubRepo = "web3auth-docs";
 const githubOrgUrl = `https://github.com/${githubOrg}`;
@@ -7,7 +7,6 @@ const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
 const githubDiscussionsUrl = `${githubOrgUrl}/${githubOrg}/discussions`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
 const contactUrl = "https://calendly.com/web3auth/meeting-with-web3auth";
-const mediumUrl = "https://medium.com/toruslabs";
 const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
 
@@ -16,7 +15,7 @@ const config = {
   title: "Documentation",
   tagline: "Flexible, Universal Key Management", // TODO: Confirm with content team
   url: "https://web3auth.io",
-  baseUrl: "/docs/",
+  baseUrl: process.env.REACT_APP_BASE_URL || "/docs/",
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   onDuplicateRoutes: "warn",
@@ -96,6 +95,9 @@ const config = {
       indexName: "docs-web3auth",
       schedule: "every 1 day at 3:00 pm",
     },
+    customFields: {
+      baseUrl: process.env.REACT_APP_BASE_URL || "/docs/",
+    }
   },
   presets: [
     [
