@@ -3,8 +3,8 @@ title: Interacting with the StarkNet Layer 2
 ---
 
 Once a user logs in, the Web3Auth SDK returns a provider. Even though StarkNet is a layer 2 on Ethereum, it is not EVM compatible. Hence to use it,
-one cannot use the native `EIP1193` provider that Web3Auth gives for EVM blockchains. Hence we need to directly use the private key to make the calls
-here.
+one cannot use the native [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider that Web3Auth gives for EVM blockchains. Hence we need to
+directly use the private key to make the calls here.
 
 Using the function, `web3auth.provider.request({method: "private_key"})` from Web3Auth provider, the application can have access to the user's private
 key. However, we cannot use this key with StarkNet EC Curve specific signing functions, hence, we first derive the Stark Key using the `getStarkKey()`

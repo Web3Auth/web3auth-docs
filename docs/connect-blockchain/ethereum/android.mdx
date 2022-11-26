@@ -1,7 +1,7 @@
 ---
 title: Integrate Web3Auth with the Ethereum Blockchain in Android
 sidebar_label: Android
-image: "/docs/contents/guides/banners/ethereum.png"
+image: "contents/guides/banners/ethereum.png"
 displayed_sidebar: docs
 keywords: [android, ethereum, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Ethereum Blockchain in Android | Documentation - Web3Auth"
@@ -9,13 +9,20 @@ description: "Integrate Web3Auth with the Ethereum Blockchain in Android | Docum
 
 ---
 
-Via Web3Auth Flutter SDK, you can interact with [Ethereum](https://ethereum.org/) to get access to user's `account`, fetch `balance`, `sign message`,
-and `send transaction`.
+While using the Web3Auth Android SDK, you get the private key and sessionId within the user scope. This private key can interact with
+[Ethereum](https://ethereum.org/) to make any blockchain calls, like getting user's `account`, fetch `balance`, `sign transaction`,
+`send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a few here for getting you started quickly on that.
+
+:::info
+
+We have made this reference for `Ethereum`, however this can work with all other EVM compatible chains similarly.
+
+:::
 
 :::note
 
-We have made this for `Ethereum` but can work with all other evm chains similarly. Also for other blockchains, we don't have examples but we do
-support it in Mobile SDKs.
+For other blockchains, the implementation flow remains similar with the corresponding packages available from their side to make the respective
+blockchain calls.
 
 :::
 
@@ -23,8 +30,8 @@ support it in Mobile SDKs.
 
 ---
 
-To interact with the Ethereum blockchain in Android, you can use any compatible package, but we're using [web3j](https://github.com/web3j/web3j) to
-demonstrate how to make blockchain calls using it with Web3Auth.
+To interact with the Ethereum blockchain in Android, you can use any [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible package available
+for Android. Here we're using [web3j](https://github.com/web3j/web3j) to demonstrate how to make blockchain calls using it with Web3Auth.
 
 In your **app-level** `build.gradle`'s dependencies section, add the following:
 
@@ -45,11 +52,9 @@ change the rpcUrl to it's corresponding chain.
 ### Mainnet
 
 - Mainnet Block Explorer URL: https://etherscan.io -- `chainId: "1"`
-- Polygon Block Explorer URL: https://polygonscan.com -- `chainId: "137"`
 
 ```js
 private val rpcUrl = 'https://rpc.ankr.com/eth_goerli'; // Ethereum Mainnet
-private val rpcUrl = "https://rpc.ankr.com/polygon_mumbai" // Polygon Mainnet
 ```
 
 ```kotlin
@@ -135,16 +140,17 @@ class MainActivity : AppCompatActivity() {
 ### Testnet
 
 - Goerli Block Explorer URL: https://goerli.etherscan.io -- `chainId: "5"`
-- Polygon Mumbai Block Explorer URL: https://mumbai.polygonscan.com -- `chainId: "80001"`
 
 ```js
 private val rpcUrl = 'https://rpc.ankr.com/eth_goerli'; // Goerli Testnet
-private val rpcUrl = "https://rpc.ankr.com/polygon_mumbai" // Polygon Testnet
 ```
 
 ## Get User Info
 
 ---
+
+You get the user information after a successful login returned from the `login` method. The `userInfo` object contains the user information, whereas
+the `privKey` object contains the private key which can be used to make blockchain calls.
 
 ```kotlin
 

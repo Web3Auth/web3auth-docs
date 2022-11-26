@@ -1,7 +1,7 @@
 ---
 title: Integrate Web3Auth with the Ethereum Blockchain in Javascript
-sidebar_label: JavaScript
-image: "/docs/contents/guides/banners/ethereum.png"
+sidebar_label: Web
+image: "contents/guides/banners/ethereum.png"
 displayed_sidebar: docs
 keywords: [ethereum, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Ethereum Blockchain in JavaScript | Documentation - Web3Auth"
@@ -26,15 +26,17 @@ import Tabs from "@theme/Tabs";
 
 ---
 
-Via Web3Auth SDK, you can interact with [Ethereum](https://ethereum.org/) to get access to your `account`, fetch `balance`, `sign message`,
-`send transaction`, and even `read` and `write` from the contract.
+While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider, similar to the
+[Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html). This provider can be used with libraries like
+[`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html), [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
+[Ethereum](https://ethereum.org/) blockchain calls like getting user's `account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from
+and `write` to the smart contract, etc. We have highlighted a few here for getting you started quickly on that.
 
 ## Installation
 
 ---
 
-To interact with the Ethereum blockchain, you can use either [web3.js](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html) or
-[ethers.js](https://docs.ethers.io/v5/getting-started/) libraries with Web3Auth.
+To interact with the Ethereum blockchain, you can use either libraries with Web3Auth.
 
 <InstallationSnippet />
 
@@ -42,8 +44,8 @@ To interact with the Ethereum blockchain, you can use either [web3.js](https://w
 
 ---
 
-Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an `EIP1193` compatible provider as **`web3auth.provider`** after
-successful authentication.
+Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible
+provider as **`web3auth.provider`** after successful authentication.
 
 ### Mainnet
 
@@ -256,23 +258,21 @@ const provider = new ethers.providers.Web3Provider(web3authProvider); // web3aut
 
 ### Testnet
 
-- Ropsten Block Explorer URL: https://ropsten.etherscan.io -- `chainId: "0x3"`
-- Rinkeby Block Explorer URL: https://rinkeby.etherscan.io -- `chainId: "0x4"`
 - Goerli Block Explorer URL: https://goerli.etherscan.io -- `chainId: "0x5"`
 
 ```js
 /*
-Simply change the chainId field of `chainConfig` to `0x13881` (testnet)
+Simply change the chainId field of `chainConfig` to `0x5` (testnet)
 */
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: "eip155",
-    chainId: "0x3", // "0x4", "Ox5"
-    rpcTarget: "https://rpc.ankr.com/eth_ropsten", // eth_rinkeby, eth_goerli
-    displayName: "Ropsten Testnet",
-    blockExplorer: "https://ropsten.etherscan.io", // rinkeby, goerli
+    chainId: "Ox5"
+    rpcTarget: "https://rpc.ankr.com/eth_goerli",
+    displayName: "Goerli Testnet",
+    blockExplorer: "https://goerli.etherscan.io",
     ticker: "ETH",
     tickerName: "Ethereum",
   },

@@ -10,11 +10,12 @@ import Tabs from "@theme/Tabs";
 
 ---
 
-The EVM Blockchain Provider is an `EIP1193` compatible provider that can be used to interact with the EVM compatible blockchains. This is a wrapper
-around the [`Ethereum JavaScript Provider API`](https://eips.ethereum.org/EIPS/eip-1193) with some additional functionality.
+The EVM Blockchain Provider is an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider that can be used to interact with the EVM
+compatible blockchains. This is a wrapper around the [`Ethereum JavaScript Provider API`](https://eips.ethereum.org/EIPS/eip-1193) with some
+additional functionality.
 
-If you are using `chainNamespace: "eip155"` while initializing `Web3Auth` or `Web3AuthCore`, it will provide you with an EIP1193 compatible provider
-as **`web3auth.provider`** after user login.
+If you are using `chainNamespace: "eip155"` while initializing `Web3Auth` or `Web3AuthCore`, it will provide you with an
+[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`** after user login.
 
 ```ts
 import { Web3Auth } from "@web3auth/modal";
@@ -33,10 +34,12 @@ const web3auth = new Web3Auth({
       such as [rinkeby, ropsten, goerli, kovan]
     */
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x3",
-    rpcTarget: `https://ropsten.infura.io/v3/${YOUR_INFURA_ID}`,
-    displayName: "ropsten",
-    blockExplorer: "https://ropsten.etherscan.io/",
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "Ethereum Mainnet",
+    blockExplorer: "https://etherscan.io",
     ticker: "ETH",
     tickerName: "Ethereum",
   },
@@ -50,7 +53,7 @@ web3auth.connect();
 
 ## Initializing the provider
 
-On connection, you can use `web3auth.provider` as an EIP1193 provider with `web3.js` or `ethers` library.
+On connection, you can use `web3auth.provider` as an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider with `web3.js` or `ethers` library.
 
 <Tabs
   defaultValue="web3"
@@ -364,8 +367,9 @@ async getPrivateKey() {
 
 ### Getting a provider from any `secp256k1` private key
 
-`@web3auth/ethereum-provider` package can be used to get an EIP1193 compatible provider from any `secp256k1` private key. You can use this package
-with our SDKs, to get an EIP1193 provider from the logged-in user's private key.
+`@web3auth/ethereum-provider` package can be used to get an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider from any
+`secp256k1` private key. You can use this package with our SDKs, to get an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider from the
+logged-in user's private key.
 
 #### Example
 
