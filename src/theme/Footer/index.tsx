@@ -1,4 +1,5 @@
 import { useColorMode } from "@docusaurus/theme-common";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Discord from "@site/static/images/social/discord.svg";
 import GitHub from "@site/static/images/social/github.svg";
 import LinkedIn from "@site/static/images/social/linkedin.svg";
@@ -10,6 +11,8 @@ import ThemedImage from "@theme/ThemedImage";
 import { useEffect, useState } from "react";
 
 export default function FooterComponent(): JSX.Element {
+  const { siteConfig } = useDocusaurusContext();
+  const { baseUrl } = siteConfig;
   const { colorMode } = useColorMode();
   const [canShowFooter, setCanShowFooter] = useState(true);
   useEffect(() => {
@@ -34,8 +37,8 @@ export default function FooterComponent(): JSX.Element {
             <ThemedImage
               alt="Logo"
               sources={{
-                light: "/images/logo.svg",
-                dark: "/images/logo-dark.svg",
+                light: `${baseUrl}/images/logo.svg`,
+                dark: `${baseUrl}/images/logo-dark.svg`,
               }}
             />
             <p>Web3Auth is where passwordless auth meets non-custodial key infrastructure for Web3 apps and wallets.</p>
