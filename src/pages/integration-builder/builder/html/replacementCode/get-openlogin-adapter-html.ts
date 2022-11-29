@@ -44,8 +44,7 @@ export const getOpenloginAdapterHTML = (isWhiteLabled: boolean, isCustomAuth: bo
     code = `
       const openloginAdapter = new window.OpenloginAdapter.OpenloginAdapter({
         adapterSettings: {
-          clientId,
-          network: "testnet",
+          network: "cyan",
           uxMode: "popup", ${whitelabel} ${loginConfig}
         },
       });
