@@ -34,8 +34,8 @@ export default function FooterComponent(): JSX.Element {
             <ThemedImage
               alt="Logo"
               sources={{
-                light: "/docs/images/logo.svg",
-                dark: "/docs/images/logo-dark.svg",
+                light: "/images/logo.svg",
+                dark: "/images/logo-dark.svg",
               }}
             />
             <p>Web3Auth is where passwordless auth meets non-custodial key infrastructure for Web3 apps and wallets.</p>
@@ -69,12 +69,12 @@ export default function FooterComponent(): JSX.Element {
               <strong>Product</strong>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/sdk/web/">
+              <a className="footer__link-item" href="/sdk/web/">
                 Plug n Play
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/sdk/self-host/installation">
+              <a className="footer__link-item" href="/sdk/self-host/installation">
                 Self-hosted
               </a>
             </div>
@@ -109,17 +109,17 @@ export default function FooterComponent(): JSX.Element {
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/sdk">
+              <a className="footer__link-item" href="/sdk">
                 SDK Reference
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/guides">
+              <a className="footer__link-item" href="/guides">
                 Guides
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/examples">
+              <a className="footer__link-item" href="/examples">
                 Examples
               </a>
             </div>
@@ -169,12 +169,12 @@ export default function FooterComponent(): JSX.Element {
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/contribute">
+              <a className="footer__link-item" href="/contribute">
                 Contribute
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/contribute/bug-bounty">
+              <a className="footer__link-item" href="/contribute/bug-bounty">
                 Bug Bounty
               </a>
             </div>
@@ -185,15 +185,15 @@ export default function FooterComponent(): JSX.Element {
           <div className="col col-3" />
           <div className="col col-3">
             {" "}
-            <a className="footer__link-item" href="/docs/legal/cookie-policy">
+            <a className="footer__link-item" href="/legal/cookie-policy">
               Cookie Policy
             </a>{" "}
             |{" "}
-            <a className="footer__link-item" href="/docs/legal/privacy-policy">
+            <a className="footer__link-item" href="/legal/privacy-policy">
               Privacy Policy
             </a>{" "}
             |{" "}
-            <a className="footer__link-item" href="/docs/legal/terms-and-conditions">
+            <a className="footer__link-item" href="/legal/terms-and-conditions">
               Terms and Conditions
             </a>
           </div>
