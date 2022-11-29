@@ -24,7 +24,7 @@ module.exports = (context, options) => ({
     const { createData, addRoute } = actions;
     const files = await createData("files.json", JSON.stringify(content));
     addRoute({
-      path: "/docs/integration-builder",
+      path: (process.env.REACT_APP_BASE_URL || "/docs/") + "integration-builder",
       component: "@site/src/pages/integration-builder",
       modules: {
         files,
