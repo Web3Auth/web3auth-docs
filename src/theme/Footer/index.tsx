@@ -37,8 +37,8 @@ export default function FooterComponent(): JSX.Element {
             <ThemedImage
               alt="Logo"
               sources={{
-                light: `${baseUrl}/images/logo.svg`,
-                dark: `${baseUrl}/images/logo-dark.svg`,
+                light: `${baseUrl}images/logo.svg`,
+                dark: `${baseUrl}images/logo-dark.svg`,
               }}
             />
             <p>Web3Auth is where passwordless auth meets non-custodial key infrastructure for Web3 apps and wallets.</p>
