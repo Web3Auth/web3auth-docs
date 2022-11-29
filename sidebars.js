@@ -258,6 +258,12 @@ module.exports = {
             "sdk/web/core/usage",
           ],
         },
+        {
+          type: "category",
+          label: "@web3auth/single-factor-auth",
+          link: { type: "doc", id: "sdk/web/single-factor-auth/single-factor-auth" },
+          items: ["sdk/web/single-factor-auth/initialize", "sdk/web/single-factor-auth/authentication", "sdk/web/single-factor-auth/usage"],
+        },
         "sdk/web/openlogin",
         "sdk/web/web3auth-mpc",
         {
