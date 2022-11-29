@@ -87,7 +87,8 @@ modal. Here, we're customising Google and Facebook to be custom verified, rest a
   values={[
     { label: "Google", value: "google" },
     { label: "Facebook", value: "facebook" },
-    { label: "JWT", value: "jwt" },
+    {label:"Discord", value:"discord"},
+    {label:"Twitch", value:"twitch"},
   ]}
 >
 
@@ -147,7 +148,7 @@ web3auth.configureAdapter(openloginAdapter);
 
 </TabItem>
 
-<TabItem value="jwt">
+<TabItem value="discord">
 
 ```tsx
 import OpenloginAdapter from "@web3auth/openlogin-adapter";
@@ -159,12 +160,40 @@ const openloginAdapter = new OpenloginAdapter({
     uxMode: "popup",
     // highlight-start
     loginConfig: {
-      // JWT login
-      jwt: {
-        name: "Custom JWT Login",
-        verifier: "web3auth-core-custom-jwt",
-        typeOfLogin: "jwt",
-        clientId,
+      // Discord login
+      discord: {
+        name: "Custom Login with Discord",
+        verifier: "YOUR_DISCORD_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
+        typeOfLogin: "discord", // Pass on the login provider of the verifier you've created
+        clientId: "DISCORD_CLIENT_ID_1234567890", //use your app client id you got from discord
+      },
+    },
+    // highlight-end
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+```
+
+</TabItem>
+
+<TabItem value="twitch">
+
+```tsx
+import OpenloginAdapter from "@web3auth/openlogin-adapter";
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId, //Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
+    network: "testnet",
+    uxMode: "popup",
+    // highlight-start
+    loginConfig: {
+      // Facebook login
+      facebook: {
+        name: "Custom Login with Facebook",
+        verifier: "YOUR_TWITCH_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
+        typeOfLogin: "twitch", // Pass on the login provider of the verifier you've created
+        clientId: "TWITCH_CLIENT_ID_1234567890", //use your app client id you got from twitch
       },
     },
     // highlight-end
