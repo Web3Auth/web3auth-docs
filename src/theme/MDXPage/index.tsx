@@ -1,3 +1,4 @@
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { MDXProvider } from "@mdx-js/react";
 import Layout from "@theme/Layout";
 import MDXComponents from "@theme/MDXComponents";
@@ -12,8 +13,10 @@ export default function MDXPage(props: ComponentProps<typeof OriginalMDXPage>) {
   const { content: MDXPageContent } = props;
   const { frontMatter, metadata } = MDXPageContent;
   const { permalink } = metadata;
+  const { siteConfig } = useDocusaurusContext();
+  const { baseUrl } = siteConfig;
 
-  if (!permalink.startsWith("/docs/guides/")) return <OriginalMDXPage {...props} />;
+  if (!permalink.startsWith(`${baseUrl}guides/`)) return <OriginalMDXPage {...props} />;
 
   const { title, image, description, type, tags, author, date, wrapperClassName } = frontMatter;
   return (
@@ -25,7 +28,7 @@ export default function MDXPage(props: ComponentProps<typeof OriginalMDXPage>) {
               <div className="col col--8 col--offset-1">
                 <div className={classNames("container", styles.container)}>
                   <div className={styles.titleContainer}>
-                    <img className={styles.cover} src={image} alt="Cover" />
+                    <img className={styles.cover} src={baseUrl + image} alt="Cover" />
                     <div className={styles.titleContainer}>
                       <span className={styles.type}>{type}</span>
                       <h1 className={styles.title}>{title}</h1>

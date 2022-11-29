@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import Link from "@docusaurus/Link";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import { useState } from "react";
 
@@ -25,7 +26,8 @@ export default function GuidesPage({ guides }: Props) {
     completeIntegrationBuilderMap.sort((a, b) => a.order - b.order)
   );
   const [sortedReferenceMap, setSortedReferenceMap] = useState<any>(completeReferenceMap.sort((a, b) => a.order - b.order));
-
+  const { siteConfig } = useDocusaurusContext();
+  const { baseUrl } = siteConfig;
   function filterByTags() {
     if (tags.length === 0) {
       setSortedGuides(completeGuides.sort((a, b) => a.order - b.order));
@@ -113,7 +115,7 @@ export default function GuidesPage({ guides }: Props) {
     return (
       <div key={article.link} className={styles.article}>
         <Link to={article.link} className={styles.articleContent}>
-          <img src={article.image} alt="Banner" />
+          <img src={baseUrl + article.image} alt="Banner" />
           <div className={styles.contentContainer}>
             <span className={styles.type}>{article.type}</span>
             <h3>{highlightSearchText(article.title)}</h3>
@@ -156,7 +158,7 @@ export default function GuidesPage({ guides }: Props) {
       <SEO
         title="Guides"
         description="Guides | Web3Auth is simple, non-custodial auth infrastructure that enables Web3 wallets and applications to provide seamless user logins for both mainstream and native Web3 users."
-        image="https://web3auth.io/docs/images/docs-meta-cards/guides-card.png"
+        image={`${baseUrl}images/docs-meta-cards/guides-card.png`}
         slug="/guides"
       />
 

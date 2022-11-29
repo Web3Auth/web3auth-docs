@@ -164,6 +164,11 @@ export type SdkInitParams = {
 import * as WebBrowser from "expo-web-browser";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
 
+const resolvedRedirectUrl =
+  Constants.appOwnership == AppOwnership.Expo || Constants.appOwnership == AppOwnership.Guest
+    ? Linking.createURL("web3auth", {})
+    : Linking.createURL("web3auth", { scheme: scheme });
+
 const clientId = "YOUR WEB3AUTH CLIENT ID";
 
 const web3auth = new Web3Auth(WebBrowser, {
@@ -180,6 +185,9 @@ const web3auth = new Web3Auth(WebBrowser, {
 import * as WebBrowser from "@toruslabs/react-native-web-browser";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
 
+const scheme = 'web3authrnbareauth0example'; // Or your desired app redirection scheme
+const resolvedRedirectUrl = `${scheme}://openlogin`;
+
 const clientId = "YOUR WEB3AUTH CLIENT ID";
 
 const web3auth = new Web3Auth(WebBrowser, {
@@ -195,6 +203,11 @@ const web3auth = new Web3Auth(WebBrowser, {
 ```js
 import * as WebBrowser from "expo-web-browser";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
+
+const resolvedRedirectUrl =
+  Constants.appOwnership == AppOwnership.Expo || Constants.appOwnership == AppOwnership.Guest
+    ? Linking.createURL("web3auth", {})
+    : Linking.createURL("web3auth", { scheme: scheme });
 
 const clientId = "YOUR WEB3AUTH CLIENT ID";
 
@@ -219,6 +232,9 @@ const web3auth = new Web3Auth(WebBrowser, {
 ```js
 import * as WebBrowser from "@toruslabs/react-native-web-browser";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
+
+const scheme = 'web3authrnbareauth0example'; // Or your desired app redirection scheme
+const resolvedRedirectUrl = `${scheme}://openlogin`;
 
 const clientId = "YOUR WEB3AUTH CLIENT ID";
 

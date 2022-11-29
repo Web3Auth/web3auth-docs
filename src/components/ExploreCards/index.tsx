@@ -1,9 +1,10 @@
-import classNames from "classnames";
 import Link from "@docusaurus/Link";
-import styles from "./styles.module.css";
 import Build from "@site/static/contents/icons/build.svg";
-import Whitelabel from "@site/static/contents/icons/whitelabel.svg";
 import CustomAuthentication from "@site/static/contents/icons/custom-authentication.svg";
+import Whitelabel from "@site/static/contents/icons/whitelabel.svg";
+import classNames from "classnames";
+
+import styles from "./styles.module.css";
 
 export default function QuickNavigation() {
   return (
@@ -12,7 +13,7 @@ export default function QuickNavigation() {
         <strong>Start with Web3Auth</strong>
       </h2>
       <div className={styles.container}>
-        <Link className={classNames(styles.card)} to="/docs/quick-start">
+        <Link className={classNames(styles.card)} to="/quick-start">
           <div>
             <Build className={styles.cardIcon} />
             <h5 className={styles.title}>
@@ -21,12 +22,12 @@ export default function QuickNavigation() {
           </div>
           <p>Integrate instantly through our uniquely designed Integration Builder.</p>
 
-          <span className={styles.footer} href="/docs/quick-start">
+          <span className={styles.footer} href="/quick-start">
             Explore Quick Start →
           </span>
         </Link>
 
-        <Link className={classNames(styles.card)} to="/docs/whitelabel">
+        <Link className={classNames(styles.card)} to="/whitelabel">
           <div>
             <Whitelabel className={styles.cardIcon} />
             <h5 className={styles.title}>
@@ -35,12 +36,12 @@ export default function QuickNavigation() {
           </div>
           <p>Make Web3Auth your own with a wide range of Whitelabeling options.</p>
 
-          <span className={styles.footer} href="/docs/whitelabel">
+          <span className={styles.footer} href="/whitelabel">
             Checkout Whitelabel Page→
           </span>
         </Link>
 
-        <Link className={classNames(styles.card)} to="/docs/custom-authentication/">
+        <Link className={classNames(styles.card)} to="/custom-authentication/">
           <div>
             <CustomAuthentication className={styles.cardIcon} />
             <h5 className={styles.title}>
@@ -49,7 +50,7 @@ export default function QuickNavigation() {
           </div>
           <p>Use your own social login and generate a non custodial private key with Web3Auth.</p>
 
-          <span className={styles.footer} href="/docs/custom-authentication/">
+          <span className={styles.footer} href="/custom-authentication/">
             Turn to Custom Authentication →
           </span>
         </Link>
