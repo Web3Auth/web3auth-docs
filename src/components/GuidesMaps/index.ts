@@ -371,16 +371,16 @@ export const featuresMap = [
     tag: "@web3auth/core",
   },
   {
-    title: "Web3Auth MPC",
-    tag: "mpc",
-  },
-  {
     title: "Web3Auth Self Host",
     tag: "self host",
   },
   {
-    title: "One Key Flow",
-    tag: "one key flow",
+    title: "Web3Auth Single Factor Auth",
+    tag: "@web3auth/single-factor-auth",
+  },
+  {
+    title: "Web3Auth MPC",
+    tag: "mpc",
   },
   {
     title: "Custom Authentication",

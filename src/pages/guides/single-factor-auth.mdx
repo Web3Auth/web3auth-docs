@@ -1,9 +1,9 @@
 ---
-title: Web3Auth One Key Flow without Redirect
+title: Web3Auth Single Factor Auth without Redirect
 image: "contents/guides/banners/one-key-flow.png"
 description: Learn how to customize the authentication flow to allow users to authenticate without redirecting to the openlogin hosted screens.
 type: guide
-tags: [web, one key flow, "@web3auth/core", custom authentication, react, ethereum]
+tags: [web, "@web3auth/single-factor-auth", "@web3auth/core", custom authentication, react, ethereum]
 date: 7th October 2022
 author: Web3Auth Team
 order: 2
@@ -56,7 +56,7 @@ _**In this guide, we will be looking at the second approach**_. If you are curio
 
 :::info note
 
-We will refer this approach as `One Key Flow` in the upcoming sections.
+We will refer this approach as `Single Factor Auth` in the upcoming sections.
 
 :::
 
@@ -71,7 +71,7 @@ below.
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd examples/node-sdk/one-key-flow/react-one-key-evm-example
+cd examples/tree/main/web-single-factor-auth/react-evm-sfa-example
 npm install
 npm run start
 ```
@@ -80,14 +80,14 @@ npm run start
 
 ---
 
-![Web3Auth Core - One Key Flow](/images/one-key-flow.png)
+![Web3Auth Core - Single Factor Auth](/images/single-factor-auth.png)
 
-Refer to the flow chart above to understand how the `One Key Flow` works:
+Refer to the flow chart above to understand how the `Single Factor Auth` works:
 
 - The first step for the application is to get the user authenticated by social login and get the user's idToken.
 - Once the social login is successful, depending on if the user has enabled **Multi Factor Authentication(MFA)** or not, the key is generated.
-- If the user has not enabled MFA, we use the `@web3auth/node-sdk` library to retrieve the private key shares from the Web3Auth auth network nodes and
-  reconstruct the private key.
+- If the user has not enabled MFA, we use the `@web3auth/single-factor-auth` sdk to retrieve the private key shares from the Web3Auth auth network
+  nodes and reconstruct the private key.
 - If the user has enabled MFA, the private key can be reconstructed simply via Web3Auth Login using Web3Auth SDK by redirecting the user to
   `app.openlogin.com`.
 
@@ -111,7 +111,7 @@ is _**future compatible**_. If you want to enable MFA in your application in the
 
 ### Setup your JWT provider
 
-- One key flow will work with any JWT provider. For this particular guide we will use Firebase as our JWT provider.
+- Single Factor Auth will work with any JWT provider. For this particular guide we will use Firebase as our JWT provider.
 - You can follow the [Firebase guide](/guides/firebase#setup-your-firebase-project) to setup Firebase.
 
 ### Setup your Web3Auth Dashboard
@@ -157,11 +157,11 @@ Below are the steps to setup Firebase as JWT Provider. The same steps can be fol
 
 ---
 
-Doing user login with one key flow consists of following steps:
+Doing user login with Single Factor Auth consists of following steps:
 
 - Authenticate user with social login provider.
 - Checking if user's mfa is enabled.
-- If mfa is not enabled, then login with `@web3auth/node-sdk` sdk.
+- If mfa is not enabled, then login with `@web3auth/single-factor-auth` sdk.
 - If mfa is enabled, then login with `@web3auth/core` sdk.
 
 ### Authenticate user with social login provider.
@@ -212,8 +212,8 @@ const idToken = await loginRes.user.getIdToken(true); // this idToken will be pa
 Now we have `idToken` and login response from firebase, which will give the user's detail. We will use these two fields to check whether a user has
 already enabled MFA or not.
 
-The check can be made by calling the `connect` method of `@web3auth/node-sdk`. This method will throw an error if the user has already enabled MFA.
-Note that this function takes idToken as a parameter which is the `idToken` we got from Firebase.
+The check can be made by calling the `connect` method of `@web3auth/single-factor-auth`. This method will throw an error if the user has already
+enabled MFA. Note that this function takes idToken as a parameter which is the `idToken` we got from Firebase.
 
 :::info
 
@@ -222,19 +222,25 @@ Ensure that the `idToken` passed to the `connect()` is a newly issued Token(JWT)
 :::
 
 ```js
-import { Web3Auth } from "@web3auth/node-sdk";
+import { Web3Auth } from "@web3auth/single-factor-auth";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
 
-const verifier = "YOUR_VERIFIER_NAME"; // verifier that you created earlier from web3auth dashboard.
-const verifierId = loginRes.user.uid; // user's id from firebase login response or this can be any unique user's id like email etc.
 const idToken = "YOUR_ID_TOKEN"; // idToken from firebase login response or from your own backend.
 
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155, // SOLANA, OTHER
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
 const web3auth = new Web3Auth({
   clientId, // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
-  },
+  chainConfig,
 });
 
 await web3auth.init({
@@ -242,8 +248,8 @@ await web3auth.init({
 });
 
 const web3AuthProvider = await web3auth?.connect({
-  verifier,
-  verifierId: sub,
+  verifier: "YOUR_VERIFIER_NAME", // verifier that you created earlier from web3auth dashboard.
+  verifierId: loginRes.user.uid, // user's id from firebase login response or this can be any unique user's id like email etc.
   idToken,
 });
 ```
@@ -285,6 +291,7 @@ const chainConfig = {
   tickerName: "Ethereum",
 };
 const web3auth = new Web3AuthCore({
+  clientId, // Get your Client ID from Web3Auth Dashboard
   chainConfig,
 });
 ```
@@ -292,18 +299,13 @@ const web3auth = new Web3AuthCore({
 #### Initialising the Openlogin Adapter
 
 ```js
-const verifier = "YOUR_VERIFIER_NAME"; // verifier that you created earlier from web3auth dashboard.
 const openloginAdapter = new OpenloginAdapter({
-  loginSettings: {
-    mfaLevel: "mandatory",
-  },
   adapterSettings: {
     network: "cyan",
-    uxMode: "redirect",
     loginConfig: {
       jwt: {
         name: "Web3Auth One Key Login Flow",
-        verifier,
+        verifier: "YOUR_VERIFIER_NAME", // verifier that you created earlier from web3auth dashboard.
         typeOfLogin: "jwt",
         clientId,
       },
@@ -331,7 +333,6 @@ const web3AuthProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   extraLoginOptions: {
     id_token: idToken,
     verifierIdField: "sub",
-    domain: window.location.origin,
   },
 });
 ```
@@ -487,8 +488,8 @@ setProvider(null);
 ### Example code
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth One Key Flow Example](https://github.com/Web3Auth/examples/tree/main/web-core-sdk/one-key-flow). Check it out and try running it locally
-yourself!
+[Web3Auth Single Factor Auth Example](https://github.com/Web3Auth/examples/tree/main/web-core-sdk/one-key-flow). Check it out and try running it
+locally yourself!
 
 ## Questions?
 
