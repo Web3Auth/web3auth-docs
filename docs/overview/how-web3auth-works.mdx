@@ -5,7 +5,10 @@ displayed_sidebar: docs
 description: "How Web3Auth Works? | Documentation - Web3Auth"
 ---
 
+import Image2 from "@site/static/contents/tkey-overview-architecture.png";
 import Image1 from "@site/static/contents/web3auth-architecture.png";
+
+---
 
 This page covers the different aspects of what happens when you use Web3Auth. This document will give you the user and the developer perspective on
 the architectural aspect of Web3Auth. It is a good idea to read this before you start using Web3Auth.
@@ -68,3 +71,17 @@ Once the user starts the process:
 ![](@site/static/contents/web3auth-working.png)
 
 <!-- ##### This diagram below can help you understand how the keyshares are splitted and stored within different devices and the Auth Network: -->
+
+## How Web3Auth Key Generation works
+
+---
+
+The Web3Auth [Key Management Infrastructure](/overview/key-management/) eliminates the exposure of seed phrases to users by splitting up the private
+key into different key shares representing a user's web of trust. The diagram shows below how user's private key is being split up. Using the concept
+of Threshold Cryptography (with Shamir Secret Sharing), users only need a minimum of 2 out of n<sup>th</sup> number of keyshares to get back their
+private key. This allow users to have control over their key and at the same time prevent account loss from a single point of failure (ie, they can
+lose their device and still have access to their account). Further to create a social login share, a user has to use the Web3Auth Auth Network, where
+the key generation happens through a 5/9 consensus system. This ensures that the keys are always non custodial to Web3Auth, Social Login Providers or
+any other party holding a key share.
+
+<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={Image2} alt="Showing How Web3Auth Key Generation works" />
