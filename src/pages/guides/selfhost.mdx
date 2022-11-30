@@ -9,9 +9,6 @@ author: Web3Auth Team
 order: 5
 ---
 
-import TkeyIntroduction from "@site/src/common/docs/_tkey-intro.mdx";
-import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
-import SelfHostModule from "@site/src/common/sdk/selfHost/_modules-description.mdx";
 import SEO from "@site/src/components/SEO";
 
 <SEO
@@ -21,12 +18,14 @@ import SEO from "@site/src/components/SEO";
   slug="/guides/selfhost"
 />
 
-This guide will help you make a react application using Web3Auth Self Host, covering the basic functionality on how to use it. For a detailed
-reference, you can refer to the [Web3Auth Self Host SDK Reference](http://localhost:3000/docs/sdk/self-host/installation).
+This guide will help you make a react application using Web3Auth Self Host SDK, covering the basic functionality on how to use it and get started
+quickly. For a detailed reference, you can refer to the [Web3Auth Self Host SDK Reference](/sdk/self-host).
 
 **Live Demo:** https://selfhost.web3auth.io
 
 ## Quick Start
+
+---
 
 ```bash
 git clone https://github.com/tkey/tkey-example.git
@@ -43,6 +42,7 @@ npm start
 - A [Google Developer](https://console.developers.google.com/) account to be used as Login provider for Web3Auth Custom Authentication.
 - Create a Web3Auth account on the [Web3Auth Dashboard](https://dashboard.web3auth.io/)
 
+<!--
 ## Understanding the tKey SDK
 
 ---
@@ -51,6 +51,7 @@ npm start
 
 For this guide here, we will be talking through the [tKey SDK](/sdk/self-host/installation) and using the Custom Authentication through Google Login
 alongside it.
+-->
 
 ## Setup
 
@@ -60,6 +61,7 @@ alongside it.
 
 1. Follow Google’s instructions to [set up an OAuth 2.0 app.](https://support.google.com/cloud/answer/6158849?hl=en)
 2. Add your application's redirect URI into the "Authorized redirect URIs" field. This is the URL that Google will redirect to after authentication.
+   `http://localhost:3000/serviceworker/redirect`
 
    ![Google OAuth2.0 App Dashboard](/contents/social-providers/google/google-app-redirect-uri.png)
 
@@ -75,82 +77,58 @@ alongside it.
   - Select `Google` from the **Login Provider**. ![Google - Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
   - Paste the **Client ID** from the Google App(above) to the `Client ID` field.
     ![Google Client ID on Web3Auth Dashboard](/dashboard/verifiers/google-verifier.png)
-  - Click on `Create` button to create your verifier. It may take up to 10 minutes to deploy verifier on _testnet_. You'll receive an email once it's
-    complete.
+  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once
+    it's complete.
 
 - You will require the `verifierName` of the newly created verifier.
 
 ### Setting up your React Project
 
-As mentioned in the prerequisites, we will need to use service workers while implementing the tKey SDK. This is because tKey forms an offchain
-multisig which needs to sit within your browser context to be able to verify the ownership of the private key in a self custodial manner to the user
-within their devices directly.
+We will need to use service workers while implementing the tKey SDK to handle the redirect login flow. This can be done by using a progressive react
+application.
 
-Hence, we need to create a progressive react application. This can be done by using the following command:
+For a new project, get started with the following command:
 
 ```bash
 npx create-react-app tkey-demo --template cra-template-pwa-typescript
 cd tkey-demo
 ```
 
+For an existing project, add a service worker.
+
 ### Setting up the service worker
 
-Further, we need to setup the service worker according to our needs of the project. Service worker basically sits between the frontend application,
-browser and the network. It kind of acts as a proxy server enabling the off chain multisig which is the foundation of tKey. Configuring a service
-worker is a totally different topic to cover, hence for the simplicity of this guide, we have added a boilerplate code that will work according to
-your needs. Easiest way to do that is as follows
+Further, we need to setup the service worker according to our needs of the project, i.e handling the redirect login flow. Service worker basically
+sits between the frontend application, browser and the network. For the simplicity of this guide, we have added a boilerplate code. The easiest way to
+do that is as follows
 
 ```bash
 mkdir public/serviceworker
 wget https://raw.githubusercontent.com/tkey/tkey-example/main/public/serviceworker/sw.js -O public/serviceworker/sw.js
 ```
 
+<!--
 <SetupBaseProject />
+-->
 
 ## Installation
 
 ---
 
-For setting up the tKey SDK for this project, we will be following the
-[standard installation](https://web3auth.io/docs/sdk/self-host/installation#standard-installation), which contains all the needed functionalities of
-the tkey SDK.
+We will be starting with a 2/2 flow, i.e `ShareA: Social Shares` and `ShareB: Device Share` and later will allow users to add more shares of tKey. i.e
+`2/n`
+
+For this project, we will be using `@tkey/default` that contains all the needed functionalities of the tKey SDK.
 
 ```bash
-npm install --save @tkey/default
+npm install --save @tkey/default @tkey/web-storage @tkey/security-questions
 ```
 
-### Understanding the Dependencies
+- `@tkey/web-storage`: This module is used to store the Device Share and used in the 2/2 flow. If you're building for Web, We recommed you to start
+  with this module. i.e `2/2`
+- `@tkey/security-questions`: This module is used to create a `Share C: Backup Share` allowing `2/3` flows.
 
-##### `@tkey/core`
-
-This is the main **Core** package that contains the main tKey SDK.
-
-```shell
-npm install --save @tkey/core
-```
-
-##### `@tkey/service-provider-torus`
-
-In the Web3Auth Self Host setup, you have to use the Web3Auth Service Provider (`@tkey/service-provider-torus`), which is basically implements
-Web3Auth's Social Login feature as a service provider, enabling you to associate the social login of the user as one of the shares.
-
-```shell
-npm install --save @tkey/service-provider-torus
-```
-
-##### `@tkey/storage-layer-torus`
-
-The storage layer is needed to store and recall metadata information of the shares generated so as to be able to recover the private key from the
-tKeys generated. For this we use the `@tkey/storage-layer-torus` SDK, giving you the ability to get and set the Metadata for the various shares
-generated.
-
-#### Adding Modules
-
-```shell
-npm install --save @tkey/storage-layer-torus
-```
-
-<SelfHostModule />
+For a detailed reference, you can refer to the [Web3Auth Self Host SDK Reference](/sdk/self-host).
 
 ## Initialization
 
@@ -158,86 +136,57 @@ npm install --save @tkey/storage-layer-torus
 
 After Installation, the next step to use Web3Auth Self Host is to Initialize the SDK.
 
-The Initialization takes a few steps, which basically involve initiating the SDK and setting up the service provider, storage layer and modules.
-
-1. [Configuration of Service Provider](/sdk/self-host/initialization#configuring-service-provider) _(recommended for social login shares)_
-2. [Configuration of Storage Layer](/sdk/self-host/initialization#configuring-storage-layer) _(optional)_
-3. [Configuration of Modules](/sdk/self-host/initialization#configuring-modules) _(optional)_
-4. **[Instantiation of tKey](/sdk/self-host/initialization#instantiating-tkey)**
-5. [Initialization of Service Provider](/sdk/self-host/initialization#initializing-service-provider) _(recommended for social login shares)_
-6. [Triggering Login using Service Provider](/sdk/self-host/initialization#triggering-login-using-service-provider) _(recommended for social login
-   shares)_
-7. **[Initialization of tKey](/sdk/self-host/initialization#initializing-tkey)**
-
-Please note that these are the most critical steps where you need to pass on different parameters according to your project. You can go to the
-particular links to learn about each step properly. For the sake of this guide, we will be using the following code for initialization:
-
 ```js
 import { useEffect } from "react";
 import ThresholdKey from "@tkey/default";
-import WebStorageModule, { WEB_STORAGE_MODULE_NAME } from "@tkey/web-storage";
-import TorusServiceProvider from "@tkey/service-provider-torus";
-import TorusStorageLayer from "@tkey/storage-layer-torus";
+import WebStorageModule from "@tkey/web-storage";
 import SecurityQuestionsModule from "@tkey/security-questions";
-import ShareTransferModule from "@tkey/share-transfer";
 
-// 1. Configuration of Service Provider
-const directParams = {
+// Configuration of Service Provider
+const customAuthArgs = {
   baseUrl: `${window.location.origin}/serviceworker`,
-  enableLogging: true,
   network: "cyan",
 };
-const serviceProvider = new TorusServiceProvider({ directParams });
-// 2. Configuration of Storage Layer
-const storageLayer = new TorusStorageLayer({ hostUrl: "https://metadata.tor.us" });
-// 3. Configuration of Modules
-const webStorageModule = new WebStorageModule();
-const securityQuestionsModule = new SecurityQuestionsModule();
-const shareTransferModule = new ShareTransferModule();
-// 4. Instantiation of tKey
+// Configuration of Modules
+const webStorageModule = new WebStorageModule(); // For 2/2
+const securityQuestionsModule = new SecurityQuestionsModule(); // For 2/3
+
+// Instantiation of tKey
 const tKey = new ThresholdKey({
-  serviceProvider: serviceProvider,
-  storageLayer,
-  modules: { webStorage: webStorageModule, securityQuestions: securityQuestionsModule, shareTransfer: shareTransferModule },
+  modules: { webStorage: webStorageModule, securityQuestions: securityQuestionsModule }
+  customAuthArgs,
 });
 
 function App() {
   // Init Service Provider inside the useEffect Method
   useEffect(() => {
     const init = async () => {
-      // 5. Initialization of Service Provider
-      await (tKey.serviceProvider as TorusServiceProvider).init({ skipSw: false });
+      // Initialization of Service Provider
+      await (tKey.serviceProvider as TorusServiceProvider).init();
       try {
       } catch (error) {
         console.error(error);
       }
     };
-
     init();
   }, []);
 }
 ```
 
-### Triggering Login using Service Provider
+## Triggering Login using Service Provider
 
 Once you have initialised the Web3Auth Service Provider, you're ready to trigger the login process. This is a needed step since this will generate a
 private key which will be needed by the tKey to generate it's share. This is done by calling the `triggerLogin()` function within the `tKey`
 instance's `serviceProvider` property.
 
-:::tip
-
-Checkout the [Service Provider Reference](/sdk/self-host/service-provider#triggering-login) to know more about `triggerLogin()` and its configuration.
-
-:::
-
 ```js
 const triggerLogin = async () => {
   try {
-    // 6. Triggering Login using Service Provider ==> opens the popup
+    // Triggering Login using Service Provider ==> opens the popup
     const loginResponse = await (tKey.serviceProvider as TorusServiceProvider).triggerLogin({
       typeOfLogin: "google",
-      verifier: "your-verifier",
-      clientId: "your-client-id",
+      verifier: "your-web3auth-verifier-name",
+      clientId: "your-google-client-id",
     });
     console.log(loginResponse);
     console.log("Public Key : " + loginResponse.publicAddress);
@@ -248,7 +197,7 @@ const triggerLogin = async () => {
 };
 ```
 
-### Initialise tKey
+## Initialise and Reconstruct tKey
 
 Once you have triggered the login process, you're ready to initialize the tKey. This will generate you a Threshold Key corresponding to your login
 provider.
@@ -256,54 +205,31 @@ provider.
 ```js
 const initializeNewKey = async () => {
   try {
-    await triggerLogin(); // Calls the triggerLogin() function above (step 6)
-    // 7. Initialization of tKey
-    await tKey.initialize();
-    const res = await tKey._initializeNewKey({ initializeModules: true });
-    console.log("response from _initializeNewKey", res);
-    console.log("Private Key " + res.privKey);
+    await triggerLogin(); // Calls the triggerLogin() function above
+    // Initialization of tKey
+    await tKey.initialize(); // 1/2 flow
+    // Gets the deviceShare
+    await tKey.modules.webStorage.inputShareFromWebStorage(); // 2/2 flow
+
+    // Checks the requiredShares to reconstruct the tKey,
+    // starts from 2 by default and each of the above share reduce it by one.
+    const { requiredShares } = tKey.getKeyDetails();
+    if (requiredShares === 0) {
+      const reconstructedKey = await tKey.reconstructKey();
+      console.log("Reconstructed tKey: " + reconstructedKey.privKey.toString("hex"));
+    }
   } catch (error) {
     console.error(error, "caught");
   }
 };
 ```
 
-## Usage
+## Generating a new share with a password
 
-### Reconstruct Key
-
-Reconstruct the Private Key from the shares
-
-```js
-const reconstructKey = async () => {
-  try {
-    console.log("Reconstucting key");
-    let reconstructedKey = await tKey.reconstructKey();
-    console.log(reconstructedKey.privKey);
-  } catch (error) {
-    console.error(error, "caught");
-  }
-};
-```
-
-### Get Tkey Details
-
-Get the details of the different key shares
-
-```js
-const getTKeyDetails = async () => {
-  console.log("Tkey details");
-  console.log(tKey.getKeyDetails());
-};
-```
-
-### Generating a new share with a password
-
-Generate a new share using the security questions module
+Generate a new share(`ShareC: Backup Share`) using the security questions module enabling `2/3` flow.
 
 ```js
 const generateNewShareWithPassword = async () => {
-    console.log("Generating new share with password");
     // swal is just a pretty dialog box
     swal("Enter password (>10 characters)", {
       content: "input" as any,
@@ -319,116 +245,12 @@ const generateNewShareWithPassword = async () => {
   };
 ```
 
-### Import Share from Security Question
-
-Import a new share using the security questions module
-
-```js
-const inputShareFromSecurityQuestions = async () => {
-    console.log("Importing Share from Security Question");
-    swal("What is your password ?", {
-      content: "input" as any,
-    }).then(async (value) => {
-      if (value.length > 10) {
-        await (tKey.modules.securityQuestions as SecurityQuestionsModule).inputShareFromSecurityQuestions(value);
-        console.log("Imported Share using the security question");
-      } else {
-        swal("Error", "Password must be > 10 characters", "error");
-      }
-    });
-  };
-```
-
-### Request Share
-
-Request a share using the share transfer module
-
-```js
-const requestShare = async () => {
-    console.log("Requesting New Share");
-    try {
-      const result = await (tKey.modules.shareTransfer as ShareTransferModule).requestNewShare(navigator.userAgent, tKey.getCurrentShareIndexes());
-      console.log(result);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-```
-
-### Approve Share Request
-
-Approve a share request using the share transfer module
-
-```js
-const approveShareRequest = async () => {
-    console.log("Approving Share Request");
-    try {
-      const result = await (tKey.modules.shareTransfer as ShareTransferModule).getShareTransferStore();
-      const requests = await (tKey.modules.shareTransfer as ShareTransferModule).lookForRequests();
-      let shareToShare;
-      try {
-        shareToShare = await (tKey.modules.webStorage as WebStorageModule).getDeviceShare();
-      } catch (err) {
-        console.error("No on device share found. Generating a new share");
-        const newShare = await tKey.generateNewShare();
-        shareToShare = newShare.newShareStores[newShare.newShareIndex.toString("hex")];
-      }
-      console.log(result, requests, tKey);
-
-      await (tKey.modules.shareTransfer as ShareTransferModule).approveRequest(requests[0], shareToShare);
-      // await this.tbsdk.modules.shareTransfer.deleteShareTransferStore(requests[0]) // delete old share requests
-      console.log("Approved Share Transfer request");
-    } catch (err) {
-      console.error(err);
-    }
-  };
-```
-
-### Check Share Request
-
-Check if there is a share request pending
-
-```js
-const checkShareRequests = async () => {
-    consoleText("Checking Share Reuqests");
-    try {
-      const result = await (tKey.modules.shareTransfer as ShareTransferModule).getShareTransferStore();
-      const requests = await (tKey.modules.shareTransfer as ShareTransferModule).lookForRequests();
-      console.log("Share Requests" + JSON.stringify(requests));
-      console.log("Share requests", requests);
-      console.log("Share Transfer Store", result);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-```
-
-### Reset Share Request
-
-Reset the share requests store
-
-```js
-const resetShareRequests = async () => {
-    console.log("Resetting Share Transfer Requests");
-    try {
-      const res = await (tKey.modules.shareTransfer as ShareTransferModule).resetShareTransferStore();
-      console.log(res);
-      console.log("Reset share transfer successful");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-```
-
 ### Interacting with Blockchain
 
-So if you have completed this far, it means that you have successfully authenticated your user. Once you have logged in your user and resconstructed
-the key, you can directly use the private key to make the RPC calls. You can also use our You can use the
-[Provider SDKs](https://web3auth.io/docs/sdk/web/providers/) to perform RPC Calls to your blockchain.
+So if you have completed this far, it means that you have successfully authenticated your user and resconstructed the key. Now, you can directly use
+the private key to make the RPC calls.
 
-Web3Auth is chain agnostic, ie. depending on whatever blockchain or layer-2 you use, Web3Auth can easily support that. Web3Auth has native providers
-for EVM and Solana blockchains and for others, you can get the private key in the user scope and make RPC calls. For standardising the type of
-provider, Web3Auth Base provides a SafeEventEmitterProvider from which you can create your own provider.
+Web3Auth is chain agnostic, you can get the private key in the user scope and make RPC calls to any blockchain.
 
 ## Example code
 
