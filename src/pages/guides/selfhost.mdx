@@ -125,8 +125,9 @@ npm install --save @tkey/default @tkey/web-storage @tkey/security-questions
 ```
 
 - `@tkey/web-storage`: This module is used to store the Device Share and used in the 2/2 flow. If you're building for Web, We recommed you to start
-  with this module. i.e `2/2`
-- `@tkey/security-questions`: This module is used to create a `Share C: Backup Share` allowing `2/3` flows.
+  with this module. i.e `2/2`, but there are other modules to achieve the same.
+- `@tkey/security-questions`: This module is used to create a `Share C: Backup Share` allowing `2/3` flows. This is what we have chosen for this
+  guide, but there are other ways to achieve the same.
 
 For a detailed reference, you can refer to the [Web3Auth Self Host SDK Reference](/sdk/self-host).
 
@@ -177,7 +178,7 @@ function App() {
 
 Once you have initialised the Web3Auth Service Provider, you're ready to trigger the login process. This is a needed step since this will generate a
 private key which will be needed by the tKey to generate it's share. This is done by calling the `triggerLogin()` function within the `tKey`
-instance's `serviceProvider` property.
+instance's of `serviceProvider` property.
 
 ```js
 const triggerLogin = async () => {
@@ -200,7 +201,7 @@ const triggerLogin = async () => {
 ## Initialise and Reconstruct tKey
 
 Once you have triggered the login process, you're ready to initialize the tKey. This will generate you a Threshold Key corresponding to your login
-provider.
+provider. And the below code also shows how the device share is added to reconstruct the final private key in the frontend.
 
 ```js
 const initializeNewKey = async () => {
@@ -226,7 +227,8 @@ const initializeNewKey = async () => {
 
 ## Generating a new share with a password
 
-Generate a new share(`ShareC: Backup Share`) using the security questions module enabling `2/3` flow.
+Generate a new share(`ShareC: Backup Share`) using the security questions module enabling `2/3` flow. One can add more shares from ShareC, but for
+simplicity, this is what we have chosen for this guide.
 
 ```js
 const generateNewShareWithPassword = async () => {
@@ -247,10 +249,8 @@ const generateNewShareWithPassword = async () => {
 
 ### Interacting with Blockchain
 
-So if you have completed this far, it means that you have successfully authenticated your user and resconstructed the key. Now, you can directly use
-the private key to make the RPC calls.
-
-Web3Auth is chain agnostic, you can get the private key in the user scope and make RPC calls to any blockchain.
+So if you have completed this far, it means that you have successfully authenticated your user and resconstructed the key in the frontend. Now, you
+can directly use the private key to make the RPC calls to any blockchain making Web3Auth chain agnostic.
 
 ## Example code
 
