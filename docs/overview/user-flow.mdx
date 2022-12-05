@@ -5,27 +5,86 @@ displayed_sidebar: docs
 description: "Multi Factor Authentication | Documentation - Web3Auth"
 ---
 
-import Image1 from "@site/static/contents/tkey-overview-architecture.png";
-
 ---
 
 Web3Auth enables simple Web2 flows for Web3 onboarding. However, as good as that sounds, this process has a few moving parts for the developers to
 understand and implement. The major reason behind this is to ensure that the user information are secure and they're in control of their keys. In all,
-our goal is that the process is transparent to the users and developers and they can choose the best flows according to their needs.
+our goal is that the process is transparent to the users and developers and they can choose the best flows according to their needs. Before starting,
+make sure you understand [how web3auth works](/overview/how-web3auth-works), so that you can understand the different available flows mentioned here.
 
-## How Web3Auth Key Generation works
+## Types of User Flows with Web3Auth
 
 ---
 
-The Web3Auth [Key Management Infrastructure](/overview/key-management/) eliminates the exposure of seed phrases to users by splitting up the private
-key into different key shares representing a user's web of trust. The diagram shows below how user's private key is being split up. Using the concept
-of Threshold Cryptography (with Shamir Secret Sharing), users only need a minimum of 2 out of n<sup>th</sup> number of keyshares to get back their
-private key. This allow users to have control over their key and at the same time prevent account loss from a single point of failure (ie, they can
-lose their device and still have access to their account). Further to create a social login share, a user has to use the Web3Auth Auth Network, where
-the key generation happens through a 5/9 consensus system. This ensures that the keys are always non custodial to Web3Auth, Social Login Providers or
-any other party holding a key share.
+### One Click Login
 
-<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={Image1} alt="Showing How Web3Auth Key Generation works" />
+This is the simplest flow for a user to onboard with Web3Auth. The user just needs to click on the login button, connect to their favourite social
+account (OAuth) or any passwordless flow, like email passwordless, biometric authentication etc., and a private key is generated for them. This flow
+has a 1/1 Key Share setup and the whole key via Web3Auth Auth Network key shares in the openlogin.com frontend. This flow is still non custodial since
+the nodes in the Web3Auth network have a 5/9 consensus mechanism to generate the key shares.
+
+However, one can claim that this flow is custodial to the OAuth Login provider, since this is directly generated using credentials provided by them.
+**Hence we can call this flow a semi-custodial flow.**
+
+:::info
+
+This can be achieved by setting the `MFALevel` to `'none'` within the Web3Auth Login while logging a user in. Also the
+[`@web3auth/single-factor-auth`](/sdk/web/single-factor-auth/) and [`@web3auth/node-sdk`](/sdk/node/) help you directly achieve this flow as well.
+
+:::
+
+### Adding a Multi Factor Authentication
+
+The Multi Factor Authentication (MFA) feature refers to the ability of the user to create a backup share (recovery phrase). This feature plays a key
+role in the Key Infrastructure of Web3Auth and a developer needs to properly understand it to be able to onboard users safely and effectively. These
+flows are a mix of 1/1 flow and 2/3 flows depending upon the user, whether they create their backup share.
+
+#### Default MFA
+
+This is the default MFA setting that Web3Auth provides. During the first login, the user is onboarded using the one click login flow and allowed to
+experience the application. However, to eventually enhance security, they're prompted to create a backup share (recovery phrase) **every third
+login**, which is optional for the user to create.
+
+:::info
+
+This can be achieved by setting the `MFALevel` to `'default'` within the Web3Auth Login while logging a user in.
+
+:::
+
+#### Optional MFA
+
+This is similar to the default MFA, except that the user is prompted to create a backup share at every login and is optional for them to create.
+
+:::info
+
+This can be achieved by setting the `MFALevel` to `'optional'` within the Web3Auth Login while logging a user in.
+
+:::
+
+#### Mandatory MFA
+
+This is the most secure MFA setting that Web3Auth provides. During the first login, the user is asked to create a backup share (recovery phrase) and
+it is a mandatory requirement for the user to create it.
+
+:::info
+
+This can be achieved by setting the `MFALevel` to `'mandatory'` within the Web3Auth Login while logging a user in.
+
+:::
+
+:::note
+
+You can check the Multi Factor Authentication section for your preferred SDK to understand how to implement this:
+
+- [Web3Auth Plug and Play Modal SDK](/sdk/web/modal/multi-factor-authentication)
+- [Web3Auth Plug and Play Core SDK](/sdk/web/core/multi-factor-authentication)
+- [Web3Auth Android SDK](/sdk/android/mfa)
+- [Web3Auth iOS SDK](/sdk/ios)
+- [Web3Auth React Native SDK](/sdk/react-native/mfa)
+- [Web3Auth Flutter SDK](/sdk/flutter/mfa)
+- [Web3Auth Unity SDK](/sdk/unity/mfa)
+
+:::
 
 ## Web3Auth's Approach Towards User Onboarding
 
@@ -83,73 +142,3 @@ beyond the integrating application. A dApp can achieve this by:
 
 Interoperability, or the ability to use the same account across multiple applications, is a key feature of Web3Auth. This is achieved by the multiple
 flows as mentioned in the [Interoperability](/interoperability) section of the documentation.
-
-## Types of User Flows with Web3Auth
-
----
-
-### One Click Login
-
-This is the simplest flow for a user to onboard with Web3Auth. The user just needs to click on the login button, connect to their favourite social
-account (OAuth) or any passwordless flow, like email or WebAuthn etc., and a private key is generated for them. This flow has a 1/1 Key Share setup
-and the whole key via Web3Auth Auth Network key shares in the openlogin.com frontend. This flow is still non custodial since the nodes in the Web3Auth
-network have a 5/9 consensus mechanism to generate the key shares.
-
-:::info
-
-This can be achieved by setting the `MFALevel` to `'none'` within the Web3Auth Login while logging a user in.
-
-:::
-
-### Adding a Multi Factor Authentication
-
-The Multi Factor Authentication (MFA) feature refers to the ability of the user to create a backup share (recovery phrase). This feature plays a key
-role in the Key Infrastructure of Web3Auth and a developer needs to properly understand it to be able to onboard users safely and effectively. These
-flows are a mix of 1/1 flow and 2/3 flows depending upon the user, whether they create their backup share.
-
-#### Default MFA
-
-This is the default MFA setting that Web3Auth provides. During the first login, the user is onboarded using the one click login flow and allowed to
-experience the application. However, to eventually enhance security, they're prompted to create a backup share (recovery phrase) **every third
-login**, which is optional for the user to create.
-
-:::info
-
-This can be achieved by setting the `MFALevel` to `'default'` within the Web3Auth Login while logging a user in.
-
-:::
-
-#### Optional MFA
-
-This is similar to the default MFA, except that the user is prompted to create a backup share at every login and is optional for them to create.
-
-:::info
-
-This can be achieved by setting the `MFALevel` to `'optional'` within the Web3Auth Login while logging a user in.
-
-:::
-
-#### Mandatory MFA
-
-This is the most secure MFA setting that Web3Auth provides. During the first login, the user is asked to create a backup share (recovery phrase) and
-it is a mandatory requirement for the user to create it.
-
-:::info
-
-This can be achieved by setting the `MFALevel` to `'mandatory'` within the Web3Auth Login while logging a user in.
-
-:::
-
-:::note
-
-You can check the Multi Factor Authentication section for your preferred SDK to understand how to implement this:
-
-- [Web3Auth Plug and Play Modal SDK](/sdk/web/modal/multi-factor-authentication)
-- [Web3Auth Plug and Play Core SDK](/sdk/web/core/multi-factor-authentication)
-- [Web3Auth Android SDK](/sdk/android/mfa)
-- [Web3Auth iOS SDK](/sdk/ios)
-- [Web3Auth React Native SDK](/sdk/react-native/mfa)
-- [Web3Auth Flutter SDK](/sdk/flutter/mfa)
-- [Web3Auth Unity SDK](/sdk/unity/mfa)
-
-:::

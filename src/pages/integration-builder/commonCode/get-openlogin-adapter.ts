@@ -44,8 +44,7 @@ export const getOpenloginAdapter = (chain: "eth" | "sol" | "starkex" | "starknet
     code = `
       const openloginAdapter = new OpenloginAdapter({
         adapterSettings: {
-          clientId,
-          network: "testnet",
+          network: "cyan",
           uxMode: "popup", ${whitelabel} ${loginConfig}
         },
       });

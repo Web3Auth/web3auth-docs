@@ -1,8 +1,8 @@
 ---
-title: "Usage of Node.js SDK"
+title: "Usage of Single Factor Auth SDK"
 sidebar_label: "Usage"
 displayed_sidebar: sdk
-description: "Usage of Node.js SDK | Documentation - Web3Auth"
+description: "Usage of Single Factor Auth SDK | Documentation - Web3Auth"
 ---
 
 import TabItem from "@theme/TabItem";
@@ -12,6 +12,12 @@ import Tabs from "@theme/Tabs";
 
 Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users. Further, you can use the native provider given
 by Web3Auth to connect the users to the respective blockchain network.
+
+:::info guide
+
+Follow this [guide](/guides/single-factor-auth) for ideal flow using a combination of Web3Auth Single Factor Auth SDK and Web3Auth Core SDK.
+
+:::
 
 Natively, the instance of Web3Auth (referred to as web3auth in our examples) returns the following functions:
 
@@ -25,72 +31,9 @@ Natively, the instance of Web3Auth (referred to as web3auth in our examples) ret
 
 To login a user in the Web3Auth Backend SDK, you need to call `connect()` function.
 
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Function Definition", value: "definition" },
-  ]}
->
-
-<TabItem value="table">
-
 | Variable      | Type     | Description      | Mandatory |
 | ------------- | -------- | ---------------- | --------- |
 | `loginParams` | `object` | Login Parameters | Yes       |
-
-</TabItem>
-
-<TabItem value="definition">
-
-```ts
-async connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null> {
-    if (!this.torusUtils || !this.nodeDetailManager || !this.privKeyProvider) throw new Error("Please call init first");
-    const { verifier, verifierId, idToken, subVerifierInfoArray } = loginParams;
-    const verifierDetails = { verifier, verifierId };
-
-    const { torusNodeEndpoints, torusIndexes, torusNodePub } = await this.nodeDetailManager.getNodeDetails(verifierDetails);
-
-    // does the key assign
-    const pubDetails = await this.torusUtils.getUserTypeAndAddress(torusNodeEndpoints, torusNodePub, verifierDetails, true);
-
-    if (pubDetails.typeOfUser === "v1" || pubDetails.upgraded) {
-      throw new Error("User has already enabled mfa, please use the @web3auth/web3auth-web sdk for login with mfa");
-    }
-
-    let finalIdToken = idToken;
-    let finalVerifierParams = { verifier_id: verifierId };
-    if (subVerifierInfoArray && subVerifierInfoArray?.length > 0) {
-      const aggregateVerifierParams: AggregateVerifierParams = { verify_params: [], sub_verifier_ids: [], verifier_id: "" };
-      const aggregateIdTokenSeeds = [];
-      for (let index = 0; index < subVerifierInfoArray.length; index += 1) {
-        const userInfo = subVerifierInfoArray[index];
-        aggregateVerifierParams.verify_params.push({ verifier_id: verifierId, idtoken: userInfo.idToken });
-        aggregateVerifierParams.sub_verifier_ids.push(userInfo.verifier);
-        aggregateIdTokenSeeds.push(userInfo.idToken);
-      }
-      aggregateIdTokenSeeds.sort();
-      finalIdToken = keccak256(aggregateIdTokenSeeds.join(String.fromCharCode(29))).slice(2);
-      aggregateVerifierParams.verifier_id = verifierId;
-      finalVerifierParams = aggregateVerifierParams;
-    }
-
-    const retrieveSharesResponse = await this.torusUtils.retrieveShares(
-      torusNodeEndpoints,
-      torusIndexes,
-      verifier,
-      finalVerifierParams,
-      finalIdToken
-    );
-    const finalKey = subkey(retrieveSharesResponse.privKey.padStart(64, "0"), Buffer.from(this.options.clientId, "base64"));
-    await this.privKeyProvider.setupProvider(finalKey.padStart(64, "0"));
-    return this.privKeyProvider.provider;
-  }
-```
-
-</TabItem>
-
-</Tabs>
 
 #### Returns
 
@@ -151,7 +94,7 @@ await web3auth.connect({
 });
 ```
 
-`@web3auth/node-sdk` SDK only works for those users who have **not enabled MFA**.
+`@web3auth/single-factor-auth` SDK only works for those users who have **not enabled MFA**.
 
 :::danger MFA enabled users
 
@@ -159,12 +102,12 @@ For MFA enabled users, you'll see `Error("User has already enabled mfa, please u
 
 :::
 
-## Node JS Example
+## Example
 
 ---
 
 ```js
-const { Web3Auth } = require("@web3auth/node-sdk");
+import Web3Auth from "@web3auth/single-factor-auth";
 
 const web3auth = new Web3Auth({
   clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
@@ -177,14 +120,12 @@ const web3auth = new Web3Auth({
 
 web3auth.init({ network: "cyan" });
 
-const connect = async () => {
-  const provider = await web3auth.connect({
+const provider = await web3auth.connect({
     verifier: "verifier-name", // replace with your verifier name, and it has to be on the same network passed in init().
     verifierId: "verifier-Id", // replace with your verifier id(sub or email), setup while creating the verifier on Web3Auth's Dashboard
     idToken: "JWT Token", // replace with your newly created unused JWT Token.
   });
-  const privateKey = await provider.request({ method: "eth_private_key" });
-  console.log("ETH Private Key", privateKey);
-};
-connect();
+  
+const privateKey = await provider.request({ method: "eth_private_key" });
+console.log("ETH Private Key", privateKey);
 ```
