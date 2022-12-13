@@ -1,6 +1,6 @@
 import SwiftUI
 import Web3Auth
-
+// DELETE THIS FILE LATER
 struct ContentView: View {
     @SwiftUI.State var text = ""
     var body: some View {
