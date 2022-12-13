@@ -1,5 +1,5 @@
 import { YES } from "../choices";
-import { FILENAME_CONTENTVIEW, FILENAME_PODFILE, FILENAME_WEB3AUTH_PLIST } from "./filenames";
+import { FILENAME_CONTENTVIEW, FILENAME_MAIN, FILENAME_PODFILE, FILENAME_WEB3AUTH_PLIST } from "./filenames";
 import STEPS from "./stepContent";
 
 export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth) {
@@ -14,7 +14,7 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
     },
     {
       ...STEPS.instantiate,
-      pointer: replacementAggregator.highlightRange(FILENAME_CONTENTVIEW, files[FILENAME_CONTENTVIEW], "instantiate"),
+      pointer: replacementAggregator.highlightRange(FILENAME_MAIN, files[FILENAME_MAIN], "instantiate"),
     },
     customAuth === YES
       ? {
@@ -23,12 +23,12 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
         }
       : {
           ...STEPS.triggeringLogin,
-          pointer: replacementAggregator.highlightRange(FILENAME_CONTENTVIEW, files[FILENAME_CONTENTVIEW], "triggeringLogin"),
+          pointer: replacementAggregator.highlightRange(FILENAME_MAIN, files[FILENAME_MAIN], "triggeringLogin"),
         },
 
     {
       ...STEPS.getUserInfo,
-      pointer: replacementAggregator.highlightRange(FILENAME_CONTENTVIEW, files[FILENAME_CONTENTVIEW], "getUserInfo"),
+      pointer: replacementAggregator.highlightRange(FILENAME_MAIN, files[FILENAME_MAIN], "getUserInfo"),
     }
   );
 }
