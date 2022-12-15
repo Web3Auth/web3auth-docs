@@ -1,3 +1,7 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { MDXProvider } from "@mdx-js/react";
 import Layout from "@theme/Layout";
@@ -162,7 +166,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                       {option.choices.map(
                         (value) =>
                           value.key !== builderOptions[key] && (
-                            <li key={value.key} onClick={(e) => onChangeDropdown(key, value.key)}>
+                            <li key={value.key} onClick={() => onChangeDropdown(key, value.key)}>
                               {value.displayName}
                             </li>
                           )

@@ -6,31 +6,35 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
   steps.push(
     {
       ...STEPS.buildingApp,
-      pointer: replacementAggregator.highlightRange(FILENAME_BUILDGRADLE, files[FILENAME_BUILDGRADLE], "buildingApp"),
+      pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "buildingApp"),
+    },
+    {
+      ...STEPS.RequirementsAndroid,
+      pointer: replacementAggregator.highlightRange(FILENAME_BUILDGRADLE, files[FILENAME_BUILDGRADLE], "installationAndroid"),
     },
     {
       ...STEPS.installationAndroid,
-      pointer: replacementAggregator.highlightRange(FILENAME_SETTINGSGRADLE, files[FILENAME_SETTINGSGRADLE], "installationAndroid"),
+      pointer: replacementAggregator.highlightRange(FILENAME_BUILDGRADLE, files[FILENAME_BUILDGRADLE], "installationBuildGradle"),
     },
     {
-      ...STEPS.installationBuildGradle,
-      pointer: replacementAggregator.highlightRange(FILENAME_BUILDGRADLE, files[FILENAME_BUILDGRADLE], "installationBuildGradle"),
+      ...STEPS.JitpackURL,
+      pointer: replacementAggregator.highlightRange(FILENAME_SETTINGSGRADLE, files[FILENAME_SETTINGSGRADLE], "JitpackURL"),
     },
     {
       ...STEPS.installationAppManifest,
       pointer: replacementAggregator.highlightRange(FILENAME_ANDROIDMANIFEST, files[FILENAME_ANDROIDMANIFEST], "installationAppManifest"),
     },
     {
-      ...STEPS.registerApp,
-      pointer: replacementAggregator.highlightRange(FILENAME_STRINGS, files[FILENAME_STRINGS], "registerApp"),
+      ...STEPS.singleTop,
+      pointer: replacementAggregator.highlightRange(FILENAME_ANDROIDMANIFEST, files[FILENAME_ANDROIDMANIFEST], "singleTop"),
     },
     {
       ...STEPS.configureDeepLink,
       pointer: replacementAggregator.highlightRange(FILENAME_ANDROIDMANIFEST, files[FILENAME_ANDROIDMANIFEST], "configureDeepLink"),
     },
     {
-      ...STEPS.singleTop,
-      pointer: replacementAggregator.highlightRange(FILENAME_ANDROIDMANIFEST, files[FILENAME_ANDROIDMANIFEST], "singleTop"),
+      ...STEPS.registerApp,
+      pointer: replacementAggregator.highlightRange(FILENAME_STRINGS, files[FILENAME_STRINGS], "registerApp"),
     },
     {
       ...STEPS.instantiate,
@@ -49,13 +53,11 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "customAuthStep"),
     });
   }
-  if (mfa !== DEFAULT) {
-    steps.push({
+  steps.push(
+    {
       ...STEPS.multiFactorAuthentication,
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "multiFactorAuthentication"),
-    });
-  }
-  steps.push(
+    },
     {
       ...STEPS.setResultURL,
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "setResultURL"),
