@@ -1,4 +1,6 @@
+//HIGHLIGHTSTART-buildingApp
 package com.web3auth.app
+//HIGHLIGHTEND-buildingApp
 
 import android.content.Intent
 import android.net.Uri

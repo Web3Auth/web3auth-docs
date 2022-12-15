@@ -64,7 +64,7 @@ export const getConstructorCodeAndroid = (isWhitelabeled: boolean, customAuth: s
                 loginConfig = hashMapOf("twitch" to LoginConfigItem(
                   verifier = "YOUR_AUTH0_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
                   typeOfLogin = TypeOfLogin.JWT,
-                  clientId = getString(R.string.auth0_client_id) // twitch's client id
+                  clientId = getString(R.string.auth0_client_id) // auth0 client id
                 ))
                 //HIGHLIGHTEND-customAuthStep`;
   }
