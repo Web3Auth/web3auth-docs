@@ -1,6 +1,7 @@
 import { toSteps } from "../../../utils";
 import * as configureDeepLink from "./configure-deeplink.mdx";
 import * as CustomAuthentication from "./custom-authentication.mdx";
+import * as evmRPCFunctions from "./evmRPCFunctions.mdx";
 import * as installationAppManifest from "./install-app-manifest.mdx";
 import * as installationBuildGradle from "./install-build-gradle.mdx";
 import * as installationAndroid from "./installation.mdx";
@@ -26,6 +27,7 @@ const STEPS = toSteps({
   triggeringLogout,
   whiteLabeling,
   CustomAuthentication,
+  evmRPCFunctions,
   multiFactorAuthentication,
 });
 
