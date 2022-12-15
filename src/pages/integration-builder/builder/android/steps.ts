@@ -5,6 +5,10 @@ import STEPS from "./stepContent";
 export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth, mfa) {
   steps.push(
     {
+      ...STEPS.buildingApp,
+      pointer: replacementAggregator.highlightRange(FILENAME_BUILDGRADLE, files[FILENAME_BUILDGRADLE], "buildingApp"),
+    },
+    {
       ...STEPS.installationAndroid,
       pointer: replacementAggregator.highlightRange(FILENAME_SETTINGSGRADLE, files[FILENAME_SETTINGSGRADLE], "installationAndroid"),
     },
