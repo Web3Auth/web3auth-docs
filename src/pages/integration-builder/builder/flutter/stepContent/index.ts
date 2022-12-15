@@ -2,6 +2,7 @@ import * as whiteLabeling from "../../../commonSteps/whitelabeling.mdx";
 import { toSteps } from "../../../utils";
 import * as buildingApp from "./buildingApp.mdx";
 import * as customAuthn from "./custom-authentication.mdx";
+import * as evmRPCFunctions from "./evmRPCFunctions.mdx";
 import * as installationFlutter from "./installation.mdx";
 import * as instantiate from "./instantiateSDK.mdx";
 import * as loginWithJwt from "./login-with-jwt.mdx";
@@ -21,6 +22,7 @@ const STEPS = toSteps({
   whiteLabeling,
   customAuthn,
   multiFactorAuthentication,
+  evmRPCFunctions,
 });
 
 export default STEPS;

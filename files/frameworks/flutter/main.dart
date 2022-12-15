@@ -1,16 +1,15 @@
 //HIGHLIGHTSTART-buildingApp
 import 'dart:collection';
 import 'dart:io';
-//HIGHLIGHTEND-buildingApp
-
 import 'package:flutter/material.dart';
-import 'package:web3auth_flutter/enums.dart';
-import 'package:web3auth_flutter/input.dart';
-import 'package:web3auth_flutter/output.dart';
 import 'dart:async';
+//HIGHLIGHTEND-buildingApp
 
 // HIGHLIGHTSTART-installationFlutter
 import 'package:web3auth_flutter/web3auth_flutter.dart';
+import 'package:web3auth_flutter/enums.dart';
+import 'package:web3auth_flutter/input.dart';
+import 'package:web3auth_flutter/output.dart';
 // HIGHLIGHTEND-installationFlutter
 
 
@@ -26,6 +25,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _result = '';
   bool logoutVisible = false;
+
+  // REPLACE-EVMProvider-
+
 
   @override
   void dispose() {
@@ -56,9 +58,13 @@ class _MyAppState extends State<MyApp> {
 
     Uri redirectUrl;
     if (Platform.isAndroid) {
+      // HIGHLIGHTSTART-registerApp
       redirectUrl = Uri.parse('w3a://com.example.w3aflutter/auth');
+      // HIGHLIGHTEND-registerApp
     } else if (Platform.isIOS) {
+      // HIGHLIGHTSTART-registerApp
       redirectUrl = Uri.parse('com.example.w3aflutter://openlogin');
+      // HIGHLIGHTEND-registerApp
     } else {
       throw UnKnownException('Unknown platform');
     }
@@ -68,7 +74,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // Map<String, dynamic> user = jsonDecode(_result);
 
     return MaterialApp(
       home: Scaffold(
