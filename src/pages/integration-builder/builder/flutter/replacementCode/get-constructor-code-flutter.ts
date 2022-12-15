@@ -90,7 +90,7 @@ export const getConstructorCodeFlutter = (isWhitelabeled: boolean, customAuth: s
       network: Network.testnet,
       redirectUrl: redirectUrl,
       loginConfig: loginConfig${whitelabelCode}
-      ));
+    ));
     // HIGHLIGHTEND-instantiate
   `;
 };
