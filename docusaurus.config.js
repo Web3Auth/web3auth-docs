@@ -309,11 +309,8 @@ async function createConfig() {
   const lightTheme = (await import("./src/components/prismLight.mjs")).default;
   const darkTheme = (await import("./src/components/prismDark.mjs")).default;
 
-  // @ts-expect-error: we know it exists, right
   config.themeConfig.prism.theme = lightTheme;
-  // @ts-expect-error: we know it exists, right
   config.themeConfig.prism.darkTheme = darkTheme;
-  // @ts-expect-error: we know it exists, right
 
   return config;
 }
