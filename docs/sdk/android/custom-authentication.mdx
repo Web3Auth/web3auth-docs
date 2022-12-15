@@ -56,7 +56,7 @@ Then, you should specify the details of your verifier in the `LoginConfigItem` s
 | --------------------- | ------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | verifier              | String              | Yes       | The name of the verifier which you have registered on the Web3Auth Dashboard.                                                                                                                                                                                         |
 | typeOfLogin           | Enum`<TypeOfLogin>` | Yes       | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose google, a google sign-in flow will be used. If you choose jwt, which you should be providing your own JWT token, no sign-in flow will be presented. |
-| name                  | String              | Yes       | Name of your verifier for display purpose.                                                                                                                                                                                                                            |
+| name                  | String              | No       | Name of your verifier for display purpose.                                                                                                                                                                                                                            |
 | description           | String?             | No        | Description of this login flow.                                                                                                                                                                                                                                       |
 | clientId              | String?             | No        | The Client Id of the login provider. e.g. Google's Client ID                                                                                                                                                                                                          |
 | verifierSubIdentifier | String?             | No        | The name of the field in the JWT that should be used as the unique user ID of the JWT. Should be same as the one you used                                                                                                                                             |
@@ -140,6 +140,7 @@ enum class TypeOfLogin {
   values={[
     { label: "Google", value: "google" },
     { label: "Facebook", value: "facebook" },
+    { label: "Auth0", value: "auth0" },
     { label: "JWT", value: "jwt" },
   ]}
 >
@@ -158,8 +159,7 @@ web3Auth = Web3Auth (
     loginConfig = hashMapOf("google" to LoginConfigItem(
       verifier = "verifier-name", // get it from web3auth dashboard
       typeOfLogin = TypeOfLogin.GOOGLE,
-      name = "Custom Google Login",
-      clientId = getString(R.string.web3auth_google_client_id) // google's client id
+      clientId = getString(R.string.google_client_id) // google's client id
     ))
     // highlight-end
   )
@@ -182,8 +182,30 @@ web3Auth = Web3Auth (
     loginConfig = hashMapOf("facebook" to LoginConfigItem(
       verifier = "verifier-name", // get it from web3auth dashboard
       typeOfLogin = TypeOfLogin.FACEBOOK,
-      name = "Custom Facebook Login",
-      clientId = getString(R.string.web3auth_facebook_client_id) // facebook's client id
+      clientId = getString(R.string.facebook_client_id) // facebook's client id
+    ))
+    // highlight-end
+  )
+)
+```
+
+</TabItem>
+
+<TabItem value="auth0">
+
+```kotlin
+web3Auth = Web3Auth (
+  Web3AuthOptions (
+    context = this,
+    clientId = getString (R.string.web3auth_project_id),
+    network = Web3Auth.Network.MAINNET,
+    redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
+    // Optional loginConfig object
+    // highlight-start
+    loginConfig = hashMapOf("jwt" to LoginConfigItem(
+      verifier = "verifier-name", // get it from web3auth dashboard
+      typeOfLogin = TypeOfLogin.JWT,
+      clientId = getString (R.string.auth0_project_id) // auth0's client id
     ))
     // highlight-end
   )
@@ -206,8 +228,6 @@ web3Auth = Web3Auth (
     loginConfig = hashMapOf("jwt" to LoginConfigItem(
       verifier = "verifier-name", // get it from web3auth dashboard
       typeOfLogin = TypeOfLogin.JWT,
-      name = "Custom JWT Login",
-      clientId = getString (R.string.web3auth_project_id) // web3auth's client id
     ))
     // highlight-end
   )
@@ -237,8 +257,8 @@ enabling login. The `ExtraLoginOptions` accepts the following parameters:
 
 | Parameter                   | Type      | Description                                                                                                                                  |
 | --------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `domain`                    | `string`  | Your Auth0 account domain such as `example.auth0.com` or `example.mycompany.com` etc. **Use any random string in case of custom JWT login.** |
-| `client_id`                 | `string`  | The Client ID found on your Auth0 Application settings page. **Use web3auth client id in case of custom JWT login.**                         |
+| `domain`                    | `string`  | Your Auth0 account domain such as `example.auth0.com` or `example.mycompany.com` etc.                                                        |
+| `client_id`                 | `string`  | The Client ID found on your Auth0 Application settings page.                                                                                 |
 | `redirect_uri`              | `string`  | The default URL where Auth0 will redirect your browser to with the authentication result.                                                    |
 | `leeway`                    | `number`  | The value in seconds used to account for clock skew in JWT expirations.                                                                      |
 | `verifierIdField`           | `string`  | The field in jwt token which maps to verifier id.                                                                                            |
@@ -295,7 +315,6 @@ web3Auth = Web3Auth (
     loginConfig = hashMapOf("jwt" to LoginConfigItem(
       verifier = "verifier-name", // get it from web3auth dashboard for auth0 configuration
       typeOfLogin = TypeOfLogin.JWT,
-      name = "Auth0 Login",
       clientId = getString (R.string.auth0_client_id) // auth0's client id, get it from auth0 dashboard
     ))
     // highlight-end
@@ -303,7 +322,7 @@ web3Auth = Web3Auth (
 )
 
 val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-    web3Auth.login(LoginParams(selectedLoginProvider,
+    web3Auth.login(LoginParams(Provider.JWT,
       // highlight-start
       extraLoginOptions = ExtraLoginOptions(
         domain: "https://username.us.auth0.com", // domain of your auth0 app
@@ -331,18 +350,15 @@ web3Auth = Web3Auth (
     loginConfig = hashMapOf("jwt" to LoginConfigItem(
       verifier = "verifier-name", // get it from web3auth dashboard for auth0 configuration
       typeOfLogin = TypeOfLogin.JWT,
-      name = "Custom JWT Login",
-      clientId = getString (R.string.web3auth_client_id) // web3auth's client id,
     ))
     // highlight-end
   )
 )
 
 val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-    web3Auth.login(LoginParams(selectedLoginProvider,
+    web3Auth.login(LoginParams(Provider.JWT,
       // highlight-start
       extraLoginOptions = ExtraLoginOptions(
-        domain: "example.com", // domain of your app backend or any random string
         id_token: "Your JWT id token",
       )
       // highlight-end
@@ -355,7 +371,7 @@ To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login
 
 ```kotlin
 val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-    web3Auth.login(LoginParams(selectedLoginProvider,
+    web3Auth.login(LoginParams(Provider.EMAIL_PASSWORDLESS,
       // highlight-next-line
       extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")))
 });
