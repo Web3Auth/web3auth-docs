@@ -5,5 +5,13 @@ title: Triggering the login
 Trigger login flow with the selected provider from the list of providers available under `com.web3auth.core.Web3Auth.Provider` such as GOOGLE,
 FACEBOOK, TWITTER, EMAIL_PASSWORDLESS, etc. `web3Auth.login()` requires `LoginParams` as a required input.
 
-If you are using the `email_passwordless` login provider, you will also have to specify the email address as `login_hint` in the `extraLoginOptions`
-as well.
+If you are using the `EMAIL_PASSWORDLESS` login provider, you will also have to specify the email address as `login_hint` in the `extraLoginOptions`.
+
+```kotlin
+LoginParams(
+    Provider.EMAIL_PASSWORDLESS,
+    extraLoginOptions = ExtraLoginOptions(
+        login_hint: "email@domain.com",
+    )
+)
+```

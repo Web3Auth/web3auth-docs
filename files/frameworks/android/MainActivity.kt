@@ -37,6 +37,17 @@ class MainActivity : AppCompatActivity() {
         web3Auth.setResultUrl(intent?.data)
         //HIGHLIGHTEND-setResultURL
 
+        // Call sessionResponse() in onCreate() to check for any existing session.
+        val sessionResponse: CompletableFuture<Web3AuthResponse> = web3Auth.sessionResponse()
+        sessionResponse.whenComplete { loginResponse, error ->
+            if (error == null) {
+                reRender(loginResponse)
+            } else {
+                Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
+                // Ideally, you should initiate the login function here.
+            }
+        }
+
         // Setup UI and event handlers
         val signInButton = findViewById<Button>(R.id.signInButton)
         signInButton.setOnClickListener { signIn() }
@@ -58,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun signIn() {
         //HIGHLIGHTSTART-triggeringLogin
-        val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
+
         // REPLACE-getAndroidLoginConfig-
 
         //HIGHLIGHTEND-triggeringLogin
