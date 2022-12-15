@@ -42,19 +42,10 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
+    // HIGHLIGHTSTART-whiteLabeling
     HashMap themeMap = HashMap<String, String>();
     themeMap['primary'] = "#229954";
-
-    // HIGHLIGHTSTART-customAuthn
-    // custom authentication with google
-    HashMap loginConfig = new HashMap<String, LoginConfigItem>();
-    loginConfig['google'] = LoginConfigItem({
-      verifier: "verifier-name", // get it from web3auth dashboard
-      typeOfLogin: TypeOfLogin.google,
-      name: "Custom Google Login",
-      clientId: "google_client_id" // google's client id
-    });
-    // HIGHLIGHTEND-customAuthn
+    // HIGHLIGHTEND-whiteLabeling
 
     Uri redirectUrl;
     if (Platform.isAndroid) {
@@ -68,7 +59,6 @@ class _MyAppState extends State<MyApp> {
     } else {
       throw UnKnownException('Unknown platform');
     }
-
     // REPLACE-getConstructorCode-
   }
 
@@ -125,17 +115,8 @@ class _MyAppState extends State<MyApp> {
                       height: 20,
                     ),
                     ElevatedButton(
-                        onPressed: _login(_withGoogle),
-                        child: const Text('Google')),
-                    ElevatedButton(
-                        onPressed: _login(_withFacebook),
-                        child: const Text('Facebook')),
-                    ElevatedButton(
-                        onPressed: _login(_withEmailPasswordless),
-                        child: const Text('Email Passwordless')),
-                    ElevatedButton(
-                        onPressed: _login(_withDiscord),
-                        child: const Text('Discord')),
+                        onPressed: _login(_withProvider),
+                        child: const Text('Login')),
                   ],
                 ),
               ),
@@ -169,6 +150,10 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+
+  Future<Web3AuthResponse> _withProvider() {
+    // REPLACE-getFlutterLoginConfig-
   }
 
   VoidCallback _login(Future<Web3AuthResponse> Function() method) {
@@ -205,21 +190,5 @@ class _MyAppState extends State<MyApp> {
     };
   }
 
-  Future<Web3AuthResponse> _withGoogle() {
-    // REPLACE-getFlutterLoginConfig-
-  }
 
-  Future<Web3AuthResponse> _withFacebook() {
-    return Web3AuthFlutter.login(LoginParams(loginProvider: Provider.facebook));
-  }
-
-  Future<Web3AuthResponse> _withEmailPasswordless() {
-    return Web3AuthFlutter.login(LoginParams(
-        loginProvider: Provider.email_passwordless,
-        extraLoginOptions: ExtraLoginOptions(login_hint: "hello@tor.us")));
-  }
-
-  Future<Web3AuthResponse> _withDiscord() {
-    return Web3AuthFlutter.login(LoginParams(loginProvider: Provider.discord));
-  }
 }

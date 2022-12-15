@@ -1,4 +1,4 @@
-import { YES } from "../choices";
+import { DEFAULT, NONE, YES } from "../choices";
 import { FILENAME_MAINACTIVITY } from "./filenames";
 import STEPS from "./stepContent";
 
@@ -21,7 +21,7 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "instantiate"),
     }
   );
-  if (customAuth === YES) {
+  if (customAuth !== NONE) {
     steps.push({
       ...STEPS.customAuthn,
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "customAuthn"),
@@ -33,7 +33,7 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "whiteLabeling"),
     });
   }
-  if (mfa === YES) {
+  if (mfa !== DEFAULT) {
     steps.push({
       ...STEPS.multiFactorAuthentication,
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "multiFactorAuthentication"),
