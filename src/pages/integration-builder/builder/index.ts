@@ -247,12 +247,12 @@ const builder: IntegrationBuilder = {
     if (finalValues.lang in MOBILE && finalValues.lang !== REACT_NATIVE) {
       this.options = {
         ...this.options,
-        sessionManagement: {
-          displayName: "Session Management",
-          default: TOGGLE[0].key,
-          type: "toggle",
-          choices: TOGGLE,
-        },
+        // sessionManagement: {
+        //   displayName: "Session Management",
+        //   default: TOGGLE[0].key,
+        //   type: "toggle",
+        //   choices: TOGGLE,
+        // },
       };
     }
 

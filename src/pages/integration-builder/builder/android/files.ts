@@ -6,7 +6,7 @@ import { getConstructorCodeAndroid, getLoginCodeAndroid } from "./replacementCod
 export default function getUpdatedFiles(files, whitelabel, customAuth, mfa, replacementAggregator) {
   const newFiles = files;
 
-  const ConstructorCodeAndroid = getConstructorCodeAndroid(whitelabel === YES, customAuth === YES);
+  const ConstructorCodeAndroid = getConstructorCodeAndroid(whitelabel === YES, customAuth);
   newFiles[FILENAME_MAINACTIVITY] = replacementAggregator.replaceFileVariable(
     files[FILENAME_MAINACTIVITY],
     FILENAME_MAINACTIVITY,
@@ -14,7 +14,7 @@ export default function getUpdatedFiles(files, whitelabel, customAuth, mfa, repl
     ConstructorCodeAndroid
   );
 
-  const LoginCodeAndroid = getLoginCodeAndroid(mfa === YES);
+  const LoginCodeAndroid = getLoginCodeAndroid(customAuth, mfa);
   newFiles[FILENAME_MAINACTIVITY] = replacementAggregator.replaceFileVariable(
     files[FILENAME_MAINACTIVITY],
     FILENAME_MAINACTIVITY,

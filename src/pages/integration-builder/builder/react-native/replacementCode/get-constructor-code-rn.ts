@@ -1,4 +1,4 @@
-import { AUTH0, DISCORD, FACEBOOK, GOOGLE, JWT, NONE, TWITCH } from "../../choices";
+import { AUTH0, DISCORD, FACEBOOK, GOOGLE, JWT, TWITCH } from "../../choices";
 
 export const getConstructorCodeRN = (whitelabel: boolean, customAuth: string) => {
   let whiteLabelCode = ``;
