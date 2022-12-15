@@ -5,6 +5,10 @@ import STEPS from "./stepContent";
 export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth, mfa) {
   steps.push(
     {
+      ...STEPS.buildingApp,
+      pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "buildingApp"),
+    },
+    {
       ...STEPS.installationFlutter,
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "installationFlutter"),
     },

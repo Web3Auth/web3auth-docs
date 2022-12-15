@@ -1,5 +1,7 @@
+//HIGHLIGHTSTART-buildingApp
 import 'dart:collection';
 import 'dart:io';
+//HIGHLIGHTEND-buildingApp
 
 import 'package:flutter/material.dart';
 import 'package:web3auth_flutter/enums.dart';
