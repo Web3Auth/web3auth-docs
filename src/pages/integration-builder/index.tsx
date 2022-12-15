@@ -94,7 +94,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     if (stepIndex > 0) {
       window.location.href = `#step-${stepIndex}`;
     }
-  }, [stepIndex]);
+  }, []);
 
   const onClickCopyLink = useCallback(() => {
     if (isLinkCopied) return;
