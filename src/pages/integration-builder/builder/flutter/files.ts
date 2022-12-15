@@ -6,7 +6,7 @@ import { getConstructorCodeFlutter, getEVMProvider, getLoginCodeFlutter } from "
 export default function getUpdatedFiles(chain, files, whitelabel, customAuth, mfa, replacementAggregator) {
   const newFiles = files;
 
-  const ConstructorCodeFlutter = getConstructorCodeFlutter(whitelabel === YES, customAuth === YES);
+  const ConstructorCodeFlutter = getConstructorCodeFlutter(whitelabel === YES, customAuth);
   newFiles[FILENAME_MAINACTIVITY] = replacementAggregator.replaceFileVariable(
     files[FILENAME_MAINACTIVITY],
     FILENAME_MAINACTIVITY,
@@ -14,7 +14,7 @@ export default function getUpdatedFiles(chain, files, whitelabel, customAuth, mf
     ConstructorCodeFlutter
   );
 
-  const LoginCodeFlutter = getLoginCodeFlutter(mfa === YES);
+  const LoginCodeFlutter = getLoginCodeFlutter(customAuth, mfa);
   newFiles[FILENAME_MAINACTIVITY] = replacementAggregator.replaceFileVariable(
     files[FILENAME_MAINACTIVITY],
     FILENAME_MAINACTIVITY,
