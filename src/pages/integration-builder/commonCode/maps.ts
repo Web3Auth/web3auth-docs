@@ -19,7 +19,7 @@ export const rpcTargetMap = {
   SOL: "https://rpc.ankr.com/solana",
   MATIC: "https://rpc-mainnet.matic.network",
   BNB: "https://bsc-dataseed.binance.org/",
-  AVAX: "api.avax.network/ext/bc/C/rpc",
+  AVAX: "https://api.avax.network/ext/bc/C/rpc",
   ARB: "https://arb1.arbitrum.io/rpc",
   OP: "https://mainnet.optimism.io",
   CRO: "https://evm.cronos.org",
