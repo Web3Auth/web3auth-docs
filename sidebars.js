@@ -69,6 +69,7 @@ module.exports = {
             "connect-blockchain/ethereum/android",
             "connect-blockchain/ethereum/react-native",
             "connect-blockchain/ethereum/flutter",
+            "connect-blockchain/ethereum/ios",
           ],
         },
         "connect-blockchain/solana",
@@ -197,6 +198,7 @@ module.exports = {
         "troubleshooting/webpack-issues",
         "troubleshooting/jwt-errors",
         "troubleshooting/different-wallet-address-issue",
+        "troubleshooting/supported-browsers",
         "troubleshooting/react-big-int-error",
       ],
     },
@@ -263,6 +265,16 @@ module.exports = {
           ],
         },
         "sdk/web/openlogin",
+        {
+          type: "category",
+          label: "@web3auth/single-factor-auth",
+          link: { type: "doc", id: "sdk/web/single-factor-auth/single-factor-auth" },
+          items: [
+            "sdk/web/single-factor-auth/initialize",
+            "sdk/web/single-factor-auth/authentication",
+            "sdk/web/single-factor-auth/usage",
+          ],
+        },
         "sdk/web/web3auth-mpc",
         {
           type: "category",

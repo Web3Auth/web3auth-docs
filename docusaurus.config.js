@@ -244,6 +244,10 @@ const config = {
             to: "/custom-authentication/verifiers",
           },
           {
+            from: "/guides/one-key-flow",
+            to: "/guides/single-factor-auth",
+          },
+          {
             from: "/api-reference/web/",
             to: "/sdk/web/",
           },

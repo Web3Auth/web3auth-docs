@@ -56,8 +56,8 @@ Then, specify the details of your verifier in the `LoginConfigItem` struct as fo
 | --------------------- | ------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | verifier              | String        | Yes       | The name of the verifier which you have registered on the Web3Auth Dashboard.                                                                                                                                                                                       |
 | typeOfLogin           | `TypeOfLogin` | Yes       | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose `google`, a Google sign-in flow will be used. If you choose `jwt`, you should be providing your own JWT token, no sign-in flow will be presented. |
-| name                  | String        | Yes       | Name of your verifier for display purpose.                                                                                                                                                                                                                          |
-| clientId              | String        | Yes       | The Client Id of the login provider. e.g. Google's Client ID or Web3Auth's client Id if using 'jwt' as TypeOfLogin.                                                                                                                                                 |
+| name                  | String?       | No        | Name of your verifier for display purpose.                                                                                                                                                                                                                          |
+| clientId              | String?       | No        | The Client Id of the login provider. e.g. Google's Client ID or Web3Auth's client Id if using 'jwt' as TypeOfLogin.                                                                                                                                                 |
 | description           | String?       | No        | Description of this login flow.                                                                                                                                                                                                                                     |
 | verifierSubIdentifier | String?       | No        | The name of the field in the JWT that should be used as the unique user ID of the JWT. Should be same as the one you used.                                                                                                                                          |
 | logoHover             | String?       | No        | Logo to be shown on mouse hover.                                                                                                                                                                                                                                    |
@@ -76,7 +76,7 @@ Then, specify the details of your verifier in the `LoginConfigItem` struct as fo
 class LoginConfigItem {
   final String verifier;
   final TypeOfLogin typeOfLogin;
-  final String name;
+  final String? name;
   final String? description;
   final String? clientId;
   final String? verifierSubIdentifier;
@@ -91,7 +91,7 @@ class LoginConfigItem {
   LoginConfigItem(
       {required this.verifier,
       required this.typeOfLogin,
-      required this.name,
+      this.name,
       this.description,
       this.clientId,
       this.verifierSubIdentifier,
@@ -173,7 +173,6 @@ Future<void> initPlatformState() async {
   loginConfig['google'] = LoginConfigItem(
     verifier: "verifier-name", // get it from web3auth dashboard
     typeOfLogin: TypeOfLogin.google,
-    name: "Custom Google Login",
     clientId: "google_client_id" // google's client id
   );
   // highlight-end
@@ -190,7 +189,7 @@ Future<void> initPlatformState() async {
   }
 
   await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId: '{WEB3AUTH_CLIENT_ID}',
+    clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
     redirectUrl: redirectUrl,
     whiteLabel: WhiteLabelData(
@@ -221,7 +220,6 @@ Future<void> initPlatformState() async {
   loginConfig['facebook'] = LoginConfigItem(
     verifier: "verifier-name", // get it from web3auth dashboard
     typeOfLogin: TypeOfLogin.facebook,
-    name: "Custom Facebook Login",
     clientId: "facebook_client_id" // facebook's client id
   );
   // highlight-end
@@ -238,7 +236,7 @@ Future<void> initPlatformState() async {
   }
 
   await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId: '{WEB3AUTH_CLIENT_ID}',
+    clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
     redirectUrl: redirectUrl,
     whiteLabel: WhiteLabelData(
@@ -269,7 +267,6 @@ Future<void> initPlatformState() async {
   loginConfig['jwt'] = LoginConfigItem(
     verifier: "verifier-name", // get it from web3auth dashboard
     typeOfLogin: TypeOfLogin.jwt,
-    name: "Custom JWT Login",
     clientId: "web3auth_client_id" // web3auth's plug and play client id
   );
   // highlight-end
@@ -286,7 +283,7 @@ Future<void> initPlatformState() async {
   }
 
   await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId: '{WEB3AUTH_CLIENT_ID}',
+    clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
     redirectUrl: redirectUrl,
     whiteLabel: WhiteLabelData(
@@ -302,7 +299,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
     // highlight-start
     loginProvider: Provider.jwt,
     extraLoginOptions: ExtraLoginOptions(
-      id_token: "{YOUR_JWT_TOKEN}", domain: "{YOUR-DOMAIN}"
+      id_token: "{YOUR_JWT_TOKEN}"
     )
     // highlight-end
   )
@@ -332,7 +329,7 @@ enabling login. The `ExtraLoginOptions` accepts the following parameters:
 
 | Parameter                   | Type      | Description                                                                                                                                  |
 | --------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `domain`                    | `string`  | Your Auth0 account domain such as `example.auth0.com` or `example.mycompany.com` etc. **Use any random string in case of custom JWT login.** |
+| `domain`                    | `string`  | Your Auth0 account domain such as `example.auth0.com` or `example.mycompany.com` etc.                                                        |
 | `client_id`                 | `string`  | The Client ID found on your Auth0 Application settings page. **Use web3auth client id in case of custom JWT login.**                         |
 | `redirect_uri`              | `string`  | The default URL where Auth0 will redirect your browser to with the authentication result.                                                    |
 | `leeway`                    | `number`  | The value in seconds used to account for clock skew in JWT expirations.                                                                      |
@@ -435,7 +432,6 @@ Future<void> initPlatformState() async {
   loginConfig['jwt'] = LoginConfigItem(
     verifier: "verifier-name", // get it from web3auth dashboard for auth0 configuration
     typeOfLogin: TypeOfLogin.jwt,
-    name: "Auth0 Login",
     clientId: "auth0_client_id" // get it from auth0 dashboard
   );
   // highlight-end
@@ -452,7 +448,7 @@ Future<void> initPlatformState() async {
   }
 
   await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId: '{WEB3AUTH_CLIENT_ID}',
+    clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
     redirectUrl: redirectUrl,
     whiteLabel: WhiteLabelData(
@@ -479,8 +475,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 ### Custom JWT Login
 
 If you're using any other provider like Firebase/ AWS Cognito or deploying your own Custom JWT server, you need to put the jwt token into the
-`id_token` field of the `extraLoginOptions`, additionally, you need to pass over the `domain` field as well, which is mandatory. If you don't have a
-domain, just passover a string in that field.
+`id_token` field of the `extraLoginOptions`.
 
 ```dart
 Future<void> initPlatformState() async {
@@ -492,8 +487,6 @@ Future<void> initPlatformState() async {
   loginConfig['jwt'] = LoginConfigItem(
     verifier: "verifier-name", // get it from web3auth dashboard
     typeOfLogin: TypeOfLogin.jwt,
-    name: "Custom JWT Login",
-    clientId: "web3auth_client_id" // web3auth's plug and play client id
   );
   // highlight-end
 
@@ -509,7 +502,7 @@ Future<void> initPlatformState() async {
   }
 
   await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId: '{WEB3AUTH_CLIENT_ID}',
+    clientId: 'WEB3AUTH_CLIENT_ID',
     network: Network.testnet,
     redirectUrl: redirectUrl,
     whiteLabel: WhiteLabelData(
@@ -524,9 +517,8 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
   LoginParams(
     // highlight-start
     loginProvider: Provider.jwt,
-    extraLoginOptions: ExtraLoginOptions(\
-      domain: "example.com", // domain of your app backedn or any random string
-      id_token: "{YOUR_JWT_TOKEN}",
+    extraLoginOptions: ExtraLoginOptions(
+      id_token: "YOUR_ID_TOKEN",
     )
     // highlight-end
   )
@@ -554,7 +546,7 @@ Future<void> initPlatformState() async {
   }
 
   await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId: '{WEB3AUTH_CLIENT_ID}',
+    clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
     redirectUrl: redirectUrl,
     whiteLabel: WhiteLabelData(
