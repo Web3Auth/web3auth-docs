@@ -52,10 +52,12 @@ npm install --save @web3auth/phantom-adapter
 
 <TabItem value="table">
 
-| Parameter     | type                |
-| ------------- | ------------------- |
-| `chainConfig` | `CustomChainConfig` |
-| `clientId?`   | `string`            |
+| Parameter          | type                     |
+| ------------------ | ------------------------ |
+| `chainConfig`      | `CustomChainConfig`      |
+| `clientId?`        | `string`                 |
+| `sessionTime?`     | `number`                 |
+| `web3AuthNetwork?` | `OPENLOGIN_NETWORK_TYPE` |
 
 </TabItem>
 
@@ -65,6 +67,8 @@ npm install --save @web3auth/phantom-adapter
 interface PhantomAdapterOptions {
   chainConfig?: CustomChainConfig;
   clientId?: string;
+  sessionTime?: number;
+  web3AuthNetwork?: OPENLOGIN_NETWORK_TYPE;
 }
 ```
 
@@ -94,6 +98,22 @@ If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` pass
 
 :::
 
+## Change Adapter Settings
+
+You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter instance.
+
+```ts
+phantomAdapter.setAdapterSettings({
+  sessionTime: 86400, // 1 day in seconds
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.SOLANA,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+  web3AuthNetwork: "cyan",
+});
+```
+
 ## Example
 
 ---
@@ -101,7 +121,25 @@ If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` pass
 ```ts
 import { PhantomAdapter } from "@web3auth/phantom-adapter";
 const phantomAdapter = new PhantomAdapter({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  clientId,
+  sessionTime: 3600, // 1 hour in seconds
+  web3AuthNetwork: "cyan",
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.SOLANA,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
 });
 web3auth.configureAdapter(phantomAdapter);
+
+// You can also change the adapter settings by calling the setAdapterSettings() function on the adapter instance.
+phantomAdapter.setAdapterSettings({
+  sessionTime: 86400, // 1 day in seconds
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.SOLANA,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+  web3AuthNetwork: "cyan",
+});
 ```

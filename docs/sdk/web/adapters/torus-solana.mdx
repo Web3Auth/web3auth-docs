@@ -53,13 +53,15 @@ npm install --save @web3auth/torus-solana-adapter
 
 <TabItem value="table">
 
-| Parameter         | type                                                                          |
-| ----------------- | ----------------------------------------------------------------------------- |
-| `chainConfig`     | `CustomChainConfig`                                                           |
-| `adapterSettings` | [`TorusCtorArgs`](https://docs.tor.us/solana-wallet/sdk/class)                |
-| `loginSettings`   | [`LoginParams`](https://docs.tor.us/solana-wallet/sdk/class)                  |
-| `initParams`      | [`Omit<TorusParams, "network">`](https://docs.tor.us/solana-wallet/sdk/class) |
-| `clientId?`       | `string`                                                                      |
+| Parameter          | type                                                                          |
+| ------------------ | ----------------------------------------------------------------------------- |
+| `chainConfig`      | `CustomChainConfig`                                                           |
+| `adapterSettings`  | [`TorusCtorArgs`](https://docs.tor.us/solana-wallet/sdk/class)                |
+| `loginSettings`    | [`LoginParams`](https://docs.tor.us/solana-wallet/sdk/class)                  |
+| `initParams`       | [`Omit<TorusParams, "network">`](https://docs.tor.us/solana-wallet/sdk/class) |
+| `clientId?`        | `string`                                                                      |
+| `sessionTime?`     | `number`                                                                      |
+| `web3AuthNetwork?` | `OPENLOGIN_NETWORK_TYPE`                                                      |
 
 </TabItem>
 
@@ -73,6 +75,8 @@ interface SolanaWalletOptions {
   initParams?: Omit<TorusParams, "network">;
   chainConfig?: CustomChainConfig;
   clientId?: string;
+  sessionTime?: number;
+  web3AuthNetwork?: OPENLOGIN_NETWORK_TYPE;
 }
 ```
 
@@ -102,6 +106,22 @@ If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` pass
 
 :::
 
+## Change Adapter Settings
+
+You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter instance.
+
+```ts
+solanaWalletAdapter.setAdapterSettings({
+  sessionTime: 86400, // 1 day in seconds
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.SOLANA,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+  web3AuthNetwork: "cyan",
+});
+```
+
 ## Example
 
 ---
@@ -120,16 +140,30 @@ const solanaWalletAdapter = new SolanaWalletAdapter({
   },
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.SOLANA,
-    rpcTarget: "https://api.testnet.solana.com",
+    rpcTarget: "https://api.mainnet-beta.solana.com",
     blockExplorer: "https://explorer.solana.com",
-    chainId: "0x2", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-    displayName: "Solana Testnet",
+    chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+    displayName: "Solana Mainnet Beta",
     ticker: "sol",
     tickerName: "solana",
   },
   clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  sessionTime: 3600, // 1 hour in seconds
+  web3AuthNetwork: "cyan",
 });
 
 // it will add/update  the torus-solana adapter in to web3auth class
 web3auth.configureAdapter(solanaWalletAdapter);
+
+// you can also change the adapter settings by calling the setAdapterSettings() function on the adapter instance
+
+solanaWalletAdapter.setAdapterSettings({
+  sessionTime: 86400, // 1 day in seconds
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.SOLANA,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+  web3AuthNetwork: "cyan",
+});
 ```
