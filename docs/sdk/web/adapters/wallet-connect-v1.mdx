@@ -52,12 +52,13 @@ npm install --save @web3auth/wallet-connect-v1-adapter
 
 <TabItem value="table">
 
-| Parameter          | type                |
-| ------------------ | ------------------- |
-| `adapterSettings?` | `IAdapterSettings`  |
-| `chainConfig?`     | `CustomChainConfig` |
-| `sessionTime?`     | `number`            |
-| `clientId?`        | `string`            |
+| Parameter          | type                     |
+| ------------------ | ------------------------ |
+| `adapterSettings?` | `IAdapterSettings`       |
+| `chainConfig?`     | `CustomChainConfig`      |
+| `sessionTime?`     | `number`                 |
+| `clientId?`        | `string`                 |
+| `web3AuthNetwork?` | `OPENLOGIN_NETWORK_TYPE` |
 
 </TabItem>
 
@@ -69,6 +70,7 @@ interface WalletConnectV1AdapterOptions {
   chainConfig?: CustomChainConfig;
   sessionTime?: number;
   clientId?: string;
+  web3AuthNetwork?: OPENLOGIN_NETWORK_TYPE;
 }
 ```
 
@@ -132,6 +134,46 @@ interface IQRCodeModalOptions {
 }
 ```
 
+## Change Adapter Settings
+
+You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter instance.
+
+### Arguments
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter          | type                     |
+| ------------------ | ------------------------ |
+| `clientId?`        | `string`                 |
+| `sessionTime?`     | `number`                 |
+| `chainConfig?`     | `CustomChainConfig`      |
+| `web3AuthNetwork?` | `OPENLOGIN_NETWORK_TYPE` |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+interface BaseAdapterSettings {
+  clientId?: string;
+  sessionTime?: number;
+  chainConfig?: CustomChainConfig;
+  web3AuthNetwork?: OPENLOGIN_NETWORK_TYPE;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 ## Example
 
 ---
@@ -144,7 +186,19 @@ const walletConnectV1Adapter = new WalletConnectV1Adapter({
     bridge: "https://bridge.walletconnect.org",
   },
   clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  sessionTime: 3600, // 1 day in seconds
 });
 
 web3auth.configureAdapter(walletConnectV1Adapter);
+
+// You can also change the adapter settings by calling the setAdapterSettings() function on the adapter instance.
+walletConnectV1Adapter.setAdapterSettings({
+  sessionTime: 86400, // 1 day in seconds
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+  web3AuthNetwork: "cyan",
+});
 ```

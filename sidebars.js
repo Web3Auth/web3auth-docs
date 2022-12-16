@@ -265,11 +265,7 @@ module.exports = {
           type: "category",
           label: "@web3auth/single-factor-auth",
           link: { type: "doc", id: "sdk/web/single-factor-auth/single-factor-auth" },
-          items: [
-            "sdk/web/single-factor-auth/initialize",
-            "sdk/web/single-factor-auth/authentication",
-            "sdk/web/single-factor-auth/usage",
-          ],
+          items: ["sdk/web/single-factor-auth/initialize", "sdk/web/single-factor-auth/authentication", "sdk/web/single-factor-auth/usage"],
         },
         "sdk/web/web3auth-mpc",
         {
@@ -297,7 +293,6 @@ module.exports = {
             "sdk/web/adapters/coinbase",
             "sdk/web/adapters/slope",
             "sdk/web/adapters/solflare",
-            "sdk/web/adapters/sollet",
           ],
         },
       ],

@@ -52,10 +52,12 @@ npm install --save @web3auth/solflare-adapter
 
 <TabItem value="table">
 
-| Parameter     | type                |
-| ------------- | ------------------- |
-| `chainConfig` | `CustomChainConfig` |
-| `clientId?`   | `string`            |
+| Parameter          | type                     |
+| ------------------ | ------------------------ |
+| `chainConfig`      | `CustomChainConfig`      |
+| `clientId?`        | `string`                 |
+| `sessionTime?`     | `number`                 |
+| `web3AuthNetwork?` | `OPENLOGIN_NETWORK_TYPE` |
 
 </TabItem>
 
@@ -65,6 +67,8 @@ npm install --save @web3auth/solflare-adapter
 interface SolflareAdapterOptions {
   chainConfig?: CustomChainConfig;
   clientId?: string;
+  sessionTime?: number;
+  web3AuthNetwork?: OPENLOGIN_NETWORK_TYPE;
 }
 ```
 
@@ -94,6 +98,46 @@ If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` pass
 
 :::
 
+## Change Adapter Settings
+
+You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter instance.
+
+### Arguments
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter          | type                     |
+| ------------------ | ------------------------ |
+| `clientId?`        | `string`                 |
+| `sessionTime?`     | `number`                 |
+| `chainConfig?`     | `CustomChainConfig`      |
+| `web3AuthNetwork?` | `OPENLOGIN_NETWORK_TYPE` |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+interface BaseAdapterSettings {
+  clientId?: string;
+  sessionTime?: number;
+  chainConfig?: CustomChainConfig;
+  web3AuthNetwork?: OPENLOGIN_NETWORK_TYPE;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 ## Example
 
 ---
@@ -102,6 +146,25 @@ If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` pass
 import { SolflareAdapter } from "@web3auth/solflare-adapter";
 const solflareAdapter = new SolflareAdapter({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  sessionTime: 3600, // 1 hour in seconds
+  web3AuthNetwork: "cyan",
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.SOLANA,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
 });
 web3auth.configureAdapter(solflareAdapter);
+
+// You can also change the adapter settings by calling the setAdapterSettings() function on the adapter instance.
+
+solflareAdapter.setAdapterSettings({
+  sessionTime: 86400, // 1 day in seconds
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.SOLANA,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+  web3AuthNetwork: "cyan",
+});
 ```
