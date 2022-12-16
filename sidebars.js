@@ -406,7 +406,7 @@ module.exports = {
     {
       type: "link",
       label: "Troubleshooting",
-      href: (process.env.REACT_APP_BASE_URL || "/docs/") + "troubleshooting/webpack-issues",
+      href: (process.env.REACT_APP_BASE_URL || "/docs/") + "troubleshooting",
     },
     {
       type: "link",
