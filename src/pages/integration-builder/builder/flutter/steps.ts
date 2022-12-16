@@ -1,5 +1,5 @@
 import { NONE, YES } from "../choices";
-import { FILENAME_BUILDGRADLE, FILENAME_MAINACTIVITY, FILENAME_PODFILE } from "./filenames";
+import { FILENAME_BUILDGRADLE, FILENAME_MAINACTIVITY, FILENAME_PODFILE, FILENAME_PUBSPEC } from "./filenames";
 import STEPS from "./stepContent";
 
 export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth) {
@@ -18,7 +18,7 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
     },
     {
       ...STEPS.installationFlutter,
-      pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "installationFlutter"),
+      pointer: replacementAggregator.highlightRange(FILENAME_PUBSPEC, files[FILENAME_PUBSPEC], "installationFlutter"),
     },
     {
       ...STEPS.registerApp,
