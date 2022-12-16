@@ -1,8 +1,8 @@
-import { DEFAULT, NONE, YES } from "../choices";
+import { NONE, YES } from "../choices";
 import { FILENAME_ANDROIDMANIFEST, FILENAME_BUILDGRADLE, FILENAME_MAINACTIVITY, FILENAME_SETTINGSGRADLE, FILENAME_STRINGS } from "./filenames";
 import STEPS from "./stepContent";
 
-export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth, mfa) {
+export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth) {
   steps.push(
     {
       ...STEPS.buildingApp,

@@ -1,12 +1,20 @@
-import { DEFAULT, NONE, YES } from "../choices";
-import { FILENAME_MAINACTIVITY } from "./filenames";
+import { NONE, YES } from "../choices";
+import { FILENAME_BUILDGRADLE, FILENAME_MAINACTIVITY, FILENAME_PODFILE } from "./filenames";
 import STEPS from "./stepContent";
 
-export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth, mfa) {
+export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth) {
   steps.push(
     {
       ...STEPS.buildingApp,
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "buildingApp"),
+    },
+    {
+      ...STEPS.RequirementsAndroid,
+      pointer: replacementAggregator.highlightRange(FILENAME_BUILDGRADLE, files[FILENAME_BUILDGRADLE], "installationAndroid"),
+    },
+    {
+      ...STEPS.RequirementsIOS,
+      pointer: replacementAggregator.highlightRange(FILENAME_PODFILE, files[FILENAME_PODFILE], "installationIOS"),
     },
     {
       ...STEPS.installationFlutter,
@@ -33,13 +41,11 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "whiteLabeling"),
     });
   }
-  if (mfa !== DEFAULT) {
-    steps.push({
+  steps.push(
+    {
       ...STEPS.multiFactorAuthentication,
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "multiFactorAuthentication"),
-    });
-  }
-  steps.push(
+    },
     {
       ...STEPS.triggeringLogin,
       pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "triggeringLogin"),
