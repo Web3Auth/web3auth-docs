@@ -102,17 +102,41 @@ If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` pass
 
 You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter instance.
 
+### Arguments
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter          | type                     |
+| ------------------ | ------------------------ |
+| `clientId?`        | `string`                 |
+| `sessionTime?`     | `number`                 |
+| `chainConfig?`     | `CustomChainConfig`      |
+| `web3AuthNetwork?` | `OPENLOGIN_NETWORK_TYPE` |
+
+</TabItem>
+
+<TabItem value="interface">
+
 ```ts
-slopeAdapter.setAdapterSettings({
-  sessionTime: 86400, // 1 day in seconds
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.SOLANA,
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-  },
-  web3AuthNetwork: "cyan",
-});
+interface BaseAdapterSettings {
+  clientId?: string;
+  sessionTime?: number;
+  chainConfig?: CustomChainConfig;
+  web3AuthNetwork?: OPENLOGIN_NETWORK_TYPE;
+}
 ```
+
+</TabItem>
+
+</Tabs>
 
 ## Example
 
