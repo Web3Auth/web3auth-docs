@@ -241,11 +241,11 @@ const chainConfig = {
 const web3auth = new Web3Auth({
   clientId, // Get your Client ID from Web3Auth Dashboard
   chainConfig,
+  // Available networks are "testnet", "mainnet", "cyan".
+  web3AuthNetwork: "cyan",
 });
 
-await web3auth.init({
-  network: "cyan",
-});
+await web3auth.init();
 
 const web3AuthProvider = await web3auth?.connect({
   verifier: "YOUR_VERIFIER_NAME", // verifier that you created earlier from web3auth dashboard.
