@@ -252,6 +252,47 @@ Finally, once all the configurations are set, you need to initialize the Openlog
 web3auth.configureAdapter(openloginAdapter);
 ```
 
+## Change Adapter Settings
+
+You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter instance. This function takes the below mentioned
+parameters as well as <b>[Openlogin Adapter Settings](#openlogin-adapter-settings)</b>.
+
+### Arguments
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter          | type                     |
+| ------------------ | ------------------------ |
+| `clientId?`        | `string`                 |
+| `sessionTime?`     | `number`                 |
+| `chainConfig?`     | `CustomChainConfig`      |
+| `web3AuthNetwork?` | `OPENLOGIN_NETWORK_TYPE` |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+interface BaseAdapterSettings {
+  clientId?: string;
+  sessionTime?: number;
+  chainConfig?: CustomChainConfig;
+  web3AuthNetwork?: OPENLOGIN_NETWORK_TYPE;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 ## Example
 
 ### `web3auth/web3auth`
@@ -292,6 +333,20 @@ const openloginAdapter = new OpenloginAdapter({
   },
 });
 web3auth.configureAdapter(openloginAdapter);
+
+// Change Adapter Settings
+
+openloginAdapter.setAdapterSettings({
+  web3AuthNetwork: "cyan",
+  sessionTime: 3600, // 1 hour in seconds
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+  clientId,
+  redirectUrl: "http://localhost:3000",
+});
 ```
 
 ### `web3auth/core`
@@ -319,4 +374,18 @@ const openloginAdapter = new OpenloginAdapter({
   },
 });
 web3auth.configureAdapter(openloginAdapter);
+
+// Change Adapter Settings
+
+openloginAdapter.setAdapterSettings({
+  web3AuthNetwork: "cyan",
+  sessionTime: 3600, // 1 hour in seconds
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+  clientId,
+  redirectUrl: "http://localhost:3000",
+});
 ```
