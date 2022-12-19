@@ -2,8 +2,23 @@
 title: Triggering the login
 ---
 
-Call the `login()` method on the `Web3Auth` instance to trigger the login flow. You should pass the `loginProvider` parameter to specify the provider
-you wish to use.
+Trigger login flow with the selected provider from the list of providers available under `Web3Auth.Provider` such as `GOOGLE`, `FACEBOOK`, `TWITTER`,
+`EMAIL_PASSWORDLESS`, etc. `web3Auth.login()` requires `W3ALoginParams` as a required input.
 
-If you are using the `email_passwordless` login provider, you will also have to specify the email address as `login_hint` in the `extraLoginOptions`
-as well.
+:::info Email Passwordless
+
+If you are using the `EMAIL_PASSWORDLESS` login provider, you will also have to specify the email address as `login_hint` in the `extraLoginOptions`.
+
+```swift
+W3ALoginParams(
+    loginProvider: .EMAIL_PASSWORDLESS,
+    extraLoginOptions: ExtraLoginOptions(display: nil,
+    prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil,
+    id_token: nil, login_hint: "hello@web3auth.io", acr_values: nil,
+    scope: nil, audience: nil, connection: nil, domain: nil, client_id: nil,
+    redirect_uri: nil, leeway: nil, verifierIdField: nil,
+    isVerifierIdCaseSensitive: nil)
+)
+```
+
+:::
