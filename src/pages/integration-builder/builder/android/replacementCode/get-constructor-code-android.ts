@@ -32,7 +32,7 @@ export const getConstructorCodeAndroid = (isWhitelabeled: boolean, isCustomAuth:
             Web3AuthOptions(
                 context = this,
                 clientId = getString(R.string.web3auth_project_id),
-                network = Web3Auth.Network.TESTNET, // MAINNET, TESTNET or CYAN
+                network = Web3Auth.Network.TESTNET, // MAINNET, TESTNET, AQUA, CELESTE or CYAN
                 redirectUrl = Uri.parse("com.web3auth.app://auth"),${whitelabelCode}${customAuthCode}
             )
         )`;

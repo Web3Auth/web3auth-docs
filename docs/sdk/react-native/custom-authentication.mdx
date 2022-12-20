@@ -53,7 +53,7 @@ Then, you should specify the details of your verifier in the value of the `Login
 | ----------------------- | ------------------ | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `verifier`              | `String`           | Yes       | The name of the verifier which you have registered in Web3Auth Dashboard.                                                                                                                                                                                             |
 | `typeOfLogin`           | `enum TypeOfLogin` | Yes       | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose google, a google sign-in flow will be used. If you choose jwt, which you should be providing your own JWT token, no sign-in flow will be presented. |
-| `name`                  | `String`           | Yes       | Name of your verifier for display purpose.                                                                                                                                                                                                                            |
+| `name`                  | `String`           | No        | Name of your verifier for display purpose.                                                                                                                                                                                                                            |
 | `description`           | `String`           | No        | Description of this login flow.                                                                                                                                                                                                                                       |
 | `clientId`              | `String`           | No        | The Client Id of the login provider. e.g. Google's Client ID                                                                                                                                                                                                          |
 | `verifierSubIdentifier` | `String`           | No        | The name of the field in the JWT that should be used as the unique user ID of the JWT. Should be same as the one you used in the verifier config.                                                                                                                     |
@@ -84,7 +84,7 @@ export type LoginConfig = Record<
     /**
      * Display Name. If not provided, we use the default for openlogin app
      */
-    name: string;
+    name?: string;
 
     /**
      * Description for button. If provided, it renders as a full length button. else, icon button
@@ -207,7 +207,6 @@ const web3auth = new Web3Auth(WebBrowser, {
     google: {
       verifier: "verifier-name", // get it from web3auth dashboard
       typeOfLogin: TypeOfLogin.GOOGLE,
-      name: "Custom Login with Google",
       clientId: "google_client_id", // google's client id
     },
   },
@@ -231,7 +230,6 @@ const web3auth = new Web3Auth(WebBrowser, {
     facebook: {
       verifier: "verifier-name", // get it from web3auth dashboard
       typeOfLogin: TypeOfLogin.FACEBOOK,
-      name: "Custom Login with Facebook",
       clientId: "facebook_client_id", // facebook's client id
     },
   },
@@ -255,7 +253,6 @@ const web3auth = new Web3Auth(WebBrowser, {
     jwt: {
       verifier: "verifier-name", // get it from web3auth dashboard
       typeOfLogin: TypeOfLogin.JWT,
-      name: "Custom Login with JWT",
       clientId: "web3auth's client id", // web3auth's client id
     },
   },
@@ -431,7 +428,6 @@ const web3auth = new Web3Auth(WebBrowser, {
     jwt: {
       verifier: "verifier-name", // get it from web3auth dashboard for auth0 configuration
       typeOfLogin: "jwt",
-      name: "Auth0 Login",
       clientId: "your auth0 client id", // get it from auth0 dashboard
     },
   },
@@ -464,7 +460,6 @@ const web3auth = new Web3Auth(WebBrowser, {
     jwt: {
       verifier: "verifier-name", // get it from web3auth dashboard
       typeOfLogin: TypeOfLogin.JWT,
-      name: "Custom Login with JWT",
       clientId: "YOUR_CLIENT_ID", // web3auth's client id
     },
   },

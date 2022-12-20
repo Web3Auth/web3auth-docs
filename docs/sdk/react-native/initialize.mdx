@@ -80,14 +80,14 @@ below.
 
 <TabItem value="table">
 
-| Parameter   | Type                                        | Mandatory | Description                                                                                                                                   |
-| ----------- | ------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| clientId    | String                                      | Yes       | Your Web3Auth project ID obtained from the Web3Auth dashboard                                                                                 |
-| network     | Choose between `mainnet`, `cyan`, `testnet` | Yes       | Web3Auth network to run on, either CYAN, MAINNET or TESTNET                                                                                   |
-| redirectUrl | String                                      | No        | The redirectUrl that the Web3Auth login flow will use to redirect back to the app.                                                            |
-| loginConfig | LoginConfig                                 | No        | A configuration optional object to customize login flow.                                                                                      |
-| whiteLabel  | WhiteLabelData                              | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer to the WhiteLabeling section for more info. |
-| sdkUrl      | String                                      | No        | The url to the SDK frontend, should not need any changes normally.                                                                            |
+| Parameter   | Type                                                           | Mandatory | Description                                                                                                                                   |
+| ----------- | -------------------------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| clientId    | String                                                         | Yes       | Your Web3Auth project ID obtained from the Web3Auth dashboard                                                                                 |
+| network     | Choose between `mainnet`, `cyan`,`aqua`, `celeste` , `testnet` | Yes       | Web3Auth network to run on, either CYAN, MAINNET, AQUA, CELESTE or TESTNET                                                                    |
+| redirectUrl | String                                                         | No        | The redirectUrl that the Web3Auth login flow will use to redirect back to the app.                                                            |
+| loginConfig | LoginConfig                                                    | No        | A configuration optional object to customize login flow.                                                                                      |
+| whiteLabel  | WhiteLabelData                                                 | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer to the WhiteLabeling section for more info. |
+| sdkUrl      | String                                                         | No        | The url to the SDK frontend, should not need any changes normally.                                                                            |
 
 </TabItem>
 
@@ -105,6 +105,8 @@ export type SdkInitParams = {
    *
    * - `'mainnet'`: https://app.openlogin.com will be used which is the production version.
    * - `'cyan'`: https://cyan.openlogin.com will be used which is the production cyan version.
+   * - `'aqua'`: https://aqua.openlogin.com will be used which is the production aqua version.
+   * - `'celeste'`: https://celeste.openlogin.com will be used which is the production celeste version.
    * - `'testnet'`: https://beta.openlogin.com will be used which is the beta version.
    */
   network: OPENLOGIN_NETWORK_TYPE,
@@ -185,7 +187,7 @@ const web3auth = new Web3Auth(WebBrowser, {
 import * as WebBrowser from "@toruslabs/react-native-web-browser";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
 
-const scheme = 'web3authrnbareauth0example'; // Or your desired app redirection scheme
+const scheme = "web3authrnbareauth0example"; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 
 const clientId = "YOUR WEB3AUTH CLIENT ID";
@@ -233,7 +235,7 @@ const web3auth = new Web3Auth(WebBrowser, {
 import * as WebBrowser from "@toruslabs/react-native-web-browser";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
 
-const scheme = 'web3authrnbareauth0example'; // Or your desired app redirection scheme
+const scheme = "web3authrnbareauth0example"; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 
 const clientId = "YOUR WEB3AUTH CLIENT ID";
