@@ -369,7 +369,7 @@ module.exports = {
     },
     "sdk/self-host/self-host",
     "sdk/self-host/installation",
-    "sdk/self-host/initialization",
+    "sdk/self-host/initialisation",
     {
       type: "category",
       label: "Modules",
