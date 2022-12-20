@@ -13,6 +13,7 @@ export const PLACEHOLDERS = {
   RN_RESOLVED_REDIRECT_URL: "getRNResolvedRedirectUrl",
   ANDROID_LOGIN_CONFIG: "getAndroidLoginConfig",
   FLUTTER_LOGIN_CONFIG: "getFlutterLoginConfig",
+  IOS_LOGIN_CONFIG: "getIOSLoginConfig",
   WEB3AUTH_OPTIONS: "Web3AuthOptions",
   LOGIN_CONFIG: "LoginParams",
   EVM_PROVIDER: "EVMProvider",

@@ -1,4 +1,6 @@
+// HIGHLIGHTSTART-buildingApp
 import Web3Auth
+// HIGHLIGHTEND-buildingApp
 import SwiftUI
 
 @main
@@ -59,7 +61,8 @@ class ViewModel: ObservableObject {
             navigationTitle = "Loading"
         })
         // HIGHLIGHTSTART-instantiate
-        web3Auth = await Web3Auth(.init(clientId: clientId, network: network))
+        // REPLACE-getConstructorCode-
+
         // HIGHLIGHTEND-instantiate
         await MainActor.run(body: {
             if self.web3Auth?.state != nil {
@@ -71,20 +74,9 @@ class ViewModel: ObservableObject {
         })
     }
     // HIGHLIGHTSTART-triggeringLogin
-    func login(provider: Web3AuthProvider) {
-        Task {
-            do {
-                let result = try await Web3Auth(.init(clientId: clientId, network: network)).login(W3ALoginParams(loginProvider: provider))
-                await MainActor.run(body: {
-                    user = result
-                    loggedIn = true
-                })
 
-            } catch {
-                print("Error")
-            }
-        }
-    }
+    // REPLACE-getIOSLoginConfig-
+
     // HIGHLIGHTEND-triggeringLogin
 
     func whitelabelLogin() {
@@ -210,18 +202,23 @@ struct UserDetailView: View {
 
                 Section {
                     Button {
+                        // HIGHLIGHTSTART-triggeringLogout
+
                         Task.detached {
                             do {
                                 try await Web3Auth(.init(clientId: clientId,
                                                          network: network)).logout()
                                 await MainActor.run(body: {
                                     loggedIn.toggle()
-                                })                             } catch {
+                                })}
+                                catch {
                                 DispatchQueue.main.async {
                                     showingAlert = true
                                 }
                             }
                         }
+
+                        // HIGHLIGHTEND-triggeringLogout
                     } label: {
                         Text("Logout")
                             .foregroundColor(.red)

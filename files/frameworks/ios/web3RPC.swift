@@ -12,7 +12,9 @@ class Web3RPC : ObservableObject {
     private var account: EthereumAccount
     private var latestBlock = 0
     private var chainID = 5
-    private var RPC_URL = "https://rpc.ankr.com/eth_goerli"
+
+    // REPLACE-EVMProvider-
+
 
     @Published var balance: Double = 0
     @Published var signedMessageHashString:String = ""
