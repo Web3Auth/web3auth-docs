@@ -370,21 +370,22 @@ module.exports = {
     "sdk/self-host/self-host",
     "sdk/self-host/installation",
     "sdk/self-host/initialisation",
+    "sdk/self-host/usage",
     {
       type: "category",
       label: "Modules",
       link: { type: "doc", id: "sdk/self-host/modules/modules" },
       items: [
+        "sdk/self-host/modules/share-serialization",
+        "sdk/self-host/modules/share-transfer",
         "sdk/self-host/modules/chrome-storage",
         "sdk/self-host/modules/web-storage",
         "sdk/self-host/modules/security-questions",
-        "sdk/self-host/modules/share-transfer",
         "sdk/self-host/modules/seed-phrase",
         "sdk/self-host/modules/private-keys",
-        "sdk/self-host/modules/share-serialization",
       ],
     },
-    "sdk/self-host/usage",
+
 
     {
       type: "html",
