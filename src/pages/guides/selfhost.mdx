@@ -125,7 +125,7 @@ For a detailed reference, you can refer to the [Web3Auth Self Host SDK Reference
 
 After Installation, the next step to use Web3Auth Self Host is to Initialize the SDK.
 
-`src/lib/web3auth.ts`
+`src/tkey.ts`
 
 ```ts
 import ThresholdKey from "@tkey/default";
@@ -155,15 +155,15 @@ export const tKey = new ThresholdKey({
 
 ```ts
 import { useEffect } from "react";
-import { tKey } from "./lib/web3auth";
+import { tKey } from "./tkey";
 
 function App() {
   // Init Service Provider inside the useEffect Method
   useEffect(() => {
     const init = async () => {
       // Initialization of Service Provider
-      await (tKey.serviceProvider as any).init();
       try {
+        await (tKey.serviceProvider as any).init();
       } catch (error) {
         console.error(error);
       }
@@ -223,7 +223,7 @@ const initializeNewKey = async () => {
     const { requiredShares } = tKey.getKeyDetails();
     if (requiredShares <= 0) {
       const reconstructedKey = await tKey.reconstructKey();
-      console.log("Private Key: " + reconstructedKey.privKey.toString());
+      console.log("Private Key: " + reconstructedKey.privKey.toString("hex"));
       // This private key will be used to make blockchain calls.
     }
   } catch (error) {
@@ -239,27 +239,26 @@ const initializeNewKey = async () => {
 Generate a new share(`ShareC: Backup Share`) using the security questions module enabling `2/3` flow. One can add more shares from ShareC, but for
 simplicity, this is what we have chosen for this guide.
 
-:::warning NOTE
+:::warning Mandatory step
 
-It is mandatory to set up a backup share, else upon losing the access of device Share, the user will also loose access to their account.
+It is mandatory to set up a backup share; upon losing access to device Share, the user will also lose access to their account.
 
 :::
 
 ```js
 const generateNewShareWithPassword = async () => {
-    // swal is just a pretty dialog box
-    swal("Enter password (>10 characters)", {
-      content: "input" as any,
-    }).then(async (value) => {
-      if (value.length > 10) {
-        await (tKey.modules.securityQuestions as any).generateNewShareWithSecurityQuestions(value, "whats your password?");
-        swal('Success', 'Successfully generated new share with password.', 'success');
-      } else {
-        swal("Error", "Password must be > 10 characters", "error");
-      }
-    });
-    await getTKeyDetails();
-  };
+  // swal is just a pretty dialog box
+  swal("Enter password (>10 characters)", {
+    content: "input" as any,
+  }).then(async (value) => {
+    if (value.length > 10) {
+      await (tKey.modules.securityQuestions as any).generateNewShareWithSecurityQuestions(value, "whats your password?");
+      swal('Success', 'Successfully generated new share with password.', 'success');
+    } else {
+      swal("Error", "Password must be > 10 characters", "error");
+    }
+  });
+};
 ```
 
 ## Set up Recovery Flow
