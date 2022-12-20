@@ -67,6 +67,21 @@ class WebStorageModule implements IModule {
 
 With the `WebStorageModule`, you've access to the following functions:
 
+### Get ShareStore from Storage
+
+#### `getDeviceShare()`
+
+#### Return
+
+- `Promise<ShareStore>`: The [`ShareStore`](#sharestore) object.
+
+```js title="Example"
+const getDeviceShare = async () => {
+  const deviceShare = await tKey.modules.webStorage.getDeviceShare();
+  return deviceShare;
+};
+```
+
 ### Store Device Share
 
 #### `storeDeviceShare(deviceShareStore: ShareStore, customDeviceInfo?: StringifiedType)`
@@ -74,9 +89,7 @@ With the `WebStorageModule`, you've access to the following functions:
 - `deviceShareStore`: The `ShareStore` object to store.
 - `customDeviceInfo?`: Information about the device to store.
 
-#### `ShareStore`
-
-```ts
+```ts title="ShareStore"
 class ShareStore implements ISerializable {
   share: Share;
   polynomialID: PolynomialID;
@@ -89,16 +102,26 @@ interface ISerializable {
 }
 ```
 
-### Storing a Share on File Storage
+#### Return
 
-#### `storeDeviceShareOnFileStorage(shareIndex)`
+- `Promise<void>`
 
-- `shareIndex`: The index of the share to store.
+```js title="Example"
+const storeDeviceShare = async (deviceShare) => {
+  await tKey.modules.webStorage.storeDeviceShare(deviceShare);
+};
+```
 
-### Get a ShareStore from Storage
+### Input Share to tKey State
 
-#### `getDeviceShare()`
+#### `inputShareFromWebStorage()`
 
 #### Return
 
-- `Promise<ShareStore>`: The [`ShareStore`](#sharestore) object.
+- `Promise<void>`
+
+```js title="Example"
+const inputShareFromWebStorage = async () => {
+  await tKey.modules.webStorage.inputShareFromWebStorage();
+};
+```

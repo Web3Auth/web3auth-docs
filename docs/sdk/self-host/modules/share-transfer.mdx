@@ -92,12 +92,20 @@ With the `ShareTransferModule`, you've access to the following functions:
 
 - `Promise<string>`: Share index of the new share.
 
+```js title="Example"
+const result_requestNewShare = await tKey.modules.shareTransfer.requestNewShare(navigator.userAgent, tKey.getCurrentShareIndexes());
+```
+
 ### Add custom info to share request
 
 #### `addCustomInfoToShareRequest(encPubKeyX: string, customInfo: string)`
 
 - `encPubKeyX`: The public key of the share that is being requested.
 - `customInfo`: The custom info that is being added to the share request.
+
+#### Return
+
+- `Promise<void>`
 
 ### Look for requests
 
@@ -107,6 +115,10 @@ With the `ShareTransferModule`, you've access to the following functions:
 
 - `Promise<Array<string>>`: An array of indexes of pending requests
 
+```js title="Example"
+const requests = await tKey.modules.shareTransfer.lookForRequests();
+```
+
 ### Approve request
 
 #### `approveRequest(encPubKeyX: string, shareStore?: ShareStore)`
@@ -114,12 +126,33 @@ With the `ShareTransferModule`, you've access to the following functions:
 - `encPubKeyX`: The public key of the share that is being approved.
 - `shareStore`: The share store that is being approved.
 
+#### Return
+
+- `Promise<void>`
+
+```js title="Example"
+const requests = await tKey.modules.shareTransfer.lookForRequests();
+let shareToShare;
+try {
+  shareToShare = await tKey.modules.webStorage.getDeviceShare();
+} catch (err) {
+  console.error("No on device share found. Generating a new share");
+  const newShare = await tKey.generateNewShare();
+  shareToShare = newShare.newShareStores[newShare.newShareIndex.toString("hex")];
+}
+await tKey.modules.shareTransfer.approveRequest(requests[0], shareToShare);
+```
+
 ### Approve request with share index
 
 #### `approveRequestWithShareIndex(encPubKeyX: string, shareIndex: string)`
 
 - `encPubKeyX`: The public key of the share that is being approved.
 - `shareIndex`: The share index that is being approved.
+
+#### Return
+
+- `Promise<void>`
 
 ### Get share transfer store
 
@@ -129,11 +162,23 @@ With the `ShareTransferModule`, you've access to the following functions:
 
 - `Promise<ShareTransferStore>`: The share transfer store.
 
+```js title="Example"
+const result_getShareTransfer = await tKey.modules.shareTransfer.getShareTransferStore();
+```
+
 ### Set share transfer store
 
 #### `setShareTransferStore(shareTransferStore: ShareTransferStore)`
 
 - `shareTransferStore`: The share transfer store.
+
+#### Return
+
+- `Promise<void>`
+
+```js title="Example"
+const result_setShareTransfer = await tKey.modules.shareTransfer.setShareTransferStore(shareTransferStore);
+```
 
 ### Start request status check
 
@@ -150,12 +195,32 @@ With the `ShareTransferModule`, you've access to the following functions:
 
 #### `cancelRequestStatusCheck()`
 
+#### Return
+
+- `Promise<void>`
+
+```js title="Example"
+await tKey.modules.shareTransfer.cancelRequestStatusCheck();
+```
+
 ### Delete share transfer store
 
 #### `deleteShareTransferStore(encPubKey: string)`
 
 - `encPubKey`: The public key of the share that is being deleted.
 
+#### Return
+
+- `Promise<void>`
+
 ### Reset share transfer store
 
 #### `resetShareTransferStore()`
+
+#### Return
+
+- `Promise<void>`
+
+```js title="Example"
+await tKey.modules.shareTransfer.resetShareTransferStore();
+```

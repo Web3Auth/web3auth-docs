@@ -26,13 +26,13 @@ npm install --save @tkey/private-keys
 #### Import the `PrivateKeyModule` class from `@tkey/private-keys`
 
 ```javascript
-import PrivateKeyModule from "@tkey/private-keys";
+import PrivateKeyModule, { SECP256K1Format, ED25519Format } from "@tkey/private-keys";
 ```
 
 #### Assign the `PrivateKeyModule` class to a variable
 
 ```javascript
-const privateKeyModule = new PrivateKeyModule([secp256k1Format]));
+const privateKeyModule = new PrivateKeyModule([SECP256K1Format]));
 // accepts secp256k1 and ed25519 curves.
 ```
 
@@ -67,6 +67,16 @@ With the `PrivateKeyModule`, you've access to the following functions:
 - `privateKeyType`: The type of private key to set. Allowed values `secp256k1n` and `ed25519`
 - `privateKey`: The private key to set.
 
+#### Return
+
+- `Promise<void>`
+
+```js title="Example"
+const setPrivateKey = async () => {
+  await tKey.modules.privateKeyModule.setPrivateKey("ed25519");
+};
+```
+
 ### Get Private Keys
 
 #### `getPrivateKeys()`
@@ -74,3 +84,9 @@ With the `PrivateKeyModule`, you've access to the following functions:
 #### Return
 
 - `Promise<IPrivateKeyStore[]>`- The private keys stored.
+
+```js title="Example"
+const getPrivateKeys = async () => {
+  const result = await tKey.modules.privateKeyModule.getPrivateKeys();
+};
+```
