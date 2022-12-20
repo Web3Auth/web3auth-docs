@@ -59,16 +59,29 @@ class ChromeExtensionStorageModule implements IModule {
 
 With the `ChromeExtensionStorageModule` , you've access to the following functions:
 
-### Storing a Device Share
+### Get ShareStore from Storage
+
+##### `getStoreFromChromeExtensionStorage()`
+
+#### Return
+
+- `Promise<ShareStore>`: The [`ShareStore`](#sharestore) object.
+
+```js title="Example"
+const getDeviceShare = async () => {
+  const deviceShare = await tKey.modules.chromeStorage.getStoreFromChromeExtensionStorage();
+  return deviceShare;
+};
+```
+
+### Store Device Share
 
 #### `storeDeviceShare(deviceShareStore, customDeviceInfo?)`
 
 - `deviceShareStore`: The `ShareStore` object to store.
 - `customDeviceInfo?`: Information about the device to store.
 
-#### `ShareStore`
-
-```ts
+```ts title="ShareStore"
 class ShareStore implements ISerializable {
   share: Share;
   polynomialID: PolynomialID;
@@ -81,16 +94,38 @@ interface ISerializable {
 }
 ```
 
+```js title="Example"
+const storeDeviceShare = async (deviceShare) => {
+  await tKey.modules.chromeStorage.storeDeviceShare(deviceShare);
+};
+```
+
 ### Storing a Share on Chrome Extension Storage
 
 #### `storeShareOnChromeExtensionStorage(share)`
 
 - `share`: The [`ShareStore`](#sharestore) object to store.
 
-### Get a ShareStore from Chrome Extension Storage
+#### Return
 
-##### `getStoreFromChromeExtensionStorage()`
+- `Promise<void>`
+
+```js title="Example"
+const storeShareOnChromeExtensionStorage = async (deviceShare) => {
+  await tKey.modules.chromeStorage.storeShareOnChromeExtensionStorage(deviceShare);
+};
+```
+
+### Input Share to tKey State
+
+#### `inputShareFromChromeExtensionStorage()`
 
 #### Return
 
-- `Promise<ShareStore>`: The [`ShareStore`](#sharestore) object.
+- `Promise<void>`
+
+```js title="Example"
+const inputShareFromChromeExtensionStorage = async () => {
+  await tKey.modules.chromeStorage.inputShareFromChromeExtensionStorage();
+};
+```

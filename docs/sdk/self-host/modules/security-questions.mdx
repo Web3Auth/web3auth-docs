@@ -69,7 +69,7 @@ class SecurityQuestionsModule implements IModule {
 
 With the `SecurityQuestionsModule`, you've access to the following functions:
 
-### Generate new share with security questions
+### Generate new share
 
 #### `generateNewShareWithSecurityQuestions(answerString: string, questions: string)`
 
@@ -80,9 +80,7 @@ With the `SecurityQuestionsModule`, you've access to the following functions:
 
 - `Promise<GenerateNewShareResult>`: The `GenerateNewShareResult` object
 
-##### GenerateNewShareResult
-
-```ts
+```ts title="GenerateNewShareResult"
 declare type GenerateNewShareResult = {
   newShareStores: ShareStoreMap;
   newShareIndex: BN;
@@ -99,6 +97,16 @@ declare class ShareStore implements ISerializable {
 }
 ```
 
+```js title="Example"
+const generateNewShareWithSecurityQuestions = async () => {
+  try {
+    await tKey.modules.securityQuestions.generateNewShareWithSecurityQuestions("Multi Factor Keys", "What is MFK?");
+  } catch (error) {
+    console.error(error);
+  }
+};
+```
+
 ### Get Security Question
 
 #### `getSecurityQuestions()`
@@ -107,29 +115,113 @@ declare class ShareStore implements ISerializable {
 
 - `string`: The security question
 
-### Input share from security question
+```js title="Example"
+const getQuestion = async () => {
+  try {
+    const question = await tKey.modules.securityQuestions.getSecurityQuestions();
+    return question;
+  } catch (error) {
+    console.error(error);
+  }
+};
+```
 
-#### `inputShareFromSecurityQuestions(answerString: string)`
-
-- `answerString`: Answer corresponding to the security question
-
-### Change Security Question and Answer
-
-#### `changeSecurityQuestionAndAnswer(newAnswerString: string, newQuestions: string)`
-
-- `newAnswerString`: Answer corresponding to the new security question
-- `newQuestions`: The new secutity question
-
-### Save answer on tkey store
-
-#### `saveAnswerOnTkeyStore(answerString: string)`
-
-- `answerString`: Answer corresponding to the security question
-
-### Get answer
+### Get the Answer
 
 #### `getAnswer`
 
 #### Return
 
 - `string`: The answer corresponding to the security question
+
+```js title="Example"
+const getAnswer = async () => {
+  try {
+    const answer = await tKey.modules.securityQuestions.getAnswer();
+    return answer;
+  } catch (error) {
+    console.error(error);
+  }
+};
+```
+
+:::note
+
+To get the Answer, `SecurityQuestionsModule`'s constructor should be passed `saveAnswers` as `true`.
+
+```js
+const securityQuestionsModule = new SecurityQuestionsModule(true);
+```
+
+:::
+
+### Input Share to tKey State
+
+#### `inputShareFromSecurityQuestions(answerString: string)`
+
+- `answerString`: Answer corresponding to the security question
+
+#### Return
+
+- `Promise<void>`
+
+```js title="Example"
+const inputShareFromSecurityQuestions = async (answer) => {
+  try {
+    await tKey.modules.securityQuestions.inputShareFromSecurityQuestions(answer);
+  } catch (error) {
+    console.error(error);
+  }
+};
+```
+
+### Change Security Q & A
+
+#### `changeSecurityQuestionAndAnswer(newAnswerString: string, newQuestions: string)`
+
+- `newAnswerString`: Answer corresponding to the new security question
+- `newQuestions`: The new secutity question
+
+#### Return
+
+- `Promise<void>`
+
+```js title="Example"
+const changeQuestionAnswer = async () => {
+  try {
+    await tKey.modules.securityQuestions.changeSecurityQuestionAndAnswer("Multi Factor Keys", "What is MFK?");
+  } catch (error) {
+    console.error(error);
+  }
+};
+```
+
+### Save answer on tKey store
+
+#### `saveAnswerOnTkeyStore(answerString: string)`
+
+- `answerString`: Answer corresponding to the security question
+
+#### Return
+
+- `Promise<void>`
+
+```js title="Example"
+const saveAnswerOnTkeyStore = async (answer) => {
+  try {
+    await tKey.modules.securityQuestions.saveAnswerOnTkeyStore(answer);
+  } catch (error) {
+    console.error(error);
+  }
+};
+```
+
+:::note
+
+To save the Answer, `SecurityQuestionsModule`'s constructor should be passed `saveAnswers` as `true`.
+
+```js
+const securityQuestionsModule = new SecurityQuestionsModule(true);
+```
+
+:::

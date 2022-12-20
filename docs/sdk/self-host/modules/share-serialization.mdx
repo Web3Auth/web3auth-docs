@@ -9,7 +9,7 @@ description: "Self Host - Modules -  Share Serialization | Documentation - Web3A
 
 #### [`@tkey/share-serialization`](https://npmjs.com/package/@tkey/share-serialization)
 
-The Share Serialization Module helps you add or remove the and password as a share for tkey.
+The Share Serialization Module helps you import/ export a share from `tKey`.
 
 ## Installation
 
@@ -55,6 +55,8 @@ declare class ShareSerializationModule implements IModule {
 
 ## Usage
 
+---
+
 With the `ShareSerializationModule`, you've access to the following functions:
 
 ### Serialize a share
@@ -64,6 +66,20 @@ With the `ShareSerializationModule`, you've access to the following functions:
 - `share`: The share to serialize.
 - `type`: The type of share to serialize.
 
+#### Return
+
+- `Promise<unknown>`: The serialized share.
+
+```js title="Example"
+const getSeedFromShare = async () => {
+  const deviceShare = await getDeviceShare();
+  const serializedShare = await tKey.modules.shareSerialization.serialize(deviceShare.share.share, "mnemonic");
+  console.log(serializedShare);
+  return serializedShare;
+  // Now, this serializedShare is a mnemonic which you can display to user/send mail
+};
+```
+
 ### Deserialize a share
 
 #### `deserialize(serializedShare: unknown, type: string)`
@@ -71,3 +87,10 @@ With the `ShareSerializationModule`, you've access to the following functions:
 #### Return
 
 - `Promise<BN>`: The deserialized share.
+
+```js title="Example"
+const getShareFromSeed = async (serializedShare) => {
+  const share = await tKey.modules.shareSerialization.deserialize(serializedShare, "mnemonic");
+  return share;
+};
+```

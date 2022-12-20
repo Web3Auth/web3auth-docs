@@ -299,6 +299,10 @@ const config = {
             from: "/sdk/web-backend",
             to: "/sdk/node",
           },
+          {
+            from: "/sdk/self-host/initialization",
+            to: "/sdk/self-host/initialisation",
+          },
         ],
       },
     ],

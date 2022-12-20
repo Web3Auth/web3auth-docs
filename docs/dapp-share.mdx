@@ -24,10 +24,10 @@ private key into multiple parts, ie. `shares`. These shares are a part of the of
 and can be used to reconstruct the private key dynamically in the user's frontend application. For a glance at the structure of the shares, these are
 the following:
 
-1. **`ShareA` is stored on the user's device**: Implementation is device and system specific. For example, on mobile devices, the share could be
-   stored in device storage secured via biometrics.
-2. **`ShareB` is managed by a login service via node operators**: This share is further split amongst a network of nodes and retrieved via
+1. **`ShareA` is managed by a login service via node operators**: This share is further split amongst a network of nodes and retrieved via
    conventional authentication flows.
+2. **`ShareB` is stored on the user's device**: Implementation is device and system specific. For example, on mobile devices, the share could be
+   stored in device storage secured via biometrics.
 3. **`ShareC` is a recovery share**: An extra share to be kept by the user, possibly kept on a separate device, downloaded or based on user input with
    enough entropy (eg. password, security questions, hardware device etc.).
 
@@ -40,8 +40,8 @@ The user experience in mobile platforms is very different from the web platforms
 they can login using their socials and then back to the app once they have been successfully authenticated. This user experience shifts the context
 between two applications, whereas in the web platforms, the context remains within the browser only.
 
-For the seamless login flow, we need to reconstruct the Shares `A` and `B`. `Share B` is managed by the login service and is provided on successful
-authentication. Whereas in web platforms, `Share A` is stored in the browser context. We can still store it in the browser context for mobile devices,
+For the seamless login flow, we need to reconstruct the Shares `A` and `B`. `Share A` is managed by the login service and is provided on successful
+authentication. Whereas in web platforms, `Share B` is stored in the browser context. We can still store it in the browser context for mobile devices,
 but this has a few risks, like user accidently deleting browser data. This is a bigger problem in mobile devices since the user doesn't realise that
 the browser is being used to login within the app and clearing the browser data can cause their logins to fail. Hence, to tackle this issue, Web3Auth
 issues a dApp Share, ie. a backup share that can be stored by the app developer directly within their application and used to reconstruct the private
