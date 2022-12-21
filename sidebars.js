@@ -189,7 +189,11 @@ module.exports = {
       defaultStyle: true,
     },
     {
-      Troubleshooting: [
+      type: "category",
+      label: "Troubleshooting",
+      link: { type: "doc", id: "troubleshooting/troubleshooting" },
+      items: [
+        "troubleshooting/sdk-errors-warnings",
         "troubleshooting/error-429",
         "troubleshooting/webpack-issues",
         "troubleshooting/jwt-errors",
@@ -396,7 +400,7 @@ module.exports = {
     {
       type: "link",
       label: "Troubleshooting",
-      href: (process.env.REACT_APP_BASE_URL || "/docs/") + "troubleshooting/webpack-issues",
+      href: (process.env.REACT_APP_BASE_URL || "/docs/") + "troubleshooting",
     },
     {
       type: "link",
