@@ -87,7 +87,7 @@ const builder: IntegrationBuilder = {
     },
     useModal: {
       displayName: "Use W3A Modal",
-      default: TOGGLE[0].key,
+      default: TOGGLE[1].key,
       type: "toggle",
       choices: TOGGLE,
     },
