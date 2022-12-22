@@ -87,10 +87,10 @@ send your query over to hello@web3auth.io.
 
 ---
 
-It is possible to combine these attestation methods in AND/OR ways. For example you could combine a Google AND Discord login to access a key or vice
-versa can be done for Google OR Discord. For these aggregate verifiers, its important to note that a user's `Verifier ID` must be known ahead of time,
-as keys in Web3Auth are append only. Meaning to assign to a key of a user with the aggregate verifier, Google OR Discord, we must know the user's
-gmail account and discord account ahead of time.
+It is possible to combine these attestation methods in AND/OR ways. For example you could combine a Google AND GitHub login to access a key or vice
+versa can be done for Google OR GitHub. For these aggregate verifiers, its important to note that a user's `Verifier ID` must be known ahead of time,
+as keys in Web3Auth are append only. Meaning to assign to a key of a user with the aggregate verifier, Google OR GitHub, we must know the user's gmail
+account and discord account ahead of time.
 
 This disadvantage can be subverted if the two attestation methods share the same `Verifier ID`. For example, Auth0 generic email logins OR Google
 logins both use email accounts as the `Verifier ID`, as such the Verifier ID can me shared amonst the two. This is referred to as a Single ID
@@ -98,3 +98,93 @@ Verifier.
 
 Reach out to us on our [GitHub Discussion](https://web3auth.io/discussions) or [Discord](https://discord.gg/web3auth) to get your aggregate verifier
 deployed on our testnet.
+
+### Set up an Aggregate Verifier
+
+1. Create a verifier for your application by selecting `Aggregate` as the Login provider from this modal.
+   ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-1.png)
+2. Click on `Add sub-verifier` to add a new sub-verifier.
+   ![Add first sub-verifier on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-2.png)
+3. Select `Google` or any other Login provider from this list.
+   ![Select Google from Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-3-1.png)
+4. Paste the **Client ID** from the Google App to the `Client ID` field and click on `Add`.
+   ![Add Google details for the first verifier on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-3-2.png)
+5. Now, it's time to create the second sub-verifier. Click on `Add sub-verifier` to add a new sub-verifier.
+   ![Add second sub-verifier on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-3.png)
+6. Select `Auth0` or `Custom` from the login provider list. We're selecting `Auth0` in this example.
+   ![Auth0 as sub verifier on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-4-1.png)
+7. Select the `Authentication Type` based on your application need from the dropdown. We're selecting `Github` in this example.
+8. Enter the `Auth0 Client ID` and `Auth0 Domain` from your Auth0 application. See how to create a new Auth0 application
+   [here](https://auth0.com/docs/quickstart/webapp/).
+
+   ![Domain and Client ID from Auth0 Dashboard](/contents/guides/auth0/auth0-guide-clientid.png)
+   ![Create Aggregate Verifiier on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-4-2.png)
+
+   :::info NOTE
+
+   1. Add the [GitHub Social Connection](https://marketplace.auth0.com/integrations/github-social-connection) to your Auth0 application.
+   2. One has to request email from user while setting up the GitHub Social Connection on Auth0 Dashboard.
+
+   :::
+
+9. Finally, click on `Create` to deploy the verifier. ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-5.png)
+
+### Example
+
+```js
+import { Web3AuthCore } from "@web3auth/core";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const clientId = "YOUR_WEB3AUTH_CLIENT_ID";
+// get it from https://dashboard.web3auth.io by creating a Plug n Play project.
+
+const web3auth = new Web3AuthCore({
+  clientId,
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1",
+  },
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    network: "testnet",
+    loginConfig: {
+      // Google login
+      google: {
+        verifier: "YOUR_AGGREGATE_VERIFIER_NAME", // Pass the Verifier name here. eg. w3a-aggregate-verifier
+        verifierSubIdentifier: "YOUR_FIRST_SUB_VERIFIER_NAME", // Pass the Sub-Verifier here. eg w3a-google
+        typeOfLogin: "google", // Pass the type of login provider.
+        clientId: "GOOGLE_CLIENT_ID", // Pass the Google `Client ID` here.
+      },
+      // GitHub Login via Auth0
+      jwt: {
+        verifier: "YOUR_AGGREGATE_VERIFIER_NAME", // Pass the Verifier name here. eg. w3a-aggregate-verifier
+        verifierSubIdentifier: "YOUR_SECONG_SUB_VERIFIER_NAME", // Pass the Sub-Verifier here. eg w3a-auth0
+        typeOfLogin: "jwt", // Pass the type of login provider. For Auth0, it's jwt and not Auth0.
+        clientId: "AUTH0_CLIENT_ID", // Pass the Auth0 `Client ID` here.
+        jwtParameters: {
+          domain: "YOUR_AUTH0_DOMAIN", // Pass the Auth0 Domain here, eg. https://shahbaz-torus.us.auth0.com
+          // This corresponds to the field inside jwt which must be used to uniquely identify the user.
+          verifierIdField: "email", // This is mapped b/w google and github logins.
+          isVerifierIdCaseSensitive: false,
+        },
+      },
+    },
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+
+// Initialize
+await web3auth.init();
+
+// When user clicks Google button, use this to Login with Google
+const web3authProvider = await web3auth.connectTo("openlogin", {
+  loginProvider: "google",
+});
+
+// // When user clicks Google button, use this to Login with GitHub via Auth0
+const web3authProvider = await web3auth.connectTo("openlogin", {
+  loginProvider: "jwt",
+});
+```
