@@ -37,6 +37,7 @@ export const getConstructorCodeAngular = (chain: string, whitelabel: boolean, us
         // HIGHLIGHTSTART-instantiateSDK
         this.web3auth = new Web3Auth({
           clientId,
+          web3AuthNetwork: "cyan", // mainnet, aqua, celeste, cyan or testnet
           chainConfig: {${chainDetails}
           },${uiConfig}
         });
@@ -50,6 +51,7 @@ export const getConstructorCodeAngular = (chain: string, whitelabel: boolean, us
         // HIGHLIGHTSTART-instantiateSDK
         this.web3auth = new Web3AuthCore({
           clientId,
+          web3AuthNetwork: "cyan", // mainnet, aqua, celeste, cyan or testnet
           chainConfig: {${chainDetails}
           },
         });

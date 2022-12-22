@@ -28,7 +28,7 @@ export default function getUpdatedFiles(files, chain, evmFramework, customAuth, 
     ModuleImport
   );
 
-  const OpenloginAdapter = getOpenloginAdapter(chain, whitelabel === YES, customAuth, useModal === YES, mfa);
+  const OpenloginAdapter = getOpenloginAdapter(whitelabel === YES, customAuth, useModal === YES, mfa);
   newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(
     files[FILENAME_APP_TS],
     FILENAME_APP_TS,
