@@ -1,4 +1,4 @@
-import { ETHERS, SOL, STARKEX, STARKNET, TEZOS, YES } from "../choices";
+import { DEFAULT, ETHERS, NONE, SOL, STARKEX, STARKNET, TEZOS, YES } from "../choices";
 import {
   FILENAME_APP_TSX,
   FILENAME_ETHERSRPC,
@@ -11,7 +11,7 @@ import {
 } from "./filenames";
 import STEPS from "./stepContent";
 
-export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth, evmFramework, chain) {
+export default function getSteps(steps, files, chain, evmFramework, customAuth, mfa, whitelabel, useModal, replacementAggregator) {
   steps.push(
     {
       ...STEPS.buildingApp,
@@ -61,15 +61,54 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
         });
       }
   }
+  if (useModal === YES) {
+    if (customAuth !== NONE || whitelabel === YES || mfa !== DEFAULT) {
+      steps.push(
+        {
+          ...STEPS.installationCustom,
+          pointer: replacementAggregator.highlightRange(FILENAME_PACKAGE_JSON, files[FILENAME_PACKAGE_JSON], "installation"),
+        },
+        {
+          ...STEPS.importModulesCustom,
+          pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "importModules"),
+        }
+      );
+    } else {
+      steps.push(
+        {
+          ...STEPS.installation,
+          pointer: replacementAggregator.highlightRange(FILENAME_PACKAGE_JSON, files[FILENAME_PACKAGE_JSON], "installation"),
+        },
+        {
+          ...STEPS.importModules,
+          pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "importModules"),
+        }
+      );
+    }
+  } else if (customAuth !== NONE || whitelabel === YES) {
+    steps.push(
+      {
+        ...STEPS.installationCustomCore,
+        pointer: replacementAggregator.highlightRange(FILENAME_PACKAGE_JSON, files[FILENAME_PACKAGE_JSON], "installation"),
+      },
+      {
+        ...STEPS.importModulesCustomCore,
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "importModules"),
+      }
+    );
+  } else {
+    steps.push(
+      {
+        ...STEPS.installationCore,
+        pointer: replacementAggregator.highlightRange(FILENAME_PACKAGE_JSON, files[FILENAME_PACKAGE_JSON], "installation"),
+      },
+      {
+        ...STEPS.importModulesCore,
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "importModules"),
+      }
+    );
+  }
   steps.push(
-    {
-      ...STEPS.installation,
-      pointer: replacementAggregator.highlightRange(FILENAME_PACKAGE_JSON, files[FILENAME_PACKAGE_JSON], "installation"),
-    },
-    {
-      ...STEPS.importModules,
-      pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "importModules"),
-    },
     {
       ...STEPS.registerApp,
       pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "registerApp"),
@@ -87,27 +126,60 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
     });
   }
 
-  if (customAuth === YES) {
+  if (customAuth !== NONE) {
+    if (useModal === YES) {
+      steps.push({
+        ...STEPS.customAuth,
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "customAuthStep"),
+      });
+    } else {
+      steps.push({
+        ...STEPS.customAuthCore,
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "customAuthStep"),
+      });
+    }
+  }
+
+  if (
+    useModal !== YES ||
+    (mfa !== DEFAULT && useModal === YES) ||
+    (customAuth !== NONE && useModal === YES) ||
+    (whitelabel === YES && useModal === YES)
+  ) {
     steps.push({
-      ...STEPS.customAuthStep,
-      pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "customAuthStep"),
+      ...STEPS.mfa,
+      pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "mfa"),
     });
   }
 
-  steps.push(
-    {
+  if (useModal === YES) {
+    steps.push({
       ...STEPS.initialize,
       pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "initialize"),
-    },
-    {
+    });
+  } else {
+    steps.push({
+      ...STEPS.initializeCore,
+      pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "initialize"),
+    });
+  }
+
+  if (useModal === YES) {
+    steps.push({
       ...STEPS.login,
       pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "login"),
-    },
-    {
-      ...STEPS.getUserInfo,
-      pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "getUserInfo"),
-    }
-  );
+    });
+  } else {
+    steps.push({
+      ...STEPS.loginCore,
+      pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "login"),
+    });
+  }
+
+  steps.push({
+    ...STEPS.getUserInfo,
+    pointer: replacementAggregator.highlightRange(FILENAME_APP_TSX, files[FILENAME_APP_TSX], "getUserInfo"),
+  });
 
   switch (chain) {
     case SOL:

@@ -1,6 +1,6 @@
-import { AUTH0, DISCORD, FACEBOOK, GOOGLE, JWT, MANDATORY, NONE, OPTIONAL, OTHER_CHAINS, TWITCH } from "../builder/choices";
+import { AUTH0, DEFAULT, DISCORD, FACEBOOK, GOOGLE, JWT, MANDATORY, NONE, OPTIONAL, TWITCH } from "../builder/choices";
 
-export const getOpenloginAdapter = (chain: string, whitelabel: boolean, customAuth: string, useModal: boolean, mfa: string) => {
+export const getOpenloginAdapter = (whitelabel: boolean, customAuth: string, useModal: boolean, mfa: string) => {
   let whiteLabelCode = ``;
   let loginConfig = ``;
   let code = ``;
@@ -8,29 +8,37 @@ export const getOpenloginAdapter = (chain: string, whitelabel: boolean, customAu
 
   if (useModal) {
     mfaLevel = `
+         // HIGHLIGHTSTART-mfa
           loginSettings: {
             mfaLevel: "default", // Pass on the mfa level of your choice: default, optional, mandatory, none
-          },`;
+          },
+          // HIGHLIGHTEND-mfa`;
 
     if (mfa === NONE) {
       mfaLevel = `
+          // HIGHLIGHTSTART-mfa
           loginSettings: {
             mfaLevel: "none", // Pass on the mfa level of your choice: default, optional, mandatory, none
-          },`;
+          },
+          // HIGHLIGHTEND-mfa`;
     }
 
     if (mfa === MANDATORY) {
       mfaLevel = `
+          // HIGHLIGHTSTART-mfa
           loginSettings: {
             mfaLevel: "mandatory", // Pass on the mfa level of your choice: default, optional, mandatory, none
-          },`;
+          },
+          // HIGHLIGHTEND-mfa`;
     }
 
     if (mfa === OPTIONAL) {
       mfaLevel = `
+          // HIGHLIGHTSTART-mfa
           loginSettings: {
             mfaLevel: "optional", // Pass on the mfa level of your choice: default, optional, mandatory, none
-          },`;
+          },
+          // HIGHLIGHTEND-mfa`;
     }
   }
 
@@ -147,13 +155,9 @@ export const getOpenloginAdapter = (chain: string, whitelabel: boolean, customAu
           // HIGHLIGHTEND-customAuthStep`;
   }
 
-  if (whitelabel || customAuth !== NONE || chain in OTHER_CHAINS) {
+  if (whitelabel || customAuth !== NONE || (useModal === true && mfa !== DEFAULT)) {
     code = `
-        const openloginAdapter = new OpenloginAdapter({
-          adapterSettings: {
-            network: "cyan",
-            uxMode: "popup",
-          }, ${mfaLevel} ${whiteLabelCode} ${loginConfig}
+        const openloginAdapter = new OpenloginAdapter({${mfaLevel} ${whiteLabelCode} ${loginConfig}
         });
         web3auth.configureAdapter(openloginAdapter);`;
   }
