@@ -5,19 +5,10 @@ title: Triggering the login
 Call the `login()` method on the `Web3AuthFlutter` instance to trigger the login flow. You should pass the `loginProvider` parameter to specify the
 provider you wish to use.
 
-:::info Email Passwordless
+:::info JWT
 
-If you are using the `email_passwordless` login provider, you will also have to specify the email address as `login_hint` in the `extraLoginOptions`.
+If you are using custom authentication through **Auth0 or Custom JWT**, you have to use the `JWT` login provider.
 
-```dart
-await Web3AuthFlutter.login(
-    LoginParams(
-        loginProvider: Provider.email_passwordless,
-        extraLoginOptions: ExtraLoginOptions(
-            login_hint: "hello@web3auth.io"
-        )
-    )
-);
-```
+Additionally, in `extraLoginOptions` you have to provide the details required by that specific method as mentioned here.
 
 :::
