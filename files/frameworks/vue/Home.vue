@@ -71,13 +71,12 @@ export default {
     // REPLACE-getConstructorCode-
 
 
+    // REPLACE-getOpenloginAdapter-
+
+
     onMounted(async () => {
       try {
         loading.value = true;
-
-        // REPLACE-getOpenloginAdapter-
-
-
         // REPLACE-getInitCode-
 
         if (web3auth.provider) {

@@ -18,12 +18,13 @@ export class AppComponent {
     // REPLACE-getWeb3AuthState-
 
     provider: SafeEventEmitterProvider | null = null;
-    isModalLoaded = false;
 
     async ngOnInit() {
       // REPLACE-getConstructorCode-
 
+
       // REPLACE-getOpenloginAdapter-
+
 
       // REPLACE-getInitCode-
 
@@ -31,8 +32,6 @@ export class AppComponent {
       if (web3auth.provider) {
         this.provider = web3auth.provider;
       }
-
-      this.isModalLoaded = true;
     }
 
     login = async () => {
