@@ -5,6 +5,7 @@ import Tabs from "@theme/Tabs";
   defaultValue="jwt"
   values={[
     { label: "JWT", value: "jwt" },
+    { label: "Auth0", value: "auth0" },
     { label: "Google", value: "google" },
     { label: "Facebook", value: "facebook" },
     { label: "Discord", value: "discord" },
@@ -26,7 +27,21 @@ const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   extraLoginOptions: {
     id_token: "idToken", // in JWT Format
     verifierIdField: "sub", // same as your JWT Verifier ID
-    domain: "https://YOUR-APPLICATION-DOMAIN" || "http://localhost:3000", // your login application domain
+  },
+});
+```
+
+</TabItem>
+
+<TabItem value="auth0">
+
+```ts
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    id_token: "idToken", // in JWT Format
+    verifierIdField: "sub", // same as your JWT Verifier ID
+    domain: "https://YOUR-APPLICATION-DOMAIN", // your login application domain, if using Auth0, use the Auth0 domain
   },
 });
 ```

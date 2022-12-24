@@ -448,8 +448,7 @@ web3auth.login({
 ### Custom JWT Login
 
 If you're using any other provider like Firebase/ AWS Cognito or deploying your own Custom JWT server, you need to put the jwt token into the
-`id_token` field of the `extraLoginOptions`, additionally, you need to pass over the `domain` field as well, which is mandatory. If you don't have a
-domain, just passover a string in that field.
+`id_token` field of the `extraLoginOptions`.
 
 ```tsx
 const web3auth = new Web3Auth(WebBrowser, {
@@ -470,7 +469,6 @@ web3auth.login({
   redirectUrl: resolvedRedirectUrl, // redirect url after login
   //highlight-start
   extraLoginOptions: {
-    domain: "example.com", // domain of your app backend or any random string
     id_token: "your JWT id token",
     verifierIdField: "sub", // auth0 generally uses sub as unique identifier
   },
