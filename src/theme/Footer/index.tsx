@@ -72,13 +72,13 @@ export default function FooterComponent(): JSX.Element {
               <strong>Product</strong>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/sdk/web/">
-                Plug n Play
+              <a className="footer__link-item" href="/docs/sdk/web/">
+                Plug & Play
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/sdk/self-host/installation">
-                Self-hosted
+              <a className="footer__link-item" href="/docs/sdk/self-host">
+                Self Host
               </a>
             </div>
             <div className="footer__item">
@@ -112,17 +112,17 @@ export default function FooterComponent(): JSX.Element {
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/sdk">
+              <a className="footer__link-item" href="/docs/sdk">
                 SDK Reference
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/guides">
+              <a className="footer__link-item" href="/docs/guides">
                 Guides
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/examples">
+              <a className="footer__link-item" href="/docs/examples">
                 Examples
               </a>
             </div>
@@ -163,7 +163,7 @@ export default function FooterComponent(): JSX.Element {
             </div>
             <div className="footer__item">
               <a className="footer__link-item" href="https://web3auth.io/discussions" target="_blank" rel="noreferrer">
-                Web3Auth Discussions Board
+                Discussions Board
               </a>
             </div>
             <div className="footer__item">
@@ -172,12 +172,12 @@ export default function FooterComponent(): JSX.Element {
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/contribute">
+              <a className="footer__link-item" href="/docs/contribute">
                 Contribute
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/contribute/bug-bounty">
+              <a className="footer__link-item" href="/docs/contribute/bug-bounty">
                 Bug Bounty
               </a>
             </div>
