@@ -188,15 +188,15 @@ export default function FooterComponent(): JSX.Element {
           <div className="col col-3" />
           <div className="col col-3">
             {" "}
-            <a className="footer__link-item" href="/legal/cookie-policy">
+            <a className="footer__link-item" href="/docs/legal/cookie-policy">
               Cookie Policy
             </a>{" "}
             |{" "}
-            <a className="footer__link-item" href="/legal/privacy-policy">
+            <a className="footer__link-item" href="/docs/legal/privacy-policy">
               Privacy Policy
             </a>{" "}
             |{" "}
-            <a className="footer__link-item" href="/legal/terms-and-conditions">
+            <a className="footer__link-item" href="/docs/legal/terms-and-conditions">
               Terms and Conditions
             </a>
           </div>
