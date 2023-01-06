@@ -29,6 +29,7 @@ import Web3 from "web3";
 
 const web3auth = new Web3Auth({
   clientId, // get from https://dashboard.web3auth.io
+  web3AuthNetwork: "cyan",
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x1", // EVM chain's Chain ID
@@ -60,6 +61,7 @@ import { SolanaWallet } from "@web3auth/solana-provider";
 
 const web3auth = new Web3Auth({
   clientId, // get from https://dashboard.web3auth.io
+  web3AuthNetwork: "cyan",
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.SOLANA,
     chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
@@ -89,20 +91,20 @@ import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
 const web3auth = new Web3Auth({
   clientId, // get from https://dashboard.web3auth.io
+  web3AuthNetwork: "cyan",
   chainConfig: {
-      /*
-      you can pass your own chain configs here
-      */
-      chainNamespace: CHAIN_NAMESPACES.OTHER,
-      displayName: "Tezos",
-      ticker: "XTZ",
-      tickerName: "tezos",
-    }
+    /*
+    you can pass your own chain configs here
+    */
+    chainNamespace: CHAIN_NAMESPACES.OTHER,
+    displayName: "Chain Name",
+    ticker: "TKR",
+    tickerName: "Ticker Name",
+  }
 });
 
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
-    network: "cyan",
     uxMode: "popup",
   },
 });
@@ -187,6 +189,7 @@ Example below demonstrates usage of `other` chainNamespace and retrieving privat
 ```ts
 const web3auth = new Web3Auth({
   chainConfig: { chainNamespace: CHAIN_NAMESPACES.OTHER },
+  web3AuthNetwork: "cyan",
   clientId: "example-client-id",
 });
 
