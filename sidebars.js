@@ -51,7 +51,12 @@ module.exports = {
       type: "category",
       label: "Developer Dashboard",
       link: { type: "doc", id: "developer-dashboard/developer-dashboard" },
-      items: ["developer-dashboard/get-client-id", "developer-dashboard/enable-interoperability", "developer-dashboard/setup-custom-authentication"],
+      items: [
+        "developer-dashboard/get-client-id",
+        "developer-dashboard/enable-interoperability",
+        "developer-dashboard/setup-custom-authentication",
+        "developer-dashboard/billing-and-user-stats",
+      ],
     },
     "self-hosting",
     {
@@ -389,7 +394,6 @@ module.exports = {
         "sdk/self-host/modules/private-keys",
       ],
     },
-
 
     {
       type: "html",
