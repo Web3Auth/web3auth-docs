@@ -333,7 +333,7 @@ import { hex2buf } from "@taquito/utils";
   Use code from the above Initializing Provider here
 */
 
-const privateKey = provider.request({ method: "eth_privateKey" });
+const privateKey = provider.request({ method: "eth_private_key" });
 const keyPairTezos = tezosCrypto.utils.seedToKeyPair(hex2buf(privateKey));
 const address = keyPairTezos?.pkh;
 ```
@@ -361,7 +361,7 @@ import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
   Use code from the above Initializing Provider here
 */
 
-const privateKey = provider.request({ method: "eth_privateKey" });
+const privateKey = provider.request({ method: "eth_private_key" });
 const keyPairStarkEx = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
 const starkex_account = starkwareCrypto.ec.keyFromPublic(keyPairStarkEx.getPublic(true, "hex"), "hex");
 const address = starkex_account.pub.getX().toString("hex");
@@ -377,7 +377,7 @@ import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
   Use code from the above Initializing Provider here
 */
 
-const privateKey = provider.request({ method: "eth_privateKey" });
+const privateKey = provider.request({ method: "eth_private_key" });
 const keyPairStarkNet = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
 const starknet_account = starkwareCrypto.ec.keyFromPublic(keyPairStarkNet.getPublic(true, "hex"), "hex");
 const address = starknet_account.pub.getX().toString("hex");
@@ -399,8 +399,28 @@ import algosdk from "algosdk";
   Use code from the above Initializing Provider here
 */
 
-const privateKey = provider.request({ method: "eth_privateKey" });
+const privateKey = provider.request({ method: "private_key" });
 const passphrase = algosdk.secretKeyToMnemonic(Buffer.from(privateKey, "hex"));
 const keyPair = algosdk.mnemonicToSecretKey(passphrase);
 const address = keyPair.addr;
+```
+
+### Polkadot
+
+For Polkadot, we will use the libraries `@polkadot/keyring` and `@polkadot/util-crypto` to create the Polkadot address.
+
+```js
+// Polkadot
+import { Keyring } from "@polkadot/api";
+import { cryptoWaitReady } from "@polkadot/util-crypto";
+
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
+const privateKey = provider.request({ method: "private_key" });
+
+const keyPair = keyring.addFromUri("0x" + privateKey);
+const address = keyPair.address;
 ```
