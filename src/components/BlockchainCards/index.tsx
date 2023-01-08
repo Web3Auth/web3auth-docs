@@ -119,6 +119,12 @@ export const tileGroupsData = [
         icon: "logo-immutablex.png",
         path: "./connect-blockchain/immutablex",
       },
+      {
+        key: "polkadot",
+        title: "Polkadot",
+        icon: "logo-polkadot.png",
+        path: "./connect-blockchain/polkadot",
+      },
     ],
   },
 ];

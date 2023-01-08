@@ -359,6 +359,17 @@ export const referenceMap = [
     order: 1,
     link: "/connect-blockchain/immutablex",
   },
+  {
+    title: "Integrate Web3Auth with the Polkadot Blockchain",
+    description: "Learn how to add a non custodial social login to the Polkadot Blockchain",
+    image: "contents/guides/banners/polkadot.png",
+    type: "REFERENCE",
+    tags: ["polkadot", "@web3auth/modal", "@web3auth/core"],
+    date: "8th Jan 2023",
+    author: "Web3Auth Team",
+    order: 1,
+    link: "/connect-blockchain/polkadot",
+  },
 ];
 
 export const featuresMap = [
