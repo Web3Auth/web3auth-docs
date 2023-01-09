@@ -100,7 +100,9 @@ export default function App() {
       <Button title="Send Transaction" onPress={() => sendTransaction()} />
       <Button title="Sign Message" onPress={() => signMessage()} />
       <Button title="Get Private Key" onPress={() => uiConsole(key)} />
+      // HIGHLIGHTSTART-triggeringLogout
       <Button title="Log Out" onPress={() => setKey('')} />
+      // HIGHLIGHTEND-triggeringLogout
     </View>
   );
 

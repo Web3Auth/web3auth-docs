@@ -56,21 +56,29 @@ export const getLoginCodeRN = (customAuth: string, mfa: string) => {
   }
 
   let mfaLevel = `
-        mfaLevel: "default", // Pass on the mfa level of your choice: default, optional, mandatory, none`;
+        // HIGHLIGHTSTART-mfa
+        mfaLevel: "default", // Pass on the mfa level of your choice: default, optional, mandatory, none
+        // HIGHLIGHTEND-mfa`;
 
   if (mfa === NONE) {
     mfaLevel = `
-        mfaLevel: "none", // Pass on the mfa level of your choice: default, optional, mandatory, none`;
+        // HIGHLIGHTSTART-mfa
+        mfaLevel: "none", // Pass on the mfa level of your choice: default, optional, mandatory, none
+        // HIGHLIGHTEND-mfa`;
   }
 
   if (mfa === MANDATORY) {
     mfaLevel = `
-        mfaLevel: "mandatory", // Pass on the mfa level of your choice: default, optional, mandatory, none`;
+        // HIGHLIGHTSTART-mfa
+        mfaLevel: "mandatory", // Pass on the mfa level of your choice: default, optional, mandatory, none
+        // HIGHLIGHTEND-mfa`;
   }
 
   if (mfa === OPTIONAL) {
     mfaLevel = `
-        mfaLevel: "optional", // Pass on the mfa level of your choice: default, optional, mandatory, none`;
+        // HIGHLIGHTSTART-mfa
+        mfaLevel: "optional", // Pass on the mfa level of your choice: default, optional, mandatory, none
+        // HIGHLIGHTEND-mfa`;
   }
 
   return `${mfaLevel}${loginProvider}`;

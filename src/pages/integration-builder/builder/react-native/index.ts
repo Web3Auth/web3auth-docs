@@ -7,7 +7,7 @@ const framework = {
   build({ chain, customAuth, mfa, rnMode, whitelabel, filenames, files, steps }) {
     const replacementAggregator = new ReplaceFileAggregator();
     getUpdatedFiles(chain, customAuth, mfa, rnMode, whitelabel, files, replacementAggregator);
-    getSteps(steps, files, replacementAggregator, whitelabel, customAuth, rnMode);
+    getSteps(steps, chain, customAuth, mfa, rnMode, whitelabel, filenames, files, replacementAggregator);
     getFileNames(filenames, rnMode);
 
     return { filenames, files, steps };

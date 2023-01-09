@@ -1,0 +1,13 @@
+---
+title: Construct your redirectUrl
+---
+
+For constructing your `redirectUrl`, you'll need to use the `expo-linking`, which will help you generate a `redirectUrl` for your app. Make sure you
+register that URL in the Web3Auth Developer Dashboard.
+
+```js
+const resolvedRedirectUrl =
+  Constants.appOwnership == AppOwnership.Expo || Constants.appOwnership == AppOwnership.Guest
+    ? Linking.createURL("web3auth", {})
+    : Linking.createURL("web3auth", { scheme: scheme });
+```
