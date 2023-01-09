@@ -519,6 +519,14 @@ export const blockchainMap = [
     title: "Algorand",
     tag: "algorand",
   },
+  {
+    title: "ImmutableX",
+    tag: "immutablex",
+  },
+  {
+    title: "Polkadot",
+    tag: "polkadot",
+  },
 ];
 export const platformMap = [
   {
