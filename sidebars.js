@@ -101,6 +101,7 @@ module.exports = {
             "connect-blockchain/tezos",
             "connect-blockchain/algorand",
             "connect-blockchain/immutablex",
+            "connect-blockchain/polkadot",
           ],
           collapsible: true,
           collapsed: false,
@@ -389,7 +390,6 @@ module.exports = {
         "sdk/self-host/modules/private-keys",
       ],
     },
-
 
     {
       type: "html",

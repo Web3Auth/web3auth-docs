@@ -1,0 +1,153 @@
+---
+title: Integrate Web3Auth with the Polkadot Blockchain
+sidebar_label: Polkadot
+image: "contents/guides/banners/polkadot.png"
+displayed_sidebar: docs
+keywords: [polkadot, web3auth, authentication, blockchain]
+description: "Integrate Web3Auth with the Polkadot Blockchain | Documentation - Web3Auth"
+---
+
+import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
+
+---
+
+While using the Web3Auth Web SDK for a non EVM chain like [Polkadot](https://polkadot.network/) you get a standard provider from which you can get the
+private key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting
+user's `account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a
+few methods here for getting you started quickly on that.
+
+:::note
+
+This reference is for the `Web`, however, you can use Polkadot on `Android`, `iOS`, `React Native`, `Flutter`, & `Unity` as well. Please follow our
+reference for [Ethereum](/connect-blockchain/ethereum/), and similarly use Polkadot libraries that support the platforms to use the private key and
+make blockchain calls accordingly.
+
+:::
+
+## Installation
+
+```bash npm2yarn
+npm install --save @polkadot/api @polkadot/util-crypto
+```
+
+## Initializing Provider
+
+---
+
+```js
+import { Web3Auth } from "@web3auth/modal";
+
+const web3auth = new Web3Auth({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "cyan",
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.OTHER,
+  },
+});
+
+await web3auth.initModal();
+
+const web3authProvider = web3auth.connect(); // web3auth.provider
+```
+
+## Get User Info
+
+---
+
+<GetUserInfoSnippet />
+
+## Get Account and Key
+
+---
+
+Once a user logs in, the Web3Auth SDK returns a provider. Since Web3Auth doesn't have a native provider for Polkadot, we need to directly use the
+private key to make the RPC calls.
+
+Using the function, `web3auth.provider.request({method: "private_key"})` from Web3Auth provider, the application can have access to the user's private
+key. However, we cannot use this key with Polkadot EC Curve specific signing functions, hence, we first derive the Polkadot Key using the
+`getPolkadotKeyPair()` function.
+
+On the underhood, it uses the helper functions from Polkadot libraries `@polkadot/api` and `@polkadot/util-crypto` to derive the key pair.
+
+```js
+import { cryptoWaitReady } from "@polkadot/util-crypto";
+import { ApiPromise, WsProvider ,Keyring } from "@polkadot/api";
+
+/*
+  Use code from the above Initializing Provider here
+*/
+
+// web3authProvider is web3auth.provider from above
+const privateKey = await web3authProvider.request({ method: "private_key" }) as string;
+const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
+
+const keyPair = keyring.addFromUri("0x" + privateKey);
+
+// keyPair.address is the account address.
+const account = keyPair?.address;
+```
+
+## Get Balance
+
+---
+
+```js
+import { cryptoWaitReady } from "@polkadot/util-crypto";
+import { ApiPromise, WsProvider ,Keyring } from "@polkadot/api";
+
+/*
+  Use code from the above Initializing Provider here
+*/
+
+// web3authProvider is web3auth.provider from above
+const privateKey = await web3authProvider.request({ method: "private_key" }) as string;
+const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
+
+const keyPair = keyring.addFromUri("0x" + privateKey);
+
+// keyPair.address is the account address.
+const account = keyPair?.address;
+
+const api = await makeClient();
+
+const data = await api.query.system.account(keyPair.address);
+console.log(data.toHuman());
+```
+
+## Send Transaction
+
+---
+
+```js
+import { cryptoWaitReady } from "@polkadot/util-crypto";
+import { ApiPromise, WsProvider ,Keyring } from "@polkadot/api";
+
+/*
+  Use code from the above Initializing Provider here
+*/
+
+// web3authProvider is web3auth.provider from above
+const privateKey = await web3authProvider.request({ method: "private_key" }) as string;
+const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
+
+const keyPair = keyring.addFromUri("0x" + privateKey);
+
+// keyPair.address is the account address.
+const account = keyPair?.address;
+
+makeClient = async (): Promise<any> => {
+  console.log("Establishing connection to Polkadot RPC...");
+  const provider = new WsProvider("wss://westend-rpc.polkadot.io"); // testnet
+  // const provider = new WsProvider("wss://rpc.polkadot.io"); // mainnet
+  const api = await ApiPromise.create({ provider });
+  const resp = await api.isReady;
+  console.log("Polkadot RPC is ready", resp);
+  return api;
+};
+
+const api = await makeClient();
+const txHash = await api.tx.balances
+      .transfer("5Gzhnn1MsDUjMi7S4cN41CfggEVzSyM58LkTYPFJY3wt7o3d", 12345)
+      .signAndSend(keyPair);
+console.log(txHash.toHuman());
+```
