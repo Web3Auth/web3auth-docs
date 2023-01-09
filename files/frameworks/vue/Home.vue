@@ -39,7 +39,7 @@
         </div>
       </div>
       <div id="console" style="white-space: pre-line">
-        <p style="white-space: pre-line"></p>
+        <p style="white-space: pre-line">Logged in Successfully!</p>
       </div>
     </div>
   </div>
@@ -96,7 +96,6 @@ export default {
       }
       // REPLACE-getLoginCode-
 
-      uiConsole("Logged in Successfully!");
     };
 
     const authenticateUser = async () => {
