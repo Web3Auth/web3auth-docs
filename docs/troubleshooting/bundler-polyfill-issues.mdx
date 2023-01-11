@@ -5,32 +5,32 @@ displayed_sidebar: docs
 description: "Bundler Polyfills Issues | Documentation - Web3Auth"
 ---
 
-### Vite/Svelte/Rollup
-
 While setting up a new web3 project from scratch, in frameworks like Vite, Svelte, or Rollup, you may encounter issues with the Bundler polyfills.
 This is because these frameworks do not include the Bundler polyfills by default and you may run into issues building these apps. Hence, you require
 certain bundler polyfills to be added to your project, while overriding the configurations to enable their usage.
+
+### Vite
 
 #### Solution
 
 - Install the missing modules
 
 ```bash npm2yarn
-npm install --save-dev crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process rollup-plugin-node-builtins rollup-plugin-node-polyfills @esbuild-plugins/node-globals-polyfill @esbuild-plugins/node-modules-polyfill
+npm install --save-dev @esbuild-plugins/node-modules-polyfill rollup-plugin-node-polyfills rollup-plugin-node-builtins buffer process
 ```
 
-Add the following lines to `svelte.config.js` or `rollup.config.js` or `vite.config.js`
+Add the following lines to `vite.config.js`
 
 ```js
 import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
+import react from "@vitejs/plugin-react";
 import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill";
 import rollupNodePolyFill from "rollup-plugin-node-polyfills";
 import builtins from "rollup-plugin-node-builtins";
+
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [react()],
   resolve: {
     alias: {
       // This Rollup aliases are extracted from @esbuild-plugins/node-modules-polyfill,
@@ -67,13 +67,7 @@ export default defineConfig({
     esbuildOptions: {
       target: "es2020",
       supported: { bigint: true },
-      plugins: [
-        NodeGlobalsPolyfillPlugin({
-          process: true,
-          buffer: true,
-        }),
-        NodeModulesPolyfillPlugin(),
-      ],
+      plugins: [NodeModulesPolyfillPlugin()],
     },
   },
   build: {
