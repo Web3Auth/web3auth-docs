@@ -258,6 +258,11 @@ const builder: IntegrationBuilder = {
 
     frameworks[finalValues.lang].build({ ...finalValues, filenames, files: newFiles, steps, chain: finalValues.chain });
 
+    if (stepIndex >= steps.length) {
+      // eslint-disable-next-line no-param-reassign
+      stepIndex = steps.length - 1;
+    }
+
     const highlightedFiles = highlight(stepIndex, filenames, newFiles, steps);
 
     return {
@@ -267,6 +272,7 @@ const builder: IntegrationBuilder = {
         ...it,
         pointer: it.pointer ? { ...it.pointer, filename: `${it.pointer.filename}` } : undefined,
       })),
+      stepIndex,
     };
   },
 };

@@ -43,6 +43,51 @@ const getURLFromBuilderOptions = (opts: Record<string, string>, stepIndex): stri
 
 export default function IntegrationBuilderPage({ files }: { files: Record<string, any> }) {
   const [builderOptions, setBuilderOptions] = useState<Record<string, string>>(getDefaultBuilderOptions());
+  const [isLinkCopied, setLinkCopied] = useState<number>();
+
+  const url = new URL(getWindowLocation());
+  const [stepIndex, setStepIndex] = useState(parseInt(url.searchParams.get("stepIndex") || "0", 10));
+
+  const integration = useMemo(() => builder.build(builderOptions, files, stepIndex), [builderOptions, files, stepIndex]);
+  const [selectedFilename, setSelectedFilename] = useState(integration.filenames[0]);
+
+  const onClickCopyLink = useCallback(() => {
+    if (isLinkCopied) return;
+    copyToClipboard(getWindowLocation());
+
+    const timeout = window.setTimeout(() => {
+      setLinkCopied(undefined);
+    }, 3000);
+    setLinkCopied(timeout);
+  }, [isLinkCopied]);
+
+  const { steps } = integration;
+
+  const onChangeStep = (index: number) => {
+    if (index >= steps.length) {
+      // eslint-disable-next-line no-param-reassign
+      index = steps.length - 1;
+    }
+    setSelectedFilename(steps[index].pointer.filename);
+    setStepIndex(index);
+  };
+
+  const onScrollLeft = (e: UIEvent<HTMLDivElement>) => {
+    const el = e.target as HTMLDivElement;
+
+    const stepEls = el.getElementsByClassName(styles.stepContainer);
+
+    for (let i = 0; i < stepEls.length; i += 1) {
+      const stepEl = stepEls.item(i) as HTMLDivElement;
+      if (el.scrollTop <= stepEl.offsetTop) {
+        const dis = stepEl.offsetTop - el.scrollTop;
+        if (dis >= 200 && dis <= 300) {
+          onChangeStep(i);
+          break;
+        }
+      }
+    }
+  };
 
   const onChangeOptionValue = (optionKey: string, event: ChangeEvent<HTMLInputElement>) => {
     const el = event.target as HTMLInputElement;
@@ -61,17 +106,10 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     });
   };
 
-  const url = new URL(getWindowLocation());
-  const [stepIndex, setStepIndex] = useState(parseInt(url.searchParams.get("stepIndex") || "0", 10));
-
-  const integration = useMemo(() => builder.build(builderOptions, files, stepIndex), [builderOptions, files, stepIndex]);
-  const [selectedFilename, setSelectedFilename] = useState(integration.filenames[0]);
-
-  const [isLinkCopied, setLinkCopied] = useState<number>();
-
   useEffect(() => {
+    setStepIndex(integration.stepIndex);
     // Update selected file when either integration changed
-    setSelectedFilename(integration.steps[stepIndex].pointer.filename);
+    setSelectedFilename(integration.steps[integration.stepIndex].pointer.filename);
 
     // Clear copied
     if (isLinkCopied) {
@@ -99,40 +137,6 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
       window.location.href = `#step-${stepIndex}`;
     }
   }, []);
-
-  const onClickCopyLink = useCallback(() => {
-    if (isLinkCopied) return;
-    copyToClipboard(getWindowLocation());
-
-    const timeout = window.setTimeout(() => {
-      setLinkCopied(undefined);
-    }, 3000);
-    setLinkCopied(timeout);
-  }, [isLinkCopied]);
-
-  const { steps } = integration;
-
-  const onChangeStep = (index: number) => {
-    setSelectedFilename(steps[index].pointer.filename);
-    setStepIndex(index);
-  };
-
-  const onScrollLeft = (e: UIEvent<HTMLDivElement>) => {
-    const el = e.target as HTMLDivElement;
-
-    const stepEls = el.getElementsByClassName(styles.stepContainer);
-
-    for (let i = 0; i < stepEls.length; i += 1) {
-      const stepEl = stepEls.item(i) as HTMLDivElement;
-      if (el.scrollTop <= stepEl.offsetTop) {
-        const dis = stepEl.offsetTop - el.scrollTop;
-        if (dis >= 200 && dis <= 300) {
-          onChangeStep(i);
-          break;
-        }
-      }
-    }
-  };
 
   return (
     <Layout title="Integration Builder">

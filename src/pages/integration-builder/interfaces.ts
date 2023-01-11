@@ -15,6 +15,7 @@ export interface Integration {
   filenames: string[];
   files: Record<string, string>;
   steps: IntegrationStep[];
+  stepIndex: number;
 }
 
 export interface DisplayChoice {
