@@ -1,3 +1,4 @@
+import { DEFAULT, ETHERS, NONE, SOL, STARKEX, STARKNET, TEZOS, YES } from "../choices";
 import {
   FILENAME_APP_TS,
   FILENAME_ETHERSRPC,
@@ -11,7 +12,7 @@ import {
 } from "./filenames";
 import STEPS from "./stepContent";
 
-export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuthentication, evmFramework, chain) {
+export default function getSteps(steps, files, chain, evmFramework, customAuth, mfa, whitelabel, useModal, replacementAggregator) {
   steps.push(
     {
       ...STEPS.buildingApp,
@@ -24,32 +25,32 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
   );
 
   switch (chain) {
-    case "sol":
+    case SOL:
       steps.push({
         ...STEPS.installationSolana,
         pointer: replacementAggregator.highlightRange(FILENAME_SOLANARPC, files[FILENAME_SOLANARPC], "installationSolana"),
       });
       break;
-    case "starkex":
+    case STARKEX:
       steps.push({
         ...STEPS.installationStarkEx,
         pointer: replacementAggregator.highlightRange(FILENAME_STARKEXRPC, files[FILENAME_STARKEXRPC], "installationStarkEx"),
       });
       break;
-    case "starknet":
+    case STARKNET:
       steps.push({
         ...STEPS.installationStarkNet,
         pointer: replacementAggregator.highlightRange(FILENAME_STARKNETRPC, files[FILENAME_STARKNETRPC], "installationStarkNet"),
       });
       break;
-    case "tezos":
+    case TEZOS:
       steps.push({
         ...STEPS.installationTezos,
         pointer: replacementAggregator.highlightRange(FILENAME_TEZOSRPC, files[FILENAME_TEZOSRPC], "installationTezos"),
       });
       break;
     default:
-      if (evmFramework === "ethers") {
+      if (evmFramework === ETHERS) {
         steps.push({
           ...STEPS.installationEthers,
           pointer: replacementAggregator.highlightRange(FILENAME_ETHERSRPC, files[FILENAME_ETHERSRPC], "installationEthers"),
@@ -62,15 +63,55 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
       }
   }
 
+  if (useModal === YES) {
+    if (customAuth !== NONE || whitelabel === YES || mfa !== DEFAULT) {
+      steps.push(
+        {
+          ...STEPS.installationCustom,
+          pointer: replacementAggregator.highlightRange(FILENAME_PACKAGE_JSON, files[FILENAME_PACKAGE_JSON], "installation"),
+        },
+        {
+          ...STEPS.importModulesCustom,
+          pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "importModules"),
+        }
+      );
+    } else {
+      steps.push(
+        {
+          ...STEPS.installation,
+          pointer: replacementAggregator.highlightRange(FILENAME_PACKAGE_JSON, files[FILENAME_PACKAGE_JSON], "installation"),
+        },
+        {
+          ...STEPS.importModules,
+          pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "importModules"),
+        }
+      );
+    }
+  } else if (customAuth !== NONE || whitelabel === YES) {
+    steps.push(
+      {
+        ...STEPS.installationCustomCore,
+        pointer: replacementAggregator.highlightRange(FILENAME_PACKAGE_JSON, files[FILENAME_PACKAGE_JSON], "installation"),
+      },
+      {
+        ...STEPS.importModulesCustomCore,
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "importModules"),
+      }
+    );
+  } else {
+    steps.push(
+      {
+        ...STEPS.installationCore,
+        pointer: replacementAggregator.highlightRange(FILENAME_PACKAGE_JSON, files[FILENAME_PACKAGE_JSON], "installation"),
+      },
+      {
+        ...STEPS.importModulesCore,
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "importModules"),
+      }
+    );
+  }
+
   steps.push(
-    {
-      ...STEPS.installation,
-      pointer: replacementAggregator.highlightRange(FILENAME_PACKAGE_JSON, files[FILENAME_PACKAGE_JSON], "installation"),
-    },
-    {
-      ...STEPS.importModules,
-      pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "importModules"),
-    },
     {
       ...STEPS.registerApp,
       pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "registerApp"),
@@ -81,25 +122,52 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
     }
   );
 
-  if (whitelabel === "yes") {
+  if (whitelabel === YES) {
     steps.push({
       ...STEPS.whiteLabeling,
       pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "whiteLabeling"),
     });
   }
 
-  if (customAuthentication === "yes") {
+  if (customAuth !== NONE) {
+    if (useModal === YES) {
+      steps.push({
+        ...STEPS.customAuth,
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "customAuthStep"),
+      });
+    } else {
+      steps.push({
+        ...STEPS.customAuthCore,
+        pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "customAuthStep"),
+      });
+    }
+  }
+
+  if (
+    useModal !== YES ||
+    (mfa !== DEFAULT && useModal === YES) ||
+    (customAuth !== NONE && useModal === YES) ||
+    (whitelabel === YES && useModal === YES)
+  ) {
     steps.push({
-      ...STEPS.customAuthenticationStep,
-      pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "customAuthenticationStep"),
+      ...STEPS.mfa,
+      pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "mfa"),
+    });
+  }
+
+  if (useModal === YES) {
+    steps.push({
+      ...STEPS.initialize,
+      pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "initialize"),
+    });
+  } else {
+    steps.push({
+      ...STEPS.initializeCore,
+      pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "initialize"),
     });
   }
 
   steps.push(
-    {
-      ...STEPS.initialize,
-      pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "initialize"),
-    },
     {
       ...STEPS.login,
       pointer: replacementAggregator.highlightRange(FILENAME_APP_TS, files[FILENAME_APP_TS], "login"),
@@ -111,25 +179,25 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
   );
 
   switch (chain) {
-    case "sol":
+    case SOL:
       steps.push({
         ...STEPS.solanaRPCFunctions,
         pointer: replacementAggregator.highlightRange(FILENAME_SOLANARPC, files[FILENAME_SOLANARPC], "solanaRPCFunctions"),
       });
       break;
-    case "starkex":
+    case STARKEX:
       steps.push({
         ...STEPS.starkExRPCFunctions,
         pointer: replacementAggregator.highlightRange(FILENAME_STARKEXRPC, files[FILENAME_STARKEXRPC], "starkExRPCFunctions"),
       });
       break;
-    case "starknet":
+    case STARKNET:
       steps.push({
         ...STEPS.starkNetRPCFunctions,
         pointer: replacementAggregator.highlightRange(FILENAME_STARKNETRPC, files[FILENAME_STARKNETRPC], "starkNetRPCFunctions"),
       });
       break;
-    case "tezos":
+    case TEZOS:
       steps.push({
         ...STEPS.tezosRPCFunctions,
         pointer: replacementAggregator.highlightRange(FILENAME_TEZOSRPC, files[FILENAME_TEZOSRPC], "tezosRPCFunctions"),
@@ -139,8 +207,8 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
       steps.push({
         ...STEPS.evmRPCFunctions,
         pointer: replacementAggregator.highlightRange(
-          evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC,
-          files[evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC],
+          evmFramework === ETHERS ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC,
+          files[evmFramework === ETHERS ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC],
           "evmRPCFunctions"
         ),
       });

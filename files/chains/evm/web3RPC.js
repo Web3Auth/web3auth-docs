@@ -79,6 +79,7 @@ const rpc = (() => {
 
     // Sign the message
     const signedMessage = await web3.eth.personal.sign(originalMessage, fromAddress);
+    // HIGHLIGHTEND-evmRPCFunctions
 
     return signedMessage;
   };

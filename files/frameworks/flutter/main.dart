@@ -1,15 +1,22 @@
+//HIGHLIGHTSTART-buildingApp
 import 'dart:collection';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:web3auth_flutter/enums.dart';
-import 'package:web3auth_flutter/input.dart';
-import 'package:web3auth_flutter/output.dart';
 import 'dart:async';
+//HIGHLIGHTEND-buildingApp
 
 // HIGHLIGHTSTART-installationFlutter
 import 'package:web3auth_flutter/web3auth_flutter.dart';
+import 'package:web3auth_flutter/enums.dart';
+import 'package:web3auth_flutter/input.dart';
+import 'package:web3auth_flutter/output.dart';
 // HIGHLIGHTEND-installationFlutter
+
+// HIGHLIGHTSTART-evmRPCFunctions
+import 'package:http/http.dart';
+import 'package:web3dart/web3dart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+// HIGHLIGHTEND-evmRPCFunctions
 
 
 void main() {
@@ -25,6 +32,9 @@ class _MyAppState extends State<MyApp> {
   String _result = '';
   bool logoutVisible = false;
 
+  // REPLACE-EVMProvider-
+
+
   @override
   void dispose() {
     super.dispose();
@@ -38,35 +48,28 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
+    // HIGHLIGHTSTART-whiteLabeling
     HashMap themeMap = HashMap<String, String>();
     themeMap['primary'] = "#229954";
-
-    // HIGHLIGHTSTART-customAuthn
-    // custom authentication with google
-    HashMap loginConfig = new HashMap<String, LoginConfigItem>();
-    loginConfig['google'] = LoginConfigItem({
-      verifier: "verifier-name", // get it from web3auth dashboard
-      typeOfLogin: TypeOfLogin.google,
-      name: "Custom Google Login",
-      clientId: "google_client_id" // google's client id
-    });
-    // HIGHLIGHTEND-customAuthn
+    // HIGHLIGHTEND-whiteLabeling
 
     Uri redirectUrl;
     if (Platform.isAndroid) {
+      // HIGHLIGHTSTART-registerApp
       redirectUrl = Uri.parse('w3a://com.example.w3aflutter/auth');
+      // HIGHLIGHTEND-registerApp
     } else if (Platform.isIOS) {
+      // HIGHLIGHTSTART-registerApp
       redirectUrl = Uri.parse('com.example.w3aflutter://openlogin');
+      // HIGHLIGHTEND-registerApp
     } else {
       throw UnKnownException('Unknown platform');
     }
-
     // REPLACE-getConstructorCode-
   }
 
   @override
   Widget build(BuildContext context) {
-    // Map<String, dynamic> user = jsonDecode(_result);
 
     return MaterialApp(
       home: Scaffold(
@@ -118,17 +121,8 @@ class _MyAppState extends State<MyApp> {
                       height: 20,
                     ),
                     ElevatedButton(
-                        onPressed: _login(_withGoogle),
-                        child: const Text('Google')),
-                    ElevatedButton(
-                        onPressed: _login(_withFacebook),
-                        child: const Text('Facebook')),
-                    ElevatedButton(
-                        onPressed: _login(_withEmailPasswordless),
-                        child: const Text('Email Passwordless')),
-                    ElevatedButton(
-                        onPressed: _login(_withDiscord),
-                        child: const Text('Discord')),
+                        onPressed: _login(_withProvider),
+                        child: const Text('Login')),
                   ],
                 ),
               ),
@@ -149,6 +143,31 @@ class _MyAppState extends State<MyApp> {
                             ],
                           )),
                     ),
+                    const Text(
+                      'Blockchain calls',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                                255, 195, 47, 233) // This is what you need!
+                            ),
+                        onPressed: _getAddress,
+                        child: const Text('Get Address')),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                                255, 195, 47, 233) // This is what you need!
+                            ),
+                        onPressed: _getBalance,
+                        child: const Text('Get Balance')),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                                255, 195, 47, 233) // This is what you need!
+                            ),
+                        onPressed: _sendTransaction,
+                        child: const Text('Send Transaction')),
                   ],
                 ),
                 visible: logoutVisible,
@@ -164,6 +183,10 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+  Future<Web3AuthResponse> _withProvider() {
+    // REPLACE-getFlutterLoginConfig-
+  }
+
   VoidCallback _login(Future<Web3AuthResponse> Function() method) {
     return () async {
       try {
@@ -172,6 +195,9 @@ class _MyAppState extends State<MyApp> {
           _result = response.toString();
           logoutVisible = true;
         });
+        debugPrint("UserInfo, ${response?.userinfo?.toString()}");
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('privateKey', response?.privKey.toString());
       } on UserCancelledException {
         print("User cancelled.");
       } on UnKnownException {
@@ -198,21 +224,72 @@ class _MyAppState extends State<MyApp> {
     };
   }
 
-  Future<Web3AuthResponse> _withGoogle() {
-    // REPLACE-getFlutterLoginConfig-
-  }
+  // HIGHLIGHTSTART-evmRPCFunctions
+  Future<String> _getAddress() async {
+    final prefs = await SharedPreferences.getInstance();
+    final privateKey = prefs.getString('privateKey') ?? '0';
+    // const String rpcUrl = 'https://rpc.ankr.com/eth_goerli';
 
-  Future<Web3AuthResponse> _withFacebook() {
-    return Web3AuthFlutter.login(LoginParams(loginProvider: Provider.facebook));
+    // final client = Web3Client(rpcUrl, Client());
+    final credentials = EthPrivateKey.fromHex(privateKey);
+    final address = credentials.address;
+    debugPrint("Account, ${address.hexEip55}");
+    setState(() {
+      _result = address.hexEip55.toString();
+    });
+    return address.hexEip55;
   }
+  // HIGHLIGHTEND-evmRPCFunctions
 
-  Future<Web3AuthResponse> _withEmailPasswordless() {
-    return Web3AuthFlutter.login(LoginParams(
-        loginProvider: Provider.email_passwordless,
-        extraLoginOptions: ExtraLoginOptions(login_hint: "hello@tor.us")));
-  }
+  // HIGHLIGHTSTART-evmRPCFunctions
+  Future<EtherAmount> _getBalance() async {
+    final prefs = await SharedPreferences.getInstance();
+    final privateKey = prefs.getString('privateKey') ?? '0';
 
-  Future<Web3AuthResponse> _withDiscord() {
-    return Web3AuthFlutter.login(LoginParams(loginProvider: Provider.discord));
+    final client = Web3Client(rpcUrl, Client());
+    final credentials = EthPrivateKey.fromHex(privateKey);
+    final address = credentials.address;
+    final balance = await client.getBalance(address);
+    debugPrint(balance.toString());
+    setState(() {
+      _result = balance.toString();
+    });
+    return balance;
   }
+  // HIGHLIGHTEND-evmRPCFunctions
+
+  // HIGHLIGHTSTART-evmRPCFunctions
+  Future<String> _sendTransaction() async {
+    final prefs = await SharedPreferences.getInstance();
+    final privateKey = prefs.getString('privateKey') ?? '0';
+
+    final client = Web3Client(rpcUrl, Client());
+    final credentials = EthPrivateKey.fromHex(privateKey);
+    final address = credentials.address;
+    try {
+      final receipt = await client.sendTransaction(
+          credentials,
+          Transaction(
+            from: address,
+            to: EthereumAddress.fromHex(
+                '0x809D4310d578649D8539e718030EE11e603Ee8f3'),
+            // gasPrice: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 100),
+            value: EtherAmount.fromUnitAndValue(
+                EtherUnit.gwei, 5000000), // 0.005 ETH
+          ),
+          chainId: 5);
+      debugPrint(receipt);
+      setState(() {
+        _result = receipt;
+      });
+      return receipt;
+    } catch (e) {
+      setState(() {
+        _result = e.toString();
+      });
+      return e.toString();
+    }
+  }
+  // HIGHLIGHTEND-evmRPCFunctions
+
 }

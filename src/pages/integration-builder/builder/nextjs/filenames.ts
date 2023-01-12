@@ -1,3 +1,5 @@
+import { ETHERS, SOL, STARKEX, STARKNET, TEZOS } from "../choices";
+
 export const FILENAME_GLOBALS_CSS = "frameworks/nextjs/globals.css";
 export const FILENAME_INDEX_TSX = "frameworks/nextjs/index.tsx";
 export const FILENAME_APP_TSX = "frameworks/nextjs/App.tsx";
@@ -14,21 +16,21 @@ export default function getFileNames(filenames, chain, evmFramework) {
   filenames.push(FILENAME_APP_TSX);
   filenames.push(FILENAME_PACKAGE_JSON);
   switch (chain) {
-    case "sol":
+    case SOL:
       filenames.push(FILENAME_SOLANARPC);
       break;
-    case "starkex":
+    case STARKEX:
       filenames.push(FILENAME_STARKEXRPC);
       break;
-    case "starknet":
+    case STARKNET:
       filenames.push(FILENAME_STARKNETRPC);
       filenames.push(FILENAME_ARGENT_ACCOUNT);
       break;
-    case "tezos":
+    case TEZOS:
       filenames.push(FILENAME_TEZOSRPC);
       break;
     default:
-      filenames.push(evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC);
+      filenames.push(evmFramework === ETHERS ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC);
   }
   filenames.push(FILENAME_INDEX_TSX);
   filenames.push(FILENAME_GLOBALS_CSS);

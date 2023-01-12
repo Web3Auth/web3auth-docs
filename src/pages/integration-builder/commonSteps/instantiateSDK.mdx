@@ -2,19 +2,33 @@
 title: Create the Web3Auth instance
 ---
 
-It's time to create an instance of the `Web3Auth` in the project.
+It's time to create an instance of Web3Auth in the project.
 
-We need `clientId` and `chainNamespace` to initialize web3auth class. You can get your `clientId` from registering (above), whereas `chainNamespace`
-signifies the type of chain you want to initialize web3auth with, which will depend on the blockchain you've selected here. Please go through the
-[connect blockchain](/connect-blockchain/) documentation, which contains all the details of the respective blockchain you have selected here.
+We need `clientId` and `chainConfig` to initialize `web3auth` object. Ideally, mentioning the `web3AuthNetwork` here will be a good practice, as it
+helps you get ready for production deployment.
 
-> There might be cases you will be getting an JSON-RPC error, which comes from the overloading of the test node server mentioned in this example. In
-> that case, we recommend you to pass on your own node server in the `rpcTarget` value, which can be easily created by using a service like
-> [Infura](https://infura.io/), [Quicknode](https://www.quicknode.com/) etc. Checkout our [troubleshooting guide](/troubleshooting/error-429) around
-> it.
+- You can get your `clientId` from registering (above) on the Developer Dashboard.
+- `chainConfig` signifies the type of chain you want to initialize Web3Auth with, which will depend on the blockchain you've selected here.
 
-:::tip
+  :::info connect any chain
 
-Additionally, there are multiple other parameters, as mentioned in our [SDK Reference](/sdk/web/modal/initialize#instantiating-web3auth)
+  Please go through the [Connect Blockchain](/connect-blockchain/) Documentation, which contains all the details of the respective blockchain you have
+  selected here.
+
+  :::
+
+- `web3AuthNetwork` signifies the network on which the deployed Web3Auth nodes are running. For testing purposes, we have a `testnet` network. For
+  production usage, you can use the `cyan`, `mainnet`, `celeste` & `aqua` networks.
+
+  :::danger
+
+  Please don't use the `testnet` network for production usage. You may end up losing user keys.
+
+  :::
+
+:::tip SDK Reference
+
+- [Instantiating Web3Auth Modal](/sdk/web/modal/initialize#instantiating-web3auth).
+- [Instantiating Web3Auth Core](/sdk/web/core/initialize#instantiating-web3authcore).
 
 :::

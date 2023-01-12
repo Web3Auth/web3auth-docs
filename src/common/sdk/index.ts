@@ -1,6 +1,7 @@
 import { getConstructorCodeAndroid, getLoginCodeAndroid } from "../../../androidSnippets";
 import { PLACEHOLDERS } from "../../../commonSnippets";
 import { ReplaceFileAggregator, toSteps } from "../../../utils";
+import { YES } from "../../pages/integration-builder/builder/choices";
 import * as configureDeepLink from "./configure-deeplink.mdx";
 import * as CustomAuthentication from "./custom-authentication.mdx";
 import * as installationAppManifest from "./install-app-manifest.mdx";
@@ -44,7 +45,7 @@ const reactSteps = {
     const FILENAME_STRINGS = "frameworks/android/strings.xml";
     const FILENAME_ACTIVITY_MAIN_XML = "frameworks/android/activity_main.xml";
 
-    const ConstructorCodeAndroid = getConstructorCodeAndroid(whitelabel === "yes", customAuthentication === "yes");
+    const ConstructorCodeAndroid = getConstructorCodeAndroid(whitelabel === YES, customAuthentication === YES);
     newFiles[FILENAME_MAINACTIVITY] = replacementAggregator.replaceFileVariable(
       files[FILENAME_MAINACTIVITY],
       FILENAME_MAINACTIVITY,
@@ -52,7 +53,7 @@ const reactSteps = {
       ConstructorCodeAndroid
     );
 
-    const LoginCodeAndroid = getLoginCodeAndroid(mfa === "yes");
+    const LoginCodeAndroid = getLoginCodeAndroid(mfa === YES);
     newFiles[FILENAME_MAINACTIVITY] = replacementAggregator.replaceFileVariable(
       files[FILENAME_MAINACTIVITY],
       FILENAME_MAINACTIVITY,
@@ -98,19 +99,19 @@ const reactSteps = {
         pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "instantiate"),
       }
     );
-    if (whitelabel === "yes") {
+    if (whitelabel === YES) {
       steps.push({
         ...STEPS.whiteLabeling,
         pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "whiteLabeling"),
       });
     }
-    if (customAuthentication === "yes") {
+    if (customAuthentication === YES) {
       steps.push({
         ...STEPS.CustomAuthentication,
         pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "CustomAuthentication"),
       });
     }
-    if (mfa === "yes") {
+    if (mfa === YES) {
       steps.push({
         ...STEPS.multiFactorAuthentication,
         pointer: replacementAggregator.highlightRange(FILENAME_MAINACTIVITY, files[FILENAME_MAINACTIVITY], "multiFactorAuthentication"),

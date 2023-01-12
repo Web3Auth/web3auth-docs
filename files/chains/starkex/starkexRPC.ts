@@ -1,20 +1,15 @@
-// @ts-ignore
 // HIGHLIGHTSTART-installationStarkEx
-import StarkExAPI from "@starkware-industries/starkex-js/dist/browser";
-// HIGHLIGHTEND-installationStarkEx
-// @ts-ignore
-// HIGHLIGHTSTART-installationStarkEx
+import StarkExAPI from "@starkware-industries/starkex-js";
+//@ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 // HIGHLIGHTEND-installationStarkEx
 import type { SafeEventEmitterProvider } from "@web3auth/base";
-// @ts-ignore
-// HIGHLIGHTSTART-installationStarkEx
-import { ec as elliptic } from "elliptic";
-// HIGHLIGHTEND-installationStarkEx
 
+// HIGHLIGHTSTART-starkExRPCFunctions
 const starkExAPI = new StarkExAPI({
   endpoint: "https://gw.playground-v2.starkex.co",
 });
+// HIGHLIGHTEND-starkExRPCFunctions
 
 export default class StarkExRpc {
   private provider: SafeEventEmitterProvider;
@@ -30,6 +25,7 @@ export default class StarkExRpc {
       const keyPair = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
       const account = starkwareCrypto.ec.keyFromPublic(keyPair.getPublic(true, "hex"), "hex");
       // HIGHLIGHTEND-starkExRPCFunctions
+
       return account;
     } catch (error) {
       return error;
@@ -42,6 +38,7 @@ export default class StarkExRpc {
       const account = await this.getStarkAccount();
       const publicKeyX = account.pub.getX().toString("hex");
       // HIGHLIGHTEND-starkExRPCFunctions
+
       return publicKeyX;
     } catch (error) {
       return error as string;
@@ -63,6 +60,7 @@ export default class StarkExRpc {
       };
       const response = await starkExAPI.gateway.mint(request);
       // HIGHLIGHTEND-starkExRPCFunctions
+
       return response;
     } catch (error) {
       return error as string;
@@ -81,8 +79,9 @@ export default class StarkExRpc {
         tokenId: "0x3ef811e040c4bc9f9eee715441cee470f5d5aff69b9cd9aca7884f5a442a890",
         vaultId: 1924014660,
       };
-      const response = await starkExAPI.gateway.deposit(request);
+      const response = await starkExAPI.gateway.deposit(request as any);
       // HIGHLIGHTEND-starkExRPCFunctions
+
       return response;
     } catch (error) {
       return error as string;
@@ -101,8 +100,9 @@ export default class StarkExRpc {
         tokenId: "0x2dd48fd7a024204f7c1bd874da5e709d4713d60c8a70639eb1167b367a9c378",
         vaultId: 612008755,
       };
-      const response = await starkExAPI.gateway.withdrawal(request);
+      const response = await starkExAPI.gateway.withdrawal(request as any);
       // HIGHLIGHTEND-starkExRPCFunctions
+
       return response;
     } catch (error) {
       return error as string;

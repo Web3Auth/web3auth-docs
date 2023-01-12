@@ -2,7 +2,24 @@
 import { IntegrationBuilder, IntegrationStep } from "../interfaces";
 import android from "./android";
 import angular from "./angular";
-import { CHAINS, CHAINS_HTML, EVM, EVM_FRAMEWORK_CHOICES, LANGS, MOBILE, RN_MODE_CHOICES, TOGGLE_CHOICES } from "./choices";
+import {
+  CHAINS,
+  CHAINS_HTML,
+  CHAINS_MOBILE,
+  CUSTOM_AUTH,
+  CUSTOM_AUTH_MOBILE,
+  EVM,
+  EVM_LIBRARY,
+  GAMING,
+  HTML,
+  LANGS,
+  MFA,
+  MOBILE,
+  REACT_NATIVE,
+  RN_MODE,
+  TOGGLE,
+  YES,
+} from "./choices";
 import flutter from "./flutter";
 import highlight from "./highlight";
 import html from "./html";
@@ -14,16 +31,16 @@ import unity from "./unity";
 import vue from "./vue";
 
 const frameworks = {
-  html,
-  react,
-  next,
-  vue,
-  ios,
-  android,
-  flutter,
-  angular,
-  "react-native": react_native,
-  unity,
+  HTML: html,
+  REACT: react,
+  NEXT: next,
+  VUE: vue,
+  IOS: ios,
+  ANDROID: android,
+  FLUTTER: flutter,
+  ANGULAR: angular,
+  REACT_NATIVE: react_native,
+  UNITY: unity,
 };
 
 const builder: IntegrationBuilder = {
@@ -33,52 +50,58 @@ const builder: IntegrationBuilder = {
   // Options that will be displayed in the UI for selection
   options: {
     lang: {
-      displayName: "Language/Framework",
+      displayName: "Platform",
       default: LANGS[0].key,
       type: "dropdown",
       choices: LANGS,
     },
     chain: {
-      displayName: "Blockchain",
+      displayName: "Chain",
       default: CHAINS[0].key,
       type: "dropdown",
       choices: CHAINS,
     },
-    customAuthentication: {
-      displayName: "Custom Authentication",
-      default: TOGGLE_CHOICES[0].key,
-      type: "toggle",
-      choices: TOGGLE_CHOICES,
+    evmFramework: {
+      displayName: "EVM Library",
+      default: EVM_LIBRARY[0].key,
+      type: "dropdown",
+      choices: EVM_LIBRARY,
+    },
+    customAuth: {
+      displayName: "Custom Auth",
+      default: CUSTOM_AUTH[0].key,
+      type: "dropdown",
+      choices: CUSTOM_AUTH,
+    },
+    mfa: {
+      displayName: "MFA",
+      default: MFA[0].key,
+      type: "dropdown",
+      choices: MFA,
     },
     whitelabel: {
       displayName: "Whitelabel",
-      default: TOGGLE_CHOICES[0].key,
+      default: TOGGLE[0].key,
       type: "toggle",
-      choices: TOGGLE_CHOICES,
+      choices: TOGGLE,
     },
-    mfaParams: {
-      displayName: "MFA",
-      default: TOGGLE_CHOICES[0].key,
+    useModal: {
+      displayName: "Use W3A Modal",
+      default: TOGGLE[1].key,
       type: "toggle",
-      choices: TOGGLE_CHOICES,
+      choices: TOGGLE,
     },
-    usingEmailPasswordless: {
-      displayName: "Using Email Passwordless",
-      default: TOGGLE_CHOICES[0].key,
+    sessionManagement: {
+      displayName: "Session Management",
+      default: TOGGLE[0].key,
       type: "toggle",
-      choices: TOGGLE_CHOICES,
+      choices: TOGGLE,
     },
-    rnWorkflowMode: {
+    rnMode: {
       displayName: "Workflow",
-      default: RN_MODE_CHOICES[0].key,
+      default: RN_MODE[0].key,
       type: "dropdown",
-      choices: RN_MODE_CHOICES,
-    },
-    evmFramework: {
-      displayName: "EVM Chain Framework",
-      default: EVM_FRAMEWORK_CHOICES[0].key,
-      type: "dropdown",
-      choices: EVM_FRAMEWORK_CHOICES,
+      choices: RN_MODE,
     },
   },
 
@@ -90,124 +113,166 @@ const builder: IntegrationBuilder = {
     const newFiles = JSON.parse(JSON.stringify(files));
     const steps: IntegrationStep[] = [];
 
+    // Language/Framework
     this.options = {
       lang: {
-        displayName: "Language/Framework",
+        displayName: "Platform",
         default: LANGS[0].key,
         type: "dropdown",
         choices: LANGS,
       },
     };
-    if (values.lang === "html") {
+
+    // Blockchain
+    if (finalValues.lang === HTML) {
       this.options = {
         ...this.options,
         chain: {
-          displayName: "Blockchain",
+          displayName: "Chain",
           default: CHAINS_HTML[0].key,
           type: "dropdown",
           choices: CHAINS_HTML,
         },
       };
-    } else if (!(values.lang in MOBILE)) {
+    } else if (finalValues.lang in MOBILE) {
       this.options = {
         ...this.options,
         chain: {
-          displayName: "Blockchain",
+          displayName: "Chain",
+          default: CHAINS_MOBILE[0].key,
+          type: "dropdown",
+          choices: CHAINS_MOBILE,
+        },
+      };
+    } else if (!(finalValues.lang in GAMING)) {
+      this.options = {
+        ...this.options,
+        chain: {
+          displayName: "Chain",
           default: CHAINS[0].key,
           type: "dropdown",
           choices: CHAINS,
         },
       };
     }
-    this.options = {
-      ...this.options,
-      customAuthentication: {
-        displayName: "Custom Authentication",
-        default: TOGGLE_CHOICES[0].key,
-        type: "toggle",
-        choices: TOGGLE_CHOICES,
-      },
-      whitelabel: {
-        displayName: "Whitelabel",
-        default: TOGGLE_CHOICES[0].key,
-        type: "toggle",
-        choices: TOGGLE_CHOICES,
-      },
-    };
 
-    if (values.lang in MOBILE) {
-      // this.options = {
-      //   ...this.options,
-      //   usingEmailPasswordless: {
-      //     displayName: "Using Email Passwordless",
-      //     default: TOGGLE_CHOICES[0].key,
-      //     type: "toggle",
-      //     choices: TOGGLE_CHOICES,
-      //   },
-      // };
-
-      if (values.lang === "react-native") {
-        this.options = {
-          ...this.options,
-          rnWorkflowMode: {
-            displayName: "Workflow",
-            default: RN_MODE_CHOICES[0].key,
-            type: "dropdown",
-            choices: RN_MODE_CHOICES,
-          },
-        };
-      } else {
-        this.options = {
-          ...this.options,
-          mfa: {
-            displayName: "Multi Factor Authentication",
-            default: TOGGLE_CHOICES[0].key,
-            type: "toggle",
-            choices: TOGGLE_CHOICES,
-          },
-        };
-      }
-    }
-
-    this.options = {
-      ...this.options,
-      customAuthentication: {
-        displayName: "Custom Authentication",
-        default: TOGGLE_CHOICES[0].key,
-        type: "toggle",
-        choices: TOGGLE_CHOICES,
-      },
-      whitelabel: {
-        displayName: "Whitelabel",
-        default: TOGGLE_CHOICES[0].key,
-        type: "toggle",
-        choices: TOGGLE_CHOICES,
-      },
-    };
-    if (values.chain in EVM && !(values.lang in MOBILE)) {
+    // EVM Chain Framework
+    if (finalValues.chain in EVM && !(finalValues.lang in MOBILE || finalValues.lang in GAMING)) {
       this.options = {
         ...this.options,
         evmFramework: {
-          displayName: "EVM Chain Framework",
-          default: EVM_FRAMEWORK_CHOICES[0].key,
+          displayName: "EVM Library",
+          default: EVM_LIBRARY[0].key,
           type: "dropdown",
-          choices: EVM_FRAMEWORK_CHOICES,
+          choices: EVM_LIBRARY,
         },
+      };
+    }
+
+    // React Native Workflow
+    if (finalValues.lang === REACT_NATIVE) {
+      this.options = {
+        ...this.options,
+        rnMode: {
+          displayName: "Workflow",
+          default: RN_MODE[0].key,
+          type: "dropdown",
+          choices: RN_MODE,
+        },
+      };
+    }
+
+    // Custom Auth
+    if (finalValues.lang in MOBILE || finalValues.lang in GAMING) {
+      this.options = {
+        ...this.options,
+        customAuth: {
+          displayName: "Custom Auth",
+          default: CUSTOM_AUTH_MOBILE[0].key,
+          type: "dropdown",
+          choices: CUSTOM_AUTH_MOBILE,
+        },
+      };
+    } else if (finalValues.useModal !== YES) {
+      this.options = {
+        ...this.options,
+        customAuth: {
+          displayName: "Custom Auth",
+          default: CUSTOM_AUTH_MOBILE[0].key,
+          type: "dropdown",
+          choices: CUSTOM_AUTH_MOBILE,
+        },
+      };
+    } else {
+      this.options = {
+        ...this.options,
+        customAuth: {
+          displayName: "Custom Auth",
+          default: CUSTOM_AUTH[0].key,
+          type: "dropdown",
+          choices: CUSTOM_AUTH,
+        },
+      };
+    }
+
+    // WhiteLabel & MFA
+    this.options = {
+      ...this.options,
+      mfa: {
+        displayName: "MFA",
+        default: MFA[0].key,
+        type: "dropdown",
+        choices: MFA,
+      },
+      whitelabel: {
+        displayName: "Whitelabel",
+        default: TOGGLE[0].key,
+        type: "toggle",
+        choices: TOGGLE,
+      },
+    };
+
+    if (!(finalValues.lang in MOBILE || finalValues.lang in GAMING)) {
+      this.options = {
+        ...this.options,
+        useModal: {
+          displayName: "Use W3A Modal",
+          default: TOGGLE[0].key,
+          type: "toggle",
+          choices: TOGGLE,
+        },
+      };
+    }
+
+    if (finalValues.lang in MOBILE && finalValues.lang !== REACT_NATIVE) {
+      this.options = {
+        ...this.options,
+        // sessionManagement: {
+        //   displayName: "Session Management",
+        //   default: TOGGLE[0].key,
+        //   type: "toggle",
+        //   choices: TOGGLE,
+        // },
       };
     }
 
     frameworks[finalValues.lang].build({ ...finalValues, filenames, files: newFiles, steps, chain: finalValues.chain });
 
+    if (stepIndex >= steps.length) {
+      // eslint-disable-next-line no-param-reassign
+      stepIndex = steps.length - 1;
+    }
+
     const highlightedFiles = highlight(stepIndex, filenames, newFiles, steps);
 
     return {
-      // Use files in `open-login` folders instead of root folder
       filenames: filenames.map((it) => `${it}`),
       files: highlightedFiles,
       steps: steps.map((it) => ({
         ...it,
         pointer: it.pointer ? { ...it.pointer, filename: `${it.pointer.filename}` } : undefined,
       })),
+      stepIndex,
     };
   },
 };

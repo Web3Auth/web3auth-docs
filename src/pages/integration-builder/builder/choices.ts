@@ -1,83 +1,175 @@
 import { DisplayChoice } from "../interfaces";
 
-export const CHAINS: DisplayChoice[] = [
-  { key: "eth", displayName: "Ethereum" },
-  { key: "sol", displayName: "Solana" },
-  { key: "starkex", displayName: "StarkEx" },
-  { key: "starknet", displayName: "StarkNet" },
-  { key: "matic", displayName: "Polygon" },
-  { key: "bnb", displayName: "BNB Chain" },
-  { key: "avax", displayName: "Avalanche" },
-  { key: "arbitrum", displayName: "Arbitrum" },
-  { key: "optimism", displayName: "Optimism" },
-  { key: "cronos", displayName: "Cronos" },
-  { key: "harmony", displayName: "Harmony" },
-  { key: "celo", displayName: "Celo" },
-  { key: "moonbeam", displayName: "Moonbeam" },
-  { key: "moonriver", displayName: "Moonriver" },
-  { key: "tezos", displayName: "Tezos" },
-];
+// Blockchain choices
 
-export const CHAINS_HTML: DisplayChoice[] = [
-  { key: "eth", displayName: "Ethereum" },
-  { key: "sol", displayName: "Solana" },
-  { key: "matic", displayName: "Polygon" },
-  { key: "bnb", displayName: "BNB Chain" },
-  { key: "avax", displayName: "Avalanche" },
-  { key: "arbitrum", displayName: "Arbitrum" },
-  { key: "optimism", displayName: "Optimism" },
-  { key: "cronos", displayName: "Cronos" },
-  { key: "harmony", displayName: "Harmony" },
-  { key: "celo", displayName: "Celo" },
-  { key: "moonbeam", displayName: "Moonbeam" },
-  { key: "moonriver", displayName: "Moonriver" },
-];
-
-export const LANGS: DisplayChoice[] = [
-  { key: "react", displayName: "React" },
-  { key: "next", displayName: "Next JS" },
-  { key: "vue", displayName: "Vue" },
-  { key: "angular", displayName: "Angular" },
-  { key: "html", displayName: "HTML/JS" },
-  { key: "android", displayName: "Android" },
-  { key: "ios", displayName: "iOS/Swift" },
-  { key: "react-native", displayName: "React Native" },
-  { key: "flutter", displayName: "Flutter" },
-  { key: "unity", displayName: "Unity" },
-];
-
-export const TOGGLE_CHOICES: DisplayChoice[] = [
-  { key: "no", displayName: "No" },
-  { key: "yes", displayName: "Yes" },
-];
-
-export const EVM_FRAMEWORK_CHOICES: DisplayChoice[] = [
-  { key: "web3", displayName: "web3.js" },
-  { key: "ethers", displayName: "ethers" },
-];
-
-export const RN_MODE_CHOICES: DisplayChoice[] = [
-  { key: "expo", displayName: "Expo" },
-  { key: "bare", displayName: "Bare React Native" },
-];
+export const ETH = "ETH";
+export const SOL = "SOL";
+export const STARKEX = "STARKEX";
+export const STARKNET = "STARKNET";
+export const MATIC = "MATIC";
+export const BNB = "BNB";
+export const AVAX = "AVAX";
+export const ARB = "ARB";
+export const OP = "OP";
+export const CRO = "CRO";
+export const ONE = "ONE";
+export const CELO = "CELO";
+export const GLMR = "GLMR";
+export const MOVR = "MOVR";
+export const KLAY = "KLAY";
+export const TEZOS = "TEZOS";
 
 export enum EVM {
-  "eth",
-  "matic",
-  "bnb",
-  "avax",
-  "arbitrum",
-  "optimism",
-  "cronos",
-  "harmony",
-  "celo",
-  "moonbeam",
-  "moonriver",
+  "ETH",
+  "MATIC",
+  "BNB",
+  "AVAX",
+  "ARB",
+  "OP",
+  "CRO",
+  "ONE",
+  "CELO",
+  "GLMR",
+  "MOVR",
+  "KLAY",
 }
+
+export enum OTHER_CHAINS {
+  "STARKEX",
+  "STARKNET",
+  "TEZOS",
+}
+
+export const CHAINS_HTML: DisplayChoice[] = [
+  { key: ETH, displayName: "Ethereum" },
+  { key: SOL, displayName: "Solana" },
+  { key: MATIC, displayName: "Polygon" },
+  { key: BNB, displayName: "BNB Chain" },
+  { key: AVAX, displayName: "Avalanche" },
+  { key: ARB, displayName: "Arbitrum" },
+  { key: OP, displayName: "Optimism" },
+  { key: CRO, displayName: "Cronos" },
+  { key: ONE, displayName: "Harmony" },
+  { key: CELO, displayName: "Celo" },
+  { key: GLMR, displayName: "Moonbeam" },
+  { key: MOVR, displayName: "Moonriver" },
+  { key: KLAY, displayName: "Klaytn" },
+];
+
+export const CHAINS_MOBILE: DisplayChoice[] = [
+  { key: ETH, displayName: "Ethereum" },
+  { key: MATIC, displayName: "Polygon" },
+  { key: BNB, displayName: "BNB Chain" },
+  { key: AVAX, displayName: "Avalanche" },
+  { key: ARB, displayName: "Arbitrum" },
+  { key: OP, displayName: "Optimism" },
+  { key: CRO, displayName: "Cronos" },
+  { key: ONE, displayName: "Harmony" },
+  { key: CELO, displayName: "Celo" },
+  { key: GLMR, displayName: "Moonbeam" },
+  { key: MOVR, displayName: "Moonriver" },
+  { key: KLAY, displayName: "Klaytn" },
+];
+
+export const CHAINS: DisplayChoice[] = [
+  ...CHAINS_HTML,
+  { key: STARKEX, displayName: "StarkEx" },
+  { key: STARKNET, displayName: "StarkNet" },
+  { key: TEZOS, displayName: "Tezos" },
+];
+
+export const WEB3 = "WEB3";
+export const ETHERS = "ETHERS";
+
+export const EVM_LIBRARY: DisplayChoice[] = [
+  { key: WEB3, displayName: "web3.js" },
+  { key: ETHERS, displayName: "ethers" },
+];
+
+// Platform choices
+
+export const REACT = "REACT";
+export const NEXT = "NEXT";
+export const VUE = "VUE";
+export const ANGULAR = "ANGULAR";
+export const HTML = "HTML";
+export const ANDROID = "ANDROID";
+export const IOS = "IOS";
+export const REACT_NATIVE = "REACT_NATIVE";
+export const FLUTTER = "FLUTTER";
+export const UNITY = "UNITY";
+export const UNREAL = "UNREAL";
+
+export const LANGS: DisplayChoice[] = [
+  { key: REACT, displayName: "React" },
+  { key: NEXT, displayName: "Next JS" },
+  { key: VUE, displayName: "Vue" },
+  { key: ANGULAR, displayName: "Angular" },
+  { key: HTML, displayName: "HTML/JS" },
+  { key: ANDROID, displayName: "Android" },
+  { key: IOS, displayName: "iOS/Swift" },
+  { key: REACT_NATIVE, displayName: "React Native" },
+  { key: FLUTTER, displayName: "Flutter" },
+  { key: UNITY, displayName: "Unity" },
+];
+
 export enum MOBILE {
-  "android",
-  "ios",
-  "react-native",
-  "flutter",
-  "unity",
+  "ANDROID",
+  "IOS",
+  "REACT_NATIVE",
+  "FLUTTER",
 }
+
+export enum GAMING {
+  "UNITY",
+  "UNREAL",
+}
+
+export const EXPO = "EXPO";
+export const BARE_RN = "BARE_RN";
+
+export const RN_MODE: DisplayChoice[] = [
+  { key: "EXPO", displayName: "Expo" },
+  { key: "BARE_RN", displayName: "Bare RN" },
+];
+
+// Auth Choices
+
+export const NONE = "NONE";
+export const GOOGLE = "GOOGLE";
+export const FACEBOOK = "FACEBOOK";
+export const DISCORD = "DISCORD";
+export const TWITCH = "TWITCH";
+export const JWT = "JWT";
+export const AUTH0 = "AUTH0";
+
+export const CUSTOM_AUTH: DisplayChoice[] = [
+  { key: NONE, displayName: "None" },
+  { key: GOOGLE, displayName: "Google" },
+  { key: FACEBOOK, displayName: "Facebook" },
+  { key: DISCORD, displayName: "Discord" },
+  { key: TWITCH, displayName: "Twitch" },
+];
+
+export const CUSTOM_AUTH_MOBILE: DisplayChoice[] = [...CUSTOM_AUTH, { key: AUTH0, displayName: "Auth0" }, { key: JWT, displayName: "JWT" }];
+
+// Misc choices
+
+export const YES = "YES";
+export const NO = "NO";
+
+export const TOGGLE: DisplayChoice[] = [
+  { key: NO, displayName: "No" },
+  { key: YES, displayName: "Yes" },
+];
+
+export const DEFAULT = "DEFAULT";
+export const OPTIONAL = "OPTIONAL";
+export const MANDATORY = "MANDATORY";
+
+export const MFA: DisplayChoice[] = [
+  { key: DEFAULT, displayName: "Default" },
+  { key: OPTIONAL, displayName: "Optional" },
+  { key: MANDATORY, displayName: "Mandatory" },
+  { key: NONE, displayName: "None" },
+];

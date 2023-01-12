@@ -1,3 +1,5 @@
+import { ETHERS, SOL, STARKEX, STARKNET, TEZOS } from "../choices";
+
 export const FILENAME_APP_HTML = "frameworks/angular/app.component.html";
 export const FILENAME_POLYFILLS = "frameworks/angular/polyfills.ts";
 export const FILENAME_TSCONFIG = "frameworks/angular/tsconfig.json";
@@ -15,20 +17,20 @@ export const FILENAME_ARGENT_ACCOUNT = "chains/starknet/ArgentAccount.json";
 export default function getFileNames(filenames, chain, evmFramework) {
   filenames.push(FILENAME_APP_TS, FILENAME_PACKAGE_JSON);
   switch (chain) {
-    case "sol":
+    case SOL:
       filenames.push(FILENAME_SOLANARPC);
       break;
-    case "starkex":
+    case STARKEX:
       filenames.push(FILENAME_STARKEXRPC);
       break;
-    case "starknet":
+    case STARKNET:
       filenames.push(FILENAME_STARKNETRPC, FILENAME_ARGENT_ACCOUNT);
       break;
-    case "tezos":
+    case TEZOS:
       filenames.push(FILENAME_TEZOSRPC);
       break;
     default:
-      filenames.push(evmFramework === "ethers" ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC);
+      filenames.push(evmFramework === ETHERS ? FILENAME_ETHERSRPC : FILENAME_WEB3RPC);
   }
   filenames.push(FILENAME_APP_HTML, FILENAME_POLYFILLS, FILENAME_TSCONFIG, FILENAME_APP_CSS);
 }

@@ -4,12 +4,11 @@ import getUpdatedFiles from "./files";
 import getSteps from "./steps";
 
 const framework = {
-  build({ filenames, files, steps, whitelabel, customAuthentication, rnWorkflowMode }) {
+  build({ chain, customAuth, mfa, rnMode, whitelabel, filenames, files, steps }) {
     const replacementAggregator = new ReplaceFileAggregator();
-
-    getUpdatedFiles(files, whitelabel, customAuthentication, rnWorkflowMode, replacementAggregator);
-    getSteps(steps, files, replacementAggregator, whitelabel, customAuthentication, rnWorkflowMode);
-    getFileNames(filenames, rnWorkflowMode);
+    getUpdatedFiles(chain, customAuth, mfa, rnMode, whitelabel, files, replacementAggregator);
+    getSteps(steps, chain, customAuth, mfa, rnMode, whitelabel, filenames, files, replacementAggregator);
+    getFileNames(filenames, rnMode);
 
     return { filenames, files, steps };
   },

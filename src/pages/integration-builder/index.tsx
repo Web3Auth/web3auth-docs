@@ -1,3 +1,8 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { MDXProvider } from "@mdx-js/react";
 import Layout from "@theme/Layout";
 import MDXComponents from "@theme/MDXComponents";
@@ -9,6 +14,7 @@ import { AiOutlineCheck, AiOutlineLink } from "react-icons/ai";
 import SEO from "../../components/SEO";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
 import builder from "./builder";
+import { NO, YES } from "./builder/choices";
 import styles from "./styles.module.css";
 
 const getWindowLocation = () => {
@@ -37,50 +43,13 @@ const getURLFromBuilderOptions = (opts: Record<string, string>, stepIndex): stri
 
 export default function IntegrationBuilderPage({ files }: { files: Record<string, any> }) {
   const [builderOptions, setBuilderOptions] = useState<Record<string, string>>(getDefaultBuilderOptions());
+  const [isLinkCopied, setLinkCopied] = useState<number>();
 
-  const onChangeOptionValue = (optionKey: string, event: ChangeEvent<HTMLInputElement>) => {
-    const el = event.target as HTMLInputElement;
-    const finalOptionValue = el.checked ? "yes" : "no";
-
-    setBuilderOptions({
-      ...builderOptions,
-      [optionKey]: finalOptionValue,
-    });
-  };
-
-  const onChangeDropdown = (optionKey: string, optionValue: string) => {
-    setBuilderOptions({
-      ...builderOptions,
-      [optionKey]: optionValue,
-    });
-  };
   const url = new URL(getWindowLocation());
   const [stepIndex, setStepIndex] = useState(parseInt(url.searchParams.get("stepIndex") || "0", 10));
 
   const integration = useMemo(() => builder.build(builderOptions, files, stepIndex), [builderOptions, files, stepIndex]);
   const [selectedFilename, setSelectedFilename] = useState(integration.filenames[0]);
-
-  const [isLinkCopied, setLinkCopied] = useState<number>();
-
-  useEffect(() => {
-    // Update selected file when either integration changed
-    setSelectedFilename(integration.steps[stepIndex].pointer.filename);
-
-    // Clear copied
-    if (isLinkCopied) {
-      clearTimeout(isLinkCopied);
-      setLinkCopied(undefined);
-    }
-    // Update query params
-    // eslint-disable-next-line no-restricted-globals
-    history.pushState({}, "", getURLFromBuilderOptions(builderOptions, stepIndex));
-  }, [builderOptions, integration, stepIndex, isLinkCopied]);
-
-  useEffect(() => {
-    if (stepIndex > 0) {
-      window.location.href = `#step-${stepIndex}`;
-    }
-  }, [stepIndex]);
 
   const onClickCopyLink = useCallback(() => {
     if (isLinkCopied) return;
@@ -95,6 +64,10 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
   const { steps } = integration;
 
   const onChangeStep = (index: number) => {
+    if (index >= steps.length) {
+      // eslint-disable-next-line no-param-reassign
+      index = steps.length - 1;
+    }
     setSelectedFilename(steps[index].pointer.filename);
     setStepIndex(index);
   };
@@ -115,6 +88,55 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
       }
     }
   };
+
+  const onChangeOptionValue = (optionKey: string, event: ChangeEvent<HTMLInputElement>) => {
+    const el = event.target as HTMLInputElement;
+    const finalOptionValue = el.checked ? YES : NO;
+
+    setBuilderOptions({
+      ...builderOptions,
+      [optionKey]: finalOptionValue,
+    });
+  };
+
+  const onChangeDropdown = (optionKey: string, optionValue: string) => {
+    setBuilderOptions({
+      ...builderOptions,
+      [optionKey]: optionValue,
+    });
+  };
+
+  useEffect(() => {
+    setStepIndex(integration.stepIndex);
+    // Update selected file when either integration changed
+    setSelectedFilename(integration.steps[integration.stepIndex].pointer.filename);
+
+    // Clear copied
+    if (isLinkCopied) {
+      clearTimeout(isLinkCopied);
+      setLinkCopied(undefined);
+    }
+
+    for (const optionKey in builderOptions) {
+      if (builder.options[optionKey]) {
+        const check = builder.options[optionKey].choices.flatMap((choice) => choice.key);
+        if (!check.includes(builderOptions[optionKey])) {
+          const option = Object.fromEntries(Object.entries(builder.options).map(([key, option]) => [key, option.default]));
+          onChangeDropdown(optionKey, option[optionKey]);
+        }
+      }
+    }
+
+    // Update query params
+    // eslint-disable-next-line no-restricted-globals
+    history.pushState({}, "", getURLFromBuilderOptions(builderOptions, stepIndex));
+  }, [builderOptions, integration, stepIndex, isLinkCopied]);
+
+  useEffect(() => {
+    if (stepIndex > 0) {
+      window.location.href = `#step-${stepIndex}`;
+    }
+  }, []);
 
   return (
     <Layout title="Integration Builder">
@@ -138,7 +160,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                 {option.type === "toggle" ? (
                   <div>
                     <label className={styles.switch}>
-                      <input type="checkbox" checked={builderOptions[key] === "yes"} onChange={(e) => onChangeOptionValue(key, e)} />
+                      <input type="checkbox" checked={builderOptions[key] === YES} onChange={(e) => onChangeOptionValue(key, e)} />
                       <span className={styles.slider} />
                     </label>
                   </div>
@@ -148,7 +170,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                       {option.choices.map(
                         (value) =>
                           value.key !== builderOptions[key] && (
-                            <li key={value.key} onClick={(e) => onChangeDropdown(key, value.key)}>
+                            <li key={value.key} onClick={() => onChangeDropdown(key, value.key)}>
                               {value.displayName}
                             </li>
                           )

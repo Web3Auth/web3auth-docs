@@ -1,11 +1,20 @@
-import { FILENAME_CONTENTVIEW, FILENAME_PODFILE, FILENAME_WEB3AUTH_PLIST } from "./filenames";
+import { NONE, YES } from "../choices";
+import { FILENAME_CONTENTVIEW, FILENAME_MAIN, FILENAME_PODFILE, FILENAME_WEB3AUTH_PLIST, FILENAME_WEB3RPC } from "./filenames";
 import STEPS from "./stepContent";
 
-export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuthentication) {
+export default function getSteps(steps, files, replacementAggregator, whitelabel, customAuth) {
   steps.push(
     {
-      ...STEPS.installationIOS,
+      ...STEPS.buildingApp,
+      pointer: replacementAggregator.highlightRange(FILENAME_MAIN, files[FILENAME_MAIN], "buildingApp"),
+    },
+    {
+      ...STEPS.RequirementsIOS,
       pointer: replacementAggregator.highlightRange(FILENAME_PODFILE, files[FILENAME_PODFILE], "installationIOS"),
+    },
+    {
+      ...STEPS.installationIOS,
+      pointer: replacementAggregator.highlightRange(FILENAME_PODFILE, files[FILENAME_PODFILE], "installationPodfile"),
     },
     {
       ...STEPS.registerApp,
@@ -13,21 +22,37 @@ export default function getSteps(steps, files, replacementAggregator, whitelabel
     },
     {
       ...STEPS.instantiate,
-      pointer: replacementAggregator.highlightRange(FILENAME_CONTENTVIEW, files[FILENAME_CONTENTVIEW], "instantiate"),
-    },
-    customAuthentication === "yes"
-      ? {
-          ...STEPS.loginWithJwt,
-          pointer: replacementAggregator.highlightRange(FILENAME_CONTENTVIEW, files[FILENAME_CONTENTVIEW], "loginWithJwt"),
-        }
-      : {
-          ...STEPS.triggeringLogin,
-          pointer: replacementAggregator.highlightRange(FILENAME_CONTENTVIEW, files[FILENAME_CONTENTVIEW], "triggeringLogin"),
-        },
-
+      pointer: replacementAggregator.highlightRange(FILENAME_MAIN, files[FILENAME_MAIN], "instantiate"),
+    }
+  );
+  if (whitelabel === YES) {
+    steps.push({
+      ...STEPS.whiteLabeling,
+      pointer: replacementAggregator.highlightRange(FILENAME_MAIN, files[FILENAME_MAIN], "whiteLabeling"),
+    });
+  }
+  if (customAuth !== NONE) {
+    steps.push({
+      ...STEPS.CustomAuthentication,
+      pointer: replacementAggregator.highlightRange(FILENAME_MAIN, files[FILENAME_MAIN], "customAuthStep"),
+    });
+  }
+  steps.push(
     {
-      ...STEPS.getUserInfo,
-      pointer: replacementAggregator.highlightRange(FILENAME_CONTENTVIEW, files[FILENAME_CONTENTVIEW], "getUserInfo"),
+      ...STEPS.multiFactorAuthentication,
+      pointer: replacementAggregator.highlightRange(FILENAME_MAIN, files[FILENAME_MAIN], "multiFactorAuthentication"),
+    },
+    {
+      ...STEPS.triggeringLogin,
+      pointer: replacementAggregator.highlightRange(FILENAME_MAIN, files[FILENAME_MAIN], "triggeringLogin"),
+    },
+    {
+      ...STEPS.evmRPCFunctions,
+      pointer: replacementAggregator.highlightRange(FILENAME_WEB3RPC, files[FILENAME_WEB3RPC], "evmRPCFunctions"),
+    },
+    {
+      ...STEPS.triggeringLogout,
+      pointer: replacementAggregator.highlightRange(FILENAME_MAIN, files[FILENAME_MAIN], "triggeringLogout"),
     }
   );
 }

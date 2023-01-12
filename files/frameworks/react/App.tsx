@@ -10,25 +10,28 @@ const clientId = "YOUR_WEB3AUTH_CLIENT_ID"; // get from https://dashboard.web3au
 // HIGHLIGHTEND-registerApp
 
 function App() {
-  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+  // REPLACE-getWeb3AuthState-
+
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
 
   useEffect(() => {
     const init = async () => {
       try {
+        // REPLACE-getConstructorCode-
 
-          // REPLACE-getConstructorCode-
+
+        // REPLACE-getOpenloginAdapter-
 
 
-          // REPLACE-getOpenloginAdapter-
+        setWeb3auth(web3auth);
 
-      setWeb3auth(web3auth);
+        // REPLACE-getInitCode-
 
-          // REPLACE-getInitCode-
 
         if (web3auth.provider) {
-          setProvider(web3auth.provider);
+            setProvider(web3auth.provider);
         };
+
       } catch (error) {
         console.error(error);
       }
@@ -37,54 +40,83 @@ function App() {
     init();
   }, []);
 
-  // HIGHLIGHTSTART-login
   const login = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      uiConsole("web3auth not initialized yet");
       return;
     }
-    const web3authProvider = await web3auth.connect();
+    // REPLACE-getLoginCode-
+
     setProvider(web3authProvider);
   };
-  // HIGHLIGHTEND-login
 
-  // HIGHLIGHTSTART-getUserInfo
+  const authenticateUser = async () => {
+    if (!web3auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    // HIGHLIGHTSTART-getWeb3AuthIdToken
+    const idToken = await web3auth.authenticateUser();
+    // HIGHLIGHTEND-getWeb3AuthIdToken
+    uiConsole(idToken);
+  };
+
   const getUserInfo = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      uiConsole("web3auth not initialized yet");
       return;
     }
+    // HIGHLIGHTSTART-getUserInfo
     const user = await web3auth.getUserInfo();
-    console.log(user);
+    // HIGHLIGHTEND-getUserInfo
+    uiConsole(user);
   };
-  // HIGHLIGHTEND-getUserInfo
 
-  // HIGHLIGHTSTART-logout
   const logout = async () => {
     if (!web3auth) {
-      console.log("web3auth not initialized yet");
+      uiConsole("web3auth not initialized yet");
       return;
     }
+    // HIGHLIGHTSTART-logout
     await web3auth.logout();
+    // HIGHLIGHTEND-logout
     setProvider(null);
   };
-  // HIGHLIGHTEND-logout
 
 // REPLACE-getRPCFunctions-
 
+
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+  }
+
   const loggedInView = (
     <>
-      <button onClick={getUserInfo} className="card">
-        Get User Info
-      </button>
-      // REPLACE-getRPCFunctionsButtons-
+      <div className="flex-container">
+        <div>
+          <button onClick={getUserInfo} className="card">
+            Get User Info
+          </button>
+        </div>
+        <div>
+          <button onClick={authenticateUser} className="card">
+            Get ID Token
+          </button>
+        </div>
+        // REPLACE-getRPCFunctionsButtons-
 
-      <button onClick={logout} className="card">
-        Log Out
-      </button>
+        <div>
+          <button onClick={logout} className="card">
+            Log Out
+          </button>
+        </div>
+      </div>
 
       <div id="console" style={{ whiteSpace: "pre-line" }}>
-        <p style={{ whiteSpace: "pre-line" }}></p>
+        <p style={{ whiteSpace: "pre-line" }}>Logged in Successfully!</p>
       </div>
     </>
   );
@@ -107,7 +139,7 @@ function App() {
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
-        <a href="https://github.com/Web3Auth/Web3Auth/tree/master/examples/react-app" target="_blank" rel="noopener noreferrer">
+        <a href="https://github.com/Web3Auth/examples" target="_blank" rel="noopener noreferrer">
           Source code
         </a>
       </footer>

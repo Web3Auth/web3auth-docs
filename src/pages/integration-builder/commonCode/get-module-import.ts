@@ -1,14 +1,18 @@
-export const getModuleImport = (
-  chain: "eth" | "sol" | "starkex" | "starknet" | "tezos",
-  isWhiteLabled: boolean,
-  isCustomAuth: boolean,
-  evmFramework: "web3" | "ethers"
-) => {
-  let code = `
+import { ETHERS, NONE, OTHER_CHAINS, SOL, STARKEX, STARKNET, TEZOS } from "../builder/choices";
+
+export const getModuleImport = (chain: string, whitelabel: boolean, customAuth: string, evmFramework: string, useModal: boolean) => {
+  let code = ``;
+  if (useModal) {
+    code += `
 // HIGHLIGHTSTART-importModules
 import { Web3Auth } from "@web3auth/modal";`;
+  } else {
+    code += `
+// HIGHLIGHTSTART-importModules
+import { Web3AuthCore } from "@web3auth/core";`;
+  }
 
-  if (isWhiteLabled || isCustomAuth || chain === "starkex" || chain === "starknet" || chain === "tezos") {
+  if (whitelabel || customAuth !== NONE || chain in OTHER_CHAINS) {
     code += `
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";`;
@@ -18,24 +22,24 @@ import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";`;
   }
 
   switch (chain) {
-    case "sol":
+    case SOL:
       code += `
 import RPC from "./solanaRPC";`;
       break;
-    case "starkex":
+    case STARKEX:
       code += `
 import RPC from "./starkexRPC";`;
       break;
-    case "starknet":
+    case STARKNET:
       code += `
 import RPC from "./starknetRPC";`;
       break;
-    case "tezos":
+    case TEZOS:
       code += `
 import RPC from "./tezosRPC";`;
       break;
     default:
-      if (evmFramework === "ethers") {
+      if (evmFramework === ETHERS) {
         code += `
 import RPC from "./ethersRPC";`;
       } else {
