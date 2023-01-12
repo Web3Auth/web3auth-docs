@@ -119,7 +119,15 @@ ID, and such verifiers are called `Single ID Verifiers`. Developers can create `
 
    :::
 
-9. Finally, click on `Create` to deploy the verifier. ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-5.png)
+9. Similarly, creare a third sub verifier for `Email Passwordless` via Auth0. Follow the above step from 5 to 8, and select `Email Passwordless` in
+   place of `Github`.
+10. Finally, click on `Create` to deploy the verifier. ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-5.png)
+
+:::info NOTE
+
+You can aggregate two or more verifiers.
+
+:::
 
 ### Example
 
@@ -132,7 +140,7 @@ const clientId = "YOUR_WEB3AUTH_CLIENT_ID";
 
 const web3auth = new Web3AuthCore({
   clientId,
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "testnet",
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x1",
@@ -149,8 +157,21 @@ const openloginAdapter = new OpenloginAdapter({
         typeOfLogin: "google", // Pass the type of login provider.
         clientId: "GOOGLE_CLIENT_ID", // Pass the Google `Client ID` here.
       },
+      // Email Password Login via Auth0
+      emailpasswordless: {
+        verifier: "YOUR_AGGREGATE_VERIFIER_NAME", // Pass the Verifier name here. eg. w3a-aggregate-verifier
+        verifierSubIdentifier: "YOUR_SECOND_SUB_VERIFIER_NAME", // Pass the Sub-Verifier here. eg w3a-email-passwordless
+        typeOfLogin: "jwt", // Pass the type of login provider. For Auth0, it's jwt and not Auth0.
+        clientId: "AUTH0_CLIENT_ID", // Pass the `Client ID` of your Auth0 Application.
+        jwtParameters: {
+          domain: "YOUR_AUTH0_DOMAIN", // Pass the Auth0 Domain here, eg. https://shahbaz-torus.us.auth0.com
+          // This corresponds to the field inside jwt which must be used to uniquely identify the user.
+          verifierIdField: "email", // This is mapped b/w google and github logins.
+          isVerifierIdCaseSensitive: false,
+        },
+      },
       // GitHub Login via Auth0
-      jwt: {
+      github: {
         verifier: "YOUR_AGGREGATE_VERIFIER_NAME", // Pass the Verifier name here. eg. w3a-aggregate-verifier
         verifierSubIdentifier: "YOUR_SECOND_SUB_VERIFIER_NAME", // Pass the Sub-Verifier here. eg w3a-auth0
         typeOfLogin: "jwt", // Pass the type of login provider. For Auth0, it's jwt and not Auth0.
@@ -175,8 +196,13 @@ const web3authProvider = await web3auth.connectTo("openlogin", {
   loginProvider: "google",
 });
 
-// // When user clicks Google button, use this to Login with GitHub via Auth0
+// When user clicks Email Passwordless button, use this to Login with Email Passwordless via Auth0
 const web3authProvider = await web3auth.connectTo("openlogin", {
-  loginProvider: "jwt",
+  loginProvider: "emailpasswordless",
+});
+
+// When user clicks GitHub button, use this to Login with GitHub via Auth0
+const web3authProvider = await web3auth.connectTo("openlogin", {
+  loginProvider: "github",
 });
 ```
