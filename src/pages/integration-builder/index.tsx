@@ -192,13 +192,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
               onClick={onClickCopyLink}
               type="button"
             >
-              {isLinkCopied ? (
-                <>
-                  Copied <AiOutlineCheck aria-hidden style={{ marginLeft: "4px" }} />
-                </>
-              ) : (
-                <AiOutlineLink size="1.5em" aria-hidden />
-              )}
+              {isLinkCopied ? <AiOutlineCheck size="1.5em" aria-hidden /> : <AiOutlineLink size="1.5em" aria-hidden />}
             </button>
           </div>
         </div>
