@@ -1,8 +1,24 @@
-import { AUTH0, DISCORD, FACEBOOK, GOOGLE, JWT, TWITCH } from "../../choices";
+import { AQUA, AUTH0, CELESTE, CYAN, DISCORD, FACEBOOK, GOOGLE, JWT, MAINNET, TWITCH } from "../../choices";
 
-export const getConstructorCodeAndroid = (isWhitelabeled: boolean, customAuth: string) => {
+export const getConstructorCodeAndroid = (isWhitelabeled: boolean, customAuth: string, web3AuthNetwork: string) => {
   let whitelabelCode = "";
   let customAuthCode = "";
+  let network = `
+                network = Web3Auth.Network.TESTNET, // MAINNET, TESTNET, AQUA, CELESTE or CYAN`;
+
+  if (web3AuthNetwork === MAINNET) {
+    network = `
+                network = Web3Auth.Network.MAINNET, // MAINNET, TESTNET, AQUA, CELESTE or CYAN`;
+  } else if (web3AuthNetwork === CYAN) {
+    network = `
+                network = Web3Auth.Network.CYAN, // MAINNET, TESTNET, AQUA, CELESTE or CYAN`;
+  } else if (web3AuthNetwork === AQUA) {
+    network = `
+                network = Web3Auth.Network.AQUA, // MAINNET, TESTNET, AQUA, CELESTE or CYAN`;
+  } else if (web3AuthNetwork === CELESTE) {
+    network = `
+                network = Web3Auth.Network.CELESTE, // MAINNET, TESTNET, AQUA, CELESTE or CYAN`;
+  }
   if (isWhitelabeled) {
     whitelabelCode = `
                 //HIGHLIGHTSTART-whiteLabeling
@@ -82,8 +98,7 @@ export const getConstructorCodeAndroid = (isWhitelabeled: boolean, customAuth: s
             Web3AuthOptions(
                 context = this,
                 clientId = getString(R.string.web3auth_project_id),
-                network = Web3Auth.Network.TESTNET, // MAINNET, TESTNET, AQUA, CELESTE or CYAN
-                redirectUrl = Uri.parse("com.web3auth.app://auth"),${whitelabelCode}${customAuthCode}
+                redirectUrl = Uri.parse("com.web3auth.app://auth"),${network}${whitelabelCode}${customAuthCode}
             )
         )`;
 };

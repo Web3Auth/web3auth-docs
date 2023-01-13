@@ -3,10 +3,10 @@ import { YES } from "../choices";
 import { FILENAME_INDEX_HTML } from "./filenames";
 import { getConstructorCode, getScriptImport } from "./replacementCode";
 
-export default function getUpdatedFiles(files, chain, evmFramework, customAuth, mfa, whitelabel, useModal, replacementAggregator) {
+export default function getUpdatedFiles(files, chain, evmFramework, customAuth, mfa, whitelabel, useModal, web3AuthNetwork, replacementAggregator) {
   const newFiles = files;
 
-  const ConstructorCode = getConstructorCode(chain, whitelabel === YES, useModal === YES);
+  const ConstructorCode = getConstructorCode(chain, whitelabel === YES, useModal === YES, web3AuthNetwork);
   newFiles[FILENAME_INDEX_HTML] = replacementAggregator.replaceFileVariable(
     files[FILENAME_INDEX_HTML],
     FILENAME_INDEX_HTML,

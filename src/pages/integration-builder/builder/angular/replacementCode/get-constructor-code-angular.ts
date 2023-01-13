@@ -1,7 +1,7 @@
 import { chainIdMap, rpcTargetMap } from "../../../commonCode";
-import { OTHER_CHAINS, SOL } from "../../choices";
+import { AQUA, CELESTE, CYAN, MAINNET, OTHER_CHAINS, SOL } from "../../choices";
 
-export const getConstructorCodeAngular = (chain: string, whitelabel: boolean, useModal: boolean) => {
+export const getConstructorCodeAngular = (chain: string, whitelabel: boolean, useModal: boolean, web3AuthNetwork: string) => {
   let chainDetails = ``;
 
   if (chain === SOL) {
@@ -17,6 +17,23 @@ export const getConstructorCodeAngular = (chain: string, whitelabel: boolean, us
           chainNamespace: CHAIN_NAMESPACES.EIP155,
           chainId: "${chainIdMap[chain]}",
           rpcTarget: "${rpcTargetMap[chain]}", // This is the public RPC we have added, please pass on your own endpoint while creating an app`;
+  }
+
+  let network = `
+          web3AuthNetwork: "testnet", // mainnet, aqua, celeste, cyan or testnet`;
+
+  if (web3AuthNetwork === MAINNET) {
+    network = `
+          web3AuthNetwork: "mainnet", // mainnet, aqua, celeste, cyan or testnet`;
+  } else if (web3AuthNetwork === CYAN) {
+    network = `
+          web3AuthNetwork: "cyan", // mainnet, aqua, celeste, cyan or testnet`;
+  } else if (web3AuthNetwork === AQUA) {
+    network = `
+          web3AuthNetwork: "aqua", // mainnet, aqua, celeste, cyan or testnet`;
+  } else if (web3AuthNetwork === CELESTE) {
+    network = `
+          web3AuthNetwork: "celeste", // mainnet, aqua, celeste, cyan or testnet`;
   }
 
   if (useModal) {
@@ -36,8 +53,7 @@ export const getConstructorCodeAngular = (chain: string, whitelabel: boolean, us
     const code = `
         // HIGHLIGHTSTART-instantiateSDK
         this.web3auth = new Web3Auth({
-          clientId,
-          web3AuthNetwork: "cyan", // mainnet, aqua, celeste, cyan or testnet
+          clientId, ${network}
           chainConfig: {${chainDetails}
           },${uiConfig}
         });
@@ -50,8 +66,7 @@ export const getConstructorCodeAngular = (chain: string, whitelabel: boolean, us
   const code = `
         // HIGHLIGHTSTART-instantiateSDK
         this.web3auth = new Web3AuthCore({
-          clientId,
-          web3AuthNetwork: "cyan", // mainnet, aqua, celeste, cyan or testnet
+          clientId, ${network}
           chainConfig: {${chainDetails}
           },
         });

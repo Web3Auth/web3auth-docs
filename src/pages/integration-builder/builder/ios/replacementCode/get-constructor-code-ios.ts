@@ -1,8 +1,24 @@
-import { AUTH0, DISCORD, FACEBOOK, GOOGLE, JWT, TWITCH } from "../../choices";
+import { AQUA, AUTH0, CELESTE, CYAN, DISCORD, FACEBOOK, GOOGLE, JWT, MAINNET, TWITCH } from "../../choices";
 
-export const getConstructorCodeIOS = (isWhitelabeled: boolean, customAuth: string) => {
+export const getConstructorCodeIOS = (isWhitelabeled: boolean, customAuth: string, web3AuthNetwork: string) => {
   let whitelabelCode = "";
   let customAuthCode = "";
+  let network = `
+                network: .testnet, // mainnet, testnet, cyan, aqua, or celeste`;
+
+  if (web3AuthNetwork === MAINNET) {
+    network = `
+                network: .mainnet, // mainnet, testnet, cyan, aqua, or celeste`;
+  } else if (web3AuthNetwork === CYAN) {
+    network = `
+                network: .cyan, // mainnet, testnet, cyan, aqua, or celeste`;
+  } else if (web3AuthNetwork === AQUA) {
+    network = `
+                network: .aqua, // mainnet, testnet, cyan, aqua, or celeste`;
+  } else if (web3AuthNetwork === CELESTE) {
+    network = `
+                network: .celeste, // mainnet, testnet, cyan, aqua, or celeste`;
+  }
   if (isWhitelabeled) {
     whitelabelCode = `
                 //HIGHLIGHTSTART-whiteLabeling
@@ -90,9 +106,7 @@ export const getConstructorCodeIOS = (isWhitelabeled: boolean, customAuth: strin
   return `
         web3Auth = Web3Auth(
             W3AInitParams(
-                clientId = clientId,
-                network = .cyan , // mainnet, testnet, cyan, aqua, or celeste
-                ${whitelabelCode}${customAuthCode}
+                clientId = clientId,${network}${whitelabelCode}${customAuthCode}
             )
         )`;
 };

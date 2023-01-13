@@ -3,10 +3,10 @@ import { YES } from "../choices";
 import { FILENAME_MAIN, FILENAME_WEB3RPC } from "./filenames";
 import { getConstructorCodeIOS, getEVMProvider, getLoginCodeIOS } from "./replacementCode";
 
-export default function getUpdatedFiles(chain, files, whitelabel, customAuth, mfa, replacementAggregator) {
+export default function getUpdatedFiles(chain, files, whitelabel, customAuth, mfa, web3AuthNetwork, replacementAggregator) {
   const newFiles = files;
 
-  const ConstructorCodeIOS = getConstructorCodeIOS(whitelabel === YES, customAuth);
+  const ConstructorCodeIOS = getConstructorCodeIOS(whitelabel === YES, customAuth, web3AuthNetwork);
   newFiles[FILENAME_MAIN] = replacementAggregator.replaceFileVariable(
     files[FILENAME_MAIN],
     FILENAME_MAIN,

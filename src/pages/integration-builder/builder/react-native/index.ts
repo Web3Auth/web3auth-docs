@@ -4,9 +4,9 @@ import getUpdatedFiles from "./files";
 import getSteps from "./steps";
 
 const framework = {
-  build({ chain, customAuth, mfa, rnMode, whitelabel, filenames, files, steps }) {
+  build({ chain, customAuth, mfa, rnMode, whitelabel, web3AuthNetwork, filenames, files, steps }) {
     const replacementAggregator = new ReplaceFileAggregator();
-    getUpdatedFiles(chain, customAuth, mfa, rnMode, whitelabel, files, replacementAggregator);
+    getUpdatedFiles(chain, customAuth, mfa, rnMode, whitelabel, web3AuthNetwork, files, replacementAggregator);
     getSteps(steps, chain, customAuth, mfa, rnMode, whitelabel, filenames, files, replacementAggregator);
     getFileNames(filenames, rnMode);
 

@@ -3,10 +3,10 @@ import { YES } from "../choices";
 import { FILENAME_APP_HTML, FILENAME_APP_TS, FILENAME_PACKAGE_JSON } from "./filenames";
 import { getConstructorCodeAngular, getRPCFunctionsAngular, getRPCFunctionsButtonsAngular, getWeb3AuthStateAngular } from "./replacementCode";
 
-export default function getUpdatedFiles(files, chain, evmFramework, customAuth, mfa, whitelabel, useModal, replacementAggregator) {
+export default function getUpdatedFiles(files, chain, evmFramework, customAuth, mfa, whitelabel, useModal, web3AuthNetwork, replacementAggregator) {
   const newFiles = files;
 
-  const ConstructorCodeAngular = getConstructorCodeAngular(chain, whitelabel === YES, useModal === YES);
+  const ConstructorCodeAngular = getConstructorCodeAngular(chain, whitelabel === YES, useModal === YES, web3AuthNetwork);
   newFiles[FILENAME_APP_TS] = replacementAggregator.replaceFileVariable(
     files[FILENAME_APP_TS],
     FILENAME_APP_TS,
