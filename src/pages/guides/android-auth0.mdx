@@ -1,39 +1,42 @@
 ---
-title: Using Web3Auth Android SDK
-image: "contents/guides/banners/android.png"
-description: Learn how to use Web3Auth Android SDK in your Android application
+title: Using Auth0 with Web3Auth Android SDK
+image: "contents/guides/banners/android-auth0.png"
+description: Learn how to use Web3Auth Android SDK in your Android application with Auth0.
 type: guide
-tags: [mobile, android, whitelabel, custom authentication, dapp share]
-date: 12th Aug 2022
+tags: [mobile, android, auth0, whitelabel, custom authentication, dapp share]
+date: 17th Jan 2023
 author: Web3Auth Team
-order: 7
+order: 13
 ---
 
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
 import AndroidResponse from "@site/src/common/sdk/android/_response.mdx";
 import SEO from "@site/src/components/SEO";
+import ImageEmailVerifer from "@site/static/contents/guides/auth0/auth0-email-verifier.png";
+import ImageSMSVerifer from "@site/static/contents/guides/auth0/auth0-sms-verifier.png";
+import ImageVerifer from "@site/static/contents/guides/auth0/auth0-w3adashboard-03.png";
 
 <SEO
-  title="Using Web3Auth Android SDK"
-  description="Learn how to use Web3Auth's Android SDK in your application"
-  image="https://web3auth.io/docs/contents/guides/banners/android.png"
+  title="Using Auth0 with Web3Auth Android SDK"
+  description="Learn how to use Web3Auth Android SDK in your Android application with Auth0."
+  image="https://web3auth.io/docs/contents/guides/banners/android-auth0.png"
   slug="/guides/android"
 />
 
-This guide will cover the basics of how to use the Web3Auth Android SDK in your Android application.
+This guide will cover the basics of how to use the Web3Auth Android SDK in your Android application with Auth0.
 
-**Demo APK:** [Download](https://github.com/Web3Auth/examples/blob/main/android/android-example/app-debug.apk)
+**Demo APK:** [Download](https://github.com/Web3Auth/examples/blob/main/android/android-auth0-example/app-debug.apk)
 
-Repository: https://github.com/Web3Auth/examples/raw/main/android/android-example
+Repository: https://github.com/Web3Auth/examples/raw/main/android/android-auth0-example
 
-**[Live Demo](https://w3a.link/android-example)**
+**[Live Demo](https://w3a.link/android-auth0-example)**
 
 ## Quick Start
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd android/android-example
+cd android/android-auth0-example
 # Open in Android Studio
 ```
 
@@ -45,7 +48,7 @@ When integrating Web3Auth Android SDK with Social Login the flow looks something
 
 ![Web3Auth Core - Social Login Flow](/images/implicit-flow.svg)
 
-- When a user logs in with `Google`, Google sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
+- When a user logs in with `Auth0`, Auth0 sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
 
 - Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
   easy onboarding for your user to the application.
@@ -58,17 +61,93 @@ When integrating Web3Auth Android SDK with Social Login the flow looks something
 
 - Android API version 21 or newer.
 
-## Setup
+- Create an Auth0 tenant and configure a Single Page Web Application (SPA for Web) or Native (for Mobile) from
+  [Auth0 Console](https://manage.auth0.com/).
+
+## Setup your Auth0 Tenant
 
 ---
 
-### Setup your Web3Auth Dashboard
+- Add the following URLs for your app to the Allowed Web Origins field when configuring your Auth0 Application.
+
+  - Additional to your own URLs for the application, please add
+    - [https://beta.openlogin.com/auth](https://beta.openlogin.com/auth) (for Web3Auth testnet used in demo applications) and
+    - [https://app.openlogin.com/auth](https://app.openlogin.com/auth) (for Web3Auth mainnet used in production applications).
+    - [https://cyan.openlogin.com/auth](https://cyan.openlogin.com/auth) (for Web3Auth `cyan` mainnet used in production applications).
+
+  ![Add Callback URL to Auth0 Dashboard](/contents/guides/auth0/auth0-callback-url.png)
+
+- You will require `domain` and `clientId` of the newly created application which you can copy from [Auth0 Console](https://manage.auth0.com/).
+  ![Domain and Client ID from Auth0 Dashboard](/contents/guides/auth0/auth0-guide-clientid.png)
+
+### Enable Social login
+
+- Enable `Google` or other social provider on the `Authentication > Social` page of your Auth0 Dashboard.
+  ![Auth0 Dashboard to enable Social logins](/contents/guides/auth0/auth0-social-logins.png)
+- Vist https://auth0.com/learn/social-login to learn more.
+
+### Enable SMS Passwordless
+
+:::note Optional
+
+If you want to implement SMS Passwordless, then this section is for you. Else you can skip this.
+
+:::
+
+- Enable `SMS` on the `Authentication > Passwordless` page of your Auth0 Dashboard.
+  ![Auth0 Dashboard to enable SMS Passwordless Option](/contents/guides/auth0/auth0-passwordless.png)
+- Under `Settings` tab, add your `Twilio SID` and `Twilio AuthToken`.
+  ![Auth0 Dashboard to enable SMS Passwordless | Setup](/contents/guides/auth0/auth0-sms-passwordless-1.png)
+- Also, update the `From` number on the same page, and click on the `Save` button.
+- Next, enable your application under `Applications` tab, and click on the `Save` button.
+  ![Auth0 Dashboard to enable SMS Passwordless | Enable App](/contents/guides/auth0/auth0-sms-passwordless-2.png)
+- You can test sending a SMS from the `Try` tab. Once, a SMS comes with OTP, it means it has been successfully configured.
+
+##### Update Lockscreen for SMS Passwordless
+
+:::info update-lock-screen
+
+If you're to use SMS Passwordless, please
+**[visit here to setup the Lock Screen of Auth0](https://auth0.com/docs/authenticate/passwordless/implement-login/universal-login)** from your Auth0
+Dashboard.
+
+:::
+
+### Enable Email Passwordless
+
+:::note Optional
+
+If you want to implement Email Passwordless, then this section is for you. Else you can skip this.
+
+:::
+
+- Enable `Email` on the `Authentication > Passwordless` page of your Auth0 Dashboard.
+  ![Auth0 Dashboard to enable Email Passwordless Option](/contents/guides/auth0/auth0-passwordless.png)
+- Under `Settings` tab, update `From` and `Subject` based on your need and click on the `Save` button.
+  ![Auth0 Dashboard to enable Email Passwordless | Setup](/contents/guides/auth0/auth0-email-passwordless-1.png)
+- Next, enable your application under `Applications` tab, and click on the `Save` button.
+  ![Auth0 Dashboard to enable Email Passwordless | Enable App](/contents/guides/auth0/auth0-email-passwordless-2.png)
+- You can test sending an Email from the `Try` tab. Once, an Email comes with OTP/Link, it means it has been successfully configured.
+
+##### Update Lockscreen for Email Passwordless
+
+:::info update-lock-screen
+
+If you're to use Email Passwordless, please
+**[visit here to setup the Lock Screen of Auth0](https://auth0.com/docs/authenticate/passwordless/implement-login/universal-login)** from your Auth0
+Dashboard.
+
+:::
+
+## Setup your Web3Auth Dashboard
+
+---
 
 <SetupWeb3AuthDashboard />
 
 - Add `{YOUR_APP_PACKAGE_NAME}://auth` in the **Whitelist URL** field of the Web3Auth Dashboard.
 
-### Configure Deep Link
+#### Configure Deep Link
 
 Open your app's `AndroidManifest.xml` file and add the following deep link intent filter to your sign-in activity:
 
@@ -93,6 +172,66 @@ Make sure your sign-in activity launchMode is set to **singleTop** in your `Andr
   <!-- ... -->
 </activity>
 ```
+
+### Create Social Verifiers
+
+- Create a Verifier from the **Custom Auth** Section of the [Developer Dashboard](https://dashboard.web3auth.io/) with the following configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. auth0-project`
+  - Select `Auth0` from the **Login Provider**.
+  - Choose your Authentication Type from `eg. Google, Twitter, Github etc..` to be the Auth provider.
+  - Paste the `Client ID` and `Auth0 Domain` from the Auth0 SPA you created in the above steps. This will be used to validate the JWT token issued by
+    Auth0.
+  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once
+    it's complete.
+    <img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} alt="Create Social Verifier" src={ImageVerifer} />
+
+  > You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+
+### Create SMS Passwordless Verifier
+
+:::note Optional
+
+If you want to implement SMS Passwordless, then this section is for you. Else you can skip this.
+
+:::
+
+- Create a Verifier from the **Custom Auth** Section of the [Developer Dashboard](https://dashboard.web3auth.io/) with the following configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. auth0-sms-passwordless`
+  - Select `Custom` from the **Login Provider**.
+  - Choose `Custom` for the `JWT Verifier ID` and type `name`.
+  - Enter `https://{YOUR-DOMAIN}.auth0.com/.well-known/jwks.json` as your `JWKS Endpoint`. This will be used to validate the JWT token issued by
+    Auth0.
+  - JWT validation fields:
+    - iss: `https://{YOUR-DOMAIN}.auth0.com`
+    - aud: `{AUTH0-CLIENT-ID}`
+  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once
+    it's complete.
+    <img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} alt="Create SMS Passwordless Verifier" src={ImageSMSVerifer} />
+
+  > You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+
+### Create Email Passwordless Verifier
+
+:::note Optional
+
+If you want to implement Email Passwordless, then this section is for you. Else you can skip this.
+
+:::
+
+- Create a Verifier from the **Custom Auth** Section of the [Developer Dashboard](https://dashboard.web3auth.io/) with the following configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. auth0-email-passwordless`
+  - Select `Auth0` from the **Login Provider**.
+  - Choose your Authentication Type as `Passwordless` to use Auth0's Email Passwordless.
+  - Paste the `Client ID` and `Auth0 Domain` from the Auth0 SPA you created in the above steps. This will be used to validate the JWT token issued by
+    Auth0.
+  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once
+    it's complete.
+    <img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} alt="Create Email Passwordless Verifier" src={ImageEmailVerifer} />
+
+  > You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
 
 ## Using the Web3Auth SDK
 
@@ -199,8 +338,8 @@ button.
 
 ```kotlin
 private fun signIn() {
-  val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
-  val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider))
+  val selectedLoginProvider = Provider.JWT   // For Auth0, we use JWT, not AUTH0
+  val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(domain = "https://shahbaz-torus.us.auth0.com", verifierIdField = "sub")))
 
   loginCompletableFuture.whenComplete { loginResponse, error ->
     if (error == null) {
@@ -337,11 +476,12 @@ sendTransactionButton.setOnClickListener { sendTransaction() }
 ## Example code
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth Android Example](https://github.com/Web3Auth/examples/tree/main/android/android-example). Check it out and try running it locally yourself!
+[Web3Auth Android Auth0 Example](https://github.com/Web3Auth/examples/tree/main/android/android-auth0-example). Check it out and try running it
+locally yourself!
 
 Also, checkout other examples:
 
-- [Using Auth0 Custom Authentication](https://github.com/Web3Auth/examples/tree/main/android/android-auth0-example)
+- [Using Web3Auth Android SDK](https://github.com/Web3Auth/examples/tree/main/android/android-example)
 - [Using Custom JWT (via Firebase)](https://github.com/Web3Auth/examples/tree/main/android/android-firebase-example)
 
 ## Questions?
