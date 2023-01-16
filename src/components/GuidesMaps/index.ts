@@ -39,7 +39,7 @@ export const integrationBuilderMap = [
     date: "25th May 2022",
     author: "Web3Auth Team",
     order: 1,
-    link: "/integration-builder?lang=react&chain=eth&customAuthentication=no&whitelabel=no",
+    link: "/integration-builder?lang=REACT",
   },
   {
     title: "How to Implement Web3Auth in a Next.js Application",
@@ -50,7 +50,7 @@ export const integrationBuilderMap = [
     date: "25th May 2022",
     author: "Web3Auth Team",
     order: 1,
-    link: "/integration-builder?lang=next&chain=eth&customAuthentication=no&whitelabel=no",
+    link: "/integration-builder?lang=NEXT",
   },
   {
     title: "How to Implement Web3Auth in a Angular Application",
@@ -61,7 +61,7 @@ export const integrationBuilderMap = [
     date: "25th May 2022",
     author: "Web3Auth Team",
     order: 1,
-    link: "/integration-builder?lang=angular&chain=eth&customAuthentication=no&whitelabel=no",
+    link: "/integration-builder?lang=ANGULAR",
   },
 
   {
@@ -73,7 +73,7 @@ export const integrationBuilderMap = [
     date: "25th May 2022",
     author: "Web3Auth Team",
     order: 1,
-    link: "/integration-builder?lang=html&chain=eth&customAuthentication=no&whitelabel=no",
+    link: "/integration-builder?lang=HTML",
   },
 
   {
@@ -85,7 +85,7 @@ export const integrationBuilderMap = [
     date: "25th May 2022",
     author: "Web3Auth Team",
     order: 1,
-    link: "/integration-builder?lang=vue&chain=eth&customAuthentication=no&whitelabel=no",
+    link: "/integration-builder?lang=VUE",
   },
 
   {
@@ -97,7 +97,7 @@ export const integrationBuilderMap = [
     date: "25th May 2022",
     author: "Web3Auth Team",
     order: 1,
-    link: "/integration-builder?lang=android&chain=eth&customAuthentication=no&whitelabel=no",
+    link: "/integration-builder?lang=ANDROID",
   },
 
   {
@@ -109,7 +109,7 @@ export const integrationBuilderMap = [
     date: "25th May 2022",
     author: "Web3Auth Team",
     order: 1,
-    link: "/integration-builder?lang=ios&chain=eth&customAuthentication=no&whitelabel=no",
+    link: "/integration-builder?lang=IOS",
   },
 
   {
@@ -121,7 +121,7 @@ export const integrationBuilderMap = [
     date: "25th May 2022",
     author: "Web3Auth Team",
     order: 1,
-    link: "/integration-builder?lang=flutter&chain=eth&customAuthentication=no&whitelabel=no",
+    link: "/integration-builder?lang=FLUTTER",
   },
 
   {
@@ -133,7 +133,7 @@ export const integrationBuilderMap = [
     date: "25th May 2022",
     author: "Web3Auth Team",
     order: 1,
-    link: "/integration-builder?lang=react-native&chain=eth&customAuthentication=no&whitelabel=no",
+    link: "/integration-builder?lang=REACT_NATIVE",
   },
 ];
 
