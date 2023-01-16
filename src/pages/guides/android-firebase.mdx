@@ -293,35 +293,35 @@ private fun signIn() {
   // Initialize Firebase Auth
   auth = Firebase.auth
   auth.signInWithEmailAndPassword("android@firebase.com", "Android@Web3Auth")
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithEmail:success")
-                    val user = auth.currentUser
-                    user!!.getIdToken(true).addOnSuccessListener { result ->
-                        val idToken = result.token
+    .addOnCompleteListener(this) { task ->
+        if (task.isSuccessful) {
+            // Sign in success, update UI with the signed-in user's information
+            Log.d(TAG, "signInWithEmail:success")
+            val user = auth.currentUser
+            user!!.getIdToken(true).addOnSuccessListener { result ->
+                val idToken = result.token
 
-                        Log.d(TAG, "GetTokenResult result = $idToken")
-                        val selectedLoginProvider = Provider.JWT
-                        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(domain = "firebase", id_token = idToken)))
+                Log.d(TAG, "GetTokenResult result = $idToken")
+                val selectedLoginProvider = Provider.JWT
+                val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(domain = "firebase", id_token = idToken)))
 
-                        loginCompletableFuture.whenComplete { loginResponse, error ->
-                            if (error == null) {
-                                println(loginResponse)
-                                reRender(loginResponse)
-                            } else {
-                                Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong" )
-                            }
-                        }
+                loginCompletableFuture.whenComplete { loginResponse, error ->
+                    if (error == null) {
+                        println(loginResponse)
+                        reRender(loginResponse)
+                    } else {
+                        Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong" )
                     }
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    Toast.makeText(baseContext, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
-
                 }
             }
+        } else {
+            // If sign in fails, display a message to the user.
+            Log.w(TAG, "signInWithEmail:failure", task.exception)
+            Toast.makeText(baseContext, "Authentication failed.",
+                Toast.LENGTH_SHORT).show()
+
+        }
+    }
 }
 ```
 
