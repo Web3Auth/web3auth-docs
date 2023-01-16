@@ -21,7 +21,7 @@ import ImageVerifer from "@site/static/contents/guides/auth0/auth0-w3adashboard-
   title="Using Auth0 with Web3Auth Android SDK"
   description="Learn how to use Web3Auth Android SDK in your Android application with Auth0."
   image="https://web3auth.io/docs/contents/guides/banners/android-auth0.png"
-  slug="/guides/android"
+  slug="/guides/android-auth0"
 />
 
 This guide will cover the basics of how to use the Web3Auth Android SDK in your Android application with Auth0.
@@ -299,6 +299,13 @@ web3Auth = Web3Auth(
     clientId = getString(R.string.web3auth_project_id), // pass over your Web3Auth Client ID from Developer Dashboard
     network = Web3Auth.Network.MAINNET, // pass over the network you want to use (MAINNET, TESTNET, CYAN, AQUA or CELESTE)
     redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"), // your app's redirect URL
+    loginConfig = hashMapOf("jwt" to LoginConfigItem(
+        verifier = "web3auth-auth0-demo",
+        typeOfLogin = TypeOfLogin.JWT,
+        name = "Auth0 Login",
+        clientId = getString(R.string.web3auth_auth0_client_id)
+        )
+    )
   )
 )
 
