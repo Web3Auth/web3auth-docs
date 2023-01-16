@@ -1,5 +1,5 @@
 // HIGHLIGHTSTART-buildingApp
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -38,7 +38,6 @@ export default function App() {
       // HIGHLIGHTSTART-instantiate
       const web3auth = new Web3Auth(WebBrowser, {
         clientId,
-        network: OPENLOGIN_NETWORK.TESTNET, // or other networks
         // REPLACE-getConstructorCode-
 
       });
@@ -88,7 +87,7 @@ export default function App() {
   };
 
   const uiConsole = (...args) => {
-    setConsole(JSON.stringify(args || {}, null, 2)+ "\n\n\n\n" + console);
+    setConsole(JSON.stringify(args || {}, null, 2) + "\n\n\n\n" + console);
   };
 
   const loggedInView = (

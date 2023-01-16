@@ -18,6 +18,7 @@ import {
   REACT_NATIVE,
   RN_MODE,
   TOGGLE,
+  WEB3AUTH_NETWORK,
   YES,
 } from "./choices";
 import flutter from "./flutter";
@@ -91,11 +92,11 @@ const builder: IntegrationBuilder = {
       type: "toggle",
       choices: TOGGLE,
     },
-    sessionManagement: {
-      displayName: "Session Management",
-      default: TOGGLE[0].key,
-      type: "toggle",
-      choices: TOGGLE,
+    web3AuthNetwork: {
+      displayName: "Web3Auth Network",
+      default: WEB3AUTH_NETWORK[0].key,
+      type: "dropdown",
+      choices: WEB3AUTH_NETWORK,
     },
     rnMode: {
       displayName: "Workflow",
@@ -122,6 +123,31 @@ const builder: IntegrationBuilder = {
         choices: LANGS,
       },
     };
+
+    if (!(finalValues.lang in MOBILE || finalValues.lang in GAMING)) {
+      this.options = {
+        ...this.options,
+        useModal: {
+          displayName: "Use W3A Modal",
+          default: TOGGLE[0].key,
+          type: "toggle",
+          choices: TOGGLE,
+        },
+      };
+    }
+
+    // React Native Workflow
+    if (finalValues.lang === REACT_NATIVE) {
+      this.options = {
+        ...this.options,
+        rnMode: {
+          displayName: "Workflow",
+          default: RN_MODE[0].key,
+          type: "dropdown",
+          choices: RN_MODE,
+        },
+      };
+    }
 
     // Blockchain
     if (finalValues.lang === HTML) {
@@ -165,19 +191,6 @@ const builder: IntegrationBuilder = {
           default: EVM_LIBRARY[0].key,
           type: "dropdown",
           choices: EVM_LIBRARY,
-        },
-      };
-    }
-
-    // React Native Workflow
-    if (finalValues.lang === REACT_NATIVE) {
-      this.options = {
-        ...this.options,
-        rnMode: {
-          displayName: "Workflow",
-          default: RN_MODE[0].key,
-          type: "dropdown",
-          choices: RN_MODE,
         },
       };
     }
@@ -230,31 +243,13 @@ const builder: IntegrationBuilder = {
         type: "toggle",
         choices: TOGGLE,
       },
+      web3AuthNetwork: {
+        displayName: "Web3Auth Network",
+        default: WEB3AUTH_NETWORK[0].key,
+        type: "dropdown",
+        choices: WEB3AUTH_NETWORK,
+      },
     };
-
-    if (!(finalValues.lang in MOBILE || finalValues.lang in GAMING)) {
-      this.options = {
-        ...this.options,
-        useModal: {
-          displayName: "Use W3A Modal",
-          default: TOGGLE[0].key,
-          type: "toggle",
-          choices: TOGGLE,
-        },
-      };
-    }
-
-    if (finalValues.lang in MOBILE && finalValues.lang !== REACT_NATIVE) {
-      this.options = {
-        ...this.options,
-        // sessionManagement: {
-        //   displayName: "Session Management",
-        //   default: TOGGLE[0].key,
-        //   type: "toggle",
-        //   choices: TOGGLE,
-        // },
-      };
-    }
 
     frameworks[finalValues.lang].build({ ...finalValues, filenames, files: newFiles, steps, chain: finalValues.chain });
 

@@ -29,6 +29,7 @@ const getLanguage = (filename: string): string => {
   if (ext === "gradle") return "language-groovy";
   if (ext === "kt") return "language-kotlin";
   if (ext === "plist") return "language-xml";
+  if (ext === "yaml") return "language-yaml";
   if (ext === "") return "language-shell";
   return undefined;
 };

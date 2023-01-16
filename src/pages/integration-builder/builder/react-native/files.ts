@@ -3,10 +3,10 @@ import { YES } from "../choices";
 import { FILENAME_APP_TSX, FILENAME_ETHERS_JS } from "./filenames";
 import { getConstructorCodeRN, getEVMProvider, getLoginCodeRN, getModuleImportRN, getResolvedRedirectUrl } from "./replacementCode";
 
-export default function getUpdatedFiles(chain, customAuth, mfa, rnMode, whitelabel, files, replacementAggregator) {
+export default function getUpdatedFiles(chain, customAuth, mfa, rnMode, whitelabel, web3AuthNetwork, files, replacementAggregator) {
   const newFiles = files;
 
-  const ConstructorCodeRN = getConstructorCodeRN(whitelabel === YES, customAuth);
+  const ConstructorCodeRN = getConstructorCodeRN(whitelabel === YES, customAuth, web3AuthNetwork);
   newFiles[FILENAME_APP_TSX] = replacementAggregator.replaceFileVariable(
     files[FILENAME_APP_TSX],
     FILENAME_APP_TSX,
