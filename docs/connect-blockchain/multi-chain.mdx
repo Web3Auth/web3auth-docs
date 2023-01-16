@@ -399,7 +399,7 @@ import algosdk from "algosdk";
   Use code from the above Initializing Provider here
 */
 
-const privateKey = provider.request({ method: "private_key" });
+const privateKey = provider.request({ method: "eth_private_key" });
 const passphrase = algosdk.secretKeyToMnemonic(Buffer.from(privateKey, "hex"));
 const keyPair = algosdk.mnemonicToSecretKey(passphrase);
 const address = keyPair.addr;
@@ -419,7 +419,7 @@ import { cryptoWaitReady } from "@polkadot/util-crypto";
 */
 
 const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
-const privateKey = provider.request({ method: "private_key" });
+const privateKey = provider.request({ method: "eth_private_key" });
 
 const keyPair = keyring.addFromUri("0x" + privateKey);
 const address = keyPair.address;
