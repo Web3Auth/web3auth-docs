@@ -1,14 +1,17 @@
 ---
-title: Using Web3Auth React Native SDK
-image: "contents/guides/banners/react-native.png"
-description: Learn how to use Web3Auth Plug and Play Core SDK in your React Native app
+title: Using Auth0 with Web3Auth React Native SDK
+image: "contents/guides/banners/react-native-auth0.png"
+description: Learn how to use Web3Auth Plug and Play React Native SDK with Auth0
 type: guide
-tags: [mobile, react-native, android, ios, whitelabel, custom authentication, dapp share]
+tags: [mobile, react-native, auth0, android, ios, whitelabel, custom authentication, dapp share]
 date: 16th Dec 2022
 author: Web3Auth Team
-order: 7
+order: 13
 ---
 
+import Auth0Prerequisites from "@site/src/common/guides/_auth0-prerequisites.mdx";
+import Auth0Setup from "@site/src/common/guides/_auth0-setup.mdx";
+import Auth0VerifierSetup from "@site/src/common/guides/_auth0-verifier-setup.mdx";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
@@ -17,24 +20,24 @@ import ReactNativeResponse from "@site/src/common/sdk/react-native/_response.mdx
 import SEO from "@site/src/components/SEO";
 
 <SEO
-  title="Using Web3Auth React Native SDK"
-  description="Learn how to use Web3Auth Plug and Play Core SDK in your React Native app"
-  image="https://web3auth.io/docs/contents/guides/banners/android.png"
-  slug="/guides/react-native"
+  title="Using Auth0 with Web3Auth React Native SDK"
+  description="Learn how to use Web3Auth Plug and Play React Native SDK with Auth0"
+  image="https://web3auth.io/docs/contents/guides/banners/react-native-auth0.png"
+  slug="/guides/react-native-auth0"
 />
 
 This guide will cover the basics of how to use the Web3Auth React Native SDK in your React Native application.
 
-**Live Demo:** [Android](https://w3a.link/react-native-example) [iOS](https://w3a.link/react-native-ios-example)
+**Live Demo:** [Android](https://w3a.link/react-native-auth0-example) [iOS](https://w3a.link/react-native-auth0-ios-example)
 
-Repository: https://github.com/Web3Auth/examples/tree/main/react-native/rn-bare-example
+Repository: https://github.com/Web3Auth/examples/tree/main/react-native/rn-bare-auth0-example
 
 ## Quick Start
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
 cd react-native
-cd rn-bare-example
+cd rn-bare-auth0-example
 npm install
 npm run android # or npm run ios
 ```
@@ -43,11 +46,11 @@ npm run android # or npm run ios
 
 ---
 
-When integrating Web3Auth React Native SDK with Social Login the flow looks something like this:
+When integrating Web3Auth React Native SDK with Auth0 the flow looks something like this:
 
-![Web3Auth Core - Social Login Flow](/images/implicit-flow.svg)
+![Auth0 SPA Flow](/contents/guides/auth0/auth0-spa-flow.png)
 
-- When a user logs in with `Google`, Google sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
+- When a user logs in with `Auth0`, Auth0 sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
 
 - Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
   easy onboarding for your user to the application.
@@ -64,13 +67,24 @@ When integrating Web3Auth React Native SDK with Social Login the flow looks some
 
 - Android Target SDK Version 31 and above
 
+<Auth0Prerequisites />
+
 ## Setup
 
 ---
 
+
+### Setup your Auth0 Tenant
+
+<Auth0Setup />
+
 ### Setup your Web3Auth Dashboard
 
 <SetupWeb3AuthDashboard />
+
+### Create Auth0 Verifiers
+
+<Auth0VerifierSetup />
 
 - Add `{YOUR_APP_SCHEME}://auth` in the **Whitelist URL** field of the Web3Auth Dashboard.
 
@@ -228,8 +242,18 @@ We need `clientId` and target Web3Auth `network` to initialize the `web3auth` ob
 
 ```js
 const web3auth = new Web3Auth(WebBrowser, {
-    clientId,
-    network: OPENLOGIN_NETWORK.CYAN, // MAINNET, AQUA, CELESTE, CYAN or TESTNET
+  clientId,
+  network: OPENLOGIN_NETWORK.CYAN, // MAINNET, AQUA, CELESTE, CYAN or TESTNET
+  loginConfig: {
+    // Add login configs corresponding to the provider
+    // Auth0 login works with jwt login config
+    jwt: {
+      verifier: "YOUR_AUTH0_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
+      typeOfLogin: "jwt",
+      clientId: "AUTH0_CLIENT_ID_123ABcdefg4HiJKlMno4P5QR6stUvWXY", // use your app client id you got from auth0
+    },
+    // Add other login providers here
+  },
 });
 ```
 :::tip SDK Reference
@@ -261,7 +285,12 @@ transactions. We also return an `ed25519` compatible private key for other block
 const web3authResponse = await web3auth.login({
   redirectUrl: resolvedRedirectUrl,
   mfaLevel: "default", // Pass on the mfa level of your choice: default, optional, mandatory, none
-  loginProvider: "google", // Pass on the login provider of your choice: google, facebook, discord, twitch, twitter, github, linkedin, apple, etc.
+  // Auth0 login works with JWT loginProvider
+  loginProvider: "jwt",
+  extraLoginOptions: {
+      domain: "https://YOUR-AUTH0-DOMAIN", // Please append "https://" before your domain
+      verifierIdField: "sub", // For SMS & Email Passwordless, use "name" as verifierIdField
+  },
 });
 ```
 
@@ -324,7 +353,7 @@ blockchain you have selected here.
 ## Example code
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth React Native Example](https://github.com/Web3Auth/examples/tree/main/react-native/rn-bare-example). Check it out and try running it locally yourself!
+[Web3Auth React Native Example](https://github.com/Web3Auth/examples/tree/main/react-native/rn-bare-auth0-example). Check it out and try running it locally yourself!
 
 ## Questions?
 
