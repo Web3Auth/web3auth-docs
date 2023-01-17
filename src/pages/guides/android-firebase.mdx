@@ -1,12 +1,12 @@
 ---
-title: Using Web3Auth Android SDK
-image: "contents/guides/banners/android.png"
-description: Learn how to use Web3Auth Android SDK in your Android application
+title: Using Firebase with Web3Auth Android SDK
+image: "contents/guides/banners/android-firebase.png"
+description: Learn how to use Web3Auth Android SDK in your Android application with Firebase.
 type: guide
-tags: [mobile, android, whitelabel, custom authentication, dapp share]
-date: 12th Aug 2022
+tags: [mobile, android, firebase, whitelabel, custom authentication, dapp share, custom jwt]
+date: 17th Jan 2023
 author: Web3Auth Team
-order: 7
+order: 14
 ---
 
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
@@ -15,25 +15,25 @@ import AndroidResponse from "@site/src/common/sdk/android/_response.mdx";
 import SEO from "@site/src/components/SEO";
 
 <SEO
-  title="Using Web3Auth Android SDK"
-  description="Learn how to use Web3Auth's Android SDK in your application"
-  image="https://web3auth.io/docs/contents/guides/banners/android.png"
-  slug="/guides/android"
+  title="Using Firebase with Web3Auth Android SDK"
+  description="Learn how to use Web3Auth Android SDK in your Android application with Firebase."
+  image="https://web3auth.io/docs/contents/guides/banners/android-firebase.png"
+  slug="/guides/android-firebase"
 />
 
-This guide will cover the basics of how to use the Web3Auth Android SDK in your Android application.
+This guide will cover the basics of how to use the Web3Auth Android SDK in your Android application with Firebase.
 
-**Demo APK:** [Download](https://github.com/Web3Auth/examples/blob/main/android/android-example/app-debug.apk)
+**Demo APK:** [Download](https://github.com/Web3Auth/examples/blob/main/android/android-firebase-example/app-debug.apk)
 
-Repository: https://github.com/Web3Auth/examples/raw/main/android/android-example
+Repository: https://github.com/Web3Auth/examples/raw/main/android/android-firebase-example
 
-**[Live Demo](https://w3a.link/android-example)**
+**[Live Demo](https://w3a.link/android-firebase-example)**
 
 ## Quick Start
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd android/android-example
+cd android/android-firebase-example
 # Open in Android Studio
 ```
 
@@ -45,7 +45,8 @@ When integrating Web3Auth Android SDK with Social Login the flow looks something
 
 ![Web3Auth Core - Social Login Flow](/images/implicit-flow.svg)
 
-- When a user logs in with `Google`, Google sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
+- When a user logs in with `Google` via Firebase, Firebase sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login
+  function.
 
 - Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
   easy onboarding for your user to the application.
@@ -62,11 +63,94 @@ When integrating Web3Auth Android SDK with Social Login the flow looks something
 
 ---
 
+### Setup your Firebase Project
+
+- Go to your [Firebase console](https://console.firebase.google.com) and create a Web App. Follow
+  [this guide](https://firebase.google.com/docs/web/setup) on how to setup your Firebase Web App project.
+
+###### Create a Firebase Project
+
+- Create a new project by clicking on **Add project** or use your existing project from [Firebase console](https://console.firebase.google.com).
+
+  ![Firebase Project - Set up 1](/contents/guides/firebase/firebase-setup-project-1.svg)
+
+- Give your project a name and click on **Continue**
+
+  ![Firebase Project - Set up 2](/contents/guides/firebase/firebase-setup-project-2.svg)
+
+- Finally, click on **Create Project**
+
+  ![Firebase Project - Set up 3](/contents/guides/firebase/firebase-setup-project-3.svg)
+
+###### Select Authentication Provider
+
+- Once the project is created. Set up _authentication_ by clicking on the **Authentication** card from the home screen of your project or choose
+  _Authentication_ under **Build** from the left sidebar.
+
+  ![Firebase Project - Set up auth 1](/contents/guides/firebase/firebase-setup-auth-1.svg)
+
+- From **Sign-in method** tab, select any provider you wish to enanle. For the purpose of this guide, we'll be enabling **Google**.
+
+  ![Firebase Project - Set up auth 2](/contents/guides/firebase/firebase-setup-auth-2.svg)
+
+- Finally, toggle the **enable** button and click on **Save**
+
+  ![Firebase Project - Set up auth 3](/contents/guides/firebase/firebase-setup-auth-3.svg)
+
+###### Configure Firebase for Android
+
+- Once the project is created and authentication is configured. Let's use Firebase for Android by clicking on the `Android` button on the home screen
+  of your project.
+
+  ![Firebase Project Android - Set up web 1](/contents/guides/firebase/android/android-firebase-set-up-1.svg)
+
+- In the next screen, enter the **Android package name** and click on **Register app** button to register the app for Android.
+
+  ![Firebase Project Android - Set up web 2](/contents/guides/firebase/android/android-firebase-set-up-2.svg)
+  ![Firebase Project Android - Set up web 3](/contents/guides/firebase/android/android-firebase-set-up-3.svg)
+
+- In the Next screen, Download and add config file to your Android Studio Project as shown below. Then Click on `Next` button.
+
+  ![Firebase Project Android - Set up web 4](/contents/guides/firebase/android/android-firebase-set-up-4.svg)
+
+- Next screen shows ways to add **Firebase** to your application. To make the `google-services.json` config values accessible to Firebase SDKs, you
+  need the Google services Gradle plugin. We will be adding the buildscript dependency to the `<project>/build.gradle` file.
+
+  ![Firebase Project Android - Set up web 5](/contents/guides/firebase/android/android-firebase-set-up-5.svg)
+
+- Then, in your module (app-level) `build.gradle` file, add both the google-services plugin and any Firebase SDKs that you want to use in your app:
+
+  ![Firebase Project Android - Set up web 6](/contents/guides/firebase/android/android-firebase-set-up-6.svg)
+
+- After adding the plugin and the desired SDKs, sync your Android project with Gradle files.
+
+  ![Firebase Project Android - Set up web 7](/contents/guides/firebase/android/android-firebase-set-up-7.svg)
+
 ### Setup your Web3Auth Dashboard
 
 <SetupWeb3AuthDashboard />
 
 - Add `{YOUR_APP_PACKAGE_NAME}://auth` in the **Whitelist URL** field of the Web3Auth Dashboard.
+
+#### Create Firebase Verifier on Web3Auth Dashboard
+
+- Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
+  configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. w3a-firebase-verifier`
+  - Select environment: `testnet`, `mainnet`,`aqua`, `celeste` or `cyan` as per your requirement.
+  - Select `Custom` from the **Login Provider**.
+  - Select `Sub` for the **JWT Verifier ID**.
+  - Enter `https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com` as the JWK endpoint for Firebase's idToken.
+  - JWT validation fields:
+    - iss: `https://securetoken.google.com/<firebase-project-id>`.
+    - aud: `<firebase-project-id>`
+  - Click on `Create` button to create your verifier. It may take up to 10 minutes to deploy verifier on _testnet_. You'll receive an email once it's
+    complete.
+
+  ![Custom Authentication - Create Firebase Verifier](/contents/guides/firebase/firebase-custom-verifier.png)
+
+- You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
 
 ### Configure Deep Link
 
@@ -160,6 +244,13 @@ web3Auth = Web3Auth(
     clientId = getString(R.string.web3auth_project_id), // pass over your Web3Auth Client ID from Developer Dashboard
     network = Web3Auth.Network.MAINNET, // pass over the network you want to use (MAINNET, TESTNET, CYAN, AQUA or CELESTE)
     redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"), // your app's redirect URL
+    loginConfig = hashMapOf("jwt" to LoginConfigItem(
+        verifier = "web3auth-firebase-examples",
+        typeOfLogin = TypeOfLogin.JWT,
+        name = "Firebase Login",
+        clientId = getString(R.string.web3auth_project_id)
+        )
+    )
   )
 )
 
@@ -199,17 +290,38 @@ button.
 
 ```kotlin
 private fun signIn() {
-  val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
-  val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider))
+  // Initialize Firebase Auth
+  auth = Firebase.auth
+  auth.signInWithEmailAndPassword("android@firebase.com", "Android@Web3Auth")
+    .addOnCompleteListener(this) { task ->
+        if (task.isSuccessful) {
+            // Sign in success, update UI with the signed-in user's information
+            Log.d(TAG, "signInWithEmail:success")
+            val user = auth.currentUser
+            user!!.getIdToken(true).addOnSuccessListener { result ->
+                val idToken = result.token
 
-  loginCompletableFuture.whenComplete { loginResponse, error ->
-    if (error == null) {
-      // render logged in UI
-      println(loginResponse)
-    } else {
-      // render error UI
+                Log.d(TAG, "GetTokenResult result = $idToken")
+                val selectedLoginProvider = Provider.JWT
+                val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(LoginParams(selectedLoginProvider, extraLoginOptions = ExtraLoginOptions(domain = "firebase", id_token = idToken)))
+
+                loginCompletableFuture.whenComplete { loginResponse, error ->
+                    if (error == null) {
+                        println(loginResponse)
+                        reRender(loginResponse)
+                    } else {
+                        Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong" )
+                    }
+                }
+            }
+        } else {
+            // If sign in fails, display a message to the user.
+            Log.w(TAG, "signInWithEmail:failure", task.exception)
+            Toast.makeText(baseContext, "Authentication failed.",
+                Toast.LENGTH_SHORT).show()
+
+        }
     }
-  }
 }
 ```
 
@@ -337,12 +449,13 @@ sendTransactionButton.setOnClickListener { sendTransaction() }
 ## Example code
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth Android Example](https://github.com/Web3Auth/examples/tree/main/android/android-example). Check it out and try running it locally yourself!
+[Web3Auth Android Firebase Example](https://github.com/Web3Auth/examples/tree/main/android/android-firebase-example). Check it out and try running it
+locally yourself!
 
 Also, checkout other examples:
 
 - [Using Auth0 Custom Authentication](https://github.com/Web3Auth/examples/tree/main/android/android-auth0-example)
-- [Using Custom JWT (via Firebase)](https://github.com/Web3Auth/examples/tree/main/android/android-firebase-example)
+- [Using Web3Auth Android SDK)](https://github.com/Web3Auth/examples/tree/main/android/android-example)
 
 ## Questions?
 
