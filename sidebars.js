@@ -202,6 +202,7 @@ module.exports = {
         "troubleshooting/sdk-errors-warnings",
         "troubleshooting/error-429",
         "troubleshooting/webpack-issues",
+        "troubleshooting/vite-issues",
         "troubleshooting/jwt-errors",
         "troubleshooting/different-wallet-address-issue",
         "troubleshooting/supported-browsers",
