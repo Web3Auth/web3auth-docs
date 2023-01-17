@@ -1,40 +1,38 @@
 ---
-title: Using Web3Auth React Native SDK
-image: "contents/guides/banners/react-native.png"
-description: Learn how to use Web3Auth Plug and Play React Native SDK in your React Native app
+title: Using Web3Auth React Native SDK in Expo Workflow
+image: "contents/guides/banners/expo.png"
+description: Learn how to use Web3Auth Plug and Play React Native SDK in your Expo app
 type: guide
-tags: [mobile, react-native, android, ios, whitelabel, custom authentication, dapp share]
+tags: [mobile, react-native, expo, android, ios, whitelabel, custom authentication, dapp share]
 date: 16th Dec 2022
 author: Web3Auth Team
 order: 7
 ---
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
 import ReactNativeResponse from "@site/src/common/sdk/react-native/_response.mdx";
 import SEO from "@site/src/components/SEO";
 
 <SEO
-  title="Using Web3Auth React Native SDK"
-  description="Learn how to use Web3Auth Plug and Play React Native SDK in your React Native app"
-  image="https://web3auth.io/docs/contents/guides/banners/react-native.png"
-  slug="/guides/react-native"
+  title="Using Web3Auth React Native SDK in Expo Workflow"
+  description="Learn how to use Web3Auth Plug and Play React Native SDK in your Expo app"
+  image="https://web3auth.io/docs/contents/guides/banners/expo.png"
+  slug="/guides/react-native-expo"
 />
 
 This guide will cover the basics of how to use the Web3Auth React Native SDK in your React Native application.
 
-**Live Demo:** [Android](https://w3a.link/react-native-example) [iOS](https://w3a.link/react-native-ios-example)
+**Live Demo:** [Coming Soon]
 
-Repository: https://github.com/Web3Auth/examples/tree/main/react-native/rn-bare-example
+Repository: https://github.com/Web3Auth/examples/tree/main/react-native/rn-expo-example
 
 ## Quick Start
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
 cd react-native
-cd rn-bare-example
+cd rn-expo-example
 npm install
 npm run android # or npm run ios
 ```
@@ -76,84 +74,30 @@ When integrating Web3Auth React Native SDK with Social Login the flow looks some
 
 ### Configure Deep Link
 
-<Tabs
-  defaultValue="android"
-  values={[
-    { label: "Android", value: "android" },
-    { label: "iOS", value: "ios" },
-  ]}
->
+- Adding URL scheme to `app.json`
 
-<TabItem value="android">
+To allow the Expo based SDK to work with exported Expo Android apps, you need to add the designated scheme into `app.json`
 
-- Make sure that the minimum SDK compile version in `build.gradle` is 31 or more.
-
-```gradle title="android/build.gradle"
-buildToolsVersion = "31.0.0"
-minSdkVersion = 21
-# highlight-next-line
-compileSdkVersion = 31
-# highlight-next-line
-targetSdkVersion = 31
+```json title="app.json"
+{
+  "expo": {
+    "scheme": "web3authexpoexample" // replace with your own scheme
+  }
+}
 ```
 
-- Add the intent filter with `scheme` defined in your `AndroidManifest.xml`
-
-```xml title="android/app/src/main/AndroidManifest.xml"
-<intent-filter>
-  <action android:name="android.intent.action.VIEW" />
-  <category android:name="android.intent.category.DEFAULT" />
-  <category android:name="android.intent.category.BROWSABLE" />
-  # replace with your own scheme
-  # highlight-next-line
-  <data android:scheme="web3authrnexample" />
-</intent-filter>
-```
-
-- SDK version 31 requires you to explicitly define `android:exported="true"` in `AndroidManifest.xml`, check whether it is correctly present or not.
-
-```xml title="android/app/src/main/AndroidManifest.xml"
-<activity
-  android:name=".MainActivity"
-  android:label="@string/app_name"
-  android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
-  android:launchMode="singleTask"
-  android:windowSoftInputMode="adjustResize"
-# highlight-next-line
-  android:exported="true">
-```
-
-- Your `redirectUrl` is your defined scheme following some identifier or your choice. For example, if your scheme is `web3authrnexample`, you can
-  define your `redirectUrl` as `web3authrnexample://openlogin`. Make sure you register this `redirectUrl` in the
-  [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
+- For constructing your `redirectUrl`, you'll need to use the `expo-linking`, which will help you generate a `redirectUrl` for your app. Make sure you
+  register that URL in the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
 
 ```js title="App.js"
-const scheme = 'web3authrnbareexample'; // Or your desired app redirection scheme
-const resolvedRedirectUrl = `${scheme}://openlogin`;
+import Constants, { AppOwnership } from "expo-constants";
+import * as Linking from "expo-linking";
+
+const resolvedRedirectUrl =
+  Constants.appOwnership == AppOwnership.Expo || Constants.appOwnership == AppOwnership.Guest
+    ? Linking.createURL("web3auth", {})
+    : Linking.createURL("web3auth", { scheme: scheme });
 ```
-
-</TabItem>
-
-<TabItem value="ios">
-
-- Make sure that the minimum SDK compile version in `Podfile` is 13 or more.
-
-```Podfile title="ios/Podfile"
-platform :ios, '13'
-```
-
-- Install the Cocoa Pods within your project directory.
-
-```shell
-cd ios && pod install && cd ..
-```
-
-- In iOS, you don't need to add `redirectUrl` as a iOS Custom URL Scheme, however, you may can add it to your `Info.plist`, but it is not required.
-  Make sure your `redirectUrl` is registered in the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
-
-</TabItem>
-
-</Tabs>
 
 ## Using the Web3Auth SDK
 
@@ -172,16 +116,13 @@ For this guide here, we will be talking through the [Web3Auth React Native SDK](
 npm install --save @web3auth/react-native-sdk
 ```
 
-### Adding a Web Browser Module
+#### Expo Web Browser
 
-We will also require a `WebBrowser` implementation to allow our JS-based SDK to interact with the native APIs, and there are different extra
-installation steps depending on whether you are using the bare workflow or managed workflow. Since we're using the SDK with a bare workflow React Native app, you have to install a `WebBrowser` implementation made by us as a porn from the Expo Web Browser Module.
+When using our SDK with a Expo-based React Native app (aka managed workflow, you have to install the `expo-web-browser` package as a `WebBrowser`
+implementation.)
 
-##### [`@toruslabs/react-native-web-browser`](https://github.com/torusresearch/react-native-web-browser)
-
-
-```bash npm2yarn
-npm install --save @toruslabs/react-native-web-browser
+```shell
+expo install expo-web-browser
 ```
 
 ### Initialization
@@ -205,7 +146,7 @@ import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-nat
 #### Importing a `WebBrowser` implementation
 
 ```typescript
-import * as WebBrowser from "@toruslabs/react-native-web-browser";
+import * as WebBrowser from "expo-web-browser";
 ```
 
 #### Instantiating Web3Auth
@@ -225,13 +166,13 @@ We need `clientId` and target Web3Auth `network` to initialize the `web3auth` ob
 
   :::
 
-
 ```js
 const web3auth = new Web3Auth(WebBrowser, {
-    clientId,
-    network: OPENLOGIN_NETWORK.CYAN, // MAINNET, AQUA, CELESTE, CYAN or TESTNET
+  clientId,
+  network: OPENLOGIN_NETWORK.CYAN, // MAINNET, AQUA, CELESTE, CYAN or TESTNET
 });
 ```
+
 :::tip SDK Reference
 
 - [Instantiating Web3Auth](/sdk/react-native/initialize).
@@ -239,12 +180,13 @@ const web3auth = new Web3Auth(WebBrowser, {
 :::
 
 ### Authentication
+
 ---
 
 #### Logging in
 
-Once initialized, you can use the `login` function of `web3auth` to navigate user to the login process. For each login method, you have to select the `loginProvider` such as
-`google`, `facebook`, `twitch`, `jwt`, `email_passwordless` etc.
+Once initialized, you can use the `login` function of `web3auth` to navigate user to the login process. For each login method, you have to select the
+`loginProvider` such as `google`, `facebook`, `twitch`, `jwt`, `email_passwordless` etc.
 
 :::info JWT
 
@@ -289,8 +231,8 @@ If you wish you **[add Multi Factor Authentication](/sdk/react-native/mfa)**, **
 var userInfo = web3authResponse.userInfo;
 ```
 
-Using the `web3Auth.login()` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
-network.
+Using the `web3Auth.login()` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in
+Web3Auth network.
 
 ### Logout
 
@@ -324,7 +266,8 @@ blockchain you have selected here.
 ## Example code
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth React Native Example](https://github.com/Web3Auth/examples/tree/main/react-native/rn-bare-example). Check it out and try running it locally yourself!
+[Web3Auth React Native Example](https://github.com/Web3Auth/examples/tree/main/react-native/rn-expo-example). Check it out and try running it locally
+yourself!
 
 ## Questions?
 
