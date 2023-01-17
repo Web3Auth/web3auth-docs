@@ -1,17 +1,17 @@
 ---
-title: Bundler Polyfills issue
+title: Vite Polyfills issue
 image: "/docs/images/docs-meta-cards/troubleshoot-card.png"
 displayed_sidebar: docs
-description: "Bundler Polyfills Issues | Documentation - Web3Auth"
+description: "Vite Polyfills Issues | Documentation - Web3Auth"
 ---
 
-While setting up a new web3 project from scratch, in frameworks like Vite, Svelte, or Rollup, you may encounter issues with the Bundler polyfills.
-This is because these frameworks do not include the Bundler polyfills by default and you may run into issues building these apps. Hence, you require
-certain bundler polyfills to be added to your project, while overriding the configurations to enable their usage.
+While setting up a new vite project from scratch, you may encounter issues with the Vite polyfills. This is because these frameworks do not include
+the Vite polyfills by default and you may run into issues building these apps. Hence, you require certain vite polyfills to be added to your project,
+while overriding the configurations to enable their usage.
 
 ### Vite
 
-#### Solution
+##### Solution
 
 - Install the missing modules
 
@@ -19,7 +19,7 @@ certain bundler polyfills to be added to your project, while overriding the conf
 npm install --save-dev @esbuild-plugins/node-modules-polyfill rollup-plugin-node-polyfills rollup-plugin-node-builtins buffer process
 ```
 
-Add the following lines to `vite.config.js`
+- Update the `vite.config.js` to refer the polyfill modules we installed.
 
 ```js
 import { defineConfig } from "vite";
@@ -84,7 +84,36 @@ export default defineConfig({
 });
 ```
 
+- Update the `index.html` file to include the polyfills. As shown in the code snippet below we added the `<script>` tag to include the polyfills.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Add the following lines -->
+    <script type="module">
+      import { Buffer } from "buffer";
+      import process from "process";
+      window.Buffer = Buffer;
+      window.process = process;
+    </script>
+    <!----------------------------->
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+```
+
+:::caution
+
 Even after adding this you might face issues like an empty modal popping up. The empty modal just pops up locally, it happens due to caching issues.
 You can remove the `React.StrictMode` from your `index.js` file to fix this issue.
 
 The empty modal doesn't appear in production builds.
+
+:::
