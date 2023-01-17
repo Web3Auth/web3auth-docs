@@ -1,17 +1,18 @@
 ---
-title: Vite Polyfills issue
+title: Vite Polyfills Issue
 image: "/docs/images/docs-meta-cards/troubleshoot-card.png"
 displayed_sidebar: docs
 description: "Vite Polyfills Issues | Documentation - Web3Auth"
 ---
 
-While setting up a new vite project from scratch, you may encounter issues with the Vite polyfills. This is because these frameworks do not include
-the Vite polyfills by default and you may run into issues building these apps. Hence, you require certain vite polyfills to be added to your project,
-while overriding the configurations to enable their usage.
+While setting up a new web3 project from scratch, you might face multiple issues with Vite configuration. This issue is caused due to the fact that
+the `web3.js` and `ethers.js` packages have certain dependencies, which are not present within the browser environment by Vite. Hence, you require
+certain node polyfills to be added to your project, while overriding the configurations to enable their usage. When that is done, your project should
+be able to utilise the `web3.js` and `ethers.js` packages easily without any issues.
 
-### Vite
+In this guide, we have added instructions of adding the polyfills in Vite:
 
-##### Solution
+#### Solution
 
 - Install the missing modules
 
@@ -90,14 +91,14 @@ export default defineConfig({
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Add the following lines -->
+    <!--highlight-start-->
     <script type="module">
       import { Buffer } from "buffer";
       import process from "process";
       window.Buffer = Buffer;
       window.process = process;
     </script>
-    <!----------------------------->
+    <!--highlight-end-->
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
