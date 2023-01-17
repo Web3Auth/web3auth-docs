@@ -1,7 +1,7 @@
 ---
 title: Using Web3Auth Flutter SDK
 image: "contents/guides/banners/flutter.png"
-description: Learn how to use Web3Auth Plug and Play Core SDK in your Flutter app
+description: Learn how to use Web3Auth Flutter SDK in your Flutter application.
 type: guide
 tags: [mobile, flutter, whitelabel, custom authentication, dapp share, blockchain]
 date: 13th Sept 2022
@@ -19,7 +19,7 @@ import Tabs from "@theme/Tabs";
 
 <SEO
   title="Using Web3Auth Flutter SDK"
-  description="Learn how to use Web3Auth Plug and Play Core SDK in your Flutter application"
+  description="Learn how to use Web3Auth Flutter SDK in your Flutter application"
   image="https://web3auth.io/docs/contents/guides/banners/flutter.png"
   slug="/guides/flutter"
 />
@@ -27,7 +27,7 @@ import Tabs from "@theme/Tabs";
 This guide will cover the basics of how to use the Web3Auth Flutter SDK in your Flutter application and make blockchain calls to get access to user's
 `account`, fetch `balance`, `sign transaction`, and `send transaction`.
 
-Repository: https://github.com/Web3Auth/examples/raw/main/flutter
+Repository: https://github.com/Web3Auth/examples/raw/main/flutter/flutter-example
 
 ## Quick Start
 
@@ -36,10 +36,6 @@ git clone https://github.com/Web3Auth/examples.git
 cd flutter/flutter-example
 # Open in Android Studio or VS Code
 flutter run
-# We also have demo apps with Auth0 and Firebase(JWT),  try these:
-# cd flutter/flutter-auth0-example && flutter run
-# or
-# cd flutter/flutter-firebase-example && flutter run
 ```
 
 ## How it works?
@@ -76,7 +72,7 @@ When integrating Web3Auth Flutter SDK with Social Login the flow looks something
 
 <SetupWeb3AuthDashboard />
 
-- Add `{SCHEME}://{YOUR_APP_PACKAGE_NAME}/auth` (w3a://com.example.w3aflutter/auth) and `{bundleId}://openlogin` (com.example.w3aflutter://openlogin)
+- Add `{SCHEME}://{YOUR_APP_PACKAGE_NAME}` (e.g, w3a://com.example.w3aflutter) for Android and `{bundleId}://openlogin` (e.g, com.example.w3aflutter://openlogin) for iOS
   in the **Whitelist URL** field of the Web3Auth Dashboard.
 
 ## Using the Web3Auth SDK
@@ -86,9 +82,22 @@ When integrating Web3Auth Flutter SDK with Social Login the flow looks something
 To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
 SDKs, please have a look at this [documentation page](/sdk).
 
-For this guide here, we will be talking through the [Web3Auth Flutter SDK](/sdk/flutter).
+For this guide, we will be using the **[Web3Auth Flutter SDK](/sdk/flutter)**.
 
 ### Installation
+
+Add `web3auth_flutter` as a dependency to your `pubspec.yaml`
+
+```yaml
+dependencies:
+  web3auth_flutter: ^1.0.3
+```
+
+or
+
+```sh
+flutter pub add web3auth_flutter
+```
 
 <Tabs
   defaultValue="android"
@@ -141,7 +150,7 @@ Open your app's `AndroidManifest.xml` file and add the following permission:
 
 - Go to [Developer Dashboard](https://dashboard.web3auth.io/), create or select a Web3Auth project:
 
-- Add `{SCHEME}://{YOUR_APP_PACKAGE_NAME}/auth` to **Whitelist URLs**. eg. `w3a://com.example.w3aflutter/auth`
+- Add `{SCHEME}://{YOUR_APP_PACKAGE_NAME}` to **Whitelist URLs**. eg. `w3a://com.example.w3aflutter`
 
 - Copy the `Client ID` for usage later.
 
@@ -158,7 +167,7 @@ Open your app's `AndroidManifest.xml` file and add the following deep link inten
 
   // highlight-next-line
   <data android:scheme="{scheme}" android:host="{YOUR_APP_PACKAGE_NAME}" android:path="/auth" />
-  <!-- Accept URIs: w3a://com.example.w3aflutter/auth -->
+  <!-- Accept URIs: w3a://com.example.w3aflutter -->
 </intent-filter>
 ```
 
@@ -453,7 +462,7 @@ Logging out your user is as simple as calling the `web3AuthFlutter.logout()` fun
 
 :::success Blockchain calls
 
-Checkout the full codes to interact with [ETH Blockchain](/connect-blockchain/ethereum/flutter).
+Checkout the full codes to interact with **[ETH Blockchain](/connect-blockchain/ethereum/flutter)**.
 
 :::
 
@@ -561,7 +570,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 ---
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth Flutter Example](https://github.com/Web3Auth/examples/tree/main/flutter/flutter). Check it out and try running it locally yourself!
+[Web3Auth Flutter Example](https://github.com/Web3Auth/examples/tree/main/flutter/flutter-example). Check it out and try running it locally yourself!
 
 `flutter run`
 
