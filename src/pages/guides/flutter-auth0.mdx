@@ -1,39 +1,42 @@
 ---
-title: Using Web3Auth Flutter SDK
-image: "contents/guides/banners/flutter.png"
-description: Learn how to use Web3Auth Flutter SDK in your Flutter application.
+title: Using Auth0 with Web3Auth Flutter SDK
+image: "contents/guides/banners/flutter-auth0.png"
+description: Learn how to use Web3Auth Flutter SDK in your Flutter application with Auth0.
 type: guide
-tags: [mobile, flutter, whitelabel, custom authentication, dapp share, blockchain]
-date: 13th Sept 2022
+tags: [mobile, flutter, auth0, whitelabel, custom authentication, dapp share, blockchain]
+date: 17th Jan 2023
 author: Web3Auth Team
-order: 8
+order: 15
 ---
 
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
 import FlutterResponse from "@site/src/common/sdk/android/_response.mdx";
 import SEO from "@site/src/components/SEO";
+import ImageEmailVerifer from "@site/static/contents/guides/auth0/auth0-email-verifier.png";
+import ImageSMSVerifer from "@site/static/contents/guides/auth0/auth0-sms-verifier.png";
+import ImageVerifer from "@site/static/contents/guides/auth0/auth0-w3adashboard-03.png";
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
 <SEO
-  title="Using Web3Auth Flutter SDK"
-  description="Learn how to use Web3Auth Flutter SDK in your Flutter application"
-  image="https://web3auth.io/docs/contents/guides/banners/flutter.png"
-  slug="/guides/flutter"
+  title="Using Auth0 with Web3Auth Flutter SDK"
+  description="Learn how to use Web3Auth Flutter SDK in your Flutter application with Auth0."
+  image="https://web3auth.io/docs/contents/guides/banners/flutter-auth0.png"
+  slug="/guides/flutter-auth0"
 />
 
-This guide will cover the basics of how to use the Web3Auth Flutter SDK in your Flutter application and make blockchain calls to get access to user's
+This guide will cover the basics of how to use the Web3Auth Flutter SDK in your Flutter application with Auth0 and make blockchain calls to get access to user's
 `account`, fetch `balance`, `sign transaction`, and `send transaction`.
 
-Repository: https://github.com/Web3Auth/examples/raw/main/flutter/flutter-example
+Repository: https://github.com/Web3Auth/examples/raw/main/flutter/flutter-auth0-example
 
 ## Quick Start
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd flutter/flutter-example
+cd flutter/flutter-auth0-example
 # Open in Android Studio or VS Code
 flutter run
 ```
@@ -46,7 +49,7 @@ When integrating Web3Auth Flutter SDK with Social Login the flow looks something
 
 ![Web3Auth Core - Social Login Flow](/images/implicit-flow.svg)
 
-- When a user logs in with `Google`, Google sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
+- When a user logs in with `Google` via Auth0. Auth0 sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
 
 - Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
   easy onboarding for your user to the application.
@@ -63,17 +66,153 @@ When integrating Web3Auth Flutter SDK with Social Login the flow looks something
 - Xcode 11.4+ / 12.x
 - Swift 4.x / 5.x
 - For iOS build: `platform :ios` needs to be 13.0. Check `ios/Podfile` in your Flutter project to change it.
+- Create an Auth0 tenant and configure a Single Page Web Application (SPA for Web) or Native (for Mobile) from
+  [Auth0 Console](https://manage.auth0.com/).
 
-## Setup
+## Setup your Auth0 Tenant
 
 ---
 
-### Setup your Web3Auth Dashboard
+- Add the following URLs for your app to the Allowed Web Origins field when configuring your Auth0 Application.
+
+  - Additional to your own URLs for the application, please add
+    - [https://beta.openlogin.com/auth](https://beta.openlogin.com/auth) (for Web3Auth testnet used in demo applications) and
+    - [https://app.openlogin.com/auth](https://app.openlogin.com/auth) (for Web3Auth mainnet used in production applications).
+    - [https://cyan.openlogin.com/auth](https://cyan.openlogin.com/auth) (for Web3Auth `cyan` mainnet used in production applications).
+
+  ![Add Callback URL to Auth0 Dashboard](/contents/guides/auth0/auth0-callback-url.png)
+
+- You will require `domain` and `clientId` of the newly created application which you can copy from [Auth0 Console](https://manage.auth0.com/).
+  ![Domain and Client ID from Auth0 Dashboard](/contents/guides/auth0/auth0-guide-clientid.png)
+
+### Enable Social login
+
+- Enable `Google` or other social provider on the `Authentication > Social` page of your Auth0 Dashboard.
+  ![Auth0 Dashboard to enable Social logins](/contents/guides/auth0/auth0-social-logins.png)
+- Vist https://auth0.com/learn/social-login to learn more.
+
+### Enable SMS Passwordless
+
+:::note Optional
+
+If you want to implement SMS Passwordless, then this section is for you. Else you can skip this.
+
+:::
+
+- Enable `SMS` on the `Authentication > Passwordless` page of your Auth0 Dashboard.
+  ![Auth0 Dashboard to enable SMS Passwordless Option](/contents/guides/auth0/auth0-passwordless.png)
+- Under `Settings` tab, add your `Twilio SID` and `Twilio AuthToken`.
+  ![Auth0 Dashboard to enable SMS Passwordless | Setup](/contents/guides/auth0/auth0-sms-passwordless-1.png)
+- Also, update the `From` number on the same page, and click on the `Save` button.
+- Next, enable your application under `Applications` tab, and click on the `Save` button.
+  ![Auth0 Dashboard to enable SMS Passwordless | Enable App](/contents/guides/auth0/auth0-sms-passwordless-2.png)
+- You can test sending a SMS from the `Try` tab. Once, a SMS comes with OTP, it means it has been successfully configured.
+
+##### Update Lockscreen for SMS Passwordless
+
+:::info update-lock-screen
+
+If you're to use SMS Passwordless, please
+**[visit here to setup the Lock Screen of Auth0](https://auth0.com/docs/authenticate/passwordless/implement-login/universal-login)** from your Auth0
+Dashboard.
+
+:::
+
+### Enable Email Passwordless
+
+:::note Optional
+
+If you want to implement Email Passwordless, then this section is for you. Else you can skip this.
+
+:::
+
+- Enable `Email` on the `Authentication > Passwordless` page of your Auth0 Dashboard.
+  ![Auth0 Dashboard to enable Email Passwordless Option](/contents/guides/auth0/auth0-passwordless.png)
+- Under `Settings` tab, update `From` and `Subject` based on your need and click on the `Save` button.
+  ![Auth0 Dashboard to enable Email Passwordless | Setup](/contents/guides/auth0/auth0-email-passwordless-1.png)
+- Next, enable your application under `Applications` tab, and click on the `Save` button.
+  ![Auth0 Dashboard to enable Email Passwordless | Enable App](/contents/guides/auth0/auth0-email-passwordless-2.png)
+- You can test sending an Email from the `Try` tab. Once, an Email comes with OTP/Link, it means it has been successfully configured.
+
+##### Update Lockscreen for Email Passwordless
+
+:::info update-lock-screen
+
+If you're to use Email Passwordless, please
+**[visit here to setup the Lock Screen of Auth0](https://auth0.com/docs/authenticate/passwordless/implement-login/universal-login)** from your Auth0
+Dashboard.
+
+:::
+
+
+## Setup your Web3Auth Dashboard
+
+---
 
 <SetupWeb3AuthDashboard />
 
 - Add `{SCHEME}://{YOUR_APP_PACKAGE_NAME}` (e.g, w3a://com.example.w3aflutter) for Android and `{bundleId}://openlogin` (e.g, com.example.w3aflutter://openlogin) for iOS
   in the **Whitelist URL** field of the Web3Auth Dashboard.
+
+### Create Social Verifiers
+
+- Create a Verifier from the **Custom Auth** Section of the [Developer Dashboard](https://dashboard.web3auth.io/) with the following configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. auth0-project`
+  - Select `Auth0` from the **Login Provider**.
+  - Choose your Authentication Type from `eg. Google, Twitter, Github etc..` to be the Auth provider.
+  - Paste the `Client ID` and `Auth0 Domain` from the Auth0 SPA you created in the above steps. This will be used to validate the JWT token issued by
+    Auth0.
+  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once
+    it's complete.
+    <img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} alt="Create Social Verifier" src={ImageVerifer} />
+
+  > You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+
+### Create SMS Passwordless Verifier
+
+:::note Optional
+
+If you want to implement SMS Passwordless, then this section is for you. Else you can skip this.
+
+:::
+
+- Create a Verifier from the **Custom Auth** Section of the [Developer Dashboard](https://dashboard.web3auth.io/) with the following configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. auth0-sms-passwordless`
+  - Select `Custom` from the **Login Provider**.
+  - Choose `Custom` for the `JWT Verifier ID` and type `name`.
+  - Enter `https://{YOUR-DOMAIN}.auth0.com/.well-known/jwks.json` as your `JWKS Endpoint`. This will be used to validate the JWT token issued by
+    Auth0.
+  - JWT validation fields:
+    - iss: `https://{YOUR-DOMAIN}.auth0.com`
+    - aud: `{AUTH0-CLIENT-ID}`
+  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once
+    it's complete.
+    <img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} alt="Create SMS Passwordless Verifier" src={ImageSMSVerifer} />
+
+  > You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+
+### Create Email Passwordless Verifier
+
+:::note Optional
+
+If you want to implement Email Passwordless, then this section is for you. Else you can skip this.
+
+:::
+
+- Create a Verifier from the **Custom Auth** Section of the [Developer Dashboard](https://dashboard.web3auth.io/) with the following configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. auth0-email-passwordless`
+  - Select `Auth0` from the **Login Provider**.
+  - Choose your Authentication Type as `Passwordless` to use Auth0's Email Passwordless.
+  - Paste the `Client ID` and `Auth0 Domain` from the Auth0 SPA you created in the above steps. This will be used to validate the JWT token issued by
+    Auth0.
+  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once
+    it's complete.
+    <img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} alt="Create Email Passwordless Verifier" src={ImageEmailVerifer} />
+
+  > You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
 
 ## Using the Web3Auth SDK
 
@@ -260,10 +399,19 @@ Future<void> initPlatformState() async {
     throw UnKnownException('Unknown platform');
   }
   // highlight-start
+  final loginConfig = HashMap<String, LoginConfigItem>();
+  loginConfig['jwt'] = LoginConfigItem(
+    verifier: "VERIFIER-NAME", // get it from web3auth dashboard
+    typeOfLogin: TypeOfLogin.jwt,
+    name: "Web3Auth Flutter Auth0 Example",
+    clientId: "AUTH0-CLIENT-ID" // auth0 client id
+  );
+
   await Web3AuthFlutter.init(Web3AuthOptions(
     clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
     network: Network.cyan,
     redirectUri: redirectUrl,
+    loginConfig: loginConfig
   ));
   // highlight-end
 }
@@ -295,12 +443,14 @@ VoidCallback _login(Future<Web3AuthResponse> Function() method) {
   };
 }
 
-Future<Web3AuthResponse> _withGoogle() {
+Future<Web3AuthResponse> _withAuth0() {
   // highlight-start
   return Web3AuthFlutter.login(LoginParams(
-    loginProvider: Provider.google,
+    loginProvider: Provider.jwt,
     mfaLevel: MFALevel.OPTIONAL,
-  ));
+    extraLoginOptions: ExtraLoginOptions(
+      domain: 'YOUR_AUTH0_DOMAIN', // eg. https://torus.us.auth0.com
+      verifierIdField: 'sub')));
   // highlight-end
 }
 ```
@@ -395,7 +545,7 @@ Logging out your user is as simple as calling the `web3AuthFlutter.logout()` fun
                       height: 10,
                     ),
                     const Text(
-                      'Welcome to Web3Auth x Flutter Demo',
+                      'Welcome to Web3Auth x Flutter Auth0 Demo',
                       style: TextStyle(fontSize: 14),
                     ),
                     const SizedBox(
@@ -409,17 +559,8 @@ Logging out your user is as simple as calling the `web3AuthFlutter.logout()` fun
                       height: 20,
                     ),
                     ElevatedButton(
-                        onPressed: _login(_withGoogle),
-                        child: const Text('Google')),
-                    ElevatedButton(
-                        onPressed: _login(_withFacebook),
-                        child: const Text('Facebook')),
-                    ElevatedButton(
-                        onPressed: _login(_withEmailPasswordless),
-                        child: const Text('Email Passwordless')),
-                    ElevatedButton(
-                        onPressed: _login(_withDiscord),
-                        child: const Text('Discord')),
+                        onPressed: _login(_withAuth0),
+                        child: const Text('Auth0')),
                   ],
                 ),
               ),
@@ -570,13 +711,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 ---
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth Flutter Example](https://github.com/Web3Auth/examples/tree/main/flutter/flutter-example). Check it out and try running it locally yourself!
+[Web3Auth Flutter Auth0 Example](https://github.com/Web3Auth/examples/tree/main/flutter/flutter-auth0-example). Check it out and try running it locally yourself!
 
 `flutter run`
 
 Also, checkout other examples:
 
-- [Using Auth0 Custom Authentication](https://github.com/Web3Auth/examples/tree/main/flutter/flutter-auth0-example)
+- [Using Flutter SDK](https://github.com/Web3Auth/examples/tree/main/flutter/flutter-example)
 - [Using Custom JWT (via Firebase)](https://github.com/Web3Auth/examples/tree/main/flutter/flutter-firebase-example)
 
 ## Questions?

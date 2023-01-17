@@ -1,12 +1,12 @@
 ---
-title: Using Web3Auth Flutter SDK
-image: "contents/guides/banners/flutter.png"
-description: Learn how to use Web3Auth Flutter SDK in your Flutter application.
+title: Using Firebase with Web3Auth Flutter SDK
+image: "contents/guides/banners/flutter-firebase.png"
+description: Learn how to use Web3Auth Flutter SDK in your Flutter application with Firebase.
 type: guide
-tags: [mobile, flutter, whitelabel, custom authentication, dapp share, blockchain]
-date: 13th Sept 2022
+tags: [mobile, flutter, firebase, whitelabel, custom authentication, dapp share, blockchain]
+date: 17th Jan 2023
 author: Web3Auth Team
-order: 8
+order: 16
 ---
 
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
@@ -18,22 +18,22 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
 <SEO
-  title="Using Web3Auth Flutter SDK"
-  description="Learn how to use Web3Auth Flutter SDK in your Flutter application"
-  image="https://web3auth.io/docs/contents/guides/banners/flutter.png"
-  slug="/guides/flutter"
+  title="Using Firebase with Web3Auth Flutter SDK"
+  description="Learn how to use Web3Auth Flutter SDK in your Flutter application with Firebase."
+  image="https://web3auth.io/docs/contents/guides/banners/flutter-firebase.png"
+  slug="/guides/flutter-firebase"
 />
 
-This guide will cover the basics of how to use the Web3Auth Flutter SDK in your Flutter application and make blockchain calls to get access to user's
+This guide will cover the basics of how to use the Web3Auth Flutter SDK in your Flutter application with Firebase and make blockchain calls to get access to user's
 `account`, fetch `balance`, `sign transaction`, and `send transaction`.
 
-Repository: https://github.com/Web3Auth/examples/raw/main/flutter/flutter-example
+Repository: https://github.com/Web3Auth/examples/raw/main/flutter/flutter-firebase-example
 
 ## Quick Start
 
 ```bash
 git clone https://github.com/Web3Auth/examples.git
-cd flutter/flutter-example
+cd flutter/flutter-firebase-example
 # Open in Android Studio or VS Code
 flutter run
 ```
@@ -46,8 +46,7 @@ When integrating Web3Auth Flutter SDK with Social Login the flow looks something
 
 ![Web3Auth Core - Social Login Flow](/images/implicit-flow.svg)
 
-- When a user logs in with `Google`, Google sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
-
+- When a user logs in with `Google` via Firebase. Firebase sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
 - Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
   easy onboarding for your user to the application.
 
@@ -63,10 +62,77 @@ When integrating Web3Auth Flutter SDK with Social Login the flow looks something
 - Xcode 11.4+ / 12.x
 - Swift 4.x / 5.x
 - For iOS build: `platform :ios` needs to be 13.0. Check `ios/Podfile` in your Flutter project to change it.
+- A [Firebase](https://console.firebase.google.com) account to be used as Federated Identity Provider.
+- A [Google Developer](https://console.developers.google.com) account to be used as Identity provider for Firebase.
 
 ## Setup
 
 ---
+
+### Setup your Firebase Project
+
+- Go to your [Firebase console](https://console.firebase.google.com) and create a Web App. Follow
+  [this guide](https://firebase.google.com/docs/web/setup) on how to setup your Firebase Web App project.
+
+###### Create a Firebase Project
+
+- Create a new project by clicking on **Add project** or use your existing project from [Firebase console](https://console.firebase.google.com).
+
+  ![Firebase Project - Set up 1](/contents/guides/firebase/firebase-setup-project-1.svg)
+
+- Give your project a name and click on **Continue**
+
+  ![Firebase Project - Set up 2](/contents/guides/firebase/firebase-setup-project-2.svg)
+
+- Finally, click on **Create Project**
+
+  ![Firebase Project - Set up 3](/contents/guides/firebase/firebase-setup-project-3.svg)
+
+###### Select Authentication Provider
+
+- Once the project is created. Set up _authentication_ by clicking on the **Authentication** card from the home screen of your project or choose
+  _Authentication_ under **Build** from the left sidebar.
+
+  ![Firebase Project - Set up auth 1](/contents/guides/firebase/firebase-setup-auth-1.svg)
+
+- From **Sign-in method** tab, select any provider you wish to enanle. For the purpose of this guide, we'll be enabling **Google**.
+
+  ![Firebase Project - Set up auth 2](/contents/guides/firebase/firebase-setup-auth-2.svg)
+
+- Finally, toggle the **enable** button and click on **Save**
+
+  ![Firebase Project - Set up auth 3](/contents/guides/firebase/firebase-setup-auth-3.svg)
+
+###### Configure Firebase for Flutter
+
+- Once the project is created and authentication is configured. Let's use Firebase for Android by clicking on the `Flutter` button on the home screen
+  of your project.
+
+  ![Firebase Project Flutter - Set up web 1](/contents/guides/firebase/flutter/flutter-firebase-setup-1.svg)
+
+- In the next screen, install the **Firebase CLI** and click on **Next** button.
+
+  ![Firebase Project Flutter - Set up web 2](/contents/guides/firebase/flutter/flutter-firebase-setup-2.svg)
+
+- In the next screen, install and run the **FLutterFire CLI**.
+
+  ![Firebase Project Flutter - Set up web 3](/contents/guides/firebase/flutter/flutter-firebase-setup-3.svg)
+
+- From any directory, run this command:
+
+```bash
+dart run global activate flutterfire.cli
+```
+
+- Then, at the root of your Flutter project, run this command: replace the project name with yours.
+
+```bash
+flutterfire configure --project=your-project-name
+```
+
+- In the Next screen, Initialize Firebase and add plugins.
+
+  ![Firebase Project Flutter - Set up web 4](/contents/guides/firebase/flutter/flutter-firebase-setup-4.svg)
 
 ### Setup your Web3Auth Dashboard
 
@@ -74,6 +140,26 @@ When integrating Web3Auth Flutter SDK with Social Login the flow looks something
 
 - Add `{SCHEME}://{YOUR_APP_PACKAGE_NAME}` (e.g, w3a://com.example.w3aflutter) for Android and `{bundleId}://openlogin` (e.g, com.example.w3aflutter://openlogin) for iOS
   in the **Whitelist URL** field of the Web3Auth Dashboard.
+
+#### Create Firebase Verifier on Web3Auth Dashboard
+
+- Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
+  configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. w3a-firebase-verifier`
+  - Select environment: `testnet`, `mainnet`,`aqua`, `celeste` or `cyan` as per your requirement.
+  - Select `Custom` from the **Login Provider**.
+  - Select `Sub` for the **JWT Verifier ID**.
+  - Enter `https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com` as the JWK endpoint for Firebase's idToken.
+  - JWT validation fields:
+    - iss: `https://securetoken.google.com/<firebase-project-id>`.
+    - aud: `<firebase-project-id>`
+  - Click on `Create` button to create your verifier. It may take up to 10 minutes to deploy verifier on _testnet_. You'll receive an email once it's
+    complete.
+
+  ![Custom Authentication - Create Firebase Verifier](/contents/guides/firebase/firebase-custom-verifier.png)
+
+- You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
 
 ## Using the Web3Auth SDK
 
@@ -260,10 +346,19 @@ Future<void> initPlatformState() async {
     throw UnKnownException('Unknown platform');
   }
   // highlight-start
+  final loginConfig = HashMap<String, LoginConfigItem>();
+  loginConfig['jwt'] = LoginConfigItem(
+		verifier: "VERIFIER_NAME", // get it from web3auth dashboard
+		typeOfLogin: TypeOfLogin.jwt,
+		name: "Firebase JWT Login",
+		clientId: "WEB3AUTH_CLIENT_ID" // web3auth's plug and play client id
+	);
+
   await Web3AuthFlutter.init(Web3AuthOptions(
     clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
     network: Network.cyan,
     redirectUri: redirectUrl,
+		loginConfig: loginConfig
   ));
   // highlight-end
 }
@@ -295,11 +390,25 @@ VoidCallback _login(Future<Web3AuthResponse> Function() method) {
   };
 }
 
-Future<Web3AuthResponse> _withGoogle() {
+Future<Web3AuthResponse> _withFirebase() {
   // highlight-start
+	var idToken = "";
+	try {
+		final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+				email: 'custom+jwt@firebase.login', password: 'Testing@123');
+		idToken = (await credential.user?.getIdToken(true)).toString();
+	} on FirebaseAuthException catch (e) {
+		if (e.code == 'user-not-found') {
+			print('No user found for that email.');
+		} else if (e.code == 'wrong-password') {
+			print('Wrong password provided for that user.');
+		}
+	}
+
   return Web3AuthFlutter.login(LoginParams(
-    loginProvider: Provider.google,
+    loginProvider: Provider.jwt,
     mfaLevel: MFALevel.OPTIONAL,
+		extraLoginOptions: ExtraLoginOptions(id_token: idToken, domain: 'firebase')
   ));
   // highlight-end
 }
@@ -395,7 +504,7 @@ Logging out your user is as simple as calling the `web3AuthFlutter.logout()` fun
                       height: 10,
                     ),
                     const Text(
-                      'Welcome to Web3Auth x Flutter Demo',
+                      'Welcome to Web3Auth x Flutter Firebase Demo',
                       style: TextStyle(fontSize: 14),
                     ),
                     const SizedBox(
@@ -409,17 +518,8 @@ Logging out your user is as simple as calling the `web3AuthFlutter.logout()` fun
                       height: 20,
                     ),
                     ElevatedButton(
-                        onPressed: _login(_withGoogle),
-                        child: const Text('Google')),
-                    ElevatedButton(
-                        onPressed: _login(_withFacebook),
-                        child: const Text('Facebook')),
-                    ElevatedButton(
-                        onPressed: _login(_withEmailPasswordless),
-                        child: const Text('Email Passwordless')),
-                    ElevatedButton(
-                        onPressed: _login(_withDiscord),
-                        child: const Text('Discord')),
+                        onPressed: _login(_withFirebase),
+                        child: const Text('Firebase')),
                   ],
                 ),
               ),
@@ -570,14 +670,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 ---
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth Flutter Example](https://github.com/Web3Auth/examples/tree/main/flutter/flutter-example). Check it out and try running it locally yourself!
+[Web3Auth Flutter Firebase Example](https://github.com/Web3Auth/examples/tree/main/flutter/flutter-firebase-example). Check it out and try running it locally yourself!
 
 `flutter run`
 
 Also, checkout other examples:
 
 - [Using Auth0 Custom Authentication](https://github.com/Web3Auth/examples/tree/main/flutter/flutter-auth0-example)
-- [Using Custom JWT (via Firebase)](https://github.com/Web3Auth/examples/tree/main/flutter/flutter-firebase-example)
+- [Using Flutter SDK](https://github.com/Web3Auth/examples/tree/main/flutter/flutter-example)
 
 ## Questions?
 
