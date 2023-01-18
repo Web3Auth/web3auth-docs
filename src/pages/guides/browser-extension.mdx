@@ -1,0 +1,173 @@
+---
+title: Building a Browser Extension with Web3Auth
+image: "contents/guides/banners/chrome-extension.png"
+description: Learn how to build a Browser Extension with Web3Auth
+type: guide
+tags: [web, "@web3auth/core", browser extension, chrome, react, ethereum]
+date: 18th Jan 2023
+author: Web3Auth Team
+order: 17
+---
+
+import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import SEO from "@site/src/components/SEO";
+import ExtensionLoggedInImage from "@site/static/contents/guides/browser-extension/extension-logged-in.png";
+import ExtensionImage from "@site/static/contents/guides/browser-extension/extension-preview.png";
+
+<SEO
+  title="Building a Browser Extension with Web3Auth"
+  description="Learn how to build a Browser Extension with Web3Auth"
+  image="https://web3auth.io/docs/contents/guides/banners/chrome-extension.png"
+  slug="/guides/browser-extension"
+/>
+
+This guide will walk you through the process of building a browser extension with Web3Auth.
+
+Repository: https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/browser-extension/chrome-extension-web3auth-example
+
+## Quick Start
+
+```bash
+git clone https://github.com/Web3Auth/examples.git
+cd examples/web-modal-sdk/browser-extension/chrome-extension-web3auth-example
+```
+
+- In your browser go to `chrome://extensions/`
+- Enable Developer mode
+- Click on Load unpacked and select the `build` folder from the folder path mentioned above
+
+The extension should now be installed and you can click on the extension icon to interact with it.
+
+End product of this guide:
+
+<img style={{ display: "block", maxHeight: "400px", margin: "20px auto" }} alt="" src={ExtensionImage} />
+
+Once logged in you can have all the features Web3Auth provides:
+
+<img style={{ display: "block", maxHeight: "400px", margin: "20px auto" }} alt="" src={ExtensionLoggedInImage} />
+
+## How it works?
+
+---
+
+We can integrate `@web3auth/core` as well as `@web3auth/modal` to build a browser extension with Web3Auth. You can read more about both the SDKs in
+the [SDKs](/docs/sdk/web) section. The login flow of the user is as follows:
+
+![Web3Auth Core - Social Login Flow](/images/implicit-flow.svg)
+
+## Prerequisites
+
+---
+
+<Web3AuthPrerequisites />
+
+- [Chrome Extension](https://developer.chrome.com/docs/extensions/mv3/getstarted/)
+
+We will be building the chrome extension with `create-react-app` in this guide.
+
+## Setup
+
+---
+
+### Setup your Web3Auth Dashboard
+
+<SetupWeb3AuthDashboard />
+
+:::note
+
+Once you have the build folder ready for the extension, you would need to go to `chrome://extensions/` and load the unpacked extension from the build
+folder. That will give you the extension ID which you would need to add to the Web3Auth Dashboard.
+
+Add `chrome-extension://<extension-id>` to the Whitelisted URLs in the Web3Auth Dashboard.
+
+:::
+
+## Using the Web3Auth SDK
+
+---
+
+### Installation
+
+Install `@web3auth/core`, `@web3auth/openlogin-adapter` & `@web3auth/base`
+
+```bash npm2yarn
+npm install @web3auth/core @web3auth/base @web3auth/openlogin-adapter
+```
+
+#### Import the Web3Auth Modules into your project
+
+```js title="src/App.tsx"
+import { useEffect, useState } from "react";
+import { Web3Auth } from "@web3auth/core";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+```
+
+#### Fixing Webpack 5 issues
+
+While using create-react-app, you may run into issues building. This is because NodeJS polyfills are not included in the latest version of webpack 5.
+To solve this, please have a look at this [troubleshooting page](https://docs.web3auth.io/troubleshooting/webpack-issues) where we have added the
+resolution.
+
+### Initialization
+
+Create the Web3Auth instance and configure the Openlogin adapter as per your requirements.
+
+```js title="src/App.tsx"
+const web3auth = new Web3AuthCore({
+  clientId,
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x13881",
+    rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
+  },
+  web3AuthNetwork: "cyan",
+});
+
+// refer to https://web3auth.io/docs/sdk/web/openlogin for learning more about configuring the adapter
+const openloginAdapter = new OpenloginAdapter();
+web3auth.configureAdapter(openloginAdapter);
+```
+
+### Authentication
+
+Once initialized, you can use the `connectTo` method to authenticate the user.
+
+```js
+const provider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "google",
+});
+```
+
+### Get the User Profile
+
+```js
+// Assuming the user is logged in.
+const user = await web3auth.getUserInfo();
+```
+
+### Logout
+
+Logging out your user is as simple as calling the `web3auth.logout()` function.
+
+```js
+await web3auth.logout();
+```
+
+## Interacting with the Blockchain
+
+---
+
+<InteractingWithBlockchain />
+
+## Example code
+
+The code for the application we developed in this guide can be found in the
+[Web3Auth Browser Extension](https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/browser-extension/chrome-extension-web3auth-example). Check
+it out and try running it locally yourself!
+
+## Questions?
+
+Ask us on [Web3Auth's Github Discussion Board](https://web3auth.io/discussions)
