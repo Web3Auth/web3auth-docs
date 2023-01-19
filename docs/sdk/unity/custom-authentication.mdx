@@ -63,7 +63,7 @@ Then, you should specify the details of your verifier in the `LoginConfigItem` s
 
 <TabItem value="interface">
 
-```csharp
+```cs
 public class LoginConfigItem {
   public string verifier { get; set; }
   public TypeOfLogin typeOfLogin { get; set; }
@@ -87,7 +87,7 @@ public class LoginConfigItem {
 
 ### `TypeOfLogin`
 
-```csharp
+```cs
 public enum TypeOfLogin
 {
   [EnumMember(Value = "google")]
@@ -139,22 +139,28 @@ public enum TypeOfLogin
 
 <TabItem value="google">
 
-```csharp
+```cs
 void Start()
 {
   web3Auth = GetComponent<Web3Auth>();
+  // highlight-start
+  var loginConfigItem = new LoginConfigItem()
+  {
+    verifier = "verifier-name", // get it from web3auth dashboard
+    typeOfLogin = TypeOfLogin.GOOGLE,
+    clientId = getString(R.string.web3auth_google_client_id) // google's client id
+  }
+  // highlight-end
   web3Auth.setOptions(new Web3AuthOptions()
   {
     redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
     clientId = "BAwFgL-r7wzQKmtcdiz2uHJKNZdK7gzEf2q-m55xfzSZOw8jLOyIi4AVvvzaEQO5nv2dFLEmf9LBkF8kaq3aErg",
     network = Web3Auth.Network.TESTNET,
-    // highlight-start
     // Optional loginConfig object
-    loginConfig = new LoginConfigItem()
+    // highlight-start
+    loginConfig = new Dictionary<string, LoginConfigItem>
     {
-      verifier = "verifier-name", // get it from web3auth dashboard
-      typeOfLogin = TypeOfLogin.GOOGLE,
-      clientId = getString(R.string.web3auth_google_client_id) // google's client id
+        {"google", loginConfigItem}
     }
     // highlight-end
   });
@@ -165,22 +171,28 @@ void Start()
 
 <TabItem value="facebook">
 
-```csharp
+```cs
 void Start()
 {
   web3Auth = GetComponent<Web3Auth>();
+  // highlight-start
+  var loginConfigItem = new LoginConfigItem()
+  {
+    verifier = "verifier-name", // get it from web3auth dashboard
+    typeOfLogin = TypeOfLogin.FACEBOOK,
+    clientId = getString(R.string.web3auth_facebook_client_id) // facebook's client id
+  }
+  // highlight-end
   web3Auth.setOptions(new Web3AuthOptions()
   {
     redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
     clientId = "BAwFgL-r7wzQKmtcdiz2uHJKNZdK7gzEf2q-m55xfzSZOw8jLOyIi4AVvvzaEQO5nv2dFLEmf9LBkF8kaq3aErg",
     network = Web3Auth.Network.TESTNET,
-    // highlight-start
     // Optional loginConfig object
-    loginConfig = new LoginConfigItem()
+    // highlight-start
+    loginConfig = new Dictionary<string, LoginConfigItem>
     {
-      verifier = "verifier-name", // get it from web3auth dashboard
-      typeOfLogin = TypeOfLogin.FACEBOOK,
-      clientId = getString(R.string.web3auth_facebook_client_id) // facebook's client id
+        {"facebook", loginConfigItem}
     }
     // highlight-end
   });
@@ -205,38 +217,64 @@ void Start()
 
 - To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` field of the `extraLoginOptions`.
 
-  ```csharp
-  public void login()
+```cs
+public void login()
+{
+  var selectedProvider = Provider.EMAIL_PASSWORDLESS;
+  var options = new LoginParams()
   {
-    var selectedProvider = Provider.EMAIL_PASSWORDLESS;
-    var options = new LoginParams()
+    loginProvider = selectedProvider,
+    extraLoginOptions = new ExtraLoginOptions()
     {
-      loginProvider = selectedProvider,
-      extraLoginOptions = new ExtraLoginOptions()
-      {
-          login_hint = "hello@web3auth.io"
-      }
-    };
-    web3Auth.login(options);
-  }
-  ```
+      // highlight-next-line
+      login_hint = "hello@web3auth.io"
+    }
+  };
+  web3Auth.login(options);
+}
+```
 
 - To use the `JWT` login, you need to put the jwt token into the `additionalParams` field of the `extraLoginOptions`.
 
-  ```csharp
-  public void login()
+```cs
+void Start()
+{
+  web3Auth = GetComponent<Web3Auth>();
+  // highlight-start
+  var loginConfigItem = new LoginConfigItem()
   {
-    var selectedProvider = Provider.JWT;
-    var options = new LoginParams()
+    verifier = "custom-jwt-verifier", // get it from web3auth dashboard
+    typeOfLogin = TypeOfLogin.JWT,
+  };
+  // highlight-end
+  web3Auth.setOptions(new Web3AuthOptions()
+  {
+    redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
+    clientId = "BAwFgL-r7wzQKmtcdiz2uHJKNZdK7gzEf2q-m55xfzSZOw8jLOyIi4AVvvzaEQO5nv2dFLEmf9LBkF8kaq3aErg",
+    network = Web3Auth.Network.TESTNET,
+    // Optional loginConfig object
+    // highlight-start
+    loginConfig = new Dictionary<string, LoginConfigItem>
     {
-      loginProvider = selectedProvider,
-      extraLoginOptions = new ExtraLoginOptions()
-      {
-        additionalParams = {
-          id_token = "your_jwt_token"
-        }
-      }
-    };
-      web3Auth.login(options);
-  }
-  ```
+      {"jwt", loginConfigItem}
+    }
+    // highlight-end
+  });
+}
+public void login()
+{
+  var selectedProvider = Provider.JWT;
+  var options = new LoginParams()
+  {
+    loginProvider = selectedProvider,
+    extraLoginOptions = new ExtraLoginOptions()
+    {
+    // highlight-start
+      verifierIdField = "sub",
+      id_token = "your_jwt_token",
+    // highlight-end
+    }
+  };
+  web3Auth.login(options);
+}
+```
