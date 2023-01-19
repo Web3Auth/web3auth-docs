@@ -1,0 +1,216 @@
+---
+title: Integrate Web3Auth with the Ethereum Blockchain in Unity
+sidebar_label: Unity
+image: "contents/guides/banners/unity.png"
+displayed_sidebar: docs
+keywords: [unity, ethereum, web3auth, authentication, blockchain]
+description: "Integrate Web3Auth with the Ethereum Blockchain in Unity | Documentation - Web3Auth"
+---
+
+---
+
+While using the Web3Auth Unity SDK, you get the private key within the user scope. This private key can interact with the
+[Nethereum Library](https://nethereum.com/) to make EVM based blockchain calls, like getting user's `account`, fetch `balance`, `sign transaction`,
+`send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a few here for getting you started quickly on that.
+
+:::info
+
+We have made this reference for `Ethereum`, however this can work with all other EVM compatible chains similarly.
+
+:::
+
+:::note
+
+For other blockchains, the implementation flow remains similar with the corresponding packages available from their side to make the respective
+blockchain calls.
+
+:::
+
+## Installation
+
+---
+
+To interact with the Ethereum blockchain in React Native, you can use any [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible package.
+This might include some extra setup from the package's side for adding supported shims and make it work in the native platforms.
+
+In this reference, we're using the `Nethereum` library to demonstrate how to make blockchain calls using it with Web3Auth.
+
+- Download the latest `net461dllsAOT.zip` package from Nethereum's [latest release](https://github.com/Nethereum/Nethereum/releases)
+
+- Extract and the rename the folder to `NethereumLib` for easy identification.
+
+- Move the folder to the `Assets/Plugins` folder of your Unity project.
+
+- You might have to delete a few files from the `NethereumLib` folder, if you're getting any errors while building the project. For our
+  implementation, we deleted the following files: `Newtonsoft.Json.dll`, all the files starting with `System.*`, `UnityEngine.dll`,
+  `Nethereum.Web3Lite.dll`, `Nethereum.HdWallet.dll`, `NBitcoin.dll`, `Nethereum.RPC.Reactive.dll`.
+
+:::info
+
+We have followed [this guide](https://docs.nethereum.com/en/latest/unity3d-introduction/) to set up the `Nethereum` package in our app. You can check
+their sample applications as well for a decent reference.
+
+You can also check the [Web3Auth Unity Sample Apps](https://github.com/Web3Auth/examples/tree/main/unity), where we have added the required packages.
+
+:::
+
+## Initialize
+
+---
+
+The `rpcURL` used will determine the chain specific details. We have documentated for `ETH Mainnet`, to configure it with other EVM Chains, simply
+change the rpcUrl to it's corresponding chain.
+
+### Mainnet
+
+Mainnet Block Explorer URL: https://etherscan.io -- `chainId: "1"`
+
+```cs
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using Newtonsoft.Json; // Package added directly for using Web3Auth
+using TMPro;
+// highlight-start
+using Nethereum.Web3;
+using Nethereum.Util;
+using Nethereum.Signer;
+using Nethereum.Hex.HexConvertors.Extensions;
+using Nethereum.ABI.Encoders;
+using Nethereum.Hex.HexTypes;
+using Nethereum.Web3.Accounts;
+using Nethereum.Web3.Accounts.Managed;
+// highlight-end
+
+public class Web3AuthScript : MonoBehaviour
+{
+    Web3Auth web3Auth;
+    // highlight-start
+    private string privateKey; // to store private key on login
+    private Account account; // to store the account on login
+    Web3 web3;
+    const string rpcURL = "https://rpc.ankr.com/eth";
+    // highlight-end
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        web3Auth = GetComponent<Web3Auth>();
+        web3Auth.setOptions(new Web3AuthOptions()
+        {
+            clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk",
+            redirectUrl = new System.Uri("torusapp://com.torus.Web3AuthUnity/auth"),
+            network = Web3Auth.Network.CYAN,
+        });
+        // highlight-next-line
+        web3 = new Web3(rpcURL);
+    }
+// ...
+```
+
+### Testnet
+
+- Goerli Block Explorer URL: https://goerli.etherscan.io -- `chainId: "5"`
+
+```js
+const string rpcURL =  "https://rpc.ankr.com/eth_goerli"; // Or your desired RPC Provider url
+```
+
+## Get User Info
+
+---
+
+You get the user information after a successful login returned from the `login` method. The `userInfo` object contains the user information, whereas
+the `privKey` object contains the private key which can be used to make blockchain calls.
+
+```cs
+// Follow the login flow from the Web3Auth Unity SDK
+public void login()
+{
+  web3Auth.login(new LoginParams()
+  {
+    loginProvider = Provider.GOOGLE
+  });
+}
+
+private void onLogin(Web3AuthResponse response)
+{
+  // highlight-start
+  privateKey = response.privKey;
+  var newAccount = new Account(privateKey);
+  account = newAccount;
+  // highlight-end
+}
+```
+
+## Get Account
+
+---
+
+```cs
+public void getAccount() {
+  if (account == null) {
+    Debug.Log("Please Login First");
+    return;
+  }
+  // highlight-next-line
+  Debug.Log(account.Address);
+}
+```
+
+## Get Balance
+
+---
+
+```cs
+public void getBalance() {
+  if (account == null) {
+    Debug.Log("Please Login First");
+    return;
+  }
+  // highlight-next-line
+  var balance = web3.Eth.GetBalance.SendRequestAsync(account.Address).Result.Value;
+
+  Debug.Log(balance);
+}
+```
+
+## Send Transaction
+
+---
+
+```cs
+public async void sendTransaction() {
+  if (account == null) {
+    Debug.Log("Please Login First");
+    return;
+  }
+  // highlight-start
+  var toAddress = "0x2E464..82D5057fB507Cc21";
+  var transaction = await web3.TransactionManager.SendTransactionAsync(account.Address, toAddress, new Nethereum.Hex.HexTypes.HexBigInteger(1));
+  // highlight-end
+
+  Debug.Log(transaction);
+}
+```
+
+## Sign a message
+
+---
+
+```cs
+public void signMessage() {
+  if (account == null) {
+    Debug.Log("Please Login First");
+    return;
+  }
+  // highlight-start
+  var msg = "test message 19/01/2023 02:55PM";
+  var signer = new EthereumMessageSigner();
+  var signature = signer.EncodeUTF8AndSign(msg, new EthECKey(privateKey));
+  // highlight-end
+
+  Debug.Log(signature);
+}
+```
