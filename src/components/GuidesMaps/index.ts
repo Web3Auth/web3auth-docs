@@ -370,6 +370,17 @@ export const referenceMap = [
     order: 1,
     link: "/connect-blockchain/polkadot",
   },
+  {
+    title: "Integrate Web3Auth with the Aptos Blockchain",
+    description: "Learn how to add a non custodial social login to the Aptos Blockchain",
+    image: "contents/guides/banners/aptos.png",
+    type: "REFERENCE",
+    tags: ["aptos", "@web3auth/modal", "@web3auth/core"],
+    date: "19th Jan 2023",
+    author: "Web3Auth Team",
+    order: 1,
+    link: "/connect-blockchain/aptos",
+  },
 ];
 
 export const featuresMap = [

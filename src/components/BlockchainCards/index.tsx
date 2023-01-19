@@ -125,6 +125,12 @@ export const tileGroupsData = [
         icon: "logo-polkadot.png",
         path: "./connect-blockchain/polkadot",
       },
+      {
+        key: "aptos",
+        title: "Aptos",
+        icon: "logo-aptos.png",
+        path: "./connect-blockchain/aptos",
+      },
     ],
   },
 ];

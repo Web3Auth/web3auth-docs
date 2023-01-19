@@ -107,6 +107,7 @@ module.exports = {
             "connect-blockchain/algorand",
             "connect-blockchain/immutablex",
             "connect-blockchain/polkadot",
+            "connect-blockchain/aptos",
           ],
           collapsible: true,
           collapsed: false,
