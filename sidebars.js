@@ -270,6 +270,7 @@ module.exports = {
             "sdk/web/core/whitelabel",
             "sdk/web/core/custom-authentication",
             "sdk/web/core/multi-factor-authentication",
+            "sdk/web/core/wagmi-connector",
             "sdk/web/core/usage",
           ],
         },
