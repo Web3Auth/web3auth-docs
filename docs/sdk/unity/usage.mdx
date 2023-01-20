@@ -26,7 +26,7 @@ selected providers in the [provider](#provider) section.
 
 Additionally you can associate a function to be triggerred on successful login. This function will receive the user's profile as a parameter.
 
-```csharp
+```cs
 void Start()
 {
     web3Auth = GetComponent<Web3Auth>();
@@ -78,7 +78,7 @@ private void onLogin(Web3AuthResponse response)
 
 <TabItem value="interface">
 
-```csharp
+```cs
 public class LoginParams
 {
     public Provider loginProvider { get; set; }
@@ -98,7 +98,7 @@ public class LoginParams
 
 ### `Provider`
 
-```csharp
+```cs
 public enum Provider
 {
     [EnumMember(Value = "google")]
@@ -143,7 +143,7 @@ public enum Provider
 The `LoginParams` class accepts the `ExtraLoginOptions` as an optional input, containing advanced options for custom authentication, email
 passwordless login etc. This parameter can be considered as advanced login options needed for specific cases.
 
-```csharp
+```cs
 LoginParams() { selectedLoginProvider, extraLoginOptions = ExtraLoginOptions() }
 ```
 
@@ -184,7 +184,7 @@ LoginParams() { selectedLoginProvider, extraLoginOptions = ExtraLoginOptions() }
 
 <TabItem value="interface">
 
-```csharp
+```cs
 public class ExtraLoginOptions {
     public Dictionary<string, string> additionalParams { get; set; }
     public string domain { get; set; }
@@ -218,7 +218,7 @@ public class ExtraLoginOptions {
 
 The `LoginParams` class accepts a `curve` parameter. This parameter can be used to select the elliptic curve to use for the signature.
 
-```csharp
+```cs
 LoginParams() { selectedLoginProvider, curve = Curve.SECP256K1 }
 ```
 
@@ -232,7 +232,7 @@ LoginParams() { selectedLoginProvider, curve = Curve.SECP256K1 }
 
 <TabItem value="secp256k1">
 
-```csharp
+```cs
 public void login()
 {
     var selectedProvider = Provider.GOOGLE;
@@ -250,7 +250,7 @@ public void login()
 
 <TabItem value="ed25519">
 
-```csharp
+```cs
 public void login()
 {
     var selectedProvider = Provider.GOOGLE;
@@ -288,7 +288,7 @@ public void login()
 
 <TabItem value="google">
 
-```csharp
+```cs
 public void login()
 {
     var selectedProvider = Provider.GOOGLE;
@@ -304,7 +304,7 @@ public void login()
 
 <TabItem value="facebook">
 
-```csharp
+```cs
 public void login()
 {
     var selectedProvider = Provider.FACEBOOK;
@@ -320,7 +320,7 @@ public void login()
 
 <TabItem value="discord">
 
-```csharp
+```cs
 public void login()
 {
     var selectedProvider = Provider.DISCORD;
@@ -336,7 +336,7 @@ public void login()
 
 <TabItem value="twitch">
 
-```csharp
+```cs
 public void login()
 {
     var selectedProvider = Provider.TWITCH;
@@ -352,7 +352,7 @@ public void login()
 
 <TabItem value="email_passwordless">
 
-```csharp
+```cs
 public void login()
 {
     var selectedProvider = Provider.EMAIL_PASSWORDLESS;
@@ -372,7 +372,7 @@ public void login()
 
 <TabItem value="jwt">
 
-```csharp
+```cs
 public void login()
 {
     var selectedProvider = Provider.JWT;
@@ -405,7 +405,7 @@ otherwise an error response is returned.
 
 Additionally you can associate a function to be triggerred on successful logout.
 
-```csharp
+```cs
 void Start()
 {
     web3Auth = GetComponent<Web3Auth>();
@@ -428,7 +428,7 @@ private void onLogout()
 
 ### Example
 
-```csharp
+```cs
 public void logout()
 {
     web3Auth.logout();
@@ -440,7 +440,7 @@ public void logout()
 
 ---
 
-```csharp title="/Assets/Web3Auth.cs"
+```cs title="/Assets/Web3Auth.cs"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -490,7 +490,6 @@ public class Web3custom : MonoBehaviour
     private void onLogout()
     {
         Debug.Log("Logged out!");
-
     }
 }
 
