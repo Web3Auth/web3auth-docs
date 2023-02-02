@@ -1,8 +1,8 @@
-export const openloginAdapterVersion = `4.2.0`;
-export const web3authCoreVersion = `4.0.0`;
-export const web3authModalVersion = `4.2.1`;
+export const openloginAdapterVersion = `4.3.0`;
+export const web3authCoreVersion = `4.3.0`;
+export const web3authModalVersion = `4.3.1`;
 export const web3authSolanaProviderVersion = `4.1.1u`;
-export const web3authBaseVersion = `4.0.0`;
+export const web3authBaseVersion = `4.3.0`;
 export const web3authAndroidVersion = `3.1.0`;
 export const web3authiOSVersion = `5.0.0`;
 export const web3authRNVersion = `3.3.0`;

@@ -48,7 +48,7 @@ const rpc = (() => {
     const web3 = new Web3(provider);
 
     // Get user's Ethereum public address
-    const address = (await web3.eth.getAccounts())[0];
+    const fromAddress = (await web3.eth.getAccounts())[0];
 
     const destination = "0x7aFac68875d2841dc16F1730Fba43974060b907A";
 

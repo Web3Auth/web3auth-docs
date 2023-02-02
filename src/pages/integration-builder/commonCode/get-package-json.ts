@@ -43,7 +43,7 @@ export const getPackageJson = (chain: string, whitelabel: boolean, customAuth: b
     "@starkware-industries/starkware-crypto-utils": "^0.0.2",
     "elliptic": "^6.5.4",
     "starknet": "^4.4.2",
-    "web3": "^1.8.0",`;
+    "web3": "^1.8.2",`;
       break;
 
     case TEZOS:
@@ -60,7 +60,7 @@ export const getPackageJson = (chain: string, whitelabel: boolean, customAuth: b
     "ethers": "^5.7.2",`;
       } else {
         code += `
-    "web3": "^1.8.0",`;
+    "web3": "^1.8.2",`;
       }
   }
   code += `

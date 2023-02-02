@@ -18,8 +18,8 @@ it according to your preference:
 - You can start by [Integrating a basic Web3Auth Modal](#integrate-web3auth-in-4-simple-steps) into your application and further customize it to your
   needs.
 
-- You also have the choice to check out our [Integration Builder](/integration-builder), which helps you develop a quick start boilerplate
-  application within seconds.
+- You also have the choice to check out our [Integration Builder](/integration-builder), which helps you develop a quick start boilerplate application
+  within seconds.
 
 - Further, you can checkout our [Guides](/guides) and tutorials around [Connecting your Blockchain](/connect-blockchain/) and
   [Custom Authentication](/custom-authentication/) to make Web3Auth suit your needs.
@@ -56,7 +56,9 @@ step where you can pass on all the configurations for Web3Auth you want. A simpl
   defaultValue="ethereum"
   values={[
     { label: "Ethereum", value: "ethereum" },
+    { label: "Polygon", value: "polygon" },
     { label: "Solana", value: "solana" },
+    { label: "Other Chains", value: "others" },
   ]}
 >
 
@@ -67,10 +69,29 @@ import { Web3Auth } from "@web3auth/modal";
 
 //Initialize within your constructor
 const web3auth = new Web3Auth({
-  clientId: "", // Get your Client ID from Web3Auth Dashboard
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x1",
+  },
+});
+
+await web3auth.initModal();
+```
+
+</TabItem>
+
+<TabItem value="polygon">
+
+```js
+import { Web3Auth } from "@web3auth/modal";
+
+//Initialize within your constructor
+const web3auth = new Web3Auth({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x89",
   },
 });
 
@@ -86,10 +107,28 @@ import { Web3Auth } from "@web3auth/modal";
 
 //Initialize within your constructor
 const web3auth = new Web3Auth({
-  clientId: "", // Get your Client ID from Web3Auth Dashboard
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: "solana",
     chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+  },
+});
+
+await web3auth.initModal();
+```
+
+</TabItem>
+
+<TabItem value="other">
+
+```js
+import { Web3Auth } from "@web3auth/modal";
+
+//Initialize within your constructor
+const web3auth = new Web3Auth({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "other",
   },
 });
 
@@ -351,7 +390,7 @@ export const tileGroupsData3 = [
         title: "Klaytn",
         icon: "logo-klaytn.png",
         path: "/integration-builder?chain=KLAY",
-      }
+      },
     ],
   },
 ];

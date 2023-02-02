@@ -1,7 +1,7 @@
 export const chainIdMap = {
   ETH: "0x1",
   SOL: "0x1",
-  MATIC: "0x89",
+  MATIC: "0x13881",
   BNB: "0x38",
   AVAX: "0xA86A",
   ARB: "0xA4B1",
@@ -17,7 +17,7 @@ export const chainIdMap = {
 export const rpcTargetMap = {
   ETH: "https://rpc.ankr.com/eth",
   SOL: "https://rpc.ankr.com/solana",
-  MATIC: "https://rpc-mainnet.matic.network",
+  MATIC: "https://rpc-mumbai.maticvigil.com",
   BNB: "https://bsc-dataseed.binance.org/",
   AVAX: "https://api.avax.network/ext/bc/C/rpc",
   ARB: "https://arb1.arbitrum.io/rpc",

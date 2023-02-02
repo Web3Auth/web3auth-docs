@@ -22,7 +22,6 @@ function App() {
 
         // REPLACE-getOpenloginAdapter-
 
-
         setWeb3auth(web3auth);
 
         // REPLACE-getInitCode-
