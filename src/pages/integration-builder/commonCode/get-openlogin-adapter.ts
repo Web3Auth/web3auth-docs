@@ -46,7 +46,7 @@ export const getOpenloginAdapter = (whitelabel: boolean, customAuth: string, use
     whiteLabelCode = `
           // HIGHLIGHTSTART-whiteLabeling
           adapterSettings: {
-              whiteLabel: {
+            whiteLabel: {
               name: "Your app Name",
               logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
               logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
