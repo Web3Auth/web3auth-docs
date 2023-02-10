@@ -31,6 +31,12 @@ await web3auth.authenticateUser();
 }
 ```
 
+:::note
+
+The External Wallet's `idToken` payload is different than the Social login's `idToken`.
+
+:::
+
 ### Sample `idToken` payload
 
 ---
@@ -38,8 +44,8 @@ await web3auth.authenticateUser();
 ```json
 {
   "iat": 1661158877,
-  "issuer": "<issuer-name>",
-  "audience": "https://requesting.website",
+  "iss": "<issuer-name>",
+  "aud": "https://requesting.website",
   "wallets": [
     {
       "address": "0x809d4310d578649d8539e718030ee11e603ee8f3",
@@ -50,12 +56,12 @@ await web3auth.authenticateUser();
 }
 ```
 
-| Parameter  | Type     | Description                                                                                                                                                                                             |
-| ---------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `iat`      | `number` | The "iat" (issued at) claim identifies the time at which the JWT was issued.                                                                                                                            |
-| `audience` | `string` | The "audience" claim identifies the recipients that the JWT is intended for. (Here, it's `website's url`)                                                                                               |
-| `issuer`   | `string` | The "issuer" claim identifies who issued the JWT. <br/> Here, issuer could be `torus-evm`, `torus-solana`, `metamask`, `phantom`, `walletconnect-v1`, `coinbase`, `slope`, `solflare`                   |
-| `wallets`  | `array`  | list of wallets for which this token is issued: <ul><li>`address` : Wallet public address</li><li>`type` Network Type such as "ethereum", "solana" or "starkware" incase of external wallets </li></ul> |
+| Parameter | Type     | Description                                                                                                                                                                                             |
+| --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `iat`     | `number` | The "iat" (issued at) claim identifies the time at which the JWT was issued.                                                                                                                            |
+| `aud`     | `string` | The "audience" claim identifies the recipients that the JWT is intended for. (Here, it's `website's url`)                                                                                               |
+| `iss`     | `string` | The "issuer" claim identifies who issued the JWT. <br/> Here, issuer could be `torus-evm`, `torus-solana`, `metamask`, `phantom`, `walletconnect-v1`, `coinbase`, `slope`, `solflare`                   |
+| `wallets` | `array`  | list of wallets for which this token is issued: <ul><li>`address` : Wallet public address</li><li>`type` Network Type such as "ethereum", "solana" or "starkware" incase of external wallets </li></ul> |
 
 ## Verifying JWT Token (idToken)
 
