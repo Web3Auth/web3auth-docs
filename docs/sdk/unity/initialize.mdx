@@ -7,8 +7,8 @@ description: "Unity SDK - Initialize | Documentation - Web3Auth"
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
-
-import web3authCS from "@site/static/contents/sdk/unity/web3authCS.png";
+import UnityInitialization from "@site/src/common/sdk/unity/_unity-initialization.mdx";
+import UnitySetOptions from "@site/src/common/sdk/unity/_unity-setoptions.mdx";
 
 ---
 
@@ -26,57 +26,13 @@ Additionally, You must configure Whitelabeling and Custom Authentication within 
 
 ---
 
-Attach a `Web3Auth.cs` script to your game object where you are planning to write your authentication code.
-
-:::tip
-
-You can refer to following sample file on how your boilerplate script should look like:
-
-```cs title="/Assets/Web3Auth.cs"
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using Newtonsoft.Json;
-
-public class Web3Auth : MonoBehaviour
-{
-  // Start is called before the first frame update
-  void Start() {}
-  public void login() {}
-  private void onLogin(Web3AuthResponse response) {}
-  public void logout() {}
-  private void onLogout() {}
-}
-```
-
-:::
-
-Within your script, import the `Web3Auth` component in your class.
-
-```cs
-Web3Auth web3Auth;
-```
-
-Next create an instance within your `Start()` function by creating an instance of the component you just imported.
-
-```cs
-web3Auth = GetComponent<Web3Auth>();
-```
+<UnityInitialization />
 
 ## Setting up Web3Auth Options
 
 ---
 
-After instantiation, within your `Start()` function, set up the Web3Auth Options as follows:
-
-```cs
-web3Auth.setOptions(new Web3AuthOptions()
-{
-
-});
-```
+<UnitySetOptions />
 
 ### Arguments
 
@@ -119,14 +75,6 @@ class Web3AuthOptions {
 </TabItem>
 
 </Tabs>
-
-:::tip
-
-You can also configure your `client_id`, `redirect_url` and `network` within the script setting in Unity Editor. It will look something like this:
-
-<img src={web3authCS} style={{ alignSelf: "center", maxWidth: "100%" }} />
-
-:::
 
 ## Example
 
