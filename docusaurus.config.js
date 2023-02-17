@@ -9,6 +9,9 @@ const githubEditUrl = `${githubRepoUrl}/edit/master`;
 const contactUrl = "https://calendly.com/web3auth/meeting-with-web3auth";
 const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
+const fs = require('fs');
+
+const resourcesDropdown = fs.readFileSync('./src/components/navDropdown/resources.html', 'utf-8');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 const config = {
@@ -46,24 +49,29 @@ const config = {
       },
       items: [
         {
-          label: "Integration Builder",
-          to: "/integration-builder",
-          position: "left",
-        },
-        {
           label: "SDKs",
           to: "/sdk",
           position: "left",
         },
         {
-          label: "Guides",
-          activeBasePath: "/guides",
-          to: "/guides",
+          label: "Integration Builder",
+          to: "/integration-builder",
           position: "left",
         },
         {
-          label: "Enterprise Demo",
-          href: contactUrl,
+          label: 'Resources',
+          type: 'dropdown',
+          items: [
+            {
+              type: 'html',
+              value: resourcesDropdown,
+           },
+          ],
+        },
+        {
+          label: "Guides",
+          activeBasePath: "/guides",
+          to: "/guides",
           position: "left",
         },
         {
