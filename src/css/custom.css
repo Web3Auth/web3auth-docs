@@ -1,9 +1,11 @@
 /* Fonts */
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"); /* Variables */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap'); /* Variables */
 :root {
   --ifm-navbar-padding-horizontal: 32px;
   --ifm-navbar-padding-vertical: 6px;
   --ifm-navbar-height: 80px;
+  --ifm-background-surface-color: #FFFFFF;
+  --ifm-background-color: #FFFFFF;
   --ifm-system-font-family-sans: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Segoe UI",
     Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --ifm-navbar-item-padding-vertical: 0px;
@@ -11,7 +13,7 @@
   --ifm-navbar-item-padding-horizontal: 10px;
   --ifm-link-color: var(--ifm-color-primary);
   --ifm-link-hover-color: black;
-  --ifm-font-family-base: "DM Sans", var(--ifm-system-font-family-sans);
+  --ifm-font-family-base: "Inter", var(--ifm-system-font-family-sans);
   --ifm-font-family-monospace: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --font-code: var(--ifm-font-family-monospace) !important;
   --font-mono: var(--ifm-font-family-monospace) !important;
@@ -33,6 +35,7 @@
   --ifm-color-icon-background: #F9FAFB;
   --ifm-color-icon-active-background: #EBF5FF;
   --ifm-color-menu-selection-background: #F9FAFB;
+  --ifm-color-product-selection-menu-background: #F3F4F6;
   --ifm-code-font-size: 95%;
   --ifm-font-size-base: 15px;
   --ifm-line-height-base: 180%;
@@ -150,16 +153,16 @@ html[data-theme="dark"] {
   --ifm-color-primary-g: 200;
   --ifm-color-primary-b: 255;
   --docusaurus-highlighted-code-line-bg: #464c61;
-  --ifm-background-surface-color: #24262e;
-  --ifm-navbar-background-color: #2e303b;
-  --ifm-footer-background-color: #2e303b;
-  --ifm-background-color: #24262e;
-  --ifm-dropdown-background-color: #24262e;
+  --ifm-background-color: #111928;
+  --ifm-navbar-background-color: #1F2A37;
+  --ifm-footer-background-color: #1F2A37;
+  --ifm-dropdown-background-color: #1F2A37;
   --ifm-code-background-color: rgba(26, 199, 254, 0.1);
   --ifm-code-color: #1ac7fe;
   --ifm-color-icon-active-background: #374151;
   --ifm-color-icon-background: #374151;
   --ifm-color-menu-selection-background: #111928;
+  --ifm-color-product-selection-menu-background: #111928;
 }
 
 html[data-theme="dark"] .navbar-github-link:before {
@@ -373,6 +376,10 @@ a:any-link:hover {
   }
 }
 
+.dropdown__menu {
+  padding: 0;
+}
+
 .resources-dropdown-menu {
   display: flex;
   flex-direction: row;
@@ -398,7 +405,7 @@ a:any-link:hover {
   color: var(--ifm-navbar-link-color);
   flex-direction: row;
   justify-content: space-between;
-  width: 230px;
+  width: 240px;
   align-items: center;
   border-radius: 8px;
   margin: 0;
@@ -476,8 +483,231 @@ a:any-link:hover {
   .resources-dropdown-menu ul {
     gap: 0;
   }
-    .resources-dropdown-menu a {
+  .resources-dropdown-menu a {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+.sdk-menu {
+  display: flex;
+  flex-direction: row;
+  border-radius: 8px;
+  padding: 0;
+}
+
+.sdk-menu h2 {
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.sdk-menu h3 {
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 150%;
+  font-weight: 500;
+  color: #9CA3AF;
+  padding-left: 14px;
+  margin: 0;
+  margin-top: 14px;
+}
+
+.sdk-menu p {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+  margin: 0;
+  color: var(--ifm-color-gray-400)
+}
+
+.product-selection-menu {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px;
+  gap: 32px;
+  border-radius: 8px;
+  background-color: var(--ifm-color-product-selection-menu-background);
+  margin: 0;
+}
+
+.product-selection-menu ul {
+  display: flex;
+  padding-left: 0;
+  color: var(--ifm-navbar-link-color);
+  list-style-type: none;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.product-selection-menu a {
+  display: flex;
+  padding-left: 14px;
+  color: var(--ifm-navbar-link-color);
+  flex-direction: row;
+  justify-content: space-between;
+  width: 190px;
+  align-items: center;
+  border-radius: 8px;
+  margin: 0;
+  border: 0;
+  background-color:  var(--ifm-color-menu-selection-background);
+}
+
+.product-selection-menu .selected{
+  background-color: var(--ifm-navbar-background-color);
+}
+
+.product-selection-menu a div {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+  margin: 0;
+}
+
+.sdk-selection-menu {
+  display: none;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px;
+  gap: 32px;
+  border-radius: 8px;
+}
+
+.selected-menu {
+  display: flex;
+}
+
+.sdk-selection-menu ul {
+  display: flex;
+  padding-left: 0;
+  color: var(--ifm-navbar-link-color);
+  list-style-type: none;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sdk-selection-menu a {
+  display: flex;
+  padding-left: 14px;
+  color: var(--ifm-navbar-link-color);
+  flex-direction: row;
+  justify-content: space-between;
+  width: 240px;
+  align-items: center;
+  border-radius: 8px;
+  margin: 0;
+}
+
+.sdk-selection-menu a div {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+  margin: 0;
+}
+
+.sdk-selection-menu a span {
+  display: flex;
+  background-color: var(--ifm-color-icon-background);
+  border-radius: 8px;
+  margin: 0;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+
+.sdk-selection-menu a span svg {
+  height: 24px;
+  width: 24px;
+  color: var(--ifm-color-gray-400);
+  display: block;
+  position: relative;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+.sdk-selection-menu a:hover {
+  background-color: var(--ifm-color-menu-selection-background);
+}
+
+.sdk-selection-menu a:hover span {
+  background-color: var(--ifm-color-icon-active-background);
+}
+
+.sdk-selection-menu a:hover span svg {
+  color: var(--ifm-color-primary);
+}
+
+@media screen and (max-width: 996px) {
+  .sdk-selection-menu {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    gap: 0;
+  }
+
+  .sdk-selection-menu ul {
+    gap: 0;
+  }
+    .sdk-selection-menu a {
       width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media screen and (max-width: 996px) {
+  .sdk-menu {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    gap: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .product-selection-menu {
+    display:none
+  }
+
+  .sdk-selection-menu {
+    display: flex;
+  }
+
+  #pnp-menu h3::before {
+    content: "Plug and Play - ";
+  }
+
+  #core-kit-menu h3::before {
+    content: "Core Kit - ";
+  }
+
+  .sdk-selection-menu {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    gap: 0;
+  }
+
+  .sdk-selection-menu ul {
+    gap: 0;
+  }
+  .sdk-selection-menu a {
+    width: 100%;
     justify-content: flex-start;
   }
 }

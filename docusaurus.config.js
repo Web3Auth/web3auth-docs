@@ -12,6 +12,7 @@ const rehypeKatex = require("rehype-katex");
 const fs = require('fs');
 
 const resourcesDropdown = fs.readFileSync('./src/components/navDropdown/resources.html', 'utf-8');
+const sdkDropdown = fs.readFileSync('./src/components/navDropdown/sdk.html', 'utf-8');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 const config = {
@@ -49,9 +50,16 @@ const config = {
       },
       items: [
         {
-          label: "SDKs",
+          label: 'SDKs',
+          type: 'dropdown',
           to: "/sdk",
           position: "left",
+          items: [
+            {
+              type: 'html',
+              value: sdkDropdown,
+           },
+          ],
         },
         {
           label: "Integration Builder",
@@ -61,6 +69,7 @@ const config = {
         {
           label: 'Resources',
           type: 'dropdown',
+          position: "left",
           items: [
             {
               type: 'html',
