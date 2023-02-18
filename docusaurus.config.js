@@ -122,7 +122,7 @@ const config = {
       {
         docs: {
           routeBasePath: "/",
-          breadcrumbs: false,
+          breadcrumbs: true,
           editUrl: githubEditUrl,
           sidebarPath: require.resolve("./sidebars.js"),
           remarkPlugins: [remarkMath, [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
