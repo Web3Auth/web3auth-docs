@@ -20,7 +20,7 @@ export default function QuickNavigation() {
   const nodejs = "Node.js";
   const weblist = [react, angular, vue, nextjs];
 
-  const pnp = "pnp";
+  const pnp = "Plug and Play";
   const pnpwebmodal = "Plug and Play Web Modal SDK";
   const pnpwebnomodal = "Plug and Play Web No Modal SDK";
   const pnpandroid = "Plug and Play Android SDK";
@@ -40,7 +40,7 @@ export default function QuickNavigation() {
     { label: "Unreal SDK", value: pnpunreal, platforms: [unreal] },
   ];
 
-  const corekit = "corekit";
+  const corekit = "Core Kit";
   const corekitweb = "Core Kit JS SDK";
   const singlefactorauth = "Single Factor Auth SDK";
   const corekitnodejs = "Node.js SDK";
@@ -98,7 +98,7 @@ export default function QuickNavigation() {
                 />
               </svg>
             </div>
-            <h5 className={styles.title}>Plug and Play</h5>
+            <h5 className={styles.title}>{pnp}</h5>
           </div>
           <p>Use pre configured UX flows and integrate your Web3Auth instance quickly.</p>
         </div>
@@ -118,7 +118,7 @@ export default function QuickNavigation() {
                 <path d="M17 5C17 6.657 13.866 8 10 8C6.134 8 3 6.657 3 5C3 3.343 6.134 2 10 2C13.866 2 17 3.343 17 5Z" fill="currentColor" />
               </svg>
             </div>
-            <h5 className={styles.title}>Core Kit</h5>
+            <h5 className={styles.title}>{corekit}</h5>
           </div>
           <p>Build on top of the Web3Auth infrastructural layer and build your own UX flows.</p>
         </div>
