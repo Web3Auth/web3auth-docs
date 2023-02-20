@@ -147,15 +147,15 @@ export default function QuickNavigation() {
           <select value={sdk} onChange={changeSDK}>
             {product === pnp
               ? pnplist.map((option) => (
-                  <option value={option.value} key={option.value}>
-                    {option.label}
-                  </option>
-                ))
+                <option value={option.value} key={option.value}>
+                  {option.label}
+                </option>
+              ))
               : corekitlist.map((option) => (
-                  <option value={option.value} key={option.value}>
-                    {option.label}
-                  </option>
-                ))}
+                <option value={option.value} key={option.value}>
+                  {option.label}
+                </option>
+              ))}
           </select>
         </div>
         <div className={styles.list}>
