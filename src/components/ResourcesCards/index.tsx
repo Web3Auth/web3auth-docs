@@ -6,6 +6,10 @@ export default function QuickNavigation() {
   return (
     <div className={styles.container}>
       <h2 className={styles.heading}>Resources</h2>
+      <p>
+        We have a varied collection of guides, references and examples to help you around anywhere with your Web3Auth Integration. Deep dive into the
+        different aspects of web3 authentication and make your own customised integration.
+      </p>
       <div className={styles.cardContainer}>
         <Link className={styles.card} to="/quick-start">
           <div className={styles.cardIconContainer}>
@@ -19,7 +23,7 @@ export default function QuickNavigation() {
             </svg>
           </div>
           <div className={styles.cardContent}>
-            <h5 className={styles.title}>Dashboard Setup</h5>
+            <h5>Dashboard Setup</h5>
             <p>Get Started with our developer dashboard</p>
           </div>
         </Link>
@@ -35,7 +39,7 @@ export default function QuickNavigation() {
             </svg>
           </div>
           <div className={styles.cardContent}>
-            <h5 className={styles.title}>Auth Provider Setup</h5>
+            <h5>Auth Provider Setup</h5>
             <p>Set up your Auth Provider to use it with Web3Auth.</p>
           </div>
         </Link>
@@ -53,7 +57,7 @@ export default function QuickNavigation() {
             </svg>
           </div>
           <div className={styles.cardContent}>
-            <h5 className={styles.title}>Connect Blockchain</h5>
+            <h5>Connect Blockchain</h5>
             <p>Connect to the blockchain of your choice.</p>
           </div>
         </Link>
@@ -69,12 +73,35 @@ export default function QuickNavigation() {
             </svg>
           </div>
           <div className={styles.cardContent}>
-            <h5 className={styles.title}>Examples</h5>
+            <h5>Examples</h5>
             <p>Explore the range of examples across all our SDKs.</p>
           </div>
         </Link>
       </div>
       <div className={styles.cardContainer}>
+        <Link className={styles.card} to="/quick-start">
+          <div className={styles.cardIconContainer}>
+            <svg viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M6.7 16.7498C6.7 14.9729 7.40589 13.2687 8.66238 12.0122C9.91887 10.7557 11.623 10.0498 13.4 10.0498H40.2C41.9769 10.0498 43.6811 10.7557 44.9376 12.0122C46.1941 13.2687 46.9 14.9729 46.9 16.7498V50.2498C46.9 52.0268 47.6059 53.7309 48.8624 54.9874C50.1189 56.2439 51.823 56.9498 53.6 56.9498H13.4C11.623 56.9498 9.91887 56.2439 8.66238 54.9874C7.40589 53.7309 6.7 52.0268 6.7 50.2498V16.7498ZM16.75 20.0998H36.85V33.4998H16.75V20.0998ZM36.85 40.1998H16.75V46.8998H36.85V40.1998Z"
+                fill="currentColor"
+              />
+              <path
+                d="M50.25 23.4502H53.6C55.377 23.4502 57.0811 24.1561 58.3376 25.4126C59.5941 26.6691 60.3 28.3732 60.3 30.1502V48.5752C60.3 49.9079 59.7706 51.186 58.8282 52.1284C57.8858 53.0708 56.6077 53.6002 55.275 53.6002C53.9423 53.6002 52.6642 53.0708 51.7218 52.1284C50.7794 51.186 50.25 49.9079 50.25 48.5752V23.4502Z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+          <div className={styles.cardContent}>
+            <h5>Blogs</h5>
+            <p>
+              Learn from the best in the wallet infra market. Product announcements, comparisons, thought leadership articles from Web3Auth just a
+              click away.
+            </p>
+          </div>
+        </Link>
         <Link className={styles.card} to="/quick-start">
           <div className={styles.cardIconContainer}>
             <svg viewBox="0 0 57 56" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
@@ -93,27 +120,7 @@ export default function QuickNavigation() {
             </svg>
           </div>
           <div className={styles.cardContent}>
-            <h5 className={styles.title}>Troubleshooting</h5>
-            <p>Stuck somewhere? Checkout the Troubleshooting section</p>
-          </div>
-        </Link>
-        <Link className={styles.card} to="/quick-start">
-          <div className={styles.cardIconContainer}>
-            <svg viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M6.7 16.7498C6.7 14.9729 7.40589 13.2687 8.66238 12.0122C9.91887 10.7557 11.623 10.0498 13.4 10.0498H40.2C41.9769 10.0498 43.6811 10.7557 44.9376 12.0122C46.1941 13.2687 46.9 14.9729 46.9 16.7498V50.2498C46.9 52.0268 47.6059 53.7309 48.8624 54.9874C50.1189 56.2439 51.823 56.9498 53.6 56.9498H13.4C11.623 56.9498 9.91887 56.2439 8.66238 54.9874C7.40589 53.7309 6.7 52.0268 6.7 50.2498V16.7498ZM16.75 20.0998H36.85V33.4998H16.75V20.0998ZM36.85 40.1998H16.75V46.8998H36.85V40.1998Z"
-                fill="currentColor"
-              />
-              <path
-                d="M50.25 23.4502H53.6C55.377 23.4502 57.0811 24.1561 58.3376 25.4126C59.5941 26.6691 60.3 28.3732 60.3 30.1502V48.5752C60.3 49.9079 59.7706 51.186 58.8282 52.1284C57.8858 53.0708 56.6077 53.6002 55.275 53.6002C53.9423 53.6002 52.6642 53.0708 51.7218 52.1284C50.7794 51.186 50.25 49.9079 50.25 48.5752V23.4502Z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
-          <div className={styles.cardContent}>
-            <h5 className={styles.title}>Guides</h5>
+            <h5>Guides</h5>
             <p>Set up your Auth Provider to use it with Web3Auth.</p>
           </div>
         </Link>
