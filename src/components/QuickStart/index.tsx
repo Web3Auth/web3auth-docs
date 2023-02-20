@@ -198,7 +198,7 @@ export default function QuickNavigation() {
       {platform === android ? <PNPAndroid /> : ""}
       {platform === ios ? <PNPIos /> : ""}
       {platform === flutter ? <PNPFlutter /> : ""}
-      {platform === reactnative ? <PNPReactNative /> : ""}
+      {platform === reactnative && product === pnp ? <PNPReactNative /> : ""}
       {platform === unity ? "Unity Example Coming Soon" : ""}
       {platform === unreal ? "Unreal Example Coming Soon" : ""}
     </div>
