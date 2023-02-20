@@ -6,7 +6,6 @@ export default function QuickNavigation() {
   return (
     <div className={styles.container}>
       <h2 className={styles.heading}>Need Help?</h2>
-      <p>Want to know about how the Web3Auth will work for you? Finding any problems with your integration? We are here to help you.</p>
       <div className={styles.cardContainer}>
         <Link className={styles.card} to="/quick-start">
           <div className={styles.cardIconContainer}>
