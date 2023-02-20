@@ -1,8 +1,24 @@
+.headingContainer {
+  display: flex;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  justify-content: space-between;
+  flex: 0 0 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  position: sticky;
+  top: 70px;
+  background-color: var(--ifm-background-color);
+  border: none;
+}
+
 .heading {
   font-weight: 700 !important;
   font-size: 32px;
   line-height: 48px;
   color: var(--ifm-color-content);
+  padding: 0;
+  margin: 0;
 }
 
 .container {
@@ -11,7 +27,8 @@
   gap: 2%;
   justify-content: space-around;
   flex-wrap: wrap;
-  overflow: hidden;
+  overflow: visible;
+  scroll-behavior: smooth;
 }
 
 .card {
@@ -23,7 +40,6 @@
   /* gray/200 */
   border: 1px solid var(--ifm-border-color);
   /* shadow-sm */
-  box-shadow: 0px 1px 2px var(--ifm-border-color);
   border-radius: 8px;
   text-decoration: none;
 }
@@ -67,13 +83,21 @@
   color: var(--ifm-color-icon-gray);
 }
 
+.cardTitleContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 11px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 .platformIconSection {
   display: flex;
   flex-direction: row;
   gap: 8px;
   justify-content: flex-start;
   align-items: center;
-  flex-wrap: wrap
+  flex-wrap: wrap;
 }
 
 .platformIconContainer {
@@ -84,6 +108,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 7px;
 }
 
 .tabContainer {
@@ -116,7 +141,7 @@
   padding-right: 18px;
   margin: 0;
   font-weight: 500 !important;
-  font-size: 12px;
+  font-size: 15px;
   line-height: 150%;
   color: var(--ifm-color-icon-gray);
 }
@@ -127,7 +152,41 @@
 }
 
 
-.tabContent {
+.pillContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  /* white */
+  background: var(--ifm-color-icon-active-background);
+  border-radius: 8px;
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
+  width: max-content;
+  overflow: hidden;
+}
+
+.pill {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  width: max-content;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 0;
+  font-weight: 500 !important;
+  font-size: 12px;
+  line-height: 150%;
+  color: var(--ifm-color-primary);
+}
+
+
+.cardContent {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -152,16 +211,23 @@
   color: var(--ifm-color-primary);
 }
 
-.tabContent:nth-child(odd) .sdkIconContainer {
+.cardContent:nth-child(even) .sdkIconContainer {
   background-color: var(--ifm-color-purple-background);
 }
 
-.tabContent:nth-child(odd) .sdkIcon {
+.cardContent:nth-child(even) .sdkIcon {
   color: var(--ifm-color-purple);
 }
 
+.cardContent:nth-child(even) .pillContainer {
+  background-color: var(--ifm-color-purple-background);
+}
 
-.tabContentText {
+.cardContent:nth-child(even) .pill {
+  color: var(--ifm-color-purple);
+}
+
+.cardContentText {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -188,21 +254,8 @@
   color: var(--ifm-color-primary);
 }
 
-.tabContent:nth-child(odd) .links a {
+.cardContent:nth-child(even) .links a {
   color: var(--ifm-color-purple);
-}
-
-@media screen and (max-width: 996px) {
-  .container {
-    flex-direction: column;
-  }
-  .card {
-    max-width: 100%;
-    justify-content: left;
-  }
-  .cardContainer {
-    justify-content: flex-start;
-  }
 }
 
 @media (max-width: 1231px) {
@@ -211,9 +264,24 @@
   }
 }
 
-  @media (max-width: 996px) {
-    .card {
+@media (max-width: 996px) {
+  .container {
     flex-direction: column;
+  }
+  .headingContainer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .card {
+    max-width: 100%;
+    justify-content: left;
+    flex-direction: column;
+  }
+
+  .cardContainer {
+    justify-content: flex-start;
   }
   .cardContainerIntro, .cardContainer {
     width: 100%;
