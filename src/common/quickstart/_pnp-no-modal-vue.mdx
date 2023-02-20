@@ -1,13 +1,14 @@
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import Image5 from "@site/static/dashboard/project_plug_n_play.png";
+import ConnectToExample from "@site/src/common/sdk/web/_connect-to-example.mdx";
 
 ### 1. Install Web3Auth
 
-Import the Web3Auth package in your Angular project. If you're using any other platform, check our respective [SDK Reference](/sdk).
+Import the Web3Auth No Modal package in your Vue project. If you're using any other platform, check our respective [SDK Reference](/sdk).
 
 ```bash npm2yarn
-npm install --save @web3auth/modal
+npm install --save @web3auth/no-modal
 ```
 
 ### 2. Get your Client ID from Web3Auth Dashboard
@@ -34,10 +35,10 @@ step where you can pass on all the configurations for Web3Auth you want. A simpl
 <TabItem value="ethereum">
 
 ```js
-import { Web3Auth } from "@web3auth/modal";
+import { Web3AuthCore } from "@web3auth/no-modal";
 
 //Initialize within your constructor
-const web3auth = new Web3Auth({
+const web3auth = new Web3AuthCore({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: "eip155",
@@ -45,7 +46,7 @@ const web3auth = new Web3Auth({
   },
 });
 
-await web3auth.initModal();
+await web3auth.init();
 ```
 
 </TabItem>
@@ -53,10 +54,10 @@ await web3auth.initModal();
 <TabItem value="polygon">
 
 ```js
-import { Web3Auth } from "@web3auth/modal";
+import { Web3AuthCore } from "@web3auth/no-modal";
 
 //Initialize within your constructor
-const web3auth = new Web3Auth({
+const web3auth = new Web3AuthCore({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: "eip155",
@@ -64,7 +65,7 @@ const web3auth = new Web3Auth({
   },
 });
 
-await web3auth.initModal();
+await web3auth.init();
 ```
 
 </TabItem>
@@ -72,10 +73,10 @@ await web3auth.initModal();
 <TabItem value="solana">
 
 ```js
-import { Web3Auth } from "@web3auth/modal";
+import { Web3AuthCore } from "@web3auth/no-modal";
 
 //Initialize within your constructor
-const web3auth = new Web3Auth({
+const web3auth = new Web3AuthCore({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: "solana",
@@ -83,7 +84,7 @@ const web3auth = new Web3Auth({
   },
 });
 
-await web3auth.initModal();
+await web3auth.init();
 ```
 
 </TabItem>
@@ -91,17 +92,17 @@ await web3auth.initModal();
 <TabItem value="other">
 
 ```js
-import { Web3Auth } from "@web3auth/modal";
+import { Web3AuthCore } from "@web3auth/no-modal";
 
 //Initialize within your constructor
-const web3auth = new Web3Auth({
+const web3auth = new Web3AuthCore({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: "other",
   },
 });
 
-await web3auth.initModal();
+await web3auth.init();
 ```
 
 </TabItem>
@@ -110,11 +111,9 @@ await web3auth.initModal();
 
 ### 4. Login your User
 
-Once you're done initialising, just create a button that triggers to open the login modal for the user on their request. Logging in is as easy as:
+Once you're done initialising, just create a button that triggers the login for the user on their request. Logging in is as easy as:
 
-```js
-await web3auth.connect();
-```
+<ConnectToExample />
 
 :::caution
 

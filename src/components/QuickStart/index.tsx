@@ -1,7 +1,23 @@
-/* eslint-disable prettier/prettier */
-
+/* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import NodeExample from "@site/src/common/quickstart/_node.mdx";
+import PNPAndroid from "@site/src/common/quickstart/_pnp-android.mdx";
+import PNPFlutter from "@site/src/common/quickstart/_pnp-flutter.mdx";
+import PNPIos from "@site/src/common/quickstart/_pnp-ios.mdx";
+import PNPModalAngular from "@site/src/common/quickstart/_pnp-modal-angular.mdx";
+import PNPModalNext from "@site/src/common/quickstart/_pnp-modal-nextjs.mdx";
+import PNPModalReact from "@site/src/common/quickstart/_pnp-modal-react.mdx";
+import PNPModalVue from "@site/src/common/quickstart/_pnp-modal-vue.mdx";
+import PNPNoModalAngular from "@site/src/common/quickstart/_pnp-no-modal-angular.mdx";
+import PNPNoModalNext from "@site/src/common/quickstart/_pnp-no-modal-nextjs.mdx";
+import PNPNoModalReact from "@site/src/common/quickstart/_pnp-no-modal-react.mdx";
+import PNPNoModalVue from "@site/src/common/quickstart/_pnp-no-modal-vue.mdx";
+import PNPReactNative from "@site/src/common/quickstart/_pnp-reactnative.mdx";
+import SFAAngular from "@site/src/common/quickstart/_sfa-angular.mdx";
+import SFANext from "@site/src/common/quickstart/_sfa-nextjs.mdx";
+import SFAReact from "@site/src/common/quickstart/_sfa-react.mdx";
+import SFAVue from "@site/src/common/quickstart/_sfa-vue.mdx";
 import { useState } from "react";
 
 import styles from "./styles.module.css";
@@ -16,7 +32,7 @@ export default function QuickNavigation() {
   const reactnative = "React Native";
   const flutter = "Flutter";
   const unity = "Unity";
-  const unreal = "unreal";
+  const unreal = "Unreal";
   const nodejs = "Node.js";
   const weblist = [react, angular, vue, nextjs];
 
@@ -57,11 +73,11 @@ export default function QuickNavigation() {
 
   function changePlatformList(productValue, sdkValue) {
     if (productValue === pnp) {
-      const selectedSDK = pnplist.filter(el => el.value === sdkValue);
+      const selectedSDK = pnplist.filter((el) => el.value === sdkValue);
       setPlatformList(selectedSDK[0].platforms);
       setPlatform(selectedSDK[0].platforms[0]);
     } else if (productValue === corekit) {
-      const selectedSDK = corekitlist.filter(el => el.value === sdkValue);
+      const selectedSDK = corekitlist.filter((el) => el.value === sdkValue);
       setPlatformList(selectedSDK[0].platforms);
       setPlatform(selectedSDK[0].platforms[0]);
     }
@@ -130,15 +146,15 @@ export default function QuickNavigation() {
           <select value={sdk} onChange={changeSDK}>
             {product === pnp
               ? pnplist.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.label}
-                </option>
-              ))
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))
               : corekitlist.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.label}
-                </option>
-              ))}
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))}
           </select>
         </div>
         <div className={styles.list}>
@@ -152,8 +168,39 @@ export default function QuickNavigation() {
           </select>
         </div>
       </div>
+      <br />
+      <h2>
+        Integrate Web3Auth {sdk} in 4 simple steps in your {platform} App
+      </h2>
       <hr />
-      <h2>Integrate Web3Auth {sdk} in 4 simple steps in your {platform} App</h2>
+      {platform === angular && sdk === pnpwebmodal ? <PNPModalAngular /> : platform === angular && sdk === pnpwebnomodal ? <PNPNoModalAngular /> : ""}
+      {platform === react && sdk === pnpwebmodal ? <PNPModalReact /> : platform === react && sdk === pnpwebnomodal ? <PNPNoModalReact /> : ""}
+      {platform === vue && sdk === pnpwebmodal ? <PNPModalVue /> : platform === vue && sdk === pnpwebnomodal ? <PNPNoModalVue /> : ""}
+      {platform === nextjs && sdk === pnpwebmodal ? <PNPModalNext /> : platform === nextjs && sdk === pnpwebnomodal ? <PNPNoModalNext /> : ""}
+      {platform === angular && sdk === tkeyjs ? (
+        "tKey Angular Example Coming Soon"
+      ) : platform === angular && sdk === singlefactorauth ? (
+        <SFAAngular />
+      ) : (
+        ""
+      )}
+      {platform === react && sdk === tkeyjs ? "tKey React Example Coming Soon" : platform === react && sdk === singlefactorauth ? <SFAReact /> : ""}
+      {platform === vue && sdk === tkeyjs ? "tKey Vue Example Coming Soon" : platform === vue && sdk === singlefactorauth ? <SFAVue /> : ""}
+      {platform === nextjs && sdk === tkeyjs ? (
+        "tKey Next.js Example Coming Soon"
+      ) : platform === nextjs && sdk === singlefactorauth ? (
+        <SFANext />
+      ) : (
+        ""
+      )}
+      {platform === reactnative && sdk === tkeyjs ? "tKey React Native Example Coming Soon" : ""}
+      {platform === nodejs ? <NodeExample /> : ""}
+      {platform === android ? <PNPAndroid /> : ""}
+      {platform === ios ? <PNPIos /> : ""}
+      {platform === flutter ? <PNPFlutter /> : ""}
+      {platform === reactnative ? <PNPReactNative /> : ""}
+      {platform === unity ? "Unity Example Coming Soon" : ""}
+      {platform === unreal ? "Unreal Example Coming Soon" : ""}
     </div>
   );
 }

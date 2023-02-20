@@ -4,10 +4,10 @@ import Image5 from "@site/static/dashboard/project_plug_n_play.png";
 
 ### 1. Install Web3Auth
 
-Import the Web3Auth package in your Angular project. If you're using any other platform, check our respective [SDK Reference](/sdk).
+Import the Web3Auth's Single Factor Auth package in your Angular project.
 
 ```bash npm2yarn
-npm install --save @web3auth/modal
+npm install --save @web3auth/single-factor-auth
 ```
 
 ### 2. Get your Client ID from Web3Auth Dashboard
@@ -34,7 +34,7 @@ step where you can pass on all the configurations for Web3Auth you want. A simpl
 <TabItem value="ethereum">
 
 ```js
-import { Web3Auth } from "@web3auth/modal";
+import { Web3Auth } from "@web3auth/single-factor-auth";
 
 //Initialize within your constructor
 const web3auth = new Web3Auth({
@@ -43,9 +43,11 @@ const web3auth = new Web3Auth({
     chainNamespace: "eip155",
     chainId: "0x1",
   },
+  // Available networks are "testnet", "mainnet", "cyan", "aqua", and "celeste".
+  web3AuthNetwork: "cyan",
 });
 
-await web3auth.initModal();
+web3auth.init();
 ```
 
 </TabItem>
@@ -53,7 +55,7 @@ await web3auth.initModal();
 <TabItem value="polygon">
 
 ```js
-import { Web3Auth } from "@web3auth/modal";
+import { Web3Auth } from "@web3auth/single-factor-auth";
 
 //Initialize within your constructor
 const web3auth = new Web3Auth({
@@ -62,9 +64,11 @@ const web3auth = new Web3Auth({
     chainNamespace: "eip155",
     chainId: "0x89",
   },
+  // Available networks are "testnet", "mainnet", "cyan", "aqua", and "celeste".
+  web3AuthNetwork: "cyan",
 });
 
-await web3auth.initModal();
+web3auth.init();
 ```
 
 </TabItem>
@@ -72,18 +76,20 @@ await web3auth.initModal();
 <TabItem value="solana">
 
 ```js
-import { Web3Auth } from "@web3auth/modal";
+import { Web3Auth } from "@web3auth/single-factor-auth";
 
 //Initialize within your constructor
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: "solana",
-    chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+    chainId: "0x1",
   },
+  // Available networks are "testnet", "mainnet", "cyan", "aqua", and "celeste".
+  web3AuthNetwork: "cyan",
 });
 
-await web3auth.initModal();
+web3auth.init();
 ```
 
 </TabItem>
@@ -91,7 +97,7 @@ await web3auth.initModal();
 <TabItem value="other">
 
 ```js
-import { Web3Auth } from "@web3auth/modal";
+import { Web3Auth } from "@web3auth/single-factor-auth";
 
 //Initialize within your constructor
 const web3auth = new Web3Auth({
@@ -99,9 +105,11 @@ const web3auth = new Web3Auth({
   chainConfig: {
     chainNamespace: "other",
   },
+  // Available networks are "testnet", "mainnet", "cyan", "aqua", and "celeste".
+  web3AuthNetwork: "cyan",
 });
 
-await web3auth.initModal();
+web3auth.init();
 ```
 
 </TabItem>
@@ -110,15 +118,12 @@ await web3auth.initModal();
 
 ### 4. Login your User
 
-Once you're done initialising, just create a button that triggers to open the login modal for the user on their request. Logging in is as easy as:
+Once you're done initialising, just create a button that triggers the login for the user on their request. Logging in is as easy as:
 
 ```js
-await web3auth.connect();
+await web3auth.connect({
+  verifier: "verifier-name", // replace with your verifier name, and it has to be on the same network passed in init().
+  verifierId: "verifier-Id", // replace with your verifier id(sub or email), setup while creating the verifier on Web3Auth's Dashboard
+  idToken: "JWT Token", // replace with your newly created unused JWT Token.
+});
 ```
-
-:::caution
-
-If you're new to Web3 development, you might be facing certain issues with Webpack while configuring your application. Please refer to our
-[Webpack Issues Troubleshooting Guide](/troubleshooting/webpack-issues) for more information.
-
-:::

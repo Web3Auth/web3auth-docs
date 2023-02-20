@@ -1,0 +1,61 @@
+import DashboardImage from "@site/static/dashboard/project_plug_n_play.png";
+
+### 1. Add Web3Auth to Swift Package Manager
+
+If you are using the Swift Package Manager, open the following menu item in Xcode:
+
+`File > Swift Packages > Add Package Dependency`
+
+In the Choose Package Repository prompt add this url:
+
+```bash
+https://github.com/web3auth/web3auth-swift-sdk
+```
+
+###### Cocoapods
+
+```bash
+pod install Web3Auth
+```
+
+### 2. Get your Client ID from Web3Auth Dashboard
+
+Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new project. Use the Client ID of the project to start your integration.
+
+<img src={DashboardImage} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Dashboard" />
+
+### 3. Create Web3Auth Instance
+
+Construct the `Web3Auth` instance with:
+
+```swift
+import Web3Auth
+
+let web3auth = Web3Auth(W3AInitParams(
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  network: .MAINNET,
+  sdkUrl: ...,
+  redirectUrl: ...,
+))
+```
+
+### 4. Login your User
+
+Once you're done initialising, just create a button that triggers the login for the user on their request. Logging in is as easy as:
+
+```swift
+func login(provider: Web3AuthProvider) {
+    Task {
+        do {
+            let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
+            await MainActor.run(body: {
+                user = result
+                loggedIn = true
+            })
+        } catch {
+            print("Error")
+        }
+    }
+}
+login(provider: .GOOGLE)
+```
