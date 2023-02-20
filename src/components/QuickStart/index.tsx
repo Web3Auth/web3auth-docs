@@ -14,6 +14,7 @@ import PNPNoModalNext from "@site/src/common/quickstart/_pnp-no-modal-nextjs.mdx
 import PNPNoModalReact from "@site/src/common/quickstart/_pnp-no-modal-react.mdx";
 import PNPNoModalVue from "@site/src/common/quickstart/_pnp-no-modal-vue.mdx";
 import PNPReactNative from "@site/src/common/quickstart/_pnp-reactnative.mdx";
+import PNPUnity from "@site/src/common/quickstart/_pnp-unity.mdx";
 import SFAAngular from "@site/src/common/quickstart/_sfa-angular.mdx";
 import SFANext from "@site/src/common/quickstart/_sfa-nextjs.mdx";
 import SFAReact from "@site/src/common/quickstart/_sfa-react.mdx";
@@ -199,7 +200,7 @@ export default function QuickNavigation() {
       {platform === ios ? <PNPIos /> : ""}
       {platform === flutter ? <PNPFlutter /> : ""}
       {platform === reactnative && product === pnp ? <PNPReactNative /> : ""}
-      {platform === unity ? "Unity Example Coming Soon" : ""}
+      {platform === unity ? <PNPUnity /> : ""}
       {platform === unreal ? "Unreal Example Coming Soon" : ""}
     </div>
   );
