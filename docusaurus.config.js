@@ -12,6 +12,7 @@ const rehypeKatex = require("rehype-katex");
 const fs = require('fs');
 
 const resourcesDropdown = fs.readFileSync('./src/components/navDropdown/resources.html', 'utf-8');
+const helpDropdown = fs.readFileSync('./src/components/navDropdown/help.html', 'utf-8');
 const sdkDropdown = fs.readFileSync('./src/components/navDropdown/sdk.html', 'utf-8');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
@@ -62,11 +63,6 @@ const config = {
           ],
         },
         {
-          label: "Integration Builder",
-          to: "/integration-builder",
-          position: "left",
-        },
-        {
           label: 'Resources',
           type: 'dropdown',
           position: "left",
@@ -78,10 +74,26 @@ const config = {
           ],
         },
         {
+          label: "Integration Builder",
+          to: "/integration-builder",
+          position: "left",
+        },
+        {
           label: "Guides",
           activeBasePath: "/guides",
           to: "/guides",
           position: "left",
+        },
+        {
+          label: 'Help',
+          type: 'dropdown',
+          position: "left",
+          items: [
+            {
+              type: 'html',
+              value: helpDropdown,
+           },
+          ],
         },
         {
           position: "right",
