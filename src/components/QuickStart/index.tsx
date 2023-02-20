@@ -41,11 +41,11 @@ export default function QuickNavigation() {
   ];
 
   const corekit = "Core Kit";
-  const corekitweb = "Core Kit JS SDK";
+  const tkeyjs = "tKey JS SDK";
   const singlefactorauth = "Single Factor Auth SDK";
   const corekitnodejs = "Node.js SDK";
   const corekitlist = [
-    { label: "Core Kit JS SDK", value: corekitweb, platforms: [...weblist, reactnative] },
+    { label: "tKey JS SDK", value: tkeyjs, platforms: [...weblist, reactnative] },
     { label: "Single Factor Auth SDK", value: singlefactorauth, platforms: [...weblist] },
     { label: "Node.js SDK", value: corekitnodejs, platforms: [nodejs] },
   ];
@@ -72,8 +72,8 @@ export default function QuickNavigation() {
       setSdk(pnpwebmodal);
       changePlatformList(pnp, pnpwebmodal);
     } else if (value === corekit) {
-      setSdk(corekitweb);
-      changePlatformList(corekit, corekitweb);
+      setSdk(tkeyjs);
+      changePlatformList(corekit, tkeyjs);
     }
   }
   const changeSDK = (event) => {

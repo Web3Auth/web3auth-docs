@@ -73,7 +73,7 @@ export default function QuickNavigation() {
           </svg>
         </div>
         <div className={styles.tabContentText}>
-          <h3 className={styles.title}>Core Kit JS SDK</h3>
+          <h3 className={styles.title}>tKey JS SDK</h3>
           <p>Build a deeper integration with Web3Auth Infrastructural Layer within your platform.</p>
           <div className={styles.links}>
             <a href="/docs">Quick Start{chevron}</a>
@@ -207,9 +207,9 @@ export default function QuickNavigation() {
         </svg>
       </div>
       <div className={styles.tabContentText}>
-        <h3 className={styles.title}>Core Kit JS SDK</h3>
+        <h3 className={styles.title}>tKey JS SDK</h3>
         <p>
-          Core Kit integration in your hybrid <strong>React Native App</strong>
+          tKey SDK integration in your hybrid <strong>React Native App</strong>
         </p>
         <div className={styles.links}>
           <a href="/docs">Quick Start{chevron}</a>
