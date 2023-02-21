@@ -1,6 +1,10 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import CoreKitAngular from "@site/src/common/quickstart/_corekit-angular.mdx";
+import CoreKitNext from "@site/src/common/quickstart/_corekit-nextjs.mdx";
+import CoreKitReact from "@site/src/common/quickstart/_corekit-react.mdx";
+import CoreKitVue from "@site/src/common/quickstart/_corekit-vue.mdx";
 import NodeExample from "@site/src/common/quickstart/_node.mdx";
 import PNPAndroid from "@site/src/common/quickstart/_pnp-android.mdx";
 import PNPFlutter from "@site/src/common/quickstart/_pnp-flutter.mdx";
@@ -184,22 +188,10 @@ export default function QuickNavigation() {
       {platform === react && sdk === pnpwebmodal ? <PNPModalReact /> : platform === react && sdk === pnpwebnomodal ? <PNPNoModalReact /> : ""}
       {platform === vue && sdk === pnpwebmodal ? <PNPModalVue /> : platform === vue && sdk === pnpwebnomodal ? <PNPNoModalVue /> : ""}
       {platform === nextjs && sdk === pnpwebmodal ? <PNPModalNext /> : platform === nextjs && sdk === pnpwebnomodal ? <PNPNoModalNext /> : ""}
-      {platform === angular && sdk === tkeyjs ? (
-        "tKey Angular Example Coming Soon"
-      ) : platform === angular && sdk === singlefactorauth ? (
-        <SFAAngular />
-      ) : (
-        ""
-      )}
-      {platform === react && sdk === tkeyjs ? "tKey React Example Coming Soon" : platform === react && sdk === singlefactorauth ? <SFAReact /> : ""}
-      {platform === vue && sdk === tkeyjs ? "tKey Vue Example Coming Soon" : platform === vue && sdk === singlefactorauth ? <SFAVue /> : ""}
-      {platform === nextjs && sdk === tkeyjs ? (
-        "tKey Next.js Example Coming Soon"
-      ) : platform === nextjs && sdk === singlefactorauth ? (
-        <SFANext />
-      ) : (
-        ""
-      )}
+      {platform === angular && sdk === tkeyjs ? <CoreKitAngular /> : platform === angular && sdk === singlefactorauth ? <SFAAngular /> : ""}
+      {platform === react && sdk === tkeyjs ? <CoreKitReact /> : platform === react && sdk === singlefactorauth ? <SFAReact /> : ""}
+      {platform === vue && sdk === tkeyjs ? <CoreKitVue /> : platform === vue && sdk === singlefactorauth ? <SFAVue /> : ""}
+      {platform === nextjs && sdk === tkeyjs ? <CoreKitNext /> : platform === nextjs && sdk === singlefactorauth ? <SFANext /> : ""}
       {platform === reactnative && sdk === tkeyjs ? "tKey React Native Example Coming Soon" : ""}
       {platform === nodejs ? <NodeExample /> : ""}
       {platform === android ? <PNPAndroid /> : ""}
