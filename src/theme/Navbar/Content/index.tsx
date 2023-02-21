@@ -1,13 +1,14 @@
-import React from "react";
 import { useThemeConfig } from "@docusaurus/theme-common";
 import { splitNavbarItems, useNavbarMobileSidebar } from "@docusaurus/theme-common/internal";
-import NavbarItem from "@theme/NavbarItem";
 import NavbarColorModeToggle from "@theme/Navbar/ColorModeToggle";
-import SearchBar from "@theme/SearchBar";
-import NavbarMobileSidebarToggle from "@theme/Navbar/MobileSidebar/Toggle";
 import NavbarLogo from "@theme/Navbar/Logo";
+import NavbarMobileSidebarToggle from "@theme/Navbar/MobileSidebar/Toggle";
 import NavbarSearch from "@theme/Navbar/Search";
+import NavbarItem from "@theme/NavbarItem";
+import SearchBar from "@theme/SearchBar";
+
 import styles from "./styles.module.css";
+
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
   return useThemeConfig().navbar.items;

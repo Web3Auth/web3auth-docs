@@ -5,8 +5,8 @@ import darkTheme from "prism-react-renderer/themes/vsDark/index.cjs.js";
 export default {
   ...darkTheme,
   plain: {
-    color: "#D4D4D4",
-    backgroundColor: "#1b1b1d",
+    color: "var(--ifm-color-gray-200)",
+    backgroundColor: "#000",
   },
   styles: [
     ...darkTheme.styles,
@@ -86,7 +86,7 @@ export default {
     {
       types: ["comment"],
       style: {
-        color: "#6B6B6B",
+        color: "var(--ifm-color-gray-500)",
       },
     },
   ],

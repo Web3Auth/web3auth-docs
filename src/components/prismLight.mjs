@@ -1,94 +1,92 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-anonymous-default-export */
-import lightTheme from "prism-react-renderer/themes/vsLight/index.cjs.js";
+import darkTheme from "prism-react-renderer/themes/vsDark/index.cjs.js";
 
 export default {
-  ...lightTheme,
+  ...darkTheme,
+  plain: {
+    color: "var(--ifm-color-gray-200)",
+    backgroundColor: "var(--ifm-color-gray-800)",
+  },
   styles: [
-    ...lightTheme.styles,
+    ...darkTheme.styles,
+    {
+      types: ["prolog"],
+      style: {
+        color: "#D4D4D4",
+      },
+    },
     {
       types: ["title"],
       style: {
-        color: "#0364ff",
+        color: "#569CD6",
         fontWeight: "bold",
       },
     },
     {
-      types: ["parameter"],
+      types: ["property", "parameter"],
       style: {
-        color: "#953800",
-      },
-    },
-    {
-      types: ["boolean", "rule", "color", "number", "constant", "property"],
-      style: {
-        color: "#0046b5",
-      },
-    },
-    {
-      types: ["atrule", "tag"],
-      style: {
-        color: "#22863A",
+        color: "#9CDCFE",
       },
     },
     {
       types: ["script"],
       style: {
-        color: "#24292E",
+        color: "#D4D4D4",
       },
     },
     {
-      types: ["operator", "unit", "rule"],
+      types: ["boolean", "arrow", "atrule", "tag"],
       style: {
-        color: "#D73A49",
+        color: "#569CD6",
       },
     },
     {
-      types: ["font-matter", "string", "attr-value"],
+      types: ["number", "color", "unit"],
       style: {
-        color: "#C6105F",
-      },
-    },
-    {
-      types: ["class-name"],
-      style: {
-        color: "#116329",
-      },
-    },
-    {
-      types: ["attr-name"],
-      style: {
-        color: "#0364ff",
-      },
-    },
-    {
-      types: ["keyword"],
-      style: {
-        color: "#CF222E",
+        color: "#B5CEA8",
       },
     },
     {
       types: ["function"],
       style: {
-        color: "#0059e8",
+        color: "#8cc8ff",
       },
     },
     {
-      types: ["selector"],
+      types: ["font-matter"],
       style: {
-        color: "#6F42C1",
+        color: "#CE9178",
       },
     },
     {
-      types: ["variable"],
+      types: ["keyword", "rule"],
       style: {
-        color: "#E36209",
+        color: "#C586C0",
+      },
+    },
+    {
+      types: ["regex"],
+      style: {
+        color: "#D16969",
+      },
+    },
+    {
+      types: ["maybe-class-name"],
+      style: {
+        color: "#4EC9B0",
+      },
+    },
+    {
+      types: ["constant"],
+      style: {
+        color: "#4FC1FF",
       },
     },
     {
       types: ["comment"],
       style: {
-        color: "#6B6B6B",
+        color: "var(--ifm-color-gray-500)",
       },
     },
   ],
