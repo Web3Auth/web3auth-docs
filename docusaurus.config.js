@@ -162,16 +162,8 @@ const config = {
       {
         redirects: [
           {
-            from: "/authenticating-users/overview",
-            to: "/server-side-verification/",
-          },
-          {
             from: "/examples/productionexamples",
             to: "/examples/liveexamples",
-          },
-          {
-            from: "/developing-with-web3auth/adapters",
-            to: "/connect-external-wallets",
           },
           {
             from: "/get-started",
@@ -218,24 +210,8 @@ const config = {
             to: "/sdk/web/modal/",
           },
           {
-            from: "/self-host/",
-            to: "/self-hosting",
-          },
-          {
             from: "/quickstart",
             to: "/quick-start",
-          },
-          {
-            from: "/customauth",
-            to: "/custom-authentication/",
-          },
-          {
-            from: "/whitelabeling",
-            to: "/whitelabel/",
-          },
-          {
-            from: "/authenticating-users/",
-            to: "/server-side-verification/",
           },
           {
             from: "/api-reference/",
@@ -268,10 +244,6 @@ const config = {
           {
             from: "/api-reference/react-native/choose-workflows",
             to: "/sdk/react-native/",
-          },
-          {
-            from: "/customauth/verifiers",
-            to: "/custom-authentication/verifiers",
           },
           {
             from: "/guides/one-key-flow",
@@ -314,24 +286,16 @@ const config = {
             to: "/sdk/web/adapters/",
           },
           {
-            from: "/authenticating-users/external-wallets",
-            to: "/server-side-verification/external-wallets",
-          },
-          {
-            from: "/authenticating-users/social-login-users",
-            to: "/server-side-verification/social-login-users",
-          },
-          {
-            from: "/overview/web3auth-and-wallets",
-            to: "/overview/web3auth-for-wallets",
-          },
-          {
             from: "/overview/what-is-web3auth",
             to: "/what-is-web3auth",
           },
           {
             from: "/overview/how-web3auth-works",
             to: "/how-web3auth-works",
+          },
+          {
+            from: "/overview/web3auth-and-wallets",
+            to: "/product-fit/web3auth-for-wallets",
           },
           {
             from: "/overview/web3auth-for-wallets",
@@ -351,7 +315,7 @@ const config = {
           },
           {
             from: "/overview/key-management/technical-architecture/",
-            to: "/infrastructure/key-management/technical-architecture/",
+            to: "/infrastructure/technical-architecture/",
           },
           {
             from: "/overview/key-management/audits",
@@ -366,6 +330,10 @@ const config = {
             to: "/sdk/self-host/initialisation",
           },
           {
+            from: "/whitelabeling",
+            to: "/pnp/features/whitelabel/",
+          },
+          {
             from: "/whitelabel/",
             to: "/pnp/features/whitelabel/",
           },
@@ -378,20 +346,44 @@ const config = {
             to: "/pnp/features/dapp-share",
           },
           {
+            from: "/authenticating-users/",
+            to: "/pnp/features/server-side-verification/",
+          },
+          {
+            from: "/authenticating-users/overview",
+            to: "/pnp/features/server-side-verification/",
+          },
+          {
             from: "/server-side-verification/",
             to: "/pnp/features/server-side-verification/",
+          },
+          {
+            from: "/developing-with-web3auth/adapters",
+            to: "/pnp/features/connect-external-wallets",
           },
           {
             from: "/connect-external-wallets",
             to: "/pnp/features/connect-external-wallets",
           },
           {
+            from: "/self-host/",
+            to: "/core-kit/introduction",
+          },
+          {
             from: "/self-hosting",
-            to: "/core-kit/",
+            to: "/core-kit/introduction",
           },
           {
             from: "/developer-dashboard/",
             to: "/dashboard-setup/",
+          },
+          {
+            from: "/customauth",
+            to: "/auth-provider-setup/",
+          },
+          {
+            from: "/customauth/verifiers",
+            to: "/auth-provider-setup/",
           },
           {
             from: "/custom-authentication/",
@@ -399,11 +391,11 @@ const config = {
           },
           {
             from: "/examples/demo",
-            to: "/examples/",
+            to: "/examples",
           },
           {
             from: "/examples/liveexamples",
-            to: "/examples/",
+            to: "/examples",
           },
         ],
       },
