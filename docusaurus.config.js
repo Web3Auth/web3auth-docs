@@ -326,12 +326,84 @@ const config = {
             to: "/overview/web3auth-for-wallets",
           },
           {
+            from: "/overview/what-is-web3auth",
+            to: "/what-is-web3auth",
+          },
+          {
+            from: "/overview/how-web3auth-works",
+            to: "/how-web3auth-works",
+          },
+          {
+            from: "/overview/web3auth-for-wallets",
+            to: "/product-fit/web3auth-for-wallets",
+          },
+          {
+            from: "/overview/web3auth-for-dapps",
+            to: "/product-fit/web3auth-for-dapps",
+          },
+          {
+            from: "/overview/user-flow",
+            to: "/product-fit/user-flow",
+          },
+          {
+            from: "/overview/key-management/",
+            to: "/infrastructure/key-management",
+          },
+          {
+            from: "/overview/key-management/technical-architecture/",
+            to: "/infrastructure/key-management/technical-architecture/",
+          },
+          {
+            from: "/overview/key-management/audits",
+            to: "/infrastructure/audits",
+          },
+          {
             from: "/sdk/web-backend",
             to: "/sdk/node",
           },
           {
             from: "/sdk/self-host/initialization",
             to: "/sdk/self-host/initialisation",
+          },
+          {
+            from: "/whitelabel/",
+            to: "/pnp/features/whitelabel/",
+          },
+          {
+            from: "/interoperability",
+            to: "/pnp/features/interoperability",
+          },
+          {
+            from: "/dapp-share",
+            to: "/pnp/features/dapp-share",
+          },
+          {
+            from: "/server-side-verification/",
+            to: "/pnp/features/server-side-verification/",
+          },
+          {
+            from: "/connect-external-wallets",
+            to: "/pnp/features/connect-external-wallets",
+          },
+          {
+            from: "/self-hosting",
+            to: "/core-kit/",
+          },
+          {
+            from: "/developer-dashboard/",
+            to: "/dashboard-setup/",
+          },
+          {
+            from: "/custom-authentication/",
+            to: "/auth-provider-setup/",
+          },
+          {
+            from: "/examples/demo",
+            to: "/examples/",
+          },
+          {
+            from: "/examples/liveexamples",
+            to: "/examples/",
           },
         ],
       },
