@@ -3,7 +3,7 @@ import Image7 from "@site/static/contents/stack-customauth-2.png";
 import Image9 from "@site/static/contents/stack-network-2.png";
 import Image3 from "@site/static/contents/stack-openlogin-2.png";
 import Image1 from "@site/static/contents/stack-overview-2.png";
-import Image5 from "@site/static/contents/stack-wallet-2.png";
+import DashboardImage from "@site/static/contents/stack-wallet-2.png";
 import Image6 from "@site/static/images/customauth-full-logo.svg";
 import Image8 from "@site/static/images/network-full-logo.svg";
 import Image2 from "@site/static/images/openlogin-full-logo-1.svg";
@@ -87,7 +87,7 @@ export default function ProductSuiteStack() {
               </Link>
             </div>
           </div>
-          <img src={Image5} alt="Torus Wallet" height={360} />
+          <img src={DashboardImage} alt="Torus Wallet" height={360} />
         </section>
       );
       break;

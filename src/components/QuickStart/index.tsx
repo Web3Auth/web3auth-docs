@@ -159,7 +159,12 @@ export default function QuickNavigation() {
           </select>
         </div>
         <div className={styles.list}>
-          <h3>Select a platform</h3>
+          <h3>
+            Select a{" "}
+            {platform === android || platform === ios || platform === reactnative || platform === flutter || platform === unity || platform === unreal
+              ? "platform"
+              : "framework"}
+          </h3>
           <select id={styles.listSelect} value={platform} onChange={changePlatform} disabled={platformList.length === 1}>
             {platformList.map((option) => (
               <option value={option} key={option}>
@@ -169,6 +174,7 @@ export default function QuickNavigation() {
           </select>
         </div>
       </div>
+      <br />
       <br />
       <h2>
         Integrate Web3Auth {sdk} in 4 simple steps in your {platform} App
