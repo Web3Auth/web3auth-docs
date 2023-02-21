@@ -2,11 +2,11 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
 <Tabs
-  defaultValue="jwt"
+  defaultValue="google"
   values={[
-    { label: "JWT", value: "jwt" },
-    { label: "Auth0", value: "auth0" },
     { label: "Google", value: "google" },
+    { label: "Auth0", value: "auth0" },
+    { label: "JWT", value: "jwt" },
     { label: "Facebook", value: "facebook" },
     { label: "Discord", value: "discord" },
     { label: "Twitter", value: "twitter" },
@@ -15,19 +15,15 @@ import Tabs from "@theme/Tabs";
     { label: "Apple", value: "apple" },
     { label: "GitHub", value: "github" },
     { label: "LinkedIn", value: "linkedin" },
-  ]}
->
+]}>
 
-<TabItem value="jwt">
+<TabItem value="google">
 
 ```ts
-// Login using JWT, either obtained from Firebase, Okta, Auth0 or bring your own JWT.
+import { WALLET_ADAPTERS } from "@web3auth/base";
+
 const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-  loginProvider: "jwt",
-  extraLoginOptions: {
-    id_token: "idToken", // in JWT Format
-    verifierIdField: "sub", // same as your JWT Verifier ID
-  },
+  loginProvider: "google",
 });
 ```
 
@@ -40,20 +36,23 @@ const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {
     verifierIdField: "sub", // same as your JWT Verifier ID
-    domain: "https://YOUR-APPLICATION-DOMAIN", // your login application domain, if using Auth0, use the Auth0 domain
+    domain: "https://YOUR-APPLICATION-DOMAIN", // your Auth0 domain
   },
 });
 ```
 
 </TabItem>
 
-<TabItem value="google">
+<TabItem value="jwt">
 
 ```ts
-import { WALLET_ADAPTERS } from "@web3auth/base";
-
+// Login using JWT, either obtained from Firebase, Okta, Auth0 or bring your own JWT.
 const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-  loginProvider: "google",
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    id_token: "idToken", // in JWT Format
+    verifierIdField: "sub", // same as your JWT Verifier ID
+  },
 });
 ```
 

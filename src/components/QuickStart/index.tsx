@@ -1,6 +1,10 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import CoreKitAngular from "@site/src/common/quickstart/_corekit-angular.mdx";
+import CoreKitNext from "@site/src/common/quickstart/_corekit-nextjs.mdx";
+import CoreKitReact from "@site/src/common/quickstart/_corekit-react.mdx";
+import CoreKitVue from "@site/src/common/quickstart/_corekit-vue.mdx";
 import NodeExample from "@site/src/common/quickstart/_node.mdx";
 import PNPAndroid from "@site/src/common/quickstart/_pnp-android.mdx";
 import PNPFlutter from "@site/src/common/quickstart/_pnp-flutter.mdx";
@@ -13,7 +17,8 @@ import PNPNoModalAngular from "@site/src/common/quickstart/_pnp-no-modal-angular
 import PNPNoModalNext from "@site/src/common/quickstart/_pnp-no-modal-nextjs.mdx";
 import PNPNoModalReact from "@site/src/common/quickstart/_pnp-no-modal-react.mdx";
 import PNPNoModalVue from "@site/src/common/quickstart/_pnp-no-modal-vue.mdx";
-import PNPReactNative from "@site/src/common/quickstart/_pnp-reactnative.mdx";
+import PNPReactNativeBare from "@site/src/common/quickstart/_pnp-reactnative-bare.mdx";
+import PNPReactNativeExpo from "@site/src/common/quickstart/_pnp-reactnative-expo.mdx";
 import PNPUnity from "@site/src/common/quickstart/_pnp-unity.mdx";
 import SFAAngular from "@site/src/common/quickstart/_sfa-angular.mdx";
 import SFANext from "@site/src/common/quickstart/_sfa-nextjs.mdx";
@@ -31,6 +36,9 @@ export default function QuickNavigation() {
   const android = "Android";
   const ios = "iOS";
   const reactnative = "React Native";
+  const rnbare = "React Native Bare";
+  const rnexpo = "React Native Expo";
+  const rnlist = [rnbare, rnexpo];
   const flutter = "Flutter";
   const unity = "Unity";
   const unreal = "Unreal";
@@ -51,7 +59,7 @@ export default function QuickNavigation() {
     { label: "Web - No Modal SDK", value: pnpwebnomodal, platforms: [...weblist] },
     { label: "Android SDK", value: pnpandroid, platforms: [android] },
     { label: "iOS SDK", value: pnpios, platforms: [ios] },
-    { label: "React Native SDK", value: pnprn, platforms: [reactnative] },
+    { label: "React Native SDK", value: pnprn, platforms: [...rnlist] },
     { label: "Flutter SDK", value: pnpflutter, platforms: [flutter] },
     { label: "Unity SDK", value: pnpunity, platforms: [unity] },
     { label: "Unreal SDK", value: pnpunreal, platforms: [unreal] },
@@ -103,7 +111,7 @@ export default function QuickNavigation() {
 
   return (
     <div>
-      <h2 className={styles.heading}>1. Select the Product you want to build upon</h2>
+      <h2 className={styles.heading}>1. Select the Web3Auth Product you would like to build upon</h2>
       <div className={styles.container}>
         <div className={product === pnp ? styles.selectedCard : styles.card} onClick={() => changeProduct(pnp)}>
           <div>
@@ -140,26 +148,37 @@ export default function QuickNavigation() {
           <p>Build on top of the Web3Auth infrastructural layer and build your own UX flows.</p>
         </div>
       </div>
-      <h2 className={styles.heading}>2. Select the SDK and Platform you want to build upon</h2>
+      <h2 className={styles.heading}>2. Select which SDK and platform you intend to use</h2>
       <div className={styles.container}>
         <div className={styles.list}>
-          <h3>Select the SDK to use</h3>
+          <h3>Select which SDK to use</h3>
           <select value={sdk} onChange={changeSDK}>
             {product === pnp
               ? pnplist.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.label}
-                </option>
-              ))
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))
               : corekitlist.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.label}
-                </option>
-              ))}
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))}
           </select>
         </div>
         <div className={styles.list}>
-          <h3>Select the Platform to Use</h3>
+          <h3>
+            Select a{" "}
+            {platform === android ||
+            platform === ios ||
+            platform === rnbare ||
+            platform === rnexpo ||
+            platform === flutter ||
+            platform === unity ||
+            platform === unreal
+              ? "platform"
+              : "framework"}
+          </h3>
           <select id={styles.listSelect} value={platform} onChange={changePlatform} disabled={platformList.length === 1}>
             {platformList.map((option) => (
               <option value={option} key={option}>
@@ -170,6 +189,7 @@ export default function QuickNavigation() {
         </div>
       </div>
       <br />
+      <br />
       <h2>
         Integrate Web3Auth {sdk} in 4 simple steps in your {platform} App
       </h2>
@@ -178,28 +198,17 @@ export default function QuickNavigation() {
       {platform === react && sdk === pnpwebmodal ? <PNPModalReact /> : platform === react && sdk === pnpwebnomodal ? <PNPNoModalReact /> : ""}
       {platform === vue && sdk === pnpwebmodal ? <PNPModalVue /> : platform === vue && sdk === pnpwebnomodal ? <PNPNoModalVue /> : ""}
       {platform === nextjs && sdk === pnpwebmodal ? <PNPModalNext /> : platform === nextjs && sdk === pnpwebnomodal ? <PNPNoModalNext /> : ""}
-      {platform === angular && sdk === tkeyjs ? (
-        "tKey Angular Example Coming Soon"
-      ) : platform === angular && sdk === singlefactorauth ? (
-        <SFAAngular />
-      ) : (
-        ""
-      )}
-      {platform === react && sdk === tkeyjs ? "tKey React Example Coming Soon" : platform === react && sdk === singlefactorauth ? <SFAReact /> : ""}
-      {platform === vue && sdk === tkeyjs ? "tKey Vue Example Coming Soon" : platform === vue && sdk === singlefactorauth ? <SFAVue /> : ""}
-      {platform === nextjs && sdk === tkeyjs ? (
-        "tKey Next.js Example Coming Soon"
-      ) : platform === nextjs && sdk === singlefactorauth ? (
-        <SFANext />
-      ) : (
-        ""
-      )}
+      {platform === angular && sdk === tkeyjs ? <CoreKitAngular /> : platform === angular && sdk === singlefactorauth ? <SFAAngular /> : ""}
+      {platform === react && sdk === tkeyjs ? <CoreKitReact /> : platform === react && sdk === singlefactorauth ? <SFAReact /> : ""}
+      {platform === vue && sdk === tkeyjs ? <CoreKitVue /> : platform === vue && sdk === singlefactorauth ? <SFAVue /> : ""}
+      {platform === nextjs && sdk === tkeyjs ? <CoreKitNext /> : platform === nextjs && sdk === singlefactorauth ? <SFANext /> : ""}
       {platform === reactnative && sdk === tkeyjs ? "tKey React Native Example Coming Soon" : ""}
       {platform === nodejs ? <NodeExample /> : ""}
       {platform === android ? <PNPAndroid /> : ""}
       {platform === ios ? <PNPIos /> : ""}
       {platform === flutter ? <PNPFlutter /> : ""}
-      {platform === reactnative && product === pnp ? <PNPReactNative /> : ""}
+      {platform === rnbare && product === pnp ? <PNPReactNativeBare /> : ""}
+      {platform === rnexpo && product === pnp ? <PNPReactNativeExpo /> : ""}
       {platform === unity ? <PNPUnity /> : ""}
       {platform === unreal ? "Unreal Example Coming Soon" : ""}
     </div>
