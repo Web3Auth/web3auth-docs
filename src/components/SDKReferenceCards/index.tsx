@@ -377,7 +377,7 @@ export default function QuickNavigation() {
                 />
               </svg>
             </div>
-            <div className={styles.platformIconContainer}>
+            {/* <div className={styles.platformIconContainer}>
               <svg width="131" height="144" viewBox="0 0 131 144" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clipPath="url(#clip0_1414_243005)">
                   <path
@@ -395,7 +395,7 @@ export default function QuickNavigation() {
                   </clipPath>
                 </defs>
               </svg>
-            </div>
+            </div> */}
           </div>
         </div>
         <ul className={styles.cardContainer}>{product === pnp ? pnpweb : corekitweb}</ul>
