@@ -103,7 +103,7 @@ export default function QuickNavigation() {
 
   return (
     <div>
-      <h2 className={styles.heading}>1. Select the Product you want to build upon</h2>
+      <h2 className={styles.heading}>1. Select the Web3Auth product you would like to build upon</h2>
       <div className={styles.container}>
         <div className={product === pnp ? styles.selectedCard : styles.card} onClick={() => changeProduct(pnp)}>
           <div>
@@ -140,26 +140,26 @@ export default function QuickNavigation() {
           <p>Build on top of the Web3Auth infrastructural layer and build your own UX flows.</p>
         </div>
       </div>
-      <h2 className={styles.heading}>2. Select the SDK and Platform you want to build upon</h2>
+      <h2 className={styles.heading}>2. Next, Select which SDK and platform you intend to use</h2>
       <div className={styles.container}>
         <div className={styles.list}>
-          <h3>Select the SDK to use</h3>
+          <h3>Select which SDK to use</h3>
           <select value={sdk} onChange={changeSDK}>
             {product === pnp
               ? pnplist.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.label}
-                </option>
-              ))
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))
               : corekitlist.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.label}
-                </option>
-              ))}
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))}
           </select>
         </div>
         <div className={styles.list}>
-          <h3>Select the Platform to Use</h3>
+          <h3>Select a platform</h3>
           <select id={styles.listSelect} value={platform} onChange={changePlatform} disabled={platformList.length === 1}>
             {platformList.map((option) => (
               <option value={option} key={option}>
