@@ -153,7 +153,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
               <span>{option.displayName}:</span>
               <div className="dropdown dropdown--hoverable">
                 {option.type === "dropdown" && (
-                  <span className={`navbar__link ${styles.w3DropdownLink}`} onClick={(e) => e.preventDefault()}>
+                  <span className={`${styles.w3DropdownLink}`} onClick={(e) => e.preventDefault()}>
                     {option.choices.find((x) => x.key === builderOptions[key])?.displayName || ""}
                   </span>
                 )}
