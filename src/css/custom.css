@@ -168,8 +168,8 @@ html[data-theme="dark"] {
   --ifm-code-color: #1ac7fe;
   --ifm-color-icon-active-background: #374151;
   --ifm-color-icon-background: #374151;
-  --ifm-color-menu-selection-background: #111928;
-  --ifm-color-product-selection-menu-background: #111928;
+  --ifm-color-menu-selection-background: var(--ifm-background-color);
+  --ifm-color-product-selection-menu-background: var(--ifm-background-color);
   --ifm-border-color: var(--ifm-navbar-background-color);
   --ifm-border-light-color: #4B5563;
   --ifm-color-purple-background: #374151;
@@ -228,7 +228,7 @@ html[data-theme="dark"] .navbar-github-link:before {
   border-right: 2px solid;
   transform: rotate(45deg);
   right: 4px;
-  top: 4px;
+  top: 5px;
 }
 
 a:any-link:hover {
@@ -716,4 +716,53 @@ a:any-link:hover {
     width: 100%;
     justify-content: flex-start;
   }
+}
+
+/* Custom design for sidebar hide and expand buttons */
+
+aside.theme-doc-sidebar-container {
+  position: relative;
+  clip-path: inset(0px -140px);
+}
+
+.theme-doc-sidebar-container button[title='Collapse sidebar'],
+.theme-doc-sidebar-container div[title='Expand sidebar'] {
+  position: absolute;
+  top: 100px;
+  right: -14px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 4px;
+  border: 0;
+  z-index: 10;
+  background-size: 16px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: var(--web3auth-banner-background);
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' fill='none' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.707 4.293a1 1 0 0 1 0 1.414L9.414 12l6.293 6.293a1 1 0 0 1-1.414 1.414l-7-7a1 1 0 0 1 0-1.414l7-7a1 1 0 0 1 1.414 0Z' fill='%23181818'/%3E%3C/svg%3E");
+}
+
+.theme-doc-sidebar-container div[title='Expand sidebar'] {
+  position: sticky;
+  margin-left: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' fill='none' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.293 4.293a1 1 0 0 0 0 1.414L14.586 12l-6.293 6.293a1 1 0 1 0 1.414 1.414l7-7a1 1 0 0 0 0-1.414l-7-7a1 1 0 0 0-1.414 0Z' fill='%23181818'/%3E%3C/svg%3E");
+}
+
+html[data-theme='dark']
+  .theme-doc-sidebar-container
+  button[title='Collapse sidebar'] {
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' fill='none' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.707 4.293a1 1 0 0 1 0 1.414L9.414 12l6.293 6.293a1 1 0 0 1-1.414 1.414l-7-7a1 1 0 0 1 0-1.414l7-7a1 1 0 0 1 1.414 0Z' fill='%23ffffff'/%3E%3C/svg%3E");
+}
+
+html[data-theme='dark']
+  .theme-doc-sidebar-container
+  div[title='Expand sidebar'] {
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' fill='none' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.293 4.293a1 1 0 0 0 0 1.414L14.586 12l-6.293 6.293a1 1 0 1 0 1.414 1.414l7-7a1 1 0 0 0 0-1.414l-7-7a1 1 0 0 0-1.414 0Z' fill='%23ffffff'/%3E%3C/svg%3E");
+}
+
+.theme-doc-sidebar-container
+  :is(div[title='Expand sidebar'], button[title='Collapse sidebar'])
+  svg {
+  display: none;
 }

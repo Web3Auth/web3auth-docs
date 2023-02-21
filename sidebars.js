@@ -1,7 +1,6 @@
 /** @type {import('@docusaurus/plugin-content-docs/lib/types').Sidebars} */
 module.exports = {
   docs: [
-    "README",
     {
       type: "category",
       label: "Overview",
