@@ -17,7 +17,8 @@ import PNPNoModalAngular from "@site/src/common/quickstart/_pnp-no-modal-angular
 import PNPNoModalNext from "@site/src/common/quickstart/_pnp-no-modal-nextjs.mdx";
 import PNPNoModalReact from "@site/src/common/quickstart/_pnp-no-modal-react.mdx";
 import PNPNoModalVue from "@site/src/common/quickstart/_pnp-no-modal-vue.mdx";
-import PNPReactNative from "@site/src/common/quickstart/_pnp-reactnative.mdx";
+import PNPReactNativeBare from "@site/src/common/quickstart/_pnp-reactnative-bare.mdx";
+import PNPReactNativeExpo from "@site/src/common/quickstart/_pnp-reactnative-expo.mdx";
 import PNPUnity from "@site/src/common/quickstart/_pnp-unity.mdx";
 import SFAAngular from "@site/src/common/quickstart/_sfa-angular.mdx";
 import SFANext from "@site/src/common/quickstart/_sfa-nextjs.mdx";
@@ -35,6 +36,9 @@ export default function QuickNavigation() {
   const android = "Android";
   const ios = "iOS";
   const reactnative = "React Native";
+  const rnbare = "React Native Bare";
+  const rnexpo = "React Native Expo";
+  const rnlist = [rnbare, rnexpo];
   const flutter = "Flutter";
   const unity = "Unity";
   const unreal = "Unreal";
@@ -55,7 +59,7 @@ export default function QuickNavigation() {
     { label: "Web - No Modal SDK", value: pnpwebnomodal, platforms: [...weblist] },
     { label: "Android SDK", value: pnpandroid, platforms: [android] },
     { label: "iOS SDK", value: pnpios, platforms: [ios] },
-    { label: "React Native SDK", value: pnprn, platforms: [reactnative] },
+    { label: "React Native SDK", value: pnprn, platforms: [...rnlist] },
     { label: "Flutter SDK", value: pnpflutter, platforms: [flutter] },
     { label: "Unity SDK", value: pnpunity, platforms: [unity] },
     { label: "Unreal SDK", value: pnpunreal, platforms: [unreal] },
@@ -165,7 +169,13 @@ export default function QuickNavigation() {
         <div className={styles.list}>
           <h3>
             Select a{" "}
-            {platform === android || platform === ios || platform === reactnative || platform === flutter || platform === unity || platform === unreal
+            {platform === android ||
+            platform === ios ||
+            platform === rnbare ||
+            platform === rnexpo ||
+            platform === flutter ||
+            platform === unity ||
+            platform === unreal
               ? "platform"
               : "framework"}
           </h3>
@@ -197,7 +207,8 @@ export default function QuickNavigation() {
       {platform === android ? <PNPAndroid /> : ""}
       {platform === ios ? <PNPIos /> : ""}
       {platform === flutter ? <PNPFlutter /> : ""}
-      {platform === reactnative && product === pnp ? <PNPReactNative /> : ""}
+      {platform === rnbare && product === pnp ? <PNPReactNativeBare /> : ""}
+      {platform === rnexpo && product === pnp ? <PNPReactNativeExpo /> : ""}
       {platform === unity ? <PNPUnity /> : ""}
       {platform === unreal ? "Unreal Example Coming Soon" : ""}
     </div>

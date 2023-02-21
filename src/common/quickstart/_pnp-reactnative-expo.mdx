@@ -1,0 +1,54 @@
+import DashboardImage from "@site/static/dashboard/project_plug_n_play.png";
+
+### 1. Install Web3Auth
+
+Install Web3Auth's React Native package in your React Native project.
+
+```bash npm2yarn
+npm install --save @web3auth/react-native-sdk
+```
+
+When using our SDK with a Expo-based React Native app (aka managed workflow, you have to install the `expo-web-browser` package as a `WebBrowser`
+implementation.)
+
+```bash
+expo install expo-web-browser
+```
+
+### 2. Get your Client ID from Web3Auth Dashboard
+
+Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new project. Use the Client ID of the project to start your integration.
+
+<img src={DashboardImage} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Dashboard" />
+
+### 3. Create Web3Auth Instance
+
+Construct the `Web3Auth` instance with:
+
+```js
+import * as WebBrowser from "expo-web-browser";
+import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
+
+const resolvedRedirectUrl =
+  Constants.appOwnership == AppOwnership.Expo || Constants.appOwnership == AppOwnership.Guest
+    ? Linking.createURL("web3auth", {})
+    : Linking.createURL("web3auth", { scheme: scheme });
+
+const clientId = "YOUR WEB3AUTH CLIENT ID";
+
+const web3auth = new Web3Auth(WebBrowser, {
+  clientId,
+  network: OPENLOGIN_NETWORK.TESTNET, // or other networks
+});
+```
+
+### 4. Login your User
+
+Once you're done initialising, just create a button that triggers the login for the user on their request. Logging in is as easy as:
+
+```js
+const state = await web3auth.login({
+  loginProvider: LoginProvider.GOOGLE,
+  redirectUrl: resolvedRedirectUrl,
+});
+```
