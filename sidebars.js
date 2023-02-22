@@ -297,7 +297,7 @@ module.exports = {
               items: [
                 "sdk/web/modal/whitelabel",
                 "sdk/web/modal/custom-authentication",
-                "sdk/web/modal/multi-factor-authentication",
+                "sdk/web/modal/mfa",
                 "sdk/web/modal/wagmi-connector",
               ],
             },
@@ -318,7 +318,7 @@ module.exports = {
               items: [
                 "sdk/web/no-modal/whitelabel",
                 "sdk/web/no-modal/custom-authentication",
-                "sdk/web/no-modal/multi-factor-authentication",
+                "sdk/web/no-modal/mfa",
                 "sdk/web/no-modal/wagmi-connector",
               ],
             },

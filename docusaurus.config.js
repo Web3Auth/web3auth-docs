@@ -190,10 +190,6 @@ const config = {
             to: "/sdk/web/modal/wagmi-connector",
           },
           {
-            from: "/sdk/web/web3auth/multi-factor-authentication",
-            to: "/sdk/web/modal/multi-factor-authentication",
-          },
-          {
             from: "/sdk/web/web3auth/custom-authentication",
             to: "/sdk/web/modal/custom-authentication",
           },
@@ -386,14 +382,6 @@ const config = {
             to: "/auth-provider-setup/",
           },
           {
-            from: "/examples/demo",
-            to: "/examples",
-          },
-          {
-            from: "/examples/liveexamples",
-            to: "/examples",
-          },
-          {
             from: "/sdk/self-host/",
             to: "/sdk/tkey/",
           },
@@ -416,6 +404,18 @@ const config = {
           {
             from: "/sdk/tkey/installation",
             to: "/sdk/tkey/install",
+          },
+          {
+            from: "/sdk/web/modal/multi-factor-authentication",
+            to: "/sdk/web/modal/mfa",
+          },
+          {
+            from: "/sdk/web/core/multi-factor-authentication",
+            to: "/sdk/web/no-modal/mfa",
+          },
+          {
+            from: "/sdk/web/web3auth/multi-factor-authentication",
+            to: "/sdk/web/modal/mfa",
           },
         ],
       },

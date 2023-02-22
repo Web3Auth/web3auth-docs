@@ -147,7 +147,7 @@ export const referenceMap = [
     date: "25th May 2022",
     author: "Web3Auth Team",
     order: 1,
-    link: "/custom-authentication/byo-jwt-providers",
+    link: "/auth-provider-setup/byo-jwt-providers",
   },
   {
     title: "Integrate Web3Auth with Multiple Chains!!",
