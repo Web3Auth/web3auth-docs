@@ -389,7 +389,7 @@ export const featuresMap = [
     tag: "@web3auth/modal",
   },
   {
-    title: "Web3Auth Plug and Play Core",
+    title: "Web3Auth Plug and Play No Modal",
     tag: "@web3auth/core",
   },
   {

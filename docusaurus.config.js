@@ -227,7 +227,7 @@ const config = {
           },
           {
             from: "/api-reference/web/customloginui",
-            to: "/sdk/web/core/",
+            to: "/sdk/web/no-modal/",
           },
           {
             from: "/api-reference/android/setting-up",
@@ -275,7 +275,7 @@ const config = {
           },
           {
             from: "/api-reference/web/customauth",
-            to: "/sdk/web/core/custom-authentication",
+            to: "/sdk/web/no-modal/custom-authentication",
           },
           {
             from: "/api-reference/web/plugins",
@@ -324,10 +324,6 @@ const config = {
           {
             from: "/sdk/web-backend",
             to: "/sdk/node",
-          },
-          {
-            from: "/sdk/self-host/initialization",
-            to: "/sdk/self-host/initialisation",
           },
           {
             from: "/whitelabeling",
@@ -404,6 +400,14 @@ const config = {
           {
             from: "/guides/selfhost",
             to: "/guides/tkey",
+          },
+          {
+            from: "/sdk/web/core/",
+            to: "/sdk/web/no-modal/",
+          },
+          {
+            from: "/sdk/tkey/initialization",
+            to: "/sdk/tkey/initialisation",
           },
         ],
       },
