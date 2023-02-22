@@ -202,7 +202,7 @@ export default function QuickNavigation() {
       {platform === react && sdk === tkeyjs ? <CoreKitReact /> : platform === react && sdk === singlefactorauth ? <SFAReact /> : ""}
       {platform === vue && sdk === tkeyjs ? <CoreKitVue /> : platform === vue && sdk === singlefactorauth ? <SFAVue /> : ""}
       {platform === nextjs && sdk === tkeyjs ? <CoreKitNext /> : platform === nextjs && sdk === singlefactorauth ? <SFANext /> : ""}
-      {platform === reactnative && sdk === tkeyjs ? "tKey React Native Example Coming Soon" : ""}
+      {platform === reactnative && sdk === tkeyjs ? "tKey React Native QuickStart Coming Soon" : ""}
       {platform === nodejs ? <NodeExample /> : ""}
       {platform === android ? <PNPAndroid /> : ""}
       {platform === ios ? <PNPIos /> : ""}
@@ -210,7 +210,7 @@ export default function QuickNavigation() {
       {platform === rnbare && product === pnp ? <PNPReactNativeBare /> : ""}
       {platform === rnexpo && product === pnp ? <PNPReactNativeExpo /> : ""}
       {platform === unity ? <PNPUnity /> : ""}
-      {platform === unreal ? "Unreal Example Coming Soon" : ""}
+      {platform === unreal ? "Unreal QuickStart Coming Soon" : ""}
     </div>
   );
 }

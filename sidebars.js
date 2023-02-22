@@ -1,7 +1,7 @@
 /** @type {import('@docusaurus/plugin-content-docs/lib/types').Sidebars} */
 module.exports = {
   docs: [
-  // Overview Section
+    // Overview Section
     {
       type: "html",
       value: "<span class='sidebarHeading'>Overview</span>",
@@ -15,12 +15,7 @@ module.exports = {
       type: "category",
       label: "Deciding your Product Fit",
       link: { type: "doc", id: "product-fit/product-fit" },
-      items: [
-        "product-fit/pnp-vs-core-kit",
-        "product-fit/user-flow",
-        "product-fit/web3auth-for-wallets",
-        "product-fit/web3auth-for-dapps",
-      ],
+      items: ["product-fit/pnp-vs-core-kit", "product-fit/user-flow", "product-fit/web3auth-for-wallets", "product-fit/web3auth-for-dapps"],
     },
     {
       type: "category",
@@ -28,7 +23,7 @@ module.exports = {
       link: { type: "doc", id: "infrastructure/infrastructure" },
       items: [
         "infrastructure/key-management",
-        "infrastructure/sss-vs-tss-mpc",
+        // "infrastructure/sss-vs-tss-mpc",
         {
           type: "category",
           label: "Technical Architecture",
@@ -66,7 +61,7 @@ module.exports = {
     {
       type: "category",
       label: "Features",
-      link: { type: "doc", id: "pnp/features/features" },
+      // link: { type: "doc", id: "pnp/features/features" },
       items: [
         {
           type: "category",
@@ -76,7 +71,7 @@ module.exports = {
         },
         "pnp/features/custom-authentication",
         "pnp/features/mfa",
-        "pnp/features/session-management",
+        // "pnp/features/session-management",
         {
           type: "category",
           label: "Server Side Verification",
@@ -103,23 +98,23 @@ module.exports = {
         },
         "pnp/features/interoperability",
         "pnp/features/connect-external-wallets",
-        "pnp/features/dapp-share",
+        // "pnp/features/dapp-share",
       ],
     },
-    "pnp/going-live",
-    {
-      type: "category",
-      label: "Release Notes",
-      items: [
-        "pnp/release-notes/web",
-        "pnp/release-notes/android",
-        "pnp/release-notes/ios",
-        "pnp/release-notes/react-native",
-        "pnp/release-notes/flutter",
-        "pnp/release-notes/unity",
-        "pnp/release-notes/unreal",
-      ],
-    },
+    // "pnp/going-live",
+    // {
+    //   type: "category",
+    //   label: "Release Notes",
+    //   items: [
+    //     "pnp/release-notes/web",
+    //     "pnp/release-notes/android",
+    //     "pnp/release-notes/ios",
+    //     "pnp/release-notes/react-native",
+    //     "pnp/release-notes/flutter",
+    //     "pnp/release-notes/unity",
+    //     "pnp/release-notes/unreal",
+    //   ],
+    // },
     // Core Kit Section
     {
       type: "html",
@@ -131,23 +126,14 @@ module.exports = {
     {
       type: "category",
       label: "Features",
-      link: { type: "doc", id: "core-kit/features/features" },
-      items: [
-        "core-kit/features/create-user-flow",
-        "core-kit/features/factors",
-        "core-kit/features/session-management",
-      ],
+      items: ["core-kit/features/create-user-flow", "core-kit/features/factors"],
     },
-    "core-kit/going-live",
-    {
-      type: "category",
-      label: "Release Notes",
-      items: [
-        "core-kit/release-notes/tkey",
-        "core-kit/release-notes/single-factor-auth",
-        "core-kit/release-notes/node",
-      ],
-    },
+    // "core-kit/going-live",
+    // {
+    //   type: "category",
+    //   label: "Release Notes",
+    //   items: ["core-kit/release-notes/tkey", "core-kit/release-notes/single-factor-auth", "core-kit/release-notes/node"],
+    // },
     // Resources Section
     {
       type: "html",
@@ -245,7 +231,7 @@ module.exports = {
         "auth-provider-setup/byo-jwt-providers",
       ],
     },
-      "examples",
+    "examples",
     {
       type: "category",
       label: "Troubleshooting",

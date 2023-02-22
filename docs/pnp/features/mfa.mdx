@@ -5,3 +5,16 @@ description: "Multi Factor Authentication | Documentation - Web3Auth"
 ---
 
 ---
+
+The Multi Factor Authentication (MFA) feature refers to the ability of the user to create a backup share (recovery phrase). Once a recovery phrase is
+created, the user keys are divided into 3 shares enabling the off-chain multisig functionality, making the key further self custodial for the user.
+Without an MFA, this is not enabled to make sure the user doesn't lose the keys by accidently clearing their browser local storage. A backup share
+helps a user to login into a new device and also to recover their account if they lose their original device.
+
+For a dApp, we give a variety of choices to set the multi factor authentication for the user. You can set the `mfaLevel` argument to customize when
+MFA screen should be shown to user. It currently accepts 4 values:
+
+- **`'default'`** Setting mfa level to `default` will present mfa screen to user on every third login.
+- **`'optional'`** Setting mfa level to `optional` will present mfa screen to user on every login but user can skip it.
+- **`'mandatory'`** Setting mfa level to `mandatory` will make it mandatory for user to setup mfa after login.
+- **`'none'`** Setting mfa level to `none` will make the user skip the mfa setup screen
