@@ -397,6 +397,14 @@ const config = {
             from: "/examples/liveexamples",
             to: "/examples",
           },
+          {
+            from: "/sdk/self-host/",
+            to: "/sdk/tkey/",
+          },
+          {
+            from: "/guides/selfhost",
+            to: "/guides/tkey",
+          },
         ],
       },
     ],

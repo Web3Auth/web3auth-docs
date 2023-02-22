@@ -77,8 +77,8 @@ export default function FooterComponent(): JSX.Element {
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/sdk/self-host">
-                Self Host
+              <a className="footer__link-item" href="/docs/sdk/tkey">
+                Core Kit
               </a>
             </div>
             <div className="footer__item">
