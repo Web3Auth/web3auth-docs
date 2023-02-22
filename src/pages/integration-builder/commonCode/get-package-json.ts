@@ -1,7 +1,7 @@
 import {
   openloginAdapterVersion,
   web3authBaseVersion,
-  web3authCoreVersion,
+  web3authNoModalVersion,
   web3authModalVersion,
   web3authSolanaProviderVersion,
 } from "../../../common/versions";
@@ -17,7 +17,7 @@ export const getPackageJson = (chain: string, whitelabel: boolean, customAuth: b
     "@web3auth/modal": "^${web3authModalVersion}",`;
   } else {
     code += `
-    "@web3auth/core": "^${web3authCoreVersion}",`;
+    "@web3auth/core": "^${web3authNoModalVersion}",`;
   }
 
   if (whitelabel || customAuth || chain in OTHER_CHAINS) {

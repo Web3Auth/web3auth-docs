@@ -6,14 +6,78 @@ const githubOrgUrl = `https://github.com/${githubOrg}`;
 const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
 const githubDiscussionsUrl = `${githubOrgUrl}/${githubOrg}/discussions`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
-const contactUrl = "https://calendly.com/web3auth/meeting-with-web3auth";
 const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
 const fs = require('fs');
-
 const resourcesDropdown = fs.readFileSync('./src/components/navDropdown/resources.html', 'utf-8');
 const helpDropdown = fs.readFileSync('./src/components/navDropdown/help.html', 'utf-8');
 const sdkDropdown = fs.readFileSync('./src/components/navDropdown/sdk.html', 'utf-8');
+
+function defineSection(section, version = {}, options = {}) {
+  return [
+    '@docusaurus/plugin-content-docs',
+    /** @type {import('@docusaurus/plugin-content-docs').Options} */
+    ({
+      path: `docs/sdk/${section}`,
+      routeBasePath: `/sdk/${section}`,
+      id: section,
+      sidebarPath: require.resolve('./sidebarsSdk.js'),
+      breadcrumbs: true,
+      editUrl: githubEditUrl,
+      versions: version && {
+        current: {
+          label: version.label,
+        },
+      },
+      remarkPlugins: [remarkMath, [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
+      rehypePlugins: [[rehypeKatex, { strict: false }]],
+      ...options,
+    }),
+  ];
+}
+
+const web3authNoModalVersion = `4.6.0`;
+const web3authAndroidVersion = `3.2.0`;
+const web3authiOSVersion = `5.0.0`;
+const web3authRNVersion = `3.4.0`;
+const web3authFlutterVersion = `1.1.1`;
+const web3authUnityVersion = `1.2.0`;
+// Core Kit SDKs
+const tkeyVersion = `7.2.0`;
+const singleFactorAuthVersion = `4.6.0`;
+const coreKitNodeVersion = `1.0.1`;
+
+const SECTIONS = [
+  // Plug and Play
+  defineSection('web', {
+    label: web3authNoModalVersion
+  }),
+  defineSection('android', {
+    label: web3authAndroidVersion
+  }),
+  defineSection('ios', {
+    label: web3authiOSVersion
+  }),
+  defineSection('react-native', {
+    label: web3authRNVersion
+  }),
+  defineSection('flutter', {
+    label: web3authFlutterVersion
+  }),
+  defineSection('unity', {
+    label: web3authUnityVersion
+  }),
+  // Core Kit
+  defineSection('tkey', {
+    label: tkeyVersion
+  }),
+  defineSection('single-factor-auth', {
+    label: singleFactorAuthVersion
+  }),
+  defineSection('node', {
+    label: coreKitNodeVersion
+  }),
+];
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 const config = {
@@ -60,7 +124,7 @@ const config = {
             {
               type: 'html',
               value: sdkDropdown,
-           },
+            },
           ],
         },
         {
@@ -71,7 +135,7 @@ const config = {
             {
               type: 'html',
               value: resourcesDropdown,
-           },
+            },
           ],
         },
         {
@@ -93,7 +157,7 @@ const config = {
             {
               type: 'html',
               value: helpDropdown,
-           },
+            },
           ],
         },
         {
@@ -110,7 +174,7 @@ const config = {
           type: "html",
           position: "right",
           value:
-            '<a href="https://dashboard.web3auth.io/" target="_blank" class="navbar-button"><strong class="navbar-button-text">Dashboard</strong></a>',
+            '<a href="https://dashboard.web3auth.io/" target="_blank" class="navbar-button"><strong class="navbar-button-text">Developer Dashboard</strong></a>',
         },
         {
           type: "html",
@@ -137,9 +201,10 @@ const config = {
           routeBasePath: "/",
           breadcrumbs: true,
           editUrl: githubEditUrl,
-          sidebarPath: require.resolve("./sidebars.js"),
+          sidebarPath: require.resolve("./sidebarMain.js"),
           remarkPlugins: [remarkMath, [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
+          exclude: ["**/sdk/**"],
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -400,6 +465,7 @@ const config = {
         ],
       },
     ],
+    ...SECTIONS,
   ],
 };
 
