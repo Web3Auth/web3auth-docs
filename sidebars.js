@@ -76,27 +76,35 @@ module.exports = {
           link: { type: "doc", id: "pnp/features/server-side-verification/server-side-verification" },
           items: [
             "pnp/features/server-side-verification/social-login-users",
-            "pnp/features/server-side-verification/external-wallets",
             {
-              type: "link",
-              label: "Sign in with Web3",
-              href: "https://siww.web3auth.io/",
-            },
-            {
-              type: "link",
-              label: "Sign in with Solana",
-              href: "https://siws.web3auth.io/",
-            },
-            {
-              type: "link",
-              label: "Sign in with Starkware",
-              href: "https://siwst.web3auth.io/",
+              type: "category",
+              label: "External Wallets",
+              collapsed: false,
+              collapsible: true,
+              link: { type: "doc", id: "pnp/features/server-side-verification/external-wallets" },
+              items: [
+                {
+                  type: "link",
+                  label: "Sign in with Web3",
+                  href: "https://siww.web3auth.io/",
+                },
+                {
+                  type: "link",
+                  label: "Sign in with Solana",
+                  href: "https://siws.web3auth.io/",
+                },
+                {
+                  type: "link",
+                  label: "Sign in with Starkware",
+                  href: "https://siwst.web3auth.io/",
+                },
+              ],
             },
           ],
         },
         "pnp/features/interoperability",
         "pnp/features/connect-external-wallets",
-        // "pnp/features/dapp-share",
+        "pnp/features/dapp-share",
       ],
     },
     // "pnp/going-live",
@@ -120,11 +128,6 @@ module.exports = {
       defaultStyle: true,
     },
     "core-kit/introduction",
-    {
-      type: "category",
-      label: "Features",
-      items: ["core-kit/features/create-user-flow", "core-kit/features/factors"],
-    },
     // "core-kit/going-live",
     // {
     //   type: "category",
