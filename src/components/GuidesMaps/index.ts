@@ -393,8 +393,8 @@ export const featuresMap = [
     tag: "@web3auth/core",
   },
   {
-    title: "Web3Auth Self Host",
-    tag: "self host",
+    title: "Web3Auth Core Kit tKey SDK",
+    tag: "tkey",
   },
   {
     title: "Web3Auth Single Factor Auth",
