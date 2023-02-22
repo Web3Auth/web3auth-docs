@@ -12,6 +12,7 @@ const fs = require('fs');
 const resourcesDropdown = fs.readFileSync('./src/components/navDropdown/resources.html', 'utf-8');
 const helpDropdown = fs.readFileSync('./src/components/navDropdown/help.html', 'utf-8');
 const sdkDropdown = fs.readFileSync('./src/components/navDropdown/sdk.html', 'utf-8');
+const { webpackPlugin } = require('./plugins/webpack-plugin.cjs');
 
 function defineSection(section, version = {}, options = {}) {
   return [
@@ -219,6 +220,7 @@ const config = {
     ],
   ],
   plugins: [
+    webpackPlugin,
     path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
     [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: "files" }],
     path.resolve(__dirname, "plugins", "node-polyfills"),
