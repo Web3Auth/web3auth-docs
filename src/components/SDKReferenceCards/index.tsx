@@ -47,7 +47,7 @@ export default function QuickNavigation() {
         </div>
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>No Modal SDK</h3>
-          <p>Plug and Play Core SDK for your JS environment. Build your own UI for user interaction</p>
+          <p>Plug and Play No Modal SDK for your JS environment. Build your own UI for user interaction</p>
           <div className={styles.links}>
             <a href="/docs">Quick Start{chevron}</a>
             <a href="/docs">SDK Reference{chevron}</a>
