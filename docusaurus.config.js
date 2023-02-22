@@ -60,7 +60,7 @@ const config = {
             {
               type: 'html',
               value: sdkDropdown,
-           },
+            },
           ],
         },
         {
@@ -71,7 +71,7 @@ const config = {
             {
               type: 'html',
               value: resourcesDropdown,
-           },
+            },
           ],
         },
         {
@@ -93,7 +93,7 @@ const config = {
             {
               type: 'html',
               value: helpDropdown,
-           },
+            },
           ],
         },
         {
@@ -407,7 +407,15 @@ const config = {
           },
           {
             from: "/sdk/tkey/initialization",
-            to: "/sdk/tkey/initialisation",
+            to: "/sdk/tkey/initialize",
+          },
+          {
+            from: "/sdk/tkey/initialisation",
+            to: "/sdk/tkey/initialize",
+          },
+          {
+            from: "/sdk/tkey/installation",
+            to: "/sdk/tkey/install",
           },
         ],
       },
