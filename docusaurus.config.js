@@ -37,7 +37,7 @@ const config = {
     announcementBar: {
       id: 'join_community',
       content:
-        '<a class="topAnnouncementBar" href="https://community.web3auth.io">Get the support you need to seamlessly integrate with Web3Auth. Join our community today!</a>',
+        '<a class="topAnnouncementBar" href="https://community.web3auth.io" target="_blank">Get the support you need to seamlessly integrate with Web3Auth. Join our community today!</a>',
       backgroundColor: 'rgb(0,49,126)',
       textColor: "var(--ifm-color-white)",
       isCloseable: true,
