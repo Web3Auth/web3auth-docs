@@ -1,5 +1,5 @@
 import Link from "@docusaurus/Link";
-import classNames from "classnames";
+import web3AuthModal from "@site/static/images/web3auth-modal.png";
 import { useEffect, useState } from "react";
 
 import styles from "./styles.module.css";
@@ -31,23 +31,18 @@ export function useWindowDimensions() {
 
 export default function Web3AuthOverview() {
   return (
-    <div className={styles.container}>
-      <div className="row">
-        <div className={classNames("col col--7", classNames(styles.cardQuickStart))}>
-          <p className={styles.headline}>Get started in seconds.</p>
-          <p className={styles.description}>Bootstrap your DApp or Wallet with our multi platform SDKs and connect to any blockchain</p>
-
-          <div className={styles.btnContainer}>
-            <div className={styles.btn}>
-              <Link to="/quick-start">
-                <button type="button" className={classNames(styles.ctaBtn, styles.ctaBtnWhite)}>
-                  Quick Start
-                </button>
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div className={classNames("col col--5", styles.modalContainer)} />
+    <div className={styles.card}>
+      <div className={styles.cardContent}>
+        <h3>Get started in seconds.</h3>
+        <p>Bootstrap your DApp or Wallet with our multi platform SDKs and connect to any blockchain</p>
+        <Link to="/quick-start">
+          <button type="button" className={styles.ctaBtn}>
+            Quick Start
+          </button>
+        </Link>
+      </div>
+      <div className={styles.imageContainer}>
+        <img src={web3AuthModal} alt="Web3Auth Modal" className={styles.image} />
       </div>
     </div>
   );
