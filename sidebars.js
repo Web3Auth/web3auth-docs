@@ -153,6 +153,29 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Auth Provider Setup",
+      link: { type: "doc", id: "auth-provider-setup/auth-provider-setup" },
+      items: [
+        "auth-provider-setup/verifiers",
+        {
+          type: "category",
+          label: "Social Providers",
+          link: { type: "doc", id: "auth-provider-setup/social-providers/social-providers" },
+          items: [
+            "auth-provider-setup/social-providers/google",
+            "auth-provider-setup/social-providers/facebook",
+            "auth-provider-setup/social-providers/twitch",
+            "auth-provider-setup/social-providers/discord",
+          ],
+          collapsible: true,
+          collapsed: false,
+        },
+        "auth-provider-setup/federated-identity-providers",
+        "auth-provider-setup/byo-jwt-providers",
+      ],
+    },
+    {
+      type: "category",
       label: "Connect Blockchain",
       link: { type: "doc", id: "connect-blockchain/connect-blockchain" },
       items: [
@@ -205,29 +228,6 @@ module.exports = {
           collapsible: true,
           collapsed: false,
         },
-      ],
-    },
-    {
-      type: "category",
-      label: "Auth Provider Setup",
-      link: { type: "doc", id: "auth-provider-setup/auth-provider-setup" },
-      items: [
-        "auth-provider-setup/verifiers",
-        {
-          type: "category",
-          label: "Social Providers",
-          link: { type: "doc", id: "auth-provider-setup/social-providers/social-providers" },
-          items: [
-            "auth-provider-setup/social-providers/google",
-            "auth-provider-setup/social-providers/facebook",
-            "auth-provider-setup/social-providers/twitch",
-            "auth-provider-setup/social-providers/discord",
-          ],
-          collapsible: true,
-          collapsed: false,
-        },
-        "auth-provider-setup/federated-identity-providers",
-        "auth-provider-setup/byo-jwt-providers",
       ],
     },
     "examples",

@@ -11,7 +11,7 @@ export default function QuickNavigation() {
         different aspects of web3 authentication and make your own customised integration.
       </p>
       <div className={styles.cardContainer}>
-        <Link className={styles.card} to="/quick-start">
+        <Link className={styles.card} to="/docs/dashboard-setup/">
           <div className={styles.cardIconContainer}>
             <svg viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
               <path
@@ -27,7 +27,7 @@ export default function QuickNavigation() {
             <p>Get Started with our developer dashboard</p>
           </div>
         </Link>
-        <Link className={styles.card} to="/quick-start">
+        <Link className={styles.card} to="/docs/auth-provider-setup/">
           <div className={styles.cardIconContainer}>
             <svg className={styles.cardIcon} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -45,7 +45,7 @@ export default function QuickNavigation() {
         </Link>
       </div>
       <div className={styles.cardContainer}>
-        <Link className={styles.card} to="/quick-start">
+        <Link className={styles.card} to="/docs/connect-blockchain/">
           <div className={styles.cardIconContainer}>
             <svg className={styles.cardIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -61,7 +61,7 @@ export default function QuickNavigation() {
             <p>Connect to the blockchain of your choice.</p>
           </div>
         </Link>
-        <Link className={styles.card} to="/quick-start">
+        <Link className={styles.card} to="/docs/examples">
           <div className={styles.cardIconContainer}>
             <svg viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
               <path
@@ -79,7 +79,7 @@ export default function QuickNavigation() {
         </Link>
       </div>
       <div className={styles.cardContainer}>
-        <Link className={styles.card} to="/quick-start">
+        <Link className={styles.card} to="https://toruslabs.medium.com/">
           <div className={styles.cardIconContainer}>
             <svg viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
               <path
@@ -102,7 +102,7 @@ export default function QuickNavigation() {
             </p>
           </div>
         </Link>
-        <Link className={styles.card} to="/quick-start">
+        <Link className={styles.card} to="/docs/guides">
           <div className={styles.cardIconContainer}>
             <svg viewBox="0 0 57 56" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
               <path
