@@ -1,39 +1,37 @@
-.container {
-  display: block;
+.card {
+  display: flex;
   background: var(--w3a-banner-background);
-  border-radius: 10px;
-  height: max-content;
-  padding: 50px 20px 50px 20px;
+  border-radius: var(--ifm-global-radius);
+  padding: 42px;
   overflow: hidden;
   margin-top: 30px;
-  width: fit-content;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: max-content;
+  gap: 36px;
 }
 
-.cardQuickStart {
+.cardContent {
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  flex: 3;
 }
 
-.content {
-  max-width: 472px;
-  height: 100%;
-  display: flex;
-  flex-flow: column;
-}
-
-.container .headline {
-  font-weight: 600;
-  font-size: 36px;
+.card h3 {
+  font-weight: 600 !important;
+  font-size: 30px;
   line-height: 150%;
   color: var(--ifm-color-content);
   margin: 0;
 }
 
-.container .description {
-  font-weight: 400;
-  font-size: 18px;
+.card p {
+  font-weight: 400 !important;
+  font-size: 16px;
   line-height: 150%;
   color: var(--w3a-color-icon-gray);
 }
@@ -50,62 +48,62 @@
   flex-wrap: wrap;
 }
 
-.modalContainer {
+.imageContainer {
   display: none;
 }
 
-@media (min-width: 500px) {
-  .headline {
-    font-size: 32px;
-  }
-
-  .description {
-    font-size: 20px;
-  }
-}
-
 @media (min-width: 700px) {
-  .container {
+  .card {
     flex-direction: row;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  .headline {
-    font-size: 40px;
-  }
-
-  .description {
-    font-size: 24px;
+  .card h3 {
+    font-size: 32px;
   }
 }
 
 @media (min-width: 997px) {
-  .container {
-    padding: 0;
+  .card {
+    border-radius: 36px;
+    padding: 63px 42px;
   }
-  .cardQuickStart {
-    padding: 50px 20px 50px 70px;
+
+  .card h3 {
+    font-size: 30px;
   }
-  .modal {
-    display: "block";
-    max-height: "600px";
+
+  .imageContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 3;
+    overflow: hidden;
+    position: relative;
+    height: max-content;
+  }
+
+  .image {
+    max-width: 440px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 1106px) {
+  .imageContainer {
+    flex: 2;
   }
 }
 
 @media (min-width: 1232px) {
-  .modalContainer {
-    display: block;
-    background-image: url("/images/integration-builder-light.png");
-    background-size: contain;
-    background-position: center bottom;
-    background-repeat: no-repeat;
-    overflow: hidden;
+  .card h3 {
+    font-size: 36px;
   }
 
-  html[data-theme="dark"] .modalContainer {
-    background-image: url("/images/integration-builder-dark.png");
-
+  .card p {
+    font-size: 18px;
   }
 }
