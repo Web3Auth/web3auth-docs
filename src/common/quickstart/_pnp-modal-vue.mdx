@@ -1,0 +1,124 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import DashboardImage from "@site/static/dashboard/project_plug_n_play.png";
+
+### 1. Install Web3Auth
+
+Install the Web3Auth package in your Vue project.
+
+```bash npm2yarn
+npm install --save @web3auth/modal
+```
+
+### 2. Get your Client ID from Web3Auth Dashboard
+
+Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new project. Use the Client ID of the project to start your integration.
+
+<img src={DashboardImage} style={{ alignSelf: "center", maxWidth: "100%" }} />
+
+### 3. Initialize Web3Auth for your preferred blockchain
+
+Web3Auth needs to initialise as soon as your app loads up to enable the user to log in. Preferably done within a constructor, initialisation is the
+step where you can pass on all the configurations for Web3Auth you want. A simple integration for some of the popular blockchains will look like this:
+
+<Tabs
+  defaultValue="ethereum"
+  values={[
+    { label: "Ethereum", value: "ethereum" },
+    { label: "Polygon", value: "polygon" },
+    { label: "Solana", value: "solana" },
+    { label: "Other Chains", value: "other" },
+  ]}
+>
+
+<TabItem value="ethereum">
+
+```js
+import { Web3Auth } from "@web3auth/modal";
+
+//Initialize within your constructor
+const web3auth = new Web3Auth({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1", // Please use 0x5 for Goerli Testnet
+  },
+});
+
+await web3auth.initModal();
+```
+
+</TabItem>
+
+<TabItem value="polygon">
+
+```js
+import { Web3Auth } from "@web3auth/modal";
+
+//Initialize within your constructor
+const web3auth = new Web3Auth({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x89", // Use 0x13881 for Mumbai Testnet
+  },
+});
+
+await web3auth.initModal();
+```
+
+</TabItem>
+
+<TabItem value="solana">
+
+```js
+import { Web3Auth } from "@web3auth/modal";
+
+//Initialize within your constructor
+const web3auth = new Web3Auth({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "solana",
+    chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+  },
+});
+
+await web3auth.initModal();
+```
+
+</TabItem>
+
+<TabItem value="other">
+
+```js
+import { Web3Auth } from "@web3auth/modal";
+
+//Initialize within your constructor
+const web3auth = new Web3Auth({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  chainConfig: {
+    chainNamespace: "other",
+  },
+});
+
+await web3auth.initModal();
+```
+
+</TabItem>
+
+</Tabs>
+
+### 4. Login your User
+
+Once you're done initialising, just create a button that triggers to open the login modal for the user on their request. Logging in is as easy as:
+
+```js
+await web3auth.connect();
+```
+
+:::caution
+
+If you're new to Web3 development, you might be facing certain issues with Webpack while configuring your application. Please refer to our
+[Webpack Issues Troubleshooting Guide](/troubleshooting/webpack-issues) for more information.
+
+:::

@@ -51,11 +51,12 @@ This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
 
 <TabItem value="table">
 
-| Parameter        | Type                                                                         | Description                                                                                                         | Mandatory |
-| ---------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------- |
-| `clientId`       | `string`                                                                     | Web3Auth Client ID. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/). | Yes       |
-| `chainConfig`    | Partial `<CustomChainConfig>` & Pick `<CustomChainConfig, "chainNamespace">` | Custom configuration for your preferred blockchain. Read more about it [here](#chainconfig).                        | Yes       |
-| `enableLogging?` | `boolean`                                                                    | Setting it to true will enable logs.                                                                                | No        |
+| Parameter          | Type                                                                         | Description                                                                                                         | Mandatory |
+| ------------------ | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------- |
+| `clientId`         | `string`                                                                     | Web3Auth Client ID. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/). | Yes       |
+| `chainConfig`      | Partial `<CustomChainConfig>` & Pick `<CustomChainConfig, "chainNamespace">` | Custom configuration for your preferred blockchain. Read more about it [here](#chainconfig).                        | Yes       |
+| `web3AuthNetwork?` | `testnet`, `mainnet`, `cyan`, `aqua`, or `celeste`                           | Web3Auth Networks                                                                                                   | No        |
+| `enableLogging?`   | `boolean`                                                                    | Setting it to true will enable logs.                                                                                | No        |
 
 </TabItem>
 
@@ -75,6 +76,11 @@ interface Web3AuthOptions {
    * @defaultValue mainnet config of provided chainNamespace
    */
   chainConfig: Partial<CustomChainConfig> & Pick<CustomChainConfig, "chainNamespace">;
+  /**
+   * Web3Auth Network to use for login
+   * @defaultValue mainnet
+   */
+  web3AuthNetwork?: TORUS_NETWORK_TYPE;
   /**
    * setting to true will enable logs
    *
@@ -119,6 +125,8 @@ const web3auth = new Web3Auth({
     chainId: "0x1",
     rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
   },
+  // Available networks are "testnet", "mainnet", "cyan", "aqua", and "celeste".
+  web3AuthNetwork: "cyan",
 });
 ```
 
@@ -134,6 +142,8 @@ const web3auth = new Web3Auth({
     chainId: "0x1",
     rpcTarget: "https://rpc.ankr.com/solana", // needed for non-other chains
   },
+  // Available networks are "testnet", "mainnet", "cyan", "aqua", and "celeste".
+  web3AuthNetwork: "cyan",
 });
 ```
 
@@ -147,6 +157,8 @@ const web3auth = new Web3Auth({
   chainConfig: {
     chainNamespace: "other",
   },
+  // Available networks are "testnet", "mainnet", "cyan", "aqua", and "celeste".
+  web3AuthNetwork: "cyan",
 });
 ```
 
@@ -163,6 +175,5 @@ This is done by calling `init()` function of the `web3auth` instance we created 
 network is "mainnet"._**
 
 ```javascript
-// Available networks are "testnet", "mainnet", "cyan", "aqua", "celeste".
-web3auth.init({ network: "cyan" });
+web3auth.init();
 ```

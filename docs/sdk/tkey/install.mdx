@@ -1,0 +1,156 @@
+---
+title: "Install Web3Auth Core Kit tKey SDK Libraries"
+sidebar_label: "Install"
+displayed_sidebar: sdk
+description: "Core Kit tKey SDK - Installation  | Documentation - Web3Auth"
+---
+
+import ServiceWorkerCode from "@site/src/common/sdk/tKey/_sw-js.mdx";
+
+---
+
+While installing Web3Auth Core Kit tKey SDK, we recommend installing the `tkey/default` SDK. This package contains all the needed functionalities of
+the `tkey` SDK.
+
+## [`@tkey/default`](https://www.npmjs.com/package/@tkey/default)
+
+```bash npm2yarn
+npm install --save @tkey/default
+```
+
+## Adding Modules
+
+---
+
+Modules extend the tKey SDK's capability to provide additional functionality for managing your tKey shares. Out of the multiple modules available, you
+can choose the module you want to include in your implementation. Here is the list of available modules:
+
+### Default Modules (Needed for basic operations)
+
+- **tKey Share Serialization Module [`@tkey/share-serialization`](/sdk/tkey/modules/share-serialization):** Adds the capability to import/ export a
+  share from `tKey`.
+
+- **tKey Share Transfer Module [`@tkey/share-transfer`](/sdk/tkey/modules/share-transfer):** Adds the capability to transfer a share to another
+  device.
+
+:::note
+
+These modules are automatically configured for you in the tKey SDK. You don't need to additionally install them.
+
+:::
+
+### Share B (Storage Modules)
+
+Storage Modules are used to store the tKey shares in the user's device storage. You can choose any of the following modules:
+
+- **tKey Web Storage Module [`@tkey/web-storage`](/sdk/tkey/modules/web-storage):** Adds the capability to add or remove a share from the local and
+  file storage.
+
+  ```bash npm2yarn
+  npm install --save @tkey/web-storage
+  ```
+
+- **tKey Chrome Storage Module [`@tkey/chrome-storage`](/sdk/tkey/modules/chrome-storage):** Adds the capability to add or remove a share from the
+  chrome extension storage.
+
+  ```bash npm2yarn
+  npm install --save @tkey/chrome-storage
+  ```
+
+:::tip
+
+Share Transfer Module can act as a Storage Module as well here.
+
+:::
+
+### Share C (Recovery Modules)
+
+Recovery Modules are used to recover the tKey shares in the case user doesn't have access to their device/storage or needs additional security. You
+can choose any of the following modules:
+
+- **tKey Security Questions Module [`@tkey/security-questions`](/sdk/tkey/modules/security-questions):** Adds the capability to add or remove a
+  question and password as a share.
+
+  ```bash npm2yarn
+  npm install --save @tkey/security-questions
+  ```
+
+:::tip
+
+Share Serialization Module can act as a Recovery Module as well here.
+
+:::
+
+### Additional Modules
+
+These modules provide extra capability to the tKey SDK, like importing user's existing private keys or seedphrases. You can choose any of the
+following modules:
+
+- **tKey Seed Phrase Module [`@tkey/seed-phrase`](/sdk/tkey/modules/seed-phrase):** Adds the capability to store and use seedphrases on the metadata.
+
+  ```bash npm2yarn
+  npm install --save @tkey/seed-phrase
+  ```
+
+- **tKey Private Keys Module [`@tkey/private-keys`](/sdk/tkey/modules/private-keys):** Adds the capability to store extra private keys on the
+  metadata.
+
+  ```bash npm2yarn
+  npm install --save @tkey/private-keys
+  ```
+
+## Troubleshooting
+
+---
+
+### Webpack 5 Issues
+
+With the latest version of webpack, you might face issues mentioning that certain dependencies are missing. These dependencies need to be polyfilled
+in your application. Furthermore, your app needs to be reconfigured to use them while building the app.
+
+Please check out our **[dedicated troubleshooting guide](/troubleshooting/webpack-issues)** for fixing webpack 5 issues.
+
+### Service Worker
+
+A service worker is a scripts that is run by the browser. It does not have any direct relationship with the DOM and provides many out of the box
+network-related features. Web3Auth Core Kit tKey SDK needs a service worker relative to `baseUrl` to capture the auth redirect at `redirectPathName`
+path.
+
+For example, while using service worker if `baseUrl` is `http://localhost:3000/serviceworker` then user will be redirected to
+`http://localhost:3000/serviceworker/redirect` page after login where service worker will capture the results and send it back to original window
+where login was initiated.
+
+:::tip
+
+- Using service worker is optional, but highly recommended. You can skip it by passing `skipSw` param while [initialising tKey](./initialize).
+
+- Service worker is needed if you are using `redirect` uxMode within your [Service Provider configuration](./initialize#configuring-service-provider).
+
+- For browsers where service workers are not supported, or in the case you wish to not use service workers, create and serve redirect page (i.e
+  `redirect.html` file).
+
+:::
+
+#### Redirect Page
+
+If you don't have to use service worker or `redirect.html` file. You can get login result by calling `getRedirectResult` on redirected page mount.
+
+For example, if baseUrl is `http://localhost:3000` and `redirectPathName` is `auth` then user will be redirected to `http://localhost:3000/auth` page
+after login where you can get login result by calling `getRedirectResult` on redirected page mount.
+
+#### Service Worker Setup
+
+- If you're using React, to setup service worker, you need to create a `sw.js` file in your public folder and register it in your `index.html` file.
+  You can find more information about it in [this blog](https://blog.bitsrc.io/using-service-workers-with-react-27a4c5e2d1a9).
+
+- For Angular, [this guide](https://angular.io/guide/service-worker-getting-started) will be helpful in setting up the service worker.
+
+- For Vue, [this guide](https://www.360learntocode.com/2020/12/how-to-use-and-customize-service-worker-in-vuejs-pwa.html) is a great way to get
+  started with service workers.
+
+#### Service Worker Code
+
+You can directly copy the service worker file code from here and paste in your respective folder. You can also find the code in our
+[tkey-react-example](https://github.com/Web3Auth/examples/blob/main/tkey/tkey-react-example/public/serviceworker/sw.js).
+
+<ServiceWorkerCode />

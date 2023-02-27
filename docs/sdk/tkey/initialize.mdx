@@ -1,0 +1,124 @@
+---
+title: "Initialize Web3Auth Core Kit tKey SDK"
+sidebar_label: "Initialize"
+displayed_sidebar: sdk
+description: "Core Kit tKey SDK - Initialisation  | Documentation - Web3Auth"
+---
+
+import InitParams from "@site/src/common/sdk/tKey/_init-params.mdx";
+import ModulesDescription from "@site/src/common/sdk/tKey/_modules-description.mdx";
+import ModulesExample from "@site/src/common/sdk/tKey/_modules-example.mdx";
+import ServiceProviderArg from "@site/src/common/sdk/tKey/_service-provider-arg.mdx";
+import ServiceProviderExample from "@site/src/common/sdk/tKey/_service-provider-example.mdx";
+import TKeyArgs from "@site/src/common/sdk/tKey/_tkey-args.mdx";
+import TKeyInstanceExample from "@site/src/common/sdk/tKey/_tkey-instance-example.mdx";
+
+---
+
+After installation, the next step to using Web3Auth Core Kit tKey SDK is to Initialize the SDK. The Initialization takes a few steps, including
+initiating the tKey SDK with the service provider and modules.
+
+- [Configuration of Service Provider](#configuring-service-provider)
+- [Instantiation of tKey](#instantiating-tkey)
+- [Initialisation of Service Provider](#initialising-service-provider)
+
+:::note
+
+Please note that these are the most critical steps where you must pass on different parameters according to the need of your project.
+
+:::
+
+:::info
+
+The initialisation of tKey puts the SDK into `Read Mode`. This is because the tKey SDK is initialised with only 1 share, ie. the Share A, using the
+Service Provider.
+
+:::
+
+## Configuring Service Provider
+
+---
+
+Service Provider in `tKey` is used for generating a [**Share A**](/sdk/tkey), i.e. the private key share managed by a wallet service provider via
+their authentication flows. This share in our [key infrastructure](/overview/key-management/) refers to the social login aspect, where we associate a
+private key share with the user's social login, enabling the seamless login experience.
+
+In the Web3Auth Core Kit tKey SDK setup, you have to use the Web3Auth Service Provider (`@tkey/service-provider-torus`), which basically implements
+Web3Auth's Social Login feature as a service provider, enabling you to associate the social login of the user as one of the shares.
+
+#### [`@tkey/service-provider-torus`](https://npmjs.com/package/@tkey/service-provider-torus)
+
+:::note
+
+This is automatically installed for you once you install the `@tkey/default` package.
+
+:::
+
+### Parameters
+
+<ServiceProviderArg />
+
+### Example
+
+<ServiceProviderExample />
+
+## Configuring Modules
+
+---
+
+<ModulesDescription />
+
+### Example
+
+<ModulesExample />
+
+## Instantiating tKey
+
+---
+
+#### Import the `ThresholdKey` class from `@tkey/default`
+
+```javascript
+import ThresholdKey from "@tkey/default";
+```
+
+#### Assign the `ThresholdKey` class to a variable
+
+```javascript
+const tKey = new ThresholdKey(TKeyArgs);
+```
+
+This ThresholdKey constructor takes an object with `TKeyArgs` as input.
+
+### Parameters
+
+<TKeyArgs />
+
+### Example
+
+<TKeyInstanceExample />
+
+## Initializing Service Provider
+
+---
+
+You need to initialize your Service Provider within your constructor function so as to use it while logging your user in through the social accounts.
+This is done by calling the `init()` function within the `tKey` instance's `serviceProvider` property.
+
+```ts
+tKey.serviceProvider.init(initParams);
+```
+
+### Parameters
+
+#### `initParams`
+
+The `init` function in TorusServiceProvider accepts the following parameters:
+
+<InitParams />
+
+### Example
+
+```js
+await (tKey.serviceProvider as TorusServiceProvider).init();
+```

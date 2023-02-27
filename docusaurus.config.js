@@ -9,6 +9,11 @@ const githubEditUrl = `${githubRepoUrl}/edit/master`;
 const contactUrl = "https://calendly.com/web3auth/meeting-with-web3auth";
 const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
+const fs = require('fs');
+
+const resourcesDropdown = fs.readFileSync('./src/components/navDropdown/resources.html', 'utf-8');
+const helpDropdown = fs.readFileSync('./src/components/navDropdown/help.html', 'utf-8');
+const sdkDropdown = fs.readFileSync('./src/components/navDropdown/sdk.html', 'utf-8');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 const config = {
@@ -26,8 +31,25 @@ const config = {
     docs: {
       sidebar: {
         autoCollapseCategories: true,
+        hideable: true,
       },
     },
+    announcementBar: {
+      id: 'join_community',
+      content:
+        '<p class="topAnnouncementBar"><a href="https://community.web3auth.io" target="_blank">Get the support you need to seamlessly integrate with Web3Auth. Join our community today!</a></p>',
+      backgroundColor: 'rgb(0,49,126)',
+      textColor: "var(--ifm-color-white)",
+      isCloseable: true,
+    },
+    // announcementBar: {
+    //   id: 'self_host_rename',
+    //   content:
+    //     '<p class="topAnnouncementBar">Self Host is now Core Kit. <a href="https://community.web3auth.io" target="_blank"><u>Read More</u></a></p>',
+    //   backgroundColor: 'rgb(0,49,126)',
+    //   textColor: "var(--ifm-color-white)",
+    //   isCloseable: true,
+    // },
     colorMode: {
       defaultMode: "dark",
       disableSwitch: false,
@@ -46,13 +68,31 @@ const config = {
       },
       items: [
         {
-          label: "Integration Builder",
-          to: "/integration-builder",
+          label: 'SDKs',
+          type: 'dropdown',
+          to: "/sdk",
           position: "left",
+          items: [
+            {
+              type: 'html',
+              value: sdkDropdown,
+            },
+          ],
         },
         {
-          label: "SDKs",
-          to: "/sdk",
+          label: 'Resources',
+          type: 'dropdown',
+          position: "left",
+          items: [
+            {
+              type: 'html',
+              value: resourcesDropdown,
+            },
+          ],
+        },
+        {
+          label: "Integration Builder",
+          to: "/integration-builder",
           position: "left",
         },
         {
@@ -62,9 +102,15 @@ const config = {
           position: "left",
         },
         {
-          label: "Enterprise Demo",
-          href: contactUrl,
+          label: 'Help',
+          type: 'dropdown',
           position: "left",
+          items: [
+            {
+              type: 'html',
+              value: helpDropdown,
+            },
+          ],
         },
         {
           position: "right",
@@ -80,7 +126,7 @@ const config = {
           type: "html",
           position: "right",
           value:
-            '<a href="https://dashboard.web3auth.io/" target="_blank" class="navbar-button"><strong class="navbar-button-text">Dashboard</strong></a>',
+            '<a href="https://dashboard.web3auth.io/" target="_blank" class="navbar-button"><strong class="navbar-button-text">Developer Dashboard</strong></a>',
         },
         {
           type: "html",
@@ -105,7 +151,7 @@ const config = {
       {
         docs: {
           routeBasePath: "/",
-          breadcrumbs: false,
+          breadcrumbs: true,
           editUrl: githubEditUrl,
           sidebarPath: require.resolve("./sidebars.js"),
           remarkPlugins: [remarkMath, [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
@@ -132,16 +178,8 @@ const config = {
       {
         redirects: [
           {
-            from: "/authenticating-users/overview",
-            to: "/server-side-verification/",
-          },
-          {
             from: "/examples/productionexamples",
             to: "/examples/liveexamples",
-          },
-          {
-            from: "/developing-with-web3auth/adapters",
-            to: "/connect-external-wallets",
           },
           {
             from: "/get-started",
@@ -168,10 +206,6 @@ const config = {
             to: "/sdk/web/modal/wagmi-connector",
           },
           {
-            from: "/sdk/web/web3auth/multi-factor-authentication",
-            to: "/sdk/web/modal/multi-factor-authentication",
-          },
-          {
             from: "/sdk/web/web3auth/custom-authentication",
             to: "/sdk/web/modal/custom-authentication",
           },
@@ -188,24 +222,8 @@ const config = {
             to: "/sdk/web/modal/",
           },
           {
-            from: "/self-host/",
-            to: "/self-hosting",
-          },
-          {
             from: "/quickstart",
             to: "/quick-start",
-          },
-          {
-            from: "/customauth",
-            to: "/custom-authentication/",
-          },
-          {
-            from: "/whitelabeling",
-            to: "/whitelabel/",
-          },
-          {
-            from: "/authenticating-users/",
-            to: "/server-side-verification/",
           },
           {
             from: "/api-reference/",
@@ -221,7 +239,7 @@ const config = {
           },
           {
             from: "/api-reference/web/customloginui",
-            to: "/sdk/web/core/",
+            to: "/sdk/web/no-modal/",
           },
           {
             from: "/api-reference/android/setting-up",
@@ -238,10 +256,6 @@ const config = {
           {
             from: "/api-reference/react-native/choose-workflows",
             to: "/sdk/react-native/",
-          },
-          {
-            from: "/customauth/verifiers",
-            to: "/custom-authentication/verifiers",
           },
           {
             from: "/guides/one-key-flow",
@@ -273,7 +287,7 @@ const config = {
           },
           {
             from: "/api-reference/web/customauth",
-            to: "/sdk/web/core/custom-authentication",
+            to: "/sdk/web/no-modal/custom-authentication",
           },
           {
             from: "/api-reference/web/plugins",
@@ -284,24 +298,140 @@ const config = {
             to: "/sdk/web/adapters/",
           },
           {
-            from: "/authenticating-users/external-wallets",
-            to: "/server-side-verification/external-wallets",
+            from: "/overview/what-is-web3auth",
+            to: "/what-is-web3auth",
           },
           {
-            from: "/authenticating-users/social-login-users",
-            to: "/server-side-verification/social-login-users",
+            from: "/overview/how-web3auth-works",
+            to: "/how-web3auth-works",
           },
           {
             from: "/overview/web3auth-and-wallets",
-            to: "/overview/web3auth-for-wallets",
+            to: "/product-fit/web3auth-for-wallets",
+          },
+          {
+            from: "/overview/web3auth-for-wallets",
+            to: "/product-fit/web3auth-for-wallets",
+          },
+          {
+            from: "/overview/web3auth-for-dapps",
+            to: "/product-fit/web3auth-for-dapps",
+          },
+          {
+            from: "/overview/user-flow",
+            to: "/product-fit/user-flow",
+          },
+          {
+            from: "/overview/key-management/",
+            to: "/infrastructure/key-management",
+          },
+          {
+            from: "/overview/key-management/technical-architecture/",
+            to: "/infrastructure/technical-architecture/",
+          },
+          {
+            from: "/overview/key-management/audits",
+            to: "/infrastructure/audits",
           },
           {
             from: "/sdk/web-backend",
             to: "/sdk/node",
           },
           {
-            from: "/sdk/self-host/initialization",
-            to: "/sdk/self-host/initialisation",
+            from: "/whitelabeling",
+            to: "/pnp/features/whitelabel/",
+          },
+          {
+            from: "/whitelabel/",
+            to: "/pnp/features/whitelabel/",
+          },
+          {
+            from: "/interoperability",
+            to: "/pnp/features/interoperability",
+          },
+          {
+            from: "/dapp-share",
+            to: "/pnp/features/dapp-share",
+          },
+          {
+            from: "/authenticating-users/",
+            to: "/pnp/features/server-side-verification/",
+          },
+          {
+            from: "/authenticating-users/overview",
+            to: "/pnp/features/server-side-verification/",
+          },
+          {
+            from: "/server-side-verification/",
+            to: "/pnp/features/server-side-verification/",
+          },
+          {
+            from: "/developing-with-web3auth/adapters",
+            to: "/pnp/features/connect-external-wallets",
+          },
+          {
+            from: "/connect-external-wallets",
+            to: "/pnp/features/connect-external-wallets",
+          },
+          {
+            from: "/self-host/",
+            to: "/core-kit/introduction",
+          },
+          {
+            from: "/self-hosting",
+            to: "/core-kit/introduction",
+          },
+          {
+            from: "/developer-dashboard/",
+            to: "/dashboard-setup/",
+          },
+          {
+            from: "/customauth",
+            to: "/auth-provider-setup/",
+          },
+          {
+            from: "/customauth/verifiers",
+            to: "/auth-provider-setup/",
+          },
+          {
+            from: "/custom-authentication/",
+            to: "/auth-provider-setup/",
+          },
+          {
+            from: "/sdk/self-host/",
+            to: "/sdk/tkey/",
+          },
+          {
+            from: "/guides/selfhost",
+            to: "/guides/tkey",
+          },
+          {
+            from: "/sdk/web/core/",
+            to: "/sdk/web/no-modal/",
+          },
+          {
+            from: "/sdk/tkey/initialization",
+            to: "/sdk/tkey/initialize",
+          },
+          {
+            from: "/sdk/tkey/initialisation",
+            to: "/sdk/tkey/initialize",
+          },
+          {
+            from: "/sdk/tkey/installation",
+            to: "/sdk/tkey/install",
+          },
+          {
+            from: "/sdk/web/modal/multi-factor-authentication",
+            to: "/sdk/web/modal/mfa",
+          },
+          {
+            from: "/sdk/web/core/multi-factor-authentication",
+            to: "/sdk/web/no-modal/mfa",
+          },
+          {
+            from: "/sdk/web/web3auth/multi-factor-authentication",
+            to: "/sdk/web/modal/mfa",
           },
         ],
       },

@@ -113,7 +113,7 @@ export default function UsecaseCards() {
             </h3>
             <h4 className={styles.headline}>Using Web3Auth on a multi chain DeFi platform</h4>
             <p>
-              Kash built an excellent UI using our Web3Auth Plug and Play Core SDK and their DeFi platform integration creates an Ethereum and Terra
+              Kash built an excellent UI using our Web3Auth Plug and Play No Modal SDK and their DeFi platform integration creates an Ethereum and Terra
               address with just a simple click.
             </p>
           </div>

@@ -1,0 +1,81 @@
+Modules extend the tKey SDK's capability to provide additional functionality for managing your tKey shares. Out of the multiple modules available, you
+can choose the module you want to include in your implementation. Here is the list of available modules:
+
+### Default Modules (Needed for basic operations)
+
+- **tKey Share Serialization Module [`@tkey/share-serialization`](/sdk/tkey/modules/share-serialization):** Adds the capability to import/ export a
+  share from `tKey`.
+
+- **tKey Share Transfer Module [`@tkey/share-transfer`](/sdk/tkey/modules/share-transfer):** Adds the capability to transfer a share to another
+  device.
+
+:::note
+
+These modules are automatically configured for you in the tKey SDK. You don't need to additionally add them.
+
+:::
+
+### Share B (Storage Modules)
+
+Storage Modules are used to store the tKey shares in the user's device storage. You can choose any of the following modules:
+
+- **tKey Web Storage Module [`@tkey/web-storage`](/sdk/tkey/modules/web-storage):** Adds the capability to add or remove a share from the local and
+  file storage.
+
+  ```ts
+  import WebStorageModule from "@tkey/web-storage";
+  const webStorageModule = new WebStorageModule();
+  ```
+
+- **tKey Chrome Storage Module [`@tkey/chrome-storage`](/sdk/tkey/modules/chrome-storage):** Adds the capability to add or remove a share from the
+  chrome extension storage.
+
+  ```ts
+  import ChromeExtensionStorageModule from "@tkey/chrome-storage";
+  const chromeStorageModule = new ChromeExtensionStorageModule();
+  ```
+
+:::tip
+
+Share Transfer Module can act as a Storage Module as well here.
+
+:::
+
+### Share C (Recovery Modules)
+
+Recovery Modules are used to recover the tKey shares in the case user doesn't have access to their device/storage or needs additional security. You
+can choose any of the following modules:
+
+- **tKey Security Questions Module [`@tkey/security-questions`](/sdk/tkey/modules/security-questions):** Adds the capability to add or remove a
+  question and password as a share.
+
+  ```ts
+  import SecurityQuestionsModule from "@tkey/security-questions";
+  const securityQuestionsModule = new SecurityQuestionsModule();
+  ```
+
+:::tip
+
+Share Serialization Module can act as a Recovery Module as well here.
+
+:::
+
+### Additional Modules
+
+These modules provide extra capability to the tKey SDK, like importing user's existing private keys or seedphrases. You can choose any of the
+following modules:
+
+- **tKey Seed Phrase Module [`@tkey/seed-phrase`](/sdk/tkey/modules/seed-phrase):** Adds the capability to store and use seedphrases on the metadata.
+
+  ```ts
+  import SeedPhraseModule from "@tkey/seed-phrase";
+  const seedPhraseModule = new SeedPhraseModule();
+  ```
+
+- **tKey Private Keys Module [`@tkey/private-keys`](/sdk/tkey/modules/private-keys):** Adds the capability to store extra private keys on the
+  metadata.
+
+  ```ts
+  import PrivateKeyModule from "@tkey/private-keys";
+  const privateKeyModule = new PrivateKeyModule();
+  ```

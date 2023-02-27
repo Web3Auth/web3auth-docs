@@ -1,0 +1,291 @@
+---
+title: Usage
+displayed_sidebar: sdk
+description: "Core Kit tKey SDK - Usage | Documentation - Web3Auth"
+---
+
+import SubVerifierDetails from "@site/src/common/sdk/tKey/_sub-verifier-details.mdx";
+import ThresholdKey from "@site/src/common/sdk/tKey/_threshold-key.mdx";
+import TkeyInitParams from "@site/src/common/sdk/tKey/_tkey-init-params.mdx";
+import TorusLoginResponse from "@site/src/common/sdk/tKey/_torus-login-response.mdx";
+
+---
+
+Once you've installed and successfully instantiated tKey and initialised the service provider in your constructor, you can use it to authenticate your
+users and generate their tKey shares. Further, you can use a variety of functions exposed by the tKey SDK and its modules to manage different aspects
+of your users' authentication needs.
+
+We'll be talking in depth about the following operations:
+
+- [Logging in the User](#log-in)
+- [Getting User Information](#get-user-information)
+- [Getting tKey Details](#get-tkey-details)
+- [Reconstructing User's Private Key](#reconstruct-private-key)
+- [Generating a new Share](#generate-a-new-share)
+- [Deleting a Share](#delete-a-share)
+- [Using Modules for Further Operations](#using-modules)
+- [Making Blockchain Calls](#making-blockchain-calls)
+
+<ThresholdKey />
+
+## Log In
+
+---
+
+The login with the tKey SDK is a two step process. First, you need to trigger the login process by calling the `triggerLogin()` function of the
+Service Provider. Following which using the returned information, use the `initialize()` function of the tKey to generate the Threshold Key
+corresponding to the user.
+
+However, before starting this process, you need to set up Custom Authentication on your Web3Auth Dashboard. For this, you need
+
+[Create a Verifier](/auth-provider-setup/verifiers) from the **Custom Auth** section of the
+
+[Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired configuration.
+
+:::tip
+
+If you want to know more about setting up a verifier and how to use it, please refer to the
+[Custom Authentication Documentation](/custom-authentication).
+
+:::
+
+### Triggering Login using Service Provider
+
+#### `tKey.serviceProvider.triggerLogin(SubVerifierDetails)`
+
+This is a needed step since this will generate a private key which will be needed by the tKey to generate it's share. This is done by calling the
+`triggerLogin()` function within the `tKey` instance's `serviceProvider`.
+
+<SubVerifierDetails />
+
+:::note additional reading
+
+#### Trigger Login using Aggregate Verifier
+
+#### `triggerAggregateLogin()`
+
+```javascript
+await (tKey.serviceProvider as TorusServiceProvider).triggerAggregateLogin(AggregateLoginParams)
+```
+
+Takes in the aggregate verifier details as `AggregateLoginParams`.
+
+```ts
+interface AggregateLoginParams {
+  aggregateVerifierType: AGGREGATE_VERIFIER_TYPE;
+  verifierIdentifier: string;
+  subVerifierDetailsArray: SubVerifierDetails[];
+}
+```
+
+:::
+
+### Initializing tKey
+
+#### `tKey.initialize(params?)`
+
+Once you have triggered the login process, you're ready to initialize the tKey. This will generate a Threshold Key corresponding to your login
+provider.
+
+#### Parameters
+
+<TkeyInitParams />
+
+### Example
+
+```js
+await(tKey.serviceProvider as any).triggerLogin({
+  typeOfLogin: "google", // "google","facebook","reddit","discord","twitch", etc.
+  verifier: "google-tkey-w3a",
+  clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+});
+await tKey.initialize();
+```
+
+## Get User Information
+
+---
+
+```ts
+triggerLogin(params: SubVerifierDetails): Promise<TorusLoginResponse>;
+```
+
+The tKey Service Provider returns a `TorusLoginResponse` object which contains the user's information and details about the login. You can access the
+`userInfo` property within it to get the user details from the login provider.
+
+<TorusLoginResponse />
+
+```js title="Example"
+const loginResponse = await(tKey.serviceProvider as any).triggerLogin({
+  typeOfLogin: "google", // "google","facebook","reddit","discord","twitch", etc.
+  verifier: "google-tkey-w3a",
+  clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+});
+const user = loginResponse.userInfo;
+console.log("User Details: ", user);
+```
+
+## Get tKey Details
+
+---
+
+#### `tKey.getKeyDetails()`
+
+The function `getKeyDetails()` returns the details of the keys present generated for the specific user. This includes the public key X & Y of the
+user, alongside the shares details and the threshold.
+
+### Sample Key Details Return
+
+```ts
+[
+  {
+    pubKey: {
+      x: "471dbccd7e55eb2d24..329b8174f2339e516a3d1728d",
+      y: "3f93da3597ded482fc..b23c5c79011a3deb8ccf8bf50",
+    },
+    requiredShares: -9,
+    threshold: 2,
+    totalShares: 11,
+    shareDescriptions: {
+      "1": [
+        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671429485524}',
+        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671429560829}',
+        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671454332687}',
+        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671454508464}',
+        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671454832067}',
+        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671506806091}',
+      ],
+      "94da7ea9b8680ea13d..1de31915c54c1cfa055134308969088": [
+        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671424397242}',
+      ],
+      "9b29f5c69bdcc4c79b..8c573e3001d72dc7a42866e88272866": [
+        '{"module":"securityQuestions","questions":"whats your password?","dateAdded":1671424430842}',
+      ],
+    },
+  },
+];
+```
+
+From here, you can know whether the user key can be reconstructed or not.
+
+- If the `requiredShares` is greater than 0, then the key cannot be reconstructed, because this means that the user has not yet generated enough
+  shares to meet the threshold.
+- Once the `requiredShares` is 0 or less than that, then the key can be reconstructed, and the user can use the shares to generate the private key and
+  make further operations on the tKey and manipulate their keys.
+
+```ts title="Example"
+const { requiredShares } = tKey.getKeyDetails();
+if (requiredShares <= 0) {
+  console.log("All shares are present, you can reconstruct your private key and do operations on the tKey");
+} else {
+  console.log("You need to generate more shares to reconstruct your private key");
+}
+```
+
+## Reconstruct Private Key
+
+---
+
+#### `tKey.reconstructKey()`
+
+The function `reconstructKey()` reconstructs the private key of the user from the shares generated. This function returns the private key of the user
+once the threshold has been met.
+
+```ts
+reconstructKey(_reconstructKeyMiddleware?: boolean): Promise<ReconstructedKeyResult>;
+
+export type ReconstructedKeyResult = {
+    privKey: BN;
+    seedPhrase?: BN[];
+    allKeys?: BN[];
+};
+```
+
+```ts title="Example"
+const { requiredShares } = tKey.getKeyDetails();
+if (requiredShares <= 0) {
+  const reconstructedKeyResult = await tKey.reconstructKey();
+  const privateKey = reconstructedKeyResult?.privKey.toString("hex"));
+  console.log("Private Key: ", privateKey);
+}
+```
+
+## Generate a New Share
+
+---
+
+#### `tKey.generateNewShare()`
+
+The function `generateNewShare()` generates a new share on the same threshold set by the user. This function returns the new share generated.
+
+```ts
+generateNewShare(): Promise<GenerateNewShareResult>;
+
+export type GenerateNewShareResult = {
+    newShareStores: ShareStoreMap;
+    newShareIndex: BN;
+};
+```
+
+```ts title="Example"
+const shareStore = await tKey.generateNewShare();
+await(tKey.modules.webStorage as WebStorageModule).storeDeviceShare(shareStore.newShareStores[1]);
+console.log("New Share Stored on the Browser Local Storage: ", shareStore.newShareIndex.toString());
+```
+
+## Delete a Share
+
+---
+
+#### `tKey.deleteShare(shareIndex: BNString)`
+
+The function `deleteShare()` deletes a share from the user's shares. This function returns the updated shareStore after the share has been deleted.
+
+```ts
+deleteShare(shareIndex: BNString): Promise<DeleteShareResult>;
+
+export type DeleteShareResult = {
+    newShareStores: ShareStoreMap;
+};
+```
+
+```ts title="Example"
+const shareStore = await tKey.deleteShare(previousShareIndex);
+console.log("Share has been deleted", shareStore);
+```
+
+## Using Modules
+
+---
+
+For making advanced operations on tKey and to manipulate the keys, you can use the modules provided by tKey. As mentioned in the
+[initialisation](./initialize) section, you need to configure the modules beforehand to make it work with tKey. Once that is done, the instance of the
+respective module is available within your tKey instance and can be used for further operations.
+
+:::tip
+
+Checkout the [Modules](./modules) section where we have listed all the available modules alongside the functions that can be used within them.
+
+:::
+
+## Making Blockchain Calls
+
+---
+
+Once you have generated the private key, you can use it to make blockchain calls. The key generated by tKey is of type `secp256k1`, which is
+compatible with EVM-based blockchains like Ethereum, Polygon, and many others that use the same curve. However, you can also convert this key into
+other curves and utilize it. For example, we have a dedicated package for converting this module to the `ed25519` curve for usage in Solana and other
+blockchains that use this curve.
+
+In addition to that, we have dedicated provider packages for EVM and Solana Blockchain libraries. You can check out their respective documentation
+here:
+
+- Getting a Ethereum Provider from tKey: [Ethereum Provider](/sdk/web/providers/evm#getting-a-provider-from-any-secp256k1-private-key)
+- Getting a Solana Provider from tKey: [Solana Provider](/sdk/web/providers/solana#getting-a-provider-from-any-secp256k1-private-key)
+
+:::tip
+
+You can checkout our [Connect Blockchain](/connect-blockchain) documentation which has a detailed guide on how to connect to major blockchains out
+there.
+
+:::

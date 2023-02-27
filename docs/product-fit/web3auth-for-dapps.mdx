@@ -1,0 +1,63 @@
+---
+title: Web3Auth for dApps
+image: "images/docs-meta-cards/documentation-card.png"
+displayed_sidebar: docs
+description: "Web3Auth for dApp | Documentation - Web3Auth"
+---
+
+import Image1 from "@site/static/contents/web3auth-architecture.png";
+
+---
+
+As a decentralised application, if you're looking for more customised flows for your application, Web3Auth is the way for you to go. While using a
+wallet might be the easiest way for you to handle blockchain transactions, it comes with a cost of sacrificing the control of the user flow and
+trusting them with the understanding of how to make a blockchain transaction. This also comes with a cost of losing users to the complex terminologies
+and flows, which can be easily avoided if you're customising flows according to your needs.
+
+Hence using a wallet infrastructure like Web3Auth can be a huge boon for you to build a customised user flow. It is important to note that Web3Auth is
+not a wallet, it is wallet infrastructure that is plugged into any applications. Web3Auth results in a standard cryptographic key provider specific to
+the user and application. While using Web3Auth, you have the flexibility of creating your own wallet within your application or using one of our pre
+existing adapters, which can handle the complexity of linking your application to a wallet.
+
+## Using Web3Auth to build your dApp
+
+---
+
+A wallet is basically a wrapper around a user's private key. It is an app that allows users to interact with the blockchain. By using Web3Auth, your
+own application is in terms becoming a pseudo wallet. This is because you're doing all the transactions for the users by directly calling Web3Auth
+functions and not any other wallet. This has the following advantages:
+
+1. The dApp owns the whole experience, with minimal external branding. You can even surpass that (have **zero Web3Auth Branding**) if you use
+   [Web3Auth Core Kit](/core-kit/introduction).
+2. You're even able to use your own OAuth 2.0 / Single Sign-On or any other flow for validating your user. You just need to provide Web3Auth with a
+   JWT `id_token` and it will handle the key generation for you.
+3. First-time users don't need the mental overhead of understanding the concept of a "wallet" to use your application. Just a standard Web2 login,
+   they're onboarded using Web3Auth!
+4. You can create your application for any chain, depending on your needs. Web3Auth generates the private key which can be used for any chain.
+5. You can have users interact with their wallet and make transactions within your application, making the whole experience more seamless and specific
+   to your app.
+6. You can use the variety of interoperability flows provided by Web3Auth to make your application's private key more accessible to users.
+
+Although being the best experience for your users, building your own wallet comes with some hurdles. Generally, linking it to other dApps/apps is a
+bit harder. To help you along the way, we have multiple solutions, such as natively integrated
+[`wallet-connect`](/sdk/web/adapters/wallet-connect-v1), [`torus-wallet-connector-plugin`](/sdk/web/plugins/torus-wallet), and other Web3Auth
+[interoperability](/interoperability) features.
+
+## Using Web3Auth with other Wallets via Adapters
+
+---
+
+In the Web SDK, we have adapters, which are essentially connectors between Web3Auth and the underlying wallet provider. For example, an adapter for
+connecting with torus wallet is available under web3auth as `@web3auth/torus-evm-adapter`. Each adapter exposes provider on a successful user login
+which can be used to invoke the RPC calls on wallet and connected blockchain.
+
+Additionally, you can get Web3Auth to securely expose the private key of the user to your application's frontend. Using the private key, you can use
+the wallet of your choice to make the further transactions within your application.
+
+##### This diagram below, describes the relationship between the Web3Auth SDK and integrating application
+
+<img
+  style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
+  src={Image1}
+  alt="This diagram describes the relationship between the Web3Auth SDK and integrating application"
+/>

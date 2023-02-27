@@ -147,7 +147,7 @@ export const referenceMap = [
     date: "25th May 2022",
     author: "Web3Auth Team",
     order: 1,
-    link: "/custom-authentication/byo-jwt-providers",
+    link: "/auth-provider-setup/byo-jwt-providers",
   },
   {
     title: "Integrate Web3Auth with Multiple Chains!!",
@@ -389,12 +389,12 @@ export const featuresMap = [
     tag: "@web3auth/modal",
   },
   {
-    title: "Web3Auth Plug and Play Core",
+    title: "Web3Auth Plug and Play No Modal",
     tag: "@web3auth/core",
   },
   {
-    title: "Web3Auth Self Host",
-    tag: "self host",
+    title: "Web3Auth Core Kit tKey SDK",
+    tag: "tkey",
   },
   {
     title: "Web3Auth Single Factor Auth",
