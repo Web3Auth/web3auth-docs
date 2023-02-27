@@ -43,7 +43,7 @@ export default function FooterComponent(): JSX.Element {
             />
             <p>Web3Auth is where passwordless auth meets non-custodial key infrastructure for Web3 apps and wallets.</p>
             <div style={{ flexDirection: "row" }}>
-              <a href="https://web3auth.io/discussions" style={{ marginRight: 8 }} target="_blank" rel="noreferrer">
+              <a href="https://github.com/web3auth/web3auth-web" style={{ marginRight: 8 }} target="_blank" rel="noreferrer">
                 <GitHub />
               </a>
               <a href="https://twitter.com/web3auth" style={{ marginRight: 8 }} target="_blank" rel="noreferrer">
@@ -72,12 +72,12 @@ export default function FooterComponent(): JSX.Element {
               <strong>Product</strong>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/sdk/web/">
+              <a className="footer__link-item" href="/docs/pnp/introduction">
                 Plug & Play
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/sdk/tkey">
+              <a className="footer__link-item" href="/docs/core-kit/introduction">
                 Core Kit
               </a>
             </div>
@@ -162,15 +162,15 @@ export default function FooterComponent(): JSX.Element {
               <strong>Community</strong>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="https://web3auth.io/discussions" target="_blank" rel="noreferrer">
-                Discussions Board
+              <a className="footer__link-item" href="https://community.web3auth.io/" target="_blank" rel="noreferrer">
+                Community Discussions
               </a>
             </div>
-            <div className="footer__item">
+            {/* <div className="footer__item">
               <a className="footer__link-item" href="https://discord.gg/web3auth" target="_blank" rel="noreferrer">
                 Discord
               </a>
-            </div>
+            </div> */}
             <div className="footer__item">
               <a className="footer__link-item" href="/docs/contribute">
                 Contribute

@@ -37,11 +37,19 @@ const config = {
     announcementBar: {
       id: 'join_community',
       content:
-        '<a class="topAnnouncementBar" href="https://community.web3auth.io" target="_blank">Get the support you need to seamlessly integrate with Web3Auth. Join our community today!</a>',
+        '<p class="topAnnouncementBar"><a href="https://community.web3auth.io" target="_blank">Get the support you need to seamlessly integrate with Web3Auth. Join our community today!</a></p>',
       backgroundColor: 'rgb(0,49,126)',
       textColor: "var(--ifm-color-white)",
       isCloseable: true,
     },
+    // announcementBar: {
+    //   id: 'self_host_rename',
+    //   content:
+    //     '<p class="topAnnouncementBar">Self Host is now Core Kit. <a href="https://community.web3auth.io" target="_blank"><u>Read More</u></a></p>',
+    //   backgroundColor: 'rgb(0,49,126)',
+    //   textColor: "var(--ifm-color-white)",
+    //   isCloseable: true,
+    // },
     colorMode: {
       defaultMode: "dark",
       disableSwitch: false,
@@ -118,7 +126,7 @@ const config = {
           type: "html",
           position: "right",
           value:
-            '<a href="https://dashboard.web3auth.io/" target="_blank" class="navbar-button"><strong class="navbar-button-text">Dashboard</strong></a>',
+            '<a href="https://dashboard.web3auth.io/" target="_blank" class="navbar-button"><strong class="navbar-button-text">Developer Dashboard</strong></a>',
         },
         {
           type: "html",
