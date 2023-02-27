@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from "react";
@@ -32,6 +31,7 @@ export default function QuickNavigation() {
           <div className={styles.links}>
             <a href="/docs/quick-start">Quick Start{chevron}</a>
             <a href="/docs/sdk/web/modal/">SDK Reference{chevron}</a>
+            <a href="/docs/examples">Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -52,6 +52,7 @@ export default function QuickNavigation() {
           <div className={styles.links}>
             <a href="/docs/quick-start">Quick Start{chevron}</a>
             <a href="/docs/sdk/web/no-modal/">SDK Reference{chevron}</a>
+            <a href="/docs/examples">Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -75,6 +76,7 @@ export default function QuickNavigation() {
           <div className={styles.links}>
             <a href="/docs/quick-start">Quick Start{chevron}</a>
             <a href="/docs/sdk/android/">SDK Reference{chevron}</a>
+            <a href="/docs/examples">Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -93,6 +95,7 @@ export default function QuickNavigation() {
           <div className={styles.links}>
             <a href="/docs/quick-start">Quick Start{chevron}</a>
             <a href="/docs/sdk/ios/">SDK Reference{chevron}</a>
+            <a href="/docs/examples">Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -111,6 +114,7 @@ export default function QuickNavigation() {
           <div className={styles.links}>
             <a href="/docs/quick-start">Quick Start{chevron}</a>
             <a href="/docs/sdk/react-native/">SDK Reference{chevron}</a>
+            <a href="/docs/examples">Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -126,6 +130,7 @@ export default function QuickNavigation() {
           <div className={styles.links}>
             <a href="/docs/quick-start">Quick Start{chevron}</a>
             <a href="/docs/sdk/flutter/">SDK Reference{chevron}</a>
+            <a href="/docs/examples">Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -148,6 +153,7 @@ export default function QuickNavigation() {
           <div className={styles.links}>
             <a href="/docs/quick-start">Quick Start{chevron}</a>
             <a href="/docs/sdk/unity/">SDK Reference{chevron}</a>
+            <a href="/docs/examples">Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -198,6 +204,7 @@ export default function QuickNavigation() {
           <div className={styles.links}>
             <a href="/docs/quick-start">Quick Start{chevron}</a>
             <a href="/docs/sdk/tkey/">SDK Reference{chevron}</a>
+            <a href="/docs/examples">Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -218,6 +225,7 @@ export default function QuickNavigation() {
           <div className={styles.links}>
             <a href="/docs/quick-start">Quick Start{chevron}</a>
             <a href="/docs/sdk/single-factor-auth/">SDK Reference{chevron}</a>
+            <a href="/docs/examples">Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -238,6 +246,7 @@ export default function QuickNavigation() {
           <div className={styles.links}>
             <a href="/docs/quick-start">Quick Start{chevron}</a>
             <a href="/docs/sdk/node/">SDK Reference{chevron}</a>
+            <a href="/docs/examples">Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -262,6 +271,7 @@ export default function QuickNavigation() {
           <div className={styles.links}>
             <a href="/docs/quick-start">Quick Start{chevron}</a>
             <a href="/docs/sdk/tkey/">SDK Reference{chevron}</a>
+            <a href="/docs/examples">Examples{chevron}</a>
           </div>
         </div>
       </div>
