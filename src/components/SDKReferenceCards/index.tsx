@@ -27,7 +27,7 @@ export default function QuickNavigation() {
         </div>
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>Modal SDK</h3>
-          <p>Plug and Play Modal SDK for your JS environment. Get a prebuilt UI Modal from Web3Auth for seemless UX</p>
+          <p>Plug and Play Modal SDK for your JS environment. Get a prebuilt UI Modal from Web3Auth for seamless UX</p>
           <div className={styles.links}>
             <a href="/docs/quick-start">Quick Start{chevron}</a>
             <a href="/docs/sdk/web/modal/">SDK Reference{chevron}</a>
@@ -515,7 +515,7 @@ export default function QuickNavigation() {
             </div>
           </div>
 
-          <p>Seemlessly authenticate users into your Web3 games with their socials using Web3Auth Gaming SDKs.</p>
+          <p>seamlessly authenticate users into your Web3 games with their socials using Web3Auth Gaming SDKs.</p>
           <div className={styles.platformIconSection}>
             <div className={styles.platformIconContainer}>
               <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
