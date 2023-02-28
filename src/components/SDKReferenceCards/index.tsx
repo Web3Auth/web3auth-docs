@@ -515,7 +515,7 @@ export default function QuickNavigation() {
             </div>
           </div>
 
-          <p>seamlessly authenticate users into your Web3 games with their socials using Web3Auth Gaming SDKs.</p>
+          <p>Seamlessly authenticate users into your Web3 games with their socials using Web3Auth Gaming SDKs.</p>
           <div className={styles.platformIconSection}>
             <div className={styles.platformIconContainer}>
               <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
