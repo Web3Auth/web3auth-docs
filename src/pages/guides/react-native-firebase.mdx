@@ -70,7 +70,6 @@ When integrating Web3Auth React Native SDK with Firebase the flow looks somethin
 
 ---
 
-
 ### Setup your Firebase Project
 
 <FirebaseSetup />
@@ -140,7 +139,7 @@ targetSdkVersion = 31
   [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
 
 ```js title="App.js"
-const scheme = 'web3authrnbareexample'; // Or your desired app redirection scheme
+const scheme = "web3authrnbareexample"; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 ```
 
@@ -187,10 +186,10 @@ npm install --save @web3auth/react-native-sdk
 ### Adding a Web Browser Module
 
 We will also require a `WebBrowser` implementation to allow our JS-based SDK to interact with the native APIs, and there are different extra
-installation steps depending on whether you are using the bare workflow or managed workflow. Since we're using the SDK with a bare workflow React Native app, you have to install a `WebBrowser` implementation made by us as a porn from the Expo Web Browser Module.
+installation steps depending on whether you are using the bare workflow or managed workflow. Since we're using the SDK with a bare workflow React
+Native app, you have to install a `WebBrowser` implementation made by us as a porn from the Expo Web Browser Module.
 
 ##### [`@toruslabs/react-native-web-browser`](https://github.com/torusresearch/react-native-web-browser)
-
 
 ```bash npm2yarn
 npm install --save @toruslabs/react-native-web-browser
@@ -237,7 +236,6 @@ We need `clientId` and target Web3Auth `network` to initialize the `web3auth` ob
 
   :::
 
-
 ```js
 const web3auth = new Web3Auth(WebBrowser, {
   clientId,
@@ -254,6 +252,7 @@ const web3auth = new Web3Auth(WebBrowser, {
   },
 });
 ```
+
 :::tip SDK Reference
 
 - [Instantiating Web3Auth](/sdk/react-native/initialize).
@@ -261,26 +260,27 @@ const web3auth = new Web3Auth(WebBrowser, {
 :::
 
 ### Authentication
+
 ---
 
 #### Logging in with Firebase
 
-We're using the React Native Firebase Library for this project. You can follow the [official RNFirebase documentation](https://rnfirebase.io/auth/usage) to setup Firebase in your project.
+We're using the React Native Firebase Library for this project. You can follow the
+[official RNFirebase documentation](https://rnfirebase.io/auth/usage) to setup Firebase in your project.
 
 ```js
-import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import auth from "@react-native-firebase/auth";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 async function signInWithFirebase() {
   try {
     GoogleSignin.configure({
-      webClientId:
-        '461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com',
+      webClientId: "461819774167-5iv443bdf5a6pnr2drt4tubaph270obl.apps.googleusercontent.com",
     });
     // Check if your device supports Google Play
-    await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
     // Get the users ID token
-    const {idToken} = await GoogleSignin.signIn();
+    const { idToken } = await GoogleSignin.signIn();
     // Create a Google credential with the token
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
@@ -295,8 +295,8 @@ async function signInWithFirebase() {
 
 #### Logging in with Web3Auth
 
-Once initialized, you can use the `login` function of `web3auth` to navigate user to the login process. For each login method, you have to select the `loginProvider` such as
-`google`, `facebook`, `twitch`, `jwt`, `email_passwordless` etc.
+Once initialized, you can use the `login` function of `web3auth` to navigate user to the login process. For each login method, you have to select the
+`loginProvider` such as `google`, `facebook`, `twitch`, `jwt`, `email_passwordless` etc.
 
 :::info JWT
 
@@ -318,8 +318,8 @@ const info = await web3auth.login({
   mfaLevel: "default", // Pass on the mfa level of your choice: default, optional, mandatory, none
   loginProvider: "jwt",
   extraLoginOptions: {
-      id_token: "YOUR_JWT_ID_TOKEN", // Please replace with your JWT ID token, generated from Firebase Login
-      verifierIdField: 'sub', // same as your JWT Verifier ID on dashboard
+    id_token: "YOUR_JWT_ID_TOKEN", // Please replace with your JWT ID token, generated from Firebase Login
+    verifierIdField: "sub", // same as your JWT Verifier ID on dashboard
   },
 });
 ```
@@ -348,8 +348,8 @@ If you wish you **[add Multi Factor Authentication](/sdk/react-native/mfa)**, **
 var userInfo = web3authResponse.userInfo;
 ```
 
-Using the `web3Auth.login()` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
-network.
+Using the `web3Auth.login()` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in
+Web3Auth network.
 
 ### Logout
 
@@ -383,8 +383,9 @@ blockchain you have selected here.
 ## Example code
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth React Native Example](https://github.com/Web3Auth/examples/tree/main/react-native/rn-bare-firebase-example). Check it out and try running it locally yourself!
+[Web3Auth React Native Example](https://github.com/Web3Auth/examples/tree/main/react-native/rn-bare-firebase-example). Check it out and try running it
+locally yourself!
 
 ## Questions?
 
-Ask us on [Web3Auth's Github Discussion Board](https://web3auth.io/discussions)
+Ask us on [Web3Auth's Community Portal](https://community.web3auth.io)
