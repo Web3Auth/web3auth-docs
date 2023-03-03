@@ -199,6 +199,7 @@ module.exports = {
           label: "EVM Based Chains",
           items: [
             "connect-blockchain/polygon",
+            "connect-blockchain/base",
             "connect-blockchain/bnb",
             "connect-blockchain/avalanche",
             "connect-blockchain/arbitrum",
