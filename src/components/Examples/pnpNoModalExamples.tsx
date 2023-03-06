@@ -80,7 +80,7 @@ export const PNPNoModalOther = [
       {
         key: "react-immutableX-no-modal-example",
         title: "ImmutableX",
-        icon: "logo-immutableX.png",
+        icon: "logo-immutablex.png",
         path: `${baseURL}immutableX/react-immutableX-no-modal-example`,
       },
       {
