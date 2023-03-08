@@ -1,6 +1,28 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import Tiles from "@theme/Tiles";
 import { useState } from "react";
 
+import {
+  corekit,
+  corekitlist,
+  corekitnodejs,
+  getOptionsfromURL,
+  pnp,
+  pnpandroid,
+  pnpflutter,
+  pnpios,
+  pnplist,
+  pnprn,
+  pnpunity,
+  pnpunreal,
+  pnpwebmodal,
+  pnpwebnomodal,
+  setURLfromOptions,
+  singlefactorauth,
+  tkeyjs,
+} from "../../common/SDKOptions";
 import { CKNode, CKSFA, CKTkey } from "./coreKitExamples";
 import { PNPUnity } from "./pnpGamingExamples";
 import { PNPAndroid, PNPFlutter, PNPIos, PNPRN } from "./pnpMobileExamples";
@@ -26,65 +48,23 @@ import {
 import styles from "./styles.module.css";
 
 export default function QuickNavigation() {
-  const react = "React";
-  const angular = "Angular";
-  const vue = "Vue";
-  const nextjs = "Next JS";
-  const android = "Android";
-  const ios = "iOS";
-  const reactnative = "React Native";
-  const rnbare = "React Native Bare";
-  const rnexpo = "React Native Expo";
-  const rnlist = [rnbare, rnexpo];
-  const flutter = "Flutter";
-  const unity = "Unity";
-  const unreal = "Unreal";
-  const nodejs = "Node.js";
-  const weblist = [react, angular, vue, nextjs];
+  const [urlOptions] = useState<Record<string, string>>(getOptionsfromURL());
 
-  const pnp = "Plug and Play";
-  const pnpwebmodal = "Plug and Play Web Modal SDK";
-  const pnpwebnomodal = "Plug and Play Web No Modal SDK";
-  const pnpandroid = "Plug and Play Android SDK";
-  const pnpios = "Plug and Play iOS SDK";
-  const pnprn = "Plug and Play React Native SDK";
-  const pnpflutter = "Plug and Play Flutter SDK";
-  const pnpunity = "Plug and Play Unity SDK";
-  const pnpunreal = "Plug and Play Unreal SDK";
-  const pnplist = [
-    { label: "Web - Modal SDK", value: pnpwebmodal, platforms: [...weblist] },
-    { label: "Web - No Modal SDK", value: pnpwebnomodal, platforms: [...weblist] },
-    { label: "Android SDK", value: pnpandroid, platforms: [android] },
-    { label: "iOS SDK", value: pnpios, platforms: [ios] },
-    { label: "React Native SDK", value: pnprn, platforms: [...rnlist] },
-    { label: "Flutter SDK", value: pnpflutter, platforms: [flutter] },
-    { label: "Unity SDK", value: pnpunity, platforms: [unity] },
-    { label: "Unreal SDK", value: pnpunreal, platforms: [unreal] },
-  ];
+  const [product, setProduct] = useState<string>(urlOptions.product || pnp);
+  const [sdk, setSdk] = useState<string>(urlOptions.sdk || pnpwebmodal);
 
-  const corekit = "Core Kit";
-  const tkeyjs = "tKey JS SDK";
-  const singlefactorauth = "Single Factor Auth SDK";
-  const corekitnodejs = "Node.js SDK";
-  const corekitlist = [
-    { label: "tKey JS SDK", value: tkeyjs, platforms: [...weblist, reactnative] },
-    { label: "Single Factor Auth SDK", value: singlefactorauth, platforms: [...weblist] },
-    { label: "Node.js SDK", value: corekitnodejs, platforms: [nodejs] },
-  ];
-
-  const [product, setProduct] = useState<string>(pnp);
-  const [sdk, setSdk] = useState<string>(pnpwebmodal);
-
-  function changeProduct(value) {
-    setProduct(value);
-    if (value === pnp) {
-      setSdk(pnpwebmodal);
-    } else if (value === corekit) {
-      setSdk(tkeyjs);
+  function changeProduct(productValue) {
+    let sdkValue = pnpwebmodal;
+    if (productValue === corekit) {
+      sdkValue = tkeyjs;
     }
+    setProduct(productValue);
+    setSdk(sdkValue);
+    history.pushState({}, "", setURLfromOptions({ product: productValue, sdk: sdkValue }));
   }
   const changeSDK = (event) => {
     setSdk(event.target.value);
+    history.pushState({}, "", setURLfromOptions({ product, sdk: event.target.value }));
   };
 
   return (

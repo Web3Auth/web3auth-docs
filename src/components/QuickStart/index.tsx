@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -26,70 +27,50 @@ import SFAReact from "@site/src/common/quickstart/_sfa-react.mdx";
 import SFAVue from "@site/src/common/quickstart/_sfa-vue.mdx";
 import { useState } from "react";
 
+import {
+  android,
+  angular,
+  corekit,
+  corekitlist,
+  flutter,
+  getOptionsfromURL,
+  ios,
+  nextjs,
+  nodejs,
+  pnp,
+  pnplist,
+  pnpwebmodal,
+  pnpwebnomodal,
+  reactJS,
+  reactnative,
+  rnbare,
+  rnexpo,
+  setURLfromOptions,
+  singlefactorauth,
+  tkeyjs,
+  unity,
+  unreal,
+  vue,
+  weblist,
+} from "../../common/SDKOptions";
 import styles from "./styles.module.css";
 
 export default function QuickNavigation() {
-  const react = "React";
-  const angular = "Angular";
-  const vue = "Vue";
-  const nextjs = "Next JS";
-  const android = "Android";
-  const ios = "iOS";
-  const reactnative = "React Native";
-  const rnbare = "React Native Bare";
-  const rnexpo = "React Native Expo";
-  const rnlist = [rnbare, rnexpo];
-  const flutter = "Flutter";
-  const unity = "Unity";
-  const unreal = "Unreal";
-  const nodejs = "Node.js";
-  const weblist = [react, angular, vue, nextjs];
+  const [urlOptions] = useState<Record<string, string>>(getOptionsfromURL());
 
-  const pnp = "Plug and Play";
-  const pnpwebmodal = "Plug and Play Web Modal SDK";
-  const pnpwebnomodal = "Plug and Play Web No Modal SDK";
-  const pnpandroid = "Plug and Play Android SDK";
-  const pnpios = "Plug and Play iOS SDK";
-  const pnprn = "Plug and Play React Native SDK";
-  const pnpflutter = "Plug and Play Flutter SDK";
-  const pnpunity = "Plug and Play Unity SDK";
-  const pnpunreal = "Plug and Play Unreal SDK";
-  const pnplist = [
-    { label: "Web - Modal SDK", value: pnpwebmodal, platforms: [...weblist] },
-    { label: "Web - No Modal SDK", value: pnpwebnomodal, platforms: [...weblist] },
-    { label: "Android SDK", value: pnpandroid, platforms: [android] },
-    { label: "iOS SDK", value: pnpios, platforms: [ios] },
-    { label: "React Native SDK", value: pnprn, platforms: [...rnlist] },
-    { label: "Flutter SDK", value: pnpflutter, platforms: [flutter] },
-    { label: "Unity SDK", value: pnpunity, platforms: [unity] },
-    { label: "Unreal SDK", value: pnpunreal, platforms: [unreal] },
-  ];
-
-  const corekit = "Core Kit";
-  const tkeyjs = "tKey JS SDK";
-  const singlefactorauth = "Single Factor Auth SDK";
-  const corekitnodejs = "Node.js SDK";
-  const corekitlist = [
-    { label: "tKey JS SDK", value: tkeyjs, platforms: [...weblist, reactnative] },
-    { label: "Single Factor Auth SDK", value: singlefactorauth, platforms: [...weblist] },
-    { label: "Node.js SDK", value: corekitnodejs, platforms: [nodejs] },
-  ];
-
-  const [product, setProduct] = useState<string>(pnp);
-  const [sdk, setSdk] = useState<string>(pnpwebmodal);
+  const [product, setProduct] = useState<string>(urlOptions.product || pnp);
+  const [sdk, setSdk] = useState<string>(urlOptions.sdk || pnpwebmodal);
+  const [platform, setPlatform] = useState<string>(urlOptions.platform || reactJS);
   const [platformList, setPlatformList] = useState<string[]>([...weblist]);
-  const [platform, setPlatform] = useState<string>(react);
 
   function changePlatformList(productValue, sdkValue) {
+    let selectedSDK = corekitlist.filter((el) => el.value === sdkValue);
     if (productValue === pnp) {
-      const selectedSDK = pnplist.filter((el) => el.value === sdkValue);
-      setPlatformList(selectedSDK[0].platforms);
-      setPlatform(selectedSDK[0].platforms[0]);
-    } else if (productValue === corekit) {
-      const selectedSDK = corekitlist.filter((el) => el.value === sdkValue);
-      setPlatformList(selectedSDK[0].platforms);
-      setPlatform(selectedSDK[0].platforms[0]);
+      selectedSDK = pnplist.filter((el) => el.value === sdkValue);
     }
+    setPlatformList(selectedSDK[0].platforms);
+    setPlatform(selectedSDK[0].platforms[0]);
+    history.pushState({}, "", setURLfromOptions({ product: productValue, sdk: sdkValue, platform: selectedSDK[0].platforms[0] }));
   }
   function changeProduct(value) {
     setProduct(value);
@@ -107,6 +88,7 @@ export default function QuickNavigation() {
   };
   const changePlatform = (event) => {
     setPlatform(event.target.value);
+    history.pushState({}, "", setURLfromOptions({ product, sdk, platform: event.target.value }));
   };
 
   return (
@@ -155,27 +137,27 @@ export default function QuickNavigation() {
           <select value={sdk} onChange={changeSDK}>
             {product === pnp
               ? pnplist.map((option) => (
-                  <option value={option.value} key={option.value}>
-                    {option.label}
-                  </option>
-                ))
+                <option value={option.value} key={option.value}>
+                  {option.label}
+                </option>
+              ))
               : corekitlist.map((option) => (
-                  <option value={option.value} key={option.value}>
-                    {option.label}
-                  </option>
-                ))}
+                <option value={option.value} key={option.value}>
+                  {option.label}
+                </option>
+              ))}
           </select>
         </div>
         <div className={styles.list}>
           <h3>
             Select a{" "}
             {platform === android ||
-            platform === ios ||
-            platform === rnbare ||
-            platform === rnexpo ||
-            platform === flutter ||
-            platform === unity ||
-            platform === unreal
+              platform === ios ||
+              platform === rnbare ||
+              platform === rnexpo ||
+              platform === flutter ||
+              platform === unity ||
+              platform === unreal
               ? "platform"
               : "framework"}
           </h3>
@@ -195,11 +177,11 @@ export default function QuickNavigation() {
       </h2>
       <hr />
       {platform === angular && sdk === pnpwebmodal ? <PNPModalAngular /> : platform === angular && sdk === pnpwebnomodal ? <PNPNoModalAngular /> : ""}
-      {platform === react && sdk === pnpwebmodal ? <PNPModalReact /> : platform === react && sdk === pnpwebnomodal ? <PNPNoModalReact /> : ""}
+      {platform === reactJS && sdk === pnpwebmodal ? <PNPModalReact /> : platform === reactJS && sdk === pnpwebnomodal ? <PNPNoModalReact /> : ""}
       {platform === vue && sdk === pnpwebmodal ? <PNPModalVue /> : platform === vue && sdk === pnpwebnomodal ? <PNPNoModalVue /> : ""}
       {platform === nextjs && sdk === pnpwebmodal ? <PNPModalNext /> : platform === nextjs && sdk === pnpwebnomodal ? <PNPNoModalNext /> : ""}
       {platform === angular && sdk === tkeyjs ? <CoreKitAngular /> : platform === angular && sdk === singlefactorauth ? <SFAAngular /> : ""}
-      {platform === react && sdk === tkeyjs ? <CoreKitReact /> : platform === react && sdk === singlefactorauth ? <SFAReact /> : ""}
+      {platform === reactJS && sdk === tkeyjs ? <CoreKitReact /> : platform === reactJS && sdk === singlefactorauth ? <SFAReact /> : ""}
       {platform === vue && sdk === tkeyjs ? <CoreKitVue /> : platform === vue && sdk === singlefactorauth ? <SFAVue /> : ""}
       {platform === nextjs && sdk === tkeyjs ? <CoreKitNext /> : platform === nextjs && sdk === singlefactorauth ? <SFANext /> : ""}
       {platform === reactnative && sdk === tkeyjs ? "tKey React Native QuickStart Coming Soon" : ""}
