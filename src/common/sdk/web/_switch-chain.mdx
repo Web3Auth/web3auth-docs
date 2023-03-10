@@ -1,0 +1,39 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+### `switchChain()`
+
+To switch the Chain to the added chain config, you need to call `switchChain()` function. This function takes the following parameter:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Function Definition", value: "definition" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Variable             | Type   | Description                                                 | Mandatory |
+| -------------------- | ------ | ----------------------------------------------------------- | --------- |
+| `{ chainId: "0x5" }` | Object | chainId of the added chain config, e.g `{ chainId: "0x5" }` | Yes       |
+
+</TabItem>
+
+<TabItem value="definition">
+
+```ts
+async switchChain(params: { chainId: string }): Promise<void> {
+    if (this.status !== ADAPTER_STATUS.CONNECTED || !this.connectedAdapterName) throw WalletLoginError.notConnectedError(`No wallet is connected`);
+    return this.walletAdapters[this.connectedAdapterName].switchChain(params);
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+```javascript
+await web3auth.switchChain({ chainId: "0x5" });
+```

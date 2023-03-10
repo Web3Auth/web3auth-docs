@@ -2,24 +2,26 @@
 title: Initialize Plug n Play Core
 sidebar_label: Initialize
 displayed_sidebar: sdk
-description: "@web3auth/core initialize | Documentation - Web3Auth"
+description: "@web3auth/no-modal initialize | Documentation - Web3Auth"
 ---
 
 import ChainConfig from "@site/src/common/sdk/web/_chain-config.mdx";
 import CustomAuthenticationCoreExample from "@site/src/common/sdk/web/_custom-authentication-core-example.mdx";
 import ExternalWalletAdapters from "@site/src/common/sdk/web/_external-wallet-adapters.mdx";
 import OpenloginAdapterIntro from "@site/src/common/sdk/web/_openlogin-adapter-intro.mdx";
+import InitiateTopUp from "@site/src/common/sdk/web/_plugin-initiate-topup.mdx";
+import ShowWCScanner from "@site/src/common/sdk/web/_plugin-showwcscanner.mdx";
 import PluginsExample from "@site/src/common/sdk/web/_plugins-example.mdx";
 import PluginsIntro from "@site/src/common/sdk/web/_plugins-intro.mdx";
 import SubscribeEvents from "@site/src/common/sdk/web/_subscribe-events.mdx";
-import Web3AuthCoreOptions from "@site/src/common/sdk/web/_web3authcore-options.mdx";
+import Web3AuthNoModalOptions from "@site/src/common/sdk/web/_web3authcore-options.mdx";
 
 ---
 
 After Installation, the next step to use Web3Auth is to Initialize the SDK. However, the Initialization is a two step process, with additional two
 steps for customisations, ie.
 
-- [Instantiation of Web3AuthCore](#instantiating-web3authcore)
+- [Instantiation of Web3AuthNoModal](#instantiating-web3authcore)
 - [Configuration of Adapters](#configuring-adapters) _(optional)_
 - [Configuration of Plugins](#configuring-plugins) _(optional)_
 - [Initialization of Web3Auth](#initializing-web3auth)
@@ -27,29 +29,29 @@ steps for customisations, ie.
 Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
 Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customise your Web3Auth Instance.
 
-## Instantiating Web3AuthCore
+## Instantiating Web3AuthNoModal
 
 ---
 
-#### Import the `Web3AuthCore` class from `@web3auth/core`
+#### Import the `Web3AuthNoModal` class from `@web3auth/no-modal`
 
 ```javascript
-import { Web3AuthCore } from "@web3auth/core";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
 ```
 
-#### Assign the `Web3AuthCore` class to a variable
+#### Assign the `Web3AuthNoModal` class to a variable
 
 ```javascript
-const web3auth = new Web3AuthCore(Web3AuthCoreOptions);
+const web3auth = new Web3AuthNoModal(Web3AuthNoModalOptions);
 ```
 
-This Web3AuthCore constructor takes an object with `Web3AuthCoreOptions` as input.
+This Web3AuthNoModal constructor takes an object with `Web3AuthNoModalOptions` as input.
 
 ### Arguments
 
-#### `Web3AuthCoreOptions`
+#### `Web3AuthNoModalOptions`
 
-<Web3AuthCoreOptions />
+<Web3AuthNoModalOptions />
 
 ### Adding a Custom Chain Configuration
 
@@ -64,7 +66,7 @@ This Web3AuthCore constructor takes an object with `Web3AuthCoreOptions` as inpu
 ### Example
 
 ```javascript
-const web3auth = new Web3AuthCore({
+const web3auth = new Web3AuthNoModal({
   clientId: "", // Get your Client ID from Web3Auth Dashboard
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -81,7 +83,7 @@ const web3auth = new Web3AuthCore({
 
 Adapter is a pluggable package which implements `IAdapter` interface for a wallet within Web3Auth. An adapter can be plugged in and out of web3auth
 modal. Each adapter exposes provider on successful user login which can be used to invoke RPC calls on wallet and on connected blockchain. You can
-configure and use any of the adapters provided by Web3Auth, by just configuring them while initialising Web3AuthCore.
+configure and use any of the adapters provided by Web3Auth, by just configuring them while initialising Web3AuthNoModal.
 
 :::info
 
@@ -96,7 +98,7 @@ the default settings.
 
 ##### Example
 
-Since we're using the `@web3auth/core`, ie. the Plug and Play No Modal SDK, the `loginConfig` can include custom JWT based authentication as well.
+Since we're using the `@web3auth/no-modal`, ie. the Plug and Play No Modal SDK, the `loginConfig` can include custom JWT based authentication as well.
 This way, we can use any of our preferred login provider and further setup their configs while logging the user in and passing over the
 `extraLoginOptions` in the `connectTo` function. Read more about this this in the
 [Custom Authentication Guide](/sdk/web/no-modal/custom-authentication).
@@ -121,11 +123,19 @@ This way, we can use any of our preferred login provider and further setup their
 
 <PluginsExample />
 
+### `showWalletConnectScanner()`
+
+<ShowWCScanner />
+
+### `initiateTopup()`
+
+<InitiateTopUp />
+
 ## Initializing Web3Auth
 
 #### `init()`
 
-The final step in the whole initialization process is the initialize the `Web3AuthCore` instance, ie. `web3auth` in our case.
+The final step in the whole initialization process is the initialize the `Web3AuthNoModal` instance, ie. `web3auth` in our case.
 
 This is done by calling `init` function of the `web3auth` instance we created above.
 

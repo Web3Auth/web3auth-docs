@@ -3,7 +3,7 @@ title: Building a Browser Extension with Web3Auth
 image: "contents/guides/banners/chrome-extension.png"
 description: Learn how to build a Browser Extension with Web3Auth
 type: guide
-tags: [web, "@web3auth/core", browser extension, chrome, react, ethereum]
+tags: [web, "@web3auth/no-modal", browser extension, chrome, react, ethereum]
 date: 18th Jan 2023
 author: Web3Auth Team
 order: 17
@@ -54,8 +54,8 @@ the blockchain.
 
 ---
 
-We can integrate `@web3auth/core` as well as `@web3auth/modal` to build a browser extension with Web3Auth. You can read more about both the SDKs in
-the [SDKs](/docs/sdk/web) section. The login flow of the user is as follows:
+We can integrate `@web3auth/no-modal` as well as `@web3auth/modal` to build a browser extension with Web3Auth. You can read more about both the SDKs
+in the [SDKs](/docs/sdk/web) section. The login flow of the user is as follows:
 
 ![Web3Auth Core - Social Login Flow](/images/implicit-flow.svg)
 
@@ -92,17 +92,17 @@ Add `chrome-extension://<extension-id>` to the Whitelisted URLs in the Web3Auth 
 
 ### Installation
 
-Install `@web3auth/core`, `@web3auth/openlogin-adapter` & `@web3auth/base`
+Install `@web3auth/no-modal`, `@web3auth/openlogin-adapter` & `@web3auth/base`
 
 ```bash npm2yarn
-npm install @web3auth/core @web3auth/base @web3auth/openlogin-adapter
+npm install @web3auth/no-modal @web3auth/base @web3auth/openlogin-adapter
 ```
 
 #### Import the Web3Auth Modules into your project
 
 ```js title="src/App.tsx"
 import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/core";
+import { Web3Auth } from "@web3auth/no-modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 ```
@@ -118,7 +118,7 @@ resolution.
 Create the Web3Auth instance and configure the Openlogin adapter as per your requirements.
 
 ```js title="src/App.tsx"
-const web3auth = new Web3AuthCore({
+const web3auth = new Web3AuthNoModal({
   clientId,
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,

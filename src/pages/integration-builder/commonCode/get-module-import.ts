@@ -9,7 +9,7 @@ import { Web3Auth } from "@web3auth/modal";`;
   } else {
     code += `
 // HIGHLIGHTSTART-importModules
-import { Web3AuthCore } from "@web3auth/core";`;
+import { Web3AuthNoModal } from "@web3auth/no-modal";`;
   }
 
   if (whitelabel || customAuth !== NONE || chain in OTHER_CHAINS) {
