@@ -1,0 +1,106 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+Initiates the Top Up with flow with selected provider.
+
+#### Arguments
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter  | Type                                                                                                     | Description           | Mandatory |
+| ---------- | -------------------------------------------------------------------------------------------------------- | --------------------- | --------- |
+| `provider` | `PAYMENT_PROVIDER_TYPE` [`"moonpay"`, `"wyre"`, `"rampnetwork"`, `"xanpool"`, `"mercuryo"`, `"transak"`] | Payment Provider name | Yes       |
+| `params`   | `PaymentParams`                                                                                          | Payment Params object | Yes       |
+
+<br />
+
+#### `PaymentParams`
+
+| Parameter                 | Type     | Description                                               | Mandatory |
+| ------------------------- | -------- | --------------------------------------------------------- | --------- |
+| `selectedAddress?`        | `string` | Address to send the funds to                              | No        |
+| `selectedCurrency?`       | `string` | Default fiat currency for the user to make the payment in | No        |
+| `fiatValue?`              | `string` | Amount to buy in the selectedCurrency                     | No        |
+| `selectedCryptoCurrency?` | `string` | Cryptocurrency to buy                                     | No        |
+| `cyptoAmount?`            | `number` | Amount Cryptocurrency to buy                              | No        |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+async initiateTopup(provider: PAYMENT_PROVIDER_TYPE, params: PaymentParams): Promise<void> {
+  if (!this.torusWalletInstance.isLoggedIn) throw TorusWalletPluginError.web3AuthNotConnected();
+  await this.torusWalletInstance.initiateTopup(provider, params);
+}
+
+export interface PaymentParams {
+  /**
+   * Address to send the funds to
+   */
+  selectedAddress?: string;
+  /**
+   * Default fiat currency for the user to make the payment in
+   */
+  selectedCurrency?: string;
+  /**
+   * Amount to buy in the selectedCurrency
+   */
+  fiatValue?: number;
+  /**
+   * Cryptocurrency to buy
+   */
+  selectedCryptoCurrency?: string;
+  /**
+   * Amount Cryptocurrency to buy
+   */
+  cryptoAmount?: number;
+}
+
+export const PAYMENT_PROVIDER = {
+  MOONPAY: "moonpay",
+  WYRE: "wyre",
+  RAMPNETWORK: "rampnetwork",
+  XANPOOL: "xanpool",
+  MERCURYO: "mercuryo",
+  TRANSAK: "transak",
+} as const;
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Example
+
+```javascript
+import { SolanaWalletConnectorPlugin } from "@web3auth/solana-wallet-connector-plugin";
+
+const torusPlugin = new SolanaWalletConnectorPlugin({
+  torusWalletOpts: {},
+  walletInitOptions: {
+    whiteLabel: {
+      theme: { isDark: true, colors: { primary: "#00a8ff" } },
+      logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+      logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+    },
+  },
+});
+
+await web3auth.addPlugin(torusPlugin); // add plugin to web3auth instance
+
+await torusPlugin.initiateTopup("moonpay", {
+  selectedAddress: "wallet_address",
+  selectedCurrency: "USD", // Fiat currency
+  fiatValue: 100, // Fiat Value
+  selectedCryptoCurrency: "ETH", // Cryptocurreny `SOL`, `MATIC` etc.
+});
+```
