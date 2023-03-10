@@ -1,4 +1,4 @@
-export const baseURL = "https://github.com/Web3Auth/examples/tree/main/web-no-modal-sdk/";
+export const baseURL = "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/";
 
 export const PNPNoModalEVM = [
   {

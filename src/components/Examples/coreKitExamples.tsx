@@ -1,4 +1,4 @@
-export const baseURL = "https://github.com/Web3Auth/examples/tree/main/";
+export const baseURL = "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/";
 
 export const CKTkey = [
   {
