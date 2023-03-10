@@ -163,12 +163,6 @@ const openloginAdapter = new OpenloginAdapter({
         verifierSubIdentifier: "YOUR_SECOND_SUB_VERIFIER_NAME", // Pass the Sub-Verifier here. eg w3a-email-passwordless
         typeOfLogin: "jwt", // Pass the type of login provider. For Auth0, it's jwt and not Auth0.
         clientId: "AUTH0_CLIENT_ID", // Pass the `Client ID` of your Auth0 Application.
-        jwtParameters: {
-          domain: "YOUR_AUTH0_DOMAIN", // Pass the Auth0 Domain here, eg. https://shahbaz-torus.us.auth0.com
-          // This corresponds to the field inside jwt which must be used to uniquely identify the user.
-          verifierIdField: "email", // This is mapped b/w google and github logins.
-          isVerifierIdCaseSensitive: false,
-        },
       },
       // GitHub Login via Auth0
       github: {
@@ -176,12 +170,6 @@ const openloginAdapter = new OpenloginAdapter({
         verifierSubIdentifier: "YOUR_SECOND_SUB_VERIFIER_NAME", // Pass the Sub-Verifier here. eg w3a-auth0
         typeOfLogin: "jwt", // Pass the type of login provider. For Auth0, it's jwt and not Auth0.
         clientId: "AUTH0_CLIENT_ID", // Pass the Auth0 `Client ID` here.
-        jwtParameters: {
-          domain: "YOUR_AUTH0_DOMAIN", // Pass the Auth0 Domain here, eg. https://shahbaz-torus.us.auth0.com
-          // This corresponds to the field inside jwt which must be used to uniquely identify the user.
-          verifierIdField: "email", // This is mapped b/w google and github logins.
-          isVerifierIdCaseSensitive: false,
-        },
       },
     },
   },
@@ -199,10 +187,22 @@ const web3authProvider = await web3auth.connectTo("openlogin", {
 // When user clicks Email Passwordless button, use this to Login with Email Passwordless via Auth0
 const web3authProvider = await web3auth.connectTo("openlogin", {
   loginProvider: "emailpasswordless",
+  extraLoginOptions: {
+    domain: "YOUR_AUTH0_DOMAIN", // Pass the Auth0 Domain here, eg. https://shahbaz-torus.us.auth0.com
+    // This corresponds to the field inside jwt which must be used to uniquely identify the user.
+    verifierIdField: "email", // This is mapped b/w google and github logins.
+    isVerifierIdCaseSensitive: false,
+  },
 });
 
 // When user clicks GitHub button, use this to Login with GitHub via Auth0
 const web3authProvider = await web3auth.connectTo("openlogin", {
   loginProvider: "github",
+  extraLoginOptions: {
+    domain: "YOUR_AUTH0_DOMAIN", // Pass the Auth0 Domain here, eg. https://shahbaz-torus.us.auth0.com
+    // This corresponds to the field inside jwt which must be used to uniquely identify the user.
+    verifierIdField: "email", // This is mapped b/w google and github logins.
+    isVerifierIdCaseSensitive: false,
+  },
 });
 ```
