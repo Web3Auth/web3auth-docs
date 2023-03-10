@@ -2,12 +2,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from "react";
 
+import { corekit, pnp } from "../../common/SDKOptions";
 import styles from "./styles.module.css";
 
 export default function QuickNavigation() {
-  const pnp = "Plug and Play";
-  const corekit = "Core Kit";
-
   const [product, setProduct] = useState<string>(pnp);
   const chevron = (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
