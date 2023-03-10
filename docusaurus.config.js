@@ -226,6 +226,14 @@ const config = {
             to: "/sdk/web/modal/",
           },
           {
+            from: "/sdk/web/modal/wagmi-connector",
+            to: "/sdk/web/wagmi-connector",
+          },
+          {
+            from: "/sdk/web/no-modal/wagmi-connector",
+            to: "/sdk/web/wagmi-connector",
+          },
+          {
             from: "/quickstart",
             to: "/quick-start",
           },

@@ -1,14 +1,13 @@
 ---
-title: Wagmi Connector with Web3Auth Core
-sidebar_label: Wagmi Connector
+title: Wagmi Connector for Web3Auth Web SDKs
+sidebar_label: "@web3auth/web3auth-wagmi-connector"
 displayed_sidebar: sdk
-description: Wagmi Connector for @web3auth/no-modal | Documentation - Web3Auth
+description: Wagmi Connector for Web3Auth Web SDKs | Documentation - Web3Auth
 ---
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
-import ExtraLoginOptions from "@site/src/common/sdk/web/_extra-login-options.mdx";
-import OpenloginLoginParams from "@site/src/common/sdk/web/_openlogin-login-params.mdx";
+import ModalConfig from "@site/src/common/sdk/web/_modal-config.mdx";
 
 ---
 
@@ -32,7 +31,7 @@ Checkout the [example apps](https://github.com/Web3Auth/web3auth-pnp-examples/tr
 ---
 
 ```bash npm2yarn
-npm install --save @web3auth/web3auth-wagmi-connector @web3auth/no-modal
+npm install --save @web3auth/web3auth-wagmi-connector
 ```
 
 ## Initialization
@@ -43,12 +42,6 @@ npm install --save @web3auth/web3auth-wagmi-connector @web3auth/no-modal
 
 ```js
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
-```
-
-### Import `Web3AuthNoModal` from `@web3auth/no-modal`
-
-```js
-import { Web3AuthNoModal } from "@web3auth/no-modal";
 ```
 
 #### Assign the `Web3AuthConnector` class to a variable
@@ -95,24 +88,75 @@ export interface Options {
 
 </Tabs>
 
-#### `loginParams`
+##### `modalConfig`
 
-The `loginParams` are specific for each and every function. Please refer to the [Adapters SDK Reference](/sdk/web/adapters) to know more about the
-login parameters specific to each wallet adapter.
-
-For `openlogin-adapter` which enables the social logins, you can refer to the following `loginParams`.
-
-<OpenloginLoginParams />
-
-Further, for Custom Authentication, `ExtraLoginOptions` can be used to pass the standard oauth login options.
-
-<ExtraLoginOptions />
+<ModalConfig />
 
 ## Usage
 
 Since this package acts like a connector, it basically takes in your whole Web3Auth instance and makes it readable for the wagmi library. While
-connecting the modal package, you need to initialise the Web3Auth Instance as mentioned in the [modal docs](/sdk/web/modal/initialize#example). You
-can configure this instance with all the options available in Web3Auth Modal package and set it up as you wish.
+connecting the web3auth web packages, you need to initialise the Web3Auth Instance as mentioned in the [modal docs](/sdk/web/modal/initialize#example)
+and [no-modal docs](/sdk/web/no-modal/initialize#example). You can configure this instance with all the options available in Web3Auth Modal package
+and set it up as you wish.
+
+<Tabs
+  defaultValue="modal"
+  values={[
+    { label: "Modal SDK", value: "modal" },
+    { label: "No Modal SDK", value: "no-modal" },
+  ]}
+>
+
+<TabItem value="modal">
+
+```js
+// set up your web3auth instance with all the features you want
+const web3AuthInstance = new Web3Auth({
+  //highlight-start
+  clientId: "YOUR_CLIENT_ID",
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x" + chains[0].id.toString(16),
+    rpcTarget: chains[0].rpcUrls.default.http[0], // This is the public RPC we have added, please pass on your own endpoint while creating an app
+    displayName: chains[0].name,
+    tickerName: chains[0].nativeCurrency?.name,
+    ticker: chains[0].nativeCurrency?.symbol,
+    blockExplorer: chains[0]?.blockExplorers.default?.url,
+  },
+  //highlight-end
+  // optional - add whitelabel config
+  uiConfig: {...},
+});
+
+// Optional - Add openlogin adapter for customisations
+const openloginAdapterInstance = new OpenloginAdapter({...});
+web3AuthInstance.configureAdapter(openloginAdapterInstance);
+
+// Optional - Add Torus Wallet Plugin
+const torusPlugin = new TorusWalletConnectorPlugin({...});
+web3AuthInstance.addPlugin(torusPlugin);
+```
+
+While all the parameters can be passed directly to the instance, the only parameters that remain during the initialisation remains (passed on to the
+`initModal()` function). You can pass these parameters to the `modalConfig` object in the `Web3AuthConnector` class.
+
+```js
+modalConfig: {
+  [WALLET_ADAPTERS.OPENLOGIN]: {
+    loginMethods: {
+      google: {
+        name: "google login",
+        logoDark: "url to your custom logo which will shown in dark mode",
+      },
+      facebook: {...},
+    },
+  },
+}
+```
+
+</TabItem>
+
+<TabItem value="no-modal">
 
 ```js
 // set up your web3auth instance with all the features you want
@@ -156,9 +200,258 @@ loginParams: {
 }
 ```
 
+</TabItem>
+</Tabs>
+
 ### Example
 
 Here are a few examples of a wagmi client using both the `Web3AuthConnector` and the default `InjectedConnector` respectively.
+
+<Tabs
+  defaultValue="modal"
+  values={[
+    { label: "Modal SDK", value: "modal" },
+    { label: "No Modal SDK", value: "no-modal" },
+  ]}
+>
+
+<TabItem value="modal">
+
+<Tabs
+  defaultValue="basic"
+  values={[
+    { label: "Basic Example", value: "basic" },
+    { label: "Using WhiteLabel Options", value: "whitelabel" },
+    { label: "Adding UI Plugin", value: "plugin" },
+  ]}
+>
+
+<TabItem value="basic">
+
+```js
+import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
+import { Web3Auth } from "@web3auth/modal";
+import { createClient, WagmiConfig, configureChains } from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { publicProvider } from "wagmi/providers/public";
+
+// Configure chains & providers with the Alchemy provider.
+// Popular providers are Alchemy (alchemy.com), Infura (infura.io), Quicknode (quicknode.com) etc.
+const { chains, provider, webSocketProvider } = configureChains([mainnet], [alchemyProvider({ apiKey: "yourAlchemyApiKey" }), publicProvider()]);
+// Instantiating Web3Auth
+const web3AuthInstance = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID",
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x" + chains[0].id.toString(16),
+    rpcTarget: chains[0].rpcUrls.default, // This is the public RPC we have added, please pass on your own endpoint while creating an app
+    displayName: chains[0].name,
+    tickerName: chains[0].nativeCurrency?.name,
+    ticker: chains[0].nativeCurrency?.symbol,
+    blockExplorer: chains[0]?.blockExplorers.default?.url,
+  },
+});
+
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors: [
+    new Web3AuthConnector({
+      chains,
+      options: {
+        web3AuthInstance,
+      },
+    }),
+    new InjectedConnector({
+      chains,
+      options: {
+        name: "Injected",
+        shimDisconnect: true,
+      },
+    }),
+  ],
+  provider,
+  webSocketProvider,
+});
+```
+
+</TabItem>
+<TabItem value="whitelabel">
+
+```javascript
+import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
+import { Web3Auth } from "@web3auth/modal";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { createClient, WagmiConfig, configureChains } from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { publicProvider } from "wagmi/providers/public";
+
+// Configure chains & providers with the Alchemy provider.
+// Popular providers are Alchemy (alchemy.com), Infura (infura.io), Quicknode (quicknode.com) etc.
+const { chains, provider, webSocketProvider } = configureChains([mainnet], [alchemyProvider({ apiKey: "yourAlchemyApiKey" }), publicProvider()]);
+// Instantiating Web3Auth
+const web3AuthInstance = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID",
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x" + chains[0].id.toString(16),
+    rpcTarget: chains[0].rpcUrls.default, // This is the public RPC we have added, please pass on your own endpoint while creating an app
+    displayName: chains[0].name,
+    tickerName: chains[0].nativeCurrency?.name,
+    ticker: chains[0].nativeCurrency?.symbol,
+    blockExplorer: chains[0]?.blockExplorers.default?.url,
+  },
+  uiConfig: {
+    theme: "light",
+    loginMethodsOrder: ["twitter", "google"],
+    defaultLanguage: "en",
+    appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+    modalZIndex: "2147483647",
+    appName: name,
+  },
+});
+
+// Add openlogin adapter for customisations
+const openloginAdapterInstance = new OpenloginAdapter({
+  adapterSettings: {
+    network: "cyan",
+    uxMode: "popup",
+    whiteLabel: {
+      name: "Your app Name",
+      logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+      logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+      defaultLanguage: "en",
+      dark: true, // whether to enable dark mode. defaultValue: false
+    },
+  },
+});
+web3AuthInstance.configureAdapter(openloginAdapterInstance);
+
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors: [
+    new Web3AuthConnector({
+      chains,
+      options: {
+        web3AuthInstance,
+        modalConfig: {
+          [WALLET_ADAPTERS.OPENLOGIN]: {
+            loginMethods: {
+              google: {
+                name: "google login",
+                logoDark: "url to your custom logo which will shown in dark mode",
+              },
+              facebook: {
+                // it will hide the facebook option from the Web3Auth modal.
+                name: "facebook login",
+                showOnModal: false,
+              },
+            },
+          },
+          [WALLET_ADAPTERS.WALLET_CONNECT_V1]: {
+            showOnModal: false,
+          },
+          [WALLET_ADAPTERS.WALLET_CONNECT_V2]: {
+            showOnModal: false,
+          },
+          [WALLET_ADAPTERS.TORUS_EVM]: {
+            showOnModal: false,
+          },
+          [WALLET_ADAPTERS.METAMASK]: {
+            showOnModal: false,
+          },
+          [WALLET_ADAPTERS.COINBASE]: {
+            showOnModal: false,
+          },
+        },
+      },
+    }),
+    new InjectedConnector({
+      chains,
+      options: {
+        name: "Injected",
+        shimDisconnect: true,
+      },
+    }),
+  ],
+  provider,
+  webSocketProvider,
+});
+```
+
+</TabItem>
+<TabItem value="plugin">
+
+```js
+import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
+import { Web3Auth } from "@web3auth/modal";
+import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
+import { createClient, WagmiConfig, configureChains } from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { publicProvider } from "wagmi/providers/public";
+
+// Configure chains & providers with the Alchemy provider.
+// Popular providers are Alchemy (alchemy.com), Infura (infura.io), Quicknode (quicknode.com) etc.
+const { chains, provider, webSocketProvider } = configureChains([mainnet], [alchemyProvider({ apiKey: "yourAlchemyApiKey" }), publicProvider()]);
+// Instantiating Web3Auth
+const web3AuthInstance = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID",
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x" + chains[0].id.toString(16),
+    rpcTarget: chains[0].rpcUrls.default, // This is the public RPC we have added, please pass on your own endpoint while creating an app
+    displayName: chains[0].name,
+    tickerName: chains[0].nativeCurrency?.name,
+    ticker: chains[0].nativeCurrency?.symbol,
+    blockExplorer: chains[0]?.blockExplorers.default?.url,
+  },
+});
+
+// Add Torus Wallet Plugin
+const torusPlugin = new TorusWalletConnectorPlugin({
+  torusWalletOpts: {
+    buttonPosition: "bottom-left",
+  },
+  walletInitOptions: {
+    whiteLabel: {
+      theme: { isDark: false, colors: { primary: "#00a8ff" } },
+      logoDark: iconUrl,
+      logoLight: iconUrl,
+    },
+    useWalletConnect: true,
+    enableLogging: true,
+  },
+});
+web3AuthInstance.addPlugin(torusPlugin);
+
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors: [
+    new Web3AuthConnector({
+      chains,
+      options: {
+        web3AuthInstance,
+      },
+    }),
+    new InjectedConnector({
+      chains,
+      options: {
+        name: "Injected",
+        shimDisconnect: true,
+      },
+    }),
+  ],
+  provider,
+  webSocketProvider,
+});
+```
+
+</TabItem>
+
+</Tabs>
+
+</TabItem>
+
+<TabItem value="no-modal">
 
 <Tabs
   defaultValue="basic"
@@ -440,6 +733,9 @@ const wagmiClient = createClient({
 
 </TabItem>
 
+</Tabs>
+
+</TabItem>
 </Tabs>
 
 :::tip examples

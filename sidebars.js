@@ -299,7 +299,6 @@ module.exports = {
                 "sdk/web/modal/whitelabel",
                 "sdk/web/modal/custom-authentication",
                 "sdk/web/modal/mfa",
-                "sdk/web/modal/wagmi-connector",
                 "sdk/web/modal/initiate-topup",
                 "sdk/web/modal/show-wallet-connect",
               ],
@@ -322,7 +321,6 @@ module.exports = {
                 "sdk/web/no-modal/whitelabel",
                 "sdk/web/no-modal/custom-authentication",
                 "sdk/web/no-modal/mfa",
-                "sdk/web/no-modal/wagmi-connector",
                 "sdk/web/no-modal/initiate-topup",
                 "sdk/web/no-modal/show-wallet-connect",
               ],
@@ -334,7 +332,8 @@ module.exports = {
           label: "Helper SDKs",
           items: [
             "sdk/web/openlogin",
-            "sdk/web/web3auth-mpc",
+            "sdk/web/wagmi-connector",
+            "sdk/web/web3auth-mpc"
           ],
         },
         {
