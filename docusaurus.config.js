@@ -203,7 +203,7 @@ const config = {
           },
           {
             from: "/sdk/web/web3auth/wagmi-connector",
-            to: "/sdk/web/modal/wagmi-connector",
+            to: "/sdk/web/wagmi-connector",
           },
           {
             from: "/sdk/web/web3auth/custom-authentication",
