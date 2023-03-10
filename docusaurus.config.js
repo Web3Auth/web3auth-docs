@@ -214,6 +214,10 @@ const config = {
             to: "/sdk/web/modal/whitelabel",
           },
           {
+            from: "/sdk/web/plugins/torus-wallet",
+            to: "/sdk/web/plugins/evm-wallet",
+          },
+          {
             from: "/sdk/web/web3auth/initialize",
             to: "/sdk/web/modal/initialize",
           },
