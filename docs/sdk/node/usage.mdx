@@ -120,7 +120,7 @@ On unsuccessful login, this function will return a `null` value.
 | Parameter               | Type                     | Description                                                                                                         | Mandatory |
 | ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- | --------- |
 | `verifier`              | `string`                 | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                                  | Yes       |
-| `verifierId`            | `string`                 | Verifier ID - if custom authentication is enabled, it will show the verifier identifier you set on dashboard        | Yes       |
+| `verifierId`            | `string`                 | Verifier ID's value, `sub` or `email` value present in the idToken.                                                 | Yes       |
 | `idToken`               | `string`                 | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. | Yes       |
 | `subVerifierInfoArray?` | `TorusSubVerifierInfo[]` | Sub verifier info                                                                                                   | No        |
 
@@ -179,8 +179,8 @@ web3auth.init({ network: "cyan" });
 
 const connect = async () => {
   const provider = await web3auth.connect({
-    verifier: "verifier-name", // replace with your verifier name, and it has to be on the same network passed in init().
-    verifierId: "verifier-Id", // replace with your verifier id(sub or email), setup while creating the verifier on Web3Auth's Dashboard
+    verifier: "verifier-name", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+    verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
     idToken: "JWT Token", // replace with your newly created unused JWT Token.
   });
   const privateKey = await provider.request({ method: "eth_private_key" });
