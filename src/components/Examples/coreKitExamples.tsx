@@ -12,10 +12,10 @@ export const CKTkey = [
         path: `${baseURL}tkey/tkey-react-redirectflow-example`,
       },
       {
-        key: "tkey-react-example",
+        key: "tkey-react-popup-example",
         title: "tKey in Popup Flow",
         icon: "logo-react.png",
-        path: `${baseURL}tkey/tkey-react-example`,
+        path: `${baseURL}tkey/tkey-react-popup-example`,
       },
     ],
   },
