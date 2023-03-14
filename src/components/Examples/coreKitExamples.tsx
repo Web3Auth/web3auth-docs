@@ -6,10 +6,10 @@ export const CKTkey = [
     description: "",
     tiles: [
       {
-        key: "tkey-react-redirectflow-example",
+        key: "tkey-react-redirect-example",
         title: "tKey in Redirect Flow",
         icon: "logo-react.png",
-        path: `${baseURL}tkey/tkey-react-redirectflow-example`,
+        path: `${baseURL}tkey/tkey-react-redirect-example`,
       },
       {
         key: "tkey-react-popup-example",
