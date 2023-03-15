@@ -64,7 +64,7 @@ export const getConstructorCode = (chain: string, whitelabel: boolean, useModal:
 
   const code = `
         // HIGHLIGHTSTART-instantiateSDK
-        const web3auth = new Web3AuthCore({
+        const web3auth = new Web3AuthNoModal({
           clientId, ${network}
           chainConfig: {${chainDetails}
           },

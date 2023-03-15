@@ -17,7 +17,7 @@ export const getPackageJson = (chain: string, whitelabel: boolean, customAuth: b
     "@web3auth/modal": "^${web3authModalVersion}",`;
   } else {
     code += `
-    "@web3auth/core": "^${web3authCoreVersion}",`;
+    "@web3auth/no-modal": "^${web3authCoreVersion}",`;
   }
 
   if (whitelabel || customAuth || chain in OTHER_CHAINS) {

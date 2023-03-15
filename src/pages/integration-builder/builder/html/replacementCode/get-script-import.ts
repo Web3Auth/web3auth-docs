@@ -4,7 +4,7 @@ import { ETHERS, NONE, OTHER_CHAINS, SOL } from "../../choices";
 export const getScriptImport = (chain: string, whitelabel: boolean, customAuth: string, evmFramework: string, useModal: boolean) => {
   const openloginAdapterScript = `https://cdn.jsdelivr.net/npm/@web3auth/openlogin-adapter@${openloginAdapterVersion}/dist/openloginAdapter.umd.min.js`;
   const web3authModalScript = `https://cdn.jsdelivr.net/npm/@web3auth/modal@${web3authModalVersion}/dist/modal.umd.min.js`;
-  const web3authCoreScript = `https://cdn.jsdelivr.net/npm/@web3auth/core@${web3authModalVersion}/dist/core.umd.min.js`;
+  const web3authCoreScript = `https://cdn.jsdelivr.net/npm/@web3auth/no-modal@${web3authModalVersion}/dist/core.umd.min.js`;
   const web3authSolanaProviderScript = `https://cdn.jsdelivr.net/npm/@web3auth/solana-provider@${web3authSolanaProviderVersion}/dist/solanaProvider.umd.min.js`;
   let code = ``;
 

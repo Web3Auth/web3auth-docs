@@ -1,0 +1,81 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+### `addChain()`
+
+To add a chain config to a connected adapter, you need to call `addChain()` function. This function helps you add the chain config by taking the
+following parameter:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Function Definition", value: "definition" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Variable      | Type                | Description         | Mandatory |
+| ------------- | ------------------- | ------------------- | --------- |
+| `chainConfig` | `CustomChainConfig` | Custom Chain Config | Yes       |
+
+</TabItem>
+
+<TabItem value="definition">
+
+```ts
+async addChain(chainConfig: CustomChainConfig): Promise<void> {
+    if (this.status !== ADAPTER_STATUS.CONNECTED || !this.connectedAdapterName) throw WalletLoginError.notConnectedError(`No wallet is connected`);
+    return this.walletAdapters[this.connectedAdapterName].addChain(chainConfig);
+}
+
+export type CustomChainConfig = {
+  chainNamespace: ChainNamespaceType;
+  /**
+   * The chain id of the chain
+   */
+  chainId: string;
+  /**
+   * RPC target Url for the chain
+   */
+  rpcTarget: string;
+  /**
+   * Display Name for the chain
+   */
+  displayName: string;
+  /**
+   * Url of the block explorer
+   */
+  blockExplorer: string;
+  /**
+   * Default currency ticker of the network (e.g: ETH)
+   */
+  ticker: string;
+  /**
+   * Name for currency ticker (e.g: `Ethereum`)
+   */
+  tickerName: string;
+  /**
+   * Number of decimals for the currency ticker (e.g: 18)
+   */
+  decimals?: number;
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+```javascript
+await web3auth.addChain({
+  chainId: "0x5",
+  displayName: "Goerli",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  tickerName: "Goerli",
+  ticker: "ETH",
+  decimals: 18,
+  rpcTarget: "https://rpc.ankr.com/eth_goerli",
+  blockExplorer: "https://goerli.etherscan.io",
+});
+```

@@ -203,7 +203,7 @@ const config = {
           },
           {
             from: "/sdk/web/web3auth/wagmi-connector",
-            to: "/sdk/web/modal/wagmi-connector",
+            to: "/sdk/web/wagmi-connector",
           },
           {
             from: "/sdk/web/web3auth/custom-authentication",
@@ -214,12 +214,24 @@ const config = {
             to: "/sdk/web/modal/whitelabel",
           },
           {
+            from: "/sdk/web/plugins/torus-wallet",
+            to: "/sdk/web/plugins/evm-wallet",
+          },
+          {
             from: "/sdk/web/web3auth/initialize",
             to: "/sdk/web/modal/initialize",
           },
           {
             from: "/sdk/web/web3auth/",
             to: "/sdk/web/modal/",
+          },
+          {
+            from: "/sdk/web/modal/wagmi-connector",
+            to: "/sdk/web/wagmi-connector",
+          },
+          {
+            from: "/sdk/web/no-modal/wagmi-connector",
+            to: "/sdk/web/wagmi-connector",
           },
           {
             from: "/quickstart",

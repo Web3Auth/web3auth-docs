@@ -13,10 +13,12 @@ const torusPlugin = new TorusWalletConnectorPlugin({
       logoDark: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
       logoLight: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
     },
-    useWalletConnect: true,
+    useWalletConnect: true, // make sure this is enabled before using the showWalletConnectScanner function
     enableLogging: true,
   },
 });
+
+await web3auth.addPlugin(torusPlugin); // add plugin to web3auth instance
 
 await torusPlugin.showWalletConnectScanner();
 ```

@@ -4,5 +4,5 @@ export const getWeb3AuthStateAngular = (useModal: boolean) => {
     web3auth: Web3Auth | null = null;`;
   }
   return `
-    web3auth: Web3AuthCore | null = null;`;
+    web3auth: Web3AuthNoModal | null = null;`;
 };
