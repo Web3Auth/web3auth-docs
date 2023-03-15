@@ -344,6 +344,7 @@ module.exports = {
                 "sdk/web/adapters/metamask",
                 "sdk/web/adapters/phantom",
                 "sdk/web/adapters/wallet-connect-v1",
+                "sdk/web/adapters/wallet-connect-v2",
                 "sdk/web/adapters/coinbase",
                 "sdk/web/adapters/slope",
                 "sdk/web/adapters/solflare",
