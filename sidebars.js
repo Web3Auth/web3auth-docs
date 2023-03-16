@@ -362,8 +362,7 @@ module.exports = {
               link: { type: "doc", id: "sdk/web/plugins/plugins" },
               items: ["sdk/web/plugins/evm-wallet", "sdk/web/plugins/solana-wallet"],
             },
-            "sdk/web/wagmi-connector",
-            "sdk/web/web3auth-mpc"
+            "sdk/web/wagmi-connector"
           ],
         },
       ],
