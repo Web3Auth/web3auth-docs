@@ -1,10 +1,10 @@
 ---
-title: Using Web3Auth MPC α (Alpha) SDK
+title: Using Web3Auth tKey JS MPC (Beta) SDK
 image: "contents/guides/banners/mpc.png"
-description: Learn how to use Web3Auth MPC α (Alpha) SDK in your React Application
+description: Learn how to use the Web3Auth tKey JS MPC (Beta) SDK in your React Application
 type: guide
-tags: [web, "@web3auth/web3auth-mpc", mpc, google, whitelabel, react, ethereum]
-date: 7th Oct 2022
+tags: [web, corekit, tkey, mpc, google, whitelabel, react, ethereum]
+date: 15th Mar 2022
 author: Web3Auth Team
 order: 1
 ---
@@ -16,21 +16,21 @@ import SEO from "@site/src/components/SEO";
 import Image1 from "@site/static/contents/tkey-overview-architecture.png";
 
 <SEO
-  title="Using Web3Auth MPC α (Alpha) SDK"
-  description="Learn how to use Web3Auth MPC α (Alpha) SDK in your React Application."
+  title="Using Web3Auth tKey MPC (Beta) SDK"
+  description="Learn how to use Web3Auth tKey MPC (Beta) SDK in your React Application."
   image="https://web3auth.io/docs/contents/guides/banners/mpc.png"
   slug="/guides/mpc"
 />
 
-This guide will help you make a react application using Web3Auth MPC α (Alpha) SDK, covering the basic functionality on how to use it. For a detailed
-reference, you can refer to the [Web3Auth MPC SDK Reference](/sdk/web/web3auth-mpc).
+This guide will help you make a react application using Web3Auth Web3Auth tKey MPC (Beta) SDK, covering the basic functionality on how to use it.
 
-**Live Demo:** https://demo-mpc.web3auth.io
+**Live Demo:** https://w3a.link/tkey-mpc-example
 
 ## Quick Start
 
 ```bash
-git clone https://github.com/torusresearch/w3a-mpc-demo.git
+git clone https://github.com/Web3Auth/web3auth-core-kit-examples/
+cd tkey/tkey-mpc-beta-react-popup-example
 npm install
 npm start
 ```
@@ -40,10 +40,11 @@ npm start
 ---
 
 - A basic knowledge of JavaScript and React.
-- Ideal to have a knowledge about Web3 and making RPC Calls.
+- Ideal to have a knowledge about service workers in React.
+- A [Google Developer](https://console.developers.google.com/) account to be used as Login provider for Web3Auth Custom Authentication.
 - Create a Web3Auth account on the [Web3Auth Dashboard](https://dashboard.web3auth.io/)
 
-## Understanding the Web3Auth MPC α (Alpha) SDK
+## Understanding the Web3Auth tKey JS MPC (Beta) SDK
 
 ---
 
@@ -61,20 +62,66 @@ You can have a look at how we devide the private key here:
 
 <img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={Image1} alt="Web3Auth Key Re-construction" />
 
-Please note that in MPC there is no key reconstruction at all. For this guide here, we will be talking through the
-[Web3Auth MPC α (Alpha) SDK](/sdk/web/web3auth-mpc) and showing you a basic example of how to use it.
+Please note that in MPC there is no key reconstruction at all. For this guide here, we will be talking through the **Web3Auth tKey JS MPC (Beta) SDK**
+and showing you a basic example of how to use it.
 
 ## Setup
 
 ---
 
+### Setup your Google App
+
+1. Follow Google’s instructions to [set up an OAuth 2.0 app.](https://support.google.com/cloud/answer/6158849?hl=en)
+2. Add your application's redirect URI into the "Authorized redirect URIs" field. This is the URL that Google will redirect to after authentication.
+   `http://localhost:3000/serviceworker/redirect`
+
+   ![Google OAuth2.0 App Dashboard](/contents/social-providers/google/google-app-redirect-uri.png)
+
+3. Obtain the OAuth `Client ID` from your [App on the Google Developer dashboard](https://console.developers.google.com/)
+
 ### Setup your Web3Auth Dashboard
 
-<SetupWeb3AuthDashboard />
+- Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
+  configuration:
 
-### Setup your Base Project
+  - Choose a name of your choice for the verifier identifier. `eg. google-core-verifier-ssv`
+  - Select environment: Please note the verifier will be deployed on `sapphire` beta environment, which is currently not available for public
+    deployments directly. Please create a sample testnet verifier for your usecase and send us the details and we'll deploy it for you. Please contact
+    us on https://community.web3auth.io
+  - Select `Google` from the **Login Provider**. ![Google - Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
+  - Paste the **Client ID** from the Google App(above) to the `Client ID` field.
+    ![Google Client ID on Web3Auth Dashboard](/dashboard/verifiers/google-verifier.png)
+  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once
+    it's complete.
 
-<SetupBaseProject />
+- You will require the `verifierName` of the newly created verifier.
+
+### Setting up your React Project
+
+We will need to use service workers while implementing the tKey SDK to handle the redirect login flow. This can be done by using a progressive react
+application.
+
+For a new project, get started with the following command:
+
+```bash
+npx create-react-app tkey-mpc-demo --template cra-template-pwa-typescript
+cd tkey-mpc-demo
+```
+
+For an existing project, add a service worker.
+
+### Setting up the service worker
+
+Further, we need to setup the service worker according to our needs of the project, i.e handling the redirect login flow. Service worker basically
+sits between the frontend application, browser and the network. For the simplicity of this guide, we have added a boilerplate code. The easiest way to
+do that is as follows
+
+```bash
+mkdir public/serviceworker
+wget https://github.com/Web3Auth/web3auth-core-kit-examples//blob/main/tkey/tkey-react-popup-example/public/serviceworker/sw.js -O public/serviceworker/sw.js
+```
+
+> For polyfill issues and BigInt issue, please checkout the [troubleshooting page](/troubleshooting/webpack-issues).
 
 For this guide, we'll be using a React application to demonstrate how the Web3Auth MPC α (Alpha) SDK works. You can use any other framework of your
 choice using any other Web3Auth [Guides](./) / [Examples](/examples). Just modify the functions to make it work.
@@ -83,305 +130,685 @@ choice using any other Web3Auth [Guides](./) / [Examples](/examples). Just modif
 
 ---
 
-We have published our MPC enabled SDKs under a different package name. These are ultimately the same packages but available in a different package for
-the alpha release. Ultimately these will be merged into the main Web3Auth SDK. You can download the following SDKs to get started.
+We will be starting with a 2/2 flow, i.e `Factor1: Social Factor` and `Factor2: Device Factor`. Please note that this terminology is different from
+our conventional terminology of Shares A and B since we will not be constructing the private key in the frontend. Instead, we will be using the these
+**Factors** stored in the different locations to make a final signature.
 
-```bash npm2yarn
-npm install --save @web3auth-mpc/web3auth @web3auth-mpc/openlogin-adapter @web3auth-mpc/base torus-mpc
+For this project, we will be using the `@tkey/default` package alongside multiple helper packages in the `8.0.0-alpha.0` version, that contain all the
+needed functionalities of the tKey MPC SDK. We will be using the following packages highlighted in the package.json file:
+
+```json title="/package.json"
+{
+  ...
+  "dependencies": {
+    //highlight-start
+    "@ethereumjs/common": "^3.1.1",
+    "@ethereumjs/tx": "^4.1.1",
+    //highlight-end
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    //highlight-start
+    "@tkey/chrome-storage": "8.0.0-alpha.0",
+    "@tkey/common-types": "8.0.0-alpha.0",
+    "@tkey/core": "8.0.0-alpha.0",
+    "@tkey/default": "8.0.0-alpha.0",
+    "@tkey/security-questions": "8.0.0-alpha.0",
+    "@tkey/service-provider-base": "8.0.0-alpha.0",
+    "@tkey/service-provider-torus": "8.0.0-alpha.0",
+    "@tkey/share-serialization": "8.0.0-alpha.0",
+    "@tkey/storage-layer-torus": "8.0.0-alpha.0",
+    "@tkey/web-storage": "8.0.0-alpha.0",
+    "@toruslabs/rss-client": "^1.3.0",
+    "@toruslabs/torus.js": "6.2.0-alpha.1",
+    "@toruslabs/tss-client": "^1.2.7-alpha.0",
+    "@toruslabs/tss-lib": "^1.2.1",
+    "@web3auth-mpc/ethereum-provider": "^2.1.22",
+    "bn.js": "^5.2.1",
+    //highlight-end
+    "copy-webpack-plugin": "^11.0.0",
+    //highlight-next-line
+    "eccrypto": "^1.1.6",
+    "html-webpack-plugin": "^5.5.0",
+    //highlight-next-line
+    "jsrsasign": "^10.6.1",
+    //highlight-next-line
+    "keccak256": "^1.0.6",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^17.0.45",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.9",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.9.3",
+    "web-vitals": "^2.1.4",
+    //highlight-next-line
+    "web3": "^1.8.1",
+    ...
+  },
+  "devDependencies": {
+    //highlight-start
+    "@types/eccrypto": "^1.1.3",
+    "@types/elliptic": "^6.4.14",
+    "@types/jsrsasign": "^10.5.5",
+    //highlight-end
+    "assert": "^2.0.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "url": "^0.11.0"
+  },
+  ...
+}
 ```
+
+These packages are quite similar to our current tKey JS SDK, however contain some additional parameters and functions needed for MPC. You can also
+refer to our [tKey JS SDK Reference](/sdk/tkey) for more details on the conventional functions involved.
 
 ### Understanding the Dependencies
 
-##### `@web3auth-mpc/web3auth`
+###### `@tkey/*`
 
-This is the core Web3Auth package with the Modal UI that contains the main Web3Auth MPC SDK.
+Contains all the functionalities of tKey needed for using MPC. These packages help us create the device factor and login to the Web3Auth.
 
-```bash npm2yarn
-npm install --save @web3auth-mpc/web3auth
-```
+###### `@toruslabs/*`
 
-##### `@web3auth-mpc/openlogin-adapter`
+Contains all the helper packages developed by Web3Auth/ Torus Labs for MPC implmentation.
 
-Openlogin adapter helps you to integrate social logins into your Web3Auth instance. The MPC Openlogin adapter also contains the TSS settings, which
-are needed to make the TSS signatures.
+###### `bn.js`, `eccrypto`, `jsrsasign`, `keccak256`
 
-```bash npm2yarn
-npm install --save @web3auth-mpc/openlogin-adapter
-```
+These packages help in key generation and signatures.
 
-##### `@web3auth-mpc/base`
+###### `@web3auth-mpc/ethereum-provider`, `web3`, `@ethereumjs/*`
 
-The base package contains the base types that are used in the Web3Auth SDK. This is done to make sure your types remains constant throughout the SDK
-usage.
-
-```bash npm2yarn
-npm install --save @web3auth-mpc/base
-```
-
-#### `torus-mpc`
-
-This package contains the needed TSS functions for the Web3Auth MPC implementation. These functions are needed to be passed into the Openlogin
-Adapter.
+These packages help in connecting to the Ethereum network and creating transactions.
 
 ## Initialization
 
 ---
 
-After Installation, the next step to use Web3Auth MPC SDK is to initialize it.
+After Installation, the next step to use Web3Auth Core Kit tKey SDK is to Initialize the SDK.
 
-The Initialization takes a few steps, which basically involves importing & instantiating the packages and then initialising them to be used in your
-application.
+```ts title="src/tkey.ts"
+import ThresholdKey from "@tkey/default";
+import SecurityQuestionsModule from "@tkey/security-questions";
+import { TorusServiceProvider } from "@tkey/service-provider-torus";
+import { TorusStorageLayer } from "@tkey/storage-layer-torus";
+import WebStorageModule from "@tkey/web-storage";
 
-1. Import the Web3Auth packages
-2. Instantiate the packages
-3. Initialize the Web3Auth SDK
+// Configuration of Service Provider
 
-Please note that these are the most critical steps where you need to pass on different parameters according to your project. For the sake of this
-guide, we will be using the following code for initialization:
-
-### Import the following packages
-
-Import the following `@web3auth-mpc` and `torus-mpc` packages into your project.
-
-```js
-import { Web3Auth } from "@web3auth-mpc/web3auth";
-import { OpenloginAdapter } from "@web3auth-mpc/openlogin-adapter";
-import { SafeEventEmitterProvider } from "@web3auth-mpc/base";
-import { tssDataCallback, tssGetPublic, tssSign, generatePrecompute } from "torus-mpc";
-```
-
-### Instantiate the packages
-
-Ideally the instantiation and initialisation should be done with the constructor of the application. For this guide, we'll be instantiating these in
-the `useEffect` function of React.
-
-#### Instantiate Web3Auth
-
-```js
-const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Client ID from your Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x5",
-    rpcTarget: "https://rpc.ankr.com/eth_goerli",
-    displayName: "Goerli Testnet",
-    blockExplorer: "https://goerli.etherscan.io/",
-    ticker: "ETH",
-    tickerName: "Ethereum",
+const torusSp = new TorusServiceProvider({
+  useTSS: true, // needed for MPC functionalities
+  customAuthArgs: {
+    baseUrl: `${window.location.origin}/serviceworker`,
+    enableLogging: true,
   },
+});
+
+const storageLayer = new TorusStorageLayer({
+  hostUrl: "https://sapphire-dev-2-1.authnetwork.dev/metadata",
+  // connect to the metadata server for MPC
+  enableLogging: true,
+});
+
+// Configuration of Modules
+const webStorageModule = new WebStorageModule();
+const securityQuestionsModule = new SecurityQuestionsModule();
+
+// Instantiation of tKey
+export const tKey = new ThresholdKey({
+  enableLogging: true,
+  modules: {
+    webStorage: webStorageModule,
+    securityQuestions: securityQuestionsModule,
+  },
+  serviceProvider: torusSp as any,
+  storageLayer: storageLayer as any,
+  manualSync: true, // manual sync for helping us syncing with metadata when we require
 });
 ```
 
-#### Instantiate Openlogin Adapter
-
-Few things to note here:
-
-1. **Multi Factor Authentication needs to be mandatory**, this is done to ensure that the user has a backup of their key in case they lose their
-   device. Please note that the email flow might be buggy right now, you can directly copy the backup phrase and save it somewhere for testing
-   purposes.
-2. We have a new config called `tssSettings`, these are specifically for the TSS implementation. You can directly pass over the functions imported
-   from `torus-mpc` here.
-3. In the `adapterSettings`, make sure the network is `development` and `_iframeUrl` is set to `https://mpc-beta.openlogin.com`. This basically points
-   to our beta network containing TSS implementation.
-
-```js
-const openloginAdapter = new OpenloginAdapter({
-  // Multi Factor Authentication has to be mandatory
-  loginSettings: {
-    mfaLevel: "mandatory",
-  },
-  // TSS Settings needed for TSS implementation
-  tssSettings: {
-    useTSS: true,
-    tssGetPublic,
-    tssSign,
-    tssDataCallback,
-  },
-  adapterSettings: {
-    // points to the beta mpc network containing TSS implementation
-    _iframeUrl: "https://mpc-beta.openlogin.com",
-    // network has to be development
-    network: "development",
-    clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Client ID from your Web3Auth Dashboard
-  },
-});
-web3auth.configureAdapter(openloginAdapter);
-```
-
-### Initialising Web3Auth
-
-For initialising, you need to directly call the `initModal` function of the Web3Auth instance. This function takes in a few parameters, which are
-generally not needed for a basic implementation, however for this alpha you need to pass them over. These configurations basically remove the external
-wallet adapters from the Web3Auth Modal. This is because the current alpha doesn't support external wallets as of now. We'll add that iteratively in
-the future.
-
-```js
-await web3auth.initModal({
-  // config to remove the external wallet adapters
-  modalConfig: {
-    "torus-evm": {
-      label: "Torus Wallet",
-      showOnModal: false,
-    },
-    metamask: {
-      label: "Metamask",
-      showOnModal: false,
-    },
-    "wallet-connect-v1": {
-      label: "Wallet Connect",
-      showOnModal: false,
-    },
-  },
-});
-```
-
-### Putting it all together
-
-The initialisation portion is one of the most important aspects of using Web3Auth. The following code snippet shows the complete initialization code
-for React. We're using the `useEffect` hook to initialise the Web3Auth SDK, this is because ideally the whole initialisation should happen within the
-constructor of your framework.
-
-```js
-const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-		null,
-	);
+```ts title="src/App.tsx"
 useEffect(() => {
   const init = async () => {
+    // Initialization of Service Provider
     try {
-      const web3auth = new Web3Auth({
-        clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Client ID from your Web3Auth Dashboard
-        // Additional uiConfig for Whitelabeling can be passed here
-        uiConfig: {
-          appLogo: "https://images.web3auth.io/web3auth-logo-w.svg",
-          theme: "light",
-          loginMethodsOrder: ["twitter", "google"],
-        },
-        chainConfig: {
-          chainNamespace: "eip155",
-          chainId: "0x5",
-          rpcTarget: "https://rpc.ankr.com/eth_goerli",
-          displayName: "Goerli Testnet",
-          blockExplorer: "https://goerli.etherscan.io/",
-          ticker: "ETH",
-          tickerName: "Ethereum",
-        },
-        enableLogging: true,
-      });
-
-      const openloginAdapter = new OpenloginAdapter({
-        // Multi Factor Authentication has to be mandatory
-        loginSettings: {
-          mfaLevel: "mandatory",
-        },
-        // TSS Settings needed for TSS implementation
-        tssSettings: {
-          useTSS: true,
-          tssGetPublic,
-          tssSign,
-          tssDataCallback,
-        },
-        adapterSettings: {
-          // points to the beta mpc network containing TSS implementation
-          _iframeUrl: "https://mpc-beta.openlogin.com",
-          // network has to be development
-          network: "development",
-          clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Client ID from your Web3Auth Dashboard
-        },
-      });
-      web3auth.configureAdapter(openloginAdapter);
-      // config to remove the external wallet adapters
-      await web3auth.initModal({
-        modalConfig: {
-          "torus-evm": {
-            label: "Torus Wallet",
-            showOnModal: false,
-          },
-          metamask: {
-            label: "Metamask",
-            showOnModal: false,
-          },
-          "wallet-connect-v1": {
-            label: "Wallet Connect",
-            showOnModal: false,
-          },
-        },
-      });
-      setWeb3auth(web3auth);
-
-      if (web3auth.provider) {
-        setProvider(web3auth.provider);
-      }
+      await (tKey.serviceProvider as any).init();
     } catch (error) {
-      console.log("error", error);
+      console.error(error);
     }
   };
   init();
 }, []);
 ```
 
-## Authentication
+### Adding the MPC utils file
 
-#### Logging in
+We have created an `utils.ts` file to help us with the MPC functionalities. You can directly copy this file from our
+[Github Example](https://raw.githubusercontent.com/Web3Auth/web3auth-core-kit-examples/main/tkey/tkey-mpc-beta-react-popup-example/src/utils.ts).
 
-You can show the modal in the browser by calling `connect()` function on `web3auth` instance. Your user can choose their preferred login method and
-access your application.
+<details><summary><code>src/utils.ts</code></summary>
+<p>
 
-```js
-const login = async () => {
-  if (!web3auth) {
-    console.log("web3auth not initialized yet");
+```ts title="src/utils.ts"
+import TorusUtils from "@toruslabs/torus.js";
+import BN from "bn.js";
+import EC from "elliptic";
+import KJUR from "jsrsasign";
+import { io, Socket } from "socket.io-client";
+import { getPubKeyECC, ShareStore } from "@tkey/common-types";
+
+import { generatePrivate } from "@toruslabs/eccrypto";
+import { Client } from "@toruslabs/tss-client";
+import * as tss from "@toruslabs/tss-lib";
+import { EthereumSigningProvider } from "@web3auth-mpc/ethereum-provider";
+import keccak256 from "keccak256";
+import Web3 from "web3";
+import type { provider } from "web3-core";
+
+const torusNodeEndpoints = [ "https://sapphire-dev-2-1.authnetwork.dev/sss/jrpc", "https://sapphire-dev-2-2.authnetwork.dev/sss/jrpc",
+"https://sapphire-dev-2-3.authnetwork.dev/sss/jrpc", "https://sapphire-dev-2-4.authnetwork.dev/sss/jrpc",
+"https://sapphire-dev-2-5.authnetwork.dev/sss/jrpc", ];
+
+const torus = new TorusUtils({ metadataHost: "https://sapphire-dev-2-1.authnetwork.dev/metadata", network: "cyan", enableOneKey: true, });
+
+const DELIMITERS = { Delimiter1: "\u001c", Delimiter2: "\u0015", Delimiter3: "\u0016", Delimiter4: "\u0017", };
+
+export function getEcCrypto(): any {
+  // eslint-disable-next-line new-cap
+  return new EC.ec("secp256k1");
+}
+
+export function ecPoint(p: { x: string; y: string }): any {
+  const ec = getEcCrypto();
+  return ec.keyFromPublic({ x: p.x.padStart(64, "0"), y: p.y.padStart(64, "0") }).getPublic();
+}
+
+export const getAdditiveCoeff = (isUser: boolean, participatingServerIndexes: number[], userTSSIndex: number, serverIndex?: number): BN => {
+  const ec = getEcCrypto();
+  if (isUser) {
+    return getLagrangeCoeffs([1, userTSSIndex], userTSSIndex);
+  }
+  // generate the lagrange coeff that converts the current server DKG share into an additive sharing
+  const serverLagrangeCoeff = getLagrangeCoeffs(participatingServerIndexes, serverIndex as number);
+  const masterLagrangeCoeff = getLagrangeCoeffs([1, userTSSIndex], 1);
+  const additiveLagrangeCoeff = serverLagrangeCoeff.mul(masterLagrangeCoeff).umod(ec.curve.n);
+  return additiveLagrangeCoeff;
+};
+
+// Note: this is only needed for DKLS and not for FROST export const getDenormaliseCoeff = (party: number, parties: number[]): BN => { if
+(parties.indexOf(party) === -1) throw new Error(`party ${party} not found in parties ${parties}`); const ec = getEcCrypto(); // generate the lagrange
+coeff that denormalises the additive sharing into the shamir sharing that TSS is expecting const denormaliseLagrangeCoeff = getLagrangeCoeffs(parties,
+party).invm(ec.curve.n).umod(ec.curve.n); return denormaliseLagrangeCoeff; };
+
+export const getDKLSCoeff = (isUser: boolean, participatingServerIndexes: number[], userTSSIndex: number, serverIndex?: number): BN => {
+  const sortedServerIndexes = participatingServerIndexes.sort((a, b) => a - b);
+  for (let i = 0; i < sortedServerIndexes.length; i++) {
+    if (sortedServerIndexes[i] !== participatingServerIndexes[i]) throw new Error("server indexes must be sorted");
+  }
+  // generate denormalise coeff for DKLS
+  const parties = [];
+
+// total number of parties for DKLS = total number of servers + 1 (user is the last party) // server party indexes let serverPartyIndex = 0; for (let
+i = 0; i < participatingServerIndexes.length; i++) { const currentPartyIndex = i + 1; parties.push(currentPartyIndex); if
+(participatingServerIndexes[i] === serverIndex) serverPartyIndex = currentPartyIndex; } const userPartyIndex = parties.length + 1;
+parties.push(userPartyIndex); // user party index if (isUser) { const additiveCoeff = getAdditiveCoeff(isUser, participatingServerIndexes,
+userTSSIndex, serverIndex); const denormaliseCoeff = getDenormaliseCoeff(userPartyIndex, parties); const ec = getEcCrypto(); return
+denormaliseCoeff.mul(additiveCoeff).umod(ec.curve.n); } const additiveCoeff = getAdditiveCoeff(isUser, participatingServerIndexes, userTSSIndex,
+serverIndex); const denormaliseCoeff = getDenormaliseCoeff(serverPartyIndex, parties); const ec = getEcCrypto(); const coeff =
+denormaliseCoeff.mul(additiveCoeff).umod(ec.curve.n); return coeff; };
+
+export function getLagrangeCoeffs(_allIndexes: number[] | BN[], _myIndex: number | BN, _target: number | BN = 0): BN {
+  const ec = getEcCrypto();
+  const allIndexes: BN[] = _allIndexes.map((i) => new BN(i));
+  const myIndex: BN = new BN(_myIndex);
+  const target: BN = new BN(_target);
+  let upper = new BN(1);
+  let lower = new BN(1);
+  for (let j = 0; j < allIndexes.length; j += 1) {
+    if (myIndex.cmp(allIndexes[j]) !== 0) {
+      let tempUpper = target.sub(allIndexes[j]);
+      tempUpper = tempUpper.umod(ec.curve.n);
+      upper = upper.mul(tempUpper);
+      upper = upper.umod(ec.curve.n);
+      let tempLower = myIndex.sub(allIndexes[j]);
+      tempLower = tempLower.umod(ec.curve.n);
+      lower = lower.mul(tempLower).umod(ec.curve.n);
+    }
+  }
+  return upper.mul(lower.invm(ec.curve.n)).umod(ec.curve.n);
+}
+
+export const createSockets = async (wsEndpoints: string[]): Promise<Socket[]> => {
+  return wsEndpoints.map((wsEndpoint) => {
+    if (wsEndpoint === null || wsEndpoint === undefined) {
+      return null as any;
+    }
+    return io(wsEndpoint, {
+      path: "/tss/socket.io",
+      transports: ["websocket", "polling"],
+      withCredentials: true,
+      reconnectionDelayMax: 10000,
+      reconnectionAttempts: 10,
+    });
+  });
+};
+
+const jwtPrivateKey =
+`-----BEGIN PRIVATE KEY-----\nMEECAQAwEwYHKoZIzj0CAQYIKoZIzj0DAQcEJzAlAgEBBCCD7oLrcKae+jVZPGx52Cb/lKhdKxpXjl9eGNa1MlY57A==\n-----END PRIVATE KEY-----`;
+export const generateIdToken = (email: any) => { const alg = "ES256"; const iat = Math.floor(Date.now() / 1000); const payload = { iss:
+"torus-key-test", aud: "torus-key-test", name: email, email, scope: "email", iat, eat: iat + 120, };
+
+const options = { expiresIn: 120, algorithm: alg, };
+
+const header = { alg, typ: "JWT" }; // @ts-ignore const token = KJUR.jws.JWS.sign(alg, header, payload, jwtPrivateKey, options);
+
+return token; };
+
+export async function fetchPostboxKeyAndSigs(opts: any) {
+  const { verifierName, verifierId } = opts;
+  const token = generateIdToken(verifierId);
+
+const retrieveSharesResponse = await torus.retrieveShares(torusNodeEndpoints, verifierName, { verifier_id: verifierId }, token);
+
+const signatures: any = []; retrieveSharesResponse.sessionTokensData.filter((session) => { if (session) { signatures.push( JSON.stringify({ data:
+session.token, sig: session.signature, }) ); } return null; });
+
+return { signatures, postboxkey: retrieveSharesResponse.privKey.toString(), }; }
+
+export async function assignTssKey(opts: any) {
+  const { verifierName, verifierId, tssTag = "default", nonce } = opts;
+  const extendedVerifierId = `${verifierId}\u0015${tssTag}\u0016${nonce}`;
+  const pubKeyDetails = await torus.getPublicAddress(torusNodeEndpoints, { verifier: verifierName, verifierId, extendedVerifierId }, true);
+
+return pubKeyDetails; }
+
+export function getTSSPubKey(dkgPubKey: any, userShare: any, userTSSIndex: number): any {
+  const userECPK = ec.curve.g.mul(userShare);
+  const userSharePubKey = { x: userECPK.getX().toString("hex"), y: userECPK.getY().toString("hex") };
+
+const serverLagrangeCoeff = getLagrangeCoeffs([1, userTSSIndex], 1); const userLagrangeCoeff = getLagrangeCoeffs([1, userTSSIndex], userTSSIndex);
+const serverTerm = ecPoint(dkgPubKey).mul(serverLagrangeCoeff); const userTerm = ecPoint(userSharePubKey).mul(userLagrangeCoeff); return
+serverTerm.add(userTerm); }
+
+export const setupSockets = async (tssWSEndpoints: string[]) => {
+  const sockets = await createSockets(tssWSEndpoints);
+  // wait for websockets to be connected
+  await new Promise((resolve) => {
+    const checkConnectionTimer = setInterval(() => {
+      for (let i = 0; i < sockets.length; i++) {
+        if (sockets[i] !== null && !sockets[i].connected) return;
+      }
+      clearInterval(checkConnectionTimer);
+      resolve(true);
+    }, 100);
+  });
+
+return sockets; };
+
+export const generateTSSEndpoints = (parties: number, clientIndex: number) => {
+  const endpoints: string[] = [];
+  const tssWSEndpoints: string[] = [];
+  const partyIndexes: number[] = [];
+  for (let i = 0; i < parties; i++) {
+    partyIndexes.push(i);
+    if (i === clientIndex) {
+      endpoints.push(null as any);
+      tssWSEndpoints.push(null as any);
+    } else {
+      endpoints.push(`https://sapphire-dev-2-${i + 1}.authnetwork.dev/tss`);
+      tssWSEndpoints.push(`https://sapphire-dev-2-${i + 1}.authnetwork.dev`);
+    }
+  }
+  return { endpoints, tssWSEndpoints, partyIndexes };
+};
+
+const parties = 4; const clientIndex = parties - 1; const ec = getEcCrypto();
+
+const tssImportUrl = `https://sapphire-dev-2-2.authnetwork.dev/tss/v1/clientWasm`;
+
+export const setupWeb3 = async (chainConfig: any, loginReponse: any, signingParams: any) => {
+  try {
+    const ethereumSigningProvider = new EthereumSigningProvider({
+      config: {
+        chainConfig,
+      },
+    });
+
+    const { tssNonce, factor2Share, factor2Index, compressedTSSPubKey, signatures } = signingParams;
+
+    const { verifier, verifierId } = loginReponse.userInfo;
+
+    const vid = `${verifier}${DELIMITERS.Delimiter1}${verifierId}`;
+    const sessionId = `${vid}${DELIMITERS.Delimiter2}default${DELIMITERS.Delimiter3}${tssNonce}${DELIMITERS.Delimiter4}`;
+
+    /*
+    pass user's private key here.
+    after calling setupProvider, we can use
+    */
+    const sign = async (msgHash: Buffer) => {
+      // 1. setup
+      // generate endpoints for servers
+      const { endpoints, tssWSEndpoints, partyIndexes } = generateTSSEndpoints(parties, clientIndex);
+      // setup mock shares, sockets and tss wasm files.
+      const [sockets] = await Promise.all([setupSockets(tssWSEndpoints), tss.default(tssImportUrl)]);
+
+      const randomSessionNonce = keccak256(generatePrivate().toString("hex") + Date.now());
+
+      // session is needed for authentication to the web3auth infrastructure holding the factor 1
+      const currentSession = `${sessionId}${randomSessionNonce.toString("hex")}`;
+
+      const participatingServerDKGIndexes = [1, 2, 3];
+      const dklsCoeff = getDKLSCoeff(true, participatingServerDKGIndexes, factor2Index);
+      const denormalisedShare = dklsCoeff.mul(factor2Share).umod(ec.curve.n);
+      const share = Buffer.from(denormalisedShare.toString(16, 64), "hex").toString("base64");
+
+      if (!currentSession) {
+        throw new Error(`sessionAuth does not exist ${currentSession}`);
+      }
+      if (!signatures) {
+        throw new Error(`Signature does not exist ${signatures}`);
+      }
+
+      const client = new Client(
+        currentSession,
+        clientIndex,
+        partyIndexes,
+        endpoints,
+        sockets,
+        share,
+        compressedTSSPubKey.toString("base64"),
+        true,
+        tssImportUrl
+      );
+      const serverCoeffs: any = {};
+      for (let i = 0; i < participatingServerDKGIndexes.length; i++) {
+        const serverIndex = participatingServerDKGIndexes[i];
+        serverCoeffs[serverIndex] = getDKLSCoeff(false, participatingServerDKGIndexes, factor2Index, serverIndex).toString("hex");
+      }
+      client.precompute(tss, { signatures, server_coeffs: serverCoeffs });
+      await client.ready();
+      const { r, s, recoveryParam } = await client.sign(tss as any, Buffer.from(msgHash).toString("base64"), true, "", "keccak256", {
+        signatures,
+      });
+      await client.cleanup(tss, { signatures, server_coeffs: serverCoeffs });
+      return { v: recoveryParam, r: Buffer.from(r.toString("hex"), "hex"), s: Buffer.from(s.toString("hex"), "hex") };
+    };
+
+    if (!compressedTSSPubKey) {
+      throw new Error(`compressedTSSPubKey does not exist ${compressedTSSPubKey}`);
+    }
+
+    const getPublic: () => Promise<Buffer> = async () => {
+      return compressedTSSPubKey;
+    };
+
+    await ethereumSigningProvider.setupProvider({ sign, getPublic });
+    console.log(ethereumSigningProvider.provider);
+    const web3 = new Web3(ethereumSigningProvider.provider as provider);
+    return web3;
+
+} catch (e) { console.error(e); return null; } };
+
+const fetchDeviceShareFromTkey = async (tKey: any) => { if (!tKey) { console.error("tKey not initialized yet"); return; } try { const polyId =
+tKey.metadata.getLatestPublicPolynomial().getPolynomialID(); const shares = tKey.shares[polyId]; let deviceShare: ShareStore | null = null;
+
+    for (const shareIndex in shares) {
+      if (shareIndex !== "1") {
+        deviceShare = shares[shareIndex];
+      }
+    }
+    return deviceShare;
+
+} catch (err: any) { console.error({ err }); throw new Error(err); } };
+
+export type FactorKeyCloudMetadata = {
+  deviceShare: ShareStore;
+  tssShare: BN;
+  tssIndex: number;
+};
+
+export const addFactorKeyMetadata = async (tKey: any, factorKey: BN, tssShare: BN, tssIndex: number, factorKeyDescription: string) => {
+  if (!tKey) {
+    console.error("tKey not initialized yet");
     return;
   }
-  const web3authProvider = await web3auth.connect();
-  setProvider(web3authProvider);
-  generatePrecompute(); // <-- So one precompute would be available to your users.
-};
+  const { requiredShares } = tKey.getKeyDetails();
+  if (requiredShares > 0) {
+    console.error("not enough shares for metadata key");
+  }
+
+const metadataDeviceShare = await fetchDeviceShareFromTkey(tKey);
+
+const factorIndex = getPubKeyECC(factorKey).toString("hex"); const metadataToSet: FactorKeyCloudMetadata = { deviceShare: metadataDeviceShare as
+ShareStore, tssShare, tssIndex, };
+
+// Set metadata for factor key backup await tKey.addLocalMetadataTransitions({ input: [{ message: JSON.stringify(metadataToSet) }], privKey:
+[factorKey], });
+
+// also set a description on tkey const params = { module: factorKeyDescription, dateAdded: Date.now(), }; await tKey.addShareDescription(factorIndex,
+JSON.stringify(params), true); };
 ```
 
-:::note
+</p>
+</details>
 
-MPC Signing has two parts, generating the pre compute and the actual signing process. The pre compute takes up the maximum time of both the functions
-and can be called in advance for more prompt signing.
-
-For now, `tssSign` of `torus-mpc` package calls `generatePrecompute()` automatically, so you don't have to.
-
-But it is recommended to call `generatePrecompute()` before making a transaction to achieve faster signing. One `generatePrecompute()` call could be
-done after a succesfull authentication of user.
-
-:::
-
-### Get the User Profile
-
-```js
-const user = await web3auth.getUserInfo();
-console.log("User info", user);
-```
-
-Using the `getUserInfo` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
-network, but are fetched from the id_token you received from Auth0 and lives in the frontend context.
-
-### Logout
-
-```js
-await web3auth.logout();
-```
-
-Logging out your user is as simple as calling the `logout` function.
-
-## Interacting with the Blockchain
+## Triggering Login using Service Provider
 
 ---
 
-<InteractingWithBlockchain />
+Once you have initialised the Web3Auth Service Provider, you're ready to trigger the login process. This is a needed step since this will generate a
+private key which will be needed by the tKey to generate it's share. This is done by calling the `triggerLogin()` function within the `tKey`
+instance's of `serviceProvider` property.
 
-## Try our Demo Application and Example Code
+```ts
+const triggerLogin = async () => {
+  if (!tKey) {
+    console.log("tKey not initialized yet");
+    return;
+  }
+  try {
+    // Triggering Login using Service Provider ==> opens the popup
+    const loginResponse = await (tKey.serviceProvider as any).triggerLogin({
+      typeOfLogin: "google",
+      verifier: "google-tkey-w3a",
+      clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+    });
+    console.log("This is the login response:", loginResponse);
+    return loginResponse;
+  } catch (error) {
+    console.error(error);
+  }
+};
+```
 
-Try our [Demo Application](https://demo-mpc.web3auth.io/) with Web3Auth MPC Signing Flow.
+## Store tKey device factor in local storage
 
-The code for the application we developed in this guide can be found in the [Web3Auth MPC Example](https://github.com/torusresearch/w3a-mpc-demo).
-Check it out and try running it locally yourself!
+---
+
+Once you have triggered the login process, you're ready to initialize the tKey. However, before you do that, you need make sure to store the device
+factor in the device local storage. This tells us that the user has already logged in and we can skip the device share generation process.
+
+```ts
+import BN from "bn.js";
+
+const [localFactorKey, setLocalFactorKey] = useState<BN | null>(null);
+
+useEffect(() => {
+  if (!localFactorKey) return;
+  localStorage.setItem("tKeyLocalStore", localFactorKey.toString("hex"));
+}, [localFactorKey]);
+```
+
+## Initialise tKey in the 2/2 flow
+
+---
+
+At this point, you're ready to initialize the tKey. This will generate you a Metadata Key corresponding to your login provider, which helps the SDK
+detect the login of the user. Additionally the device (factor2) factor helps us make the sign for the user.
+
+```ts
+import { addFactorKeyMetadata, getTSSPubKey } from "./utils";
+import BN from "bn.js";
+import { generatePrivate } from "eccrypto";
+
+const [metadataKey, setMetadataKey] = useState<any>();
+const [localFactorKey, setLocalFactorKey] = useState<BN | null>(null);
+const [signingParams, setSigningParams] = useState<any>(null);
+
+const initializeNewKey = async () => {
+  if (!tKey) {
+    console.log("tKey not initialized yet");
+    return;
+  }
+  try {
+    const loginResponse = await triggerLogin(); // Calls the triggerLogin() function above
+
+    const signatures = loginResponse.signatures.filter((sign: any) => sign !== null);
+
+    const localFactorKey: string | null = localStorage.getItem("tKeyLocalStore");
+
+    // Right not we're depending on if local storage exists to tell us if user is new or existing.
+    let factorKey: BN;
+    let deviceTSSShare: BN;
+    let deviceTSSIndex: number;
+    let metadataDeviceShare: ShareStore;
+
+    // check if local factor key exists or not
+    if (!localFactorKey) {
+      // if not, generate a new factor key
+      factorKey = new BN(generatePrivate());
+      deviceTSSShare = new BN(generatePrivate());
+      deviceTSSIndex = 2;
+      const factorPub = getPubKeyPoint(factorKey);
+      // initialise with the new factor key
+      await tKey.initialize({ useTSS: true, factorPub, deviceTSSShare, deviceTSSIndex });
+    } else {
+      // if it does, use the existing factor key
+      factorKey = new BN(localFactorKey, "hex");
+      const factorKeyMetadata = await tKey.storageLayer.getMetadata<{
+        message: string;
+      }>({
+        privKey: factorKey,
+      });
+
+      if (factorKeyMetadata.message === "KEY_NOT_FOUND") {
+        throw new Error("no metadata for your factor key, reset your account");
+      }
+      const metadataShare = JSON.parse(factorKeyMetadata.message);
+
+      if (!metadataShare.deviceShare || !metadataShare.tssShare) throw new Error("Invalid data from metadata");
+      metadataDeviceShare = metadataShare.deviceShare;
+      await tKey.initialize({ neverInitializeNewKey: true });
+      await tKey.inputShareStoreSafe(metadataDeviceShare, true);
+      await tKey.reconstructKey();
+    }
+
+    // Checks the requiredShares to reconstruct the tKey, starts from 2 by default and each of the above share reduce it by one.
+    const { requiredShares } = tKey.getKeyDetails();
+    if (requiredShares > 0) {
+      throw `Threshold not met. Required Share: ${requiredShares}. You should reset your account.`;
+    }
+    // 2. Reconstruct the Metadata Key
+    const metadataKey = await tKey.reconstructKey();
+    setMetadataKey(metadataKey?.privKey.toString("hex"));
+
+    const tssNonce: number = tKey.metadata.tssNonces![tKey.tssTag];
+    const factor1PubKeyDetails = await tKey.serviceProvider.getTSSPubKey(tKey.tssTag, tssNonce);
+    const factor1PubKey = { x: factor1PubKeyDetails.x.toString("hex"), y: factor1PubKeyDetails.y.toString("hex") };
+
+    const { tssShare: factor2Share, tssIndex: factor2Index } = await tKey.getTSSShare(factorKey);
+
+    // 4. derive tss pub key, tss pubkey is implicitly formed using the dkgPubKey and the userShare (as well as userTSSIndex)
+    const tssPubKey = getTSSPubKey(factor1PubKey, factor2Share, factor2Index);
+    const compressedTSSPubKey = Buffer.from(`${tssPubKey.getX().toString(16, 64)}${tssPubKey.getY().toString(16, 64)}`, "hex");
+
+    // 5. save factor key and other metadata
+    await addFactorKeyMetadata(tKey, factorKey, factor2Share, factor2Index, "local storage key");
+    await tKey.syncLocalMetadataTransitions();
+    setLocalFactorKey(factorKey);
+
+    setSigningParams({
+      tssNonce,
+      factor2Share,
+      factor2Index,
+      compressedTSSPubKey,
+      signatures,
+    });
+
+    console.log(
+      "Successfully logged in & initialised MPC TKey SDK",
+      "TSS Public Key: ",
+      tssPubKey,
+      "Metadata Key",
+      metadataKey.privKey.toString("hex")
+    );
+  } catch (error) {
+    console.log(error, "caught");
+  }
+};
+```
+
+#### Setup Web3 Provider
+
+Once you have set up your tKey instance, you're ready to set up the Web3 Provider. This is the provider that will be used by the Web3 SDK to sign the
+transactions.
+
+```ts
+import { setupWeb3 } from "./utils";
+
+const [web3, setWeb3] = useState<any>(null);
+const [signingParams, setSigningParams] = useState<any>(null);
+
+useEffect(() => {
+  const localSetup = async () => {
+    const chainConfig = {
+      chainId: "0x5",
+      rpcTarget: "https://rpc.ankr.com/eth_goerli",
+      displayName: "Goerli Testnet",
+      blockExplorer: "https://goerli.etherscan.io",
+      ticker: "ETH",
+      tickerName: "Ethereum",
+    };
+    const web3Local = await setupWeb3(chainConfig, loginResponse, signingParams);
+    setWeb3(web3Local);
+  };
+  if (signingParams) {
+    localSetup();
+  }
+}, [signingParams]);
+```
+
+## Interacting with Blockchain
+
+---
+
+Once you are done with the setting of the web3 provider, you can use it to make blockchain calls. This can be used with any EVM compatible chain
+
+:::tip
+
+You can checkout our [Connect Blockchain](/connect-blockchain) documentation which has a detailed guide on how to connect to major blockchains out
+there.
+
+:::
+
+## Example code
+
+---
+
+The code for the application we developed in this guide can be found in the
+[examples repository](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/tkey/tkey-mpc-beta-react-popup-example). Check it out and try
+running it locally yourself!
 
 ## Questions?
+
+---
 
 Ask us on [Web3Auth's Community Portal](https://community.web3auth.io)
