@@ -190,6 +190,14 @@ const res = await fetch("/api/verify", {
 
 ### Verifying `idToken` in Backend
 
+:::info JWKS endpoint
+
+Please note, the JWKS endpoint for Social logins are different from External Wallets.
+
+- JWKS Endpoint: `https://api.openlogin.com/jwks`
+
+:::
+
 ```javascript
 // JWT verification using JWKS
 
@@ -202,6 +210,7 @@ const idToken = req.headers.authorization?.split(' ')[1];
 const app_pub_key = req.body.appPubKey;
 
 // Get the JWK set used to sign the JWT issued by Web3Auth
+// highlight-next-line
 const jwks = jose.createRemoteJWKSet(new URL("https://api.openlogin.com/jwks"));
 
 // Verify the JWT using Web3Auth's JWKS
