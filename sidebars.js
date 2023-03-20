@@ -157,6 +157,7 @@ module.exports = {
       link: { type: "doc", id: "auth-provider-setup/auth-provider-setup" },
       items: [
         "auth-provider-setup/verifiers",
+        "auth-provider-setup/aggregate-verifier",
         {
           type: "category",
           label: "Social Providers",
