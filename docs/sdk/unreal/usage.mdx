@@ -1,0 +1,463 @@
+---
+title: Usage of Unreal SDK
+sidebar_label: Usage
+displayed_sidebar: sdk
+description: "Unreal SDK - Usage | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import UnrealResponse from "@site/src/common/sdk/unreal/_response.mdx";
+
+---
+
+Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users.
+
+## Logging in a User
+
+---
+
+#### `web3Auth.login(LoginParams)`
+
+This function helps your user to trigger the login process. The login flow will be triggered based on the selected provider. You can view the list of
+selected providers in the [provider](#provider) section.
+
+### Arguments
+
+`web3Auth.login()` requires `LoginParams` as a required input.
+
+### `LoginParams`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter           | Type                | Mandatory | Description                                                                                                                                                                                                           |
+| ------------------- | ------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginProvider`     | `enum` `Provider`   | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`, `EMAIL_PASSWORD`, `JWT` |
+| `dappShare`         | `string`            | No        | Dapp share can be used to pass dapp share url, default is `null`                                                                                                                                                      |
+| `extraLoginOptions` | `ExtraLoginOptions` | No        | You can pass various OAuth supported options, default is `null`                                                                                                                                                       |
+| `redirectUrl`       | `Uri`               | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                                           |
+| `appState`          | `string`            | No        | appState can be used to keep track of the app state when user will be redirected to app after login, default is `null`                                                                                                |
+| `mfaLevel`          | `MFALevel`          | No        | MFA level can be used to pass 2FA screen shown during login, default is `mfaLevel.DEFAULT`, shown every 3rd login.                                                                                                    |
+| `curve`             | `Curve`             | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum                                                                                                                            |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```cpp
+USTRUCT(BlueprintType)
+struct FLoginParams
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString loginProvider;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString dappShare;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FExtraLoginOptions extraLoginOptions;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString appState;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString redirectUrl;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FMFALevel mfaLevel;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FCurve curve;
+
+	FLoginParams() {};
+
+	FJsonObject getJsonObject() {
+		FJsonObject output;
+
+		if (!appState.IsEmpty())
+			output.SetStringField("appState", appState);
+
+		if (!dappShare.IsEmpty())
+			output.SetStringField("dappShare", dappShare);
+
+		if (!loginProvider.IsEmpty())
+			output.SetStringField("loginProvider", loginProvider);
+
+		if (!redirectUrl.IsEmpty())
+			output.SetStringField("redirectUrl", redirectUrl);
+
+		if (extraLoginOptions.getJsonObject() != nullptr)
+			output.SetObjectField("extraLoginOptions", extraLoginOptions.getJsonObject());
+
+		return output;
+	}
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+### `Provider`
+
+```cpp
+UENUM(BlueprintType)
+enum class FProvider : uint8
+{
+	GOOGLE,
+	FACEBOOK,
+	REDDIT,
+	DISCORD,
+	TWITCH,
+	APPLE,
+	LINE,
+	GITHUB,
+	KAKAO,
+	LINKEDIN,
+	TWITTER,
+	WEIBO,
+	WECHAT,
+	EMAIL_PASSWORDLESS,
+	EMAIL_PASSWORD,
+	JWT
+};
+```
+
+### `ExtraLoginOptions`
+
+The `LoginParams` class accepts the `ExtraLoginOptions` as an optional input, containing advanced options for custom authentication, email
+passwordless login etc. This parameter can be considered as advanced login options needed for specific cases.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                 | Type      | Mandatory | Description                                           |
+| ------------------------- | --------- | --------- | ----------------------------------------------------- |
+| domain                    | `string`  | No        | Domain of the app                                     |
+| client_id                 | `string`  | No        | client_id from Web3Auth Dashboard                     |
+| leeway                    | `string`  | No        | leeway                                                |
+| verifierIdField           | `string`  | No        | verifierIdField                                       |
+| isVerifierIdCaseSensitive | `bool`    | No        | Boolean to confirm the case sensitivity of VerifierId |
+| display                   | `Display` | No        | Display                                               |
+| prompt                    | `Prompt`  | No        | Prompt                                                |
+| max_age                   | `string`  | No        | max_age                                               |
+| ui_locales                | `string`  | No        | ui_locales to be shown on the modal                   |
+| id_token_hint             | `string`  | No        | ID Token hint                                         |
+| login_hint                | `string`  | No        | Email used for EMAIL_PASSWORDLESS                     |
+| acr_values                | `string`  | No        | acc_values                                            |
+| scope                     | `string`  | No        | scope                                                 |
+| audience                  | `string`  | No        | audience                                              |
+| connection                | `string`  | No        | connection                                            |
+| state                     | `string`  | No        | state                                                 |
+| response_type             | `string`  | No        | response_type                                         |
+| nonce                     | `string`  | No        | nonce                                                 |
+| redirect_uri              | `string`  | No        | redirect_uri                                          |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```cpp
+USTRUCT(BlueprintType)
+struct WEB3AUTHSDK_API FExtraLoginOptions
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString domain;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString client_id;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString leeway;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString verifierIdField;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString max_age;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString ui_locales;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString id_token_hint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString login_hint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString acr_values;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString scope;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString audience;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString connection;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString state;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString response_type;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString nonce;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString redirect_uri;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool isVerifierIdCaseSensitive;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FDisplay display;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FPrompt prompt;
+
+	FExtraLoginOptions() {};
+
+	TSharedPtr<FJsonObject> getJsonObject() {
+		TSharedPtr<FJsonObject> output = MakeShareable(new FJsonObject);
+
+		if (!domain.IsEmpty())
+			output->SetStringField("domain", domain);
+
+		if (!client_id.IsEmpty())
+			output->SetStringField("client_id", client_id);
+
+		if (!leeway.IsEmpty())
+			output->SetStringField("leeway", leeway);
+
+		if (!verifierIdField.IsEmpty())
+			output->SetStringField("verifierIdField", verifierIdField);
+
+		if (!max_age.IsEmpty())
+			output->SetStringField("max_age", max_age);
+
+		if (!ui_locales.IsEmpty())
+			output->SetStringField("ui_locales", ui_locales);
+
+		if (!id_token_hint.IsEmpty())
+			output->SetStringField("id_token_hint", id_token_hint);
+
+		if (!login_hint.IsEmpty())
+			output->SetStringField("login_hint", login_hint);
+
+		if (!acr_values.IsEmpty())
+			output->SetStringField("acr_values", acr_values);
+
+		if (!scope.IsEmpty())
+			output->SetStringField("scope", scope);
+
+		if (!audience.IsEmpty())
+			output->SetStringField("audience", audience);
+
+		if (!connection.IsEmpty())
+			output->SetStringField("connection", connection);
+
+		if (!state.IsEmpty())
+			output->SetStringField("state", state);
+
+		if (!response_type.IsEmpty())
+			output->SetStringField("response_type", response_type);
+
+		if (!nonce.IsEmpty())
+			output->SetStringField("nonce", nonce);
+
+		if (!redirect_uri.IsEmpty())
+			output->SetStringField("redirect_uri", redirect_uri);
+
+
+		if (output->Values.IsEmpty()) {
+			return nullptr;
+		}
+
+		output->SetBoolField("isVerifierIdCaseSensitive", isVerifierIdCaseSensitive);
+
+		switch (display) {
+		case FDisplay::PAGE:
+			output->SetStringField("display", "page");
+			break;
+		case FDisplay::POPUP:
+			output->SetStringField("display", "popup");
+			break;
+		case FDisplay::TOUCH:
+			output->SetStringField("display", "touch");
+			break;
+		case FDisplay::WAP:
+			output->SetStringField("display", "wap");
+			break;
+		}
+
+		switch (prompt) {
+		case FPrompt::CONSENT:
+			output->SetStringField("prompt", "consent");
+			break;
+		case FPrompt::LOGIN:
+			output->SetStringField("prompt", "login");
+			break;
+		case FPrompt::NONE:
+			output->SetStringField("prompt", "none");
+			break;
+		case FPrompt::SELECT_ACCOUNT:
+			output->SetStringField("prompt", "select_acocunt");
+			break;
+		}
+
+		return output;
+	}
+
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+### `Curve`
+
+The `LoginParams` class accepts a `curve` parameter. This parameter can be used to select the elliptic curve to use for the signature.
+
+```cs
+
+```
+
+<Tabs
+  defaultValue="secp256k1"
+  values={[
+    { label: "SECP256K1", value: "secp256k1" },
+    { label: "ED25519", value: "ed25519" },
+  ]}
+>
+
+<TabItem value="secp256k1">
+
+```cs
+
+```
+
+</TabItem>
+
+<TabItem value="ed25519">
+
+```cs
+
+```
+
+</TabItem>
+
+</Tabs>
+
+### Sample Response
+
+<UnrealResponse />
+
+### Example
+
+<Tabs
+  defaultValue="google"
+  values={[
+    { label: "Google", value: "google" },
+    { label: "Facebook", value: "facebook" },
+    { label: "Discord", value: "discord" },
+    { label: "Twitch", value: "twitch" },
+    { label: "Email Passwordless", value: "email_passwordless" },
+    { label: "JWT", value: "jwt" },
+  ]}
+>
+
+<TabItem value="google">
+
+```cs
+
+```
+
+</TabItem>
+
+<TabItem value="facebook">
+
+```cs
+
+```
+
+</TabItem>
+
+<TabItem value="discord">
+
+```cs
+
+```
+
+</TabItem>
+
+<TabItem value="twitch">
+
+```cs
+
+```
+
+</TabItem>
+
+<TabItem value="email_passwordless">
+
+```cs
+
+```
+
+</TabItem>
+
+<TabItem value="jwt">
+
+```cs
+
+```
+
+</TabItem>
+
+</Tabs>
+
+## Logging out a user
+
+---
+
+### `web3Auth.logout()`
+
+Trigger logout flow. This function doesn't take any parameters. A completable future containing void object is returned on successfull logout
+otherwise an error response is returned.
+
+### Example
+
+```cs
+
+```
+
+## Working Example Blueprint
+
+---
+
+```cs
+
+```
