@@ -78,131 +78,24 @@ details.
 
 - [Custom JWT](/auth-provider-setup/byo-jwt-providers)
 
+- [Aggregate Verifier](/auth-provider-setup/aggregate-verifier)
+
 ### Can XXXX authenticator/login be supported?
 
-The list above isn't comprehensive to all the logins that our system is capable of supporting, if you'd like support for a particular login system do
-send your query over to hello@web3auth.io.
+The list above is only comprehensive to some of the logins our system can support. If you'd like support for a particular login system, send your
+query to hello@web3auth.io.
 
 ## Aggregate Verifiers
 
 ---
 
-It is possible to combine multiple login methods to create a verifier to get the same address for your user. For example, combine a `Google` and
-`Email Passwordless` login or `Google` and `GitHub` via Auth0 to access the same key for your user. These login methods should share the same Verifier
-ID, and such verifiers are called `Single ID Verifiers`. Developers can create `Aggregate Verifiers` from the Web3Auth Dashboard.
+Developers can create `Aggregate Verifiers` from the Web3Auth Dashboard. Combining multiple login methods to create a verifier to get the same address
+for your user regardless of their login providers is possible while creating a verifier, for example, combining a `Google` and `Email Passwordless`
+login or `Google` and `GitHub` via Auth0 to access the same key for your user. These login methods should share the same Verifier ID, e.g., `email`;
+such verifiers are called `Single ID Verifiers`.
 
-### Set up an Aggregate Verifier
+:::info Aggregate Verifier Set up
 
-1. Create a verifier for your application by selecting `Aggregate` as the Login provider from this modal.
-   ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-1.png)
-2. Click on `Add sub-verifier` to add a new sub-verifier.
-   ![Add first sub-verifier on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-2.png)
-3. Select `Google` or any other Login provider from this list.
-   ![Select Google from Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-3-1.png)
-4. Paste the **Client ID** from the Google App to the `Client ID` field and click on `Add`.
-   ![Add Google details for the first verifier on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-3-2.png)
-5. Now, it's time to create the second sub-verifier. Click on `Add sub-verifier` to add a new sub-verifier.
-   ![Add second sub-verifier on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-3.png)
-6. Select `Auth0` or `Custom` from the login provider list. We're selecting `Auth0` in this example.
-   ![Auth0 as sub verifier on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-4-1.png)
-7. Select the `Authentication Type` based on your application need from the dropdown. We're selecting `Github` in this example.
-8. Enter the `Auth0 Client ID` and `Auth0 Domain` from your Auth0 application. See how to create a new Auth0 application
-   [here](https://auth0.com/docs/quickstart/webapp/).
-
-   ![Domain and Client ID from Auth0 Dashboard](/contents/guides/auth0/auth0-guide-clientid.png)
-   ![Create Aggregate Verifiier on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-4-2.png)
-
-   :::info NOTE
-
-   1. Add the [GitHub Social Connection](https://marketplace.auth0.com/integrations/github-social-connection) to your Auth0 application.
-   2. One has to request email from user while setting up the GitHub Social Connection on Auth0 Dashboard.
-
-   :::
-
-9. Similarly, creare a third sub verifier for `Email Passwordless` via Auth0. Follow the above step from 5 to 8, and select `Email Passwordless` in
-   place of `Github`.
-10. Finally, click on `Create` to deploy the verifier. ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/av-5.png)
-
-:::info NOTE
-
-You can aggregate two or more verifiers.
+Check out [**Aggregate Verifier page**](/auth-provider-setup/aggregate-verifier) to set up your verifier.
 
 :::
-
-### Example
-
-```js
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-
-const clientId = "YOUR_WEB3AUTH_CLIENT_ID";
-// get it from https://dashboard.web3auth.io by creating a Plug n Play project.
-
-const web3auth = new Web3AuthNoModal({
-  clientId,
-  web3AuthNetwork: "testnet",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x1",
-  },
-});
-
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    loginConfig: {
-      // Google login
-      google: {
-        verifier: "YOUR_AGGREGATE_VERIFIER_NAME", // Pass the Verifier name here. eg. w3a-aggregate-verifier
-        verifierSubIdentifier: "YOUR_FIRST_SUB_VERIFIER_NAME", // Pass the Sub-Verifier here. eg w3a-google
-        typeOfLogin: "google", // Pass the type of login provider.
-        clientId: "GOOGLE_CLIENT_ID", // Pass the Google `Client ID` here.
-      },
-      // Email Password Login via Auth0
-      emailpasswordless: {
-        verifier: "YOUR_AGGREGATE_VERIFIER_NAME", // Pass the Verifier name here. eg. w3a-aggregate-verifier
-        verifierSubIdentifier: "YOUR_SECOND_SUB_VERIFIER_NAME", // Pass the Sub-Verifier here. eg w3a-email-passwordless
-        typeOfLogin: "jwt", // Pass the type of login provider. For Auth0, it's jwt and not Auth0.
-        clientId: "AUTH0_CLIENT_ID", // Pass the `Client ID` of your Auth0 Application.
-      },
-      // GitHub Login via Auth0
-      github: {
-        verifier: "YOUR_AGGREGATE_VERIFIER_NAME", // Pass the Verifier name here. eg. w3a-aggregate-verifier
-        verifierSubIdentifier: "YOUR_SECOND_SUB_VERIFIER_NAME", // Pass the Sub-Verifier here. eg w3a-auth0
-        typeOfLogin: "jwt", // Pass the type of login provider. For Auth0, it's jwt and not Auth0.
-        clientId: "AUTH0_CLIENT_ID", // Pass the Auth0 `Client ID` here.
-      },
-    },
-  },
-});
-web3auth.configureAdapter(openloginAdapter);
-
-// Initialize
-await web3auth.init();
-
-// When user clicks Google button, use this to Login with Google
-const web3authProvider = await web3auth.connectTo("openlogin", {
-  loginProvider: "google",
-});
-
-// When user clicks Email Passwordless button, use this to Login with Email Passwordless via Auth0
-const web3authProvider = await web3auth.connectTo("openlogin", {
-  loginProvider: "emailpasswordless",
-  extraLoginOptions: {
-    domain: "YOUR_AUTH0_DOMAIN", // Pass the Auth0 Domain here, eg. https://shahbaz-torus.us.auth0.com
-    // This corresponds to the field inside jwt which must be used to uniquely identify the user.
-    verifierIdField: "email", // This is mapped b/w google and github logins.
-    isVerifierIdCaseSensitive: false,
-  },
-});
-
-// When user clicks GitHub button, use this to Login with GitHub via Auth0
-const web3authProvider = await web3auth.connectTo("openlogin", {
-  loginProvider: "github",
-  extraLoginOptions: {
-    domain: "YOUR_AUTH0_DOMAIN", // Pass the Auth0 Domain here, eg. https://shahbaz-torus.us.auth0.com
-    // This corresponds to the field inside jwt which must be used to uniquely identify the user.
-    verifierIdField: "email", // This is mapped b/w google and github logins.
-    isVerifierIdCaseSensitive: false,
-  },
-});
-```
