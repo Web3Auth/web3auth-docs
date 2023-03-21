@@ -9,11 +9,9 @@ author: Web3Auth Team
 order: 1
 ---
 
-import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
-import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
-import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import TkeyMPCUtils from "@site/src/common/guides/_tkey-mpc-utils.mdx";
 import SEO from "@site/src/components/SEO";
-import Image1 from "@site/static/contents/tkey-overview-architecture.png";
+import Image1 from "@site/static/images/tkey-mpc-flow.png";
 
 <SEO
   title="Using Web3Auth tKey MPC (Beta) SDK"
@@ -50,20 +48,81 @@ npm start
 
 With the Web3Auth infrastructure, your key is divided into multiple parts and stored across your devices and our Auth Network. This is done to ensure
 that your key is never stored in a single place and is always available to you. While in the traditional Web3Auth SDK, your key was dynamically
-reconstructed in the frontend using threshold signatures, with the new Web3Auth MPC (Multi Party Computation) architecture, it is never reconstructed.
-Instead, these partial keys are stored all across the different locations, and your device is used to make partial signatures for your message/
-transaction. These are finally returned to the frontend where using TSS (Threshold Signature Scheme), these signatures are combined to make a final
-signature. You can use this finally signed message/transaction to make a transaction on the blockchain.
+reconstructed in the frontend using threshold signatures, with the new Web3Auth MPC (Multi Party Computation) architecture, it is **never
+reconstructed**. Instead, these partial keys are stored all across the different locations, and your device is used to make partial signatures for
+your message/ transaction. These are finally returned to the frontend where using TSS (Threshold Signature Scheme), these signatures are combined to
+make a final signature. You can use this finally signed message/transaction to make a transaction on the blockchain.
 
 The Threshold Signature Scheme (TSS) is a cryptographic primitive for distributed key generation and signing. The use of TSS in Web3Auth's Auth
 network is a new paradigm that can provide numerous benefits, especially in terms of security.
 
-You can have a look at how we devide the private key here:
+<img style={{ display: "block", margin: "20px auto" }} src={Image1} alt="Web3Auth Key Management" />
 
-<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={Image1} alt="Web3Auth Key Re-construction" />
+As you can notice in this diagram above, the final output, ie. the User's TSS Account is generated in multiple stages within the whole infrastructure.
+Since, this is an TSS- MPC based infrastructure, you don't get back a private key, but signatures that can be used to make transactions on the
+blockchain. Let's understand each of the these stages in detail.
 
-Please note that in MPC there is no key reconstruction at all. For this guide here, we will be talking through the **Web3Auth tKey JS MPC (Beta) SDK**
-and showing you a basic example of how to use it.
+### Factors
+
+---
+
+##### Social Login Factor
+
+This is the primary way for a user to access their account. This step involves the authentication using a user's preferred social login provider. The
+idToken received the social login provider here is passed over to the Web3Auth Auth Network to generate the TSS Shares in the Nodes. By default, these
+nodes have a threshold of 3/5 which can be customised according to requirements. When a user logs in, the Auth Network generates signatures
+corresponding to the TSS Shares in the nodes and returns them back to the user's end. These signatures are then used alongside other shares to
+generate the final TSS Account signatures.
+
+##### Device Factor
+
+This is the second factor that is used to access the user's account. This step involves generation of a TSS Share on the user's device and using that
+to generate a final signature for the TSS Account alongside the social login factor. This makes sure the user is logging in using their trusted device
+and a proper non custodial setup is maintained.
+
+##### Backup Factor
+
+A user has a choice to generate as many backup factors as needed to access their account. This step involves generation of a TSS Share on the user's
+end and storing them in which ever location they prefer. This share can be used similarly to the device share to generate a final signature for the
+TSS Account alongside the social login factor and/or device factor.
+
+### Threshold
+
+---
+
+The threshold is the minimum number of shares required to generate a final signature for the TSS Account. This threshold by default, is set to 3/5 on
+the Auth Network, and 2/3 for the user's device front. This is to ensure high availability and ease of access on both ends alongside optimum security.
+Both these thresholds can be customised according to the requirements.
+
+### Components of a Factor
+
+---
+
+#### TSS Shares
+
+The TSS Shares are the main component needed for the generation of the final working signature of the user. These shares are generated using
+distributed key generation and are stored in the Auth Network and the user's device. Since these shares are generated using MPC, they are **never
+reconstructed** and always stay decentralised and secure.
+
+#### Metadata Key & Shares
+
+The Metadata Key closely mimics the storage of the TSS Key and Shares, the only difference is that the metadata key is always reconstructed and used
+for its encryption/decryption capabilities. It utilizes basic Shamir’s Secret Sharing and is initially generated on a users’s front-end. The metadata
+key is present to make sure that the infrastructure is backwards compatible with the existing Web3Auth architecture which utilizes SSS (Shamir’s
+Secret Sharing) as the main key reconstruction scheme.
+
+#### Factor Keys
+
+To enable refresh, deletion and rotational capabilities on the $tssKey$ we also introduce **factorKeys**. Factor Keys are randomly generated keys,
+unique to each factor generated user's device and backups like users' phone, chrome extension, on their cloud, assisting third parties etc.
+
+As shares to the TSS Key and/or Metadata Key may rotate, Factor Keys allow for a consistant secret to be saved in these different locations.
+
+:::note
+
+For this guide here, we will be talking through the **Web3Auth tKey JS MPC (Beta) SDK** and showing you a basic example of how to use it.
+
+:::
 
 ## Setup
 
@@ -137,10 +196,10 @@ our conventional terminology of Shares A and B since we will not be constructing
 For this project, we will be using the `@tkey/default` package alongside multiple helper packages in the `8.0.0-alpha.0` version, that contain all the
 needed functionalities of the tKey MPC SDK. We will be using the following packages highlighted in the package.json file:
 
-```json title="/package.json"
+```json title="package.json"
 {
-  ...
-  "dependencies": {
+...
+"dependencies": {
     //highlight-start
     "@ethereumjs/common": "^3.1.1",
     "@ethereumjs/tx": "^4.1.1",
@@ -152,28 +211,21 @@ needed functionalities of the tKey MPC SDK. We will be using the following packa
     "@tkey/chrome-storage": "8.0.0-alpha.0",
     "@tkey/common-types": "8.0.0-alpha.0",
     "@tkey/core": "8.0.0-alpha.0",
-    "@tkey/default": "8.0.0-alpha.0",
-    "@tkey/security-questions": "8.0.0-alpha.0",
-    "@tkey/service-provider-base": "8.0.0-alpha.0",
     "@tkey/service-provider-torus": "8.0.0-alpha.0",
-    "@tkey/share-serialization": "8.0.0-alpha.0",
     "@tkey/storage-layer-torus": "8.0.0-alpha.0",
-    "@tkey/web-storage": "8.0.0-alpha.0",
+    "@tkey/share-serialization": "8.0.0-alpha.0",
     "@toruslabs/rss-client": "^1.3.0",
     "@toruslabs/torus.js": "6.2.0-alpha.1",
     "@toruslabs/tss-client": "^1.2.7-alpha.0",
     "@toruslabs/tss-lib": "^1.2.1",
     "@web3auth-mpc/ethereum-provider": "^2.1.22",
     "bn.js": "^5.2.1",
-    //highlight-end
     "copy-webpack-plugin": "^11.0.0",
-    //highlight-next-line
     "eccrypto": "^1.1.6",
     "html-webpack-plugin": "^5.5.0",
-    //highlight-next-line
     "jsrsasign": "^10.6.1",
-    //highlight-next-line
     "keccak256": "^1.0.6",
+    //highlight-end
     "@types/jest": "^27.5.2",
     "@types/node": "^17.0.45",
     "@types/react": "^18.0.25",
@@ -236,42 +288,38 @@ These packages help in connecting to the Ethereum network and creating transacti
 After Installation, the next step to use Web3Auth Core Kit tKey SDK is to Initialize the SDK.
 
 ```ts title="src/tkey.ts"
-import ThresholdKey from "@tkey/default";
-import SecurityQuestionsModule from "@tkey/security-questions";
+import ThresholdKey from "@tkey/core";
 import { TorusServiceProvider } from "@tkey/service-provider-torus";
 import { TorusStorageLayer } from "@tkey/storage-layer-torus";
-import WebStorageModule from "@tkey/web-storage";
+import { ShareSerializationModule } from "@tkey/share-serialization";
 
 // Configuration of Service Provider
-
 const torusSp = new TorusServiceProvider({
-  useTSS: true, // needed for MPC functionalities
+  useTSS: true,
   customAuthArgs: {
     baseUrl: `${window.location.origin}/serviceworker`,
     enableLogging: true,
   },
 });
 
+// Configuration of Metadata Storage Layer
 const storageLayer = new TorusStorageLayer({
   hostUrl: "https://sapphire-dev-2-1.authnetwork.dev/metadata",
-  // connect to the metadata server for MPC
   enableLogging: true,
 });
 
-// Configuration of Modules
-const webStorageModule = new WebStorageModule();
-const securityQuestionsModule = new SecurityQuestionsModule();
+// Configuration of Share Serialization Module
+const shareSerializationModule = new ShareSerializationModule();
 
 // Instantiation of tKey
 export const tKey = new ThresholdKey({
-  enableLogging: true,
-  modules: {
-    webStorage: webStorageModule,
-    securityQuestions: securityQuestionsModule,
-  },
+  enableLogging: true, // optional, used to logging all info, default is false
   serviceProvider: torusSp as any,
   storageLayer: storageLayer as any,
-  manualSync: true, // manual sync for helping us syncing with metadata when we require
+  manualSync: true, // needed for atomisation of tKey
+  modules: {
+    shareSerialization: shareSerializationModule,
+  },
 });
 ```
 
@@ -292,313 +340,10 @@ useEffect(() => {
 ### Adding the MPC utils file
 
 We have created an `utils.ts` file to help us with the MPC functionalities. You can directly copy this file from our
-[Github Example](https://raw.githubusercontent.com/Web3Auth/web3auth-core-kit-examples/main/tkey/tkey-mpc-beta-react-popup-example/src/utils.ts).
+[Github Example](https://raw.githubusercontent.com/Web3Auth/web3auth-core-kit-examples/main/tkey/tkey-mpc-beta-react-popup-example/src/utils.ts) or
+the code below.
 
-<details><summary><code>src/utils.ts</code></summary>
-<p>
-
-```ts title="src/utils.ts"
-import TorusUtils from "@toruslabs/torus.js";
-import BN from "bn.js";
-import EC from "elliptic";
-import KJUR from "jsrsasign";
-import { io, Socket } from "socket.io-client";
-import { getPubKeyECC, ShareStore } from "@tkey/common-types";
-
-import { generatePrivate } from "@toruslabs/eccrypto";
-import { Client } from "@toruslabs/tss-client";
-import * as tss from "@toruslabs/tss-lib";
-import { EthereumSigningProvider } from "@web3auth-mpc/ethereum-provider";
-import keccak256 from "keccak256";
-import Web3 from "web3";
-import type { provider } from "web3-core";
-
-const torusNodeEndpoints = [ "https://sapphire-dev-2-1.authnetwork.dev/sss/jrpc", "https://sapphire-dev-2-2.authnetwork.dev/sss/jrpc",
-"https://sapphire-dev-2-3.authnetwork.dev/sss/jrpc", "https://sapphire-dev-2-4.authnetwork.dev/sss/jrpc",
-"https://sapphire-dev-2-5.authnetwork.dev/sss/jrpc", ];
-
-const torus = new TorusUtils({ metadataHost: "https://sapphire-dev-2-1.authnetwork.dev/metadata", network: "cyan", enableOneKey: true, });
-
-const DELIMITERS = { Delimiter1: "\u001c", Delimiter2: "\u0015", Delimiter3: "\u0016", Delimiter4: "\u0017", };
-
-export function getEcCrypto(): any {
-  // eslint-disable-next-line new-cap
-  return new EC.ec("secp256k1");
-}
-
-export function ecPoint(p: { x: string; y: string }): any {
-  const ec = getEcCrypto();
-  return ec.keyFromPublic({ x: p.x.padStart(64, "0"), y: p.y.padStart(64, "0") }).getPublic();
-}
-
-export const getAdditiveCoeff = (isUser: boolean, participatingServerIndexes: number[], userTSSIndex: number, serverIndex?: number): BN => {
-  const ec = getEcCrypto();
-  if (isUser) {
-    return getLagrangeCoeffs([1, userTSSIndex], userTSSIndex);
-  }
-  // generate the lagrange coeff that converts the current server DKG share into an additive sharing
-  const serverLagrangeCoeff = getLagrangeCoeffs(participatingServerIndexes, serverIndex as number);
-  const masterLagrangeCoeff = getLagrangeCoeffs([1, userTSSIndex], 1);
-  const additiveLagrangeCoeff = serverLagrangeCoeff.mul(masterLagrangeCoeff).umod(ec.curve.n);
-  return additiveLagrangeCoeff;
-};
-
-// Note: this is only needed for DKLS and not for FROST export const getDenormaliseCoeff = (party: number, parties: number[]): BN => { if
-(parties.indexOf(party) === -1) throw new Error(`party ${party} not found in parties ${parties}`); const ec = getEcCrypto(); // generate the lagrange
-coeff that denormalises the additive sharing into the shamir sharing that TSS is expecting const denormaliseLagrangeCoeff = getLagrangeCoeffs(parties,
-party).invm(ec.curve.n).umod(ec.curve.n); return denormaliseLagrangeCoeff; };
-
-export const getDKLSCoeff = (isUser: boolean, participatingServerIndexes: number[], userTSSIndex: number, serverIndex?: number): BN => {
-  const sortedServerIndexes = participatingServerIndexes.sort((a, b) => a - b);
-  for (let i = 0; i < sortedServerIndexes.length; i++) {
-    if (sortedServerIndexes[i] !== participatingServerIndexes[i]) throw new Error("server indexes must be sorted");
-  }
-  // generate denormalise coeff for DKLS
-  const parties = [];
-
-// total number of parties for DKLS = total number of servers + 1 (user is the last party) // server party indexes let serverPartyIndex = 0; for (let
-i = 0; i < participatingServerIndexes.length; i++) { const currentPartyIndex = i + 1; parties.push(currentPartyIndex); if
-(participatingServerIndexes[i] === serverIndex) serverPartyIndex = currentPartyIndex; } const userPartyIndex = parties.length + 1;
-parties.push(userPartyIndex); // user party index if (isUser) { const additiveCoeff = getAdditiveCoeff(isUser, participatingServerIndexes,
-userTSSIndex, serverIndex); const denormaliseCoeff = getDenormaliseCoeff(userPartyIndex, parties); const ec = getEcCrypto(); return
-denormaliseCoeff.mul(additiveCoeff).umod(ec.curve.n); } const additiveCoeff = getAdditiveCoeff(isUser, participatingServerIndexes, userTSSIndex,
-serverIndex); const denormaliseCoeff = getDenormaliseCoeff(serverPartyIndex, parties); const ec = getEcCrypto(); const coeff =
-denormaliseCoeff.mul(additiveCoeff).umod(ec.curve.n); return coeff; };
-
-export function getLagrangeCoeffs(_allIndexes: number[] | BN[], _myIndex: number | BN, _target: number | BN = 0): BN {
-  const ec = getEcCrypto();
-  const allIndexes: BN[] = _allIndexes.map((i) => new BN(i));
-  const myIndex: BN = new BN(_myIndex);
-  const target: BN = new BN(_target);
-  let upper = new BN(1);
-  let lower = new BN(1);
-  for (let j = 0; j < allIndexes.length; j += 1) {
-    if (myIndex.cmp(allIndexes[j]) !== 0) {
-      let tempUpper = target.sub(allIndexes[j]);
-      tempUpper = tempUpper.umod(ec.curve.n);
-      upper = upper.mul(tempUpper);
-      upper = upper.umod(ec.curve.n);
-      let tempLower = myIndex.sub(allIndexes[j]);
-      tempLower = tempLower.umod(ec.curve.n);
-      lower = lower.mul(tempLower).umod(ec.curve.n);
-    }
-  }
-  return upper.mul(lower.invm(ec.curve.n)).umod(ec.curve.n);
-}
-
-export const createSockets = async (wsEndpoints: string[]): Promise<Socket[]> => {
-  return wsEndpoints.map((wsEndpoint) => {
-    if (wsEndpoint === null || wsEndpoint === undefined) {
-      return null as any;
-    }
-    return io(wsEndpoint, {
-      path: "/tss/socket.io",
-      transports: ["websocket", "polling"],
-      withCredentials: true,
-      reconnectionDelayMax: 10000,
-      reconnectionAttempts: 10,
-    });
-  });
-};
-
-const jwtPrivateKey =
-`-----BEGIN PRIVATE KEY-----\nMEECAQAwEwYHKoZIzj0CAQYIKoZIzj0DAQcEJzAlAgEBBCCD7oLrcKae+jVZPGx52Cb/lKhdKxpXjl9eGNa1MlY57A==\n-----END PRIVATE KEY-----`;
-export const generateIdToken = (email: any) => { const alg = "ES256"; const iat = Math.floor(Date.now() / 1000); const payload = { iss:
-"torus-key-test", aud: "torus-key-test", name: email, email, scope: "email", iat, eat: iat + 120, };
-
-const options = { expiresIn: 120, algorithm: alg, };
-
-const header = { alg, typ: "JWT" }; // @ts-ignore const token = KJUR.jws.JWS.sign(alg, header, payload, jwtPrivateKey, options);
-
-return token; };
-
-export async function fetchPostboxKeyAndSigs(opts: any) {
-  const { verifierName, verifierId } = opts;
-  const token = generateIdToken(verifierId);
-
-const retrieveSharesResponse = await torus.retrieveShares(torusNodeEndpoints, verifierName, { verifier_id: verifierId }, token);
-
-const signatures: any = []; retrieveSharesResponse.sessionTokensData.filter((session) => { if (session) { signatures.push( JSON.stringify({ data:
-session.token, sig: session.signature, }) ); } return null; });
-
-return { signatures, postboxkey: retrieveSharesResponse.privKey.toString(), }; }
-
-export async function assignTssKey(opts: any) {
-  const { verifierName, verifierId, tssTag = "default", nonce } = opts;
-  const extendedVerifierId = `${verifierId}\u0015${tssTag}\u0016${nonce}`;
-  const pubKeyDetails = await torus.getPublicAddress(torusNodeEndpoints, { verifier: verifierName, verifierId, extendedVerifierId }, true);
-
-return pubKeyDetails; }
-
-export function getTSSPubKey(dkgPubKey: any, userShare: any, userTSSIndex: number): any {
-  const userECPK = ec.curve.g.mul(userShare);
-  const userSharePubKey = { x: userECPK.getX().toString("hex"), y: userECPK.getY().toString("hex") };
-
-const serverLagrangeCoeff = getLagrangeCoeffs([1, userTSSIndex], 1); const userLagrangeCoeff = getLagrangeCoeffs([1, userTSSIndex], userTSSIndex);
-const serverTerm = ecPoint(dkgPubKey).mul(serverLagrangeCoeff); const userTerm = ecPoint(userSharePubKey).mul(userLagrangeCoeff); return
-serverTerm.add(userTerm); }
-
-export const setupSockets = async (tssWSEndpoints: string[]) => {
-  const sockets = await createSockets(tssWSEndpoints);
-  // wait for websockets to be connected
-  await new Promise((resolve) => {
-    const checkConnectionTimer = setInterval(() => {
-      for (let i = 0; i < sockets.length; i++) {
-        if (sockets[i] !== null && !sockets[i].connected) return;
-      }
-      clearInterval(checkConnectionTimer);
-      resolve(true);
-    }, 100);
-  });
-
-return sockets; };
-
-export const generateTSSEndpoints = (parties: number, clientIndex: number) => {
-  const endpoints: string[] = [];
-  const tssWSEndpoints: string[] = [];
-  const partyIndexes: number[] = [];
-  for (let i = 0; i < parties; i++) {
-    partyIndexes.push(i);
-    if (i === clientIndex) {
-      endpoints.push(null as any);
-      tssWSEndpoints.push(null as any);
-    } else {
-      endpoints.push(`https://sapphire-dev-2-${i + 1}.authnetwork.dev/tss`);
-      tssWSEndpoints.push(`https://sapphire-dev-2-${i + 1}.authnetwork.dev`);
-    }
-  }
-  return { endpoints, tssWSEndpoints, partyIndexes };
-};
-
-const parties = 4; const clientIndex = parties - 1; const ec = getEcCrypto();
-
-const tssImportUrl = `https://sapphire-dev-2-2.authnetwork.dev/tss/v1/clientWasm`;
-
-export const setupWeb3 = async (chainConfig: any, loginReponse: any, signingParams: any) => {
-  try {
-    const ethereumSigningProvider = new EthereumSigningProvider({
-      config: {
-        chainConfig,
-      },
-    });
-
-    const { tssNonce, factor2Share, factor2Index, compressedTSSPubKey, signatures } = signingParams;
-
-    const { verifier, verifierId } = loginReponse.userInfo;
-
-    const vid = `${verifier}${DELIMITERS.Delimiter1}${verifierId}`;
-    const sessionId = `${vid}${DELIMITERS.Delimiter2}default${DELIMITERS.Delimiter3}${tssNonce}${DELIMITERS.Delimiter4}`;
-
-    /*
-    pass user's private key here.
-    after calling setupProvider, we can use
-    */
-    const sign = async (msgHash: Buffer) => {
-      // 1. setup
-      // generate endpoints for servers
-      const { endpoints, tssWSEndpoints, partyIndexes } = generateTSSEndpoints(parties, clientIndex);
-      // setup mock shares, sockets and tss wasm files.
-      const [sockets] = await Promise.all([setupSockets(tssWSEndpoints), tss.default(tssImportUrl)]);
-
-      const randomSessionNonce = keccak256(generatePrivate().toString("hex") + Date.now());
-
-      // session is needed for authentication to the web3auth infrastructure holding the factor 1
-      const currentSession = `${sessionId}${randomSessionNonce.toString("hex")}`;
-
-      const participatingServerDKGIndexes = [1, 2, 3];
-      const dklsCoeff = getDKLSCoeff(true, participatingServerDKGIndexes, factor2Index);
-      const denormalisedShare = dklsCoeff.mul(factor2Share).umod(ec.curve.n);
-      const share = Buffer.from(denormalisedShare.toString(16, 64), "hex").toString("base64");
-
-      if (!currentSession) {
-        throw new Error(`sessionAuth does not exist ${currentSession}`);
-      }
-      if (!signatures) {
-        throw new Error(`Signature does not exist ${signatures}`);
-      }
-
-      const client = new Client(
-        currentSession,
-        clientIndex,
-        partyIndexes,
-        endpoints,
-        sockets,
-        share,
-        compressedTSSPubKey.toString("base64"),
-        true,
-        tssImportUrl
-      );
-      const serverCoeffs: any = {};
-      for (let i = 0; i < participatingServerDKGIndexes.length; i++) {
-        const serverIndex = participatingServerDKGIndexes[i];
-        serverCoeffs[serverIndex] = getDKLSCoeff(false, participatingServerDKGIndexes, factor2Index, serverIndex).toString("hex");
-      }
-      client.precompute(tss, { signatures, server_coeffs: serverCoeffs });
-      await client.ready();
-      const { r, s, recoveryParam } = await client.sign(tss as any, Buffer.from(msgHash).toString("base64"), true, "", "keccak256", {
-        signatures,
-      });
-      await client.cleanup(tss, { signatures, server_coeffs: serverCoeffs });
-      return { v: recoveryParam, r: Buffer.from(r.toString("hex"), "hex"), s: Buffer.from(s.toString("hex"), "hex") };
-    };
-
-    if (!compressedTSSPubKey) {
-      throw new Error(`compressedTSSPubKey does not exist ${compressedTSSPubKey}`);
-    }
-
-    const getPublic: () => Promise<Buffer> = async () => {
-      return compressedTSSPubKey;
-    };
-
-    await ethereumSigningProvider.setupProvider({ sign, getPublic });
-    console.log(ethereumSigningProvider.provider);
-    const web3 = new Web3(ethereumSigningProvider.provider as provider);
-    return web3;
-
-} catch (e) { console.error(e); return null; } };
-
-const fetchDeviceShareFromTkey = async (tKey: any) => { if (!tKey) { console.error("tKey not initialized yet"); return; } try { const polyId =
-tKey.metadata.getLatestPublicPolynomial().getPolynomialID(); const shares = tKey.shares[polyId]; let deviceShare: ShareStore | null = null;
-
-    for (const shareIndex in shares) {
-      if (shareIndex !== "1") {
-        deviceShare = shares[shareIndex];
-      }
-    }
-    return deviceShare;
-
-} catch (err: any) { console.error({ err }); throw new Error(err); } };
-
-export type FactorKeyCloudMetadata = {
-  deviceShare: ShareStore;
-  tssShare: BN;
-  tssIndex: number;
-};
-
-export const addFactorKeyMetadata = async (tKey: any, factorKey: BN, tssShare: BN, tssIndex: number, factorKeyDescription: string) => {
-  if (!tKey) {
-    console.error("tKey not initialized yet");
-    return;
-  }
-  const { requiredShares } = tKey.getKeyDetails();
-  if (requiredShares > 0) {
-    console.error("not enough shares for metadata key");
-  }
-
-const metadataDeviceShare = await fetchDeviceShareFromTkey(tKey);
-
-const factorIndex = getPubKeyECC(factorKey).toString("hex"); const metadataToSet: FactorKeyCloudMetadata = { deviceShare: metadataDeviceShare as
-ShareStore, tssShare, tssIndex, };
-
-// Set metadata for factor key backup await tKey.addLocalMetadataTransitions({ input: [{ message: JSON.stringify(metadataToSet) }], privKey:
-[factorKey], });
-
-// also set a description on tkey const params = { module: factorKeyDescription, dateAdded: Date.now(), }; await tKey.addShareDescription(factorIndex,
-JSON.stringify(params), true); };
-```
-
-</p>
-</details>
+<TkeyMPCUtils />
 
 ## Triggering Login using Service Provider
 
@@ -611,30 +356,61 @@ instance's of `serviceProvider` property.
 ```ts
 const triggerLogin = async () => {
   if (!tKey) {
-    console.log("tKey not initialized yet");
+    uiConsole("tKey not initialized yet");
     return;
   }
   try {
     // Triggering Login using Service Provider ==> opens the popup
     const loginResponse = await (tKey.serviceProvider as any).triggerLogin({
-      typeOfLogin: "google",
-      verifier: "google-tkey-w3a",
-      clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+      typeOfLogin: "jwt",
+      verifier: "mpc-key-demo-passwordless",
+      clientId: "QQRQNGxJ80AZ5odiIjt1qqfryPOeDcb1",
+      jwtParams: {
+        domain: "https://shahbaz-torus.us.auth0.com",
+        verifierIdField: "name",
+        connection: "google-oauth2",
+      },
     });
-    console.log("This is the login response:", loginResponse);
+    setLoginResponse(loginResponse);
+    setUser(loginResponse.userInfo);
     return loginResponse;
   } catch (error) {
-    console.error(error);
+    uiConsole(error);
   }
 };
 ```
 
-## Store tKey device factor in local storage
+## Initialise tKey
 
 ---
 
-Once you have triggered the login process, you're ready to initialize the tKey. However, before you do that, you need make sure to store the device
-factor in the device local storage. This tells us that the user has already logged in and we can skip the device share generation process.
+Once you have triggered the login process, you're ready to initialize the tKey. This will generate you a Metadata Key corresponding to your login
+provider, which helps the SDK detect the login of the user. Additionally. we'll generate the device (factor2) factor and store/retrieve it from the
+local storage helping us to setup the 2/2 basic flow to make transactions.
+
+### Check if user is new or existing
+
+The Web3Auth Metadata stores the information about the user's key locations, like how many keys are generated, which factorPub represents which key
+according to the set description etc. You can customise what information you want to store in the metadata. The utils file we created earlier has a
+function called `addFactorKeyMetadata` which is used to add data in the metadata, you can customise that according to your needs.
+
+By default, if the key is not present, the metadata returns a `KEY_NOT_FOUND` message. We can use this to check if the user is new or existing.
+
+```ts
+const isMetadataPresent = async (privateKeyBN: BN) => {
+  const metadata = await tKey.storageLayer.getMetadata({ privKey: privateKeyBN });
+  if (metadata && Object.keys(metadata).length > 0 && (metadata as any).message !== "KEY_NOT_FOUND") {
+    return true;
+  } else {
+    return false;
+  }
+};
+```
+
+### Store tKey device factor in local storage
+
+Since we are use the tKey Core MPC Beta SDK, we need to implement the device storage functions ourselves. We'll be using the local storage to store
+the device share for this example.
 
 ```ts
 import BN from "bn.js";
@@ -643,16 +419,18 @@ const [localFactorKey, setLocalFactorKey] = useState<BN | null>(null);
 
 useEffect(() => {
   if (!localFactorKey) return;
-  localStorage.setItem("tKeyLocalStore", localFactorKey.toString("hex"));
+  localStorage.setItem(
+    `tKeyLocalStore\u001c${loginResponse.userInfo.verifier}\u001c${loginResponse.userInfo.verifierId}`,
+    JSON.stringify({
+      factorKey: localFactorKey.toString("hex"),
+      verifier: loginResponse.userInfo.verifier,
+      verifierId: loginResponse.userInfo.verifierId,
+    })
+  );
 }, [localFactorKey]);
 ```
 
-## Initialise tKey in the 2/2 flow
-
----
-
-At this point, you're ready to initialize the tKey. This will generate you a Metadata Key corresponding to your login provider, which helps the SDK
-detect the login of the user. Additionally the device (factor2) factor helps us make the sign for the user.
+### Implementing the main `initializeNewKey` function
 
 ```ts
 import { addFactorKeyMetadata, getTSSPubKey } from "./utils";
@@ -661,54 +439,81 @@ import { generatePrivate } from "eccrypto";
 
 const [metadataKey, setMetadataKey] = useState<any>();
 const [localFactorKey, setLocalFactorKey] = useState<BN | null>(null);
+const [oAuthShare, setOAuthShare] = useState<any>(null);
 const [signingParams, setSigningParams] = useState<any>(null);
 
 const initializeNewKey = async () => {
   if (!tKey) {
-    console.log("tKey not initialized yet");
+    uiConsole("tKey not initialized yet");
     return;
   }
   try {
-    const loginResponse = await triggerLogin(); // Calls the triggerLogin() function above
+    // Trigger Login using Service Provider
+    loginResponse = await triggerLogin();
+    setOAuthShare(loginResponse.privateKey); // This private key is the OAuth Metadata Share
 
+    // Filter out the null values from the signatures
     const signatures = loginResponse.signatures.filter((sign: any) => sign !== null);
 
-    const localFactorKey: string | null = localStorage.getItem("tKeyLocalStore");
+    // Get the Device Share
+    const tKeyLocalStoreString = localStorage.getItem(
+      `tKeyLocalStore\u001c${loginResponse.userInfo.verifier}\u001c${loginResponse.userInfo.verifierId}`
+    );
+    const tKeyLocalStore = JSON.parse(tKeyLocalStoreString || "{}");
 
-    // Right not we're depending on if local storage exists to tell us if user is new or existing.
-    let factorKey: BN;
-    let deviceTSSShare: BN;
-    let deviceTSSIndex: number;
-    let metadataDeviceShare: ShareStore;
+    // Define the factorKey variable for later usage. Please note that this factorKey represents the factorKey 2, ie. device share or recovery share in the 2/2 flow
+    let factorKey: BN | null = null;
 
-    // check if local factor key exists or not
-    if (!localFactorKey) {
-      // if not, generate a new factor key
+    // Check if the user is new or existing
+    const existingUser = await isMetadataPresent(loginResponse.privateKey);
+
+    if (!existingUser) {
+      // If the user is new, we'll generate a new factorKey & deviceShare and store it in the local storage. The factorKey can be used to get the deviceShare from metadata. Device Share is stored on the metadata encrypted by the factorKey.
       factorKey = new BN(generatePrivate());
-      deviceTSSShare = new BN(generatePrivate());
-      deviceTSSIndex = 2;
+      const deviceTSSShare = new BN(generatePrivate());
+      const deviceTSSIndex = 2;
       const factorPub = getPubKeyPoint(factorKey);
-      // initialise with the new factor key
       await tKey.initialize({ useTSS: true, factorPub, deviceTSSShare, deviceTSSIndex });
     } else {
-      // if it does, use the existing factor key
-      factorKey = new BN(localFactorKey, "hex");
+      if (tKeyLocalStore.verifier === loginResponse.userInfo.verifier && tKeyLocalStore.verifierId === loginResponse.userInfo.verifierId) {
+        // If the user is existing and the local storage has the factorKey corresponding the logged in user, we'll use that factorKey to get the deviceShare from metadata. Device Share is stored on the metadata encrypted by the factorKey.
+        factorKey = new BN(tKeyLocalStore.factorKey, "hex");
+      } else {
+        // If the user is existing but the local storage doesn't have the factorKey corresponding the logged in user, we'll ask the user to enter the backup factor key to get the deviceShare from metadata.
+        try {
+          factorKey = await swal("Enter your backup share", {
+            content: "input" as any,
+          }).then(async (value) => {
+            uiConsole(value);
+            return await (tKey.modules.shareSerialization as any).deserialize(value, "mnemonic");
+          });
+        } catch (error) {
+          uiConsole(error);
+          throw new Error("Invalid backup share");
+        }
+      }
+      // if the factorKey is null, it means the user entered an invalid backup share
+      if (factorKey === null) throw new Error("Backup share not found");
+
+      // Get the corresponding TSS share from metadata using the factorKey
       const factorKeyMetadata = await tKey.storageLayer.getMetadata<{
         message: string;
       }>({
         privKey: factorKey,
       });
 
+      // If the metadata doesn't have the TSS Share, it means the user has entered an invalid backup share
       if (factorKeyMetadata.message === "KEY_NOT_FOUND") {
         throw new Error("no metadata for your factor key, reset your account");
       }
       const metadataShare = JSON.parse(factorKeyMetadata.message);
-
       if (!metadataShare.deviceShare || !metadataShare.tssShare) throw new Error("Invalid data from metadata");
-      metadataDeviceShare = metadataShare.deviceShare;
+
+      const metadataDeviceShare = metadataShare.deviceShare;
+
+      // Initialize the tKey with the TSS Share from metadata
       await tKey.initialize({ neverInitializeNewKey: true });
       await tKey.inputShareStoreSafe(metadataDeviceShare, true);
-      await tKey.reconstructKey();
     }
 
     // Checks the requiredShares to reconstruct the tKey, starts from 2 by default and each of the above share reduce it by one.
@@ -716,42 +521,54 @@ const initializeNewKey = async () => {
     if (requiredShares > 0) {
       throw `Threshold not met. Required Share: ${requiredShares}. You should reset your account.`;
     }
-    // 2. Reconstruct the Metadata Key
+    // Reconstruct the Metadata Key
     const metadataKey = await tKey.reconstructKey();
     setMetadataKey(metadataKey?.privKey.toString("hex"));
 
     const tssNonce: number = tKey.metadata.tssNonces![tKey.tssTag];
-    const factor1PubKeyDetails = await tKey.serviceProvider.getTSSPubKey(tKey.tssTag, tssNonce);
-    const factor1PubKey = { x: factor1PubKeyDetails.x.toString("hex"), y: factor1PubKeyDetails.y.toString("hex") };
+    // tssShare1 = TSS Share from the social login/ service provider
+    const tssShare1PubKeyDetails = await tKey.serviceProvider.getTSSPubKey(tKey.tssTag, tssNonce);
+    const tssShare1PubKey = { x: tssShare1PubKeyDetails.x.toString("hex"), y: tssShare1PubKeyDetails.y.toString("hex") };
 
-    const { tssShare: factor2Share, tssIndex: factor2Index } = await tKey.getTSSShare(factorKey);
+    // tssShare2 = TSS Share from the local storage of the device
+    const { tssShare: tssShare2, tssIndex: tssShare2Index } = await tKey.getTSSShare(factorKey);
 
-    // 4. derive tss pub key, tss pubkey is implicitly formed using the dkgPubKey and the userShare (as well as userTSSIndex)
-    const tssPubKey = getTSSPubKey(factor1PubKey, factor2Share, factor2Index);
+    // derive tss pub key, tss pubkey is implicitly formed using the dkgPubKey and the userShare (as well as userTSSIndex)
+    const tssPubKey = getTSSPubKey(tssShare1PubKey, tssShare2, tssShare2Index);
     const compressedTSSPubKey = Buffer.from(`${tssPubKey.getX().toString(16, 64)}${tssPubKey.getY().toString(16, 64)}`, "hex");
 
-    // 5. save factor key and other metadata
-    await addFactorKeyMetadata(tKey, factorKey, factor2Share, factor2Index, "local storage key");
+    // save factor key and other metadata on local storage
+    if (
+      !existingUser ||
+      !(tKeyLocalStore.verifier === loginResponse.userInfo.verifier && tKeyLocalStore.verifierId === loginResponse.userInfo.verifierId)
+    ) {
+      await addFactorKeyMetadata(tKey, factorKey, tssShare2, tssShare2Index, "local storage share");
+    }
     await tKey.syncLocalMetadataTransitions();
+
     setLocalFactorKey(factorKey);
 
+    // Set Signing Params for the Web3 Provider
     setSigningParams({
       tssNonce,
-      factor2Share,
-      factor2Index,
+      tssShare2,
+      tssShare2Index,
       compressedTSSPubKey,
       signatures,
     });
 
-    console.log(
+    // All done!
+    uiConsole(
       "Successfully logged in & initialised MPC TKey SDK",
       "TSS Public Key: ",
-      tssPubKey,
+      tKey.getTSSPub(),
       "Metadata Key",
-      metadataKey.privKey.toString("hex")
+      metadataKey.privKey.toString("hex"),
+      "With Factors/Shares:",
+      tKey.getMetadata().getShareDescription()
     );
   } catch (error) {
-    console.log(error, "caught");
+    uiConsole(error, "caught");
   }
 };
 ```
@@ -784,6 +601,104 @@ useEffect(() => {
     localSetup();
   }
 }, [signingParams]);
+```
+
+## Copy the Local TSS Share into a Manual Backup Factor Key
+
+The following code snippet shows how to copy the local TSS share into a manual backup factor key. This is useful if you want to create a backup of
+your device share, without generating new TSS Shares. Generation of new TSS shares by default has been limited to 3 at the moment. This is to help
+save processing time and enhance the user experience.
+
+```ts
+import { copyExistingTSSShareForNewFactor, addFactorKeyMetadata } from "./utils";
+
+const copyTSSShareIntoManualBackupFactorkey = async () => {
+  try {
+    if (!tKey) {
+      throw new Error("tkey does not exist, cannot add factor pub");
+    }
+    if (!localFactorKey) {
+      throw new Error("localFactorKey does not exist, cannot add factor pub");
+    }
+
+    const backupFactorKey = new BN(generatePrivate());
+    const backupFactorPub = getPubKeyPoint(backupFactorKey);
+
+    await copyExistingTSSShareForNewFactor(tKey, backupFactorPub, localFactorKey);
+
+    const { tssShare: tssShare2, tssIndex: tssIndex2 } = await tKey.getTSSShare(localFactorKey);
+    await addFactorKeyMetadata(tKey, backupFactorKey, tssShare2, tssIndex2, "manual share");
+    const serializedShare = await (tKey.modules.shareSerialization as any).serialize(backupFactorKey, "mnemonic");
+    await tKey.syncLocalMetadataTransitions();
+    uiConsole("Successfully created manual backup. Manual Backup Factor: ", serializedShare);
+  } catch (err) {
+    uiConsole(`Failed to copy share to new manual factor: ${err}`);
+  }
+};
+```
+
+## Create new TSS Share into a Manual Backup Factor Key
+
+The following code snippet shows how to create a new TSS share into a manual backup factor key.
+
+```ts
+import { addNewTSSShareAndFactor, addFactorKeyMetadata } from "./utils";
+
+const createNewTSSShareIntoManualBackupFactorkey = async () => {
+  try {
+    if (!tKey) {
+      throw new Error("tkey does not exist, cannot add factor pub");
+    }
+    if (!localFactorKey) {
+      throw new Error("localFactorKey does not exist, cannot add factor pub");
+    }
+
+    const backupFactorKey = new BN(generatePrivate());
+    const backupFactorPub = getPubKeyPoint(backupFactorKey);
+    const tKeyShareDescriptions = await tKey.getMetadata().getShareDescription();
+    let backupFactorIndex = 2;
+    for (const [key, value] of Object.entries(tKeyShareDescriptions)) {
+      console.log(`value of share ${key}`, value);
+      // eslint-disable-next-line no-loop-func, array-callback-return
+      value.map((factor: any) => {
+        factor = JSON.parse(factor);
+        if (factor.tssShareIndex > backupFactorIndex) {
+          backupFactorIndex = factor.tssShareIndex;
+          console.log(`backupFactorIndex of share ${key}`, backupFactorIndex);
+        }
+      });
+    }
+    uiConsole("backupFactorIndex:", backupFactorIndex + 1);
+    await addNewTSSShareAndFactor(tKey, backupFactorPub, backupFactorIndex + 1, localFactorKey, signingParams.signatures);
+
+    const { tssShare: tssShare2, tssIndex: tssIndex2 } = await tKey.getTSSShare(backupFactorKey);
+    await addFactorKeyMetadata(tKey, backupFactorKey, tssShare2, tssIndex2, "manual share");
+    const serializedShare = await (tKey.modules.shareSerialization as any).serialize(backupFactorKey, "mnemonic");
+
+    await tKey.syncLocalMetadataTransitions();
+    uiConsole(" Successfully created manual backup.Manual Backup Factor: ", serializedShare);
+  } catch (err) {
+    uiConsole(`Failed to create new manual factor ${err}`);
+  }
+};
+```
+
+## Get Key Details
+
+The following code snippet will help you get the details of the key stored on the metadata server. Please note these details can be customised and
+stored according to your needs.
+
+```ts
+const keyDetails = async () => {
+  if (!tKey) {
+    uiConsole("tKey not initialized yet");
+    return;
+  }
+  // const keyDetails = await tKey.getKeyDetails();
+
+  uiConsole("TSS Public Key: ", tKey.getTSSPub(), "With Factors/Shares:", tKey.getMetadata().getShareDescription());
+  // return keyDetails;
+};
 ```
 
 ## Interacting with Blockchain
