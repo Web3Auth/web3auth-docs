@@ -51,12 +51,13 @@ This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
 
 <TabItem value="table">
 
-| Parameter          | Type                                                                         | Description                                                                                                         | Mandatory |
-| ------------------ | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------- |
-| `clientId`         | `string`                                                                     | Web3Auth Client ID. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/). | Yes       |
-| `chainConfig`      | Partial `<CustomChainConfig>` & Pick `<CustomChainConfig, "chainNamespace">` | Custom configuration for your preferred blockchain. Read more about it [here](#chainconfig).                        | Yes       |
-| `web3AuthNetwork?` | `testnet`, `mainnet`, `cyan`, `aqua`, or `celeste`                           | Web3Auth Networks                                                                                                   | No        |
-| `enableLogging?`   | `boolean`                                                                    | Setting it to true will enable logs.                                                                                | No        |
+| Parameter          | Type                                                                         | Description                                                                                                              | Mandatory |
+| ------------------ | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------- |
+| `clientId`         | `string`                                                                     | Web3Auth Client ID. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).      | Yes       |
+| `chainConfig`      | Partial `<CustomChainConfig>` & Pick `<CustomChainConfig, "chainNamespace">` | Custom configuration for your preferred blockchain. Read more about it [here](#chainconfig).                             | Yes       |
+| `web3AuthNetwork?` | `testnet`, `mainnet`, `cyan`, `aqua`, or `celeste`                           | Web3Auth Networks                                                                                                        | No        |
+| `enableLogging?`   | `boolean`                                                                    | Setting it to true will enable logs.                                                                                     | No        |
+| `usePnPKey?`       | `boolean`                                                                    | Setting this to true returns the same key as web sdk (i.e., plug n play key), By default, this sdk returns `CoreKitKey`. | No        |
 
 </TabItem>
 
@@ -70,23 +71,32 @@ interface Web3AuthOptions {
    * You can set any random string for this on localhost.
    */
   clientId: string;
+
   /**
    * custom chain configuration for chainNamespace
    *
    * @defaultValue mainnet config of provided chainNamespace
    */
   chainConfig: Partial<CustomChainConfig> & Pick<CustomChainConfig, "chainNamespace">;
+
   /**
    * Web3Auth Network to use for login
    * @defaultValue mainnet
    */
   web3AuthNetwork?: TORUS_NETWORK_TYPE;
+
   /**
    * setting to true will enable logs
    *
    * @defaultValue false
    */
   enableLogging?: boolean;
+
+  /**
+   * setting this to true returns the same key as web sdk (i.e., plug n play key)
+   * By default, this sdk returns CoreKitKey
+   */
+  usePnPKey?: boolean;
 }
 ```
 
@@ -127,6 +137,7 @@ const web3auth = new Web3Auth({
   },
   // Available networks are "testnet", "mainnet", "cyan", "aqua", and "celeste".
   web3AuthNetwork: "cyan",
+  usePnPKey: "false", // By default, this sdk returns CoreKitKey
 });
 ```
 
@@ -144,6 +155,7 @@ const web3auth = new Web3Auth({
   },
   // Available networks are "testnet", "mainnet", "cyan", "aqua", and "celeste".
   web3AuthNetwork: "cyan",
+  usePnPKey: "false", // By default, this sdk returns CoreKitKey
 });
 ```
 
@@ -159,6 +171,7 @@ const web3auth = new Web3Auth({
   },
   // Available networks are "testnet", "mainnet", "cyan", "aqua", and "celeste".
   web3AuthNetwork: "cyan",
+  usePnPKey: "false", // By default, this sdk returns CoreKitKey
 });
 ```
 
