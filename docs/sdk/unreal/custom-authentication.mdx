@@ -151,7 +151,42 @@ enum class FTypeOfLogin : uint8
 
 ![Unreal Blueprint Login Options](/contents/sdk/unreal/provider-options.png)
 
-![Unreal Blueprint Login Provider List](/contents/sdk/unreal/provider-list.png)
+<Tabs
+  defaultValue="google"
+  values={[
+    { label: "Google", value: "google" },
+    { label: "Facebook", value: "facebook" },
+    { label: "Email Passwordless", value: "email_passwordless" },
+    { label: "Auth0", value: "auth0" },
+  ]}
+>
+
+<TabItem value="google">
+
+![Unreal Blueprint Google Custom Login](/contents/sdk/unreal/google-custom-auth.png)
+
+</TabItem>
+
+<TabItem value="facebook">
+
+![Unreal Blueprint Facebook Custom Login](/contents/sdk/unreal/fb-custom-auth.png)
+
+</TabItem>
+
+<TabItem value="email_passwordless">
+
+![Unreal Blueprint Email Passwordless Custom Login](/contents/sdk/unreal/email-passwordless.png)
+
+</TabItem>
+
+<TabItem value="auth0">
+
+![Unreal Blueprint Auth0 Custom Login](/contents/sdk/unreal/auth0-login-config.png)
+![Unreal Blueprint Auth0 Extralogin option](/contents/sdk/unreal/extraloginoption-auth0.png)
+
+</TabItem>
+
+</Tabs>
 
 :::note
 
@@ -161,11 +196,3 @@ enum class FTypeOfLogin : uint8
   Use `mfaLevel = MFALevel.MANDATORY` in the `LoginParams` during login. See **[MFA](./mfa)** for more details.
 
 :::
-
-### `ExtraLoginOptions` for special login methods
-
----
-
-- To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` field of the `extraLoginOptions`.
-
-- To use the `JWT` login, you need to put the jwt token into the `additionalParams` field of the `extraLoginOptions`.
