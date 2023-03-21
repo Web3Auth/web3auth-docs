@@ -26,3 +26,30 @@ export const PNPUnity = [
     ],
   },
 ];
+
+export const PNPUnreal = [
+  {
+    name: "",
+    description: "",
+    tiles: [
+      {
+        key: "unreal-example",
+        title: "Unreal Basic Example",
+        icon: "logo-unreal.png",
+        path: "https://github.com/Web3Auth/web3auth-unity-example/tree/master",
+      },
+      {
+        key: "unity-auth0-example",
+        title: "Unreal + Auth0",
+        icon: "logo-auth0.png",
+        path: "https://github.com/Web3Auth/web3auth-unity-example/tree/auth0-example",
+      },
+      {
+        key: "unity-google-example",
+        title: "Unreal + Custom Google",
+        icon: "logo-google.png",
+        path: "https://github.com/Web3Auth/web3auth-unity-example/tree/custom-google",
+      },
+    ],
+  },
+];

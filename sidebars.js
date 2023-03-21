@@ -474,6 +474,26 @@ module.exports = {
       ],
     },
     {
+      type: "category",
+      label: "Unreal SDK",
+      link: { type: "doc", id: "sdk/unreal/unreal" },
+      items: [
+        "sdk/unreal/initialize",
+        "sdk/unreal/usage",
+        {
+          type: "category",
+          collapsible: true,
+          collapsed: false,
+          label: "Additional Settings",
+          items: [
+            "sdk/unreal/whitelabel",
+            "sdk/unreal/custom-authentication",
+            "sdk/unreal/mfa",
+          ],
+        },
+      ],
+    },
+    {
       type: "html",
       value: "<span class='sidebarHeading'>Core Kit</span>",
       defaultStyle: true,

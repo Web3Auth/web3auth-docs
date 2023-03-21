@@ -167,15 +167,13 @@ export default function QuickNavigation() {
         <div className={styles.cardContentText}>
           <div className={styles.cardTitleContainer}>
             <h3 className={styles.title}>Unreal SDK</h3>
-            <div className={styles.pillContainer}>
-              <div className={styles.pill}>Docs Coming Soon</div>
-            </div>
           </div>
           <p>Plug and Play Native SDK for Unreal</p>
-          {/* <div className={styles.links}>
-            <a href="/docs">Quick Start{chevron}</a>
-            <a href="/docs">SDK Reference{chevron}</a>
-          </div> */}
+          <div className={styles.links}>
+            <a href="/docs/quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Unreal+SDK&platform=Unreal">Quick Start{chevron}</a>
+            <a href="/docs/sdk/unreal/">SDK Reference{chevron}</a>
+            <a href="/docs/examples?product=Plug+and+Play&sdk=Plug+and+Play+Unreal+SDK">Examples{chevron}</a>
+          </div>
         </div>
       </div>
     </>

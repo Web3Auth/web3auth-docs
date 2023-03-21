@@ -21,6 +21,7 @@ import PNPNoModalVue from "@site/src/common/quickstart/_pnp-no-modal-vue.mdx";
 import PNPReactNativeBare from "@site/src/common/quickstart/_pnp-reactnative-bare.mdx";
 import PNPReactNativeExpo from "@site/src/common/quickstart/_pnp-reactnative-expo.mdx";
 import PNPUnity from "@site/src/common/quickstart/_pnp-unity.mdx";
+import PNPUnreal from "@site/src/common/quickstart/_pnp-unreal.mdx";
 import SFAAngular from "@site/src/common/quickstart/_sfa-angular.mdx";
 import SFANext from "@site/src/common/quickstart/_sfa-nextjs.mdx";
 import SFAReact from "@site/src/common/quickstart/_sfa-react.mdx";
@@ -184,27 +185,27 @@ export default function QuickNavigation() {
           <select value={sdk} onChange={changeSDK}>
             {product === pnp
               ? pnplist.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.label}
-                </option>
-              ))
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))
               : corekitlist.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.label}
-                </option>
-              ))}
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))}
           </select>
         </div>
         <div className={styles.list}>
           <h3>
             Select a{" "}
             {platform === android ||
-              platform === ios ||
-              platform === rnbare ||
-              platform === rnexpo ||
-              platform === flutter ||
-              platform === unity ||
-              platform === unreal
+            platform === ios ||
+            platform === rnbare ||
+            platform === rnexpo ||
+            platform === flutter ||
+            platform === unity ||
+            platform === unreal
               ? "platform"
               : "framework"}
           </h3>
@@ -239,7 +240,7 @@ export default function QuickNavigation() {
       {platform === rnbare && product === pnp ? <PNPReactNativeBare /> : ""}
       {platform === rnexpo && product === pnp ? <PNPReactNativeExpo /> : ""}
       {platform === unity ? <PNPUnity /> : ""}
-      {platform === unreal ? "Unreal QuickStart Coming Soon" : ""}
+      {platform === unreal ? <PNPUnreal /> : ""}
     </div>
   );
 }

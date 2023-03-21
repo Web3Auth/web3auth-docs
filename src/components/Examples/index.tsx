@@ -24,7 +24,7 @@ import {
   tkeyjs,
 } from "../../common/SDKOptions";
 import { CKNode, CKSFA, CKTkey } from "./coreKitExamples";
-import { PNPUnity } from "./pnpGamingExamples";
+import { PNPUnity, PNPUnreal } from "./pnpGamingExamples";
 import { PNPAndroid, PNPFlutter, PNPIos, PNPRN } from "./pnpMobileExamples";
 import {
   PNPModalAdditional,
@@ -137,15 +137,15 @@ export default function QuickNavigation() {
           <select value={sdk} onChange={changeSDK}>
             {product === pnp
               ? pnplist.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.label}
-                </option>
-              ))
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))
               : corekitlist.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.label}
-                </option>
-              ))}
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))}
           </select>
         </div>
       </div>
@@ -192,7 +192,7 @@ export default function QuickNavigation() {
       {sdk === tkeyjs ? <Tiles tileGroups={CKTkey} /> : null}
       {sdk === corekitnodejs ? <Tiles tileGroups={CKNode} /> : null}
       {sdk === singlefactorauth ? <Tiles tileGroups={CKSFA} /> : null}
-      {sdk === pnpunreal ? <p>Unreal Examples Coming Soon</p> : null}
+      {sdk === pnpunreal ? <Tiles tileGroups={PNPUnreal} /> : null}
     </div>
   );
 }
