@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import Tiles from "@theme/Tiles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   corekit,
@@ -48,10 +48,34 @@ import {
 import styles from "./styles.module.css";
 
 export default function QuickNavigation() {
-  const [urlOptions] = useState<Record<string, string>>(getOptionsfromURL());
+  const [product, setProduct] = useState<string>(pnp);
+  const [sdk, setSdk] = useState<string>(pnpwebmodal);
 
-  const [product, setProduct] = useState<string>(urlOptions.product || pnp);
-  const [sdk, setSdk] = useState<string>(urlOptions.sdk || pnpwebmodal);
+  useEffect(() => {
+    const options = getOptionsfromURL();
+    let productState: string;
+    let sdkState: string;
+
+    if (!options.product) {
+      history.pushState({}, "", setURLfromOptions({ product: pnp, sdk: pnpwebmodal }));
+      productState = pnp;
+      sdkState = pnpwebmodal;
+    } else if (!options.sdk && options.product in [pnp, corekit]) {
+      let sdkValue = pnpwebmodal;
+      if (options.product === corekit) {
+        sdkValue = tkeyjs;
+      }
+      history.pushState({}, "", setURLfromOptions({ product: options.product, sdk: sdkValue }));
+      productState = options.product;
+      sdkState = sdkValue;
+    } else {
+      productState = options.product;
+      sdkState = options.sdk;
+    }
+
+    setProduct(productState);
+    setSdk(sdkState);
+  }, []);
 
   function changeProduct(productValue) {
     let sdkValue = pnpwebmodal;

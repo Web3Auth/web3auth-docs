@@ -25,7 +25,7 @@ import SFAAngular from "@site/src/common/quickstart/_sfa-angular.mdx";
 import SFANext from "@site/src/common/quickstart/_sfa-nextjs.mdx";
 import SFAReact from "@site/src/common/quickstart/_sfa-react.mdx";
 import SFAVue from "@site/src/common/quickstart/_sfa-vue.mdx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   android,
@@ -56,12 +56,10 @@ import {
 import styles from "./styles.module.css";
 
 export default function QuickNavigation() {
-  const [urlOptions] = useState<Record<string, string>>(getOptionsfromURL());
-
-  const [product, setProduct] = useState<string>(urlOptions.product || pnp);
-  const [sdk, setSdk] = useState<string>(urlOptions.sdk || pnpwebmodal);
-  const [platform, setPlatform] = useState<string>(urlOptions.platform || reactJS);
-  const [platformList, setPlatformList] = useState<string[]>([...weblist]);
+  const [product, setProduct] = useState<string>(pnp);
+  const [sdk, setSdk] = useState<string>(pnpwebmodal);
+  const [platform, setPlatform] = useState<string>(reactJS);
+  const [platformList, setPlatformList] = useState<string[]>(weblist);
 
   function changePlatformList(productValue, sdkValue) {
     let selectedSDK = corekitlist.filter((el) => el.value === sdkValue);
@@ -72,6 +70,55 @@ export default function QuickNavigation() {
     setPlatform(selectedSDK[0].platforms[0]);
     history.pushState({}, "", setURLfromOptions({ product: productValue, sdk: sdkValue, platform: selectedSDK[0].platforms[0] }));
   }
+
+  useEffect(() => {
+    const options = getOptionsfromURL();
+    let productState: string;
+    let sdkState: string;
+    let platformState: string;
+
+    if (!options.product) {
+      history.pushState({}, "", setURLfromOptions({ product: pnp, sdk: pnpwebmodal, platform: reactJS }));
+      productState = pnp;
+      sdkState = pnpwebmodal;
+      platformState = reactJS;
+    } else if (!options.sdk && options.product in [pnp, corekit]) {
+      let sdkValue = pnpwebmodal;
+      let selectedSDK = pnplist.filter((el) => el.value === sdkValue);
+      if (options.product === corekit) {
+        sdkValue = tkeyjs;
+        selectedSDK = corekitlist.filter((el) => el.value === sdkValue);
+      }
+      const currentPlatform = selectedSDK[0].platforms[0];
+
+      history.pushState({}, "", setURLfromOptions({ product: options.product, sdk: sdkValue, platform: currentPlatform }));
+      productState = options.product;
+      sdkState = sdkValue;
+      platformState = currentPlatform;
+    } else if (!options.platform && options.product in [pnp, corekit]) {
+      let selectedSDK = pnplist.filter((el) => el.value === options.sdk);
+
+      if (options.product === corekit) {
+        selectedSDK = corekitlist.filter((el) => el.value === options.sdk);
+      }
+
+      const currentPlatform = selectedSDK[0].platforms[0];
+      history.pushState({}, "", setURLfromOptions({ product: options.product, sdk: options.sdk, platform: currentPlatform }));
+      productState = options.product;
+      sdkState = options.sdk;
+      platformState = currentPlatform;
+    } else {
+      productState = options.product;
+      sdkState = options.sdk;
+      platformState = options.platform;
+    }
+
+    setProduct(productState);
+    setSdk(sdkState);
+    setPlatform(platformState);
+    changePlatformList(productState, sdkState);
+  }, []);
+
   function changeProduct(value) {
     setProduct(value);
     if (value === pnp) {
