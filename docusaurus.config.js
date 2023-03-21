@@ -368,6 +368,14 @@ const config = {
             to: "/pnp/features/server-side-verification/",
           },
           {
+            from: "/server-side-verification/social-login-users",
+            to: "/pnp/features/server-side-verification/social-login-users",
+          },
+          {
+            from: "/server-side-verification/external-wallets",
+            to: "/pnp/features/server-side-verification/external-wallets",
+          },
+          {
             from: "/developing-with-web3auth/adapters",
             to: "/pnp/features/connect-external-wallets",
           },
@@ -388,20 +396,108 @@ const config = {
             to: "/dashboard-setup/",
           },
           {
+            from: "/developer-dashboard/get-client-id",
+            to: "/dashboard-setup/get-client-id",
+          },
+          {
+            from: "/developer-dashboard/enable-interoperability",
+            to: "/dashboard-setup/enable-interoperability",
+          },
+          {
+            from: "/developer-dashboard/setup-custom-authentication",
+            to: "/dashboard-setup/setup-custom-authentication",
+          },
+          {
+            from: "/developer-dashboard/billing-and-user-stats",
+            to: "/dashboard-setup/billing-and-user-stats",
+          },
+          {
             from: "/customauth",
             to: "/auth-provider-setup/",
           },
           {
             from: "/customauth/verifiers",
-            to: "/auth-provider-setup/",
+            to: "/auth-provider-setup/verifiers",
           },
           {
-            from: "/custom-authentication/",
-            to: "/auth-provider-setup/",
+            from: "/custom-authentication/verifiers",
+            to: "/auth-provider-setup/verifiers",
+          },
+          {
+            from: "/custom-authentication/social-providers/",
+            to: "/auth-provider-setup/social-providers/",
+          },
+          {
+            from: "/custom-authentication/social-providers/google",
+            to: "/auth-provider-setup/social-providers/google",
+          },
+          {
+            from: "/custom-authentication/social-providers/facebook",
+            to: "/auth-provider-setup/social-providers/facebook",
+          },
+          {
+            from: "/custom-authentication/social-providers/twitch",
+            to: "/auth-provider-setup/social-providers/twitch",
+          },
+          {
+            from: "/custom-authentication/social-providers/discord",
+            to: "/auth-provider-setup/social-providers/discord",
+          },
+          {
+            from: "/custom-authentication/federated-identity-providers",
+            to: "/auth-provider-setup/federated-identity-providers",
+          },
+          {
+            from: "/custom-authentication/byo-jwt-providers",
+            to: "/auth-provider-setup/byo-jwt-providers",
           },
           {
             from: "/sdk/self-host/",
             to: "/sdk/tkey/",
+          },
+          {
+            from: "/sdk/self-host/install",
+            to: "/sdk/tkey/install",
+          },
+          {
+            from: "/sdk/self-host/initialize",
+            to: "/sdk/tkey/initialize",
+          },
+          {
+            from: "/sdk/self-host/usage",
+            to: "/sdk/tkey/usage",
+          },
+          {
+            from: "/sdk/self-host/modules/",
+            to: "/sdk/tkey/modules/",
+          },
+          {
+            from: "/sdk/self-host/modules/share-serialization",
+            to: "/sdk/tkey/modules/share-serialization",
+          },
+          {
+            from: "/sdk/self-host/modules/share-transfer",
+            to: "/sdk/tkey/modules/share-transfer",
+          },
+          {
+            from: "/sdk/self-host/modules/chrome-storage",
+            to: "/sdk/tkey/modules/chrome-storage",
+          },
+          {
+            from: "/sdk/self-host/modules/web-storage",
+            to: "/sdk/tkey/modules/web-storage",
+          },
+          {
+            from: "/sdk/self-host/modules/security-questions",
+            to: "/sdk/tkey/modules/security-questions",
+          },
+          {
+            from: "/sdk/self-host/modules/seed-phrase",
+            to: "/sdk/tkey/modules/seed-phrase",
+          },
+          {
+            from: "/sdk/self-host/modules/private-keys",
+            to: "/sdk/tkey/modules/private-keys",
           },
           {
             from: "/guides/selfhost",
@@ -410,6 +506,34 @@ const config = {
           {
             from: "/sdk/web/core/",
             to: "/sdk/web/no-modal/",
+          },
+          {
+            from: "/sdk/web/core/initialize",
+            to: "/sdk/web/no-modal/initialize",
+          },
+          {
+            from: "/sdk/web/core/usage",
+            to: "/sdk/web/no-modal/usage",
+          },
+          {
+            from: "/sdk/web/core/whitelabel",
+            to: "/sdk/web/no-modal/whitelabel",
+          },
+          {
+            from: "/sdk/web/core/custom-authentication",
+            to: "/sdk/web/no-modal/custom-authentication",
+          },
+          {
+            from: "/sdk/web/core/mfa",
+            to: "/sdk/web/no-modal/mfa",
+          },
+          {
+            from: "/sdk/web/core/initiate-topup",
+            to: "/sdk/web/no-modal/initiate-topup",
+          },
+          {
+            from: "/sdk/web/core/show-wallet-connect",
+            to: "/sdk/web/no-modal/show-wallet-connect",
           },
           {
             from: "/sdk/tkey/initialization",
