@@ -50,6 +50,12 @@ export const PNPIos = [
         icon: "logo-auth0.png",
         path: `${baseURL}ios/ios-auth0-example`,
       },
+      {
+        key: "ios-aggregate-example",
+        title: "iOS + Aggregate Verifier",
+        icon: "logo-google.png",
+        path: `${baseURL}ios/ios-aggregate-example`,
+      },
     ],
   },
 ];
