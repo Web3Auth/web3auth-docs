@@ -46,21 +46,21 @@ npm start
 
 ---
 
-With the Web3Auth infrastructure, your key is divided into multiple parts and stored across your devices and our Auth Network. This is done to ensure
-that your key is never stored in a single place and is always available to you. While in the traditional Web3Auth SDK, your key was dynamically
-reconstructed in the frontend using threshold signatures, with the new Web3Auth MPC (Multi Party Computation) architecture, it is **never
-reconstructed**. Instead, these partial keys are stored all across the different locations, and your device is used to make partial signatures for
-your message/ transaction. These are finally returned to the frontend where using TSS (Threshold Signature Scheme), these signatures are combined to
-make a final signature. You can use this finally signed message/transaction to make a transaction on the blockchain.
+With the Web3Auth infrastructure, your key is divided into multiple parts and stored across your devices and our Auth Network. This ensures that your
+key is always available and never stored in a single place. While in the traditional Web3Auth SDK, your key was dynamically reconstructed in the
+frontend using threshold signatures, with the new Web3Auth MPC (Multi Party Computation) architecture, it is **never reconstructed**. Instead, these
+partial keys are stored across different locations, and your device is used to make partial signatures for your message/ transaction. These are
+finally returned to the frontend where using TSS (Threshold Signature Scheme), these signatures are combined to make a final signature. You can use
+this finally signed message/transaction to make a transaction on the blockchain.
 
 The Threshold Signature Scheme (TSS) is a cryptographic primitive for distributed key generation and signing. The use of TSS in Web3Auth's Auth
 network is a new paradigm that can provide numerous benefits, especially in terms of security.
 
 <img style={{ display: "block", margin: "20px auto" }} src={Image1} alt="Web3Auth Key Management" />
 
-As you can notice in this diagram above, the final output, ie. the User's TSS Account is generated in multiple stages within the whole infrastructure.
-Since, this is an TSS- MPC based infrastructure, you don't get back a private key, but signatures that can be used to make transactions on the
-blockchain. Let's understand each of the these stages in detail.
+As you can notice in this diagram above, the final output, i.e., the User's TSS Account, is generated in multiple stages within the infrastructure.
+Since this is a TSS- MPC based infrastructure, you don't get back a private key, but signatures that can be used to make transactions on the
+blockchain. Let's understand each of these stages in detail.
 
 ### Factors
 
@@ -68,31 +68,31 @@ blockchain. Let's understand each of the these stages in detail.
 
 ##### Social Login Factor
 
-This is the primary way for a user to access their account. This step involves the authentication using a user's preferred social login provider. The
-idToken received the social login provider here is passed over to the Web3Auth Auth Network to generate the TSS Shares in the Nodes. By default, these
-nodes have a threshold of 3/5 which can be customised according to requirements. When a user logs in, the Auth Network generates signatures
-corresponding to the TSS Shares in the nodes and returns them back to the user's end. These signatures are then used alongside other shares to
-generate the final TSS Account signatures.
+This is the primary way for a user to access their account. This step involves authentication using a user's preferred social login provider. The
+idToken received from the social login provider here is passed to the Web3Auth Auth Network to generate the TSS Shares in the Nodes. By default, these
+nodes have a threshold of 3/5 which can be customized according to requirements. When a user logs in, the Auth Network generates signatures
+corresponding to the TSS Shares in the nodes and returns them to the user's end. These signatures are then used alongside other shares to generate the
+final TSS Account signatures.
 
 ##### Device Factor
 
-This is the second factor that is used to access the user's account. This step involves generation of a TSS Share on the user's device and using that
-to generate a final signature for the TSS Account alongside the social login factor. This makes sure the user is logging in using their trusted device
-and a proper non custodial setup is maintained.
+This is the second factor used to access the user's account. This step involves the generation of a TSS Share on the user's device and using that to
+generate a final signature for the TSS Account alongside the social login factor. This ensures the user logs in using their trusted device and
+maintains a proper non-custodial setup.
 
 ##### Backup Factor
 
-A user has a choice to generate as many backup factors as needed to access their account. This step involves generation of a TSS Share on the user's
-end and storing them in which ever location they prefer. This share can be used similarly to the device share to generate a final signature for the
-TSS Account alongside the social login factor and/or device factor.
+A user has a choice to generate as many backup factors as needed to access their account. This step involves the generation of a TSS Share on the
+user's end and storing them in whichever location they prefer. This share can be used similarly to the device share to generate a final signature for
+the TSS Account alongside the social login and/or device factors.
 
 ### Threshold
 
 ---
 
-The threshold is the minimum number of shares required to generate a final signature for the TSS Account. This threshold by default, is set to 3/5 on
-the Auth Network, and 2/3 for the user's device front. This is to ensure high availability and ease of access on both ends alongside optimum security.
-Both these thresholds can be customised according to the requirements.
+The threshold is the minimum number of shares required to generate a final signature for the TSS Account. This threshold, by default, is set to 3/5 on
+the Auth Network and 2/3 for the user's device front. This ensures high availability and ease of access on both ends alongside optimum security. Both
+these thresholds can be customized according to the requirements.
 
 ### Components of a Factor
 
@@ -102,25 +102,26 @@ Both these thresholds can be customised according to the requirements.
 
 The TSS Shares are the main component needed for the generation of the final working signature of the user. These shares are generated using
 distributed key generation and are stored in the Auth Network and the user's device. Since these shares are generated using MPC, they are **never
-reconstructed** and always stay decentralised and secure.
+reconstructed** and always stay decentralized and secure.
 
 #### Metadata Key & Shares
 
-The Metadata Key closely mimics the storage of the TSS Key and Shares, the only difference is that the metadata key is always reconstructed and used
-for its encryption/decryption capabilities. It utilizes basic Shamir’s Secret Sharing and is initially generated on a users’s front-end. The metadata
-key is present to make sure that the infrastructure is backwards compatible with the existing Web3Auth architecture which utilizes SSS (Shamir’s
-Secret Sharing) as the main key reconstruction scheme.
+The Metadata Key closely mimics the storage of the TSS Key and Shares. The only difference is that the metadata key is always reconstructed and used
+for its encryption/decryption capabilities. It utilizes basic Shamir's Secret Sharing and is initially generated on a users' frontend. The metadata
+key ensures that the infrastructure is backward compatible with the existing Web3Auth architecture, which utilizes SSS (Shamir's Secret Sharing) as
+the main key reconstruction scheme.
 
 #### Factor Keys
 
-To enable refresh, deletion and rotational capabilities on the $tssKey$ we also introduce **factorKeys**. Factor Keys are randomly generated keys,
-unique to each factor generated user's device and backups like users' phone, chrome extension, on their cloud, assisting third parties etc.
+To enable refresh, deletion, and rotational capabilities on the `tssKey`, we also introduce **factorKeys**. Factor Keys are randomly generated keys
+unique to each factor-generated user's device and backups, like users' phones, chrome extension, on their cloud, assisting third parties, etc.
 
-As shares to the TSS Key and/or Metadata Key may rotate, Factor Keys allow for a consistant secret to be saved in these different locations.
+As shares to the TSS Key and/or Metadata Key may rotate, Factor Keys allow a consistent secret to being saved in these different locations.
 
 :::note
 
-For this guide here, we will be talking through the **Web3Auth tKey JS MPC (Beta) SDK** and showing you a basic example of how to use it.
+For this guide, we will be talking through the Web3Auth tKey JS MPC (Beta) SDK and showing you a basic example of using it with
+`@tkey/default: 8.0.0-alpha.0` package.
 
 :::
 
@@ -143,7 +144,7 @@ For this guide here, we will be talking through the **Web3Auth tKey JS MPC (Beta
 - Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
   configuration:
 
-  - Choose a name of your choice for the verifier identifier. `eg. google-core-verifier-ssv`
+  - Choose a name of your choice for the verifier identifier. `eg. google-tkey-w3a`
   - Select environment: Please note the verifier will be deployed on `sapphire` beta environment, which is currently not available for public
     deployments directly. Please create a sample testnet verifier for your usecase and send us the details and we'll deploy it for you. Please contact
     us on https://community.web3auth.io
@@ -362,14 +363,9 @@ const triggerLogin = async () => {
   try {
     // Triggering Login using Service Provider ==> opens the popup
     const loginResponse = await (tKey.serviceProvider as any).triggerLogin({
-      typeOfLogin: "jwt",
-      verifier: "mpc-key-demo-passwordless",
-      clientId: "QQRQNGxJ80AZ5odiIjt1qqfryPOeDcb1",
-      jwtParams: {
-        domain: "https://shahbaz-torus.us.auth0.com",
-        verifierIdField: "name",
-        connection: "google-oauth2",
-      },
+      verifier: "google-tkey-w3a",
+      typeOfLogin: "google",
+      clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
     });
     setLoginResponse(loginResponse);
     setUser(loginResponse.userInfo);
