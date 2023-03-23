@@ -51,6 +51,12 @@ export const PNPIos = [
         path: `${baseURL}ios/ios-auth0-example`,
       },
       {
+        key: "ios-firebase-example",
+        title: "iOS + Firebase",
+        icon: "logo-firebase.png",
+        path: `${baseURL}ios/ios-firebase-example`,
+      },
+      {
         key: "ios-aggregate-example",
         title: "iOS + Aggregate Verifier",
         icon: "logo-google.png",
