@@ -420,6 +420,10 @@ const config = {
             to: "/auth-provider-setup/verifiers",
           },
           {
+            from: "/custom-authentication/",
+            to: "/auth-provider-setup/",
+          },
+          {
             from: "/custom-authentication/verifiers",
             to: "/auth-provider-setup/verifiers",
           },
