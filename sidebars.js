@@ -149,6 +149,7 @@ module.exports = {
         "dashboard-setup/enable-interoperability",
         "dashboard-setup/setup-custom-authentication",
         "dashboard-setup/billing-and-user-stats",
+        "dashboard-setup/roles-and-permissions",
       ],
     },
     {
