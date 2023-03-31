@@ -6,7 +6,6 @@ const githubOrgUrl = `https://github.com/${githubOrg}`;
 const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
 const githubDiscussionsUrl = `${githubOrgUrl}/${githubOrg}/discussions`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
-const contactUrl = "https://calendly.com/web3auth/meeting-with-web3auth";
 const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
 const fs = require('fs');
@@ -86,9 +85,9 @@ const config = {
           position: "left",
         },
         {
-          label: "Guides",
-          activeBasePath: "/guides",
-          to: "/guides",
+          label: "Content Hub",
+          activeBasePath: "/content-hub",
+          to: "/content-hub",
           position: "left",
         },
         {
@@ -160,7 +159,7 @@ const config = {
     ],
   ],
   plugins: [
-    path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
+    path.resolve(__dirname, "plugins", "docusaurus-plugin-content-hub"),
     [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: "files" }],
     path.resolve(__dirname, "plugins", "node-polyfills"),
     [

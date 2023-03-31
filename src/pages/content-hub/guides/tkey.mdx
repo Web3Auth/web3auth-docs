@@ -1,0 +1,330 @@
+---
+title: Using Web3Auth Core Kit tKey SDK in a React Application
+image: "content-hub/guides/banners/tkey.png"
+description: Learn how to use Web3Auth Core Kit tKey SDK in your React Application
+type: guide
+tags: [web, tkey, google, custom authentication, whitelabel, react, ethereum, tkey]
+date: 10th Aug 2022
+author: Web3Auth Team
+order: 1
+---
+
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Using Web3Auth Core Kit tKey SDK in a React Application"
+  description="Learn how to use Web3Auth Core Kit tKey SDK in your React Application with Google as the authentication method."
+  image="https://web3auth.io/docs/content-hub/guides/banners/tkey.png"
+  slug="/content-hub/guides/tkey"
+/>
+
+This guide will help you make a react application using Web3Auth Core Kit tKey SDK, covering the basic functionality on how to use it and get started
+quickly. For a detailed reference, you can refer to the [Web3Auth Core Kit tKey SDK Reference](/sdk/tkey).
+
+**Live Demo:** https://w3a.link/tkey-example
+
+## Quick Start
+
+---
+
+```bash
+git clone https://github.com/Web3Auth/web3auth-core-kit-examples/
+cd tkey/tkey-react-popup-example
+npm install
+npm start
+```
+
+## Prerequisites
+
+---
+
+- A basic knowledge of JavaScript and React.
+- Ideal to have a knowledge about service workers in React.
+- A [Google Developer](https://console.developers.google.com/) account to be used as Login provider for Web3Auth Custom Authentication.
+- Create a Web3Auth account on the [Web3Auth Dashboard](https://dashboard.web3auth.io/)
+
+## Setup
+
+---
+
+### Setup your Google App
+
+1. Follow Google’s instructions to [set up an OAuth 2.0 app.](https://support.google.com/cloud/answer/6158849?hl=en)
+2. Add your application's redirect URI into the "Authorized redirect URIs" field. This is the URL that Google will redirect to after authentication.
+   `http://localhost:3000/serviceworker/redirect`
+
+   ![Google OAuth2.0 App Dashboard](/content-hub/social-providers/google/google-app-redirect-uri.png)
+
+3. Obtain the OAuth `Client ID` from your [App on the Google Developer dashboard](https://console.developers.google.com/)
+
+### Setup your Web3Auth Dashboard
+
+- Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
+  configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. google-core-verifier-ssv`
+  - Select environment: `testnet`, `mainnet`, `aqua`, `celeste` or `cyan` as per your requirement.
+  - Select `Google` from the **Login Provider**. ![Google - Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
+  - Paste the **Client ID** from the Google App(above) to the `Client ID` field.
+    ![Google Client ID on Web3Auth Dashboard](/dashboard/verifiers/google-verifier.png)
+  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once
+    it's complete.
+
+- You will require the `verifierName` of the newly created verifier.
+
+### Setting up your React Project
+
+We will need to use service workers while implementing the tKey SDK to handle the redirect login flow. This can be done by using a progressive react
+application.
+
+For a new project, get started with the following command:
+
+```bash
+npx create-react-app tkey-demo --template cra-template-pwa-typescript
+cd tkey-demo
+```
+
+For an existing project, add a service worker.
+
+### Setting up the service worker
+
+Further, we need to setup the service worker according to our needs of the project, i.e handling the redirect login flow. Service worker basically
+sits between the frontend application, browser and the network. For the simplicity of this guide, we have added a boilerplate code. The easiest way to
+do that is as follows
+
+```bash
+mkdir public/serviceworker
+wget https://github.com/Web3Auth/web3auth-core-kit-examples//blob/main/tkey/tkey-react-popup-example/public/serviceworker/sw.js -O public/serviceworker/sw.js
+```
+
+> For polyfill issues and BigInt issue, please checkout the [troubleshooting page](/troubleshooting/webpack-issues).
+
+## Installation
+
+---
+
+We will be starting with a 2/2 flow, i.e `ShareA: Social Shares` and `ShareB: Device Share` and later will allow users to add more shares of tKey. i.e
+`2/n`
+
+For this project, we will be using `@tkey/default` that contains all the needed functionalities of the tKey SDK.
+
+```bash
+npm install --save @tkey/default @tkey/web-storage @tkey/security-questions
+```
+
+- `@tkey/web-storage`: This module is used to store the Device Share and used in the 2/2 flow. If you're building for Web, We recommed you to start
+  with this module. i.e `2/2`, but there are other modules to achieve the same.
+- `@tkey/security-questions`: This module is used to create a `Share C: Backup Share` allowing `2/3` flows. This is what we have chosen for this
+  guide, but there are other ways to achieve the same.
+
+For a detailed reference, you can refer to the [Web3Auth Core Kit tKey SDK Reference](/sdk/tkey).
+
+## Initialization
+
+---
+
+After Installation, the next step to use Web3Auth Core Kit tKey SDK is to Initialize the SDK.
+
+`src/tkey.ts`
+
+```ts
+import ThresholdKey from "@tkey/default";
+import WebStorageModule from "@tkey/web-storage";
+import SecurityQuestionsModule from "@tkey/security-questions";
+
+// Configuration of Service Provider
+const customAuthArgs = {
+  baseUrl: `${window.location.origin}/serviceworker`,
+  network: "cyan", // based on the verifier network.
+};
+// Configuration of Modules
+const webStorageModule = new WebStorageModule();
+const securityQuestionsModule = new SecurityQuestionsModule();
+
+// Instantiation of tKey
+export const tKey = new ThresholdKey({
+  modules: {
+    webStorage: webStorageModule,
+    securityQuestions: securityQuestionsModule,
+  },
+  customAuthArgs: customAuthArgs as any,
+});
+```
+
+`src/App.tsx`
+
+```ts
+import { useEffect } from "react";
+import { tKey } from "./tkey";
+
+function App() {
+  // Init Service Provider inside the useEffect Method
+  useEffect(() => {
+    const init = async () => {
+      // Initialization of Service Provider
+      try {
+        await (tKey.serviceProvider as any).init();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    init();
+  }, []);
+}
+```
+
+## Triggering Login using Service Provider
+
+---
+
+Once you have initialised the Web3Auth Service Provider, you're ready to trigger the login process. This is a needed step since this will generate a
+private key which will be needed by the tKey to generate it's share. This is done by calling the `triggerLogin()` function within the `tKey`
+instance's of `serviceProvider` property.
+
+```js
+const triggerLogin = async () => {
+  try {
+    // Triggering Login using Service Provider ==> opens the popup
+    const loginResponse = await (tKey.serviceProvider as any).triggerLogin({
+      typeOfLogin: "google", // type of login
+      verifier: "your-web3auth-verifier-name",
+      clientId: "your-google-client-id",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+```
+
+## Initialise and Reconstruct tKey
+
+---
+
+Once you have triggered the login process, you're ready to initialize the tKey. This will generate you a Threshold Key corresponding to your login
+provider. The below code shows how the device share is added to reconstruct the final private key in the frontend.
+
+```js
+const initializeNewKey = async () => {
+  try {
+    await triggerLogin(); // Calls the triggerLogin() function above
+    // Initialization of tKey
+    await tKey.initialize(); // 1/2 flow
+    // Gets the deviceShare
+    try {
+      await (tKey.modules.webStorage as any).inputShareFromWebStorage(); // 2/2 flow
+    } catch (error) {
+      console.error(error);
+      // highlight-next-line
+      await recoverShare(); // <-- We'll address this later in this guide.
+    }
+
+    // Checks the requiredShares to reconstruct the tKey,
+    // starts from 2 by default and each of the above share reduce it by one.
+    const { requiredShares } = tKey.getKeyDetails();
+    if (requiredShares <= 0) {
+      const reconstructedKey = await tKey.reconstructKey();
+      console.log("Private Key: " + reconstructedKey.privKey.toString("hex"));
+      // This private key will be used to make blockchain calls.
+    }
+  } catch (error) {
+    console.error(error, "caught");
+  }
+};
+```
+
+## Generating a new share with a password
+
+---
+
+Generate a new share(`ShareC: Backup Share`) using the security questions module enabling `2/3` flow. One can add more shares from ShareC, but for
+simplicity, this is what we have chosen for this guide.
+
+:::warning Mandatory step
+
+It is mandatory to set up a backup share; upon losing access to device Share, the user will also lose access to their account.
+
+:::
+
+```js
+const generateNewShareWithPassword = async () => {
+  // swal is just a pretty dialog box
+  swal("Enter password (>10 characters)", {
+    content: "input" as any,
+  }).then(async (value) => {
+    if (value.length > 10) {
+      await (tKey.modules.securityQuestions as any).generateNewShareWithSecurityQuestions(value, "whats your password?");
+      swal('Success', 'Successfully generated new share with password.', 'success');
+    } else {
+      swal("Error", "Password must be > 10 characters", "error");
+    }
+  });
+};
+```
+
+## Set up Recovery Flow
+
+---
+
+The Recovery flow generates a new share and adds it into the `WebStorageModule`. To do so, we take the answer of the Question from the
+`SecurityQuestionsModule` setup in the `generateNewShareWithPassword()` function above.
+
+```ts
+const recoverShare = async () => {
+  // swal is just a pretty dialog box
+  swal("Enter password (>10 characters)", {
+    content: "input" as any,
+  }).then(async (value) => {
+    if (value.length > 10) {
+      try {
+        await (tKey.modules.securityQuestions as any).inputShareFromSecurityQuestions(value); // 2/2 flow
+        tKey.reconstructKey();
+        const shareStore = await tKey.generateNewShare();
+        await (tKey.modules.webStorage as any).storeDeviceShare(shareStore.newShareStores[1]);
+        swal("Success", "Successfully logged you in with the recovery password.", "success");
+      } catch (error) {
+        swal("Error", (error as any)?.message.toString(), "error");
+        logout();
+      }
+    } else {
+      swal("Error", "Password must be >= 11 characters", "error");
+      logout();
+    }
+  });
+};
+```
+
+## Interacting with Blockchain
+
+---
+
+Once you have generated the private key, you can use it to make blockchain calls. The key generated by tKey is of type `secp256k1`, which is
+compatible with EVM-based blockchains like Ethereum, Polygon, and many others that use the same curve. However, you can also convert this key into
+other curves and utilize it. For example, we have a dedicated package for converting this module to the `ed25519` curve for usage in Solana and other
+blockchains that use this curve.
+
+In addition to that, we have dedicated provider packages for EVM and Solana Blockchain libraries. You can check out their respective documentation
+here:
+
+- Getting a Ethereum Provider from tKey: [Ethereum Provider](/sdk/web/providers/evm#getting-a-provider-from-any-secp256k1-private-key)
+- Getting a Solana Provider from tKey: [Solana Provider](/sdk/web/providers/solana#getting-a-provider-from-any-secp256k1-private-key)
+
+:::tip
+
+You can checkout our [Connect Blockchain](/connect-blockchain) documentation which has a detailed guide on how to connect to major blockchains out
+there.
+
+:::
+
+## Example code
+
+---
+
+The code for the application we developed in this guide can be found in the
+[examples repository](https://github.com/Web3Auth/web3auth-core-kit-examples//blob/main/tkey/tkey-react-popup-example). Check it out and try running
+it locally yourself!
+
+## Questions?
+
+---
+
+Ask us on [Web3Auth's Community Portal](https://community.web3auth.io)

@@ -1,0 +1,585 @@
+---
+title: Using Web3Auth Flutter SDK
+image: "content-hub/guides/banners/flutter.png"
+description: Learn how to use Web3Auth Flutter SDK in your Flutter application.
+type: guide
+tags: [mobile, flutter, whitelabel, custom authentication, dapp share, blockchain]
+date: 13th Sept 2022
+author: Web3Auth Team
+order: 8
+---
+
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import FlutterResponse from "@site/src/common/sdk/android/_response.mdx";
+import SEO from "@site/src/components/SEO";
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<SEO
+  title="Using Web3Auth Flutter SDK"
+  description="Learn how to use Web3Auth Flutter SDK in your Flutter application"
+  image="https://web3auth.io/docs/content-hub/guides/banners/flutter.png"
+  slug="/content-hub/guides/flutter"
+/>
+
+This guide will cover the basics of how to use the Web3Auth Flutter SDK in your Flutter application and make blockchain calls to get access to user's
+`account`, fetch `balance`, `sign transaction`, and `send transaction`.
+
+Repository: https://github.com/Web3Auth/web3auth-pnp-examples//raw/main/flutter/flutter-example
+
+## Quick Start
+
+```bash
+git clone https://github.com/Web3Auth/web3auth-pnp-examples/.git
+cd flutter/flutter-example
+# Open in Android Studio or VS Code
+flutter run
+```
+
+## How it works?
+
+---
+
+When integrating Web3Auth Flutter SDK with Social Login the flow looks something like this:
+
+![Web3Auth Core - Social Login Flow](/images/implicit-flow.svg)
+
+- When a user logs in with `Google`, Google sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
+
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
+  easy onboarding for your user to the application.
+
+## Prerequisites
+
+---
+
+<Web3AuthPrerequisites />
+
+- Android API version 24 or newer.
+- For Android build: compileSdkVersion needs to be 32. Check `android/app/build.gradle` in your Flutter project to change it.
+- iOS 12+
+- Xcode 11.4+ / 12.x
+- Swift 4.x / 5.x
+- For iOS build: `platform :ios` needs to be 13.0. Check `ios/Podfile` in your Flutter project to change it.
+
+## Setup
+
+---
+
+### Setup your Web3Auth Dashboard
+
+<SetupWeb3AuthDashboard />
+
+- Add `{SCHEME}://{YOUR_APP_PACKAGE_NAME}` (e.g, w3a://com.example.w3aflutter) for Android and `{bundleId}://openlogin` (e.g,
+  com.example.w3aflutter://openlogin) for iOS in the **Whitelist URL** field of the Web3Auth Dashboard.
+
+## Using the Web3Auth SDK
+
+---
+
+To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
+SDKs, please have a look at this [documentation page](/sdk).
+
+For this guide, we will be using the **[Web3Auth Flutter SDK](/sdk/flutter)**.
+
+### Installation
+
+Add `web3auth_flutter` as a dependency to your `pubspec.yaml`
+
+```yaml
+dependencies:
+  web3auth_flutter: ^1.0.3
+```
+
+or
+
+```sh
+flutter pub add web3auth_flutter
+```
+
+<Tabs
+  defaultValue="android"
+  values={[
+    { label: "Android", value: "android" },
+    { label: "iOS", value: "ios" },
+  ]}
+>
+
+<TabItem value="android">
+
+#### Add Web3Auth to Gradle
+
+In your project-level's `build.gradle` file, add JitPack repository:
+
+```groovy
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        // highlight-next-line
+        maven { url "https://jitpack.io" } // <-- Add this line
+    }
+}
+```
+
+Then, in your app-level `build.gradle` dependencies section, add the following:
+
+```groovy
+dependencies {
+    // highlight-next-line
+    implementation 'org.torusresearch:web3auth-android-sdk:3.0.0'
+}
+```
+
+#### Permissions
+
+Open your app's `AndroidManifest.xml` file and add the following permission:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+```
+
+> Note: The `<uses-permission>` element must be a direct child of the `<manifest>` root element.
+
+#### Configuration
+
+##### Configure a Plug n Play project
+
+- Go to [Developer Dashboard](https://dashboard.web3auth.io/), create or select a Web3Auth project:
+
+- Add `{SCHEME}://{YOUR_APP_PACKAGE_NAME}` to **Whitelist URLs**. eg. `w3a://com.example.w3aflutter`
+
+- Copy the `Client ID` for usage later.
+
+##### Configure Deep Link
+
+Open your app's `AndroidManifest.xml` file and add the following deep link intent filter to your sign-in activity:
+
+```xml
+<intent-filter>
+  <action android:name="android.intent.action.VIEW" />
+
+  <category android:name="android.intent.category.DEFAULT" />
+  <category android:name="android.intent.category.BROWSABLE" />
+
+  // highlight-next-line
+  <data android:scheme="{scheme}" android:host="{YOUR_APP_PACKAGE_NAME}" android:path="/auth" />
+  <!-- Accept URIs: w3a://com.example.w3aflutter -->
+</intent-filter>
+```
+
+Make sure your sign-in activity launchMode is set to **singleTop** in your `AndroidManifest.xml`
+
+```xml
+<activity
+// highlight-next-line
+  android:launchMode="singleTop"
+  android:name=".YourActivity">
+  // ...
+</activity>
+```
+
+</TabItem>
+
+<TabItem value="ios">
+
+#### Swift Package Manager
+
+If you are using the Swift Package Manager, open the following menu item in Xcode:
+
+`File > Swift Packages > Add Package Dependency`
+
+In the Choose Package Repository prompt add this url:
+
+```
+https://github.com/web3auth/web3auth-swift-sdk
+```
+
+##### Cocoapods
+
+```sh
+pod install Web3Auth
+```
+
+#### Configuration
+
+In order to use Web3Auth you need to provide your Web3Auth `ClientId` and which `Network` to run it.
+
+- Go to [Web3Auth Developer Dashboard](https://dashboard.web3auth.io), create or open an existing Web3Auth project and copy your Client ID, which is
+  the `ClientId`.
+- Whitelist `{bundleId}://openlogin` eg. `com.example.w3aflutter://openlogin` in the developer dashboard. **This step is mandatory for the redirect to
+  work.**
+
+</TabItem>
+
+</Tabs>
+
+### Initialization
+
+After Installation, the next step to use Web3Auth is to Initialize the SDK. This can be achieved by using the `init()` function.
+
+Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
+Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customise your Web3Auth Instance.
+
+#### Create Web3Auth Instance
+
+In your `main.dart` file, initialise the `Web3AuthFlutter` plugin at the very beginning such as in the overriden `initState` function
+
+```dart
+import 'dart:collection';
+import 'dart:io';
+import 'dart:async';
+
+import 'package:web3auth_flutter/web3auth_flutter.dart';
+import 'package:web3auth_flutter/enums.dart';
+import 'package:web3auth_flutter/input.dart';
+import 'package:web3auth_flutter/output.dart';
+
+@override
+void initState() {
+  super.initState();
+  initPlatformState();
+}
+
+// Initialization
+Future<void> initPlatformState() async {
+  HashMap themeMap = new HashMap<String, String>();
+  themeMap['primary'] = "#fff000";
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('{bundleId}://openlogin');
+    // com.example.w3aflutter://openlogin
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+  // highlight-start
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
+    network: Network.cyan,
+    redirectUri: redirectUrl,
+  ));
+  // highlight-end
+}
+```
+
+Read more about initialising the Flutter SDK [here](/sdk/flutter/initialize).
+
+### Authentication
+
+#### Logging in
+
+Once initialized, you can use the `Web3AuthFlutter.login(LoginParams( loginProvider: Provider.google ))` function to authenticate the user when they
+click the login button.
+
+```dart
+VoidCallback _login(Future<Web3AuthResponse> Function() method) {
+  return () async {
+    try {
+      final Web3AuthResponse response = await method();
+      setState(() {
+        _result = response.toString();
+        logoutVisible = true;
+      });
+    } on UserCancelledException {
+      print("User cancelled.");
+    } on UnKnownException {
+      print("Unknown exception occurred");
+    }
+  };
+}
+
+Future<Web3AuthResponse> _withGoogle() {
+  // highlight-start
+  return Web3AuthFlutter.login(LoginParams(
+    loginProvider: Provider.google,
+    mfaLevel: MFALevel.OPTIONAL,
+  ));
+  // highlight-end
+}
+```
+
+When connecting, the `login` function takes the LoginParams arguments for the login. See the [LoginParams](/sdk/flutter/usage#arguments) for more
+details.
+
+#### Sample loginResponse
+
+<FlutterResponse />
+
+### Get the User Profile
+
+```dart
+// Assuming the user is logged in, get the user profile from the web3AuthResponse
+userInfo = web3AuthResponse.userInfo
+```
+
+Using the `web3AuthFlutter.login` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in
+Web3Auth network.
+
+If you wish you **[add Multi Factor Authentication](/sdk/flutter/mfa)**, **[use dApp Share](/sdk/flutter/dapp-share)** or
+**[select Curve](/sdk/flutter/usage#selecting-curve)** for your Android application, read the linked documentation.
+
+- [Multi Factor Authentication](/sdk/flutter/mfa)
+- [Using dApp Share](/sdk/flutter/dapp-share)
+- [Selecting Curve](/sdk/flutter/usage#selecting-curve)
+
+### Logout
+
+```dart
+VoidCallback _logout() {
+  return () async {
+    try {
+      // highlight-next-line
+      await Web3AuthFlutter.logout();
+      setState(() {
+        _result = '<empty>';
+        logoutVisible = false;
+      });
+    } on UserCancelledException {
+      print("User cancelled.");
+    } on UnKnownException {
+      print("Unknown exception occurred");
+    }
+  };
+}
+```
+
+Logging out your user is as simple as calling the `web3AuthFlutter.logout()` function.
+
+### UI in this guide
+
+```dart
+@override
+  Widget build(BuildContext context) {
+    // Map<String, dynamic> user = jsonDecode(_result);
+
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Web3Auth x Flutter Example'),
+        ),
+        body: SingleChildScrollView(
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+              ),
+              Visibility(
+                visible: !logoutVisible,
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.flutter_dash,
+                      size: 80,
+                      color: Color(0xFF1389fd),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    const Text(
+                      'Web3Auth',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 36,
+                          color: Color(0xFF0364ff)),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      'Welcome to Web3Auth x Flutter Demo',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      'Login with',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                        onPressed: _login(_withGoogle),
+                        child: const Text('Google')),
+                    ElevatedButton(
+                        onPressed: _login(_withFacebook),
+                        child: const Text('Facebook')),
+                    ElevatedButton(
+                        onPressed: _login(_withEmailPasswordless),
+                        child: const Text('Email Passwordless')),
+                    ElevatedButton(
+                        onPressed: _login(_withDiscord),
+                        child: const Text('Discord')),
+                  ],
+                ),
+              ),
+              Visibility(
+                // ignore: sort_child_properties_last
+                child: Column(
+                  children: [
+                    Center(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Colors.red[600] // This is what you need!
+                              ),
+                          onPressed: _logout(),
+                          child: Column(
+                            children: const [
+                              Text('Logout'),
+                            ],
+                          )),
+                    ),
+                  ],
+                ),
+                visible: logoutVisible,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(_result),
+              )
+            ],
+          )),
+        ),
+      ),
+    );
+  }
+```
+
+## Interacting with the Blockchain
+
+---
+
+:::success Blockchain calls
+
+Checkout the full codes to interact with **[ETH Blockchain](/connect-blockchain/ethereum/flutter)**.
+
+:::
+
+### Get Account
+
+```dart
+import 'package:web3dart/web3dart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// checkout the Connect Blockchain > Ethereum > Flutter to get full code.
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+            child:
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              // Get Account
+              ElevatedButton(
+                onPressed: () async {
+                  final credentials = EthPrivateKey.fromHex(privateKey);
+                  final address = credentials.address;
+                  debugPrint("Account, ${address.hexEip55}");
+                },
+                child: const Text('Get Address'),
+              ),
+            ])));
+  }
+```
+
+### Get Balance
+
+```dart
+import 'package:web3dart/web3dart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// checkout the Connect Blockchain > Ethereum > Flutter to get full code.
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+            child:
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              // Get Balance
+              ElevatedButton(
+                onPressed: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  final privateKey = prefs.getString('privateKey') ?? '0';
+                  final credentials = EthPrivateKey.fromHex(privateKey);
+                  final client = Web3Client(rpcUrl, Client());
+                  final credentials = EthPrivateKey.fromHex(privateKey);
+                  final address = credentials.address;
+                  final balance = await client.getBalance(address);
+                  debugPrint("Balance, ${balance}");
+                },
+                child: const Text('Get Balance'),
+              ),
+            ])));
+  }
+```
+
+### Send Transaction
+
+```dart
+import 'package:web3dart/web3dart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// checkout the Connect Blockchain > Ethereum > Flutter to get full code.
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+            child:
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              // Send Transaction
+              ElevatedButton(
+                onPressed: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  final privateKey = prefs.getString('privateKey') ?? '0';
+                  final client = Web3Client(rpcUrl, Client());
+                  final credentials = EthPrivateKey.fromHex(privateKey);
+                  final address = credentials.address;
+                  final receipt = await client.sendTransaction(
+                      credentials,
+                      Transaction(
+                        from: address,
+                        to: EthereumAddress.fromHex(
+                            '0x809D4310d578649D8539e718030EE11e603Ee8f3'),
+                        value: EtherAmount.fromUnitAndValue(
+                            EtherUnit.gwei, 5000000), // 0.005 ETH
+                      ),
+                      chainId: 5); // change chainId as per your chain.
+                  debugPrint("Receipt, ${receipt}");
+                },
+                child: const Text('Send Transaction'),
+              ),
+            ])));
+  }
+```
+
+## Example code
+
+---
+
+The code for the application we developed in this guide can be found in the
+[Web3Auth Flutter Example](https://github.com/Web3Auth/web3auth-pnp-examples//tree/main/flutter/flutter-example). Check it out and try running it
+locally yourself!
+
+`flutter run`
+
+Also, checkout other examples:
+
+- [Using Auth0 Custom Authentication](https://github.com/Web3Auth/web3auth-pnp-examples//tree/main/flutter/flutter-auth0-example)
+- [Using Custom JWT (via Firebase)](https://github.com/Web3Auth/web3auth-pnp-examples//tree/main/flutter/flutter-firebase-example)
+
+## Questions?
+
+Ask us on [Web3Auth's Community Portal](https://community.web3auth.io)

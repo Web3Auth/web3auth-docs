@@ -1,0 +1,322 @@
+---
+title: Using Web3Auth iOS SDK
+image: "content-hub/guides/banners/ios-swift.svg"
+description: Learn how to use Web3Auth Plug and Play No Modal SDK in your iOS app
+type: guide
+tags: [mobile, ios, whitelabel, custom authentication, dapp share, swift]
+date: 11th Dec 2022
+author: Web3Auth Team
+order: 7
+---
+
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import IosResponse from "@site/src/common/sdk/ios/_response.mdx";
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Using Web3Auth's iOS SDK"
+  description="Learn how to use Web3Auth Plug and Play No Modal SDK in your iOS application"
+  image="https://web3auth.io/docs/content-hub/guides/banners/ios-swift.png"
+  slug="/content-hub/guides/ios"
+/>
+
+This guide will cover the basics of how to use the Web3Auth iOS SDK in your iOS application.
+
+Repository: https://github.com/Web3Auth/web3auth-pnp-examples//raw/main/ios
+
+## Quick Start
+
+```bash
+git clone https://github.com/Web3Auth/web3auth-pnp-examples/.git
+cd ios/ios-example
+# Open in Xcode
+```
+
+## How it works?
+
+---
+
+When integrating Web3Auth iOS SDK with Social Login the flow looks something like this:
+
+![Web3Auth Core - Social Login Flow](/images/implicit-flow.svg)
+
+- When a user logs in with `Google`, Google sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
+
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
+  easy onboarding for your user to the application.
+
+## Prerequisites
+
+---
+
+<Web3AuthPrerequisites />
+
+- iOS 13.0 or later
+- Xcode 11.4+ / 12.x
+- Swift 4.x / 5.x
+
+## Setup
+
+---
+
+### Setup your Web3Auth Dashboard
+
+<SetupWeb3AuthDashboard />
+
+- Add `(bundleId)://auth` in the **Whitelist URL** field of the Web3Auth Dashboard.
+
+## Using the Web3Auth SDK
+
+---
+
+### Installation
+
+#### Swift Package Manager
+
+If you are using the Swift Package Manager, open the following menu item in Xcode:
+
+`File > Swift Packages > Add Package Dependency`
+
+In the Choose Package Repository prompt add this url:
+
+```
+https://github.com/web3auth/web3auth-swift-sdk
+```
+
+#### Cocoapods
+
+```sh
+pod install Web3Auth
+```
+
+After Installation, the next step to use Web3Auth is to Initialize the SDK. However, the Initialization can be done in 2 ways,
+
+- [With `Web3Auth.plist`](#with-web3authplist)
+- [Without `Web3Auth.plist`](#without-web3authplist)
+
+Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
+Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customise your Web3Auth Instance.
+
+### Initialization
+
+#### With `Web3Auth.plist`
+
+In your application bundle add a plist file named `Web3Auth.plist` with the following information:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>ClientId</key>
+  <string>YOUR_OPENLOGIN_CLIENT_ID</string>
+  <key>Network</key>
+  <string>mainnet | testnet</string>
+</dict>
+</plist>
+```
+
+When you have a `Web3Auth.plist` and you have specified your Web3Auth configuration there, you can simply construct your Web3Auth instance with
+
+```swift
+import Web3Auth
+
+let web3auth = Web3Auth()
+```
+
+#### Without `Web3Auth.plist`
+
+If you don't have a `Web3Auth.plist` or want to use optional configurtion parameters, you can construct the Web3Auth instance with
+
+```swift
+import Web3Auth
+
+let web3auth = Web3Auth(W3AInitParams(
+  clientId: "<your clientId>",
+  network: .MAINNET,
+  sdkUrl: ...,
+  redirectUrl: ...,
+))
+```
+
+All the below code snippets are based on the above initialization. Please refer to the [Web3Auth ios SDK Reference](/docs/sdk/ios) for more
+information.
+
+After creating a `Web3Auth` instance using one of the above methods, you can use the instance to call various methods.
+
+### Authentication
+
+#### Logging in
+
+Once initialized, you can use the `Web3Auth().login(W3ALoginParams(loginProvider: provider))` function to authenticate the user with the chosen
+provider.
+
+```swift
+func login(provider: Web3AuthProvider) {
+        Task {
+            do {
+                let result = try await Web3Auth(.init(
+                    clientId: clientId,
+                    network: network))
+                    .login(W3ALoginParams(loginProvider: provider))
+
+            } catch {
+                print("Error")
+            }
+        }
+    }
+
+// provider can be .GOOGLE, .APPLE, .FACEBOOK etc
+let web3AuthResponse = login(provider: .GOOGLE)
+```
+
+When connecting, the `login` function takes the W3ALoginParams arguments for the login. See the [W3ALoginParams](/sdk/ios/usage#arguments) for more
+details.
+
+#### Sample Login Response
+
+<IosResponse />
+
+### Get the User Profile
+
+```swift
+// Assuming the user is logged in, get the user profile from the web3AuthResponse
+val userInfo = web3AuthResponse.userInfo
+```
+
+Using the `web3Auth.login` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
+network.
+
+If you wish you **[add Multi Factor Authentication](/sdk/ios/mfa)**, **[use dApp Share](/sdk/ios/dapp-share)** or
+**[select Curve](/sdk/ios/usage#selecting-curve)** for your iOS application, read the linked documentation.
+
+- [Multi Factor Authentication](/sdk/ios/mfa)
+- [Using dApp Share](/sdk/ios/dapp-share)
+- [Selecting Curve](/sdk/ios/usage#selecting-curve)
+
+### Logout
+
+```swift
+func logout() {
+        Task {
+            do {
+                let result = try await Web3Auth(.init(
+                    clientId: clientId,
+                    network: network))
+                    .logout()
+
+            } catch {
+                print("Error")
+            }
+        }
+    }
+```
+
+Logging out your user is as simple as calling the `Web3Auth.logout()` function.
+
+## Interacting with the Blockchain
+
+---
+
+:::success Blockchain calls
+
+Checkout the full codes to interact with [ETH Blockchain](/connect-blockchain/ethereum/ios).
+
+:::
+
+### Get Account
+
+```swift
+// checkout the Connect Blockchain > Ethereum > iOS to get full code.
+account = try EthereumAccount(keyStorage: user )
+address = account.address
+```
+
+### Get Balance
+
+```swift
+// checkout the Connect Blockchain > Ethereum > iOS to get full code.
+client = EthereumClient(url: URL(string: RPC_URL)!)
+latestBlock = client.eth_blockNumber
+let balance = try client.eth_getBalance(address: address, block:latestBlock)
+```
+
+### Send Transaction
+
+```swift
+let gasPrice = try await client.eth_gasPrice()
+let maxTipInGwie = BigUInt(TorusWeb3Utils.toEther(Gwie: BigUInt(amount)))
+let totalGas = gasPrice + maxTipInGwie
+let amtInGwie = TorusWeb3Utils.toWei(ether: amount)
+let nonce = try await client.eth_getTransactionCount(address: address, block: .Latest)
+let transaction = EthereumTransaction(from: address, to: EthereumAddress(sendTo), value: amtInGwie, data: Data(), nonce: nonce + 1, gasPrice: totalGas, gasLimit: gasLimit, chainId: chainID)
+let signed = try account.sign(transaction: transaction)
+let val = try await client.eth_sendRawTransaction(signed.transaction, withAccount: account)
+
+// checkout the Connect Blockchain > Ethereum > iOS to get full code.
+
+import BigInt
+import Foundation
+import web3
+
+public typealias Ether = Double
+public typealias Wei = BigUInt
+
+public final class TorusWeb3Utils {
+    public static func timeMinToSec(val: Double) -> Double {
+        return val * 60
+    }
+
+    // NOTE: calculate wei by 10^18
+    private static let etherInWei = pow(Double(10), 18)
+    private static let etherInGwei = pow(Double(10), 9)
+
+    /// Convert Wei(BInt) unit to Ether(Decimal) unit
+    public static func toEther(wei: Wei) -> Ether {
+        guard let decimalWei = Double(wei.description) else {
+            return 0
+        }
+        return decimalWei / etherInWei
+    }
+
+    public static func toEther(Gwie: BigUInt) -> Ether {
+        guard let decimalWei = Double(Gwie.description) else {
+            return 0
+        }
+        return decimalWei / etherInGwei
+    }
+
+    /// Convert Ether(Decimal) unit to Wei(BInt) unit
+    public static func toWei(ether: Ether) -> Wei {
+        let wei = Wei(ether * etherInWei)
+        return wei
+    }
+
+    /// Convert Ether(String) unit to Wei(BInt) unit
+    public static func toWei(ether: String) -> Wei {
+        guard let decimalEther = Double(ether) else {
+            return 0
+        }
+        return toWei(ether: decimalEther)
+    }
+
+    // Only used for calcurating gas price and gas limit.
+    public static func toWei(GWei: Double) -> Wei {
+        return Wei(GWei * 1000000000)
+    }
+}
+```
+
+## Example code
+
+The code for the application we developed in this guide can be found in the
+[Web3Auth iOS Example](https://github.com/Web3Auth/web3auth-pnp-examples//tree/main/ios). Check it out and try running it locally yourself!
+
+Also, checkout other examples:
+
+- [Using Auth0 Custom Authentication](https://github.com/Web3Auth/web3auth-pnp-examples//tree/main/ios/ios-auth0-example)
+
+## Questions?
+
+Ask us on [Web3Auth's Community Portal](https://community.web3auth.io)

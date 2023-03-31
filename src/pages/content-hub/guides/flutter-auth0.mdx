@@ -1,0 +1,725 @@
+---
+title: Using Auth0 with Web3Auth Flutter SDK
+image: "content-hub/guides/banners/flutter-auth0.png"
+description: Learn how to use Web3Auth Flutter SDK in your Flutter application with Auth0.
+type: guide
+tags: [mobile, flutter, auth0, whitelabel, custom authentication, dapp share, blockchain]
+date: 17th Jan 2023
+author: Web3Auth Team
+order: 15
+---
+
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import FlutterResponse from "@site/src/common/sdk/android/_response.mdx";
+import SEO from "@site/src/components/SEO";
+import ImageEmailVerifer from "@site/static/content-hub/guides/auth0/auth0-email-verifier.png";
+import ImageSMSVerifer from "@site/static/content-hub/guides/auth0/auth0-sms-verifier.png";
+import ImageVerifer from "@site/static/content-hub/guides/auth0/auth0-w3adashboard-03.png";
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<SEO
+  title="Using Auth0 with Web3Auth Flutter SDK"
+  description="Learn how to use Web3Auth Flutter SDK in your Flutter application with Auth0."
+  image="https://web3auth.io/docs/content-hub/guides/banners/flutter-auth0.png"
+  slug="/content-hub/guides/flutter-auth0"
+/>
+
+This guide will cover the basics of how to use the Web3Auth Flutter SDK in your Flutter application with Auth0 and make blockchain calls to get access
+to user's `account`, fetch `balance`, `sign transaction`, and `send transaction`.
+
+Repository: https://github.com/Web3Auth/web3auth-pnp-examples//raw/main/flutter/flutter-auth0-example
+
+## Quick Start
+
+```bash
+git clone https://github.com/Web3Auth/web3auth-pnp-examples/.git
+cd flutter/flutter-auth0-example
+# Open in Android Studio or VS Code
+flutter run
+```
+
+## How it works?
+
+---
+
+When integrating Web3Auth Flutter SDK with Social Login the flow looks something like this:
+
+![Web3Auth Core - Social Login Flow](/images/implicit-flow.svg)
+
+- When a user logs in with `Google` via Auth0. Auth0 sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
+
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
+  easy onboarding for your user to the application.
+
+## Prerequisites
+
+---
+
+<Web3AuthPrerequisites />
+
+- Android API version 24 or newer.
+- For Android build: compileSdkVersion needs to be 32. Check `android/app/build.gradle` in your Flutter project to change it.
+- iOS 12+
+- Xcode 11.4+ / 12.x
+- Swift 4.x / 5.x
+- For iOS build: `platform :ios` needs to be 13.0. Check `ios/Podfile` in your Flutter project to change it.
+- Create an Auth0 tenant and configure a Single Page Web Application (SPA for Web) or Native (for Mobile) from
+  [Auth0 Console](https://manage.auth0.com/).
+
+## Setup your Auth0 Tenant
+
+---
+
+- Add the following URLs for your app to the Allowed Web Origins field when configuring your Auth0 Application.
+
+  - Additional to your own URLs for the application, please add
+    - [https://beta.openlogin.com/auth](https://beta.openlogin.com/auth) (for Web3Auth testnet used in demo applications) and
+    - [https://app.openlogin.com/auth](https://app.openlogin.com/auth) (for Web3Auth mainnet used in production applications).
+    - [https://cyan.openlogin.com/auth](https://cyan.openlogin.com/auth) (for Web3Auth `cyan` mainnet used in production applications).
+
+  ![Add Callback URL to Auth0 Dashboard](/content-hub/guides/auth0/auth0-callback-url.png)
+
+- You will require `domain` and `clientId` of the newly created application which you can copy from [Auth0 Console](https://manage.auth0.com/).
+  ![Domain and Client ID from Auth0 Dashboard](/content-hub/guides/auth0/auth0-guide-clientid.png)
+
+### Enable Social login
+
+- Enable `Google` or other social provider on the `Authentication > Social` page of your Auth0 Dashboard.
+  ![Auth0 Dashboard to enable Social logins](/content-hub/guides/auth0/auth0-social-logins.png)
+- Vist https://auth0.com/learn/social-login to learn more.
+
+### Enable SMS Passwordless
+
+:::note Optional
+
+If you want to implement SMS Passwordless, then this section is for you. Else you can skip this.
+
+:::
+
+- Enable `SMS` on the `Authentication > Passwordless` page of your Auth0 Dashboard.
+  ![Auth0 Dashboard to enable SMS Passwordless Option](/content-hub/guides/auth0/auth0-passwordless.png)
+- Under `Settings` tab, add your `Twilio SID` and `Twilio AuthToken`.
+  ![Auth0 Dashboard to enable SMS Passwordless | Setup](/content-hub/guides/auth0/auth0-sms-passwordless-1.png)
+- Also, update the `From` number on the same page, and click on the `Save` button.
+- Next, enable your application under `Applications` tab, and click on the `Save` button.
+  ![Auth0 Dashboard to enable SMS Passwordless | Enable App](/content-hub/guides/auth0/auth0-sms-passwordless-2.png)
+- You can test sending a SMS from the `Try` tab. Once, a SMS comes with OTP, it means it has been successfully configured.
+
+##### Update Lockscreen for SMS Passwordless
+
+:::info update-lock-screen
+
+If you're to use SMS Passwordless, please
+**[visit here to setup the Lock Screen of Auth0](https://auth0.com/docs/authenticate/passwordless/implement-login/universal-login)** from your Auth0
+Dashboard.
+
+:::
+
+### Enable Email Passwordless
+
+:::note Optional
+
+If you want to implement Email Passwordless, then this section is for you. Else you can skip this.
+
+:::
+
+- Enable `Email` on the `Authentication > Passwordless` page of your Auth0 Dashboard.
+  ![Auth0 Dashboard to enable Email Passwordless Option](/content-hub/guides/auth0/auth0-passwordless.png)
+- Under `Settings` tab, update `From` and `Subject` based on your need and click on the `Save` button.
+  ![Auth0 Dashboard to enable Email Passwordless | Setup](/content-hub/guides/auth0/auth0-email-passwordless-1.png)
+- Next, enable your application under `Applications` tab, and click on the `Save` button.
+  ![Auth0 Dashboard to enable Email Passwordless | Enable App](/content-hub/guides/auth0/auth0-email-passwordless-2.png)
+- You can test sending an Email from the `Try` tab. Once, an Email comes with OTP/Link, it means it has been successfully configured.
+
+##### Update Lockscreen for Email Passwordless
+
+:::info update-lock-screen
+
+If you're to use Email Passwordless, please
+**[visit here to setup the Lock Screen of Auth0](https://auth0.com/docs/authenticate/passwordless/implement-login/universal-login)** from your Auth0
+Dashboard.
+
+:::
+
+## Setup your Web3Auth Dashboard
+
+---
+
+<SetupWeb3AuthDashboard />
+
+- Add `{SCHEME}://{YOUR_APP_PACKAGE_NAME}` (e.g, w3a://com.example.w3aflutter) for Android and `{bundleId}://openlogin` (e.g,
+  com.example.w3aflutter://openlogin) for iOS in the **Whitelist URL** field of the Web3Auth Dashboard.
+
+### Create Social Verifiers
+
+- Create a Verifier from the **Custom Auth** Section of the [Developer Dashboard](https://dashboard.web3auth.io/) with the following configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. auth0-project`
+  - Select `Auth0` from the **Login Provider**.
+  - Choose your Authentication Type from `eg. Google, Twitter, Github etc..` to be the Auth provider.
+  - Paste the `Client ID` and `Auth0 Domain` from the Auth0 SPA you created in the above steps. This will be used to validate the JWT token issued by
+    Auth0.
+  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once
+    it's complete.
+    <img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} alt="Create Social Verifier" src={ImageVerifer} />
+
+  > You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+
+### Create SMS Passwordless Verifier
+
+:::note Optional
+
+If you want to implement SMS Passwordless, then this section is for you. Else you can skip this.
+
+:::
+
+- Create a Verifier from the **Custom Auth** Section of the [Developer Dashboard](https://dashboard.web3auth.io/) with the following configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. auth0-sms-passwordless`
+  - Select `Custom` from the **Login Provider**.
+  - Choose `Custom` for the `JWT Verifier ID` and type `name`.
+  - Enter `https://{YOUR-DOMAIN}.auth0.com/.well-known/jwks.json` as your `JWKS Endpoint`. This will be used to validate the JWT token issued by
+    Auth0.
+  - JWT validation fields:
+    - iss: `https://{YOUR-DOMAIN}.auth0.com`
+    - aud: `{AUTH0-CLIENT-ID}`
+  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once
+    it's complete.
+    <img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} alt="Create SMS Passwordless Verifier" src={ImageSMSVerifer} />
+
+  > You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+
+### Create Email Passwordless Verifier
+
+:::note Optional
+
+If you want to implement Email Passwordless, then this section is for you. Else you can skip this.
+
+:::
+
+- Create a Verifier from the **Custom Auth** Section of the [Developer Dashboard](https://dashboard.web3auth.io/) with the following configuration:
+
+  - Choose a name of your choice for the verifier identifier. `eg. auth0-email-passwordless`
+  - Select `Auth0` from the **Login Provider**.
+  - Choose your Authentication Type as `Passwordless` to use Auth0's Email Passwordless.
+  - Paste the `Client ID` and `Auth0 Domain` from the Auth0 SPA you created in the above steps. This will be used to validate the JWT token issued by
+    Auth0.
+  - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once
+    it's complete.
+    <img style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} alt="Create Email Passwordless Verifier" src={ImageEmailVerifer} />
+
+  > You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+
+## Using the Web3Auth SDK
+
+---
+
+To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
+SDKs, please have a look at this [documentation page](/sdk).
+
+For this guide, we will be using the **[Web3Auth Flutter SDK](/sdk/flutter)**.
+
+### Installation
+
+Add `web3auth_flutter` as a dependency to your `pubspec.yaml`
+
+```yaml
+dependencies:
+  web3auth_flutter: ^1.0.3
+```
+
+or
+
+```sh
+flutter pub add web3auth_flutter
+```
+
+<Tabs
+  defaultValue="android"
+  values={[
+    { label: "Android", value: "android" },
+    { label: "iOS", value: "ios" },
+  ]}
+>
+
+<TabItem value="android">
+
+#### Add Web3Auth to Gradle
+
+In your project-level's `build.gradle` file, add JitPack repository:
+
+```groovy
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        // highlight-next-line
+        maven { url "https://jitpack.io" } // <-- Add this line
+    }
+}
+```
+
+Then, in your app-level `build.gradle` dependencies section, add the following:
+
+```groovy
+dependencies {
+    // highlight-next-line
+    implementation 'org.torusresearch:web3auth-android-sdk:3.0.0'
+}
+```
+
+#### Permissions
+
+Open your app's `AndroidManifest.xml` file and add the following permission:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+```
+
+> Note: The `<uses-permission>` element must be a direct child of the `<manifest>` root element.
+
+#### Configuration
+
+##### Configure a Plug n Play project
+
+- Go to [Developer Dashboard](https://dashboard.web3auth.io/), create or select a Web3Auth project:
+
+- Add `{SCHEME}://{YOUR_APP_PACKAGE_NAME}` to **Whitelist URLs**. eg. `w3a://com.example.w3aflutter`
+
+- Copy the `Client ID` for usage later.
+
+##### Configure Deep Link
+
+Open your app's `AndroidManifest.xml` file and add the following deep link intent filter to your sign-in activity:
+
+```xml
+<intent-filter>
+  <action android:name="android.intent.action.VIEW" />
+
+  <category android:name="android.intent.category.DEFAULT" />
+  <category android:name="android.intent.category.BROWSABLE" />
+
+  // highlight-next-line
+  <data android:scheme="{scheme}" android:host="{YOUR_APP_PACKAGE_NAME}" android:path="/auth" />
+  <!-- Accept URIs: w3a://com.example.w3aflutter -->
+</intent-filter>
+```
+
+Make sure your sign-in activity launchMode is set to **singleTop** in your `AndroidManifest.xml`
+
+```xml
+<activity
+// highlight-next-line
+  android:launchMode="singleTop"
+  android:name=".YourActivity">
+  // ...
+</activity>
+```
+
+</TabItem>
+
+<TabItem value="ios">
+
+#### Swift Package Manager
+
+If you are using the Swift Package Manager, open the following menu item in Xcode:
+
+`File > Swift Packages > Add Package Dependency`
+
+In the Choose Package Repository prompt add this url:
+
+```
+https://github.com/web3auth/web3auth-swift-sdk
+```
+
+##### Cocoapods
+
+```sh
+pod install Web3Auth
+```
+
+#### Configuration
+
+In order to use Web3Auth you need to provide your Web3Auth `ClientId` and which `Network` to run it.
+
+- Go to [Web3Auth Developer Dashboard](https://dashboard.web3auth.io), create or open an existing Web3Auth project and copy your Client ID, which is
+  the `ClientId`.
+- Whitelist `{bundleId}://openlogin` eg. `com.example.w3aflutter://openlogin` in the developer dashboard. **This step is mandatory for the redirect to
+  work.**
+
+</TabItem>
+
+</Tabs>
+
+### Initialization
+
+After Installation, the next step to use Web3Auth is to Initialize the SDK. This can be achieved by using the `init()` function.
+
+Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
+Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customise your Web3Auth Instance.
+
+#### Create Web3Auth Instance
+
+In your `main.dart` file, initialise the `Web3AuthFlutter` plugin at the very beginning such as in the overriden `initState` function
+
+```dart
+import 'dart:collection';
+import 'dart:io';
+import 'dart:async';
+
+import 'package:web3auth_flutter/web3auth_flutter.dart';
+import 'package:web3auth_flutter/enums.dart';
+import 'package:web3auth_flutter/input.dart';
+import 'package:web3auth_flutter/output.dart';
+
+@override
+void initState() {
+  super.initState();
+  initPlatformState();
+}
+
+// Initialization
+Future<void> initPlatformState() async {
+  HashMap themeMap = new HashMap<String, String>();
+  themeMap['primary'] = "#fff000";
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('{bundleId}://openlogin');
+    // com.example.w3aflutter://openlogin
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+  // highlight-start
+  final loginConfig = HashMap<String, LoginConfigItem>();
+  loginConfig['jwt'] = LoginConfigItem(
+    verifier: "VERIFIER-NAME", // get it from web3auth dashboard
+    typeOfLogin: TypeOfLogin.jwt,
+    name: "Web3Auth Flutter Auth0 Example",
+    clientId: "AUTH0-CLIENT-ID" // auth0 client id
+  );
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId:'YOUR WEB3AUTH CLIENT ID FROM DASHBOARD',
+    network: Network.cyan,
+    redirectUri: redirectUrl,
+    loginConfig: loginConfig
+  ));
+  // highlight-end
+}
+```
+
+Read more about initialising the Flutter SDK [here](/sdk/flutter/initialize).
+
+### Authentication
+
+#### Logging in
+
+Once initialized, you can use the `Web3AuthFlutter.login(LoginParams( loginProvider: Provider.google ))` function to authenticate the user when they
+click the login button.
+
+```dart
+VoidCallback _login(Future<Web3AuthResponse> Function() method) {
+  return () async {
+    try {
+      final Web3AuthResponse response = await method();
+      setState(() {
+        _result = response.toString();
+        logoutVisible = true;
+      });
+    } on UserCancelledException {
+      print("User cancelled.");
+    } on UnKnownException {
+      print("Unknown exception occurred");
+    }
+  };
+}
+
+Future<Web3AuthResponse> _withAuth0() {
+  // highlight-start
+  return Web3AuthFlutter.login(LoginParams(
+    loginProvider: Provider.jwt,
+    mfaLevel: MFALevel.OPTIONAL,
+    extraLoginOptions: ExtraLoginOptions(
+      domain: 'YOUR_AUTH0_DOMAIN', // eg. https://torus.us.auth0.com
+      verifierIdField: 'sub')));
+  // highlight-end
+}
+```
+
+When connecting, the `login` function takes the LoginParams arguments for the login. See the [LoginParams](/sdk/flutter/usage#arguments) for more
+details.
+
+#### Sample loginResponse
+
+<FlutterResponse />
+
+### Get the User Profile
+
+```dart
+// Assuming the user is logged in, get the user profile from the web3AuthResponse
+userInfo = web3AuthResponse.userInfo
+```
+
+Using the `web3AuthFlutter.login` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in
+Web3Auth network.
+
+If you wish you **[add Multi Factor Authentication](/sdk/flutter/mfa)**, **[use dApp Share](/sdk/flutter/dapp-share)** or
+**[select Curve](/sdk/flutter/usage#selecting-curve)** for your Android application, read the linked documentation.
+
+- [Multi Factor Authentication](/sdk/flutter/mfa)
+- [Using dApp Share](/sdk/flutter/dapp-share)
+- [Selecting Curve](/sdk/flutter/usage#selecting-curve)
+
+### Logout
+
+```dart
+VoidCallback _logout() {
+  return () async {
+    try {
+      // highlight-next-line
+      await Web3AuthFlutter.logout();
+      setState(() {
+        _result = '<empty>';
+        logoutVisible = false;
+      });
+    } on UserCancelledException {
+      print("User cancelled.");
+    } on UnKnownException {
+      print("Unknown exception occurred");
+    }
+  };
+}
+```
+
+Logging out your user is as simple as calling the `web3AuthFlutter.logout()` function.
+
+### UI in this guide
+
+```dart
+@override
+  Widget build(BuildContext context) {
+    // Map<String, dynamic> user = jsonDecode(_result);
+
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Web3Auth x Flutter Example'),
+        ),
+        body: SingleChildScrollView(
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+              ),
+              Visibility(
+                visible: !logoutVisible,
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.flutter_dash,
+                      size: 80,
+                      color: Color(0xFF1389fd),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    const Text(
+                      'Web3Auth',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 36,
+                          color: Color(0xFF0364ff)),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      'Welcome to Web3Auth x Flutter Auth0 Demo',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      'Login with',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                        onPressed: _login(_withAuth0),
+                        child: const Text('Auth0')),
+                  ],
+                ),
+              ),
+              Visibility(
+                // ignore: sort_child_properties_last
+                child: Column(
+                  children: [
+                    Center(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Colors.red[600] // This is what you need!
+                              ),
+                          onPressed: _logout(),
+                          child: Column(
+                            children: const [
+                              Text('Logout'),
+                            ],
+                          )),
+                    ),
+                  ],
+                ),
+                visible: logoutVisible,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(_result),
+              )
+            ],
+          )),
+        ),
+      ),
+    );
+  }
+```
+
+## Interacting with the Blockchain
+
+---
+
+:::success Blockchain calls
+
+Checkout the full codes to interact with **[ETH Blockchain](/connect-blockchain/ethereum/flutter)**.
+
+:::
+
+### Get Account
+
+```dart
+import 'package:web3dart/web3dart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// checkout the Connect Blockchain > Ethereum > Flutter to get full code.
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+            child:
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              // Get Account
+              ElevatedButton(
+                onPressed: () async {
+                  final credentials = EthPrivateKey.fromHex(privateKey);
+                  final address = credentials.address;
+                  debugPrint("Account, ${address.hexEip55}");
+                },
+                child: const Text('Get Address'),
+              ),
+            ])));
+  }
+```
+
+### Get Balance
+
+```dart
+import 'package:web3dart/web3dart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// checkout the Connect Blockchain > Ethereum > Flutter to get full code.
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+            child:
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              // Get Balance
+              ElevatedButton(
+                onPressed: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  final privateKey = prefs.getString('privateKey') ?? '0';
+                  final credentials = EthPrivateKey.fromHex(privateKey);
+                  final client = Web3Client(rpcUrl, Client());
+                  final credentials = EthPrivateKey.fromHex(privateKey);
+                  final address = credentials.address;
+                  final balance = await client.getBalance(address);
+                  debugPrint("Balance, ${balance}");
+                },
+                child: const Text('Get Balance'),
+              ),
+            ])));
+  }
+```
+
+### Send Transaction
+
+```dart
+import 'package:web3dart/web3dart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// checkout the Connect Blockchain > Ethereum > Flutter to get full code.
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+            child:
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              // Send Transaction
+              ElevatedButton(
+                onPressed: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  final privateKey = prefs.getString('privateKey') ?? '0';
+                  final client = Web3Client(rpcUrl, Client());
+                  final credentials = EthPrivateKey.fromHex(privateKey);
+                  final address = credentials.address;
+                  final receipt = await client.sendTransaction(
+                      credentials,
+                      Transaction(
+                        from: address,
+                        to: EthereumAddress.fromHex(
+                            '0x809D4310d578649D8539e718030EE11e603Ee8f3'),
+                        value: EtherAmount.fromUnitAndValue(
+                            EtherUnit.gwei, 5000000), // 0.005 ETH
+                      ),
+                      chainId: 5); // change chainId as per your chain.
+                  debugPrint("Receipt, ${receipt}");
+                },
+                child: const Text('Send Transaction'),
+              ),
+            ])));
+  }
+```
+
+## Example code
+
+---
+
+The code for the application we developed in this guide can be found in the
+[Web3Auth Flutter Auth0 Example](https://github.com/Web3Auth/web3auth-pnp-examples//tree/main/flutter/flutter-auth0-example). Check it out and try
+running it locally yourself!
+
+`flutter run`
+
+Also, checkout other examples:
+
+- [Using Flutter SDK](https://github.com/Web3Auth/web3auth-pnp-examples//tree/main/flutter/flutter-example)
+- [Using Custom JWT (via Firebase)](https://github.com/Web3Auth/web3auth-pnp-examples//tree/main/flutter/flutter-firebase-example)
+
+## Questions?
+
+Ask us on [Web3Auth's Community Portal](https://community.web3auth.io)
