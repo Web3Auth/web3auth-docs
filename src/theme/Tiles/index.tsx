@@ -28,7 +28,7 @@ export default function Tiles(props: { tileGroups: TileGroup[] }) {
           <div className={styles.tileGroupContent}>
             {group.tiles.map((tile: Tile) => (
               <Link key={tile.key} className={styles.tile} to={tile.path}>
-                {tile.icon ? <img className={styles.tileIcon} src={useBaseUrl(`/contents/${tile.icon}`)} alt={tile.icon} /> : <div />}
+                {tile.icon ? <img className={styles.tileIcon} src={useBaseUrl(`/content-hub/${tile.icon}`)} alt={tile.icon} /> : <div />}
                 <div className={styles.tileText}>{tile.title}</div>
               </Link>
             ))}
