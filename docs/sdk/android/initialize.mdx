@@ -46,14 +46,16 @@ The Web3Auth Constructor takes an object with `Web3AuthOptions` as input.
 
 <TabItem value="table">
 
-| Parameter   | Type                                    | Mandatory | Description                                                                                                                                                     |
-| ----------- | --------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| context     | android.content.Context                 | Yes       | Android context to launch Web-based authentication, usually is the current activity                                                                             |
-| clientId    | String                                  | Yes       | Your Web3Auth Project ID                                                                                                                                        |
-| network     | enum com.web3auth.core.Web3Auth.Network | Yes       | Network to run Web3Auth, either MAINNET, TESTNET, AQUA, CELESTE or CYAN                                                                                         |
-| redirectUrl | android.net.Uri                         | No        | URL that Web3Auth will redirect API responses, default is `null`                                                                                                |
-| whiteLabel  | WhiteLabelData                          | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer [WhiteLabel](/pnp/features/whitelabel) section for more info. |
-| loginConfig | LoginConfigItem                         | No        | A configuration optional object to use custom authentication. Refer [Custom Authentication](/pnp/features/custom-authentication) for more info.                 |
+| Parameter      | Type                                                                | Mandatory | Description                                                                                                                                                     |
+| -------------- | ------------------------------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| context        | android.content.Context                                             | Yes       | Android context to launch Web-based authentication, usually is the current activity                                                                             |
+| clientId       | String                                                              | Yes       | Your Web3Auth Project ID                                                                                                                                        |
+| network        | enum com.web3auth.core.Web3Auth.Network                             | Yes       | Network to run Web3Auth, either MAINNET, TESTNET, AQUA, CELESTE or CYAN                                                                                         |
+| redirectUrl    | android.net.Uri                                                     | No        | URL that Web3Auth will redirect API responses, default is `null`                                                                                                |
+| whiteLabel     | WhiteLabelData                                                      | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer [WhiteLabel](/pnp/features/whitelabel) section for more info. |
+| loginConfig    | LoginConfigItem                                                     | No        | A configuration optional object to use custom authentication. Refer [Custom Authentication](/pnp/features/custom-authentication) for more info.                 |
+| useCoreKitKey  | Boolean                                                             | No        | Use CoreKit Key true to the CoreKit keys.                                                                                                                       |
+| chainNamespace | enum com.web3auth.core.Web3Auth.ChainNamespace ["EIP155", "SOLANA"] | No        | A configuration optional object to use chain namespace.                                                                                                         |
 
 </TabItem>
 
@@ -65,9 +67,12 @@ data class Web3AuthOptions (
   val clientId: String,
   val network: Web3Auth.Network,
   val redirectUrl: Uri? = null,
-  val sdkUrl: String = "https://sdk.openlogin.com",
+  @Transient var redirectUrl: Uri? = null,
+  var sdkUrl: String = getSdkUrl(network),
   val whiteLabel: WhiteLabelData? = null,
   val loginConfig: HashMap<String, LoginConfigItem>? = null,
+  val useCoreKitKey: Boolean? = false,
+  val chainNamespace: Web3Auth.ChainNamespace? = Web3Auth.ChainNamespace.EIP155
 )
 ```
 
