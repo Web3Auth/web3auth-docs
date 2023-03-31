@@ -143,7 +143,9 @@ export default function ContentHub({ content }: Props) {
         <Link to={article.link} className={styles.articleContent}>
           <img src={baseUrl + article.image} alt="Banner" />
           <div className={styles.contentContainer}>
-            <span className={styles.type}>{article.type}</span>
+            <div className={styles.pillContainer}>
+              <div className={styles.pill}>{article.type}</div>
+            </div>
             <h3>{highlightSearchText(article.title)}</h3>
             <p>{highlightSearchText(article.description)}</p>
           </div>
