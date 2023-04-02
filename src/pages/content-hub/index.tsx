@@ -55,27 +55,46 @@ export default function ContentHub({ content }: Props) {
   }, [tabActive]);
 
   function filterByTags() {
+    let guides, references, integrationBuilders;
     if (tags.length === 0) {
-      setSortedGuides(completeGuides.sort((a, b) => a.order - b.order));
-      setSortedIntegrationBuilderMap(integrationBuilderMap);
-      setSortedReferenceMap(referenceMap);
+      guides = completeGuides.sort((a, b) => a.order - b.order);
+      integrationBuilders = integrationBuilderMap;
+      references = referenceMap;
     } else {
-      setSortedGuides(
-        completeGuides.filter((item) => {
-          return tags.some((tag) => item.tags.includes(tag));
-        })
-      );
-      setSortedIntegrationBuilderMap(
-        completeIntegrationBuilderMap.filter((item) => {
-          return tags.some((tag) => item.tags.includes(tag));
-        })
-      );
-      setSortedReferenceMap(
-        completeReferenceMap.filter((item) => {
-          return tags.some((tag) => item.tags.includes(tag));
-        })
-      );
+      guides = completeGuides.filter((item) => {
+        return tags.some((tag) => item.tags.includes(tag));
+      });
+      integrationBuilders = completeIntegrationBuilderMap.filter((item) => {
+        return tags.some((tag) => item.tags.includes(tag));
+      });
+      references = completeReferenceMap.filter((item) => {
+        return tags.some((tag) => item.tags.includes(tag));
+      });
     }
+
+    if (tabActive === guide && guides.length === 0) {
+      if (sortedIntegrationBuilderMap.length > 0) {
+        setTabActive(integrationBuilder);
+      } else if (sortedReferenceMap.length > 0) {
+        setTabActive(reference);
+      }
+    } else if (tabActive === integrationBuilder && integrationBuilders.length === 0) {
+      if (sortedGuides.length > 0) {
+        setTabActive(guide);
+      } else if (sortedReferenceMap.length > 0) {
+        setTabActive(reference);
+      }
+    } else if (tabActive === reference && references.length === 0) {
+      if (sortedGuides.length > 0) {
+        setTabActive(guide);
+      } else if (sortedIntegrationBuilderMap.length > 0) {
+        setTabActive(integrationBuilder);
+      }
+    }
+
+    setSortedGuides(guides);
+    setSortedIntegrationBuilderMap(integrationBuilders);
+    setSortedReferenceMap(references);
   }
 
   function onChangeFilter(e) {
