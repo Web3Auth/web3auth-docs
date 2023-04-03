@@ -1,16 +1,15 @@
-import classNames from "classnames";
 import Link from "@docusaurus/Link";
 import { useColorMode } from "@docusaurus/theme-common";
+import ThievesDark from "@site/static/content-hub/logo-100thieves-dark.png";
+import ThievesLight from "@site/static/content-hub/logo-100thieves-light.png";
+import BEW from "@site/static/content-hub/logo-bew.png";
+import Kash from "@site/static/content-hub/logo-kash.png";
+import Keplr from "@site/static/content-hub/logo-keplr.png";
+import SkyweaverDark from "@site/static/content-hub/logo-skyweaver-dark.png";
+import SkyweaverLight from "@site/static/content-hub/logo-skyweaver-light.png";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
-
-import BEW from "@site/static/contents/logo-bew.png";
-import SkyweaverDark from "@site/static/contents/logo-skyweaver-dark.png";
-import SkyweaverLight from "@site/static/contents/logo-skyweaver-light.png";
-import ThievesDark from "@site/static/contents/logo-100thieves-dark.png";
-import ThievesLight from "@site/static/contents/logo-100thieves-light.png";
-import Kash from "@site/static/contents/logo-kash.png";
-import Keplr from "@site/static/contents/logo-keplr.png";
 
 export default function UsecaseCards() {
   const { colorMode } = useColorMode();
@@ -34,7 +33,6 @@ export default function UsecaseCards() {
             className={styles.footer}
             target="_blank"
             href="https://chrome.google.com/webstore/detail/binance-wallet/fhbohimaelbohpjbbldcngcnapndodjp"
-            rel="noreferrer"
           >
             Download the Extension →
           </span>
@@ -56,7 +54,7 @@ export default function UsecaseCards() {
               solution on Polygon L2. This combination gives players the best user experience, security and access control to their wallets.
             </p>
           </div>
-          <span className={styles.footer} target="_blank" href="https://play.skyweaver.net/" rel="noreferrer">
+          <span className={styles.footer} target="_blank" href="https://play.skyweaver.net/">
             Try being a gamer once →
           </span>
         </Link>
@@ -80,7 +78,7 @@ export default function UsecaseCards() {
               using an out-of-the-box Modal provided by Web3Auth, that you can add too, in less than 30 mins!
             </p>
           </div>
-          <span className={styles.footer} target="_blank" href="https://collect.100thieves.com/" rel="noreferrer">
+          <span className={styles.footer} target="_blank" href="https://collect.100thieves.com/">
             Collect the 100 Thieves chain →
           </span>
         </Link>
@@ -97,7 +95,7 @@ export default function UsecaseCards() {
               handle all the transactions required for the dApp.
             </p>
           </div>
-          <span className={styles.footer} target="_blank" href="https://www.keplr.app/" rel="noreferrer">
+          <span className={styles.footer} target="_blank" href="https://www.keplr.app/">
             Download the Extension →
           </span>
         </Link>
@@ -113,11 +111,11 @@ export default function UsecaseCards() {
             </h3>
             <h4 className={styles.headline}>Using Web3Auth on a multi chain DeFi platform</h4>
             <p>
-              Kash built an excellent UI using our Web3Auth Plug and Play No Modal SDK and their DeFi platform integration creates an Ethereum and Terra
-              address with just a simple click.
+              Kash built an excellent UI using our Web3Auth Plug and Play No Modal SDK and their DeFi platform integration creates an Ethereum and
+              Terra address with just a simple click.
             </p>
           </div>
-          <span className={styles.footer} target="_blank" href="https://app.kash.io/" rel="noreferrer">
+          <span className={styles.footer} target="_blank" href="https://app.kash.io/">
             Just experience this →
           </span>
         </Link>

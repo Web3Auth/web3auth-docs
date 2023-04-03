@@ -102,7 +102,7 @@ export default function QuickNavigation() {
             </p>
           </div>
         </Link>
-        <Link className={styles.card} to="/docs/guides">
+        <Link className={styles.card} to="/docs/content-hub?type=guide">
           <div className={styles.cardIconContainer}>
             <svg viewBox="0 0 57 56" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
               <path

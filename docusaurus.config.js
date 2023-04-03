@@ -6,7 +6,6 @@ const githubOrgUrl = `https://github.com/${githubOrg}`;
 const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
 const githubDiscussionsUrl = `${githubOrgUrl}/${githubOrg}/discussions`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
-const contactUrl = "https://calendly.com/web3auth/meeting-with-web3auth";
 const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
 const fs = require('fs');
@@ -86,9 +85,9 @@ const config = {
           position: "left",
         },
         {
-          label: "Guides",
-          activeBasePath: "/guides",
-          to: "/guides",
+          label: "Content Hub",
+          activeBasePath: "/content-hub",
+          to: "/content-hub",
           position: "left",
         },
         {
@@ -160,7 +159,7 @@ const config = {
     ],
   ],
   plugins: [
-    path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
+    path.resolve(__dirname, "plugins", "docusaurus-plugin-content-hub"),
     [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: "files" }],
     path.resolve(__dirname, "plugins", "node-polyfills"),
     [
@@ -169,7 +168,7 @@ const config = {
         redirects: [
           {
             from: "/examples/productionexamples",
-            to: "/examples/liveexamples",
+            to: "/examples",
           },
           {
             from: "/get-started",
@@ -184,36 +183,8 @@ const config = {
             to: "/quick-start",
           },
           {
-            from: "/customauth/auth0",
-            to: "/guides/auth0",
-          },
-          {
-            from: "/sdk/web/web3auth/usage",
-            to: "/sdk/web/modal/usage",
-          },
-          {
-            from: "/sdk/web/web3auth/wagmi-connector",
-            to: "/sdk/web/wagmi-connector",
-          },
-          {
-            from: "/sdk/web/web3auth/custom-authentication",
-            to: "/sdk/web/modal/custom-authentication",
-          },
-          {
-            from: "/sdk/web/web3auth/whitelabel",
-            to: "/sdk/web/modal/whitelabel",
-          },
-          {
             from: "/sdk/web/plugins/torus-wallet",
             to: "/sdk/web/plugins/evm-wallet",
-          },
-          {
-            from: "/sdk/web/web3auth/initialize",
-            to: "/sdk/web/modal/initialize",
-          },
-          {
-            from: "/sdk/web/web3auth/",
-            to: "/sdk/web/modal/",
           },
           {
             from: "/sdk/web/modal/wagmi-connector",
@@ -228,76 +199,28 @@ const config = {
             to: "/quick-start",
           },
           {
-            from: "/api-reference/",
-            to: "/sdk/",
-          },
-          {
-            from: "/api-reference/web/choosesdk/",
+            from: "/sdk/web/choosesdk/",
             to: "/sdk/web/",
           },
           {
-            from: "/api-reference/web/plugnplay",
-            to: "/sdk/web/modal/",
-          },
-          {
-            from: "/api-reference/web/customloginui",
-            to: "/sdk/web/no-modal/",
-          },
-          {
-            from: "/api-reference/android/setting-up",
+            from: "/sdk/android/setting-up",
             to: "/sdk/android/",
           },
           {
-            from: "/api-reference/ios/setting-up",
+            from: "/sdk/ios/setting-up",
             to: "/sdk/ios/",
           },
           {
-            from: "/api-reference/flutter/setting-up",
+            from: "/sdk/flutter/setting-up",
             to: "/sdk/flutter/",
           },
           {
-            from: "/api-reference/react-native/choose-workflows",
+            from: "/sdk/react-native/choose-workflows",
             to: "/sdk/react-native/",
           },
           {
-            from: "/guides/one-key-flow",
-            to: "/guides/single-factor-auth",
-          },
-          {
-            from: "/api-reference/web/",
-            to: "/sdk/web/",
-          },
-          {
-            from: "/api-reference/android/",
-            to: "/sdk/android/",
-          },
-          {
-            from: "/api-reference/ios/",
-            to: "/sdk/ios/",
-          },
-          {
-            from: "/api-reference/react-native/",
-            to: "/sdk/react-native/",
-          },
-          {
-            from: "/api-reference/flutter/",
-            to: "/sdk/flutter/",
-          },
-          {
-            from: "/api-reference/react-native/chooseworkflows",
-            to: "/sdk/react-native/",
-          },
-          {
-            from: "/api-reference/web/customauth",
+            from: "/sdk/web/customauth",
             to: "/sdk/web/no-modal/custom-authentication",
-          },
-          {
-            from: "/api-reference/web/plugins",
-            to: "/sdk/web/plugins/",
-          },
-          {
-            from: "/api-reference/web/adapters",
-            to: "/sdk/web/adapters/",
           },
           {
             from: "/overview/what-is-web3auth",
@@ -334,10 +257,6 @@ const config = {
           {
             from: "/overview/key-management/audits",
             to: "/infrastructure/audits",
-          },
-          {
-            from: "/sdk/web-backend",
-            to: "/sdk/node",
           },
           {
             from: "/whitelabeling",
@@ -420,126 +339,6 @@ const config = {
             to: "/auth-provider-setup/verifiers",
           },
           {
-            from: "/custom-authentication/",
-            to: "/auth-provider-setup/",
-          },
-          {
-            from: "/custom-authentication/verifiers",
-            to: "/auth-provider-setup/verifiers",
-          },
-          {
-            from: "/custom-authentication/social-providers/",
-            to: "/auth-provider-setup/social-providers/",
-          },
-          {
-            from: "/custom-authentication/social-providers/google",
-            to: "/auth-provider-setup/social-providers/google",
-          },
-          {
-            from: "/custom-authentication/social-providers/facebook",
-            to: "/auth-provider-setup/social-providers/facebook",
-          },
-          {
-            from: "/custom-authentication/social-providers/twitch",
-            to: "/auth-provider-setup/social-providers/twitch",
-          },
-          {
-            from: "/custom-authentication/social-providers/discord",
-            to: "/auth-provider-setup/social-providers/discord",
-          },
-          {
-            from: "/custom-authentication/federated-identity-providers",
-            to: "/auth-provider-setup/federated-identity-providers",
-          },
-          {
-            from: "/custom-authentication/byo-jwt-providers",
-            to: "/auth-provider-setup/byo-jwt-providers",
-          },
-          {
-            from: "/sdk/self-host/",
-            to: "/sdk/tkey/",
-          },
-          {
-            from: "/sdk/self-host/install",
-            to: "/sdk/tkey/install",
-          },
-          {
-            from: "/sdk/self-host/initialize",
-            to: "/sdk/tkey/initialize",
-          },
-          {
-            from: "/sdk/self-host/usage",
-            to: "/sdk/tkey/usage",
-          },
-          {
-            from: "/sdk/self-host/modules/",
-            to: "/sdk/tkey/modules/",
-          },
-          {
-            from: "/sdk/self-host/modules/share-serialization",
-            to: "/sdk/tkey/modules/share-serialization",
-          },
-          {
-            from: "/sdk/self-host/modules/share-transfer",
-            to: "/sdk/tkey/modules/share-transfer",
-          },
-          {
-            from: "/sdk/self-host/modules/chrome-storage",
-            to: "/sdk/tkey/modules/chrome-storage",
-          },
-          {
-            from: "/sdk/self-host/modules/web-storage",
-            to: "/sdk/tkey/modules/web-storage",
-          },
-          {
-            from: "/sdk/self-host/modules/security-questions",
-            to: "/sdk/tkey/modules/security-questions",
-          },
-          {
-            from: "/sdk/self-host/modules/seed-phrase",
-            to: "/sdk/tkey/modules/seed-phrase",
-          },
-          {
-            from: "/sdk/self-host/modules/private-keys",
-            to: "/sdk/tkey/modules/private-keys",
-          },
-          {
-            from: "/guides/selfhost",
-            to: "/guides/tkey",
-          },
-          {
-            from: "/sdk/web/core/",
-            to: "/sdk/web/no-modal/",
-          },
-          {
-            from: "/sdk/web/core/initialize",
-            to: "/sdk/web/no-modal/initialize",
-          },
-          {
-            from: "/sdk/web/core/usage",
-            to: "/sdk/web/no-modal/usage",
-          },
-          {
-            from: "/sdk/web/core/whitelabel",
-            to: "/sdk/web/no-modal/whitelabel",
-          },
-          {
-            from: "/sdk/web/core/custom-authentication",
-            to: "/sdk/web/no-modal/custom-authentication",
-          },
-          {
-            from: "/sdk/web/core/mfa",
-            to: "/sdk/web/no-modal/mfa",
-          },
-          {
-            from: "/sdk/web/core/initiate-topup",
-            to: "/sdk/web/no-modal/initiate-topup",
-          },
-          {
-            from: "/sdk/web/core/show-wallet-connect",
-            to: "/sdk/web/no-modal/show-wallet-connect",
-          },
-          {
             from: "/sdk/tkey/initialization",
             to: "/sdk/tkey/initialize",
           },
@@ -563,7 +362,58 @@ const config = {
             from: "/sdk/web/web3auth/multi-factor-authentication",
             to: "/sdk/web/modal/mfa",
           },
+          {
+            from: "/guides/one-key-flow",
+            to: "/content-hub/guides/single-factor-auth",
+          },
+          {
+            from: "/customauth/auth0",
+            to: "/content-hub/guides/auth0",
+          },
+          {
+            from: "/guides/selfhost",
+            to: "/content-hub/guides/tkey",
+          },
+          {
+            from: "/content-hub/guides/",
+            to: "/content-hub/",
+          },
         ],
+        createRedirects(existingPath) {
+          if (existingPath.includes('/content-hub')) {
+            return [
+              existingPath.replace('/content-hub/guides', '/guides'),
+            ];
+          }
+          if (existingPath.includes('/sdk')) {
+            return [
+              existingPath.replace('/sdk', '/api-reference'),
+            ];
+          }
+          if (existingPath.includes('/auth-provider-setup')) {
+            return [
+              existingPath.replace('/auth-provider-setup', '/custom-authentication'),
+            ];
+          }
+          if (existingPath.includes('/sdk/web/no-modal')) {
+            return [
+              existingPath.replace('/sdk/web/no-modal', '/sdk/web/core'),
+              existingPath.replace('/sdk/web/no-modal', '/sdk/web/customloginui'),
+            ];
+          }
+          if (existingPath.includes('/sdk/web/modal')) {
+            return [
+              existingPath.replace('/sdk/web/modal', '/sdk/web/web3auth'),
+              existingPath.replace('/sdk/web/modal', '/sdk/web/plugnplay'),
+            ];
+          }
+          if (existingPath.includes('/sdk/tkey')) {
+            return [
+              existingPath.replace('/sdk/tkey', '/sdk/self-host'),
+            ];
+          }
+          return undefined; // Return a falsy value: no redirect created
+        },
       },
     ],
   ],

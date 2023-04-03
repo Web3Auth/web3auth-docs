@@ -235,6 +235,11 @@ module.exports = {
     },
     "examples",
     {
+      type: "link",
+      label: "Guides",
+      href: "/content-hub?type=guide",
+    },
+    {
       type: "category",
       label: "Troubleshooting",
       link: { type: "doc", id: "troubleshooting/troubleshooting" },
@@ -259,11 +264,6 @@ module.exports = {
       type: "link",
       label: "Integration Builder",
       href: "/integration-builder",
-    },
-    {
-      type: "link",
-      label: "Guides",
-      href: "/guides",
     },
     {
       type: "link",
