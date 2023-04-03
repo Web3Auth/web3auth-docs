@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 
+import styles from "./styles.module.css";
+
 export default function DiscourseComment(props) {
   // eslint-disable-next-line react/prop-types
   const { topicId } = props;
@@ -16,5 +18,5 @@ export default function DiscourseComment(props) {
     (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(d);
   }, []);
 
-  return <div id="discourse-comments" />;
+  return <div id="discourse-comments" className={styles.embedContainer} />;
 }
