@@ -375,12 +375,8 @@ const config = {
             to: "/content-hub/guides/tkey",
           },
           {
-            from: "/content-hub/guides/",
-            to: "/content-hub/",
-          },
-          {
-            from: "/content-hub/guides/",
-            to: "/guides/",
+            from: "/guides/",
+            to: "/content-hub",
           },
         ],
         createRedirects(existingPath) {
