@@ -378,6 +378,10 @@ const config = {
             from: "/content-hub/guides/",
             to: "/content-hub/",
           },
+          {
+            from: "/content-hub/guides/",
+            to: "/guides/",
+          },
         ],
         createRedirects(existingPath) {
           if (existingPath.includes('/content-hub')) {
