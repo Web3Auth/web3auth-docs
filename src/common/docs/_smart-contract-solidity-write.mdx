@@ -21,8 +21,8 @@ import Tabs from "@theme/Tabs";
 const fromAddress = (await web3.eth.getAccounts())[0];
 
 const contractABI =
-  '[{"constant":false,"inputs":[{"name":"newMessage","type":"string"}],"name":"update","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"message","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"initMessage","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]';
-const contractAddress = "0x1dce94bb358785c2fa27b74551f8aea24d3d0afe";
+  '[{"inputs":[{"internalType":"string","name":"initMessage","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"string","name":"newMessage","type":"string"}],"name":"update","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"message","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}]';
+const contractAddress = "0xD65AF91Bbb4334711A598dFD293596E6dc2d8313#code";
 const contract = new web3.eth.Contract(JSON.parse(contractABI), contractAddress);
 
 // Send transaction to smart contract to update message and wait to finish
@@ -46,8 +46,8 @@ const receipt = await contract.methods.update("NEW_MESSAGE").send({
 const signer = provider.getSigner();
 
 const contractABI =
-  '[{"constant":false,"inputs":[{"name":"newMessage","type":"string"}],"name":"update","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"message","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"initMessage","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]';
-const contractAddress = "0x1dce94bb358785c2fa27b74551f8aea24d3d0afe";
+  '[{"inputs":[{"internalType":"string","name":"initMessage","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"string","name":"newMessage","type":"string"}],"name":"update","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"message","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}]';
+const contractAddress = "0xD65AF91Bbb4334711A598dFD293596E6dc2d8313#code";
 const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
 // Send transaction to smart contract to update message
