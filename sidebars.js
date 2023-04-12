@@ -107,7 +107,7 @@ module.exports = {
         "pnp/features/dapp-share",
       ],
     },
-    // "pnp/going-live",
+    "pnp/going-live",
     // {
     //   type: "category",
     //   label: "Release Notes",
