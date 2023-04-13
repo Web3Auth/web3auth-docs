@@ -1,0 +1,122 @@
+---
+title: Initialize SFA Android SDK
+sidebar_label: Initialize
+displayed_sidebar: sdk
+description: "SFA Android SDK - Initialize | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+---
+
+After Installation, the next step to using Web3Auth is to Initialize the SDK.
+
+Please note that this is the most critical steps where you must pass on different parameters according to the preference of your project.
+
+## Create Web3Auth Instance
+
+---
+
+In your activity, create a `SingleFactorAuth` instance with `singleFactorAuthArgs`.
+
+```kotlin
+singleFactorAuth = `SingleFactorAuth`(singleFactorAuthArgs)
+```
+
+### Arguments
+
+#### `singleFactorAuthArgs`
+
+The SingleFactorAuth Constructor takes `singleFactorAuthArgs` as input.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Function Defination", value: "function" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter | Type                                                       | Mandatory | Description                                                                     |
+| --------- | ---------------------------------------------------------- | --------- | ------------------------------------------------------------------------------- |
+| network   | enum org.torusresearch.fetchnodedetails.types.TorusNetwork | Yes       | Network to run SingleFactorAuth, either MAINNET, TESTNET, AQUA, CELESTE or CYAN |
+
+</TabItem>
+
+<TabItem value="function">
+
+```kotlin
+public enum TorusNetwork {
+    MAINNET("mainnet"),
+    TESTNET("testnet"),
+    CYAN("cyan"),
+    AQUA("aqua"),
+    CELESTE("celeste");
+
+    private final String val;
+
+    TorusNetwork(String s) {
+        this.val = s;
+    }
+
+    public String toString() {
+        return val;
+    }
+}
+
+public SingleFactorAuthArgs(TorusNetwork network) {
+  this.network = network;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Instance
+
+```kotlin
+singleFactorAuthArgs = SingleFactorAuthArgs(TorusNetwork.TESTNET)
+singleFactorAuth = SingleFactorAuth(singleFactorAuthArgs)
+```
+
+## Example
+
+```kotlin
+class MainActivity : AppCompatActivity() {
+  // ...
+  private lateinit var singleFactorAuth: SingleFactorAuth
+  private lateinit var singleFactorAuthArgs: SingleFactorAuthArgs
+  private lateinit var loginParams: LoginParams
+  private var torusKey: TorusKey? = null
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+
+    singleFactorAuthArgs = SingleFactorAuthArgs(TorusNetwork.TESTNET)
+    singleFactorAuth = SingleFactorAuth(singleFactorAuthArgs)
+
+    // Setup UI and event handlers
+    val signInButton = findViewById<Button>(R.id.signIn)
+    signInButton.setOnClickListener { signIn() }
+  }
+
+  private fun signIn() {
+    loginParams = LoginParams("web3auth-firebase-examples", "sub", "id_token")
+    try {
+        torusKey = singleFactorAuth.getKey(loginParams).get()
+    } catch (e: ExecutionException) {
+        e.printStackTrace()
+    } catch (e: InterruptedException) {
+        e.printStackTrace()
+    }
+    println("""Private Key: ${torusKey!!.privateKey.toString(16)}""".trimIndent())
+    println("""Public Address: ${torusKey!!.publicAddress}""".trimIndent())
+  }
+  //...
+}
+```
