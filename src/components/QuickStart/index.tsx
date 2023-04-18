@@ -236,7 +236,8 @@ export default function QuickNavigation() {
       {platform === nextjs && sdk === tkeyjs ? <CoreKitNext /> : platform === nextjs && sdk === singlefactorauth ? <SFANext /> : ""}
       {platform === reactnative && sdk === tkeyjs ? "tKey React Native QuickStart Coming Soon" : ""}
       {platform === nodejs ? <NodeExample /> : ""}
-      {platform === android && product === pnp ? <PNPAndroid /> : <SFAAndroid />}
+      {platform === android && product === pnp ? <PNPAndroid /> : ""}
+      {platform === android && sdk === singlefactorauthandroid ? <SFAAndroid /> : ""}
       {platform === ios ? <PNPIos /> : ""}
       {platform === flutter ? <PNPFlutter /> : ""}
       {platform === rnbare && product === pnp ? <PNPReactNativeBare /> : ""}
