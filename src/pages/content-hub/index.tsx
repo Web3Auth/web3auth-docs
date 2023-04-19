@@ -11,7 +11,6 @@ import { request } from "graphql-request";
 import { useEffect, useState } from "react";
 
 import { getOptionsfromURL, setURLfromOptions } from "../../common/SDKOptions";
-// import BlogPage from "../../components/BlogPage";
 import { blockchainMap, featuresMap, integrationBuilderMap, languageMap, platformMap, Props, referenceMap } from "../../components/ContentHubMaps";
 import { Modal } from "../../components/Modal";
 import SEO from "../../components/SEO";
@@ -255,6 +254,7 @@ export default function ContentHub({ content }: Props) {
           </div>
         </Link>
 
+        {/* Will address tags later */}
         {/* <div className={styles.tagContainer}>
           {article.tags &&
             article.tags.map((tag) => {
