@@ -426,6 +426,9 @@ const config = {
       crossorigin: 'anonymous',
     },
   ],
+  customFields: {
+    'REACT_HYGRAPHCMS_ENDPOINT': process.env.REACT_HYGRAPHCMS_ENDPOINT,
+  },
 };
 
 async function createConfig() {
