@@ -22,6 +22,7 @@ import PNPReactNativeBare from "@site/src/common/quickstart/_pnp-reactnative-bar
 import PNPReactNativeExpo from "@site/src/common/quickstart/_pnp-reactnative-expo.mdx";
 import PNPUnity from "@site/src/common/quickstart/_pnp-unity.mdx";
 import PNPUnreal from "@site/src/common/quickstart/_pnp-unreal.mdx";
+import SFAAndroid from "@site/src/common/quickstart/_sfa-android.mdx";
 import SFAAngular from "@site/src/common/quickstart/_sfa-angular.mdx";
 import SFANext from "@site/src/common/quickstart/_sfa-nextjs.mdx";
 import SFAReact from "@site/src/common/quickstart/_sfa-react.mdx";
@@ -48,6 +49,7 @@ import {
   rnexpo,
   setURLfromOptions,
   singlefactorauth,
+  singlefactorauthandroid,
   tkeyjs,
   unity,
   unreal,
@@ -234,7 +236,8 @@ export default function QuickNavigation() {
       {platform === nextjs && sdk === tkeyjs ? <CoreKitNext /> : platform === nextjs && sdk === singlefactorauth ? <SFANext /> : ""}
       {platform === reactnative && sdk === tkeyjs ? "tKey React Native QuickStart Coming Soon" : ""}
       {platform === nodejs ? <NodeExample /> : ""}
-      {platform === android ? <PNPAndroid /> : ""}
+      {platform === android && product === pnp ? <PNPAndroid /> : ""}
+      {platform === android && sdk === singlefactorauthandroid ? <SFAAndroid /> : ""}
       {platform === ios ? <PNPIos /> : ""}
       {platform === flutter ? <PNPFlutter /> : ""}
       {platform === rnbare && product === pnp ? <PNPReactNativeBare /> : ""}

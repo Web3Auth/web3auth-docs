@@ -103,9 +103,9 @@ const config = {
         },
         {
           position: "right",
-          href: githubDiscussionsUrl,
+          href: githubOrgUrl,
           className: "navbar-github-link",
-          "aria-label": "GitHub repository",
+          "aria-label": "GitHub Organization",
         },
         {
           type: "search",

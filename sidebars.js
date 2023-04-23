@@ -535,5 +535,11 @@ module.exports = {
       link: { type: "doc", id: "sdk/node/node" },
       items: ["sdk/node/initialize", "sdk/node/authentication", "sdk/node/usage"],
     },
+    {
+      type: "category",
+      label: "SFA Android SDK",
+      link: { type: "doc", id: "sdk/single-factor-auth-android/single-factor-auth-android" },
+      items: ["sdk/single-factor-auth-android/initialize", "sdk/single-factor-auth-android/authentication", "sdk/single-factor-auth-android/usage"],
+    },
   ],
 };
