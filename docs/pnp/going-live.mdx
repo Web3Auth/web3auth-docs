@@ -49,42 +49,48 @@ All networks produce **different private keys/ accounts** for users, it is not p
 
 ### 2. Create a Web3Auth Production Verifier
 
-While using the Custom Authentication Feature in the Plug and Play SDKs, you will need to create a verifier. Make sure the network of the verifier is
-the same as the network of the client id.
+While using the [Custom Authentication Feature](/pnp/features/custom-authentication) in the Plug and Play SDKs, you will need to create a verifier.
+Make sure the network of the verifier is the same as the network of the client id.
 
 :::warning
 
-All new verifiers produce **different private keys/ accounts** for users, it is not possible to rename a verifier once you have created it.
+All new verifiers produce **different private keys/ accounts** for users, it is not possible to rename a verifier once you have created it. The person
+who has created the verifier can only edit it afterwards. This is a limitation even when you have a team setup. This is because a verifier is a smart
+contract and the address editing it cannot be changed. The only way to change this is to create a new verifier.
 
 :::
 
 ### 3. Update your Web3Auth SDKs to the latest version
 
-We are constantly updating our SDKs to make sure they are secure and performant. Make sure you are using the latest version of the SDKs.
+We are constantly updating our SDKs to make sure they are secure and performant. Make sure you are using the latest version of the SDKs. Please do not
+actively use the pre release versions, rather wait for the latest stable release.
 
-### 4. Check that you're using a production RPC Endpoint for your respective blockchains
+### 4. Use a production RPC Endpoint for your respective blockchains
 
 For testing purposes, our examples and SDKs use public RPC endpoints. Make sure you are using a production RPC endpoint (by providers like Infura,
-Quicknode, Alchemy etc.) for your production environment before going live. This can be done by updating the `rpcTarget` value in the `Web3Auth`
-object in the SDK initialisation in Web SDKs and updating the provider URL in mobile SDKs.
+Quicknode, Alchemy etc.) for your production environment before going live. This can be done by updating the
+[`rpcTarget`](/sdk/web/modal/initialize#chainconfig) value in the `Web3Auth` object in the SDK initialisation in Web SDKs and updating the provider
+URL in mobile SDKs.
 
 ### 5. Audit the UX for your Web3Auth Login flow
 
-From the icon showing up in the Web3Auth Modal to the whitelabel setting for the intermediary pages that are shown to the user, make sure you have
-checked your branding and customisations. Checking all the possible flows is recommended.
+From the icon showing up in the Web3Auth Modal to the [whitelabel setting](/pnp/features/whitelabel/) for the intermediary pages that are shown to the
+user, make sure you have checked your branding and customisations. Checking all the possible flows is recommended.
 
 ### 6. Check your interoperability flow
 
-If you're using interoperability with Torus Wallet on the dashboard settings, you need to use Web3Auth in the `mainnet` network. It is recommended
-that you audit that flow before going live. Your app name shown in the Torus Wallet login screen is the app name of your Client Id so make sure you
-have updated that.
+If you're using [interoperability with Torus Wallet](/pnp/features/interoperability#using-web3auth-dashboard-toggles) on the dashboard settings, you
+need to use Web3Auth in the `mainnet` network. It is recommended that you audit that flow before going live. Your app name shown in the Torus Wallet
+login screen is the app name of your Client Id so make sure you have updated that.
 
-If you're using WalletConnect or Web3Auth Plugins based interoperability flow, make sure you have tested the flow before going live.
+If you're using [WalletConnect or Web3Auth Plugins based interoperability flow](/pnp/features/interoperability#interoperability-with-plugins), make
+sure you have tested the flow before going live.
 
 ### 7. Check in multiple browsers and devices
 
-The Web3Auth SDKs are built to work in all major browsers and devices. Make sure you have tested your login flow in all major browsers and devices. If
-you're facing any issues with any particular browser or device, please make sure they're compatible with the Web3Auth SDKs.
+The Web3Auth SDKs are built to work in all [major browsers and devices](/troubleshooting/supported-browsers). Make sure you have tested your login
+flow in all major browsers and devices. If you're facing any issues with any particular browser or device, please make sure they're compatible with
+the Web3Auth SDKs.
 
 ### 8. Upgrade your Web3Auth Plan
 

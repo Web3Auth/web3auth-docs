@@ -128,7 +128,7 @@ module.exports = {
       defaultStyle: true,
     },
     "core-kit/introduction",
-    // "core-kit/going-live",
+    "core-kit/going-live",
     // {
     //   type: "category",
     //   label: "Release Notes",
