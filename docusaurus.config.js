@@ -115,7 +115,7 @@ const config = {
           type: "html",
           position: "right",
           value:
-            '<a href="https://dashboard.web3auth.io/" target="_blank" class="navbar-button"><strong class="navbar-button-text">Developer Dashboard</strong></a>',
+            '<a href="https://dashboard.web3auth.io/" target="_blank" class="navbar-button"><strong class="navbar-button-text">Login to Dashboard</strong></a>',
         },
         {
           type: "html",
