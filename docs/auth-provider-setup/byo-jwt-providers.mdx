@@ -1,23 +1,24 @@
 ---
-title: Bring your own JWT Providers
+title: Bring your own custom JWT Providers
 displayed_sidebar: docs
-description: "Bring your own JWT Providers | Documentation - Web3Auth"
+description: "Bring your own custom JWT Providers | Documentation - Web3Auth"
 image: "images/docs-meta-cards/documentation-card.png"
 ---
 
 ---
 
-Bring your own login providers with Web3Auth, using one of the custom login schemes (either via RSA or ECDSA signatures). This way, your users can
-still use your existing login provider.
+You can incorporate your login providers by utilizing one of the custom login schemes, including RSA or ECDSA signatures. By doing so, your users can
+continue using your current login provider.
 
 :::info
 
-For a Custom JWT based authentication services you need to use the [`Web3Auth Plug and Play No Modal SDK`](/sdk/web/no-modal/), since the Web3Auth
-Modal will only help you configure the social logins present within the Modal UI.
+For Custom JWT-based authentication services, you need to use the [`Web3Auth Plug and Play No Modal SDK`](/sdk/web/no-modal/) since the Web3Auth Modal
+will only help you configure the social logins within the Modal UI.
 
 :::
 
-The application should follow the JWT specification and use JWKS for signing the JWT, whose public keys are exposed by an endpoint.
+For signing the JWT, your application must follow the JWT specification and use the private key corresponding to the JWKS. And the public keys of the
+JWT should be exposed through an endpoint.
 
 :::caution
 
@@ -33,36 +34,21 @@ The application should follow the JWT specification and use JWKS for signing the
 
 To create a custom verifier for your JWT Providers, you'll need
 
-1. **JWT Verifier ID**
+1. **JWT Verifier ID**: JWT Verifier ID is the unique identifier to publicly represent a user on a verifier. e.g: `sub`, `email`, or even a custom
+   field of your JWT etc.
 
-   JWT Verifier ID is the unique identifier to publicly represent a user on a verifier.
+2. **JWK Endpoint**: An endpoint containing the JWKS used for signing the JWT.
 
-   e.g: sub, email, or even a custom field of your JWT etc.
-
-2. **JWK Endpoint**
-
-   An endpoint containing the JWKS used for signing.
-
-   > Output of jwk endpoint should contain same fields as the example given below.
-
-   ```json
+   ```json title="Your JWKS must have the following fields."
    {
      "keys": [
        {
          "kty": "RSA",
-         "e": "AQAB",
+         "kid": "1bb9605c36e{your_kid}69386830202b2d",
          "use": "sig",
-         "kid": "1bb9605c36e98e30117a69517569386830202b2d",
-         "n": "pAbfKmQ1ljT6yZcrdxaJxqsB7EupbBFcCLiMzmuFQMuk3y_g-vVPR8ZwTJbalwBxD-vUPmxmZAVok_iNthw1mnW0POg3kEwtl1qambgNKlaTeO8S3D-KGlUNV6bU-JXbyquds7v8bQjmIQ5oXhwIQt6x55bEyZTOCQDl3ZHy1XxeBWFyiPUXXnqkO51EFeVNiMi8Ihue16UY_lIizhivl2C_UwJ0Ymx9eWJ-nefPBo7Lr_fIxh81NaLMB6t5L8123RSIaaIcR_r1H_ZbEe9VNTfnGdYS3A0u-pNS_bm5jRSBo1qt01OFu0xEsjcO7-NESTBr8w8SUqGK86tg9oQz5w",
-         "alg": "RS256"
-       },
-       {
-         "kty": "RSA",
-         "e": "AQAB",
          "alg": "RS256",
-         "kid": "c53624af1600da79f31f0314f205d4f37ad6e246",
-         "use": "sig",
-         "n": "sinuWOLB7u0NoJ5Cy92AUqC7clH0ErjTjrI_b_dBbndg0rrFZryKfbvH4ncZW_yQ9izl2mjLsjsBzVwAyzWIn83QRhTtisdV7k9AkhSGdNu-cG_qPkedhqFPIn_uyBnVpxksp8clMRALetdHncUqcTfhIpngQp_JxFHle0fNsylU510fH-iZfphLO9mMpq6eB5QGynttgpdsLxLuXe1CffNQya0pmtLkU4ATfVdXV_bMqzRxxbDOnzIaLjzUJdsMuScCTjQX93xdfzEu-Vk6zOpdkrBRUuopgAX1e8NPQz150XEOTInkh0Mfhw0t1GeB7zbbjYJDmCgYTIW1g4teBw"
+         "n": "0x{your_n}",
+         "e": "0x{your_e}"
        }
      ]
    }
@@ -72,7 +58,7 @@ To create a custom verifier for your JWT Providers, you'll need
 
    :::caution
 
-   - Your JWT token header must contain the `kid` field and the payload data must contain `iat` field.
+   Your JWT header must contain the `kid` field and the payload data must contain `iat` field.
 
    :::
 
@@ -81,24 +67,19 @@ To create a custom verifier for your JWT Providers, you'll need
 
    Here are a couple of examples to be used in validation:
 
-   - Token Audience ( `aud` ):
+   - Token Audience ( `aud` ): The "aud" (audience) claim identifies the recipients for which the JWT is intended. Each principal intended to process
+     the JWT MUST identify itself with a value in the audience claim. If the principal processing the claim does not identify itself with a value in
+     the "aud" claim when this claim is present, then the JWT will be rejected. The `aud` value is a case-sensitive string containing a StringOrURI
+     value. The interpretation of audience values is generally application specific.
 
-     The "aud" (audience) claim identifies the recipients for which the JWT is intended. Each principal intended to process the JWT MUST identify
-     itself with a value in the audience claim. If the principal processing the claim does not identify itself with a value in the "aud" claim when
-     this claim is present, then the JWT will be rejected. The `aud` value is a case-sensitive string containing a StringOrURI value. The
-     interpretation of audience values is generally application specific.
+   - Token Issuer ( `iss` ): The issuing authority of the token. The `iss` value is a case-sensitive string containing a StringOrURI value. Use of
+     this claim is OPTIONAL.
 
-   - Token Issuer ( `iss` ):
+   - Token Subject ( `sub` ): The subject of the token. The `sub` value is a case-sensitive string containing a StringOrURI value. Use of this claim
+     is OPTIONAL.
 
-     The issuing authority of the token. The `iss` value is a case-sensitive string containing a StringOrURI value. Use of this claim is OPTIONAL.
-
-   - Token Subject ( `sub` ):
-
-     The subject of the token. The `sub` value is a case-sensitive string containing a StringOrURI value. Use of this claim is OPTIONAL.
-
-   - Token Email Verified ( `email_verified` ):
-
-     The email verified claim is a boolean value that indicates whether the email address has been verified.
+   - Token Email Verified ( `email_verified` ): The email verified claim is a boolean value that indicates whether the email address has been
+     verified.
 
 ## Using `jsonwebtoken`
 
@@ -127,8 +108,9 @@ import fs from "fs";
 // openssl genrsa -out privateKey.pem 512
 var privateKey = fs.readFileSync("privateKey.pem");
 // openssl rsa -in privateKey.pem -pubout -out publicKey.pem
-var publicKey = fs.readFileSync("publicKey.pem");
+// var publicKey = fs.readFileSync("publicKey.pem");
 // https://my-authz-server/.well-known/jwks.json -> publicKey to be used in Custom Authentication as JWK Endpoint.
+// Visit https://community.web3auth.io/t/how-to-create-jwks-from-pem-format/2718 to convert the public key to JWK format.
 
 var token = jwt.sign(
   {
@@ -145,19 +127,16 @@ var token = jwt.sign(
 );
 
 console.log(token);
-
-var decoded = jwt.verify(token, publicKey);
-console.log(decoded);
-
 // Step 4. open terminal inside the vscode and type
 // openssl genrsa -out privateKey.pem 512
 // This is the private key used to sign the JWT.
 // Step 5. inside the vscode terminal type
 // openssl rsa -in privateKey.pem -pubout -out publicKey.pem
-// This is the public key used to verify the JWT. This is the key that is exposed to the user.
+// This is the public key used to verify the JWT. This is the key that is used to make JWKS.
+// Visit https://community.web3auth.io/t/how-to-create-jwks-from-pem-format/2718 to convert the public key to JWK format.
 // Store it in gist, public folder or somewhere else that is accessible to the public.
 // like this enpoint: https://my-authz-server/.well-known/jwks.json
-// Step 6. Configure the JWT Verifier in Web3Auth Dashboard as per the above fields of JWT.
+// Step 6. Create the JWT Verifier in Web3Auth Dashboard as per the above fields of JWT.
 ```
 
 </TabItem>
@@ -174,12 +153,13 @@ import fs from "fs";
 // openssl ecparam -name secp256k1 -genkey -noout -out ec-secp256k1-privateKey.pem
 var privateKey = fs.readFileSync("ec-secp256k1-privateKey.pem");
 // openssl ec -in ec-secp256k1-privateKey.pem -pubout -out ec-secp256k1-publicKey.pem
-var publicKey = fs.readFileSync("ec-secp256k1-publicKey.pem");
+// var publicKey = fs.readFileSync("ec-secp256k1-publicKey.pem");
 // https://my-authz-server/.well-known/jwks.json -> publicKey to be used in Custom Authentication as JWK Endpoint.
+// Visit https://community.web3auth.io/t/how-to-create-jwks-from-pem-format/2718 to convert the public key to JWK format.
 
 var token = jwt.sign(
   {
-    sub: "Custom JWT(ECDSA) for Web3Auth Custom Auth",
+    sub: "faj2720i2fdG7NsqzncndijwnKrthDvq43",
     name: "Mohammad Shahbaz Alam",
     email: "shahbaz@web3auth.io",
     aud: "urn:my-resource-server", // -> to be used in Custom Authentication as JWT Field
@@ -192,30 +172,50 @@ var token = jwt.sign(
 );
 
 console.log(token);
-
-var decoded = jwt.verify(token, publicKey);
-console.log(decoded);
-
 // Step 4. open terminal inside the vscode and type
 // openssl ecparam -name secp256k1 -genkey -noout -out ec-secp256k1-privateKey.pem
 // This is the private key used to sign the JWT.
 // Step 5. inside the vscode terminal type
 // openssl ec -in ec-secp256k1-privateKey.pem -pubout -out ec-secp256k1-publicKey.pem
-// This is the public key used to verify the JWT. This is the key that is exposed to the user.
+// This is the public key used to verify the JWT. This is the key that is used to make JWKS.
+// Visit https://community.web3auth.io/t/how-to-create-jwks-from-pem-format/2718 to convert the public key to JWK format.
 // Store it in gist, public folder or somewhere else that is accessible to the public.
 // like this enpoint: https://my-authz-server/.well-known/jwks.json
-// Step 6. Configure the JWT Verifier in Web3Auth Dashboard as per the above fields of JWT.
+// Step 6. Create the JWT Verifier in Web3Auth Dashboard as per the above fields of JWT.
 ```
 
 </TabItem>
 
 </Tabs>
 
-See [this](#filled-custom-jwt-verifier) to setup the customer jwt verifier using the above JWT data on Web3Auth Dashboard.
+See [this](#filled-custom-jwt-verifier) to setup the custom jwt verifier using the above JWT data on Web3Auth Dashboard.
 
 ### Login with JWT (idToken - jsonwebtoken)
 
 ```js
+const web3auth = new Web3AuthNoModal({
+  clientId: "", // Web3Auth Client ID
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x5",
+  },
+  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua or celeste
+  useCoreKitKey: false,
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    uxMode: "redirect", // redirect or popup
+    loginConfig: {
+      jwt: {
+        verifier: "verifier-name", // name of the verifier created on Web3Auth Dashboard
+        typeOfLogin: "jwt",
+        clientId: "", // Web3Auth Client ID
+      },
+    },
+  },
+});
+
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {
@@ -264,11 +264,34 @@ console.log(protectedHeader);
 console.log(payload);
 ```
 
-See [this](#filled-custom-jwt-verifier) to setup the customer jwt verifier using the above JWT data on Web3Auth Dashboard.
+See [this](#filled-custom-jwt-verifier) to setup the custom jwt verifier using the above JWT data on Web3Auth Dashboard.
 
 ### Login with JWT (idToken - jose)
 
 ```js
+const web3auth = new Web3AuthNoModal({
+  clientId: "", // Web3Auth Client ID
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x5",
+  },
+  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua or celeste
+  useCoreKitKey: false,
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    uxMode: "redirect", // redirect or popup
+    loginConfig: {
+      jwt: {
+        verifier: "verifier-name", // name of the verifier created on Web3Auth Dashboard
+        typeOfLogin: "jwt",
+        clientId: "", // Web3Auth Client ID
+      },
+    },
+  },
+});
+
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {
@@ -320,11 +343,34 @@ passport.use(
 app.use(passport.initialize());
 ```
 
-See [this](#filled-custom-jwt-verifier) to setup the customer jwt verifier using the above JWT data on Web3Auth Dashboard.
+See [this](#filled-custom-jwt-verifier) to setup the custom jwt verifier using the above JWT data on Web3Auth Dashboard.
 
 ### Login with JWT (idToken - passport-jwt)
 
 ```js
+const web3auth = new Web3AuthNoModal({
+  clientId: "", // Web3Auth Client ID
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x5",
+  },
+  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua or celeste
+  useCoreKitKey: false,
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    uxMode: "redirect", // redirect or popup
+    loginConfig: {
+      jwt: {
+        verifier: "verifier-name", // name of the verifier created on Web3Auth Dashboard
+        typeOfLogin: "jwt",
+        clientId: "", // Web3Auth Client ID
+      },
+    },
+  },
+});
+
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {
