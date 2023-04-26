@@ -356,7 +356,7 @@ module.exports = {
               type: "category",
               label: "Providers",
               link: { type: "doc", id: "sdk/web/providers/providers" },
-              items: ["sdk/web/providers/evm", "sdk/web/providers/solana", "sdk/web/providers/other"],
+              items: ["sdk/web/providers/evm", "sdk/web/providers/solana", "sdk/web/providers/ripple", "sdk/web/providers/other"],
             },
             {
               type: "category",

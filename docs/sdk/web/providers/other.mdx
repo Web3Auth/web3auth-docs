@@ -42,7 +42,8 @@ const web3auth = new Web3Auth({
         ticker: "XTZ",
         tickerName: "tezos",
     }
-    clientId: "localhost-id" // get it from https://dashboard.web3auth.io
+    clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from https://dashboard.web3auth.io
+    web3AuthNetwork = "cyan", // testnet, mainnet, cyan, aqua or celeste
 });
 
 const openloginAdapter = new OpenloginAdapter({
@@ -55,7 +56,7 @@ web3auth.configureAdapter(openloginAdapter);
 
 await web3auth.initModal();
 
-web3auth.connect();
+await web3auth.connect();
 ```
 
 ## Usage
