@@ -1,20 +1,32 @@
 ---
-title: Ripple Provider
-displayed_sidebar: sdk
-description: "Ripple Provider | Documentation - Web3Auth"
+title: Integrate Web3Auth with the Ripple Blockchain
+sidebar_label: Ripple
+image: "content-hub/guides/banners/ripple.png"
+displayed_sidebar: docs
+keywords: [ripple, web3auth, authentication, blockchain]
+description: "Integrate Web3Auth with the Ripple Blockchain | Documentation - Web3Auth"
 ---
 
----
-
-The `@web3auth/xrpl-provider` is a Web3Auth provider that simplifies interaction with the Ripple Blockchain by serving as a wrapper around the
-[Ripple JSON RPC API](https://xrpl.org/request-formatting.html). It is used to interact with the Ripple blockchain and perform various operations like
-getting user's account, balance, signing a transaction, sending a transaction etc.
-
-## Initializing the provider
+import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
 
 ---
 
-```ts
+The Web3Auth Web SDK offers a standard provider for accessing the user's private key on non-EVM chains like [Ripple](https://ripple.com/). To enable a
+wider range of blockchain actions, you can use the `XrplPrivateKeyProvider` from `@web3auth/xrpl-provider`. This will provide an xrplProvider that can
+be injected back into the Openlogin adapter, allowing you to perform actions such as retrieving account information, obtaining balances, signing and
+sending transactions, and reading from and writing to smart contracts. Here are some methods to help you quickly get started.
+
+## Installation
+
+```bash npm2yarn
+npm install --save xrpl @web3auth/xrpl-provider @web3auth/modal @web3auth/openlogin-adapter @web3auth/base
+```
+
+## Initializing Provider
+
+---
+
+```js
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACESS } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -44,25 +56,20 @@ web3AuthInstance.configureAdapter(adapter);
 
 await web3auth.initModal();
 
-const rippleProvider = await web3auth.connect();
+const rippleProvider = await web3auth.connect(); // web3auth.provider
 ```
 
-## Usage
+## Get User Info
 
 ---
 
-After configuring the provider, you may utilize various functions from the `@web3auth/xrpl-provider` library for tasks such as obtaining the user's
-account, executing transactions, and signing messages. Below are a few sample use cases to assist you in getting started:
+<GetUserInfoSnippet />
 
-### Get User Account and Balance
+## Get Account and Balance
 
-#### `ripple_getAccounts`
+---
 
-The purpose of this function is to retrieve the details of the connected account.
-
-#### Example
-
-```ts
+```js
 try {
   // rippleProvider is from above
   const accounts = await rippleProvider.request<string[]>({
@@ -94,15 +101,11 @@ try {
 }
 ```
 
-### Sign a Transaction
+## Sign Transaction
 
-#### `ripple_signTransaction`
+---
 
-The function is utilized for signing transactions.
-
-#### Example
-
-```ts
+```js
 try {
   const accounts = await provider.request<string[]>({
     method: "ripple_getAccounts",
@@ -130,16 +133,11 @@ try {
 }
 ```
 
-### Sign and Send a Transaction
+## Send Transaction
 
-#### `ripple_submitTransaction`
+---
 
-The purpose of this function is to sign and broadcast a transaction onto the blockchain. Upon successful execution, it will return the signature of
-the broadcasted transaction.
-
-#### Example:
-
-```ts
+```js
 try {
   const accounts = await provider.request<string[]>({
     method: "ripple_getAccounts",
@@ -167,44 +165,25 @@ try {
 }
 ```
 
-### Sign a Message
+## Sign Message
 
-#### `ripple_signMessage`
+---
 
-This method is utilized for signing any message using the currently connected wallet.
-
-#### Example
-
-```ts
+```js
 try {
   const msg = "Hello world";
   const hexMsg = convertStringToHex(msg);
-  const txSign = await provider.request<{ signature: string }>({
-    method: "ripple_signMessage",
-    params: {
-      message: hexMsg,
-    },
-  });
+  const txSign =
+    (await provider.request) <
+    { signature: string } >
+    {
+      method: "ripple_signMessage",
+      params: {
+        message: hexMsg,
+      },
+    };
   console.log("txRes", txSign);
 } catch (error) {
   console.log("error", error);
-}
-```
-
-### Fetch User's Private Key
-
-#### `private_key`
-
-The purpose of this method is to retrieve the private key of the currently logged-in user.
-
-#### Example
-
-```ts
-//Assuming user is already logged in.
-async getPrivateKey() {
-	const privateKey = await web3auth.provider.request({
-		method: "private_key"
-	});
-	//Do something with privateKey
 }
 ```

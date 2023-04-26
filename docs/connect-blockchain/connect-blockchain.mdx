@@ -18,6 +18,7 @@ defaultValue="EVM"
 values={[
   { label: "EVM", value: "EVM" },
   { label: "Solana", value: "solana" },
+  { label: "Ripple", value: "ripple" },
   { label: "Other Chains", value: "other" },
 ]}
 >
@@ -83,6 +84,41 @@ console.log(userAccounts);
 ```
 
 </TabItem>
+<TabItem value="ripple">
+
+```js
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACESS } from "@web3auth/base";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { XrplPrivateKeyProvider, getXRPLChainConfig } from "@web3auth/xrpl-provider";
+
+const web3auth = new Web3Auth({
+chainConfig: {
+  chainNamespace: CHAIN_NAMESPACES.OTHER,
+},
+clientId = "YOUR_WEB3AUTH_CLIENT_ID", // get from https://dashboard.web3auth.io
+web3AuthNetwork = "cyan", // testnet, mainnet, cyan, aqua or celeste
+});
+
+const xrplProvider = new XrplPrivateKeyProvider({
+config: {
+  chainConfig: getXRPLChainConfig("testnet"), // devnet, testnet, mainnet
+},
+});
+
+const adapter = new OpenloginAdapter({
+adapterSettings: {
+  provider: xrplProvider, // <-- Injecting the Ripple provider
+},
+});
+web3AuthInstance.configureAdapter(adapter);
+
+await web3auth.initModal();
+
+const rippleProvider = await web3auth.connect();
+```
+
+</TabItem>
 <TabItem value="other">
 
 ```js
@@ -139,6 +175,7 @@ can follow our API Reference to know more about how to use these providers with 
 
 - [EIP1193 (EVM) Providers](/sdk/web/providers/evm)
 - [Solana Providers](/sdk/web/providers/solana)
+- [Ripple Providers](/sdk/web/providers/ripple)
 - [Other Providers](/sdk/web/providers/other)
 
 ## Adding JSON RPC APIs
