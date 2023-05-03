@@ -196,6 +196,7 @@ module.exports = {
           ],
         },
         "connect-blockchain/solana",
+        "connect-blockchain/ripple",
         {
           type: "category",
           label: "EVM Based Chains",
@@ -227,7 +228,6 @@ module.exports = {
             "connect-blockchain/immutablex",
             "connect-blockchain/polkadot",
             "connect-blockchain/aptos",
-            "connect-blockchain/ripple",
           ],
           collapsible: true,
           collapsed: false,
