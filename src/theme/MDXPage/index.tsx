@@ -20,6 +20,10 @@ export default function MDXPage(props: ComponentProps<typeof OriginalMDXPage>) {
     return <OriginalMDXPage {...props} />;
   }
 
+  // if (!permalink.includes(`/blog/`)) {
+  //   return <OriginalMDXPage {...props} />;
+  // }
+
   const { title, image, description, type, tags, author, date, wrapperClassName, communityPortalTopicId } = frontMatter;
   return (
     <Layout title={title} description={description} wrapperClassName={wrapperClassName}>

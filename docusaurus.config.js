@@ -162,6 +162,15 @@ const config = {
     path.resolve(__dirname, "plugins", "docusaurus-plugin-content-hub"),
     [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: "files" }],
     path.resolve(__dirname, "plugins", "node-polyfills"),
+    [path.resolve(__dirname, "plugins", "plugin-dynamic-route"), {
+      routes: [
+        {
+          path: '/docs/blog/',
+          exact: false,
+          component: '@site/src/components/BlogLayout/index',
+        },
+      ],
+    }],
     [
       "@docusaurus/plugin-client-redirects",
       {
