@@ -73,9 +73,6 @@ export default function ContentHub({ content }: Props) {
             coverImage {
               url
             }
-            content {
-              html
-            }
             author {
               name
               title

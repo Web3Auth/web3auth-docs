@@ -1,10 +1,10 @@
+/* eslint-disable react/no-danger */
+/* eslint-disable no-console */
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import { MDXProvider } from "@mdx-js/react";
-import MDXComponents from "@theme/MDXComponents";
-import OriginalMDXPage from "@theme-original/MDXPage";
 import { request } from "graphql-request";
 import { useEffect, useState } from "react";
 import { useRouteMatch } from "react-router-dom";
+import * as sanitizeHtml from "sanitize-html";
 
 import styles from "./styles.module.css";
 
@@ -13,9 +13,8 @@ type BlogDetailParams = {
   slug: string;
 };
 
-// Add a function to fetch data from the exact slug blog
-
 export default function BlogDetail() {
+  // const { content: MDXPageContent } = props;
   const { siteConfig } = useDocusaurusContext();
   const { customFields } = siteConfig;
   const [postData, setPostData] = useState<any>("Title");
@@ -39,6 +38,7 @@ export default function BlogDetail() {
             }
             content {
               html
+              markdown
             }
             author {
               name
@@ -50,7 +50,6 @@ export default function BlogDetail() {
         `
       )) as any;
 
-      // eslint-disable-next-line no-console
       console.log("post", post);
       setPostData(post);
     };
@@ -63,7 +62,7 @@ export default function BlogDetail() {
       <div className="container">
         <div className="margin-vert--lg padding-vert--lg">
           <div className="row">
-            <div className="col col--8 col--offset-1">
+            <div className="col col--12">
               <div className={styles.titleContainer}>
                 <img className={styles.cover} src={postData.coverImage?.url} alt="Cover" />
                 <div className={styles.titleContainer}>
@@ -86,14 +85,8 @@ export default function BlogDetail() {
                   </span>
                 </div>
               </div>
-              {/* <OriginalMDXPage content={postData?.content?.markdown} /> */}
-              <div dangerouslySetInnerHTML={{ __html: postData?.content?.html }} />
+              <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(postData?.content?.html) }} />
             </div>
-            {/* {MDXPageContent.toc && (
-          <div className="col col--3" style={{ paddingRight: "30px" }}>
-            <TOC toc={MDXPageContent.toc} />
-          </div>
-        )} */}
           </div>
         </div>
       </div>
