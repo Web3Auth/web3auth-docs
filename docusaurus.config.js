@@ -165,7 +165,7 @@ const config = {
     [path.resolve(__dirname, "plugins", "plugin-dynamic-route"), {
       routes: [
         {
-          path: '/docs/blog/',
+          path: '/docs/content-hub/blogs/',
           exact: false,
           component: '@site/src/components/BlogLayout/index',
         },
@@ -385,18 +385,26 @@ const config = {
           },
           {
             from: "/guides/",
-            to: "/content-hub",
+            to: "/content-hub/",
+          },
+          {
+            from: "/blogs/",
+            to: "/content-hub/",
           },
         ],
         createRedirects(existingPath) {
           if (existingPath.includes('/content-hub')) {
             return [
               existingPath.replace('/content-hub/guides', '/guides'),
+              existingPath.replace('/content-hub/guides', '/guide'),
+              existingPath.replace('/content-hub/blogs', '/blogs'),
+              existingPath.replace('/content-hub/blogs', '/blog'),
             ];
           }
           if (existingPath.includes('/sdk')) {
             return [
               existingPath.replace('/sdk', '/api-reference'),
+              existingPath.replace('/sdk', '/sdk-reference'),
             ];
           }
           if (existingPath.includes('/auth-provider-setup')) {

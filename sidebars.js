@@ -239,7 +239,7 @@ module.exports = {
     {
       type: "link",
       label: "Guides",
-      href: "/content-hub?type=guide",
+      href: "/content-hub?type=guides",
     },
     {
       type: "category",
