@@ -9,6 +9,7 @@ const githubEditUrl = `${githubRepoUrl}/edit/master`;
 const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
 const fs = require('fs');
+const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
 
 const resourcesDropdown = fs.readFileSync('./src/components/navDropdown/resources.html', 'utf-8');
 const helpDropdown = fs.readFileSync('./src/components/navDropdown/help.html', 'utf-8');
@@ -19,7 +20,7 @@ const config = {
   title: "Documentation",
   tagline: "Flexible, Universal Key Management", // TODO: Confirm with content team
   url: "https://web3auth.io",
-  baseUrl: process.env.REACT_APP_BASE_URL || "/docs/",
+  baseUrl,
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   onDuplicateRoutes: "warn",
@@ -131,7 +132,7 @@ const config = {
       schedule: "every 1 day at 3:00 pm",
     },
     customFields: {
-      baseUrl: process.env.REACT_APP_BASE_URL || "/docs/",
+      baseUrl,
     }
   },
   presets: [
@@ -165,7 +166,7 @@ const config = {
     [path.resolve(__dirname, "plugins", "plugin-dynamic-route"), {
       routes: [
         {
-          path: '/docs/content-hub/blogs/',
+          path: `${baseUrl}content-hub/blogs/`,
           exact: false,
           component: '@site/src/components/BlogLayout/index',
         },
