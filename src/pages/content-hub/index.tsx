@@ -78,6 +78,7 @@ export default function ContentHub({ content }: Props) {
               title
             }
             date
+            tags
           }
         }
         `
@@ -251,8 +252,7 @@ export default function ContentHub({ content }: Props) {
           </div>
         </Link>
 
-        {/* Will address tags later */}
-        {/* <div className={styles.tagContainer}>
+        <div className={styles.tagContainer}>
           {article.tags &&
             article.tags.map((tag) => {
               if (tags.includes(tag) || searchInput.split(" ").includes(tag)) {
@@ -275,7 +275,7 @@ export default function ContentHub({ content }: Props) {
               }
               return null;
             })}
-        </div> */}
+        </div>
         <span className={styles.date}>
           {article.author.name} | {article.date}
         </span>
