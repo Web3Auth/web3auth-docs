@@ -4,6 +4,8 @@ import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { request } from "graphql-request";
 import { useEffect, useState } from "react";
+import Bookmark from "react-bookmark";
+import ReactPlayer from "react-player";
 import { useRouteMatch } from "react-router-dom";
 import * as sanitizeHtml from "sanitize-html";
 
@@ -17,6 +19,13 @@ type BlogDetailParams = {
   slug: string;
 };
 
+declare global {
+  interface Window {
+    sidebar: any;
+    opera: any;
+  }
+}
+
 export default function BlogDetail() {
   // const { content: MDXPageContent } = props;
   const { siteConfig } = useDocusaurusContext();
@@ -27,8 +36,18 @@ export default function BlogDetail() {
   const [twitterLink, setTwitterLink] = useState<string>("");
   const [copyButtonText, setCopyButtonText] = useState<string>("Copy");
   const [postData, setPostData] = useState<any>("Title");
+  const [coverIsImage, setCoverIsImage] = useState<boolean>(true);
   const match = useRouteMatch();
   const { slug } = match.params as BlogDetailParams;
+
+  const checkImageURL = (imageUrl) => {
+    const img = new Image();
+    img.src = imageUrl;
+    return new Promise((resolve) => {
+      img.onerror = () => resolve(false);
+      img.onload = () => resolve(true);
+    });
+  };
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -72,6 +91,9 @@ export default function BlogDetail() {
       setPostData(post);
       const newDate = new Date(post.date);
       setDate(newDate.toLocaleString());
+      checkImageURL(post.coverImage.url)
+        .then((res) => setCoverIsImage(res as boolean))
+        .catch((err) => console.log(err));
     };
 
     fetchPost();
@@ -90,10 +112,6 @@ export default function BlogDetail() {
     setTimeout(() => {
       setCopyButtonText("Copy");
     }, 500);
-  };
-
-  const checkImageURL = (url) => {
-    return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
   };
 
   return (
@@ -165,12 +183,12 @@ export default function BlogDetail() {
                   </div>
                 </div>
               </div>
-              {checkImageURL ? (
+              {coverIsImage ? (
                 <img className={styles.cover} src={postData.coverImage?.url} alt="Cover" />
               ) : (
-                <video loop autoPlay muted className={styles.cover}>
-                  <source src={postData.coverImage?.url} />
-                </video>
+                <div className={styles.cover}>
+                  <ReactPlayer playing controls url={postData.coverImage?.url} />
+                </div>
               )}
               <div className={styles.content}>
                 <div className={styles.introduction}>{postData?.introduction}</div>
@@ -219,6 +237,17 @@ export default function BlogDetail() {
                     {copyButtonText}
                   </button>
                 </div>
+                <Bookmark className={styles.bookmarkButton} href={url} title={postData.title}>
+                  <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M1.58579 1.58579C1.21071 1.96086 1 2.46957 1 3V19L8 15.5L15 19V3C15 2.46957 14.7893 1.96086 14.4142 1.58579C14.0391 1.21071 13.5304 1 13 1H3C2.46957 1 1.96086 1.21071 1.58579 1.58579Z"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </Bookmark>
               </div>
               {postData.discourseTopicId && <DiscourseComment topicId={postData.discourseTopicId} />}
             </div>
