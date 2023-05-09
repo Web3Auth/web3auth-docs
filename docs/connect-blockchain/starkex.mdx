@@ -9,8 +9,6 @@ description: "Integrate Web3Auth with the StarkEx Blockchain | Documentation - W
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
 
----
-
 While using the Web3Auth Web SDK for a non EVM chain like [StarkEx](https://starkware.co/starkex/) you get a standard provider from which you can get
 the private key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting
 user's `account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a
@@ -31,8 +29,6 @@ npm install --save web3 bn.js elliptic @starkware-industries/starkex-js @starkwa
 ```
 
 ## Initializing Provider
-
----
 
 ```js
 import { Web3Auth } from "@web3auth/modal";
@@ -61,13 +57,9 @@ const web3authProvider = web3auth.connect(); // web3auth.provider
 
 ## Get User Info
 
----
-
 <GetUserInfoSnippet />
 
 ## Get Account and Key
-
----
 
 Once a user logs in, the Web3Auth SDK returns a provider. Even though StarkEx is a layer 2 on Ethereum, it is not EVM compatible. Hence to use it, one
 cannot use the native [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider that Web3Auth gives for EVM blockchains. Hence we need to directly
@@ -99,8 +91,6 @@ const startKey = account.pub.getX().toString("hex");
 ```
 
 ## Mint Request
-
----
 
 ```js
 import StarkExAPI from "@starkware-industries/starkex-js/dist/browser";
@@ -138,8 +128,6 @@ const response = await starkExAPI.gateway.mint(request);
 
 ## Deposit Request
 
----
-
 ```js
 import StarkExAPI from "@starkware-industries/starkex-js/dist/browser";
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
@@ -175,8 +163,6 @@ const response = await starkExAPI.gateway.deposit(request);
 ```
 
 ## Withdraw Request
-
----
 
 ```js
 import StarkExAPI from "@starkware-industries/starkex-js/dist/browser";

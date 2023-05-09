@@ -54,9 +54,11 @@ export default function MDXPage(props: ComponentProps<typeof OriginalMDXPage>) {
                     </span>
                   </div>
                 </div>
-                <MDXProvider components={MDXComponents}>
-                  <MDXPageContent />
-                </MDXProvider>
+                <div className="markdown">
+                  <MDXProvider components={MDXComponents}>
+                    <MDXPageContent />
+                  </MDXProvider>
+                </div>
                 {communityPortalTopicId && <DiscourseComment topicId={communityPortalTopicId} />}
               </div>
               {MDXPageContent.toc && (

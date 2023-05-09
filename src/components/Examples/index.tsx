@@ -93,8 +93,8 @@ export default function QuickNavigation() {
   };
 
   return (
-    <div>
-      <h2 className={styles.heading}>1. Select the Web3Auth Product you would like to build upon</h2>
+    <div className="markdown">
+      <h3 className={styles.heading}>1. Select the Web3Auth Product you would like to build upon</h3>
       <div className={styles.container}>
         <div className={product === pnp ? styles.selectedCard : styles.card} onClick={() => changeProduct(pnp)}>
           <div>
@@ -131,7 +131,7 @@ export default function QuickNavigation() {
           <p>Build on top of the Web3Auth infrastructural layer and build your own UX flows.</p>
         </div>
       </div>
-      <h2 className={styles.heading}>2. Select which SDK and platform you intend to use</h2>
+      <h3 className={styles.heading}>2. Select which SDK and platform you intend to use</h3>
       <div className={styles.container}>
         <div className={styles.list}>
           <h3>Select which SDK to use</h3>
