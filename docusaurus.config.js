@@ -166,7 +166,7 @@ const config = {
     [path.resolve(__dirname, "plugins", "plugin-dynamic-route"), {
       routes: [
         {
-          path: `${baseUrl}content-hub/blogs/`,
+          path: `${baseUrl}content-hub/blog/`,
           exact: false,
           component: '@site/src/components/BlogLayout/index',
         },
@@ -385,6 +385,14 @@ const config = {
             to: "/content-hub/guides/tkey",
           },
           {
+            from: "/guide/",
+            to: "/content-hub/",
+          },
+          {
+            from: "/blog/",
+            to: "/content-hub/",
+          },
+          {
             from: "/guides/",
             to: "/content-hub/",
           },
@@ -398,8 +406,8 @@ const config = {
             return [
               existingPath.replace('/content-hub/guides', '/guides'),
               existingPath.replace('/content-hub/guides', '/guide'),
-              existingPath.replace('/content-hub/blogs', '/blogs'),
-              existingPath.replace('/content-hub/blogs', '/blog'),
+              existingPath.replace('/content-hub/blog', '/blogs'),
+              existingPath.replace('/content-hub/blog', '/blog'),
             ];
           }
           if (existingPath.includes('/sdk')) {

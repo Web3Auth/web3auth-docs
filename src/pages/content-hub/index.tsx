@@ -31,7 +31,7 @@ export default function ContentHub({ content }: Props) {
   const { baseUrl, customFields } = siteConfig;
   const guide = "guides";
   const reference = "references";
-  const blogs = "blogs";
+  const blog = "blog";
   const [tabActive, setTabActive] = useState<string>(guide);
   const [blogPostMap, setBlogPostMap] = useState<any>([]);
   const [completeBlogPostMap, setCompleteBlogPostMap] = useState<any>([]);
@@ -41,8 +41,8 @@ export default function ContentHub({ content }: Props) {
     let type: string;
 
     if (!options.type) {
-      history.pushState({}, "", setURLfromOptions({ type: blogs }));
-      type = blogs;
+      history.pushState({}, "", setURLfromOptions({ type: blog }));
+      type = blog;
     } else {
       type = options.type;
     }
@@ -108,11 +108,11 @@ export default function ContentHub({ content }: Props) {
 
     if (tabActive === guide && guides.length === 0) {
       if (blogPosts.length > 0) {
-        setTabActive(blogs);
+        setTabActive(blog);
       } else if (sortedReferenceMap.length > 0) {
         setTabActive(reference);
       }
-    } else if (tabActive === blogs && blogPosts.length === 0) {
+    } else if (tabActive === blog && blogPosts.length === 0) {
       if (sortedGuides.length > 0) {
         setTabActive(guide);
       } else if (sortedReferenceMap.length > 0) {
@@ -122,7 +122,7 @@ export default function ContentHub({ content }: Props) {
       if (sortedGuides.length > 0) {
         setTabActive(guide);
       } else if (blogPosts.length > 0) {
-        setTabActive(blogs);
+        setTabActive(blog);
       }
     }
 
@@ -177,7 +177,7 @@ export default function ContentHub({ content }: Props) {
         inputKeywords.every((key) => item.tags.map((tag) => tag.includes(key.toLowerCase())).includes(true))
       );
     }
-    function searchFilterBlogs(item) {
+    function searchFilterBlog(item) {
       return (
         inputKeywords.every((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
         inputKeywords.every((key) => item.excerpt.toLowerCase().includes(key.toLowerCase())) ||
@@ -188,7 +188,7 @@ export default function ContentHub({ content }: Props) {
       filterByTags();
     } else {
       const finalSortedGuide = completeGuides.filter((item) => searchFilter(item));
-      const finalBlogPosts = completeBlogPostMap.filter((item) => searchFilterBlogs(item));
+      const finalBlogPosts = completeBlogPostMap.filter((item) => searchFilterBlog(item));
       const finalSortedReferenceMap = completeReferenceMap.filter((item) => searchFilter(item));
 
       setSortedGuides(finalSortedGuide);
@@ -245,7 +245,7 @@ export default function ContentHub({ content }: Props) {
     // console.log(article);
     return (
       <div key={article.id} className={styles.article}>
-        <Link to={`/content-hub/blogs/${article.slug}`} className={styles.articleContent}>
+        <Link to={`/content-hub/blog/${article.slug}`} className={styles.articleContent}>
           <img src={article.coverImage.url} alt="Blog Banner" />
           <div className={styles.contentContainer}>
             <div className={styles.pillContainer}>
@@ -338,7 +338,7 @@ export default function ContentHub({ content }: Props) {
             </button>
           </div>
           <div className={styles.buttonGroup}>
-            <div className={tabActive === blogs ? styles.activeTab : styles.tab} onClick={() => setTabActive(blogs)}>
+            <div className={tabActive === blog ? styles.activeTab : styles.tab} onClick={() => setTabActive(blog)}>
               <div className={styles.tabIconContainer}>
                 <svg viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -353,7 +353,7 @@ export default function ContentHub({ content }: Props) {
                   />
                 </svg>
               </div>
-              Blogs
+              Blog
             </div>
             <div className={tabActive === guide ? styles.activeTab : styles.tab} onClick={() => setTabActive(guide)}>
               <div className={styles.tabIconContainer}>
@@ -482,7 +482,7 @@ export default function ContentHub({ content }: Props) {
       )}
 
       <div className={styles.container}>
-        {tabActive === blogs && (
+        {tabActive === blog && (
           <>
             {blogPostMap.map((post) => renderBlog(post))}
             {blogPostMap.length === 0 && (

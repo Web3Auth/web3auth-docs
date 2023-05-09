@@ -95,7 +95,7 @@ export default function QuickNavigation() {
             </svg>
           </div>
           <div className={styles.cardContent}>
-            <h5>Blogs</h5>
+            <h5>Blog</h5>
             <p>
               Learn from the best in the wallet infra market. Product announcements, comparisons, thought leadership articles from Web3Auth just a
               click away.
