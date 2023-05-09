@@ -4,7 +4,6 @@ const githubOrg = "web3auth";
 const githubRepo = "web3auth-docs";
 const githubOrgUrl = `https://github.com/${githubOrg}`;
 const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
-const githubDiscussionsUrl = `${githubOrgUrl}/${githubOrg}/discussions`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
 const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
@@ -102,12 +101,12 @@ const config = {
             },
           ],
         },
-        {
-          position: "right",
-          href: githubOrgUrl,
-          className: "navbar-github-link",
-          "aria-label": "GitHub Organization",
-        },
+        // {
+        //   position: "right",
+        //   href: githubOrgUrl,
+        //   className: "navbar-github-link",
+        //   "aria-label": "GitHub Organization",
+        // },
         {
           type: "search",
           position: "right",
