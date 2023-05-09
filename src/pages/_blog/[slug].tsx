@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouteMatch } from "react-router-dom";
 import * as sanitizeHtml from "sanitize-html";
 
+import SEO from "../../components/SEO";
 import styles from "./styles.module.css";
 
 type BlogDetailParams = {
@@ -45,6 +46,14 @@ export default function BlogDetail() {
               title
             }
             date
+            seo {
+              keywords
+              image {
+                url
+              }
+              description
+              title
+            }
           }
         }
         `
@@ -59,6 +68,13 @@ export default function BlogDetail() {
 
   return (
     <main>
+      <SEO
+        title={postData.seo?.title}
+        description={postData.seo?.description}
+        image={postData.seo?.image?.url}
+        slug={`/blog/${postData.slug}`}
+        keywords={postData.seo?.keywords}
+      />
       <div className="container">
         <div className="margin-vert--lg padding-vert--lg">
           <div className="row">
