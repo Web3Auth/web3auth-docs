@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -282,7 +281,7 @@ export default function ContentHub({ content }: Props) {
             })}
         </div>
         <span className={styles.date}>
-          {article.author.name} | {article.date}
+          {article.author.name} | {new Date(article.date).toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" })}
         </span>
       </div>
     );

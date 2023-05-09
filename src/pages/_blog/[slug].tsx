@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
@@ -83,14 +82,25 @@ export default function BlogDetail() {
               title
             }
             discourseTopicId
+            updatedAt
           }
         }
         `
       )) as any;
 
       setPostData(post);
-      const newDate = new Date(post.date);
-      setDate(newDate.toLocaleString());
+      const newDate = new Date(post.updatedAt);
+      const options: Intl.DateTimeFormatOptions = {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+        timeZoneName: "long",
+      };
+      const formattedDate: string = newDate.toLocaleString("en-US", options);
+      setDate(formattedDate.replace(" at", ""));
       checkImageURL(post.coverImage.url)
         .then((res) => setCoverIsImage(res as boolean))
         .catch((err) => console.log(err));
