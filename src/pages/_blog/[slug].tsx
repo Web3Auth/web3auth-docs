@@ -58,21 +58,19 @@ export default function BlogDetail() {
             id
             title
             slug
+            date
             excerpt
-            publishedAt
+            introduction
             coverImage {
               url
             }
-            introduction
             content {
               html
-              markdown
             }
             author {
               name
               title
             }
-            date
             seo {
               keywords
               image {
@@ -82,14 +80,13 @@ export default function BlogDetail() {
               title
             }
             discourseTopicId
-            updatedAt
           }
         }
         `
       )) as any;
 
       setPostData(post);
-      const newDate = new Date(post.updatedAt);
+      const newDate = new Date(post.date);
       const options: Intl.DateTimeFormatOptions = {
         month: "long",
         day: "numeric",

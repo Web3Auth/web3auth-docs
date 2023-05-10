@@ -60,12 +60,12 @@ export default function ContentHub({ content }: Props) {
         customFields.REACT_HYGRAPHCMS_ENDPOINT as string,
         `
         {
-          posts {
+          posts(orderBy: date_DESC) {
             id
             title
             slug
             excerpt
-            publishedAt
+            date
             coverImage {
               url
             }
@@ -73,7 +73,6 @@ export default function ContentHub({ content }: Props) {
               name
               title
             }
-            date
             tags
           }
         }
