@@ -34,7 +34,7 @@ If you are using `create-react-app` version >= 5 you may run into issues buildin
 - Install `react-app-rewired` and the missing modules into your application
 
 ```bash npm2yarn
-npm install --save-dev react-app-rewired crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process
+npm install --save-dev react-app-rewired crypto-browserify stream-browserify browserify-zlib assert stream-http https-browserify os-browserify url buffer process
 ```
 
 - Create `config-overrides.js` in the root of your project folder with the content:
@@ -52,6 +52,7 @@ module.exports = function override(config) {
     https: require.resolve("https-browserify"),
     os: require.resolve("os-browserify"),
     url: require.resolve("url"),
+    zlib: require.resolve("browserify-zlib"),
   });
   config.resolve.fallback = fallback;
   config.plugins = (config.plugins || []).concat([
@@ -134,7 +135,7 @@ If you are using Angular version >11, you may run into issues building. The issu
 - Install the required dependencies within your angular project:
 
 ```bash npm2yarn
-npm install --save-dev crypto-browserify stream-browserify assert stream-http https-browserify os-browserify process buffer url
+npm install --save-dev crypto-browserify stream-browserify browserify-zlib assert stream-http https-browserify os-browserify process buffer url
 ```
 
 - Within `tsconfig.json` add the following `paths` in `compilerOptions` so Webpack can get the correct dependencies
@@ -150,6 +151,7 @@ npm install --save-dev crypto-browserify stream-browserify assert stream-http ht
             "https": ["./node_modules/https-browserify"],
             "os": ["./node_modules/os-browserify"],
             "process": ["./node_modules/process"],
+            "zlib": ["./node_modules/browserify-zlib"],
         }
     }
 }
