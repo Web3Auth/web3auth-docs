@@ -227,6 +227,7 @@ module.exports = {
             "connect-blockchain/immutablex",
             "connect-blockchain/polkadot",
             "connect-blockchain/aptos",
+            "connect-blockchain/cosmos",
           ],
           collapsible: true,
           collapsed: false,
