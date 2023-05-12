@@ -1,7 +1,7 @@
 ---
 title: Integrate Web3Auth with the Cosmos Blockchain
 sidebar_label: Cosmos
-image: "content-hub/guides/banners/logo-cosmos.png"
+image: "content-hub/guides/banners/cosmos.png"
 displayed_sidebar: docs
 keywords: [cosmos, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Cosmos Blockchain | Documentation - Web3Auth"
@@ -149,29 +149,6 @@ export default class CosmosRPC {
     this.provider = provider;
   }
 
-  async getPrivateKey(): Promise<any> {
-    try {
-      return await this.provider.request({
-        method: "private_key",
-      });
-    } catch (error) {
-      return error as string;
-    }
-  }
-
-  async getChainId(): Promise<string> {
-    try {
-      const client = await StargateClient.connect(rpc);
-
-      // Get the connected Chain's ID
-      const chainId = await client.getChainId();
-
-      return chainId.toString();
-    } catch (error) {
-      return error as string;
-    }
-  }
-
   async getAccounts(): Promise<any> {
     try {
       const privateKey = Buffer.from(await this.getPrivateKey(), "hex");
@@ -205,42 +182,6 @@ export default class CosmosRPC {
 
   constructor(provider: SafeEventEmitterProvider) {
     this.provider = provider;
-  }
-
-  async getPrivateKey(): Promise<any> {
-    try {
-      return await this.provider.request({
-        method: "private_key",
-      });
-    } catch (error) {
-      return error as string;
-    }
-  }
-
-  async getChainId(): Promise<string> {
-    try {
-      const client = await StargateClient.connect(rpc);
-
-      // Get the connected Chain's ID
-      const chainId = await client.getChainId();
-
-      return chainId.toString();
-    } catch (error) {
-      return error as string;
-    }
-  }
-
-  async getAccounts(): Promise<any> {
-    try {
-      const privateKey = Buffer.from(await this.getPrivateKey(), "hex");
-      const walletPromise = await DirectSecp256k1Wallet.fromKey(
-        privateKey,
-        "cosmos"
-      );
-      return (await walletPromise.getAccounts())[0].address;
-    } catch (error) {
-      return error;
-    }
   }
 
   async getBalance(): Promise<any> {
@@ -278,59 +219,6 @@ export default class CosmosRPC {
 
   constructor(provider: SafeEventEmitterProvider) {
     this.provider = provider;
-  }
-
-  async getPrivateKey(): Promise<any> {
-    try {
-      return await this.provider.request({
-        method: "private_key",
-      });
-    } catch (error) {
-      return error as string;
-    }
-  }
-
-  async getChainId(): Promise<string> {
-    try {
-      const client = await StargateClient.connect(rpc);
-
-      // Get the connected Chain's ID
-      const chainId = await client.getChainId();
-
-      return chainId.toString();
-    } catch (error) {
-      return error as string;
-    }
-  }
-
-  async getAccounts(): Promise<any> {
-    try {
-      const privateKey = Buffer.from(await this.getPrivateKey(), "hex");
-      const walletPromise = await DirectSecp256k1Wallet.fromKey(
-        privateKey,
-        "cosmos"
-      );
-      return (await walletPromise.getAccounts())[0].address;
-    } catch (error) {
-      return error;
-    }
-  }
-
-  async getBalance(): Promise<any> {
-    try {
-      const client = await StargateClient.connect(rpc);
-
-      const privateKey = Buffer.from(await this.getPrivateKey(), "hex");
-      const walletPromise = await DirectSecp256k1Wallet.fromKey(
-        privateKey,
-        "cosmos"
-      );
-      const address = (await walletPromise.getAccounts())[0].address;
-      // Get user's balance in uAtom
-      return await client.getAllBalances(address);
-    } catch (error) {
-      return error as string;
-    }
   }
 
   async sendTransaction(): Promise<any> {
