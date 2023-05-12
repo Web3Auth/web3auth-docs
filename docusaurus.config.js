@@ -4,11 +4,11 @@ const githubOrg = "web3auth";
 const githubRepo = "web3auth-docs";
 const githubOrgUrl = `https://github.com/${githubOrg}`;
 const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
-const githubDiscussionsUrl = `${githubOrgUrl}/${githubOrg}/discussions`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
 const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
 const fs = require('fs');
+const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
 
 const resourcesDropdown = fs.readFileSync('./src/components/navDropdown/resources.html', 'utf-8');
 const helpDropdown = fs.readFileSync('./src/components/navDropdown/help.html', 'utf-8');
@@ -19,7 +19,7 @@ const config = {
   title: "Documentation",
   tagline: "Flexible, Universal Key Management", // TODO: Confirm with content team
   url: "https://web3auth.io",
-  baseUrl: process.env.REACT_APP_BASE_URL || "/docs/",
+  baseUrl,
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   onDuplicateRoutes: "warn",
@@ -101,12 +101,12 @@ const config = {
             },
           ],
         },
-        {
-          position: "right",
-          href: githubOrgUrl,
-          className: "navbar-github-link",
-          "aria-label": "GitHub Organization",
-        },
+        // {
+        //   position: "right",
+        //   href: githubOrgUrl,
+        //   className: "navbar-github-link",
+        //   "aria-label": "GitHub Organization",
+        // },
         {
           type: "search",
           position: "right",
@@ -131,7 +131,7 @@ const config = {
       schedule: "every 1 day at 3:00 pm",
     },
     customFields: {
-      baseUrl: process.env.REACT_APP_BASE_URL || "/docs/",
+      baseUrl,
     }
   },
   presets: [
@@ -162,6 +162,15 @@ const config = {
     path.resolve(__dirname, "plugins", "docusaurus-plugin-content-hub"),
     [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: "files" }],
     path.resolve(__dirname, "plugins", "node-polyfills"),
+    [path.resolve(__dirname, "plugins", "plugin-dynamic-route"), {
+      routes: [
+        {
+          path: `${baseUrl}content-hub/blog/`,
+          exact: false,
+          component: '@site/src/components/BlogLayout/index',
+        },
+      ],
+    }],
     [
       "@docusaurus/plugin-client-redirects",
       {
@@ -375,19 +384,35 @@ const config = {
             to: "/content-hub/guides/tkey",
           },
           {
+            from: "/guide/",
+            to: "/content-hub/",
+          },
+          {
+            from: "/blog/",
+            to: "/content-hub/",
+          },
+          {
             from: "/guides/",
-            to: "/content-hub",
+            to: "/content-hub/",
+          },
+          {
+            from: "/blogs/",
+            to: "/content-hub/",
           },
         ],
         createRedirects(existingPath) {
           if (existingPath.includes('/content-hub')) {
             return [
               existingPath.replace('/content-hub/guides', '/guides'),
+              existingPath.replace('/content-hub/guides', '/guide'),
+              existingPath.replace('/content-hub/blog', '/blogs'),
+              existingPath.replace('/content-hub/blog', '/blog'),
             ];
           }
           if (existingPath.includes('/sdk')) {
             return [
               existingPath.replace('/sdk', '/api-reference'),
+              existingPath.replace('/sdk', '/sdk-reference'),
             ];
           }
           if (existingPath.includes('/auth-provider-setup')) {
@@ -426,6 +451,9 @@ const config = {
       crossorigin: 'anonymous',
     },
   ],
+  customFields: {
+    'REACT_HYGRAPHCMS_ENDPOINT': process.env.REACT_HYGRAPHCMS_ENDPOINT,
+  },
 };
 
 async function createConfig() {

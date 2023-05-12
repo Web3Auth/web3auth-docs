@@ -99,8 +99,6 @@ await web3auth.authenticateUser();
 
 ### Sample `idToken` payload
 
----
-
 ```json
 {
   "iat": 1655835494,
@@ -138,8 +136,6 @@ await web3auth.authenticateUser();
 | `wallets`           | `array`  | list of wallets for which this token is issued: <ul><li>`curve` "secp256k1" (default) or "ed25519" <br/> You can specify which curve you want use for the encoded public key in the login parameters<br/></li><li>`type` "web3auth_key" incase of social logins</li><li>`public_key` compressed public key derived based on the specified curve </li></ul> |
 
 ## Verifying JWT Token (idToken)
-
----
 
 In order to verify the JWT Token(`idToken`) you need the compressed **app_pub_key** (derived from _**app_scoped_privkey**_) and the `idToken` obtained
 from the `userInfo()` or `authenticateUser()`.
@@ -226,8 +222,6 @@ if ((jwtDecoded.payload as any).wallets[0].public_key === app_pub_key) {
 ```
 
 ## Changing the Public Key Curve
-
----
 
 :::info
 

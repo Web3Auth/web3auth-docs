@@ -9,8 +9,6 @@ description: "Integrate Web3Auth with the Aptos Blockchain | Documentation - Web
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
 
----
-
 While using the Web3Auth Web SDK for a non EVM chain like [Aptos](https://aptos.dev/) you get a standard provider from which you can get the private
 key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting user's
 `account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a few
@@ -32,8 +30,6 @@ npm install --save aptos
 
 ## Initializing Provider
 
----
-
 ```js
 import { Web3Auth } from "@web3auth/modal";
 
@@ -52,13 +48,9 @@ const web3authProvider = web3auth.connect(); // web3auth.provider
 
 ## Get User Info
 
----
-
 <GetUserInfoSnippet />
 
 ## Get Account and Key
-
----
 
 Once a user logs in, the Web3Auth SDK returns a provider. Since Web3Auth doesn't have a native provider for Aptos, we need to directly use the private
 key to make the RPC calls.
@@ -87,8 +79,6 @@ const aptosAccountAddress = aptosAccount.address();
 
 ## Get Balance
 
----
-
 ```js
 import { AptosAccount, AptosClient } from "aptos";
 
@@ -115,8 +105,6 @@ let balance = parseInt((accountResource?.data as any).coin.value);
 ```
 
 ## Send Transaction
-
----
 
 ```js
 import { AptosAccount, FaucetClient,  AptosClient } from "aptos";

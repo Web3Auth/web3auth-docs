@@ -9,8 +9,6 @@ description: "Integrate Web3Auth with the Near Protocol | Documentation - Web3Au
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
 
----
-
 While using the Web3Auth Web SDK for a non-EVM chain like [NEAR](https://near.org/), you get a standard provider from which you can get the user's
 private key. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting a user's
 `account`, fetching `balance`, performing `send transaction`, etc. To help you get started, we've outlined some methods for you to use.
@@ -22,8 +20,6 @@ npm install --save near-api-js
 ```
 
 ## Initializing Provider
-
----
 
 ```js
 import { Web3Auth } from "@web3auth/modal";
@@ -43,13 +39,9 @@ const web3authProvider = web3auth.connect(); // web3auth.provider
 
 ## Get User Info
 
----
-
 <GetUserInfoSnippet />
 
 ## Get Key Pair and Account
-
----
 
 After a user logs in, they receive a provider from the Web3Auth SDK. However, there is no native provider for Near in Web3Auth, so we must use the
 private key to make RPC calls directly.
@@ -89,8 +81,6 @@ const accountId = utils.serialize.base_decode(pk58.split(":")[1]).toString("hex"
 
 ## Get Balance
 
----
-
 ```js
 import { connect, keyStores, utils } from "near-api-js";
 /*
@@ -113,8 +103,6 @@ const availableBalance = utils.format.formatNearAmount(accountBalance.available)
 ```
 
 ## Send Transaction
-
----
 
 ```js
 import { connect, keyStores, utils } from "near-api-js";

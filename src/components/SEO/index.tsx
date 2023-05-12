@@ -2,7 +2,7 @@ import Head from "@docusaurus/Head";
 
 export default function SEO(props) {
   // eslint-disable-next-line react/prop-types
-  const { title, description, image, slug } = props;
+  const { title, description, image, slug, keywords } = props;
 
   return (
     <Head>
@@ -16,10 +16,17 @@ export default function SEO(props) {
         />
       )}
 
-      <meta
-        name="keywords"
-        content="web3auth, blockchain, web3, web3.js, ethers.js, solana, ethereum, passwordless, passwordless magic link, multi party computation, tkey, torus, web3 auth, auth"
-      />
+      {/* Add keywords to meta from an array of keywords */}
+      {keywords ? (
+        keywords.length > 0 && (
+          <meta name="keywords" content={`web3auth, blockchain, solana, ethereum, multi party computation, ${keywords.join(", ")}`} />
+        )
+      ) : (
+        <meta
+          name="keywords"
+          content="web3auth, blockchain, web3, web3.js, ethers.js, solana, ethereum, passwordless, passwordless magic link, multi party computation, tkey, torus, web3 auth, auth"
+        />
+      )}
 
       {/* Open Graph Meta Tags  */}
       <meta property="og:site_name" content="Web3Auth" />

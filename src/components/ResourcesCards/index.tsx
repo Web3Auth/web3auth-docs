@@ -1,8 +1,11 @@
 import Link from "@docusaurus/Link";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 import styles from "./styles.module.css";
 
 export default function QuickNavigation() {
+  const { siteConfig } = useDocusaurusContext();
+  const { baseUrl } = siteConfig;
   return (
     <div className={styles.container}>
       <h2 className={styles.heading}>Resources</h2>
@@ -11,7 +14,7 @@ export default function QuickNavigation() {
         different aspects of web3 authentication and make your own customised integration.
       </p>
       <div className={styles.cardContainer}>
-        <Link className={styles.card} to="/docs/dashboard-setup/">
+        <Link className={styles.card} to={`${baseUrl}dashboard-setup/`}>
           <div className={styles.cardIconContainer}>
             <svg viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
               <path
@@ -27,7 +30,7 @@ export default function QuickNavigation() {
             <p>Get Started with our developer dashboard</p>
           </div>
         </Link>
-        <Link className={styles.card} to="/docs/auth-provider-setup/">
+        <Link className={styles.card} to={`${baseUrl}auth-provider-setup/`}>
           <div className={styles.cardIconContainer}>
             <svg className={styles.cardIcon} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -45,7 +48,7 @@ export default function QuickNavigation() {
         </Link>
       </div>
       <div className={styles.cardContainer}>
-        <Link className={styles.card} to="/docs/connect-blockchain/">
+        <Link className={styles.card} to={`${baseUrl}connect-blockchain/`}>
           <div className={styles.cardIconContainer}>
             <svg className={styles.cardIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -61,7 +64,7 @@ export default function QuickNavigation() {
             <p>Connect to the blockchain of your choice.</p>
           </div>
         </Link>
-        <Link className={styles.card} to="/docs/examples">
+        <Link className={styles.card} to={`${baseUrl}examples`}>
           <div className={styles.cardIconContainer}>
             <svg viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
               <path
@@ -95,14 +98,14 @@ export default function QuickNavigation() {
             </svg>
           </div>
           <div className={styles.cardContent}>
-            <h5>Blogs</h5>
+            <h5>Blog</h5>
             <p>
               Learn from the best in the wallet infra market. Product announcements, comparisons, thought leadership articles from Web3Auth just a
               click away.
             </p>
           </div>
         </Link>
-        <Link className={styles.card} to="/docs/content-hub?type=guide">
+        <Link className={styles.card} to={`${baseUrl}content-hub?type=guide`}>
           <div className={styles.cardIconContainer}>
             <svg viewBox="0 0 57 56" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
               <path
