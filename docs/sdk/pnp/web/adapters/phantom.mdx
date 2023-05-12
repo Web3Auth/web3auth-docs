@@ -1,0 +1,159 @@
+---
+title: phantom-adapter
+sidebar_label: Plantom Wallet
+displayed_sidebar: sdk
+description: "Web Adapters - Phantom | Documentation - Web3Auth"
+---
+
+# Phantom Adapter
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+## [`@web3auth/phantom-adapter`](https://npmjs.com/package/@web3auth/phantom-adapter)
+
+Phantom adapter allows you to connect with phantom wallet. You can read more about phantom wallet here.(https://docs.phantom.app/).
+
+## Basic Details
+
+#### Adapter Name: `phantom`
+
+#### Package Name: [`@web3auth/phantom-adapter`](https://npmjs.com/package/@web3auth/phantom-adapter)
+
+#### authMode: `DAPP`
+
+#### chainNamespace: `SOLANA`
+
+#### Default: `YES`
+
+## Installation
+
+```bash npm2yarn
+npm install --save @web3auth/phantom-adapter
+```
+
+## Arguments
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter          | type                     |
+| ------------------ | ------------------------ |
+| `chainConfig`      | `CustomChainConfig`      |
+| `clientId?`        | `string`                 |
+| `sessionTime?`     | `number`                 |
+| `web3AuthNetwork?` | `OPENLOGIN_NETWORK_TYPE` |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+interface PhantomAdapterOptions {
+  chainConfig?: CustomChainConfig;
+  clientId?: string;
+  sessionTime?: number;
+  web3AuthNetwork?: OPENLOGIN_NETWORK_TYPE;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Custom Chain Config
+
+#### `chainConfig`
+
+:::caution
+
+While you can pass your `chainConfig`, it is not required since you can directly pass it over to the `Web3Auth`/ `Web3AuthNoModal` configuration while
+instantiating it.
+
+Read more about it in their respective sections:
+
+- [`web3auth/modal`](/sdk/pnp/web/modal/initialize#adding-a-custom-chain-configuration)
+- [`web3auth/no-modal`](/sdk/pnp/web/no-modal/initialize#adding-a-custom-chain-configuration)
+
+:::
+
+:::warning
+
+If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` passed over to the `Web3Auth`/ `Web3AuthNoModal` constructor.
+
+:::
+
+## Change Adapter Settings
+
+You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter instance.
+
+### Arguments
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter          | type                     |
+| ------------------ | ------------------------ |
+| `clientId?`        | `string`                 |
+| `sessionTime?`     | `number`                 |
+| `chainConfig?`     | `CustomChainConfig`      |
+| `web3AuthNetwork?` | `OPENLOGIN_NETWORK_TYPE` |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+interface BaseAdapterSettings {
+  clientId?: string;
+  sessionTime?: number;
+  chainConfig?: CustomChainConfig;
+  web3AuthNetwork?: OPENLOGIN_NETWORK_TYPE;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+## Example
+
+```ts
+import { PhantomAdapter } from "@web3auth/phantom-adapter";
+const phantomAdapter = new PhantomAdapter({
+  clientId,
+  sessionTime: 3600, // 1 hour in seconds
+  web3AuthNetwork: "cyan",
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.SOLANA,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+});
+web3auth.configureAdapter(phantomAdapter);
+
+// You can also change the adapter settings by calling the setAdapterSettings() function on the adapter instance.
+phantomAdapter.setAdapterSettings({
+  sessionTime: 86400, // 1 day in seconds
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.SOLANA,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/solana", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+  web3AuthNetwork: "cyan",
+});
+```
