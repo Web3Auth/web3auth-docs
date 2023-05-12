@@ -212,6 +212,12 @@ export const PNPModalOther = [
         icon: "logo-aptos.png",
         path: `${baseURL}aptos/react-aptos-modal-example`,
       },
+      {
+        key: "react-near-modal-example",
+        title: "Near",
+        icon: "logo-near.png",
+        path: `${baseURL}near/react-near-modal-example`,
+      },
     ],
   },
 ];
