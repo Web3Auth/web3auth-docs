@@ -28,8 +28,8 @@ export default function MDXPage(props: ComponentProps<typeof OriginalMDXPage>) {
 
   const { title, image, description, type, tags, author, date, wrapperClassName, communityPortalTopicId } = frontMatter;
   const url = `https://web3auth.io${permalink}`;
-  const facebookLink = `https://www.facebook.com/sharer/sharer.php?${permalink}`;
-  const twitterLink = `http://twitter.com/share?text=Checkout ${title} published by @Web3Auth&url=${permalink}`;
+  const facebookLink = `https://www.facebook.com/sharer/sharer.php?${url}`;
+  const twitterLink = `http://twitter.com/share?text=Checkout ${title} published by @Web3Auth&url=${url}`;
 
   const handleClick = () => {
     navigator.clipboard.writeText(url);
