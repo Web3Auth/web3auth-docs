@@ -138,22 +138,21 @@ export default function QuickNavigation() {
           <select value={sdk} onChange={changeSDK}>
             {product === pnp
               ? pnplist.map((option) => (
-                  <option value={option.value} key={option.value}>
-                    {option.label}
-                  </option>
-                ))
+                <option value={option.value} key={option.value}>
+                  {option.label}
+                </option>
+              ))
               : corekitlist.map((option) => (
-                  <option value={option.value} key={option.value}>
-                    {option.label}
-                  </option>
-                ))}
+                <option value={option.value} key={option.value}>
+                  {option.label}
+                </option>
+              ))}
           </select>
         </div>
       </div>
       <br />
       <br />
       <h1>Sample Apps using Web3Auth {sdk}</h1>
-      <hr />
       {sdk === pnpwebmodal ? (
         <>
           <h2>EVM Chain Examples</h2>
