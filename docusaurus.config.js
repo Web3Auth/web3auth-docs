@@ -484,7 +484,9 @@ const config = {
     },
   ],
   customFields: {
-    'REACT_HYGRAPHCMS_ENDPOINT': process.env.REACT_HYGRAPHCMS_ENDPOINT,
+    // 'REACT_HYGRAPHCMS_ENDPOINT': process.env.REACT_HYGRAPHCMS_ENDPOINT,
+    'REACT_CONTENTFUL_SPACE': process.env.REACT_CONTENTFUL_SPACE,
+    'REACT_CONTENTFUL_TOKEN': process.env.REACT_CONTENTFUL_TOKEN,
   },
 };
 

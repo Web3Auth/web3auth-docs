@@ -1,16 +1,14 @@
-/* eslint-disable no-console */
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import { BLOCKS } from "@contentful/rich-text-types";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import { request } from "graphql-request";
 import { useEffect, useState } from "react";
 import Bookmark from "react-bookmark";
-import ReactPlayer from "react-player";
+// import ReactPlayer from "react-player";
 import { useRouteMatch } from "react-router-dom";
-import * as sanitizeHtml from "sanitize-html";
 
 import DiscourseComment from "../../components/DiscourseComment";
 import SEO from "../../components/SEO";
-// import * as sanitizeHtml from "sanitize-html";
 import styles from "./styles.module.css";
 
 type BlogDetailParams = {
@@ -25,8 +23,29 @@ declare global {
   }
 }
 
+// https://www.contentful.com/blog/rendering-linked-assets-entries-in-contentful/
+const renderOptions = (links) => {
+  // create an asset map
+  const assetMap = new Map();
+  // loop through the assets and add them to the map
+  for (const asset of links.assets.block) {
+    assetMap.set(asset.sys.id, asset);
+  }
+
+  return {
+    renderNode: {
+      [BLOCKS.EMBEDDED_ASSET]: (node) => {
+        // find the asset in the assetMap by ID
+        const asset = assetMap.get((node as any).data.target.sys.id);
+
+        // render the asset accordingly
+        return <img src={asset.url} alt={asset.description} />;
+      },
+    },
+  };
+};
+
 export default function BlogDetail() {
-  // const { content: MDXPageContent } = props;
   const { siteConfig } = useDocusaurusContext();
   const { customFields } = siteConfig;
   const [date, setDate] = useState<string>("");
@@ -35,55 +54,80 @@ export default function BlogDetail() {
   const [twitterLink, setTwitterLink] = useState<string>("");
   const [copyButtonText, setCopyButtonText] = useState<string>("Copy");
   const [postData, setPostData] = useState<any>("Title");
-  const [coverIsImage, setCoverIsImage] = useState<boolean>(true);
   const match = useRouteMatch();
   const { slug } = match.params as BlogDetailParams;
 
-  const checkImageURL = (imageUrl) => {
-    const img = new Image();
-    img.src = imageUrl;
-    return new Promise((resolve) => {
-      img.onerror = () => resolve(false);
-      img.onload = () => resolve(true);
-    });
+  const apiCall = async (query) => {
+    const fetchUrl = `https://graphql.contentful.com/content/v1/spaces/${customFields.REACT_CONTENTFUL_SPACE}/environments/master`;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${customFields.REACT_CONTENTFUL_TOKEN}`,
+      },
+      body: JSON.stringify({ query }),
+    };
+    return fetch(fetchUrl, options);
   };
 
   useEffect(() => {
     const fetchPost = async () => {
-      const { post } = (await request(
-        customFields.REACT_HYGRAPHCMS_ENDPOINT as string,
-        `
-        {
-          post(where: { slug: "${slug}" }) {
-            id
-            title
-            slug
-            date
-            excerpt
-            introduction
-            coverImage {
-              url
-            }
-            content {
-              html
-            }
-            author {
-              name
+      const query = `
+        query {
+          pageBlogPostCollection(
+            where: { slug: "${slug}" }
+          ) {
+            items {
+              sys {
+                id
+              }
+              featured
               title
-            }
-            seo {
-              keywords
-              image {
+              slug
+              date
+              excerpt
+              introduction
+              content {
+                json
+                links {
+                  __typename
+                  assets {
+                    block {
+                      sys {
+                        id
+                      }
+                      url
+                      title
+                      width
+                      height
+                      description
+                    }
+                  }
+                }
+              }
+              coverImage {
                 url
               }
-              description
-              title
+              author {
+                name
+              }
+              tags
+              discourseTopicId
+              seo {
+                title
+                description
+                keywords
+                image {
+                  url
+                }
+              }
             }
-            discourseTopicId
           }
         }
-        `
-      )) as any;
+      `;
+      const response = await apiCall(query);
+      const { data } = await response.json();
+      const post = data.pageBlogPostCollection.items[0];
 
       setPostData(post);
       const newDate = new Date(post.date);
@@ -98,9 +142,6 @@ export default function BlogDetail() {
       };
       const formattedDate: string = newDate.toLocaleString("en-US", options);
       setDate(formattedDate.replace(" at", ""));
-      checkImageURL(post.coverImage.url)
-        .then((res) => setCoverIsImage(res as boolean))
-        .catch((err) => console.log(err));
     };
 
     fetchPost();
@@ -123,13 +164,15 @@ export default function BlogDetail() {
 
   return (
     <main>
-      <SEO
-        title={postData.seo?.title}
-        description={postData.seo?.description}
-        image={postData.seo?.image?.url}
-        slug={`/blog/${postData.slug}`}
-        keywords={postData.seo?.keywords}
-      />
+      {postData.seo && (
+        <SEO
+          title={postData.seo?.title}
+          description={postData.seo?.description}
+          image={postData.seo?.image?.url}
+          slug={`/blog/${postData.slug}`}
+          keywords={postData.seo?.keywords}
+        />
+      )}
       <div className="container">
         <div className="margin-vert--lg padding-vert--lg">
           <div className="row">
@@ -190,16 +233,12 @@ export default function BlogDetail() {
                   </div>
                 </div>
               </div>
-              {coverIsImage ? (
-                <img className={styles.cover} src={postData.coverImage?.url} alt="Cover" />
-              ) : (
-                <div className={styles.cover}>
-                  <ReactPlayer playing controls url={postData.coverImage?.url} />
-                </div>
-              )}
+              <img className={styles.cover} src={postData.coverImage?.url} alt={`${postData.title} cover`} />
               <div className={styles.content}>
                 <div className={styles.introduction}>{postData?.introduction}</div>
-                <div className="markdown" dangerouslySetInnerHTML={{ __html: sanitizeHtml(postData?.content?.html) }} />
+                {postData.content && (
+                  <div className="markdown">{documentToReactComponents(postData.content.json, renderOptions(postData.content.links))}</div>
+                )}
               </div>
               <div className={styles.bottomMenu}>
                 <div className={styles.socialButtonContainer}>
