@@ -152,7 +152,8 @@ export default function BlogDetail() {
         timeZoneName: "short",
       };
       const formattedDate: string = newDate.toLocaleString("en-US", options);
-      setDate(formattedDate.replace(" at", ""));
+      const d = formattedDate.split("at ");
+      setDate(`${d[1]} ${d[0]}`); // 4:00 PM GMT+5:30 May 16, 2023
     };
 
     fetchPost();
