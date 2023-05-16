@@ -152,8 +152,8 @@ export default function BlogDetail() {
         timeZoneName: "short",
       };
       const formattedDate: string = newDate.toLocaleString("en-US", options);
-      const d = formattedDate.split("at ");
-      setDate(`${d[1]} ${d[0]}`); // 4:00 PM GMT+5:30 May 16, 2023
+      const d = formattedDate.split(" at ");
+      setDate(`${d[0]}, ${d[1]}`); // 4:00 PM GMT+5:30 May 16, 2023
     };
 
     fetchPost();
@@ -195,7 +195,7 @@ export default function BlogDetail() {
 
                 <div className={styles.topMenu}>
                   <div className={styles.authorName}>
-                    By <strong>{postData.author?.name}</strong> / {date}
+                    By <strong>{postData.author?.name}</strong> | {date}
                   </div>
                   <div className={styles.socialButtonContainer}>
                     <Link to={facebookLink}>
