@@ -149,7 +149,7 @@ export default function BlogDetail() {
         hour: "numeric",
         minute: "numeric",
         hour12: true,
-        timeZoneName: "long",
+        timeZoneName: "short",
       };
       const formattedDate: string = newDate.toLocaleString("en-US", options);
       setDate(formattedDate.replace(" at", ""));
@@ -189,16 +189,12 @@ export default function BlogDetail() {
           <div className="row">
             <div className="col col--10 col--offset-1">
               <div className={styles.titleContainer}>
-                <div className={styles.dateContainer}>
-                  <strong>Published</strong>
-                  <div className={styles.date}>{date}</div>
-                </div>
                 <h1 className={styles.title}>{postData.title}</h1>
                 <h3 className={styles.excerpt}>{postData.excerpt}</h3>
 
                 <div className={styles.topMenu}>
                   <div className={styles.authorName}>
-                    By <strong>{postData.author?.name}</strong>
+                    By <strong>{postData.author?.name}</strong> / {date}
                   </div>
                   <div className={styles.socialButtonContainer}>
                     <Link to={facebookLink}>
