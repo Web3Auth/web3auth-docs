@@ -515,35 +515,43 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Single Factor Auth SDK",
-      link: { type: "doc", id: "sdk/core-kit/sfa/sfa" },
+      label: "Single Factor Auth SDKs",
+      collapsed: false,
+      collapsible: false,
       items: [
-        "sdk/core-kit/sfa/install",
-        "sdk/core-kit/sfa/initialize",
-        "sdk/core-kit/sfa/authentication",
-        "sdk/core-kit/sfa/usage"
-      ],
-    },
-    {
-      type: "category",
-      label: "SFA Node SDK",
-      link: { type: "doc", id: "sdk/core-kit/node/node" },
-      items: [
-        "sdk/core-kit/node/install",
-        "sdk/core-kit/node/initialize",
-        "sdk/core-kit/node/authentication",
-        "sdk/core-kit/node/usage"
-      ],
-    },
-    {
-      type: "category",
-      label: "SFA Android SDK",
-      link: { type: "doc", id: "sdk/core-kit/sfa-android/sfa-android" },
-      items: [
-        "sdk/core-kit/sfa-android/install",
-        "sdk/core-kit/sfa-android/initialize",
-        "sdk/core-kit/sfa-android/authentication",
-        "sdk/core-kit/sfa-android/usage"
+        {
+          type: "category",
+          label: "SFA Web SDK",
+          link: { type: "doc", id: "sdk/core-kit/sfa/sfa" },
+          items: [
+            "sdk/core-kit/sfa/install",
+            "sdk/core-kit/sfa/initialize",
+            "sdk/core-kit/sfa/authentication",
+            "sdk/core-kit/sfa/usage"
+          ],
+        },
+        {
+          type: "category",
+          label: "SFA Node SDK",
+          link: { type: "doc", id: "sdk/core-kit/node/node" },
+          items: [
+            "sdk/core-kit/node/install",
+            "sdk/core-kit/node/initialize",
+            "sdk/core-kit/node/authentication",
+            "sdk/core-kit/node/usage"
+          ],
+        },
+        {
+          type: "category",
+          label: "SFA Android SDK",
+          link: { type: "doc", id: "sdk/core-kit/sfa-android/sfa-android" },
+          items: [
+            "sdk/core-kit/sfa-android/install",
+            "sdk/core-kit/sfa-android/initialize",
+            "sdk/core-kit/sfa-android/authentication",
+            "sdk/core-kit/sfa-android/usage"
+          ],
+        },
       ],
     },
     {
