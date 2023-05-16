@@ -1,5 +1,5 @@
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import { BLOCKS } from "@contentful/rich-text-types";
+import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { useEffect, useState } from "react";
@@ -40,6 +40,17 @@ const renderOptions = (links) => {
 
         // render the asset accordingly
         return <img src={asset.url} alt={asset.description} />;
+      },
+      [INLINES.HYPERLINK]: (node: any) => {
+        return (
+          <a
+            href={(node as any).data.uri}
+            target={`${(node as any).data.uri.startsWith("https://web3auth.io") ? "_self" : "_blank"}`}
+            rel={`${(node as any).data.uri.startsWith("https://web3auth.io") ? "" : "noopener noreferrer"}`}
+          >
+            {(node as any).content[0].value}
+          </a>
+        );
       },
     },
   };
