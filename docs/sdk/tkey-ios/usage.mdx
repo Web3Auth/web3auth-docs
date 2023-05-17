@@ -1,0 +1,334 @@
+---
+title: Usage
+displayed_sidebar: sdk
+description: "Core Kit tKey iOS SDK - Usage | Documentation - Web3Auth"
+---
+
+Once you've installed and successfully instantiated tKey and initialised the service provider in your constructor, you can use it to authenticate your
+users and generate their tKey shares. Further, you can use a variety of functions exposed by the tKey SDK and its modules to manage different aspects
+of your users' authentication needs.
+
+We'll be talking in depth about the following operations:
+
+- [Logging in the User](#log-in)
+- [Getting tKey Details](#get-tkey-details)
+- [Reconstructing User's Private Key](#reconstruct-private-key)
+- [Generating a new Share](#generate-a-new-share)
+- [Deleting a Share](#delete-a-share)
+- [Using Modules for Further Operations](#using-modules-for-further-operations)
+- [Making Blockchain Calls](#making-blockchain-calls)
+
+### `ThresholdKey`
+
+Natively, the instance of `tKey`, (ie. `ThresholdKey`) returns many functions, however, we have documented a few relevant ones here. You can check the
+table below for a list of all relevant functions, or the class reference to checkout the full list of functions.
+
+| Function                                     | Description                                                                                                                                 | Arguments                                                                                                                  | Async | return                     |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ----- | -------------------------- |
+| `initialize`                                 | Generates a Threshold Key object corresponding to your login provider.                                                                      | `import_share: String`, `input: ShareStore?`, `never_initialize_new_key: Bool`, `include_local_metadata_transitions: Bool` | Yes   | `KeyDetails`               |
+| `reconstruct`                                | Reconstructs the user private key (minimum threshold no. of shares required)                                                                | `void`                                                                                                                     | Yes   | `KeyReconstructionDetails` |
+| `reconstruct_latest_poly`                    | Returns the latest polynomial from all the available shares (for this pub-poly). We using Lagrange's interpolation to derive the polynomial | `void`                                                                                                                     | No    | `Polynomial`               |
+| `get_all_share_stores_for_latest_polynomial` | Get all available ShareStores from latest polynomial                                                                                        | `void`                                                                                                                     | No    | `ShareStoreArray`          |
+| `generate_new_share`                         | Generate a new share for the reconstructed private key.                                                                                     | `void`                                                                                                                     | Yes   | `GenerateShareStoreResult` |
+| `delete_share`                               | Delete a share from private key.                                                                                                            | `share_index: String`                                                                                                      | Yes   | `void`                     |
+| `CRITICAL_delete_tkey`                       | Deletes a threshold key, all shares will be removed, use with caution                                                                       | `void`                                                                                                                     | Yes   | `void`                     |
+| `get_key_details`                            | Get the details of the keys.                                                                                                                | `void`                                                                                                                     | No    | `KeyDetails`               |
+| `output_share`                               | Output a share from the tKey                                                                                                                | `shareIndex: String, shareType: String?`                                                                                   | No    | `String`                   |
+| `share_to_share_store`                       | Convert Share to ShareStore                                                                                                                 | `share: String`                                                                                                            | No    | `ShareStore`               |
+| `input_share`                                | Adds an existing share to tkey.                                                                                                             | `share: String`, `shareType: String?`                                                                                      | Yes   | `void`                     |
+| `output_share_store`                         | Output a share store from the tKey                                                                                                          | `shareIndex: String, polyId: String?`                                                                                      | No    | `ShareStore`               |
+| `input_share_store`                          | Input a share store into the tKey                                                                                                           | `shareStore: ShareStore`                                                                                                   | Yes   | `void`                     |
+| `get_shares_indexes`                         | Returns an array of all the share indexes from latest polynomial                                                                            | `void`                                                                                                                     | No    | `[String]`                 |
+| `encrypt`                                    | Encrypt a message/data with the provided publicKey.                                                                                         | `msg: String`                                                                                                              | No    | `String`                   |
+| `decrypt`                                    | Decrypt a message/data with the provided publicKey.                                                                                         | `msg: String`                                                                                                              | No    | `String`                   |
+| `get_tkey_store`                             | Returns data from tkey store given a module name                                                                                            | `moduleName: String`                                                                                                       | No    | `[[String:Any]]`           |
+| `get_tkey_store_item`                        | Returns data from tkey store given id and a module name                                                                                     | `moduleName: String`, `id: String`                                                                                         | No    | `String`                   |
+| `get_shares`                                 | get shares from tKey                                                                                                                        | `void`                                                                                                                     | No    | `ShareStorePolyIdIndexMap` |
+| `get_share_descriptions`                     | Get a description to a share                                                                                                                | `void`                                                                                                                     | No    | `[String: [String]]`       |
+| `add_share_description`                      | Add a description to a share                                                                                                                | `key: String, description: String, update_metadata: Bool`                                                                  | Yes   | `void`                     |
+| `update_share_description`                   | Update a description to a share                                                                                                             | `key: String, oldDescription: String, newDescription: String, update_metadata: Bool`                                       | Yes   | `void`                     |
+| `delete_share_description`                   | Delete a description to a share                                                                                                             | `key: String, description: String, update_metadata: Bool`                                                                  | Yes   | `void`                     |
+
+## Log In
+
+The login with the tKey SDK is a two step process. First, you need to trigger the login process by calling the `triggerLogin()` function of the
+Service Provider. Following which using the returned information, use the `initialize()` function of the tKey to generate the Threshold Key
+corresponding to the user.
+
+However, before starting this process, you need to set up Custom Authentication on your Web3Auth Dashboard. For this, you need to
+[Create a Verifier](/auth-provider-setup/verifiers) from the **Custom Auth** section of the
+[Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired configuration.
+
+:::tip
+
+If you want to know more about setting up a verifier and how to use it, please refer to the
+[Custom Authentication Documentation](/pnp/features/custom-authentication).
+
+:::
+
+### Triggering Login using Service Provider
+
+```swift
+import CustomAuth
+
+let sub = SubVerifierDetails(
+  loginType: .web, // default .web
+  loginProvider: <typeOfLogin>, // .google,
+  clientId: "<your-client-id>",
+  verifierName: "<verifier-name>",
+  redirectURL: "<your-redirect-url>",
+  browserRedirectURL: "<your-browser-redirect-url>")
+
+let tdsdk = CustomAuth(
+  aggregateVerifierType: "<type-of-verifier>", // singleLogin, singleIdVerifier supported
+  aggregateVerifierName: "<verifier-name>", // Web3Auth Custom verifier name
+  subVerifierDetails: [sub],
+  network: .TESTNET)
+
+tdsdk.triggerLogin(controller: <UIViewController>?, browserType: <method-of-opening-browser>, modalPresentationStyle: <style-of-modal>).done{ data in
+    print("user data", data)
+    let key = data["privateKey"]
+    // highlight-next-line
+    service_provider = try! ServiceProvider(enable_logging: true, postbox_key: key)
+}.catch{ err in
+    print(err)
+}
+```
+
+This is a needed step since this will generate a private key which will be needed by the tKey to generate it's share. This is done by calling the
+`triggerLogin()` function of the `CustomAuth`.
+
+#### `SubVerifierDetails`
+
+| Parameter            | Type            | Mandatory | Description                                                                                                                                                                                  |
+| -------------------- | --------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginType`          | SubVerifierType | No        | loginType to be used. [ `web`: default, `installed`]                                                                                                                                         |
+| `loginProvider`      | LoginProviders  | Yes       | loginProvider to be used. [ `google`, `facebook`, `twitch`, `reddit`, `discord`, `apple`, `github`, `linkedin`, `kakao`, `twitter`, `weibo`, `line`, `wechat`, `email_password`, and `jwt` ] |
+| `clientId`           | String          | Yes       | login provider's client Id.                                                                                                                                                                  |
+| `verifier`           | String          | Yes       | Web3Auth verifier name                                                                                                                                                                       |
+| `redirectURL`        | String          | Yes       | It refers to a url for the login flow to redirect into your app, it should have a scheme that is registered by your app, for example `com.mycompany.myapp://redirect`                        |
+| `browserRedirectURL` | String          | No        | It refers to a page that the browser should use in the login flow, it should have a http or https scheme. e.g. `https://scripts.toruswallet.io/redirect.html`                                |
+| `jwtParams`          | String          | No        | Additional JWT parameters to be passed.                                                                                                                                                      |
+| `urlSession`         | URLSession      | No        | Custom URLSession to be used.                                                                                                                                                                |
+
+#### `CustomAuth`
+
+| Parameter               | Type                   | Mandatory | Description                                                            |
+| ----------------------- | ---------------------- | --------- | ---------------------------------------------------------------------- |
+| `aggregateVerifierType` | String                 | Yes       | Type of the aggregate verifier.                                        |
+| `aggregateVerifier`     | String                 | Yes       | Name of the aggregate verifier.                                        |
+| `subVerifierDetails`    | [`SubVerifierDetails`] | Yes       | Array of SubVerifierDetails.                                           |
+| `network`               | Network                | Yes       | Network to be used. [ `MAINNET`, `TESTNET`, `CYAN`, `AQUA`, `CELESTE`] |
+
+## Instantiate tKey
+
+```swift
+let thresholdKey = try? ThresholdKey(
+  storage_layer: storage_layer,
+  service_provider: service_provider,
+  enable_logging: true,
+  manual_sync: false)
+```
+
+### Parameters
+
+| Parameter                    | Type                       | Description                                                                                                                                      | Mandatory |
+| ---------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
+| `metadata`                   | `Metadata`                 | Metadata object containing the metadata details of tKey.                                                                                         | No        |
+| `shares`                     | `ShareStorePolyIdIndexMap` | Array of ShareStore with PolyId.                                                                                                                 | No        |
+| `storage_layer`              | `StorageLayer`             | Takes in the Storage Provider Instance                                                                                                           | No        |
+| `service_provider`           | `ServiceProvider`          | Takes in the Service Provider Instance                                                                                                           | No        |
+| `local_matadata_transitions` | `Metadata`                 | Local metadata transitions                                                                                                                       | No        |
+| `enable_logging`             | `Bool`                     | This option is used to specify whether to enable logging or not.                                                                                 | No        |
+| `manual_sync`                | `Bool`                     | Helps you turn on manual sync, which helps you configure Tkey to not contant the server for every request. You can sync as per your convenience. | No        |
+
+### Example
+
+```swift
+guard let postboxkey = userData["privateKey"] as? String else {
+  alertContent = "Failed to get postboxkey"
+  showAlert = true
+  showSpinner = SpinnerLocation.nowhere
+  return
+}
+
+guard let storage_layer = try? StorageLayer(enable_logging: true, host_url: "https://metadata.tor.us", server_time_offset: 2) else {
+  alertContent = "Failed to create storage layer"
+  showAlert = true
+  showSpinner = SpinnerLocation.nowhere
+  return
+}
+
+guard let service_provider = try? ServiceProvider(enable_logging: true, postbox_key: postboxkey) else {
+  alertContent = "Failed to create service provider"
+  showAlert = true
+  showSpinner = SpinnerLocation.nowhere
+  return
+}
+
+guard let thresholdKey = try? ThresholdKey(
+  storage_layer: storage_layer,
+  service_provider: service_provider,
+  enable_logging: true,
+  manual_sync: false) else {
+    alertContent = "Failed to create threshold key"
+    showAlert = true
+    showSpinner = SpinnerLocation.nowhere
+    return
+  }
+
+threshold_key = thresholdKey
+```
+
+## Initialize tKey
+
+#### `threshold_key.initialize(params?)`
+
+Once you have triggered the login process, you're ready to initialize the tKey. This will generate a Threshold Key corresponding to your login
+provider.
+
+### Parameters
+
+| Parameter                            | Type       | Description                                                                      | Mandatory |
+| ------------------------------------ | ---------- | -------------------------------------------------------------------------------- | --------- |
+| `import_share`                       | String     | An optional string representing the import share.                                | No        |
+| `input`                              | ShareStore | An optional ShareStore object representing the input.                            | No        |
+| `never_initialize_new_key`           | Bool       | A boolean value indicating whether or not to initialize a new key.               | No        |
+| `include_local_metadata_transitions` | Bool       | A boolean value indicating whether or not to include local metadata transitions. | No        |
+
+### Example
+
+```swift
+guard let key_details = try? await threshold_key.initialize(never_initialize_new_key: false, include_local_metadata_transitions: false) else {
+	alertContent = "Failed to get key details"
+	showAlert = true
+	showSpinner = SpinnerLocation.nowhere
+	return
+}
+```
+
+## Get tKey Details
+
+`let key_details = try! threshold_key.get_key_details()`
+
+The function `get_key_details()` returns the details of the keys present generated for the specific user. This includes the public key X & Y of the
+user, alongside the shares details and the threshold.
+
+#### Sample Key Details Return
+
+```json
+[
+  {
+    pub_key: {
+      x: "471dbccd7e55eb2d24..329b8174f2339e516a3d1728d",
+      y: "3f93da3597ded482fc..b23c5c79011a3deb8ccf8bf50",
+    },
+    required_shares: -9,
+    threshold: 2,
+    total_shares: 11,
+    share_descriptions: {
+      "1": [
+        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671429485524}',
+        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671429560829}',
+        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671454332687}',
+        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671454508464}',
+        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671454832067}',
+        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671506806091}',
+      ],
+      "94da7ea9b8680ea13d..1de31915c54c1cfa055134308969088": [
+        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671424397242}',
+      ],
+      "9b29f5c69bdcc4c79b..8c573e3001d72dc7a42866e88272866": [
+        '{"module":"securityQuestions","questions":"whats your password?","dateAdded":1671424430842}',
+      ],
+    },
+  },
+];
+```
+
+From here, you can know whether the user key can be reconstructed or not.
+
+- If the `required_shares` is greater than 0, then the key cannot be reconstructed, because this means that the user has not yet generated enough
+  shares to meet the threshold.
+- Once the `required_shares` is 0 or less than that, then the key can be reconstructed, and the user can use the shares to generate the private key
+  and make further operations on the tKey and manipulate their keys.
+
+## Reconstruct Private Key
+
+The function `reconstruct()` reconstructs the private key of the user from the shares. This function returns the private key of the user once the
+threshold has been met.
+
+```swift
+let reconstructedKeyResult = try! await threshold_key.reconstruct()
+
+public final class KeyReconstructionDetails: Codable {
+    public var key: String
+    public var seed_phrase: [String]
+    public var all_keys: [String]
+}
+```
+
+```swift title="Example"
+guard let key_details = try? await threshold_key.initialize(never_initialize_new_key: false, include_local_metadata_transitions: false) else {
+	alertContent = "Failed to get key details"
+	showAlert = true
+	showSpinner = SpinnerLocation.nowhere
+	return
+}
+
+guard let reconstructionDetails = try? await threshold_key.reconstruct() else {
+  alertContent = "Failed to reconstruct key. \(threshold) more share(s) required"
+  resetAccount = true
+  showAlert = true
+  showSpinner = SpinnerLocation.nowhere
+  return
+}
+```
+
+## Generate a New Share
+
+The function `generate_new_share()` generates a new share on the same threshold (e.g, 2/3 -> 2/4). This function returns the new share generated.
+
+```js
+let newShare = try! await threshold_key.generate_new_share()
+```
+
+## Delete a Share
+
+The function `delete_share()` deletes a share from the user's shares. This function returns the updated shareStore after the share has been deleted.
+
+```js
+let shareStore = try! await threshold_key.delete_share(share_index: idx)
+```
+
+## Using Modules for Further Operations
+
+For making advanced operations on tKey and to manipulate the keys, you can use the modules provided by tKey. As mentioned in the
+[initialisation](./initialize) section, you need to configure the modules beforehand to make it work with tKey. Once that is done, the instance of the
+respective module is available within your tKey instance and can be used for further operations.
+
+:::tip
+
+Checkout the [Modules](./modules) section where we have listed all the available modules alongside the functions that can be used within them.
+
+:::
+
+## Making Blockchain Calls
+
+Once you have generated the private key, you can use it to make blockchain calls. The key generated by tKey is of type `secp256k1`, which is
+compatible with EVM-based blockchains like Ethereum, Polygon, and many others that use the same curve. However, you can also convert this key into
+other curves and utilize it. For example, we have a dedicated package for converting this module to the `ed25519` curve for usage in Solana and other
+blockchains that use this curve.
+
+In addition to that, we have dedicated provider packages for EVM and Solana Blockchain libraries. You can check out their respective documentation
+here:
+
+- Getting a Ethereum Provider from tKey: [Ethereum Provider](/sdk/web/providers/evm#getting-a-provider-from-any-secp256k1-private-key)
+- Getting a Solana Provider from tKey: [Solana Provider](/sdk/web/providers/solana#getting-a-provider-from-any-secp256k1-private-key)
+
+:::tip
+
+You can checkout our [Connect Blockchain](/connect-blockchain) documentation which has a detailed guide on how to connect to major blockchains out
+there.
+
+:::

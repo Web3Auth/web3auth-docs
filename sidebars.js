@@ -415,7 +415,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "React Native",
+      label: "React Native SDK",
       link: { type: "doc", id: "sdk/react-native/react-native" },
       items: [
         "sdk/react-native/initialize",
@@ -527,13 +527,22 @@ module.exports = {
     },
     {
       type: "category",
+      label: "tKey iOS SDK",
+      link: { type: "doc", id: "sdk/tkey-ios/ios" },
+      items: [
+        "sdk/tkey-ios/initialize",
+        "sdk/tkey-ios/usage",
+      ],
+    },
+    {
+      type: "category",
       label: "Single Factor Auth SDK",
       link: { type: "doc", id: "sdk/single-factor-auth/single-factor-auth" },
       items: ["sdk/single-factor-auth/initialize", "sdk/single-factor-auth/authentication", "sdk/single-factor-auth/usage"],
     },
     {
       type: "category",
-      label: "Node SDK",
+      label: "SFA Node SDK",
       link: { type: "doc", id: "sdk/node/node" },
       items: ["sdk/node/initialize", "sdk/node/authentication", "sdk/node/usage"],
     },
