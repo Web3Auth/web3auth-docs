@@ -69,6 +69,22 @@ export const CKSFAAndroid = [
   },
 ];
 
+export const CKTkeyiOS = [
+  {
+    name: "",
+    description: "",
+    tiles: [
+      {
+        key: "tkey-ios-example",
+        title: "CoreKit tKey iOS Example",
+        icon: "logo-apple.png",
+        path: "https://github.com/torusresearch/tkey-rust-ios-example",
+        // path: `${baseURL}tkey-ios/ios-basic-example`,
+      },
+    ],
+  },
+];
+
 export const CKNode = [
   {
     name: "",
