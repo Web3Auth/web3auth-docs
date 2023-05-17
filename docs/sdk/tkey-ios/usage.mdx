@@ -4,24 +4,14 @@ displayed_sidebar: sdk
 description: "Core Kit tKey iOS SDK - Usage | Documentation - Web3Auth"
 ---
 
-Once you've installed and successfully instantiated tKey and initialised the service provider in your constructor, you can use it to authenticate your
-users and generate their tKey shares. Further, you can use a variety of functions exposed by the tKey SDK and its modules to manage different aspects
-of your users' authentication needs.
-
-We'll be talking in depth about the following operations:
-
-- [Logging in the User](#log-in)
-- [Getting tKey Details](#get-tkey-details)
-- [Reconstructing User's Private Key](#reconstruct-private-key)
-- [Generating a new Share](#generate-a-new-share)
-- [Deleting a Share](#delete-a-share)
-- [Using Modules for Further Operations](#using-modules-for-further-operations)
-- [Making Blockchain Calls](#making-blockchain-calls)
+Once you've installed and successfully instantiated tKey and initialized the service provider in your constructor, you can use it to authenticate your
+users and generate their tKey shares. Further, you can use various functions exposed by the tKey SDK and its modules to manage different aspects of
+your users' authentication needs.
 
 ### `ThresholdKey`
 
-Natively, the instance of `tKey`, (ie. `ThresholdKey`) returns many functions, however, we have documented a few relevant ones here. You can check the
-table below for a list of all relevant functions, or the class reference to checkout the full list of functions.
+Natively, the instance of `tKey`, (i.e., `ThresholdKey`) returns many functions. However, we have documented a few relevant ones here. You can check
+the table below for a list of all relevant functions or the class reference to check out the complete list of functions.
 
 | Function                                     | Description                                                                                                                                 | Arguments                                                                                                                  | Async | return                     |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ----- | -------------------------- |
@@ -51,18 +41,17 @@ table below for a list of all relevant functions, or the class reference to chec
 
 ## Log In
 
-The login with the tKey SDK is a two step process. First, you need to trigger the login process by calling the `triggerLogin()` function of the
-Service Provider. Following which using the returned information, use the `initialize()` function of the tKey to generate the Threshold Key
-corresponding to the user.
+The login with the tKey SDK is a two-step process. First, you need to trigger the login process by calling the `triggerLogin()` function of the
+Service Provider. Using the returned information, use the `initialize()` function of the tKey to generate the Threshold Key corresponding to the user.
 
-However, before starting this process, you need to set up Custom Authentication on your Web3Auth Dashboard. For this, you need to
+However, before starting this process, you must set up Custom Authentication on your Web3Auth Dashboard. You must
 [Create a Verifier](/auth-provider-setup/verifiers) from the **Custom Auth** section of the
 [Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired configuration.
 
 :::tip
 
-If you want to know more about setting up a verifier and how to use it, please refer to the
-[Custom Authentication Documentation](/pnp/features/custom-authentication).
+For further information on how to set up and use a verifier, please visit the
+[**Custom Authentication Documentation**](/pnp/features/custom-authentication).
 
 :::
 
@@ -95,8 +84,8 @@ tdsdk.triggerLogin(controller: <UIViewController>?, browserType: <method-of-open
 }
 ```
 
-This is a needed step since this will generate a private key which will be needed by the tKey to generate it's share. This is done by calling the
-`triggerLogin()` function of the `CustomAuth`.
+Generating a private key is an essential step for the tKey to create its share. The `triggerLogin()` function of the `CustomAuth` is called to
+accomplish this.
 
 #### `SubVerifierDetails`
 
@@ -303,32 +292,32 @@ let shareStore = try! await threshold_key.delete_share(share_index: idx)
 
 ## Using Modules for Further Operations
 
-For making advanced operations on tKey and to manipulate the keys, you can use the modules provided by tKey. As mentioned in the
-[initialisation](./initialize) section, you need to configure the modules beforehand to make it work with tKey. Once that is done, the instance of the
-respective module is available within your tKey instance and can be used for further operations.
+To perform advanced operations and manipulate keys, tKey offers modules that can be utilized. As previously stated in the
+[initialization](./initialize) section, modules need to be configured beforehand to function properly with tKey. After configuration, the respective
+module's instance is accessible within your tKey instance and can be utilized for additional operations.
 
 :::info Modules
 
-Checkout the [**Modules**](./modules) section where we have listed all the available modules alongside the functions that can be used within them.
+Please visit the [**Modules**](./modules) section to view a comprehensive list of available modules and their respective functions.
 
 :::
 
 ## Making Blockchain Calls
 
-Once you have generated the private key, you can use it to make blockchain calls. The key generated by tKey is of type `secp256k1`, which is
-compatible with EVM-based blockchains like Ethereum, Polygon, and many others that use the same curve. However, you can also convert this key into
-other curves and utilize it. For example, we have a dedicated package for converting this module to the `ed25519` curve for usage in Solana and other
-blockchains that use this curve.
+After generating your private key with tKey, you can use it to make blockchain calls on EVM-based blockchains like Ethereum, Polygon and other EVM
+Chains. The key is of the `secp256k1` type, which is compatible with EVM blockchains. Additionally, you can convert this key into other curves if
+needed. We offer a dedicated package for conversion to use the `ed25519` curve for Solana, NEAR, and other compatible blockchains.
 
-In addition to that, we have dedicated provider packages for EVM and Solana Blockchain libraries. You can check out their respective documentation
-here:
+In addition to that, we have dedicated provider packages for EVM and Solana Blockchain libraries.
+
+You can find their documentation by following these links:
 
 - Getting a Ethereum Provider from tKey: [Ethereum Provider](/sdk/web/providers/evm#getting-a-provider-from-any-secp256k1-private-key)
 - Getting a Solana Provider from tKey: [Solana Provider](/sdk/web/providers/solana#getting-a-provider-from-any-secp256k1-private-key)
 
 :::info Connect Blockchain
 
-You can checkout our [**Connect Blockchain**](/connect-blockchain) documentation which has a detailed guide on how to connect to major blockchains out
-there.
+Our [**Connect Blockchain**](/connect-blockchain) documentation provides a comprehensive guide on how to connect to major blockchains. Feel free to
+check it out.
 
 :::

@@ -300,6 +300,27 @@ export default function QuickNavigation() {
       </div>
       <div className={styles.cardContent}>
         <div className={styles.sdkIconContainer}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.sdkIcon}>
+            <path
+              d="M20.4933 17.5861C20.1908 18.2848 19.8328 18.928 19.418 19.5193C18.8526 20.3255 18.3897 20.8835 18.0329 21.1934C17.4798 21.702 16.8872 21.9625 16.2527 21.9773C15.7972 21.9773 15.2478 21.8477 14.6083 21.5847C13.9667 21.323 13.3771 21.1934 12.838 21.1934C12.2726 21.1934 11.6662 21.323 11.0176 21.5847C10.3679 21.8477 9.84463 21.9847 9.44452 21.9983C8.83602 22.0242 8.22949 21.7563 7.62408 21.1934C7.23767 20.8563 6.75436 20.2786 6.17536 19.4601C5.55415 18.586 5.04342 17.5725 4.64331 16.417C4.21481 15.1689 4 13.9603 4 12.7902C4 11.4498 4.28962 10.2938 4.86973 9.32509C5.32564 8.54696 5.93216 7.93316 6.69127 7.48255C7.45038 7.03195 8.2706 6.80233 9.15391 6.78763C9.63723 6.78763 10.271 6.93714 11.0587 7.23096C11.8441 7.52576 12.3484 7.67526 12.5695 7.67526C12.7348 7.67526 13.295 7.50045 14.2447 7.15195C15.1429 6.82874 15.9009 6.69492 16.5218 6.74764C18.2045 6.88343 19.4686 7.54675 20.3094 8.74177C18.8045 9.6536 18.06 10.9307 18.0749 12.5691C18.0884 13.8452 18.5514 14.9071 19.4612 15.7503C19.8736 16.1417 20.334 16.4441 20.8464 16.6589C20.7353 16.9812 20.618 17.2898 20.4933 17.5861ZM16.6342 2.40011C16.6342 3.40034 16.2687 4.33425 15.5404 5.19867C14.6614 6.22629 13.5982 6.8201 12.4453 6.7264C12.4306 6.60641 12.4221 6.48011 12.4221 6.3474C12.4221 5.38718 12.8401 4.35956 13.5824 3.51934C13.953 3.09392 14.4244 2.74019 14.9959 2.45801C15.5663 2.18005 16.1058 2.02632 16.6132 2C16.628 2.13371 16.6342 2.26744 16.6342 2.4001V2.40011Z"
+              fill="currentColor"
+            />
+          </svg>
+        </div>
+        <div className={styles.cardContentText}>
+          <div className={styles.cardTitleContainer}>
+            <h3 className={styles.title}>tKey iOS SDK</h3>
+          </div>
+          <p>Core Kit tKey Native SDK for iOS Platform</p>
+          <div className={styles.links}>
+            <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=Single+Factor+Auth+Android+SDK&platform=Android`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}sdk/tkey-ios/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+Android+SDK`}>Examples{chevron}</a>
+          </div>
+        </div>
+      </div>
+      <div className={styles.cardContent}>
+        <div className={styles.sdkIconContainer}>
           <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" className={styles.sdkIcon}>
             <path
               d="M420.55,301.93a24,24,0,1,1,24-24,24,24,0,0,1-24,24m-265.1,0a24,24,0,1,1,24-24,24,24,0,0,1-24,24m273.7-144.48,47.94-83a10,10,0,1,0-17.27-10h0l-48.54,84.07a301.25,301.25,0,0,0-246.56,0L116.18,64.45a10,10,0,1,0-17.27,10h0l47.94,83C64.53,202.22,8.24,285.55,0,384H576c-8.24-98.45-64.54-181.78-146.85-226.55"
@@ -315,29 +336,6 @@ export default function QuickNavigation() {
             </div>
           </div>
           <p>Core Kit tKey Native SDK for Android Platform</p>
-          {/* <div className={styles.links}>
-            <a href="/docs">Quick Start{chevron}</a>
-            <a href="/docs">SDK Reference{chevron}</a>
-          </div> */}
-        </div>
-      </div>
-      <div className={styles.cardContent}>
-        <div className={styles.sdkIconContainer}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.sdkIcon}>
-            <path
-              d="M20.4933 17.5861C20.1908 18.2848 19.8328 18.928 19.418 19.5193C18.8526 20.3255 18.3897 20.8835 18.0329 21.1934C17.4798 21.702 16.8872 21.9625 16.2527 21.9773C15.7972 21.9773 15.2478 21.8477 14.6083 21.5847C13.9667 21.323 13.3771 21.1934 12.838 21.1934C12.2726 21.1934 11.6662 21.323 11.0176 21.5847C10.3679 21.8477 9.84463 21.9847 9.44452 21.9983C8.83602 22.0242 8.22949 21.7563 7.62408 21.1934C7.23767 20.8563 6.75436 20.2786 6.17536 19.4601C5.55415 18.586 5.04342 17.5725 4.64331 16.417C4.21481 15.1689 4 13.9603 4 12.7902C4 11.4498 4.28962 10.2938 4.86973 9.32509C5.32564 8.54696 5.93216 7.93316 6.69127 7.48255C7.45038 7.03195 8.2706 6.80233 9.15391 6.78763C9.63723 6.78763 10.271 6.93714 11.0587 7.23096C11.8441 7.52576 12.3484 7.67526 12.5695 7.67526C12.7348 7.67526 13.295 7.50045 14.2447 7.15195C15.1429 6.82874 15.9009 6.69492 16.5218 6.74764C18.2045 6.88343 19.4686 7.54675 20.3094 8.74177C18.8045 9.6536 18.06 10.9307 18.0749 12.5691C18.0884 13.8452 18.5514 14.9071 19.4612 15.7503C19.8736 16.1417 20.334 16.4441 20.8464 16.6589C20.7353 16.9812 20.618 17.2898 20.4933 17.5861ZM16.6342 2.40011C16.6342 3.40034 16.2687 4.33425 15.5404 5.19867C14.6614 6.22629 13.5982 6.8201 12.4453 6.7264C12.4306 6.60641 12.4221 6.48011 12.4221 6.3474C12.4221 5.38718 12.8401 4.35956 13.5824 3.51934C13.953 3.09392 14.4244 2.74019 14.9959 2.45801C15.5663 2.18005 16.1058 2.02632 16.6132 2C16.628 2.13371 16.6342 2.26744 16.6342 2.4001V2.40011Z"
-              fill="currentColor"
-            />
-          </svg>
-        </div>
-        <div className={styles.cardContentText}>
-          <div className={styles.cardTitleContainer}>
-            <h3 className={styles.title}>tKey iOS SDK</h3>
-            <div className={styles.pillContainer}>
-              <div className={styles.pill}>Coming Soon</div>
-            </div>
-          </div>
-          <p>Core Kit tKey Native SDK for iOS Platform</p>
           {/* <div className={styles.links}>
             <a href="/docs">Quick Start{chevron}</a>
             <a href="/docs">SDK Reference{chevron}</a>
