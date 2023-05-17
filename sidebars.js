@@ -532,6 +532,18 @@ module.exports = {
       items: [
         "sdk/tkey-ios/initialize",
         "sdk/tkey-ios/usage",
+        {
+          type: "category",
+          label: "Modules",
+          link: { type: "doc", id: "sdk/tkey-ios/modules/modules" },
+          items: [
+            "sdk/tkey-ios/modules/private-keys",
+            "sdk/tkey-ios/modules/security-questions",
+            "sdk/tkey-ios/modules/seed-phrase",
+            "sdk/tkey-ios/modules/share-serialization",
+            "sdk/tkey-ios/modules/share-transfer",
+          ],
+        },
       ],
     },
     {
