@@ -1,38 +1,62 @@
 ---
-title: "Usage of Single Factor Auth SDK"
+title: "Usage of MPC Core Kit Web SDK"
 sidebar_label: "Usage"
 displayed_sidebar: sdk
-description: "Usage of Single Factor Auth SDK | Documentation - Web3Auth"
+description: "Web3Auth MPC Core Kit Web SDK - Usage | Documentation - Web3Auth"
 ---
 
+import LogOut from "@site/src/common/sdk/pnp/web/_logout.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users. Further, you can use the native provider given
-by Web3Auth to connect the users to the respective blockchain network.
+Once you've installed and successfully initialized `Web3AuthMPCCoreKit`, you can use it to authenticate your users. Further, you can use the native
+provider given by Web3Auth to sign transactions and interact with the blockchain.
 
-:::info guide
+Natively, the instance of `Web3AuthMPCCoreKit` (referred to as `coreKitInstance` in our examples) returns the following functions:
 
-Follow this [guide](/content-hub/guides/single-factor-auth) for ideal flow using a combination of Web3Auth Single Factor Auth SDK and Web3Auth Core
-SDK.
+Authentication Functions:
 
-:::
+- `connect()` - Logs in the User.
+- `logout()` - Logs out the User.
+- `handleRedirectResult()` - Handles the redirect result while logging in the User, while in redirect mode
 
-Natively, the instance of Web3Auth (referred to as web3auth in our examples) returns the following functions:
+Backup Share Functions:
 
-- `connect()` - Logs in the User using the `verifier`, `verifierId` & `idToken`.
+- `exportBackupShare()` - Exports the Backup Mnemonic Share.
+- `inputBackupShare()` - Inputs the Backup Mnemonic Share to recover the User's account.
+
+Security Question Functions:
+
+- `addSecurityQuestionShare()` - Adds a Security Question Share to the User's account.
+- `recoverSecurityQuestionShare()` - Recovers the User's account using the Security Question Share.
+- `changeSecurityQuestionShare()` - Changes the Security Question Share of the User's account.
+- `deleteSecurityQuestionShare()` - Deletes the Security Question Share of the User's account.
+
+User Functions:
+
+- `getUserInfo()` - Returns the User's information received from the ID Token.
+- `getKeyDetails()` - Returns the User's Key Details.
+- `commitChanges()` - Commits the changes made to the User's account while in manual sync mode.
+- `CRITICAL_resetAccount()` - Resets the User's account. This function is only to be used in case of emergencies, when the user is unable to recover
+  their account. This deletes all the history of the previous key and the funds/ assets associated with it.
 
 ## Logging in your User
 
-`connect()`
+#### `connect(params: LoginParams): Promise<SafeEventEmitterProvider | null>;`
 
-To login a user in the Web3Auth Backend SDK, you need to call `connect()` function.
+To login a user in the Web3Auth MPC Core Kit SDK, you need to call `connect()` function. The function takes in the following parameters:
 
 | Variable      | Type     | Description      | Mandatory |
 | ------------- | -------- | ---------------- | --------- |
 | `loginParams` | `object` | Login Parameters | Yes       |
 
-#### Returns
+:::tip
+
+Checkout the [Authentication Section](./authentication) to know more about the `loginParams` object.
+
+:::
+
+### Returns
 
 ```js
 connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null>
@@ -43,87 +67,227 @@ corresponding to your selected blockchain. You can use this provider to connect 
 
 On unsuccessful login, this function will return a `null` value.
 
-#### `connect(loginParams: LoginParams)`
+### Example
 
-`LoginParams`
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Type", value: "type" },
-  ]}
->
-
-<TabItem value="table">
-
-| Parameter               | Type                     | Description                                                                                                         | Mandatory |
-| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- | --------- |
-| `verifier`              | `string`                 | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                                  | Yes       |
-| `verifierId`            | `string`                 | Verifier ID's value, `sub` or `email` value present in the idToken.                                                 | Yes       |
-| `idToken`               | `string`                 | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. | Yes       |
-| `subVerifierInfoArray?` | `TorusSubVerifierInfo[]` | Sub verifier info                                                                                                   | No        |
-
-</TabItem>
-
-<TabItem value="type">
-
-```javascript
-export type LoginParams = {
-  verifier: string,
-  verifierId: string,
-  idToken: string,
-  subVerifierInfoArray?: TorusSubVerifierInfo[],
-};
+```js
+const provider = await coreKitInstance.connect({
+  subVerifierDetails: {
+    typeOfLogin: "google",
+    verifier: "google-tkey-w3a",
+    clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+  },
+});
 ```
 
-</TabItem>
+## Logging out the User
 
-</Tabs>
+#### `logout(): Promise<void>;`
+
+Disconnect the user's connected wallet/ provider and log them out of the Web3Auth MPC Core Kit SDK.
 
 ### Example
 
 ```js
-await web3auth.connect({
-  verifier: "verifier-name", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
-  verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
-  idToken: "JWT Token", // replace with your newly created unused JWT Token.
-});
+await coreKitInstance.logout();
 ```
 
-`@web3auth/single-factor-auth` SDK only works for those users who have **not enabled MFA**.
+## Handle Redirect Result
 
-:::danger MFA enabled users
+#### `handleRedirectResult(): Promise<SafeEventEmitterProvider | null>;`
 
-For MFA enabled users, you'll see `Error("User has already enabled mfa, please use the @webauth/webauth-web sdk for login with mfa");`
+While using the redirect mode, you need to handle the redirect result in your application. This can be done by calling the `handleRedirectResult()`
+method of the `web3auth` instance, within the constructor of the component where you want to handle the redirect result.
+
+If your URL anchor contains `#state`, then the `handleRedirectResult()` method should be be called, since that is where the redirect result,
+containing the `idToken` is returned from the login provider.
+
+#### Example
+
+```javascript
+useEffect(() => {
+  const submitRedirectResult = async () => {
+    try {
+      const provider = await coreKitInstance?.handleRedirectResult();
+      if (provider) setProvider(provider);
+    } catch (error) {
+      if ((error as Error).message === "required more shares") {
+        uiConsole("first triggered", coreKitInstance);
+        recoverAccount();
+      }
+    }
+  }
+  if (coreKitInstance && window.location.hash.includes("#state")) {
+    submitRedirectResult();
+  }
+}, [coreKitInstance]);
+```
+
+:::note
+
+For the popup flow, the service worker handles it automatically. This flow is managed within the SDK itself.
 
 :::
 
-## Example
+## Export Backup Share
+
+#### `exportBackupShare(): Promise<string>;`
+
+Returns the Backup Mnemonic Share, which can be used to recover the User's account on a different device than they have logged in previously.
+
+### Example
 
 ```js
-import Web3Auth from "@web3auth/single-factor-auth";
+await coreKitInstance.exportBackupShare();
+```
 
-const web3auth = new Web3Auth({
-  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
-  },
-  // Available networks are "testnet", "mainnet", "cyan", "aqua", and "celeste".
-  web3AuthNetwork: "cyan",
-});
+## Input Backup Share
 
-web3auth.init();
+#### `inputBackupShare(shareMnemonic: string): Promise<void>;`
 
-const provider = await web3auth.connect({
-  verifier: "verifier-name", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
-  verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
-  idToken: "JWT Token", // replace with your newly created unused JWT Token.
-});
+Inputs the Backup Mnemonic Share to recover the User's account.
 
-const privateKey = await provider.request({ method: "eth_private_key" });
-// The private key returned here is the CoreKitKey
-console.log("ETH Private Key", privateKey);
+### Example
+
+```js
+await coreKitInstance.inputBackupShare(seedPhrase);
+```
+
+## Add Security Question Share
+
+#### `addSecurityQuestionShare(question: string, password: string): Promise<void>;`
+
+Creates a security question share for your to easily recover user's account. Since this share can take any question and password, you can innovatively
+use this to create any flow for your users to recover their account. From a general password login to using mobile OTP based login and associating a
+certain parameter on successful authentication, you can use this share to create any flow you want.
+
+### Example
+
+```js
+await coreKitInstance.addSecurityQuestionShare("What is your password?", password);
+```
+
+## Recover Security Question Share
+
+#### `recoverSecurityQuestionShare(question: string, password: string): Promise<void>;`
+
+Recover the User's account using the Security Question Share.
+
+### Example
+
+```js
+await coreKitInstance.recoverSecurityQuestionShare("What is your password?", password);
+```
+
+## Change Security Question Share
+
+#### `changeSecurityQuestionShare(question: string, password: string): Promise<void>;`
+
+Changes the Security Question Share of the User's account. This helps you change the password if the user has lost it somehow. However, this function
+can only be used if the user has already logged in within the application while meeting the minimum share threshold.
+
+### Example
+
+```js
+await coreKitInstance.changeSecurityQuestionShare("What is your password?", password);
+```
+
+## Delete Security Question Share
+
+#### `deleteSecurityQuestionShare(question: string): Promise<void>;`
+
+Deletes the Security Question Share of the User's account. This function can only be used if the user has already logged in within the application
+while meeting the minimum share threshold.
+
+### Example
+
+```js
+await coreKitInstance.deleteSecurityQuestionShare("What is your password?");
+```
+
+## Get User Info
+
+#### `getUserInfo(): UserInfo;`
+
+Returns the User's information received from the ID Token.
+
+### Returns
+
+This function returns the following parameters in the form of an object:
+
+```js
+type UserInfo = {
+  email: string,
+  name: string,
+  profileImage: string,
+  aggregateVerifier?: string,
+  verifier: string,
+  verifierId: string,
+  typeOfLogin: LOGIN_TYPE,
+  ref?: string,
+  registerOnly?: boolean,
+  extraVerifierParams?: WebAuthnExtraParams,
+  accessToken: string,
+  idToken?: string,
+  ref?: string,
+  extraParams?: string,
+  extraParamsPassed?: string,
+  state: TorusGenericObject,
+};
+```
+
+### Example
+
+```js
+await coreKitInstance.getUserInfo();
+```
+
+## Get Key Details
+
+#### `getKeyDetails(): KeyDetails;`
+
+Returns the details of how the user's key is managed by the MPC Core Kit.
+
+### Returns
+
+This function returns the following parameters in the form of an object:
+
+```js
+type KeyDetails = {
+  pubKey: Point,
+  requiredShares: number,
+  threshold: number,
+  totalShares: number,
+  shareDescriptions: ShareDescriptionMap,
+};
+```
+
+### Example
+
+```js
+await coreKitInstance.getUserInfo();
+```
+
+## Commit Changes
+
+#### `commitChanges(): Promise<void>; logout(): Promise<void>;`
+
+Sync the local changes made to the User's account with the web3auth metadata server. This function is only to be used while in manual sync mode.
+
+### Example
+
+```js
+await coreKitInstance.commitChanges();
+```
+
+## Reset Account (CRITICAL)
+
+#### `CRITICAL_resetAccount(): Promise<void>;`
+
+Can be used to reset user's account in case of emergencies, when the user is unable to recover their account. This deletes all the history of the
+previous key and the funds/ assets associated with it.
+
+### Example
+
+```js
+await coreKitInstance.CRITICAL_resetAccount();
 ```

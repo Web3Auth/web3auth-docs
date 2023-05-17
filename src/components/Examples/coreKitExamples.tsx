@@ -7,9 +7,9 @@ export const CKTkey = [
     tiles: [
       {
         key: "tkey-mpc-beta-react-popup-example",
-        title: "tKey MPC Beta Popup Flow",
+        title: "tKey MPC Popup Flow",
         icon: "logo-react.png",
-        path: `${baseURL}tkey/tkey-mpc-beta-react-popup-example`,
+        path: `${baseURL}mpc-core-kit/tkey-mpc-react-popup-example`,
       },
       {
         key: "tkey-react-redirect-example",
