@@ -313,7 +313,7 @@ export default function QuickNavigation() {
           </div>
           <p>Core Kit tKey Native SDK for iOS Platform</p>
           <div className={styles.links}>
-            <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=Single+Factor+Auth+Android+SDK&platform=Android`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=tKey+iOS+SDK&platform=iOS`}>Quick Start{chevron}</a>
             <a href={`${baseUrl}sdk/tkey-ios/`}>SDK Reference{chevron}</a>
             <a href={`${baseUrl}examples?product=Core+Kit&sdk=tKey+iOS+SDK`}>Examples{chevron}</a>
           </div>
