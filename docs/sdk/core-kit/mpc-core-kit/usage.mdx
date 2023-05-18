@@ -56,7 +56,7 @@ Checkout the [Authentication Section](./authentication) to know more about the `
 
 :::
 
-### Returns
+#### Returns
 
 ```js
 connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null>
@@ -67,7 +67,7 @@ corresponding to your selected blockchain. You can use this provider to connect 
 
 On unsuccessful login, this function will return a `null` value.
 
-### Example
+#### Example
 
 ```js
 const provider = await coreKitInstance.connect({
@@ -85,7 +85,7 @@ const provider = await coreKitInstance.connect({
 
 Disconnect the user's connected wallet/ provider and log them out of the Web3Auth MPC Core Kit SDK.
 
-### Example
+#### Example
 
 ```js
 await coreKitInstance.logout();
@@ -135,7 +135,7 @@ the service worker for your application.
 
 Returns the Backup Mnemonic Share, which can be used to recover the User's account on a different device than they have logged in previously.
 
-### Example
+#### Example
 
 ```js
 await coreKitInstance.exportBackupShare();
@@ -147,7 +147,7 @@ await coreKitInstance.exportBackupShare();
 
 Inputs the Backup Mnemonic Share to recover the User's account.
 
-### Example
+#### Example
 
 ```js
 await coreKitInstance.inputBackupShare(seedPhrase);
@@ -161,7 +161,7 @@ Creates a security question share for your to easily recover user's account. Sin
 use this to create any flow for your users to recover their account. From a general password login to using mobile OTP based login and associating a
 certain parameter on successful authentication, you can use this share to create any flow you want.
 
-### Example
+#### Example
 
 ```js
 await coreKitInstance.addSecurityQuestionShare("What is your password?", password);
@@ -173,7 +173,7 @@ await coreKitInstance.addSecurityQuestionShare("What is your password?", passwor
 
 Recover the User's account using the Security Question Share.
 
-### Example
+#### Example
 
 ```js
 await coreKitInstance.recoverSecurityQuestionShare("What is your password?", password);
@@ -186,7 +186,7 @@ await coreKitInstance.recoverSecurityQuestionShare("What is your password?", pas
 Changes the Security Question Share of the User's account. This helps you change the password if the user has lost it somehow. However, this function
 can only be used if the user has already logged in within the application while meeting the minimum share threshold.
 
-### Example
+#### Example
 
 ```js
 await coreKitInstance.changeSecurityQuestionShare("What is your password?", password);
@@ -199,7 +199,7 @@ await coreKitInstance.changeSecurityQuestionShare("What is your password?", pass
 Deletes the Security Question Share of the User's account. This function can only be used if the user has already logged in within the application
 while meeting the minimum share threshold.
 
-### Example
+#### Example
 
 ```js
 await coreKitInstance.deleteSecurityQuestionShare("What is your password?");
@@ -211,7 +211,7 @@ await coreKitInstance.deleteSecurityQuestionShare("What is your password?");
 
 Returns the User's information received from the ID Token.
 
-### Returns
+#### Returns
 
 This function returns the following parameters in the form of an object:
 
@@ -236,7 +236,7 @@ type UserInfo = {
 };
 ```
 
-### Example
+#### Example
 
 ```js
 await coreKitInstance.getUserInfo();
@@ -248,7 +248,7 @@ await coreKitInstance.getUserInfo();
 
 Returns the details of how the user's key is managed by the MPC Core Kit.
 
-### Returns
+#### Returns
 
 This function returns the following parameters in the form of an object:
 
@@ -262,7 +262,7 @@ type KeyDetails = {
 };
 ```
 
-### Example
+#### Example
 
 ```js
 await coreKitInstance.getKeyDetails();
@@ -270,11 +270,11 @@ await coreKitInstance.getKeyDetails();
 
 ## Commit Changes
 
-#### `commitChanges(): Promise<void>; logout(): Promise<void>;`
+#### `commitChanges(): Promise<void>;`
 
 Sync the local changes made to the User's account with the web3auth metadata server. This function is only to be used while in manual sync mode.
 
-### Example
+#### Example
 
 ```js
 await coreKitInstance.commitChanges();
@@ -287,7 +287,7 @@ await coreKitInstance.commitChanges();
 Can be used to reset user's account in case of emergencies, when the user is unable to recover their account. This deletes all the history of the
 previous key and the funds/ assets associated with it.
 
-### Example
+#### Example
 
 ```js
 await coreKitInstance.CRITICAL_resetAccount();
