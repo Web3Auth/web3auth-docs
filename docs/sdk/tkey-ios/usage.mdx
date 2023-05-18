@@ -203,44 +203,38 @@ guard let key_details = try? await threshold_key.initialize(never_initialize_new
 The `get_key_details()` function provides information about the keys created for a particular user. It includes the user's public key X and Y, as well
 as the share descriptions, number of required shares, total shares, and threshold.
 
-#### Sample Key Details Response
+#### Usage Sample
 
-```json
-[
-  {
-    pub_key: {
-      x: "471dbccd7e55eb2d24..329b8174f2339e516a3d1728d",
-      y: "3f93da3597ded482fc..b23c5c79011a3deb8ccf8bf50",
-    },
-    required_shares: -9,
-    threshold: 2,
-    total_shares: 11,
-    share_descriptions: {
-      "1": [
-        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671429485524}',
-        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671429560829}',
-        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671454332687}',
-        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671454508464}',
-        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671454832067}',
-        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671506806091}',
-      ],
-      "94da7ea9b8680ea13d..1de31915c54c1cfa055134308969088": [
-        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671424397242}',
-      ],
-      "9b29f5c69bdcc4c79b..8c573e3001d72dc7a42866e88272866": [
-        '{"module":"securityQuestions","questions":"whats your password?","dateAdded":1671424430842}',
-      ],
-    },
-  },
-];
+```swift
+let key_details = try! threshold_key.get_key_details() // Returns a KeyDetails object.
+
+// To get the public key
+let pub_key = key_details.pub_key // Returns a KeyPoint object
+
+// For key x and y, or serialized representation
+let x_coord = try! pub_key.getX()
+let y_coord = try! pub_key.getY()
+let serialized = try! pub_key.getAsCompressedPublicKey(format: "elliptic-compressed")
+
+//Required shares
+key_details.required_shares
+
+// Threshold
+key_details.threshold
+
+// Total Shares
+key_details.total_shares
+
+// Share Descriptions
+key_details.share_descriptions // This is a json object in string format
 ```
 
 From here, you can know whether the user key can be reconstructed or not.
 
-- If the `required_shares` is greater than 0, then the key cannot be reconstructed, because this means that the user has not yet generated enough
-  shares to meet the threshold.
-- Once the `required_shares` is 0 or less than that, then the key can be reconstructed, and the user can use the shares to generate the private key
-  and make further operations on the tKey and manipulate their keys.
+- If the value of `required_shares` is more than zero, it implies that the threshold hasn't been met yet, and as a result, the key can't be
+  reconstructed since the user hasn't generated enough shares.
+- When the value of `required_shares` is 0 or less, the user can reconstruct the key. They can then use the shares to generate their private key and
+  carry out additional operations on the tKey to manage their keys.
 
 ## Reconstruct Private Key
 
