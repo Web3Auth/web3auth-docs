@@ -517,6 +517,17 @@ module.exports = {
     },
     {
       type: "category",
+      label: "MPC Core Kit (Beta) SDK",
+      link: { type: "doc", id: "sdk/core-kit/mpc-core-kit/mpc-core-kit" },
+      items: [
+        "sdk/core-kit/mpc-core-kit/install",
+        "sdk/core-kit/mpc-core-kit/initialize",
+        "sdk/core-kit/mpc-core-kit/authentication",
+        "sdk/core-kit/mpc-core-kit/usage"
+      ],
+    },
+    {
+      type: "category",
       label: "tKey iOS SDK",
       link: { type: "doc", id: "sdk/core-kit/tkey-ios/tkey-ios" },
       items: [
@@ -534,26 +545,6 @@ module.exports = {
             "sdk/core-kit/tkey-ios/modules/share-transfer",
           ],
         },
-      ],
-    },
-    {
-      type: "category",
-      label: "Single Factor Auth SDK",
-      link: { type: "doc", id: "sdk/single-factor-auth/single-factor-auth" },
-      items: ["sdk/single-factor-auth/initialize", "sdk/single-factor-auth/authentication", "sdk/single-factor-auth/usage"],
-    },
-    {
-      type: "category",
-      label: "SFA Node SDK",
-      link: { type: "doc", id: "sdk/node/node" },
-      items: ["sdk/node/initialize", "sdk/node/authentication", "sdk/node/usage"],
-      label: "MPC Core Kit (Beta) SDK",
-      link: { type: "doc", id: "sdk/core-kit/mpc-core-kit/mpc-core-kit" },
-      items: [
-        "sdk/core-kit/mpc-core-kit/install",
-        "sdk/core-kit/mpc-core-kit/initialize",
-        "sdk/core-kit/mpc-core-kit/authentication",
-        "sdk/core-kit/mpc-core-kit/usage"
       ],
     },
     {
