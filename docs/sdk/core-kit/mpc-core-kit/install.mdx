@@ -1,0 +1,69 @@
+---
+title: "Installing MPC Core Kit Web SDK"
+sidebar_label: "Install"
+displayed_sidebar: sdk
+description: "Web3Auth MPC Core Kit Web SDK - Install | Documentation - Web3Auth"
+---
+
+import ServiceWorkerCode from "@site/src/common/sdk/core-kit/tkey/_sw-js.mdx";
+
+## [`@web3auth/mpc-core-kit`](https://npmjs.com/package/@web3auth/mpc-core-kit)
+
+```bash npm2yarn
+npm install --save @web3auth/mpc-core-kit
+```
+
+## Consider adding `@web3auth/base` to your project
+
+```bash npm2yarn
+npm install --save @web3auth/base
+```
+
+This package gives access to common types and interfaces for Web3Auth. This comes in handy by providing you a standard way of importing the values you
+need to work with the SDKs. We highly recommend using it while working with `Typescript`.
+
+### Service Worker
+
+A service worker is a scripts that is run by the browser. It does not have any direct relationship with the DOM and provides many out of the box
+network-related features. Web3Auth Core Kit tKey SDK needs a service worker relative to `baseUrl` to capture the auth redirect at `redirectPathName`
+path.
+
+For example, while using service worker if `baseUrl` is `http://localhost:3000/serviceworker` then user will be redirected to
+`http://localhost:3000/serviceworker/redirect` page after login where service worker will capture the results and send it back to original window
+where login was initiated.
+
+:::tip
+
+- Using service worker is required only in the popup flow.
+
+- Service worker is needed if you are using `popup` uxMode within your [Service Provider configuration](./initialize#configuring-service-provider).
+
+- For browsers where service workers are not supported, or in the case you wish to not use service workers, create and serve redirect page (i.e
+  `redirect.html` file).
+
+:::
+
+#### Redirect Page
+
+If you don't have to use service worker or `redirect.html` file. You can get login result by calling `handleRedirectResult()` on redirected page
+mount.
+
+For example, if baseUrl is `http://localhost:3000` and `redirectPathName` is `auth` then user will be redirected to `http://localhost:3000/auth` page
+after login where you can get login result by calling `getRedirectResult` on redirected page mount.
+
+#### Service Worker Setup
+
+- If you're using React, to setup service worker, you need to create a `sw.js` file in your public folder and register it in your `index.html` file.
+  You can find more information about it in [this blog](https://blog.bitsrc.io/using-service-workers-with-react-27a4c5e2d1a9).
+
+- For Angular, [this guide](https://angular.io/guide/service-worker-getting-started) will be helpful in setting up the service worker.
+
+- For Vue, [this guide](https://www.360learntocode.com/2020/12/how-to-use-and-customize-service-worker-in-vuejs-pwa.html) is a great way to get
+  started with service workers.
+
+#### Service Worker Code
+
+You can directly copy the service worker file code from here and paste in your respective folder. You can also find the code in our
+[MPC Core Kit Example (Popup Flow)](https://github.com/Web3Auth/web3auth-core-kit-examples/blob/main/mpc-core-kit/mpc-core-kit-react-popup-example/src/App.tsx).
+
+<ServiceWorkerCode />

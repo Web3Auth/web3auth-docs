@@ -1,0 +1,79 @@
+---
+title: Custom Authentication with PnP Web Modal SDK
+sidebar_label: Custom Authentication
+displayed_sidebar: sdk
+description: "@web3auth/modal Custom Authentication | Documentation - Web3Auth"
+---
+
+import CustomAuthenticationWeb3AuthExample from "@site/src/common/sdk/pnp/web/_custom-authentication-web3auth-example.mdx";
+import LoginConfig from "@site/src/common/sdk/pnp/web/_login-config.mdx";
+
+Custom Authentication is a way to authenticate users with your own custom authentication service. For example, while authenticating with Google, you
+have the ability to use your own Google Client ID and Dashboard to authenticate users directly.
+
+:::caution
+
+For a Custom JWT based authentication services you need to use the [`Web3Auth Plug and Play No Modal SDK`](/sdk/pnp/web/no-modal), since the Web3Auth
+Modal will only help you configure the social logins present within the Modal UI.
+
+:::
+
+For enabling this, you need [Create a Verifier](/auth-provider-setup/verifiers) from the **Custom Auth** section of the
+[Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired configuration.
+
+:::tip
+
+If you want to know more about setting up a verifier and how to use it, please refer to the
+[Custom Authentication Documentation](/pnp/features/custom-authentication).
+
+:::
+
+## Installing Openlogin Adapter
+
+---
+
+Social logins in Web3Auth are enabled by the [`openlogin-adapter`](/sdk/pnp/web/adapters/openlogin). Natively, it is already present and preconfigured
+within the Plug and Play SDK, but for custom configurations, you need to install the adapter package.
+
+```bash npm2yarn
+npm install --save @web3auth/openlogin-adapter
+```
+
+## Configuring Openlogin Adapter
+
+While instantiating the Openlogin Adapter, you can pass some configuration objects to the constructor. One of these configurations is the
+`adapterSettings` configuration which enables you to make changes in the adapter, enabling you to do things like Whitelabeling and Custom
+Authentication among other things.
+
+:::tip
+
+Checkout the [`openlogin-adapter`](/sdk/pnp/web/adapters/openlogin) SDK Reference for more details on different configurations you can pass for
+customisations.
+
+:::
+
+Further, the `loginConfig` parameter of the `adapterSettings` configuration helps us to customise the social logins. Since we're using the
+`@web3auth/modal`, ie. the Plug and Play Modal SDK, the `loginConfig` should be corresponding to the socials mentioned in the modal. This means you
+can use your own authentication services for the following services:
+
+`google` | `facebook` | `discord` | `twitch` |
+
+:::info
+
+You can customise all or few of the social logins and other will remain default. You can also remove the ones you don't want using the whitelabeling
+option.
+
+:::
+
+#### `loginConfig`
+
+The `loginConfig` parameter of `adapterSettings` in `openlogin-adapter` contains the following properties:
+
+<LoginConfig />
+
+## Example
+
+Since we're using the `@web3auth/modal` ie. the Plug and Play Modal SDK, the `loginConfig` should be corresponding to the socials mentioned in the
+modal. Here, we're customising Google and Facebook to be custom verified, rest all other socials will be default.
+
+<CustomAuthenticationWeb3AuthExample />

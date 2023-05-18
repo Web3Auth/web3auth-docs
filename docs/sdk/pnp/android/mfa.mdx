@@ -1,0 +1,61 @@
+---
+title: Multi Factor Authentication in PnP Android SDK
+sidebar_label: Multi Factor Authentication
+displayed_sidebar: sdk
+description: "Web3Auth PnP Android SDK - Multi Factor Authentication | Documentation - Web3Auth"
+---
+
+The Multi Factor Authentication feature refers to the ability of the user to create a backup share (recovery phrase). This helps them login into a new
+device and also to recover their account if they lose their original device.
+
+You can set the mfaLevel within the `loginParams` to customize when mfa screen should be shown to user. It currently accepts 4 values:
+
+- **`default`** - Setting the mfaLevel to default will present the MFA screen to user on every third login. `mfaLevel = MFALevel.DEFAULT`
+- **`optional`** - Setting mfaLevel to optional will present the MFA screen to user on every login but user will have the option to skip it.
+  `mfaLevel = MFALevel.OPTIONAL`
+- **`mandatory`** - Setting mfaLevel to mandatory will make it mandatory for user to setup MFA after login. `mfaLevel = MFALevel.MANDATORY`
+- **`none`** - Setting mfaLevel to none will skip the mfa setup screen totally. `mfaLevel = MFALevel.NONE`
+
+```kotlin
+web3Auth.login(LoginParams(selectedLoginProvider, mfaLevel = MFALevel.MANDATORY))
+```
+
+### Example
+
+```kotlin
+import android.widget.Button
+import com.web3auth.core.Web3Auth
+import android.os.Bundle
+
+class MainActivity : AppCompatActivity() {
+	private lateinit var web3Auth: Web3Auth
+	private fun signIn() {
+		val selectedLoginProvider = Provider.GOOGLE
+		// Can be GOOGLE, FACEBOOK, TWITCH etc.
+
+		// MFA Level is set Mandatory here.
+		// `mfaLevel = MFALevel.MANDATORY`
+		val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+				web3Auth.login(LoginParams(selectedLoginProvider,
+						// highlight-next-line
+						mfaLevel = MFALevel.MANDATORY))
+
+		loginCompletableFuture.whenComplete { loginResponse, error ->
+			if (error == null) {
+				// render logged in UI
+			} else {
+				// render error UI
+			}
+
+		}
+	}
+	override fun onCreate(savedInstanceState: Bundle?) {
+			// ...
+			// Setup UI and event handlers
+			val signInButton = findViewById<Button>(R.id.signInButton)
+			signInButton.setOnClickListener { signIn() }
+			// ...
+	}
+	// ...
+}
+```

@@ -1,0 +1,85 @@
+---
+title: Whitelabel PnP Unreal Engine SDK
+sidebar_label: Whitelabel
+displayed_sidebar: sdk
+description: "Web3Auth PnP Unreal Engine SDK - Whitelabel | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+For defining custom UI, branding, and translations for your brand app, you just need to specify an additional parameter within the `Web3AuthOptions`
+class called `whiteLabel`. This parameter takes another object called `WhiteLabelData`.
+
+## Arguments
+
+### `WhiteLabelData`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter         | Type               | Mandatory | Description                                       |
+| ----------------- | ------------------ | --------- | ------------------------------------------------- |
+| `name`            | `String`           | No        | Name of your application                          |
+| `logoLight`       | `String`           | No        | Light logo for dark background                    |
+| `logoDark`        | `String`           | No        | Dark logo for light background                    |
+| `defaultLanguage` | `String`           | No        | Default translation language to be used           |
+| `dark`            | `Boolean`          | No        | If true, enables dark mode. Default is light mode |
+| `theme`           | `Map<String, Any>` | No        | Whitelabel theme                                  |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```cs
+USTRUCT(BlueprintType)
+struct FWhiteLabelData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString name;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString logoLight;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString logoDark;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString defaultLanguage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool dark;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TMap<FString, FString> theme;
+
+	FWhiteLabelData() {};
+
+	void operator= (const FWhiteLabelData& other) {
+		name = other.name;
+		logoLight = other.logoLight;
+		logoDark = other.logoDark;
+		defaultLanguage = other.defaultLanguage;
+		dark = other.dark;
+		theme = other.theme;
+	}
+
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+# Example
+
+![Unreal Whitelabel](/content-hub/sdk/unreal/whitelable.png)

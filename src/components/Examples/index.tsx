@@ -9,6 +9,7 @@ import {
   corekitlist,
   corekitnodejs,
   getOptionsfromURL,
+  mpccorekit,
   pnp,
   pnpandroid,
   pnpflutter,
@@ -24,7 +25,7 @@ import {
   singlefactorauthandroid,
   tkeyjs,
 } from "../../common/SDKOptions";
-import { CKNode, CKSFA, CKSFAAndroid, CKTkey } from "./coreKitExamples";
+import { CKNode, CKSFA, CKSFAAndroid, CKTkey, MPCCK } from "./coreKitExamples";
 import { PNPUnity, PNPUnreal } from "./pnpGamingExamples";
 import { PNPAndroid, PNPFlutter, PNPIos, PNPRN } from "./pnpMobileExamples";
 import {
@@ -138,22 +139,21 @@ export default function QuickNavigation() {
           <select value={sdk} onChange={changeSDK}>
             {product === pnp
               ? pnplist.map((option) => (
-                  <option value={option.value} key={option.value}>
-                    {option.label}
-                  </option>
-                ))
+                <option value={option.value} key={option.value}>
+                  {option.label}
+                </option>
+              ))
               : corekitlist.map((option) => (
-                  <option value={option.value} key={option.value}>
-                    {option.label}
-                  </option>
-                ))}
+                <option value={option.value} key={option.value}>
+                  {option.label}
+                </option>
+              ))}
           </select>
         </div>
       </div>
       <br />
       <br />
       <h1>Sample Apps using Web3Auth {sdk}</h1>
-      <hr />
       {sdk === pnpwebmodal ? (
         <>
           <h2>EVM Chain Examples</h2>
@@ -191,6 +191,7 @@ export default function QuickNavigation() {
       {sdk === pnprn ? <Tiles tileGroups={PNPRN} /> : null}
       {sdk === pnpflutter ? <Tiles tileGroups={PNPFlutter} /> : null}
       {sdk === tkeyjs ? <Tiles tileGroups={CKTkey} /> : null}
+      {sdk === mpccorekit ? <Tiles tileGroups={MPCCK} /> : null}
       {sdk === corekitnodejs ? <Tiles tileGroups={CKNode} /> : null}
       {sdk === singlefactorauth ? <Tiles tileGroups={CKSFA} /> : null}
       {sdk === singlefactorauthandroid ? <Tiles tileGroups={CKSFAAndroid} /> : null}
