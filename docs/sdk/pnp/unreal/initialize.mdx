@@ -1,0 +1,96 @@
+---
+title: Initialize PnP Unreal Engine SDK
+sidebar_label: Initialize
+displayed_sidebar: sdk
+description: "Web3Auth PnP Unreal Engine SDK - Initialize | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+import unrealInitialization from "@site/static/content-hub/sdk/unreal/unreal-initialization.png";
+import unrealExample from "@site/static/content-hub/sdk/unreal/unreal-blueprint-example.png";
+
+After Installation, the next step to using Web3Auth is to Initialize the SDK. However, In Unreal, the Initialization happens through the blueprint.
+
+## Web3Auth Initialization Blueprint
+
+<img src={unrealInitialization} style={{ alignSelf: "center", maxWidth: "100%" }} alt="web3auth unreal initialization" />
+
+### Arguments
+
+#### `Web3AuthOptions`
+
+The Web3Auth Constructor takes a class `Web3AuthOptions` as input. This class has the following arguments.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter     | Type                              | Mandatory | Description                                                                                                                                        |
+| ------------- | --------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`    | `string`                          | Yes       | Your Web3Auth Project ID                                                                                                                           |
+| `network`     | Web3Auth Network                  | Yes       | Network to run Web3Auth, either MAINNET, TESTNET or CYAN                                                                                           |
+| `redirectUrl` | `Uri`                             | No        | URL that Web3Auth will redirect API responses, default is `null`                                                                                   |
+| `whiteLabel`  | `WhiteLabelData`                  | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer [WhiteLabel](/whitelabel) section for more info. |
+| `loginConfig` | `TMap<FString, FLoginConfigItem>` | No        | A configuration optional object to use custom authentication. Refer [Custom Authentication](/custom-authentication) for more info.                 |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```c
+USTRUCT(BlueprintType)
+struct FWeb3AuthOptions
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString clientId;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString redirectUrl;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString sdkUrl = "https://sdk.openlogin.com";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FNetwork network;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FWhiteLabelData whiteLabel;
+
+	UPROPERTY(BlueprintReadWrite)
+		TMap<FString, FLoginConfigItem> loginConfig;
+
+
+	FWeb3AuthOptions() {};
+
+	void operator= (const FWeb3AuthOptions& other) {
+		clientId = other.clientId;
+		redirectUrl = other.redirectUrl;
+		sdkUrl = other.sdkUrl;
+		network = other.network;
+		whiteLabel = other.whiteLabel;
+		loginConfig = other.loginConfig;
+	}
+
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+# Example
+
+The following is the graph to set Web3Auth actor configuration. The graph currently uses string values to add parameters to blueprint blocks, but you
+can connect the values coming from different UI components.
+
+<img src={unrealExample} style={{ alignSelf: "center", maxWidth: "100%" }} alt="unreal example blueprint" />

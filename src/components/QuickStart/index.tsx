@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-globals */
-/* eslint-disable no-nested-ternary */
+
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import CoreKitAngular from "@site/src/common/quickstart/_corekit-angular.mdx";
@@ -7,6 +7,10 @@ import CoreKitiOS from "@site/src/common/quickstart/_corekit-ios.mdx";
 import CoreKitNext from "@site/src/common/quickstart/_corekit-nextjs.mdx";
 import CoreKitReact from "@site/src/common/quickstart/_corekit-react.mdx";
 import CoreKitVue from "@site/src/common/quickstart/_corekit-vue.mdx";
+import MPCCoreKitAngular from "@site/src/common/quickstart/_mpcck-angular.mdx";
+import MPCCoreKitNext from "@site/src/common/quickstart/_mpcck-nextjs.mdx";
+import MPCCoreKitReact from "@site/src/common/quickstart/_mpcck-react.mdx";
+import MPCCoreKitVue from "@site/src/common/quickstart/_mpcck-vue.mdx";
 import NodeExample from "@site/src/common/quickstart/_node.mdx";
 import PNPAndroid from "@site/src/common/quickstart/_pnp-android.mdx";
 import PNPFlutter from "@site/src/common/quickstart/_pnp-flutter.mdx";
@@ -28,6 +32,7 @@ import SFAAngular from "@site/src/common/quickstart/_sfa-angular.mdx";
 import SFANext from "@site/src/common/quickstart/_sfa-nextjs.mdx";
 import SFAReact from "@site/src/common/quickstart/_sfa-react.mdx";
 import SFAVue from "@site/src/common/quickstart/_sfa-vue.mdx";
+import TKeyReact from "@site/src/common/quickstart/_tkey-react.mdx";
 import { useEffect, useState } from "react";
 
 import {
@@ -38,6 +43,7 @@ import {
   flutter,
   getOptionsfromURL,
   ios,
+  mpccorekit,
   nextjs,
   nodejs,
   pnp,
@@ -226,16 +232,16 @@ export default function QuickNavigation() {
       <h2>
         Integrate Web3Auth {sdk} in 4 simple steps in your {platform} App
       </h2>
-      {platform === angular && sdk === pnpwebmodal ? <PNPModalAngular /> : platform === angular && sdk === pnpwebnomodal ? <PNPNoModalAngular /> : ""}
-      {platform === reactJS && sdk === pnpwebmodal ? <PNPModalReact /> : platform === reactJS && sdk === pnpwebnomodal ? <PNPNoModalReact /> : ""}
-      {platform === vue && sdk === pnpwebmodal ? <PNPModalVue /> : platform === vue && sdk === pnpwebnomodal ? <PNPNoModalVue /> : ""}
-      {platform === nextjs && sdk === pnpwebmodal ? <PNPModalNext /> : platform === nextjs && sdk === pnpwebnomodal ? <PNPNoModalNext /> : ""}
-      {platform === angular && sdk === tkeyjs ? <CoreKitAngular /> : platform === angular && sdk === singlefactorauth ? <SFAAngular /> : ""}
-      {platform === reactJS && sdk === tkeyjs ? <CoreKitReact /> : platform === reactJS && sdk === singlefactorauth ? <SFAReact /> : ""}
-      {platform === vue && sdk === tkeyjs ? <CoreKitVue /> : platform === vue && sdk === singlefactorauth ? <SFAVue /> : ""}
-      {platform === nextjs && sdk === tkeyjs ? <CoreKitNext /> : platform === nextjs && sdk === singlefactorauth ? <SFANext /> : ""}
-      {platform === reactnative && sdk === tkeyjs ? "tKey React Native QuickStart Coming Soon" : ""}
-      {platform === nodejs ? <NodeExample /> : ""}
+      {platform === reactJS && sdk === pnpwebmodal ? <PNPModalReact /> : ""}
+      {platform === nextjs && sdk === pnpwebmodal ? <PNPModalNext /> : ""}
+      {platform === angular && sdk === pnpwebmodal ? <PNPModalAngular /> : ""}
+      {platform === vue && sdk === pnpwebmodal ? <PNPModalVue /> : ""}
+
+      {platform === reactJS && sdk === pnpwebnomodal ? <PNPNoModalReact /> : ""}
+      {platform === nextjs && sdk === pnpwebnomodal ? <PNPNoModalNext /> : ""}
+      {platform === angular && sdk === pnpwebnomodal ? <PNPNoModalAngular /> : ""}
+      {platform === vue && sdk === pnpwebnomodal ? <PNPNoModalVue /> : ""}
+
       {platform === android && product === pnp ? <PNPAndroid /> : ""}
       {platform === android && sdk === singlefactorauthandroid ? <SFAAndroid /> : ""}
       {platform === ios && product === pnp ? <PNPIos /> : ""}
@@ -245,6 +251,23 @@ export default function QuickNavigation() {
       {platform === rnexpo && product === pnp ? <PNPReactNativeExpo /> : ""}
       {platform === unity ? <PNPUnity /> : ""}
       {platform === unreal ? <PNPUnreal /> : ""}
+
+      {platform === reactJS && sdk === singlefactorauth ? <SFAReact /> : ""}
+      {platform === nextjs && sdk === singlefactorauth ? <SFANext /> : ""}
+      {platform === angular && sdk === singlefactorauth ? <SFAAngular /> : ""}
+      {platform === vue && sdk === singlefactorauth ? <SFAVue /> : ""}
+
+      {platform === android && sdk === singlefactorauthandroid ? <SFAAndroid /> : ""}
+
+      {platform === nodejs ? <NodeExample /> : ""}
+
+      {platform === reactJS && sdk === tkeyjs ? <TKeyReact /> : ""}
+      {platform === reactnative && sdk === tkeyjs ? "tKey React Native QuickStart Coming Soon" : ""}
+
+      {platform === reactJS && sdk === mpccorekit ? <MPCCoreKitReact /> : ""}
+      {platform === angular && sdk === mpccorekit ? <MPCCoreKitAngular /> : ""}
+      {platform === vue && sdk === mpccorekit ? <MPCCoreKitVue /> : ""}
+      {platform === nextjs && sdk === mpccorekit ? <MPCCoreKitNext /> : ""}
     </div>
   );
 }

@@ -1,0 +1,72 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type Declarations", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter        | Type                                                                                                                                                                                                                       | Description                                                                                                                                                                                                                                          | Optional                                       |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| `chainNamespace` | <ul><li>**`string`** - (Choose between `eip155`, `solana` & `other`)</li> **or** <li>**`ChainNamespaceType`** - (Choose between `CHAIN_NAMESPACES.EIP155`, `CHAIN_NAMESPACES.SOLANA` & `CHAIN_NAMESPACES.OTHER`)</li></ul> | The namespace of your preferred chain. Checkout [Providers SDK Reference](/sdk/pnp/web/providers) for understanding RPC Calls.                                                                                                                       | No                                             |
+| `chainId`        | `string`                                                                                                                                                                                                                   | The chain id of the selected blockchain in `hex`                                                                                                                                                                                                     | No                                             |
+| `rpcTarget`      | `string`                                                                                                                                                                                                                   | <ul><li>RPC Target URL for the selected `chainNamespace` & `chainId`.</li><li> We provide a default RPC Target for certain blockchains, but due to congestion it might be slow hence it is recommended to provide your own RPC Target URL.</li></ul> | Yes, but for unknown blockchains, it is needed |
+| `displayName`    | `string`                                                                                                                                                                                                                   | Display Name for the chain                                                                                                                                                                                                                           | Yes                                            |
+| `blockExplorer`  | `string`                                                                                                                                                                                                                   | Blockchain's explorer URL. (eg: `https://etherscan.io`)                                                                                                                                                                                              | Yes                                            |
+| `ticker`         | `string`                                                                                                                                                                                                                   | Default currency ticker of the network (e.g: `ETH`)                                                                                                                                                                                                  | Yes                                            |
+| `tickerName`     | `string`                                                                                                                                                                                                                   | Name for currency ticker (e.g: `Ethereum`)                                                                                                                                                                                                           | Yes                                            |
+| `decimals`       | `number`                                                                                                                                                                                                                   | Number of decimals for the currency ticker (e.g: `18`)                                                                                                                                                                                               | Yes                                            |
+
+</TabItem>
+
+<TabItem value="type">
+
+```ts
+declare const CHAIN_NAMESPACES: {
+  readonly EIP155: "eip155";
+  readonly SOLANA: "solana";
+  readonly OTHER: "other";
+};
+
+declare type ChainNamespaceType = typeof CHAIN_NAMESPACES[keyof typeof CHAIN_NAMESPACES];
+declare type CustomChainConfig = {
+  chainNamespace: ChainNamespaceType;
+  /**
+   * The chain id of the chain
+   */
+  chainId: string;
+  /**
+   * RPC target Url for the chain
+   */
+  rpcTarget: string;
+  /**
+   * Display Name for the chain
+   */
+  displayName: string;
+  /**
+   * Url of the block explorer
+   */
+  blockExplorer: string;
+  /**
+   * Default currency ticker of the network (e.g: ETH)
+   */
+  ticker: string;
+  /**
+   * Name for currency ticker (e.g: `Ethereum`)
+   */
+  tickerName: string;
+  /**
+   * Number of decimals for the currency ticker (e.g: 18)
+   */
+  decimals?: number;
+};
+```
+
+</TabItem>
+
+</Tabs>

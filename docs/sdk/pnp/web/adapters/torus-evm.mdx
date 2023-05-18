@@ -1,0 +1,185 @@
+---
+title: Torus EVM Wallet Adapter
+sidebar_label: Torus EVM Wallet
+displayed_sidebar: sdk
+description: "Web3Auth PnP Web Adapter SDKs - Torus EVM | Documentation - Web3Auth"
+---
+
+# Torus EVM Adapter
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+## [`@web3auth/torus-evm-adapter`](https://npmjs.com/package/@web3auth/torus-evm-adapter)
+
+Torus Wallet adapter allows to connect with torus wallet for evm chains. You can read more about torus wallet
+[here](https://docs.tor.us/wallet/get-started).
+
+## Basic Details
+
+#### Adapter Name: `torus-evm`
+
+#### Package Name: [`@web3auth/torus-evm-adapter`](https://npmjs.com/package/@web3auth/torus-evm-adapter)
+
+#### authMode: `DAPP`
+
+#### chainNamespace: `EIP155`
+
+#### Default: `YES`
+
+## Installation
+
+```bash npm2yarn
+npm install --save @web3auth/torus-evm-adapter
+```
+
+## Arguments
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter          | type                                                                    |
+| ------------------ | ----------------------------------------------------------------------- |
+| `chainConfig`      | `CustomChainConfig`                                                     |
+| `adapterSettings`  | [`TorusCtorArgs`](https://docs.tor.us/wallet/sdk/class)                 |
+| `loginSettings`    | [`LoginParams`](https://docs.tor.us/wallet/sdk/class)                   |
+| `initParams`       | [`Omit <TorusParams, "network">`](https://docs.tor.us/wallet/sdk/class) |
+| `clientId?`        | `string`                                                                |
+| `sessionTime?`     | `number`                                                                |
+| `web3AuthNetwork?` | `OPENLOGIN_NETWORK_TYPE`                                                |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+// refer to https://docs.tor.us/wallet/sdk/class to know more about interface field types
+interface TorusWalletOptions {
+  adapterSettings?: TorusCtorArgs;
+  loginSettings?: LoginParams;
+  initParams?: Omit<TorusParams, "network">;
+  chainConfig?: CustomChainConfig;
+  clientId?: string;
+  sessionTime?: number;
+  web3AuthNetwork?: OPENLOGIN_NETWORK_TYPE;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Custom Chain Config
+
+#### `chainConfig`
+
+:::caution
+
+While you can pass your `chainConfig` to `OpenloginAdapter`, it is not required since you can directly pass it over to the `Web3Auth`/
+`Web3AuthNoModal` configuration while instantiating it.
+
+Read more about it in their respective sections:
+
+- [`web3auth/modal`](/sdk/pnp/web/modal/initialize#adding-a-custom-chain-configuration)
+- [`web3auth/no-modal`](/sdk/pnp/web/no-modal/initialize#adding-a-custom-chain-configuration)
+
+:::
+
+:::warning
+
+If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` passed over to the `Web3Auth`/ `Web3AuthNoModal` constructor.
+
+:::
+
+## Change Adapter Settings
+
+You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter instance.
+
+### Arguments
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter          | type                     |
+| ------------------ | ------------------------ |
+| `clientId?`        | `string`                 |
+| `sessionTime?`     | `number`                 |
+| `chainConfig?`     | `CustomChainConfig`      |
+| `web3AuthNetwork?` | `OPENLOGIN_NETWORK_TYPE` |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+interface BaseAdapterSettings {
+  clientId?: string;
+  sessionTime?: number;
+  chainConfig?: CustomChainConfig;
+  web3AuthNetwork?: OPENLOGIN_NETWORK_TYPE;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+## Example
+
+```ts
+import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
+
+const torusWalletAdapter = new TorusWalletAdapter({
+  adapterSettings: {
+    buttonPosition: "bottom-left",
+  },
+  loginSettings: {
+    verifier: "google",
+  },
+  initParams: {
+    buildEnv: "testing",
+  },
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "Ethereum Mainnet",
+    blockExplorer: "https://etherscan.io",
+    ticker: "ETH",
+    tickerName: "Ethereum",
+  },
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  sessionTime: 3600, // 1 hour in seconds
+  web3AuthNetwork: "cyan",
+});
+
+// it will add/update  the torus-evm adapter in to web3auth class
+web3auth.configureAdapter(torusWalletAdapter);
+
+// You can change the adapter settings by calling the setAdapterSettings() function on the adapter instance.
+torusWalletAdapter.setAdapterSettings({
+  sessionTime: 86400, // 1 day in seconds
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+  web3AuthNetwork: "cyan",
+});
+```

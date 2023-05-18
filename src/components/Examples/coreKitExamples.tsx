@@ -6,12 +6,6 @@ export const CKTkey = [
     description: "",
     tiles: [
       {
-        key: "tkey-mpc-beta-react-popup-example",
-        title: "tKey MPC Beta Popup Flow",
-        icon: "logo-react.png",
-        path: `${baseURL}tkey/tkey-mpc-beta-react-popup-example`,
-      },
-      {
         key: "tkey-react-redirect-example",
         title: "tKey in Redirect Flow",
         icon: "logo-react.png",
@@ -27,6 +21,33 @@ export const CKTkey = [
   },
 ];
 
+export const MPCCK = [
+  {
+    name: "",
+    description: "",
+    tiles: [
+      {
+        key: "mpc-core-kit-react-popup-example",
+        title: "MPC Core Kit Popup Flow",
+        icon: "logo-react.png",
+        path: `${baseURL}mpc-core-kit/mpc-core-kit-react-popup-example`,
+      },
+      {
+        key: "mpc-core-kit-react-redirect-example",
+        title: "MPC Core Kit Redirect Flow",
+        icon: "logo-react.png",
+        path: `${baseURL}mpc-core-kit/mpc-core-kit-react-redirect-example`,
+      },
+      {
+        key: "tkey-mpc-beta-react-popup-example",
+        title: "tKey MPC Popup Flow",
+        icon: "logo-react.png",
+        path: `${baseURL}mpc-core-kit/tkey-mpc-react-popup-example`,
+      },
+    ],
+  },
+];
+
 export const CKSFA = [
   {
     name: "",
@@ -36,19 +57,19 @@ export const CKSFA = [
         key: "react-evm-sfa-example",
         title: "Single Factor Auth Basic Example",
         icon: "logo-react.png",
-        path: `${baseURL}single-factor-auth/react-evm-sfa-example`,
+        path: `${baseURL}single-factor-auth-web/react-evm-sfa-example`,
       },
       {
         key: "sfa-react-example",
         title: "Single Factor Auth React Example",
         icon: "logo-react.png",
-        path: `${baseURL}single-factor-auth/sfa-react-example`,
+        path: `${baseURL}single-factor-auth-web/sfa-react-example`,
       },
       {
         key: "sfa-react-vite-example",
         title: "Single Factor Auth React (Vite) Example",
         icon: "logo-react.png",
-        path: `${baseURL}single-factor-auth/sfa-react-vite-example`,
+        path: `${baseURL}single-factor-auth-web/sfa-react-vite-example`,
       },
     ],
   },
@@ -63,7 +84,7 @@ export const CKSFAAndroid = [
         key: "android-sfa-example",
         title: "Single Factor Auth Android Example",
         icon: "logo-android.png",
-        path: `${baseURL}single-factor-auth/android-sfa-firebase-example`,
+        path: `${baseURL}single-factor-auth-android/android-sfa-firebase-example`,
       },
     ],
   },
@@ -94,7 +115,7 @@ export const CKNode = [
         key: "node-backend-example",
         title: "Node Backend Example",
         icon: "logo-nodejs.png",
-        path: `${baseURL}node-sdk/node-backend-example`,
+        path: `${baseURL}node-sdk/core-kit/node-backend-example`,
       },
     ],
   },

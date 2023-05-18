@@ -37,11 +37,13 @@ export const pnplist = [
 export const corekit = "Core Kit";
 export const tkeyjs = "tKey JS SDK";
 export const tkeyios = "tKey iOS SDK";
-export const singlefactorauth = "Single Factor Auth SDK";
+export const singlefactorauth = "Single Factor Auth Web SDK";
 export const singlefactorauthandroid = "Single Factor Auth Android SDK";
 export const corekitnodejs = "Node.js SDK";
+export const mpccorekit = "MPC Core Kit";
 export const corekitlist = [
-  { label: "tKey JS SDK", value: tkeyjs, platforms: [...weblist, reactnative] },
+  { label: "tKey JS SDK", value: tkeyjs, platforms: [reactJS, reactnative] },
+  { label: "MPC Core Kit", value: mpccorekit, platforms: [...weblist] },
   { label: "tKey iOS SDK", value: tkeyios, platforms: [ios] },
   { label: "Single Factor Auth Web SDK", value: singlefactorauth, platforms: [...weblist] },
   { label: "SFA Node.js SDK", value: corekitnodejs, platforms: [nodejs] },
