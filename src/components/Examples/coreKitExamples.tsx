@@ -6,12 +6,6 @@ export const CKTkey = [
     description: "",
     tiles: [
       {
-        key: "tkey-mpc-beta-react-popup-example",
-        title: "tKey MPC Popup Flow",
-        icon: "logo-react.png",
-        path: `${baseURL}mpc-core-kit/tkey-mpc-react-popup-example`,
-      },
-      {
         key: "tkey-react-redirect-example",
         title: "tKey in Redirect Flow",
         icon: "logo-react.png",
@@ -22,6 +16,33 @@ export const CKTkey = [
         title: "tKey in Popup Flow",
         icon: "logo-react.png",
         path: `${baseURL}tkey/tkey-react-popup-example`,
+      },
+    ],
+  },
+];
+
+export const MPCCK = [
+  {
+    name: "",
+    description: "",
+    tiles: [
+      {
+        key: "mpc-core-kit-react-popup-example",
+        title: "MPC Core Kit Popup Flow",
+        icon: "logo-react.png",
+        path: `${baseURL}mpc-core-kit/mpc-core-kit-react-popup-example`,
+      },
+      {
+        key: "mpc-core-kit-react-redirect-example",
+        title: "MPC Core Kit Redirect Flow",
+        icon: "logo-react.png",
+        path: `${baseURL}mpc-core-kit/mpc-core-kit-react-redirect-example`,
+      },
+      {
+        key: "tkey-mpc-beta-react-popup-example",
+        title: "tKey MPC Popup Flow",
+        icon: "logo-react.png",
+        path: `${baseURL}mpc-core-kit/tkey-mpc-react-popup-example`,
       },
     ],
   },
