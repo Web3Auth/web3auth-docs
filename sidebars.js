@@ -500,6 +500,8 @@ module.exports = {
         {
           type: "category",
           label: "Modules",
+          collapsible: true,
+          collapsed: false,
           link: { type: "doc", id: "sdk/core-kit/tkey/modules/modules" },
           items: [
             "sdk/core-kit/tkey/modules/share-serialization",
