@@ -115,37 +115,31 @@ let thresholdKey = try? ThresholdKey(
 
 ### Parameters
 
-| Parameter                    | Type                       | Description                                                                                                                                      | Mandatory |
-| ---------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
-| `metadata`                   | `Metadata`                 | Metadata object containing the metadata details of tKey.                                                                                         | No        |
-| `shares`                     | `ShareStorePolyIdIndexMap` | Array of ShareStore with PolyId.                                                                                                                 | No        |
-| `storage_layer`              | `StorageLayer`             | Takes in the Storage Provider Instance                                                                                                           | No        |
-| `service_provider`           | `ServiceProvider`          | Takes in the Service Provider Instance                                                                                                           | No        |
-| `local_matadata_transitions` | `Metadata`                 | Local metadata transitions                                                                                                                       | No        |
-| `enable_logging`             | `Bool`                     | This option is used to specify whether to enable logging or not.                                                                                 | No        |
-| `manual_sync`                | `Bool`                     | Helps you turn on manual sync, which helps you configure Tkey to not contant the server for every request. You can sync as per your convenience. | No        |
+| Parameter                    | Type                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Mandatory |
+| ---------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
+| `metadata`                   | `Metadata`                 | Metadata object containing the metadata details of tKey.                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | No        |
+| `shares`                     | `ShareStorePolyIdIndexMap` | Array of ShareStore with PolyId.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | No        |
+| `storage_layer`              | `StorageLayer`             | Takes in the Storage Provider Instance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | No        |
+| `service_provider`           | `ServiceProvider`          | Takes in the Service Provider Instance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | No        |
+| `local_matadata_transitions` | `Metadata`                 | Local metadata transitions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | No        |
+| `enable_logging`             | `Bool`                     | This option is used to specify whether to enable logging or not.                                                                                                                                                                                                                                                                                                                                                                                                                                                               | No        |
+| `manual_sync`                | `Bool`                     | manual sync provides atomicity to your tkey share. If manual_sync is true, you should sync your local metadata transitions manually to your storage_layer, which means your storage layer doesn’t know the local changes of your tkey unless you manually sync, gives atomicity. Otherwise, If manual_sync is false, then your local metadata changes will be synced automatically to your storage layer. If manual_sync = true and want to synchronize manually, you need to call sync_local_metadata_transitions() manually. | No        |
 
 ### Example
 
 ```swift
 guard let postboxkey = userData["privateKey"] as? String else {
   alertContent = "Failed to get postboxkey"
-  showAlert = true
-  showSpinner = SpinnerLocation.nowhere
   return
 }
 
 guard let storage_layer = try? StorageLayer(enable_logging: true, host_url: "https://metadata.tor.us", server_time_offset: 2) else {
   alertContent = "Failed to create storage layer"
-  showAlert = true
-  showSpinner = SpinnerLocation.nowhere
   return
 }
 
 guard let service_provider = try? ServiceProvider(enable_logging: true, postbox_key: postboxkey) else {
   alertContent = "Failed to create service provider"
-  showAlert = true
-  showSpinner = SpinnerLocation.nowhere
   return
 }
 
@@ -155,8 +149,6 @@ guard let thresholdKey = try? ThresholdKey(
   enable_logging: true,
   manual_sync: false) else {
     alertContent = "Failed to create threshold key"
-    showAlert = true
-    showSpinner = SpinnerLocation.nowhere
     return
   }
 

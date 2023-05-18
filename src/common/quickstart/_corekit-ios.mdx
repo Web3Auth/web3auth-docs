@@ -63,19 +63,14 @@ guard let thresholdKey = try? ThresholdKey(
 	enable_logging: true,
 	manual_sync: false) else {
 		alertContent = "Failed to create threshold key"
-		showAlert = true
-		showSpinner = SpinnerLocation.nowhere
 		return
 	}
 
 threshold_key = thresholdKey
 
 guard let key_details = try? await threshold_key.initialize(
-	never_initialize_new_key: false,
-	include_local_metadata_transitions: false) else {
+	never_initialize_new_key: false) else {
 	alertContent = "Failed to get key details"
-	showAlert = true
-	showSpinner = SpinnerLocation.nowhere
 	return
 }
 

@@ -121,37 +121,31 @@ let thresholdKey = try? ThresholdKey(
 
 ### Parameters
 
-| Parameter                    | Type                       | Description                                                                                                                                      | Mandatory |
-| ---------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
-| `metadata`                   | `Metadata`                 | Metadata object containing the metadata details of tKey.                                                                                         | No        |
-| `shares`                     | `ShareStorePolyIdIndexMap` | Array of ShareStore with PolyId.                                                                                                                 | No        |
-| `storage_layer`              | `StorageLayer`             | Takes in the Storage Provider Instance                                                                                                           | No        |
-| `service_provider`           | `ServiceProvider`          | Takes in the Service Provider Instance                                                                                                           | No        |
-| `local_matadata_transitions` | `Metadata`                 | Local metadata transitions                                                                                                                       | No        |
-| `enable_logging`             | `Bool`                     | This option is used to specify whether to enable logging or not.                                                                                 | No        |
-| `manual_sync`                | `Bool`                     | Helps you turn on manual sync, which helps you configure Tkey to not contant the server for every request. You can sync as per your convenience. | No        |
+| Parameter                    | Type                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Mandatory |
+| ---------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
+| `metadata`                   | `Metadata`                 | Metadata object containing the metadata details of tKey.                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | No        |
+| `shares`                     | `ShareStorePolyIdIndexMap` | Array of ShareStore with PolyId.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | No        |
+| `storage_layer`              | `StorageLayer`             | Takes in the Storage Provider Instance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | No        |
+| `service_provider`           | `ServiceProvider`          | Takes in the Service Provider Instance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | No        |
+| `local_matadata_transitions` | `Metadata`                 | Local metadata transitions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | No        |
+| `enable_logging`             | `Bool`                     | This option is used to specify whether to enable logging or not.                                                                                                                                                                                                                                                                                                                                                                                                                                                               | No        |
+| `manual_sync`                | `Bool`                     | manual sync provides atomicity to your tkey share. If manual_sync is true, you should sync your local metadata transitions manually to your storage_layer, which means your storage layer doesn’t know the local changes of your tkey unless you manually sync, gives atomicity. Otherwise, If manual_sync is false, then your local metadata changes will be synced automatically to your storage layer. If manual_sync = true and want to synchronize manually, you need to call sync_local_metadata_transitions() manually. | No        |
 
 ### Example
 
 ```swift
 guard let postboxkey = userData["privateKey"] as? String else {
   alertContent = "Failed to get postboxkey"
-  showAlert = true
-  showSpinner = SpinnerLocation.nowhere
   return
 }
 
 guard let storage_layer = try? StorageLayer(enable_logging: true, host_url: "https://metadata.tor.us", server_time_offset: 2) else {
   alertContent = "Failed to create storage layer"
-  showAlert = true
-  showSpinner = SpinnerLocation.nowhere
   return
 }
 
 guard let service_provider = try? ServiceProvider(enable_logging: true, postbox_key: postboxkey) else {
   alertContent = "Failed to create service provider"
-  showAlert = true
-  showSpinner = SpinnerLocation.nowhere
   return
 }
 
@@ -161,8 +155,6 @@ guard let thresholdKey = try? ThresholdKey(
   enable_logging: true,
   manual_sync: false) else {
     alertContent = "Failed to create threshold key"
-    showAlert = true
-    showSpinner = SpinnerLocation.nowhere
     return
   }
 
@@ -188,10 +180,8 @@ provider.
 ### Example
 
 ```swift
-guard let key_details = try? await threshold_key.initialize(never_initialize_new_key: false, include_local_metadata_transitions: false) else {
+guard let key_details = try? await threshold_key.initialize(never_initialize_new_key: false) else {
 	alertContent = "Failed to get key details"
-	showAlert = true
-	showSpinner = SpinnerLocation.nowhere
 	return
 }
 ```
@@ -252,18 +242,14 @@ public final class KeyReconstructionDetails: Codable {
 ```
 
 ```swift title="Example"
-guard let key_details = try? await threshold_key.initialize(never_initialize_new_key: false, include_local_metadata_transitions: false) else {
+guard let key_details = try? await threshold_key.initialize(never_initialize_new_key: false) else {
 	alertContent = "Failed to get key details"
-	showAlert = true
-	showSpinner = SpinnerLocation.nowhere
 	return
 }
 
 guard let reconstructionDetails = try? await threshold_key.reconstruct() else {
   alertContent = "Failed to reconstruct key. \(threshold) more share(s) required"
   resetAccount = true
-  showAlert = true
-  showSpinner = SpinnerLocation.nowhere
   return
 }
 ```
@@ -295,6 +281,51 @@ module's instance is accessible within your tKey instance and can be utilized fo
 Please visit the [**Modules**](./modules) section to view a comprehensive list of available modules and their respective functions.
 
 :::
+
+## Consider multiple device environment
+
+Imagine a situation where a user wants to use the same private key on multiple devices using the Tkey SDK.
+
+Basically, you need at least 2 shares to reconstruct a tkey. If you initialized tkey on device A, you need the 2 shares (social login share, device
+share) obtained through initialization on device A'. This can be accomplished by transferring the device share from device A to device A'. (by using
+share transfer module)
+
+You can try like this :
+
+1. Serialize a share created on device A and import it from device A' to reconstruct it.
+2. Use share Transfer Module
+
+Here's an example of transfering a share using shareTransfer module.
+
+```swift
+// assume that threshold_key, threshold_key2 are independent tkeys initialized on each device
+// initialized with the same value of service provider and storage layer
+// 1. request new share from second device
+let request_enc = try! await ShareTransferModule.request_new_share(threshold_key: threshold_key2, user_agent: "agent", available_share_indexes: "[]")
+// 2. generate new share and approve the request from existing device
+let lookup = try! await ShareTransferModule.look_for_request(threshold_key: threshold_key)
+let encPubKey = lookup[0]
+// generate a new share
+let newShare = try! await threshold_key.generate_new_share()
+// approve the corresponding share
+try! await ShareTransferModule.approve_request_with_share_index(threshold_key: threshold_key, enc_pub_key_x: encPubKey, share_index: newShare.hex)
+// 3. check the request status and reconstruct when it succeeds
+_ = try! await ShareTransferModule.add_custom_info_to_request(threshold_key: threshold_key2, enc_pub_key_x: request_enc, custom_info: "test info")
+_ = try! await ShareTransferModule.request_status_check(threshold_key: threshold_key2, enc_pub_key_x: request_enc, delete_request_on_completion: true)
+let k2 = try! await threshold_key2.reconstruct()
+```
+
+Alternatively, you can create one additional share (backup share, security question share, etc) and utilize it on device A'.
+
+Below is an example guide of leveraging security question module :
+
+1. Initialize the tkey on Device A. (2/2 shares are needed)
+2. Create an extra share using the Security question module and reconstruct it. (2/3)
+3. Recover the final key from Device A' with the social login share and security question share.
+4. Save the security question share locally. If you set up the device share like this, you don't need to ask the security question every time you log
+   in.
+
+Creating an additional share also makes it easier for account management, as you can recover your account if you lose your device share.
 
 ## Making Blockchain Calls
 
