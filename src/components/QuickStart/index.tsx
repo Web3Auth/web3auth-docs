@@ -1,7 +1,12 @@
 /* eslint-disable no-restricted-globals */
-/* eslint-disable no-nested-ternary */
+
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import CoreKitAngular from "@site/src/common/quickstart/_corekit-angular.mdx";
+import CoreKitiOS from "@site/src/common/quickstart/_corekit-ios.mdx";
+import CoreKitNext from "@site/src/common/quickstart/_corekit-nextjs.mdx";
+import CoreKitReact from "@site/src/common/quickstart/_corekit-react.mdx";
+import CoreKitVue from "@site/src/common/quickstart/_corekit-vue.mdx";
 import MPCCoreKitAngular from "@site/src/common/quickstart/_mpcck-angular.mdx";
 import MPCCoreKitNext from "@site/src/common/quickstart/_mpcck-nextjs.mdx";
 import MPCCoreKitReact from "@site/src/common/quickstart/_mpcck-react.mdx";
@@ -189,27 +194,27 @@ export default function QuickNavigation() {
           <select value={sdk} onChange={changeSDK}>
             {product === pnp
               ? pnplist.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.label}
-                </option>
-              ))
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))
               : corekitlist.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.label}
-                </option>
-              ))}
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))}
           </select>
         </div>
         <div className={styles.list}>
           <h3>
             Select a{" "}
             {platform === android ||
-              platform === ios ||
-              platform === rnbare ||
-              platform === rnexpo ||
-              platform === flutter ||
-              platform === unity ||
-              platform === unreal
+            platform === ios ||
+            platform === rnbare ||
+            platform === rnexpo ||
+            platform === flutter ||
+            platform === unity ||
+            platform === unreal
               ? "platform"
               : "framework"}
           </h3>
@@ -238,7 +243,9 @@ export default function QuickNavigation() {
       {platform === vue && sdk === pnpwebnomodal ? <PNPNoModalVue /> : ""}
 
       {platform === android && product === pnp ? <PNPAndroid /> : ""}
-      {platform === ios ? <PNPIos /> : ""}
+      {platform === android && sdk === singlefactorauthandroid ? <SFAAndroid /> : ""}
+      {platform === ios && product === pnp ? <PNPIos /> : ""}
+      {platform === ios && product === corekit ? <CoreKitiOS /> : ""}
       {platform === flutter ? <PNPFlutter /> : ""}
       {platform === rnbare && product === pnp ? <PNPReactNativeBare /> : ""}
       {platform === rnexpo && product === pnp ? <PNPReactNativeExpo /> : ""}

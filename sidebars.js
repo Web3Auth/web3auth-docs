@@ -399,7 +399,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "React Native",
+      label: "React Native SDK",
       link: { type: "doc", id: "sdk/pnp/react-native/react-native" },
       items: [
         "sdk/pnp/react-native/install",
@@ -524,6 +524,27 @@ module.exports = {
         "sdk/core-kit/mpc-core-kit/initialize",
         "sdk/core-kit/mpc-core-kit/authentication",
         "sdk/core-kit/mpc-core-kit/usage"
+      ],
+    },
+    {
+      type: "category",
+      label: "tKey iOS SDK",
+      link: { type: "doc", id: "sdk/core-kit/tkey-ios/tkey-ios" },
+      items: [
+        "sdk/core-kit/tkey-ios/initialize",
+        "sdk/core-kit/tkey-ios/usage",
+        {
+          type: "category",
+          label: "Modules",
+          link: { type: "doc", id: "sdk/core-kit/tkey-ios/modules/modules" },
+          items: [
+            "sdk/core-kit/tkey-ios/modules/private-keys",
+            "sdk/core-kit/tkey-ios/modules/security-questions",
+            "sdk/core-kit/tkey-ios/modules/seed-phrase",
+            "sdk/core-kit/tkey-ios/modules/share-serialization",
+            "sdk/core-kit/tkey-ios/modules/share-transfer",
+          ],
+        },
       ],
     },
     {
