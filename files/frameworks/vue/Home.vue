@@ -36,11 +36,10 @@
           <button class="card" @click="logout" style="cursor: pointer">
             Logout
           </button>
-        </div>
       </div>
-      <div id="console" style="white-space: pre-line">
-        <p style="white-space: pre-line">Logged in Successfully!</p>
-      </div>
+    </div>
+    <div id="console" style="white-space: pre-line">
+      <p style="white-space: pre-line">Logged in Successfully!</p>
     </div>
   </div>
 </template>
