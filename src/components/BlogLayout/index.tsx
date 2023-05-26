@@ -11,7 +11,7 @@ function BookLayout() {
   return (
     <Layout title="Blog detail">
       <Switch>
-        <Route path={`${match.path}:slug`}>
+        <Route exact path={`${match.path}:slug`}>
           <BlogDetail />
         </Route>
 
