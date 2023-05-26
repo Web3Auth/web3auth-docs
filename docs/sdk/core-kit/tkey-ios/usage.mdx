@@ -13,31 +13,327 @@ your users' authentication needs.
 Natively, the instance of `tKey`, (i.e., `ThresholdKey`) returns many functions. However, we have documented a few relevant ones here. You can check
 the table below for a list of all relevant functions or the class reference to check out the complete list of functions.
 
-| Function                                     | Description                                                                                                                                 | Arguments                                                                                                                    | Async | return                     |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ----- | -------------------------- |
-| `initialize`                                 | Generates a Threshold Key object corresponding to your login provider.                                                                      | `import_share: String`, `input: ShareStore?`, `never_initialize_new_key: Bool?`, `include_local_metadata_transitions: Bool?` | Yes   | `KeyDetails`               |
-| `reconstruct`                                | Reconstructs the user private key (minimum threshold no. of shares required)                                                                | `void`                                                                                                                       | Yes   | `KeyReconstructionDetails` |
-| `reconstruct_latest_poly`                    | Returns the latest polynomial from all the available shares (for this pub-poly). We using Lagrange's interpolation to derive the polynomial | `void`                                                                                                                       | No    | `Polynomial`               |
-| `get_all_share_stores_for_latest_polynomial` | Get all available ShareStores from latest polynomial                                                                                        | `void`                                                                                                                       | No    | `ShareStoreArray`          |
-| `generate_new_share`                         | Generate a new share for the reconstructed private key.                                                                                     | `void`                                                                                                                       | Yes   | `GenerateShareStoreResult` |
-| `delete_share`                               | Delete a share from private key.                                                                                                            | `share_index: String`                                                                                                        | Yes   | `void`                     |
-| `CRITICAL_delete_tkey`                       | Deletes a threshold key, all shares will be removed, use with caution                                                                       | `void`                                                                                                                       | Yes   | `void`                     |
-| `get_key_details`                            | Get the details of the keys.                                                                                                                | `void`                                                                                                                       | No    | `KeyDetails`               |
-| `output_share`                               | Output a share from the tKey                                                                                                                | `shareIndex: String, shareType: String?`                                                                                     | No    | `String`                   |
-| `share_to_share_store`                       | Convert Share to ShareStore                                                                                                                 | `share: String`                                                                                                              | No    | `ShareStore`               |
-| `input_share`                                | Adds an existing share to tkey.                                                                                                             | `share: String`, `shareType: String?`                                                                                        | Yes   | `void`                     |
-| `output_share_store`                         | Output a share store from the tKey                                                                                                          | `shareIndex: String, polyId: String?`                                                                                        | No    | `ShareStore`               |
-| `input_share_store`                          | Input a share store into the tKey                                                                                                           | `shareStore: ShareStore`                                                                                                     | Yes   | `void`                     |
-| `get_shares_indexes`                         | Returns an array of all the share indexes from latest polynomial                                                                            | `void`                                                                                                                       | No    | `[String]`                 |
-| `encrypt`                                    | Encrypt a message/data with the provided publicKey.                                                                                         | `msg: String`                                                                                                                | No    | `String`                   |
-| `decrypt`                                    | Decrypt a message/data with the provided publicKey.                                                                                         | `msg: String`                                                                                                                | No    | `String`                   |
-| `get_tkey_store`                             | Returns data from tkey store given a module name                                                                                            | `moduleName: String`                                                                                                         | No    | `[[String:Any]]`           |
-| `get_tkey_store_item`                        | Returns data from tkey store given id and a module name                                                                                     | `moduleName: String`, `id: String`                                                                                           | No    | `String`                   |
-| `get_shares`                                 | get shares from tKey                                                                                                                        | `void`                                                                                                                       | No    | `ShareStorePolyIdIndexMap` |
-| `get_share_descriptions`                     | Get a description to a share                                                                                                                | `void`                                                                                                                       | No    | `[String: [String]]`       |
-| `add_share_description`                      | Add a description to a share                                                                                                                | `key: String, description: String, update_metadata: Bool`                                                                    | Yes   | `void`                     |
-| `update_share_description`                   | Update a description to a share                                                                                                             | `key: String, oldDescription: String, newDescription: String, update_metadata: Bool`                                         | Yes   | `void`                     |
-| `delete_share_description`                   | Delete a description to a share                                                                                                             | `key: String, description: String, update_metadata: Bool`                                                                    | Yes   | `void`                     |
+<details>
+  <summary>Functions</summary>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>Function</th>
+          <th>Description</th>
+          <th>Arguments</th>
+          <th>Async</th>
+          <th>return</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <code>initialize</code>
+          </td>
+          <td>Generates a Threshold Key object corresponding to your login provider.</td>
+          <td>
+            <code>import_share: String</code>, <code>input: ShareStore?</code>, <code>never_initialize_new_key: Bool?</code>,{" "}
+            <code>include_local_metadata_transitions: Bool?</code>
+          </td>
+          <td>Yes</td>
+          <td>
+            <code>KeyDetails</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>reconstruct</code>
+          </td>
+          <td>Reconstructs the user private key (minimum threshold no. of shares required)</td>
+          <td>
+            <code>void</code>
+          </td>
+          <td>Yes</td>
+          <td>
+            <code>KeyReconstructionDetails</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>reconstruct_latest_poly</code>
+          </td>
+          <td>
+            Returns the latest polynomial from all the available shares (for this pub-poly). We using Lagrange&#39;s interpolation to derive the
+            polynomial
+          </td>
+          <td>
+            <code>void</code>
+          </td>
+          <td>No</td>
+          <td>
+            <code>Polynomial</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>get_all_share_stores_for_latest_polynomial</code>
+          </td>
+          <td>Get all available ShareStores from latest polynomial</td>
+          <td>
+            <code>void</code>
+          </td>
+          <td>No</td>
+          <td>
+            <code>ShareStoreArray</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>generate_new_share</code>
+          </td>
+          <td>Generate a new share for the reconstructed private key.</td>
+          <td>
+            <code>void</code>
+          </td>
+          <td>Yes</td>
+          <td>
+            <code>GenerateShareStoreResult</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>delete_share</code>
+          </td>
+          <td>Delete a share from private key.</td>
+          <td>
+            <code>share_index: String</code>
+          </td>
+          <td>Yes</td>
+          <td>
+            <code>void</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>CRITICAL_delete_tkey</code>
+          </td>
+          <td>Deletes a threshold key, all shares will be removed, use with caution</td>
+          <td>
+            <code>void</code>
+          </td>
+          <td>Yes</td>
+          <td>
+            <code>void</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>get_key_details</code>
+          </td>
+          <td>Get the details of the keys.</td>
+          <td>
+            <code>void</code>
+          </td>
+          <td>No</td>
+          <td>
+            <code>KeyDetails</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>output_share</code>
+          </td>
+          <td>Output a share from the tKey</td>
+          <td>
+            <code>shareIndex: String, shareType: String?</code>
+          </td>
+          <td>No</td>
+          <td>
+            <code>String</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>share_to_share_store</code>
+          </td>
+          <td>Convert Share to ShareStore</td>
+          <td>
+            <code>share: String</code>
+          </td>
+          <td>No</td>
+          <td>
+            <code>ShareStore</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>input_share</code>
+          </td>
+          <td>Adds an existing share to tkey.</td>
+          <td>
+            <code>share: String</code>, <code>shareType: String?</code>
+          </td>
+          <td>Yes</td>
+          <td>
+            <code>void</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>output_share_store</code>
+          </td>
+          <td>Output a share store from the tKey</td>
+          <td>
+            <code>shareIndex: String, polyId: String?</code>
+          </td>
+          <td>No</td>
+          <td>
+            <code>ShareStore</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>input_share_store</code>
+          </td>
+          <td>Input a share store into the tKey</td>
+          <td>
+            <code>shareStore: ShareStore</code>
+          </td>
+          <td>Yes</td>
+          <td>
+            <code>void</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>get_shares_indexes</code>
+          </td>
+          <td>Returns an array of all the share indexes from latest polynomial</td>
+          <td>
+            <code>void</code>
+          </td>
+          <td>No</td>
+          <td>
+            <code>[String]</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>encrypt</code>
+          </td>
+          <td>Encrypt a message/data with the provided publicKey.</td>
+          <td>
+            <code>msg: String</code>
+          </td>
+          <td>No</td>
+          <td>
+            <code>String</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>decrypt</code>
+          </td>
+          <td>Decrypt a message/data with the provided publicKey.</td>
+          <td>
+            <code>msg: String</code>
+          </td>
+          <td>No</td>
+          <td>
+            <code>String</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>get_tkey_store</code>
+          </td>
+          <td>Returns data from tkey store given a module name</td>
+          <td>
+            <code>moduleName: String</code>
+          </td>
+          <td>No</td>
+          <td>
+            <code>[[String:Any]]</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>get_tkey_store_item</code>
+          </td>
+          <td>Returns data from tkey store given id and a module name</td>
+          <td>
+            <code>moduleName: String</code>, <code>id: String</code>
+          </td>
+          <td>No</td>
+          <td>
+            <code>String</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>get_shares</code>
+          </td>
+          <td>get shares from tKey</td>
+          <td>
+            <code>void</code>
+          </td>
+          <td>No</td>
+          <td>
+            <code>ShareStorePolyIdIndexMap</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>get_share_descriptions</code>
+          </td>
+          <td>Get a description to a share</td>
+          <td>
+            <code>void</code>
+          </td>
+          <td>No</td>
+          <td>
+            <code>[String: [String]]</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>add_share_description</code>
+          </td>
+          <td>Add a description to a share</td>
+          <td>
+            <code>key: String, description: String, update_metadata: Bool</code>
+          </td>
+          <td>Yes</td>
+          <td>
+            <code>void</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>update_share_description</code>
+          </td>
+          <td>Update a description to a share</td>
+          <td>
+            <code>key: String, oldDescription: String, newDescription: String, update_metadata: Bool</code>
+          </td>
+          <td>Yes</td>
+          <td>
+            <code>void</code>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>delete_share_description</code>
+          </td>
+          <td>Delete a description to a share</td>
+          <td>
+            <code>key: String, description: String, update_metadata: Bool</code>
+          </td>
+          <td>Yes</td>
+          <td>
+            <code>void</code>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</details>
 
 ## Log In
 
