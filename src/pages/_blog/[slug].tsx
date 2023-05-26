@@ -162,7 +162,7 @@ export default function BlogDetail() {
   useEffect(() => {
     setURL(`${window.location.href}`);
     setFacebookLink(`https://www.facebook.com/sharer/sharer.php?${window.location.href}`);
-    setTwitterLink(`http://twitter.com/share?text=Checkout ${postData.title} published by @Web3Auth&url=${window.location.href}`);
+    setTwitterLink(`http://twitter.com/share?text=Checkout ${postData?.title} published by @Web3Auth&url=${window.location.href}`);
   }, [postData]);
 
   const handleClick = () => {
@@ -176,7 +176,7 @@ export default function BlogDetail() {
 
   return (
     <main>
-      {postData.seo && (
+      {postData?.seo && (
         <SEO
           title={postData.seo?.title}
           description={postData.seo?.description}
