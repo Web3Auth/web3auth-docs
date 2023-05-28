@@ -269,7 +269,7 @@ export default function ContentHub({ content }: Props) {
           </div>
         </Link>
 
-        <div className={styles.tagContainer}>
+        {/* <div className={styles.tagContainer}>
           {article.tags &&
             article.tags.map((tag) => {
               if (tags.includes(tag) || searchInput.split(" ").includes(tag)) {
@@ -292,7 +292,7 @@ export default function ContentHub({ content }: Props) {
               }
               return null;
             })}
-        </div>
+        </div> */}
         <span className={styles.date}>
           {article.author.name} | {new Date(article.date).toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" })}
         </span>

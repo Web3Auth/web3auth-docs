@@ -146,14 +146,10 @@ export default function BlogDetail() {
         month: "long",
         day: "numeric",
         year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        hour12: true,
-        timeZoneName: "short",
       };
       const formattedDate: string = newDate.toLocaleString("en-US", options);
       const d = formattedDate.split(" at ");
-      setDate(`${d[0]}, ${d[1]}`); // 4:00 PM GMT+5:30 May 16, 2023
+      setDate(`${d[0]}`); // May 16, 2023
     };
 
     fetchPost();
@@ -241,12 +237,10 @@ export default function BlogDetail() {
               </div>
             </div>
             <img className={styles.cover} src={postData.coverImage?.url} alt={`${postData.title} cover`} />
-            <div className={styles.content}>
-              <div className={styles.introduction}>{postData?.introduction}</div>
-              {postData.content && (
-                <div className="markdown">{documentToReactComponents(postData.content.json, renderOptions(postData.content.links))}</div>
-              )}
-            </div>
+            <div className={styles.introduction}>{postData?.introduction}</div>
+            {postData.content && (
+              <div className="markdown">{documentToReactComponents(postData.content.json, renderOptions(postData.content.links))}</div>
+            )}
             <div className={styles.bottomMenu}>
               <div className={styles.socialButtonContainer}>
                 <Link to={facebookLink}>
