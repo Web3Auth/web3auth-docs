@@ -491,6 +491,17 @@ module.exports = {
     },
     {
       type: "category",
+      label: "MPC Core Kit (Beta) SDK",
+      link: { type: "doc", id: "sdk/core-kit/mpc-core-kit/mpc-core-kit" },
+      items: [
+        "sdk/core-kit/mpc-core-kit/install",
+        "sdk/core-kit/mpc-core-kit/initialize",
+        "sdk/core-kit/mpc-core-kit/authentication",
+        "sdk/core-kit/mpc-core-kit/usage"
+      ],
+    },
+    {
+      type: "category",
       label: "tKey JS SDK",
       link: { type: "doc", id: "sdk/core-kit/tkey/tkey" },
       items: [
@@ -515,15 +526,29 @@ module.exports = {
         },
       ],
     },
+
     {
       type: "category",
-      label: "MPC Core Kit (Beta) SDK",
-      link: { type: "doc", id: "sdk/core-kit/mpc-core-kit/mpc-core-kit" },
+      label: "tKey JS React Native",
+      link: { type: "doc", id: "sdk/core-kit/tkey-react-native/tkey-react-native" },
       items: [
-        "sdk/core-kit/mpc-core-kit/install",
-        "sdk/core-kit/mpc-core-kit/initialize",
-        "sdk/core-kit/mpc-core-kit/authentication",
-        "sdk/core-kit/mpc-core-kit/usage"
+        "sdk/core-kit/tkey-react-native/install",
+        "sdk/core-kit/tkey-react-native/initialize",
+        "sdk/core-kit/tkey-react-native/usage",
+        {
+          type: "category",
+          label: "Modules",
+          collapsible: true,
+          collapsed: false,
+          link: { type: "doc", id: "sdk/core-kit/tkey-react-native/modules/modules" },
+          items: [
+            "sdk/core-kit/tkey-react-native/modules/share-serialization",
+            "sdk/core-kit/tkey-react-native/modules/share-transfer",
+            "sdk/core-kit/tkey-react-native/modules/security-questions",
+            "sdk/core-kit/tkey-react-native/modules/seed-phrase",
+            "sdk/core-kit/tkey-react-native/modules/private-keys",
+          ],
+        },
       ],
     },
     {

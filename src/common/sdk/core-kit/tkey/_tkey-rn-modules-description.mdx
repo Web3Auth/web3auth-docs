@@ -1,0 +1,65 @@
+Modules extend the tKey SDK's capability to provide additional functionality for managing your tKey shares. Out of the multiple modules available, you
+can choose the module you want to include in your implementation. Here is the list of available modules:
+
+### Default Modules (Needed for basic operations)
+
+- **tKey Share Serialization Module [`@tkey/share-serialization`](/sdk/core-kit/tkey/modules/share-serialization):** Adds the capability to import/
+  export a share from `tKey`.
+
+  ```ts
+  import ShareSerializationModule from "@tkey/share-serialization";
+  const shareSerializationModule = new ShareSerializationModule();
+  ```
+
+- **tKey Share Transfer Module [`@tkey/share-transfer`](/sdk/core-kit/tkey/modules/share-transfer):** Adds the capability to transfer a share to
+  another device.
+
+  ```ts
+  import ShareTransferModule from "@tkey/share-transfer";
+  const shareTransferModule = new ShareTransferModule();
+  ```
+
+### Share B (Storage Modules)
+
+The storage modules are not suitable for the React Native environment. We recommend you to store the shares manually into the keychain of the device
+and call it during the tKey SDK initialization. You can use the Share Transfer Module for that.
+
+### Share C (Recovery Modules)
+
+Recovery Modules are used to recover the tKey shares in the case user doesn't have access to their device/storage or needs additional security. You
+can choose any of the following modules:
+
+- **tKey Security Questions Module [`@tkey/security-questions`](/sdk/core-kit/tkey/modules/security-questions):** Adds the capability to add or remove
+  a question and password as a share.
+
+  ```ts
+  import SecurityQuestionsModule from "@tkey/security-questions";
+  const securityQuestionsModule = new SecurityQuestionsModule();
+  ```
+
+:::tip
+
+Share Serialization Module can act as a Recovery Module as well here.
+
+:::
+
+### Additional Modules
+
+These modules provide extra capability to the tKey SDK, like importing user's existing private keys or seedphrases. You can choose any of the
+following modules:
+
+- **tKey Seed Phrase Module [`@tkey/seed-phrase`](/sdk/core-kit/tkey/modules/seed-phrase):** Adds the capability to store and use seedphrases on the
+  metadata.
+
+  ```ts
+  import SeedPhraseModule from "@tkey/seed-phrase";
+  const seedPhraseModule = new SeedPhraseModule();
+  ```
+
+- **tKey Private Keys Module [`@tkey/private-keys`](/sdk/core-kit/tkey/modules/private-keys):** Adds the capability to store extra private keys on the
+  metadata.
+
+  ```ts
+  import PrivateKeyModule from "@tkey/private-keys";
+  const privateKeyModule = new PrivateKeyModule();
+  ```
