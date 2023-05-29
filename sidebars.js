@@ -529,7 +529,7 @@ module.exports = {
 
     {
       type: "category",
-      label: "tKey JS React Native",
+      label: "tKey JS in React Native",
       link: { type: "doc", id: "sdk/core-kit/tkey-react-native/tkey-react-native" },
       items: [
         "sdk/core-kit/tkey-react-native/install",
