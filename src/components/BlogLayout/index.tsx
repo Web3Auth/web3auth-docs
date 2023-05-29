@@ -9,17 +9,17 @@ function BookLayout() {
   const match = useRouteMatch();
 
   return (
-    <Switch>
-      <Route exact path={`${match.path}:slug`}>
-        <Layout title="Blog detail">
+    <Layout title="Blog detail">
+      <Switch>
+        <Route exact path={`${match.path}:slug`}>
           <BlogDetail />
-        </Layout>
-      </Route>
+        </Route>
 
-      <Route>
-        <NotFound />
-      </Route>
-    </Switch>
+        <Route>
+          <NotFound />
+        </Route>
+      </Switch>
+    </Layout>
   );
 }
 
