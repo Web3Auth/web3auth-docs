@@ -1,0 +1,152 @@
+---
+title: Security Question Module
+displayed_sidebar: sdk
+description: "Core Kit tKey Android SDK - Modules - Security Questions  | Documentation - Web3Auth"
+---
+
+SecurityQuestionModule is an Android module that provides functionality for setting, changing, getting, and deleting security question and password
+for a ThresholdKey object.
+
+To use the SecurityQuestionModule in your Android project, you will need to import the module as follows:
+
+```java
+import com.web3auth.tkey.ThresholdKey.ThresholdKey;
+import com.web3auth.tkey.ThresholdKey.Modules.SecurityQuestionModule;
+```
+
+`SecurityQuestionModule` is a class that provides the following methods:
+
+| Function                          | Description                                    | Arguments                                                       | Async | return                     |
+| --------------------------------- | ---------------------------------------------- | --------------------------------------------------------------- | ----- | -------------------------- |
+| `generateNewShare`                | generate a new Share with security question    | `thresholdKey: ThresholdKey, questions: String, answer: String` | Yes   | `GenerateShareStoreResult` |
+| `inputShare`                      | input share from security question             | `thresholdKey: ThresholdKey, answer: String`                    | Yes   | `Bool`                     |
+| `changeSecurityQuestionAndAnswer` | Get private Key accounts                       | `thresholdKey: ThresholdKey, questions: String, answer: String` | Yes   | `Bool`                     |
+| `storeAnswer`                     | Store answer of security question in tKey      | `thresholdKey: ThresholdKey, answer: String`                    | Yes   | `Bool`                     |
+| `getAnswer`                       | Get answer of security question stored in tKey | `thresholdKey: ThresholdKey`                                    | No    | `String`                   |
+| `getQuestions`                    | Get security questions stored in tKey          | `thresholdKey: ThresholdKey`                                    | No    | `String`                   |
+
+## `generateNewShare()`
+
+`public static void generateNewShare(ThresholdKey thresholdKey, String questions, String answer, ThresholdKeyCallback<GenerateShareStoreResult> callback)`
+
+This function generates a new share for a given ThresholdKey, along with the user's security question and answer.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                                   |
+| ------------ | ------------ | ----------------------------------------------------------------------------- |
+| thresholdKey | ThresholdKey | A ThresholdKey object representing the key for which to generate a new share. |
+| questions    | String       | A String representing the user's security question.                           |
+| answer       | String       | A String representing the user's security answer.                             |
+
+**Returns**
+
+- GenerateShareStoreResult: A struct that contains information about the new share that was generated.
+
+**Throws**
+
+- Error: An error if the operation failed.
+
+## `inputShare()`
+
+`public static void inputShare(ThresholdKey thresholdKey, String answer, ThresholdKeyCallback<Boolean> callback)`
+
+A method that inputs a share for a threshold key based on a security question and answer.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                 |
+| ------------ | ------------ | ----------------------------------------------------------- |
+| thresholdKey | ThresholdKey | A ThresholdKey instance for which to input a share.         |
+| answer       | String       | A String representing the answer to the security questions. |
+
+**Returns**
+
+- Boolean: true if the share was successfully input, false otherwise.
+
+**Throws**
+
+- Error: An error if the operation failed.
+
+## `changeSecurityQuestionAndAnswer()`
+
+`public static void changeSecurityQuestionAndAnswer(ThresholdKey thresholdKey, String questions, String answer, ThresholdKeyCallback<Boolean> callback)`
+
+A method that changes the security questions and answers for a threshold key.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                                     |
+| ------------ | ------------ | ------------------------------------------------------------------------------- |
+| thresholdKey | ThresholdKey | A ThresholdKey instance for which to change the security questions and answers. |
+| questions    | String       | A String representing a new set of security questions to be answered.           |
+| answer       | String       | A String representing the answer to the security questions.                     |
+
+**Returns**
+
+- Bool: true if the security questions and answers were successfully changed, false otherwise.
+
+**Throws**
+
+- Error: An error if the operation failed.
+
+## `storeAnswer()`
+
+`public static void storeAnswer(ThresholdKey thresholdKey, String answer, ThresholdKeyCallback<Boolean> callback)`
+
+A method that stores the answer to a security question for a threshold key.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                                   |
+| ------------ | ------------ | ----------------------------------------------------------------------------- |
+| thresholdKey | ThresholdKey | A ThresholdKey instance for which to store the answer to a security question. |
+| answer       | String       | A String representing the answer to the security question.                    |
+
+**Returns**
+
+- Bool: true if the answer was successfully stored, false otherwise.
+
+**Throws**
+
+- Error: An error if the operation failed.
+
+## `getAnswer()`
+
+`public static String getAnswer(ThresholdKey thresholdKey) throws RuntimeError`
+
+Get answer of security question stored in tKey.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                                   |
+| ------------ | ------------ | ----------------------------------------------------------------------------- |
+| thresholdKey | ThresholdKey | A ThresholdKey instance for which to store the answer to a security question. |
+
+**Returns**
+
+- String: A String representing the answer to the security questions.
+
+**Throws**
+
+- RuntimeError: An error if the operation failed.
+
+## `getQuestions()`
+
+`public static String getQuestions(ThresholdKey thresholdKey) throws RuntimeError`
+
+This method gets security questions stored in tKey.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                                   |
+| ------------ | ------------ | ----------------------------------------------------------------------------- |
+| thresholdKey | ThresholdKey | A ThresholdKey instance for which to store the answer to a security question. |
+
+**Returns**
+
+- String: A String representing the user's security question.
+
+**Throws**
+
+- RuntimeError: An error if the operation failed.

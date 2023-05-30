@@ -1,0 +1,220 @@
+---
+title: Share Transfer Module
+displayed_sidebar: sdk
+description: "Core Kit tKey iOS SDK - Modules - Share Transfer Module  | Documentation - Web3Auth"
+---
+
+The SharetransferModule is an Android module that provides functions for requesting, approving and transfering a share to another device.
+
+To use the SharetransferModule in your Android project, you will need to import the module as follows:
+
+```java
+import com.web3auth.tkey.ThresholdKey.ThresholdKey;
+import com.web3auth.tkey.ThresholdKey.Modules.SharetransferModule;
+```
+
+`SharetransferModule` is a class that provides the following methods:
+
+| Function                       | Description                                     | Arguments                                                                         | Async | return               |
+| ------------------------------ | ----------------------------------------------- | --------------------------------------------------------------------------------- | ----- | -------------------- |
+| `requestNewShare`              | request a new share                             | `thresholdKey: ThresholdKey, userAgent: String, availableShareIndexes: String`    | Yes   | `String`             |
+| `addCustomInfoToRequest`       | Add custom info to share request                | `thresholdKey: ThresholdKey, encPubKeyX: String, customInfo: String`              | Yes   | `void`               |
+| `lookForRequest`               | Returns an array of indexes of pending requests | `thresholdKey: ThresholdKey `                                                     | Yes   | `[String]`           |
+| `approveRequest`               | approve the shareStore to be shared             | `thresholdKey: ThresholdKey, encPubKeyX: String, store: ShareStore`               | Yes   | `void`               |
+| `approveRequestWithShareIndex` | approve sharing with share index                | `thresholdKey: ThresholdKey, encPubKeyX: String, shareIndex: String`              | Yes   | `void`               |
+| `getStore`                     | Get share transfer store                        | `thresholdKey: ThresholdKey`                                                      | Yes   | `ShareTransferStore` |
+| `setStore`                     | Set share transfer store                        | `thresholdKey: ThresholdKey, store: ShareTransferStore`                           | Yes   | `Bool`               |
+| `deleteStore`                  | Delete share transfer store                     | `thresholdKey: ThresholdKey, encPubKeyX: String`                                  | Yes   | `Bool`               |
+| `getCurrentEncryptionKey`      | Get security questions stored in tKey           | `thresholdKey: ThresholdKey`                                                      | No    | `String`             |
+| `requestStatusCheck`           | start request status checking                   | `thresholdKey: ThresholdKey, encPubKeyX: String, deleteRequestOnCompletion: Bool` | Yes   | `ShareStore`         |
+| `cleanupRequest`               | cleanup the request                             | `thresholdKey: ThresholdKey`                                                      | No    | `Bool`               |
+
+## `requestNewShare()`
+
+`public static void requestNewShare(ThresholdKey thresholdKey, String userAgent, String availableShareIndexes, ThresholdKeyCallback<String> callback)`
+
+Request a new share for the given user.
+
+#### Parameters
+
+| Parameters            | Type         | Description                                                     |
+| --------------------- | ------------ | --------------------------------------------------------------- |
+| thresholdKey          | ThresholdKey | A ThresholdKey object representing the user's threshold key.    |
+| userAgent             | String       | A string representing the user's user agent.                    |
+| availableShareIndexes | String       | A string representing the available share indexes for the user. |
+
+**Returns**
+
+- String: A string representing the requested share.
+
+## `addCustomInfoToRequest()`
+
+`public static void addCustomInfoToRequest(ThresholdKey thresholdKey, String encPubKeyX, String customInfo, ThresholdKeyCallback<Boolean> callback)`
+
+Adds custom information to a share request.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                         |
+| ------------ | ------------ | ------------------------------------------------------------------- |
+| thresholdKey | ThresholdKey | A ThresholdKey object representing the user's threshold key.        |
+| encPubKeyX   | String       | A string representing the user's encryption public key.             |
+| customInfo   | String       | A string representing the custom information to add to the request. |
+
+## `lookForRequest()`
+
+`public static void lookForRequest(ThresholdKey thresholdKey, ThresholdKeyCallback<ArrayList<String>> callback)`
+
+Check the status of the user's share request.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                  |
+| ------------ | ------------ | ------------------------------------------------------------ |
+| thresholdKey | ThresholdKey | A ThresholdKey object representing the user's threshold key. |
+
+**Returns**
+
+- [String]: An array of strings representing the status of the user's share request.
+
+## `approveRequest()`
+
+`public static void approveRequest(ThresholdKey thresholdKey, String encPubKeyX, @Nullable ShareStore store, ThresholdKeyCallback<Boolean> callback)`
+
+Approves a share request for the user.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                  |
+| ------------ | ------------ | ------------------------------------------------------------ |
+| thresholdKey | ThresholdKey | A ThresholdKey object representing the user's threshold key. |
+| encPubKeyX   | String       | A string representing the user's encryption public key.      |
+| store        | ShareStore   | A ShareStore object representing the user's share store.     |
+
+## `approveRequestWithShareIndex()`
+
+`public static void approveRequestWithShareIndex(ThresholdKey thresholdKey, String encPubKeyX, String shareIndex, ThresholdKeyCallback<Boolean> callback)`
+
+Approves a share request for the user using a specific share index.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                                  |
+| ------------ | ------------ | ---------------------------------------------------------------------------- |
+| thresholdKey | ThresholdKey | A ThresholdKey object representing the user's threshold key.                 |
+| encPubKeyX   | String       | A string representing the user's encryption public key.                      |
+| shareIndex   | String       | A string representing the specific share index to use for the share request. |
+
+## `getStore()`
+
+`public static void getStore(ThresholdKey thresholdKey, ThresholdKeyCallback<ShareTransferStore> callback)`
+
+Get the user's share store.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                  |
+| ------------ | ------------ | ------------------------------------------------------------ |
+| thresholdKey | ThresholdKey | A ThresholdKey object representing the user's threshold key. |
+
+**Returns**
+
+- ShareTransferStore: A ShareTransferStore object representing the user's share store.
+
+## `setStore()`
+
+`public static void setStore(ThresholdKey thresholdKey, ShareTransferStore store, ThresholdKeyCallback<Boolean> callback)`
+
+Set the user's share store.
+
+#### Parameters
+
+| Parameters   | Type               | Description                                                      |
+| ------------ | ------------------ | ---------------------------------------------------------------- |
+| thresholdKey | ThresholdKey       | A ThresholdKey object representing the user's threshold key.     |
+| store        | ShareTransferStore | A ShareTransferStore object representing the user's share store. |
+
+**Returns**
+
+- Bool: A boolean value indicating whether the operation was successful.
+
+## `deleteStore()`
+
+`public static void deleteStore(ThresholdKey thresholdKey, String encPubKeyX, ThresholdKeyCallback<Boolean> callback)`
+
+Delete the user's share store.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                  |
+| ------------ | ------------ | ------------------------------------------------------------ |
+| thresholdKey | ThresholdKey | A ThresholdKey object representing the user's threshold key. |
+| encPubKeyX   | String       | A string representing the user's encryption public key.      |
+
+**Returns**
+
+- Bool: A boolean value indicating whether the operation was successful.
+
+## `getCurrentEncryptionKey()`
+
+`public static String getCurrentEncryptionKey(ThresholdKey thresholdKey) throws RuntimeError`
+
+This method is used to get the current encryption key for the given thresholdKey.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                  |
+| ------------ | ------------ | ------------------------------------------------------------ |
+| thresholdKey | ThresholdKey | A ThresholdKey object representing the user's threshold key. |
+
+**Returns**
+
+- String: A string value representing the current encryption key.
+
+**Throws**
+
+- ShareTransferError: If there is an issue with the underlying share transfer module.
+- RuntimeError: If there is an issue with the runtime environment.
+
+## `requestStatusCheck()`
+
+`public static void requestStatusCheck(ThresholdKey thresholdKey, String encPubKeyX, Boolean deleteRequestOnCompletion, ThresholdKeyCallback<ShareStore> callback)`
+
+This method is used to check the status of a request for the specified encPubKeyX under the given thresholdKey.
+
+#### Parameters
+
+| Parameters                | Type         | Description                                                                       |
+| ------------------------- | ------------ | --------------------------------------------------------------------------------- |
+| thresholdKey              | ThresholdKey | A ThresholdKey object representing the user's threshold key.                      |
+| encPubKeyX                | String       | A string representing the user's encryption public key.                           |
+| deleteRequestOnCompletion | Bool         | A boolean value indicating whether the request should be deleted upon completion. |
+
+**Returns**
+
+- ShareStore: A ShareStore object representing the current status of the request.
+
+**Throws**
+
+- ShareTransferError: If there is an issue with the underlying share transfer module.
+- RuntimeError: If there is an issue with the runtime environment.
+
+## `cleanupRequest()`
+
+`public static void cleanupRequest(ThresholdKey thresholdKey) throws RuntimeError`
+
+This method is used to clean up any remaining requests for the specified thresholdKey.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                  |
+| ------------ | ------------ | ------------------------------------------------------------ |
+| thresholdKey | ThresholdKey | A ThresholdKey object representing the user's threshold key. |
+
+**Returns**
+
+- Void
+
+**Throws**
+
+- RuntimeError: If there is an issue with the runtime environment.

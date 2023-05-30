@@ -1,0 +1,81 @@
+---
+title: Private Keys Module
+displayed_sidebar: sdk
+description: "Core Kit tKey Android SDK - Modules - Private Keys | Documentation - Web3Auth"
+---
+
+The PrivateKeysModule module provides an interface for setting, getting and managing private keys for a ThresholdKey object.
+
+To use the PrivateKeysModule in your Android project, you will need to import the module as follows:
+
+```java
+import com.web3auth.tkey.ThresholdKey.ThresholdKey;
+import com.web3auth.tkey.ThresholdKey.Modules.PrivateKeysModule;
+```
+
+`PrivateKeysModule` is a class that provides the following methods:
+
+| Function                | Description                           | Arguments                                                  | Async | return              |
+| ----------------------- | ------------------------------------- | ---------------------------------------------------------- | ----- | ------------------- |
+| `setPrivateKey`         | Set private key to corresponding tKey | `thresholdKey: ThresholdKey, key: String?, format: String` | Yes   | `Bool`              |
+| `getPrivateKeys`        | Get Private Keys                      | `thresholdKey: ThresholdKey`                               | No    | `[[String:String]]` |
+| `getPrivateKeyAccounts` | Get private Key accounts              | `thresholdKey: ThresholdKey`                               | No    | `[String]`          |
+
+## `setPrivateKey()`
+
+`public static void setPrivateKey(ThresholdKey thresholdKey, @Nullable String key, String format, ThresholdKeyCallback<Boolean> callback)`
+
+Sets a private key for a ThresholdKey object.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                          |
+| ------------ | ------------ | ---------------------------------------------------- |
+| thresholdKey | ThresholdKey | A ThresholdKey object.                               |
+| key          | String?      | A private key in hex-encoded/mnemonic string format  |
+| format       | String       | A string representing the format of the private key. |
+
+**Returns**
+
+- Bool: A boolean indicating whether the operation succeeded or not.
+
+## `getPrivateKeys()`
+
+`public static String getPrivateKeys(ThresholdKey thresholdKey) throws RuntimeError`
+
+Returns a list of private keys for a ThresholdKey object.
+
+#### Parameters
+
+| Parameters   | Type         | Description            |
+| ------------ | ------------ | ---------------------- |
+| thresholdKey | ThresholdKey | A ThresholdKey object. |
+
+**Returns**
+
+- [[String:String]]: A list of private keys as dictionaries.
+
+**Throws**
+
+- RuntimeError: If there is an error in during runtime.
+
+## `getPrivateKeyAccounts()`
+
+`public static ArrayList<String> getPrivateKeyAccounts(ThresholdKey thresholdKey) throws RuntimeError, JSONException`
+
+- Returns a list of accounts for which private keys are available.
+
+#### Parameters
+
+| Parameters   | Type         | Description            |
+| ------------ | ------------ | ---------------------- |
+| thresholdKey | ThresholdKey | A ThresholdKey object. |
+
+**Returns**
+
+- `ArrayList<String>`: A list of accounts for which private keys are available.
+
+**Throws**
+
+- RuntimeError: If there is an error in during runtime.
+- JSONException: If there is an error in JSON parsing.

@@ -350,15 +350,13 @@ export default function QuickNavigation() {
         <div className={styles.cardContentText}>
           <div className={styles.cardTitleContainer}>
             <h3 className={styles.title}>tKey Android SDK</h3>
-            <div className={styles.pillContainer}>
-              <div className={styles.pill}>Coming Soon</div>
-            </div>
           </div>
           <p>Core Kit tKey Native SDK for Android Platform</p>
-          {/* <div className={styles.links}>
-            <a href="/docs">Quick Start{chevron}</a>
-            <a href="/docs">SDK Reference{chevron}</a>
-          </div> */}
+          <div className={styles.links}>
+            <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=tKey+Android+SDK&platform=Android`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}sdk/core-kit/tkey-android/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Core+Kit&sdk=tKey+Android+SDK`}>Examples{chevron}</a>
+          </div>
         </div>
       </div>
     </>

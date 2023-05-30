@@ -243,6 +243,7 @@ export default function QuickNavigation() {
       {platform === vue && sdk === pnpwebnomodal ? <PNPNoModalVue /> : ""}
 
       {platform === android && product === pnp ? <PNPAndroid /> : ""}
+      {platform === android && product === corekit ? <PNPAndroid /> : ""}
       {platform === android && sdk === singlefactorauthandroid ? <SFAAndroid /> : ""}
       {platform === ios && product === pnp ? <PNPIos /> : ""}
       {platform === ios && product === corekit ? <CoreKitiOS /> : ""}
