@@ -1,17 +1,17 @@
 ---
-title: Integrate Web3Auth with the Ripple Blockchain
-sidebar_label: Ripple
-image: "content-hub/guides/banners/ripple.png"
+title: Integrate Web3Auth with the XRPL Blockchain
+sidebar_label: XRPL
+image: "content-hub/guides/banners/xrpl.png"
 displayed_sidebar: docs
-keywords: [ripple, web3auth, authentication, blockchain]
-description: "Integrate Web3Auth with the Ripple Blockchain | Documentation - Web3Auth"
+keywords: [xrpl, web3auth, authentication, blockchain]
+description: "Integrate Web3Auth with the XRPL Blockchain | Documentation - Web3Auth"
 ---
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
 
 ---
 
-The Web3Auth Web SDK offers a standard provider for accessing the user's private key on non-EVM chains like [Ripple](https://ripple.com/). To enable a
+The Web3Auth Web SDK offers a standard provider for accessing the user's private key on non-EVM chains like [XRPL](https://xrpl.com/). To enable a
 wider range of blockchain actions, you can use the `XrplPrivateKeyProvider` from `@web3auth/xrpl-provider`. This will provide an xrplProvider that can
 be injected back into the Openlogin adapter, allowing you to perform actions such as retrieving account information, obtaining balances, signing and
 sending transactions, and reading from and writing to smart contracts. Here are some methods to help you quickly get started.
@@ -49,7 +49,7 @@ const xrplProvider = new XrplPrivateKeyProvider({
 
 const adapter = new OpenloginAdapter({
   adapterSettings: {
-    provider: xrplProvider, // <-- Injecting the Ripple provider
+    provider: xrplProvider, // <-- Injecting the XRPL provider
   },
 });
 web3AuthInstance.configureAdapter(adapter);
@@ -88,8 +88,8 @@ try {
         },
       ],
     })) as Record<string, Record<string, string>>;
-    console.log("xrpl account info", accInfo);
-    // Ripple Account
+    console.log("XRPL account info", accInfo);
+    // XRPL Account
     const account = accInfo?.account_data?.Account;
     // Balance
     const balance = accInfo?.account_data?.Balance;
@@ -119,7 +119,7 @@ try {
       Destination: "rJAHHPYmy4g3h7kzfj2Mzm2nHwpKuVdEvX", // Destination address
     };
     const txSign = await provider.request({
-      method: "ripple_signTransaction",
+      method: "xrpl_signTransaction",
       params: {
         transaction: tx,
       },
@@ -151,7 +151,7 @@ try {
       Destination: "rJAHHPYmy4g3h7kzfj2Mzm2nHwpKuVdEvX",
     };
     const txSign = await provider.request({
-      method: "ripple_submitTransaction",
+      method: "xrpl_submitTransaction",
       params: {
         transaction: tx,
       },
