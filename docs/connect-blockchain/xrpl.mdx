@@ -56,7 +56,7 @@ web3AuthInstance.configureAdapter(adapter);
 
 await web3auth.initModal();
 
-const rippleProvider = await web3auth.connect(); // web3auth.provider
+const provider = await web3auth.connect(); // web3auth.provider
 ```
 
 ## Get User Info
@@ -71,13 +71,13 @@ const rippleProvider = await web3auth.connect(); // web3auth.provider
 
 ```js
 try {
-  // rippleProvider is from above
-  const accounts = await rippleProvider.request<string[]>({
+  // provider is from above
+  const accounts = await provider.request<string[]>({
     method: "xrpl_getAccounts",
   });
 
   if (accounts) {
-    const accInfo = (await rippleProvider.request({
+    const accInfo = (await provider.request({
       method: "account_info",
       params: [
         {
