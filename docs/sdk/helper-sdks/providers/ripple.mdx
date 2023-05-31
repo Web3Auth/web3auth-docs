@@ -66,7 +66,7 @@ The purpose of this function is to retrieve the details of the connected account
 try {
   // rippleProvider is from above
   const accounts = await rippleProvider.request<string[]>({
-    method: "ripple_getAccounts",
+    method: "xrpl_getAccounts",
   });
 
   if (accounts) {
@@ -105,7 +105,7 @@ The function is utilized for signing transactions.
 ```ts
 try {
   const accounts = await provider.request<string[]>({
-    method: "ripple_getAccounts",
+    method: "xrpl_getAccounts",
   });
 
   if (accounts && accounts.length > 0) {
@@ -142,7 +142,7 @@ the broadcasted transaction.
 ```ts
 try {
   const accounts = await provider.request<string[]>({
-    method: "ripple_getAccounts",
+    method: "xrpl_getAccounts",
   });
 
   if (accounts && accounts.length > 0) {
@@ -180,7 +180,7 @@ try {
   const msg = "Hello world";
   const hexMsg = convertStringToHex(msg);
   const txSign = await provider.request<{ signature: string }>({
-    method: "ripple_signMessage",
+    method: "xrpl_signMessage",
     params: {
       message: hexMsg,
     },
