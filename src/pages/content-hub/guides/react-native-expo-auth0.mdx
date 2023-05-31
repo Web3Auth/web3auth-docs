@@ -4,7 +4,7 @@ image: "content-hub/guides/banners/expo-auth0.png"
 description: Learn how to use Web3Auth Plug and Play React Native SDK with Auth0 in Expo Workflow
 type: guide
 tags: [mobile, react-native, auth0, android, ios, whitelabel, custom authentication, dapp share]
-date: 16th Dec 2022
+date: December 16, 2022
 author: Web3Auth Team
 order: 13
 communityPortalTopicId: 60
@@ -15,7 +15,7 @@ import Auth0Setup from "@site/src/common/guides/_auth0-setup.mdx";
 import Auth0VerifierSetup from "@site/src/common/guides/_auth0-verifier-setup.mdx";
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
-import ReactNativeResponse from "@site/src/common/sdk/react-native/_response.mdx";
+import ReactNativeResponse from "@site/src/common/sdk/pnp/react-native/_response.mdx";
 import SEO from "@site/src/components/SEO";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
@@ -48,8 +48,6 @@ npm run ios
 
 ## How it works?
 
----
-
 When integrating Web3Auth React Native SDK with Auth0 the flow looks something like this:
 
 ![Auth0 SPA Flow](/content-hub/guides/auth0/auth0-spa-flow.png)
@@ -61,8 +59,6 @@ When integrating Web3Auth React Native SDK with Auth0 the flow looks something l
 
 ## Prerequisites
 
----
-
 <Web3AuthPrerequisites />
 
 - Expo SDK 45 and above (for Expo Managed Workflow)
@@ -70,8 +66,6 @@ When integrating Web3Auth React Native SDK with Auth0 the flow looks something l
 <Auth0Prerequisites />
 
 ## Setup
-
----
 
 ### Setup your Auth0 Tenant
 
@@ -116,12 +110,10 @@ const resolvedRedirectUrl =
 
 ## Using the Web3Auth SDK
 
----
-
 To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
 SDKs, please have a look at this [documentation page](/sdk).
 
-For this guide here, we will be talking through the [Web3Auth React Native SDK](/sdk/react-native).
+For this guide here, we will be talking through the [Web3Auth React Native SDK](/sdk/pnp/react-native).
 
 ### Installation
 
@@ -200,13 +192,11 @@ const web3auth = new Web3Auth(WebBrowser, {
 
 :::tip SDK Reference
 
-- [Instantiating Web3Auth](/sdk/react-native/initialize).
+- [Instantiating Web3Auth](/sdk/pnp/react-native/initialize).
 
 :::
 
 ### Authentication
-
----
 
 #### Logging in
 
@@ -239,16 +229,16 @@ const web3authResponse = await web3auth.login({
 
 :::info SDK Reference
 
-- [`login()` function](/sdk/react-native/usage#login).
+- [`login()` function](/sdk/pnp/react-native/usage#login).
 
 :::
 
-If you wish you **[add Multi Factor Authentication](/sdk/react-native/mfa)**, **[use dApp Share](/sdk/react-native/dapp-share)** or
-**[select Curve](/sdk/react-native/usage#selecting-curve)** for your React Native application, read the linked documentation.
+If you wish you **[add Multi Factor Authentication](/sdk/pnp/react-native/mfa)**, **[use dApp Share](/sdk/pnp/react-native/dapp-share)** or
+**[select Curve](/sdk/pnp/react-native/usage#selecting-curve)** for your React Native application, read the linked documentation.
 
-- [Multi Factor Authentication](/sdk/react-native/mfa)
-- [Using dApp Share](/sdk/react-native/dapp-share)
-- [Selecting Curve](/sdk/react-native/usage#selecting-curve)
+- [Multi Factor Authentication](/sdk/pnp/react-native/mfa)
+- [Using dApp Share](/sdk/pnp/react-native/dapp-share)
+- [Selecting Curve](/sdk/pnp/react-native/usage#selecting-curve)
 
 #### Sample loginResponse
 
@@ -274,13 +264,11 @@ web3auth.logout();
 
 :::info SDK Reference
 
-- [`logout()` function](/sdk/react-native/usage#logout).
+- [`logout()` function](/sdk/pnp/react-native/usage#logout).
 
 :::
 
 ## Interacting with the Blockchain
-
----
 
 Once a user logs in, the Web3Auth SDK returns their reconstructed private key. For EVM Blockchains, the `secp256k1` private key is used to sign
 transactions. We also return an `ed25519` compatible private key for other blockchains. Similar to how we're using this private key in the `ethers.js`

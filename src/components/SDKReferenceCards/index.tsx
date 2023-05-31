@@ -1,11 +1,15 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { useState } from "react";
 
 import { corekit, pnp } from "../../common/SDKOptions";
 import styles from "./styles.module.css";
 
 export default function QuickNavigation() {
+  const { siteConfig } = useDocusaurusContext();
+  const { baseUrl } = siteConfig;
+
   const [product, setProduct] = useState<string>(pnp);
   const chevron = (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -27,9 +31,9 @@ export default function QuickNavigation() {
           <h3 className={styles.title}>Modal SDK</h3>
           <p>Plug and Play Modal SDK for your JS environment. Get a prebuilt UI Modal from Web3Auth for seamless UX</p>
           <div className={styles.links}>
-            <a href="/docs/quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Web+Modal+SDK&platform=React">Quick Start{chevron}</a>
-            <a href="/docs/sdk/web/modal/">SDK Reference{chevron}</a>
-            <a href="/docs/examples?product=Plug+and+Play&sdk=Plug+and+Play+Web+Modal+SDK">Examples{chevron}</a>
+            <a href={`${baseUrl}quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Web+Modal+SDK&platform=React`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}sdk/pnp/web/modal/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Web+Modal+SDK`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -48,9 +52,9 @@ export default function QuickNavigation() {
           <h3 className={styles.title}>No Modal SDK</h3>
           <p>Plug and Play No Modal SDK for your JS environment. Build your own UI for user interaction</p>
           <div className={styles.links}>
-            <a href="/docs/quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Web+No+Modal+SDK&platform=React">Quick Start{chevron}</a>
-            <a href="/docs/sdk/web/no-modal/">SDK Reference{chevron}</a>
-            <a href="/docs/examples?product=Plug+and+Play&sdk=Plug+and+Play+Web+No+Modal+SDK">Examples{chevron}</a>
+            <a href={`${baseUrl}quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Web+No+Modal+SDK&platform=React`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}sdk/pnp/web/no-modal/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Web+No+Modal+SDK`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -72,9 +76,9 @@ export default function QuickNavigation() {
           <h3 className={styles.title}>Android SDK</h3>
           <p>Plug and Play Native SDK for Android Platform</p>
           <div className={styles.links}>
-            <a href="/docs/quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Android+SDK&platform=Android">Quick Start{chevron}</a>
-            <a href="/docs/sdk/android/">SDK Reference{chevron}</a>
-            <a href="/docs/examples?product=Plug+and+Play&sdk=Plug+and+Play+Android+SDK">Examples{chevron}</a>
+            <a href={`${baseUrl}quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Android+SDK&platform=Android`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}sdk/pnp/android/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Android+SDK`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -91,9 +95,9 @@ export default function QuickNavigation() {
           <h3 className={styles.title}>iOS SDK</h3>
           <p>Plug and Play Native SDK for iOS Platform</p>
           <div className={styles.links}>
-            <a href="/docs/quick-start?product=Plug+and+Play&sdk=Plug+and+Play+iOS+SDK&platform=iOS">Quick Start{chevron}</a>
-            <a href="/docs/sdk/ios/">SDK Reference{chevron}</a>
-            <a href="/docs/examples?product=Plug+and+Play&sdk=Plug+and+Play+iOS+SDK">Examples{chevron}</a>
+            <a href={`${baseUrl}quick-start?product=Plug+and+Play&sdk=Plug+and+Play+iOS+SDK&platform=iOS`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}sdk/pnp/ios/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+iOS+SDK`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -110,9 +114,11 @@ export default function QuickNavigation() {
           <h3 className={styles.title}>React Native SDK</h3>
           <p>Plug and Play SDK for Hybrid React Native & Expo Application.</p>
           <div className={styles.links}>
-            <a href="/docs/quick-start?product=Plug+and+Play&sdk=Plug+and+Play+React+Native+SDK&platform=React+Native+Bare">Quick Start{chevron}</a>
-            <a href="/docs/sdk/react-native/">SDK Reference{chevron}</a>
-            <a href="/docs/examples?product=Plug+and+Play&sdk=Plug+and+Play+React+Native+SDK">Examples{chevron}</a>
+            <a href={`${baseUrl}quick-start?product=Plug+and+Play&sdk=Plug+and+Play+React+Native+SDK&platform=React+Native+Bare`}>
+              Quick Start{chevron}
+            </a>
+            <a href={`${baseUrl}sdk/pnp/react-native/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+React+Native+SDK`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -126,9 +132,9 @@ export default function QuickNavigation() {
           <h3 className={styles.title}>Flutter SDK</h3>
           <p>Plug and Play SDK for Hybrid Flutter Applications</p>
           <div className={styles.links}>
-            <a href="/docs/quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Flutter+SDK&platform=Flutter">Quick Start{chevron}</a>
-            <a href="/docs/sdk/flutter/">SDK Reference{chevron}</a>
-            <a href="/docs/examples?product=Plug+and+Play&sdk=Plug+and+Play+Flutter+SDK">Examples{chevron}</a>
+            <a href={`${baseUrl}quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Flutter+SDK&platform=Flutter`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}sdk/pnp/flutter/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Flutter+SDK`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -149,9 +155,9 @@ export default function QuickNavigation() {
           <h3 className={styles.title}>Unity SDK</h3>
           <p>Plug and Play Native SDK for Unity</p>
           <div className={styles.links}>
-            <a href="/docs/quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Unity+SDK&platform=Unity">Quick Start{chevron}</a>
-            <a href="/docs/sdk/unity/">SDK Reference{chevron}</a>
-            <a href="/docs/examples?product=Plug+and+Play&sdk=Plug+and+Play+Unity+SDK">Examples{chevron}</a>
+            <a href={`${baseUrl}quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Unity+SDK&platform=Unity`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}sdk/pnp/unity/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Unity+SDK`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -170,9 +176,9 @@ export default function QuickNavigation() {
           </div>
           <p>Plug and Play Native SDK for Unreal</p>
           <div className={styles.links}>
-            <a href="/docs/quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Unreal+SDK&platform=Unreal">Quick Start{chevron}</a>
-            <a href="/docs/sdk/unreal/">SDK Reference{chevron}</a>
-            <a href="/docs/examples?product=Plug+and+Play&sdk=Plug+and+Play+Unreal+SDK">Examples{chevron}</a>
+            <a href={`${baseUrl}quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Unreal+SDK&platform=Unreal`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}sdk/pnp/unreal/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Unreal+SDK`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -198,9 +204,28 @@ export default function QuickNavigation() {
           <h3 className={styles.title}>tKey JS SDK</h3>
           <p>Core Kit tKey SDK for your JS environment. Build a deeper integration with Web3Auth Infrastructural Layer within your platform.</p>
           <div className={styles.links}>
-            <a href="/docs/quick-start?product=Core+Kit&sdk=tKey+JS+SDK&platform=React">Quick Start{chevron}</a>
-            <a href="/docs/sdk/tkey/">SDK Reference{chevron}</a>
-            <a href="/docs/examples?product=Core+Kit&sdk=tKey+JS+SDK">Examples{chevron}</a>
+            <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=tKey+JS+SDK&platform=React`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}sdk/core-kit/tkey/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Core+Kit&sdk=tKey+JS+SDK`}>Examples{chevron}</a>
+          </div>
+        </div>
+      </div>
+      <div className={styles.cardContent}>
+        <div className={styles.sdkIconContainer}>
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.sdkIcon}>
+            <path
+              d="M10 3.5C10 3.10218 10.158 2.72064 10.4393 2.43934C10.7206 2.15804 11.1022 2 11.5 2C11.8978 2 12.2794 2.15804 12.5607 2.43934C12.842 2.72064 13 3.10218 13 3.5V4C13 4.26522 13.1054 4.51957 13.2929 4.70711C13.4804 4.89464 13.7348 5 14 5H17C17.2652 5 17.5196 5.10536 17.7071 5.29289C17.8946 5.48043 18 5.73478 18 6V9C18 9.26522 17.8946 9.51957 17.7071 9.70711C17.5196 9.89464 17.2652 10 17 10H16.5C16.1022 10 15.7206 10.158 15.4393 10.4393C15.158 10.7206 15 11.1022 15 11.5C15 11.8978 15.158 12.2794 15.4393 12.5607C15.7206 12.842 16.1022 13 16.5 13H17C17.2652 13 17.5196 13.1054 17.7071 13.2929C17.8946 13.4804 18 13.7348 18 14V17C18 17.2652 17.8946 17.5196 17.7071 17.7071C17.5196 17.8946 17.2652 18 17 18H14C13.7348 18 13.4804 17.8946 13.2929 17.7071C13.1054 17.5196 13 17.2652 13 17V16.5C13 16.1022 12.842 15.7206 12.5607 15.4393C12.2794 15.158 11.8978 15 11.5 15C11.1022 15 10.7206 15.158 10.4393 15.4393C10.158 15.7206 10 16.1022 10 16.5V17C10 17.2652 9.89464 17.5196 9.70711 17.7071C9.51957 17.8946 9.26522 18 9 18H6C5.73478 18 5.48043 17.8946 5.29289 17.7071C5.10536 17.5196 5 17.2652 5 17V14C5 13.7348 4.89464 13.4804 4.70711 13.2929C4.51957 13.1054 4.26522 13 4 13H3.5C3.10218 13 2.72064 12.842 2.43934 12.5607C2.15804 12.2794 2 11.8978 2 11.5C2 11.1022 2.15804 10.7206 2.43934 10.4393C2.72064 10.158 3.10218 10 3.5 10H4C4.26522 10 4.51957 9.89464 4.70711 9.70711C4.89464 9.51957 5 9.26522 5 9V6C5 5.73478 5.10536 5.48043 5.29289 5.29289C5.48043 5.10536 5.73478 5 6 5H9C9.26522 5 9.51957 4.89464 9.70711 4.70711C9.89464 4.51957 10 4.26522 10 4V3.5Z"
+              fill="currentColor"
+            />
+          </svg>
+        </div>
+        <div className={styles.cardContentText}>
+          <h3 className={styles.title}>MPC Core Kit SDK</h3>
+          <p>Get the Web3Auth MPC Infrastructure with a deeper integration within your application.</p>
+          <div className={styles.links}>
+            <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=MPC+Core+Kit&platform=React`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}sdk/core-kit/mpc-core-kit/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Core+Kit&sdk=MPC+Core+Kit`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -216,12 +241,12 @@ export default function QuickNavigation() {
           </svg>
         </div>
         <div className={styles.cardContentText}>
-          <h3 className={styles.title}>Single Factor Auth SDK</h3>
-          <p>Core Kit Single Factor Auth SDK for your JS environment. Implement Core Kit in a single key pair flow</p>
+          <h3 className={styles.title}>Single Factor Auth Web SDK</h3>
+          <p>Core Kit Single Factor Auth Web SDK for your JS environment. Implement Core Kit in a single key pair flow</p>
           <div className={styles.links}>
-            <a href="/docs/quick-start?product=Core+Kit&sdk=Single+Factor+Auth+SDK&platform=React">Quick Start{chevron}</a>
-            <a href="/docs/sdk/single-factor-auth/">SDK Reference{chevron}</a>
-            <a href="/docs/examples?product=Core+Kit&sdk=Single+Factor+Auth+SDK">Examples{chevron}</a>
+            <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=Single+Factor+Auth+SDK&platform=React`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}sdk/core-kit/single-factor-auth/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+SDK`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -237,12 +262,12 @@ export default function QuickNavigation() {
           </svg>
         </div>
         <div className={styles.cardContentText}>
-          <h3 className={styles.title}>NodeJS SDK</h3>
+          <h3 className={styles.title}>Single Factor Auth NodeJS SDK</h3>
           <p>Core Kit NodeJS SDK for your Node environment. Single key pair flow integration in your NodeJS Backend server.</p>
           <div className={styles.links}>
-            <a href="/docs/quick-start?product=Core+Kit&sdk=Node.js+SDK&platform=Node.js">Quick Start{chevron}</a>
-            <a href="/docs/sdk/node/">SDK Reference{chevron}</a>
-            <a href="/docs/examples?product=Core+Kit&sdk=Node.js+SDK">Examples{chevron}</a>
+            <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=Node.js+SDK&platform=Node.js`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}sdk/core-kit/node/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Core+Kit&sdk=Node.js+SDK`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -265,9 +290,9 @@ export default function QuickNavigation() {
             tKey JS SDK integration in your hybrid <strong>React Native App</strong>
           </p>
           <div className={styles.links}>
-            <a href="/docs/quick-start?product=Core+Kit&sdk=tKey+JS+SDK&platform=React+Native">Quick Start{chevron}</a>
-            <a href="/docs/sdk/tkey/">SDK Reference{chevron}</a>
-            <a href="/docs/examples?product=Core+Kit&sdk=tKey+JS+SDK">Examples{chevron}</a>
+            <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=tKey+JS+SDK&platform=React+Native`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}sdk/core-kit/tkey/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Core+Kit&sdk=tKey+JS+SDK`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -286,9 +311,30 @@ export default function QuickNavigation() {
           </div>
           <p>Core Kit Single Factor Auth Android SDK for your Android application. Implement Core Kit in a single key pair flow</p>
           <div className={styles.links}>
-            <a href="/docs/quick-start?product=Core+Kit&sdk=Single+Factor+Auth+Android+SDK&platform=Android">Quick Start{chevron}</a>
-            <a href="/docs/sdk/single-factor-auth-android/">SDK Reference{chevron}</a>
-            <a href="/docs/examples?product=Core+Kit&sdk=Single+Factor+Auth+Android+SDK">Examples{chevron}</a>
+            <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=Single+Factor+Auth+Android+SDK&platform=Android`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}sdk/core-kit/single-factor-auth-android/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+Android+SDK`}>Examples{chevron}</a>
+          </div>
+        </div>
+      </div>
+      <div className={styles.cardContent}>
+        <div className={styles.sdkIconContainer}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.sdkIcon}>
+            <path
+              d="M20.4933 17.5861C20.1908 18.2848 19.8328 18.928 19.418 19.5193C18.8526 20.3255 18.3897 20.8835 18.0329 21.1934C17.4798 21.702 16.8872 21.9625 16.2527 21.9773C15.7972 21.9773 15.2478 21.8477 14.6083 21.5847C13.9667 21.323 13.3771 21.1934 12.838 21.1934C12.2726 21.1934 11.6662 21.323 11.0176 21.5847C10.3679 21.8477 9.84463 21.9847 9.44452 21.9983C8.83602 22.0242 8.22949 21.7563 7.62408 21.1934C7.23767 20.8563 6.75436 20.2786 6.17536 19.4601C5.55415 18.586 5.04342 17.5725 4.64331 16.417C4.21481 15.1689 4 13.9603 4 12.7902C4 11.4498 4.28962 10.2938 4.86973 9.32509C5.32564 8.54696 5.93216 7.93316 6.69127 7.48255C7.45038 7.03195 8.2706 6.80233 9.15391 6.78763C9.63723 6.78763 10.271 6.93714 11.0587 7.23096C11.8441 7.52576 12.3484 7.67526 12.5695 7.67526C12.7348 7.67526 13.295 7.50045 14.2447 7.15195C15.1429 6.82874 15.9009 6.69492 16.5218 6.74764C18.2045 6.88343 19.4686 7.54675 20.3094 8.74177C18.8045 9.6536 18.06 10.9307 18.0749 12.5691C18.0884 13.8452 18.5514 14.9071 19.4612 15.7503C19.8736 16.1417 20.334 16.4441 20.8464 16.6589C20.7353 16.9812 20.618 17.2898 20.4933 17.5861ZM16.6342 2.40011C16.6342 3.40034 16.2687 4.33425 15.5404 5.19867C14.6614 6.22629 13.5982 6.8201 12.4453 6.7264C12.4306 6.60641 12.4221 6.48011 12.4221 6.3474C12.4221 5.38718 12.8401 4.35956 13.5824 3.51934C13.953 3.09392 14.4244 2.74019 14.9959 2.45801C15.5663 2.18005 16.1058 2.02632 16.6132 2C16.628 2.13371 16.6342 2.26744 16.6342 2.4001V2.40011Z"
+              fill="currentColor"
+            />
+          </svg>
+        </div>
+        <div className={styles.cardContentText}>
+          <div className={styles.cardTitleContainer}>
+            <h3 className={styles.title}>tKey iOS SDK</h3>
+          </div>
+          <p>Core Kit tKey Native SDK for iOS Platform</p>
+          <div className={styles.links}>
+            <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=tKey+iOS+SDK&platform=iOS`}>Quick Start{chevron}</a>
+            <a href={`${baseUrl}sdk/core-kit/tkey-ios/`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}examples?product=Core+Kit&sdk=tKey+iOS+SDK`}>Examples{chevron}</a>
           </div>
         </div>
       </div>
@@ -309,29 +355,6 @@ export default function QuickNavigation() {
             </div>
           </div>
           <p>Core Kit tKey Native SDK for Android Platform</p>
-          {/* <div className={styles.links}>
-            <a href="/docs">Quick Start{chevron}</a>
-            <a href="/docs">SDK Reference{chevron}</a>
-          </div> */}
-        </div>
-      </div>
-      <div className={styles.cardContent}>
-        <div className={styles.sdkIconContainer}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.sdkIcon}>
-            <path
-              d="M20.4933 17.5861C20.1908 18.2848 19.8328 18.928 19.418 19.5193C18.8526 20.3255 18.3897 20.8835 18.0329 21.1934C17.4798 21.702 16.8872 21.9625 16.2527 21.9773C15.7972 21.9773 15.2478 21.8477 14.6083 21.5847C13.9667 21.323 13.3771 21.1934 12.838 21.1934C12.2726 21.1934 11.6662 21.323 11.0176 21.5847C10.3679 21.8477 9.84463 21.9847 9.44452 21.9983C8.83602 22.0242 8.22949 21.7563 7.62408 21.1934C7.23767 20.8563 6.75436 20.2786 6.17536 19.4601C5.55415 18.586 5.04342 17.5725 4.64331 16.417C4.21481 15.1689 4 13.9603 4 12.7902C4 11.4498 4.28962 10.2938 4.86973 9.32509C5.32564 8.54696 5.93216 7.93316 6.69127 7.48255C7.45038 7.03195 8.2706 6.80233 9.15391 6.78763C9.63723 6.78763 10.271 6.93714 11.0587 7.23096C11.8441 7.52576 12.3484 7.67526 12.5695 7.67526C12.7348 7.67526 13.295 7.50045 14.2447 7.15195C15.1429 6.82874 15.9009 6.69492 16.5218 6.74764C18.2045 6.88343 19.4686 7.54675 20.3094 8.74177C18.8045 9.6536 18.06 10.9307 18.0749 12.5691C18.0884 13.8452 18.5514 14.9071 19.4612 15.7503C19.8736 16.1417 20.334 16.4441 20.8464 16.6589C20.7353 16.9812 20.618 17.2898 20.4933 17.5861ZM16.6342 2.40011C16.6342 3.40034 16.2687 4.33425 15.5404 5.19867C14.6614 6.22629 13.5982 6.8201 12.4453 6.7264C12.4306 6.60641 12.4221 6.48011 12.4221 6.3474C12.4221 5.38718 12.8401 4.35956 13.5824 3.51934C13.953 3.09392 14.4244 2.74019 14.9959 2.45801C15.5663 2.18005 16.1058 2.02632 16.6132 2C16.628 2.13371 16.6342 2.26744 16.6342 2.4001V2.40011Z"
-              fill="currentColor"
-            />
-          </svg>
-        </div>
-        <div className={styles.cardContentText}>
-          <div className={styles.cardTitleContainer}>
-            <h3 className={styles.title}>tKey iOS SDK</h3>
-            <div className={styles.pillContainer}>
-              <div className={styles.pill}>Coming Soon</div>
-            </div>
-          </div>
-          <p>Core Kit tKey Native SDK for iOS Platform</p>
           {/* <div className={styles.links}>
             <a href="/docs">Quick Start{chevron}</a>
             <a href="/docs">SDK Reference{chevron}</a>

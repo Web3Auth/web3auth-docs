@@ -6,10 +6,11 @@
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
+// import { request } from "graphql-request";
 import { useEffect, useState } from "react";
 
 import { getOptionsfromURL, setURLfromOptions } from "../../common/SDKOptions";
-import { blockchainMap, featuresMap, integrationBuilderMap, languageMap, platformMap, Props, referenceMap } from "../../components/ContentHubMaps";
+import { blockchainMap, featuresMap, languageMap, platformMap, Props, referenceMap } from "../../components/ContentHubMaps";
 import { Modal } from "../../components/Modal";
 import SEO from "../../components/SEO";
 import styles from "./styles.module.css";
@@ -19,30 +20,29 @@ export default function ContentHub({ content }: Props) {
     if (value.type === "guide") return { ...value, link: `/content-hub/${key}` };
     return {};
   });
-  const completeIntegrationBuilderMap = integrationBuilderMap;
   const completeReferenceMap = referenceMap;
   const [searchInput, setSearchInput] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [tags, setTags] = useState<string[]>([]);
-  const [sortedGuides, setSortedGuides] = useState<any>(completeGuides.sort((a, b) => a.order - b.order));
-  const [sortedIntegrationBuilderMap, setSortedIntegrationBuilderMap] = useState<any>(
-    completeIntegrationBuilderMap.sort((a, b) => a.order - b.order)
-  );
+  const [sortedGuides, setSortedGuides] = useState<any>(completeGuides.sort((a: any, b: any) => a.order - b.order));
+
   const [sortedReferenceMap, setSortedReferenceMap] = useState<any>(completeReferenceMap.sort((a, b) => a.order - b.order));
   const { siteConfig } = useDocusaurusContext();
-  const { baseUrl } = siteConfig;
-  const guide = "guide";
-  const integrationBuilder = "integrationBuilder";
-  const reference = "reference";
+  const { baseUrl, customFields } = siteConfig;
+  const guide = "guides";
+  const reference = "references";
+  const blog = "blog";
   const [tabActive, setTabActive] = useState<string>(guide);
+  const [blogPostMap, setBlogPostMap] = useState<any>([]);
+  const [completeBlogPostMap, setCompleteBlogPostMap] = useState<any>([]);
 
   useEffect(() => {
     const options = getOptionsfromURL();
     let type: string;
 
     if (!options.type) {
-      history.pushState({}, "", setURLfromOptions({ type: guide }));
-      type = guide;
+      history.pushState({}, "", setURLfromOptions({ type: blog }));
+      type = blog;
     } else {
       type = options.type;
     }
@@ -54,17 +54,65 @@ export default function ContentHub({ content }: Props) {
     history.pushState({}, "", setURLfromOptions({ type: tabActive }));
   }, [tabActive]);
 
+  const apiCall = async (query) => {
+    const fetchUrl = `https://graphql.contentful.com/content/v1/spaces/${customFields.REACT_CONTENTFUL_SPACE}/environments/master`;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${customFields.REACT_CONTENTFUL_TOKEN}`,
+      },
+      body: JSON.stringify({ query }),
+    };
+    return fetch(fetchUrl, options);
+  };
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const query = `
+        query {
+          pageBlogPostCollection(order:date_DESC) {
+            items {
+              sys {
+                id
+              }
+              featured
+              title
+              slug
+              date
+              excerpt
+              coverImage {
+                url
+              }
+              author {
+                name
+              }
+              tags
+            }
+          }
+        }
+      `;
+      const response = await apiCall(query);
+      const { data } = await response.json();
+
+      setBlogPostMap(data.pageBlogPostCollection.items);
+      setCompleteBlogPostMap(data.pageBlogPostCollection.items);
+    };
+
+    fetchPosts();
+  }, []);
+
   function filterByTags() {
-    let guides, references, integrationBuilders;
+    let guides, references, blogPosts;
     if (tags.length === 0) {
-      guides = completeGuides.sort((a, b) => a.order - b.order);
-      integrationBuilders = integrationBuilderMap;
+      guides = completeGuides.sort((a: any, b: any) => a.order - b.order);
+      blogPosts = completeBlogPostMap;
       references = referenceMap;
     } else {
-      guides = completeGuides.filter((item) => {
+      guides = completeGuides.filter((item: any) => {
         return tags.some((tag) => item.tags.includes(tag));
       });
-      integrationBuilders = completeIntegrationBuilderMap.filter((item) => {
+      blogPosts = blogPostMap.filter((item) => {
         return tags.some((tag) => item.tags.includes(tag));
       });
       references = completeReferenceMap.filter((item) => {
@@ -73,12 +121,12 @@ export default function ContentHub({ content }: Props) {
     }
 
     if (tabActive === guide && guides.length === 0) {
-      if (sortedIntegrationBuilderMap.length > 0) {
-        setTabActive(integrationBuilder);
+      if (blogPosts.length > 0) {
+        setTabActive(blog);
       } else if (sortedReferenceMap.length > 0) {
         setTabActive(reference);
       }
-    } else if (tabActive === integrationBuilder && integrationBuilders.length === 0) {
+    } else if (tabActive === blog && blogPosts.length === 0) {
       if (sortedGuides.length > 0) {
         setTabActive(guide);
       } else if (sortedReferenceMap.length > 0) {
@@ -87,13 +135,13 @@ export default function ContentHub({ content }: Props) {
     } else if (tabActive === reference && references.length === 0) {
       if (sortedGuides.length > 0) {
         setTabActive(guide);
-      } else if (sortedIntegrationBuilderMap.length > 0) {
-        setTabActive(integrationBuilder);
+      } else if (blogPosts.length > 0) {
+        setTabActive(blog);
       }
     }
 
     setSortedGuides(guides);
-    setSortedIntegrationBuilderMap(integrationBuilders);
+    setBlogPostMap(blogPosts);
     setSortedReferenceMap(references);
   }
 
@@ -143,15 +191,22 @@ export default function ContentHub({ content }: Props) {
         inputKeywords.every((key) => item.tags.map((tag) => tag.includes(key.toLowerCase())).includes(true))
       );
     }
+    function searchFilterBlog(item) {
+      return (
+        inputKeywords.every((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
+        inputKeywords.every((key) => item.excerpt.toLowerCase().includes(key.toLowerCase())) ||
+        inputKeywords.every((key) => item.tags.map((tag) => tag.includes(key.toLowerCase())).includes(true))
+      );
+    }
     if (input === "") {
       filterByTags();
     } else {
       const finalSortedGuide = completeGuides.filter((item) => searchFilter(item));
-      const finalSortedIntegrationBuilderMap = completeIntegrationBuilderMap.filter((item) => searchFilter(item));
+      const finalBlogPosts = completeBlogPostMap.filter((item) => searchFilterBlog(item));
       const finalSortedReferenceMap = completeReferenceMap.filter((item) => searchFilter(item));
 
       setSortedGuides(finalSortedGuide);
-      setSortedIntegrationBuilderMap(finalSortedIntegrationBuilderMap);
+      setBlogPostMap(finalBlogPosts);
       setSortedReferenceMap(finalSortedReferenceMap);
     }
   }
@@ -195,6 +250,51 @@ export default function ContentHub({ content }: Props) {
         </div>
         <span className={styles.date}>
           {article.author} | {article.date}
+        </span>
+      </div>
+    );
+  }
+
+  function renderBlog(article) {
+    return (
+      <div key={article.sys.id} className={styles.article}>
+        <Link to={`/content-hub/blog/${article.slug}`} className={styles.articleContent}>
+          <img src={article.coverImage.url} alt="Blog Banner" />
+          <div className={styles.contentContainer}>
+            <div className={styles.pillContainer}>
+              <div className={styles.pill}>BLOG</div>
+            </div>
+            <h3>{highlightSearchText(article.title)}</h3>
+            <p>{highlightSearchText(article.excerpt)}</p>
+          </div>
+        </Link>
+
+        {/* <div className={styles.tagContainer}>
+          {article.tags &&
+            article.tags.map((tag) => {
+              if (tags.includes(tag) || searchInput.split(" ").includes(tag)) {
+                return (
+                  <div key={tag} className={styles.tagActive} onClick={() => setShowModal(true)}>
+                    {tag}
+                  </div>
+                );
+              }
+              return null;
+            })}
+          {article.tags &&
+            article.tags.map((tag) => {
+              if (!(tags.includes(tag) || searchInput.split(" ").includes(tag))) {
+                return (
+                  <div key={tag} className={styles.tag} onClick={() => setShowModal(true)}>
+                    {tag}
+                  </div>
+                );
+              }
+              return null;
+            })}
+        </div> */}
+        <span className={styles.date}>
+          {article.author.name} | {new Date(article.date).toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" })}
         </span>
       </div>
     );
@@ -251,6 +351,23 @@ export default function ContentHub({ content }: Props) {
             </button>
           </div>
           <div className={styles.buttonGroup}>
+            <div className={tabActive === blog ? styles.activeTab : styles.tab} onClick={() => setTabActive(blog)}>
+              <div className={styles.tabIconContainer}>
+                <svg viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M6.7 16.7498C6.7 14.9729 7.40589 13.2687 8.66238 12.0122C9.91887 10.7557 11.623 10.0498 13.4 10.0498H40.2C41.9769 10.0498 43.6811 10.7557 44.9376 12.0122C46.1941 13.2687 46.9 14.9729 46.9 16.7498V50.2498C46.9 52.0268 47.6059 53.7309 48.8624 54.9874C50.1189 56.2439 51.823 56.9498 53.6 56.9498H13.4C11.623 56.9498 9.91887 56.2439 8.66238 54.9874C7.40589 53.7309 6.7 52.0268 6.7 50.2498V16.7498ZM16.75 20.0998H36.85V33.4998H16.75V20.0998ZM36.85 40.1998H16.75V46.8998H36.85V40.1998Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M50.25 23.4502H53.6C55.377 23.4502 57.0811 24.1561 58.3376 25.4126C59.5941 26.6691 60.3 28.3732 60.3 30.1502V48.5752C60.3 49.9079 59.7706 51.186 58.8282 52.1284C57.8858 53.0708 56.6077 53.6002 55.275 53.6002C53.9423 53.6002 52.6642 53.0708 51.7218 52.1284C50.7794 51.186 50.25 49.9079 50.25 48.5752V23.4502Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+              Blog
+            </div>
             <div className={tabActive === guide ? styles.activeTab : styles.tab} onClick={() => setTabActive(guide)}>
               <div className={styles.tabIconContainer}>
                 <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -274,21 +391,6 @@ export default function ContentHub({ content }: Props) {
                 </svg>
               </div>
               References
-            </div>
-            <div className={tabActive === integrationBuilder ? styles.activeTab : styles.tab} onClick={() => setTabActive(integrationBuilder)}>
-              <div className={styles.tabIconContainer}>
-                <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M8.12435 11.1667V3.16666V11.1667Z" fill="#6B7280" />
-                  <path
-                    d="M2.79102 11.1667V11.8333C2.79102 12.3638 3.00173 12.8725 3.3768 13.2475C3.75187 13.6226 4.26058 13.8333 4.79102 13.8333H11.4577C11.9881 13.8333 12.4968 13.6226 12.8719 13.2475C13.247 12.8725 13.4577 12.3638 13.4577 11.8333V11.1667M10.791 8.49999L8.12435 11.1667M8.12435 11.1667L5.45768 8.49999M8.12435 11.1667V3.16666"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              Integration Builder
             </div>
           </div>
         </div>
@@ -393,6 +495,16 @@ export default function ContentHub({ content }: Props) {
       )}
 
       <div className={styles.container}>
+        {tabActive === blog && (
+          <>
+            {blogPostMap.map((post) => renderBlog(post))}
+            {blogPostMap.length === 0 && (
+              <div className={styles.noResults}>
+                <p>No Results</p>
+              </div>
+            )}
+          </>
+        )}
         {tabActive === guide && (
           <>
             {sortedGuides.map((item) => renderArticle(item))}
@@ -407,16 +519,6 @@ export default function ContentHub({ content }: Props) {
           <>
             {sortedReferenceMap.map((item) => renderArticle(item))}
             {sortedReferenceMap.length === 0 && (
-              <div className={styles.noResults}>
-                <p>No Results</p>
-              </div>
-            )}
-          </>
-        )}
-        {tabActive === integrationBuilder && (
-          <>
-            {sortedIntegrationBuilderMap.map((item) => renderArticle(item))}
-            {sortedIntegrationBuilderMap.length === 0 && (
               <div className={styles.noResults}>
                 <p>No Results</p>
               </div>

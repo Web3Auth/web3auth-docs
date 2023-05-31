@@ -131,6 +131,12 @@ export const tileGroupsData = [
         icon: "logo-aptos.png",
         path: "./connect-blockchain/aptos",
       },
+      {
+        key: "cosmos",
+        title: "Cosmos",
+        icon: "logo-cosmos.png",
+        path: "./connect-blockchain/cosmos",
+      },
     ],
   },
 ];

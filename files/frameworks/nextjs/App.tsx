@@ -25,6 +25,7 @@ function App() {
         setWeb3auth(web3auth);
 
         // REPLACE-getInitCode-
+
         if (web3auth.provider) {
           setProvider(web3auth.provider);
         };

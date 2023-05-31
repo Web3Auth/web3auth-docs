@@ -1,0 +1,145 @@
+---
+title: "Usage of Core Kit SFA Web SDK"
+sidebar_label: "Usage"
+displayed_sidebar: sdk
+description: "Web3Auth Core Kit Single Factor Auth Web SDK - Usage | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users. Further, you can use the native provider given
+by Web3Auth to connect the users to the respective blockchain network.
+
+:::info guide
+
+Follow this [guide](/content-hub/guides/single-factor-auth) for ideal flow using a combination of Web3Auth Single Factor Auth Web SDK and Web3Auth
+Core SDK.
+
+:::
+
+Natively, the instance of Web3Auth (referred to as web3auth in our examples) returns the following functions:
+
+- `connect()` - Logs in the User using the `verifier`, `verifierId` & `idToken`.
+
+## Logging in your User
+
+`connect()`
+
+To login a user in the Web3Auth SFA Web SDK, you need to call `connect()` function.
+
+| Variable      | Type     | Description      | Mandatory |
+| ------------- | -------- | ---------------- | --------- |
+| `loginParams` | `object` | Login Parameters | Yes       |
+
+#### Returns
+
+```js
+connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null>
+```
+
+On successful login, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
+corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
+
+On unsuccessful login, this function will return a `null` value.
+
+#### `connect(loginParams: LoginParams)`
+
+`LoginParams`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter               | Type                     | Description                                                                                                         | Mandatory |
+| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- | --------- |
+| `verifier`              | `string`                 | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                                  | Yes       |
+| `verifierId`            | `string`                 | Verifier ID's value, `sub` or `email` value present in the idToken.                                                 | Yes       |
+| `idToken`               | `string`                 | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. | Yes       |
+| `subVerifierInfoArray?` | `TorusSubVerifierInfo[]` | Sub verifier info                                                                                                   | No        |
+
+</TabItem>
+
+<TabItem value="type">
+
+```javascript
+export type LoginParams = {
+  verifier: string,
+  verifierId: string,
+  idToken: string,
+  subVerifierInfoArray?: TorusSubVerifierInfo[],
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+### Example
+
+```js
+await web3auth.connect({
+  verifier: "verifier-name", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+  verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
+  idToken: "JWT Token", // replace with your newly created unused JWT Token.
+});
+```
+
+`@web3auth/single-factor-auth` SDK only works for those users who have **not enabled MFA**.
+
+:::danger MFA enabled users
+
+For MFA enabled users, you'll see `Error("User has already enabled mfa, please use the @webauth/webauth-web sdk for login with mfa");`
+
+:::
+
+## Example
+
+```js
+import Web3Auth from "@web3auth/single-factor-auth";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+
+// Define the chain config according to the chain you want to connect to
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x5",
+  rpcTarget: "https://rpc.ankr.com/eth_goerli",
+  displayName: "Goerli Testnet",
+  blockExplorer: "https://goerli.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+// Instantiate Web3Auth SFA SDK
+const web3authSfa = new Web3Auth({
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  chainConfig,
+  web3AuthNetwork: "testnet", // ["cyan", "testnet"]
+  usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
+});
+
+// Instantiate Ethereum Provider
+const provider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+// Initialize Web3Auth SFA SDK
+web3authSfa.init(provider);
+
+// Login the user
+const web3authSfaprovider = await web3auth.connect({
+  verifier: "verifier-name", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+  verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
+  idToken: "JWT Token", // replace with your newly created unused JWT Token.
+});
+
+// Get the private key, The private key returned here is the CoreKit Key, since the usePnPKey is set to false.
+const privateKey = await web3authSfaprovider.request({ method: "eth_private_key" });
+
+console.log("ETH Private Key", privateKey);
+```

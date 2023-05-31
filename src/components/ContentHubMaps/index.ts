@@ -33,7 +33,7 @@ export const integrationBuilderMap = [
   {
     title: "How to Implement Web3Auth in a React Application",
     description: "Learn how to add a non custodial web3 login to a React Applications using Web3Auth.",
-    image: "content-hub/guides/banners/react.svg",
+    image: "content-hub/guides/banners/react.png",
     type: "INTEGRATION BUILDER",
     tags: ["web", "react", "@web3auth/modal", "whitelabel", "custom authentication", "solana", "starkex", "starknet", ...EVMBlockchains, "tezos"],
     date: "25th May 2022",
@@ -44,7 +44,7 @@ export const integrationBuilderMap = [
   {
     title: "How to Implement Web3Auth in a Next.js Application",
     description: "Learn how to add a non custodial web3 login to a Next.js Applications using Web3Auth.",
-    image: "content-hub/guides/banners/nextjs.svg",
+    image: "content-hub/guides/banners/nextjs.png",
     type: "INTEGRATION BUILDER",
     tags: ["web", "next.js", "@web3auth/modal", "whitelabel", "custom authentication", "solana", "starkex", "starknet", ...EVMBlockchains, "tezos"],
     date: "25th May 2022",
@@ -55,7 +55,7 @@ export const integrationBuilderMap = [
   {
     title: "How to Implement Web3Auth in a Angular Application",
     description: "Learn how to add a non custodial web3 login to a Angular Applications using Web3Auth.",
-    image: "content-hub/guides/banners/angular.svg",
+    image: "content-hub/guides/banners/angular.png",
     type: "INTEGRATION BUILDER",
     tags: ["web", "angular", "@web3auth/modal", "whitelabel", "custom authentication", "solana", "starkex", "starknet", ...EVMBlockchains, "tezos"],
     date: "25th May 2022",
@@ -67,7 +67,7 @@ export const integrationBuilderMap = [
   {
     title: "How to Implement Web3Auth in a HTML/JS Application",
     description: "Learn how to add a non custodial web3 login to a HTML/JS Applications using Web3Auth.",
-    image: "content-hub/guides/banners/htmljs.svg",
+    image: "content-hub/guides/banners/htmljs.png",
     type: "INTEGRATION BUILDER",
     tags: ["web", "html/js", "@web3auth/modal", "whitelabel", "custom authentication", ...EVMBlockchains],
     date: "25th May 2022",
@@ -79,7 +79,7 @@ export const integrationBuilderMap = [
   {
     title: "How to Implement Web3Auth in a Vue.js Application",
     description: "Learn how to add a non custodial web3 login to a Vue.js Applications using Web3Auth.",
-    image: "content-hub/guides/banners/vue.svg",
+    image: "content-hub/guides/banners/vue.png",
     type: "INTEGRATION BUILDER",
     tags: ["web", "vue", "@web3auth/modal", "whitelabel", "custom authentication", "solana", "starkex", "starknet", ...EVMBlockchains, "tezos"],
     date: "25th May 2022",
@@ -91,7 +91,7 @@ export const integrationBuilderMap = [
   {
     title: "How to Implement Web3Auth in an Android Application",
     description: "Learn how to add a non custodial web3 login to an Android Applications using Web3Auth.",
-    image: "content-hub/guides/banners/android.svg",
+    image: "content-hub/guides/banners/android.png",
     type: "INTEGRATION BUILDER",
     tags: ["mobile", "android", "whitelabel", "custom authentication", "dapp share"],
     date: "25th May 2022",
@@ -103,7 +103,7 @@ export const integrationBuilderMap = [
   {
     title: "How to Implement Web3Auth in an iOS/Swift Application",
     description: "Learn how to add a non custodial web3 login to an iOS/Swift Applications using Web3Auth.",
-    image: "content-hub/guides/banners/ios-swift.svg",
+    image: "content-hub/guides/banners/ios-swift.png",
     type: "INTEGRATION BUILDER",
     tags: ["mobile", "ios", "whitelabel", "custom authentication", "dapp share"],
     date: "25th May 2022",
@@ -115,7 +115,7 @@ export const integrationBuilderMap = [
   {
     title: "How to Implement Web3Auth in a Flutter Application",
     description: "Learn how to add a non custodial web3 login to a Flutter Applications using Web3Auth.",
-    image: "content-hub/guides/banners/flutter.svg",
+    image: "content-hub/guides/banners/flutter.png",
     type: "INTEGRATION BUILDER",
     tags: ["mobile", "flutter", "whitelabel", "custom authentication", "dapp share"],
     date: "25th May 2022",
@@ -127,7 +127,7 @@ export const integrationBuilderMap = [
   {
     title: "How to Implement Web3Auth in a React Native Application",
     description: "Learn how to add a non custodial web3 login to a React Native Applications using Web3Auth.",
-    image: "content-hub/guides/banners/react-native.svg",
+    image: "content-hub/guides/banners/react-native.png",
     type: "INTEGRATION BUILDER",
     tags: ["mobile", "react native", "whitelabel", "custom authentication", "dapp share"],
     date: "25th May 2022",
@@ -141,7 +141,7 @@ export const referenceMap = [
   {
     title: "Login with Web3Auth using your own JWT Token",
     description: "Learn how to authenticate a user with Web3Auth using your own JWT Token",
-    image: "content-hub/guides/banners/jwt.svg",
+    image: "content-hub/guides/banners/jwt.png",
     type: "REFERENCE",
     tags: ["jwt", "custom authentication", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",
@@ -163,7 +163,7 @@ export const referenceMap = [
   {
     title: "Integrate Web3Auth with the Ethereum Blockchain",
     description: "Learn how to add a non custodial social login to the Ethereum Blockchain",
-    image: "content-hub/guides/banners/ethereum.svg",
+    image: "content-hub/guides/banners/ethereum.png",
     type: "REFERENCE",
     tags: ["ethereum", "evm", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",
@@ -174,7 +174,7 @@ export const referenceMap = [
   {
     title: "Integrate Web3Auth with the Solana Blockchain",
     description: "Learn how to add a non custodial social login to the Solana Blockchain",
-    image: "content-hub/guides/banners/solana.svg",
+    image: "content-hub/guides/banners/solana.png",
     type: "REFERENCE",
     tags: ["solana", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",
@@ -185,7 +185,7 @@ export const referenceMap = [
   {
     title: "Integrate Web3Auth with the StarkEx Blockchain",
     description: "Learn how to add a non custodial social login to the StarkEx Blockchain",
-    image: "content-hub/guides/banners/starkex.svg",
+    image: "content-hub/guides/banners/starkex.png",
     type: "REFERENCE",
     tags: ["starkex", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",
@@ -197,7 +197,7 @@ export const referenceMap = [
   {
     title: "Integrate Web3Auth with the StarkNet Blockchain",
     description: "Learn how to add a non custodial social login to the StarkNet Blockchain",
-    image: "content-hub/guides/banners/starknet.svg",
+    image: "content-hub/guides/banners/starknet.png",
     type: "REFERENCE",
     tags: ["starknet", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",
@@ -208,7 +208,7 @@ export const referenceMap = [
   {
     title: "Integrate Web3Auth with the Polygon Blockchain",
     description: "Learn how to add a non custodial social login to the Polygon Blockchain",
-    image: "content-hub/guides/banners/polygon.svg",
+    image: "content-hub/guides/banners/polygon.png",
     type: "REFERENCE",
     tags: ["polygon", "evm", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",
@@ -219,7 +219,7 @@ export const referenceMap = [
   {
     title: "Integrate Web3Auth with the Tezos Blockchain",
     description: "Learn how to add a non custodial social login to the Tezos Blockchain",
-    image: "content-hub/guides/banners/tezos.svg",
+    image: "content-hub/guides/banners/tezos.png",
     type: "REFERENCE",
     tags: ["tezos", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",
@@ -230,7 +230,7 @@ export const referenceMap = [
   {
     title: "Integrate Web3Auth with the Avalanche Blockchain",
     description: "Learn how to add a non custodial social login to the Avalanche Blockchain",
-    image: "content-hub/guides/banners/avalanche.svg",
+    image: "content-hub/guides/banners/avalanche.png",
     type: "REFERENCE",
     tags: ["avalanche", "evm", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",
@@ -241,7 +241,7 @@ export const referenceMap = [
   {
     title: "Integrate Web3Auth with the Binance Blockchain",
     description: "Learn how to add a non custodial social login to the Binance Blockchain",
-    image: "content-hub/guides/banners/binance.svg",
+    image: "content-hub/guides/banners/binance.png",
     type: "REFERENCE",
     tags: ["binance", "bnb", "evm", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",
@@ -252,7 +252,7 @@ export const referenceMap = [
   {
     title: "Integrate Web3Auth with the Optimism Blockchain",
     description: "Learn how to add a non custodial social login to the Optimism Blockchain",
-    image: "content-hub/guides/banners/optimism.svg",
+    image: "content-hub/guides/banners/optimism.png",
     type: "REFERENCE",
     tags: ["optimism", "evm", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",
@@ -263,7 +263,7 @@ export const referenceMap = [
   {
     title: "Integrate Web3Auth with the Arbitrum Blockchain",
     description: "Learn how to add a non custodial social login to the Arbitrum Blockchain",
-    image: "content-hub/guides/banners/arbitrum.svg",
+    image: "content-hub/guides/banners/arbitrum.png",
     type: "REFERENCE",
     tags: ["arbitrum", "evm", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",
@@ -274,7 +274,7 @@ export const referenceMap = [
   {
     title: "Integrate Web3Auth with the Cronos Blockchain",
     description: "Learn how to add a non custodial social login to the Cronos Blockchain",
-    image: "content-hub/guides/banners/cronos.svg",
+    image: "content-hub/guides/banners/cronos.png",
     type: "REFERENCE",
     tags: ["cronos", "evm", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",
@@ -285,7 +285,7 @@ export const referenceMap = [
   {
     title: "Integrate Web3Auth with the Harmony Blockchain",
     description: "Learn how to add a non custodial social login to the Harmony Blockchain",
-    image: "content-hub/guides/banners/harmony.svg",
+    image: "content-hub/guides/banners/harmony.png",
     type: "REFERENCE",
     tags: ["harmony", "evm", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",
@@ -296,7 +296,7 @@ export const referenceMap = [
   {
     title: "Integrate Web3Auth with the Celo Blockchain",
     description: "Learn how to add a non custodial social login to the Celo Blockchain",
-    image: "content-hub/guides/banners/celo.svg",
+    image: "content-hub/guides/banners/celo.png",
     type: "REFERENCE",
     tags: ["celo", "evm", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",
@@ -307,7 +307,7 @@ export const referenceMap = [
   {
     title: "Integrate Web3Auth with the Moonbeam Blockchain",
     description: "Learn how to add a non custodial social login to the Moonbeam Blockchain",
-    image: "content-hub/guides/banners/moonbeam.svg",
+    image: "content-hub/guides/banners/moonbeam.png",
     type: "REFERENCE",
     tags: ["moonbeam", "evm", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",
@@ -318,7 +318,7 @@ export const referenceMap = [
   {
     title: "Integrate Web3Auth with the Moonriver Blockchain",
     description: "Learn how to add a non custodial social login to the Moonriver Blockchain",
-    image: "content-hub/guides/banners/moonriver.svg",
+    image: "content-hub/guides/banners/moonriver.png",
     type: "REFERENCE",
     tags: ["moonriver", "evm", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",
@@ -329,7 +329,7 @@ export const referenceMap = [
   {
     title: "Integrate Web3Auth with the Klaytn Blockchain",
     description: "Learn how to add a non custodial social login to the Klaytn Blockchain",
-    image: "content-hub/guides/banners/klaytn.svg",
+    image: "content-hub/guides/banners/klaytn.png",
     type: "REFERENCE",
     tags: ["kalytn", "evm", "@web3auth/modal", "@web3auth/no-modal"],
     date: "25th May 2022",

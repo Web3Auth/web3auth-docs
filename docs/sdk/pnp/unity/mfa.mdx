@@ -1,0 +1,50 @@
+---
+title: Multi Factor Authentication in PnP Unity SDK
+sidebar_label: Multi Factor Authentication
+displayed_sidebar: sdk
+description: "Web3Auth PnP Unity SDK - Multi Factor Authentication | Documentation - Web3Auth"
+---
+
+The Multi Factor Authentication feature refers to the ability of the user to create a backup share (recovery phrase). This helps them login into a new
+device and also to recover their account if they lose their original device.
+
+You can set the mfaLevel within the `loginParams` to customize when mfa screen should be shown to user. It currently accepts 4 values:
+
+- **`default`** - Setting the mfaLevel to default will present the MFA screen to user on every third login. `mfaLevel = MFALevel.DEFAULT`
+- **`optional`** - Setting mfaLevel to optional will present the MFA screen to user on every login but user will have the option to skip it.
+  `mfaLevel = MFALevel.OPTIONAL`
+- **`mandatory`** - Setting mfaLevel to mandatory will make it mandatory for user to setup MFA after login. `mfaLevel = MFALevel.MANDATORY`
+- **`none`** - Setting mfaLevel to none will skip the mfa setup screen totally. `mfaLevel = MFALevel.NONE`
+
+## Arguments
+
+### `MFALevel`
+
+```cs
+public enum MFALevel
+{
+    [EnumMember(Value = "default")]
+    DEFAULT,
+    [EnumMember(Value = "optional")]
+    OPTIONAL,
+    [EnumMember(Value = "mandatory")]
+    MANDATORY,
+    [EnumMember(Value = "none")]
+    NONE
+}
+```
+
+## Example
+
+```cs
+public void login()
+{
+    var selectedProvider = Provider.GOOGLE;
+    var options = new LoginParams()
+    {
+        loginProvider = selectedProvider,
+		mfaLevel = MFALevel.MANDATORY
+    };
+    web3Auth.login(options);
+}
+```

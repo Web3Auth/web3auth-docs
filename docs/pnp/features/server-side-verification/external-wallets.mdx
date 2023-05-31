@@ -5,8 +5,6 @@ description: "External Wallets | Documentation - Web3Auth"
 image: "images/docs-meta-cards/documentation-card.png"
 ---
 
----
-
 Web3Auth's SDK has abstracted the Server Side Verification Flow that was present in `Auth.js` SDK aka Sign-in with Web3 to allow External Wallet users
 to login smoothly and allowing dApps to verify the JWT Token(`idToken`) using Web3Auth's JWKS endpoint.
 
@@ -14,7 +12,7 @@ to login smoothly and allowing dApps to verify the JWT Token(`idToken`) using We
 
 ## Get idToken
 
-After a user is logged in using one of the supported [Wallets](/sdk/web/adapters/#currently-available-adapters). One can obtain the `idToken` by
+After a user is logged in using one of the supported [Wallets](/sdk/pnp/web/adapters/#currently-available-adapters). One can obtain the `idToken` by
 calling `web3auth.authenticateUser()` of Web3Auth.
 
 ### `authenticateUser`
@@ -39,8 +37,6 @@ The External Wallet's `idToken` payload is different than the Social login's `id
 
 ### Sample `idToken` payload
 
----
-
 ```json
 {
   "iat": 1661158877,
@@ -64,8 +60,6 @@ The External Wallet's `idToken` payload is different than the Social login's `id
 | `wallets` | `array`  | list of wallets for which this token is issued: <ul><li>`address` : Wallet public address</li><li>`type` Network Type such as "ethereum", "solana" or "starkware" incase of external wallets </li></ul> |
 
 ## Verifying JWT Token (idToken)
-
----
 
 In order to verify the JWT Token(`idToken`) you need the wallet's `address` and the `idToken` obtained from the `authenticateUser()`.
 

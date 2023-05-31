@@ -2,25 +2,23 @@
   <div id="app">
     <h2>
       <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
-        Web3Auth
+      Web3Auth
       </a>
       Vue.js Ethereum Example
     </h2>
-
     <button
       v-if="!provider"
       class="card"
       @click="login"
       style="cursor: pointer"
-    >
-      Login
+      >
+    Login
     </button>
-
     <div v-if="provider">
       <div class="flex-container">
         <div>
           <button class="card" @click="getUserInfo" style="cursor: pointer">
-            Get User Info
+          Get User Info
           </button>
         </div>
         <div>
@@ -28,19 +26,18 @@
             class="card"
             @click="authenticateUser"
             style="cursor: pointer"
-          >
-            Get ID Token
+            >
+          Get ID Token
           </button>
         </div>
         // REPLACE-getRPCFunctionsButtons-
-          <button class="card" @click="logout" style="cursor: pointer">
-            Logout
-          </button>
-        </div>
+        <button class="card" @click="logout" style="cursor: pointer">
+        Logout
+        </button>
       </div>
-      <div id="console" style="white-space: pre-line">
-        <p style="white-space: pre-line">Logged in Successfully!</p>
-      </div>
+    </div>
+    <div id="console" style="white-space: pre-line">
+      <p style="white-space: pre-line">Logged in Successfully!</p>
     </div>
   </div>
 </template>

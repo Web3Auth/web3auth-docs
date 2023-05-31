@@ -1,8 +1,8 @@
 import {
   openloginAdapterVersion,
   web3authBaseVersion,
-  web3authCoreVersion,
   web3authModalVersion,
+  web3authNoModalVersion,
   web3authSolanaProviderVersion,
 } from "../../../common/versions";
 import { ETHERS, OTHER_CHAINS, SOL, STARKEX, STARKNET, TEZOS } from "../builder/choices";
@@ -17,7 +17,7 @@ export const getPackageJson = (chain: string, whitelabel: boolean, customAuth: b
     "@web3auth/modal": "^${web3authModalVersion}",`;
   } else {
     code += `
-    "@web3auth/no-modal": "^${web3authCoreVersion}",`;
+    "@web3auth/no-modal": "^${web3authNoModalVersion}",`;
   }
 
   if (whitelabel || customAuth || chain in OTHER_CHAINS) {

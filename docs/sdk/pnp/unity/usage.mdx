@@ -1,0 +1,488 @@
+---
+title: Using of PnP Unity SDK
+sidebar_label: Usage
+displayed_sidebar: sdk
+description: "Web3Auth PnP Unity SDK - Usage | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import UnityResponse from "@site/src/common/sdk/pnp/unity/_response.mdx";
+
+Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users.
+
+## Logging in a User
+
+#### `web3Auth.login(LoginParams)`
+
+This function helps your user to trigger the login process. The login flow will be triggered based on the selected provider. You can view the list of
+selected providers in the [provider](#provider) section.
+
+:::tip
+
+Additionally you can associate a function to be triggerred on successful login. This function will receive the user's profile as a parameter.
+
+```cs
+void Start()
+{
+    web3Auth = GetComponent<Web3Auth>();
+    web3Auth.setOptions(new Web3AuthOptions()
+    {
+
+    });
+    // highlight-next-line
+    web3Auth.onLogin += onLogin;
+}
+//highlight-start
+private void onLogin(Web3AuthResponse response)
+{
+    // Functions to be called after logging in your user
+}
+//highlight-end
+```
+
+:::
+
+### Arguments
+
+`web3Auth.login()` requires `LoginParams` as a required input.
+
+### `LoginParams`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter           | Type                | Mandatory | Description                                                                                                                                                                                         |
+| ------------------- | ------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginProvider`     | `enum` `Provider`   | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`, `JWT` |
+| `dappShare`         | `string`            | No        | Dapp share can be used to pass dapp share url, default is `null`                                                                                                                                    |
+| `extraLoginOptions` | `ExtraLoginOptions` | No        | You can pass various oauth supported options, default is `null`                                                                                                                                     |
+| `redirectUrl`       | `Uri`               | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                         |
+| `appState`          | `string`            | No        | appState can be used to keep track of the app state when user will be redirected to app after login, default is `null`                                                                              |
+| `mfaLevel`          | `MFALevel`          | No        | MFA level can be used to pass 2FA screen shown during login, default is `mfaLevel.DEFAULT`, shown every 3rd login.                                                                                  |
+| `sessionTime`       | `int`               | No        | Set the maximum session time before next login                                                                                                                                                      |
+| `curve`             | `Curve`             | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum                                                                                                          |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```cs
+public class LoginParams
+{
+    public Provider loginProvider { get; set; }
+    public string dappShare { get; set; }
+    public ExtraLoginOptions extraLoginOptions { get; set; }
+    public Uri redirectUrl { get; set; }
+    public string appState { get; set; }
+    public MFALevel mfaLevel { get; set; }
+    public int sessionTime { get; set; }
+    public Curve curve { get; set; }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### `Provider`
+
+```cs
+public enum Provider
+{
+    [EnumMember(Value = "google")]
+    GOOGLE,
+    [EnumMember(Value = "facebook")]
+    FACEBOOK,
+    [EnumMember(Value = "reddit")]
+    REDDIT,
+    [EnumMember(Value = "discord")]
+    DISCORD,
+    [EnumMember(Value = "twitch")]
+    TWITCH,
+    [EnumMember(Value = "apple")]
+    APPLE,
+    [EnumMember(Value = "line")]
+    LINE,
+    [EnumMember(Value = "github")]
+    GITHUB,
+    [EnumMember(Value = "kakao")]
+    KAKAO,
+    [EnumMember(Value = "linkedin")]
+    LINKEDIN,
+    [EnumMember(Value = "twitter")]
+    TWITTER,
+    [EnumMember(Value = "weibo")]
+    WEIBO,
+    [EnumMember(Value = "wechat")]
+    WECHAT,
+    [EnumMember(Value = "email_passwordless")]
+    EMAIL_PASSWORDLESS,
+    [EnumMember(Value = "email_password")]
+    EMAIL_PASSWORD,
+    [EnumMember(Value = "jwt")]
+    JWT,
+    [EnumMember(Value = "CUSTOM_VERIFIER")]
+    CUSTOM_VERIFIER
+}
+```
+
+### `ExtraLoginOptions`
+
+The `LoginParams` class accepts the `ExtraLoginOptions` as an optional input, containing advanced options for custom authentication, email
+passwordless login etc. This parameter can be considered as advanced login options needed for specific cases.
+
+```cs
+LoginParams() { selectedLoginProvider, extraLoginOptions = ExtraLoginOptions() }
+```
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                 | Type                         | Mandatory | Description                                           |
+| ------------------------- | ---------------------------- | --------- | ----------------------------------------------------- |
+| additionalParams          | `Dictionary<string, string>` | No        | additionalParams                                      |
+| domain                    | `string`                     | No        | Domain of the app                                     |
+| client_id                 | `string`                     | No        | client_id from Web3Auth Dashboard                     |
+| leeway                    | `string`                     | No        | leeway                                                |
+| verifierIdField           | `string`                     | No        | verifierIdField                                       |
+| isVerifierIdCaseSensitive | `bool`                       | No        | Boolean to confirm the case sensitivity of VerifierId |
+| display                   | `Display`                    | No        | Display                                               |
+| prompt                    | `Prompt`                     | No        | Prompt                                                |
+| max_age                   | `string`                     | No        | max_age                                               |
+| ui_locales                | `string`                     | No        | ui_locales to be shown on the modal                   |
+| id_token                  | `string`                     | No        | JWT token passed to authenticate with web3auth        |
+| login_hint                | `string`                     | No        | Email used for EMAIL_PASSWORDLESS                     |
+| acr_values                | `string`                     | No        | acc_values                                            |
+| scope                     | `string`                     | No        | scope                                                 |
+| audience                  | `string`                     | No        | audience                                              |
+| connection                | `string`                     | No        | connection                                            |
+| state                     | `string`                     | No        | state                                                 |
+| response_type             | `string`                     | No        | response_type                                         |
+| nonce                     | `string`                     | No        | nonce                                                 |
+| redirect_uri              | `string`                     | No        | redirect_uri                                          |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```cs
+public class ExtraLoginOptions {
+    public Dictionary<string, string> additionalParams { get; set; }
+    public string domain { get; set; }
+    public string client_id { get; set; }
+    public string leeway { get; set; }
+    public string verifierIdField { get; set; }
+    public bool isVerifierIdCaseSensitive { get; set; }
+    public Display display { get; set; }
+    public Prompt prompt { get; set; }
+    public string max_age { get; set; }
+    public string ui_locales { get; set; }
+    public string id_token_hint { get; set; }
+    public string login_hint { get; set; }
+    public string id_token { get; set; }
+    public string acr_values { get; set; }
+    public string scope { get; set; }
+    public string audience { get; set; }
+    public string connection { get; set; }
+    public string state { get; set; }
+    public string response_type { get; set; }
+    public string nonce { get; set; }
+    public string redirect_uri { get; set; }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### `Curve`
+
+The `LoginParams` class accepts a `curve` parameter. This parameter can be used to select the elliptic curve to use for the signature.
+
+```cs
+LoginParams() { selectedLoginProvider, curve = Curve.SECP256K1 }
+```
+
+<Tabs
+  defaultValue="secp256k1"
+  values={[
+    { label: "SECP256K1", value: "secp256k1" },
+    { label: "ED25519", value: "ed25519" },
+  ]}
+>
+
+<TabItem value="secp256k1">
+
+```cs
+public void login()
+{
+    var selectedProvider = Provider.GOOGLE;
+    var options = new LoginParams()
+    {
+        loginProvider = selectedProvider,
+        //highlight-next-line
+        curve = Curve.SECP256K1
+    };
+    web3Auth.login(options);
+}
+```
+
+</TabItem>
+
+<TabItem value="ed25519">
+
+```cs
+public void login()
+{
+    var selectedProvider = Provider.GOOGLE;
+    var options = new LoginParams()
+    {
+        loginProvider = selectedProvider,
+        //highlight-next-line
+        curve = Curve.ED25519
+    };
+    web3Auth.login(options);
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Sample Response
+
+<UnityResponse />
+
+### Example
+
+<Tabs
+  defaultValue="google"
+  values={[
+    { label: "Google", value: "google" },
+    { label: "Facebook", value: "facebook" },
+    { label: "Discord", value: "discord" },
+    { label: "Twitch", value: "twitch" },
+    { label: "Email Passwordless", value: "email_passwordless" },
+    { label: "JWT", value: "jwt" },
+  ]}
+>
+
+<TabItem value="google">
+
+```cs
+public void login()
+{
+    var selectedProvider = Provider.GOOGLE;
+    var options = new LoginParams()
+    {
+        loginProvider = selectedProvider
+    };
+    web3Auth.login(options);
+}
+```
+
+</TabItem>
+
+<TabItem value="facebook">
+
+```cs
+public void login()
+{
+    var selectedProvider = Provider.FACEBOOK;
+    var options = new LoginParams()
+    {
+        loginProvider = selectedProvider
+    };
+    web3Auth.login(options);
+}
+```
+
+</TabItem>
+
+<TabItem value="discord">
+
+```cs
+public void login()
+{
+    var selectedProvider = Provider.DISCORD;
+    var options = new LoginParams()
+    {
+        loginProvider = selectedProvider
+    };
+    web3Auth.login(options);
+}
+```
+
+</TabItem>
+
+<TabItem value="twitch">
+
+```cs
+public void login()
+{
+    var selectedProvider = Provider.TWITCH;
+    var options = new LoginParams()
+    {
+        loginProvider = selectedProvider
+    };
+    web3Auth.login(options);
+}
+```
+
+</TabItem>
+
+<TabItem value="email_passwordless">
+
+```cs
+public void login()
+{
+    var selectedProvider = Provider.EMAIL_PASSWORDLESS;
+    var options = new LoginParams()
+    {
+        loginProvider = selectedProvider,
+        extraLoginOptions = new ExtraLoginOptions()
+        {
+            login_hint = "hello@web3auth.io"
+        }
+    };
+    web3Auth.login(options);
+}
+```
+
+</TabItem>
+
+<TabItem value="jwt">
+
+```cs
+public void login()
+{
+    var selectedProvider = Provider.JWT;
+    var options = new LoginParams()
+    {
+        loginProvider = selectedProvider,
+        extraLoginOptions = new ExtraLoginOptions()
+        {
+            id_token = "your_jwt_token"
+        }
+    };
+    web3Auth.login(options);
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+## Logging out a user
+
+### `web3Auth.logout()`
+
+Trigger logout flow. This function doesn't take any parameters. A completable future containing void object is returned on successfull logout
+otherwise an error response is returned.
+
+:::tip
+
+Additionally you can associate a function to be triggerred on successful logout.
+
+```cs
+void Start()
+{
+    web3Auth = GetComponent<Web3Auth>();
+    web3Auth.setOptions(new Web3AuthOptions()
+    {
+
+    });
+    // highlight-next-line
+    web3Auth.onLogout += onLogout;
+}
+//highlight-start
+private void onLogout()
+{
+    // Functions to be called after user logs out
+}
+//highlight-end
+```
+
+:::
+
+### Example
+
+```cs
+public void logout()
+{
+    web3Auth.logout();
+    Debug.Log("Logged out!");
+}
+```
+
+## Working Example
+
+```cs title="/Assets/Web3Auth.cs"
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using Newtonsoft.Json;
+
+public class Web3custom : MonoBehaviour
+{
+    Web3Auth web3Auth;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        web3Auth = GetComponent<Web3Auth>();
+        web3Auth.setOptions(new Web3AuthOptions()
+        {
+            redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
+            clientId = "BAwFgL-r7wzQKmtcdiz2uHJKNZdK7gzEf2q-m55xfzSZOw8jLOyIi4AVvvzaEQO5nv2dFLEmf9LBkF8kaq3aErg",
+            network = Web3Auth.Network.TESTNET,
+        });
+        web3Auth.onLogin += onLogin;
+        web3Auth.onLogout += onLogout;
+    }
+
+    public void login()
+    {
+        var selectedProvider = Provider.GOOGLE;
+        var options = new LoginParams()
+        {
+            loginProvider = selectedProvider
+        };
+        web3Auth.login(options);
+    }
+
+    private void onLogin(Web3AuthResponse response)
+    {
+        var userInfo = JsonConvert.SerializeObject(response.userInfo, Formatting.Indented);
+        Debug.Log(userInfo);
+    }
+
+    public void logout()
+    {
+        web3Auth.logout();
+    }
+
+    private void onLogout()
+    {
+        Debug.Log("Logged out!");
+    }
+}
+
+```

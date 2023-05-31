@@ -7,8 +7,6 @@ keywords: [react-native, ethereum, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Ethereum Blockchain in React Native | Documentation - Web3Auth"
 ---
 
----
-
 While using the Web3Auth React Native SDK, you get the private key within the user scope. This private key can interact with
 [Ethereum](https://ethereum.org/) to make any blockchain calls, like getting user's `account`, fetch `balance`, `sign transaction`,
 `send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a few here for getting you started quickly on that.
@@ -27,8 +25,6 @@ blockchain calls.
 :::
 
 ## Installation
-
----
 
 To interact with the Ethereum blockchain in React Native, you can use any [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible package like
 [`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html), [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. This might
@@ -62,8 +58,6 @@ We have followed [this guide](https://docs.ethers.io/v4/cookbook-react.html) to 
 
 ## Initialize
 
----
-
 The `providerUrl` used will determine the chain specific details. We have documentated for `ETH Mainnet`, to configure it with other EVM Chains,
 simply change the rpcUrl to it's corresponding chain.
 
@@ -90,8 +84,6 @@ const providerUrl = "https://rpc.ankr.com/eth_goerli"; // Or your desired RPC Pr
 
 ## Get User Info
 
----
-
 You get the user information after a successful login returned from the `login` method. The `userInfo` object contains the user information, whereas
 the `privKey` object contains the private key which can be used to make blockchain calls.
 
@@ -114,8 +106,6 @@ const key = info.privKey; // User's Private Key
 
 ## Get Account
 
----
-
 ```js
 const wallet = new ethers.Wallet(key);
 // Get user's Ethereum public address
@@ -124,8 +114,6 @@ const address = await wallet.address;
 ```
 
 ## Get Balance
-
----
 
 ```js
 const ethersProvider = ethers.getDefaultProvider(providerUrl);
@@ -136,8 +124,6 @@ const balance = await wallet.getBalance();
 ```
 
 ## Send Transaction
-
----
 
 ```js
 const ethersProvider = ethers.getDefaultProvider(providerUrl);
@@ -160,8 +146,6 @@ const tx = await wallet.sendTransaction({
 ```
 
 ## Sign a message
-
----
 
 ```js
 const ethersProvider = ethers.getDefaultProvider(providerUrl);

@@ -1,0 +1,308 @@
+---
+title: Solana Provider
+
+displayed_sidebar: sdk
+description: "Solana Provider | Documentation - Web3Auth"
+---
+
+The Solana Blockchain Provider is basically a wrapper around the [Solana JSON RPC API](https://docs.solana.com/developing/clients/jsonrpc-api) making
+it easier to interact with the Solana Blockchain.
+
+If you are using `chainNamespace: "solana"` while initializing `Web3Auth` or `Web3AuthNoModal`, it will provide you with a Solana provider as
+**`web3auth.provider`** after user login.
+
+```ts
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACESS } from "@web3auth/base";
+
+/*
+We are initializing with SOLANA namespace which will initialize the
+modal with solana mainnet by default.
+*/
+
+const web3auth = new Web3Auth({
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.SOLANA,
+    chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+    rpcTarget: "https://rpc.ankr.com/solana",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "solana",
+    ticker: "SOL",
+    tickerName: "solana",
+  },
+  clientId = "YOUR_WEB3AUTH_CLIENT_ID", // get from https://dashboard.web3auth.io
+  web3AuthNetwork = "cyan", // testnet, mainnet, cyan, aqua or celeste
+});
+
+await web3auth.initModal();
+
+await web3auth.connect();
+```
+
+## Initializing the provider
+
+On connection, you can use `web3auth.provider` as a solana provider with `@web3auth/solana-provider` along with
+[@solana/web3.js](https://solana-labs.github.io/solana-web3.js/) library.
+
+```ts
+import { SolanaWallet } from "@web3auth/solana-provider";
+
+const solanaWallet = new SolanaWallet(web3Auth.provider);
+```
+
+## Usage
+
+Once you have setup the provider, you can use the standard functions in the `solana/web3.js` library to get user's account, perform transaction, sign
+a message etc. Here we have listed a few examples to help you get started there:
+
+:::info
+
+All the RPC methods which are available by default on Solana Blockchain are also available on the Solana Provider. Although, for the case of `phantom`
+adapter they are not available.
+
+You can refer to standard RPC calls for Solana [here](https://docs.solana.com/developing/clients/jsonrpc-api)
+
+:::
+
+### Get User Account and Balance
+
+#### `solana_requestAccounts`
+
+This method is used fetch the address of connected account.
+
+#### Example
+
+```ts
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import { SolanaWallet } from "@web3auth/solana-provider";
+
+const solanaWallet = new SolanaWallet(web3Auth.provider);
+
+// Get user's Solana public address
+const accounts = await solanaWallet.requestAccounts();
+
+const connectionConfig = await solanaWallet.request({
+  method: "solana_provider_config",
+  params: [],
+});
+
+const connection = new Connection(connectionConfig.rpcTarget);
+
+// Fetch the balance for the specified public key
+const balance = await connection.getBalance(new PublicKey(accounts[0]));
+```
+
+### Sign a Transaction
+
+#### `signTransaction`
+
+This method is used to sign a single serialized transaction and it returns a signed `Transaction` object.
+
+#### Example
+
+```ts
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import { SolanaWallet } from "@web3auth/solana-provider";
+
+const solanaWallet = new SolanaWallet(web3Auth.provider);
+
+const connectionConfig = await solanaWallet.request({
+  method: "solana_provider_config",
+  params: [],
+});
+
+const connection = new Connection(connectionConfig.rpcTarget);
+
+const accounts = await solanaWallet.requestAccounts();
+const blockhash = (await connection.getRecentBlockhash("finalized")).blockhash;
+const TransactionInstruction = SystemProgram.transfer({
+  fromPubkey: new PublicKey(accounts[0]),
+  toPubkey: new PublicKey(accounts[0]),
+  lamports: 0.01 * LAMPORTS_PER_SOL,
+});
+const transaction = new Transaction({
+  recentBlockhash: blockhash,
+  feePayer: new PublicKey(pubKey[0]),
+}).add(TransactionInstruction);
+
+const signedTx = await solanaWallet.signTransaction(transaction);
+console.log(signedTx.signature);
+```
+
+### Sign all Transactions
+
+#### `signAllTransactions`
+
+This method is used to sign a list of serialized transactions and it returns back list of signed of `Transaction` objects.
+
+#### Example:
+
+```ts
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import { SolanaWallet } from "@web3auth/solana-provider";
+
+const solanaWallet = new SolanaWallet(web3Auth.provider);
+
+const connectionConfig = await solanaWallet.request({
+  method: "solana_provider_config",
+  params: [],
+});
+
+const connection = new Connection(connectionConfig.rpcTarget);
+
+const accounts = await solanaWallet.requestAccounts();
+const blockhash = (await connection.getRecentBlockhash("finalized")).blockhash;
+const TransactionInstruction = SystemProgram.transfer({
+  fromPubkey: new PublicKey(accounts[0]),
+  toPubkey: new PublicKey(accounts[0]),
+  lamports: 0.01 * LAMPORTS_PER_SOL,
+});
+const transaction = new Transaction({
+  recentBlockhash: blockhash,
+  feePayer: new PublicKey(pubKey[0]),
+}).add(TransactionInstruction);
+
+const signedTx = await solanaWallet.signAllTransactions(transaction);
+console.log(signedTx.signature);
+```
+
+### Sign and Send a Transaction
+
+#### `signAndSendTransaction`
+
+This function is used to sign and broadcast the transaction on chain. It returns the signature of broadcasted transaction.
+
+#### Example:
+
+```ts
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import { SolanaWallet } from "@web3auth/solana-provider";
+
+const solanaWallet = new SolanaWallet(web3Auth.provider);
+
+const connectionConfig = await solanaWallet.request({
+  method: "solana_provider_config",
+  params: [],
+});
+
+const connection = new Connection(connectionConfig.rpcTarget);
+
+const accounts = await solanaWallet.requestAccounts();
+const blockhash = (await connection.getRecentBlockhash("finalized")).blockhash;
+const TransactionInstruction = SystemProgram.transfer({
+  fromPubkey: new PublicKey(accounts[0]),
+  toPubkey: new PublicKey(accounts[0]),
+  lamports: 0.01 * LAMPORTS_PER_SOL,
+});
+const transaction = new Transaction({
+  recentBlockhash: blockhash,
+  feePayer: new PublicKey(pubKey[0]),
+}).add(TransactionInstruction);
+const { signature } = await solanaWallet.signAndSendTransaction(transaction);
+```
+
+### Sign a Message
+
+#### `signMessage`
+
+This method is used sign any message from connected wallet.
+
+#### Example
+
+```ts
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import { SolanaWallet } from "@web3auth/solana-provider";
+
+const solanaWallet = new SolanaWallet(web3Auth.provider);
+
+const msg = Buffer.from("Test Signing Message ", "utf8");
+const result = await solanaWallet.signMessage(msg);
+console.log(result.toString());
+```
+
+### Fetch User's Private Key
+
+#### `solanaPrivateKey`
+
+This method is used to fetch the private key of logged in user. It is only available for `in-app` adapters like `openlogin`.
+
+#### Example
+
+```ts
+//Assuming user is already logged in.
+async getPrivateKey() {
+  const privateKey = await web3auth.provider.request({
+    method: "solanaPrivateKey"
+  });
+  //Do something with privateKey
+}
+```
+
+## Additional Reading
+
+### Getting a provider from any `ed25519` private key.
+
+`@web3auth/solana-provider` package can be used to get a solana compatible provider from any `ed25519` private key. You can use this package with our
+SDKs to get an solana provider from the logged-in user's private key.
+
+#### Example
+
+```ts
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+
+/*
+ed25519key: any ed25519 private key.
+*/
+
+// Get user's Solana's public address
+const solanaPrivateKeyProvider = new SolanaPrivateKeyProvider({
+  config: {
+    chainConfig: {
+      chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+      rpcTarget: "https://rpc.ankr.com/solana",
+      displayName: "Solana Mainnet",
+      blockExplorer: "https://explorer.solana.com/",
+      ticker: "SOL",
+      tickerName: "Solana",
+    },
+  },
+});
+await solanaPrivateKeyProvider.setupProvider(ed25519key);
+console.log(solanaPrivateKeyProvider.provider);
+```
+
+### Getting a provider from any `secp256k1` private key.
+
+Web3Auth by default returns an `secp256k1` private key. However, for Solana, you need an `ed25519` key. We have made some additional libraries to help
+you convert this `secp256k1` key to `ed25519` key. Further you can utlise the same to get a Solana Provider.
+
+#### Example
+
+```ts
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+import { getED25519Key } from "@toruslabs/openlogin-ed25519";
+
+/*
+privateKey: any secp256k1 private key.
+*/
+
+const ed25519key = getED25519Key(privateKey).sk.toString("hex");
+
+// Get user's Solana's public address
+const solanaPrivateKeyProvider = new SolanaPrivateKeyProvider({
+  config: {
+    chainConfig: {
+      chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+      rpcTarget: "https://rpc.ankr.com/solana",
+      displayName: "Solana Mainnet",
+      blockExplorer: "https://explorer.solana.com/",
+      ticker: "SOL",
+      tickerName: "Solana",
+    },
+  },
+});
+
+await solanaPrivateKeyProvider.setupProvider(ed25519key);
+console.log(solanaPrivateKeyProvider.provider);
+```

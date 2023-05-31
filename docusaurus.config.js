@@ -4,11 +4,11 @@ const githubOrg = "web3auth";
 const githubRepo = "web3auth-docs";
 const githubOrgUrl = `https://github.com/${githubOrg}`;
 const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
-const githubDiscussionsUrl = `${githubOrgUrl}/${githubOrg}/discussions`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
 const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
 const fs = require('fs');
+const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
 
 const resourcesDropdown = fs.readFileSync('./src/components/navDropdown/resources.html', 'utf-8');
 const helpDropdown = fs.readFileSync('./src/components/navDropdown/help.html', 'utf-8');
@@ -19,7 +19,7 @@ const config = {
   title: "Documentation",
   tagline: "Flexible, Universal Key Management", // TODO: Confirm with content team
   url: "https://web3auth.io",
-  baseUrl: process.env.REACT_APP_BASE_URL || "/docs/",
+  baseUrl,
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   onDuplicateRoutes: "warn",
@@ -101,12 +101,12 @@ const config = {
             },
           ],
         },
-        {
-          position: "right",
-          href: githubOrgUrl,
-          className: "navbar-github-link",
-          "aria-label": "GitHub Organization",
-        },
+        // {
+        //   position: "right",
+        //   href: githubOrgUrl,
+        //   className: "navbar-github-link",
+        //   "aria-label": "GitHub Organization",
+        // },
         {
           type: "search",
           position: "right",
@@ -131,7 +131,7 @@ const config = {
       schedule: "every 1 day at 3:00 pm",
     },
     customFields: {
-      baseUrl: process.env.REACT_APP_BASE_URL || "/docs/",
+      baseUrl,
     }
   },
   presets: [
@@ -162,6 +162,15 @@ const config = {
     path.resolve(__dirname, "plugins", "docusaurus-plugin-content-hub"),
     [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: "files" }],
     path.resolve(__dirname, "plugins", "node-polyfills"),
+    [path.resolve(__dirname, "plugins", "plugin-dynamic-route"), {
+      routes: [
+        {
+          path: `${baseUrl}content-hub/blog/`,
+          exact: false,
+          component: '@site/src/components/BlogLayout/index',
+        },
+      ],
+    }],
     [
       "@docusaurus/plugin-client-redirects",
       {
@@ -184,15 +193,15 @@ const config = {
           },
           {
             from: "/sdk/web/plugins/torus-wallet",
-            to: "/sdk/web/plugins/evm-wallet",
+            to: "/sdk/helper-sdks/plugins/evm-wallet",
           },
           {
             from: "/sdk/web/modal/wagmi-connector",
-            to: "/sdk/web/wagmi-connector",
+            to: "/sdk/pnp/web/wagmi-connector",
           },
           {
             from: "/sdk/web/no-modal/wagmi-connector",
-            to: "/sdk/web/wagmi-connector",
+            to: "/sdk/pnp/web/wagmi-connector",
           },
           {
             from: "/quickstart",
@@ -200,27 +209,27 @@ const config = {
           },
           {
             from: "/sdk/web/choosesdk/",
-            to: "/sdk/web/",
+            to: "/sdk/pnp/web/",
           },
           {
             from: "/sdk/android/setting-up",
-            to: "/sdk/android/",
+            to: "/sdk/pnp/android/",
           },
           {
             from: "/sdk/ios/setting-up",
-            to: "/sdk/ios/",
+            to: "/sdk/pnp/ios/",
           },
           {
             from: "/sdk/flutter/setting-up",
-            to: "/sdk/flutter/",
+            to: "/sdk/pnp/flutter/",
           },
           {
             from: "/sdk/react-native/choose-workflows",
-            to: "/sdk/react-native/",
+            to: "/sdk/pnp/react-native/",
           },
           {
             from: "/sdk/web/customauth",
-            to: "/sdk/web/no-modal/custom-authentication",
+            to: "/sdk/pnp/web/no-modal/custom-authentication",
           },
           {
             from: "/overview/what-is-web3auth",
@@ -340,27 +349,27 @@ const config = {
           },
           {
             from: "/sdk/tkey/initialization",
-            to: "/sdk/tkey/initialize",
+            to: "/sdk/core-kit/tkey/initialize",
           },
           {
             from: "/sdk/tkey/initialisation",
-            to: "/sdk/tkey/initialize",
+            to: "/sdk/core-kit/tkey/initialize",
           },
           {
             from: "/sdk/tkey/installation",
-            to: "/sdk/tkey/install",
+            to: "/sdk/core-kit/tkey/install",
           },
           {
             from: "/sdk/web/modal/multi-factor-authentication",
-            to: "/sdk/web/modal/mfa",
+            to: "/sdk/pnp/web/modal/mfa",
           },
           {
             from: "/sdk/web/core/multi-factor-authentication",
-            to: "/sdk/web/no-modal/mfa",
+            to: "/sdk/pnp/web/no-modal/mfa",
           },
           {
             from: "/sdk/web/web3auth/multi-factor-authentication",
-            to: "/sdk/web/modal/mfa",
+            to: "/sdk/pnp/web/modal/mfa",
           },
           {
             from: "/guides/one-key-flow",
@@ -375,19 +384,35 @@ const config = {
             to: "/content-hub/guides/tkey",
           },
           {
+            from: "/guide/",
+            to: "/content-hub/",
+          },
+          {
+            from: "/blog/",
+            to: "/content-hub/",
+          },
+          {
             from: "/guides/",
-            to: "/content-hub",
+            to: "/content-hub/",
+          },
+          {
+            from: "/blogs/",
+            to: "/content-hub/",
           },
         ],
         createRedirects(existingPath) {
           if (existingPath.includes('/content-hub')) {
             return [
               existingPath.replace('/content-hub/guides', '/guides'),
+              existingPath.replace('/content-hub/guides', '/guide'),
+              existingPath.replace('/content-hub/blog', '/blogs'),
+              existingPath.replace('/content-hub/blog', '/blog'),
             ];
           }
           if (existingPath.includes('/sdk')) {
             return [
               existingPath.replace('/sdk', '/api-reference'),
+              existingPath.replace('/sdk', '/sdk-reference'),
             ];
           }
           if (existingPath.includes('/auth-provider-setup')) {
@@ -412,6 +437,38 @@ const config = {
               existingPath.replace('/sdk/tkey', '/sdk/self-host'),
             ];
           }
+          if (existingPath.includes('/helper-sdks/providers')) {
+            return [
+              existingPath.replace('/helper-sdks/providers', '/web/providers'),
+            ];
+          }
+          if (existingPath.includes('/helper-sdks/plugins')) {
+            return [
+              existingPath.replace('/helper-sdks/plugins', '/web/plugins'),
+            ];
+          }
+          if (existingPath.includes('/pnp')) {
+            return [
+              existingPath.replace('/pnp/web', '/web'),
+              existingPath.replace('/pnp/android', '/android'),
+              existingPath.replace('/pnp/ios', '/ios'),
+              existingPath.replace('/pnp/react-native', '/react-native'),
+              existingPath.replace('/pnp/flutter', '/flutter'),
+              existingPath.replace('/pnp/unity', '/unity'),
+              existingPath.replace('/pnp/unreal', '/unreal'),
+            ];
+          }
+          if (existingPath.includes('/core-kit')) {
+            return [
+              existingPath.replace('/core-kit/node', '/node'),
+              existingPath.replace('/core-kit/sfa', '/single-factor-auth'),
+              existingPath.replace('/core-kit/sfa', '/core-kit/single-factor-auth'),
+              existingPath.replace('/core-kit/sfa-android', '/single-factor-auth-android'),
+              existingPath.replace('/core-kit/sfa-android', '/core-kit/single-factor-auth-android'),
+              existingPath.replace('/core-kit/tkey', '/tkey'),
+              existingPath.replace('/core-kit/mpc-core-kit', '/mpc-core-kit'),
+            ];
+          }
           return undefined; // Return a falsy value: no redirect created
         },
       },
@@ -426,6 +483,11 @@ const config = {
       crossorigin: 'anonymous',
     },
   ],
+  customFields: {
+    // 'REACT_HYGRAPHCMS_ENDPOINT': process.env.REACT_HYGRAPHCMS_ENDPOINT,
+    'REACT_CONTENTFUL_SPACE': process.env.REACT_CONTENTFUL_SPACE,
+    'REACT_CONTENTFUL_TOKEN': process.env.REACT_CONTENTFUL_TOKEN,
+  },
 };
 
 async function createConfig() {

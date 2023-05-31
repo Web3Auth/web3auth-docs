@@ -5,17 +5,15 @@ displayed_sidebar: docs
 description: "dApp Share | Documentation - Web3Auth"
 ---
 
-import AndroidResponse from "@site/src/common/sdk/android/_response.mdx";
-import FlutterResponse from "@site/src/common/sdk/flutter/_response.mdx";
-import IosResponse from "@site/src/common/sdk/ios/_response.mdx";
-import RNResponse from "@site/src/common/sdk/react-native/_response.mdx";
-import WebResponse from "@site/src/common/sdk/web/_get-user-info-response.mdx";
+import AndroidResponse from "@site/src/common/sdk/pnp/android/_response.mdx";
+import FlutterResponse from "@site/src/common/sdk/pnp/flutter/_response.mdx";
+import IosResponse from "@site/src/common/sdk/pnp/ios/_response.mdx";
+import RNResponse from "@site/src/common/sdk/pnp/react-native/_response.mdx";
+import WebResponse from "@site/src/common/sdk/pnp/web/_get-user-info-response.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
 # Backup Share for Applications - dApp Share
-
----
 
 ## Web3Auth Infrastructure at a glance
 
@@ -36,24 +34,24 @@ initial setup provides several benefits.
 
 ## The User Experience in Mobile Platforms
 
-The user experience in mobile platforms is very different from the web platforms. This is because the user has to be redirected to a browser where
+The user experience on mobile platforms is very different from the web platforms. This is because the user has to be redirected to a browser where
 they can login using their socials and then back to the app once they have been successfully authenticated. This user experience shifts the context
-between two applications, whereas in the web platforms, the context remains within the browser only.
+between two applications, whereas, in web platforms, the context remains within the browser only.
 
-For the seamless login flow, we need to reconstruct the Shares `A` and `B`. `Share A` is managed by the login service and is provided on successful
-authentication. Whereas in web platforms, `Share B` is stored in the browser context. We can still store it in the browser context for mobile devices,
-but this has a few risks, like user accidently deleting browser data. This is a bigger problem in mobile devices since the user doesn't realise that
-the browser is being used to login within the app and clearing the browser data can cause their logins to fail. Hence, to tackle this issue, Web3Auth
-issues a dApp Share, ie. a backup share that can be stored by the app developer directly within their application and used to reconstruct the private
-key after successful login by the user.
+For the seamless login flow, we need to reconstruct Shares A, and B. Share A is managed by the login service and is provided on successful
+authentication. Whereas in web platforms, Share B is stored in the browser context. We can still store it in the browser context for mobile devices,
+but this has a few risks, like users accidentally deleting browser data. This is a bigger problem in mobile devices since the user doesn't realize
+that the browser is being used to login within the app, and clearing the browser data can cause their logins to fail. Hence, to tackle this issue,
+Web3Auth issues a dApp Share, i.e., a backup share that can be stored by the app developer directly within their application and used to reconstruct
+the private key after successful login by the user.
 
 ## The dApp Share
 
-After a successful login from a user, the user details are returned as a response to the application in mobile devices. This same response can be
-gathered in web applications using the `getUserInfo()` function as well. The login response for different platforms looks as follows:
+Once a user logs in, their details are returned as a response to the mobile application. The same response can be retrieved in web applications by
+utilizing the `getUserInfo()` function. Here's what the login response looks like for various platforms.
 
 <Tabs
-  defaultValue="android"
+  defaultValue="web"
   values={[
     { label: "Web", value: "web" },
     { label: "Android", value: "android" },
@@ -95,20 +93,16 @@ gathered in web applications using the `getUserInfo()` function as well. The log
 
 </Tabs>
 
-If you notice, in all these reponses there's a field called `dappShare` which is a 24 words seed phrase that can be used to reconstruct the private
-key. This dappShare is a suplement to the `Share A` and represents half of the private key. The application can store the dApp share in their own
-application local storage safely.
-
-Now, while logging in the user can use their social accounts to obtain one share, and the application provides the dApp Share, removing the need to
-store the share in the browser context and enabling user to login seamlessly. This can be done by passing over the stored dApp share value in the
-login function (for Mobile SDKs) or the openlogin adapter configuration (for Web SDK).
-
-You can read more about how to use dApp Share for your platform in the particular [SDK Reference](/sdk).
+In all of the responses, there is a field called dappShare, which is a 24-word seed phrase that can be used to reconstruct the private key. These
+dappShares supplement Share A and makeup half of the private key. The application can securely store the dApp share in its local storage. Users can
+use their social media accounts to obtain one share when logging in. The application provides the dApp Share, eliminating the need to store the share
+in the browser context and enabling users to log in smoothly. This is accomplished by passing the stored dApp share value in the login function (for
+Mobile SDKs) or the openlogin adapter configuration (for Web SDK).
 
 :::note
 
-One major thing to note here is that the `dappShare` is only available for custom verifiers and not the standard web3auth verifiers. This is done to
-make sure that an application only has access to the corresponding share to the private key of their application's user. Hence, to use dApp Share, one
-has to use the custom authentication feature of Web3Auth.
+It's important to understand that `dappShare` is exclusively for `custom verifiers` and can't be used with standard web3auth verifiers. Moreover,
+**only users who have `enabled MFA` can access it**. To use dApp Share, you need to use the custom authentication feature of Web3Auth. This guarantees
+that an application can only access the share corresponding to a user's private key.
 
 :::
