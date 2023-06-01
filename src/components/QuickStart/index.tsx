@@ -68,14 +68,18 @@ export default function QuickNavigation() {
   const [platform, setPlatform] = useState<string>(reactJS);
   const [platformList, setPlatformList] = useState<string[]>(weblist);
 
-  function changePlatformList(productValue, sdkValue) {
+  function changePlatformList(productValue, sdkValue, platformState?) {
     let selectedSDK = corekitlist.filter((el) => el.value === sdkValue);
     if (productValue === pnp) {
       selectedSDK = pnplist.filter((el) => el.value === sdkValue);
     }
+    if (!platformState) {
+      // eslint-disable-next-line no-param-reassign
+      platformState = selectedSDK[0].platforms[0];
+    }
     setPlatformList(selectedSDK[0].platforms);
-    setPlatform(selectedSDK[0].platforms[0]);
-    history.pushState({}, "", setURLfromOptions({ product: productValue, sdk: sdkValue, platform: selectedSDK[0].platforms[0] }));
+    setPlatform(platformState);
+    history.pushState({}, "", setURLfromOptions({ product: productValue, sdk: sdkValue, platform: platformState }));
   }
 
   useEffect(() => {
@@ -89,7 +93,7 @@ export default function QuickNavigation() {
       productState = pnp;
       sdkState = pnpwebmodal;
       platformState = reactJS;
-    } else if (!options.sdk && options.product in [pnp, corekit]) {
+    } else if (!options.sdk) {
       let sdkValue = pnpwebmodal;
       let selectedSDK = pnplist.filter((el) => el.value === sdkValue);
       if (options.product === corekit) {
@@ -102,7 +106,7 @@ export default function QuickNavigation() {
       productState = options.product;
       sdkState = sdkValue;
       platformState = currentPlatform;
-    } else if (!options.platform && options.product in [pnp, corekit]) {
+    } else if (!options.platform) {
       let selectedSDK = pnplist.filter((el) => el.value === options.sdk);
 
       if (options.product === corekit) {
@@ -123,7 +127,7 @@ export default function QuickNavigation() {
     setProduct(productState);
     setSdk(sdkState);
     setPlatform(platformState);
-    changePlatformList(productState, sdkState);
+    changePlatformList(productState, sdkState, platformState);
   }, []);
 
   function changeProduct(value) {
