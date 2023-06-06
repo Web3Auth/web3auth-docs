@@ -231,8 +231,8 @@ const sendTransaction = async () => {
     return;
   }
   const provider = new ethers.providers.Web3Provider(provider);
-  const signer = provider.getSigner();
-  const { address } = await signer;
+  const signer = await provider.getSigner();
+  const address = signer.getAddress();
 
   const tx = await signer.sendTransaction({
     to: address,

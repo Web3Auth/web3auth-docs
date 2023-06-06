@@ -28,10 +28,10 @@ export default class EthereumRpc {
     try {
       // HIGHLIGHTSTART-evmRPCFunctions
       const ethersProvider = new ethers.BrowserProvider(this.provider);
-      const signer = ethersProvider.getSigner();
+      const signer = await ethersProvider.getSigner();
 
       // Get user's Ethereum public address
-      const { address } = await signer;
+      const address = signer.getAddress();
       // HIGHLIGHTEND-evmRPCFunctions
 
       return address;
@@ -44,10 +44,10 @@ export default class EthereumRpc {
     try {
       // HIGHLIGHTSTART-evmRPCFunctions
       const ethersProvider = new ethers.BrowserProvider(this.provider);
-      const signer = ethersProvider.getSigner();
+      const signer = await ethersProvider.getSigner();
 
       // Get user's Ethereum public address
-      const { address } = await signer;
+      const address = signer.getAddress();
 
       // Get user's balance in ether
       const balance = ethers.formatEther(
