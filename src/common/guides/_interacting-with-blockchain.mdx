@@ -94,7 +94,7 @@ const getBalance = async () => {
   const signer = provider.getSigner();
   const account = await signer.getAddress();
   // Get user's balance in ether
-  const balance = ethers.utils.formatEther(
+  const balance = ethers.formatEther(
     await provider.getBalance(account), // Balance is in wei
   );
   console.log(balance);
@@ -232,7 +232,7 @@ const sendTransaction = async () => {
   }
   const provider = new ethers.providers.Web3Provider(provider);
   const signer = provider.getSigner();
-  const address = await signer.getAddress();
+  const { address } = await signer;
 
   const tx = await signer.sendTransaction({
     to: address,

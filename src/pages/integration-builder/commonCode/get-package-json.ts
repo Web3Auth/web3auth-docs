@@ -57,7 +57,7 @@ export const getPackageJson = (chain: string, whitelabel: boolean, customAuth: b
     default:
       if (evmFramework === ETHERS) {
         code += `
-    "ethers": "^5.7.2",`;
+    "ethers": "^6.4.0",`;
       } else {
         code += `
     "web3": "^1.8.2",`;
