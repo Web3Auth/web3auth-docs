@@ -6,7 +6,7 @@
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
-import { request } from "graphql-request";
+// import { request } from "graphql-request";
 import { useEffect, useState } from "react";
 
 import { getOptionsfromURL, setURLfromOptions } from "../../common/SDKOptions";
@@ -54,34 +54,49 @@ export default function ContentHub({ content }: Props) {
     history.pushState({}, "", setURLfromOptions({ type: tabActive }));
   }, [tabActive]);
 
+  const apiCall = async (query) => {
+    const fetchUrl = `https://graphql.contentful.com/content/v1/spaces/${customFields.REACT_CONTENTFUL_SPACE}/environments/master`;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${customFields.REACT_CONTENTFUL_TOKEN}`,
+      },
+      body: JSON.stringify({ query }),
+    };
+    return fetch(fetchUrl, options);
+  };
+
   useEffect(() => {
     const fetchPosts = async () => {
-      const { posts } = await request(
-        customFields.REACT_HYGRAPHCMS_ENDPOINT as string,
-        `
-        {
-          posts(orderBy: date_DESC) {
-            id
-            title
-            slug
-            excerpt
-            date
-            coverImage {
-              url
-            }
-            author {
-              name
+      const query = `
+        query {
+          pageBlogPostCollection(order:date_DESC) {
+            items {
+              sys {
+                id
+              }
+              featured
               title
+              slug
+              date
+              excerpt
+              coverImage {
+                url
+              }
+              author {
+                name
+              }
+              tags
             }
-            tags
           }
         }
-        `
-      );
+      `;
+      const response = await apiCall(query);
+      const { data } = await response.json();
 
-      // console.log("posts", posts);
-      setBlogPostMap(posts);
-      setCompleteBlogPostMap(posts);
+      setBlogPostMap(data.pageBlogPostCollection.items);
+      setCompleteBlogPostMap(data.pageBlogPostCollection.items);
     };
 
     fetchPosts();
@@ -241,9 +256,8 @@ export default function ContentHub({ content }: Props) {
   }
 
   function renderBlog(article) {
-    // console.log(article);
     return (
-      <div key={article.id} className={styles.article}>
+      <div key={article.sys.id} className={styles.article}>
         <Link to={`/content-hub/blog/${article.slug}`} className={styles.articleContent}>
           <img src={article.coverImage.url} alt="Blog Banner" />
           <div className={styles.contentContainer}>
@@ -255,7 +269,7 @@ export default function ContentHub({ content }: Props) {
           </div>
         </Link>
 
-        <div className={styles.tagContainer}>
+        {/* <div className={styles.tagContainer}>
           {article.tags &&
             article.tags.map((tag) => {
               if (tags.includes(tag) || searchInput.split(" ").includes(tag)) {
@@ -278,7 +292,7 @@ export default function ContentHub({ content }: Props) {
               }
               return null;
             })}
-        </div>
+        </div> */}
         <span className={styles.date}>
           {article.author.name} | {new Date(article.date).toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" })}
         </span>

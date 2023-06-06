@@ -103,27 +103,43 @@ For MFA enabled users, you'll see `Error("User has already enabled mfa, please u
 
 ```js
 import Web3Auth from "@web3auth/single-factor-auth";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 
-const web3auth = new Web3Auth({
+// Define the chain config according to the chain you want to connect to
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x5",
+  rpcTarget: "https://rpc.ankr.com/eth_goerli",
+  displayName: "Goerli Testnet",
+  blockExplorer: "https://goerli.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+// Instantiate Web3Auth SFA SDK
+const web3authSfa = new Web3Auth({
   clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
-  },
-  // Available networks are "testnet", "mainnet", "cyan", "aqua", and "celeste".
-  web3AuthNetwork: "cyan",
+  chainConfig,
+  web3AuthNetwork: "testnet", // ["cyan", "testnet"]
+  usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
 });
 
-web3auth.init();
+// Instantiate Ethereum Provider
+const provider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
-const provider = await web3auth.connect({
+// Initialize Web3Auth SFA SDK
+web3authSfa.init(provider);
+
+// Login the user
+const web3authSfaprovider = await web3auth.connect({
   verifier: "verifier-name", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
   verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
   idToken: "JWT Token", // replace with your newly created unused JWT Token.
 });
 
-const privateKey = await provider.request({ method: "eth_private_key" });
-// The private key returned here is the CoreKitKey
+// Get the private key, The private key returned here is the CoreKit Key, since the usePnPKey is set to false.
+const privateKey = await web3authSfaprovider.request({ method: "eth_private_key" });
+
 console.log("ETH Private Key", privateKey);
 ```

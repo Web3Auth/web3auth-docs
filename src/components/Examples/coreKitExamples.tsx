@@ -98,9 +98,26 @@ export const CKTkeyiOS = [
       {
         key: "tkey-ios-example",
         title: "CoreKit tKey iOS Example",
+        icon: "logo-google.png",
+        path: `${baseURL}tkey-ios/tkey-ios-google-example`,
+      },
+      {
+        key: "tkey-ios-aggregate-example",
+        title: "CoreKit tKey iOS Aggregate Example",
         icon: "logo-apple.png",
-        path: "https://github.com/torusresearch/tkey-rust-ios-example",
-        // path: `${baseURL}tkey-ios/ios-basic-example`,
+        path: `${baseURL}tkey-ios/tkey-ios-google-example`,
+      },
+      {
+        key: "tkey-ios-auth0-example",
+        title: "CoreKit tKey iOS Auth0 Example",
+        icon: "logo-auth0.png",
+        path: `${baseURL}tkey-ios/tkey-ios-google-example`,
+      },
+      {
+        key: "tkey-ios-firebase-example",
+        title: "CoreKit tKey iOS Firebase Example",
+        icon: "logo-firebase.png",
+        path: `${baseURL}tkey-ios/tkey-ios-google-example`,
       },
     ],
   },
