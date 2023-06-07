@@ -1,0 +1,245 @@
+---
+title: "Installing Core Kit tKey SDK"
+sidebar_label: "Install"
+displayed_sidebar: sdk
+description: "Web3Auth Core Kit tKey SDK - Installation  | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+While installing Web3Auth Core Kit tKey SDK, we recommend installing the `tkey/core` SDK, along with `@tkey/service-provider-base`,
+`@tkey/storage-layer-torus` and individual modules as needed.
+
+## [`@tkey/core`](https://www.npmjs.com/package/@tkey/core)
+
+```bash npm2yarn
+npm install --save @tkey/core @tkey/service-provider-base @tkey/storage-layer-torus
+```
+
+## CustomAuth React Native SDK
+
+```bash npm2yarn
+npm install --save @torusresearch/customauth-react-native
+```
+
+Since the service worker is not present upfront, we use the `CustomAuth` SDK to initialize the service worker with a private key generated from the
+social shares of Web3Auth. This is an internal module of Web3Auth which acts very similar to the [Single Factor Auth SDKs](/sdk/core-kit/sfa/).
+
+### Configuration of Project to use CustomAuth SDK
+
+<Tabs
+  defaultValue="android"
+  values={[
+    { label: "Android", value: "android" },
+    { label: "iOS", value: "ios" },
+  ]}
+>
+
+<TabItem value="ios">
+
+1. Add the following to your `Podfile` then run `pod install` from the `ios` directory:
+
+```ruby
+pod 'CustomAuth', '~> 2.1.0', :modular_headers => true
+pod 'secp256k1.swift', :modular_headers => true
+```
+
+2. Open Xcode, in the project navigator, select your project. Add `libRNCustomAuthSdk.a` to your project's `Build Phases` ➜
+   `Link Binary With Libraries`
+3. Run your project `Cmd+R`
+
+</TabItem>
+
+<TabItem value="android">
+
+1. Add `maven { url "https://jitpack.io" }` to the repositories block of `android/build.gradle`
+2. Append the following lines to `android/settings.gradle`:
+
+   ```groovy
+   include ':customauth-react-native-sdk'
+   project(':customauth-react-native-sdk').projectDir = new File(rootProject.projectDir, '../node_modules/@toruslabs/customauth-react-native-sdk/android')
+   ```
+
+3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
+
+   ```groovy
+   implementation project(':customauth-react-native-sdk')
+   ```
+
+4. Add the following to `android/app/build.grade`
+
+```groovy
+android {
+  ...
+  defaultConfig {
+    manifestPlaceholders = [
+          //... other placeholders if you have them
+          'torusRedirectScheme': 'torusapp',
+          'torusRedirectHost': 'org.torusresearch.customauthandroid',
+          'torusRedirectPathPrefix': '/redirect'
+      ]
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Adding Modules
+
+Modules extend the tKey SDK's capability to provide additional functionality for managing your tKey shares. Out of the multiple modules available, you
+can choose the module you want to include in your implementation. Here is the list of available modules:
+
+### Default Modules (Needed for basic operations)
+
+- **tKey Share Serialization Module [`@tkey/share-serialization`](/sdk/core-kit/tkey/modules/share-serialization):** Adds the capability to import/
+  export a share from `tKey`.
+
+  ```bash npm2yarn
+  npm install --save @tkey/share-serialization
+  ```
+
+- **tKey Share Transfer Module [`@tkey/share-transfer`](/sdk/core-kit/tkey/modules/share-transfer):** Adds the capability to transfer a share to
+  another device.
+
+  ```bash npm2yarn
+  npm install --save @tkey/share-transfer
+  ```
+
+### Share B (Storage Modules)
+
+The storage modules are not suitable for the React Native environment. We recommend you to store the shares manually into the keychain of the device
+and call it during the tKey SDK initialization. You can use the Share Transfer Module for that.
+
+### Share C (Recovery Modules)
+
+Recovery Modules are used to recover the tKey shares in the case user doesn't have access to their device/storage or needs additional security. You
+can choose any of the following modules:
+
+- **tKey Security Questions Module [`@tkey/security-questions`](/sdk/core-kit/tkey/modules/security-questions):** Adds the capability to add or remove
+  a question and password as a share.
+
+  ```bash npm2yarn
+  npm install --save @tkey/security-questions
+  ```
+
+:::tip
+
+Share Serialization Module can act as a Recovery Module as well here.
+
+:::
+
+### Additional Modules
+
+These modules provide extra capability to the tKey SDK, like importing user's existing private keys or seedphrases. You can choose any of the
+following modules:
+
+- **tKey Seed Phrase Module [`@tkey/seed-phrase`](/sdk/core-kit/tkey/modules/seed-phrase):** Adds the capability to store and use seedphrases on the
+  metadata.
+
+  ```bash npm2yarn
+  npm install --save @tkey/seed-phrase
+  ```
+
+- **tKey Private Keys Module [`@tkey/private-keys`](/sdk/core-kit/tkey/modules/private-keys):** Adds the capability to store extra private keys on the
+  metadata.
+
+  ```bash npm2yarn
+  npm install --save @tkey/private-keys
+  ```
+
+## Troubleshooting
+
+### Bundler Polyfilling
+
+These libraries use many packages that are not present in the React Native environment. Hence, to get around that, you need to manually polyfill them.
+
+- Install the missing modules:
+
+```bash npm2yarn
+npm install --save buffer node-libs-react-native crypto-browserify
+```
+
+- Update your `metro.config.js` you refer to the polyfilled modules:
+
+```js
+const { getDefaultConfig } = require("metro-config");
+const nodeLibs = require("node-libs-react-native");
+
+module.exports = (async () => {
+  const {
+    resolver: { sourceExts, assetExts },
+  } = await getDefaultConfig();
+
+  const defaultSourceExts = [...sourceExts, "svg", "mjs", "cjs"];
+
+  return {
+    resolver: {
+      extraNodeModules: {
+        ...nodeLibs,
+        crypto: require.resolve("crypto-browserify"),
+      },
+
+      assetExts: assetExts.filter((ext) => ext !== "svg"),
+
+      sourceExts: process.env.TEST_REACT_NATIVE ? ["e2e.js"].concat(defaultSourceExts) : defaultSourceExts,
+    },
+    transformer: {
+      getTransformOptions: async () => ({
+        transform: {
+          experimentalImportSupport: false,
+          inlineRequires: true,
+        },
+      }),
+    },
+  };
+})();
+```
+
+- Update your `globals.js` to update your global variables:
+
+```js
+// global variables required to be replaced for web3auth packages to work
+import { decode, encode } from "base-64";
+import "react-native-get-random-values";
+import "react-native-url-polyfill/auto";
+
+if (!global.btoa) {
+  global.btoa = encode;
+}
+
+if (!global.atob) {
+  global.atob = decode;
+}
+if (!global.Buffer) {
+  global.Buffer = require("buffer").Buffer;
+}
+
+global.process.version = "v16.0.0";
+if (!global.process.version) {
+  global.process = require("process");
+  console.log({ process: global.process });
+}
+```
+
+### FAQs
+
+- I got an error on my android build similar to `Failed to transform bcprov-jdk15on-1.68.jar`
+
+  Add the following to `android/app/build.gradle` in the `android` block:
+
+  ```groovy
+  android {
+    //All other config in the android block should be above this
+    configurations {
+      all*.exclude module: 'bcprov-jdk15on'
+    }
+  }
+  ```
+
+  and add the following to `gradle.properties`:
+
+  ```
+  android.jetifier.blacklist=bcprov
+  ```

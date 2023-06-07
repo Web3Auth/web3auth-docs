@@ -8,9 +8,8 @@ description: "Web3Auth Core Kit tKey SDK - Usage | Documentation - Web3Auth"
 import SubVerifierDetails from "@site/src/common/sdk/core-kit/tkey/_sub-verifier-details.mdx";
 import ThresholdKey from "@site/src/common/sdk/core-kit/tkey/_threshold-key.mdx";
 import TkeyInitParams from "@site/src/common/sdk/core-kit/tkey/_tkey-init-params.mdx";
-import TorusLoginResponse from "@site/src/common/sdk/core-kit/tkey/_torus-login-response.mdx";
 
-Once you've installed and successfully instantiated tKey and initialised the service provider in your constructor, you can use it to authenticate your
+Once you've installed and successfully instantiated tKey and initialised the CustomAuth SDK in your constructor, you can use it to authenticate your
 users and generate their tKey shares. Further, you can use a variety of functions exposed by the tKey SDK and its modules to manage different aspects
 of your users' authentication needs.
 
@@ -29,12 +28,14 @@ We'll be talking in depth about the following operations:
 
 ## Log In
 
-The login with the tKey SDK is a two step process. First, you need to trigger the login process by calling the `triggerLogin()` function of the
-Service Provider. Following which using the returned information, use the `initialize()` function of the tKey to generate the Threshold Key
+The login with the tKey SDK is a two step process. First, you need to trigger the login process by calling any one of the functions of the CustomAuth
+SDK as per your use case. Following which using the returned information, use the `initialize()` function of the tKey to generate the Threshold Key
 corresponding to the user.
 
-However, before starting this process, you need to set up Custom Authentication on your Web3Auth Dashboard. For this, you need to
+However, before starting this process, you need to set up Custom Authentication on your Web3Auth Dashboard. For this, you need
+
 [Create a Verifier](/auth-provider-setup/verifiers) from the **Custom Auth** section of the
+
 [Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired configuration.
 
 :::tip
@@ -44,28 +45,95 @@ If you want to know more about setting up a verifier and how to use it, please r
 
 :::
 
-### Triggering Login using Service Provider
+:::note
 
-#### `tKey.serviceProvider.triggerLogin(SubVerifierDetails)`
+The `triggerLogin()` & `triggerAggregateLogin()` functions are used when you want to use the login process using a login method which returns back the
+user's id token intrinsically on redirection back into the application. For example, Google, Facebook, Auth0, etc. These functions help you trigger
+the login process and return back the postbox key for tKey initialisation.
 
-This is a needed step since this will generate a private key which will be needed by the tKey to generate it's share. This is done by calling the
-`triggerLogin()` function within the `tKey` instance's `serviceProvider`.
+The `getTorusKey()` & `getAggregateTorusKey()` functions are used when you already have the id token of the user and want to use it to generate the
+postbox key for tKey initialisation.
+
+:::
+
+### Triggering Login using CustomAuth SDK
+
+#### `CustomAuth.triggerLogin(SubVerifierDetails)`
+
+The `triggerLogin()` function is used when you want to use the login process using a verifier which returns back the user's id token intrinsically on
+redirection back into the application. For example, Google, Facebook, Auth0, etc. This function helps you trigger the login process and return back
+the postbox key for tKey initialisation.
 
 <SubVerifierDetails />
 
-:::note additional reading
+```ts title="Example"
+const loginDetails = await CustomAuth.triggerLogin({
+  typeOfLogin: "jwt",
+  verifier,
+  clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT",
+  jwtParams: {
+    domain: "shahbaz-torus.us.auth0.com",
+    verifierIdField: "sub",
+  },
+});
+```
 
-#### Trigger Login using Aggregate Verifier
+### Get Torus Key using CustomAuth SDK
+
+#### `CustomAuth.getTorusKey()`
+
+The `getTorusKey()` function is used when you already have the id token of the user corresponding to your verifier and want to use it to generate the
+postbox key for tKey initialisation.
+
+The `triggerLogin` function in `TorusServiceProvider` accepts the following parameters:
+
+```ts
+await CustomAuth.getTorusKey(
+  verifier: string,
+  verifierId: string,
+  verifierParams: {
+    verifier_id: string
+  },
+  idToken: string,
+  additionalParams?: extraParams
+);
+```
+
+| Parameter           | Type          | Description                                                                                                                                                                                                  |
+| ------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `verifier`          | `string`      | A verifier is a unique identifier for your OAuth registration on the torus network. The public/private keys generated for a user are scoped to a verifier. Register your app here to get your verifier today |
+| `verifierId`        | `string`      | verifierId is the unique identifier to publicly represent a user on a verifier. e.g: email, sub etc. other fields can be classified as verifierId                                                            |
+| `verifierParams`    | `object`      | Contains other fields which can be useful for aggregate logins. Passing `verifier_id` inside this function is mandatory                                                                                      |
+| `idToken`           | `string`      | idToken received from the OAuth provider. Please make sure the token is not older than 30 secs                                                                                                               |
+| `additionalParams?` | `extraParams` | Any additional parameters you wish to send to the torus nodes. useful for WebAuthn logins                                                                                                                    |
+
+```ts title="Example"
+const loginDetails = await CustomAuth.getTorusKey(
+  verifier: 'web3auth-firebase-examples',
+  verifierId: parsedIdToken.sub,
+  {
+    verifierIdField: "sub",
+    verifier_id: parsedIdToken.sub,
+  },
+  idToken
+);
+```
+
+### Trigger Aggregate Verifier Login using CustomAuth SDK
+
+The `triggerAggregateLogin()` function is used when you want to use the login process using an aggregate verifier which returns back the user's id
+token intrinsically on redirection back into the application. For example, Google, Facebook, Auth0, etc. This function helps you trigger the login
+process and return back the postbox key for tKey initialisation.
 
 #### `triggerAggregateLogin()`
 
-```javascript
-await (tKey.serviceProvider as TorusServiceProvider).triggerAggregateLogin(AggregateLoginParams)
+```ts
+await CustomAuth.triggerAggregateLogin(AggregateLoginParams);
 ```
 
 Takes in the aggregate verifier details as `AggregateLoginParams`.
 
-```ts
+```js
 interface AggregateLoginParams {
   aggregateVerifierType: AGGREGATE_VERIFIER_TYPE;
   verifierIdentifier: string;
@@ -73,7 +141,37 @@ interface AggregateLoginParams {
 }
 ```
 
-:::
+### Get Aggregate Torus Key using CustomAuth SDK
+
+#### `CustomAuth.getAggregateTorusKey()`
+
+The `getAggregateTorusKey()` function is used when you already have the id token of the user corresponding to your aggregate verifier and want to use
+it to generate the postbox key for tKey initialisation.
+
+The `triggerLogin` function in `TorusServiceProvider` accepts the following parameters:
+
+```ts
+await CustomAuth.getAggregateTorusKey(
+  verifier: string,
+  verifierId: string,
+  subVerifierInfoArray: TorusSubVerifierInfo[]
+);
+
+```
+
+| Parameter              | Type                     | Description                                                                                                                                                                                                  |
+| ---------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `verifier`             | `string`                 | A verifier is a unique identifier for your OAuth registration on the torus network. The public/private keys generated for a user are scoped to a verifier. Register your app here to get your verifier today |
+| `verifierId`           | `string`                 | verifierId is the unique identifier to publicly represent a user on a verifier. e.g: email, sub etc. other fields can be classified as verifierId                                                            |
+| `subVerifierInfoArray` | `TorusSubVerifierInfo[]` | Contains the particular details of the sub verifiers you're connecting your app to.                                                                                                                          |
+
+```ts
+export interface TorusSubVerifierInfo {
+  verifier: string;
+  idToken: string;
+  extraVerifierParams?: WebAuthnExtraParams;
+}
+```
 
 ### Initializing tKey
 
@@ -86,37 +184,50 @@ provider.
 
 <TkeyInitParams />
 
-### Example
-
-```js
-await(tKey.serviceProvider as any).triggerLogin({
-  typeOfLogin: "google", // "google","facebook","reddit","discord","twitch", etc.
-  verifier: "google-tkey-w3a",
-  clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+```ts title="triggerLogin() Example"
+const verifier = "web3auth-firebase-examples";
+const loginDetails = await CustomAuth.triggerLogin({
+  typeOfLogin: "jwt",
+  verifier,
+  clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT",
+  jwtParams: {
+    domain: "shahbaz-torus.us.auth0.com",
+    verifierIdField: "sub",
+  },
 });
+
+tKey.serviceProvider.postboxKey = loginDetails.privateKey;
+(tKey.serviceProvider as any).verifierName = verifier;
+(tKey.serviceProvider as any).verifierId = loginDetails.userInfo.name;
+
+await tKey.initialize();
+```
+
+```ts title="getTorusKey() Example"
+const verifier = "web3auth-firebase-examples";
+const verifierId = parsedIdToken.sub;
+const loginDetails = await CustomAuth.getTorusKey(
+  verifier,
+  verifierId,
+  {
+    verifierIdField: "sub",
+    verifier_id: verifierId,
+  },
+  idToken
+);
+
+tKey.serviceProvider.postboxKey = loginDetails.privateKey;
+(tKey.serviceProvider as any).verifierName = verifier;
+(tKey.serviceProvider as any).verifierId = verifierId;
+
 await tKey.initialize();
 ```
 
 ## Get User Information
 
-```ts
-triggerLogin(params: SubVerifierDetails): Promise<TorusLoginResponse>;
-```
-
-The tKey Service Provider returns a `TorusLoginResponse` object which contains the user's information and details about the login. You can access the
-`userInfo` property within it to get the user details from the login provider.
-
-<TorusLoginResponse />
-
-```js title="Example"
-const loginResponse = await(tKey.serviceProvider as any).triggerLogin({
-  typeOfLogin: "google", // "google","facebook","reddit","discord","twitch", etc.
-  verifier: "google-tkey-w3a",
-  clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
-});
-const user = loginResponse.userInfo;
-console.log("User Details: ", user);
-```
+To get the user's information, while using the `triggerLogin()` & `triggerAggregateLogin` functions, you can use the return of the functions, ie.
+`loginDetails` and get the userInfo from that. While using the `getTorusKey()` & `getAggregateTorusKey` functions, you can directly use the `idToken`
+and get the userInfo from that.
 
 ## Get tKey Details
 
@@ -262,7 +373,7 @@ In addition to that, we have dedicated provider packages for EVM and Solana Bloc
 here:
 
 - Getting a Ethereum Provider from tKey: [Ethereum Provider](/sdk/helper-sdks/providers/evm#getting-a-provider-from-any-secp256k1-private-key)
-- Getting a Solana Provider from tKey: [Solana Provider](/sdk/helper-sdks/providers/solana#getting-a-provider-from-any-secp256k1-private-key)
+- Getting a Solana Provider from tKey: [Solana Provider](/sdk/pnp/web/providers/solana#getting-a-provider-from-any-secp256k1-private-key)
 
 :::tip
 
