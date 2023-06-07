@@ -26,11 +26,6 @@ modal with ethereum mainnet by default.
 
 const web3auth = new Web3Auth({
   chainConfig: {
-    /*
-      you can pass your own chain configs here
-      by default it will only chainId is required for supported networks
-      such as [rinkeby, ropsten, goerli, kovan]
-    */
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x1",
     rpcTarget: "https://rpc.ankr.com/eth",
@@ -41,12 +36,13 @@ const web3auth = new Web3Auth({
     ticker: "ETH",
     tickerName: "Ethereum",
   },
-  clientId = "YOUR_WEB3AUTH_CLIENT_ID"; // get from https://dashboard.web3auth.io
+  clientId = "YOUR_WEB3AUTH_CLIENT_ID", // get from https://dashboard.web3auth.io
+  web3AuthNetwork = "cyan", // testnet, mainnet, cyan, aqua or celeste
 });
 
 await web3auth.initModal();
 
-web3auth.connect();
+await web3auth.connect();
 ```
 
 ## Initializing the provider

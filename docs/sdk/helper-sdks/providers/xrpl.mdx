@@ -1,0 +1,210 @@
+---
+title: XRPL Provider
+displayed_sidebar: sdk
+description: "XRPL Provider | Documentation - Web3Auth"
+---
+
+---
+
+The `@web3auth/xrpl-provider` is a Web3Auth provider that simplifies interaction with the XRPL Blockchain by serving as a wrapper around the
+[XRPL JSON RPC API](https://xrpl.org/request-formatting.html). It is used to interact with the XRPL blockchain and perform various operations like
+getting user's account, balance, signing a transaction, sending a transaction etc.
+
+## Initializing the provider
+
+---
+
+```ts
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACESS } from "@web3auth/base";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { XrplPrivateKeyProvider, getXRPLChainConfig } from "@web3auth/xrpl-provider";
+import { convertStringToHex, Payment, xrpToDrops } from "xrpl";
+
+const web3auth = new Web3Auth({
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.OTHER,
+  },
+  clientId = "YOUR_WEB3AUTH_CLIENT_ID", // get from https://dashboard.web3auth.io
+  web3AuthNetwork = "cyan", // testnet, mainnet, cyan, aqua or celeste
+});
+
+const xrplProvider = new XrplPrivateKeyProvider({
+  config: {
+    chainConfig: getXRPLChainConfig("testnet"), // devnet, testnet, mainnet
+  },
+});
+
+const adapter = new OpenloginAdapter({
+  adapterSettings: {
+    provider: xrplProvider, // <-- Injecting the XRPL provider
+  },
+});
+web3AuthInstance.configureAdapter(adapter);
+
+await web3auth.initModal();
+
+const provider = await web3auth.connect();
+```
+
+## Usage
+
+---
+
+After configuring the provider, you may utilize various functions from the `@web3auth/xrpl-provider` library for tasks such as obtaining the user's
+account, executing transactions, and signing messages. Below are a few sample use cases to assist you in getting started:
+
+### Get User Account and Balance
+
+#### `xrpl_getAccounts`
+
+The purpose of this function is to retrieve the details of the connected account.
+
+#### Example
+
+```ts
+try {
+  // provider is from above
+  const accounts = await provider.request<string[]>({
+    method: "xrpl_getAccounts",
+  });
+
+  if (accounts) {
+    const accInfo = (await provider.request({
+      method: "account_info",
+      params: [
+        {
+          account: accounts[0],
+          strict: true,
+          ledger_index: "current",
+          queue: true,
+        },
+      ],
+    })) as Record<string, Record<string, string>>;
+    console.log("XRPL account info", accInfo);
+    // xrpl Account
+    const account = accInfo?.account_data?.Account;
+    // Balance
+    const balance = accInfo?.account_data?.Balance;
+  } else {
+    console.log("No accounts found, please report this issue.");
+  }
+} catch (error) {
+  console.error("Error", error);
+}
+```
+
+### Sign a Transaction
+
+#### `xrpl_signTransaction`
+
+The function is utilized for signing transactions.
+
+#### Example
+
+```ts
+try {
+  const accounts = await provider.request<string[]>({
+    method: "xrpl_getAccounts",
+  });
+
+  if (accounts && accounts.length > 0) {
+    const tx: Payment = {
+      TransactionType: "Payment",
+      Account: accounts[0] as string,
+      Amount: xrpToDrops(2),
+      Destination: "rJAHHPYmy4g3h7kzfj2Mzm2nHwpKuVdEvX", // Destination address
+    };
+    const txSign = await provider.request({
+      method: "xrpl_signTransaction",
+      params: {
+        transaction: tx,
+      },
+    });
+    console.log("txRes", txSign);
+  } else {
+    console.log("failed to fetch accounts");
+  }
+} catch (error) {
+  console.log("error", error);
+}
+```
+
+### Sign and Send a Transaction
+
+#### `xrpl_submitTransaction`
+
+The purpose of this function is to sign and broadcast a transaction onto the blockchain. Upon successful execution, it will return the signature of
+the broadcasted transaction.
+
+#### Example:
+
+```ts
+try {
+  const accounts = await provider.request<string[]>({
+    method: "xrpl_getAccounts",
+  });
+
+  if (accounts && accounts.length > 0) {
+    const tx: Payment = {
+      TransactionType: "Payment",
+      Account: accounts[0] as string,
+      Amount: xrpToDrops(2),
+      Destination: "rJAHHPYmy4g3h7kzfj2Mzm2nHwpKuVdEvX",
+    };
+    const txSign = await provider.request({
+      method: "xrpl_submitTransaction",
+      params: {
+        transaction: tx,
+      },
+    });
+    console.log("txRes", txSign);
+  } else {
+    console.log("failed to fetch accounts");
+  }
+} catch (error) {
+  console.log("error", error);
+}
+```
+
+### Sign a Message
+
+#### `xrpl_signMessage`
+
+This method is utilized for signing any message using the currently connected wallet.
+
+#### Example
+
+```ts
+try {
+  const msg = "Hello world";
+  const hexMsg = convertStringToHex(msg);
+  const txSign = await provider.request<{ signature: string }>({
+    method: "xrpl_signMessage",
+    params: {
+      message: hexMsg,
+    },
+  });
+  console.log("txRes", txSign);
+} catch (error) {
+  console.log("error", error);
+}
+```
+
+### Fetch User's Private Key
+
+#### `private_key`
+
+The purpose of this method is to retrieve the private key of the currently logged-in user.
+
+#### Example
+
+```ts
+//Assuming user is already logged in.
+async getPrivateKey() {
+	const privateKey = await web3auth.provider.request({
+		method: "private_key"
+	});
+	//Do something with privateKey
+}
+```

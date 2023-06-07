@@ -196,6 +196,7 @@ module.exports = {
           ],
         },
         "connect-blockchain/solana",
+        "connect-blockchain/xrpl",
         {
           type: "category",
           label: "EVM Based Chains",
@@ -625,6 +626,7 @@ module.exports = {
       items: [
         "sdk/helper-sdks/providers/evm",
         "sdk/helper-sdks/providers/solana",
+        "sdk/helper-sdks/providers/xrpl",
         "sdk/helper-sdks/providers/other"
       ],
     },
