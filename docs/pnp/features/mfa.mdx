@@ -4,15 +4,39 @@ displayed_sidebar: docs
 description: "Multi Factor Authentication | Documentation - Web3Auth"
 ---
 
-The Multi Factor Authentication (MFA) feature refers to the ability of the user to create a backup share (recovery phrase). Once a recovery phrase is
-created, the user keys are divided into 3 shares enabling the off-chain multisig functionality, making the key further self custodial for the user.
-Without an MFA, this is not enabled to make sure the user doesn't lose the keys by accidently clearing their browser local storage. A backup share
-helps a user to login into a new device and also to recover their account if they lose their original device.
+import ReactPlayer from "react-player/youtube";
 
-For a dApp, we give a variety of choices to set the multi factor authentication for the user. You can set the `mfaLevel` argument to customize when
-MFA screen should be shown to user. It currently accepts 4 values:
+At Web3Auth, we prioritize your security by offering Multi-Factor Authentication (MFA). MFA is an extra layer of protection that verifies your
+identity when accessing your account. To ensure ownership, you must provide two or more different backup factors. You have the option to choose from
+the device, social, backup factor (seed phrase), and password factors to guarantee access to your Web3 account. Once you create a recovery factor, MFA
+is enabled, and your keys are divided into three shares for off-chain multi-sig, making the key self-custodial. Without MFA, the keys are not divided,
+which increases the risk of losing them as users might accidentally clear their browser's local storage. With backup factors, you can easily recover
+your account if you lose access to your original device or helps login into a new device.
 
-- **`'default'`** Setting mfa level to `default` will present mfa screen to user on every third login.
-- **`'optional'`** Setting mfa level to `optional` will present mfa screen to user on every login but user can skip it.
-- **`'mandatory'`** Setting mfa level to `mandatory` will make it mandatory for user to setup mfa after login.
-- **`'none'`** Setting mfa level to `none` will make the user skip the mfa setup screen
+For a dApp, we provide various options to set up Multi-Factor Authentication. You can customize the MFA screen by setting the `mfaLevel` argument. You
+can enable or disable a backup factor and change their order. Currently, there are four values for `mfaLevel`:
+
+- `default`: presents the MFA screen every third login
+- `optional`: presents the MFA screen on every login, but you can skip it
+- `mandatory`: make it mandatory to set up MFA after login
+- `none`: skips the MFA setup screen
+
+We offer the following backup factors under `mfaSettings`:
+
+- `deviceShareFactor`,
+- `backUpShareFactor`,
+- `socialBackupFactor`, and
+- `passwordFactor`.
+
+Choose the best options that suit your needs to ensure a safe and secure Web3 experience.
+
+## Default mfaSettings
+
+<ReactPlayer
+  url="https://www.youtube.com/watch?v=7Rp8BoiB1X0"
+  playing
+  loop
+  controls={false}
+  light
+  style={{ display: "block", maxHeight: "600px", margin: "5px auto" }}
+/>
