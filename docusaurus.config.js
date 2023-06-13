@@ -13,6 +13,7 @@ const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
 const resourcesDropdown = fs.readFileSync('./src/components/navDropdown/resources.html', 'utf-8');
 const helpDropdown = fs.readFileSync('./src/components/navDropdown/help.html', 'utf-8');
 const sdkDropdown = fs.readFileSync('./src/components/navDropdown/sdk.html', 'utf-8');
+const contentHubDropdown = fs.readFileSync('./src/components/navDropdown/content-hub.html', 'utf-8');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 const config = {
@@ -85,10 +86,16 @@ const config = {
           position: "left",
         },
         {
-          label: "Content Hub",
-          activeBasePath: "/content-hub",
+          label: 'Content Hub',
+          type: 'dropdown',
           to: "/content-hub",
           position: "left",
+          items: [
+            {
+              type: 'html',
+              value: contentHubDropdown,
+            },
+          ],
         },
         {
           label: 'Help',
