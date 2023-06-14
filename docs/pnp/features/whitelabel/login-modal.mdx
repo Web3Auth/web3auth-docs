@@ -66,39 +66,39 @@ const web3auth = new Web3Auth({
 
 ### defaultLanguage
 
-#### en
+#### en - English
 
 ![en](/images/whitelabel/modal/en.png)
 
-#### de
+#### de - German
 
 ![de](/images/whitelabel/modal/de.png)
 
-#### ja
+#### ja - Japanese
 
 ![ja](/images/whitelabel/modal/ja.png)
 
-#### ko
+#### ko - Korean
 
 ![ko](/images/whitelabel/modal/ko.png)
 
-#### zh
+#### zh - Chinese (Mandarin)
 
 ![zh](/images/whitelabel/modal/zh.png)
 
-#### es
+#### es - Spanish
 
 ![es](/images/whitelabel/modal/es.png)
 
-#### fr
+#### fr - French
 
 ![fr](/images/whitelabel/modal/fr.png)
 
-#### pt
+#### pt - Portuguese
 
 ![pt](/images/whitelabel/modal/pt.png)
 
-#### nl
+#### nl - Dutch
 
 ![nl](/images/whitelabel/modal/nl.png)
 
@@ -109,3 +109,75 @@ const web3auth = new Web3Auth({
 ### primaryButton
 
 ![primaryButton](/images/whitelabel/modal/primaryButton.png)
+
+## More customization
+
+`initModal`
+
+### Disable few Social Login Methods
+
+```js
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3auth = new Web3Auth({
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  web3AuthNetwork: "cyan",
+});
+
+// highlight-start
+await web3auth.initModal({
+  modalConfig: {
+    [WALLET_ADAPTERS.OPENLOGIN]: {
+      label: "openlogin",
+      loginMethods: {
+        // Disable facebook and reddit
+        facebook: {
+          name: "facebook",
+          showOnModal: false,
+        },
+        reddit: {
+          name: "reddit",
+          showOnModal: false,
+        },
+      },
+    },
+  },
+});
+// highlight-end
+```
+
+### Disable Email or SMS Login Methods
+
+```js
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3auth = new Web3Auth({
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  web3AuthNetwork: "cyan",
+});
+
+// highlight-start
+await web3auth.initModal({
+  modalConfig: {
+    [WALLET_ADAPTERS.OPENLOGIN]: {
+      label: "openlogin",
+      loginMethods: {
+        // Disable email_passwordless and sms_passwordless
+        email_passwordless: {
+          name: "email_passwordless",
+          showOnModal: false,
+        },
+        sms_passwordless: {
+          name: "sms_passwordless",
+          showOnModal: false,
+        },
+      },
+    },
+  },
+});
+// highlight-end
+```
