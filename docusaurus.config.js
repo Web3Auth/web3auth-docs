@@ -395,6 +395,11 @@ const config = {
             to: "/content-hub/",
           },
           {
+            from: "/sdk/helper-sdks/providers/other",
+            to: "/sdk/helper-sdks/providers/common",
+          },
+
+          {
             from: "/blog/",
             to: "/content-hub/",
           },
