@@ -54,18 +54,23 @@ You can aggregate two or more verifiers.
 ```js
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 const clientId = "YOUR_WEB3AUTH_CLIENT_ID";
 // get it from https://dashboard.web3auth.io by creating a Plug n Play project.
 
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x1",
+};
+
 const web3auth = new Web3AuthNoModal({
   clientId,
+  chainConfig,
   web3AuthNetwork: "testnet",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x1",
-  },
 });
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
@@ -93,6 +98,7 @@ const openloginAdapter = new OpenloginAdapter({
       },
     },
   },
+  privateKeyProvider,
 });
 web3auth.configureAdapter(openloginAdapter);
 
