@@ -18,6 +18,12 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Migration Guides",
+      link: { type: "doc", id: "migration-guide/migration-guide" },
+      items: ["migration-guide/migrating-to-v6-from-v5"]
+    },
+    {
+      type: "category",
       label: "Web3Auth Infrastructure",
       link: { type: "doc", id: "infrastructure/infrastructure" },
       items: [
