@@ -30,7 +30,7 @@ import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 
 ### Assign the `CommonPrivateKeyProvider` class to a variable
 
-After creating your Web3Auth instance, you need to initialise the Torus Wallet UI Plugin and add it to a class for further usage.
+After creating your Web3Auth instance, you need to initialise the CommonPrivateKeyProvider and add it to a class for further usage.
 
 ```javascript
 const privateKeyProvider = new CommonPrivateKeyProvider();
@@ -39,8 +39,6 @@ const privateKeyProvider = new CommonPrivateKeyProvider();
 :::info Note
 
 - The common private key provider only exposes one RPC method (i.e 'private_key') to get the private key of logged in user.
-
-- The `chainConfig` field is not required in the case of `CommonPrivateKeyProvider` as it is not used anywhere.
 
 :::
 
@@ -52,15 +50,19 @@ If you are using `chainNamespace: "other"` while initializing `Web3Auth` or `Web
 `privateKeyProvider` to the OpenLogin instance.
 
 ```ts
+const chainConfig = {
+    chainId: "0x1",
+    chainNamespace: CHAIN_NAMESPACES.OTHER,
+    rpcTarget: "https://any-rpc-endpoint.com",
+};
+
 const web3auth = new Web3AuthNoModal({
   clientId,
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.OTHER,
-  },
+  chainConfig,
   web3AuthNetwork: "cyan",
 });
 
-const privateKeyProvider = new CommonPrivateKeyProvider();
+const privateKeyProvider = new CommonPrivateKeyProvider(config: chainConfig);
 
 const openloginAdapter = new OpenloginAdapter({
   privateKeyProvider,
@@ -85,23 +87,27 @@ provider = await web3auth.connectTo(
 While using the SFA Web SDK, you need to pass the provider during the initialisation of SDK, while calling the init() function.
 
 ```ts
+const chainConfig = {
+  chainId: "0x1",
+  chainNamespace: CHAIN_NAMESPACES.OTHER,
+  rpcTarget: "https://any-rpc-endpoint.com",
+};
+
 const web3authSfa = new Web3Auth({
   clientId, // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.OTHER,
-  },
+  chainConfig,
   web3AuthNetwork: "cyan", // ["cyan", "testnet"]
   usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
 });
 
-const privateKeyProvider = new CommonPrivateKeyProvider();
+const privateKeyProvider = new CommonPrivateKeyProvider(config: chainConfig);
 
 web3authSfa.init(privateKeyProvider);
 
-const provider = await web3authSFAuth.connect({
-  verifier,
-  verifierId: sub,
-  idToken,
+const web3authSfaprovider = await web3auth.connect({
+  verifier: "web3auth-sfa-verifier", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+  verifierId: "name@email.com", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
+  idToken: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlRZT2dnXy01RU9FYmxhWS1WVlJZcVZhREFncHRuZktWNDUzNU1aUEMwdzAifQ.eyJpYXQiOjE2ODY4OTMzMzYsImF1ZCI6IkJIcl9kS2N4QzBlY0tuXzJkWlFtUWVOZGpQZ1d5a01rY29kRUhrVnZQTW83MXF6T1Y2U2d0b044S0N2RmRMTjdiZjM0Sk9tODl2V1FNTEZtU2ZJbzg0QSIsIm5vbmNlIjoiMDM0MGU2MDJlYzM4YTE2YzE1N2MzMDA3Yjk5YjFmZGNmMzU3MzFjNjIwOTVjMmMzMTk4ZDllNThhYWQwODVhMTZmIiwiaXNzIjoiaHR0cHM6Ly9hcGkub3BlbmxvZ2luLmNvbSIsIndhbGxldHMiOlt7InB1YmxpY19rZXkiOiIwMjcxNTk2YTkyZjJmZjM4ZDZhMTU1ZmIwZjMwNjcxMzZhMzQ4MTUwODY1NjlmMTgzYjZlYzQwZWEzNjA4OTI3NjEiLCJ0eXBlIjoid2ViM2F1dGhfYXBwX2tleSIsImN1cnZlIjoic2VjcDI1NmsxIn1dLCJlbWFpbCI6InNoYWhiYXpAdG9yLnVzIiwibmFtZSI6Ik1vaGFtbWFkIFNoYWhiYXogQWxhbSIsInByb2ZpbGVJbWFnZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBY0hUdGNOWmFacUkwNjQyXzJVdjBiSDFDeHEwQVZtX09ES09KNnR2THpXPXM5Ni1jIiwidmVyaWZpZXIiOiJ0b3J1cyIsInZlcmlmaWVySWQiOiJzaGFoYmF6QHRvci51cyIsImFnZ3JlZ2F0ZVZlcmlmaWVyIjoidGtleS1nb29nbGUtbHJjIiwiZXhwIjoxNjg2OTc5NzM2fQ.uoRbO9fvLyYEq3-X-osNlP4pda7aASKko0dm7EsmQvA-uq7cKFJWgAD8S9jC8ZogiEtJ6MRnjDYY8UdTwBL7mQ", // replace with your newly created unused JWT Token.
 });
 
 // use this provider to export the private key of the user
