@@ -6,21 +6,25 @@ description: "Migrating to V6 from V5 | Documentation - Web3Auth"
 
 ## General
 
-### Manage session using `web3auth.connectedAdapterName` instead of `web3auth.provider`
+### `web3auth.connected` is introduced
 
-With V6, users can manage their session using `web3auth.connectedAdapterName` instead of `web3auth.provider`.
+#### Manage session using `web3auth.connected` instead of `web3auth.provider`
+
+With V6, users can manage their session using `web3auth.connected` instead of `web3auth.provider`.
 
 ```js
 // With V6
-if (web3auth.connectedAdapterName) {
+// highlight-start
+if (web3auth.connected) {
   setLoggedIn(true);
 }
+// highlight-end
 ```
 
 ### `provider` is now always available
 
 In V5, we used to add a check for setting the `provider` only if the `web3auth.provider` was present. But now with V6 we always have provider
-available.
+available even if the user is not logged-in.
 
 ```js
 // With V5
@@ -28,23 +32,24 @@ if (web3auth.provider) {
   setProvider(web3auth.provider);
 }
 // With V6
-setProvider(web3auth.provider);
+// highlight-next-line
+setProvider(web3auth.provider); // before the connect() or connectTo(), provider is available.
 ```
 
-## Changes in the Web Modal SDK
+### `rpcTarget` and `chainId` is now a mandatory parameter
 
-### `rpcTarget` is now a mandatory parameter
-
-Previously, the Web Modal SDK required `chainConfig` as a parameter which had `rpcTarget` as an option parameter. But with V6, it's mandatory to add
-`rpcTarget` in the `chainConfig` object.
+Previously, the Web Modal SDK required `chainConfig` as a parameter which had `rpcTarget` & `chainId` as the optional parameter. But with V6, it's
+mandatory to add `rpcTarget` & `chainId` in the `chainConfig` object.
 
 ```js
 const web3auth = new Web3Auth({
   clientId,
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
+    // highlight-start
     chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own custom endpoint while creating an app
+    // highlight-end
   },
   web3AuthNetwork: "cyan",
 });
@@ -52,7 +57,9 @@ const web3auth = new Web3Auth({
 
 ## Changes in the Web No Modal SDK
 
-### `privateKeyProvider` is now a mandatory parameter to be passed into the `OpenLoginAdapter`
+### `privateKeyProvider` is introduced
+
+#### `privateKeyProvider` is now a mandatory parameter to be passed into the `OpenLoginAdapter`
 
 With V6, we have added a new parameter `privateKeyProvider` which is mandatory to be passed into the `OpenLoginAdapter`.
 
@@ -73,9 +80,10 @@ const chainConfig = {
   ticker: "ETH",
   tickerName: "Ethereum",
 };
-
+// highlight-next-line
 const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 const openloginAdapter = new OpenloginAdapter({
+  // highlight-next-line
   privateKeyProvider,
 });
 web3authInstance.configureAdapter(openloginAdapter);
@@ -98,25 +106,27 @@ const chainConfig = {
   ticker: "SOL",
   tickerName: "Solana Token",
 };
-
+// highlight-next-line
 const privateKeyProvider = new SolanaPrivateKeyProvider({ config: { chainConfig } });
 const openloginAdapter = new OpenloginAdapter({
+  // highlight-next-line
   privateKeyProvider,
 });
 web3auth.configureAdapter(openloginAdapter);
 ```
 
-#### For all Non-EVM chains and chains other than Solana
+#### For all other chains
 
-For all Non-EVM chains and chains other than Solana use the `CommonPrivateKeyProvider` from the `@web3auth/base-provider`package. Unlike,
-`EthereumPrivateKeyProvider` and `SolanaPrivateKeyProvider`, `CommonPrivateKeyProvider` does not require any parameter at the time of initialization.
+For all Non-EVM & Non-Solana chains use the `CommonPrivateKeyProvider` from the `@web3auth/base-provider`package. Unlike, `EthereumPrivateKeyProvider`
+and `SolanaPrivateKeyProvider`, `CommonPrivateKeyProvider` does not require any parameter at the time of initialization.
 
 ```js
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
-
+// highlight-next-line
 const privateKeyProvider = new CommonPrivateKeyProvider();
 
 const openloginAdapter = new OpenloginAdapter({
+  // highlight-next-line
   privateKeyProvider,
 });
 web3authInstance.configureAdapter(openloginAdapter);
