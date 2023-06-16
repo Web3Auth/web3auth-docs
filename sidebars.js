@@ -633,7 +633,7 @@ module.exports = {
         "sdk/helper-sdks/providers/evm",
         "sdk/helper-sdks/providers/solana",
         "sdk/helper-sdks/providers/xrpl",
-        "sdk/helper-sdks/providers/other"
+        "sdk/helper-sdks/providers/common"
       ],
     },
     {

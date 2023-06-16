@@ -1,17 +1,26 @@
 ---
-title: Webpack 5 Polyfills Issue
+title: Bundler Polyfill Issues - Webpack 5
 image: "images/docs-meta-cards/troubleshoot-card.png"
 displayed_sidebar: docs
-description: "Webpack 5 Issues | Documentation - Web3Auth"
+description: "Bundler Polyfill Issues - Webpack 5 | Documentation - Web3Auth"
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-While setting up a new web3 project from scratch, you might face multiple issues with webpack 5. This issue is caused due to the fact that the
-`web3.js` and `ethers.js` packages have certain dependencies, which are not present within the browser environment by webpack 5. Hence, you require
-certain node polyfills to be added to your project, while overriding the configurations to enable their usage. When that is done, your project should
-be able to utilise the `web3.js` and `ethers.js` packages easily without any issues.
+While setting up a new web3 project from scratch, you might face multiple issues the bundler. This issue is caused due to the fact that the core
+packages like `eccrypto` have certain dependencies, which are not present within the build environment. Webpack 5 especially introduced a lot of
+issues since it does not include the multiple of these packages by default. For rectifying this, the go to method has been to just add the missing
+modules directly into the package, and edit the bundler configuration to take advantage of that.
+
+Although this method works, but it increases the bundle size significantly. Causing slow loading speeds and a bad user experience. It is important to
+note that these modules, even while the build fails, are still present within the browser environment. Many libraries like Web3Auth are written in a
+way so as to take advantage of this fact. Hence, even if the build doesn't contain the polyfill, the library should still work as expected. However,
+if you are using a library which does not take advantage of this fact, you might face issues while using the library. Checkout
+[this tweet thread](https://twitter.com/ChaitanyaPotti/status/1658108310824861696) where we have explained it further on how this works in detail.
+
+Hence, you need to be mindful of the fact that you only require certain node polyfills to be added to your project, while testing each of it's
+functionalities. At the same time, you need to tell the bundler to ignore the missing modules, and not include them in the build.
 
 In this guide, we have added instructions of adding the polyfills of some of the commonly used web frameworks:
 
@@ -19,19 +28,28 @@ In this guide, we have added instructions of adding the polyfills of some of the
 - [Angular](#angular)
 - [Vue.js](#vuejs)
 
-## React
+## React (create-react-app)
 
-### create-react-app
-
-If you are using `create-react-app` version >= 5 you may run into issues building. The issue can be resolved following the instructions below:
-
-#### Solution
-
-- Install `react-app-rewired` and the missing modules into your application
+- Install `react-app-rewired` into your application
 
 ```bash npm2yarn
-npm install --save-dev react-app-rewired crypto-browserify stream-browserify browserify-zlib assert stream-http https-browserify os-browserify url buffer process
+npm install --save-dev react-app-rewired
 ```
+
+- Check for the missing libraries in your build and included packages, and accordingly polyfill them. For Web3Auth, you just need to polyfill the
+  `buffer` and `process` libraries
+
+```bash npm2yarn
+npm install --save-dev buffer process
+```
+
+:::caution
+
+There might be a possibility that you might need to polyfill more libraries, in case you're using any other blockchain library alongside Web3Auth that
+requires them. Generally the libraries like `crypto-browserify`, `stream-browserify`, `browserify-zlib`, `assert`, `stream-http`, `https-browserify`,
+`os-browserify`, `url` are the ones that might be required. `crypto-browserify` and `stream-browserify` being the most common polyfills.
+
+:::
 
 - Create `config-overrides.js` in the root of your project folder with the content:
 
@@ -41,14 +59,14 @@ const webpack = require("webpack");
 module.exports = function override(config) {
   const fallback = config.resolve.fallback || {};
   Object.assign(fallback, {
-    crypto: require.resolve("crypto-browserify"),
-    stream: require.resolve("stream-browserify"),
-    assert: require.resolve("assert"),
-    http: require.resolve("stream-http"),
-    https: require.resolve("https-browserify"),
-    os: require.resolve("os-browserify"),
-    url: require.resolve("url"),
-    zlib: require.resolve("browserify-zlib"),
+    crypto: false, // require.resolve("crypto-browserify") can be polyfilled here if needed
+    stream: false, // require.resolve("stream-browserify") can be polyfilled here if needed
+    assert: false, // require.resolve("assert") can be polyfilled here if needed
+    http: false, // require.resolve("stream-http") can be polyfilled here if needed
+    https: false, // require.resolve("https-browserify") can be polyfilled here if needed
+    os: false, // require.resolve("os-browserify") can be polyfilled here if needed
+    url: false, // require.resolve("url") can be polyfilled here if needed
+    zlib: false, // require.resolve("browserify-zlib") can be polyfilled here if needed
   });
   config.resolve.fallback = fallback;
   config.plugins = (config.plugins || []).concat([
@@ -110,88 +128,104 @@ module.exports = function override(config) {
 
 The missing Nodejs polyfills should be included now and your app should be functional with web3.
 
-- If you want to hide the warnings created by the console:
+:::note
 
-In `config-overrides.js` within the `override` function, add:
+If you're using `craco`, similar changes need to be made to `craco.config.js`
 
-```js
-config.ignoreWarnings = [/Failed to parse source map/];
-```
-
-##### If you're using `craco`, similar changes need to be made to `craco.config.js`
+:::
 
 ## Angular
 
-If you are using Angular version >11, you may run into issues building. The issue can be resolved following the instructions below:
-
-#### Solution
-
-- Install the required dependencies within your angular project:
+- Check for the missing libraries in your build and included packages, and accordingly polyfill them. For Web3Auth, you just need to polyfill the
+  `buffer` and `process` libraries. For the rest of the libraries, we are installing a dummy module called `empty-module` which helps us get rid of
+  the warnings while building the project.
 
 ```bash npm2yarn
-npm install --save-dev crypto-browserify stream-browserify browserify-zlib assert stream-http https-browserify os-browserify process buffer url
+npm install --save-dev buffer process empty-module
 ```
+
+:::caution
+
+There might be a possibility that you might need to polyfill more libraries, in case you're using any other blockchain library alongside Web3Auth that
+requires them. Generally the libraries like `crypto-browserify`, `stream-browserify`, `browserify-zlib`, `assert`, `stream-http`, `https-browserify`,
+`os-browserify`, `url` are the ones that might be required. `crypto-browserify` and `stream-browserify` being the most common polyfills.
+
+:::
 
 - Within `tsconfig.json` add the following `paths` in `compilerOptions` so Webpack can get the correct dependencies
 
 ```ts
 {
-    "compilerOptions": {
-        "paths" : {
-            "crypto": ["./node_modules/crypto-browserify"],
-            "stream": ["./node_modules/stream-browserify"],
-            "assert": ["./node_modules/assert"],
-            "http": ["./node_modules/stream-http"],
-            "https": ["./node_modules/https-browserify"],
-            "os": ["./node_modules/os-browserify"],
-            "process": ["./node_modules/process"],
-            "zlib": ["./node_modules/browserify-zlib"],
-        }
+  "compilerOptions": {
+    "paths" : {
+      "crypto": ["./node_modules/empty-module"], // crypto-browserify can be polyfilled here if needed
+      "stream": ["./node_modules/empty-module"], // stream-browserify can be polyfilled here if needed
+      "assert": ["./node_modules/empty-module"], // assert can be polyfilled here if needed
+      "http": ["./node_modules/empty-module"], // stream-http can be polyfilled here if needed
+      "https": ["./node_modules/empty-module"], // https-browserify can be polyfilled here if needed
+      "os": ["./node_modules/empty-module"], // os-browserify can be polyfilled here if needed
+      "url": ["./node_modules/empty-module"], // url can be polyfilled here if needed
+      "zlib": ["./node_modules/empty-module"], // browserify-zlib can be polyfilled here if needed
+      "process": ["./node_modules/process"],
     }
+  }
 }
 ```
 
 - Add the following lines to `polyfills.ts` file:
 
 ```typescript
-import { Buffer } from "buffer";
-
 (window as any).global = window;
-global.Buffer = Buffer;
-global.process = {
-  env: { DEBUG: undefined },
-  version: "",
-  nextTick: require("next-tick"),
-} as any;
+global.Buffer = global.Buffer || require("buffer").Buffer;
+global.process = global.process || require("process");
 ```
 
 ## Vue.js
 
-If you are using vue.js you may run into issues building. The issue can be resolved following the instructions below:
-
-#### Solution
-
-- Install the missing modules
+- Check for the missing libraries in your build and included packages, and accordingly polyfill them. For Web3Auth, you just need to polyfill the
+  `buffer` and `process` libraries
 
 ```bash npm2yarn
-npm install --save node-polyfill-webpack-plugin
+npm install --save-dev buffer process
 ```
 
-Add the following lines to `vue.config.js`
+:::caution
+
+There might be a possibility that you might need to polyfill more libraries, in case you're using any other blockchain library alongside Web3Auth that
+requires them. Generally the libraries like `crypto-browserify`, `stream-browserify`, `browserify-zlib`, `assert`, `stream-http`, `https-browserify`,
+`os-browserify`, `url` are the ones that might be required. `crypto-browserify` and `stream-browserify` being the most common polyfills.
+
+:::
+
+- Add the following lines to `vue.config.js`
 
 ```js
 const { defineConfig } = require("@vue/cli-service");
-const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+const { ProvidePlugin } = require("webpack");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 module.exports = defineConfig({
   transpileDependencies: true,
   lintOnSave: false,
-  configureWebpack: {
-    plugins: [new NodePolyfillPlugin()],
-    optimization: {
-      splitChunks: {
-        chunks: "all",
-      },
-    },
+  configureWebpack: (config) => {
+    config.devtool = "source-map";
+    config.resolve.symlinks = false;
+    config.resolve.fallback = {
+      crypto: false, // crypto-browserify can be polyfilled here if needed
+      stream: false, // stream-browserify can be polyfilled here if needed
+      assert: false, // assert can be polyfilled here if needed
+      os: false, // os-browserify can be polyfilled here if needed
+      https: false, // https-browserify can be polyfilled here if needed
+      http: false, // stream-http can be polyfilled here if needed
+      url: false, // url can be polyfilled here if needed
+      zlib: false, // browserify-zlib can be polyfilled here if needed
+    };
+    config.plugins.push(new ProvidePlugin({ Buffer: ["buffer", "Buffer"] }));
+    config.plugins.push(new ProvidePlugin({ process: ["process/browser"] }));
+    config.plugins.push(
+      new BundleAnalyzerPlugin({
+        analyzerMode: "disabled",
+      })
+    );
   },
 });
 ```

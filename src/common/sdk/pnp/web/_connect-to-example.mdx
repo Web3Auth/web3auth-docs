@@ -9,6 +9,8 @@ import Tabs from "@theme/Tabs";
     { label: "JWT", value: "jwt" },
     { label: "Facebook", value: "facebook" },
     { label: "Discord", value: "discord" },
+    { label: "Email Passwordless", value: "email_passwordless" },
+    { label: "SMS Passwordless", value: "sms_passwordless" },
     { label: "Twitter", value: "twitter" },
     { label: "Reddit", value: "reddit" },
     { label: "Twitch", value: "twitch" },
@@ -65,6 +67,36 @@ import { WALLET_ADAPTERS } from "@web3auth/base";
 
 const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "facebook",
+});
+```
+
+</TabItem>
+
+<TabItem value="email_passwordless">
+
+```ts
+import { WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "email_passwordless",
+  extraLoginOptions: {
+    login_hint: "hello@web3auth.io", // email to send the OTP to
+  },
+});
+```
+
+</TabItem>
+
+<TabItem value="sms_passwordless">
+
+```ts
+import { WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "sms_passwordless",
+  extraLoginOptions: {
+    login_hint: "+65-XXXXXXX",
+  },
 });
 ```
 

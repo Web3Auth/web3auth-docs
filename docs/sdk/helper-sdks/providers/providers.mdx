@@ -1,111 +1,23 @@
 ---
 title: Providers
-
 displayed_sidebar: sdk
-description: "Web3Auth Privders | Documentation - Web3Auth"
+description: "Web3Auth Providers | Documentation - Web3Auth"
 ---
 
-When connecting your application with a blockchain network, you have multiple options from Web3Auth. Web3Auth, across all blockchain networks,
-provides you the choice to export your private key, which can be used further to connect to the blockchain network. However, to make it easier for
-developers to connect to a few common networks, we also expose certain `provider` packages for EVM-compatible chains and Solana Blockchain. Providers
-take JSON-RPC requests and return the response. This is normally done by submitting the request to an HTTP or IPC socket-based server.
+Providers are basically pre configured RPC clients for different blockchains. They are used to interact with the blockchain network. Web3Auth provides
+you with a few common providers for EVM compatible chains and Solana Blockchain. You can also use the private key of the user to connect to other
+blockchain networks, in case of SSS based infrastructure. For MPC, you can only use the dedicated providers provided by Web3Auth.
 
-Each adapter in Web3Auth exposes a Provider on successful user authentication. This provider can be used to interact with wallet or connected chain
-using RPC calls. By default Web3Auth providers expose chain-specific providers based on the `chainConfig` and `chainNamespace` field passed in the
-constructor.
+Currently, Web3Auth supports the following providers:
 
-Currently, Web3Auth supports three chainNamespaces:
+- [EIP1193 Provider for EVM Compatible Chains](/sdk/helper-sdks/providers/evm)
+- [Solana Provider for Solana Blockchain](/sdk/helper-sdks/providers/solana)
+- [XRPL Provider for XRPL Blockchain](/sdk/helper-sdks/providers/xrpl)
+- [Common Provider for Other Blockchains](/sdk/helper-sdks/providers/common)
 
-- `eip155`: EVM Compatible Chains
-- `solana`: Solana Blockchain
-- `other`: Other Blockchains
+## Base Type Reference for Web3Auth Providers
 
-## EVM Compatible Chains
-
-`chainNamespace: "eip155"` will return a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider once user is logged in. Chains like
-Ethereum, Binance, Polygon, Arbitrum, etc. are [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compliant.
-
-Read more about it in [**EVM Provider**](/sdk/helper-sdks/providers/evm)
-
-## Solana Blockchain
-
-`chainNamespace: "solana"` will return a provider with Solana chain connection.
-
-Read more about it in [**Solana Provider**](/sdk/helper-sdks/providers/solana)
-
-## Other Blockchains
-
-If you want to use any other chain except Solana or EVM chains, for ex: Tezos, you can specify the value of `chainNamespace: "other"`.
-
-Read more about it in [**Other Provider**](/sdk/helper-sdks/providers/other)
-
-## Exporting Web3Auth Private Key
-
-Web3Auth gives you the option to export your users' private key. This can be used to connect directly to the blockchain network and interact with it.
-
-### Examples
-
-#### Ethereum Private Key
-
-Example below demonstrates usage of `eip155` chainNamespace and retrieving ethereum private key of logged in user.
-
-```ts
-const web3auth = new Web3Auth({
-  chainConfig: { chainNamespace: "eip155" },
-  clientId = "YOUR_WEB3AUTH_CLIENT_ID"; // get from https://dashboard.web3auth.io
-});
-
-//Assuming user is already logged in.
-async function getPrivateKey() {
-    const privateKey = await web3auth.provider.request({
-        method: "eth_private_key"
-    });
-    //Do something with privateKey
-}
-```
-
-#### Solana Private Key
-
-Example below demonstrates usage of `solana` chainNamespace and retrieving private key of logged in user.
-
-```ts
-const web3auth = new Web3Auth({
-  chainConfig: {chainNamespace: "solana" },
-  clientId = "YOUR_WEB3AUTH_CLIENT_ID"; // get from https://dashboard.web3auth.io
-});
-
-//Assuming user is already logged in.
-async function getPrivateKey() {
-    const privateKey = await web3auth.provider.request({
-        method: "solanaPrivateKey",
-        params: {},
-    });
-    //Do something with privateKey
-}
-```
-
-#### General Private Key
-
-Example below demonstrates usage of `other` chainNamespace and retrieving private key of logged in user.
-
-```ts
-const web3auth = new Web3Auth({
-  chainConfig: { chainNamespace: "other" },
-  clientId = "YOUR_WEB3AUTH_CLIENT_ID"; // get from https://dashboard.web3auth.io
-});
-
-//Assuming user is already logged in.
-async function getPrivateKey() {
-    const privateKey = await web3auth.provider.request({
-        method: "private_key"
-    });
-    //Do something with privateKey
-}
-```
-
-## Standard Type for Web3Auth Provider
-
-For facilitating this flow, Web3Auth exposes a `SafeEventEmitterProvider` which is a provider type helping you make standardized RPC calls to a
+For facilitating these providers, Web3Auth exposes a `SafeEventEmitterProvider` which is a provider type helping you make standardized RPC calls to a
 blockchain.
 
 This provider contains two functions, `send` and `request`. You can find its type reference below:

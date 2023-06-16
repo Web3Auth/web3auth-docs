@@ -4,19 +4,128 @@ displayed_sidebar: sdk
 description: "XRPL Provider | Documentation - Web3Auth"
 ---
 
----
+## [`@web3auth/xrpl-provider`](https://npmjs.com/package/@web3auth/xrpl-provider)
 
 The `@web3auth/xrpl-provider` is a Web3Auth provider that simplifies interaction with the XRPL Blockchain by serving as a wrapper around the
 [XRPL JSON RPC API](https://xrpl.org/request-formatting.html). It is used to interact with the XRPL blockchain and perform various operations like
 getting user's account, balance, signing a transaction, sending a transaction etc.
 
-## Initializing the provider
+In this section we'll explore more about how you can use this provider with our SDKs.
 
----
+## Installation
+
+#### [`@web3auth/xrpl-provider`](https://npmjs.com/package/@web3auth/xrpl-provider)
+
+```bash npm2yarn
+npm install --save @web3auth/xrpl-provider
+```
+
+## Initialisation
+
+Import the `XrplPrivateKeyProvider` **class** from `@web3auth/xrpl-provider`.
+
+```javascript
+import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
+```
+
+### Assign the `XrplPrivateKeyProvider` class to a variable
+
+After creating your Web3Auth instance, you need to initialise the Torus Wallet UI Plugin and add it to a class for further usage.
+
+```javascript
+const privateKeyProvider = new XrplPrivateKeyProvider({ config: XrplPrivKeyProviderConfig });
+```
+
+This constructor takes an object with a config of `XrplPrivKeyProviderConfig` as input.
+
+#### Arguments
+
+`XrplPrivKeyProviderConfig`
+
+```ts
+export interface XrplPrivKeyProviderConfig extends BaseProviderConfig {
+  chainConfig: Omit<CustomChainConfig, "chainNamespace"> & Pick<CustomChainConfig, "wsTarget">;
+}
+export type CustomChainConfig = {
+  chainNamespace: ChainNamespaceType;
+  /**
+   * The chain id of the chain
+   */
+  chainId: string;
+  /**
+   * RPC target Url for the chain
+   */
+  rpcTarget: string;
+  /**
+   * web socket target Url for the chain
+   */
+  wsTarget?: string;
+  /**
+   * Display Name for the chain
+   */
+  displayName: string;
+  /**
+   * Url of the block explorer
+   */
+  blockExplorer: string;
+  /**
+   * Default currency ticker of the network (e.g: ETH)
+   */
+  ticker: string;
+  /**
+   * Name for currency ticker (e.g: `Ethereum`)
+   */
+  tickerName: string;
+  /**
+   * Number of decimals for the currency ticker (e.g: 18)
+   */
+  decimals?: number;
+};
+export interface BaseProviderConfig extends BaseConfig {
+  chainConfig: Partial<CustomChainConfig>;
+  networks?: Record<string, CustomChainConfig>;
+  skipLookupNetwork?: boolean;
+}
+export interface BaseConfig {
+  /**
+   *  Determines if this controller is enabled
+   */
+  disabled?: boolean;
+}
+```
+
+### Chain Config
+
+For getting the Chain Config for XRPL Chain, you need to use the `getXRPLChainConfig` function from `@web3auth/xrpl-provider`.
+
+```ts
+export declare const getXRPLChainConfig: (
+  network: XRPLNetworkType,
+  customChainConfig?: Partial<Omit<CustomChainConfig, "chainNamespace">>
+) => CustomChainConfig & Pick<CustomChainConfig, "wsTarget">;
+```
+
+In this function, you can pass over your custom config as well as just the network type for web3auth to generate a standard config according to your
+requirement.
+
+#### Example
+
+```ts
+const xrplProvider: any = new XrplPrivateKeyProvider({
+  config: { chainConfig: getXRPLChainConfig("testnet") },
+}); // devnet, testnet, mainnet
+```
+
+## Setting up the provider
+
+### For Web3Auth PnP Web SDKs
+
+If you are using `chainNamespace: "other"` while initializing `Web3Auth` or `Web3AuthNoModal` with the `OpenloginAdapter`, you need to add the
+`privateKeyProvider` to the OpenLogin instance.
 
 ```ts
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACESS } from "@web3auth/base";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { XrplPrivateKeyProvider, getXRPLChainConfig } from "@web3auth/xrpl-provider";
 import { convertStringToHex, Payment, xrpToDrops } from "xrpl";
