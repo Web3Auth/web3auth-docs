@@ -75,26 +75,40 @@ public struct W3ALoginParams: Codable {
 
 </Tabs>
 
-### Sample Response
+### `getPrivkey()`
+
+Use getPrivkey() to get the private key of the user. This private key can be used to sign transactions on Ethereum.
+
+### `getEd25519PrivKey()`
+
+Use getEd25519PrivKey() to get the Ed25519 private key of the user. This private key can be used to sign transactions on Solana.
+
+### `getUserInfo()`
+
+Use getUserInfo() to get the user info of the user.
+
+### UserInfo Response
 
 ```json
 {
-  "ed25519PrivKey": "666523652352635....",
   "privKey": "0ajjsdsd....",
   "userInfo": {
-    "aggregateVerifier": "tkey-google",
-    "email": "john@gmail.com",
     "name": "John Dash",
     "profileImage": "https://lh3.googleusercontent.com/a/Ajjjsdsmdjmnm...",
     "typeOfLogin": "google",
+    "aggregateVerifier": "tkey-google",
     "verifier": "torus",
     "verifierId": "john@gmail.com",
+    "email": "john@gmail.com",
     "dappShare": "<24 words seed phrase>", // will be sent only incase of custom verifiers
     "idToken": "<jwtToken issued by Web3Auth>",
     "oAuthIdToken": "<jwtToken issued by OAuth Provider>", // will be sent only incase of custom verifiers
     "oAuthAccessToken": "<accessToken issued by OAuth Provider>" // will be sent only incase of custom verifiers
   },
-  "sessionId": "468f67d70.......dad5cea3f133"
+  "ed25519PrivKey": "666523652352635....",
+  "coreKitKey": "0xajjsdsd....",
+  "coreKitEd25519PrivKey": "666523652352635....",
+  "sessionId": "0xajjsdsd...."
 }
 ```
 
@@ -474,8 +488,6 @@ login(provider: .GOOGLE)
 
 This method will logout the user and remove the session id from the device. The user will need to login again to use the dApp next time the dApp is
 opened.
-
-### Example
 
 ```swift
 await Web3Auth().logout()
