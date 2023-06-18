@@ -8,7 +8,7 @@ export const getConstructorCodeAndroid = (isWhitelabeled: boolean, customAuth: s
 
   if (web3AuthNetwork === MAINNET) {
     network = `
-                network = Web3Auth.Network.MAINNET, // MAINNET, TESTNET, AQUA, CELESTE or CYAN`;
+                network = Network.MAINNET, // MAINNET, TESTNET, AQUA, CELESTE or CYAN`;
   } else if (web3AuthNetwork === CYAN) {
     network = `
                 network = Web3Auth.Network.CYAN, // MAINNET, TESTNET, AQUA, CELESTE or CYAN`;
