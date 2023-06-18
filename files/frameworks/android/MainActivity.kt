@@ -13,10 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.web3auth.core.Web3Auth
 import com.web3auth.core.types.*
-import java8.util.concurrent.CompletableFuture
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
-import org.web3j.protocol.http.HttpService
+import java.util.concurrent.CompletableFuture
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,15 +44,15 @@ class MainActivity : AppCompatActivity() {
         web3Auth.setResultUrl(intent?.data)
         //HIGHLIGHTEND-setResultURL
 
-        // Call sessionResponse() in onCreate() to check for any existing session.
-        val sessionResponse: CompletableFuture<Web3AuthResponse> = web3Auth.sessionResponse()
+        // Call initialize() in onCreate() to check for any existing session.
+        val sessionResponse: CompletableFuture<Void> = web3Auth.initialize()
         sessionResponse.whenComplete { loginResponse, error ->
             if (error == null) {
                 // Sets the sessionId, credentials and Web3j instance.
                 sessionId = loginResponse.sessionId.toString()
                 credentials = Credentials.create(sessionId)
                 web3 = Web3j.build(HttpService(rpcUrl))
-                reRender(loginResponse)
+                reRender()
             } else {
                 Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
                 // Ideally, you should initiate the login function here.
@@ -82,7 +81,6 @@ class MainActivity : AppCompatActivity() {
         sendTransactionButton.setOnClickListener { sendTransaction() }
         // HIGHLIGHTEND-evmRPCFunctions
 
-        reRender(Web3AuthResponse())
     }
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
@@ -109,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                 // Sets the credentials and Web3j instance.
                 credentials = Credentials.create(sessionId)
                 web3 = Web3j.build(HttpService(rpcUrl))
-                reRender(loginResponse)
+                reRender()
             } else {
                 Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong" )
             }
@@ -122,7 +120,7 @@ class MainActivity : AppCompatActivity() {
         //HIGHLIGHTEND-triggeringLogout
         logoutCompletableFuture.whenComplete { _, error ->
             if (error == null) {
-                reRender(Web3AuthResponse())
+                reRender()
             } else {
                 Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong" )
             }
@@ -197,11 +195,17 @@ class MainActivity : AppCompatActivity() {
         val signInButton = findViewById<Button>(R.id.signInButton)
         val signOutButton = findViewById<Button>(R.id.signOutButton)
 
-        val key = web3AuthResponse.privKey
-        val userInfo = web3AuthResponse.userInfo
+        var key: String? = null
+        var userInfo: UserInfo? = null
+        try {
+            key = web3Auth.getPrivkey()
+            userInfo = web3Auth.getUserInfo()
+        } catch (ex: Exception) {
+            print(ex)
+        }
 
         if (key is String && key.isNotEmpty()) {
-            contentTextView.text = gson.toJson(web3AuthResponse)
+            contentTextView.text = gson.toJson(userInfo) + "\n Private Key: " + key
             contentTextView.visibility = View.VISIBLE
             signInButton.visibility = View.GONE
             signOutButton.visibility = View.VISIBLE
