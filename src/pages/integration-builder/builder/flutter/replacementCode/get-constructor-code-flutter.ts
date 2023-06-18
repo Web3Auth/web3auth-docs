@@ -1,23 +1,20 @@
-import { AQUA, AUTH0, CELESTE, CYAN, DISCORD, FACEBOOK, GOOGLE, JWT, MAINNET, TWITCH } from "../../choices";
+import { AQUA, AUTH0, CYAN, DISCORD, FACEBOOK, GOOGLE, JWT, MAINNET, TWITCH } from "../../choices";
 
 export const getConstructorCodeFlutter = (isWhitelabeled: boolean, customAuth: string, web3AuthNetwork: string) => {
   let whitelabelCode = "";
   let loginConfigCode = "";
   let network = `
-      network: Network.testnet, // mainnet, testnet, aqua, celeste or cyan`;
+      network: Network.testnet, // mainnet, testnet, aqua or cyan`;
 
   if (web3AuthNetwork === MAINNET) {
     network = `
-      network: Network.mainnet, // mainnet, testnet, aqua, celeste or cyan`;
+      network: Network.mainnet, // mainnet, testnet, aqua or cyan`;
   } else if (web3AuthNetwork === CYAN) {
     network = `
-      network: Network.cyan, // mainnet, testnet, aqua, celeste or cyan`;
+      network: Network.cyan, // mainnet, testnet, aqua or cyan`;
   } else if (web3AuthNetwork === AQUA) {
     network = `
-      network: Network.aqua, // mainnet, testnet, aqua, celeste or cyan`;
-  } else if (web3AuthNetwork === CELESTE) {
-    network = `
-      network: Network.celeste, // mainnet, testnet, aqua, celeste or cyan`;
+      network: Network.aqua, // mainnet, testnet, aqua or cyan`;
   }
   if (isWhitelabeled) {
     whitelabelCode = `,

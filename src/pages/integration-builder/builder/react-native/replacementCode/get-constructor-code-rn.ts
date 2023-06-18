@@ -1,23 +1,20 @@
-import { AQUA, AUTH0, CELESTE, CYAN, DISCORD, FACEBOOK, GOOGLE, JWT, MAINNET, TWITCH } from "../../choices";
+import { AQUA, AUTH0, CYAN, DISCORD, FACEBOOK, GOOGLE, JWT, MAINNET, TWITCH } from "../../choices";
 
 export const getConstructorCodeRN = (whitelabel: boolean, customAuth: string, web3AuthNetwork: string) => {
   let whiteLabelCode = ``;
   let loginConfig = ``;
   let network = `
-        network: OPENLOGIN_NETWORK.TESTNET, // MAINNET, AQUA, CELESTE, CYAN or TESTNET`;
+        network: OPENLOGIN_NETWORK.TESTNET, // MAINNET, AQUA,  CYAN or TESTNET`;
 
   if (web3AuthNetwork === MAINNET) {
     network = `
-        network: OPENLOGIN_NETWORK.MAINNET, // MAINNET, AQUA, CELESTE, CYAN or TESTNET`;
+        network: OPENLOGIN_NETWORK.MAINNET, // MAINNET, AQUA,  CYAN or TESTNET`;
   } else if (web3AuthNetwork === CYAN) {
     network = `
-        network: OPENLOGIN_NETWORK.CYAN, // MAINNET, AQUA, CELESTE, CYAN or TESTNET`;
+        network: OPENLOGIN_NETWORK.CYAN, // MAINNET, AQUA,  CYAN or TESTNET`;
   } else if (web3AuthNetwork === AQUA) {
     network = `
-        network: OPENLOGIN_NETWORK.AQUA, // MAINNET, AQUA, CELESTE, CYAN or TESTNET`;
-  } else if (web3AuthNetwork === CELESTE) {
-    network = `
-        network: OPENLOGIN_NETWORK.CELESTE, // MAINNET, AQUA, CELESTE, CYAN or TESTNET`;
+        network: OPENLOGIN_NETWORK.AQUA, // MAINNET, AQUA,  CYAN or TESTNET`;
   }
 
   if (whitelabel) {

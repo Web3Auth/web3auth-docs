@@ -1,23 +1,20 @@
-import { AQUA, AUTH0, CELESTE, CYAN, DISCORD, FACEBOOK, GOOGLE, JWT, MAINNET, TWITCH } from "../../choices";
+import { AQUA, AUTH0, CYAN, DISCORD, FACEBOOK, GOOGLE, JWT, MAINNET, TWITCH } from "../../choices";
 
 export const getConstructorCodeAndroid = (isWhitelabeled: boolean, customAuth: string, web3AuthNetwork: string) => {
   let whitelabelCode = "";
   let customAuthCode = "";
   let network = `
-                network = Web3Auth.Network.TESTNET, // MAINNET, TESTNET, AQUA, CELESTE or CYAN`;
+                network = Web3Auth.Network.TESTNET, // MAINNET, TESTNET, AQUA or CYAN`;
 
   if (web3AuthNetwork === MAINNET) {
     network = `
-                network = Network.MAINNET, // MAINNET, TESTNET, AQUA, CELESTE or CYAN`;
+                network = Network.MAINNET, // MAINNET, TESTNET, AQUA or CYAN`;
   } else if (web3AuthNetwork === CYAN) {
     network = `
-                network = Web3Auth.Network.CYAN, // MAINNET, TESTNET, AQUA, CELESTE or CYAN`;
+                network = Web3Auth.Network.CYAN, // MAINNET, TESTNET, AQUA or CYAN`;
   } else if (web3AuthNetwork === AQUA) {
     network = `
-                network = Web3Auth.Network.AQUA, // MAINNET, TESTNET, AQUA, CELESTE or CYAN`;
-  } else if (web3AuthNetwork === CELESTE) {
-    network = `
-                network = Web3Auth.Network.CELESTE, // MAINNET, TESTNET, AQUA, CELESTE or CYAN`;
+                network = Web3Auth.Network.AQUA, // MAINNET, TESTNET, AQUA or CYAN`;
   }
   if (isWhitelabeled) {
     whitelabelCode = `
