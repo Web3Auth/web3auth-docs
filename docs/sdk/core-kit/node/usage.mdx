@@ -161,7 +161,7 @@ For MFA enabled users, you'll see `Error("User has already enabled mfa, please u
 const { Web3Auth } = require("@web3auth/node-sdk");
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
-const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+const provider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig: {
       chainId: "0x1",
@@ -180,16 +180,16 @@ const web3auth = new Web3Auth({
   web3AuthNetwork: "cyan",
 });
 
-web3auth.init(ethereumPrivateKeyProvider);
+web3auth.init({ provider });
 
 const connect = async () => {
-  const provider = await web3auth.connect({
+  const web3authNodeprovider = await web3auth.connect({
     verifier: "web3auth-sfa-verifier", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
     verifierId: "Yux1873xnibdui", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
     idToken:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c", // replace with your newly created unused JWT Token.
   });
-  const privateKey = await provider.request({ method: "eth_private_key" });
+  const privateKey = await web3authNodeprovider.request({ method: "eth_private_key" });
   // The private key returned here is the CoreKitKey
   console.log("ETH Private Key", privateKey);
 };
