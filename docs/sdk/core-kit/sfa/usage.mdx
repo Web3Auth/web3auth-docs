@@ -120,7 +120,6 @@ const chainConfig = {
 // Instantiate Web3Auth SFA SDK
 const web3authSfa = new Web3Auth({
   clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  chainConfig,
   web3AuthNetwork: "testnet", // ["cyan", "testnet"]
   usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
 });
@@ -129,7 +128,7 @@ const web3authSfa = new Web3Auth({
 const provider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 // Initialize Web3Auth SFA SDK
-web3authSfa.init(provider);
+web3authSfa.init({ provider });
 
 // Login the user
 const web3authSfaprovider = await web3auth.connect({
