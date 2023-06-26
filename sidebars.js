@@ -498,7 +498,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "MPC Core Kit (Beta) SDK",
+      label: "MPC Core Kit SDK",
       link: { type: "doc", id: "sdk/core-kit/mpc-core-kit/mpc-core-kit" },
       items: [
         "sdk/core-kit/mpc-core-kit/install",
