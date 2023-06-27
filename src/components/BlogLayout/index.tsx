@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import Layout from "@theme/Layout";
 import NotFound from "@theme/NotFound";
 import { Route, Switch, useRouteMatch } from "react-router-dom";

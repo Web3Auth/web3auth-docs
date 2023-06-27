@@ -64,7 +64,7 @@ export default function BlogDetail() {
   const [facebookLink, setFacebookLink] = useState<string>("");
   const [twitterLink, setTwitterLink] = useState<string>("");
   const [copyButtonText, setCopyButtonText] = useState<string>("Copy");
-  const [postData, setPostData] = useState<any>("Title");
+  const [postData, setPostData] = useState<any>("");
   const match = useRouteMatch();
   const { slug } = match.params as BlogDetailParams;
 
