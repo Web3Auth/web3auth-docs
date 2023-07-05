@@ -391,6 +391,10 @@ const config = {
             to: "/content-hub/guides/tkey",
           },
           {
+            from: "/content-hub/guides/",
+            to: "/content-hub/",
+          },
+          {
             from: "/guide/",
             to: "/content-hub/",
           },
