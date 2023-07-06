@@ -3,6 +3,7 @@ import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { useEffect, useState } from "react";
 import Bookmark from "react-bookmark";
+import { useRouteMatch } from "react-router-dom";
 
 import DiscourseComment from "../../components/DiscourseComment";
 import SEO from "../../components/SEO";
@@ -16,6 +17,11 @@ declare global {
   }
 }
 
+type BlogDetailParams = {
+  [key: string]: any;
+  slug: string;
+};
+
 export default function BlogDetail() {
   const { siteConfig } = useDocusaurusContext();
   const { customFields } = siteConfig;
@@ -25,6 +31,8 @@ export default function BlogDetail() {
   const [twitterLink, setTwitterLink] = useState<string>("");
   const [copyButtonText, setCopyButtonText] = useState<string>("Copy");
   const [postData, setPostData] = useState<any>("Title");
+  const match = useRouteMatch();
+  const { slug } = match.params as BlogDetailParams;
 
   const apiCall = async (query) => {
     const fetchUrl = `https://graphql.contentful.com/content/v1/spaces/${customFields.REACT_CONTENTFUL_SPACE}/environments/master`;
@@ -44,7 +52,7 @@ export default function BlogDetail() {
       const query = `
       query {
         pageBlogPostCollection(
-          where: { slug: "announcing-our-partnership-with-trust-wallet-to-offer-the-simplest-web3" }
+          where: { slug: "${slug}"}
         ) {
           items {
             sys {
