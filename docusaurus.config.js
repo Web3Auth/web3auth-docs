@@ -141,13 +141,19 @@ const config = {
       baseUrl,
     }
   },
+  scripts: [
+    {
+      src: baseUrl + 'js/fix-trailing-slash.js',
+      async: false,
+      defer: false,
+    },],
   presets: [
     [
       "@docusaurus/preset-classic",
       {
         docs: {
           routeBasePath: "/",
-          breadcrumbs: true,
+          breadcrumbs: false,
           editUrl: githubEditUrl,
           sidebarPath: require.resolve("./sidebars.js"),
           remarkPlugins: [remarkMath, [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
@@ -160,7 +166,24 @@ const config = {
           trackingID: "GTM-ML3T5M6",
         },
         pages: {
-          remarkPlugins: [require("@docusaurus/remark-plugin-npm2yarn")],
+          path: 'src/pages',
+          routeBasePath: "/",
+          include: ['**/**.{js,jsx,ts,tsx,md,mdx}'],
+          exclude: [
+            '**/_*.{js,jsx,ts,tsx,md,mdx}',
+            '**/_*/**',
+            '**/*.test.{js,jsx,ts,tsx}',
+            '**/__tests__/**',
+          ],
+          mdxPageComponent: '@theme/MDXPage',
+          remarkPlugins: [remarkMath, [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
+          rehypePlugins: [[rehypeKatex, { strict: false }]],
+          beforeDefaultRemarkPlugins: [],
+          beforeDefaultRehypePlugins: [],
+        },
+        sitemap: {
+          changefreq: 'weekly',
+          priority: 0.5,
         },
       },
     ],
@@ -319,14 +342,6 @@ const config = {
             to: "/pnp/features/connect-external-wallets",
           },
           {
-            from: "/self-host/",
-            to: "/core-kit/introduction",
-          },
-          {
-            from: "/self-hosting",
-            to: "/core-kit/introduction",
-          },
-          {
             from: "/developer-dashboard/",
             to: "/dashboard-setup/",
           },
@@ -355,18 +370,6 @@ const config = {
             to: "/auth-provider-setup/verifiers",
           },
           {
-            from: "/sdk/tkey/initialization",
-            to: "/sdk/core-kit/tkey/initialize",
-          },
-          {
-            from: "/sdk/tkey/initialisation",
-            to: "/sdk/core-kit/tkey/initialize",
-          },
-          {
-            from: "/sdk/tkey/installation",
-            to: "/sdk/core-kit/tkey/install",
-          },
-          {
             from: "/sdk/web/modal/multi-factor-authentication",
             to: "/sdk/pnp/web/modal/mfa",
           },
@@ -379,42 +382,22 @@ const config = {
             to: "/sdk/pnp/web/modal/mfa",
           },
           {
-            from: "/guides/one-key-flow",
-            to: "/content-hub/guides/single-factor-auth",
-          },
-          {
-            from: "/customauth/auth0",
-            to: "/content-hub/guides/auth0",
-          },
-          {
-            from: "/guides/selfhost",
-            to: "/content-hub/guides/tkey",
-          },
-          {
-            from: "/content-hub/guides/",
-            to: "/content-hub/",
-          },
-          {
-            from: "/guide/",
-            to: "/content-hub/",
-          },
-          {
             from: "/sdk/helper-sdks/providers/other",
             to: "/sdk/helper-sdks/providers/common",
           },
+          {
+            from: "/sdk/tkey/initialization",
+            to: "/sdk/core-kit/tkey/initialize",
+          },
+          {
+            from: "/sdk/tkey/initialisation",
+            to: "/sdk/core-kit/tkey/initialize",
+          },
+          {
+            from: "/sdk/tkey/installation",
+            to: "/sdk/core-kit/tkey/install",
+          },
 
-          {
-            from: "/blog/",
-            to: "/content-hub/",
-          },
-          {
-            from: "/guides/",
-            to: "/content-hub/",
-          },
-          {
-            from: "/blogs/",
-            to: "/content-hub/",
-          },
         ],
         createRedirects(existingPath) {
           if (existingPath.includes('/content-hub')) {
@@ -423,6 +406,9 @@ const config = {
               existingPath.replace('/content-hub/guides', '/guide'),
               existingPath.replace('/content-hub/blog', '/blogs'),
               existingPath.replace('/content-hub/blog', '/blog'),
+              existingPath.replace('/content-hub/guides/auth0', '/customauth/auth0'),
+              existingPath.replace('/content-hub/guides/tkey', '/guides/selfhost'),
+              existingPath.replace('/content-hub/guides/single-factor-auth', '/guides/one-key-flow'),
             ];
           }
           if (existingPath.includes('/sdk')) {
@@ -483,6 +469,8 @@ const config = {
               existingPath.replace('/core-kit/sfa-android', '/core-kit/single-factor-auth-android'),
               existingPath.replace('/core-kit/tkey', '/tkey'),
               existingPath.replace('/core-kit/mpc-core-kit', '/mpc-core-kit'),
+              existingPath.replace('/core-kit/introduction', '/self-host/'),
+              existingPath.replace('/core-kit/introduction', '/self-hosting'),
             ];
           }
           return undefined; // Return a falsy value: no redirect created
