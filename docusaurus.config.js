@@ -81,8 +81,8 @@ const config = {
           ],
         },
         {
-          label: "Integration Builder",
-          to: "/integration-builder",
+          label: "Quick Start",
+          to: "/quick-start",
           position: "left",
         },
         {

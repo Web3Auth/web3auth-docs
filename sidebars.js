@@ -9,7 +9,6 @@ module.exports = {
     },
     "what-is-web3auth",
     "how-web3auth-works",
-    "quick-start",
     {
       type: "category",
       label: "Deciding your Product Fit",
@@ -112,6 +111,11 @@ module.exports = {
         "pnp/features/connect-external-wallets",
         "pnp/features/dapp-share",
       ],
+    },
+    {
+      type: "link",
+      label: "Integration Builder",
+      href: "/integration-builder",
     },
     "pnp/going-live",
     // {
@@ -268,11 +272,6 @@ module.exports = {
       label: "Contribute",
       link: { type: "doc", id: "contribute/contribute" },
       items: ["contribute/bug-bounty"],
-    },
-    {
-      type: "link",
-      label: "Integration Builder",
-      href: "/integration-builder",
     },
     {
       type: "link",
