@@ -92,7 +92,7 @@ export default function FooterComponent(): JSX.Element {
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="https://status.web3auth.io/" target="_blank" rel="noreferrer">
+              <a className="footer__link-item" href="https://status.web3auth.io" target="_blank" rel="noreferrer">
                 System Status
               </a>
             </div>
@@ -102,7 +102,7 @@ export default function FooterComponent(): JSX.Element {
               <strong>Developer</strong>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="https://dashboard.web3auth.io/" target="_blank" rel="noreferrer">
+              <a className="footer__link-item" href="https://dashboard.web3auth.io" target="_blank" rel="noreferrer">
                 Dashboard
               </a>
             </div>
@@ -162,7 +162,7 @@ export default function FooterComponent(): JSX.Element {
               <strong>Community</strong>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="https://community.web3auth.io/" target="_blank" rel="noreferrer">
+              <a className="footer__link-item" href="https://community.web3auth.io" target="_blank" rel="noreferrer">
                 Community Discussions
               </a>
             </div>

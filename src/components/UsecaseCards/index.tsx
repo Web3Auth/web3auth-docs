@@ -38,7 +38,7 @@ export default function UsecaseCards() {
           </span>
         </Link>
 
-        <Link className={classNames(styles.card)} to="https://play.skyweaver.net/">
+        <Link className={classNames(styles.card)} to="https://play.skyweaver.net">
           <div>
             {colorMode === "dark" ? (
               <img className={styles.logo} src={SkyweaverDark} alt="Skyweaver" />
@@ -54,7 +54,7 @@ export default function UsecaseCards() {
               solution on Polygon L2. This combination gives players the best user experience, security and access control to their wallets.
             </p>
           </div>
-          <span className={styles.footer} target="_blank" href="https://play.skyweaver.net/">
+          <span className={styles.footer} target="_blank" href="https://play.skyweaver.net">
             Try being a gamer once →
           </span>
         </Link>
@@ -62,7 +62,7 @@ export default function UsecaseCards() {
 
       {/* SECOND ROW */}
       <div className={styles.container}>
-        <Link className={classNames(styles.card)} to="https://collect.100thieves.com/">
+        <Link className={classNames(styles.card)} to="https://collect.100thieves.com">
           <div>
             {colorMode === "dark" ? (
               <img className={styles.logo} src={ThievesDark} alt="100Thieves" />
@@ -78,11 +78,11 @@ export default function UsecaseCards() {
               using an out-of-the-box Modal provided by Web3Auth, that you can add too, in less than 30 mins!
             </p>
           </div>
-          <span className={styles.footer} target="_blank" href="https://collect.100thieves.com/">
+          <span className={styles.footer} target="_blank" href="https://collect.100thieves.com">
             Collect the 100 Thieves chain →
           </span>
         </Link>
-        <Link className={classNames(styles.card)} to="https://www.keplr.app/">
+        <Link className={classNames(styles.card)} to="https://www.keplr.app">
           <div>
             <img className={styles.logo} src={Keplr} alt="Keplr" />
             <h3 className={styles.title}>
@@ -95,7 +95,7 @@ export default function UsecaseCards() {
               handle all the transactions required for the dApp.
             </p>
           </div>
-          <span className={styles.footer} target="_blank" href="https://www.keplr.app/">
+          <span className={styles.footer} target="_blank" href="https://www.keplr.app">
             Download the Extension →
           </span>
         </Link>
@@ -103,7 +103,7 @@ export default function UsecaseCards() {
 
       {/* THRID ROW */}
       <div className={styles.container}>
-        <Link className={classNames(styles.card)} to="https://app.kash.io/">
+        <Link className={classNames(styles.card)} to="https://app.kash.io">
           <div>
             <img className={styles.logo} src={Kash} alt="Kash" />
             <h3 className={styles.title}>
@@ -115,7 +115,7 @@ export default function UsecaseCards() {
               Terra address with just a simple click.
             </p>
           </div>
-          <span className={styles.footer} target="_blank" href="https://app.kash.io/">
+          <span className={styles.footer} target="_blank" href="https://app.kash.io">
             Just experience this →
           </span>
         </Link>

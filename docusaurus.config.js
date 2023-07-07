@@ -122,7 +122,7 @@ const config = {
           type: "html",
           position: "right",
           value:
-            '<a href="https://dashboard.web3auth.io/" target="_blank" class="navbar-button"><strong class="navbar-button-text">Login to Dashboard</strong></a>',
+            '<a href="https://dashboard.web3auth.io" target="_blank" class="navbar-button"><strong class="navbar-button-text">Login to Dashboard</strong></a>',
         },
         {
           type: "html",
@@ -218,7 +218,7 @@ const config = {
             to: "/quick-start",
           },
           {
-            from: "/developing-with-web3auth/",
+            from: "/developing-with-web3auth",
             to: "/quick-start",
           },
           {
@@ -238,24 +238,24 @@ const config = {
             to: "/quick-start",
           },
           {
-            from: "/sdk/web/choosesdk/",
-            to: "/sdk/pnp/web/",
+            from: "/sdk/web/choosesdk",
+            to: "/sdk/pnp/web",
           },
           {
             from: "/sdk/android/setting-up",
-            to: "/sdk/pnp/android/",
+            to: "/sdk/pnp/android",
           },
           {
             from: "/sdk/ios/setting-up",
-            to: "/sdk/pnp/ios/",
+            to: "/sdk/pnp/ios",
           },
           {
             from: "/sdk/flutter/setting-up",
-            to: "/sdk/pnp/flutter/",
+            to: "/sdk/pnp/flutter",
           },
           {
             from: "/sdk/react-native/choose-workflows",
-            to: "/sdk/pnp/react-native/",
+            to: "/sdk/pnp/react-native",
           },
           {
             from: "/sdk/web/customauth",
@@ -286,12 +286,12 @@ const config = {
             to: "/product-fit/user-flow",
           },
           {
-            from: "/overview/key-management/",
+            from: "/overview/key-management",
             to: "/infrastructure/key-management",
           },
           {
-            from: "/overview/key-management/technical-architecture/",
-            to: "/infrastructure/technical-architecture/",
+            from: "/overview/key-management/technical-architecture",
+            to: "/infrastructure/technical-architecture",
           },
           {
             from: "/overview/key-management/audits",
@@ -299,11 +299,11 @@ const config = {
           },
           {
             from: "/whitelabeling",
-            to: "/pnp/features/whitelabel/",
+            to: "/pnp/features/whitelabel",
           },
           {
-            from: "/whitelabel/",
-            to: "/pnp/features/whitelabel/",
+            from: "/whitelabel",
+            to: "/pnp/features/whitelabel",
           },
           {
             from: "/interoperability",
@@ -314,16 +314,16 @@ const config = {
             to: "/pnp/features/dapp-share",
           },
           {
-            from: "/authenticating-users/",
-            to: "/pnp/features/server-side-verification/",
+            from: "/authenticating-users",
+            to: "/pnp/features/server-side-verification",
           },
           {
             from: "/authenticating-users/overview",
-            to: "/pnp/features/server-side-verification/",
+            to: "/pnp/features/server-side-verification",
           },
           {
-            from: "/server-side-verification/",
-            to: "/pnp/features/server-side-verification/",
+            from: "/server-side-verification",
+            to: "/pnp/features/server-side-verification",
           },
           {
             from: "/server-side-verification/social-login-users",
@@ -342,8 +342,8 @@ const config = {
             to: "/pnp/features/connect-external-wallets",
           },
           {
-            from: "/developer-dashboard/",
-            to: "/dashboard-setup/",
+            from: "/developer-dashboard",
+            to: "/dashboard-setup",
           },
           {
             from: "/developer-dashboard/get-client-id",
@@ -363,7 +363,7 @@ const config = {
           },
           {
             from: "/customauth",
-            to: "/auth-provider-setup/",
+            to: "/auth-provider-setup",
           },
           {
             from: "/customauth/verifiers",

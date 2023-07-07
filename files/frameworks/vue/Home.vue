@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h2>
-      <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
+      <a target="_blank" href="http://web3auth.io" rel="noreferrer">
       Web3Auth
       </a>
       Vue.js Ethereum Example

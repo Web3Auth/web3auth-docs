@@ -129,7 +129,7 @@ function App() {
   return (
     <div className="container">
       <h1 className="title">
-        <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
+        <a target="_blank" href="http://web3auth.io" rel="noreferrer">
           Web3Auth
         </a>
         & ReactJS Example
@@ -138,7 +138,7 @@ function App() {
       <div className="grid">{provider ? loggedInView : unloggedInView}</div>
 
       <footer className="footer">
-        <a href="https://github.com/Web3Auth/web3auth-pnp-examples/" target="_blank" rel="noopener noreferrer">
+        <a href="https://github.com/Web3Auth/web3auth-pnp-examples" target="_blank" rel="noopener noreferrer">
           Source code
         </a>
       </footer>

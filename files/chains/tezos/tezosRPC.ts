@@ -10,7 +10,7 @@ import { InMemorySigner } from "@taquito/signer";
 // HIGHLIGHTEND-installationTezos
 
 // HIGHLIGHTSTART-tezosRPCFunctions
-const tezos = new TezosToolkit("https://rpc.tzbeta.net/");
+const tezos = new TezosToolkit("https://rpc.tzbeta.net");
 // HIGHLIGHTEND-tezosRPCFunctions
 
 export default class TezosRpc {
