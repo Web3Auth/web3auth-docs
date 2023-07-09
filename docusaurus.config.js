@@ -397,7 +397,10 @@ const config = {
             from: "/sdk/tkey/installation",
             to: "/sdk/core-kit/tkey/install",
           },
-
+          {
+            from: "/content-hub/guides",
+            to: "/content-hub",
+          },
         ],
         createRedirects(existingPath) {
           if (existingPath.includes('/content-hub')) {
