@@ -21,7 +21,7 @@ export default function QuickNavigation() {
             <p>Talk to our sales team and understand how Web3Auth suits your needs.</p>
           </div>
         </Link>
-        <Link className={styles.card} to="https://community.web3auth.io">
+        <Link className={styles.card} to="https://community.web3auth.io/">
           <div className={styles.cardIconContainer}>
             <svg viewBox="0 0 57 56" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
               <path
@@ -43,7 +43,7 @@ export default function QuickNavigation() {
             <p>Join our community of passionate developers - learn, grow and get help for your Web3Auth setup.</p>
           </div>
         </Link>
-        <Link className={styles.card} to="/docs/troubleshooting">
+        <Link className={styles.card} to="/docs/troubleshooting/">
           <div className={styles.cardIconContainer}>
             <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
               <path
