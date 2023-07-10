@@ -8,7 +8,7 @@ const githubEditUrl = `${githubRepoUrl}/edit/master`;
 const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
 const fs = require('fs');
-const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
+const baseUrl = process.env.REACT_APP_BASE_URL || "/docs";
 
 const resourcesDropdown = fs.readFileSync('./src/components/navDropdown/resources.html', 'utf-8');
 const helpDropdown = fs.readFileSync('./src/components/navDropdown/help.html', 'utf-8');
