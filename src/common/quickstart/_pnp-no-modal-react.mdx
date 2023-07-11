@@ -8,7 +8,7 @@ import ConnectToExample from "@site/src/common/sdk/pnp/web/_connect-to-example.m
 Install the Web3Auth No Modal package in your React project.
 
 ```bash npm2yarn
-npm install --save @web3auth/no-modal
+npm install --save @web3auth/no-modal @web3auth/ethereum-provider @web3auth/openlogin-adapter @web3auth/solana-provider @web3auth/base-provider
 ```
 
 ### 2. Get your Client ID from Web3Auth Dashboard
@@ -36,15 +36,29 @@ step where you can pass on all the configurations for Web3Auth you want. A simpl
 
 ```js
 import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
-//Initialize within your constructor
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://goerli.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
 const web3auth = new Web3AuthNoModal({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x1", // Please use 0x5 for Goerli Testnet
-  },
+  chainConfig,
 });
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+const openloginAdapter = new OpenloginAdapter({
+  privateKeyProvider,
+});
+web3auth.configureAdapter(openloginAdapter);
 
 await web3auth.init();
 ```
@@ -55,15 +69,29 @@ await web3auth.init();
 
 ```js
 import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
-//Initialize within your constructor
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x89",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Polygon Mainnet",
+  blockExplorer: "https://polygonscan.com",
+  ticker: "MATIC",
+  tickerName: "Polygon",
+};
 const web3auth = new Web3AuthNoModal({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x89", // Use 0x13881 for Mumbai Testnet
-  },
+  chainConfig,
 });
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+const openloginAdapter = new OpenloginAdapter({
+  privateKeyProvider,
+});
+web3auth.configureAdapter(openloginAdapter);
 
 await web3auth.init();
 ```
@@ -74,16 +102,30 @@ await web3auth.init();
 
 ```js
 import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
-//Initialize within your constructor
+const chainConfig = {
+  chainNamespace: "solana",
+  chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+  rpcTarget: "https://rpc.ankr.com/solana",
+  displayName: "Solana Mainnet",
+  blockExplorer: "https://explorer.solana.com",
+  ticker: "SOL",
+  tickerName: "Solana Token",
+};
+// eslint-disable-next-line @typescript-eslint/no-shadow
 const web3auth = new Web3AuthNoModal({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "solana",
-    chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-  },
+  chainConfig,
 });
 
+const privateKeyProvider = new SolanaPrivateKeyProvider({ config: { chainConfig } });
+
+const openloginAdapter = new OpenloginAdapter({
+  privateKeyProvider,
+});
+web3auth.configureAdapter(openloginAdapter);
 await web3auth.init();
 ```
 
@@ -93,16 +135,31 @@ await web3auth.init();
 
 ```js
 import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
-//Initialize within your constructor
-const web3auth = new Web3AuthNoModal({
+const chainConfig = {
+  chainNamespace: "other",
+  chainId: "chainId",
+  rpcTarget: "rpcUrl",
+  displayName: "displayName",
+  blockExplorer: "blockExplorerUrl",
+  ticker: "ticker",
+  tickerName: "tickerName",
+};
+const web3authInstance = new Web3AuthNoModal({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "other",
-  },
+  chainConfig,
 });
 
-await web3auth.init();
+const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
+
+const openloginAdapter = new OpenloginAdapter({
+  privateKeyProvider,
+});
+web3authInstance.configureAdapter(openloginAdapter);
+
+await web3authInstance.init();
 ```
 
 </TabItem>

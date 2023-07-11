@@ -178,12 +178,10 @@ export const TESTNET = "TESTNET";
 export const MAINNET = "MAINNET";
 export const CYAN = "CYAN";
 export const AQUA = "AQUA";
-export const CELESTE = "CELESTE";
 
 export const WEB3AUTH_NETWORK: DisplayChoice[] = [
   { key: TESTNET, displayName: "Testnet" },
   { key: MAINNET, displayName: "Mainnet" },
   { key: CYAN, displayName: "Cyan Mainnet" },
   { key: AQUA, displayName: "Aqua Mainnet" },
-  { key: CELESTE, displayName: "Celeste Mainnet" },
 ];

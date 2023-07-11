@@ -35,6 +35,8 @@ To create a custom verifier for your JWT Providers, you'll need
 
 2. **JWK Endpoint**: An endpoint containing the JWKS used for signing the JWT.
 
+   Check [What are JWKS and How to create one from PEM](#what-are-jwks) to learn how to create JWKS.
+
    ```json title="Your JWKS must have the following fields."
    {
      "keys": [
@@ -193,7 +195,7 @@ const web3auth = new Web3AuthNoModal({
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x5",
   },
-  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua or celeste
+  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua
   useCoreKitKey: false,
 });
 
@@ -267,7 +269,7 @@ const web3auth = new Web3AuthNoModal({
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x5",
   },
-  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua or celeste
+  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua
   useCoreKitKey: false,
 });
 
@@ -344,7 +346,7 @@ const web3auth = new Web3AuthNoModal({
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x5",
   },
-  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua or celeste
+  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua
   useCoreKitKey: false,
 });
 
@@ -373,3 +375,55 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 ## Filled Custom JWT Verifier
 
 ![Custom JSON Web Token Provider on Web3Auth Dashboard](/dashboard/verifiers/custom-jsonwebtoken-verifier.png)
+
+## What are JWKS?
+
+JWKS stands for JSON Web Key Set. It is a set of keys containing the public keys that should be used to verify any JSON Web Token (JWT) issued by the
+authorization server and signed using the RS256 signing algorithm.
+
+### How to create JWKS?
+
+- Most of the login providers that support JWT-based login will provide you this URL, such as Firebase, Google, Auth0, AWS Cognito etc.
+
+  - Firebase: `https://www.googleapis.com/service_accounts/v1/jwk/{your-project-id}`
+  - Auth0: `https://{your-domain}/.well-known/jwks.json`
+  - Google: `https://www.googleapis.com/oauth2/v3/certs`
+  - AWS Cognito: `https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json`
+
+- If you are using a your own custom JWT, you will need to convert your PEM file to JWKS.
+
+### How to convert PEM to JWKS?
+
+If you're using `jose` or `jsonwebtoken` library, you can use the following steps to convert your PEM file to JWKS.
+
+1. Create a Private Key using openssl.
+
+   ```bash
+   openssl genrsa -out privateKey.pem 512
+   ```
+
+   This privateKey will be used to sign the token.
+
+2. Using the above privateKey.pem file, create a Public Key.
+
+   ```bash
+   openssl rsa -in privateKey.pem -pubout -out publicKey.pem
+   ```
+
+   This publicKey.pem file will be converted to JWKS.
+
+3. Convert the publicKey.pem file to JWKS.
+
+   Now, look for a tool that converts `.pem` to `jwk(s)` format.
+
+   - One of the tools is https://russelldavies.github.io/jwk-creator/
+     - Select Public Key Use: `Signing`
+     - Algorithm: `RS256`
+     - Key ID: `alpha-numeric-random-string`
+     - PEM encoded key: p`aste-the-publicKey-pem-file-content-here`
+   - Click on `Convert` button.
+
+     ![JWKS Convert Tool](https://community.web3auth.io/uploads/default/optimized/1X/d815cd0b533151eb54e4b1342e4f58258c1995fd_2_690x448.jpeg)
+
+4. To complete the process, you need to save the output as a `.json` file, host it on your server, and make sure it's available to the public. This
+   will give you the `JWKS Endpoint`, which is required when setting up a Custom JWT Verifier on the Web3Auth Dashboard.

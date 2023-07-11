@@ -13,11 +13,12 @@ const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
 const resourcesDropdown = fs.readFileSync('./src/components/navDropdown/resources.html', 'utf-8');
 const helpDropdown = fs.readFileSync('./src/components/navDropdown/help.html', 'utf-8');
 const sdkDropdown = fs.readFileSync('./src/components/navDropdown/sdk.html', 'utf-8');
+const contentHubDropdown = fs.readFileSync('./src/components/navDropdown/content-hub.html', 'utf-8');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 const config = {
-  title: "Documentation",
-  tagline: "Flexible, Universal Key Management", // TODO: Confirm with content team
+  title: "Documentation | Web3Auth",
+  tagline: "Web3 Auth and Key Management SDKs with MPC", // TODO: Confirm with content team
   url: "https://web3auth.io",
   baseUrl,
   onBrokenLinks: "warn",
@@ -80,15 +81,21 @@ const config = {
           ],
         },
         {
-          label: "Integration Builder",
-          to: "/integration-builder",
+          label: "Quick Start",
+          to: "/quick-start",
           position: "left",
         },
         {
-          label: "Content Hub",
-          activeBasePath: "/content-hub",
+          label: 'Content Hub',
+          type: 'dropdown',
           to: "/content-hub",
           position: "left",
+          items: [
+            {
+              type: 'html',
+              value: contentHubDropdown,
+            },
+          ],
         },
         {
           label: 'Help',
@@ -134,13 +141,19 @@ const config = {
       baseUrl,
     }
   },
+  scripts: [
+    {
+      src: baseUrl + 'js/fix-trailing-slash.js',
+      async: false,
+      defer: false,
+    },],
   presets: [
     [
       "@docusaurus/preset-classic",
       {
         docs: {
           routeBasePath: "/",
-          breadcrumbs: true,
+          breadcrumbs: false,
           editUrl: githubEditUrl,
           sidebarPath: require.resolve("./sidebars.js"),
           remarkPlugins: [remarkMath, [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
@@ -153,7 +166,24 @@ const config = {
           trackingID: "GTM-ML3T5M6",
         },
         pages: {
-          remarkPlugins: [require("@docusaurus/remark-plugin-npm2yarn")],
+          path: 'src/pages',
+          routeBasePath: "/",
+          include: ['**/**.{js,jsx,ts,tsx,md,mdx}'],
+          exclude: [
+            '**/_*.{js,jsx,ts,tsx,md,mdx}',
+            '**/_*/**',
+            '**/*.test.{js,jsx,ts,tsx}',
+            '**/__tests__/**',
+          ],
+          mdxPageComponent: '@theme/MDXPage',
+          remarkPlugins: [remarkMath, [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
+          rehypePlugins: [[rehypeKatex, { strict: false }]],
+          beforeDefaultRemarkPlugins: [],
+          beforeDefaultRehypePlugins: [],
+        },
+        sitemap: {
+          changefreq: 'weekly',
+          priority: 0.5,
         },
       },
     ],
@@ -312,14 +342,6 @@ const config = {
             to: "/pnp/features/connect-external-wallets",
           },
           {
-            from: "/self-host/",
-            to: "/core-kit/introduction",
-          },
-          {
-            from: "/self-hosting",
-            to: "/core-kit/introduction",
-          },
-          {
             from: "/developer-dashboard/",
             to: "/dashboard-setup/",
           },
@@ -348,18 +370,6 @@ const config = {
             to: "/auth-provider-setup/verifiers",
           },
           {
-            from: "/sdk/tkey/initialization",
-            to: "/sdk/core-kit/tkey/initialize",
-          },
-          {
-            from: "/sdk/tkey/initialisation",
-            to: "/sdk/core-kit/tkey/initialize",
-          },
-          {
-            from: "/sdk/tkey/installation",
-            to: "/sdk/core-kit/tkey/install",
-          },
-          {
             from: "/sdk/web/modal/multi-factor-authentication",
             to: "/sdk/pnp/web/modal/mfa",
           },
@@ -372,32 +382,24 @@ const config = {
             to: "/sdk/pnp/web/modal/mfa",
           },
           {
-            from: "/guides/one-key-flow",
-            to: "/content-hub/guides/single-factor-auth",
+            from: "/sdk/helper-sdks/providers/other",
+            to: "/sdk/helper-sdks/providers/common",
           },
           {
-            from: "/customauth/auth0",
-            to: "/content-hub/guides/auth0",
+            from: "/sdk/tkey/initialization",
+            to: "/sdk/core-kit/tkey/initialize",
           },
           {
-            from: "/guides/selfhost",
-            to: "/content-hub/guides/tkey",
+            from: "/sdk/tkey/initialisation",
+            to: "/sdk/core-kit/tkey/initialize",
           },
           {
-            from: "/guide/",
-            to: "/content-hub/",
+            from: "/sdk/tkey/installation",
+            to: "/sdk/core-kit/tkey/install",
           },
           {
-            from: "/blog/",
-            to: "/content-hub/",
-          },
-          {
-            from: "/guides/",
-            to: "/content-hub/",
-          },
-          {
-            from: "/blogs/",
-            to: "/content-hub/",
+            from: "/content-hub/guides",
+            to: "/content-hub",
           },
         ],
         createRedirects(existingPath) {
@@ -407,6 +409,9 @@ const config = {
               existingPath.replace('/content-hub/guides', '/guide'),
               existingPath.replace('/content-hub/blog', '/blogs'),
               existingPath.replace('/content-hub/blog', '/blog'),
+              existingPath.replace('/content-hub/guides/auth0', '/customauth/auth0'),
+              existingPath.replace('/content-hub/guides/tkey', '/guides/selfhost'),
+              existingPath.replace('/content-hub/guides/single-factor-auth', '/guides/one-key-flow'),
             ];
           }
           if (existingPath.includes('/sdk')) {
@@ -467,6 +472,8 @@ const config = {
               existingPath.replace('/core-kit/sfa-android', '/core-kit/single-factor-auth-android'),
               existingPath.replace('/core-kit/tkey', '/tkey'),
               existingPath.replace('/core-kit/mpc-core-kit', '/mpc-core-kit'),
+              existingPath.replace('/core-kit/introduction', '/self-host/'),
+              existingPath.replace('/core-kit/introduction', '/self-hosting'),
             ];
           }
           return undefined; // Return a falsy value: no redirect created
