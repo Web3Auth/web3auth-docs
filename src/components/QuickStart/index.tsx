@@ -2,11 +2,6 @@
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import CoreKitAngular from "@site/src/common/quickstart/_corekit-angular.mdx";
-import CoreKitiOS from "@site/src/common/quickstart/_corekit-ios.mdx";
-import CoreKitNext from "@site/src/common/quickstart/_corekit-nextjs.mdx";
-import CoreKitReact from "@site/src/common/quickstart/_corekit-react.mdx";
-import CoreKitVue from "@site/src/common/quickstart/_corekit-vue.mdx";
 import MPCCoreKitAngular from "@site/src/common/quickstart/_mpcck-angular.mdx";
 import MPCCoreKitNext from "@site/src/common/quickstart/_mpcck-nextjs.mdx";
 import MPCCoreKitReact from "@site/src/common/quickstart/_mpcck-react.mdx";
@@ -32,7 +27,9 @@ import SFAAngular from "@site/src/common/quickstart/_sfa-angular.mdx";
 import SFANext from "@site/src/common/quickstart/_sfa-nextjs.mdx";
 import SFAReact from "@site/src/common/quickstart/_sfa-react.mdx";
 import SFAVue from "@site/src/common/quickstart/_sfa-vue.mdx";
+import TKeyiOS from "@site/src/common/quickstart/_tkey-ios.mdx";
 import TKeyReact from "@site/src/common/quickstart/_tkey-react.mdx";
+import TKeyReactNative from "@site/src/common/quickstart/_tkey-react-native.mdx";
 import { useEffect, useState } from "react";
 
 import {
@@ -71,14 +68,18 @@ export default function QuickNavigation() {
   const [platform, setPlatform] = useState<string>(reactJS);
   const [platformList, setPlatformList] = useState<string[]>(weblist);
 
-  function changePlatformList(productValue, sdkValue) {
+  function changePlatformList(productValue, sdkValue, platformState?) {
     let selectedSDK = corekitlist.filter((el) => el.value === sdkValue);
     if (productValue === pnp) {
       selectedSDK = pnplist.filter((el) => el.value === sdkValue);
     }
+    if (!platformState) {
+      // eslint-disable-next-line no-param-reassign
+      platformState = selectedSDK[0].platforms[0];
+    }
     setPlatformList(selectedSDK[0].platforms);
-    setPlatform(selectedSDK[0].platforms[0]);
-    history.pushState({}, "", setURLfromOptions({ product: productValue, sdk: sdkValue, platform: selectedSDK[0].platforms[0] }));
+    setPlatform(platformState);
+    history.pushState({}, "", setURLfromOptions({ product: productValue, sdk: sdkValue, platform: platformState }));
   }
 
   useEffect(() => {
@@ -92,7 +93,7 @@ export default function QuickNavigation() {
       productState = pnp;
       sdkState = pnpwebmodal;
       platformState = reactJS;
-    } else if (!options.sdk && options.product in [pnp, corekit]) {
+    } else if (!options.sdk) {
       let sdkValue = pnpwebmodal;
       let selectedSDK = pnplist.filter((el) => el.value === sdkValue);
       if (options.product === corekit) {
@@ -105,7 +106,7 @@ export default function QuickNavigation() {
       productState = options.product;
       sdkState = sdkValue;
       platformState = currentPlatform;
-    } else if (!options.platform && options.product in [pnp, corekit]) {
+    } else if (!options.platform) {
       let selectedSDK = pnplist.filter((el) => el.value === options.sdk);
 
       if (options.product === corekit) {
@@ -126,7 +127,7 @@ export default function QuickNavigation() {
     setProduct(productState);
     setSdk(sdkState);
     setPlatform(platformState);
-    changePlatformList(productState, sdkState);
+    changePlatformList(productState, sdkState, platformState);
   }, []);
 
   function changeProduct(value) {
@@ -246,7 +247,7 @@ export default function QuickNavigation() {
       {platform === android && product === corekit ? <PNPAndroid /> : ""}
       {platform === android && sdk === singlefactorauthandroid ? <SFAAndroid /> : ""}
       {platform === ios && product === pnp ? <PNPIos /> : ""}
-      {platform === ios && product === corekit ? <CoreKitiOS /> : ""}
+      {platform === ios && product === corekit ? <TKeyiOS /> : ""}
       {platform === flutter ? <PNPFlutter /> : ""}
       {platform === rnbare && product === pnp ? <PNPReactNativeBare /> : ""}
       {platform === rnexpo && product === pnp ? <PNPReactNativeExpo /> : ""}
@@ -263,7 +264,7 @@ export default function QuickNavigation() {
       {platform === nodejs ? <NodeExample /> : ""}
 
       {platform === reactJS && sdk === tkeyjs ? <TKeyReact /> : ""}
-      {platform === reactnative && sdk === tkeyjs ? "tKey React Native QuickStart Coming Soon" : ""}
+      {platform === reactnative && sdk === tkeyjs ? <TKeyReactNative /> : ""}
 
       {platform === reactJS && sdk === mpccorekit ? <MPCCoreKitReact /> : ""}
       {platform === angular && sdk === mpccorekit ? <MPCCoreKitAngular /> : ""}

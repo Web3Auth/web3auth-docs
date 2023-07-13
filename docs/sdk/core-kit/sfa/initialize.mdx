@@ -1,5 +1,5 @@
 ---
-title: "Initialize Core Kit SFA Web SDK"
+title: "Initializing Core Kit SFA Web SDK"
 sidebar_label: "Initialize"
 displayed_sidebar: sdk
 description: "Web3Auth Core Kit Single Factor Auth Web SDK - Initialize | Documentation - Web3Auth"
@@ -56,22 +56,22 @@ This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
 
 <TabItem value="table">
 
-| Parameter           | Type                                                                         | Description                                                                                                                                                                                               | Mandatory |
-| ------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| `clientId`          | `string`                                                                     | Web3Auth Client ID. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).                                                                                       | Yes       |
-| `chainConfig`       | Partial `<CustomChainConfig>` & Pick `<CustomChainConfig, "chainNamespace">` | Custom configuration for your preferred blockchain. Read more about it [here](#chainconfig).                                                                                                              | Yes       |
-| `enableLogging?`    | `boolean`                                                                    | Setting it to true will enable logs.                                                                                                                                                                      | No        |
-| `usePnPKey?`        | `boolean`                                                                    | Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey. Use this flag if you require the key returned by PnP SDK. Ideal for migrating from PnP Products to SFA | No        |
-| `sessionTime?`      | `number`                                                                     | Determine the session length in seconds. By default the value is set at 86400 seconds, ie. 7 days.                                                                                                        | No        |
-| `storageKey?`       | `"session"` or `"local"`                                                     | Select the session key storage across local storage or session storage. Setting to "local" will persist social login session accross browser tabs. @defaultValue "local"                                  | No        |
-| `storageServerUrl?` | `string`                                                                     | Specify a custom metadata storage server url. For general usecases, you don't need to change this value. @defaultValue https://broadcast-server.tor.us                                                    | No        |
+| Parameter           | Type                        | Description                                                                                                                                                                                               | Mandatory |
+| ------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `clientId`          | `string`                    | Web3Auth Client ID. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).                                                                                       | Yes       |
+| `web3AuthNetwork?`  | `TORUS_LEGACY_NETWORK_TYPE` | Web3Auth Network to use for login. @defaultValue mainnet                                                                                                                                                  | No        |
+| `enableLogging?`    | `boolean`                   | Setting it to true will enable logs.                                                                                                                                                                      | No        |
+| `usePnPKey?`        | `boolean`                   | Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey. Use this flag if you require the key returned by PnP SDK. Ideal for migrating from PnP Products to SFA | No        |
+| `sessionTime?`      | `number`                    | Determine the session length in seconds. By default the value is set at 86400 seconds, ie. 7 days.                                                                                                        | No        |
+| `storageKey?`       | `"session"` or `"local"`    | Select the session key storage across local storage or session storage. Setting to "local" will persist social login session accross browser tabs. @defaultValue "local"                                  | No        |
+| `storageServerUrl?` | `string`                    | Specify a custom metadata storage server url. For general usecases, you don't need to change this value. @defaultValue https://broadcast-server.tor.us                                                    | No        |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```ts
-interface Web3AuthOptions {
+export interface Web3AuthOptions {
   /**
    * Client id for web3auth.
    * You can obtain your client id from the web3auth developer dashboard.
@@ -79,22 +79,24 @@ interface Web3AuthOptions {
    */
   clientId: string;
   /**
-   * custom chain configuration for chainNamespace
-   *
-   * @defaultValue mainnet config of provided chainNamespace
+   * Web3Auth Network to use for login
+   * @defaultValue mainnet
    */
-  chainConfig: Partial<CustomChainConfig> & Pick<CustomChainConfig, "chainNamespace">;
+  web3AuthNetwork?: TORUS_LEGACY_NETWORK_TYPE;
+
   /**
    * setting to true will enable logs
    *
    * @defaultValue false
    */
   enableLogging?: boolean;
+
   /**
    * setting this to true returns the same key as web sdk (i.e., plug n play key)
    * By default, this sdk returns CoreKitKey
    */
   usePnPKey?: boolean;
+
   /**
    * How long should a login session last at a minimum in seconds
    *
@@ -102,12 +104,14 @@ interface Web3AuthOptions {
    * @remarks Max value of sessionTime can be 7 * 86400 (7 days)
    */
   sessionTime?: number;
+
   /**
    * setting to "local" will persist social login session accross browser tabs.
    *
    * @defaultValue "local"
    */
   storageKey?: "session" | "local";
+
   /**
    * Specify a custom storage server url
    * @defaultValue https://broadcast-server.tor.us
@@ -120,76 +124,16 @@ interface Web3AuthOptions {
 
 </Tabs>
 
-### Adding a Custom Chain Configuration
-
-#### `chainConfig`
-
-<ChainConfig />
-
-### Returns
-
-- `Object`: The web3auth instance with all its methods and events.
-
-### Example
-
-<Tabs
-  defaultValue="eth"
-  values={[
-    { label: "ETH", value: "eth" },
-    { label: "Solana", value: "solana" },
-    { label: "Other Chains", value: "other" },
-  ]}
->
-
-<TabItem value="eth">
+### Usage Example
 
 ```javascript
 const web3auth = new Web3Auth({
   clientId: "", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
-  },
-  // Available networks are "testnet", "mainnet", "cyan","aqua","celeste".
+  // Available networks are "testnet", "mainnet", "cyan", "aqua", .
   web3AuthNetwork: "cyan",
+  usePnPKey: "false", // By default, this sdk returns CoreKitKey
 });
 ```
-
-</TabItem>
-
-<TabItem value="solana">
-
-```javascript
-const web3auth = new Web3Auth({
-  clientId: "", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "solana",
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/solana", // needed for non-other chains
-  },
-  // Available networks are "testnet", "mainnet", "cyan".
-  web3AuthNetwork: "cyan",
-});
-```
-
-</TabItem>
-
-<TabItem value="other">
-
-```javascript
-const web3auth = new Web3Auth({
-  clientId: "", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "other",
-  },
-  // Available networks are "testnet", "mainnet", "cyan".
-  web3AuthNetwork: "cyan",
-});
-```
-
-</TabItem>
-</Tabs>
 
 ## Instantiating Provider
 
@@ -198,8 +142,8 @@ blockchain. Currently, Web3Auth exposes the following provider packages to be in
 
 - [EthereumPrivateKeyProvider](/sdk/helper-sdks/providers/evm#getting-a-provider-from-any-secp256k1-private-key): For Ethereum and EVM compatible
   chains (secp256k1 private key)
-- [SolanaPrivateKeyProvider](/sdk/pnp/web/providers/solana#getting-a-provider-from-any-ed25519-private-key): For Solana Blockchain (ed25519 private
-  key)
+- [SolanaPrivateKeyProvider](/sdk/helper-sdks/providers/solana#getting-a-provider-from-any-ed25519-private-key): For Solana Blockchain (ed25519
+  private key)
 
 Using these providers, you can export the private keys for the respective curves of the selected blockchain. You can use these keys to even create
 manual providers for other blockchains supporting the curves/ have conversion packages for their blockchain curves.
@@ -298,5 +242,5 @@ This is done by calling `init()` function of the `web3auth` instance we created 
 network is "mainnet"._**
 
 ```javascript
-web3auth.init(provider);
+web3auth.init({ provider });
 ```

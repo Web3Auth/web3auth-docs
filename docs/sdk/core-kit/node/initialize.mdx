@@ -1,5 +1,5 @@
 ---
-title: "Initialize Core Kit SFA Node.js SDK"
+title: "Initializing Core Kit SFA Node SDK"
 sidebar_label: "Initialize"
 displayed_sidebar: sdk
 description: "Web3Auth Core Kit Single Factor Auth Node.js SDK - Initialize | Documentation - Web3Auth"
@@ -47,33 +47,25 @@ This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
 
 <TabItem value="table">
 
-| Parameter          | Type                                                                         | Description                                                                                                              | Mandatory |
-| ------------------ | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------- |
-| `clientId`         | `string`                                                                     | Web3Auth Client ID. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).      | Yes       |
-| `chainConfig`      | Partial `<CustomChainConfig>` & Pick `<CustomChainConfig, "chainNamespace">` | Custom configuration for your preferred blockchain. Read more about it [here](#chainconfig).                             | Yes       |
-| `web3AuthNetwork?` | `testnet`, `mainnet`, `cyan`, `aqua`, or `celeste`                           | Web3Auth Networks                                                                                                        | No        |
-| `enableLogging?`   | `boolean`                                                                    | Setting it to true will enable logs.                                                                                     | No        |
-| `usePnPKey?`       | `boolean`                                                                    | Setting this to true returns the same key as web sdk (i.e., plug n play key), By default, this sdk returns `CoreKitKey`. | No        |
+| Parameter          | Type                                 | Description                                                                                                              | Mandatory |
+| ------------------ | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | --------- |
+| `clientId`         | `string`                             | Web3Auth Client ID. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).      | Yes       |
+| `web3AuthNetwork?` | `testnet`, `mainnet`, `cyan`, `aqua` | Web3Auth Networks                                                                                                        | No        |
+| `enableLogging?`   | `boolean`                            | Setting it to true will enable logs.                                                                                     | No        |
+| `usePnPKey?`       | `boolean`                            | Setting this to true returns the same key as web sdk (i.e., plug n play key), By default, this sdk returns `CoreKitKey`. | No        |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```ts
-interface Web3AuthOptions {
+export interface Web3AuthOptions {
   /**
    * Client id for web3auth.
    * You can obtain your client id from the web3auth developer dashboard.
    * You can set any random string for this on localhost.
    */
   clientId: string;
-
-  /**
-   * custom chain configuration for chainNamespace
-   *
-   * @defaultValue mainnet config of provided chainNamespace
-   */
-  chainConfig: Partial<CustomChainConfig> & Pick<CustomChainConfig, "chainNamespace">;
 
   /**
    * Web3Auth Network to use for login
@@ -100,15 +92,29 @@ interface Web3AuthOptions {
 
 </Tabs>
 
-### Adding a Custom Chain Configuration
+### Usage Example
 
-#### `chainConfig`
+```javascript
+const web3auth = new Web3Auth({
+  clientId: "", // Get your Client ID from Web3Auth Dashboard
+  // Available networks are "testnet", "mainnet", "cyan", "aqua", .
+  web3AuthNetwork: "cyan",
+  usePnPKey: "false", // By default, this sdk returns CoreKitKey
+});
+```
 
-<ChainConfig />
+## Instantiating Provider
 
-### Returns
+For getting the appropriate key for your selected chain, you need to instantiate a provider. This provider is used to make calls to the selected
+blockchain. Currently, Web3Auth exposes the following provider packages to be integrated within the SDKs:
 
-- `Object`: The web3auth instance with all its methods and events.
+- [EthereumPrivateKeyProvider](/sdk/helper-sdks/providers/evm#getting-a-provider-from-any-secp256k1-private-key): For Ethereum and EVM compatible
+  chains (secp256k1 private key)
+- [SolanaPrivateKeyProvider](/sdk/helper-sdks/providers/solana#getting-a-provider-from-any-ed25519-private-key): For Solana Blockchain (ed25519
+  private key)
+
+Using these providers, you can export the private keys for the respective curves of the selected blockchain. You can use these keys to even create
+manual providers for other blockchains supporting the curves/ have conversion packages for their blockchain curves.
 
 ### Example
 
@@ -124,16 +130,23 @@ interface Web3AuthOptions {
 <TabItem value="eth">
 
 ```javascript
-const web3auth = new Web3Auth({
-  clientId: "", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+  config: {
+    /*
+      pass the chain config that you want to connect with
+      all chainConfig fields are required.
+      */
+    chainConfig: {
+      chainId: "0x1",
+      rpcTarget: `https://rpc.ankr.com/eth`,
+      displayName: "ropsten",
+      blockExplorer: "https://ropsten.etherscan.io/",
+      ticker: "ETH",
+      tickerName: "Ethereum",
+    },
   },
-  // Available networks are "testnet", "mainnet", "cyan", "aqua", and "celeste".
-  web3AuthNetwork: "cyan",
-  usePnPKey: "false", // By default, this sdk returns CoreKitKey
 });
 ```
 
@@ -142,16 +155,24 @@ const web3auth = new Web3Auth({
 <TabItem value="solana">
 
 ```javascript
-const web3auth = new Web3Auth({
-  clientId: "", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "solana",
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/solana", // needed for non-other chains
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+
+/*
+ed25519key: any ed25519 private key.
+*/
+
+// Get user's Solana's public address
+const provider = new SolanaPrivateKeyProvider({
+  config: {
+    chainConfig: {
+      chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+      rpcTarget: "https://rpc.ankr.com/solana",
+      displayName: "Solana Mainnet",
+      blockExplorer: "https://explorer.solana.com/",
+      ticker: "SOL",
+      tickerName: "Solana",
+    },
   },
-  // Available networks are "testnet", "mainnet", "cyan", "aqua", and "celeste".
-  web3AuthNetwork: "cyan",
-  usePnPKey: "false", // By default, this sdk returns CoreKitKey
 });
 ```
 
@@ -160,14 +181,19 @@ const web3auth = new Web3Auth({
 <TabItem value="other">
 
 ```javascript
-const web3auth = new Web3Auth({
-  clientId: "", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "other",
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+  config: {
+    chainConfig: {
+      chainId: "0x1",
+      rpcTarget: `https://rpc.ankr.com/eth`,
+      displayName: "ropsten",
+      blockExplorer: "https://ropsten.etherscan.io/",
+      ticker: "ETH",
+      tickerName: "Ethereum",
+    },
   },
-  // Available networks are "testnet", "mainnet", "cyan", "aqua", and "celeste".
-  web3AuthNetwork: "cyan",
-  usePnPKey: "false", // By default, this sdk returns CoreKitKey
 });
 ```
 
@@ -184,5 +210,5 @@ This is done by calling `init()` function of the `web3auth` instance we created 
 network is "mainnet"._**
 
 ```javascript
-web3auth.init();
+web3auth.init({ provider });
 ```

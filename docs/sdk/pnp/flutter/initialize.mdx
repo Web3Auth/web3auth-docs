@@ -1,5 +1,5 @@
 ---
-title: Initialize PnP Flutter SDK
+title: Initializing PnP Flutter SDK
 sidebar_label: Initialize
 displayed_sidebar: sdk
 description: "Web3Auth PnP Flutter SDK - Initialization | Documentation - Web3Auth"
@@ -29,13 +29,15 @@ Construct and configure the init function with the params as following
 
 <TabItem value="table">
 
-| Parameter     | Type                                                                     | Mandatory | Description                                                                                                                         |
-| ------------- | ------------------------------------------------------------------------ | --------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `clientId`    | `String`                                                                 | Yes       | Your Web3Auth Client ID                                                                                                             |
-| `network`     | `Network`                                                                | Yes       | Network to run Web3Auth, either `MAINNET`, `TESTNET`, `AQUA`, `CELESTE` or `CYAN`                                                   |
-| `redirectUrl` | [Uri class](https://api.dart.dev/stable/2.18.0/dart-core/Uri-class.html) | No        | URL that Web3Auth will redirect API responses, default is `null`                                                                    |
-| `whiteLabel`  | `WhiteLabelData`                                                         | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer WhiteLabel section for more info. |
-| `loginConfig` | `HashMap<String, LoginConfigItem>`                                       | No        | Login config object                                                                                                                 |
+| Parameter        | Type                                                                     | Mandatory | Description                                                                                                                         |
+| ---------------- | ------------------------------------------------------------------------ | --------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`       | `String`                                                                 | Yes       | Your Web3Auth Client ID                                                                                                             |
+| `network`        | `Network`                                                                | Yes       | Network to run Web3Auth, either `MAINNET`, `TESTNET`, `AQUA` or `CYAN`                                                              |
+| `redirectUrl`    | [Uri class](https://api.dart.dev/stable/2.18.0/dart-core/Uri-class.html) | No        | URL that Web3Auth will redirect API responses, default is `null`                                                                    |
+| `whiteLabel`     | `WhiteLabelData`                                                         | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer WhiteLabel section for more info. |
+| `loginConfig`    | `HashMap<String, LoginConfigItem>`                                       | No        | Login config object                                                                                                                 |
+| `useCoreKitKey`  | `bool`                                                                   | No        | Use CoreKit Key to get core kit key.                                                                                                |
+| `chainNamespace` | `ChainNamespace`                                                         | No        | Chain Namespace [`eip155` and `solana`]                                                                                             |
 
 </TabItem>
 
@@ -48,14 +50,17 @@ class Web3AuthOptions {
   final Uri? redirectUrl;
   final WhiteLabelData? whiteLabel;
   final HashMap<String, LoginConfigItem>? loginConfig;
+  final bool? useCoreKitKey;
+  final ChainNamespace? chainNamespace;
 
-  Web3AuthOptions({
-    required this.clientId,
-    required this.network,
-    this.redirectUrl,
-    this.whiteLabel,
-    this.loginConfig,
-  });
+  Web3AuthOptions(
+      {required this.clientId,
+      required this.network,
+      this.redirectUrl,
+      this.whiteLabel,
+      this.loginConfig,
+      this.useCoreKitKey,
+      this.chainNamespace});
 
   Map<String, dynamic> toJson() {
     return {
@@ -64,6 +69,8 @@ class Web3AuthOptions {
       'redirectUrl': redirectUrl?.toString(),
       'whiteLabel': whiteLabel?.toJson(),
       'loginConfig': loginConfig,
+      'useCoreKitKey': useCoreKitKey,
+      'chainNamespace': chainNamespace,
     };
   }
 }

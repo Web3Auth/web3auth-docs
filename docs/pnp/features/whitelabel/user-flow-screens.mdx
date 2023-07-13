@@ -7,7 +7,6 @@ description: "User Flow Screens | Documentation - Web3Auth"
 
 import OpenloginWhiteLabelConfig from "@site/src/common/sdk/pnp/web/_openlogin-whitelabel-config.mdx";
 import OpenloginWhiteLabelExample from "@site/src/common/sdk/pnp/web/_openlogin-whitelabel-example.mdx";
-import Image2 from "@site/static/content-hub/whitelabel-web3auth-modal-openlogin.png";
 import Image4 from "@site/static/content-hub/whitelabel-web3auth-openlogin-dark.png";
 import Image7 from "@site/static/content-hub/whitelabel-web3auth-openlogin-language.png";
 import Image3 from "@site/static/content-hub/whitelabel-web3auth-openlogin-light.png";
@@ -16,14 +15,15 @@ import Image8 from "@site/static/content-hub/whitelabel-web3auth-openlogin-logo-
 import DashboardImage from "@site/static/content-hub/whitelabel-web3auth-openlogin-theme1.png";
 import Image6 from "@site/static/content-hub/whitelabel-web3auth-openlogin-theme2.png";
 
-The Social Logins and Email Login functionalities of Web3Auth operate through the OpenLogin Flow. Additionally, the entire user experience of
-OpenLogin can be customized to match your branding using the `OpenLoginAdapter` settings.
+Web3Auth's User Flow Screens can be customized to match a dApp's branding using the `OpenLoginAdapter` settings, providing more options for a
+personalized user experience.
 
-<div>
-  <img style={{ minWidth: "250px", maxWidth: "300px" }} src={Image2} alt="open login modal" />
-</div>
+![Web3Auth - User Flow Screens](/images/whitelabel/user-flow-screens.gif)
 
 ## Arguments
+
+You can pass the `whiteLabel` parameters to `OpenLoginAdapter` with `@web3auth/modal`, `@web3auth/no-modal` and even to Mobile & Gaming SDKs to
+whitelabel the Web3Auth's User Flow Screens.
 
 <OpenloginWhiteLabelConfig />
 
@@ -95,6 +95,12 @@ Default language will set the language used on all OpenLogin screens. The suppor
       <li>
         <code>fr</code> - French
       </li>
+      <li>
+        <code>pt</code> - Portuguese
+      </li>
+      <li>
+        <code>nl</code> - Dutch
+      </li>
     </ul>
   </div>
   <div>
@@ -153,4 +159,145 @@ color is `#0364FF`). Theme affects icons and links. Examples below.
 
 ## Example
 
+### Web
+
 <OpenloginWhiteLabelExample />
+
+### Android
+
+```kotlin
+web3Auth = Web3Auth (
+  Web3AuthOptions (
+    context = this,
+    clientId = getString (R.string.web3auth_project_id),
+    network = Network.MAINNET,
+    redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
+    // Optional whitelabel object
+    // highlight-start
+    whiteLabel = WhiteLabelData (
+      name = "Web3Auth Android Sample App",
+      logoLight = "https://images.web3auth.io/web3auth-logo-w.svg",
+      logoDark = "https://images.web3auth.io/web3auth-logo-w.svg",
+      defaultLanguage = "en",
+      dark = true,
+      theme = hashMapOf (
+        "primary" to "#229954"
+      )
+    )
+    // highlight-end
+  )
+)
+```
+
+### iOS
+
+```swift
+web3Auth = await Web3Auth(
+  W3AInitParams(
+    clientId:"YOUR_WEB3AUTH_CLIENT_ID",
+    network: .testnet,
+    // highlight-start
+    whiteLabel: W3AWhiteLabelData(
+      name: "Web3Auth iOS Sample App",
+      logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
+      logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+      defaultLanguage: "en",
+      dark: true,
+      theme: ["primary": "#229954"])
+    ))
+    // highlight-end
+```
+
+### React Native
+
+```tsx
+import * as WebBrowser from "@toruslabs/react-native-web-browser";
+// or  import * as WebBrowser from "expo-web-browser"; // (for expo)
+
+const web3auth = new Web3Auth(WebBrowser, {
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  network: Network.TESTNET,
+  // highlight-start
+  whiteLabel: {
+    name: "Web3Auth ReactNative Sample App",
+    logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
+    logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+    defaultLanguage: "en",
+    dark: true,
+    theme: {
+      primary: "#229954",
+    },
+  },
+  // highlight-end
+});
+```
+
+### Flutter
+
+```dart
+Future<void> initPlatformState() async {
+  final themeMap = HashMap<String, String>();
+  // highlight-next-line
+  themeMap['primary'] = "#229954";
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('{bundleId}://openlogin');
+    // com.example.w3aflutter://openlogin
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId: "WEB3AUTH_CLIENT_ID",
+    network: Network.testnet,
+    redirectUrl: redirectUrl,
+    // highlight-start
+    whiteLabel: WhiteLabelData(
+      name: "Web3Auth Flutter App",
+      logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
+      logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+      defaultLanguage: "en",
+      dark: true,
+      theme: themeMap)
+    ));
+    // highlight-end
+}
+```
+
+### Unity
+
+```cs
+void Start()
+{
+  web3Auth = GetComponent<Web3Auth>();
+  web3Auth.setOptions(new Web3AuthOptions()
+  {
+    redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
+    clientId = "BAwFgL-r7wzQKmtcdiz2uHJKNZdK7gzEf2q-m55xfzSZOw8jLOyIi4AVvvzaEQO5nv2dFLEmf9LBkF8kaq3aErg",
+    network = Web3Auth.Network.TESTNET,
+    // highlight-start
+    whiteLabel = new WhiteLabelData() {
+      name = "Web3Auth Sample App",
+      logoLight = "https://images.web3auth.io/web3auth-logo-w.svg",
+      logoDark = "https://images.web3auth.io/web3auth-logo-w.svg",
+      defaultLanguage = "en",
+      dark = true,
+      theme = new Dictionary < string, string > {
+        {
+          "primary",
+          "#229954"
+        }
+      }
+    }
+    // highlight-end
+  });
+}
+```
+
+### Unreal
+
+![Unreal Whitelabel](/content-hub/sdk/unreal/whitelable.png)

@@ -23,7 +23,7 @@ import ConnectToExample from "@site/src/common/sdk/pnp/web/_connect-to-example.m
 ## [`@web3auth/openlogin-adapter`](https://npmjs.com/package/@web3auth/openlogin-adapter)
 
 The default adapter of Web3Auth is the `openlogin-adapter`. This adapter is a wrapper around the
-[`openlogin`](https://github.com/torusresearch/openlogin) library from Web3Auth and enables the social login features. By default, Web3Auth has
+[`openlogin`](https://github.com/torusresearch/OpenLoginSdk) library from Web3Auth and enables the social login features. By default, Web3Auth has
 certain configurations set to enable a quick integration, however, for customising features, like [Whitelabel](/pnp/features/whitelabel),
 [Custom Authentication](/pnp/features/custom-authentication), etc. you need to configure the Openlogin Adapter. With the Openlogin Adapter package
 installed and instantiated, you can explore a number of options and customise the login experience of the user as per your needs.
@@ -76,11 +76,11 @@ This OpenloginAdapter constructor takes an object with `OpenloginAdapterOptions`
 
 <TabItem value="table">
 
-| Parameter          | type                                    |
-| ------------------ | --------------------------------------- |
-| `chainConfig?`     | [CustomChainConfig](#customchainconfig) |
-| `adapterSettings?` | [OpenLoginOptions](#openloginoptions)   |
-| `loginSettings?`   | [LoginSettings](#loginsettings)         |
+| Parameter             | type                                  |
+| --------------------- | ------------------------------------- |
+| `adapterSettings?`    | [OpenLoginOptions](#openloginoptions) |
+| `loginSettings?`      | [LoginSettings](#loginsettings)       |
+| `privateKeyProvider?` | [PrivateKeyProvider](#loginsettings)  |
 
 </TabItem>
 
@@ -88,9 +88,11 @@ This OpenloginAdapter constructor takes an object with `OpenloginAdapterOptions`
 
 ```ts
 interface OpenloginAdapterOptions {
-  chainConfig?: CustomChainConfig;
-  adapterSettings?: OpenLoginOptions;
+  adapterSettings?: MakeOptional<OpenLoginOptions, "clientId" | "network"> & {
+    useCoreKitKey?: boolean;
+  };
   loginSettings?: LoginSettings;
+  privateKeyProvider?: PrivateKeyProvider;
 }
 ```
 
@@ -99,20 +101,6 @@ interface OpenloginAdapterOptions {
 </Tabs>
 
 ### Custom Chain Config
-
-#### `chainConfig`
-
-:::caution
-
-While you can pass your `chainConfig` to `OpenloginAdapter`, it is not required since you can directly pass it over to the `Web3Auth`/
-`Web3AuthNoModal` configuration while instantiating it.
-
-Read more about it in their respective sections:
-
-- [`web3auth/modal`](/sdk/pnp/web/modal/initialize#adding-a-custom-chain-configuration)
-- [`web3auth/no-modal`](/sdk/pnp/web/no-modal/initialize#adding-a-custom-chain-configuration)
-
-:::
 
 ### Openlogin Adapter Settings
 
@@ -140,22 +128,57 @@ Read more about how to pass `loginParams` to `connectTo` in its respective secti
 
 ## Multi Factor Authentication
 
-The Multi Factor Authentication feature refers to the ability of the user to create a backup share (recovery phrase). This helps them login into a new
-device and also to recover their account if they lose their original device.
+At Web3Auth, we prioritize your security by offering Multi-Factor Authentication (MFA). MFA is an extra layer of protection that verifies your
+identity when accessing your account. To ensure ownership, you must provide two or more different backup factors. You have the option to choose from
+the device, social, backup factor (seed phrase), and password factors to guarantee access to your Web3 account. Once you create a recovery factor, MFA
+is enabled, and your keys are divided into three shares for off-chain multi-sig, making the key self-custodial. With backup factors, you can easily
+recover your account if you lose access to your original device or helps login into a new device.
 
-You can set the `mfaLevel` within the `loginSettings` to customize when mfa screen should be shown to user. It currently accepts 4 values:
+For a dApp, we provide various options to set up Multi-Factor Authentication. You can customize the MFA screen by setting the `mfaLevel` argument. You
+can enable or disable a backup factor and change their order. Currently, there are four values for `mfaLevel`:
 
-- **`'default'`** Setting mfa level to `default` will present mfa screen to user on every third login.
-- **`'optional'`** Setting mfa level to `default` will present mfa screen to user on every login but user can skip it.
-- **`'mandatory'`** Setting mfa level to `mandatory` will make it mandatory for user to setup mfa after login.
-- **`'none'`** Setting mfa level to `none` will make the user skip the mfa setup screen
+- `default`: presents the MFA screen every third login
+- `optional`: presents the MFA screen on every login, but you can skip it
+- `mandatory`: make it mandatory to set up MFA after login
+- `none`: skips the MFA setup screen
+
+We offer the following backup factors under `mfaSettings`:
+
+- `deviceShareFactor`,
+- `backUpShareFactor`,
+- `socialBackupFactor`, and
+- `passwordFactor`.
 
 ### Example
 
 ```js
 const openloginAdapter = new OpenloginAdapter({
   loginSettings: {
-    mfaLevel: "mandatory",
+    mfaLevel: "optional", // default, optional, mandatory, none
+  },
+  adapterSettings: {
+    mfaSettings: {
+      deviceShareFactor: {
+        enable: true,
+        priority: 1,
+        mandatory: true,
+      },
+      backUpShareFactor: {
+        enable: true,
+        priority: 2,
+        mandatory: false,
+      },
+      socialBackupFactor: {
+        enable: true,
+        priority: 3,
+        mandatory: false,
+      },
+      passwordFactor: {
+        enable: true,
+        priority: 4,
+        mandatory: false,
+      },
+    },
   },
 });
 ```

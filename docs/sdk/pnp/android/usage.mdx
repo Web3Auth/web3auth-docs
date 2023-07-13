@@ -48,15 +48,15 @@ FACEBOOK, TWITTER, EMAIL_PASSWORDLESS, etc. `web3Auth.login()` requires `LoginPa
 <TabItem value="class">
 
 ```kotlin
-data class LoginParams (
-	val loginProvider: Provider,
-	val dappShare: String? = null,
-	val extraLoginOptions: ExtraLoginOptions? = null,
-	val redirectUrl: Uri? = null,
-	val appState: String? = null,
-	val mfaLevel: MFALevel? = null,
-	val sessionTime: Int? = null,
-	val curve: Curve? = null
+data class LoginParams(
+    val loginProvider: Provider,
+    var dappShare: String? = null,
+    val extraLoginOptions: ExtraLoginOptions? = null,
+    val redirectUrl: Uri? = null,
+    val appState: String? = null,
+    val mfaLevel: MFALevel? = null,
+    val sessionTime: Int? = null,
+    val curve: Curve? = null
 )
 ```
 
@@ -72,7 +72,11 @@ Use getPrivkey() to get the private key of the user. This private key can be use
 
 Use getEd25519PrivKey() to get the Ed25519 private key of the user. This private key can be used to sign transactions on Solana.
 
-### Sample Response
+### `web3Auth.getUserInfo()`
+
+Use getUserInfo() to get the user info of the user.
+
+### UserInfo Response
 
 <AndroidResponse />
 
@@ -390,8 +394,8 @@ web3Auth.login(LoginParams(selectedLoginProvider,
 | prompt                    | Prompt?                  | No        | Prompt                                                            |
 | max_age                   | String?                  | No        | max_age                                                           |
 | ui_locales                | String?                  | No        | ui_locales to be shown on the modal                               |
-| id_token_hint             | String?                  | No        | Previously issued ID Token.                                       |
 | id_token                  | String?                  | No        | JWT (ID Token) to be passed for Login.                            |
+| id_token_hint             | String?                  | No        | Previously issued ID Token.                                       |
 | login_hint                | String?                  | No        | Email used for EMAIL_PASSWORDLESS                                 |
 | acr_values                | String?                  | No        | acc_values                                                        |
 | scope                     | String?                  | No        | scope                                                             |
@@ -418,8 +422,8 @@ data class ExtraLoginOptions(
     private var prompt : Prompt? = null,
     private var max_age : String? = null,
     private var ui_locales : String? = null,
-    private var id_token_hint : String? = null,
     private var id_token : String? = null,
+    private var id_token_hint : String? = null,
     private var login_hint : String? = null,
     private var acr_values : String? = null,
     private var scope : String? = null,
@@ -599,16 +603,7 @@ class MainActivity : AppCompatActivity() {
 
 ### `web3Auth.logout()`
 
-Trigger logout flow. You can additionally pass on the following parameters:
-
-| Parameter     | Type             | Mandatory | Description                                                                                                                   |
-| ------------- | ---------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `redirectUrl` | android.net.Uri? | No        | Url where user will be redirected after successfull logout. Default value is `null`                                           |
-| `appState`    | String?          | No        | appState can be used to keep track of the app state when user will be redirected to app after logout. Default value is `null` |
-
-### Sample Response
-
-A completable future containing void object is returned on successfull logout otherwise an error response is returned
+The `logout()` method is used to log out a user from Web3Auth. This method will clear the session data and the user will be logged out from Web3Auth.
 
 ### Example
 

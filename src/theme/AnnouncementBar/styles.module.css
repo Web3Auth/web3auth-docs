@@ -25,7 +25,21 @@ html[data-announcement-bar-initially-dismissed="true"] .announcementBar {
 }
 
 .announcementBarPlaceholder {
-  flex: 0 0 10px;
+  display: flex !important;
+  align-items: center;
+  height: var(--docusaurus-announcement-bar-height);
+  background: linear-gradient(90deg, #13a5d3 0%, #1b6bec 32.29%, #9824cf 100%) !important;
+  color: var(--ifm-color-white) !important;
+
+  /*
+  Unfortunately we can't make announcement bar render above the navbar
+  IE need to use border-bottom instead of shadow
+  See https://github.com/facebookincubator/infima/issues/275
+
+  box-shadow: var(--ifm-global-shadow-lw);
+  z-index: calc(var(--ifm-z-index-fixed) + 1);
+  */
+  border-bottom: 1px solid var(--ifm-color-emphasis-100);
 }
 
 .announcementBarClose {

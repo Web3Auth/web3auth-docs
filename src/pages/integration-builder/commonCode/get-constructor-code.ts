@@ -1,4 +1,4 @@
-import { AQUA, CELESTE, CYAN, MAINNET, OTHER_CHAINS, SOL } from "../builder/choices";
+import { AQUA, CYAN, MAINNET, OTHER_CHAINS, SOL } from "../builder/choices";
 import { chainIdMap, rpcTargetMap } from "./maps";
 
 export const getConstructorCode = (chain: string, whitelabel: boolean, useModal: boolean, web3AuthNetwork: string) => {
@@ -20,20 +20,17 @@ export const getConstructorCode = (chain: string, whitelabel: boolean, useModal:
   }
 
   let network = `
-          web3AuthNetwork: "testnet", // mainnet, aqua, celeste, cyan or testnet`;
+          web3AuthNetwork: "testnet", // mainnet, aqua,  cyan or testnet`;
 
   if (web3AuthNetwork === MAINNET) {
     network = `
-          web3AuthNetwork: "mainnet", // mainnet, aqua, celeste, cyan or testnet`;
+          web3AuthNetwork: "mainnet", // mainnet, aqua,  cyan or testnet`;
   } else if (web3AuthNetwork === CYAN) {
     network = `
-          web3AuthNetwork: "cyan", // mainnet, aqua, celeste, cyan or testnet`;
+          web3AuthNetwork: "cyan", // mainnet, aqua,  cyan or testnet`;
   } else if (web3AuthNetwork === AQUA) {
     network = `
-          web3AuthNetwork: "aqua", // mainnet, aqua, celeste, cyan or testnet`;
-  } else if (web3AuthNetwork === CELESTE) {
-    network = `
-          web3AuthNetwork: "celeste", // mainnet, aqua, celeste, cyan or testnet`;
+          web3AuthNetwork: "aqua", // mainnet, aqua,  cyan or testnet`;
   }
 
   if (useModal) {

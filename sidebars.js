@@ -9,12 +9,17 @@ module.exports = {
     },
     "what-is-web3auth",
     "how-web3auth-works",
-    "quick-start",
     {
       type: "category",
       label: "Deciding your Product Fit",
       link: { type: "doc", id: "product-fit/product-fit" },
       items: ["product-fit/pnp-vs-core-kit", "product-fit/user-flow", "product-fit/web3auth-for-wallets", "product-fit/web3auth-for-dapps"],
+    },
+    {
+      type: "category",
+      label: "Migration Guides",
+      link: { type: "doc", id: "migration-guide/migration-guide" },
+      items: ["migration-guide/migrating-to-v6-from-v5"]
     },
     {
       type: "category",
@@ -107,6 +112,11 @@ module.exports = {
         "pnp/features/dapp-share",
       ],
     },
+    {
+      type: "link",
+      label: "Integration Builder",
+      href: "/integration-builder",
+    },
     "pnp/going-live",
     // {
     //   type: "category",
@@ -196,6 +206,7 @@ module.exports = {
           ],
         },
         "connect-blockchain/solana",
+        "connect-blockchain/xrpl",
         {
           type: "category",
           label: "EVM Based Chains",
@@ -261,11 +272,6 @@ module.exports = {
       label: "Contribute",
       link: { type: "doc", id: "contribute/contribute" },
       items: ["contribute/bug-bounty"],
-    },
-    {
-      type: "link",
-      label: "Integration Builder",
-      href: "/integration-builder",
     },
     {
       type: "link",
@@ -491,6 +497,17 @@ module.exports = {
     },
     {
       type: "category",
+      label: "MPC Core Kit SDK",
+      link: { type: "doc", id: "sdk/core-kit/mpc-core-kit/mpc-core-kit" },
+      items: [
+        "sdk/core-kit/mpc-core-kit/install",
+        "sdk/core-kit/mpc-core-kit/initialize",
+        "sdk/core-kit/mpc-core-kit/authentication",
+        "sdk/core-kit/mpc-core-kit/usage"
+      ],
+    },
+    {
+      type: "category",
       label: "tKey JS SDK",
       link: { type: "doc", id: "sdk/core-kit/tkey/tkey" },
       items: [
@@ -515,15 +532,29 @@ module.exports = {
         },
       ],
     },
+
     {
       type: "category",
-      label: "MPC Core Kit (Beta) SDK",
-      link: { type: "doc", id: "sdk/core-kit/mpc-core-kit/mpc-core-kit" },
+      label: "tKey JS in React Native",
+      link: { type: "doc", id: "sdk/core-kit/tkey-react-native/tkey-react-native" },
       items: [
-        "sdk/core-kit/mpc-core-kit/install",
-        "sdk/core-kit/mpc-core-kit/initialize",
-        "sdk/core-kit/mpc-core-kit/authentication",
-        "sdk/core-kit/mpc-core-kit/usage"
+        "sdk/core-kit/tkey-react-native/install",
+        "sdk/core-kit/tkey-react-native/initialize",
+        "sdk/core-kit/tkey-react-native/usage",
+        {
+          type: "category",
+          label: "Modules",
+          collapsible: true,
+          collapsed: false,
+          link: { type: "doc", id: "sdk/core-kit/tkey-react-native/modules/modules" },
+          items: [
+            "sdk/core-kit/tkey-react-native/modules/share-serialization",
+            "sdk/core-kit/tkey-react-native/modules/share-transfer",
+            "sdk/core-kit/tkey-react-native/modules/security-questions",
+            "sdk/core-kit/tkey-react-native/modules/seed-phrase",
+            "sdk/core-kit/tkey-react-native/modules/private-keys",
+          ],
+        },
       ],
     },
     {
@@ -621,7 +652,8 @@ module.exports = {
       items: [
         "sdk/helper-sdks/providers/evm",
         "sdk/helper-sdks/providers/solana",
-        "sdk/helper-sdks/providers/other"
+        "sdk/helper-sdks/providers/xrpl",
+        "sdk/helper-sdks/providers/common"
       ],
     },
     {

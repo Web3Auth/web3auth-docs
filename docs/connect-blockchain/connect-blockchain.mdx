@@ -16,6 +16,7 @@ defaultValue="EVM"
 values={[
   { label: "EVM", value: "EVM" },
   { label: "Solana", value: "solana" },
+  { label: "XRPL", value: "xrpl" },
   { label: "Other Chains", value: "other" },
 ]}
 >
@@ -81,6 +82,41 @@ console.log(userAccounts);
 ```
 
 </TabItem>
+<TabItem value="xrpl">
+
+```js
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { XrplPrivateKeyProvider, getXRPLChainConfig } from "@web3auth/xrpl-provider";
+
+const web3auth = new Web3Auth({
+chainConfig: {
+  chainNamespace: CHAIN_NAMESPACES.OTHER,
+},
+clientId = "YOUR_WEB3AUTH_CLIENT_ID", // get from https://dashboard.web3auth.io
+web3AuthNetwork = "cyan", // testnet, mainnet, cyan, aqua
+});
+
+const xrplProvider = new XrplPrivateKeyProvider({
+config: {
+  chainId: "chainId",
+  chainConfig: getXRPLChainConfig("testnet"), // devnet, testnet, mainnet
+  rpcTarget: "rpc url"
+},
+});
+
+const adapter = new OpenloginAdapter({
+  privateKeyProvider: xrplProvider, // <-- Injecting the XRPL provider
+});
+web3AuthInstance.configureAdapter(adapter);
+
+await web3auth.initModal();
+
+const provider = await web3auth.connect();
+```
+
+</TabItem>
 <TabItem value="other">
 
 ```js
@@ -94,6 +130,8 @@ const web3auth = new Web3Auth({
     /*
     you can pass your own chain configs here
     */
+    chainId: "chain id",
+    rpcTarget: "rpc url",
     chainNamespace: CHAIN_NAMESPACES.OTHER,
     displayName: "Chain Name",
     ticker: "TKR",
@@ -134,8 +172,9 @@ authentication. This provider can be used to interact with wallet or connected c
 can follow our API Reference to know more about how to use these providers with their compatible adapters:
 
 - [EIP1193 (EVM) Providers](/sdk/helper-sdks/providers/evm)
-- [Solana Providers](/sdk/pnp/web/providers/solana)
-- [Other Providers](/sdk/helper-sdks/providers/other)
+- [Solana Providers](/sdk/helper-sdks/providers/solana)
+- [XRPL Providers](/sdk/helper-sdks/providers/xrpl)
+- [Other Providers](/sdk/helper-sdks/providers/common)
 
 ## Adding JSON RPC APIs
 
@@ -194,7 +233,7 @@ async getPrivateKey() {
 }
 ```
 
-You can read more about this in our [**Provider SDK Reference**](/sdk/pnp/web/providers)
+You can read more about this in our [**Provider SDK Reference**](/sdk/helper-sdks/providers)
 
 :::info Note
 

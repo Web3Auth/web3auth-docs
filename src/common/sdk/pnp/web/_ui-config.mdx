@@ -11,13 +11,15 @@ import Tabs from "@theme/Tabs";
 
 <TabItem value="table">
 
-| Parameter            | Type                       | Description                                                                                                             | Mandatory | Default                                                                                                                                                     |
-| -------------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `appLogo?`           | `string`                   | A link to preferred logo.                                                                                               | No        | [`web3auth-logo.svg`](https://images.web3auth.io/web3auth-logo.svg)                                                                                         |
-| `theme?`             | `enum` - (`light`, `dark`) | Theme for the modal, can be set to light or dark.                                                                       | No        | `light`                                                                                                                                                     |
-| `loginMethodsOrder?` | `string[]`                 | The list of login methods can also be reordered with this parameter. Those methods specified will be first on the list. | No        | `["google", "facebook", "twitter", "reddit", "discord", "twitch", "apple", "line", "github", "kakao", "linkedin", "weibo", "wechat", "email_passwordless"]` |
-| `defaultLanguage?`   | `string`                   | The language that will be used by web3auth Modal.                                                                       | No        | `en`: english, `de`: german, `ja`: japanese, `ko`: korean, `zh`: mandarin, `es`: spanish                                                                    |
-| `modalZIndex?`       | `string`                   | Z-index of the modal and iframe.                                                                                        | No        | `99998`                                                                                                                                                     |
+| Parameter            | Type                                                      | Description                                                                                                                                                                                                                                                                                                 | Mandatory | Default                                                                                                                                                     |
+| -------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `appName?`           | `string`                                                  | The name of your app.                                                                                                                                                                                                                                                                                       | No        | `Web3Auth`                                                                                                                                                  |
+| `appLogo?`           | `string`                                                  | A link to preferred logo.                                                                                                                                                                                                                                                                                   | No        | [`web3auth-logo.svg`](https://images.web3auth.io/web3auth-logo.svg)                                                                                         |
+| `theme?`             | `enum` - (`light`, `dark` or `auto`)                      | Theme for the modal, can be set to light, dark or auto.                                                                                                                                                                                                                                                     | No        | `light`                                                                                                                                                     |
+| `loginMethodsOrder?` | `string[]`                                                | The list of login methods can be reordered with this parameter. Those methods specified will be first on the list.                                                                                                                                                                                          | No        | `["google", "facebook", "twitter", "reddit", "discord", "twitch", "apple", "line", "github", "kakao", "linkedin", "weibo", "wechat", "email_passwordless"]` |
+| `defaultLanguage?`   | `string`                                                  | The displayed language that will be used in the Web3Auth Modal. <br/> Choose from: <ul><li>`en` - English</li><li>`de` - German</li><li>`ja` - Japanese</li><li>`ko` - Korean</li><li>`zh` - Mandarin</li><li>`es` - Spanish</li><li>`fr` - French</li><li>`pt` - Portuguese</li><li>`nl` - Dutch</li></ul> | No        | `en`: English                                                                                                                                               |
+| `loginGridCol?`      | `2` or `3`                                                | Number of columns to display the Social Login buttons.                                                                                                                                                                                                                                                      | No        | `3`                                                                                                                                                         |
+| `primaryButton?`     | `enum` - (`externalLogin`, `socialLogin` or `emailLogin`) | Decides which button will be displayed as primary button in modal. Only one button will be primary and other buttons in modal will be secondary.                                                                                                                                                            | No        | `socialLogin`                                                                                                                                               |
 
 </TabItem>
 
@@ -26,21 +28,29 @@ import Tabs from "@theme/Tabs";
 ```ts
 interface UIConfig {
   /**
+   * App name to display in the UI.
+   */
+  appName?: string;
+
+  /**
    * Logo for your app.
    */
   appLogo?: string;
+
   /**
    * theme for the modal
    *
-   * @defaultValue `light`
+   * @defaultValue `auto`
    */
-  theme?: "light" | "dark";
+  theme?: "light" | "dark" | "auto";
+
   /**
    * order of how login methods are shown
    *
    * @defaultValue `["google", "facebook", "twitter", "reddit", "discord", "twitch", "apple", "line", "github", "kakao", "linkedin", "weibo", "wechat", "email_passwordless"]`
    */
   loginMethodsOrder?: string[];
+
   /**
    * language which will be used by web3auth. app will use browser language if not specified. if language is not supported it will use "en"
    * en: english
@@ -49,14 +59,40 @@ interface UIConfig {
    * ko: korean
    * zh: mandarin
    * es: spanish
+   * fr: french
+   * pt: portuguese
+   * nl: dutch
    *
    */
   defaultLanguage?: string;
+
   /**
    * Z-index of the modal and iframe
    * @defaultValue 99998
    */
   modalZIndex?: string;
+
+  /**
+   * Whether to show errors on Web3Auth modal.
+   *
+   * @defaultValue `true`
+   */
+  displayErrorsOnModal?: boolean;
+
+  /**
+   * number of columns to display the Social Login buttons
+   *
+   * @defaultValue `3`
+   */
+  loginGridCol?: 2 | 3;
+
+  /**
+   * decides which button will be displayed as primary button in modal
+   * only one button will be primary and other buttons in modal will be secondary
+   *
+   * @defaultValue `socialLogin`
+   */
+  primaryButton?: "externalLogin" | "socialLogin" | "emailLogin";
 }
 ```
 
