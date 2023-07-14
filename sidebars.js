@@ -236,7 +236,6 @@ module.exports = {
             "connect-blockchain/tezos",
             "connect-blockchain/algorand",
             "connect-blockchain/immutablex",
-            "connect-blockchain/polkadot",
             "connect-blockchain/aptos",
             "connect-blockchain/cosmos",
             "connect-blockchain/near",
