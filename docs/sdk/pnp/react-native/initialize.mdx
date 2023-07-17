@@ -53,11 +53,64 @@ import * as WebBrowser from "@toruslabs/react-native-web-browser";
 </TabItem>
 </Tabs>
 
-## Instantiating Web3Auth
+### Importing a `Storage` implementation
+
+<Tabs
+  defaultValue="expo"
+  values={[
+    { label: "Expo Managed Workflow", value: "expo" },
+    { label: "Bare React Native Workflow", value: "bare" },
+  ]}
+>
+
+<TabItem value="expo">
 
 ```typescript
-const web3auth = new Web3Auth(WebBrowser, SdkInitParams);
+import * as SecureStore from "expo-secure-store";
 ```
+
+</TabItem>
+
+<TabItem value="bare">
+
+```typescript
+import EncryptedStorage from "react-native-encrypted-storage";
+```
+
+</TabItem>
+</Tabs>
+
+## Instantiating Web3Auth
+
+:::info NOTE
+Now with `react-native-sdk` v4 `SecureStore` or `EncryptedStorage` gets passed with the Web3Auth constructor, depending on the workflow you are using. This is due to
+the addition of session management without storing the private key in the device.
+:::
+
+<Tabs
+  defaultValue="expo"
+  values={[
+    { label: "Expo Managed Workflow", value: "expo" },
+    { label: "Bare React Native Workflow", value: "bare" },
+  ]}
+>
+
+<TabItem value="expo">
+
+```typescript
+const web3auth = new Web3Auth(WebBrowser, SecureStore, SdkInitParams);
+```
+
+</TabItem>
+
+<TabItem value="bare">
+
+```typescript
+const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, SdkInitParams);
+```
+
+</TabItem>
+</Tabs>
 
 ### `SdkInitParams` object
 
@@ -155,6 +208,7 @@ export type SdkInitParams = {
 
 ```js
 import * as WebBrowser from "expo-web-browser";
+import * as SecureStore from "expo-secure-store";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
 
 const resolvedRedirectUrl =
@@ -164,7 +218,7 @@ const resolvedRedirectUrl =
 
 const clientId = "YOUR WEB3AUTH CLIENT ID";
 
-const web3auth = new Web3Auth(WebBrowser, {
+const web3auth = new Web3Auth(WebBrowser, SecureStore, {
   clientId,
   network: OPENLOGIN_NETWORK.TESTNET, // or other networks
 });
@@ -176,6 +230,7 @@ const web3auth = new Web3Auth(WebBrowser, {
 
 ```js
 import * as WebBrowser from "@toruslabs/react-native-web-browser";
+import EncryptedStorage from "react-native-encrypted-storage";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
 
 const scheme = "web3authrnbareauth0example"; // Or your desired app redirection scheme
@@ -183,7 +238,7 @@ const resolvedRedirectUrl = `${scheme}://openlogin`;
 
 const clientId = "YOUR WEB3AUTH CLIENT ID";
 
-const web3auth = new Web3Auth(WebBrowser, {
+const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
   network: OPENLOGIN_NETWORK.TESTNET, // or other networks
 });
@@ -195,6 +250,7 @@ const web3auth = new Web3Auth(WebBrowser, {
 
 ```js
 import * as WebBrowser from "expo-web-browser";
+import * as SecureStore from "expo-secure-store";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
 
 const resolvedRedirectUrl =
@@ -204,7 +260,7 @@ const resolvedRedirectUrl =
 
 const clientId = "YOUR WEB3AUTH CLIENT ID";
 
-const web3auth = new Web3Auth(WebBrowser, {
+const web3auth = new Web3Auth(WebBrowser, SecureStore, {
   clientId,
   network: OPENLOGIN_NETWORK.TESTNET, // or other networks
   loginConfig: {
@@ -224,6 +280,7 @@ const web3auth = new Web3Auth(WebBrowser, {
 
 ```js
 import * as WebBrowser from "@toruslabs/react-native-web-browser";
+import EncryptedStorage from "react-native-encrypted-storage";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
 
 const scheme = "web3authrnbareauth0example"; // Or your desired app redirection scheme
@@ -231,7 +288,7 @@ const resolvedRedirectUrl = `${scheme}://openlogin`;
 
 const clientId = "YOUR WEB3AUTH CLIENT ID";
 
-const web3auth = new Web3Auth(WebBrowser, {
+const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
   network: OPENLOGIN_NETWORK.TESTNET, // or other networks
   loginConfig: {
