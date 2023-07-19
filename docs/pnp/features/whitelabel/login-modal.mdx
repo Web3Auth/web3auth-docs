@@ -181,3 +181,33 @@ await web3auth.initModal({
 });
 // highlight-end
 ```
+
+## Disable External Wallet Options
+
+```js
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3auth = new Web3Auth({
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  web3AuthNetwork: "cyan",
+});
+
+// highlight-start
+await web3auth.initModal({
+  modalConfig: {
+    // Disable Wallet Connect V2
+    [WALLET_ADAPTERS.WALLET_CONNECT_V2]: {
+      label: "wallet_connect",
+      showOnModal: false,
+    },
+    // Disable Metamask
+    [WALLET_ADAPTERS.METAMASK]: {
+      label: "metamask",
+      showOnModal: false,
+    },
+  },
+});
+// highlight-end
+```
