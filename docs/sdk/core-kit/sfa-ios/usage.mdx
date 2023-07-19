@@ -1,0 +1,110 @@
+---
+title: "Using Core Kit SFA iOS SDK"
+sidebar_label: "Usage"
+displayed_sidebar: sdk
+description: "Web3Auth Core Kit Single Factor Auth iOS SDK - Usage | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+After successfully installing and initializing SingleFactorAuth, you can use it to authenticate your users and obtain their private and public keys.
+
+The SingleFactorAuth instance natively provides the following functions:
+
+- `getKey()` - Returns the torus key using the `verifier`, `verifierId` & `idToken`.
+
+## Get TorusKey - `getKey()`
+
+`getKey()`
+
+To obtain a user's Torus key using the Web3Auth SFA iOS SDK, you can call the `getKey()` function.
+
+| Variable      | Type     | Description      | Mandatory |
+| ------------- | -------- | ---------------- | --------- |
+| `loginParams` | `object` | Login Parameters | Yes       |
+
+#### Returns
+
+```js
+public func getKey(loginParams: LoginParams) async throws -> TorusKey
+```
+
+### `getKey(loginParams: LoginParams)`
+
+`LoginParams`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter               | Type                     | Description                                                                                                         | Mandatory |
+| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- | --------- |
+| `verifier`              | `string`                 | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                                  | Yes       |
+| `verifierId`            | `string`                 | Verifier ID's value, `sub` or `email` value present in the idToken.                                                 | Yes       |
+| `idToken`               | `string`                 | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. | Yes       |
+| `subVerifierInfoArray?` | `TorusSubVerifierInfo[]` | Sub verifier info                                                                                                   | No        |
+
+</TabItem>
+
+<TabItem value="type">
+
+```swift
+public class LoginParams {
+    public let verifier: String
+    public let verifierId: String
+    public let idToken: String
+    public let subVerifierInfoArray: [TorusSubVerifierInfo]?
+
+    public init(verifier: String, verifierId: String, idToken: String) {
+        self.verifier = verifier
+        self.verifierId = verifierId
+        self.idToken = idToken
+        self.subVerifierInfoArray = nil
+    }
+
+    init(verifier: String, verifierId: String, idToken: String, subVerifierInfoArray: [TorusSubVerifierInfo]) {
+        self.verifier = verifier
+        self.verifierId = verifierId
+        self.idToken = idToken
+        self.subVerifierInfoArray = subVerifierInfoArray
+    }
+}
+
+```
+
+</TabItem>
+
+</Tabs>
+
+```js title="Example"
+let idToken = try generateIdToken(email: TOURUS_TEST_EMAIL)
+let loginParams = LoginParams(verifier: TEST_VERIFIER, verifierId: TOURUS_TEST_EMAIL, idToken: idToken)
+let torusKey = try await singleFactoreAuth.getKey(loginParams: loginParams)
+```
+
+Web3Auth SFA iOS SDK only works for those users who have **not enabled MFA**.
+
+:::danger MFA enabled users
+
+For MFA enabled users, you'll see an Error message.
+
+:::
+
+## Session Management
+
+We have also included Session Management in this SDK, so calling the initialize function to get the TorusKey value without re-logging in the user if a
+user has an active session will return the TorusKey struct; otherwise, it will return nil.
+
+```swift
+if let savedKey = try await singleFactoreAuth.initialize() {
+  print(savedKey.getPrivateKey())
+  print(savedKey.getPublicAddress())
+}
+```

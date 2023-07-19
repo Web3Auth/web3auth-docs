@@ -1,0 +1,62 @@
+---
+title: Initializing SFA iOS SDK
+sidebar_label: Initialize
+displayed_sidebar: sdk
+description: "Web3Auth SFA iOS SDK - Initialization | Documentation - Web3Auth"
+---
+
+After Installation, the next step to use Web3Auth is to Initialize the SDK. However, the Initialization can be done in 2 ways,
+
+- [With `Web3Auth.plist`](#with-web3authplist)
+- [Without `Web3Auth.plist`](#without-web3authplist)
+
+Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
+
+## With `SingleFactorAuth.plist`
+
+### Setup `SingleFactorAuth.plist`
+
+In your application bundle add a plist file named `Web3Auth.plist` with the following information:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>ClientId</key>
+    <string>YOUR_WEB3AUTH_CLIENT_ID</string>
+  <key>Network</key>
+  <string>mainnet | testnet | cyan | aqua</string>
+</dict>
+</plist>
+```
+
+When you have a SingleFactorAuth.plist and you have specified your Web3Auth configuration there, you can simply construct your Web3Auth instance with
+
+```swift
+import SingleFactorAuth
+
+let singleFactorAuthArgs = SingleFactorAuthArgs(network: TorusNetwork.TESTNET)
+let singleFactoreAuth = SingleFactorAuth(singleFactorAuthArgs: singleFactorAuthArgs)
+```
+
+## Without `Web3Auth.plist`
+
+If you don't have a Web3Auth.plist or want to use optional configurtion parameters, you can construct the Web3Auth instance with
+
+```swift
+import SingleFactorAuth
+
+let singleFactorAuthArgs = SingleFactorAuthArgs(network: TorusNetwork.TESTNET)
+let singleFactoreAuth = SingleFactorAuth(singleFactorAuthArgs: singleFactorAuthArgs)
+```
+
+### `SingleFactorAuthArgs`
+
+The `singleFactoreAuth` constructor takes an object called `SingleFactorAuthArgs` as input. The below are the aviliable fields of the
+`SingleFactorAuthArgs` object.
+
+| Parameter    | Type         | Mandatory | Description                                                                                     |
+| ------------ | ------------ | --------- | ----------------------------------------------------------------------------------------------- |
+| `network`    | TorusNetwork | Yes       | Web3Auth Network to run the authentication on, either `.MAINNET`,`.CYAN`, `.AQUA` or `.TESTNET` |
+| `networkUrl` | string       | No        | Custom network url                                                                              |
