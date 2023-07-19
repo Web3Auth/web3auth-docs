@@ -616,6 +616,17 @@ module.exports = {
             "sdk/core-kit/sfa-android/usage"
           ],
         },
+        {
+          type: "category",
+          label: "SFA iOS SDK",
+          link: { type: "doc", id: "sdk/core-kit/sfa-ios/sfa-ios" },
+          items: [
+            "sdk/core-kit/sfa-ios/install",
+            "sdk/core-kit/sfa-ios/initialize",
+            "sdk/core-kit/sfa-ios/authentication",
+            "sdk/core-kit/sfa-ios/usage"
+          ],
+        },
       ],
     },
     {
