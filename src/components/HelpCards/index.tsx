@@ -21,7 +21,7 @@ export default function QuickNavigation() {
             <p>Talk to our sales team and understand how Web3Auth suits your needs.</p>
           </div>
         </Link>
-        <Link className={styles.card} to="https://community.web3auth.io/">
+        <Link className={styles.card} to="https://web3auth.io/community/">
           <div className={styles.cardIconContainer}>
             <svg viewBox="0 0 57 56" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
               <path

@@ -1,0 +1,47 @@
+import DashboardVerifier from "@site/static/dashboard/verifiers/w3a-dashboard-verifier.png";
+
+### 1. Add SingleFactorAuth to Swift Package Manager
+
+## Cocoapods
+
+```sh
+pod install SingleFactorAuth
+```
+
+## Swift Package Manager
+
+If you are using the Swift Package Manager, open the following menu item in Xcode:
+
+`File > Swift Packages > Add Package Dependency`
+
+In the Choose Package Repository prompt add this url: `https://github.com/Web3Auth/single-factor-auth-swift`
+
+## Configuration
+
+In order to use Web3Auth SFA you need to provide your Web3Auth `Network` to run it.
+
+### 2. Get your Verifier details from Web3Auth Dashboard
+
+Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new verifier. Use the verifier details in your project.
+
+<img src={DashboardVerifier} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Dashboard" />
+
+### 3. Create SingleFactorAuth Instance
+
+In your activity, create a `SingleFactorAuth` instance with `singleFactorAuthArgs`.
+
+```swift
+let singleFactorAuthArgs = SingleFactorAuthArgs(TorusNetwork.TESTNET)
+let singleFactorAuth = SingleFactorAuth(singleFactorAuthArgs)
+```
+
+### 4. Get TorusKey
+
+```swift
+let singleFactorAuthArgs = SingleFactorAuthArgs(network: TorusNetwork.TESTNET)
+let singleFactoreAuth = SingleFactorAuth(singleFactorAuthArgs: singleFactorAuthArgs)
+
+let idToken = try generateIdToken(email: TOURUS_TEST_EMAIL)
+let loginParams = LoginParams(verifier: TEST_VERIFIER, verifierId: TOURUS_TEST_EMAIL, idToken: idToken)
+let torusKey = try await singleFactoreAuth.getKey(loginParams: loginParams)
+```
