@@ -82,10 +82,8 @@ import EncryptedStorage from "react-native-encrypted-storage";
 
 ## Instantiating Web3Auth
 
-:::info NOTE
-Now with `react-native-sdk` v4 `SecureStore` or `EncryptedStorage` gets passed with the Web3Auth constructor, depending on the workflow
-you are using. This is due to the addition of session management without storing the private key in the device.
-:::
+:::info NOTE Now with `react-native-sdk` v4 `SecureStore` or `EncryptedStorage` gets passed with the Web3Auth constructor, depending on the workflow
+you are using. This is due to the addition of session management without storing the private key in the device. :::
 
 <Tabs
   defaultValue="expo"
@@ -223,6 +221,108 @@ export type SdkInitParams = {
    * sdkUrl is the url to the sdk frontend, should not need any changes normally.
    */
   sdkUrl?: string,
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+### `SdkLoginParams` object
+
+The `web3auth.login()` method in the React Native SDK take an `SdkLoginParams` object respectively as an argument. The fields of such object are
+listed below.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter         | Type                                              | Mandatory | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ----------------- | ------------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| loginProvider     | LOGIN_PROVIDER_TYPE or CUSTOM_LOGIN_PROVIDER_TYPE | Yes       | LoginProvider sets the oauth login method to be used. You can use any of the valid loginProvider from the supported list.                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| redirectUrl       | String                                            | No        | The redirectUrl that the Web3Auth login flow will use to redirect back to the app.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| appState          | String                                            | No        | Any custom state you wish to pass along. This will be returned to you post redirect. Use this to store data that you want to be available to the dapp after login.                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| mfaLevel          | MfaLevelType                                      | No        | You can set the `mfaLevel` to customize when mfa screen should be shown to user. It currently accepts 4 values: <ul><li> **`'default'`** Setting mfa level to `default` will present mfa screen to user on every third login. </li><li> **`'optional'`** Setting mfa level to `default` will present mfa screen to user on every login but user can skip it. </li><li> **`'mandatory'`** Setting mfa level to `mandatory` will make it mandatory for user to setup mfa after login. </li><li> **`'none'`** Setting mfa level to `none` will make the user skip the mfa setup screen</li></ul> |
+| extraLoginOptions | ExtraLoginOptions                                 | No        | ExtraLoginOptions can be used to pass standard oauth login options tologinProvider. For ex: you will have to pass `login_hint` as user's email and `domain`as your app domain in `extraLoginOptions` while using `email_passwordless` loginProvider.                                                                                                                                                                                                                                                                                                                                          |
+| dappShare         | String                                            | No        | Custom Logins can get a dapp share returned to them post successful login. This is useful if the dapps want to use this share to allow users to login seamlessly where the dappShare is a 24 word seed phrase.                                                                                                                                                                                                                                                                                                                                                                                |
+| curve             | SUPPORTED_KEY_CURVES_TYPE                         | No        | This curve will be used to determine the public key encoded in the jwt token which returned in `getUserInfo` function after user login. You can use that public key from jwt token as a unique user identifier in your backend.                                                                                                                                                                                                                                                                                                                                                               |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```js
+export type SdkLoginParams = {
+  /**
+   * loginProvider sets the oauth login method to be used.
+   * You can use any of the valid loginProvider from the supported list.
+   */
+  loginProvider: LOGIN_PROVIDER_TYPE | CUSTOM_LOGIN_PROVIDER_TYPE,
+  /**
+   * redirectUrl is the dapp's url where user will be redirected after login.
+   *
+   * @remarks
+   * Register this url at {@link "https://dashboard.web3auth.io"| developer dashboard}
+   * else initialization will give error.
+   */
+  redirectUrl?: string,
+  /**
+   * Any custom state you wish to pass along. This will be returned to you post redirect.
+   * Use this to store data that you want to be available to the dapp after login.
+   */
+  appState?: string,
+  /**
+   * You can set the `mfaLevel` to customize when mfa screen should be shown to user.
+   * It currently accepts 4 values:-
+   * - `'default'`: Setting mfa level to `default` will present mfa screen to user on every third login.
+   * - `'optional'`: Setting mfa level to `default` will present mfa screen to user on every login but user can skip it.
+   * - `'mandatory'`: Setting mfa level to `mandatory` will make it mandatory for user to setup mfa after login.
+   * - `'none'`: Setting mfa level to `none` will make the user skip the mfa setup screen
+   *
+   * Defaults to `default`
+   * @defaultValue `default`
+   */
+  mfaLevel?: MfaLevelType,
+
+  /**
+   * extraLoginOptions can be used to pass standard oauth login options to
+   * loginProvider.
+   *
+   * For ex: you will have to pass `login_hint` as user's email and `domain`
+   * as your app domain in `extraLoginOptions` while using `email_passwordless`
+   * loginProvider
+   */
+  extraLoginOptions?: ExtraLoginOptions,
+
+  /**
+   * Custom Logins can get a dapp share returned to them post successful login.
+   * This is useful if the dapps want to use this share to allow users to login seamlessly
+   * dappShare is a 24 word seed phrase
+   */
+  dappShare?: string,
+
+  /**
+   * This curve will be used to determine the public key encoded in the jwt token which returned in
+   * `getUserInfo` function after user login.
+   * You can use that public key from jwt token as a unique user identifier in your backend.
+   *
+   * - `'secp256k1'`: secp256k1 based pub key is added as a wallet public key in jwt token to use.
+   * - `'ed25519'`: ed25519 based pub key is added as a wallet public key in jwt token to use.
+   *
+   * Note: This parameter won't change format of private key returned by openlogin. Private key returned
+   * by openlogin is always `secp256k1`. As of now you have to convert it to `'ed25519'` if you want.
+   * You can use `@toruslabs/openlogin-ed25519` npm package for this purpose.
+   *
+   *
+   * @defaultValue secp256k1
+   */
+  curve?: SUPPORTED_KEY_CURVES_TYPE,
 };
 ```
 

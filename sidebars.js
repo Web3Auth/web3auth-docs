@@ -410,6 +410,7 @@ module.exports = {
         "sdk/pnp/react-native/install",
         "sdk/pnp/react-native/initialize",
         "sdk/pnp/react-native/usage",
+        "sdk/pnp/react-native/migration-guide-to-v4",
         {
           type: "category",
           collapsible: true,
