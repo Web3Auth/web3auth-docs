@@ -188,16 +188,24 @@ See [this](#filled-custom-jwt-verifier) to setup the custom jwt verifier using t
 
 ### Login with JWT (idToken - jsonwebtoken)
 
-```js
+```js title="Example"
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x5",
+};
+
 const web3auth = new Web3AuthNoModal({
   clientId: "", // Web3Auth Client ID
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x5",
-  },
+  chainConfig,
   web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua
   useCoreKitKey: false,
 });
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
@@ -210,6 +218,7 @@ const openloginAdapter = new OpenloginAdapter({
       },
     },
   },
+  privateKeyProvider,
 });
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
@@ -262,16 +271,24 @@ See [this](#filled-custom-jwt-verifier) to setup the custom jwt verifier using t
 
 ### Login with JWT (idToken - jose)
 
-```js
+```js title="Example"
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x5",
+};
+
 const web3auth = new Web3AuthNoModal({
   clientId: "", // Web3Auth Client ID
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x5",
-  },
+  chainConfig,
   web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua
   useCoreKitKey: false,
 });
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
@@ -284,6 +301,7 @@ const openloginAdapter = new OpenloginAdapter({
       },
     },
   },
+  privateKeyProvider,
 });
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
@@ -341,16 +359,24 @@ See [this](#filled-custom-jwt-verifier) to setup the custom jwt verifier using t
 
 ### Login with JWT (idToken - passport-jwt)
 
-```js
+```js title="Example"
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x5",
+};
+
 const web3auth = new Web3AuthNoModal({
   clientId: "", // Web3Auth Client ID
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x5",
-  },
+  chainConfig,
   web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua
   useCoreKitKey: false,
 });
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
@@ -363,6 +389,7 @@ const openloginAdapter = new OpenloginAdapter({
       },
     },
   },
+  privateKeyProvider,
 });
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
