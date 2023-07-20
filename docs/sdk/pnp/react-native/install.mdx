@@ -15,14 +15,15 @@ In React Native, you have the choice to use one of the following workflows:
 ### Expo Managed Workflow
 
 Your Expo app is built on your Expo's cloud, so you don't have control over the native modules used in the app. Developers build managed workflow apps
-using expo-cli on their computer and a development client on their mobile devices (either the Expo Go app for more simple projects or a development
-build when your project grows). Managed workflows apps typically use one or more Expo services, such as push notifications, build, and updates.
+using expo-cli on their computer and a development client on their mobile devices. Managed workflows apps typically use one or more Expo services,
+such as push notifications, build, and updates. Although, the React Native PnP SDK is not compatible with "Expo Go" app. It is compatible only with
+Custom Dev Client and EAS builds. Please refer to the troubleshooting section for more on this.
 
 ### Bare React Native Workflow
 
 Your Bare React Native app is entirely built on your own machine. In this workflow the developer has complete control, along with the complexity that
 comes with that. Configuration with app.json / app.config.js is mostly not supported in this context; instead, you will need to configure each native
-project directly with Swift/Kotlin native modules.
+project directly with Swift/Kotlin native modules. Check out the troubleshooting section for fixing common issues.
 
 :::tip
 
@@ -178,10 +179,10 @@ const resolvedRedirectUrl = `${scheme}://openlogin`;
 
 #### iOS
 
-- Make sure that the minimum SDK compile version in `Podfile` is 13 or more.
+- Make sure that the minimum SDK compile version in `Podfile` is 14 or more.
 
 ```Podfile title="ios/Podfile"
-platform :ios, '13'
+platform :ios, '14'
 ```
 
 - Install the Cocoa Pods within your project directory.
@@ -207,10 +208,8 @@ These libraries use many packages that are not present in the React Native envir
 
 - Install the missing modules:
 
-:::
-
 ```bash npm2yarn
-npm install --save empty-module stream-browserify crypto-browserify
+npm install --save empty-module readable-stream react-native-quick-crypto
 ```
 
 - Update your `metro.config.js` as per the polyfilled modules:
@@ -226,9 +225,11 @@ npm install --save empty-module stream-browserify crypto-browserify
 <TabItem value="expo">
 
 :::info
-You will have to create `metro.config.js` for Expo Managed Workflow, as it is not present by default. Also note that the React Native PnP SDK
-is not compatible with "Expo Go" app. It is compatible only with Custom Dev Client and EAS builds. Please run `npx expo prebuild` before running
-`npm run ios` or `npm run android`.
+
+You will have to create `metro.config.js` for Expo Managed Workflow, as it is not present by default. Also note that the React Native PnP SDK is not
+compatible with "Expo Go" app. It is compatible only with Custom Dev Client and EAS builds. Please run `npx expo prebuild` to generate native code
+based on the version of expo a project has installed, before running `npm run ios` or `npm run android`.
+
 :::
 
 ```js
@@ -251,8 +252,8 @@ module.exports = (async () => {
         url: require.resolve("empty-module"), // url can be polyfilled here if needed
         zlib: require.resolve("empty-module"), // browserify-zlib can be polyfilled here if needed
         path: require.resolve("empty-module"),
-        crypto: require.resolve("crypto-browserify"),
-        stream: require.resolve("stream-browserify"),
+        crypto: require.resolve("react-native-quick-crypto"),
+        stream: require.resolve("readable-stream"),
       },
 
       assetExts: assetExts.filter((ext) => ext !== "svg"),
@@ -295,8 +296,8 @@ module.exports = (async () => {
         url: require.resolve("empty-module"), // url can be polyfilled here if needed
         zlib: require.resolve("empty-module"), // browserify-zlib can be polyfilled here if needed
         path: require.resolve("empty-module"),
-        crypto: require.resolve("crypto-browserify"),
-        stream: require.resolve("stream-browserify"),
+        crypto: require.resolve("react-native-quick-crypto"),
+        stream: require.resolve("readable-stream"),
       },
 
       assetExts: assetExts.filter((ext) => ext !== "svg"),
@@ -317,3 +318,24 @@ module.exports = (async () => {
 
 </TabItem>
 </Tabs>
+
+### Fixing `Buffer` issues in Bare workflow
+
+Add globals.js to your project root directory and add the following code to it.
+
+```js title="globals.js"
+process.browser = true;
+
+global.Buffer = require("buffer").Buffer;
+
+// Needed so that 'stream-http' chooses the right default protocol.
+global.location = {
+  protocol: "file:",
+};
+```
+
+Then, import the `globals.js` to `index.js` of your project.
+
+```js title="index.js"
+import "./globals.js";
+```
