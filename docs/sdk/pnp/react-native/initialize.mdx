@@ -83,8 +83,8 @@ import EncryptedStorage from "react-native-encrypted-storage";
 ## Instantiating Web3Auth
 
 :::info NOTE
-Now with `react-native-sdk` v4 `SecureStore` or `EncryptedStorage` gets passed with the Web3Auth constructor, depending on the workflow you are using. This is due to
-the addition of session management without storing the private key in the device.
+Now with `react-native-sdk` v4 `SecureStore` or `EncryptedStorage` gets passed with the Web3Auth constructor, depending on the workflow
+you are using. This is due to the addition of session management without storing the private key in the device.
 :::
 
 <Tabs
@@ -127,14 +127,18 @@ below.
 
 <TabItem value="table">
 
-| Parameter   | Type                                                 | Mandatory | Description                                                                                                                                   |
-| ----------- | ---------------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| clientId    | String                                               | Yes       | Your Web3Auth project ID obtained from the Web3Auth dashboard                                                                                 |
-| network     | Choose between `mainnet`, `cyan`,`aqua`, , `testnet` | Yes       | Web3Auth network to run on, either CYAN, MAINNET, AQUA or TESTNET                                                                             |
-| redirectUrl | String                                               | No        | The redirectUrl that the Web3Auth login flow will use to redirect back to the app.                                                            |
-| loginConfig | LoginConfig                                          | No        | A configuration optional object to customize login flow.                                                                                      |
-| whiteLabel  | WhiteLabelData                                       | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer to the WhiteLabeling section for more info. |
-| sdkUrl      | String                                               | No        | The url to the SDK frontend, should not need any changes normally.                                                                            |
+| Parameter     | Type                                                          | Mandatory | Description                                                                                                                                                                                                           |
+| ------------- | ------------------------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| clientId      | String                                                        | Yes       | Your Web3Auth project ID obtained from the Web3Auth dashboard                                                                                                                                                         |
+| network       | Choose between `mainnet`, `cyan`,`aqua`,`celeste` , `testnet` | Yes       | Web3Auth network to run on, either CYAN, MAINNET, AQUA, CELESTE or TESTNET                                                                                                                                            |
+| redirectUrl   | String                                                        | No        | The redirectUrl that the Web3Auth login flow will use to redirect back to the app.                                                                                                                                    |
+| loginConfig   | LoginConfig                                                   | No        | A configuration optional object to customize login flow.                                                                                                                                                              |
+| whiteLabel    | WhiteLabelData                                                | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer to the WhiteLabeling section for more info.                                                                         |
+| storageKey    | Choose between `session`, `local`. Default is `local`         | No        | Setting this to `local` will persist social login session accross browser tabs as opposed to `session`                                                                                                                |
+| sessionTime   | Any number from 1 to 86400\*7. Default is 86400               | No        | Decides how long should a login session last in seconds                                                                                                                                                               |
+| mfaSettings   | MfaSettings                                                   | No        | This parameter will be used to enable mfa factors and set priority on UI listing. List of factors available <ul><li>backUpShareFactor</li><li>socialFactor</li><li>passwordFactor</li><li>deviceShareFactor</li></ul> |
+| useCoreKitKey | boolean                                                       | No        | Use `useCoreKitKey` as `true`, if you're using this SDK with the Single Factor Auth Web SDK                                                                                                                           |
+| sdkUrl        | String                                                        | No        | The url to the SDK frontend, should not need any changes normally.                                                                                                                                                    |
 
 </TabItem>
 
@@ -144,26 +148,29 @@ below.
 export type SdkInitParams = {
   /**
    * You can get your clientId/projectId by registering your
-   * dapp on {@link "https://developer.tor.us"| developer dashbaord}
+   * dapp on {@link "https://dashboard.web3auth.io"| developer dashboard}
    */
   clientId: string,
+
   /**
-   * network specifies the specific web3auth network to be used.
+   * network specifies the openlogin sdk url to be used.
    *
    * - `'mainnet'`: https://app.openlogin.com will be used which is the production version.
    * - `'cyan'`: https://cyan.openlogin.com will be used which is the production cyan version.
-   * - `'aqua'`: https://aqua.openlogin.com will be used which is the production aqua version.
-   * - `'testnet'`: https://beta.openlogin.com will be used which is the beta version.
+   * - `'testnet'`: https://testing.openlogin.com will be used which is the testing version.
+   * - `'development'`: http://localhost:3000 will be used for development purpose.
    */
   network: OPENLOGIN_NETWORK_TYPE,
+
   /**
    * redirectUrl is the dapp's url where user will be redirected after login.
    *
    * @remarks
-   * Register this url at {@link "https://developer.tor.us"| developer dashbaord}
+   * Register this url at {@link "https://dashboard.web3auth.io"| developer dashboard}
    * else initialization will give error.
    */
   redirectUrl?: string,
+
   /**
    * loginConfig enables you to pass your own login verifiers configuration for various
    * loginProviders.
@@ -172,15 +179,46 @@ export type SdkInitParams = {
    * should be custom configuration for that loginProvider
    *
    * @remarks
-   * You can deploy your own verifiers from {@link "https://developer.tor.us"| developer dashbaord}
+   * You can deploy your own verifiers from {@link "https://dashboard.web3auth.io"| developer dashboard}
    * to use here.
    *
    */
   loginConfig?: LoginConfig,
+
   /**
    * options for whitelabling default openlogin modal.
    */
   whiteLabel?: WhiteLabelData,
+
+  /**
+   * setting to "local" will persist social login session accross browser tabs.
+   *
+   * @defaultValue "local"
+   */
+  storageKey?: "session" | "local",
+
+  /**
+   * How long should a login session last at a minimum in seconds
+   *
+   * @defaultValue 86400 seconds
+   * @remarks Max value of sessionTime can be 7 * 86400 (7 days)
+   */
+  sessionTime?: number,
+
+  /**
+   * This parameter will be used to enable mfa factors and set priority on UI listing.
+   * List of factors available
+   * backUpShareFactor | socialFactor | passwordFactor
+   * @defaultValue false
+   */
+  mfaSettings?: MfaSettings,
+
+  /**
+   * Uses core-kit key with web3auth provider
+   * @defaultValue false
+   */
+  useCoreKitKey?: boolean,
+
   /**
    * sdkUrl is the url to the sdk frontend, should not need any changes normally.
    */
