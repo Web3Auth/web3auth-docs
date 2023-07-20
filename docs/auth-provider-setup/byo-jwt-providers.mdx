@@ -189,14 +189,23 @@ See [this](#filled-custom-jwt-verifier) to setup the custom jwt verifier using t
 ### Login with JWT (idToken - jsonwebtoken)
 
 ```js
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://goerli.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
 const web3auth = new Web3AuthNoModal({
-  clientId: "", // Web3Auth Client ID
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x5",
-  },
-  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua
-  useCoreKitKey: false,
+  clientId,
+  chainConfig,
+  web3AuthNetwork: "cyan",
+});
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
 });
 
 const openloginAdapter = new OpenloginAdapter({
@@ -210,6 +219,7 @@ const openloginAdapter = new OpenloginAdapter({
       },
     },
   },
+  privateKeyProvider,
 });
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
@@ -263,14 +273,23 @@ See [this](#filled-custom-jwt-verifier) to setup the custom jwt verifier using t
 ### Login with JWT (idToken - jose)
 
 ```js
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://goerli.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
 const web3auth = new Web3AuthNoModal({
-  clientId: "", // Web3Auth Client ID
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x5",
-  },
-  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua
-  useCoreKitKey: false,
+  clientId,
+  chainConfig,
+  web3AuthNetwork: "cyan",
+});
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
 });
 
 const openloginAdapter = new OpenloginAdapter({
@@ -284,6 +303,7 @@ const openloginAdapter = new OpenloginAdapter({
       },
     },
   },
+  privateKeyProvider,
 });
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
@@ -342,14 +362,23 @@ See [this](#filled-custom-jwt-verifier) to setup the custom jwt verifier using t
 ### Login with JWT (idToken - passport-jwt)
 
 ```js
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://goerli.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
 const web3auth = new Web3AuthNoModal({
-  clientId: "", // Web3Auth Client ID
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x5",
-  },
-  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua
-  useCoreKitKey: false,
+  clientId,
+  chainConfig,
+  web3AuthNetwork: "cyan",
+});
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
 });
 
 const openloginAdapter = new OpenloginAdapter({
@@ -363,6 +392,7 @@ const openloginAdapter = new OpenloginAdapter({
       },
     },
   },
+  privateKeyProvider,
 });
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
