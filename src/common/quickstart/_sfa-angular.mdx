@@ -1,5 +1,3 @@
-import TabItem from "@theme/TabItem";
-import Tabs from "@theme/Tabs";
 import DashboardImage from "@site/static/dashboard/project_plug_n_play.png";
 
 ### 1. Install Web3Auth
@@ -7,125 +5,59 @@ import DashboardImage from "@site/static/dashboard/project_plug_n_play.png";
 Install the Web3Auth's Single Factor Auth package in your Angular project.
 
 ```bash npm2yarn
-npm install --save @web3auth/single-factor-auth
+npm install --save @web3auth/single-factor-auth @web3auth/ethereum-provider
 ```
 
 ### 2. Get your Client ID from Web3Auth Dashboard
 
 Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new project. Use the Client ID of the project to start your integration.
 
-<img src={DashboardImage} style={{ alignSelf: "center", maxWidth: "100%" }} />
+<img src={DashboardImage} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Dashboard" />
 
 ### 3. Initialize Web3Auth for your preferred blockchain
 
 Web3Auth needs to initialise as soon as your app loads up to enable the user to log in. Preferably done within a constructor, initialisation is the
-step where you can pass on all the configurations for Web3Auth you want. A simple integration for some of the popular blockchains will look like this:
-
-<Tabs
-  defaultValue="ethereum"
-  values={[
-    { label: "Ethereum", value: "ethereum" },
-    { label: "Polygon", value: "polygon" },
-    { label: "Solana", value: "solana" },
-    { label: "Other Chains", value: "other" },
-  ]}
->
-
-<TabItem value="ethereum">
+step where you can pass on all the configurations for Web3Auth you want. A simple integration for EVM blockchains will look like this:
 
 ```js
 import { Web3Auth } from "@web3auth/single-factor-auth";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+const provider = new EthereumPrivateKeyProvider({
+  config: {
+    chainConfig: {
+      chainId: "0x5",
+      rpcTarget: "https://rpc.ankr.com/eth_goerli",
+      displayName: "goerli",
+      blockExplorer: "https://goerli.etherscan.io/",
+      ticker: "ETH",
+      tickerName: "Ethereum",
+    },
+  },
+});
 
 //Initialize within your constructor
 const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x1", // Please use 0x5 for Goerli Testnet
-  },
-  // Available networks are "testnet", "mainnet", "cyan", "aqua", .
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  // Available networks are "testnet", "mainnet", "cyan", "aqua".
   web3AuthNetwork: "cyan",
 });
 
-web3auth.init();
+web3auth.init({ provider });
 ```
-
-</TabItem>
-
-<TabItem value="polygon">
-
-```js
-import { Web3Auth } from "@web3auth/single-factor-auth";
-
-//Initialize within your constructor
-const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x89", // Use 0x13881 for Mumbai Testnet
-  },
-  // Available networks are "testnet", "mainnet", "cyan", "aqua", .
-  web3AuthNetwork: "cyan",
-});
-
-web3auth.init();
-```
-
-</TabItem>
-
-<TabItem value="solana">
-
-```js
-import { Web3Auth } from "@web3auth/single-factor-auth";
-
-//Initialize within your constructor
-const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "solana",
-    chainId: "0x1",
-  },
-  // Available networks are "testnet", "mainnet", "cyan", "aqua", .
-  web3AuthNetwork: "cyan",
-});
-
-web3auth.init();
-```
-
-</TabItem>
-
-<TabItem value="other">
-
-```js
-import { Web3Auth } from "@web3auth/single-factor-auth";
-
-//Initialize within your constructor
-const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainId: "chainId",
-    chainNamespace: "other",
-    rpcTarget: "rpcUrl",
-  },
-  // Available networks are "testnet", "mainnet", "cyan", "aqua", .
-  web3AuthNetwork: "cyan",
-});
-
-web3auth.init();
-```
-
-</TabItem>
-
-</Tabs>
 
 ### 4. Login your User
 
 Once you're done initialising, just create a button that triggers the login for the user on their request. Logging in is as easy as:
 
 ```js
-await web3auth.connect({
-  verifier: "verifier-name", // replace with your verifier name, and it has to be on the same network passed in init().
-  verifierId: "verifier-Id", // replace with your verifier id(sub or email), setup while creating the verifier on Web3Auth's Dashboard
-  idToken: "JWT Token", // replace with your newly created unused JWT Token.
+const web3authNodeprovider = await web3auth.connect({
+  verifier: "web3auth-sfa-verifier", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+  verifierId: `Yux1873xnibdui`, // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
+  idToken:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c", // replace with your newly created unused JWT Token.
 });
+const privateKey = await web3authNodeprovider.request({ method: "eth_private_key" });
+// The private key returned here is the CoreKitKey
+console.log("ETH Private Key", privateKey);
 ```
