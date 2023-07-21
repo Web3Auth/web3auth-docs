@@ -1,8 +1,7 @@
 ---
-title: Migration guide to v4 React Native PnP SDK
-sidebar_label: Migration Guide to v4
-displayed_sidebar: sdk
-description: "Web3Auth PnP React Native SDK - Migration Guide to v4 | Documentation - Web3Auth"
+title: PnP React Native SDK - v3 to v4
+displayed_sidebar: docs
+description: "PnP React Native SDK - v3 to v4 | Documentation - Web3Auth"
 ---
 
 ## Third parameter to web3auth constructor
@@ -234,31 +233,31 @@ module.exports = (async () => {
 Previous versions of the SDK returned a response object with the `login()` method. This is no longer the case. The `login()` method now returns a
 `Promise<void>`. You can use the getters such as the `web3auth.privKey()` to get the private key of the user (default is `secp256k1` key). Or use
 `web3auth.ed25519Key()` to get the `ed25519` key. Lastly, for userInfo instead of accessing the object properties directly you can use the
-`web3auth.userInfo()`.
-Types for the react-native PnP SDK.
+`web3auth.userInfo()`. Types for the react-native PnP SDK.
+
 ```ts
 import { EncryptedStorage } from "./types/IEncryptedStorage";
 import { SecureStore } from "./types/IExpoSecureStore";
 import { IWeb3Auth, SdkInitParams, SdkLoginParams, State } from "./types/interface";
 import { IWebBrowser } from "./types/IWebBrowser";
 declare class Web3Auth implements IWeb3Auth {
-    private initParams;
-    private webBrowser;
-    private keyStore;
-    private state;
-    private sessionManager;
-    constructor(webBrowser: IWebBrowser, storage: SecureStore | EncryptedStorage, initParams: SdkInitParams);
-    get privKey(): string;
-    get ed25519Key(): string;
-    init(): Promise<void>;
-    login(options: SdkLoginParams): Promise<void>;
-    logout(): Promise<void>;
-    userInfo(): State["userInfo"];
-    private _syncState;
-    private request;
-    private _authorizeSession;
+  private initParams;
+  private webBrowser;
+  private keyStore;
+  private state;
+  private sessionManager;
+  constructor(webBrowser: IWebBrowser, storage: SecureStore | EncryptedStorage, initParams: SdkInitParams);
+  get privKey(): string;
+  get ed25519Key(): string;
+  init(): Promise<void>;
+  login(options: SdkLoginParams): Promise<void>;
+  logout(): Promise<void>;
+  userInfo(): State["userInfo"];
+  private _syncState;
+  private request;
+  private _authorizeSession;
 }
 export default Web3Auth;
 ```
-Checkout our react-native PnP examples in PnP examples repo to know how to use the new SDK methods.
 
+Checkout our react-native PnP examples in PnP examples repo to know how to use the new SDK methods.
