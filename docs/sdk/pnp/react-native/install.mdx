@@ -16,8 +16,14 @@ In React Native, you have the choice to use one of the following workflows:
 
 Your Expo app is built on your Expo's cloud, so you don't have control over the native modules used in the app. Developers build managed workflow apps
 using expo-cli on their computer and a development client on their mobile devices. Managed workflows apps typically use one or more Expo services,
-such as push notifications, build, and updates. Although, the React Native PnP SDK is not compatible with "Expo Go" app. It is compatible only with
+such as push notifications, build, and updates.
+
+:::warning Note
+
+The React Native PnP SDK V4 is not compatible with "Expo Go" app. It is compatible only with
 Custom Dev Client and EAS builds. Please refer to the troubleshooting section for more on this.
+
+:::
 
 ### Bare React Native Workflow
 
@@ -59,13 +65,8 @@ installation steps depending on whether you are using the bare workflow or manag
 When using our SDK with a Expo-based React Native app (aka managed workflow), you have to install the `expo-web-browser` package as a `WebBrowser`
 implementation.
 
-#### Expo Secure Store
-
-When using our SDK with a Expo-based React Native app (aka managed workflow), you have to install the `expo-secure-store` package as a `Storage`
-implementation.
-
 ```shell
-expo install expo-web-browser expo-secure-store
+expo install expo-web-browser
 ```
 
 </TabItem>
@@ -76,12 +77,47 @@ expo install expo-web-browser expo-secure-store
 
 When using our SDK with a bare workflow React Native app, you have to install a `WebBrowser` implementation made by us.
 
+```bash npm2yarn
+npm install --save @toruslabs/react-native-web-browser
+```
+
+</TabItem>
+</Tabs>
+
+### Adding a `Storage` Module
+
+Now with v4, we need to pass a `Storage` parameter to the SDK, which will be used for session management without storing the private keys of the user
+in the device.
+
+<Tabs
+  defaultValue="expo"
+  values={[
+    { label: "Expo Managed Workflow", value: "expo" },
+    { label: "Bare React Native Workflow", value: "bare" },
+  ]}
+>
+
+<TabItem value="expo">
+
+#### Expo Secure Store
+
+When using our SDK with a Expo-based React Native app (aka managed workflow), you have to install the `expo-secure-store` package as a `Storage`
+implementation.
+
+```shell
+expo install expo-secure-store
+```
+
+</TabItem>
+
+<TabItem value="bare">
+
 #### React Native Encrypted Storage
 
 When using our SDK with a bare workflow React Native app, you have to install a `Storage` implementation provided by react-native.
 
 ```bash npm2yarn
-npm install --save @toruslabs/react-native-web-browser react-native-encrypted-storage
+npm install --save react-native-encrypted-storage
 ```
 
 </TabItem>
@@ -324,14 +360,20 @@ module.exports = (async () => {
 Add globals.js to your project root directory and add the following code to it.
 
 ```js title="globals.js"
-process.browser = true;
-
 global.Buffer = require("buffer").Buffer;
 
 // Needed so that 'stream-http' chooses the right default protocol.
 global.location = {
   protocol: "file:",
 };
+
+global.process.version = "v16.0.0";
+if (!global.process.version) {
+  global.process = require("process");
+  console.log({ process: global.process });
+}
+
+process.browser = true;
 ```
 
 Then, import the `globals.js` to `index.js` of your project.

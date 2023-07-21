@@ -60,20 +60,21 @@ const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
 Add `globals.js` file to your project and import it in your `index.js` file.
 
 ```js title="globals.js"
-global.Buffer = require("buffer").Buffer;
+global.Buffer = require('buffer').Buffer;
 
 // Needed so that 'stream-http' chooses the right default protocol.
 global.location = {
-  protocol: "file:",
+  protocol: 'file:',
 };
 
-global.process.version = "v16.0.0";
+global.process.version = 'v16.0.0';
 if (!global.process.version) {
-  global.process = require("process");
-  console.log({ process: global.process });
+  global.process = require('process');
+  console.log({process: global.process});
 }
 
 process.browser = true;
+
 ```
 
 ```js title="index.js"
@@ -117,7 +118,6 @@ module.exports = (async () => {
         os: require.resolve("empty-module"), // os-browserify can be polyfilled here if needed
         url: require.resolve("empty-module"), // url can be polyfilled here if needed
         zlib: require.resolve("empty-module"), // browserify-zlib can be polyfilled here if needed
-        process: require.resolve("empty-module"), // process can be polyfilled here if needed
         path: require.resolve("empty-module"),
         crypto: require.resolve("react-native-quick-crypto"),
         stream: require.resolve("readable-stream"),
