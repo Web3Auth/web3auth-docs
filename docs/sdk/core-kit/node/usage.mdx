@@ -160,6 +160,7 @@ For MFA enabled users, you'll see `Error("User has already enabled mfa, please u
 ```js
 const { Web3Auth } = require("@web3auth/node-sdk");
 const { EthereumPrivateKeyProvider } = require("@web3auth/ethereum-provider");
+const jwt = require("jsonwebtoken");
 const fs = require("fs");
 
 // Use "openssl genrsa -out privateKey.pem 2048" to generate a private key
@@ -171,20 +172,21 @@ var privateKey = fs.readFileSync("privateKey.pem");
 const provider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig: {
-      chainId: "0x1",
-      rpcTarget: `https://rpc.ankr.com/eth`,
-      displayName: "ropsten",
-      blockExplorer: "https://ropsten.etherscan.io/",
+      chainId: "0x5",
+      rpcTarget: "https://rpc.ankr.com/eth_goerli",
+      displayName: "goerli",
+      blockExplorer: "https://goerli.etherscan.io/",
       ticker: "ETH",
       tickerName: "Ethereum",
     },
   },
 });
 
+// Instantiate Web3Auth Node.js SDK
 const web3auth = new Web3Auth({
   clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  // Available networks are "testnet", "mainnet", "cyan", "aqua".
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "cyan", // Available networks are "testnet", "mainnet", "cyan", "aqua".
+  usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
 });
 
 web3auth.init({ provider });
@@ -215,9 +217,9 @@ const connect = async () => {
       { algorithm: "RS256", keyid: "1bb9605c36e69386830202b2d" }
     ), // or replace it with your newly created unused JWT Token.
   });
-  const privateKey = await web3authNodeprovider.request({ method: "eth_private_key" });
+  const ethPrivateKey = await web3authNodeprovider.request({ method: "eth_private_key" });
   // The private key returned here is the CoreKitKey
-  console.log("ETH Private Key", privateKey);
+  console.log("ETH Private Key", ethPrivateKey);
 };
 connect();
 ```
