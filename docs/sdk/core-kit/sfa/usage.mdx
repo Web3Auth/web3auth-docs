@@ -130,11 +130,31 @@ const provider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 // Initialize Web3Auth SFA SDK
 web3authSfa.init({ provider });
 
+const user = {
+  id: "faj2720i2fdG7NsqznOKrthDvq43", // must be unique to each user
+  name: "Mohammad Shahbaz Alam",
+  email: "shahbaz@web3auth.io",
+  profileImage: "https://avatars.githubusercontent.com/u/46641595?v=4",
+};
+
 // Login the user
 const web3authSfaprovider = await web3auth.connect({
-  verifier: "verifier-name", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
-  verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
-  idToken: "JWT Token", // replace with your newly created unused JWT Token.
+  verifier: "web3auth-sfa-verifier", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+  verifierId: user.id, // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
+  idToken: jwt.sign(
+    {
+      sub: user.id, // must be unique to each user
+      name: user.name,
+      email: user.email,
+      picture: user.profileImage,
+      aud: "urn:my-resource-server", // -> to be used in Custom Authentication as JWT Field
+      iss: "https://my-authz-server", // -> to be used in Custom Authentication as JWT Field
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 60 * 60,
+    },
+    privateKey, // <-- privateKey to sign the JWT Token
+    { algorithm: "RS256", keyid: "1bb9605c36e69386830202b2d" }
+  ), // or replace it with your newly created unused JWT Token.
 });
 
 // Get the private key, The private key returned here is the CoreKit Key, since the usePnPKey is set to false.
