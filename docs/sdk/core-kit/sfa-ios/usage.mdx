@@ -84,8 +84,7 @@ public class LoginParams {
 </Tabs>
 
 ```js title="Example"
-let idToken = try generateIdToken(email: TOURUS_TEST_EMAIL)
-let loginParams = LoginParams(verifier: TEST_VERIFIER, verifierId: TOURUS_TEST_EMAIL, idToken: idToken)
+let loginParams = LoginParams(verifier: "YOUR_VERIFIER_NAME", verifierId: "YOUR_VERIFIER_ID", idToken: "YOUR_ID_TOKEN")
 let torusKey = try await singleFactoreAuth.getKey(loginParams: loginParams)
 ```
 
@@ -96,6 +95,27 @@ Web3Auth SFA iOS SDK only works for those users who have **not enabled MFA**.
 For MFA enabled users, you'll see an Error message.
 
 :::
+
+## Example
+
+```swift
+import SingleFactorAuth
+import JWTDecode
+
+/*
+.
+.
+.
+*/
+
+let jwt = try decode(jwt: id_token)
+let result = try await SingleFactorAuth(singleFactorAuthArgs: .init(network: .CYAN)).getKey(loginParams: .init(verifier: "web3auth-firebase-examples", verifierId: jwt.subject ?? "YOUR_VERIFIER_ID", idToken: id_token))
+
+await MainActor.run(body: {
+    privateKey = result.getPrivateKey()
+    publicAddress = result.getPublicAddress()
+})
+```
 
 ## Session Management
 

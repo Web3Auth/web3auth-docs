@@ -71,7 +71,7 @@ export type LoginParams = {
 </Tabs>
 
 ```js title="Example"
-loginParams = LoginParams("verifier_name", "verifier_id", "id_token");
+loginParams = LoginParams("YOUR_VERIFIER_NAME", "YOUR_VERIFIER_ID", "YOUR_ID_TOKEN");
 torusKey = singleFactorAuth.getKey(loginParams).get();
 ```
 
@@ -93,6 +93,7 @@ import com.github.web3auth.singlefactorauth.types.SingleFactorAuthArgs
 import com.github.web3auth.singlefactorauth.types.LoginParams
 import com.github.web3auth.singlefactorauth.types.TorusKey
 import org.torusresearch.fetchnodedetails.types.TorusNetwork
+import com.auth0.android.jwt.JWT
 
 class MainActivity : AppCompatActivity() {
   // ...
@@ -114,7 +115,9 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun signIn() {
-    loginParams = LoginParams("web3auth-firebase-examples", "sub", "id_token")
+    val jwt = JWT(idToken) // idToken is the JWT token obtained from auth provider or your custom JWT provider
+    val sub = jwt.getClaim("sub").asString() // get sub claims
+    loginParams = LoginParams("web3auth-firebase-examples", "$sub", "$idToken")
     try {
         torusKey = singleFactorAuth.getKey(loginParams).get()
     } catch (e: ExecutionException) {
