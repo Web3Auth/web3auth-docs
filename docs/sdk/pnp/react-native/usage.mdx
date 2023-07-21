@@ -50,12 +50,8 @@ Trigger the login flow that navigate the user to a browser model that allows the
 
 ```typescript
 
-async login(params?: LoginParams & Partial<BaseRedirectParams>): Promise<{ privKey: string }> {
-  if (params?.loginProvider) {
-    return this._selectedLogin(params);
-  }
-  return this._modal(params);
-}
+async login(options: SdkLoginParams): Promise<void>;
+export type SdkLoginParams = Omit<LoginParams, "fastLogin" | "skipTKey" | "getWalletKey"> & Required<Pick<LoginParams, "loginProvider">>;
 
 export type BaseRedirectParams = {
   /**
@@ -176,14 +172,10 @@ export type LoginParams = BaseRedirectParams & {
 
 </Tabs>
 
-### Sample Response
-
-<RNResponse />
-
 ### Example
 
 ```typescript
-const state = await web3auth.login({
+await web3auth.login({
   loginProvider: LoginProvider.GOOGLE,
   redirectUrl: resolvedRedirectUrl,
 });
@@ -389,7 +381,7 @@ web3auth.login({
 <TabItem value="secp256k1">
 
 ```typescript
-const state = await web3auth.login({
+await web3auth.login({
   loginProvider: LoginProvider.GOOGLE,
   redirectUrl: resolvedRedirectUrl,
   // highlight-next-line
@@ -402,7 +394,7 @@ const state = await web3auth.login({
 <TabItem value="ed25519">
 
 ```typescript
-const state = await web3auth.login({
+await web3auth.login({
   loginProvider: LoginProvider.GOOGLE,
   redirectUrl: resolvedRedirectUrl,
   // highlight-next-line
