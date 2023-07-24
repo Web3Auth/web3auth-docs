@@ -10,8 +10,6 @@ import Web3AuthOptions from "@site/src/common/sdk/pnp/web/_web3authcore-options.
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
----
-
 After Installation, the next step to use Web3Auth Single Factor Auth Web SDK is to Initialize the SDK.
 
 However, the Initialization is a two step process, ie.
@@ -21,7 +19,7 @@ However, the Initialization is a two step process, ie.
 
 :::info guide
 
-Follow this [guide](/content-hub/guides/single-factor-auth) for ideal flow using a combination of Web3Auth Single Factor Auth Web SDK and Web3Auth
+[**Follow this guide**](/content-hub/guides/single-factor-auth) for ideal flow using a combination of Web3Auth Single Factor Auth Web SDK and Web3Auth
 Core SDK.
 
 :::
@@ -124,9 +122,7 @@ export interface Web3AuthOptions {
 
 </Tabs>
 
-### Usage Example
-
-```javascript
+```javascript title="Usage"
 const web3auth = new Web3Auth({
   clientId: "", // Get your Client ID from Web3Auth Dashboard
   // Available networks are "testnet", "mainnet", "cyan", "aqua", .
@@ -148,8 +144,6 @@ blockchain. Currently, Web3Auth exposes the following provider packages to be in
 Using these providers, you can export the private keys for the respective curves of the selected blockchain. You can use these keys to even create
 manual providers for other blockchains supporting the curves/ have conversion packages for their blockchain curves.
 
-### Example
-
 <Tabs
   defaultValue="eth"
   values={[
@@ -161,20 +155,22 @@ manual providers for other blockchains supporting the curves/ have conversion pa
 
 <TabItem value="eth">
 
-```javascript
+```javascript title="Usage"
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
 
-const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+const provider = new EthereumPrivateKeyProvider({
   config: {
     /*
-      pass the chain config that you want to connect with
+      pass the chain config that you want to connect with.
       all chainConfig fields are required.
       */
     chainConfig: {
+      chainNamespace: CHAIN_NAMESPACES.EIP155,
       chainId: "0x1",
-      rpcTarget: `https://rpc.ankr.com/eth`,
-      displayName: "ropsten",
-      blockExplorer: "https://ropsten.etherscan.io/",
+      rpcTarget: "https://rpc.ankr.com/eth",
+      displayName: "Ethereum Mainnet",
+      blockExplorer: "https://etherscan.io",
       ticker: "ETH",
       tickerName: "Ethereum",
     },
@@ -186,18 +182,19 @@ const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
 
 <TabItem value="solana">
 
-```javascript
+```javascript title="Usage"
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
 
-/*
-ed25519key: any ed25519 private key.
-*/
-
-// Get user's Solana's public address
 const provider = new SolanaPrivateKeyProvider({
   config: {
+    /*
+      pass the chain config that you want to connect with.
+      all chainConfig fields are required.
+      */
     chainConfig: {
-      chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+      chainNamespace: CHAIN_NAMESPACES.SOLANA,
+      chainId: "0x1",
       rpcTarget: "https://rpc.ankr.com/solana",
       displayName: "Solana Mainnet",
       blockExplorer: "https://explorer.solana.com/",
@@ -212,18 +209,24 @@ const provider = new SolanaPrivateKeyProvider({
 
 <TabItem value="other">
 
-```javascript
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+```javascript title="Usage"
+import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
 
-const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+const provider = new CommonPrivateKeyProvider({
   config: {
+    /*
+      pass the chain config that you want to connect with.
+      all chainConfig fields are required.
+      */
     chainConfig: {
+      chainNamespace: CHAIN_NAMESPACES.OTHER,
       chainId: "0x1",
-      rpcTarget: `https://rpc.ankr.com/eth`,
-      displayName: "ropsten",
-      blockExplorer: "https://ropsten.etherscan.io/",
-      ticker: "ETH",
-      tickerName: "Ethereum",
+      rpcTarget: `https://rpc.target.url`,
+      displayName: "Display Name",
+      blockExplorer: "https://chain.explorer.link",
+      ticker: "TKR",
+      tickerName: "Ticker Name",
     },
   },
 });
@@ -236,11 +239,40 @@ const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
 
 #### `init()`
 
-The final step in the initialization process is to initialize the `Web3Auth` instance, ie. `web3auth` in our case.
-
-This is done by calling `init()` function of the `web3auth` instance we created above with a network type matching the `Verifier` network. **_Default
-network is "mainnet"._**
+To complete the initialization process, we need to initialize the `Web3Auth` instance, which we named `web3auth`. This is achieved by calling the
+`init()` function of the previously created `web3auth` instance, using a **private key provider**.
 
 ```javascript
+web3auth.init({ provider });
+```
+
+## Example
+
+```javascript
+import { Web3Auth } from "@web3auth/single-factor-auth";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+// Swap with different provider if you want to use a different blockchain
+const provider = new EthereumPrivateKeyProvider({
+  config: {
+    chainConfig: {
+      chainNamespace: CHAIN_NAMESPACES.EIP155,
+      chainId: "0x1",
+      rpcTarget: "https://rpc.ankr.com/eth",
+      displayName: "Ethereum Mainnet",
+      blockExplorer: "https://etherscan.io",
+      ticker: "ETH",
+      tickerName: "Ethereum",
+    },
+  },
+});
+
+const web3auth = new Web3Auth({
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "cyan", // Available networks are "testnet", "mainnet", "cyan", and "aqua".
+  usePnPKey: "false", // By default, this sdk returns CoreKitKey by default.
+});
+
 web3auth.init({ provider });
 ```

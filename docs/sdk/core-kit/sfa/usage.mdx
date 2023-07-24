@@ -60,7 +60,7 @@ On unsuccessful login, this function will return a `null` value.
 | Parameter               | Type                     | Description                                                                                                         | Mandatory |
 | ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- | --------- |
 | `verifier`              | `string`                 | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                                  | Yes       |
-| `verifierId`            | `string`                 | Verifier ID's value, `sub` or `email` value present in the idToken.                                                 | Yes       |
+| `verifierId`            | `string`                 | Verifier ID's value, `sub` or `email`'s value present in the idToken and **not the string `sub` or `email`**.       | Yes       |
 | `idToken`               | `string`                 | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. | Yes       |
 | `subVerifierInfoArray?` | `TorusSubVerifierInfo[]` | Sub verifier info                                                                                                   | No        |
 
@@ -81,9 +81,7 @@ export type LoginParams = {
 
 </Tabs>
 
-### Example
-
-```js
+```js title="Usage"
 await web3auth.connect({
   verifier: "verifier-name", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
   verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
@@ -91,7 +89,11 @@ await web3auth.connect({
 });
 ```
 
-`@web3auth/single-factor-auth` SDK only works for those users who have **not enabled MFA**.
+:::tip Note
+
+`@web3auth/single-factor-auth` SDK only works for users who have **not enabled MFA**.
+
+:::
 
 :::danger MFA enabled users
 
