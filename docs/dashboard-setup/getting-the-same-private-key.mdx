@@ -1,0 +1,74 @@
+---
+title: Getting the same private key
+image: "images/docs-meta-cards/documentation-card.png"
+displayed_sidebar: docs
+description: "Getting the same private across various Web3Auth products | Documentation - Web3Auth"
+---
+
+## Private keys across Web3Auth products depend on the following factors
+
+### Verifier
+
+A verifier is a piece of information about the OAuth provider being used by the application, which is queried by web3auth auth network nodes from a
+smart contract deployed on the Ethereum blockchain to verify the JWT token. To know more about creating verifiers, please refer
+[here](/docs/auth-provider-setup/verifiers).
+
+As the verifiers change, the private key changes. And as we go across different SDKs, we need different verifiers to be created, hence changing the
+wallet addresses for the end-users.
+
+### Aggregate Verifier
+
+Aggregate verifier is combining multiple login methods to create a verifier to get the same wallet address for your user for the same email id
+regardless of their login providers, for example, combining a Google and Email Passwordless login or Google and GitHub via Auth0 to access the same
+key for your user. Refer to the docs [here](/docs/auth-provider-setup/verifiers/aggregate-verifier) to know more about creating an aggregate verifier.
+
+Here, multiple sub-verifiers are combined under one single aggregate verifier, and one wallet address is generated from the aggregate verifier. This
+is particularly useful when you want to have the same wallet address for your user across multiple verifiers created for different socials logged in
+with the same email id.
+
+### Client ID
+
+To get your Client ID, it's as simple as setting up a new Plug and Play project on the Web3Auth dashboard. Now, "Plug and Play" might sound technical,
+but it's just a way of describing the pre-packaged user interface and experience that Web3Auth has ready for you. The idea here is to make integrating
+Web3Auth into your project as easy and efficient as possible, saving you the hassle of building everything from scratch. To get a client id for your
+project, please refer [here](/docs/auth-provider-setup/client-id).
+
+Wallet addresses depend on client ID only for plug and play SDKs because we take sub key from the main key in PNP SDKs.
+
+### Environment
+
+While creating a verifier you need to select between `testnet`, `mainnet`, `aqua`, and `cyan`.
+
+`testnet` is a sandbox environment for developers to experiment. People usually test and finish their integration here. `mainnet`, `aqua` , & `cyan`
+are the production environments for scalable applications.
+
+When you test your application on `testnet` and then decide to move to one of the production envirionments, you will get a different wallet address
+than the one you get on `mainnet`, `aqua`, or `cyan` as the nodes are different for each environment.
+
+## General Tips
+
+- PnP and Core-Kit SDKs have different keys, because we take subkey from the mainkey in PNP SDKs. Please check the `@toruslabs/openlogin-subkey`
+  package for more details.
+- In PnP SDKs, there is a parameter `useCoreKitKey` accepting boolean value which can be set to `true` to use the same wallet address as Core-Kit
+  SDKs. Please check the following code snippet where `useCoreKitKey` is set to `true` while initializing the web-no-modal SDK:
+
+```js
+const web3auth = new Web3AuthNoModal({
+  clientId,
+  chainConfig,
+  web3AuthNetwork: "cyan",
+  useCoreKitKey: true,
+});
+```
+
+- In core-kit SDKs, there is a parameter `usePnPKey` accepting boolean value which can be set to `true` to use the same wallet address as PnP SDKs.
+  Please check the following code snippet where `usePnPKey` is set to `true` while initializing the web3auth-sfa SDK:
+
+```js
+const web3authSfa = new Web3AuthSFA({
+  clientId,
+  web3AuthNetwork: "cyan",
+  usePnPKey: true,
+});
+```
+- For MPC, the keys are totally different due to the different nodes.

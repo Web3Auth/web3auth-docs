@@ -148,6 +148,7 @@ module.exports = {
         "dashboard-setup/setup-custom-authentication",
         "dashboard-setup/billing-and-user-stats",
         "dashboard-setup/roles-and-permissions",
+        "dashboard-setup/getting-the-same-private-key",
       ],
     },
     {
