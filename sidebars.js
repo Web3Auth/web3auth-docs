@@ -587,23 +587,23 @@ module.exports = {
         {
           type: "category",
           label: "SFA Web SDK",
-          link: { type: "doc", id: "sdk/core-kit/sfa/sfa" },
+          link: { type: "doc", id: "sdk/core-kit/sfa-web/sfa-web" },
           items: [
-            "sdk/core-kit/sfa/install",
-            "sdk/core-kit/sfa/initialize",
-            "sdk/core-kit/sfa/authentication",
-            "sdk/core-kit/sfa/usage"
+            "sdk/core-kit/sfa-web/install",
+            "sdk/core-kit/sfa-web/initialize",
+            "sdk/core-kit/sfa-web/authentication",
+            "sdk/core-kit/sfa-web/usage"
           ],
         },
         {
           type: "category",
           label: "SFA Node SDK",
-          link: { type: "doc", id: "sdk/core-kit/node/node" },
+          link: { type: "doc", id: "sdk/core-kit/sfa-node/sfa-node" },
           items: [
-            "sdk/core-kit/node/install",
-            "sdk/core-kit/node/initialize",
-            "sdk/core-kit/node/authentication",
-            "sdk/core-kit/node/usage"
+            "sdk/core-kit/sfa-node/install",
+            "sdk/core-kit/sfa-node/initialize",
+            "sdk/core-kit/sfa-node/authentication",
+            "sdk/core-kit/sfa-node/usage"
           ],
         },
         {

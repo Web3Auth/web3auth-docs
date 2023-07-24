@@ -465,9 +465,10 @@ const config = {
           }
           if (existingPath.includes('/core-kit')) {
             return [
-              existingPath.replace('/core-kit/node', '/node'),
-              existingPath.replace('/core-kit/sfa', '/single-factor-auth'),
-              existingPath.replace('/core-kit/sfa', '/core-kit/single-factor-auth'),
+              existingPath.replace('/core-kit/sfa-node', '/node'),
+              existingPath.replace('/core-kit/sfa-node', '/core-kit/node'),
+              existingPath.replace('/core-kit/sfa-web', '/single-factor-auth'),
+              existingPath.replace('/core-kit/sfa-web', '/core-kit/single-factor-auth'),
               existingPath.replace('/core-kit/sfa-android', '/single-factor-auth-android'),
               existingPath.replace('/core-kit/sfa-android', '/core-kit/single-factor-auth-android'),
               existingPath.replace('/core-kit/tkey', '/tkey'),
