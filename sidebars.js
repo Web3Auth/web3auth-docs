@@ -583,6 +583,7 @@ module.exports = {
       label: "tKey Android SDK",
       link: { type: "doc", id: "sdk/core-kit/tkey-android/tkey-android" },
       items: [
+        "sdk/core-kit/tkey-android/install",
         "sdk/core-kit/tkey-android/initialize",
         "sdk/core-kit/tkey-android/usage",
         {
