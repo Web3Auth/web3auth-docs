@@ -51,7 +51,11 @@ module.exports = {
             },
           ],
         },
-        "infrastructure/audits",
+        {
+          type: 'link',
+          label: 'Trust Center', // The link label
+          href: 'https://trust.web3auth.io', // The external URL
+        },
       ],
     },
     // Plug and Play Section
@@ -278,7 +282,12 @@ module.exports = {
       href: "/sdk",
     },
     {
-      Legal: ["legal/cookie-policy", "legal/privacy-policy", "legal/terms-and-conditions"],
+      Legal: ["legal/cookie-policy", "legal/privacy-policy", "legal/terms-and-conditions",
+        {
+          type: 'link',
+          label: 'Trust Center', // The link label
+          href: 'https://trust.web3auth.io', // The external URL
+        },],
     },
   ],
   sdk: [
