@@ -5,9 +5,22 @@ displayed_sidebar: docs
 description: "Client ID and Whitelisting references | Documentation - Web3Auth"
 ---
 
-# Client ID and Whitelisting references
+import DashboardImage from "@site/static/dashboard/project_plug_n_play.png";
 
-### How to whitelist URLs without using the Developer Dashboard?
+### Whitelisting URLs using the Developer Dashboard
+
+The Whitelist URL is the address you wish to authorize for your project. When implementing Web3Auth, it is important to whitelist the specific URLs
+from which you intend to make calls for user authentication. By doing so, you can ensure that these activities are conducted securely and efficiently.
+Remember to whitelist all relevant URLs to guarantee seamless integration with Web3Auth.
+
+Type in the URL you wish to whitelist in the text box and click on the `Add` button. The URL will be added to the list of whitelisted URLs. You can
+add as many URLs as you want.
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src={DashboardImage} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Dashboard Whitelist" />
+</div>
+
+### Whitelisting URLs using the OpenloginAdapter
 
 You can use the manual origin whitelisting method to whitelist URLs without using the Developer Dashboard. `OpenLoginAdapter` accepts a parameter
 called `originData` inside the `adapterSettings`. `originData` is a key value pair where key is the origin URL and the value is a `signature`. The
@@ -35,6 +48,7 @@ const openloginAdapter = new OpenloginAdapter({
 ```
 
 A snippet from the SDK reference for `originData` is given below:
+
 ```ts
     /**
      * originData is used to verify the origin of dapp by iframe.
@@ -50,7 +64,11 @@ A snippet from the SDK reference for `originData` is given below:
     originData?: OriginData;
 ```
 
-### How to secure the backlinking via whitelusting strategies to avoid phishing attacks?
+### Whitelisting for Mobile apps
+
+You can use the Developer Dashboard to whitelist URLs for mobile apps as well. Or you can try out the the programmatic whitelisting method to whitelist URLs.
+
+### How to secure the backlinking via whitelisting strategies to avoid phishing attacks?
 
 Deep links are a type of link that can direct users deeper into a native mobile application. These are useful for connecting users to specific content
 within apps, but they don't have built-in mechanisms for verifying the authenticity of the destination app. This can potentially expose users to
@@ -65,4 +83,5 @@ the risk of phishing by not allowing malicious apps to intercept these links.
 All OAuth applications work on whitelisting strategies. One may use App links or Universal links to secure the backlinking via whitelisting instead of
 deep links.
 
-For more information, please refer to the following StackOverflow thread [here](https://stackoverflow.com/questions/46169025/android-deep-links-and-app-links-confused).
+For more information, please refer to the following StackOverflow thread
+[here](https://stackoverflow.com/questions/46169025/android-deep-links-and-app-links-confused).
