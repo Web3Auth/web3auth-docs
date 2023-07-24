@@ -244,7 +244,7 @@ module.exports = {
       label: "Troubleshooting",
       link: { type: "doc", id: "troubleshooting/troubleshooting" },
       items: [
-        "troubleshooting/diff-private-key-across-integn",
+        "troubleshooting/different-private-key",
         "troubleshooting/sdk-errors-warnings",
         "troubleshooting/error-429",
         "troubleshooting/webpack-issues",
