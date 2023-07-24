@@ -147,7 +147,7 @@ export const CKNode = [
         key: "node-backend-example",
         title: "Node Backend Example",
         icon: "logo-nodejs.png",
-        path: `${baseURL}node-sdk/core-kit/node-backend-example`,
+        path: `${baseURL}node-sdk/node-backend-example`,
       },
     ],
   },
