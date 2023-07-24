@@ -148,7 +148,6 @@ module.exports = {
         "dashboard-setup/setup-custom-authentication",
         "dashboard-setup/billing-and-user-stats",
         "dashboard-setup/roles-and-permissions",
-        "dashboard-setup/getting-the-same-private-key",
       ],
     },
     {
@@ -245,6 +244,7 @@ module.exports = {
       label: "Troubleshooting",
       link: { type: "doc", id: "troubleshooting/troubleshooting" },
       items: [
+        "troubleshooting/diff-private-key-across-integn",
         "troubleshooting/sdk-errors-warnings",
         "troubleshooting/error-429",
         "troubleshooting/webpack-issues",
