@@ -561,6 +561,7 @@ module.exports = {
       label: "tKey iOS SDK",
       link: { type: "doc", id: "sdk/core-kit/tkey-ios/tkey-ios" },
       items: [
+        "sdk/core-kit/tkey-ios/install",
         "sdk/core-kit/tkey-ios/initialize",
         "sdk/core-kit/tkey-ios/usage",
         {
