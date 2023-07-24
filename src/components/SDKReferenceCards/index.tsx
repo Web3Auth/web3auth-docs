@@ -10,7 +10,7 @@ export default function QuickNavigation() {
   const { siteConfig } = useDocusaurusContext();
   const { baseUrl } = siteConfig;
 
-  const [product, setProduct] = useState<string>(corekit);
+  const [product, setProduct] = useState<string>(pnp);
   const chevron = (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M6 3.33301L10.6667 7.99967L6 12.6663" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
