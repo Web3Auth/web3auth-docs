@@ -24,6 +24,7 @@ import PNPUnity from "@site/src/common/quickstart/_pnp-unity.mdx";
 import PNPUnreal from "@site/src/common/quickstart/_pnp-unreal.mdx";
 import SFAAndroid from "@site/src/common/quickstart/_sfa-android.mdx";
 import SFAAngular from "@site/src/common/quickstart/_sfa-angular.mdx";
+import SFAiOS from "@site/src/common/quickstart/_sfa-ios.mdx";
 import SFANext from "@site/src/common/quickstart/_sfa-nextjs.mdx";
 import SFAReact from "@site/src/common/quickstart/_sfa-react.mdx";
 import SFAVue from "@site/src/common/quickstart/_sfa-vue.mdx";
@@ -54,6 +55,8 @@ import {
   setURLfromOptions,
   singlefactorauth,
   singlefactorauthandroid,
+  singlefactorauthios,
+  tkeyios,
   tkeyjs,
   unity,
   unreal,
@@ -195,27 +198,27 @@ export default function QuickNavigation() {
           <select value={sdk} onChange={changeSDK}>
             {product === pnp
               ? pnplist.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.label}
-                </option>
-              ))
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))
               : corekitlist.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.label}
-                </option>
-              ))}
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))}
           </select>
         </div>
         <div className={styles.list}>
           <h3>
             Select a{" "}
             {platform === android ||
-              platform === ios ||
-              platform === rnbare ||
-              platform === rnexpo ||
-              platform === flutter ||
-              platform === unity ||
-              platform === unreal
+            platform === ios ||
+            platform === rnbare ||
+            platform === rnexpo ||
+            platform === flutter ||
+            platform === unity ||
+            platform === unreal
               ? "platform"
               : "framework"}
           </h3>
@@ -246,7 +249,7 @@ export default function QuickNavigation() {
       {platform === android && product === pnp ? <PNPAndroid /> : ""}
       {platform === android && sdk === singlefactorauthandroid ? <SFAAndroid /> : ""}
       {platform === ios && product === pnp ? <PNPIos /> : ""}
-      {platform === ios && product === corekit ? <TKeyiOS /> : ""}
+      {platform === ios && sdk === tkeyios && product === corekit ? <TKeyiOS /> : ""}
       {platform === flutter ? <PNPFlutter /> : ""}
       {platform === rnbare && product === pnp ? <PNPReactNativeBare /> : ""}
       {platform === rnexpo && product === pnp ? <PNPReactNativeExpo /> : ""}
@@ -258,7 +261,7 @@ export default function QuickNavigation() {
       {platform === angular && sdk === singlefactorauth ? <SFAAngular /> : ""}
       {platform === vue && sdk === singlefactorauth ? <SFAVue /> : ""}
 
-      {platform === android && sdk === singlefactorauthandroid ? <SFAAndroid /> : ""}
+      {platform === ios && product === corekit && sdk === singlefactorauthios ? <SFAiOS /> : ""}
 
       {platform === nodejs ? <NodeExample /> : ""}
 

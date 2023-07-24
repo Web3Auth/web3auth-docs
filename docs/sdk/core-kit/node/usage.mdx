@@ -1,5 +1,5 @@
 ---
-title: "Using Core Kit SFA Node.js SDK"
+title: "Using Core Kit SFA Node SDK"
 sidebar_label: "Usage"
 displayed_sidebar: sdk
 description: "Web3Auth Core Kit Single Factor Auth Node.js SDK - Usage | Documentation - Web3Auth"
@@ -7,6 +7,8 @@ description: "Web3Auth Core Kit Single Factor Auth Node.js SDK - Usage | Documen
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
+import SFANodeCustomJWTExample from "@site/src/common/sdk/core-kit/sfa/_sfa_node_custom_jwt_example.mdx";
+import SFANodeJWTExample from "@site/src/common/sdk/core-kit/sfa/_sfa_node_jwt_example.mdx";
 
 Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users. Further, you can use the native provider given
 by Web3Auth to connect the users to the respective blockchain network.
@@ -39,49 +41,49 @@ To login a user in the Web3Auth SFA Node.js SDK, you need to call `connect()` fu
 
 <TabItem value="definition">
 
-```ts
+```
 async connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null> {
-    if (!this.torusUtils || !this.nodeDetailManager || !this.privKeyProvider) throw new Error("Please call init first");
-    const { verifier, verifierId, idToken, subVerifierInfoArray } = loginParams;
-    const verifierDetails = { verifier, verifierId };
+  if (!this.torusUtils || !this.nodeDetailManager || !this.privKeyProvider) throw new Error("Please call init first");
+  const { verifier, verifierId, idToken, subVerifierInfoArray } = loginParams;
+  const verifierDetails = { verifier, verifierId };
 
-    const { torusNodeEndpoints, torusIndexes, torusNodePub } = await this.nodeDetailManager.getNodeDetails(verifierDetails);
+  const { torusNodeEndpoints, torusIndexes, torusNodePub } = await this.nodeDetailManager.getNodeDetails(verifierDetails);
 
-    // does the key assign
-    const pubDetails = await this.torusUtils.getUserTypeAndAddress(torusNodeEndpoints, torusNodePub, verifierDetails, true);
+  // does the key assign
+  const pubDetails = await this.torusUtils.getUserTypeAndAddress(torusNodeEndpoints, torusNodePub, verifierDetails, true);
 
-    if (pubDetails.typeOfUser === "v1" || pubDetails.upgraded) {
-      throw new Error("User has already enabled mfa, please use the @web3auth/web3auth-web sdk for login with mfa");
-    }
-
-    let finalIdToken = idToken;
-    let finalVerifierParams = { verifier_id: verifierId };
-    if (subVerifierInfoArray && subVerifierInfoArray?.length > 0) {
-      const aggregateVerifierParams: AggregateVerifierParams = { verify_params: [], sub_verifier_ids: [], verifier_id: "" };
-      const aggregateIdTokenSeeds = [];
-      for (let index = 0; index < subVerifierInfoArray.length; index += 1) {
-        const userInfo = subVerifierInfoArray[index];
-        aggregateVerifierParams.verify_params.push({ verifier_id: verifierId, idtoken: userInfo.idToken });
-        aggregateVerifierParams.sub_verifier_ids.push(userInfo.verifier);
-        aggregateIdTokenSeeds.push(userInfo.idToken);
-      }
-      aggregateIdTokenSeeds.sort();
-      finalIdToken = keccak256(aggregateIdTokenSeeds.join(String.fromCharCode(29))).slice(2);
-      aggregateVerifierParams.verifier_id = verifierId;
-      finalVerifierParams = aggregateVerifierParams;
-    }
-
-    const retrieveSharesResponse = await this.torusUtils.retrieveShares(
-      torusNodeEndpoints,
-      torusIndexes,
-      verifier,
-      finalVerifierParams,
-      finalIdToken
-    );
-    const finalKey = subkey(retrieveSharesResponse.privKey.padStart(64, "0"), Buffer.from(this.options.clientId, "base64"));
-    await this.privKeyProvider.setupProvider(finalKey.padStart(64, "0"));
-    return this.privKeyProvider.provider;
+  if (pubDetails.typeOfUser === "v1" || pubDetails.upgraded) {
+    throw new Error("User has already enabled mfa, please use the @web3auth/web3auth-web sdk for login with mfa");
   }
+
+  let finalIdToken = idToken;
+  let finalVerifierParams = { verifier_id: verifierId };
+  if (subVerifierInfoArray && subVerifierInfoArray?.length > 0) {
+    const aggregateVerifierParams: AggregateVerifierParams = { verify_params: [], sub_verifier_ids: [], verifier_id: "" };
+    const aggregateIdTokenSeeds = [];
+    for (let index = 0; index < subVerifierInfoArray.length; index += 1) {
+      const userInfo = subVerifierInfoArray[index];
+      aggregateVerifierParams.verify_params.push({ verifier_id: verifierId, idtoken: userInfo.idToken });
+      aggregateVerifierParams.sub_verifier_ids.push(userInfo.verifier);
+      aggregateIdTokenSeeds.push(userInfo.idToken);
+    }
+    aggregateIdTokenSeeds.sort();
+    finalIdToken = keccak256(aggregateIdTokenSeeds.join(String.fromCharCode(29))).slice(2);
+    aggregateVerifierParams.verifier_id = verifierId;
+    finalVerifierParams = aggregateVerifierParams;
+  }
+
+  const retrieveSharesResponse = await this.torusUtils.retrieveShares(
+    torusNodeEndpoints,
+    torusIndexes,
+    verifier,
+    finalVerifierParams,
+    finalIdToken
+  );
+  const finalKey = subkey(retrieveSharesResponse.privKey.padStart(64, "0"), Buffer.from(this.options.clientId, "base64"));
+  await this.privKeyProvider.setupProvider(finalKey.padStart(64, "0"));
+  return this.privKeyProvider.provider;
+}
 ```
 
 </TabItem>
@@ -116,7 +118,7 @@ On unsuccessful login, this function will return a `null` value.
 | Parameter               | Type                     | Description                                                                                                         | Mandatory |
 | ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- | --------- |
 | `verifier`              | `string`                 | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                                  | Yes       |
-| `verifierId`            | `string`                 | Verifier ID's value, `sub` or `email` value present in the idToken.                                                 | Yes       |
+| `verifierId`            | `string`                 | Verifier ID's value, `sub` or `email` value present in the idToken and **not the string `sub` or `email`**.         | Yes       |
 | `idToken`               | `string`                 | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. | Yes       |
 | `subVerifierInfoArray?` | `TorusSubVerifierInfo[]` | Sub verifier info                                                                                                   | No        |
 
@@ -137,9 +139,7 @@ export type LoginParams = {
 
 </Tabs>
 
-### Example
-
-```js
+```js title="Usage"
 await web3auth.connect({
   verifier: "verifier-name", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
   verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
@@ -147,7 +147,11 @@ await web3auth.connect({
 });
 ```
 
-`@web3auth/node-sdk` SDK only works for those users who have **not enabled MFA**.
+:::tip Note
+
+`@web3auth/single-factor-auth` SDK only works for users who have **not enabled MFA**.
+
+:::
 
 :::danger MFA enabled users
 
@@ -155,33 +159,12 @@ For MFA enabled users, you'll see `Error("User has already enabled mfa, please u
 
 :::
 
-## Node JS Example
+## Example
 
-```js
-const { Web3Auth } = require("@web3auth/node-sdk");
+### Custom JWT Example
 
-const web3auth = new Web3Auth({
-  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth", // needed for non-other chains
-  },
-  // Available networks are "testnet", "mainnet", "cyan", "aqua", and "celeste".
-  web3AuthNetwork: "cyan",
-});
+<SFANodeCustomJWTExample />
 
-web3auth.init();
+### Provider JWT Example
 
-const connect = async () => {
-  const provider = await web3auth.connect({
-    verifier: "verifier-name", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
-    verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
-    idToken: "JWT Token", // replace with your newly created unused JWT Token.
-  });
-  const privateKey = await provider.request({ method: "eth_private_key" });
-  // The private key returned here is the CoreKitKey
-  console.log("ETH Private Key", privateKey);
-};
-connect();
-```
+<SFANodeJWTExample />

@@ -18,11 +18,10 @@ import Tabs from "@theme/Tabs";
 | `web3AuthNetwork?`      | `OPENLOGIN_NETWORK_TYPE`                                                     | Web3Auth Network to use for the session & the issued idToken                                                                                                                                                                                                                                        | No        | `mainnet`                  |
 | `authMode?`             | `enum` - (`DAPP`, `WALLET`)                                                  | Web3Auth instance provides different adapters for different type of usages. If you are a dApp and want to use external wallets like metamask, then you can use the `DAPP` authMode. If you are a wallet and only want to use you own wallet implementations, then you should use `WALLET` authMode. | No        | `DAPP`                     |
 | `uiConfig?`             | `UIConfig`                                                                   | Configuration for whitelabeling the Modal UI display properties. Read more about it [here](#uiconfig)                                                                                                                                                                                               | No        | Predefined `UIConfig` used |
-| `displayErrorsOnModal?` | `boolean`                                                                    | Whether to show errors on Web3Auth modal.                                                                                                                                                                                                                                                           | No        | `true`                     |
 | `enableLogging?`        | `boolean`                                                                    | Setting to true will enable logs                                                                                                                                                                                                                                                                    | No        | `false`                    |
 | `storageKey?`           | `enum` - (`session`, `local`)                                                | Setting to "local" will persist social login session across browser tabs.                                                                                                                                                                                                                           | No        | `local`                    |
 | `sessionTime?`          | `number`                                                                     | sessionTime (in seconds) for idToken issued by Web3Auth for server side verification. Note: max value can be 7 days (86400 \* 7) and min can be 1 day (86400)                                                                                                                                       | No        | `86400`                    |
-| `useCoreKitKey?`        | `boolean`                                                                    | Use `useCoreKitKey` as `true`, if you're using this SDK with the Single Factor Auth Web SDK                                                                                                                                                                                                         | No        |                            |
+| `useCoreKitKey?`        | `boolean`                                                                    | Use `useCoreKitKey` as `true`, if you're using this SDK with the Single Factor Auth Web SDK                                                                                                                                                                                                         | No        | `false`                    |
 
 </TabItem>
 
@@ -30,12 +29,6 @@ import Tabs from "@theme/Tabs";
 
 ```ts
 interface Web3AuthOptions extends Web3AuthNoModalOptions {
-  /**
-   * Client id for web3auth.
-   * You can obtain your client id from the web3auth developer dashboard.
-   * You can set any random string for this on localhost.
-   */
-  clientId: string;
   /**
    * web3auth instance provides different adapters for different type of usages. If you are dapp and want to
    * use external wallets like metamask, then you can use the `DAPP` authMode.
@@ -48,16 +41,16 @@ interface Web3AuthOptions extends Web3AuthNoModalOptions {
   /**
    * Config for configuring modal ui display properties
    */
-  uiConfig?: UIConfig;
-  /**
-   * Whether to show errors on Web3Auth modal.
-   *
-   * @defaultValue `true`
-   */
-  displayErrorsOnModal?: boolean;
+  uiConfig?: Omit<UIConfig, "adapterListener">;
 }
 
 interface Web3AuthNoModalOptions {
+  /**
+   * Client id for web3auth.
+   * You can obtain your client id from the web3auth developer dashboard.
+   * You can set any random string for this on localhost.
+   */
+  clientId: string;
   /**
    * custom chain configuration for chainNamespace
    *
@@ -83,6 +76,16 @@ interface Web3AuthNoModalOptions {
    * Note: max value can be 7 days (86400 * 7) and min can be  1 day (86400)
    */
   sessionTime?: number;
+  /**
+   * Web3Auth Network to use for the session & the issued idToken
+   * @defaultValue mainnet
+   */
+  web3AuthNetwork?: OPENLOGIN_NETWORK_TYPE;
+  /**
+   * Uses core-kit key with web3auth provider
+   * @defaultValue false
+   */
+  useCoreKitKey?: boolean;
 }
 ```
 

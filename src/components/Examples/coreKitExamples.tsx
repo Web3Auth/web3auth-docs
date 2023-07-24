@@ -90,6 +90,21 @@ export const CKSFAAndroid = [
   },
 ];
 
+export const CKSFAiOS = [
+  {
+    name: "",
+    description: "",
+    tiles: [
+      {
+        key: "ios-sfa-example",
+        title: "Single Factor Auth iOS Example",
+        icon: "logo-apple.png",
+        path: `${baseURL}single-factor-auth-ios/ios-sfa-firebase-example`,
+      },
+    ],
+  },
+];
+
 export const CKTkeyiOS = [
   {
     name: "",
@@ -132,7 +147,7 @@ export const CKNode = [
         key: "node-backend-example",
         title: "Node Backend Example",
         icon: "logo-nodejs.png",
-        path: `${baseURL}node-sdk/core-kit/node-backend-example`,
+        path: `${baseURL}node-sdk/node-backend-example`,
       },
     ],
   },

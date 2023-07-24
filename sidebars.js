@@ -9,12 +9,17 @@ module.exports = {
     },
     "what-is-web3auth",
     "how-web3auth-works",
-    "quick-start",
     {
       type: "category",
       label: "Deciding your Product Fit",
       link: { type: "doc", id: "product-fit/product-fit" },
       items: ["product-fit/pnp-vs-core-kit", "product-fit/user-flow", "product-fit/web3auth-for-wallets", "product-fit/web3auth-for-dapps"],
+    },
+    {
+      type: "category",
+      label: "Migration Guides",
+      link: { type: "doc", id: "migration-guide/migration-guide" },
+      items: ["migration-guide/migrating-to-v6-from-v5"]
     },
     {
       type: "category",
@@ -107,6 +112,11 @@ module.exports = {
         "pnp/features/dapp-share",
       ],
     },
+    {
+      type: "link",
+      label: "Integration Builder",
+      href: "/integration-builder",
+    },
     "pnp/going-live",
     // {
     //   type: "category",
@@ -196,6 +206,7 @@ module.exports = {
           ],
         },
         "connect-blockchain/solana",
+        "connect-blockchain/xrpl",
         {
           type: "category",
           label: "EVM Based Chains",
@@ -225,7 +236,6 @@ module.exports = {
             "connect-blockchain/tezos",
             "connect-blockchain/algorand",
             "connect-blockchain/immutablex",
-            "connect-blockchain/polkadot",
             "connect-blockchain/aptos",
             "connect-blockchain/cosmos",
             "connect-blockchain/near",
@@ -261,11 +271,6 @@ module.exports = {
       label: "Contribute",
       link: { type: "doc", id: "contribute/contribute" },
       items: ["contribute/bug-bounty"],
-    },
-    {
-      type: "link",
-      label: "Integration Builder",
-      href: "/integration-builder",
     },
     {
       type: "link",
@@ -491,7 +496,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "MPC Core Kit (Beta) SDK",
+      label: "MPC Core Kit SDK",
       link: { type: "doc", id: "sdk/core-kit/mpc-core-kit/mpc-core-kit" },
       items: [
         "sdk/core-kit/mpc-core-kit/install",
@@ -556,6 +561,7 @@ module.exports = {
       label: "tKey iOS SDK",
       link: { type: "doc", id: "sdk/core-kit/tkey-ios/tkey-ios" },
       items: [
+        "sdk/core-kit/tkey-ios/install",
         "sdk/core-kit/tkey-ios/initialize",
         "sdk/core-kit/tkey-ios/usage",
         {
@@ -611,6 +617,17 @@ module.exports = {
             "sdk/core-kit/sfa-android/usage"
           ],
         },
+        {
+          type: "category",
+          label: "SFA iOS SDK",
+          link: { type: "doc", id: "sdk/core-kit/sfa-ios/sfa-ios" },
+          items: [
+            "sdk/core-kit/sfa-ios/install",
+            "sdk/core-kit/sfa-ios/initialize",
+            "sdk/core-kit/sfa-ios/authentication",
+            "sdk/core-kit/sfa-ios/usage"
+          ],
+        },
       ],
     },
     {
@@ -625,7 +642,8 @@ module.exports = {
       items: [
         "sdk/helper-sdks/providers/evm",
         "sdk/helper-sdks/providers/solana",
-        "sdk/helper-sdks/providers/other"
+        "sdk/helper-sdks/providers/xrpl",
+        "sdk/helper-sdks/providers/common"
       ],
     },
     {

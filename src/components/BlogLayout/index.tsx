@@ -1,25 +1,38 @@
-/* eslint-disable no-console */
+import { PageMetadata } from "@docusaurus/theme-common";
 import Layout from "@theme/Layout";
-import NotFound from "@theme/NotFound";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 
-import BlogDetail from "../../pages/_blog/[slug]";
+import SEO from "../SEO";
+import BlogDetail from "./[slug]";
+import BlogNotFound from "./BlogNotFound";
 
 function BookLayout() {
   const match = useRouteMatch();
 
   return (
-    <Switch>
-      <Route exact path={`${match.path}:slug`}>
-        <Layout title="Blog detail">
-          <BlogDetail />
-        </Layout>
-      </Route>
+    <>
+      <SEO
+        title="Web3Auth Blogs"
+        description="Blogs - Web3Auth Content Hub"
+        image="http://web3auth.io/docs/images/docs-meta-cards/documentation-card.png"
+      />
+      <PageMetadata
+        title="Web3Auth Blogs"
+        description="Blogs - Web3Auth Content Hub"
+        image="http://web3auth.io/docs/images/docs-meta-cards/documentation-card.png"
+      />
+      <Switch>
+        <Route exact path={`${match.path}:slug`}>
+          <Layout title="Blog detail">
+            <BlogDetail />
+          </Layout>
+        </Route>
 
-      <Route>
-        <NotFound />
-      </Route>
-    </Switch>
+        <Route>
+          <BlogNotFound />
+        </Route>
+      </Switch>
+    </>
   );
 }
 

@@ -1,20 +1,15 @@
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 import Link from "@docusaurus/Link";
+import { PageMetadata } from "@docusaurus/theme-common";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { useEffect, useState } from "react";
 import Bookmark from "react-bookmark";
-// import ReactPlayer from "react-player";
 import { useRouteMatch } from "react-router-dom";
 
-import DiscourseComment from "../../components/DiscourseComment";
-import SEO from "../../components/SEO";
+import DiscourseComment from "../DiscourseComment";
+import SEO from "../SEO";
+import renderOptions from "./renderOptions";
 import styles from "./styles.module.css";
-
-type BlogDetailParams = {
-  [key: string]: any;
-  slug: string;
-};
 
 declare global {
   interface Window {
@@ -23,37 +18,9 @@ declare global {
   }
 }
 
-// https://www.contentful.com/blog/rendering-linked-assets-entries-in-contentful/
-const renderOptions = (links) => {
-  // create an asset map
-  const assetMap = new Map();
-  // loop through the assets and add them to the map
-  for (const asset of links.assets.block) {
-    assetMap.set(asset.sys.id, asset);
-  }
-
-  return {
-    renderNode: {
-      [BLOCKS.EMBEDDED_ASSET]: (node) => {
-        // find the asset in the assetMap by ID
-        const asset = assetMap.get((node as any).data.target.sys.id);
-
-        // render the asset accordingly
-        return <img src={asset.url} alt={asset.description} />;
-      },
-      [INLINES.HYPERLINK]: (node: any) => {
-        return (
-          <a
-            href={(node as any).data.uri}
-            target={`${(node as any).data.uri.startsWith("https://web3auth.io") ? "_self" : "_blank"}`}
-            rel={`${(node as any).data.uri.startsWith("https://web3auth.io") ? "" : "noopener noreferrer"}`}
-          >
-            {(node as any).content[0].value}
-          </a>
-        );
-      },
-    },
-  };
+type BlogDetailParams = {
+  [key: string]: any;
+  slug: string;
 };
 
 export default function BlogDetail() {
@@ -84,58 +51,70 @@ export default function BlogDetail() {
   useEffect(() => {
     const fetchPost = async () => {
       const query = `
-        query {
-          pageBlogPostCollection(
-            where: { slug: "${slug}" }
-          ) {
-            items {
-              sys {
-                id
-              }
-              featured
-              title
-              slug
-              date
-              excerpt
-              introduction
-              content {
-                json
-                links {
+      query {
+        pageBlogPostCollection(
+          where: { slug: "${slug}"}
+        ) {
+          items {
+            sys {
+              id
+            }
+            featured
+            title
+            slug
+            date
+            excerpt
+            introduction
+            content {
+              json
+              links {
+                __typename
+                entries {
+                  inline {
+                    sys {
+                      id
+                    }
                   __typename
-                  assets {
-                    block {
-                      sys {
-                        id
-                      }
-                      url
-                      title
-                      width
-                      height
-                      description
+                  ... on HtmlEmbed {
+                    code
                     }
                   }
                 }
-              }
-              coverImage {
-                url
-              }
-              author {
-                name
-              }
-              tags
-              discourseTopicId
-              seo {
-                title
-                description
-                keywords
-                image {
-                  url
+                assets {
+                  block {
+                    sys {
+                      id
+                    }
+                    url
+                    title
+                    width
+                    height
+                    description
+                  }
                 }
+              }
+            }
+            coverImage {
+              url
+            }
+            author {
+              name
+            }
+            tags
+            discourseTopicId
+            seo {
+              title
+              description
+              keywords
+              image {
+                url
               }
             }
           }
         }
+      }
       `;
+
       const response = await apiCall(query);
       const { data } = await response.json();
       const post = data.pageBlogPostCollection.items[0];
@@ -156,6 +135,16 @@ export default function BlogDetail() {
   }, []);
 
   useEffect(() => {
+    const getTwitterWidget = () => {
+      const script = document.createElement("script");
+      script.src = "https://platform.twitter.com/widgets.js";
+      script.async = true;
+      document.body.appendChild(script);
+    };
+    getTwitterWidget();
+  }, []);
+
+  useEffect(() => {
     setURL(`${window.location.href}`);
     setFacebookLink(`https://www.facebook.com/sharer/sharer.php?${window.location.href}`);
     setTwitterLink(`http://twitter.com/share?text=Checkout ${postData?.title} published by @Web3Auth&url=${window.location.href}`);
@@ -173,13 +162,21 @@ export default function BlogDetail() {
   return (
     <div className="container">
       {postData?.seo && (
-        <SEO
-          title={postData.seo?.title}
-          description={postData.seo?.description}
-          image={postData.seo?.image?.url}
-          slug={`/blog/${postData.slug}`}
-          keywords={postData.seo?.keywords}
-        />
+        <>
+          <SEO
+            title={postData.seo?.title}
+            description={postData.seo?.description}
+            image={postData.seo?.image?.url}
+            slug={`/blog/${postData.slug}`}
+            keywords={postData.seo?.keywords}
+          />
+          <PageMetadata
+            title={postData.seo?.title}
+            description={postData.seo?.description}
+            image={postData.seo?.image?.url}
+            keywords={postData.seo?.keywords}
+          />
+        </>
       )}
       <div className="margin-vert--lg padding-vert--lg">
         <div className="row">

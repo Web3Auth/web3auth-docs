@@ -6,21 +6,21 @@ image: "images/docs-meta-cards/documentation-card.png"
 ---
 
 You can incorporate your login providers by utilizing one of the custom login schemes, including RSA or ECDSA signatures. By doing so, your users can
-continue using your current login provider.
+continue using your current login providers or your custom authentication scheme.
 
 :::info
 
-For Custom JWT-based authentication services, you need to use the [`Web3Auth Plug and Play No Modal SDK`](/sdk/pnp/web/no-modal/) since the Web3Auth
-Modal will only help you configure the social logins within the Modal UI.
+Custom JWT authentication is only supported with [`Web3Auth Plug and Play No Modal SDK`](/sdk/pnp/web/no-modal/) since the Web3Auth Modal SDK will
+only help you configure the social logins within the Modal UI.
 
 :::
 
 For signing the JWT, your application must follow the JWT specification and use the private key corresponding to the JWKS. And the public keys of the
-JWT should be exposed through an endpoint.
+JWT should be exposed through an endpoint, which is used by Web3Auth to verify the JWT.
 
-:::caution
+:::caution Facing issue with JWT?
 
-**Facing issue with JWTs?** Checkout [this Troubleshoot page](/troubleshooting/jwt-errors).
+Checkout [**this troubleshooting page to fix those.**](/troubleshooting/jwt-errors).
 
 :::
 
@@ -35,16 +35,18 @@ To create a custom verifier for your JWT Providers, you'll need
 
 2. **JWK Endpoint**: An endpoint containing the JWKS used for signing the JWT.
 
+   Check [What are JWKS and How to create one from PEM](#what-are-jwks) to learn how to create JWKS.
+
    ```json title="Your JWKS must have the following fields."
    {
      "keys": [
        {
          "kty": "RSA",
-         "kid": "1bb9605c36e{your_kid}69386830202b2d",
+         "kid": "{your_kid}",
          "use": "sig",
          "alg": "RS256",
-         "n": "0x{your_n}",
-         "e": "0x{your_e}"
+         "n": "{your_n}",
+         "e": "{your_e}"
        }
      ]
    }
@@ -77,7 +79,7 @@ To create a custom verifier for your JWT Providers, you'll need
    - Token Email Verified ( `email_verified` ): The email verified claim is a boolean value that indicates whether the email address has been
      verified.
 
-## Using `jsonwebtoken`
+## Using `jsonwebtoken` to generate JWT
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
@@ -99,12 +101,12 @@ values={[
 // Step 3. create an index.js file and paste the below code
 import jwt from "jsonwebtoken";
 import fs from "fs";
-// openssl genrsa -out privateKey.pem 512
+// openssl genrsa -out privateKey.pem 2048
 var privateKey = fs.readFileSync("privateKey.pem");
 // openssl rsa -in privateKey.pem -pubout -out publicKey.pem
 // var publicKey = fs.readFileSync("publicKey.pem");
 // https://my-authz-server/.well-known/jwks.json -> publicKey to be used in Custom Authentication as JWK Endpoint.
-// Visit https://community.web3auth.io/t/how-to-create-jwks-from-pem-format/2718 to convert the public key to JWK format.
+// Check out below to convert PEM to JWKS
 
 var token = jwt.sign(
   {
@@ -117,17 +119,17 @@ var token = jwt.sign(
     exp: Math.floor(Date.now() / 1000) + 60 * 60,
   },
   privateKey,
-  { algorithm: "RS256", keyid: "1bb9605c36e{your_kid}69386830202b2d" } // <-- This has to be present in the JWKS endpoint.
+  { algorithm: "RS256", keyid: "1bb9605c36e69386830202b2d" } // <-- Replace it with your kid. This has to be present in the JWKS endpoint.
 );
 
 console.log(token);
 // Step 4. open terminal inside the vscode and type
-// openssl genrsa -out privateKey.pem 512
+// openssl genrsa -out privateKey.pem 2048
 // This is the private key used to sign the JWT.
 // Step 5. inside the vscode terminal type
 // openssl rsa -in privateKey.pem -pubout -out publicKey.pem
 // This is the public key used to verify the JWT. This is the key that is used to make JWKS.
-// Visit https://community.web3auth.io/t/how-to-create-jwks-from-pem-format/2718 to convert the public key to JWK format.
+// Check out below to convert PEM to JWKS
 // Store it in gist, public folder or somewhere else that is accessible to the public.
 // like this enpoint: https://my-authz-server/.well-known/jwks.json
 // Step 6. Create the JWT Verifier in Web3Auth Dashboard as per the above fields of JWT.
@@ -149,7 +151,7 @@ var privateKey = fs.readFileSync("ec-secp256k1-privateKey.pem");
 // openssl ec -in ec-secp256k1-privateKey.pem -pubout -out ec-secp256k1-publicKey.pem
 // var publicKey = fs.readFileSync("ec-secp256k1-publicKey.pem");
 // https://my-authz-server/.well-known/jwks.json -> publicKey to be used in Custom Authentication as JWK Endpoint.
-// Visit https://community.web3auth.io/t/how-to-create-jwks-from-pem-format/2718 to convert the public key to JWK format.
+// Check out below to convert PEM to JWKS
 
 var token = jwt.sign(
   {
@@ -162,7 +164,7 @@ var token = jwt.sign(
     exp: Math.floor(Date.now() / 1000) + 60 * 60,
   },
   privateKey,
-  { algorithm: "ECDSA", keyid: "1bb9605c36e{your_kid}69386830202b2d" }
+  { algorithm: "ECDSA", keyid: "1bb9605c36e69386830202b2d" } // <-- Replace it with your kid. This has to be present in the JWKS endpoint.
 );
 
 console.log(token);
@@ -172,7 +174,7 @@ console.log(token);
 // Step 5. inside the vscode terminal type
 // openssl ec -in ec-secp256k1-privateKey.pem -pubout -out ec-secp256k1-publicKey.pem
 // This is the public key used to verify the JWT. This is the key that is used to make JWKS.
-// Visit https://community.web3auth.io/t/how-to-create-jwks-from-pem-format/2718 to convert the public key to JWK format.
+// Check out below to convert PEM to JWKS
 // Store it in gist, public folder or somewhere else that is accessible to the public.
 // like this enpoint: https://my-authz-server/.well-known/jwks.json
 // Step 6. Create the JWT Verifier in Web3Auth Dashboard as per the above fields of JWT.
@@ -186,16 +188,24 @@ See [this](#filled-custom-jwt-verifier) to setup the custom jwt verifier using t
 
 ### Login with JWT (idToken - jsonwebtoken)
 
-```js
+```js title="Example"
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x5",
+};
+
 const web3auth = new Web3AuthNoModal({
   clientId: "", // Web3Auth Client ID
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x5",
-  },
-  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua or celeste
+  chainConfig,
+  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua
   useCoreKitKey: false,
 });
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
@@ -208,6 +218,7 @@ const openloginAdapter = new OpenloginAdapter({
       },
     },
   },
+  privateKeyProvider,
 });
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
@@ -219,14 +230,14 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 });
 ```
 
-## Using `jose`
+## Using `jose` to generate JWT
 
 ```js
-// Step 1. npm install jose
+// Step 1. npm init -y && npm install jose
 // Step 2. create an index.js file and paste the below code
 import * as jose from "jose";
 import fs from "fs";
-// openssl genrsa -out privateKey.pem 512
+// openssl genrsa -out privateKey.pem 2048
 var privateKey = fs.readFileSync("privateKey.pem");
 // openssl rsa -in privateKey.pem -pubout -out publicKey.pem
 var publicKey = fs.readFileSync("publicKey.pem");
@@ -234,7 +245,7 @@ var publicKey = fs.readFileSync("publicKey.pem");
 
 // Signing the JWT
 const jwt = await new jose.SignJWT({ "urn:example:claim": true })
-  .setProtectedHeader({ alg: "RS256", kid: "1bb9605c36e{your_kid}69386830202b2d" })
+  .setProtectedHeader({ alg: "RS256", kid: "1bb9605c36e69386830202b2d" }) // <-- Replace it with your kid. This has to be present in the JWKS endpoint.
   .setIssuedAt()
   .setIssuer("https://my-authz-server")
   .setAudience("urn:my-resource-server")
@@ -260,16 +271,24 @@ See [this](#filled-custom-jwt-verifier) to setup the custom jwt verifier using t
 
 ### Login with JWT (idToken - jose)
 
-```js
+```js title="Example"
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x5",
+};
+
 const web3auth = new Web3AuthNoModal({
   clientId: "", // Web3Auth Client ID
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x5",
-  },
-  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua or celeste
+  chainConfig,
+  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua
   useCoreKitKey: false,
 });
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
@@ -282,6 +301,7 @@ const openloginAdapter = new OpenloginAdapter({
       },
     },
   },
+  privateKeyProvider,
 });
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
@@ -293,7 +313,7 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 });
 ```
 
-## Using `passport-jwt`
+## Using `passport-jwt` to generate JWT
 
 `jwks-rsa - Passport Example`
 
@@ -301,6 +321,8 @@ The `jwks-rsa` library provides a small helper that makes it easy to configure `
 you can generate a secret provider that will provide the right signing key to `passport-jwt` based on the `kid` in the JWT header.
 
 ```js
+// Step 1. npm init -y && npm install passport-jwt
+// Step 2. create an index.js file and paste the below code
 const Express = require('express');
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -337,16 +359,24 @@ See [this](#filled-custom-jwt-verifier) to setup the custom jwt verifier using t
 
 ### Login with JWT (idToken - passport-jwt)
 
-```js
+```js title="Example"
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x5",
+};
+
 const web3auth = new Web3AuthNoModal({
   clientId: "", // Web3Auth Client ID
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x5",
-  },
-  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua or celeste
+  chainConfig,
+  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua
   useCoreKitKey: false,
 });
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
@@ -359,6 +389,7 @@ const openloginAdapter = new OpenloginAdapter({
       },
     },
   },
+  privateKeyProvider,
 });
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
@@ -373,3 +404,56 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 ## Filled Custom JWT Verifier
 
 ![Custom JSON Web Token Provider on Web3Auth Dashboard](/dashboard/verifiers/custom-jsonwebtoken-verifier.png)
+
+## What are JWKS?
+
+JWKS stands for JSON Web Key Set. It is a set of keys containing the public keys that should be used to verify any JSON Web Token (JWT) issued by the
+authorization server and signed using the RS256 signing algorithm.
+
+### How to create JWKS?
+
+- Most of the login providers that support JWT-based login will provide you this URL, such as Firebase, Google, Auth0, AWS Cognito etc.
+
+  - Firebase: `https://www.googleapis.com/service_accounts/v1/jwk/{your-project-id}`
+  - Auth0: `https://{your-domain}/.well-known/jwks.json`
+  - Google: `https://www.googleapis.com/oauth2/v3/certs`
+  - AWS Cognito: `https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json`
+
+- If you are using a your own custom JWT, you will need to convert your PEM file to JWKS.
+
+### How to convert PEM to JWKS?
+
+If you're using `jose` or `jsonwebtoken` library, you can use the following steps to convert your PEM file to JWKS.
+
+1. Create a Private Key using openssl.
+
+   ```bash
+   openssl genrsa -out privateKey.pem 2048
+   ```
+
+   This privateKey will be used to sign the token.
+
+2. Using the above privateKey.pem file, create a Public Key.
+
+   ```bash
+   openssl rsa -in privateKey.pem -pubout -out publicKey.pem
+   ```
+
+   This publicKey.pem file will be converted to JWKS.
+
+3. Convert the publicKey.pem file to JWKS.
+
+   Now, look for a tool that converts `.pem` to `jwk(s)` format.
+
+   - One of the tools is https://russelldavies.github.io/jwk-creator/
+     - Select Public Key Use: `Signing`
+     - Algorithm: `RS256`
+     - Key ID: `676da9d312c39a429932f543e6c1b6512e4983` // Use your own alpha numeric random string here.
+     - PEM encoded key: `{paste-the-publicKey-pem-file-s-content-here}`
+   - Click on `Convert` button.
+
+     ![JWKS Convert Tool](https://web3auth.io/community/uploads/default/optimized/1X/d815cd0b533151eb54e4b1342e4f58258c1995fd_2_690x448.jpeg)
+
+4. To complete the process, you need to save the output as a `.json` file, host it on your server, and make sure it's publicly accessible.
+
+   This will give you the `JWKS Endpoint`, which is required when setting up a `Custom JWT Verifier` on the Web3Auth Dashboard.

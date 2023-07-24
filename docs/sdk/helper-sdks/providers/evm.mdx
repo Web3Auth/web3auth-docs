@@ -1,57 +1,256 @@
 ---
-title: EVM Blockchain Provider
-
+title: EIP1193 (EVM) Provider
 displayed_sidebar: sdk
-description: "EVM Blockchain Provider | Documentation - Web3Auth"
+description: "EIP1193 Provider for EVM Compatible Chains | Documentation - Web3Auth"
 ---
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-The EVM Blockchain Provider is an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider that can be used to interact with the EVM
-compatible blockchains. This is a wrapper around the [`Ethereum JavaScript Provider API`](https://eips.ethereum.org/EIPS/eip-1193) with some
-additional functionality.
+## [`@web3auth/ethereum-provider`](https://npmjs.com/package/@web3auth/ethereum-provider)
 
-If you are using `chainNamespace: "eip155"` while initializing `Web3Auth` or `Web3AuthNoModal`, it will provide you with an
-[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`** after user login.
+The [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) Provider can be used to interact with any EVM compatible blockchain. This is a wrapper around
+the [`Ethereum JavaScript Provider API`](https://eips.ethereum.org/EIPS/eip-1193) with some additional functionalities around Web3Auth Private Key
+handling.
 
-```ts
-import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACESS } from "@web3auth/base";
+In this section we'll explore more about how you can use this provider with our SDKs.
 
-/*
-We are initializing with EIP155 namespace which will initialize the
-modal with ethereum mainnet by default.
-*/
+## Installation
 
-const web3auth = new Web3Auth({
-  chainConfig: {
-    /*
-      you can pass your own chain configs here
-      by default it will only chainId is required for supported networks
-      such as [rinkeby, ropsten, goerli, kovan]
-    */
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Ethereum Mainnet",
-    blockExplorer: "https://etherscan.io",
-    ticker: "ETH",
-    tickerName: "Ethereum",
-  },
-  clientId = "YOUR_WEB3AUTH_CLIENT_ID"; // get from https://dashboard.web3auth.io
-});
+#### [`@web3auth/ethereum-provider`](https://npmjs.com/package/@web3auth/ethereum-provider)
 
-await web3auth.initModal();
-
-web3auth.connect();
+```bash npm2yarn
+npm install --save @web3auth/ethereum-provider
 ```
 
-## Initializing the provider
+## Initialisation
 
-On connection, you can use `web3auth.provider` as an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider with `web3.js` or `ethers` library.
+Import the `EthereumPrivateKeyProvider` **class** from `@web3auth/ethereum-provider`.
+
+```javascript
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+```
+
+### Assign the `EthereumPrivateKeyProvider` class to a variable
+
+After creating your Web3Auth instance, you need to initialise the Torus Wallet UI Plugin and add it to a class for further usage.
+
+```javascript
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: EthereumPrivKeyProviderConfig });
+```
+
+This constructor takes an object with a config of `EthereumPrivKeyProviderConfig` as input.
+
+#### Arguments
+
+`EthereumPrivKeyProviderConfig`
+
+```ts
+export interface EthereumPrivKeyProviderConfig extends BaseProviderConfig {
+  chainConfig: Omit<CustomChainConfig, "chainNamespace">;
+}
+export type CustomChainConfig = {
+  chainNamespace: ChainNamespaceType;
+  /**
+   * The chain id of the chain
+   */
+  chainId: string;
+  /**
+   * RPC target Url for the chain
+   */
+  rpcTarget: string;
+  /**
+   * web socket target Url for the chain
+   */
+  wsTarget?: string;
+  /**
+   * Display Name for the chain
+   */
+  displayName: string;
+  /**
+   * Url of the block explorer
+   */
+  blockExplorer: string;
+  /**
+   * Default currency ticker of the network (e.g: ETH)
+   */
+  ticker: string;
+  /**
+   * Name for currency ticker (e.g: `Ethereum`)
+   */
+  tickerName: string;
+  /**
+   * Number of decimals for the currency ticker (e.g: 18)
+   */
+  decimals?: number;
+};
+export interface BaseProviderConfig extends BaseConfig {
+  chainConfig: Partial<CustomChainConfig>;
+  networks?: Record<string, CustomChainConfig>;
+  skipLookupNetwork?: boolean;
+}
+export interface BaseConfig {
+  /**
+   *  Determines if this controller is enabled
+   */
+  disabled?: boolean;
+}
+```
+
+### Chain Config
+
+While connecting your preferred chain, you need to pass the chainConfig as a parameter. The Chain IDs for the supported chains can be found on
+[ChainList](https://chainlist.org/). Please note that you need to pass over the hex value of the chain id in the provider config.
+
+Some of the commonly used L2s and the Ethereum chain ids are listed below.
+
+| Hex    | Decimal | Network                     |
+| ------ | ------- | --------------------------- |
+| 0x1    | 1       | Ethereum Mainnet            |
+| 0x5    | 5       | Goerli Mainnet            |
+| 0x38   | 56      | Binance Smart Chain Mainnet |
+| 0x89   | 137     | Polygon Mainnet             |
+| 0xA86A | 43114   | Avalanche C-Chain           |
+| 0xA    | 10      | Optimism                    |
+
+#### Example
+
+```ts
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://goerli.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+```
+
+## Setting up the provider
+
+### For Web3Auth PnP Web SDKs
+
+If you are using `chainNamespace: "eip155"` while initializing `Web3Auth` or `Web3AuthNoModal` with the `OpenloginAdapter`, you need to add the
+`privateKeyProvider` to the OpenLogin instance.
+
+```ts
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://goerli.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+const web3auth = new Web3AuthNoModal({
+  clientId,
+  chainConfig,
+  web3AuthNetwork: "cyan",
+});
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  privateKeyProvider,
+  adapterSettings: {...},
+  mfaSettings: {...},
+  loginSettings: {...},
+});
+web3auth.configureAdapter(openloginAdapter);
+
+provider = await web3auth.connectTo(
+  WALLET_ADAPTERS.OPENLOGIN,
+  {
+    loginProvider: "google",
+  }
+);
+
+// use this provider to interact with the blockchain
+```
+
+### For Single Factor Auth Web SDK
+
+While using the SFA Web SDK, you need to pass the provider during the initialisation of SDK, while calling the init() function.
+
+```ts
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://goerli.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+const web3authSfa = new Web3Auth({
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  chainConfig,
+  web3AuthNetwork: "cyan", // ["cyan", "testnet"]
+  usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
+});
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+web3authSfa.init(privateKeyProvider);
+
+const provider = await web3authSFAuth.connect({
+  verifier,
+  verifierId: sub,
+  idToken,
+});
+
+// use this provider to interact with the blockchain
+```
+
+### For tKey JS SDK
+
+In tKey JS SDK, there is not internal method of passing the provider directly. Hence, you need to setup the provider using the private key generated
+from tKey, using the setupProvider function of the EthereumPrivateKeyProvider.
+
+```ts
+setupProvider(privKey: string): Promise<void>;
+```
+
+```ts
+// please complete the tKey setup and login before this.
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://goerli.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+const reconstructedKey = await tKey.reconstructKey();
+privateKey = reconstructedKey?.privKey.toString("hex");
+
+const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+await ethereumPrivateKeyProvider.setupProvider(privateKey);
+provider = ethereumPrivateKeyProvider.provider;
+
+// use this provider to interact with the blockchain
+```
+
+## Using the provider
+
+On connection, you can use this `provider` as an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider with `web3.js` or `ethers` library.
 
 <Tabs
   defaultValue="web3"
@@ -66,7 +265,7 @@ On connection, you can use `web3auth.provider` as an [`EIP1193`](https://eips.et
 ```ts
 import Web3 from "web3";
 
-const web3 = new Web3(web3auth.provider);
+const web3 = new Web3(provider);
 ```
 
 </TabItem>
@@ -76,29 +275,12 @@ const web3 = new Web3(web3auth.provider);
 ```ts
 import { ethers } from "ethers";
 
-const provider = new ethers.providers.Web3Provider(web3auth.provider);
+const provider = new ethers.providers.Web3Provider(provider);
 ```
 
 </TabItem>
 
 </Tabs>
-
-## Chain ID
-
-While connecting your preferred chain, you can pass the chainId as a parameter. The Chain IDs for the supported chains can be found on
-[ChainList](https://chainlist.org/). Please note that you need to pass over the hex value of the chain id while initialising Web3Auth.
-
-Ethereum and some common L2 chain ids are listed below.
-
-| Hex    | Decimal | Network                     |
-| ------ | ------- | --------------------------- |
-| 0x1    | 1       | Ethereum Mainnet            |
-| 0x38   | 56      | Binance Smart Chain Mainnet |
-| 0x89   | 137     | Polygon Mainnet             |
-| 0xA86A | 43114   | Avalanche C-Chain           |
-| 0xA    | 10      | Optimism                    |
-
-## Usage
 
 Once you have set up the provider, you can use the standard functions in the web3 library to get user's account, perform transactions, sign a message
 etc. Here we have listed a few examples to help you get started.
@@ -117,12 +299,6 @@ etc. Here we have listed a few examples to help you get started.
 This method is used to fetch the address of the connected account.
 
 ```ts
-import Web3 from "web3";
-
-// refer to `Getting a provider with web3auth login.` section above
-// to know how `web3auth.provider` is initialized after user's login
-const web3 = new Web3(web3auth.provider);
-
 // Get user's Ethereum public address
 const address = (await web3.eth.getAccounts())[0];
 
@@ -139,11 +315,6 @@ const balance = web3.utils.fromWei(
 This function is used to broadcast a transaction on chain.
 
 ```ts
-import Web3 from "web3";
-// refer to `Getting a provider with web3auth login.` section above
-// to know how `web3auth.provider` is initialized after user's login
-const web3 = new Web3(web3auth.provider);
-
 // Get user's Ethereum public address
 const fromAddress = (await web3.eth.getAccounts())[0];
 
@@ -167,12 +338,6 @@ The following example shows how to sign different types of messages with the con
 #### `web3.eth.personal.sign(originalMessage, fromAddress)`
 
 ```ts
-import Web3 from "web3";
-
-// refer to `Getting a provider with web3auth login.` section above
-// to know how `web3auth.provider` is initialized after user's login
-const web3 = new Web3(web3auth.provider);
-
 // Get user's Ethereum public address
 const fromAddress = (await web3.eth.getAccounts())[0];
 
@@ -186,12 +351,6 @@ const signedMessage = await web3.eth.personal.sign(originalMessage, fromAddress)
 #### `eth_signTypedData`
 
 ```ts
-import Web3 from "web3";
-
-// refer to `Getting a provider with web3auth login.` section above
-// to know how `web3auth.provider` is initialized after user's login
-const web3 = new Web3(web3auth.provider);
-
 // Get user's Ethereum public address
 const fromAddress = (await web3.eth.getAccounts())[0];
 
@@ -223,12 +382,6 @@ const signedMessage = await web3.currentProvider.sendAsync({
 #### `eth_signTypedData_v3`
 
 ```ts
-import Web3 from "web3";
-
-// refer to `Getting a provider with web3auth login.` section above
-// to know how `web3auth.provider` is initialized after user's login
-const web3 = new Web3(web3auth.provider);
-
 // Get user's Ethereum public address
 const fromAddress = (await web3.eth.getAccounts())[0];
 
@@ -287,12 +440,6 @@ const signedMessage = await web3.currentProvider.sendAsync({
 
   Otherwise, it works the same as Sign Typed Data v3.
 */
-
-import Web3 from "web3";
-
-// refer to `Getting a provider with web3auth login.` section above
-// to know how `web3auth.provider` is initialized after user's login
-const web3 = new Web3(web3auth.provider);
 
 // Get user's Ethereum public address
 const fromAddress = (await web3.eth.getAccounts())[0];
@@ -354,48 +501,5 @@ async getPrivateKey() {
     method: "eth_private_key"
   });
   //Do something with privateKey
-}
-```
-
-## Additional Reading
-
-### Getting a provider from any `secp256k1` private key
-
-`@web3auth/ethereum-provider` package can be used to get an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider from any
-`secp256k1` private key. You can use this package with our SDKs, to get an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider from the
-logged-in user's private key.
-
-#### Example
-
-```ts
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-
-/*
-privKey: any secp256k1 private key.
-*/
-
-async setProvider(privKey: string) {
-  const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
-    config: {
-      /*
-      pass the chain config that you want to connect with
-      all chainConfig fields are required.
-      */
-      chainConfig: {
-        chainId: "0x1",
-        rpcTarget: `https://rpc.ankr.com/eth`,
-        displayName: "ropsten",
-        blockExplorer: "https://ropsten.etherscan.io/",
-        ticker: "ETH",
-        tickerName: "Ethereum",
-      },
-    },
-  });
-  /*
-  pass user's private key here.
-  after calling setupProvider, we can use
-  */
-  await ethereumPrivateKeyProvider.setupProvider(privKey);
-  console.log(ethereumPrivateKeyProvider.provider);
 }
 ```

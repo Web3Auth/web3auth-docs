@@ -5,7 +5,7 @@ export default function DiscourseComment(props) {
   const { topicId } = props;
   useEffect(() => {
     window.DiscourseEmbed = {
-      discourseUrl: "https://community.web3auth.io/",
+      discourseUrl: "https://web3auth.io/community/",
       topicId,
     };
 

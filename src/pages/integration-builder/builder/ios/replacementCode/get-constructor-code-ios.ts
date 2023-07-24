@@ -1,23 +1,20 @@
-import { AQUA, AUTH0, CELESTE, CYAN, DISCORD, FACEBOOK, GOOGLE, JWT, MAINNET, TWITCH } from "../../choices";
+import { AQUA, AUTH0, CYAN, DISCORD, FACEBOOK, GOOGLE, JWT, MAINNET, TWITCH } from "../../choices";
 
 export const getConstructorCodeIOS = (isWhitelabeled: boolean, customAuth: string, web3AuthNetwork: string) => {
   let whitelabelCode = "";
   let customAuthCode = "";
   let network = `
-                network: .testnet, // mainnet, testnet, cyan, aqua, or celeste`;
+                network: .testnet, // mainnet, testnet, cyan, aqua`;
 
   if (web3AuthNetwork === MAINNET) {
     network = `
-                network: .mainnet, // mainnet, testnet, cyan, aqua, or celeste`;
+                network: .mainnet, // mainnet, testnet, cyan, aqua`;
   } else if (web3AuthNetwork === CYAN) {
     network = `
-                network: .cyan, // mainnet, testnet, cyan, aqua, or celeste`;
+                network: .cyan, // mainnet, testnet, cyan, aqua`;
   } else if (web3AuthNetwork === AQUA) {
     network = `
-                network: .aqua, // mainnet, testnet, cyan, aqua, or celeste`;
-  } else if (web3AuthNetwork === CELESTE) {
-    network = `
-                network: .celeste, // mainnet, testnet, cyan, aqua, or celeste`;
+                network: .aqua, // mainnet, testnet, cyan, aqua`;
   }
   if (isWhitelabeled) {
     whitelabelCode = `
@@ -28,7 +25,7 @@ export const getConstructorCodeIOS = (isWhitelabeled: boolean, customAuth: strin
                   logoDark : null,
                   defaultLanguage : "en", // ['en','es','de','zh','ja','ko']
                   dark : true,
-                  theme : ["primary": "#123456"]
+                  theme : ["primary": "#d53f8c"]
                 ),
                 //HIGHLIGHTEND-whiteLabeling`;
   }

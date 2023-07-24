@@ -139,10 +139,13 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
   }, []);
 
   return (
-    <Layout title="Integration Builder">
+    <Layout
+      title="Integration Builder"
+      description="Web3Auth is simple, non-custodial auth infrastructure that enables Web3 wallets and applications to provide seamless user logins for both mainstream and native Web3 users."
+    >
       <SEO
         title="Integration Builder"
-        description="Web3Auth is simple, non-custodial auth infrastructure that enables Web3 wallets and applications to provide seamless user logins for both mainstream and native Web3 users."
+        description="Web3Auth Integration Builder for easy quick start. Web3Auth is simple, non-custodial auth infrastructure that enables Web3 wallets and applications to provide seamless user logins for both mainstream and native Web3 users."
         image="https://web3auth.io/docs/images/docs-meta-cards/integration-builder-card.png"
         url="https://web3auth.io/docs/integration-builder"
       />
