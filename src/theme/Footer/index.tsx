@@ -162,7 +162,7 @@ export default function FooterComponent(): JSX.Element {
               <strong>Community</strong>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="https://community.web3auth.io/" target="_blank" rel="noreferrer">
+              <a className="footer__link-item" href="https://web3auth.io/community/" target="_blank" rel="noreferrer">
                 Community Discussions
               </a>
             </div>

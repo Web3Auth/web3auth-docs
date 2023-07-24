@@ -13,7 +13,7 @@ export const getWeb3AuthOptions = (isWhitelabeled: boolean, isCustomAuth: boolea
                 theme = new Dictionary < string, string > {
                     {
                       "primary",
-                      "#123456"
+                      "#d53f8c"
                     }
                 }
             }

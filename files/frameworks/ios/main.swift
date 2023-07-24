@@ -87,7 +87,7 @@ class ViewModel: ObservableObject {
                         network: network,
                         whiteLabel: W3AWhiteLabelData(
                             name: "Web3Auth Stub",
-                            dark: true, theme: ["primary": "#123456"])
+                            dark: true, theme: ["primary": "#d53f8c"])
                     ))
                     let result = try await self.web3Auth?
                         .login(W3ALoginParams(loginProvider: .GOOGLE))

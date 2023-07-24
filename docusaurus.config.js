@@ -37,7 +37,7 @@ const config = {
     announcementBar: {
       id: 'join_community',
       content:
-        '<a href="https://community.web3auth.io" target="_blank">Get the support you need to seamlessly integrate with Web3Auth. Join our community today!</a>',
+        '<a href="https://web3auth.io/community" target="_blank">Get the support you need to seamlessly integrate with Web3Auth. Join our community today!</a>',
       isCloseable: true,
     },
     colorMode: {
@@ -183,7 +183,7 @@ const config = {
         },
         sitemap: {
           changefreq: 'weekly',
-          priority: 0.5,
+          priority: 0.8,
         },
       },
     ],

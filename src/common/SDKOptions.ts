@@ -40,6 +40,7 @@ export const tkeyios = "tKey iOS SDK";
 export const tkeyandroid = "tKey Android SDK";
 export const singlefactorauth = "Single Factor Auth Web SDK";
 export const singlefactorauthandroid = "Single Factor Auth Android SDK";
+export const singlefactorauthios = "Single Factor Auth iOS SDK";
 export const corekitnodejs = "Node.js SDK";
 export const mpccorekit = "MPC Core Kit";
 export const corekitlist = [
@@ -50,6 +51,7 @@ export const corekitlist = [
   { label: "Single Factor Auth Web SDK", value: singlefactorauth, platforms: [...weblist] },
   { label: "SFA Node.js SDK", value: corekitnodejs, platforms: [nodejs] },
   { label: "SFA Android SDK", value: singlefactorauthandroid, platforms: [android] },
+  { label: "SFA iOS SDK", value: singlefactorauthios, platforms: [ios] },
 ];
 
 const getWindowLocation = () => {

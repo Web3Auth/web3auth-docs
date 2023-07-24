@@ -1,12 +1,13 @@
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import Link from "@docusaurus/Link";
+import { PageMetadata } from "@docusaurus/theme-common";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { useEffect, useState } from "react";
 import Bookmark from "react-bookmark";
 import { useRouteMatch } from "react-router-dom";
 
-import DiscourseComment from "../../components/DiscourseComment";
-import SEO from "../../components/SEO";
+import DiscourseComment from "../DiscourseComment";
+import SEO from "../SEO";
 import renderOptions from "./renderOptions";
 import styles from "./styles.module.css";
 
@@ -161,13 +162,21 @@ export default function BlogDetail() {
   return (
     <div className="container">
       {postData?.seo && (
-        <SEO
-          title={postData.seo?.title}
-          description={postData.seo?.description}
-          image={postData.seo?.image?.url}
-          slug={`/blog/${postData.slug}`}
-          keywords={postData.seo?.keywords}
-        />
+        <>
+          <SEO
+            title={postData.seo?.title}
+            description={postData.seo?.description}
+            image={postData.seo?.image?.url}
+            slug={`/blog/${postData.slug}`}
+            keywords={postData.seo?.keywords}
+          />
+          <PageMetadata
+            title={postData.seo?.title}
+            description={postData.seo?.description}
+            image={postData.seo?.image?.url}
+            keywords={postData.seo?.keywords}
+          />
+        </>
       )}
       <div className="margin-vert--lg padding-vert--lg">
         <div className="row">
