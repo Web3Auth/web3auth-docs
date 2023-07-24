@@ -7,6 +7,7 @@ description: "Web3Auth Core Kit Single Factor Auth Web SDK - Initialize | Docume
 
 import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
 import Web3AuthOptions from "@site/src/common/sdk/pnp/web/_web3authcore-options.mdx";
+import InstantiatingProvider from "@site/src/common/sdk/core-kit/sfa/_instantiating_provider.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
@@ -124,116 +125,15 @@ export interface Web3AuthOptions {
 
 ```javascript title="Usage"
 const web3auth = new Web3Auth({
-  clientId: "", // Get your Client ID from Web3Auth Dashboard
-  // Available networks are "testnet", "mainnet", "cyan", "aqua", .
-  web3AuthNetwork: "cyan",
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "cyan", // Available networks are "testnet", "mainnet", "cyan", and "aqua".
   usePnPKey: "false", // By default, this sdk returns CoreKitKey
 });
 ```
 
 ## Instantiating Provider
 
-For getting the appropriate key for your selected chain, you need to instantiate a provider. This provider is used to make calls to the selected
-blockchain. Currently, Web3Auth exposes the following provider packages to be integrated within the SDKs:
-
-- [EthereumPrivateKeyProvider](/sdk/helper-sdks/providers/evm#getting-a-provider-from-any-secp256k1-private-key): For Ethereum and EVM compatible
-  chains (secp256k1 private key)
-- [SolanaPrivateKeyProvider](/sdk/helper-sdks/providers/solana#getting-a-provider-from-any-ed25519-private-key): For Solana Blockchain (ed25519
-  private key)
-
-Using these providers, you can export the private keys for the respective curves of the selected blockchain. You can use these keys to even create
-manual providers for other blockchains supporting the curves/ have conversion packages for their blockchain curves.
-
-<Tabs
-  defaultValue="eth"
-  values={[
-    { label: "ETH", value: "eth" },
-    { label: "Solana", value: "solana" },
-    { label: "Other Chains", value: "other" },
-  ]}
->
-
-<TabItem value="eth">
-
-```javascript title="Usage"
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
-
-const provider = new EthereumPrivateKeyProvider({
-  config: {
-    /*
-      pass the chain config that you want to connect with.
-      all chainConfig fields are required.
-      */
-    chainConfig: {
-      chainNamespace: CHAIN_NAMESPACES.EIP155,
-      chainId: "0x1",
-      rpcTarget: "https://rpc.ankr.com/eth",
-      displayName: "Ethereum Mainnet",
-      blockExplorer: "https://etherscan.io",
-      ticker: "ETH",
-      tickerName: "Ethereum",
-    },
-  },
-});
-```
-
-</TabItem>
-
-<TabItem value="solana">
-
-```javascript title="Usage"
-import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
-
-const provider = new SolanaPrivateKeyProvider({
-  config: {
-    /*
-      pass the chain config that you want to connect with.
-      all chainConfig fields are required.
-      */
-    chainConfig: {
-      chainNamespace: CHAIN_NAMESPACES.SOLANA,
-      chainId: "0x1",
-      rpcTarget: "https://rpc.ankr.com/solana",
-      displayName: "Solana Mainnet",
-      blockExplorer: "https://explorer.solana.com/",
-      ticker: "SOL",
-      tickerName: "Solana",
-    },
-  },
-});
-```
-
-</TabItem>
-
-<TabItem value="other">
-
-```javascript title="Usage"
-import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
-
-const provider = new CommonPrivateKeyProvider({
-  config: {
-    /*
-      pass the chain config that you want to connect with.
-      all chainConfig fields are required.
-      */
-    chainConfig: {
-      chainNamespace: CHAIN_NAMESPACES.OTHER,
-      chainId: "0x1",
-      rpcTarget: `https://rpc.target.url`,
-      displayName: "Display Name",
-      blockExplorer: "https://chain.explorer.link",
-      ticker: "TKR",
-      tickerName: "Ticker Name",
-    },
-  },
-});
-```
-
-</TabItem>
-</Tabs>
+<InstantiatingProvider />
 
 ## Initializing Web3Auth
 
