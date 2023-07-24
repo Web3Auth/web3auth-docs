@@ -25,7 +25,7 @@ export const getConstructorCodeIOS = (isWhitelabeled: boolean, customAuth: strin
                   logoDark : null,
                   defaultLanguage : "en", // ['en','es','de','zh','ja','ko']
                   dark : true,
-                  theme : ["primary": "#123456"]
+                  theme : ["primary": "#d53f8c"]
                 ),
                 //HIGHLIGHTEND-whiteLabeling`;
   }
