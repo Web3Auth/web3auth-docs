@@ -14,7 +14,7 @@ The SingleFactorAuth instance natively provides the following functions:
 
 - `getKey()` - Returns the torus key using the `verifier`, `verifierId` & `idToken`.
 
-## Get TorusKey - `getKey()`
+## `getKey()`
 
 `getKey()`
 
@@ -30,7 +30,7 @@ To obtain a user's Torus key using the Web3Auth SFA iOS SDK, you can call the `g
 public func getKey(loginParams: LoginParams) async throws -> TorusKey
 ```
 
-### `LoginParams`
+#### `LoginParams`
 
 `getKey(loginParams: LoginParams)`
 
@@ -83,12 +83,16 @@ public class LoginParams {
 
 </Tabs>
 
-```js title="Example"
+```js title="Usage"
 let loginParams = LoginParams(verifier: "YOUR_VERIFIER_NAME", verifierId: "YOUR_VERIFIER_ID", idToken: "YOUR_ID_TOKEN")
 let torusKey = try await singleFactoreAuth.getKey(loginParams: loginParams)
 ```
 
-Web3Auth SFA iOS SDK only works for those users who have **not enabled MFA**.
+:::tip NOTE
+
+Web3Auth SFA iOS SDK only works for users who have **not enabled MFA**.
+
+:::
 
 :::danger MFA enabled users
 
