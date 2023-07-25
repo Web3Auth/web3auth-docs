@@ -245,7 +245,7 @@ These libraries use many packages that are not present in the React Native envir
 - Install the missing modules:
 
 ```bash npm2yarn
-npm install --save empty-module readable-stream react-native-quick-crypto
+npm install --save empty-module readable-stream crypto-browserify
 ```
 
 - Update your `metro.config.js` as per the polyfilled modules:
@@ -288,7 +288,7 @@ module.exports = (async () => {
         url: require.resolve("empty-module"), // url can be polyfilled here if needed
         zlib: require.resolve("empty-module"), // browserify-zlib can be polyfilled here if needed
         path: require.resolve("empty-module"),
-        crypto: require.resolve("react-native-quick-crypto"),
+        crypto: require.resolve("crypto-browserify"),
         stream: require.resolve("readable-stream"),
       },
 
@@ -332,7 +332,7 @@ module.exports = (async () => {
         url: require.resolve("empty-module"), // url can be polyfilled here if needed
         zlib: require.resolve("empty-module"), // browserify-zlib can be polyfilled here if needed
         path: require.resolve("empty-module"),
-        crypto: require.resolve("react-native-quick-crypto"),
+        crypto: require.resolve("crypto-browserify"),
         stream: require.resolve("readable-stream"),
       },
 
@@ -380,4 +380,18 @@ Then, import the `globals.js` to `index.js` of your project.
 
 ```js title="index.js"
 import "./globals.js";
+```
+
+### Fixing logout issues in iOS apps (applicable for both Bare and Expo managed workflow)
+
+Install `react-native-get-random-values`
+
+```bash npm2yarn
+npm install --save react-native-get-random-values
+```
+
+Then, add the following code to `index.js` of your project.
+
+```js title="index.js"
+import "react-native-get-random-values";
 ```
