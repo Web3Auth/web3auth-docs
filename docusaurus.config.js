@@ -294,10 +294,6 @@ const config = {
             to: "/infrastructure/technical-architecture/",
           },
           {
-            from: "/overview/key-management/audits",
-            to: "/infrastructure/audits",
-          },
-          {
             from: "/whitelabeling",
             to: "/pnp/features/whitelabel/",
           },
