@@ -22,6 +22,13 @@ decision-making process. They cater to diverse project requirements and explore 
 be better equipped to make an informed decision that ensures your selected Web3Auth product aligns seamlessly with your needs, laying a solid
 foundation for your project's success.
 
+:::note
+
+All these points are valid for our SSS (Shamir Secret Sharing) and TSS (Threshold Signature Scheme) based MPC Infrastructure. For a few points where
+MPC has an edge, we've mentioned it explicitly. Check the last 4 questions for more details on MPC and SSS based infrastructure considerations.
+
+:::
+
 ### What are you building? A dApp or a Wallet?
 
 - If you're building a Wallet, our Web3Auth Plug and Play SDKs can provide a quick and effective solution, although a better user experience for a
@@ -87,10 +94,18 @@ Explore [Web3Auth SDKs](/sdk/)
 
 - If you'd like to maintain ownership of the MFA Infrastructure, our Core-Kit SDKs are the best choice for you.
 
-### Do you want to manage the Login Infrastructure?
+### Do you want to manage the Login Infrastructure ie. use any existing Social Logins (e.g. Google, FB, etc…) , or a passwordless login of your own?
 
 - Both our Plug and Play and Core Kit SDKs allow you to manage your own Login Infrastructure. It is a feature called Custom Authentication in Plug and
   Play SDKs and a requirement for Core Kit SDKs.
+
+### Do you want to customise the storage and threshold of the user key shares?
+
+- The Web3Auth Plug and Play SDK gives you the standard way of storing the user key shares. If you want to customise the storage of the user key
+  shares, you can use our Core Kit SDKs.
+- With Core Kit SDKs, you can customise the threshold and the number of shares required to recover the user key. You can also customise the storage of
+  the user key shares. From Devices share storage to Social Recovery, QR backups, Email Backups, Database encrypted storage etc. you can choose the
+  flow you want to use.
 
 ### Do you want the user key to be present in the application frontend?
 
@@ -98,6 +113,23 @@ Explore [Web3Auth SDKs](/sdk/)
   you.
 - If you prefer to keep the user's keys divided the whole time and only have a temporary sign generated when the user is signing, our new SDKs,
   powered by the Threshold Signature Scheme, are the way to go.
+
+### Do you want to import keys from other wallets?
+
+- If you want to import keys from other wallets, you can use our Core Kit SDKs.
+- The Core Kit SDKs have the option of key import, however, it has the trade off of key generation integrity. This is because to maintain non
+  custodiality, we make sure that key imported is encrypted by the Web3Auth generated key, and stored on the metadata server. It is not possible to
+  directly import a key and distribute into multiple parts within the Shamir Secret Sharing infrastructure.
+- The best place to import keys can be the MPC Infrastructure. With the import key API in our MPC SDKs, it is possible to import upto 4 keys directly
+  into the MPC infrastructure. However, as you import multiple keys, the user interaction tends to become slower.
+
+### Do you want your user to be able export their key?
+
+- If you want your users to be able to export their key, you can any of our SDKs.
+- With SSS based SDKs, the key is reconstructed on every login, so the user can export the key at any point of time.
+- With MPC based SDKs, the key reconstruction never happens, hence the process of exporting the key is a bit more complex. Exports can be done via an
+  opensource external script which can be locally run. Alternatively we’re in the midst of developing a simple binary which could be operated to
+  combine the factors.
 
 :::info Schedule a demo
 
