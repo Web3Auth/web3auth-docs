@@ -24,10 +24,11 @@ import {
   singlefactorauth,
   singlefactorauthandroid,
   singlefactorauthios,
+  tkeyandroid,
   tkeyios,
   tkeyjs,
 } from "../../common/SDKOptions";
-import { CKNode, CKSFA, CKSFAAndroid, CKSFAiOS, CKTkey, CKTkeyiOS, MPCCK } from "./coreKitExamples";
+import { CKNode, CKSFA, CKSFAAndroid, CKSFAiOS, CKTkey, CKTkeyAndroid, CKTkeyiOS, MPCCK } from "./coreKitExamples";
 import { PNPUnity, PNPUnreal } from "./pnpGamingExamples";
 import { PNPAndroid, PNPFlutter, PNPIos, PNPRN } from "./pnpMobileExamples";
 import {
@@ -194,6 +195,7 @@ export default function QuickNavigation() {
       {sdk === pnpflutter ? <Tiles tileGroups={PNPFlutter} /> : null}
       {sdk === tkeyjs ? <Tiles tileGroups={CKTkey} /> : null}
       {sdk === tkeyios ? <Tiles tileGroups={CKTkeyiOS} /> : null}
+      {sdk === tkeyandroid ? <Tiles tileGroups={CKTkeyAndroid} /> : null}
       {sdk === mpccorekit ? <Tiles tileGroups={MPCCK} /> : null}
       {sdk === corekitnodejs ? <Tiles tileGroups={CKNode} /> : null}
       {sdk === singlefactorauth ? <Tiles tileGroups={CKSFA} /> : null}

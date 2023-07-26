@@ -580,6 +580,28 @@ module.exports = {
     },
     {
       type: "category",
+      label: "tKey Android SDK",
+      link: { type: "doc", id: "sdk/core-kit/tkey-android/tkey-android" },
+      items: [
+        "sdk/core-kit/tkey-android/install",
+        "sdk/core-kit/tkey-android/initialize",
+        "sdk/core-kit/tkey-android/usage",
+        {
+          type: "category",
+          label: "Modules",
+          link: { type: "doc", id: "sdk/core-kit/tkey-android/modules/modules" },
+          items: [
+            "sdk/core-kit/tkey-android/modules/private-keys",
+            "sdk/core-kit/tkey-android/modules/security-questions",
+            "sdk/core-kit/tkey-android/modules/seed-phrase",
+            "sdk/core-kit/tkey-android/modules/share-serialization",
+            "sdk/core-kit/tkey-android/modules/share-transfer",
+          ],
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "Single Factor Auth SDKs",
       collapsed: false,
       collapsible: false,

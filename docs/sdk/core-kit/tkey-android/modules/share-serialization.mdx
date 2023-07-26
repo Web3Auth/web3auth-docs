@@ -1,0 +1,65 @@
+---
+title: Share Serialization Module
+displayed_sidebar: sdk
+description: "Core Kit tKey Android SDK - Modules -  Share Serialization | Documentation - Web3Auth"
+---
+
+The ShareSerializationModule is an Android module that provides functionality for serializing and deserializing threshold key shares.
+
+To use the ShareSerializationModule in your Android project, you will need to import the module as follows:
+
+```java
+import com.web3auth.tkey.ThresholdKey.ThresholdKey;
+import com.web3auth.tkey.ThresholdKey.Modules.ShareSerializationModule;
+```
+
+`ShareSerializationModule` is a class that provides the following methods:
+
+| Function           | Description       | Arguments                                                    | Async | return   |
+| ------------------ | ----------------- | ------------------------------------------------------------ | ----- | -------- |
+| `serializeShare`   | Serialize share   | `thresholdKey: ThresholdKey, share: String, format: String?` | No    | `String` |
+| `deserializeShare` | Deserialize share | `thresholdKey: ThresholdKey, share: String, format: String?` | No    | `String` |
+
+## `serializeShare()`
+
+`public static String serializeShare(ThresholdKey thresholdKey, String share, @Nullable String format) throws RuntimeError`
+
+This method serializes a threshold key share and returns it as a string.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                                                                           |
+| ------------ | ------------ | --------------------------------------------------------------------------------------------------------------------- |
+| thresholdKey | ThresholdKey | A ThresholdKey object that represents the threshold key to which the share belongs.                                   |
+| share        | String       | A string that represents the share to be serialized.                                                                  |
+| format       | String?      | An optional string that represents the serialization format. If it is not specified, the default format will be used. |
+
+**Returns**
+
+- A string that represents the serialized share.
+
+**Throws**
+
+- RuntimeError: If the serialization operation fails, a RuntimeError will be thrown.
+
+## `deserializeShare()`
+
+`deserializeShare(thresholdKey: ThresholdKey, share: String, format: String?) throws -> String`
+
+This method deserializes a threshold key share and returns it as a string.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                                                                           |
+| ------------ | ------------ | --------------------------------------------------------------------------------------------------------------------- |
+| thresholdKey | ThresholdKey | A ThresholdKey object that represents the threshold key to which the share belongs.                                   |
+| share        | String       | A string that represents the share to be deserialized.                                                                |
+| format       | String?      | An optional string that represents the serialization format. If it is not specified, the default format will be used. |
+
+**Returns**
+
+- A string that represents the deserialized share.
+
+**Throws**
+
+- RuntimeError: If the deserialization operation fails, a RuntimeError will be thrown.
