@@ -245,20 +245,10 @@ These libraries use many packages that are not present in the React Native envir
 - Install the missing modules:
 
 ```bash npm2yarn
-npm install --save empty-module readable-stream crypto-browserify
+npm install --save empty-module readable-stream crypto-browserify react-native-get-random-values
 ```
 
 - Update your `metro.config.js` as per the polyfilled modules:
-
-<Tabs
-  defaultValue="expo"
-  values={[
-    { label: "Expo Managed Workflow", value: "expo" },
-    { label: "Bare React Native Workflow", value: "bare" },
-  ]}
->
-
-<TabItem value="expo">
 
 :::info
 
@@ -268,7 +258,7 @@ based on the version of expo a project has installed, before running `npm run io
 
 :::
 
-```js
+```js title="metro.config.js for expo managed workflow"
 const { getDefaultConfig } = require("expo/metro-config");
 
 module.exports = (async () => {
@@ -308,11 +298,7 @@ module.exports = (async () => {
 })();
 ```
 
-</TabItem>
-
-<TabItem value="bare">
-
-```js
+```js title="metro.config.js for bare workflow"
 const { getDefaultConfig } = require("metro-config");
 
 module.exports = (async () => {
@@ -352,10 +338,7 @@ module.exports = (async () => {
 })();
 ```
 
-</TabItem>
-</Tabs>
-
-### Fixing `Buffer` issues in Bare workflow
+### Fixing dependency issues
 
 Add globals.js to your project root directory and add the following code to it.
 
@@ -376,22 +359,13 @@ if (!global.process.version) {
 process.browser = true;
 ```
 
-Then, import the `globals.js` to `index.js` of your project.
+Then, import the dependencies to `index.js` of your project.
 
 ```js title="index.js"
-import "./globals.js";
-```
-
-### Fixing logout issues in iOS apps (applicable for both Bare and Expo managed workflow)
-
-Install `react-native-get-random-values`
-
-```bash npm2yarn
-npm install --save react-native-get-random-values
-```
-
-Then, add the following code to `index.js` of your project.
-
-```js title="index.js"
-import "react-native-get-random-values";
+import {AppRegistry} from 'react-native';
+import './globals';
+import 'react-native-get-random-values';
+import App from './App';
+import {name as appName} from './app.json';
+AppRegistry.registerComponent(appName, () => App);
 ```
