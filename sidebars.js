@@ -17,12 +17,6 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Migration Guides",
-      link: { type: "doc", id: "migration-guide/migration-guide" },
-      items: ["migration-guide/migrating-to-v6-from-v5"]
-    },
-    {
-      type: "category",
       label: "Web3Auth Infrastructure",
       link: { type: "doc", id: "infrastructure/infrastructure" },
       items: [
@@ -118,6 +112,15 @@ module.exports = {
       href: "/integration-builder",
     },
     "pnp/going-live",
+    {
+      type: "category",
+      label: "Migration Guides",
+      items: [
+        "pnp/migration-guides/modal-v5-to-v6",
+        "pnp/migration-guides/no-modal-v5-to-v6",
+        "pnp/migration-guides/rn-v3-to-v4"
+      ]
+    },
     // {
     //   type: "category",
     //   label: "Release Notes",

@@ -5,7 +5,7 @@ displayed_sidebar: sdk
 description: "Web3Auth PnP React Native SDK - Usage | Documentation - Web3Auth"
 ---
 
-import RNResponse from "@site/src/common/sdk/pnp/react-native/_response.mdx";
+import RNResponse from "@site/src/common/sdk/pnp/react-native/_get-user-info.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
@@ -42,7 +42,7 @@ Trigger the login flow that navigate the user to a browser model that allows the
 | `mfaLevel`          | `MfaLevelType`                    | No        | You can set the `mfaLevel` to customize when mfa screen should be shown to user.                                                                                                                                                                                                                          |
 | `dappShare`         | `string`                          | No        | Custom Logins can get a dapp share returned to them post successful login. This is useful if the dapps want to use this share to allow users to login seamlessly dappShare is a 24 word seed phrase                                                                                                       |
 | `extraLoginOptions` | `ExtraLoginOptions`               | No        | can be used to pass standard oauth login options to loginProvider                                                                                                                                                                                                                                         |
-| `curve`             | `Map<`string`, Any>`              | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum                                                                                                                                                                                                                |
+| `curve`             | `Map<string, Any>`              | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum                                                                                                                                                                                                                |
 
 </TabItem>
 
@@ -50,12 +50,8 @@ Trigger the login flow that navigate the user to a browser model that allows the
 
 ```typescript
 
-async login(params?: LoginParams & Partial<BaseRedirectParams>): Promise<{ privKey: string }> {
-  if (params?.loginProvider) {
-    return this._selectedLogin(params);
-  }
-  return this._modal(params);
-}
+async login(options: SdkLoginParams): Promise<void>;
+export type SdkLoginParams = Omit<LoginParams, "fastLogin" | "skipTKey" | "getWalletKey"> & Required<Pick<LoginParams, "loginProvider">>;
 
 export type BaseRedirectParams = {
   /**
@@ -176,14 +172,10 @@ export type LoginParams = BaseRedirectParams & {
 
 </Tabs>
 
-### Sample Response
-
-<RNResponse />
-
 ### Example
 
 ```typescript
-const state = await web3auth.login({
+await web3auth.login({
   loginProvider: LoginProvider.GOOGLE,
   redirectUrl: resolvedRedirectUrl,
 });
@@ -204,24 +196,24 @@ You can pass extra options to the `login` function to configure the login flow f
 
 <TabItem value="table">
 
-| Parameter                 | Type     | Mandatory | Description                                           |
-| ------------------------- | -------- | --------- | ----------------------------------------------------- |
-| domain                    | String?  | No        | Domain of the app                                     |
-| client_id                 | String?  | No        | client_id from Web3Auth Dashboard                     |
-| leeway                    | String?  | No        | leeway                                                |
-| verifierIdField           | String?  | No        | verifierIdField                                       |
-| isVerifierIdCaseSensitive | Boolean? | No        | Boolean to confirm the case sensitivity of VerifierId |
-| display                   | Display? | No        | Display                                               |
-| prompt                    | Prompt?  | No        | Prompt                                                |
-| max_age                   | String?  | No        | max_age                                               |
-| ui_locales                | String?  | No        | ui_locales to be shown on the modal                   |
-| id_token                  | String?  | No        | JWT token passed to authenticate with web3auth        |
-| login_hint                | String?  | No        | Email used for EMAIL_PASSWORDLESS                     |
-| acr_values                | String?  | No        | acc_values                                            |
-| scope                     | String?  | No        | scope                                                 |
-| audience                  | String?  | No        | audience                                              |
-| connection                | String?  | No        | connection                                            |
-| redirect_uri              | String?  | No        | redirect_uri                                          |
+| Parameter                   | Type       | Mandatory | Description                                           |
+| --------------------------- | ---------- | --------- | ----------------------------------------------------- |
+| `domain`                    | `String?`  | No        | Domain of the app                                     |
+| `client_id`                 | `String?`  | No        | client_id from Web3Auth Dashboard                     |
+| `leeway`                    | `String?`  | No        | leeway                                                |
+| `verifierIdField`           | `String?`  | No        | verifierIdField                                       |
+| `isVerifierIdCaseSensitive` | `Boolean?` | No        | Boolean to confirm the case sensitivity of VerifierId |
+| `display`                   | `Display?` | No        | Display                                               |
+| `prompt`                    | `Prompt?`  | No        | Prompt                                                |
+| `max_age`                   | `String?`  | No        | max_age                                               |
+| `ui_locales`                | `String?`  | No        | ui_locales to be shown on the modal                   |
+| `id_token`                  | `String?`  | No        | JWT token passed to authenticate with web3auth        |
+| `login_hint`                | `String?`  | No        | Email used for EMAIL_PASSWORDLESS                     |
+| `acr_values`                | `String?`  | No        | acc_values                                            |
+| `scope`                     | `String?`  | No        | scope                                                 |
+| `audience`                  | `String?`  | No        | audience                                              |
+| `connection`                | `String?`  | No        | connection                                            |
+| `redirect_uri`              | `String?`  | No        | redirect_uri                                          |
 
 </TabItem>
 
@@ -389,7 +381,7 @@ web3auth.login({
 <TabItem value="secp256k1">
 
 ```typescript
-const state = await web3auth.login({
+await web3auth.login({
   loginProvider: LoginProvider.GOOGLE,
   redirectUrl: resolvedRedirectUrl,
   // highlight-next-line
@@ -402,7 +394,7 @@ const state = await web3auth.login({
 <TabItem value="ed25519">
 
 ```typescript
-const state = await web3auth.login({
+await web3auth.login({
   loginProvider: LoginProvider.GOOGLE,
   redirectUrl: resolvedRedirectUrl,
   // highlight-next-line

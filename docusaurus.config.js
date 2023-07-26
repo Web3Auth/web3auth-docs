@@ -420,6 +420,12 @@ const config = {
               existingPath.replace('/sdk', '/sdk-reference'),
             ];
           }
+          if (existingPath.includes('/sdk')) {
+            return [
+              existingPath.replace('/migration-guide/', '/migration-guides/no-modal-v5-to-v6'),
+              existingPath.replace('/migration-guide/migrating-to-v6-from-v5', '/migration-guides/no-modal-v5-to-v6'),
+            ];
+          }
           if (existingPath.includes('/auth-provider-setup')) {
             return [
               existingPath.replace('/auth-provider-setup', '/custom-authentication'),

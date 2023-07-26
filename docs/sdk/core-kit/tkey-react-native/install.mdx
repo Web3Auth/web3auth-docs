@@ -157,6 +157,12 @@ These libraries use many packages that are not present in the React Native envir
 
 - Install the missing modules:
 
+:::info note
+
+The below `metro.config.js` works for Expo managed workflow as well.
+
+:::
+
 ```bash npm2yarn
 npm install --save buffer node-libs-react-native crypto-browserify
 ```
@@ -165,20 +171,27 @@ npm install --save buffer node-libs-react-native crypto-browserify
 
 ```js
 const { getDefaultConfig } = require("metro-config");
-const nodeLibs = require("node-libs-react-native");
 
 module.exports = (async () => {
   const {
     resolver: { sourceExts, assetExts },
-  } = await getDefaultConfig();
+  } = await getDefaultConfig(__dirname);
 
   const defaultSourceExts = [...sourceExts, "svg", "mjs", "cjs"];
 
   return {
     resolver: {
       extraNodeModules: {
-        ...nodeLibs,
+        assert: require.resolve("empty-module"), // assert can be polyfilled here if needed
+        http: require.resolve("empty-module"), // stream-http can be polyfilled here if needed
+        https: require.resolve("empty-module"), // https-browserify can be polyfilled here if needed
+        os: require.resolve("empty-module"), // os-browserify can be polyfilled here if needed
+        url: require.resolve("empty-module"), // url can be polyfilled here if needed
+        zlib: require.resolve("empty-module"), // browserify-zlib can be polyfilled here if needed
+        process: require.resolve("empty-module"), // process can be polyfilled here if needed
+        path: require.resolve("empty-module"),
         crypto: require.resolve("crypto-browserify"),
+        stream: require.resolve("stream-browserify"),
       },
 
       assetExts: assetExts.filter((ext) => ext !== "svg"),
@@ -197,7 +210,7 @@ module.exports = (async () => {
 })();
 ```
 
-- Update your `globals.js` to update your global variables:
+- Update your `index.js` to update your global variables:
 
 ```js
 // global variables required to be replaced for web3auth packages to work

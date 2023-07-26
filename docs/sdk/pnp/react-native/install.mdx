@@ -15,14 +15,22 @@ In React Native, you have the choice to use one of the following workflows:
 ### Expo Managed Workflow
 
 Your Expo app is built on your Expo's cloud, so you don't have control over the native modules used in the app. Developers build managed workflow apps
-using expo-cli on their computer and a development client on their mobile devices (either the Expo Go app for more simple projects or a development
-build when your project grows). Managed workflows apps typically use one or more Expo services, such as push notifications, build, and updates.
+using `expo-cli` on their computer and a development client on their mobile devices. Managed workflows apps typically use one or more Expo services,
+such as push notifications, build, and updates.
+
+:::warning Note
+
+The React Native PnP SDK V4 is not compatible with "Expo Go" app. It is compatible only with Custom Dev Client and EAS builds. Please refer to the
+troubleshooting section for more on this. Please run `npx expo prebuild` to generate native code based on the version of expo a project has installed,
+before running `npm run ios` or `npm run android`.
+
+:::
 
 ### Bare React Native Workflow
 
 Your Bare React Native app is entirely built on your own machine. In this workflow the developer has complete control, along with the complexity that
-comes with that. Configuration with app.json / app.config.js is mostly not supported in this context; instead, you will need to configure each native
-project directly with Swift/Kotlin native modules.
+comes with that. Configuration with `app.json` / `app.config.js` is mostly not supported in this context; instead, you will need to configure each native
+project directly with Swift/Kotlin native modules. Check out the [troubleshooting section](/docs/sdk/pnp/react-native/install#troubleshooting) for fixing common issues.
 
 :::tip
 
@@ -44,7 +52,7 @@ We will also require a `WebBrowser` implementation to allow our JS-based SDK to 
 installation steps depending on whether you are using the bare workflow or managed workflow.
 
 <Tabs
-  defaultValue="expo"
+  defaultValue="bare"
   values={[
     { label: "Expo Managed Workflow", value: "expo" },
     { label: "Bare React Native Workflow", value: "bare" },
@@ -55,8 +63,8 @@ installation steps depending on whether you are using the bare workflow or manag
 
 #### Expo Web Browser
 
-When using our SDK with a Expo-based React Native app (aka managed workflow, you have to install the `expo-web-browser` package as a `WebBrowser`
-implementation.)
+When using our SDK with a Expo-based React Native app (aka managed workflow), you have to install the `expo-web-browser` package as a `WebBrowser`
+implementation.
 
 ```shell
 expo install expo-web-browser
@@ -72,6 +80,45 @@ When using our SDK with a bare workflow React Native app, you have to install a 
 
 ```bash npm2yarn
 npm install --save @toruslabs/react-native-web-browser
+```
+
+</TabItem>
+</Tabs>
+
+### Adding a `Storage` Module
+
+Now with v4, we need to pass a `Storage` parameter to the SDK, which will be used for session management without storing the private keys of the user
+in the device.
+
+<Tabs
+  defaultValue="bare"
+  values={[
+    { label: "Expo Managed Workflow", value: "expo" },
+    { label: "Bare React Native Workflow", value: "bare" },
+  ]}
+>
+
+<TabItem value="expo">
+
+#### Expo Secure Store
+
+When using our SDK with a Expo-based React Native app (aka managed workflow), you have to install the `expo-secure-store` package as a `Storage`
+implementation.
+
+```shell
+expo install expo-secure-store
+```
+
+</TabItem>
+
+<TabItem value="bare">
+
+#### React Native Encrypted Storage
+
+When using our SDK with a bare workflow React Native app, you have to install a `Storage` implementation provided by react-native.
+
+```bash npm2yarn
+npm install --save react-native-encrypted-storage
 ```
 
 </TabItem>
@@ -163,16 +210,16 @@ targetSdkVersion = 31
   [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
 
 ```js title="App.js"
-const scheme = "web3authrnbareexample"; // Or your desired app redirection scheme
+const scheme = "web3authrnexample"; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 ```
 
 #### iOS
 
-- Make sure that the minimum SDK compile version in `Podfile` is 13 or more.
+- Make sure that the minimum SDK compile version in `Podfile` is 14 or more.
 
 ```Podfile title="ios/Podfile"
-platform :ios, '13'
+platform :ios, '14'
 ```
 
 - Install the Cocoa Pods within your project directory.
@@ -189,3 +236,141 @@ cd ios && pod install && cd ..
 You may refer to **[these example apps](/examples?product=Plug+and+Play&sdk=Plug+and+Play+React+Native+SDK)** and try it out yourself.
 
 :::
+
+## Troubleshooting
+
+### Bundler Polyfilling
+
+These libraries use many packages that are not present in the React Native environment. Hence, to get around that, you need to manually polyfill them.
+
+- Install the missing modules:
+
+```bash npm2yarn
+npm install --save empty-module readable-stream crypto-browserify react-native-get-random-values buffer process
+```
+
+- Update your `metro.config.js` as per the polyfilled modules:
+
+:::info
+
+You will have to create `metro.config.js` for Expo Managed Workflow, as it is not present by default. Also note that the React Native PnP SDK is not
+compatible with "Expo Go" app. It is compatible only with Custom Dev Client and EAS builds. Please run `npx expo prebuild` to generate native code
+based on the version of expo a project has installed, before running `npm run ios` or `npm run android`.
+
+:::
+
+#### `metro.config.js` for expo managed workflow
+
+```js title="metro.config.js"
+const { getDefaultConfig } = require("expo/metro-config");
+
+module.exports = (async () => {
+  const {
+    resolver: { sourceExts, assetExts },
+  } = await getDefaultConfig(__dirname);
+
+  const defaultSourceExts = [...sourceExts, "svg", "mjs", "cjs"];
+
+  return {
+    resolver: {
+      extraNodeModules: {
+        assert: require.resolve("empty-module"), // assert can be polyfilled here if needed
+        http: require.resolve("empty-module"), // stream-http can be polyfilled here if needed
+        https: require.resolve("empty-module"), // https-browserify can be polyfilled here if needed
+        os: require.resolve("empty-module"), // os-browserify can be polyfilled here if needed
+        url: require.resolve("empty-module"), // url can be polyfilled here if needed
+        zlib: require.resolve("empty-module"), // browserify-zlib can be polyfilled here if needed
+        path: require.resolve("empty-module"),
+        crypto: require.resolve("crypto-browserify"),
+        stream: require.resolve("readable-stream"),
+      },
+
+      assetExts: assetExts.filter((ext) => ext !== "svg"),
+
+      sourceExts: process.env.TEST_REACT_NATIVE ? ["e2e.js"].concat(defaultSourceExts) : defaultSourceExts,
+    },
+    transformer: {
+      getTransformOptions: async () => ({
+        transform: {
+          experimentalImportSupport: false,
+          inlineRequires: true,
+        },
+      }),
+    },
+  };
+})();
+```
+
+#### `metro.config.js` for bare workflow
+
+```js title="metro.config.js"
+const { getDefaultConfig } = require("metro-config");
+
+module.exports = (async () => {
+  const {
+    resolver: { sourceExts, assetExts },
+  } = await getDefaultConfig(__dirname);
+
+  const defaultSourceExts = [...sourceExts, "svg", "mjs", "cjs"];
+
+  return {
+    resolver: {
+      extraNodeModules: {
+        assert: require.resolve("empty-module"), // assert can be polyfilled here if needed
+        http: require.resolve("empty-module"), // stream-http can be polyfilled here if needed
+        https: require.resolve("empty-module"), // https-browserify can be polyfilled here if needed
+        os: require.resolve("empty-module"), // os-browserify can be polyfilled here if needed
+        url: require.resolve("empty-module"), // url can be polyfilled here if needed
+        zlib: require.resolve("empty-module"), // browserify-zlib can be polyfilled here if needed
+        path: require.resolve("empty-module"),
+        crypto: require.resolve("crypto-browserify"),
+        stream: require.resolve("readable-stream"),
+      },
+
+      assetExts: assetExts.filter((ext) => ext !== "svg"),
+
+      sourceExts: process.env.TEST_REACT_NATIVE ? ["e2e.js"].concat(defaultSourceExts) : defaultSourceExts,
+    },
+    transformer: {
+      getTransformOptions: async () => ({
+        transform: {
+          experimentalImportSupport: false,
+          inlineRequires: true,
+        },
+      }),
+    },
+  };
+})();
+```
+
+### Fixing dependency issues
+
+Add `globals.js` to your project root directory and add the following code to it.
+
+```js title="globals.js"
+global.Buffer = require("buffer").Buffer;
+
+// Needed so that 'stream-http' chooses the right default protocol.
+global.location = {
+  protocol: "file:",
+};
+
+global.process.version = "v16.0.0";
+if (!global.process.version) {
+  global.process = require("process");
+  console.log({ process: global.process });
+}
+
+process.browser = true;
+```
+
+Then, import the dependencies to `index.js` of your project.
+
+```js title="index.js"
+import { AppRegistry } from "react-native";
+import "./globals";
+import "react-native-get-random-values";
+import App from "./App";
+import { name as appName } from "./app.json";
+AppRegistry.registerComponent(appName, () => App);
+```

@@ -1,0 +1,56 @@
+---
+title: PnP Modal SDK - v5 to v6
+displayed_sidebar: docs
+description: "PnP Modal SDK - v5 to v6 | Documentation - Web3Auth"
+---
+
+## General
+
+### `web3auth.connected` is introduced
+
+#### Manage session using `web3auth.connected` instead of `web3auth.provider`
+
+With V6, users can manage their session using `web3auth.connected` instead of `web3auth.provider`.
+
+```js
+// With V6
+// highlight-start
+if (web3auth.connected) {
+  setLoggedIn(true);
+}
+// highlight-end
+```
+
+### `provider` is now always available
+
+In V5, we used to add a check for setting the `provider` only if the `web3auth.provider` was present. But now with V6 we always have provider
+available even if the user is not logged-in.
+
+```js
+// With V5
+if (web3auth.provider) {
+  setProvider(web3auth.provider);
+}
+// With V6
+// highlight-next-line
+setProvider(web3auth.provider); // before the connect() or connectTo(), provider is available.
+```
+
+### `rpcTarget` and `chainId` is now a mandatory parameter
+
+Previously, the Web Modal SDK required `chainConfig` as a parameter which had `rpcTarget` & `chainId` as the optional parameter. But with V6, it's
+mandatory to add `rpcTarget` & `chainId` in the `chainConfig` object.
+
+```js
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    // highlight-start
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own custom endpoint while creating an app
+    // highlight-end
+  },
+  web3AuthNetwork: "cyan",
+});
+```
