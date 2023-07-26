@@ -1,0 +1,61 @@
+```js title="Firebase JWT Example"
+import Web3Auth from "@web3auth/single-factor-auth";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { GoogleAuthProvider, getAuth, signInWithPopup, UserCredential } from "firebase/auth";
+
+// Define the chain config according to the chain you want to connect to
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyB0nd9YsPLu-tpdCrsXn8wgsWVAiYEpQ_E",
+  authDomain: "web3auth-oauth-logins.firebaseapp.com",
+  projectId: "web3auth-oauth-logins",
+  storageBucket: "web3auth-oauth-logins.appspot.com",
+  messagingSenderId: "461819774167",
+  appId: "1:461819774167:web:e74addfb6cc88f3b5b9c92",
+};
+
+// Instantiate Web3Auth SFA SDK
+const web3authSfa = new Web3Auth({
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "cyan", // Available networks are "testnet", "mainnet", "cyan", "aqua".
+  usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
+});
+
+// Instantiate Ethereum Provider
+const provider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+// Initialize Web3Auth SFA SDK
+web3authSfa.init({ provider });
+
+// Initialize Firebase and get idToken from Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
+const res = await signInWithPopup(auth, googleProvider);
+const idToken = await res.user.getIdToken(true);
+// get sub value from firebase id token
+const { sub } = parseToken(token); // parseToken is a function that parses the token and returns the payload.
+
+// Login the user
+const web3authSfaprovider = await web3auth.connect({
+  verifier: "web3auth-sfa-verifier", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+  verifierId: sub, // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
+  idToken: idToken, // or replace it with your newly created unused JWT Token.
+});
+
+// Get the private key, The private key returned here is the CoreKit Key, since the usePnPKey is set to false.
+const ethPrivateKey = await web3authSfaprovider.request({ method: "eth_private_key" });
+
+console.log("ETH Private Key", ethPrivateKey);
+```

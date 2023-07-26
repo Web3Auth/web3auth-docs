@@ -7,6 +7,7 @@ description: "Web3Auth Core Kit Single Factor Auth Node.js SDK - Initialize | Do
 
 import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
 import Web3AuthOptions from "@site/src/common/sdk/pnp/web/_web3authcore-options.mdx";
+import InstantiatingProvider from "@site/src/common/sdk/core-kit/sfa/_instantiating_provider.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
@@ -96,119 +97,54 @@ export interface Web3AuthOptions {
 
 ```javascript
 const web3auth = new Web3Auth({
-  clientId: "", // Get your Client ID from Web3Auth Dashboard
-  // Available networks are "testnet", "mainnet", "cyan", "aqua", .
-  web3AuthNetwork: "cyan",
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "cyan", // Available networks are "testnet", "mainnet", "cyan", and "aqua".
   usePnPKey: "false", // By default, this sdk returns CoreKitKey
 });
 ```
 
 ## Instantiating Provider
 
-For getting the appropriate key for your selected chain, you need to instantiate a provider. This provider is used to make calls to the selected
-blockchain. Currently, Web3Auth exposes the following provider packages to be integrated within the SDKs:
-
-- [EthereumPrivateKeyProvider](/sdk/helper-sdks/providers/evm#getting-a-provider-from-any-secp256k1-private-key): For Ethereum and EVM compatible
-  chains (secp256k1 private key)
-- [SolanaPrivateKeyProvider](/sdk/helper-sdks/providers/solana#getting-a-provider-from-any-ed25519-private-key): For Solana Blockchain (ed25519
-  private key)
-
-Using these providers, you can export the private keys for the respective curves of the selected blockchain. You can use these keys to even create
-manual providers for other blockchains supporting the curves/ have conversion packages for their blockchain curves.
-
-### Example
-
-<Tabs
-  defaultValue="eth"
-  values={[
-    { label: "ETH", value: "eth" },
-    { label: "Solana", value: "solana" },
-    { label: "Other Chains", value: "other" },
-  ]}
->
-
-<TabItem value="eth">
-
-```javascript
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-
-const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
-  config: {
-    /*
-      pass the chain config that you want to connect with
-      all chainConfig fields are required.
-      */
-    chainConfig: {
-      chainId: "0x1",
-      rpcTarget: `https://rpc.ankr.com/eth`,
-      displayName: "ropsten",
-      blockExplorer: "https://ropsten.etherscan.io/",
-      ticker: "ETH",
-      tickerName: "Ethereum",
-    },
-  },
-});
-```
-
-</TabItem>
-
-<TabItem value="solana">
-
-```javascript
-import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
-
-/*
-ed25519key: any ed25519 private key.
-*/
-
-// Get user's Solana's public address
-const provider = new SolanaPrivateKeyProvider({
-  config: {
-    chainConfig: {
-      chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-      rpcTarget: "https://rpc.ankr.com/solana",
-      displayName: "Solana Mainnet",
-      blockExplorer: "https://explorer.solana.com/",
-      ticker: "SOL",
-      tickerName: "Solana",
-    },
-  },
-});
-```
-
-</TabItem>
-
-<TabItem value="other">
-
-```javascript
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-
-const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
-  config: {
-    chainConfig: {
-      chainId: "0x1",
-      rpcTarget: `https://rpc.ankr.com/eth`,
-      displayName: "ropsten",
-      blockExplorer: "https://ropsten.etherscan.io/",
-      ticker: "ETH",
-      tickerName: "Ethereum",
-    },
-  },
-});
-```
-
-</TabItem>
-</Tabs>
+<InstantiatingProvider />
 
 ## Initializing Web3Auth
 
 #### `init()`
 
-The final step in the initialization process is to initialize the `Web3Auth` instance, ie. `web3auth` in our case.
-
-This is done by calling `init()` function of the `web3auth` instance we created above with a network type matching the `Verifier` network. **_Default
-network is "mainnet"._**
+To complete the initialization process, we need to initialize the `Web3Auth` instance, which we named `web3auth`. This is achieved by calling the
+`init()` function of the previously created `web3auth` instance, using a **private key provider**.
 
 ```javascript
+web3auth.init({ provider });
+```
+
+## Example
+
+```javascript
+const Web3Auth = require("@web3auth/single-factor-auth");
+const EthereumPrivateKeyProvider = require("@web3auth/ethereum-provider");
+const CHAIN_NAMESPACES = require("@web3auth/base");
+
+// Swap with different provider if you want to use a different blockchain
+const provider = new EthereumPrivateKeyProvider({
+  config: {
+    chainConfig: {
+      chainNamespace: CHAIN_NAMESPACES.EIP155,
+      chainId: "0x1",
+      rpcTarget: "https://rpc.ankr.com/eth",
+      displayName: "Ethereum Mainnet",
+      blockExplorer: "https://etherscan.io",
+      ticker: "ETH",
+      tickerName: "Ethereum",
+    },
+  },
+});
+
+const web3auth = new Web3Auth({
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "cyan", // Available networks are "testnet", "mainnet", "cyan", and "aqua".
+  usePnPKey: "false", // By default, this sdk returns CoreKitKey by default.
+});
+
 web3auth.init({ provider });
 ```

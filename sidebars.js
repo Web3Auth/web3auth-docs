@@ -564,6 +564,7 @@ module.exports = {
       label: "tKey iOS SDK",
       link: { type: "doc", id: "sdk/core-kit/tkey-ios/tkey-ios" },
       items: [
+        "sdk/core-kit/tkey-ios/install",
         "sdk/core-kit/tkey-ios/initialize",
         "sdk/core-kit/tkey-ios/usage",
         {
@@ -576,6 +577,28 @@ module.exports = {
             "sdk/core-kit/tkey-ios/modules/seed-phrase",
             "sdk/core-kit/tkey-ios/modules/share-serialization",
             "sdk/core-kit/tkey-ios/modules/share-transfer",
+          ],
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "tKey Android SDK",
+      link: { type: "doc", id: "sdk/core-kit/tkey-android/tkey-android" },
+      items: [
+        "sdk/core-kit/tkey-android/install",
+        "sdk/core-kit/tkey-android/initialize",
+        "sdk/core-kit/tkey-android/usage",
+        {
+          type: "category",
+          label: "Modules",
+          link: { type: "doc", id: "sdk/core-kit/tkey-android/modules/modules" },
+          items: [
+            "sdk/core-kit/tkey-android/modules/private-keys",
+            "sdk/core-kit/tkey-android/modules/security-questions",
+            "sdk/core-kit/tkey-android/modules/seed-phrase",
+            "sdk/core-kit/tkey-android/modules/share-serialization",
+            "sdk/core-kit/tkey-android/modules/share-transfer",
           ],
         },
       ],
@@ -617,6 +640,17 @@ module.exports = {
             "sdk/core-kit/sfa-android/initialize",
             "sdk/core-kit/sfa-android/authentication",
             "sdk/core-kit/sfa-android/usage"
+          ],
+        },
+        {
+          type: "category",
+          label: "SFA iOS SDK",
+          link: { type: "doc", id: "sdk/core-kit/sfa-ios/sfa-ios" },
+          items: [
+            "sdk/core-kit/sfa-ios/install",
+            "sdk/core-kit/sfa-ios/initialize",
+            "sdk/core-kit/sfa-ios/authentication",
+            "sdk/core-kit/sfa-ios/usage"
           ],
         },
       ],

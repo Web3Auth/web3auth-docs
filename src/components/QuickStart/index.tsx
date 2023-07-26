@@ -24,6 +24,7 @@ import PNPUnity from "@site/src/common/quickstart/_pnp-unity.mdx";
 import PNPUnreal from "@site/src/common/quickstart/_pnp-unreal.mdx";
 import SFAAndroid from "@site/src/common/quickstart/_sfa-android.mdx";
 import SFAAngular from "@site/src/common/quickstart/_sfa-angular.mdx";
+import SFAiOS from "@site/src/common/quickstart/_sfa-ios.mdx";
 import SFANext from "@site/src/common/quickstart/_sfa-nextjs.mdx";
 import SFAReact from "@site/src/common/quickstart/_sfa-react.mdx";
 import SFAVue from "@site/src/common/quickstart/_sfa-vue.mdx";
@@ -54,6 +55,8 @@ import {
   setURLfromOptions,
   singlefactorauth,
   singlefactorauthandroid,
+  singlefactorauthios,
+  tkeyios,
   tkeyjs,
   unity,
   unreal,
@@ -244,9 +247,10 @@ export default function QuickNavigation() {
       {platform === vue && sdk === pnpwebnomodal ? <PNPNoModalVue /> : ""}
 
       {platform === android && product === pnp ? <PNPAndroid /> : ""}
+      {platform === android && product === corekit ? <PNPAndroid /> : ""}
       {platform === android && sdk === singlefactorauthandroid ? <SFAAndroid /> : ""}
       {platform === ios && product === pnp ? <PNPIos /> : ""}
-      {platform === ios && product === corekit ? <TKeyiOS /> : ""}
+      {platform === ios && sdk === tkeyios && product === corekit ? <TKeyiOS /> : ""}
       {platform === flutter ? <PNPFlutter /> : ""}
       {platform === rnbare && product === pnp ? <PNPReactNativeBare /> : ""}
       {platform === rnexpo && product === pnp ? <PNPReactNativeExpo /> : ""}
@@ -258,7 +262,7 @@ export default function QuickNavigation() {
       {platform === angular && sdk === singlefactorauth ? <SFAAngular /> : ""}
       {platform === vue && sdk === singlefactorauth ? <SFAVue /> : ""}
 
-      {platform === android && sdk === singlefactorauthandroid ? <SFAAndroid /> : ""}
+      {platform === ios && product === corekit && sdk === singlefactorauthios ? <SFAiOS /> : ""}
 
       {platform === nodejs ? <NodeExample /> : ""}
 

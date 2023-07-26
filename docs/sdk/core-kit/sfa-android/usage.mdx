@@ -14,7 +14,7 @@ The SingleFactorAuth instance natively provides the following functions:
 
 - `getKey()` - Returns the torus key using the `verifier`, `verifierId` & `idToken`.
 
-## Get TorusKey - `getKey()`
+## `getKey()`
 
 `getKey()`
 
@@ -32,9 +32,9 @@ public CompletableFuture<TorusKey> getKey(LoginParams loginParams)
 
 On successful call, the `getKey()` function returns a `CompletableFuture` instance.
 
-### `getKey(loginParams: LoginParams)`
+#### `LoginParams`
 
-`LoginParams`
+`getKey(loginParams: LoginParams)`
 
 <Tabs
   defaultValue="table"
@@ -70,12 +70,16 @@ export type LoginParams = {
 
 </Tabs>
 
-```js title="Example"
-loginParams = LoginParams("verifier_name", "verifier_id", "id_token");
+```js title="Usage"
+loginParams = LoginParams("YOUR_VERIFIER_NAME", "YOUR_VERIFIER_ID", "YOUR_ID_TOKEN");
 torusKey = singleFactorAuth.getKey(loginParams).get();
 ```
 
-Web3Auth SFA Android SDK only works for those users who have **not enabled MFA**.
+:::tip Note
+
+Web3Auth SFA Android SDK only works for users who have **not enabled MFA**.
+
+:::
 
 :::danger MFA enabled users
 
@@ -93,6 +97,7 @@ import com.github.web3auth.singlefactorauth.types.SingleFactorAuthArgs
 import com.github.web3auth.singlefactorauth.types.LoginParams
 import com.github.web3auth.singlefactorauth.types.TorusKey
 import org.torusresearch.fetchnodedetails.types.TorusNetwork
+import com.auth0.android.jwt.JWT
 
 class MainActivity : AppCompatActivity() {
   // ...
@@ -114,7 +119,9 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun signIn() {
-    loginParams = LoginParams("web3auth-firebase-examples", "sub", "id_token")
+    val jwt = JWT(idToken) // idToken is the JWT token obtained from auth provider or your custom JWT provider
+    val sub = jwt.getClaim("sub").asString() // get sub claims
+    loginParams = LoginParams("web3auth-firebase-examples", "$sub", "$idToken")
     try {
         torusKey = singleFactorAuth.getKey(loginParams).get()
     } catch (e: ExecutionException) {

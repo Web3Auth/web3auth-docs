@@ -1,0 +1,66 @@
+```js title="Custom JWT Example"
+const { Web3Auth } = require("@web3auth/node-sdk");
+const { EthereumPrivateKeyProvider } = require("@web3auth/ethereum-provider");
+const jwt = require("jsonwebtoken");
+const fs = require("fs");
+
+// Use "openssl genrsa -out privateKey.pem 2048" to generate a private key
+// Also, use this private key to generate a public key using "openssl rsa -in privateKey.pem -pubout -out publicKey.pem"
+// Convert PEM to JWKS and expose it on a public URL, and make a web3auth verifier using that.
+// Check out https://web3auth.io/docs/auth-provider-setup/byo-jwt-providers for more details.
+var privateKey = fs.readFileSync("privateKey.pem");
+
+const provider = new EthereumPrivateKeyProvider({
+  config: {
+    chainConfig: {
+      chainId: "0x5",
+      rpcTarget: "https://rpc.ankr.com/eth_goerli",
+      displayName: "goerli",
+      blockExplorer: "https://goerli.etherscan.io/",
+      ticker: "ETH",
+      tickerName: "Ethereum",
+    },
+  },
+});
+
+// Instantiate Web3Auth Node.js SDK
+const web3auth = new Web3Auth({
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "cyan", // Available networks are "testnet", "mainnet", "cyan", "aqua".
+  usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
+});
+
+web3auth.init({ provider });
+
+const user = {
+  id: "faj2720i2fdG7NsqznOKrthDvq43", // must be unique to each user
+  name: "Mohammad Shahbaz Alam",
+  email: "shahbaz@web3auth.io",
+  profileImage: "https://avatars.githubusercontent.com/u/46641595?v=4",
+};
+
+const connect = async () => {
+  const web3authNodeprovider = await web3auth.connect({
+    verifier: "web3auth-sfa-verifier", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+    verifierId: user.id, // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
+    idToken: jwt.sign(
+      {
+        sub: user.id, // must be unique to each user
+        name: user.name,
+        email: user.email,
+        picture: user.profileImage,
+        aud: "urn:my-resource-server", // -> to be used in Custom Authentication as JWT Field
+        iss: "https://my-authz-server", // -> to be used in Custom Authentication as JWT Field
+        iat: Math.floor(Date.now() / 1000),
+        exp: Math.floor(Date.now() / 1000) + 60 * 60,
+      },
+      privateKey,
+      { algorithm: "RS256", keyid: "1bb9605c36e69386830202b2d" }
+    ), // or replace it with your newly created unused JWT Token.
+  });
+  const ethPrivateKey = await web3authNodeprovider.request({ method: "eth_private_key" });
+  // The private key returned here is the CoreKitKey
+  console.log("ETH Private Key", ethPrivateKey);
+};
+connect();
+```

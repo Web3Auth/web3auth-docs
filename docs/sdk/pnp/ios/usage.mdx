@@ -5,7 +5,7 @@ displayed_sidebar: sdk
 description: "Web3Auth PnP iOS SDK - Usage | Documentation - Web3Auth"
 ---
 
-import IosResponse from "@site/src/common/sdk/pnp/ios/_response.mdx";
+import IosResponse from "@site/src/common/sdk/pnp/_userinfo_response.mdx";
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
@@ -87,32 +87,9 @@ Use getEd25519PrivKey() to get the Ed25519 private key of the user. This private
 
 Use getUserInfo() to get the user info of the user.
 
-### UserInfo Response
+#### UserInfo Response
 
-```json
-{
-  "privKey": "0ajjsdsd....",
-  "userInfo": {
-    "name": "John Dash",
-    "profileImage": "https://lh3.googleusercontent.com/a/Ajjjsdsmdjmnm...",
-    "typeOfLogin": "google",
-    "aggregateVerifier": "tkey-google",
-    "verifier": "torus",
-    "verifierId": "john@gmail.com",
-    "email": "john@gmail.com",
-    "dappShare": "<24 words seed phrase>", // will be sent only incase of custom verifiers
-    "idToken": "<jwtToken issued by Web3Auth>",
-    "oAuthIdToken": "<jwtToken issued by OAuth Provider>", // will be sent only incase of custom verifiers
-    "oAuthAccessToken": "<accessToken issued by OAuth Provider>" // will be sent only incase of custom verifiers
-  },
-  "ed25519PrivKey": "666523652352635....",
-  "coreKitKey": "0xajjsdsd....",
-  "coreKitEd25519PrivKey": "666523652352635....",
-  "sessionId": "0xajjsdsd...."
-}
-```
-
-### Example
+<IosResponse />
 
 <Tabs
   defaultValue="google"
@@ -128,7 +105,7 @@ Use getUserInfo() to get the user info of the user.
 
 <TabItem value="google">
 
-```swift
+```swift title="Usage"
 func login(provider: Web3AuthProvider) {
 	Task {
 		do {
@@ -150,7 +127,7 @@ login(provider: .GOOGLE)
 
 <TabItem value="facebook">
 
-```swift
+```swift title="Usage"
 func login(provider: Web3AuthProvider) {
 	Task {
 		do {
@@ -172,7 +149,7 @@ login(provider: .FACEBOOK)
 
 <TabItem value="discord">
 
-```swift
+```swift title="Usage"
 func login(provider: Web3AuthProvider) {
 	Task {
 		do {
@@ -194,7 +171,7 @@ login(provider: .DISCORD)
 
 <TabItem value="twitch">
 
-```swift
+```swift title="Usage"
 func login(provider: Web3AuthProvider) {
 	Task {
 		do {
@@ -216,7 +193,7 @@ login(provider: .TWITCH)
 
 <TabItem value="email_passwordless">
 
-```swift
+```swift title="Usage"
 func login(provider: Web3AuthProvider) {
 	Task {
 		do {
@@ -238,7 +215,7 @@ login(provider: .EMAIL_PASSWORDLESS)
 
 <TabItem value="jwt">
 
-```swift
+```swift title="Usage"
 func login(provider: Web3AuthProvider) {
 	Task {
 		do {
@@ -348,9 +325,7 @@ let sessionTime = 86400 // 1 day
 let result = await Web3Auth().login(W3ALoginParams(loginProvider: .GOOGLE, sessionTime: sessionTime))
 ```
 
-### Example
-
-```swift
+```swift title="Usage"
 import Foundation
 import Web3Auth
 
@@ -414,8 +389,6 @@ let result = try await Web3Auth().login(
 	))
 ```
 
-### Example
-
 <Tabs
   defaultValue="secp256k1"
   values={[
@@ -426,7 +399,7 @@ let result = try await Web3Auth().login(
 
 <TabItem value="secp256k1">
 
-```swift
+```swift title="Usage"
 
 func login(provider: Web3AuthProvider) {
 	Task {
@@ -454,7 +427,7 @@ login(provider: .GOOGLE)
 
 <TabItem value="ed25519">
 
-```swift
+```swift title="Usage"
 
 func login(provider: Web3AuthProvider) {
 	Task {
