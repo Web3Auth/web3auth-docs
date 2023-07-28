@@ -163,7 +163,7 @@ const config = {
           customCss: require.resolve("./src/css/custom.css"),
         },
         gtag: {
-          trackingID: "G-WPPHHHRZ1T",
+          trackingID: "GTM-ML3T5M6",
         },
         pages: {
           path: 'src/pages',
