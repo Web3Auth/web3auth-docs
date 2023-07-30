@@ -1,26 +1,26 @@
 import DashboardVerifier from "@site/static/dashboard/verifiers/w3a-dashboard-verifier.png";
 
-### 1. Add Web3Auth to Swift Package Manager
+### 1. Add the tKey iOS and SFA iOS SDK to your project using Swift Package Manager
 
-If you are using the Swift Package Manager, open the following menu item in Xcode:
+1. In Xcode, with your app project open, navigate to **File > Add Packages**.
 
-`File > Swift Packages > Add Package Dependency`
+1. When prompted, add the tKey iOS SDK repository:
 
-In the Choose Package Repository prompt add this url:
+   ```sh
+   https://github.com/tkey/tkey-ios
+   ```
 
-```bash
-https://github.com/torusresearch/tkey-rust-ios/tag/0.0.3
-# and
-https://github.com/torusresearch/customauth-swift-sdk/releases/tag/5.0.0
-```
+   From the `Dependency Rule` dropdown, select `Exact Version` and enter `0.0.4` as the version.
 
-###### Cocoapods
+1. Follow the same process to add the SFA iOS SDK repository:
 
-```bash
-pod 'tkey-rust-ios', '~> 0.0.3'
-# and
-pod 'CustomAuth', '~> 5.0.0'
-```
+   ```sh
+   https://github.com/Web3Auth/single-factor-auth-swift
+   ```
+
+   From the `Dependency Rule` dropdown, select `Exact Version` and enter `2.0.3` as the version.
+
+1. When finished, Xcode will automatically begin resolving and downloading your dependencies in the background.
 
 ### 2. Get your Verifier details from Web3Auth Dashboard
 
@@ -28,58 +28,27 @@ Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new v
 
 <img src={DashboardVerifier} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Dashboard" />
 
-### 3. Login with CustomAuth to get the private key
+### 3. Login with Your Auth Provider and pass the idToken to SFA iOS to get the private key
 
 ```swift
-func loginWithCustomAuth() {
+func loginWithSFA() {
 	Task {
-		let sub = SubVerifierDetails(
-			loginType: .web,
-			loginProvider: .google,
-			clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
-			verifier: "w3a-tkey-google",
-			redirectURL: "tdsdk://tdsdk/oauthCallback",
-			browserRedirectURL: "https://scripts.toruswallet.io/redirect.html")
-		let tdsdk = CustomAuth(
-			aggregateVerifierType: .singleLogin,
-			aggregateVerifier: "w3a-tkey-google",
-			subVerifierDetails: [sub],
-			network: .TESTNET)
-		let data = try await tdsdk.triggerLogin()
+		let singleFactorAuthArgs = SingleFactorAuthArgs(network: TorusNetwork.TESTNET)
+		let singleFactoreAuth = SingleFactorAuth(singleFactorAuthArgs: singleFactorAuthArgs)
+
+		let idToken = try getIdTokenFromAuthProvider() // Get the idToken from your auth provider
+		let loginParams = LoginParams(verifier: "verifier-name", verifierId: "your-verifier-id", idToken: idToken)
+		let torusKey = try await singleFactoreAuth.getKey(loginParams: loginParams)
 		await MainActor.run(body: {
-				self.userData = data
+				self.userData = torusKey
 				loggedIn = true
 		})
 	}
 }
 ```
 
-### 4. Initialize tKey and get keyDetails
-
-```swift
-guard let thresholdKey = try? ThresholdKey(
-	storage_layer: storage_layer,
-	service_provider: service_provider,
-	enable_logging: true,
-	manual_sync: false) else {
-		alertContent = "Failed to create threshold key"
-		return
-	}
-
-threshold_key = thresholdKey
-
-guard let key_details = try? await threshold_key.initialize(
-	never_initialize_new_key: false) else {
-	alertContent = "Failed to get key details"
-	return
-}
-
-totalShares = Int(key_details.total_shares)
-threshold = Int(key_details.threshold)
-```
-
 :::info Quick Start
 
-You can have a look at the **[example](https://github.com/torusresearch/tkey-rust-ios-example)** made on top of this SDK and try it out yourself.
+You can have a look at the **[example](/examples?product=Core+Kit&sdk=tKey+iOS+SDK)** made on top of this SDK and try it out yourself.
 
 :::

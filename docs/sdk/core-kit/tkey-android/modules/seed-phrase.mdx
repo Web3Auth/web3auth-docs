@@ -1,0 +1,110 @@
+---
+title: Seed Phrase Module
+displayed_sidebar: sdk
+description: "Core Kit tKey Android SDK - Modules - Seed Phrase Module | Documentation - Web3Auth"
+---
+
+SeedPhraseModule is an Android module that provides functionality for setting, changing, getting, and deleting seed phrases for a ThresholdKey object.
+
+To use the SeedPhraseModule in your Android project, you will need to import the module as follows:
+
+```java
+import com.web3auth.tkey.ThresholdKey.ThresholdKey;
+import com.web3auth.tkey.ThresholdKey.Modules.SeedPhraseModule;
+```
+
+`SeedPhraseModule` is a class that provides the following methods:
+
+| Function        | Description                           | Arguments                                                                                | Async | return                |
+| --------------- | ------------------------------------- | ---------------------------------------------------------------------------------------- | ----- | --------------------- |
+| `setSeedPhrase` | Set seed phrase to corresponding tKey | `thresholdKey: ThresholdKey, format: String, phrase: String?, number_of_wallets: UInt32` | Yes   | `void`                |
+| `changePhrase`  | Changes specific seed phrase          | `thresholdKey: ThresholdKey, old_phrase: String, new_phrase: String`                     | Yes   | `void`                |
+| `getPhrases`    | Gets all seed phrases stored in tKey. | `thresholdKey: ThresholdKey`                                                             | Yes   | `[seedPhraseStruct] ` |
+| `deletePhrase`  | Delete the seed phrase                | `thresholdKey: ThresholdKey, phrase: String`                                             | Yes   | `void`                |
+
+## `setSeedPhrase()`
+
+`public static void setSeedPhrase(ThresholdKey thresholdKey, String format, @Nullable String phrase, int wallets, ThresholdKeyCallback<Boolean> callback)`
+
+This function sets the seed phrase for the given ThresholdKey.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                 |
+| ------------ | ------------ | ----------------------------------------------------------- |
+| thresholdKey | ThresholdKey | The ThresholdKey object to set the seed phrase for.         |
+| format       | String       | The format of the seed phrase.                              |
+| phrase       | String?      | The seed phrase. If nil, a random seed phrase is generated. |
+| wallets      | int          | The number of wallets to derive from the seed phrase.       |
+
+**Returns**
+
+- Void
+
+**Throws**
+
+- Error: An error if the operation fails.
+
+## `changePhrase()`
+
+`public static void changePhrase(ThresholdKey thresholdKey, String oldPhrase, String newPhrase, ThresholdKeyCallback<Boolean> callback)`
+
+This function changes the seed phrase of the given ThresholdKey. The old_phrase parameter specifies the old seed phrase, and the new_phrase parameter
+specifies the new seed phrase. The function is asynchronous and can throw an error.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                            |
+| ------------ | ------------ | ------------------------------------------------------ |
+| thresholdKey | ThresholdKey | The ThresholdKey object to change the seed phrase for. |
+| oldPhrase    | String       | The old seed phrase.                                   |
+| newPhrase    | String       | The new seed phrase.                                   |
+
+**Returns**
+
+- Void
+
+**Throws**
+
+- Error: An error if the operation fails.
+
+## `getPhrases()`
+
+`public static String getPhrases(ThresholdKey thresholdKey) throws RuntimeError`
+
+This function returns an array of seedPhraseStruct objects, which contain the seed phrases and their type for the given ThresholdKey.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                          |
+| ------------ | ------------ | ---------------------------------------------------- |
+| thresholdKey | ThresholdKey | The ThresholdKey object to get the seed phrases for. |
+
+**Returns**
+
+- seedPhraseStruct
+
+**Throws**
+
+- RuntimeError: An error if the operation fails.
+
+## `deletePhrase()`
+
+`public static void deletePhrase(ThresholdKey thresholdKey, String phrase, ThresholdKeyCallback<Boolean> callback)`
+
+This method deletes a seed phrase from the given ThresholdKey.
+
+#### Parameters
+
+| Parameters   | Type         | Description                                                     |
+| ------------ | ------------ | --------------------------------------------------------------- |
+| thresholdKey | ThresholdKey | The ThresholdKey instance from which to delete the seed phrase. |
+| phrase       | String       | The seed phrase to delete, as a string.                         |
+
+**Returns**
+
+- Void
+
+**Throws**
+
+- Error: An error if the operation fails.

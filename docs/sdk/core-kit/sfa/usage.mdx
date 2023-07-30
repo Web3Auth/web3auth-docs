@@ -7,6 +7,8 @@ description: "Web3Auth Core Kit Single Factor Auth Web SDK - Usage | Documentati
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
+import SFAWebCustomJWTExample from "@site/src/common/sdk/core-kit/sfa/_sfa_web_custom_jwt_example.mdx";
+import SFAWebFirebaseJWTExample from "@site/src/common/sdk/core-kit/sfa/_sfa_web_firebase_jwt_example.mdx";
 
 Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users. Further, you can use the native provider given
 by Web3Auth to connect the users to the respective blockchain network.
@@ -60,7 +62,7 @@ On unsuccessful login, this function will return a `null` value.
 | Parameter               | Type                     | Description                                                                                                         | Mandatory |
 | ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- | --------- |
 | `verifier`              | `string`                 | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                                  | Yes       |
-| `verifierId`            | `string`                 | Verifier ID's value, `sub` or `email` value present in the idToken.                                                 | Yes       |
+| `verifierId`            | `string`                 | Verifier ID's value, `sub` or `email`'s value present in the idToken and **not the string `sub` or `email`**.       | Yes       |
 | `idToken`               | `string`                 | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. | Yes       |
 | `subVerifierInfoArray?` | `TorusSubVerifierInfo[]` | Sub verifier info                                                                                                   | No        |
 
@@ -81,9 +83,7 @@ export type LoginParams = {
 
 </Tabs>
 
-### Example
-
-```js
+```js title="Usage"
 await web3auth.connect({
   verifier: "verifier-name", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
   verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
@@ -91,7 +91,11 @@ await web3auth.connect({
 });
 ```
 
-`@web3auth/single-factor-auth` SDK only works for those users who have **not enabled MFA**.
+:::tip Note
+
+`@web3auth/single-factor-auth` SDK only works for users who have **not enabled MFA**.
+
+:::
 
 :::danger MFA enabled users
 
@@ -101,72 +105,10 @@ For MFA enabled users, you'll see `Error("User has already enabled mfa, please u
 
 ## Example
 
-```js
-import Web3Auth from "@web3auth/single-factor-auth";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import jwt from "jsonwebtoken";
-import fs from "fs";
+### Custom JWT Example
 
-// Use "openssl genrsa -out privateKey.pem 2048" to generate a private key
-// Also, use this private key to generate a public key using "openssl rsa -in privateKey.pem -pubout -out publicKey.pem"
-// Convert PEM to JWKS and expose it on a public URL, and make a web3auth verifier using that.
-// Check out https://web3auth.io/docs/auth-provider-setup/byo-jwt-providers for more details.
-var privateKey = fs.readFileSync("privateKey.pem");
+<SFAWebCustomJWTExample />
 
-// Define the chain config according to the chain you want to connect to
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x5",
-  rpcTarget: "https://rpc.ankr.com/eth_goerli",
-  displayName: "Goerli Testnet",
-  blockExplorer: "https://goerli.etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-};
+### Firebase JWT Example
 
-// Instantiate Web3Auth SFA SDK
-const web3authSfa = new Web3Auth({
-  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  web3AuthNetwork: "cyan", // Available networks are "testnet", "mainnet", "cyan", "aqua".
-  usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
-});
-
-// Instantiate Ethereum Provider
-const provider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-
-// Initialize Web3Auth SFA SDK
-web3authSfa.init({ provider });
-
-const user = {
-  id: "faj2720i2fdG7NsqznOKrthDvq43", // must be unique to each user
-  name: "Mohammad Shahbaz Alam",
-  email: "shahbaz@web3auth.io",
-  profileImage: "https://avatars.githubusercontent.com/u/46641595?v=4",
-};
-
-// Login the user
-const web3authSfaprovider = await web3auth.connect({
-  verifier: "web3auth-sfa-verifier", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
-  verifierId: user.id, // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
-  idToken: jwt.sign(
-    {
-      sub: user.id, // must be unique to each user
-      name: user.name,
-      email: user.email,
-      picture: user.profileImage,
-      aud: "urn:my-resource-server", // -> to be used in Custom Authentication as JWT Field
-      iss: "https://my-authz-server", // -> to be used in Custom Authentication as JWT Field
-      iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + 60 * 60,
-    },
-    privateKey, // <-- privateKey to sign the JWT Token
-    { algorithm: "RS256", keyid: "1bb9605c36e69386830202b2d" }
-  ), // or replace it with your newly created unused JWT Token.
-});
-
-// Get the private key, The private key returned here is the CoreKit Key, since the usePnPKey is set to false.
-const ethPrivateKey = await web3authSfaprovider.request({ method: "eth_private_key" });
-
-console.log("ETH Private Key", ethPrivateKey);
-```
+<SFAWebFirebaseJWTExample />

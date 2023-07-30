@@ -1,0 +1,38 @@
+```js title="JWT Example"
+const { Web3Auth } = require("@web3auth/node-sdk");
+const { EthereumPrivateKeyProvider } = require("@web3auth/ethereum-provider");
+
+const provider = new EthereumPrivateKeyProvider({
+  config: {
+    chainConfig: {
+      chainId: "0x5",
+      rpcTarget: "https://rpc.ankr.com/eth_goerli",
+      displayName: "goerli",
+      blockExplorer: "https://goerli.etherscan.io/",
+      ticker: "ETH",
+      tickerName: "Ethereum",
+    },
+  },
+});
+
+// Instantiate Web3Auth Node.js SDK
+const web3auth = new Web3Auth({
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "cyan", // Available networks are "testnet", "mainnet", "cyan", "aqua".
+  usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
+});
+
+web3auth.init({ provider });
+
+const connect = async () => {
+  const web3authNodeprovider = await web3auth.connect({
+    verifier: "web3auth-sfa-verifier", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+    verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
+    idToken: "JWT Token", // or replace it with your newly created unused JWT Token you get from your auth provider.
+  });
+  const ethPrivateKey = await web3authNodeprovider.request({ method: "eth_private_key" });
+  // The private key returned here is the CoreKitKey
+  console.log("ETH Private Key", ethPrivateKey);
+};
+connect();
+```

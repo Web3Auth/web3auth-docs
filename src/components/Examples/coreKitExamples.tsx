@@ -138,6 +138,39 @@ export const CKTkeyiOS = [
   },
 ];
 
+export const CKTkeyAndroid = [
+  {
+    name: "",
+    description: "",
+    tiles: [
+      {
+        key: "tkey-android-example",
+        title: "CoreKit tKey Android Example",
+        icon: "logo-google.png",
+        path: `${baseURL}tkey-android/tkey-android-google-example`,
+      },
+      {
+        key: "tkey-android-aggregate-example",
+        title: "CoreKit tKey Android Aggregate Example",
+        icon: "logo-android.png",
+        path: `${baseURL}tkey-android/tkey-android-google-example`,
+      },
+      {
+        key: "tkey-android-auth0-example",
+        title: "CoreKit tKey Android Auth0 Example",
+        icon: "logo-auth0.png",
+        path: `${baseURL}tkey-android/tkey-android-google-example`,
+      },
+      {
+        key: "tkey-android-firebase-example",
+        title: "CoreKit tKey Android Firebase Example",
+        icon: "logo-firebase.png",
+        path: `${baseURL}tkey-android/tkey-android-google-example`,
+      },
+    ],
+  },
+];
+
 export const CKNode = [
   {
     name: "",
@@ -147,7 +180,7 @@ export const CKNode = [
         key: "node-backend-example",
         title: "Node Backend Example",
         icon: "logo-nodejs.png",
-        path: `${baseURL}node-sdk/core-kit/node-backend-example`,
+        path: `${baseURL}node-sdk/node-backend-example`,
       },
     ],
   },

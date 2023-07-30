@@ -18,7 +18,7 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
-import ReactNativeResponse from "@site/src/common/sdk/pnp/react-native/_response.mdx";
+import ReactNativeResponse from "@site/src/common/sdk/pnp/react-native/_get-user-info.mdx";
 import SEO from "@site/src/components/SEO";
 import FirebaseWorking from "@site/src/common/guides/_firebase-working.mdx";
 
@@ -58,9 +58,9 @@ When integrating Web3Auth React Native SDK with Firebase the flow looks somethin
 
 <Web3AuthPrerequisites />
 
-- React Native Release 0.65 and above (for Bare React Native Workflow)
+- React Native Release 0.71 and above (for Bare React Native Workflow)
 
-- iOS Platform Target Version 13 and above
+- iOS Platform Target Version 14 and above
 
 - Android Target SDK Version 31 and above
 
@@ -145,10 +145,10 @@ const resolvedRedirectUrl = `${scheme}://openlogin`;
 
 <TabItem value="ios">
 
-- Make sure that the minimum SDK compile version in `Podfile` is 13 or more.
+- Make sure that the minimum SDK compile version in `Podfile` is 14 or more.
 
 ```Podfile title="ios/Podfile"
-platform :ios, '13'
+platform :ios, '14'
 ```
 
 - Install the Cocoa Pods within your project directory.
@@ -191,6 +191,14 @@ Native app, you have to install a `WebBrowser` implementation made by us as a po
 npm install --save @toruslabs/react-native-web-browser
 ```
 
+### Adding a `EncryptedStorage` Module
+
+We will also require a `EncryptedStorage` implementation to allow for session management without storing the private key on the device.
+
+```bash npm2yarn
+npm install --save react-native-encrypted-storage
+```
+
 ### Initialization
 
 After Installation, the next step to use Web3Auth is to Initialize the SDK. The Initialization is a two step process,
@@ -215,6 +223,12 @@ import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-nat
 import * as WebBrowser from "@toruslabs/react-native-web-browser";
 ```
 
+#### Importing a `EncryptedStorage` implementation
+
+```typescript
+import EncryptedStorage from 'react-native-encrypted-storage';
+```
+
 #### Instantiating Web3Auth
 
 It's time to create an instance of Web3Auth in the project.
@@ -233,7 +247,7 @@ We need `clientId` and target Web3Auth `network` to initialize the `web3auth` ob
   :::
 
 ```js
-const web3auth = new Web3Auth(WebBrowser, {
+const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
   network: OPENLOGIN_NETWORK.CYAN, // MAINNET, AQUA,  CYAN or TESTNET
   loginConfig: {
@@ -300,14 +314,14 @@ Additionally, in `extraLoginOptions` you have to provide the details required by
 
 :::
 
-Once a user logs in, the Web3Auth SDK returns their reconstructed private key. For EVM Blockchains, the `secp256k1` private key is used to sign
-transactions. We also return an `ed25519` compatible private key for other blockchains.
+Once a user logs in, the user can access the key by `web3auth.privKey()`. For EVM Blockchains, the `secp256k1` private key is used to sign
+transactions. We can get an `ed25519` compatible private key for other blockchains using `web3auth.ed25519Key()`.
 
 ```js
 const loginRes = await signInWithFirebase();
 const idToken = await loginRes.user.getIdToken(true);
 
-const info = await web3auth.login({
+await web3auth.login({
   redirectUrl: resolvedRedirectUrl,
   mfaLevel: "default", // Pass on the mfa level of your choice: default, optional, mandatory, none
   loginProvider: "jwt",
@@ -331,23 +345,23 @@ If you wish you **[add Multi Factor Authentication](/sdk/pnp/react-native/mfa)**
 - [Using dApp Share](/sdk/pnp/react-native/dapp-share)
 - [Selecting Curve](/sdk/pnp/react-native/usage#selecting-curve)
 
-#### Sample loginResponse
-
-<ReactNativeResponse />
-
 ### Get the User Profile
 
 ```js
-// Assuming the user is logged in, get the user profile from the web3AuthResponse
-var userInfo = web3authResponse.userInfo;
+// Assuming the user is logged in, get the user profile from the web3auth object
+var userInfo = web3auth.userInfo();
 ```
 
 Using the `web3Auth.login()` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in
 Web3Auth network.
 
+#### Sample userInfo
+
+<ReactNativeResponse />
+
 ### Logout
 
-Use the `logout` function of `web3auth` to log the user out. This function doesn't work in iOS, so you need to navigate the user back manually.
+Use the `logout` function of `web3auth` to log the user out.
 
 ```js
 web3auth.logout();
@@ -361,8 +375,8 @@ web3auth.logout();
 
 ## Interacting with the Blockchain
 
-Once a user logs in, the Web3Auth SDK returns their reconstructed private key. For EVM Blockchains, the `secp256k1` private key is used to sign
-transactions. We also return an `ed25519` compatible private key for other blockchains. Similar to how we're using this private key in the `ethers.js`
+Once a user logs in, the user can ccess the private key by `web3auth.privKey()`. For EVM Blockchains, the `secp256k1` private key is used to sign
+transactions. We can get an `ed25519` compatible private key for other blockchains using `web3auth.ed25519Key()`. Similar to how we're using this private key in the `ethers.js`
 library in this example, you can connect to any other blockchain of your choice.
 
 :::info connect any blockchain

@@ -17,12 +17,6 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Migration Guides",
-      link: { type: "doc", id: "migration-guide/migration-guide" },
-      items: ["migration-guide/migrating-to-v6-from-v5"]
-    },
-    {
-      type: "category",
       label: "Web3Auth Infrastructure",
       link: { type: "doc", id: "infrastructure/infrastructure" },
       items: [
@@ -118,6 +112,15 @@ module.exports = {
       href: "/integration-builder",
     },
     "pnp/going-live",
+    {
+      type: "category",
+      label: "Migration Guides",
+      items: [
+        "pnp/migration-guides/modal-v5-to-v6",
+        "pnp/migration-guides/no-modal-v5-to-v6",
+        "pnp/migration-guides/rn-v3-to-v4"
+      ]
+    },
     // {
     //   type: "category",
     //   label: "Release Notes",
@@ -562,6 +565,7 @@ module.exports = {
       label: "tKey iOS SDK",
       link: { type: "doc", id: "sdk/core-kit/tkey-ios/tkey-ios" },
       items: [
+        "sdk/core-kit/tkey-ios/install",
         "sdk/core-kit/tkey-ios/initialize",
         "sdk/core-kit/tkey-ios/usage",
         {
@@ -574,6 +578,28 @@ module.exports = {
             "sdk/core-kit/tkey-ios/modules/seed-phrase",
             "sdk/core-kit/tkey-ios/modules/share-serialization",
             "sdk/core-kit/tkey-ios/modules/share-transfer",
+          ],
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "tKey Android SDK",
+      link: { type: "doc", id: "sdk/core-kit/tkey-android/tkey-android" },
+      items: [
+        "sdk/core-kit/tkey-android/install",
+        "sdk/core-kit/tkey-android/initialize",
+        "sdk/core-kit/tkey-android/usage",
+        {
+          type: "category",
+          label: "Modules",
+          link: { type: "doc", id: "sdk/core-kit/tkey-android/modules/modules" },
+          items: [
+            "sdk/core-kit/tkey-android/modules/private-keys",
+            "sdk/core-kit/tkey-android/modules/security-questions",
+            "sdk/core-kit/tkey-android/modules/seed-phrase",
+            "sdk/core-kit/tkey-android/modules/share-serialization",
+            "sdk/core-kit/tkey-android/modules/share-transfer",
           ],
         },
       ],

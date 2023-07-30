@@ -1,7 +1,7 @@
 ---
-title: Migrating to V6 from V5
+title: PnP No Modal SDK - v5 to v6
 displayed_sidebar: docs
-description: "Migrating to V6 from V5 | Documentation - Web3Auth"
+description: "PnP No Modal SDK - v5 to v6 | Documentation - Web3Auth"
 ---
 
 ## General
@@ -54,8 +54,6 @@ const web3auth = new Web3Auth({
   web3AuthNetwork: "cyan",
 });
 ```
-
-## Changes in the Web No Modal SDK
 
 ### `privateKeyProvider` is introduced
 
@@ -117,13 +115,23 @@ web3auth.configureAdapter(openloginAdapter);
 
 #### For all other chains
 
-For all Non-EVM & Non-Solana chains use the `CommonPrivateKeyProvider` from the `@web3auth/base-provider`package. Unlike, `EthereumPrivateKeyProvider`
-and `SolanaPrivateKeyProvider`, `CommonPrivateKeyProvider` does not require any parameter at the time of initialization.
+For all Non-EVM & Non-Solana chains use the `CommonPrivateKeyProvider` from the `@web3auth/base-provider`package. Please note that
+`CommonPrivateKeyProvider` requires `chainConfig` as the `config` parameter at the time of initialization.
 
 ```js
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.SOLANA,
+  chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+  rpcTarget: "https://rpc.ankr.com/solana",
+  displayName: "Solana Mainnet",
+  blockExplorer: "https://explorer.solana.com",
+  ticker: "SOL",
+  tickerName: "Solana Token",
+};
 // highlight-next-line
-const privateKeyProvider = new CommonPrivateKeyProvider();
+const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig } });
 
 const openloginAdapter = new OpenloginAdapter({
   // highlight-next-line

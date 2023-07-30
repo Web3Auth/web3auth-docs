@@ -8,11 +8,11 @@ Install Web3Auth's React Native package in your React Native project.
 npm install --save @web3auth/react-native-sdk
 ```
 
-When using our SDK with a Expo-based React Native app (aka managed workflow, you have to install the `expo-web-browser` package as a `WebBrowser`
-implementation.)
+When using our SDK with a Expo-based React Native app (aka managed workflow), you have to install the `expo-web-browser` package as a `WebBrowser`
+implementation. You also need to install `expo-secure-store` to store the user's session.
 
 ```bash
-expo install expo-web-browser
+expo install expo-web-browser expo-secure-store
 ```
 
 ### 2. Get your Client ID from Web3Auth Dashboard
@@ -27,6 +27,7 @@ Construct the `Web3Auth` instance with:
 
 ```js
 import * as WebBrowser from "expo-web-browser";
+import * as SecureStore from "expo-secure-store";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
 
 const resolvedRedirectUrl =
@@ -36,7 +37,7 @@ const resolvedRedirectUrl =
 
 const clientId = "YOUR WEB3AUTH CLIENT ID";
 
-const web3auth = new Web3Auth(WebBrowser, {
+const web3auth = new Web3Auth(WebBrowser, SecureStore, {
   clientId,
   network: OPENLOGIN_NETWORK.TESTNET, // or other networks
 });
@@ -46,8 +47,15 @@ const web3auth = new Web3Auth(WebBrowser, {
 
 Once you're done initialising, just create a button that triggers the login for the user on their request. Logging in is as easy as:
 
+:::warning
+
+Please note that the v4 react-native-sdk has some breaking changes. For instance, `web3auth.login` is a void method, unlike the older versions of the
+SDK. Please refer to the [migration guide](/docs/sdk/pnp/react-native/migration-guide-to-v4) for more
+
+:::
+
 ```js
-const state = await web3auth.login({
+await web3auth.login({
   loginProvider: LoginProvider.GOOGLE,
   redirectUrl: resolvedRedirectUrl,
 });

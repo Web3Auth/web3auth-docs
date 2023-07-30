@@ -5,6 +5,8 @@ displayed_sidebar: sdk
 description: "Web3Auth PnP Flutter SDK - dApp Share | Documentation - Web3Auth"
 ---
 
+import FlutterResponse from "@site/src/common/sdk/pnp/_userinfo_response.mdx";
+
 ## Web3Auth Infrastructure at a glance
 
 If you go through the [Web3Auth infrastructure](/infrastructure/key-management/) you'll notice that to enable the non custodiality of Web3Auth, we
@@ -42,28 +44,9 @@ private key after successful login by the user.
 
 After a successful login from a user, the user details are returned as a response to the application in mobile devices.
 
-### Sample Response in Flutter
+#### Sample Response in Flutter
 
-```json
-{
-  "ed25519PrivKey": "666523652352635....",
-  "privKey": "0ajjsdsd....",
-  "userInfo": {
-    "aggregateVerifier": "tkey-google",
-    "email": "john@gmail.com",
-    "name": "John Dash",
-    "profileImage": "https://lh3.googleusercontent.com/a/Ajjjsdsmdjmnm...",
-    "typeOfLogin": "google",
-    "verifier": "torus",
-    "verifierId": "john@gmail.com",
-    // highlight-next-line
-    "dappShare": "<24 words seed phrase>", // will be sent only incase of custom verifiers
-    "idToken": "<jwtToken issued by Web3Auth>",
-    "oAuthIdToken": "<idToken(JWT) issued by OAuth Provider>", // will be sent only incase of custom verifiers
-    "oAuthAccessToken": "<accessToken issued by OAuth Provider>" // will be sent only incase of custom verifiers
-  }
-}
-```
+<FlutterResponse />
 
 If you notice, the reponses has a field called `dappShare` which is a 24 words seed phrase that can be used to reconstruct the private key. This
 dappShare is a suplement to the `Share A` and represents half of the private key. The application can store the dApp share in their own application
@@ -89,7 +72,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
 ));
 ```
 
-### Example
+## Example
 
 ```dart
 Future<void> initPlatformState() async {

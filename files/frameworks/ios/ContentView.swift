@@ -132,7 +132,7 @@ struct ContentView: View {
                             whiteLabel: W3AWhiteLabelData(
                                 name: "Web3Auth Stub",
                                 dark: true,
-                                theme: ["primary": "#123456"]
+                                theme: ["primary": "#d53f8c"]
                             )
                         )
                     )
@@ -221,7 +221,7 @@ struct ContentView: View {
                             whiteLabel: W3AWhiteLabelData(
                                 name: "Web3Auth Stub",
                                 dark: true,
-                                theme: ["primary": "#123456"]
+                                theme: ["primary": "#d53f8c"]
                             )
                         )
                     )

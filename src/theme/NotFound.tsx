@@ -5,7 +5,7 @@ import Layout from "@theme/Layout";
 const title = "Page Not Found";
 const para1content = "We could not find the page you were looking for.";
 const para2content =
-  "Please redirect back to the main page to find the item you're looking for. If you're facing any difficulty intigrating Web3Auth, feel free to open up an issue on our [Community Portal](https://web3auth.io/community).";
+  "Please redirect back to the main page to find the item you're looking for. If you're facing any difficulty integrating Web3Auth, feel free to open up an issue on our ";
 
 export default function NotFound() {
   return (
@@ -34,6 +34,7 @@ export default function NotFound() {
                 <Translate id="theme.NotFound.p2" description="The 2nd paragraph of the 404 page">
                   {para2content}
                 </Translate>
+                <a href="https://web3auth.io/community">Community Portal.</a>
               </p>
             </div>
           </div>

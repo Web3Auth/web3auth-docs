@@ -14,7 +14,7 @@ The SingleFactorAuth instance natively provides the following functions:
 
 - `getKey()` - Returns the torus key using the `verifier`, `verifierId` & `idToken`.
 
-## Get TorusKey - `getKey()`
+## `getKey()`
 
 `getKey()`
 
@@ -32,9 +32,9 @@ public CompletableFuture<TorusKey> getKey(LoginParams loginParams)
 
 On successful call, the `getKey()` function returns a `CompletableFuture` instance.
 
-### `getKey(loginParams: LoginParams)`
+#### `LoginParams`
 
-`LoginParams`
+`getKey(loginParams: LoginParams)`
 
 <Tabs
   defaultValue="table"
@@ -70,12 +70,16 @@ export type LoginParams = {
 
 </Tabs>
 
-```js title="Example"
+```js title="Usage"
 loginParams = LoginParams("YOUR_VERIFIER_NAME", "YOUR_VERIFIER_ID", "YOUR_ID_TOKEN");
 torusKey = singleFactorAuth.getKey(loginParams).get();
 ```
 
-Web3Auth SFA Android SDK only works for those users who have **not enabled MFA**.
+:::tip Note
+
+Web3Auth SFA Android SDK only works for users who have **not enabled MFA**.
+
+:::
 
 :::danger MFA enabled users
 
