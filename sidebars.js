@@ -26,31 +26,10 @@ module.exports = {
       label: "Web3Auth Infrastructure",
       link: { type: "doc", id: "infrastructure/infrastructure" },
       items: [
-        "infrastructure/key-management",
-        // "infrastructure/sss-vs-tss-mpc",
-        {
-          type: "category",
-          label: "Technical Architecture",
-          link: { type: "doc", id: "infrastructure/technical-architecture/technical-architecture" },
-          items: [
-            {
-              type: "category",
-              label: "Role of Nodes",
-              link: { type: "doc", id: "infrastructure/technical-architecture/role-of-nodes/role-of-nodes" },
-              items: [
-                "infrastructure/technical-architecture/role-of-nodes/lifecycle",
-                "infrastructure/technical-architecture/role-of-nodes/key-generation",
-                "infrastructure/technical-architecture/role-of-nodes/logins-key-assignment",
-                "infrastructure/technical-architecture/role-of-nodes/oauth2-vs-proxy-signin",
-                {
-                  type: "link",
-                  label: "DKG Technical Specification",
-                  href: "https://github.com/torusresearch/audit/blob/master/Torus_DKG_Technical_Specification.pdf",
-                },
-              ],
-            },
-          ],
-        },
+        "infrastructure/glossary",
+        "infrastructure/sss-architecture",
+        "infrastructure/mpc-architecture",
+        "infrastructure/nodes-and-dkg",
         {
           type: 'link',
           label: 'Trust Center', // The link label
