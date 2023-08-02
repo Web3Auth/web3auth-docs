@@ -287,11 +287,19 @@ const config = {
           },
           {
             from: "/overview/key-management/",
-            to: "/infrastructure/key-management",
+            to: "/infrastructure/",
           },
           {
             from: "/overview/key-management/technical-architecture/",
-            to: "/infrastructure/technical-architecture/",
+            to: "/infrastructure/",
+          },
+          {
+            from: "/infrastructure/key-management",
+            to: "/infrastructure/",
+          },
+          {
+            from: "/infrastructure/technical-architecture/",
+            to: "/infrastructure/",
           },
           {
             from: "/whitelabeling",
