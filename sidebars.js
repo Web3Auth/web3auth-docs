@@ -20,13 +20,13 @@ module.exports = {
       label: "Web3Auth Infrastructure",
       link: { type: "doc", id: "infrastructure/infrastructure" },
       items: [
-        "infrastructure/glossary",
-        "infrastructure/sss-architecture",
         "infrastructure/mpc-architecture",
+        "infrastructure/sss-architecture",
         "infrastructure/nodes-and-dkg",
+        "infrastructure/glossary",
         {
           type: 'link',
-          label: 'Trust Center', // The link label
+          label: 'Compliance, Audits and Trust', // The link label
           href: 'https://trust.web3auth.io', // The external URL
         },
       ],

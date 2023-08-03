@@ -1,8 +1,8 @@
 ---
-title: Web3Auth TSS MPC Architecture
-sidebar_label: TSS MPC Architecture
+title: Web3Auth MPC Architecture
+sidebar_label: MPC Architecture
 displayed_sidebar: docs
-description: "TSS MPC Architecture - Web3Auth Key Infrastructure | Documentation - Web3Auth"
+description: "MPC Architecture - Web3Auth Key Infrastructure | Documentation - Web3Auth"
 ---
 
 import ExpandingSharesFlow from "@site/static/images/expanding-shares-tss-flow.png";
@@ -10,20 +10,50 @@ import KeyInitialisationFlow from "@site/static/images/key-initialisation-tss-fl
 import KeyUsageFlow from "@site/static/images/key-usage-tss-flow.png";
 import TKeyMPCFlow from "@site/static/images/tkey-mpc-flow.png";
 
-This segment goes through some of the interactions on a deeper level. Note that these interactions do not cover the cryptographic schemes themselves,
-those would be found in the Full MPC interaction document.
+This document provides an in-depth exploration of the technical architecture of the MPC-based SDKs, this includes the tKey MPC SDK and CoreKit MPC SDK (a rundown of our SDKs [here](/how-web3auth-works/)).
 
-## Components
+The only difference between the SSS-based SDKs and MPC SDKs are that during usage/login MPC SDKs do not reconstruct user keys.
 
-Web3Auth uses [tKey](https://github.com/tkey) to manage user keys in a distributed fashion, leveraging various factors or shares managed by users,
+While the tKey MPC SDK, supports multiple configurations like 2/n, 2/2 flows, this documentation, for simplicity,
+focuses on a 2/3 setup.
+
+
+## Overview of Cryptographic and Blockchain Support (compatibility and implementations)
+
+Web3Auth supports most popular blockchains & elliptic curves out there. In particular, out of the box the infrastucture supports all chains on:
+
+- `secp256k1` | Ethereum (EVM) chains, Bitcoin, Polygon & other L2s, etc...
+- `ed25519` | Solana, Polkadot, NEAR
+
+For other elliptic curve/chain support, feel free to [ask/request](https://web3auth.io/contact-us.html) as we may already support them.
+
+### Distributed Key Generation & Pro-active Secret Sharing Schemes Used
+
+There are many schemes and variants for DKGs and PSSs out there, we in particular use an asynchronous variant,
+[Kate12](https://eprint.iacr.org/2012/377.pdf), derived from Asynchronous Verifiable Secret Sharing (AVSS),
+[Cachin02](https://eprint.iacr.org/2002/134.pdf).
+
+### TSS & Signature Schemes Used
+
+TSS schemes often vary in their approach to creating shared cryptographic material in a distributed manner. We support the popular
+[GG19](https://eprint.iacr.org/2019/114.pdf), GG20, EDDSA, and [DKLS19](https://eprint.iacr.org/2019/523.pdf). In result supporting the `ecdsa`
+signature standard on both elliptic curves.
+
+Its worth noting that the TSS signing is largely decoupled from Web3Auth's infrastucture to allow us to be agnostic to TSS implementation. These
+include other signature schemes, which arguably are much more convienent. Notably, but non-exhaustively, Web3Auth supports:
+
+- [ECDSA](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) or its ElGamal variants
+- EDDSA or its [Schnorr variants](https://en.wikipedia.org/wiki/Schnorr_signature)
+- BLS, Stark (coming soon)
+
+| :memo: For other signature or elliptic curve or chain support, feel free to [ask or request](https://web3auth.io/contact-us.html) if we support them |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+
+## User Key Overview
+
+Web3Auth uses [tKey MPC](https://github.com/tkey) to manage user keys in a distributed fashion, leveraging various factors or shares managed by users,
 including their devices, private inputs, backup locations, and cloud service providers. As long as a user can access 2 out of n (2/n) of these shares,
-they can access their key.
-
-:::note
-
-Although tKey supports different configurations like 2/n, 2/2 flows, or m/n flows, this documentation does, for simplicity, assume a 2/3 setup.
-
-:::
+they can access their key. This distributedly secure key is called the $TSSKey$.
 
 One of the lost functionalities of a distributedly secure key is the loss of efficient encryption/decryption capabilities. As such the **TSSKey** is
 supported by another cryptographic key that's main purpose is to manage metadata pertaining to the user's account, the **metadataKey**. User metadata
@@ -50,6 +80,8 @@ This key's storage process mirrors that of the TSSKey, with the primary differen
 encryption/decryption tasks. It's based on the fundamental Shamir’s Secret Sharing scheme and initially generated on the user's front-end. Readers can
 further reference tKey v1 flows used by the metadataKey in our SSS Infrastructure Documentation.
 
+## Other components
+
 ### Factor Keys
 
 Factor keys enable refreshing, setting up multiple keys, deletion, and rotation capabilities on the TSSKey. They are randomly generated across various
@@ -68,6 +100,7 @@ facilitating the user login.
 
 During operation, when the user has threshold shares, they can read and write to metadata. Writing to metadata requires encrypting the data and
 signing it with the shares / private key.
+
 
 ## Flows
 
@@ -104,12 +137,33 @@ We select a polynomial $f(z)$ over $Z_q$ where: $$f(z) = a_1z + \sigma$$
 
 ShareA is stored on the user’s device, ShareB stored on Web3Auth Infrastructure, and ShareC dependent on user input or handled as a recovery share.
 
-### Key Usage and Access
+### Key Usage, Access and Signing
 
 If a user has logged in previously, he/she access their key by accessing ShareB via a session token handshake and utilzing it with ShareA on the
 user’s current device using to sign Threshold Signaures.
 
 <img alt="Key Usage Flow" style={{ display: "block", maxHeight: "500px", margin: "20px auto" }} src={KeyUsageFlow} />
+
+#### Threshold Signature Scheme (TSS)
+
+The TSS signing requires information from two sections:
+
+- shared information (eg. public key, share commitments, theshold, unique identifiers)
+- local information (eg. TSS key share).
+
+The shared information is stored on metadata and replicated, whereas the local information is kept locally on the user's device. This ensures that
+metadata for shared operations can be easily replicated and accessed without computationally expensive calls, while for local operations the TSS key
+shares never leave the local context.
+
+Constructing a threshold signature requires a session token which we can get via the session request. This then allows us to set up a threshold
+signature session. The threshold signature session consists of and offline signing phase and an online signing phase (GG20, GG19, Doerner19).
+
+The offline signing phase consists of 6 rounds of interaction between the device and nodes and can be pre-computed before the transaction signing
+request is received. The online signing phase requires the transaction to be present and is non-interactive.
+
+This means that although the threshold signature generation takes a substantial amount of time, most of it can be precomputed via a background
+process, before the user even needs to sign a transaction. When the user decides to sign a message in the online phase, only one round of
+noninteractive communication is required, which is very fast (<0.2 seconds).
 
 ### Expanding the Number of Shares (Adding a Device)
 
@@ -148,230 +202,3 @@ nodes in a similar fashion. Using the $h(z)$ allows $s^d$ to also be deprecated 
 
 Resharing allows us to share a key on a new polynomial with a different degree/threshold, allowing us to also increase a user's security/factor
 devices or inputs to reconstruct their key as they require it. This can be incrementally done as needed.
-
-## Metadata
-
-In order to provide functionality and ease of use beyond simple reconstruction, we need to hold commitments, threshold and other forms of metadata
-along with the shares.
-
-### Design
-
-The design of the metadata data structures minimizes assumptions on the metadata layer. In particular, we only assume that the metadata layer is
-indexable and has data availability.
-
-Other guarantees like privacy, verifiability, replication, are achieved through the data structures. For ease of implementation, we only use
-conventional cryptographic schemes like ECIES and ECDSA for encryption and signing respectively.
-
-We represent metadata data structure as a JSON, which is associated with each individual share on the Shamir secret sharing. The metadata is encrypted
-with the share before being stored on the metadata layer, and is decrypted before being read. Common information across shares (eg. thresholds), is
-stored on a field (i.e. GeneralStore) on the metadata of each share (i.e. replicated).
-
-Each copy of valid metadata contains a valid signature on the data by the tKey, ensuring that only clients with full access can write valid
-metadata’s.
-
-#### PolynomialIDs
-
-Each SSS uses a polynomial which has a public identifier derived through two parts - together they provide information necessary for the verification,
-reconstruction and refreshing of shares.
-
-The first half is a concatenation of their co-efficient commitments. In specific, only the $x$ point is used in the concatenation in hexadecimal
-format:
-
-$$
-Given f(x) =
-a_0 x^2 + a_1 x + \cdots + a_{t-1} x^{-1} \\
-first Half = g^{a_0}| g^{a_1}|\cdots g^{a_{t-1}}
-$$
-
-And the second half is a concatenation of share indexes with respect to the polynomial.
-
-$$
-second Half = z_0|z_1|z_2|\cdots z_n
-$$
-
-The final polynomialID consists of them joined by a seperator. Similarly in a hexadecimal format:
-
-$$
-polyID = firstHalf|0x0|secondHalf
-$$
-
-#### PolynomialID List
-
-For any adjustment in the configuration of the sharing (either $t$ or $n$ ) we refresh shares and reconstruct a new polynomial. On the technical level
-this is only strictly necessary for an adjustment on $t$ , but as; it generally is good practice to refresh, we want to maintain a log of previous
-configurations and refreshing is negligable in cost - we propose to also refresh on adjustments to $n$ . We keep a list of polynomial IDs on metadata:
-
-$$
-polyIDList = [polyID(f_0), polyID(f_1), \cdots]
-$$
-
-#### Stores
-
-Stores on metadata are key value maps that live on metadata. They are used both for core flows, and as a space for extensions or modules to use. There
-are currently three which are defined and each are differenciated by their access structures:
-
-- General Store: Readable by any share and only writable by the reconstructed tKey
-- Scoped Store: Readable by a specific share, and only writable by the reconstructed tKey
-- tKey Store: Readable and writable by only the reconstructed tKey
-
-Each of the stores have these properties by specific encryption and decryption schemes which we further expand on. Note that metadata is encrypted and
-replicated for each individual share.
-
-With the metadata encrypted and replicated above, data in external fields of metadata and the General Store share the same permission properties.
-
-The Scoped Store requires an additional encrytion on the store’s data, only for the respective share its made readable to.
-
-Likewise the tKey Store requires additional encryption on its data by the tKey itself, to give it read properties only by the tKey.
-
-Stores in metadata are designed to be extendable by nature to incorporate as much data necessary for smooth user flows. The extendability allows for
-modules to be built around the core infrastructure of metadata where needed.
-
-#### Serialization/Deserialization
-
-Summerizing, metadata is represented by a JSON with the following fields:
-
-| Field          | Description                                            |
-| -------------- | ------------------------------------------------------ |
-| `pubKey`       | the $x$ value from $g^s$                               |
-| `polyIDList`   | list of polyIDs                                        |
-| `generalStore` | key value map of data readable by any share            |
-| `scopedStore`  | key value map of data readable by only specific shares |
-| `tKeyStore`    | key value map of data readable by only tKey            |
-
-We provide a full example below:
-
-```
-{
-    "pubKey": "429519635c8130e1398c94246c2d64e92c7440fa24ab70f9868ff06b02b0f3f4",
-    "polyIDList": ["429519635c8130e1398c94246c2d64e92c7440fa24ab70f9868ff06b02b0f3f4|f3c5a4c339a8fcdb848a0262d0c4c0c7804164307588e388bdcc52c573aa0ad4|0x0|41c900a05135a69012b0be44a1b3fbbd2d22aeb41f84b0f13d14d89d6e25bffe|bf60d4ea3a03c094d96e6aebe48e8f245f55af22c9e15235c3f2863374a03b19"],
-    "generalStore": {"shareDescriptions":{"2":["{\"module\":\"webStorage\",\"userAgent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36\",\"dateAdded\":1600052849609}","{\"module\":\"webStorage\",\"userAgent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36\",\"dateAdded\":1600846590812}"],"7087bef077dc156afa0903dbaf83144aeb53b701591c84b85427d0cd40ce4343":["{\"module\":\"securityQuestions\",\"questions\":\"whats your password?\",\"dateAdded\":1600835960674}"]},"shareTransfer":{"pointer":"230ff5590f4280072f54de288fce7fcb961f86279fcb12aaffba8cbdf5894088"}},
-    "scopedStore": {"bf60d4ea3a03c094d96e6aebe48e8f245f55af22c9e15235c3f2863374a03b19":{"ciphertext":"a37a489bbc6aa2e458ab8917e8ae31fc44abb51ad21abc5c1b34d98c738eb2d6b03ce66c23045ade83a1c9da9287dc21cf20d3de3d8bce6af9b2389029192ac8989bac3d1ab2365126f440ffb3af72f18e239e271cf6bf02f0a2742972a3aa0706ef320562d46408c453942dc540771dab7644cc272bd50b174f9fc2f5c057e347ba8dcd5f3c3137dd86eb775504e9b3060576f1aa4b0a84826a7dc0c3c7146a9c4aaaf8d7f1c0f70d0b4a83b79fe378aebff8486f8a98667f58a4b51c6cdd42bf62162026b0f79c3ded6f4e6d8cb6d20be89e4cde2cb7a6725bea48a6a3a00d5f345b2302549554e24609687275d3951e2cd963e8e44d72f3f2bbdff07a37d6","ephemPublicKey":"0477522b2b2d41b2d96f547cd1b11f2477b8a82c9670374661d42fa1720b5f879d396d38dd023bd5986d965ec17275fb49442c2d9829f3b8a84d39ab84c12b40ef","iv":"dd003d7582516f81e3b8627dbadff3ab","mac":"b9cf4cea565ada89a25acb593cb4da54b9fe475fb92535b7da2abb1044f2e181"}},
-    "tKeyStore": {"ciphertext":"0f1db0bed90a48bd82ac16c043ceb346e0fdbc99e6ffb519c3ac54f7c2000488","ephemPublicKey":"04b3913d61f3fbb824331ecb2d315938707ea6976426c79aaeb1f9cc540b353314eff55097a8dbd31b86278fce995ae05a030dc14a81223776d3dc90ba6b7b4ac5","iv":"f85a2caffaa561270db13aa7f4400df8","mac":"69aafb4619cb5bb4a0f1466a6f2c6931dc4766f88325476e09426cf05c930154"}
-}
-```
-
-### Modules
-
-The extendability of metadata allows for unique modules to be built upon its core data structure. Enabling functionality such as storing more detailed
-descriptions on shares, syncing data for share transfers, and passwords/user inputs. These modules each take a domain or namespace on each of the
-stores they interact with and need to be spec-ed out for intropebility across applications.
-
-## Detailed User Interactions
-
-Below we describe the main interactions with the user:
-
-- **SessionRequest** | A user's intial interaction/login
-- **KeygenRequest** | Key generation/setup for a user
-- **ThresholdSignRequest** | Usage of the user's assigned key/s
-- **Reshare/Revoke** | Changing the parameters of a user's account setup, in a distributed manner
-
-### SessionRequest
-
-Session request is the intial interaction that any user does with a node before interacting with further interactions. Its not unsimilar to standard
-authentication to backend services, but does include a commit vs reveal phase to prevent against front-running attacks from other nodes.
-
-The result of the session request is a token, that in combination with the session key is used to interact with the infra from there on out.
-
-SessionRequests are specific to different applciations and are agnostic to most implementations of authentication, including but not limited to
-OAuth2.0, OIDC, ECJWTs and most forms of FIDO.
-
-### Key generation & importing keys
-
-Keys can be distributedly generated OR imported into the ecosystem. Below describes the former interactoin with users where after session
-authentication, key generation is conducted with a series of round interactions:
-
-This is done differently for the import of a key. When importing a key, the nodes interact with one another to do a DKG seperate from the user, the
-user then retrives the public key for this distributed secret, and creates a second share with respect to it on the client side.
-
-### Threshold Signature Scheme (TSS)
-
-The TSS key is made up of two sections:
-
-- shared information (eg. public key, share commitments, theshold, unique identifiers)
-- local information (eg. TSS key share).
-
-The shared information is stored on metadata and replicated, whereas the local information is kept locally on the user's device. This ensures that
-metadata for shared operations can be easily replicated and accessed without computationally expensive calls, while for local operations the TSS key
-shares never leave the local context.
-
-Constructing a threshold signature requires a session token which we can get via the session request. This then allows us to set up a threshold
-signature session. The threshold signature session consists of and offline signing phase and an online signing phase (GG20, GG19, Doerner19).
-
-The offline signing phase consists of 6 rounds of interaction between the device and nodes and can be pre-computed before the transaction signing
-request is received. The online signing phase requires the transaction to be present and is non-interactive.
-
-This means that although the threshold signature generation takes a substantial amount of time, most of it can be precomputed via a background
-process, before the user even needs to sign a transaction. When the user decides to sign a message in the online phase, only one round of
-noninteractive communication is required, which is very fast (<0.2 seconds).
-
-### Resharing and revokability
-
-Users can reshare current secrets kept with the node set. This is done via Proactive Secret Sharing, in particular the variant used here is PSS via
-AVSS an async method of doing so.
-
-Below describes the interaction, between user and nodes in this particular transaction. You'll find its quite similar to key generation in its rounds,
-they are similar schemes:
-
-Offline revokability is also something that is inherited from the inital version of tKey. How its implemented is similar as well, only difference
-being in the above interaction the key is never reconstructed on a front-end context.
-
-#### Using metadata for share resharing and revokability
-
-Utilizing the storage layer, we are able to generate new shares for all devices, regardless if they are online or offline. This allows us to remove
-devices from the sharing, allow the user to change their security questions and/or adjust their security threshold. The key concept here is utilizing
-published Share commitments as encryption keys to retrieve shares on the most updated SSS polynomial.
-
-This is illustrated from a 2/4 SSS sharing $f(z)$ with shares $s_a, s_b, s_c, s_d$ kept on 3 user devices and the service provider. Let $g$ be a
-generator of a multiplicative subgroup where the discrete log problem is assumed hard to solve. During initialization of the key we create share
-commitments $g^{s_a}, g^{s_b}, g^{s_c}, g^{s_d}$ to be stored on the storage layer. These share commitments are analgous to public keys derived from
-the share scalars.
-
-Given the user loses device D holding $s_d$, and wants to make that share redundant. He/she first reconstructs their key on device A. We utilize a
-public key based encryption scheme (eg. ECIES).
-
-The user generates a new 2/3 SSS polynomial $h(z)$ on the same $\sigma$ with shares $s_1, s_2, s_3$ and encrypts the newly generated shares for each
-respective share commitment, except for the lost $g^{s_d}$ commitment.
-
-$$
-\text{for }i = \{1,2,3\}  \text{ and } v = \{a,b,c\} \\   encrypt(s_iu,g^{s_v}) \Rightarrow c_{nv} \\
-\text{where } nv = \{1a,2b,2c\}
-$$
-
-$c_{nv}$, the resulting ciphertext from the encryption, is then stored on the storage layer for retrieval on other devices.
-
-On login to device B, the user retrieves $c_{2b}$ is able to use $s_b$ to decrypt the new $s_2$ and reconstruct their key with $s_1$ derived from the
-service provider in a similar fashion. Using the $h(z)$ allows $s^d$ to also be deprecated as a share.
-
-Resharing allows us to share a key on a new polynomial with a different degree/threshold, allowing us to also increase a user's security/factor
-devices or inputs to reconstruct thier key as they require it. This can be incrementally done as needed.
-
-## Cryptographic and blockchain support (compatibility and implementations)
-
-Web3Auth supports most popular blockchains & elliptic curves out there. In particular, out of the box the infrastucture supports all chains on:
-
-- `secp256k1` | Ethereum (EVM) chains, Bitcoin, Polygon & other L2s, etc...
-- `ed25519` | Solana, Polkadot, NEAR
-
-For other elliptic curve/chain support, feel free to [ask/request](https://web3auth.io/contact-us.html) as we may already support them.
-
-### Distributed Key Generation & Pro-active Secret Sharing Scheme References
-
-There are many schemes and variants for DKGs and PSSs out there, we in particular use an asynchronous variant,
-[Kate12](https://eprint.iacr.org/2012/377.pdf), derived from Asynchronous Verifiable Secret Sharing (AVSS),
-[Cachin02](https://eprint.iacr.org/2002/134.pdf).
-
-### TSS & Signature References
-
-TSS schemes often vary in their approach to creating shared cryptographic material in a distributed manner. We support the popular
-[GG19](https://eprint.iacr.org/2019/114.pdf), GG20, EDDSA, and [DKLS19](https://eprint.iacr.org/2019/523.pdf). In result supporting the `ecdsa`
-signature standard on both elliptic curves.
-
-Its worth noting that the TSS signing is largely decoupled from Web3Auth's infrastucture to allow us to be agnostic to TSS implementation. These
-include other signature schemes, which arguably are much more convienent. Notably, but non-exhaustively, Web3Auth supports:
-
-- [ECDSA](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) or its ElGamal variants
-- EDDSA or its [Schnorr variants](https://en.wikipedia.org/wiki/Schnorr_signature)
-- BLS, Stark (coming soon)
-
-| :memo: For other signature or elliptic curve or chain support, feel free to [ask or request](https://web3auth.io/contact-us.html) if we support them |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------- |
