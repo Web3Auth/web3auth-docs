@@ -15,6 +15,9 @@ Web3Auth returns the following functions:
 
 - `login()` - Logs in the User using the particular configuration you require for authentication.
 - `logout()` - Logs out the User.
+- `userInfo()` - After logging in, the Web3Auth instance will provide you with information regarding the user that is logged in.
+- `privKey()` - After log in, gets the private key of the user (default is `secp256k1` key).
+- `ed25519Key()` - After log in, gets the `ed25519` key.
 
 ## Logging in a User
 
@@ -174,7 +177,7 @@ export type LoginParams = BaseRedirectParams & {
 
 ### Example
 
-```typescript
+```typescript title="example.tsx"
 await web3auth.login({
   loginProvider: LoginProvider.GOOGLE,
   redirectUrl: resolvedRedirectUrl,
@@ -360,7 +363,7 @@ web3auth.login({
 The `web3auth.login()` method accepts a `curve` parameter. This parameter can be used to select the elliptic curve to use for the signature.
 
 ```typescript
-web3auth.login({
+await web3auth.login({
   loginProvider: LoginProvider.GOOGLE,
   redirectUrl: resolvedRedirectUrl,
   // highlight-next-line
@@ -410,12 +413,6 @@ await web3auth.login({
 
 ### `logout()`
 
-:::info
-
-Trigger the logout flow. It is not adviced to be used in iOS since it will trigger a system dialog that ask if users want to allow a Login operation.
-
-:::
-
 This method has no input and returns a `Promise` that resolves if the operation is successful, and rejects if the operation failed.
 
 ### Example
@@ -423,3 +420,14 @@ This method has no input and returns a `Promise` that resolves if the operation 
 ```typescript
 await web3auth.logout();
 ```
+
+## Getting the `userInfo`
+
+Along with v4, the `login()` method does not return any object containing the `userInfo`. In order to get the `userInfo` one needs to call the method
+via the web3auth instance.
+
+```js
+const userInfo = web3auth.userInfo();
+```
+
+<RNResponse />
