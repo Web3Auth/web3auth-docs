@@ -5,50 +5,107 @@ displayed_sidebar: docs
 description: "Plug and Play vs Core Kit | Documentation - Web3Auth"
 ---
 
-Plug and Play provide predefined UI & UX flows and easy-to-use SDKs, allowing developers to integrate Web3Auth instances quickly. Our PnP SDKs support
-recovery when they lose access to their device, provided they have enabled MFA.
+import SDKReferenceCards from "@site/src/components/SDKReferenceCards";
 
-Core-Kit are built on top of the Web3Auth infrastructural layer allowing developers to define and develop their UX flows. They choose the Auth
-provider and the factors to determine the key splitting. We also provide Core-Kit with one key using our SFA or Node SDKs. Developers could easily
-switch projects starting with One-Key flow to PnP using a `useCoreKitKey: true` parameter in PnP Web SDKs.
+Choosing the right Web3Auth product involves a careful analysis of what each option offers. Both our Plug and Play and Core-Kit solutions have unique
+features and benefits tailored to meet specific project needs.
 
-| Plug and Play                                                                                               | Core-Kit                                                                                   |
-| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Predefined login UX and UI, with whitelabeling options                                                      | Build and maintain your own UI & UX for login                                              |
-| Recoveribility is easier through `app.openlogin.com`                                                        | You would have to provide recoveribility for your users when they loose access to device   |
-| Out of the box Auth, with options to bring you existing auth and even configure the provided auth providers | Auth setup to be maintained at your end with the option to bring your existing auth set-up |
-| Easy and quick setup for builders and projects going live quickly                                           | Best suited for Enterprizes and builders who want to customize the UX flow                 |
-| Available in Web, Mobile and Gaming SDKs                                                                    | Only available for Web and React Native, but Mobile and Gaming support coming soon         |
+## Plug and Play
 
-## Web3Auth SDKs
+Web3Auth's **Plug and Play** is designed for efficiency and ease of use, offering predefined UI & UX flows and user-friendly SDKs.
 
-### Plug and Play SDKs
+**Key Features:**
 
-#### Web3Auth Plug and Play SDKs for Web
+- **Ease of Integration:** Requires only the initialization of the Web3Auth SDKs and the setup of necessary configurations.
+- **Non Custodial:** By default, the SDKs are non-custodial, meaning that users have complete control over their private keys.
+- **Pre Generated UX/UI Flows:** For ease of integration, this SDK offers predefined UI/UX flow, with full whitelabeling options.
+- **Wallet Aggregator:** Allows you to integrate multiple existing wallets into your application, alongside social logins, to provide users with a
+  seamless login experience of their choice.
+- **Platform Compatibility:** Available for Web, iOS, Android, React Native, Flutter, Unity and Unreal environments.
 
-- Web3Auth Plug and Play Modal SDK [`@web3auth/modal`](/sdk/pnp/web/modal/)
-- Web3Auth Plug and Play No Modal SDK [`@web3auth/no-modal`](/sdk/pnp/web/no-modal)
+## Core-Kit
 
-#### Web3Auth Plug and Play SDKs for Mobile
+The **Core-Kit** provides a more hands-on approach. It allows developers to define and develop their authentication flows, with Web3Auth being
+invisible to the end-user.
 
-- Web3Auth Plug and Play Android SDK [`web3auth-android-sdk`](/sdk/pnp/android/)
-- Web3Auth Plug and Play iOS SDK [`web3auth-swift-sdk`](/sdk/pnp/ios/)
-- Web3Auth Plug and Play React Native SDK [`web3auth-react-native-sdk`](/sdk/pnp/react-native/)
-- Web3Auth Plug and Play Flutter SDK [`web3auth-flutter-sdk`](/sdk/pnp/flutter/)
+**Key Features:**
 
-#### Web3Auth Plug and Play SDKs for Gaming
+- **Customizable UI & UX:** Enables you to build and maintain your own UI & UX for login and MFA.
+- **Owning the Infrastructure:** Enables you to own the key management and the authentication flow.
+- **No Redirection:** Unlike PnP, for Core Kit the key management flows are not hosted on `app.openlogin.com`. This means that users will not be
+  redirected to a different domain for authentication. All the flows can happen within your application.
+- **Platform Compatibility:** Available for Web, React Native, iOS and Android.
 
-- Web3Auth Plug and Play Unity SDK [`web3auth-unity-sdk`](/sdk/pnp/unity/)
-- Web3Auth Plug and Play Unreal SDK [`web3auth-unreal-sdk`](#) - (SDK is out, docs coming soon)
+## Comparison Table
 
-### Core-Kit SDKs
+|                            | Plug and Play                                                                             | Core-Kit                                                                                                  |
+| -------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **UI & UX**                | Predefined login UX and UI, with whitelabeling options                                    | Build and maintain your own UI & UX for login and MFA                                                     |
+| **Recoverability**         | Easier through `app.openlogin.com`, requires redirection for key management flows         | Need to build flows for key recovery and management. Everything can happen within the application itself. |
+| **Key Custodiality**       | Non Custodial by design.                                                                  | Integrating application determines the custodiality of the key for the user. All flows are available.     |
+| **Authentication**         | Out of the box Auth, with options to bring your existing authentication and configuration | Auth setup to be maintained at your end, with the option to integrate existing authentication systems.    |
+| **Setup**                  | Easy and quick setup for projects going live quickly                                      | Best suited for enterprises and builders seeking to customize the UX flow                                 |
+| **Platform Compatibility** | Available in Web, Mobile, and Gaming SDKs                                                 | Currently available for Web, React Native, iOS and Android                                                |
 
-#### Web3Auth Core-Kit SDKs for Web
+## Migrating between SDKs
 
-- Web3Auth tKey JS SDK [`@tkey/default`](/sdk/core-kit/tkey/)
-- Web3Auth Single Factor Auth Web SDK [`@web3auth/single-factor-auth`](/sdk/core-kit/sfa/)
-- Web3Auth Node JS SDK [`@web3auth/node-sdk`](/sdk/core-kit/node/)
+Whether you're seeking to optimize your current user flows or want to try out new features, migrating from one Web3Auth product to another can be a
+powerful way to enhance your application. However, it's crucial to handle migrations properly to ensure security and seamless user experience.
 
-#### Web3Auth Core-Kit SDKs for Mobile
+:::caution
 
-- Web3Auth tKey JS SDK [`@tkey/default`](/sdk/core-kit/tkey/)
+Migrations might involve changing the private keys, which can lead to loss of access to the user's account. Please ensure you meet all the
+requirements for migrating between SDKs.
+
+:::
+
+### Plug and Play to Core Kit Migration
+
+This is one of the most common migration paths. Usually, developers start with the Web3Auth Plug and Play for low engineering effort and then
+transition to Core Kit for a more customized integration.
+
+:::danger
+
+This migration is only possible if you've used custom authentication with your own login verifiers with Plug and Play SDKs. If you're using the
+standard authentication flows, the private keys will change in the new integration.
+
+:::
+
+#### To Single Factor Auth (SFA) SDKs
+
+If you're migrating to SFA SDKs, you can directly use the SDK with the same Client Id, alongside authentication and verifier details. Additionally, by
+setting the `usePnPKey` flag to `true`, you can get the same key as the Plug and Play SDKs. However, if a user has enabled MFA, they will not be able
+to use the SFA SDKs.
+
+#### To tKey JS SDK
+
+If you're migrating to the tKey JS SDK, it is more manual process in total. Firstly, you need to use the same authentication and verifier details as
+the plug and play integration, but additionally, you need to create a subkey of the final private key generated by the Plug and Play SDKs. To do this,
+you'll need to use the `@toruslabs/openlogin-subkey` and generate a subkey of the private key with your Plug and Play Client ID as a the parameter.
+
+```ts
+import { subkey } from "@toruslabs/openlogin-subkey";
+
+subkey(PRIVATE_KEY.padStart(64, "0"), Buffer.from(CLIENT_ID, "base64"));
+```
+
+:::info Pre planning Migrations
+
+Ideally, we would recommend you to use the products within the correct configuration to minimise the migration efforts. Ideally, using the Single
+Factor Auth SDK before hand and then shifting to tKey SDK works best for most integrations, however pre planning your key requirements while using
+Plug and Play SDKs can be helpful.
+
+#### If you're looking to use Core Kit SDKs in the future, planning the use Plug and Play SDKs right now, make sure:
+
+- You're using Custom Authentication with your own login verifiers.
+- Set the `useCoreKitKey` flag to `true`
+
+:::
+
+### Core Kit to Plug and Play Migration
+
+This migration typically occurs when developers want to leverage the prebuilt UI/UX of the Plug and Play SDKs for user MFA. Use the same verifier
+details from your Core Kit integration in the custom authentication feature of Plug and Play. Set the `useCoreKitKey` flag to `true` to use the same
+private key as the Core Kit SDKs.
+
+<SDKReferenceCards />

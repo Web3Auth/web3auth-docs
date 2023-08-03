@@ -1,29 +1,139 @@
 ---
-title: Deciding your Product Fit
+title: Choosing the Correct Web3Auth Product
 displayed_sidebar: docs
 description: "Deciding your Product Fit | Documentation - Web3Auth"
 ---
 
-Deciding whether your product fits the market can be a crucial step in launching a successful product.
+Deciding on the right product for your needs can often be a critical part of ensuring the success of your launch. If you're considering Web3Auth or
+[Torus Wallet](app.tor.us) for your project, the following qualifying questions will help you understand which of our products best fits your
+requirements.
 
-Here are some of the qualifying questions that might help you decide which product of Web3Auth is a good fit for you.
+:::info Schedule a demo
 
-### Qualifying Questions
+[Schedule a Demo Call](https://calendly.com/web3auth/meeting-with-web3auth) with our team to discuss your project requirements and find out which
+Web3Auth product is the best fit for you.
 
-- Are you building a Wallet?
-  - If so, you could use Web3Auth Plug and Play SDKs to get started quickly.
-- Which chain are you building on?
-  - Web3Auth is chain agnostic, so that you can happily build on any chain. We support all the available chains out there with special providers
-    available for EVM and Solana.
-- What platform are you using?
-  - We have SDKs for Web, Mobile and Gaming.
-- Do you want a prebuilt UI/UX for Login/MFA?
-  - If so, use Web3Auth Plug and Play SDKs else use Web3Auth Core-Kit SDKs to own the UI/UX for your users.
-- What level of interoperability do you want?
-  - Need fully interoperable flow, then please use Torus wallet in your application.
-  - It would be good to have? Simply use Wallet connect interoperability that comes with all of our Plug and Play SDKs.
-- Do you want auto signing?
-  - Plug and Play and Core-Kit both get this feature, so your users don't have to worry about approving each and every transaction.
-  - Torus Wallet allows users to see the transaction details giving more control to the user. But it can be a lot for your users.
-- Do you want to own the MFA Infra?
-  - Start with the Core-Kit SDK and reach out to our team to know more about best UX flows for your users.
+:::
+
+## Qualifying questions to consider
+
+Choosing the right Web3Auth product is key to a successful project launch. The following qualifying questions aim to guide you through the
+decision-making process. They cater to diverse project requirements and explore various key considerations. By reflecting on these questions, you'll
+be better equipped to make an informed decision that ensures your selected Web3Auth product aligns seamlessly with your needs, laying a solid
+foundation for your project's success.
+
+:::note
+
+All these points are valid for our SSS (Shamir Secret Sharing) and TSS (Threshold Signature Scheme) based MPC Infrastructure. For a few points where
+MPC has an edge, we've mentioned it explicitly. Check the last 4 questions for more details on MPC and SSS based infrastructure considerations.
+
+:::
+
+### What are you building? A dApp or a Wallet?
+
+- If you're building a Wallet, our Web3Auth Plug and Play SDKs can provide a quick and effective solution, although a better user experience for a
+  wallet might come from our Core Kit SDKs, where Web3Auth is hidden. You just need put in additional engineering efforts to build the UX flows. You
+  can switch between any of our SDKs in the future, however it is important to consider you're choosing the right configuration for the future
+  migration to be easier.
+
+  :::tip
+
+  Read More about integrating [Web3Auth in Wallets](./web3auth-for-wallets/).
+
+  :::
+
+- If you're building a dApp any of our products can be useful, however, with Web3Auth PnP or Core Kit Solutions, you would need to manage the UX Flows
+  and Interoperability yourself. Plug and Play can be quite useful as it contains some pre made flows to make the integration easier. Torus Wallet is
+  a great integration too, but it is an independent wallet, so any of the UX flows will not be in your control.
+
+  :::tip
+
+  Read More about integrating [Web3Auth in dApps](./web3auth-for-dapps/).
+
+  :::
+
+### What chain are you building on?
+
+- The good news is that Web3Auth is chain agnostic. That means you can build on any chain you prefer. We support `SECP256K1` and `ED25519` keys curves
+  out of the box, and with private key manipulation, one can connect any chain. There are specialized providers for EVM, Solana and XRPL.
+- Torus Wallet is currently only available for [EVM](app.tor.us), [Solana](solana.tor.us) and [XRPL](xrpl.tor.us).
+
+### What platform are you using?
+
+- Plug and Play SDKs support Web, Mobile (Android and iOS), Hybrid (React Native and Flutter) and Gaming (Unity and Unreal) environments.
+- Core Kit SDKs support Web, Mobile (Android and iOS), and React Native environments.
+- Torus Wallet is currently only available for Web.
+
+:::tip
+
+Explore [Web3Auth SDKs](/sdk/)
+
+:::
+
+### Do you require a prebuilt UI/UX for Login/MFA?
+
+- If you want a ready-made solution, use our Web3Auth Plug and Play SDKs.
+- If you prefer to craft your own UI/UX for your users, the Web3Auth Core-Kit SDKs are the way to go.
+- Torus Wallet offers a more user-controlled approach, where the access of the wallet goes out of our app's scope. This is because it is an
+  independent wallet itself using Web3Auth authentication. This may or may not be desirable depending on your user base.
+
+### What level of interoperability do you need?
+
+- For a fully interoperable flow, use the Torus wallet in your application. If interoperability is a plus but not a must, the WalletConnect
+  interoperability that comes with all of our SDKs will work perfectly.
+
+### Do you need auto signing?
+
+- By autosigning, we mean that the UX for approving the transaction is controlled by the application itself. This can only be done when the
+  application has access to the private key/ user signature.
+- Both Plug and Play SDKs and Core-Kit SDKs feature auto signing, removing the need for your users to approve each transaction.
+- Torus Wallet offers a more user-controlled approach, allowing users to view transaction details, which may or may not be desirable depending on your
+  user base.
+
+### Do you want to manage the MFA Infrastructure?
+
+- If you'd like to maintain ownership of the MFA Infrastructure, our Core-Kit SDKs are the best choice for you.
+
+### Do you want to manage the Login Infrastructure ie. use any existing Social Logins (e.g. Google, FB, etc…) , or a passwordless login of your own?
+
+- Both our Plug and Play and Core Kit SDKs allow you to manage your own Login Infrastructure. It is a feature called Custom Authentication in Plug and
+  Play SDKs and a requirement for Core Kit SDKs.
+
+### Do you want to customise the storage and threshold of the user key shares?
+
+- The Web3Auth Plug and Play SDK gives you the standard way of storing the user key shares. If you want to customise the storage of the user key
+  shares, you can use our Core Kit SDKs.
+- With Core Kit SDKs, you can customise the threshold and the number of shares required to recover the user key. You can also customise the storage of
+  the user key shares. From Devices share storage to Social Recovery, QR backups, Email Backups, Database encrypted storage etc. you can choose the
+  flow you want to use.
+
+### Do you want the user key to be present in the application frontend?
+
+- If you're looking to keep the user key in the frontend, our traditional SDKs, powered by Shamir's Secret Sharing Scheme, can be a good choice for
+  you.
+- If you prefer to keep the user's keys divided the whole time and only have a temporary sign generated when the user is signing, our new SDKs,
+  powered by the Threshold Signature Scheme, are the way to go.
+
+### Do you want to import keys from other wallets?
+
+- If you want to import keys from other wallets, you can use our Core Kit SDKs.
+- The Core Kit SDKs have the option of key import, however, it has the trade off of key generation integrity. This is because to maintain non
+  custodiality, we make sure that key imported is encrypted by the Web3Auth generated key, and stored on the metadata server. It is not possible to
+  directly import a key and distribute into multiple parts within the Shamir Secret Sharing infrastructure.
+- The best place to import keys can be the MPC Infrastructure. With the import key API in our MPC SDKs, it is possible to import upto 4 keys directly
+  into the MPC infrastructure. However, as you import multiple keys, the user interaction tends to become slower.
+
+### Do you want your user to be able export their key?
+
+- If you want your users to be able to export their key, you can any of our SDKs.
+- With SSS based SDKs, the key is reconstructed on every login, so the user can export the key at any point of time.
+- With MPC based SDKs, the key reconstruction never happens, hence the process of exporting the key is a bit more complex. Exports can be done via an
+  opensource external script which can be locally run. Alternatively we’re in the midst of developing a simple binary which could be operated to
+  combine the factors.
+
+:::info Schedule a demo
+
+Still confused? Feel free to [schedule a demo call](https://calendly.com/web3auth/meeting-with-web3auth) with our team to discuss your project
+requirements and find out which Web3Auth product is the best fit for you.
+
+:::
