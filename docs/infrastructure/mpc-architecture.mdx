@@ -2,7 +2,7 @@
 title: Web3Auth MPC Architecture
 sidebar_label: MPC Architecture
 displayed_sidebar: docs
-description: "MPC Architecture - Web3Auth Key Infrastructure | Documentation - Web3Auth"
+description: "MPC Architecture - Web3Auth Wallet Infrastructure | Documentation - Web3Auth"
 ---
 
 import ExpandingSharesFlow from "@site/static/images/expanding-shares-tss-flow.png";
@@ -10,13 +10,12 @@ import KeyInitialisationFlow from "@site/static/images/key-initialisation-tss-fl
 import KeyUsageFlow from "@site/static/images/key-usage-tss-flow.png";
 import TKeyMPCFlow from "@site/static/images/tkey-mpc-flow.png";
 
-This document provides an in-depth exploration of the technical architecture of the MPC-based SDKs, this includes the tKey MPC SDK and CoreKit MPC SDK (a rundown of our SDKs [here](/how-web3auth-works/)).
+This document provides an in-depth exploration of the technical architecture of the MPC-based SDKs, this includes the tKey MPC SDK and CoreKit MPC SDK
+(a rundown of our SDKs [here](/how-web3auth-works/)).
 
-The only difference between the SSS-based SDKs and MPC SDKs are that during usage/login MPC SDKs do not reconstruct user keys.
+The only difference between the SSS-based SDKs and MPC SDKs are that during usage/login MPC SDKs do not reconstruct user private keys.
 
-While the tKey MPC SDK, supports multiple configurations like 2/n, 2/2 flows, this documentation, for simplicity,
-focuses on a 2/3 setup.
-
+While the tKey MPC SDK, supports multiple configurations like 2/n, 2/2 flows, this documentation, for simplicity, focuses on a 2/3 setup.
 
 ## Overview of Cryptographic and Blockchain Support (compatibility and implementations)
 
@@ -51,9 +50,9 @@ include other signature schemes, which arguably are much more convienent. Notabl
 
 ## User Key Overview
 
-Web3Auth uses [tKey MPC](https://github.com/tkey) to manage user keys in a distributed fashion, leveraging various factors or shares managed by users,
-including their devices, private inputs, backup locations, and cloud service providers. As long as a user can access 2 out of n (2/n) of these shares,
-they can access their key. This distributedly secure key is called the $TSSKey$.
+Web3Auth uses [tKey MPC](https://github.com/tkey) to manage user wallets in a distributed fashion, leveraging various factors or shares managed by
+users, including their devices, private inputs, backup locations, and cloud service providers. As long as a user can access 2 out of n (2/n) of these
+shares, they can access their key. This distributedly secure key is called the $TSSKey$.
 
 One of the lost functionalities of a distributedly secure key is the loss of efficient encryption/decryption capabilities. As such the **TSSKey** is
 supported by another cryptographic key that's main purpose is to manage metadata pertaining to the user's account, the **metadataKey**. User metadata
@@ -100,7 +99,6 @@ facilitating the user login.
 
 During operation, when the user has threshold shares, they can read and write to metadata. Writing to metadata requires encrypting the data and
 signing it with the shares / private key.
-
 
 ## Flows
 

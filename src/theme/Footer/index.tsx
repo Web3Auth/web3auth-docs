@@ -41,7 +41,7 @@ export default function FooterComponent(): JSX.Element {
                 dark: `${baseUrl}images/logo-dark.svg`,
               }}
             />
-            <p>Web3Auth is where passwordless auth meets non-custodial key infrastructure for Web3 apps and wallets.</p>
+            <p>Web3Auth is where passwordless auth meets non-custodial wallet infrastructure for Web3 apps and wallets.</p>
             <div style={{ flexDirection: "row" }}>
               <a href="https://github.com/web3auth/web3auth-web" style={{ marginRight: 8 }} target="_blank" rel="noreferrer">
                 <GitHub />
