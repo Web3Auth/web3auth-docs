@@ -26,15 +26,15 @@ regardless of their login providers, for example, combining a Google and Email P
 key for your user. Refer to the docs [here](/auth-provider-setup/verifiers/aggregate-verifier) to know more about creating an aggregate verifier.
 
 Here, multiple sub-verifiers are combined under one single aggregate verifier, and one wallet address is generated from the aggregate verifier. So for
-In the case discussed above verifiers with different login providers can be added as sub-verifiers under one aggregate verifier, which would allow users
-to get a single wallet address provided one of the fields (like email) stays the same across sub-verifiers.
+In the case discussed above verifiers with different login providers can be added as sub-verifiers under one aggregate verifier, which would allow
+users to get a single wallet address provided one of the fields (like email) stays the same across sub-verifiers.
 
 ### Client ID
 
 To get your Client ID, it's as simple as setting up a new Plug and Play project on the Web3Auth dashboard. Now, "Plug and Play" might sound technical,
 but it's just a way of describing the pre-packaged user interface and experience that Web3Auth has ready for you. The idea here is to make integrating
-Web3Auth into your project as easily and efficiently as possible, saving you the hassle of building everything from scratch. To get a client id for your
-project, please refer [here](/auth-provider-setup/client-id).
+Web3Auth into your project as easily and efficiently as possible, saving you the hassle of building everything from scratch. To get a client id for
+your project, please refer [here](/auth-provider-setup/client-id).
 
 Wallet addresses change if the client ID changes. Please use the same client ID across all your SDK integrations to get the same wallet address.
 
@@ -51,8 +51,8 @@ Every network has different nodes and that causes the keys to change. If you mov
 
 #### PnP And Core-kit
 
-PnP and Core-Kit SDKs have different keys because we take the subkey from the main key in PnP SDKs. Please check the `@toruslabs/openlogin-subkey` package
-for more details.
+PnP and Core-Kit SDKs have different keys because we take the subkey from the main key in PnP SDKs. Please check the `@toruslabs/openlogin-subkey`
+package for more details.
 
 In PnP SDKs, there is a parameter `useCoreKitKey` accepting a boolean value that can be set to `true` to use the same wallet address as Core-Kit SDKs.
 Please check the following code snippet where `useCoreKitKey` is set to `true` while initializing the web-no-modal SDK:
@@ -65,6 +65,8 @@ const web3auth = new Web3AuthNoModal({
   useCoreKitKey: true,
 });
 ```
+
+#### Core-kit SFA and PnP
 
 In core-kit SDKs, there is a parameter `usePnPKey` accepting a boolean value that can be set to `true` to use the same wallet address as PnP SDKs.
 Please check the following code snippet where `usePnPKey` is set to `true` while initializing the web3auth-sfa SDK:
@@ -91,5 +93,5 @@ subkey(PRIVATE_KEY.padStart(64, "0"), Buffer.from(CLIENT_ID, "base64"));
 
 #### Torus Wallet
 
-Torus Wallet will always have a different private key since it is a wallet built on top of web3auth. It is a separate product and has a different private
-key.
+Torus Wallet will always have a different private key since it is a wallet built on top of web3auth. It is a separate product and has a different
+private key.
