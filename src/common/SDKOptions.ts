@@ -43,6 +43,7 @@ export const singlefactorauthandroid = "Single Factor Auth Android SDK";
 export const singlefactorauthios = "Single Factor Auth iOS SDK";
 export const corekitnodejs = "Node.js SDK";
 export const mpccorekit = "MPC Core Kit";
+export const singlefactorauthrn = "Single Factor Auth React Native SDK";
 export const corekitlist = [
   { label: "tKey JS SDK", value: tkeyjs, platforms: [reactJS, reactnative] },
   { label: "MPC Core Kit", value: mpccorekit, platforms: [...weblist] },
@@ -52,6 +53,7 @@ export const corekitlist = [
   { label: "SFA Node.js SDK", value: corekitnodejs, platforms: [nodejs] },
   { label: "SFA Android SDK", value: singlefactorauthandroid, platforms: [android] },
   { label: "SFA iOS SDK", value: singlefactorauthios, platforms: [ios] },
+  { label: "SFA React Native SDK", value: singlefactorauthrn, platforms: [reactnative] },
 ];
 
 const getWindowLocation = () => {

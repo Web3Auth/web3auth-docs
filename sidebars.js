@@ -653,6 +653,17 @@ module.exports = {
             "sdk/core-kit/sfa-ios/usage"
           ],
         },
+        {
+          type: "category",
+          label: "SFA React Native SDK",
+          link: { type: "doc", id: "sdk/core-kit/sfa-react-native/sfa-react-native" },
+          items: [
+            "sdk/core-kit/sfa-ios/install",
+            "sdk/core-kit/sfa-ios/initialize",
+            "sdk/core-kit/sfa-ios/authentication",
+            "sdk/core-kit/sfa-ios/usage"
+          ],
+        },
       ],
     },
     {
