@@ -532,15 +532,12 @@ export default function QuickNavigation() {
           </div>
           <div className={styles.cardContentText}>
             <h3 className={styles.title}>Single Factor Auth React Native SDK</h3>
-            <div className={styles.pillContainer}>
-              <div className={styles.pill}>Coming Soon</div>
-            </div>
             <p>Core Kit Single Factor Auth React Native SDK for your React Native application. Implement Core Kit in a single key pair flow</p>
-            {/* <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=SFA+React+Native+SDK+SDK&platform=React+Native`}>Quick Start{chevron}</a>
+            <div className={styles.links}>
+              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=Single+Factor+Auth+React+Native+SDK&platform=React+Native`}>Quick Start{chevron}</a>
               <a href={`${baseUrl}sdk/core-kit/sfa-react-native`}>SDK Reference{chevron}</a>
-              <a href={`${baseUrl}examples?product=Core+Kit&sdk=SFA+React+Native+SDK`}>Examples{chevron}</a>
-            </div> */}
+              <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+React+Native+SDK`}>Examples{chevron}</a>
+            </div>
           </div>
         </div>
       </ul>
