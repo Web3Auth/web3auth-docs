@@ -9,18 +9,17 @@ import TkeyIntroduction from "@site/src/common/docs/_tkey-intro.mdx";
 import KeyManagement from "@site/static/images/key-management.png";
 import PnPCoreKitFlow from "@site/static/images/pnp-core-kit-flow.png";
 import SFAInfra from "@site/static/images/sfa-infra.png";
-import TKeyMPCFlow from "@site/static/images/tkey-mpc-flow.png";
 
 Web3Auth operates as a wallet infrastructure, providing enhanced flexibility and security for decentralized applications (dApps) and blockchain
 wallets. Throughout this documentation, we'll explore the functionality of Web3Auth, showcasing how it produces unique cryptographic key providers for
 each user and application.
 
-## High Level Architecture
+## High-Level Architecture
 
 The Web3Auth SDK lives solely on the user/application’s front-end client and handles the interactions between OAuth providers and the Auth Network.
 
-This diagram below, describes the relationship between the Web3Auth SDKs and integrating application. It also depicts the difference between the
-products Web3Auth offers, to enable a developer friendly integration of this infrastructure.
+The diagram below describes the relationship between the Web3Auth SDKs and integrating applications. It also depicts the difference between the
+products Web3Auth offers, to enable a developer-friendly integration of this infrastructure.
 
 <img
   style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
@@ -38,9 +37,10 @@ Once the user starts the process:
 
 1. User is redirected to our portal (`app.openlogin.com`)
 2. Our portal, `app.openlogin.com`, then handles the initial process of login
-3. User is redirected to login/OAuth provider and carries out the authentication process with respect to their auth provider
+3. User is redirected to the login/OAuth provider and carries out the authentication process concerning their auth provider
 4. User is redirected back to our portal, which then handles the reconstruction of the user’s key
-5. Finally, once the user is successfully authenticated, they are redirected back to application, with derived key specific to the application/wallet
+5. Finally, once the user is successfully authenticated, they are redirected back to the application, with a derived key specific to the
+   application/wallet
 
 ##### Here's a diagram showing this process:
 
@@ -52,17 +52,17 @@ The Core Kit SDKs serve as the backbone of the Web3Auth Plug n Play (PnP) SDKs. 
 direct usage within decentralized applications (dApps) to foster deeper integration. They are further divided into two types of SDKs:
 
 1. Single Factor Auth SDKs
-2. Multi Factor SDKs, like tKey SDK
+2. Multi-Factor SDKs, like tKey SDK
 
 #### Single Factor Auth SDKs
 
-These SDKs allow for the integration of a single factor of authentication, such as a social login, into your dApp. They are designed to be simple to
-use and can be integrated into your dApp with minimal effort, allowing you to directly use the Web3Auth Network for Key Management. This is one of the
-most common use cases of Web3Auth, however, it is semi custodial in nature, since the key is custodial to the Auth Provider and the Web3Auth Network.
+These SDKs allow for the integration of a single factor of authentication, such as social login, into your dApp. They are designed to be simple to use
+and can be integrated into your dApp with minimal effort, allowing you to directly use the Web3Auth Network for Wallet Management. This is one of the
+most common use cases of Web3Auth, however, it is semi-custodial in nature, since the key is custodial to the Auth Provider and the Web3Auth Network.
 
 <img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={SFAInfra} alt="Single Factor Auth SDK Infrastructure" />
 
-#### Multi Factor Auth SDKs
+#### Multi-Factor Auth SDKs
 
 An integral part of this infrastructure is the tKey SDK, the foundational SDK utilized for the implementation of Web3Auth PnP and Core-Kit.
 
@@ -71,45 +71,37 @@ An integral part of this infrastructure is the tKey SDK, the foundational SDK ut
 ### MPC SDKs
 
 With the Web3Auth infrastructure, your key is divided into multiple parts and stored across your devices and our Auth Network. This ensures that your
-key is always available and never stored in a single place. While in the traditional Web3Auth SDK, your key was dynamically reconstructed in the
-frontend using threshold signatures.
+key is always available and never stored in a single place. While in the traditional Web3Auth SDK, your key was dynamically reconstructed in the front
+end using threshold signatures.
 
-With the new Web3Auth MPC (Multi Party Computation) architecture, it is **never reconstructed**. Instead, these partial keys are stored across
-different locations, and your device is used to make partial signatures for your message/ transaction. These are finally returned to the frontend
+With the new Web3Auth MPC (Multi-Party Computation) architecture, it is **never reconstructed**. Instead, these partial keys are stored across
+different locations, and your device is used to make partial signatures for your message/ transaction. These are finally returned to the front end
 where using TSS (Threshold Signature Scheme), these signatures are combined to make a final signature. You can use this finally signed
 message/transaction to make a transaction on the blockchain.
 
 The Threshold Signature Scheme (TSS) is a cryptographic primitive for distributed key generation and signing. The use of TSS in Web3Auth's Auth
 network is a new paradigm that can provide numerous benefits, especially in terms of security.
 
-<img style={{ display: "block", margin: "20px auto" }} src={TKeyMPCFlow} alt="Web3Auth Key Management" />
-
-As you can notice in this diagram above, the final output, i.e., the User's TSS Account, is generated in multiple stages within the infrastructure.
-Since this is a TSS- MPC based infrastructure, you don't get back a private key, but signatures that can be used to make transactions on the
-blockchain.
-
-## Web3Auth Key Management
-
-Web3Auth's [Key Management Infrastructure](/infrastructure/key-management/) enhances security by distributing a user's private key across various key
-shares, thereby avoiding direct exposure of seed phrases. These key shares form a 'web of trust' and enable key management akin to multi-factor
-account handling. Users employ OAuth logins, trusted devices, and other factors to manage their cryptographic key pairs. Importantly, the complete
-private keys are not stored anywhere within the Key Infrastructure system, including our databases or any participating nodes.
-
-The process is illustrated below using Threshold Cryptography principles. In this system, users only need a minimum of 2 out of n key shares to either
-retrieve their private key _(in the non-MPC version)_ or generate transaction signatures _(in the MPC version)_. This design empowers users with
-control over their keys while also eliminating the risk of account loss due to a single point of failure. For instance, a user could lose their device
-yet still retain access to their account.
-
-To create a social login share, users interact with the Web3Auth Auth Network, where key generation operates via a 5/9 consensus system. This setup
-guarantees that keys remain non-custodial, ensuring that neither Web3Auth, Social Login Providers, nor any other party holding a key share can claim
-full ownership.
-
 <img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={KeyManagement} alt="Showing How Web3Auth Key Generation works" />
 
-:::tip managing keys
+As you can notice in this diagram above, the final output for the right side TSS architecture are the signatures that can be used to make transactions
+on the blockchain.
 
-For managing keys, our infrastructure uses various cryptographic techniques such as Shamir's Secret Sharing, Threshold Cryptography, and Multi Party
-Computation. To know more about how we manage keys, please refer to our
-[Key Management and Security of our Infrastructure](/infrastructure/key-management).
+## Web3Auth Wallet Management Infrastructure
+
+Web3Auth's [Wallet Management Infrastructure](/infrastructure/) enhances security by distributing a user's wallet across various key shares, thereby
+avoiding direct exposure of seed phrases. These key shares form a 'web of trust' and enable wallet management akin to multi-factor account handling.
+Users employ OAuth logins, trusted devices, and other factors to manage their cryptographic key pairs. Importantly, the complete private keys are not
+stored anywhere within the Wallet Infrastructure system, including our databases or any participating nodes.
+
+To create a social login share, users interact with the Web3Auth Auth Network, where key generation operates via a 5/9 consensus system. This setup
+guarantees that wallets remain non-custodial, ensuring that neither Web3Auth, Social Login Providers, nor any other party holding a key share can
+claim full ownership.
+
+:::tip managing wallets
+
+For managing wallets, our infrastructure uses various cryptographic techniques such as Shamir's Secret Sharing, Threshold Cryptography, and Multi
+Party Computation. To know more about how we manage wallets, please refer to our
+[Wallet Management and Security of our Infrastructure](/infrastructure/).
 
 :::

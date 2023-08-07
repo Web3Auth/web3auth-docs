@@ -18,7 +18,7 @@ const contentHubDropdown = fs.readFileSync('./src/components/navDropdown/content
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 const config = {
   title: "Documentation | Web3Auth",
-  tagline: "Web3 Auth and Key Management SDKs with MPC", // TODO: Confirm with content team
+  tagline: "Web3 Auth and Wallet Management (WaaS) SDKs with MPC", // TODO: Confirm with content team
   url: "https://web3auth.io",
   baseUrl,
   onBrokenLinks: "warn",
