@@ -283,7 +283,11 @@ const config = {
           },
           {
             from: "/overview/user-flow",
-            to: "/product-fit/user-flow",
+            to: "/user-flow",
+          },
+          {
+            from: "/product-fit/user-flow",
+            to: "/user-flow",
           },
           {
             from: "/overview/key-management/",
