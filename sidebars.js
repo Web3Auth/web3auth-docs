@@ -244,12 +244,12 @@ module.exports = {
       label: "Troubleshooting",
       link: { type: "doc", id: "troubleshooting/troubleshooting" },
       items: [
+        "troubleshooting/different-private-key",
         "troubleshooting/sdk-errors-warnings",
         "troubleshooting/error-429",
         "troubleshooting/webpack-issues",
         "troubleshooting/vite-issues",
         "troubleshooting/jwt-errors",
-        "troubleshooting/different-wallet-address-issue",
         "troubleshooting/supported-browsers",
         "troubleshooting/react-big-int-error",
       ],
