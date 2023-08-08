@@ -402,6 +402,10 @@ const config = {
             to: "/sdk/core-kit/tkey/initialize",
           },
           {
+            from: "/troubleshooting/different-wallet-address-issue",
+            to: "/troubleshooting/different-private-key",
+          },
+          {
             from: "/sdk/tkey/installation",
             to: "/sdk/core-kit/tkey/install",
           },
