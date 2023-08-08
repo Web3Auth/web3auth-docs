@@ -143,6 +143,7 @@ module.exports = {
       link: { type: "doc", id: "dashboard-setup/dashboard-setup" },
       items: [
         "dashboard-setup/get-client-id",
+        "dashboard-setup/whitelisting",
         "dashboard-setup/enable-interoperability",
         "dashboard-setup/setup-custom-authentication",
         "dashboard-setup/billing-and-user-stats",
