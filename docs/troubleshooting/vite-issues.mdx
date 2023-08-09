@@ -13,18 +13,18 @@ Although this method works, but it increases the bundle size significantly. Caus
 note that these modules, even while the build fails, are still present within the browser environment. Many libraries like Web3Auth are written in a
 way so as to take advantage of this fact. Hence, even if the build doesn't contain the polyfill, the library should still work as expected. However,
 if you are using a library which does not take advantage of this fact, you might face issues while using the library. Checkout
-[this tweet thread](https://twitter.com/ChaitanyaPotti/status/1658108310824861696) where we have explained it further on how this works in detail.
+[this tweet thread](https://twitter.com/ChaitanyaPotti/status/1658103946274111488) where we have explained it further on how this works in detail.
 
 Hence, you need to be mindful of the fact that you only require certain node polyfills to be added to your project, while testing each of it's
 functionalities. At the same time, you need to tell the bundler to ignore the missing modules, and not include them in the build.
 
 In this guide, we have added instructions of adding the polyfills in Vite:
 
-#### Solution
+## Install the missing modules
 
-- Check for the missing libraries in your build and included packages, and accordingly polyfill them. For Web3Auth, you just need to polyfill the
-  `buffer` and `process` libraries. For the rest of the libraries, we are installing a dummy module called `empty-module` which helps us get rid of
-  the warnings while building the project.
+Check for the missing libraries in your build and included packages, and accordingly polyfill them. For Web3Auth, you just need to polyfill the
+`buffer` and `process` libraries. For the rest of the libraries, we are installing a dummy module called `empty-module` which helps us get rid of the
+warnings while building the project.
 
 ```bash npm2yarn
 npm install --save-dev buffer process empty-module
@@ -38,7 +38,9 @@ requires them. Generally the libraries like `crypto-browserify`, `stream-browser
 
 :::
 
-- Update the `vite.config.js` to refer the polyfill modules we installed.
+## Update your `vite.config.js`
+
+To make use of the polyfilled modules while building the application, you need to reconfigure your vite config.
 
 ```js
 /* eslint-disable import/no-extraneous-dependencies */
@@ -71,7 +73,9 @@ export default defineConfig({
 });
 ```
 
-- Update the `index.html` file to include the polyfills. As shown in the code snippet below we added the `<script>` tag to include the polyfills.
+## Fixing additional dependency issues
+
+Update the `index.html` file to include the polyfills. As shown in the code snippet below we added the `<script>` tag to include the polyfills.
 
 ```html
 <!DOCTYPE html>

@@ -231,6 +231,7 @@ module.exports = {
         "troubleshooting/error-429",
         "troubleshooting/webpack-issues",
         "troubleshooting/vite-issues",
+        "troubleshooting/metro-issues",
         "troubleshooting/jwt-errors",
         "troubleshooting/supported-browsers",
         "troubleshooting/react-big-int-error",
