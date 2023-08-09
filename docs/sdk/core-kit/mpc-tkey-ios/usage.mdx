@@ -1,0 +1,141 @@
+---
+title: Using Core Kit MPC tKey iOS SDK
+sidebar_label: Usage
+displayed_sidebar: sdk
+description: "Web3Auth Core Kit MPC tKey iOS SDK - Usage | Documentation - Web3Auth"
+---
+
+Once you've installed and successfully instantiated tKey, you can use it to generate their tKey shares.
+
+### `ThresholdKey`
+
+## Log In
+
+The login with the tKey SDK is a two-step process. First, you need to trigger the login process by calling the `triggerLogin()` function of the
+CustomAuth SDK. Using the returned information, use the `initialize()` function of the tKey to generate the Threshold Key corresponding to the user.
+
+However, before starting this process, you must set up Custom Authentication on your Web3Auth Dashboard. You must
+[Create a Verifier](/auth-provider-setup/verifiers) from the **Custom Auth** section of the
+[Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired configuration.
+
+:::tip
+
+For further information on how to set up and use a verifier, please visit the
+[**Custom Authentication Documentation**](/pnp/features/custom-authentication).
+
+:::
+
+### Triggering Login and Initializing Service Provider
+
+```swift
+import CustomAuth
+
+let sub = SubVerifierDetails(
+  loginType: .web, // default .web
+  loginProvider: "TYPE_OF_LOGIN", // .google, .facebook, .discord and other supported login providers
+  clientId: "CLIENT_ID",
+  verifierName: "VERIFIER_NAME",
+  redirectURL: "tdsdk://tdsdk/oauthCallback",
+  browserRedirectURL: "https://scripts.toruswallet.io/redirect.html")
+
+let tdsdk = CustomAuth(
+  aggregateVerifierType: "TYPE_OF_VERIFIER", // singleLogin, singleIdVerifier supported
+  aggregateVerifierName: "VERIFIER_NAME", // Web3Auth Custom verifier name
+  subVerifierDetails: [sub],
+  network: .SAPPHIRE_DEVNET,
+  enableOneKey: true)
+
+tdsdk.triggerLogin().done{ data in
+    print("user data", data)
+
+    let finalKeyData = data["finalKeyData"] as? [String: Any]
+    let verifier =  data["verifier"] as? String
+    let verifierId = data["verifierId"] as? String
+    let postboxkey = finalKeyData["privKey"] as? String
+
+    let torusUtils = TorusUtils(
+      enableOneKey: true,
+      network: .sapphire(.SAPPHIRE_DEVNET) )
+    let fnd = NodeDetailManager(network: .sapphire(.SAPPHIRE_DEVNET))
+    let nodeDetails = try await fnd.getNodeDetails(verifier: verifier, verifierID: verifierId)
+
+    let service_provider = try? ServiceProvider(
+      enable_logging: true,
+      postbox_key: postboxkey,
+      useTss: true,
+      verifier: verifier,
+      verifierId: verifierId,
+      nodeDetails: nodeDetails,
+      torusUtils: torusUtils )
+
+    }.catch{ err in
+        print(err)
+    }
+```
+
+## Instantiate tKey
+
+```swift
+let storage_layer = try? StorageLayer(
+  enable_logging: true,
+  host_url: "https://metadata.tor.us",
+  server_time_offset: 2)
+
+let rss_comm = try RssComm()
+
+let thresholdKey = try? ThresholdKey(
+  storage_layer: storage_layer,
+  service_provider: service_provider,
+  enable_logging: true,
+  manual_sync: false,
+  rss_comm: rss_comm)
+
+threshold_key = thresholdKey
+```
+
+### Parameters
+
+| Parameter                    | Type                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Mandatory |
+| ---------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
+| `metadata`                   | `Metadata`                 | Metadata object containing the metadata details of tKey.                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | No        |
+| `shares`                     | `ShareStorePolyIdIndexMap` | Array of ShareStore with PolyId.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | No        |
+| `storage_layer`              | `StorageLayer`             | Takes in the Storage Provider Instance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | No        |
+| `service_provider`           | `ServiceProvider`          | Takes in the Service Provider Instance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | No        |
+| `local_matadata_transitions` | `Metadata`                 | Existing local metadata to be used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | No        |
+| `last_fetch_cloud_metadata`  | `Metadata`                 | Existing cloud metadata to be used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | No        |
+| `enable_logging`             | `Bool`                     | This option is used to specify whether to enable logging or not.                                                                                                                                                                                                                                                                                                                                                                                                                                                               | No        |
+| `manual_sync`                | `Bool`                     | manual sync provides atomicity to your tkey share. If manual_sync is true, you should sync your local metadata transitions manually to your storage_layer, which means your storage layer doesn’t know the local changes of your tkey unless you manually sync, gives atomicity. Otherwise, If manual_sync is false, then your local metadata changes will be synced automatically to your storage layer. If manual_sync = true and want to synchronize manually, you need to call sync_local_metadata_transitions() manually. | No        |
+| `rss_comm`                   | `RssComm`                  | RssComm object to be used. RSS client, required for TSS.                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | No        |
+| `torusUtils`                 | `TorusUtils`               | TorusUtils object to be used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | No        |
+| `nodeDetails`                | `AllNodeDetailsModel`      | NodeDetails object to be used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | No        |
+
+## Initialize tKey
+
+#### `threshold_key.initialize(params?)`
+
+Once you have triggered the login process, you're ready to initialize the tKey. This will generate a Threshold Key corresponding to your login
+provider.
+
+### Parameters
+
+| Parameter                            | Type       | Description                                                             | Mandatory |
+| ------------------------------------ | ---------- | ----------------------------------------------------------------------- | --------- |
+| `import_share`                       | String     | An optional string representing the import share.                       | No        |
+| `input`                              | ShareStore | An optional ShareStore object representing the input.                   | No        |
+| `never_initialize_new_key`           | Bool       | Do not initialize a new tKey if an existing one is found.               | No        |
+| `include_local_metadata_transitions` | Bool       | Proritize existing metadata transitions over cloud fetched transitions. | No        |
+| `use_tss`                            | Bool       | Whether TSS is used or not.                                             | No        |
+| `device_tss_share`                   | String     | An optional string representing the device share.                       | No        |
+| `device_tss_index`                   | `Int32`    | An optional integer representing the device share index.                | No        |
+| `tss_factor_pub`                     | `KeyPoint` | An optional KeyPoint object representing the tss factor public key.     | No        |
+
+### Example
+
+```swift
+guard let key_details = try? await threshold_key.initialize(never_initialize_new_key: false, include_local_metadata_transitions: false) else {
+  alertContent = "Failed to get key details"
+  return
+}
+totalShares = Int(key_details.total_shares)
+threshold = Int(key_details.threshold)
+```
