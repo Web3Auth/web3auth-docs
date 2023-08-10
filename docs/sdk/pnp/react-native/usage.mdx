@@ -6,6 +6,8 @@ description: "Web3Auth PnP React Native SDK - Usage | Documentation - Web3Auth"
 ---
 
 import RNResponse from "@site/src/common/sdk/pnp/react-native/_get-user-info.mdx";
+import PrivateKey from "@site/src/common/sdk/pnp/react-native/_get-priv-key.mdx";
+import ED25519Key from "@site/src/common/sdk/pnp/react-native/_get-ed25519-priv-key.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
@@ -15,12 +17,15 @@ Web3Auth returns the following functions:
 
 - `login()` - Logs in the User using the particular configuration you require for authentication.
 - `logout()` - Logs out the User.
+- `userInfo()` - After logging in, the Web3Auth instance will provide you with information regarding the user that is logged in.
+- `privKey()` - After login, gets the private key of the user (default is `secp256k1` key).
+- `ed25519Key()` - After login, gets the `ed25519` key.
 
 ## Logging in a User
 
 ### `login()`
 
-Trigger the login flow that navigate the user to a browser model that allows them to login with the selected login provider.
+Trigger the login flow that navigates the user to a browser model that allows them to log in with the selected login provider.
 
 #### Arguments
 
@@ -38,11 +43,11 @@ Trigger the login flow that navigate the user to a browser model that allows the
 | ------------------- | --------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `loginProvider`     | `LOGIN_PROVIDER_TYPE` or `string` | Yes       | Login provider to be used, will show a web-based page allowing user to pick their own loginProvider if not specified. supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`, `JWT` |
 | `redirectUrl`       | `string`                          | Yes       | The redirectUrl that the Web3Auth login flow will use to redirect back to the app. Setting `redirectUrl` here can override the settings in `SdkInitParams`.                                                                                                                                               |
-| `appState`          | `string`                          | No        | Any custom state you wish to pass along. This will be returned to you post redirect. Use this to store data that you want to be available to the dapp after login.                                                                                                                                        |
-| `mfaLevel`          | `MfaLevelType`                    | No        | You can set the `mfaLevel` to customize when mfa screen should be shown to user.                                                                                                                                                                                                                          |
-| `dappShare`         | `string`                          | No        | Custom Logins can get a dapp share returned to them post successful login. This is useful if the dapps want to use this share to allow users to login seamlessly dappShare is a 24 word seed phrase                                                                                                       |
+| `appState`          | `string`                          | No        | Any custom state you wish to pass along. This will be returned to you post-redirect. Use this to store data that you want to be available to the dapp after login.                                                                                                                                        |
+| `mfaLevel`          | `MfaLevelType`                    | No        | You can set the `mfaLevel` to customize when mfa screen should be shown to the user.                                                                                                                                                                                                                      |
+| `dappShare`         | `string`                          | No        | Custom Logins can get a dapp share returned to them post successful login. This is useful if the dapps want to use this share to allow users to log in seamlessly dappShare is a 24-word seed phrase                                                                                                      |
 | `extraLoginOptions` | `ExtraLoginOptions`               | No        | can be used to pass standard oauth login options to loginProvider                                                                                                                                                                                                                                         |
-| `curve`             | `Map<string, Any>`              | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum                                                                                                                                                                                                                |
+| `curve`             | `Map<string, Any>`                | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum                                                                                                                                                                                                                |
 
 </TabItem>
 
@@ -172,16 +177,16 @@ export type LoginParams = BaseRedirectParams & {
 
 </Tabs>
 
-### Example
+#### Example
 
-```typescript
+```typescript title="example.tsx"
 await web3auth.login({
   loginProvider: LoginProvider.GOOGLE,
   redirectUrl: resolvedRedirectUrl,
 });
 ```
 
-## `ExtraLoginOptions` for special login methods
+### `ExtraLoginOptions` for special login methods
 
 You can pass extra options to the `login` function to configure the login flow for cases requiring additional info for enabling login. The
 `ExtraLoginOptions` accepts the following parameters:
@@ -340,7 +345,7 @@ web3auth.login({
 });
 ```
 
-### Example (Custom Authentication)
+#### Example (Custom Authentication)
 
 ```ts
 web3auth.login({
@@ -355,12 +360,12 @@ web3auth.login({
 });
 ```
 
-## Selecting Curve
+### Selecting Curve
 
 The `web3auth.login()` method accepts a `curve` parameter. This parameter can be used to select the elliptic curve to use for the signature.
 
 ```typescript
-web3auth.login({
+await web3auth.login({
   loginProvider: LoginProvider.GOOGLE,
   redirectUrl: resolvedRedirectUrl,
   // highlight-next-line
@@ -368,7 +373,7 @@ web3auth.login({
 });
 ```
 
-### Example
+#### Example
 
 <Tabs
   defaultValue="secp256k1"
@@ -412,14 +417,44 @@ await web3auth.login({
 
 :::info
 
-Trigger the logout flow. It is not adviced to be used in iOS since it will trigger a system dialog that ask if users want to allow a Login operation.
+Trigger the logout flow. It is not advised to be used in iOS since it will trigger a system dialog that asks if users want to allow a Login operation.
 
 :::
 
 This method has no input and returns a `Promise` that resolves if the operation is successful, and rejects if the operation failed.
 
-### Example
+#### Example
 
 ```typescript
 await web3auth.logout();
 ```
+
+## Getting the User Information
+
+To get the information of the user, extracted from the id token, you can call the `userInfo` method in the web3auth instance.
+
+```js
+const userInfo = web3auth.userInfo();
+```
+
+<RNResponse />
+
+## Getting the `secp256k1` private key
+
+Using the `privKey()` method in the web3auth instance you can get the `secp256k1` private key.
+
+```js
+const privateKey = web3auth.privKey();
+```
+
+<PrivateKey />
+
+## Getting the `ed25519` private key
+
+Using the `ed25519Key()` method in the web3auth instance you can get the `ed25519` private key.
+
+```js
+const ed25519Key = web3auth.ed25519Key();
+```
+
+<ED25519Key />

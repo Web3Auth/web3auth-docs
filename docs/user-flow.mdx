@@ -1,0 +1,175 @@
+---
+title: User Flows with Web3Auth
+image: "images/docs-meta-cards/documentation-card.png"
+displayed_sidebar: docs
+description: "User Flows with Web3Auth | Documentation - Web3Auth"
+---
+
+Web3Auth enables simple Web2 flows for Web3 onboarding. However, as good as that sounds, this process has a few moving parts for the developers to
+understand and implement. The major reason behind this is to ensure that the user information is secure and they're in control of their wallets. In
+all, our goal is that the process is transparent to the users and developers and they can choose the best flows according to their needs. Before
+starting, make sure you understand [how web3auth works](/how-web3auth-works), so that you can understand the different available flows mentioned here.
+
+## One-Click Login
+
+This is the simplest flow for a user to onboard with Web3Auth. The user just needs to click on the login button, connect to their favorite social
+account (OAuth) or any passwordless flow, like email passwordless, biometric authentication etc., and a wallet is generated for them. This flow has a
+1/1 Key Share setup and the whole key via Web3Auth Auth Network key shares in the openlogin.com frontend. This flow is still non-custodial since the
+nodes in the Web3Auth network have a 5/9 consensus mechanism to generate the key shares.
+
+:::caution
+
+While analyzing, one can claim that this flow is custodial to the OAuth Login provider, since this is directly generated using credentials provided by
+them. Also, since the Web3Auth Network handles this flow independently, even while being decentralized, **we can call this flow a semi-custodial
+flow.**
+
+:::
+
+:::info
+
+In our One Click Flow, we add a `nonce` value to the social login share to keep the threshold 2/2. while it feels like 1/1. This is done to ensure
+that the application has the flexibility to move to a 2/n MFA flow in the future if they want to. As the application triggers the creation of MFA
+Factors the nonce is automatically deleted.
+
+:::
+
+:::tip
+
+- The Single Factor SDKs help you directly achieve this flow.
+
+- For Plug and Play SDKs, this flow can be achieved by setting the `MFALevel` to `'none'` within the Web3Auth Login while logging a user in.
+
+:::
+
+## Adding a Multi-Factor Authentication (Recommended)
+
+The Multi-Factor Authentication (MFA) feature refers to the ability of the user to create a backup share (recovery factor). This feature plays a key
+role in the Wallet Infrastructure of Web3Auth and a developer needs to properly understand it to be able to onboard users safely and effectively. The
+most interesting feature of adding a multi-factor authentication is that it makes the keys **self-custodial** to the user. This is achieved by
+associating a key share alongside the factor that the user chooses to create, hence making sure the key is further distributed and not just associated
+with the user's social account or the Web3Auth Network.
+
+### Types of MFA Flows
+
+With both Core Kit and Plug and Play SDKs, you have the choice to use multiple types of multi-factor flows according to your needs. With Plug and
+Play, we expose various logins out of the box. For Core Kit SDKs, the developers can determine which flow suits them the most, with total freedom of
+managing key storage and access. For Plug and Play, we have some predefined configurations that can be used.
+
+| MFA Type                      | Custodiality of MFA                                                   | Ease of Access | Setup Custodiality                                                                     | Availability in Plug and Play SDKs                                       |
+| ----------------------------- | --------------------------------------------------------------------- | -------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| **Recovery Mnemonic Phrase ** | Self Custodial to User                                                | Difficult      | Fully Non-Custodial                                                                    | Yes                                                                      |
+| **Email Backup Share**        | Potentially Custodial to Email Provider                               | Medium         | Non-Custodial <br /> Semi-Custodial _(if same email as first factor social login)_     | Yes, SMTP server for email can be customized for Enterprise Customers.   |
+| **Backup Password**           | Semi Custodial to the Encrypted Metadata Server                       | Medium         | Non-Custodial                                                                          | Yes                                                                      |
+| **Secondary Social Login**    | Semi Custodial to Social Provider, using Distributed Web3Auth Network | Easy           | Non-Custodial <br /> Semi-Custodial _(if same social login provider for first factor)_ | Yes, however, custom authentication cannot be used for the second factor |
+| **SMS Passwordless**          | Semi Custodial to SMS Service using Distributed Web3Auth Network      | Easy           | Non-Custodial                                                                          | Yes, however, custom authentication cannot be used for the second factor |
+| **Email Passwordless**        | Semi Custodial to Email Provider using Distributed Web3Auth Network   | Easy           | Non-Custodial <br /> Semi-Custodial _(if same email as first factor social login)_     | Yes, however, custom authentication cannot be used for the second factor |
+| **Passkeys**                  | Semi Custodial using Distributed Web3Auth Network                     | Easy           | Non-Custodial                                                                          | No                                                                       |
+
+### Setting up the Threshold for MFA
+
+The threshold for MFA is the number of shares required to access the user's wallet. This is a very important factor to consider while onboarding your
+onboarding flow. As we have seen the ideal threshold is 2/n, where the first is the social login share, alongside multiple recovery device shares.
+This gives the user a flow that they're used to alongside ease of access on their trusted devices.
+
+That being said, the threshold can be set to any number as per the security requirements of the integrating application. However, this can be done
+only using the Core Kit SDKs. The Plug and Play SDKs come with a default threshold of 2/n.
+
+| Parameter                                                                                                                                              | restricting to 2/2 shares                                                                                                                                                                                                                                                                                                    | allowing ≥ 2/3 shares                                                                                                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Non-Custodiality:** Ownership/access to a user key and/or Ability to grief?                                                                          | “Semi-custodial” - Never has access but nodes/ network always can grieve in this setup, as they always own one of the only factors.                                                                                                                                                                                          | More fully non-custodial, can’t grief, a user can ALWAYS reconstruct their key pair                                                                                                                                                           |
+| **Redundancy:** The ability to ensure that users never lose their key. Conversely the likelihood of a user’s key being lost, due to a loss of factors. | In a 2/2 setup, the nodes become even more important. If nodes go down/lose factor due to issues users lose their keys. Users get redundancy on their side by copying the factor/share that they have across their devices.                                                                                                  | In a ≥ 2/3 setup, users can get redundancy in the same way as 2/2 (by copying the same factors) or by increasing the threshold 2/4, 2/5.                                                                                                      |
+| **Control vs Security:** Restricted access means greater practical security from the network/cloud provider                                            | When we restrict things to the 2/2 flow, we can be certain that the user cannot transact without the node network. While it acts as a sword towards non-custodial, it can be a strong shield. For example, we can not allow a tx that withdraws all the user's money from the user (unless they do extra validation with us) | in the 2/3 flow, the user always has full access to the key. We can still do the same restrictions, but we don’t have the guarantee that the user won’t transact without us cause they can always reconstruct the key.                        |
+| **Exportability vs Security:** Exporting keys from the system                                                                                          | To have a restricted 2/2 flow is to restrict exportability. Still can be done with extra validation.                                                                                                                                                                                                                         | Always exportable all the time. This could be a detriment as, if we give the ability to transport and reshare the key out (without extra validation/restriction) it's as good as v1 technically as a hacker can always reshare the user keys. |
+
+### Ideal time to trigger MFA according to the user flow
+
+The ideal time to trigger MFA is when the user is comfortable with the application and is ready to take the next step towards securing their account.
+Most users try to lurk around the application to know the gist of it before they're ready to commit to it. This is the ideal time to trigger MFA for
+the user. However, this is not a hard and fast rule and the dApp can choose to trigger MFA at any point in time. With all our SDKs, you can decide
+when to trigger your MFA flow. This has to be done manually in the Core Kit SDKs and using the `MFALevel` parameter in the Plug and Play SDKs.
+
+#### MFA Levels in Plug and Play SDKs
+
+- **Default MFA:** During the first login, the user is onboarded using the one-click login flow and allowed to experience the application. However, to
+  eventually, enhance security, they're prompted to create a backup share (recovery phrase) **every third login**, which is optional for the user to
+  create.
+
+  :::info
+
+  This can be achieved by setting the `MFALevel` to `'default'` within the Web3Auth Login while logging a user in.
+
+  :::
+
+- **Optional MFA:** This is similar to the default MFA, except that the user is prompted to create a backup share at every login and is optional for
+  them to create.
+
+  :::info
+
+  This can be achieved by setting the `MFALevel` to `'optional'` within the Web3Auth Login while logging a user in.
+
+  :::
+
+- **Mandatory MFA:** During the first login, the user is asked to create a backup share (recovery phrase) and it is a mandatory requirement for the
+  user to create it.
+
+  :::info
+
+  This can be achieved by setting the `MFALevel` to `'mandatory'` within the Web3Auth Login while logging a user in.
+
+  :::
+
+## Web3Auth's Approach Towards User Onboarding
+
+Web3Auth approaches user onboarding via **Progressive Discoverability**. This means that we are not forcing users to create a backup share right away.
+Instead, we want them to be able to use the application in the traditional ways they're familiar with and once they're comfortable with the
+application, we can then introduce the concept of Multi-Factor Authentication to them. However, it highly depends on the dApps how they want to
+approach this within their user flows. Below mentioned are the 4 pillars for Progressive Discoverability with Web3Auth:
+
+### User Experience
+
+This constitutes the user experience of the dApp. The dApp should be able to provide a seamless experience for the user to onboard. The focus here
+includes:
+
+1. Onboard with a single click
+2. Provide a familiar Web2 user experience
+
+### Accessibility
+
+These are the different flows that the dApp can use to onboard users, according to the security and privacy needs of the dApp. There are multiple
+types of flows:
+
+- **One-click login** - only 1/1 Key Share required to login
+- **Enhanced security login** - 2/3 Key Shares required to login
+- **Types of Shares**
+
+  - **Social Login Share** - Share attached with the user's social media account via the Web3Auth Auth Network. Please note that this share is also
+    not custodial to any social network, rather the Web3Auth Network generates it with a 5/9 consensus mechanism.
+  - **Trusted Device Share** - Share attached with the user's device. This share is stored within the browser's local storage or as a dApp Share
+    within the particular application's local context.
+  - **Recovery Share** - Share attached with the user's recovery phrase. This share is generally shown to the user while creating an MFA and the user
+    has the flexibility to choose their recovery method. From social logins and passwordless to password-based and manual key input, the user can
+    choose any method to recover their account.
+
+    :::info
+
+    Please note that all these shares represent just 1/2 of the private key and on their own are not enough to log in. However, the user can
+    reconstruct them using Web3Auth, if they provide any 2 of these shares while logging in.
+
+    :::
+
+### Non-Custodial
+
+This is the major pillar that supports all the processes of Web3Auth. Being a non-custodial solution, Web3Auth does not store any user data, or any
+keys on its servers. This means that the user is in full control of their data and wallets. This also means that the user can lose their account if
+they are not able to provide the correct shares to reconstruct their private key. This is major information that the user needs to be made aware of
+beyond the integrating application. A dApp can achieve this by:
+
+- Making users aware of openlogin.com and how Web3Auth manages their wallets.
+- Making users aware of the different types of shares and how they can be used to reconstruct their private keys.
+- Making users aware of the importance of keeping their recovery phrases safe.
+- Occasional check if the user has a recovery phrase or not.
+
+### Interoperability
+
+Interoperability, or the ability to use the same account across multiple applications, is a key feature of Web3Auth. This is achieved by the multiple
+flows as mentioned in the [Interoperability](/pnp/features/interoperability) section of the documentation.

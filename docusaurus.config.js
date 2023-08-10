@@ -283,7 +283,11 @@ const config = {
           },
           {
             from: "/overview/user-flow",
-            to: "/product-fit/user-flow",
+            to: "/user-flow",
+          },
+          {
+            from: "/product-fit/user-flow",
+            to: "/user-flow",
           },
           {
             from: "/overview/key-management/",
@@ -396,6 +400,10 @@ const config = {
           {
             from: "/sdk/tkey/initialisation",
             to: "/sdk/core-kit/tkey/initialize",
+          },
+          {
+            from: "/troubleshooting/different-wallet-address-issue",
+            to: "/troubleshooting/different-private-key",
           },
           {
             from: "/sdk/tkey/installation",

@@ -36,14 +36,20 @@ const balance = web3.utils.fromWei(
 
 // provider is const provider = new ethers.providers.Web3Provider(web3authProvider); from above.
 
-const signer = provider.getSigner();
+// For ethers v5
+// const signer = ethersProvider.getSigner();
+const signer = await ethersProvider.getSigner();
 
 // Get user's Ethereum public address
-const address = await signer.getAddress();
+const address = signer.getAddress();
 
 // Get user's balance in ether
+// For ethers v5
+// const balance = ethers.utils.formatEther(
+// await ethersProvider.getBalance(address) // Balance is in wei
+// );
 const balance = ethers.utils.formatEther(
-  await provider.getBalance(userAddress) // Balance is in wei
+  await provider.getBalance(address) // Balance is in wei
 );
 ```
 
