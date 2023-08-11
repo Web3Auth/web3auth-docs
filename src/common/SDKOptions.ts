@@ -53,7 +53,7 @@ export const corekitlist = [
   { label: "SFA Node.js SDK", value: corekitnodejs, platforms: [nodejs] },
   { label: "SFA Android SDK", value: singlefactorauthandroid, platforms: [android] },
   { label: "SFA iOS SDK", value: singlefactorauthios, platforms: [ios] },
-  { label: "SFA React Native SDK", value: singlefactorauthrn, platforms: [reactnative] },
+  { label: "SFA React Native SDK", value: singlefactorauthrn, platforms: [...rnlist] },
 ];
 
 const getWindowLocation = () => {

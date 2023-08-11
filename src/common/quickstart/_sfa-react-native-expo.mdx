@@ -5,8 +5,21 @@ import DashboardImage from "@site/static/dashboard/project_plug_n_play.png";
 Install the Web3Auth's Single Factor Auth package in your react-native project.
 
 ```bash npm2yarn
-npm install --save @web3auth/single-factor-auth-react-native @web3auth/ethereum-provider
+npm install --save @web3auth/single-factor-auth-react-native @web3auth/ethereum-provider jsonwebtoken fs
 ```
+
+When using our SDK with an Expo-based React Native app (aka managed workflow), you have to install `expo-secure-store` to store the user's session.
+
+```bash
+expo install expo-secure-store
+```
+
+:::warning
+
+Please have a look at the troubleshooting guide [here](/troubleshooting/metro-issues), to set up the `globals.js` file and the `metro.config.js` file
+for polyfilling.
+
+:::
 
 ### 2. Get your Client ID from Web3Auth Dashboard
 
@@ -16,13 +29,13 @@ Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new p
 
 ### 3. Initialize Web3Auth for your preferred blockchain
 
-Web3Auth needs to initialise as soon as your app loads up to enable the user to log in. Preferably done within a constructor, initialisation is the
+Web3Auth needs to initialize as soon as your app loads up to enable the user to log in. Preferably done within a constructor, initialization is the
 step where you can pass on all the configurations for Web3Auth you want. A simple integration for EVM blockchains will look like this:
 
 ```js
-import Web3Auth from "@web3auth/single-factor-auth";
+import Web3Auth from "@web3auth/single-factor-auth-react-native";
+import * as SecureStore from "expo-secure-store";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import jwt from "jsonwebtoken";
 import fs from "fs";
 
@@ -46,18 +59,18 @@ const provider = new EthereumPrivateKeyProvider({
 });
 
 // Instantiate Web3Auth SFA SDK
-const web3authSfa = new Web3Auth({
+const web3authSfa = new Web3Auth(SecureStore, {
   clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
   web3AuthNetwork: "cyan", // Available networks are "testnet", "mainnet", "cyan", "aqua".
   usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
 });
 
-web3auth.init({ provider });
+await web3auth.init(provider);
 ```
 
 ### 4. Login your User
 
-Once you're done initialising, just create a button that triggers the login for the user on their request. Logging in is as easy as:
+Once you're done initializing, just create a button that triggers the login for the user on their request. Logging in is as easy as:
 
 ```js
 const user = {
@@ -91,4 +104,8 @@ const web3authSfaprovider = await web3auth.connect({
 const ethPrivateKey = await web3authSfaprovider.request({ method: "eth_private_key" });
 
 console.log("ETH Private Key", ethPrivateKey);
+
+const ethPublicAddress = await web3authProvider?.request<string[]>({ method: "eth_accounts" });
+
+console.log("Web3Auth user created with public address:", ethPublicAddress![0]);
 ```
