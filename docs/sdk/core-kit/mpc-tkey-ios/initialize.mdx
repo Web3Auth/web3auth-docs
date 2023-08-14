@@ -106,20 +106,50 @@ let thresholdKey = try? ThresholdKey(
 | `enable_logging`             | `Bool`                     | This option is used to specify whether to enable logging or not.                                                                                                                                                                                                                                                                                                                                                                                                                                                               | No        |
 | `manual_sync`                | `Bool`                     | manual sync provides atomicity to your tkey share. If manual_sync is true, you should sync your local metadata transitions manually to your storage_layer, which means your storage layer doesn’t know the local changes of your tkey unless you manually sync, gives atomicity. Otherwise, If manual_sync is false, then your local metadata changes will be synced automatically to your storage layer. If manual_sync = true and want to synchronize manually, you need to call sync_local_metadata_transitions() manually. | No        |
 | `rss_comm`                   | `RssComm`                  | RssComm object to be used. RSS client, required for TSS.                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | No        |
-| `torusUtils`                 | `TorusUtils`               | TorusUtils object to be used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | No        |
-| `nodeDetails`                | `AllNodeDetailsModel`      | NodeDetails object to be used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | No        |
 
 ### Example
 
 ```swift
 let finalKeyData = userData["finalKeyData"] as? [String: Any]
 
-let fetchKey = finalKeyData["evmAddress"] as? String
+let postboxkey = finalKeyData["privKey"] as? String
 
 let verifier =  userData["verifier"] as? String
 let verifierId = userData["verifierId"] as? String
 
-let postboxkey = finalKeyData["privKey"] as? String
+let storage_layer = try? StorageLayer(
+  enable_logging: true,
+  host_url: "https://metadata.tor.us",
+  server_time_offset: 2)
+
+let fnd = NodeDetailManager(network: .sapphire(.SAPPHIRE_DEVNET))
+let nodeDetails = try await fnd.getNodeDetails(verifier: verifier, verifierID: verifierId)
+
+let service_provider = try? ServiceProvider(
+  enable_logging: true,
+  postbox_key: postboxkey,
+  useTss: true,
+  verifier: verifier,
+  verifierId: verifierId,
+  nodeDetails: nodeDetails )
+
+let rss_comm = try RssComm()
+
+let thresholdKey = try? ThresholdKey(
+  storage_layer: storage_layer,
+  service_provider: service_provider,
+  enable_logging: true,
+  manual_sync: false,
+  rss_comm: rss_comm)
+```
+
+The following parameters are required to initialize MPC tKey:
+
+```swift
+@State private var signatures: [[String: Any]]!
+@State private var tssEndpoint: [String]!
+
+let fetchKey = finalKeyData["evmAddress"] as? String
 
 let sessionData = userData["sessionData"] as? [String: Any]
 
@@ -130,34 +160,9 @@ signatures = sessionTokenData.map { token in
               "sig": token.signature ]
 }
 
-let storage_layer = try? StorageLayer(
-  enable_logging: true,
-  host_url: "https://metadata.tor.us",
-  server_time_offset: 2)
-
 let torusUtils = TorusUtils(
   enableOneKey: true,
   network: .sapphire(.SAPPHIRE_DEVNET) )
-let fnd = NodeDetailManager(network: .sapphire(.SAPPHIRE_DEVNET))
-let nodeDetails = try await fnd.getNodeDetails(verifier: verifier, verifierID: verifierId)
 
-tssEndpoint = nodeDetails.torusNodeTSSEndpoints
-
-let service_provider = try? ServiceProvider(
-  enable_logging: true,
-  postbox_key: postboxkey,
-  useTss: true,
-  verifier: verifier,
-  verifierId: verifierId,
-  nodeDetails: nodeDetails,
-  torusUtils: torusUtils )
-
-let rss_comm = try RssComm()
-
-let thresholdKey = try? ThresholdKey(
-  storage_layer: storage_layer,
-  service_provider: service_provider,
-  enable_logging: true,
-  manual_sync: false,
-  rss_comm: rss_comm)
+tssEndpoint = nodeDetails!.torusNodeTSSEndpoints
 ```
