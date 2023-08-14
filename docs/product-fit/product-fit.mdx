@@ -15,25 +15,25 @@ Web3Auth product is the best fit for you.
 
 :::
 
-## Qualifying questions to consider
-
 Choosing the right Web3Auth product is key to a successful project launch. The following qualifying questions aim to guide you through the
 decision-making process. They cater to diverse project requirements and explore various key considerations. By reflecting on these questions, you'll
 be better equipped to make an informed decision that ensures your selected Web3Auth product aligns seamlessly with your needs, laying a solid
 foundation for your project's success.
 
-:::note
+We've divided the questions into the following categories:
 
-All these points are valid for our SSS (Shamir Secret Sharing) and TSS (Threshold Signature Scheme) based MPC Infrastructure. For a few points where
-MPC has an edge, we've mentioned it explicitly. Check the last 4 questions for more details on MPC and SSS based infrastructure considerations.
+- [Basic Product Questions](#basic-product-questions)
+- [UI/ UX Questions](#ui-ux-questions)
+- [Infrastructure Questions](#infrastructure-questions)
+- [SSS vs MPC Questions](#sss-vs-mpc-questions)
 
-:::
+## Basic Product Questions
 
 ### What are you building? A dApp or a Wallet?
 
 - If you're building a Wallet, our Web3Auth Plug and Play SDKs can provide a quick and effective solution, although a better user experience for a
   wallet might come from our Core Kit SDKs, where Web3Auth is hidden. You just need put in additional engineering efforts to build the UX flows. You
-  can switch between any of our SDKs in the future, however it is important to consider you're choosing the right configuration for the future
+  can switch between any of our SDKs in the future, however, it is important to consider you're choosing the right configuration for the future
   migration to be easier.
 
   :::tip
@@ -64,11 +64,18 @@ MPC has an edge, we've mentioned it explicitly. Check the last 4 questions for m
 - Core Kit SDKs support Web, Mobile (Android and iOS), and React Native environments.
 - Torus Wallet is currently only available for Web.
 
+### What level of interoperability do you need?
+
+- For a fully interoperable flow, use the Torus wallet in your application. If interoperability is a plus but not a must, the WalletConnect
+  interoperability that comes with all of our SDKs will work perfectly.
+
 :::tip
 
 Explore [Web3Auth SDKs](/sdk/)
 
 :::
+
+## UI/ UX Questions
 
 ### Do you require a prebuilt UI/UX for Login/MFA?
 
@@ -77,18 +84,15 @@ Explore [Web3Auth SDKs](/sdk/)
 - Torus Wallet offers a more user-controlled approach, where the access of the wallet goes out of our app's scope. This is because it is an
   independent wallet itself using Web3Auth authentication. This may or may not be desirable depending on your user base.
 
-### What level of interoperability do you need?
+### Do you need auto-signing?
 
-- For a fully interoperable flow, use the Torus wallet in your application. If interoperability is a plus but not a must, the WalletConnect
-  interoperability that comes with all of our SDKs will work perfectly.
-
-### Do you need auto signing?
-
-- By autosigning, we mean that the UX for approving the transaction is controlled by the application itself. This can only be done when the
+- By auto-signing, we mean that the UX for approving the transaction is controlled by the application itself. This can only be done when the
   application has access to the private key/ user signature.
 - Both Plug and Play SDKs and Core-Kit SDKs feature auto signing, removing the need for your users to approve each transaction.
 - Torus Wallet offers a more user-controlled approach, allowing users to view transaction details, which may or may not be desirable depending on your
   user base.
+
+## Infrastructure Questions
 
 ### Do you want to manage the MFA Infrastructure?
 
@@ -99,13 +103,15 @@ Explore [Web3Auth SDKs](/sdk/)
 - Both our Plug and Play and Core Kit SDKs allow you to manage your own Login Infrastructure. It is a feature called Custom Authentication in Plug and
   Play SDKs and a requirement for Core Kit SDKs.
 
-### Do you want to customise the storage and threshold of the user key shares?
+### Do you want to customize the storage and threshold of the user key shares?
 
 - The Web3Auth Plug and Play SDK gives you the standard way of storing the user key shares. If you want to customise the storage of the user key
   shares, you can use our Core Kit SDKs.
-- With Core Kit SDKs, you can customise the threshold and the number of shares required to recover the user key. You can also customise the storage of
+- With Core Kit SDKs, you can customize the threshold and the number of shares required to recover the user key. You can also customise the storage of
   the user key shares. From Devices share storage to Social Recovery, QR backups, Email Backups, Database encrypted storage etc. you can choose the
   flow you want to use.
+
+## SSS vs MPC Questions
 
 ### Do you want the user key to be present in the application frontend?
 
