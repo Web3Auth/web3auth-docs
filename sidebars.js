@@ -507,6 +507,27 @@ module.exports = {
     },
     {
       type: "category",
+      label: "MPC Core Kit SDK",
+      link: { type: "doc", id: "sdk/core-kit/mpc-core-kit/mpc-core-kit" },
+      items: [
+        "sdk/core-kit/mpc-core-kit/install",
+        "sdk/core-kit/mpc-core-kit/initialize",
+        "sdk/core-kit/mpc-core-kit/authentication",
+        "sdk/core-kit/mpc-core-kit/usage"
+      ],
+    },
+    {
+      type: "category",
+      label: "MPC tKey iOS SDK",
+      link: { type: "doc", id: "sdk/core-kit/mpc-tkey-ios/mpc-tkey-ios" },
+      items: [
+        "sdk/core-kit/mpc-tkey-ios/install",
+        "sdk/core-kit/mpc-tkey-ios/initialize",
+        "sdk/core-kit/mpc-tkey-ios/usage",
+      ],
+    },
+    {
+      type: "category",
       label: "tKey JS SDK",
       link: { type: "doc", id: "sdk/core-kit/tkey/tkey" },
       items: [
@@ -536,7 +557,6 @@ module.exports = {
         },
       ],
     },
-
     {
       type: "category",
       label: "tKey JS in React Native",
