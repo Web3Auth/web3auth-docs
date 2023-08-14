@@ -143,7 +143,7 @@ values={[
 >
 <TabItem value="social">
 
-```js
+```tsx
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
@@ -158,7 +158,7 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 </TabItem>
 <TabItem value="sms">
 
-```js
+```tsx
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
@@ -173,7 +173,7 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 </TabItem>
 <TabItem value="email">
 
-```js
+```tsx
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
@@ -195,7 +195,7 @@ there directly from the Web3Auth Plug and Play No Modal SDK.
 
 ### Get the User Profile
 
-```js
+```tsx
 const user = await web3auth.getUserInfo();
 console.log("User info", user);
 ```
@@ -205,7 +205,7 @@ network, but are fetched from the id_token you received from Auth0 and lives in 
 
 ### Logout
 
-```js
+```tsx
 await web3auth.logout();
 ```
 
@@ -241,7 +241,7 @@ https://{YOUR_DOMAIN_URL}/authorize?scope=openid&response_type=code&client_id={Y
 - In the backend server, you can use the `code` to get the `id_token` from Auth0 and redirect the user to the frontend with `id_token` as a query
   parameter
 
-```js
+```tsx
 app.get('/callback', (req, res) => {
   var options = {
     method: 'POST',
@@ -270,7 +270,7 @@ app.get('/callback', (req, res) => {
 
 - In the frontend, pass on this `id_token` to the Web3Auth SDK to authenticate the user
 
-```js
+```tsx
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {

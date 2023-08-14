@@ -268,7 +268,7 @@ These packages help in connecting to the Ethereum network and creating transacti
 
 After Installation, the next step to use Web3Auth Core Kit tKey SDK is to Initialize the SDK.
 
-```ts title="src/tkey.ts"
+```tsx title="src/tkey.ts"
 import ThresholdKey from "@tkey/core";
 import { TorusServiceProvider } from "@tkey/service-provider-torus";
 import { TorusStorageLayer } from "@tkey/storage-layer-torus";
@@ -304,7 +304,7 @@ export const tKey = new ThresholdKey({
 });
 ```
 
-```ts title="src/App.tsx"
+```tsx title="src/App.tsx"
 useEffect(() => {
   const init = async () => {
     // Initialization of Service Provider
@@ -332,7 +332,7 @@ Once you have initialised the Web3Auth Service Provider, you're ready to trigger
 private key which will be needed by the tKey to generate it's share. This is done by calling the `triggerLogin()` function within the `tKey`
 instance's of `serviceProvider` property.
 
-```ts
+```tsx
 const triggerLogin = async () => {
   if (!tKey) {
     uiConsole("tKey not initialized yet");
@@ -368,7 +368,7 @@ function called `addFactorKeyMetadata` which is used to add data in the metadata
 
 By default, if the key is not present, the metadata returns a `KEY_NOT_FOUND` message. We can use this to check if the user is new or existing.
 
-```ts
+```tsx
 const isMetadataPresent = async (privateKeyBN: BN) => {
   const metadata = await tKey.storageLayer.getMetadata({ privKey: privateKeyBN });
   if (metadata && Object.keys(metadata).length > 0 && (metadata as any).message !== "KEY_NOT_FOUND") {
@@ -384,7 +384,7 @@ const isMetadataPresent = async (privateKeyBN: BN) => {
 Since we are use the tKey Core MPC SDK, we need to implement the device storage functions ourselves. We'll be using the local storage to store the
 device share for this example.
 
-```ts
+```tsx
 import BN from "bn.js";
 
 const [localFactorKey, setLocalFactorKey] = useState<BN | null>(null);
@@ -404,7 +404,7 @@ useEffect(() => {
 
 ### Implementing the main `initializeNewKey` function
 
-```ts
+```tsx
 import { addFactorKeyMetadata, getTSSPubKey } from "./utils";
 import BN from "bn.js";
 import { generatePrivate } from "eccrypto";
@@ -550,7 +550,7 @@ const initializeNewKey = async () => {
 Once you have set up your tKey instance, you're ready to set up the Web3 Provider. This is the provider that will be used by the Web3 SDK to sign the
 transactions.
 
-```ts
+```tsx
 import { setupWeb3 } from "./utils";
 
 const [web3, setWeb3] = useState<any>(null);
@@ -581,7 +581,7 @@ The following code snippet shows how to copy the local TSS share into a manual b
 your device share, without generating new TSS Shares. Generation of new TSS shares by default has been limited to 3 at the moment. This is to help
 save processing time and enhance the user experience.
 
-```ts
+```tsx
 import { copyExistingTSSShareForNewFactor, addFactorKeyMetadata } from "./utils";
 
 const copyTSSShareIntoManualBackupFactorkey = async () => {
@@ -613,7 +613,7 @@ const copyTSSShareIntoManualBackupFactorkey = async () => {
 
 The following code snippet shows how to create a new TSS share into a manual backup factor key.
 
-```ts
+```tsx
 import { addNewTSSShareAndFactor, addFactorKeyMetadata } from "./utils";
 
 const createNewTSSShareIntoManualBackupFactorkey = async () => {
@@ -660,7 +660,7 @@ const createNewTSSShareIntoManualBackupFactorkey = async () => {
 The following code snippet will help you get the details of the key stored on the metadata server. Please note these details can be customised and
 stored according to your needs.
 
-```ts
+```tsx
 const keyDetails = async () => {
   if (!tKey) {
     uiConsole("tKey not initialized yet");

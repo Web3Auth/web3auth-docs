@@ -26,7 +26,7 @@ values={[
 >
 <TabItem value="web3">
 
-```js
+```tsx
 const getAccounts = async () => {
   if (!provider) {
     console.log("provider not initialized yet");
@@ -35,13 +35,13 @@ const getAccounts = async () => {
   const web3 = new Web3(provider as any);
   const userAccounts = await web3.eth.getAccounts();
   console.log(userAccounts);
-}
+};
 ```
 
   </TabItem>
 <TabItem value="ethers.js">
 
-```js
+```tsx
 const getAccounts = async () => {
   if (!provider) {
     console.log("provider not initialized yet");
@@ -51,7 +51,7 @@ const getAccounts = async () => {
   const signer = provider.getSigner();
   const userAccounts = await signer.getAddress();
   console.log(userAccounts);
-}
+};
 ```
 
 </TabItem>
@@ -69,7 +69,7 @@ values={[
 >
 <TabItem value="web3">
 
-```js
+```tsx
 const getBalance = async () => {
   if (!provider) {
     console.log("provider not initialized yet");
@@ -79,13 +79,13 @@ const getBalance = async () => {
   const accounts = await web3.eth.getAccounts();
   const balance = await web3.eth.getBalance(accounts[0]);
   console.log(web3.utils.fromWei(balance));
-}
+};
 ```
 
   </TabItem>
 <TabItem value="ethers.js">
 
-```js
+```tsx
 const getBalance = async () => {
   if (!provider) {
     console.log("provider not initialized yet");
@@ -100,10 +100,10 @@ const getBalance = async () => {
   // await ethersProvider.getBalance(address) // Balance is in wei
   // );
   const balance = ethers.formatEther(
-    await provider.getBalance(account), // Balance is in wei
+    await provider.getBalance(account) // Balance is in wei
   );
   console.log(balance);
-}
+};
 ```
 
 </TabItem>
@@ -121,7 +121,7 @@ values={[
 >
 <TabItem value="web3">
 
-```js
+```tsx
 const signMessage = async () => {
   if (!provider) {
     console.log("provider not initialized yet");
@@ -149,13 +149,13 @@ const signMessage = async () => {
     params,
   });
   console.log(signedMessage);
-}
+};
 ```
 
   </TabItem>
 <TabItem value="ethers.js">
 
-```js
+```tsx
 const signMessage = async () => {
   if (!provider) {
     console.log("provider not initialized yet");
@@ -177,7 +177,7 @@ const signMessage = async () => {
 
 ### Sign Transaction
 
-```js
+```tsx
 const signTransaction = async () => {
   if (!provider) {
     console.log("provider not initialized yet");
@@ -189,11 +189,11 @@ const signTransaction = async () => {
   const txRes = await web3.eth.signTransaction({
     from: accounts[0],
     to: accounts[0],
-    value: web3.utils.toWei('0.0001'),
+    value: web3.utils.toWei("0.0001"),
     chainId: 1, // change it to your specific chain id.
   });
   console.log(txRes.transactionHash);
-}
+};
 ```
 
 ### Send Transaction
@@ -207,7 +207,7 @@ values={[
 >
 <TabItem value="web3">
 
-```js
+```tsx
 const sendTransaction = async () => {
   if (!provider) {
     console.log("provider not initialized yet");
@@ -219,17 +219,17 @@ const sendTransaction = async () => {
   const txRes = await web3.eth.sendTransaction({
     from: accounts[0],
     to: accounts[0],
-    value: web3.utils.toWei('0.0001'),
+    value: web3.utils.toWei("0.0001"),
     chainId: 1, // change it to your specific chain id.
   });
   console.log(txRes.transactionHash);
-}
+};
 ```
 
   </TabItem>
 <TabItem value="ethers.js">
 
-```js
+```tsx
 const sendTransaction = async () => {
   if (!provider) {
     console.log("provider not initialized yet");

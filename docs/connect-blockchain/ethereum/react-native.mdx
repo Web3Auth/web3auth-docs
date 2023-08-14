@@ -40,7 +40,7 @@ npm install shims
 
 - Import the packages and shims into your codebase:
 
-```js
+```tsx
 // Import the required shims
 //highlight-next-line
 import "ethers/dist/shims.js";
@@ -65,7 +65,7 @@ simply change the rpcUrl to it's corresponding chain.
 
 Mainnet Block Explorer URL: https://etherscan.io -- `chainId: "1"`
 
-```js
+```tsx
 import "@ethersproject/shims";
 import { ethers } from "ethers";
 import { Buffer } from "buffer";
@@ -78,7 +78,7 @@ const providerUrl = "https://rpc.ankr.com/eth"; // Or your desired RPC Provider 
 
 - Goerli Block Explorer URL: https://goerli.etherscan.io -- `chainId: "5"`
 
-```js
+```tsx
 const providerUrl = "https://rpc.ankr.com/eth_goerli"; // Or your desired RPC Provider url
 ```
 
@@ -87,7 +87,7 @@ const providerUrl = "https://rpc.ankr.com/eth_goerli"; // Or your desired RPC Pr
 You get the user information after a successful login returned from the `login` method. The `userInfo` object contains the user information, whereas
 the `privKey` object contains the private key which can be used to make blockchain calls.
 
-```js
+```tsx
 // Follow the login flow from the Web3Auth React Native SDK
 const web3auth = new Web3Auth(WebBrowser, {
   clientId,
@@ -106,7 +106,7 @@ const key = info.privKey; // User's Private Key
 
 ## Get Account
 
-```js
+```tsx
 const wallet = new ethers.Wallet(key);
 // Get user's Ethereum public address
 //highlight-next-line
@@ -115,7 +115,7 @@ const address = await wallet.address;
 
 ## Get Balance
 
-```js
+```tsx
 const ethersProvider = ethers.getDefaultProvider(providerUrl);
 const wallet = new ethers.Wallet(key, ethersProvider);
 // Get user's balance in ether
@@ -125,7 +125,7 @@ const balance = await wallet.getBalance();
 
 ## Send Transaction
 
-```js
+```tsx
 const ethersProvider = ethers.getDefaultProvider(providerUrl);
 const wallet = new ethers.Wallet(key, ethersProvider);
 
@@ -147,7 +147,7 @@ const tx = await wallet.sendTransaction({
 
 ## Sign a message
 
-```js
+```tsx
 const ethersProvider = ethers.getDefaultProvider(providerUrl);
 const wallet = new ethers.Wallet(key, ethersProvider);
 
