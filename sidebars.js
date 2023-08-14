@@ -541,44 +541,26 @@ module.exports = {
           collapsed: false,
           link: { type: "doc", id: "sdk/core-kit/tkey/modules/modules" },
           items: [
-            "sdk/core-kit/tkey/modules/share-serialization",
-            "sdk/core-kit/tkey/modules/share-transfer",
-            "sdk/core-kit/tkey/modules/chrome-storage",
             "sdk/core-kit/tkey/modules/web-storage",
+            "sdk/core-kit/tkey/modules/react-native-storage",
+            "sdk/core-kit/tkey/modules/chrome-storage",
             "sdk/core-kit/tkey/modules/security-questions",
+            "sdk/core-kit/tkey/modules/share-transfer",
+            "sdk/core-kit/tkey/modules/share-serialization",
             "sdk/core-kit/tkey/modules/seed-phrase",
             "sdk/core-kit/tkey/modules/private-keys",
           ],
         },
         {
-          type: 'link',
-          label: 'Release Notes', // The link label
-          href: 'https://github.com/tkey/tkey/releases', // The external URL
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "tKey JS in React Native",
-      link: { type: "doc", id: "sdk/core-kit/tkey-react-native/tkey-react-native" },
-      items: [
-        "sdk/core-kit/tkey-react-native/install",
-        "sdk/core-kit/tkey-react-native/initialize",
-        "sdk/core-kit/tkey-react-native/usage",
-        {
           type: "category",
-          label: "Modules",
+          label: "Additional Reading",
           collapsible: true,
           collapsed: false,
-          link: { type: "doc", id: "sdk/core-kit/tkey-react-native/modules/modules" },
           items: [
-            "sdk/core-kit/tkey-react-native/modules/share-serialization",
-            "sdk/core-kit/tkey-react-native/modules/share-transfer",
-            "sdk/core-kit/tkey-react-native/modules/security-questions",
-            "sdk/core-kit/tkey-react-native/modules/seed-phrase",
-            "sdk/core-kit/tkey-react-native/modules/private-keys",
+            "sdk/core-kit/tkey/intrinsic-flow",
           ],
         },
+
         {
           type: 'link',
           label: 'Release Notes', // The link label

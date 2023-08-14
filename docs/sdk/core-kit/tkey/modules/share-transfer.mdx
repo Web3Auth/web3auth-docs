@@ -17,23 +17,80 @@ npm install --save @tkey/share-transfer
 
 ## Initialization
 
-#### Import the `ShareTransferModule` class from `@tkey/share-transfer`
-
-```javascript
-import ShareTransferModule from "@tkey/share-transfer";
-```
-
-#### Assign the `ShareTransferModule` class to a variable
-
-```javascript
+```tsx
+import { ShareTransferModule } from "@tkey/share-transfer";
 const shareTransferModule = new ShareTransferModule();
 ```
 
-### Returns
+## Usage
 
-The `ShareTransferModule` class returns an object with the following properties:
+With the `ShareTransferModule`, you have access to the multiple functions as mentioned in the type reference, however, the most important ones are:
 
-```ts
+### Request a New Share from a Device
+
+```tsx
+requestNewShare(
+  userAgent: string,
+  availableShareIndexes: Array<string>,
+  callback?: (err?: ITkeyError, shareStore?: ShareStore) => void
+): Promise<string>;
+```
+
+- `userAgent`: The user agent of the client that is requesting a new share.
+- `availableShareIndexes`: An array of share indexes that are available for the client.
+- `callback`: A callback function that is called when the request is complete.
+
+#### Return
+
+- `Promise<string>`: Share index of the new share.
+
+#### Example
+
+```js
+const result_requestNewShare = await (tKey.modules.shareTransfer as ShareTransferModule).requestNewShare(navigator.userAgent, tKey.getCurrentShareIndexes());
+```
+
+### Look for Requests from Another Device
+
+`lookForRequests(): Promise<Array<string>>;`
+
+#### Return
+
+- `Promise<Array<string>>`: An array of indexes of pending requests
+
+#### Example
+
+```js
+const requests = await (tKey.modules.shareTransfer ShareTransferModule).lookForRequests();
+```
+
+### Approve request from Another Device
+
+`approveRequest(encPubKeyX: string, shareStore?: ShareStore): Promise<void>;`
+
+- `encPubKeyX`: The public key of the share that is being approved.
+- `shareStore`: The share store that is being approved.
+
+#### Example
+
+```js
+const requests = await (tKey.modules.shareTransfer as ShareTransferModule).lookForRequests();
+let shareToShare;
+try {
+  shareToShare = await (tKey.modules.webStorage as WebStorageModule).getDeviceShare();
+} catch (err) {
+  console.error("No on device share found. Generating a new share");
+  const newShare = await tKey.generateNewShare();
+  shareToShare = newShare.newShareStores[newShare.newShareIndex.toString("hex")];
+}
+await (tKey.modules.shareTransfer as ShareTransferModule).approveRequest(requests[0], shareToShare);
+```
+
+## Type Reference
+
+### `ShareTransferModule`
+
+```tsx
 declare class ShareTransferModule implements IModule {
   moduleName: string;
   tbSDK: ITKeyApi;
@@ -68,151 +125,17 @@ declare class ShareTransferModule implements IModule {
 }
 ```
 
-## Usage
+### `ShareStore`
 
-With the `ShareTransferModule`, you've access to the following functions:
-
-### Request a new share
-
-#### `requestNewShare(userAgent: string, availableShareIndexes: Array<string>, callback?: (err?: ITkeyError, shareStore?: ShareStore) => void)`
-
-- `userAgent`: The user agent of the client that is requesting a new share.
-- `availableShareIndexes`: An array of share indexes that are available for the client.
-- `callback`: A callback function that is called when the request is complete.
-
-#### Return
-
-- `Promise<string>`: Share index of the new share.
-
-```js title="Example"
-const result_requestNewShare = await tKey.modules.shareTransfer.requestNewShare(navigator.userAgent, tKey.getCurrentShareIndexes());
-```
-
-### Add custom info to share request
-
-#### `addCustomInfoToShareRequest(encPubKeyX: string, customInfo: string)`
-
-- `encPubKeyX`: The public key of the share that is being requested.
-- `customInfo`: The custom info that is being added to the share request.
-
-#### Return
-
-- `Promise<void>`
-
-### Look for requests
-
-#### `lookForRequests()`
-
-#### Return
-
-- `Promise<Array<string>>`: An array of indexes of pending requests
-
-```js title="Example"
-const requests = await tKey.modules.shareTransfer.lookForRequests();
-```
-
-### Approve request
-
-#### `approveRequest(encPubKeyX: string, shareStore?: ShareStore)`
-
-- `encPubKeyX`: The public key of the share that is being approved.
-- `shareStore`: The share store that is being approved.
-
-#### Return
-
-- `Promise<void>`
-
-```js title="Example"
-const requests = await tKey.modules.shareTransfer.lookForRequests();
-let shareToShare;
-try {
-  shareToShare = await tKey.modules.webStorage.getDeviceShare();
-} catch (err) {
-  console.error("No on device share found. Generating a new share");
-  const newShare = await tKey.generateNewShare();
-  shareToShare = newShare.newShareStores[newShare.newShareIndex.toString("hex")];
+```tsx
+class ShareStore implements ISerializable {
+  share: Share;
+  polynomialID: PolynomialID;
+  constructor(share: Share, polynomialID: PolynomialID);
+  static fromJSON(value: StringifiedType): ShareStore;
+  toJSON(): StringifiedType;
 }
-await tKey.modules.shareTransfer.approveRequest(requests[0], shareToShare);
-```
-
-### Approve request with share index
-
-#### `approveRequestWithShareIndex(encPubKeyX: string, shareIndex: string)`
-
-- `encPubKeyX`: The public key of the share that is being approved.
-- `shareIndex`: The share index that is being approved.
-
-#### Return
-
-- `Promise<void>`
-
-### Get share transfer store
-
-#### `getShareTransferStore()`
-
-#### Return
-
-- `Promise<ShareTransferStore>`: The share transfer store.
-
-```js title="Example"
-const result_getShareTransfer = await tKey.modules.shareTransfer.getShareTransferStore();
-```
-
-### Set share transfer store
-
-#### `setShareTransferStore(shareTransferStore: ShareTransferStore)`
-
-- `shareTransferStore`: The share transfer store.
-
-#### Return
-
-- `Promise<void>`
-
-```js title="Example"
-const result_setShareTransfer = await tKey.modules.shareTransfer.setShareTransferStore(shareTransferStore);
-```
-
-### Start request status check
-
-#### `startRequestStatusCheck(encPubKeyX: string, deleteRequestAfterCompletion: boolean)`
-
-- `encPubKeyX`: The public key of the share that is being checked.
-- `deleteRequestAfterCompletion`: Whether or not to delete the request after it is completed.
-
-#### Return
-
-- `Promise<ShareStore>`: The share store.
-
-### Cancel request status check
-
-#### `cancelRequestStatusCheck()`
-
-#### Return
-
-- `Promise<void>`
-
-```js title="Example"
-await tKey.modules.shareTransfer.cancelRequestStatusCheck();
-```
-
-### Delete share transfer store
-
-#### `deleteShareTransferStore(encPubKey: string)`
-
-- `encPubKey`: The public key of the share that is being deleted.
-
-#### Return
-
-- `Promise<void>`
-
-### Reset share transfer store
-
-#### `resetShareTransferStore()`
-
-#### Return
-
-- `Promise<void>`
-
-```js title="Example"
-await tKey.modules.shareTransfer.resetShareTransferStore();
+interface ISerializable {
+  toJSON(): StringifiedType;
+}
 ```

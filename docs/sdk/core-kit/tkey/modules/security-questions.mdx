@@ -17,29 +17,65 @@ npm install --save @tkey/security-questions
 
 ## Initialization
 
-#### Import the `SecurityQuestionsModule` class from `@tkey/security-questions`
-
-```javascript
-import SecurityQuestionsModule from "@tkey/security-questions";
-```
-
-#### Assign the `SecurityQuestionsModule` class to a variable
-
-```javascript
-const securityQuestionsModule = new SecurityQuestionsModule(params);
-```
-
 ### Parameters
 
 `params`
 
 - `saveAnswers?`: `boolean`
 
-### Returns
+```tsx
+import { SecurityQuestionsModule } from "@tkey/security-questions";
+const securityQuestionsModule = new SecurityQuestionsModule();
+```
 
-The `SecurityQuestionsModule` class returns an object with the following properties:
+## Usage
 
-```ts
+With the `SecurityQuestionsModule`, you have access to the multiple functions as mentioned in the type reference, however, the most important ones
+are:
+
+### Generate New Share with Question and Answer
+
+`generateNewShareWithSecurityQuestions(answerString: string, questions: string): Promise<GenerateNewShareResult>;`
+
+- `answerString`: Answer corresponding to a security question
+- `questions`: The security question, **must be greater than 10 characters**
+
+#### Example
+
+```tsx
+await(tKeyInstance.modules.securityQuestions as SecurityQuestionsModule).generateNewShareWithSecurityQuestions(password, "whats your password?");
+```
+
+### Input Existing Security Questions Share into tKey Instance
+
+`inputShareFromSecurityQuestions(answerString: string): Promise<void>;`
+
+#### Example
+
+- `answerString`: Answer corresponding to a security question
+
+```tsx
+await(tKeyInstance.modules.securityQuestions as any).inputShareFromSecurityQuestions(password);
+```
+
+### Change Security Question and Answer
+
+`changeSecurityQuestionAndAnswer(newAnswerString: string, newQuestions: string): Promise<void>;`
+
+- `newAnswerString`: Answer corresponding to the new security question
+- `newQuestions`: The new security question
+
+#### Example
+
+```tsx
+await(tKeyInstance.modules.securityQuestions as any).changeSecurityQuestionAndAnswer(password, "whats your password?");
+```
+
+## Type Reference
+
+### `SecurityQuestionsModule`
+
+```tsx
 class SecurityQuestionsModule implements IModule {
   moduleName: string;
   tbSDK: ITKeyApi;
@@ -57,22 +93,9 @@ class SecurityQuestionsModule implements IModule {
 }
 ```
 
-## Usage
+### `GenerateNewShareResult`
 
-With the `SecurityQuestionsModule`, you've access to the following functions:
-
-### Generate new share
-
-#### `generateNewShareWithSecurityQuestions(answerString: string, questions: string)`
-
-- `answerString`: Answer corresponding to a security question
-- `questions`: The secutity question
-
-#### Return
-
-- `Promise<GenerateNewShareResult>`: The `GenerateNewShareResult` object
-
-```ts title="GenerateNewShareResult"
+```tsx
 declare type GenerateNewShareResult = {
   newShareStores: ShareStoreMap;
   newShareIndex: BN;
@@ -88,132 +111,3 @@ declare class ShareStore implements ISerializable {
   toJSON(): StringifiedType;
 }
 ```
-
-```js title="Example"
-const generateNewShareWithSecurityQuestions = async () => {
-  try {
-    await tKey.modules.securityQuestions.generateNewShareWithSecurityQuestions("Multi Factor Keys", "What is MFK?");
-  } catch (error) {
-    console.error(error);
-  }
-};
-```
-
-### Get Security Question
-
-#### `getSecurityQuestions()`
-
-#### Return
-
-- `string`: The security question
-
-```js title="Example"
-const getQuestion = async () => {
-  try {
-    const question = await tKey.modules.securityQuestions.getSecurityQuestions();
-    return question;
-  } catch (error) {
-    console.error(error);
-  }
-};
-```
-
-### Get the Answer
-
-#### `getAnswer`
-
-#### Return
-
-- `string`: The answer corresponding to the security question
-
-```js title="Example"
-const getAnswer = async () => {
-  try {
-    const answer = await tKey.modules.securityQuestions.getAnswer();
-    return answer;
-  } catch (error) {
-    console.error(error);
-  }
-};
-```
-
-:::note
-
-To get the Answer, `SecurityQuestionsModule`'s constructor should be passed `saveAnswers` as `true`.
-
-```js
-const securityQuestionsModule = new SecurityQuestionsModule(true);
-```
-
-:::
-
-### Input Share to tKey State
-
-#### `inputShareFromSecurityQuestions(answerString: string)`
-
-- `answerString`: Answer corresponding to the security question
-
-#### Return
-
-- `Promise<void>`
-
-```js title="Example"
-const inputShareFromSecurityQuestions = async (answer) => {
-  try {
-    await tKey.modules.securityQuestions.inputShareFromSecurityQuestions(answer);
-  } catch (error) {
-    console.error(error);
-  }
-};
-```
-
-### Change Security Q & A
-
-#### `changeSecurityQuestionAndAnswer(newAnswerString: string, newQuestions: string)`
-
-- `newAnswerString`: Answer corresponding to the new security question
-- `newQuestions`: The new secutity question
-
-#### Return
-
-- `Promise<void>`
-
-```js title="Example"
-const changeQuestionAnswer = async () => {
-  try {
-    await tKey.modules.securityQuestions.changeSecurityQuestionAndAnswer("Multi Factor Keys", "What is MFK?");
-  } catch (error) {
-    console.error(error);
-  }
-};
-```
-
-### Save answer on tKey store
-
-#### `saveAnswerOnTkeyStore(answerString: string)`
-
-- `answerString`: Answer corresponding to the security question
-
-#### Return
-
-- `Promise<void>`
-
-```js title="Example"
-const saveAnswerOnTkeyStore = async (answer) => {
-  try {
-    await tKey.modules.securityQuestions.saveAnswerOnTkeyStore(answer);
-  } catch (error) {
-    console.error(error);
-  }
-};
-```
-
-:::note
-
-To save the Answer, `SecurityQuestionsModule`'s constructor should be passed `saveAnswers` as `true`.
-
-```js
-const securityQuestionsModule = new SecurityQuestionsModule(true);
-```
-
-:::
