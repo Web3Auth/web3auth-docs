@@ -154,7 +154,7 @@ In this guide, we are using firebase to authenticate the user's Identity and get
 
 Following is the code snippet to authenticate a user with firebase and get the `idToken`.
 
-```js
+```tsx
 // Import the functions you need from the SDK
 import { initializeApp } from "firebase/app";
 
@@ -205,7 +205,7 @@ Ensure that the `idToken` passed to the `connect()` is a newly issued Token(JWT)
 
 :::
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/single-factor-auth";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 
@@ -259,7 +259,7 @@ Here are the steps required to login with MFA:
 
 #### Instantiate Web3Auth sdk
 
-```js
+```tsx
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 
@@ -282,7 +282,7 @@ const web3auth = new Web3AuthNoModal({
 
 #### Initialising the Openlogin Adapter
 
-```js
+```tsx
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
     network: "cyan",
@@ -303,13 +303,13 @@ about openloginAdapterParams refer to docs [here](/sdk/pnp/web/adapters/openlogi
 
 #### Initialising the Web3Auth SDK
 
-```js
+```tsx
 await web3auth.init();
 ```
 
 #### Login with MFA
 
-```js
+```tsx
 const idToken = "YOUR_ID_TOKEN"; // idToken from firebase login response or from your own backend.
 // if NO, login with web3auth
 const web3AuthProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
@@ -349,7 +349,7 @@ application.
 
 The following code snippet depicts how to enable MFA for users while using Firebase as the JWT provider.
 
-```js
+```tsx
 import { WALLET_ADAPTERS } from "@web3auth/base";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
@@ -405,7 +405,7 @@ values={[
 
 <TabItem value="mfa">
 
-```js
+```tsx
 const user = await web3auth.getUserInfo();
 console.log("User info", user);
 ```
@@ -414,7 +414,7 @@ console.log("User info", user);
 
 <TabItem value="mfa-disabled">
 
-```js
+```tsx
 const user = parse(idToken);
 console.log("User info", user);
 ```
@@ -440,7 +440,7 @@ values={[
 
 <TabItem value="mfa">
 
-```js
+```tsx
 await web3auth.logout();
 ```
 
@@ -450,7 +450,7 @@ await web3auth.logout();
 
 Set the provider to null. This will log out the user.
 
-```js
+```tsx
 setProvider(null);
 ```
 

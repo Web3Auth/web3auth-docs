@@ -92,7 +92,7 @@ npm install @web3auth/no-modal @web3auth/base @web3auth/openlogin-adapter
 
 #### Import the Web3Auth Modules into your project
 
-```js title="src/App.tsx"
+```tsx title="src/App.tsx"
 import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/no-modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
@@ -109,7 +109,7 @@ resolution.
 
 Create the Web3Auth instance and configure the Openlogin adapter as per your requirements.
 
-```js title="src/App.tsx"
+```tsx title="src/App.tsx"
 const web3auth = new Web3AuthNoModal({
   clientId,
   chainConfig: {
@@ -129,7 +129,7 @@ web3auth.configureAdapter(openloginAdapter);
 
 Once initialized, you can use the `connectTo` method to authenticate the user.
 
-```js
+```tsx
 const provider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "google",
 });
@@ -137,7 +137,7 @@ const provider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 
 ### Get the User Profile
 
-```js
+```tsx
 // Assuming the user is logged in.
 const user = await web3auth.getUserInfo();
 ```
@@ -146,7 +146,7 @@ const user = await web3auth.getUserInfo();
 
 Logging out your user is as simple as calling the `web3auth.logout()` function.
 
-```js
+```tsx
 await web3auth.logout();
 ```
 

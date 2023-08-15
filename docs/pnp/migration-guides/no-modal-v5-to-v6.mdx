@@ -12,7 +12,7 @@ description: "PnP No Modal SDK - v5 to v6 | Documentation - Web3Auth"
 
 With V6, users can manage their session using `web3auth.connected` instead of `web3auth.provider`.
 
-```js
+```tsx
 // With V6
 // highlight-start
 if (web3auth.connected) {
@@ -26,7 +26,7 @@ if (web3auth.connected) {
 In V5, we used to add a check for setting the `provider` only if the `web3auth.provider` was present. But now with V6 we always have provider
 available even if the user is not logged-in.
 
-```js
+```tsx
 // With V5
 if (web3auth.provider) {
   setProvider(web3auth.provider);
@@ -41,7 +41,7 @@ setProvider(web3auth.provider); // before the connect() or connectTo(), provider
 Previously, the Web Modal SDK required `chainConfig` as a parameter which had `rpcTarget` & `chainId` as the optional parameter. But with V6, it's
 mandatory to add `rpcTarget` & `chainId` in the `chainConfig` object.
 
-```js
+```tsx
 const web3auth = new Web3Auth({
   clientId,
   chainConfig: {
@@ -66,7 +66,7 @@ With V6, we have added a new parameter `privateKeyProvider` which is mandatory t
 For EVM chains use the `EthereumPrivateKeyProvider` from the `@web3auth/ethereum-provider`package. Please note
 that`EthereumPrivateKeyProvider`requires`chainConfig`as the `config` parameter at the time of initialization.
 
-```js
+```tsx
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 const chainConfig = {
@@ -92,7 +92,7 @@ web3authInstance.configureAdapter(openloginAdapter);
 For Solana use the `SolanaPrivateKeyProvider` from the `@web3auth/solana-provider`package. Please note that `SolanaPrivateKeyProvider` requires
 `chainConfig` as the `config` parameter at the time of initialization.
 
-```js
+```tsx
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 
 const chainConfig = {
@@ -118,7 +118,7 @@ web3auth.configureAdapter(openloginAdapter);
 For all Non-EVM & Non-Solana chains use the `CommonPrivateKeyProvider` from the `@web3auth/base-provider`package. Please note that
 `CommonPrivateKeyProvider` requires `chainConfig` as the `config` parameter at the time of initialization.
 
-```js
+```tsx
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 
 const chainConfig = {

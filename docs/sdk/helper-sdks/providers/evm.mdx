@@ -45,7 +45,7 @@ This constructor takes an object with a config of `EthereumPrivKeyProviderConfig
 
 `EthereumPrivKeyProviderConfig`
 
-```ts
+```tsx
 export interface EthereumPrivKeyProviderConfig extends BaseProviderConfig {
   chainConfig: Omit<CustomChainConfig, "chainNamespace">;
 }
@@ -115,7 +115,7 @@ Some of the commonly used L2s and the Ethereum chain ids are listed below.
 
 #### Example
 
-```ts
+```tsx
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0x1",
@@ -138,7 +138,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 If you are using `chainNamespace: "eip155"` while initializing `Web3Auth` or `Web3AuthNoModal` with the `OpenloginAdapter`, you need to add the
 `privateKeyProvider` to the OpenLogin instance.
 
-```ts
+```tsx
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0x1",
@@ -181,7 +181,7 @@ provider = await web3auth.connectTo(
 
 While using the SFA Web SDK, you need to pass the provider during the initialisation of SDK, while calling the init() function.
 
-```ts
+```tsx
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0x1",
@@ -219,11 +219,11 @@ const provider = await web3authSFAuth.connect({
 In tKey JS SDK, there is not internal method of passing the provider directly. Hence, you need to setup the provider using the private key generated
 from tKey, using the setupProvider function of the EthereumPrivateKeyProvider.
 
-```ts
+```tsx
 setupProvider(privKey: string): Promise<void>;
 ```
 
-```ts
+```tsx
 // please complete the tKey setup and login before this.
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -262,7 +262,7 @@ On connection, you can use this `provider` as an [`EIP1193`](https://eips.ethere
 
 <TabItem value="web3">
 
-```ts
+```tsx
 import Web3 from "web3";
 
 const web3 = new Web3(provider);
@@ -272,7 +272,7 @@ const web3 = new Web3(provider);
 
 <TabItem value="ethers">
 
-```ts
+```tsx
 import { ethers } from "ethers";
 
 const provider = new ethers.providers.Web3Provider(provider);
@@ -298,7 +298,7 @@ etc. Here we have listed a few examples to help you get started.
 
 This method is used to fetch the address of the connected account.
 
-```ts
+```tsx
 // Get user's Ethereum public address
 const address = (await web3.eth.getAccounts())[0];
 
@@ -314,7 +314,7 @@ const balance = web3.utils.fromWei(
 
 This function is used to broadcast a transaction on chain.
 
-```ts
+```tsx
 // Get user's Ethereum public address
 const fromAddress = (await web3.eth.getAccounts())[0];
 
@@ -337,7 +337,7 @@ The following example shows how to sign different types of messages with the con
 
 #### `web3.eth.personal.sign(originalMessage, fromAddress)`
 
-```ts
+```tsx
 // Get user's Ethereum public address
 const fromAddress = (await web3.eth.getAccounts())[0];
 
@@ -350,7 +350,7 @@ const signedMessage = await web3.eth.personal.sign(originalMessage, fromAddress)
 
 #### `eth_signTypedData`
 
-```ts
+```tsx
 // Get user's Ethereum public address
 const fromAddress = (await web3.eth.getAccounts())[0];
 
@@ -381,7 +381,7 @@ const signedMessage = await web3.currentProvider.sendAsync({
 
 #### `eth_signTypedData_v3`
 
-```ts
+```tsx
 // Get user's Ethereum public address
 const fromAddress = (await web3.eth.getAccounts())[0];
 
@@ -433,7 +433,7 @@ const signedMessage = await web3.currentProvider.sendAsync({
 
 #### `eth_signTypedData_v4`
 
-```ts
+```tsx
 /*
   Sign Typed Data v4 adds support for
   arrays and recursive data types.
@@ -494,7 +494,7 @@ const signedMessage = await web3.currentProvider.sendAsync({
 
 This method is used to fetch the private key of logged in user. It is only available for `in-app` adapters like `openlogin`.
 
-```ts
+```tsx
 //Assuming user is already logged in.
 async getPrivateKey() {
   const privateKey = await web3auth.provider.request({

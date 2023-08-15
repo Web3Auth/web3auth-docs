@@ -54,7 +54,7 @@ Checkout the [Authentication Section](./authentication) to know more about the `
 
 #### Returns
 
-```js
+```tsx
 connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null>
 ```
 
@@ -65,7 +65,7 @@ On unsuccessful login, this function will return a `null` value.
 
 #### Example
 
-```js
+```tsx
 const provider = await coreKitInstance.connect({
   subVerifierDetails: {
     typeOfLogin: "google",
@@ -83,7 +83,7 @@ Disconnect the user's connected wallet/ provider and log them out of the Web3Aut
 
 #### Example
 
-```js
+```tsx
 await coreKitInstance.logout();
 ```
 
@@ -133,7 +133,7 @@ Returns the Backup Mnemonic Share, which can be used to recover the User's accou
 
 #### Example
 
-```js
+```tsx
 await coreKitInstance.exportBackupShare();
 ```
 
@@ -145,7 +145,7 @@ Inputs the Backup Mnemonic Share to recover the User's account.
 
 #### Example
 
-```js
+```tsx
 await coreKitInstance.inputBackupShare(seedPhrase);
 ```
 
@@ -159,7 +159,7 @@ certain parameter on successful authentication, you can use this share to create
 
 #### Example
 
-```js
+```tsx
 await coreKitInstance.addSecurityQuestionShare("What is your password?", password);
 ```
 
@@ -171,7 +171,7 @@ Recover the User's account using the Security Question Share.
 
 #### Example
 
-```js
+```tsx
 await coreKitInstance.recoverSecurityQuestionShare("What is your password?", password);
 ```
 
@@ -184,7 +184,7 @@ can only be used if the user has already logged in within the application while 
 
 #### Example
 
-```js
+```tsx
 await coreKitInstance.changeSecurityQuestionShare("What is your password?", password);
 ```
 
@@ -197,7 +197,7 @@ while meeting the minimum share threshold.
 
 #### Example
 
-```js
+```tsx
 await coreKitInstance.deleteSecurityQuestionShare("What is your password?");
 ```
 
@@ -211,30 +211,30 @@ Returns the User's information received from the ID Token.
 
 This function returns the following parameters in the form of an object:
 
-```js
+```tsx
 type UserInfo = {
-  email: string,
-  name: string,
-  profileImage: string,
-  aggregateVerifier?: string,
-  verifier: string,
-  verifierId: string,
-  typeOfLogin: LOGIN_TYPE,
-  ref?: string,
-  registerOnly?: boolean,
-  extraVerifierParams?: WebAuthnExtraParams,
-  accessToken: string,
-  idToken?: string,
-  ref?: string,
-  extraParams?: string,
-  extraParamsPassed?: string,
-  state: TorusGenericObject,
+  email: string;
+  name: string;
+  profileImage: string;
+  aggregateVerifier?: string;
+  verifier: string;
+  verifierId: string;
+  typeOfLogin: LOGIN_TYPE;
+  ref?: string;
+  registerOnly?: boolean;
+  extraVerifierParams?: WebAuthnExtraParams;
+  accessToken: string;
+  idToken?: string;
+  ref?: string;
+  extraParams?: string;
+  extraParamsPassed?: string;
+  state: TorusGenericObject;
 };
 ```
 
 #### Example
 
-```js
+```tsx
 await coreKitInstance.getUserInfo();
 ```
 
@@ -248,19 +248,19 @@ Returns the details of how the user's key is managed by the MPC Core Kit.
 
 This function returns the following parameters in the form of an object:
 
-```js
+```tsx
 type KeyDetails = {
-  pubKey: Point,
-  requiredShares: number,
-  threshold: number,
-  totalShares: number,
-  shareDescriptions: ShareDescriptionMap,
+  pubKey: Point;
+  requiredShares: number;
+  threshold: number;
+  totalShares: number;
+  shareDescriptions: ShareDescriptionMap;
 };
 ```
 
 #### Example
 
-```js
+```tsx
 await coreKitInstance.getKeyDetails();
 ```
 
@@ -272,7 +272,7 @@ Sync the local changes made to the User's account with the web3auth metadata ser
 
 #### Example
 
-```js
+```tsx
 await coreKitInstance.commitChanges();
 ```
 
@@ -285,6 +285,6 @@ previous key and the funds/ assets associated with it.
 
 #### Example
 
-```js
+```tsx
 await coreKitInstance.CRITICAL_resetAccount();
 ```

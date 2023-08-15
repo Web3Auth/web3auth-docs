@@ -22,7 +22,7 @@ values={[
 >
 <TabItem value="EVM">
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 import Web3 from "web3";
 
@@ -54,7 +54,7 @@ console.log(userAccounts);
 </TabItem>
 <TabItem value="solana">
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { SolanaWallet } from "@web3auth/solana-provider";
 
@@ -84,26 +84,26 @@ console.log(userAccounts);
 </TabItem>
 <TabItem value="xrpl">
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { XrplPrivateKeyProvider, getXRPLChainConfig } from "@web3auth/xrpl-provider";
 
 const web3auth = new Web3Auth({
-chainConfig: {
-  chainNamespace: CHAIN_NAMESPACES.OTHER,
-},
-clientId = "YOUR_WEB3AUTH_CLIENT_ID", // get from https://dashboard.web3auth.io
-web3AuthNetwork = "cyan", // testnet, mainnet, cyan, aqua
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.OTHER,
+  },
+  clientId = "YOUR_WEB3AUTH_CLIENT_ID", // get from https://dashboard.web3auth.io
+  web3AuthNetwork = "cyan", // testnet, mainnet, cyan, aqua
 });
 
 const xrplProvider = new XrplPrivateKeyProvider({
-config: {
-  chainId: "chainId",
-  chainConfig: getXRPLChainConfig("testnet"), // devnet, testnet, mainnet
-  rpcTarget: "rpc url"
-},
+  config: {
+    chainId: "chainId",
+    chainConfig: getXRPLChainConfig("testnet"), // devnet, testnet, mainnet
+    rpcTarget: "rpc url",
+  },
 });
 
 const adapter = new OpenloginAdapter({
@@ -119,7 +119,7 @@ const provider = await web3auth.connect();
 </TabItem>
 <TabItem value="other">
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
@@ -217,7 +217,7 @@ scalability solutions, meta transactions, smart contract wallets, different elli
 
 Example below demonstrates usage of `other` chainNamespace and retrieving private key of logged in user.
 
-```ts
+```tsx
 const web3auth = new Web3Auth({
   chainConfig: { chainNamespace: CHAIN_NAMESPACES.OTHER },
   web3AuthNetwork: "cyan",

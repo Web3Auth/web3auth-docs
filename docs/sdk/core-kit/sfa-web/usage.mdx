@@ -5,8 +5,7 @@ displayed_sidebar: sdk
 description: "Web3Auth Core Kit Single Factor Auth Web SDK - Usage | Documentation - Web3Auth"
 ---
 
-import TabItem from "@theme/TabItem";
-import Tabs from "@theme/Tabs";
+import SFALoginParams from "@site/src/common/sdk/core-kit/sfa/_sfa_login_params.mdx";
 import SFAWebCustomJWTExample from "@site/src/common/sdk/core-kit/sfa/_sfa_web_custom_jwt_example.mdx";
 import SFAWebFirebaseJWTExample from "@site/src/common/sdk/core-kit/sfa/_sfa_web_firebase_jwt_example.mdx";
 
@@ -36,7 +35,7 @@ To login a user in the Web3Auth SFA Web SDK, you need to call `connect()` functi
 
 #### Returns
 
-```js
+```tsx
 connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null>
 ```
 
@@ -45,45 +44,9 @@ corresponding to your selected blockchain. You can use this provider to connect 
 
 On unsuccessful login, this function will return a `null` value.
 
-#### `connect(loginParams: LoginParams)`
+<SFALoginParams />
 
-`LoginParams`
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Type", value: "type" },
-  ]}
->
-
-<TabItem value="table">
-
-| Parameter               | Type                     | Description                                                                                                         | Mandatory |
-| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- | --------- |
-| `verifier`              | `string`                 | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                                  | Yes       |
-| `verifierId`            | `string`                 | Verifier ID's value, `sub` or `email`'s value present in the idToken and **not the string `sub` or `email`**.       | Yes       |
-| `idToken`               | `string`                 | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. | Yes       |
-| `subVerifierInfoArray?` | `TorusSubVerifierInfo[]` | Sub verifier info                                                                                                   | No        |
-
-</TabItem>
-
-<TabItem value="type">
-
-```javascript
-export type LoginParams = {
-  verifier: string,
-  verifierId: string,
-  idToken: string,
-  subVerifierInfoArray?: TorusSubVerifierInfo[],
-};
-```
-
-</TabItem>
-
-</Tabs>
-
-```js title="Usage"
+```tsx title="Usage"
 await web3auth.connect({
   verifier: "verifier-name", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
   verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.

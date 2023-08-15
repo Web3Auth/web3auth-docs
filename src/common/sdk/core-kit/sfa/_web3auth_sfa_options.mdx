@@ -1,0 +1,80 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter           | Type                        | Description                                                                                                                                                                                               | Mandatory |
+| ------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `clientId`          | `string`                    | Web3Auth Client ID. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).                                                                                       | Yes       |
+| `web3AuthNetwork?`  | `TORUS_LEGACY_NETWORK_TYPE` | Web3Auth Network to use for login. @defaultValue mainnet                                                                                                                                                  | No        |
+| `enableLogging?`    | `boolean`                   | Setting it to true will enable logs.                                                                                                                                                                      | No        |
+| `usePnPKey?`        | `boolean`                   | Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey. Use this flag if you require the key returned by PnP SDK. Ideal for migrating from PnP Products to SFA | No        |
+| `sessionTime?`      | `number`                    | Determine the session length in seconds. By default the value is set at 86400 seconds, ie. 7 days.                                                                                                        | No        |
+| `storageKey?`       | `"session"` or `"local"`    | Select the session key storage across local storage or session storage. Setting to "local" will persist social login session accross browser tabs. @defaultValue "local"                                  | No        |
+| `storageServerUrl?` | `string`                    | Specify a custom metadata storage server url. For general usecases, you don't need to change this value. @defaultValue https://broadcast-server.tor.us                                                    | No        |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface Web3AuthOptions {
+  /**
+   * Client id for web3auth.
+   * You can obtain your client id from the web3auth developer dashboard.
+   * You can set any random string for this on localhost.
+   */
+  clientId: string;
+  /**
+   * Web3Auth Network to use for login
+   * @defaultValue mainnet
+   */
+  web3AuthNetwork?: TORUS_LEGACY_NETWORK_TYPE;
+
+  /**
+   * setting to true will enable logs
+   *
+   * @defaultValue false
+   */
+  enableLogging?: boolean;
+
+  /**
+   * setting this to true returns the same key as web sdk (i.e., plug n play key)
+   * By default, this sdk returns CoreKitKey
+   */
+  usePnPKey?: boolean;
+
+  /**
+   * How long should a login session last at a minimum in seconds
+   *
+   * @defaultValue 86400 seconds
+   * @remarks Max value of sessionTime can be 7 * 86400 (7 days)
+   */
+  sessionTime?: number;
+
+  /**
+   * setting to "local" will persist social login session accross browser tabs.
+   *
+   * @defaultValue "local"
+   */
+  storageKey?: "session" | "local";
+
+  /**
+   * Specify a custom storage server url
+   * @defaultValue https://broadcast-server.tor.us
+   */
+  storageServerUrl?: string;
+}
+```
+
+</TabItem>
+
+</Tabs>

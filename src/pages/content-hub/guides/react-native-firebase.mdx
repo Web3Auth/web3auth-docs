@@ -136,7 +136,7 @@ targetSdkVersion = 31
   define your `redirectUrl` as `web3authrnexample://openlogin`. Make sure you register this `redirectUrl` in the
   [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
 
-```js title="App.js"
+```tsx title="App.js"
 const scheme = "web3authrnbareexample"; // Or your desired app redirection scheme
 const resolvedRedirectUrl = `${scheme}://openlogin`;
 ```
@@ -226,7 +226,7 @@ import * as WebBrowser from "@toruslabs/react-native-web-browser";
 #### Importing a `EncryptedStorage` implementation
 
 ```typescript
-import EncryptedStorage from 'react-native-encrypted-storage';
+import EncryptedStorage from "react-native-encrypted-storage";
 ```
 
 #### Instantiating Web3Auth
@@ -246,7 +246,7 @@ We need `clientId` and target Web3Auth `network` to initialize the `web3auth` ob
 
   :::
 
-```js
+```tsx
 const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
   network: OPENLOGIN_NETWORK.CYAN, // MAINNET, AQUA,  CYAN or TESTNET
@@ -276,7 +276,7 @@ const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
 We're using the React Native Firebase Library for this project. You can follow the
 [official RNFirebase documentation](https://rnfirebase.io/auth/usage) to setup Firebase in your project.
 
-```js
+```tsx
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
@@ -317,7 +317,7 @@ Additionally, in `extraLoginOptions` you have to provide the details required by
 Once a user logs in, the user can access the key by `web3auth.privKey()`. For EVM Blockchains, the `secp256k1` private key is used to sign
 transactions. We can get an `ed25519` compatible private key for other blockchains using `web3auth.ed25519Key()`.
 
-```js
+```tsx
 const loginRes = await signInWithFirebase();
 const idToken = await loginRes.user.getIdToken(true);
 
@@ -347,7 +347,7 @@ If you wish you **[add Multi Factor Authentication](/sdk/pnp/react-native/mfa)**
 
 ### Get the User Profile
 
-```js
+```tsx
 // Assuming the user is logged in, get the user profile from the web3auth object
 var userInfo = web3auth.userInfo();
 ```
@@ -363,7 +363,7 @@ Web3Auth network.
 
 Use the `logout` function of `web3auth` to log the user out.
 
-```js
+```tsx
 web3auth.logout();
 ```
 
@@ -376,8 +376,8 @@ web3auth.logout();
 ## Interacting with the Blockchain
 
 Once a user logs in, the user can ccess the private key by `web3auth.privKey()`. For EVM Blockchains, the `secp256k1` private key is used to sign
-transactions. We can get an `ed25519` compatible private key for other blockchains using `web3auth.ed25519Key()`. Similar to how we're using this private key in the `ethers.js`
-library in this example, you can connect to any other blockchain of your choice.
+transactions. We can get an `ed25519` compatible private key for other blockchains using `web3auth.ed25519Key()`. Similar to how we're using this
+private key in the `ethers.js` library in this example, you can connect to any other blockchain of your choice.
 
 :::info connect any blockchain
 
