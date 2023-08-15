@@ -156,13 +156,13 @@ up.
 
 ### Importing the packages
 
-```js
+```tsx
 import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK } from "@web3auth/mpc-core-kit";
 ```
 
 ### Instantiate the Web3Auth SDK
 
-```js
+```tsx
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 
@@ -185,7 +185,7 @@ we can use the property `rpcTarget` and pass over the url of the node you want t
 
 Once initialized, you can use the `connect()` function to authenticate the user when they click the login button.
 
-```js
+```tsx
 const provider = await coreKitInstance.connect({
   subVerifierDetails: {
     typeOfLogin: "google",
@@ -199,7 +199,7 @@ When connecting, your `connect` function takes the arguments to connect to the `
 
 ### Get the User Profile
 
-```js
+```tsx
 const user = await coreKitInstance.getUserInfo();
 console.log("User info", user);
 ```
@@ -213,13 +213,13 @@ Logging out your user is as simple as calling the `logout` function.
 
 Returns the details of how the user's key is managed by the MPC Core Kit.
 
-```js
+```tsx
 await coreKitInstance.getKeyDetails();
 ```
 
 ### Logout
 
-```js
+```tsx
 await coreKitInstance.logout();
 ```
 
@@ -233,7 +233,7 @@ for the user and ask them to input it whenever they want to recover their accoun
 
 Returns the Backup Mnemonic Share, which can be used to recover the User's account.
 
-```js
+```tsx
 await coreKitInstance.exportBackupShare();
 ```
 
@@ -241,7 +241,7 @@ await coreKitInstance.exportBackupShare();
 
 Inputs the Backup Mnemonic Share to recover the User's account.
 
-```js
+```tsx
 await coreKitInstance.inputBackupShare(seedPhrase);
 ```
 
@@ -255,7 +255,7 @@ certain parameter on successful authentication, you can use this share to create
 
 Add a new Security Question Share to the user's account.
 
-```js
+```tsx
 await coreKitInstance.addSecurityQuestionShare("What is your password?", password);
 ```
 
@@ -263,7 +263,7 @@ await coreKitInstance.addSecurityQuestionShare("What is your password?", passwor
 
 Recover the User's account using the Security Question Share.
 
-```js
+```tsx
 await coreKitInstance.recoverSecurityQuestionShare("What is your password?", password);
 ```
 
@@ -272,7 +272,7 @@ await coreKitInstance.recoverSecurityQuestionShare("What is your password?", pas
 Changes the Security Question Share of the User's account. This helps you change the password if the user has lost it somehow. However, this function
 can only be used if the user has already logged in within the application while meeting the minimum share threshold.
 
-```js
+```tsx
 await coreKitInstance.changeSecurityQuestionShare("What is your password?", password);
 ```
 
@@ -281,7 +281,7 @@ await coreKitInstance.changeSecurityQuestionShare("What is your password?", pass
 Deletes the Security Question Share of the User's account. This function can only be used if the user has already logged in within the application
 while meeting the minimum share threshold.
 
-```js
+```tsx
 await coreKitInstance.deleteSecurityQuestionShare("What is your password?");
 ```
 

@@ -30,7 +30,7 @@ npm install --save aptos
 
 ## Initializing Provider
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 
 const web3auth = new Web3Auth({
@@ -61,7 +61,7 @@ key. However, we cannot use this key with Aptos EC Curve specific signing functi
 
 On the underhood, it uses the helper functions from `aptos` library to derive the key pair.
 
-```js
+```tsx
 import { AptosAccount, AptosClient } from "aptos";
 
 /*
@@ -70,16 +70,14 @@ import { AptosAccount, AptosClient } from "aptos";
 
 // web3authProvider is web3auth.provider from above
 const privateKey = await web3authProvider.request({ method: "private_key" });
-const privateKeyUint8Array = new Uint8Array(
-    privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16))
-);
+const privateKeyUint8Array = new Uint8Array(privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16)));
 const aptosAccount = new AptosAccount(privateKeyUint8Array);
 const aptosAccountAddress = aptosAccount.address();
 ```
 
 ## Get Balance
 
-```js
+```tsx
 import { AptosAccount, AptosClient } from "aptos";
 
 /*
@@ -88,13 +86,11 @@ import { AptosAccount, AptosClient } from "aptos";
 
 // web3authProvider is web3auth.provider from above
 const privateKey = await web3authProvider.request({ method: "private_key" });
-const privateKeyUint8Array = new Uint8Array(
-    privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16))
-);
+const privateKeyUint8Array = new Uint8Array(privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16)));
 const aptosAccount = new AptosAccount(privateKeyUint8Array);
 const aptosAccountAddress = aptosAccount.address();
 
-const NODE_URL ="https://fullnode.devnet.aptoslabs.com";
+const NODE_URL = "https://fullnode.devnet.aptoslabs.com";
 const aptosCoinStore = "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>";
 
 const client = new AptosClient(NODE_URL);
@@ -106,8 +102,8 @@ let balance = parseInt((accountResource?.data as any).coin.value);
 
 ## Send Transaction
 
-```js
-import { AptosAccount, FaucetClient,  AptosClient } from "aptos";
+```tsx
+import { AptosAccount, FaucetClient, AptosClient } from "aptos";
 
 /*
   Use code from the above Initializing Provider here
@@ -115,23 +111,21 @@ import { AptosAccount, FaucetClient,  AptosClient } from "aptos";
 
 // web3authProvider is web3auth.provider from above
 const privateKey = await web3authProvider.request({ method: "private_key" });
-const privateKeyUint8Array = new Uint8Array(
-    privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16))
-);
+const privateKeyUint8Array = new Uint8Array(privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16)));
 const aptosAccount = new AptosAccount(privateKeyUint8Array);
 const aptosAccountAddress = aptosAccount.address();
 
-const NODE_URL ="https://fullnode.devnet.aptoslabs.com";
+const NODE_URL = "https://fullnode.devnet.aptoslabs.com";
 const aptosCoinStore = "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>";
 
 const client = new AptosClient(NODE_URL);
 
 const payload = {
-      type: "entry_function_payload",
-      function: "0x1::coin::transfer",
-      type_arguments: ["0x1::aptos_coin::AptosCoin"],
-      arguments: [aptosAccount.address().hex(), 717], // sending funds to self
-    };
+  type: "entry_function_payload",
+  function: "0x1::coin::transfer",
+  type_arguments: ["0x1::aptos_coin::AptosCoin"],
+  arguments: [aptosAccount.address().hex(), 717], // sending funds to self
+};
 const txnRequest = await client.generateTransaction(aptosAccount.address(), payload);
 const signedTxn = await client.signTransaction(aptosAccount, txnRequest);
 const transactionRes = await client.submitTransaction(signedTxn);

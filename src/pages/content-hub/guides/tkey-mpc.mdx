@@ -108,8 +108,7 @@ As shares to the TSS Key and/or Metadata Key may rotate, Factor Keys allow a con
 
 :::note
 
-For this guide, we will be talking through the Web3Auth tKey JS MPC SDK and showing you a basic example of using it with
-`@tkey/default: 8.0.0-alpha.0` package.
+For this guide, we will be talking through the Web3Auth tKey JS MPC SDK and showing you a basic example of using it with `@tkey-mpc/default` package.
 
 :::
 
@@ -176,8 +175,8 @@ We will be starting with a 2/2 flow, i.e `Factor1: Social Factor` and `Factor2: 
 our conventional terminology of Shares A and B since we will not be constructing the private key in the frontend. Instead, we will be using the these
 **Factors** stored in the different locations to make a final signature.
 
-For this project, we will be using the `@tkey/default` package alongside multiple helper packages in the `8.0.0-alpha.0` version, that contain all the
-needed functionalities of the tKey MPC SDK. We will be using the following packages highlighted in the package.json file:
+For this project, we will be using the `@tkey-mpc/default` package alongside multiple helper packages, that contain all the needed functionalities of
+the tKey MPC SDK. We will be using the following packages highlighted in the package.json file:
 
 ```json title="package.json"
 {
@@ -185,59 +184,75 @@ needed functionalities of the tKey MPC SDK. We will be using the following packa
 "dependencies": {
     //highlight-start
     "@ethereumjs/common": "^3.1.1",
-    "@ethereumjs/tx": "^4.1.1",
+		"@ethereumjs/tx": "^4.1.1",
     //highlight-end
     "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
+		"@testing-library/react": "^13.4.0",
+		"@testing-library/user-event": "^13.5.0",
     //highlight-start
-    "@tkey/chrome-storage": "8.0.0-alpha.0",
-    "@tkey/common-types": "8.0.0-alpha.0",
-    "@tkey/core": "8.0.0-alpha.0",
-    "@tkey/service-provider-torus": "8.0.0-alpha.0",
-    "@tkey/storage-layer-torus": "8.0.0-alpha.0",
-    "@tkey/share-serialization": "8.0.0-alpha.0",
-    "@toruslabs/rss-client": "^1.3.0",
-    "@toruslabs/torus.js": "6.2.0-alpha.1",
-    "@toruslabs/tss-client": "^1.2.7-alpha.0",
-    "@toruslabs/tss-lib": "^1.2.1",
-    "@web3auth-mpc/ethereum-provider": "^2.1.22",
-    "bn.js": "^5.2.1",
-    "copy-webpack-plugin": "^11.0.0",
-    "eccrypto": "^1.1.6",
-    "html-webpack-plugin": "^5.5.0",
-    "jsrsasign": "^10.6.1",
-    "keccak256": "^1.0.6",
+    "@tkey-mpc/common-types": "^8.1.0",
+		"@tkey-mpc/core": "^8.1.0",
+		"@tkey-mpc/service-provider-torus": "^8.1.0",
+		"@tkey-mpc/share-serialization": "^8.1.0",
+		"@tkey-mpc/storage-layer-torus": "^8.1.0",
+		"@toruslabs/constants": "^10.0.0",
+		"@toruslabs/eslint-config-typescript": "^2.0.0",
+		"@toruslabs/fnd-base": "^12.0.0",
+		"@toruslabs/torus.js": "^10.0.5",
+		"@toruslabs/tss-client": "^1.6.1-alpha.0",
+		"@toruslabs/tss-lib": "^1.6.0-alpha.0",
+		"@web3auth-mpc/ethereum-provider": "^2.1.22",
+		"@web3auth/base": "^6.1.7",
+		"@web3auth/ethereum-provider": "^6.1.7",
+		"bn.js": "^5.2.1",
+		"copy-webpack-plugin": "^11.0.0",
+		"eccrypto": "^1.1.6",
+		"html-webpack-plugin": "^5.5.0",
+		"jsrsasign": "^10.6.1",
+		"keccak256": "^1.0.6",
     //highlight-end
-    "@types/jest": "^27.5.2",
-    "@types/node": "^17.0.45",
-    "@types/react": "^18.0.25",
-    "@types/react-dom": "^18.0.9",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.9.3",
-    "web-vitals": "^2.1.4",
+		"react-dom": "^18.2.0",
+		"react-scripts": "5.0.1",
+		"sweetalert": "^2.1.2",
+		"typescript": "^4.9.3",
+		"web-vitals": "^2.1.4",
     //highlight-next-line
-    "web3": "^1.8.1",
-    ...
+		"web3": "^1.8.2"
   },
   "devDependencies": {
     //highlight-start
     "@types/eccrypto": "^1.1.3",
-    "@types/elliptic": "^6.4.14",
-    "@types/jsrsasign": "^10.5.5",
+		"@types/elliptic": "^6.4.14",
+		"@types/jsrsasign": "^10.5.5",
     //highlight-end
+    "@types/jest": "^27.5.2",
+		"@types/node": "^17.0.45",
+		"@types/react": "^18.0.25",
+		"@types/react-dom": "^18.0.9",
     "assert": "^2.0.0",
-    "buffer": "^6.0.3",
-    "crypto-browserify": "^3.12.0",
-    "https-browserify": "^1.0.0",
-    "os-browserify": "^0.3.0",
-    "process": "^0.11.10",
-    "react-app-rewired": "^2.2.1",
-    "stream-browserify": "^3.0.0",
-    "stream-http": "^3.2.0",
-    "url": "^0.11.0"
+		"buffer": "^6.0.3",
+		"browserify-zlib": "^0.2.0",
+		"crypto-browserify": "^3.12.0",
+		"https-browserify": "^1.0.0",
+		"os-browserify": "^0.3.0",
+		"process": "^0.11.10",
+		"react-app-rewired": "^2.2.1",
+		"stream-browserify": "^3.0.0",
+		"stream-http": "^3.2.0",
+		"url": "^0.11.0",
+		"workbox-background-sync": "^6.5.4",
+		"workbox-broadcast-update": "^6.5.4",
+		"workbox-cacheable-response": "^6.5.4",
+		"workbox-core": "^6.5.4",
+		"workbox-expiration": "^6.5.4",
+		"workbox-google-analytics": "^6.5.4",
+		"workbox-navigation-preload": "^6.5.4",
+		"workbox-precaching": "^6.5.4",
+		"workbox-range-requests": "^6.5.4",
+		"workbox-routing": "^6.5.4",
+		"workbox-strategies": "^6.5.4",
+		"workbox-streams": "^6.5.4"
   },
   ...
 }
@@ -248,7 +263,7 @@ refer to our [tKey JS SDK Reference](/sdk/core-kit/tkey) for more details on the
 
 ### Understanding the Dependencies
 
-###### `@tkey/*`
+###### `@tkey-mpc/*`
 
 Contains all the functionalities of tKey needed for using MPC. These packages help us create the device factor and login to the Web3Auth.
 
@@ -269,15 +284,17 @@ These packages help in connecting to the Ethereum network and creating transacti
 After Installation, the next step to use Web3Auth Core Kit tKey SDK is to Initialize the SDK.
 
 ```ts title="src/tkey.ts"
-import ThresholdKey from "@tkey/core";
-import { TorusServiceProvider } from "@tkey/service-provider-torus";
-import { TorusStorageLayer } from "@tkey/storage-layer-torus";
-import { ShareSerializationModule } from "@tkey/share-serialization";
+import ThresholdKey from "@tkey-mpc/core";
+import { TorusServiceProvider } from "@tkey-mpc/service-provider-torus";
+import { TorusStorageLayer } from "@tkey-mpc/storage-layer-torus";
+import { ShareSerializationModule } from "@tkey-mpc/share-serialization";
 
 // Configuration of Service Provider
 const torusSp = new TorusServiceProvider({
   useTSS: true,
   customAuthArgs: {
+    network: "sapphire_devnet",
+    web3AuthClientId: "YOUR_CLIENT_ID", // anything will work on localhost, but get one valid clientID before hosting, from https://dashboard.web3auth.io
     baseUrl: `${window.location.origin}/serviceworker`,
     enableLogging: true,
   },
@@ -294,17 +311,17 @@ const shareSerializationModule = new ShareSerializationModule();
 
 // Instantiation of tKey
 export const tKey = new ThresholdKey({
-  enableLogging: true, // optional, used to logging all info, default is false
+  enableLogging: true,
   serviceProvider: torusSp as any,
   storageLayer: storageLayer as any,
-  manualSync: true, // needed for atomisation of tKey
+  manualSync: true,
   modules: {
     shareSerialization: shareSerializationModule,
   },
 });
 ```
 
-```ts title="src/App.tsx"
+```tsx title="src/App.tsx"
 useEffect(() => {
   const init = async () => {
     // Initialization of Service Provider
@@ -332,7 +349,7 @@ Once you have initialised the Web3Auth Service Provider, you're ready to trigger
 private key which will be needed by the tKey to generate it's share. This is done by calling the `triggerLogin()` function within the `tKey`
 instance's of `serviceProvider` property.
 
-```ts
+```tsx
 const triggerLogin = async () => {
   if (!tKey) {
     uiConsole("tKey not initialized yet");
@@ -341,10 +358,12 @@ const triggerLogin = async () => {
   try {
     // Triggering Login using Service Provider ==> opens the popup
     const loginResponse = await (tKey.serviceProvider as any).triggerLogin({
-      verifier: "google-tkey-w3a",
       typeOfLogin: "google",
+      verifier: "google-tkey-w3a",
       clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
     });
+    console.log("loginResponse", loginResponse);
+
     setLoginResponse(loginResponse);
     setUser(loginResponse.userInfo);
     return loginResponse;
@@ -368,7 +387,7 @@ function called `addFactorKeyMetadata` which is used to add data in the metadata
 
 By default, if the key is not present, the metadata returns a `KEY_NOT_FOUND` message. We can use this to check if the user is new or existing.
 
-```ts
+```tsx
 const isMetadataPresent = async (privateKeyBN: BN) => {
   const metadata = await tKey.storageLayer.getMetadata({ privKey: privateKeyBN });
   if (metadata && Object.keys(metadata).length > 0 && (metadata as any).message !== "KEY_NOT_FOUND") {
@@ -384,7 +403,7 @@ const isMetadataPresent = async (privateKeyBN: BN) => {
 Since we are use the tKey Core MPC SDK, we need to implement the device storage functions ourselves. We'll be using the local storage to store the
 device share for this example.
 
-```ts
+```tsx
 import BN from "bn.js";
 
 const [localFactorKey, setLocalFactorKey] = useState<BN | null>(null);
@@ -404,7 +423,7 @@ useEffect(() => {
 
 ### Implementing the main `initializeNewKey` function
 
-```ts
+```tsx
 import { addFactorKeyMetadata, getTSSPubKey } from "./utils";
 import BN from "bn.js";
 import { generatePrivate } from "eccrypto";
@@ -421,11 +440,15 @@ const initializeNewKey = async () => {
   }
   try {
     // Trigger Login using Service Provider
-    loginResponse = await triggerLogin();
-    setOAuthShare(loginResponse.privateKey); // This private key is the OAuth Metadata Share
+    const loginResponse = await triggerLogin();
+
+    const OAuthShare = new BN(TorusUtils.getPostboxKey(loginResponse), "hex");
+    setOAuthShare(OAuthShare); // This private key is the OAuth Metadata Share
 
     // Filter out the null values from the signatures
-    const signatures = loginResponse.signatures.filter((sign: any) => sign !== null);
+    const signatures = loginResponse.sessionData.sessionTokenData
+      .filter((i) => Boolean(i))
+      .map((session) => JSON.stringify({ data: session.token, sig: session.signature }));
 
     // Get the Device Share
     const tKeyLocalStoreString = localStorage.getItem(
@@ -437,7 +460,7 @@ const initializeNewKey = async () => {
     let factorKey: BN | null = null;
 
     // Check if the user is new or existing
-    const existingUser = await isMetadataPresent(loginResponse.privateKey);
+    const existingUser = await isMetadataPresent(OAuthShare);
 
     if (!existingUser) {
       // If the user is new, we'll generate a new factorKey & deviceShare and store it in the local storage. The factorKey can be used to get the deviceShare from metadata. Device Share is stored on the metadata encrypted by the factorKey.
@@ -520,6 +543,8 @@ const initializeNewKey = async () => {
 
     setLocalFactorKey(factorKey);
 
+    const nodeDetails = await tKey.serviceProvider.getTSSNodeDetails();
+
     // Set Signing Params for the Web3 Provider
     setSigningParams({
       tssNonce,
@@ -527,6 +552,7 @@ const initializeNewKey = async () => {
       tssShare2Index,
       compressedTSSPubKey,
       signatures,
+      nodeDetails,
     });
 
     // All done!
@@ -550,7 +576,7 @@ const initializeNewKey = async () => {
 Once you have set up your tKey instance, you're ready to set up the Web3 Provider. This is the provider that will be used by the Web3 SDK to sign the
 transactions.
 
-```ts
+```tsx
 import { setupWeb3 } from "./utils";
 
 const [web3, setWeb3] = useState<any>(null);
@@ -581,7 +607,7 @@ The following code snippet shows how to copy the local TSS share into a manual b
 your device share, without generating new TSS Shares. Generation of new TSS shares by default has been limited to 3 at the moment. This is to help
 save processing time and enhance the user experience.
 
-```ts
+```tsx
 import { copyExistingTSSShareForNewFactor, addFactorKeyMetadata } from "./utils";
 
 const copyTSSShareIntoManualBackupFactorkey = async () => {
@@ -613,7 +639,7 @@ const copyTSSShareIntoManualBackupFactorkey = async () => {
 
 The following code snippet shows how to create a new TSS share into a manual backup factor key.
 
-```ts
+```tsx
 import { addNewTSSShareAndFactor, addFactorKeyMetadata } from "./utils";
 
 const createNewTSSShareIntoManualBackupFactorkey = async () => {
@@ -660,7 +686,7 @@ const createNewTSSShareIntoManualBackupFactorkey = async () => {
 The following code snippet will help you get the details of the key stored on the metadata server. Please note these details can be customised and
 stored according to your needs.
 
-```ts
+```tsx
 const keyDetails = async () => {
   if (!tKey) {
     uiConsole("tKey not initialized yet");

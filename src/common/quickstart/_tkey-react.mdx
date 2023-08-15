@@ -20,7 +20,7 @@ After Installation, the next step to use Web3Auth's tKey JS is to Initialize the
 
 `src/tkey.ts`
 
-```js
+```tsx
 import ThresholdKey from "@tkey/default";
 import WebStorageModule from "@tkey/web-storage";
 import SecurityQuestionsModule from "@tkey/security-questions";
@@ -49,7 +49,7 @@ export const tKey = new ThresholdKey({
 
 `src/App.tsx`
 
-```js
+```tsx
 import { useEffect } from "react";
 import { tKey } from "./tkey";
 
@@ -59,12 +59,12 @@ function App() {
     const init = async () => {
       // Initialization of Service Provider
       try {
-        (tKey.serviceProvider as any).init({skipInit: true});
-        if ( window.location.pathname === "/auth" && window.location.hash.includes("#state") ) {
-            let result = await (tKey.serviceProvider as any).directWeb.getRedirectResult();
-            tKey.serviceProvider.postboxKey = new BN ( (result.result as any).privateKey!  , "hex");
-            setUser( (result.result as any).userInfo);
-            initializeNewKey();
+        (tKey.serviceProvider as any).init({ skipInit: true });
+        if (window.location.pathname === "/auth" && window.location.hash.includes("#state")) {
+          let result = await (tKey.serviceProvider as any).directWeb.getRedirectResult();
+          tKey.serviceProvider.postboxKey = new BN((result.result as any).privateKey!, "hex");
+          setUser((result.result as any).userInfo);
+          initializeNewKey();
         }
       } catch (error) {
         console.error(error);
@@ -81,7 +81,7 @@ Once you have initialised the Web3Auth Service Provider, you're ready to trigger
 private key which will be needed by the tKey to generate it's share. This is done by calling the `triggerLogin()` function within the `tKey`
 instance's of `serviceProvider` property.
 
-```js
+```tsx
 const triggerLogin = async () => {
   try {
     // Triggering Login using Service Provider ==> opens the popup
@@ -107,41 +107,39 @@ const triggerLogin = async () => {
 
 `initializeNewKey`
 
-```js
+```tsx
 const initializeNewKey = async () => {
-    if (!tKey) {
-        console.log("tKey not initialized yet");
-        return;
-    }
+  if (!tKey) {
+    console.log("tKey not initialized yet");
+    return;
+  }
+  try {
+    // Initialization of tKey
+    await tKey.initialize(); // 1/2 flow
+    // Gets the deviceShare
+    console.log(tKey);
     try {
-        // Initialization of tKey
-        await tKey.initialize(); // 1/2 flow
-        // Gets the deviceShare
-        console.log(tKey);
-        try {
-            // throw new Error('Device share not found');
-            await (tKey.modules.webStorage as any).inputShareFromWebStorage(); // 2/2 flow
-        } catch (e) {
-            console.log(e);
-            // await backupShareRecover();
-            await recoverShare();
-        }
-
-        console.log(tKey);
-        // Checks the requiredShares to reconstruct the tKey,
-        // starts from 2 by default and each of the above share reduce it by one.
-        const { requiredShares } = tKey.getKeyDetails();
-        console.log(tKey);
-        if (requiredShares <= 0) {
-            const reconstructedKey = await tKey.reconstructKey();
-            setPrivateKey(reconstructedKey?.privKey.toString("hex"))
-            console.log(
-                'Private Key: ' + reconstructedKey.privKey.toString("hex"),
-            );
-        }
-    } catch (error) {
-        console.log(error, 'caught');
+      // throw new Error('Device share not found');
+      await (tKey.modules.webStorage as any).inputShareFromWebStorage(); // 2/2 flow
+    } catch (e) {
+      console.log(e);
+      // await backupShareRecover();
+      await recoverShare();
     }
+
+    console.log(tKey);
+    // Checks the requiredShares to reconstruct the tKey,
+    // starts from 2 by default and each of the above share reduce it by one.
+    const { requiredShares } = tKey.getKeyDetails();
+    console.log(tKey);
+    if (requiredShares <= 0) {
+      const reconstructedKey = await tKey.reconstructKey();
+      setPrivateKey(reconstructedKey?.privKey.toString("hex"));
+      console.log("Private Key: " + reconstructedKey.privKey.toString("hex"));
+    }
+  } catch (error) {
+    console.log(error, "caught");
+  }
 };
 ```
 

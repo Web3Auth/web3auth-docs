@@ -18,7 +18,7 @@ implementation. You also need to install `expo-secure-store` to store the user's
 expo install expo-web-browser expo-secure-store
 ```
 
-```js
+```tsx
 import * as WebBrowser from "expo-web-browser";
 import * as SecureStore from "expo-secure-store";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
@@ -40,7 +40,7 @@ Install Web3Auth's React Native SDK in your React Native project. When using our
 npm install --save @toruslabs/react-native-web-browser react-native-encrypted-storage
 ```
 
-```js
+```tsx
 import * as WebBrowser from "@toruslabs/react-native-web-browser";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
@@ -59,25 +59,24 @@ const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
 
 Add `globals.js` file to your project and import it in your `index.js` file.
 
-```js title="globals.js"
-global.Buffer = require('buffer').Buffer;
+```tsx title="globals.js"
+global.Buffer = require("buffer").Buffer;
 
 // Needed so that 'stream-http' chooses the right default protocol.
 global.location = {
-  protocol: 'file:',
+  protocol: "file:",
 };
 
-global.process.version = 'v16.0.0';
+global.process.version = "v16.0.0";
 if (!global.process.version) {
-  global.process = require('process');
-  console.log({process: global.process});
+  global.process = require("process");
+  console.log({ process: global.process });
 }
 
 process.browser = true;
-
 ```
 
-```js title="index.js"
+```tsx title="index.js"
 import { AppRegistry } from "react-native";
 // highlight-next-line
 import "./globals";
@@ -99,7 +98,7 @@ npm install --save empty-module crypto-browserify readable-stream
 
 :::
 
-```js title="metro.config.js"
+```tsx title="metro.config.js"
 const { getDefaultConfig } = require("metro-config");
 
 module.exports = (async () => {
@@ -152,7 +151,7 @@ to work.
 
 Create a `globals.js` file in your project and import it in your `index.js` file.
 
-```js title="globals.js"
+```tsx title="globals.js"
 global.Buffer = require("buffer").Buffer;
 
 // Needed so that 'stream-http' chooses the right default protocol.
@@ -171,7 +170,7 @@ process.browser = true;
 
 Then add this line to your `index.js` file.
 
-```js title="index.js"
+```tsx title="index.js"
 import "./globals";
 ```
 
@@ -187,7 +186,7 @@ npm install --save @expo/metro-config empty-module crypto-browserify readable-st
 
 :::
 
-```js title="metro.config.js"
+```tsx title="metro.config.js"
 const { getDefaultConfig } = require("expo/metro-config");
 
 module.exports = (async () => {
@@ -235,7 +234,7 @@ Previous versions of the SDK returned a response object with the `login()` metho
 `web3auth.ed25519Key()` to get the `ed25519` key. Lastly, for userInfo, instead of accessing the object properties directly you can use the
 `web3auth.userInfo()`. Types for the react-native PnP SDK.
 
-```ts
+```tsx
 import { EncryptedStorage } from "./types/IEncryptedStorage";
 import { SecureStore } from "./types/IExpoSecureStore";
 import { IWeb3Auth, SdkInitParams, SdkLoginParams, State } from "./types/interface";

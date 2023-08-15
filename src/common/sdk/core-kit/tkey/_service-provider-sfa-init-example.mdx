@@ -1,0 +1,30 @@
+```tsx
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+const chainConfig = {
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "mainnet",
+  blockExplorer: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+export const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+  config: {
+    chainConfig,
+  },
+});
+
+useEffect(() => {
+  const init = async () => {
+    // Initialization of Service Provider
+    try {
+      await (tKeyInstance.serviceProvider as any).init(ethereumPrivateKeyProvider);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  init();
+}, []);
+```

@@ -645,7 +645,7 @@ export default function QuickNavigation() {
             </p>
             <div className={styles.links}>
               <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=tKey+JS+SDK&platform=React+Native`}>Quick Start{chevron}</a>
-              <a href={`${baseUrl}sdk/core-kit/tkey-react-native`}>SDK Reference{chevron}</a>
+              <a href={`${baseUrl}sdk/core-kit/tkey`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Core+Kit&sdk=tKey+JS+SDK`}>Examples{chevron}</a>
             </div>
           </div>

@@ -30,7 +30,7 @@ npm install --save @polkadot/api @polkadot/util-crypto
 
 ## Initializing Provider
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 
 const web3auth = new Web3Auth({
@@ -61,16 +61,16 @@ key. However, we cannot use this key with Polkadot EC Curve specific signing fun
 
 On the underhood, it uses the helper functions from Polkadot libraries `@polkadot/api` and `@polkadot/util-crypto` to derive the key pair.
 
-```js
+```tsx
 import { cryptoWaitReady } from "@polkadot/util-crypto";
-import { ApiPromise, WsProvider ,Keyring } from "@polkadot/api";
+import { ApiPromise, WsProvider, Keyring } from "@polkadot/api";
 
 /*
   Use code from the above Initializing Provider here
 */
 
 // web3authProvider is web3auth.provider from above
-const privateKey = await web3authProvider.request({ method: "private_key" }) as string;
+const privateKey = (await web3authProvider.request({ method: "private_key" })) as string;
 const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
 
 const keyPair = keyring.addFromUri("0x" + privateKey);
@@ -81,16 +81,16 @@ const account = keyPair?.address;
 
 ## Get Balance
 
-```js
+```tsx
 import { cryptoWaitReady } from "@polkadot/util-crypto";
-import { ApiPromise, WsProvider ,Keyring } from "@polkadot/api";
+import { ApiPromise, WsProvider, Keyring } from "@polkadot/api";
 
 /*
   Use code from the above Initializing Provider here
 */
 
 // web3authProvider is web3auth.provider from above
-const privateKey = await web3authProvider.request({ method: "private_key" }) as string;
+const privateKey = (await web3authProvider.request({ method: "private_key" })) as string;
 const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
 
 const keyPair = keyring.addFromUri("0x" + privateKey);
@@ -106,16 +106,16 @@ console.log(data.toHuman());
 
 ## Send Transaction
 
-```js
+```tsx
 import { cryptoWaitReady } from "@polkadot/util-crypto";
-import { ApiPromise, WsProvider ,Keyring } from "@polkadot/api";
+import { ApiPromise, WsProvider, Keyring } from "@polkadot/api";
 
 /*
   Use code from the above Initializing Provider here
 */
 
 // web3authProvider is web3auth.provider from above
-const privateKey = await web3authProvider.request({ method: "private_key" }) as string;
+const privateKey = (await web3authProvider.request({ method: "private_key" })) as string;
 const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
 
 const keyPair = keyring.addFromUri("0x" + privateKey);
@@ -134,8 +134,6 @@ makeClient = async (): Promise<any> => {
 };
 
 const api = await makeClient();
-const txHash = await api.tx.balances
-      .transfer("5Gzhnn1MsDUjMi7S4cN41CfggEVzSyM58LkTYPFJY3wt7o3d", 12345)
-      .signAndSend(keyPair);
+const txHash = await api.tx.balances.transfer("5Gzhnn1MsDUjMi7S4cN41CfggEVzSyM58LkTYPFJY3wt7o3d", 12345).signAndSend(keyPair);
 console.log(txHash.toHuman());
 ```
