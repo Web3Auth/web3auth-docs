@@ -7,6 +7,7 @@ description: "Installing Web3Auth Plug and Play React Native SDK | Documentation
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
+import ExpoWarning from "@site/src/common/docs/_expo-warning.mdx";
 
 ## Selecting your Workflow
 
@@ -18,14 +19,7 @@ Your Expo app is built on your Expo's cloud, so you don't have control over the 
 using `expo-cli` on their computers and a development client on their mobile devices. Managed workflow apps typically use one or more Expo services,
 such as push notifications, builds, and updates.
 
-:::caution
-
-The Web3Auth React Native PnP SDK is not compatible with the "Expo Go" app. It is compatible only with Custom Dev Client and EAS builds. Please refer to
-the troubleshooting section for more on this.
-
-Please run `npx expo prebuild` to generate native code based on the version of expo a project has installed, before moving forward.
-
-:::
+<ExpoWarning />
 
 ### Bare React Native Workflow
 
@@ -194,7 +188,8 @@ targetSdkVersion = 31
 </intent-filter>
 ```
 
-- SDK version 31 requires you to explicitly define `android:exported="true"` in `AndroidManifest.xml`, and check whether it is correctly present or not.
+- SDK version 31 requires you to explicitly define `android:exported="true"` in `AndroidManifest.xml`, and check whether it is correctly present or
+  not.
 
 ```xml title="android/app/src/main/AndroidManifest.xml"
 <activity
@@ -231,8 +226,8 @@ cd ios
 pod install
 ```
 
-- In iOS, you don't need to add `redirectUrl` as an iOS Custom URL Scheme, however, you may add it to your `Info.plist`, but it is not required.
-  Make sure your `redirectUrl` is registered in the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
+- In iOS, you don't need to add `redirectUrl` as an iOS Custom URL Scheme, however, you may add it to your `Info.plist`, but it is not required. Make
+  sure your `redirectUrl` is registered in the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
 
 :::tip
 
