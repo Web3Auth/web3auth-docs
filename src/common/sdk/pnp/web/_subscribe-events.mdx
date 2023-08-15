@@ -1,19 +1,25 @@
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-#### `on(EVENT, CALLBACK)`
-
 Subscribing to events help you trigger responses based on the status of the connection of the user. An adapter emits certain events like `CONNECTED`,
 `CONNECTING` and `DISCONNECTED` etc during login lifecycle of a user. For example, you can use this to show an error message, if the user is not
 connected to the network. Generally, this is not a required step and should be done only if needed in particular cases.
 
-:::note
+:::info
+
+This step is totally optional. If you don't want to use any plugins, feel free to skip this section.
+
+:::
+
+:::tip
 
 If you're using the `uxMode: "redirect"` option within your [`openlogin-adapter`](/sdk/pnp/web/adapters/openlogin) configuration, you need to
 subscribe to the event to handle the logging in implicitly. This is because, when redirected to a different application, the app state is not updated
 as per the login status. Using a lifecycle method to check this, one can easily handle the login status within the constructor function.
 
 :::
+
+#### `on(EVENT, CALLBACK)`
 
 Web3Auth provides the following lifecycle event to check the login status:
 

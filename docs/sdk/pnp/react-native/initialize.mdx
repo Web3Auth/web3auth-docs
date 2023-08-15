@@ -8,13 +8,13 @@ description: "Web3Auth PnP React Native SDK - Initialization  | Documentation - 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-After Installation, the next step to use Web3Auth is to Initialize the SDK. The Initialization is a two step process,
+After Installation, the next step to use Web3Auth is to Initialize the SDK. The Initialization is a two-step process,
 
 - [Importing Required Packages](#importing-required-packages)
 - [Instantiating Web3Auth](#instantiating-web3auth)
 
 Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
-Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customise your Web3Auth Instance.
+Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customize your Web3Auth Instance.
 
 ## Importing Required packages
 
@@ -116,7 +116,7 @@ const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, SdkInitParams);
 
 ### `SdkInitParams` object
 
-The `Web3Auth` constructor in the React Native SDK take an `SdkInitParams` object respectively as an argument. The fields of such object are listed
+The `Web3Auth` constructor in the React Native SDK takes an `SdkInitParams` object respectively as an argument. The fields of such objects are listed
 below.
 
 <Tabs
@@ -136,7 +136,6 @@ below.
 | redirectUrl   | String                                                        | No        | The redirectUrl that the Web3Auth login flow will use to redirect back to the app.                                                                                                                                    |
 | loginConfig   | LoginConfig                                                   | No        | A configuration optional object to customize login flow.                                                                                                                                                              |
 | whiteLabel    | WhiteLabelData                                                | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer to the WhiteLabeling section for more info.                                                                         |
-| storageKey    | Choose between `session`, `local`. Default is `local`         | No        | Setting this to `local` will persist social login session accross browser tabs as opposed to `session`                                                                                                                |
 | sessionTime   | Any number from 1 to 86400\*7. Default is 86400               | No        | Decides how long should a login session last in seconds                                                                                                                                                               |
 | mfaSettings   | MfaSettings                                                   | No        | This parameter will be used to enable mfa factors and set priority on UI listing. List of factors available <ul><li>backUpShareFactor</li><li>socialFactor</li><li>passwordFactor</li><li>deviceShareFactor</li></ul> |
 | useCoreKitKey | boolean                                                       | No        | Use `useCoreKitKey` as `true`, if you're using this SDK with the Single Factor Auth Web SDK                                                                                                                           |
@@ -190,14 +189,7 @@ export type SdkInitParams = {
   /**
    * options for whitelabling default openlogin modal.
    */
-  whiteLabel?: WhiteLabelData;
-
-  /**
-   * setting to "local" will persist social login session accross browser tabs.
-   *
-   * @defaultValue "local"
-   */
-  storageKey?: "session" | "local";
+  whiteLabel?: WhiteLabelData,
 
   /**
    * How long should a login session last at a minimum in seconds
