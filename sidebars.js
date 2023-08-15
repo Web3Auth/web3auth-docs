@@ -695,22 +695,6 @@ module.exports = {
       ],
     },
     {
-      type: "category",
-      label: "MPC Core Kit SDK",
-      link: { type: "doc", id: "sdk/core-kit/mpc-core-kit/mpc-core-kit" },
-      items: [
-        "sdk/core-kit/mpc-core-kit/install",
-        "sdk/core-kit/mpc-core-kit/initialize",
-        "sdk/core-kit/mpc-core-kit/authentication",
-        "sdk/core-kit/mpc-core-kit/usage",
-        {
-          type: 'link',
-          label: 'Release Notes', // The link label
-          href: 'https://github.com/web3auth/mpc-core-kit/releases', // The external URL
-        },
-      ],
-    },
-    {
       type: "html",
       value: "<span class='sidebarHeading'>Helper SDKs</span>",
       defaultStyle: true,
