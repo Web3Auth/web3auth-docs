@@ -1,0 +1,303 @@
+---
+title: "Using Core Kit SFA Flutter SDK"
+sidebar_label: "Usage"
+displayed_sidebar: sdk
+description: "Web3Auth Core Kit Single Factor Auth Flutter SDK - Usage | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+After successfully installing and initializing SingleFactorAuth, you can use it to authenticate your users and obtain their private and public keys.
+
+The SingleFactorAuth instance natively provides the following functions:
+
+- `getTorusKey(Web3AuthOptions)` - Returns the torus key using the `verifier`, `verifierId` & `idToken`.
+- `getAggregateTorusKey(Web3AuthOptions)` - Returns the aggregate torus key using the `verifier`, `verifierId` & `idToken`.
+
+## `getTorusKey()`
+
+To obtain a user's Torus key using the Web3Auth SFA Flutter SDK, you can call the `getTorusKey()` function.
+
+| Variable          | Type     | Description                 | Mandatory |
+| ----------------- | -------- | --------------------------- | --------- |
+| `Web3AuthOptions` | `object` | Web3Auth Options Parameters | Yes       |
+
+#### Returns
+
+```tsx
+Future<String> getTorusKey(Web3AuthOptions web3authOptions)
+```
+
+On successful call, the `getTorusKey()` function returns a `Future<string>` instance.
+
+#### `Web3AuthOptions`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter         | Type   | Mandatory | Description                                                        |
+| ----------------- | ------ | --------- | ------------------------------------------------------------------ |
+| verifier          | String | Yes       | The verifier string obtained from the Web3Auth Dashboard           |
+| verifierId        | String | Yes       | The verifierId of the user                                         |
+| idToken           | String | Yes       | The idToken of the user                                            |
+| aggregateVerifier | String | No        | The aggregate verifier string obtained from the Web3Auth Dashboard |
+
+</TabItem>
+
+<TabItem value="class">
+
+```dart
+class Web3AuthOptions {
+  final String verifier;
+  final String verifierId;
+  final String idToken;
+  final String? aggregateVerifier;
+
+  Web3AuthOptions({
+    required this.verifier,
+    required this.verifierId,
+    required this.idToken,
+    this.aggregateVerifier,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'verifier': verifier,
+      'verifierId': verifierId,
+      'idToken': idToken,
+      'aggregateVerifier': aggregateVerifier,
+    };
+  }
+}
+
+Future<String> getTorusKey(Web3AuthOptions web3authOptions) async {
+  try {
+    Map<String, dynamic> loginParamsJson = web3authOptions.toJson();
+    loginParamsJson.removeWhere((key, value) => value == null);
+    final String privateKey = await _channel.invokeMethod(
+        'getTorusKey', jsonEncode(web3authOptions));
+    return privateKey;
+  } on PlatformException catch (e) {
+    switch (e.code) {
+      case "UserCancelledException":
+        throw UserCancelledException();
+      case "NoAllowedBrowserFoundException":
+        throw UnKnownException(e.message);
+      default:
+        rethrow;
+    }
+  }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+```tsx title="Usage"
+Future<String> getKey() {
+  return _SingleFactorAuthFlutterPlugin.getTorusKey(Web3AuthOptions(
+    verifier: 'YOUR_VERIFIER_NAME',
+    verifierId: 'YOUR_VERIFIER_ID',
+    idToken: 'YOUR_ID_TOKEN',));
+}
+```
+
+## `getAggregateTorusKey()`
+
+To obtain a user's Torus key using the Web3Auth SFA Flutter SDK, you can call the `getAggregateTorusKey()` function.
+
+| Variable          | Type     | Description                 | Mandatory |
+| ----------------- | -------- | --------------------------- | --------- |
+| `Web3AuthOptions` | `object` | Web3Auth Options Parameters | Yes       |
+
+#### Returns
+
+```tsx
+Future<String> getAggregateTorusKey(Web3AuthOptions web3authOptions)
+```
+
+On successful call, the `getAggregateTorusKey()` function returns a `Future<String>` instance.
+
+#### `Web3AuthOptions`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter         | Type   | Mandatory | Description                                                        |
+| ----------------- | ------ | --------- | ------------------------------------------------------------------ |
+| verifier          | String | Yes       | The verifier string obtained from the Web3Auth Dashboard           |
+| verifierId        | String | Yes       | The verifierId of the user                                         |
+| idToken           | String | Yes       | The idToken of the user                                            |
+| aggregateVerifier | String | No        | The aggregate verifier string obtained from the Web3Auth Dashboard |
+
+</TabItem>
+
+<TabItem value="class">
+
+```dart
+class Web3AuthOptions {
+  final String verifier;
+  final String verifierId;
+  final String idToken;
+  final String? aggregateVerifier;
+
+  Web3AuthOptions({
+    required this.verifier,
+    required this.verifierId,
+    required this.idToken,
+    this.aggregateVerifier,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'verifier': verifier,
+      'verifierId': verifierId,
+      'idToken': idToken,
+      'aggregateVerifier': aggregateVerifier,
+    };
+  }
+}
+
+Future<String> getAggregateTorusKey(Web3AuthOptions web3authOptions) async {
+  try {
+    Map<String, dynamic> loginParamsJson = web3authOptions.toJson();
+    loginParamsJson.removeWhere((key, value) => value == null);
+    final String privateKey = await _channel.invokeMethod(
+        'getAggregateTorusKey', jsonEncode(web3authOptions));
+    return privateKey;
+  } on PlatformException catch (e) {
+    switch (e.code) {
+      case "UserCancelledException":
+        throw UserCancelledException();
+      case "NoAllowedBrowserFoundException":
+        throw UnKnownException(e.message);
+      default:
+        rethrow;
+    }
+  }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+```tsx title="Usage"
+Future<String> getKey() {
+  return _SingleFactorAuthFlutterPlugin.getAggregateTorusKey(Web3AuthOptions(
+    verifier: 'YOUR_VERIFIER_NAME',
+    verifierId: 'YOUR_VERIFIER_ID',
+    idToken: 'YOUR_ID_TOKEN',
+    aggregateVerifier: 'YOUR_AGGREGATE_VERIFIER_NAME',));
+}
+```
+
+:::tip Note
+
+Web3Auth SFA Flutter SDK only works for users who have **not enabled MFA**.
+
+:::
+
+:::danger MFA enabled users
+
+For MFA enabled users, you'll see an Error message.
+
+:::
+
+## Example
+
+```dart
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/services.dart';
+import 'package:single_factor_auth_flutter/input.dart';
+
+import 'single_factor_auth_flutter_platform_interface.dart';
+
+class SingleFactAuthFlutter {
+  static const MethodChannel _channel =
+      MethodChannel('single_factor_auth_flutter');
+
+  Future<String?> getPlatformVersion() {
+    return SingleFactAuthFlutterPlatform.instance.getPlatformVersion();
+  }
+
+  Future<void> init(Web3AuthNetwork initParams) async {
+    Map<String, dynamic> initParamsJson = initParams.toJson();
+    initParamsJson.removeWhere((key, value) => value == null);
+    await _channel.invokeMethod('init', jsonEncode(initParamsJson));
+  }
+
+  Future<String> initialize() async {
+    try {
+      final String privKey =
+          await _channel.invokeMethod('initialize', jsonEncode({}));
+      return privKey;
+    } on PlatformException catch (e) {
+      switch (e.code) {
+        case "UserCancelledException":
+          throw UserCancelledException();
+        case "NoAllowedBrowserFoundException":
+          throw UnKnownException(e.message);
+        default:
+          rethrow;
+      }
+    }
+  }
+
+  Future<String> getTorusKey(Web3AuthOptions web3authOptions) async {
+    try {
+      Map<String, dynamic> loginParamsJson = web3authOptions.toJson();
+      loginParamsJson.removeWhere((key, value) => value == null);
+      final String privateKey = await _channel.invokeMethod(
+          'getTorusKey', jsonEncode(web3authOptions));
+      return privateKey;
+    } on PlatformException catch (e) {
+      switch (e.code) {
+        case "UserCancelledException":
+          throw UserCancelledException();
+        case "NoAllowedBrowserFoundException":
+          throw UnKnownException(e.message);
+        default:
+          rethrow;
+      }
+    }
+  }
+
+  Future<String> getAggregateTorusKey(Web3AuthOptions web3authOptions) async {
+    try {
+      Map<String, dynamic> loginParamsJson = web3authOptions.toJson();
+      loginParamsJson.removeWhere((key, value) => value == null);
+      final String privateKey = await _channel.invokeMethod(
+          'getAggregateTorusKey', jsonEncode(web3authOptions));
+      return privateKey;
+    } on PlatformException catch (e) {
+      switch (e.code) {
+        case "UserCancelledException":
+          throw UserCancelledException();
+        case "NoAllowedBrowserFoundException":
+          throw UnKnownException(e.message);
+        default:
+          rethrow;
+      }
+    }
+  }
+}
+```
