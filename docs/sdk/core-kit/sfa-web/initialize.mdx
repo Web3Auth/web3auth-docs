@@ -61,7 +61,7 @@ To complete the initialization process, we need to initialize the `Web3Auth` ins
 `init()` function of the previously created `web3auth` instance, using a **private key provider**.
 
 ```javascript
-web3auth.init({ provider });
+web3auth.init({ privateKeyProvider });
 ```
 
 ## Example
@@ -71,8 +71,8 @@ import { Web3Auth } from "@web3auth/single-factor-auth";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 
-// Swap with different provider if you want to use a different blockchain
-const provider = new EthereumPrivateKeyProvider({
+// Swap with a different provider if you want to use a different blockchain
+const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig: {
       chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -89,8 +89,8 @@ const provider = new EthereumPrivateKeyProvider({
 const web3auth = new Web3Auth({
   clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
   web3AuthNetwork: "cyan", // Available networks are "testnet", "mainnet", "cyan", and "aqua".
-  usePnPKey: "false", // By default, this sdk returns CoreKitKey by default.
+  usePnPKey: "false", // By default, this SDK returns CoreKitKey by default.
 });
 
-web3auth.init({ provider });
+web3auth.init({ privateKeyProvider });
 ```

@@ -2,7 +2,7 @@
 const { Web3Auth } = require("@web3auth/node-sdk");
 const { EthereumPrivateKeyProvider } = require("@web3auth/ethereum-provider");
 
-const provider = new EthereumPrivateKeyProvider({
+const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig: {
       chainId: "0x5",
@@ -22,7 +22,7 @@ const web3auth = new Web3Auth({
   usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
 });
 
-web3auth.init({ provider });
+web3auth.init({ privateKeyProvider });
 
 const connect = async () => {
   const web3authNodeprovider = await web3auth.connect({
