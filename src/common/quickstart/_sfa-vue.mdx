@@ -16,7 +16,7 @@ Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new p
 
 ### 3. Initialize Web3Auth for your preferred blockchain
 
-Web3Auth needs to initialise as soon as your app loads up to enable the user to log in. Preferably done within a constructor, initialisation is the
+Web3Auth needs to initialize as soon as your app loads up to enable the user to log in. Preferably done within a constructor, initialisation is the
 step where you can pass on all the configurations for Web3Auth you want. A simple integration for EVM blockchains will look like this:
 
 ```tsx
@@ -32,7 +32,7 @@ import fs from "fs";
 // Check out https://web3auth.io/docs/auth-provider-setup/byo-jwt-providers for more details.
 var privateKey = fs.readFileSync("privateKey.pem");
 
-const provider = new EthereumPrivateKeyProvider({
+const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig: {
       chainId: "0x5",
@@ -52,12 +52,12 @@ const web3authSfa = new Web3Auth({
   usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
 });
 
-web3auth.init({ provider });
+web3auth.init({ privateKeyProvider });
 ```
 
 ### 4. Login your User
 
-Once you're done initialising, just create a button that triggers the login for the user on their request. Logging in is as easy as:
+Once you're done initializing, just create a button that triggers the login for the user on their request. Logging in is as easy as:
 
 ```tsx
 const user = {
