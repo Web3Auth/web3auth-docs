@@ -12,26 +12,26 @@ After successfully installing and initializing SingleFactorAuth, you can use it 
 
 The SingleFactorAuth instance natively provides the following functions:
 
-- `getTorusKey(Web3AuthOptions)` - Returns the torus key using the `verifier`, `verifierId` & `idToken`.
-- `getAggregateTorusKey(Web3AuthOptions)` - Returns the aggregate torus key using the `verifier`, `verifierId` & `idToken`.
+- `getKey(LoginParams)` - Returns the private key using the `verifier`, `verifierId` & `idToken`.
+- `getAggregateKey(LoginParams)` - Returns the aggregate private key using the `verifier`, `verifierId` & `idToken`.
 
-## `getTorusKey()`
+## `getKey()`
 
-To obtain a user's Torus key using the Web3Auth SFA Flutter SDK, you can call the `getTorusKey()` function.
+To obtain a user's private key using the Web3Auth SFA Flutter SDK, you can call the `getKey()` function.
 
-| Variable          | Type     | Description                 | Mandatory |
-| ----------------- | -------- | --------------------------- | --------- |
-| `Web3AuthOptions` | `object` | Web3Auth Options Parameters | Yes       |
+| Variable      | Type     | Description                    | Mandatory |
+| ------------- | -------- | ------------------------------ | --------- |
+| `LoginParams` | `object` | LoginParams Options Parameters | Yes       |
 
 #### Returns
 
 ```tsx
-Future<String> getTorusKey(Web3AuthOptions web3authOptions)
+Future<String> getKey(LoginParams loginParams)
 ```
 
-On successful call, the `getTorusKey()` function returns a `Future<string>` instance.
+On successful call, the `getKey()` function returns a `Future<string>` instance.
 
-#### `Web3AuthOptions`
+#### `LoginParams`
 
 <Tabs
   defaultValue="table"
@@ -55,13 +55,13 @@ On successful call, the `getTorusKey()` function returns a `Future<string>` inst
 <TabItem value="class">
 
 ```dart
-class Web3AuthOptions {
+class LoginParams {
   final String verifier;
   final String verifierId;
   final String idToken;
   final String? aggregateVerifier;
 
-  Web3AuthOptions({
+  LoginParams({
     required this.verifier,
     required this.verifierId,
     required this.idToken,
@@ -78,12 +78,12 @@ class Web3AuthOptions {
   }
 }
 
-Future<String> getTorusKey(Web3AuthOptions web3authOptions) async {
+Future<String> getKey(LoginParams loginParams) async {
   try {
-    Map<String, dynamic> loginParamsJson = web3authOptions.toJson();
+    Map<String, dynamic> loginParamsJson = loginParams.toJson();
     loginParamsJson.removeWhere((key, value) => value == null);
-    final String privateKey = await _channel.invokeMethod(
-        'getTorusKey', jsonEncode(web3authOptions));
+    final String privateKey =
+        await _channel.invokeMethod('getTorusKey', jsonEncode(loginParams));
     return privateKey;
   } on PlatformException catch (e) {
     switch (e.code) {
@@ -104,30 +104,30 @@ Future<String> getTorusKey(Web3AuthOptions web3authOptions) async {
 
 ```tsx title="Usage"
 Future<String> getKey() {
-  return _SingleFactorAuthFlutterPlugin.getTorusKey(Web3AuthOptions(
+  return _SingleFactorAuthFlutterPlugin.getKey(LoginParams(
     verifier: 'YOUR_VERIFIER_NAME',
     verifierId: 'YOUR_VERIFIER_ID',
     idToken: 'YOUR_ID_TOKEN',));
 }
 ```
 
-## `getAggregateTorusKey()`
+## `getAggregateKey()`
 
-To obtain a user's Torus key using the Web3Auth SFA Flutter SDK, you can call the `getAggregateTorusKey()` function.
+To obtain a user's Torus key using the Web3Auth SFA Flutter SDK, you can call the `getAggregateKey()` function.
 
-| Variable          | Type     | Description                 | Mandatory |
-| ----------------- | -------- | --------------------------- | --------- |
-| `Web3AuthOptions` | `object` | Web3Auth Options Parameters | Yes       |
+| Variable      | Type     | Description                    | Mandatory |
+| ------------- | -------- | ------------------------------ | --------- |
+| `LoginParams` | `object` | LoginParams Options Parameters | Yes       |
 
 #### Returns
 
 ```tsx
-Future<String> getAggregateTorusKey(Web3AuthOptions web3authOptions)
+Future<String> getAggregateKey(LoginParams loginParams)
 ```
 
-On successful call, the `getAggregateTorusKey()` function returns a `Future<String>` instance.
+On successful call, the `getAggregateKey()` function returns a `Future<String>` instance.
 
-#### `Web3AuthOptions`
+#### `LoginParams`
 
 <Tabs
   defaultValue="table"
@@ -151,13 +151,13 @@ On successful call, the `getAggregateTorusKey()` function returns a `Future<Stri
 <TabItem value="class">
 
 ```dart
-class Web3AuthOptions {
+class LoginParams {
   final String verifier;
   final String verifierId;
   final String idToken;
   final String? aggregateVerifier;
 
-  Web3AuthOptions({
+  LoginParams({
     required this.verifier,
     required this.verifierId,
     required this.idToken,
@@ -174,12 +174,12 @@ class Web3AuthOptions {
   }
 }
 
-Future<String> getAggregateTorusKey(Web3AuthOptions web3authOptions) async {
+Future<String> getAggregateKey(LoginParams loginParams) async {
   try {
-    Map<String, dynamic> loginParamsJson = web3authOptions.toJson();
+    Map<String, dynamic> loginParamsJson = loginParams.toJson();
     loginParamsJson.removeWhere((key, value) => value == null);
     final String privateKey = await _channel.invokeMethod(
-        'getAggregateTorusKey', jsonEncode(web3authOptions));
+        'getAggregateTorusKey', jsonEncode(loginParams));
     return privateKey;
   } on PlatformException catch (e) {
     switch (e.code) {
@@ -199,8 +199,8 @@ Future<String> getAggregateTorusKey(Web3AuthOptions web3authOptions) async {
 </Tabs>
 
 ```tsx title="Usage"
-Future<String> getKey() {
-  return _SingleFactorAuthFlutterPlugin.getAggregateTorusKey(Web3AuthOptions(
+Future<String> getAggregateKey() {
+  return _SingleFactorAuthFlutterPlugin.getAggregateKey(LoginParams(
     verifier: 'YOUR_VERIFIER_NAME',
     verifierId: 'YOUR_VERIFIER_ID',
     idToken: 'YOUR_ID_TOKEN',
@@ -222,81 +222,222 @@ For MFA enabled users, you'll see an Error message.
 
 ## Example
 
-```dart
+`lib/main.dart`
+
+```dart title="main.dart"
 import 'dart:async';
-import 'dart:convert';
+import 'dart:io';
 
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:single_factor_auth_flutter/input.dart';
+import 'package:single_factor_auth_flutter/single_factor_auth_flutter.dart';
+import './utils.dart';
 
-import 'single_factor_auth_flutter_platform_interface.dart';
+void main() {
+  runApp(const MyApp());
+}
 
-class SingleFactAuthFlutter {
-  static const MethodChannel _channel =
-      MethodChannel('single_factor_auth_flutter');
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
-  Future<String?> getPlatformVersion() {
-    return SingleFactAuthFlutterPlatform.instance.getPlatformVersion();
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final _SingleFactorAuthFlutterPlugin = SingleFactAuthFlutter();
+  String _result = '';
+  bool logoutVisible = false;
+  TorusNetwork torusNetwork = TorusNetwork.testnet;
+
+  @override
+  void initState() {
+    super.initState();
+    initSdk();
   }
 
-  Future<void> init(Web3AuthNetwork initParams) async {
-    Map<String, dynamic> initParamsJson = initParams.toJson();
-    initParamsJson.removeWhere((key, value) => value == null);
-    await _channel.invokeMethod('init', jsonEncode(initParamsJson));
+  Future<void> initSdk() async {
+    if (Platform.isAndroid) {
+      init().then((value) => initialize());
+    } else if (Platform.isIOS) {
+      init();
+      initialize();
+    } else {}
   }
 
-  Future<String> initialize() async {
-    try {
-      final String privKey =
-          await _channel.invokeMethod('initialize', jsonEncode({}));
-      return privKey;
-    } on PlatformException catch (e) {
-      switch (e.code) {
-        case "UserCancelledException":
-          throw UserCancelledException();
-        case "NoAllowedBrowserFoundException":
-          throw UnKnownException(e.message);
-        default:
-          rethrow;
-      }
+  Future<void> init() async {
+    await _SingleFactorAuthFlutterPlugin.init(
+        Web3AuthNetwork(network: torusNetwork));
+  }
+
+  Future<void> initialize() async {
+    print("initialize() called");
+    final String privKey = await _SingleFactorAuthFlutterPlugin.initialize();
+    if (privKey.isNotEmpty) {
+      setState(() {
+        _result = "Private Key : $privKey";
+      });
     }
   }
 
-  Future<String> getTorusKey(Web3AuthOptions web3authOptions) async {
-    try {
-      Map<String, dynamic> loginParamsJson = web3authOptions.toJson();
-      loginParamsJson.removeWhere((key, value) => value == null);
-      final String privateKey = await _channel.invokeMethod(
-          'getTorusKey', jsonEncode(web3authOptions));
-      return privateKey;
-    } on PlatformException catch (e) {
-      switch (e.code) {
-        case "UserCancelledException":
-          throw UserCancelledException();
-        case "NoAllowedBrowserFoundException":
-          throw UnKnownException(e.message);
-        default:
-          rethrow;
-      }
-    }
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('SingleFactorAuthFlutter Example'),
+        ),
+        body: SingleChildScrollView(
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+              ),
+              Visibility(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    const Icon(
+                      Icons.flutter_dash,
+                      size: 80,
+                      color: Color(0xFF1389fd),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    const Text(
+                      'Web3Auth',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 36,
+                          color: Color(0xFF0364ff)),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      'Welcome to SingleFactorAuthFlutter Demo',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      'Get privKey',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                        onPressed: _getKey(getAggregrateKey),
+                        child: const Text('GetprivKey')),
+                    ElevatedButton(
+                        onPressed: _initialize(),
+                        child: const Text('Get Session Response')),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(_result),
+              )
+            ],
+          )),
+        ),
+      ),
+    );
   }
 
-  Future<String> getAggregateTorusKey(Web3AuthOptions web3authOptions) async {
-    try {
-      Map<String, dynamic> loginParamsJson = web3authOptions.toJson();
-      loginParamsJson.removeWhere((key, value) => value == null);
-      final String privateKey = await _channel.invokeMethod(
-          'getAggregateTorusKey', jsonEncode(web3authOptions));
-      return privateKey;
-    } on PlatformException catch (e) {
-      switch (e.code) {
-        case "UserCancelledException":
-          throw UserCancelledException();
-        case "NoAllowedBrowserFoundException":
-          throw UnKnownException(e.message);
-        default:
-          rethrow;
+  VoidCallback _getKey(Future<String> Function() method) {
+    return () async {
+      try {
+        final String response = await method();
+        setState(() {
+          _result = "Private Key : $response";
+        });
+      } on UserCancelledException {
+        print("User cancelled.");
+      } on UnKnownException {
+        print("Unknown exception occurred");
       }
+    };
+  }
+
+  VoidCallback _initialize() {
+    return () async {
+      try {
+        final String response =
+            await _SingleFactorAuthFlutterPlugin.initialize();
+        setState(() {
+          _result = "Private Key : $response";
+        });
+      } on UserCancelledException {
+        print("User cancelled.");
+      } on UnKnownException {
+        print("Unknown exception occurred");
+      }
+    };
+  }
+
+  Future<String> getKey() {
+    return _SingleFactorAuthFlutterPlugin.getKey(LoginParams(
+        verifier: 'torus-test-health', // replace with your own verifier name
+        verifierId: 'hello@tor.us', // replace with your own verifier id based on your JWT token payload (sub)
+        idToken: Utils().es256Token("hello@tor.us"))); // replace with your own JWT token
+  }
+
+  Future<String> getAggregrateKey() {
+    return _SingleFactorAuthFlutterPlugin.getAggregateKey(LoginParams(
+        verifier: 'torus-test-health', // replace with your own verifier name
+        verifierId: 'hello@tor.us', // replace with your own verifier id based on your JWT token payload (sub)
+        idToken: Utils().es256Token("hello@tor.us"), // replace with your own JWT token
+        aggregateVerifier: 'torus-test-health-aggregate')); // replace with your own aggregate verifier name
+  }
+}
+```
+
+`lib/utils.dart`
+
+This Dart code will produce a JSON Web Token (JWT) using the ES256 algorithm. You have the option to use your own implementation or follow our
+[Bring your own JWT token steps](/auth-provider-setup/byo-jwt-providers). Alternatively, you may choose to use any
+[social](/auth-provider-setup/social-providers/)/[federated identity](/auth-provider-setup/federated-identity-providers) provider that is supported by
+Web3auth.
+
+```dart title="utils.dart"
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+
+class Utils {
+  String es256Token(String email) {
+    String token;
+
+    /* Sign */ {
+      // Create a json web token
+      final jwt = JWT({
+        "sub": "email|hello",
+        "aud": "torus-key-test",
+        "exp": DateTime.now().millisecond,
+        "iat": DateTime.now().millisecond,
+        "iss": "torus-key-test",
+        "email": email,
+        "nickname": email.split("@")[0],
+        "name": email,
+        "picture": "",
+        "email_verified": true
+      });
+
+      // Sign it
+      final key = ECPrivateKey("-----BEGIN PRIVATE KEY-----\n"
+          "MEECAQAwEwYHKoZIzj0CAQYIKoZIzj0DAQcEJzAlAgEBBCCD7oLrcKae+jVZPGx52Cb/lKhdKxpXjl9eGNa1MlY57A=="
+          "\n-----END PRIVATE KEY-----");
+      token = jwt.sign(key, algorithm: JWTAlgorithm.ES256);
+
+      print('Signed token: \n $token\n');
+      return token;
     }
   }
 }
