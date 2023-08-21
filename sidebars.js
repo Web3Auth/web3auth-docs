@@ -703,6 +703,22 @@ module.exports = {
             "sdk/core-kit/sfa-react-native/usage"
           ],
         },
+        {
+          type: "category",
+          label: "SFA Flutter SDK",
+          link: { type: "doc", id: "sdk/core-kit/sfa-flutter/sfa-flutter" },
+          items: [
+            "sdk/core-kit/sfa-flutter/install",
+            "sdk/core-kit/sfa-flutter/initialize",
+            "sdk/core-kit/sfa-flutter/authentication",
+            "sdk/core-kit/sfa-flutter/usage",
+            {
+              type: 'link',
+              label: 'Release Notes', // The link label
+              href: 'https://github.com/web3auth/single-factor-auth-flutter/releases', // The external URL
+            },
+          ],
+        },
       ],
     },
     {

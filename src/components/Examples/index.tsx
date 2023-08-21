@@ -23,13 +23,14 @@ import {
   setURLfromOptions,
   singlefactorauth,
   singlefactorauthandroid,
+  singlefactorauthflutter,
   singlefactorauthios,
   singlefactorauthrn,
   tkeyandroid,
   tkeyios,
   tkeyjs,
 } from "../../common/SDKOptions";
-import { CKNode, CKSFA, CKSFAAndroid, CKSFAiOS, CKTkey, CKTkeyAndroid, CKTkeyiOS, MPCCK, CKSFARN } from "./coreKitExamples";
+import { CKNode, CKSFA, CKSFAAndroid, CKSFAFlutter, CKSFAiOS, CKSFARN, CKTkey, CKTkeyAndroid, CKTkeyiOS, MPCCK } from "./coreKitExamples";
 import { PNPUnity, PNPUnreal } from "./pnpGamingExamples";
 import { PNPAndroid, PNPFlutter, PNPIos, PNPRN } from "./pnpMobileExamples";
 import {
@@ -203,6 +204,7 @@ export default function QuickNavigation() {
       {sdk === singlefactorauthandroid ? <Tiles tileGroups={CKSFAAndroid} /> : null}
       {sdk === singlefactorauthios ? <Tiles tileGroups={CKSFAiOS} /> : null}
       {sdk === singlefactorauthrn ? <Tiles tileGroups={CKSFARN} /> : null}
+      {sdk === singlefactorauthflutter ? <Tiles tileGroups={CKSFAFlutter} /> : null}
       {sdk === pnpunreal ? <Tiles tileGroups={PNPUnreal} /> : null}
     </div>
   );
