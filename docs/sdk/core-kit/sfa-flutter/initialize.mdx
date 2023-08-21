@@ -1,0 +1,71 @@
+---
+title: Initializing Core Kit SFA Flutter SDK
+sidebar_label: Initialize
+displayed_sidebar: sdk
+description: "Web3Auth Core Kit Single Factor Auth Flutter SDK - Initialize | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+After Installation, the next step to use Web3Auth SFA Flutter is to Initialize the SDK and is achieved by `init()` function. This step requires
+passing various parameters that align with your project preferences. It's important to note that the initialization process is critical to the
+successful use of Web3Auth SFA Flutter.
+
+## Arguments
+
+Construct and configure the init function with the params as following
+
+`Web3AuthNetwork`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter | Type | Mandatory | Description                                                |
+| --------- | ---- | --------- | ---------------------------------------------------------- |
+| network   | enum | Yes       | The web3auth network. `mainnet`, `testnet`, `cyan`, `aqua` |
+
+</TabItem>
+
+<TabItem value="class">
+
+```dart
+class Web3AuthNetwork {
+  final TorusNetwork network;
+
+  Web3AuthNetwork({required this.network});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'network': network.name,
+    };
+  }
+}
+
+enum TorusNetwork { mainnet, testnet, cyan, aqua }
+```
+
+</TabItem>
+
+</Tabs>
+
+## Using the `init()` function
+
+Initialise the `Web3AuthFlutter` plugin at the very beginning such as in the overriden `initState` function
+
+```dart title="Usage"
+import 'package:single_factor_auth_flutter/single_factor_auth_flutter.dart';
+final _SingleFactorAuthFlutterPlugin = SingleFactAuthFlutter();
+
+Future<void> init() async {
+    await _SingleFactorAuthFlutterPlugin.init(
+        Web3AuthNetwork(network: torusNetwork));
+  }
+```

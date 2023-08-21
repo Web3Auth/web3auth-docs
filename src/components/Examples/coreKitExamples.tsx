@@ -126,6 +126,21 @@ export const CKSFARN = [
   },
 ];
 
+export const CKSFAFlutter = [
+  {
+    name: "",
+    description: "",
+    tiles: [
+      {
+        key: "flutter-sfa-example",
+        title: "Single Factor Auth Flutter Example",
+        icon: "logo-flutter.png",
+        path: "https://github.com/Web3Auth/single-factor-auth-flutter/tree/master/example",
+      },
+    ],
+  },
+];
+
 export const CKTkeyiOS = [
   {
     name: "",
