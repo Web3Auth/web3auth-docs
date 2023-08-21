@@ -35,9 +35,9 @@ const config = {
       },
     },
     announcementBar: {
-      id: 'join_community',
+      id: 'sign_up_for_wallets_ux_unconference',
       content:
-        '<a href="https://web3auth.io/community" target="_blank">Get the support you need to seamlessly integrate with Web3Auth. Join our community today!</a>',
+        '<a href="https://lu.ma/l8at7q5b" target="_blank">Secure your spot for Wallets & UX Unconference at token 2049! Sign up now →</a>',
       isCloseable: true,
     },
     colorMode: {
