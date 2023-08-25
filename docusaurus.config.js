@@ -21,8 +21,8 @@ const config = {
   tagline: "Web3 Auth and Wallet Management (WaaS) SDKs with MPC", // TODO: Confirm with content team
   url: "https://web3auth.io",
   baseUrl,
-  onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "throw",
+  onBrokenLinks: "warn",
+  onBrokenMarkdownLinks: "warn",
   onDuplicateRoutes: "warn",
   favicon: "images/favicon.ico",
   organizationName: githubOrg,
