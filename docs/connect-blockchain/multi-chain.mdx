@@ -114,8 +114,6 @@ the Ethereum provider.
     { label: "Binance Smart Chain", value: "bsc" },
     {label: "Avalanche", value: "avalanche"},
     {label: "Cronos", value: "cronos"},
-    {label: "Flare", value: "flare"},
-    {label: "Songbird", value: "songbird"},
     {label: "Any EVM Compatible Chain", value: "evm"}
 ]}>
 
@@ -240,71 +238,6 @@ const web3 = new Web3(cronosPrivateKeyProvider.provider as any);
 const address = (await web3.eth.getAccounts())[0];
 
 ```
-
-</TabItem>
-<TabItem value="flare">
-
-```js
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-
-/*
-  Use code from the above Initializing Provider here
-*/
-
-const privateKey = provider.request({ method: "eth_private_key" });
-const flarePrivateKeyProvider = new EthereumPrivateKeyProvider({
-      config: {
-        chainConfig: {
-          chainNamespace: "eip155",
-          chainId: "0xE", // hex of 14
-          rpcTarget: "https://flare-api.flare.network/ext/C/rpc",
-          // Avoid using public rpcTarget in production.
-          // Use services provided by Flare or other node providers
-          displayName: "Flare Mainnet",
-          blockExplorer: "https://flare-explorer.flare.network/",
-          ticker: "FLR",
-          tickerName: "FLR",
-        },
-      },
-    });
-await flarePrivateKeyProvider.setupProvider(privateKey);
-const web3 = new Web3(avaxPrivateKeyProvider.provider as any);
-const address = (await web3.eth.getAccounts())[0];
-
-```
-
-</TabItem>
-<TabItem value="songbird">
-
-```js
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-
-/*
-  Use code from the above Initializing Provider here
-*/
-
-const privateKey = provider.request({ method: "eth_private_key" });
-const flarePrivateKeyProvider = new EthereumPrivateKeyProvider({
-      config: {
-        chainConfig: {
-          chainNamespace: "eip155",
-          chainId: "0x13", // hex of 19
-          rpcTarget: "https://songbird-api.flare.network/ext/C/rpc",
-          // Avoid using public rpcTarget in production.
-          // Use services provided by Flare or other node providers
-          displayName: "Songbird canary network",
-          blockExplorer: "https://songbird-explorer.flare.network",
-          ticker: "SGB",
-          tickerName: "SGB",
-        },
-      },
-    });
-await flarePrivateKeyProvider.setupProvider(privateKey);
-const web3 = new Web3(avaxPrivateKeyProvider.provider as any);
-const address = (await web3.eth.getAccounts())[0];
-
-```
-
 
 </TabItem>
 <TabItem value="evm">
