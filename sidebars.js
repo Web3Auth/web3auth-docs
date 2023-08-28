@@ -520,16 +520,6 @@ module.exports = {
     },
     {
       type: "category",
-      label: "MPC tKey iOS SDK",
-      link: { type: "doc", id: "sdk/core-kit/mpc-tkey-ios/mpc-tkey-ios" },
-      items: [
-        "sdk/core-kit/mpc-tkey-ios/install",
-        "sdk/core-kit/mpc-tkey-ios/initialize",
-        "sdk/core-kit/mpc-tkey-ios/usage",
-      ],
-    },
-    {
-      type: "category",
       label: "tKey JS SDK",
       link: { type: "doc", id: "sdk/core-kit/tkey/tkey" },
       items: [
