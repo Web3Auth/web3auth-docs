@@ -18,6 +18,8 @@ export const GLMR = "GLMR";
 export const MOVR = "MOVR";
 export const KLAY = "KLAY";
 export const TEZOS = "TEZOS";
+export const FLR = "FLR";
+export const SGB = "SGB";
 
 export enum EVM {
   "ETH",
@@ -32,6 +34,8 @@ export enum EVM {
   "GLMR",
   "MOVR",
   "KLAY",
+  "FLR",
+  "SGB",
 }
 
 export enum OTHER_CHAINS {
@@ -54,6 +58,8 @@ export const CHAINS_HTML: DisplayChoice[] = [
   { key: GLMR, displayName: "Moonbeam" },
   { key: MOVR, displayName: "Moonriver" },
   { key: KLAY, displayName: "Klaytn" },
+  { key: FLR, displayName: "Flare" },
+  { key: SGB, displayName: "Songbird" },
 ];
 
 export const CHAINS_MOBILE: DisplayChoice[] = [
@@ -69,6 +75,8 @@ export const CHAINS_MOBILE: DisplayChoice[] = [
   { key: GLMR, displayName: "Moonbeam" },
   { key: MOVR, displayName: "Moonriver" },
   { key: KLAY, displayName: "Klaytn" },
+  { key: FLR, displayName: "Flare" },
+  { key: SGB, displayName: "Songbird" },
 ];
 
 export const CHAINS: DisplayChoice[] = [
