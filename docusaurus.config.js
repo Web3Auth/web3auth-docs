@@ -355,7 +355,7 @@ const config = {
           },
           {
             from: "/developer-dashboard/get-client-id",
-            to: "/dashboard-setup/get-client-id",
+            to: "/dashboard-setup/projects-and-analytics",
           },
           {
             from: "/developer-dashboard/enable-interoperability",
@@ -368,10 +368,6 @@ const config = {
           {
             from: "/developer-dashboard/billing-and-user-stats",
             to: "/dashboard-setup/billing-and-usage",
-          },
-          {
-            from: "/developer-dashboard/get-client-id",
-            to: "/dashboard-setup/projects-and-analytics",
           },
           {
             from: "/customauth",
