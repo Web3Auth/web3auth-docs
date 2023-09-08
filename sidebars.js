@@ -124,11 +124,11 @@ module.exports = {
       label: "Dashboard Setup",
       link: { type: "doc", id: "dashboard-setup/dashboard-setup" },
       items: [
-        "dashboard-setup/get-client-id",
+        "dashboard-setup/projects-and-analytics",
         "dashboard-setup/whitelisting",
         "dashboard-setup/enable-interoperability",
         "dashboard-setup/setup-custom-authentication",
-        "dashboard-setup/billing-and-user-stats",
+        "dashboard-setup/billing-and-usage",
         "dashboard-setup/roles-and-permissions",
       ],
     },
