@@ -101,6 +101,7 @@ module.exports = {
       label: "Migration Guides",
       items: [
         "pnp/migration-guides/modal-v5-to-v6",
+        "pnp/migration-guides/modal-v6-to-v7",
         "pnp/migration-guides/no-modal-v5-to-v6",
         "pnp/migration-guides/rn-v3-to-v4"
       ]
