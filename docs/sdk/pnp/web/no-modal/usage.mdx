@@ -24,6 +24,8 @@ provider given by `Web3AuthNoModal` to connect the users to the respective block
 Natively, the instance of `Web3AuthNoModal` _(referred to as `web3auth` in our examples)_ returns the following functions:
 
 - `connectTo()` - Logging in the User with the given Wallet Adapter and respective Login Parameters
+- `provider()` - Returns the native provider which can be used to make different blockchain transactions.
+- `connected()` - Returns `true` or `false` depending on whether the web3auth instance is available or not.
 - `getUserInfo()` - Getting the User's Information
 - `authenticateUser()` - Getting the idToken from Web3Auth
 - `addChain()` - Add chain config details to the connected adapter.
@@ -37,11 +39,11 @@ Natively, the instance of `Web3AuthNoModal` _(referred to as `web3auth` in our e
 #### Returns
 
 ```tsx
-connectTo<T>(walletName: WALLET_ADAPTER_TYPE, loginParams?: T): Promise<SafeEventEmitterProvider | null>;
+connectTo<T>(walletName: WALLET_ADAPTER_TYPE, loginParams?: T): Promise<IProvider | null>;
 ```
 
-On successful login, the `connectTo()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
-corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
+On successful login, the `connectTo()` function returns a `IProvider` instance. This instance contains the respective provider corresponding to your
+selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
 
 On unsuccessful login, this function will return a `null` value.
 

@@ -12,7 +12,7 @@ const clientId = "YOUR_WEB3AUTH_CLIENT_ID"; // get from https://dashboard.web3au
 function App() {
   // REPLACE-getWeb3AuthState-
 
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<IProvider
 
   useEffect(() => {
     const init = async () => {

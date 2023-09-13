@@ -7,15 +7,15 @@ import {
   Transaction,
 } from "@solana/web3.js";
 // HIGHLIGHTEND-installationSolana
-import { CustomChainConfig, SafeEventEmitterProvider } from "@web3auth/base";
+import { CustomChainConfig, IProvider } from "@web3auth/base";
 // HIGHLIGHTSTART-installationSolana
 import { SolanaWallet } from "@web3auth/solana-provider";
 // HIGHLIGHTEND-installationSolana
 
 export default class SolanaRpc {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 

@@ -75,7 +75,7 @@ import Web3 from "web3";
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0xE", // hex of 14
@@ -105,7 +105,7 @@ import Web3 from "web3";
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0xE", // hex of 14
@@ -134,7 +134,7 @@ const Web3 = require("web3");
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0xE", // hex of 14
@@ -176,7 +176,7 @@ import { ethers } from "ethers";
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0xE", // hex of 14
@@ -206,7 +206,7 @@ import { ethers } from "ethers";
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0xE
@@ -235,7 +235,7 @@ const ethers = require("ethers");
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0xE", // hex of 14
@@ -272,7 +272,7 @@ Simply change the chainId field of `chainConfig` to `0x13881` (testnet)
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x72", // hex of 114
@@ -368,10 +368,7 @@ const contractAddress = "0x13DC2b5053857AE17a4f95aFF55530b267F3E040";
 const contract = new web3.eth.Contract(JSON.parse(contractABI), contractAddress);
 
 // Read current pricing data from FTSO system
-const [
-  btcPriceInfo,
-  flarePriceInfo,
-] = await contract.methods.getCurrentPricesBySymbols(["BTC", "FLR"]).call();
+const [btcPriceInfo, flarePriceInfo] = await contract.methods.getCurrentPricesBySymbols(["BTC", "FLR"]).call();
 const btcPrice = btcPriceInfo.price;
 const flarePrice = flarePriceInfo.price;
 ```
@@ -395,10 +392,7 @@ const contractAddress = "0x13DC2b5053857AE17a4f95aFF55530b267F3E040";
 const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
 // Read current pricing data from FTSO system
-const [
-  btcPriceInfo,
-  flarePriceInfo,
-] = await contract.getCurrentPricesBySymbols(["BTC", "FLR"]);
+const [btcPriceInfo, flarePriceInfo] = await contract.getCurrentPricesBySymbols(["BTC", "FLR"]);
 const btcPrice = btcPriceInfo.price;
 const flarePrice = flarePriceInfo.price;
 ```

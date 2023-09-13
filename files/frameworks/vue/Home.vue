@@ -59,7 +59,7 @@ export default {
     const loading = ref<boolean>(false);
     const loginButtonStatus = ref<string>("");
     const connecting = ref<boolean>(false);
-    let provider = ref<SafeEventEmitterProvider | any>(null);
+    let provider = ref<IProvider | any>(null);
 
     // HIGHLIGHTSTART-registerApp
     const clientId = "YOUR_WEB3AUTH_CLIENT_ID"; // get from https://dashboard.web3auth.io
