@@ -180,12 +180,18 @@ export const getWalletConnectV2Settings = async (
 ## Example
 
 ```tsx
-import { WalletConnectV2Adapter, getWalletConnectV2Settings } from "@web3auth/wallet-connect-v2-adapter";
+import { WalletConnectV2Adapter } from "@web3auth/wallet-connect-v2-adapter";
+import { WalletConnectModal } from "@walletconnect/modal";
 
-const defaultWcSettings = await getWalletConnectV2Settings("eip155", [1, 5, 137], "04309ed1007e77d1f119b85205bb779d");
+const walletConnectModal = new WalletConnectModal({ projectId: "04309ed1007e77d1f119b85205bb779d" });
 const walletConnectV2Adapter = new WalletConnectV2Adapter({
-  adapterSettings: { ...defaultWcSettings.adapterSettings },
-  loginSettings: { ...defaultWcSettings.loginSettings },
+  adapterSettings: {
+    qrcodeModal: walletConnectModal,
+    ...defaultWcSettings.adapterSettings,
+  },
+  loginSettings: {
+    ...defaultWcSettings.loginSettings,
+  },
 });
 
 web3auth.configureAdapter(walletConnectV2Adapter);
