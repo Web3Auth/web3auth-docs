@@ -1,0 +1,118 @@
+---
+title: PnP Modal SDK - v6 to v7
+displayed_sidebar: docs
+description: "PnP Modal SDK - v6 to v7 | Documentation - Web3Auth"
+---
+
+## General
+
+### `IProvider` is introduced at @web3auth/base
+
+#### set web3auth provider type as `IProvider` instead of `SafeEventEmitterProvider`
+
+With V7, users can manage their web3auth provider using `IProvider` instead of `SafeEventEmitterProvider`. If `SafeEventEmitterProvider` compatible
+with your existing example, there's nothing wrong with using it.
+
+```tsx
+// With V7
+// highlight-start
+const [provider, setProvider] = useState<IProvider | null>(null);
+// highlight-end
+```
+
+### TypeError: Cannot read properties of undefined (reading 'defaultLanguage')
+
+In V6, we could initialize Web3Auth without uiConfig. However in V7, if you encounter this kind of problem, this is because you initialized web3auth
+without uiConfig
+
+```tsx
+// With V6
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+  web3AuthNetwork: "cyan",
+});
+// With V7
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+  // add uiConfig
+  // highlight-start
+  uiConfig: {
+    appName: "W3A",
+    // appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+    theme: {
+      primary: "red",
+    },
+    mode: "dark",
+    logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+    logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+    defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+    loginGridCol: 3,
+    primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+  },
+  // highlight-end
+
+  web3AuthNetwork: "cyan",
+});
+```
+
+### `rpcTarget` and `chainId` is now a mandatory parameter
+
+Previously, the Web Modal SDK required `chainConfig` as a parameter which had `rpcTarget` & `chainId` as the optional parameter. But with V6, it's
+mandatory to add `rpcTarget` & `chainId` in the `chainConfig` object.
+
+```tsx
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    // highlight-start
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own custom endpoint while creating an app
+    // highlight-end
+  },
+  web3AuthNetwork: "cyan",
+});
+```
+
+#### For Solana
+
+For Solana, SolanaWallet in package "@web3auth/solana-provider", the request typings require both input and output now use `string[]` when input
+placeholder is needed
+
+```tsx
+// With V7
+const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
+  method: "solana_provider_config",
+  params: [],
+});
+const conn = new Connection(connectionConfig.rpcTarget);
+```
+
+#### For XRPL
+
+For XRPL, after the change of "@web3auth/xrpl-provider" version to v7, the request typings require both input and output now so use `never` when input
+or output placeholder is needed
+
+```tsx
+// With V7
+const txSign = await this.provider.request<{ signature: string }, never>({
+  method: "xrpl_signMessage",
+  params: {
+    signature: hexMsg,
+  },
+});
+
+const accounts = await this.provider.request<never, string[]>({
+  method: "xrpl_getAccounts",
+});
+```
