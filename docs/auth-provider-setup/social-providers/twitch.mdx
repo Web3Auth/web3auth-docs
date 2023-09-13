@@ -17,11 +17,9 @@ description: "Twitch Social Login with Web3Auth | Documentation - Web3Auth"
 1. Follow Twitch's [registration instructions](https://dev.twitch.tv/docs/authentication/#registration) to
    [register your app](https://dev.twitch.tv/console/apps/create)
 
-2. Paste the following as Redirect URI into the "OAuth Redirect URLs" field.
+2. Paste the following as redirect URI into the "OAuth Redirect URLs" field.
 
-   - https://testing.openlogin.com/auth (for Web3Auth testnet used in demo applications)
-
-   - https://app.openlogin.com/auth (for Web3Auth mainnet used in production applications)
+   - https://auth.web3auth.io/auth
 
    ![Twitch OAuth2.0 App Dashboard](/content-hub/social-providers/twitch/twitch-app.png)
 
@@ -36,9 +34,9 @@ description: "Twitch Social Login with Web3Auth | Documentation - Web3Auth"
 ## Set up Twitch Custom Authentication
 
 1. Create a verifier for your Twitch application by selecting `Twitch` as the Login provider from this modal.
-   ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
+   ![Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier-google.png)
 2. Paste the **Client ID** from the Twitch App(above) to the `Client ID` field and click on Create.
-   ![Twitch Client ID on Web3Auth Dashboard](/dashboard/verifiers/twitch-verifier.png)
+   ![Twitch Client ID on Web3Auth Dashboard](/images/dashboard/create-verifier-twitch.png)
 
 ## Example
 
@@ -55,6 +53,11 @@ const web3auth = new Web3Auth({
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth",
+    displayName: "Ethereum Mainnet",
+    blockExplorer: "https://goerli.etherscan.io",
+    ticker: "ETH",
+    tickerName: "Ethereum",
   },
 });
 

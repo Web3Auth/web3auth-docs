@@ -16,11 +16,9 @@ description: "Discord Social Login with Web3Auth | Documentation - Web3Auth"
 
 1. Create a Discord [API application](https://discord.com/developers/applications).
 
-2. Navigate to **OAuth2** from the sidebar, and paste the following as Redirect URI into the "Redirect URI" field.
+2. Navigate to **OAuth2** from the sidebar, and Paste the following URI as a redirect URI into the "Redirect URIs" field.
 
-   - https://testing.openlogin.com/auth (for Web3Auth testnet used in demo applications)
-
-   - https://app.openlogin.com/auth (for Web3Auth mainnet used in production applications)
+   - https://auth.web3auth.io/auth
 
    ![Discord OAuth2.0 App Dashboard](/content-hub/social-providers/discord/discord-redirect-uri.png)
 
@@ -33,9 +31,9 @@ description: "Discord Social Login with Web3Auth | Documentation - Web3Auth"
 ## Set up Discord Custom Authentication
 
 1. Create a verifier for your Discord application by selecting `Discord` as the Login provider from this modal.
-   ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
+   ![Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier-google.png)
 2. Paste the **Client ID** from the Discord App(above) to the `Client ID` field and click on Create.
-   ![Discord Client ID on Web3Auth Dashboard](/dashboard/verifiers/discord-verifier.png)
+   ![Discord Client ID on Web3Auth Dashboard](/images/dashboard/create-verifier-discord.png)
 
 ## Example
 
@@ -52,6 +50,11 @@ const web3auth = new Web3Auth({
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth",
+    displayName: "Ethereum Mainnet",
+    blockExplorer: "https://goerli.etherscan.io",
+    ticker: "ETH",
+    tickerName: "Ethereum",
   },
 });
 
