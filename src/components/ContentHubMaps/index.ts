@@ -27,6 +27,8 @@ const EVMBlockchains = [
   "celo",
   "moonbeam",
   "moonriver",
+  "flare",
+  "songbird",
 ];
 
 export const integrationBuilderMap = [
@@ -380,6 +382,28 @@ export const referenceMap = [
     author: "Web3Auth Team",
     order: 1,
     link: "/connect-blockchain/aptos",
+  },
+  {
+    title: "Integrate Web3Auth with the Flare Blockchain",
+    description: "Learn how to add a non custodial social login to the Flare Blockchain",
+    image: "content-hub/guides/banners/flare.png",
+    type: "REFERENCE",
+    tags: ["flare", "evm", "@web3auth/modal", "@web3auth/no-modal"],
+    date: "14th August 2023",
+    author: "Flare Labs Team",
+    order: 1,
+    link: "/connect-blockchain/flare",
+  },
+  {
+    title: "Integrate Web3Auth with the Songbird Blockchain",
+    description: "Learn how to add a non custodial social login to the Songbird Blockchain",
+    image: "content-hub/guides/banners/songbird.png",
+    type: "REFERENCE",
+    tags: ["songbird", "evm", "@web3auth/modal", "@web3auth/no-modal"],
+    date: "14th August 2023",
+    author: "Flare Labs Team",
+    order: 1,
+    link: "/connect-blockchain/songbird",
   },
 ];
 

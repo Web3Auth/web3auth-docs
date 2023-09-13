@@ -201,6 +201,8 @@ module.exports = {
             "connect-blockchain/moonbeam",
             "connect-blockchain/moonriver",
             "connect-blockchain/klaytn",
+            "connect-blockchain/flare",
+            "connect-blockchain/songbird",
           ],
           collapsible: true,
           collapsed: false,

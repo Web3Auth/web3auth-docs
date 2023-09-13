@@ -1,4 +1,3 @@
-import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -136,6 +135,18 @@ export const tileGroupsData = [
         title: "Cosmos",
         icon: "logo-cosmos.png",
         path: "./connect-blockchain/cosmos",
+      },
+      {
+        key: "flare",
+        title: "Flare",
+        icon: "logo-flare.png",
+        path: "./connect-blockchain/flare",
+      },
+      {
+        key: "songbird",
+        title: "Songbird",
+        icon: "logo-songbird.png",
+        path: "./connect-blockchain/songbird",
       },
     ],
   },
