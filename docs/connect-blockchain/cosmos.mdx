@@ -36,7 +36,7 @@ import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "other", // for all non EVM and SOLANA chains, use "other"
     rpcTarget: "https://rpc.sentry-02.theta-testnet.polypore.xyz",
@@ -81,15 +81,15 @@ In order to get the ChainId, we connect to the RPC using StargateClient and make
 the private key using `this.provider.request({method: "private_key",})`.
 
 ```tsx
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/base";
 import { SigningStargateClient, StargateClient } from "@cosmjs/stargate";
 import { DirectSecp256k1Wallet, OfflineDirectSigner } from "@cosmjs/proto-signing";
 
 const rpc = "https://rpc.sentry-02.theta-testnet.polypore.xyz";
 export default class CosmosRPC {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 
@@ -123,15 +123,15 @@ export default class CosmosRPC {
 Using `DirectSecp256k1Wallet.fromKey()` we can get the accounts via the private key we get through the provider.
 
 ```tsx
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/base";
 import { SigningStargateClient, StargateClient } from "@cosmjs/stargate";
 import { DirectSecp256k1Wallet, OfflineDirectSigner } from "@cosmjs/proto-signing";
 
 const rpc = "https://rpc.sentry-02.theta-testnet.polypore.xyz";
 export default class CosmosRPC {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 
@@ -152,15 +152,15 @@ export default class CosmosRPC {
 Using the account address we receive in the previous step, we can fetch the balance using an RPC call to `client.getAllBalances(address)`.
 
 ```tsx
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/base";
 import { SigningStargateClient, StargateClient } from "@cosmjs/stargate";
 import { DirectSecp256k1Wallet, OfflineDirectSigner } from "@cosmjs/proto-signing";
 
 const rpc = "https://rpc.sentry-02.theta-testnet.polypore.xyz";
 export default class CosmosRPC {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 
@@ -183,15 +183,15 @@ export default class CosmosRPC {
 ## Send transaction
 
 ```tsx
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+import type { IProvider } from "@web3auth/base";
 import { SigningStargateClient, StargateClient } from "@cosmjs/stargate";
 import { DirectSecp256k1Wallet, OfflineDirectSigner } from "@cosmjs/proto-signing";
 
 const rpc = "https://rpc.sentry-02.theta-testnet.polypore.xyz";
 export default class CosmosRPC {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 

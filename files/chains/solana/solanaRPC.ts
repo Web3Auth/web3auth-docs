@@ -7,15 +7,15 @@ import {
   Transaction,
 } from "@solana/web3.js";
 // HIGHLIGHTEND-installationSolana
-import { CustomChainConfig, SafeEventEmitterProvider } from "@web3auth/base";
+import { CustomChainConfig, IProvider } from "@web3auth/base";
 // HIGHLIGHTSTART-installationSolana
 import { SolanaWallet } from "@web3auth/solana-provider";
 // HIGHLIGHTEND-installationSolana
 
 export default class SolanaRpc {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 
@@ -36,7 +36,7 @@ export default class SolanaRpc {
     try {
       // HIGHLIGHTSTART-solanaRPCFunctions
       const solanaWallet = new SolanaWallet(this.provider);
-      const connectionConfig = await solanaWallet.request<CustomChainConfig>({
+      const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
         method: "solana_provider_config",
         params: [],
       });
@@ -73,7 +73,7 @@ export default class SolanaRpc {
 
       const accounts = await solanaWallet.requestAccounts();
 
-      const connectionConfig = await solanaWallet.request<CustomChainConfig>({
+      const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
         method: "solana_provider_config",
         params: [],
       });
@@ -108,7 +108,7 @@ export default class SolanaRpc {
     try {
       // HIGHLIGHTSTART-solanaRPCFunctions
       const solanaWallet = new SolanaWallet(this.provider);
-      const connectionConfig = await solanaWallet.request<CustomChainConfig>({
+      const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
         method: "solana_provider_config",
         params: [],
       });
