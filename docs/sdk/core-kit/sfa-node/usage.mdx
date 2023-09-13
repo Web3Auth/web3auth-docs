@@ -42,7 +42,7 @@ To login a user in the Web3Auth SFA Node.js SDK, you need to call `connect()` fu
 <TabItem value="definition">
 
 ```
-async connect(loginParams: LoginParams): Promise<IProvider | null> {
+async connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null> {
   if (!this.torusUtils || !this.nodeDetailManager || !this.privKeyProvider) throw new Error("Please call init first");
   const { verifier, verifierId, idToken, subVerifierInfoArray } = loginParams;
   const verifierDetails = { verifier, verifierId };
@@ -93,11 +93,11 @@ async connect(loginParams: LoginParams): Promise<IProvider | null> {
 #### Returns
 
 ```tsx
-connect(loginParams: LoginParams): Promise<IProvider | null>
+connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null>
 ```
 
-On successful login, the `connect()` function returns a `IProvider` instance. This instance contains the respective provider corresponding to your
-selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
+On successful login, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
+corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
 
 On unsuccessful login, this function will return a `null` value.
 

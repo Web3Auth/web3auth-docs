@@ -38,7 +38,7 @@ User Functions:
 
 ## Logging in your User
 
-#### `connect(params: LoginParams): Promise<IProvider | null>;`
+#### `connect(params: LoginParams): Promise<SafeEventEmitterProvider | null>;`
 
 To login a user in the Web3Auth MPC Core Kit SDK, you need to call `connect()` function. The function takes in the following parameters:
 
@@ -55,11 +55,11 @@ Checkout the [Authentication Section](./authentication) to know more about the `
 #### Returns
 
 ```tsx
-connect(loginParams: LoginParams): Promise<IProvider | null>
+connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null>
 ```
 
-On successful login, the `connect()` function returns a `IProvider` instance. This instance contains the respective provider corresponding to your
-selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
+On successful login, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
+corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
 
 On unsuccessful login, this function will return a `null` value.
 
@@ -89,7 +89,7 @@ await coreKitInstance.logout();
 
 ## Handle Redirect Result
 
-#### `handleRedirectResult(): Promise<IProvider | null>;`
+#### `handleRedirectResult(): Promise<SafeEventEmitterProvider | null>;`
 
 While using the redirect mode, you need to handle the redirect result in your application. This can be done by calling the `handleRedirectResult()`
 method of the `web3auth` instance, within the constructor of the component where you want to handle the redirect result.
