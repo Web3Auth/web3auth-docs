@@ -19,6 +19,8 @@ by Web3Auth to connect the users to the respective blockchain network.
 Natively, the instance of `Web3Auth` _(referred to as `web3auth` in our examples)_ returns the following functions:
 
 - `connect()` - Showing the Modal and Logging in the User
+- `provider()` - Returns the native provider which can be used to make different blockchain transactions.
+- `connected()` - Returns `true` or `false` depending on whether the web3auth instance is available or not.
 - `getUserInfo()` - Getting the User's Information
 - `authenticateUser()` - Getting the idToken from Web3Auth
 - `addChain()` - Add chain config details to the connected adapter.
@@ -39,11 +41,11 @@ await web3auth.connect();
 #### Returns
 
 ```tsx
-connect(): Promise<SafeEventEmitterProvider | null>;
+connect(): Promise<IProvider | null>;
 ```
 
-On successful login, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
-corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
+On successful login, the `connect()` function returns a `IProvider` instance. This instance contains the respective provider corresponding to your
+selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
 
 On unsuccessful login, this function will return a `null` value.
 
@@ -52,6 +54,30 @@ On unsuccessful login, this function will return a `null` value.
 Read more about connecting your users with the selected blockchain in the [Providers SDK Reference](/sdk/helper-sdks/providers).
 
 :::
+
+## Get a native provider
+
+`provider()`
+
+Returns the native provider which can be used to make different blockchain transactions.
+
+#### Returns
+
+```js
+get provider(): IProvider | null;
+```
+
+## Get connected status
+
+`connected()`
+
+Returns `true` or `false` depending on whether the web3auth instance is available or not.
+
+#### Returns
+
+```js
+get connected(): boolean;
+```
 
 ## Get User's Information
 

@@ -75,7 +75,7 @@ import Web3 from "web3";
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x13", // hex of 19
@@ -105,8 +105,8 @@ import Web3 from "web3";
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
-    chainConfig: {
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x13", // hex of 19
     rpcTarget: "https://songbird-api.flare.network/ext/C/rpc",
@@ -134,8 +134,8 @@ const Web3 = require("web3");
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
-    chainConfig: {
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x13", // hex of 19
     rpcTarget: "https://songbird-api.flare.network/ext/C/rpc",
@@ -176,8 +176,8 @@ import { ethers } from "ethers";
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
-    chainConfig: {
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x13", // hex of 19
     rpcTarget: "https://songbird-api.flare.network/ext/C/rpc",
@@ -206,7 +206,7 @@ import { ethers } from "ethers";
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x13", // hex of 19
@@ -235,8 +235,8 @@ const ethers = require("ethers");
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
-    chainConfig: {
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x13", // hex of 19
     rpcTarget: "https://songbird-api.flare.network/ext/C/rpc",
@@ -272,7 +272,7 @@ Simply change the chainId field of `chainConfig` to `0x13881` (testnet)
 
 const web3auth = new Web3Auth({
   clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x10", // hex of 16
@@ -368,10 +368,7 @@ const contractAddress = "0xEf4c203470553C654B3870f37ce4DE1fA862Dee0";
 const contract = new web3.eth.Contract(JSON.parse(contractABI), contractAddress);
 
 // Read current pricing data from FTSO system
-const [
-  btcPriceInfo,
-  songbirdPriceInfo,
-] = await contract.methods.getCurrentPricesBySymbols(["BTC", "SGB"]).call();
+const [btcPriceInfo, songbirdPriceInfo] = await contract.methods.getCurrentPricesBySymbols(["BTC", "SGB"]).call();
 const btcPrice = btcPriceInfo.price;
 const songbirdPrice = songbirdPriceInfo.price;
 ```
@@ -395,10 +392,7 @@ const contractAddress = "0xEf4c203470553C654B3870f37ce4DE1fA862Dee0";
 const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
 // Read current pricing data from FTSO system
-const [
-  btcPriceInfo,
-  songbirdPriceInfo,
-] = await contract.getCurrentPricesBySymbols(["BTC", "DGB"]);
+const [btcPriceInfo, songbirdPriceInfo] = await contract.getCurrentPricesBySymbols(["BTC", "DGB"]);
 const btcPrice = btcPriceInfo.price;
 const songbirdPrice = songbirdPriceInfo.price;
 ```
