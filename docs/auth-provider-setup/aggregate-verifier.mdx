@@ -40,8 +40,9 @@ such verifiers are called `Single ID Verifiers`.
    :::
 
 8. Similarly, create a third sub-verifier for `Email Passwordless` via Auth0. Follow the above steps from 5 to 8, and select `Email Passwordless` in
-   place of `Github`. ![Create Email Passwordless Sub Verifiier on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate-auth0-email-passwordless-filled.png)
-9. Finally, click on `Create` to deploy the verifier. ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/aggregate-verifier/6.png)
+   place of `Github`.
+   ![Create Email Passwordless Sub Verifiier on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate-auth0-email-passwordless-filled.png)
+9. Finally, click on `Create` to deploy the verifier.
 
 :::note NOTE
 
@@ -62,12 +63,17 @@ const clientId = "YOUR_WEB3AUTH_CLIENT_ID";
 const chainConfig = {
   chainNamespace: "eip155",
   chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://goerli.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
 };
 
 const web3auth = new Web3AuthNoModal({
   clientId,
   chainConfig,
-  web3AuthNetwork: "testnet",
+  web3AuthNetwork: "sapphire_mainnet",
 });
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
