@@ -18,7 +18,7 @@ Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new p
 
 ### 3. Initialize Web3Auth for your preferred blockchain
 
-Web3Auth needs to initialise as soon as your app loads up to enable the user to log in. Preferably done within a constructor, initialisation is the
+Web3Auth needs to initialize as soon as your app loads up to enable the user to log in. Preferably done within a constructor, initialisation is the
 step where you can pass on all the configurations for Web3Auth you want. A simple integration for some of the popular blockchains will look like this:
 
 <Tabs
@@ -36,13 +36,18 @@ step where you can pass on all the configurations for Web3Auth you want. A simpl
 ```tsx
 import { Web3Auth } from "@web3auth/modal";
 
-//Initialize within your constructor
+// Initialize within ngOnInit()
 const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet", // Web3Auth Network
   chainConfig: {
     chainNamespace: "eip155",
-    chainId: "0x1", // Please use 0x5 for Goerli Testnet
+    chainId: "0x1",
     rpcTarget: "https://rpc.ankr.com/eth",
+    displayName: "Ethereum Mainnet",
+    blockExplorer: "https://goerli.etherscan.io",
+    ticker: "ETH",
+    tickerName: "Ethereum",
   },
 });
 
@@ -56,13 +61,18 @@ await web3auth.initModal();
 ```tsx
 import { Web3Auth } from "@web3auth/modal";
 
-//Initialize within your constructor
+// Initialize within ngOnInit()
 const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet", // Web3Auth Network
   chainConfig: {
     chainNamespace: "eip155",
-    chainId: "0x89", // Use 0x13881 for Mumbai Testnet
-    rpcTarget: "https://rpc.ankr.com/eth",
+    chainId: "0x89",
+    rpcTarget: "https://rpc.ankr.com/polygon",
+    displayName: "Polygon Mainnet",
+    blockExplorer: "https://polygon.etherscan.io",
+    ticker: "MATIC",
+    tickerName: "Polygon",
   },
 });
 
@@ -76,13 +86,18 @@ await web3auth.initModal();
 ```tsx
 import { Web3Auth } from "@web3auth/modal";
 
-//Initialize within your constructor
+// Initialize within ngOnInit()
 const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet", // Web3Auth Network
   chainConfig: {
     chainNamespace: "solana",
-    chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-    rpcTarget: "https://api.devnet.solana.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+    chainId: "0x1",
+    rpcTarget: "https://api.devnet.solana.com",
+    displayName: "Solana Mainnet",
+    blockExplorer: "https://explorer.solana.com/",
+    ticker: "SOL",
+    tickerName: "Solana",
   },
 });
 
@@ -98,9 +113,10 @@ import { Web3Auth } from "@web3auth/modal";
 
 //Initialize within your constructor
 const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet", // Web3Auth Network
   chainConfig: {
-    chainId: "chainId",
+    chainId: "0x1",
     chainNamespace: "other",
     rpcTarget: "rpcUrl",
   },
@@ -115,7 +131,7 @@ await web3auth.initModal();
 
 ### 4. Login your User
 
-Once you're done initialising, just create a button that triggers to open the login modal for the user on their request. Logging in is as easy as:
+Once you're done initializing, just create a button that triggers to open the login modal for the user on their request. Logging in is as easy as:
 
 ```tsx
 await web3auth.connect();
