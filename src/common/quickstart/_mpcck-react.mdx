@@ -1,4 +1,4 @@
-import DashboardImage from "@site/static/images/dashboard/project-details.png";
+import DashboardVerifier from "@site/static/dashboard/verifiers/w3a-dashboard-verifier.png";
 
 ### 1. Install Web3Auth
 
@@ -8,25 +8,25 @@ Install the Web3Auth's MPC Core Kit package in your React project.
 npm install --save @web3auth/mpc-core-kit
 ```
 
-### 2. Get your Client ID from Web3Auth Dashboard
+### 2. Get your Verifier details from the Web3Auth Dashboard
 
-Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new project. Use the Client ID of the project to start your integration.
+Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new verifier. Use the verifier details in your project.
 
-<img src={DashboardImage} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Web3Auth Dashboard" />
+<img src={DashboardVerifier} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Dashboard" />
 
 ### 3. Initialize Web3Auth
 
-Web3Auth needs to initialise as soon as your app loads up to enable the user to log in. Preferably done within a constructor, initialisation is the
-step where you can pass on all the configurations for Web3Auth you want. A simple integration will look like this:
+Web3Auth needs to be initialized as soon as your app loads up to enable the user to log in. Preferably done within a constructor, initialization is
+the step where you can pass on all the configurations for Web3Auth you want. A simple integration will look like this:
 
 ```tsx
 import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK } from "@web3auth/mpc-core-kit";
 
 //Initialize within your constructor
 const coreKitInstance = new Web3AuthMPCCoreKit({
-  web3AuthClientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  web3AuthclientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // Get your Client ID from the Web3Auth Dashboard
   // Available networks are "sapphire_devnet", "sapphire_mainnet"
-  web3AuthNetwork: WEB3AUTH_NETWORK.DEVNET,
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
   uxMode: "popup",
 });
 
@@ -35,14 +35,14 @@ await coreKitInstance.init();
 
 ### 4. Login your User
 
-Once you're done initialising, just create a button that triggers the login for the user on their request. Logging in is as easy as:
+Once you're done initializing, just create a button that triggers the login for the user on their request. Logging in is as easy as:
 
 ```tsx
 const provider = await coreKitInstance.connect({
   subVerifierDetails: {
     typeOfLogin: "google",
-    verifier: "google-tkey-w3a",
-    clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+    verifier: "w3a-google-demo",
+    clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
   },
 });
 ```
