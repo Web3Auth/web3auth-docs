@@ -1,5 +1,5 @@
 const path = require("path");
-require('dotenv').config()
+require("dotenv").config();
 const githubOrg = "web3auth";
 const githubRepo = "web3auth-docs";
 const githubOrgUrl = `https://github.com/${githubOrg}`;
@@ -7,13 +7,13 @@ const githubRepoUrl = `${githubOrgUrl}/${githubRepo}`;
 const githubEditUrl = `${githubRepoUrl}/edit/master`;
 const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
-const fs = require('fs');
+const fs = require("fs");
 const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
 
-const resourcesDropdown = fs.readFileSync('./src/components/navDropdown/resources.html', 'utf-8');
-const helpDropdown = fs.readFileSync('./src/components/navDropdown/help.html', 'utf-8');
-const sdkDropdown = fs.readFileSync('./src/components/navDropdown/sdk.html', 'utf-8');
-const contentHubDropdown = fs.readFileSync('./src/components/navDropdown/content-hub.html', 'utf-8');
+const resourcesDropdown = fs.readFileSync("./src/components/navDropdown/resources.html", "utf-8");
+const helpDropdown = fs.readFileSync("./src/components/navDropdown/help.html", "utf-8");
+const sdkDropdown = fs.readFileSync("./src/components/navDropdown/sdk.html", "utf-8");
+const contentHubDropdown = fs.readFileSync("./src/components/navDropdown/content-hub.html", "utf-8");
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 const config = {
@@ -35,9 +35,8 @@ const config = {
       },
     },
     announcementBar: {
-      id: 'sign_up_for_wallets_ux_unconference',
-      content:
-        '<a href="https://lu.ma/l8at7q5b" target="_blank">Secure your spot for Wallets & UX Unconference at token 2049! Sign up now →</a>',
+      id: "sign_up_for_wallets_ux_unconference",
+      content: '<a href="https://lu.ma/l8at7q5b" target="_blank">Secure your spot for Wallets & UX Unconference at token 2049! Sign up now →</a>',
       isCloseable: true,
     },
     colorMode: {
@@ -58,24 +57,24 @@ const config = {
       },
       items: [
         {
-          label: 'SDKs',
-          type: 'dropdown',
+          label: "SDKs",
+          type: "dropdown",
           to: "/sdk",
           position: "left",
           items: [
             {
-              type: 'html',
+              type: "html",
               value: sdkDropdown,
             },
           ],
         },
         {
-          label: 'Resources',
-          type: 'dropdown',
+          label: "Resources",
+          type: "dropdown",
           position: "left",
           items: [
             {
-              type: 'html',
+              type: "html",
               value: resourcesDropdown,
             },
           ],
@@ -86,24 +85,24 @@ const config = {
           position: "left",
         },
         {
-          label: 'Content Hub',
-          type: 'dropdown',
+          label: "Content Hub",
+          type: "dropdown",
           to: "/content-hub",
           position: "left",
           items: [
             {
-              type: 'html',
+              type: "html",
               value: contentHubDropdown,
             },
           ],
         },
         {
-          label: 'Help',
-          type: 'dropdown',
+          label: "Help",
+          type: "dropdown",
           position: "left",
           items: [
             {
-              type: 'html',
+              type: "html",
               value: helpDropdown,
             },
           ],
@@ -139,14 +138,15 @@ const config = {
     },
     customFields: {
       baseUrl,
-    }
+    },
   },
   scripts: [
     {
-      src: baseUrl + 'js/fix-trailing-slash.js',
+      src: baseUrl + "js/fix-trailing-slash.js",
       async: false,
       defer: false,
-    },],
+    },
+  ],
   presets: [
     [
       "@docusaurus/preset-classic",
@@ -166,23 +166,18 @@ const config = {
           trackingID: "GTM-ML3T5M6",
         },
         pages: {
-          path: 'src/pages',
+          path: "src/pages",
           routeBasePath: "/",
-          include: ['**/**.{js,jsx,ts,tsx,md,mdx}'],
-          exclude: [
-            '**/_*.{js,jsx,ts,tsx,md,mdx}',
-            '**/_*/**',
-            '**/*.test.{js,jsx,ts,tsx}',
-            '**/__tests__/**',
-          ],
-          mdxPageComponent: '@theme/MDXPage',
+          include: ["**/**.{js,jsx,ts,tsx,md,mdx}"],
+          exclude: ["**/_*.{js,jsx,ts,tsx,md,mdx}", "**/_*/**", "**/*.test.{js,jsx,ts,tsx}", "**/__tests__/**"],
+          mdxPageComponent: "@theme/MDXPage",
           remarkPlugins: [remarkMath, [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
           beforeDefaultRemarkPlugins: [],
           beforeDefaultRehypePlugins: [],
         },
         sitemap: {
-          changefreq: 'weekly',
+          changefreq: "weekly",
           priority: 0.8,
         },
       },
@@ -192,15 +187,18 @@ const config = {
     path.resolve(__dirname, "plugins", "docusaurus-plugin-content-hub"),
     [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: "files" }],
     path.resolve(__dirname, "plugins", "node-polyfills"),
-    [path.resolve(__dirname, "plugins", "plugin-dynamic-route"), {
-      routes: [
-        {
-          path: `${baseUrl}content-hub/blog/`,
-          exact: false,
-          component: '@site/src/components/BlogLayout/index',
-        },
-      ],
-    }],
+    [
+      path.resolve(__dirname, "plugins", "plugin-dynamic-route"),
+      {
+        routes: [
+          {
+            path: `${baseUrl}content-hub/blog/`,
+            exact: false,
+            component: "@site/src/components/BlogLayout/index",
+          },
+        ],
+      },
+    ],
     [
       "@docusaurus/plugin-client-redirects",
       {
@@ -419,84 +417,67 @@ const config = {
           },
         ],
         createRedirects(existingPath) {
-          if (existingPath.includes('/content-hub')) {
+          if (existingPath.includes("/content-hub")) {
             return [
-              existingPath.replace('/content-hub/guides', '/guides'),
-              existingPath.replace('/content-hub/guides', '/guide'),
-              existingPath.replace('/content-hub/blog', '/blogs'),
-              existingPath.replace('/content-hub/blog', '/blog'),
-              existingPath.replace('/content-hub/guides/auth0', '/customauth/auth0'),
-              existingPath.replace('/content-hub/guides/tkey', '/guides/selfhost'),
-              existingPath.replace('/content-hub/guides/single-factor-auth', '/guides/one-key-flow'),
+              existingPath.replace("/content-hub/guides", "/guides"),
+              existingPath.replace("/content-hub/guides", "/guide"),
+              existingPath.replace("/content-hub/blog", "/blogs"),
+              existingPath.replace("/content-hub/blog", "/blog"),
+              existingPath.replace("/content-hub/guides/auth0", "/customauth/auth0"),
+              existingPath.replace("/content-hub/guides/tkey", "/guides/selfhost"),
+              existingPath.replace("/content-hub/guides/single-factor-auth", "/guides/one-key-flow"),
             ];
           }
-          if (existingPath.includes('/sdk')) {
+          if (existingPath.includes("/sdk")) {
+            return [existingPath.replace("/sdk", "/api-reference"), existingPath.replace("/sdk", "/sdk-reference")];
+          }
+          if (existingPath.includes("/sdk")) {
             return [
-              existingPath.replace('/sdk', '/api-reference'),
-              existingPath.replace('/sdk', '/sdk-reference'),
+              existingPath.replace("/migration-guide/", "/migration-guides/no-modal-v5-to-v6"),
+              existingPath.replace("/migration-guide/migrating-to-v6-from-v5", "/migration-guides/no-modal-v5-to-v6"),
             ];
           }
-          if (existingPath.includes('/sdk')) {
+          if (existingPath.includes("/auth-provider-setup")) {
+            return [existingPath.replace("/auth-provider-setup", "/custom-authentication")];
+          }
+          if (existingPath.includes("/sdk/web/no-modal")) {
+            return [existingPath.replace("/sdk/web/no-modal", "/sdk/web/core"), existingPath.replace("/sdk/web/no-modal", "/sdk/web/customloginui")];
+          }
+          if (existingPath.includes("/sdk/web/modal")) {
+            return [existingPath.replace("/sdk/web/modal", "/sdk/web/web3auth"), existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay")];
+          }
+          if (existingPath.includes("/sdk/tkey")) {
+            return [existingPath.replace("/sdk/tkey", "/sdk/self-host")];
+          }
+          if (existingPath.includes("/helper-sdks/providers")) {
+            return [existingPath.replace("/helper-sdks/providers", "/web/providers")];
+          }
+          if (existingPath.includes("/helper-sdks/plugins")) {
+            return [existingPath.replace("/helper-sdks/plugins", "/web/plugins")];
+          }
+          if (existingPath.includes("/pnp")) {
             return [
-              existingPath.replace('/migration-guide/', '/migration-guides/no-modal-v5-to-v6'),
-              existingPath.replace('/migration-guide/migrating-to-v6-from-v5', '/migration-guides/no-modal-v5-to-v6'),
+              existingPath.replace("/pnp/web", "/web"),
+              existingPath.replace("/pnp/android", "/android"),
+              existingPath.replace("/pnp/ios", "/ios"),
+              existingPath.replace("/pnp/react-native", "/react-native"),
+              existingPath.replace("/pnp/flutter", "/flutter"),
+              existingPath.replace("/pnp/unity", "/unity"),
+              existingPath.replace("/pnp/unreal", "/unreal"),
             ];
           }
-          if (existingPath.includes('/auth-provider-setup')) {
+          if (existingPath.includes("/core-kit")) {
             return [
-              existingPath.replace('/auth-provider-setup', '/custom-authentication'),
-            ];
-          }
-          if (existingPath.includes('/sdk/web/no-modal')) {
-            return [
-              existingPath.replace('/sdk/web/no-modal', '/sdk/web/core'),
-              existingPath.replace('/sdk/web/no-modal', '/sdk/web/customloginui'),
-            ];
-          }
-          if (existingPath.includes('/sdk/web/modal')) {
-            return [
-              existingPath.replace('/sdk/web/modal', '/sdk/web/web3auth'),
-              existingPath.replace('/sdk/web/modal', '/sdk/web/plugnplay'),
-            ];
-          }
-          if (existingPath.includes('/sdk/tkey')) {
-            return [
-              existingPath.replace('/sdk/tkey', '/sdk/self-host'),
-            ];
-          }
-          if (existingPath.includes('/helper-sdks/providers')) {
-            return [
-              existingPath.replace('/helper-sdks/providers', '/web/providers'),
-            ];
-          }
-          if (existingPath.includes('/helper-sdks/plugins')) {
-            return [
-              existingPath.replace('/helper-sdks/plugins', '/web/plugins'),
-            ];
-          }
-          if (existingPath.includes('/pnp')) {
-            return [
-              existingPath.replace('/pnp/web', '/web'),
-              existingPath.replace('/pnp/android', '/android'),
-              existingPath.replace('/pnp/ios', '/ios'),
-              existingPath.replace('/pnp/react-native', '/react-native'),
-              existingPath.replace('/pnp/flutter', '/flutter'),
-              existingPath.replace('/pnp/unity', '/unity'),
-              existingPath.replace('/pnp/unreal', '/unreal'),
-            ];
-          }
-          if (existingPath.includes('/core-kit')) {
-            return [
-              existingPath.replace('/core-kit/sfa-node', '/node'),
-              existingPath.replace('/core-kit/sfa-node', '/core-kit/node'),
-              existingPath.replace('/core-kit/sfa-web', '/single-factor-auth'),
-              existingPath.replace('/core-kit/sfa-web', '/core-kit/single-factor-auth'),
-              existingPath.replace('/core-kit/sfa-android', '/single-factor-auth-android'),
-              existingPath.replace('/core-kit/sfa-android', '/core-kit/single-factor-auth-android'),
-              existingPath.replace('/core-kit/tkey', '/tkey'),
-              existingPath.replace('/core-kit/mpc-core-kit', '/mpc-core-kit'),
-              existingPath.replace('/core-kit/introduction', '/self-host/'),
-              existingPath.replace('/core-kit/introduction', '/self-hosting'),
+              existingPath.replace("/core-kit/sfa-node", "/node"),
+              existingPath.replace("/core-kit/sfa-node", "/core-kit/node"),
+              existingPath.replace("/core-kit/sfa-web", "/single-factor-auth"),
+              existingPath.replace("/core-kit/sfa-web", "/core-kit/single-factor-auth"),
+              existingPath.replace("/core-kit/sfa-android", "/single-factor-auth-android"),
+              existingPath.replace("/core-kit/sfa-android", "/core-kit/single-factor-auth-android"),
+              existingPath.replace("/core-kit/tkey", "/tkey"),
+              existingPath.replace("/core-kit/mpc-core-kit", "/mpc-core-kit"),
+              existingPath.replace("/core-kit/introduction", "/self-host/"),
+              existingPath.replace("/core-kit/introduction", "/self-hosting"),
             ];
           }
           return undefined; // Return a falsy value: no redirect created
@@ -506,17 +487,16 @@ const config = {
   ],
   stylesheets: [
     {
-      href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
-      type: 'text/css',
-      integrity:
-        'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
-      crossorigin: 'anonymous',
+      href: "https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css",
+      type: "text/css",
+      integrity: "sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM",
+      crossorigin: "anonymous",
     },
   ],
   customFields: {
     // 'REACT_HYGRAPHCMS_ENDPOINT': process.env.REACT_HYGRAPHCMS_ENDPOINT,
-    'REACT_CONTENTFUL_SPACE': process.env.REACT_CONTENTFUL_SPACE,
-    'REACT_CONTENTFUL_TOKEN': process.env.REACT_CONTENTFUL_TOKEN,
+    REACT_CONTENTFUL_SPACE: process.env.REACT_CONTENTFUL_SPACE,
+    REACT_CONTENTFUL_TOKEN: process.env.REACT_CONTENTFUL_TOKEN,
   },
 };
 

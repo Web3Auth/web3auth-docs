@@ -14,7 +14,8 @@
     "update-docusaurus": "npm install @docusaurus/core@latest @docusaurus/plugin-client-redirects@latest @docusaurus/preset-classic@latest @docusaurus/remark-plugin-npm2yarn@latest @docusaurus/theme-common@latest @docusaurus/theme-search-algolia@latest @docusaurus/module-type-aliases@latest",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "^15.16.4",
@@ -70,6 +71,8 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-tsdoc": "^0.2.16",
+    "husky": "^8.0.0",
+    "lint-staged": "^14.0.1",
     "path-browserify": "^1.0.1",
     "prettier": "^2.7.1",
     "typescript": "^4.7.4"
@@ -84,6 +87,14 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "prettier --write"
+    ],
+    "**/*.{md,mdx}": [
+      "prettier --write"
     ]
   }
 }
