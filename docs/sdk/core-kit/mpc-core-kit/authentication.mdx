@@ -5,6 +5,14 @@ displayed_sidebar: sdk
 description: "Web3Auth MPC Core Kit Web SDK - Authentication | Documentation - Web3Auth"
 ---
 
+There are two ways to login your users, depending on the type of authentication method you've chosen. If you are looking for an Intrinsic
+Authentication Flow in your application (like Auth0 SPA Flow), you can use the `loginWithOAuth()` function. If you are looking to pass a JWT based Id
+Token to the SDK from in your application (like Auth0 RWA Flow), you can use the `loginWithJWT()` function.
+
+As a prerequisite, before triggering the login function, you need to create a verifier for your login method on the [Web3Auth Dashboard](https://dashboard.web3auth.io).
+
+## Creating a Verifier
+
 Since this a Core Kit SDK, it does not provide any default authentication methods. You need to create a custom verifier in order to use this SDK. This
 means that you need to authenticate users with your own custom authentication service. For example, while authenticating with Google, you have to use
 your own Google Client ID and Dashboard to authenticate users directly, or use aggregate services like Auth0, Firebase, AWS Cognito etc. Additionally,
@@ -26,17 +34,15 @@ Core Kit SDK only supports Sapphire Mainnet and Devnet networks. The other netwo
 
 :::
 
-## Logging in your User
+## Log In with OAuth Intrinsic Flow
 
-#### `connect(params: LoginParams): Promise<SafeEventEmitterProvider | null>;`
-
-To login a user in the Web3Auth MPC Core Kit SDK, you need to call `connect()` function. The function takes in the following parameters:
+#### `loginWithOauth(loginParams: OauthLoginParams): Promise<void>;`
 
 | Variable      | Type     | Description      | Mandatory |
 | ------------- | -------- | ---------------- | --------- |
 | `loginParams` | `object` | Login Parameters | Yes       |
 
-## `LoginParams`
+### `OauthLoginParams`
 
 Contains the parameters required to login a user. This is a mandatory field to be passed in the `connect()` function.
 
@@ -61,25 +67,26 @@ Contains the parameters required to login a user. This is a mandatory field to b
 <TabItem value="type">
 
 ```javascript
-type LoginParams = SubVerifierDetailsParams & AggregateVerifierLoginParams;
+export type OauthLoginParams = SubVerifierDetailsParams | AggregateVerifierLoginParams;
 
-interface SubVerifierDetailsParams extends BaseLoginParams {
+export interface SubVerifierDetailsParams extends BaseLoginParams {
   subVerifierDetails: SubVerifierDetails;
 }
 
-interface AggregateVerifierLoginParams extends BaseLoginParams {
-    aggregateVerifierIdentifier?: string;
-    aggregateVerifierType?: AGGREGATE_VERIFIER_TYPE;
-    subVerifierDetailsArray?: SubVerifierDetails[];
+export interface AggregateVerifierLoginParams extends BaseLoginParams {
+  aggregateVerifierIdentifier?: string;
+  aggregateVerifierType?: AGGREGATE_VERIFIER_TYPE;
+  subVerifierDetailsArray?: SubVerifierDetails[];
 }
 
-interface BaseLoginParams {
-    serverTimeOffset?: number;
+export interface BaseLoginParams {
+  // offset in seconds
+  serverTimeOffset?: number;
 }
 
-type AGGREGATE_VERIFIER_TYPE = (typeof AGGREGATE_VERIFIER)[keyof typeof AGGREGATE_VERIFIER];
+export type AGGREGATE_VERIFIER_TYPE = (typeof AGGREGATE_VERIFIER)[keyof typeof AGGREGATE_VERIFIER];
 
-declare const AGGREGATE_VERIFIER: {
+export declare const AGGREGATE_VERIFIER: {
     readonly SINGLE_VERIFIER_ID: "single_id_verifier";
 };
 ```
@@ -88,9 +95,9 @@ declare const AGGREGATE_VERIFIER: {
 
 </Tabs>
 
-### `SubVerifierDetails`
+#### `SubVerifierDetails`
 
-Contains the details of verifier the app needs to connect to. This is a mandatory field to be passed in the `connect()` function.
+Contains the details of verifier the app needs to connect to. Use this in case of a single verifier.
 
 <Tabs
   defaultValue="table"
@@ -102,31 +109,30 @@ Contains the details of verifier the app needs to connect to. This is a mandator
 
 <TabItem value="table">
 
-| Parameter    | Type                 | Description                                                                                                                                                                                                                                                         | Mandatory |
-| ------------ | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| typeOfLogin  | `TypeOfLogin`        | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose `google`, a Google sign-in flow will be used. If you choose `jwt`, you should be providing your own JWT token, no sign-in flow will be presented. | Yes       |
-| `verifier`   | `string`             | Name/ Identifier of the verifier/ sub verifier in case of aggregate verifiers, you'd like your app to connect to.                                                                                                                                                   | Yes       |
-| `clientId`   | `string`             | Client Id given by the auth provider. Pass a random string in case you're connecting to a JWT based setup.                                                                                                                                                          | Yes       |
-| `jwtParams?` | `Auth0ClientOptions` | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown.                                                                                                                                                 | Yes       |
+| Parameter   | Type          | Description                                                                                                                                                                                                                                                         | Mandatory |
+| ----------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| typeOfLogin | `TypeOfLogin` | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose `google`, a Google sign-in flow will be used. If you choose `jwt`, you should be providing your own JWT token, no sign-in flow will be presented. | Yes       |
+| `verifier`  | `string`      | Name/ Identifier of the verifier/ sub verifier in case of aggregate verifiers, you'd like your app to connect to.                                                                                                                                                   | Yes       |
+| `clientId`  | `string`      | Client Id given by the auth provider. Pass a random string in case you're connecting to a JWT based setup.                                                                                                                                                          | Yes       |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```javascript
-interface SubVerifierDetails {
-  typeOfLogin: LOGIN_TYPE;
-  verifier: string;
-  clientId: string;
-  jwtParams?: Auth0ClientOptions;
-  hash?: string;
-  queryParameters?: TorusGenericObject;
-  customState?: TorusGenericObject;
+export interface SubVerifierDetails {
+    typeOfLogin: LOGIN_TYPE;
+    verifier: string;
+    clientId: string;
+    jwtParams?: Auth0ClientOptions;
+    hash?: string;
+    queryParameters?: TorusGenericObject;
+    customState?: TorusGenericObject;
 }
 
-type LOGIN_TYPE = (typeof LOGIN)[keyof typeof LOGIN];
+export type LOGIN_TYPE = (typeof LOGIN)[keyof typeof LOGIN];
 
-declare const LOGIN: {
+export declare const LOGIN: {
     readonly GOOGLE: "google";
     readonly FACEBOOK: "facebook";
     readonly REDDIT: "reddit";
@@ -149,11 +155,9 @@ declare const LOGIN: {
 
 </Tabs>
 
-### `jwtParams?`
+#### `AggregateVerifierLoginParams`
 
-#### `Auth0ClientOptions`
-
-Parameters needed to be passed while logging in using JWT. Not required for other types of logins.
+Contains the details of an aggregate verifier the app needs to connect to. Use this in case of an aggregate verifier.
 
 <Tabs
   defaultValue="table"
@@ -165,90 +169,101 @@ Parameters needed to be passed while logging in using JWT. Not required for othe
 
 <TabItem value="table">
 
-| Parameter                    | Type      | Description                                                                                                                                                    | Mandatory |
-| ---------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| `domain?`                    | `string`  | Domain on which your authentication app is hosted on. Ideal while using the SPA flow in Auth0.                                                                 | No        |
-| `client_id?`                 | `string`  | The Client ID found on your OAuth provider settings page                                                                                                       | No        |
-| `redirect_uri?`              | `string`  | The default URL where OAuth provider will redirect your browser to with the authentication result. It must be whitelisted in their dashboard.                  | No        |
-| `leeway?`                    | `number`  | The value in seconds used to account for clock skew in JWT expirations. Typically, this value is no more than a minute or two at maximum. Defaults to 60 secs. | No        |
-| `verifierIdField?`           | `string`  | The field in jwt token which maps to verifier id                                                                                                               | No        |
-| `isVerifierIdCaseSensitive?` | `boolean` | Whether the verifier id field is case sensitive. Defaults to `true`                                                                                            | No        |
-| `id_token?`                  | `string`  | Id Token given by the OAuth provider.                                                                                                                          | No        |
-| `access_token?`              | `string`  | OAuth Access Token given by the OAuth provider.                                                                                                                | No        |
-| `user_info_route?`           | `string`  | The route for user info endpoint. This will be padded to domain.                                                                                               | No        |
+| Parameter                     | Type                      | Description                                                                                                         | Mandatory |
+| ----------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------- |
+| `aggregateVerifierIdentifier` | `string`                  | The name of your aggregate verifier                                                                                 | Yes       |
+| `aggregateVerifierType`       | `AGGREGATE_VERIFIER_TYPE` | What kind of aggregation is needed for your aggregate verifier. Use `"single_id_verifier"` by default in most cases | Yes       |
+| `subVerifierDetailsArray`     | `SubVerifierDetails[]`    | An array containing the details of your sub verifiers.                                                              | Yes       |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```javascript
-interface Auth0ClientOptions extends BaseLoginOptions {
-  /**
-   * Your Auth0 account domain such as `'example.auth0.com'`,
-   * `'example.eu.auth0.com'` or , `'example.mycompany.com'`
-   * (when using [custom domains](https://auth0.com/docs/custom-domains))
-   */
-  domain?: string;
-  /**
-   * The Client ID found on your Application settings page
-   */
-  client_id?: string;
-  /**
-   * The default URL where Auth0 will redirect your browser to with
-   * the authentication result. It must be whitelisted in
-   * the "Allowed Callback URLs" field in your Auth0 Application's
-   * settings. If not provided here, it should be provided in the other
-   * methods that provide authentication.
-   */
-  redirect_uri?: string;
-  /**
-   * The value in seconds used to account for clock skew in JWT expirations.
-   * Typically, this value is no more than a minute or two at maximum.
-   * Defaults to 60s.
-   */
-  leeway?: number;
-  /**
-   * The field in jwt token which maps to verifier id
-   */
-  verifierIdField?: string;
-  /**
-   * Whether the verifier id field is case sensitive
-   * @defaultValue true
-   */
-  isVerifierIdCaseSensitive?: boolean;
-  id_token?: string;
-  access_token?: string;
-  /**
-   * The route for user info endpoint. This will be padded to domain
-   * @defaultValue userinfo
-   * */
-  user_info_route?: string;
+export interface AggregateVerifierLoginParams extends BaseLoginParams {
+  aggregateVerifierIdentifier?: string;
+  aggregateVerifierType?: AGGREGATE_VERIFIER_TYPE;
+  subVerifierDetailsArray?: SubVerifierDetails[];
 }
+export type AGGREGATE_VERIFIER_TYPE = (typeof AGGREGATE_VERIFIER)[keyof typeof AGGREGATE_VERIFIER];
 ```
 
 </TabItem>
 
 </Tabs>
 
-## Returns
+### Usage
+
+### General Verifier
 
 ```tsx
-connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null>
-```
+import { Web3AuthMPCCoreKit, SubVerifierDetailsParams } from "@web3auth/mpc-core-kit";
 
-On successful login, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
-corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
-
-On unsuccessful login, this function will return a `null` value.
-
-## Example
-
-```tsx
-const provider = await coreKitInstance.connect({
+const verifierConfig = {
   subVerifierDetails: {
     typeOfLogin: "google",
     verifier: "w3a-google-demo",
     clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
   },
-});
+} as SubVerifierDetailsParams;
+
+await coreKitInstance.loginWithOauth(verifierConfig);
 ```
+
+### Aggregate Verifier
+
+```tsx
+import { Web3AuthMPCCoreKit, AggregateVerifierLoginParams } from "@web3auth/mpc-core-kit";
+
+const verifierConfig = {
+  aggregateVerifierIdentifier: "aggregate-sapphire",
+  aggregateVerifierType: "single_id_verifier",
+  subVerifierDetailsArray: [
+    {
+      typeOfLogin: "google",
+      verifier: "w3a-google",
+      clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+    },
+  ],
+} as AggregateVerifierLoginParams;
+
+await coreKitInstance.loginWithOauth(verifierConfig);
+```
+
+## Handle Redirect Result
+
+#### `handleRedirectResult(): Promise<SafeEventEmitterProvider | null>;`
+
+While using the redirect mode, you need to handle the redirect result in your application. This can be done by calling the `handleRedirectResult()`
+method of the `web3auth` instance, within the constructor of the component where you want to handle the redirect result.
+
+If your URL anchor contains `#state`, then the `handleRedirectResult()` method should be called, since that is where the redirect result, containing
+the `idToken` is returned from the login provider.
+
+#### Example
+
+```javascript
+useEffect(() => {
+  const submitRedirectResult = async () => {
+    try {
+      const provider = await coreKitInstance?.handleRedirectResult();
+      if (provider) setProvider(provider);
+    } catch (error) {
+      if ((error as Error).message === "required more shares") {
+        uiConsole("first triggered", coreKitInstance);
+        recoverAccount();
+      }
+    }
+  }
+  if (coreKitInstance && window.location.hash.includes("#state")) {
+    submitRedirectResult();
+  }
+}, [coreKitInstance]);
+```
+
+:::note
+
+For the popup flow, the service worker is needed to handle it properly. Please have a look at the [installation page](./install) to know how to set up
+the service worker for your application.
+
+:::

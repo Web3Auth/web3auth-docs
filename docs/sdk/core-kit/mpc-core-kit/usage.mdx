@@ -12,79 +12,238 @@ Natively, the instance of `Web3AuthMPCCoreKit` (referred to as `coreKitInstance`
 
 Authentication Functions:
 
-- `connect()` - Logs in the User.
+- `loginWithOAuth()` - Logs in the user in OAuth Intrisic Flow.
+- `loginWithJWT()` - Logs in the user with a JWT based ID Token.
 - `logout()` - Logs out the User.
-- `handleRedirectResult()` - Handles the redirect result while logging in the User, while in redirect mode
+- `handleRedirectResult()` - Handles the redirect result while logging in the User, while in redirect mode in Intrinsic Flow.
 
-Backup Share Functions:
+Handling Factors:
 
-- `exportBackupShare()` - Exports the Backup Mnemonic Share.
-- `inputBackupShare()` - Inputs the Backup Mnemonic Share to recover the User's account.
-
-Security Question Functions:
-
-- `addSecurityQuestionShare()` - Adds a Security Question Share to the User's account.
-- `recoverSecurityQuestionShare()` - Recovers the User's account using the Security Question Share.
-- `changeSecurityQuestionShare()` - Changes the Security Question Share of the User's account.
-- `deleteSecurityQuestionShare()` - Deletes the Security Question Share of the User's account.
+- `inputFactorKey()` - Inputs the Factor Key to recover the User's account.
+- `getCurrentFactorKey()` - Returns the current Factor Key of the User's account, present in the state of the SDK.
+- `createFactor()` - Creates a new Factor for the User's account.
+- `deleteFactor()` - Deletes a Factor from the User's account.
 
 User Functions:
 
 - `getUserInfo()` - Returns the User's information received from the ID Token.
 - `getKeyDetails()` - Returns the User's Key Details.
 - `commitChanges()` - Commits the changes made to the User's account while in manual sync mode.
-- `CRITICAL_resetAccount()` - Resets the User's account. This function is only to be used in case of emergencies, when the user is unable to recover
-  their account. This deletes all the history of the previous key and the funds/ assets associated with it.
 
-## Logging in your User
+Import/ Export Keys:
 
-#### `connect(params: LoginParams): Promise<SafeEventEmitterProvider | null>;`
+- `importTssKey()` - Imports a TSS Key to the User's account. Useful to import an already existing account into the MPC Archiecture.
+- `_UNSAFE_exportTssKey()` - Exports the TSS Key of the User's account. Not recommended for general usage, however, can be used in cases where users
+  ask for their private key.
 
-To login a user in the Web3Auth MPC Core Kit SDK, you need to call `connect()` function. The function takes in the following parameters:
+Additional Helper Functions:
+
+- Web Storage
+  - `storeWebBrowserFactor()` - Stores a Factor in the Web Local/ Session Storage.
+  - `getWebBrowserFactor()` - Returns the Factor from the Web Local/ Session Storage.
+- Security Questions
+  - `setSecurityQuestion()` - Sets the Security Question Factor for the User's account.
+  - `changeSecurityQuestion()` - Changes the Security Question for the User's account.
+  - `deleteSecurityQuestion()` - Deletes the Security Question for the User's account.
+  - `recoverSecurityQuestionFactor()` - Recovers the Security Question Factor for the User's account using the given password.
+  - `getQuestion()` - Returns the Security Question for the User's account.
+- Conversion from Mnemonic
+  - `mnemonicToKey()` - Converts a Mnemonic to a BN.
+
+## Log In with OAuth Intrinsic Flow
+
+#### `loginWithOauth(loginParams: OauthLoginParams): Promise<void>;`
 
 | Variable      | Type     | Description      | Mandatory |
 | ------------- | -------- | ---------------- | --------- |
 | `loginParams` | `object` | Login Parameters | Yes       |
 
-:::tip
+### `OauthLoginParams`
 
-Checkout the [Authentication Section](/sdk/core-kit/mpc-core-kit/authentication) to know more about the `loginParams` object.
+Contains the parameters required to login a user. This is a mandatory field to be passed in the `connect()` function.
 
-:::
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type", value: "type" },
+  ]}
+>
 
-#### Returns
+<TabItem value="table">
 
-```tsx
-connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null>
+| Parameter                      | Type                   | Description                                                                                                                             | Mandatory |
+| ------------------------------ | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `subVerifierDetails`           | `SubVerifierDetails`   | Details of the verifier the app needs to connect to. This is named a "sub verifier" to accommodate for aggregate verifiers as well.     | Yes       |
+| `aggregateVerifierIdentifier?` | `string`               | Identifier/ Name of the aggregate verifier you've made on the Web3Auth Dashboard. Not needed if you're connecting to a single verifier. | No        |
+| `subVerifierDetailsArray?`     | `SubVerifierDetails[]` | Array of the details of verifiers the app needs to connect to.                                                                          | No        |
+
+</TabItem>
+
+<TabItem value="type">
+
+```javascript
+export type OauthLoginParams = SubVerifierDetailsParams | AggregateVerifierLoginParams;
+
+export interface SubVerifierDetailsParams extends BaseLoginParams {
+  subVerifierDetails: SubVerifierDetails;
+}
+
+export interface AggregateVerifierLoginParams extends BaseLoginParams {
+  aggregateVerifierIdentifier?: string;
+  aggregateVerifierType?: AGGREGATE_VERIFIER_TYPE;
+  subVerifierDetailsArray?: SubVerifierDetails[];
+}
+
+export interface BaseLoginParams {
+  // offset in seconds
+  serverTimeOffset?: number;
+}
+
+export type AGGREGATE_VERIFIER_TYPE = (typeof AGGREGATE_VERIFIER)[keyof typeof AGGREGATE_VERIFIER];
+
+export declare const AGGREGATE_VERIFIER: {
+    readonly SINGLE_VERIFIER_ID: "single_id_verifier";
+};
 ```
 
-On successful login, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
-corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
+</TabItem>
 
-On unsuccessful login, this function will return a `null` value.
+</Tabs>
 
-#### Example
+#### `SubVerifierDetails`
+
+Contains the details of verifier the app needs to connect to. Use this in case of a single verifier.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter   | Type          | Description                                                                                                                                                                                                                                                         | Mandatory |
+| ----------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| typeOfLogin | `TypeOfLogin` | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose `google`, a Google sign-in flow will be used. If you choose `jwt`, you should be providing your own JWT token, no sign-in flow will be presented. | Yes       |
+| `verifier`  | `string`      | Name/ Identifier of the verifier/ sub verifier in case of aggregate verifiers, you'd like your app to connect to.                                                                                                                                                   | Yes       |
+| `clientId`  | `string`      | Client Id given by the auth provider. Pass a random string in case you're connecting to a JWT based setup.                                                                                                                                                          | Yes       |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```javascript
+export interface SubVerifierDetails {
+    typeOfLogin: LOGIN_TYPE;
+    verifier: string;
+    clientId: string;
+    jwtParams?: Auth0ClientOptions;
+    hash?: string;
+    queryParameters?: TorusGenericObject;
+    customState?: TorusGenericObject;
+}
+
+export type LOGIN_TYPE = (typeof LOGIN)[keyof typeof LOGIN];
+
+export declare const LOGIN: {
+    readonly GOOGLE: "google";
+    readonly FACEBOOK: "facebook";
+    readonly REDDIT: "reddit";
+    readonly DISCORD: "discord";
+    readonly TWITCH: "twitch";
+    readonly APPLE: "apple";
+    readonly GITHUB: "github";
+    readonly LINKEDIN: "linkedin";
+    readonly TWITTER: "twitter";
+    readonly WEIBO: "weibo";
+    readonly LINE: "line";
+    readonly EMAIL_PASSWORD: "email_password";
+    readonly PASSWORDLESS: "passwordless";
+    readonly JWT: "jwt";
+    readonly WEBAUTHN: "webauthn";
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+#### `AggregateVerifierLoginParams`
+
+Contains the details of an aggregate verifier the app needs to connect to. Use this in case of an aggregate verifier.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                     | Type                      | Description                                                                                                         | Mandatory |
+| ----------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------- |
+| `aggregateVerifierIdentifier` | `string`                  | The name of your aggregate verifier                                                                                 | Yes       |
+| `aggregateVerifierType`       | `AGGREGATE_VERIFIER_TYPE` | What kind of aggregation is needed for your aggregate verifier. Use `"single_id_verifier"` by default in most cases | Yes       |
+| `subVerifierDetailsArray`     | `SubVerifierDetails[]`    | An array containing the details of your sub verifiers.                                                              | Yes       |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```javascript
+export interface AggregateVerifierLoginParams extends BaseLoginParams {
+  aggregateVerifierIdentifier?: string;
+  aggregateVerifierType?: AGGREGATE_VERIFIER_TYPE;
+  subVerifierDetailsArray?: SubVerifierDetails[];
+}
+export type AGGREGATE_VERIFIER_TYPE = (typeof AGGREGATE_VERIFIER)[keyof typeof AGGREGATE_VERIFIER];
+```
+
+</TabItem>
+
+</Tabs>
+
+### Usage
+
+### General Verifier
 
 ```tsx
-const provider = await coreKitInstance.connect({
+import { Web3AuthMPCCoreKit, SubVerifierDetailsParams } from "@web3auth/mpc-core-kit";
+
+const verifierConfig = {
   subVerifierDetails: {
     typeOfLogin: "google",
     verifier: "w3a-google-demo",
     clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
   },
-});
+} as SubVerifierDetailsParams;
+
+await coreKitInstance.loginWithOauth(verifierConfig);
 ```
 
-## Logging out the User
-
-#### `logout(): Promise<void>;`
-
-Disconnect the user's connected wallet/ provider and log them out of the Web3Auth MPC Core Kit SDK.
-
-#### Example
+### Aggregate Verifier
 
 ```tsx
-await coreKitInstance.logout();
+import { Web3AuthMPCCoreKit, AggregateVerifierLoginParams } from "@web3auth/mpc-core-kit";
+
+const verifierConfig = {
+  aggregateVerifierIdentifier: "aggregate-sapphire",
+  aggregateVerifierType: "single_id_verifier",
+  subVerifierDetailsArray: [
+    {
+      typeOfLogin: "google",
+      verifier: "w3a-google",
+      clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+    },
+  ],
+} as AggregateVerifierLoginParams;
+
+await coreKitInstance.loginWithOauth(verifierConfig);
 ```
 
 ## Handle Redirect Result
@@ -94,8 +253,8 @@ await coreKitInstance.logout();
 While using the redirect mode, you need to handle the redirect result in your application. This can be done by calling the `handleRedirectResult()`
 method of the `web3auth` instance, within the constructor of the component where you want to handle the redirect result.
 
-If your URL anchor contains `#state`, then the `handleRedirectResult()` method should be be called, since that is where the redirect result,
-containing the `idToken` is returned from the login provider.
+If your URL anchor contains `#state`, then the `handleRedirectResult()` method should be called, since that is where the redirect result, containing
+the `idToken` is returned from the login provider.
 
 #### Example
 
@@ -124,6 +283,18 @@ For the popup flow, the service worker is needed to handle it properly. Please h
 [installation page](/sdk/core-kit/mpc-core-kit/install) to know how to set up the service worker for your application.
 
 :::
+
+## Logging out the User
+
+#### `logout(): Promise<void>;`
+
+Disconnect the user's connected wallet/ provider and log them out of the Web3Auth MPC Core Kit SDK.
+
+#### Example
+
+```tsx
+await coreKitInstance.logout();
+```
 
 ## Export Backup Share
 

@@ -49,58 +49,78 @@ This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
 
 | Parameter          | Type                                     | Default                                   | Description                                                                                                                                                                                                                                                                                       | Mandatory |
 | ------------------ | ---------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| `web3AuthClientId` | `string`                                 | -                                         | Web3Auth Client ID. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/).                                                                                                                                                                               | Yes       |
-| `chainConfig`      | `CustomChainConfig`                      | -                                         | Custom configuration for your preferred blockchain. Read more about it [here](#chainconfig).                                                                                                                                                                                                      | Yes       |
+| `web3AuthClientId` | `string`                                 | -                                         | The Web3Auth Client ID for your application. Find one at https://dashboard.web3auth.io                                                                                                                                                                                                            | Yes       |
+| `chainConfig`      | `CustomChainConfig`                      | -                                         | Chain Config for the chain you want to connect to. Currently supports only EVM based chains.                                                                                                                                                                                                      | Yes       |
 | `manualSync?`      | `boolean`                                | `false`                                   | Enables you to manually sync with the Web3Auth Metadata Server, helping you manage the API calls to the server. Ideal for managing custom flows.                                                                                                                                                  | No        |
 | `baseUrl?`         | `string`                                 | `${window.location.origin}/serviceworker` | URL of the service worker handling the authentication in popup flow. For general usecases, you don't need to change this value.                                                                                                                                                                   | No        |
 | `web3AuthNetwork`  | `"sapphire_mainnet"`,`"sapphire_devnet"` | `"sapphire_mainnet"`                      | Web3Auth Network used for MPC Wallet Management. Use Devnet/ Testnet in testing environment and Mainnet in production environment.                                                                                                                                                                | No        |
 | `storageKey?`      | `"session"` or `"local"`                 | `'local'`                                 | Select the session key storage across local storage or session storage. Setting to "local" will persist social login session accross browser tabs. @defaultValue "local"                                                                                                                          | No        |
 | `sessionTime?`     | `number`                                 | `86400`                                   | Determine the session length in seconds. By default the value is set at 86400 seconds, ie. 7 days.                                                                                                                                                                                                | No        |
 | `uxMode?`          | `"popup"` or `"redirect"`                | `"popup"`                                 | Two uxModes are supported: <ul><li>`'popup'`: In this uxMode, a popup will be shown to user for login.</li><li>`'redirect'`: In this uxMode, user will be redirected to a new window tab for login.</li></ul> Use of `'REDIRECT'` mode is recommended in browsers where popups might get blocked. | No        |
+| `enableLogging?`   | `boolean`                                | `false`                                   | Enables Logs for the SDK                                                                                                                                                                                                                                                                          | No        |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```tsx
-interface Web3AuthOptions {
+export interface Web3AuthOptions {
+  /**
+   * The Web3Auth Client ID for your application. Find one at https://dashboard.web3auth.io
+   */
   web3AuthClientId: string;
+
+  /**
+   * Chain Config for the chain you want to connect to. Currently supports only EVM based chains.
+   */
   chainConfig?: CustomChainConfig;
+
   /**
    * @defaultValue `false`
    */
   manualSync?: boolean;
+
   /**
    * @defaultValue `${window.location.origin}/serviceworker`
    */
   baseUrl?: string;
+
   /**
    *
-   * @defaultValue `'sapphire_mainnet`
+   * @defaultValue `'sapphire_mainner'`
    */
   web3AuthNetwork?: WEB3AUTH_NETWORK_TYPE;
+
   /**
    *
    * @defaultValue `'local'`
    */
   storageKey?: "session" | "local";
+
   /**
    * @defaultValue 86400
    */
   sessionTime?: number;
+
   /**
    * @defaultValue `'POPUP'`
    */
   uxMode?: UX_MODE_TYPE;
-}
-type WEB3AUTH_NETWORK_TYPE = typeof WEB3AUTH_NETWORK[keyof typeof WEB3AUTH_NETWORK];
-const WEB3AUTH_NETWORK: {
-  readonly MAINNET: "sapphire_mainnet";
-  readonly DEVNET: "sapphire_devnet";
-};
 
-type UX_MODE_TYPE = typeof UX_MODE[keyof typeof UX_MODE];
-const UX_MODE: {
+  /**
+   * @defaultValue `false`
+   * enables logging of the internal packages.
+   */
+  enableLogging?: boolean;
+}
+export type WEB3AUTH_NETWORK_TYPE = typeof WEB3AUTH_NETWORK[keyof typeof WEB3AUTH_NETWORK];
+export const WEB3AUTH_NETWORK = {
+  MAINNET: TORUS_SAPPHIRE_NETWORK.SAPPHIRE_MAINNET,
+  DEVNET: TORUS_SAPPHIRE_NETWORK.SAPPHIRE_DEVNET,
+} as const;
+
+export type UX_MODE_TYPE = typeof UX_MODE[keyof typeof UX_MODE];
+export declare const UX_MODE: {
   readonly POPUP: "popup";
   readonly REDIRECT: "redirect";
 };
@@ -114,7 +134,7 @@ const UX_MODE: {
 
 :::caution
 
-Currently Web3Auth MPC supports **only EVM Compatible Chains**. We're constantly working on adding support for more chains.
+Currently Web3Auth MPC Core Kit supports **only EVM Compatible Chains**. We're constantly working on adding support for more chains.
 
 :::
 
