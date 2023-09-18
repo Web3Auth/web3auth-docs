@@ -40,13 +40,13 @@ npm install --save @web3auth/web3auth-wagmi-connector
 
 ### Import the `Web3AuthConnector` class from `@web3auth/web3auth-wagmi-connector`
 
-```js
+```tsx
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 ```
 
 #### Assign the `Web3AuthConnector` class to a variable
 
-```js
+```tsx
 const connector = new Web3AuthConnector(chains?, options);
 ```
 
@@ -74,7 +74,7 @@ const connector = new Web3AuthConnector(chains?, options);
 
 <TabItem value="interface">
 
-```ts
+```tsx
 export interface Options {
   web3AuthInstance: IWeb3Auth | IWeb3AuthModal;
   loginParams?: OpenloginLoginParams;
@@ -99,7 +99,7 @@ with all the options available in Web3Auth Modal package and set it up as you wi
 
 ### Modal SDK
 
-```js
+```tsx
 const name = "My App Name";
 const iconUrl = "https://web3auth.io/docs/contents/logo-ethereum.png";
 const chainConfig = {
@@ -119,7 +119,7 @@ const web3AuthInstance = new Web3Auth({
   //highlight-end
   // optional - add whitelabel config
   uiConfig: {...},
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
 });
 
 // Optional - Add openlogin adapter for customisations
@@ -139,7 +139,7 @@ web3AuthInstance.addPlugin(torusPlugin);
 While all the parameters can be passed directly to the instance, the only parameters that remain during the initialisation remains (passed on to the
 `initModal()` function). You can pass these parameters to the `modalConfig` object in the `Web3AuthConnector` class.
 
-```js
+```tsx
 modalConfig: {
   [WALLET_ADAPTERS.OPENLOGIN]: {
     loginMethods: {
@@ -155,7 +155,7 @@ modalConfig: {
 
 ### No Modal SDK
 
-```js
+```tsx
 const name = "My App Name";
 const iconUrl = "https://web3auth.io/docs/contents/logo-ethereum.png";
 const chainConfig = {
@@ -175,7 +175,7 @@ const web3AuthInstance = new Web3AuthNoModal({
   //highlight-end
   // optional - add whitelabel config
   uiConfig: {...},
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
 });
 
 // Mandatory - Add openlogin adapter
@@ -225,7 +225,7 @@ params to connect to the adapter/ social login desired by the user.
 
 <TabItem value="google">
 
-```js
+```tsx
 loginParams: {
   loginProvider: 'google',
 }
@@ -234,7 +234,7 @@ loginParams: {
 </TabItem>
 <TabItem value="facebook">
 
-```js
+```tsx
 loginParams: {
   loginProvider: 'facebook',
 }
@@ -243,7 +243,7 @@ loginParams: {
 </TabItem>
 <TabItem value="jwt">
 
-```js
+```tsx
 loginParams: {
   loginProvider: "jwt",
   extraLoginOptions: {
@@ -256,7 +256,7 @@ loginParams: {
 </TabItem>
 <TabItem value="auth0">
 
-```js
+```tsx
 loginParams: {
   loginProvider: "jwt",
   extraLoginOptions: {
@@ -269,7 +269,7 @@ loginParams: {
 </TabItem>
 <TabItem value="email_passwordless">
 
-```js
+```tsx
 loginParams: {
   loginProvider: 'email_passwordless',
   extraLoginOptions: {
@@ -281,7 +281,7 @@ loginParams: {
 </TabItem>
 <TabItem value="sms_passwordless">
 
-```js
+```tsx
 loginParams: {
   loginProvider: 'sms_passwordless',
   extraLoginOptions: {
@@ -293,7 +293,7 @@ loginParams: {
 </TabItem>
 <TabItem value="reddit">
 
-```js
+```tsx
 loginParams: {
   loginProvider: 'reddit',
 }
@@ -302,7 +302,7 @@ loginParams: {
 </TabItem>
 <TabItem value="discord">
 
-```js
+```tsx
 loginParams: {
   loginProvider: 'discord',
 }
@@ -311,7 +311,7 @@ loginParams: {
 </TabItem>
 <TabItem value="twitch">
 
-```js
+```tsx
 loginParams: {
   loginProvider: 'twitch',
 }
@@ -320,7 +320,7 @@ loginParams: {
 </TabItem>
 <TabItem value="apple">
 
-```js
+```tsx
 loginParams: {
   loginProvider: 'apple',
 }
@@ -329,7 +329,7 @@ loginParams: {
 </TabItem>
 <TabItem value="github">
 
-```js
+```tsx
 loginParams: {
   loginProvider: 'github',
 }
@@ -338,7 +338,7 @@ loginParams: {
 </TabItem>
 <TabItem value="linkedin">
 
-```js
+```tsx
 loginParams: {
   loginProvider: 'linkedin',
 }
@@ -347,7 +347,7 @@ loginParams: {
 </TabItem>
 <TabItem value="twitter">
 
-```js
+```tsx
 loginParams: {
   loginProvider: 'twitter',
 }
@@ -356,7 +356,7 @@ loginParams: {
 </TabItem>
 <TabItem value="weibo">
 
-```js
+```tsx
 loginParams: {
   loginProvider: 'weibo',
 }
@@ -365,7 +365,7 @@ loginParams: {
 </TabItem>
 <TabItem value="line">
 
-```js
+```tsx
 loginParams: {
   loginProvider: 'line',
 }
@@ -399,7 +399,7 @@ various UI Kits for better integration and user experience
 
 <TabItem value="basic">
 
-```js
+```tsx
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import { Web3Auth } from "@web3auth/modal";
 import { createConfig, WagmiConfig, configureChains } from "wagmi";
@@ -422,7 +422,7 @@ const web3AuthInstance = new Web3Auth({
     ticker: chains[0].nativeCurrency?.symbol,
     blockExplorer: chains[0]?.blockExplorers.default?.url,
   },
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
 });
 
 const wagmiConfig = createConfig({
@@ -492,7 +492,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfi
 const openloginAdapterInstance = new OpenloginAdapter({
   privateKeyProvider,
   adapterSettings: {
-    network: "cyan",
+    network: "sapphire_mainnet",
     uxMode: "popup",
     whiteLabel: {
       name: "Your app Name",
@@ -560,7 +560,7 @@ const wagmiConfig = createConfig({
 </TabItem>
 <TabItem value="plugin">
 
-```js
+```tsx
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import { Web3Auth } from "@web3auth/modal";
 import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
@@ -642,7 +642,7 @@ const wagmiConfig = createConfig({
 
 <TabItem value="basic">
 
-```js
+```tsx
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -657,7 +657,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains([mainnet
 // Instantiating Web3Auth
 const web3AuthInstance = new Web3AuthNoModal({
   clientId: "YOUR_CLIENT_ID",
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x" + chains[0].id.toString(16),
@@ -674,7 +674,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfi
 const openloginAdapterInstance = new OpenloginAdapter({
   privateKeyProvider,
   adapterSettings: {
-    network: "cyan",
+    network: "sapphire_mainnet",
     uxMode: "popup",
   },
 });
@@ -734,7 +734,7 @@ const chainConfig = {
 const web3AuthInstance = new Web3AuthNoModal({
   clientId: "YOUR_CLIENT_ID",
   chainConfig,
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
 });
 
 // Add openlogin adapter for customisations
@@ -742,7 +742,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfi
 const openloginAdapter = new OpenloginAdapter({
   privateKeyProvider,
   adapterSettings: {
-    network: "cyan",
+    network: "sapphire_mainnet",
     uxMode: "popup",
     loginConfig: {
       jwt: {
@@ -816,7 +816,7 @@ const chainConfig = {
 const web3AuthInstance = new Web3AuthNoModal({
   clientId: "YOUR_CLIENT_ID",
   chainConfig,
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
 });
 
 // Add openlogin adapter for customisations
@@ -824,7 +824,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfi
 const openloginAdapterInstance = new OpenloginAdapter({
   privateKeyProvider,
   adapterSettings: {
-    network: "cyan",
+    network: "sapphire_mainnet",
     uxMode: "popup",
     whiteLabel: {
       name: "Your app Name",
@@ -865,7 +865,7 @@ const wagmiConfig = createConfig({
 </TabItem>
 <TabItem value="plugin">
 
-```js
+```tsx
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -887,12 +887,12 @@ const chainConfig = {
   tickerName: chains[0].nativeCurrency?.name,
   ticker: chains[0].nativeCurrency?.symbol,
   blockExplorer: chains[0].blockExplorers?.default.url[0] as string,
-}
+};
 
 const web3AuthInstance = new Web3AuthNoModal({
   clientId: "YOUR_CLIENT_ID",
   chainConfig,
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
 });
 
 // Add openlogin adapter
@@ -900,7 +900,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfi
 const openloginAdapterInstance = new OpenloginAdapter({
   privateKeyProvider,
   adapterSettings: {
-    network: "cyan",
+    network: "sapphire_mainnet",
     uxMode: "popup",
   },
 });

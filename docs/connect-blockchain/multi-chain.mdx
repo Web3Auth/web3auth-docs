@@ -40,13 +40,13 @@ provider as **`web3auth.provider`** after successful authentication.
 >
 <TabItem value="es">
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 import Web3 from "web3";
 
 const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x1",
@@ -59,14 +59,14 @@ const provider = web3auth.provider;
 </TabItem>
 <TabItem value="ts">
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 import Web3 from "web3";
 
 const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x1",
@@ -79,13 +79,13 @@ const provider = web3auth.provider;
 </TabItem>
 <TabItem value="js">
 
-```js
+```tsx
 const { Web3Auth } = require("@web3auth/modal");
 const Web3 = require("web3");
 
 const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x1",
@@ -119,7 +119,7 @@ the Ethereum provider.
 
 <TabItem value="polygon">
 
-```js
+```tsx
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 /*
@@ -128,19 +128,19 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 const privateKey = provider.request({ method: "eth_private_key" });
 const polygonPrivateKeyProvider = new EthereumPrivateKeyProvider({
-      config: {
-        chainConfig: {
-          chainId: "0x13881",
-          rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
-          // Avoid using public rpcTarget in production.
-          // Use services like Infura, Quicknode etc
-          displayName: "Polygon Mumbai",
-          blockExplorer: "https://mumbai.polygonscan.com/",
-          ticker: "MATIC",
-          tickerName: "MATIC",
-        },
-      },
-    });
+  config: {
+    chainConfig: {
+      chainId: "0x13881",
+      rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
+      // Avoid using public rpcTarget in production.
+      // Use services like Infura, Quicknode etc
+      displayName: "Polygon Mumbai",
+      blockExplorer: "https://mumbai.polygonscan.com/",
+      ticker: "MATIC",
+      tickerName: "MATIC",
+    },
+  },
+});
 await polygonPrivateKeyProvider.setupProvider(privateKey);
 const web3 = new Web3(polygonPrivateKeyProvider.provider as any);
 const address = (await web3.eth.getAccounts())[0];
@@ -149,7 +149,7 @@ const address = (await web3.eth.getAccounts())[0];
 </TabItem>
 <TabItem value="bsc">
 
-```js
+```tsx
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 /*
@@ -158,29 +158,28 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 const privateKey = provider.request({ method: "eth_private_key" });
 const bnbPrivateKeyProvider = new EthereumPrivateKeyProvider({
-      config: {
-        chainConfig: {
-          chainId: "0x38",
-          rpcTarget: "https://rpc.ankr.com/bsc",
-          // Avoid using public rpcTarget in production.
-          // Use services like Infura, Quicknode etc
-          displayName: "Binance SmartChain Mainnet",
-          blockExplorer: "https://bscscan.com/",
-          ticker: "BNB",
-          tickerName: "BNB",
-        },
-      },
-    });
+  config: {
+    chainConfig: {
+      chainId: "0x38",
+      rpcTarget: "https://rpc.ankr.com/bsc",
+      // Avoid using public rpcTarget in production.
+      // Use services like Infura, Quicknode etc
+      displayName: "Binance SmartChain Mainnet",
+      blockExplorer: "https://bscscan.com/",
+      ticker: "BNB",
+      tickerName: "BNB",
+    },
+  },
+});
 await bnbPrivateKeyProvider.setupProvider(privateKey);
 const web3 = new Web3(bnbPrivateKeyProvider.provider as any);
 const address = (await web3.eth.getAccounts())[0];
-
 ```
 
 </TabItem>
 <TabItem value="avalanche">
 
-```js
+```tsx
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 /*
@@ -189,29 +188,28 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 const privateKey = provider.request({ method: "eth_private_key" });
 const avaxPrivateKeyProvider = new EthereumPrivateKeyProvider({
-      config: {
-        chainConfig: {
-          chainId: "0xA86A",
-          rpcTarget: "https://rpc.ankr.com/avalanche-c",
-          // Avoid using public rpcTarget in production.
-          // Use services like Infura, Quicknode etc
-          displayName: "Avalanche C-Chain Mainnet",
-          blockExplorer: "https://subnets.avax.network/c-chain",
-          ticker: "AVAX",
-          tickerName: "AVAX",
-        },
-      },
-    });
+  config: {
+    chainConfig: {
+      chainId: "0xA86A",
+      rpcTarget: "https://rpc.ankr.com/avalanche-c",
+      // Avoid using public rpcTarget in production.
+      // Use services like Infura, Quicknode etc
+      displayName: "Avalanche C-Chain Mainnet",
+      blockExplorer: "https://subnets.avax.network/c-chain",
+      ticker: "AVAX",
+      tickerName: "AVAX",
+    },
+  },
+});
 await avaxPrivateKeyProvider.setupProvider(privateKey);
 const web3 = new Web3(avaxPrivateKeyProvider.provider as any);
 const address = (await web3.eth.getAccounts())[0];
-
 ```
 
 </TabItem>
 <TabItem value="cronos">
 
-```js
+```tsx
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 /*
@@ -220,29 +218,28 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 const privateKey = provider.request({ method: "eth_private_key" });
 const cronosPrivateKeyProvider = new EthereumPrivateKeyProvider({
-      config: {
-        chainConfig: {
-          chainId: "0x19",
-          rpcTarget: "https://rpc.cronos.org",
-          // Avoid using public rpcTarget in production.
-          // Use services like Infura, Quicknode etc
-          displayName: "Cronos Mainnet",
-          blockExplorer: "https://cronoscan.com/",
-          ticker: "CRO",
-          tickerName: "CRO",
-        },
-      },
-    });
+  config: {
+    chainConfig: {
+      chainId: "0x19",
+      rpcTarget: "https://rpc.cronos.org",
+      // Avoid using public rpcTarget in production.
+      // Use services like Infura, Quicknode etc
+      displayName: "Cronos Mainnet",
+      blockExplorer: "https://cronoscan.com/",
+      ticker: "CRO",
+      tickerName: "CRO",
+    },
+  },
+});
 await cronosPrivateKeyProvider.setupProvider(privateKey);
 const web3 = new Web3(cronosPrivateKeyProvider.provider as any);
 const address = (await web3.eth.getAccounts())[0];
-
 ```
 
 </TabItem>
 <TabItem value="evm">
 
-```js
+```tsx
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 /*
@@ -251,23 +248,22 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 const privateKey = provider.request({ method: "eth_private_key" });
 const PrivateKeyProvider = new EthereumPrivateKeyProvider({
-      config: {
-        chainConfig: {
-          chainId: "YOUR_CHAIN_ID",
-          rpcTarget: "YOUR_RPC_URL",
-          // Avoid using public rpcTarget in production.
-          // Use services like Infura, Quicknode etc
-          displayName: "YOUR_CHAIN_NAME",
-          blockExplorer: "YOUR_BLOCK_EXPLORER_URL",
-          ticker: "YOUR_TICKER", // eg: MATIC, BNB, AVAX, CRO
-          tickerName: "YOUR_TICKER_NAME", // eg: MATIC, BNB, AVAX, CRO
-        },
-      },
-    });
+  config: {
+    chainConfig: {
+      chainId: "YOUR_CHAIN_ID",
+      rpcTarget: "YOUR_RPC_URL",
+      // Avoid using public rpcTarget in production.
+      // Use services like Infura, Quicknode etc
+      displayName: "YOUR_CHAIN_NAME",
+      blockExplorer: "YOUR_BLOCK_EXPLORER_URL",
+      ticker: "YOUR_TICKER", // eg: MATIC, BNB, AVAX, CRO
+      tickerName: "YOUR_TICKER_NAME", // eg: MATIC, BNB, AVAX, CRO
+    },
+  },
+});
 await PrivateKeyProvider.setupProvider(privateKey);
 const web3 = new Web3(PrivateKeyProvider.provider as any);
 const address = (await web3.eth.getAccounts())[0];
-
 ```
 
 </TabItem>
@@ -279,11 +275,8 @@ const address = (await web3.eth.getAccounts())[0];
 To interact with the Solana blockchain, you can use [@solana/web3.js](https://solana-labs.github.io/solana-web3.js/) library with Web3Auth along with
 `@web3auth/solana-provider` package.
 
-```js
-import {
-  SolanaPrivateKeyProvider,
-  SolanaWallet,
-} from "@web3auth/solana-provider";
+```tsx
+import { SolanaPrivateKeyProvider, SolanaWallet } from "@web3auth/solana-provider";
 import { getED25519Key } from "@toruslabs/openlogin-ed25519";
 
 /*
@@ -295,33 +288,30 @@ const ed25519key = getED25519Key(privateKey).sk.toString("hex");
 
 // Get user's Solana's public address
 const solanaPrivateKeyProvider = new SolanaPrivateKeyProvider({
-    config: {
+  config: {
     chainConfig: {
-        chainId: "0x1",
-        rpcTarget: "https://ssc-dao.genesysgo.net",
-        displayName: "Solana Mainnet",
-        blockExplorer: "https://explorer.solana.com/",
-        ticker: "SOL",
-        tickerName: "Solana",
+      chainId: "0x1",
+      rpcTarget: "https://ssc-dao.genesysgo.net",
+      displayName: "Solana Mainnet",
+      blockExplorer: "https://explorer.solana.com/",
+      ticker: "SOL",
+      tickerName: "Solana",
     },
-    },
+  },
 });
 await solanaPrivateKeyProvider.setupProvider(ed25519key);
 console.log(solanaPrivateKeyProvider.provider);
 
-const solanaWallet = new SolanaWallet(
-    solanaPrivateKeyProvider.provider as any
-);
+const solanaWallet = new SolanaWallet(solanaPrivateKeyProvider.provider as any);
 const solana_address = await solanaWallet.requestAccounts();
 const solana_address_one = solana_address[0];
-
 ```
 
 ### Tezos
 
 For Tezos, we will be requiring the [taquito](https://tezostaquito.io/) library to create the Tezos address and interact with the Tezos blockchain.
 
-```js
+```tsx
 import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
 import { hex2buf } from "@taquito/utils";
 
@@ -350,7 +340,7 @@ StarkEx and StarkNet address creation.
 
 <TabItem value="starkex">
 
-```js
+```tsx
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 
 /*
@@ -366,7 +356,7 @@ const address = starkex_account.pub.getX().toString("hex");
 </TabItem>
 <TabItem value="starknet">
 
-```js
+```tsx
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 
 /*
@@ -388,7 +378,7 @@ const address = starknet_account.pub.getX().toString("hex");
 For Algorand, we will pass in the privateKey and will be using [algosdk](https://www.npmjs.com/package/algosdk) package to handle the Algorand address
 creation.
 
-```js
+```tsx
 import algosdk from "algosdk";
 
 /*
@@ -405,7 +395,7 @@ const address = keyPair.addr;
 
 For Polkadot, we will use the libraries `@polkadot/keyring` and `@polkadot/util-crypto` to create the Polkadot address.
 
-```js
+```tsx
 // Polkadot
 import { Keyring } from "@polkadot/api";
 import { cryptoWaitReady } from "@polkadot/util-crypto";

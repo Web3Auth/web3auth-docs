@@ -1,6 +1,6 @@
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
-import DashboardImage from "@site/static/dashboard/project_plug_n_play.png";
+import DashboardImage from "@site/static/images/dashboard/project-details.png";
 import ConnectToExample from "@site/src/common/sdk/pnp/web/_connect-to-example.mdx";
 
 ### 1. Install Web3Auth
@@ -11,7 +11,7 @@ Install the Web3Auth No Modal package in your Vue project.
 npm install --save @web3auth/no-modal @web3auth/ethereum-provider @web3auth/openlogin-adapter @web3auth/solana-provider @web3auth/base-provider
 ```
 
-### 2. Get your Client ID from Web3Auth Dashboard
+### 2. Get your Client ID from the Web3Auth Dashboard
 
 Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new project. Use the Client ID of the project to start your integration.
 
@@ -19,8 +19,9 @@ Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new p
 
 ### 3. Initialize Web3Auth for your preferred blockchain
 
-Web3Auth needs to initialise as soon as your app loads up to enable the user to log in. Preferably done within a constructor, initialisation is the
-step where you can pass on all the configurations for Web3Auth you want. A simple integration for some of the popular blockchains will look like this:
+Web3Auth needs to be initialized as soon as your app loads up to enable the user to log in. Preferably done within a constructor, initialization is
+the step where you can pass on all the configurations for Web3Auth you want. A simple integration for some of the popular blockchains will look like
+this:
 
 <Tabs
   defaultValue="ethereum"
@@ -34,7 +35,7 @@ step where you can pass on all the configurations for Web3Auth you want. A simpl
 
 <TabItem value="ethereum">
 
-```js
+```tsx
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -49,7 +50,8 @@ const chainConfig = {
   tickerName: "Ethereum",
 };
 const web3auth = new Web3AuthNoModal({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet", // Web3Auth Network
   chainConfig,
 });
 
@@ -67,7 +69,7 @@ await web3auth.init();
 
 <TabItem value="polygon">
 
-```js
+```tsx
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -82,7 +84,8 @@ const chainConfig = {
   tickerName: "Polygon",
 };
 const web3auth = new Web3AuthNoModal({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet", // Web3Auth Network
   chainConfig,
 });
 
@@ -100,7 +103,7 @@ await web3auth.init();
 
 <TabItem value="solana">
 
-```js
+```tsx
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -112,11 +115,12 @@ const chainConfig = {
   displayName: "Solana Mainnet",
   blockExplorer: "https://explorer.solana.com",
   ticker: "SOL",
-  tickerName: "Solana Token",
+  tickerName: "Solana",
 };
 // eslint-disable-next-line @typescript-eslint/no-shadow
 const web3auth = new Web3AuthNoModal({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet", // Web3Auth Network
   chainConfig,
 });
 
@@ -133,7 +137,7 @@ await web3auth.init();
 
 <TabItem value="other">
 
-```js
+```tsx
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -148,7 +152,8 @@ const chainConfig = {
   tickerName: "tickerName",
 };
 const web3authInstance = new Web3AuthNoModal({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet", // Web3Auth Network
   chainConfig,
 });
 
@@ -168,13 +173,64 @@ await web3authInstance.init();
 
 ### 4. Login your User
 
-Once you're done initialising, just create a button that triggers the login for the user on their request. Logging in is as easy as:
+Once you're done initializing, just create a button that triggers the login for the user on their request. Logging in is as easy as:
 
 <ConnectToExample />
 
 :::caution
 
-If you're new to Web3 development, you might be facing certain issues with Webpack while configuring your application. Please refer to our
-[Webpack Issues Troubleshooting Guide](/troubleshooting/webpack-issues) for more information.
+If you're new to Web3 development, you might be facing certain issues with Webpack while configuring your application.
+
+Please follow the below steps to troubleshoot your application.
+
+:::
+
+### &. Troubleshoot Webpack in Vue.js
+
+- Check for the missing libraries in your build and included packages, and accordingly polyfill them. For Web3Auth, you just need to polyfill the
+  `buffer` and `process` libraries
+
+  ```bash npm2yarn
+  npm install --save-dev buffer process
+  ```
+
+- Add the following lines to `vue.config.js`
+
+  ```tsx
+  const { defineConfig } = require("@vue/cli-service");
+  const { ProvidePlugin } = require("webpack");
+  const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+  module.exports = defineConfig({
+    transpileDependencies: true,
+    lintOnSave: false,
+    configureWebpack: (config) => {
+      config.devtool = "source-map";
+      config.resolve.symlinks = false;
+      config.resolve.fallback = {
+        crypto: false, // crypto-browserify can be polyfilled here if needed
+        stream: false, // stream-browserify can be polyfilled here if needed
+        assert: false, // assert can be polyfilled here if needed
+        os: false, // os-browserify can be polyfilled here if needed
+        https: false, // https-browserify can be polyfilled here if needed
+        http: false, // stream-http can be polyfilled here if needed
+        url: "url", // url is needed if using `signer.provider.send` method for signing from ethers.js
+        zlib: false, // browserify-zlib can be polyfilled here if needed
+      };
+      config.plugins.push(new ProvidePlugin({ Buffer: ["buffer", "Buffer"] }));
+      config.plugins.push(new ProvidePlugin({ process: ["process/browser"] }));
+      config.plugins.push(
+        new BundleAnalyzerPlugin({
+          analyzerMode: "disabled",
+        })
+      );
+    },
+  });
+  ```
+
+:::caution
+
+There might be a possibility that you might need to polyfill more libraries, in case you're using any other blockchain library alongside Web3Auth that
+requires them. Generally the libraries like `crypto-browserify`, `stream-browserify`, `browserify-zlib`, `assert`, `stream-http`, `https-browserify`,
+`os-browserify`, `url` are the ones that might be required. `crypto-browserify` and `stream-browserify` being the most common polyfills.
 
 :::

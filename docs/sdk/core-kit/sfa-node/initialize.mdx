@@ -13,7 +13,7 @@ import Tabs from "@theme/Tabs";
 
 After Installation, the next step to use Web3Auth Node.js SDK is to Initialize the SDK.
 
-However, the Initialization is a two step process, ie.
+However, the Initialization is a two-step process, ie.
 
 - [Instantiation of Web3Auth](#instantiating-web3auth)
 - [Initialization of Web3Auth](#initializing-web3auth)
@@ -59,7 +59,7 @@ This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
 
 <TabItem value="interface">
 
-```ts
+```tsx
 export interface Web3AuthOptions {
   /**
    * Client id for web3auth.
@@ -82,8 +82,8 @@ export interface Web3AuthOptions {
   enableLogging?: boolean;
 
   /**
-   * setting this to true returns the same key as web sdk (i.e., plug n play key)
-   * By default, this sdk returns CoreKitKey
+   * setting this to true returns the same key as web SDK (i.e., plug-n-play key)
+   * By default, this SDK returns CoreKitKey
    */
   usePnPKey?: boolean;
 }
@@ -97,9 +97,9 @@ export interface Web3AuthOptions {
 
 ```javascript
 const web3auth = new Web3Auth({
-  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  web3AuthNetwork: "cyan", // Available networks are "testnet", "mainnet", "cyan", and "aqua".
-  usePnPKey: "false", // By default, this sdk returns CoreKitKey
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  usePnPKey: "false", // By default, this SDK returns CoreKitKey
 });
 ```
 
@@ -115,7 +115,7 @@ To complete the initialization process, we need to initialize the `Web3Auth` ins
 `init()` function of the previously created `web3auth` instance, using a **private key provider**.
 
 ```javascript
-web3auth.init({ provider });
+web3auth.init({ privateKeyProvider });
 ```
 
 ## Example
@@ -125,8 +125,8 @@ const Web3Auth = require("@web3auth/single-factor-auth");
 const EthereumPrivateKeyProvider = require("@web3auth/ethereum-provider");
 const CHAIN_NAMESPACES = require("@web3auth/base");
 
-// Swap with different provider if you want to use a different blockchain
-const provider = new EthereumPrivateKeyProvider({
+// Swap with a different privateKeyProvider if you want to use a different blockchain
+const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig: {
       chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -141,10 +141,10 @@ const provider = new EthereumPrivateKeyProvider({
 });
 
 const web3auth = new Web3Auth({
-  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  web3AuthNetwork: "cyan", // Available networks are "testnet", "mainnet", "cyan", and "aqua".
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
   usePnPKey: "false", // By default, this sdk returns CoreKitKey by default.
 });
 
-web3auth.init({ provider });
+web3auth.init({ privateKeyProvider });
 ```

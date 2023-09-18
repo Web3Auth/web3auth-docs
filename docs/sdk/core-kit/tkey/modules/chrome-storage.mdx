@@ -17,23 +17,46 @@ npm install --save @tkey/chrome-storage
 
 ## Initialization
 
-#### Import the `ChromeExtensionStorageModule` class from `@tkey/chrome-storage`
-
-```javascript
-import ChromeExtensionStorageModule from "@tkey/chrome-storage";
-```
-
-#### Assign the `ChromeExtensionStorageModule` class to a variable
-
-```javascript
+```tsx
+import { ChromeExtensionStorageModule } from "@tkey/chrome-storage";
 const chromeStorageModule = new ChromeExtensionStorageModule();
 ```
 
-### Returns
+## Usage
 
-The `ChromeExtensionStorageModule` class returns an object with the following properties:
+With the `ChromeExtensionStorageModule`, you have access to the multiple functions as mentioned in the type reference, however, the most important
+ones are:
 
-```ts
+### Get ShareStore from Storage
+
+`getStoreFromChromeExtensionStorage(): Promise<ShareStore>;`
+
+#### Example
+
+```tsx
+const share = await tKey.modules.chromeStorage.getStoreFromChromeExtensionStorage();
+```
+
+### Store Device Share
+
+`storeDeviceShare(deviceShareStore: ShareStore, customDeviceInfo?: StringifiedType): Promise<void>;`
+
+- `deviceShareStore`: The `ShareStore` object to store.
+- `customDeviceInfo?`: Information about the device to store.
+
+#### Example
+
+```tsx
+const generateShareResult = await tKeyInstance.generateNewShare();
+const share = await tKeyInstance.outputShareStore(generateShareResult.newShareIndex);
+await tKey.modules.chromeStorage.storeDeviceShare(share);
+```
+
+## Type Reference
+
+### `ChromeExtensionStorageModule`
+
+```tsx
 class ChromeExtensionStorageModule implements IModule {
   moduleName: string;
   tbSDK: ITKeyApi;
@@ -47,33 +70,9 @@ class ChromeExtensionStorageModule implements IModule {
 }
 ```
 
-## Usage
+### `ShareStore`
 
-With the `ChromeExtensionStorageModule` , you've access to the following functions:
-
-### Get ShareStore from Storage
-
-##### `getStoreFromChromeExtensionStorage()`
-
-#### Return
-
-- `Promise<ShareStore>`: The [`ShareStore`](#sharestore) object.
-
-```js title="Example"
-const getDeviceShare = async () => {
-  const deviceShare = await tKey.modules.chromeStorage.getStoreFromChromeExtensionStorage();
-  return deviceShare;
-};
-```
-
-### Store Device Share
-
-#### `storeDeviceShare(deviceShareStore, customDeviceInfo?)`
-
-- `deviceShareStore`: The `ShareStore` object to store.
-- `customDeviceInfo?`: Information about the device to store.
-
-```ts title="ShareStore"
+```tsx
 class ShareStore implements ISerializable {
   share: Share;
   polynomialID: PolynomialID;
@@ -84,40 +83,4 @@ class ShareStore implements ISerializable {
 interface ISerializable {
   toJSON(): StringifiedType;
 }
-```
-
-```js title="Example"
-const storeDeviceShare = async (deviceShare) => {
-  await tKey.modules.chromeStorage.storeDeviceShare(deviceShare);
-};
-```
-
-### Storing a Share on Chrome Extension Storage
-
-#### `storeShareOnChromeExtensionStorage(share)`
-
-- `share`: The [`ShareStore`](#sharestore) object to store.
-
-#### Return
-
-- `Promise<void>`
-
-```js title="Example"
-const storeShareOnChromeExtensionStorage = async (deviceShare) => {
-  await tKey.modules.chromeStorage.storeShareOnChromeExtensionStorage(deviceShare);
-};
-```
-
-### Input Share to tKey State
-
-#### `inputShareFromChromeExtensionStorage()`
-
-#### Return
-
-- `Promise<void>`
-
-```js title="Example"
-const inputShareFromChromeExtensionStorage = async () => {
-  await tKey.modules.chromeStorage.inputShareFromChromeExtensionStorage();
-};
 ```

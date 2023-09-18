@@ -22,13 +22,13 @@ values={[
 >
 <TabItem value="EVM">
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 import Web3 from "web3";
 
 const web3auth = new Web3Auth({
   clientId, // get from https://dashboard.web3auth.io
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x1", // EVM chain's Chain ID
@@ -54,13 +54,13 @@ console.log(userAccounts);
 </TabItem>
 <TabItem value="solana">
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { SolanaWallet } from "@web3auth/solana-provider";
 
 const web3auth = new Web3Auth({
   clientId, // get from https://dashboard.web3auth.io
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.SOLANA,
     chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
@@ -68,7 +68,7 @@ const web3auth = new Web3Auth({
     displayName: "Solana Mainnet",
     blockExplorer: "https://explorer.solana.com",
     ticker: "SOL",
-    tickerName: "Solana Token",
+    tickerName: "Solana",
   },
 });
 
@@ -84,26 +84,26 @@ console.log(userAccounts);
 </TabItem>
 <TabItem value="xrpl">
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { XrplPrivateKeyProvider, getXRPLChainConfig } from "@web3auth/xrpl-provider";
 
 const web3auth = new Web3Auth({
-chainConfig: {
-  chainNamespace: CHAIN_NAMESPACES.OTHER,
-},
-clientId = "YOUR_WEB3AUTH_CLIENT_ID", // get from https://dashboard.web3auth.io
-web3AuthNetwork = "cyan", // testnet, mainnet, cyan, aqua
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.OTHER,
+  },
+  clientId = "YOUR_WEB3AUTH_CLIENT_ID", // get from https://dashboard.web3auth.io
+  web3AuthNetwork = "sapphire_mainnet", // testnet, mainnet, cyan, aqua
 });
 
 const xrplProvider = new XrplPrivateKeyProvider({
-config: {
-  chainId: "chainId",
-  chainConfig: getXRPLChainConfig("testnet"), // devnet, testnet, mainnet
-  rpcTarget: "rpc url"
-},
+  config: {
+    chainId: "chainId",
+    chainConfig: getXRPLChainConfig("testnet"), // devnet, testnet, mainnet
+    rpcTarget: "rpc url",
+  },
 });
 
 const adapter = new OpenloginAdapter({
@@ -119,13 +119,13 @@ const provider = await web3auth.connect();
 </TabItem>
 <TabItem value="other">
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
 const web3auth = new Web3Auth({
   clientId, // get from https://dashboard.web3auth.io
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     /*
     you can pass your own chain configs here
@@ -217,10 +217,10 @@ scalability solutions, meta transactions, smart contract wallets, different elli
 
 Example below demonstrates usage of `other` chainNamespace and retrieving private key of logged in user.
 
-```ts
+```tsx
 const web3auth = new Web3Auth({
   chainConfig: { chainNamespace: CHAIN_NAMESPACES.OTHER },
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   clientId: "example-client-id",
 });
 

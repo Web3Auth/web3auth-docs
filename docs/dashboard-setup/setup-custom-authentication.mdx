@@ -11,68 +11,59 @@ you can tailor your authentication process to the unique needs of your project a
 
 But before understanding about custom authentication, let us see **What is a Verifier?**
 
+#### What is a Verifier?
+
 A verifier is a piece of information about the OAuth provider being used by the application, which is queried by web3auth auth network nodes from a
 smart contract deployed on the Ethereum blockchain to verify the JWT token.
 
 There are two types of `Verifiers` at Web3Auth:
 
-1. `Default Verifiers`: These are the verifiers associated with OAuth providers(Google, Facebook, Apple etc) which are owned and managed by Web3Auth's
-   account.
-2. `Custom Verifiers`: If you want to manage your OAuth providers(Google, Facebook, Apple etc) yourself or to use some Federated Identity Providers
-   like Auth0, Firebase, AWS Cognito, Okta etc, or even your Custom JWT Authentication, you'll need to create a verifier on the Web3Auth's dashboard.
+1. `Default Verifiers`: These are the verifiers associated with OAuth providers(Google, Facebook, Apple etc.) which are owned and managed by
+   Web3Auth's account.
+2. `Custom Verifiers`: If you want to manage your OAuth providers(Google, Facebook, Apple etc.) yourself or to use some Federated Identity Providers
+   like Auth0, Firebase, AWS Cognito, Okta etc., or even your Custom JWT Authentication, you'll need to create a verifier under a project on the
+   Web3Auth's dashboard.
 
-`Custom Verifier` is needed to let the user login with your custom authentication flow. The wallets generated for a user are scoped to a verifier.
-Verifier scripts determine the access structure to your user's wallets, and the set Verifier scripts are chosen to determine which logins your
-application will ultimately use.
+For users to be able to log in using your custom authentication flow, you will need to use a Custom Verifier. The Wallet that is generated for each
+user is specific to a verifier. Verifier scripts determine the access structure to your users' wallets, and the set of Verifier scripts you choose
+will determine which logins your application will ultimately use.
 
 You can read more about verifiers [in this blog post](https://medium.com/toruslabs/key-assignments-resolution-and-retrieval-afb984500612) or
 [in this GitHub discussion](https://github.com/orgs/Web3Auth/discussions/427#discussioncomment-3442052).
 
-The `Custom Auth` Dashboard looks something like this:
+The `Custom Authentication` tab of a project looks something like this:
 
-![Custom Authentication Dashboard](/dashboard/custom_auth.png)
+![Custom Authentication Dashboard](/images/dashboard/custom-authentication.png)
+
+<br />
 
 ## Create Verifier
 
 Once you click on the `Create Verifier` button, you'll see a toggle similar to this:
 
-![Verifier Modal on Web3Auth Dashboard](/dashboard/verifiers/verifier-modal.png)
+![Verifier Modal on Web3Auth Dashboard](/images/dashboard/create-verifier.png)
 
 To create a verifier, you need to input the following details:
 
 ### Verifier identifier
 
-The identifier for your verifier. This is used to identify your verifier in the Web3Auth dashboard. You'll need this while initialising the
-`Web3Auth`/`Web3AuthNoModal` SDK for setting up the custom authentication.
+The identifier for your verifier. You'll need this while initializing the `Web3Auth`/`Web3AuthNoModal` SDK for setting up the custom authentication.
 
-### Select Environment
+### Choose a Login Provider
 
-Select between `testnet`, `mainnet`, `aqua`, and `cyan`.
+Select the Login Provider from the provided options.
 
-- `testnet` is a sandbox environment for developers to experiment. People usually test and finish their integration here.
-- `mainnet`, `aqua` , & `cyan` are the production environments for scalable applications.
+The following is the list we have on our Dashboard:
 
-### Login Provider
+1. Social Login Providers
+   - [Google](/auth-provider-setup/social-providers/google)
+   - [Facebook](/auth-provider-setup/social-providers/facebook)
+   - [Twitch](/auth-provider-setup/social-providers/twitch)
+   - [Discord](/auth-provider-setup/social-providers/discord)
+2. Custom Providers
+   - [Auth0](/auth-provider-setup/federated-identity-providers#auth0)
+   - [Custom JWT](/auth-provider-setup/byo-jwt-providers)
+3. Aggregate Multiple Providers
+   - [Aggregate Verifier](/auth-provider-setup/aggregate-verifier)
 
-Select the Login Provider from the list to create a verifier of that type.
-
-The following are the list we have on our Dashboard, if something you're loooking is not available in the list, choose `Custom` and provide the JWT
-details.
-
-![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
-
-**Login Providers Setup**
-
-- [Google](/auth-provider-setup/social-providers/google)
-
-- [Facebook](/auth-provider-setup/social-providers/facebook)
-
-- [Twitch](/auth-provider-setup/social-providers/twitch)
-
-- [Discord](/auth-provider-setup/social-providers/discord)
-
-- [Auth0](/auth-provider-setup/federated-identity-providers#auth0)
-
-- [Custom JWT](/auth-provider-setup/byo-jwt-providers)
-
-- [Aggregate Verifier](/auth-provider-setup/aggregate-verifier)
+If something you're looking for is not available in the list, choose `Custom Provider` and provide the JWT details.

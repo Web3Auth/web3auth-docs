@@ -65,7 +65,7 @@ export const getAuthenticateUserData = [
 
 ### `getUserInfo`
 
-```js
+```tsx
 await web3auth.getUserInfo();
 ```
 
@@ -83,7 +83,7 @@ await web3auth.getUserInfo();
 
 ### `authenticateUser`
 
-```js
+```tsx
 await web3auth.authenticateUser();
 ```
 
@@ -103,7 +103,7 @@ await web3auth.authenticateUser();
 {
   "iat": 1655835494,
   "aud": "BCtbnOamqh0cJFEUYA0NB5YkvBECZ3HLZsKfvSRBvew2EiiKW3UxpyQASSR0artjQkiUOCHeZ_ZeygXpYpxZjOs",
-  "iss": "https://api.openlogin.com/",
+  "iss": "https://api-auth.web3auth.io/",
   "email": "xyz@xyz.com",
   "name": "John Doe",
   "profileImage": "https://lh3.googleusercontent.com/a/AATXAJx3lnGmHiM4K97uLo9Rb0AxOceH-dQCBSRqGbck=s96-c",
@@ -190,7 +190,8 @@ const res = await fetch("/api/verify", {
 
 Please note, the JWKS endpoint for Social logins are different from External Wallets.
 
-- JWKS Endpoint: `https://api.openlogin.com/jwks`
+- JWKS Endpoint: `https://api-auth.web3auth.io/jwks`
+
 
 :::
 
@@ -207,7 +208,7 @@ const app_pub_key = req.body.appPubKey;
 
 // Get the JWK set used to sign the JWT issued by Web3Auth
 // highlight-next-line
-const jwks = jose.createRemoteJWKSet(new URL("https://api.openlogin.com/jwks"));
+const jwks = jose.createRemoteJWKSet(new URL("https://api-auth.web3auth.io/jwks"));
 
 // Verify the JWT using Web3Auth's JWKS
 const jwtDecoded = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] });
@@ -231,7 +232,7 @@ By default Web3Auth returns an `idToken` which contains the `public_key` in `sec
 
 If you want to encode the public_key in `ed25519` format then you have to pass the curve parameter in OpenloginAdapter as:
 
-```js
+```tsx
 const openloginAdapter = new OpenloginAdapter({
   loginSettings: {
     curve: "ed25519", // allowed values "secp256k1" (default) or "ed25519"

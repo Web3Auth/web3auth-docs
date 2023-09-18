@@ -1,0 +1,75 @@
+:::warning Note
+
+Please use these examples in conjunction with our troubleshooting guide for React Native Bundler polyfill issues
+[here](/troubleshooting/metro-issues).
+
+:::
+
+```js title="App.js"
+import { Auth0Provider, useAuth0 } from "react-native-auth0";
+import * as SecureStore from "expo-secure-store";
+import {EthereumPrivateKeyProvider} from '@web3auth/ethereum-provider';
+import Web3Auth from '@web3auth/single-factor-auth-react-native';
+
+// Instantiate Web3Auth SFA SDK
+const web3AuthSfa = new Web3Auth(SecureStore, {
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: 'cyan',
+  usePnPKey: false, // By default, this sdk returns CoreKitKey
+});
+
+// Instantiate Ethereum Provider
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: {
+    /*
+      pass the chain config that you want to connect with
+      all chainConfig fields are required.
+      */
+    chainConfig: {
+      chainId: '0x1',
+      rpcTarget: 'https://rpc.ankr.com/eth',
+      displayName: 'mainnet',
+      blockExplorer: 'https://etherscan.io/',
+      ticker: 'ETH',
+      tickerName: 'Ethereum',
+    },
+  },
+});
+
+// Initialize Web3Auth SFA SDK
+await web3AuthSfa.init(privateKeyProvider);
+
+// Get idToken from auth0
+const signInWithAuth0 = async () => {
+  try {
+    await authorize({ scope: "openid profile email" }, { customScheme: "auth0.com.web3authsfaauth0" }, { responseType: "token id_token" });
+    const credentials = await getCredentials();
+
+    return credentials.idToken;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const idToken = await signInWithAuth0();
+
+// parseToken is a function that parses the token and returns the payload.
+const parsedToken = parseToken(idToken);
+
+const verifier = "web3auth-auth0-demo";
+const verifierId = parsedToken.sub;
+
+// Login the user
+const provider = await web3auth!.connect({
+  verifier, // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+  verifierId, // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
+  idToken,
+});
+
+// Get the private key, The private key returned here is the CoreKit Key, since the usePnPKey is set to false.
+const finalPrivateKey = await provider!.request({
+  method: 'eth_private_key',
+});
+
+console.log("ETH Private key", finalPrivateKey);
+```

@@ -44,7 +44,7 @@ This constructor takes an object with a config of `SolanaPrivKeyProviderConfig` 
 
 `SolanaPrivKeyProviderConfig`
 
-```ts
+```tsx
 export interface SolanaPrivKeyProviderConfig extends BaseProviderConfig {
   chainConfig: Omit<CustomChainConfig, "chainNamespace">;
 }
@@ -112,7 +112,7 @@ according to your use case.
 
 <TabItem value="mainnet">
 
-```ts
+```tsx
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.SOLANA,
   chainId: "0x1", // Please use 0x1 for Mainnet
@@ -120,7 +120,7 @@ const chainConfig = {
   displayName: "Solana Mainnet",
   blockExplorer: "https://explorer.solana.com",
   ticker: "SOL",
-  tickerName: "Solana Token",
+  tickerName: "Solana",
 };
 ```
 
@@ -128,7 +128,7 @@ const chainConfig = {
 
 <TabItem value="testnet">
 
-```ts
+```tsx
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.SOLANA,
   chainId: "0x2", // Please use 0x2 for Testnet
@@ -136,7 +136,7 @@ const chainConfig = {
   displayName: "Solana Testnet",
   blockExplorer: "https://explorer.solana.com",
   ticker: "SOL",
-  tickerName: "Solana Token",
+  tickerName: "Solana",
 };
 ```
 
@@ -144,7 +144,7 @@ const chainConfig = {
 
 <TabItem value="devnet">
 
-```ts
+```tsx
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.SOLANA,
   chainId: "0x3", // Please use 0x3 for Devnet
@@ -152,7 +152,7 @@ const chainConfig = {
   displayName: "Solana Devnet",
   blockExplorer: "https://explorer.solana.com",
   ticker: "SOL",
-  tickerName: "Solana Token",
+  tickerName: "Solana",
 };
 ```
 
@@ -162,7 +162,7 @@ const chainConfig = {
 
 #### Example
 
-```ts
+```tsx
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.SOLANA,
   chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
@@ -170,7 +170,7 @@ const chainConfig = {
   displayName: "Solana Devnet",
   blockExplorer: "https://explorer.solana.com",
   ticker: "SOL",
-  tickerName: "Solana Token",
+  tickerName: "Solana",
 };
 
 const privateKeyProvider = new SolanaPrivateKeyProvider({
@@ -185,7 +185,7 @@ const privateKeyProvider = new SolanaPrivateKeyProvider({
 If you are using `chainNamespace: "solana"` while initializing `Web3Auth` or `Web3AuthNoModal` with the `OpenloginAdapter`, you need to add the
 `privateKeyProvider` to the OpenLogin instance.
 
-```ts
+```tsx
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.SOLANA,
   chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
@@ -193,13 +193,13 @@ const chainConfig = {
   displayName: "Solana Devnet",
   blockExplorer: "https://explorer.solana.com",
   ticker: "SOL",
-  tickerName: "Solana Token",
+  tickerName: "Solana",
 };
 
 const web3auth = new Web3AuthNoModal({
   clientId,
   chainConfig,
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
 });
 
 const privateKeyProvider = new SolanaPrivateKeyProvider({
@@ -228,7 +228,7 @@ provider = await web3auth.connectTo(
 
 While using the SFA Web SDK, you need to pass the provider during the initialisation of SDK, while calling the init() function.
 
-```ts
+```tsx
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.SOLANA,
   chainId: "0x3", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
@@ -236,13 +236,13 @@ const chainConfig = {
   displayName: "Solana Devnet",
   blockExplorer: "https://explorer.solana.com",
   ticker: "SOL",
-  tickerName: "Solana Token",
+  tickerName: "Solana",
 };
 
 const web3authSfa = new Web3Auth({
-  clientId, // Get your Client ID from Web3Auth Dashboard
+  clientId, // Get your Client ID from the Web3Auth Dashboard
   chainConfig,
-  web3AuthNetwork: "cyan", // ["cyan", "testnet"]
+  web3AuthNetwork: "sapphire_mainnet",
   usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
 });
 
@@ -266,11 +266,11 @@ const provider = await web3authSFAuth.connect({
 In tKey JS SDK, there is not internal method of passing the provider directly. Hence, you need to setup the provider using the private key generated
 from tKey, using the setupProvider function of the SolanaPrivateKeyProvider.
 
-```ts
+```tsx
 setupProvider(privKey: string): Promise<void>;
 ```
 
-```ts
+```tsx
 import { getED25519Key } from "@toruslabs/openlogin-ed25519";
 
 // please complete the tKey setup and login before this.
@@ -281,7 +281,7 @@ const chainConfig = {
   displayName: "Solana Devnet",
   blockExplorer: "https://explorer.solana.com",
   ticker: "SOL",
-  tickerName: "Solana Token",
+  tickerName: "Solana",
 };
 
 const reconstructedKey = await tKey.reconstructKey();
@@ -303,7 +303,7 @@ provider = privateKeyProvider.provider;
 On connection, you can use `web3auth.provider` as a solana provider with `@web3auth/solana-provider` along with
 [@solana/web3.js](https://solana-labs.github.io/solana-web3.js/) library.
 
-```ts
+```tsx
 import { SolanaWallet } from "@web3auth/solana-provider";
 
 const solanaWallet = new SolanaWallet(provider);
@@ -329,7 +329,7 @@ This method is used fetch the address of connected account.
 
 #### Example
 
-```ts
+```tsx
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 import { SolanaWallet } from "@web3auth/solana-provider";
 
@@ -357,7 +357,7 @@ This method is used to sign a single serialized transaction and it returns a sig
 
 #### Example
 
-```ts
+```tsx
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 import { SolanaWallet } from "@web3auth/solana-provider";
 
@@ -394,7 +394,7 @@ This method is used to sign a list of serialized transactions and it returns bac
 
 #### Example:
 
-```ts
+```tsx
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 import { SolanaWallet } from "@web3auth/solana-provider";
 
@@ -431,7 +431,7 @@ This function is used to sign and broadcast the transaction on chain. It returns
 
 #### Example:
 
-```ts
+```tsx
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 import { SolanaWallet } from "@web3auth/solana-provider";
 
@@ -466,7 +466,7 @@ This method is used sign any message from connected wallet.
 
 #### Example
 
-```ts
+```tsx
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 import { SolanaWallet } from "@web3auth/solana-provider";
 
@@ -485,7 +485,7 @@ This method is used to fetch the private key of logged in user. It is only avail
 
 #### Example
 
-```ts
+```tsx
 //Assuming user is already logged in.
 async getPrivateKey() {
   const privateKey = await web3auth.provider.request({

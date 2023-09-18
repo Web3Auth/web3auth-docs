@@ -48,7 +48,7 @@ const privateKeyProvider = new CommonPrivateKeyProvider();
 If you are using `chainNamespace: "other"` while initializing `Web3Auth` or `Web3AuthNoModal` with the `OpenloginAdapter`, you need to add the
 `privateKeyProvider` to the OpenLogin instance.
 
-```ts
+```tsx
 const chainConfig = {
     chainId: "0x1",
     chainNamespace: CHAIN_NAMESPACES.OTHER,
@@ -58,7 +58,7 @@ const chainConfig = {
 const web3auth = new Web3AuthNoModal({
   clientId,
   chainConfig,
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
 });
 
 const privateKeyProvider = new CommonPrivateKeyProvider(config: chainConfig);
@@ -85,7 +85,7 @@ provider = await web3auth.connectTo(
 
 While using the SFA Web SDK, you need to pass the provider during the initialisation of SDK, while calling the init() function.
 
-```ts
+```tsx
 const chainConfig = {
   chainId: "0x1",
   chainNamespace: CHAIN_NAMESPACES.OTHER,
@@ -93,9 +93,9 @@ const chainConfig = {
 };
 
 const web3authSfa = new Web3Auth({
-  clientId, // Get your Client ID from Web3Auth Dashboard
+  clientId, // Get your Client ID from the Web3Auth Dashboard
   chainConfig,
-  web3AuthNetwork: "cyan", // ["cyan", "testnet"]
+  web3AuthNetwork: "sapphire_mainnet",
   usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
 });
 
@@ -116,7 +116,7 @@ const web3authSfaprovider = await web3auth.connect({
 
 On connection, you can use this `provider` as a private key provider to expose user's private key in the frontend context
 
-```ts
+```tsx
 //Assuming user is already logged in.
 async getPrivateKey() {
     const privateKey = await provider.request({

@@ -8,16 +8,16 @@ description: "Bundler Polyfill Issues - Webpack 5 | Documentation - Web3Auth"
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-While setting up a new web3 project from scratch, you might face multiple issues the bundler. This issue is due to the fact that core
-packages like `eccrypto` have certain dependencies which are not present within the build environment. Webpack 5 especially introduced a lot of
-issues since it does not include many of these packages by default. The go-to method for rectifying these issues has been to simply add the missing
-modules directly into the package, and edit the bundler configuration to take advantage of that.
+While setting up a new web3 project from scratch, you might face multiple issues the bundler. This issue is due to the fact that core packages like
+`eccrypto` have certain dependencies which are not present within the build environment. Webpack 5 especially introduced a lot of issues since it does
+not include many of these packages by default. The go-to method for rectifying these issues has been to simply add the missing modules directly into
+the package, and edit the bundler configuration to take advantage of that.
 
-Although this method works, it increases the bundle size significantly, causing slow loading speeds and a bad user experience. It is important to
-note that these modules, even while the build fails, are still present within the browser environment. Many libraries like Web3Auth are written in a
-way so as to take advantage of this fact. Hence, even if the build doesn't contain the polyfill, the library should still work as expected. However,
-if you are using a library which does not take advantage of this fact, you might face issues while using the library. Check out
-[this tweet thread](https://twitter.com/ChaitanyaPotti/status/1658108310824861696) where we have explained it further on how this works in detail.
+Although this method works, it increases the bundle size significantly, causing slow loading speeds and a bad user experience. It is important to note
+that these modules, even while the build fails, are still present within the browser environment. Many libraries like Web3Auth are written in a way so
+as to take advantage of this fact. Hence, even if the build doesn't contain the polyfill, the library should still work as expected. However, if you
+are using a library which does not take advantage of this fact, you might face issues while using the library. Check out
+[this tweet thread](https://twitter.com/ChaitanyaPotti/status/1658103946274111488) where we have explained it further on how this works in detail.
 
 Hence, you need to be mindful of the fact that you only require certain node polyfills to be added to your project, while testing each of it's
 functionalities. At the same time, you need to tell the bundler to ignore the missing modules, and not include them in the build.
@@ -53,7 +53,7 @@ requires them. Generally the libraries like `crypto-browserify`, `stream-browser
 
 - Create `config-overrides.js` in the root of your project folder with the content:
 
-```js
+```tsx
 const webpack = require("webpack");
 
 module.exports = function override(config) {
@@ -154,7 +154,7 @@ requires them. Generally the libraries like `crypto-browserify`, `stream-browser
 
 - Within `tsconfig.json` add the following `paths` in `compilerOptions` so Webpack can get the correct dependencies
 
-```ts
+```tsx
 {
   "compilerOptions": {
     "paths" : {
@@ -199,7 +199,7 @@ requires them. Generally the libraries like `crypto-browserify`, `stream-browser
 
 - Add the following lines to `vue.config.js`
 
-```js
+```tsx
 const { defineConfig } = require("@vue/cli-service");
 const { ProvidePlugin } = require("webpack");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
@@ -216,7 +216,7 @@ module.exports = defineConfig({
       os: false, // os-browserify can be polyfilled here if needed
       https: false, // https-browserify can be polyfilled here if needed
       http: false, // stream-http can be polyfilled here if needed
-      url: false, // url can be polyfilled here if needed
+      url: "url", // url is needed if using `signer.provider.send` method for signing from ethers.js
       zlib: false, // browserify-zlib can be polyfilled here if needed
     };
     config.plugins.push(new ProvidePlugin({ Buffer: ["buffer", "Buffer"] }));

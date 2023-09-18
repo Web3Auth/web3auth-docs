@@ -1,23 +1,23 @@
 ---
-title: Using Core Kit tKey JS SDK
+title: Using tKey JS SDK
 sidebar_label: Usage
 displayed_sidebar: sdk
 description: "Web3Auth Core Kit tKey JS SDK - Usage | Documentation - Web3Auth"
 ---
 
-import SubVerifierDetails from "@site/src/common/sdk/core-kit/tkey/_sub-verifier-details.mdx";
+import SFALoginParams from "@site/src/common/sdk/core-kit/sfa/_sfa_login_params.mdx";
+import SFASPConnectExample from "@site/src/common/sdk/core-kit/tkey/_service-provider-sfa-connect-example.mdx";
 import ThresholdKey from "@site/src/common/sdk/core-kit/tkey/_threshold-key.mdx";
 import TkeyInitParams from "@site/src/common/sdk/core-kit/tkey/_tkey-init-params.mdx";
-import TorusLoginResponse from "@site/src/common/sdk/core-kit/tkey/_torus-login-response.mdx";
+import TkeyKeyDetailsReturn from "@site/src/common/sdk/core-kit/tkey/_tkey-key-details-return.mdx";
 
-Once you've installed and successfully instantiated tKey and initialised the service provider in your constructor, you can use it to authenticate your
-users and generate their tKey shares. Further, you can use a variety of functions exposed by the tKey SDK and its modules to manage different aspects
-of your users' authentication needs.
+Once you've installed all packages, instantiated tKey and initialized the service provider instance in your constructor, you can use it to
+authenticate your users and generate their tKey shares. Further, you can use a variety of functions exposed by the tKey SDK and its modules to manage
+different aspects of your users' authentication needs.
 
-We'll be talking in depth about the following operations:
+We'll be talking in-depth about the following operations:
 
 - [Logging in the User](#log-in)
-- [Getting User Information](#get-user-information)
 - [Getting tKey Details](#get-tkey-details)
 - [Reconstructing User's Private Key](#reconstruct-private-key)
 - [Generating a new Share](#generate-a-new-share)
@@ -29,51 +29,55 @@ We'll be talking in depth about the following operations:
 
 ## Log In
 
-The login with the tKey SDK is a two step process. First, you need to trigger the login process by calling the `triggerLogin()` function of the
-Service Provider. Following which using the returned information, use the `initialize()` function of the tKey to generate the Threshold Key
-corresponding to the user.
+The login with the tKey SDK is a 3-step process.
+
+1. Login using your desired login provider and get their OAuth Id Token
+2. Use the OAuth ID Token to connect to the Web3Auth Service Provider to generate the OAuth Key
+3. Once the OAuth Key is generated, initialize the tKey Instance
 
 However, before starting this process, you need to set up Custom Authentication on your Web3Auth Dashboard. For this, you need to
-[Create a Verifier](/auth-provider-setup/verifiers) from the **Custom Auth** section of the
-[Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired configuration.
+[Create a Verifier](/auth-provider-setup/verifiers) within the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired
+configuration.
 
 :::tip
 
-If you want to know more about setting up a verifier and how to use it, please refer to the
-[Custom Authentication Documentation](/pnp/features/custom-authentication).
+If you want to know more about setting up a verifier and how to use it, please refer to the [Auth Provider Setup Documentation](/auth-provider-setup).
 
 :::
 
-### Triggering Login using Service Provider
+### Login using OAuth
 
-#### `tKey.serviceProvider.triggerLogin(SubVerifierDetails)`
+You can choose any OAuth Provider of your choice and login using their standard process. You can check out
+[our examples](https://github.com/Web3Auth/web3auth-core-kit-examples/) where we have used the most common OAuth providers like Google, Auth0,
+Firebase etc. Additionally, you can checkout our documentation around OAuth Provider setup [here](/auth-provider-setup).
 
-This is a needed step since this will generate a private key which will be needed by the tKey to generate it's share. This is done by calling the
-`triggerLogin()` function within the `tKey` instance's `serviceProvider`.
+:::tip Intrinsic Auth Flow
 
-<SubVerifierDetails />
-
-:::note additional reading
-
-#### Trigger Login using Aggregate Verifier
-
-#### `triggerAggregateLogin()`
-
-```javascript
-await (tKey.serviceProvider as TorusServiceProvider).triggerAggregateLogin(AggregateLoginParams)
-```
-
-Takes in the aggregate verifier details as `AggregateLoginParams`.
-
-```ts
-interface AggregateLoginParams {
-  aggregateVerifierType: AGGREGATE_VERIFIER_TYPE;
-  verifierIdentifier: string;
-  subVerifierDetailsArray: SubVerifierDetails[];
-}
-```
+If you prefer using an intrinsic login method with your OAuth Provider, you can do so by using the `TorusServiceProvider`. You can check out the
+[additional reading section](/sdk/core-kit/tkey/intrinsic-flow) for more information. This provider doesn't work in a React Native environment.
 
 :::
+
+### Generating OAuth Key
+
+This setup helps you generate a private key which will be needed by the tKey Instance to generate the OAuth Share. This is done by calling the
+`connect()` function within the `tKey` instance's `serviceProvider`.
+
+```tsx
+tKeyInstance.serviceProvider.connect(params: LoginParams): Promise<BN>;
+```
+
+<SFALoginParams />
+
+#### Usage
+
+```tsx
+const OAuthShareKey = await(tKeyInstance.serviceProvider as SfaServiceProvider).connect({
+  verifier,
+  verifierId,
+  idToken,
+});
+```
 
 ### Initializing tKey
 
@@ -88,35 +92,7 @@ provider.
 
 ### Example
 
-```js
-await(tKey.serviceProvider as any).triggerLogin({
-  typeOfLogin: "google", // "google","facebook","reddit","discord","twitch", etc.
-  verifier: "google-tkey-w3a",
-  clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
-});
-await tKey.initialize();
-```
-
-## Get User Information
-
-```ts
-triggerLogin(params: SubVerifierDetails): Promise<TorusLoginResponse>;
-```
-
-The tKey Service Provider returns a `TorusLoginResponse` object which contains the user's information and details about the login. You can access the
-`userInfo` property within it to get the user details from the login provider.
-
-<TorusLoginResponse />
-
-```js title="Example"
-const loginResponse = await(tKey.serviceProvider as any).triggerLogin({
-  typeOfLogin: "google", // "google","facebook","reddit","discord","twitch", etc.
-  verifier: "google-tkey-w3a",
-  clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
-});
-const user = loginResponse.userInfo;
-console.log("User Details: ", user);
-```
+<SFASPConnectExample />
 
 ## Get tKey Details
 
@@ -127,35 +103,7 @@ user, alongside the shares details and the threshold.
 
 ### Sample Key Details Return
 
-```ts
-[
-  {
-    pubKey: {
-      x: "471dbccd7e55eb2d24..329b8174f2339e516a3d1728d",
-      y: "3f93da3597ded482fc..b23c5c79011a3deb8ccf8bf50",
-    },
-    requiredShares: -9,
-    threshold: 2,
-    totalShares: 11,
-    shareDescriptions: {
-      "1": [
-        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671429485524}',
-        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671429560829}',
-        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671454332687}',
-        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671454508464}',
-        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671454832067}',
-        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671506806091}',
-      ],
-      "94da7ea9b8680ea13d..1de31915c54c1cfa055134308969088": [
-        '{"module":"webStorage","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36","dateAdded":1671424397242}',
-      ],
-      "9b29f5c69bdcc4c79b..8c573e3001d72dc7a42866e88272866": [
-        '{"module":"securityQuestions","questions":"whats your password?","dateAdded":1671424430842}',
-      ],
-    },
-  },
-];
-```
+<TkeyKeyDetailsReturn />
 
 From here, you can know whether the user key can be reconstructed or not.
 
@@ -164,7 +112,7 @@ From here, you can know whether the user key can be reconstructed or not.
 - Once the `requiredShares` is 0 or less than that, then the key can be reconstructed, and the user can use the shares to generate the private key and
   make further operations on the tKey and manipulate their keys.
 
-```ts title="Example"
+```tsx title="Example"
 const { requiredShares } = tKey.getKeyDetails();
 if (requiredShares <= 0) {
   console.log("All shares are present, you can reconstruct your private key and do operations on the tKey");
@@ -180,7 +128,7 @@ if (requiredShares <= 0) {
 The function `reconstructKey()` reconstructs the private key of the user from the shares generated. This function returns the private key of the user
 once the threshold has been met.
 
-```ts
+```tsx
 reconstructKey(_reconstructKeyMiddleware?: boolean): Promise<ReconstructedKeyResult>;
 
 export type ReconstructedKeyResult = {
@@ -190,7 +138,7 @@ export type ReconstructedKeyResult = {
 };
 ```
 
-```ts title="Example"
+```tsx title="Example"
 const { requiredShares } = tKey.getKeyDetails();
 if (requiredShares <= 0) {
   const reconstructedKeyResult = await tKey.reconstructKey();
@@ -205,7 +153,7 @@ if (requiredShares <= 0) {
 
 The function `generateNewShare()` generates a new share on the same threshold set by the user. This function returns the new share generated.
 
-```ts
+```tsx
 generateNewShare(): Promise<GenerateNewShareResult>;
 
 export type GenerateNewShareResult = {
@@ -214,7 +162,7 @@ export type GenerateNewShareResult = {
 };
 ```
 
-```ts title="Example"
+```tsx title="Example"
 const shareStore = await tKey.generateNewShare();
 await(tKey.modules.webStorage as WebStorageModule).storeDeviceShare(shareStore.newShareStores[1]);
 console.log("New Share Stored on the Browser Local Storage: ", shareStore.newShareIndex.toString());
@@ -226,7 +174,7 @@ console.log("New Share Stored on the Browser Local Storage: ", shareStore.newSha
 
 The function `deleteShare()` deletes a share from the user's shares. This function returns the updated shareStore after the share has been deleted.
 
-```ts
+```tsx
 deleteShare(shareIndex: BNString): Promise<DeleteShareResult>;
 
 export type DeleteShareResult = {
@@ -234,7 +182,7 @@ export type DeleteShareResult = {
 };
 ```
 
-```ts title="Example"
+```tsx title="Example"
 const shareStore = await tKey.deleteShare(previousShareIndex);
 console.log("Share has been deleted", shareStore);
 ```
@@ -258,11 +206,8 @@ compatible with EVM-based blockchains like Ethereum, Polygon, and many others th
 other curves and utilize it. For example, we have a dedicated package for converting this module to the `ed25519` curve for usage in Solana and other
 blockchains that use this curve.
 
-In addition to that, we have dedicated provider packages for EVM and Solana Blockchain libraries. You can check out their respective documentation
-here:
-
-- Getting a Ethereum Provider from tKey: [Ethereum Provider](/sdk/helper-sdks/providers/evm#getting-a-provider-from-any-secp256k1-private-key)
-- Getting a Solana Provider from tKey: [Solana Provider](/sdk/helper-sdks/providers/solana#getting-a-provider-from-any-secp256k1-private-key)
+In addition to that, we have dedicated provider packages for EVM, Solana and XRPL libraries. You can check out their respective documentation in the
+[Providers Section](/sdk/helper-sdks/providers/).
 
 :::tip
 

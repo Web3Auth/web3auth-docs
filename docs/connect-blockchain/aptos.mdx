@@ -9,10 +9,10 @@ description: "Integrate Web3Auth with the Aptos Blockchain | Documentation - Web
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
 
-While using the Web3Auth Web SDK for a non EVM chain like [Aptos](https://aptos.dev/) you get a standard provider from which you can get the private
-key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting user's
+While using the Web3Auth Web SDK for a non-EVM chain like [Aptos](https://aptos.dev/) you get a standard provider from which you can get the private
+key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting the user's
 `account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a few
-methods here for getting you started quickly on that.
+methods here to get you started quickly on that.
 
 :::note
 
@@ -30,12 +30,12 @@ npm install --save aptos
 
 ## Initializing Provider
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 
 const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.OTHER,
   },
@@ -43,7 +43,7 @@ const web3auth = new Web3Auth({
 
 await web3auth.initModal();
 
-const web3authProvider = web3auth.connect(); // web3auth.provider
+const web3authProvider = await web3auth.connect(); // web3auth.provider
 ```
 
 ## Get User Info
@@ -61,7 +61,7 @@ key. However, we cannot use this key with Aptos EC Curve specific signing functi
 
 On the underhood, it uses the helper functions from `aptos` library to derive the key pair.
 
-```js
+```tsx
 import { AptosAccount, AptosClient } from "aptos";
 
 /*
@@ -70,16 +70,14 @@ import { AptosAccount, AptosClient } from "aptos";
 
 // web3authProvider is web3auth.provider from above
 const privateKey = await web3authProvider.request({ method: "private_key" });
-const privateKeyUint8Array = new Uint8Array(
-    privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16))
-);
+const privateKeyUint8Array = new Uint8Array(privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16)));
 const aptosAccount = new AptosAccount(privateKeyUint8Array);
 const aptosAccountAddress = aptosAccount.address();
 ```
 
 ## Get Balance
 
-```js
+```tsx
 import { AptosAccount, AptosClient } from "aptos";
 
 /*
@@ -88,13 +86,11 @@ import { AptosAccount, AptosClient } from "aptos";
 
 // web3authProvider is web3auth.provider from above
 const privateKey = await web3authProvider.request({ method: "private_key" });
-const privateKeyUint8Array = new Uint8Array(
-    privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16))
-);
+const privateKeyUint8Array = new Uint8Array(privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16)));
 const aptosAccount = new AptosAccount(privateKeyUint8Array);
 const aptosAccountAddress = aptosAccount.address();
 
-const NODE_URL ="https://fullnode.devnet.aptoslabs.com";
+const NODE_URL = "https://fullnode.devnet.aptoslabs.com";
 const aptosCoinStore = "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>";
 
 const client = new AptosClient(NODE_URL);
@@ -106,8 +102,8 @@ let balance = parseInt((accountResource?.data as any).coin.value);
 
 ## Send Transaction
 
-```js
-import { AptosAccount, FaucetClient,  AptosClient } from "aptos";
+```tsx
+import { AptosAccount, FaucetClient, AptosClient } from "aptos";
 
 /*
   Use code from the above Initializing Provider here
@@ -115,23 +111,21 @@ import { AptosAccount, FaucetClient,  AptosClient } from "aptos";
 
 // web3authProvider is web3auth.provider from above
 const privateKey = await web3authProvider.request({ method: "private_key" });
-const privateKeyUint8Array = new Uint8Array(
-    privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16))
-);
+const privateKeyUint8Array = new Uint8Array(privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16)));
 const aptosAccount = new AptosAccount(privateKeyUint8Array);
 const aptosAccountAddress = aptosAccount.address();
 
-const NODE_URL ="https://fullnode.devnet.aptoslabs.com";
+const NODE_URL = "https://fullnode.devnet.aptoslabs.com";
 const aptosCoinStore = "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>";
 
 const client = new AptosClient(NODE_URL);
 
 const payload = {
-      type: "entry_function_payload",
-      function: "0x1::coin::transfer",
-      type_arguments: ["0x1::aptos_coin::AptosCoin"],
-      arguments: [aptosAccount.address().hex(), 717], // sending funds to self
-    };
+  type: "entry_function_payload",
+  function: "0x1::coin::transfer",
+  type_arguments: ["0x1::aptos_coin::AptosCoin"],
+  arguments: [aptosAccount.address().hex(), 717], // sending funds to self
+};
 const txnRequest = await client.generateTransaction(aptosAccount.address(), payload);
 const signedTxn = await client.signTransaction(aptosAccount, txnRequest);
 const transactionRes = await client.submitTransaction(signedTxn);

@@ -9,10 +9,10 @@ description: "Integrate Web3Auth with the Algorand Blockchain | Documentation - 
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
 
-While using the Web3Auth Web SDK for a non EVM chain like [Algorand](https://www.algorand.com/) you get a standard provider from which you can get the
-private key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting
+While using the Web3Auth Web SDK for a non-EVM chain like [Algorand](https://www.algorand.com/) you get a standard provider from which you can get the
+private key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting the
 user's `account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a
-few methods here for getting you started quickly on that.
+few methods here to get you started quickly on that.
 
 :::note
 
@@ -30,13 +30,13 @@ npm install --save algosdk
 
 ## Initializing Provider
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
 const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "other", // for all non EVM and SOLANA chains, use "other"
   },
@@ -52,7 +52,7 @@ web3auth.configureAdapter(openloginAdapter);
 
 await web3auth.initModal();
 
-const web3authProvider = web3auth.connect(); // web3auth.provider
+const web3authProvider = await web3auth.connect(); // web3auth.provider
 ```
 
 ## Get User Info
@@ -65,15 +65,15 @@ Once a user logs in, the Web3Auth SDK returns a provider. Since Web3Auth doesn't
 private key to make the RPC calls.
 
 Using the function, `web3auth.provider.request({method: "private_key"})` from Web3Auth provider, the application can have access to the user's private
-key. However, we cannot use this key with Algorand specific signing functions, hence, we first derive the Algorand Key using the
+key. However, we cannot use this key with Algorand-specific signing functions, hence, we first derive the Algorand Key using the
 `getAlgorandKeyPair()` function.
 
 On the underhood, it uses the `algosdk.secretKeyToMnemonic()` function, where we need to pass the `Buffer.from(privateKey, "hex")`, ie. the
-hexadecimal to Uint8Array converted private key. We get a mnemonic seed phrase which can be used to derive the keypair using the
-`algosdk.mnemonicToSecretKey()`, this returns a keypair. We can use the returned private key pair from this and use on Algorand transactions.
+hexadecimal to Uint8Array converted private key. We get a mnemonic seed phrase which can be used to derive the key pair using the
+`algosdk.mnemonicToSecretKey()`, this returns a key pair. We can use the returned private key pair from this and use it on Algorand transactions.
 
-```js
-import { SafeEventEmitterProvider } from "@web3auth/base";
+```tsx
+import { IProvider } from "@web3auth/base";
 import algosdk from "algosdk";
 
 /*
@@ -93,8 +93,8 @@ const account = keyPair.addr;
 
 ## Get Balance
 
-```js
-import { SafeEventEmitterProvider } from "@web3auth/base";
+```tsx
+import { IProvider } from "@web3auth/base";
 import algosdk from "algosdk";
 
 /*
@@ -123,8 +123,8 @@ const balance = await client.accountInformation(keyPair.addr).do();
 
 ## Send Transaction
 
-```js
-import { SafeEventEmitterProvider } from "@web3auth/base";
+```tsx
+import { IProvider } from "@web3auth/base";
 import algosdk from "algosdk";
 
 /*
@@ -173,8 +173,8 @@ const txHash = await client.sendRawTransaction(signedTxn.blob).do();
 
 ## Sign Message
 
-```js
-import { SafeEventEmitterProvider } from "@web3auth/base";
+```tsx
+import { IProvider } from "@web3auth/base";
 import algosdk from "algosdk";
 
 /*

@@ -532,15 +532,30 @@ export default function QuickNavigation() {
           </div>
           <div className={styles.cardContentText}>
             <h3 className={styles.title}>Single Factor Auth React Native SDK</h3>
-            <div className={styles.pillContainer}>
-              <div className={styles.pill}>Coming Soon</div>
-            </div>
             <p>Core Kit Single Factor Auth React Native SDK for your React Native application. Implement Core Kit in a single key pair flow</p>
-            {/* <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=SFA+React+Native+SDK+SDK&platform=React+Native`}>Quick Start{chevron}</a>
+            <div className={styles.links}>
+              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=Single+Factor+Auth+React+Native+SDK&platform=React+Native`}>
+                Quick Start{chevron}
+              </a>
               <a href={`${baseUrl}sdk/core-kit/sfa-react-native`}>SDK Reference{chevron}</a>
-              <a href={`${baseUrl}examples?product=Core+Kit&sdk=SFA+React+Native+SDK`}>Examples{chevron}</a>
-            </div> */}
+              <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+React+Native+SDK`}>Examples{chevron}</a>
+            </div>
+          </div>
+        </div>
+        <div className={styles.cardContent}>
+          <div className={styles.sdkIconContainer}>
+            <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className={styles.sdkIcon}>
+              <path d="M3.5 12.5L6.5 15.5 19 3 13 3zM19 12L13 12 8 17 13 22 19 22 14 17z" fill="currentColor" />
+            </svg>
+          </div>
+          <div className={styles.cardContentText}>
+            <h3 className={styles.title}>Single Factor Auth Flutter SDK</h3>
+            <p>Core Kit Single Factor Auth Flutter SDK for your Flutter application. Implement Core Kit in a single key pair flow</p>
+            <div className={styles.links}>
+              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=Single+Factor+Auth+Flutter+SDK&platform=Flutter`}>Quick Start{chevron}</a>
+              <a href={`${baseUrl}sdk/core-kit/sfa-flutter`}>SDK Reference{chevron}</a>
+              <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+Flutter+SDK`}>Examples{chevron}</a>
+            </div>
           </div>
         </div>
       </ul>
@@ -648,7 +663,7 @@ export default function QuickNavigation() {
             </p>
             <div className={styles.links}>
               <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=tKey+JS+SDK&platform=React+Native`}>Quick Start{chevron}</a>
-              <a href={`${baseUrl}sdk/core-kit/tkey-react-native`}>SDK Reference{chevron}</a>
+              <a href={`${baseUrl}sdk/core-kit/tkey`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Core+Kit&sdk=tKey+JS+SDK`}>Examples{chevron}</a>
             </div>
           </div>

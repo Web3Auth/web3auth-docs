@@ -8,7 +8,7 @@ Install the Web3Auth's tKey JS package in your React project.
 npm install --save @tkey/default @tkey/web-storage @tkey/security-questions
 ```
 
-### 2. Get your Verifier details from Web3Auth Dashboard
+### 2. Get your Verifier details from the Web3Auth Dashboard
 
 Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new verifier. Use the verifier details in your project.
 
@@ -20,7 +20,7 @@ After Installation, the next step to use Web3Auth's tKey JS is to Initialize the
 
 `src/tkey.ts`
 
-```js
+```tsx
 import ThresholdKey from "@tkey/default";
 import WebStorageModule from "@tkey/web-storage";
 import SecurityQuestionsModule from "@tkey/security-questions";
@@ -31,7 +31,8 @@ const customAuthArgs = {
   redirectPathName: "auth",
   enableLogging: true,
   uxMode: "redirect",
-  network: "cyan", // based on the verifier network.
+  web3AuthClientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+  network: "sapphire_mainnet", // based on the verifier network.
 };
 // Configuration of Modules
 const webStorageModule = new WebStorageModule();
@@ -49,7 +50,7 @@ export const tKey = new ThresholdKey({
 
 `src/App.tsx`
 
-```js
+```tsx
 import { useEffect } from "react";
 import { tKey } from "./tkey";
 
@@ -59,12 +60,12 @@ function App() {
     const init = async () => {
       // Initialization of Service Provider
       try {
-        (tKey.serviceProvider as any).init({skipInit: true});
-        if ( window.location.pathname === "/auth" && window.location.hash.includes("#state") ) {
-            let result = await (tKey.serviceProvider as any).directWeb.getRedirectResult();
-            tKey.serviceProvider.postboxKey = new BN ( (result.result as any).privateKey!  , "hex");
-            setUser( (result.result as any).userInfo);
-            initializeNewKey();
+        (tKey.serviceProvider as any).init({ skipInit: true });
+        if (window.location.pathname === "/auth" && window.location.hash.includes("#state")) {
+          let result = await (tKey.serviceProvider as any).directWeb.getRedirectResult();
+          tKey.serviceProvider.postboxKey = new BN((result.result as any).privateKey!, "hex");
+          setUser((result.result as any).userInfo);
+          initializeNewKey();
         }
       } catch (error) {
         console.error(error);
@@ -81,14 +82,14 @@ Once you have initialised the Web3Auth Service Provider, you're ready to trigger
 private key which will be needed by the tKey to generate it's share. This is done by calling the `triggerLogin()` function within the `tKey`
 instance's of `serviceProvider` property.
 
-```js
+```tsx
 const triggerLogin = async () => {
   try {
     // Triggering Login using Service Provider ==> opens the popup
     const loginResponse = await (tKey.serviceProvider as any).triggerLogin({
       typeOfLogin: "google", // type of login
-      verifier: "your-web3auth-verifier-name",
-      clientId: "your-google-client-id", // when using google as login provider
+      verifier: "w3a-google-demo",
+      clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com", // when using google as login provider
     });
     setUser(loginResponse.userInfo);
     initializeNewKey();
@@ -107,41 +108,39 @@ const triggerLogin = async () => {
 
 `initializeNewKey`
 
-```js
+```tsx
 const initializeNewKey = async () => {
-    if (!tKey) {
-        console.log("tKey not initialized yet");
-        return;
-    }
+  if (!tKey) {
+    console.log("tKey not initialized yet");
+    return;
+  }
+  try {
+    // Initialization of tKey
+    await tKey.initialize(); // 1/2 flow
+    // Gets the deviceShare
+    console.log(tKey);
     try {
-        // Initialization of tKey
-        await tKey.initialize(); // 1/2 flow
-        // Gets the deviceShare
-        console.log(tKey);
-        try {
-            // throw new Error('Device share not found');
-            await (tKey.modules.webStorage as any).inputShareFromWebStorage(); // 2/2 flow
-        } catch (e) {
-            console.log(e);
-            // await backupShareRecover();
-            await recoverShare();
-        }
-
-        console.log(tKey);
-        // Checks the requiredShares to reconstruct the tKey,
-        // starts from 2 by default and each of the above share reduce it by one.
-        const { requiredShares } = tKey.getKeyDetails();
-        console.log(tKey);
-        if (requiredShares <= 0) {
-            const reconstructedKey = await tKey.reconstructKey();
-            setPrivateKey(reconstructedKey?.privKey.toString("hex"))
-            console.log(
-                'Private Key: ' + reconstructedKey.privKey.toString("hex"),
-            );
-        }
-    } catch (error) {
-        console.log(error, 'caught');
+      // throw new Error('Device share not found');
+      await (tKey.modules.webStorage as any).inputShareFromWebStorage(); // 2/2 flow
+    } catch (e) {
+      console.log(e);
+      // await backupShareRecover();
+      await recoverShare();
     }
+
+    console.log(tKey);
+    // Checks the requiredShares to reconstruct the tKey,
+    // starts from 2 by default and each of the above share reduce it by one.
+    const { requiredShares } = tKey.getKeyDetails();
+    console.log(tKey);
+    if (requiredShares <= 0) {
+      const reconstructedKey = await tKey.reconstructKey();
+      setPrivateKey(reconstructedKey?.privKey.toString("hex"));
+      console.log("Private Key: " + reconstructedKey.privKey.toString("hex"));
+    }
+  } catch (error) {
+    console.log(error, "caught");
+  }
 };
 ```
 

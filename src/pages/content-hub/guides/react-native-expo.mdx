@@ -83,7 +83,7 @@ To allow the Expo based SDK to work with exported Expo Android apps, you need to
 - For constructing your `redirectUrl`, you'll need to use the `expo-linking`, which will help you generate a `redirectUrl` for your app. Make sure you
   register that URL in the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
 
-```js title="App.js"
+```tsx title="App.js"
 import Constants, { AppOwnership } from "expo-constants";
 import * as Linking from "expo-linking";
 
@@ -158,7 +158,7 @@ We need `clientId` and target Web3Auth `network` to initialize the `web3auth` ob
 
   :::
 
-```js
+```tsx
 const web3auth = new Web3Auth(WebBrowser, {
   clientId,
   network: OPENLOGIN_NETWORK.CYAN, // MAINNET, AQUA,  CYAN or TESTNET
@@ -189,7 +189,7 @@ Additionally, in `extraLoginOptions` you have to provide the details required by
 Once a user logs in, the Web3Auth SDK returns their reconstructed private key. For EVM Blockchains, the `secp256k1` private key is used to sign
 transactions. We also return an `ed25519` compatible private key for other blockchains.
 
-```js
+```tsx
 const web3authResponse = await web3auth.login({
   redirectUrl: resolvedRedirectUrl,
   mfaLevel: "default", // Pass on the mfa level of your choice: default, optional, mandatory, none
@@ -216,7 +216,7 @@ If you wish you **[add Multi Factor Authentication](/sdk/pnp/react-native/mfa)**
 
 ### Get the User Profile
 
-```js
+```tsx
 // Assuming the user is logged in, get the user profile from the web3AuthResponse
 var userInfo = web3authResponse.userInfo;
 ```
@@ -232,7 +232,7 @@ Web3Auth network.
 
 Use the `logout` function of `web3auth` to log the user out. This function doesn't work in iOS, so you need to navigate the user back manually.
 
-```js
+```tsx
 web3auth.logout();
 ```
 

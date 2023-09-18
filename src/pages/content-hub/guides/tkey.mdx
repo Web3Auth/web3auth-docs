@@ -115,7 +115,7 @@ After Installation, the next step to use Web3Auth Core Kit tKey SDK is to Initia
 
 `src/tkey.ts`
 
-```ts
+```tsx
 import ThresholdKey from "@tkey/default";
 import WebStorageModule from "@tkey/web-storage";
 import SecurityQuestionsModule from "@tkey/security-questions";
@@ -123,7 +123,7 @@ import SecurityQuestionsModule from "@tkey/security-questions";
 // Configuration of Service Provider
 const customAuthArgs = {
   baseUrl: `${window.location.origin}/serviceworker`,
-  network: "cyan", // based on the verifier network.
+  network: "sapphire_mainnet", // based on the verifier network.
 };
 // Configuration of Modules
 const webStorageModule = new WebStorageModule();
@@ -141,7 +141,7 @@ export const tKey = new ThresholdKey({
 
 `src/App.tsx`
 
-```ts
+```tsx
 import { useEffect } from "react";
 import { tKey } from "./tkey";
 
@@ -167,7 +167,7 @@ Once you have initialised the Web3Auth Service Provider, you're ready to trigger
 private key which will be needed by the tKey to generate it's share. This is done by calling the `triggerLogin()` function within the `tKey`
 instance's of `serviceProvider` property.
 
-```js
+```tsx
 const triggerLogin = async () => {
   try {
     // Triggering Login using Service Provider ==> opens the popup
@@ -187,7 +187,7 @@ const triggerLogin = async () => {
 Once you have triggered the login process, you're ready to initialize the tKey. This will generate you a Threshold Key corresponding to your login
 provider. The below code shows how the device share is added to reconstruct the final private key in the frontend.
 
-```js
+```tsx
 const initializeNewKey = async () => {
   try {
     await triggerLogin(); // Calls the triggerLogin() function above
@@ -227,7 +227,7 @@ It is mandatory to set up a backup share; upon losing access to device Share, th
 
 :::
 
-```js
+```tsx
 const generateNewShareWithPassword = async () => {
   // swal is just a pretty dialog box
   swal("Enter password (>10 characters)", {
@@ -235,7 +235,7 @@ const generateNewShareWithPassword = async () => {
   }).then(async (value) => {
     if (value.length > 10) {
       await (tKey.modules.securityQuestions as any).generateNewShareWithSecurityQuestions(value, "whats your password?");
-      swal('Success', 'Successfully generated new share with password.', 'success');
+      swal("Success", "Successfully generated new share with password.", "success");
     } else {
       swal("Error", "Password must be > 10 characters", "error");
     }
@@ -248,7 +248,7 @@ const generateNewShareWithPassword = async () => {
 The Recovery flow generates a new share and adds it into the `WebStorageModule`. To do so, we take the answer of the Question from the
 `SecurityQuestionsModule` setup in the `generateNewShareWithPassword()` function above.
 
-```ts
+```tsx
 const recoverShare = async () => {
   // swal is just a pretty dialog box
   swal("Enter password (>10 characters)", {

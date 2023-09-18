@@ -1,0 +1,168 @@
+---
+title: Initializing Web3auth CoreKit tKey MPC Swift SDK
+sidebar_label: Initialize
+displayed_sidebar: sdk
+description: "Web3Auth CoreKit tKey MPC Swift SDK - Initiatize | Documentation - Web3Auth"
+---
+
+Once you have installed the Web3Auth Core Kit tKey SDK, the next step is to initialize it. This involves a few steps, such as initiating the tKey SDK
+with the service provider and modules.
+
+- [Configuration of Service Provider](#configuring-service-provider)
+- [Initializing Service Provider](#initializing-service-provider)
+- [Instantiation of tKey](#instantiating-tkey)
+
+## Configuring Service Provider
+
+Service Provider in `tKey` generates a [**Share A**](/sdk/core-kit/tkey), i.e., the private key share managed by a wallet service provider via their
+authentication flows. This share in our [wallet infrastructure](/infrastructure/) refers to the social login aspect, where we associate a private key
+share with the user's social login, enabling the seamless login experience.
+
+To configure your service provider, you must use [CustomAuth Swift SDK](https://github.com/torusresearch/customauth-swift-sdk). Please note that this
+SDK is not automatically installed with tKey iOS SDK, so you must install it first.
+
+### Initialization
+
+Initalize the SDK depending on the login you require.
+
+```swift
+import CustomAuth
+
+let sub = SubVerifierDetails(
+  loginType: .web, // default .web
+  loginProvider: "TYPE_OF_LOGIN", // .google, .facebook, .discord and other supported login providers
+  clientId: "CLIENT_ID",
+  verifierName: "VERIFIER_NAME",
+  redirectURL: "tdsdk://tdsdk/oauthCallback",
+  browserRedirectURL: "https://scripts.toruswallet.io/redirect.html")
+
+let tdsdk = CustomAuth(
+  aggregateVerifierType: "TYPE_OF_VERIFIER", // singleLogin, singleIdVerifier supported
+  aggregateVerifierName: "VERIFIER_NAME", // Web3Auth Custom verifier name
+  subVerifierDetails: [sub],
+  network: .SAPPHIRE_DEVNET,
+  enableOneKey: true)
+```
+
+#### `SubVerifierDetails`
+
+| Parameter            | Type            | Mandatory | Description                                                                                                                                                                                  |
+| -------------------- | --------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginType`          | SubVerifierType | No        | loginType to be used. [ `web`: default, `installed`]                                                                                                                                         |
+| `loginProvider`      | LoginProviders  | Yes       | loginProvider to be used. [ `google`, `facebook`, `twitch`, `reddit`, `discord`, `apple`, `github`, `linkedin`, `kakao`, `twitter`, `weibo`, `line`, `wechat`, `email_password`, and `jwt` ] |
+| `clientId`           | String          | Yes       | login provider's client Id.                                                                                                                                                                  |
+| `verifier`           | String          | Yes       | Web3Auth verifier name                                                                                                                                                                       |
+| `redirectURL`        | String          | Yes       | It refers to a url for the login flow to redirect into your app, it should have a scheme that is registered by your app, for example `com.mycompany.myapp://redirect`                        |
+| `browserRedirectURL` | String          | No        | It refers to a page that the browser should use in the login flow, it should have a http or https scheme. e.g. `https://scripts.toruswallet.io/redirect.html`                                |
+| `jwtParams`          | String          | No        | Additional JWT parameters to be passed.                                                                                                                                                      |
+| `urlSession`         | URLSession      | No        | Custom URLSession to be used.                                                                                                                                                                |
+
+#### `CustomAuth`
+
+| Parameter               | Type                   | Mandatory | Description                                                                                        |
+| ----------------------- | ---------------------- | --------- | -------------------------------------------------------------------------------------------------- |
+| `aggregateVerifierType` | String                 | Yes       | Type of the aggregate verifier.                                                                    |
+| `aggregateVerifier`     | String                 | Yes       | Name of the aggregate verifier.                                                                    |
+| `subVerifierDetails`    | [`SubVerifierDetails`] | Yes       | Array of SubVerifierDetails.                                                                       |
+| `network`               | TorusNetwork           | Yes       | Network to be used. [ `SAPPHIRE_DEVNET`, `SAPPHIRE_MAINNET`, `MAINNET`, `TESTNET`, `CYAN`, `AQUA`] |
+| `enableOneKey`          | Bool                   | No        | Enable OneKey login.                                                                               |
+| `networkUrl`            | String                 | No        | Custom network url to be used.                                                                     |
+
+## Getting User Data from Custom Auth
+
+1. `triggerLogin()` returns a promise that resolve with a Dictionary that contain `finalKeyData` field to be used to initialize the tKey.
+
+```swift
+tdsdk.triggerLogin().done{ data in
+    print("user data", data)
+    self.userData = data
+}.catch{ err in
+    print(err)
+}
+```
+
+## Instantiating tKey
+
+```swift
+let rss_comm = try RssComm()
+let thresholdKey = try? ThresholdKey(
+  storage_layer: storage_layer,
+  service_provider: service_provider,
+  enable_logging: true,
+  manual_sync: false,
+  rss_comm: rss_comm)
+```
+
+### Parameters
+
+| Parameter                    | Type                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Mandatory |
+| ---------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
+| `metadata`                   | `Metadata`                 | Metadata object containing the metadata details of tKey.                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | No        |
+| `shares`                     | `ShareStorePolyIdIndexMap` | Array of ShareStore with PolyId.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | No        |
+| `storage_layer`              | `StorageLayer`             | Takes in the Storage Provider Instance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | No        |
+| `service_provider`           | `ServiceProvider`          | Takes in the Service Provider Instance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | No        |
+| `local_matadata_transitions` | `Metadata`                 | Existing local metadata to be used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | No        |
+| `last_fetch_cloud_metadata`  | `Metadata`                 | Existing cloud metadata to be used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | No        |
+| `enable_logging`             | `Bool`                     | This option is used to specify whether to enable logging or not.                                                                                                                                                                                                                                                                                                                                                                                                                                                               | No        |
+| `manual_sync`                | `Bool`                     | manual sync provides atomicity to your tkey share. If manual_sync is true, you should sync your local metadata transitions manually to your storage_layer, which means your storage layer doesn’t know the local changes of your tkey unless you manually sync, gives atomicity. Otherwise, If manual_sync is false, then your local metadata changes will be synced automatically to your storage layer. If manual_sync = true and want to synchronize manually, you need to call sync_local_metadata_transitions() manually. | No        |
+| `rss_comm`                   | `RssComm`                  | RssComm object to be used. RSS client, required for TSS.                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | No        |
+
+### Example
+
+```swift
+let finalKeyData = userData["finalKeyData"] as? [String: Any]
+
+let postboxkey = finalKeyData["privKey"] as? String
+
+let verifier =  userData["verifier"] as? String
+let verifierId = userData["verifierId"] as? String
+
+let storage_layer = try? StorageLayer(
+  enable_logging: true,
+  host_url: "https://metadata.tor.us",
+  server_time_offset: 2)
+
+let fnd = NodeDetailManager(network: .sapphire(.SAPPHIRE_DEVNET))
+let nodeDetails = try await fnd.getNodeDetails(verifier: verifier, verifierID: verifierId)
+
+let service_provider = try? ServiceProvider(
+  enable_logging: true,
+  postbox_key: postboxkey,
+  useTss: true,
+  verifier: verifier,
+  verifierId: verifierId,
+  nodeDetails: nodeDetails )
+
+let rss_comm = try RssComm()
+
+let thresholdKey = try? ThresholdKey(
+  storage_layer: storage_layer,
+  service_provider: service_provider,
+  enable_logging: true,
+  manual_sync: false,
+  rss_comm: rss_comm)
+```
+
+The following parameters are required to initialize MPC tKey:
+
+```swift
+@State private var signatures: [[String: Any]]!
+@State private var tssEndpoint: [String]!
+
+let fetchKey = finalKeyData["evmAddress"] as? String
+
+let sessionData = userData["sessionData"] as? [String: Any]
+
+let sessionTokenData = sessionData["sessionTokenData"] as? [SessionToken]
+
+signatures = sessionTokenData.map { token in
+    return [  "data": Data(hex: token.token)!.base64EncodedString(),
+              "sig": token.signature ]
+}
+
+let torusUtils = TorusUtils(
+  enableOneKey: true,
+  network: .sapphire(.SAPPHIRE_DEVNET) )
+
+tssEndpoint = nodeDetails!.torusNodeTSSEndpoints
+```

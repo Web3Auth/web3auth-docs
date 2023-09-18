@@ -30,13 +30,13 @@ npm install --save @web3auth/no-modal @web3auth/openlogin-adapter @web3auth/base
 
 ## Initializing Provider
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
 const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "other", // for all non EVM and SOLANA chains, use "other"
     rpcTarget: "https://rpc.sentry-02.theta-testnet.polypore.xyz",
@@ -57,7 +57,7 @@ web3auth.configureAdapter(openloginAdapter);
 
 await web3auth.initModal();
 
-const web3authProvider = web3auth.connect(); // web3auth.provider
+const web3authProvider = await web3auth.connect(); // web3auth.provider
 ```
 
 ## Get User Info
@@ -80,19 +80,16 @@ blockchains. It provides a simple API for generating and verifying signatures us
 In order to get the ChainId, we connect to the RPC using StargateClient and make a call using the Cosmos RPC client to get the chainId. You can get
 the private key using `this.provider.request({method: "private_key",})`.
 
-```js
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+```tsx
+import type { IProvider } from "@web3auth/base";
 import { SigningStargateClient, StargateClient } from "@cosmjs/stargate";
-import {
-  DirectSecp256k1Wallet,
-  OfflineDirectSigner,
-} from "@cosmjs/proto-signing";
+import { DirectSecp256k1Wallet, OfflineDirectSigner } from "@cosmjs/proto-signing";
 
 const rpc = "https://rpc.sentry-02.theta-testnet.polypore.xyz";
 export default class CosmosRPC {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 
@@ -125,29 +122,23 @@ export default class CosmosRPC {
 
 Using `DirectSecp256k1Wallet.fromKey()` we can get the accounts via the private key we get through the provider.
 
-```js
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+```tsx
+import type { IProvider } from "@web3auth/base";
 import { SigningStargateClient, StargateClient } from "@cosmjs/stargate";
-import {
-  DirectSecp256k1Wallet,
-  OfflineDirectSigner,
-} from "@cosmjs/proto-signing";
+import { DirectSecp256k1Wallet, OfflineDirectSigner } from "@cosmjs/proto-signing";
 
 const rpc = "https://rpc.sentry-02.theta-testnet.polypore.xyz";
 export default class CosmosRPC {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 
   async getAccounts(): Promise<any> {
     try {
       const privateKey = Buffer.from(await this.getPrivateKey(), "hex");
-      const walletPromise = await DirectSecp256k1Wallet.fromKey(
-        privateKey,
-        "cosmos"
-      );
+      const walletPromise = await DirectSecp256k1Wallet.fromKey(privateKey, "cosmos");
       return (await walletPromise.getAccounts())[0].address;
     } catch (error) {
       return error;
@@ -160,19 +151,16 @@ export default class CosmosRPC {
 
 Using the account address we receive in the previous step, we can fetch the balance using an RPC call to `client.getAllBalances(address)`.
 
-```js
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+```tsx
+import type { IProvider } from "@web3auth/base";
 import { SigningStargateClient, StargateClient } from "@cosmjs/stargate";
-import {
-  DirectSecp256k1Wallet,
-  OfflineDirectSigner,
-} from "@cosmjs/proto-signing";
+import { DirectSecp256k1Wallet, OfflineDirectSigner } from "@cosmjs/proto-signing";
 
 const rpc = "https://rpc.sentry-02.theta-testnet.polypore.xyz";
 export default class CosmosRPC {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 
@@ -181,10 +169,7 @@ export default class CosmosRPC {
       const client = await StargateClient.connect(rpc);
 
       const privateKey = Buffer.from(await this.getPrivateKey(), "hex");
-      const walletPromise = await DirectSecp256k1Wallet.fromKey(
-        privateKey,
-        "cosmos"
-      );
+      const walletPromise = await DirectSecp256k1Wallet.fromKey(privateKey, "cosmos");
       const address = (await walletPromise.getAccounts())[0].address;
       // Get user's balance in uAtom
       return await client.getAllBalances(address);
@@ -197,19 +182,16 @@ export default class CosmosRPC {
 
 ## Send transaction
 
-```js
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+```tsx
+import type { IProvider } from "@web3auth/base";
 import { SigningStargateClient, StargateClient } from "@cosmjs/stargate";
-import {
-  DirectSecp256k1Wallet,
-  OfflineDirectSigner,
-} from "@cosmjs/proto-signing";
+import { DirectSecp256k1Wallet, OfflineDirectSigner } from "@cosmjs/proto-signing";
 
 const rpc = "https://rpc.sentry-02.theta-testnet.polypore.xyz";
 export default class CosmosRPC {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 
@@ -217,10 +199,7 @@ export default class CosmosRPC {
     try {
       await StargateClient.connect(rpc);
       const privateKey = Buffer.from(await this.getPrivateKey(), "hex");
-      const walletPromise = await DirectSecp256k1Wallet.fromKey(
-        privateKey,
-        "cosmos"
-      );
+      const walletPromise = await DirectSecp256k1Wallet.fromKey(privateKey, "cosmos");
       const fromAddress = (await walletPromise.getAccounts())[0].address;
 
       const destination = "cosmos15aptdqmm7ddgtcrjvc5hs988rlrkze40l4q0he";
@@ -230,20 +209,12 @@ export default class CosmosRPC {
       };
       const signer: OfflineDirectSigner = await getSignerFromKey();
 
-      const signingClient = await SigningStargateClient.connectWithSigner(
-        rpc,
-        signer
-      );
+      const signingClient = await SigningStargateClient.connectWithSigner(rpc, signer);
 
-      const result = await signingClient.sendTokens(
-        fromAddress,
-        destination,
-        [{ denom: "uatom", amount: "250" }],
-        {
-          amount: [{ denom: "uatom", amount: "250" }],
-          gas: "100000",
-        }
-      );
+      const result = await signingClient.sendTokens(fromAddress, destination, [{ denom: "uatom", amount: "250" }], {
+        amount: [{ denom: "uatom", amount: "250" }],
+        gas: "100000",
+      });
       const transactionHash = result.transactionHash;
       const height = result.height;
       return { transactionHash, height };

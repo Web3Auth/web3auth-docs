@@ -6,7 +6,7 @@ type: guide
 tags: [web, "@web3auth/no-modal", cognito, custom authentication, react, ethereum]
 date: June 25, 2022
 author: Web3Auth Team
-order: 4
+order: 8
 communityPortalTopicId: 47
 ---
 
@@ -208,7 +208,7 @@ the loginConfig object. This makes sure that the Openlogin Adapter can connect t
 
 Once initialized, you can use the `connectTo()` function to authenticate the user when they click the login button.
 
-```js
+```tsx
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
@@ -228,7 +228,7 @@ login there directly from the Web3Auth Plug and Play No Modal SDK.
 
 ### Get the User Profile
 
-```js
+```tsx
 const user = await web3auth.getUserInfo();
 console.log("User info", user);
 ```
@@ -238,7 +238,7 @@ network, but are fetched from the id_token you received from AWS Cognito and liv
 
 ### Logout
 
-```js
+```tsx
 await web3auth.logout();
 ```
 
@@ -246,7 +246,7 @@ Logging out your user is as simple as calling the `logout` function.
 
 > Note: Currently, Web3Auth Plug and Play SDKs don't log out a user from AWS Cognito, so you can try calling this below endpoint to log out a user.
 
-```js
+```tsx
 window.open("
     YOUR-COGNITO-DOMAIN/logout?
     client_id=YOUR-CLIENTID-FROM-AWS-COGNITO-DASHBOARD&
@@ -291,7 +291,7 @@ https://{YOUR_DOMAIN}.auth.{region}.amazoncognito.com/oauth2/authorize?
 - In the backend server, you can use the `code` to get the `id_token` from AWS Cognito and redirect the user to the frontend with `id_token` as a
   query parameter
 
-```js
+```tsx
 app.get('/callback', (req, res) => {
   var options = {
     method: 'POST',
@@ -321,7 +321,7 @@ app.get('/callback', (req, res) => {
 
 - In the frontend, pass on this `id_token` to the Web3Auth SDK to authenticate the user
 
-```js
+```tsx
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {

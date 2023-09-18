@@ -1,0 +1,39 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+#### `LoginParams`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type Declarations", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter               | Type                     | Description                                                                                                         | Mandatory |
+| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- | --------- |
+| `verifier`              | `string`                 | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                                  | Yes       |
+| `verifierId`            | `string`                 | Verifier ID's value, `sub` or `email` value present in the idToken.                                                 | Yes       |
+| `idToken`               | `string`                 | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. | Yes       |
+| `subVerifierInfoArray?` | `TorusSubVerifierInfo[]` | Sub verifier info                                                                                                   | No        |
+| `serverTimeOffset?`     | `number`                 | Server time offset                                                                                                  | No        |
+
+</TabItem>
+
+<TabItem value="type">
+
+```ts
+export type LoginParams = {
+  verifier: string;
+  verifierId: string;
+  idToken: string;
+  subVerifierInfoArray?: TorusSubVerifierInfo[];
+  serverTimeOffset?: number;
+};
+```
+
+</TabItem>
+</Tabs>

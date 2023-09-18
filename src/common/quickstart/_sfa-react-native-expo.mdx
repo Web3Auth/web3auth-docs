@@ -1,0 +1,221 @@
+import DashboardImage from "@site/static/images/dashboard/project-details.png";
+
+### 1. Install Web3Auth
+
+Install the Web3Auth's Single Factor Auth package in your react-native project.
+
+```bash npm2yarn
+npm install --save @web3auth/single-factor-auth-react-native @web3auth/ethereum-provider jsonwebtoken fs
+```
+
+When using our SDK with an Expo-based React Native app (aka managed workflow), you have to install `expo-secure-store` to store the user's session.
+
+```bash
+expo install expo-secure-store
+```
+
+:::warning
+
+Please have a look at the troubleshooting guide [here](/troubleshooting/metro-issues), to set up the `globals.js` file and the `metro.config.js` file
+for polyfilling.
+
+:::
+
+### 2. Get your Client ID from the Web3Auth Dashboard
+
+Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new project. Use the Client ID of the project to start your integration.
+
+<img src={DashboardImage} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Dashboard" />
+
+### 3. Initialize Web3Auth for your preferred blockchain
+
+Web3Auth needs to initialize as soon as your app loads up to enable the user to log in. Preferably done within a constructor, initialization is the
+step where you can pass on all the configurations for Web3Auth you want. A simple integration for EVM blockchains will look like this:
+
+```js
+import Web3Auth from "@web3auth/single-factor-auth-react-native";
+import * as SecureStore from "expo-secure-store";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import jwt from "jsonwebtoken";
+import fs from "fs";
+
+// Use "openssl genrsa -out privateKey.pem 2048" to generate a private key
+// Also, use this private key to generate a public key using "openssl rsa -in privateKey.pem -pubout -out publicKey.pem"
+// Convert PEM to JWKS and expose it on a public URL, and make a web3auth verifier using that.
+// Check out https://web3auth.io/docs/auth-provider-setup/byo-jwt-providers for more details.
+var privateKey = fs.readFileSync("privateKey.pem");
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: {
+    chainConfig: {
+      chainId: "0x5",
+      rpcTarget: "https://rpc.ankr.com/eth_goerli",
+      displayName: "goerli",
+      blockExplorer: "https://goerli.etherscan.io/",
+      ticker: "ETH",
+      tickerName: "Ethereum",
+    },
+  },
+});
+
+// Instantiate Web3Auth SFA SDK
+const web3authSfa = new Web3Auth(SecureStore, {
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
+});
+
+await web3auth.init(privateKeyProvider);
+```
+
+### 4. Login your User
+
+Once you're done initializing, just create a button that triggers the login for the user on their request. Logging in is as easy as:
+
+```js
+const user = {
+  id: "faj2720i2fdG7NsqznOKrthDvq43", // must be unique to each user
+  name: "Mohammad Shahbaz Alam",
+  email: "shahbaz@web3auth.io",
+  profileImage: "https://avatars.githubusercontent.com/u/46641595?v=4",
+};
+
+// Login the user
+const web3authSfaprovider = await web3auth.connect({
+  verifier: "web3auth-sfa-verifier", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+  verifierId: user.id, // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
+  idToken: jwt.sign(
+    {
+      sub: user.id, // must be unique to each user
+      name: user.name,
+      email: user.email,
+      picture: user.profileImage,
+      aud: "urn:my-resource-server", // -> to be used in Custom Authentication as JWT Field
+      iss: "https://my-authz-server", // -> to be used in Custom Authentication as JWT Field
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 60 * 60,
+    },
+    privateKey, // <-- privateKey to sign the JWT Token
+    { algorithm: "RS256", keyid: "1bb9605c36e69386830202b2d" }
+  ), // or replace it with your newly created unused JWT Token.
+});
+
+// Get the private key, The private key returned here is the CoreKit Key, since the usePnPKey is set to false.
+const ethPrivateKey = await web3authSfaprovider.request({ method: "eth_private_key" });
+
+console.log("ETH Private Key", ethPrivateKey);
+
+const ethPublicAddress = await web3authProvider?.request<string[]>({ method: "eth_accounts" });
+
+console.log("Web3Auth user created with public address:", ethPublicAddress![0]);
+```
+
+### 5. Troubleshooting Bundler Polyfill Issue with React Native
+
+#### Install the missing modules
+
+Check for the missing libraries in your build and included packages, and accordingly polyfill them. For Web3Auth, you need to polyfill the `buffer`,
+`process`, `crypto` and `stream` libraries. For the rest of the libraries, we are installing a dummy module called `empty-module` which helps us get
+rid of the warnings while building the project.
+
+```bash npm2yarn
+npm install --save empty-module readable-stream crypto-browserify react-native-get-random-values buffer process
+```
+
+:::caution
+
+There might be a possibility that you might need to polyfill more libraries, in case you're using any other blockchain library alongside Web3Auth that
+requires them. Generally, the libraries like `browserify-zlib`, `assert`, `stream-http`, `https-browserify`, `os-browserify`, `url` are the ones that
+might be required.
+
+:::
+
+#### Update your `metro.config.js`
+
+To make use of the polyfilled modules while building the application, you need to reconfigure your metro bundler config.
+
+:::info Expo Managed Workflow
+
+You will have to create `metro.config.js` for Expo Managed Workflow, as it is not present by default. Also, note that polyfilling is not supported with
+"Expo Go" app. It is compatible only with Custom Dev Client and EAS builds.
+
+Please run `npx expo prebuild` to generate native code based on the version of expo a project has installed, before moving forward.
+
+:::
+
+You can copy the following code in your `metro.config.js` file. This will tell the bundler to ignore the missing modules and include the ones that are
+needed.
+
+#### `metro.config.js`
+
+```tsx title="metro.config.js"
+const { getDefaultConfig } = require("expo/metro-config");
+
+module.exports = (async () => {
+  const {
+    resolver: { sourceExts, assetExts },
+  } = await getDefaultConfig(__dirname);
+
+  const defaultSourceExts = [...sourceExts, "svg", "mjs", "cjs"];
+
+  return {
+    resolver: {
+      extraNodeModules: {
+        assert: require.resolve("empty-module"), // assert can be polyfilled here if needed
+        http: require.resolve("empty-module"), // stream-http can be polyfilled here if needed
+        https: require.resolve("empty-module"), // https-browserify can be polyfilled here if needed
+        os: require.resolve("empty-module"), // os-browserify can be polyfilled here if needed
+        url: require.resolve("empty-module"), // url can be polyfilled here if needed
+        zlib: require.resolve("empty-module"), // browserify-zlib can be polyfilled here if needed
+        path: require.resolve("empty-module"),
+        crypto: require.resolve("crypto-browserify"),
+        stream: require.resolve("readable-stream"),
+      },
+
+      assetExts: assetExts.filter((ext) => ext !== "svg"),
+
+      sourceExts: process.env.TEST_REACT_NATIVE ? ["e2e.js"].concat(defaultSourceExts) : defaultSourceExts,
+    },
+    transformer: {
+      getTransformOptions: async () => ({
+        transform: {
+          experimentalImportSupport: false,
+          inlineRequires: true,
+        },
+      }),
+    },
+  };
+})();
+```
+
+#### Fixing additional dependency issues
+
+- Create a `globals.js` to your project root directory and add the following code to it.
+
+  ```tsx title="globals.js"
+  global.Buffer = require("buffer").Buffer;
+
+  // Needed so that 'stream-http' chooses the right default protocol.
+  global.location = {
+    protocol: "file:",
+  };
+
+  global.process.version = "v16.0.0";
+  if (!global.process.version) {
+    global.process = require("process");
+    console.log({ process: global.process });
+  }
+
+  process.browser = true;
+  ```
+
+- Then, import the dependencies to `index.js` of your project.
+
+  ```tsx title="index.js"
+  import { AppRegistry } from "react-native";
+  import "./globals";
+  import "react-native-get-random-values";
+  import App from "./App";
+  import { name as appName } from "./app.json";
+  AppRegistry.registerComponent(appName, () => App);
+  ```

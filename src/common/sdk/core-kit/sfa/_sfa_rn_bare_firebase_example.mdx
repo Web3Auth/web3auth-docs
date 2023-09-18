@@ -1,0 +1,77 @@
+:::warning Note
+
+Please use these examples in conjunction with our troubleshooting guide for React Native Bundler polyfill issues
+[here](/troubleshooting/metro-issues).
+
+:::
+
+:::tip Note
+
+Please set up Firebase configuration in your React Native bare app using the guide [here](https://rnfirebase.io/).
+
+:::
+
+```tsx title="App.tsx"
+import auth from "@react-native-firebase/auth";
+import EncryptedStorage from "react-native-encrypted-storage";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import Web3Auth from "@web3auth/single-factor-auth-react-native";
+
+// Get idToken from Firebase
+async function signInWithEmailPassword() {
+  try {
+    const res = await auth().signInWithEmailAndPassword("custom+jwt@firebase.login", "Testing@123");
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Instantiate Web3Auth SFA SDK
+const web3AuthSfa = new Web3Auth(EncryptedStorage, {
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: "cyan",
+  usePnPKey: false, // By default, this sdk returns CoreKitKey
+});
+
+// Instantiate Ethereum Provider
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: {
+    /*
+      pass the chain config that you want to connect with
+      all chainConfig fields are required.
+      */
+    chainConfig: {
+      chainId: "0x1",
+      rpcTarget: "https://rpc.ankr.com/eth",
+      displayName: "mainnet",
+      blockExplorer: "https://etherscan.io/",
+      ticker: "ETH",
+      tickerName: "Ethereum",
+    },
+  },
+});
+
+// Initialize Web3Auth SFA SDK
+await web3AuthSfa.init(privateKeyProvider);
+
+const loginRes = await signInWithEmailPassword();
+const idToken = await loginRes!.user.getIdToken(true);
+const parsedToken = parseToken(idToken);
+
+const verifier = "web3auth-firebase-examples";
+// get sub value from firebase id token
+const verifierId = parsedToken.sub;
+
+// Login the user
+const provider = await web3auth!.connect({
+  verifier, // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+  verifierId, // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
+  idToken,
+});
+
+// Get the private key, The private key returned here is the CoreKit Key, since the usePnPKey is set to false.
+const finalPrivateKey = await provider!.request({
+  method: "eth_private_key",
+});
+```

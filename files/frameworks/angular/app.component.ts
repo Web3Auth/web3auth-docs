@@ -17,7 +17,7 @@ export class AppComponent {
     title = "angular-app";
     // REPLACE-getWeb3AuthState-
 
-    provider: SafeEventEmitterProvider | null = null;
+    provider: IProvider | null = null;
 
     async ngOnInit() {
       // REPLACE-getConstructorCode-

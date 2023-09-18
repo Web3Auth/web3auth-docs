@@ -1,0 +1,49 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter          | Type                        | Description                                                                                                         | Mandatory |
+| ------------------ | --------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------- |
+| `clientId`         | `string`                    | Web3Auth Client ID. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/). | Yes       |
+| `web3AuthNetwork?` | `TORUS_LEGACY_NETWORK_TYPE` | Web3Auth Network to use for login. @defaultValue mainnet                                                            | No        |
+| `enableLogging?`   | `boolean`                   | Setting it to true will enable logs.                                                                                | No        |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface Web3AuthOptions {
+  /**
+   * Client id for web3auth.
+   * You can obtain your client id from the web3auth developer dashboard.
+   * You can set any random string for this on localhost.
+   */
+  clientId: string;
+  /**
+   * Web3Auth Network to use for login
+   * @defaultValue mainnet
+   */
+  web3AuthNetwork?: TORUS_LEGACY_NETWORK_TYPE;
+
+  /**
+   * setting to true will enable logs
+   *
+   * @defaultValue false
+   */
+  enableLogging?: boolean;
+}
+```
+
+</TabItem>
+
+</Tabs>

@@ -30,13 +30,13 @@ npm install --save @taquito/signer @taquito/taquito @taquito/utils @tezos-core-t
 
 ## Initializing Provider
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
 const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "other", // for all non EVM and SOLANA chains, use "other"
     rpcTarget: "https://rpc.tzbeta.net/",
@@ -57,7 +57,7 @@ web3auth.configureAdapter(openloginAdapter);
 
 await web3auth.initModal();
 
-const web3authProvider = web3auth.connect(); // web3auth.provider
+const web3authProvider = await web3auth.connect(); // web3auth.provider
 ```
 
 ## Get User Info
@@ -76,9 +76,9 @@ key. However, we cannot use this key with Tezos EC Curve specific signing functi
 On the underhood, it uses the `tezosCrypto.utils.seedToKeyPair()` function, where we need to pass the `hex2buf(privateKey)`, ie. the hexadecimal to
 byteArray converted private key. We can use the returned private key pair from this and use on Tezos transactions.
 
-```js
+```tsx
 import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
-import { SafeEventEmitterProvider } from "@web3auth/base";
+import { IProvider } from "@web3auth/base";
 import { TezosToolkit } from "@taquito/taquito";
 import { hex2buf } from "@taquito/utils";
 import { InMemorySigner } from "@taquito/signer";
@@ -103,9 +103,9 @@ const balance = await tezos.tz.getBalance(account);
 
 ## Send Transaction
 
-```js
+```tsx
 import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
-import { SafeEventEmitterProvider } from "@web3auth/base";
+import { IProvider } from "@web3auth/base";
 import { TezosToolkit } from "@taquito/taquito";
 import { hex2buf } from "@taquito/utils";
 import { InMemorySigner } from "@taquito/signer";
@@ -149,9 +149,9 @@ const txRes = await op.confirmation();
 
 ## Sign Message
 
-```js
+```tsx
 import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
-import { SafeEventEmitterProvider } from "@web3auth/base";
+import { IProvider } from "@web3auth/base";
 import { TezosToolkit } from "@taquito/taquito";
 import { hex2buf } from "@taquito/utils";
 import { InMemorySigner } from "@taquito/signer";

@@ -1,4 +1,4 @@
-```js title="Custom JWT Example"
+```tsx title="Custom JWT Example"
 const { Web3Auth } = require("@web3auth/node-sdk");
 const { EthereumPrivateKeyProvider } = require("@web3auth/ethereum-provider");
 const jwt = require("jsonwebtoken");
@@ -10,7 +10,7 @@ const fs = require("fs");
 // Check out https://web3auth.io/docs/auth-provider-setup/byo-jwt-providers for more details.
 var privateKey = fs.readFileSync("privateKey.pem");
 
-const provider = new EthereumPrivateKeyProvider({
+const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig: {
       chainId: "0x5",
@@ -25,12 +25,12 @@ const provider = new EthereumPrivateKeyProvider({
 
 // Instantiate Web3Auth Node.js SDK
 const web3auth = new Web3Auth({
-  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from Web3Auth Dashboard
-  web3AuthNetwork: "cyan", // Available networks are "testnet", "mainnet", "cyan", "aqua".
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
   usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
 });
 
-web3auth.init({ provider });
+web3auth.init({ privateKeyProvider });
 
 const user = {
   id: "faj2720i2fdG7NsqznOKrthDvq43", // must be unique to each user

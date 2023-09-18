@@ -30,13 +30,13 @@ npm install --save web3 starknet elliptic bn.js @starkware-industries/starkware-
 
 ## Initializing Provider
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
 const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "other", // for all non EVM and SOLANA chains, use "other"
   },
@@ -52,7 +52,7 @@ web3auth.configureAdapter(openloginAdapter);
 
 await web3auth.initModal();
 
-const web3authProvider = web3auth.connect(); // web3auth.provider
+const web3authProvider = await web3auth.connect(); // web3auth.provider
 ```
 
 ## Get User Info
@@ -78,7 +78,7 @@ For the `deployAccount()`, we use the file `ArgentAccount.json` which given us t
 
 [Get ArgentAccount.json from this gist.](https://gist.githubusercontent.com/yashovardhan/27e622a0f8de5acb3686674cd10fe0c8/raw/c1b2f70996083d2c3e85330464f71735aecf58a8/ArgentAccount.json)
 
-```js
+```tsx
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import { ec as elliptic } from "elliptic";
 /*
@@ -97,7 +97,7 @@ const startKey = account.pub.getX().toString("hex");
 
 ## Deploy Account
 
-```js
+```tsx
 import { AddTransactionResponse, defaultProvider } from "starknet";
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import { ec as elliptic } from "elliptic";

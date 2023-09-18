@@ -1,0 +1,321 @@
+---
+title: "Usage of Core Kit SFA React Native SDK"
+sidebar_label: "Usage"
+displayed_sidebar: sdk
+description: "Web3Auth Core Kit Single Factor Auth React Native SDK - Usage | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import SFARNBareFirebaseExample from "@site/src/common/sdk/core-kit/sfa/_sfa_rn_bare_firebase_example.mdx";
+import SFARNExpoAuth0Example from "@site/src/common/sdk/core-kit/sfa/_sfa_rn_expo_auth0_example.mdx";
+
+Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users. Further, you can use the native provider given
+by Web3Auth to connect the users to the respective blockchain network.
+
+Natively, the instance of Web3Auth (referred to as web3auth in our examples) returns the following functions:
+
+- `connect()` - Logs in the User using the `verifier`, `verifierId` & `idToken` mandatorily while `subVerifierInfoArray` and `serverTimeOffset` are
+  optional.
+- `provider()` - Returns the native provider which can be used to make different blockchain transactions.
+- `connected()` - Returns `true` or `false` depending on whether the web3auth instance is available or not.
+- `sessionId()` - Returns the sessionId of the user as a string.
+- `authenticateUser()` - Returns a promise of `UserAuthInfo` object containing the `idToken` of the user.
+- `addChain()` - Add chain configuration to the web3auth instance.
+- `switchChain()` - Switch the chainId to one of the added chainIds.
+- `logout()` - Logs out the user from the web3auth instance.
+
+## Logging in your User
+
+`connect(loginParams: LoginParams)`
+
+To login a user in the Web3Auth SFA Web SDK, you need to call `connect()` function.
+
+| Variable      | Type     | Description      | Mandatory |
+| ------------- | -------- | ---------------- | --------- |
+| `loginParams` | `object` | Login Parameters | Yes       |
+
+#### Returns
+
+```js
+connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null>
+```
+
+#### `LoginParams`
+
+`connect(loginParams: LoginParams)`
+
+On successful login, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
+corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
+
+On unsuccessful login, this function will return a `null` value.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type Declarations", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter               | Type                     | Description                                                                                                         | Mandatory |
+| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- | --------- |
+| `verifier`              | `string`                 | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                                  | Yes       |
+| `verifierId`            | `string`                 | Verifier ID's value, `sub` or `email` value present in the idToken.                                                 | Yes       |
+| `idToken`               | `string`                 | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. | Yes       |
+| `subVerifierInfoArray?` | `TorusSubVerifierInfo[]` | Sub verifier info                                                                                                   | No        |
+| `serverTimeOffset?`     | `number`                 | Server time offset                                                                                                  | No        |
+
+</TabItem>
+
+<TabItem value="type">
+
+```ts
+export type LoginParams = {
+  verifier: string;
+  verifierId: string;
+  idToken: string;
+  subVerifierInfoArray?: TorusSubVerifierInfo[];
+  serverTimeOffset?: number;
+};
+```
+
+</TabItem>
+</Tabs>
+
+#### `TorusSubVerifierInfo`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter  | Type     | Description                                                                                                         |
+| ---------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
+| `verifier` | `string` | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                                  |
+| `idToken`  | `string` | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+export interface TorusSubVerifierInfo {
+  verifier: string;
+  idToken: string;
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### Usage
+
+```js
+await web3auth.connect({
+  verifier: "verifier-name", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+  verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
+  idToken: "JWT Token", // replace with your newly created unused JWT Token.
+});
+```
+
+## Get a native provider
+
+`provider()`
+
+Returns the native provider which can be used to make different blockchain transactions.
+
+#### Returns
+
+```js
+get provider(): SafeEventEmitterProvider | null;
+```
+
+## Get connected status
+
+`connected()`
+
+Returns `true` or `false` depending on whether the web3auth instance is available or not.
+
+#### Returns
+
+```js
+get connected(): boolean;
+```
+
+## Get sessionId
+
+`sessionId()`
+
+Returns the sessionId of the user as a string.
+
+#### Returns
+
+```js
+get sessionId(): string;
+```
+
+## Authenticate the user
+
+`authenticateUser()`
+
+Returns a promise of `UserAuthInfo` object containing the `idToken` of the user.
+
+#### Returns
+
+```js
+authenticateUser(): Promise<UserAuthInfo>;
+```
+
+#### `UserAuthInfo`
+
+```ts
+export type UserAuthInfo = {
+  idToken: string;
+};
+```
+
+## Add a new chain
+
+`addChain(chainConfig: CustomChainConfig)`
+
+Add chain configuration to the web3auth instance.
+
+| Variable      | Type                | Description                  | Mandatory |
+| ------------- | ------------------- | ---------------------------- | --------- |
+| `chainConfig` | `CustomChainConfig` | Chain specific configuration | Yes       |
+
+#### `CustomChainConfig`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type Declarations", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter        | Type                                                                                                                                                                                                                       | Description                                                                                                                                                                                                                                          | Optional |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `chainNamespace` | <ul><li>**`string`** - (Choose between `eip155`, `solana` & `other`)</li> **or** <li>**`ChainNamespaceType`** - (Choose between `CHAIN_NAMESPACES.EIP155`, `CHAIN_NAMESPACES.SOLANA` & `CHAIN_NAMESPACES.OTHER`)</li></ul> | The namespace of your preferred chain. Checkout [Providers SDK Reference](/sdk/helper-sdks/providers) for understanding RPC Calls.                                                                                                                   | No       |
+| `chainId`        | `string`                                                                                                                                                                                                                   | The chain id of the selected blockchain in `hex`                                                                                                                                                                                                     | No       |
+| `rpcTarget`      | `string`                                                                                                                                                                                                                   | <ul><li>RPC Target URL for the selected `chainNamespace` & `chainId`.</li><li> We provide a default RPC Target for certain blockchains, but due to congestion it might be slow hence it is recommended to provide your own RPC Target URL.</li></ul> | No       |
+| `wsTarget`       | `string`                                                                                                                                                                                                                   | Web socket target URL for the chain                                                                                                                                                                                                                  | Yes      |
+| `displayName`    | `string`                                                                                                                                                                                                                   | Display Name for the chain                                                                                                                                                                                                                           | No       |
+| `blockExplorer`  | `string`                                                                                                                                                                                                                   | Blockchain's explorer URL. (eg: `https://etherscan.io`)                                                                                                                                                                                              | No       |
+| `ticker`         | `string`                                                                                                                                                                                                                   | Default currency ticker of the network (e.g: `ETH`)                                                                                                                                                                                                  | No       |
+| `tickerName`     | `string`                                                                                                                                                                                                                   | Name for currency ticker (e.g: `Ethereum`)                                                                                                                                                                                                           | No       |
+| `decimals`       | `number`                                                                                                                                                                                                                   | Number of decimals for the currency ticker (e.g: `18`)                                                                                                                                                                                               | Yes      |
+
+</TabItem>
+
+<TabItem value="type">
+
+```ts
+declare const CHAIN_NAMESPACES: {
+  readonly EIP155: "eip155";
+  readonly SOLANA: "solana";
+  readonly OTHER: "other";
+};
+
+declare type ChainNamespaceType = typeof CHAIN_NAMESPACES[keyof typeof CHAIN_NAMESPACES];
+declare type CustomChainConfig = {
+  chainNamespace: ChainNamespaceType;
+  /**
+   * The chain id of the chain
+   */
+  chainId: string;
+  /**
+   * RPC target Url for the chain
+   */
+  rpcTarget: string;
+  /**
+   * web socket target Url for the chain
+   */
+  wsTarget?: string;
+  /**
+   * Display Name for the chain
+   */
+  displayName: string;
+  /**
+   * Url of the block explorer
+   */
+  blockExplorer: string;
+  /**
+   * Default currency ticker of the network (e.g: ETH)
+   */
+  ticker: string;
+  /**
+   * Name for currency ticker (e.g: `Ethereum`)
+   */
+  tickerName: string;
+  /**
+   * Number of decimals for the currency ticker (e.g: 18)
+   */
+  decimals?: number;
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+## Switch the chain
+
+`switchChain(params: {chainId: string;})`
+
+Switch to one of the added chains
+
+| Variable  | Type     | Description                  | Mandatory |
+| --------- | -------- | ---------------------------- | --------- |
+| `chainId` | `string` | id of the chain to switch to | yes       |
+
+## Logging out the user
+
+`logout()`
+
+Logs out the user and clears the session.
+
+:::tip Note
+
+`@web3auth/single-factor-auth-react-native` SDK only works for users who have **not enabled MFA**.
+
+:::
+
+:::danger MFA enabled users
+
+For MFA enabled users, you'll see `Error("User has already enabled mfa, please use the @webauth/webauth-web sdk for login with mfa");`
+
+:::
+
+## Example
+
+<Tabs
+  defaultValue="bare"
+  values={[
+    { label: "Expo app with Auth0 authentication", value: "expo" },
+    { label: "Bare app with Firebase authentication", value: "bare" },
+  ]}
+>
+
+<TabItem value="expo">
+
+<SFARNExpoAuth0Example />
+
+</TabItem>
+
+<TabItem value="bare">
+
+<SFARNBareFirebaseExample />
+
+</TabItem>
+</Tabs>

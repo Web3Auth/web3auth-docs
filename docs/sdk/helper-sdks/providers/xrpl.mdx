@@ -42,7 +42,7 @@ This constructor takes an object with a config of `XrplPrivKeyProviderConfig` as
 
 `XrplPrivKeyProviderConfig`
 
-```ts
+```tsx
 export interface XrplPrivKeyProviderConfig extends BaseProviderConfig {
   chainConfig: Omit<CustomChainConfig, "chainNamespace"> & Pick<CustomChainConfig, "wsTarget">;
 }
@@ -98,7 +98,7 @@ export interface BaseConfig {
 
 For getting the Chain Config for XRPL Chain, you need to use the `getXRPLChainConfig` function from `@web3auth/xrpl-provider`.
 
-```ts
+```tsx
 export declare const getXRPLChainConfig: (
   network: XRPLNetworkType,
   customChainConfig?: Partial<Omit<CustomChainConfig, "chainNamespace">>
@@ -110,7 +110,7 @@ requirement.
 
 #### Example
 
-```ts
+```tsx
 const xrplProvider: any = new XrplPrivateKeyProvider({
   config: { chainConfig: getXRPLChainConfig("testnet") },
 }); // devnet, testnet, mainnet
@@ -123,7 +123,7 @@ const xrplProvider: any = new XrplPrivateKeyProvider({
 If you are using `chainNamespace: "other"` while initializing `Web3Auth` or `Web3AuthNoModal` with the `OpenloginAdapter`, you need to add the
 `privateKeyProvider` to the OpenLogin instance.
 
-```ts
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -135,7 +135,7 @@ const web3auth = new Web3Auth({
     chainNamespace: CHAIN_NAMESPACES.OTHER,
   },
   clientId = "YOUR_WEB3AUTH_CLIENT_ID", // get from https://dashboard.web3auth.io
-  web3AuthNetwork = "cyan", // testnet, mainnet, cyan, aqua
+  web3AuthNetwork = "sapphire_mainnet",
 });
 
 const xrplProvider = new XrplPrivateKeyProvider({
@@ -169,7 +169,7 @@ The purpose of this function is to retrieve the details of the connected account
 
 #### Example
 
-```ts
+```tsx
 try {
   // provider is from above
   const accounts = await provider.request<string[]>({
@@ -209,7 +209,7 @@ The function is utilized for signing transactions.
 
 #### Example
 
-```ts
+```tsx
 try {
   const accounts = await provider.request<string[]>({
     method: "xrpl_getAccounts",
@@ -246,7 +246,7 @@ the broadcasted transaction.
 
 #### Example:
 
-```ts
+```tsx
 try {
   const accounts = await provider.request<string[]>({
     method: "xrpl_getAccounts",
@@ -282,7 +282,7 @@ This method is utilized for signing any message using the currently connected wa
 
 #### Example
 
-```ts
+```tsx
 try {
   const msg = "Hello world";
   const hexMsg = convertStringToHex(msg);
@@ -306,7 +306,7 @@ The purpose of this method is to retrieve the private key of the currently logge
 
 #### Example
 
-```ts
+```tsx
 //Assuming user is already logged in.
 async getPrivateKey() {
 	const privateKey = await web3auth.provider.request({

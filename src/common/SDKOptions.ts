@@ -41,8 +41,11 @@ export const tkeyandroid = "tKey Android SDK";
 export const singlefactorauth = "Single Factor Auth Web SDK";
 export const singlefactorauthandroid = "Single Factor Auth Android SDK";
 export const singlefactorauthios = "Single Factor Auth iOS SDK";
+export const singlefactorauthrn = "Single Factor Auth React Native SDK";
+export const singlefactorauthflutter = "Single Factor Auth Flutter SDK";
 export const corekitnodejs = "Node.js SDK";
 export const mpccorekit = "MPC Core Kit";
+
 export const corekitlist = [
   { label: "tKey JS SDK", value: tkeyjs, platforms: [reactJS, reactnative] },
   { label: "MPC Core Kit", value: mpccorekit, platforms: [...weblist] },
@@ -52,6 +55,8 @@ export const corekitlist = [
   { label: "SFA Node.js SDK", value: corekitnodejs, platforms: [nodejs] },
   { label: "SFA Android SDK", value: singlefactorauthandroid, platforms: [android] },
   { label: "SFA iOS SDK", value: singlefactorauthios, platforms: [ios] },
+  { label: "SFA React Native SDK", value: singlefactorauthrn, platforms: [...rnlist] },
+  { label: "SFA Flutter SDK", value: singlefactorauthflutter, platforms: [flutter] },
 ];
 
 const getWindowLocation = () => {

@@ -17,26 +17,51 @@ npm install --save @tkey/private-keys
 
 ## Initialization
 
-#### Import the `PrivateKeyModule` class from `@tkey/private-keys`
-
-```javascript
-import PrivateKeyModule, { SECP256K1Format, ED25519Format } from "@tkey/private-keys";
+```tsx
+import { PrivateKeyModule } from "@tkey/private-keys";
+const privateKeyModule = new PrivateKeyModule();
 ```
 
-#### Assign the `PrivateKeyModule` class to a variable
+## Usage
 
-```javascript
-const privateKeyModule = new PrivateKeyModule([SECP256K1Format]));
-// accepts secp256k1 and ed25519 curves.
+With the `PrivateKeyModule`, you have access to the multiple functions as mentioned in the type reference, however, the most important ones are:
+
+### Set Private Key
+
+`setPrivateKey(privateKeyType: string, privateKey?: BN): Promise<void>;`
+
+- `privateKeyType`: The type of private key to set. Allowed values `secp256k1n` and `ed25519`
+- `privateKey`: The private key to set.
+
+#### Return
+
+- `Promise<void>`
+
+#### Example
+
+```tsx
+await tKey.modules.privateKeyModule.setPrivateKey("secp256k1n", privateKey);
 ```
 
-> Note: New curve formats can be added on demand. Reach out to our team to assist you with that.
+### Get Private Keys
 
-### Returns
+`getPrivateKeys(): Promise<IPrivateKeyStore[]>;`
 
-The `PrivateKeyModule` class returns an object with the following properties:
+#### Return
 
-```ts
+- `Promise<IPrivateKeyStore[]>`- The private keys stored.
+
+#### Example
+
+```tsx
+const privataKeyStore = await tKey.modules.privateKeyModule.getPrivateKeys();
+```
+
+## Type Reference
+
+### `PrivateKeyModule`
+
+```tsx
 declare class PrivateKeyModule implements IModule {
   moduleName: string;
   tbSDK: ITKeyApi;
@@ -48,39 +73,4 @@ declare class PrivateKeyModule implements IModule {
   getPrivateKeys(): Promise<IPrivateKeyStore[]>;
   getAccounts(): Promise<BN[]>;
 }
-```
-
-## Usage
-
-With the `PrivateKeyModule`, you've access to the following functions:
-
-### Set Private Key
-
-#### `setPrivateKey(privateKeyType: string, privateKey?: BN)`
-
-- `privateKeyType`: The type of private key to set. Allowed values `secp256k1n` and `ed25519`
-- `privateKey`: The private key to set.
-
-#### Return
-
-- `Promise<void>`
-
-```js title="Example"
-const setPrivateKey = async () => {
-  await tKey.modules.privateKeyModule.setPrivateKey("ed25519");
-};
-```
-
-### Get Private Keys
-
-#### `getPrivateKeys()`
-
-#### Return
-
-- `Promise<IPrivateKeyStore[]>`- The private keys stored.
-
-```js title="Example"
-const getPrivateKeys = async () => {
-  const result = await tKey.modules.privateKeyModule.getPrivateKeys();
-};
 ```

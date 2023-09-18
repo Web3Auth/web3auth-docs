@@ -31,13 +31,13 @@ npm install --save @imtbl/core-sdk
 
 ## Initializing Provider
 
-```js
+```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
 const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "cyan",
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "eip155", // for all non EVM and SOLANA chains, use "other"
   },
@@ -53,7 +53,7 @@ web3auth.configureAdapter(openloginAdapter);
 
 await web3auth.initModal();
 
-const web3authProvider = web3auth.connect(); // web3auth.provider
+const web3authProvider = await web3auth.connect(); // web3auth.provider
 ```
 
 ## Get User Info
@@ -66,8 +66,8 @@ Once a user logs in, the Web3Auth SDK returns a provider. ImmutableX is a layer 
 provider. We will use the ethers library to create the signer. Then we use the helper function `createStarkSigner` from the `@imtbl/core-sdk` to
 create a stark signer from the private key.
 
-```js
-import { SafeEventEmitterProvider } from "@web3auth/base";
+```tsx
+import { IProvider } from "@web3auth/base";
 import { ImmutableX, Config, createStarkSigner } from "@imtbl/core-sdk";
 import { ethers } from "ethers";
 
@@ -89,7 +89,7 @@ const starkSigner = createStarkSigner(starkKey);
 
 After creating the signers, we need to register these signers with the ImmutableX SDK. We can do this by calling the `registerOffchain` method.
 
-```js
+```tsx
 const config = Config.SANDBOX; // Or Config.PRODUCTION or Config.ROPSTEN
 const client = new ImmutableX(config);
 
@@ -103,7 +103,7 @@ const response = await client.registerOffchain(walletConnection);
 
 We can get the Layer 1 ( Ethereum ) balance using the below code snippet.
 
-```js
+```tsx
 const ethersProvider = new ethers.providers.Web3Provider(web3authProvider);
 const signer = ethersProvider.getSigner();
 
@@ -118,7 +118,7 @@ const balance = ethers.utils.formatEther(
 
 ## Send funds from Layer 1 to Layer 2
 
-```js
+```tsx
 const ethersProvider = new ethers.providers.Web3Provider(web3authProvider);
 const ethSigner = ethersProvider.getSigner();
 const depositResponse = await client.deposit(ethSigner, {

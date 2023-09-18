@@ -17,23 +17,52 @@ npm install --save @tkey/share-serialization
 
 ## Initialization
 
-#### Import the `ShareSerializationModule` class from `@tkey/share-serialization`
-
-```javascript
-import ShareSerializationModule from "@tkey/share-serialization";
-```
-
-#### Assign the `ShareSerializationModule` class to a variable
-
-```javascript
+```tsx
+import { ShareSerializationModule } from "@tkey/share-serialization";
 const shareSerializationModule = new ShareSerializationModule();
 ```
 
-### Returns
+## Usage
 
-The `ShareSerializationModule` class returns an object with the following properties:
+With the `ShareSerializationModule`, you have access to the multiple functions as mentioned in the type reference, however, the most important ones
+are:
 
-```ts
+### Serialize a Share
+
+`serialize(share: BN, type: string): Promise<unknown>;`
+
+#### Return
+
+- `Promise<unknown>`: The serialized share.
+
+#### Example
+
+```tsx
+const generateShareResult = await tKeyInstance.generateNewShare();
+const share = await tKeyInstance.outputShareStore(generateShareResult.newShareIndex).share.share;
+const mnemonic = await(tKeyInstance.modules.shareSerialization as ShareSerializationModule).serialize(share, "mnemonic");
+```
+
+### Deserialize a Share
+
+`deserialize(serializedShare: unknown, type: string): Promise<BN>;`
+
+#### Return
+
+- `Promise<BN>`: The deserialized share.
+
+#### Example
+
+```tsx
+const share = await(tKeyInstance.modules.shareSerialization as ShareSerializationModule).deserialize(mnemonic, "mnemonic");
+await tKeyInstance.inputShare(share);
+```
+
+## Type Reference
+
+### `ShareSerializationModule`
+
+```tsx
 declare class ShareSerializationModule implements IModule {
   moduleName: string;
   tbSDK: ITKeyApi;
@@ -45,44 +74,4 @@ declare class ShareSerializationModule implements IModule {
   serialize(share: BN, type: string): Promise<unknown>;
   deserialize(serializedShare: unknown, type: string): Promise<BN>;
 }
-```
-
-## Usage
-
-With the `ShareSerializationModule`, you've access to the following functions:
-
-### Serialize a share
-
-#### `serialize(share: BN, type: string)`
-
-- `share`: The share to serialize.
-- `type`: The type of share to serialize.
-
-#### Return
-
-- `Promise<unknown>`: The serialized share.
-
-```js title="Example"
-const getSeedFromShare = async () => {
-  const deviceShare = await getDeviceShare();
-  const serializedShare = await tKey.modules.shareSerialization.serialize(deviceShare.share.share, "mnemonic");
-  console.log(serializedShare);
-  return serializedShare;
-  // Now, this serializedShare is a mnemonic which you can display to user/send mail
-};
-```
-
-### Deserialize a share
-
-#### `deserialize(serializedShare: unknown, type: string)`
-
-#### Return
-
-- `Promise<BN>`: The deserialized share.
-
-```js title="Example"
-const getShareFromSeed = async (serializedShare) => {
-  const share = await tKey.modules.shareSerialization.deserialize(serializedShare, "mnemonic");
-  return share;
-};
 ```
