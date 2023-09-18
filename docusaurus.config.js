@@ -413,6 +413,10 @@ const config = {
             from: "/content-hub/guides",
             to: "/content-hub",
           },
+          {
+            from: "/content-hub/guides/mpc",
+            to: "/content-hub/guides/mpc-core-kit",
+          },
         ],
         createRedirects(existingPath) {
           if (existingPath.includes('/content-hub')) {
