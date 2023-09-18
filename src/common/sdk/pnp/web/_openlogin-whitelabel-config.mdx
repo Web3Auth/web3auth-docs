@@ -17,15 +17,17 @@ The whitelabel parameter takes `WhitelabelData` as input. The `WhitelabelData` o
 
 `WhiteLabelData`
 
-| Parameter          | Type                         | Description                                                                                                                                                                                                                                                          | Default                                                           | Mandatory |
-| ------------------ | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | --------- |
-| `name?`            | `string`                     | App name to be displayed in the User Flow Screens.                                                                                                                                                                                                                   | dApp's Website URL                                                | No        |
-| `url?`             | `string`                     | App URL to be displayed in the User Flow Screens.                                                                                                                                                                                                                    | dApp's Website URL                                                | No        |
-| `logoLight?`       | `string`                     | App logo to be shown on the dark background (dark theme)                                                                                                                                                                                                             | [web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg) | No        |
-| `logoDark?`        | `string`                     | App logo to be shown on the light background (light theme)                                                                                                                                                                                                           | [web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg) | No        |
-| `defaultLanguage?` | `string`                     | Default Language to use. <br/> Choose from: <ul><li>`en` - English</li><li>`de` - German</li><li>`ja` - Japanese</li><li>`ko` - Korean</li><li>`zh` - Mandarin</li><li>`es` - Spanish</li><li>`fr` - French</li><li>`pt` - Portuguese</li><li>`nl` - Dutch</li></ul> | en - English                                                      | No        |
-| `dark?`            | `boolean`                    | Whether to enable dark mode                                                                                                                                                                                                                                          | `false`                                                           | No        |
-| `theme?`           | `{ [P in string]: string; }` | Used to customize theme of the login modal with following options <br /> `'primary'` - To customize primary color of modal's content                                                                                                                                 | `#0364FF`                                                         | No        |
+| Parameter          | Type                                     | Description                                                                                                                                                                                                                                                          | Default                                                           | Mandatory |
+| ------------------ | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | --------- |
+| `appName?`         | `string`                                 | App name to be displayed in the User Flow Screens.                                                                                                                                                                                                                   | dApp's Website URL                                                | No        |
+| `appUrl?`          | `string`                                 | App URL to be displayed in the User Flow Screens.                                                                                                                                                                                                                    | dApp's Website URL                                                | No        |
+| `logoLight?`       | `string`                                 | App logo to be shown on the dark background (dark theme)                                                                                                                                                                                                             | [web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg) | No        |
+| `logoDark?`        | `string`                                 | App logo to be shown on the light background (light theme)                                                                                                                                                                                                           | [web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg) | No        |
+| `defaultLanguage?` | `string`                                 | Default Language to use. <br/> Choose from: <ul><li>`en` - English</li><li>`de` - German</li><li>`ja` - Japanese</li><li>`ko` - Korean</li><li>`zh` - Mandarin</li><li>`es` - Spanish</li><li>`fr` - French</li><li>`pt` - Portuguese</li><li>`nl` - Dutch</li></ul> | en - English                                                      | No        |
+| `mode?`            | `string`                                 | Choose between `auto`, `light` or `dark` modes.                                                                                                                                                                                                                      | `auto`                                                            | No        |
+| `theme?`           | `{ [P in string]: string; }`             | Used to customize the theme of the login modal with the following options <br /> `'primary'` - To customize the primary color of the modal's content                                                                                                                 | `#0364FF`                                                         | No        |
+| `tncLink?`         | `Partial<Record<LANGUAGE_TYPE, string>>` | Language specific link for terms and conditions on torus-website. See (examples/vue-app) to configure e.g. tncLink: `{en: "http://example.com/tnc/en", ja: "http://example.com/tnc/ja"}`                                                                             | none                                                              | No        |
+| `privacyPolicy?`   | `Partial<Record<LANGUAGE_TYPE, string>>` | Language specific link for privacy policy on torus-website. See (examples/vue-app) to configure e.g. `privacyPolicy: { en: "http://example.com/tnc/en", ja: "http://example.com/tnc/ja", }`                                                                          | none                                                              | No        |
 
 </TabItem>
 
@@ -33,62 +35,84 @@ The whitelabel parameter takes `WhitelabelData` as input. The `WhitelabelData` o
 
 ```tsx
 export type WhiteLabelData = {
-  /**
-   * App name to display in the UI
-   */
-  name?: string;
-  /**
-   * App url
-   */
-  url?: string;
-  /**
-   * App logo to use in light mode
-   */
-  logoLight?: string;
-  /**
-   * App logo to use in dark mode
-   */
-  logoDark?: string;
-  /**
-   * Default language to use
-   *
-   * @defaultValue en
-   */
-  defaultLanguage?: string;
-  /**
-   * Whether to enable dark mode
-   *
-   * @defaultValue false
-   */
-  dark?: boolean;
-  /**
-   * Used to customize theme of the login modal with following options
-   * `'primary'` - To customize primary color of modal's content.
-   */
-  theme?: {
-    primary?: string | ColorPalette;
-    gray?: string | ColorPalette;
-    red?: string | ColorPalette;
-    green?: string | ColorPalette;
-    success?: string;
-    warning?: string;
-    error?: string;
-    info?: string;
-    white?: string;
-  };
+    /**
+     * App name to display in the UI
+     */
+    appName?: string;
+    /**
+     * App url
+     */
+    appUrl?: string;
+    /**
+     * App logo to use in light mode
+     */
+    logoLight?: string;
+    /**
+     * App logo to use in dark mode
+     */
+    logoDark?: string;
+    /**
+     * language which will be used by web3auth. app will use browser language if not specified. if language is not supported it will use "en"
+     * en: english
+     * de: german
+     * ja: japanese
+     * ko: korean
+     * zh: mandarin
+     * es: spanish
+     * fr: french
+     * pt: portuguese
+     * nl: dutch
+     *
+     * @defaultValue en
+     */
+    defaultLanguage?: LANGUAGE_TYPE;
+    /**
+     theme
+     *
+     * @defaultValue auto
+     */
+    mode?: THEME_MODE_TYPE;
+    /**
+     * Use logo loader
+     *
+     * @defaultValue false
+     */
+    useLogoLoader?: boolean;
+    /**
+     * Used to customize theme of the login modal with following options
+     * `'primary'` - To customize primary color of modal's content.
+     */
+    theme?: {
+        primary?: string;
+        gray?: string;
+        red?: string;
+        green?: string;
+        success?: string;
+        warning?: string;
+        error?: string;
+        info?: string;
+        white?: string;
+    };
+    /**
+     * Language specific link for terms and conditions on torus-website. See (examples/vue-app) to configure
+     * e.g.
+     * tncLink: {
+     *  en: "http://example.com/tnc/en",
+     *  ja: "http://example.com/tnc/ja",
+     * }
+     */
+    tncLink?: Partial<Record<LANGUAGE_TYPE, string>>;
+    /**
+     * Language specific link for privacy policy on torus-website. See (examples/vue-app) to configure
+     * e.g.
+     * privacyPolicy: {
+     *  en: "http://example.com/tnc/en",
+     *  ja: "http://example.com/tnc/ja",
+     * }
+     */
+    privacyPolicy?: Partial<Record<LANGUAGE_TYPE, string>>;
 };
 
-export interface ColorPalette {
-  50?: string;
-  100?: string;
-  200?: string;
-  300?: string;
-  400?: string;
-  500?: string;
-  600?: string;
-  700?: string;
-  800?: string;
-  900?: string;
 }
 ```
 

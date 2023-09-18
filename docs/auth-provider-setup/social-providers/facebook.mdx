@@ -6,6 +6,9 @@ displayed_sidebar: docs
 description: "Facebook Social Login with Web3Auth | Documentation - Web3Auth"
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 :::info
 
 **[Using Facebook with Web3Auth Guide](/content-hub/guides/facebook)**
@@ -14,7 +17,7 @@ description: "Facebook Social Login with Web3Auth | Documentation - Web3Auth"
 
 ## Create a Facebook app
 
-1. Follow Facebook's instruction to [create a new app](https://developers.facebook.com/docs/development/create-an-app).
+1. Follow Facebook's instructions to [create a new app](https://developers.facebook.com/docs/development/create-an-app).
 2. When creating an app, make sure to select `Consumer` from this screen to use Facebook Login.
    ![Facebook OAuth2.0 App Dashboard](/content-hub/social-providers/facebook/facebook-app.png)
 
@@ -23,11 +26,9 @@ description: "Facebook Social Login with Web3Auth | Documentation - Web3Auth"
 
    ![Facebook OAuth2.0 App Dashboard](/content-hub/social-providers/facebook/facebook-login-setup.png)
 
-4. Paste the following as Redirect URI into the "Valid OAuth Redirect URIs" field.
+4. Paste the following as a redirect URI into the "Valid OAuth Redirect URIs" field.
 
-   - https://testing.openlogin.com/auth (for Web3Auth testnet used in demo applications)
-
-   - https://app.openlogin.com/auth (for Web3Auth mainnet used in production applications)
+   - https://auth.web3auth.io/auth
 
    ![Facebook OAuth2.0 App Dashboard](/content-hub/social-providers/facebook/facebook-login-settings-oauth.png)
 
@@ -38,25 +39,39 @@ description: "Facebook Social Login with Web3Auth | Documentation - Web3Auth"
 ## Set up Facebook Custom Authentication
 
 1. Create a verifier for your Facebook application by selecting `Facebook` as the Login provider from this modal.
-   ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
-2. Paste the **App ID** and **App Secret** from the Facebook App(above) to the `Client ID` and `Client Secret` field respectively and click on Create.
-   ![Facebook Client ID on Web3Auth Dashboard](/dashboard/verifiers/facebook-verifier.png)
+   ![Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier-google.png)
+2. Paste the **App ID** and **App Secret** from the Facebook App(above) to the `Client ID` and `Client Secret` fields respectively and click on
+   Create. ![Facebook Client ID on Web3Auth Dashboard](/images/dashboard/create-verifier-facebook.png)
 
 ## Example
+
+<Tabs
+defaultValue="modal"
+values={[
+  { label: "Modal", value: "modal" },
+  { label: "NoModal", value: "nomodal" },
+]}
+>
+<TabItem value="modal">
 
 ```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
-const clientId = "YOUR_WEB3AUTH_CLIENT_ID";
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
 // get it from https://dashboard.web3auth.io by creating a Plug n Play project.
 
 const web3auth = new Web3Auth({
   clientId,
-  web3AuthNetwork: "cyan",
+  web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "eip155",
     chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth",
+    displayName: "Ethereum Mainnet",
+    blockExplorer: "https://goerli.etherscan.io",
+    ticker: "ETH",
+    tickerName: "Ethereum",
   },
 });
 
@@ -66,9 +81,9 @@ const openloginAdapter = new OpenloginAdapter({
     loginConfig: {
       // Facebook login
       facebook: {
-        verifier: "YOUR_FACEBOOK_VERIFIER_NAME", // Pass the Verifier name here
+        verifier: "w3a-facebook-demo", // Pass the Verifier name here
         typeOfLogin: "facebook", // Pass on the login provider of the verifier you've created
-        clientId: "FACEBOOK_CLIENT_ID_1234567890", // Pass on the Facebook `Client ID` here
+        clientId: "215892741216994", // Pass on the Facebook `Client ID` here
       },
     },
   },
@@ -81,3 +96,64 @@ await web3auth.initModal();
 // Login with Facebook
 await web3auth.connect();
 ```
+
+</TabItem>
+
+<TabItem value="nomodal">
+
+```tsx
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
+// get it from https://dashboard.web3auth.io by creating a project.
+
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://goerli.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig,
+  web3AuthNetwork: "sapphire_mainnet",
+});
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  privateKeyProvider,
+  adapterSettings: {
+    uxMode: "redirect",
+    loginConfig: {
+      facebook: {
+        verifier: "w3a-facebook-demo", // Pass the Verifier name here
+        typeOfLogin: "facebook", // Pass on the login provider of the verifier you've created
+        clientId: "215892741216994", // Pass on the Facebook `Client ID` here
+      },
+    },
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+setWeb3auth(web3auth);
+
+// Initialize
+await web3auth.init();
+
+// Login with Facebook
+await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "facebook",
+});
+```
+
+</TabItem>
+
+</Tabs>

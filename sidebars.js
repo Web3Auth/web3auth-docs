@@ -125,11 +125,11 @@ module.exports = {
       label: "Dashboard Setup",
       link: { type: "doc", id: "dashboard-setup/dashboard-setup" },
       items: [
-        "dashboard-setup/get-client-id",
+        "dashboard-setup/projects-and-analytics",
         "dashboard-setup/whitelisting",
         "dashboard-setup/enable-interoperability",
         "dashboard-setup/setup-custom-authentication",
-        "dashboard-setup/billing-and-user-stats",
+        "dashboard-setup/billing-and-usage",
         "dashboard-setup/roles-and-permissions",
       ],
     },
@@ -149,6 +149,14 @@ module.exports = {
             "auth-provider-setup/social-providers/facebook",
             "auth-provider-setup/social-providers/twitch",
             "auth-provider-setup/social-providers/discord",
+            "auth-provider-setup/social-providers/twitter",
+            "auth-provider-setup/social-providers/apple",
+            "auth-provider-setup/social-providers/linkedin",
+            "auth-provider-setup/social-providers/github",
+            "auth-provider-setup/social-providers/line",
+            "auth-provider-setup/social-providers/weibo",
+            "auth-provider-setup/social-providers/kakao",
+
           ],
           collapsible: true,
           collapsed: false,
@@ -517,16 +525,6 @@ module.exports = {
         "sdk/core-kit/mpc-core-kit/initialize",
         "sdk/core-kit/mpc-core-kit/authentication",
         "sdk/core-kit/mpc-core-kit/usage"
-      ],
-    },
-    {
-      type: "category",
-      label: "MPC tKey iOS SDK",
-      link: { type: "doc", id: "sdk/core-kit/mpc-tkey-ios/mpc-tkey-ios" },
-      items: [
-        "sdk/core-kit/mpc-tkey-ios/install",
-        "sdk/core-kit/mpc-tkey-ios/initialize",
-        "sdk/core-kit/mpc-tkey-ios/usage",
       ],
     },
     {
