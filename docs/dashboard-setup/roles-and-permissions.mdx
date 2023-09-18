@@ -2,74 +2,107 @@
 title: Roles and Permissions
 image: "images/docs-meta-cards/documentation-card.png"
 displayed_sidebar: docs
-description: "Teams Roles and Permissions | Documentation - Web3Auth"
+description: "Organization Roles and Permissions | Documentation - Web3Auth"
 ---
 
 import ProjectToTeam from "@site/static/dashboard/move-project-to-team.png";
 import VerifierToTeam from "@site/static/dashboard/move-verifier-to-team.png";
-import TeamCreate from "@site/static/dashboard/team-1.png";
-import TeamInviteButton from "@site/static/dashboard/team-2.png";
-import TeamInvite from "@site/static/dashboard/team-3.png";
-import TeamRoles from "@site/static/dashboard/team-4.png";
 import VerifierTransfer from "@site/static/dashboard/transfer-verifier-ownership.png";
+import DeleteInvitation from "@site/static/images/dashboard/dashboard-settings-delete-invitation-link.png";
+import InviteMemberList from "@site/static/images/dashboard/dashboard-settings-invite-member-list.png";
+import InviteMemberOptions from "@site/static/images/dashboard/dashboard-settings-invite-member-options.png";
+import MemberRoles from "@site/static/images/dashboard/dashboard-settings-invite-member-roles.png";
+import InviteModal from "@site/static/images/dashboard/dashboard-settings-invite-members.png";
+import InviteSent from "@site/static/images/dashboard/dashboard-settings-invite-sent.png";
+import InviteButton from "@site/static/images/dashboard/dashboard-settings-members.png";
+import ViewInvite from "@site/static/images/dashboard/dashboard-settings-view-invite.png";
 
-In order to perform any actions on the Web3Auth dashboard, such as collaborating on a project or adjusting your team's billing settings, you must have
-the necessary access permissions. Permissions determine a user's ability to perform specific actions, such as editing project settings or accessing
-billing information. To manage these permissions, you can assign roles to team members. A role is a predefined set of permissions assigned to one or
-more users. By assigning the appropriate roles to team members, you can ensure they have access to perform their tasks effectively while maintaining
-security and control over your Web3Auth projects.
+You must have the required access permissions to perform any actions on the Web3Auth dashboard, such as collaborating on a project or adjusting your
+organization's billing settings. These permissions determine what you can and cannot do on the platform, such as editing project settings or accessing
+billing information. To manage these permissions, you can assign roles to organization members. A role is a predefined set of permissions assigned to
+one or more users. By assigning the appropriate roles to organization members, you can ensure they have the necessary access to perform their tasks
+effectively while maintaining security and control over your Web3Auth projects.
 
-## Create a team
+## Organization Roles
 
-To create a team in the Web3Auth dashboard, you need to be logged in and click on your profile image under the "Workspace" section in the sidebar.
-From there, you can see the list of teams you're currently part of and a button to create a new team. Click on the button, enter the name of your new
-team, and then click the "Create Team" button to complete the process.
+In your organization, there are four different roles: Owner, Admin, Member, and Billing.
+
+- **Owner**: The owner can add new members, edit settings, or delete the organization. If you create an account, you automatically become the owner,
+  and ownership can be transferable. There can only be one owner at a time.
+
+- **Admin**: Admins can create, edit, and move projects and settings in the organization but cannot delete the organization.
+
+- **Member**: Members can only view projects and do not have permission to edit any projects or settings.
+
+- **Billing**: The Billing role is responsible for managing the billing settings of your organization, and there can only be one billing role at a
+  time.
 
 <div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
-  <img src={TeamCreate} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Team" />
+  <img src={MemberRoles} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Member Roles" />
 </div>
 <br />
 
-## Team Roles
+## Organization Permissions
 
-- **Owner**: The only people on your team who can add new members and edit settings or delete a team. If you create a workspace, you're automatically
-  an owner. Ownership may be transferable and there may only be one owner at one time.
+| Permission                                         | Owner                                        | Admin | Member | Billing |
+| -------------------------------------------------- | -------------------------------------------- | ----- | ------ | ------- |
+| View organization projects                         | Yes                                          | Yes   | Yes    | Yes     |
+| Edit organization projects/verifiers and settings  | Yes                                          | Yes   | No     | No      |
+| Edit organization verifiers                        | Only the creator of the verifier can edit it |
+| Invite or remove members                           | Yes                                          | Yes   | No     | No      |
+| Move personal projects/verifiers into organization | Yes                                          | Yes   | No     | No      |
+| Delete Organization                                | Yes                                          | No    | No     | No      |
+| Manage Organization’s Billing                      | Yes                                          | No    | No     | Yes     |
+| Transfer Organization ownership                    | Yes                                          | No    | No     | No      |
 
-- **Admin**: People on your team who can create, edit, move projects and settings in the team, but not delete the team.
+## Invite members to your organization
 
-- **Member**: People on your team who can only view the projects but not edit any projects or settings
+To invite someone to your organization, you must be the owner of the organization. To do so, click on `Settings` on the sidebar menu and then select
+the `Members` tab. From this screen, you'll be able to see the list of members in your organization. To invite someone, click on the `Add Member`
+button and enter their email address along with their the role you want to assign them.
 
-- **Billing**: Member who can only manage the billing settings of your team. There may only be one billing role at one time.
-
-<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
-  <img src={TeamRoles} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Team Roles" />
-</div>
-<br />
-
-## Team Permissions
-
-| Permission                                 | Owner                                        | Admin | Member | Billing |
-| ------------------------------------------ | -------------------------------------------- | ----- | ------ | ------- |
-| View team projects                         | Yes                                          | Yes   | Yes    | Yes     |
-| Edit team projects/verifiers and settings  | Yes                                          | Yes   | No     | No      |
-| Edit team verifiers                        | Only the creator of the verifier can edit it |
-| Invite or remove members                   | Yes                                          | Yes   | No     | No      |
-| Move personal projects/verifiers into team | Yes                                          | Yes   | No     | No      |
-| Delete Team                                | Yes                                          | No    | No     | No      |
-| Manage Team’s Billing                      | Yes                                          | No    | No     | Yes     |
-| Transfer team ownership                    | Yes                                          | No    | No     | No      |
-
-## Invite members to team
-
-To invite members to your team, you must be an owner of the team. To invite a member, click on the team name in the sidebar and then click on the
-"Invite" button. You can invite members by email address. If the member is already a user of Web3Auth, they will receive an email with a link to join
-your team. If the member is not a user of Web3Auth, they will receive an email with a link to create an account and join your team.
+If the person you're inviting is already a user of Web3Auth, they'll receive an email with a link to join your organization. If they're not a user,
+they'll receive an email with a link to create an account and join your organization.
 
 <div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
-  <img src={TeamInviteButton} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Team" />
+  <img src={InviteButton} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Add Member to Organization" />
 </div>
 <div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
-  <img src={TeamInvite} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Invite" />
+  <img src={InviteModal} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Invite" />
+</div>
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src={MemberRoles} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Member Roles" />
+</div>
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src={InviteSent} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Invite Sent" />
+</div>
+
+### View invitations
+
+To view the invitations you've sent, click on `Settings` on the sidebar menu and then select the `Members` tab. Besides `Add Member` button, you'll
+see a dropdown menu with Members and Invitations. Click on the `Invitations` to view the invitations you've sent.
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src={ViewInvite} style={{ alignSelf: "center", maxWidth: "100%" }} alt="View Invites" />
+</div>
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src={InviteMemberList} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Invite Member List" />
+</div>
+
+### Invitation options
+
+To view the options for an invitation, click on the three dots (…) next to the invitation. From here, you can resend the invitation, delete the
+invitation, or copy the invitation link.
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src={InviteMemberOptions} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Invite Member Options" />
+</div>
+
+<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
+  <img src={DeleteInvitation} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Delete Invitation" />
 </div>
 <br />
 
@@ -77,15 +110,14 @@ your team. If the member is not a user of Web3Auth, they will receive an email w
 
 Web3Auth's base plan is available only for individuals. If you are a team of 2 or more, you will need to upgrade to growth plan and above.
 
-- The Web3Auth dashboard allows you to easily add new members to your team. To add members, simply navigate to the "Team" section of the dashboard and
-  click the "Add Member" button. From here, you can enter the email address of the person you wish to add, along with their name and the role you want
-  to assign them.
+- The Web3Auth dashboard allows you to easily add new members to your organization. To add members, follow the steps outlined in
+  [#invite-members-to-your-organization](#invite-members-to-your-organization)
 
-- Once you have added a member to your team, they will receive an email inviting them to join. They will need to log in to the Web3Auth dashboard
-  using their existing account or create a new account to accept the invitation.
+- Once you have added a member to your organization, they will receive an email inviting them to join. They will need to log in to the Web3Auth
+  dashboard using their existing account or create a new account to accept the invitation.
 
 - It's important to note that there is a five-minute link expiry for the invitation email. If the link expires, the member will need to request a new
-  invitation.
+  invitation. See [#invitation-options](#invitation-options) to manage invitations.
 
 - After accepting the invitation, the new member will have access to the Web3Auth dashboard with the permissions assigned to their role. It's
   important to review and manage these permissions to ensure that team members have the appropriate level of access.
@@ -94,65 +126,4 @@ Web3Auth's base plan is available only for individuals. If you are a team of 2 o
   important to keep track of pending invitations and approvals to ensure that team members can access the dashboard as needed.
 
 - Lastly, it's important to keep track of your team's seats and billing. Each team member requires a seat, and you may need to adjust your billing
-  settings if you exceed your plan's limits. You can view and manage your team's billing information in the "Billing" section of the dashboard.
-
-## Transfer projects from personal to team
-
-If you want to move a project from your personal account to a team, you must first be the owner of the project. To do so, follow these simple steps:
-
-- Locate the project you wish to transfer in your personal account.
-- Click on the three dots (…) next to the project name.
-- Click on the "Move to team" button.
-- Choose the team you want to transfer the project to.
-- Confirm the transfer by clicking on the "Confirm" button.
-
-By following these steps, you can easily transfer your project from your personal account to a team.
-
-<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
-  <img src={ProjectToTeam} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Move project from personal to team" />
-</div>
-
-:::warning Note
-
-**Please be aware that transferring a project to a team is an irreversible action. Once transferred to a team, it cannot be transferred back to a
-personal account.**
-
-:::
-
-## Transfer verifiers from personal to team
-
-If you want to move a verifier from your personal account to a team, you must first be the owner of the verifier. To do so, follow these simple steps:
-
-- Locate the verifier you wish to transfer in your personal account.
-- Click on the three dots (…) next to the verifier name.
-- Click on the "Move to team" button.
-- Choose the team you want to transfer the verifier to.
-- Confirm the transfer by clicking on the "Confirm" button.
-
-By following these steps, you can easily transfer your verifier from your personal account to a team.
-
-<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
-  <img src={VerifierToTeam} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Move verifier from personal to team" />
-</div>
-
-:::warning Note
-
-**Please be aware that transferring a verifier to a team is an irreversible action. Once transferred to a team, it cannot be transferred back to a
-personal account.**
-
-:::
-
-## Transfer verifier ownership
-
-If you want to transfer ownership of a verifier, you must first be the owner of that verifier. Here are the steps to transfer ownership:
-
-- Go to the verifier you want to transfer ownership of.
-- Click on the three dots (…) next to the verifier name.
-- Click on the "Transfer Verifier" button.
-- A modal will appear, where you can enter the new owner's ETH address.
-- Note that this action is irreversible and requires Goerli funds to perform.
-- Select the terms and click on "Transfer" to initiate the transfer of ownership.
-
-<div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
-  <img src={VerifierTransfer} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Verifier Transfer" />
-</div>
+  settings if you exceed your plan's limits. You can view and manage your team's billing information in the `Billing` section of the dashboard.

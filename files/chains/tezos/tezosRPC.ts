@@ -2,7 +2,7 @@
 //@ts-ignore
 import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
 // HIGHLIGHTEND-installationTezos
-import { SafeEventEmitterProvider } from "@web3auth/base";
+import { IProvider } from "@web3auth/base";
 // HIGHLIGHTSTART-installationTezos
 import { TezosToolkit } from "@taquito/taquito";
 import { hex2buf } from "@taquito/utils";
@@ -14,9 +14,9 @@ const tezos = new TezosToolkit("https://rpc.tzbeta.net/");
 // HIGHLIGHTEND-tezosRPCFunctions
 
 export default class TezosRpc {
-  private provider: SafeEventEmitterProvider;
+  private provider: IProvider;
 
-  constructor(provider: SafeEventEmitterProvider) {
+  constructor(provider: IProvider) {
     this.provider = provider;
   }
 

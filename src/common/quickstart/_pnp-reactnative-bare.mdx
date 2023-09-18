@@ -1,4 +1,4 @@
-import DashboardImage from "@site/static/dashboard/project_plug_n_play.png";
+import DashboardImage from "@site/static/images/dashboard/project-details.png";
 
 ### 1. Install Web3Auth
 
@@ -16,7 +16,7 @@ for polyfilling.
 
 :::
 
-### 2. Get your Client ID from Web3Auth Dashboard
+### 2. Get your Client ID from the Web3Auth Dashboard
 
 Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new project. Use the Client ID of the project to start your integration.
 
@@ -49,7 +49,7 @@ Once you're done initializing, just create a button that triggers the login for 
 :::warning
 
 Please note that the v4 react-native-sdk has some breaking changes. For instance, `web3auth.login` is a void method, unlike the older versions of the
-SDK. Please refer to the [migration guide](/docs/sdk/pnp/react-native/migration-guide-to-v4) for more.
+SDK. Please refer to the [migration guide](/docs/pnp/migration-guides/rn-v3-to-v4) for more.
 
 :::
 
@@ -59,3 +59,113 @@ await web3auth.login({
   redirectUrl: resolvedRedirectUrl,
 });
 ```
+
+### 5. Troubleshooting Bundler Polyfill Issue with React Native
+
+#### Install the missing modules
+
+Check for the missing libraries in your build and included packages, and accordingly polyfill them. For Web3Auth, you need to polyfill the `buffer`,
+`process`, `crypto` and `stream` libraries. For the rest of the libraries, we are installing a dummy module called `empty-module` which helps us get
+rid of the warnings while building the project.
+
+```bash npm2yarn
+npm install --save empty-module readable-stream crypto-browserify react-native-get-random-values buffer process
+```
+
+:::caution
+
+There might be a possibility that you might need to polyfill more libraries, in case you're using any other blockchain library alongside Web3Auth that
+requires them. Generally, the libraries like `browserify-zlib`, `assert`, `stream-http`, `https-browserify`, `os-browserify`, `url` are the ones that
+might be required.
+
+:::
+
+#### Update your `metro.config.js`
+
+To make use of the polyfilled modules while building the application, you need to reconfigure your metro bundler config.
+
+:::info Expo Managed Workflow
+
+You will have to create `metro.config.js` for Expo Managed Workflow, as it is not present by default. Also, note that polyfilling is not supported with
+"Expo Go" app. It is compatible only with Custom Dev Client and EAS builds.
+
+Please run `npx expo prebuild` to generate native code based on the version of expo a project has installed, before moving forward.
+
+:::
+
+You can copy the following code in your `metro.config.js` file. This will tell the bundler to ignore the missing modules and include the ones that are
+needed.
+
+##### `metro.config.js`
+
+```tsx title="metro.config.js"
+const { getDefaultConfig } = require("metro-config");
+
+module.exports = (async () => {
+  const {
+    resolver: { sourceExts, assetExts },
+  } = await getDefaultConfig(__dirname);
+
+  const defaultSourceExts = [...sourceExts, "svg", "mjs", "cjs"];
+
+  return {
+    resolver: {
+      extraNodeModules: {
+        assert: require.resolve("empty-module"), // assert can be polyfilled here if needed
+        http: require.resolve("empty-module"), // stream-http can be polyfilled here if needed
+        https: require.resolve("empty-module"), // https-browserify can be polyfilled here if needed
+        os: require.resolve("empty-module"), // os-browserify can be polyfilled here if needed
+        url: require.resolve("empty-module"), // url can be polyfilled here if needed
+        zlib: require.resolve("empty-module"), // browserify-zlib can be polyfilled here if needed
+        path: require.resolve("empty-module"),
+        crypto: require.resolve("crypto-browserify"),
+        stream: require.resolve("readable-stream"),
+      },
+
+      assetExts: assetExts.filter((ext) => ext !== "svg"),
+
+      sourceExts: process.env.TEST_REACT_NATIVE ? ["e2e.js"].concat(defaultSourceExts) : defaultSourceExts,
+    },
+    transformer: {
+      getTransformOptions: async () => ({
+        transform: {
+          experimentalImportSupport: false,
+          inlineRequires: true,
+        },
+      }),
+    },
+  };
+})();
+```
+
+#### Fixing additional dependency issues
+
+- Create a `globals.js` to your project root directory and add the following code to it.
+
+  ```tsx title="globals.js"
+  global.Buffer = require("buffer").Buffer;
+
+  // Needed so that 'stream-http' chooses the right default protocol.
+  global.location = {
+    protocol: "file:",
+  };
+
+  global.process.version = "v16.0.0";
+  if (!global.process.version) {
+    global.process = require("process");
+    console.log({ process: global.process });
+  }
+
+  process.browser = true;
+  ```
+
+- Then, import the dependencies to `index.js` of your project.
+
+  ```tsx title="index.js"
+  import { AppRegistry } from "react-native";
+  import "./globals";
+  import "react-native-get-random-values";
+  import App from "./App";
+  import { name as appName } from "./app.json";
+  AppRegistry.registerComponent(appName, () => App);
+  ```

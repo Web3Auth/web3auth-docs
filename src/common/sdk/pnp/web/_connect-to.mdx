@@ -3,7 +3,7 @@ import Tabs from "@theme/Tabs";
 
 ### `connectTo()`
 
-To login a user in the Web3Auth Plug and Play No Modal SDK, you need to call `connectTo()` function. This function helps you customise the login
+To log a user in the Web3Auth Plug and Play No Modal SDK, you need to call `connectTo()` function. This function helps you customize the login
 process according to your own needs, by taking the following parameters:
 
 <Tabs
@@ -26,7 +26,7 @@ process according to your own needs, by taking the following parameters:
 <TabItem value="definition">
 
 ```tsx
-async connectTo<T>(walletName: WALLET_ADAPTER_TYPE, loginParams?: T): Promise<SafeEventEmitterProvider | null> {
+async connectTo<T>(walletName: WALLET_ADAPTER_TYPE, loginParams?: T): Promise<IProvider | null> {
   if (!this.walletAdapters[walletName])
     throw WalletInitializationError.notFound(`Please add wallet adapter for ${walletName} wallet, before connecting`);
   const provider = await this.walletAdapters[walletName].connect(loginParams);

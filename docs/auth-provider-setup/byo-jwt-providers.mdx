@@ -20,13 +20,13 @@ JWT should be exposed through an endpoint, which is used by Web3Auth to verify t
 
 :::caution Facing issue with JWT?
 
-Checkout [**this troubleshooting page to fix those.**](/troubleshooting/jwt-errors).
+Check out [**this troubleshooting page to fix those.**](/troubleshooting/jwt-errors).
 
 :::
 
 ## Set up Custom JWT Verifier
 
-![Custom JWT Provider on Web3Auth Dashboard](/dashboard/verifiers/custom-jwt-verifier.png)
+![Custom JWT Provider on Web3Auth Dashboard](/images/dashboard/create-verifier-custom-jwt.png)
 
 To create a custom verifier for your JWT Providers, you'll need
 
@@ -68,7 +68,7 @@ To create a custom verifier for your JWT Providers, you'll need
    - Token Audience ( `aud` ): The "aud" (audience) claim identifies the recipients for which the JWT is intended. Each principal intended to process
      the JWT MUST identify itself with a value in the audience claim. If the principal processing the claim does not identify itself with a value in
      the "aud" claim when this claim is present, then the JWT will be rejected. The `aud` value is a case-sensitive string containing a StringOrURI
-     value. The interpretation of audience values is generally application specific.
+     value. The interpretation of audience values is generally application-specific.
 
    - Token Issuer ( `iss` ): The issuing authority of the token. The `iss` value is a case-sensitive string containing a StringOrURI value. Use of
      this claim is OPTIONAL.
@@ -184,7 +184,7 @@ console.log(token);
 
 </Tabs>
 
-See [this](#filled-custom-jwt-verifier) to setup the custom jwt verifier using the above JWT data on Web3Auth Dashboard.
+See [this](#filled-custom-jwt-verifier) to set up the custom jwt verifier using the above JWT data on the Web3Auth Dashboard.
 
 ### Login with JWT (idToken - jsonwebtoken)
 
@@ -201,7 +201,7 @@ const chainConfig = {
 const web3auth = new Web3AuthNoModal({
   clientId: "", // Web3Auth Client ID
   chainConfig,
-  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua
+  web3AuthNetwork: "saphhire_mainnet",
   useCoreKitKey: false,
 });
 
@@ -267,7 +267,7 @@ console.log(protectedHeader);
 console.log(payload);
 ```
 
-See [this](#filled-custom-jwt-verifier) to setup the custom jwt verifier using the above JWT data on Web3Auth Dashboard.
+See [this](#filled-custom-jwt-verifier) to set up the custom jwt verifier using the above JWT data on the Web3Auth Dashboard.
 
 ### Login with JWT (idToken - jose)
 
@@ -284,7 +284,7 @@ const chainConfig = {
 const web3auth = new Web3AuthNoModal({
   clientId: "", // Web3Auth Client ID
   chainConfig,
-  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua
+  web3AuthNetwork: "saphhire_mainnet",
   useCoreKitKey: false,
 });
 
@@ -355,7 +355,7 @@ passport.use(
 app.use(passport.initialize());
 ```
 
-See [this](#filled-custom-jwt-verifier) to setup the custom jwt verifier using the above JWT data on Web3Auth Dashboard.
+See [this](#filled-custom-jwt-verifier) to set up the custom jwt verifier using the above JWT data on the Web3Auth Dashboard.
 
 ### Login with JWT (idToken - passport-jwt)
 
@@ -376,7 +376,7 @@ const chainConfig = {
 const web3auth = new Web3AuthNoModal({
   clientId: "", // Web3Auth Client ID
   chainConfig,
-  web3AuthNetwork: "cyan", // testnet, mainnet, cyan, aqua
+  web3AuthNetwork: "saphhire_mainnet",
   useCoreKitKey: false,
 });
 
@@ -452,7 +452,7 @@ If you're using `jose` or `jsonwebtoken` library, you can use the following step
    - One of the tools is https://russelldavies.github.io/jwk-creator/
      - Select Public Key Use: `Signing`
      - Algorithm: `RS256`
-     - Key ID: `676da9d312c39a429932f543e6c1b6512e4983` // Use your own alpha numeric random string here.
+     - Key ID: `676da9d312c39a429932f543e6c1b6512e4983` // Use your own alphanumeric random string here.
      - PEM encoded key: `{paste-the-publicKey-pem-file-s-content-here}`
    - Click on `Convert` button.
 

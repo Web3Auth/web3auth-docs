@@ -6,7 +6,7 @@ displayed_sidebar: docs
 description: "Client ID and Whitelisting references | Documentation - Web3Auth"
 ---
 
-import DashboardImage from "@site/static/dashboard/project_plug_n_play.png";
+import DashboardWhiteListURL from "@site/static/images/dashboard/project-whitelist.png";
 
 ### Whitelisting URLs using the Developer Dashboard
 
@@ -14,11 +14,11 @@ The Whitelist URL is the address you wish to authorize for your project. When im
 from which you intend to make calls for user authentication. By doing so, you can ensure that these activities are conducted securely and efficiently.
 Remember to whitelist all relevant URLs to guarantee seamless integration with Web3Auth.
 
-Type in the URL you wish to whitelist in the text box and click on the `Add` button. The URL will be added to the list of whitelisted URLs. You can
-add as many URLs as you want.
+Type in the URL you wish to whitelist in the text box and click on the `Add URL` button. The URL will be added to the list of whitelisted URLs. You
+can add as many URLs as you want.
 
 <div style={{ flexBasis: "300px", flexGrow: "1", textAlign: "center" }}>
-  <img src={DashboardImage} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Dashboard Whitelist" />
+  <img src={DashboardWhiteListURL} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Dashboard Whitelist URL" />
 </div>
 
 ### Whitelisting for Mobile apps
@@ -56,7 +56,7 @@ const sig = await whitelistUrl(clientId, clientSecret, origin);
 const openloginAdapter = new OpenloginAdapter({
   privateKeyProvider,
   adapterSettings: {
-    originData: { origin: sig },
+    originData: { [origin]: sig },
   },
 });
 ```
