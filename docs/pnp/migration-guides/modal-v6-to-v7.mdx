@@ -21,7 +21,40 @@ connect(): Promise<IProvider | null>;
 // highlight-end
 ```
 
-###
+### `appLogo` is replaced by `logoLight` and `logoDark`
+
+#### `uiConfig` is in line with the `whitelabel` object in `OpenLoginAdapter`.
+
+With v7, the `uiConfig` object now accepts `logoLight` and `logoDark` instead of `appLogo`. This is done to bring consistency to the naming
+convention.
+
+```tsx
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  },
+  // uiConfig refers to the whitelabeling options, which is available only on Growth Plan and above
+  // Please remove this parameter if you're on the Base Plan
+  uiConfig: {
+    appName: "W3A",
+    theme: {
+      primary: "red",
+    },
+    mode: "dark",
+    // highlight-start
+    logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+    logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+    // highlight-end
+    defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+    loginGridCol: 3,
+    primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+  },
+  web3AuthNetwork: "sapphire_mainnet",
+});
+```
 
 ## OpenLoginAdapter
 

@@ -5,11 +5,12 @@ displayed_sidebar: docs
 description: "Login Modal | Documentation - Web3Auth"
 ---
 
+import WhiteLabelData from "@site/src/common/sdk/pnp/web/_openlogin-whitelabel-config.mdx";
 import UIConfig from "@site/src/common/sdk/pnp/web/_ui-config.mdx";
 
 The Web3Auth Plug and Play Modal offers a user-friendly interface that enables your dApp to connect with various login methods and adapters provided
 by Web3Auth. By whitelabeling the Login Modal, your dApp can maintain a consistent user experience. You can customize the theme, choose from 8+
-languages supported, and provide your dApp name and brand logo, along with other options for detailed customization across all our offerings.
+languages supported and provide your dApp name and brand logo, along with other options for detailed customization across all our offerings.
 
 ![Web3Auth Plug and Play Login Modal](/images/whitelabel/modal/whitelable-login-modal.gif)
 
@@ -21,6 +22,10 @@ You can pass the `uiConfig` parameters to `@web3auth/modal` to whitelabel your W
 
 <UIConfig />
 
+`WhiteLabelData`
+
+<WhiteLabelData />
+
 ## Example
 
 ```tsx
@@ -31,12 +36,15 @@ const web3auth = new Web3Auth({
   // type uiConfig
   // highlight-start
   uiConfig: {
-    appName: "W3A", // <-- Your dApp Name
-    appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your dApp Logo URL
-    theme: "light", // "light" | "dark" | "auto"
-    loginMethodsOrder: ["apple", "google", "twitter"],
+    appName: "W3A",
+    theme: {
+      primary: "red",
+    },
+    mode: "dark",
+    logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+    logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
     defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-    loginGridCol: 3, // 2 | 3
+    loginGridCol: 3,
     primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
   },
   // highlight-end
