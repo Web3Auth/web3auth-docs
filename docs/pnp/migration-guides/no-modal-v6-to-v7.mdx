@@ -2,6 +2,7 @@
 title: PnP No Modal SDK - v6 to v7
 displayed_sidebar: docs
 description: "PnP No Modal SDK - v6 to v7 | Documentation - Web3Auth"
+sidebar_label: v6 to v7
 ---
 
 ## General
@@ -47,11 +48,48 @@ const openloginAdapter = new OpenloginAdapter({
       // highlight-next-line
       mode: "auto", // whether to enable dark mode. defaultValue: false
       theme: {
-          primary: "#768729",
+        primary: "#768729",
       },
       useLogoLoader: true,
-  }
+    },
   },
   privateKeyProvider,
+});
+```
+
+## Other changes
+
+### Extra parameters for `solana-provider` and `xrpl-provider`
+
+#### For Solana
+
+For Solana, SolanaWallet in package "@web3auth/solana-provider", the request typings require both input and output now use `string[]` when input
+placeholder is needed
+
+```tsx
+// With V7
+const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
+  method: "solana_provider_config",
+  params: [],
+});
+const conn = new Connection(connectionConfig.rpcTarget);
+```
+
+#### For XRPL
+
+For XRPL, after the change of "@web3auth/xrpl-provider" version to v7, the request typings require both input and output now so use `never` when input
+or output placeholder is needed
+
+```tsx
+// With V7
+const txSign = await this.provider.request<{ signature: string }, never>({
+  method: "xrpl_signMessage",
+  params: {
+    signature: hexMsg,
+  },
+});
+
+const accounts = await this.provider.request<never, string[]>({
+  method: "xrpl_getAccounts",
 });
 ```
