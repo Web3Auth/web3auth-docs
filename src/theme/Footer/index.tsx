@@ -137,8 +137,8 @@ export default function FooterComponent(): JSX.Element {
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="https://web3auth.io/partners.html" target="_blank" rel="noreferrer">
-                Partners
+              <a className="footer__link-item" href="https://web3auth.io/customers.html" target="_blank" rel="noreferrer">
+                Customers
               </a>
             </div>
             <div className="footer__item">
