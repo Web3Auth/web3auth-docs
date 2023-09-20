@@ -1,7 +1,6 @@
 ---
 title: Weibo Social Login with Web3Auth
 sidebar_label: Weibo
-
 displayed_sidebar: docs
 description: "Weibo Social Login with Web3Auth | Documentation - Web3Auth"
 ---
@@ -10,7 +9,7 @@ description: "Weibo Social Login with Web3Auth | Documentation - Web3Auth"
 
 1. Create a verifier for your Auth0 application by selecting `Auth0` as the Login provider from this modal.
    ![Weibo - Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier-auth0.png)
-2. Select the `Weibo` as the **Authentication Type** based from the dropdown.
+2. Select the `Weibo` as the **Authentication Type** based on the dropdown.
    ![Weibo - Auth0 Authentication Type list on Web3Auth Dashboard](/images/dashboard/create-verifier-google.png)
 3. Enter the `Auth0 Client ID` and `Auth0 Domain` from your Auth0 application. See how to create a new Auth0 application
    [here](https://auth0.com/docs/quickstart/webapp/).
@@ -21,7 +20,7 @@ description: "Weibo Social Login with Web3Auth | Documentation - Web3Auth"
 4. Add the [Weibo Social Connection](https://marketplace.auth0.com/integrations/weibo-social-connection) to your Auth0 application.
 5. Click on the `Create` button to create `Weibo` Custom Authentication via Auth0 verifier.
 
-## Example
+### Example
 
 ```tsx
 import { Web3AuthNoModal } from "@web3auth/no-modal";
@@ -57,9 +56,9 @@ const openloginAdapter = new OpenloginAdapter({
     uxMode: "redirect",
     loginConfig: {
       jwt: {
-        verifier: "w3a-auth0-demo", // Pass the Verifier name here
+        verifier: "w3a-auth0-jp-demo", // Pass the Verifier name here
         typeOfLogin: "jwt", // Pass on the login provider of the verifier you've created
-        clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O", // Pass on the Auth0 `Client ID` here
+        clientId: "N9jnKM2Fo8PFRj8rYM9I7rWX1FW6X5xx", // Pass on the Auth0 `Client ID` here
       },
     },
   },
@@ -74,7 +73,7 @@ await web3auth.init();
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {
-    domain: "https://web3auth.au.auth0.com", // Pass on the Auth0 `Domain` here
+    domain: "https://web3auth.jp.auth0.com", // Pass on the Auth0 `Domain` here
     verifierIdField: "sub", // Pass on the field name of the `sub` field in the JWT
     connection: "weibo", // Use this to skip Auth0 Modal for Weibo login
   },

@@ -1,25 +1,24 @@
 ---
-title: LinkedIn Social Login with Web3Auth
-sidebar_label: LinkedIn
-
+title: Slack Login with Web3Auth
+sidebar_label: Slack
 displayed_sidebar: docs
-description: "LinkedIn Social Login with Web3Auth | Documentation - Web3Auth"
+description: "Slack Login with Web3Auth | Documentation - Web3Auth"
 ---
 
-## Set up [LinkedIn](https://marketplace.auth0.com/integrations/linkedin-social-connection) via Auth0
+## Set up [Slack](https://marketplace.auth0.com/integrations/sign-in-with-slack) via Auth0
 
 1. Create a verifier for your Auth0 application by selecting `Auth0` as the Login provider from this modal.
-   ![LinkedIn - Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier-auth0.png)
-2. Select `LinkedIn` as the **Authentication Type** based on the dropdown.
-   ![LinkedIn - Auth0 Authentication Type list on Web3Auth Dashboard](/images/dashboard/create-verifier-google.png)
+   ![Slack - Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier-auth0.png)
+2. Select the `Other` as the **Authentication Type** based on the dropdown.
+   ![Slack - Auth0 Authentication Type list on Web3Auth Dashboard](/images/dashboard/create-verifier-google.png)
 3. Enter the `Auth0 Client ID` and `Auth0 Domain` from your Auth0 application. See how to create a new Auth0 application
    [here](https://auth0.com/docs/quickstart/webapp/).
 
-   ![LinkedIn - Domain and Client ID from Auth0 Dashboard](/images/dashboard/create-verifier-auth0-filled-common.png)
-   ![LinkedIn - Auth0 Client ID and Auth0 Domain on Web3Auth Dashboard](/images/dashboard/create-verifier-auth0-unfilled.png)
+   ![Slack - Domain and Client ID from Auth0 Dashboard](/images/dashboard/create-verifier-auth0-filled-common.png)
+   ![Slack - Auth0 Client ID and Auth0 Domain on Web3Auth Dashboard](/images/dashboard/create-verifier-auth0-unfilled.png)
 
-4. Add the [LinkedIn Social Connection](https://marketplace.auth0.com/integrations/linkedin-social-connection) to your Auth0 application.
-5. Click on the `Create` button to create `LinkedIn` Custom Authentication via Auth0 verifier.
+4. Add the [Slack Social Connection](https://marketplace.auth0.com/integrations/sign-in-with-slack) to your Auth0 application.
+5. Click on the `Create` button to create `Slack` Custom Authentication via Auth0 verifier.
 
 ### Example
 
@@ -57,9 +56,9 @@ const openloginAdapter = new OpenloginAdapter({
     uxMode: "redirect",
     loginConfig: {
       jwt: {
-        verifier: "w3a-auth0-demo", // Pass the Verifier name here
+        verifier: "w3a-auth0-uk-demo", // Pass the Verifier name here
         typeOfLogin: "jwt", // Pass on the login provider of the verifier you've created
-        clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O", // Pass on the Auth0 `Client ID` here
+        clientId: "OfDAVldBEGslU9wjiWyQ1LPWOWNnnzim", // Pass on the Auth0 `Client ID` here
       },
     },
   },
@@ -70,13 +69,13 @@ setWeb3auth(web3auth);
 // Initialize
 await web3auth.init();
 
-// Login with LinkedIn
+// Login with Slack
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {
-    domain: "https://web3auth.au.auth0.com", // Pass on the Auth0 `Domain` here
+    domain: "https://web3auth.uk.auth0.com", // Pass on the Auth0 `Domain` here
     verifierIdField: "sub", // Pass on the field name of the `sub` field in the JWT
-    connection: "linkedin", // Use this to skip Auth0 Modal for LinkedIn login
+    connection: "sign-in-with-slack", // Use this to skip Auth0 Modal for Slack login
   },
 });
 ```
