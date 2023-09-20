@@ -57,7 +57,7 @@ import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
-const clientId = "YOUR_WEB3AUTH_CLIENT_ID";
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
 // get it from https://dashboard.web3auth.io by creating a Plug n Play project.
 
 const chainConfig = {
@@ -83,24 +83,24 @@ const openloginAdapter = new OpenloginAdapter({
     loginConfig: {
       // Google login
       google: {
-        verifier: "YOUR_AGGREGATE_VERIFIER_NAME", // Pass the Verifier name here. eg. w3a-agg-example
-        verifierSubIdentifier: "YOUR_FIRST_SUB_VERIFIER_NAME", // Pass the Sub-Verifier here. eg w3a-google
+        verifier: "aggregate-sapphire", // Pass the Verifier name here. eg. w3a-agg-example
+        verifierSubIdentifier: "w3a-google", // Pass the Sub-Verifier here. eg w3a-google
         typeOfLogin: "google", // Pass the type of login provider.
-        clientId: "GOOGLE_CLIENT_ID", // Pass the Google `Client ID` here.
+        clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com", // Pass the Google `Client ID` here.
       },
       // GitHub Login via Auth0
       github: {
-        verifier: "YOUR_AGGREGATE_VERIFIER_NAME", // Pass the Verifier name here. eg. w3a-agg-example
-        verifierSubIdentifier: "YOUR_SECOND_SUB_VERIFIER_NAME", // Pass the Sub-Verifier here. eg w3a-a0-github
+        verifier: "aggregate-sapphire", // Pass the Verifier name here. eg. w3a-agg-example
+        verifierSubIdentifier: "w3a-a0-github", // Pass the Sub-Verifier here. eg w3a-a0-github
         typeOfLogin: "jwt", // Pass the type of login provider. For Auth0, it's jwt and not Auth0.
-        clientId: "AUTH0_CLIENT_ID", // Pass the Auth0 `Client ID` here.
+        clientId: "hiLqaop0amgzCC0AXo4w0rrG9abuJTdu", // Pass the Auth0 `Client ID` here.
       },
       // Email Password Login via Auth0
       emailpasswordless: {
-        verifier: "YOUR_AGGREGATE_VERIFIER_NAME", // Pass the Verifier name here. eg. w3a-agg-example
-        verifierSubIdentifier: "YOUR_THIRD_SUB_VERIFIER_NAME", // Pass the Sub-Verifier here. eg w3a-a0-email-passwordless
+        verifier: "aggregate-sapphire", // Pass the Verifier name here. eg. w3a-agg-example
+        verifierSubIdentifier: "w3a-a0-email-passwordless", // Pass the Sub-Verifier here. eg w3a-a0-email-passwordless
         typeOfLogin: "jwt", // Pass the type of login provider. For Auth0, it's jwt and not Auth0.
-        clientId: "AUTH0_CLIENT_ID", // Pass the `Client ID` of your Auth0 Application.
+        clientId: "QiEf8qZ9IoasbZsbHvjKZku4LdnRC1Ct", // Pass the `Client ID` of your Auth0 Application.
       },
     },
   },
@@ -120,7 +120,7 @@ const web3authProvider = await web3auth.connectTo("openlogin", {
 const web3authProvider = await web3auth.connectTo("openlogin", {
   loginProvider: "emailpasswordless",
   extraLoginOptions: {
-    domain: "YOUR_AUTH0_DOMAIN", // Pass the Auth0 Domain here, eg. https://web3auth.au.auth0.com
+    domain: "https://web3auth.au.auth0.com", // Pass the Auth0 Domain here, eg. https://web3auth.au.auth0.com
     // This corresponds to the field inside jwt which must be used to uniquely identify the user.
     verifierIdField: "email", // This is mapped b/w google and github logins.
     isVerifierIdCaseSensitive: false,
@@ -131,7 +131,7 @@ const web3authProvider = await web3auth.connectTo("openlogin", {
 const web3authProvider = await web3auth.connectTo("openlogin", {
   loginProvider: "github",
   extraLoginOptions: {
-    domain: "YOUR_AUTH0_DOMAIN", // Pass the Auth0 Domain here, eg. https://web3auth.au.auth0.com
+    domain: "https://web3auth.au.auth0.com", // Pass the Auth0 Domain here, eg. https://web3auth.au.auth0.com
     // This corresponds to the field inside jwt which must be used to uniquely identify the user.
     verifierIdField: "email", // This is mapped b/w google and github logins.
     isVerifierIdCaseSensitive: false,
