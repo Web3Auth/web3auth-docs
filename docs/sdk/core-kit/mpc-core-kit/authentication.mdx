@@ -5,11 +5,16 @@ displayed_sidebar: sdk
 description: "Web3Auth MPC Core Kit Web SDK - Authentication | Documentation - Web3Auth"
 ---
 
+import ServiceWorkerCode from "@site/src/common/sdk/core-kit/tkey/_sw-js.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 There are two ways to login your users, depending on the type of authentication method you've chosen. If you are looking for an Intrinsic
 Authentication Flow in your application (like Auth0 SPA Flow), you can use the `loginWithOAuth()` function. If you are looking to pass a JWT based Id
 Token to the SDK from in your application (like Auth0 RWA Flow), you can use the `loginWithJWT()` function.
 
-As a prerequisite, before triggering the login function, you need to create a verifier for your login method on the [Web3Auth Dashboard](https://dashboard.web3auth.io).
+As a prerequisite, before triggering the login function, you need to create a verifier for your login method on the
+[Web3Auth Dashboard](https://dashboard.web3auth.io).
 
 ## Creating a Verifier
 
@@ -34,7 +39,7 @@ Core Kit SDK only supports Sapphire Mainnet and Devnet networks. The other netwo
 
 :::
 
-## Log In with OAuth Intrinsic Flow
+## Log In with OAuth (Intrinsic Flow)
 
 #### `loginWithOauth(loginParams: OauthLoginParams): Promise<void>;`
 
@@ -43,8 +48,6 @@ Core Kit SDK only supports Sapphire Mainnet and Devnet networks. The other netwo
 | `loginParams` | `object` | Login Parameters | Yes       |
 
 ### `OauthLoginParams`
-
-Contains the parameters required to login a user. This is a mandatory field to be passed in the `connect()` function.
 
 <Tabs
   defaultValue="table"
@@ -172,8 +175,8 @@ Contains the details of an aggregate verifier the app needs to connect to. Use t
 | Parameter                     | Type                      | Description                                                                                                         | Mandatory |
 | ----------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------- |
 | `aggregateVerifierIdentifier` | `string`                  | The name of your aggregate verifier                                                                                 | Yes       |
-| `aggregateVerifierType`       | `AGGREGATE_VERIFIER_TYPE` | What kind of aggregation is needed for your aggregate verifier. Use `"single_id_verifier"` by default in most cases | Yes       |
 | `subVerifierDetailsArray`     | `SubVerifierDetails[]`    | An array containing the details of your sub verifiers.                                                              | Yes       |
+| `aggregateVerifierType?`      | `AGGREGATE_VERIFIER_TYPE` | What kind of aggregation is needed for your aggregate verifier. Use `"single_id_verifier"` by default in most cases | No        |
 
 </TabItem>
 
@@ -181,9 +184,9 @@ Contains the details of an aggregate verifier the app needs to connect to. Use t
 
 ```javascript
 export interface AggregateVerifierLoginParams extends BaseLoginParams {
-  aggregateVerifierIdentifier?: string;
+  aggregateVerifierIdentifier: string;
+  subVerifierDetailsArray: SubVerifierDetails[];
   aggregateVerifierType?: AGGREGATE_VERIFIER_TYPE;
-  subVerifierDetailsArray?: SubVerifierDetails[];
 }
 export type AGGREGATE_VERIFIER_TYPE = (typeof AGGREGATE_VERIFIER)[keyof typeof AGGREGATE_VERIFIER];
 ```
@@ -217,7 +220,6 @@ import { Web3AuthMPCCoreKit, AggregateVerifierLoginParams } from "@web3auth/mpc-
 
 const verifierConfig = {
   aggregateVerifierIdentifier: "aggregate-sapphire",
-  aggregateVerifierType: "single_id_verifier",
   subVerifierDetailsArray: [
     {
       typeOfLogin: "google",
@@ -230,40 +232,195 @@ const verifierConfig = {
 await coreKitInstance.loginWithOauth(verifierConfig);
 ```
 
-## Handle Redirect Result
+### Popup Mode
 
-#### `handleRedirectResult(): Promise<SafeEventEmitterProvider | null>;`
+If you're using the popup mode (default) in your application, while logging in, you need to have a service worker running, which essential catches the
+login redirect and sends it back to the main DOM with the parameters. These parameters are then used to login the user with Web3Auth.
 
-While using the redirect mode, you need to handle the redirect result in your application. This can be done by calling the `handleRedirectResult()`
-method of the `web3auth` instance, within the constructor of the component where you want to handle the redirect result.
+#### Service Worker
 
-If your URL anchor contains `#state`, then the `handleRedirectResult()` method should be called, since that is where the redirect result, containing
-the `idToken` is returned from the login provider.
+A service worker is a script that is run by the browser. It does not have any direct relationship with the DOM and provides many out of the box
+network-related features. Web3Auth Core Kit tKey SDK needs a service worker relative to `baseUrl` to capture the auth redirect at `redirectPathName`
+path.
 
-#### Example
+For example, while using service worker if `baseUrl` is `http://localhost:3000/serviceworker` then user will be redirected to
+`http://localhost:3000/serviceworker/redirect` page after login where service worker will capture the results and send it back to original window
+where login was initiated.
 
-```javascript
-useEffect(() => {
-  const submitRedirectResult = async () => {
-    try {
-      const provider = await coreKitInstance?.handleRedirectResult();
-      if (provider) setProvider(provider);
-    } catch (error) {
-      if ((error as Error).message === "required more shares") {
-        uiConsole("first triggered", coreKitInstance);
-        recoverAccount();
-      }
-    }
-  }
-  if (coreKitInstance && window.location.hash.includes("#state")) {
-    submitRedirectResult();
-  }
-}, [coreKitInstance]);
-```
+:::tip
 
-:::note
+- Using service worker is required only in the popup flow.
 
-For the popup flow, the service worker is needed to handle it properly. Please have a look at the [installation page](./install) to know how to set up
-the service worker for your application.
+- Service worker is needed if you are using `popup` uxMode within your MPC Core Kit Configuration.
+
+- For browsers where service workers are not supported, or in the case you wish to not use service workers, create and serve redirect page (i.e
+  `redirect.html` file).
 
 :::
+
+#### Service Worker Setup
+
+- If you're using React, to setup service worker, you need to create a `sw.js` file in your public folder and register it in your `index.html` file.
+  You can find more information about it in [this blog](https://blog.bitsrc.io/using-service-workers-with-react-27a4c5e2d1a9).
+
+- For Angular, [this guide](https://angular.io/guide/service-worker-getting-started) will be helpful in setting up the service worker.
+
+- For Vue, [this guide](https://www.360learntocode.com/2020/12/how-to-use-and-customize-service-worker-in-vuejs-pwa.html) is a great way to get
+  started with service workers.
+
+#### Service Worker Code
+
+You can directly copy the service worker file code from here and paste in your respective folder. You can also find the code in our
+[MPC Core Kit Example (Popup Flow)](https://github.com/Web3Auth/web3auth-core-kit-examples/blob/main/mpc-core-kit/mpc-core-kit-react-popup-example/src/App.tsx).
+
+<details>
+  <summary>Service Worker Code</summary>
+  <ServiceWorkerCode />
+</details>
+
+### Redirect Mode
+
+If you are using the redirect mode, don't have to use service worker or `redirect.html` file. You can get login result by calling `init()` function on
+redirected page mount.
+
+For example, if `baseUrl` is `http://localhost:3000` and `redirectPathName` is `auth` then user will be redirected to `http://localhost:3000/auth`
+page after login where you can get login result by calling `init()` function on redirected page mount.
+
+## Log In with JWT (IdToken Flow)
+
+#### `loginWithJWT(idTokenLoginParams: IdTokenLoginParams): Promise<void>;`
+
+| Variable             | Type     | Description      | Mandatory |
+| -------------------- | -------- | ---------------- | --------- |
+| `idTokenLoginParams` | `object` | Login Parameters | Yes       |
+
+### `IdTokenLoginParams`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter              | Type                  | Mandatory | Description                                                                                                                                 |
+| ---------------------- | --------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `verifier`             | `string`              | Yes       | Name of the verifier created on Web3Auth Dashboard. In case of Aggregate Verifier, the name of the top level aggregate verifier.            |
+| `verifierId`           | `string`              | Yes       | Unique Identifier for the User. The verifier identifier field set for the verifier/ sub verifier. E.g. "sub" field in your on jwt id token. |
+| `idToken`              | `string`              | Yes       | The idToken received from the Auth Provider.                                                                                                |
+| `subVerifier?`         | `string`              | No        | Name of the sub verifier in case of aggregate verifier setup. This field is mandatory in case of an aggregate verifier.                     |
+| `extraVerifierParams?` | `WebAuthnExtraParams` | No        | Extra verifier params in case of a WebAuthn verifier type.                                                                                  |
+| `additionalParams?`    | `ExtraParams`         | No        | Any additional parameter (key value pair) you'd like to pass to the login function.                                                         |
+
+</TabItem>
+
+<TabItem value="type">
+
+```javascript
+export interface IdTokenLoginParams {
+  /**
+   * Name of the verifier created on Web3Auth Dashboard. In case of Aggregate Verifier, the name of the top level aggregate verifier.
+   */
+  verifier: string;
+
+  /**
+   * Unique Identifier for the User. The verifier identifier field set for the verifier/ sub verifier. E.g. "sub" field in your on jwt id token.
+   */
+  verifierId: string;
+
+  /**
+   * The idToken received from the Auth Provider.
+   */
+  idToken: string;
+
+  /**
+   * Name of the sub verifier in case of aggregate verifier setup. This field should only be provided in case of an aggregate verifier.
+   */
+  subVerifier?: string;
+
+  /**
+   * Extra verifier params in case of a WebAuthn verifier type.
+   */
+  extraVerifierParams?: WebAuthnExtraParams;
+
+  /**
+   * Any additional parameter (key value pair) you'd like to pass to the login function.
+   */
+  additionalParams?: ExtraParams;
+}
+
+export interface ExtraParams {
+  [key: string]: unknown;
+}
+
+export type WebAuthnExtraParams = {
+  signature?: string,
+  clientDataJSON?: string,
+  authenticatorData?: string,
+  publicKey?: string,
+  challenge?: string,
+  rpOrigin?: string,
+  credId?: string,
+  transports?: AuthenticatorTransport[],
+};
+
+type AuthenticatorTransport = "ble" | "hybrid" | "internal" | "nfc" | "usb";
+```
+
+</TabItem>
+
+</Tabs>
+
+### Usage
+
+### General Verifier
+
+```tsx
+import { Web3AuthMPCCoreKit, idTokenLoginParams } from "@web3auth/mpc-core-kit";
+
+const loginRes = await signInWithGoogle();
+const idToken = await loginRes.user.getIdToken(true);
+const parsedToken = parseToken(idToken);
+
+const idTokenLoginParams = {
+  verifier: "w3a-firebase-demo",
+  verifierId: parsedToken.email,
+  idToken,
+} as IdTokenLoginParams;
+
+await coreKitInstance.loginWithJWT(idTokenLoginParams);
+```
+
+### Aggregate Verifier
+
+```tsx
+import { Web3AuthMPCCoreKit, idTokenLoginParams } from "@web3auth/mpc-core-kit";
+
+const loginRes = await signInWithGoogle();
+const idToken = await loginRes.user.getIdToken(true);
+const parsedToken = parseToken(idToken);
+
+const idTokenLoginParams = {
+  verifier: "aggregate-sapphire"
+  subVerifier: "w3a-google",
+  verifierId: parsedToken.email,
+  idToken,
+} as IdTokenLoginParams;
+
+await coreKitInstance.loginWithJWT(idTokenLoginParams);
+```
+
+## Logging out the User
+
+#### `logout(): Promise<void>;`
+
+Disconnect the user's connected wallet/ provider and log them out of the Web3Auth MPC Core Kit SDK.
+
+#### Usage
+
+```tsx
+await coreKitInstance.logout();
+```
