@@ -103,21 +103,18 @@ export interface SdkInitOptions {
    * Web3Auth Network to use for login
    * @defaultValue mainnet
    */
-  web3AuthNetwork?: TORUS_LEGACY_NETWORK_TYPE;
-
+  web3AuthNetwork?: TORUS_NETWORK_TYPE;
   /**
    * setting to true will enable logs
    *
    * @defaultValue false
    */
   enableLogging?: boolean;
-
   /**
    * setting this to true returns the same key as web sdk (i.e., plug n play key)
    * By default, this sdk returns CoreKitKey
    */
   usePnPKey?: boolean;
-
   /**
    * How long should a login session last at a minimum in seconds
    *
@@ -221,7 +218,7 @@ const web3auth = new Web3Auth(SecureStore, {
   usePnPKey: "false", // By default, this sdk returns CoreKitKey
 });
 
-await authProvider.init(privateKeyProvider);
+await web3auth.init(privateKeyProvider);
 ```
 
 </TabItem>
@@ -255,7 +252,7 @@ const web3auth = new Web3Auth(EncryptedStorage, {
   usePnPKey: "false", // By default, this sdk returns CoreKitKey
 });
 
-await authProvider.init(privateKeyProvider);
+await web3auth.init(privateKeyProvider);
 ```
 
 </TabItem>
