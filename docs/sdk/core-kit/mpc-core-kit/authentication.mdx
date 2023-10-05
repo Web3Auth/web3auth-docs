@@ -5,6 +5,19 @@ displayed_sidebar: sdk
 description: "Web3Auth MPC Core Kit Web SDK - Authentication | Documentation - Web3Auth"
 ---
 
+import ServiceWorkerCode from "@site/src/common/sdk/core-kit/tkey/_sw-js.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+There are two ways to login your users, depending on the type of authentication method you've chosen. If you are looking for an Intrinsic
+Authentication Flow in your application (like Auth0 SPA Flow), you can use the `loginWithOAuth()` function. If you are looking to pass a JWT based Id
+Token to the SDK from in your application (like Auth0 RWA Flow), you can use the `loginWithJWT()` function.
+
+As a prerequisite, before triggering the login function, you need to create a verifier for your login method on the
+[Web3Auth Dashboard](https://dashboard.web3auth.io).
+
+## Creating a Verifier
+
 Since this a Core Kit SDK, it does not provide any default authentication methods. You need to create a custom verifier in order to use this SDK. This
 means that you need to authenticate users with your own custom authentication service. For example, while authenticating with Google, you have to use
 your own Google Client ID and Dashboard to authenticate users directly, or use aggregate services like Auth0, Firebase, AWS Cognito etc. Additionally,
@@ -26,19 +39,15 @@ Core Kit SDK only supports Sapphire Mainnet and Devnet networks. The other netwo
 
 :::
 
-## Logging in your User
+## Log In with OAuth (Intrinsic Flow)
 
-#### `connect(params: LoginParams): Promise<SafeEventEmitterProvider | null>;`
-
-To login a user in the Web3Auth MPC Core Kit SDK, you need to call `connect()` function. The function takes in the following parameters:
+#### `loginWithOauth(loginParams: OauthLoginParams): Promise<void>;`
 
 | Variable      | Type     | Description      | Mandatory |
 | ------------- | -------- | ---------------- | --------- |
 | `loginParams` | `object` | Login Parameters | Yes       |
 
-## `LoginParams`
-
-Contains the parameters required to login a user. This is a mandatory field to be passed in the `connect()` function.
+### `OauthLoginParams`
 
 <Tabs
   defaultValue="table"
@@ -61,25 +70,26 @@ Contains the parameters required to login a user. This is a mandatory field to b
 <TabItem value="type">
 
 ```javascript
-type LoginParams = SubVerifierDetailsParams & AggregateVerifierLoginParams;
+export type OauthLoginParams = SubVerifierDetailsParams | AggregateVerifierLoginParams;
 
-interface SubVerifierDetailsParams extends BaseLoginParams {
+export interface SubVerifierDetailsParams extends BaseLoginParams {
   subVerifierDetails: SubVerifierDetails;
 }
 
-interface AggregateVerifierLoginParams extends BaseLoginParams {
-    aggregateVerifierIdentifier?: string;
-    aggregateVerifierType?: AGGREGATE_VERIFIER_TYPE;
-    subVerifierDetailsArray?: SubVerifierDetails[];
+export interface AggregateVerifierLoginParams extends BaseLoginParams {
+  aggregateVerifierIdentifier?: string;
+  aggregateVerifierType?: AGGREGATE_VERIFIER_TYPE;
+  subVerifierDetailsArray?: SubVerifierDetails[];
 }
 
-interface BaseLoginParams {
-    serverTimeOffset?: number;
+export interface BaseLoginParams {
+  // offset in seconds
+  serverTimeOffset?: number;
 }
 
-type AGGREGATE_VERIFIER_TYPE = (typeof AGGREGATE_VERIFIER)[keyof typeof AGGREGATE_VERIFIER];
+export type AGGREGATE_VERIFIER_TYPE = (typeof AGGREGATE_VERIFIER)[keyof typeof AGGREGATE_VERIFIER];
 
-declare const AGGREGATE_VERIFIER: {
+export declare const AGGREGATE_VERIFIER: {
     readonly SINGLE_VERIFIER_ID: "single_id_verifier";
 };
 ```
@@ -88,9 +98,9 @@ declare const AGGREGATE_VERIFIER: {
 
 </Tabs>
 
-### `SubVerifierDetails`
+#### `SubVerifierDetails`
 
-Contains the details of verifier the app needs to connect to. This is a mandatory field to be passed in the `connect()` function.
+Contains the details of verifier the app needs to connect to. Use this in case of a single verifier.
 
 <Tabs
   defaultValue="table"
@@ -102,31 +112,30 @@ Contains the details of verifier the app needs to connect to. This is a mandator
 
 <TabItem value="table">
 
-| Parameter    | Type                 | Description                                                                                                                                                                                                                                                         | Mandatory |
-| ------------ | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| typeOfLogin  | `TypeOfLogin`        | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose `google`, a Google sign-in flow will be used. If you choose `jwt`, you should be providing your own JWT token, no sign-in flow will be presented. | Yes       |
-| `verifier`   | `string`             | Name/ Identifier of the verifier/ sub verifier in case of aggregate verifiers, you'd like your app to connect to.                                                                                                                                                   | Yes       |
-| `clientId`   | `string`             | Client Id given by the auth provider. Pass a random string in case you're connecting to a JWT based setup.                                                                                                                                                          | Yes       |
-| `jwtParams?` | `Auth0ClientOptions` | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown.                                                                                                                                                 | Yes       |
+| Parameter   | Type          | Description                                                                                                                                                                                                                                                         | Mandatory |
+| ----------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| typeOfLogin | `TypeOfLogin` | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose `google`, a Google sign-in flow will be used. If you choose `jwt`, you should be providing your own JWT token, no sign-in flow will be presented. | Yes       |
+| `verifier`  | `string`      | Name/ Identifier of the verifier/ sub verifier in case of aggregate verifiers, you'd like your app to connect to.                                                                                                                                                   | Yes       |
+| `clientId`  | `string`      | Client Id given by the auth provider. Pass a random string in case you're connecting to a JWT based setup.                                                                                                                                                          | Yes       |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```javascript
-interface SubVerifierDetails {
-  typeOfLogin: LOGIN_TYPE;
-  verifier: string;
-  clientId: string;
-  jwtParams?: Auth0ClientOptions;
-  hash?: string;
-  queryParameters?: TorusGenericObject;
-  customState?: TorusGenericObject;
+export interface SubVerifierDetails {
+    typeOfLogin: LOGIN_TYPE;
+    verifier: string;
+    clientId: string;
+    jwtParams?: Auth0ClientOptions;
+    hash?: string;
+    queryParameters?: TorusGenericObject;
+    customState?: TorusGenericObject;
 }
 
-type LOGIN_TYPE = (typeof LOGIN)[keyof typeof LOGIN];
+export type LOGIN_TYPE = (typeof LOGIN)[keyof typeof LOGIN];
 
-declare const LOGIN: {
+export declare const LOGIN: {
     readonly GOOGLE: "google";
     readonly FACEBOOK: "facebook";
     readonly REDDIT: "reddit";
@@ -149,11 +158,9 @@ declare const LOGIN: {
 
 </Tabs>
 
-### `jwtParams?`
+#### `AggregateVerifierLoginParams`
 
-#### `Auth0ClientOptions`
-
-Parameters needed to be passed while logging in using JWT. Not required for other types of logins.
+Contains the details of an aggregate verifier the app needs to connect to. Use this in case of an aggregate verifier.
 
 <Tabs
   defaultValue="table"
@@ -165,90 +172,255 @@ Parameters needed to be passed while logging in using JWT. Not required for othe
 
 <TabItem value="table">
 
-| Parameter                    | Type      | Description                                                                                                                                                    | Mandatory |
-| ---------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| `domain?`                    | `string`  | Domain on which your authentication app is hosted on. Ideal while using the SPA flow in Auth0.                                                                 | No        |
-| `client_id?`                 | `string`  | The Client ID found on your OAuth provider settings page                                                                                                       | No        |
-| `redirect_uri?`              | `string`  | The default URL where OAuth provider will redirect your browser to with the authentication result. It must be whitelisted in their dashboard.                  | No        |
-| `leeway?`                    | `number`  | The value in seconds used to account for clock skew in JWT expirations. Typically, this value is no more than a minute or two at maximum. Defaults to 60 secs. | No        |
-| `verifierIdField?`           | `string`  | The field in jwt token which maps to verifier id                                                                                                               | No        |
-| `isVerifierIdCaseSensitive?` | `boolean` | Whether the verifier id field is case sensitive. Defaults to `true`                                                                                            | No        |
-| `id_token?`                  | `string`  | Id Token given by the OAuth provider.                                                                                                                          | No        |
-| `access_token?`              | `string`  | OAuth Access Token given by the OAuth provider.                                                                                                                | No        |
-| `user_info_route?`           | `string`  | The route for user info endpoint. This will be padded to domain.                                                                                               | No        |
+| Parameter                     | Type                      | Description                                                                                                         | Mandatory |
+| ----------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------- |
+| `aggregateVerifierIdentifier` | `string`                  | The name of your aggregate verifier                                                                                 | Yes       |
+| `subVerifierDetailsArray`     | `SubVerifierDetails[]`    | An array containing the details of your sub verifiers.                                                              | Yes       |
+| `aggregateVerifierType?`      | `AGGREGATE_VERIFIER_TYPE` | What kind of aggregation is needed for your aggregate verifier. Use `"single_id_verifier"` by default in most cases | No        |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```javascript
-interface Auth0ClientOptions extends BaseLoginOptions {
-  /**
-   * Your Auth0 account domain such as `'example.auth0.com'`,
-   * `'example.eu.auth0.com'` or , `'example.mycompany.com'`
-   * (when using [custom domains](https://auth0.com/docs/custom-domains))
-   */
-  domain?: string;
-  /**
-   * The Client ID found on your Application settings page
-   */
-  client_id?: string;
-  /**
-   * The default URL where Auth0 will redirect your browser to with
-   * the authentication result. It must be whitelisted in
-   * the "Allowed Callback URLs" field in your Auth0 Application's
-   * settings. If not provided here, it should be provided in the other
-   * methods that provide authentication.
-   */
-  redirect_uri?: string;
-  /**
-   * The value in seconds used to account for clock skew in JWT expirations.
-   * Typically, this value is no more than a minute or two at maximum.
-   * Defaults to 60s.
-   */
-  leeway?: number;
-  /**
-   * The field in jwt token which maps to verifier id
-   */
-  verifierIdField?: string;
-  /**
-   * Whether the verifier id field is case sensitive
-   * @defaultValue true
-   */
-  isVerifierIdCaseSensitive?: boolean;
-  id_token?: string;
-  access_token?: string;
-  /**
-   * The route for user info endpoint. This will be padded to domain
-   * @defaultValue userinfo
-   * */
-  user_info_route?: string;
+export interface AggregateVerifierLoginParams extends BaseLoginParams {
+  aggregateVerifierIdentifier: string;
+  subVerifierDetailsArray: SubVerifierDetails[];
+  aggregateVerifierType?: AGGREGATE_VERIFIER_TYPE;
 }
+export type AGGREGATE_VERIFIER_TYPE = (typeof AGGREGATE_VERIFIER)[keyof typeof AGGREGATE_VERIFIER];
 ```
 
 </TabItem>
 
 </Tabs>
 
-## Returns
+### Usage
+
+### General Verifier
 
 ```tsx
-connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null>
-```
+import { Web3AuthMPCCoreKit, SubVerifierDetailsParams } from "@web3auth/mpc-core-kit";
 
-On successful login, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
-corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
-
-On unsuccessful login, this function will return a `null` value.
-
-## Example
-
-```tsx
-const provider = await coreKitInstance.connect({
+const verifierConfig = {
   subVerifierDetails: {
     typeOfLogin: "google",
     verifier: "w3a-google-demo",
     clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
   },
-});
+} as SubVerifierDetailsParams;
+
+await coreKitInstance.loginWithOauth(verifierConfig);
+```
+
+### Aggregate Verifier
+
+```tsx
+import { Web3AuthMPCCoreKit, AggregateVerifierLoginParams } from "@web3auth/mpc-core-kit";
+
+const verifierConfig = {
+  aggregateVerifierIdentifier: "aggregate-sapphire",
+  subVerifierDetailsArray: [
+    {
+      typeOfLogin: "google",
+      verifier: "w3a-google",
+      clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+    },
+  ],
+} as AggregateVerifierLoginParams;
+
+await coreKitInstance.loginWithOauth(verifierConfig);
+```
+
+### Popup Mode
+
+If you're using the popup mode (default) in your application, while logging in, you need to have a service worker running, which essential catches the
+login redirect and sends it back to the main DOM with the parameters. These parameters are then used to login the user with Web3Auth.
+
+#### Service Worker
+
+A service worker is a script that is run by the browser. It does not have any direct relationship with the DOM and provides many out of the box
+network-related features. Web3Auth Core Kit tKey SDK needs a service worker relative to `baseUrl` to capture the auth redirect at `redirectPathName`
+path.
+
+For example, while using service worker if `baseUrl` is `http://localhost:3000/serviceworker` then user will be redirected to
+`http://localhost:3000/serviceworker/redirect` page after login where service worker will capture the results and send it back to original window
+where login was initiated.
+
+:::tip
+
+- Using service worker is required only in the popup flow.
+
+- Service worker is needed if you are using `popup` uxMode within your MPC Core Kit Configuration.
+
+- For browsers where service workers are not supported, or in the case you wish to not use service workers, create and serve redirect page (i.e
+  `redirect.html` file).
+
+:::
+
+#### Service Worker Setup
+
+- If you're using React, to setup service worker, you need to create a `sw.js` file in your public folder and register it in your `index.html` file.
+  You can find more information about it in [this blog](https://blog.bitsrc.io/using-service-workers-with-react-27a4c5e2d1a9).
+
+- For Angular, [this guide](https://angular.io/guide/service-worker-getting-started) will be helpful in setting up the service worker.
+
+- For Vue, [this guide](https://www.360learntocode.com/2020/12/how-to-use-and-customize-service-worker-in-vuejs-pwa.html) is a great way to get
+  started with service workers.
+
+#### Service Worker Code
+
+You can directly copy the service worker file code from here and paste in your respective folder. You can also find the code in our
+[MPC Core Kit Example (Popup Flow)](https://github.com/Web3Auth/web3auth-core-kit-examples/blob/main/mpc-core-kit/mpc-core-kit-react-popup-example/src/App.tsx).
+
+<details>
+  <summary>Service Worker Code</summary>
+  <ServiceWorkerCode />
+</details>
+
+### Redirect Mode
+
+If you are using the redirect mode, don't have to use service worker or `redirect.html` file. You can get login result by calling `init()` function on
+redirected page mount.
+
+For example, if `baseUrl` is `http://localhost:3000` and `redirectPathName` is `auth` then user will be redirected to `http://localhost:3000/auth`
+page after login where you can get login result by calling `init()` function on redirected page mount.
+
+## Log In with JWT (IdToken Flow)
+
+#### `loginWithJWT(idTokenLoginParams: IdTokenLoginParams): Promise<void>;`
+
+| Variable             | Type     | Description      | Mandatory |
+| -------------------- | -------- | ---------------- | --------- |
+| `idTokenLoginParams` | `object` | Login Parameters | Yes       |
+
+### `IdTokenLoginParams`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter              | Type                  | Mandatory | Description                                                                                                                                 |
+| ---------------------- | --------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `verifier`             | `string`              | Yes       | Name of the verifier created on Web3Auth Dashboard. In case of Aggregate Verifier, the name of the top level aggregate verifier.            |
+| `verifierId`           | `string`              | Yes       | Unique Identifier for the User. The verifier identifier field set for the verifier/ sub verifier. E.g. "sub" field in your on jwt id token. |
+| `idToken`              | `string`              | Yes       | The idToken received from the Auth Provider.                                                                                                |
+| `subVerifier?`         | `string`              | No        | Name of the sub verifier in case of aggregate verifier setup. This field is mandatory in case of an aggregate verifier.                     |
+| `extraVerifierParams?` | `WebAuthnExtraParams` | No        | Extra verifier params in case of a WebAuthn verifier type.                                                                                  |
+| `additionalParams?`    | `ExtraParams`         | No        | Any additional parameter (key value pair) you'd like to pass to the login function.                                                         |
+
+</TabItem>
+
+<TabItem value="type">
+
+```javascript
+export interface IdTokenLoginParams {
+  /**
+   * Name of the verifier created on Web3Auth Dashboard. In case of Aggregate Verifier, the name of the top level aggregate verifier.
+   */
+  verifier: string;
+
+  /**
+   * Unique Identifier for the User. The verifier identifier field set for the verifier/ sub verifier. E.g. "sub" field in your on jwt id token.
+   */
+  verifierId: string;
+
+  /**
+   * The idToken received from the Auth Provider.
+   */
+  idToken: string;
+
+  /**
+   * Name of the sub verifier in case of aggregate verifier setup. This field should only be provided in case of an aggregate verifier.
+   */
+  subVerifier?: string;
+
+  /**
+   * Extra verifier params in case of a WebAuthn verifier type.
+   */
+  extraVerifierParams?: WebAuthnExtraParams;
+
+  /**
+   * Any additional parameter (key value pair) you'd like to pass to the login function.
+   */
+  additionalParams?: ExtraParams;
+}
+
+export interface ExtraParams {
+  [key: string]: unknown;
+}
+
+export type WebAuthnExtraParams = {
+  signature?: string,
+  clientDataJSON?: string,
+  authenticatorData?: string,
+  publicKey?: string,
+  challenge?: string,
+  rpOrigin?: string,
+  credId?: string,
+  transports?: AuthenticatorTransport[],
+};
+
+type AuthenticatorTransport = "ble" | "hybrid" | "internal" | "nfc" | "usb";
+```
+
+</TabItem>
+
+</Tabs>
+
+### Usage
+
+### General Verifier
+
+```tsx
+import { Web3AuthMPCCoreKit, idTokenLoginParams } from "@web3auth/mpc-core-kit";
+
+const loginRes = await signInWithGoogle();
+const idToken = await loginRes.user.getIdToken(true);
+const parsedToken = parseToken(idToken);
+
+const idTokenLoginParams = {
+  verifier: "w3a-firebase-demo",
+  verifierId: parsedToken.email,
+  idToken,
+} as IdTokenLoginParams;
+
+await coreKitInstance.loginWithJWT(idTokenLoginParams);
+```
+
+### Aggregate Verifier
+
+```tsx
+import { Web3AuthMPCCoreKit, idTokenLoginParams } from "@web3auth/mpc-core-kit";
+
+const loginRes = await signInWithGoogle();
+const idToken = await loginRes.user.getIdToken(true);
+const parsedToken = parseToken(idToken);
+
+const idTokenLoginParams = {
+  verifier: "aggregate-sapphire"
+  subVerifier: "w3a-google",
+  verifierId: parsedToken.email,
+  idToken,
+} as IdTokenLoginParams;
+
+await coreKitInstance.loginWithJWT(idTokenLoginParams);
+```
+
+## Logging out the User
+
+#### `logout(): Promise<void>;`
+
+Disconnect the user's connected wallet/ provider and log them out of the Web3Auth MPC Core Kit SDK.
+
+#### Usage
+
+```tsx
+await coreKitInstance.logout();
 ```

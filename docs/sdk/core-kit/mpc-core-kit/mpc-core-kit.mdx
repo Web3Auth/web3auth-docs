@@ -7,23 +7,7 @@ description: "Web3Auth MPC Core Kit Web SDK | Documentation - Web3Auth"
 import Image1 from "@site/static/images/tkey-mpc-flow.png";
 
 Web3Auth's `@web3auth/mpc-core-kit` SDK is a simple and easy to use SDK, which helps you implement the Web3Auth MPC Features, while giving you the
-flexibility to customize the UI and UX of the authentication process. It is essentially a wrapper around the tKey MPC SDK, which is the core
-implementation of Web3Auth MPC.
-
-:::caution
-
-This SDK is production ready, however, this works in the 2/2 recovery flow. This means that the backup/ recovery shares are copies of the device
-share, making the user hold only one of the shares is any case.
-
-Web3Auth MPC Core Kit Web SDK is designed in a way to make it easier for you to integrate Web3Auth MPC. Without the social login share, it is not
-possible for you to sign signatures. Hence, the 2/2 flow is allows you the same experience as a 2/3 or 2/4 flow. You can generate as many backup
-shares as you want, but internally, they will be copies of the device share.
-
-If you require the 2/3 flow for your application, you need to directly integrate the [tKey MPC SDK](/content-hub/guides/tkey-js-mpc). Here, there is
-one additional share which you can ask the user to safe gaurd, however the experience of using it will be the same. We are working on adding more
-features to this SDK and will be releasing them in the consecutive updates.
-
-:::
+flexibility to customize the UI and UX of the authentication process.
 
 ## Requirements
 
@@ -31,7 +15,7 @@ features to this SDK and will be releasing them in the consecutive updates.
 - Basic knowledge of JavaScipt
 - Supports all major JavaScript Frameworks, Libraries and Bundlers
 
-## Understanding the Web3Auth MPC Core Kit Web SDK
+## Web3Auth MPC Infrastructure Components
 
 With the Web3Auth infrastructure, your key is divided into multiple parts and stored across your devices and our Auth Network. This ensures that your
 key is always available and never stored in a single place. While in the traditional Web3Auth SDK, your key was dynamically reconstructed in the
@@ -59,13 +43,13 @@ nodes have a threshold of 3/5 which can be customized according to requirements.
 corresponding to the TSS Shares in the nodes and returns them to the user's end. These signatures are then used alongside other shares to generate the
 final TSS Account signatures.
 
-#### Device Factor
+#### Device Factor (Index 2)
 
 This is the second factor used to access the user's account. This step involves the generation of a TSS Share on the user's device and using that to
 generate a final signature for the TSS Account alongside the social login factor. This ensures the user logs in using their trusted device and
 maintains a proper non-custodial setup.
 
-#### Backup Factor
+#### Backup Factor (Index 3)
 
 A user has a choice to generate as many backup factors as needed to access their account. This step involves the generation of a TSS Share on the
 user's end and storing them in whichever location they prefer. This share can be used similarly to the device share to generate a final signature for
@@ -85,19 +69,36 @@ The TSS Shares are the main component needed for the generation of the final wor
 distributed key generation and are stored in the Auth Network and the user's device. Since these shares are generated using MPC, they are **never
 reconstructed** and always stay decentralized and secure.
 
+However, we have exposed a function to reconstruct the TSS Key from the shares in the SDK. This function has been marked unsafe since there is no
+direct use case for it other than key exports in the case the user wants to own it completely.
+
 #### Metadata Key & Shares
 
-The Metadata Key closely mimics the storage of the TSS Key and Shares. The only difference is that the metadata key is always reconstructed and used
-for its encryption/decryption capabilities. It utilizes basic Shamir's Secret Sharing and is initially generated on a users' frontend. The metadata
-key ensures that the infrastructure is backward compatible with the existing Web3Auth architecture, which utilizes SSS (Shamir's Secret Sharing) as
-the main key reconstruction scheme.
+The Metadata Key closely mimics the storage of the TSS Shares. The only difference is that the metadata key is always reconstructed and used for its
+encryption/decryption capabilities. It utilizes basic Shamir's Secret Sharing and is initially generated on a users' front end. The metadata key is
+utilised for the encryption/decryption of the user metadata stored in the Web3Auth Metadata Server.
+
+One metadata share gives you the **read** access to the metadata server, while two or more (as the threshold is reached) give you the **write**
+access.
 
 #### Factor Keys
 
 To enable refresh, deletion, and rotational capabilities on the `tssKey`, we also introduce **factorKeys**. Factor Keys are randomly generated keys
 unique to each factor-generated user's device and backups, like users' phones, chrome extension, on their cloud, assisting third parties, etc.
 
-As shares to the TSS Key and/or Metadata Key may rotate, Factor Keys allow a consistent secret to being saved in these different locations.
+As share to the TSS Key and/or Metadata Key may rotate, Factor Keys allow a consistent secret to being saved in these different locations.
+
+## Understanding the MPC Core Kit SDK Flow
+
+By default, for a new user, the MPC Core Kit SDK starts in a 2/2 flow. This means that the user will have to generate a social login factor and a
+hashed cloud factor. This hashed cloud factor is derived on the SDK front end and stored in the encrypted metadata server. This enables the user to
+start the login process from any device without creating an MFA factor.
+
+This is done to make sure the user can access their account from any device without having to generate a new factor. However, this makes the initial
+onboarding, semi-custodial. To make the onboarding completely non-custodial, the user can use the `enableMfa` feature to generate a device and backup
+factor and delete the hashed cloud factor. This makes the user's account completely non-custodial in 2/3 setup and enables them to access their
+account from any device using the backup share. Device share is saved on trusted device and can be used to access the account from that device
+seamlessly without having to generate a new factor.
 
 ## Resources
 

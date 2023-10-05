@@ -24,6 +24,7 @@ import InitializationWeb3Auth from "@site/src/common/guides/_initialization-web3
 import InstantiationWeb3Auth from "@site/src/common/guides/_instantiation-web3auth.mdx";
 import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
 import OpenloginConfigCode from "@site/src/common/guides/_openlogin-config-code.mdx";
+import SetupAWSCognitoVerifier from "@site/src/common/guides/_setup-aws-cognito-verifier.mdx";
 
 <SEO
   title="Using AWS Cognito with Web3Auth"
@@ -87,7 +88,7 @@ For Authorization code flow, you will need an additional backend server to commu
 
 ## Setup
 
-### Setup your AWS Cognito
+### Setup AWS Cognito
 
 - Go to your AWS account and go to [AWS Cognito](https://console.aws.amazon.com/cognito/home) console. And Create a new user pool by following
   [this AWS Console guide](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-console.html).
@@ -144,29 +145,15 @@ For Authorization code flow, you will need an additional backend server to commu
 
 - Now lets configure Web3Auth using AWS Cognito app details.
 
-### Setup your Web3Auth Dashboard
+### Setup Web3Auth
+
+#### Setup Web3Auth Project
 
 <SetupWeb3AuthDashboard />
 
-- Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
-  configuration:
+#### Setup Firebase Custom Authentication Verifier
 
-  - Choose a name of your choice for the verifier identifier. `eg. aws-cognito-verifier`
-  - Select environment: `testnet`, `mainnet`, `aqua`, or `cyan` as per your requirement.
-  - Select `Custom` from the **Login Provider**.
-  - Select `Email` for the **JWT Verifier ID**.
-  - Your JWK endpoint endpoint for aws cognito will look something like this:
-    `https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json`. Get the `region` and `userPoolId` value from your AWS Cognito
-    console.
-  - JWT validation fields:
-    - iss: `https://cognito-idp.{region}.amazonaws.com/{userPoolId}`.
-    - aud: `App client id` the from AWS Cognito console.
-  - Click on `Create` button to create your verifier. It may take up to 10 minutes to deploy verifier on _testnet_. You'll receive an email once it's
-    complete.
-
-  ![Custom Authentication - Create AWS Cognito Verifier](/content-hub/guides/cognito/cognito-create-verifier.png)
-
-- You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+<SetupAWSCognitoVerifier />
 
 ## Using the Web3Auth SDK
 
@@ -209,7 +196,7 @@ the loginConfig object. This makes sure that the Openlogin Adapter can connect t
 Once initialized, you can use the `connectTo()` function to authenticate the user when they click the login button.
 
 ```tsx
-import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
+import { WALLET_ADAPTERS } from "@web3auth/base";
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
@@ -246,7 +233,7 @@ Logging out your user is as simple as calling the `logout` function.
 
 > Note: Currently, Web3Auth Plug and Play SDKs don't log out a user from AWS Cognito, so you can try calling this below endpoint to log out a user.
 
-```tsx
+```
 window.open("
     YOUR-COGNITO-DOMAIN/logout?
     client_id=YOUR-CLIENTID-FROM-AWS-COGNITO-DASHBOARD&
