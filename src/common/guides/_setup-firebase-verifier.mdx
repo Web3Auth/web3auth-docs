@@ -1,0 +1,25 @@
+Create a Firebase **Verifier** from the **Custom Authentication** tab of your Web3Auth Project.
+
+- Click on the `Custom Authentication` tab of your [Web3Auth Project](/dashboard-setup/projects-and-analytics#create-a-new-project).
+- Click on the `Create Verifier` button.
+- Enter a name of your choice for the verifier identifier. `eg. w3a-firebase-demo`
+- Select `Custom Providers` from **Choose a Login Provider** section.
+  ![Verifier Modal on Web3Auth Dashboard](/images/dashboard/create-verifier-custom-jwt.png)
+- **JWKS Endpoint**: Enter `https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com` as the JWKS endpoint for the
+  Firebase.
+- Now you have the option to paste a sample idToken(JWT) to get the fields for the JWT validation. This step is optional, but if you have a sample JWT
+  you can paste it here to get the fields for the JWT validation. You can also skip this step and fill in the fields manually.
+- The following are the JWT validation fields needed for the Firebase JWT validation:
+
+  - Type `iss` as a field and `https://securetoken.google.com/FIREBASE-PROJECT-ID` as a value.
+  - Next, type `aud` as a field and `FIREBASE-PROJECT-ID` as a value.
+
+  **_Note: Replace the `FIREBASE-PROJECT-ID` with your Firebase Project ID._**
+
+- Next, Select `Sub`, `Email` or a `Custom` value from the dropdown for the **JWT Verifier ID**. This is the field that will be used as the verifier
+  ID for the user, and it has to be unique for each user.
+- Finally, Click on the `Create` button to create your verifier.
+
+![Verifier Modal on Web3Auth Dashboard](/images/dashboard/create-verifier-custom-jwt-filled.png)
+
+It may take up to 10 minutes to deploy the verifier on _sapphire_devnet_. You'll receive an email once it's complete.

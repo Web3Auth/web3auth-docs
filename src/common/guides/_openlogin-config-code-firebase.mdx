@@ -1,17 +1,18 @@
 ```tsx
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
-    clientId: "YOUR-WEB3AUTH-CLIENT-ID", //Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
-    uxMode: "redirect",
+    uxMode: "redirect", // redirect or popup
     loginConfig: {
       jwt: {
-        name: "Name of your choice",
-        verifier: "YOUR-VERIFIER-NAME-ON-WEB3AUTH-DASHBOARD",
+        verifier: "w3a-firebase-demo", // name of the verifier created on Web3Auth Dashboard
         typeOfLogin: "jwt",
-        clientId: "YOUR-WEB3AUTH-CLIENT-ID",
+        clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
       },
     },
   },
+  privateKeyProvider,
 });
 
 web3auth.configureAdapter(openloginAdapter);
