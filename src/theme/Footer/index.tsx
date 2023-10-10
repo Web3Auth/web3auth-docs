@@ -4,7 +4,6 @@ import Discord from "@site/static/images/social/discord.svg";
 import GitHub from "@site/static/images/social/github.svg";
 import LinkedIn from "@site/static/images/social/linkedin.svg";
 import Medium from "@site/static/images/social/medium.svg";
-import Telegram from "@site/static/images/social/telegram.svg";
 import Twitter from "@site/static/images/social/twitter.svg";
 import YouTube from "@site/static/images/social/youtube.svg";
 import ThemedImage from "@theme/ThemedImage";
@@ -57,9 +56,6 @@ export default function FooterComponent(): JSX.Element {
               </a>
               <a href="https://youtube.com/c/web3auth" style={{ marginRight: 8 }} target="_blank" rel="noreferrer">
                 <YouTube />
-              </a>
-              <a href="https://t.me/web3auth" style={{ marginRight: 8 }} target="_blank" rel="noreferrer">
-                <Telegram />
               </a>
               <a href="https://www.linkedin.com/company/web3auth" style={{ marginRight: 8 }} target="_blank" rel="noreferrer">
                 <LinkedIn />
