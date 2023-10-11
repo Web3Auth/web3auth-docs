@@ -114,6 +114,13 @@ module.exports = {
           collapsible: true,
           items: ["pnp/migration-guides/no-modal-v6-to-v7", "pnp/migration-guides/no-modal-v5-to-v6"],
         },
+        {
+          type: "category",
+          label: "PnP android",
+          collapsed: true,
+          collapsible: true,
+          items: ["pnp/migration-guides/android-v4-to-v5"],
+        },
 
         "pnp/migration-guides/rn-v3-to-v4",
       ],
