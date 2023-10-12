@@ -452,9 +452,9 @@ export default function QuickNavigation() {
             <h3 className={styles.title}>Single Factor Auth Web SDK</h3>
             <p>Core Kit Single Factor Auth Web SDK for your JS environment. Implement Core Kit in a single key pair flow</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=Single+Factor+Auth+SDK&platform=React`}>Quick Start{chevron}</a>
-              <a href={`${baseUrl}sdk/core-kit/sfa`}>SDK Reference{chevron}</a>
-              <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+SDK`}>Examples{chevron}</a>
+              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=Single+Factor+Auth+Web+SDK&platform=React`}>Quick Start{chevron}</a>
+              <a href={`${baseUrl}sdk/core-kit/sfa-web`}>SDK Reference{chevron}</a>
+              <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+Web+SDK`}>Examples{chevron}</a>
             </div>
           </div>
         </div>
