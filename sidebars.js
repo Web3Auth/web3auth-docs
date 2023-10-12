@@ -116,7 +116,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "PnP android",
+          label: "PnP Android",
           collapsed: true,
           collapsible: true,
           items: ["pnp/migration-guides/android-v4-to-v5"],
