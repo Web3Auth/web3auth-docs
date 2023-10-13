@@ -88,13 +88,16 @@ The Web3Auth Constructor takes a class `Web3AuthOptions` as input. This class ha
 
 <TabItem value="table">
 
-| Parameter     | Type                                  | Mandatory | Description                                                                                                                                                     |
-| ------------- | ------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `clientId`    | `string`                              | Yes       | Your Web3Auth Project ID                                                                                                                                        |
-| `network`     | enum Web3Auth.Network                 | Yes       | Network to run Web3Auth, either MAINNET, TESTNET, AQUA or CYAN                                                                                                  |
-| `redirectUrl` | `Uri`                                 | No        | URL that Web3Auth will redirect API responses, default is `null`                                                                                                |
-| `whiteLabel`  | `WhiteLabelData`                      | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer [WhiteLabel](/pnp/features/whitelabel) section for more info. |
-| `loginConfig` | `Dictionary<string, LoginConfigItem>` | No        | A configuration optional object to use custom authentication. Refer [Custom Authentication](/pnp/features/custom-authentication) for more info.                 |
+| Parameter        | Type                                  | Mandatory | Description                                                                                                                                                     |
+| ---------------- | ------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`       | `string`                              | Yes       | Your Web3Auth Project ID                                                                                                                                        |
+| `network`        | enum Web3Auth.Network                 | Yes       | Network to run Web3Auth, either SAPPHIRE_MAINNET, SAPPHIRE_DEVNET, MAINNET, CYAN, AQUA or TESTNET                                                               |
+| `redirectUrl`    | `Uri`                                 | No        | URL that Web3Auth will redirect API responses, default is `null`                                                                                                |
+| `whiteLabel`     | `WhiteLabelData`                      | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer [WhiteLabel](/pnp/features/whitelabel) section for more info. |
+| `loginConfig`    | `Dictionary<string, LoginConfigItem>` | No        | A configuration optional object to use custom authentication. Refer [Custom Authentication](/pnp/features/custom-authentication) for more info.                 |
+| `useCoreKitKey`  | `bool`                                | No        | A configuration optional object to use coreKitKey.                                                                                                              |
+| `chainNamespace` | `ChainNamespace`                      | No        | A configuration optional object to use chainNamespace.                                                                                                          |
+| `mfaSettings`    | `MfaSettings`                         | No        | A configuration optional object to use mfaSettings.                                                                                                             |
 
 </TabItem>
 
@@ -105,8 +108,11 @@ class Web3AuthOptions {
   string clientId;  // Your Web3Auth project ID
   public Web3Auth.Network network;    // Network to run Web3Auth, either MAINNET, TESTNET, AQUA or CYAN
   public Uri redirectUrl;  // URL that Web3Auth will redirect API responses
-  public WhiteLabelData whiteLabel;  // Optional param to configure look
+  public WhiteLabelData? whiteLabel;  // Optional param to configure look
   public Dictionary<string, LoginConfigItem> loginConfig;  // Optional
+  public bool? useCoreKitKey ; // Optional
+  public Web3Auth.ChainNamespace? chainNamespace; // Optional, default is "EIP155"
+  public MfaSettings? mfaSettings; // Optional
 }
 ```
 

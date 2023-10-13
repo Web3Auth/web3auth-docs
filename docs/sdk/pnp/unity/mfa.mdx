@@ -5,16 +5,28 @@ displayed_sidebar: sdk
 description: "Web3Auth PnP Unity SDK - Multi Factor Authentication | Documentation - Web3Auth"
 ---
 
-The Multi Factor Authentication feature refers to the ability of the user to create a backup share (recovery phrase). This helps them login into a new
-device and also to recover their account if they lose their original device.
+MFA is an extra layer of protection that verifies your identity when accessing your account. To ensure ownership, you must provide two or more
+different backup factors. You have the option to choose from the device, social, backup factor (seed phrase), and password factors to guarantee access
+to your Web3 account. Once you create a recovery factor, MFA is enabled, and your keys are divided into three shares for off-chain multi-sig, making
+the key self-custodial. With backup factors, you can easily recover your account if you lose access to your original device or help login into a new
+device.
 
-You can set the mfaLevel within the `loginParams` to customize when mfa screen should be shown to user. It currently accepts 4 values:
+For a dApp, we provide various options to set up Multi-Factor Authentication. You can customize the MFA screen by setting the `mfaLevel` argument. You
+can enable or disable a backup factor and change their order. Currently, there are four values for `mfaLevel`:
 
-- **`default`** - Setting the mfaLevel to default will present the MFA screen to user on every third login. `mfaLevel = MFALevel.DEFAULT`
-- **`optional`** - Setting mfaLevel to optional will present the MFA screen to user on every login but user will have the option to skip it.
-  `mfaLevel = MFALevel.OPTIONAL`
-- **`mandatory`** - Setting mfaLevel to mandatory will make it mandatory for user to setup MFA after login. `mfaLevel = MFALevel.MANDATORY`
-- **`none`** - Setting mfaLevel to none will skip the mfa setup screen totally. `mfaLevel = MFALevel.NONE`
+- `default`: presents the MFA screen every third login
+- `optional`: presents the MFA screen on every login, but you can skip it
+- `mandatory`: make it mandatory to set up MFA after login
+- `none`: skips the MFA setup screen
+
+We offer the following backup factors under `mfaSettings`:
+
+- `deviceShareFactor`,
+- `backUpShareFactor`,
+- `socialBackupFactor`, and
+- `passwordFactor`.
+
+Choose the best options that suit your needs to ensure a safe and secure Web3 experience.
 
 ## Arguments
 
@@ -34,9 +46,7 @@ public enum MFALevel
 }
 ```
 
-## Example
-
-```cs
+```cs title="Usage"
 public void login()
 {
     var selectedProvider = Provider.GOOGLE;
@@ -47,4 +57,62 @@ public void login()
     };
     web3Auth.login(options);
 }
+```
+
+### `MFASettings`
+
+```cs
+public class MfaSetting
+{
+    public bool enable { get; set; }
+    public int? priority { get; set; }
+    public bool? mandatory { get; set; }
+
+    // Constructor
+    public MfaSetting(bool enable, int? priority, bool? mandatory)
+    {
+        this.enable = enable;
+        this.priority = priority;
+        this.mandatory = mandatory;
+    }
+}
+```
+
+```cs title="Usage"
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using Newtonsoft.Json;
+
+public class Web3custom : MonoBehaviour
+{
+  Web3Auth web3Auth;
+
+  // Start is called before the first frame update
+  void Start()
+  {
+    web3Auth = GetComponent<Web3Auth>();
+    web3Auth.setOptions(new Web3AuthOptions()
+    {
+      redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
+      clientId = "BAwFgL-r7wzQKmtcdiz2uHJKNZdK7gzEf2q-m55xfzSZOw8jLOyIi4AVvvzaEQO5nv2dFLEmf9LBkF8kaq3aErg",
+      network = Web3Auth.Network.TESTNET,
+      mfaSettings = new MfaSettings(
+        deviceShareFactor = new MfaSetting(true, 1, false),
+        backUpShareFactor = new MfaSetting(true, 1, true),
+        socialBackupFactor = new MfaSetting(true, 1, false),
+        passwordFactor = new MfaSetting(true, 1, true)
+      )
+    });
+    web3Auth.onLogin += onLogin;
+    web3Auth.onLogout += onLogout;
+  }
+  public void login() {}
+  private void onLogin(Web3AuthResponse response) {}
+  public void logout() {}
+  private void onLogout() {}
+}
+
 ```
