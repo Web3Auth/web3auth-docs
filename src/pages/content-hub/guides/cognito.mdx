@@ -15,6 +15,7 @@ import Tabs from "@theme/Tabs";
 
 import SEO from "@site/src/components/SEO";
 
+import SetupAWSCognito from "@site/src/common/guides/_setup-aws-cognito.mdx";
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
 import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
 import Installation from "@site/src/common/guides/_installation.mdx";
@@ -66,7 +67,7 @@ When integrating Web3Auth with AWS Cognito the Authorization code flow looks som
 
 ![AWS Cognito - Authorization Code Flow](/content-hub/guides/cognito/cognito-authcode.png)
 
-For Authorization code flow, you will need an additional backend server to communicate with AWS Cognito to get the `id_token` in exchange of
+For Authorization code flow, you will need an additional backend server to communicate with AWS Cognito to get the `id_token` in exchange for
 `authorization_code` received.
 
 </TabItem>
@@ -75,75 +76,22 @@ For Authorization code flow, you will need an additional backend server to commu
 
 - When a user logs in with AWS Cognito, Cognito sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
 
-- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self-custodial way, resulting in
   easy onboarding for your user to the application.
 
 ## Prerequisites
 
 <Web3AuthPrerequisites />
 
-- An [AWS](https://aws.amazon.com/console) account to create AWS Cognito User Poll.
+- An [AWS](https://aws.amazon.com/console) account to create an AWS Cognito User Poll.
 
-- A [Google Developer](https://console.developers.google.com) account to be used as Identity provider for AWS Cognito.
+- A [Google Developer](https://console.developers.google.com) account to be used as an Identity provider for AWS Cognito.
 
 ## Setup
 
-### Setup AWS Cognito
+### Set up AWS Cognito
 
-- Go to your AWS account and go to [AWS Cognito](https://console.aws.amazon.com/cognito/home) console. And Create a new user pool by following
-  [this AWS Console guide](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-console.html).
-
-- Note down the `userPoolId` and `region` after creating the new user pool.
-
-- Add a new app client to the user pool from App clients tab under General settings of your pool settings. Note down the `App client id` for this app
-  client, that looks something like `3j2tXXXXkkff5ajpn`. We will use this as the `aud` value for the JWT validation field.
-
-  ![AWS Cognito - Create app client](/content-hub/guides/cognito/cognito-create-app-client.png)
-
-- Add a domain to your AWS Cognito App from `App integration > Domain name` section.
-
-- We will use Google login as Identity provider in AWS Cognito for this guide.
-
-  - Obtain the OAuth `Client ID` and `Client Secret` from your [Google Developer dashboard](https://console.developers.google.com). Follow Google’s
-    instructions to [set up an OAuth 2.0 App](https://support.google.com/cloud/answer/6158849?hl=en).
-
-  - While configuring your Google OAuth 2.0 client for web, make sure to enter
-    - `<AWS_COGNITO_DOMAIN>` in the `Authorized Javascript Origins list` and,
-    - `<AWS_COGNITO_DOMAIN>/oauth2/idpresponse` in the Authorized redirect URIs list.
-
-- Let's configure Google login in AWS Cognito.
-
-  - Go to identity providers tab under federation tab and select Google.
-  - It will require you to enter your Google app's `Client ID` and `Client Secret` which you get in the above steps.
-    - Paste `Client ID` in the Google app ID field.
-    - Paste `Client Secret` in the App secret field.
-    - Type `profile email openid` in the Authorize scope field.
-      ![AWS Cognito - Google Login Identity configuration](/content-hub/guides/cognito/cognito-google-identity.png)
-    - Your Google login provider is configured, you can enable it in your App client settings under App Integration settings of your pool settings.
-      ![AWS Cognito - Enable Google Identity](/content-hub/guides/cognito/cognito-enable-google-identity.png)
-    - **Map email from Google attribute to user pool attribute**.
-      - In the Amazon Cognito console, choose Manage user pools, and then choose your user pool.
-      - In the left navigation pane, under Federation, choose `Attribute mapping`.
-      - On the attribute mapping page, choose the `Google` tab.
-      - Next to the Google attribute named `email`, select the Capture check box.
-      - Next to email, for User pool attribute, choose `Email` from the list.
-      - Choose Save changes.
-
-- Update App client settings to set the desired OAuth flow and redirect endpoints. For this guide, we will be using the _Implicit OAuth flow_.
-
-  - Click on `App client settings` under **App integration**.
-  - Callback URL(s): `http://localhost:3000/callback, https://testing.openlogin.com/auth`
-  - Sign out URL(s): `http://localhost:3000`
-    - Additional to your own URLs for the application, please add
-      - [https://testing.openlogin.com/auth](https://testing.openlogin.com/auth) (for Web3Auth testnet used in demo applications) and
-      - [https://app.openlogin.com/auth](https://app.openlogin.com/auth) (for Web3Auth mainnet used in production applications).
-  - OAuth2.0
-    - Select [x] `Implicit grant` from **Allowed OAuth Flows**
-    - Select [x] `email` `openid` `profile` from **Allowed OAuth Scopes**
-      ![AWS Cognito - App Client Settings Final](/content-hub/guides/cognito/cognito-final-app-client-settings.png)
-  - **Save Changes** and your Cognito app is configured to use Web3Auth.
-
-- Now lets configure Web3Auth using AWS Cognito app details.
+<SetupAWSCognito />
 
 ### Setup Web3Auth
 
@@ -160,7 +108,7 @@ For Authorization code flow, you will need an additional backend server to commu
 To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
 SDKs, please have a look at this [documentation page](/sdk).
 
-For this guide here, we will be talking through the [Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and using the
+For this guide, we will be talking through the [Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and using the
 [OpenLogin Provider](/sdk/pnp/web/adapters/openlogin) alongside it to enable Custom Authentication through AWS Cognito.
 
 <SetupBaseProject />
@@ -174,7 +122,8 @@ For this guide here, we will be talking through the [Web3Auth Plug and Play No M
 <InitializationIntro />
 
 For this guide, we're only focusing on the Instantiation, Configuration for the Openlogin Adapter (the default adapter that enables social logins) and
-Initialization of the Web3Auth SDK. To know more about the other things you can do with Web3Auth, checkout our [SDK Reference](/sdk/pnp/web/no-modal).
+Initialization of the Web3Auth SDK. To know more about the other things you can do with Web3Auth, check out our
+[SDK Reference](/sdk/pnp/web/no-modal).
 
 #### Instantiating Web3Auth
 
@@ -211,7 +160,7 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 
 When connecting, your `connectTo` function takes the arguments for the adapter you want to connect to and the options for the login. The major thing
 to note here is the `domain` option in the `extraLoginOptions` object. This is the domain of your AWS Cognito pool so that you can be redirected to
-login there directly from the Web3Auth Plug and Play No Modal SDK.
+log in there directly from the Web3Auth Plug and Play No Modal SDK.
 
 ### Get the User Profile
 
@@ -220,8 +169,8 @@ const user = await web3auth.getUserInfo();
 console.log("User info", user);
 ```
 
-Using the `getUserInfo` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
-network, but are fetched from the id_token you received from AWS Cognito and lives in the frontend context.
+Using the `getUserInfo` function, you can get the details of the logged-in user. Please note that these details are not stored anywhere in Web3Auth
+network, but are fetched from the id_token you received from AWS Cognito and live in the frontend context.
 
 ### Logout
 
@@ -251,11 +200,11 @@ window.open("
 ### Difference between Implicit and Authorization code flow
 
 In the **Implicit** flow, the frontend gets the JWT `id_token` from AWS Cognito directly. This flow is leveraged by the Web3Auth SDK, which handles
-all the callbacks by itself and the user just needs to setup the `OpenloginAdapter` and connect to the Web3Auth SDK, adding in the AWS Cognito
-`client_id` in it. Hence, this is the implicit flow and is the most suitable flow for setting up your authentication via AWS Cognito and Web3Auth.
+all the callbacks by itself and the user just needs to set the `OpenloginAdapter` and connect to the Web3Auth SDK, adding the AWS Cognito `client_id`
+in it. Hence, this is the implicit flow and is the most suitable flow for setting up your authentication via AWS Cognito and Web3Auth.
 
 In the **Authorization code** flow, you have to spin up a server on your own where you'll receive the `authorisation code` from AWS Cognito. For
-Web3Auth, still require an `id_token` to be sent to the OpenloginAdapter to log the user in the frontend context. This is where you need to make
+Web3Auth, still requires an `id_token` to be sent to the OpenloginAdapter to log the user in the frontend context. This is where you need to make
 another call from the backend server to AWS Cognito to get the `id_token` and pass it over to your frontend where you can send it to the Web3Auth SDK.
 
 ### Setting up your application with Authorization code Flow
