@@ -68,7 +68,7 @@ If you want to check what the result of this guide will look like, you can clone
 below.
 
 ```bash
-npx degit Web3Auth/web3auth-core-kit-examples/single-factor-auth-web/react-evm-sfa-example w3a-sfa-react-demo && cd w3a-sfa-react-demo && npm install && npm run start
+npx degit Web3Auth/web3auth-core-kit-examples/single-factor-auth/sfa-react-example w3a-sfa-react-demo && cd w3a-sfa-react-demo && npm install && npm run start
 ```
 
 ## How it works?
@@ -78,7 +78,7 @@ npx degit Web3Auth/web3auth-core-kit-examples/single-factor-auth-web/react-evm-s
 Refer to the flow chart above to understand how the `Single Factor Auth` works:
 
 - The first step for the application is to get the user authenticated by social login and get the user's idToken.
-- Once the social login is successful, depending on if the user has enabled **Multi-Factor Authentication(MFA)** or not, the key is generated.
+- Once the social login is successful, depending on whether the user has enabled **Multi-Factor Authentication(MFA)** or not, the key is generated.
 - If the user has not enabled MFA, we use the `@web3auth/single-factor-auth` SDK to retrieve the private key shares from the Web3Auth auth network
   nodes and reconstruct the private key.
 - If the user has enabled MFA, the private key can be reconstructed simply via Web3Auth Login using Web3Auth SDK by redirecting the user to
@@ -134,8 +134,8 @@ Doing user login with Single Factor Auth consists of the following steps:
 
 - Authenticate user with social login provider.
 - Checking if the user's MFA is enabled.
-- If MFA is not enabled, then login with `@web3auth/single-factor-auth` sdk.
-- If MFA is enabled, then login with `@web3auth/no-modal` sdk.
+- If MFA is not enabled, then login with the `@web3auth/single-factor-auth` SDK.
+- If MFA is enabled, then login with the `@web3auth/no-modal` SDK.
 
 ### Authenticate user with social login provider.
 
@@ -242,7 +242,7 @@ the section [here](/content-hub/guides/single-factor-auth#interacting-with-block
 
 ### Implementing login with MFA.
 
-If the user's MFA is enabled, we can simply log in with `@web3auth/no-modal` SDK.
+If the user's MFA is enabled, we can simply log in with the `@web3auth/no-modal` SDK.
 
 Here are the steps required to log in with MFA:
 
@@ -299,8 +299,8 @@ await web3auth.init();
 #### Login with MFA
 
 ```tsx
-const idToken = "YOUR_ID_TOKEN"; // idToken from firebase login response or from your own backend.
-// if NO, login with web3auth
+const idToken = "YOUR_ID_TOKEN"; // idToken from firebase login response or your backend.
+// If NO, log in with web3auth
 const web3AuthProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {
