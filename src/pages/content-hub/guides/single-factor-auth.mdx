@@ -12,6 +12,7 @@ communityPortalTopicId: 66
 
 import InstallationWithOneKeyFlowFirebase from "@site/src/common/guides/_installation-one-key-flow.mdx";
 import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
+import SetupFirebaseVerifier from "@site/src/common/guides/_setup-firebase-verifier.mdx";
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
 import SEO from "@site/src/components/SEO";
 import TabItem from "@theme/TabItem";
@@ -36,7 +37,7 @@ So before we get started, let's look at the general authentication flow in web3a
 
 When a user logs in with Web3Auth, a user's account can be in two states:
 
-- **Account Without MFA**: When the User logs in with only social login and key is secured by web3auth network.
+- **Account Without MFA**: When the User logs in with only a social login and the key is secured by the web3auth network.
 - **Account With MFA**: When the User enables MFA by adding other shares like password, backup share, device share, etc., to the existing account.
 
 By default, to reconstruct the key in both states, web3auth SDK redirects the user to http://app.openlogin.com. Where all the computation to
@@ -47,7 +48,7 @@ authentication flow described in this guide comes in.
 Currently, there are two ways to achieve this:
 
 - **First** is using the Core Kit approach where the application itself handles both states of the user's accounts.
-- **Second** approach is a hybrid approach where the application handles the user's account state without MFA, and the account state with MFA is
+- The second\*\* approach is a hybrid approach where the application handles the user's account state without MFA, and the account state with MFA is
   handled by web3auth SDK by redirecting to openlogin.
 
 _**In this guide, we will be looking at the second approach**_. If you are curious about the first approach, you can look at our Core Kit docs
@@ -55,7 +56,7 @@ _**In this guide, we will be looking at the second approach**_. If you are curio
 
 :::info note
 
-We will refer this approach as `Single Factor Auth` in the upcoming sections.
+We will refer to this approach as `Single Factor Auth` in the upcoming sections.
 
 :::
 
@@ -77,8 +78,8 @@ npx degit Web3Auth/web3auth-core-kit-examples/single-factor-auth-web/react-evm-s
 Refer to the flow chart above to understand how the `Single Factor Auth` works:
 
 - The first step for the application is to get the user authenticated by social login and get the user's idToken.
-- Once the social login is successful, depending on if the user has enabled **Multi Factor Authentication(MFA)** or not, the key is generated.
-- If the user has not enabled MFA, we use the `@web3auth/single-factor-auth` sdk to retrieve the private key shares from the Web3Auth auth network
+- Once the social login is successful, depending on if the user has enabled **Multi-Factor Authentication(MFA)** or not, the key is generated.
+- If the user has not enabled MFA, we use the `@web3auth/single-factor-auth` SDK to retrieve the private key shares from the Web3Auth auth network
   nodes and reconstruct the private key.
 - If the user has enabled MFA, the private key can be reconstructed simply via Web3Auth Login using Web3Auth SDK by redirecting the user to
   `app.openlogin.com`.
@@ -92,43 +93,31 @@ is _**future compatible**_. If you want to enable MFA in your application in the
 - You should know how Web3Auth works. You can read about it [here](/how-web3auth-works).
 - You should know how to create a basic application on Web3Auth by following this [quck-start](https://web3auth.io/docs/quick-start).
 - We will be using react.js in this app, so basic knowledge of react is expected to follow the guide.
-- A [Firebase](https://console.firebase.google.com) account to be used as Federated Identity Provider.
-- A [Google Developer](https://console.developers.google.com) account to be used as Identity provider for Firebase.
+- A [Firebase](https://console.firebase.google.com) account to be used as a Federated Identity Provider.
+- A [Google Developer](https://console.developers.google.com) account to be used as an Identity provider for Firebase.
 
 ## Setup
 
 ### Setup your JWT provider
 
-- Single Factor Auth will work with any JWT provider. For this particular guide we will use Firebase as our JWT provider.
+- Single Factor Auth will work with any JWT provider. For this particular guide, we will use Firebase as our JWT provider.
 - You can follow the [Firebase guide](/content-hub/guides/firebase#setup-your-firebase-project) to setup Firebase.
 
 ### Setup your Web3Auth Dashboard
 
 <SetupWeb3AuthDashboard />
 
-Below are the steps to setup Firebase as JWT Provider. The same steps can be followed for any other JWT provider.
+Below are the steps to set up Firebase as a JWT Provider. The same steps can be followed for any other JWT provider.
 
-- Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
-  configuration:
+<SetupFirebaseVerifier />
 
-  - Choose a name of your choice for the verifier identifier. `eg. w3a-firebase-verifier`
-  - Select environment: `testnet`, `mainnet`, `aqua`, or `cyan` as per your requirement.
-  - Select `Custom` from the **Login Provider**.
-  - Select `Sub` for the **JWT Verifier ID**.
-  - Enter `https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com` as the JWK endpoint for Firebase's idToken.
-  - JWT validation fields:
-    - iss: `https://securetoken.google.com/<firebase-project-id>`.
-    - aud: `<firebase-project-id>`
-  - Click on `Create` button to create your verifier. It may take up to 10 minutes to deploy verifier on _testnet_. You'll receive an email once it's
-    complete.
-
-  ![Custom Authentication - Create Firebase Verifier](/content-hub/guides/firebase/firebase-custom-verifier.png)
+![Custom Authentication - Create Firebase Verifier](/content-hub/guides/firebase/firebase-custom-verifier.png)
 
 - You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
 
 ### Setting up react project.
 
-- You can simply setup react project using `create-react-app`.
+- You can simply set up react project using `create-react-app`.
 
   ###### Webpack 5 polyfill issues
 
@@ -141,18 +130,18 @@ Below are the steps to setup Firebase as JWT Provider. The same steps can be fol
 
 ## Implementing User Login.
 
-Doing user login with Single Factor Auth consists of following steps:
+Doing user login with Single Factor Auth consists of the following steps:
 
 - Authenticate user with social login provider.
-- Checking if user's mfa is enabled.
-- If mfa is not enabled, then login with `@web3auth/single-factor-auth` sdk.
-- If mfa is enabled, then login with `@web3auth/no-modal` sdk.
+- Checking if the user's MFA is enabled.
+- If MFA is not enabled, then login with `@web3auth/single-factor-auth` sdk.
+- If MFA is enabled, then login with `@web3auth/no-modal` sdk.
 
 ### Authenticate user with social login provider.
 
-In this guide, we are using firebase to authenticate the user's Identity and get the idToken. You can use any other social login provider as well.
+In this guide, we are using Firebase to authenticate the user's Identity and get the idToken. You can use any other social login provider as well.
 
-Following is the code snippet to authenticate a user with firebase and get the `idToken`.
+Following is the code snippet to authenticate a user with Firebase and get the `idToken`.
 
 ```tsx
 // Import the functions you need from the SDK
@@ -191,9 +180,9 @@ const loginRes = await signInWithGoogle();
 const idToken = await loginRes.user.getIdToken(true); // this idToken will be passed to web3auth
 ```
 
-### Checking if user's MFA is enabled and implementing login.
+### Checking if the user's MFA is enabled and implementing login.
 
-Now we have `idToken` and login response from firebase, which will give the user's detail. We will use these two fields to check whether a user has
+Now we have `idToken` and login response from Firebase, which will give the user's details. We will use these two fields to check whether a user has
 already enabled MFA or not.
 
 The check can be made by calling the `connect` method of `@web3auth/single-factor-auth`. This method will throw an error if the user has already
@@ -225,7 +214,7 @@ const chainConfig = {
 const web3auth = new Web3Auth({
   clientId, // Get your Client ID from the Web3Auth Dashboard
   chainConfig,
-  // Available networks are "testnet", "mainnet", "sapphire_mainnet", "aqua".
+  // Available networks are "sapphire_mainnet", "sapphire_devnet".
   web3AuthNetwork: "sapphire_mainnet",
 });
 
@@ -248,14 +237,14 @@ the flow described in the next section.
 
 :::
 
-Now, if you want to know how to login with MFA or upgrade your user's account to MFA, you can refer to the next section. Otherwise, you can skip to
+Now, if you want to know how to log in with MFA or upgrade your user's account to MFA, you can refer to the next section. Otherwise, you can skip to
 the section [here](/content-hub/guides/single-factor-auth#interacting-with-blockchain) to learn how to use blockchain providers.
 
 ### Implementing login with MFA.
 
-If the user's MFA is enabled, we can simply login with `@web3auth/no-modal` SDK.
+If the user's MFA is enabled, we can simply log in with `@web3auth/no-modal` SDK.
 
-Here are the steps required to login with MFA:
+Here are the steps required to log in with MFA:
 
 #### Instantiate Web3Auth sdk
 
@@ -337,8 +326,8 @@ Once enabled by the User, MFA cannot be disabled.
 
 ## How to enable Multi Factor Authentication(MFA) for your users
 
-So far, we have seen how to login with MFA and without MFA. But there might be a case in your application where you want the user to start without MFA
-for easy onboarding. Later, you want your users to enable MFA to enhance security.
+So far, we have seen how to log in with MFA and without MFA. But there might be a case in your application where you want the user to start without
+MFA for easy onboarding. Later, you want your users to enable MFA to enhance security.
 
 The process to enable MFA is quite simple, as described in the code snippet below. Still, the caveat is once the user enables MFA, the user won't be
 able to disable it. So make sure your login screen is flexible enough to cater both with and without MFA flows if you are giving this option in your
@@ -355,7 +344,7 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 
-// initialize web3auth sdk here as described in login with mfa step
+// initialize web3auth sdk here as described in login with MFA step
 
 // ...
 // ...
@@ -368,7 +357,7 @@ const enableMfa = async () => {
   const idToken = await user.getIdToken(true);
 
   // web3auth instance must be initialized before calling this function
-  // as decribed in login with mfa flow above
+  // as described in login with MFA flow above
   const web3AuthProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
     loginProvider: "jwt",
     extraLoginOptions: {
@@ -390,7 +379,7 @@ Once enabled by the User, MFA cannot be disabled.
 
 ## Get the User Profile
 
-Depending upon if the user has enabled MFA or not, we can get the user profile from the provider.
+Depending upon whether the user has enabled MFA or not, we can get the user profile from the provider.
 
 <Tabs
 defaultValue="mfa"
