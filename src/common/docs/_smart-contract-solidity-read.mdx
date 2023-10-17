@@ -17,13 +17,19 @@ import Tabs from "@theme/Tabs";
 
 // web3 is const web3 = new Web3(web3authProvider); from above.
 
-// Get user's Ethereum public address
-const fromAddress = (await web3.eth.getAccounts())[0];
-
-const contractABI =
-  '[{"inputs":[{"internalType":"string","name":"initMessage","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"string","name":"newMessage","type":"string"}],"name":"update","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"message","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}]';
-const contractAddress = "0xD65AF91Bbb4334711A598dFD293596E6dc2d8313#code";
-const contract = new web3.eth.Contract(JSON.parse(contractABI), contractAddress);
+const contractABI = [
+  { inputs: [{ internalType: "string", name: "initMessage", type: "string" }], stateMutability: "nonpayable", type: "constructor" },
+  { inputs: [], name: "message", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
+  {
+    inputs: [{ internalType: "string", name: "newMessage", type: "string" }],
+    name: "update",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
+const contractAddress = "0x04cA407965D60C2B39d892a1DFB1d1d9C30d0334";
+const contract = new web3.eth.Contract(JSON.parse(JSON.stringify(contractABI)), contractAddress);
 
 // Read message from smart contract
 const message = await contract.methods.message().call();
@@ -41,11 +47,19 @@ const message = await contract.methods.message().call();
 
 const signer = provider.getSigner();
 
-const contractABI =
-  '[{"inputs":[{"internalType":"string","name":"initMessage","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"string","name":"newMessage","type":"string"}],"name":"update","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"message","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}]';
-const contractAddress = "0xD65AF91Bbb4334711A598dFD293596E6dc2d8313#code";
-
-const contract = new ethers.Contract(contractAddress, contractABI, signer);
+const contractABI = [
+  { inputs: [{ internalType: "string", name: "initMessage", type: "string" }], stateMutability: "nonpayable", type: "constructor" },
+  { inputs: [], name: "message", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
+  {
+    inputs: [{ internalType: "string", name: "newMessage", type: "string" }],
+    name: "update",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
+const contractAddress = "0x04cA407965D60C2B39d892a1DFB1d1d9C30d0334";
+const contract = new ethers.Contract(contractAddress, JSON.parse(JSON.stringify(contractABI)), signer);
 
 // Read message from smart contract
 const message = await contract.message();
