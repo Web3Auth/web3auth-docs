@@ -25,14 +25,16 @@ class called `whiteLabel`. This parameter takes another object called `WhiteLabe
 
 <TabItem value="table">
 
-| Parameter         | Type               | Mandatory | Description                                       |
-| ----------------- | ------------------ | --------- | ------------------------------------------------- |
-| `name`            | `String`           | No        | Name of your application                          |
-| `logoLight`       | `String`           | No        | Light logo for dark background                    |
-| `logoDark`        | `String`           | No        | Dark logo for light background                    |
-| `defaultLanguage` | `String`           | No        | Default translation language to be used           |
-| `dark`            | `Boolean`          | No        | If true, enables dark mode. Default is light mode |
-| `theme`           | `Map<String, Any>` | No        | Whitelabel theme                                  |
+| Parameter         | Type                          | Mandatory | Description                                         |
+| ----------------- | ----------------------------- | --------- | --------------------------------------------------- |
+| `appName`         | `String`                      | No        | Name of your application                            |
+| `appUrl`          | `String`                      | No        | URL of your application                             |
+| `logoLight`       | `String`                      | No        | Light logo for dark background                      |
+| `logoDark`        | `String`                      | No        | Dark logo for light background                      |
+| `useLogoLoader`   | `Boolean`                     | No        | Use logo as loader, default is false.               |
+| `defaultLanguage` | `Web3Auth.Language?`          | No        | Translation language to be used, default is English |
+| `mode`            | `Web3Auth.ThemeModes?`        | No        | `light`, `dark` or `auto`. Defualt is `auto`        |
+| `theme`           | `Dictionary<string, string>?` | No        | Whitelabel theme                                    |
 
 </TabItem>
 
@@ -40,12 +42,14 @@ class called `whiteLabel`. This parameter takes another object called `WhiteLabe
 
 ```cs
 public class WhiteLabelData {
-    public string name { get; set; }
-    public string logoLight { get; set; }
-    public string logoDark { get; set; }
-    public string defaultLanguage { get; set; } = "en";
-    public bool dark { get; set; } = false;
-    public Dictionary<string, string> theme { get; set; }
+  public string? appName { get; set; }
+  public string? logoLight { get; set; }
+  public string? logoDark { get; set; }
+  public Web3Auth.Language? defaultLanguage { get; set; } = Web3Auth.Language.en;
+  public Web3Auth.ThemeModes? mode { get; set; } = Web3Auth.ThemeModes.light;
+  public Dictionary<string, string>? theme { get; set; }
+  public string? appUrl { get; set; }
+  public bool? useLogoLoader { get; set; } = false;
 }
 ```
 
@@ -66,17 +70,17 @@ void Start()
     network = Web3Auth.Network.TESTNET,
     // highlight-start
     whiteLabel = new WhiteLabelData() {
-      name = "Web3Auth Sample App",
-        logoLight = null,
-        logoDark = null,
-        defaultLanguage = "en",
-        dark = true,
-        theme = new Dictionary < string, string > {
-          {
-            "primary",
-            "#d53f8c"
-          }
+      appName = "Web3Auth Sample App",
+      logoLight = null,
+      logoDark = null,
+      defaultLanguage = "en",
+      mode = "dark",
+      theme = new Dictionary < string, string > {
+        {
+          "primary",
+          "#d53f8c"
         }
+      }
     }
     // highlight-end
 

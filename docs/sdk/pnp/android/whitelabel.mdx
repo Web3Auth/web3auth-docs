@@ -27,27 +27,31 @@ Object called `whiteLabel`. This parameter takes another object called `WhiteLab
 
 <TabItem value="table">
 
-| Parameter         | Type               | Mandatory | Description                                       |
-| ----------------- | ------------------ | --------- | ------------------------------------------------- |
-| `name`            | `String`           | No        | Name of your application                          |
-| `logoLight`       | `String`           | No        | Light logo for dark background                    |
-| `logoDark`        | `String`           | No        | Dark logo for light background                    |
-| `defaultLanguage` | `String`           | No        | Default translation language to be used           |
-| `dark`            | `Boolean`          | No        | If true, enables dark mode. Default is light mode |
-| `theme`           | `Map<String, Any>` | No        | Whitelabel theme                                  |
+| Parameter         | Type               | Mandatory | Description                             |
+| ----------------- | ------------------ | --------- | --------------------------------------- |
+| `appName`         | `String`           | No        | Name of your application                |
+| `appUrl`          | `String`           | No        | Url of your application                 |
+| `logoLight`       | `String`           | No        | Light logo for dark background          |
+| `logoDark`        | `String`           | No        | Dark logo for light background          |
+| `defaultLanguage` | `String`           | No        | Default translation language to be used |
+| `mode`            | `Boolean`          | No        | 3 Theme modes of the application        |
+| `theme`           | `Map<String, Any>` | No        | Whitelabel theme                        |
+| `useLogoLoader`   | `Boolean`          | No        | Loads the logo when loading             |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```kotlin
-data class WhiteLabelData (
-  private var name : String? = null,
-  private var logoLight : String? = null,
-  private var logoDark : String? = null,
-  private var defaultLanguage : String? = "en",
-  private var dark : Boolean? = false,
-  private var theme : HashMap<String, String>? = null
+data class WhiteLabelData(
+    private var appName: String? = null,
+    private var appUrl: String? = null,
+    private var logoLight: String? = null,
+    private var logoDark: String? = null,
+    private var defaultLanguage: Language? = Language.EN,
+    private var mode: ThemeModes? = null,
+    private var useLogoLoader: Boolean? = false,
+    private var theme: HashMap<String, String>? = null
 )
 ```
 
@@ -65,11 +69,13 @@ web3Auth = Web3Auth (
     // Optional whitelabel object
     // highlight-start
     whiteLabel = WhiteLabelData (
-      name = "Web3Auth Sample App",
+      appName = "Web3Auth Sample App",
+      appUrl = null,
       logoLight = null,
       logoDark = null,
-      defaultLanguage = "en", // en, de, ja, ko, zh, es, fr, pt, nl
-      dark = true,
+      defaultLanguage = Language.EN, // EN, DE, JA, KO, ZH, ES, FR, PT, NL
+      ThemeModes = ThemeModes.DARK, // LIGHT, DARK, AUTO
+      useLogoLoader = true,
       theme = hashMapOf (
         "primary" to "#229954"
       )
