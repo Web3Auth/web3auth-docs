@@ -13,12 +13,14 @@ communityPortalTopicId: 58
 import Auth0Prerequisites from "@site/src/common/guides/_auth0-prerequisites.mdx";
 import Auth0Setup from "@site/src/common/guides/_auth0-setup.mdx";
 import Auth0VerifierSetup from "@site/src/common/guides/_auth0-verifier-setup.mdx";
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
+import RNAndroidConfig from "@site/src/common/guides/_rn-android-config.mdx";
+import RNBarePreRequisites from "@site/src/common/guides/_rn-bare-prerequisites.mdx";
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
 import ReactNativeResponse from "@site/src/common/sdk/pnp/react-native/_get-user-info.mdx";
 import SEO from "@site/src/components/SEO";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
 
 <SEO
   title="Using Auth0 with Web3Auth React Native SDK"
@@ -54,18 +56,14 @@ When integrating Web3Auth React Native SDK with Auth0 the flow looks something l
 
 - When a user logs in with `Auth0`, Auth0 sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
 
-- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self-custodial way, resulting in
   easy onboarding for your user to the application.
 
 ## Prerequisites
 
 <Web3AuthPrerequisites />
 
-- React Native Release 0.71 and above (for Bare React Native Workflow)
-
-- iOS Platform Target Version 14 and above
-
-- Android Target SDK Version 31 and above
+<RNBarePreRequisites />
 
 <Auth0Prerequisites />
 
@@ -97,51 +95,7 @@ When integrating Web3Auth React Native SDK with Auth0 the flow looks something l
 
 <TabItem value="android">
 
-- Make sure that the minimum SDK compile version in `build.gradle` is 31 or more.
-
-```gradle title="android/build.gradle"
-buildToolsVersion = "31.0.0"
-minSdkVersion = 21
-# highlight-next-line
-compileSdkVersion = 31
-# highlight-next-line
-targetSdkVersion = 31
-```
-
-- Add the intent filter with `scheme` defined in your `AndroidManifest.xml`
-
-```xml title="android/app/src/main/AndroidManifest.xml"
-<intent-filter>
-  <action android:name="android.intent.action.VIEW" />
-  <category android:name="android.intent.category.DEFAULT" />
-  <category android:name="android.intent.category.BROWSABLE" />
-  # replace with your own scheme
-  # highlight-next-line
-  <data android:scheme="web3authrnexample" />
-</intent-filter>
-```
-
-- SDK version 31 requires you to explicitly define `android:exported="true"` in `AndroidManifest.xml`, check whether it is correctly present or not.
-
-```xml title="android/app/src/main/AndroidManifest.xml"
-<activity
-  android:name=".MainActivity"
-  android:label="@string/app_name"
-  android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
-  android:launchMode="singleTask"
-  android:windowSoftInputMode="adjustResize"
-# highlight-next-line
-  android:exported="true">
-```
-
-- Your `redirectUrl` is your defined scheme following some identifier or your choice. For example, if your scheme is `web3authrnexample`, you can
-  define your `redirectUrl` as `web3authrnexample://openlogin`. Make sure you register this `redirectUrl` in the
-  [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
-
-```tsx title="App.js"
-const scheme = "web3authrnbareexample"; // Or your desired app redirection scheme
-const resolvedRedirectUrl = `${scheme}://openlogin`;
-```
+<RNAndroidConfig />
 
 </TabItem>
 
@@ -171,7 +125,7 @@ cd ios && pod install && cd ..
 To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
 SDKs, please have a look at this [documentation page](/sdk).
 
-For this guide here, we will be talking through the [Web3Auth React Native SDK](/sdk/pnp/react-native).
+For this guide, we will be talking through the [Web3Auth React Native SDK](/sdk/pnp/react-native).
 
 ### Installation
 
@@ -183,9 +137,9 @@ npm install --save @web3auth/react-native-sdk
 
 ### Adding a Web Browser Module
 
-We will also require a `WebBrowser` implementation to allow our JS-based SDK to interact with the native APIs, and there are different extra
-installation steps depending on whether you are using the bare workflow or managed workflow. Since we're using the SDK with a bare workflow React
-Native app, you have to install a `WebBrowser` implementation made by us as a porn from the Expo Web Browser Module.
+We will also require a `WebBrowser` implementation to allow our JS-based SDK to interact with the native APIs, and different extra installation steps
+depending on whether you are using the bare workflow or managed workflow. Since we're using the SDK with a bare workflow React Native app, you have to
+install a `WebBrowser` implementation made by us as a porn from the Expo Web Browser Module.
 
 ##### [`@toruslabs/react-native-web-browser`](https://github.com/torusresearch/react-native-web-browser)
 
@@ -193,9 +147,9 @@ Native app, you have to install a `WebBrowser` implementation made by us as a po
 npm install --save @toruslabs/react-native-web-browser
 ```
 
-### Adding a `EncryptedStorage` Module
+### Adding an `EncryptedStorage` Module
 
-We will also require a `EncryptedStorage` implementation to allow for session management without storing the private key on the device.
+We will also require an `EncryptedStorage` implementation to allow for session management without storing the private key on the device.
 
 ```bash npm2yarn
 npm install --save react-native-encrypted-storage
