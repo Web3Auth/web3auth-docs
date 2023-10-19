@@ -116,6 +116,13 @@ module.exports = {
         },
         {
           type: "category",
+          label: "PnP React Native",
+          collapsed: true,
+          collapsible: true,
+          items: ["pnp/migration-guides/rn-v3-to-v4", "pnp/migration-guides/rn-v4-to-v5"],
+        },
+        {
+          type: "category",
           label: "PnP Android",
           collapsed: true,
           collapsible: true,
