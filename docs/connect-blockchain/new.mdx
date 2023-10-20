@@ -1,0 +1,1066 @@
+### Testnet
+
+#### SKALE Europa Hub Testnet
+
+<Tabs
+  defaultValue="web3"
+  values={[
+    { label: "web3.js", value: "web3" },
+    { label: "ethers.js", value: "ethers" },
+  ]}
+>
+<TabItem value="web3">
+
+<Tabs
+  defaultValue="es"
+  values={[
+    { label: "ES Modules", value: "es" },
+    { label: "TypeScript", value: "ts" },
+    { label: "CommonJS", value: "js" },
+  ]}
+>
+<TabItem value="es">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import Web3 from "web3";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1c6199cc",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-legal-crazy-castor",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Europa Hub Testnet",
+    blockExplorer: "https://staging-legal-crazy-castor.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="ts">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import Web3 from "web3";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1c6199cc",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-legal-crazy-castor",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Europa Hub Testnet",
+    blockExplorer: "https://staging-legal-crazy-castor.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="js">
+
+```tsx
+const { Web3Auth } = require("@web3auth/modal");
+const Web3 = require("web3");
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1c6199cc",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-legal-crazy-castor",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Europa Hub Testnet",
+    blockExplorer: "https://staging-legal-crazy-castor.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+<TabItem value="ethers">
+
+<Tabs
+  defaultValue="es"
+  values={[
+    { label: "ES Modules", value: "es" },
+    { label: "TypeScript", value: "ts" },
+    { label: "CommonJS", value: "js" },
+  ]}
+>
+<TabItem value="es">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { ethers } from "ethers";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1c6199cc",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-legal-crazy-castor",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Europa Hub Testnet",
+    blockExplorer: "https://staging-legal-crazy-castor.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="ts">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { ethers } from "ethers";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1c6199cc",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-legal-crazy-castor",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Europa Hub Testnet",
+    blockExplorer: "https://staging-legal-crazy-castor.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="js">
+
+```tsx
+const { Web3Auth } = require("@web3auth/modal");
+const ethers = require("ethers");
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1c6199cc",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-legal-crazy-castor",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Europa Hub Testnet",
+    blockExplorer: "https://staging-legal-crazy-castor.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+</Tabs>
+
+#### SKALE Calypso NFT Hub Testnet
+
+<Tabs
+  defaultValue="web3"
+  values={[
+    { label: "web3.js", value: "web3" },
+    { label: "ethers.js", value: "ethers" },
+  ]}
+>
+<TabItem value="web3">
+
+<Tabs
+  defaultValue="es"
+  values={[
+    { label: "ES Modules", value: "es" },
+    { label: "TypeScript", value: "ts" },
+    { label: "CommonJS", value: "js" },
+  ]}
+>
+<TabItem value="es">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import Web3 from "web3";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1482a7b2",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-utter-unripe-menkar",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Calypso NFT Hub Testnet",
+    blockExplorer: "https://staging-utter-unripe-menkar.explorer.staging-v3.skalenodes.com/ ",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="ts">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import Web3 from "web3";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1482a7b2",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-utter-unripe-menkar",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Calypso NFT Hub Testnet",
+    blockExplorer: "https://staging-utter-unripe-menkar.explorer.staging-v3.skalenodes.com/ ",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="js">
+
+```tsx
+const { Web3Auth } = require("@web3auth/modal");
+const Web3 = require("web3");
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1482a7b2",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-utter-unripe-menkar",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Calypso NFT Hub Testnet",
+    blockExplorer: "https://staging-utter-unripe-menkar.explorer.staging-v3.skalenodes.com/ ",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+<TabItem value="ethers">
+
+<Tabs
+  defaultValue="es"
+  values={[
+    { label: "ES Modules", value: "es" },
+    { label: "TypeScript", value: "ts" },
+    { label: "CommonJS", value: "js" },
+  ]}
+>
+<TabItem value="es">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { ethers } from "ethers";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1482a7b2",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-utter-unripe-menkar",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Calypso NFT Hub Testnet",
+    blockExplorer: "https://staging-utter-unripe-menkar.explorer.staging-v3.skalenodes.com/ ",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="ts">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { ethers } from "ethers";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1482a7b2",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-utter-unripe-menkar",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Calypso NFT Hub Testnet",
+    blockExplorer: "https://staging-utter-unripe-menkar.explorer.staging-v3.skalenodes.com/ ",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="js">
+
+```tsx
+const { Web3Auth } = require("@web3auth/modal");
+const ethers = require("ethers");
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1482a7b2",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-utter-unripe-menkar",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Calypso NFT Hub Testnet",
+    blockExplorer: "https://staging-utter-unripe-menkar.explorer.staging-v3.skalenodes.com/ ",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+</Tabs>
+
+#### SKALE Nebula Gaming Hub Testnet
+
+<Tabs
+  defaultValue="web3"
+  values={[
+    { label: "web3.js", value: "web3" },
+    { label: "ethers.js", value: "ethers" },
+  ]}
+>
+<TabItem value="web3">
+
+<Tabs
+  defaultValue="es"
+  values={[
+    { label: "ES Modules", value: "es" },
+    { label: "TypeScript", value: "ts" },
+    { label: "CommonJS", value: "js" },
+  ]}
+>
+<TabItem value="es">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import Web3 from "web3";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1dfd2731",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-faint-slimy-achird",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Nebula Gaming Hub Testnet",
+    blockExplorer: "https://staging-faint-slimy-achird.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="ts">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import Web3 from "web3";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1dfd2731",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-faint-slimy-achird",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Nebula Gaming Hub Testnet",
+    blockExplorer: "https://staging-faint-slimy-achird.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="js">
+
+```tsx
+const { Web3Auth } = require("@web3auth/modal");
+const Web3 = require("web3");
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1dfd2731",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-faint-slimy-achird",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Nebula Gaming Hub Testnet",
+    blockExplorer: "https://staging-faint-slimy-achird.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+<TabItem value="ethers">
+
+<Tabs
+  defaultValue="es"
+  values={[
+    { label: "ES Modules", value: "es" },
+    { label: "TypeScript", value: "ts" },
+    { label: "CommonJS", value: "js" },
+  ]}
+>
+<TabItem value="es">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { ethers } from "ethers";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1dfd2731",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-faint-slimy-achird",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Nebula Gaming Hub Testnet",
+    blockExplorer: "https://staging-faint-slimy-achird.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="ts">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { ethers } from "ethers";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1dfd2731",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-faint-slimy-achird",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Nebula Gaming Hub Testnet",
+    blockExplorer: "https://staging-faint-slimy-achird.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="js">
+
+```tsx
+const { Web3Auth } = require("@web3auth/modal");
+const ethers = require("ethers");
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1dfd2731",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-faint-slimy-achird",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Nebula Gaming Hub Testnet",
+    blockExplorer: "https://staging-faint-slimy-achird.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+</Tabs>
+
+#### SKALE Titan Community Hub
+
+<Tabs
+  defaultValue="web3"
+  values={[
+    { label: "web3.js", value: "web3" },
+    { label: "ethers.js", value: "ethers" },
+  ]}
+>
+<TabItem value="web3">
+
+<Tabs
+  defaultValue="es"
+  values={[
+    { label: "ES Modules", value: "es" },
+    { label: "TypeScript", value: "ts" },
+    { label: "CommonJS", value: "js" },
+  ]}
+>
+<TabItem value="es">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import Web3 from "web3";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x5a79c44e",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-aware-chief-gianfar",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Titan Community Hub Testnet",
+    blockExplorer: "https://staging-aware-chief-gianfar.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="ts">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import Web3 from "web3";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x5a79c44e",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-aware-chief-gianfar",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Titan Community Hub Testnet",
+    blockExplorer: "https://staging-aware-chief-gianfar.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="js">
+
+```tsx
+const { Web3Auth } = require("@web3auth/modal");
+const Web3 = require("web3");
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x5a79c44e",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-aware-chief-gianfar",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Titan Community Hub Testnet",
+    blockExplorer: "https://staging-aware-chief-gianfar.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+<TabItem value="ethers">
+
+<Tabs
+  defaultValue="es"
+  values={[
+    { label: "ES Modules", value: "es" },
+    { label: "TypeScript", value: "ts" },
+    { label: "CommonJS", value: "js" },
+  ]}
+>
+<TabItem value="es">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { ethers } from "ethers";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x5a79c44e",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-aware-chief-gianfar",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Titan Community Hub Testnet",
+    blockExplorer: "https://staging-aware-chief-gianfar.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="ts">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { ethers } from "ethers";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x5a79c44e",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-aware-chief-gianfar",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Titan Community Hub Testnet",
+    blockExplorer: "https://staging-aware-chief-gianfar.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="js">
+
+```tsx
+const { Web3Auth } = require("@web3auth/modal");
+const ethers = require("ethers");
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x5a79c44e",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-aware-chief-gianfar",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Titan Community Hub Testnet",
+    blockExplorer: "https://staging-aware-chief-gianfar.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+</Tabs>
+
+#### SKALE Chaos Testnet
+
+<Tabs
+  defaultValue="web3"
+  values={[
+    { label: "web3.js", value: "web3" },
+    { label: "ethers.js", value: "ethers" },
+  ]}
+>
+<TabItem value="web3">
+
+<Tabs
+  defaultValue="es"
+  values={[
+    { label: "ES Modules", value: "es" },
+    { label: "TypeScript", value: "ts" },
+    { label: "CommonJS", value: "js" },
+  ]}
+>
+<TabItem value="es">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import Web3 from "web3";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x50877ed6",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-fast-active-bellatrix",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Chaos Testnet",
+    blockExplorer: "https://staging-fast-active-bellatrix.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="ts">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import Web3 from "web3";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x50877ed6",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-fast-active-bellatrix",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Chaos Testnet",
+    blockExplorer: "https://staging-fast-active-bellatrix.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="js">
+
+```tsx
+const { Web3Auth } = require("@web3auth/modal");
+const Web3 = require("web3");
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x50877ed6",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-fast-active-bellatrix",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Chaos Testnet",
+    blockExplorer: "https://staging-fast-active-bellatrix.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const web3 = new Web3(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+<TabItem value="ethers">
+
+<Tabs
+  defaultValue="es"
+  values={[
+    { label: "ES Modules", value: "es" },
+    { label: "TypeScript", value: "ts" },
+    { label: "CommonJS", value: "js" },
+  ]}
+>
+<TabItem value="es">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { ethers } from "ethers";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x50877ed6",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-fast-active-bellatrix",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Chaos Testnet",
+    blockExplorer: "https://staging-fast-active-bellatrix.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="ts">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { ethers } from "ethers";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x50877ed6",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-fast-active-bellatrix",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Chaos Testnet",
+    blockExplorer: "https://staging-fast-active-bellatrix.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="js">
+
+```tsx
+const { Web3Auth } = require("@web3auth/modal");
+const ethers = require("ethers");
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x50877ed6",
+    rpcTarget: "https://staging-v3.skalenodes.com/v1/staging-fast-active-bellatrix",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "SKALE Chaos Testnet",
+    blockExplorer: "https://staging-fast-active-bellatrix.explorer.staging-v3.skalenodes.com/",
+    ticker: "ETH",
+    tickerName: "ETH",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+</Tabs>

@@ -235,6 +235,8 @@ module.exports = {
             "connect-blockchain/klaytn",
             "connect-blockchain/flare",
             "connect-blockchain/songbird",
+            "connect-blockchain/zkatana",
+            "connect-blockchain/skale",
           ],
           collapsible: true,
           collapsed: false,
