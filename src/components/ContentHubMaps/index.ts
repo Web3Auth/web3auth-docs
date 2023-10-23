@@ -405,6 +405,28 @@ export const referenceMap = [
     order: 1,
     link: "/connect-blockchain/songbird",
   },
+  {
+    title: "Integrate Web3Auth with the zKatana Blockchain",
+    description: "Learn how to add a non custodial social login to the zKatana Blockchain",
+    image: "content-hub/guides/banners/zkatana.png",
+    type: "REFERENCE",
+    tags: ["zkatana", "evm", "@web3auth/modal", "@web3auth/no-modal"],
+    date: "20th Oct 2023",
+    author: "Web3Auth Team",
+    order: 1,
+    link: "/connect-blockchain/zkatana",
+  },
+  {
+    title: "Integrate Web3Auth with the Skale Blockchain",
+    description: "Learn how to add a non custodial social login to the Skale Blockchain",
+    image: "content-hub/guides/banners/skale.png",
+    type: "REFERENCE",
+    tags: ["skale", "evm", "@web3auth/modal", "@web3auth/no-modal"],
+    date: "20th Oct 2023",
+    author: "Web3Auth Team",
+    order: 1,
+    link: "/connect-blockchain/skale",
+  },
 ];
 
 export const featuresMap = [

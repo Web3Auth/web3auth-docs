@@ -1,17 +1,17 @@
 ---
-title: PnP React Native SDK - v3 to v4
+title: PnP React Native - v3 to v4
 displayed_sidebar: docs
 description: "PnP React Native SDK - v3 to v4 | Documentation - Web3Auth"
 ---
 
 ## Third parameter to web3auth constructor
 
-In order to introduce session management without storing the private key in the device, a new parameter is introduced to the web3auth constructor.
-Thhis is the `Storage` parameter.
+To introduce session management without storing the private key in the device, a new parameter is introduced to the web3auth constructor. This is the
+`Storage` parameter.
 
-### In Expo managed workflow
+### In Expo-managed workflow
 
-When using our SDK with a Expo-based React Native app (aka managed workflow), you have to install the `expo-web-browser` package as a `WebBrowser`
+When using our SDK with an Expo-based React Native app (aka managed workflow), you have to install the `expo-web-browser` package as a `WebBrowser`
 implementation. You also need to install `expo-secure-store` to store the user's session.
 
 ```bash
@@ -31,7 +31,7 @@ const web3auth = new Web3Auth(WebBrowser, SecureStore, {
 });
 ```
 
-### In Bare react native workflow
+### In Bare React native workflow
 
 Install Web3Auth's React Native SDK in your React Native project. When using our SDK with a bare workflow React Native app, you have to install a
 `WebBrowser` implementation made by us and a `Storage` implementation provided by react-native.
@@ -57,7 +57,7 @@ const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
 
 ### For Bare React Native workflow
 
-Add `globals.js` file to your project and import it in your `index.js` file.
+Add `globals.js` file to your project and import it into your `index.js` file.
 
 ```tsx title="globals.js"
 global.Buffer = require("buffer").Buffer;
@@ -140,7 +140,7 @@ module.exports = (async () => {
 
 ### For Expo managed workflow
 
-Before running `npm run ios` or `npm run android` in your Expo managed workflow project, run the following command.
+Before running `npm run ios` or `npm run android` in your Expo-managed workflow project, run the following command.
 
 ```bash
 npx expo prebuild
@@ -149,7 +149,7 @@ npx expo prebuild
 This generates the native folder structure for your project, just like you would have in a bare workflow project. This is required for the polyfills
 to work.
 
-Create a `globals.js` file in your project and import it in your `index.js` file.
+Create a `globals.js` file in your project and import it into your `index.js` file.
 
 ```tsx title="globals.js"
 global.Buffer = require("buffer").Buffer;
@@ -174,7 +174,7 @@ Then add this line to your `index.js` file.
 import "./globals";
 ```
 
-Once you have done the above, ceate a new metro.config.js file in your project and add the following to it.
+Once you have done the above, create a new metro.config.js file in your project and add the following to it.
 
 :::info
 
@@ -259,4 +259,4 @@ declare class Web3Auth implements IWeb3Auth {
 export default Web3Auth;
 ```
 
-Checkout our react-native PnP examples in PnP examples repo to know how to use the new SDK methods.
+Check out our react-native PnP examples in the PnP examples repo to know how to use the new SDK methods.
