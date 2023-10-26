@@ -253,6 +253,7 @@ module.exports = {
             "connect-blockchain/aptos",
             "connect-blockchain/cosmos",
             "connect-blockchain/near",
+            "connect-blockchain/polkadot",
           ],
           collapsible: true,
           collapsed: false,
