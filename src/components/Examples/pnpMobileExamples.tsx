@@ -6,10 +6,10 @@ export const PNPAndroid = [
     description: "",
     tiles: [
       {
-        key: "android-example",
-        title: "Android Basic Example",
+        key: "android-quick-start",
+        title: "Android QuickStart Example",
         icon: "logo-android.png",
-        path: `${baseURL}android/android-example`,
+        path: `${baseURL}android/android-quick-start`,
       },
       {
         key: "android-auth0-example",
@@ -24,10 +24,10 @@ export const PNPAndroid = [
         path: `${baseURL}android/android-firebase-example`,
       },
       {
-        key: "android-google-emailpasswordless-example",
+        key: "android-android-aggregate-verifier-example",
         title: "Android + Aggregate Verifier",
         icon: "logo-google.png",
-        path: `${baseURL}android/android-google-emailpasswordless-example`,
+        path: `${baseURL}android/android-aggregate-verifier-example`,
       },
     ],
   },
@@ -39,10 +39,10 @@ export const PNPIos = [
     description: "",
     tiles: [
       {
-        key: "ios-example",
-        title: "iOS Basic Example",
+        key: "ios-quick-start",
+        title: "iOS QuickStart Example",
         icon: "logo-apple.png",
-        path: `${baseURL}ios/ios-example`,
+        path: `${baseURL}ios/ios-quick-start`,
       },
       {
         key: "ios-auth0-example",
@@ -57,10 +57,10 @@ export const PNPIos = [
         path: `${baseURL}ios/ios-firebase-example`,
       },
       {
-        key: "ios-aggregate-example",
+        key: "ios-aggregate-verifier-example",
         title: "iOS + Aggregate Verifier",
         icon: "logo-google.png",
-        path: `${baseURL}ios/ios-aggregate-example`,
+        path: `${baseURL}ios/ios-aggregate-verifier-example`,
       },
     ],
   },
@@ -72,10 +72,10 @@ export const PNPRN = [
     description: "",
     tiles: [
       {
-        key: "rn-bare-example",
-        title: "React Native Bare Basic Example",
+        key: "rn-bare-quick-start",
+        title: "React Native Bare QuickStart Example",
         icon: "logo-react.png",
-        path: `${baseURL}react-native/rn-bare-example`,
+        path: `${baseURL}react-native/rn-bare-quick-start`,
       },
       {
         key: "rn-bare-auth0-example",
@@ -90,28 +90,16 @@ export const PNPRN = [
         path: `${baseURL}react-native/rn-bare-firebase-example`,
       },
       {
-        key: "rn-bare-google-emailpasswordless-example",
+        key: "rn-bare-aggregate-verifier-example",
         title: "React Native Bare + Aggregate Verifier",
         icon: "logo-google.png",
-        path: `${baseURL}react-native/rn-bare-google-emailpasswordless-example`,
+        path: `${baseURL}react-native/rn-bare-aggregate-verifier-example`,
       },
       {
         key: "rn-expo-example",
         title: "React Native Expo Basic Example",
         icon: "logo-react.png",
         path: `${baseURL}react-native/rn-expo-example`,
-      },
-      {
-        key: "rn-expo-auth0-example",
-        title: "React Native Expo + Auth0",
-        icon: "logo-auth0.png",
-        path: `${baseURL}react-native/rn-expo-auth0-example`,
-      },
-      {
-        key: "rn-expo-google-emailpasswordless-example",
-        title: "React Native Expo + Aggregate Verifier",
-        icon: "logo-google.png",
-        path: `${baseURL}react-native/rn-expo-google-emailpasswordless-example`,
       },
     ],
   },
@@ -123,10 +111,10 @@ export const PNPFlutter = [
     description: "",
     tiles: [
       {
-        key: "flutter-example",
-        title: "Flutter Basic Example",
+        key: "flutter-quick-start",
+        title: "Flutter QuickStart Example",
         icon: "logo-flutter.png",
-        path: `${baseURL}flutter/flutter-example`,
+        path: `${baseURL}flutter/flutter-quick-start`,
       },
       {
         key: "flutter-auth0-example",
@@ -141,10 +129,10 @@ export const PNPFlutter = [
         path: `${baseURL}flutter/flutter-firebase-example`,
       },
       {
-        key: "flutter-google-emailpasswordless-example",
+        key: "flutter-aggregate-verifier-example",
         title: "Flutter + Aggregate Verifier",
         icon: "logo-google.png",
-        path: `${baseURL}flutter/flutter-google-emailpasswordless-example`,
+        path: `${baseURL}flutter/flutter-aggregate-verifier-example`,
       },
     ],
   },
