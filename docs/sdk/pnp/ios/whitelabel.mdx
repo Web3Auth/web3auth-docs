@@ -25,14 +25,16 @@ For defining custom UI, branding, and translations for your brand app, you just 
 
 <TabItem value="table">
 
-| Parameter         | Type               | Mandatory | Description                                       |
-| ----------------- | ------------------ | --------- | ------------------------------------------------- |
-| `name`            | `String`           | No        | Name of your application                          |
-| `logoLight`       | `String`           | No        | Light logo for dark background                    |
-| `logoDark`        | `String`           | No        | Dark logo for light background                    |
-| `defaultLanguage` | `String`           | No        | Default translation language to used              |
-| `dark`            | `Bool`             | No        | If true, enables dark mode. Default is light mode |
-| `theme`           | `[String, String]` | No        | Whitelabel theme                                  |
+| Parameter         | Type               | Mandatory | Description                             |
+| ----------------- | ------------------ | --------- | --------------------------------------- |
+| `appName`         | `String`           | No        | Name of your application                |
+| `logoLight`       | `String`           | No        | Light logo for dark background          |
+| `logoDark`        | `String`           | No        | Dark logo for light background          |
+| `defaultLanguage` | `String`           | No        | Default translation language to be used |
+| `mode`            | `Bool`             | No        | 3 Theme modes of the application        |
+| `theme`           | `[String, String]` | No        | Whitelabel theme                        |
+| `appUrl`          | `String`           | No        | Url of your application                 |
+| `useLogoLoader`   | `Bool`             | No        | Loads the logo when loading             |
 
 </TabItem>
 
@@ -40,12 +42,14 @@ For defining custom UI, branding, and translations for your brand app, you just 
 
 ```swift
 public struct W3AWhiteLabelData: Codable {
-    let name: String?
+    let appName: String?
     let logoLight: String?
     let logoDark: String?
-    let defaultLanguage: String?
-    let dark: Bool?
+    let defaultLanguage: Language?
+    let mode: ThemeModes?
     let theme: [String: String]?
+    let appUrl: String?
+    let useLogoLoader: Bool?
 }
 ```
 
@@ -60,11 +64,11 @@ web3Auth = await Web3Auth(
     network: .testnet,
     // highlight-start
     whiteLabel: W3AWhiteLabelData(
-      name: "Web3Auth Stub",
+      appName: "Web3Auth Stub",
       logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
       logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
-      defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
-      dark: true,
+      defaultLanguage: .en, // en, de, ja, ko, zh, es, fr, pt, nl
+      mode: .dark
       theme: ["primary": "#d53f8c"])
     ))
     // highlight-end
