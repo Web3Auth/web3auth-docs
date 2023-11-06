@@ -10,12 +10,6 @@ device and also to recover their account if they lose their original device.
 
 You can set the mfaLevel within the `loginParams` to customize when mfa screen should be shown to user. It currently accepts 4 values:
 
-- **`default`** - Setting the mfaLevel to default will present the MFA screen to user on every third login. `mfaLevel = MFALevel.DEFAULT`
-- **`optional`** - Setting mfaLevel to optional will present the MFA screen to user on every login but user will have the option to skip it.
-  `mfaLevel = MFALevel.OPTIONAL`
-- **`mandatory`** - Setting mfaLevel to mandatory will make it mandatory for user to setup MFA after login. `mfaLevel = MFALevel.MANDATORY`
-- **`none`** - Setting mfaLevel to none will skip the mfa setup screen totally. `mfaLevel = MFALevel.NONE`
-
 ```swift
 Web3Auth().login(W3ALoginParams(loginProvider: provider, mfaLevel = MFALevel.MANDATORY))
 ```
@@ -54,9 +48,15 @@ class ViewModel: ObservableObject {
                 let result = try await Web3Auth().login(
 					W3ALoginParams(
 						loginProvider: provider, // can be .GOOGLE, .FACEBOOK, .APPLE etc
-						// highlight-next-line
-                        mfaLevel: MFALevel.MANDATORY
-					))
+						// highlight-start
+                        mfaSettings: MfaSettings(
+                            deviceShareFactor: .init(enable: true, priority: 1),
+                            backUpShareFactor: .init(enable: true, priority: 2),
+                            socialBackupFactor: .init(enable: true, priority: 3),
+                            passwordFactor: .init(enable: true, priority: 4)
+                            )
+                        // highlight-end
+                    ))
                 await MainActor.run(body: {
                     user = result
                     loggedIn = true
