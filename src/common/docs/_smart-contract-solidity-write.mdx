@@ -32,11 +32,8 @@ const contractAddress = "0x04cA407965D60C2B39d892a1DFB1d1d9C30d0334";
 const contract = new web3.eth.Contract(JSON.parse(JSON.stringify(contractABI)), contractAddress);
 
 // Write message to smart contract
-// @ts-ignore
 const receipt = await contract.methods.update("W3A").send({
   from: (await web3.eth.getAccounts())[0],
-  maxFeePerGas: "300",
-  maxPriorityFeePerGas: "10",
 });
 ```
 
@@ -50,7 +47,7 @@ const receipt = await contract.methods.update("W3A").send({
 
 // provider is const provider = new ethers.providers.Web3Provider(web3authProvider); from above.
 
-const signer = provider.getSigner();
+const signer = await provider.getSigner();
 
 const contractABI = [
   { inputs: [{ internalType: "string", name: "initMessage", type: "string" }], stateMutability: "nonpayable", type: "constructor" },
