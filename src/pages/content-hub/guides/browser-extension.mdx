@@ -3,7 +3,7 @@ title: Building a Browser Extension with Web3Auth
 image: "content-hub/guides/banners/chrome-extension.png"
 description: Learn how to build a Browser Extension with Web3Auth
 type: guide
-tags: [web, "@web3auth/no-modal", browser extension, chrome, react, ethereum]
+tags: [web, "@web3auth/no-modal", "@web3auth/modal", browser extension, chrome, react, ethereum]
 date: January 18, 2023
 author: Web3Auth Team
 order: 17
@@ -16,6 +16,8 @@ import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisit
 import SEO from "@site/src/components/SEO";
 import ExtensionLoggedInImage from "@site/static/content-hub/guides/browser-extension/extension-logged-in.png";
 import ExtensionImage from "@site/static/content-hub/guides/browser-extension/extension-preview.png";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
 
 <SEO
   title="Building a Browser Extension with Web3Auth"
@@ -45,8 +47,8 @@ End product of this guide:
 
 <img style={{ display: "block", maxHeight: "400px", margin: "20px auto" }} alt="" src={ExtensionImage} />
 
-Once logged in you can have all the features Web3Auth provides and along with blockchain libraries like ethers.js, web3.js, etc you can interact with
-the blockchain.
+Once logged in you can have all the features Web3Auth provides and along with blockchain libraries like `ethers.js`, `web3.js`, etc you can interact
+with the blockchain.
 
 <img style={{ display: "block", maxHeight: "400px", margin: "20px auto" }} alt="" src={ExtensionLoggedInImage} />
 
@@ -63,7 +65,7 @@ in the [SDKs](/sdk/pnp/web) section. The login flow of the user is as follows:
 
 - [Chrome Extension](https://developer.chrome.com/docs/extensions/mv3/getstarted/)
 
-We will be building the chrome extension with `create-react-app` in this guide.
+We will be building the Chrome extension with `create-react-app` in this guide.
 
 ## Setup
 
@@ -73,7 +75,7 @@ We will be building the chrome extension with `create-react-app` in this guide.
 
 :::note
 
-Once you have the build folder ready for the extension, you would need to go to `chrome://extensions/` and load the unpacked extension from the build
+Once you have the build folder ready for the extension, you will need to go to `chrome://extensions/` and load the unpacked extension from the build
 folder. That will give you the extension ID which you would need to add to the Web3Auth Dashboard.
 
 Add `chrome-extension://<extension-id>` to the Whitelisted URLs in the Web3Auth Dashboard.
@@ -84,48 +86,137 @@ Add `chrome-extension://<extension-id>` to the Whitelisted URLs in the Web3Auth 
 
 ### Installation
 
-Install `@web3auth/no-modal`, `@web3auth/openlogin-adapter` & `@web3auth/base`
+<Tabs
+defaultValue="modal"
+values={[
+  { label: "NoModal", value: "no-modal" },
+  { label: "Modal", value: "modal" },
+]}
+>
+<TabItem value="no-modal">
+
+Install `@web3auth/no-modal`, `@web3auth/openlogin-adapter`, `@web3auth/ethereum-provider` & `@web3auth/base`
 
 ```bash npm2yarn
-npm install @web3auth/no-modal @web3auth/base @web3auth/openlogin-adapter
+npm install @web3auth/no-modal @web3auth/base @web3auth/openlogin-adapter @web3auth/ethereum-provider
 ```
 
 #### Import the Web3Auth Modules into your project
 
 ```tsx title="src/App.tsx"
 import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/no-modal";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 ```
 
+</TabItem>
+
+<TabItem value="modal">
+
+Install `@web3auth/modal` & `@web3auth/base`
+
+```bash npm2yarn
+npm install @web3auth/modal @web3auth/base
+```
+
+#### Import the Web3Auth Modules into your project
+
+```tsx title="src/App.tsx"
+import { useEffect, useState } from "react";
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
+```
+
+</TabItem>
+
+</Tabs>
+
 #### Fixing Webpack 5 issues
 
-While using create-react-app, you may run into issues building. This is because NodeJS polyfills are not included in the latest version of webpack 5.
-To solve this, please have a look at this [troubleshooting page](https://docs.web3auth.io/troubleshooting/webpack-issues) where we have added the
-resolution.
+While using create-react-app, you may run into issues building. This is because NodeJS polyfills are not included in the latest version of Webpack 5.
+To solve this, please have a look at this [troubleshooting page](/troubleshooting/webpack-issues) where we have added the resolution.
 
 ### Initialization
 
-Create the Web3Auth instance and configure the Openlogin adapter as per your requirements.
+Create the Web3Auth instance and configure the Openlogin adapter, in case of no-modal SDK, as per your requirements.
+
+<Tabs
+defaultValue="modal"
+values={[
+  { label: "NoModal", value: "no-modal" },
+  { label: "Modal", value: "modal" },
+]}
+>
+<TabItem value="no-modal">
 
 ```tsx title="src/App.tsx"
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
 const web3auth = new Web3AuthNoModal({
   clientId,
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x13881",
-    rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
-  },
+  chainConfig,
   web3AuthNetwork: "sapphire_mainnet",
 });
 
-// refer to https://web3auth.io/docs/sdk/pnp/web/adapters/openlogin for learning more about configuring the adapter
-const openloginAdapter = new OpenloginAdapter();
+// refer to https://web3auth.io/docs/sdk/pnp/web/adapters/openlogin to learn more about configuring the adapter
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+const openloginAdapter = new OpenloginAdapter({
+  privateKeyProvider,
+});
+
 web3auth.configureAdapter(openloginAdapter);
+
+await web3auth.init();
 ```
 
+</TabItem>
+
+<TabItem value="modal">
+
+```tsx title="src/App.tsx"
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig,
+  web3AuthNetwork: "sapphire_mainnet",
+});
+
+await web3auth.initModal();
+```
+
+</TabItem>
+</Tabs>
+
 ### Authentication
+
+<Tabs
+defaultValue="modal"
+values={[
+  { label: "NoModal", value: "no-modal" },
+  { label: "Modal", value: "modal" },
+]}
+>
+<TabItem value="no-modal">
 
 Once initialized, you can use the `connectTo` method to authenticate the user.
 
@@ -134,6 +225,19 @@ const provider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "google",
 });
 ```
+
+</TabItem>
+
+Once initialized, you can use the `connect` method to authenticate the user.
+
+<TabItem value="modal">
+
+```tsx
+const web3authProvider = await web3auth.connect();
+```
+
+</TabItem>
+</Tabs>
 
 ### Get the User Profile
 

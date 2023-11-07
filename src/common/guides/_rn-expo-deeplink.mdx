@@ -1,0 +1,24 @@
+- Adding URL scheme to `app.json`
+
+To allow the Expo-based SDK to work with exported Expo Android apps, you need to add the designated scheme into `app.json`
+
+```json title="app.json"
+{
+  "expo": {
+    "scheme": "web3authexpoexample" // replace with your own scheme
+  }
+}
+```
+
+- For constructing your `redirectUrl`, you'll need to use the `expo-linking`, which will help you generate a `redirectUrl` for your app. Make sure you
+  register that URL in the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
+
+```tsx title="App.js"
+import Constants, { AppOwnership } from "expo-constants";
+import * as Linking from "expo-linking";
+
+const resolvedRedirectUrl =
+  Constants.appOwnership == AppOwnership.Expo || Constants.appOwnership == AppOwnership.Guest
+    ? Linking.createURL("web3auth", {})
+    : Linking.createURL("web3auth", { scheme: scheme });
+```
