@@ -114,9 +114,6 @@ Use getUserInfo() to get the user info of the user.
 
 ```dart title="Usage"
 Future<void> initPlatformState() async {
-  final themeMap = HashMap<String, String>();
-  themeMap['primary'] = "#229954";
-
   Uri redirectUrl;
   if (Platform.isAndroid) {
     redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
@@ -132,9 +129,9 @@ Future<void> initPlatformState() async {
     clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
     redirectUrl: redirectUrl,
-    whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
     ));
+
+  await Web3AuthFlutter.initialize();
 }
 
 // Login
@@ -150,8 +147,6 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 ```dart title="Usage"
 Future<void> initPlatformState() async {
-  final themeMap = HashMap<String, String>();
-  themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -168,9 +163,9 @@ Future<void> initPlatformState() async {
     clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
     redirectUrl: redirectUrl,
-    whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
     ));
+
+  await Web3AuthFlutter.initialize();
 }
 
 // Login
@@ -186,8 +181,6 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 ```dart title="Usage"
 Future<void> initPlatformState() async {
-  final themeMap = HashMap<String, String>();
-  themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -204,9 +197,9 @@ Future<void> initPlatformState() async {
     clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
     redirectUrl: redirectUrl,
-    whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
     ));
+
+  await Web3AuthFlutter.initialize();
 }
 
 // Login
@@ -222,8 +215,6 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 ```dart title="Usage"
 Future<void> initPlatformState() async {
-  final themeMap = HashMap<String, String>();
-  themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -240,9 +231,9 @@ Future<void> initPlatformState() async {
     clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
     redirectUrl: redirectUrl,
-    whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
     ));
+
+  await Web3AuthFlutter.initialize();
 }
 
 // Login
@@ -258,8 +249,8 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 ```dart title="Usage"
 Future<void> initPlatformState() async {
-  final themeMap = HashMap<String, String>();
-  themeMap['primary'] = "#229954";
+  final additionalParams = HashMap<String, String>();
+  additionalParams['flow_type'] = "link"; // default is 'code'
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -276,16 +267,16 @@ Future<void> initPlatformState() async {
     clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
     redirectUrl: redirectUrl,
-    whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
     ));
+
+  await Web3AuthFlutter.initialize();
 }
 
 // Login
 final Web3AuthResponse response = await Web3AuthFlutter.login(
   // highlight-start
     LoginParams(loginProvider: Provider.email_passwordless,
-      extraLoginOptions: ExtraLoginOptions(login_hint: "hello@web3auth.io")));
+      extraLoginOptions: ExtraLoginOptions(login_hint: "hello@web3auth.io", additionalParams: additionalParams)));
   // highlight-end
 ```
 
@@ -295,14 +286,13 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 ```dart title="Usage"
 Future<void> initPlatformState() async {
-  final themeMap = HashMap<String, String>();
-  themeMap['primary'] = "#229954";
 
   // highlight-start
   final loginConfig = new HashMap<String, LoginConfigItem>();
   loginConfig['jwt'] = LoginConfigItem(
     verifier: "verifier-name", // get it from web3auth dashboard
     typeOfLogin: TypeOfLogin.jwt,
+    client_id: "CLIENT_ID", // Auth0, Google, Facebook, Twitch, Discord or Web3Auth Client ID
   );
   // highlight-end
 
@@ -320,12 +310,12 @@ Future<void> initPlatformState() async {
   await Web3AuthFlutter.init(Web3AuthOptions(
     clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
-    redirectUrl: redirectUrl,
-    whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap),
+    redirectUrl: redirectUrl,,
     // highlight-next-line
     loginConfig: loginConfig
     ));
+
+  await Web3AuthFlutter.initialize();
 }
 
 // Login
@@ -496,8 +486,6 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
 
 ```dart title="Usage"
 Future<void> initPlatformState() async {
-  final themeMap = HashMap<String, String>();
-  themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -513,10 +501,9 @@ Future<void> initPlatformState() async {
   await Web3AuthFlutter.init(Web3AuthOptions(
     clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
-    redirectUrl: redirectUrl,
-    whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
-    ));
+    redirectUrl: redirectUrl));
+
+  await Web3AuthFlutter.initialize();
 }
 
 final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
@@ -532,8 +519,6 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
 
 ```dart title="Usage"
 Future<void> initPlatformState() async {
-  final themeMap = HashMap<String, String>();
-  themeMap['primary'] = "#229954";
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -549,10 +534,9 @@ Future<void> initPlatformState() async {
   await Web3AuthFlutter.init(Web3AuthOptions(
     clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
-    redirectUrl: redirectUrl,
-    whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
-    ));
+    redirectUrl: redirectUrl));
+
+  await Web3AuthFlutter.initialize();
 }
 
 final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
@@ -576,7 +560,7 @@ await Web3AuthFlutter.logout();
 
 #### Response
 
-A void object is returned on successfull logout otherwise an error is thrown
+A void object is returned on successful logout otherwise an error is thrown
 
 :::tip sample-app
 

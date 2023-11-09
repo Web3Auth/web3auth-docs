@@ -6,10 +6,12 @@ type: guide
 tags: [web, "@web3auth/no-modal", google, custom authentication, react, ethereum]
 date: July 18, 2022
 author: Web3Auth Team
-order: 9
+order: 11
 communityPortalTopicId: 54
 ---
 
+import CreatingVerifiers from "@site/src/common/guides/_creating-verifiers.mdx";
+import GoogleAppSetup from "@site/src/common/guides/_google-app-setup.mdx";
 import InitializationIntro from "@site/src/common/guides/_initialization-intro.mdx";
 import InitializationWeb3Auth from "@site/src/common/guides/_initialization-web3auth.mdx";
 import Installation from "@site/src/common/guides/_installation.mdx";
@@ -28,7 +30,7 @@ import SEO from "@site/src/components/SEO";
   slug="/content-hub/guides/google"
 />
 
-This guide will cover the basics of how to set up your Web3Auth SDK and Google Login for the custom authentication and provide you the steps on how to
+This guide will cover the basics of how to set up your Web3Auth SDK and Google Login for custom authentication and provide you the steps on how to
 develop a basic web application on the Ethereum blockchain.
 
 **Live Demo:** https://web3auth-core-google-demo.vercel.app
@@ -47,7 +49,7 @@ When integrating Web3Auth with Google Login the flow looks something like this:
 
 - When a user logs in with `Google`, Google sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
 
-- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self-custodial way, resulting in
   easy onboarding for your user to the application.
 
 ## Prerequisites
@@ -60,40 +62,20 @@ When integrating Web3Auth with Google Login the flow looks something like this:
 
 ### Setup your Google App
 
-1. Follow Google’s instructions to [set up an OAuth 2.0 app.](https://support.google.com/cloud/answer/6158849?hl=en)
-2. Paste the following as Redirect URI into the "Authorized redirect URIs" field.
-
-   - https://testing.openlogin.com/auth (for Web3Auth testnet used in demo applications)
-
-   - https://app.openlogin.com/auth (for Web3Auth mainnet used in production applications)
-
-   ![Google OAuth2.0 App Dashboard](/content-hub/social-providers/google/google-app-redirect-uri.png)
-
-3. Obtain the OAuth `Client ID` from your [App on the Google Developer dashboard](https://console.developers.google.com/)
+<GoogleAppSetup />
 
 ### Setup your Web3Auth Dashboard
 
 <SetupWeb3AuthDashboard />
 
-- Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
-  configuration:
-
-  - Choose a name of your choice for the verifier identifier. `eg. google-core-verifier`
-  - Select environment: `testnet`, `mainnet`, `aqua`, or `cyan` as per your requirement.
-  - Select `Google` from the **Login Provider**. ![Google - Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
-  - Paste the **Client ID** from the Google App(above) to the `Client ID` field.
-    ![Google Client ID on Web3Auth Dashboard](/dashboard/verifiers/google-verifier.png)
-  - Click on `Create` button to create your verifier. It may take up to 10 minutes to deploy verifier on _testnet_. You'll receive an email once it's
-    complete.
-
-- You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+<CreatingVerifiers />
 
 ## Using the Web3Auth SDK
 
 To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
 SDKs, please have a look at this [documentation page](/sdk).
 
-For this guide here, we will be talking through the [Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and using the
+For this guide, we will be talking through the [Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and using the
 [OpenLogin Provider](/sdk/pnp/web/adapters/openlogin) alongside it to enable Custom Authentication through Google Login.
 
 <SetupBaseProject />
@@ -107,7 +89,8 @@ For this guide here, we will be talking through the [Web3Auth Plug and Play No M
 <InitializationIntro />
 
 For this guide, we're only focusing on the Instantiation, Configuration for the Openlogin Adapter (the default adapter that enables social logins) and
-Initialization of the Web3Auth SDK. To know more about the other things you can do with Web3Auth, checkout our [SDK Reference](/sdk/pnp/web/no-modal).
+Initialization of the Web3Auth SDK. To know more about the other things you can do with Web3Auth, check out our
+[SDK Reference](/sdk/pnp/web/no-modal).
 
 #### Instantiating Web3Auth
 
@@ -145,8 +128,8 @@ const user = await web3auth.getUserInfo();
 console.log("User info", user);
 ```
 
-Using the `getUserInfo` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
-network, but are fetched from the id_token you received from AWS Cognito and lives in the frontend context.
+Using the `getUserInfo` function, you can get the details of the logged-in user. Please note that these details are not stored anywhere in Web3Auth
+network, but are fetched from the id_token you received from AWS Cognito and live in the frontend context.
 
 ### Logout
 

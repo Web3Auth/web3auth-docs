@@ -6,16 +6,18 @@ type: guide
 tags: [mobile, react-native, android, ios, whitelabel, custom authentication, dapp share]
 date: December 16, 2022
 author: Web3Auth Team
-order: 9
+order: 12
 communityPortalTopicId: 62
 ---
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
+import RNAndroidConfig from "@site/src/common/guides/_rn-android-config.mdx";
+import RNBarePreRequisites from "@site/src/common/guides/_rn-bare-prerequisites.mdx";
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
 import ReactNativeResponse from "@site/src/common/sdk/pnp/react-native/_get-user-info.mdx";
 import SEO from "@site/src/components/SEO";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
 
 <SEO
   title="Using Web3Auth React Native SDK"
@@ -51,18 +53,14 @@ When integrating Web3Auth React Native SDK with Social Login the flow looks some
 
 - When a user logs in with `Google`, Google sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
 
-- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self-custodial way, resulting in
   easy onboarding for your user to the application.
 
 ## Prerequisites
 
 <Web3AuthPrerequisites />
 
-- React Native Release 0.71 and above (for Bare React Native Workflow)
-
-- iOS Platform Target Version 48 and above
-
-- Android Target SDK Version 31 and above
+<RNBarePreRequisites />
 
 ## Setup
 
@@ -84,51 +82,7 @@ When integrating Web3Auth React Native SDK with Social Login the flow looks some
 
 <TabItem value="android">
 
-- Make sure that the minimum SDK compile version in `build.gradle` is 31 or more.
-
-```gradle title="android/build.gradle"
-buildToolsVersion = "31.0.0"
-minSdkVersion = 21
-# highlight-next-line
-compileSdkVersion = 31
-# highlight-next-line
-targetSdkVersion = 31
-```
-
-- Add the intent filter with `scheme` defined in your `AndroidManifest.xml`
-
-```xml title="android/app/src/main/AndroidManifest.xml"
-<intent-filter>
-  <action android:name="android.intent.action.VIEW" />
-  <category android:name="android.intent.category.DEFAULT" />
-  <category android:name="android.intent.category.BROWSABLE" />
-  # replace with your own scheme
-  # highlight-next-line
-  <data android:scheme="web3authrnexample" />
-</intent-filter>
-```
-
-- SDK version 31 requires you to explicitly define `android:exported="true"` in `AndroidManifest.xml`, check whether it is correctly present or not.
-
-```xml title="android/app/src/main/AndroidManifest.xml"
-<activity
-  android:name=".MainActivity"
-  android:label="@string/app_name"
-  android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
-  android:launchMode="singleTask"
-  android:windowSoftInputMode="adjustResize"
-# highlight-next-line
-  android:exported="true">
-```
-
-- Your `redirectUrl` is your defined scheme following some identifier or your choice. For example, if your scheme is `web3authrnexample`, you can
-  define your `redirectUrl` as `web3authrnexample://openlogin`. Make sure you register this `redirectUrl` in the
-  [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
-
-```tsx title="App.js"
-const scheme = "web3authrnbareexample"; // Or your desired app redirection scheme
-const resolvedRedirectUrl = `${scheme}://openlogin`;
-```
+<RNAndroidConfig />
 
 </TabItem>
 
@@ -146,8 +100,8 @@ platform :ios, '14'
 cd ios && pod install && cd ..
 ```
 
-- In iOS, you don't need to add `redirectUrl` as a iOS Custom URL Scheme, however, you may can add it to your `Info.plist`, but it is not required.
-  Make sure your `redirectUrl` is registered in the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
+- In iOS, you don't need to add `redirectUrl` as an iOS Custom URL Scheme, however, you may add it to your `Info.plist`, but it is not required. Make
+  sure your `redirectUrl` is registered in the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
 
 </TabItem>
 
@@ -158,7 +112,7 @@ cd ios && pod install && cd ..
 To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
 SDKs, please have a look at this [documentation page](/sdk).
 
-For this guide here, we will be talking through the [Web3Auth React Native SDK](/sdk/pnp/react-native).
+For this guide, we will be talking through the [Web3Auth React Native SDK](/sdk/pnp/react-native).
 
 ### Installation
 
@@ -170,9 +124,9 @@ npm install --save @web3auth/react-native-sdk
 
 ### Adding a Web Browser Module
 
-We will also require a `WebBrowser` implementation to allow our JS-based SDK to interact with the native APIs, and there are different extra
-installation steps depending on whether you are using the bare workflow or managed workflow. Since we're using the SDK with a bare workflow React
-Native app, you have to install a `WebBrowser` implementation made by us as a porn from the Expo Web Browser Module.
+We will also require a `WebBrowser` implementation to allow our JS-based SDK to interact with the native APIs, and different extra installation steps
+depending on whether you are using the bare workflow or managed workflow. Since we're using the SDK with a bare workflow React Native app, you have to
+install a `WebBrowser` implementation made by us as a port from the Expo Web Browser Module.
 
 ##### [`@toruslabs/react-native-web-browser`](https://github.com/torusresearch/react-native-web-browser)
 
@@ -180,9 +134,9 @@ Native app, you have to install a `WebBrowser` implementation made by us as a po
 npm install --save @toruslabs/react-native-web-browser
 ```
 
-### Adding a `EncryptedStorage` Module
+### Adding an `EncryptedStorage` Module
 
-We will also require a `EncryptedStorage` implementation to allow for session management without storing the private key on the device.
+We will also require an `EncryptedStorage` implementation to allow for session management without storing the private key on the device.
 
 ```bash npm2yarn
 npm install --save react-native-encrypted-storage
@@ -190,13 +144,13 @@ npm install --save react-native-encrypted-storage
 
 ### Initialization
 
-After Installation, the next step to use Web3Auth is to Initialize the SDK. The Initialization is a two step process,
+After Installation, the next step to use Web3Auth is to Initialize the SDK. The Initialization is a two-step process,
 
 - [Importing Required Packages](#importing-required-packages)
 - [Instantiating Web3Auth](#instantiating-web3auth)
 
 Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
-Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customise your Web3Auth Instance.
+Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customize your Web3Auth Instance.
 
 #### Importing `Web3Auth`
 
@@ -226,19 +180,13 @@ We need `clientId` and target Web3Auth `network` to initialize the `web3auth` ob
 
 - You can get your `clientId` from registering (above) on the Developer Dashboard.
 
-- `network` signifies the network on which the deployed Web3Auth nodes are running. For testing purposes, we have a `TESTNET` network. For production
-  usage, you can use the `CYAN`, `MAINNET`, & `AQUA` networks.
-
-  :::danger
-
-  Please don't use the `TESTNET` network for production usage. You may end up losing user keys.
-
-  :::
+- `network` signifies the network on which the deployed Web3Auth nodes are running. For testing purposes, we have a `Sapphire Devnet` network. For
+  production usage, you can use the `Sapphire Mainnet` network.
 
 ```tsx
 const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
-  network: OPENLOGIN_NETWORK.CYAN, // MAINNET, AQUA,  CYAN or TESTNET
+  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // SAPPHIRE_MAINNET or SAPPHIRE_DEVNET
 });
 ```
 
@@ -252,8 +200,8 @@ const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
 
 #### Logging in
 
-Once initialized, you can use the `login` function of `web3auth` to navigate user to the login process. For each login method, you have to select the
-`loginProvider` such as `google`, `facebook`, `twitch`, `jwt`, `email_passwordless` etc.
+Once initialized, you can use the `login` function of `web3auth` to navigate the user to the login process. For each login method, you have to select
+the `loginProvider` such as `google`, `facebook`, `twitch`, `jwt`, `email_passwordless` etc.
 
 :::info JWT
 
@@ -269,7 +217,7 @@ transactions. We can get an `ed25519` compatible private key for other blockchai
 ```tsx
 await web3auth.login({
   redirectUrl: resolvedRedirectUrl,
-  mfaLevel: "default", // Pass on the mfa level of your choice: default, optional, mandatory, none
+  mfaLevel: "default", // Pass on the MFA level of your choice: default, optional, mandatory, none
   loginProvider: "google", // Pass on the login provider of your choice: google, facebook, discord, twitch, twitter, github, linkedin, apple, etc.
 });
 ```
@@ -294,7 +242,7 @@ If you wish you **[add Multi Factor Authentication](/sdk/pnp/react-native/mfa)**
 var userInfo = web3auth.userInfo();
 ```
 
-Using the `web3Auth.login()` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in
+Using the `web3Auth.login()` function, you can get the details of the logged-in user. Please note that these details are not stored anywhere in
 Web3Auth network.
 
 #### Sample userInfo
@@ -317,13 +265,13 @@ web3auth.logout();
 
 ## Interacting with the Blockchain
 
-Once a user logs in, the user can ccess the private key by `web3auth.privKey()`. For EVM Blockchains, the `secp256k1` private key is used to sign
+Once a user logs in, the user can access the private key by `web3auth.privKey()`. For EVM Blockchains, the `secp256k1` private key is used to sign
 transactions. We can get an `ed25519` compatible private key for other blockchains using `web3auth.ed25519Key()`. Similar to how we're using this
 private key in the `ethers.js` library in this example, you can connect to any other blockchain of your choice.
 
 :::info connect any blockchain
 
-Please go through the [Connect Blockchain](/connect-blockchain/ethereum/react-native) Documentation, which contains all the details of the EVM based
+Please go through the [Connect Blockchain](/connect-blockchain/ethereum/react-native) Documentation, which contains all the details of the EVM-based
 blockchain you have selected here.
 
 :::

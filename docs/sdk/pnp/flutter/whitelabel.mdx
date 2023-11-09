@@ -26,14 +26,16 @@ An optional configuration object to customize UI, branding, and translations for
 
 <TabItem value="table">
 
-| Parameter         | Type                   | Mandatory | Description                                              |
-| ----------------- | ---------------------- | --------- | -------------------------------------------------------- |
-| `name`            | `String`               | No        | Name of your application                                 |
-| `logoLight`       | `String`               | No        | Light logo for the dark background                       |
-| `logoDark`        | `String`               | No        | Dark logo for the light background                       |
-| `defaultLanguage` | `String`               | No        | Default language to be used.                             |
-| `dark`            | `Boolean`              | No        | If `true`, enables `Dark mode`. Default is `Light mode`. |
-| `theme`           | `HashMap<String, Any>` | No        | Theme color.                                             |
+| Parameter         | Type                      | Mandatory | Description                                                                                                                                                                                                                                                          |
+| ----------------- | ------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `appName`         | `String`                  | `false`   | Name of the app                                                                                                                                                                                                                                                      |
+| `logoLight`       | `String`                  | `false`   | App logo to be shown on the light background (dark mode)                                                                                                                                                                                                             |
+| `logoDark`        | `String`                  | `false`   | App logo to be shown on the dark background (light mode)                                                                                                                                                                                                             |
+| `defaultLanguage` | `Language`                | `false`   | Default Language to use. <br/> Choose from: <ul><li>`en` - English</li><li>`de` - German</li><li>`ja` - Japanese</li><li>`ko` - Korean</li><li>`zh` - Mandarin</li><li>`es` - Spanish</li><li>`fr` - French</li><li>`pt` - Portuguese</li><li>`nl` - Dutch</li></ul> |
+| `mode`            | `ThemeModes`              | `false`   | Choose between `auto`, `light` or `dark` background modes.                                                                                                                                                                                                           |
+| `theme`           | `HashMap<String, String>` | `false`   | Custom theme for the app                                                                                                                                                                                                                                             |
+| `appUrl`          | `String`                  | `false`   | App URL                                                                                                                                                                                                                                                              |
+| `useLogoLoader`   | `bool`                    | `false`   | Use logo as loader                                                                                                                                                                                                                                                   |
 
 </TabItem>
 
@@ -41,29 +43,35 @@ An optional configuration object to customize UI, branding, and translations for
 
 ```dart
 class WhiteLabelData {
-  final String? name;
+  final String? appName;
   final String? logoLight;
   final String? logoDark;
-  final String? defaultLanguage;
-  final bool? dark;
+  final Language? defaultLanguage;
+  final ThemeModes? mode;
   final HashMap? theme;
+  final String? appUrl;
+  final bool? useLogoLoader;
 
   WhiteLabelData(
-      {this.name,
+      {this.appName,
       this.logoLight,
       this.logoDark,
-      this.defaultLanguage,
-      this.dark,
-      this.theme});
+      this.defaultLanguage = Language.en,
+      this.mode = ThemeModes.auto,
+      this.theme,
+      this.appUrl,
+      this.useLogoLoader});
 
   Map<String, dynamic> toJson() {
     return {
-      'name': name,
+      'name': appName,
       'logoLight': logoLight,
       'logoDark': logoDark,
-      'defaultLanguage': defaultLanguage,
-      'dark': dark,
-      'theme': theme
+      'defaultLanguage': defaultLanguage.toString().split('.').last,
+      'mode': mode.toString().split('.').last,
+      'theme': theme,
+      'appUrl': appUrl,
+      'useLogoLoader': useLogoLoader
     };
   }
 }
@@ -95,11 +103,18 @@ Future<void> initPlatformState() async {
     clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
     redirectUrl: redirectUrl,
-    defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
     // highlight-start
     whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap)
-    ));
+      appName: "Web3Auth Flutter App",
+      logoLight:
+          "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
+      logoDark:
+          "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
+      defaultLanguage: Language.en,
+      mode: ThemeModes.auto,
+      appUrl: "https://web3auth.io",
+      useLogoLoader: true,
+      theme: themeMap),
     // highlight-end
 }
 ```

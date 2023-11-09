@@ -1,0 +1,54 @@
+- Go to your AWS account and go to [AWS Cognito](https://console.aws.amazon.com/cognito/home) console. And Create a new user pool by following
+  [this AWS Console guide](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-console.html).
+
+- Note down the `userPoolId` and `region` after creating the new user pool.
+
+- Add a new app client to the user pool from the App clients tab under General settings of your pool settings. Note down the `App client id` for this
+  app client, which looks something like `3j2tXXXXkkff5ajpn`. We will use this as the `aud` value for the JWT validation field.
+
+  ![AWS Cognito - Create app client](/content-hub/guides/cognito/cognito-create-app-client.png)
+
+- Add a domain to your AWS Cognito App from the `App integration > Domain name` section.
+
+- We will use Google login as an Identity provider in AWS Cognito for this guide.
+
+  - Obtain the OAuth `Client ID` and `Client Secret` from your [Google Developer dashboard](https://console.developers.google.com). Follow Google’s
+    instructions to [set up an OAuth 2.0 App](https://support.google.com/cloud/answer/6158849?hl=en).
+
+  - While configuring your Google OAuth 2.0 client for the web, make sure to enter
+    - `<AWS_COGNITO_DOMAIN>` in the `Authorized Javascript Origins list` and,
+    - `<AWS_COGNITO_DOMAIN>/oauth2/idpresponse` in the Authorized redirect URIs list.
+
+- Let's configure Google login in AWS Cognito.
+
+  - Go to the identity providers tab under the federation tab and select Google.
+  - It will require you to enter your Google app's `Client ID` and `Client Secret` which you get in the above steps.
+    - Paste `Client ID` in the Google app ID field.
+    - Paste `Client Secret` in the App secret field.
+    - Type `profile email openid` in the Authorize scope field.
+      ![AWS Cognito - Google Login Identity configuration](/content-hub/guides/cognito/cognito-google-identity.png)
+    - Your Google login provider is configured, you can enable it in your App client settings under App Integration settings of your pool settings.
+      ![AWS Cognito - Enable Google Identity](/content-hub/guides/cognito/cognito-enable-google-identity.png)
+    - **Map email from Google attribute to user pool attribute**.
+      - In the Amazon Cognito console, choose Manage user pools, and then choose your user pool.
+      - In the left navigation pane, under Federation, choose `Attribute mapping`.
+      - On the attribute mapping page, choose the `Google` tab.
+      - Next to the Google attribute named `email`, select the Capture check box.
+      - Next to email, for the User pool attribute, choose `Email` from the list.
+      - Choose Save changes.
+
+- Update App client settings to set the desired OAuth flow and redirect endpoints. For this guide, we will be using the _Implicit OAuth flow_.
+
+  - Click on `App client settings` under **App integration**.
+  - Callback URL(s): `http://localhost:3000/callback, https://testing.openlogin.com/auth`
+  - Sign out URL(s): `http://localhost:3000`
+    - Additional to your own URLs for the application, please add
+      - [https://testing.openlogin.com/auth](https://testing.openlogin.com/auth) (for Web3Auth testnet used in demo applications) and
+      - [https://app.openlogin.com/auth](https://app.openlogin.com/auth) (for Web3Auth mainnet used in production applications).
+  - OAuth2.0
+    - Select [x] `Implicit grant` from **Allowed OAuth Flows**
+    - Select [x] `email` `openid` `profile` from **Allowed OAuth Scopes**
+      ![AWS Cognito - App Client Settings Final](/content-hub/guides/cognito/cognito-final-app-client-settings.png)
+  - **Save Changes** and your Cognito app is configured to use Web3Auth.
+
+- Now let's configure Web3Auth using AWS Cognito app details.
