@@ -6,7 +6,7 @@ Add `web3auth_flutter` as a dependency to your `pubspec.yaml`
 
 ```bash
 dependencies:
-  web3auth_flutter: ^2.0.3
+  web3auth_flutter: ^3.1.0
 ```
 
 or
@@ -26,11 +26,22 @@ Visit the [Web3Auth Dashboard](https://dashboard.web3auth.io) and create a new p
 Construct the `Web3Auth` instance with:
 
 ```dart
+Uri redirectUrl;
+if (Platform.isAndroid) {
+  redirectUrl = Uri.parse('w3a://com.example.w3aflutter/auth');
+} else if (Platform.isIOS) {
+  redirectUrl = Uri.parse('com.example.w3aflutter://openlogin');
+} else {
+  throw UnKnownException('Unknown platform');
+}
+
 await Web3AuthFlutter.init(Web3AuthOptions(
     clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
-    network: Network.testnet,
+    network: Network.sapphire_mainnet,
     redirectUrl: redirectUrl
 ));
+
+await Web3AuthFlutter.initialize();
 ```
 
 ### 4. Login your User
