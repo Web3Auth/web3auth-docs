@@ -39,7 +39,7 @@ export default function QuickNavigation() {
             </svg>
           </div>
           <div className={styles.cardContent}>
-            <h5>Community Discussions</h5>
+            <h5>Community Forum</h5>
             <p>Join our community of passionate developers - learn, grow and get help for your Web3Auth setup.</p>
           </div>
         </Link>
