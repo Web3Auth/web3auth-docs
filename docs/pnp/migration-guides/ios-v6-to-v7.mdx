@@ -12,7 +12,7 @@ import Tabs from "@theme/Tabs";
 
 ### openlogin v5 is supported
 
-With V7, Users can now log in from sapphire mainnet and sapphire devnet.
+With V7, Users can now log in from `Sapphire Mainnet` and `Sapphire Devnet`.
 
 ```swift
 import Web3Auth
@@ -25,9 +25,9 @@ let web3auth = Web3Auth(W3AInitParams(
 ))
 ```
 
-### Web3AuthState now has more parameters
+### `Web3AuthState` now has more parameters
 
-In v7, you should add `coreKitKey` and `coreKitEd25519PrivKey` field when you initialize Web3authState.
+In v7, you should add `coreKitKey` and `coreKitEd25519PrivKey` field when you initialize `Web3authState`.
 
 ```swift
 let user: Web3AuthState = .init(privKey: "12345",
@@ -42,10 +42,10 @@ let user: Web3AuthState = .init(privKey: "12345",
 )
 ```
 
-### W3AInitParams param configuration changed
+### `W3AInitParams` param configuration changed
 
 In v7, the whiteLabel parameter type and configuration has changed. And, as mentioned earlier, the sapphire network type has been added. Also several
-parameters have been added to W3AInitParams.
+parameters have been added to `W3AInitParams`.
 
 #### change of `WhiteLabel` parameter configuration
 
@@ -86,10 +86,10 @@ parameters have been added to W3AInitParams.
 </TabItem>
 
 </Tabs>
-
 #### change of `W3AInitParams` object
 
-The `Web3Auth` constructor takes an object called `W3AInitParams` as input. The below are the aviliable fields of the `W3AInitParams` object.
+The `Web3Auth` constructor takes an object called `W3AInitParams` as input. The below are the aviliable fields of the `W3AInitParams` object. With v7,
+additional 2 parameters, which are `MfaSettings` and `sessionTIme` can be set.
 
 <Tabs
   defaultValue="v7"
@@ -134,20 +134,155 @@ The `Web3Auth` constructor takes an object called `W3AInitParams` as input. The 
 
 </Tabs>
 
-Here's the example configuration of Web3AuthOptions.
+Here's the example configuration of `Web3AuthOptions`.
 
 ```swift
-web3Auth = await Web3Auth(W3AInitParams(
-                    clientId: clientId,
-                    network: network,
-                    whiteLabel: W3AWhiteLabelData(
-                        appName: "Web3Auth iOS Example",
-                        defaultLanguage: .en,
-                        mode: .dark, theme: ["primary": "#123456"])
-                ))
+        let result = try await Web3Auth(.init(
+            clientId: clientId,
+            network: network,
+            loginConfig: [
+                TypeOfLogin.google.rawValue:
+                        .init(
+                            verifier: "w3a-agg-example",
+                            typeOfLogin: .google,
+                            name: "Web3Auth-Aggregate-Verifier-Google-Example",
+                            clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+                            verifierSubIdentifier: "w3a-google"
+                        )
+            ],
+            whiteLabel: W3AWhiteLabelData(
+                    appName: "Web3Auth Stub",
+                    logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
+                    logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+                    defaultLanguage: .en, // en, de, ja, ko, zh, es, fr, pt, nl
+                    mode: .dark,
+                    theme: ["primary": "#d53f8c"]),
+            mfaSettings: MfaSettings(
+                deviceShareFactor: MfaSetting(enable: true, priority: 1),
+                backUpShareFactor: MfaSetting(enable: true, priority: 2),
+                socialBackupFactor: MfaSetting(enable: true, priority: 3),
+                passwordFactor: MfaSetting(enable: true, priority: 4)
+            )
+        )).login(
+            W3ALoginParams(
+            loginProvider: .GOOGLE,
+            dappShare: nil,
+            extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: nil, client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: nil, isVerifierIdCaseSensitive: nil, additionalParams: nil),
+            mfaLevel: .DEFAULT,
+            curve: .SECP256K1
+        ))
 ```
 
-### web3.swift version updated to v1.6
+### Using the `mfaSettings` to configure MFA Order
+
+You can configure the order of MFA or enable/disable MFA type by passing the `mfaSettings` object in `Web3AuthOptions`.
+
+`MfaSettings`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+`deviceShareFactor` | `backUpShareFactor` | `socialBackupFactor` | `passwordFactor`
+
+| Parameter   | Type   | Mandatory | Description            |
+| ----------- | ------ | --------- | ---------------------- |
+| `enable`    | `bool` | Yes       | Enable/Disable MFA     |
+| `priority`  | `int`  | No        | Priority of MFA        |
+| `mandatory` | `bool` | No        | Mandatory/Optional MFA |
+
+</TabItem>
+
+<TabItem value="class">
+
+```swift
+
+    public struct MfaSetting: Codable {
+        public init(enable: Bool, priority: Int?, mandatory: Bool? = nil) {
+            self.enable = enable
+            self.priority = priority
+            self.mandatory = mandatory
+        }
+
+        let enable: Bool
+        let priority: Int?
+        let mandatory: Bool?
+    }
+
+    public struct MfaSettings: Codable {
+        public init(deviceShareFactor: MfaSetting?, backUpShareFactor: MfaSetting?, socialBackupFactor: MfaSetting?, passwordFactor: MfaSetting?) {
+            self.deviceShareFactor = deviceShareFactor
+            self.backUpShareFactor = backUpShareFactor
+            self.socialBackupFactor = socialBackupFactor
+            self.passwordFactor = passwordFactor
+        }
+
+        let deviceShareFactor: MfaSetting?
+        let backUpShareFactor: MfaSetting?
+        let socialBackupFactor: MfaSetting?
+        let passwordFactor: MfaSetting?
+    }
+
+
+```
+
+</TabItem>
+
+</Tabs>
+
+### `web3.swift` version updated to v1.6
 
 With V7, lots of package dependencies have been updated. Among that, version of package `web3.swift` is updated to v1.6.0. Ethereum-related calls from
 the client changed lot, so need to care about that.
+
+### ExtraLoginOptions
+
+With V7, ExtraLoginOptions now has one more parameter which is `additionalParams: [String : String]?`
+
+<TabItem value="table">
+
+| Parameter                   | Type      | Description                                                                                                                                  |
+| --------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `domain`                    | `string`  | Your Auth0 account domain such as `example.auth0.com` or `example.mycompany.com` etc. **Use any random string in case of custom JWT login.** |
+| `client_id`                 | `string`  | The Client ID found on your Auth0 Application settings page. **Use web3auth client id in case of custom JWT login.**                         |
+| `redirect_uri`              | `string`  | The default URL where Auth0 will redirect your browser to with the authentication result.                                                    |
+| `leeway`                    | `number`  | The value in seconds used to account for clock skew in JWT expirations.                                                                      |
+| `verifierIdField`           | `string`  | The field in jwt token which maps to verifier id.                                                                                            |
+| `isVerifierIdCaseSensitive` | `boolean` | Whether the verifier id field is case sensitive. Defaults to `true`                                                                          |
+
+</TabItem>
+
+<TabItem value="struct">
+
+```swift
+public struct ExtraLoginOptions: Codable{
+  let display: String?
+  let prompt: String?
+  let max_age: String?
+  let ui_locales: String?
+  let id_token_hint: String?
+  let id_token: String?
+  let login_hint: String?
+  let acr_values: String?
+  let scope: String?
+  let audience: String?
+  let connection: String?
+  let domain: String?
+  let client_id: String?
+  let redirect_uri: String?
+  let leeway: Int?
+  let verifierIdField: String?
+  let isVerifierIdCaseSensitive: Bool?
+  // highlight-start
+  let additionalParams: [String : String]?
+  // highlight-end
+}
+```
+
+</TabItem>
