@@ -5,13 +5,13 @@ displayed_sidebar: sdk
 description: "Web3Auth PnP iOS SDK - Initialization | Documentation - Web3Auth"
 ---
 
-After Installation, the next step to use Web3Auth is to Initialize the SDK. However, the Initialization can be done in 2 ways,
+After Installation, the next step to use Web3Auth is to Initialize the SDK. However, the Initialization can be done in two ways,
 
 - [With `Web3Auth.plist`](#with-web3authplist)
 - [Without `Web3Auth.plist`](#without-web3authplist)
 
 Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
-Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customise your Web3Auth Instance.
+Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customize your Web3Auth Instance.
 
 ## With `Web3Auth.plist`
 
@@ -27,7 +27,7 @@ In your application bundle add a plist file named `Web3Auth.plist` with the foll
   <key>ClientId</key>
     <string>YOUR_WEB3AUTH_CLIENT_ID</string>
   <key>Network</key>
-  <string>mainnet | testnet | cyan | aqua</string>
+  <string>sapphire_mainnet | sapphire_devnet | mainnet | cyan | aqua | testnet</string>
 </dict>
 </plist>
 ```
@@ -42,7 +42,7 @@ let web3auth = Web3Auth()
 
 ## Without `Web3Auth.plist`
 
-If you don't have a Web3Auth.plist or want to use optional configurtion parameters, you can construct the Web3Auth instance with
+If you don't have a Web3Auth.plist or want to use optional configuration parameters, you can construct the Web3Auth instance with
 
 ```swift
 import Web3Auth
@@ -57,18 +57,18 @@ let web3auth = Web3Auth(W3AInitParams(
 
 ### `W3AInitParams` object
 
-The `Web3Auth` constructor takes an object called `W3AInitParams` as input. The below are the aviliable fields of the `W3AInitParams` object.
+The `Web3Auth` constructor takes an object called `W3AInitParams` as input. Below are the available fields of the `W3AInitParams` object.
 
 | Parameter        | Type                        | Mandatory | Description                                                                                                                                   |
 | ---------------- | --------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | `clientId`       | String                      | Yes       | Your Web3Auth project ID                                                                                                                      |
 | `network`        | Network                     | Yes       | Web3Auth Network to run the authentication on, either `.mainnet`,`.aqua`, `.testnet`, `.cyan`, or `.sapphire_devnet` or `.sapphire_mainnet`   |
-| `buildEnv`       | BuildEnv                    | No        | Obtion for auth service, `production`, `staging`, `testing` available                                                                         |
+| `buildEnv`       | BuildEnv                    | No        | Option for auth service, `production`, `staging`, `testing` available                                                                         |
 | `sdkUrl`         | URL                         | No        | Web3Auth sdk frontend to be used. This field is for advanced usage only and should not be changed.                                            |
-| `redirectUrl`    | String                      | No        | redirectUrl to be passed to the sdk frontend. This field is for advanced usage only and should not be changed.                                |
+| `redirectUrl`    | String                      | No        | redirectUrl to be passed to the SDK frontend. This field is for advanced usage only and should not be changed.                                |
 | `whiteLabel`     | W3AWhiteLabelData           | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer to the WhiteLabeling section for more info. |
 | `loginConfig`    | `[String : W3ALoginConfig]` | No        | A configuration optional object to customize login flow.                                                                                      |
 | `useCoreKitKey`  | `bool`                      | No        | Use CoreKit Key to get core kit key.                                                                                                          |
 | `chainNamespace` | `ChainNamespace`            | No        | Chain Namespace [`eip155` and `solana`]                                                                                                       |
 | `MfaSettings`    | `MfaSettings`               | No        | Settings for Multi factor authentication                                                                                                      |
-| `sessionTIme`    | Int                         | No        | Session maintainance time                                                                                                                     |
+| `sessionTime`    | Int                         | No        | Session maintenance time                                                                                                                      |
