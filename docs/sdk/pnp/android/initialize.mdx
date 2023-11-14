@@ -52,6 +52,8 @@ The Web3Auth Constructor takes an object with `Web3AuthOptions` as input.
 | loginConfig    | LoginConfigItem                                                     | No        | A configuration optional object to use custom authentication. Refer [Custom Authentication](/pnp/features/custom-authentication) for more info.                 |
 | useCoreKitKey  | Boolean                                                             | No        | Use Core Kit Key true to the Core Kit keys.                                                                                                                     |
 | chainNamespace | enum com.web3auth.core.Web3Auth.ChainNamespace ["EIP155", "SOLANA"] | No        | A configuration optional object to use chain namespace.                                                                                                         |
+| `mfaSettings`  | MfaSettings                                                         | No        | MFA Settings                                                                                                                                                    |
+| `sessionTime`  | `Int                                                                | No        | Session Time in seconds, default is `86400` seconds                                                                                                             |
 
 </TabItem>
 
@@ -59,15 +61,18 @@ The Web3Auth Constructor takes an object with `Web3AuthOptions` as input.
 
 ```kotlin
 data class Web3AuthOptions(
-  var context: Context,
-  val clientId: String,
-  val network: Network,
-  @Transient var redirectUrl: Uri? = null,
-  var sdkUrl: String = getSdkUrl(network),
-  val whiteLabel: WhiteLabelData? = null,
-  val loginConfig: HashMap<String, LoginConfigItem>? = null,
-  val useCoreKitKey: Boolean? = false,
-  val chainNamespace: ChainNamespace? = ChainNamespace.EIP155
+    var context: Context,
+    val clientId: String,
+    val network: Network,
+    var buildEnv: BuildEnv? = BuildEnv.PRODUCTION,
+    @Transient var redirectUrl: Uri? = null,
+    var sdkUrl: String = getSdkUrl(buildEnv),
+    val whiteLabel: WhiteLabelData? = null,
+    val loginConfig: HashMap<String, LoginConfigItem>? = null,
+    val useCoreKitKey: Boolean? = false,
+    val chainNamespace: ChainNamespace? = ChainNamespace.EIP155,
+    val mfaSettings: MfaSettings? = null,
+    val sessionTime: Int? = 86400
 )
 ```
 
@@ -100,6 +105,53 @@ Add the below line to your `app/res/values/strings.xml` file:
     <!-- -->
 </resources>
 ```
+
+### Using the `mfaSettings` to configure MFA Order
+
+You can configure the order of MFA or enable/disable MFA type by passing the `mfaSettings` object in `Web3AuthOptions`.
+
+`MfaSettings`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+`deviceShareFactor` | `backUpShareFactor` | `socialBackupFactor` | `passwordFactor`
+
+| Parameter   | Type   | Mandatory | Description            |
+| ----------- | ------ | --------- | ---------------------- |
+| `enable`    | `bool` | Yes       | Enable/Disable MFA     |
+| `priority`  | `int`  | No        | Priority of MFA        |
+| `mandatory` | `bool` | No        | Mandatory/Optional MFA |
+
+</TabItem>
+
+<TabItem value="class">
+
+```kotlin
+	data class MfaSetting(
+		var enable: Boolean,
+		var priority: Int?,
+		var mandatory: Boolean?
+	)
+
+	data class MfaSettings(
+		private var deviceShareFactor: MfaSetting? = null,
+		private var backUpShareFactor: MfaSetting? = null,
+		private var socialBackupFactor: MfaSetting? = null,
+		private var passwordFactor: MfaSetting? = null,
+	)
+```
+
+</TabItem>
+
+</Tabs>
 
 ### Session Management
 
