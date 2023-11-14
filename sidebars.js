@@ -128,6 +128,13 @@ module.exports = {
           collapsible: true,
           items: ["pnp/migration-guides/android-v4-to-v5"],
         },
+        {
+          type: "category",
+          label: "PnP IOS",
+          collapsed: true,
+          collapsible: true,
+          items: ["pnp/migration-guides/ios-v6-to-v7"],
+        },
 
         "pnp/migration-guides/rn-v3-to-v4",
       ],
@@ -276,6 +283,7 @@ module.exports = {
         "troubleshooting/error-429",
         "troubleshooting/webpack-issues",
         "troubleshooting/vite-issues",
+        "troubleshooting/svelte-issues",
         "troubleshooting/metro-issues",
         "troubleshooting/jwt-errors",
         "troubleshooting/supported-browsers",

@@ -70,3 +70,103 @@ class ViewModel: ObservableObject {
 }
 
 ```
+
+## Using the `mfaSettings` to configure MFA Order
+
+You can configure the order of MFA or enable/disable MFA type by passing the `mfaSettings` object in `Web3AuthOptions`.
+
+`MfaSettings`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+`deviceShareFactor` | `backUpShareFactor` | `socialBackupFactor` | `passwordFactor`
+
+| Parameter   | Type   | Mandatory | Description            |
+| ----------- | ------ | --------- | ---------------------- |
+| `enable`    | `bool` | Yes       | Enable/Disable MFA     |
+| `priority`  | `int`  | No        | Priority of MFA        |
+| `mandatory` | `bool` | No        | Mandatory/Optional MFA |
+
+</TabItem>
+
+<TabItem value="class">
+
+```swift
+
+    public struct MfaSetting: Codable {
+        public init(enable: Bool, priority: Int?, mandatory: Bool? = nil) {
+            self.enable = enable
+            self.priority = priority
+            self.mandatory = mandatory
+        }
+
+        let enable: Bool
+        let priority: Int?
+        let mandatory: Bool?
+    }
+
+    public struct MfaSettings: Codable {
+        public init(deviceShareFactor: MfaSetting?, backUpShareFactor: MfaSetting?, socialBackupFactor: MfaSetting?, passwordFactor: MfaSetting?) {
+            self.deviceShareFactor = deviceShareFactor
+            self.backUpShareFactor = backUpShareFactor
+            self.socialBackupFactor = socialBackupFactor
+            self.passwordFactor = passwordFactor
+        }
+
+        let deviceShareFactor: MfaSetting?
+        let backUpShareFactor: MfaSetting?
+        let socialBackupFactor: MfaSetting?
+        let passwordFactor: MfaSetting?
+    }
+
+
+```
+
+</TabItem>
+
+</Tabs>
+
+```swift
+        let result = try await Web3Auth(.init(
+            clientId: clientId,
+            network: network,
+            loginConfig: [
+                TypeOfLogin.google.rawValue:
+                        .init(
+                            verifier: "w3a-agg-example",
+                            typeOfLogin: .google,
+                            name: "Web3Auth-Aggregate-Verifier-Google-Example",
+                            clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+                            verifierSubIdentifier: "w3a-google"
+                        )
+            ],
+            whiteLabel: W3AWhiteLabelData(
+                    appName: "Web3Auth Stub",
+                    logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
+                    logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+                    defaultLanguage: .en, // en, de, ja, ko, zh, es, fr, pt, nl
+                    mode: .dark,
+                    theme: ["primary": "#d53f8c"]),
+            mfaSettings: MfaSettings(
+                deviceShareFactor: MfaSetting(enable: true, priority: 1),
+                backUpShareFactor: MfaSetting(enable: true, priority: 2),
+                socialBackupFactor: MfaSetting(enable: true, priority: 3),
+                passwordFactor: MfaSetting(enable: true, priority: 4)
+            )
+        )).login(
+            W3ALoginParams(
+            loginProvider: .GOOGLE,
+            dappShare: nil,
+            extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: nil, client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: nil, isVerifierIdCaseSensitive: nil, additionalParams: nil),
+            mfaLevel: .DEFAULT,
+            curve: .SECP256K1
+        ))
+```
