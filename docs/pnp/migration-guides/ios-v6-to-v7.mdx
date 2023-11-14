@@ -27,19 +27,20 @@ let web3auth = Web3Auth(W3AInitParams(
 
 ### `Web3AuthState` now has more parameters
 
-In v7, you should add `coreKitKey` and `coreKitEd25519PrivKey` field when you initialize `Web3authState`.
+In v7, you can configure additional `coreKitKey` and `coreKitEd25519PrivKey` fields when you initialize `Web3authState`.
 
 ```swift
-let user: Web3AuthState = .init(privKey: "12345",
-    ed25519PrivKey: "32334",
-    sessionId: "23234384y7735y47shdj",
-    userInfo: nil,
-    error: nil,
+public struct Web3AuthState: Codable {
+    public let privKey: String?
+    public let ed25519PrivKey: String?
+    public let sessionId: String?
+    public let userInfo: Web3AuthUserInfo?
+    public let error: String?
     // highlight-start
-    coreKitKey: "45676",
-    coreKitEd25519PrivKey: "84567"
+    public let coreKitKey: String?
+    public let coreKitEd25519PrivKey: String?
     // highlight-end
-)
+}
 ```
 
 ### `W3AInitParams` param configuration changed
@@ -72,20 +73,38 @@ parameters have been added to `W3AInitParams`.
 
 <TabItem value="v7">
 
-| Parameter         | Type               | Mandatory | Description                             |
-| ----------------- | ------------------ | --------- | --------------------------------------- |
-| `appName`         | `String`           | No        | Name of your application                |
-| `logoLight`       | `String`           | No        | Light logo for dark background          |
-| `logoDark`        | `String`           | No        | Dark logo for light background          |
-| `defaultLanguage` | `String`           | No        | Default translation language to be used |
-| `mode`            | `Bool`             | No        | 3 Theme modes of the application        |
-| `theme`           | `[String, String]` | No        | Whitelabel theme                        |
-| `appUrl`          | `String`           | No        | Url of your application                 |
-| `useLogoLoader`   | `Bool`             | No        | Loads the logo when loading             |
+| Parameter         | Type               | Description                                                                                                                                                                                                                                                          | Default                                                           | Mandatory |
+| ----------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | --------- |
+| `appName`         | `String`           | App name to be displayed in the User Flow Screens.                                                                                                                                                                                                                   | dApp's Website URL                                                | No        |
+| `logoLight`       | `String`           | App logo to be shown on the dark background (dark theme)                                                                                                                                                                                                             | [web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg) | No        |
+| `logoDark`        | `String`           | App logo to be shown on the light background (light theme)                                                                                                                                                                                                           | [web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg) | No        |
+| `defaultLanguage` | `Language`         | Default Language to use. <br/> Choose from: <ul><li>`en` - English</li><li>`de` - German</li><li>`ja` - Japanese</li><li>`ko` - Korean</li><li>`zh` - Mandarin</li><li>`es` - Spanish</li><li>`fr` - French</li><li>`pt` - Portuguese</li><li>`nl` - Dutch</li></ul> | en - English                                                      | No        |
+| `mode`            | `ThemeModes`       | Choose between `auto`, `light` or `dark` modes.                                                                                                                                                                                                                      | `auto`                                                            | No        |
+| `theme`           | `[String: String]` | Used to customize the theme of the login modal with the following options <br /> `'primary'` - To customize the primary color of the modal's content                                                                                                                 | `#0364FF`                                                         | No        |
+| `appUrl`          | `String`           | App URL to be displayed in the User Flow Screens.                                                                                                                                                                                                                    | dApp's Website URL                                                | No        |
+| `useLogoLoader`   | `Bool`             | Loads the logo when loading                                                                                                                                                                                                                                          | false                                                             | No        |
 
 </TabItem>
 
 </Tabs>
+
+```swift title="Usage"
+web3Auth = await Web3Auth(
+  W3AInitParams(
+    clientId:"YOUR_CLIENT_ID",
+    network: .testnet,
+    // highlight-start
+    whiteLabel: W3AWhiteLabelData(
+      appName: "Web3Auth Stub",
+      logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
+      logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+      defaultLanguage: .en, // en, de, ja, ko, zh, es, fr, pt, nl
+      mode: .dark
+      theme: ["primary": "#d53f8c"])
+    ))
+    // highlight-end
+```
+
 #### change of `W3AInitParams` object
 
 The `Web3Auth` constructor takes an object called `W3AInitParams` as input. The below are the aviliable fields of the `W3AInitParams` object. With v7,
