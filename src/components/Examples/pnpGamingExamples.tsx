@@ -6,10 +6,10 @@ export const PNPUnity = [
     description: "",
     tiles: [
       {
-        key: "unity-example",
-        title: "Unity Basic Example",
+        key: "unity-quick-start",
+        title: "Unity QuickStart Example",
         icon: "logo-unity.png",
-        path: `${baseURL}unity/unity-example`,
+        path: `${baseURL}unity/unity-quick-start`,
       },
       {
         key: "unity-auth0-example",
@@ -18,10 +18,10 @@ export const PNPUnity = [
         path: `${baseURL}unity/unity-auth0-example`,
       },
       {
-        key: "unity-google-emailpasswordless-example",
+        key: "unity-aggregate-verifier-example",
         title: "Unity + Aggregate Verifier",
         icon: "logo-google.png",
-        path: `${baseURL}unity/unity-google-emailpasswordless-example`,
+        path: `${baseURL}unity/unity-aggregate-verifier-example`,
       },
     ],
   },

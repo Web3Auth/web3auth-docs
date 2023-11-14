@@ -31,7 +31,7 @@ import Tabs from "@theme/Tabs";
 This guide will cover the basics of how to use the Web3Auth Flutter SDK in your Flutter application with Auth0 and make blockchain calls to get access
 to user's `account`, fetch `balance`, `sign transaction`, and `send transaction`.
 
-Repository: https://github.com/Web3Auth/web3auth-pnp-examples//raw/main/flutter/flutter-auth0-example
+Repository: https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/flutter/flutter-auth0-example
 
 ## Quick Start
 
@@ -61,7 +61,7 @@ When integrating Web3Auth Flutter SDK with Social Login the flow looks something
 <Web3AuthPrerequisites />
 
 - Android API version 24 or newer.
-- For Android build: compileSdkVersion needs to be 32. Check `android/app/build.gradle` in your Flutter project to change it.
+- For Android build: compileSdkVersion needs to be 34. Check `android/app/build.gradle` in your Flutter project to change it.
 - iOS 12+
 - Xcode 11.4+ / 12.x
 - Swift 4.x / 5.x
@@ -222,7 +222,7 @@ Add `web3auth_flutter` as a dependency to your `pubspec.yaml`
 
 ```yaml
 dependencies:
-  web3auth_flutter: ^2.0.3
+  web3auth_flutter: ^3.1.0
 ```
 
 or
@@ -254,15 +254,6 @@ dependencyResolutionManagement {
         // highlight-next-line
         maven { url "https://jitpack.io" } // <-- Add this line
     }
-}
-```
-
-Then, in your app-level `build.gradle` dependencies section, add the following:
-
-```groovy
-dependencies {
-    // highlight-next-line
-    implementation 'com.github.Web3Auth:web3auth-android-sdk:4.0.8'
 }
 ```
 
@@ -324,16 +315,16 @@ If you are using the Swift Package Manager, open the following menu item in Xcod
 
 `File > Swift Packages > Add Package Dependency`
 
-In the Choose Package Repository prompt add this url:
+In the Choose Package Repository prompt add this URL:
 
 ```
-https://github.com/Web3Auth/web3auth-swift-sdk/releases/tag/6.0.1
+https://github.com/Web3Auth/web3auth-swift-sdk/releases/tag/7.4.0
 ```
 
 ##### Cocoapods
 
 ```sh
-pod 'Web3Auth', '~> 6.0.1'
+pod 'Web3Auth', '~> 7.4.0'
 ```
 
 #### Configuration
@@ -378,8 +369,6 @@ void initState() {
 
 // Initialization
 Future<void> initPlatformState() async {
-  HashMap themeMap = new HashMap<String, String>();
-  themeMap['primary'] = "#fff000";
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -407,10 +396,12 @@ Future<void> initPlatformState() async {
     loginConfig: loginConfig
   ));
   // highlight-end
+
+  await Web3AuthFlutter.initialize();
 }
 ```
 
-Read more about initialising the Flutter SDK [here](/sdk/pnp/flutter/initialize).
+Read more about initializing the Flutter SDK [here](/sdk/pnp/flutter/initialize).
 
 ### Authentication
 
@@ -594,7 +585,7 @@ Logging out your user is as simple as calling the `web3AuthFlutter.logout()` fun
 
 :::success Blockchain calls
 
-Checkout the full codes to interact with **[ETH Blockchain](/connect-blockchain/ethereum/flutter)**.
+Check out the full codes to interact with **[ETH Blockchain](/connect-blockchain/ethereum/flutter)**.
 
 :::
 
@@ -705,9 +696,9 @@ running it locally yourself!
 
 `flutter run`
 
-Also, checkout other examples:
+Also, check other examples:
 
-- [Using Flutter SDK](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/flutter/flutter-example)
+- [Using Flutter SDK](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/flutter/flutter-quick-start)
 - [Using Custom JWT (via Firebase)](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/flutter/flutter-firebase-example)
 
 ## Questions?

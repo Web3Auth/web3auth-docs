@@ -417,8 +417,8 @@ export const referenceMap = [
     link: "/connect-blockchain/zkatana",
   },
   {
-    title: "Integrate Web3Auth with the Skale Blockchain",
-    description: "Learn how to add a non custodial social login to the Skale Blockchain",
+    title: "Integrate Web3Auth with the SKALE Blockchain",
+    description: "Learn how to add a non custodial social login to the SKALE Blockchain",
     image: "content-hub/guides/banners/skale.png",
     type: "REFERENCE",
     tags: ["skale", "evm", "@web3auth/modal", "@web3auth/no-modal"],

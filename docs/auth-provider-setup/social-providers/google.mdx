@@ -162,7 +162,7 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 
 1. Create a verifier for your Auth0 application by selecting `Auth0` as the Login provider from this modal.
    ![Google - Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier-auth0.png)
-2. Select the `Google` as the **Authentication Type** based on the dropdown.
+2. Select `Google` as the **Authentication Type** based on the dropdown.
    ![Google - Auth0 Authentication Type list on Web3Auth Dashboard](/images/dashboard/create-verifier-google.png)
 3. Enter the `Auth0 Client ID` and `Auth0 Domain` from your Auth0 application. See how to create a new Auth0 application
    [here](https://auth0.com/docs/quickstart/webapp/).
@@ -174,6 +174,62 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 5. Click on the `Create` button to create `Google` Custom Authentication via Auth0 verifier.
 
 ### Example
+
+<Tabs
+defaultValue="modal"
+values={[
+  { label: "Modal", value: "modal" },
+  { label: "NoModal", value: "nomodal" },
+]}
+>
+<TabItem value="modal">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
+// get it from https://dashboard.web3auth.io by creating a Plug n Play project.
+
+const web3auth = new Web3Auth({
+  clientId,
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1",
+    rpcTarget: "https://rpc.ankr.com/eth",
+    displayName: "Ethereum Mainnet",
+    blockExplorer: "https://goerli.etherscan.io",
+    ticker: "ETH",
+    tickerName: "Ethereum",
+  },
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    uxMode: "popup",
+    loginConfig: {
+      // Google login
+      google: {
+        verifier: "w3a-google-demo", // Pass the Verifier name here
+        typeOfLogin: "google", // Pass on the login provider of the verifier you've created
+        clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com", // Pass on the Google `Client ID` here
+      },
+    },
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+
+// Initialize Modal
+await web3auth.initModal();
+
+// Login with Google
+await web3auth.connect();
+```
+
+</TabItem>
+
+<TabItem value="nomodal">
 
 ```tsx
 import { Web3AuthNoModal } from "@web3auth/no-modal";
@@ -193,7 +249,7 @@ const chainConfig = {
   tickerName: "Ethereum",
 };
 
-const web3auth = new Web3Auth({
+const web3auth = new Web3AuthNoModal({
   clientId,
   chainConfig,
   web3AuthNetwork: "sapphire_mainnet",
@@ -232,3 +288,7 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   },
 });
 ```
+
+</TabItem>
+
+</Tabs>

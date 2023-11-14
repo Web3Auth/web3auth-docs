@@ -187,7 +187,16 @@ Future<void> initPlatformState() async {
     network: Network.testnet,
     redirectUrl: redirectUrl,
     whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap),
+      appName: "Web3Auth Flutter App",
+      logoLight:
+          "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
+      logoDark:
+          "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
+      defaultLanguage: Language.en,
+      mode: ThemeModes.auto,
+      appUrl: "https://web3auth.io",
+      useLogoLoader: true,
+      theme: themeMap),
     // highlight-next-line
     loginConfig: loginConfig
     ));
@@ -234,7 +243,16 @@ Future<void> initPlatformState() async {
     network: Network.testnet,
     redirectUrl: redirectUrl,
     whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap),
+      appName: "Web3Auth Flutter App",
+      logoLight:
+          "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
+      logoDark:
+          "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
+      defaultLanguage: Language.en,
+      mode: ThemeModes.auto,
+      appUrl: "https://web3auth.io",
+      useLogoLoader: true,
+      theme: themeMap),
     // highlight-next-line
     loginConfig: loginConfig
     ));
@@ -281,7 +299,16 @@ Future<void> initPlatformState() async {
     network: Network.testnet,
     redirectUrl: redirectUrl,
     whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap),
+      appName: "Web3Auth Flutter App",
+      logoLight:
+          "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
+      logoDark:
+          "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
+      defaultLanguage: Language.en,
+      mode: ThemeModes.auto,
+      appUrl: "https://web3auth.io",
+      useLogoLoader: true,
+      theme: themeMap),
     // highlight-next-line
     loginConfig: loginConfig
     ));
@@ -293,7 +320,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
     // highlight-start
     loginProvider: Provider.jwt,
     extraLoginOptions: ExtraLoginOptions(
-      id_token: "{YOUR_JWT_TOKEN}"
+      id_token: "YOUR_JWT_TOKEN"
     )
     // highlight-end
   )
@@ -444,7 +471,16 @@ Future<void> initPlatformState() async {
     network: Network.testnet,
     redirectUrl: redirectUrl,
     whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap),
+      appName: "Web3Auth Flutter App",
+      logoLight:
+          "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
+      logoDark:
+          "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
+      defaultLanguage: Language.en,
+      mode: ThemeModes.auto,
+      appUrl: "https://web3auth.io",
+      useLogoLoader: true,
+      theme: themeMap),
     // highlight-next-line
     loginConfig: loginConfig
     ));
@@ -456,7 +492,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
     // highlight-start
     loginProvider: Provider.jwt,
     extraLoginOptions: ExtraLoginOptions(
-      domain: "https://username.us.auth0.com", // domain of your auth0 app
+      domain: "https://tenant-name.us.auth0.com", // domain of your auth0 app
       verifierIdField: "sub", // The field in jwt token which maps to verifier id.
     )
     // highlight-end
@@ -498,7 +534,16 @@ Future<void> initPlatformState() async {
     network: Network.testnet,
     redirectUrl: redirectUrl,
     whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap),
+      appName: "Web3Auth Flutter App",
+      logoLight:
+          "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
+      logoDark:
+          "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
+      defaultLanguage: Language.en,
+      mode: ThemeModes.auto,
+      appUrl: "https://web3auth.io",
+      useLogoLoader: true,
+      theme: themeMap),
     // highlight-next-line
     loginConfig: loginConfig
     ));
@@ -519,12 +564,16 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 ### Email Passwordless
 
-To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` field of the `extraLoginOptions`.
+To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` field of the `extraLoginOptions`. By default, the login flow
+will be `code` flow, if you want to use the `link` flow, you need to put `flow_type` into the `additionalParams` field of the `extraLoginOptions`.
 
 ```kotlin
 Future<void> initPlatformState() async {
   final themeMap = HashMap<String, String>();
   themeMap['primary'] = "#229954";
+
+  final additionalParams = HashMap<String, String>();
+  additionalParams['flow_type'] = "link"; // default is 'code'
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -542,7 +591,16 @@ Future<void> initPlatformState() async {
     network: Network.testnet,
     redirectUrl: redirectUrl,
     whiteLabel: WhiteLabelData(
-        dark: true, name: "Web3Auth Flutter App", theme: themeMap),
+      appName: "Web3Auth Flutter App",
+      logoLight:
+          "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
+      logoDark:
+          "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
+      defaultLanguage: Language.en,
+      mode: ThemeModes.auto,
+      appUrl: "https://web3auth.io",
+      useLogoLoader: true,
+      theme: themeMap),
     ));
 }
 
@@ -550,5 +608,5 @@ Future<void> initPlatformState() async {
 final Web3AuthResponse response = await Web3AuthFlutter.login(
     LoginParams(loginProvider: Provider.email_passwordless,
     // highlight-next-line
-      extraLoginOptions: ExtraLoginOptions(login_hint: "hello@web3auth.io")));
+      extraLoginOptions: ExtraLoginOptions(login_hint: "hello@web3auth.io", additionalParams: additionalParams)));
 ```
