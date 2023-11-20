@@ -12,207 +12,203 @@ Natively, the instance of `Web3AuthMPCCoreKit` (referred to as `coreKitInstance`
 
 Authentication Functions:
 
-- `connect()` - Logs in the User.
+- `loginWithOAuth()` - Logs in the user in OAuth Intrisic Flow.
+- `loginWithJWT()` - Logs in the user with a JWT based ID Token.
 - `logout()` - Logs out the User.
-- `handleRedirectResult()` - Handles the redirect result while logging in the User, while in redirect mode
 
-Backup Share Functions:
+:::tip
 
-- `exportBackupShare()` - Exports the Backup Mnemonic Share.
-- `inputBackupShare()` - Inputs the Backup Mnemonic Share to recover the User's account.
+Checkout the [Authentication section](/sdk/core-kit/mpc-core-kit/authentication) of the SDK Reference to learn more about these functions.
 
-Security Question Functions:
+:::
 
-- `addSecurityQuestionShare()` - Adds a Security Question Share to the User's account.
-- `recoverSecurityQuestionShare()` - Recovers the User's account using the Security Question Share.
-- `changeSecurityQuestionShare()` - Changes the Security Question Share of the User's account.
-- `deleteSecurityQuestionShare()` - Deletes the Security Question Share of the User's account.
+Handling Factors:
+
+- `enableMFA()` - Enable MFA for the user. Deletes the Hashed Factor and generates a new Factor Key.
+- `inputFactorKey()` - Inputs the Factor Key to recover the User's account.
+- `getCurrentFactorKey()` - Returns the current Factor Key of the User's account, present in the state of the SDK.
+- `createFactor()` - Creates a new Factor for the User's account.
+- `deleteFactor()` - Deletes a Factor from the User's account.
 
 User Functions:
 
 - `getUserInfo()` - Returns the User's information received from the ID Token.
 - `getKeyDetails()` - Returns the User's Key Details.
 - `commitChanges()` - Commits the changes made to the User's account while in manual sync mode.
-- `CRITICAL_resetAccount()` - Resets the User's account. This function is only to be used in case of emergencies, when the user is unable to recover
-  their account. This deletes all the history of the previous key and the funds/ assets associated with it.
 
-## Logging in your User
+Additional Helper Functions:
 
-#### `connect(params: LoginParams): Promise<SafeEventEmitterProvider | null>;`
+- Web Storage
+  - `storeWebBrowserFactor()` - Stores a Factor in the Web Local/ Session Storage.
+  - `getWebBrowserFactor()` - Returns the Factor from the Web Local/ Session Storage.
+- Security Questions
+  - `setSecurityQuestion()` - Sets the Security Question Factor for the User's account.
+  - `changeSecurityQuestion()` - Changes the Security Question for the User's account.
+  - `deleteSecurityQuestion()` - Deletes the Security Question for the User's account.
+  - `recoverFactor()` - Recovers the Security Question Factor for the User's account using the given password.
+  - `getQuestion()` - Returns the Security Question for the User's account.
+- Conversion from Mnemonic
+  - `mnemonicToKey()` - Converts a Mnemonic to a BN.
+  - `keyToMnemonic()` - Converts a hex string to a Mnemonic.
 
-To login a user in the Web3Auth MPC Core Kit SDK, you need to call `connect()` function. The function takes in the following parameters:
+## Enable MFA
 
-| Variable      | Type     | Description      | Mandatory |
-| ------------- | -------- | ---------------- | --------- |
-| `loginParams` | `object` | Login Parameters | Yes       |
+#### `enableMFA(enableMFAParams: EnableMFAParams): Promise<string>;`
 
-:::tip
+Enables MFA for the user. It creates a device factor and stores it in the local storage. It also creates a backup factor and returns it to the user.
+You can also pass a factor key which can be used for the backup factor. If you don't pass a factor key, a new factor key will be generated.
 
-Checkout the [Authentication Section](/sdk/core-kit/mpc-core-kit/authentication) to know more about the `loginParams` object.
+Most importantly, this function deletes the Hashed Factor Key enabling a non-custodial flow.
 
-:::
+### Parameters
 
-#### Returns
-
-```tsx
-connect(loginParams: LoginParams): Promise<SafeEventEmitterProvider | null>
+```js
+export interface EnableMFAParams {
+  /**
+   * A BN used for encrypting your Device/ Recovery TSS Key Share. You can generate it using `generateFactorKey()` function or use an existing one.
+   */
+  factorKey?: BN;
+  /**
+   * Setting the Description of Share - Security Questions, Device Share, Seed Phrase, Password Share, Social Share, Other. Default is Other.
+   */
+  shareDescription?: FactorKeyTypeShareDescription;
+  /**
+   * Additional metadata information you want to be stored alongside this factor for easy identification.
+   */
+  additionalMetadata?: Record<string, string>;
+}
+export enum FactorKeyTypeShareDescription {
+  HashedShare = "hashedShare",
+  SecurityQuestions = "tssSecurityQuestions",
+  DeviceShare = "deviceShare",
+  SeedPhrase = "seedPhrase",
+  PasswordShare = "passwordShare",
+  SocialShare = "socialShare",
+  Other = "Other",
+}
 ```
 
-On successful login, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
-corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
-
-On unsuccessful login, this function will return a `null` value.
-
-#### Example
+#### Usage
 
 ```tsx
-const provider = await coreKitInstance.connect({
-  subVerifierDetails: {
-    typeOfLogin: "google",
-    verifier: "w3a-google-demo",
-    clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
-  },
+const factorKey = await coreKitInstance.enableMFA({});
+const factorKeyMnemonic = keyToMnemonic(factorKey);
+
+uiConsole("MFA enabled, device factor stored in local store, deleted hashed cloud key, your backup factor key: ", factorKeyMnemonic);
+```
+
+## Input Factor Key
+
+#### `inputFactorKey(factorKey: BN): Promise<void>;`
+
+Inputs the Factor Key into the SDK. This function is used to recover the User's account using the Factor Key. If the factor key is correct, the SDK
+initialises the User's account and logs them in.
+
+If you want to change the factor key in the current state of the SDK, you can use this function.
+
+#### Usage
+
+```tsx
+const factorKey = new BN(backupFactorKey, "hex");
+await coreKitInstance.inputFactorKey(factorKey);
+```
+
+## Get Current Factor Key
+
+#### `getCurrentFactorKey(): IFactorKey;`
+
+Returns the current factor key in usage within the state of the SDK.
+
+#### Usage
+
+```tsx
+const factorKey = coreKitInstance.getCurrentFactorKey();
+```
+
+## Create Factor
+
+A low-level function, helping you to create a backup factor key based on the type of TSS Share you want to create. You can pass your own factor key or
+let the SDK generate one for you.
+
+### Parameters
+
+```tsx
+export interface CreateFactorParams extends EnableMFAParams {
+  /**
+   * Setting the Type of Share - Device or Recovery.
+   **/
+  shareType: TssShareType;
+}
+
+export enum TssShareType {
+  DEVICE = 2,
+  RECOVERY = 3,
+}
+
+export interface EnableMFAParams {
+  /**
+   * A BN used for encrypting your Device/ Recovery TSS Key Share. You can generate it using `generateFactorKey()` function or use an existing one.
+   */
+  factorKey?: BN;
+  /**
+   * Setting the Description of Share - Security Questions, Device Share, Seed Phrase, Password Share, Social Share, Other. Default is Other.
+   */
+  shareDescription?: FactorKeyTypeShareDescription;
+  /**
+   * Additional metadata information you want to be stored alongside this factor for easy identification.
+   */
+  additionalMetadata?: Record<string, string>;
+}
+
+export enum FactorKeyTypeShareDescription {
+  HashedShare = "hashedShare",
+  SecurityQuestions = "tssSecurityQuestions",
+  DeviceShare = "deviceShare",
+  SeedPhrase = "seedPhrase",
+  PasswordShare = "passwordShare",
+  SocialShare = "socialShare",
+  Other = "Other",
+}
+```
+
+#### Usage
+
+```tsx
+const factorKey = generateFactorKey();
+await coreKitInstance.createFactor({
+  shareType: exportTssShareType,
+  factorKey: factorKey.private,
 });
 ```
 
-## Logging out the User
+## Delete Factor
 
-#### `logout(): Promise<void>;`
+#### `deleteFactor(factorPub: TkeyPoint): Promise<void>;`
 
-Disconnect the user's connected wallet/ provider and log them out of the Web3Auth MPC Core Kit SDK.
+Deletes the Factor, respective to the factorPub provided for the User's account. You can get the factor Pubs by using the `getKeyDetails()` function.
 
-#### Example
+It will throw an error if you try to delete the factor that is currently active within the state of the SDK. Use the `inputFactorKey()` function to
+change the factor key in the current state of the SDK to be able to delete that factor.
 
-```tsx
-await coreKitInstance.logout();
-```
-
-## Handle Redirect Result
-
-#### `handleRedirectResult(): Promise<SafeEventEmitterProvider | null>;`
-
-While using the redirect mode, you need to handle the redirect result in your application. This can be done by calling the `handleRedirectResult()`
-method of the `web3auth` instance, within the constructor of the component where you want to handle the redirect result.
-
-If your URL anchor contains `#state`, then the `handleRedirectResult()` method should be be called, since that is where the redirect result,
-containing the `idToken` is returned from the login provider.
-
-#### Example
-
-```javascript
-useEffect(() => {
-  const submitRedirectResult = async () => {
-    try {
-      const provider = await coreKitInstance?.handleRedirectResult();
-      if (provider) setProvider(provider);
-    } catch (error) {
-      if ((error as Error).message === "required more shares") {
-        uiConsole("first triggered", coreKitInstance);
-        recoverAccount();
-      }
-    }
-  }
-  if (coreKitInstance && window.location.hash.includes("#state")) {
-    submitRedirectResult();
-  }
-}, [coreKitInstance]);
-```
-
-:::note
-
-For the popup flow, the service worker is needed to handle it properly. Please have a look at the
-[installation page](/sdk/core-kit/mpc-core-kit/install) to know how to set up the service worker for your application.
-
-:::
-
-## Export Backup Share
-
-#### `exportBackupShare(): Promise<string>;`
-
-Returns the Backup Mnemonic Share, which can be used to recover the User's account on a different device than they have logged in previously.
-
-#### Example
+#### Usage
 
 ```tsx
-await coreKitInstance.exportBackupShare();
-```
-
-## Input Backup Share
-
-#### `inputBackupShare(shareMnemonic: string): Promise<void>;`
-
-Inputs the Backup Mnemonic Share to recover the User's account.
-
-#### Example
-
-```tsx
-await coreKitInstance.inputBackupShare(seedPhrase);
-```
-
-## Add Security Question Share
-
-#### `addSecurityQuestionShare(question: string, password: string): Promise<void>;`
-
-Creates a security question share for your to easily recover user's account. Since this share can take any question and password, you can innovatively
-use this to create any flow for your users to recover their account. From a general password login to using mobile OTP based login and associating a
-certain parameter on successful authentication, you can use this share to create any flow you want.
-
-#### Example
-
-```tsx
-await coreKitInstance.addSecurityQuestionShare("What is your password?", password);
-```
-
-## Recover Security Question Share
-
-#### `recoverSecurityQuestionShare(question: string, password: string): Promise<void>;`
-
-Recover the User's account using the Security Question Share.
-
-#### Example
-
-```tsx
-await coreKitInstance.recoverSecurityQuestionShare("What is your password?", password);
-```
-
-## Change Security Question Share
-
-#### `changeSecurityQuestionShare(question: string, password: string): Promise<void>;`
-
-Changes the Security Question Share of the User's account. This helps you change the password if the user has lost it somehow. However, this function
-can only be used if the user has already logged in within the application while meeting the minimum share threshold.
-
-#### Example
-
-```tsx
-await coreKitInstance.changeSecurityQuestionShare("What is your password?", password);
-```
-
-## Delete Security Question Share
-
-#### `deleteSecurityQuestionShare(question: string): Promise<void>;`
-
-Deletes the Security Question Share of the User's account. This function can only be used if the user has already logged in within the application
-while meeting the minimum share threshold.
-
-#### Example
-
-```tsx
-await coreKitInstance.deleteSecurityQuestionShare("What is your password?");
+const pubBuffer = Buffer.from(factorPubToDelete, "hex");
+const pub = Point.fromBufferSEC1(pubBuffer);
+await coreKitInstance.deleteFactor(pub.toTkeyPoint());
 ```
 
 ## Get User Info
 
 #### `getUserInfo(): UserInfo;`
 
-Returns the User's information received from the ID Token.
+Gives you the User's information received from the ID Token.
 
 #### Returns
 
-This function returns the following parameters in the form of an object:
-
 ```tsx
-type UserInfo = {
+export type UserInfo = TorusVerifierResponse & LoginWindowResponse;
+export interface TorusVerifierResponse {
   email: string;
   name: string;
   profileImage: string;
@@ -223,68 +219,243 @@ type UserInfo = {
   ref?: string;
   registerOnly?: boolean;
   extraVerifierParams?: WebAuthnExtraParams;
+}
+export interface LoginWindowResponse {
   accessToken: string;
   idToken?: string;
   ref?: string;
   extraParams?: string;
   extraParamsPassed?: string;
   state: TorusGenericObject;
-};
+}
 ```
 
-#### Example
+#### Usage
 
 ```tsx
-await coreKitInstance.getUserInfo();
+const user = coreKitInstance?.getUserInfo();
 ```
 
 ## Get Key Details
 
-#### `getKeyDetails(): KeyDetails;`
+#### `getKeyDetails(): MPCKeyDetails;`
 
-Returns the details of how the user's key is managed by the MPC Core Kit.
+Gives you the details of the keys and factors held by the User's account.
 
 #### Returns
 
-This function returns the following parameters in the form of an object:
-
 ```tsx
-type KeyDetails = {
-  pubKey: Point;
-  requiredShares: number;
+export type MPCKeyDetails = {
+  metadataPubKey: TkeyPoint;
   threshold: number;
-  totalShares: number;
+  requiredFactors: number;
+  totalFactors: number;
   shareDescriptions: ShareDescriptionMap;
+  tssPubKey?: TkeyPoint;
+};
+export type ShareDescriptionMap = {
+  [shareIndexStr: string]: string[];
 };
 ```
 
-#### Example
+#### Usage
 
 ```tsx
-await coreKitInstance.getKeyDetails();
+const keyDetails = coreKitInstance?.getKeyDetails();
 ```
 
 ## Commit Changes
 
 #### `commitChanges(): Promise<void>;`
 
-Sync the local changes made to the User's account with the web3auth metadata server. This function is only to be used while in manual sync mode.
+Syncs the local metadata with the web3auth metadata server. This function is only to be used while in manual sync mode.
 
-#### Example
+#### Usage
 
 ```tsx
-await coreKitInstance.commitChanges();
+await coreKitInstance?.commitChanges();
 ```
 
-## Reset Account (CRITICAL)
+- Web Storage
+  - `storeWebBrowserFactor()` - Stores a Factor in the Web Local/ Session Storage.
+  - `getWebBrowserFactor()` - Returns the Factor from the Web Local/ Session Storage.
+- Security Questions
+  - `setSecurityQuestion()` - Sets the Security Question Factor for the User's account.
+  - `changeSecurityQuestion()` - Changes the Security Question for the User's account.
+  - `deleteSecurityQuestion()` - Deletes the Security Question for the User's account.
+  - `recoverFactor()` - Recovers the Security Question Factor for the User's account using the given password.
+  - `getQuestion()` - Returns the Security Question for the User's account.
+- Conversion from Mnemonic
+  - `mnemonicToKey()` - Converts a Mnemonic to a BN.
+  - `keyToMnemonic()` - Converts a hex string to a Mnemonic.
 
-#### `CRITICAL_resetAccount(): Promise<void>;`
+## Web Storage Helper Functions
 
-Can be used to reset user's account in case of emergencies, when the user is unable to recover their account. This deletes all the history of the
-previous key and the funds/ assets associated with it.
+### Store Web Browser Factor
 
-#### Example
+#### `storeWebBrowserFactor(factorKey: BN, mpcCoreKit: ICoreKit, storageKey: "local" | "session" = "local"): Promise<void>`
+
+Helps you store a web browser factor in the local/ session storage.
+
+#### Usage
 
 ```tsx
-await coreKitInstance.CRITICAL_resetAccount();
+import bowser from "bowser";
+import { storeWebBrowserFactor } from "@web3auth/mpc-core-kit";
+
+const browserInfo = bowser.parse(navigator.userAgent);
+const browserName = `${browserInfo.browser.name}`;
+const browserData = {
+  browserName,
+  browserVersion: browserInfo.browser.version,
+  deviceName: browserInfo.os.name,
+};
+const deviceFactorKey = new BN(await coreKitInstance.createFactor({ shareType: TssShareType.DEVICE, additionalMetadata: browserData }), "hex");
+storeWebBrowserFactor(deviceFactorKey, coreKitInstance);
+```
+
+### Get Web Browser Factor
+
+#### `getWebBrowserFactor(mpcCoreKit: ICoreKit, storageKey: "local" | "session" = "local")`
+
+Get the web browser factor from the local/ session storage.
+
+#### Usage
+
+```tsx
+import { getWebBrowserFactor } from "@web3auth/mpc-core-kit";
+
+const factorKey = await getWebBrowserFactor(coreKitInstance!);
+```
+
+## Security Question
+
+### Set Security Question
+
+#### `setSecurityQuestion(params: setSecurityQuestionParams): Promise<string>;`
+
+#### Parameters
+
+```tsx
+export interface setSecurityQuestionParams {
+  mpcCoreKit: Web3AuthMPCCoreKit;
+  question: string;
+  answer: string;
+  shareType?: TssShareType;
+  description?: Record<string, string>;
+  tssIndex?: TssShareType;
+}
+export enum TssShareType {
+  DEVICE = 2,
+  RECOVERY = 3,
+}
+```
+
+Creates a security question share for your to easily recover user's account.
+
+#### Usage
+
+```tsx
+import { TssSecurityQuestion } from "@web3auth/mpc-core-kit";
+
+const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
+
+await securityQuestion.setSecurityQuestion({ mpcCoreKit: coreKitInstance, question, answer, shareType: TssShareType.RECOVERY });
+```
+
+### Change Security Question
+
+#### `changeSecurityQuestion(params: changeSecurityQuestionParams): Promise<void>;`
+
+#### Parameters
+
+```tsx
+export interface changeSecurityQuestionParams {
+  mpcCoreKit: Web3AuthMPCCoreKit;
+  newQuestion: string;
+  newAnswer: string;
+  answer: string;
+}
+```
+
+Changes the Security Question Share of the User's account. This helps you change the password if the user has lost it somehow. However, this function
+can only be used if the user has already logged in within the application while meeting the minimum share threshold.
+
+#### Usage
+
+```tsx
+import { TssSecurityQuestion } from "@web3auth/mpc-core-kit";
+
+const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
+
+await securityQuestion.changeSecurityQuestion({ mpcCoreKit: coreKitInstance, newQuestion, newAnswer, answer });
+```
+
+### Delete Security Question Share
+
+#### `deleteSecurityQuestion(mpcCoreKit: Web3AuthMPCCoreKit, deleteFactorKey?: boolean): Promise<void>;`
+
+Deletes the Security Question Share of the User's account. This function can only be used if the user has already logged in within the application
+while meeting the minimum share threshold.
+
+#### Usage
+
+```tsx
+import { TssSecurityQuestion } from "@web3auth/mpc-core-kit";
+
+const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
+
+await securityQuestion.deleteSecurityQuestion(coreKitInstance);
+```
+
+### Get Factor Key from Security Question
+
+#### `recoverFactor(mpcCoreKit: Web3AuthMPCCoreKit, answer: string): Promise<string>`
+
+Returns the Factor Key stored against the security question share.
+
+#### Usage
+
+```tsx
+import { TssSecurityQuestion } from "@web3auth/mpc-core-kit";
+
+const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
+
+const factorKey = await securityQuestion.recoverFactor(coreKitInstance, answer);
+```
+
+### Get Security Question for User's Account
+
+#### `getQuestion(mpcCoreKit: Web3AuthMPCCoreKit): string;`
+
+Get the security question for the user's account.
+
+#### Usage
+
+```tsx
+const question = securityQuestion.getQuestion(coreKitInstance!);
+```
+
+## Mnemonic Conversations
+
+### Mnemonic to Key
+
+#### `mnemonicToKey(shareMnemonic: string): string`
+
+Converts a Mnemonic to a BN.
+
+```tsx
+const factorKeyBN = keyToMnemonic(factorKeyMnemonic);
+```
+
+### Key to Mnemonic
+
+#### `keyToMnemonic(shareHex: string): string`
+
+Converts a factor key hex string to a Mnemonic.
+
+#### Usage
+
+```tsx
+const factorKeyMnemonic = keyToMnemonic(factorKeyHex);
 ```

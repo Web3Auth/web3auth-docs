@@ -6,7 +6,7 @@ type: guide
 tags: [web, "@web3auth/no-modal", firebase, custom authentication, react, ethereum]
 date: August 23, 2022
 author: Web3Auth Team
-order: 5
+order: 4
 communityPortalTopicId: 50
 ---
 
@@ -18,6 +18,7 @@ import InstantiationWeb3Auth from "@site/src/common/guides/_instantiation-web3au
 import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
 import OpenloginConfigCodeFirebase from "@site/src/common/guides/_openlogin-config-code-firebase.mdx";
 import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
+import SetupFirebaseVerifier from "@site/src/common/guides/_setup-firebase-verifier.mdx";
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
 import SEO from "@site/src/components/SEO";
@@ -37,7 +38,7 @@ a basic web application on the Ethereum blockchain.
 ## Quick Start
 
 ```bash
-npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/firebase-react-no-modal-example w3a-firebase-demo && cd w3a-firebase-demo && npm install && npm run start
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/single-verifier-examples/firebase-no-modal-example w3a-firebase-demo && cd w3a-firebase-demo && npm install && npm run start
 ```
 
 ## How it works?
@@ -50,16 +51,16 @@ When integrating Web3Auth with Firebase, the login flow looks something like thi
 
 <Web3AuthPrerequisites />
 
-- A [Firebase](https://console.firebase.google.com) account to be used as Federated Identity Provider.
+- A [Firebase](https://console.firebase.google.com) account to be used as a Federated Identity Provider.
 
-- A [Google Developer](https://console.developers.google.com) account to be used as Identity provider for Firebase.
+- A [Google Developer](https://console.developers.google.com) account to be used as an Identity provider for Firebase.
 
 ## Setup
 
-### Setup your Firebase Project
+### Setup Firebase
 
 - Go to your [Firebase console](https://console.firebase.google.com) and create a Web App. Follow
-  [this guide](https://firebase.google.com/docs/web/setup) on how to setup your Firebase Web App project.
+  [this guide](https://firebase.google.com/docs/web/setup) on how to set up your Firebase Web App project.
 
 ###### Create a Firebase Project
 
@@ -82,7 +83,7 @@ When integrating Web3Auth with Firebase, the login flow looks something like thi
 
   ![Firebase Project - Set up auth 1](/content-hub/guides/firebase/firebase-setup-auth-1.svg)
 
-- From **Sign-in method** tab, select any provider you wish to enanle. For the purpose of this guide, we'll be enabling **Google**.
+- From the **Sign-in method** tab, select any provider you wish to enable. For this guide, we'll be enabling **Google**.
 
   ![Firebase Project - Set up auth 2](/content-hub/guides/firebase/firebase-setup-auth-2.svg)
 
@@ -97,43 +98,31 @@ When integrating Web3Auth with Firebase, the login flow looks something like thi
 
   ![Firebase Project - Set up web 1](/content-hub/guides/firebase/firebase-setup-web-1.svg)
 
-- In the next screen, enter the **App nickname** and click on **Register** button to register the app for Web.
+- In the next screen, enter the **App nickname** and click on the **Register** button to register the app for Web.
 
   ![Firebase Project - Set up web 2](/content-hub/guides/firebase/firebase-setup-web-2.svg)
 
-- Next screen shows ways to add **Firebase** to your application. We will be using the config from here later in the guide. Please keep a note of the
-  `firebaseConfig` object.
+- The next screen shows ways to add **Firebase** to your application. We will be using the config from here later in the guide. Please keep a note of
+  the `firebaseConfig` object.
 
   ![Firebase Project - Set up web 3](/content-hub/guides/firebase/firebase-setup-web-3.svg)
 
-### Setup your Web3Auth Dashboard
+### Setup Web3Auth
+
+#### Setup Web3Auth Project
 
 <SetupWeb3AuthDashboard />
 
-- Create a **Verifier** from the **Custom Auth** Section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) with following
-  configuration:
+#### Setup Firebase Custom Authentication Verifier
 
-  - Choose a name of your choice for the verifier identifier. `eg. w3a-firebase-verifier`
-  - Select environment: `testnet`, `mainnet`,`aqua`, or `cyan` as per your requirement.
-  - Select `Custom` from the **Login Provider**.
-  - Select `Sub` for the **JWT Verifier ID**.
-  - Enter `https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com` as the JWK endpoint for Firebase's idToken.
-  - JWT validation fields:
-    - iss: `https://securetoken.google.com/<firebase-project-id>`.
-    - aud: `<firebase-project-id>`
-  - Click on `Create` button to create your verifier. It may take up to 10 minutes to deploy verifier on _testnet_. You'll receive an email once it's
-    complete.
-
-  ![Custom Authentication - Create Firebase Verifier](/content-hub/guides/firebase/firebase-custom-verifier.png)
-
-- You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+<SetupFirebaseVerifier />
 
 ## Using the Web3Auth SDK with Firebase
 
 To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
 SDKs, please have a look at this [documentation page](/sdk).
 
-For this guide here, we will be talking through the [Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and using the
+For this guide, we will be talking through the [Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and using the
 [OpenLogin Provider](/sdk/pnp/web/adapters/openlogin) alongside it to enable Custom Authentication through Firebase.
 
 <SetupBaseProject />
@@ -147,7 +136,8 @@ For this guide here, we will be talking through the [Web3Auth Plug and Play No M
 <InitializationIntro />
 
 For this guide, we're only focusing on the Instantiation, Configuration for the Openlogin Adapter (the default adapter that enables social logins) and
-Initialization of the Web3Auth SDK. To know more about the other things you can do with Web3Auth, checkout our [SDK Reference](/sdk/pnp/web/no-modal).
+Initialization of the Web3Auth SDK. To know more about the other things you can do with Web3Auth, check out our
+[SDK Reference](/sdk/pnp/web/no-modal).
 
 #### Instantiating Web3Auth
 
@@ -186,10 +176,10 @@ makes sure that the Openlogin Adapter can connect to the correct verifier and Fi
 
 ### Authentication
 
-Login is a two step process:
+Login is a two-step process:
 
 1. Firstly, we will login with **Firebase(Google)** to get the `idToken`.
-2. Next, we will pass the received `idToken` to **web3auth** to login via Web3Auth SDK to generate the public-private key pair for easier onboarding
+2. Next, we will pass the received `idToken` to **web3auth** to log in via Web3Auth SDK to generate the public-private key pair for easier onboarding
    to Web3.
 
 ##### Login with Firebase
@@ -219,14 +209,13 @@ const idToken = await loginRes.user.getIdToken(true); // this idToken will be pa
 Once initialized, and `idToken` is obtained from **Firebase**, you can use the `connectTo()` function to authenticate the user with Web3Auth.
 
 ```tsx
-import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
+import { WALLET_ADAPTERS } from "@web3auth/base";
 
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {
     id_token: idToken,
-    verifierIdField: "sub", // same as your JWT Verifier ID
-    domain: "https://YOUR-APPLICATION-DOMAIN" || "http://localhost:3000",
+    verifierIdField: "sub", // same as your JWT Verifier ID field
   },
 });
 ```
@@ -261,10 +250,10 @@ await web3auth.logout();
 
 Try our [Demo Application](https://demo-firebase.web3auth.io/) with Web3Auth & Firebase integration. It works for either Ethereum, Solana or Polygon.
 The source code for the demo application is available
-[here](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/modular-examples/firebase-react-modular-no-modal-example).
+[here](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/firebase-no-modal-example).
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth Firebase Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/firebase-react-no-modal-example).
+[Web3Auth Firebase Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/firebase-no-modal-example).
 Check it out and try running it locally yourself!
 
 ## Questions?

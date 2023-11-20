@@ -47,10 +47,17 @@ const getAccounts = async () => {
     console.log("provider not initialized yet");
     return;
   }
-  const provider = new ethers.providers.Web3Provider(provider as any);
-  const signer = provider.getSigner();
-  const userAccounts = await signer.getAddress();
-  console.log(userAccounts);
+  // For ethers v5
+  // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+  const ethersProvider = new ethers.BrowserProvider(this.provider);
+
+  // For ethers v5
+  // const signer = ethersProvider.getSigner();
+  const signer = await ethersProvider.getSigner();
+
+  // Get the user's Ethereum public address
+  const address = signer.getAddress();
+  console.log(address);
 };
 ```
 
@@ -91,16 +98,24 @@ const getBalance = async () => {
     console.log("provider not initialized yet");
     return;
   }
-  const provider = new ethers.providers.Web3Provider(this.provider as any);
-  const signer = provider.getSigner();
-  const account = await signer.getAddress();
-  // Get user's balance in ether
+  // For ethers v5
+  // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+  const ethersProvider = new ethers.BrowserProvider(this.provider);
+
+  // For ethers v5
+  // const signer = ethersProvider.getSigner();
+  const signer = await ethersProvider.getSigner();
+
+  // Get the user's Ethereum public address
+  const address = signer.getAddress();
+
+  // Get the user's balance in ether
   // For ethers v5
   // const balance = ethers.utils.formatEther(
   // await ethersProvider.getBalance(address) // Balance is in wei
   // );
   const balance = ethers.formatEther(
-    await provider.getBalance(account) // Balance is in wei
+    await ethersProvider.getBalance(address) // Balance is in wei
   );
   console.log(balance);
 };
@@ -161,12 +176,18 @@ const signMessage = async () => {
     console.log("provider not initialized yet");
     return;
   }
-  const provider = new ethers.providers.Web3Provider(provider);
-  const signer = provider.getSigner();
+  // For ethers v5
+  // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+  const ethersProvider = new ethers.BrowserProvider(this.provider);
 
-  const originalMessage = "Hello MPC, Bye Bye SeedPhrase";
+  // For ethers v5
+  // const signer = ethersProvider.getSigner();
+  const signer = await ethersProvider.getSigner();
+  const originalMessage = "YOUR_MESSAGE";
 
+  // Sign the message
   const signedMessage = await signer.signMessage(originalMessage);
+
   console.log(signedMessage);
 };
 ```
@@ -235,15 +256,30 @@ const sendTransaction = async () => {
     console.log("provider not initialized yet");
     return;
   }
-  const provider = new ethers.providers.Web3Provider(provider);
-  const signer = await provider.getSigner();
-  const address = signer.getAddress();
+  // For ethers v5
+  // const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+  const ethersProvider = new ethers.BrowserProvider(this.provider);
 
+  // For ethers v5
+  // const signer = ethersProvider.getSigner();
+  const signer = await ethersProvider.getSigner();
+
+  const destination = "0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56";
+
+  // Convert 1 ether to wei
+  // For ethers v5
+  // const amount = ethers.utils.parseEther("0.001");
+  const amount = ethers.parseEther("0.001");
+
+  // Submit transaction to the blockchain
   const tx = await signer.sendTransaction({
-    to: address,
-    value: ethers.utils.parseEther("0.0001"),
-    chainId: 1, // change it to your specific chain id.
+    to: destination,
+    value: amount,
+    maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
+    maxFeePerGas: "6000000000000", // Max fee per gas
   });
+
+  // Wait for the transaction to be mined
   const receipt = await tx.wait();
 
   console.log(receipt.transactionHash);

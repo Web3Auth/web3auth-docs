@@ -47,11 +47,11 @@ Then, you should specify the details of your verifier in the value of the `Login
 
 | Parameter               | Type               | Mandatory | Description                                                                                                                                                                                                                                                           |
 | ----------------------- | ------------------ | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `verifier`              | `String`           | Yes       | The name of the verifier which you have registered in Web3Auth Dashboard.                                                                                                                                                                                             |
+| `verifier`              | `String`           | Yes       | The name of the verifier that you have registered in Web3Auth Dashboard.                                                                                                                                                                                              |
 | `typeOfLogin`           | `enum TypeOfLogin` | Yes       | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose google, a google sign-in flow will be used. If you choose jwt, which you should be providing your own JWT token, no sign-in flow will be presented. |
-| `name`                  | `String`           | No        | Name of your verifier for display purpose.                                                                                                                                                                                                                            |
+| `clientId`              | `String`           | Yes       | The Client Id of the login provider. e.g. Google's Client ID                                                                                                                                                                                                          |
+| `name`                  | `String`           | No        | Name of your verifier.                                                                                                                                                                                                                                                |
 | `description`           | `String`           | No        | Description of this login flow.                                                                                                                                                                                                                                       |
-| `clientId`              | `String`           | No        | The Client Id of the login provider. e.g. Google's Client ID                                                                                                                                                                                                          |
 | `verifierSubIdentifier` | `String`           | No        | The name of the field in the JWT that should be used as the unique user ID of the JWT. Should be same as the one you used in the verifier config.                                                                                                                     |
 | `logoHover`             | `String`           | No        | Logo to be shown on mouse hover.                                                                                                                                                                                                                                      |
 | `logoLight`             | `String`           | No        | Logo to be shown on light background (light theme).                                                                                                                                                                                                                   |
@@ -263,8 +263,8 @@ const web3auth = new Web3Auth(WebBrowser, {
 
 ## `ExtraLoginOptions` for special login methods
 
-Additional to the `LoginConfig` you can pass extra options to the `login` function to configure the login flow for cases requiring additional info for
-enabling login. The `ExtraLoginOptions` accepts the following parameters:
+In addition to the `LoginConfig` you can pass extra options to the `login` function to configure the login flow for cases requiring additional info
+for enabling login. The `ExtraLoginOptions` accepts the following parameters:
 
 <Tabs
   defaultValue="table"

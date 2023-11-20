@@ -172,11 +172,11 @@ export type WhiteLabelData = {
     /**
      * App name to display in the UI
      */
-    name?: string;
+    appName?: string;
     /**
      * App url
      */
-    url?: string;
+    appUrl?: string;
     /**
      * App logo to use in light mode
      */
@@ -186,32 +186,65 @@ export type WhiteLabelData = {
      */
     logoDark?: string;
     /**
-     * Default language to use
+     * language which will be used by web3auth. app will use browser language if not specified. if language is not supported it will use "en"
+     * en: english
+     * de: german
+     * ja: japanese
+     * ko: korean
+     * zh: mandarin
+     * es: spanish
+     * fr: french
+     * pt: portuguese
+     * nl: dutch
      *
      * @defaultValue en
      */
-    defaultLanguage?: string;
+    defaultLanguage?: LANGUAGE_TYPE;
     /**
-     * Whether to enable dark mode
+     theme
+     *
+     * @defaultValue auto
+     */
+    mode?: THEME_MODE_TYPE;
+    /**
+     * Use logo loader
      *
      * @defaultValue false
      */
-    dark?: boolean;
+    useLogoLoader?: boolean;
     /**
      * Used to customize theme of the login modal with following options
      * `'primary'` - To customize primary color of modal's content.
      */
     theme?: {
-        primary?: string | ColorPalette;
-        gray?: string | ColorPalette;
-        red?: string | ColorPalette;
-        green?: string | ColorPalette;
+        primary?: string;
+        gray?: string;
+        red?: string;
+        green?: string;
         success?: string;
         warning?: string;
         error?: string;
         info?: string;
         white?: string;
     };
+    /**
+     * Language specific link for terms and conditions on torus-website. See (examples/vue-app) to configure
+     * e.g.
+     * tncLink: {
+     *  en: "http://example.com/tnc/en",
+     *  ja: "http://example.com/tnc/ja",
+     * }
+     */
+    tncLink?: Partial<Record<LANGUAGE_TYPE, string>>;
+    /**
+     * Language specific link for privacy policy on torus-website. See (examples/vue-app) to configure
+     * e.g.
+     * privacyPolicy: {
+     *  en: "http://example.com/tnc/en",
+     *  ja: "http://example.com/tnc/ja",
+     * }
+     */
+    privacyPolicy?: Partial<Record<LANGUAGE_TYPE, string>>;
 };
 
 export type MfaSettings = Partial<Record<MFA_FACTOR_TYPE, MFA_SETTINGS>>;

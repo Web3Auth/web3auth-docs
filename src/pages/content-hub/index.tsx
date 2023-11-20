@@ -259,7 +259,7 @@ export default function ContentHub({ content }: Props) {
     return (
       <div key={article.sys.id} className={styles.article}>
         <Link to={`/content-hub/blog/${article.slug}`} className={styles.articleContent}>
-          <img src={article.coverImage.url} alt="Blog Banner" />
+          <img src={article.coverImage.url ? article.coverImage.url : `${baseUrl}images/docs-meta-cards/guides-card.png`} alt="Blog Banner" />
           <div className={styles.contentContainer}>
             <div className={styles.pillContainer}>
               <div className={styles.pill}>BLOG</div>
@@ -504,7 +504,7 @@ export default function ContentHub({ content }: Props) {
             {blogPostMap.map((post) => renderBlog(post))}
             {blogPostMap.length === 0 && (
               <div className={styles.noResults}>
-                <p>No Results</p>
+                <p>Loading...</p>
               </div>
             )}
           </>
@@ -514,7 +514,7 @@ export default function ContentHub({ content }: Props) {
             {sortedGuides.map((item) => renderArticle(item))}
             {sortedGuides.length === 0 && (
               <div className={styles.noResults}>
-                <p>No Results</p>
+                <p>Loading...</p>
               </div>
             )}
           </>
@@ -524,7 +524,7 @@ export default function ContentHub({ content }: Props) {
             {sortedReferenceMap.map((item) => renderArticle(item))}
             {sortedReferenceMap.length === 0 && (
               <div className={styles.noResults}>
-                <p>No Results</p>
+                <p>Loading...</p>
               </div>
             )}
           </>

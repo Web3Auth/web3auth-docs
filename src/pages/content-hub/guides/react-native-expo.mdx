@@ -10,6 +10,7 @@ order: 14
 communityPortalTopicId: 61
 ---
 
+import RNExpoDeepLink from "@site/src/common/guides/_rn-expo-deeplink.mdx";
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
 import ReactNativeResponse from "@site/src/common/sdk/pnp/react-native/_get-user-info.mdx";
@@ -68,37 +69,14 @@ When integrating Web3Auth React Native SDK with Social Login the flow looks some
 
 ### Configure Deep Link
 
-- Adding URL scheme to `app.json`
-
-To allow the Expo based SDK to work with exported Expo Android apps, you need to add the designated scheme into `app.json`
-
-```json title="app.json"
-{
-  "expo": {
-    "scheme": "web3authexpoexample" // replace with your own scheme
-  }
-}
-```
-
-- For constructing your `redirectUrl`, you'll need to use the `expo-linking`, which will help you generate a `redirectUrl` for your app. Make sure you
-  register that URL in the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
-
-```tsx title="App.js"
-import Constants, { AppOwnership } from "expo-constants";
-import * as Linking from "expo-linking";
-
-const resolvedRedirectUrl =
-  Constants.appOwnership == AppOwnership.Expo || Constants.appOwnership == AppOwnership.Guest
-    ? Linking.createURL("web3auth", {})
-    : Linking.createURL("web3auth", { scheme: scheme });
-```
+<RNExpoDeepLink />
 
 ## Using the Web3Auth SDK
 
 To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
 SDKs, please have a look at this [documentation page](/sdk).
 
-For this guide here, we will be talking through the [Web3Auth React Native SDK](/sdk/pnp/react-native).
+For this guide, we will be talking through the [Web3Auth React Native SDK](/sdk/pnp/react-native).
 
 ### Installation
 
@@ -110,22 +88,30 @@ npm install --save @web3auth/react-native-sdk
 
 #### Expo Web Browser
 
-When using our SDK with a Expo-based React Native app (aka managed workflow, you have to install the `expo-web-browser` package as a `WebBrowser`
+When using our SDK with an Expo-based React Native app (aka managed workflow, you have to install the `expo-web-browser` package as a `WebBrowser`
 implementation.)
 
 ```shell
 expo install expo-web-browser
 ```
 
+#### Expo Secure Store
+
+We will require a `SecureStore` implementation to allow for session management without storing the private key on the device.
+
+```shell
+expo install expo-secure-store
+```
+
 ### Initialization
 
-After Installation, the next step to use Web3Auth is to Initialize the SDK. The Initialization is a two step process,
+After Installation, the next step to use Web3Auth is to Initialize the SDK. The Initialization is a two-step process,
 
 - [Importing Required Packages](#importing-required-packages)
 - [Instantiating Web3Auth](#instantiating-web3auth)
 
 Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
-Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customise your Web3Auth Instance.
+Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customize your Web3Auth Instance.
 
 #### Importing `Web3Auth`
 
@@ -141,6 +127,12 @@ import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-nat
 import * as WebBrowser from "expo-web-browser";
 ```
 
+#### Importing `SecureStore` implementation
+
+```typescript
+import * as SecureStore from "expo-secure-store";
+```
+
 #### Instantiating Web3Auth
 
 It's time to create an instance of Web3Auth in the project.
@@ -149,19 +141,13 @@ We need `clientId` and target Web3Auth `network` to initialize the `web3auth` ob
 
 - You can get your `clientId` from registering (above) on the Developer Dashboard.
 
-- `network` signifies the network on which the deployed Web3Auth nodes are running. For testing purposes, we have a `TESTNET` network. For production
-  usage, you can use the `CYAN`, `MAINNET`, & `AQUA` networks.
-
-  :::danger
-
-  Please don't use the `TESTNET` network for production usage. You may end up losing user keys.
-
-  :::
+- `network` signifies the network on which the deployed Web3Auth nodes are running. For testing purposes, we have a `Sapphire Devnet` network. For
+  production usage, you can use the `Sapphire Mainnet` network.
 
 ```tsx
-const web3auth = new Web3Auth(WebBrowser, {
+const web3auth = new Web3Auth(WebBrowser, SecureStore, {
   clientId,
-  network: OPENLOGIN_NETWORK.CYAN, // MAINNET, AQUA,  CYAN or TESTNET
+  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // SAPPHIRE_MAINNET or SAPPHIRE_DEVNET
 });
 ```
 
@@ -175,8 +161,8 @@ const web3auth = new Web3Auth(WebBrowser, {
 
 #### Logging in
 
-Once initialized, you can use the `login` function of `web3auth` to navigate user to the login process. For each login method, you have to select the
-`loginProvider` such as `google`, `facebook`, `twitch`, `jwt`, `email_passwordless` etc.
+Once initialized, you can use the `login` function of `web3auth` to navigate the user to the login process. For each login method, you have to select
+the `loginProvider` such as `google`, `facebook`, `twitch`, `jwt`, `email_passwordless` etc.
 
 :::info JWT
 
@@ -221,7 +207,7 @@ If you wish you **[add Multi Factor Authentication](/sdk/pnp/react-native/mfa)**
 var userInfo = web3authResponse.userInfo;
 ```
 
-Using the `web3Auth.login()` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in
+Using the `web3Auth.login()` function, you can get the details of the logged-in user. Please note that these details are not stored anywhere in
 Web3Auth network.
 
 #### Sample userInfo
@@ -254,6 +240,10 @@ Please go through the [Connect Blockchain](/connect-blockchain/ethereum/react-na
 blockchain you have selected here.
 
 :::
+
+## Troubleshooting React Native issues
+
+Some commonly faced issues and the ways to fix them are addressed in this [troubleshooting guide](/troubleshooting/metro-issues).
 
 ## Example code
 

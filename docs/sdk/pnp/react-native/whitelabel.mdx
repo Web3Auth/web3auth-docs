@@ -26,14 +26,18 @@ For defining custom UI, branding, and translations for your brand app, you just 
 
 <TabItem value="table">
 
-| Parameter         | Type               | Mandatory | Description                                       |
-| ----------------- | ------------------ | --------- | ------------------------------------------------- |
-| `name`            | `String`           | No        | Name of your application                          |
-| `logoLight`       | `String`           | No        | Light logo for dark background                    |
-| `logoDark`        | `String`           | No        | Dark logo for light background                    |
-| `defaultLanguage` | `String`           | No        | Default translation language to used              |
-| `dark`            | `Bool`             | No        | If true, enables dark mode. Default is light mode |
-| `theme`           | `[String, String]` | No        | Whitelabel theme                                  |
+| Parameter         | Type      | Mandatory | Description                             |
+| ----------------- | --------- | --------- | --------------------------------------- |
+| `appName`         | `String`  | No        | Name of your application                |
+| `appUrl`          | `String`  | No        | URL of your application                 |
+| `logoLight`       | `String`  | No        | Light logo for dark background          |
+| `logoDark`        | `String`  | No        | Dark logo for light background          |
+| `defaultLanguage` | `String`  | No        | Default translation language to be used |
+| `mode`            | `String`  | No        | Theme mode to be used                   |
+| `useLogoLoader`   | `Boolean` | No        | Use logo loader                         |
+| `theme`           | `Object`  | No        | Whitelabel theme                        |
+| `tncLink`         | `String`  | No        | Terms and conditions link               |
+| `privacyPolicy`   | `String`  | No        | Privacy policy link                     |
 
 </TabItem>
 
@@ -44,7 +48,11 @@ export type WhiteLabelData = {
   /**
    * App name to display in the UI
    */
-  name?: string;
+  appName?: string;
+  /**
+   * App url
+   */
+  appUrl?: string;
   /**
    * App logo to use in light mode
    */
@@ -54,25 +62,65 @@ export type WhiteLabelData = {
    */
   logoDark?: string;
   /**
-   * Default language to use
+   * language which will be used by web3auth. app will use browser language if not specified. if language is not supported it will use "en"
+   * en: english
+   * de: german
+   * ja: japanese
+   * ko: korean
+   * zh: mandarin
+   * es: spanish
+   * fr: french
+   * pt: portuguese
+   * nl: dutch
    *
    * @defaultValue en
    */
-  defaultLanguage?: string;
+  defaultLanguage?: LANGUAGE_TYPE;
   /**
-   * Whether to enable dark mode
+   theme
+    *
+    * @defaultValue auto
+    */
+  mode?: THEME_MODE_TYPE;
+  /**
+   * Use logo loader
    *
    * @defaultValue false
    */
-  dark?: boolean;
-
+  useLogoLoader?: boolean;
   /**
    * Used to customize theme of the login modal with following options
    * `'primary'` - To customize primary color of modal's content.
    */
   theme?: {
-    [P in string]: string;
+    primary?: string;
+    gray?: string;
+    red?: string;
+    green?: string;
+    success?: string;
+    warning?: string;
+    error?: string;
+    info?: string;
+    white?: string;
   };
+  /**
+   * Language specific link for terms and conditions on torus-website. See (examples/vue-app) to configure
+   * e.g.
+   * tncLink: {
+   *  en: "http://example.com/tnc/en",
+   *  ja: "http://example.com/tnc/ja",
+   * }
+   */
+  tncLink?: Partial<Record<LANGUAGE_TYPE, string>>;
+  /**
+   * Language specific link for privacy policy on torus-website. See (examples/vue-app) to configure
+   * e.g.
+   * privacyPolicy: {
+   *  en: "http://example.com/tnc/en",
+   *  ja: "http://example.com/tnc/ja",
+   * }
+   */
+  privacyPolicy?: Partial<Record<LANGUAGE_TYPE, string>>;
 };
 ```
 
@@ -94,20 +142,21 @@ export type WhiteLabelData = {
 
 ```tsx
 import * as WebBrowser from "expo-web-browser";
+import * as SecureStore from "expo-secure-store";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
 
 const clientId = "YOUR WEB3AUTH CLIENT ID";
 
-const web3auth = new Web3Auth(WebBrowser, {
+const web3auth = new Web3Auth(WebBrowser, SecureStore, {
   clientId,
   network: OPENLOGIN_NETWORK.TESTNET, // or other networks
   // highlight-start
   whiteLabel: {
-    name: "My App",
+    appName: "My App",
     logoLight: "https://web3auth.io/images/logo-light.png",
     logoDark: "https://web3auth.io/images/logo-dark.png",
     defaultLanguage: "en",
-    dark: true,
+    mode: "auto", // or "dark" or "light"
     theme: {
       primary: "#cddc39",
     },
@@ -122,20 +171,21 @@ const web3auth = new Web3Auth(WebBrowser, {
 
 ```tsx
 import * as WebBrowser from "@toruslabs/react-native-web-browser";
+import EncryptedStorage from "react-native-encrypted-storage";
 import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
 
 const clientId = "YOUR WEB3AUTH CLIENT ID";
 
-const web3auth = new Web3Auth(WebBrowser, {
+const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
   network: OPENLOGIN_NETWORK.TESTNET, // or other networks
   // highlight-start
   whiteLabel: {
-    name: "My App",
+    appName: "My App",
     logoLight: "https://web3auth.io/images/logo-light.png",
     logoDark: "https://web3auth.io/images/logo-dark.png",
     defaultLanguage: "en",
-    dark: true,
+    mode: "auto", // or "dark" or "light"
     theme: {
       primary: "#cddc39",
     },

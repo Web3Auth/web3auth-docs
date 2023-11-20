@@ -161,23 +161,9 @@ export default function BlogDetail() {
 
   return (
     <div className="container">
-      {postData?.seo && (
-        <>
-          <SEO
-            title={postData.seo?.title}
-            description={postData.seo?.description}
-            image={postData.seo?.image?.url}
-            slug={`/blog/${postData.slug}`}
-            keywords={postData.seo?.keywords}
-          />
-          <PageMetadata
-            title={postData.seo?.title}
-            description={postData.seo?.description}
-            image={postData.seo?.image?.url}
-            keywords={postData.seo?.keywords}
-          />
-        </>
-      )}
+      <SEO title={postData.title} description={postData.excerpt} image={postData.coverImage?.url} slug={`/blog/${postData.slug}`} />
+      <PageMetadata title={postData.title} description={postData.excerpt} image={postData.coverImage?.url} />
+
       <div className="margin-vert--lg padding-vert--lg">
         <div className="row">
           <div className="col col--10 col--offset-1">

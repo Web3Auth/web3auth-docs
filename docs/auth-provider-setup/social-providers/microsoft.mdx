@@ -1,0 +1,88 @@
+---
+title: Microsoft Social Login with Web3Auth
+sidebar_label: Microsoft
+displayed_sidebar: docs
+description: "Microsoft Social Login with Web3Auth | Documentation - Web3Auth"
+---
+
+:::note
+
+Microsoft login can be performed in various ways, depending on the use case. We have demonstrated this with Auth0, but this can be done with any other
+Federated/JWT providers.
+
+:::
+
+## Set up [Microsoft](https://marketplace.auth0.com/integrations/microsoft-account-social-connection) via Auth0
+
+1. Create a verifier for your Auth0 application by selecting `Auth0` as the Login provider from this modal.
+   ![Microsoft - Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier-auth0.png)
+2. Select the `Other` as the **Authentication Type** based on the dropdown.
+   ![Microsoft - Auth0 Authentication Type list on Web3Auth Dashboard](/images/dashboard/create-verifier-google.png)
+3. Enter the `Auth0 Client ID` and `Auth0 Domain` from your Auth0 application. See how to create a new Auth0 application
+   [here](https://auth0.com/docs/quickstart/webapp/).
+
+   ![Microsoft - Domain and Client ID from Auth0 Dashboard](/images/dashboard/create-verifier-auth0-filled-common.png)
+   ![Microsoft - Auth0 Client ID and Auth0 Domain on Web3Auth Dashboard](/images/dashboard/create-verifier-auth0-unfilled.png)
+
+4. Add the [Microsoft Social Connection](https://marketplace.auth0.com/integrations/microsoft-account-social-connection) to your Auth0 application.
+5. Click on the `Create` button to create `Microsoft` Custom Authentication via Auth0 verifier.
+
+### Example
+
+```tsx
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
+// get it from https://dashboard.web3auth.io by creating a project.
+
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://goerli.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig,
+  web3AuthNetwork: "sapphire_mainnet",
+});
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  privateKeyProvider,
+  adapterSettings: {
+    uxMode: "redirect",
+    loginConfig: {
+      jwt: {
+        verifier: "w3a-auth0-uk-demo", // Pass the Verifier name here
+        typeOfLogin: "jwt", // Pass on the login provider of the verifier you've created
+        clientId: "OfDAVldBEGslU9wjiWyQ1LPWOWNnnzim", // Pass on the Auth0 `Client ID` here
+      },
+    },
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+setWeb3auth(web3auth);
+
+// Initialize
+await web3auth.init();
+
+// Login with Microsoft
+await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    domain: "https://web3auth.uk.auth0.com", // Pass on the Auth0 `Domain` here
+    verifierIdField: "sub", // Pass on the field name of the `sub` field in the JWT
+    connection: "windowslive", // Use this to skip Auth0 Modal for Microsoft login
+  },
+});
+```

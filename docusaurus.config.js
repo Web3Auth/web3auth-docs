@@ -36,7 +36,7 @@ const config = {
     },
     announcementBar: {
       id: "sign_up_for_wallets_ux_unconference",
-      content: '<a href="https://lu.ma/l8at7q5b" target="_blank">Secure your spot for Wallets & UX Unconference at token 2049! Sign up now →</a>',
+      content: '<a href="https://w3a.link/community-call" target="_blank">Secure your spot for the next community call! Sign up now →</a>',
       isCloseable: true,
     },
     colorMode: {
@@ -163,7 +163,7 @@ const config = {
           customCss: require.resolve("./src/css/custom.css"),
         },
         gtag: {
-          trackingID: "GTM-ML3T5M6",
+          trackingID: "GTM-NFBSNHL",
         },
         pages: {
           path: "src/pages",
