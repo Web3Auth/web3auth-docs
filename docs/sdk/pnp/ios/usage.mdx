@@ -262,49 +262,51 @@ Web3Auth.login(W3ALoginParams(
 
 <TabItem value="table">
 
-| Parameter                 | Type     | Mandatory | Description                                           |
-| ------------------------- | -------- | --------- | ----------------------------------------------------- |
-| domain                    | String?  | No        | Domain of the app                                     |
-| client_id                 | String?  | No        | client_id from Web3Auth Dashboard                     |
-| leeway                    | Int?     | No        | leeway                                                |
-| verifierIdField           | String?  | No        | verifierIdField                                       |
-| isVerifierIdCaseSensitive | Boolean? | No        | Boolean to confirm the case sensitivity of VerifierId |
-| display                   | Display? | No        | Display                                               |
-| prompt                    | Prompt?  | No        | Prompt                                                |
-| max_age                   | String?  | No        | max_age                                               |
-| ui_locales                | String?  | No        | ui_locales to be shown on the modal                   |
-| id_token_hint             | String?  | No        | Previously issued ID Token.                           |
-| id_token                  | String?  | No        | JWT (ID Token) to be passed for Login.                |
-| login_hint                | String?  | No        | Email used for EMAIL_PASSWORDLESS                     |
-| acr_values                | String?  | No        | acc_values                                            |
-| scope                     | String?  | No        | scope                                                 |
-| audience                  | String?  | No        | audience                                              |
-| connection                | String?  | No        | connection                                            |
-| redirect_uri              | String?  | No        | redirect_uri                                          |
+| Parameter                 | Type               | Mandatory | Description                                                            |
+| ------------------------- | ------------------ | --------- | ---------------------------------------------------------------------- |
+| domain                    | String?            | No        | Domain of the app                                                      |
+| client_id                 | String?            | No        | client_id from Web3Auth Dashboard                                      |
+| leeway                    | Int?               | No        | The value in seconds used to account for clock skew in JWT expirations |
+| verifierIdField           | String?            | No        | The field in the jwt token that maps to the verifier id.               |
+| isVerifierIdCaseSensitive | Boolean?           | No        | Whether the verifier id field is case sensitive                        |
+| display                   | Display?           | No        | Display                                                                |
+| prompt                    | Prompt?            | No        | Prompt                                                                 |
+| max_age                   | String?            | No        | max_age                                                                |
+| ui_locales                | String?            | No        | ui_locales to be shown on the modal                                    |
+| id_token_hint             | String?            | No        | Previously issued ID Token.                                            |
+| id_token                  | String?            | No        | JWT (ID Token) to be passed for Login.                                 |
+| login_hint                | String?            | No        | Email used for EMAIL_PASSWORDLESS                                      |
+| acr_values                | String?            | No        | acc_values                                                             |
+| scope                     | String?            | No        | scope                                                                  |
+| audience                  | String?            | No        | audience                                                               |
+| connection                | String?            | No        | connection                                                             |
+| redirect_uri              | String?            | No        | redirect_uri                                                           |
+| additionalParams          | [String : String]? | No        | additonal parameters                                                   |
 
 </TabItem>
 
 <TabItem value="struct">
 
 ```swift
-public struct ExtraLoginOptions: Encodable {
-    let display: String?
-    let prompt: String?
-    let max_age: String?
-    let ui_locales: String?
-    let id_token_hint: String?
-    let id_token: String?
-    let login_hint: String?
-    let acr_values: String?
-    let scope: String?
-    let audience: String?
-    let connection: String?
-    let domain: String?
-    let client_id: String?
-    let redirect_uri: String?
-    let leeway: Int?
-    let verifierIdField: String?
-    let isVerifierIdCaseSensitive: Bool?
+public struct ExtraLoginOptions: Codable{
+  let display: String?
+  let prompt: String?
+  let max_age: String?
+  let ui_locales: String?
+  let id_token_hint: String?
+  let id_token: String?
+  let login_hint: String?
+  let acr_values: String?
+  let scope: String?
+  let audience: String?
+  let connection: String?
+  let domain: String?
+  let client_id: String?
+  let redirect_uri: String?
+  let leeway: Int?
+  let verifierIdField: String?
+  let isVerifierIdCaseSensitive: Bool?
+  let additionalParams: [String : String]?
 }
 ```
 

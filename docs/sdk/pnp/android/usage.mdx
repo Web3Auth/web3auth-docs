@@ -35,12 +35,11 @@ FACEBOOK, TWITTER, EMAIL_PASSWORDLESS, etc. `web3Auth.login()` requires `LoginPa
 | Parameter           | Type                                         | Mandatory | Description                                                                                                                                                                                         |
 | ------------------- | -------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `loginProvider`     | `enum` `com.web3auth.core.Web3Auth.Provider` | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`, `JWT` |
+| `dappShare`         | `String`                                     | No        | Dapp share can be used to pass dapp share url, default is `null`                                                                                                                                    |
 | `extraLoginOptions` | `Map<String, Any>`                           | No        | You can pass various oauth supported options, default is `null`                                                                                                                                     |
-| `sessionTime`       | `Int`                                        | No        | Session time to be passed to set the session of a user that will be returned to sessionResponse()                                                                                                   |
 | `redirectUrl`       | `android.net.Uri`                            | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                         |
 | `appState`          | `String`                                     | No        | appState can be used to keep track of the app state when user will be redirected to app after login, default is `null`                                                                              |
 | `mfaLevel`          | `Map<String, Any>`                           | No        | MFA level can be used to pass 2FA screen shown during login, default is `mfaLevel.DEFAULT`, shown every 3rd login.                                                                                  |
-| `dappShare`         | `String`                                     | No        | Dapp share can be used to pass dapp share url, default is `null`                                                                                                                                    |
 | `curve`             | `Map<String, Any>`                           | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum                                                                                                          |
 
 </TabItem>
@@ -52,11 +51,10 @@ data class LoginParams(
     val loginProvider: Provider,
     var dappShare: String? = null,
     val extraLoginOptions: ExtraLoginOptions? = null,
-    val redirectUrl: Uri? = null,
+    @Transient var redirectUrl: Uri? = null,
     val appState: String? = null,
     val mfaLevel: MFALevel? = null,
-    val sessionTime: Int? = null,
-    val curve: Curve? = null
+    val curve: Curve? = Curve.SECP256K1
 )
 ```
 

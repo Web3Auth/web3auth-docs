@@ -14,7 +14,7 @@ module.exports = {
       type: "category",
       label: "Deciding your Product Fit",
       link: { type: "doc", id: "product-fit/product-fit" },
-      items: ["product-fit/pnp-vs-core-kit", "product-fit/web3auth-for-wallets", "product-fit/web3auth-for-dapps"],
+      items: ["product-fit/pnp-vs-core-kit", "product-fit/partner-products", "product-fit/enterprise", "product-fit/web3auth-for-wallets", "product-fit/web3auth-for-dapps"],
     },
     {
       type: "category",

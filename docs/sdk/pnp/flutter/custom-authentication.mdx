@@ -50,10 +50,10 @@ Then, specify the details of your verifier in the `LoginConfigItem` struct as fo
 
 | Parameter             | Type          | Mandatory | Description                                                                                                                                                                                                                                                         |
 | --------------------- | ------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| verifier              | String        | Yes       | The name of the verifier which you have registered on the Web3Auth Dashboard.                                                                                                                                                                                       |
+| verifier              | String        | Yes       | The name of the verifier that you have registered on the Web3Auth Dashboard.                                                                                                                                                                                        |
 | typeOfLogin           | `TypeOfLogin` | Yes       | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose `google`, a Google sign-in flow will be used. If you choose `jwt`, you should be providing your own JWT token, no sign-in flow will be presented. |
-| name                  | String?       | No        | Name of your verifier for display purpose.                                                                                                                                                                                                                          |
-| clientId              | String?       | No        | The Client Id of the login provider. e.g. Google's Client ID or Web3Auth's client Id if using 'jwt' as TypeOfLogin.                                                                                                                                                 |
+| clientId              | String        | Yes       | The Client Id of the login provider. e.g. Google's Client ID or Web3Auth's client Id if using 'jwt' as TypeOfLogin.                                                                                                                                                 |
+| name                  | String?       | No        | Name of your verifier.                                                                                                                                                                                                                                              |
 | description           | String?       | No        | Description of this login flow.                                                                                                                                                                                                                                     |
 | verifierSubIdentifier | String?       | No        | The name of the field in the JWT that should be used as the unique user ID of the JWT. Should be same as the one you used.                                                                                                                                          |
 | logoHover             | String?       | No        | Logo to be shown on mouse hover.                                                                                                                                                                                                                                    |
@@ -72,9 +72,9 @@ Then, specify the details of your verifier in the `LoginConfigItem` struct as fo
 class LoginConfigItem {
   final String verifier;
   final TypeOfLogin typeOfLogin;
+  final String clientId;
   final String? name;
   final String? description;
-  final String? clientId;
   final String? verifierSubIdentifier;
   final String? logoHover;
   final String? logoLight;
@@ -87,9 +87,9 @@ class LoginConfigItem {
   LoginConfigItem(
       {required this.verifier,
       required this.typeOfLogin,
+      required this.clientId,
       this.name,
       this.description,
-      this.clientId,
       this.verifierSubIdentifier,
       this.logoHover,
       this.logoLight,
@@ -103,9 +103,9 @@ class LoginConfigItem {
     return {
       'verifier': verifier,
       'typeOfLogin': typeOfLogin.name,
+      'clientId': clientId,
       'name': name,
       'description': description,
-      'clientId': clientId,
       'verifierSubIdentifier': verifierSubIdentifier,
       'logoHover': logoHover,
       'logoLight': logoLight,
