@@ -1,18 +1,22 @@
 ```javascript
 const web3auth = new Web3Auth({
   clientId: "", // Get your Client ID from the Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // import {WEB3AUTH_NETWORK} from "@web3auth/base";
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x1",
     rpcTarget: "https://rpc.ankr.com/eth", // This is the mainnet RPC we have added, please pass on your own endpoint while creating an app
   },
   uiConfig: {
-    theme: "dark",
-    loginMethodsOrder: ["facebook", "google"],
-    appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg", // Your App Logo Here
+    appName: "W3A Heroes",
+    mode: "dark", // light, dark or auto
+    loginMethodsOrder: ["apple", "google", "twitter"],
+    logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+    logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
+    defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+    loginGridCol: 3,
+    primaryButton: "socialLogin", // "externalLogin" | "socialLogin" | "emailLogin"
   },
-  defaultLanguage: "en",
   modalZIndex: "99998",
 });
 ```
