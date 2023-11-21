@@ -15,29 +15,30 @@ import Tabs from "@theme/Tabs";
 
 `params`
 
-| Parameter                | Type            | Description                                                                                                                                                                               | Mandatory |
-| ------------------------ | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| `verifier`               | `string`        | Identifier for the Verifier you created on the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io)                                                                              | Yes       |
-| `typeOfLogin`            | `TypeOfLogin`   | Choose your type of social login. Select from the list: `google`, `facebook`, `twitter`, `reddit`, `discord`, `twitch`, `apple`, `line`, `github`, `kakao`, `linkedin`, `weibo`, `wechat` | Yes       |
-| `name`                   | `string`        | Display Name. If not provided, we use the default for openlogin app                                                                                                                       | No        |
-| `description?`           | `string`        | Description for button. If provided, it renders as a full length button. else, icon button                                                                                                | No        |
-| `clientId?`              | `string`        | Custom client_id for the corresponding social provider. This is needed for connecting to your account. If not provided, we use the default for openlogin app                              | No        |
-| `verifierSubIdentifier?` | `string`        | Sub identifier - used in case of creation of aggregate verifiers                                                                                                                          | No        |
-| `logoHover?`             | `string`        | Logo to be shown on mouse hover. If not provided, we use the default for openlogin app                                                                                                    | No        |
-| `logoLight?`             | `string`        | Logo to be shown on dark background (dark theme). If not provided, we use the default for openlogin app                                                                                   | No        |
-| `logoDark?`              | `string`        | Logo to be shown on light background (light theme). If not provided, we use the default for openlogin app                                                                                 | No        |
-| `mainOption?`            | `boolean`       | Whether to show the login button on modal or not                                                                                                                                          | No        |
-| `showOnModal?`           | `boolean`       | Whether to show the login button on modal or not                                                                                                                                          | No        |
-| `showOnModal?`           | `boolean`       | Whether to show the login button on desktop                                                                                                                                               | No        |
-| `showOnMobile?`          | `boolean`       | Whether to show the login button on mobile                                                                                                                                                | No        |
-| `jwtParameters?`         | `JwtParameters` | Custom jwt parameters to configure the login. Useful for Auth0 configuration                                                                                                              | No        |
+| Parameter                   | Type            | Description                                                                                                                                                                               | Mandatory |
+| --------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `verifier`                  | `string`        | Identifier for the Verifier you created on the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io)                                                                              | Yes       |
+| `typeOfLogin`               | `TypeOfLogin`   | Choose your type of social login. Select from the list: `google`, `facebook`, `twitter`, `reddit`, `discord`, `twitch`, `apple`, `line`, `github`, `kakao`, `linkedin`, `weibo`, `wechat` | Yes       |
+| `name`                      | `string`        | Display Name. If not provided, we use the default for openlogin app                                                                                                                       | No        |
+| `description?`              | `string`        | Description for button. If provided, it renders as a full-length button. else, icon button                                                                                                | No        |
+| `clientId?`                 | `string`        | Custom client_id for the corresponding social provider. This is needed for connecting to your account. If not provided, we use the default for openlogin app                              | No        |
+| `verifierSubIdentifier?`    | `string`        | Sub identifier - used in case of creation of aggregate verifiers                                                                                                                          | No        |
+| `logoHover?`                | `string`        | Logo to be shown on mouse hover. If not provided, we use the default for openlogin app                                                                                                    | No        |
+| `logoLight?`                | `string`        | Logo to be shown on a light background (light mode). If not provided, we use the default for openlogin app                                                                                | No        |
+| `logoDark?`                 | `string`        | Logo to be shown on a dark background (dark mode). If not provided, we use the default for openlogin app                                                                                  | No        |
+| `mainOption?`               | `boolean`       | Show login button on the main list                                                                                                                                                        | No        |
+| `showOnModal?`              | `boolean`       | Whether to show the login button on modal or not                                                                                                                                          |
+| `showOnDesktop`             | `boolean`       | Whether to show the login button on desktop                                                                                                                                               | No        |
+| `showOnMobile?`             | `boolean`       | Whether to show the login button on mobile                                                                                                                                                | No        |
+| `showOnSocialBackupFactor?` | `boolean`       | If we are using social logins as a backup factor, then this option will be used to show the type of social login on the social backup login screen.                                       | No        |
+| `jwtParameters?`            | `JwtParameters` | Custom jwt parameters to configure the login. Useful for Auth0 configuration                                                                                                              | No        |
 
 </TabItem>
 
 <TabItem value="type">
 
 ```tsx
-declare type LoginConfig = Record<
+export type LoginConfig = Record<
   string,
   {
     verifier: string;
@@ -87,13 +88,19 @@ declare type LoginConfig = Record<
      */
     showOnMobile?: boolean;
     /**
+     * If we are using social logins as a backup factor,
+     * then this option will be used to show the type of social login
+     * on the social backup login screen.
+     */
+    showOnSocialBackupFactor?: boolean;
+    /**
      * Custom jwt parameters to configure the login. Useful for Auth0 configuration
      */
     jwtParameters?: JwtParameters;
   }
 >;
 
-declare type TypeOfLogin =
+export type TypeOfLogin =
   | "google"
   | "facebook"
   | "reddit"
@@ -107,7 +114,8 @@ declare type TypeOfLogin =
   | "line"
   | "email_password"
   | "passwordless"
-  | "jwt";
+  | "jwt"
+  | "webauthn";
 ```
 
 </TabItem>
