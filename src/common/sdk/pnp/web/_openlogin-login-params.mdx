@@ -11,7 +11,7 @@ import Tabs from "@theme/Tabs";
 
 <TabItem value="table">
 
-##### `OpenloginLoginParams`
+##### `LoginSettings`
 
 | Variable             | Type                                                                                                                                                                                                                                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Mandatory |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
@@ -29,11 +29,9 @@ import Tabs from "@theme/Tabs";
 <TabItem value="type">
 
 ```tsx
-export declare type OpenloginLoginParams = LoginParams & {
-  login_hint?: string;
-};
+export type LoginSettings = Partial<LoginParams> & Partial<BaseRedirectParams>;
 
-export declare type LoginParams = BaseRedirectParams & {
+export type LoginParams = BaseRedirectParams & {
   /**
    * loginProvider sets the oauth login method to be used.
    * You can use any of the valid loginProvider from the supported list.
@@ -84,7 +82,7 @@ export declare type LoginParams = BaseRedirectParams & {
   curve?: SUPPORTED_KEY_CURVES_TYPE;
 };
 
-export declare type BaseRedirectParams = {
+export type BaseRedirectParams = {
   /**
    * redirectUrl is the dapp's url where user will be redirected after login.
    *
@@ -103,7 +101,7 @@ export declare type BaseRedirectParams = {
 /**
  * {@label loginProviderType}
  */
-export declare type LOGIN_PROVIDER_TYPE = typeof LOGIN_PROVIDER[keyof typeof LOGIN_PROVIDER];
+export type LOGIN_PROVIDER_TYPE = typeof LOGIN_PROVIDER[keyof typeof LOGIN_PROVIDER];
 export declare const LOGIN_PROVIDER: {
   readonly GOOGLE: "google";
   readonly FACEBOOK: "facebook";
@@ -124,7 +122,7 @@ export declare const LOGIN_PROVIDER: {
   readonly JWT: "jwt";
 };
 
-export declare type CUSTOM_LOGIN_PROVIDER_TYPE = string & {
+export type CUSTOM_LOGIN_PROVIDER_TYPE = string & {
   toString?: (radix?: number) => string;
 };
 
@@ -132,7 +130,7 @@ export declare type CUSTOM_LOGIN_PROVIDER_TYPE = string & {
  * {@label MfaLevelType}
  */
 
-export declare type MfaLevelType = typeof MFA_LEVELS[keyof typeof MFA_LEVELS];
+export type MfaLevelType = typeof MFA_LEVELS[keyof typeof MFA_LEVELS];
 export declare const MFA_LEVELS: {
   readonly DEFAULT: "default";
   readonly OPTIONAL: "optional";
@@ -144,7 +142,7 @@ export declare const MFA_LEVELS: {
  * {@label SUPPORTED_KEY_CURVES_TYPE}
  */
 
-export declare type SUPPORTED_KEY_CURVES_TYPE = typeof SUPPORTED_KEY_CURVES[keyof typeof SUPPORTED_KEY_CURVES];
+export type SUPPORTED_KEY_CURVES_TYPE = typeof SUPPORTED_KEY_CURVES[keyof typeof SUPPORTED_KEY_CURVES];
 export declare const SUPPORTED_KEY_CURVES: {
   readonly SECP256K1: "secp256k1";
   readonly ED25519: "ed25519";

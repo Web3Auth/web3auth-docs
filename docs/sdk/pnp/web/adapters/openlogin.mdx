@@ -10,7 +10,7 @@ import Tabs from "@theme/Tabs";
 
 import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
 import OpenloginOptions from "@site/src/common/sdk/pnp/web/_openlogin-options.mdx";
-import OpenloginLoginParams from "@site/src/common/sdk/pnp/web/_openlogin-login-params.mdx";
+import LoginSettings from "@site/src/common/sdk/pnp/web/_openlogin-login-params.mdx";
 import OpenloginWhiteLabelConfig from "@site/src/common/sdk/pnp/web/_openlogin-whitelabel-config.mdx";
 import OpenloginWhiteLabelExample from "@site/src/common/sdk/pnp/web/_openlogin-whitelabel-example.mdx";
 import LoginConfig from "@site/src/common/sdk/pnp/web/_login-config.mdx";
@@ -24,9 +24,9 @@ import ConnectToExample from "@site/src/common/sdk/pnp/web/_connect-to-example.m
 
 The default adapter of Web3Auth is the `openlogin-adapter`. This adapter is a wrapper around the
 [`openlogin`](https://github.com/torusresearch/OpenLoginSdk) library from Web3Auth and enables the social login features. By default, Web3Auth has
-certain configurations set to enable a quick integration, however, for customising features, like [Whitelabel](/pnp/features/whitelabel),
+certain configurations set to enable a quick integration, however, for customizing features, like [Whitelabel](/pnp/features/whitelabel),
 [Custom Authentication](/pnp/features/custom-authentication), etc. you need to configure the Openlogin Adapter. With the Openlogin Adapter package
-installed and instantiated, you can explore a number of options and customise the login experience of the user as per your needs.
+installed and instantiated, you can explore several options and customize the login experience of the user as per your needs.
 
 ## Basic Details
 
@@ -36,7 +36,7 @@ installed and instantiated, you can explore a number of options and customise th
 
 #### authMode: `WALLET`, `DAPP`
 
-#### chainNamespace: `EIP155`,`SOLANA`
+#### chainNamespace: `EIP155`, `SOLANA`
 
 #### Default: `YES`
 
@@ -87,7 +87,7 @@ This OpenloginAdapter constructor takes an object with `OpenloginAdapterOptions`
 <TabItem value="interface">
 
 ```tsx
-interface OpenloginAdapterOptions {
+interface OpenloginAdapterOptions extends BaseAdapterSettings {
   adapterSettings?: MakeOptional<OpenLoginOptions, "clientId" | "network"> & {
     useCoreKitKey?: boolean;
   };
@@ -124,15 +124,15 @@ Read more about how to pass `loginParams` to `connectTo` in its respective secti
 
 :::
 
-<OpenloginLoginParams />
+<LoginSettings />
 
-## Multi Factor Authentication
+## Multi-Factor Authentication
 
 At Web3Auth, we prioritize your security by offering Multi-Factor Authentication (MFA). MFA is an extra layer of protection that verifies your
 identity when accessing your account. To ensure ownership, you must provide two or more different backup factors. You have the option to choose from
 the device, social, backup factor (seed phrase), and password factors to guarantee access to your Web3 account. Once you create a recovery factor, MFA
 is enabled, and your keys are divided into three shares for off-chain multi-sig, making the key self-custodial. With backup factors, you can easily
-recover your account if you lose access to your original device or helps login into a new device.
+recover your account if you lose access to your original device or help log into a new device.
 
 For a dApp, we provide various options to set up Multi-Factor Authentication. You can customize the MFA screen by setting the `mfaLevel` argument. You
 can enable or disable a backup factor and change their order. Currently, there are four values for `mfaLevel`:
@@ -185,8 +185,8 @@ const openloginAdapter = new OpenloginAdapter({
 
 ## Whitelabel
 
-Web3Auth's Social Logins and Email Login runs using the OpenLogin Flow. The whole OpenLogin user experience can also be whitelabeled using OpenLogin
-Adapter settings. For this you need to pass on the `whiteLabel` configuration parameter to the `adapterSettings` property of the `openlogin-adapter`.
+Web3Auth's Social Logins and Email Login run using the OpenLogin Flow. The whole OpenLogin user experience can also be whitelabeled using OpenLogin
+Adapter settings. For this, you need to pass on the `whiteLabel` configuration parameter to the `adapterSettings` property of the `openlogin-adapter`.
 
 <OpenloginWhiteLabelConfig />
 
@@ -208,16 +208,16 @@ The `loginConfig` parameter of `adapterSettings` in `openlogin-adapter` contains
 
 ### Custom Authentication within Web3Auth Modal
 
-When we're using the `@web3auth/modal`, ie. the Plug and Play Modal SDK, the `loginConfig` should be corresponding to the socials mentioned in the
-modal. This means you can use your own authentication services for the following services:
+When we're using the `@web3auth/modal`, ie. the Plug and Play Modal SDK, the `loginConfig` should correspond to the socials mentioned in the modal.
+This means you can use your own authentication services for the following services:
 
 `google` | `facebook` | `twitter` | `reddit` | `discord` | `twitch` | `apple` | `line` | `github` | `kakao` | `linkedin` | `weibo` | `wechat` |
 `passwordless`
 
 :::info
 
-You can customise all or few of the social logins and other will remain default. You can also remove the ones you don't want using the whitelabeling
-option.
+You can customize all or a few of the social logins and others will remain default. You can also remove the ones you don't want using the
+whitelabeling option.
 
 :::
 
@@ -227,8 +227,8 @@ option.
 
 ### Logging in through your Custom JWT Token
 
-When we are using `@web3auth/no-modal`, ie. Web3Auth Plug and Play No Modal SDK, we have the option to use the `connectTo` function, that enables you
-to customise the login process according to the parameters you have for your custom authentication service.
+When we are using `@web3auth/no-modal`, ie. Web3Auth Plug and Play No Modal SDK, we have the option to use the `connectTo` function, which enables you
+to customize the login process according to the parameters you have for your custom authentication service.
 
 <ConnectTo />
 
@@ -258,7 +258,7 @@ web3auth.configureAdapter(openloginAdapter);
 
 ## Change Adapter Settings
 
-You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter instance. This function takes the below mentioned
+You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter instance. This function takes the below-mentioned
 parameters as well as <b>[Openlogin Adapter Settings](#openlogin-adapter-settings)</b>.
 
 ### Arguments
@@ -299,19 +299,39 @@ interface BaseAdapterSettings {
 
 ## Example
 
-### `web3auth/web3auth`
+### `@web3auth/modal`
 
 ```tsx
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
-    network: "sapphire_mainnet",
-    uxMode: "popup",
+    uxMode: "redirect", // "redirect" | "popup"
     whiteLabel: {
-      name: "Your app Name",
-      logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-      logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-      defaultLanguage: "en",
-      dark: true, // whether to enable dark mode. defaultValue: false
+      logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+      logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+      defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+      mode: "dark", // whether to enable dark, light or auto mode. defaultValue: auto [ system theme]
+    },
+    mfaSettings: {
+      deviceShareFactor: {
+        enable: true,
+        priority: 1,
+        mandatory: true,
+      },
+      backUpShareFactor: {
+        enable: true,
+        priority: 2,
+        mandatory: false,
+      },
+      socialBackupFactor: {
+        enable: true,
+        priority: 3,
+        mandatory: false,
+      },
+      passwordFactor: {
+        enable: true,
+        priority: 4,
+        mandatory: false,
+      },
     },
     loginConfig: {
       // Add login configs corresponding to the providers on modal
@@ -359,15 +379,42 @@ const openloginAdapter = new OpenloginAdapter({
     network: "sapphire_mainnet",
     uxMode: "popup",
     whiteLabel: {
-      name: "Your app Name",
-      logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-      logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-      defaultLanguage: "en",
-      dark: true, // whether to enable dark mode. defaultValue: false
+      appName: "W3A Heroes",
+      appUrl: "https://web3auth.io",
+      logoLight: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+      logoDark: "https://web3auth.io/images/w3a-D-Favicon-1.svg",
+      defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+      mode: "auto", // whether to enable dark mode. defaultValue: false
+      theme: {
+        primary: "#768729",
+      },
+      useLogoLoader: true,
+    },
+    mfaSettings: {
+      deviceShareFactor: {
+        enable: true,
+        priority: 1,
+        mandatory: true,
+      },
+      backUpShareFactor: {
+        enable: true,
+        priority: 2,
+        mandatory: false,
+      },
+      socialBackupFactor: {
+        enable: true,
+        priority: 3,
+        mandatory: false,
+      },
+      passwordFactor: {
+        enable: true,
+        priority: 4,
+        mandatory: false,
+      },
     },
     loginConfig: {
       jwt: {
-        verifier: "web3auth-auth0",
+        verifier: "web3auth-auth0-demo",
         typeOfLogin: "jwt",
         clientId: "294QRkchfq2YaXUbPri7D6PH7xzHgQMT",
       },
