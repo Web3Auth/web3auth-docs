@@ -1,0 +1,51 @@
+##### Importing the packages
+
+```tsx
+import { Web3Auth } from "@web3auth/single-factor-auth";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { useAuth0 } from "@auth0/auth0-react";
+```
+
+Alongside the `Web3Auth` and `OpenloginAdapter` you need the above-mentioned packages from `@web3auth/base` for different initializations mentioned
+further in this guide.
+
+##### Instantiate the Web3Auth SFA Web SDK
+
+```tsx
+import { Web3Auth } from "@web3auth/single-factor-auth";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+
+const chainConfig = {
+  chainId: "0x1",
+  displayName: "Ethereum Mainnet",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  tickerName: "Ethereum",
+  ticker: "ETH",
+  decimals: 18,
+  rpcTarget: "https://rpc.ankr.com/eth",
+  blockExplorer: "https://etherscan.io",
+};
+
+// Initialising Web3Auth Single Factor Auth SDK
+const web3authSfa = new Web3Auth({
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet", // Get your Network from Web3Auth Dashboard
+  usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
+});
+
+// Initializing Ethereum Provider
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+```
+
+Here, we're using the `chainConfig` property to set the chainId and chainNamespace among other parameters. The `chainId` and `chainNamespace` are the
+id and the namespace respectively of the chain you're connecting to. We've initialized them for EVM for this guide. You can find the list of available
+providers [here](/sdk/helper-sdks/providers/) to select from.
+
+Additionally, sometimes you might face clogging in the network because the test network is a bit clogged at that point. To avoid this, we can use the
+property `rpcTarget` and pass over the URL of the node you want to connect to.
