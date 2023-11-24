@@ -1,13 +1,13 @@
 ---
-title: Using Auth0 with Web3Auth SFA Web
-image: "content-hub/guides/banners/auth0.png"
-description: Learn how to use Web3Auth Single Factor Auth web SDK with Auth0
+title: Using Google with Web3Auth SFA Web
+image: "content-hub/guides/banners/google.png"
+description: Learn how to use Web3Auth Single Factor Auth web SDK with Google
 type: guide
 tags:
   [
     web,
     "@web3auth/single-factor-auth",
-    auth0,
+    google,
     custom authentication,
     react,
     ethereum,
@@ -24,9 +24,8 @@ order: 3
 communityPortalTopicId: 22
 ---
 
-import Auth0Prerequisites from "@site/src/common/guides/_auth0-prerequisites.mdx";
-import Auth0Setup from "@site/src/common/guides/_auth0-setup.mdx";
-import Auth0VerifierSetup from "@site/src/common/guides/_auth0-verifier-setup.mdx";
+import CreatingVerifiers from "@site/src/common/guides/_creating-verifiers.mdx";
+import GoogleAppSetup from "@site/src/common/guides/_google-app-setup.mdx";
 import SFAWebInstantiation from "@site/src/common/guides/_instantiation-w3a-sfa-web.mdx";
 import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
 import ParseIdtokenGetSub from "@site/src/common/guides/_parse-idtoken-get-sub.mdx";
@@ -38,24 +37,24 @@ import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisit
 import SEO from "@site/src/components/SEO";
 
 <SEO
-  title="Using Auth0 with Web3Auth SFA Web"
-  description="Learn how to use Web3Auth Single Factor Auth with Auth0 in your React Application."
-  image="https://web3auth.io/docs/content-hub/guides/banners/auth0.png"
-  slug="/content-hub/guides/sfa-web-auth0"
+  title="Using Google with Web3Auth SFA Web"
+  description="Learn how to use Web3Auth Single Factor Auth with Google in your React Application."
+  image="https://web3auth.io/docs/content-hub/guides/banners/google.png"
+  slug="/content-hub/guides/sfa-web-google"
 />
 
-This guide will cover the basics of how to set up your Web3Auth SDK and Auth0 account for the integration and provide you with the links on how to
+This guide will cover the basics of how to set up your Web3Auth SDK and Google account for the integration and provide you with the links on how to
 develop a basic web application on the blockchain of your choice.
 
 ## Quick Start
 
 ```bash
-npx degit Web3Auth/web3auth-core-kit-examples/single-factor-auth-web/sfa-web-auth0-example sfa-web-auth0-demo && cd sfa-web-auth0-demo && npm install && npm run start
+npx degit Web3Auth/web3auth-core-kit-examples/single-factor-auth-web/sfa-web-google-example sfa-web-google-demo && cd sfa-web-google-demo && npm install && npm run start
 ```
 
 ## How it works?
 
-- The first step for the application is to get the user authenticated by a login provider(here, Auth0) and get the user's `idToken`.
+- The first step for the application is to get the user authenticated by a login provider(here, Google) and get the user's `idToken`.
 - Once the social login is successful, depending on whether the user has enabled **Multi-Factor Authentication(MFA)** or not, the key is generated.
 - If the user has not enabled MFA, we use the `@web3auth/single-factor-auth` SDK to retrieve the private key shares from the Web3Auth auth network
   nodes and reconstruct the private key.
@@ -66,19 +65,15 @@ npx degit Web3Auth/web3auth-core-kit-examples/single-factor-auth-web/sfa-web-aut
 
 <Web3AuthPrerequisites />
 
-<Auth0Prerequisites />
+### Setup your Google App
 
-## Setup your Auth0 Tenant
-
-<Auth0Setup />
+<GoogleAppSetup />
 
 ## Setup your Web3Auth Dashboard
 
 <SetupWeb3AuthDashboard />
 
-### Create Auth0 Verifiers
-
-<Auth0VerifierSetup />
+<CreatingVerifiers />
 
 ## Using the Web3Auth SFA Web SDK
 
@@ -91,7 +86,7 @@ To use the Web3Auth SFA Web SDK, you need to add `@web3auth/single-factor-auth` 
 For this project, you need to add the following Web3Auth dependencies to your package.json
 
 ```shell
-npm install --save @web3auth/single-factor-auth @web3auth/ethereum-provider @web3auth/base web3 @auth0/auth0-react
+npm install --save @web3auth/single-factor-auth @web3auth/ethereum-provider @web3auth/base web3 @react-oauth/google
 ```
 
 #### Understanding the Dependencies
@@ -121,12 +116,12 @@ This package is the core package for Single Factor Auth Web SDK.
 npm install --save @web3auth/single-factor-auth
 ```
 
-##### `@auth0/auth0-react`
+##### `@react-oauth/google`
 
-This package is used to provide the Auth0 SDK to the app. This is required to retrieve the `idToken` from Auth0 as the login provider.
+This package is used to provide the Google SDK to the app. This is required to retrieve the `idToken` from Google as the login provider.
 
 ```shell
-npm install --save @auth0/auth0-react
+npm install --save @react-oauth/google
 ```
 
 ##### `web3`
@@ -137,28 +132,20 @@ This package is used to interact with the blockchain.
 npm install --save web3
 ```
 
-### Wrapping component with `Auth0Provider`
+### Wrapping component with `GoogleOAuthProvider`
 
-To use the Auth0 SDK, we need to wrap our app with the `Auth0Provider` component. This component provides the Auth0 `domain`, `clientId` and
-`authorizationParams` to the app.
+To use the Google SDK, we need to wrap our app with the `GoogleOAuthProvider` component. This component provides the Google `clientId` to the app.
 
 ```tsx
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { Auth0Provider } from "@auth0/auth0-react";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
-  <Auth0Provider
-    domain="web3auth.au.auth0.com" // Your Auth0 domain
-    clientId="hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O" // Your Auth0 client id
-    authorizationParams={{
-      redirect_uri: window.location.origin,
-      connection: "github", // Your Auth0 social login provider
-    }}
-  >
+  <GoogleOAuthProvider clientId="519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com">
     <App />
-  </Auth0Provider>
+  </GoogleOAuthProvider>
 );
 ```
 
@@ -177,20 +164,32 @@ web3authSfa.init(ethereumPrivateKeyProvider);
 
 ### Authentication
 
-#### Getting the `idToken` from Auth0 upon login
+#### Getting the `idToken` and initializing Web3Auth
 
 ```tsx
-import { useAuth0 } from "@auth0/auth0-react";
+import { GoogleLogin, CredentialResponse, googleLogout } from "@react-oauth/google";
 
-const { getIdTokenClaims, loginWithPopup } = useAuth0();
+const logoutView = <GoogleLogin onSuccess={onSuccess} />;
 
-await loginWithPopup();
-const idToken = (await getIdTokenClaims())?.__raw.toString();
+const onSuccess = async (response: CredentialResponse) => {
+  try {
+    const idToken = response.credential;
+    setIdToken(idToken!);
+    const { email } = parseToken(idToken);
+    console.log(email);
+    await web3authSfa.connect({
+      verifier: "w3a-google-demo",
+      verifierId: email,
+      idToken: idToken!,
+    });
+  } catch (err) {
+    // Single Factor Auth SDK throws an error if the user has already enabled MFA
+    // One can use the Web3AuthNoModal SDK to handle this case
+    setIsLoggingIn(false);
+    console.error(err);
+  }
+};
 ```
-
-<ParseIdtokenGetSub />
-
-<SfaWebIntialization />
 
 :::info
 
@@ -206,6 +205,7 @@ from the `idToken`.
 Logging out your user is as simple as calling the `logout` function on the Web3Auth SDK.
 
 ```tsx
+await googleLogout();
 await web3authSfa.logout();
 ```
 
@@ -216,7 +216,7 @@ await web3authSfa.logout();
 ## Example Code
 
 The code for the example can be found
-[here](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/sfa-web-auth0-example).
+[here](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/sfa-web-google-example).
 
 ## Questions?
 
