@@ -144,6 +144,31 @@ This package is used to interact with the blockchain.
 npm install --save web3
 ```
 
+### Wrapping component with `Auth0Provider`
+
+To use the Auth0 SDK, we need to wrap our app with the `Auth0Provider` component. This component provides the Auth0 `domain`, `clientId` and
+`authorizationParams` to the app.
+
+```tsx
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import { Auth0Provider } from "@auth0/auth0-react";
+
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+root.render(
+  <Auth0Provider
+    domain="web3auth.au.auth0.com" // Your Auth0 domain
+    clientId="hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O" // Your Auth0 client id
+    authorizationParams={{
+      redirect_uri: window.location.origin,
+      connection: "github", // Your Auth0 social login provider
+    }}
+  >
+    <App />
+  </Auth0Provider>
+);
+```
+
 ### Initialization
 
 Once installed, your Web3Auth application needs to be initialized. Initialization is a multi-step process where we add all the config details for
