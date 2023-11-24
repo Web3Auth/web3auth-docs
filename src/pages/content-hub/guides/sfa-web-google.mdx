@@ -169,8 +169,6 @@ web3authSfa.init(ethereumPrivateKeyProvider);
 ```tsx
 import { GoogleLogin, CredentialResponse, googleLogout } from "@react-oauth/google";
 
-const logoutView = <GoogleLogin onSuccess={onSuccess} />;
-
 const onSuccess = async (response: CredentialResponse) => {
   try {
     const idToken = response.credential;
@@ -189,6 +187,12 @@ const onSuccess = async (response: CredentialResponse) => {
     console.error(err);
   }
 };
+```
+
+Add this to your login page:
+
+```jsx
+<GoogleLogin onSuccess={onSuccess} />
 ```
 
 :::info
