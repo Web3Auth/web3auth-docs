@@ -34,7 +34,7 @@ export default function NotFound() {
                 <Translate id="theme.NotFound.p2" description="The 2nd paragraph of the 404 page">
                   {para2content}
                 </Translate>
-                <a href="https://web3auth.io/community">Community Portal.</a>
+                <a href="https://web3auth.io/community">Community Support Portal.</a>
               </p>
             </div>
           </div>
