@@ -7,20 +7,6 @@ export default function QuickNavigation() {
     <div className={styles.container}>
       <h2 className={styles.heading}>Need Help?</h2>
       <div className={styles.cardContainer}>
-        <Link className={styles.card} to="https://calendly.com/web3auth/meeting-with-web3auth">
-          <div className={styles.cardIconContainer}>
-            <svg className={styles.cardIcon} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M2 3C2 2.73478 2.10536 2.48043 2.29289 2.29289C2.48043 2.10536 2.73478 2 3 2H5.153C5.38971 2.00011 5.6187 2.08418 5.79924 2.23726C5.97979 2.39034 6.10018 2.6025 6.139 2.836L6.879 7.271C6.91436 7.48222 6.88097 7.69921 6.78376 7.89003C6.68655 8.08085 6.53065 8.23543 6.339 8.331L4.791 9.104C5.34611 10.4797 6.17283 11.7293 7.22178 12.7782C8.27072 13.8272 9.52035 14.6539 10.896 15.209L11.67 13.661C11.7655 13.4695 11.9199 13.3138 12.1106 13.2166C12.3012 13.1194 12.5179 13.0859 12.729 13.121L17.164 13.861C17.3975 13.8998 17.6097 14.0202 17.7627 14.2008C17.9158 14.3813 17.9999 14.6103 18 14.847V17C18 17.2652 17.8946 17.5196 17.7071 17.7071C17.5196 17.8946 17.2652 18 17 18H15C7.82 18 2 12.18 2 5V3Z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
-          <div className={styles.cardContent}>
-            <h5>Schedule a Demo</h5>
-            <p>Talk to our sales team and understand how Web3Auth suits your needs.</p>
-          </div>
-        </Link>
         <Link className={styles.card} to="https://web3auth.io/community/">
           <div className={styles.cardIconContainer}>
             <svg viewBox="0 0 57 56" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
@@ -39,7 +25,7 @@ export default function QuickNavigation() {
             </svg>
           </div>
           <div className={styles.cardContent}>
-            <h5>Community Forum</h5>
+            <h5>Support Forum</h5>
             <p>Join our community of passionate developers - learn, grow and get help for your Web3Auth setup.</p>
           </div>
         </Link>
@@ -57,6 +43,20 @@ export default function QuickNavigation() {
           <div className={styles.cardContent}>
             <h5>Troubleshooting</h5>
             <p>Stuck somewhere? Checkout the Troubleshooting section</p>
+          </div>
+        </Link>
+        <Link className={styles.card} to="https://calendly.com/web3auth/meeting-with-web3auth">
+          <div className={styles.cardIconContainer}>
+            <svg className={styles.cardIcon} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M2 3C2 2.73478 2.10536 2.48043 2.29289 2.29289C2.48043 2.10536 2.73478 2 3 2H5.153C5.38971 2.00011 5.6187 2.08418 5.79924 2.23726C5.97979 2.39034 6.10018 2.6025 6.139 2.836L6.879 7.271C6.91436 7.48222 6.88097 7.69921 6.78376 7.89003C6.68655 8.08085 6.53065 8.23543 6.339 8.331L4.791 9.104C5.34611 10.4797 6.17283 11.7293 7.22178 12.7782C8.27072 13.8272 9.52035 14.6539 10.896 15.209L11.67 13.661C11.7655 13.4695 11.9199 13.3138 12.1106 13.2166C12.3012 13.1194 12.5179 13.0859 12.729 13.121L17.164 13.861C17.3975 13.8998 17.6097 14.0202 17.7627 14.2008C17.9158 14.3813 17.9999 14.6103 18 14.847V17C18 17.2652 17.8946 17.5196 17.7071 17.7071C17.5196 17.8946 17.2652 18 17 18H15C7.82 18 2 12.18 2 5V3Z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+          <div className={styles.cardContent}>
+            <h5>Talk to sales</h5>
+            <p>Schedule a demo and understand how Web3Auth suits your needs.</p>
           </div>
         </Link>
       </div>
