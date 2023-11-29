@@ -1,25 +1,66 @@
 const axios = require("axios");
+const util = require("util");
+const fs = require("fs");
+const path = require("path");
+const joi = require("joi");
+const readFileAsync = util.promisify(fs.readFile);
+const writeFileAsync = util.promisify(fs.writeFile);
+
+const environment = process.env.NODE_ENV || "development";
+
+async function fetchHostedFile(filename) {
+  try {
+    response = await axios.get("https:/raw.githubusercontent.com/" + filename);
+    var fileContent = response.data;
+    if (typeof fileContent !== "string") {
+      fileContent = JSON.stringify(fileContent, null, 2);
+    }
+    return fileContent;
+  } catch (e) {
+    console.log(`Error fetching ${filename}: ${e}`);
+    return "";
+  }
+}
+
 const hostedFileLinks = require("../../src/common/hostedFileLinks.json");
 module.exports = (context, options) => ({
   name: "docusaurus-plugin-virtual-files",
   async loadContent() {
+    const dir = path.resolve(context.siteDir, options.rootDir);
     const filenames = Object.values(hostedFileLinks);
     const fileContents = {};
 
-    for (const filename of filenames) {
-      var data;
-      try {
-        response = await axios.get(filename);
-        data = response.data;
-      } catch (e) {
-        data = "";
-        console.log(`Error fetching ${filename}: ${e}`);
+    if (environment === "development") {
+      var data = "";
+      for (const filename of filenames) {
+        const filePath = path.join(dir, filename.replaceAll("/", "-"));
+        const directoryPath = path.dirname(filePath);
+
+        try {
+          data = await readFileAsync(filePath);
+        } catch (e) {
+          console.log(`Fetching ${filename} since local cache not available`);
+
+          data = await fetchHostedFile(filename);
+
+          try {
+            if (!fs.existsSync(directoryPath)) {
+              fs.mkdirSync(directoryPath, { recursive: true });
+            }
+            await writeFileAsync(filePath, data);
+            console.log(`Saved ${filename} to cache`);
+          } catch (error) {
+            console.log(`Error saving ${filename} to cache`);
+          }
+        }
+        fileContents[filename] = data;
       }
-      if (typeof data !== "string") {
-        data = JSON.stringify(data, null, 2);
+    } else {
+      for (const filename of filenames) {
+        fileContents[filename] = await fetchHostedFile(filename);
       }
-      fileContents[filename] = data;
     }
+
     return fileContents;
   },
   async contentLoaded({ content, actions }) {
@@ -34,3 +75,11 @@ module.exports = (context, options) => ({
     });
   },
 });
+
+module.exports.validateOptions = ({ options, validate }) =>
+  validate(
+    joi.object({
+      rootDir: joi.string().required(),
+    }),
+    options
+  );

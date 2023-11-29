@@ -188,7 +188,7 @@ const config: Config = {
   ],
   plugins: [
     path.resolve(__dirname, "plugins", "docusaurus-plugin-content-hub"),
-    [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: "files" }],
+    [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: ".integrationBuilderCache" }],
     path.resolve(__dirname, "plugins", "node-polyfills"),
     [
       path.resolve(__dirname, "plugins", "plugin-dynamic-route"),
