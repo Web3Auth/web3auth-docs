@@ -5,47 +5,51 @@ export default function getSteps(steps, files, replacementAggregator) {
   steps.push(
     {
       ...STEPS.htmlQuickStart,
-      pointer: replacementAggregator.highlightRange(hostedFileLinks.MODAL_HTML_STYLE_CSS, files[hostedFileLinks.MODAL_HTML_STYLE_CSS], "Quick Start"),
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MODAL_HTML_INDEX_HTML,
+        files[hostedFileLinks.MODAL_HTML_INDEX_HTML],
+        "Quick Start"
+      ),
     },
     {
       ...STEPS.registerApp,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MODAL_HTML_STYLE_CSS,
-        files[hostedFileLinks.MODAL_HTML_STYLE_CSS],
+        hostedFileLinks.MODAL_HTML_INDEX_HTML,
+        files[hostedFileLinks.MODAL_HTML_INDEX_HTML],
         "Dashboard Registration"
       ),
     },
     {
       ...STEPS.initialization,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MODAL_HTML_STYLE_CSS,
-        files[hostedFileLinks.MODAL_HTML_STYLE_CSS],
+        hostedFileLinks.MODAL_HTML_INDEX_HTML,
+        files[hostedFileLinks.MODAL_HTML_INDEX_HTML],
         "SDK Initialization"
       ),
     },
     {
       ...STEPS.login,
-      pointer: replacementAggregator.highlightRange(hostedFileLinks.MODAL_HTML_STYLE_CSS, files[hostedFileLinks.MODAL_HTML_STYLE_CSS], "Login"),
+      pointer: replacementAggregator.highlightRange(hostedFileLinks.MODAL_HTML_INDEX_HTML, files[hostedFileLinks.MODAL_HTML_INDEX_HTML], "Login"),
     },
     {
       ...STEPS.getUserInfo,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MODAL_HTML_STYLE_CSS,
-        files[hostedFileLinks.MODAL_HTML_STYLE_CSS],
+        hostedFileLinks.MODAL_HTML_INDEX_HTML,
+        files[hostedFileLinks.MODAL_HTML_INDEX_HTML],
         "Get User Information"
       ),
     },
     {
       ...STEPS.blockchainCalls,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MODAL_HTML_STYLE_CSS,
-        files[hostedFileLinks.MODAL_HTML_STYLE_CSS],
+        hostedFileLinks.MODAL_HTML_INDEX_HTML,
+        files[hostedFileLinks.MODAL_HTML_INDEX_HTML],
         "Blockchain Calls"
       ),
     },
     {
       ...STEPS.logout,
-      pointer: replacementAggregator.highlightRange(hostedFileLinks.MODAL_HTML_STYLE_CSS, files[hostedFileLinks.MODAL_HTML_STYLE_CSS], "Logout"),
+      pointer: replacementAggregator.highlightRange(hostedFileLinks.MODAL_HTML_INDEX_HTML, files[hostedFileLinks.MODAL_HTML_INDEX_HTML], "Logout"),
     }
   );
 }

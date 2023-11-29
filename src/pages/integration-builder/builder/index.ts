@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { IntegrationBuilder, IntegrationStep } from "../interfaces";
 import {
-  CORE_KIT,
+  HTML,
   LANGS_ANDROID,
   LANGS_FLUTTER,
   LANGS_IOS,
@@ -205,7 +205,9 @@ const builder: IntegrationBuilder = {
 
     if (WEB_SDKS.includes(finalValues.sdk)) {
       if (!WEB_FRAMEWORKS.includes(finalValues.framework)) {
-        finalValues.framework = WEB_FRAMEWORKS[0];
+        if (!(finalValues.sdk === PNP_MODAL && finalValues.framework === HTML)) {
+          finalValues.framework = WEB_FRAMEWORKS[0];
+        }
       }
       selectedSDK = `${finalValues.sdk}_${finalValues.framework}`;
     } else {

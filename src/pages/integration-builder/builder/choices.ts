@@ -26,7 +26,7 @@ export const MPC_CORE_KIT = "MPC_CORE_KIT";
 
 // Platform choices
 export const REACT = "REACT";
-export const NEXT = "NEXT";
+export const NEXTJS = "NEXTJS";
 export const VUE = "VUE";
 export const ANGULAR = "ANGULAR";
 export const HTML = "HTML";
@@ -39,7 +39,7 @@ export const UNREAL = "UNREAL";
 export const NODE = "NODE";
 
 export const WEB_SDKS = [PNP_MODAL, PNP_NO_MODAL, SFA_WEB, MPC_CORE_KIT];
-export const WEB_FRAMEWORKS = [REACT, NEXT, VUE, ANGULAR, HTML];
+export const WEB_FRAMEWORKS = [REACT, NEXTJS, VUE, ANGULAR];
 
 export const SDKS_PNP: DisplayChoice[] = [
   { key: PNP_MODAL, displayName: "Web - Modal SDK" },
@@ -62,10 +62,9 @@ export const SDKS_CORE_KIT: DisplayChoice[] = [
 
 export const LANGS_WEB: DisplayChoice[] = [
   { key: REACT, displayName: "React" },
-  { key: NEXT, displayName: "Next JS" },
+  { key: NEXTJS, displayName: "Next JS" },
   { key: VUE, displayName: "Vue" },
   { key: ANGULAR, displayName: "Angular" },
-  { key: HTML, displayName: "HTML/JS" },
 ];
 
 export const LANGS_WEB_PNP_MODAL: DisplayChoice[] = [...LANGS_WEB, { key: HTML, displayName: "HTML/JS" }];

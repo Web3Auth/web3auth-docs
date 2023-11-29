@@ -29,13 +29,14 @@ module.exports = (context, options) => ({
     const dir = path.resolve(context.siteDir, options.rootDir);
     const filenames = Object.values(hostedFileLinks);
     const fileContents = {};
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
 
     if (environment === "development") {
       var data = "";
       for (const filename of filenames) {
         const filePath = path.join(dir, filename.replaceAll("/", "-"));
-        const directoryPath = path.dirname(filePath);
-
         try {
           data = await readFileAsync(filePath, "utf8");
         } catch (e) {
@@ -44,9 +45,6 @@ module.exports = (context, options) => ({
           data = await fetchHostedFile(filename);
 
           try {
-            if (!fs.existsSync(directoryPath)) {
-              fs.mkdirSync(directoryPath, { recursive: true });
-            }
             await writeFileAsync(filePath, data);
             console.log(`Saved ${filename} to cache`);
           } catch (error) {

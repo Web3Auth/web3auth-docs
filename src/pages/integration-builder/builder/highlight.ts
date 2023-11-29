@@ -2,7 +2,7 @@
 function highlightStart(fileContent: string, variableName: string): string {
   const contentByLine = fileContent.split(`\n`);
   for (let i = 0; i < contentByLine.length; i += 1) {
-    if (contentByLine[i].includes(`HIGHLIGHTSTART-${variableName}`)) {
+    if (contentByLine[i].includes(`IMP START - ${variableName}`)) {
       contentByLine[i] = "// highlight-start";
     }
   }
@@ -11,7 +11,7 @@ function highlightStart(fileContent: string, variableName: string): string {
 function highlightEnd(fileContent: string, variableName: string): string {
   const contentByLine = fileContent.split(`\n`);
   for (let i = 0; i < contentByLine.length; i += 1) {
-    if (contentByLine[i].includes(`HIGHLIGHTEND-${variableName}`)) {
+    if (contentByLine[i].includes(`IMP END - ${variableName}`)) {
       contentByLine[i] = "// highlight-end";
     }
   }
@@ -22,7 +22,7 @@ function removeHighlightCode(fileContent: string): string {
   // 2. line that this occurs on
   const contentByLine = fileContent.split(`\n`);
   for (let i = 0; i < contentByLine.length; i += 1) {
-    if (contentByLine[i].includes("HIGHLIGHT")) {
+    if (contentByLine[i].includes("IMP")) {
       contentByLine.splice(i, 1);
     }
   }
