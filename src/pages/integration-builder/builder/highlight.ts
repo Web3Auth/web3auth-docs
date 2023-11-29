@@ -38,6 +38,7 @@ function highlightSection(fileContent: string, variableName: string): string {
 function highlight(stepIndex, filenames, files, steps) {
   const { pointer } = steps[stepIndex];
   const newFiles = files;
+
   for (let i = 0; i < filenames.length; i++) {
     if (filenames[i] === pointer.filename) {
       newFiles[filenames[i]] = highlightSection(pointer.fileContent || files[filenames[i]], pointer.variableName);

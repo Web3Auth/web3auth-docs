@@ -37,7 +37,7 @@ module.exports = (context, options) => ({
         const directoryPath = path.dirname(filePath);
 
         try {
-          data = await readFileAsync(filePath);
+          data = await readFileAsync(filePath, "utf8");
         } catch (e) {
           console.log(`Fetching ${filename} since local cache not available`);
 

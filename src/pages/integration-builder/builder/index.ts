@@ -1,47 +1,87 @@
 /* eslint-disable camelcase */
 import { IntegrationBuilder, IntegrationStep } from "../interfaces";
-import android from "./android";
-import angular from "./angular";
 import {
-  CHAINS,
-  CHAINS_HTML,
-  CHAINS_MOBILE,
-  CUSTOM_AUTH,
-  CUSTOM_AUTH_MOBILE,
-  EVM,
-  EVM_LIBRARY,
-  GAMING,
-  HTML,
-  LANGS,
-  MFA,
-  MOBILE,
-  REACT_NATIVE,
-  RN_MODE,
-  TOGGLE,
-  WEB3AUTH_NETWORK,
-  YES,
+  CORE_KIT,
+  LANGS_ANDROID,
+  LANGS_FLUTTER,
+  LANGS_IOS,
+  LANGS_NODE,
+  LANGS_REACT_NATIVE,
+  LANGS_UNITY,
+  LANGS_WEB,
+  LANGS_WEB_PNP_MODAL,
+  PNP,
+  PNP_ANDROID,
+  PNP_FLUTTER,
+  PNP_IOS,
+  PNP_MODAL,
+  PNP_REACT_NATIVE,
+  PNP_UNITY,
+  PRODUCTS,
+  SDKS_CORE_KIT,
+  SDKS_PNP,
+  SFA_ANDROID,
+  SFA_IOS,
+  SFA_NODE,
+  SFA_REACT_NATIVE,
+  WEB_FRAMEWORKS,
+  WEB_SDKS,
 } from "./choices";
-import flutter from "./flutter";
+import mpc_core_kit_angular from "./core_kit/mpc_core_kit/angular";
+import mpc_core_kit_nextjs from "./core_kit/mpc_core_kit/nextjs";
+import mpc_core_kit_react from "./core_kit/mpc_core_kit/react";
+import mpc_core_kit_vue from "./core_kit/mpc_core_kit/vue";
+import sfa_android from "./core_kit/sfa/android";
+import sfa_ios from "./core_kit/sfa/ios";
+import sfa_node from "./core_kit/sfa/node";
+import sfa_react_native from "./core_kit/sfa/react_native";
+import sfa_web_angular from "./core_kit/sfa/web/angular";
+import sfa_web_nextjs from "./core_kit/sfa/web/nextjs";
+import sfa_web_react from "./core_kit/sfa/web/react";
+import sfa_web_vue from "./core_kit/sfa/web/vue";
 import highlight from "./highlight";
-import html from "./html";
-import ios from "./ios";
-import next from "./nextjs";
-import react from "./react";
-import react_native from "./react-native";
-import unity from "./unity";
-import vue from "./vue";
+import pnp_android from "./pnp/android";
+import pnp_flutter from "./pnp/flutter";
+import pnp_ios from "./pnp/ios";
+import pnp_react_native from "./pnp/react_native";
+import pnp_unity from "./pnp/unity";
+import pnp_web_modal_angular from "./pnp/web_modal/angular";
+import pnp_web_modal_html from "./pnp/web_modal/html";
+import pnp_web_modal_nextjs from "./pnp/web_modal/nextjs";
+import pnp_web_modal_react from "./pnp/web_modal/react";
+import pnp_web_modal_vue from "./pnp/web_modal/vue";
+import pnp_web_no_modal_angular from "./pnp/web_no_modal/angular";
+import pnp_web_no_modal_nextjs from "./pnp/web_no_modal/nextjs";
+import pnp_web_no_modal_react from "./pnp/web_no_modal/react";
+import pnp_web_no_modal_vue from "./pnp/web_no_modal/vue";
 
-const frameworks = {
-  HTML: html,
-  REACT: react,
-  NEXT: next,
-  VUE: vue,
-  IOS: ios,
-  ANDROID: android,
-  FLUTTER: flutter,
-  ANGULAR: angular,
-  REACT_NATIVE: react_native,
-  UNITY: unity,
+const sdks = {
+  PNP_MODAL_ANGULAR: pnp_web_modal_angular,
+  PNP_MODAL_HTML: pnp_web_modal_html,
+  PNP_MODAL_NEXTJS: pnp_web_modal_nextjs,
+  PNP_MODAL_REACT: pnp_web_modal_react,
+  PNP_MODAL_VUE: pnp_web_modal_vue,
+  PNP_NO_MODAL_ANGULAR: pnp_web_no_modal_angular,
+  PNP_NO_MODAL_NEXTJS: pnp_web_no_modal_nextjs,
+  PNP_NO_MODAL_REACT: pnp_web_no_modal_react,
+  PNP_NO_MODAL_VUE: pnp_web_no_modal_vue,
+  PNP_ANDROID: pnp_android,
+  PNP_IOS: pnp_ios,
+  PNP_REACT_NATIVE: pnp_react_native,
+  PNP_FLUTTER: pnp_flutter,
+  PNP_UNITY: pnp_unity,
+  SFA_WEB_ANGULAR: sfa_web_angular,
+  SFA_WEB_NEXTJS: sfa_web_nextjs,
+  SFA_WEB_REACT: sfa_web_react,
+  SFA_WEB_VUE: sfa_web_vue,
+  SFA_REACT_NATIVE: sfa_react_native,
+  SFA_ANDROID: sfa_android,
+  SFA_IOS: sfa_ios,
+  SFA_NODE: sfa_node,
+  MPC_CORE_KIT_ANGULAR: mpc_core_kit_angular,
+  MPC_CORE_KIT_NEXTJS: mpc_core_kit_nextjs,
+  MPC_CORE_KIT_REACT: mpc_core_kit_react,
+  MPC_CORE_KIT_VUE: mpc_core_kit_vue,
 };
 
 const builder: IntegrationBuilder = {
@@ -50,59 +90,23 @@ const builder: IntegrationBuilder = {
 
   // Options that will be displayed in the UI for selection
   options: {
-    lang: {
-      displayName: "Platform",
-      default: LANGS[0].key,
+    product: {
+      displayName: "Product",
+      default: PRODUCTS[0].key,
       type: "dropdown",
-      choices: LANGS,
+      choices: PRODUCTS,
     },
-    chain: {
-      displayName: "Chain",
-      default: CHAINS[0].key,
+    sdk: {
+      displayName: "SDK",
+      default: SDKS_PNP[0].key,
       type: "dropdown",
-      choices: CHAINS,
+      choices: SDKS_PNP,
     },
-    evmFramework: {
-      displayName: "EVM Library",
-      default: EVM_LIBRARY[0].key,
+    framework: {
+      displayName: "Platform/ Framework",
+      default: LANGS_WEB_PNP_MODAL[0].key,
       type: "dropdown",
-      choices: EVM_LIBRARY,
-    },
-    customAuth: {
-      displayName: "Custom Auth",
-      default: CUSTOM_AUTH[0].key,
-      type: "dropdown",
-      choices: CUSTOM_AUTH,
-    },
-    mfa: {
-      displayName: "MFA",
-      default: MFA[0].key,
-      type: "dropdown",
-      choices: MFA,
-    },
-    whitelabel: {
-      displayName: "Whitelabel",
-      default: TOGGLE[0].key,
-      type: "toggle",
-      choices: TOGGLE,
-    },
-    useModal: {
-      displayName: "Use W3A Modal",
-      default: TOGGLE[1].key,
-      type: "toggle",
-      choices: TOGGLE,
-    },
-    web3AuthNetwork: {
-      displayName: "Web3Auth Network",
-      default: WEB3AUTH_NETWORK[0].key,
-      type: "dropdown",
-      choices: WEB3AUTH_NETWORK,
-    },
-    rnMode: {
-      displayName: "Workflow",
-      default: RN_MODE[0].key,
-      type: "dropdown",
-      choices: RN_MODE,
+      choices: LANGS_WEB_PNP_MODAL,
     },
   },
 
@@ -114,144 +118,101 @@ const builder: IntegrationBuilder = {
     const newFiles = JSON.parse(JSON.stringify(files));
     const steps: IntegrationStep[] = [];
 
-    // Language/Framework
-    this.options = {
-      lang: {
-        displayName: "Platform",
-        default: LANGS[0].key,
-        type: "dropdown",
-        choices: LANGS,
-      },
-    };
+    let sdkDefault, sdkChoices, frameworkDefault, frameworkChoices;
 
-    if (!(finalValues.lang in MOBILE || finalValues.lang in GAMING)) {
-      this.options = {
-        ...this.options,
-        useModal: {
-          displayName: "Use W3A Modal",
-          default: TOGGLE[0].key,
-          type: "toggle",
-          choices: TOGGLE,
-        },
-      };
-    }
+    if (finalValues.product === PNP) {
+      sdkDefault = SDKS_PNP[0].key;
+      sdkChoices = SDKS_PNP;
 
-    // React Native Workflow
-    if (finalValues.lang === REACT_NATIVE) {
-      this.options = {
-        ...this.options,
-        rnMode: {
-          displayName: "Workflow",
-          default: RN_MODE[0].key,
-          type: "dropdown",
-          choices: RN_MODE,
-        },
-      };
-    }
-
-    // Blockchain
-    if (finalValues.lang === HTML) {
-      this.options = {
-        ...this.options,
-        chain: {
-          displayName: "Chain",
-          default: CHAINS_HTML[0].key,
-          type: "dropdown",
-          choices: CHAINS_HTML,
-        },
-      };
-    } else if (finalValues.lang in MOBILE) {
-      this.options = {
-        ...this.options,
-        chain: {
-          displayName: "Chain",
-          default: CHAINS_MOBILE[0].key,
-          type: "dropdown",
-          choices: CHAINS_MOBILE,
-        },
-      };
-    } else if (!(finalValues.lang in GAMING)) {
-      this.options = {
-        ...this.options,
-        chain: {
-          displayName: "Chain",
-          default: CHAINS[0].key,
-          type: "dropdown",
-          choices: CHAINS,
-        },
-      };
-    }
-
-    // EVM Chain Framework
-    if (finalValues.chain in EVM && !(finalValues.lang in MOBILE || finalValues.lang in GAMING)) {
-      this.options = {
-        ...this.options,
-        evmFramework: {
-          displayName: "EVM Library",
-          default: EVM_LIBRARY[0].key,
-          type: "dropdown",
-          choices: EVM_LIBRARY,
-        },
-      };
-    }
-
-    // Custom Auth
-    if (finalValues.lang in MOBILE || finalValues.lang in GAMING) {
-      this.options = {
-        ...this.options,
-        customAuth: {
-          displayName: "Custom Auth",
-          default: CUSTOM_AUTH_MOBILE[0].key,
-          type: "dropdown",
-          choices: CUSTOM_AUTH_MOBILE,
-        },
-      };
-    } else if (finalValues.useModal !== YES) {
-      this.options = {
-        ...this.options,
-        customAuth: {
-          displayName: "Custom Auth",
-          default: CUSTOM_AUTH_MOBILE[0].key,
-          type: "dropdown",
-          choices: CUSTOM_AUTH_MOBILE,
-        },
-      };
+      switch (finalValues.sdk) {
+        case PNP_MODAL:
+          frameworkDefault = LANGS_WEB_PNP_MODAL[0].key;
+          frameworkChoices = LANGS_WEB_PNP_MODAL;
+          break;
+        case PNP_ANDROID:
+          frameworkDefault = LANGS_ANDROID[0].key;
+          frameworkChoices = LANGS_ANDROID;
+          break;
+        case PNP_IOS:
+          frameworkDefault = LANGS_IOS[0].key;
+          frameworkChoices = LANGS_IOS;
+          break;
+        case PNP_REACT_NATIVE:
+          frameworkDefault = LANGS_REACT_NATIVE[0].key;
+          frameworkChoices = LANGS_REACT_NATIVE;
+          break;
+        case PNP_FLUTTER:
+          frameworkDefault = LANGS_FLUTTER[0].key;
+          frameworkChoices = LANGS_FLUTTER;
+          break;
+        case PNP_UNITY:
+          frameworkDefault = LANGS_UNITY[0].key;
+          frameworkChoices = LANGS_UNITY;
+          break;
+        default:
+          frameworkDefault = LANGS_WEB[0].key;
+          frameworkChoices = LANGS_WEB;
+      }
     } else {
-      this.options = {
-        ...this.options,
-        customAuth: {
-          displayName: "Custom Auth",
-          default: CUSTOM_AUTH[0].key,
-          type: "dropdown",
-          choices: CUSTOM_AUTH,
-        },
-      };
+      sdkDefault = SDKS_CORE_KIT[0].key;
+      sdkChoices = SDKS_CORE_KIT;
+
+      switch (finalValues.sdk) {
+        case SFA_ANDROID:
+          frameworkDefault = LANGS_ANDROID[0].key;
+          frameworkChoices = LANGS_ANDROID;
+          break;
+        case SFA_IOS:
+          frameworkDefault = LANGS_IOS[0].key;
+          frameworkChoices = LANGS_IOS;
+          break;
+        case SFA_REACT_NATIVE:
+          frameworkDefault = LANGS_REACT_NATIVE[0].key;
+          frameworkChoices = LANGS_REACT_NATIVE;
+          break;
+        case SFA_NODE:
+          frameworkDefault = LANGS_NODE[0].key;
+          frameworkChoices = LANGS_NODE;
+          break;
+        default:
+          frameworkDefault = LANGS_WEB[0].key;
+          frameworkChoices = LANGS_WEB;
+      }
     }
 
-    // WhiteLabel & MFA
     this.options = {
-      ...this.options,
-      mfa: {
-        displayName: "MFA",
-        default: MFA[0].key,
+      product: {
+        displayName: "Product",
+        default: PRODUCTS[0].key,
         type: "dropdown",
-        choices: MFA,
+        choices: PRODUCTS,
       },
-      whitelabel: {
-        displayName: "Whitelabel",
-        default: TOGGLE[0].key,
-        type: "toggle",
-        choices: TOGGLE,
-      },
-      web3AuthNetwork: {
-        displayName: "Web3Auth Network",
-        default: WEB3AUTH_NETWORK[0].key,
+      sdk: {
+        displayName: "SDK",
+        default: sdkDefault,
         type: "dropdown",
-        choices: WEB3AUTH_NETWORK,
+        choices: sdkChoices,
+      },
+      framework: {
+        displayName: "Platform/ Framework",
+        default: frameworkDefault,
+        type: "dropdown",
+        choices: frameworkChoices,
       },
     };
 
-    frameworks[finalValues.lang].build({ ...finalValues, filenames, files: newFiles, steps, chain: finalValues.chain });
+    let selectedSDK;
+
+    if (WEB_SDKS.includes(finalValues.sdk)) {
+      if (!WEB_FRAMEWORKS.includes(finalValues.framework)) {
+        finalValues.framework = WEB_FRAMEWORKS[0];
+      }
+      selectedSDK = `${finalValues.sdk}_${finalValues.framework}`;
+    } else {
+      selectedSDK = finalValues.sdk;
+    }
+
+    sdks[selectedSDK].build({ ...finalValues, filenames, files: newFiles, steps });
 
     if (stepIndex >= steps.length) {
       // eslint-disable-next-line no-param-reassign
