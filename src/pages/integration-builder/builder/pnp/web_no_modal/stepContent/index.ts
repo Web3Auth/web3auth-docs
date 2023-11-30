@@ -10,6 +10,7 @@ import * as installation from "./installationPnPNoModal.mdx";
 import * as login from "./login.mdx";
 import * as logout from "./logout.mdx";
 import * as angularQuickStart from "./noModalAngularQuickStart.mdx";
+import * as htmlQuickStart from "./noModalHTMLQuickStart.mdx";
 import * as nextQuickStart from "./noModalNextQuickStart.mdx";
 import * as reactQuickStart from "./noModalReactQuickStart.mdx";
 import * as vueQuickStart from "./noModalVueQuickStart.mdx";
@@ -20,6 +21,7 @@ const STEPS = toSteps({
   reactBundlerIssues,
   registerApp,
   initialization,
+  htmlQuickStart,
   login,
   getUserInfo,
   blockchainCalls,

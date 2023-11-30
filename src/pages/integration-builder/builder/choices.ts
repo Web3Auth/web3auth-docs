@@ -39,7 +39,7 @@ export const UNREAL = "UNREAL";
 export const NODE = "NODE";
 
 export const WEB_SDKS = [PNP_MODAL, PNP_NO_MODAL, SFA_WEB, MPC_CORE_KIT];
-export const WEB_FRAMEWORKS = [REACT, NEXTJS, VUE, ANGULAR];
+export const WEB_FRAMEWORKS = [REACT, NEXTJS, VUE, ANGULAR, HTML];
 
 export const SDKS_PNP: DisplayChoice[] = [
   { key: PNP_MODAL, displayName: "Web - Modal SDK" },
@@ -65,9 +65,15 @@ export const LANGS_WEB: DisplayChoice[] = [
   { key: NEXTJS, displayName: "Next JS" },
   { key: VUE, displayName: "Vue" },
   { key: ANGULAR, displayName: "Angular" },
+  { key: HTML, displayName: "Vanilla JS" },
 ];
 
-export const LANGS_WEB_PNP_MODAL: DisplayChoice[] = [...LANGS_WEB, { key: HTML, displayName: "HTML/JS" }];
+export const LANGS_WEB_MPC_CORE_KIT: DisplayChoice[] = [
+  { key: REACT, displayName: "React" },
+  { key: NEXTJS, displayName: "Next JS" },
+  { key: VUE, displayName: "Vue" },
+  { key: ANGULAR, displayName: "Angular" },
+];
 
 export const LANGS_ANDROID: DisplayChoice[] = [{ key: ANDROID, displayName: "Android" }];
 

@@ -7,6 +7,7 @@ const framework = {
     const replacementAggregator = new ReplaceFileAggregator();
     getSteps(steps, files, replacementAggregator);
     filenames.push(hostedFileLinks.MODAL_HTML_INDEX_HTML);
+    filenames.push(hostedFileLinks.MODAL_HTML_SCRIPT_JS);
     filenames.push(hostedFileLinks.MODAL_HTML_STYLE_CSS);
 
     return { filenames, files, steps };

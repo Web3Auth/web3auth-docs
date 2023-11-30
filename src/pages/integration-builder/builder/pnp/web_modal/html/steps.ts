@@ -14,42 +14,42 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.registerApp,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MODAL_HTML_INDEX_HTML,
-        files[hostedFileLinks.MODAL_HTML_INDEX_HTML],
+        hostedFileLinks.MODAL_HTML_SCRIPT_JS,
+        files[hostedFileLinks.MODAL_HTML_SCRIPT_JS],
         "Dashboard Registration"
       ),
     },
     {
       ...STEPS.initialization,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MODAL_HTML_INDEX_HTML,
-        files[hostedFileLinks.MODAL_HTML_INDEX_HTML],
+        hostedFileLinks.MODAL_HTML_SCRIPT_JS,
+        files[hostedFileLinks.MODAL_HTML_SCRIPT_JS],
         "SDK Initialization"
       ),
     },
     {
       ...STEPS.login,
-      pointer: replacementAggregator.highlightRange(hostedFileLinks.MODAL_HTML_INDEX_HTML, files[hostedFileLinks.MODAL_HTML_INDEX_HTML], "Login"),
+      pointer: replacementAggregator.highlightRange(hostedFileLinks.MODAL_HTML_SCRIPT_JS, files[hostedFileLinks.MODAL_HTML_SCRIPT_JS], "Login"),
     },
     {
       ...STEPS.getUserInfo,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MODAL_HTML_INDEX_HTML,
-        files[hostedFileLinks.MODAL_HTML_INDEX_HTML],
+        hostedFileLinks.MODAL_HTML_SCRIPT_JS,
+        files[hostedFileLinks.MODAL_HTML_SCRIPT_JS],
         "Get User Information"
       ),
     },
     {
       ...STEPS.blockchainCalls,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MODAL_HTML_INDEX_HTML,
-        files[hostedFileLinks.MODAL_HTML_INDEX_HTML],
+        hostedFileLinks.MODAL_HTML_SCRIPT_JS,
+        files[hostedFileLinks.MODAL_HTML_SCRIPT_JS],
         "Blockchain Calls"
       ),
     },
     {
       ...STEPS.logout,
-      pointer: replacementAggregator.highlightRange(hostedFileLinks.MODAL_HTML_INDEX_HTML, files[hostedFileLinks.MODAL_HTML_INDEX_HTML], "Logout"),
+      pointer: replacementAggregator.highlightRange(hostedFileLinks.MODAL_HTML_SCRIPT_JS, files[hostedFileLinks.MODAL_HTML_SCRIPT_JS], "Logout"),
     }
   );
 }

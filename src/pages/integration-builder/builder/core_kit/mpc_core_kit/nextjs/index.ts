@@ -6,8 +6,8 @@ const framework = {
   build({ filenames, files, steps }) {
     const replacementAggregator = new ReplaceFileAggregator();
     getSteps(steps, files, replacementAggregator);
-    filenames.push(hostedFileLinks.NO_MODAL_NEXT_PAGE_TSX);
-    filenames.push(hostedFileLinks.NO_MODAL_NEXT_PACKAGE_JSON);
+    filenames.push(hostedFileLinks.MPC_CORE_KIT_NEXT_PAGE_TSX);
+    filenames.push(hostedFileLinks.MPC_CORE_KIT_NEXT_PACKAGE_JSON);
 
     return { filenames, files, steps };
   },
