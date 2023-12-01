@@ -159,7 +159,7 @@ module.exports = {
       value: "<span class='sidebarHeading'>Account Abstraction</span>",
       defaultStyle: true,
     },
-    "account-abstraction/safe",
+    "account-abstraction/safeauth",
     // Resources Section
     {
       type: "html",
