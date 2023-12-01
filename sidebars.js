@@ -153,6 +153,13 @@ module.exports = {
     },
     "core-kit/introduction",
     "core-kit/going-live",
+    // Account Abstraction Section
+    {
+      type: "html",
+      value: "<span class='sidebarHeading'>Account Abstraction</span>",
+      defaultStyle: true,
+    },
+    "account-abstraction/safe",
     // Resources Section
     {
       type: "html",
