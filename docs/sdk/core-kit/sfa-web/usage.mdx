@@ -14,13 +14,6 @@ import Tabs from "@theme/Tabs";
 Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users. Further, you can use the native provider given
 by Web3Auth to connect the users to the respective blockchain network.
 
-:::info guide
-
-Follow this [guide](/content-hub/guides/single-factor-auth) for ideal flow using a combination of Web3Auth Single Factor Auth Web SDK and Web3Auth
-Core SDK.
-
-:::
-
 Natively, the instance of Web3Auth (referred to as web3auth in our examples) returns the following functions:
 
 - `connect()` - Logs in the User using the `verifier`, `verifierId` & `idToken` mandatorily while `subVerifierInfoArray` and `serverTimeOffset` are
@@ -189,7 +182,7 @@ declare const CHAIN_NAMESPACES: {
   readonly OTHER: "other";
 };
 
-declare type ChainNamespaceType = (typeof CHAIN_NAMESPACES)[keyof typeof CHAIN_NAMESPACES];
+declare type ChainNamespaceType = typeof CHAIN_NAMESPACES[keyof typeof CHAIN_NAMESPACES];
 declare type CustomChainConfig = {
   chainNamespace: ChainNamespaceType;
   /**
