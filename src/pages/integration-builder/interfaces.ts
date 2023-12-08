@@ -31,7 +31,7 @@ export interface IntegrationBuilder {
     {
       displayName: string;
       default: string;
-      type: "toggle" | "dropdown";
+      type: "dropdown" | "product_selection";
       choices: DisplayChoice[];
     }
   >;

@@ -4,7 +4,7 @@ import STEPS from "../stepContent";
 export default function getSteps(steps, files, replacementAggregator) {
   steps.push(
     {
-      ...STEPS.vueQuickStart,
+      ...STEPS.angularQuickStart,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.MODAL_ANGULAR_APP_COMPONENT_TS,
         files[hostedFileLinks.MODAL_ANGULAR_APP_COMPONENT_TS],

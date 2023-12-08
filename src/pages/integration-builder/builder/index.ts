@@ -97,7 +97,7 @@ const builder: IntegrationBuilder = {
     product: {
       displayName: "Product",
       default: PRODUCTS[0].key,
-      type: "dropdown",
+      type: "product_selection",
       choices: PRODUCTS,
     },
     sdk: {
@@ -186,19 +186,19 @@ const builder: IntegrationBuilder = {
 
     this.options = {
       product: {
-        displayName: "Product",
+        displayName: "Select a Web3Auth Product to build upon",
         default: PRODUCTS[0].key,
-        type: "dropdown",
+        type: "product_selection",
         choices: PRODUCTS,
       },
       sdk: {
-        displayName: "SDK",
+        displayName: "Select the SDK you want to use",
         default: sdkDefault,
         type: "dropdown",
         choices: sdkChoices,
       },
       framework: {
-        displayName: "Platform/ Framework",
+        displayName: "Select a Platform/ Framework",
         default: frameworkDefault,
         type: "dropdown",
         choices: frameworkChoices,
