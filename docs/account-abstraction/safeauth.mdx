@@ -1,0 +1,233 @@
+---
+title: Account Abstraction with SafeAuth Kit
+sidebar_label: SafeAuth
+image: "content-hub/guides/banners/safeauth.png"
+displayed_sidebar: docs
+keywords: [safe, safeauth kit, safeauth, web3auth, authentication, blockchain]
+description: "Account Abstraction with SafeAuth Kit | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+[Safe](https://safe.global/) is a platform that makes it possible for anyone to own a digital account. It establishes universal and transparent
+standards for the storage of digital assets, data, and identity. With **[SafeAuth Kit](https://www.npmjs.com/package/@safe-global/auth-kit)**, you can
+easily create smart wallets that work seamlessly with [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337), using the user's EOA as the smart wallet's
+signer. This simplifies the process of incorporating [Account Abstraction](https://ethereum.org/en/roadmap/account-abstraction/) features into your
+application.
+
+:::tip
+
+Check out our [**example app**](https://w3a-safe-demo.vercel.app/) and
+[**repository**](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/account-abstraction/web3auth-safe-example) for an
+end-to-end **Web3Auth** and **SafeAuth Kit integration**.
+
+:::
+
+<details>
+  <summary><b>What is an EOA?</b></summary>
+  <div>
+    <p>
+    An <a href="https://ethereum.org/en/developers/docs/accounts/" target="_blank"><b>EOA, or externally-owned account</b></a> is a type of Ethereum account that is controlled by a private key.
+    EOAs can be created through Web3Auth, or by using external wallets such as MetaMask, Coinbase Wallet, Rainbow Wallet, etc.
+    </p>
+    <p>
+    On the other hand, there are <b>contract accounts</b> that are controlled by smart contract codes and do not have their own private key. Safe's smart wallet
+    is a contract account that has <a href="https://ethereum.org/en/roadmap/account-abstraction/" target="_blank">enhanced capabilities, such as gas sponsorship and batched transactions.</a></p>
+    <p>
+    Since contract accounts do not have their own private key, they require a <b>signer</b> to initiate transaction flows and produce signatures. Signers are
+    usually EOAs that authorize actions taken by the contract account via a signature.</p>
+    <p>
+    In this integration, the user's EOA (from Web3Auth) serves as the signer for their smart wallet (from Safe). The smart wallet (Safe) holds all assets
+    and submits all transactions to the network. However, the signer (Web3Auth) is responsible for producing signatures and "kicking off" transaction
+    flows.
+    </p>
+
+  </div>
+</details>
+
+## Install SafeAuth Kit
+
+To get started, install the [`@safe-global/auth-kit`](https://www.npmjs.com/package/@safe-global/auth-kit) SDK from Safe.
+
+```bash
+npm i @safe-global/auth-kit
+```
+
+## Create a SafeAuthPack instance
+
+To integrate SafeAuth into your application, start by creating an instance of the `SafeAuthPack` class from the
+[`@safe-global/auth-kit`](https://www.npmjs.com/package/@safe-global/auth-kit) package. This instance will be the entry point for managing
+authentication and transactions.
+
+```typescript
+import { SafeAuthPack, SafeAuthConfig, SafeAuthInitOptions } from "@safe-global/auth-kit";
+
+const safeAuthInitOptions: SafeAuthInitOptions = {
+  showWidgetButton: false, // Set to true to show the SafeAuth widget button
+  chainConfig: {
+    blockExplorerUrl: "https://etherscan.io", // The block explorer URL
+    chainId: "0x5", // The chain ID
+    displayName: "Ethereum Goerli", // The chain name
+    rpcTarget: "https://rpc.ankr.com/eth_goerli", // The RPC target
+    ticker: "ETH", // The chain ticker
+    tickerName: "Ethereum", // The chain ticker name
+  },
+};
+
+const safeAuthPack = new SafeAuthPack();
+await safeAuthPack.init(safeAuthInitOptions);
+```
+
+You should always call the `init()` method afterward before interacting with the pack. The init method initializes the provided Web3Auth SDK and Safe
+services. It creates an embedded browser wallet within an iframe, establishing communication through the internally generated EIP-1193 provider.
+
+## Sign in to an Ethereum account
+
+### Sign In
+
+To start the authentication process, simply call the `signIn()` method. This method is usually triggered when a user clicks on a `Sign In` button on
+your web application. Once the user has successfully signed in, a new Ethereum Wallet will be created. This wallet will be utilized for all future
+logins and can be **shared across different applications**.
+
+```typescript
+const safeAuthSignInResponse = await safeAuthPack.signIn();
+```
+
+The returned safeAuthSignInResponse contains the user's Ethereum address and associated Safe addresses.
+
+> This method retrieves Safe addresses owned by the EOA, but does not create a Safe.
+
+```typescript
+AuthKitSignInData {
+  eoa: string // The safe signer
+  safes?: string[] // The list of associated Safe addresses in the chain
+}
+```
+
+### Create Safe
+
+> Creation of a Safe is done by using the SafeFactory from the [Protocol Kit](https://www.npmjs.com/package/@safe-global/protocol-kit). The Protocol
+> Kit is a library that provides a set of tools to interact with the Safe smart contract.
+
+**To create a Safe, use the following code:**
+
+```typescript
+import { ethers, BrowserProvider, Eip1193Provider } from "ethers";
+import { EthersAdapter, SafeFactory } from "@safe-global/protocol-kit";
+
+const provider = new BrowserProvider(safeAuthPack?.getProvider() as Eip1193Provider);
+const signer = await provider.getSigner();
+const ethAdapter = new EthersAdapter({
+  ethers,
+  signerOrProvider: signer,
+} as any);
+
+const safeFactory = await SafeFactory.create({ ethAdapter });
+const safe = await safeFactory.deploySafe({
+  safeAccountConfig: { threshold: 1, owners: [safeAuthSignInResponse?.eoa as string] },
+});
+console.log("SAFE Created!", await safe.getAddress());
+```
+
+### Provider
+
+After authentication, use `getProvider()` to obtain the Ethereum provider instance, compatible with **EIP-1193**.
+
+```typescript
+safeAuthPack.getProvider();
+```
+
+### Sign Out
+
+To sign out the user, use the `signOut()` method.
+
+```typescript
+await safeAuthPack.signOut();
+```
+
+## Signing and executing transactions
+
+Combine SafeAuth Kit with the Protocol Kit to connect to a Safe and perform transactions.
+
+```typescript
+import { ethers, BrowserProvider, Eip1193Provider } from "ethers";
+import { EthersAdapter } from "@safe-global/protocol-kit";
+
+const provider = new BrowserProvider(safeAuthPack?.getProvider() as Eip1193Provider);
+const signer = await provider.getSigner();
+
+// Create the Safe EthersAdapter
+const ethAdapter = new EthersAdapter({
+  ethers,
+  signerOrProvider: signer || provider,
+});
+
+const safeAddress = safeAuthSignInResponse?.safes?.[0] || "0x";
+
+// Instantiate the protocolKit
+const protocolKit = await Safe.create({
+  ethAdapter,
+  safeAddress,
+});
+
+// Create a Safe transaction with the provided parameters
+const safeTransactionData: MetaTransactionData = {
+  to: ethers.getAddress(safeAuthSignInResponse?.eoa || "0x"),
+  data: "0x",
+  value: ethers.parseUnits("0.0001", "ether").toString(),
+};
+
+const safeTransaction = await protocolKit.createTransaction({
+  safeTransactionData,
+});
+
+// Sign transaction
+const tx = await protocolKit.signTransaction(safeTransaction);
+
+// Execute the transaction
+const txResult = await protocolKit.executeTransaction(tx);
+```
+
+## Sign messages using the `SafeAuthPack`
+
+Sign messages or transactions using your preferred web3 library.
+
+<Tabs
+  defaultValue="web3"
+  values={[
+    { label: "web3.js", value: "web3" },
+    { label: "ethers.js", value: "ethers" },
+  ]}
+>
+<TabItem value="web3">
+
+```typescript
+// Using web3
+const web3 = new Web3(safeAuthPack.getProvider());
+
+const message = "Safe meets Web3Auth";
+const address = safeAuthSignInResponse?.eoa || "0x";
+await web3.eth.personal.sign(message, address);
+await web3.eth.signTransaction(tx);
+await web3.eth.sendTransaction(tx);
+```
+
+</TabItem>
+<TabItem value="ethers">
+
+```typescript
+// Using ethers
+const provider = new BrowserProvider(safeAuthPack?.getProvider() as Eip1193Provider);
+const signer = await provider.getSigner();
+
+await signer.signMessage(message);
+
+await signer.signTransaction(tx);
+await signer.sendTransaction(tx);
+```
+
+</TabItem>
+</Tabs>
+
+The integration makes use of Web3Auth Wallet Services to offer users a secure and hassle-free authentication experience.
