@@ -301,6 +301,7 @@ module.exports = {
         "troubleshooting/jwt-errors",
         "troubleshooting/supported-browsers",
         "troubleshooting/react-big-int-error",
+        "troubleshooting/popup-blocked-issue",
       ],
     },
     {
