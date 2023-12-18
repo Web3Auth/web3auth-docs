@@ -214,7 +214,7 @@ const openloginAdapter = new OpenloginAdapter({
 });
 web3auth.configureAdapter(openloginAdapter);
 
-provider = await web3auth.connectTo(
+const web3authProvider = await web3auth.connectTo(
   WALLET_ADAPTERS.OPENLOGIN,
   {
     loginProvider: "google",
@@ -252,7 +252,7 @@ const privateKeyProvider = new SolanaPrivateKeyProvider({
 
 web3authSfa.init(privateKeyProvider);
 
-const provider = await web3authSFAuth.connect({
+const web3authProvider = await web3authSFAuth.connect({
   verifier,
   verifierId: sub,
   idToken,

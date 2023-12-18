@@ -8,6 +8,7 @@ description: "Integrate Web3Auth with the Algorand Blockchain | Documentation - 
 ---
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
+import Tabs from "@theme/Tabs";
 
 While using the Web3Auth Web SDK for a non-EVM chain like [Algorand](https://algorandtechnologies.com/) you get a standard provider from which you can
 get the private key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like
@@ -30,6 +31,55 @@ npm install --save algosdk
 
 ## Initializing Provider
 
+### Getting the `chainConfig`
+
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+``` tsx
+const chainConfig = {
+  chainNamespace: "other",
+  chainId: "0x3E8", //
+  rpcTarget: "https://api.algoexplorer.io",
+  // Avoid using public rpcTarget in production.
+  // Use services like PureStake, AlgoExplorer API, etc.
+  displayName: "Algorand Mainnet",
+  blockExplorer: "https://algoexplorer.io",
+  ticker: "ALGO",
+  tickerName: "Algorand",
+};
+
+````
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+``` tsx
+const chainConfig = {
+  chainNamespace: "other",
+  chainId: "0x3E8", //
+  rpcTarget: "https://api.algoexplorer.io",
+  // Avoid using public rpcTarget in production.
+  // Use services like PureStake, AlgoExplorer API, etc.
+  displayName: "Algorand Testnet",
+  blockExplorer: "https://testnet.algoexplorer.io",
+  ticker: "ALGO",
+  tickerName: "Algorand",
+};
+
+````
+
+</TabItem>
+</Tabs>
+
 ```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -37,9 +87,7 @@ import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 const web3auth = new Web3Auth({
   clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
   web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "other", // for all non EVM and SOLANA chains, use "other"
-  },
+  chainConfig,
 });
 
 // "other" is supported through @web3auth/openlogin-adapter package.
