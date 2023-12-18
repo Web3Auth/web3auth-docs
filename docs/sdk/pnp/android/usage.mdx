@@ -437,56 +437,6 @@ data class ExtraLoginOptions(
 
 </Tabs>
 
-## Session Management
-
-The Session Management feature allows you to check the existing sessions with Web3Auth. The `sessionResponse()` will allow users to remain
-authenticated with Web3Auth for up to 1 day default, or a maximum of 7 days, or until they logout or session data is cleared.
-
-The `web3Auth.login()` method accepts a `sessionTime` parameter.
-
-```kotlin
-web3Auth.login(LoginParams(selectedLoginProvider, sessionTime = 86400))
-```
-
-```kotlin title="Usage"
-import android.widget.Button
-import com.web3auth.core.Web3Auth
-import android.os.Bundle
-
-class MainActivity : AppCompatActivity() {
-    private lateinit var web3Auth: Web3Auth
-
-    private fun signIn() {
-
-        val selectedLoginProvider = Provider.GOOGLE
-        // Can be GOOGLE, FACEBOOK, TWITCH etc.
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            web3Auth.login(LoginParams(selectedLoginProvider,
-                // highlight-next-line
-                sessionTime = 86400))
-
-        loginCompletableFuture.whenComplete { loginResponse, error ->
-            if (error == null) {
-                // render logged in UI
-            } else {
-                // render error UI
-            }
-
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        ...
-        // Setup UI and event handlers
-        val signInButton = findViewById<Button>(R.id.signInButton)
-        signInButton.setOnClickListener { signIn() }
-        ...
-    }
-    ...
-}
-
-```
-
 ## Selecting Curve
 
 The `web3Auth.login()` method accepts a `curve` parameter. This parameter can be used to select the elliptic curve to use for the signature.
