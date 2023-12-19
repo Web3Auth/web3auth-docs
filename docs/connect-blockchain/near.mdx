@@ -24,30 +24,55 @@ npm install --save near-api-js
 
 ### Getting the `chainConfig`
 
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "other",
+  chainId: "0x4e454152",
+  rpcTarget: "https://mainnet.aurora.dev",
+  // Avoid using public rpcTarget in production.
+  displayName: "Near",
+  blockExplorer: "https://aurorascan.dev",
+  ticker: "NEAR",
+  tickerName: "NEAR",
+};
+```
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "other",
+  chainId: "0x4e454153",
+  rpcTarget: "https://testnet.aurora.dev",
+  // Avoid using public rpcTarget in production.
+  displayName: "Near",
+  blockExplorer: "https://explorer.testnet.aurora.dev",
+  ticker: "NEAR",
+  tickerName: "NEAR",
+};
+```
+
+</TabItem>
+</Tabs>
+
 ### Initializing and instantiating the Web3Auth SDK
 
 <InitializeWeb3Auth />
-
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet", // "testnet" or "mainnet, "sapphire_mainnet", "aqua"
-  chainConfig: {
-    chainNamespace: "other", // for all non EVM and SOLANA chains, use "other"
-    rpcTarget: "https://rpc.testnet.near.org",
-    displayName: "Near",
-    blockExplorer: "https://explorer.testnet.near.org",
-    ticker: "NEAR",
-    tickerName: "NEAR",
-  },
-});
-
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect(); // web3auth.provider
-```
 
 ## Get User Info
 

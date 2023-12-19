@@ -32,39 +32,55 @@ npm install --save @web3auth/no-modal @web3auth/openlogin-adapter @web3auth/base
 
 ### Getting the `chainConfig`
 
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "other",
+  chainId: "cosmoshub-4", //
+  rpcTarget: "https://cosmos-rpc.quickapi.com", // Please add in your custom URL
+  // Avoid using public rpcTarget in production.
+  displayName: "Cosmos Mainnet",
+  blockExplorer: "https://www.mintscan.io/cosmos", // Please add in your custom URL
+  ticker: "ATOM",
+  tickerName: "Cosmos",
+};
+```
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "other",
+  chainId: "theta-testnet-001", //
+  rpcTarget: "https://rpc.sentry-02.theta-testnet.polypore.xyz",
+  // Avoid using public rpcTarget in production.
+  displayName: "Cosmos Testnet",
+  blockExplorer: "https://explorer.theta-testnet.polypore.xyz",
+  ticker: "ATOM",
+  tickerName: "Cosmos",
+};
+```
+
+</TabItem>
+</Tabs>
+
 ### Initializing and instantiating the Web3Auth SDK
 
 <InitializeWeb3Auth />
-
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "other", // for all non EVM and SOLANA chains, use "other"
-    rpcTarget: "https://rpc.sentry-02.theta-testnet.polypore.xyz",
-    displayName: "Cosmos",
-    blockExplorer: "https://explorer.theta-testnet.polypore.xyz",
-    ticker: "ATOM",
-    tickerName: "Cosmos",
-  },
-});
-
-// "other" is supported through @web3auth/openlogin-adapter package.
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    uxMode: "popup",
-  },
-});
-web3auth.configureAdapter(openloginAdapter);
-
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect(); // web3auth.provider
-```
 
 ## Get User Info
 
