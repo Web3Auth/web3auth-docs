@@ -8,6 +8,7 @@ description: "Integrate Web3Auth with the Aptos Blockchain | Documentation - Web
 ---
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-pnp-sfa-tkey.mdx";
 
 While using the Web3Auth Web SDK for a non-EVM chain like [Aptos](https://aptos.dev/) you get a standard provider from which you can get the private
 key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting the user's
@@ -30,21 +31,11 @@ npm install --save aptos
 
 ## Initializing Provider
 
-```tsx
-import { Web3Auth } from "@web3auth/modal";
+### Getting the `chainConfig`
 
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.OTHER,
-  },
-});
+### Initializing and instantiating the Web3Auth SDK
 
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect(); // web3auth.provider
-```
+<InitializeWeb3Auth />
 
 ## Get User Info
 
@@ -53,13 +44,13 @@ const web3authProvider = await web3auth.connect(); // web3auth.provider
 ## Get Account and Key
 
 Once a user logs in, the Web3Auth SDK returns a provider. Since Web3Auth doesn't have a native provider for Aptos, we need to directly use the private
-key to make the RPC calls.
+key for making the RPC calls.
 
 Using the function, `web3auth.provider.request({method: "private_key"})` from Web3Auth provider, the application can have access to the user's private
 key. However, we cannot use this key with Aptos EC Curve specific signing functions, hence, we first derive the Aptos Account using the
 `getAptosAccount()` function.
 
-On the underhood, it uses the helper functions from `aptos` library to derive the key pair.
+On the underhood, it uses the helper functions from the `aptos` library to derive the key pair.
 
 ```tsx
 import { AptosAccount, AptosClient } from "aptos";

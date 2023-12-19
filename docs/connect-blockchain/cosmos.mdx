@@ -8,11 +8,11 @@ description: "Integrate Web3Auth with the Cosmos Blockchain | Documentation - We
 ---
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-pnp-sfa-tkey.mdx";
 
-While using the Web3Auth Web SDK for a non EVM chain like [Cosmos](https://cosmos.network/) you get a standard provider from which you can get the
-private key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting
-user's `account`, `chain ID`, fetch `balance`, `send transaction`, etc. We have highlighted a few methods here for getting you started quickly on
-that.
+While using the Web3Auth Web SDK for a non-EVM chain like [Cosmos](https://cosmos.network/) you get a standard provider from which you can get the
+private key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting the
+user's `account`, `chain ID`, fetch `balance`, `send transaction`, etc. We have highlighted a few methods here to get you started quickly on that.
 
 :::note
 
@@ -29,6 +29,12 @@ npm install --save @web3auth/no-modal @web3auth/openlogin-adapter @web3auth/base
 ```
 
 ## Initializing Provider
+
+### Getting the `chainConfig`
+
+### Initializing and instantiating the Web3Auth SDK
+
+<InitializeWeb3Auth />
 
 ```tsx
 import { Web3Auth } from "@web3auth/modal";
@@ -71,7 +77,7 @@ private key to make the RPC calls.
 
 ### CosmJS Libraries
 
-`@cosmjs/stargate` A client library for the Cosmos SDK 0.40+. Provides a high level client for querying, signing and broadcasting. This is an npm
+`@cosmjs/stargate` A client library for the Cosmos SDK 0.40+. Provides a high-level client for querying, signing and broadcasting. This is an npm
 library that provides a JavaScript/TypeScript interface to interact with the Cosmos SDK blockchain via the Tendermint RPC interface.
 
 `@cosmjs/proto-signing` It is an npm library for signing messages using protobuf serialization, which is commonly used in Cosmos SDK-based
@@ -149,7 +155,7 @@ export default class CosmosRPC {
 
 ## Get Balance
 
-Using the account address we receive in the previous step, we can fetch the balance using an RPC call to `client.getAllBalances(address)`.
+Using the account address we received in the previous step, we can fetch the balance using an RPC call to `client.getAllBalances(address)`.
 
 ```tsx
 import type { IProvider } from "@web3auth/base";
