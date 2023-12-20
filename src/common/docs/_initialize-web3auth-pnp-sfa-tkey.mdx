@@ -42,6 +42,7 @@ const web3authProvider = await web3auth.connect(); // web3auth.provider
 ```tsx
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 
 const web3auth = new Web3AuthNoModal({
   clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
@@ -49,10 +50,15 @@ const web3auth = new Web3AuthNoModal({
   chainConfig,
 });
 
+const privateKeyProvider = new CommonPrivateKeyProvider({
+  config: {
+    chainConfig,
+  },
+});
+
 // "other" is supported through @web3auth/openlogin-adapter package.
 const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    uxMode: "popup",
+  privateKeyProvider,
   },
 });
 web3auth.configureAdapter(openloginAdapter);
