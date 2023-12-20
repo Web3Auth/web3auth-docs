@@ -21,14 +21,15 @@ import DeployContractSolidityDeploySnippet from "@site/src/common/docs/_smart-co
 import DeployContractSolidityReadSnippet from "@site/src/common/docs/_smart-contract-solidity-read.mdx";
 import DeployContractSolidityWriteSnippet from "@site/src/common/docs/_smart-contract-solidity-write.mdx";
 import FetchUserPrivateKeySnippet from "@site/src/common/docs/_evm-fetch-user-private-key.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-pnp-sfa-tkey.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
 While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider, similar to the
 [Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html). This provider can be used with libraries like
 [`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html), [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
-[Polygon (formerly Matic)](https://polygon.technology/) blockchain calls like getting user's `account`, fetch `balance`, `sign transaction`,
-`send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a few here for getting you started quickly on that.
+[Polygon (formerly Matic)](https://polygon.technology/) blockchain calls like getting the user's `account`, fetch `balance`, `sign transaction`,
+`send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a few here to get you started quickly on that.
 
 :::info
 
@@ -46,246 +47,59 @@ To interact with the Polygon blockchain, you can use either [web3.js](https://we
 
 ## Initializing Provider (Polygon)
 
-### Mainnet
-
-Mainnet Block Explorer URL: https://polygonscan.com
+### Getting the `chainConfig`
 
 <Tabs
-  defaultValue="web3"
+ defaultValue="mainnet"
   values={[
-    { label: "web3.js", value: "web3" },
-    { label: "ethers.js", value: "ethers" },
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
   ]}
 >
-<TabItem value="web3">
-
-<Tabs
-  defaultValue="es"
-  values={[
-    { label: "ES Modules", value: "es" },
-    { label: "TypeScript", value: "ts" },
-    { label: "CommonJS", value: "js" },
-  ]}
+<TabItem
+  value="mainnet"
 >
-<TabItem value="es">
 
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import Web3 from "web3";
-
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x89", // hex of 137, polygon mainnet
-    rpcTarget: "https://rpc.ankr.com/polygon",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Polygon Mainnet",
-    blockExplorer: "https://polygonscan.com",
-    ticker: "MATIC",
-    tickerName: "Matic",
-  },
-});
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect();
-
-const web3 = new Web3(web3authProvider); // web3auth.provider
+```typescript
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x89", // hex of 137, polygon mainnet
+  rpcTarget: "https://rpc.ankr.com/polygon",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Polygon Mainnet",
+  blockExplorer: "https://polygonscan.com",
+  ticker: "MATIC",
+  tickerName: "Matic",
+};
 ```
 
 </TabItem>
-<TabItem value="ts">
 
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
-import Web3 from "web3";
+<TabItem
+  value="testnet"
+>
 
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x89", // hex of 137, polygon mainnet
-    rpcTarget: "https://rpc.ankr.com/polygon",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Polygon Mainnet",
-    blockExplorer: "https://polygonscan.com",
-    ticker: "MATIC",
-    tickerName: "Matic",
-  },
-});
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect();
-
-const web3 = new Web3(web3authProvider); // web3auth.provider
-```
-
-</TabItem>
-<TabItem value="js">
-
-```tsx
-const { Web3Auth } = require("@web3auth/modal");
-const Web3 = require("web3");
-
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x89", // hex of 137, polygon mainnet
-    rpcTarget: "https://rpc.ankr.com/polygon",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Polygon Mainnet",
-    blockExplorer: "https://polygonscan.com",
-    ticker: "MATIC",
-    tickerName: "Matic",
-  },
-});
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect();
-
-const web3 = new Web3(web3authProvider); // web3auth.provider
+```typescript
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x13881", // hex of 80001, polygon testnet
+  rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Polygon Mumbai Testnet",
+  blockExplorer: "https://mumbai.polygonscan.com/",
+  ticker: "MATIC",
+  tickerName: "Matic",
+};
 ```
 
 </TabItem>
 </Tabs>
 
-</TabItem>
-<TabItem value="ethers">
+### Initializing and instantiating the Web3Auth SDK
 
-<Tabs
-  defaultValue="es"
-  values={[
-    { label: "ES Modules", value: "es" },
-    { label: "TypeScript", value: "ts" },
-    { label: "CommonJS", value: "js" },
-  ]}
->
-<TabItem value="es">
-
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { ethers } from "ethers";
-
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x89", // hex of 137, polygon mainnet
-    rpcTarget: "https://rpc.ankr.com/polygon",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Polygon Mainnet",
-    blockExplorer: "https://polygonscan.com",
-    ticker: "MATIC",
-    tickerName: "Matic",
-  },
-});
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect();
-
-const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
-```
-
-</TabItem>
-<TabItem value="ts">
-
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
-import { ethers } from "ethers";
-
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x89", // hex of 137, polygon mainnet
-    rpcTarget: "https://rpc.ankr.com/polygon",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Polygon Mainnet",
-    blockExplorer: "https://polygonscan.com",
-    ticker: "MATIC",
-    tickerName: "Matic",
-  },
-});
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect();
-
-const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
-```
-
-</TabItem>
-<TabItem value="js">
-
-```tsx
-const { Web3Auth } = require("@web3auth/modal");
-const ethers = require("ethers");
-
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x89", // hex of 137, polygon mainnet
-    rpcTarget: "https://rpc.ankr.com/polygon",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Polygon Mainnet",
-    blockExplorer: "https://polygonscan.com",
-    ticker: "MATIC",
-    tickerName: "Matic",
-  },
-});
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect();
-
-const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
-```
-
-</TabItem>
-</Tabs>
-
-</TabItem>
-</Tabs>
-
-### Testnet
-
-Testnet Block Explorer URL: https://mumbai.polygonscan.com
-
-```tsx
-/*
-Simply change the chainId field of `chainConfig` to `0x13881` (testnet)
-*/
-
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x13881", // hex of 80001, polygon testnet
-    rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Polygon Mumbai Testnet",
-    blockExplorer: "https://mumbai.polygonscan.com/",
-    ticker: "MATIC",
-    tickerName: "Matic",
-  },
-});
-```
+<InitializeWeb3Auth />
 
 ## Get User Info
 
