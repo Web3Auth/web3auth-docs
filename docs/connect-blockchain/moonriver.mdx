@@ -47,247 +47,59 @@ To interact with the Moonriver blockchain, you can use either [web3.js](https://
 
 ## Initializing Provider (Moonriver)
 
-### Mainnet
-
-- Moonriver Mainnet Block Explorer URL: https://moonriver.moonscan.io
-  - Use `"Ox505"` as the chainId
+### Getting the `chainConfig`
 
 <Tabs
-  defaultValue="web3"
+ defaultValue="mainnet"
   values={[
-    { label: "web3.js", value: "web3" },
-    { label: "ethers.js", value: "ethers" },
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
   ]}
 >
-<TabItem value="web3">
-
-<Tabs
-  defaultValue="es"
-  values={[
-    { label: "ES Modules", value: "es" },
-    { label: "TypeScript", value: "ts" },
-    { label: "CommonJS", value: "js" },
-  ]}
+<TabItem
+  value="mainnet"
 >
-<TabItem value="es">
 
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import Web3 from "web3";
-
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x505", // hex of 1285, moonriver mainnet
-    rpcTarget: "https://rpc.api.moonriver.moonbeam.network",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Moonriver Mainnet",
-    blockExplorer: "https://moonriver.moonscan.io",
-    ticker: "MOVR",
-    tickerName: "MOVR",
-  },
-});
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect();
-
-const web3 = new Web3(web3authProvider); // web3auth.provider
+```typescript
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x505", // hex of 1285, moonriver mainnet
+  rpcTarget: "https://rpc.api.moonriver.moonbeam.network",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Moonriver Mainnet",
+  blockExplorer: "https://moonriver.moonscan.io",
+  ticker: "MOVR",
+  tickerName: "MOVR",
+};
 ```
 
 </TabItem>
-<TabItem value="ts">
 
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
-import Web3 from "web3";
+<TabItem
+  value="testnet"
+>
 
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x504", // hex of 1284, moonriver mainnet
-    rpcTarget: "https://rpc.api.moonriver.moonbeam.network",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Moonriver Mainnet",
-    blockExplorer: "https://moonriver.moonscan.io",
-    ticker: "MOVR",
-    tickerName: "MOVR",
-  },
-});
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect();
-
-const web3 = new Web3(web3authProvider); // web3auth.provider
-```
-
-</TabItem>
-<TabItem value="js">
-
-```tsx
-const { Web3Auth } = require("@web3auth/modal");
-const Web3 = require("web3");
-
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x504", // hex of 1284, moonriver mainnet
-    rpcTarget: "https://rpc.api.moonriver.moonbeam.network",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Moonriver Mainnet",
-    blockExplorer: "https://moonriver.moonscan.io",
-    ticker: "MOVR",
-    tickerName: "MOVR",
-  },
-});
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect();
-
-const web3 = new Web3(web3authProvider); // web3auth.provider
+```typescript
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x507", // hex of 1287, moonriver testnet
+  rpcTarget: "https://rpc.api.moonriver.moonbeam.network",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Moonriver Testnet",
+  blockExplorer: "https://moonbase.moonscan.io",
+  ticker: "MOVR",
+  tickerName: "MOVR",
+};
 ```
 
 </TabItem>
 </Tabs>
 
-</TabItem>
-<TabItem value="ethers">
+### Initializing and instantiating the Web3Auth SDK
 
-<Tabs
-  defaultValue="es"
-  values={[
-    { label: "ES Modules", value: "es" },
-    { label: "TypeScript", value: "ts" },
-    { label: "CommonJS", value: "js" },
-  ]}
->
-<TabItem value="es">
-
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { ethers } from "ethers";
-
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x504", // hex of 1284, moonriver mainnet
-    rpcTarget: "https://rpc.api.moonriver.moonbeam.network",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Moonriver Mainnet",
-    blockExplorer: "https://moonriver.moonscan.io",
-    ticker: "MOVR",
-    tickerName: "MOVR",
-  },
-});
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect();
-
-const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
-```
-
-</TabItem>
-<TabItem value="ts">
-
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
-import { ethers } from "ethers";
-
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x504", // hex of 1284, moonriver mainnet
-    rpcTarget: "https://rpc.api.moonriver.moonbeam.network",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Moonriver Mainnet",
-    blockExplorer: "https://moonriver.moonscan.io",
-    ticker: "MOVR",
-    tickerName: "MOVR",
-  },
-});
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect();
-
-const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
-```
-
-</TabItem>
-<TabItem value="js">
-
-```tsx
-const { Web3Auth } = require("@web3auth/modal");
-const ethers = require("ethers");
-
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x504", // hex of 1284, moonriver mainnet
-    rpcTarget: "https://rpc.api.moonriver.moonbeam.network",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Moonriver Mainnet",
-    blockExplorer: "https://moonriver.moonscan.io",
-    ticker: "MOVR",
-    tickerName: "MOVR",
-  },
-});
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect();
-
-const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
-```
-
-</TabItem>
-</Tabs>
-
-</TabItem>
-</Tabs>
-
-### Testnet
-
-Moonbase Alpha Testnet Block Explorer URL: https://moonbase.moonscan.io
-
-```tsx
-/*
-Simply change the chainId field of `chainConfig` to `0x507` (testnet)
-*/
-
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x507", // hex of 1287, moonriver testnet
-    rpcTarget: "https://rpc.api.moonriver.moonbeam.network",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Moonriver Testnet",
-    blockExplorer: "https://moonbase.moonscan.io",
-    ticker: "MOVR",
-    tickerName: "MOVR",
-  },
-});
-```
+<InitializeWeb3Auth />
 
 ## Get User Info
 
