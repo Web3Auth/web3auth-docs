@@ -47,6 +47,60 @@ To interact with the Klaytn blockchain, you can use either [web3.js](https://web
 
 ## Initializing Provider (Klaytn)
 
+### Getting the `chainConfig`
+
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x2019", // hex of 8217, Klaytn mainnet
+  rpcTarget: "https://public-node-api.klaytnapi.com/v1/cypress",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Klaytn Mainnet",
+  blockExplorer: "https://scope.klaytn.com",
+  ticker: "KLAY",
+  tickerName: "KLAY",
+};
+```
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x3e9", // hex of 1001, Klaytn Boabab testnet
+  rpcTarget: "https://api.baobab.klaytn.net:8651",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Klaytn Testnet",
+  blockExplorer: "https://baobab.scope.klaytn.com/",
+  ticker: "KLAY",
+  tickerName: "KLAY",
+};
+```
+
+</TabItem>
+</Tabs>
+
+### Initializing and instantiating the Web3Auth SDK
+
+<InitializeWeb3Auth />
+
 ### Mainnet
 
 Mainnet Block Explorer URL: https://scope.klaytn.com
