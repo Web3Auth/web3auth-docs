@@ -18,7 +18,7 @@ only help you configure the social logins within the Modal UI.
 For signing the JWT, your application must follow the JWT specification and use the private key corresponding to the JWKS. And the public keys of the
 JWT should be exposed through an endpoint, which is used by Web3Auth to verify the JWT.
 
-:::caution Facing issue with JWT?
+:::warning Facing issue with JWT?
 
 Check out [**this troubleshooting page to fix those.**](/troubleshooting/jwt-errors)
 
@@ -54,7 +54,7 @@ To create a custom verifier for your JWT Providers, you'll need
 
 3. **JWT Validations**
 
-   :::caution
+   :::warning
 
    Your JWT header must contain the `kid` field and the payload data must contain `iat` field.
 
@@ -119,7 +119,7 @@ var token = jwt.sign(
     exp: Math.floor(Date.now() / 1000) + 60 * 60,
   },
   privateKey,
-  { algorithm: "RS256", keyid: "1bb9605c36e69386830202b2d" } // <-- Replace it with your kid. This has to be present in the JWKS endpoint.
+  { algorithm: "RS256", keyid: "1bb9605c36e69386830202b2d" }, // <-- Replace it with your kid. This has to be present in the JWKS endpoint.
 );
 
 console.log(token);
@@ -164,7 +164,7 @@ var token = jwt.sign(
     exp: Math.floor(Date.now() / 1000) + 60 * 60,
   },
   privateKey,
-  { algorithm: "ECDSA", keyid: "1bb9605c36e69386830202b2d" } // <-- Replace it with your kid. This has to be present in the JWKS endpoint.
+  { algorithm: "ECDSA", keyid: "1bb9605c36e69386830202b2d" }, // <-- Replace it with your kid. This has to be present in the JWKS endpoint.
 );
 
 console.log(token);
