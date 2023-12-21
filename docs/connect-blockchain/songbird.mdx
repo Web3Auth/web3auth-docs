@@ -47,6 +47,61 @@ To interact with the Songbird C-Chain blockchain, you can use either [web3.js](h
 
 ## Initializing Provider
 
+### Getting the `chainConfig`
+
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet (Coston)", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x13", // hex of 19
+  rpcTarget: "https://songbird-api.flare.network/ext/C/rpc",
+  // Avoid using public rpcTarget in production.
+  // Use services provided by Flare or other node providers
+  displayName: "Songbird canary network",
+  blockExplorer: "https://songbird-explorer.flare.network",
+  ticker: "SGB",
+  tickerName: "SGB",
+};
+```
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x10", // hex of 16
+  rpcTarget: "https://coston-api.flare.network/ext/C/rpc",
+  // Avoid using public rpcTarget in production.
+  // Use services provided by Flare or other node providers
+  displayName: "Coston testnet",
+  blockExplorer: "https://coston-explorer.flare.network/",
+  ticker: "CFLR",
+  tickerName: "CFLR",
+  // faucet- "https://coston-faucet.towolabs.com"
+};
+```
+
+</TabItem>
+</Tabs>
+
+### Initializing and instantiating the Web3Auth SDK
+
+<InitializeWeb3Auth />
+
 ### Mainnet
 
 Mainnet Block Explorer URL: https://songbird-explorer.flare.network/
