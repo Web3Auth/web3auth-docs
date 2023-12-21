@@ -1,8 +1,9 @@
 import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 <Tabs
   defaultValue="modal"
-  value={[
+  values={[
     { label: "Modal", value: "modal", },
     { label: "No-Modal", value: "no-modal", },
     { label: "SFA web", value: "sfa", },
@@ -61,7 +62,6 @@ const privateKeyProvider = new CommonPrivateKeyProvider({
 // "other" is supported through @web3auth/openlogin-adapter package.
 const openloginAdapter = new OpenloginAdapter({
   privateKeyProvider,
-  },
 });
 web3auth.configureAdapter(openloginAdapter);
 
@@ -171,9 +171,9 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 
 await (tKey.serviceProvider as SfaServiceProvider).init(privateKeyProvider);
 
-// login with firebase
+// login with Firebase
 const loginRes = await signInWithGoogle(); // signInWithGoogle is a function to sign in with Google
-// get the id token from firebase
+// Get the id token from Firebase
 const idToken = await loginRes.user.getIdToken(true);
 const userInfo = parseToken(idToken); // parseToken is a function to parse the id token
 
