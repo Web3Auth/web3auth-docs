@@ -8,6 +8,7 @@ import MDXComponents from "@theme/MDXComponents";
 import classNames from "classnames";
 import copyToClipboard from "copy-to-clipboard";
 import { UIEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { AiOutlineCheck, AiOutlineLink } from "react-icons/ai";
 
 import SEO from "../../components/SEO";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
@@ -153,7 +154,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
         );
       case "product_selection":
         return (
-          <div className={styles.productSelection}>
+          <div key={key} className={styles.list}>
             <h3>{option.displayName}</h3>
             <div className={styles.cardContainer}>
               {option.choices.map((value) => (
@@ -227,7 +228,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
         <div className={styles.optionsPane}>
           {Object.entries(builder.options).map(([key, option]) => optionRender(key, option))}
 
-          {/* <div className={styles.copyContainer}>
+          <div className={styles.copyContainer}>
             <button
               title="Copy link to example"
               aria-label="Copy link to example"
@@ -239,7 +240,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
             >
               {isLinkCopied ? <AiOutlineCheck size="1.5em" aria-hidden /> : <AiOutlineLink size="1.5em" aria-hidden />}
             </button>
-          </div> */}
+          </div>
         </div>
         <div className={styles.cols}>
           <div className={styles.leftCol} onScroll={onScrollLeft}>
