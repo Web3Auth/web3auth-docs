@@ -257,6 +257,7 @@ module.exports = {
             "connect-blockchain/songbird",
             "connect-blockchain/zkatana",
             "connect-blockchain/skale",
+            "connect-blockchain/polymesh",
           ],
           collapsible: true,
           collapsed: false,
