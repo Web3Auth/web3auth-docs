@@ -186,19 +186,19 @@ const builder: IntegrationBuilder = {
 
     this.options = {
       product: {
-        displayName: "Select a Web3Auth Product to build upon",
+        displayName: "Product",
         default: PRODUCTS[0].key,
         type: "product_selection",
         choices: PRODUCTS,
       },
       sdk: {
-        displayName: "Select the SDK you want to use",
+        displayName: "SDK",
         default: sdkDefault,
         type: "dropdown",
         choices: sdkChoices,
       },
       framework: {
-        displayName: "Select a Platform/ Framework",
+        displayName: "Platform",
         default: frameworkDefault,
         type: "dropdown",
         choices: frameworkChoices,

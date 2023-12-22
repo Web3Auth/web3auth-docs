@@ -5,8 +5,8 @@ export const PNP = "PNP";
 export const CORE_KIT = "CORE_KIT";
 
 export const PRODUCTS: DisplayChoice[] = [
-  { key: PNP, displayName: "Plug and Play SDKs" },
-  { key: CORE_KIT, displayName: "Core Kit SDKs" },
+  { key: PNP, displayName: "Plug and Play" },
+  { key: CORE_KIT, displayName: "Core Kit" },
 ];
 
 // SDK Choices
