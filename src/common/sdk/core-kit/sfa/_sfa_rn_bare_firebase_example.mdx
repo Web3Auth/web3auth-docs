@@ -64,14 +64,14 @@ const verifier = "web3auth-firebase-examples";
 const verifierId = parsedToken.sub;
 
 // Login the user
-const provider = await web3auth!.connect({
+const web3authProvider = await web3auth!.connect({
   verifier, // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
   verifierId, // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
   idToken,
 });
 
 // Get the private key, The private key returned here is the CoreKit Key, since the usePnPKey is set to false.
-const finalPrivateKey = await provider!.request({
+const finalPrivateKey = await web3authProvider!.request({
   method: "eth_private_key",
 });
 ```

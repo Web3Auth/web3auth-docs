@@ -1,4 +1,7 @@
-<details><summary><code>src/utils.ts</code></summary>
+<details>
+<summary>
+<code>src/utils.ts</code>
+</summary>
 <p>
 
 ```tsx title="src/utils.ts"
@@ -103,7 +106,7 @@ export const setupWeb3 = async (chainConfig: any, loginReponse: any, signingPara
         share,
         compressedTSSPubKey.toString("base64"),
         true,
-        tssImportUrl
+        tssImportUrl,
       );
       const serverCoeffs: any = {};
       for (let i = 0; i < participatingServerDKGIndexes.length; i++) {
@@ -225,7 +228,7 @@ export const copyExistingTSSShareForNewFactor = async (tKey: any, newFactorPub: 
         Buffer.from(newFactorPub.x.toString(16, 64), "hex"),
         Buffer.from(newFactorPub.y.toString(16, 64), "hex"),
       ]),
-      Buffer.from(tssShare.toString(16, 64), "hex")
+      Buffer.from(tssShare.toString(16, 64), "hex"),
     ),
     serverEncs: [],
   };
@@ -241,7 +244,7 @@ export const addNewTSSShareAndFactor = async (
   newFactorPub: Point,
   newFactorTSSIndex: number,
   factorKeyForExistingTSSShare: BN,
-  signatures: any
+  signatures: any,
 ) => {
   try {
     if (!tKey) {
@@ -269,7 +272,7 @@ export const addNewTSSShareAndFactor = async (
     const { serverEndpoints, serverPubKeys, serverThreshold } = rssNodeDetails;
     const randomSelectedServers = randomSelection(
       new Array(rssNodeDetails.serverEndpoints.length).fill(null).map((_, i) => i + 1),
-      Math.ceil(rssNodeDetails.serverEndpoints.length / 2)
+      Math.ceil(rssNodeDetails.serverEndpoints.length / 2),
     );
 
     const verifierNameVerifierId = tKey.serviceProvider.getVerifierNameVerifierId();

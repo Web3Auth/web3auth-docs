@@ -9,14 +9,17 @@ const remarkMath = require("remark-math");
 const rehypeKatex = require("rehype-katex");
 const fs = require("fs");
 const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
+const { themes } = require("prism-react-renderer");
 
 const resourcesDropdown = fs.readFileSync("./src/components/navDropdown/resources.html", "utf-8");
 const helpDropdown = fs.readFileSync("./src/components/navDropdown/help.html", "utf-8");
 const sdkDropdown = fs.readFileSync("./src/components/navDropdown/sdk.html", "utf-8");
 const contentHubDropdown = fs.readFileSync("./src/components/navDropdown/content-hub.html", "utf-8");
 
-/** @type {import('@docusaurus/types').DocusaurusConfig} */
-const config = {
+import type { Config } from "@docusaurus/types";
+import type * as Preset from "@docusaurus/preset-classic";
+
+const config: Config = {
   title: "Documentation | Web3Auth",
   tagline: "Web3 Auth and Wallet Management (WaaS) SDKs with MPC", // TODO: Confirm with content team
   url: "https://web3auth.io",
@@ -139,7 +142,7 @@ const config = {
     customFields: {
       baseUrl,
     },
-  },
+  } satisfies Preset.ThemeConfig,
   scripts: [
     {
       src: baseUrl + "js/fix-trailing-slash.js",
@@ -180,7 +183,7 @@ const config = {
           changefreq: "weekly",
           priority: 0.8,
         },
-      },
+      } satisfies Preset.Options,
     ],
   ],
   plugins: [
@@ -501,11 +504,186 @@ const config = {
 };
 
 async function createConfig() {
-  const lightTheme = (await import("./src/components/prismLight.mjs")).default;
-  const darkTheme = (await import("./src/components/prismDark.mjs")).default;
+  const prismTheme = themes.vsDark;
 
-  config.themeConfig.prism.theme = lightTheme;
-  config.themeConfig.prism.darkTheme = darkTheme;
+  (config.themeConfig.prism as any).theme = {
+    ...prismTheme,
+    plain: {
+      color: "var(--ifm-color-gray-200)",
+      backgroundColor: "var(--ifm-color-gray-800)",
+    },
+    styles: [
+      ...prismTheme.styles,
+      {
+        types: ["prolog"],
+        style: {
+          color: "#D4D4D4",
+        },
+      },
+      {
+        types: ["title"],
+        style: {
+          color: "#569CD6",
+          fontWeight: "bold",
+        },
+      },
+      {
+        types: ["property", "parameter"],
+        style: {
+          color: "#9CDCFE",
+        },
+      },
+      {
+        types: ["script"],
+        style: {
+          color: "#D4D4D4",
+        },
+      },
+      {
+        types: ["boolean", "arrow", "atrule", "tag"],
+        style: {
+          color: "#569CD6",
+        },
+      },
+      {
+        types: ["number", "color", "unit"],
+        style: {
+          color: "#B5CEA8",
+        },
+      },
+      {
+        types: ["function"],
+        style: {
+          color: "#8cc8ff",
+        },
+      },
+      {
+        types: ["font-matter"],
+        style: {
+          color: "#CE9178",
+        },
+      },
+      {
+        types: ["keyword", "rule"],
+        style: {
+          color: "#C586C0",
+        },
+      },
+      {
+        types: ["regex"],
+        style: {
+          color: "#D16969",
+        },
+      },
+      {
+        types: ["maybe-class-name"],
+        style: {
+          color: "#4EC9B0",
+        },
+      },
+      {
+        types: ["constant"],
+        style: {
+          color: "#4FC1FF",
+        },
+      },
+      {
+        types: ["comment"],
+        style: {
+          color: "var(--ifm-color-gray-500)",
+        },
+      },
+    ],
+  };
+  (config.themeConfig.prism as any).darkTheme = {
+    ...prismTheme,
+    plain: {
+      color: "var(--ifm-color-gray-200)",
+      backgroundColor: "#000",
+    },
+    styles: [
+      ...prismTheme.styles,
+      {
+        types: ["prolog"],
+        style: {
+          color: "#D4D4D4",
+        },
+      },
+      {
+        types: ["title"],
+        style: {
+          color: "#569CD6",
+          fontWeight: "bold",
+        },
+      },
+      {
+        types: ["property", "parameter"],
+        style: {
+          color: "#9CDCFE",
+        },
+      },
+      {
+        types: ["script"],
+        style: {
+          color: "#D4D4D4",
+        },
+      },
+      {
+        types: ["boolean", "arrow", "atrule", "tag"],
+        style: {
+          color: "#569CD6",
+        },
+      },
+      {
+        types: ["number", "color", "unit"],
+        style: {
+          color: "#B5CEA8",
+        },
+      },
+      {
+        types: ["function"],
+        style: {
+          color: "#8cc8ff",
+        },
+      },
+      {
+        types: ["font-matter"],
+        style: {
+          color: "#CE9178",
+        },
+      },
+      {
+        types: ["keyword", "rule"],
+        style: {
+          color: "#C586C0",
+        },
+      },
+      {
+        types: ["regex"],
+        style: {
+          color: "#D16969",
+        },
+      },
+      {
+        types: ["maybe-class-name"],
+        style: {
+          color: "#4EC9B0",
+        },
+      },
+      {
+        types: ["constant"],
+        style: {
+          color: "#4FC1FF",
+        },
+      },
+      {
+        types: ["comment"],
+        style: {
+          color: "var(--ifm-color-gray-500)",
+        },
+      },
+    ],
+  };
 
   return config;
 }

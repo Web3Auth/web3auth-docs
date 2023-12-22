@@ -8,11 +8,11 @@ description: "Integrate Web3Auth with the Cosmos Blockchain | Documentation - We
 ---
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-pnp-sfa-tkey.mdx";
 
-While using the Web3Auth Web SDK for a non EVM chain like [Cosmos](https://cosmos.network/) you get a standard provider from which you can get the
-private key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting
-user's `account`, `chain ID`, fetch `balance`, `send transaction`, etc. We have highlighted a few methods here for getting you started quickly on
-that.
+While using the Web3Auth Web SDK for a non-EVM chain like [Cosmos](https://cosmos.network/) you get a standard provider from which you can get the
+private key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting the
+user's `account`, `chain ID`, fetch `balance`, `send transaction`, etc. We have highlighted a few methods here to get you started quickly on that.
 
 :::note
 
@@ -30,35 +30,57 @@ npm install --save @web3auth/no-modal @web3auth/openlogin-adapter @web3auth/base
 
 ## Initializing Provider
 
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+### Getting the `chainConfig`
 
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "other", // for all non EVM and SOLANA chains, use "other"
-    rpcTarget: "https://rpc.sentry-02.theta-testnet.polypore.xyz",
-    displayName: "Cosmos",
-    blockExplorer: "https://explorer.theta-testnet.polypore.xyz",
-    ticker: "ATOM",
-    tickerName: "Cosmos",
-  },
-});
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
 
-// "other" is supported through @web3auth/openlogin-adapter package.
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    uxMode: "popup",
-  },
-});
-web3auth.configureAdapter(openloginAdapter);
-
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect(); // web3auth.provider
+```typescript
+const chainConfig = {
+  chainNamespace: "other",
+  chainId: "cosmoshub-4", //
+  rpcTarget: "https://cosmos-rpc.quickapi.com", // Please add in your custom URL
+  // Avoid using public rpcTarget in production.
+  displayName: "Cosmos Mainnet",
+  blockExplorer: "https://www.mintscan.io/cosmos", // Please add in your custom URL
+  ticker: "ATOM",
+  tickerName: "Cosmos",
+};
 ```
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "other",
+  chainId: "theta-testnet-001", //
+  rpcTarget: "https://rpc.sentry-02.theta-testnet.polypore.xyz",
+  // Avoid using public rpcTarget in production.
+  displayName: "Cosmos Testnet",
+  blockExplorer: "https://explorer.theta-testnet.polypore.xyz",
+  ticker: "ATOM",
+  tickerName: "Cosmos",
+};
+```
+
+</TabItem>
+</Tabs>
+
+### Initializing and instantiating the Web3Auth SDK
+
+<InitializeWeb3Auth />
 
 ## Get User Info
 
@@ -71,7 +93,7 @@ private key to make the RPC calls.
 
 ### CosmJS Libraries
 
-`@cosmjs/stargate` A client library for the Cosmos SDK 0.40+. Provides a high level client for querying, signing and broadcasting. This is an npm
+`@cosmjs/stargate` A client library for the Cosmos SDK 0.40+. Provides a high-level client for querying, signing and broadcasting. This is an npm
 library that provides a JavaScript/TypeScript interface to interact with the Cosmos SDK blockchain via the Tendermint RPC interface.
 
 `@cosmjs/proto-signing` It is an npm library for signing messages using protobuf serialization, which is commonly used in Cosmos SDK-based
@@ -149,7 +171,7 @@ export default class CosmosRPC {
 
 ## Get Balance
 
-Using the account address we receive in the previous step, we can fetch the balance using an RPC call to `client.getAllBalances(address)`.
+Using the account address we received in the previous step, we can fetch the balance using an RPC call to `client.getAllBalances(address)`.
 
 ```tsx
 import type { IProvider } from "@web3auth/base";

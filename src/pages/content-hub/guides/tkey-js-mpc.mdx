@@ -341,7 +341,7 @@ useEffect(() => {
 ### Adding the MPC utils file
 
 We have created an `utils.ts` file to help us with the MPC functionalities. You can directly copy this file from our
-[Github Example](https://raw.githubusercontent.com/tkey/tkey-mpc-examples/main/tkey-mpc-web/tkey-mpc-react-popup-example/src/utils.ts) or the code
+[GitHub Example](https://raw.githubusercontent.com/tkey/tkey-mpc-examples/main/tkey-mpc-web/tkey-mpc-react-popup-example/src/utils.ts) or the code
 below.
 
 <TkeyMPCUtils />
@@ -419,7 +419,7 @@ useEffect(() => {
       factorKey: localFactorKey.toString("hex"),
       verifier: loginResponse.userInfo.verifier,
       verifierId: loginResponse.userInfo.verifierId,
-    })
+    }),
   );
 }, [localFactorKey]);
 ```
@@ -455,7 +455,7 @@ const initializeNewKey = async () => {
 
     // Get the Device Share
     const tKeyLocalStoreString = localStorage.getItem(
-      `tKeyLocalStore\u001c${loginResponse.userInfo.verifier}\u001c${loginResponse.userInfo.verifierId}`
+      `tKeyLocalStore\u001c${loginResponse.userInfo.verifier}\u001c${loginResponse.userInfo.verifierId}`,
     );
     const tKeyLocalStore = JSON.parse(tKeyLocalStoreString || "{}");
 
@@ -566,7 +566,7 @@ const initializeNewKey = async () => {
       "Metadata Key",
       metadataKey.privKey.toString("hex"),
       "With Factors/Shares:",
-      tKey.getMetadata().getShareDescription()
+      tKey.getMetadata().getShareDescription(),
     );
   } catch (error) {
     uiConsole(error, "caught");
@@ -721,4 +721,4 @@ locally yourself!
 
 ## Questions?
 
-Ask us on [Web3Auth's Community Portal](https://web3auth.io/community)
+Ask us on [Web3Auth's Community Support Portal](https://web3auth.io/community)

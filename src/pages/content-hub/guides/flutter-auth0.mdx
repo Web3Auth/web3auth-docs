@@ -146,7 +146,7 @@ Dashboard.
 
 <SetupWeb3AuthDashboard />
 
-- Add `{SCHEME}://{YOUR_APP_PACKAGE_NAME}` (e.g, w3a://com.example.w3aflutter) for Android and `{bundleId}://openlogin` (e.g,
+- Add `{SCHEME}://{YOUR_APP_PACKAGE_NAME}` (e.g, w3a://com.example.w3aflutter) for Android and `{bundleId}://auth` (e.g,
   com.example.w3aflutter://openlogin) for iOS in the **Whitelist URL** field of the Web3Auth Dashboard.
 
 ### Create Social Verifiers
@@ -155,7 +155,7 @@ Dashboard.
 
   - Choose a name of your choice for the verifier identifier. `eg. auth0-project`
   - Select `Auth0` from the **Login Provider**.
-  - Choose your Authentication Type from `eg. Google, Twitter, Github etc..` to be the Auth provider.
+  - Choose your Authentication Type from `eg. Google, Twitter, GitHub etc..` to be the Auth provider.
   - Paste the `Client ID` and `Auth0 Domain` from the Auth0 SPA you created in the above steps. This will be used to validate the JWT token issued by
     Auth0.
   - Click on `Create` button to create your verifier. It may take up to 10-20 minutes to deploy verifier on _testnet_. You'll receive an email once
@@ -333,7 +333,7 @@ In order to use Web3Auth you need to provide your Web3Auth `ClientId` and which 
 
 - Go to [Web3Auth Developer Dashboard](https://dashboard.web3auth.io), create or open an existing Web3Auth project and copy your Client ID, which is
   the `ClientId`.
-- Whitelist `{bundleId}://openlogin` eg. `com.example.w3aflutter://openlogin` in the developer dashboard. **This step is mandatory for the redirect to
+- Whitelist `{bundleId}://auth` eg. `com.example.w3aflutter://openlogin` in the developer dashboard. **This step is mandatory for the redirect to
   work.**
 
 </TabItem>
@@ -375,7 +375,7 @@ Future<void> initPlatformState() async {
     redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
     // w3a://com.example.w3aflutter/auth
   } else if (Platform.isIOS) {
-    redirectUrl = Uri.parse('{bundleId}://openlogin');
+    redirectUrl = Uri.parse('{bundleId}://auth');
     // com.example.w3aflutter://openlogin
   } else {
     throw UnKnownException('Unknown platform');
@@ -703,4 +703,4 @@ Also, check other examples:
 
 ## Questions?
 
-Ask us on [Web3Auth's Community Portal](https://web3auth.io/community)
+Ask us on [Web3Auth's Community Support Portal](https://web3auth.io/community)

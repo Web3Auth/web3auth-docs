@@ -1,5 +1,6 @@
-/** @type {import('@docusaurus/plugin-content-docs/lib/types').Sidebars} */
-module.exports = {
+import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
+
+const sidebars: SidebarsConfig = {
   docs: [
     // Overview Section
     {
@@ -14,7 +15,13 @@ module.exports = {
       type: "category",
       label: "Deciding your Product Fit",
       link: { type: "doc", id: "product-fit/product-fit" },
-      items: ["product-fit/pnp-vs-core-kit", "product-fit/partner-products", "product-fit/enterprise", "product-fit/web3auth-for-wallets", "product-fit/web3auth-for-dapps"],
+      items: [
+        "product-fit/pnp-vs-core-kit",
+        "product-fit/partner-products",
+        "product-fit/enterprise",
+        "product-fit/web3auth-for-wallets",
+        "product-fit/web3auth-for-dapps",
+      ],
     },
     {
       type: "category",
@@ -147,6 +154,13 @@ module.exports = {
     },
     "core-kit/introduction",
     "core-kit/going-live",
+    // Account Abstraction Section
+    {
+      type: "html",
+      value: "<span class='sidebarHeading'>Account Abstraction</span>",
+      defaultStyle: true,
+    },
+    "account-abstraction/safeauth",
     // Resources Section
     {
       type: "html",
@@ -178,11 +192,11 @@ module.exports = {
           label: "Social Providers",
           link: { type: "doc", id: "auth-provider-setup/social-providers/social-providers" },
           items: [
+            "auth-provider-setup/social-providers/twitter",
             "auth-provider-setup/social-providers/google",
             "auth-provider-setup/social-providers/facebook",
             "auth-provider-setup/social-providers/twitch",
             "auth-provider-setup/social-providers/discord",
-            "auth-provider-setup/social-providers/twitter",
             "auth-provider-setup/social-providers/apple",
             "auth-provider-setup/social-providers/linkedin",
             "auth-provider-setup/social-providers/github",
@@ -244,6 +258,7 @@ module.exports = {
             "connect-blockchain/songbird",
             "connect-blockchain/zkatana",
             "connect-blockchain/skale",
+            "connect-blockchain/polymesh",
           ],
           collapsible: true,
           collapsed: false,
@@ -288,6 +303,7 @@ module.exports = {
         "troubleshooting/jwt-errors",
         "troubleshooting/supported-browsers",
         "troubleshooting/react-big-int-error",
+        "troubleshooting/popup-blocked-issue",
       ],
     },
     {
@@ -346,6 +362,16 @@ module.exports = {
                 "sdk/pnp/web/modal/show-wallet-connect",
               ],
             },
+            {
+              type: "link",
+              label: "Support Forum", // The link label
+              href: "https://web3auth.io/community/c/help-pnp/pnp-modal/7", // The external URL
+            },
+            {
+              type: "link",
+              label: "Release Notes", // The link label
+              href: "https://github.com/Web3Auth/web3auth-web/releases", // The external URL
+            },
           ],
         },
         {
@@ -369,6 +395,16 @@ module.exports = {
                 "sdk/pnp/web/no-modal/show-wallet-connect",
               ],
             },
+            {
+              type: "link",
+              label: "Support Forum", // The link label
+              href: "https://web3auth.io/community/c/help-pnp/pnp-no-modal/15", // The external URL
+            },
+            {
+              type: "link",
+              label: "Release Notes", // The link label
+              href: "https://github.com/Web3Auth/web3auth-web/releases", // The external URL
+            },
           ],
         },
         {
@@ -389,11 +425,6 @@ module.exports = {
           ],
         },
         "sdk/pnp/web/wagmi-connector",
-        {
-          type: "link",
-          label: "Release Notes", // The link label
-          href: "https://github.com/Web3Auth/web3auth-web/releases", // The external URL
-        },
       ],
     },
     {
@@ -410,6 +441,11 @@ module.exports = {
           collapsed: false,
           label: "Additional Settings",
           items: ["sdk/pnp/android/whitelabel", "sdk/pnp/android/custom-authentication", "sdk/pnp/android/mfa", "sdk/pnp/android/dapp-share"],
+        },
+        {
+          type: "link",
+          label: "Support Forum", // The link label
+          href: "https://web3auth.io/community/c/help-pnp/pnp-android/16", // The external URL
         },
         {
           type: "link",
@@ -432,6 +468,11 @@ module.exports = {
           collapsed: false,
           label: "Additional Settings",
           items: ["sdk/pnp/ios/whitelabel", "sdk/pnp/ios/custom-authentication", "sdk/pnp/ios/mfa", "sdk/pnp/ios/dapp-share"],
+        },
+        {
+          type: "link",
+          label: "Support Forum", // The link label
+          href: "https://web3auth.io/community/c/help-pnp/pnp-ios/17", // The external URL
         },
         {
           type: "link",
@@ -462,6 +503,11 @@ module.exports = {
         },
         {
           type: "link",
+          label: "Support Forum", // The link label
+          href: "https://web3auth.io/community/c/help-pnp/pnp-rn/19", // The external URL
+        },
+        {
+          type: "link",
           label: "Release Notes", // The link label
           href: "https://github.com/Web3Auth/web3auth-react-native-sdk/releases", // The external URL
         },
@@ -481,6 +527,11 @@ module.exports = {
           collapsed: false,
           label: "Additional Settings",
           items: ["sdk/pnp/flutter/whitelabel", "sdk/pnp/flutter/custom-authentication", "sdk/pnp/flutter/mfa", "sdk/pnp/flutter/dapp-share"],
+        },
+        {
+          type: "link",
+          label: "Support Forum", // The link label
+          href: "https://web3auth.io/community/c/help-pnp/pnp-flutter/18", // The external URL
         },
         {
           type: "link",
@@ -506,6 +557,11 @@ module.exports = {
         },
         {
           type: "link",
+          label: "Support Forum", // The link label
+          href: "https://web3auth.io/community/c/help-pnp/pnp-unity/20", // The external URL
+        },
+        {
+          type: "link",
           label: "Release Notes", // The link label
           href: "https://github.com/Web3Auth/web3auth-unity-sdk/releases", // The external URL
         },
@@ -528,6 +584,11 @@ module.exports = {
         },
         {
           type: "link",
+          label: "Support Forum", // The link label
+          href: "https://web3auth.io/community/c/help-pnp/pnp-unreal/21", // The external URL
+        },
+        {
+          type: "link",
           label: "Release Notes", // The link label
           href: "https://github.com/Web3Auth/web3auth-unreal-sdk/releases", // The external URL
         },
@@ -547,6 +608,16 @@ module.exports = {
         "sdk/core-kit/mpc-core-kit/initialize",
         "sdk/core-kit/mpc-core-kit/authentication",
         "sdk/core-kit/mpc-core-kit/usage",
+        {
+          type: "link",
+          label: "Support Forum", // The link label
+          href: "https://web3auth.io/community/c/help-core-kit/mpc-core-kit/33", // The external URL
+        },
+        {
+          type: "link",
+          label: "Release Notes", // The link label
+          href: "https://github.com/Web3Auth/mpc-core-kit/releases", // The external URL
+        },
       ],
     },
     {
@@ -581,7 +652,16 @@ module.exports = {
           collapsed: false,
           items: ["sdk/core-kit/tkey/intrinsic-flow"],
         },
-
+        {
+          type: "link",
+          label: "Support Forum Web", // The link label
+          href: "https://web3auth.io/community/c/help-core-kit/core-kit-tkey/8", // The external URL
+        },
+        {
+          type: "link",
+          label: "Support Forum React Native", // The link label
+          href: "https://web3auth.io/community/c/help-core-kit/tkey-react-native-sdk/29", // The external URL
+        },
         {
           type: "link",
           label: "Release Notes", // The link label
@@ -608,6 +688,11 @@ module.exports = {
             "sdk/core-kit/tkey-ios/modules/share-serialization",
             "sdk/core-kit/tkey-ios/modules/share-transfer",
           ],
+        },
+        {
+          type: "link",
+          label: "Support Forum", // The link label
+          href: "https://web3auth.io/community/c/help-core-kit/core-kit-tkey-ios/27", // The external URL
         },
         {
           type: "link",
@@ -638,6 +723,11 @@ module.exports = {
         },
         {
           type: "link",
+          label: "Support Forum", // The link label
+          href: "https://web3auth.io/community/c/help-core-kit/tkey-android/28", // The external URL
+        },
+        {
+          type: "link",
           label: "Release Notes", // The link label
           href: "https://github.com/tkey/tkey-android/releases", // The external URL
         },
@@ -660,6 +750,11 @@ module.exports = {
             "sdk/core-kit/sfa-web/usage",
             {
               type: "link",
+              label: "Support Forum", // The link label
+              href: "https://web3auth.io/community/c/help-core-kit/core-kit-sfa-web/22", // The external URL
+            },
+            {
+              type: "link",
               label: "Release Notes", // The link label
               href: "https://github.com/web3auth/single-factor-auth-web/releases", // The external URL
             },
@@ -674,6 +769,11 @@ module.exports = {
             "sdk/core-kit/sfa-node/initialize",
             "sdk/core-kit/sfa-node/authentication",
             "sdk/core-kit/sfa-node/usage",
+            {
+              type: "link",
+              label: "Support Forum", // The link label
+              href: "https://web3auth.io/community/c/help-core-kit/core-kit-sfa-node/23", // The external URL
+            },
             {
               type: "link",
               label: "Release Notes", // The link label
@@ -692,6 +792,11 @@ module.exports = {
             "sdk/core-kit/sfa-android/usage",
             {
               type: "link",
+              label: "Support Forum", // The link label
+              href: "https://web3auth.io/community/c/help-core-kit/core-kit-sfa-android/26", // The external URL
+            },
+            {
+              type: "link",
               label: "Release Notes", // The link label
               href: "https://github.com/web3auth/single-factor-auth-android/releases", // The external URL
             },
@@ -708,6 +813,11 @@ module.exports = {
             "sdk/core-kit/sfa-ios/usage",
             {
               type: "link",
+              label: "Support Forum", // The link label
+              href: "https://web3auth.io/community/c/help-core-kit/sfa-swift-sdk/30", // The external URL
+            },
+            {
+              type: "link",
               label: "Release Notes", // The link label
               href: "https://github.com/web3auth/single-factor-auth-swift/releases", // The external URL
             },
@@ -722,6 +832,16 @@ module.exports = {
             "sdk/core-kit/sfa-react-native/initialize",
             "sdk/core-kit/sfa-react-native/authentication",
             "sdk/core-kit/sfa-react-native/usage",
+            {
+              type: "link",
+              label: "Support Forum", // The link label
+              href: "https://web3auth.io/community/c/help-core-kit/sfa-react-native-sdk/32", // The external URL
+            },
+            {
+              type: "link",
+              label: "Release Notes", // The link label
+              href: "https://github.com/Web3Auth/single-factor-auth-react-native/releases", // The external URL
+            },
           ],
         },
         {
@@ -733,6 +853,11 @@ module.exports = {
             "sdk/core-kit/sfa-flutter/initialize",
             "sdk/core-kit/sfa-flutter/authentication",
             "sdk/core-kit/sfa-flutter/usage",
+            {
+              type: "link",
+              label: "Support Forum", // The link label
+              href: "https://web3auth.io/community/c/help-core-kit/sfa-flutter-sdk/31", // The external URL
+            },
             {
               type: "link",
               label: "Release Notes", // The link label
@@ -758,6 +883,11 @@ module.exports = {
         "sdk/helper-sdks/providers/common",
         {
           type: "link",
+          label: "Support Forum", // The link label
+          href: "https://web3auth.io/community/c/help-pnp/4", // The external URL
+        },
+        {
+          type: "link",
           label: "Release Notes", // The link label
           href: "https://github.com/Web3Auth/web3auth-web/releases", // The external URL
         },
@@ -772,6 +902,11 @@ module.exports = {
         "sdk/helper-sdks/plugins/solana-wallet",
         {
           type: "link",
+          label: "Support Forum", // The link label
+          href: "https://web3auth.io/community/c/help-pnp/4", // The external URL
+        },
+        {
+          type: "link",
           label: "Release Notes", // The link label
           href: "https://github.com/Web3Auth/web3auth-web/releases", // The external URL
         },
@@ -779,3 +914,5 @@ module.exports = {
     },
   ],
 };
+
+export default sidebars;
