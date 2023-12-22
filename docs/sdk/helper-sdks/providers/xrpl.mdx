@@ -151,7 +151,7 @@ web3AuthInstance.configureAdapter(adapter);
 
 await web3auth.initModal();
 
-const provider = await web3auth.connect();
+const web3authProvider = await web3auth.connect();
 ```
 
 ## Usage
@@ -171,13 +171,13 @@ The purpose of this function is to retrieve the details of the connected account
 
 ```tsx
 try {
-  // provider is from above
-  const accounts = await provider.request<string[]>({
+  // web3authProvider is from above
+  const accounts = await web3authProvider.request<string[]>({
     method: "xrpl_getAccounts",
   });
 
   if (accounts) {
-    const accInfo = (await provider.request({
+    const accInfo = (await web3authProvider.request({
       method: "account_info",
       params: [
         {
@@ -211,7 +211,7 @@ The function is utilized for signing transactions.
 
 ```tsx
 try {
-  const accounts = await provider.request<string[]>({
+  const accounts = await web3authProvider.request<string[]>({
     method: "xrpl_getAccounts",
   });
 
@@ -222,7 +222,7 @@ try {
       Amount: xrpToDrops(2),
       Destination: "rJAHHPYmy4g3h7kzfj2Mzm2nHwpKuVdEvX", // Destination address
     };
-    const txSign = await provider.request({
+    const txSign = await web3authProvider.request({
       method: "xrpl_signTransaction",
       params: {
         transaction: tx,
@@ -248,7 +248,7 @@ the broadcasted transaction.
 
 ```tsx
 try {
-  const accounts = await provider.request<string[]>({
+  const accounts = await web3authProvider.request<string[]>({
     method: "xrpl_getAccounts",
   });
 
@@ -286,7 +286,7 @@ This method is utilized for signing any message using the currently connected wa
 try {
   const msg = "Hello world";
   const hexMsg = convertStringToHex(msg);
-  const txSign = await provider.request<{ signature: string }>({
+  const txSign = await web3authProvider.request<{ signature: string }>({
     method: "xrpl_signMessage",
     params: {
       message: hexMsg,
@@ -309,7 +309,7 @@ The purpose of this method is to retrieve the private key of the currently logge
 ```tsx
 //Assuming user is already logged in.
 async getPrivateKey() {
-	const privateKey = await web3auth.provider.request({
+	const privateKey = await web3authProvider.request({
 		method: "private_key"
 	});
 	//Do something with privateKey

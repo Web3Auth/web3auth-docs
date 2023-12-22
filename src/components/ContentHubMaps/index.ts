@@ -427,6 +427,17 @@ export const referenceMap = [
     order: 1,
     link: "/connect-blockchain/skale",
   },
+  {
+    title: "Integrate Web3Auth with the Polymesh Blockchain",
+    description: "Learn how to add a non custodial social login to the Polymesh Blockchain",
+    image: "content-hub/guides/banners/polymesh.png",
+    type: "REFERENCE",
+    tags: ["polymesh", "@web3auth/modal", "@web3auth/no-modal"],
+    date: "21st Dec 2023",
+    author: "Web3Auth Team",
+    order: 1,
+    link: "/connect-blockchain/polymesh",
+  },
 ];
 
 export const featuresMap = [
