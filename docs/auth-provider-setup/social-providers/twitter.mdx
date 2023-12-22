@@ -1,21 +1,22 @@
 ---
-title: Twitter Social Login with Web3Auth
+title: X(Twitter) Social Login with Web3Auth
 sidebar_label: Twitter
-
 displayed_sidebar: docs
 description: "Twitter Social Login with Web3Auth | Documentation - Web3Auth"
 ---
 
+import SetupFirebaseVerifier from "@site/src/common/guides/_setup-firebase-verifier.mdx";
+
 :::note
 
-Twitter login can be performed in various ways, depending on the use case. We have demonstrated this with Auth0, but this can be done with any other
-Federated/JWT providers.
+Twitter login can be performed in various ways, depending on the use case. We have demonstrated this with Auth0 & Firebase, but this can be done with
+any other Federated/JWT providers.
 
 :::
 
 ## Set up [Twitter via Auth0](https://auth0.com/blog/how-to-add-a-twitter-social-connection-in-auth0/#Setup-Twitter-connection)
 
-1. Create a verifier for your Auth0 application by selecting `Auth0` as the Login provider from this modal.
+1. Create an Auth0 verifier for your application by selecting `Auth0` as the Login provider from this modal.
    ![Twitter - Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier-auth0.png)
 2. Select `Twitter` as the **Authentication Type** based on the dropdown.
    ![Twitter - Auth0 Authentication Type list on Web3Auth Dashboard](/images/dashboard/create-verifier-google.png)
@@ -87,3 +88,106 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   },
 });
 ```
+
+## Set up [Twitter via Firebase](https://firebase.google.com/docs/auth/web/twitter-login)
+
+<SetupFirebaseVerifier />
+
+### Example
+
+```tsx
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { initializeApp } from "firebase/app";
+import { TwitterAuthProvider, getAuth, signInWithPopup, UserCredential } from "firebase/auth";
+
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
+// get it from https://dashboard.web3auth.io by creating a project.
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyB0nd9YsPLu-tpdCrsXn8wgsWVAiYEpQ_E", // Replace with your Firebase project's API key
+  authDomain: "web3auth-oauth-logins.firebaseapp.com", // Replace with your Firebase project's auth domain
+  projectId: "web3auth-oauth-logins", // Replace with your Firebase project's ID
+  storageBucket: "web3auth-oauth-logins.appspot.com", // Replace with your Firebase project's storage bucket
+  messagingSenderId: "461819774167", // Replace with your Firebase project's messaging sender ID
+  appId: "1:461819774167:web:e74addfb6cc88f3b5b9c92", // Replace with your Firebase project's app ID
+};
+
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://goerli.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig,
+  web3AuthNetwork: "sapphire_mainnet",
+});
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  privateKeyProvider,
+  adapterSettings: {
+    uxMode: "redirect",
+    loginConfig: {
+      jwt: {
+        verifier: "w3a-auth0-demo", // Pass the Verifier name here
+        typeOfLogin: "jwt", // Pass on the login provider of the verifier you've created
+        clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O", // Pass on the Auth0 `Client ID` here
+      },
+    },
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+setWeb3auth(web3auth);
+
+// Initialize
+await web3auth.init();
+
+const signInWithTwitter = async (): Promise<UserCredential> => {
+    try {
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const twitterProvider = new TwitterAuthProvider();
+      const res = await signInWithPopup(auth, twitterProvider);
+      console.log(res);
+      return res;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+
+const loginRes = await signInWithTwitter();
+
+const idToken = await loginRes.user.getIdToken(true);
+
+// Login with Twitter / X
+await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  WALLET_ADAPTERS.OPENLOGIN,
+  {
+    loginProvider: "jwt",
+    extraLoginOptions: {
+      id_token: idToken,
+      verifierIdField: "sub",
+    },
+  }
+});
+```
+
+:::tip Example
+
+You can find a working example of
+[**Twitter login via Firebase with Web3Auth here**](https://github.com/Web3Auth/web3auth-pnp-examples/blob/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/firebase-no-modal-example/src/App.tsx).
+
+:::
