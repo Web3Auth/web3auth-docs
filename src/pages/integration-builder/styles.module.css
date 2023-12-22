@@ -4,16 +4,18 @@
 }
 
 .iframeContainer {
-  /* width: 100%;
-  height: 100%; */
-  overflow: hidden;
-  margin: 10px;
+  width: 100%;
+  height: 90%;
+  overflow: scroll;
   border-radius: 16px;
-  background: var(--ifm-color-white)
+  background: var(--ifm-color-white);
 }
 
 .previewModalContainer {
   position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   top: 0;
   bottom: 0;
   left: 0;
@@ -37,14 +39,22 @@
   overflow: hidden;
 }
 
-.optionsPane {
+.optionsPane,
+.optionsPaneCollapsed {
   padding: 20px var(--ifm-navbar-padding-horizontal);
   margin: 36px;
   padding-top: 36px;
-  padding-bottom: 36px;
+  padding-bottom: 0;
   border-radius: 16px;
+  max-height: 600px;
+  transition: max-height 0.5s ease;
+  overflow: hidden;
   background: var(--ifm-color-second-narbar);
   box-shadow: var(--ifm-navbar-shadow);
+}
+
+.optionsPaneCollapsed {
+  max-height: 102px;
 }
 
 .optionsHeader {
@@ -56,6 +66,7 @@
   margin-right: 24px;
   margin-bottom: 0;
   margin-top: 0;
+  padding-bottom: 36px;
 }
 
 .optionsHeaderText {
@@ -87,6 +98,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   grid-gap: 8px 0;
+  padding-bottom: 36px;
 }
 
 .builderContainer {
@@ -105,7 +117,7 @@
   align-items: center;
   margin: 24px;
   margin-bottom: 0;
-  margin-top: 53px;
+  margin-top: 29px;
   gap: var(--ifm-spacing-horizontal);
   flex-wrap: wrap;
 }
@@ -324,6 +336,7 @@ input:checked + .slider:before {
 
 .list {
   margin: 24px;
+  margin-top: 0;
   margin-bottom: 0;
   padding: 0;
   list-style: none;
@@ -370,7 +383,8 @@ input:checked + .slider:before {
   color: var(--w3a-color-icon-gray);
 }
 
-.copyButton, .previewButton {
+.copyButton,
+.previewButton {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -388,12 +402,11 @@ input:checked + .slider:before {
 }
 
 .previewButton {
- background: var(--ifm-color-primary-light);
- border: 1px solid var(--ifm-color-primary-light);
- box-shadow: 0px 1px 2px var(--ifm-color-primary-light);
- color: var(--ifm-color-white);
+  background: var(--ifm-color-primary-light);
+  border: 1px solid var(--ifm-color-primary-light);
+  box-shadow: 0px 1px 2px var(--ifm-color-primary-light);
+  color: var(--ifm-color-white);
 }
-
 
 @media (max-width: 996px) {
   .list {
@@ -403,7 +416,8 @@ input:checked + .slider:before {
   .selectedCard {
     max-width: 100%;
   }
-  .optionsPane {
+  .optionsPane,
+  .optionsPaneCollapsed {
     flex-direction: column;
     margin: 24px;
   }
