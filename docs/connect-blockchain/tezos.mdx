@@ -8,6 +8,7 @@ description: "Integrate Web3Auth with the Tezos Blockchain | Documentation - Web
 ---
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-pnp-sfa-tkey.mdx";
 
 While using the Web3Auth Web SDK for a non EVM chain like [Tezos](https://tezos.com/) you get a standard provider from which you can get the private
 key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting user's
@@ -29,6 +30,56 @@ npm install --save @taquito/signer @taquito/taquito @taquito/utils @tezos-core-t
 ```
 
 ## Initializing Provider
+
+### Getting the `chainConfig`
+
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "other",
+  chainId: "0x1", //
+  rpcTarget: "https://rpc.tzbeta.net/",
+  displayName: "Tezos Mainnet",
+  blockExplorer: "https://tzstats.com",
+  ticker: "XTZ",
+  tickerName: "Tezos",
+};
+```
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "other",
+  chainId: "0x5", //
+  rpcTarget: "https://rpc.tzbeta.net/",
+  displayName: "Tezos Testnet",
+  blockExplorer: "https://tzstats.com",
+  ticker: "XTZ",
+  tickerName: "Tezos",
+};
+```
+
+</TabItem>
+</Tabs>
+
+### Initializing and instantiating the Web3Auth SDK
+
+<InitializeWeb3Auth />
 
 ```tsx
 import { Web3Auth } from "@web3auth/modal";

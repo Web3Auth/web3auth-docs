@@ -18,9 +18,9 @@ only help you configure the social logins within the Modal UI.
 For signing the JWT, your application must follow the JWT specification and use the private key corresponding to the JWKS. And the public keys of the
 JWT should be exposed through an endpoint, which is used by Web3Auth to verify the JWT.
 
-:::caution Facing issue with JWT?
+:::warning Facing issue with JWT?
 
-Check out [**this troubleshooting page to fix those.**](/troubleshooting/jwt-errors).
+Check out [**this troubleshooting page to fix those.**](/troubleshooting/jwt-errors)
 
 :::
 
@@ -31,7 +31,7 @@ Check out [**this troubleshooting page to fix those.**](/troubleshooting/jwt-err
 To create a custom verifier for your JWT Providers, you'll need
 
 1. **JWT Verifier ID**: JWT Verifier ID is the unique identifier to publicly represent a user on a verifier. e.g: `sub`, `email`, or even a custom
-   field of your JWT etc.
+   field of your JWT payload that is unique in your system for each user.
 
 2. **JWK Endpoint**: An endpoint containing the JWKS used for signing the JWT.
 
@@ -54,9 +54,9 @@ To create a custom verifier for your JWT Providers, you'll need
 
 3. **JWT Validations**
 
-   :::caution
+   :::warning
 
-   Your JWT header must contain the `kid` field and the payload data must contain `iat` field.
+   Your JWT header must contain the `kid` field and the payload data must contain the `iat` field.
 
    :::
 
@@ -119,7 +119,7 @@ var token = jwt.sign(
     exp: Math.floor(Date.now() / 1000) + 60 * 60,
   },
   privateKey,
-  { algorithm: "RS256", keyid: "1bb9605c36e69386830202b2d" } // <-- Replace it with your kid. This has to be present in the JWKS endpoint.
+  { algorithm: "RS256", keyid: "1bb9605c36e69386830202b2d" }, // <-- Replace it with your kid. This has to be present in the JWKS endpoint.
 );
 
 console.log(token);
@@ -164,7 +164,7 @@ var token = jwt.sign(
     exp: Math.floor(Date.now() / 1000) + 60 * 60,
   },
   privateKey,
-  { algorithm: "ECDSA", keyid: "1bb9605c36e69386830202b2d" } // <-- Replace it with your kid. This has to be present in the JWKS endpoint.
+  { algorithm: "ECDSA", keyid: "1bb9605c36e69386830202b2d" }, // <-- Replace it with your kid. This has to be present in the JWKS endpoint.
 );
 
 console.log(token);
@@ -423,7 +423,7 @@ authorization server and signed using the RS256 signing algorithm.
   - Google: `https://www.googleapis.com/oauth2/v3/certs`
   - AWS Cognito: `https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json`
 
-- If you are using a your own custom JWT, you will need to convert your PEM file to JWKS.
+- If you are using your own custom JWT, you will need to convert your PEM file to JWKS.
 
 ### How to convert PEM to JWKS?
 
@@ -454,7 +454,7 @@ If you're using `jose` or `jsonwebtoken` library, you can use the following step
      - Algorithm: `RS256`
      - Key ID: `676da9d312c39a429932f543e6c1b6512e4983` // Use your own alphanumeric random string here.
      - PEM encoded key: `{paste-the-publicKey-pem-file-s-content-here}`
-   - Click on `Convert` button.
+   - Click on the `Convert` button.
 
      ![JWKS Convert Tool](https://web3auth.io/community/uploads/default/optimized/1X/d815cd0b533151eb54e4b1342e4f58258c1995fd_2_690x448.jpeg)
 

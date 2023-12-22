@@ -8,12 +8,13 @@ description: "Integrate Web3Auth with the ImmutableX Blockchain | Documentation 
 ---
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-pnp-sfa-tkey.mdx";
 
 While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider, similar to the
 [Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html). This provider can be used with libraries like
 [`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html), [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
-[ImmutableX](https://www.avalabs.org) blockchain calls. However, since this chain is not fully EVM Compatible, there are a few extra setup
-requirements. We have highlighted a few methods here for getting you started quickly on that.
+[ImmutableX](https://www.avalabs.org) blockchain calls. However, since this chain is not fully EVM-compatible, there are a few extra setup
+requirements. We have highlighted a few methods here to get you started quickly on that.
 
 :::note
 
@@ -31,30 +32,57 @@ npm install --save @imtbl/core-sdk
 
 ## Initializing Provider
 
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+### Getting the `chainConfig`
 
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "eip155", // for all non EVM and SOLANA chains, use "other"
-  },
-});
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
 
-// "other" is supported through @web3auth/openlogin-adapter package.
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    uxMode: "popup",
-  },
-});
-web3auth.configureAdapter(openloginAdapter);
-
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect(); // web3auth.provider
+```typescript
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x1", //
+  rpcTarget: "https://rpc.ankr.com/eth",
+  // Avoid using public rpcTarget in production.
+  displayName: "ImmutableX Mainnet",
+  blockExplorer: "https://explorer.immutable.com",
+  ticker: "IMX",
+  tickerName: "ImmutableX",
+};
 ```
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x5", //
+  rpcTarget: "https://rpc.ankr.com/eth_goerli",
+  // Avoid using public rpcTarget in production.
+  displayName: "ImmutableX Testnet",
+  blockExplorer: "https://explorer.testnet.immutable.com",
+  ticker: "IMX",
+  tickerName: "ImmutableX",
+};
+```
+
+</TabItem>
+</Tabs>
+
+### Initializing and instantiating the Web3Auth SDK
+
+<InitializeWeb3Auth />
 
 ## Get User Info
 

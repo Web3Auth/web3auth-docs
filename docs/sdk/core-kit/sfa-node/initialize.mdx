@@ -99,7 +99,7 @@ export interface Web3AuthOptions {
 const web3auth = new Web3Auth({
   clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from the Web3Auth Dashboard
   web3AuthNetwork: "sapphire_mainnet",
-  usePnPKey: "false", // By default, this SDK returns CoreKitKey
+  usePnPKey: false, // By default, this SDK returns CoreKitKey
 });
 ```
 
@@ -115,13 +115,13 @@ To complete the initialization process, we need to initialize the `Web3Auth` ins
 `init()` function of the previously created `web3auth` instance, using a **private key provider**.
 
 ```javascript
-web3auth.init({ privateKeyProvider });
+web3auth.init({ provider: privateKeyProvider });
 ```
 
 ## Example
 
 ```javascript
-const Web3Auth = require("@web3auth/single-factor-auth");
+const Web3Auth = require("@web3auth/node-sdk");
 const EthereumPrivateKeyProvider = require("@web3auth/ethereum-provider");
 const CHAIN_NAMESPACES = require("@web3auth/base");
 
@@ -129,7 +129,6 @@ const CHAIN_NAMESPACES = require("@web3auth/base");
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig: {
-      chainNamespace: CHAIN_NAMESPACES.EIP155,
       chainId: "0x1",
       rpcTarget: "https://rpc.ankr.com/eth",
       displayName: "Ethereum Mainnet",
@@ -143,8 +142,8 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 const web3auth = new Web3Auth({
   clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from the Web3Auth Dashboard
   web3AuthNetwork: "sapphire_mainnet",
-  usePnPKey: "false", // By default, this sdk returns CoreKitKey by default.
+  usePnPKey: false, // By default, this sdk returns CoreKitKey by default.
 });
 
-web3auth.init({ privateKeyProvider });
+web3auth.init({ provider: privateKeyProvider });
 ```
