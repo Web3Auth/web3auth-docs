@@ -8,13 +8,19 @@ export default function QuickNavigation() {
   const { baseUrl } = siteConfig;
   return (
     <div className={styles.container}>
+      <h2 className={styles.heading}>What is Web3Auth</h2>
+      <p>
+        Web3Auth is a pluggable wallet infrastructure for Web3 wallets and applications. It streamlines the onboarding of both mainstream and crypto
+        native users in under a minute by providing experiences that they're most comfortable with. With support for all OAuth based logins systems,
+        web & mobile native platforms, Web3Auth provides a seamless onboarding experience for your users.
+      </p>
       <h2 className={styles.heading}>Resources</h2>
       <p>
         We have a varied collection of guides, references and examples to help you around anywhere with your Web3Auth Integration. Deep dive into the
         different aspects of web3 authentication and make your own customised integration.
       </p>
       <div className={styles.cardContainer}>
-        <Link className={styles.card} to={`${baseUrl}dashboard-setup/`}>
+        <Link className={styles.card} to={`${baseUrl}sdk/`}>
           <div className={styles.cardIconContainer}>
             <svg viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
               <path
@@ -26,8 +32,8 @@ export default function QuickNavigation() {
             </svg>
           </div>
           <div className={styles.cardContent}>
-            <h5>Dashboard Setup</h5>
-            <p>Get Started with our developer dashboard</p>
+            <h5>SDK Reference</h5>
+            <p>Deep dive into the Web3Auth SDKs and get started with your customised integration.</p>
           </div>
         </Link>
         <Link className={styles.card} to={`${baseUrl}auth-provider-setup/`}>

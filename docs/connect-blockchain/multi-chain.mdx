@@ -53,7 +53,7 @@ const web3auth = new Web3Auth({
   },
 });
 await web3auth.initModal();
-const provider = web3auth.provider;
+const web3authProvider = web3auth.provider;
 ```
 
 </TabItem>
@@ -73,7 +73,7 @@ const web3auth = new Web3Auth({
   },
 });
 await web3auth.initModal();
-const provider = web3auth.provider;
+const web3authProvider = web3auth.provider;
 ```
 
 </TabItem>
@@ -92,7 +92,7 @@ const web3auth = new Web3Auth({
   },
 });
 await web3auth.initModal();
-const provider = web3auth.provider;
+const web3authProvider = web3auth.provider;
 ```
 
 </TabItem>
@@ -126,7 +126,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
   Use code from the above Initializing Provider here
 */
 
-const privateKey = provider.request({ method: "eth_private_key" });
+const privateKey = web3authProvider.request({ method: "eth_private_key" });
 const polygonPrivateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig: {
@@ -156,7 +156,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
   Use code from the above Initializing Provider here
 */
 
-const privateKey = provider.request({ method: "eth_private_key" });
+const privateKey = web3authProvider.request({ method: "eth_private_key" });
 const bnbPrivateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig: {
@@ -186,7 +186,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
   Use code from the above Initializing Provider here
 */
 
-const privateKey = provider.request({ method: "eth_private_key" });
+const privateKey = web3authProvider.request({ method: "eth_private_key" });
 const avaxPrivateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig: {
@@ -216,7 +216,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
   Use code from the above Initializing Provider here
 */
 
-const privateKey = provider.request({ method: "eth_private_key" });
+const privateKey = web3authProvider.request({ method: "eth_private_key" });
 const cronosPrivateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig: {
@@ -246,7 +246,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
   Use code from the above Initializing Provider here
 */
 
-const privateKey = provider.request({ method: "eth_private_key" });
+const privateKey = web3authProvider.request({ method: "eth_private_key" });
 const PrivateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig: {
@@ -283,7 +283,7 @@ import { getED25519Key } from "@toruslabs/openlogin-ed25519";
   Use code from the above Initializing Provider here
 */
 
-const privateKey = provider.request({ method: "eth_private_key" });
+const privateKey = web3authProvider.request({ method: "eth_private_key" });
 const ed25519key = getED25519Key(privateKey).sk.toString("hex");
 
 // Get user's Solana's public address
@@ -319,7 +319,7 @@ import { hex2buf } from "@taquito/utils";
   Use code from the above Initializing Provider here
 */
 
-const privateKey = provider.request({ method: "eth_private_key" });
+const privateKey = web3authProvider.request({ method: "eth_private_key" });
 const keyPairTezos = tezosCrypto.utils.seedToKeyPair(hex2buf(privateKey));
 const address = keyPairTezos?.pkh;
 ```
@@ -347,7 +347,7 @@ import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
   Use code from the above Initializing Provider here
 */
 
-const privateKey = provider.request({ method: "eth_private_key" });
+const privateKey = web3authProvider.request({ method: "eth_private_key" });
 const keyPairStarkEx = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
 const starkex_account = starkwareCrypto.ec.keyFromPublic(keyPairStarkEx.getPublic(true, "hex"), "hex");
 const address = starkex_account.pub.getX().toString("hex");
@@ -363,7 +363,7 @@ import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
   Use code from the above Initializing Provider here
 */
 
-const privateKey = provider.request({ method: "eth_private_key" });
+const privateKey = web3authProvider.request({ method: "eth_private_key" });
 const keyPairStarkNet = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
 const starknet_account = starkwareCrypto.ec.keyFromPublic(keyPairStarkNet.getPublic(true, "hex"), "hex");
 const address = starknet_account.pub.getX().toString("hex");
@@ -385,7 +385,7 @@ import algosdk from "algosdk";
   Use code from the above Initializing Provider here
 */
 
-const privateKey = provider.request({ method: "eth_private_key" });
+const privateKey = web3authProvider.request({ method: "eth_private_key" });
 const passphrase = algosdk.secretKeyToMnemonic(Buffer.from(privateKey, "hex"));
 const keyPair = algosdk.mnemonicToSecretKey(passphrase);
 const address = keyPair.addr;
@@ -405,7 +405,7 @@ import { cryptoWaitReady } from "@polkadot/util-crypto";
 */
 
 const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
-const privateKey = provider.request({ method: "eth_private_key" });
+const privateKey = web3authProvider.request({ method: "eth_private_key" });
 
 const keyPair = keyring.addFromUri("0x" + privateKey);
 const address = keyPair.address;

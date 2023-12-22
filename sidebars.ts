@@ -1,5 +1,6 @@
-/** @type {import('@docusaurus/plugin-content-docs/lib/types').Sidebars} */
-module.exports = {
+import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
+
+const sidebars: SidebarsConfig = {
   docs: [
     // Overview Section
     {
@@ -191,11 +192,11 @@ module.exports = {
           label: "Social Providers",
           link: { type: "doc", id: "auth-provider-setup/social-providers/social-providers" },
           items: [
+            "auth-provider-setup/social-providers/twitter",
             "auth-provider-setup/social-providers/google",
             "auth-provider-setup/social-providers/facebook",
             "auth-provider-setup/social-providers/twitch",
             "auth-provider-setup/social-providers/discord",
-            "auth-provider-setup/social-providers/twitter",
             "auth-provider-setup/social-providers/apple",
             "auth-provider-setup/social-providers/linkedin",
             "auth-provider-setup/social-providers/github",
@@ -257,6 +258,7 @@ module.exports = {
             "connect-blockchain/songbird",
             "connect-blockchain/zkatana",
             "connect-blockchain/skale",
+            "connect-blockchain/polymesh",
           ],
           collapsible: true,
           collapsed: false,
@@ -301,6 +303,7 @@ module.exports = {
         "troubleshooting/jwt-errors",
         "troubleshooting/supported-browsers",
         "troubleshooting/react-big-int-error",
+        "troubleshooting/popup-blocked-issue",
       ],
     },
     {
@@ -911,3 +914,5 @@ module.exports = {
     },
   ],
 };
+
+export default sidebars;

@@ -8,10 +8,10 @@ assignees: ""
 
 ## **Description**f
 
-Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change.
+Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are
+required for this change.
 
-Fixes # (issue) (Link github issue)
-(Add jira ticket link)
+Fixes # (issue) (Link GitHub issue) (Add jira ticket link)
 
 ## **Type of change**
 

@@ -8,10 +8,11 @@ description: "Integrate Web3Auth with the Polkadot Blockchain | Documentation - 
 ---
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-pnp-sfa-tkey.mdx";
 
 While using the Web3Auth Web SDK for a non-EVM chain like [Polkadot](https://www.polkadot.network/) you get a standard provider from which you can get
 the private key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting
-the user's `account`, fetch `balance`, `sign & send transaction`. We have highlighted a few methods here to get you started quickly on that.
+the user's `account`, fetching `balance`, and `sign & send transaction`. We have highlighted a few methods here to get you started quickly on that.
 
 ## Installation
 
@@ -23,30 +24,57 @@ npm install --save @polkadot/keyring @polkadot/util-crypto
 
 ## Initializing Provider
 
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+### Getting the `chainConfig`
 
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "other", // for all non EVM and SOLANA chains, use "other"
-  },
-});
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
 
-// "other" is supported through @web3auth/openlogin-adapter package.
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    uxMode: "popup",
-  },
-});
-web3auth.configureAdapter(openloginAdapter);
-
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect(); // web3auth.provider
+```typescript
+const chainConfig = {
+  chainNamespace: "other",
+  chainId: "0x1", //
+  rpcTarget: "https://rpc.polkadot.io",
+  // Avoid using public rpcTarget in production.
+  displayName: "Polkadot Mainnet",
+  blockExplorer: "https://explorer.polkascan.io/polkadot",
+  ticker: "DOT",
+  tickerName: "Polkadot",
+};
 ```
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "other",
+  chainId: "0x5", //
+  rpcTarget: "https://westend-rpc.polkadot.io",
+  // Avoid using public rpcTarget in production.
+  displayName: "Polkadot Testnet",
+  blockExplorer: "https://westend.subscan.io",
+  ticker: "DOT",
+  tickerName: "Polkadot",
+};
+```
+
+</TabItem>
+</Tabs>
+
+### Initializing and instantiating the Web3Auth SDK
+
+<InitializeWeb3Auth />
 
 ## Get User Info
 
