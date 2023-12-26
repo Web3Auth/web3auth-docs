@@ -68,7 +68,7 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
-      ...STEPS.instantiateSDK,
+      ...STEPS.initialize,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_ANDROID_MAINACTIVITY_KT,
         files[hostedFileLinks.PNP_ANDROID_MAINACTIVITY_KT],

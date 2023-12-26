@@ -11,7 +11,7 @@ import * as requirements from "./requirements.mdx";
 import * as enableInternetUsage from "./enableInternetUsage.mdx";
 import * as singleTop from "./singleTop.mdx";
 import * as configureDeepLink from "./configureDeepLink.mdx";
-import * as instantiateSDK from "./instantiateSDK.mdx";
+import * as initialize from "./initialize.mdx";
 
 const STEPS = toSteps({
   androidQuickStart,
@@ -22,7 +22,7 @@ const STEPS = toSteps({
   singleTop,
   configureDeepLink,
   registerApp,
-  instantiateSDK,
+  initialize,
   login,
   getUserInfo,
   blockchainCalls,
