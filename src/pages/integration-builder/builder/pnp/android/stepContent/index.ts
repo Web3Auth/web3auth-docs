@@ -1,20 +1,28 @@
 import * as getUserInfo from "../../../../commonSteps/getUserInfo.mdx";
-import * as reactNativeBundlerIssues from "../../../../commonSteps/reactNativeBundlerIssues.mdx";
-import * as registerApp from "../../../../commonSteps/registerApp.mdx";
+import * as registerApp from "./registerApp.mdx";
 import { toSteps } from "../../../../utils";
-import * as blockchainCalls from "./blockchainCallsReactNative.mdx";
-import * as initialization from "./initializeReactNative.mdx";
-import * as installation from "./installationReactNative.mdx";
+import * as blockchainCalls from "./blockchainCalls.mdx";
+import * as jitpack from "./jitpack.mdx";
+import * as installation from "./installation.mdx";
 import * as login from "./login.mdx";
 import * as logout from "./logout.mdx";
-import * as rnQuickStart from "./rnQuickStart.mdx";
+import * as androidQuickStart from "./androidQuickStart.mdx";
+import * as requirements from "./requirements.mdx";
+import * as enableInternetUsage from "./enableInternetUsage.mdx";
+import * as singleTop from "./singleTop.mdx";
+import * as configureDeepLink from "./configureDeepLink.mdx";
+import * as instantiateSDK from "./instantiateSDK.mdx";
 
 const STEPS = toSteps({
-  rnQuickStart,
-  reactNativeBundlerIssues,
+  androidQuickStart,
+  requirements,
   installation,
+  jitpack,
+  enableInternetUsage,
+  singleTop,
+  configureDeepLink,
   registerApp,
-  initialization,
+  instantiateSDK,
   login,
   getUserInfo,
   blockchainCalls,

@@ -6,11 +6,12 @@ const framework = {
   build({ filenames, files, steps }) {
     const replacementAggregator = new ReplaceFileAggregator();
     getSteps(steps, files, replacementAggregator);
-    filenames.push(hostedFileLinks.PNP_REACT_NATIVE_APP_TSX);
-    filenames.push(hostedFileLinks.PNP_REACT_NATIVE_PACKAGE_JSON);
-    filenames.push(hostedFileLinks.PNP_REACT_NATIVE_METRO_CONFIG_JS);
-    filenames.push(hostedFileLinks.PNP_REACT_NATIVE_GLOBALS_JS);
-    filenames.push(hostedFileLinks.PNP_REACT_NATIVE_INDEX_JS);
+    filenames.push(hostedFileLinks.PNP_ANDROID_MAINACTIVITY_KT);
+    filenames.push(hostedFileLinks.PNP_ANDROID_ANDROIDMANIFEST_XML);
+    filenames.push(hostedFileLinks.PNP_ANDROID_BUILD_GRADLE);
+    filenames.push(hostedFileLinks.PNP_ANDROID_SETTINGS_GRADLE);
+    filenames.push(hostedFileLinks.PNP_ANDROID_STRINGS_XML);
+    filenames.push(hostedFileLinks.PNP_ANDROID_ACTIVITY_MAIN_XML);
 
     return { filenames, files, steps };
   },

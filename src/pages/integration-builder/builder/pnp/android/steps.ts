@@ -4,68 +4,92 @@ import STEPS from "./stepContent";
 export default function getSteps(steps, files, replacementAggregator) {
   steps.push(
     {
-      ...STEPS.rnQuickStart,
+      ...STEPS.androidQuickStart,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Quick Start"
+        hostedFileLinks.PNP_ANDROID_MAINACTIVITY_KT,
+        files[hostedFileLinks.PNP_ANDROID_MAINACTIVITY_KT],
+        "Quick Start",
+      ),
+    },
+    {
+      ...STEPS.requirements,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_ANDROID_BUILD_GRADLE,
+        files[hostedFileLinks.PNP_ANDROID_BUILD_GRADLE],
+        "Requirements",
       ),
     },
     {
       ...STEPS.installation,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_PACKAGE_JSON,
-        files[hostedFileLinks.PNP_REACT_NATIVE_PACKAGE_JSON],
-        "Web3Auth Installation"
+        hostedFileLinks.PNP_ANDROID_BUILD_GRADLE,
+        files[hostedFileLinks.PNP_ANDROID_BUILD_GRADLE],
+        "Installation",
       ),
     },
     {
-      ...STEPS.reactNativeBundlerIssues,
+      ...STEPS.jitpack,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_METRO_CONFIG_JS,
-        files[hostedFileLinks.PNP_REACT_NATIVE_METRO_CONFIG_JS],
-        "Bundler Issues"
+        hostedFileLinks.PNP_ANDROID_SETTINGS_GRADLE,
+        files[hostedFileLinks.PNP_ANDROID_SETTINGS_GRADLE],
+        "JitPack",
+      ),
+    },
+    {
+      ...STEPS.enableInternetUsage,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_ANDROID_ANDROIDMANIFEST_XML,
+        files[hostedFileLinks.PNP_ANDROID_ANDROIDMANIFEST_XML],
+        "Enable Internet Usage",
+      ),
+    },
+    {
+      ...STEPS.singleTop,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_ANDROID_ANDROIDMANIFEST_XML,
+        files[hostedFileLinks.PNP_ANDROID_ANDROIDMANIFEST_XML],
+        "Enable Single Top",
+      ),
+    },
+    {
+      ...STEPS.configureDeepLink,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_ANDROID_ANDROIDMANIFEST_XML,
+        files[hostedFileLinks.PNP_ANDROID_ANDROIDMANIFEST_XML],
+        "Configure Deep Link",
       ),
     },
     {
       ...STEPS.registerApp,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Dashboard Registration"
-      ),
-    },
-    {
-      ...STEPS.initialization,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "SDK Initialization"
+        hostedFileLinks.PNP_ANDROID_STRINGS_XML,
+        files[hostedFileLinks.PNP_ANDROID_STRINGS_XML],
+        "Get your Web3Auth Client ID from Dashboard",
       ),
     },
     {
       ...STEPS.login,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Login"
+        hostedFileLinks.PNP_ANDROID_MAINACTIVITY_KT,
+        files[hostedFileLinks.PNP_ANDROID_MAINACTIVITY_KT],
+        "Login",
       ),
     },
     {
       ...STEPS.blockchainCalls,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Blockchain Calls"
+        hostedFileLinks.PNP_ANDROID_MAINACTIVITY_KT,
+        files[hostedFileLinks.PNP_ANDROID_MAINACTIVITY_KT],
+        "Blockchain Calls",
       ),
     },
     {
       ...STEPS.logout,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Logout"
+        hostedFileLinks.PNP_ANDROID_MAINACTIVITY_KT,
+        files[hostedFileLinks.PNP_ANDROID_MAINACTIVITY_KT],
+        "Logout",
       ),
-    }
+    },
   );
 }
