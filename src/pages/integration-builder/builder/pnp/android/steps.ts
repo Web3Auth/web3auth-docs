@@ -32,7 +32,7 @@ export default function getSteps(steps, files, replacementAggregator) {
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_ANDROID_SETTINGS_GRADLE,
         files[hostedFileLinks.PNP_ANDROID_SETTINGS_GRADLE],
-        "JitPack",
+        "Add JitPack URL",
       ),
     },
     {
@@ -65,6 +65,14 @@ export default function getSteps(steps, files, replacementAggregator) {
         hostedFileLinks.PNP_ANDROID_STRINGS_XML,
         files[hostedFileLinks.PNP_ANDROID_STRINGS_XML],
         "Get your Web3Auth Client ID from Dashboard",
+      ),
+    },
+    {
+      ...STEPS.instantiateSDK,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_ANDROID_MAINACTIVITY_KT,
+        files[hostedFileLinks.PNP_ANDROID_MAINACTIVITY_KT],
+        "Initialize Web3Auth",
       ),
     },
     {
