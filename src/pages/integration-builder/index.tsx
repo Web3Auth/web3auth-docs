@@ -208,7 +208,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
         title="Integration Builder"
         description="Web3Auth Integration Builder for easy quick start. Web3Auth is simple, non-custodial auth infrastructure that enables Web3 wallets and applications to provide seamless user logins for both mainstream and native Web3 users."
         image="https://web3auth.io/docs/images/docs-meta-cards/integration-builder-card.png"
-        url="https://web3auth.io/docs/integration-builder"
+        url="https://web3auth.io/docs/quick-start"
       />
       <div className={styles.container}>
         {showPreviewModal && (

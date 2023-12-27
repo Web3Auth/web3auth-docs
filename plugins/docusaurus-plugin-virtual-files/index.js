@@ -65,7 +65,7 @@ module.exports = (context, options) => ({
     const { createData, addRoute } = actions;
     const files = await createData("files.json", JSON.stringify(content));
     addRoute({
-      path: (process.env.REACT_APP_BASE_URL || "/docs/") + "integration-builder",
+      path: (process.env.REACT_APP_BASE_URL || "/docs/") + "quick-start",
       component: "@site/src/pages/integration-builder",
       modules: {
         files,
@@ -79,5 +79,5 @@ module.exports.validateOptions = ({ options, validate }) =>
     joi.object({
       rootDir: joi.string().required(),
     }),
-    options
+    options,
   );

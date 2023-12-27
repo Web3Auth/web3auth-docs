@@ -235,10 +235,6 @@ const config: Config = {
             to: "/sdk/pnp/web/wagmi-connector",
           },
           {
-            from: "/quickstart",
-            to: "/quick-start",
-          },
-          {
             from: "/sdk/web/choosesdk/",
             to: "/sdk/pnp/web/",
           },
@@ -451,6 +447,12 @@ const config: Config = {
           }
           if (existingPath.includes("/sdk/tkey")) {
             return [existingPath.replace("/sdk/tkey", "/sdk/self-host")];
+          }
+          if (existingPath.includes("integration-builder")) {
+            return [existingPath.replace("integration-builder", "quick-start")];
+          }
+          if (existingPath.includes("quickstart")) {
+            return [existingPath.replace("quickstart", "quick-start")];
           }
           if (existingPath.includes("/helper-sdks/providers")) {
             return [existingPath.replace("/helper-sdks/providers", "/web/providers")];
