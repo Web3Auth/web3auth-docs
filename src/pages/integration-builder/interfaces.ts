@@ -16,6 +16,7 @@ export interface Integration {
   files: Record<string, string>;
   steps: IntegrationStep[];
   stepIndex: number;
+  embedLink: string;
 }
 
 export interface DisplayChoice {

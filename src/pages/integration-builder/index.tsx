@@ -7,7 +7,7 @@ import Layout from "@theme/Layout";
 import MDXComponents from "@theme/MDXComponents";
 import classNames from "classnames";
 import copyToClipboard from "copy-to-clipboard";
-import { UIEvent, useEffect, useMemo, useState } from "react";
+import { UIEvent, useEffect, useMemo, useState, useRef } from "react";
 
 import SEO from "../../components/SEO";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
@@ -51,6 +51,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
   const [selectedFilename, setSelectedFilename] = useState(integration.filenames[0]);
 
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const ref = useRef(null);
 
   const onClickCopyLink = async () => {
     if (isLinkCopied) return;
@@ -106,9 +107,10 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     });
   };
 
-  const toggleBuilderView = () => {
+  const toggleBuilderView = async () => {
     if (builderView) {
       setBuilderView(false);
+      ref.current?.scrollIntoView({ behavior: "smooth" });
     } else {
       setBuilderView(true);
     }
@@ -136,7 +138,6 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
         }
       }
     }
-
     // Update query params
     // eslint-disable-next-line no-restricted-globals
     history.pushState({}, "", getURLFromBuilderOptions(builderOptions, stepIndex));
@@ -227,7 +228,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                 </button>
               </div>
               <div className={styles.iframeContainer}>
-                <iframe src="https://main.dmmzgprvd8gqq.amplifyapp.com/" height="100%" width="100%" loading="lazy" title="Quick Start Preview" />
+                <iframe src={integration.embedLink} height="100%" width="100%" loading="lazy" title="Quick Start Preview" />
               </div>
             </div>
           </div>
@@ -269,9 +270,11 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
             <div className={styles.builderContainer}>{Object.entries(builder.options).map(([key, option]) => optionRender(key, option))}</div>
 
             <div className={styles.utilityButtonsContainer}>
-              <button className={styles.previewButton} onClick={togglePreviewModal} type="button">
-                Preview
-              </button>
+              {integration.embedLink && (
+                <button className={styles.previewButton} onClick={togglePreviewModal} type="button">
+                  Preview
+                </button>
+              )}
               <button className={styles.copyButton} onClick={onClickCopyLink} type="button">
                 <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -287,7 +290,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
           </div>
         </div>
 
-        <div className={styles.cols}>
+        <div className={styles.cols} ref={ref}>
           <div className={styles.leftCol} onScroll={onScrollLeft}>
             <MDXProvider components={MDXComponents}>
               {steps.map((step, index) => (

@@ -38,9 +38,6 @@ export const UNITY = "UNITY";
 export const UNREAL = "UNREAL";
 export const NODE = "NODE";
 
-export const WEB_SDKS = [PNP_MODAL, PNP_NO_MODAL, SFA_WEB, MPC_CORE_KIT];
-export const WEB_FRAMEWORKS = [REACT, NEXTJS, VUE, ANGULAR, HTML];
-
 export const SDKS_PNP: DisplayChoice[] = [
   { key: PNP_MODAL, displayName: "Web - Modal SDK" },
   { key: PNP_NO_MODAL, displayName: "Web - No Modal SDK" },
@@ -75,15 +72,18 @@ export const LANGS_WEB_MPC_CORE_KIT: DisplayChoice[] = [
   { key: ANGULAR, displayName: "Angular" },
 ];
 
-export const LANGS_ANDROID: DisplayChoice[] = [{ key: ANDROID, displayName: "Android" }];
+const android = { key: ANDROID, displayName: "Android" };
+const ios = { key: IOS, displayName: "iOS/Swift" };
 
-export const LANGS_IOS: DisplayChoice[] = [{ key: IOS, displayName: "iOS/Swift" }];
+export const LANGS_ANDROID: DisplayChoice[] = [android];
 
-export const LANGS_REACT_NATIVE: DisplayChoice[] = [{ key: REACT_NATIVE, displayName: "React Native" }];
+export const LANGS_IOS: DisplayChoice[] = [ios];
 
-export const LANGS_FLUTTER: DisplayChoice[] = [{ key: FLUTTER, displayName: "Flutter" }];
+export const LANGS_REACT_NATIVE: DisplayChoice[] = [ios, android];
 
-export const LANGS_UNITY: DisplayChoice[] = [{ key: UNITY, displayName: "Unity" }];
+export const LANGS_FLUTTER: DisplayChoice[] = [android, ios];
+
+export const LANGS_UNITY: DisplayChoice[] = [android, ios];
 
 export const LANGS_NODE: DisplayChoice[] = [{ key: NODE, displayName: "NodeJS" }];
 
