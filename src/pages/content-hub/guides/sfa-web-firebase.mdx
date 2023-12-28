@@ -29,7 +29,7 @@ import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
 import SetupFirebaseVerifier from "@site/src/common/guides/_setup-firebase-verifier.mdx";
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
 import UserInfoFromIdtoken from "@site/src/common/guides/_user-info-from-idtoken.mdx";
-import SFAWebInstantiation from "@site/src/common/guides/_w3a-sfa-web-instantiation-google.mdx";
+import SFAInfra from "@site/static/images/sfa-infra.png";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
 import SEO from "@site/src/components/SEO";
 
@@ -51,7 +51,14 @@ npx degit Web3Auth/web3auth-core-kit-examples/single-factor-auth-web/sfa-web-pas
 
 ## How it works?
 
-- The first step for the application is to get the user authenticated by a login provider(here, Firebase) and get the user's `idToken`.
+Single Factor Auth SDKs allow for the integration of a single factor of authentication, such as social login, into your dApp. They are designed to be
+simple to use and can be integrated into your dApp with minimal effort, allowing you to directly use the Web3Auth Network for Wallet Management. This
+is one of the most common use cases of Web3Auth, however, it is semi-custodial in nature, since the key is custodial to the Auth Provider and the
+Web3Auth Network.
+
+<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={SFAInfra} alt="Single Factor Auth SDK Infrastructure" />
+
+- The first step for the application is to get the user authenticated by a login provider(here, Google) and get the user's `idToken`.
 - Once the social login is successful, depending on whether the user has enabled **Multi-Factor Authentication(MFA)** or not, the key is generated.
 - If the user has not enabled MFA, we use the `@web3auth/single-factor-auth` SDK to retrieve the private key shares from the Web3Auth auth network
   nodes and reconstruct the private key.
