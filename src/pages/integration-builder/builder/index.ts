@@ -158,7 +158,7 @@ const builder: IntegrationBuilder = {
   options: {
     product: {
       displayName: "Product",
-      default: PRODUCTS[1].key,
+      default: PRODUCTS[0].key,
       type: "product_selection",
       choices: PRODUCTS,
     },
@@ -193,13 +193,22 @@ const builder: IntegrationBuilder = {
     }
 
     switch (finalValues.sdk) {
-      case PNP_ANDROID || SFA_ANDROID:
+      case PNP_ANDROID:
         frameworkChoices = LANGS_ANDROID;
         break;
-      case PNP_IOS || SFA_IOS:
+      case SFA_ANDROID:
+        frameworkChoices = LANGS_ANDROID;
+        break;
+      case PNP_IOS:
         frameworkChoices = LANGS_IOS;
         break;
-      case PNP_REACT_NATIVE || SFA_REACT_NATIVE:
+      case SFA_IOS:
+        frameworkChoices = LANGS_IOS;
+        break;
+      case PNP_REACT_NATIVE:
+        frameworkChoices = LANGS_REACT_NATIVE;
+        break;
+      case SFA_REACT_NATIVE:
         frameworkChoices = LANGS_REACT_NATIVE;
         break;
       case PNP_FLUTTER:
