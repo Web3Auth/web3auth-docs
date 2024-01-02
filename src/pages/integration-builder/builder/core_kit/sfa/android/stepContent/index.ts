@@ -1,24 +1,18 @@
-import * as getUserInfo from "../../../../../commonSteps/getUserInfo.mdx";
-import * as reactNativeBundlerIssues from "../../../../../commonSteps/reactNativeBundlerIssues.mdx";
-import * as registerApp from "../../../../../commonSteps/registerApp.mdx";
+import * as createVerifier from "../../../../../commonSteps/createVerifier.mdx";
 import { toSteps } from "../../../../../utils";
-import * as blockchainCalls from "./blockchainCallsReactNative.mdx";
-import * as initialization from "./initializeReactNative.mdx";
-import * as installation from "./installationReactNative.mdx";
+import * as initialization from "./initialize.mdx";
+import * as installation from "./installation.mdx";
 import * as login from "./login.mdx";
-import * as logout from "./logout.mdx";
-import * as rnQuickStart from "./rnQuickStart.mdx";
+import * as androidQuickStart from "./androidQuickStart.mdx";
+import * as requirements from "./requirements.mdx";
 
 const STEPS = toSteps({
-  rnQuickStart,
-  reactNativeBundlerIssues,
+  androidQuickStart,
+  requirements,
   installation,
-  registerApp,
+  createVerifier,
   initialization,
   login,
-  getUserInfo,
-  blockchainCalls,
-  logout,
 });
 
 export default STEPS;

@@ -4,68 +4,44 @@ import STEPS from "./stepContent";
 export default function getSteps(steps, files, replacementAggregator) {
   steps.push(
     {
-      ...STEPS.rnQuickStart,
+      ...STEPS.iOSQuickStart,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Quick Start"
+        hostedFileLinks.SFA_IOS_VIEWMODEL_SWIFT,
+        files[hostedFileLinks.SFA_IOS_VIEWMODEL_SWIFT],
+        "Quick Start",
       ),
     },
     {
       ...STEPS.installation,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_PACKAGE_JSON,
-        files[hostedFileLinks.PNP_REACT_NATIVE_PACKAGE_JSON],
-        "Web3Auth Installation"
+        hostedFileLinks.SFA_IOS_VIEWMODEL_SWIFT,
+        files[hostedFileLinks.SFA_IOS_VIEWMODEL_SWIFT],
+        "Installation",
       ),
     },
     {
-      ...STEPS.reactNativeBundlerIssues,
+      ...STEPS.createVerifier,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_METRO_CONFIG_JS,
-        files[hostedFileLinks.PNP_REACT_NATIVE_METRO_CONFIG_JS],
-        "Bundler Issues"
-      ),
-    },
-    {
-      ...STEPS.registerApp,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Dashboard Registration"
+        hostedFileLinks.SFA_IOS_VIEWMODEL_SWIFT,
+        files[hostedFileLinks.SFA_IOS_VIEWMODEL_SWIFT],
+        "Verifier Creation",
       ),
     },
     {
       ...STEPS.initialization,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "SDK Initialization"
+        hostedFileLinks.SFA_IOS_VIEWMODEL_SWIFT,
+        files[hostedFileLinks.SFA_IOS_VIEWMODEL_SWIFT],
+        "Initialize Web3Auth SFA",
       ),
     },
     {
       ...STEPS.login,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Login"
+        hostedFileLinks.SFA_IOS_VIEWMODEL_SWIFT,
+        files[hostedFileLinks.SFA_IOS_VIEWMODEL_SWIFT],
+        "Get Key",
       ),
     },
-    {
-      ...STEPS.blockchainCalls,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Blockchain Calls"
-      ),
-    },
-    {
-      ...STEPS.logout,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Logout"
-      ),
-    }
   );
 }
