@@ -21,6 +21,7 @@ import {
   SDKS_PNP,
   SFA_ANDROID,
   SFA_IOS,
+  SFA_FLUTTER,
   SFA_NODE,
   SFA_REACT_NATIVE,
 } from "./choices";
@@ -30,6 +31,7 @@ import mpc_core_kit_react from "./core_kit/mpc_core_kit/react";
 import mpc_core_kit_vue from "./core_kit/mpc_core_kit/vue";
 import sfa_android from "./core_kit/sfa/android";
 import sfa_ios from "./core_kit/sfa/ios";
+import sfa_flutter from "./core_kit/sfa/flutter";
 import sfa_node from "./core_kit/sfa/node";
 import sfa_react_native from "./core_kit/sfa/react_native";
 import sfa_web_angular from "./core_kit/sfa/web/angular";
@@ -93,6 +95,9 @@ const sdks = {
   SFA_ANDROID_ANDROID: sfa_android,
   // SFA iOS SDK
   SFA_IOS_IOS: sfa_ios,
+  // SFA Flutter SDK
+  SFA_FLUTTER_ANDROID: sfa_flutter,
+  SFA_FLUTTER_IOS: sfa_flutter,
   // SFA Node SDK
   SFA_NODE_NODE: sfa_node,
   // MPC Core Kit SDK
@@ -141,6 +146,9 @@ const embed_links = {
   SFA_ANDROID_ANDROID: "https://w3a.link/sfa-android-quick-start",
   // SFA iOS SDK
   SFA_IOS_IOS: "https://w3a.link/sfa-ios-quick-start",
+  // SFA Flutter SDK
+  SFA_FLUTTER_ANDROID: "https://w3a.link/sfa-flutter-android-quick-start",
+  SFA_FLUTTER_IOS: "https://w3a.link/sfa-flutter-ios-quick-start",
   // SFA Node SDK
   SFA_NODE_NODE: "",
   // MPC Core Kit SDK
@@ -212,6 +220,9 @@ const builder: IntegrationBuilder = {
         frameworkChoices = LANGS_REACT_NATIVE;
         break;
       case PNP_FLUTTER:
+        frameworkChoices = LANGS_FLUTTER;
+        break;
+      case SFA_FLUTTER:
         frameworkChoices = LANGS_FLUTTER;
         break;
       case PNP_UNITY:

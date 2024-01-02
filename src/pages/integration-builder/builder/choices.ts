@@ -21,6 +21,7 @@ export const SFA_WEB = "SFA_WEB";
 export const SFA_REACT_NATIVE = "SFA_REACT_NATIVE";
 export const SFA_ANDROID = "SFA_ANDROID";
 export const SFA_IOS = "SFA_IOS";
+export const SFA_FLUTTER = "SFA_FLUTTER";
 export const SFA_NODE = "SFA_NODE";
 export const MPC_CORE_KIT = "MPC_CORE_KIT";
 
@@ -53,6 +54,7 @@ export const SDKS_CORE_KIT: DisplayChoice[] = [
   { key: SFA_REACT_NATIVE, displayName: "Single Factor Auth React Native SDK" },
   { key: SFA_ANDROID, displayName: "Single Factor Auth Android SDK" },
   { key: SFA_IOS, displayName: "Single Factor Auth iOS SDK" },
+  { key: SFA_FLUTTER, displayName: "Single Factor Auth Flutter SDK" },
   { key: SFA_NODE, displayName: "Single Factor Auth Node SDK" },
   { key: MPC_CORE_KIT, displayName: "MPC Core Kit SDK" },
 ];
