@@ -148,7 +148,7 @@ const embed_links = {
   SFA_IOS_IOS: "", // "https://w3a.link/sfa-ios-quick-start",
   // SFA Flutter SDK
   SFA_FLUTTER_ANDROID: "https://w3a.link/sfa-flutter-android-quick-start",
-  SFA_FLUTTER_IOS: "https://w3a.link/sfa-flutter-ios-quick-start",
+  SFA_FLUTTER_IOS: "", //"https://w3a.link/sfa-flutter-ios-quick-start",
   // SFA Node SDK
   SFA_NODE_NODE: "",
   // MPC Core Kit SDK
