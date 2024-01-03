@@ -6,66 +6,82 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.rnQuickStart,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Quick Start"
+        hostedFileLinks.SFA_REACT_NATIVE_APP_TSX,
+        files[hostedFileLinks.SFA_REACT_NATIVE_APP_TSX],
+        "Quick Start",
       ),
     },
     {
       ...STEPS.installation,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_PACKAGE_JSON,
-        files[hostedFileLinks.PNP_REACT_NATIVE_PACKAGE_JSON],
-        "Web3Auth Installation"
+        hostedFileLinks.SFA_REACT_NATIVE_PACKAGE_JSON,
+        files[hostedFileLinks.SFA_REACT_NATIVE_PACKAGE_JSON],
+        "Web3Auth Installation",
       ),
     },
     {
       ...STEPS.reactNativeBundlerIssues,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_METRO_CONFIG_JS,
-        files[hostedFileLinks.PNP_REACT_NATIVE_METRO_CONFIG_JS],
-        "Bundler Issues"
+        hostedFileLinks.SFA_REACT_NATIVE_METRO_CONFIG_JS,
+        files[hostedFileLinks.SFA_REACT_NATIVE_METRO_CONFIG_JS],
+        "Bundler Issues",
       ),
     },
     {
       ...STEPS.registerApp,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Dashboard Registration"
+        hostedFileLinks.SFA_REACT_NATIVE_APP_TSX,
+        files[hostedFileLinks.SFA_REACT_NATIVE_APP_TSX],
+        "Dashboard Registration",
+      ),
+    },
+    {
+      ...STEPS.createVerifier,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.SFA_REACT_NATIVE_APP_TSX,
+        files[hostedFileLinks.SFA_REACT_NATIVE_APP_TSX],
+        "Verifier Creation",
       ),
     },
     {
       ...STEPS.initialization,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "SDK Initialization"
+        hostedFileLinks.SFA_REACT_NATIVE_APP_TSX,
+        files[hostedFileLinks.SFA_REACT_NATIVE_APP_TSX],
+        "SDK Initialization",
+      ),
+    },
+    {
+      ...STEPS.authProviderLogin,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.SFA_REACT_NATIVE_APP_TSX,
+        files[hostedFileLinks.SFA_REACT_NATIVE_APP_TSX],
+        "Auth Provider Login",
       ),
     },
     {
       ...STEPS.login,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Login"
+        hostedFileLinks.SFA_REACT_NATIVE_APP_TSX,
+        files[hostedFileLinks.SFA_REACT_NATIVE_APP_TSX],
+        "Login",
       ),
     },
     {
       ...STEPS.blockchainCalls,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Blockchain Calls"
+        hostedFileLinks.SFA_REACT_NATIVE_APP_TSX,
+        files[hostedFileLinks.SFA_REACT_NATIVE_APP_TSX],
+        "Blockchain Calls",
       ),
     },
     {
       ...STEPS.logout,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Logout"
+        hostedFileLinks.SFA_REACT_NATIVE_APP_TSX,
+        files[hostedFileLinks.SFA_REACT_NATIVE_APP_TSX],
+        "Logout",
       ),
-    }
+    },
   );
 }

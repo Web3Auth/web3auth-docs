@@ -1,3 +1,5 @@
+import * as createVerifier from "../../../../../commonSteps/createVerifier.mdx";
+import * as authProviderLogin from "../../../../../commonSteps/authProviderLogin.mdx";
 import * as getUserInfo from "../../../../../commonSteps/getUserInfo.mdx";
 import * as reactNativeBundlerIssues from "../../../../../commonSteps/reactNativeBundlerIssues.mdx";
 import * as registerApp from "../../../../../commonSteps/registerApp.mdx";
@@ -11,6 +13,8 @@ import * as rnQuickStart from "./rnQuickStart.mdx";
 
 const STEPS = toSteps({
   rnQuickStart,
+  createVerifier,
+  authProviderLogin,
   reactNativeBundlerIssues,
   installation,
   registerApp,
