@@ -7,14 +7,15 @@ keywords: [multichain, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Multiple Blockchains | Documentation - Web3Auth"
 ---
 
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-pnp-sfa-tkey.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-**The Web3Auth Web SDK supports all blockchains following the `secp256k1` & `ed25519` curves**. This is because Web3Auth focuses of generating wallets
-non custodially, and using the finally generated key one can use the corresponding libraries of the blockchain to make calls like getting user's
+**The Web3Auth Web SDK supports all blockchains following the `secp256k1` & `ed25519` curves**. This is because Web3Auth focuses on generating wallets
+non custodially, and using the finally generated key one can use the corresponding libraries of the blockchain to make calls like getting the user's
 `account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract, etc.
 
-Not just that, you can connect multiple chains at once and use them simultaneously. We have highlighted a few methods for a few chains here for
+Not only that, you can connect multiple chains at once and use them simultaneously. We have highlighted a few methods for a few chains here for
 getting you started quickly on that.
 
 :::note
@@ -30,78 +31,62 @@ use the private key and make blockchain calls accordingly.
 Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible
 provider as **`web3auth.provider`** after successful authentication.
 
+### Getting the `chainConfig`
+
 <Tabs
-  defaultValue="es"
+ defaultValue="mainnet"
   values={[
-    { label: "ES Modules", value: "es" },
-    { label: "TypeScript", value: "ts" },
-    { label: "CommonJS", value: "js" },
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
   ]}
 >
-<TabItem value="es">
+<TabItem
+  value="mainnet"
+>
 
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import Web3 from "web3";
-
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x1",
-  },
-});
-await web3auth.initModal();
-const web3authProvider = web3auth.provider;
+```typescript
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
 ```
 
 </TabItem>
-<TabItem value="ts">
 
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
-import Web3 from "web3";
+<TabItem
+  value="testnet"
+>
 
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x1",
-  },
-});
-await web3auth.initModal();
-const web3authProvider = web3auth.provider;
-```
-
-</TabItem>
-<TabItem value="js">
-
-```tsx
-const { Web3Auth } = require("@web3auth/modal");
-const Web3 = require("web3");
-
-const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x1",
-  },
-});
-await web3auth.initModal();
-const web3authProvider = web3auth.provider;
+```typescript
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x5",
+  rpcTarget: "https://rpc.ankr.com/eth_goerli",
+  displayName: "Goerli Testnet",
+  blockExplorer: "https://goerli.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
 ```
 
 </TabItem>
 </Tabs>
 
+### Initializing and instantiating the Web3Auth SDK
+
+<InitializeWeb3Auth />
+
 ### For Ethereum and Other EVM Compatible Chains
 
-For EVM chains, we will be creating a provider where you just input the chain ids and RPC URLs to get different providers for different chains.
-Web3Auth SDK makes it easier to manage multiple chains by providing a modular infrastructure.
+For EVM chains, we will be creating a provider where you just input the `chainConfig` to get different providers for different chains. Web3Auth SDK
+makes it easier to manage multiple chains by providing a modular infrastructure.
 
 To interact with the Ethereum blockchain and other EVMs, you can use either [web3.js](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html) or
 [ethers.js](https://docs.ethers.io/v5/getting-started/) libraries with Web3Auth. For changing the chains you will require to add different RPC URLs in

@@ -7,19 +7,23 @@ keywords: [react-native, ethereum, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Ethereum Blockchain in React Native | Documentation - Web3Auth"
 ---
 
+import InstallationSnippet from "@site/src/common/docs/_evm-installation.mdx";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 While using the Web3Auth React Native SDK, you get the private key within the user scope. This private key can interact with
-[Ethereum](https://ethereum.org/) to make any blockchain calls, like getting user's `account`, fetch `balance`, `sign transaction`,
-`send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a few here for getting you started quickly on that.
+[Ethereum](https://ethereum.org/) to make any blockchain calls, like getting the user's `account`, fetch `balance`, `sign transaction`,
+`send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a few here to get you started quickly on that.
 
 :::info
 
-We have made this reference for `Ethereum`, however this can work with all other EVM compatible chains similarly.
+We have made this reference for `Ethereum`, however, this can work with all other EVM-compatible chains similarly.
 
 :::
 
 :::note
 
-For other blockchains, the implementation flow remains similar with the corresponding packages available from their side to make the respective
+For other blockchains, the implementation flow remains similar to the corresponding packages available from their side to make the respective
 blockchain calls.
 
 :::
@@ -27,8 +31,7 @@ blockchain calls.
 ## Installation
 
 To interact with the Ethereum blockchain in React Native, you can use any [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible package like
-[`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html), [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. This might
-include some extra setup from the package's side for adding supported shims and make it work in the native platforms.
+[`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html), [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc.
 
 In this reference, we're using `ethers.js` to demonstrate how to make blockchain calls using it with Web3Auth.
 
@@ -43,7 +46,7 @@ npm install shims
 ```tsx
 // Import the required shims
 //highlight-next-line
-import "ethers/dist/shims.js";
+import "@ethersproject/shims";
 
 // Import the ethers library
 //highlight-next-line
@@ -58,69 +61,173 @@ We have followed [this guide](https://docs.ethers.io/v4/cookbook-react.html) to 
 
 ## Initialize
 
-The `providerUrl` used will determine the chain specific details. We have documentated for `ETH Mainnet`, to configure it with other EVM Chains,
-simply change the rpcUrl to it's corresponding chain.
+<Tabs
+ defaultValue="pnp"
+  values={[
+    { label: "PnP React Native SDK", value: "pnp", },
+    { label: "SFA React Native SDK", value: "sfa", },
+  ]}
+>
+<TabItem
+  value="pnp"
+>
 
-### Mainnet
-
-Mainnet Block Explorer URL: https://etherscan.io -- `chainId: "1"`
-
-```tsx
+```typescript
+import * as WebBrowser from "@toruslabs/react-native-web-browser";
+import EncryptedStorage from "react-native-encrypted-storage";
+import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK, OpenloginUserInfo } from "@web3auth/react-native-sdk";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
-import { Buffer } from "buffer";
-global.Buffer = global.Buffer || Buffer;
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
-const providerUrl = "https://rpc.ankr.com/eth"; // Or your desired RPC Provider url
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+
+const chainConfig = {
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "mainnet",
+  blockExplorer: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+  config: {
+    chainConfig,
+  },
+});
+
+const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
+  clientId,
+  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
+});
+
+await web3auth.init();
+
+if (web3auth.privKey) {
+  await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
+}
+
+await web3auth.login({
+  loginProvider: LOGIN_PROVIDER.GOOGLE,
+  redirectUrl: resolvedRedirectUrl,
+});
 ```
 
-### Testnet
+</TabItem>
 
-- Sepolia Block Explorer URL: https://sepolia.etherscan.io -- `chainId: "11155111"`
+<TabItem
+  value="sfa"
+>
+
+```typescript
+import EncryptedStorage from "react-native-encrypted-storage";
+import "@ethersproject/shims";
+import Web3Auth from "@web3auth/single-factor-auth-react-native";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { ethers } from "ethers";
+
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+
+const verifier = "w3a-firebase-demo";
+
+const chainConfig = {
+  chainId: "0x1", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+const web3auth = new Web3Auth(EncryptedStorage, {
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+});
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+await web3auth.init(privateKeyProvider);
+
+await web3auth!.connect({
+  verifier, // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+  verifierId, // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
+  idToken, // get it from your login provider, e.g. firebase, auth0, etc.
+});
+```
+
+</TabItem>
+</Tabs>
 
 ```tsx
-const providerUrl = "https://rpc.ankr.com/eth_sepolia"; // Or your desired RPC Provider url
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
+const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
+  clientId,
+  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
+  useCoreKitKey: false,
+  loginConfig: {
+    jwt: {
+      name: "Web3Auth-Auth0-JWT",
+      verifier: "w3a-auth0-demo",
+      typeOfLogin: "jwt",
+      clientId,
+    },
+  },
+});
 ```
 
 ## Get User Info
 
-You get the user information after a successful login returned from the `login` method. The `userInfo` object contains the user information, whereas
-the `privKey` object contains the private key that can be used to make blockchain calls.
+You get the user information after a successful login is returned from the `login` method. The `userInfo` object contains the user information,
+whereas the `privKey` object contains the private key which can be used to make blockchain calls.
 
 ```tsx
-// Follow the login flow from the Web3Auth React Native SDK
-const web3auth = new Web3Auth(WebBrowser, {
-  clientId,
-  network: OPENLOGIN_NETWORK.TESTNET, // MAINNET, CYAN,  AQUA
-});
-const info = await web3auth.login({
-  loginProvider: LOGIN_PROVIDER.JWT,
-  redirectUrl: resolvedRedirectUrl,
-});
-
 //highlight-start
-const info = info.userInfo; // User Information
-const key = info.privKey; // User's Private Key
+const info = web3auth.userInfo(); // User Information
+const key = web3auth.privKey(); // User's Private Key
 //highlight-end
 ```
 
 ## Get Account
 
 ```tsx
-const wallet = new ethers.Wallet(key);
+// For ethers v5
+// const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+const ethersProvider = new ethers.BrowserProvider(provider!);
+
+// For ethers v5
+// const signer = ethersProvider.getSigner();
+const signer = await ethersProvider.getSigner();
+
 // Get user's Ethereum public address
-//highlight-next-line
-const address = await wallet.address;
+const address = signer.getAddress();
+uiConsole(address);
 ```
 
 ## Get Balance
 
 ```tsx
-const ethersProvider = ethers.getDefaultProvider(providerUrl);
-const wallet = new ethers.Wallet(key, ethersProvider);
+// For ethers v5
+// const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+const ethersProvider = new ethers.BrowserProvider(provider!);
+
+// For ethers v5
+// const signer = ethersProvider.getSigner();
+const signer = await ethersProvider.getSigner();
+
+// Get user's Ethereum public address
+const address = signer.getAddress();
+
 // Get user's balance in ether
-//highlight-next-line
-const balance = await wallet.getBalance();
+// For ethers v5
+// const balance = ethers.utils.formatEther(
+// await ethersProvider.getBalance(address) // Balance is in wei
+// );
+const balance = ethers.formatEther(
+  await ethersProvider.getBalance(address), // Balance is in wei
+);
 ```
 
 ## Send Transaction
@@ -148,12 +255,15 @@ const tx = await wallet.sendTransaction({
 ## Sign a message
 
 ```tsx
-const ethersProvider = ethers.getDefaultProvider(providerUrl);
-const wallet = new ethers.Wallet(key, ethersProvider);
+// For ethers v5
+// const ethersProvider = new ethers.providers.Web3Provider(this.provider);
+const ethersProvider = new ethers.BrowserProvider(provider!);
 
+// For ethers v5
+// const signer = ethersProvider.getSigner();
+const signer = await ethersProvider.getSigner();
 const originalMessage = "YOUR_MESSAGE";
 
 // Sign the message
-//highlight-next-line
-const signedMessage = await wallet.signMessage(originalMessage);
+const signedMessage = await signer.signMessage(originalMessage);
 ```
