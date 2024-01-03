@@ -123,7 +123,7 @@ const embed_links = {
   // PNP Android SDK
   PNP_ANDROID_ANDROID: "https://w3a.link/pnp-android-quick-start",
   // PNP iOS SDK
-  PNP_IOS_IOS: "https://w3a.link/pnp-ios-quick-start",
+  PNP_IOS_IOS: "", // https://w3a.link/pnp-ios-quick-start",
   // PNP React Native SDK
   PNP_REACT_NATIVE_ANDROID: "https://w3a.link/pnp-react-native-android-quick-start",
   PNP_REACT_NATIVE_IOS: "https://w3a.link/pnp-react-native-ios-quick-start",

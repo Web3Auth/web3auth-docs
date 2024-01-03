@@ -28,6 +28,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.whitelist,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_IOS_VIEWMODEL_SWIFT,
+        files[hostedFileLinks.PNP_IOS_VIEWMODEL_SWIFT],
+        "Whitelist bundle ID",
+      ),
+    },
+    {
       ...STEPS.initialization,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_IOS_VIEWMODEL_SWIFT,
@@ -38,6 +46,14 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.login,
       pointer: replacementAggregator.highlightRange(hostedFileLinks.PNP_IOS_VIEWMODEL_SWIFT, files[hostedFileLinks.PNP_IOS_VIEWMODEL_SWIFT], "Login"),
+    },
+    {
+      ...STEPS.getUserInfo,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_IOS_VIEWMODEL_SWIFT,
+        files[hostedFileLinks.PNP_IOS_VIEWMODEL_SWIFT],
+        "Get User Info",
+      ),
     },
     {
       ...STEPS.blockchainCalls,
