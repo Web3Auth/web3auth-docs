@@ -145,7 +145,7 @@ const embed_links = {
   // SFA Android SDK
   SFA_ANDROID_ANDROID: "https://w3a.link/sfa-android-quick-start",
   // SFA iOS SDK
-  SFA_IOS_IOS: "https://w3a.link/sfa-ios-quick-start",
+  SFA_IOS_IOS: "", // "https://w3a.link/sfa-ios-quick-start",
   // SFA Flutter SDK
   SFA_FLUTTER_ANDROID: "https://w3a.link/sfa-flutter-android-quick-start",
   SFA_FLUTTER_IOS: "https://w3a.link/sfa-flutter-ios-quick-start",
