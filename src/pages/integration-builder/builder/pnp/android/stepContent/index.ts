@@ -1,5 +1,5 @@
 import * as getUserInfo from "../../../../commonSteps/getUserInfo.mdx";
-import * as registerApp from "./registerApp.mdx";
+import * as registerApp from "../../../../commonSteps/registerApp.mdx";
 import { toSteps } from "../../../../utils";
 import * as blockchainCalls from "./blockchainCalls.mdx";
 import * as jitpack from "./jitpack.mdx";

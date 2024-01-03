@@ -84,6 +84,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.getUserInfo,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_ANDROID_MAINACTIVITY_KT,
+        files[hostedFileLinks.PNP_ANDROID_MAINACTIVITY_KT],
+        "Get User Info",
+      ),
+    },
+    {
       ...STEPS.blockchainCalls,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_ANDROID_MAINACTIVITY_KT,
