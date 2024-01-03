@@ -44,6 +44,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.whitelist,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_FLUTTER_MAIN_DART,
+        files[hostedFileLinks.PNP_FLUTTER_MAIN_DART],
+        "Whitelist bundle ID",
+      ),
+    },
+    {
       ...STEPS.initialization,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_FLUTTER_MAIN_DART,
