@@ -11,6 +11,8 @@ const framework = {
     filenames.push(hostedFileLinks.SFA_REACT_NATIVE_METRO_CONFIG_JS);
     filenames.push(hostedFileLinks.SFA_REACT_NATIVE_GLOBALS_JS);
     filenames.push(hostedFileLinks.SFA_REACT_NATIVE_INDEX_JS);
+    filenames.push(hostedFileLinks.SFA_REACT_NATIVE_BUILD_GRADLE);
+    filenames.push(hostedFileLinks.SFA_REACT_NATIVE_PODFILE);
 
     return { filenames, files, steps };
   },

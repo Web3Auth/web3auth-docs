@@ -46,8 +46,8 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.whitelist,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_FLUTTER_MAIN_DART,
-        files[hostedFileLinks.PNP_FLUTTER_MAIN_DART],
+        hostedFileLinks.PNP_FLUTTER_BUILD_GRADLE,
+        files[hostedFileLinks.PNP_FLUTTER_BUILD_GRADLE],
         "Whitelist bundle ID",
       ),
     },

@@ -8,7 +8,23 @@ export default function getSteps(steps, files, replacementAggregator) {
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
         files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Quick Start"
+        "Quick Start",
+      ),
+    },
+    {
+      ...STEPS.requirementsAndroid,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_REACT_NATIVE_BUILD_GRADLE,
+        files[hostedFileLinks.PNP_REACT_NATIVE_BUILD_GRADLE],
+        "Requirements Android",
+      ),
+    },
+    {
+      ...STEPS.requirementsIOS,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_REACT_NATIVE_PODFILE,
+        files[hostedFileLinks.PNP_REACT_NATIVE_PODFILE],
+        "Requirements iOS",
       ),
     },
     {
@@ -16,7 +32,7 @@ export default function getSteps(steps, files, replacementAggregator) {
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_REACT_NATIVE_PACKAGE_JSON,
         files[hostedFileLinks.PNP_REACT_NATIVE_PACKAGE_JSON],
-        "Web3Auth Installation"
+        "Web3Auth Installation",
       ),
     },
     {
@@ -24,7 +40,7 @@ export default function getSteps(steps, files, replacementAggregator) {
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_REACT_NATIVE_METRO_CONFIG_JS,
         files[hostedFileLinks.PNP_REACT_NATIVE_METRO_CONFIG_JS],
-        "Bundler Issues"
+        "Bundler Issues",
       ),
     },
     {
@@ -32,7 +48,15 @@ export default function getSteps(steps, files, replacementAggregator) {
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
         files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Dashboard Registration"
+        "Dashboard Registration",
+      ),
+    },
+    {
+      ...STEPS.whitelist,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
+        files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
+        "Whitelist bundle ID",
       ),
     },
     {
@@ -40,7 +64,7 @@ export default function getSteps(steps, files, replacementAggregator) {
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
         files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "SDK Initialization"
+        "SDK Initialization",
       ),
     },
     {
@@ -48,7 +72,7 @@ export default function getSteps(steps, files, replacementAggregator) {
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
         files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Login"
+        "Login",
       ),
     },
     {
@@ -56,7 +80,7 @@ export default function getSteps(steps, files, replacementAggregator) {
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
         files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Blockchain Calls"
+        "Blockchain Calls",
       ),
     },
     {
@@ -64,8 +88,8 @@ export default function getSteps(steps, files, replacementAggregator) {
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_REACT_NATIVE_APP_TSX,
         files[hostedFileLinks.PNP_REACT_NATIVE_APP_TSX],
-        "Logout"
+        "Logout",
       ),
-    }
+    },
   );
 }

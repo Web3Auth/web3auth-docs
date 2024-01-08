@@ -51,7 +51,7 @@ export default function getSteps(steps, files, replacementAggregator) {
       ...STEPS.getUserInfo,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_IOS_VIEWMODEL_SWIFT,
-        files[hostedFileLinks.PNP_IOS_VIEWMODEL_SWIFT],
+        files[hostedFileLinks.PNP_IOS_USERDETAILVIEW_SWIFT],
         "Get User Info",
       ),
     },

@@ -36,6 +36,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.authProviderLogin,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.SFA_IOS_VIEWMODEL_SWIFT,
+        files[hostedFileLinks.SFA_IOS_VIEWMODEL_SWIFT],
+        "Auth Provider Login",
+      ),
+    },
+    {
       ...STEPS.login,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.SFA_IOS_VIEWMODEL_SWIFT,

@@ -8,7 +8,7 @@ export default function getSteps(steps, files, replacementAggregator) {
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS,
         files[hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS],
-        "Quick Start"
+        "Quick Start",
       ),
     },
     {
@@ -16,7 +16,7 @@ export default function getSteps(steps, files, replacementAggregator) {
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_UNITY_MANIFEST_JSON,
         files[hostedFileLinks.PNP_UNITY_MANIFEST_JSON],
-        "Web3Auth Installation"
+        "Web3Auth Installation",
       ),
     },
     {
@@ -24,7 +24,23 @@ export default function getSteps(steps, files, replacementAggregator) {
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS,
         files[hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS],
-        "Dashboard Registration"
+        "Dashboard Registration",
+      ),
+    },
+    {
+      ...STEPS.androidCustomTabs,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_UNITY_ANDROID_MANIFEST,
+        files[hostedFileLinks.PNP_UNITY_ANDROID_MANIFEST],
+        "Android Custom Tabs",
+      ),
+    },
+    {
+      ...STEPS.configureDeepLink,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_UNITY_ANDROID_MANIFEST,
+        files[hostedFileLinks.PNP_UNITY_ANDROID_MANIFEST],
+        "Configure Deep Link",
       ),
     },
     {
@@ -32,7 +48,7 @@ export default function getSteps(steps, files, replacementAggregator) {
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS,
         files[hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS],
-        "SDK Initialization"
+        "SDK Initialization",
       ),
     },
     {
@@ -40,7 +56,15 @@ export default function getSteps(steps, files, replacementAggregator) {
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS,
         files[hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS],
-        "Login"
+        "Login",
+      ),
+    },
+    {
+      ...STEPS.getUserInfo,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS,
+        files[hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS],
+        "Get User Information",
       ),
     },
     {
@@ -48,7 +72,7 @@ export default function getSteps(steps, files, replacementAggregator) {
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS,
         files[hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS],
-        "Blockchain Calls"
+        "Blockchain Calls",
       ),
     },
     {
@@ -56,8 +80,8 @@ export default function getSteps(steps, files, replacementAggregator) {
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS,
         files[hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS],
-        "Logout"
+        "Logout",
       ),
-    }
+    },
   );
 }

@@ -4,7 +4,7 @@ import STEPS from "./stepContent";
 export default function getSteps(steps, files, replacementAggregator) {
   steps.push(
     {
-      ...STEPS.rnQuickStart,
+      ...STEPS.nodeQuickStart,
       pointer: replacementAggregator.highlightRange(hostedFileLinks.SFA_NODE_INDEX_JS, files[hostedFileLinks.SFA_NODE_INDEX_JS], "Quick Start"),
     },
     {

@@ -8,6 +8,7 @@ import MDXComponents from "@theme/MDXComponents";
 import classNames from "classnames";
 import copyToClipboard from "copy-to-clipboard";
 import { UIEvent, useEffect, useMemo, useState, useRef } from "react";
+import MoonLoader from "react-spinners/BeatLoader";
 
 import SEO from "../../components/SEO";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
@@ -46,7 +47,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
   const [showPreviewModal, setShowPreviewModal] = useState<boolean>(false);
   const url = new URL(getWindowLocation());
   const [stepIndex, setStepIndex] = useState(parseInt(url.searchParams.get("stepIndex") || "0", 10));
-
+  const [loading, setLoading] = useState<boolean>(false);
   const integration = useMemo(() => builder.build(builderOptions, files, stepIndex), [builderOptions, files, stepIndex]);
   const [selectedFilename, setSelectedFilename] = useState(integration.filenames[0]);
 
@@ -120,6 +121,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     if (showPreviewModal) {
       setShowPreviewModal(false);
     } else {
+      setLoading(true);
       setShowPreviewModal(true);
     }
   };
@@ -228,7 +230,27 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                 </button>
               </div>
               <div className={styles.iframeContainer}>
-                <iframe src={integration.embedLink} height="100%" width="100%" loading="lazy" title="Quick Start Preview" />
+                {loading && (
+                  <div className={styles.loadingContainer}>
+                    {" "}
+                    <MoonLoader
+                      loading={loading}
+                      size={20}
+                      color={getComputedStyle(document.body).getPropertyValue("--ifm-color-primary")}
+                      aria-label="Loading"
+                      speedMultiplier={0.85}
+                    />
+                  </div>
+                )}
+                <iframe
+                  src={integration.embedLink}
+                  height="100%"
+                  width="100%"
+                  title="Quick Start Preview"
+                  loading="eager"
+                  seamless={true}
+                  onLoad={() => setLoading(false)}
+                />
               </div>
             </div>
           </div>

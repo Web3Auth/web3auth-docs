@@ -129,10 +129,10 @@ const embed_links = {
   PNP_REACT_NATIVE_IOS: "https://w3a.link/pnp-react-native-ios-quick-start",
   // PNP Flutter SDK
   PNP_FLUTTER_ANDROID: "https://w3a.link/pnp-flutter-android-quick-start",
-  PNP_FLUTTER_IOS: "https://w3a.link/pnp-flutter-ios-quick-start",
+  PNP_FLUTTER_IOS: "", // "https://w3a.link/pnp-flutter-ios-quick-start",
   // PNP Unity SDK
   PNP_UNITY_ANDROID: "https://w3a.link/pnp-unity-android-quick-start",
-  PNP_UNITY_IOS: "",
+  PNP_UNITY_IOS: "", // "https://w3a.link/pnp-unity-ios-quick-start"
   // SFA Web SDK
   SFA_WEB_ANGULAR: "https://w3a.link/sfa-angular-quick-start",
   SFA_WEB_NEXTJS: "https://w3a.link/sfa-nextjs-quick-start",

@@ -52,6 +52,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.authProviderLogin,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.SFA_FLUTTER_AUTH_SERVICE_DART,
+        files[hostedFileLinks.SFA_FLUTTER_AUTH_SERVICE_DART],
+        "Auth Provider Login",
+      ),
+    },
+    {
       ...STEPS.login,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.SFA_FLUTTER_AUTH_SERVICE_DART,

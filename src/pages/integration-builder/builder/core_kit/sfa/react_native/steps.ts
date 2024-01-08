@@ -12,6 +12,22 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.requirementsAndroid,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.SFA_REACT_NATIVE_BUILD_GRADLE,
+        files[hostedFileLinks.SFA_REACT_NATIVE_BUILD_GRADLE],
+        "Requirements Android",
+      ),
+    },
+    {
+      ...STEPS.requirementsIOS,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.SFA_REACT_NATIVE_PODFILE,
+        files[hostedFileLinks.SFA_REACT_NATIVE_PODFILE],
+        "Requirements iOS",
+      ),
+    },
+    {
       ...STEPS.installation,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.SFA_REACT_NATIVE_PACKAGE_JSON,

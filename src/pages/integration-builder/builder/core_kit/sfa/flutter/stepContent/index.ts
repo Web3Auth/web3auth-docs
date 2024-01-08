@@ -1,6 +1,7 @@
 import { toSteps } from "../../../../../utils";
 import * as flutterQuickStart from "./flutterQuickStart.mdx";
 import * as requirementsAndroid from "./requirementsAndroid.mdx";
+import * as authProviderLogin from "../../../../../commonSteps/authProviderLogin.mdx";
 import * as requirementsIOS from "./requirementsIOS.mdx";
 import * as installation from "./installation.mdx";
 import * as createVerifier from "../../../../../commonSteps/createVerifier.mdx";
@@ -14,6 +15,7 @@ const STEPS = toSteps({
   installation,
   createVerifier,
   initialization,
+  authProviderLogin,
   login,
 });
 

@@ -8,6 +8,7 @@ const framework = {
     getSteps(steps, files, replacementAggregator);
     filenames.push(hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS);
     filenames.push(hostedFileLinks.PNP_UNITY_MANIFEST_JSON);
+    filenames.push(hostedFileLinks.PNP_UNITY_ANDROID_MANIFEST);
 
     return { filenames, files, steps };
   },

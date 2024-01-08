@@ -56,6 +56,9 @@ const chainConfig = {
 <TabItem value="solana">
 
 ```tsx
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.SOLANA,
   chainId: "0x1",
@@ -65,6 +68,14 @@ const chainConfig = {
   ticker: "SOL",
   tickerName: "Solana",
 };
+
+const privateKeyProvider = new SolanaPrivateKeyProvider({
+  config: { chainConfig },
+});
+const openloginAdapter = new OpenloginAdapter({
+  privateKeyProvider: privateKeyProvider,
+});
+web3auth.configureAdapter(openloginAdapter);
 ```
 
 </TabItem>
@@ -72,11 +83,22 @@ const chainConfig = {
 <TabItem value="other">
 
 ```tsx
+import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.OTHER,
   chainId: "0x1",
   rpcTarget: "RPC_URL",
 };
+
+const privateKeyProvider = new CommonPrivateKeyProvider({
+  config: { chainConfig },
+});
+const openloginAdapter = new OpenloginAdapter({
+  privateKeyProvider: privateKeyProvider,
+});
+web3auth.configureAdapter(openloginAdapter);
 ```
 
 </TabItem>

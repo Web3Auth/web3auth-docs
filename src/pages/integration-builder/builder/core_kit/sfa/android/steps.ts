@@ -44,6 +44,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.authProviderLogin,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.SFA_ANDROID_MAINACTIVITY_KT,
+        files[hostedFileLinks.SFA_ANDROID_MAINACTIVITY_KT],
+        "Auth Provider Login",
+      ),
+    },
+    {
       ...STEPS.login,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.SFA_ANDROID_MAINACTIVITY_KT,

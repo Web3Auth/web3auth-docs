@@ -7,6 +7,8 @@ import * as installation from "./installationUnity.mdx";
 import * as login from "./login.mdx";
 import * as logout from "./logout.mdx";
 import * as unityQuickStart from "./unityQuickStart.mdx";
+import * as androidCustomTabs from "./androidCustomTabs.mdx";
+import * as configureDeepLink from "./configureDeepLink.mdx";
 
 const STEPS = toSteps({
   unityQuickStart,
@@ -17,6 +19,8 @@ const STEPS = toSteps({
   getUserInfo,
   blockchainCalls,
   logout,
+  androidCustomTabs,
+  configureDeepLink,
 });
 
 export default STEPS;

@@ -1,5 +1,5 @@
 import * as createVerifier from "../../../../../commonSteps/createVerifier.mdx";
-import * as authProviderLogin from "../../../../../commonSteps/authProviderLogin.mdx";
+import * as authProviderLogin from "./authProviderLogin.mdx";
 import * as getUserInfo from "../../../../../commonSteps/getUserInfo.mdx";
 import * as reactNativeBundlerIssues from "../../../../../commonSteps/reactNativeBundlerIssues.mdx";
 import * as registerApp from "../../../../../commonSteps/registerApp.mdx";
@@ -8,11 +8,10 @@ import * as blockchainCalls from "./blockchainCallsReactNative.mdx";
 import * as initialization from "./initializeReactNative.mdx";
 import * as installation from "./installationReactNative.mdx";
 import * as login from "./login.mdx";
-import * as logout from "./logout.mdx";
-import * as rnQuickStart from "./rnQuickStart.mdx";
+import * as nodeQuickStart from "./nodeQuickStart.mdx";
 
 const STEPS = toSteps({
-  rnQuickStart,
+  nodeQuickStart,
   createVerifier,
   authProviderLogin,
   reactNativeBundlerIssues,
@@ -22,7 +21,6 @@ const STEPS = toSteps({
   login,
   getUserInfo,
   blockchainCalls,
-  logout,
 });
 
 export default STEPS;

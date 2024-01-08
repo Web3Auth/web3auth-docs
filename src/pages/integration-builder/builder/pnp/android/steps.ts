@@ -52,19 +52,19 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
-      ...STEPS.configureDeepLink,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.PNP_ANDROID_ANDROIDMANIFEST_XML,
-        files[hostedFileLinks.PNP_ANDROID_ANDROIDMANIFEST_XML],
-        "Configure Deep Link",
-      ),
-    },
-    {
       ...STEPS.registerApp,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_ANDROID_STRINGS_XML,
         files[hostedFileLinks.PNP_ANDROID_STRINGS_XML],
         "Get your Web3Auth Client ID from Dashboard",
+      ),
+    },
+    {
+      ...STEPS.configureDeepLink,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_ANDROID_ANDROIDMANIFEST_XML,
+        files[hostedFileLinks.PNP_ANDROID_ANDROIDMANIFEST_XML],
+        "Configure Deep Link",
       ),
     },
     {
