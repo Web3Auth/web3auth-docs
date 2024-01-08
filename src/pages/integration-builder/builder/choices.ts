@@ -1,103 +1,33 @@
 import { DisplayChoice } from "../interfaces";
 
-// Blockchain choices
+// Product Choice
+export const PNP = "PNP";
+export const CORE_KIT = "CORE_KIT";
 
-export const ETH = "ETH";
-export const SOL = "SOL";
-export const STARKEX = "STARKEX";
-export const STARKNET = "STARKNET";
-export const MATIC = "MATIC";
-export const BNB = "BNB";
-export const AVAX = "AVAX";
-export const ARB = "ARB";
-export const OP = "OP";
-export const CRO = "CRO";
-export const ONE = "ONE";
-export const CELO = "CELO";
-export const GLMR = "GLMR";
-export const MOVR = "MOVR";
-export const KLAY = "KLAY";
-export const TEZOS = "TEZOS";
-export const FLR = "FLR";
-export const SGB = "SGB";
-
-export enum EVM {
-  "ETH",
-  "MATIC",
-  "BNB",
-  "AVAX",
-  "ARB",
-  "OP",
-  "CRO",
-  "ONE",
-  "CELO",
-  "GLMR",
-  "MOVR",
-  "KLAY",
-  "FLR",
-  "SGB",
-}
-
-export enum OTHER_CHAINS {
-  "STARKEX",
-  "STARKNET",
-  "TEZOS",
-}
-
-export const CHAINS_HTML: DisplayChoice[] = [
-  { key: ETH, displayName: "Ethereum" },
-  { key: SOL, displayName: "Solana" },
-  { key: MATIC, displayName: "Polygon" },
-  { key: BNB, displayName: "BNB Chain" },
-  { key: AVAX, displayName: "Avalanche" },
-  { key: ARB, displayName: "Arbitrum" },
-  { key: OP, displayName: "Optimism" },
-  { key: CRO, displayName: "Cronos" },
-  { key: ONE, displayName: "Harmony" },
-  { key: CELO, displayName: "Celo" },
-  { key: GLMR, displayName: "Moonbeam" },
-  { key: MOVR, displayName: "Moonriver" },
-  { key: KLAY, displayName: "Klaytn" },
-  { key: FLR, displayName: "Flare" },
-  { key: SGB, displayName: "Songbird" },
+export const PRODUCTS: DisplayChoice[] = [
+  { key: PNP, displayName: "Plug and Play" },
+  { key: CORE_KIT, displayName: "Core Kit" },
 ];
 
-export const CHAINS_MOBILE: DisplayChoice[] = [
-  { key: ETH, displayName: "Ethereum" },
-  { key: MATIC, displayName: "Polygon" },
-  { key: BNB, displayName: "BNB Chain" },
-  { key: AVAX, displayName: "Avalanche" },
-  { key: ARB, displayName: "Arbitrum" },
-  { key: OP, displayName: "Optimism" },
-  { key: CRO, displayName: "Cronos" },
-  { key: ONE, displayName: "Harmony" },
-  { key: CELO, displayName: "Celo" },
-  { key: GLMR, displayName: "Moonbeam" },
-  { key: MOVR, displayName: "Moonriver" },
-  { key: KLAY, displayName: "Klaytn" },
-  { key: FLR, displayName: "Flare" },
-  { key: SGB, displayName: "Songbird" },
-];
-
-export const CHAINS: DisplayChoice[] = [
-  ...CHAINS_HTML,
-  { key: STARKEX, displayName: "StarkEx" },
-  { key: STARKNET, displayName: "StarkNet" },
-  { key: TEZOS, displayName: "Tezos" },
-];
-
-export const WEB3 = "WEB3";
-export const ETHERS = "ETHERS";
-
-export const EVM_LIBRARY: DisplayChoice[] = [
-  { key: WEB3, displayName: "web3.js" },
-  { key: ETHERS, displayName: "ethers" },
-];
+// SDK Choices
+export const PNP_MODAL = "PNP_MODAL";
+export const PNP_NO_MODAL = "PNP_NO_MODAL";
+export const PNP_ANDROID = "PNP_ANDROID";
+export const PNP_IOS = "PNP_IOS";
+export const PNP_REACT_NATIVE = "PNP_REACT_NATIVE";
+export const PNP_FLUTTER = "PNP_FLUTTER";
+export const PNP_UNITY = "PNP_UNITY";
+export const SFA_WEB = "SFA_WEB";
+export const SFA_REACT_NATIVE = "SFA_REACT_NATIVE";
+export const SFA_ANDROID = "SFA_ANDROID";
+export const SFA_IOS = "SFA_IOS";
+export const SFA_FLUTTER = "SFA_FLUTTER";
+export const SFA_NODE = "SFA_NODE";
+export const MPC_CORE_KIT = "MPC_CORE_KIT";
 
 // Platform choices
-
 export const REACT = "REACT";
-export const NEXT = "NEXT";
+export const NEXTJS = "NEXTJS";
 export const VUE = "VUE";
 export const ANGULAR = "ANGULAR";
 export const HTML = "HTML";
@@ -107,59 +37,57 @@ export const REACT_NATIVE = "REACT_NATIVE";
 export const FLUTTER = "FLUTTER";
 export const UNITY = "UNITY";
 export const UNREAL = "UNREAL";
+export const NODE = "NODE";
 
-export const LANGS: DisplayChoice[] = [
+export const SDKS_PNP: DisplayChoice[] = [
+  { key: PNP_MODAL, displayName: "Web - Modal SDK" },
+  { key: PNP_NO_MODAL, displayName: "Web - No Modal SDK" },
+  { key: PNP_ANDROID, displayName: "Android SDK" },
+  { key: PNP_IOS, displayName: "iOS SDK" },
+  { key: PNP_REACT_NATIVE, displayName: "React Native SDK" },
+  { key: PNP_FLUTTER, displayName: "Flutter SDK" },
+  { key: PNP_UNITY, displayName: "Unity SDK" },
+];
+
+export const SDKS_CORE_KIT: DisplayChoice[] = [
+  { key: SFA_WEB, displayName: "Single Factor Auth Web SDK" },
+  { key: SFA_REACT_NATIVE, displayName: "Single Factor Auth React Native SDK" },
+  { key: SFA_ANDROID, displayName: "Single Factor Auth Android SDK" },
+  { key: SFA_IOS, displayName: "Single Factor Auth iOS SDK" },
+  { key: SFA_FLUTTER, displayName: "Single Factor Auth Flutter SDK" },
+  { key: SFA_NODE, displayName: "Single Factor Auth Node SDK" },
+  { key: MPC_CORE_KIT, displayName: "MPC Core Kit SDK" },
+];
+
+export const LANGS_WEB: DisplayChoice[] = [
   { key: REACT, displayName: "React" },
-  { key: NEXT, displayName: "Next JS" },
+  { key: NEXTJS, displayName: "Next JS" },
   { key: VUE, displayName: "Vue" },
   { key: ANGULAR, displayName: "Angular" },
-  { key: HTML, displayName: "HTML/JS" },
-  { key: ANDROID, displayName: "Android" },
-  { key: IOS, displayName: "iOS/Swift" },
-  { key: REACT_NATIVE, displayName: "React Native" },
-  { key: FLUTTER, displayName: "Flutter" },
-  { key: UNITY, displayName: "Unity" },
+  { key: HTML, displayName: "Vanilla JS" },
 ];
 
-export enum MOBILE {
-  "ANDROID",
-  "IOS",
-  "REACT_NATIVE",
-  "FLUTTER",
-}
-
-export enum GAMING {
-  "UNITY",
-  "UNREAL",
-}
-
-export const EXPO = "EXPO";
-export const BARE_RN = "BARE_RN";
-
-export const RN_MODE: DisplayChoice[] = [
-  { key: "EXPO", displayName: "Expo" },
-  { key: "BARE_RN", displayName: "Bare RN" },
+export const LANGS_WEB_MPC_CORE_KIT: DisplayChoice[] = [
+  { key: REACT, displayName: "React" },
+  { key: NEXTJS, displayName: "Next JS" },
+  { key: VUE, displayName: "Vue" },
+  { key: ANGULAR, displayName: "Angular" },
 ];
 
-// Auth Choices
+const android = { key: ANDROID, displayName: "Android" };
+const ios = { key: IOS, displayName: "iOS/Swift" };
 
-export const NONE = "NONE";
-export const GOOGLE = "GOOGLE";
-export const FACEBOOK = "FACEBOOK";
-export const DISCORD = "DISCORD";
-export const TWITCH = "TWITCH";
-export const JWT = "JWT";
-export const AUTH0 = "AUTH0";
+export const LANGS_ANDROID: DisplayChoice[] = [android];
 
-export const CUSTOM_AUTH: DisplayChoice[] = [
-  { key: NONE, displayName: "None" },
-  { key: GOOGLE, displayName: "Google" },
-  { key: FACEBOOK, displayName: "Facebook" },
-  { key: DISCORD, displayName: "Discord" },
-  { key: TWITCH, displayName: "Twitch" },
-];
+export const LANGS_IOS: DisplayChoice[] = [ios];
 
-export const CUSTOM_AUTH_MOBILE: DisplayChoice[] = [...CUSTOM_AUTH, { key: AUTH0, displayName: "Auth0" }, { key: JWT, displayName: "JWT" }];
+export const LANGS_REACT_NATIVE: DisplayChoice[] = [ios, android];
+
+export const LANGS_FLUTTER: DisplayChoice[] = [android, ios];
+
+export const LANGS_UNITY: DisplayChoice[] = [android, ios];
+
+export const LANGS_NODE: DisplayChoice[] = [{ key: NODE, displayName: "NodeJS" }];
 
 // Misc choices
 
@@ -169,27 +97,4 @@ export const NO = "NO";
 export const TOGGLE: DisplayChoice[] = [
   { key: NO, displayName: "No" },
   { key: YES, displayName: "Yes" },
-];
-
-export const DEFAULT = "DEFAULT";
-export const OPTIONAL = "OPTIONAL";
-export const MANDATORY = "MANDATORY";
-
-export const MFA: DisplayChoice[] = [
-  { key: DEFAULT, displayName: "Default" },
-  { key: OPTIONAL, displayName: "Optional" },
-  { key: MANDATORY, displayName: "Mandatory" },
-  { key: NONE, displayName: "None" },
-];
-
-export const TESTNET = "TESTNET";
-export const MAINNET = "MAINNET";
-export const CYAN = "CYAN";
-export const AQUA = "AQUA";
-
-export const WEB3AUTH_NETWORK: DisplayChoice[] = [
-  { key: TESTNET, displayName: "Testnet" },
-  { key: MAINNET, displayName: "Mainnet" },
-  { key: CYAN, displayName: "Cyan Mainnet" },
-  { key: AQUA, displayName: "Aqua Mainnet" },
 ];

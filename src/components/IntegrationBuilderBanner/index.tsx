@@ -39,7 +39,7 @@ export default function Web3AuthOverview() {
       <div className={styles.cardContent}>
         <h3>Try building with our Integration Builder</h3>
         <p>A seamless way to quick start your Web3Auth Integration while configuring the components and features of your choice dynamically.</p>
-        <Link to="/integration-builder" className={styles.btnContainer}>
+        <Link to="/quick-start" className={styles.btnContainer}>
           Get Started with Integration Builder
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path

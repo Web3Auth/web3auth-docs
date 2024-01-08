@@ -51,10 +51,10 @@ export class ReplaceFileAggregator {
     const startLine = [];
     const endLine = [];
     for (let i = 0; i < contentByLine.length; i += 1) {
-      if (contentByLine[i].includes(`HIGHLIGHTSTART-${variableName}`)) {
+      if (contentByLine[i].includes(`IMP START - ${variableName}`)) {
         startLine.push(i);
       }
-      if (contentByLine[i].includes(`HIGHLIGHTEND-${variableName}`)) {
+      if (contentByLine[i].includes(`IMP END - ${variableName}`)) {
         endLine.push(i);
       }
     }
