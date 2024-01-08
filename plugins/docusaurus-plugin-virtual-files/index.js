@@ -6,7 +6,7 @@ const joi = require("joi");
 const readFileAsync = util.promisify(fs.readFile);
 const writeFileAsync = util.promisify(fs.writeFile);
 
-const environment = process.env.NODE_ENV || "development";
+const environment = process.env.IB_ENV || "development";
 
 async function fetchHostedFile(filename) {
   try {
