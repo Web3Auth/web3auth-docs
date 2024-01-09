@@ -83,7 +83,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
       const stepEl = stepEls.item(i) as HTMLDivElement;
       if (el.scrollTop <= stepEl.offsetTop) {
         const dis = stepEl.offsetTop - el.scrollTop;
-        if (dis >= 200 && dis <= 300) {
+        if (dis >= 700 && dis <= 800) {
           onChangeStep(i);
           break;
         }
