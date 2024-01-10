@@ -1,0 +1,24 @@
+---
+title: Add Android Custom Tabs and Permissions
+---
+
+For using Web3Auth SDK in Unity Android, you'll need to create a custom AndroidManifest.xml file. You can do so by following the instructions written
+in the [Unity documentation](https://docs.unity3d.com/Manual/overriding-android-manifest.html).
+
+Following this, you'll need to add the following in your AndroidManifest.xml file:
+
+```xml
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.INTERNET" />
+<queries xmlns:android="http://schemas.android.com/apk/res/android">
+    <intent>
+        <action android:name="android.support.customtabs.action.CustomTabsService" />
+    </intent>
+</queries>
+```
+
+:::note
+
+The `<uses-permission>` element must be a direct child of the `<manifest>` root element.
+
+:::

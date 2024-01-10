@@ -23,6 +23,13 @@ You can set the `mfaLevel` within the `web3auth.login()` to customize when the m
 - **`mandatory`** - Setting mfaLevel to mandatory will make it mandatory for the user to set up MFA after login. `mfaLevel = MFALevel.MANDATORY`
 - **`none`** - Setting mfaLevel to none will skip the mfa setup screen totally. `mfaLevel = MFALevel.NONE`
 
+:::caution Note
+
+If you are using default verifiers, your users may have set up MFA on other dApps that also use default Web3Auth verifiers. In this case, the MFA
+screen will continue to appear if the user has enabled MFA on other dApps. This is because MFA cannot be turned off once it is enabled.
+
+:::
+
 ```tsx
 export const MFA_LEVELS = {
   DEFAULT: "default",

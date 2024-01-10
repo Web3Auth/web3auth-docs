@@ -22,7 +22,14 @@ can enable or disable a backup factor and change their order. Currently, there a
 - `mandatory`: make it mandatory to set up MFA after login
 - `none`: skips the MFA setup screen
 
-:::note
+:::caution Note
+
+If you are using default verifiers, your users may have set up MFA on other dApps that also use default Web3Auth verifiers. In this case, the MFA
+screen will continue to appear if the user has enabled MFA on other dApps. This is because MFA cannot be turned off once it is enabled.
+
+:::
+
+:::note Minimum Growth plan required
 
 This is a paid feature and the the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the
 **Growth Plan**. You can use this feature in the development environment for free.
@@ -71,6 +78,15 @@ const openloginAdapter = new OpenloginAdapter({
 #### `adapterSettings`
 
 <OpenloginAdapterSettings />
+
+##### `mfaSettings`
+
+:::note Minimum SCALE plan required
+
+This is a paid feature and the the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the **SCALE
+Plan**. You can use this feature in the development environment for free.
+
+:::
 
 ```tsx title="Usage"
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";

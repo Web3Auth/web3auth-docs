@@ -1,0 +1,114 @@
+---
+title: Initialize Web3Auth
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Web3Auth needs to be initialized as soon as your app loads up to enable the user to log in. Preferably done within a constructor, initialization is
+the step where you can pass on all the configurations for Web3Auth you want.
+
+For initializing Web3Auth PnP No Modal SDK, you need to provide your Client ID, the Web3Auth Network of your project and the configuration of the
+chain you're looking to connect to. A simple integration for some of the popular blockchains will look like this:
+
+<Tabs
+  defaultValue="evm"
+  values={[
+    { label: "EVM Chains", value: "evm" },
+    { label: "Polygon", value: "polygon" },
+    { label: "Solana", value: "solana" },
+    { label: "Any Other Blockchain", value: "other" },
+  ]}
+>
+
+<TabItem value="evm">
+
+```tsx
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+```
+
+</TabItem>
+
+<TabItem value="polygon">
+
+```tsx
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x89",
+  rpcTarget: "https://rpc.ankr.com/polygon",
+  displayName: "Polygon Mainnet",
+  blockExplorer: "https://polygon.etherscan.io",
+  ticker: "MATIC",
+  tickerName: "Polygon",
+};
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+```
+
+</TabItem>
+
+<TabItem value="solana">
+
+```tsx
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.SOLANA,
+  chainId: "0x1",
+  rpcTarget: "https://api.mainnet.solana.com",
+  displayName: "Solana Mainnet",
+  blockExplorer: "https://explorer.solana.com/",
+  ticker: "SOL",
+  tickerName: "Solana",
+};
+
+const privateKeyProvider = new SolanaPrivateKeyProvider({
+  config: { chainConfig },
+});
+```
+
+</TabItem>
+
+<TabItem value="other">
+
+```tsx
+import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.OTHER,
+  chainId: "0x1",
+  rpcTarget: "RPC_URL",
+};
+
+const privateKeyProvider = new CommonPrivateKeyProvider({
+  config: { chainConfig },
+});
+```
+
+</TabItem>
+
+</Tabs>
+
+:::tip SDK Reference
+
+- [Initializing Web3Auth](/sdk/pnp/web/no-modal/initialize).
+
+:::

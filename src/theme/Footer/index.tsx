@@ -18,7 +18,7 @@ export default function FooterComponent(): JSX.Element {
     if (typeof window !== "undefined") {
       // check if footer can be shown
       const path = window.location.pathname;
-      if (path.includes("integration-builder")) {
+      if (path.includes("quick-start")) {
         setCanShowFooter(false);
       }
     }
