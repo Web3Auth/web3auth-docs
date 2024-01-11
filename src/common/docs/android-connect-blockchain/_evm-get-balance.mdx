@@ -1,0 +1,13 @@
+```kotlin
+private fun getBalance(): BigInteger? {
+  val publicAddress = credentials.address
+  val ethBalance: EthGetBalance = web3.ethGetBalance(publicAddress, DefaultBlockParameterName.LATEST).sendAsync().get()
+  println("Balance: ${ethBalance.balance}")
+  // highlight-next-line
+  return ethBalance.balance
+}
+
+// Setup UI and event handlers
+val getBalanceButton = findViewById<Button>(R.id.getBalanceButton)
+getBalanceButton.setOnClickListener { getBalance() }
+```

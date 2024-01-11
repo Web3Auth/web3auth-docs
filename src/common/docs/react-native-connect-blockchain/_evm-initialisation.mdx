@@ -1,0 +1,70 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs
+ defaultValue="pnp"
+  values={[
+    { label: "PnP React Native SDK", value: "pnp", },
+    { label: "SFA React Native SDK", value: "sfa", },
+  ]}
+>
+<TabItem
+  value="pnp"
+>
+
+```typescript
+import * as WebBrowser from "@toruslabs/react-native-web-browser";
+import EncryptedStorage from "react-native-encrypted-storage";
+import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK, OpenloginUserInfo } from "@web3auth/react-native-sdk";
+import "@ethersproject/shims";
+import { ethers } from "ethers";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+const [provider, setProvider] = useState<IProvider | null>(null);
+
+const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+  config: {
+    chainConfig,
+  },
+});
+
+const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
+  clientId,
+  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
+});
+
+await ethereumPrivateKeyProvider.setupProvider(web3auth.privKey);
+
+setProvider(ethereumPrivateKeyProvider);
+```
+
+</TabItem>
+
+<TabItem
+  value="sfa"
+>
+
+```typescript
+import EncryptedStorage from "react-native-encrypted-storage";
+import "@ethersproject/shims";
+import Web3Auth from "@web3auth/single-factor-auth-react-native";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { ethers } from "ethers";
+
+const [provider, setProvider] = useState<IProvider | null>(null);
+
+const web3auth = new Web3Auth(EncryptedStorage, {
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+});
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+await web3auth.init(privateKeyProvider);
+setProvider(web3auth.provider);
+```
+
+</TabItem>
+</Tabs>

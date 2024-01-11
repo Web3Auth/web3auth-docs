@@ -1,0 +1,30 @@
+```dart
+// Use codes from Initialization here,
+// and replace the `Widget build` from the below code:
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+            child:
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              // Get Balance
+              ElevatedButton(
+                onPressed: () async {
+                  // highlight-start
+                  final prefs = await SharedPreferences.getInstance();
+                  final privateKey = prefs.getString('privateKey') ?? '0';
+                  final credentials = EthPrivateKey.fromHex(privateKey);
+                  final client = Web3Client(rpcUrl, Client());
+                  final credentials = EthPrivateKey.fromHex(privateKey);
+                  final address = credentials.address;
+                  final balance = await client.getBalance(address);
+                  debugPrint("Balance, ${balance}");
+                  // highlight-end
+                },
+                child: const Text('Get Balance'),
+              ),
+            ])));
+  }
+
+```
