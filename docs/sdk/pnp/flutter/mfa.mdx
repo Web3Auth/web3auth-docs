@@ -14,7 +14,7 @@ the device, social, backup factor (seed phrase), and password factors to guarant
 is enabled, and your keys are divided into three shares for off-chain multi-sig, making the key self-custodial. With backup factors, you can easily
 recover your account if you lose access to your original device or helps login into a new device.
 
-:::note
+:::note Minimum Growth plan required
 
 This is a paid feature and the the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the
 **Growth Plan**. You can use this feature in the development environment for free.
@@ -30,6 +30,13 @@ can enable or disable a backup factor and change their order. Currently, there a
 - `optional`: presents the MFA screen on every login, but you can skip it
 - `mandatory`: make it mandatory to set up MFA after login
 - `none`: skips the MFA setup screen
+
+:::caution Note
+
+If you are using default verifiers, your users may have set up MFA on other dApps that also use default Web3Auth verifiers. In this case, the MFA
+screen will continue to appear if the user has enabled MFA on other dApps. This is because MFA cannot be turned off once it is enabled.
+
+:::
 
 ```dart
 Web3AuthFlutter.login(LoginParams(
@@ -81,6 +88,13 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
 ```
 
 ## Using the `mfaSettings` to configure MFA Order
+
+:::note Minimum SCALE plan required
+
+This is a paid feature and the the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the **SCALE
+Plan**. You can use this feature in the development environment for free.
+
+:::
 
 You can configure the order of MFA or enable/disable MFA type by passing the `mfaSettings` object in `Web3AuthOptions`.
 

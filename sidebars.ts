@@ -97,11 +97,6 @@ const sidebars: SidebarsConfig = {
         "pnp/features/dapp-share",
       ],
     },
-    {
-      type: "link",
-      label: "Integration Builder",
-      href: "/integration-builder",
-    },
     "pnp/going-live",
     {
       type: "category",

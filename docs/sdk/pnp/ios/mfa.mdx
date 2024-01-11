@@ -11,7 +11,7 @@ import Tabs from "@theme/Tabs";
 The Multi Factor Authentication feature refers to the ability of the user to create a backup share (recovery phrase). This helps them login into a new
 device and also to recover their account if they lose their original device.
 
-:::note
+:::note Minimum Growth plan required
 
 This is a paid feature and the the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the
 **Growth Plan**. You can use this feature in the development environment for free.
@@ -25,6 +25,13 @@ You can set the mfaLevel within the `loginParams` to customize when mfa screen s
   `mfaLevel = MFALevel.OPTIONAL`
 - **`mandatory`** - Setting mfaLevel to mandatory will make it mandatory for user to setup MFA after login. `mfaLevel = MFALevel.MANDATORY`
 - **`none`** - Setting mfaLevel to none will skip the mfa setup screen totally. `mfaLevel = MFALevel.NONE`
+
+:::caution Note
+
+If you are using default verifiers, your users may have set up MFA on other dApps that also use default Web3Auth verifiers. In this case, the MFA
+screen will continue to appear if the user has enabled MFA on other dApps. This is because MFA cannot be turned off once it is enabled.
+
+:::
 
 ```swift
 Web3Auth().login(W3ALoginParams(loginProvider: provider, mfaLevel = MFALevel.MANDATORY))
@@ -82,6 +89,13 @@ class ViewModel: ObservableObject {
 ```
 
 ## Using the `mfaSettings` to configure MFA Order
+
+:::note Minimum SCALE plan required
+
+This is a paid feature and the the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the **SCALE
+Plan**. You can use this feature in the development environment for free.
+
+:::
 
 You can configure the order of MFA or enable/disable MFA type by passing the `mfaSettings` object in `Web3AuthOptions`.
 
