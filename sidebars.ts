@@ -253,8 +253,6 @@ const sidebars: SidebarsConfig = {
             // "connect-blockchain/skale",
             // "connect-blockchain/polymesh",
           ],
-          collapsible: true,
-          collapsed: false,
         },
         {
           type: "category",
@@ -266,7 +264,7 @@ const sidebars: SidebarsConfig = {
         "connect-blockchain/xrpl",
         {
           type: "category",
-          label: "Non EVM Chains",
+          label: "Other Chains",
           items: [
             "connect-blockchain/other/starkex",
             "connect-blockchain/other/starknet",
