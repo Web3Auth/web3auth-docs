@@ -23,9 +23,10 @@ functionalities. At the same time, you need to tell the bundler to ignore the mi
 
 In this guide, we have added instructions of adding the polyfills of some of the most commonly used web frameworks:
 
-- [React](#react)
+- [React](#react-create-react-app)
 - [Angular](#angular)
 - [Vue.js](#vuejs)
+- [Gatsby](#gatsby)
 
 ## React (create-react-app)
 
@@ -227,4 +228,58 @@ module.exports = defineConfig({
     );
   },
 });
+```
+
+## Gatsby
+
+#### Can’t resolve object.assign/polyfill ?
+
+- Check for the missing libraries in your build and included packages, and accordingly polyfill them. For Web3Auth, you just need to polyfill the
+  `buffer` and `process` libraries
+
+```bash npm2yarn
+npm install --save-dev buffer process
+```
+
+:::warning
+
+There might be a possibility that you might need to polyfill more libraries, in case you're using any other blockchain library alongside Web3Auth that
+requires them. Generally the libraries like `crypto-browserify`, `stream-browserify`, `browserify-zlib`, `assert`, `stream-http`, `https-browserify`,
+`os-browserify`, `url` are the ones that might be required. `crypto-browserify` and `stream-browserify` being the most common polyfills.
+
+:::
+
+- Add the following lines to `gatsby-node.js`
+
+```tsx
+exports.onCreateWebpackConfig = ({ actions, plugins, getConfig }) => {
+  const webpack = require("webpack");
+  const path = require("path");
+  const config = getConfig();
+  if (config.externals && config.externals[0]) {
+    config.externals[0]["node:crypto"] = require.resolve("crypto-browserify");
+  }
+  actions.setWebpackConfig({
+    ...config,
+    resolve: {
+      fallback: {
+        crypto: false,
+        stream: false,
+        assert: require.resolve("assert/"),
+        http: false,
+        https: false,
+        os: false,
+        url: false,
+        zlib: false,
+        "object.assign/polyfill": path.resolve("./node_modules/object.assign/polyfill.js"),
+      },
+    },
+    plugins: [
+      plugins.provide({ process: "process/browser" }),
+      new webpack.ProvidePlugin({
+        Buffer: ["buffer", "Buffer"],
+      }),
+    ],
+  });
+};
 ```
