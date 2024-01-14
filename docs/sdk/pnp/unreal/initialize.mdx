@@ -33,13 +33,17 @@ The Web3Auth Constructor takes a class `Web3AuthOptions` as input. This class ha
 
 <TabItem value="table">
 
-| Parameter     | Type                              | Mandatory | Description                                                                                                                                        |
-| ------------- | --------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `clientId`    | `string`                          | Yes       | Your Web3Auth Project ID                                                                                                                           |
-| `network`     | Web3Auth Network                  | Yes       | Network to run Web3Auth, either MAINNET, TESTNET or CYAN                                                                                           |
-| `redirectUrl` | `Uri`                             | No        | URL that Web3Auth will redirect API responses, default is `null`                                                                                   |
-| `whiteLabel`  | `WhiteLabelData`                  | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer [WhiteLabel](/whitelabel) section for more info. |
-| `loginConfig` | `TMap<FString, FLoginConfigItem>` | No        | A configuration optional object to use custom authentication. Refer [Custom Authentication](/custom-authentication) for more info.                 |
+| Parameter        | Type                              | Mandatory | Description                                                                                                                                |
+| ---------------- | --------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `clientId`       | `string`                          | Yes       | The Client ID of your Web3Auth Application.                                                                                                |
+| `redirectUrl`    | `string`                          | Yes       | The Redirect URL of your Web3Auth Application.                                                                                             |
+| `network`        | `FNetwork`                        | No        | The Network of your Web3Auth Application. Defaults to `FNetwork::Mainnet`. MAINNET, TESTNET, CYAN, AQUA, SAPPHIRE_DEVNET, SAPPHIRE_MAINNET |
+| `whiteLabel`     | `FWhiteLabelData`                 | No        | The White Label Data of your Web3Auth Application.                                                                                         |
+| `loginConfig`    | `TMap<FString, FLoginConfigItem>` | No        | The Login Config of your Web3Auth Application.                                                                                             |
+| `chainNamespace` | `FChainNamespace`                 | No        | The Chain Namespace of your Web3Auth Application.                                                                                          |
+| `useCoreKitKey`  | `bool`                            | No        | Whether to use CoreKit Key for authentication.                                                                                             |
+| `mfaSettings`    | `FMfaSettings`                    | No        | The MFA Settings of your Web3Auth Application.                                                                                             |
+| `sessionTime`    | `int`                             | No        | The Session Time of your Web3Auth Application.                                                                                             |
 
 </TabItem>
 
@@ -64,11 +68,25 @@ struct FWeb3AuthOptions
 		FNetwork network;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        FBuildEnv buildEnv;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FWhiteLabelData whiteLabel;
 
 	UPROPERTY(BlueprintReadWrite)
 		TMap<FString, FLoginConfigItem> loginConfig;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        FChainNamespace chainNamespace;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        bool useCoreKitKey;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    	FMfaSettings mfaSettings;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        int32 sessionTime = 86400;
 
 	FWeb3AuthOptions() {};
 
@@ -77,10 +95,21 @@ struct FWeb3AuthOptions
 		redirectUrl = other.redirectUrl;
 		sdkUrl = other.sdkUrl;
 		network = other.network;
+		buildEnv = other.buildEnv;
 		whiteLabel = other.whiteLabel;
 		loginConfig = other.loginConfig;
+		chainNamespace = other.chainNamespace;
+        useCoreKitKey = other.useCoreKitKey;
+        mfaSettings = other.mfaSettings;
+        sessionTime = other.sessionTime;
 	}
 
+};
+
+UENUM(BlueprintType)
+enum class FNetwork : uint8
+{
+	MAINNET = 0, TESTNET = 1, CYAN = 2, AQUA = 3, SAPPHIRE_DEVNET = 4, SAPPHIRE_MAINNET = 5
 };
 ```
 

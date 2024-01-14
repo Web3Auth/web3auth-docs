@@ -30,9 +30,7 @@ This is a paid feature and the the minimum [pricing plan](https://web3auth.io/pr
 
 :::
 
-## Arguments
-
-### `MFALevel`
+## `MFALevel`
 
 ```c
 UENUM(BlueprintType)
@@ -45,6 +43,61 @@ enum class FMFALevel : uint8
 };
 ```
 
-## Usage
+### Usage
 
 ![Unreal Blueprint MFA Options](/content-hub/sdk/unreal/mfa.png)
+
+## `MFASettings`
+
+:::note Minimum SCALE plan required
+
+This is a paid feature and the the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the **SCALE
+Plan**. You can use this feature in the development environment for free.
+
+:::
+
+```c
+USTRUCT(BlueprintType)
+struct FMfaSettings
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    	FMfaSetting deviceShareFactor;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    	FMfaSetting backUpShareFactor;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        FMfaSetting socialBackupFactor;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        FMfaSetting passwordFactor;
+
+	FMfaSettings() {};
+
+	void operator= (const FMfaSettings& other) {
+		deviceShareFactor = other.deviceShareFactor;
+		backUpShareFactor = other.backUpShareFactor;
+		socialBackupFactor = other.socialBackupFactor;
+		passwordFactor = other.passwordFactor;
+	}
+
+	bool operator==(const FMfaSettings& other) const
+    {
+    if (deviceShareFactor == other.deviceShareFactor &&
+	    backUpShareFactor == other.backUpShareFactor  &&
+	    socialBackupFactor == other.socialBackupFactor &&
+	    passwordFactor == other.passwordFactor)
+		{
+			return true;
+		}
+	return false;
+    }
+
+};
+```
+
+### Usage
+
+![Unreal Blueprint MFA Settings Options](/content-hub/sdk/unreal/unreal-mfa-settings.png)
