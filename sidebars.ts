@@ -404,10 +404,22 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/polygon/unity",
               ],
             },
+            {
+              type: "category",
+              label: "Polymesh",
+              link: { type: "doc", id: "connect-blockchain/evm/polymesh/polymesh" },
+              items: [
+                "connect-blockchain/evm/polymesh/web",
+                "connect-blockchain/evm/polymesh/android",
+                "connect-blockchain/evm/polymesh/ios",
+                "connect-blockchain/evm/polymesh/react-native",
+                "connect-blockchain/evm/polymesh/flutter",
+                "connect-blockchain/evm/polymesh/unity",
+              ],
+            },
             // "connect-blockchain/songbird",
             // "connect-blockchain/zkatana",
             // "connect-blockchain/skale",
-            // "connect-blockchain/polymesh",
           ],
         },
         {
