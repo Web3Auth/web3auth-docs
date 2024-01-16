@@ -1,10 +1,10 @@
 ---
-title: Integrate Web3Auth with the Celo Blockchain
-sidebar_label: Celo
-image: "content-hub/guides/banners/celo.png"
+title: Integrate Web3Auth with the Cronos Blockchain in JavaScript
+sidebar_label: Web
+image: "content-hub/guides/banners/cronos.png"
 displayed_sidebar: docs
-keywords: [celo, web3auth, authentication, blockchain]
-description: "Integrate Web3Auth with the Celo Blockchain | Documentation - Web3Auth"
+keywords: [cronos, web3auth, authentication, blockchain]
+description: "Integrate Web3Auth with the Cronos Blockchain in JavaScript | Documentation - Web3Auth"
 ---
 
 import InstallationSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-installation.mdx";
@@ -24,28 +24,31 @@ import FetchUserPrivateKeySnippet from "@site/src/common/docs/web-connect-blockc
 import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa-tkey.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Integrate Web3Auth with the Cronos Blockchain in JavaScript"
+  description="Integrate Web3Auth with the Cronos Blockchain in JavaScript | Documentation - Web3Auth"
+  image="https://web3auth.io/docs/content-hub/guides/banners/cronos.png"
+  slug="/connect-blockchain/evm/cronos/web"
+/>
 
 While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider, similar to the
 [Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html). This provider can be used with libraries like
 [`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html), [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
-[Celo](https://celo.org/) blockchain calls like getting the user's `account`, fetching `balance`, `sign transaction`, `send transaction`, `read` from
-and `write` to the smart contract, etc. We have highlighted a few here to get you started quickly on that.
-
-:::info
-
-This reference is for the `Web`, however, you can use Celo on `Android`, `iOS`, `React Native`, `Flutter`, & `Unity` as well. Please follow our
-reference for [Ethereum](/connect-blockchain/ethereum/), and change the RPC Provider URL & configurations corresponding to Celo.
-
-:::
+[Cronos](https://cronos.org/) blockchain calls like getting the user's `account`, fetching `balance`, `sign transaction`, `send transaction`, `read`
+from and `write` to the smart contract, etc. We have highlighted a few here to get you started quickly on that.
 
 ## Installation
 
-To interact with the Celo blockchain, you can use either [web3.js](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html) or
-[ethers.js](https://docs.ethers.io/v5/getting-started/) libraries with Web3Auth.
+To interact with the Cronos blockchain, you can use either library with Web3Auth.
 
 <InstallationSnippet />
 
-## Initializing Provider (Celo)
+## Initializing Provider
+
+Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible
+provider as **`web3auth.provider`** after successful authentication.
 
 ### Getting the `chainConfig`
 
@@ -63,14 +66,14 @@ To interact with the Celo blockchain, you can use either [web3.js](https://web3j
 ```typescript
 const chainConfig = {
   chainNamespace: "eip155",
-  chainId: "0xa4ec", // hex of 42220, Celo mainnet
-  rpcTarget: "https://rpc.ankr.com/celo",
+  chainId: "0x19", // hex of 25, cronos mainnet
+  rpcTarget: "https://rpc.cronos.org",
   // Avoid using public rpcTarget in production.
   // Use services like Infura, Quicknode etc
-  displayName: "Celo Mainnet",
-  blockExplorer: "https://explorer.celo.org",
-  ticker: "CELO",
-  tickerName: "CELO",
+  displayName: "Cronos Mainnet",
+  blockExplorer: "https://cronoscan.com/",
+  ticker: "CRO",
+  tickerName: "CRO",
 };
 ```
 
@@ -83,14 +86,14 @@ const chainConfig = {
 ```typescript
 const chainConfig = {
   chainNamespace: "eip155",
-  chainId: "0xaef3", // hex of 44787, celo testnet
-  rpcTarget: "https://rpc.ankr.com/celo",
+  chainId: "0x152", // hex of 338, cronos testnet
+  rpcTarget: "https://rpc-t3.cronos.org/",
   // Avoid using public rpcTarget in production.
   // Use services like Infura, Quicknode etc
-  displayName: "Celo Testnet",
-  blockExplorer: "https://alfajores-blockscout.celo-testnet.org",
-  ticker: "CELO",
-  tickerName: "CELO",
+  displayName: "Cronos Testnet",
+  blockExplorer: "https://cronoscan.com/",
+  ticker: "CRO",
+  tickerName: "CRO",
 };
 ```
 
