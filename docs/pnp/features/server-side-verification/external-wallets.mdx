@@ -115,7 +115,7 @@ const jwtDecoded = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] }
 
 // Incase of Non-Torus Users
 // Checking Wallet's `publicAddress` against the decoded JWT wallet's address
-if ((jwtDecoded.payload as any).wallets[0].address === publicAddress) {
+if ((jwtDecoded.payload as any).wallets[0].address.toLowerCase() === publicAddress.toLowerCase()) {
   // Verified
   res.status(200).json({name: 'Verification Successful'})
 } else {
