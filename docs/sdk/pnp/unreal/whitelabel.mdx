@@ -32,14 +32,16 @@ This is a paid feature and the the minimum [pricing plan](https://web3auth.io/pr
 
 <TabItem value="table">
 
-| Parameter         | Type               | Mandatory | Description                                       |
-| ----------------- | ------------------ | --------- | ------------------------------------------------- |
-| `name`            | `String`           | No        | Name of your application                          |
-| `logoLight`       | `String`           | No        | Light logo for dark background                    |
-| `logoDark`        | `String`           | No        | Dark logo for light background                    |
-| `defaultLanguage` | `String`           | No        | Default translation language to be used           |
-| `dark`            | `Boolean`          | No        | If true, enables dark mode. Default is light mode |
-| `theme`           | `Map<String, Any>` | No        | Whitelabel theme                                  |
+| Parameter         | Type                     | Mandatory | Description                                                                                                                                                                                                                                                                                                                                                             |
+| ----------------- | ------------------------ | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `appName`         | `string`                 | Yes       | The name of your dApp.                                                                                                                                                                                                                                                                                                                                                  |
+| `logoLight`       | `string`                 | Yes       | The URL of the logo for light mode.                                                                                                                                                                                                                                                                                                                                     |
+| `logoDark`        | `string`                 | Yes       | The URL of the logo for dark mode.                                                                                                                                                                                                                                                                                                                                      |
+| `defaultLanguage` | `FLanguage`              | No        | Default Language to use. <br/> Choose from: <ul><li>`FLanguage::en` - English</li><li>`FLanguage::de` - German</li><li>`FLanguage::ja` - Japanese</li><li>`FLanguage::ko` - Korean</li><li>`FLanguage::zh` - Mandarin</li><li>`FLanguage::es` - Spanish</li><li>`FLanguage::fr` - French</li><li>`FLanguage::pt` - Portuguese</li><li>`FLanguage::nl` - Dutch</li></ul> |
+| `mode`            | `FThemeModes`            | No        | Choose between `auto`, `light` or `dark` modes.                                                                                                                                                                                                                                                                                                                         |
+| `theme`           | `TMap<FString, FString>` | No        | The theme for your dApp.                                                                                                                                                                                                                                                                                                                                                |
+| `appUrl`          | `string`                 | No        | The URL of your dApp.                                                                                                                                                                                                                                                                                                                                                   |
+| `useLogoLoader`   | `bool`                   | No        | Use the logo loader for your dApp.                                                                                                                                                                                                                                                                                                                                      |
 
 </TabItem>
 
@@ -52,7 +54,7 @@ struct FWhiteLabelData
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString name;
+		FString appName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FString logoLight;
@@ -61,23 +63,31 @@ struct FWhiteLabelData
 		FString logoDark;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString defaultLanguage;
+    	FLanguage defaultLanguage = FLanguage::en;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool dark;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    	FThemeModes mode;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TMap<FString, FString> theme;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    	FString appUrl;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    	bool useLogoLoader;
+
 	FWhiteLabelData() {};
 
 	void operator= (const FWhiteLabelData& other) {
-		name = other.name;
+		appName = other.appName;
 		logoLight = other.logoLight;
 		logoDark = other.logoDark;
 		defaultLanguage = other.defaultLanguage;
-		dark = other.dark;
+		mode = other.mode;
 		theme = other.theme;
+		appUrl = other.appUrl;
+		useLogoLoader = other.useLogoLoader;
 	}
 
 };
@@ -89,4 +99,4 @@ struct FWhiteLabelData
 
 # Example
 
-![Unreal Whitelabel](/content-hub/sdk/unreal/whitelable.png)
+![Unreal Whitelabel](/content-hub/sdk/unreal/unreal-whitelable-data.png)
