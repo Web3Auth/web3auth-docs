@@ -417,9 +417,21 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/polymesh/unity",
               ],
             },
+            {
+              type: "category",
+              label: "SKALE",
+              link: { type: "doc", id: "connect-blockchain/evm/skale/skale" },
+              items: [
+                "connect-blockchain/evm/skale/web",
+                "connect-blockchain/evm/skale/android",
+                "connect-blockchain/evm/skale/ios",
+                "connect-blockchain/evm/skale/react-native",
+                "connect-blockchain/evm/skale/flutter",
+                "connect-blockchain/evm/skale/unity",
+              ],
+            },
             // "connect-blockchain/songbird",
             // "connect-blockchain/zkatana",
-            // "connect-blockchain/skale",
           ],
         },
         {
