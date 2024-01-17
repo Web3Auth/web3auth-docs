@@ -460,7 +460,7 @@ const config: Config = {
           },
           {
             from: "/connect-blockchain/klaytn",
-            to: "/connect-blockchain/evm/klaytn",
+            to: "/connect-blockchain/evm/klatyn/",
           },
           {
             from: "/connect-blockchain/flare",
