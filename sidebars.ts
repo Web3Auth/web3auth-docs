@@ -443,7 +443,19 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/songbird/unity",
               ],
             },
-            // "connect-blockchain/zkatana",
+            {
+              type: "category",
+              label: "zKatana",
+              link: { type: "doc", id: "connect-blockchain/evm/zkatana/zkatana" },
+              items: [
+                "connect-blockchain/evm/zkatana/web",
+                "connect-blockchain/evm/zkatana/android",
+                "connect-blockchain/evm/zkatana/ios",
+                "connect-blockchain/evm/zkatana/react-native",
+                "connect-blockchain/evm/zkatana/flutter",
+                "connect-blockchain/evm/zkatana/unity",
+              ],
+            },
           ],
         },
         {
