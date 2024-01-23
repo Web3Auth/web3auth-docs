@@ -14,6 +14,7 @@ import * as htmlQuickStart from "./modalHTMLQuickStart.mdx";
 import * as nextQuickStart from "./modalNextQuickStart.mdx";
 import * as reactQuickStart from "./modalReactQuickStart.mdx";
 import * as vueQuickStart from "./modalVueQuickStart.mdx";
+import * as nuxtQuickStart from "./modalNuxtQuickStart.mdx";
 
 const STEPS = toSteps({
   reactQuickStart,
@@ -31,6 +32,7 @@ const STEPS = toSteps({
   htmlQuickStart,
   vueBundlerIssues,
   angularBundlerIssues,
+  nuxtQuickStart,
 });
 
 export default STEPS;

@@ -12,7 +12,8 @@ export const flutter = "Flutter";
 export const unity = "Unity";
 export const unreal = "Unreal";
 export const nodejs = "Node.js";
-export const weblist = [reactJS, angular, vue, nextjs];
+export const nuxt = "Nuxt";
+export const weblist = [reactJS, angular, vue, nextjs, nuxt];
 
 export const pnp = "Plug and Play";
 export const pnpwebmodal = "Plug and Play Web Modal SDK";
