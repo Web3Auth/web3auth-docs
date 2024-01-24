@@ -13,10 +13,10 @@ var privateKey = fs.readFileSync("privateKey.pem");
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig: {
-      chainId: "0x5",
-      rpcTarget: "https://rpc.ankr.com/eth_goerli",
-      displayName: "goerli",
-      blockExplorer: "https://goerli.etherscan.io/",
+      chainId: "0xaa36a7",
+      rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+      displayName: "Ethereum Sepolia",
+      blockExplorer: "https://sepolia.etherscan.io/",
       ticker: "ETH",
       tickerName: "Ethereum",
     },
@@ -55,7 +55,7 @@ const connect = async () => {
         exp: Math.floor(Date.now() / 1000) + 60 * 60,
       },
       privateKey,
-      { algorithm: "RS256", keyid: "1bb9605c36e69386830202b2d" }
+      { algorithm: "RS256", keyid: "1bb9605c36e69386830202b2d" },
     ), // or replace it with your newly created unused JWT Token.
   });
   const ethPrivateKey = await web3authNodeprovider.request({ method: "eth_private_key" });
