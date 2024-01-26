@@ -54,7 +54,9 @@ class ViewModel: ObservableObject {
             isLoading = true
             navigationTitle = "Loading"
         })
-        web3Auth = await Web3Auth()
+        web3Auth = await Web3Auth(W3AInitParams(
+            clientId: clientId, network: network
+        ))
         await MainActor.run(body: {
             if self.web3Auth?.state != nil {
                 user = web3Auth?.state
@@ -68,9 +70,10 @@ class ViewModel: ObservableObject {
     func login(provider: Web3AuthProvider) {
         Task {
             do {
-                let result = try await Web3Auth().login(
+                let result = try await web3Auth.login(
 					W3ALoginParams(
-						loginProvider: provider, // can be .GOOGLE, .FACEBOOK, .APPLE etc
+                        // provider can be .GOOGLE, .FACEBOOK, .APPLE etc
+						loginProvider: provider,
 						// highlight-next-line
                         mfaLevel: MFALevel.MANDATORY
 					))
@@ -115,9 +118,9 @@ You can configure the order of MFA or enable/disable MFA type by passing the `mf
 
 | Parameter   | Type   | Mandatory | Description            |
 | ----------- | ------ | --------- | ---------------------- |
-| `enable`    | `bool` | Yes       | Enable/Disable MFA     |
-| `priority`  | `int`  | No        | Priority of MFA        |
-| `mandatory` | `bool` | No        | Mandatory/Optional MFA |
+| `enable`    | `Bool` | Yes       | Enable/Disable MFA     |
+| `priority`  | `Int?` | No        | Priority of MFA        |
+| `mandatory` | `Bool?`| No        | Mandatory/Optional MFA |
 
 </TabItem>
 
@@ -159,38 +162,40 @@ You can configure the order of MFA or enable/disable MFA type by passing the `mf
 </Tabs>
 
 ```swift
-        let result = try await Web3Auth(.init(
-            clientId: clientId,
-            network: network,
-            loginConfig: [
-                TypeOfLogin.google.rawValue:
-                        .init(
-                            verifier: "w3a-agg-example",
-                            typeOfLogin: .google,
-                            name: "Web3Auth-Aggregate-Verifier-Google-Example",
-                            clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
-                            verifierSubIdentifier: "w3a-google"
-                        )
-            ],
-            whiteLabel: W3AWhiteLabelData(
-                    appName: "Web3Auth Stub",
-                    logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
-                    logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
-                    defaultLanguage: .en, // en, de, ja, ko, zh, es, fr, pt, nl
-                    mode: .dark,
-                    theme: ["primary": "#d53f8c"]),
+let result = try await Web3Auth(
+    W3AInitParams(
+        clientId: "YOUR_CLIENT_ID",
+        network: .sapphire_devnet,
+        loginConfig: [
+            TypeOfLogin.google.rawValue: .init(
+                // Get it from Web3Auth Dashboard
+                verifier: "YOUR_VERIFIER_ID",
+                typeOfLogin: .google,
+                name: "Web3Auth-Aggregate-Verifier-Google-Example",
+                clientId: "YOUR_GOOGLE_CLIENT_ID",
+                // Get it from Web3Auth Dashboard
+                verifierSubIdentifier: "YOUR_VERIFIER_SUB_ID"
+            )
+        ],
+        whiteLabel: W3AWhiteLabelData(
+            appName: "Web3Auth Stub",
+            logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
+            logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
+            defaultLanguage: .en, // en, de, ja, ko, zh, es, fr, pt, nl
+            mode: .dark,
+            theme: ["primary": "#d53f8c"]),
             mfaSettings: MfaSettings(
                 deviceShareFactor: MfaSetting(enable: true, priority: 1),
                 backUpShareFactor: MfaSetting(enable: true, priority: 2),
                 socialBackupFactor: MfaSetting(enable: true, priority: 3),
                 passwordFactor: MfaSetting(enable: true, priority: 4)
-            )
-        )).login(
-            W3ALoginParams(
-            loginProvider: .GOOGLE,
-            dappShare: nil,
-            extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: nil, client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: nil, isVerifierIdCaseSensitive: nil, additionalParams: nil),
+        )
+    )).login(
+        W3ALoginParams(
+        loginProvider: .GOOGLE,
+        dappShare: nil,
+        extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: nil, client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: nil, isVerifierIdCaseSensitive: nil, additionalParams: nil),
             mfaLevel: .DEFAULT,
             curve: .SECP256K1
-        ))
+    ))
 ```
