@@ -8,13 +8,13 @@ description: "Web3Auth PnP iOS SDK - Using Custom Authentication | Documentation
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-To use custom authentication (Using Social providers or Login providers like Auth0, AWS Cognito, Firebase etc. or even your own custom JWT login) with
-the Web3Auth Swift(iOS) SDK. You can add the configuration to the `loginConfig` field of the `Web3AuthOptions` object.
+To use custom authentication (Using Social providers or Login providers like Auth0, AWS Cognito, Firebase etc. or even your own custom JWT login) you can
+add the configuration to the `loginConfig` parameter of the `W3AInitParams` object during the initialization.
 
-The `loginConfig` field is a key value map. The key should be one of the `Web3AuthProvider` in its string form, and the value should be a
-`W3ALoginConfig` struct instance.
+The `loginConfig` parameter is a key value map. The key should be one of the `Web3AuthProvider` in its string form, and the value should be a
+`W3ALoginConfig` struct.
 
-First, configure your own verifier in the Web3Auth Dashboard to use custom authentication.
+To use custom authentication, first you'll need to configure your own verifier in the Web3Auth Dashboard in Custom Authentication section.
 
 :::note
 
@@ -37,7 +37,7 @@ Check out how to create a **[Custom Verifier](/auth-provider-setup/verifiers)** 
 
 :::
 
-Then, you should specify the details of your verifier in the `W3ALoginConfig` struct, the details of this struct are as follows:
+Once the custom verifier is created, you need to specify the details of your verifier in the `W3ALoginConfig` struct, the parameters of the struct are as follows:
 
 ## `W3ALoginConfig`
 
@@ -55,21 +55,21 @@ Then, you should specify the details of your verifier in the `W3ALoginConfig` st
 
 <TabItem value="table">
 
-| Parameter             | Type                | Mandatory | Description                                                                                                                                                                                                                                                           |
-| --------------------- | ------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| verifier              | String              | Yes       | The name of the verifier that you have registered in Web3Auth Dashboard.                                                                                                                                                                                              |
-| typeOfLogin           | Enum`<TypeOfLogin>` | Yes       | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose google, a google sign-in flow will be used. If you choose jwt, which you should be providing your own JWT token, no sign-in flow will be presented. |
-| clientId              | String              | Yes       | The Web3Auth ClientId you want to use for this login provider.                                                                                                                                                                                                        |
-| name                  | String?             | No        | Name of your verifier.                                                                                                                                                                                                                                                |
-| description           | String?             | No        | Description of this login flow.                                                                                                                                                                                                                                       |
-| verifierSubIdentifier | String?             | No        | The name of the field in the JWT that should be used as the unique user ID of the JWT. Should be same as the one you used in the verifier config.                                                                                                                     |
-| logoHover             | String?             | No        | Logo to be shown on mouse hover.                                                                                                                                                                                                                                      |
-| logoLight             | String?             | No        | Logo to be shown on light background (light theme).                                                                                                                                                                                                                   |
-| logoDark              | String?             | No        | Logo to be shown on dark background (dark theme).                                                                                                                                                                                                                     |
-| mainOption            | Bool?               | No        | Show login button on the main list                                                                                                                                                                                                                                    |
-| showOnModal           | Bool?               | No        | Whether to show the login button on modal or not                                                                                                                                                                                                                      |
-| showOnDesktop         | Bool?               | No        | Whether to show the login button on desktop                                                                                                                                                                                                                           |
-| showOnMobile          | Bool?               | No        | Whether to show the login button on mobile                                                                                                                                                                                                                            |
+| Parameter               | Type                | Mandatory | Description                                                                                                                                                                                                                                                           |
+| ----------------------- | ------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `verifier`              | `String`            | Yes       | The name of the verifier that you have registered in Web3Auth Dashboard.                                                                                                                                                                                              |
+| `typeOfLogin`           | `TypeOfLogin`       | Yes       | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose google, a google sign-in flow will be used. If you choose jwt, which you should be providing your own JWT token, no sign-in flow will be presented. |
+| `clientId`              | `String`            | Yes       | The Web3Auth ClientId you want to use for this login provider.                                                                                                                                                                                                        |
+| `name`                  | `String`            | No        | Name of your verifier.                                                                                                                                                                                                                                                |
+| `description`           | `String`            | No        | Description of this login flow.                                                                                                                                                                                                                                       |
+| `verifierSubIdentifier` | `String`            | No        | The name of the field in the JWT that should be used as the unique user ID of the JWT. Should be same as the one you used in the verifier config.                                                                                                                     |
+| `logoHover`             | `String`            | No        | Logo to be shown on mouse hover.                                                                                                                                                                                                                                      |
+| `logoLight`             | `String`            | No        | Logo to be shown on light background (light theme).                                                                                                                                                                                                                   |
+| `logoDark`              | `String`            | No        | Logo to be shown on dark background (dark theme).                                                                                                                                                                                                                     |
+| `mainOption`            | `Bool?`             | No        | Show login button on the main list                                                                                                                                                                                                                                    |
+| `showOnModal`           | `Bool?`             | No        | Whether to show the login button on modal or not                                                                                                                                                                                                                      |
+| `showOnDesktop`         | `Bool?`             | No        | Whether to show the login button on desktop                                                                                                                                                                                                                           |
+| `showOnMobile`          | `Bool?`             | No        | Whether to show the login button on mobile                                                                                                                                                                                                                            |
 
 </TabItem>
 
@@ -131,19 +131,19 @@ public enum TypeOfLogin: String, Codable {
 
 ```swift title="Usage"
 web3Auth = await Web3Auth(
-          W3AInitParams(
-            clientId:"YOUR_CLIENT_ID",
-            network: .testnet,
-            // highlight-start
-            loginConfig: [
-              Web3AuthProvider.JWT.rawValue: .init(
-                verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard
-                typeOfLogin: TypeOfLogin.google,
-                clientId: "YOUR_GOOGLE_CLIENT_ID",
-              )
-            ]
-            // highlight-end
-          ))
+  W3AInitParams(
+    clientId: "YOUR_CLIENT_ID",
+    network: .sapphire_mainnet,
+    // highlight-start
+    loginConfig: [
+      Web3AuthProvider.JWT.rawValue: .init(
+        verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard
+        typeOfLogin: TypeOfLogin.google,
+        clientId: "YOUR_GOOGLE_CLIENT_ID",
+      )
+    ]
+    // highlight-end
+))
 ```
 
 </TabItem>
@@ -152,19 +152,19 @@ web3Auth = await Web3Auth(
 
 ```swift title="Usage"
 web3Auth = await Web3Auth(
-          W3AInitParams(
-            clientId:"YOUR_CLIENT_ID",
-            network: .testnet,
-            // highlight-start
-            loginConfig: [
-              Web3AuthProvider.JWT.rawValue: .init(
-                verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard
-                typeOfLogin: TypeOfLogin.facebook,
-                clientId: "YOUR_FACEBOOK_CLIENT_ID",
-              )
-            ]
-            // highlight-end
-          ))
+  W3AInitParams(
+    clientId: "YOUR_CLIENT_ID",
+    network: .sapphire_mainnet,
+    // highlight-start
+    loginConfig: [
+      Web3AuthProvider.JWT.rawValue: .init(
+        verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard
+        typeOfLogin: TypeOfLogin.facebook,
+        clientId: "YOUR_FACEBOOK_CLIENT_ID",
+      )
+    ]
+    // highlight-end
+))
 ```
 
 </TabItem>
@@ -173,19 +173,19 @@ web3Auth = await Web3Auth(
 
 ```swift title="Usage"
 web3Auth = await Web3Auth(
-          W3AInitParams(
-            clientId:"YOUR_CLIENT_ID",
-            network: .testnet,
-            // highlight-start
-            loginConfig: [
-              Web3AuthProvider.JWT.rawValue: .init(
-                verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard
-                typeOfLogin: TypeOfLogin.jwt,
-                clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from web3auth dashboard
-              )
-            ]
-            // highlight-end
-          ))
+  W3AInitParams(
+    clientId:"YOUR_CLIENT_ID",
+    network: .sapphire_mainnet,
+    // highlight-start
+    loginConfig: [
+      Web3AuthProvider.JWT.rawValue: .init(
+        verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard
+        typeOfLogin: TypeOfLogin.jwt,
+        clientId: "YOUR_CLIENT_ID", // get it from web3auth dashboard
+      )
+    ]
+    // highlight-end
+))
 ```
 
 </TabItem>
@@ -209,19 +209,19 @@ for enabling login. The `extraLoginOptions` accepts the following parameters:
 
 | Parameter                   | Type      | Description                                                                                                                                  |
 | --------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `domain`                    | `string`  | Your Auth0 account domain such as `example.auth0.com` or `example.mycompany.com` etc. **Use any random string in case of custom JWT login.** |
-| `client_id`                 | `string`  | The Client ID found on your Auth0 Application settings page. **Use web3auth client id in case of custom JWT login.**                         |
-| `redirect_uri`              | `string`  | The default URL where Auth0 will redirect your browser to with the authentication result.                                                    |
-| `leeway`                    | `number`  | The value in seconds used to account for clock skew in JWT expirations.                                                                      |
-| `verifierIdField`           | `string`  | The field in the jwt token that maps to the verifier id.                                                                                     |
-| `isVerifierIdCaseSensitive` | `boolean` | Whether the verifier id field is case sensitive. Defaults to `true`                                                                          |
+| `domain`                    | `String?` | Your Auth0 account domain such as `example.auth0.com` or `example.mycompany.com` etc. **Use any random string in case of custom JWT login.** |
+| `client_id`                 | `String?` | The Client ID found on your Auth0 Application settings page. **Use web3auth client id in case of custom JWT login.**                         |
+| `redirect_uri`              | `String?` | The default URL where Auth0 will redirect your browser to with the authentication result.                                                    |
+| `leeway`                    | `Int?`    | The value in seconds used to account for clock skew in JWT expirations.                                                                      |
+| `verifierIdField`           | `String?`  | The field in the jwt token that maps to the verifier id.                                                                                     |
+| `isVerifierIdCaseSensitive` | `Bool?`    | Whether the verifier id field is case sensitive. Defaults to `true`                                                                          |
 
 </TabItem>
 
 <TabItem value="struct">
 
 ```swift
-public struct ExtraLoginOptions: Codable{
+public struct ExtraLoginOptions: Codable {
   let display: String?
   let prompt: String?
   let max_age: String?
@@ -254,27 +254,29 @@ Auth0 has a special login flow, called the SPA flow. This flow requires a `clien
 
 ```swift
 web3Auth = await Web3Auth(
-          W3AInitParams(
-            clientId:"YOUR_CLIENT_ID",
-            network: .testnet,
-            // Optional loginConfig object
-            //highlight-start
-            loginConfig: [
-              Web3AuthProvider.JWT.rawValue: .init(
-                verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard for auth0 configuration
-                typeOfLogin: TypeOfLogin.jwt,
-                clientId: "YOUR_AUTH0_CLIENT_ID", // auth0's client id, get it from auth0 dashboard
-              )
-            ]
-            //highlight-end
-          )
-        )
+  W3AInitParams(
+    clientId:"YOUR_CLIENT_ID",
+    network: .sapphire_mainnet,
+    // Optional loginConfig object
+    //highlight-start
+    loginConfig: [
+      Web3AuthProvider.JWT.rawValue: .init(
+        verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard for auth0 configuration
+        typeOfLogin: TypeOfLogin.jwt,
+        clientId: "YOUR_AUTH0_CLIENT_ID", // auth0's client id, get it from auth0 dashboard
+      )
+    ]
+    //highlight-end
+  )
+)
 
-let result  = await Web3Auth().login(W3ALoginParams(selectedLoginProvider,
+let result  = await web3Auth.login(W3ALoginParams(selectedLoginProvider,
     // highlight-start
     extraLoginOptions: .init(
-      domain:"https://username.us.auth0.com", // domain of your auth0 app
-       verifierIdField: "sub", // The field in jwt token which maps to verifier id.
+      // Domain of your auth0 app
+      domain:"https://username.us.auth0.com",
+      // The field in jwt token which maps to verifier id
+      verifierIdField: "sub",
     )
     // highlight-end
 ))
@@ -282,44 +284,45 @@ let result  = await Web3Auth().login(W3ALoginParams(selectedLoginProvider,
 
 ### Custom JWT Login
 
-If you're using any other provider like Firebase/ AWS Cognito or deploying your own Custom JWT server, you need to put the jwt token into the
+If you're using any other provider like Firebase, AWS Cognito or deploying your own Custom JWT server, you need to put the jwt token into the
 `id_token` field of the `extraLoginOptions`, additionally, you need to pass over the `domain` field as well, which is mandatory. If you don't have a
 domain, just passover a string in that field.
 
 ```swift
 
 web3Auth = await Web3Auth(
-          W3AInitParams(
-            clientId:"YOUR_CLIENT_ID",
-            network: .testnet,
-            // Optional loginConfig object
-            //highlight-start
-            loginConfig: [
-              Web3AuthProvider.JWT.rawValue: .init(
-                verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard
-                typeOfLogin: TypeOfLogin.jwt,
-                clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from web3auth dashboard
-              )
-            ]
-            //highlight-end
-          )
-        )
+  W3AInitParams(
+    clientId:"YOUR_CLIENT_ID",
+    network: .testnet,
+    // Optional loginConfig object
+    // highlight-start
+    loginConfig: [
+      Web3AuthProvider.JWT.rawValue: .init(
+        verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard
+        typeOfLogin: TypeOfLogin.jwt,
+        clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from web3auth dashboard
+      )
+    ]
+    //highlight-end
+  )
+)
 
-let result  =
-await Web3Auth().login(W3ALoginParams(selectedLoginProvider,
+let result = await web3Auth.login(
+  W3ALoginParams(
+    selectedLoginProvider,
     // highlight-next-line
     extraLoginOptions: .init(domain:"your-domain", id_token: "your_jwt_token")
-))
+  )
+)
 ```
 
 ### Email Passwordless
 
 - To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` field of the `extraLoginOptions`.
 
-  ```swift
-  let result  =
-    await Web3Auth().login(W3ALoginParams(selectedLoginProvider,
-        // highlight-next-line
-        extraLoginOptions: .init(loginHint: "hello@web3auth.io")
-    ))
-  ```
+```swift
+let result = await Web3Auth().login(W3ALoginParams(selectedLoginProvider,
+  // highlight-next-line
+  extraLoginOptions: .init(loginHint: "hello@web3auth.io")
+))
+```
