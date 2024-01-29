@@ -298,6 +298,7 @@ class SolanaProvider {
 
   SolanaProvider(this.solanaClient);
 
+  // highlight-start
   Future<double> getBalance(String address) async {
     final balanceResponse = await solanaClient.rpcClient.getBalance(
       address,
@@ -307,6 +308,7 @@ class SolanaProvider {
     /// token decimals is set to be 9;
     return balanceResponse.value / pow(10, tokenDecimals);
   }
+  // highlight-end
 
    // ..
   // Additional methods
