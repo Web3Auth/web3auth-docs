@@ -127,7 +127,7 @@ const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
 const keyPair = keyring.addFromUri("0x" + privateKey);
 
 const provider = new WsProvider("wss://westend-rpc.polkadot.io"); // testnet
-// const provider = new WsProvider("wss://rpc.polkadot.io"); // mainnet
+// const provider = new WsProvider("wss://rpc.polkadot.io"); // Polkadot Relay Chain
 
 // Create the API and wait until ready
 const api = await ApiPromise.create({ provider });
@@ -159,13 +159,13 @@ const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
 const keyPair = keyring.addFromUri("0x" + privateKey);
 
 const provider = new WsProvider("wss://westend-rpc.polkadot.io"); // testnet
-// const provider = new WsProvider("wss://rpc.polkadot.io"); // mainnet
+// const provider = new WsProvider("wss://rpc.polkadot.io"); // Polkadot Relay Chain
 
 // Create the API and wait until ready
 const api = await ApiPromise.create({ provider });
 
 // Transfer 12345 units to '5Gzhnn1MsDUjMi7S4cN41CfggEVzSyM58LkTYPFJY3wt7o3d'
-const txHash = await api.tx.balances.transfer("5Gzhnn1MsDUjMi7S4cN41CfggEVzSyM58LkTYPFJY3wt7o3d", 12345).signAndSend(keyPair);
+const txHash = await api.tx.balances.transferKeepAlive("5Gzhnn1MsDUjMi7S4cN41CfggEVzSyM58LkTYPFJY3wt7o3d", 12345).signAndSend(keyPair);
 
 console.log("txHash", txHash.toHuman());
 ```
