@@ -231,7 +231,16 @@ const sidebars: SidebarsConfig = {
             "connect-blockchain/ethereum/unity",
           ],
         },
-        "connect-blockchain/solana",
+        {
+          type: "category",
+          label: "Solana",
+          link: { type: "doc", id: "connect-blockchain/solana/solana" },
+          items: [
+            "connect-blockchain/solana/web",
+            "connect-blockchain/solana/flutter",
+          ],
+        },
+
         "connect-blockchain/xrpl",
         {
           type: "category",
