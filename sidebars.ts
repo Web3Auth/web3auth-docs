@@ -237,7 +237,7 @@ const sidebars: SidebarsConfig = {
           link: { type: "doc", id: "connect-blockchain/solana/solana" },
           items: [
             "connect-blockchain/solana/web",
-            "connect-blockchain/ethereum/flutter",
+            "connect-blockchain/solana/flutter",
           ],
         },
 
