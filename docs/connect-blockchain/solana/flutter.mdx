@@ -41,11 +41,11 @@ flutter pub add solana get_it hex
 
 To Initialize the `SolanaClient` we require `rpcUrl` and `websocketUrl`. The `rpcUrl` will provide a gateway & protocol
 to interact with Solana cluster while sending requests and receving response. For this example, we are using `rpcUrl`
-& `websocketUrl` for Mainnet-beta. To interact with Testnet or Devnet, you can simply change the `rpcUrl` and `websocketUrl`.
+& `websocketUrl` for Devnet-beta. To interact with Testnet or Mainnet, you can simply change the `rpcUrl` and `websocketUrl`.
 
 ### Initializing Solana SDK
 
-In the below code block, we'll initialize the `SolanaClient` using the Mainnet-beta rpc and websocket urls. We'll also
+In the below code block, we'll initialize the `SolanaClient` using the Devnet-beta rpc and websocket urls. We'll also
 register the instance in GetIt for it to be accessed anywhere using service locator.
 
 
@@ -63,8 +63,8 @@ class ServiceLocator {
   static Future<void> init() async {
     // highlight-start
     final solanaClient = SolanaClient(
-      rpcUrl: Uri.parse('https://api.mainnet-beta.solana.com'),
-      websocketUrl: Uri.parse('ws://api.mainnet-beta.solana.com'),
+      rpcUrl: Uri.parse('https://api.devnet.solana.com'),
+      websocketUrl: Uri.parse('ws://api.devnet.solana.com'),
     );
      // highlight-end
 
@@ -184,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late final SolanaProvider provider;
   late double balance;
   // highlight-next-line
-  late final TorusUserInfo torusUserInfo;
+  late final dynamic web3AuthInfo;
 
   @override
   void initState() {
@@ -202,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // such as email, name, isMFA enabled. Checkout documentation
       // to know more.
       // highlight-next-line
-      torusUserInfo = await Web3AuthFlutter.getUserInfo();
+      web3AuthInfo = await Web3AuthFlutter.getUserInfo();
 
       // ..
       // Additional codebase
@@ -241,10 +241,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
                   // highlight-start
-                  if (torusUserInfo.email != null) ...[
+                  if (web3AuthInfo.email != null) ...[
                     verticalGap,
                     Text(
-                      torusUserInfo.email!,
+                      web3AuthInfo.email!,
                       style: Theme.of(context).textTheme.bodyLarge,
                     )
                   ],
@@ -260,9 +260,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   // highlight-start
                   OutlinedButton(
                     onPressed: () async {
-                      log(jsonEncode(torusUserInfo.toJson()));
+                     showInfoDialog(
+                        context,
+                        jsonEncode(web3AuthInfo.toJson()),
+                        true,
+                      );
                     },
-                    child: const Text("Log user infor in console"),
+                    child: const Text("Get user info"),
                   ),
                   // highlight-end
                 ],
@@ -327,7 +331,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late final Ed25519HDKeyPair keyPair;
   late final SolanaProvider provider;
   late double balance;
-  late final TorusUserInfo torusUserInfo;
+  late final dynamic web3AuthInfo;
 
   @override
   void initState() {
@@ -583,7 +587,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late final Ed25519HDKeyPair keyPair;
   late final SolanaProvider provider;
   late double balance;
-  late final TorusUserInfo torusUserInfo;
+  late final dynamic web3AuthInfo;
 
   @override
   void initState() {
