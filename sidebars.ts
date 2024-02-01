@@ -319,6 +319,11 @@ const sidebars: SidebarsConfig = {
       href: "/sdk",
     },
     {
+      type: "link",
+      label: "Pregenerate Wallet",
+      href: "/pregenerate-wallet",
+    },
+    {
       Legal: [
         "legal/cookie-policy",
         "legal/privacy-policy",
