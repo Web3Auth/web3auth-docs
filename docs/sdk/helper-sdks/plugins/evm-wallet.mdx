@@ -1,121 +1,82 @@
 ---
-title: Torus EVM Wallet UI Plugin
+title: Torus EVM Wallet Plugin is deprecated, use Wallet Services Plugin now
 displayed_sidebar: sdk
-description: "Web3Auth Plugin - Torus EVM Wallet UI Plugin | Documentation - Web3Auth"
+description: "Torus EVM Wallet UI Plugin is deprecated, use Wallet Services Plugin now - Web3Auth"
 ---
 
 import PluginConfig from "@site/src/common/sdk/pnp/web/_plugin-config.mdx";
-import InitiateTopUp from "@site/src/common/sdk/pnp/web/_plugin-initiate-topup.mdx";
+import ShowCheckout from "@site/src/common/sdk/pnp/web/_plugin-initiate-topup.mdx";
 import ShowWCScanner from "@site/src/common/sdk/pnp/web/_plugin-showwcscanner.mdx";
+import ShowWalletUi from "@site/src/common/sdk/pnp/web/_plugin-show-wallet-ui.mdx";
 import PluginWhitelabelConfig from "@site/src/common/sdk/pnp/web/_plugin-whitelabel-config.mdx";
 import PluginsExample from "@site/src/common/sdk/pnp/web/_plugins-example.mdx";
 
-## [`@web3auth/torus-wallet-connector-plugin`](https://npmjs.com/package/@web3auth/torus-wallet-connector-plugin)
+:::danger
 
-Torus EVM Wallet UI Plugin helps you get the functionalities of the Torus EVM Wallet into your Web3Auth Instance. It helps you use your Web3Auth key
-in the Torus EVM Wallet, making it easier for your end user to make transactions, add money into their wallet and even use it across different
-applications using Torus Wallet.
-
-After initialisation, this plugin you a provider from the Torus EVM Wallet, injecting the Torus Wallet UI into your dApp and helping you make the
-wallet calls directly through it without the need of making your own wallet UI flow.
-
-In this section we'll explore more about how you can use the Torus EVM Wallet UI Plugin for your dApp.
-
-## Installation
-
-#### [`@web3auth/torus-wallet-connector-plugin`](https://www.npmjs.com/package/@web3auth/torus-wallet-connector-plugin)
-
-```bash npm2yarn
-npm install --save @web3auth/torus-wallet-connector-plugin
-```
-
-## Initialisation
-
-Import the `TorusWalletConnectorPlugin` **class** from `@web3auth/torus-wallet-connector-plugin`.
-
-```javascript
-import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
-```
-
-### Assign the `TorusWalletConnectorPlugin` class to a variable
-
-After creating your Web3Auth instance, you need to initialize the Torus Wallet UI Plugin and add it to a class for further usage.
-
-```javascript
-const torusPlugin = new TorusWalletConnectorPlugin(options);
-```
-
-This constructor takes an objects with `torusWalletOpts` & `walletInitOptions` as input.
-
-#### Arguments
-
-<PluginConfig />
-<PluginWhitelabelConfig />
-
-:::info
-
-For additional information on the init options for Torus Wallet, please check the
-[Torus Wallet documentation](https://docs.tor.us/wallet/api-reference/class#init)
+**Torus EVM Wallet Plugin is deprecated now, use Wallet Services Plugin moving forward.**
 
 :::
 
-### Add the `torusPlugin` class to your Web3Auth instance
+### [`@web3auth/wallet-services-plugin`](https://npmjs.com/package/@web3auth/wallet-services-plugin)
 
-After initializing the `torusPlugin`, use the `addPlugin()` function to your Web3Auth instance, you can use the Torus Wallet UI Plugin for your dApp.
+Wallet Services Plugin Enable allows your application to use templated wallet UI screens. Take control of and personalize the wallet interface, and
+optionally, activate an embedded wallet for your users.
+
+## Installation
+
+```bash npm2yarn
+npm install --save @web3auth/wallet-services-plugin
+```
+
+## Initialization
+
+Import the `WalletServicesPlugin` **class** from `@web3auth/wallet-services-plugin`.
+
+```javascript
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
+```
+
+#### Assign the `WalletServicesPlugin` class to a variable
+
+After creating your Web3Auth instance, you need to initialize the Wallet Services Plugin and add it to a class for further usage.
+
+```javascript
+const walletServicesPlugin = new WalletServicesPlugin(options);
+```
+
+This constructor takes an objects with `wsEmbedOpts` & `walletInitOptions` as input.
+
+### Arguments
+
+<PluginConfig />
+
+### Whitelabel
+
+<PluginWhitelabelConfig />
+
+#### Add the `walletServicesPlugin` class to your Web3Auth instance
+
+After initializing the `walletServicesPlugin`, use the `addPlugin()` function to your Web3Auth instance, you can use the Wallet Services Plugin for
+your dApp.
 
 ```
-await web3AuthInstance.addPlugin(torusPlugin);
+web3AuthInstance.addPlugin(walletServicesPlugin);
 ```
 
 ### Example
 
 <PluginsExample />
 
-## Using the Torus EVM Wallet Provider
-
-As soon as you add the `torusPlugin` class to your Web3Auth instance, you have access to the Torus Wallet Provider. You can use this provider to
-access the Torus Wallet UI within your dApp and make RPC calls through that. To use the provider, use the following command:
-
-```
-setWalletProvider((torusPlugin?.proxyProvider as IProvider) || web3auth?.provider);
-```
+## Using Wallet Services Plugin
 
 ### `showWalletConnectScanner()`
 
 <ShowWCScanner />
 
-### `initiateTopup()`
+### `showCheckout()`
 
-<InitiateTopUp />
+<ShowCheckout />
 
-## Additional Reading
+### `showWalletUi()`
 
-### Initialiazing the Torus Plugin with a custom provider
-
-You can also initialize the Torus Wallet UI Plugin with a custom provider. If your dApp is already initiating another provider, you can use that
-provider to initialize the Torus Wallet UI Plugin. This way it will be easier for you to use the Torus Wallet UI Plugin with your dApp.
-
-#### Example
-
-```tsx
-import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
-
-const torusPlugin = new TorusWalletConnectorPlugin({
-  torusWalletOpts: {
-    buttonPosition: "bottom-left",
-  },
-  walletInitOptions: {
-    whiteLabel: {
-      theme: { isDark: true, colors: { primary: "#00a8ff" } },
-      logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-      logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-    },
-    useWalletConnect: true,
-    enableLogging: true,
-  },
-});
-
-torusPlugin.initWithProvider(YOUR_CUSTOM_PROVIDER, userInfo);
-```
-
-#### Know more about how to use the [Torus EVM Wallet Provider](https://docs.tor.us/wallet/api-reference/ethereum-api#provider)
+<ShowWalletUi />

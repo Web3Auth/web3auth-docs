@@ -1,7 +1,7 @@
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-While initializing the plugin, you need to pass on the following parameters to the constructor:
+While initializing the Wallet Services plugin, you need to pass on the following parameters to the constructor:
 
 <Tabs
   defaultValue="table"
@@ -13,19 +13,19 @@ While initializing the plugin, you need to pass on the following parameters to t
 
 <TabItem value="table">
 
-| Parameter           | Type                                                               | Description                                                               | Mandatory |
-| ------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------- | --------- |
-| `torusWalletOpts?`  | `TorusCtorArgs`                                                    | Configuration options for Torus Wallet                                    | No        |
-| `walletInitOptions` | `Partial<TorusParams> & Required<Pick<TorusParams, "whiteLabel">>` | Parameters to customise your Torus Wallet Embed UI within the application | Yes       |
+| Parameter            | Type                     | Description                                                            | Mandatory |
+| -------------------- | ------------------------ | ---------------------------------------------------------------------- | --------- |
+| `wsEmbedOpts?`       | `CtorArgs`               | Configuration options for Wallet Services                              | No        |
+| `walletInitOptions?` | `Partial<WsEmbedParams>` | Parameters to customize your Wallet Services UI within the application | No        |
 
 </TabItem>
 
 <TabItem value="interface">
 
-```tsx
-constructor(options: {
-    torusWalletOpts?: TorusCtorArgs;
-    walletInitOptions: Partial<TorusParams> & Required<Pick<TorusParams, "whiteLabel">>;
+```
+constructor(options?: {
+  wsEmbedOpts?: Partial<CtorArgs>;
+  walletInitOptions?: Partial<WsEmbedParams>;
 });
 ```
 
@@ -33,10 +33,10 @@ constructor(options: {
 
 </Tabs>
 
-#### `torusWalletOpts`
+#### 1. `wsEmbedOpts`
 
-`torusWalletOpts` is an optional parameter that allows you to pass in the configuration options for Torus Wallet. It takes the `TorusCtorArgs` object
-as input which contains the following parameters:
+`wsEmbedOpts` is an optional parameter that allows you to pass in the configuration options for Wallet Services. It takes the `CtorArgs` object as
+input which contains the following parameters:
 
 <Tabs
   defaultValue="table"
@@ -48,51 +48,45 @@ as input which contains the following parameters:
 
 <TabItem value="table">
 
-`TorusCtorArgs`
+`CtorArgs`
 
-| Parameter         | Type                                                              | Description                                                                            | Default Value | Mandatory |
-| ----------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ------------- | --------- |
-| `buttonPosition?` | `enum` - (`bottom-left`, `top-left`, `bottom-right`, `top-right`) | Determines where the torus widget is visible on the page.                              | `bottom-left` | No        |
-| `modalZIndex?`    | `number`                                                          | Z-index of the modal and iframe                                                        | `99999`       | No        |
-| `buttonSize`      | `number`                                                          | Size of the widget button                                                              | `56`          | No        |
-| `apiKey?`         | `string`                                                          | Torus Wallet API Key - Get it from [Web3Auth Dashboard](https://dashboard.web3auth.io) |               | No        |
+| Parameter          | Type     | Description                     |
+| ------------------ | -------- | ------------------------------- |
+| `modalZIndex`      | `number` | Z-index of the modal and iframe |
+| `web3AuthClientId` | `string` | Web3Auth Client ID              |
+| `web3AuthNetwork`  | `string` | Web3auth network to be used.    |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```tsx
-export interface TorusCtorArgs {
-  /**
-   * Determines where the torus widget is visible on the page.
-   * @defaultValue bottom-left
-   */
-  buttonPosition?: BUTTON_POSITION_TYPE;
-
-  /**
-   * Size of the widget button
-   * @defaultValue 56
-   */
-  buttonSize?: number;
-
+export interface CtorArgs {
   /**
    * Z-index of the modal and iframe
    * @defaultValue 99999
    */
   modalZIndex?: number;
-
   /**
-   * Api key
-   * Get yours today at {@link https://developer.tor.us | Dashboard}
+   * You can get your clientId/projectId by registering your
+   * dapp on {@link "https://dashboard.web3auth.io"| developer dashboard}
    */
-  apiKey?: string;
+  web3AuthClientId: string;
+  /**
+   * network specifies the web3auth network to be used.
+   */
+  web3AuthNetwork: OPENLOGIN_NETWORK_TYPE;
 }
 
-declare const BUTTON_POSITION: {
-  readonly BOTTOM_LEFT: "bottom-left";
-  readonly TOP_LEFT: "top-left";
-  readonly BOTTOM_RIGHT: "bottom-right";
-  readonly TOP_RIGHT: "top-right";
+export type OPENLOGIN_NETWORK_TYPE = (typeof OPENLOGIN_NETWORK)[keyof typeof OPENLOGIN_NETWORK];
+export declare const OPENLOGIN_NETWORK: {
+  readonly MAINNET: "mainnet";
+  readonly TESTNET: "testnet";
+  readonly CYAN: "cyan";
+  readonly AQUA: "aqua";
+  readonly CELESTE: "celeste";
+  readonly SAPPHIRE_DEVNET: "sapphire_devnet";
+  readonly SAPPHIRE_MAINNET: "sapphire_mainnet";
 };
 ```
 
@@ -100,13 +94,10 @@ declare const BUTTON_POSITION: {
 
 </Tabs>
 
-#### `walletInitOptions`
+#### 2. `walletInitOptions`
 
-The `walletInitOptions` from Torus Wallet is a required parameter that allows you to customise your Torus Wallet Embed Modal UI within the
-application. It takes the objet `TorusParams` as input which contains multiple parameters mentioned in the
-[Torus Wallet Documentation](https://docs.tor.us/wallet/api-reference/class#init).
-
-Out of those mentioned parameters, the following 3 parameters are important for whitelabeling the plugin:
+The `walletInitOptions` from Wallet Services is an optional parameter that allows you to customise your Wallet Services UI within the application. It
+takes the object `WsEmbedParams` as input which contains multiple parameters that allow you to customise the UI of the plugin.
 
 <Tabs
   defaultValue="table"
@@ -118,41 +109,37 @@ Out of those mentioned parameters, the following 3 parameters are important for 
 
 <TabItem value="table">
 
-`TorusParams`
+`WsEmbedParams`
 
-| Parameter          | Type               | Mandatory | Description                                                                                                                                                                            | Default |
-| ------------------ | ------------------ | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `whiteLabel`       | `WhiteLabelParams` | Yes       | Params to enable whitelabelling of torus website and widget. Know more about whitelabeling options for Torus Wallet [here](https://docs.tor.us/wallet/api-reference/class#whitelabel). | N/A     |
-| `showTorusButton`  | `boolean`          | No        | Determines whether to show/hide torus widget.                                                                                                                                          | `true`  |
-| `useWalletConnect` | `boolean`          | No        | Setting `useWalletConnect` to true allows to display wallet connect qr scanner from torus-embed.                                                                                       | `false` |
+| Parameter      | Type               | Mandatory | Description                                                    |
+| -------------- | ------------------ | --------- | -------------------------------------------------------------- |
+| `chainConfig?` | `EthereumProvider` | No        | Chain config of the Blockchain to connect with.                |
+| `whiteLabel?`  | `WhiteLabelParams` | No        | White Label parameters to whitelisting the Wallet Services UI. |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```tsx
-export interface TorusParams {
+export interface WsEmbedParams {
   /**
-   * Torus Network Object
+   * Chain to connect with
    */
-  network?: NetworkInterface;
+  chainConfig?: EthereumProviderConfig;
   /**
-   * Build Environment of Torus.
+   * Build Environment of WsEmbed.
    *
-   * production uses https://app.tor.us,
+   * production uses https://wallet.web3auth.io,
    *
-   * development uses http://localhost:4050 (expects torus-website to be run locally),
+   * staging uses https://staging-wallet.web3auth.io,
    *
-   * binance uses https://binance.tor.us,
+   * testing uses https://develop-wallet.web3auth.io (latest internal build)
    *
-   * lrc uses https://lrc.tor.us,
+   * development uses http://localhost:4050 (expects wallet-services-frontend to be run locally),
    *
-   * beta uses https://beta.tor.us, (currently supports tkey)
-   *
-   * testing uses https://testing.tor.us (latest internal build)
    * @defaultValue production
    */
-  buildEnv?: TORUS_BUILD_ENV_TYPE;
+  buildEnv?: WS_EMBED_BUILD_ENV_TYPE;
   /**
    * Enables or disables logging.
    *
@@ -160,56 +147,41 @@ export interface TorusParams {
    */
   enableLogging?: boolean;
   /**
-   * whether to show/hide torus widget.
+   * url of widget to load
    *
    * Defaults to true
    * @defaultValue true
    */
-  showTorusButton?: boolean;
+  walletUrls?: Partial<Record<WS_EMBED_BUILD_ENV_TYPE, WalletUrlConfig>>;
   /**
-   * setting false, hides those verifiers from login modal
-   * @deprecated
-   * Please use loginConfig instead
-   */
-  enabledVerifiers?: VerifierStatus;
-  /**
-   * Array of login config items. Used to modify the default logins/ add new logins
-   */
-  loginConfig?: LoginConfig;
-  /**
-   * Params to enable integrity checks and load specific versions of torus-website
-   */
-  integrity?: IntegrityParams;
-  /**
-   * Params to enable whitelabelling of torus website and widget
-   */
-  whiteLabel?: WhiteLabelParams;
-  /**
-   * Skips TKey onboarding for new users
+   * Determines how to show confirmation screens
    *
-   * Defaults to false
-   * @defaultValue false
+   * @defaultValue none for wallet services
+   * @defaultValue popup for safe-auth, mocaverse
    */
-  skipTKey?: boolean;
-
   /**
-   * Setting `useWalletConnect` to true allows to display wallet connect qr scanner from torus-embed.
-   *
-   * Defaults to false
-   * @defaultValue false
+   * Allows you to customize the look & feel of the widget
    */
-  useWalletConnect?: boolean;
-
-  /**
-   * Setting mfa level to `default` will present mfa screen to user on every third login
-   * Setting mfa level to `optional` will present mfa screen to user on every login but user can skip it
-   * Setting mfa level to `mandatory` will make it mandatory for user to setup mfa after login
-   * Setting mfa level to`none` will make the user skip the mfa setup screen
-   *
-   * Defaults to default
-   * @defaultValue default
-   */
-  mfaLevel?: "none" | "default" | "optional" | "mandatory";
+  whiteLabel?: {
+    /**
+     * whether to show/hide ws-embed widget.
+     *
+     * Defaults to true
+     * @defaultValue true
+     */
+    showWidgetButton?: boolean;
+    /**
+     * Determines where the wsEmbed widget is visible on the page.
+     * @defaultValue bottom-left
+     */
+    buttonPosition?: BUTTON_POSITION_TYPE;
+    hideNftDisplay?: boolean;
+    hideTokenDisplay?: boolean;
+    hideTransfers?: boolean;
+    hideTopup?: boolean;
+    hideReceive?: boolean;
+    defaultPortfolio?: "token" | "nft";
+  } & WhiteLabelData;
 }
 ```
 
