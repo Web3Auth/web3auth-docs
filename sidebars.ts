@@ -235,10 +235,7 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Solana",
           link: { type: "doc", id: "connect-blockchain/solana/solana" },
-          items: [
-            "connect-blockchain/solana/web",
-            "connect-blockchain/solana/flutter",
-          ],
+          items: ["connect-blockchain/solana/web", "connect-blockchain/solana/flutter"],
         },
 
         "connect-blockchain/xrpl",
@@ -600,6 +597,12 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "html",
+      value: "<span class='sidebarHeading'>Wallet Services</span>",
+      defaultStyle: true,
+    },
+    "sdk/wallet-services/wallet-services",
+    {
+      type: "html",
       value: "<span class='sidebarHeading'>Core Kit</span>",
       defaultStyle: true,
     },
@@ -902,7 +905,7 @@ const sidebars: SidebarsConfig = {
       label: "Plugins",
       link: { type: "doc", id: "sdk/helper-sdks/plugins/plugins" },
       items: [
-        "sdk/helper-sdks/plugins/evm-wallet",
+        // "sdk/helper-sdks/plugins/evm-wallet",
         "sdk/helper-sdks/plugins/solana-wallet",
         {
           type: "link",
