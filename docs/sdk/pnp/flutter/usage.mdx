@@ -13,8 +13,9 @@ import FlutterResponse from "@site/src/common/sdk/pnp/_userinfo_response.mdx";
 
 ### `login(LoginParams)`
 
-Trigger login flow with the selected provider from the list of providers available such as GOOGLE, FACEBOOK, TWITTER, EMAIL_PASSWORDLESS, etc.
-`web3Auth.login()` requires `LoginParams` as a required input.
+Trigger login flow will navigate the user to a browser model allowing the user to login into the service. You can pass in the supported providers to
+the login method for specific social logins such as GOOGLE, APPLE, FACEBOOK, etc., and do whitelabel login. The `login` function takes in
+`LoginParams` as a required input.
 
 #### Arguments
 
@@ -32,9 +33,9 @@ Trigger login flow with the selected provider from the list of providers availab
 
 | Parameter           | Type                | Mandatory | Description                                                                                                                                                                                  |
 | ------------------- | ------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginProvider`     | `enum` `Provider`   | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS` |
-| `extraLoginOptions` | `ExtraLoginOptions` | No        | You can pass various oauth supported options, default is `null`                                                                                                                              |
-| `redirectUrl`       | `ExtraLoginOptions` | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                  |
+| `loginProvider`     | `Provider`          | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS` |
+| `extraLoginOptions` | `ExtraLoginOptions` | No        | You can pass various oAuth supported options, default is `null`                                                                                                                              |
+| `redirectUrl`       | `Uri`               | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                  |
 | `appState`          | `String`            | No        | `appState` can be used to keep track of the app state when user will be redirected to app after login, default is `null`                                                                     |
 | `mfaLevel`          | `Map<String, Any>`  | No        | MFA level can be used to pass 2FA screen shown during login, default is `mfaLevel.DEFAULT`, shown every 3rd login.                                                                           |
 | `dappShare`         | `String`            | No        | Dapp share can be used to pass dapp share url, default is `null`                                                                                                                             |
@@ -55,36 +56,36 @@ class LoginParams {
   final String? appState;
   final MFALevel? mfaLevel;
 
-  LoginParams(
-      {required this.loginProvider,
-      this.dappShare,
-      this.sessionTime,
-      this.curve,
-      this.extraLoginOptions,
-      this.redirectUrl,
-      this.appState,
-      this.mfaLevel});
+  LoginParams({
+    required this.loginProvider,
+    this.dappShare,
+    this.sessionTime,
+    this.curve,
+    this.extraLoginOptions,
+    this.redirectUrl,
+    this.appState,
+    this.mfaLevel,
+  });
 
   Map<String, dynamic> toJson() => {
-        "loginProvider": loginProvider.name,
-        "dappShare": dappShare,
-        "sessionTime": sessionTime,
-        "curve": curve?.name,
-        "extraLoginOptions": extraLoginOptions?.toJson(),
-        "redirectUrl": redirectUrl?.toString(),
-        "appState": appState,
-        "mfaLevel": mfaLevel?.type,
-      };
+    "loginProvider": loginProvider.name,
+    "dappShare": dappShare,
+    "sessionTime": sessionTime,
+    "curve": curve?.name,
+    "extraLoginOptions": extraLoginOptions?.toJson(),
+    "redirectUrl": redirectUrl?.toString(),
+    "appState": appState,
+    "mfaLevel": mfaLevel?.type,
+  };
 }
 ```
-
 </TabItem>
-
 </Tabs>
 
 ### `getPrivkey()`
 
-Use getPrivkey() to get the private key of the user. This private key can be used to sign transactions on Ethereum.
+Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private key which can be
+used to sign transactions on EVM compatible chains.
 
 ### `getEd25519PrivKey()`
 
@@ -113,8 +114,9 @@ Use getUserInfo() to get the user info of the user.
 <TabItem value="google">
 
 ```dart title="Usage"
-Future<void> initPlatformState() async {
+Future<void> initWeb3Auth() async {
   Uri redirectUrl;
+
   if (Platform.isAndroid) {
     redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
     // w3a://com.example.w3aflutter/auth
@@ -127,9 +129,9 @@ Future<void> initPlatformState() async {
 
   await Web3AuthFlutter.init(Web3AuthOptions(
     clientId: "WEB3AUTH_CLIENT_ID",
-    network: Network.testnet,
+    network: Network.sapphire_mainnet,
     redirectUrl: redirectUrl,
-    ));
+  ));
 
   await Web3AuthFlutter.initialize();
 }
@@ -138,7 +140,7 @@ Future<void> initPlatformState() async {
 final Web3AuthResponse response = await Web3AuthFlutter.login(
   // highlight-next-line
   LoginParams(loginProvider: Provider.google)
-  );
+);
 ```
 
 </TabItem>
@@ -146,7 +148,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 <TabItem value="facebook">
 
 ```dart title="Usage"
-Future<void> initPlatformState() async {
+Future<void> initWeb3Auth() async {
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -161,9 +163,9 @@ Future<void> initPlatformState() async {
 
   await Web3AuthFlutter.init(Web3AuthOptions(
     clientId: "WEB3AUTH_CLIENT_ID",
-    network: Network.testnet,
+    network: Network.sapphire_mainnet,
     redirectUrl: redirectUrl,
-    ));
+  ));
 
   await Web3AuthFlutter.initialize();
 }
@@ -172,7 +174,7 @@ Future<void> initPlatformState() async {
 final Web3AuthResponse response = await Web3AuthFlutter.login(
   // highlight-next-line
   LoginParams(loginProvider: Provider.facebook)
-  );
+);
 ```
 
 </TabItem>
@@ -180,7 +182,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 <TabItem value="discord">
 
 ```dart title="Usage"
-Future<void> initPlatformState() async {
+Future<void> initWeb3Auth() async {
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -189,15 +191,13 @@ Future<void> initPlatformState() async {
   } else if (Platform.isIOS) {
     redirectUrl = Uri.parse('{bundleId}://auth');
     // com.example.w3aflutter://openlogin
-  } else {
-    throw UnKnownException('Unknown platform');
   }
 
   await Web3AuthFlutter.init(Web3AuthOptions(
     clientId: "WEB3AUTH_CLIENT_ID",
-    network: Network.testnet,
+    network: Network.sapphire_mainnet,
     redirectUrl: redirectUrl,
-    ));
+  ));
 
   await Web3AuthFlutter.initialize();
 }
@@ -206,7 +206,7 @@ Future<void> initPlatformState() async {
 final Web3AuthResponse response = await Web3AuthFlutter.login(
   // highlight-next-line
   LoginParams(loginProvider: Provider.discord)
-  );
+);
 ```
 
 </TabItem>
@@ -214,7 +214,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 <TabItem value="twitch">
 
 ```dart title="Usage"
-Future<void> initPlatformState() async {
+Future<void> initWeb3Auth() async {
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -229,9 +229,9 @@ Future<void> initPlatformState() async {
 
   await Web3AuthFlutter.init(Web3AuthOptions(
     clientId: "WEB3AUTH_CLIENT_ID",
-    network: Network.testnet,
+    network: Network.sapphire_mainnet,
     redirectUrl: redirectUrl,
-    ));
+  ));
 
   await Web3AuthFlutter.initialize();
 }
@@ -240,7 +240,7 @@ Future<void> initPlatformState() async {
 final Web3AuthResponse response = await Web3AuthFlutter.login(
   // highlight-next-line
   LoginParams(loginProvider: Provider.twitch)
-  );
+);
 ```
 
 </TabItem>
@@ -248,9 +248,11 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 <TabItem value="email_passwordless">
 
 ```dart title="Usage"
-Future<void> initPlatformState() async {
+Future<void> initWeb3Auth() async {
   final additionalParams = HashMap<String, String>();
-  additionalParams['flow_type'] = "link"; // default is 'code'
+
+  // Default is 'code'
+  additionalParams['flow_type'] = "link";
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -267,7 +269,7 @@ Future<void> initPlatformState() async {
     clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
     redirectUrl: redirectUrl,
-    ));
+  ));
 
   await Web3AuthFlutter.initialize();
 }
@@ -275,9 +277,15 @@ Future<void> initPlatformState() async {
 // Login
 final Web3AuthResponse response = await Web3AuthFlutter.login(
   // highlight-start
-    LoginParams(loginProvider: Provider.email_passwordless,
-      extraLoginOptions: ExtraLoginOptions(login_hint: "hello@web3auth.io", additionalParams: additionalParams)));
+  LoginParams(
+    loginProvider: Provider.email_passwordless,
+    extraLoginOptions: ExtraLoginOptions(
+      login_hint: "hello@web3auth.io",
+      additionalParams: additionalParams
+    )
+  ),
   // highlight-end
+);
 ```
 
 </TabItem>
@@ -290,9 +298,11 @@ Future<void> initPlatformState() async {
   // highlight-start
   final loginConfig = new HashMap<String, LoginConfigItem>();
   loginConfig['jwt'] = LoginConfigItem(
-    verifier: "verifier-name", // get it from web3auth dashboard
+    // get it from web3auth dashboard
+    verifier: "verifier-name",
     typeOfLogin: TypeOfLogin.jwt,
-    client_id: "CLIENT_ID", // Auth0, Google, Facebook, Twitch, Discord or Web3Auth Client ID
+    // Auth0, Google, Facebook, Twitch, Discord or Web3Auth Client ID
+    client_id: "CLIENT_ID",
   );
   // highlight-end
 
@@ -313,7 +323,7 @@ Future<void> initPlatformState() async {
     redirectUrl: redirectUrl,,
     // highlight-next-line
     loginConfig: loginConfig
-    ));
+  ));
 
   await Web3AuthFlutter.initialize();
 }
@@ -324,7 +334,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
     // highlight-start
     loginProvider: Provider.jwt,
     extraLoginOptions: ExtraLoginOptions(
-      id_token: "YOUR_JWT_TOKEN"
+      id_token: "YOUR_JWT_TOKEN",
     )
     // highlight-end
   )
@@ -341,9 +351,14 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 `ExtraLoginOptions`
 
-```kotlin
-web3Auth.login(LoginParams(selectedLoginProvider,
-    extraLoginOptions = ExtraLoginOptions(login_hint: "hello@web3auth.io")))
+```dart
+Web3AuthFlutter.login(
+  LoginParams(
+    loginProvider: selectedLoginProvider,
+    // highlight-next-line
+    extraLoginOptions: ExtraLoginOptions(login_hint: "hello@web3auth.io")
+  ),
+)
 ```
 
 <Tabs
@@ -356,29 +371,29 @@ web3Auth.login(LoginParams(selectedLoginProvider,
 
 <TabItem value="table">
 
-| Parameter                 | Type                      | Mandatory | Description                                                       |
-| ------------------------- | ------------------------- | --------- | ----------------------------------------------------------------- |
-| additionalParams          | HashMap\<String, String>? | No        | additionalParams, use id_token(JWT) to authenticate with web3auth |
-| domain                    | String?                   | No        | Domain of the app                                                 |
-| client_id                 | String?                   | No        | client_id from Web3Auth Dashboard                                 |
-| leeway                    | String?                   | No        | leeway                                                            |
-| verifierIdField           | String?                   | No        | verifierIdField                                                   |
-| isVerifierIdCaseSensitive | Boolean?                  | No        | Boolean to confirm the case sensitivity of VerifierId             |
-| display                   | Display?                  | No        | Display                                                           |
-| prompt                    | Prompt?                   | No        | Prompt                                                            |
-| max_age                   | String?                   | No        | max_age                                                           |
-| ui_locales                | String?                   | No        | ui_locales to be shown on the modal                               |
-| id_token_hint             | String?                   | No        | Previously issued ID Token.                                       |
-| id_token                  | String?                   | No        | JWT (ID Token) to be passed for Login.                            |
-| login_hint                | String?                   | No        | Email used for EMAIL_PASSWORDLESS                                 |
-| acr_values                | String?                   | No        | acc_values                                                        |
-| scope                     | String?                   | No        | scope                                                             |
-| audience                  | String?                   | No        | audience                                                          |
-| connection                | String?                   | No        | connection                                                        |
-| state                     | String?                   | No        | state                                                             |
-| response_type             | String?                   | No        | response_type                                                     |
-| nonce                     | String?                   | No        | nonce                                                             |
-| redirect_uri              | String?                   | No        | redirect_uri                                                      |
+| Parameter                   | Type                      | Mandatory | Description                                                       |
+| ----------------------------| ------------------------- | --------- | ----------------------------------------------------------------- |
+| `additionalParams`          | `Map?`                    | No        | additionalParams, use id_token(JWT) to authenticate with web3auth |
+| `domain`                    | `String?`                 | No        | Domain of the app                                                 |
+| `client_id`                 | `String?`                 | No        | client_id from Web3Auth Dashboard                                 |
+| `leeway`                    | `String?`                 | No        | leeway                                                            |
+| `verifierIdField`           | `String?`                 | No        | verifierIdField                                                   |
+| `isVerifierIdCaseSensitive` | `bool?`                   | No        | Boolean to confirm the case sensitivity of VerifierId             |
+| `display`                   | `Display?`                | No        | Display                                                           |
+| `prompt`                    | `Prompt?`                 | No        | Prompt                                                            |
+| `max_age`                   | `String?`                 | No        | max_age                                                           |
+| `ui_locales`                | `String?`                 | No        | ui_locales to be shown on the modal                               |
+| `id_token_hint`             | `String?`                 | No        | Previously issued ID Token.                                       |
+| `id_token`                  | `String?`                 | No        | JWT (ID Token) to be passed for Login.                            |
+| `login_hint`                | `String?`                 | No        | Email used for EMAIL_PASSWORDLESS                                 |
+| `acr_values`                | `String?`                 | No        | acc_values                                                        |
+| `scope`                     | `String?`                 | No        | scope                                                             |
+| `audience`                  | `String?`                 | No        | audience                                                          |
+| `connection`                | `String?`                 | No        | connection                                                        |
+| `state`                     | `String?`                 | No        | state                                                             |
+| `response_type`             | `String?`                 | No        | response_type                                                     |
+| `nonce`                     | `String?`                 | No        | nonce                                                             |
+| `redirect_uri`              | `String?`                 | No        | redirect_uri                                                      |
 
 </TabItem>
 
@@ -408,52 +423,53 @@ class ExtraLoginOptions {
   final String? nonce;
   final String? redirect_uri;
 
-  ExtraLoginOptions(
-      {this.additionalParams = const {},
-      this.domain,
-      this.client_id,
-      this.leeway,
-      this.verifierIdField,
-      this.isVerifierIdCaseSensitive,
-      this.display,
-      this.prompt,
-      this.max_age,
-      this.ui_locales,
-      this.id_token_hint,
-      this.id_token,
-      this.login_hint,
-      this.acr_values,
-      this.scope,
-      this.audience,
-      this.connection,
-      this.state,
-      this.response_type,
-      this.nonce,
-      this.redirect_uri});
+  ExtraLoginOptions({
+    this.additionalParams = const {},
+    this.domain,
+    this.client_id,
+    this.leeway,
+    this.verifierIdField,
+    this.isVerifierIdCaseSensitive,
+    this.display,
+    this.prompt,
+    this.max_age,
+    this.ui_locales,
+    this.id_token_hint,
+    this.id_token,
+    this.login_hint,
+    this.acr_values,
+    this.scope,
+    this.audience,
+    this.connection,
+    this.state,
+    this.response_type,
+    this.nonce,
+    this.redirect_uri,
+  });
 
   Map<String, dynamic> toJson() => {
-        "additionalParams": additionalParams,
-        "domain": domain,
-        "client_id": client_id,
-        "leeway": leeway,
-        "verifierIdField": verifierIdField,
-        "isVerifierIdCaseSensitive": isVerifierIdCaseSensitive,
-        "display": display?.name,
-        "prompt": prompt?.name,
-        "max_age": max_age,
-        "ui_locales": ui_locales,
-        "id_token_hint": id_token_hint,
-        "id_token": id_token,
-        "login_hint": login_hint,
-        "acr_values": acr_values,
-        "scope": scope,
-        "audience": audience,
-        "connection": connection,
-        "state": state,
-        "response_type": response_type,
-        "nonce": nonce,
-        "redirect_uri": redirect_uri,
-      };
+    "additionalParams": additionalParams,
+    "domain": domain,
+    "client_id": client_id,
+    "leeway": leeway,
+    "verifierIdField": verifierIdField,
+    "isVerifierIdCaseSensitive": isVerifierIdCaseSensitive,
+    "display": display?.name,
+    "prompt": prompt?.name,
+    "max_age": max_age,
+    "ui_locales": ui_locales,
+    "id_token_hint": id_token_hint,
+    "id_token": id_token,
+    "login_hint": login_hint,
+    "acr_values": acr_values,
+    "scope": scope,
+    "audience": audience,
+    "connection": connection,
+    "state": state,
+    "response_type": response_type,
+    "nonce": nonce,
+    "redirect_uri": redirect_uri,
+  };
 }
 ```
 
@@ -463,7 +479,7 @@ class ExtraLoginOptions {
 
 ## Selecting Curve
 
-The `Web3AuthFlutter.login(LoginParams)` method accepts a `curve` parameter. This parameter can be used to select the elliptic curve to use for the
+The `LoginParams` class has a `curve` parameter. This parameter can be used to select the elliptic curve to use for the
 signature.
 
 ```dart
@@ -485,7 +501,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
 <TabItem value="secp256k1">
 
 ```dart title="Usage"
-Future<void> initPlatformState() async {
+Future<void> initWeb3Auth() async {
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -500,8 +516,9 @@ Future<void> initPlatformState() async {
 
   await Web3AuthFlutter.init(Web3AuthOptions(
     clientId: "WEB3AUTH_CLIENT_ID",
-    network: Network.testnet,
-    redirectUrl: redirectUrl));
+    network: Network.sapphire_mainnet,
+    redirectUrl: redirectUrl,
+  ));
 
   await Web3AuthFlutter.initialize();
 }
@@ -518,7 +535,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
 <TabItem value="ed25519">
 
 ```dart title="Usage"
-Future<void> initPlatformState() async {
+Future<void> initWeb3Auth() async {
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -534,7 +551,8 @@ Future<void> initPlatformState() async {
   await Web3AuthFlutter.init(Web3AuthOptions(
     clientId: "WEB3AUTH_CLIENT_ID",
     network: Network.testnet,
-    redirectUrl: redirectUrl));
+    redirectUrl: redirectUrl
+  ));
 
   await Web3AuthFlutter.initialize();
 }
@@ -554,13 +572,12 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
 
 ### `logout()`
 
+This method will logout the user and remove the session id from the device. The user will need to login again to use the dApp next time the dApp is
+opened.
+
 ```dart
 await Web3AuthFlutter.logout();
 ```
-
-#### Response
-
-A void object is returned on successful logout otherwise an error is thrown
 
 :::tip sample-app
 
