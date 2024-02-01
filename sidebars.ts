@@ -320,8 +320,8 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "link",
-      label: "Wallet Pregeneration API",
-      href: "/lookup-api",
+      label: "Pregenerate Wallet",
+      href: "/pregenerate-wallet",
     },
     {
       Legal: [
