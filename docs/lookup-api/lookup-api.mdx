@@ -7,7 +7,7 @@ image: "images/docs-meta-cards/sdk-reference-card.png"
 description: "Wallet Pregeneration API | Documentation - Web3Auth"
 ---
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../../src/css/custom.css";
 
@@ -31,7 +31,7 @@ export default function LookupAPIPage() {
 
         return (
             <div className="url-display">
-                GET {baseUrl}?{readableParams}
+                <span className="get-method">GET</span> {baseUrl}?{readableParams}
             </div>
         );
     };
@@ -43,7 +43,7 @@ export default function LookupAPIPage() {
         clientId: 'BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ'
     });
     const [isLoading, setIsLoading] = useState(false);
-    const [response, setResponse] = useState('Edit parameters and click submit to see response here');
+    const [response, setResponse] = useState(null);
     const [error, setError] = useState('');
 
     const handleChange = (e) => {
@@ -65,6 +65,23 @@ export default function LookupAPIPage() {
             setIsLoading(false);
         }
     };
+
+    useEffect(() => {
+        const fetchInitialData = async () => {
+            setIsLoading(true);
+            try {
+                const res = await axios.get(`https://lookup.web3auth.io/lookup`, { params: formData });
+                setResponse(JSON.stringify(res.data, null, 2));
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchInitialData();
+    }, []);
+
 
     return (
         <>
@@ -122,11 +139,14 @@ export default function LookupAPIPage() {
                         </tr>
                      </tbody>
                 </table>
-                <div className="submit-button-container">
-                    <button type="submit" className="submit-button" disabled={isLoading}>
-                        {isLoading ? <div className="loader"></div> : 'Submit'}
-                    </button>
-        <       /div>
+                <div className="instruction-text-container">
+            <p>Edit parameters and click submit to see the response in the terminal.</p>
+            </div>
+            <div className="submit-button-container">
+                <button type="submit" className="submit-button" disabled={isLoading}>
+                    {isLoading ? <div className="loader"></div> : 'Submit'}
+                </button>
+            </div>
             </form>
 
             <h3>Response</h3>
