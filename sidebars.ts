@@ -319,11 +319,6 @@ const sidebars: SidebarsConfig = {
       href: "/sdk",
     },
     {
-      type: "link",
-      label: "Pregenerate Wallet",
-      href: "/pregenerate-wallet",
-    },
-    {
       Legal: [
         "legal/cookie-policy",
         "legal/privacy-policy",
@@ -606,6 +601,7 @@ const sidebars: SidebarsConfig = {
       defaultStyle: true,
     },
     "sdk/wallet-services/wallet-services",
+    "sdk/wallet-services/pregenerate-wallet",
     {
       type: "html",
       value: "<span class='sidebarHeading'>Core Kit</span>",
