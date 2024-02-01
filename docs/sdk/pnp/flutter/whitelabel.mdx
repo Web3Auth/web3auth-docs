@@ -8,16 +8,12 @@ description: "Web3Auth PnP Flutter SDK - Whitelabel | Documentation - Web3Auth"
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-`whiteLabel`
-
-An optional configuration object to customize UI, branding, and translations for your brand. It is initiated when we configure the `init` function.
+For defining custom UI, branding, and translations for your brand app, you just need to define an optional object called `WhiteLabelData`. `WhiteLabelData` can be definied during initialization of the SDK in `LoginParams` object.
 
 :::note
 
 This is a paid feature and the the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the
 **Growth Plan**. You can use this feature in the development environment for free.
-
-:::
 
 ### Arguments
 
@@ -59,19 +55,20 @@ class WhiteLabelData {
   final String? appUrl;
   final bool? useLogoLoader;
 
-  WhiteLabelData(
-      {this.appName,
-      this.logoLight,
-      this.logoDark,
-      this.defaultLanguage = Language.en,
-      this.mode = ThemeModes.auto,
-      this.theme,
-      this.appUrl,
-      this.useLogoLoader});
+  WhiteLabelData({
+    this.appName,
+    this.logoLight,
+    this.logoDark,
+    this.defaultLanguage = Language.en,
+    this.mode = ThemeModes.auto,
+    this.theme,
+    this.appUrl,
+    this.useLogoLoader,
+  });
 
   Map<String, dynamic> toJson() {
     return {
-      'name': appName,
+      'appName': appName,
       'logoLight': logoLight,
       'logoDark': logoDark,
       'defaultLanguage': defaultLanguage.toString().split('.').last,
@@ -85,11 +82,11 @@ class WhiteLabelData {
 ```
 
 </TabItem>
-
 </Tabs>
 
 ```dart title="Usage"
-Future<void> initPlatformState() async {
+Future<void> initWeb3Auth() async {
+
   // highlight-start
   final themeMap = HashMap<String, String>();
   themeMap['primary'] = "#229954";
@@ -106,22 +103,26 @@ Future<void> initPlatformState() async {
     throw UnKnownException('Unknown platform');
   }
 
-  await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId: "WEB3AUTH_CLIENT_ID",
-    network: Network.testnet,
-    redirectUrl: redirectUrl,
-    // highlight-start
-    whiteLabel: WhiteLabelData(
-      appName: "Web3Auth Flutter App",
-      logoLight:
+  await Web3AuthFlutter.init(
+    Web3AuthOptions(
+      clientId: "WEB3AUTH_CLIENT_ID",
+      network: Network.sapphire_mainnet,
+      redirectUrl: redirectUrl,
+      // highlight-start
+      whiteLabel: WhiteLabelData(
+        appName: "Web3Auth Flutter App",
+        logoLight:
           "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
-      logoDark:
+        logoDark:
           "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
-      defaultLanguage: Language.en,
-      mode: ThemeModes.auto,
-      appUrl: "https://web3auth.io",
-      useLogoLoader: true,
-      theme: themeMap),
+        defaultLanguage: Language.en,
+        mode: ThemeModes.auto,
+        appUrl: "https://web3auth.io",
+        useLogoLoader: true,
+        theme: themeMap,
+      ),
     // highlight-end
+    ),
+  );
 }
 ```
