@@ -235,10 +235,7 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Solana",
           link: { type: "doc", id: "connect-blockchain/solana/solana" },
-          items: [
-            "connect-blockchain/solana/web",
-            "connect-blockchain/solana/flutter",
-          ],
+          items: ["connect-blockchain/solana/web", "connect-blockchain/solana/flutter"],
         },
 
         "connect-blockchain/xrpl",
@@ -320,6 +317,11 @@ const sidebars: SidebarsConfig = {
       type: "link",
       label: "SDK Reference",
       href: "/sdk",
+    },
+    {
+      type: "link",
+      label: "Wallet Pregeneration API",
+      href: "/lookup-api",
     },
     {
       Legal: [
