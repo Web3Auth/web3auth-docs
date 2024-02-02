@@ -1,0 +1,132 @@
+---
+title: PnP No Modal SDK - v7 to v8
+displayed_sidebar: docs
+description: "PnP No Modal SDK - v6 to v7 | Documentation - Web3Auth"
+sidebar_label: v7 to v8
+---
+
+# Migration Guide from v7 to v8 for Web3Auth No Modal SDK
+
+## Overview
+
+This migration guide provides steps for upgrading from version 7 (v7) to version 8 (v8) of the Web3Auth No Modal SDK. The guide outlines significant
+changes and enhancements, including simplification of the whitelabeling process, introduction of `getDefaultExternalAdapters` for easy adapter
+management, and updates to the `CustomChainConfig` interface.
+
+## Changes in Detail
+
+### 1. Whitelabeling Configuration Update
+
+#### Before (v7):
+
+Whitelabel configuration was passed directly to the `OpenLoginAdapter`. This often required importing the `OpenLoginAdapter` just for this purpose.
+
+```tsx
+// v7 code
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    whiteLabel: {
+      appName: "W3A Heroes",
+      appUrl: "https://web3auth.io",
+      // ... other settings
+    },
+  },
+  // ... other settings
+});
+```
+
+#### After (v8):
+
+The whitelabel configuration can now be passed to the `uiConfig` parameter, streamlining the process and reducing unnecessary imports.
+
+```tsx
+// v8 code
+const web3AuthOptions: Web3AuthNoModalOptions = {
+  clientId,
+  chainConfig,
+  web3AuthNetwork: "sapphire_mainnet",
+  uiConfig: {
+    appName: "W3A Heroes",
+    appUrl: "https://web3auth.io",
+    theme: {
+      primary: "#768729",
+    },
+    logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+    logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
+    defaultLanguage: "en",
+    mode: "auto",
+    useLogoLoader: true,
+  },
+  privateKeyProvider,
+};
+const web3auth = new Web3AuthNoModal(web3AuthOptions);
+```
+
+### 2. Adapter Management with `getDefaultExternalAdapters`
+
+#### Before (v7):
+
+Adapters were manually configured and instantiated.
+
+#### After (v8):
+
+Adapters can be automatically fetched and configured using the `getDefaultExternalAdapters` method, streamlining the setup process.
+
+```tsx
+// v8 code
+import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+
+const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
+
+adapters.forEach((adapter) => {
+  if (adapter.name === "walletconnectv2") {
+    web3auth.configureAdapter(adapter);
+  }
+});
+```
+
+### 3. `ChainConfig` Interface Updates
+
+#### Before (v7):
+
+`ChainConfig` did not require a `logo` parameter, and `blockExplorer` was used for the block explorer URL.
+
+#### After (v8):
+
+`ChainConfig` now requires a `logo` parameter for the network's logo and has renamed the `blockExplorer` parameter to `blockExplorerUrl`.
+
+```tsx
+// v8 code
+export type CustomChainConfig = {
+  chainNamespace: ChainNamespaceType;
+  chainId: string;
+  rpcTarget: string;
+  wsTarget?: string;
+  displayName: string;
+  blockExplorerUrl: string;
+  ticker: string;
+  tickerName: string;
+  decimals?: number;
+  logo: string;
+  isTestnet?: boolean;
+};
+
+const chainConfig: CustomChainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.OTHER,
+  chainId: "0x1",
+  rpcTarget: "https://mainnet-algorand.api.purestake.io/ps2",
+  displayName: "Algorand Mainnet",
+  blockExplorerUrl: "",
+  ticker: "ALGO",
+  tickerName: "Algorand",
+  logo: "https://assets.coingecko.com/coins/images/12559/small/algorand.png?1601019597",
+};
+```
+
+## Summary
+
+Migrating from v7 to v8 of the Web3Auth No Modal SDK involves:
+
+- Moving whitelabel configuration to the `uiConfig` parameter.
+- Utilizing `getDefaultExternalAdapters` for streamlined adapter configuration.
+- Updating `ChainConfig` to include the `logo` parameter and renaming `blockExplorer` to `blockExplorerUrl`.

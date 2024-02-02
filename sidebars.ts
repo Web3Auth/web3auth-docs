@@ -114,7 +114,7 @@ const sidebars: SidebarsConfig = {
           label: "PnP Web No Modal",
           collapsed: true,
           collapsible: true,
-          items: ["pnp/migration-guides/no-modal-v6-to-v7", "pnp/migration-guides/no-modal-v5-to-v6"],
+          items: ["pnp/migration-guides/no-modal-v7-to-v8", "pnp/migration-guides/no-modal-v6-to-v7", "pnp/migration-guides/no-modal-v5-to-v6"],
         },
         {
           type: "category",

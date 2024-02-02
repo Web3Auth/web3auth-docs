@@ -16,16 +16,15 @@ import PluginsIntro from "@site/src/common/sdk/pnp/web/_plugins-intro.mdx";
 import SubscribeEvents from "@site/src/common/sdk/pnp/web/_subscribe-events.mdx";
 import Web3AuthNoModalOptions from "@site/src/common/sdk/pnp/web/_web3authcore-options.mdx";
 
-After Installation, the next step to use Web3Auth is to Initialize the SDK. However, the Initialization is a two step process, with additional two
+After Installation, the next step to use Web3Auth is to Initialize the SDK. However, the Initialization is a two-step process, with an additional two
 steps for customizations, ie.
 
 - [Instantiation of Web3AuthNoModal](#instantiating-web3authcore)
-- [Configuration of Adapters](#configuring-adapters) _(mandatory)_
 - [Configuration of Plugins](#configuring-plugins) _(optional)_
 - [Initialization of Web3Auth](#initializing-web3auth)
 
 Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
-Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customise your Web3Auth Instance.
+Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customize your Web3Auth Instance.
 
 ## Instantiating Web3AuthNoModal
 
@@ -59,35 +58,86 @@ This Web3AuthNoModal constructor takes an object with `Web3AuthNoModalOptions` a
 
 - `Object`: The web3auth instance with all its methods and events.
 
-### Example
+### Instantiating a Provider
 
-```javascript
+<InstantiatingProvider />
+
+### Whitelabeling
+
+#### `uiConfig`
+
+For customizing the redirect screens while logging in and constructing the key, you need to pass on `WhiteLabelData` in the `uiConfig` parameter to
+the `uiConfig` property of Web3Auth.
+
+:::tip
+
+This is just one of the aspects of whitelabeling you can achieve with Web3Auth. To know more in-depth about how you can Whitelabel your application
+with Web3Auth, have a look at our [Whitelabeling SDK Reference](/pnp/features/whitelabel).
+
+:::
+
+##### Example
+
+```tsx
+const uiConfig: WhiteLabelData = {
+  appName: "My App",
+  appURL: "https://example.com",
+  logoLight: "https://example.com/logo-light.png",
+  logoDark: "https://example.com/logo-dark.png",
+  defaultLanguage: "en",
+  mode: "light",
+  useLogoLoader: true,
+  theme: {
+    primary: "#FF0000",
+    secondary: "#00FF00",
+    warning: "#FFA500",
+  },
+  tncLink: "https://example.com/terms",
+  privacyPolicy: "https://example.com/privacy",
+};
+
 const web3auth = new Web3AuthNoModal({
   clientId: "", // Get your Client ID from the Web3Auth Dashboard
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x1",
-    displayName: "Ethereum Mainnet",
-    blockExplorer: "https://etherscan.io",
-    ticker: "ETH",
-    tickerName: "Ethereum",
-    rpcTarget: "https://rpc.ankr.com/eth", // This is the mainnet RPC we have added, please pass on your own endpoint while creating an app
-  },
+  chainConfig,
   web3AuthNetwork: "sapphire_mainnet",
+  privateKeyProvider,
+  uiConfig,
+});
+```
+
+### Example
+
+```tsx
+const chainConfig: CustomChainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  rpcTarget: "https://rpc.ankr.com/eth", // This is the mainnet RPC we have added, please pass on your own endpoint while creating an app
+};
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+const web3auth = new Web3AuthNoModal({
+  clientId: "", // Get your Client ID from the Web3Auth Dashboard
+  chainConfig,
+  web3AuthNetwork: "sapphire_mainnet",
+  privateKeyProvider,
+  uiConfig: {
+    theme: {
+      primaryColor: "#FF0000",
+      secondaryColor: "#00FF00",
+      textColor: "#0000FF",
+    },
+  },
 });
 ```
 
 ## Configuring Adapters
 
-An adapter is a pluggable package that implements an `IAdapter` interface for a wallet within Web3Auth. An adapter can be plugged in and out of
+An adapter is a pluggable package that implements an `IAdapter` interface for a wallet within Web3Auth. An adapter can be plugged in and out of the
 web3auth modal. Each adapter exposes the provider on successful user login that can be used to invoke RPC calls on the wallet and connected
 blockchain. You can configure and use any of the adapters provided by Web3Auth, by just configuring them while initializing Web3AuthNoModal.
-
-:::warning
-
-This step is mandatory in the case of the Plug and Play No Modal SDK. You need to configure at least one adapter to be able to utilize the SDK.
-
-:::
 
 ### Instantiating a Provider
 
