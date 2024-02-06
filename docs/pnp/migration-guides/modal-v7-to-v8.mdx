@@ -14,10 +14,13 @@ sidebar_label: v7 to v8
 #### `blockExplorer` is now `blockExplorerUrl`
 With v8, in `CustomChainConfig` accepts `blockExplorerUrl` instead of `blockExplorer`.
 
-#### A new `logo` parameter is now added to CustomChainConfig
+#### A new `logo` parameter is now added to `CustomChainConfig`
+
+#### A new `isTestnet` parameter is now added to `CustomChainConfig`
 
 In `CustomChainConfig`, a new parameter `logo` has been introduced which can be used to pass
-the logo for the chain.
+the logo for the chain. Along with that, `isTestnet` has been introduced which can be used to define
+whether the network is testnet or not.
 
 ```tsx
 const chainConfig = {
@@ -30,7 +33,8 @@ const chainConfig = {
     rpcTarget: "https://api.testnet.solana.com",
     // highlight-start
     blockExplorerUrl: "https://explorer.solana.com/?cluster=testnet",
-    logo: "https://images.toruswallet.io/sol.svg"
+    logo: "https://images.toruswallet.io/sol.svg",
+    isTestnet: true
     // highlight-end
 };
 ```
@@ -72,7 +76,8 @@ const web3auth = new Web3Auth({
   },
   uiConfig: {
     // highlight-next-line
-    defaultLanguage: "tr", // en, de, ja, ko, zh, es, fr, pt, nl
+    // Access the LANGUAGES from @toruslabs/openlogin-utils
+    defaultLanguage: LANGUAGES.tr, // Supported languages en, de, ja, ko, zh, es, fr, pt, nl
   }
   // highlight-next-line
   privateKeyProvider: ethereumPrivateKeyProvider,
@@ -150,7 +155,8 @@ const chainConfig = {
     decimals: 18,
     rpcTarget: "https://api.testnet.solana.com",
     blockExplorerUrl: "https://explorer.solana.com/?cluster=testnet",
-    logo: "https://images.toruswallet.io/sol.svg"
+    logo: "https://images.toruswallet.io/sol.svg",
+    isTestnet: true,
 };
 
 const privateKeyProvider = new SolanaPrivateKeyProvider({ config: { chainConfig } });
