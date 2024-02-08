@@ -1,10 +1,10 @@
 ---
-title: Integrate Web3Auth with the zKatana Blockchain in React Native
+title: Integrate Web3Auth with the BNB Optimistic Rolllup in React Native
 sidebar_label: React Native
-image: "content-hub/guides/banners/zkatana.png"
+image: "content-hub/guides/banners/opbnb.png"
 displayed_sidebar: docs
-keywords: [react-native, zkatana, web3auth, authentication, blockchain]
-description: "Integrate Web3Auth with the zKatana Blockchain in React Native | Documentation - Web3Auth"
+keywords: [react-native, opbnb, web3auth, authentication, blockchain]
+description: "Integrate Web3Auth with the BNB Optimistic Rolllup in React Native | Documentation - Web3Auth"
 ---
 
 import InstallationSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-installation.mdx";
@@ -19,17 +19,17 @@ import TabItem from "@theme/TabItem";
 import SEO from "@site/src/components/SEO";
 
 <SEO
-  title="Integrate Web3Auth with the zKatana Blockchain in React Native"
-  description="Integrate Web3Auth with the zKatana Blockchain in React Native | Documentation - Web3Auth"
-  image="https://web3auth.io/docs/content-hub/guides/banners/zkatana.png"
-  slug="/connect-blockchain/evm/zkatana/react-native"
+  title="Integrate Web3Auth with the BNB Optimistic Rolllup in React Native"
+  description="Integrate Web3Auth with the BNB Optimistic Rolllup in React Native | Documentation - Web3Auth"
+  image="https://web3auth.io/docs/content-hub/guides/banners/opbnb.png"
+  slug="/connect-blockchain/evm/opbnb/react-native"
 />
 
 While using the Web3Auth React Native SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider, similar to the
 [Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html). This provider can be used with libraries like
 [`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html), [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
-[zKatana](https://astar.network/) blockchain calls like getting the user's `account`, fetching `balance`, `sign transaction`, `send transaction`,
-`read` from and `write` to the smart contract, etc. We have highlighted a few here to get you started quickly on that.
+[opBNB](https://astar.network/) blockchain calls like getting the user's `account`, fetching `balance`, `sign transaction`, `send transaction`, `read`
+from and `write` to the smart contract, etc. We have highlighted a few here to get you started quickly on that.
 
 ## Installation
 
@@ -43,11 +43,32 @@ provider as **`web3auth.provider`** after successful authentication.
 ### Getting the `chainConfig`
 
 <Tabs
- defaultValue="testnet"
+ defaultValue="mainnet"
   values={[
+    { label: "Mainnet", value: "mainnet", },
     { label: "Testnet", value: "testnet", },
   ]}
 >
+
+<TabItem
+  value="mainnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0xCC", // hex of 1261120
+  rpcTarget: "https://opbnb-mainnet-rpc.bnbchain.org",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "opBNB Mainnet",
+  blockExplorer: "https://opbnbscan.com",
+  ticker: "BNB",
+  tickerName: "opBNB",
+};
+```
+
+</TabItem>
 
 <TabItem
   value="testnet"
@@ -56,18 +77,19 @@ provider as **`web3auth.provider`** after successful authentication.
 ```typescript
 const chainConfig = {
   chainNamespace: "eip155",
-  chainId: "0x133E40", // hex of 1261120
-  rpcTarget: "https://rpc.zkatana.gelato.digital",
+  chainId: "0x15EB", // hex of 1261120
+  rpcTarget: "https://opbnb-testnet-rpc.bnbchain.org",
   // Avoid using public rpcTarget in production.
   // Use services like Infura, Quicknode etc
-  displayName: "zKatana Testnet",
-  blockExplorer: "https://zkatana.blockscout.com",
-  ticker: "ETH",
-  tickerName: "ETH",
+  displayName: "opBNB Testnet",
+  blockExplorer: "https://testnet.opbnbscan.com",
+  ticker: "tBNB",
+  tickerName: "opBNB",
 };
 ```
 
 </TabItem>
+
 </Tabs>
 
 ## Initialize

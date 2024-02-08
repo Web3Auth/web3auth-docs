@@ -9,15 +9,26 @@ description: "Integrate Web3Auth with the XRPL Blockchain | Documentation - Web3
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
 
-The Web3Auth Web SDK offers a standard provider for accessing the user's private key on non-EVM chains like [XRPL](https://xrpl.org/). To enable a
-wider range of blockchain actions, you can use the `XrplPrivateKeyProvider` from `@web3auth/xrpl-provider`. This will provide an xrplProvider that can
-be injected back into the Openlogin adapter, allowing you to perform actions such as retrieving account information, obtaining balances, signing and
-sending transactions, and reading from and writing to smart contracts. Here are some methods to help you quickly get started.
+The Web3Auth Web SDK offers a standard provider for accessing the user's private key on non-EVM chains like [XRPL](https://xrpl.org/). You can use our
+native `@web3auth/xrpl-provider` for making direct connections with XRPL Blockchain. This will provide an xrplProvider that can be injected back into
+the Web3Auth instance, allowing you to perform actions such as retrieving account information, obtaining balances, signing and sending transactions,
+and reading from and writing to smart contracts. Here are some methods to help you quickly get started.
 
 ## Installation
 
+To interact with the XRPL blockchain, you can use the `@web3auth/xrpl-provider` package.
+
 ```bash npm2yarn
-npm install --save xrpl @web3auth/xrpl-provider @web3auth/modal @web3auth/openlogin-adapter @web3auth/base
+npm install --save @web3auth/xrpl-provider
+```
+
+### Getting the `chainConfig`
+
+You can get the chain config directly from our `@web3auth/base` package. We expose a function `getXrplChainConfig`, which exposes the standard
+configuration needed to connect to XRPL. Look into the initialization section further to know more about it.
+
+```bash npm2yarn
+npm install --save @web3auth/base
 ```
 
 ## Initializing Provider

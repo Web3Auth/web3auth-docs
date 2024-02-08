@@ -1,10 +1,10 @@
 ---
-title: Integrate Web3Auth with the zKatana Blockchain
-sidebar_label: zKatana
-image: "content-hub/guides/banners/zkatana.png"
+title: Integrate Web3Auth with the BNB Optimistic Rolllup in JavaScript
+sidebar_label: Web
+image: "content-hub/guides/banners/opbnb.png"
 displayed_sidebar: docs
-keywords: [zkatana, blockchain, web3auth]
-description: "Integrate Web3Auth with the zKatana Blockchain | Documentation - Web3Auth"
+keywords: [opbnb, web3auth, authentication, blockchain]
+description: "Integrate Web3Auth with the BNB Optimistic Rolllup in JavaScript | Documentation - Web3Auth"
 ---
 
 import InstallationSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-installation.mdx";
@@ -24,37 +24,61 @@ import FetchUserPrivateKeySnippet from "@site/src/common/docs/web-connect-blockc
 import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa-tkey.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Integrate Web3Auth with the BNB Optimistic Rolllup in JavaScript"
+  description="Integrate Web3Auth with the BNB Optimistic Rolllup in JavaScript | Documentation - Web3Auth"
+  image="https://web3auth.io/docs/content-hub/guides/banners/opbnb.png"
+  slug="/connect-blockchain/evm/opbnb/web"
+/>
 
 While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider, similar to the
 [Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html). This provider can be used with libraries like
 [`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html), [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
-[zKatana](https://astar.network/) blockchain calls like getting the user's `account`, fetching `balance`, `sign transaction`, `send transaction`,
-`read` from and `write` to the smart contract, etc. We have highlighted a few here to get you started quickly on that.
-
-:::info
-
-This reference is for the `Web`, however, you can use zKatana on `Android`, `iOS`, `React Native`, `Flutter`, & `Unity` as well. Please follow our
-reference for [Ethereum](/connect-blockchain/ethereum/), and change the RPC Provider URL & configurations corresponding to zKatana.
-
-:::
+[opBNB](https://astar.network/) blockchain calls like getting the user's `account`, fetching `balance`, `sign transaction`, `send transaction`, `read`
+from and `write` to the smart contract, etc. We have highlighted a few here to get you started quickly on that.
 
 ## Installation
 
-To interact with the zKatana blockchain, you can use either [web3.js](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html) or
-[ethers.js](https://docs.ethers.io/v5/getting-started/) libraries with Web3Auth.
+To interact with the opBNB blockchain, you can use either library with Web3Auth.
 
 <InstallationSnippet />
 
-## Initializing Provider (zKatana)
+## Initializing Provider
+
+Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible
+provider as **`web3auth.provider`** after successful authentication.
 
 ### Getting the `chainConfig`
 
 <Tabs
- defaultValue="testnet"
+ defaultValue="mainnet"
   values={[
+    { label: "Mainnet", value: "mainnet", },
     { label: "Testnet", value: "testnet", },
   ]}
 >
+
+<TabItem
+  value="mainnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0xCC", // hex of 1261120
+  rpcTarget: "https://opbnb-mainnet-rpc.bnbchain.org",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "opBNB Mainnet",
+  blockExplorer: "https://opbnbscan.com",
+  ticker: "BNB",
+  tickerName: "opBNB",
+};
+```
+
+</TabItem>
 
 <TabItem
   value="testnet"
@@ -63,18 +87,19 @@ To interact with the zKatana blockchain, you can use either [web3.js](https://we
 ```typescript
 const chainConfig = {
   chainNamespace: "eip155",
-  chainId: "0x133E40", // hex of 1261120
-  rpcTarget: "https://rpc.zkatana.gelato.digital",
+  chainId: "0x15EB", // hex of 1261120
+  rpcTarget: "https://opbnb-testnet-rpc.bnbchain.org",
   // Avoid using public rpcTarget in production.
   // Use services like Infura, Quicknode etc
-  displayName: "zKatana Testnet",
-  blockExplorer: "https://zkatana.blockscout.com",
-  ticker: "ETH",
-  tickerName: "ETH",
+  displayName: "opBNB Testnet",
+  blockExplorer: "https://testnet.opbnbscan.com",
+  ticker: "tBNB",
+  tickerName: "opBNB",
 };
 ```
 
 </TabItem>
+
 </Tabs>
 
 ### Initializing and instantiating the Web3Auth SDK

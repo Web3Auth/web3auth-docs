@@ -2,7 +2,7 @@ import Link from "@docusaurus/Link";
 import { useColorMode } from "@docusaurus/theme-common";
 import ThievesDark from "@site/static/content-hub/logo-100thieves-dark.png";
 import ThievesLight from "@site/static/content-hub/logo-100thieves-light.png";
-import BEW from "@site/static/content-hub/logo-bew.png";
+import BNB from "@site/static/content-hub/logo-bnb.png";
 import Kash from "@site/static/content-hub/logo-kash.png";
 import Keplr from "@site/static/content-hub/logo-keplr.png";
 import SkyweaverDark from "@site/static/content-hub/logo-skyweaver-dark.png";
@@ -19,7 +19,7 @@ export default function UsecaseCards() {
       <div className={styles.container}>
         <Link className={classNames(styles.card)} to="https://chrome.google.com/webstore/detail/binance-wallet/fhbohimaelbohpjbbldcngcnapndodjp">
           <div>
-            <img className={styles.logo} src={BEW} alt="Binance Wallet" />
+            <img className={styles.logo} src={BNB} alt="Binance Wallet" />
             <h3 className={styles.title}>
               <strong>Binance Extension Wallet</strong>
             </h3>

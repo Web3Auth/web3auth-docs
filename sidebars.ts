@@ -217,10 +217,10 @@ const sidebars: SidebarsConfig = {
       label: "Connect Blockchain",
       link: { type: "doc", id: "connect-blockchain/connect-blockchain" },
       items: [
-        "connect-blockchain/multi-chain",
         {
           type: "category",
           label: "EVM Based Chains",
+          link: { type: "doc", id: "connect-blockchain/evm/evm" },
           items: [
             {
               type: "category",
@@ -250,19 +250,6 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
-              label: "Base Chain (Coinbase)",
-              link: { type: "doc", id: "connect-blockchain/evm/base/base" },
-              items: [
-                "connect-blockchain/evm/base/web",
-                "connect-blockchain/evm/base/android",
-                "connect-blockchain/evm/base/ios",
-                "connect-blockchain/evm/base/react-native",
-                "connect-blockchain/evm/base/flutter",
-                "connect-blockchain/evm/base/unity",
-              ],
-            },
-            {
-              type: "category",
               label: "Avalanche",
               link: { type: "doc", id: "connect-blockchain/evm/avalanche/avalanche" },
               items: [
@@ -276,7 +263,20 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
-              label: "BNB (Binance) Smart Chain",
+              label: "Base Chain (Coinbase)",
+              link: { type: "doc", id: "connect-blockchain/evm/base/base" },
+              items: [
+                "connect-blockchain/evm/base/web",
+                "connect-blockchain/evm/base/android",
+                "connect-blockchain/evm/base/ios",
+                "connect-blockchain/evm/base/react-native",
+                "connect-blockchain/evm/base/flutter",
+                "connect-blockchain/evm/base/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "BNB Chain",
               link: { type: "doc", id: "connect-blockchain/evm/bnb/bnb" },
               items: [
                 "connect-blockchain/evm/bnb/web",
@@ -285,6 +285,19 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/bnb/react-native",
                 "connect-blockchain/evm/bnb/flutter",
                 "connect-blockchain/evm/bnb/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "BNB Optimistic Rollup",
+              link: { type: "doc", id: "connect-blockchain/evm/opbnb/opbnb" },
+              items: [
+                "connect-blockchain/evm/opbnb/web",
+                "connect-blockchain/evm/opbnb/android",
+                "connect-blockchain/evm/opbnb/ios",
+                "connect-blockchain/evm/opbnb/react-native",
+                "connect-blockchain/evm/opbnb/flutter",
+                "connect-blockchain/evm/opbnb/unity",
               ],
             },
             {
@@ -430,19 +443,6 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/songbird/unity",
               ],
             },
-            {
-              type: "category",
-              label: "zKatana",
-              link: { type: "doc", id: "connect-blockchain/evm/zkatana/zkatana" },
-              items: [
-                "connect-blockchain/evm/zkatana/web",
-                "connect-blockchain/evm/zkatana/android",
-                "connect-blockchain/evm/zkatana/ios",
-                "connect-blockchain/evm/zkatana/react-native",
-                "connect-blockchain/evm/zkatana/flutter",
-                "connect-blockchain/evm/zkatana/unity",
-              ],
-            },
           ],
         },
         {
@@ -456,16 +456,17 @@ const sidebars: SidebarsConfig = {
         {
           type: "category",
           label: "Other Chains",
+          link: { type: "doc", id: "connect-blockchain/other/other" },
           items: [
+            "connect-blockchain/other/algorand",
+            "connect-blockchain/other/aptos",
+            "connect-blockchain/other/cosmos",
+            "connect-blockchain/other/immutablex",
+            "connect-blockchain/other/near",
+            "connect-blockchain/other/polkadot",
             "connect-blockchain/other/starkex",
             "connect-blockchain/other/starknet",
             "connect-blockchain/other/tezos",
-            "connect-blockchain/other/algorand",
-            "connect-blockchain/other/immutablex",
-            "connect-blockchain/other/aptos",
-            "connect-blockchain/other/cosmos",
-            "connect-blockchain/other/near",
-            "connect-blockchain/other/polkadot",
           ],
           collapsible: true,
           collapsed: false,
