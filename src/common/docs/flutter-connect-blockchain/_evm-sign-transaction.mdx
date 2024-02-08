@@ -1,0 +1,38 @@
+```dart
+// Use codes from Initialization here,
+// and replace the `Widget build` from the below code:
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+            child:
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              // Send Transaction
+              ElevatedButton(
+                onPressed: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  final privateKey = prefs.getString('privateKey') ?? '0';
+                  final client = Web3Client(rpcUrl, Client());
+                  final credentials = EthPrivateKey.fromHex(privateKey);
+                  final address = credentials.address;
+                  // highlight-start
+                  final receipt = await client.signTransaction(
+                      credentials,
+                      Transaction(
+                        from: address,
+                        to: EthereumAddress.fromHex(
+                            '0x809D4310d578649D8539e718030EE11e603Ee8f3'),
+                        value: EtherAmount.fromUnitAndValue(
+                            EtherUnit.gwei, 50000000), // 0.05 ETH
+                      ),
+                      chainId: 5); // change chainId as per your chain.
+                  debugPrint("Receipt, ${receipt}");
+                  // highlight-end
+                },
+                child: const Text('Sign Transaction'),
+              ),
+            ])));
+  }
+
+```

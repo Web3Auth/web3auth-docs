@@ -1,0 +1,11 @@
+```dart
+final client = Web3Client(rpcUrl, Client());
+
+final contract = DeployedContract(
+    ContractAbi.fromJson(TestContract.contractAbi, ''),
+    TestContract.deployedAddress);
+final messageFunction = contract.function('message');
+var message = await client.call(
+contract: contract, function: messageFunction, params: []);
+debugPrint("Contract Read Message, $message");
+```

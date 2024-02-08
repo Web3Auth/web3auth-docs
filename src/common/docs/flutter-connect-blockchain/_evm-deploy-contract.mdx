@@ -1,0 +1,16 @@
+```dart
+final prefs = await SharedPreferences.getInstance();
+final privateKey = prefs.getString('privateKey') ?? '0';
+final client = Web3Client(rpcUrl, Client());
+final credential = EthPrivateKey.fromHex(privateKey);
+
+var list = utf8.encode(TestContract.byteCode);
+Uint8List payload = Uint8List.fromList(list);
+final Transaction transaction = Transaction(
+  to: null,
+  from: credential.address,
+  data: payload,
+  maxGas: 2000000);
+final String transactionId =
+  await client.sendTransaction(credential, transaction);
+```

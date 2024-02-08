@@ -1,0 +1,58 @@
+```dart
+import 'package:flutter/material.dart';
+// highlight-next-line
+import 'package:web3auth_flutter/web3auth_flutter.dart';
+import 'package:web3auth_flutter/enums.dart';
+import 'package:web3auth_flutter/input.dart';
+import 'package:web3auth_flutter/output.dart';
+import 'package:http/http.dart';
+// highlight-next-line
+import 'package:web3dart/web3dart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  // highlight-next-line
+  String rpcUrl = ""; // EVM chain RPC URL
+
+  @override
+  void initState() {
+    super.initState();
+    initPlatformState();
+  }
+
+  Future<void> initPlatformState() async {
+    Uri redirectUrl;
+    if (Platform.isAndroid) {
+      redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+      // w3a://com.example.w3aflutter/auth
+    } else if (Platform.isIOS) {
+      redirectUrl = Uri.parse('{bundleId}://auth');
+      // com.example.w3aflutter://openlogin
+    } else {
+      throw UnKnownException('Unknown platform');
+    }
+
+    // highlight-start
+    await Web3AuthFlutter.init(Web3AuthOptions(
+        clientId: 'WEB3AUTH_CLIENT_ID_FROM_DASHBOARD',
+        network: Network.testnet,
+        redirectUrl: redirectUrl));
+    // highlight-end
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Your page
+  }
+}
+```

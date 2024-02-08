@@ -1,180 +1,254 @@
 ---
-title: Connect to any Blockchain
+title: Connecting Blockchains with Web3Auth
 displayed_sidebar: docs
 description: "Connect to any Blockchain via Web3Auth | Documentation - Web3Auth"
 image: "images/docs-meta-cards/documentation-card.png"
 ---
 
-import TabItem from "@theme/TabItem";
-import Tabs from "@theme/Tabs";
+import Tiles from "@theme/Tiles";
 
-Web3Auth is the frontend authentication system for your dApp. Once the user is authenticated, the Web3Auth SDK returns a provider. Using this returned
-provider we can sign transactions and **make RPC calls to any blockchain**.
+Web3Auth is the frontend authentication system for your dApp. Once the user is authenticated, the Web3Auth SDK returns a provider. A provider is how
+libraries like web3.js & ethers.js talk to the blockchain. Providers take JSON-RPC requests and return the response. This is normally done by
+submitting the request to an HTTP or IPC socket-based server. With Web3Auth, you get two types of providers, depending upon the product you use:
 
-<Tabs
-defaultValue="EVM"
-values={[
-  { label: "EVM", value: "EVM" },
-  { label: "Solana", value: "solana" },
-  { label: "XRPL", value: "xrpl" },
-  { label: "Other Chains", value: "other" },
-]}
->
-<TabItem value="EVM">
+1. [Shamir Secret Sharing based Private Key Providers](#private-key-providers-non-mpc)
+2. [Threshold Signature Scheme based MPC Providers](#mpc-providers)
 
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import Web3 from "web3";
+## Web3Auth is Chain Agnostic
 
-const web3auth = new Web3Auth({
-  clientId, // get from https://dashboard.web3auth.io
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x1", // EVM chain's Chain ID
-    rpcTarget: "https://rpc.ankr.com/eth", // EVM chain's RPC endpoint
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode, Alchemy, Ankr etc.
-    displayName: "Ethereum Mainnet", // EVM chain's Name
-    blockExplorer: "https://etherscan.io/", // EVM chain's Blockexplorer
-    ticker: "ETH", // EVM chain's Ticker
-    tickerName: "Ethereum", // EVM chain's Ticker Name
+By default Web3Auth supports the `secp256k1` and `ed25519` key curves. While these key curves serve the majority of blockchains out there, certain
+blockchains have different curve implementations of their own. While for our MPC products, you need dedicated providers to interact with certain
+blockchains, with **Web3Auth non MPC products you can interact with any blockchain of your choice**.
+
+In Web3Auth non MPC Products, the ability to export the user's private key comes in handy. This private key can be utilised by the dApp to interact
+with the chain.
+
+You can read more about this in our [Connect with Other Blockchains](./other/) section.
+
+:::info
+
+Web3Auth is composable - you can combine it with meta-transaction flows, multisigs, and other cryptographic protocols. It is easy to build on top of,
+and generally fits in with most other technology stacks, including but not limited to; your favorite scalability solutions, meta transactions, smart
+contract wallets, different elliptic curve pairs and even RSA.
+
+:::
+
+## Private Key Providers (non MPC)
+
+The Private Key Providers work with the majority of Web3Auth products, including Plug and Play SDKs, Single Factor Auth SDKs, and tKey SSS (v1) SDKs.
+As the name suggests these providers are a wrapper around the user's private key, which is dynamically reconstructed with Shamir's Secret Sharing and
+is present in the user's frontend.
+
+Once the authentication happens, the returned result from Web3Auth network is taken up by the provider to give a common interface to interact with the
+blockchain of your choice. Currently, Web3Auth supports the following private key providers for Web SDKs:
+
+- [EIP1193 Private Key Provider](/sdk/helper-sdks/providers/evm): For connecting to EVM based chains
+- [Solana Private Key Provider](/sdk/helper-sdks/providers/solana): For connecting with Solana Blockchain
+- [XRPL Private Key Provider](/sdk/helper-sdks/providers/xrpl): For connecting with XRPL Blockchain
+- [Common Private Key Provider](/sdk/helper-sdks/providers/common): For connecting with any blockchain.
+
+## MPC Providers
+
+The Threshold Signature Scheme based MPC Providers work with our MPC Core Kit SDK. These providers generate a signature of the particular key curve
+the provider is configured for and accordingly give you the interface to initialize with the blockchain it is configured for. Currently, Web3Auth MPC
+Core Kit support the following providers:
+
+- EIP1193 MPC Provider: For connecting with EVM based chains [Available by default within the SDK]
+- Bitcoin MPC Provider (coming soon)
+- Solana MPC Provider (coming soon)
+
+export const EVMChains = [
+  {
+    name: "",
+    description: "",
+    tiles: [
+      {
+        key: "ethereum",
+        title: "Ethereum",
+        icon: "logo-ethereum.png",
+        path: "/connect-blockchain/evm/ethereum/",
+      },
+      {
+        key: "arbitrum",
+        title: "Arbitrum",
+        icon: "logo-arbitrum.png",
+        path: "/connect-blockchain/evm/arbitrum/",
+      },
+      {
+        key: "avalanche",
+        title: "Avalanche",
+        icon: "logo-avalanche.png",
+        path: "/connect-blockchain/evm/avalanche/",
+      },
+      {
+        key: "base",
+        title: "Base Chain",
+        icon: "logo-base.png",
+        path: "/connect-blockchain/evm/base/",
+      },
+      {
+        key: "bnb",
+        title: "BNB Chain",
+        icon: "logo-binance.png",
+        path: "/connect-blockchain/evm/bnb/",
+      },
+      {
+        key: "celo",
+        title: "Celo",
+        icon: "logo-celo.png",
+        path: "/connect-blockchain/evm/celo/",
+      },
+      {
+        key: "cronos",
+        title: "Cronos",
+        icon: "logo-cronos.png",
+        path: "/connect-blockchain/evm/cronos/",
+      },
+      {
+        key: "flare",
+        title: "Flare",
+        icon: "logo-flare.png",
+        path: "/connect-blockchain/evm/flare/",
+      },
+      {
+        key: "harmony",
+        title: "Harmony",
+        icon: "logo-harmony.png",
+        path: "/connect-blockchain/evm/harmony/",
+      },
+      {
+        key: "klaytn",
+        title: "Klaytn",
+        icon: "logo-klaytn.png",
+        path: "/connect-blockchain/evm/klaytn/",
+      },
+      {
+        key: "moonbeam",
+        title: "Moonbeam",
+        icon: "logo-moonbeam.png",
+        path: "/connect-blockchain/evm/moonbeam/",
+      },
+      {
+        key: "moonriver",
+        title: "Moonriver",
+        icon: "logo-moonriver.png",
+        path: "/connect-blockchain/evm/moonriver/",
+      },
+      {
+        key: "optimism",
+        title: "Optimism",
+        icon: "logo-optimism.png",
+        path: "/connect-blockchain/evm/optimism/",
+      },
+      {
+        key: "polygon",
+        title: "Polygon",
+        icon: "logo-polygon.png",
+        path: "/connect-blockchain/evm/polygon/",
+      },
+      {
+        key: "skale",
+        title: "SKALE",
+        icon: "logo-skale.png",
+        path: "/connect-blockchain/evm/skale/",
+      },
+      {
+        key: "songbird",
+        title: "Songbird",
+        icon: "logo-songbird.png",
+        path: "/connect-blockchain/evm/songbird/",
+      },
+    ],
   },
-});
+];
 
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect();
-
-const web3 = new Web3(web3authProvider);
-const userAccounts = await web3.eth.getAccounts();
-console.log(userAccounts);
-```
-
-</TabItem>
-<TabItem value="solana">
-
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { SolanaWallet } from "@web3auth/solana-provider";
-
-const web3auth = new Web3Auth({
-  clientId, // get from https://dashboard.web3auth.io
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.SOLANA,
-    chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-    rpcTarget: "https://rpc.ankr.com/solana",
-    displayName: "Solana Mainnet",
-    blockExplorer: "https://explorer.solana.com",
-    ticker: "SOL",
-    tickerName: "Solana",
+export const OtherChains = [
+  {
+    name: "",
+    description: "",
+    tiles: [
+      {
+        key: "solana",
+        title: "Solana",
+        icon: "logo-solana.png",
+        path: "/connect-blockchain/solana",
+      },
+      {
+        key: "xrpl",
+        title: "XRPL",
+        icon: "logo-xrpl.png",
+        path: "/connect-blockchain/xrpl",
+      },
+      {
+        key: "algorand",
+        title: "Algorand",
+        icon: "logo-algorand.png",
+        path: "/connect-blockchain/other/algorand",
+      },
+      {
+        key: "aptos",
+        title: "Aptos",
+        icon: "logo-aptos.png",
+        path: "/connect-blockchain/other/aptos",
+      },
+      {
+        key: "cosmos",
+        title: "Cosmos",
+        icon: "logo-cosmos.png",
+        path: "/connect-blockchain/other/cosmos",
+      },
+      {
+        key: "immutablex",
+        title: "ImmutableX",
+        icon: "logo-immutablex.png",
+        path: "/connect-blockchain/other/immutablex",
+      },
+      {
+        key: "near",
+        title: "Near",
+        icon: "logo-near.png",
+        path: "/connect-blockchain/other/near",
+      },
+      {
+        key: "polkadot",
+        title: "Polkadot",
+        icon: "logo-polkadot.png",
+        path: "/connect-blockchain/other/polkadot",
+      },
+      {
+        key: "starkex",
+        title: "StarkEx",
+        icon: "logo-starkex.png",
+        path: "/connect-blockchain/other/starkex",
+      },
+      {
+        key: "starknet",
+        title: "StarkNet",
+        icon: "logo-starknet.png",
+        path: "/connect-blockchain/other/starknet",
+      },
+      {
+        key: "tezos",
+        title: "Tezos",
+        icon: "logo-tezos.png",
+        path: "/connect-blockchain/other/tezos",
+      },
+    ],
   },
-});
+];
 
-await web3auth.initModal();
+## Reference Guides for Blockchain Connections
 
-const web3authProvider = await web3auth.connect();
+You can checkout the following guides we've written for certain blockchains. We have covered a wide variety of EVM and non EVM Chains, supported by
+multiple web3auth providers.
 
-const solanaWallet = new SolanaWallet(web3authProvider);
-const userAccounts = await solanaWallet.requestAccounts();
-console.log(userAccounts);
-```
+### EVM Chain Guides
 
-</TabItem>
-<TabItem value="xrpl">
+<Tiles tileGroups={EVMChains} />
 
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { XrplPrivateKeyProvider, getXRPLChainConfig } from "@web3auth/xrpl-provider";
+### Non EVM Chain guides
 
-const web3auth = new Web3Auth({
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.OTHER,
-  },
-  clientId = "YOUR_WEB3AUTH_CLIENT_ID", // get from https://dashboard.web3auth.io
-  web3AuthNetwork = "sapphire_mainnet", // testnet, mainnet, cyan, aqua
-});
-
-const xrplProvider = new XrplPrivateKeyProvider({
-  config: {
-    chainId: "chainId",
-    chainConfig: getXRPLChainConfig("testnet"), // devnet, testnet, mainnet
-    rpcTarget: "rpc url",
-  },
-});
-
-const adapter = new OpenloginAdapter({
-  privateKeyProvider: xrplProvider, // <-- Injecting the XRPL provider
-});
-web3AuthInstance.configureAdapter(adapter);
-
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect();
-```
-
-</TabItem>
-<TabItem value="other">
-
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-
-const web3auth = new Web3Auth({
-  clientId, // get from https://dashboard.web3auth.io
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    /*
-    you can pass your own chain configs here
-    */
-    chainId: "chain id",
-    rpcTarget: "rpc url",
-    chainNamespace: CHAIN_NAMESPACES.OTHER,
-    displayName: "Chain Name",
-    ticker: "TKR",
-    tickerName: "Ticker Name",
-  }
-});
-
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
-    uxMode: "popup",
-  },
-});
-web3auth.configureAdapter(openloginAdapter);
-
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect();
-
-async getPrivateKey() {
-  const privateKey = await web3authProvider.request({
-      method: "private_key"
-  });
-    //Fetch Address with privateKey
-}
-
-```
-
-</TabItem>
-
-</Tabs>
-
-## Using Web3Auth Providers
-
-A provider is how libraries like web3.js & ethers.js talk to the blockchain. Providers take JSON-RPC requests and return the response. This is
-normally done by submitting the request to an HTTP or IPC socket-based server. Each adapter in Web3Auth exposes a Provider on successful user
-authentication. This provider can be used to interact with wallet or connected chain using RPC calls. Currently, Web3Auth supports providers for both
-**EVM** and **Solana** chains, which means that any EVM compatible chain & Solana can directly use our native providers to interact with the dApp. You
-can follow our API Reference to know more about how to use these providers with their compatible adapters:
-
-- [EIP1193 (EVM) Providers](/sdk/helper-sdks/providers/evm)
-- [Solana Providers](/sdk/helper-sdks/providers/solana)
-- [XRPL Providers](/sdk/helper-sdks/providers/xrpl)
-- [Other Providers](/sdk/helper-sdks/providers/common)
+<Tiles tileGroups={OtherChains} />
 
 ## Adding JSON RPC APIs
 
@@ -203,40 +277,3 @@ all major chains, an ethers.js SDK, and a library of [enhanced APIs](https://doc
 
 [Ankr](https://www.ankr.com/) is a decentralized cloud computing platform that provides a full suite of infrastructure services for blockchain
 developers. Most of the examples in our documentation use Ankr's Public JSON RPC APIs, to help you kickstart.
-
-## Web3Auth has multichain support
-
-So, we have covered our existing wallet adapters and providers available. What if you want to use a different chain or a wallet?
-
-Here the ability to expose the user's private key comes in handy. Every SDK of Web3Auth has the functionality of exposing the user's private key,
-within the dApp instance locally. This private key can be utilised by the dApp to interact with the chain.
-
-The small API surface also means Web3Auth is composable - you can combine it with meta-transaction flows, multisigs, and other cryptographic
-protocols. It is easy to build on top of, and generally fits in with most other technology stacks, including but not limited to; your favorite
-scalability solutions, meta transactions, smart contract wallets, different elliptic curve pairs and even RSA.
-
-Example below demonstrates usage of `other` chainNamespace and retrieving private key of logged in user.
-
-```tsx
-const web3auth = new Web3Auth({
-  chainConfig: { chainNamespace: CHAIN_NAMESPACES.OTHER },
-  web3AuthNetwork: "sapphire_mainnet",
-  clientId: "example-client-id",
-});
-
-//Assuming user is already logged in.
-async getPrivateKey() {
-    const privateKey = await web3auth.provider.request({
-        method: "private_key"
-    });
-    //Do something with privateKey
-}
-```
-
-You can read more about this in our [**Provider SDK Reference**](/sdk/helper-sdks/providers)
-
-:::info Note
-
-Currently only `OpenloginAdapter` is supported with `other` chainNamespace.
-
-:::

@@ -1,0 +1,25 @@
+```dart
+// Use codes from Initialization here,
+// and replace the `Widget build` from the below code:
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+            child:
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              // Get Account
+              ElevatedButton(
+                onPressed: () async {
+                  // highlight-start
+                  final credentials = EthPrivateKey.fromHex(privateKey);
+                  final address = credentials.address;
+                  debugPrint("Account, ${address.hexEip55}");
+                  // highlight-end
+                },
+                child: const Text('Get Address'),
+              ),
+            ])));
+  }
+
+```

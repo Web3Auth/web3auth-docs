@@ -1,0 +1,256 @@
+---
+title: Integrate Web3Auth with the Skale Blockchain in Flutter
+sidebar_label: Flutter
+image: "content-hub/guides/banners/skale.png"
+displayed_sidebar: docs
+keywords: [flutter, skale, web3auth, authentication, blockchain]
+description: "Integrate Web3Auth with the Skale Blockchain in Flutter | Documentation - Web3Auth"
+---
+
+import InstallationSnippet from "@site/src/common/docs/flutter-connect-blockchain/_evm-installation.mdx";
+import GetAccountSnippet from "@site/src/common/docs/flutter-connect-blockchain/_evm-get-account.mdx";
+import UserInfoSnippet from "@site/src/common/docs/flutter-connect-blockchain/_evm-user-info.mdx";
+import GetBalanceSnippet from "@site/src/common/docs/flutter-connect-blockchain/_evm-get-balance.mdx";
+import InitialisationSnippet from "@site/src/common/docs/flutter-connect-blockchain/_evm-initialisation.mdx";
+import SignTransactionSnippet from "@site/src/common/docs/flutter-connect-blockchain/_evm-sign-transaction.mdx";
+import SendTransactionSnippet from "@site/src/common/docs/flutter-connect-blockchain/_evm-send-transaction.mdx";
+import TestContractSnippet from "@site/src/common/docs/flutter-connect-blockchain/_evm-test-contract.mdx";
+import DeployContractSnippet from "@site/src/common/docs/flutter-connect-blockchain/_evm-deploy-contract.mdx";
+import ReadContractSnippet from "@site/src/common/docs/flutter-connect-blockchain/_evm-read-contract.mdx";
+import WriteContractSnippet from "@site/src/common/docs/flutter-connect-blockchain/_evm-write-contract.mdx";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Integrate Web3Auth with the Skale Blockchain in Flutter"
+  description="Integrate Web3Auth with the Skale Blockchain in Flutter | Documentation - Web3Auth"
+  image="https://web3auth.io/docs/content-hub/guides/banners/skale.png"
+  slug="/connect-blockchain/evm/skale/flutter"
+/>
+
+While using the Web3Auth Flutter SDK, you get the private key within the user scope. This private key can interact with [SKALE](https://skale.space/)
+to make any blockchain calls, like getting the user's `account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and `write` to
+the smart contract, etc. We have highlighted a few here to get you started quickly on that.
+
+## Installation
+
+<InstallationSnippet />
+
+## Chain Details for Skale
+
+### Getting the `chainConfig` for Europa Hub
+
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+
+- Chain ID: 0x79f99296
+- Public RPC URL: https://mainnet.skalenodes.com/v1/elated-tan-skat (Avoid using public rpcTarget in production, use services like Infura, Quicknode
+  etc)
+- Display Name: SKALE Europa Hub Mainnet
+- Block Explorer Link: https://elated-tan-skat.explorer.mainnet.skalenodes.com
+- Ticker: sFUEL
+- Ticker Name: sFUEL
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+- Chain ID: 0x1c6199cc
+- Public RPC URL: https://staging-v3.skalenodes.com/v1/staging-legal-crazy-castor (Avoid using public rpcTarget in production, use services like
+  Infura, Quicknode etc)
+- Display Name: SKALE Europa Hub Testnet
+- Block Explorer Link: https://staging-legal-crazy-castor.explorer.staging-v3.skalenodes.com
+- Ticker: sFUEL
+- Ticker Name: sFUEL
+
+</TabItem>
+</Tabs>
+
+### Getting the `chainConfig` for Calypso Hub
+
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+
+- Chain ID: 0x5d456c62
+- Public RPC URL: https://mainnet.skalenodes.com/v1/honorable-steel-rasalhague (Avoid using public rpcTarget in production, use services like Infura,
+  Quicknode etc)
+- Display Name: SKALE Calypso Hub Mainnet
+- Block Explorer Link: https://honorable-steel-rasalhague.explorer.mainnet.skalenodes.com
+- Ticker: sFUEL
+- Ticker Name: sFUEL
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+- Chain ID: 0x1482a7b2
+- Public RPC URL: https://staging-v3.skalenodes.com/v1/staging-utter-unripe-menkar (Avoid using public rpcTarget in production, use services like
+  Infura, Quicknode etc)
+- Display Name: SKALE Calypso Hub Testnet
+- Block Explorer Link: https://staging-utter-unripe-menkar.explorer.staging-v3.skalenodes.com
+- Ticker: sFUEL
+- Ticker Name: sFUEL
+
+</TabItem>
+</Tabs>
+
+### Getting the `chainConfig` for Nebula Gaming Hub
+
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+
+- Chain ID: 0x585eb4b1
+- Public RPC URL: https://mainnet.skalenodes.com/v1/green-giddy-denebola (Avoid using public rpcTarget in production, use services like Infura,
+  Quicknode etc)
+- Display Name: SKALE Nebula Gaming Hub Mainnet
+- Block Explorer Link: https://green-giddy-denebola.explorer.mainnet.skalenodes.com
+- Ticker: sFUEL
+- Ticker Name: sFUEL
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+- Chain ID: 0x1dfd2731
+- Public RPC URL: https://staging-v3.skalenodes.com/v1/staging-faint-slimy-achird (Avoid using public rpcTarget in production, use services like
+  Infura, Quicknode etc)
+- Display Name: SKALE Nebula Gaming Hub Testnet
+- Block Explorer Link: https://staging-faint-slimy-achird.explorer.staging-v3.skalenodes.com
+- Ticker: sFUEL
+- Ticker Name: sFUEL
+
+</TabItem>
+</Tabs>
+
+### Getting the `chainConfig` for Titan Community Hub
+
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+
+- Chain ID: 0x507aaa2a
+- Public RPC URL: https://mainnet.skalenodes.com/v1/parallel-stormy-spica (Avoid using public rpcTarget in production, use services like Infura,
+  Quicknode etc)
+- Display Name: SKALE Titan Community Hub Mainnet
+- Block Explorer Link: https://parallel-stormy-spica.explorer.mainnet.skalenodes.com
+- Ticker: sFUEL
+- Ticker Name: sFUEL
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+- Chain ID: 0x5a79c44e
+- Public RPC URL: https://staging-v3.skalenodes.com/v1/staging-aware-chief-gianfar (Avoid using public rpcTarget in production, use services like
+  Infura, Quicknode etc)
+- Display Name: SKALE Titan Community Hub Testnet
+- Block Explorer Link: https://staging-aware-chief-gianfar.explorer.staging-v3.skalenodes.com
+- Ticker: sFUEL
+- Ticker Name: sFUEL
+
+</TabItem>
+</Tabs>
+
+### Getting the `chainConfig` for Chaos Testnet
+
+<Tabs
+ defaultValue="testnet"
+  values={[
+    { label: "Testnet", value: "testnet", },
+  ]}
+>
+
+<TabItem
+  value="testnet"
+>
+
+- Chain ID: 0x50877ed6
+- Public RPC URL: https://staging-v3.skalenodes.com/v1/staging-fast-active-bellatrix (Avoid using public rpcTarget in production, use services like
+  Infura, Quicknode etc)
+- Display Name: SKALE Chaos Testnet
+- Block Explorer Link: https://staging-fast-active-bellatrix.explorer.staging-v3.skalenodes.com
+- Ticker: sFUEL
+- Ticker Name: sFUEL
+
+</TabItem>
+</Tabs>
+
+## Initialize
+
+<InitialisationSnippet />
+
+## Get User Info
+
+<UserInfoSnippet />
+
+## Get Account
+
+<GetAccountSnippet />
+
+## Get Balance
+
+<GetBalanceSnippet />
+
+## Send Transaction
+
+<SendTransactionSnippet />
+
+## Sign Transaction
+
+<SignTransactionSnippet />
+
+## Smart Contract
+
+<TestContractSnippet />
+
+### Deploy Contract
+
+<DeployContractSnippet />
+
+### Read From Contract
+
+<ReadContractSnippet />
+
+### Write to Contract
+
+<WriteContractSnippet />
