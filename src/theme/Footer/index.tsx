@@ -180,7 +180,7 @@ export default function FooterComponent(): JSX.Element {
           </div>
         </div>
         <div className="row">
-          <div className="col col-6">Copyright © Torus Labs Pte Ltd 2022</div>
+          <div className="col col-6">Copyright © Torus Labs Pte Ltd 2024</div>
           <div className="col col-3" />
           <div className="col col-3">
             {" "}
