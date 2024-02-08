@@ -29,6 +29,137 @@ accordingly.
 To interact with the Solana blockchain, you can use [`@solana/web3.js`](https://solana-labs.github.io/solana-web3.js/) library with Web3Auth along
 with `@web3auth/solana-provider` package.
 
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+    { label: "CDN", value: "cdn" },
+  ]}
+>
+<TabItem value="npm">
+
+```shell
+npm install --save @solana/web3.js @web3auth/solana-provider
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```shell
+yarn add @solana/web3.js @web3auth/solana-provider
+```
+
+</TabItem>
+<TabItem value="cdn">
+```shell
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+<script src="https://unpkg.com/@web3auth/solana-provider@1.1.0/dist/solanaProvider.umd.min.js"></script>
+```
+
+</TabItem>
+</Tabs>
+
+## Initializing Provider
+
+Using `solana` as `chainNamespace` while initializing `web3auth` will provide a `solana` compatible provider as **`web3auth.provider`** after
+successful authentication.
+
+Additionally, in the `clientId` field, you can specify the clain you want to work with. Please use `0x1` for Solana Mainnet, `0x2` for Solana Testnet,
+`0x3` for Solana Devnet.
+
+<Tabs
+  defaultValue="es"
+  values={[
+    { label: "ES Modules", value: "es" },
+    { label: "TypeScript", value: "ts" },
+    { label: "CommonJS", value: "js" },
+  ]}
+>
+<TabItem value="es">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { SolanaWallet } from "@web3auth/solana-provider";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "solana",
+    chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+    rpcTarget: "https://rpc.ankr.com/solana",
+    displayName: "Solana Mainnet",
+    blockExplorer: "https://explorer.solana.com",
+    ticker: "SOL",
+    tickerName: "Solana",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const solanaWallet = new SolanaWallet(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="ts">
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { SolanaWallet } from "@web3auth/solana-provider";
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.SOLANA,
+    chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+    rpcTarget: "https://rpc.ankr.com/solana",
+    displayName: "Solana Mainnet",
+    blockExplorer: "https://explorer.solana.com",
+    ticker: "SOL",
+    tickerName: "Solana",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const solanaWallet = new SolanaWallet(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+<TabItem value="js">
+
+```tsx
+const { Web3Auth } = require("@web3auth/modal");
+const { SolanaWallet } = require("@web3auth/solana-provider");
+
+const web3auth = new Web3Auth({
+  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig: {
+    chainNamespace: "solana",
+    chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+    rpcTarget: "https://rpc.ankr.com/solana",
+    displayName: "Solana Mainnet",
+    blockExplorer: "https://explorer.solana.com",
+    ticker: "SOL",
+    tickerName: "Solana",
+  },
+});
+await web3auth.initModal();
+
+const web3authProvider = await web3auth.connect();
+
+const solanaWallet = new SolanaWallet(web3authProvider); // web3auth.provider
+```
+
+</TabItem>
+</Tabs>
+
 ### Getting the `chainConfig`
 
 <Tabs
@@ -74,10 +205,6 @@ const chainConfig: {
 
 </TabItem>
 </Tabs>
-
-### Initializing and instantiating the Web3Auth SDK
-
-<InitializeWeb3Auth />
 
 ## Get User Info
 
