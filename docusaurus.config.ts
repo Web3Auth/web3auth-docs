@@ -590,7 +590,7 @@ const config: Config = {
             ];
           }
           if (existingPath.includes("/connect-blockchain/evm/ethereum")) {
-            return [existingPath.replace("/connect-blockchain/evm/ethereum", "/connect-blockchain/ethereum")];
+            return [existingPath.replace("/connect-blockchain/evm/ethereum", "/connect-blockchain/evm/ethereum")];
           }
           return undefined; // Return a falsy value: no redirect created
         },
