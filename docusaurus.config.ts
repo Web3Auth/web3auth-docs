@@ -471,16 +471,8 @@ const config: Config = {
             to: "/connect-blockchain/evm/songbird",
           },
           {
-            from: "/connect-blockchain/zkatana",
-            to: "/connect-blockchain/evm/zkatana",
-          },
-          {
             from: "/connect-blockchain/skale",
             to: "/connect-blockchain/evm/skale",
-          },
-          {
-            from: "/connect-blockchain/polymesh",
-            to: "/connect-blockchain/evm/polymesh",
           },
           {
             from: "/connect-blockchain/starkex",
