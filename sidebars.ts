@@ -468,6 +468,7 @@ const sidebars: SidebarsConfig = {
             "connect-blockchain/other/immutablex",
             "connect-blockchain/other/near",
             "connect-blockchain/other/polkadot",
+            "connect-blockchain/other/polymesh",
             "connect-blockchain/other/starkex",
             "connect-blockchain/other/starknet",
             "connect-blockchain/other/tezos",

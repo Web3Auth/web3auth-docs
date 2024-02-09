@@ -60,6 +60,12 @@ export const PNPNoModalWebExample = [
         path: `${baseURL}blockchain-connection-examples/polkadot-no-modal-example`,
       },
       {
+        key: "react-polymesh-no-modal-example",
+        title: "Polymesh in React",
+        icon: "logo-polymesh.png",
+        path: `${baseURL}blockchain-connection-examples/polymesh-no-modal-example`,
+      },
+      {
         key: "react-starkex-no-modal-example",
         title: "StarkEX in React",
         icon: "logo-starkex.png",
