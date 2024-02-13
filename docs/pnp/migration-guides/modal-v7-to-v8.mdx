@@ -9,10 +9,12 @@ sidebar_label: v7 to v8
 
 ## General
 
+This migration guide provides steps for upgrading from version 7 (v7) to version 8 (v8) of the Web3Auth Modal SDK.
+
 ### `CustomChainConfig`
 
 #### `blockExplorer` is now `blockExplorerUrl`
-With v8, in `CustomChainConfig` accepts `blockExplorerUrl` instead of `blockExplorer`.
+With v8, `CustomChainConfig` accepts `blockExplorerUrl` instead of `blockExplorer`.
 
 #### A new `logo` parameter is now added to `CustomChainConfig`
 
@@ -39,6 +41,11 @@ const chainConfig = {
 };
 ```
 
+#### CustomChainConfig optional params
+In v8, parameters apart from `chainId`, `rpcTarget`, and `chainNamespace` are now optional.
+Please note, while using [Wallet Services](@web3auth/wallet-services-plugin) you have to also pass
+the optional parameters.
+
 ### `Web3AuthOptions`
 
 #### A new mandatory `privateKeyProvider` parameter is now added to `Web3AuthOptions`
@@ -49,6 +56,10 @@ have a look at your [Providers reference](/sdk/helper-sdks/providers).
 #### New language support for `defaultLanguage`
 
 With v8, you can now use Turkish as a `defaultLanguage` option in `uiConfig`.
+
+#### chainConfig is now optional
+
+With v8, `chainConfig` is now optional parameter. The SDK fetches the `chainConfig` from `privateKeyProvider`.
 
 ```tsx
 const chainConfig = {
@@ -70,10 +81,6 @@ const ethereumPrivateKeyProvider = EthereumPrivateKeyProvider({
 const web3auth = new Web3Auth({
   clientId: "", // Get your Client ID from the Web3Auth Dashboard
   web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    ...chainConfig,
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-  },
   uiConfig: {
     // highlight-next-line
     // Access the LANGUAGES from @toruslabs/openlogin-utils
@@ -85,6 +92,25 @@ const web3auth = new Web3Auth({
 ```
 
 ## Other changes
+
+### WalletConnect v2 Adapter
+With v8, `getWalletConnectV2Settings` now accepts a list of string, instead of list of number for `chainId`.
+
+##### Usage
+
+```tsx
+import { WalletConnectModal } from "@walletconnect/modal";
+import { getWalletConnectV2Settings, WalletConnectV2Adapter } from "@web3auth/wallet-connect-v2-adapter";
+
+const defaultWcSettings = await getWalletConnectV2Settings("eip155", ["1"], "projectId");
+const walletConnectModal = new WalletConnectModal({ projectId: "projectId" });
+const walletConnectV2Adapter = new WalletConnectV2Adapter({
+  adapterSettings: { qrcodeModal: walletConnectModal, ...defaultWcSettings.adapterSettings },
+  loginSettings: { ...defaultWcSettings.loginSettings },
+});
+
+web3auth.configureAdapter(walletConnectV2Adapter);
+```
 
 ### Adapters
 
