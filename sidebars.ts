@@ -149,6 +149,11 @@ const sidebars: SidebarsConfig = {
     },
     "core-kit/introduction",
     "core-kit/going-live",
+    {
+      type: "category",
+      label: "Migration Guides",
+      items: ["core-kit/migration-guides/sfa-flutter-v1-to-v2"],
+    },
     // Account Abstraction Section
     {
       type: "html",
