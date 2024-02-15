@@ -1,19 +1,17 @@
-In this example we're adding the `TorusWalletConnectorPlugin` with a very basic configuration.
+In this example, we're adding the `WalletServicesPlugin` with a very basic configuration.
 
 ```javascript
-import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
-const torusPlugin = new TorusWalletConnectorPlugin({
-  torusWalletOpts: {},
-  walletInitOptions: {
-    whiteLabel: {
-      theme: { isDark: true, colors: { primary: "#00a8ff" } },
-      logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-      logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-    },
-    useWalletConnect: true,
-    enableLogging: true,
-  },
-});
-await web3auth.addPlugin(torusPlugin);
+const walletServicesPlugin = new WalletServicesPlugin();
+web3auth.addPlugin(walletServicesPlugin);
+
+// Show the wallet services plugin
+await walletServicesPlugin.showWalletUi();
+
+// Show the wallet connect scanner
+await walletServicesPlugin.showWalletConnectScanner();
+
+// Show the checkout
+await walletServicesPlugin.showCheckout();
 ```

@@ -1,24 +1,13 @@
-Shows the Wallet Connect Scanner to connect with dApps having Wallet Connect login option.
+Shows the Wallet Connect Scanner to connect with dApps having Wallet Connect login option. This is useful for interoperability with dApps having
+Wallet Connect login option.
 
 #### Example
 
 ```javascript
-import { TorusWalletConnectorPlugin } from "@web3auth/torus-wallet-connector-plugin";
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
-const torusPlugin = new TorusWalletConnectorPlugin({
-  torusWalletOpts: {},
-  walletInitOptions: {
-    whiteLabel: {
-      theme: { isDark: true, colors: { primary: "#00a8ff" } },
-      logoLight: "https://web3auth.io/images/web3auth-logo.svg",
-      logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
-    },
-    useWalletConnect: true, // make sure this is enabled before using the showWalletConnectScanner function
-    enableLogging: true,
-  },
-});
+const walletServicesPlugin = new WalletServicesPlugin();
+web3auth.addPlugin(walletServicesPlugin); // Add the plugin to web3auth
 
-await web3auth.addPlugin(torusPlugin); // add plugin to web3auth instance
-
-await torusPlugin.showWalletConnectScanner();
+await walletServicesPlugin.showWalletConnectScanner();
 ```

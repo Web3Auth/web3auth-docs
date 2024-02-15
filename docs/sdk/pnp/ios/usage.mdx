@@ -32,15 +32,15 @@ the login method for specific social logins such as Google, Apple, Facebook, etc
 
 <TabItem value="table">
 
-| Parameter           | Type                | Mandatory | Description                                                                                                                                                                                        |
-| ------------------- | ------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginProvider`     | `String` `Provider` | No        | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `GITHUB`, `LINKEDIN`, `TWITTER`, `WEIBO`, `LINE`, `EMAIL_PASSWORD`, `EMAIL_PASSWORDLESS`, `JWT` |
-| `dappShare`         | `String`            | No        | Dapp share can be used to pass dapp share url, default is `nil`                                                                                                                                    |
-| `extraLoginOptions` | `ExtraLoginOptions` | No        | You can pass various OAuth-supported options, default is `nil`                                                                                                                                     |
-| `redirectUrl`       | `String`            | No        | Url where user will be redirected after successfull login. By default user will be redirected to the same page where login will be initiated, the default is `nil`                                 |
-| `appState`          | `String`            | No        | `appState` can be used to keep track of the app state when the user is redirected to the app after login, default is `nil`                                                                         |
-| `mfaLevel`          | `enum`              | No        | MFA level can be used to pass 2FA screen shown during login, default is `nil`, shown every 3rd login.                                                                                              |
-| `curve`             | `enum`              | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum, default is `SECP256K1`.                                                                                |
+| Parameter           | Type                  | Mandatory | Description                                                                                                                                                                                        |
+| ------------------- | --------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginProvider`     | `Web3AuthProvider` 	  | No        | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `GITHUB`, `LINKEDIN`, `TWITTER`, `WEIBO`, `LINE`, `EMAIL_PASSWORD`, `EMAIL_PASSWORDLESS`, `JWT` |
+| `dappShare`         | `String`              | No        | Dapp share can be used to pass dapp share url, default is `nil`                                                                                                                                    |
+| `extraLoginOptions` | `ExtraLoginOptions`   | No        | You can pass various OAuth-supported options, default is `nil`                                                                                                                                     |
+| `redirectUrl`       | `String`              | No        | Url where user will be redirected after successfull login. By default user will be redirected to the same page where login will be initiated, the default is `nil`                                 |
+| `appState`          | `String`              | No        | `appState` can be used to keep track of the app state when the user is redirected to the app after login, default is `nil`                                                                         |
+| `mfaLevel`          | `MFALevel`            | No        | MFA level can be used to pass 2FA screen shown during login, default is `nil`, shown every 3rd login.                                                                                              |
+| `curve`             | `SUPPORTED_KEY_CURVES`| No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum, default is `SECP256K1`.                                                                                |
 
 </TabItem>
 
@@ -74,7 +74,7 @@ public struct W3ALoginParams: Codable {
 
 ### `getPrivkey()`
 
-Use getPrivkey() to get the private key of the user. This private key can be used to sign transactions on Ethereum.
+Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private key which can be used to sign transactions on EVM compatible chains.
 
 ### `getEd25519PrivKey()`
 
@@ -107,10 +107,7 @@ func login(provider: Web3AuthProvider) {
 	Task {
 		do {
 			let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
-			await MainActor.run(body: {
-				user = result
-				loggedIn = true
-			})
+			// Perform action upon success
 		} catch {
 			print("Error")
 		}
@@ -129,10 +126,7 @@ func login(provider: Web3AuthProvider) {
 	Task {
 		do {
 			let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
-			await MainActor.run(body: {
-				user = result
-				loggedIn = true
-			})
+			// Perform action upon success
 		} catch {
 			print("Error")
 		}
@@ -151,10 +145,7 @@ func login(provider: Web3AuthProvider) {
 	Task {
 		do {
 			let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
-			await MainActor.run(body: {
-				user = result
-				loggedIn = true
-			})
+			// Perform action upon success
 		} catch {
 			print("Error")
 		}
@@ -173,10 +164,7 @@ func login(provider: Web3AuthProvider) {
 	Task {
 		do {
 			let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
-			await MainActor.run(body: {
-				user = result
-				loggedIn = true
-			})
+			// Perform action upon success
 		} catch {
 			print("Error")
 		}
@@ -195,10 +183,7 @@ func login(provider: Web3AuthProvider) {
 	Task {
 		do {
 			let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
-			await MainActor.run(body: {
-				user = result
-				loggedIn = true
-			})
+			// Perform action upon success
 		} catch {
 			print("Error")
 		}
@@ -216,14 +201,13 @@ login(provider: .EMAIL_PASSWORDLESS)
 func login(provider: Web3AuthProvider) {
 	Task {
 		do {
-			let result = try await Web3Auth().login(W3ALoginParams(selectedLoginProvider,
+			let result = try await Web3Auth().login(W3ALoginParams(
+				selectedLoginProvider,
       		// highlight-next-line
-      		extraLoginOptions: .init(domain:"your-domain", id_token: "your_jwt_token")
+      			extraLoginOptions: .init(domain:"your-domain", id_token: "your_jwt_token")
   			))
-			await MainActor.run(body: {
-				user = result
-				loggedIn = true
-			})
+
+			// Perform action upon success
 		} catch {
 			print("Error")
 		}
@@ -246,7 +230,8 @@ login(provider: .JWT)
 ```swift
 Web3Auth.login(W3ALoginParams(
 	provider = selectedLoginProvider,
-    extraLoginOptions = ExtraLoginOptions(login_hint: "hello@web3auth.io")))
+    extraLoginOptions = ExtraLoginOptions(login_hint: "hello@web3auth.io")
+))
 ```
 
 <Tabs
@@ -259,26 +244,26 @@ Web3Auth.login(W3ALoginParams(
 
 <TabItem value="table">
 
-| Parameter                 | Type               | Mandatory | Description                                                            |
-| ------------------------- | ------------------ | --------- | ---------------------------------------------------------------------- |
-| domain                    | String?            | No        | Domain of the app                                                      |
-| client_id                 | String?            | No        | client_id from Web3Auth Dashboard                                      |
-| leeway                    | Int?               | No        | The value in seconds used to account for clock skew in JWT expirations |
-| verifierIdField           | String?            | No        | The field in the jwt token that maps to the verifier id.               |
-| isVerifierIdCaseSensitive | Boolean?           | No        | Whether the verifier id field is case sensitive                        |
-| display                   | Display?           | No        | Display                                                                |
-| prompt                    | Prompt?            | No        | Prompt                                                                 |
-| max_age                   | String?            | No        | max_age                                                                |
-| ui_locales                | String?            | No        | ui_locales to be shown on the modal                                    |
-| id_token_hint             | String?            | No        | Previously issued ID Token.                                            |
-| id_token                  | String?            | No        | JWT (ID Token) to be passed for Login.                                 |
-| login_hint                | String?            | No        | Email used for EMAIL_PASSWORDLESS                                      |
-| acr_values                | String?            | No        | acc_values                                                             |
-| scope                     | String?            | No        | scope                                                                  |
-| audience                  | String?            | No        | audience                                                               |
-| connection                | String?            | No        | connection                                                             |
-| redirect_uri              | String?            | No        | redirect_uri                                                           |
-| additionalParams          | [String : String]? | No        | additonal parameters                                                   |
+| Parameter                   | Type                | Mandatory | Description                                                            |
+| --------------------------- | ------------------- | --------- | ---------------------------------------------------------------------- |
+| `domain`                    | `String?`           | No        | Domain of the app                                                      |
+| `client_id`                 | `String?`           | No        | client_id from Web3Auth Dashboard                                      |
+| `leeway`                    | `Int?`              | No        | The value in seconds used to account for clock skew in JWT expirations |
+| `verifierIdField`           | `String?`           | No        | The field in the jwt token that maps to the verifier id.               |
+| `isVerifierIdCaseSensitive` | `Bool?`          	| No        | Whether the verifier id field is case sensitive                        |
+| `display`                   | `Display?`          | No        | Display                                                                |
+| `prompt`                    | `Prompt?`           | No        | Prompt                                                                 |
+| `max_age`                   | `String?`           | No        | max_age                                                                |
+| `ui_locales`                | `String?`           | No        | ui_locales to be shown on the modal                                    |
+| `id_token_hint`             | `String?`           | No        | Previously issued ID Token.                                            |
+| `id_token`                  | `String?`           | No        | JWT (ID Token) to be passed for Login.                                 |
+| `login_hint`                | `String?`           | No        | Email used for EMAIL_PASSWORDLESS                                      |
+| `acr_values`                | `String?`           | No        | acc_values                                                             |
+| `scope`                     | `String?`           | No        | scope                                                                  |
+| `audience`                  | `String?`           | No        | audience                                                               |
+| `connection`                | `String?`           | No        | connection                                                             |
+| `redirect_uri`              | `String?`           | No        | redirect_uri                                                           |
+| `additionalParams`          | `[String : String]?`| No        | additonal parameters                                                   |
 
 </TabItem>
 
@@ -314,7 +299,7 @@ public struct ExtraLoginOptions: Codable{
 ## Session Management
 
 The Session Management feature allows you to check the existing sessions with Web3Auth. The `Web3AuthState` will allow users to remain authenticated
-with Web3Auth for up to 1-day default, or a maximum of 7 days, or until the user logout or session data is cleared.
+with Web3Auth for 1 day by default, or a maximum of 7 days, or until the user logout or session data is cleared.
 
 The `Web3Auth` initialization accepts a `sessionTime` parameter.
 
@@ -324,7 +309,9 @@ let sessionTime = 86400 // 1 day
 
 ```swift title="Usage"
 import Foundation
+// IMP START - Quick Start
 import Web3Auth
+// IMP END - Quick Start
 
 class ViewModel: ObservableObject {
     var web3Auth: Web3Auth?
@@ -339,14 +326,16 @@ class ViewModel: ObservableObject {
             isLoading = true
             navigationTitle = "Loading"
         })
-        web3Auth = await Web3Auth(
-			W3AInitParams(
-				clientId: "YOUR_WEB3AUTH_CLIENT_ID",
-    			network: .testnet,
-				// highlight-next-line
-				sessionTime: 86400, // 1 day
-			)
-		)
+
+
+        web3Auth = await Web3Auth(W3AInitParams(
+            clientId: "<Your client id>",
+			network: .sapphire_mainnet,
+			// highlight-next-line
+			sessionTime: 86400, // 1 day
+
+        ))
+
         await MainActor.run(body: {
             if self.web3Auth?.state != nil {
 				// highlight-next-line
@@ -361,10 +350,11 @@ class ViewModel: ObservableObject {
     func login(provider: Web3AuthProvider) {
         Task {
             do {
-                let result = try await Web3Auth().login(
-					W3ALoginParams(
-						loginProvider: provider,
-					))
+
+                let result = try await web3Auth?.login(
+                    W3ALoginParams(loginProvider: provider)
+                )
+
                 await MainActor.run(body: {
                     user = result
                     loggedIn = true
@@ -375,7 +365,15 @@ class ViewModel: ObservableObject {
             }
         }
     }
-}
+
+    func logout() throws {
+        Task {
+            try await web3Auth?.logout()
+            await MainActor.run(body: {
+                loggedIn = false
+            })
+        }
+    }
 ```
 
 ## Selecting Curve
@@ -387,7 +385,7 @@ signature.
 let result = try await Web3Auth().login(
 	W3ALoginParams(
 		loginProvider: provider,
-		 curve: SUPPORTED_KEY_CURVES.SECP256K1
+		curve: SUPPORTED_KEY_CURVES.SECP256K1
 	))
 ```
 
@@ -410,11 +408,8 @@ func login(provider: Web3AuthProvider) {
 				loginProvider: provider,
 				// highlight-next-line
 				curve: SUPPORTED_KEY_CURVES.SECP256K1
-				))
-			await MainActor.run(body: {
-				user = result
-				loggedIn = true
-			})
+			))
+			// Perform action on success
 		} catch {
 			print("Error")
 		}
@@ -438,11 +433,8 @@ func login(provider: Web3AuthProvider) {
 				loginProvider: provider,
 				// highlight-next-line
 				curve: SUPPORTED_KEY_CURVES.ED25519
-				))
-			await MainActor.run(body: {
-				user = result
-				loggedIn = true
-			})
+			))
+			// Perform action on success
 		} catch {
 			print("Error")
 		}
