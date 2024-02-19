@@ -10,12 +10,12 @@ sidebar_label: v7 to v8
 ## Overview
 
 This migration guide provides steps for upgrading from version 7 (v7) to version 8 (v8) of the Web3Auth Modal SDK. The guide outlines significant
-changes and enhancements, including introduction of `getDefaultExternalAdapters` for easy adapter management, updates to the `CustomChainConfig` and
-`Web3AuthOptions` interface.
+changes and enhancements, including the introduction of `getDefaultExternalAdapters` for easy adapter management, updates to the `CustomChainConfig`
+and `Web3AuthOptions` interface.
 
 ## Changes in Detail
 
-### 1. `CustomChainConfig`
+### `CustomChainConfig`
 
 #### Before v8:
 
@@ -38,8 +38,12 @@ const chainConfig: CustomChainConfig = {
 In `CustomChainConfig`, a new parameter `logo` has been introduced which can be used to pass the logo for the chain. Along with that, `isTestnet` has
 been introduced which can be used to define whether the network is testnet or not.
 
-:::note In v8, parameters apart from `chainId`, `rpcTarget`, and `chainNamespace` are now optional. Please note, while using
-[Wallet Services](@web3auth/wallet-services-plugin) you have to also pass the optional parameters. :::
+:::note
+
+From v8, parameters apart from `chainId`, `rpcTarget`, and `chainNamespace` are now optional. Please note, while using
+[Wallet Services](/docs/sdk/wallet-services) you have to also pass the optional parameters.
+
+:::
 
 ```tsx
 type CustomChainConfig = {
@@ -72,11 +76,11 @@ const chainConfig = {
 };
 ```
 
-### 2. `Web3AuthOptions`
+### `Web3AuthOptions`
 
 #### Before v8:
 
-Earlier, `privateKeyProvider` provider was not mandatory, and `chainConfig` was mandatory.
+Earlier, the `privateKeyProvider` provider was not mandatory, and `chainConfig` was mandatory.
 
 #### After v8:
 
@@ -112,11 +116,11 @@ const web3auth = new Web3Auth({
 });
 ```
 
-### 3. WalletConnect v2 Adapter
+### WalletConnect v2 Adapter
 
 #### Before v8:
 
-Earlier, `getWalletConnectV2Settings` used to accept list of number, instead of list of string for `chainId`.
+Earlier, `getWalletConnectV2Settings` was used to accept a list of numbers, instead of a list of strings for `chainId`.
 
 ```tsx
 const defaultWcSettings = await getWalletConnectV2Settings("eip155", [1], "projectId");
@@ -139,7 +143,7 @@ const walletConnectV2Adapter = new WalletConnectV2Adapter({
 web3auth.configureAdapter(walletConnectV2Adapter);
 ```
 
-### 4. Adapter Management with `getDefaultExternalAdapters`
+### Adapter Management with `getDefaultExternalAdapters`
 
 #### Before v8:
 
