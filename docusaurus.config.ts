@@ -414,6 +414,102 @@ const config: Config = {
             from: "/content-hub/guides/mpc",
             to: "/content-hub/guides/mpc-core-kit",
           },
+          {
+            from: "/connect-blockchain/polygon",
+            to: "/connect-blockchain/evm/polygon",
+          },
+          {
+            from: "/connect-blockchain/base",
+            to: "/connect-blockchain/evm/base",
+          },
+          {
+            from: "/connect-blockchain/bnb",
+            to: "/connect-blockchain/evm/bnb",
+          },
+          {
+            from: "/connect-blockchain/avalanche",
+            to: "/connect-blockchain/evm/avalanche",
+          },
+          {
+            from: "/connect-blockchain/arbitrum",
+            to: "/connect-blockchain/evm/arbitrum",
+          },
+          {
+            from: "/connect-blockchain/optimism",
+            to: "/connect-blockchain/evm/optimism",
+          },
+          {
+            from: "/connect-blockchain/cronos",
+            to: "/connect-blockchain/evm/cronos",
+          },
+          {
+            from: "/connect-blockchain/harmony",
+            to: "/connect-blockchain/evm/harmony",
+          },
+          {
+            from: "/connect-blockchain/celo",
+            to: "/connect-blockchain/evm/celo",
+          },
+          {
+            from: "/connect-blockchain/moonbeam",
+            to: "/connect-blockchain/evm/moonbeam",
+          },
+          {
+            from: "/connect-blockchain/moonriver",
+            to: "/connect-blockchain/evm/moonriver",
+          },
+          {
+            from: "/connect-blockchain/klaytn",
+            to: "/connect-blockchain/evm/klatyn/",
+          },
+          {
+            from: "/connect-blockchain/flare",
+            to: "/connect-blockchain/evm/flare",
+          },
+          {
+            from: "/connect-blockchain/songbird",
+            to: "/connect-blockchain/evm/songbird",
+          },
+          {
+            from: "/connect-blockchain/skale",
+            to: "/connect-blockchain/evm/skale",
+          },
+          {
+            from: "/connect-blockchain/starkex",
+            to: "/connect-blockchain/other/starkex",
+          },
+          {
+            from: "/connect-blockchain/starknet",
+            to: "/connect-blockchain/other/starknet",
+          },
+          {
+            from: "/connect-blockchain/tezos",
+            to: "/connect-blockchain/other/tezos",
+          },
+          {
+            from: "/connect-blockchain/algorand",
+            to: "/connect-blockchain/other/algorand",
+          },
+          {
+            from: "/connect-blockchain/immutablex",
+            to: "/connect-blockchain/other/immutablex",
+          },
+          {
+            from: "/connect-blockchain/aptos",
+            to: "/connect-blockchain/other/aptos",
+          },
+          {
+            from: "/connect-blockchain/cosmos",
+            to: "/connect-blockchain/other/cosmos",
+          },
+          {
+            from: "/connect-blockchain/near",
+            to: "/connect-blockchain/other/near",
+          },
+          {
+            from: "/connect-blockchain/polkadot",
+            to: "/connect-blockchain/other/polkadot",
+          },
         ],
         createRedirects(existingPath) {
           if (existingPath.includes("/content-hub")) {
@@ -484,6 +580,9 @@ const config: Config = {
               existingPath.replace("/core-kit/introduction", "/self-host/"),
               existingPath.replace("/core-kit/introduction", "/self-hosting"),
             ];
+          }
+          if (existingPath.includes("/connect-blockchain/evm/ethereum")) {
+            return [existingPath.replace("/connect-blockchain/evm/ethereum", "/connect-blockchain/evm/ethereum")];
           }
           return undefined; // Return a falsy value: no redirect created
         },

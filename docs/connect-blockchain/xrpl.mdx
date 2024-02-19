@@ -8,52 +8,179 @@ description: "Integrate Web3Auth with the XRPL Blockchain | Documentation - Web3
 ---
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
 
-The Web3Auth Web SDK offers a standard provider for accessing the user's private key on non-EVM chains like [XRPL](https://xrpl.org/). To enable a
-wider range of blockchain actions, you can use the `XrplPrivateKeyProvider` from `@web3auth/xrpl-provider`. This will provide an xrplProvider that can
-be injected back into the Openlogin adapter, allowing you to perform actions such as retrieving account information, obtaining balances, signing and
-sending transactions, and reading from and writing to smart contracts. Here are some methods to help you quickly get started.
+The Web3Auth Web SDK offers a standard provider for accessing the user's private key on non-EVM chains like [XRPL](https://xrpl.org/). You can use our
+native `@web3auth/xrpl-provider` for making direct connections with XRPL Blockchain. This will provide an xrplProvider that can be injected back into
+the Web3Auth instance, allowing you to perform actions such as retrieving account information, obtaining balances, signing and sending transactions,
+and reading from and writing to smart contracts. Here are some methods to help you quickly get started.
 
 ## Installation
 
+To interact with the XRPL blockchain, you can use the `@web3auth/xrpl-provider` package.
+
 ```bash npm2yarn
-npm install --save xrpl @web3auth/xrpl-provider @web3auth/modal @web3auth/openlogin-adapter @web3auth/base
+npm install --save @web3auth/xrpl-provider
 ```
+
+### Getting the `chainConfig`
+
+<Tabs
+ defaultValue="mainnet"
+  values={[
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
+    { label: "Devnet", value: "devnet", },
+  ]}
+>
+<TabItem
+  value="mainnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.OTHER,
+  chainId: "0x1",
+  // Avoid using public rpcTarget & wsTarget in production.
+  // Use services like Infura, Quicknode etc
+  rpcTarget: "https://ripple-node.tor.us",
+  wsTarget: "wss://s2.ripple.com",
+  ticker: "XRP",
+  tickerName: "XRPL",
+  displayName: "xrpl mainnet",
+  blockExplorer: "https://livenet.xrpl.org",
+};
+```
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.OTHER,
+  chainId: "0x2",
+  // Avoid using public rpcTarget & wsTarget in production.
+  // Use services like Infura, Quicknode etc
+  rpcTarget: "https://testnet-ripple-node.tor.us",
+  wsTarget: "wss://s.altnet.rippletest.net",
+  ticker: "XRP",
+  tickerName: "XRPL",
+  displayName: "xrpl testnet",
+  blockExplorer: "https://testnet.xrpl.org",
+};
+```
+
+</TabItem>
+
+<TabItem
+  value="devnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.OTHER,
+  chainId: "0x3",
+  // Avoid using public rpcTarget & wsTarget in production.
+  // Use services like Infura, Quicknode etc
+  rpcTarget: "https://devnet-ripple-node.tor.us",
+  wsTarget: "wss://s.devnet.rippletest.net/",
+  ticker: "XRP",
+  tickerName: "XRPL",
+  displayName: "xrpl devnet",
+  blockExplorer: "https://devnet.xrpl.org",
+};
+```
+
+</TabItem>
+</Tabs>
 
 ## Initializing Provider
 
+<Tabs
+  defaultValue="modal"
+  values={[
+    { label: "PnP Modal SDK", value: "modal", },
+    { label: "PnP NoModal SDK", value: "no-modal", },
+    { label: "CoreKit SFA Web SDK", value: "sfa", },
+  ]}
+>
+<TabItem
+  value="modal"
+>
+
 ```tsx
 import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { XrplPrivateKeyProvider, getXRPLChainConfig } from "@web3auth/xrpl-provider";
-import { convertStringToHex, Payment, xrpToDrops } from "xrpl";
+import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
 
 const web3auth = new Web3Auth({
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.OTHER,
-  },
-  clientId = "YOUR_WEB3AUTH_CLIENT_ID", // get from https://dashboard.web3auth.io
+  clientId, // get from https://dashboard.web3auth.io
+  chainConfig,
   web3AuthNetwork = "sapphire_mainnet", // testnet, mainnet, cyan, aqua
 });
 
-const xrplProvider = new XrplPrivateKeyProvider({
-  config: {
-    chainId: "chainId",
-    chainConfig: getXRPLChainConfig("testnet"), // devnet, testnet, mainnet
-    rpcTarget: "rpc url", // devnet, testnet, mainnet
-  },
+const privateKeyProvider = new XrplPrivateKeyProvider({
+  config: chainConfig,
 });
 
 const adapter = new OpenloginAdapter({
-  privateKeyProvider: xrplProvider, // <-- Injecting the XRPL provider
+  privateKeyProvider, // <-- Injecting the XRPL provider
 });
+
 web3AuthInstance.configureAdapter(adapter);
-
-await web3auth.initModal();
-
-const web3authProvider = await web3auth.connect(); // web3auth.provider
 ```
+
+</TabItem>
+<TabItem
+  value="no-modal"
+>
+
+```tsx
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
+
+const web3auth = new Web3AuthNoModal({
+  clientId, // get it from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  chainConfig,
+});
+
+const privateKeyProvider = new XrplPrivateKeyProvider({
+  config: chainConfig,
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  privateKeyProvider,
+});
+web3auth.configureAdapter(openloginAdapter);
+```
+
+</TabItem>
+<TabItem
+  value="sfa"
+>
+
+```tsx
+import { Web3Auth } from "@web3auth/single-factor-auth";
+import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
+
+const web3auth = new Web3Auth({
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+});
+
+const privateKeyProvider = new XrplPrivateKeyProvider({
+  config: chainConfig,
+});
+```
+
+</TabItem>
+</Tabs>
 
 ## Get User Info
 

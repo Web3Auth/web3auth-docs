@@ -46,7 +46,7 @@ export const referenceMap = [
     date: "25th May 2022",
     author: "Web3Auth Team",
     order: 1,
-    link: "/connect-blockchain/ethereum",
+    link: "/connect-blockchain/evm/ethereum",
   },
   {
     title: "Integrate Web3Auth with the Solana Blockchain",

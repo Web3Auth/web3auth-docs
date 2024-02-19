@@ -120,7 +120,7 @@ export default function QuickNavigation() {
             <h3 className={styles.title}>Modal SDK</h3>
             <p>Plug and Play Modal SDK for your JS environment. Get a prebuilt UI Modal from Web3Auth for seamless UX</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Web+Modal+SDK&platform=React`}>Quick Start{chevron}</a>
+              <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_MODAL&framework=REACT&stepIndex=0`}>Quick Start{chevron}</a>
               <a href={`${baseUrl}sdk/pnp/web/modal`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Web+Modal+SDK`}>Examples{chevron}</a>
             </div>
@@ -144,7 +144,7 @@ export default function QuickNavigation() {
             <h3 className={styles.title}>No Modal SDK</h3>
             <p>Plug and Play No Modal SDK for your JS environment. Build your own UI for user interaction</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Web+No+Modal+SDK&platform=React`}>Quick Start{chevron}</a>
+              <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_NO_MODAL&framework=REACT&stepIndex=0`}>Quick Start{chevron}</a>
               <a href={`${baseUrl}sdk/pnp/web/no-modal`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Web+No+Modal+SDK`}>Examples{chevron}</a>
             </div>
@@ -230,7 +230,7 @@ export default function QuickNavigation() {
             <h3 className={styles.title}>Android SDK</h3>
             <p>Plug and Play Native SDK for Android Platform</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Android+SDK&platform=Android`}>Quick Start{chevron}</a>
+              <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_ANDROID&framework=ANDROID&stepIndex=0`}>Quick Start{chevron}</a>
               <a href={`${baseUrl}sdk/pnp/android`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Android+SDK`}>Examples{chevron}</a>
             </div>
@@ -249,7 +249,7 @@ export default function QuickNavigation() {
             <h3 className={styles.title}>iOS SDK</h3>
             <p>Plug and Play Native SDK for iOS Platform</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Plug+and+Play&sdk=Plug+and+Play+iOS+SDK&platform=iOS`}>Quick Start{chevron}</a>
+              <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_IOS&framework=IOS&stepIndex=0`}>Quick Start{chevron}</a>
               <a href={`${baseUrl}sdk/pnp/ios`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+iOS+SDK`}>Examples{chevron}</a>
             </div>
@@ -268,9 +268,7 @@ export default function QuickNavigation() {
             <h3 className={styles.title}>React Native SDK</h3>
             <p>Plug and Play SDK for Hybrid React Native & Expo Application.</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Plug+and+Play&sdk=Plug+and+Play+React+Native+SDK&platform=React+Native+Bare`}>
-                Quick Start{chevron}
-              </a>
+              <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_REACT_NATIVE&framework=IOS&stepIndex=0`}>Quick Start{chevron}</a>
               <a href={`${baseUrl}sdk/pnp/react-native`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+React+Native+SDK`}>Examples{chevron}</a>
             </div>
@@ -286,7 +284,7 @@ export default function QuickNavigation() {
             <h3 className={styles.title}>Flutter SDK</h3>
             <p>Plug and Play SDK for Hybrid Flutter Applications</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Flutter+SDK&platform=Flutter`}>Quick Start{chevron}</a>
+              <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_FLUTTER&framework=IOS&stepIndex=0`}>Quick Start{chevron}</a>
               <a href={`${baseUrl}sdk/pnp/flutter`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Flutter+SDK`}>Examples{chevron}</a>
             </div>
@@ -340,7 +338,7 @@ export default function QuickNavigation() {
             <h3 className={styles.title}>Unity SDK</h3>
             <p>Plug and Play Native SDK for Unity</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Unity+SDK&platform=Unity`}>Quick Start{chevron}</a>
+              <a href={`${baseUrl}quick-start?product=PNP&sdk=PNP_UNITY&framework=IOS&stepIndex=0`}>Quick Start{chevron}</a>
               <a href={`${baseUrl}sdk/pnp/unity`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Unity+SDK`}>Examples{chevron}</a>
             </div>
@@ -361,7 +359,7 @@ export default function QuickNavigation() {
             </div>
             <p>Plug and Play Native SDK for Unreal</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Plug+and+Play&sdk=Plug+and+Play+Unreal+SDK&platform=Unreal`}>Quick Start{chevron}</a>
+              {/* <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Unreal+SDK`}>Quick Start{chevron}</a> */}
               <a href={`${baseUrl}sdk/pnp/unreal`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Unreal+SDK`}>Examples{chevron}</a>
             </div>
@@ -452,7 +450,7 @@ export default function QuickNavigation() {
             <h3 className={styles.title}>Single Factor Auth Web SDK</h3>
             <p>Core Kit Single Factor Auth Web SDK for your JS environment. Implement Core Kit in a single key pair flow</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=Single+Factor+Auth+Web+SDK&platform=React`}>Quick Start{chevron}</a>
+              <a href={`${baseUrl}quick-start?product=CORE_KIT&sdk=SFA_WEB&framework=REACT&stepIndex=0`}>Quick Start{chevron}</a>
               <a href={`${baseUrl}sdk/core-kit/sfa-web`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+Web+SDK`}>Examples{chevron}</a>
             </div>
@@ -473,7 +471,7 @@ export default function QuickNavigation() {
             </div>
             <p>Core Kit Single Factor Auth Android SDK for your Android application. Implement Core Kit in a single key pair flow</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=Single+Factor+Auth+Android+SDK&platform=Android`}>Quick Start{chevron}</a>
+              <a href={`${baseUrl}quick-start?product=CORE_KIT&sdk=SFA_ANDROID&framework=ANDROID&stepIndex=0&stepIndex=0`}>Quick Start{chevron}</a>
               <a href={`${baseUrl}sdk/core-kit/sfa-android`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+Android+SDK`}>Examples{chevron}</a>
             </div>
@@ -494,7 +492,7 @@ export default function QuickNavigation() {
             </div>
             <p>Core Kit Single Factor Auth iOS SDK for your iOS application. Implement Core Kit in a single key pair flow</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=Single+Factor+Auth+iOS+SDK&platform=iOS`}>Quick Start{chevron}</a>
+              <a href={`${baseUrl}quick-start?product=CORE_KIT&sdk=SFA_IOS&framework=IOS&stepIndex=0&stepIndex=0`}>Quick Start{chevron}</a>
               <a href={`${baseUrl}sdk/core-kit/sfa-ios`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+iOS+SDK`}>Examples{chevron}</a>
             </div>
@@ -515,7 +513,7 @@ export default function QuickNavigation() {
             <h3 className={styles.title}>Single Factor Auth NodeJS SDK</h3>
             <p>Core Kit NodeJS SDK for your Node environment. Single key pair flow integration in your NodeJS Backend server.</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=Node.js+SDK&platform=Node.js`}>Quick Start{chevron}</a>
+              <a href={`${baseUrl}quick-start?product=CORE_KIT&sdk=SFA_NODE&framework=NODE&stepIndex=0&stepIndex=0`}>Quick Start{chevron}</a>
               <a href={`${baseUrl}sdk/core-kit/sfa-node`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Core+Kit&sdk=Node.js+SDK`}>Examples{chevron}</a>
             </div>
@@ -534,9 +532,7 @@ export default function QuickNavigation() {
             <h3 className={styles.title}>Single Factor Auth React Native SDK</h3>
             <p>Core Kit Single Factor Auth React Native SDK for your React Native application. Implement Core Kit in a single key pair flow</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=Single+Factor+Auth+React+Native+SDK&platform=React+Native`}>
-                Quick Start{chevron}
-              </a>
+              <a href={`${baseUrl}quick-start?product=CORE_KIT&sdk=SFA_REACT_NATIVE&framework=IOS&stepIndex=0&stepIndex=0`}>Quick Start{chevron}</a>
               <a href={`${baseUrl}sdk/core-kit/sfa-react-native`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+React+Native+SDK`}>Examples{chevron}</a>
             </div>
@@ -552,7 +548,7 @@ export default function QuickNavigation() {
             <h3 className={styles.title}>Single Factor Auth Flutter SDK</h3>
             <p>Core Kit Single Factor Auth Flutter SDK for your Flutter application. Implement Core Kit in a single key pair flow</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=Single+Factor+Auth+Flutter+SDK&platform=Flutter`}>Quick Start{chevron}</a>
+              <a href={`${baseUrl}quick-start?product=CORE_KIT&sdk=SFA_FLUTTER&framework=IOS&stepIndex=0&stepIndex=0`}>Quick Start{chevron}</a>
               <a href={`${baseUrl}sdk/core-kit/sfa-flutter`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+Flutter+SDK`}>Examples{chevron}</a>
             </div>
@@ -641,7 +637,7 @@ export default function QuickNavigation() {
             <h3 className={styles.title}>tKey JS SDK for Web</h3>
             <p>Core Kit tKey SDK for your JS environment. Build a deeper integration with Web3Auth Infrastructural Layer within your platform.</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=tKey+JS+SDK&platform=React`}>Quick Start{chevron}</a>
+              {/* <a href={`${baseUrl}quick-start`}>Quick Start{chevron}</a> */}
               <a href={`${baseUrl}sdk/core-kit/tkey/`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Core+Kit&sdk=tKey+JS+SDK`}>Examples{chevron}</a>
             </div>
@@ -662,7 +658,7 @@ export default function QuickNavigation() {
               tKey JS SDK integration in your hybrid <strong>React Native App</strong>
             </p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=tKey+JS+SDK&platform=React+Native`}>Quick Start{chevron}</a>
+              {/* <a href={`${baseUrl}quick-start`}>Quick Start{chevron}</a> */}
               <a href={`${baseUrl}sdk/core-kit/tkey`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Core+Kit&sdk=tKey+JS+SDK`}>Examples{chevron}</a>
             </div>
@@ -683,7 +679,7 @@ export default function QuickNavigation() {
             </div>
             <p>Core Kit tKey Native SDK for Android Platform</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=tKey+Android+SDK&platform=Android`}>Quick Start{chevron}</a>
+              {/* <a href={`${baseUrl}quick-start`}>Quick Start{chevron}</a> */}
               <a href={`${baseUrl}sdk/core-kit/tkey-android`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Core+Kit&sdk=tKey+Android+SDK`}>Examples{chevron}</a>
             </div>
@@ -704,7 +700,7 @@ export default function QuickNavigation() {
             </div>
             <p>Core Kit tKey Native SDK for iOS Platform</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=tKey+iOS+SDK&platform=iOS`}>Quick Start{chevron}</a>
+              {/* <a href={`${baseUrl}quick-start`}>Quick Start{chevron}</a> */}
               <a href={`${baseUrl}sdk/core-kit/tkey-ios`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Core+Kit&sdk=tKey+iOS+SDK`}>Examples{chevron}</a>
             </div>
@@ -728,7 +724,7 @@ export default function QuickNavigation() {
             <h3 className={styles.title}>MPC Core Kit SDK</h3>
             <p>Get the Web3Auth MPC Infrastructure with a deeper integration within your application.</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}quick-start?product=Core+Kit&sdk=MPC+Core+Kit&platform=React`}>Quick Start{chevron}</a>
+              <a href={`${baseUrl}quick-start?product=CORE_KIT&sdk=MPC_CORE_KIT&framework=REACT&stepIndex=0&stepIndex=0`}>Quick Start{chevron}</a>
               <a href={`${baseUrl}sdk/core-kit/mpc-core-kit`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Core+Kit&sdk=MPC+Core+Kit`}>Examples{chevron}</a>
             </div>
