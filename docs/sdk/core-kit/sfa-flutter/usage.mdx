@@ -25,11 +25,11 @@ To obtain a user's private key using the Web3Auth SFA Flutter SDK, you can call 
 
 #### Returns
 
-```tsx
-Future<String> getKey(LoginParams loginParams)
+```dart
+Future<TorusKey> getKey(LoginParams loginParams)
 ```
 
-On successful call, the `getKey()` function returns a `Future<string>` instance.
+On successful call, the `getKey()` function returns a `Future<TorusKey>` instance.
 
 #### `LoginParams`
 
@@ -78,22 +78,18 @@ class LoginParams {
   }
 }
 
-Future<String> getKey(LoginParams loginParams) async {
+Future<TorusKey> getKey(LoginParams loginParams) async {
   try {
     Map<String, dynamic> loginParamsJson = loginParams.toJson();
     loginParamsJson.removeWhere((key, value) => value == null);
-    final String privateKey =
-        await _channel.invokeMethod('getTorusKey', jsonEncode(loginParams));
-    return privateKey;
+    final String torusKeyJson = await _channel.invokeMethod(
+      'getTorusKey',
+      jsonEncode(loginParams),
+    );
+
+    return torusKeyFromJson(torusKeyJson);
   } on PlatformException catch (e) {
-    switch (e.code) {
-      case "UserCancelledException":
-        throw UserCancelledException();
-      case "NoAllowedBrowserFoundException":
-        throw UnKnownException(e.message);
-      default:
-        rethrow;
-    }
+    throw _hanldePlatformException(e);
   }
 }
 ```
@@ -102,12 +98,14 @@ Future<String> getKey(LoginParams loginParams) async {
 
 </Tabs>
 
-```tsx title="Usage"
-Future<String> getKey() {
-  return _SingleFactorAuthFlutterPlugin.getKey(LoginParams(
+```dart title="Usage"
+Future<TorusKey> getKey() {
+  return _singleFactorAuthFlutterPlugin.getKey(LoginParams(
     verifier: 'YOUR_VERIFIER_NAME',
     verifierId: 'YOUR_VERIFIER_ID',
-    idToken: 'YOUR_ID_TOKEN',));
+    idToken: 'YOUR_ID_TOKEN',
+    ),
+  );
 }
 ```
 
@@ -121,11 +119,11 @@ To obtain a user's Torus key using the Web3Auth SFA Flutter SDK, you can call th
 
 #### Returns
 
-```tsx
-Future<String> getAggregateKey(LoginParams loginParams)
+```dart
+Future<TorusKey> getAggregateKey(LoginParams loginParams)
 ```
 
-On successful call, the `getAggregateKey()` function returns a `Future<String>` instance.
+On successful call, the `getAggregateKey()` function returns a `Future<TorusKey>` instance.
 
 #### `LoginParams`
 
@@ -174,22 +172,19 @@ class LoginParams {
   }
 }
 
-Future<String> getAggregateKey(LoginParams loginParams) async {
+Future<TorusKey> getAggregateKey(LoginParams loginParams) async {
   try {
     Map<String, dynamic> loginParamsJson = loginParams.toJson();
     loginParamsJson.removeWhere((key, value) => value == null);
-    final String privateKey = await _channel.invokeMethod(
-        'getAggregateTorusKey', jsonEncode(loginParams));
-    return privateKey;
+
+    final String torusKeyJson = await _channel.invokeMethod(
+      'getAggregateTorusKey',
+      jsonEncode(loginParams),
+    );
+
+    return torusKeyFromJson(torusKeyJson);
   } on PlatformException catch (e) {
-    switch (e.code) {
-      case "UserCancelledException":
-        throw UserCancelledException();
-      case "NoAllowedBrowserFoundException":
-        throw UnKnownException(e.message);
-      default:
-        rethrow;
-    }
+    throw _hanldePlatformException(e);
   }
 }
 ```
@@ -198,13 +193,14 @@ Future<String> getAggregateKey(LoginParams loginParams) async {
 
 </Tabs>
 
-```tsx title="Usage"
-Future<String> getAggregateKey() {
-  return _SingleFactorAuthFlutterPlugin.getAggregateKey(LoginParams(
+```dart title="Usage"
+Future<TorusKey> getAggregateKey() {
+  return _singleFactorAuthFlutterPlugin.getAggregateKey(LoginParams(
     verifier: 'YOUR_VERIFIER_NAME',
     verifierId: 'YOUR_VERIFIER_ID',
     idToken: 'YOUR_ID_TOKEN',
-    aggregateVerifier: 'YOUR_AGGREGATE_VERIFIER_NAME',));
+    aggregateVerifier: 'YOUR_AGGREGATE_VERIFIER_NAME',
+  ));
 }
 ```
 
@@ -220,16 +216,28 @@ For MFA enabled users, you'll see an Error message.
 
 :::
 
+## Session Management
+
+We have included Session Management in this SDK, so calling the initialize function
+to get the TorusKey value without re-logging in the user if a user has an active session will return the TorusKey,
+otherwise, it will return null.
+
+```dart
+final TorusKey? torusKey = await _singleFactorAuthFlutterPlugin.initialize();
+```
+
 ## Example
 
 `lib/main.dart`
 
 ```dart title="main.dart"
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:single_factor_auth_flutter/input.dart';
+import 'package:single_factor_auth_flutter/output.dart';
 import 'package:single_factor_auth_flutter/single_factor_auth_flutter.dart';
 import './utils.dart';
 
@@ -245,7 +253,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _SingleFactorAuthFlutterPlugin = SingleFactAuthFlutter();
+  final _singleFactorAuthFlutterPlugin = SingleFactAuthFlutter();
   String _result = '';
   bool logoutVisible = false;
   TorusNetwork torusNetwork = TorusNetwork.testnet;
@@ -258,24 +266,26 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initSdk() async {
     if (Platform.isAndroid) {
-      init().then((value) => initialize());
+      await init();
+      initialize();
     } else if (Platform.isIOS) {
-      init();
+      await init();
       initialize();
     } else {}
   }
 
   Future<void> init() async {
-    await _SingleFactorAuthFlutterPlugin.init(
-        Web3AuthNetwork(network: torusNetwork));
+    await _singleFactorAuthFlutterPlugin
+        .init(Web3AuthNetwork(network: torusNetwork));
   }
 
   Future<void> initialize() async {
-    print("initialize() called");
-    final String privKey = await _SingleFactorAuthFlutterPlugin.initialize();
-    if (privKey.isNotEmpty) {
+    log("initialize() called");
+    final TorusKey? torusKey =
+        await _singleFactorAuthFlutterPlugin.initialize();
+    if (torusKey != null) {
       setState(() {
-        _result = "Private Key : $privKey";
+        _result = "Private Key : ${torusKey.privateKey}";
       });
     }
   }
@@ -327,18 +337,20 @@ class _MyAppState extends State<MyApp> {
                       height: 20,
                     ),
                     const Text(
-                      'Get privKey',
+                      'Get TorusKey',
                       style: TextStyle(fontSize: 12),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     ElevatedButton(
-                        onPressed: _getKey(getAggregrateKey),
-                        child: const Text('GetprivKey')),
+                      onPressed: _getKey(getAggregrateKey),
+                      child: const Text('GetTorusKey'),
+                    ),
                     ElevatedButton(
-                        onPressed: _initialize(),
-                        child: const Text('Get Session Response')),
+                      onPressed: () => _initialize(),
+                      child: const Text('Get Session Response'),
+                    ),
                   ],
                 ),
               ),
@@ -353,50 +365,56 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  VoidCallback _getKey(Future<String> Function() method) {
+  VoidCallback _getKey(Future<TorusKey> Function() method) {
     return () async {
       try {
-        final String response = await method();
+        final TorusKey response = await method();
         setState(() {
-          _result = "Private Key : $response";
+          _result = "Private Key : ${response.privateKey}";
+          log(response.publicAddress);
         });
-      } on UserCancelledException {
-        print("User cancelled.");
+      } on PrivateKeyNotGeneratedException {
+        log("Private key not generated");
       } on UnKnownException {
-        print("Unknown exception occurred");
+        log("Unknown exception occurred");
       }
     };
   }
 
-  VoidCallback _initialize() {
-    return () async {
-      try {
-        final String response =
-            await _SingleFactorAuthFlutterPlugin.initialize();
-        setState(() {
-          _result = "Private Key : $response";
-        });
-      } on UserCancelledException {
-        print("User cancelled.");
-      } on UnKnownException {
-        print("Unknown exception occurred");
-      }
-    };
+  Future<void> _initialize() async {
+    try {
+      final TorusKey? response =
+          await _singleFactorAuthFlutterPlugin.initialize();
+      setState(() {
+        _result = "Private Key : ${response?.privateKey}";
+        log(response!.publicAddress);
+      });
+    } on PrivateKeyNotGeneratedException {
+      log("Private key not generated");
+    } on UnKnownException {
+      log("Unknown exception occurred");
+    }
   }
 
-  Future<String> getKey() {
-    return _SingleFactorAuthFlutterPlugin.getKey(LoginParams(
-        verifier: 'torus-test-health', // replace with your own verifier name
-        verifierId: 'hello@tor.us', // replace with your own verifier id based on your JWT token payload (sub)
-        idToken: Utils().es256Token("hello@tor.us"))); // replace with your own JWT token
+  Future<TorusKey> getKey() {
+    return _singleFactorAuthFlutterPlugin.getKey(
+      LoginParams(
+        verifier: 'torus-test-health',
+        verifierId: 'hello@tor.us',
+        idToken: Utils().es256Token("hello@tor.us"),
+      ),
+    );
   }
 
-  Future<String> getAggregrateKey() {
-    return _SingleFactorAuthFlutterPlugin.getAggregateKey(LoginParams(
-        verifier: 'torus-test-health', // replace with your own verifier name
-        verifierId: 'hello@tor.us', // replace with your own verifier id based on your JWT token payload (sub)
-        idToken: Utils().es256Token("hello@tor.us"), // replace with your own JWT token
-        aggregateVerifier: 'torus-test-health-aggregate')); // replace with your own aggregate verifier name
+  Future<TorusKey> getAggregrateKey() {
+    return _singleFactorAuthFlutterPlugin.getAggregateKey(
+      LoginParams(
+        verifier: 'torus-test-health',
+        verifierId: 'hello@tor.us',
+        idToken: Utils().es256Token("hello@tor.us"),
+        aggregateVerifier: 'torus-test-health-aggregate',
+      ),
+    );
   }
 }
 ```

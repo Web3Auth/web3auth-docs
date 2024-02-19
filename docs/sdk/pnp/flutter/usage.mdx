@@ -584,3 +584,58 @@ await Web3AuthFlutter.logout();
 Get started with a sample app found [here](/examples?product=Plug+and+Play&sdk=Plug+and+Play+Flutter+SDK).
 
 :::
+
+## Triggering Login exceptions
+
+### `setResultUrl()`
+
+This method will trigger login exceptions for Android. For iOS, you don't need this method to trigger
+the login exceptions. The Android SDK usees the custom tabs and from current implementation of chrome custom tab,
+that's not possible to add a listener directly to chrome custom tab close button and trigger login exceptions.
+
+Hence, it's necessary to user `setResultUrl` method in your login screen to trigger exceptions.
+
+```dart
+class LoginScreen extends State<T> with WidgetsBindingObserver {
+
+  @override
+  void initState() {
+    super.initState();
+    // highlight-next-line
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // highlight-next-line
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  // highlight-start
+  @override
+  void didChangeAppLifecycleState(final AppLifecycleState state) {
+    // This is important to trigger the user cancellation on Android.
+    if (state == AppLifecycleState.resumed) {
+      Web3AuthFlutter.setResultUrl();
+    }
+  }
+  // highlight-end
+
+   @override
+  Widget build(BuildContext context) {
+    // Your UI code
+  }
+
+  Future<void> _login() async {
+    try {
+      await Web3AuthFlutter.login(LoginParams(loginProvider: Provider.google));
+    } on UserCancelledException {
+        log("User cancelled.");
+    } on UnKnownException {
+        log("Unknown exception occurred");
+    } catch (e) {
+        log(e.toString());
+    }
+  }
+```
