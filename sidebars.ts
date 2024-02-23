@@ -798,6 +798,27 @@ const sidebars: SidebarsConfig = {
     "sdk/wallet-services/wallet-services",
     "sdk/wallet-services/pregenerate-wallet",
     {
+      type: "category",
+      label: "Providers",
+      link: { type: "doc", id: "sdk/helper-sdks/providers/providers" },
+      items: [
+        "sdk/helper-sdks/providers/evm",
+        "sdk/helper-sdks/providers/solana",
+        "sdk/helper-sdks/providers/xrpl",
+        "sdk/helper-sdks/providers/common",
+        {
+          type: "link",
+          label: "Support Forum", // The link label
+          href: "https://web3auth.io/community/c/help-pnp/4", // The external URL
+        },
+        {
+          type: "link",
+          label: "Release Notes", // The link label
+          href: "https://github.com/Web3Auth/web3auth-web/releases", // The external URL
+        },
+      ],
+    },
+    {
       type: "html",
       value: "<span class='sidebarHeading'>Core Kit</span>",
       defaultStyle: true,
@@ -1067,51 +1088,6 @@ const sidebars: SidebarsConfig = {
               href: "https://github.com/web3auth/single-factor-auth-flutter/releases", // The external URL
             },
           ],
-        },
-      ],
-    },
-    {
-      type: "html",
-      value: "<span class='sidebarHeading'>Helper SDKs</span>",
-      defaultStyle: true,
-    },
-    {
-      type: "category",
-      label: "Providers",
-      link: { type: "doc", id: "sdk/helper-sdks/providers/providers" },
-      items: [
-        "sdk/helper-sdks/providers/evm",
-        "sdk/helper-sdks/providers/solana",
-        "sdk/helper-sdks/providers/xrpl",
-        "sdk/helper-sdks/providers/common",
-        {
-          type: "link",
-          label: "Support Forum", // The link label
-          href: "https://web3auth.io/community/c/help-pnp/4", // The external URL
-        },
-        {
-          type: "link",
-          label: "Release Notes", // The link label
-          href: "https://github.com/Web3Auth/web3auth-web/releases", // The external URL
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Plugins",
-      link: { type: "doc", id: "sdk/helper-sdks/plugins/plugins" },
-      items: [
-        // "sdk/helper-sdks/plugins/evm-wallet",
-        "sdk/helper-sdks/plugins/solana-wallet",
-        {
-          type: "link",
-          label: "Support Forum", // The link label
-          href: "https://web3auth.io/community/c/help-pnp/4", // The external URL
-        },
-        {
-          type: "link",
-          label: "Release Notes", // The link label
-          href: "https://github.com/Web3Auth/web3auth-web/releases", // The external URL
         },
       ],
     },
