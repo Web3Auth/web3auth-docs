@@ -57,27 +57,33 @@ values={[
 ```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
-// get it from https://dashboard.web3auth.io by creating a Plug n Play project.
+// get it from https://dashboard.web3auth.io by creating a project.
+
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io",
+  ticker: "ETH",
+  logo: "https://images.toruswallet.io/ethereum.svg"
+};
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
 
 const web3auth = new Web3Auth({
   clientId,
   web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth",
-    displayName: "Ethereum Mainnet",
-    blockExplorer: "https://etherscan.io",
-    ticker: "ETH",
-    tickerName: "Ethereum",
-  },
+  privateKeyProvider: privateKeyProvider,
 });
 
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
-    uxMode: "popup",
     loginConfig: {
       // Facebook login
       facebook: {
@@ -88,6 +94,7 @@ const openloginAdapter = new OpenloginAdapter({
     },
   },
 });
+
 web3auth.configureAdapter(openloginAdapter);
 
 // Initialize Modal
@@ -114,25 +121,24 @@ const chainConfig = {
   chainId: "0x1",
   rpcTarget: "https://rpc.ankr.com/eth",
   displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io",
+  blockExplorerUrl: "https://etherscan.io",
   ticker: "ETH",
-  tickerName: "Ethereum",
+  logo: "https://images.toruswallet.io/ethereum.svg"
 };
-
-const web3auth = new Web3Auth({
-  clientId,
-  chainConfig,
-  web3AuthNetwork: "sapphire_mainnet",
-});
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: { chainConfig },
 });
 
+const web3auth = new Web3AuthNoModal({
+  clientId,
+  web3AuthNetwork: "sapphire_mainnet",
+  privateKeyProvider: privateKeyProvider,
+});
+
 const openloginAdapter = new OpenloginAdapter({
   privateKeyProvider,
   adapterSettings: {
-    uxMode: "redirect",
     loginConfig: {
       facebook: {
         verifier: "w3a-facebook-demo", // Pass the Verifier name here
@@ -142,6 +148,7 @@ const openloginAdapter = new OpenloginAdapter({
     },
   },
 });
+
 web3auth.configureAdapter(openloginAdapter);
 setWeb3auth(web3auth);
 
@@ -188,25 +195,24 @@ const chainConfig = {
   chainId: "0x1",
   rpcTarget: "https://rpc.ankr.com/eth",
   displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io",
+  blockExplorerUrl: "https://etherscan.io",
   ticker: "ETH",
-  tickerName: "Ethereum",
+  logo: "https://images.toruswallet.io/ethereum.svg"
 };
-
-const web3auth = new Web3Auth({
-  clientId,
-  chainConfig,
-  web3AuthNetwork: "sapphire_mainnet",
-});
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: { chainConfig },
 });
 
+const web3auth = new Web3AuthNoModal({
+  clientId,
+  web3AuthNetwork: "sapphire_mainnet",
+  privateKeyProvider: privateKeyProvider,
+});
+
 const openloginAdapter = new OpenloginAdapter({
   privateKeyProvider,
   adapterSettings: {
-    uxMode: "redirect",
     loginConfig: {
       jwt: {
         verifier: "w3a-auth0-demo", // Pass the Verifier name here
@@ -216,6 +222,7 @@ const openloginAdapter = new OpenloginAdapter({
     },
   },
 });
+
 web3auth.configureAdapter(openloginAdapter);
 setWeb3auth(web3auth);
 

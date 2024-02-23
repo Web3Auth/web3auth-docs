@@ -132,7 +132,7 @@ You can get walletConnectV2 settings by calling the `getWalletConnectV2Settings(
 | Parameter   | type                                                                   |
 | ----------- | ---------------------------------------------------------------------- |
 | `namespace` | `ChainNamespaceType`, e.g. (`eip155`)                                  |
-| `chainIds`  | `number[]` e.g. [1]                                                    |
+| `chainIds`  | `string[]` e.g. ["1"]                                                    |
 | `projectID` | WalletConnect Project ID, get one from https://cloud.walletconnect.com |
 
 </TabItem>
@@ -142,7 +142,7 @@ You can get walletConnectV2 settings by calling the `getWalletConnectV2Settings(
 ```tsx
 export declare const getWalletConnectV2Settings: (
   namespace: ChainNamespaceType,
-  chainIds: number[],
+  chainIds: string[],
   projectID: string,
 ) => Promise<{
   adapterSettings: IAdapterSettings;
@@ -164,7 +164,7 @@ export interface IAdapterSettings {
 import { WalletConnectModal } from "@walletconnect/modal";
 import { getWalletConnectV2Settings, WalletConnectV2Adapter } from "@web3auth/wallet-connect-v2-adapter";
 
-const defaultWcSettings = await getWalletConnectV2Settings("eip155", [1], "04309ed1007e77d1f119b85205bb779d");
+const defaultWcSettings = await getWalletConnectV2Settings("eip155", ["1"], "04309ed1007e77d1f119b85205bb779d");
 const walletConnectModal = new WalletConnectModal({ projectId: "04309ed1007e77d1f119b85205bb779d" });
 const walletConnectV2Adapter = new WalletConnectV2Adapter({
   adapterSettings: { qrcodeModal: walletConnectModal, ...defaultWcSettings.adapterSettings },

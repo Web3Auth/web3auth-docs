@@ -30,6 +30,10 @@ Natively, the instance of `Web3AuthNoModal` _(referred to as `web3auth` in our e
 - `authenticateUser()` - Getting the idToken from Web3Auth
 - `addChain()` - Add chain config details to the connected adapter.
 - `switchChain()` - Switch chain as per chainId already added to chain config.
+- `getAdapter()` - Get the connected adapter instance.
+- `configureAdapter()` - Configure the adapter instance.
+- `clearCache()` - Clear the cache.
+- `addPlugin()` - Add a plugin to Web3Auth.
 - `logout()` - Logging out the User
 
 ## Logging in the User
@@ -121,6 +125,44 @@ get connected(): boolean;
 ## Switch Chain
 
 <SwitchChain />
+
+## Get Adapter
+
+Get the adapter connected by passing the name of the adapter.
+
+```tsx
+export declare const WALLET_ADAPTERS: {
+  OPENLOGIN: string;
+  WALLET_CONNECT_V2: string;
+  TORUS_SOLANA: string;
+  PHANTOM: string;
+  SOLFLARE: string;
+  SLOPE: string;
+  TORUS_EVM: string;
+  METAMASK: string;
+  COINBASE: string;
+};
+```
+
+```tsx
+getAdapter(adapterName: WALLET_ADAPTER_TYPE): IAdapter<unknown> | null;
+```
+
+## Configure Adapter
+
+Configure an adapter instance to Web3Auth.
+
+```tsx
+configureAdapter(adapter: IAdapter<unknown>): Web3AuthNoModal;
+```
+
+## Clear Cache
+
+Clear the cache.
+
+```tsx
+clearCache(): void;
+```
 
 ## Logging out the User
 
