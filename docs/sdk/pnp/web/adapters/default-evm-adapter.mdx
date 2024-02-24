@@ -1,0 +1,96 @@
+---
+title: Default EVM Adapter
+sidebar_label: Default EVM Adapter
+displayed_sidebar: sdk
+description: "Web3Auth PnP Web Adapter SDKs - Default EVM Adapter | Documentation - Web3Auth"
+---
+
+# Default EVM Adapter
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+## [`@web3auth/default-evm-adapter`](https://npmjs.com/package/@web3auth/default-evm-adapter)
+
+Default EVM adapter allows you to create external adapters like [`@web3auth/torus-evm`](/sdk/pnp/web/adapters/torus-evm), [`@web3auth/metamask`](/sdk/pnp/web/adapters/metamask), and [`@web3auth/wallet-connect-v2`](/sdk/pnp/web/adapters/wallet-connect-v2)
+easily with a single line of code.
+
+## Basic Details
+
+#### Adapter Name: `default-evm-adapter`
+
+#### Package Name: [`@web3auth/default-evm-adapter`](https://npmjs.com/package/@web3auth/default-evm-adapter)
+
+#### authMode: `DAPP`
+
+#### chainNamespace: `EIP155`
+
+#### Default: `NO`
+
+## Installation
+
+```bash npm2yarn
+npm install --save @web3auth/default-evm-adapter
+```
+
+## Arguments
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter          | type                       |
+| ------------------ | -------------------------- |
+| `options`          | `Web3AuthNoModalOptions`   |
+
+</TabItem>
+
+<TabItem value="function">
+
+```tsx
+export declare const getDefaultExternalAdapters: (params: {
+    options: Web3AuthNoModalOptions;
+}) => Promise<IAdapter<unknown>[]>;
+```
+
+</TabItem>
+
+</Tabs>
+
+## Example
+
+```tsx
+import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+const chainConfig = {
+  chainId: "0x1", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://images.toruswallet.io/eth.svg",
+};
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+const web3AuthOptions: Web3AuthOptions = {
+  clientId,
+  chainConfig: { ...chainConfig, chainNamespace: CHAIN_NAMESPACES.EIP155 },
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider: privateKeyProvider,
+};
+
+const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
+
+adapters.forEach((adapter) => {
+  web3auth.configureAdapter(adapter);
+});
+```

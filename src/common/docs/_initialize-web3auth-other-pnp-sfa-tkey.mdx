@@ -16,25 +16,19 @@ import TabItem from "@theme/TabItem";
 
 ```tsx
 import { Web3Auth } from "@web3auth/modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
-
-const web3auth = new Web3Auth({
-  clientId, // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig,
-});
+import { WEB3AUTH_NETWORK } from "@web3auth/base";
 
 const privateKeyProvider = new CommonPrivateKeyProvider({
-  config: {
-    chainConfig,
-  },
+  config: { chainConfig: chainConfig }
 });
 
-const openloginAdapter = new OpenloginAdapter({
-  privateKeyProvider,
+const web3auth = new Web3Auth({
+  // Get it from Web3Auth Dashboard
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider: privateKeyProvider,
 });
-web3auth.configureAdapter(openloginAdapter);
 ```
 
 </TabItem>
@@ -46,22 +40,18 @@ web3auth.configureAdapter(openloginAdapter);
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
-
-const web3auth = new Web3AuthNoModal({
-  clientId, // get it from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig,
-});
+import { WEB3AUTH_NETWORK } from "@web3auth/base";
 
 const privateKeyProvider = new CommonPrivateKeyProvider({
-  config: {
-    chainConfig,
-  },
+  config: {chainConfig},
 });
 
-const openloginAdapter = new OpenloginAdapter({
-  privateKeyProvider,
+const web3auth = new Web3AuthNoModal({
+  clientId, // Get it from Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
 });
+
+const openloginAdapter = new OpenloginAdapter();
 web3auth.configureAdapter(openloginAdapter);
 ```
 
