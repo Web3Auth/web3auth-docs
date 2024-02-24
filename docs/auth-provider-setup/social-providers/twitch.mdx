@@ -45,23 +45,30 @@ import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 const clientId = "YOUR_WEB3AUTH_CLIENT_ID";
 // get it from https://dashboard.web3auth.io by creating a Plug n Play project.
 
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://images.toruswallet.io/ethereum.svg"
+};
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+
 const web3auth = new Web3Auth({
   clientId,
   web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth",
-    displayName: "Ethereum Mainnet",
-    blockExplorer: "https://etherscan.io",
-    ticker: "ETH",
-    tickerName: "Ethereum",
-  },
+  privateKeyProvider: privateKeyProvider,
 });
 
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
-    uxMode: "popup",
     loginConfig: {
       // Twitch login
       twitch: {
@@ -72,6 +79,7 @@ const openloginAdapter = new OpenloginAdapter({
     },
   },
 });
+
 web3auth.configureAdapter(openloginAdapter);
 
 // Initialize Modal
@@ -98,25 +106,26 @@ const chainConfig = {
   chainId: "0x1",
   rpcTarget: "https://rpc.ankr.com/eth",
   displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io",
+  blockExplorerUrl: "https://etherscan.io",
   ticker: "ETH",
   tickerName: "Ethereum",
+  logo: "https://images.toruswallet.io/ethereum.svg"
 };
-
-const web3auth = new Web3Auth({
-  clientId,
-  chainConfig,
-  web3AuthNetwork: "sapphire_mainnet",
-});
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: { chainConfig },
 });
 
+
+const web3auth = new Web3AuthNoModal({
+  clientId,
+  web3AuthNetwork: "sapphire_mainnet",
+  privateKeyProvider: privateKeyProvider,
+});
+
 const openloginAdapter = new OpenloginAdapter({
   privateKeyProvider,
   adapterSettings: {
-    uxMode: "redirect",
     loginConfig: {
       twitch: {
         verifier: "w3a-twitch-demo", // Pass the Verifier name here
@@ -126,6 +135,7 @@ const openloginAdapter = new OpenloginAdapter({
     },
   },
 });
+
 web3auth.configureAdapter(openloginAdapter);
 setWeb3auth(web3auth);
 
@@ -172,25 +182,26 @@ const chainConfig = {
   chainId: "0x1",
   rpcTarget: "https://rpc.ankr.com/eth",
   displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io",
+  blockExplorerUrl: "https://etherscan.io",
   ticker: "ETH",
   tickerName: "Ethereum",
+  logo: "https://images.toruswallet.io/ethereum.svg"
 };
-
-const web3auth = new Web3Auth({
-  clientId,
-  chainConfig,
-  web3AuthNetwork: "sapphire_mainnet",
-});
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: { chainConfig },
 });
 
+
+const web3auth = new Web3AuthNoModal({
+  clientId,
+  web3AuthNetwork: "sapphire_mainnet",
+  privateKeyProvider: privateKeyProvider,
+});
+
 const openloginAdapter = new OpenloginAdapter({
   privateKeyProvider,
   adapterSettings: {
-    uxMode: "redirect",
     loginConfig: {
       jwt: {
         verifier: "w3a-auth0-jp-demo", // Pass the Verifier name here
@@ -200,6 +211,7 @@ const openloginAdapter = new OpenloginAdapter({
     },
   },
 });
+
 web3auth.configureAdapter(openloginAdapter);
 setWeb3auth(web3auth);
 

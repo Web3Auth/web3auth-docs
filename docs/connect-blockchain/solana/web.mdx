@@ -44,13 +44,14 @@ with `@web3auth/solana-provider` package.
 
 ```typescript
 const chainConfig: {
-  chainNamespace: "solana";
-  chainId: "0x1"; // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-  rpcTarget: "https://rpc.ankr.com/solana";
-  displayName: "Solana Mainnet";
-  blockExplorer: "https://explorer.solana.com";
-  ticker: "SOL";
-  tickerName: "Solana";
+  chainNamespace: "solana",
+  chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+  rpcTarget: "https://rpc.ankr.com/solana",
+  displayName: "Solana Mainnet",
+  blockExplorerUrl: "https://explorer.solana.com",
+  ticker: "SOL",
+  tickerName: "Solana",
+  logo: "https://images.toruswallet.io/solana.svg",
 };
 ```
 
@@ -62,13 +63,14 @@ const chainConfig: {
 
 ```typescript
 const chainConfig: {
-  chainNamespace: "solana";
-  chainId: "0x2"; // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-  rpcTarget: "https://api.testnet.solana.com";
-  displayName: "Solana Testnet";
-  blockExplorer: "https://explorer.solana.com";
-  ticker: "SOL";
-  tickerName: "Solana";
+  chainNamespace: "solana",
+  chainId: "0x2", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+  rpcTarget: "https://api.testnet.solana.com",
+  displayName: "Solana Testnet",
+  blockExplorerUrl: "https://explorer.solana.com",
+  ticker: "SOL",
+  tickerName: "Solana",
+  logo: "https://images.toruswallet.io/solana.svg"
 };
 ```
 
@@ -77,7 +79,100 @@ const chainConfig: {
 
 ### Initializing and instantiating the Web3Auth SDK
 
-<InitializeWeb3Auth />
+<Tabs
+  defaultValue="modal"
+  values={[
+    { label: "PnP Modal SDK", value: "modal", },
+    { label: "PnP NoModal SDK", value: "no-modal", },
+    { label: "CoreKit SFA Web SDK", value: "sfa", },
+    { label: "CoreKit MFA tKey JS SDK", value: "tkey", },
+  ]}
+>
+<TabItem
+  value="modal"
+>
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+import { WEB3AUTH_NETWORK } from "@web3auth/base";
+
+const privateKeyProvider = new SolanaPrivateKeyProvider({
+  config: { chainConfig: chainConfig }
+});
+
+const web3auth = new Web3Auth({
+  // Get it from Web3Auth Dashboard
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider: privateKeyProvider,
+});
+```
+
+</TabItem>
+<TabItem
+  value="no-modal"
+>
+
+```tsx
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+import { WEB3AUTH_NETWORK } from "@web3auth/base";
+
+const privateKeyProvider = new SolanaPrivateKeyProvider({
+  config: {chainConfig},
+});
+
+const web3auth = new Web3AuthNoModal({
+  clientId, // Get it from Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+});
+
+const openloginAdapter = new OpenloginAdapter();
+web3auth.configureAdapter(openloginAdapter);
+```
+
+</TabItem>
+<TabItem
+  value="sfa"
+>
+
+```tsx
+import { Web3Auth } from "@web3auth/single-factor-auth";
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+
+const web3auth = new Web3Auth({
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+});
+
+const privateKeyProvider = new SolanaPrivateKeyProvider({
+  config: { chainConfig },
+});
+```
+
+</TabItem>
+<TabItem
+  value="tkey"
+>
+
+```tsx
+import { SfaServiceProvider } from "@tkey/service-provider-sfa";
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+
+// Initialization of private key provider
+const privateKeyProvider = new SolanaPrivateKeyProvider({
+  config: {
+    chainConfig,
+  },
+});
+
+await (tKey.serviceProvider as SfaServiceProvider).init(privateKeyProvider);
+```
+
+</TabItem>
+</Tabs>
 
 ## Get User Info
 
@@ -88,16 +183,13 @@ const chainConfig: {
 ```tsx
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
-/*
-  Use code from the above Initializing Provider here
-*/
-
-// solanaWallet is from above
+const solanaWallet = new SolanaWallet(web3auth.provider);
 
 // Get user's Solana public address
 const accounts = await solanaWallet.requestAccounts();
 
-const connectionConfig = await solanaWallet.request({
+
+const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
   method: "solana_provider_config",
   params: [],
 });
@@ -113,29 +205,31 @@ const balance = await connection.getBalance(new PublicKey(accounts[0]));
 ```tsx
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
-/*
-  Use code from the above Initializing Provider here
-*/
-
 // solanaWallet is from above
 const connectionConfig = await solanaWallet.request({
   method: "solana_provider_config",
   params: [],
 });
 
+const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
+  method: "solana_provider_config",
+  params: [],
+});
+
 const connection = new Connection(connectionConfig.rpcTarget);
 
-const accounts = await solanaWallet.requestAccounts();
-const block = await connection.getLatestBlockhash("finalized");
+const pubKey = await solanaWallet.requestAccounts();
+const { blockhash } = await connection.getRecentBlockhash("finalized");
+
 const TransactionInstruction = SystemProgram.transfer({
-  fromPubkey: new PublicKey(accounts[0]),
-  toPubkey: new PublicKey(accounts[0]),
+  fromPubkey: new PublicKey(pubKey[0]),
+  toPubkey: new PublicKey(pubKey[0]),
   lamports: 0.01 * LAMPORTS_PER_SOL,
 });
+
 const transaction = new Transaction({
-  blockhash: block.blockhash,
-  lastValidBlockHeight: block.lastValidBlockHeight,
-  feePayer: new PublicKey(accounts[0]),
+  recentBlockhash: blockhash,
+  feePayer: new PublicKey(pubKey[0]),
 }).add(TransactionInstruction);
 
 const signedTx = await solanaWallet.signTransaction(transaction);
@@ -147,45 +241,34 @@ console.log(signedTx.signature);
 ```tsx
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
-/*
-  Use code from the above Initializing Provider here
-*/
-
 // solanaWallet is from above
-const connectionConfig = await solanaWallet.request({
-  method: "solana_provider_config",
-  params: [],
+const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
+  method: "solana_provider_config", params: []
 });
 
 const connection = new Connection(connectionConfig.rpcTarget);
 
-const accounts = await solanaWallet.requestAccounts();
-const block = await connection.getLatestBlockhash("finalized");
-// Transaction 1
-const TransactionInstruction = SystemProgram.transfer({
-  fromPubkey: new PublicKey(accounts[0]),
-  toPubkey: new PublicKey(accounts[0]),
+const pubKey = await solanaWallet.requestAccounts();
+const { blockhash } = await connection.getRecentBlockhash("finalized");
+
+// First transaction
+const TransactionInstruction1 = SystemProgram.transfer({
+  fromPubkey: new PublicKey(pubKey[0]),
+  toPubkey: new PublicKey(pubKey[0]),
   lamports: 0.01 * LAMPORTS_PER_SOL,
 });
-const transaction = new Transaction({
-  blockhash: block.blockhash,
-  lastValidBlockHeight: block.lastValidBlockHeight,
-  feePayer: new PublicKey(accounts[0]),
-}).add(TransactionInstruction);
 
-// Transaction 2
+// Second transaction
 const TransactionInstruction2 = SystemProgram.transfer({
-  fromPubkey: new PublicKey(accounts[0]),
-  toPubkey: new PublicKey(accounts[0]),
-  lamports: 0.0001 * LAMPORTS_PER_SOL,
+  fromPubkey: new PublicKey(pubKey[0]),
+  toPubkey: new PublicKey(pubKey[0]),
+  lamports: 0.02 * LAMPORTS_PER_SOL,
 });
-const transaction2 = new Transaction({
-  blockhash: block.blockhash,
-  lastValidBlockHeight: block.lastValidBlockHeight,
-  feePayer: new PublicKey(accounts[0]),
-}).add(TransactionInstruction2);
 
-const signedTx = await solanaWallet.signAllTransactions([transaction, transaction2]);
+const transaction1 = new Transaction({ recentBlockhash: blockhash, feePayer: new PublicKey(pubKey[0]) }).add(TransactionInstruction1);
+const transaction2 = new Transaction({ recentBlockhash: blockhash, feePayer: new PublicKey(pubKey[0]) }).add(TransactionInstruction2);
+
+const signedTx = await solanaWallet.signAllTransactions([transaction1, transaction2]);
 console.log(signedTx);
 ```
 
@@ -194,41 +277,38 @@ console.log(signedTx);
 ```tsx
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
-/*
-  Use code from the above Initializing Provider here
-*/
 
 // solanaWallet is from above
-const connectionConfig = await solanaWallet.request({
-  method: "solana_provider_config",
-  params: [],
+const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
+  method: "solana_provider_config", params: []
 });
 
 const connection = new Connection(connectionConfig.rpcTarget);
 
 const accounts = await solanaWallet.requestAccounts();
 const block = await connection.getLatestBlockhash("finalized");
+
 const TransactionInstruction = SystemProgram.transfer({
   fromPubkey: new PublicKey(accounts[0]),
   toPubkey: new PublicKey(accounts[0]),
   lamports: 0.01 * LAMPORTS_PER_SOL,
 });
+
 const transaction = new Transaction({
   blockhash: block.blockhash,
   lastValidBlockHeight: block.lastValidBlockHeight,
   feePayer: new PublicKey(accounts[0]),
 }).add(TransactionInstruction);
+
 const { signature } = await solanaWallet.signAndSendTransaction(transaction);
+
+console.log(signature);
 ```
 
 ## Sign Message
 
 ```tsx
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
-
-/*
-  Use code from the above Initializing Provider here
-*/
 
 // solanaWallet is from above
 const msg = Buffer.from("Test Signing Message", "utf8");
@@ -241,12 +321,13 @@ console.log(result.toString());
 `solanaPrivateKey` is used to fetch the private key of the logged in user. It is only available for `in-app` adapters like `openlogin`.
 
 ```tsx
-//Assuming user is already logged in.
+// Assuming user is already logged in.
 async getPrivateKey() {
   const privateKey = await web3auth.provider.request({
     method: "solanaPrivateKey"
   });
-  //Do something with privateKey
+
+  // Do something with privateKey
 }
 ```
 

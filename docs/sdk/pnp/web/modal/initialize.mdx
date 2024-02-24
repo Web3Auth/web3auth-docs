@@ -57,6 +57,42 @@ This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
 
 <Web3AuthOptions />
 
+### Adding a Private key provider
+
+#### `privateKeyProvider`
+
+`privateKeyProvider` parameter helps you to connect with various wallet SDKs. These are preconfigured RPC clients for different blockchains used to
+interact with the respective blockchain networks.
+
+:::note
+
+It's mandatory to provide `privateKeyProvider` for your corresponding chain namespace. To know more in-depth about providers, have a look at your
+[Providers reference](/sdk/helper-sdks/providers).
+
+:::
+
+```javascript
+const chainConfig = {
+  chainId: "0x1", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://images.toruswallet.io/eth.svg",
+};
+
+const ethereumPrivateKeyProvider = EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3Auth({
+  clientId: "", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider: ethereumPrivateKeyProvider,
+});
+```
+
 ### Adding a Custom Chain Configuration
 
 #### `chainConfig`
@@ -105,14 +141,24 @@ with Web3Auth Plug and Play Modal SDK, have a look at our [Whitelabeling SDK Ref
 <TabItem value="no-whitelabel">
 
 ```javascript
+const chainConfig = {
+  chainId: "0x1", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://images.toruswallet.io/eth.svg",
+};
+
+const ethereumPrivateKeyProvider = EthereumPrivateKeyProvider({
+  config: { chainConfig: chainConfig },
+});
+
 const web3auth = new Web3Auth({
   clientId: "", // Get your Client ID from the Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth", // This is the mainnet RPC we have added, please pass on your own endpoint while creating an app
-  },
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider: ethereumPrivateKeyProvider,
 });
 ```
 
@@ -122,9 +168,10 @@ const web3auth = new Web3Auth({
 
 ## Configuring Adapters
 
-An adapter is a pluggable package that implements `IAdapter` interface for a wallet within Web3Auth. An adapter can be plugged in and out of web3auth
-modal. Each adapter exposes the provider on successful user login that can be used to invoke RPC calls on the wallet and on the connected blockchain.
-Web3Auth's modal UI supports a set of default adapters depending on the [`authMode`](/sdk/pnp/web/modal/initialize#web3authoptions) being used.
+An adapter is a pluggable package that implements an `IAdapter` interface for a wallet within Web3Auth. An adapter can be plugged in and out of
+web3auth modal. Each adapter exposes the provider on successful user login that can be used to invoke RPC calls on the wallet and on the connected
+blockchain. Web3Auth's modal UI supports a set of default adapters depending on the [`authMode`](/sdk/pnp/web/modal/initialize#web3authoptions) being
+used.
 
 :::info
 
@@ -142,8 +189,8 @@ are required to be configured always based on the `authMode` you are using.
 ##### Example
 
 Since we're using the `@web3auth/modal`, ie. the Plug and Play Modal SDK, the `loginConfig` should correspond to the socials mentioned in the modal.
-Here, we're customizing Google and Facebook to be custom verified, rest all other socials will be default. You can customize other social logins or
-remove them using the whitelabeling option.
+Here, we're customizing Google and Facebook to be custom verified, rest of all other socials will be the default. You can customize other social
+logins or remove them using the whitelabeling option.
 
 <CustomAuthenticationWeb3AuthExample />
 
@@ -223,7 +270,7 @@ const subscribeAuthEvents = (web3auth: Web3Auth) => {
 
 The final step in the whole initialization process is the initialize the Modal from Web3Auth.
 
-This is done by calling `initModal` function of the `web3auth` instance we created above.
+This is done by calling the `initModal` function of the `web3auth` instance we created above.
 
 ```javascript
 await web3auth.initModal(params);
