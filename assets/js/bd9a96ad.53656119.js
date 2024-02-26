@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkweb3auth_docs=self.webpackChunkweb3auth_docs||[]).push([[96156],{3066:e=>{e.exports=JSON.parse('{"name":"plugin-dynamic-route","id":"default"}')}}]);

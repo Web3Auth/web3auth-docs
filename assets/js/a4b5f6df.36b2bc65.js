@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkweb3auth_docs=self.webpackChunkweb3auth_docs||[]).push([[32884],{529:e=>{e.exports=JSON.parse('{"name":"docusaurus-plugin-virtual-files","id":"default"}')}}]);
