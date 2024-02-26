@@ -453,7 +453,12 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Solana",
           link: { type: "doc", id: "connect-blockchain/solana/solana" },
-          items: ["connect-blockchain/solana/web", "connect-blockchain/solana/flutter", "connect-blockchain/solana/android"],
+          items: [
+            "connect-blockchain/solana/web",
+            "connect-blockchain/solana/flutter",
+            "connect-blockchain/solana/android",
+            "connect-blockchain/solana/ios",
+          ],
         },
 
         "connect-blockchain/xrpl",
