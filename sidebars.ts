@@ -360,14 +360,14 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "Klaytn",
-              link: { type: "doc", id: "connect-blockchain/evm/klatyn/klatyn" },
+              link: { type: "doc", id: "connect-blockchain/evm/klaytn/klaytn" },
               items: [
-                "connect-blockchain/evm/klatyn/web",
-                "connect-blockchain/evm/klatyn/android",
-                "connect-blockchain/evm/klatyn/ios",
-                "connect-blockchain/evm/klatyn/react-native",
-                "connect-blockchain/evm/klatyn/flutter",
-                "connect-blockchain/evm/klatyn/unity",
+                "connect-blockchain/evm/klaytn/web",
+                "connect-blockchain/evm/klaytn/android",
+                "connect-blockchain/evm/klaytn/ios",
+                "connect-blockchain/evm/klaytn/react-native",
+                "connect-blockchain/evm/klaytn/flutter",
+                "connect-blockchain/evm/klaytn/unity",
               ],
             },
             {

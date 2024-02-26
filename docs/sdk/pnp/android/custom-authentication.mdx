@@ -8,11 +8,11 @@ description: "Web3Auth PnP Android SDK - Using Custom Authentication | Documenta
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-This is a document to use a custom login mechanism with the Web3Auth Android SDK. For example, to login using your own custom JWT issuers like Auth0,
-AWS Cognito, or Firebase. You can add the your configuration to the `loginConfig` field of the `Web3AuthOptions` object.
+To use custom authentication (Using Social providers or Login providers like Auth0, AWS Cognito, Firebase etc. or even your own custom JWT login) you
+can add the configuration to the `loginConfig` parameter of the `Web3AuthOptions` object during the initialization.
 
-The `loginConfig` field is a key value map. The key should be one of the `Web3AuthProvider` in its string form, and the value should be a
-`LoginConfigItem` struct instance.
+The `loginConfig` parameter is a key value map. The key should be one of the `Web3AuthProvider` in its string form, and the value should be a
+`LoginConfigItem` instance.
 
 First, configure your own verifier in the Web3Auth Dashboard to use custom authentication.
 
@@ -55,21 +55,21 @@ Then, you should specify the details of your verifier in the `LoginConfigItem` s
 
 <TabItem value="table">
 
-| Parameter             | Type                | Mandatory | Description                                                                                                                                                                                                                                                           |
-| --------------------- | ------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| verifier              | String              | Yes       | The name of the verifier that you have registered on the Web3Auth Dashboard.                                                                                                                                                                                          |
-| typeOfLogin           | Enum`<TypeOfLogin>` | Yes       | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose google, a google sign-in flow will be used. If you choose jwt, which you should be providing your own JWT token, no sign-in flow will be presented. |
-| clientId              | String              | Yes       | The Client Id of the login provider. e.g. Google's Client ID                                                                                                                                                                                                          |
-| name                  | String?             | No        | Name of your verifier.                                                                                                                                                                                                                                                |
-| description           | String?             | No        | Description of this login flow.                                                                                                                                                                                                                                       |
-| verifierSubIdentifier | String?             | No        | The name of the field in the JWT that should be used as the unique user ID of the JWT. Should be same as the one you used                                                                                                                                             |
-| logoHover             | String?             | No        | Logo to be shown on mouse hover.                                                                                                                                                                                                                                      |
-| logoLight             | String?             | No        | Light logo for dark background                                                                                                                                                                                                                                        |
-| logoDark              | String?             | No        | Dark logo for light background                                                                                                                                                                                                                                        |
-| mainOption            | Boolean?            | No        | Show login button on the main list                                                                                                                                                                                                                                    |
-| showOnModal           | Boolean?            | No        | Whether to show the login button on modal or not                                                                                                                                                                                                                      |
-| showOnDesktop         | Boolean?            | No        | Whether to show the login button on desktop                                                                                                                                                                                                                           |
-| showOnMobile          | Boolean?            | No        | Whether to show the login button on mobile                                                                                                                                                                                                                            |
+| Parameter               | Type          | Mandatory | Description                                                                                                                                                                                                                                                           |
+| ----------------------- | ------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `verifier`              | `String`      | Yes       | The name of the verifier that you have registered on the Web3Auth Dashboard.                                                                                                                                                                                          |
+| `typeOfLogin`           | `TypeOfLogin` | Yes       | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose google, a google sign-in flow will be used. If you choose jwt, which you should be providing your own JWT token, no sign-in flow will be presented. |
+| `clientId`              | `String`      | Yes       | The Client Id of the login provider. e.g. Google's Client ID                                                                                                                                                                                                          |
+| `name`                  | `String?`     | No        | Name of your verifier.                                                                                                                                                                                                                                                |
+| `description`           | `String?`     | No        | Description of this login flow.                                                                                                                                                                                                                                       |
+| `verifierSubIdentifier` | `String?`     | No        | The name of the field in the JWT that should be used as the unique user ID of the JWT. Should be same as the one you used                                                                                                                                             |
+| `logoHover`             | `String?`     | No        | Logo to be shown on mouse hover.                                                                                                                                                                                                                                      |
+| `logoLight`             | `String?`     | No        | Light logo for dark background                                                                                                                                                                                                                                        |
+| `logoDark`              | `String?`     | No        | Dark logo for light background                                                                                                                                                                                                                                        |
+| `mainOption`            | `Boolean?`    | No        | Show login button on the main list                                                                                                                                                                                                                                    |
+| `showOnModal`           | `Boolean?`    | No        | Whether to show the login button on modal or not                                                                                                                                                                                                                      |
+| `showOnDesktop`         | `Boolean?`    | No        | Whether to show the login button on desktop                                                                                                                                                                                                                           |
+| `showOnMobile`          | `Boolean?`    | No        | Whether to show the login button on mobile                                                                                                                                                                                                                            |
 
 </TabItem>
 
@@ -256,12 +256,12 @@ enabling login. The `ExtraLoginOptions` accepts the following parameters:
 
 | Parameter                   | Type      | Description                                                                               |
 | --------------------------- | --------- | ----------------------------------------------------------------------------------------- |
-| `domain`                    | `string`  | Your Auth0 account domain such as `example.auth0.com` or `example.mycompany.com` etc.     |
-| `client_id`                 | `string`  | The Client ID found on your Auth0 Application settings page.                              |
-| `redirect_uri`              | `string`  | The default URL where Auth0 will redirect your browser to with the authentication result. |
-| `leeway`                    | `number`  | The value in seconds used to account for clock skew in JWT expirations.                   |
-| `verifierIdField`           | `string`  | The field in jwt token which maps to verifier id.                                         |
-| `isVerifierIdCaseSensitive` | `boolean` | Whether the verifier id field is case sensitive. Defaults to `true`                       |
+| `domain`                    | `String`  | Your Auth0 account domain such as `example.auth0.com` or `example.mycompany.com` etc.     |
+| `client_id`                 | `String`  | The Client ID found on your Auth0 Application settings page.                              |
+| `redirect_uri`              | `String`  | The default URL where Auth0 will redirect your browser to with the authentication result. |
+| `leeway`                    | `String`  | The value in seconds used to account for clock skew in JWT expirations.                   |
+| `verifierIdField`           | `String`  | The field in jwt token which maps to verifier id.                                         |
+| `isVerifierIdCaseSensitive` | `Boolean` | Whether the verifier id field is case sensitive. Defaults to `true`                       |
 
 </TabItem>
 
@@ -369,8 +369,11 @@ val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
 To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` field of the `extraLoginOptions`.
 
 ```kotlin
-val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-    web3Auth.login(LoginParams(Provider.EMAIL_PASSWORDLESS,
-      // highlight-next-line
-      extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")))
+val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
+  LoginParams(
+    Provider.EMAIL_PASSWORDLESS,
+    // highlight-next-line
+    extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")
+  )
+)
 ```

@@ -5,18 +5,19 @@ displayed_sidebar: sdk
 description: "Web3Auth PnP Android SDK - Usage | Documentation - Web3Auth"
 ---
 
-Web3Auth's Android SDK is a set of libraries and tools that allow you to easily integrate Web3 with Android applications.
-
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import AndroidResponse from "@site/src/common/sdk/pnp/_userinfo_response.mdx";
+
+Web3Auth's Android SDK is a set of libraries and tools that allow you to easily integrate Web3 with Android applications.
 
 ## Logging in a User
 
 ### `web3Auth.login(LoginParams)`
 
-Trigger login flow with the selected provider from the list of providers available under `com.web3auth.core.Web3Auth.Provider` such as GOOGLE,
-FACEBOOK, TWITTER, EMAIL_PASSWORDLESS, etc. `web3Auth.login()` requires `LoginParams` as a required input.
+Trigger login flow will navigate the user to a browser model allowing the user to login into the service. You can pass in the supported providers to
+the login method for specific social logins such as GOOGLE, APPLE, FACEBOOK, etc., and do whitelabel login. The `login` function takes in
+`LoginParams` as a required input.
 
 #### Arguments
 
@@ -32,15 +33,15 @@ FACEBOOK, TWITTER, EMAIL_PASSWORDLESS, etc. `web3Auth.login()` requires `LoginPa
 
 <TabItem value="table">
 
-| Parameter           | Type                                         | Mandatory | Description                                                                                                                                                                                         |
-| ------------------- | -------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginProvider`     | `enum` `com.web3auth.core.Web3Auth.Provider` | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`, `JWT` |
-| `dappShare`         | `String`                                     | No        | Dapp share can be used to pass dapp share url, default is `null`                                                                                                                                    |
-| `extraLoginOptions` | `Map<String, Any>`                           | No        | You can pass various oauth supported options, default is `null`                                                                                                                                     |
-| `redirectUrl`       | `android.net.Uri`                            | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                         |
-| `appState`          | `String`                                     | No        | appState can be used to keep track of the app state when user will be redirected to app after login, default is `null`                                                                              |
-| `mfaLevel`          | `Map<String, Any>`                           | No        | MFA level can be used to pass 2FA screen shown during login, default is `mfaLevel.DEFAULT`, shown every 3rd login.                                                                                  |
-| `curve`             | `Map<String, Any>`                           | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum                                                                                                          |
+| Parameter           | Type                | Mandatory | Description                                                                                                                                                                                         |
+| ------------------- | ------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginProvider`     | `Provider`          | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`, `JWT` |
+| `dappShare`         | `String`            | No        | Dapp share can be used to pass dapp share url, default is `null`                                                                                                                                    |
+| `extraLoginOptions` | `ExtraLoginOptions` | No        | You can pass various oauth supported options, default is `null`                                                                                                                                     |
+| `redirectUrl`       | `Uri`               | No        | Uri where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                         |
+| `appState`          | `String`            | No        | appState can be used to keep track of the app state when user will be redirected to app after login, default is `null`                                                                              |
+| `mfaLevel`          | `MFALevel`          | No        | MFA level can be used to pass 2FA screen shown during login, default is `mfaLevel.DEFAULT`, shown every 3rd login.                                                                                  |
+| `curve`             | `Curve`             | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum                                                                                                          |
 
 </TabItem>
 
@@ -64,7 +65,8 @@ data class LoginParams(
 
 ### `web3Auth.getPrivkey()`
 
-Use getPrivkey() to get the private key of the user. This private key can be used to sign transactions on Ethereum.
+Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private key which can be used to sign transactions on EVM
+compatible chains.
 
 ### `web3Auth.getEd25519PrivKey()`
 
@@ -278,8 +280,12 @@ class MainActivity : AppCompatActivity() {
         // extraLoginOptions = ExtraLoginOptions(login_hint = "email address")
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
             // highlight-start
-            web3Auth.login(LoginParams(selectedLoginProvider,
-                extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")))
+            web3Auth.login(
+                LoginParams(
+                    selectedLoginProvider,
+                    extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")
+                )
+            )
             // highlight-end
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
@@ -323,9 +329,12 @@ class MainActivity : AppCompatActivity() {
         // extraLoginOptions = ExtraLoginOptions(id_token = "jwt_token")
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
             // highlight-start
-            web3Auth.login(LoginParams(selectedLoginProvider,
-                extraLoginOptions = ExtraLoginOptions(id_token = "your_jwt_token")
-                ))
+            web3Auth.login(
+                LoginParams(
+                    selectedLoginProvider,
+                    extraLoginOptions = ExtraLoginOptions(id_token = "your_jwt_token")
+                )
+            )
             // highlight-end
         // Use this for login with your generated JWT token,
         // please refer to https://web3auth.io/docs/auth-provider-setup/byo-jwt-providers to learn more
@@ -364,8 +373,12 @@ class MainActivity : AppCompatActivity() {
 `ExtraLoginOptions`
 
 ```kotlin
-web3Auth.login(LoginParams(selectedLoginProvider,
-    extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")))
+web3Auth.login(
+    LoginParams(
+        selectedLoginProvider,
+        extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")
+    )
+)
 ```
 
 <Tabs
@@ -378,29 +391,29 @@ web3Auth.login(LoginParams(selectedLoginProvider,
 
 <TabItem value="table">
 
-| Parameter                 | Type                      | Mandatory | Description                                                       |
-| ------------------------- | ------------------------- | --------- | ----------------------------------------------------------------- |
-| additionalParams          | HashMap\<String, String>? | No        | additionalParams, use id_token(JWT) to authenticate with web3auth |
-| domain                    | String?                   | No        | Domain of the app                                                 |
-| client_id                 | String?                   | No        | client_id from Web3Auth Dashboard                                 |
-| leeway                    | String?                   | No        | leeway                                                            |
-| verifierIdField           | String?                   | No        | verifierIdField                                                   |
-| isVerifierIdCaseSensitive | Boolean?                  | No        | Boolean to confirm the case sensitivity of VerifierId             |
-| display                   | Display?                  | No        | Display                                                           |
-| prompt                    | Prompt?                   | No        | Prompt                                                            |
-| max_age                   | String?                   | No        | max_age                                                           |
-| ui_locales                | String?                   | No        | ui_locales to be shown on the modal                               |
-| id_token                  | String?                   | No        | JWT (ID Token) to be passed for Login.                            |
-| id_token_hint             | String?                   | No        | Previously issued ID Token.                                       |
-| login_hint                | String?                   | No        | Email used for EMAIL_PASSWORDLESS                                 |
-| acr_values                | String?                   | No        | acc_values                                                        |
-| scope                     | String?                   | No        | scope                                                             |
-| audience                  | String?                   | No        | audience                                                          |
-| connection                | String?                   | No        | connection                                                        |
-| state                     | String?                   | No        | state                                                             |
-| response_type             | String?                   | No        | response_type                                                     |
-| nonce                     | String?                   | No        | nonce                                                             |
-| redirect_uri              | String?                   | No        | redirect_uri                                                      |
+| Parameter                   | Type                       | Mandatory | Description                                                       |
+| --------------------------- | -------------------------- | --------- | ----------------------------------------------------------------- |
+| `additionalParams`          | `HashMap\<String, String>` | No        | additionalParams, use id_token(JWT) to authenticate with web3auth |
+| `domain`                    | `String`                   | No        | Domain of the app                                                 |
+| `client_id`                 | `String`                   | No        | client_id from Web3Auth Dashboard                                 |
+| `leeway`                    | `String`                   | No        | leeway                                                            |
+| `verifierIdField`           | `String`                   | No        | verifierIdField                                                   |
+| `isVerifierIdCaseSensitive` | `Boolean`                  | No        | Boolean to confirm the case sensitivity of VerifierId             |
+| `display`                   | `Display`                  | No        | Display                                                           |
+| `prompt`                    | `Prompt`                   | No        | Prompt                                                            |
+| `max_age`                   | `String`                   | No        | max_age                                                           |
+| `ui_locales`                | `String`                   | No        | ui_locales to be shown on the modal                               |
+| `id_token`                  | `String`                   | No        | JWT (ID Token) to be passed for Login.                            |
+| `id_token_hint`             | `String`                   | No        | Previously issued ID Token.                                       |
+| `login_hint`                | `String`                   | No        | Email used for EMAIL_PASSWORDLESS                                 |
+| `acr_values`                | `String`                   | No        | acc_values                                                        |
+| `scope`                     | `String`                   | No        | scope                                                             |
+| `audience`                  | `String`                   | No        | audience                                                          |
+| `connection`                | `String`                   | No        | connection                                                        |
+| `state`                     | `String`                   | No        | state                                                             |
+| `response_type`             | `String`                   | No        | response_type                                                     |
+| `nonce`                     | `String`                   | No        | nonce                                                             |
+| `redirect_uri`              | `String`                   | No        | redirect_uri                                                      |
 
 </TabItem>
 
@@ -510,9 +523,13 @@ class MainActivity : AppCompatActivity() {
         val selectedLoginProvider = Provider.GOOGLE
         // Can be GOOGLE, FACEBOOK, TWITCH etc.
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            web3Auth.login(LoginParams(selectedLoginProvider,
+            web3Auth.login(
+                LoginParams(
+                    selectedLoginProvider,
                 // highlight-next-line
-                curve = Curve.ED25519))
+                    curve = Curve.ED25519
+                )
+            )
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
@@ -577,3 +594,125 @@ class MainActivity : AppCompatActivity() {
     ...
 }
 ```
+
+### Enable MFA for a user
+
+The `enableMFA` method is used to trigger MFA setup flow for users. The method takes `LoginParams` which will used during custom verifiers. If you are
+using default login providers, you don't need to pass `LoginParams`. If you are using custom jwt verifiers, you need to pass the JWT token in
+`loginParams` as well.
+
+```kotlin title="Usage"
+import android.widget.Button
+import com.web3auth.core.Web3Auth
+import android.os.Bundle
+
+class MainActivity : AppCompatActivity() {
+    private lateinit var web3Auth: Web3Auth
+
+     private fun enableMFA() {
+       // highlight-next-line
+       val completableFuture = web3Auth.enableMFA()
+
+        completableFuture.whenComplete{_, error ->
+            if (error == null) {
+                Log.d("MainActivity_Web3Auth", "Launched successfully")
+                // Add your logic
+            } else {
+                // Add your logic on error
+                Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
+            }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ...
+        // Setup UI and event handlers
+        val enableMFAButton = findViewById<Button>(R.id.enableMFAButton)
+        enableMFAButton.setOnClickListener { enableMFA() }
+        ...
+    }
+    ...
+}
+```
+
+## Launch Wallet Services
+
+The `launchWalletServices` method launches a WebView which allows you to use the templated wallet UI services. The method takes `LoginParams` and
+`ChainConfig` as the required input.Wallet Services is currently only available for EVM chains.
+
+### Arguments
+
+`ChainConfig`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter          | Type             | Mandatory | Description                                                                                                                 |
+| ------------------ | ---------------- | --------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `chainNamespace`   | `ChainNamespace` | No        | Custom configuration for your preferred blockchain. As of now only EVM supported. Default value is `ChainNamespace.EIP155`. |
+| `decimals`         | `Int`            | No        | Number of decimals for the currency ticker. Default value is 18                                                             |
+| `blockExplorerUrl` | `String`         | No        | Blockchain's explorer URL. (eg: `https://etherscan.io`)                                                                     |
+| `chainId`          | `String`         | Yes       | The chain id of the selected blockchain in `hex`.                                                                           |
+| `displayName`      | `String`         | No        | Display Name for the chain.                                                                                                 |
+| `logo`             | `String`         | No        | Logo for the selected `chainNamespace` & `chainId`.                                                                         |
+| `rpcTarget`        | `String`         | Yes       | RPC Target URL for the selected `chainNamespace` & `chainId`.                                                               |
+| `ticker`           | `String`         | Yes       | Default currency ticker of the network (e.g: `ETH`)                                                                         |
+| `tickerName`       | `String`         | No        | Name for currency ticker (e.g: `Ethereum`)                                                                                  |
+
+</TabItem>
+
+<TabItem value="class">
+
+```kotlin
+data class ChainConfig(
+    val chainNamespace: ChainNamespace = ChainNamespace.EIP155,
+    val decimals: Int = 18,
+    val blockExplorerUrl: String? = null,
+    val chainId: String,
+    val displayName: String? = null,
+    val logo: String? = null,
+    val rpcTarget: String,
+    val ticker: String,
+    val tickerName: String? = null,
+)
+```
+
+</TabItem>
+</Tabs>
+
+```kotlin title="Usage"
+val loginParams = LoginParams(Provider.GOOGLE)
+
+// highlight-start
+val chainConfig = ChainConfig(
+    chainId = "0x1",
+    rpcTarget = "https://rpc.ankr.com/eth",
+    ticker = "ETH",
+    chainNamespace = ChainNamespace.EIP155
+)
+// highlight-end
+
+val completableFuture = web3Auth.launchWalletServices(
+    loginParams, chainConfig
+)
+
+completableFuture.whenComplete{_, error ->
+    if(error == null) {
+        // Add your logic
+        Log.d("MainActivity_Web3Auth", "Wallet services launched successfully")
+    } else {
+        // Add your logic for error
+        Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
+    }
+}
+```
+
+:::note Access to Wallet Services is gated. You can use this feature in the development environment for free. The minimum
+[pricing plan](https://web3auth.io/pricing.html) to use this feature in a production environment is the **Scale Plan**. :::
