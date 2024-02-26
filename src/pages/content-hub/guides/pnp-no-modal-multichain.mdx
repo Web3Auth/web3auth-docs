@@ -139,26 +139,28 @@ const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 
 For each blockchain you want to connect to, you need to call the `getAddress` function and with the private key, we will generate the public address.
 
-## EVM (Binance Smart Chain)
+## EVM (Polygon mumbai testnet)
 
 ```tsx
 const rpc = new RPC(provider);
 const privateKey = await rpc.getPrivateKey();
 
-const bnbPrivateKeyProvider = new EthereumPrivateKeyProvider({
+const polygonPrivateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig: {
-      chainId: "0x38",
-      rpcTarget: "https://rpc.ankr.com/bsc",
-      displayName: "Binance SmartChain Mainnet",
-      blockExplorer: "https://bscscan.com/",
-      ticker: "BNB",
-      tickerName: "BNB",
+      chainNamespace: CHAIN_NAMESPACES.EIP155,
+      chainId: "0x13881",
+      rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
+      displayName: "Polygon Mumbai",
+      blockExplorerUrl: "https://mumbai.polygonscan.com/",
+      ticker: "MATIC",
+      tickerName: "MATIC",
+      logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
     },
   },
 });
-await bnbPrivateKeyProvider.setupProvider(privateKey);
-const web3 = new Web3(bnbPrivateKeyProvider);
+await polygonPrivateKeyProvider.setupProvider(privateKey);
+const web3 = new Web3(polygonPrivateKeyProvider);
 const address = (await web3.eth.getAccounts())[0];
 return address;
 ```
@@ -176,12 +178,14 @@ const ed25519key = getED25519Key(privateKey).sk.toString("hex");
 const solanaPrivateKeyProvider = new SolanaPrivateKeyProvider({
   config: {
     chainConfig: {
+      chainNamespace: CHAIN_NAMESPACES.SOLANA,
       chainId: "0x3",
       rpcTarget: "https://api.devnet.solana.com",
       displayName: "Solana Mainnet",
-      blockExplorer: "https://explorer.solana.com/",
+      blockExplorerUrl: "https://explorer.solana.com/",
       ticker: "SOL",
       tickerName: "Solana",
+      logo: "",
     },
   },
 });
