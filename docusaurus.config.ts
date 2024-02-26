@@ -511,8 +511,8 @@ const config: Config = {
             to: "/connect-blockchain/other/polkadot",
           },
           {
-            from: "/content-hub/guides/pnp-no-modal-multichain",
-            to: "/content-hub/guides/pnp-no-modal-multichain-connection",
+            from: "/content-hub/guides/pnp-no-modal-multichain-connection",
+            to: "/content-hub/guides/pnp-no-modal-multichain",
           },
         ],
         createRedirects(existingPath) {
