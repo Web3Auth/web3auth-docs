@@ -510,6 +510,10 @@ const config: Config = {
             from: "/connect-blockchain/polkadot",
             to: "/connect-blockchain/other/polkadot",
           },
+          {
+            from: "/account-abstraction/safeauth",
+            to: "/sdk/wallet-ecosystems/safeauth",
+          },
         ],
         createRedirects(existingPath) {
           if (existingPath.includes("/content-hub")) {
