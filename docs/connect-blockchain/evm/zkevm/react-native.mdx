@@ -1,10 +1,10 @@
 ---
-title: Integrate Web3Auth with the Optimism Blockchain in React Native
+title: Integrate Web3Auth with the Astar zkEVM Blockchain in React Native
 sidebar_label: React Native
-image: "content-hub/guides/banners/optimism.png"
+image: "content-hub/guides/banners/zkevm.png"
 displayed_sidebar: docs
-keywords: [react-native, optimism, web3auth, authentication, blockchain]
-description: "Integrate Web3Auth with the Optimism Blockchain in React Native | Documentation - Web3Auth"
+keywords: [react-native, zkevm, astar, web3auth, authentication, blockchain]
+description: "Integrate Web3Auth with the Astar zkEVM Blockchain in React Native | Documentation - Web3Auth"
 ---
 
 import InstallationSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-installation.mdx";
@@ -19,17 +19,18 @@ import TabItem from "@theme/TabItem";
 import SEO from "@site/src/components/SEO";
 
 <SEO
-  title="Integrate Web3Auth with the Optimism Blockchain in React Native"
-  description="Integrate Web3Auth with the Optimism Blockchain in React Native | Documentation - Web3Auth"
-  image="https://web3auth.io/docs/content-hub/guides/banners/optimism.png"
-  slug="/connect-blockchain/evm/optimism/react-native"
+  title="Integrate Web3Auth with the Astar zkEVM Blockchain in React Native"
+  description="Integrate Web3Auth with the Astar zkEVM Blockchain in React Native | Documentation - Web3Auth"
+  image="https://web3auth.io/docs/content-hub/guides/banners/zkevm.png"
+  slug="/connect-blockchain/evm/zkevm/react-native"
 />
 
 While using the Web3Auth React Native SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider, similar to the
 [Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html). This provider can be used with libraries like
 [`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html), [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
-[Optimism](https://optimism.io/) blockchain calls like getting the user's `account`, fetching `balance`, `sign transaction`, `send transaction`,
-`read` from and `write` to the smart contract, etc. We have highlighted a few here to get you started quickly on that.
+[Astar zkEVM](https://docs.astar.network/docs/build/zkEVM/) blockchain calls like getting the user's `account`, fetching `balance`,
+`sign transaction`, `send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a few here to get you started quickly
+on that.
 
 ## Installation
 
@@ -46,7 +47,6 @@ provider as **`web3auth.provider`** after successful authentication.
  defaultValue="mainnet"
   values={[
     { label: "Mainnet", value: "mainnet", },
-    { label: "Testnet", value: "testnet", },
   ]}
 >
 <TabItem
@@ -56,34 +56,14 @@ provider as **`web3auth.provider`** after successful authentication.
 ```typescript
 const chainConfig = {
   chainNamespace: "eip155",
-  chainId: "0xA", // hex of 10
-  rpcTarget: "https://rpc.ankr.com/optimism",
+  chainId: "0xEC0", // hex of 3776
+  rpcTarget: "https://rpc.startale.com/astar-zkevm",
   // Avoid using public rpcTarget in production.
   // Use services like Infura, Quicknode etc
-  displayName: "Optimism Mainnet",
-  blockExplorer: "https://optimistic.etherscan.io",
-  ticker: "OP",
-  tickerName: "OP",
-};
-```
-
-</TabItem>
-
-<TabItem
-  value="testnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: "eip155",
-  chainId: "0x45", // hex of 69
-  rpcTarget: "https://rpc.ankr.com/optimism_testnet",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
-  displayName: "Optimism Testnet",
-  blockExplorer: "`https://kovan-optimistic.etherscan.io`",
-  ticker: "OP",
-  tickerName: "OP",
+  displayName: "Astar zkEVM",
+  blockExplorer: "https://astar-zkevm.explorer.startale.com/",
+  ticker: "$ASTR",
+  tickerName: "$ASTR",
 };
 ```
 
