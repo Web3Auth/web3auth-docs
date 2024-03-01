@@ -9,18 +9,18 @@ import Tiles from "@theme/Tiles";
 
 Web3Auth is the frontend authentication system for your dApp. Once the user is authenticated, the Web3Auth SDK returns a provider. A provider is how
 libraries like web3.js & ethers.js talk to the blockchain. Providers take JSON-RPC requests and return the response. This is normally done by
-submitting the request to an HTTP or IPC socket-based server. With Web3Auth, you get two types of providers, depending upon the product you use:
+submitting the request to an HTTP or IPC socket-based server. With Web3Auth, you get two types of providers, depending on the product you use:
 
 1. [Shamir Secret Sharing based Private Key Providers](#private-key-providers-non-mpc)
 2. [Threshold Signature Scheme based MPC Providers](#mpc-providers)
 
 ## Web3Auth is Chain Agnostic
 
-By default Web3Auth supports the `secp256k1` and `ed25519` key curves. While these key curves serve the majority of blockchains out there, certain
+By default, Web3Auth supports the `secp256k1` and `ed25519` key curves. While these key curves serve the majority of blockchains out there, certain
 blockchains have different curve implementations of their own. While for our MPC products, you need dedicated providers to interact with certain
-blockchains, with **Web3Auth non MPC products you can interact with any blockchain of your choice**.
+blockchains, with **Web3Auth non-MPC products you can interact with any blockchain of your choice**.
 
-In Web3Auth non MPC Products, the ability to export the user's private key comes in handy. This private key can be utilised by the dApp to interact
+In Web3Auth non-MPC Products, the ability to export the user's private key comes in handy. This private key can be utilized by the dApp to interact
 with the chain.
 
 You can read more about this in our [Connect with Other Blockchains](./other/) section.
@@ -33,14 +33,14 @@ contract wallets, different elliptic curve pairs and even RSA.
 
 :::
 
-## Private Key Providers (non MPC)
+## Private Key Providers (non-MPC)
 
 The Private Key Providers work with the majority of Web3Auth products, including Plug and Play SDKs, Single Factor Auth SDKs, and tKey SSS (v1) SDKs.
 As the name suggests these providers are a wrapper around the user's private key, which is dynamically reconstructed with Shamir's Secret Sharing and
 is present in the user's frontend.
 
-Once the authentication happens, the returned result from Web3Auth network is taken up by the provider to give a common interface to interact with the
-blockchain of your choice. Currently, Web3Auth supports the following private key providers for Web SDKs:
+Once the authentication happens, the returned result from the Web3Auth network is taken up by the provider to give a common interface to interact with
+the blockchain of your choice. Currently, Web3Auth supports the following private key providers for Web SDKs:
 
 - [EIP1193 Private Key Provider](/sdk/helper-sdks/providers/evm): For connecting to EVM based chains
 - [Solana Private Key Provider](/sdk/helper-sdks/providers/solana): For connecting with Solana Blockchain
@@ -49,11 +49,11 @@ blockchain of your choice. Currently, Web3Auth supports the following private ke
 
 ## MPC Providers
 
-The Threshold Signature Scheme based MPC Providers work with our MPC Core Kit SDK. These providers generate a signature of the particular key curve
-the provider is configured for and accordingly give you the interface to initialize with the blockchain it is configured for. Currently, Web3Auth MPC
-Core Kit support the following providers:
+The Threshold Signature Scheme-based MPC Providers work with our MPC Core Kit SDK. These providers generate a signature of the particular key curve
+the provider is configured for and accordingly gives you the interface to initialize with the blockchain it is configured for. Currently, Web3Auth MPC
+Core Kit supports the following providers:
 
-- EIP1193 MPC Provider: For connecting with EVM based chains [Available by default within the SDK]
+- EIP1193 MPC Provider: For connecting with EVM-based chains [Available by default within the SDK]
 - Bitcoin MPC Provider (coming soon)
 - Solana MPC Provider (coming soon)
 
@@ -158,6 +158,13 @@ export const EVMChains = [
         icon: "logo-songbird.png",
         path: "/connect-blockchain/evm/songbird/",
       },
+      ,
+      {
+        key: "zkevm",
+        title: "Astar zkEVM",
+        icon: "logo-astar-zkevm.png",
+        path: "/connect-blockchain/evm/zkevm/",
+      },
     ],
   },
 ];
@@ -245,7 +252,7 @@ export const OtherChains = [
 
 ## Reference Guides for Blockchain Connections
 
-You can checkout the following guides we've written for certain blockchains. We have covered a wide variety of EVM and non EVM Chains, supported by
+You can check out the following guides we've written for certain blockchains. We have covered a wide variety of EVM and EVM Chains, supported by
 multiple web3auth providers.
 
 ### EVM Chain Guides
