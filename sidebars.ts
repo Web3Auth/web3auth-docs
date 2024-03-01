@@ -254,6 +254,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Astar zkEVM",
+              link: { type: "doc", id: "connect-blockchain/evm/zkevm/zkevm" },
+              items: [
+                "connect-blockchain/evm/zkevm/web",
+                "connect-blockchain/evm/zkevm/android",
+                "connect-blockchain/evm/zkevm/ios",
+                "connect-blockchain/evm/zkevm/react-native",
+                "connect-blockchain/evm/zkevm/flutter",
+                "connect-blockchain/evm/zkevm/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Avalanche",
               link: { type: "doc", id: "connect-blockchain/evm/avalanche/avalanche" },
               items: [
@@ -432,19 +445,6 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/skale/react-native",
                 "connect-blockchain/evm/skale/flutter",
                 "connect-blockchain/evm/skale/unity",
-              ],
-            },
-            {
-              type: "category",
-              label: "Astar zkEVM",
-              link: { type: "doc", id: "connect-blockchain/evm/zkevm/zkevm" },
-              items: [
-                "connect-blockchain/evm/zkevm/web",
-                "connect-blockchain/evm/zkevm/android",
-                "connect-blockchain/evm/zkevm/ios",
-                "connect-blockchain/evm/zkevm/react-native",
-                "connect-blockchain/evm/zkevm/flutter",
-                "connect-blockchain/evm/zkevm/unity",
               ],
             },
             {
