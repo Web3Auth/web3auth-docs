@@ -134,7 +134,7 @@ const config: Config = {
       appId: "6OF28D8CMV",
       apiKey: "425a1e860cb4b9b4ce1f7d9b117c7a81",
       indexName: "docs-web3auth",
-      schedule: "every 1 day at 3:00 pm",
+      contextualSearch: true,
     },
     customFields: {
       baseUrl,
@@ -177,7 +177,7 @@ const config: Config = {
           beforeDefaultRehypePlugins: [],
         },
         sitemap: {
-          changefreq: "weekly",
+          changefreq: "weekly" as any,
           priority: 0.8,
         },
       } satisfies Preset.Options,
@@ -493,13 +493,14 @@ const config: Config = {
           },
         ],
         createRedirects(existingPath) {
-          if (existingPath.includes("/guides")) {
-            return [existingPath.replace("/guides", "/content-hub/guides"), existingPath.replace("/guides", "/guide")];
+          if (existingPath.includes("/guides/")) {
+            return [existingPath.replace("/guides/", "/content-hub/guides/")];
           }
-          existingPath.replace("https://blog.web3auth.io", "/blogs");
-          existingPath.replace("https://blog.web3auth.io", "/blog");
-          existingPath.replace("https://blog.web3auth.io", "/content-hub/blog");
-          existingPath.replace("https://blog.web3auth.io", "/content-hub/blogs");
+          existingPath.replace("https://blog.web3auth.io", "/blogs/");
+          existingPath.replace("https://blog.web3auth.io", "/blog/");
+          existingPath.replace("https://blog.web3auth.io/", "/content-hub/blog/");
+          existingPath.replace("https://blog.web3auth.io", "/content-hub/blogs/");
+
           if (existingPath.includes("/sdk")) {
             return [existingPath.replace("/sdk", "/api-reference"), existingPath.replace("/sdk", "/sdk-reference")];
           }
@@ -574,11 +575,6 @@ const config: Config = {
       crossorigin: "anonymous",
     },
   ],
-  customFields: {
-    // 'REACT_HYGRAPHCMS_ENDPOINT': process.env.REACT_HYGRAPHCMS_ENDPOINT,
-    REACT_CONTENTFUL_SPACE: process.env.REACT_CONTENTFUL_SPACE,
-    REACT_CONTENTFUL_TOKEN: process.env.REACT_CONTENTFUL_TOKEN,
-  },
 };
 
 async function createConfig() {
