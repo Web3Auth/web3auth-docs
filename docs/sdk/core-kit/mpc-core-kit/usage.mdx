@@ -58,8 +58,14 @@ Additional Helper Functions:
 
 #### `setTssWalletIndex(accountIndex: number): void;`
 
-Sets the TSS Wallet Index for the User's account. This is a new feature that supports key derivation, allowing users to derive multiple private keys
-from a single account for improved asset organization.
+Sets the TSS Wallet Index for the User's account. This function can be used to deterministically derive different wallet addresses by using account
+indexes. Using this function you can add multi-address account support to your application.
+
+:::note
+
+As an application, you need to persist this account index in the application state.
+
+:::
 
 #### Usage
 
@@ -71,17 +77,14 @@ await coreKitInstance.setTssWalletIndex(index);
 
 #### `getPublicSync()`
 
-### Parameters
+This function returns the final public key of the user.
 
-```js
-public getPublicSync: () => Buffer = () => {
-  let { tssPubKey } = this.state;
-  if (tssPubKey.length === FIELD_ELEMENT_HEX_LEN + 1) {
-    tssPubKey = tssPubKey.subarray(1);
-  }
-  return Buffer.from(tssPubKey);
-};
-```
+:::info NOTE
+
+The public key returned will depend on the account index set using the `setTssWalletIndex()` function. A different account indexes will return a
+different public key.
+
+:::
 
 #### Usage
 
@@ -165,7 +168,7 @@ const factorKey = coreKitInstance.getCurrentFactorKey();
 
 ## Create Factor
 
-A low-level function, helping you to create a backup factor key based on the type of TSS Share you want to create. You can pass your own factor key or
+A low-level function, helps you to create a backup factor key based on the type of TSS Share you want to create. You can pass your own factor key or
 let the SDK generate one for you.
 
 ### Parameters
