@@ -254,6 +254,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Astar zkEVM",
+              link: { type: "doc", id: "connect-blockchain/evm/zkevm/zkevm" },
+              items: [
+                "connect-blockchain/evm/zkevm/web",
+                "connect-blockchain/evm/zkevm/android",
+                "connect-blockchain/evm/zkevm/ios",
+                "connect-blockchain/evm/zkevm/react-native",
+                "connect-blockchain/evm/zkevm/flutter",
+                "connect-blockchain/evm/zkevm/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Avalanche",
               link: { type: "doc", id: "connect-blockchain/evm/avalanche/avalanche" },
               items: [
@@ -453,7 +466,12 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Solana",
           link: { type: "doc", id: "connect-blockchain/solana/solana" },
-          items: ["connect-blockchain/solana/web", "connect-blockchain/solana/flutter"],
+          items: [
+            "connect-blockchain/solana/web",
+            "connect-blockchain/solana/flutter",
+            "connect-blockchain/solana/android",
+            "connect-blockchain/solana/ios",
+          ],
         },
 
         "connect-blockchain/xrpl",
@@ -468,6 +486,7 @@ const sidebars: SidebarsConfig = {
             "connect-blockchain/other/immutablex",
             "connect-blockchain/other/near",
             "connect-blockchain/other/polkadot",
+            "connect-blockchain/other/polymesh",
             "connect-blockchain/other/starkex",
             "connect-blockchain/other/starknet",
             "connect-blockchain/other/tezos",
