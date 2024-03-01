@@ -511,6 +511,10 @@ const config: Config = {
             to: "/connect-blockchain/other/polkadot",
           },
           {
+            from: "/connect-blockchain/polymesh",
+            to: "/connect-blockchain/other/polymesh",
+          },
+          {
             from: "/account-abstraction/safeauth",
             to: "/sdk/wallet-ecosystems/safeauth",
           },
