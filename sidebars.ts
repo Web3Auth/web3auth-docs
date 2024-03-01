@@ -481,7 +481,7 @@ const sidebars: SidebarsConfig = {
     {
       type: "link",
       label: "Guides",
-      href: "/content-hub?type=guides",
+      href: "/guides/",
     },
     {
       type: "category",

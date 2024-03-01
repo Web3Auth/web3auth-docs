@@ -1,0 +1,277 @@
+---
+title: Using AWS Cognito with Web3Auth
+image: "guides/banners/cognito.png"
+description: Learn how to use Web3Auth Plug and Play No Modal SDK with AWS Cognito
+type: guide
+tags: [web, "@web3auth/no-modal", cognito, custom authentication, react, ethereum]
+date: June 25, 2022
+author: Web3Auth Team
+order: 8
+communityPortalTopicId: 47
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+import SEO from "@site/src/components/SEO";
+
+import SetupAWSCognito from "@site/src/common/guides/_setup-aws-cognito.mdx";
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
+import Installation from "@site/src/common/guides/_installation.mdx";
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import InitializationIntro from "@site/src/common/guides/_initialization-intro.mdx";
+import InitializationWeb3Auth from "@site/src/common/guides/_initialization-web3auth.mdx";
+import InstantiationWeb3Auth from "@site/src/common/guides/_instantiation-web3auth.mdx";
+import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
+import OpenloginConfigCode from "@site/src/common/guides/_openlogin-config-code.mdx";
+import SetupAWSCognitoVerifier from "@site/src/common/guides/_setup-aws-cognito-verifier.mdx";
+
+<SEO
+  title="Using AWS Cognito with Web3Auth Plug and Play No Modal SDK"
+  description="Learn how to use Web3Auth Plug and Play SDK with AWS Cognito in your React Application."
+  image="https://web3auth.io/docs/guides/banners/cognito.png"
+  slug="/guides/cognito"
+/>
+
+This guide will cover the basics of how to set up your Web3Auth SDK and AWS Cognito for the integration and provide you with the links on how to
+develop a basic web application on the Ethereum blockchain.
+
+## Quick Start
+
+```bash
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/custom-authentication/single-verifier-examples/cognito-no-modal-example w3a-cognito-demo && cd w3a-cognito-demo && npm install && npm run start
+```
+
+## How it works?
+
+<Tabs
+defaultValue="implicit"
+values={[
+  { label: "Implicit Flow", value: "implicit" },
+  { label: "Authorization Code Flow", value: "authcode" },
+]}
+>
+<TabItem value="implicit">
+
+When integrating Web3Auth with AWS Cognito the Implicit flow looks something like this:
+
+![AWS Cognito - Implicit Flow](/guides/cognito/cognito-implicit.png)
+
+</TabItem>
+<TabItem value="authcode">
+
+When integrating Web3Auth Plug and Play No Modal SDK with AWS Cognito the Authorization code flow looks something like this:
+
+![AWS Cognito - Authorization Code Flow](/guides/cognito/cognito-authcode.png)
+
+For Authorization code flow, you will need an additional backend server to communicate with AWS Cognito to get the `id_token` in exchange for
+`authorization_code` received.
+
+</TabItem>
+
+</Tabs>
+
+- When a user logs in with AWS Cognito, Cognito sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
+
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self-custodial way, resulting in
+  easy onboarding for your user to the application.
+
+## Prerequisites
+
+<Web3AuthPrerequisites />
+
+- An [AWS](https://aws.amazon.com/console) account to create an AWS Cognito User Poll.
+
+- A [Google Developer](https://console.developers.google.com) account to be used as an Identity provider for AWS Cognito.
+
+## Setup
+
+### Set up AWS Cognito
+
+<SetupAWSCognito />
+
+### Setup Web3Auth
+
+#### Setup Web3Auth Project
+
+<SetupWeb3AuthDashboard />
+
+#### Setup Firebase Custom Authentication Verifier
+
+<SetupAWSCognitoVerifier />
+
+## Using the Web3Auth SDK
+
+To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
+SDKs, please have a look at this [documentation page](/sdk).
+
+For this guide, we will be talking through the [Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and using the
+[OpenLogin Provider](/sdk/pnp/web/adapters/openlogin) alongside it to enable Custom Authentication through AWS Cognito.
+
+<SetupBaseProject />
+
+### Installation
+
+<Installation />
+
+### Initialization
+
+<InitializationIntro />
+
+For this guide, we're only focusing on the Instantiation, Configuration for the Openlogin Adapter (the default adapter that enables social logins) and
+Initialization of the Web3Auth SDK. To know more about the other things you can do with Web3Auth, check out our
+[SDK Reference](/sdk/pnp/web/no-modal).
+
+#### Instantiating Web3Auth
+
+<InstantiationWeb3Auth />
+
+#### Initializing the Openlogin Adapter
+
+<OpenloginConfigCode />
+
+Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom Auth `verifierName` and AWS Cognito `clientId` in
+the loginConfig object. This makes sure that the Openlogin Adapter can connect to the correct verifier and AWS Cognito server.
+
+<InitializationWeb3Auth />
+
+### Authentication
+
+#### Logging in
+
+Once initialized, you can use the `connectTo()` function to authenticate the user when they click the login button.
+
+```tsx
+import { WALLET_ADAPTERS } from "@web3auth/base";
+
+await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    domain: "https://YOUR-AWS-COGNITO-DOMAIN",
+    verifierIdField: "email",
+    response_type: "token",
+    scope: "email profile openid",
+  },
+});
+```
+
+When connecting, your `connectTo` function takes the arguments for the adapter you want to connect to and the options for the login. The major thing
+to note here is the `domain` option in the `extraLoginOptions` object. This is the domain of your AWS Cognito pool so that you can be redirected to
+log in there directly from the Web3Auth Plug and Play No Modal SDK.
+
+### Get the User Profile
+
+```tsx
+const user = await web3auth.getUserInfo();
+console.log("User info", user);
+```
+
+Using the `getUserInfo` function, you can get the details of the logged-in user. Please note that these details are not stored anywhere in Web3Auth
+network, but are fetched from the id_token you received from AWS Cognito and live in the frontend context.
+
+### Logout
+
+```tsx
+await web3auth.logout();
+```
+
+Logging out your user is as simple as calling the `logout` function.
+
+> Note: Currently, Web3Auth Plug and Play SDKs don't log out a user from AWS Cognito, so you can try calling this below endpoint to log out a user.
+
+```
+window.open("
+    YOUR-COGNITO-DOMAIN/logout?
+    client_id=YOUR-CLIENTID-FROM-AWS-COGNITO-DASHBOARD&
+    logout_uri=LOGOUT_URI&
+    redirect_uri=REDIRECT_URI
+");
+```
+
+### Interacting with Blockchain
+
+<InteractingWithBlockchain />
+
+## Additional Reading: Setup Custom Authentication using AWS Cognito Authorization code flow
+
+### Difference between Implicit and Authorization code flow
+
+In the **Implicit** flow, the frontend gets the JWT `id_token` from AWS Cognito directly. This flow is leveraged by the Web3Auth SDK, which handles
+all the callbacks by itself and the user just needs to set the `OpenloginAdapter` and connect to the Web3Auth SDK, adding the AWS Cognito `client_id`
+in it. Hence, this is the implicit flow and is the most suitable flow for setting up your authentication via AWS Cognito and Web3Auth.
+
+In the **Authorization code** flow, you have to spin up a server on your own where you'll receive the `authorisation code` from AWS Cognito. For
+Web3Auth, still requires an `id_token` to be sent to the OpenloginAdapter to log the user in the frontend context. This is where you need to make
+another call from the backend server to AWS Cognito to get the `id_token` and pass it over to your frontend where you can send it to the Web3Auth SDK.
+
+### Setting up your application with Authorization code Flow
+
+- In addition to the steps above, select `Authorization code grant` from **Allowed OAuth Flows** on your AWS Cognito Console's App client settings
+  page and add callback URLs for both your backend and frontend
+- On the frontend, your login button should hit on the following URL
+
+```url
+https://{YOUR_DOMAIN}.auth.{region}.amazoncognito.com/oauth2/authorize?
+  response_type=code&
+  client_id={CLIENT_ID_FROM_AWS}&
+  redirect_uri=https://{YOUR_APP}/redirect_uri&
+  state=STATE&
+  scope=openid+profile+aws.cognito.signin.user.admin
+```
+
+- This is where the user is redirected to a login screen by AWS Cognito.
+- On successful login, the user will be redirected to your backend server with authorization `code` as a query parameter.
+- In the backend server, you can use the `code` to get the `id_token` from AWS Cognito and redirect the user to the frontend with `id_token` as a
+  query parameter
+
+```tsx
+app.get('/callback', (req, res) => {
+  var options = {
+    method: 'POST',
+    url: 'https://{YOUR_DOMAIN}.auth.{REGION}.amazoncognito.com/oauth2/token',
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Basic ' + Buffer.from(CLIENT_ID_FROM_AWS + ':' + CLIENT_SECRET_FROM_AWS).toString('base64')
+     },
+    form:{
+      grant_type: 'authorization_code',
+      client_id: 'CLIENT_ID_FROM_AWS',
+      code: req.query.code, // the authorisation code you got from AWS Cognito
+      redirect_uri: 'https://{YOUR_FRONTEND_URL}',
+    }
+   };
+
+   var id_token = "";
+
+   request(options, function (error, response, data) {
+    id_token = JSON.parse(data)["id_token"];
+    redirect_url = "http://{YOUR_FRONTEND_URL}?token=%22+id_token;
+    // Redirection URL to frontend with `id_token` as a query parameter
+    res.redirect(redirect_url);
+  });
+})
+```
+
+- In the frontend, pass on this `id_token` to the Web3Auth SDK to authenticate the user
+
+```tsx
+await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "jwt",
+  extraLoginOptions: {
+    id_token: "YOUR_ID_TOKEN_FETCHED_FROM_BACKEND_SERVER",
+    domain: "https://YOUR-AWS-COGNITO-DOMAIN",
+    verifierIdField: "sub",
+  },
+});
+```
+
+## Example code
+
+The code for the application we developed in this guide can be found in the
+[Web3Auth Cognito Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/cognito-no-modal-example).
+Check it out and try running it locally yourself!
+
+## Questions?
+
+Ask us on [Web3Auth's Community Support Portal](https://web3auth.io/community)
