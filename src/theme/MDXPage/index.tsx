@@ -18,7 +18,7 @@ export default function MDXPage(props: ComponentProps<typeof OriginalMDXPage>) {
   const { frontMatter, metadata } = MDXPageContent;
   const { permalink } = metadata;
 
-  if (!permalink.includes(`/content-hub/guides/`)) {
+  if (!permalink.includes(`/guides/`)) {
     return <OriginalMDXPage {...props} />;
   }
 
