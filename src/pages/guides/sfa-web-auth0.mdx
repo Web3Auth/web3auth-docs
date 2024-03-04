@@ -1,0 +1,231 @@
+---
+title: Using Auth0 with Web3Auth SFA Web SDK
+image: "guides/banners/auth0.png"
+description: Learn how to use Web3Auth Single Factor Auth Web SDK with Auth0
+type: guide
+tags:
+  [
+    web,
+    "@web3auth/single-factor-auth",
+    auth0,
+    custom authentication,
+    react,
+    ethereum,
+    sms,
+    email,
+    sms passwordless,
+    email passwordless,
+    passwordless,
+    sms otp,
+  ]
+date: 14 November, 2023
+author: Web3Auth Team
+order: 3
+communityPortalTopicId: 22
+---
+
+import Auth0Prerequisites from "@site/src/common/guides/_auth0-prerequisites.mdx";
+import Auth0Setup from "@site/src/common/guides/_auth0-setup.mdx";
+import Auth0VerifierSetup from "@site/src/common/guides/_auth0-verifier-setup.mdx";
+import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
+import ParseIdtokenGetSub from "@site/src/common/guides/_parse-idtoken-get-sub.mdx";
+import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import SfaWebAuth0Intialization from "@site/src/common/guides/_sfa-web-auth0-initialization.mdx";
+import UserInfoFromIdtoken from "@site/src/common/guides/_user-info-from-idtoken.mdx";
+import SFAWebInstantiation from "@site/src/common/guides/_w3a-sfa-web-instantiation-auth0.mdx";
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import SFAInfra from "@site/static/images/sfa-infra.png";
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Using Auth0 with Web3Auth SFA Web"
+  description="Learn how to use Web3Auth Single Factor Auth with Auth0 in your React Application."
+  image="https://web3auth.io/docs/guides/banners/auth0.png"
+  slug="/guides/sfa-web-auth0"
+/>
+
+This guide will cover the basics of how to set up your Web3Auth SDK and Auth0 account for the integration and provide you with the links on how to
+develop a basic web application on the blockchain of your choice.
+
+## Quick Start
+
+```bash
+npx degit Web3Auth/web3auth-core-kit-examples/single-factor-auth-web/sfa-web-auth0-example sfa-web-auth0-demo && cd sfa-web-auth0-demo && npm install && npm run start
+```
+
+## How it works?
+
+Single Factor Auth SDKs allow for the integration of a single factor of authentication, such as social login, into your dApp. They are designed to be
+simple to use and can be integrated into your dApp with minimal effort, allowing you to directly use the Web3Auth Network for Wallet Management. This
+is one of the most common use cases of Web3Auth, however, it is semi-custodial in nature, since the key is custodial to the Auth Provider and the
+Web3Auth Network.
+
+<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={SFAInfra} alt="Single Factor Auth SDK Infrastructure" />
+
+- The first step for the application is to get the user authenticated by a login provider(here, Google) and get the user's `idToken`.
+- Once the social login is successful, depending on whether the user has enabled **Multi-Factor Authentication(MFA)** or not, the key is generated.
+- If the user has not enabled MFA, we use the `@web3auth/single-factor-auth` SDK to retrieve the private key shares from the Web3Auth auth network
+  nodes and reconstruct the private key.
+- If the user has enabled MFA, an error message is shown that the user has enabled MFA and in this case, they should be using the Web3Auth Plug and
+  Play Web SDKs.
+
+## Prerequisites
+
+<Web3AuthPrerequisites />
+
+<Auth0Prerequisites />
+
+## Setup your Auth0 Tenant
+
+<Auth0Setup />
+
+## Setup your Web3Auth Dashboard
+
+<SetupWeb3AuthDashboard />
+
+### Create Auth0 Verifiers
+
+<Auth0VerifierSetup />
+
+## Using the Web3Auth SFA Web SDK
+
+To use the Web3Auth SFA Web SDK, you need to add `@web3auth/single-factor-auth` to your project.
+
+<SetupBaseProject />
+
+### Installation
+
+For this project, you need to add the following Web3Auth dependencies to your package.json
+
+```shell
+npm install --save @web3auth/single-factor-auth @web3auth/ethereum-provider @web3auth/base web3 @auth0/auth0-react
+```
+
+#### Understanding the Dependencies
+
+##### `@web3auth/base`
+
+Since we're using typescript, we need the **`@web3auth/base`** package to provide the types of the different variables we'll be using throughout the
+app-building process. This reduces errors to a very large extent.
+
+```shell
+npm install --save @web3auth/base
+```
+
+##### `@web3auth/ethereum-provider`
+
+This package is used to provide the Ethereum provider to the Web3Auth SDK. This is required to interact with the blockchain.
+
+```shell
+npm install --save @web3auth/ethereum-provider
+```
+
+##### `@web3auth/single-factor-auth`
+
+This package is the core package for Single Factor Auth Web SDK.
+
+```shell
+npm install --save @web3auth/single-factor-auth
+```
+
+##### `@auth0/auth0-react`
+
+This package is used to provide the Auth0 SDK to the app. This is required to retrieve the `idToken` from Auth0 as the login provider.
+
+```shell
+npm install --save @auth0/auth0-react
+```
+
+##### `web3`
+
+This package is used to interact with the blockchain.
+
+```shell
+npm install --save web3
+```
+
+### Wrapping component with `Auth0Provider`
+
+To use the Auth0 SDK, we need to wrap our app with the `Auth0Provider` component. This component provides the Auth0 `domain`, `clientId` and
+`authorizationParams` to the app.
+
+```tsx
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import { Auth0Provider } from "@auth0/auth0-react";
+
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+root.render(
+  <Auth0Provider
+    domain="web3auth.au.auth0.com" // Your Auth0 domain
+    clientId="hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O" // Your Auth0 client id
+    authorizationParams={{
+      redirect_uri: window.location.origin,
+      connection: "github", // Your Auth0 social login provider
+    }}
+  >
+    <App />
+  </Auth0Provider>,
+);
+```
+
+### Initialization
+
+Once installed, your Web3Auth application needs to be initialized. Initialization is a multi-step process where we add all the config details for
+Web3Auth SDK:
+
+<SFAWebInstantiation />
+
+#### Initializing the Web3Auth SDK
+
+```tsx
+web3authSfa.init(privateKeyProvider);
+```
+
+### Authentication
+
+#### Getting the `idToken` from Auth0 upon login
+
+```tsx
+import { useAuth0 } from "@auth0/auth0-react";
+
+const { getIdTokenClaims, loginWithPopup } = useAuth0();
+
+await loginWithPopup();
+const idToken = (await getIdTokenClaims())?.__raw.toString();
+```
+
+<ParseIdtokenGetSub />
+
+<SfaWebAuth0Intialization />
+
+:::info
+
+Since we are directly using Single Factor Auth SDK to log in, the Web3Auth `getUserInfo` function won't work. We need to get the user details directly
+from the `idToken`.
+
+:::
+
+<UserInfoFromIdtoken />
+
+### Logout
+
+Logging out your user is as simple as calling the `logout` function on the Web3Auth SDK.
+
+```tsx
+await web3authSfa.logout();
+```
+
+## Interacting with the Blockchain
+
+<InteractingWithBlockchain />
+
+## Example Code
+
+The code for the example can be found
+[here](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/sfa-web-auth0-example).
+
+## Questions?
+
+Ask us on [Web3Auth Community Portal](https://web3auth.io/community/c/help-core-kit/core-kit-sfa-web/22).

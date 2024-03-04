@@ -1,0 +1,294 @@
+---
+title: Using Auth0 with Web3Auth SFA React Native SDK
+image: "guides/banners/auth0.png"
+description: Learn how to use Web3Auth Single Factor Auth React Native SDK with Auth0
+type: guide
+tags:
+  [
+    web,
+    "@web3auth/single-factor-auth-react-native",
+    auth0,
+    custom authentication,
+    react native,
+    ethereum,
+    sms,
+    email,
+    sms passwordless,
+    email passwordless,
+    passwordless,
+    sms otp,
+  ]
+date: 14 November, 2023
+author: Web3Auth Team
+order: 3
+communityPortalTopicId: 32
+---
+
+import Auth0Prerequisites from "@site/src/common/guides/_auth0-prerequisites.mdx";
+import Auth0Setup from "@site/src/common/guides/_auth0-setup.mdx";
+import Auth0VerifierSetup from "@site/src/common/guides/_auth0-verifier-setup.mdx";
+import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
+import ParseIdtokenGetSub from "@site/src/common/guides/_parse-idtoken-get-sub.mdx";
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import UserInfoFromIdtoken from "@site/src/common/guides/_user-info-from-idtoken.mdx";
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import SFAInfra from "@site/static/images/sfa-infra.png";
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Using Auth0 with Web3Auth SFA React Native SDK"
+  description="Learn how to use Web3Auth Single Factor Auth React Native SDK with Auth0 in your React Native Expo Application."
+  image="https://web3auth.io/docs/guides/banners/auth0.png"
+  slug="/guides/sfa-rn-expo-auth0"
+/>
+
+This guide will cover the basics of how to set up your Web3Auth SDK and Auth0 account for the integration and provide you with the links on how to
+develop a basic React Native Expo application on the blockchain of your choice.
+
+## Quick Start
+
+```bash
+npx degit Web3Auth/web3auth-core-kit-examples/single-factor-auth-react-native/sfa-rn-expo-auth0-example sfa-rn-auth0-demo && cd sfa-rn-auth0-demo && npm install && npm run start
+```
+
+## How it works?
+
+Single Factor Auth SDKs allow for the integration of a single factor of authentication, such as social login, into your dApp. They are designed to be
+simple to use and can be integrated into your dApp with minimal effort, allowing you to directly use the Web3Auth Network for Wallet Management. This
+is one of the most common use cases of Web3Auth, however, it is semi-custodial in nature, since the key is custodial to the Auth Provider and the
+Web3Auth Network.
+
+<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={SFAInfra} alt="Single Factor Auth SDK Infrastructure" />
+
+- The first step for the application is to get the user authenticated by a login provider(here, Google) and get the user's `idToken`.
+- Once the social login is successful, depending on whether the user has enabled **Multi-Factor Authentication(MFA)** or not, the key is generated.
+- If the user has not enabled MFA, we use the `@web3auth/single-factor-auth` SDK to retrieve the private key shares from the Web3Auth auth network
+  nodes and reconstruct the private key.
+- If the user has enabled MFA, an error message is shown that the user has enabled MFA and in this case, they should be using the Web3Auth Plug and
+  Play Web SDKs.
+
+## Prerequisites
+
+<Web3AuthPrerequisites />
+
+<Auth0Prerequisites />
+
+## Setup your Auth0 Tenant
+
+<Auth0Setup />
+
+## Setup your Web3Auth Dashboard
+
+<SetupWeb3AuthDashboard />
+
+### Create Auth0 Verifiers
+
+<Auth0VerifierSetup />
+
+## Using the Web3Auth SFA Web SDK
+
+To use the Web3Auth SFA Web SDK, you need to add `@web3auth/single-factor-auth` to your project.
+
+### Installation
+
+For this project, you need to add the following Web3Auth dependencies to your package.json
+
+```shell
+npm install --save @web3auth/single-factor-auth-react-native @web3auth/base @web3auth/ethereum-provider ethers react-native-auth0 expo-secure-store
+```
+
+#### Understanding the Dependencies
+
+##### `@web3auth/base`
+
+Since we're using typescript, we need the **`@web3auth/base`** package to provide the types of the different variables we'll be using throughout the
+app-building process. This reduces errors to a very large extent.
+
+```shell
+npm install --save @web3auth/base
+```
+
+##### `@web3auth/ethereum-provider`
+
+This package is used to provide the Ethereum provider to the Web3Auth SDK. This is required to interact with the blockchain.
+
+```shell
+npm install --save @web3auth/ethereum-provider
+```
+
+##### `@web3auth/single-factor-auth-react-native`
+
+This package is the core package for Single Factor Auth React Native SDK.
+
+```shell
+npm install --save @web3auth/single-factor-auth-react-native
+```
+
+##### `react-native-auth0`
+
+This package is used to provide the Auth0 SDK to the app. This is required to retrieve the `idToken` from Auth0 as the login provider.
+
+```shell
+npm install --save @auth0/auth0-react
+```
+
+##### `ethers`
+
+This package is used to interact with the blockchain.
+
+```shell
+npm install --save web3
+```
+
+#### `expo-secure-store`
+
+This package is used to store the private key shares in the device's secure storage.
+
+```shell
+npm install --save expo-secure-store
+```
+
+#### Configure Auth0 for React Native
+
+Please follow the guide here to [configure Auth0 for React Native](https://auth0.com/docs/quickstart/native/react-native/00-login).
+
+### Initialization
+
+Once installed, your Web3Auth application needs to be initialized. Initialization is a multi-step process where we add all the config details for
+Web3Auth SDK:
+
+##### Importing the packages
+
+```tsx
+import { IProvider } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import Web3Auth from "@web3auth/single-factor-auth-react-native";
+import { decode as atob } from "base-64";
+import { ethers } from "ethers";
+import * as SecureStore from "expo-secure-store";
+import { Auth0Provider, useAuth0 } from "react-native-auth0";
+```
+
+##### Instantiate the Web3Auth SFA React Native SDK
+
+```tsx
+import { IProvider } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import Web3Auth from "@web3auth/single-factor-auth-react-native";
+import { decode as atob } from "base-64";
+import { ethers } from "ethers";
+import * as SecureStore from "expo-secure-store";
+import { Auth0Provider, useAuth0 } from "react-native-auth0";
+
+const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+
+const chainConfig = {
+  chainId: "0x1",
+  displayName: "Ethereum Mainnet",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  tickerName: "Ethereum",
+  ticker: "ETH",
+  decimals: 18,
+  rpcTarget: "https://rpc.ankr.com/eth",
+  blockExplorer: "https://etherscan.io",
+};
+
+// Initialising Web3Auth Single Factor Auth SDK
+const web3auth = new Web3Auth(SecureStore, {
+  clientId,
+  web3AuthNetwork: "sapphire_mainnet",
+  usePnPKey: false, // By default, this sdk returns CoreKitKey
+});
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+```
+
+Here, we're using the `chainConfig` property to set the `chainId` and `chainNamespace` among other parameters. The `chainId` and `chainNamespace` are
+the id and the namespace respectively of the chain you're connecting to. We've initialized them for EVM for this guide. You can find the list of
+available providers [here](/sdk/helper-sdks/providers/) to select from.
+
+Additionally, sometimes you might face clogging in the network because the test network is a bit clogged at that point. To avoid this, we can use the
+property `rpcTarget` and pass over the URL of the node you want to connect to.
+
+#### Initializing the Web3Auth SDK
+
+```tsx
+web3authSfa.init(privateKeyProvider);
+```
+
+### Authentication
+
+#### Getting the `idToken` from Auth0 upon login
+
+```tsx
+const { authorize, clearSession, getCredentials } = useAuth0();
+
+const signInWithAuth0 = async () => {
+  try {
+    // @ts-ignore
+    await authorize({ scope: "openid profile email" }, { customScheme: "auth0.com.web3authsfaauth0" }, { responseType: "token id_token" });
+    const credentials = await getCredentials();
+
+    return credentials.idToken;
+  } catch (error) {
+    console.error(error);
+  }
+};
+```
+
+<ParseIdtokenGetSub />
+
+#### Initializing the Web3Auth SDK
+
+The next step is to initialize the Web3Auth SDK. We now have all the parameters that are needed to call the `connect` method of the Web3Auth SDK.
+
+```tsx
+const idToken = await signInWithAuth0();
+
+const parsedToken = parseToken(idToken);
+setUserInfo(parsedToken);
+
+const verifierId = sub;
+await web3auth.connect({
+  verifier: "w3a-auth0-demo", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+  verifierId, // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
+  idToken,
+});
+```
+
+:::info
+
+Since we are directly using Single Factor Auth SDK to log in, the Web3Auth `getUserInfo` function won't work. We need to get the user details directly
+from the `idToken`.
+
+:::
+
+<UserInfoFromIdtoken />
+
+### Logout
+
+Logging out your user is as simple as calling the `logout` function on the Web3Auth SDK.
+
+```tsx
+await clearSession();
+await web3authSfa.logout();
+```
+
+## Interacting with the Blockchain
+
+<InteractingWithBlockchain />
+
+## Example Code
+
+The code for the example can be found
+[here](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-react-native/sfa-rn-expo-auth0-example).
+
+## Troubleshooting
+
+Please refer to the **[React Native Troubleshooting Guide](/troubleshooting/metro-issues)** if you face any hurdles.
+
+## Questions?
+
+Ask us on [Web3Auth Community Portal](https://web3auth.io/community/c/help-core-kit/sfa-react-native-sdk/32).

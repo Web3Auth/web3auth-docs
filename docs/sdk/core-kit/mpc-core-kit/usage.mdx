@@ -10,11 +10,12 @@ provider given by Web3Auth to sign transactions and interact with the blockchain
 
 Natively, the instance of `Web3AuthMPCCoreKit` (referred to as `coreKitInstance` in our examples) returns the following functions:
 
-Authentication Functions:
+Authentication and Handling Functions:
 
-- `loginWithOAuth()` - Logs in the user in OAuth Intrisic Flow.
-- `loginWithJWT()` - Logs in the user with a JWT based ID Token.
+- `loginWithOAuth()` - Logs in the user in OAuth Implicit Flow.
+- `loginWithJWT()` - Logs in the user with a JWT-based ID Token.
 - `logout()` - Logs out the User.
+- `handleRedirectResult()` - Handles the redirect result from the OAuth Implicit Flow.
 
 :::tip
 
@@ -24,6 +25,8 @@ Checkout the [Authentication section](/sdk/core-kit/mpc-core-kit/authentication)
 
 Handling Factors:
 
+- `setTssWalletIndex()` - Sets the TSS Wallet Index for the User's account.
+- `getPublicSync()` - Returns the Public Sync of the User's account.
 - `enableMFA()` - Enable MFA for the user. Deletes the Hashed Factor and generates a new Factor Key.
 - `inputFactorKey()` - Inputs the Factor Key to recover the User's account.
 - `getCurrentFactorKey()` - Returns the current Factor Key of the User's account, present in the state of the SDK.
@@ -50,6 +53,44 @@ Additional Helper Functions:
 - Conversion from Mnemonic
   - `mnemonicToKey()` - Converts a Mnemonic to a BN.
   - `keyToMnemonic()` - Converts a hex string to a Mnemonic.
+
+## Set TSS Wallet Index
+
+#### `setTssWalletIndex(accountIndex: number): void;`
+
+Sets the TSS Wallet Index for the User's account. This function can be used to deterministically derive different wallet addresses by using account
+indexes. Using this function you can add multi-address account support to your application.
+
+:::note
+
+As an application, you need to persist this account index in the application state.
+
+:::
+
+#### Usage
+
+```tsx
+await coreKitInstance.setTssWalletIndex(index);
+```
+
+## Get Public Sync
+
+#### `getPublicSync()`
+
+This function returns the final public key of the user.
+
+:::info NOTE
+
+The public key returned will depend on the account index set using the `setTssWalletIndex()` function. A different account indexes will return a
+different public key.
+
+:::
+
+#### Usage
+
+```ts
+await coreKitInstance.getPublicSync();
+```
 
 ## Enable MFA
 
@@ -127,7 +168,7 @@ const factorKey = coreKitInstance.getCurrentFactorKey();
 
 ## Create Factor
 
-A low-level function, helping you to create a backup factor key based on the type of TSS Share you want to create. You can pass your own factor key or
+A low-level function, helps you to create a backup factor key based on the type of TSS Share you want to create. You can pass your own factor key or
 let the SDK generate one for you.
 
 ### Parameters
