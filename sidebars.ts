@@ -841,7 +841,6 @@ const sidebars: SidebarsConfig = {
       value: "<span class='sidebarHeading'>Wallet Ecosystems</span>",
       defaultStyle: true,
     },
-    "sdk/wallet-ecosystems/mocaverse",
     "sdk/wallet-ecosystems/safeauth",
     {
       type: "html",
