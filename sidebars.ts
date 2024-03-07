@@ -500,7 +500,7 @@ const sidebars: SidebarsConfig = {
     {
       type: "link",
       label: "Guides",
-      href: "/content-hub?type=guides",
+      href: "/guides/",
     },
     {
       type: "category",
@@ -841,7 +841,6 @@ const sidebars: SidebarsConfig = {
       value: "<span class='sidebarHeading'>Wallet Ecosystems</span>",
       defaultStyle: true,
     },
-    "sdk/wallet-ecosystems/mocaverse",
     "sdk/wallet-ecosystems/safeauth",
     {
       type: "html",
