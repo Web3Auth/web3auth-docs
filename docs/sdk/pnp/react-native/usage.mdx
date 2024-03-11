@@ -39,15 +39,15 @@ Trigger the login flow that navigates the user to a browser model that allows th
 
 <TabItem value="table">
 
-| Parameter           | Type                              | Mandatory | Description                                                                                                                                                                                                                                                                                               |
-| ------------------- | --------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginProvider`     | `LOGIN_PROVIDER_TYPE` or `string` | Yes       | Login provider to be used, will show a web-based page allowing user to pick their own loginProvider if not specified. supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`, `JWT` |
-| `redirectUrl`       | `string`                          | Yes       | The redirectUrl that the Web3Auth login flow will use to redirect back to the app. Setting `redirectUrl` here can override the settings in `SdkInitParams`.                                                                                                                                               |
-| `appState`          | `string`                          | No        | Any custom state you wish to pass along. This will be returned to you post-redirect. Use this to store data that you want to be available to the dapp after login.                                                                                                                                        |
-| `mfaLevel`          | `MfaLevelType`                    | No        | You can set the `mfaLevel` to customize when mfa screen should be shown to the user.                                                                                                                                                                                                                      |
-| `dappShare`         | `string`                          | No        | Custom Logins can get a dapp share returned to them post successful login. This is useful if the dapps want to use this share to allow users to log in seamlessly dappShare is a 24-word seed phrase                                                                                                      |
-| `extraLoginOptions` | `ExtraLoginOptions`               | No        | can be used to pass standard oauth login options to loginProvider                                                                                                                                                                                                                                         |
-| `curve`             | `Map<string, Any>`                | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum                                                                                                                                                                                                                |
+| Parameter            | Description                                                                                                                                                                                                                                                                                                                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `loginProvider`      | It sets the OAuth login method to be used. You can use any of the supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`.                                                                                                                                      |
+| `extraLoginOptions?` | It can be used to set the OAuth login options for corresponding `loginProvider`. For instance, you'll need to pass user's email address as. Default value for the field is `null`, and it accepts `ExtraLoginOptions` as a value.                                                                                                                                                    |
+| `redirectUrl?`       | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated. Default value for the field is `null`, and accepts `Uri` as a value.                                                                                                                                                                       |
+| `appState?`          | It can be used to keep track of the app state when user will be redirected to app after login. Default is `null`, and accepts `string` as a value.                                                                                                                                                                                                                                   |
+| `mfaLevel?`          | Customize the MFA screen shown to the user during OAuth authentication. Default value for field is `MfaLevelType.default`, which shows MFA screen every 3rd login. It accepts `MfaLevelType` as a value.                                                                                                                                                                             |
+| `dappShare?`         | Custom verifier logins can get a dapp share returned to them post successful login. This is useful if the dapps want to use this share to allow users to login seamlessly. It accepts `string` as a value.                                                                                                                                                                           |
+| `curve?`             | It will be used to determine the public key encoded in the jwt token which returned in `getUserInfo` function after user login. This parameter won't change format of private key returned by We3Auth. Private key returned by `getPrivKey` is always secp256k1. To get the ed25519 key you can use `ed25519Key` method. The default value is `SUPPORTED_KEY_CURVES_TYPE.secp256k1`. |
 
 </TabItem>
 
@@ -153,180 +153,6 @@ export type LoginParams = BaseRedirectParams & {
 await web3auth.login({
   loginProvider: LoginProvider.GOOGLE,
   redirectUrl: resolvedRedirectUrl,
-});
-```
-
-### `ExtraLoginOptions` for special login methods
-
-You can pass extra options to the `login` function to configure the login flow for cases requiring additional info for enabling login. The
-`ExtraLoginOptions` accepts the following parameters:
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
-
-<TabItem value="table">
-
-| Parameter                   | Type       | Mandatory | Description                                           |
-| --------------------------- | ---------- | --------- | ----------------------------------------------------- |
-| `domain`                    | `String?`  | No        | Domain of the app                                     |
-| `client_id`                 | `String?`  | No        | client_id from Web3Auth Dashboard                     |
-| `leeway`                    | `String?`  | No        | leeway                                                |
-| `verifierIdField`           | `String?`  | No        | verifierIdField                                       |
-| `isVerifierIdCaseSensitive` | `Boolean?` | No        | Boolean to confirm the case sensitivity of VerifierId |
-| `display`                   | `Display?` | No        | Display                                               |
-| `prompt`                    | `Prompt?`  | No        | Prompt                                                |
-| `max_age`                   | `String?`  | No        | max_age                                               |
-| `ui_locales`                | `String?`  | No        | ui_locales to be shown on the modal                   |
-| `id_token`                  | `String?`  | No        | JWT token passed to authenticate with web3auth        |
-| `login_hint`                | `String?`  | No        | Email used for EMAIL_PASSWORDLESS                     |
-| `acr_values`                | `String?`  | No        | acc_values                                            |
-| `scope`                     | `String?`  | No        | scope                                                 |
-| `audience`                  | `String?`  | No        | audience                                              |
-| `connection`                | `String?`  | No        | connection                                            |
-| `redirect_uri`              | `String?`  | No        | redirect_uri                                          |
-
-</TabItem>
-
-<TabItem value="interface">
-
-```typescript
-export interface BaseLoginOptions {
-  /**
-   * If you need to send custom parameters to the Authorization Server,
-   * make sure to use the original parameter name.
-   */
-  [key: string]: unknown;
-  /**
-   * - `'page'`: displays the UI with a full page view
-   * - `'popup'`: displays the UI with a popup window
-   * - `'touch'`: displays the UI in a way that leverages a touch interface
-   * - `'wap'`: displays the UI with a "feature phone" type interface
-   */
-  display?: "page" | "popup" | "touch" | "wap" | string;
-  /**
-   * - `'none'`: do not prompt user for login or consent on re-authentication
-   * - `'login'`: prompt user for re-authentication
-   * - `'consent'`: prompt user for consent before processing request
-   * - `'select_account'`: prompt user to select an account
-   */
-  prompt?: "none" | "login" | "consent" | "select_account" | string;
-  /**
-   * Maximum allowable elapsed time (in seconds) since authentication.
-   * If the last time the user authenticated is greater than this value,
-   * the user must be re-authenticated.
-   */
-  max_age?: string | number;
-  /**
-   * The space-separated list of language tags, ordered by preference.
-   * For example: `'fr-CA fr en'`.
-   */
-  ui_locales?: string;
-  /**
-   * Previously issued ID Token.
-   */
-  id_token_hint?: string;
-  /**
-   * The user's email address or other identifier. When your app knows
-   * which user is trying to authenticate, you can provide this parameter
-   * to pre-fill the email box or select the right session for sign-in.
-   *
-   * This currently only affects the classic Lock experience.
-   */
-  login_hint?: string;
-  id_token?: string;
-  acr_values?: string;
-  /**
-   * The default scope to be used on authentication requests.
-   * The defaultScope defined in the Auth0Client is included
-   * along with this scope
-   */
-  scope?: string;
-  /**
-   * The default audience to be used for requesting API access.
-   */
-  audience?: string;
-  /**
-   * The name of the connection configured for your application.
-   * If null, it will redirect to the Auth0 Login Page and show
-   * the Login Widget.
-   */
-  connection?: string;
-}
-
-export interface ExtraLoginOptions extends BaseLoginOptions {
-  /**
-   * Your Auth0 account domain such as `'example.auth0.com'`,
-   * `'example.eu.auth0.com'` or , `'example.mycompany.com'`
-   * (when using [custom domains](https://auth0.com/docs/custom-domains))
-   */
-  domain?: string;
-  /**
-   * The Client ID found on your Application settings page
-   */
-  client_id?: string;
-  /**
-   * The default URL where Auth0 will redirect your browser to with
-   * the authentication result. It must be whitelisted in
-   * the "Allowed Callback URLs" field in your Auth0 Application's
-   * settings. If not provided here, it should be provided in the other
-   * methods that provide authentication.
-   */
-  redirect_uri?: string;
-  /**
-   * The value in seconds used to account for clock skew in JWT expirations.
-   * Typically, this value is no more than a minute or two at maximum.
-   * Defaults to 60s.
-   */
-  leeway?: number;
-  /**
-   * The field in jwt token which maps to verifier id
-   */
-  verifierIdField?: string;
-  /**
-   * Whether the verifier id field is case sensitive
-   * @defaultValue true
-   */
-  isVerifierIdCaseSensitive?: boolean;
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-### Email Passwordless
-
-To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` field of the `extraLoginOptions`.
-
-```tsx
-web3auth.login({
-  loginProvider: LoginProvider.EMAIL_PASSWORDLESS,
-  redirectUrl: resolvedRedirectUrl,
-  //highlight-start
-  extraLoginOptions: {
-    login_hint: "hello@web3auth.io",
-  },
-  //highlight-end
-});
-```
-
-#### Example (Custom Authentication)
-
-```tsx
-web3auth.login({
-  loginProvider: LoginProvider.JWT,
-  redirectUrl: resolvedRedirectUrl, // redirect url after login
-  //highlight-start
-  extraLoginOptions: {
-    id_token: "your JWT id token",
-    verifierIdField: "sub", // auth0 generally uses sub as unique identifier
-  },
-  //highlight-end
 });
 ```
 
