@@ -14,7 +14,6 @@ const { themes } = require("prism-react-renderer");
 const resourcesDropdown = fs.readFileSync("./src/components/navDropdown/resources.html", "utf-8");
 const helpDropdown = fs.readFileSync("./src/components/navDropdown/help.html", "utf-8");
 const sdkDropdown = fs.readFileSync("./src/components/navDropdown/sdk.html", "utf-8");
-const contentHubDropdown = fs.readFileSync("./src/components/navDropdown/content-hub.html", "utf-8");
 
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
@@ -88,16 +87,14 @@ const config: Config = {
           position: "left",
         },
         {
-          label: "Content Hub",
-          type: "dropdown",
-          to: "/content-hub",
+          label: "Guides",
+          to: "/guides",
           position: "left",
-          items: [
-            {
-              type: "html",
-              value: contentHubDropdown,
-            },
-          ],
+        },
+        {
+          label: "Blog",
+          to: "https://blog.web3auth.io",
+          position: "left",
         },
         {
           label: "Help",
@@ -137,7 +134,7 @@ const config: Config = {
       appId: "6OF28D8CMV",
       apiKey: "425a1e860cb4b9b4ce1f7d9b117c7a81",
       indexName: "docs-web3auth",
-      schedule: "every 1 day at 3:00 pm",
+      contextualSearch: true,
     },
     customFields: {
       baseUrl,
@@ -180,28 +177,16 @@ const config: Config = {
           beforeDefaultRehypePlugins: [],
         },
         sitemap: {
-          changefreq: "weekly",
+          changefreq: "weekly" as any,
           priority: 0.8,
         },
       } satisfies Preset.Options,
     ],
   ],
   plugins: [
-    path.resolve(__dirname, "plugins", "docusaurus-plugin-content-hub"),
+    path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
     [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: ".integrationBuilderCache" }],
     path.resolve(__dirname, "plugins", "node-polyfills"),
-    [
-      path.resolve(__dirname, "plugins", "plugin-dynamic-route"),
-      {
-        routes: [
-          {
-            path: `${baseUrl}content-hub/blog/`,
-            exact: false,
-            component: "@site/src/components/BlogLayout/index",
-          },
-        ],
-      },
-    ],
     [
       "@docusaurus/plugin-client-redirects",
       {
@@ -394,6 +379,7 @@ const config: Config = {
             from: "/sdk/tkey/initialization",
             to: "/sdk/core-kit/tkey/initialize",
           },
+
           {
             from: "/sdk/tkey/initialisation",
             to: "/sdk/core-kit/tkey/initialize",
@@ -405,14 +391,6 @@ const config: Config = {
           {
             from: "/sdk/tkey/installation",
             to: "/sdk/core-kit/tkey/install",
-          },
-          {
-            from: "/content-hub/guides",
-            to: "/content-hub",
-          },
-          {
-            from: "/content-hub/guides/mpc",
-            to: "/content-hub/guides/mpc-core-kit",
           },
           {
             from: "/connect-blockchain/polygon",
@@ -511,22 +489,23 @@ const config: Config = {
             to: "/connect-blockchain/other/polkadot",
           },
           {
-            from: "/content-hub/guides/pnp-no-modal-multichain-connection",
-            to: "/content-hub/guides/pnp-no-modal-multichain",
+            from: "/connect-blockchain/polymesh",
+            to: "/connect-blockchain/other/polymesh",
+          },
+          {
+            from: "/account-abstraction/safeauth",
+            to: "/sdk/wallet-ecosystems/safeauth",
           },
         ],
         createRedirects(existingPath) {
-          if (existingPath.includes("/content-hub")) {
-            return [
-              existingPath.replace("/content-hub/guides", "/guides"),
-              existingPath.replace("/content-hub/guides", "/guide"),
-              existingPath.replace("/content-hub/blog", "/blogs"),
-              existingPath.replace("/content-hub/blog", "/blog"),
-              existingPath.replace("/content-hub/guides/auth0", "/customauth/auth0"),
-              existingPath.replace("/content-hub/guides/tkey", "/guides/selfhost"),
-              existingPath.replace("/content-hub/guides/single-factor-auth", "/guides/one-key-flow"),
-            ];
+          if (existingPath.includes("/guides/")) {
+            return [existingPath.replace("/guides/", "/content-hub/guides/")];
           }
+          existingPath.replace("https://blog.web3auth.io", "/blogs/");
+          existingPath.replace("https://blog.web3auth.io", "/blog/");
+          existingPath.replace("https://blog.web3auth.io/", "/content-hub/blog/");
+          existingPath.replace("https://blog.web3auth.io", "/content-hub/blogs/");
+
           if (existingPath.includes("/sdk")) {
             return [existingPath.replace("/sdk", "/api-reference"), existingPath.replace("/sdk", "/sdk-reference")];
           }
@@ -601,11 +580,6 @@ const config: Config = {
       crossorigin: "anonymous",
     },
   ],
-  customFields: {
-    // 'REACT_HYGRAPHCMS_ENDPOINT': process.env.REACT_HYGRAPHCMS_ENDPOINT,
-    REACT_CONTENTFUL_SPACE: process.env.REACT_CONTENTFUL_SPACE,
-    REACT_CONTENTFUL_TOKEN: process.env.REACT_CONTENTFUL_TOKEN,
-  },
 };
 
 async function createConfig() {

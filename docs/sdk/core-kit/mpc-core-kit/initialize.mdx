@@ -47,19 +47,23 @@ This Web3AuthMPCCoreKit constructor takes an object with `Web3AuthOptions` as in
 
 <TabItem value="table">
 
-| Parameter                 | Type                                     | Default                                   | Description                                                                                                                                                                                                                                                                                       | Mandatory |
-| ------------------------- | ---------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| `web3AuthClientId`        | `string`                                 | -                                         | The Web3Auth Client ID for your application. Find one at https://dashboard.web3auth.io                                                                                                                                                                                                            | Yes       |
-| `chainConfig`             | `CustomChainConfig`                      | -                                         | Chain Config for the chain you want to connect to. Currently supports only EVM based chains.                                                                                                                                                                                                      | Yes       |
-| `manualSync?`             | `boolean`                                | `false`                                   | Enables you to manually sync with the Web3Auth Metadata Server, helping you manage the API calls to the server. Ideal for managing custom flows.                                                                                                                                                  | No        |
-| `baseUrl?`                | `string`                                 | `${window.location.origin}/serviceworker` | URL of the service worker handling the authentication in popup flow. For general usecases, you don't need to change this value.                                                                                                                                                                   | No        |
-| `web3AuthNetwork`         | `"sapphire_mainnet"`,`"sapphire_devnet"` | `"sapphire_mainnet"`                      | Web3Auth Network used for MPC Wallet Management. Use Devnet/ Testnet in testing environment and Mainnet in production environment.                                                                                                                                                                | No        |
-| `storageKey?`             | `"session"` or `"local"`                 | `'local'`                                 | Select the session key storage across local storage or session storage. Setting to "local" will persist social login session accross browser tabs. @defaultValue "local"                                                                                                                          | No        |
-| `sessionTime?`            | `number`                                 | `86400`                                   | Determine the session length in seconds. By default the value is set at 86400 seconds, ie. 7 days.                                                                                                                                                                                                | No        |
-| `uxMode?`                 | `"popup"` or `"redirect"`                | `"popup"`                                 | Two uxModes are supported: <ul><li>`'popup'`: In this uxMode, a popup will be shown to user for login.</li><li>`'redirect'`: In this uxMode, user will be redirected to a new window tab for login.</li></ul> Use of `'REDIRECT'` mode is recommended in browsers where popups might get blocked. | No        |
-| `enableLogging?`          | `boolean`                                | `false`                                   | Enables Logs for the SDK                                                                                                                                                                                                                                                                          | No        |
-| `redirectPathName?`       | `string`                                 | `"redirect"`                              | Specifies the url path where user will be redirected after login. Redirect Uri for OAuth is baseUrl/redirectPathName.                                                                                                                                                                             | No        |
-| `disableHashedFactorKey?` | `boolean`                                | `false`                                   | Disables the Hashed Key, making the sure user logs in always in a non-custodial mode. Recommended only if you have proper MFA flow setup for the user while creating the account.                                                                                                                 | No        |
+| Parameter                 | Type                    | Description                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `web3AuthClientId`        | `string`                | The Web3Auth Client ID for your application. Find one at https://dashboard.web3auth.io                                                                                                                                                                                                                                                                                                                              |
+| `chainConfig`             | `CustomChainConfig`     | Chain Config for the chain you want to connect to. Currently supports only EVM based chains.                                                                                                                                                                                                                                                                                                                        |
+| `manualSync?`             | `boolean`               | Enables you to manually sync with the Web3Auth Metadata Server, helping you manage the API calls to the server. Ideal for managing custom flows.                                                                                                                                                                                                                                                                    |
+| `baseUrl?`                | `string`                | URL of the service worker handling the authentication in popup flow. For general usecases, you don't need to change this value.                                                                                                                                                                                                                                                                                     |
+| `web3AuthNetwork`         | `WEB3AUTH_NETWORK_TYPE` | Web3Auth Network used for MPC Wallet Management. Use Devnet/ Testnet in testing environment and Mainnet in production environment.                                                                                                                                                                                                                                                                                  |
+| `storageKey?`             | `SupportedStorageType`  | Select the session key storage across local storage or session storage. Setting to "local" will persist social login session accross browser tabs. @defaultValue "local"                                                                                                                                                                                                                                            |
+| `asyncStorageKey`         | `IAsyncStorage`         | Custom Async Storage Implementation. For general usecases, you don't need to change this value.                                                                                                                                                                                                                                                                                                                     |
+| `sessionTime?`            | `number`                | Determine the session length in seconds. By default the value is set at 86400 seconds, ie. 7 days.                                                                                                                                                                                                                                                                                                                  |
+| `uxMode?`                 | `CoreKitMode`           | **Four uxModes** are supported: <ul><li>`'popup'`: In this uxMode, a popup will be shown to user for login.</li><li>`'redirect'`: In this uxMode, user will be redirected to a new window tab for login.</li><li>`'nodejs'`: Use this for Node.js projects.</li><li>`'react-native'`: Use this for React Native apps.</li></ul> Use of `'redirect'` mode is recommended in browsers where popups might get blocked. |
+| `enableLogging?`          | `boolean`               | Enables Logs for the SDK                                                                                                                                                                                                                                                                                                                                                                                            |
+| `redirectPathName?`       | `string`                | Specifies the url path where user will be redirected after login. Redirect Uri for OAuth is baseUrl/redirectPathName.                                                                                                                                                                                                                                                                                               |
+| `disableHashedFactorKey?` | `boolean`               | Disables the Hashed Key, making the sure user logs in always in a non-custodial mode. Recommended only if you have proper MFA flow setup for the user while creating the account.                                                                                                                                                                                                                                   |
+| `tssLib?`                 | `TssLib`                | Custom TSS Library Implementation. For general usecases, you don't need to change this value.                                                                                                                                                                                                                                                                                                                       |
+| `hashedFactorNonce?`      | `string`                | Nonce for the hashed factor.                                                                                                                                                                                                                                                                                                                                                                                        |
+| `setupProviderOnInit?`    | `boolean`               | Setup the provider on init.                                                                                                                                                                                                                                                                                                                                                                                         |
 
 </TabItem>
 
@@ -71,50 +75,47 @@ export interface Web3AuthOptions {
    * The Web3Auth Client ID for your application. Find one at https://dashboard.web3auth.io
    */
   web3AuthClientId: string;
-
   /**
    * Chain Config for the chain you want to connect to. Currently supports only EVM based chains.
    */
   chainConfig?: CustomChainConfig;
-
   /**
    * @defaultValue `false`
    */
   manualSync?: boolean;
-
   /**
    * @defaultValue `${window.location.origin}/serviceworker`
    */
   baseUrl?: string;
-
   /**
    *
    * @defaultValue `'sapphire_mainnet'`
    */
   web3AuthNetwork?: WEB3AUTH_NETWORK_TYPE;
-
   /**
    *
    * @defaultValue `'local'`
    */
-  storageKey?: "session" | "local";
-
+  storageKey?: SupportedStorageType;
+  /**
+   *  asyncStorageKey take precedence over storageKey.
+   *  if asyncStorageKey is provided, storageKey will be ignored.
+   * @defaultValue `undefined`
+   */
+  asyncStorageKey?: IAsyncStorage;
   /**
    * @defaultValue 86400
    */
   sessionTime?: number;
-
   /**
    * @defaultValue `'POPUP'`
    */
-  uxMode?: UX_MODE_TYPE;
-
+  uxMode?: CoreKitMode;
   /**
    * @defaultValue `false`
    * enables logging of the internal packages.
    */
   enableLogging?: boolean;
-
   /**
    * This option is used to specify the url path where user will be
    * redirected after login. Redirect Uri for OAuth is baseUrl/redirectPathName.
@@ -151,24 +152,46 @@ export interface Web3AuthOptions {
    *
    */
   redirectPathName?: string;
-
   /**
    * @defaultValue `false`
    * Disables the cloud factor key, enabling the one key semi custodial flow.
    * Recommended for Non Custodial Flow.
    */
   disableHashedFactorKey?: boolean;
+  /**
+   * @defaultValue `null`
+   * Overwrite tss-lib for nodejs.
+   * Required for nodejs mode.
+   * Do not use this option for non nodejs mode.
+   */
+  tssLib?: unknown;
+  /**
+   * @defaultValue `Web3AuthOptions.web3AuthClientId`
+   * Overwrites the default value ( clientId ) used as nonce for hashing the hash factor key.
+   *
+   * If you want to aggregate the mfa status of client id 1 and client id 2  apps
+   * set hashedFactorNonce to some common clientID, which can be either client id 1 or client id 2 or any other unique string
+   * #PR 72
+   * Do not use this unless you know what you are doing.
+   */
+  hashedFactorNonce?: string;
+  /**
+   * @defaultValue `true`
+   * Setup Provider after `login success` reconstruct.
+   */
+  setupProviderOnInit?: boolean;
 }
 
 export type WEB3AUTH_NETWORK_TYPE = (typeof WEB3AUTH_NETWORK)[keyof typeof WEB3AUTH_NETWORK];
+export declare const WEB3AUTH_NETWORK: {
+  readonly MAINNET: "sapphire_mainnet";
+  readonly DEVNET: "sapphire_devnet";
+};
 
-export const WEB3AUTH_NETWORK = {
-  MAINNET: TORUS_SAPPHIRE_NETWORK.SAPPHIRE_MAINNET,
-  DEVNET: TORUS_SAPPHIRE_NETWORK.SAPPHIRE_DEVNET,
-} as const;
+export type SupportedStorageType = "local" | "session" | "memory" | IStorage;
 
+export type CoreKitMode = UX_MODE_TYPE | "nodejs" | "react-native";
 export type UX_MODE_TYPE = (typeof UX_MODE)[keyof typeof UX_MODE];
-
 export declare const UX_MODE: {
   readonly POPUP: "popup";
   readonly REDIRECT: "redirect";
@@ -219,7 +242,45 @@ const coreKitInstance = new Web3AuthMPCCoreKit({
 
 ## Initializing Web3Auth
 
-#### `init()`
+#### `init(params?: InitParams)`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter              | Type      | Description                                        |
+| ---------------------- | --------- | -------------------------------------------------- |
+| `handleRedirectResult` | `boolean` | `true` to handle the redirect result during init() |
+| `rehydrate`            | `boolean` | `true` to rehydrate the session during init()      |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```typescript
+export interface InitParams {
+  /**
+   * @defaultValue `true`
+   * handle the redirect result during init()
+   */
+  handleRedirectResult: boolean;
+  /**
+   * @defaultValue `true`
+   * rehydrate the session during init()
+   */
+  rehydrate?: boolean;
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 The final step in the initialization process is to initialize the `Web3AuthMPCCoreKit` instance, ie. `coreKitInstance` in our case.
 

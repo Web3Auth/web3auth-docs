@@ -1,0 +1,945 @@
+---
+title: Mocaverse Embed  SDK
+sidebar_label: Mocaverse
+image: "images/docs-meta-cards/sdk-reference-card.png"
+displayed_sidebar: sdk
+keywords: [animoca, moca, mocaverse, web3auth, authentication, blockchain]
+description: "Mocaverse Embed  SDK | Web3Auth Wallet Ecosystems | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
+
+The Wallet Ecosystems Mocaverse Embed SDK for [Mocaverse](https://www.mocaverse.xyz/), developed by Web3Auth with Animoca Brands, represents a
+groundbreaking integration of Multi-Party Computation (MPC) technology with Account Abstraction, setting a new standard in secure and user-centric
+blockchain wallet solutions. The Mocaverse Embed SDK is a powerful tool for developers to integrate seamless social logins based easy onboarding that
+not only prioritizes security but also prioritizes user convenience, driving forward the adoption of blockchain technology within the Mocaverse
+ecosystem and beyond.
+
+:::tip
+
+Check out our [**example app**](https://github.com/Web3Auth/wallet-ecosystems-examples/tree/main/mocaverse-embed/) for an end-to-end Mocaverse Embed
+integrations.
+
+:::
+
+## Installation
+
+To get started, install the [`@web3auth/mocaverse-embed`](https://www.npmjs.com/package/@web3auth/mocaverse-embed) SDK.
+
+```bash npm2yarn
+npm i @web3auth/mocaverse-embed
+```
+
+## Instantiate Mocaverse Embed
+
+To integrate SafeAuth into your application, start by creating an instance of the `MocaEmbed` class from the
+[`@web3auth/mocaverse-embed`](https://www.npmjs.com/package/@web3auth/mocaverse-embed) package.
+
+```typescript
+import MocaEmbed from "@web3auth/mocaverse-embed";
+
+const mocaEmbed = new MocaEmbed({
+  web3AuthClientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+});
+```
+
+### Arguments
+
+#### `CtorArgs`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter          | Description                                                                     |
+| ------------------ | ------------------------------------------------------------------------------- |
+| `modalZIndex`      | Z Index of the modal and iframe of Moca Embed. Default value: 99999             |
+| `web3AuthClientId` | Client Id of a project from [Web3Auth Dashboard](https://dashboard.web3auth.io) |
+| `web3AuthNetwork`  | Choose between `sapphire_mainnet`, `sapphire_testnet`                           |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface CtorArgs {
+  /**
+   * Z-index of the modal and iframe
+   * @defaultValue 99999
+   */
+  modalZIndex?: number;
+  /**
+   * You can get your clientId/projectId by registering your
+   * dapp on {@link "https://dashboard.web3auth.io"| developer dashboard}
+   */
+  web3AuthClientId: string;
+  /**
+   * network specifies the web3auth network to be used.
+   */
+  web3AuthNetwork: OPENLOGIN_NETWORK_TYPE;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+## Initialise MocaEmbed SDK
+
+After creating an instance of the `MocaEmbed` class, you should always call the `init()` method before trying to login into the embedded wallet. The
+`init` method should be called within the constructor of your application.
+
+```tsx
+await mocaEmbed.init({
+  chainConfig,
+});
+```
+
+### Arguments
+
+#### `WsEmbedParams`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter       | Description                                                                                                                        |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `chainConfig`   | Details of the chain you wish to connect. Currently only Polygon Mainnet, Polygon Mumbai Testnet & Optimism Mainnet are supported. |
+| `buildEnv`      | Build Environment details of the hosted wallet. Default "production". Please use the parameter ONLY while testing the SDK.         |
+| `enableLogging` | Enables or disables logging. Defaults to false in prod and true in other environments                                              |
+| `whiteLabel`    | Allows you to customize the look & feel of the widget                                                                              |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface WsEmbedParams {
+  /**
+   * Chain to connect with
+   */
+  chainConfig?: EthereumProviderConfig;
+  /**
+   * Build Environment of WsEmbed.
+   *
+   * production uses https://wallet.web3auth.io,
+   *
+   * staging uses https://staging-wallet.web3auth.io,
+   *
+   * testing uses https://develop-wallet.web3auth.io (latest internal build)
+   *
+   * development uses http://localhost:4050 (expects wallet-services-frontend to be run locally),
+   *
+   * @defaultValue production
+   */
+  buildEnv?: WS_EMBED_BUILD_ENV_TYPE;
+  /**
+   * Enables or disables logging.
+   *
+   * Defaults to false in prod and true in other environments
+   */
+  enableLogging?: boolean;
+  /**
+   * url of widget to load
+   *
+   * Defaults to true
+   * @defaultValue true
+   */
+  walletUrls?: Partial<Record<WS_EMBED_BUILD_ENV_TYPE, WalletUrlConfig>>;
+  /**
+   * Determines how to show confirmation screens
+   *
+   * @defaultValue none for wallet services
+   * @defaultValue popup for safe-auth, mocaverse
+   */
+  /**
+   * Allows you to customize the look & feel of the widget
+   */
+  whiteLabel?: {
+    /**
+     * whether to show/hide ws-embed widget.
+     *
+     * Defaults to true
+     * @defaultValue true
+     */
+    showWidgetButton?: boolean;
+    /**
+     * Determines where the wsEmbed widget is visible on the page.
+     * @defaultValue bottom-left
+     */
+    buttonPosition?: BUTTON_POSITION_TYPE;
+    hideNftDisplay?: boolean;
+    hideTokenDisplay?: boolean;
+    hideTransfers?: boolean;
+    hideTopup?: boolean;
+    hideReceive?: boolean;
+    defaultPortfolio?: "token" | "nft";
+  } & WhiteLabelData;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+#### `chainConfig`
+
+:::warning
+
+The Mocaverse Embed only works with the **Polygon Mainnet (Chain ID: 137), Polygon Mumbai Testnet (Chain ID: 80001 ) & Optimism Mainnet (Chain
+ID: 10)**.
+
+:::
+
+<ChainConfig />
+
+### Whitelabeing the Mocaverse Embed
+
+Within the `init` method, you can customize the look and feel of the Mocaverse Embed widget by passing the `whiteLabel` parameter.
+
+#### `whiteLabel`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter           | Description                                                                                                                                                                                                                                                          |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `showWidgetButton?` | Whether to show the Mocaverse Embed Button, used for easily opening the UI                                                                                                                                                                                           |
+| `buttonPosition?`   | Postion of the Button: "bottom-left", "top-left", "bottom-right", "top-right"                                                                                                                                                                                        |
+| `hideNftDisplay?`   | Hide the NFT Diplay Section within the main wallet UI                                                                                                                                                                                                                |
+| `hideTokenDisplay?` | Hide the Token Display Section within the main wallet UI                                                                                                                                                                                                             |
+| `hideTransfers?`    | Hide the Transfers Section within the main wallet UI                                                                                                                                                                                                                 |
+| `hideTopup?`        | Hide the Topup Section within the main wallet UI                                                                                                                                                                                                                     |
+| `hideReceive?`      | Hide the Receive Section within the main wallet UI                                                                                                                                                                                                                   |
+| `defaultPortfolio?` | Select the default portfolio showcase section - token or nft                                                                                                                                                                                                         |
+| `appUrl?`           | App URL to be displayed in the User Flow Screens.                                                                                                                                                                                                                    |
+| `logoLight?`        | App logo to be shown on the light background (light theme)                                                                                                                                                                                                           |
+| `logoDark?`         | App logo to be shown on the dark background (dark theme)                                                                                                                                                                                                             |
+| `defaultLanguage?`  | Default Language to use. <br/> Choose from: <ul><li>`en` - English</li><li>`de` - German</li><li>`ja` - Japanese</li><li>`ko` - Korean</li><li>`zh` - Mandarin</li><li>`es` - Spanish</li><li>`fr` - French</li><li>`pt` - Portuguese</li><li>`nl` - Dutch</li></ul> |
+| `mode?`             | Choose between `auto`, `light` or `dark` background modes.                                                                                                                                                                                                           |
+| `theme?`            | Used to customize the theme of the login modal with the following options <br /> `'primary'` - To customize the primary color of the modal's content                                                                                                                 |
+| `tncLink?`          | Language specific link for terms and conditions on torus-website. See (examples/vue-app) to configure e.g. tncLink: `{en: "http://example.com/tnc/en", ja: "http://example.com/tnc/ja"}`                                                                             |
+| `privacyPolicy?`    | Language specific link for privacy policy on torus-website. See (examples/vue-app) to configure e.g. `privacyPolicy: { en: "http://example.com/tnc/en", ja: "http://example.com/tnc/ja", }`                                                                          |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface WsEmbedParams {
+...
+  whiteLabel?: {
+    /**
+     * whether to show/hide ws-embed widget.
+     *
+     * Defaults to true
+     * @defaultValue true
+     */
+    showWidgetButton?: boolean;
+    /**
+     * Determines where the wsEmbed widget is visible on the page.
+     * @defaultValue bottom-left
+     */
+    buttonPosition?: BUTTON_POSITION_TYPE;
+    hideNftDisplay?: boolean;
+    hideTokenDisplay?: boolean;
+    hideTransfers?: boolean;
+    hideTopup?: boolean;
+    hideReceive?: boolean;
+    defaultPortfolio?: "token" | "nft";
+  } & WhiteLabelData;
+}
+
+  export type WhiteLabelData = {
+    /**
+     * App name to display in the UI
+     */
+    appName?: string;
+    /**
+     * App url
+     */
+    appUrl?: string;
+    /**
+     * App logo to use in light mode
+     */
+    logoLight?: string;
+    /**
+     * App logo to use in dark mode
+     */
+    logoDark?: string;
+    /**
+     * language which will be used by web3auth. app will use browser language if not specified. if language is not supported it will use "en"
+     * en: english
+     * de: german
+     * ja: japanese
+     * ko: korean
+     * zh: mandarin
+     * es: spanish
+     * fr: french
+     * pt: portuguese
+     * nl: dutch
+     * tr: turkish
+     *
+     * @defaultValue en
+     */
+    defaultLanguage?: LANGUAGE_TYPE;
+    /**
+     theme
+     *
+     * @defaultValue auto
+     */
+    mode?: THEME_MODE_TYPE;
+    /**
+     * Use logo loader
+     *
+     * @defaultValue false
+     */
+    useLogoLoader?: boolean;
+    /**
+     * Used to customize theme of the login modal with following options
+     * `'primary'` - To customize primary color of modal's content.
+     */
+    theme?: {
+        primary?: string;
+        gray?: string;
+        red?: string;
+        green?: string;
+        success?: string;
+        warning?: string;
+        error?: string;
+        info?: string;
+        white?: string;
+    };
+    /**
+     * Language specific link for terms and conditions on torus-website. See (examples/vue-app) to configure
+     * e.g.
+     * tncLink: {
+     *  en: "http://example.com/tnc/en",
+     *  ja: "http://example.com/tnc/ja",
+     * }
+     */
+    tncLink?: Partial<Record<LANGUAGE_TYPE, string>>;
+    /**
+     * Language specific link for privacy policy on torus-website. See (examples/vue-app) to configure
+     * e.g.
+     * privacyPolicy: {
+     *  en: "http://example.com/tnc/en",
+     *  ja: "http://example.com/tnc/ja",
+     * }
+     */
+    privacyPolicy?: Partial<Record<LANGUAGE_TYPE, string>>;
+};
+export declare const BUTTON_POSITION: {
+    readonly BOTTOM_LEFT: "bottom-left";
+    readonly TOP_LEFT: "top-left";
+    readonly BOTTOM_RIGHT: "bottom-right";
+    readonly TOP_RIGHT: "top-right";
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+## Usage
+
+Once you've installed and successfully initialized MocaEmbed, you can use it to authenticate your users. Further, you can use the native provider
+given by the SDK to connect the users to the respective blockchain network.
+
+Natively, the instance of `MocaEmbed` rreturns the following functions:
+
+- `login()` - Showing the Modal and Logging in the User
+- `logout()` - Logs our the User and clears up the session
+- `clearInit()` - Clears the initialisation of the SDK
+- `getUserInfo()` - Getting the User's Information
+- `hideTorusButton()` - Disables the Widget Button
+- `showTorusButton()` - Enabled the Widget Button
+- `showWalletConnectScanner()` - Shows the Wallet Connect Scanner for connecting to other dapps using Wallet Connect
+- `showWalletUi()` - Show the Wallet UI
+- `showCheckout()` - Shows the Checkout Window for Fiat to Crypto Transactions
+
+### `login()`
+
+Helps you to Login your user into the Mocaverse Embed Wallet. While this function is as simple as just calling a basic instance, you can pass over
+more variables to customize the login flow. This function returns your an array of accounts associated with the user. Generally for Mocaverse, you
+will get two accounts:
+
+- Smart Contract Wallet Account - account[0] - The main address used for all transaction
+- Externally Owned Account - account[1] - The address used for signing transactions, which manages the Smart Contract Wallet Account.
+
+#### `LoginParams`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter       | Description                                                                                                                                                                                                                                                                                               |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginProvider` | Login provider to be used, will show a web-based page allowing user to pick their own loginProvider if not specified. supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`, `JWT` |
+| `login_hint`    | Email used for EMAIL_PASSWORDLESS                                                                                                                                                                                                                                                                         |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface LoginParams {
+  loginProvider?: LOGIN_PROVIDER_TYPE | EXTERNAL_LOGIN_PROVIDER_TYPE;
+  login_hint?: string;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### `logout()`
+
+Logs out the user from the Mocaverse Embed Wallet and clears the session.
+
+### `getUserInfo()`
+
+Gives your the information of the user that is logged in.
+
+#### `UserInfo`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+
+>
+
+<TabItem value="table">
+
+| Parameter      | Description                                                                                                                  |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `email`        | Email of the user                                                                                                            |
+| `name`         | Name of the user                                                                                                             |
+| `profileImage` | Profile image of the logged in user                                                                                          |
+| `verifier`     | verifier of the logged in user (google, facebook etc)                                                                        |
+| `verifierId`   | Verifier Id of the logged in user, ie. email for google, id for facebook, username for reddit, id for twitch, id for discord |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface UserInfo {
+  /**
+   * Email of the logged in user
+   */
+  email: string;
+  /**
+   * Full name of the logged in user
+   */
+  name: string;
+  /**
+   * Profile image of the logged in user
+   */
+  profileImage: string;
+  /**
+   * verifier of the logged in user (google, facebook etc)
+   */
+  verifier: string;
+  /**
+   * Verifier Id of the logged in user
+   *
+   * email for google,
+   * id for facebook,
+   * username for reddit,
+   * id for twitch,
+   * id for discord
+   */
+  verifierId: string;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### `showWalletConnectScanner()`
+
+Shows the Wallet Connect Scanner to connect with dApps having Wallet Connect login option. This is useful for interoperability with dApps having
+Wallet Connect login option.
+
+### `showCheckout()`
+
+Shows the TopUp modal to select local currency and amount to top up the wallet.
+
+### `showWalletUi()`
+
+Shows the Wallet Services modal UI to be used as a wallet UI.
+
+## Connecting with Wagmi
+
+For connecting with Wagmi, you need to use the Mocaverse Wagmi Connector SDK. The SDK is a simple wrapper around the Mocaverse Embed SDK, which
+extends the functionality to connect with Wagmi.
+
+### Installation
+
+To get started, install the [`@web3auth/mocaverse-wagmi-connector`](https://www.npmjs.com/package/@web3auth/mocaverse-wagmi-connector) SDK.
+
+```bash npm2yarn
+npm i @web3auth/mocaverse-wagmi-connector
+```
+
+### Instantiate Mocaverse Wagmi Connector
+
+The instantiation process for Wagmi Connector is quite similar, just that you need to provide all contructor, initialisation and login parameters at
+once within the instance. This is because all these functions are called internally via the wagmi library.
+
+#### Arguments
+
+#### `MocaverseConnectorParams`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+
+>
+
+<TabItem value="table">
+
+| Parameter          | Description                                                                                                                               |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `web3AuthClientId` | Client Id of a project from [Web3Auth Dashboard](https://dashboard.web3auth.io)                                                           |
+| `web3AuthNetwork`  | Choose between `sapphire_mainnet`, `sapphire_testnet`                                                                                     |
+| `modalZIndex`      | Z Index of the modal and iframe of Moca Embed. Default value: 99999                                                                       |
+| `initParams`       | An object containing all initialisation parameters for the embed SDK. Please check the initialisation process above for more information. |
+| `loginParams`      | An object containing all login parameters for the embed SDK. Please check the login process above for more information.                   |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface MocaverseConnectorParams extends CtorArgs {
+  initParams?: WsEmbedParams;
+  loginParams?: LoginParams;
+}
+
+export interface CtorArgs {
+  /**
+   * Z-index of the modal and iframe
+   * @defaultValue 99999
+   */
+  modalZIndex?: number;
+  /**
+   * You can get your clientId/projectId by registering your
+   * dapp on {@link "https://dashboard.web3auth.io"| developer dashboard}
+   */
+  web3AuthClientId: string;
+  /**
+   * network specifies the web3auth network to be used.
+   */
+  web3AuthNetwork: OPENLOGIN_NETWORK_TYPE;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Usage
+
+You can simply pass over the instance of the Mocaverse Wagmi Connector to the Wagmi Config and it will handle the rest of the process for you
+automatically.
+
+```js
+import { WagmiProvider, createConfig, http } from "wagmi";
+import { polygon, optimism, polygonMumbai } from "wagmi/chains";
+import { MocaverseConnector } from "@web3auth/mocaverse-wagmi-connector";
+
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
+
+
+const web3AuthClientId =
+  "BANbxuTYFGeYi8HxUzaPQkvQlSAXiKRtUqb1vqsXbsZsZKrNr05PEPCM2J2PhUJZpIYl0XzQa6jxUjnYzSU9LXY";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: `0x${polygon.id.toString(16)}`,
+  rpcTarget: polygon.rpcUrls.default.http[0], // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  displayName: polygon.name,
+  tickerName: polygon.nativeCurrency?.name,
+  ticker: polygon.nativeCurrency?.symbol,
+  blockExplorerUrl: polygon.blockExplorers?.default.url[0] as string,
+  logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
+};
+
+// Set up client
+const config = createConfig({
+  chains: [polygon, optimism, polygonMumbai],
+  transports: {
+    [polygon.id]: http(),
+    [optimism.id]: http(),
+    [polygonMumbai.id]: http(),
+  },
+  connectors: [
+    MocaverseConnector({
+      web3AuthClientId,
+      web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+      initParams: {
+        buildEnv: "testing",
+        chainConfig,
+        enableLogging: true,
+      }
+    })
+  ],
+});
+```
+
+## Examples
+
+:::tip
+
+Checkout the examples in our [examples repository](https://github.com/Web3Auth/wallet-ecosystems-examples/)
+
+:::
+
+### React Integration for Mocaverse Embed
+
+```tsx
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
+import MocaEmbed from "@web3auth/mocaverse-embed";
+import { useEffect, useState } from "react";
+import Web3 from "web3";
+
+import "./App.css";
+
+const web3AuthClientId = "BANbxuTYFGeYi8HxUzaPQkvQlSAXiKRtUqb1vqsXbsZsZKrNr05PEPCM2J2PhUJZpIYl0XzQa6jxUjnYzSU9LXY"; // get from https://dashboard.web3auth.io
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x89", // hex of 137, polygon mainnet
+  rpcTarget: "https://rpc.ankr.com/polygon",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Polygon Mainnet",
+  blockExplorerUrl: "https://polygonscan.com",
+  ticker: "MATIC",
+  tickerName: "MATIC",
+  logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
+};
+
+function App() {
+  const [mocaEmbed, setMocaEmbed] = useState<MocaEmbed>();
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [eoaAccount, setEoaAccount] = useState("");
+  const [aaAccount, setAaAcount] = useState("");
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const mocaEmbed = new MocaEmbed({
+          web3AuthClientId,
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+        });
+        await mocaEmbed.init({
+          buildEnv: "testing",
+          chainConfig,
+          enableLogging: true,
+        });
+
+        if (mocaEmbed.isLoggedIn) {
+          setLoggedIn(true);
+          await getAccounts();
+        }
+        setMocaEmbed(mocaEmbed);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const login = async () => {
+    try {
+      const accounts = await mocaEmbed?.login();
+      if (accounts) {
+        setEoaAccount(accounts[1]);
+        setAaAcount(accounts[0]);
+        setLoggedIn(true);
+        uiConsole(accounts);
+      }
+    } catch (error) {
+      uiConsole(error);
+    }
+  };
+
+  const getUserInfo = async () => {
+    const user = await mocaEmbed?.getUserInfo();
+    uiConsole(user);
+  };
+
+  const logout = async () => {
+    // IMP START - Logout
+    await mocaEmbed?.logout();
+    // IMP END - Logout
+    setLoggedIn(false);
+    uiConsole("logged out");
+  };
+
+  // IMP START - Blockchain Calls
+  const getAccounts = async () => {
+    if (!loggedIn) {
+      uiConsole("Not logged in");
+      return;
+    }
+    const web3 = new Web3(mocaEmbed?.provider as any);
+    // Get user's Ethereum public address
+    const address = await web3.eth.getAccounts();
+    setAaAcount(address[0]);
+    setEoaAccount(address[1]);
+    uiConsole(address);
+  };
+
+  const getBalance = async () => {
+    if (!loggedIn) {
+      uiConsole("Not logged in");
+      return;
+    }
+    const web3 = new Web3(mocaEmbed?.provider as any);
+
+    // Get user's balance in ether
+    const balance = web3.utils.fromWei(
+      await web3.eth.getBalance(aaAccount), // Balance is in wei
+      "ether",
+    );
+    uiConsole(balance);
+  };
+
+  const signMessage = async () => {
+    if (!loggedIn) {
+      uiConsole("Not logged in");
+      return;
+    }
+    try {
+      const web3 = new Web3(mocaEmbed?.provider as any);
+      const originalMessage = "YOUR_MESSAGE";
+      // Sign the message
+      const signedMessage = await web3.eth.personal.sign(
+        originalMessage,
+        eoaAccount,
+        "test password!", // configure your own password here.
+      );
+      uiConsole(signedMessage);
+    } catch (error) {
+      uiConsole(error);
+    }
+  };
+  // IMP END - Blockchain Calls
+
+  function uiConsole(...args: any[]): void {
+    const el = document.querySelector("#console>p");
+    if (el) {
+      el.innerHTML = JSON.stringify(args || {}, null, 2);
+    }
+    console.log(...args);
+  }
+
+  const loggedInView = (
+    <>
+      <div className="flex-container">
+        <div>
+          <button onClick={getUserInfo} className="card">
+            Get User Info
+          </button>
+        </div>
+        <div>
+          <button onClick={getAccounts} className="card">
+            Get Accounts
+          </button>
+        </div>
+        <div>
+          <button onClick={getBalance} className="card">
+            Get Balance
+          </button>
+        </div>
+        <div>
+          <button onClick={signMessage} className="card">
+            Sign Message
+          </button>
+        </div>
+        <div>
+          <button onClick={logout} className="card">
+            Log Out
+          </button>
+        </div>
+      </div>
+    </>
+  );
+
+  const unloggedInView = (
+    <button onClick={login} className="card">
+      Login
+    </button>
+  );
+
+  return (
+    <div className="container">
+      <h1 className="title">
+        <a target="_blank" href="https://web3auth.io/docs/sdk/pnp/web/modal" rel="noreferrer">
+          Mocaverse Embed{" "}
+        </a>
+        & ReactJS (Webpack) Quick Start
+      </h1>
+
+      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
+      <div id="console" style={{ whiteSpace: "pre-line" }}>
+        <p style={{ whiteSpace: "pre-line" }}></p>
+      </div>
+
+      <footer className="footer">
+        <a
+          href="https://github.com/Web3Auth/wallet-ecosystems-examples/tree/main/mocaverse-embed/moca-react-example/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Source code
+        </a>
+      </footer>
+    </div>
+  );
+}
+
+export default App;
+```
+
+### Wagmi Integration for Mocaverse Embed
+
+```tsx
+// WAGMI Libraries
+import { WagmiProvider, createConfig, http, useAccount, useConnect, useDisconnect } from "wagmi";
+import { coinbaseWallet, walletConnect } from "wagmi/connectors";
+import { polygon, optimism, polygonMumbai } from "wagmi/chains";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MocaverseConnector } from "@web3auth/mocaverse-wagmi-connector";
+
+import "./App.css";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
+
+const queryClient = new QueryClient();
+
+const web3AuthClientId = "BANbxuTYFGeYi8HxUzaPQkvQlSAXiKRtUqb1vqsXbsZsZKrNr05PEPCM2J2PhUJZpIYl0XzQa6jxUjnYzSU9LXY";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: `0x${polygon.id.toString(16)}`,
+  rpcTarget: polygon.rpcUrls.default.http[0], // This is the public RPC we have added, please pass on your own endpoint while creating an app
+  displayName: polygon.name,
+  tickerName: polygon.nativeCurrency?.name,
+  ticker: polygon.nativeCurrency?.symbol,
+  blockExplorerUrl: polygon.blockExplorers?.default.url[0] as string,
+  logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
+};
+
+// Set up client
+const config = createConfig({
+  chains: [polygon, optimism, polygonMumbai],
+  transports: {
+    [polygon.id]: http(),
+    [optimism.id]: http(),
+    [polygonMumbai.id]: http(),
+  },
+  connectors: [
+    walletConnect({
+      projectId: "3314f39613059cb687432d249f1658d2",
+      showQrModal: true,
+    }),
+    coinbaseWallet({ appName: "wagmi" }),
+    MocaverseConnector({
+      web3AuthClientId,
+      web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+      initParams: {
+        buildEnv: "testing",
+        chainConfig,
+        enableLogging: true,
+      },
+    }),
+  ],
+});
+
+function Profile() {
+  const { address, connector, isConnected } = useAccount();
+  const { connect, connectors, error } = useConnect();
+  const { disconnect } = useDisconnect();
+
+  if (isConnected) {
+    return (
+      <div className="main">
+        <div className="title">Connected to {connector?.name}</div>
+        <div>{address}</div>
+        <button className="card" onClick={disconnect as any}>
+          Disconnect
+        </button>
+      </div>
+    );
+  } else {
+    return (
+      <div className="main">
+        {connectors.map((connector) => {
+          return (
+            <button className="card" key={connector.id} onClick={() => connect({ connector })}>
+              {connector.name}
+            </button>
+          );
+        })}
+        {error && <div>{error.message}</div>}
+      </div>
+    );
+  }
+}
+
+// Pass client to React Context Provider
+function App() {
+  return (
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <div className="container">
+          <Profile />
+        </div>
+      </QueryClientProvider>
+    </WagmiProvider>
+  );
+}
+
+export default App;
+```

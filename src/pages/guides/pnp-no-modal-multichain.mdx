@@ -1,0 +1,265 @@
+---
+title: Creating a Multichain Connection with Web3Auth and React PnP no-modal SDK
+image: "content-hub/guides/banners/multichain.png"
+description: Learn how to connect to different blockchain using Web3Auth.
+type: guide
+tags: [multichain, polkadot, evm, cosmos, no-modal]
+date: Febreaury 9, 2024
+author: Web3Auth Team
+order: 1
+communityPortalTopicId:
+---
+
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Creating a Multichain Connection with Web3Auth and PnP no-modal SDK"
+  description="Learn how to connect to different blockchain using Web3Auth."
+  image="https://web3auth.io/docs/guides/banners/multichain.png"
+  slug="/guides/pnp-no-modal-multichain-connection"
+/>
+
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
+
+This guide will cover the basics of how to integrate Web3Auth with different blockchains at the same time. In this demo you will be able to
+authenticate with different social logins and different addresses from each blockchain. Of course, you can interact and sign transactions with any of
+them.
+
+You will be able to make calls like get the user's `account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and `write` to
+smart contracts, etc.
+
+**The Web3Auth Web SDK supports all blockchains that follow the `secp256k1` & `ed25519` curves**. This includes all EVM like (Ethereum, Polygon
+Binance Smart Chain, etc) and non-EVM like (Aptos, Cosmos, Polkadot, Solana, Tezos, etc) blockchains.
+
+:::note
+
+This reference is for the `Web`, but you can use all the blockchains on `Android`, `iOS`, `React Native`, `Flutter`, `Unity` & `Unreal` as well.
+Please follow our reference for [Ethereum](https://web3auth.io/docs/connect-blockchain/evm/ethereum), and similarly use corresponding blockchain
+libraries that support the platforms to use the private key and make blockchain calls accordingly.
+
+:::
+
+## Quick Start
+
+```bash
+npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/blockchain-connection-examples/multi-chain-no-modal-example/ w3a-multi-chain-no-modal-demo && cd w3a-multi-chain-no-modal-demo && npm install && npm run start
+```
+
+## Prerequisites
+
+<Web3AuthPrerequisites />
+
+## Setup your Web3Auth Dashboard
+
+<SetupWeb3AuthDashboard />
+
+## Using the Web3Auth Plug and Play No Modal SDK
+
+To use the Web3Auth Plug and Play No Modal SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To learn
+more about the available SDKs, please have a look at this [documentation page](/sdk).
+
+For the purpose of this guide, we will discuss the [Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and the different blockchain
+providers.
+
+<SetupBaseProject />
+
+### Installation
+
+We need many dependencies to make this work::
+
+```bash
+npm install @web3auth/base @web3auth/no-modal @web3auth/openlogin-adapter @web3auth/ethereum-provider @web3auth/solana-provider @polkadot/api @polkadot/util-crypto @taquito/signer @taquito/taquito @taquito/utils @tezos-core-tools/crypto-utils @starkware-industries/starkware-crypto-utils web3 ethers
+```
+
+#### Instantiating Web3Auth
+
+Import the required modules for web3auth and any providers you want to use.
+
+```tsx
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { IProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { web3AuthConfig, openloginAdapterConfig } from "./config/web3auth";
+
+// EVM
+import Web3 from "web3";
+// Solana
+import { SolanaPrivateKeyProvider, SolanaWallet } from "@web3auth/solana-provider";
+// Tezos
+//@ts-ignore
+import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
+import { hex2buf } from "@taquito/utils";
+// StarkEx and StarkNet
+//@ts-ignore
+import { ec } from "@starkware-industries/starkware-crypto-utils";
+// Polkadot
+import { Keyring } from "@polkadot/api";
+import { cryptoWaitReady } from "@polkadot/util-crypto";
+```
+
+Call `init` when the app is loads, it will initialize the Web3Auth instance . Also don't forget to propertly configure the `clientId`,
+`web3AuthConfig` and `openloginAdapterConfig` objects in the `config` directory.
+
+```tsx
+const init = async () => {
+  try {
+    const web3auth = new Web3AuthNoModal(web3AuthConfig);
+    setWeb3auth(web3auth);
+
+    const openloginAdapter = new OpenloginAdapter(openloginAdapterConfig);
+    web3auth.configureAdapter(openloginAdapter);
+
+    await web3auth.init();
+
+    setProvider(web3auth.provider);
+    if (web3auth.connected) {
+      setLoggedIn(true);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+```
+
+### Login with Web3Auth
+
+You must call this function to start the login process. You can change the `loginProvider` to any of the
+[available social logins](https://web3auth.io/docs/sdk/pnp/web/adapters/openlogin#loginsettings).
+
+```tsx
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "google",
+});
+```
+
+### Get Public Address from different blockchains
+
+For each blockchain you want to connect to, you need to call the `getAddress` function and with the private key, we will generate the public address.
+
+## EVM (Polygon mumbai testnet)
+
+```tsx
+const rpc = new RPC(provider);
+const privateKey = await rpc.getPrivateKey();
+
+const polygonPrivateKeyProvider = new EthereumPrivateKeyProvider({
+  config: {
+    chainConfig: {
+      chainNamespace: CHAIN_NAMESPACES.EIP155,
+      chainId: "0x13881",
+      rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
+      displayName: "Polygon Mumbai",
+      blockExplorerUrl: "https://mumbai.polygonscan.com/",
+      ticker: "MATIC",
+      tickerName: "MATIC",
+      logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
+    },
+  },
+});
+await polygonPrivateKeyProvider.setupProvider(privateKey);
+const web3 = new Web3(polygonPrivateKeyProvider);
+const address = (await web3.eth.getAccounts())[0];
+return address;
+```
+
+## Solana
+
+```tsx
+const rpc = new RPC(provider);
+const privateKey = await rpc.getPrivateKey();
+
+const { getED25519Key } = await import("@toruslabs/openlogin-ed25519");
+const ed25519key = getED25519Key(privateKey).sk.toString("hex");
+
+// Get user's Solana's public address
+const solanaPrivateKeyProvider = new SolanaPrivateKeyProvider({
+  config: {
+    chainConfig: {
+      chainNamespace: CHAIN_NAMESPACES.SOLANA,
+      chainId: "0x3",
+      rpcTarget: "https://api.devnet.solana.com",
+      displayName: "Solana Mainnet",
+      blockExplorerUrl: "https://explorer.solana.com/",
+      ticker: "SOL",
+      tickerName: "Solana",
+      logo: "",
+    },
+  },
+});
+await solanaPrivateKeyProvider.setupProvider(ed25519key);
+console.log(solanaPrivateKeyProvider.provider);
+
+const solanaWallet = new SolanaWallet(solanaPrivateKeyProvider.provider as any);
+const solana_address = await solanaWallet.requestAccounts();
+return "0x" + solana_address[0];
+```
+
+## Tezos
+
+```tsx
+const rpc = new RPC(provider);
+const privateKey = await rpc.getPrivateKey();
+const keyPairTezos = tezosCrypto.utils.seedToKeyPair(hex2buf(privateKey));
+const address = "0x" + keyPairTezos?.pkh;
+return address;
+```
+
+## StarkEx and StarkNet
+
+```tsx
+const rpc = new RPC(provider);
+const privateKey = await rpc.getPrivateKey();
+const keyPairStarkEx = ec.keyFromPrivate(privateKey, "hex");
+const starkex_account = ec.keyFromPublic(keyPairStarkEx.getPublic(true, "hex"), "hex");
+const address = "0x" + starkex_account.pub.getX().toString("hex");
+return address;
+```
+
+## Polkadot
+
+```tsx
+await cryptoWaitReady();
+const rpc = new RPC(provider);
+const privateKey = (await rpc.getPrivateKey()) as string;
+const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
+
+const keyPair = keyring.addFromUri("0x" + privateKey);
+const address = "0x" + keyPair.address;
+return address;
+```
+
+### Get all the public wallets
+
+As you can see in the full example, we get the public address from each blockchain. In this case, It's clear that you can interact with different
+blockchains at the same time.
+
+And in Web3auth we have
+[several examples](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples) of how to interact
+with [any blockchain](https://web3auth.io/docs/connect-blockchain#mpc-providers).
+
+We also have some examples of how to interact with Cosmos, Aptos, Algorand and XRPL.
+
+### Conclusion
+
+This guide has walked you through the seamless process of creating a multichain connection using Web3Auth and the React PnP no-modal SDK. By
+integrating Web3Auth, developers are empowered to build applications that are not only blockchain agnostic but also user-friendly, leveraging social
+logins for authentication across multiple blockchains.
+
+The provided examples and code snippets have shown how to initialize Web3Auth, configure adapters, and retrieve public addresses for different
+blockchains, highlighting the flexibility and power of Web3Auth in handling diverse blockchain technologies. With this knowledge, developers can now
+extend their applications to support a wide range of blockchains.
+
+As the blockchain ecosystem continues to evolve, tools like Web3Auth will play a crucial role in simplifying access and interaction with blockchain
+technologies.
+
+If you want to interact with a specific blockchain and you are having trouble with the code, pleaes contact us in our
+[community](https://web3auth.io/community/).
+
+### References
+
+- https://web3auth.io/docs/sdk/pnp/web/no-modal/
+- https://web3auth.io/docs/sdk/helper-sdks/providers/
+- https://web3auth.io/docs/examples?product=Plug+and+Play&sdk=Plug+and+Play+Web+Modal+SDK

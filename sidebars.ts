@@ -154,13 +154,6 @@ const sidebars: SidebarsConfig = {
       label: "Migration Guides",
       items: ["core-kit/migration-guides/sfa-flutter-v1-to-v2"],
     },
-    // Account Abstraction Section
-    {
-      type: "html",
-      value: "<span class='sidebarHeading'>Account Abstraction</span>",
-      defaultStyle: true,
-    },
-    "account-abstraction/safeauth",
     // Resources Section
     {
       type: "html",
@@ -251,6 +244,19 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/arbitrum/react-native",
                 "connect-blockchain/evm/arbitrum/flutter",
                 "connect-blockchain/evm/arbitrum/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "Astar zkEVM",
+              link: { type: "doc", id: "connect-blockchain/evm/zkevm/zkevm" },
+              items: [
+                "connect-blockchain/evm/zkevm/web",
+                "connect-blockchain/evm/zkevm/android",
+                "connect-blockchain/evm/zkevm/ios",
+                "connect-blockchain/evm/zkevm/react-native",
+                "connect-blockchain/evm/zkevm/flutter",
+                "connect-blockchain/evm/zkevm/unity",
               ],
             },
             {
@@ -454,7 +460,12 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Solana",
           link: { type: "doc", id: "connect-blockchain/solana/solana" },
-          items: ["connect-blockchain/solana/web", "connect-blockchain/solana/flutter"],
+          items: [
+            "connect-blockchain/solana/web",
+            "connect-blockchain/solana/flutter",
+            "connect-blockchain/solana/android",
+            "connect-blockchain/solana/ios",
+          ],
         },
 
         "connect-blockchain/xrpl",
@@ -469,6 +480,7 @@ const sidebars: SidebarsConfig = {
             "connect-blockchain/other/immutablex",
             "connect-blockchain/other/near",
             "connect-blockchain/other/polkadot",
+            "connect-blockchain/other/polymesh",
             "connect-blockchain/other/starkex",
             "connect-blockchain/other/starknet",
             "connect-blockchain/other/tezos",
@@ -482,7 +494,7 @@ const sidebars: SidebarsConfig = {
     {
       type: "link",
       label: "Guides",
-      href: "/content-hub?type=guides",
+      href: "/guides/",
     },
     {
       type: "category",
@@ -818,6 +830,12 @@ const sidebars: SidebarsConfig = {
         },
       ],
     },
+    {
+      type: "html",
+      value: "<span class='sidebarHeading'>Wallet Ecosystems</span>",
+      defaultStyle: true,
+    },
+    "sdk/wallet-ecosystems/safeauth",
     {
       type: "html",
       value: "<span class='sidebarHeading'>Core Kit</span>",

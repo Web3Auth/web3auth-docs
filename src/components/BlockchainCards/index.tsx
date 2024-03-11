@@ -124,6 +124,12 @@ export const tileGroupsData = [
         path: "./connect-blockchain/polkadot",
       },
       {
+        key: "polymesh",
+        title: "Polymesh",
+        icon: "logo-polymesh.png",
+        path: "./connect-blockchain/polymesh",
+      },
+      {
         key: "aptos",
         title: "Aptos",
         icon: "logo-aptos.png",

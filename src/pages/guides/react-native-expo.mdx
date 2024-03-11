@@ -1,0 +1,260 @@
+---
+title: Using Web3Auth React Native SDK in Expo Workflow
+image: "guides/banners/expo.png"
+description: Learn how to use Web3Auth Plug and Play React Native SDK in your Expo app
+type: guide
+tags: [mobile, react-native, expo, android, ios, whitelabel, custom authentication, dapp share]
+date: December 16, 2022
+author: Web3Auth Team
+order: 14
+communityPortalTopicId: 61
+---
+
+import RNExpoDeepLink from "@site/src/common/guides/_rn-expo-deeplink.mdx";
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import ReactNativeResponse from "@site/src/common/sdk/pnp/react-native/_get-user-info.mdx";
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Using Web3Auth React Native SDK in Expo Workflow"
+  description="Learn how to use Web3Auth Plug and Play React Native SDK in your Expo app"
+  image="https://web3auth.io/docs/guides/banners/expo.png"
+  slug="/guides/react-native-expo"
+/>
+
+This guide will cover the basics of how to use the Web3Auth React Native SDK in your React Native application.
+
+**Live Demo:** [Coming Soon]
+
+Repository: https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-expo-example
+
+## Quick Start
+
+```bash
+npx degit Web3Auth/web3auth-pnp-examples/react-native/rn-expo-example w3a-rn-expo-demo && cd w3a-rn-expo-demo && npm install
+```
+
+```bash
+# For Android
+npm run android
+# For iOS
+npm run ios
+```
+
+## How it works?
+
+When integrating Web3Auth React Native SDK with Social Login the flow looks something like this:
+
+![Web3Auth Core - Social Login Flow](/images/implicit-flow.svg)
+
+- When a user logs in with `Google`, Google sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
+
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
+  easy onboarding for your user to the application.
+
+## Prerequisites
+
+<Web3AuthPrerequisites />
+
+- Expo SDK 45 and above (for Expo Managed Workflow)
+
+## Setup
+
+### Setup your Web3Auth Dashboard
+
+<SetupWeb3AuthDashboard />
+
+- Add `{YOUR_APP_SCHEME}://auth` in the **Whitelist URL** field of the Web3Auth Dashboard.
+
+### Configure Deep Link
+
+<RNExpoDeepLink />
+
+## Using the Web3Auth SDK
+
+To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
+SDKs, please have a look at this [documentation page](/sdk).
+
+For this guide, we will be talking through the [Web3Auth React Native SDK](/sdk/pnp/react-native).
+
+### Installation
+
+##### [`@web3auth/react-native-sdk`](https://github.com/web3auth/web3auth-react-native-sdk)
+
+```bash npm2yarn
+npm install --save @web3auth/react-native-sdk
+```
+
+#### Expo Web Browser
+
+When using our SDK with an Expo-based React Native app (aka managed workflow, you have to install the `expo-web-browser` package as a `WebBrowser`
+implementation.)
+
+```shell
+expo install expo-web-browser
+```
+
+#### Expo Secure Store
+
+We will require a `SecureStore` implementation to allow for session management without storing the private key on the device.
+
+```shell
+expo install expo-secure-store
+```
+
+### Initialization
+
+After Installation, the next step to use Web3Auth is to Initialize the SDK. The Initialization is a two-step process,
+
+- [Importing Required Packages](/sdk/pnp/react-native/initialize#importing-required-packages)
+- [Instantiating Web3Auth](#instantiating-web3auth)
+
+Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
+Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customize your Web3Auth Instance.
+
+#### Importing `Web3Auth`
+
+You may also import additional types from the SDK to help in the development process.
+
+```typescript
+import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
+```
+
+#### Importing a `WebBrowser` implementation
+
+```typescript
+import * as WebBrowser from "expo-web-browser";
+```
+
+#### Importing `SecureStore` implementation
+
+```typescript
+import * as SecureStore from "expo-secure-store";
+```
+
+#### Instantiating Web3Auth
+
+It's time to create an instance of Web3Auth in the project.
+
+We need `clientId` and target Web3Auth `network` to initialize the `web3auth` object.
+
+- You can get your `clientId` from registering (above) on the Developer Dashboard.
+
+- `network` signifies the network on which the deployed Web3Auth nodes are running. For testing purposes, we have a `Sapphire Devnet` network. For
+  production usage, you can use the `Sapphire Mainnet` network.
+
+```tsx
+const web3auth = new Web3Auth(WebBrowser, SecureStore, {
+  clientId,
+  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // SAPPHIRE_MAINNET or SAPPHIRE_DEVNET
+});
+```
+
+:::tip SDK Reference
+
+- [Instantiating Web3Auth](/sdk/pnp/react-native/initialize).
+
+:::
+
+### Authentication
+
+#### Logging in
+
+Once initialized, you can use the `login` function of `web3auth` to navigate the user to the login process. For each login method, you have to select
+the `loginProvider` such as `google`, `facebook`, `twitch`, `jwt`, `email_passwordless` etc.
+
+:::info JWT
+
+If you are using custom authentication through **Auth0 or Custom JWT**, you have to use the `JWT` login provider.
+
+Additionally, in `extraLoginOptions` you have to provide the details required by that specific method as mentioned here.
+
+:::
+
+Once a user logs in, the Web3Auth SDK returns their reconstructed private key. For EVM Blockchains, the `secp256k1` private key is used to sign
+transactions. We also return an `ed25519` compatible private key for other blockchains.
+
+```tsx
+const web3authResponse = await web3auth.login({
+  redirectUrl: resolvedRedirectUrl,
+  mfaLevel: "default", // Pass on the mfa level of your choice: default, optional, mandatory, none
+  loginProvider: "google", // Pass on the login provider of your choice: google, facebook, discord, twitch, twitter, github, linkedin, apple, etc.
+});
+```
+
+:::info SDK Reference
+
+- [`login()` function](/sdk/pnp/react-native/usage#login).
+
+:::
+
+If you wish you **[add Multi Factor Authentication](/sdk/pnp/react-native/mfa)**, **[use dApp Share](/sdk/pnp/react-native/dapp-share)** or
+**[select Curve](/sdk/pnp/react-native/usage#selecting-curve)** for your React Native application, read the linked documentation.
+
+- [Multi Factor Authentication](/sdk/pnp/react-native/mfa)
+- [Using dApp Share](/sdk/pnp/react-native/dapp-share)
+- [Selecting Curve](/sdk/pnp/react-native/usage#selecting-curve)
+
+#### Sample loginResponse
+
+<ReactNativeResponse />
+
+### Get the User Profile
+
+```tsx
+// Assuming the user is logged in, get the user profile from the web3AuthResponse
+var userInfo = web3authResponse.userInfo;
+```
+
+Using the `web3Auth.login()` function, you can get the details of the logged-in user. Please note that these details are not stored anywhere in
+Web3Auth network.
+
+#### Sample userInfo
+
+<ReactNativeResponse />
+
+### Logout
+
+Use the `logout` function of `web3auth` to log the user out. This function doesn't work in iOS, so you need to navigate the user back manually.
+
+```tsx
+web3auth.logout();
+```
+
+:::info SDK Reference
+
+- [`logout()` function](/sdk/pnp/react-native/usage#logout).
+
+:::
+
+## Interacting with the Blockchain
+
+Once a user logs in, the Web3Auth SDK returns their reconstructed private key. For EVM Blockchains, the `secp256k1` private key is used to sign
+transactions. We also return an `ed25519` compatible private key for other blockchains. Similar to how we're using this private key in the `ethers.js`
+library in this example, you can connect to any other blockchain of your choice.
+
+:::info connect any blockchain
+
+Please go through the [Connect Blockchain](/connect-blockchain/evm/ethereum/react-native) Documentation, which contains all the details of the EVM
+based blockchain you have selected here.
+
+:::
+
+## Troubleshooting React Native issues
+
+Some commonly faced issues and the ways to fix them are addressed in this [troubleshooting guide](/troubleshooting/metro-issues).
+
+## Example code
+
+The code for the application we developed in this guide can be found in the
+[Web3Auth React Native Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-expo-example). Check it out and try
+running it locally yourself!
+
+## Questions?
+
+Ask us on [Web3Auth's Community Support Portal](https://web3auth.io/community)
+
+```
+
+```

@@ -1,7 +1,7 @@
 ---
 title: Integrate Web3Auth with the Solana Blockchain in Javascript
 sidebar_label: Web
-image: "content-hub/guides/banners/solana.png"
+image: "guides/banners/solana.png"
 displayed_sidebar: docs
 keywords: [solana, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Solana Blockchain in Javascript | Documentation - Web3Auth"
@@ -44,14 +44,14 @@ with `@web3auth/solana-provider` package.
 
 ```typescript
 const chainConfig: {
-  chainNamespace: "solana",
-  chainId: "0x1", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-  rpcTarget: "https://rpc.ankr.com/solana",
-  displayName: "Solana Mainnet",
-  blockExplorerUrl: "https://explorer.solana.com",
-  ticker: "SOL",
-  tickerName: "Solana",
-  logo: "https://images.toruswallet.io/solana.svg",
+  chainNamespace: "solana";
+  chainId: "0x1"; // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+  rpcTarget: "https://rpc.ankr.com/solana";
+  displayName: "Solana Mainnet";
+  blockExplorerUrl: "https://explorer.solana.com";
+  ticker: "SOL";
+  tickerName: "Solana";
+  logo: "https://images.toruswallet.io/solana.svg";
 };
 ```
 
@@ -63,14 +63,14 @@ const chainConfig: {
 
 ```typescript
 const chainConfig: {
-  chainNamespace: "solana",
-  chainId: "0x2", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-  rpcTarget: "https://api.testnet.solana.com",
-  displayName: "Solana Testnet",
-  blockExplorerUrl: "https://explorer.solana.com",
-  ticker: "SOL",
-  tickerName: "Solana",
-  logo: "https://images.toruswallet.io/solana.svg"
+  chainNamespace: "solana";
+  chainId: "0x2"; // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+  rpcTarget: "https://api.testnet.solana.com";
+  displayName: "Solana Testnet";
+  blockExplorerUrl: "https://explorer.solana.com";
+  ticker: "SOL";
+  tickerName: "Solana";
+  logo: "https://images.toruswallet.io/solana.svg";
 };
 ```
 
@@ -98,7 +98,7 @@ import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 import { WEB3AUTH_NETWORK } from "@web3auth/base";
 
 const privateKeyProvider = new SolanaPrivateKeyProvider({
-  config: { chainConfig: chainConfig }
+  config: { chainConfig: chainConfig },
 });
 
 const web3auth = new Web3Auth({
@@ -121,7 +121,7 @@ import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 import { WEB3AUTH_NETWORK } from "@web3auth/base";
 
 const privateKeyProvider = new SolanaPrivateKeyProvider({
-  config: {chainConfig},
+  config: { chainConfig },
 });
 
 const web3auth = new Web3AuthNoModal({
@@ -188,7 +188,6 @@ const solanaWallet = new SolanaWallet(web3auth.provider);
 // Get user's Solana public address
 const accounts = await solanaWallet.requestAccounts();
 
-
 const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
   method: "solana_provider_config",
   params: [],
@@ -243,7 +242,8 @@ import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } f
 
 // solanaWallet is from above
 const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
-  method: "solana_provider_config", params: []
+  method: "solana_provider_config",
+  params: [],
 });
 
 const connection = new Connection(connectionConfig.rpcTarget);
@@ -277,10 +277,10 @@ console.log(signedTx);
 ```tsx
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
 
-
 // solanaWallet is from above
 const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
-  method: "solana_provider_config", params: []
+  method: "solana_provider_config",
+  params: [],
 });
 
 const connection = new Connection(connectionConfig.rpcTarget);

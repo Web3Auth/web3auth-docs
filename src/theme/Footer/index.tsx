@@ -113,7 +113,7 @@ export default function FooterComponent(): JSX.Element {
               </a>
             </div>
             <div className="footer__item">
-              <a className="footer__link-item" href="/docs/content-hub?type=guide">
+              <a className="footer__link-item" href="/docs/guides">
                 Guides
               </a>
             </div>
