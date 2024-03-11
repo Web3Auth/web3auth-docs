@@ -33,8 +33,8 @@ screen will continue to appear if the user has enabled MFA on other dApps. This 
 
 :::note Minimum Growth plan required
 
-This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the
-**Growth Plan**. You can use this feature in the development environment for free.
+This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the **Growth
+Plan**. You can use this feature in the development environment for free.
 
 :::
 
@@ -105,13 +105,46 @@ You can configure the order of MFA or enable/disable MFA type by passing the `mf
 
 <TabItem value="table">
 
-`deviceShareFactor` | `backUpShareFactor` | `socialBackupFactor` | `passwordFactor`
+| Parameter             | Description                                                             |
+| --------------------- | ----------------------------------------------------------------------- |
+| `deviceShareFactor?`  | MFA setting for deviceShareFactor. It accepts `MfaSetting` as a value.  |
+| `backUpShareFactor?`  | MFA setting for backUpShareFactor. It accepts `MfaSetting` as a value.  |
+| `socialBackupFactor?` | MFA setting for socialBackupFactor. It accepts `MfaSetting` as a value. |
+| `passwordFactor?`     | MFA setting for passwordFactor. It accepts `MfaSetting` as a value.     |
 
-| Parameter   | Type   | Mandatory | Description            |
-| ----------- | ------ | --------- | ---------------------- |
-| `enable`    | `bool` | Yes       | Enable/Disable MFA     |
-| `priority`  | `int`  | No        | Priority of MFA        |
-| `mandatory` | `bool` | No        | Mandatory/Optional MFA |
+</TabItem>
+
+<TabItem value="class">
+
+```kotlin
+	data class MfaSettings(
+		private var deviceShareFactor: MfaSetting? = null,
+		private var backUpShareFactor: MfaSetting? = null,
+		private var socialBackupFactor: MfaSetting? = null,
+		private var passwordFactor: MfaSetting? = null,
+	)
+```
+
+</TabItem>
+</Tabs>
+
+`MfaSetting`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter    | Description                                                                     |
+| ------------ | ------------------------------------------------------------------------------- |
+| `enable`     | Enable/Disable MFA. It accepts `Boolean` as a value.                            |
+| `priority?`  | Priority of MFA. It accepts `int` as a value, where valid range is from 1 to 4. |
+| `mandatory?` | Mandatory/Optional MFA. It acccepts `Boolean` as a value.                       |
 
 </TabItem>
 
@@ -123,17 +156,9 @@ You can configure the order of MFA or enable/disable MFA type by passing the `mf
 		var priority: Int?,
 		var mandatory: Boolean?
 	)
-
-	data class MfaSettings(
-		private var deviceShareFactor: MfaSetting? = null,
-		private var backUpShareFactor: MfaSetting? = null,
-		private var socialBackupFactor: MfaSetting? = null,
-		private var passwordFactor: MfaSetting? = null,
-	)
 ```
 
 </TabItem>
-
 </Tabs>
 
 ```kotlin

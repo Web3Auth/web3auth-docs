@@ -42,19 +42,18 @@ The Web3Auth Constructor takes an object with `Web3AuthOptions` as input.
 
 <TabItem value="table">
 
-| Parameter        | Type                      | Mandatory | Description                                                                                                                                                     |
-| ---------------- | ------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `context`        | `android.content.Context` | Yes       | Android context to launch Web-based authentication, usually is the current activity                                                                             |
-| `clientId`       | `String`                  | Yes       | Your Web3Auth Project ID                                                                                                                                        |
-| `network`        | `Network`                 | Yes       | Network to run Web3Auth, either `MAINNET`, `TESTNET`, `AQUA`, `CYAN`, `SAPPHIRE_MAINNET` or `SAPPHIRE_TESTNET`                                                  |
-| `buildEnv`       | `BuildEnv`                | No        | Option for auth service, `BuildEnv.PRODUCTION`, `BuildEnv.STAGING`, `BuildEnv.TESTING` available                                                                |
-| `redirectUrl`    | `android.net.Uri`         | No        | URL that Web3Auth will redirect API responses, default is `null`                                                                                                |
-| `whiteLabel`     | `WhiteLabelData`          | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer [WhiteLabel](/pnp/features/whitelabel) section for more info. |
-| `loginConfig`    | `LoginConfigItem`         | No        | A configuration optional object to use custom authentication. Refer [Custom Authentication](/pnp/features/custom-authentication) for more info.                 |
-| `useCoreKitKey`  | `Boolean`                 | No        | Use Core Kit Key true to the Core Kit keys.                                                                                                                     |
-| `chainNamespace` | `ChainNamespace`          | No        | A configuration optional object to use chain namespace. `EIP155`, `SOLANA` are the availale namespaces.                                                         |
-| `mfaSettings`    | `MfaSettings`             | No        | MFA Settings                                                                                                                                                    |
-| `sessionTime`    | `Int`                     | No        | Session Time in seconds, default is `86400` seconds                                                                                                             |
+| Parameter         | Description                                                                                                                                                         |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `context`         | Android context to launch Web-based authentication, usually is the current activity. It's a mandatory field, and accepts `android.content.Context` as a value.      |
+| `clientId`        | Your Web3Auth Client ID. You can get it from Web3Auth [Dashboard](https://dashboard.web3auth.io/) under project details. It's a mandatory field of type `String`    |
+| `network`         | Defines the Web3Auth network. It's a mandatory field of type Network.                                                                                               |
+| `redirectUrl`     | URL that Web3Auth will redirect API responses upon successful authentication from browser. It's a mandatory field of type `Uri`.                                    |
+| `whiteLabel?`     | WhiteLabel options for web3auth. It helps you define custom UI, branding, and translations for your brand app. It takes `WhiteLabelData` as a value.                |
+| `loginConfig?`    | Login config for the custom verifiers. It takes `HashMap<String, LoginConfigItem>` as a value.                                                                      |
+| `useCoreKitKey?`  | Use CoreKit Key to get core kit key. It's an optional field with default value as `false`.                                                                          |
+| `chainNamespace?` | Chain Namespace [`EIP155` and `SOLANA`]. It takes `ChainNamespace` as a value.                                                                                      |
+| `mfaSettings?`    | Allows developers to configure the Mfa settings for authentication. It takes `MfaSettings` as a value.                                                              |
+| `sessionTime?`    | It allows developers to configure the session management time. Session Time is in seconds, default is 86400 seconds which is 1 day. `sessionTime` can be max 7 days |
 
 </TabItem>
 
@@ -106,53 +105,6 @@ Add the below line to your `app/res/values/strings.xml` file:
     <!-- -->
 </resources>
 ```
-
-### Using the `mfaSettings` to configure MFA Order
-
-You can configure the order of MFA or enable/disable MFA type by passing the `mfaSettings` object in `Web3AuthOptions`.
-
-`MfaSettings`
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Class", value: "class" },
-  ]}
->
-
-<TabItem value="table">
-
-`deviceShareFactor` | `backUpShareFactor` | `socialBackupFactor` | `passwordFactor`
-
-| Parameter   | Type       | Mandatory | Description            |
-| ----------- | ---------- | --------- | ---------------------- |
-| `enable`    | `Boolean`  | Yes       | Enable/Disable MFA     |
-| `priority`  | `Int?`     | No        | Priority of MFA        |
-| `mandatory` | `Boolean?` | No        | Mandatory/Optional MFA |
-
-</TabItem>
-
-<TabItem value="class">
-
-```kotlin
-	data class MfaSetting(
-		var enable: Boolean,
-		var priority: Int?,
-		var mandatory: Boolean?
-	)
-
-	data class MfaSettings(
-		private var deviceShareFactor: MfaSetting? = null,
-		private var backUpShareFactor: MfaSetting? = null,
-		private var socialBackupFactor: MfaSetting? = null,
-		private var passwordFactor: MfaSetting? = null,
-	)
-```
-
-</TabItem>
-
-</Tabs>
 
 ### Session Management
 
