@@ -57,16 +57,14 @@ let web3auth = Web3Auth(W3AInitParams(
 
 The `Web3Auth` constructor takes an object called `W3AInitParams` as input. Below are the available fields of the `W3AInitParams` object.
 
-| Parameter        | Type                                         | Mandatory | Description                                                                                                                                   |
-| ---------------- | -------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `clientId`       | `String`                                     | Yes       | Your Web3Auth project Client ID.                                                                                                                     |
-| `network`        | `Network`                                    | Yes       | Web3Auth Network to run the authentication on, either `.mainnet`,`.aqua`, `.testnet`, `.cyan`, or `.sapphire_devnet` or `.sapphire_mainnet`.  |
-| `buildEnv`       | `BuildEnv`                                   | No        | Option for auth service, `production`, `staging`, or `testing`.                                                                               |
-| `sdkUrl`         | `URL`                                        | No        | Web3Auth sdk frontend to be used. This field is for advanced usage only and should not be changed.                                            |
-| `redirectUrl`    | `String`                                     | No        | redirectUrl to be passed to the SDK frontend. This field is for advanced usage only and should not be changed.                                |
-| `loginConfig`    | `[String : W3ALoginConfig]`                  | No        | An optional configuration object to customize login flow.                                                                                      |
-| `whiteLabel`     | [W3AWhiteLabelData](/sdk/pnp/ios/whitelabel) | No        | An optional configuration object to customize UI, branding, and translations for your brand. Refer to the WhiteLabeling section for more info. |
-| `chainNamespace` | `ChainNamespace`                             | No        | Chain Namespace [`eip155` and `solana`]                                                                                                       |
-| `useCoreKitKey`  | `bool`                                       | No        | Use CoreKit Key to get core kit key.                                                                                                          |
-| `mfaSettings`    | `MfaSettings`                                | No        | Settings for Multi-factor authentication                                                                                                      |
-| `sessionTime`    | `Int`                                        | No        | Session time to be passed to set the session of a user that will be returned to Web3AuthState. _**Maximum value is 7 days.**_                 |
+| Parameter         | Description                                                                                                                                                         |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`        | Your Web3Auth Client ID. You can get it from Web3Auth [Dashboard](https://dashboard.web3auth.io/) under project details. It's a mandatory field of type `String`    |
+| `network`         | Defines the Web3Auth network. It's a mandatory field of type Network.                                                                                               |
+| `redirectUrl`     | URL that Web3Auth will redirect API responses upon successful authentication from browser. It's a mandatory field of type `URL`.                                    |
+| `whiteLabel?`     | WhiteLabel options for web3auth. It helps you define custom UI, branding, and translations for your brand app. It takes `W3AWhiteLabelData` as a value.             |
+| `loginConfig?`    | Login config for the custom verifiers. It takes Dictonary of `[String: W3ALoginConfig]` as a value.                                                                 |
+| `useCoreKitKey?`  | Use CoreKit Key to get core kit key. It's an optional field with default value as `false`.                                                                          |
+| `chainNamespace?` | Chain Namespace [`eip155` and `solana`]. It takes `ChainNamespace` as a value.                                                                                      |
+| `mfaSettings?`    | Allows developers to configure the Mfa settings for authentication. It takes `MfaSettings` as a value.                                                              |
+| `sessionTime?`    | It allows developers to configure the session management time. Session Time is in seconds, default is 86400 seconds which is 1 day. `sessionTime` can be max 7 days |

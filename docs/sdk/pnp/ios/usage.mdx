@@ -32,15 +32,15 @@ the login method for specific social logins such as Google, Apple, Facebook, etc
 
 <TabItem value="table">
 
-| Parameter           | Type                  | Mandatory | Description                                                                                                                                                                                        |
-| ------------------- | --------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginProvider`     | `Web3AuthProvider` 	  | No        | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `GITHUB`, `LINKEDIN`, `TWITTER`, `WEIBO`, `LINE`, `EMAIL_PASSWORD`, `EMAIL_PASSWORDLESS`, `JWT` |
-| `dappShare`         | `String`              | No        | Dapp share can be used to pass dapp share url, default is `nil`                                                                                                                                    |
-| `extraLoginOptions` | `ExtraLoginOptions`   | No        | You can pass various OAuth-supported options, default is `nil`                                                                                                                                     |
-| `redirectUrl`       | `String`              | No        | Url where user will be redirected after successfull login. By default user will be redirected to the same page where login will be initiated, the default is `nil`                                 |
-| `appState`          | `String`              | No        | `appState` can be used to keep track of the app state when the user is redirected to the app after login, default is `nil`                                                                         |
-| `mfaLevel`          | `MFALevel`            | No        | MFA level can be used to pass 2FA screen shown during login, default is `nil`, shown every 3rd login.                                                                                              |
-| `curve`             | `SUPPORTED_KEY_CURVES`| No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum, default is `SECP256K1`.                                                                                |
+| Parameter            | Description                                                                                                                                                                                                                                                                                                                                                                            |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginProvider`      | It sets the OAuth login method to be used. You can use any of the supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`.                                                                                                                                        |
+| `extraLoginOptions?` | It can be used to set the OAuth login options for corresponding `loginProvider`. For instance, you'll need to pass user's email address as. Default value for the field is `nil`, and it accepts `ExtraLoginOptions` as a value.                                                                                                                                                       |
+| `redirectUrl?`       | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated. Default value for the field is `nil`, and accepts `URL` as a value.                                                                                                                                                                          |
+| `appState?`          | It can be used to keep track of the app state when user will be redirected to app after login. Default is `nil`, and accepts `String` as a value.                                                                                                                                                                                                                                      |
+| `mfaLevel?`          | Customize the MFA screen shown to the user during OAuth authentication. Default value for field is `MFALevel.DEFAULT`, which shows MFA screen every 3rd login. It accepts `MFALevel` as a value.                                                                                                                                                                                       |
+| `dappShare?`         | Custom verifier logins can get a dapp share returned to them post successful login. This is useful if the dapps want to use this share to allow users to login seamlessly. It accepts `String` as a value.                                                                                                                                                                             |
+| `curve?`             | It will be used to determine the public key encoded in the jwt token which returned in `getUserInfo` function after user login. This parameter won't change format of private key returned by We3Auth. Private key returned by `getPrivKey` is always secp256k1. To get the ed25519 key you can use `getEd25519PrivKey` method. The default value is `SUPPORTED_KEY_CURVES.SECP256K1`. |
 
 </TabItem>
 
@@ -74,7 +74,8 @@ public struct W3ALoginParams: Codable {
 
 ### `getPrivkey()`
 
-Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private key which can be used to sign transactions on EVM compatible chains.
+Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private key which can be used to sign transactions on EVM
+compatible chains.
 
 ### `getEd25519PrivKey()`
 
@@ -218,82 +219,6 @@ login(provider: .JWT)
 ```
 
 </TabItem>
-
-</Tabs>
-
-## ExtraLoginOptions
-
-### Arguments
-
-`ExtraLoginOptions`
-
-```swift
-Web3Auth.login(W3ALoginParams(
-	provider = selectedLoginProvider,
-    extraLoginOptions = ExtraLoginOptions(login_hint: "hello@web3auth.io")
-))
-```
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Struct", value: "struct" },
-  ]}
->
-
-<TabItem value="table">
-
-| Parameter                   | Type                | Mandatory | Description                                                            |
-| --------------------------- | ------------------- | --------- | ---------------------------------------------------------------------- |
-| `domain`                    | `String?`           | No        | Domain of the app                                                      |
-| `client_id`                 | `String?`           | No        | client_id from Web3Auth Dashboard                                      |
-| `leeway`                    | `Int?`              | No        | The value in seconds used to account for clock skew in JWT expirations |
-| `verifierIdField`           | `String?`           | No        | The field in the jwt token that maps to the verifier id.               |
-| `isVerifierIdCaseSensitive` | `Bool?`          	| No        | Whether the verifier id field is case sensitive                        |
-| `display`                   | `Display?`          | No        | Display                                                                |
-| `prompt`                    | `Prompt?`           | No        | Prompt                                                                 |
-| `max_age`                   | `String?`           | No        | max_age                                                                |
-| `ui_locales`                | `String?`           | No        | ui_locales to be shown on the modal                                    |
-| `id_token_hint`             | `String?`           | No        | Previously issued ID Token.                                            |
-| `id_token`                  | `String?`           | No        | JWT (ID Token) to be passed for Login.                                 |
-| `login_hint`                | `String?`           | No        | Email used for EMAIL_PASSWORDLESS                                      |
-| `acr_values`                | `String?`           | No        | acc_values                                                             |
-| `scope`                     | `String?`           | No        | scope                                                                  |
-| `audience`                  | `String?`           | No        | audience                                                               |
-| `connection`                | `String?`           | No        | connection                                                             |
-| `redirect_uri`              | `String?`           | No        | redirect_uri                                                           |
-| `additionalParams`          | `[String : String]?`| No        | additonal parameters                                                   |
-
-</TabItem>
-
-<TabItem value="struct">
-
-```swift
-public struct ExtraLoginOptions: Codable{
-  let display: String?
-  let prompt: String?
-  let max_age: String?
-  let ui_locales: String?
-  let id_token_hint: String?
-  let id_token: String?
-  let login_hint: String?
-  let acr_values: String?
-  let scope: String?
-  let audience: String?
-  let connection: String?
-  let domain: String?
-  let client_id: String?
-  let redirect_uri: String?
-  let leeway: Int?
-  let verifierIdField: String?
-  let isVerifierIdCaseSensitive: Bool?
-  let additionalParams: [String : String]?
-}
-```
-
-</TabItem>
-
 </Tabs>
 
 ## Session Management
