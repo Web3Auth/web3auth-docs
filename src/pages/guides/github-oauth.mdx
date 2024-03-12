@@ -40,19 +40,22 @@ web integration would be like this steps:
    - `GET https://github.com/login/oauth/authorize`
 
 2. Users are redirected back to your site by GitHub
+
    - Exchange this code for an access token:
    - `POST https://github.com/login/oauth/access_token`
    - ```
        Accept: application/json
        {
-       "access_token":"gho_16C7e42F292c6912E7710c838347Ae178B4a",
+       "access_token":"gho_16C7e42....e178B4a",
        "scope":"repo,gist",
        "token_type":"bearer"
        }
      ```
+
    ```
 
    ```
+
 3. The Token is sent to Web3auth (Instead of access the Github API.)
    - Github sends a `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function. Web3Auth SDK will generate a private key for
      the user, in a self custodial way, resulting in easy onboarding for your user to the application.
@@ -136,7 +139,7 @@ private key.
       "created_at":"2011-07-28T17:24:29Z",
       "updated_at":"2024-02-29T15:54:30Z"
    },
-   "jwtToken":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIs...oWw",
+   "jwtToken":"eyJhbGciOiJSUzI1NiIsInR5cC....oWw",
    "ethData":{
       "ethPrivateKey":"f8fe70c14868b709b0....1498a9db5",
       "ethPublicAddress":[
