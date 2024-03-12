@@ -33,17 +33,17 @@ The Web3Auth Constructor takes a class `Web3AuthOptions` as input. This class ha
 
 <TabItem value="table">
 
-| Parameter        | Type                              | Mandatory | Description                                                                                                                                |
-| ---------------- | --------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `clientId`       | `string`                          | Yes       | The Client ID of your Web3Auth Application.                                                                                                |
-| `redirectUrl`    | `string`                          | Yes       | The Redirect URL of your Web3Auth Application.                                                                                             |
-| `network`        | `FNetwork`                        | No        | The Network of your Web3Auth Application. Defaults to `FNetwork::Mainnet`. MAINNET, TESTNET, CYAN, AQUA, SAPPHIRE_DEVNET, SAPPHIRE_MAINNET |
-| `whiteLabel`     | `FWhiteLabelData`                 | No        | The White Label Data of your Web3Auth Application.                                                                                         |
-| `loginConfig`    | `TMap<FString, FLoginConfigItem>` | No        | The Login Config of your Web3Auth Application.                                                                                             |
-| `chainNamespace` | `FChainNamespace`                 | No        | The Chain Namespace of your Web3Auth Application.                                                                                          |
-| `useCoreKitKey`  | `bool`                            | No        | Whether to use CoreKit Key for authentication.                                                                                             |
-| `mfaSettings`    | `FMfaSettings`                    | No        | The MFA Settings of your Web3Auth Application.                                                                                             |
-| `sessionTime`    | `int`                             | No        | The Session Time of your Web3Auth Application.                                                                                             |
+| Parameter         | Description                                                                                                                                                         |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`        | Your Web3Auth Client ID. You can get it from Web3Auth [Dashboard](https://dashboard.web3auth.io/) under project details. It's a mandatory field of type `FString`   |
+| `network`         | Defines the Web3Auth network. It's a mandatory field of type Network.                                                                                               |
+| `redirectUrl`     | URL that Web3Auth will redirect API responses upon successful authentication from browser. It's a mandatory field of type `FString`.                                |
+| `whiteLabel?`     | WhiteLabel options for web3auth. It helps you define custom UI, branding, and translations for your brand app. It takes `FWhiteLabelData` as a value.               |
+| `loginConfig?`    | Login config for the custom verifiers. It takes `TMap<FString, FLoginConfigItem>` as a value.                                                                       |
+| `useCoreKitKey?`  | Use CoreKit Key to get core kit key. It's an optional field with default value as `false`.                                                                          |
+| `chainNamespace?` | Chain Namespace [`EIP155` and `SOLANA`]. It takes `FChainNamespace` as a value.                                                                                     |
+| `mfaSettings?`    | Allows developers to configure the Mfa settings for authentication. It takes `FMfaSettings` as a value.                                                             |
+| `sessionTime?`    | It allows developers to configure the session management time. Session Time is in seconds, default is 86400 seconds which is 1 day. `sessionTime` can be max 7 days |
 
 </TabItem>
 
