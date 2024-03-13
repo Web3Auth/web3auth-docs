@@ -1,0 +1,201 @@
+---
+title: Integrating Github OAuth with Web3Auth for Authentication
+image: "guides/banners/github.png"
+description: Learn how to integrate Github OAuth with Web3auth
+type: guide
+tags: [github, oauth, authentication]
+date: March 8, 2024
+author: Web3Auth Team
+order: 1
+communityPortalTopicId:
+---
+
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Integrating Github OAuth with Web3Auth for Authentication"
+  description="Learn how to integrate Github OAuth with Web3auth."
+  image="https://web3auth.io/docs/guides/banners/github.png"
+  slug="/guides/github-oauth"
+/>
+
+This guide will cover the basics of how to integrate Web3Auth with GitHub OAuth for authentication. Web3Auth is employed to provide Ethereum private
+key access and public address and GitHub OAuth is used to authenticate users
+
+Full example: https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web3auth-byoa/github-oauth-connection
+
+We use two web3auth libraries in this project: `@web3auth/ethereum-provider` and `@web3auth/node-sdk`.
+
+To install them, run: `npm install @web3auth/ethereum-provider @web3auth/node-sdk`
+
+## How it works?
+
+As explain in the [github OAuth Docs](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps#web-application-flow), The
+web integration would be like this steps:
+
+![Github Flow](/images/oauth/github-oauth-flow.jpg)
+
+1. Request a user's GitHub identity
+
+   - `GET https://github.com/login/oauth/authorize`
+
+2. Users are redirected back to your site by GitHub
+
+   - Exchange this code for an access token:
+   - `POST https://github.com/login/oauth/access_token`
+   - ```
+       Accept: application/json
+       {
+       "access_token":"gho_16C7e42....e178B4a",
+       "scope":"repo,gist",
+       "token_type":"bearer"
+       }
+     ```
+
+3. The Token is sent to Web3auth (Instead of access the Github API.)
+   - Github sends a `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function. Web3Auth SDK will generate a private key for
+     the user, in a self custodial way, resulting in easy onboarding for your user to the application.
+
+## Create a JWKS file
+
+A JWKS stands for JSON Web Key Set. It is a set of keys containing the public keys that should be used to verify any JSON Web Token (JWT) issued by
+the authorization server and signed using the RS256 signing algorithm.
+
+If you don't know how to create a JWKS, you can follow this
+[web3auth tutorial](https://web3auth.io/docs/auth-provider-setup/byo-jwt-providers#how-to-create-jwks). This file must be located on a public
+endpoint. To test the example, you will need to modify the file located in the root directory of the project.
+
+Both the private and the public keys, that you used to create the JWKS, must be in the server directory. In our project, they are called `private.pem`
+and `public.pem`.
+
+## Set up Custom JWT Verifier
+
+![Custom JWT Provider on Web3Auth Dashboard](/images/dashboard/create-verifier-custom-jwt.png)
+
+To create a custom verifier for your JWT Provider, you'll need the follow this steps:
+
+1. The verifier Identifier, which would be the name. This name should be used in your .ENV file as `WEB3AUTH_VERIFIER`.
+
+2. **JWT Verifier ID**: JWT Verifier ID is the unique identifier to publicly represent a user on a verifier. e.g: `sub`, `email`, or even a custom
+   field of your JWT payload that is unique in your system for each user. In this case, we are using the `sub` field.
+
+3. **JWK Endpoint**: An endpoint containing the JWKS used to sign the JWT. In my example I'm using a static github url file.
+
+4. In the Select JWT Validation. You will add `iss` and `aud` fields (eplace both with your real Github Client ID.).
+   - The `iss` field is the issuer of the JWT. In this case "https://github.com"
+   - The `aud` field is the audience of the JWT. In this case "https://github.com/login/oauth/access_token"
+
+![Custom JWT Provider in Web3Auth Dashboard](/images/dashboard/custom-JWT-provider-validate.png)
+
+## How to create a App in Github
+
+- In the upper-right corner of any page on GitHub, click your profile photo.
+- Navigate to your account settings.
+- For an app owned by a personal account, click Settings.
+- For an app owned by an organization: (Click Your organizations.)
+- To the right of the organization, click Settings.
+- In the left sidebar, click Developer settings.
+- In the left sidebar, click GitHub Apps or OAuth apps.
+
+![CCreate a github App](/images/oauth/github-create-app.jpg)
+
+You have to configure you Homepage URL: `http://localhost:5005` and the callback URL `http://localhost:5005/github/callback`
+
+After creating the app, you'll need the Client Application ID into the .ENV file. Then click on "Generate a new client secret" and copy to use it also
+in the .ENV file.
+
+## Running the example
+
+Execute `npm run dev`. To initiate the Github OAuth flow, Open your browser to `http://localhost:5005/github/login`
+
+Finally, after loginning in as a result, you will receive in the callback url a JSON with the user data, the JWT token, the Ethereum address and
+private key.
+
+```json
+{
+   "userData":{
+      "login":"<alias>",
+      "id":<id>,
+      "node_id":"MSSSSS",
+      "gravatar_id":"",
+      "url":"https://api.github.com/users/<name>",
+      "type":"User",
+      "site_admin":false,
+      "name":"Name",
+      "company":"Web3Auth",
+      "location":"AR, CABA",
+      "email":null,
+      "hireable":null,
+      "bio":"<description>",
+      "twitter_username":null,
+      "public_repos":43,
+      "public_gists":0,
+      "followers":10,
+      "following":12,
+      "created_at":"2011-07-28T17:24:29Z",
+      "updated_at":"2024-02-29T15:54:30Z"
+   },
+   "jwtToken":"eyJhbGciOiJSUzI1NiIsInR5cC....oWw",
+   "ethData":{
+      "ethPrivateKey":"f8fe70c14868b709b0....1498a9db5",
+      "ethPublicAddress":[
+         "0x3d9c0cfff5c0a25....5a53fd6f4b678990f9"
+      ]
+   }
+}
+```
+
+## Code guide
+
+In the example, we are using express for the server. This are the Endpoint that we are using:
+
+- The initial endpoint to start the Github OAuth flow.
+
+```javascript
+app.get("/github/login", (req, res) => {
+  res.redirect(`https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${githubRedirectUri}`);
+});
+```
+
+- The Callback endpoint to receive the JWT token and exchange it for an access token.
+
+```javascript
+app.get("/github/callback", async (req, res) => {
+  const code = req.query.code;
+  try {
+    const accessToken = await exchangeCodeForAccessToken(code);
+    const userData = await fetchGitHubUserDetails(accessToken);
+    const jwtToken = generateJwtToken(userData);
+    const ethData = await getPrivateKey(jwtToken, userData.id.toString());
+    res.json({ userData, jwtToken, ethData });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error during GitHub authentication");
+  }
+});
+```
+
+In the `getPrivateKey` function, we use Web3auth to establish a connection with the provider and get both the address and the private key.
+
+```javascript
+const getPrivateKey = async (idToken: string, verifierId: string) => {
+    const web3authNodeprovider = await web3auth.connect({
+        verifier: process.env.WEB3AUTH_VERIFIER,
+        verifierId,
+        idToken,
+    });
+    // The private key returned here is the CoreKit Key
+    const ethPrivateKey = await web3authNodeprovider.request({ method: "eth_private_key" });
+    const ethPublicAddress = await web3authNodeprovider.request({ method: "eth_accounts" });
+    const ethData = {
+        ethPrivateKey,
+        ethPublicAddress,
+    };
+    return ethData;
+};
+```
+
+References
+
+- [Custom JWT providers in Web3auth](https://web3auth.io/docs/auth-provider-setup/byo-jwt-providers)
+- [Github OAUTH 2.0 flow](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps#web-application-flow)
