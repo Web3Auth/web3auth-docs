@@ -154,12 +154,6 @@ const sidebars: SidebarsConfig = {
       label: "Migration Guides",
       items: ["core-kit/migration-guides/sfa-flutter-v1-to-v2"],
     },
-    // Account Abstraction Section
-    {
-      type: "html",
-      value: "<span class='sidebarHeading'>Account Abstraction</span>",
-      defaultStyle: true,
-    },
     // Resources Section
     {
       type: "html",
