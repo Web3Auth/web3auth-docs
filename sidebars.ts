@@ -484,6 +484,7 @@ const sidebars: SidebarsConfig = {
             "connect-blockchain/other/starkex",
             "connect-blockchain/other/starknet",
             "connect-blockchain/other/tezos",
+            "connect-blockchain/other/sui",
           ],
           collapsible: true,
           collapsed: false,
