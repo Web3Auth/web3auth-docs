@@ -16,10 +16,10 @@ process according to your own needs, by taking the following parameters:
 
 <TabItem value="table">
 
-| Variable      | Type                  | Description                                             | Mandatory |
-| ------------- | --------------------- | ------------------------------------------------------- | --------- |
-| `walletName`  | `WALLET_ADAPTER_TYPE` | Wallet Adapter you want to use for logging in your user | Yes       |
-| `loginParams` | `object`              | Login Parameters specific to your wallet adapter        | No        |
+| Variable       | Description                                                                                |
+| -------------- | ------------------------------------------------------------------------------------------ |
+| `walletName`   | Wallet Adapter you want to use for logging in your user. It accepts `WALLET_ADAPTER_TYPE`. |
+| `loginParams?` | Login Parameters specific to your wallet adapter.                                          |
 
 </TabItem>
 
@@ -30,7 +30,7 @@ process according to your own needs, by taking the following parameters:
 ```
 
 ```tsx
-export type WALLET_ADAPTER_TYPE = typeof WALLET_ADAPTERS[keyof typeof WALLET_ADAPTERS];
+export type WALLET_ADAPTER_TYPE = (typeof WALLET_ADAPTERS)[keyof typeof WALLET_ADAPTERS];
 export declare const WALLET_ADAPTERS: {
   OPENLOGIN: string;
   WALLET_CONNECT_V2: string;

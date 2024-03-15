@@ -129,17 +129,19 @@ below.
 
 <TabItem value="table">
 
-| Parameter     | Type                                                  | Mandatory | Description                                                                                                                                                                                                           |
-| ------------- | ----------------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| clientId      | String                                                | Yes       | Your Web3Auth project ID obtained from the Web3Auth dashboard                                                                                                                                                         |
-| network       | Choose between `sapphire_mainnet`, `sapphire_testnet` | Yes       | Web3Auth network to run on, either `sapphire_mainnet` or `sapphire_testnet`                                                                                                                                           |
-| redirectUrl   | String                                                | No        | The redirectUrl that the Web3Auth login flow will use to redirect back to the app.                                                                                                                                    |
-| loginConfig   | LoginConfig                                           | No        | A configuration optional object to customize login flow.                                                                                                                                                              |
-| whiteLabel    | WhiteLabelData                                        | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer to the WhiteLabeling section for more info.                                                                         |
-| sessionTime   | Any number from 1 to 86400\*7. Default is 86400       | No        | Decides how long should a login session last in seconds                                                                                                                                                               |
-| mfaSettings   | MfaSettings                                           | No        | This parameter will be used to enable mfa factors and set priority on UI listing. List of factors available <ul><li>backUpShareFactor</li><li>socialFactor</li><li>passwordFactor</li><li>deviceShareFactor</li></ul> |
-| useCoreKitKey | boolean                                               | No        | Use `useCoreKitKey` as `true`, if you're using this SDK with the Single Factor Auth Web SDK                                                                                                                           |
-| sdkUrl        | String                                                | No        | The url to the SDK frontend, should not need any changes normally.                                                                                                                                                    |
+| Parameter          | Description                                                                                                                                                         |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`         | Your Web3Auth Client ID. You can get it from Web3Auth [Dashboard](https://dashboard.web3auth.io/) under project details. It's a mandatory field of type `string`    |
+| `network`          | Defines the Web3Auth network. It's a mandatory field of type `OPENLOGIN_NETWORK_TYPE`.                                                                              |
+| `redirectUrl`      | URL that Web3Auth will redirect API responses upon successful authentication from browser. It's a mandatory field of type `string`.                                 |
+| `whiteLabel?`      | WhiteLabel options for web3auth. It helps you define custom UI, branding, and translations for your brand app. It takes `WhiteLabelData` as a value.                |
+| `loginConfig?`     | Login config for the custom verifiers. It takes `LoginConfig` as a value.                                                                                           |
+| `useCoreKitKey?`   | Use CoreKit Key to get core kit key. It's an optional field with default value as `false`.                                                                          |
+| `mfaSettings?`     | Allows developers to configure the Mfa settings for authentication. It takes `MfaSettings` as a value.                                                              |
+| `sessionTime?`     | It allows developers to configure the session management time. Session Time is in seconds, default is 86400 seconds which is 1 day. `sessionTime` can be max 7 days |
+| `storageServerUrl` | Specify a custom storage url. Default value is `https://broadcast-server.tor.us`.                                                                                   |
+| `storageKey`       | Specify the storage key. Setting to "local" will persist social login session accross browser tabs. Available options are "local" and "session".                    |
+| `useMpc`           | Whether to use openlogin MPC or not. Default value is `false`.                                                                                                      |
 
 </TabItem>
 
@@ -152,14 +154,6 @@ export type SdkInitParams = {
    * dapp on {@link "https://dashboard.web3auth.io"| developer dashboard}
    */
   clientId: string;
-  /**
-   * network specifies the openlogin sdk url to be used.
-   *
-   * - `'mainnet'`: https://app.openlogin.com will be used which is the production version.
-   * - `'cyan'`: https://cyan.openlogin.com will be used which is the production cyan version.
-   * - `'testnet'`: https://testing.openlogin.com will be used which is the testing version.
-   * - `'development'`: http://localhost:3000 will be used for development purpose.
-   */
   network: OPENLOGIN_NETWORK_TYPE;
   /**
    * This parameter will be used to change the build environment of openlogin sdk.
