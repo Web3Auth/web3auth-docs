@@ -73,6 +73,7 @@ const config: Config = {
         {
           label: "Resources",
           type: "dropdown",
+          to: "/resources",
           position: "left",
           items: [
             {
@@ -99,6 +100,7 @@ const config: Config = {
         {
           label: "Help",
           type: "dropdown",
+          to: "/troubleshooting",
           position: "left",
           items: [
             {
@@ -206,10 +208,6 @@ const config: Config = {
           {
             from: "/developing-with-web3auth/",
             to: "/quick-start",
-          },
-          {
-            from: "/sdk/web/plugins/torus-wallet",
-            to: "/sdk/helper-sdks/plugins/evm-wallet",
           },
           {
             from: "/sdk/web/modal/wagmi-connector",
@@ -372,8 +370,8 @@ const config: Config = {
             to: "/sdk/pnp/web/modal/mfa",
           },
           {
-            from: "/sdk/helper-sdks/providers/other",
-            to: "/sdk/helper-sdks/providers/common",
+            from: "/sdk/providers/other",
+            to: "/sdk/providers/common",
           },
           {
             from: "/sdk/tkey/initialization",
@@ -527,6 +525,14 @@ const config: Config = {
             from: "/pnp/features/dapp-share",
             to: "/features/mfa",
           },
+          {
+            from: "/auth-provider-setup/federated-identity-providers",
+            to: "/auth-provider-setup/authentication-service-providers",
+          },
+          {
+            from: "/auth-provider-setup/byo-jwt-providers",
+            to: "/auth-provider-setup/byo-jwt-provider",
+          },
         ],
         createRedirects(existingPath) {
           if (existingPath.includes("/guides/")) {
@@ -571,11 +577,8 @@ const config: Config = {
           if (existingPath.includes("quickstart")) {
             return [existingPath.replace("quickstart", "quick-start")];
           }
-          if (existingPath.includes("/helper-sdks/providers")) {
-            return [existingPath.replace("/helper-sdks/providers", "/web/providers")];
-          }
-          if (existingPath.includes("/helper-sdks/plugins")) {
-            return [existingPath.replace("/helper-sdks/plugins", "/web/plugins")];
+          if (existingPath.includes("/providers")) {
+            return [existingPath.replace("/providers", "/web/providers")];
           }
           if (existingPath.includes("/pnp")) {
             return [

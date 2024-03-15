@@ -1,27 +1,71 @@
 ---
-title: Creating Verifiers to use Custom Authentication
-sidebar_label: Create Verifiers
+title: Verifiers
+sidebar_label: Verifiers
 displayed_sidebar: resources
-description: "Creating Verifiers to use Custom Authentication | Documentation - Web3Auth"
+description: Verifiers | Auth Provider Setup | Documentation - Web3Auth"
 image: "images/docs-meta-cards/documentation-card.png"
 ---
 
-### What is a Verifier?
+A verifier is essentially a configuration that contains information about the OAuth provider you've chosen for your application. It acts as a bridge
+between Web3Auth and the OAuth provider, enabling the Auth Network nodes to query and validate JWT tokens effectively.
 
-A verifier is a piece of information about the OAuth provider being used by the application, which is queried by web3auth auth network nodes from a
-smart contract deployed on the Ethereum blockchain to verify the JWT token.
+Web3Auth employs a blockchain based on Polkadot to store and manage verifier information securely. This blockchain approach ensures that verifier data
+is accessible to Auth Network nodes in a decentralized and tamper-proof manner, facilitating reliable authentication across the Web3Auth ecosystem.
 
-**There are two types of `Verifiers` at Web3Auth:**
+A verifier contains the necessary information for Web3Auth's network nodes to validate the JWT token provided by an authentication service. This
+process ensures that the login attempt is legitimate and that the user controls the associated social or external account.
 
-1. **`Default Verifiers`**: These are the verifiers associated with OAuth providers(Google, Facebook, Apple etc.) which are owned and managed by
-   Web3Auth's account and **_migration from default verifiers to custom verifiers is not possible._**
-2. **`Custom Verifiers`**: If you want to manage your OAuth providers(Google, Facebook, Apple etc.) yourself or to use some Federated Identity
-   Providers like Auth0, Firebase, AWS Cognito, Okta etc., or even your Custom JWT Authentication, you'll need to create a verifier under a project on
-   the Web3Auth's dashboard. `Social Login`, `Custom` or `Aggregate Multiple Providers` are the types of verifiers you can create on
-   [Web3Auth Dashboard](https://dashboard.web3auth.io/).
+## Types of Verifiers
 
-**For users to be able to log in using a custom authentication flow, you will need to use a _Custom Verifier_.
-[The wallet generated for each user is specific to a verifier.](/troubleshooting/different-private-key#verifier)**
+Web3Auth's design accommodates a variety of authentication scenarios through three primary verifier types, each catering to different integration
+needs and offering distinct advantages:
+
+### Default Verifiers
+
+For the basic integration of Web3Auth Plug and Play, we shield you from the complexities of creating and managing verifiers. This is done by providing
+default verifiers for the most popular social login providers, such as Google, Facebook, Twitter, and more. These default verifiers are pre-configured
+and ready to use, allowing you to get started with Web3Auth quickly and easily.
+
+However, it is highly recommended to create custom verifiers for your application, as they offer more flexibility and control over the authentication
+flow. Some other caveats of using default verifiers are:
+
+- **Migration from Default Verifiers to Custom Verifiers is not possible**: Once the keys are assigned for a particular verifier, they cannot be
+  changed.
+- **Aggregation of the default verifier is not possible**: If you want to any aggregate two/more social providers, like Google and Email Passwordless,
+  you will need to create an Aggregate Verifier, which is not possible if you start with:
+  - a Default Verifier
+  - Social Login Providers
+  - Custom Providers
+
+### Social Login Verifiers
+
+These verifiers simplify the integration of popular social login options - Google, Facebook, Discord, Twitch, and through Auth0, an array of
+additional services. This straightforward approach is especially beneficial for applications employing an implicit login flow, ensuring a hassle-free
+setup for both developers and users. Head over to the particular documentation for the social login provider you want to integrate with Web3Auth.
+
+### Custom Verifiers
+
+For those seeking greater control or needing to integrate authentication services not directly supported within Web3Auth's dashboard, custom verifiers
+offer a solution. Whether you're leveraging your own backend authentication system or connecting to various social login providers, custom verifiers
+provide the flexibility to manually configure your authentication flow. This setup is particularly useful for applications integrating federated
+identity providers like Firebase, Cognito, or Okta, allowing for a tailored authentication experience.
+
+### Aggregate Verifiers
+
+The digital landscape often requires users to authenticate via multiple methods. However, with multiple providers, you'll need to create multiple
+verifiers. However, the [wallet generated for each user is specific to a verifier](/troubleshooting/different-private-key#verifier).
+
+Aggregate verifiers address this need by enabling a unified identity across different login mechanisms. For instance, combining Google and Email
+Passwordless logins under a single verifier ensures that users receive the same private key regardless of their chosen method. These login methods
+should share the same verifier identifier, e.g., email or username which is unique to the user.
+
+This process involves creating an aggregate verifier, followed by sub verifiers for each login method.
+
+:::info
+
+Learn how to create an [Aggregate Verifier](/auth-provider-setup/aggregate-verifier).
+
+:::
 
 :::tip
 
@@ -34,11 +78,11 @@ smart contract deployed on the Ethereum blockchain to verify the JWT token.
 
 You can read more about verifiers [in this GitHub discussion](https://github.com/orgs/Web3Auth/discussions/427#discussioncomment-3442052).
 
+## Create Verifier
+
 The `Custom Authentication` tab of a project looks something like this:
 
 ![Custom Authentication Dashboard](/images/dashboard/custom-authentication.png)
-
-## Create Verifier
 
 Once you click on the `Create Verifier` button, you'll see a page similar to this:
 
@@ -62,9 +106,9 @@ The following is the list we have on our Dashboard:
    - [Facebook](/auth-provider-setup/social-providers/facebook)
    - [Twitch](/auth-provider-setup/social-providers/twitch)
    - [Discord](/auth-provider-setup/social-providers/discord)
-   - [Auth0](/auth-provider-setup/federated-identity-providers#auth0)
+   - [Auth0](/auth-provider-setup/authentication-service-providers#auth0)
 2. Custom Providers
-   - [Custom JWT](/auth-provider-setup/byo-jwt-providers)
+   - [Custom JWT](/auth-provider-setup/byo-jwt-provider)
 3. Aggregate Multiple Providers
    - [Aggregate Verifier](/auth-provider-setup/aggregate-verifier)
 
@@ -87,16 +131,3 @@ Click on the verifier or the three dots next to the verifier you wish to edit an
 
 The `Edit Verifier` page will appear with previously filled information. Make the necessary changes and click on the `Update Verifier` button at the
 bottom.
-
-## Aggregate Verifiers
-
-Developers can create `Aggregate Multiple Provider` from the Web3Auth Dashboard by combining multiple login methods to create a verifier to get the
-same address for their user regardless of their login providers. For example, combining a `Google` and `Email Passwordless` login or `Google` and
-`GitHub` via Auth0 to access the same address for your user. These login methods should share the same Verifier ID, e.g., `email`; Such verifiers are
-called `Single ID Verifiers`.
-
-:::info Aggregate Verifier Set up
-
-Check out the [**Aggregate Verifier page**](/auth-provider-setup/aggregate-verifier) to set up your aggregate verifier.
-
-:::

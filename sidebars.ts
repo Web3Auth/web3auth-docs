@@ -116,56 +116,15 @@ const sidebars: SidebarsConfig = {
     "features/mobile",
     // "features/passkeys",
     "features/server-side-verification",
-    // {
-    //   type: "category",
-    //   label: "Server Side Verification",
-    //   link: { type: "doc", id: "features/server-side-verification/server-side-verification" },
-    //   items: [
-    //     "features/server-side-verification/social-login-users",
-    //     {
-    //       type: "category",
-    //       label: "External Wallets",
-    //       collapsed: false,
-    //       collapsible: true,
-    //       link: { type: "doc", id: "features/server-side-verification/external-wallets" },
-    //       items: [
-    //         {
-    //           type: "link",
-    //           label: "Sign in with Web3",
-    //           href: "https://siww.web3auth.io/",
-    //         },
-    //         {
-    //           type: "link",
-    //           label: "Sign in with Solana",
-    //           href: "https://siws.web3auth.io/",
-    //         },
-    //         {
-    //           type: "link",
-    //           label: "Sign in with Starkware",
-    //           href: "https://siwst.web3auth.io/",
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
     "features/session-management",
     "features/user-management",
     "features/wallet-pregeneration",
     "features/wallet-aggregation",
     "features/whitelabel",
-
-    // {
-    //   type: "category",
-    //   label: "Whitelabel",
-    //   link: { type: "doc", id: "features/whitelabel/whitelabel" },
-    //   items: ["features/whitelabel/login-modal", "features/whitelabel/user-flow-screens", "features/whitelabel/torus-wallet-plugin"],
-    // },
-
     {
       type: "category",
       label: "Contribute",
-      link: { type: "doc", id: "contribute/contribute" },
-      items: ["contribute/bug-bounty"],
+      items: ["contribute/contribute", "contribute/bug-bounty"],
     },
     {
       Legal: [
@@ -174,8 +133,8 @@ const sidebars: SidebarsConfig = {
         "legal/terms-and-conditions",
         {
           type: "link",
-          label: "Trust Center", // The link label
-          href: "https://trust.web3auth.io", // The external URL
+          label: "Trust Center",
+          href: "https://trust.web3auth.io",
         },
       ],
     },
@@ -248,29 +207,18 @@ const sidebars: SidebarsConfig = {
     "resources",
     {
       type: "category",
-      label: "Dashboard Setup",
-      link: { type: "doc", id: "dashboard-setup/dashboard-setup" },
-      items: [
-        "dashboard-setup/projects-and-analytics",
-        "dashboard-setup/whitelisting",
-        "dashboard-setup/enable-interoperability",
-        "dashboard-setup/setup-custom-authentication",
-        "dashboard-setup/billing-and-usage",
-        "dashboard-setup/roles-and-permissions",
-      ],
-    },
-    {
-      type: "category",
       label: "Auth Provider Setup",
-      link: { type: "doc", id: "auth-provider-setup/auth-provider-setup" },
       items: [
+        "auth-provider-setup/auth-provider-setup",
         "auth-provider-setup/verifiers",
         "auth-provider-setup/aggregate-verifier",
+        "auth-provider-setup/authentication-service-providers",
+        "auth-provider-setup/byo-jwt-provider",
         {
           type: "category",
           label: "Social Providers",
-          link: { type: "doc", id: "auth-provider-setup/social-providers/social-providers" },
           items: [
+            "auth-provider-setup/social-providers/social-providers",
             "auth-provider-setup/social-providers/twitter",
             "auth-provider-setup/social-providers/google",
             "auth-provider-setup/social-providers/facebook",
@@ -292,25 +240,24 @@ const sidebars: SidebarsConfig = {
           collapsible: true,
           collapsed: false,
         },
-        "auth-provider-setup/federated-identity-providers",
-        "auth-provider-setup/byo-jwt-providers",
       ],
     },
+
     {
       type: "category",
       label: "Connect Blockchain",
-      link: { type: "doc", id: "connect-blockchain/connect-blockchain" },
       items: [
+        "connect-blockchain/connect-blockchain",
         {
           type: "category",
           label: "EVM Based Chains",
-          link: { type: "doc", id: "connect-blockchain/evm/evm" },
           items: [
+            "connect-blockchain/evm/evm",
             {
               type: "category",
               label: "Ethereum",
-              link: { type: "doc", id: "connect-blockchain/evm/ethereum/ethereum" },
               items: [
+                "connect-blockchain/evm/ethereum/ethereum",
                 "connect-blockchain/evm/ethereum/web",
                 "connect-blockchain/evm/ethereum/android",
                 "connect-blockchain/evm/ethereum/ios",
@@ -322,8 +269,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "Arbitrum",
-              link: { type: "doc", id: "connect-blockchain/evm/arbitrum/arbitrum" },
               items: [
+                "connect-blockchain/evm/arbitrum/arbitrum",
                 "connect-blockchain/evm/arbitrum/web",
                 "connect-blockchain/evm/arbitrum/android",
                 "connect-blockchain/evm/arbitrum/ios",
@@ -335,8 +282,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "Astar zkEVM",
-              link: { type: "doc", id: "connect-blockchain/evm/zkevm/zkevm" },
               items: [
+                "connect-blockchain/evm/zkevm/zkevm",
                 "connect-blockchain/evm/zkevm/web",
                 "connect-blockchain/evm/zkevm/android",
                 "connect-blockchain/evm/zkevm/ios",
@@ -348,8 +295,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "Avalanche",
-              link: { type: "doc", id: "connect-blockchain/evm/avalanche/avalanche" },
               items: [
+                "connect-blockchain/evm/avalanche/avalanche",
                 "connect-blockchain/evm/avalanche/web",
                 "connect-blockchain/evm/avalanche/android",
                 "connect-blockchain/evm/avalanche/ios",
@@ -361,8 +308,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "Base Chain (Coinbase)",
-              link: { type: "doc", id: "connect-blockchain/evm/base/base" },
               items: [
+                "connect-blockchain/evm/base/base",
                 "connect-blockchain/evm/base/web",
                 "connect-blockchain/evm/base/android",
                 "connect-blockchain/evm/base/ios",
@@ -374,8 +321,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "BNB Chain",
-              link: { type: "doc", id: "connect-blockchain/evm/bnb/bnb" },
               items: [
+                "connect-blockchain/evm/bnb/bnb",
                 "connect-blockchain/evm/bnb/web",
                 "connect-blockchain/evm/bnb/android",
                 "connect-blockchain/evm/bnb/ios",
@@ -387,8 +334,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "BNB Optimistic Rollup",
-              link: { type: "doc", id: "connect-blockchain/evm/opbnb/opbnb" },
               items: [
+                "connect-blockchain/evm/opbnb/opbnb",
                 "connect-blockchain/evm/opbnb/web",
                 "connect-blockchain/evm/opbnb/android",
                 "connect-blockchain/evm/opbnb/ios",
@@ -400,8 +347,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "Celo",
-              link: { type: "doc", id: "connect-blockchain/evm/celo/celo" },
               items: [
+                "connect-blockchain/evm/celo/celo",
                 "connect-blockchain/evm/celo/web",
                 "connect-blockchain/evm/celo/android",
                 "connect-blockchain/evm/celo/ios",
@@ -413,8 +360,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "Cronos",
-              link: { type: "doc", id: "connect-blockchain/evm/cronos/cronos" },
               items: [
+                "connect-blockchain/evm/cronos/cronos",
                 "connect-blockchain/evm/cronos/web",
                 "connect-blockchain/evm/cronos/android",
                 "connect-blockchain/evm/cronos/ios",
@@ -426,8 +373,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "Flare",
-              link: { type: "doc", id: "connect-blockchain/evm/flare/flare" },
               items: [
+                "connect-blockchain/evm/flare/flare",
                 "connect-blockchain/evm/flare/web",
                 "connect-blockchain/evm/flare/android",
                 "connect-blockchain/evm/flare/ios",
@@ -439,8 +386,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "Harmony",
-              link: { type: "doc", id: "connect-blockchain/evm/harmony/harmony" },
               items: [
+                "connect-blockchain/evm/harmony/harmony",
                 "connect-blockchain/evm/harmony/web",
                 "connect-blockchain/evm/harmony/android",
                 "connect-blockchain/evm/harmony/ios",
@@ -452,8 +399,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "Klaytn",
-              link: { type: "doc", id: "connect-blockchain/evm/klaytn/klaytn" },
               items: [
+                "connect-blockchain/evm/klaytn/klaytn",
                 "connect-blockchain/evm/klaytn/web",
                 "connect-blockchain/evm/klaytn/android",
                 "connect-blockchain/evm/klaytn/ios",
@@ -465,8 +412,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "Moonbeam",
-              link: { type: "doc", id: "connect-blockchain/evm/moonbeam/moonbeam" },
               items: [
+                "connect-blockchain/evm/moonbeam/moonbeam",
                 "connect-blockchain/evm/moonbeam/web",
                 "connect-blockchain/evm/moonbeam/android",
                 "connect-blockchain/evm/moonbeam/ios",
@@ -478,8 +425,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "Moonriver",
-              link: { type: "doc", id: "connect-blockchain/evm/moonriver/moonriver" },
               items: [
+                "connect-blockchain/evm/moonriver/moonriver",
                 "connect-blockchain/evm/moonriver/web",
                 "connect-blockchain/evm/moonriver/android",
                 "connect-blockchain/evm/moonriver/ios",
@@ -491,8 +438,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "Optimism",
-              link: { type: "doc", id: "connect-blockchain/evm/optimism/optimism" },
               items: [
+                "connect-blockchain/evm/optimism/optimism",
                 "connect-blockchain/evm/optimism/web",
                 "connect-blockchain/evm/optimism/android",
                 "connect-blockchain/evm/optimism/ios",
@@ -504,8 +451,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "Polygon",
-              link: { type: "doc", id: "connect-blockchain/evm/polygon/polygon" },
               items: [
+                "connect-blockchain/evm/polygon/polygon",
                 "connect-blockchain/evm/polygon/web",
                 "connect-blockchain/evm/polygon/android",
                 "connect-blockchain/evm/polygon/ios",
@@ -517,8 +464,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "SKALE",
-              link: { type: "doc", id: "connect-blockchain/evm/skale/skale" },
               items: [
+                "connect-blockchain/evm/skale/skale",
                 "connect-blockchain/evm/skale/web",
                 "connect-blockchain/evm/skale/android",
                 "connect-blockchain/evm/skale/ios",
@@ -530,8 +477,8 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "Songbird",
-              link: { type: "doc", id: "connect-blockchain/evm/songbird/songbird" },
               items: [
+                "connect-blockchain/evm/songbird/songbird",
                 "connect-blockchain/evm/songbird/web",
                 "connect-blockchain/evm/songbird/android",
                 "connect-blockchain/evm/songbird/ios",
@@ -545,8 +492,8 @@ const sidebars: SidebarsConfig = {
         {
           type: "category",
           label: "Solana",
-          link: { type: "doc", id: "connect-blockchain/solana/solana" },
           items: [
+            "connect-blockchain/solana/solana",
             "connect-blockchain/solana/web",
             "connect-blockchain/solana/flutter",
             "connect-blockchain/solana/android",
@@ -558,8 +505,8 @@ const sidebars: SidebarsConfig = {
         {
           type: "category",
           label: "Other Chains",
-          link: { type: "doc", id: "connect-blockchain/other/other" },
           items: [
+            "connect-blockchain/other/other",
             "connect-blockchain/other/algorand",
             "connect-blockchain/other/aptos",
             "connect-blockchain/other/cosmos",
@@ -579,26 +526,39 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "category",
-      label: "Web3Auth Infrastructure",
-      link: { type: "doc", id: "infrastructure/infrastructure" },
+      label: "Dashboard Setup",
       items: [
+        "dashboard-setup/dashboard-setup",
+        "dashboard-setup/projects-and-analytics",
+        "dashboard-setup/whitelisting",
+        "dashboard-setup/enable-interoperability",
+        "dashboard-setup/setup-custom-authentication",
+        "dashboard-setup/billing-and-usage",
+        "dashboard-setup/roles-and-permissions",
+      ],
+    },
+    "examples",
+    {
+      type: "category",
+      label: "Web3Auth Infrastructure",
+      items: [
+        "infrastructure/infrastructure",
         "infrastructure/mpc-architecture",
         "infrastructure/sss-architecture",
         "infrastructure/nodes-and-dkg",
         "infrastructure/glossary",
         {
           type: "link",
-          label: "Compliance, Audits and Trust", // The link label
-          href: "https://trust.web3auth.io", // The external URL
+          label: "Compliance, Audits and Trust",
+          href: "https://trust.web3auth.io",
         },
       ],
     },
-    "examples",
     {
       type: "category",
       label: "Troubleshooting",
-      link: { type: "doc", id: "troubleshooting/troubleshooting" },
       items: [
+        "troubleshooting/troubleshooting",
         "troubleshooting/different-private-key",
         "troubleshooting/sdk-errors-warnings",
         "troubleshooting/error-429",
@@ -622,13 +582,13 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Web SDKs",
-      link: { type: "doc", id: "sdk/pnp/web/web" },
       items: [
+        "sdk/pnp/web/web",
         {
           type: "category",
           label: "Modal SDK",
-          link: { type: "doc", id: "sdk/pnp/web/modal/modal" },
           items: [
+            "sdk/pnp/web/modal/modal",
             "sdk/pnp/web/modal/install",
             "sdk/pnp/web/modal/initialize",
             "sdk/pnp/web/modal/usage",
@@ -647,21 +607,21 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "link",
-              label: "Support Forum", // The link label
-              href: "https://web3auth.io/community/c/help-pnp/pnp-modal/7", // The external URL
+              label: "Support Forum",
+              href: "https://web3auth.io/community/c/help-pnp/pnp-modal/7",
             },
             {
               type: "link",
-              label: "Release Notes", // The link label
-              href: "https://github.com/Web3Auth/web3auth-web/releases", // The external URL
+              label: "Release Notes",
+              href: "https://github.com/Web3Auth/web3auth-web/releases",
             },
           ],
         },
         {
           type: "category",
           label: "No Modal SDK",
-          link: { type: "doc", id: "sdk/pnp/web/no-modal/no-modal" },
           items: [
+            "sdk/pnp/web/no-modal/no-modal",
             "sdk/pnp/web/no-modal/install",
             "sdk/pnp/web/no-modal/initialize",
             "sdk/pnp/web/no-modal/usage",
@@ -680,21 +640,21 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "link",
-              label: "Support Forum", // The link label
-              href: "https://web3auth.io/community/c/help-pnp/pnp-no-modal/15", // The external URL
+              label: "Support Forum",
+              href: "https://web3auth.io/community/c/help-pnp/pnp-no-modal/15",
             },
             {
               type: "link",
-              label: "Release Notes", // The link label
-              href: "https://github.com/Web3Auth/web3auth-web/releases", // The external URL
+              label: "Release Notes",
+              href: "https://github.com/Web3Auth/web3auth-web/releases",
             },
           ],
         },
         {
           type: "category",
           label: "Adapters",
-          link: { type: "doc", id: "sdk/pnp/web/adapters/adapters" },
           items: [
+            "sdk/pnp/web/adapters/adapters",
             "sdk/pnp/web/adapters/openlogin",
             "sdk/pnp/web/adapters/torus-evm",
             "sdk/pnp/web/adapters/torus-solana",
@@ -713,8 +673,8 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Android SDK",
-      link: { type: "doc", id: "sdk/pnp/android/android" },
       items: [
+        "sdk/pnp/android/android",
         "sdk/pnp/android/install",
         "sdk/pnp/android/initialize",
         "sdk/pnp/android/usage",
@@ -727,21 +687,21 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "link",
-          label: "Support Forum", // The link label
-          href: "https://web3auth.io/community/c/help-pnp/pnp-android/16", // The external URL
+          label: "Support Forum",
+          href: "https://web3auth.io/community/c/help-pnp/pnp-android/16",
         },
         {
           type: "link",
-          label: "Release Notes", // The link label
-          href: "https://github.com/Web3Auth/web3auth-android-sdk/releases", // The external URL
+          label: "Release Notes",
+          href: "https://github.com/Web3Auth/web3auth-android-sdk/releases",
         },
       ],
     },
     {
       type: "category",
       label: "iOS SDK",
-      link: { type: "doc", id: "sdk/pnp/ios/ios" },
       items: [
+        "sdk/pnp/ios/ios",
         "sdk/pnp/ios/install",
         "sdk/pnp/ios/initialize",
         "sdk/pnp/ios/usage",
@@ -754,21 +714,21 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "link",
-          label: "Support Forum", // The link label
-          href: "https://web3auth.io/community/c/help-pnp/pnp-ios/17", // The external URL
+          label: "Support Forum",
+          href: "https://web3auth.io/community/c/help-pnp/pnp-ios/17",
         },
         {
           type: "link",
-          label: "Release Notes", // The link label
-          href: "https://github.com/Web3Auth/web3auth-swift-sdk/releases", // The external URL
+          label: "Release Notes",
+          href: "https://github.com/Web3Auth/web3auth-swift-sdk/releases",
         },
       ],
     },
     {
       type: "category",
       label: "React Native SDK",
-      link: { type: "doc", id: "sdk/pnp/react-native/react-native" },
       items: [
+        "sdk/pnp/react-native/react-native",
         "sdk/pnp/react-native/install",
         "sdk/pnp/react-native/initialize",
         "sdk/pnp/react-native/usage",
@@ -786,21 +746,21 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "link",
-          label: "Support Forum", // The link label
-          href: "https://web3auth.io/community/c/help-pnp/pnp-rn/19", // The external URL
+          label: "Support Forum",
+          href: "https://web3auth.io/community/c/help-pnp/pnp-rn/19",
         },
         {
           type: "link",
-          label: "Release Notes", // The link label
-          href: "https://github.com/Web3Auth/web3auth-react-native-sdk/releases", // The external URL
+          label: "Release Notes",
+          href: "https://github.com/Web3Auth/web3auth-react-native-sdk/releases",
         },
       ],
     },
     {
       type: "category",
       label: "Flutter SDK",
-      link: { type: "doc", id: "sdk/pnp/flutter/flutter" },
       items: [
+        "sdk/pnp/flutter/flutter",
         "sdk/pnp/flutter/install",
         "sdk/pnp/flutter/initialize",
         "sdk/pnp/flutter/usage",
@@ -813,21 +773,21 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "link",
-          label: "Support Forum", // The link label
-          href: "https://web3auth.io/community/c/help-pnp/pnp-flutter/18", // The external URL
+          label: "Support Forum",
+          href: "https://web3auth.io/community/c/help-pnp/pnp-flutter/18",
         },
         {
           type: "link",
-          label: "Release Notes", // The link label
-          href: "https://github.com/Web3Auth/web3auth-flutter-sdk/releases", // The external URL
+          label: "Release Notes",
+          href: "https://github.com/Web3Auth/web3auth-flutter-sdk/releases",
         },
       ],
     },
     {
       type: "category",
       label: "Unity SDK",
-      link: { type: "doc", id: "sdk/pnp/unity/unity" },
       items: [
+        "sdk/pnp/unity/unity",
         "sdk/pnp/unity/install",
         "sdk/pnp/unity/initialize",
         "sdk/pnp/unity/usage",
@@ -840,21 +800,21 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "link",
-          label: "Support Forum", // The link label
-          href: "https://web3auth.io/community/c/help-pnp/pnp-unity/20", // The external URL
+          label: "Support Forum",
+          href: "https://web3auth.io/community/c/help-pnp/pnp-unity/20",
         },
         {
           type: "link",
-          label: "Release Notes", // The link label
-          href: "https://github.com/Web3Auth/web3auth-unity-sdk/releases", // The external URL
+          label: "Release Notes",
+          href: "https://github.com/Web3Auth/web3auth-unity-sdk/releases",
         },
       ],
     },
     {
       type: "category",
       label: "Unreal SDK",
-      link: { type: "doc", id: "sdk/pnp/unreal/unreal" },
       items: [
+        "sdk/pnp/unreal/unreal",
         "sdk/pnp/unreal/install",
         "sdk/pnp/unreal/initialize",
         "sdk/pnp/unreal/usage",
@@ -867,13 +827,13 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "link",
-          label: "Support Forum", // The link label
-          href: "https://web3auth.io/community/c/help-pnp/pnp-unreal/21", // The external URL
+          label: "Support Forum",
+          href: "https://web3auth.io/community/c/help-pnp/pnp-unreal/21",
         },
         {
           type: "link",
-          label: "Release Notes", // The link label
-          href: "https://github.com/Web3Auth/web3auth-unreal-sdk/releases", // The external URL
+          label: "Release Notes",
+          href: "https://github.com/Web3Auth/web3auth-unreal-sdk/releases",
         },
       ],
     },
@@ -886,21 +846,21 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Providers",
-      link: { type: "doc", id: "sdk/helper-sdks/providers/providers" },
       items: [
-        "sdk/helper-sdks/providers/evm",
-        "sdk/helper-sdks/providers/solana",
-        "sdk/helper-sdks/providers/xrpl",
-        "sdk/helper-sdks/providers/common",
+        "sdk/providers/providers",
+        "sdk/providers/evm",
+        "sdk/providers/solana",
+        "sdk/providers/xrpl",
+        "sdk/providers/common",
         {
           type: "link",
-          label: "Support Forum", // The link label
-          href: "https://web3auth.io/community/c/help-pnp/4", // The external URL
+          label: "Support Forum",
+          href: "https://web3auth.io/community/c/help-pnp/4",
         },
         {
           type: "link",
-          label: "Release Notes", // The link label
-          href: "https://github.com/Web3Auth/web3auth-web/releases", // The external URL
+          label: "Release Notes",
+          href: "https://github.com/Web3Auth/web3auth-web/releases",
         },
       ],
     },
@@ -918,29 +878,29 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "MPC Core Kit SDK",
-      link: { type: "doc", id: "sdk/core-kit/mpc-core-kit/mpc-core-kit" },
       items: [
+        "sdk/core-kit/mpc-core-kit/mpc-core-kit",
         "sdk/core-kit/mpc-core-kit/install",
         "sdk/core-kit/mpc-core-kit/initialize",
         "sdk/core-kit/mpc-core-kit/authentication",
         "sdk/core-kit/mpc-core-kit/usage",
         {
           type: "link",
-          label: "Support Forum", // The link label
-          href: "https://web3auth.io/community/c/help-core-kit/mpc-core-kit/33", // The external URL
+          label: "Support Forum",
+          href: "https://web3auth.io/community/c/help-core-kit/mpc-core-kit/33",
         },
         {
           type: "link",
-          label: "Release Notes", // The link label
-          href: "https://github.com/Web3Auth/mpc-core-kit/releases", // The external URL
+          label: "Release Notes",
+          href: "https://github.com/Web3Auth/mpc-core-kit/releases",
         },
       ],
     },
     {
       type: "category",
       label: "tKey JS SDK",
-      link: { type: "doc", id: "sdk/core-kit/tkey/tkey" },
       items: [
+        "sdk/core-kit/tkey/tkey",
         "sdk/core-kit/tkey/install",
         "sdk/core-kit/tkey/initialize",
         "sdk/core-kit/tkey/usage",
@@ -949,8 +909,8 @@ const sidebars: SidebarsConfig = {
           label: "Modules",
           collapsible: true,
           collapsed: false,
-          link: { type: "doc", id: "sdk/core-kit/tkey/modules/modules" },
           items: [
+            "sdk/core-kit/tkey/modules/modules",
             "sdk/core-kit/tkey/modules/web-storage",
             "sdk/core-kit/tkey/modules/react-native-storage",
             "sdk/core-kit/tkey/modules/chrome-storage",
@@ -970,34 +930,34 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "link",
-          label: "Support Forum Web", // The link label
-          href: "https://web3auth.io/community/c/help-core-kit/core-kit-tkey/8", // The external URL
+          label: "Support Forum Web",
+          href: "https://web3auth.io/community/c/help-core-kit/core-kit-tkey/8",
         },
         {
           type: "link",
-          label: "Support Forum React Native", // The link label
-          href: "https://web3auth.io/community/c/help-core-kit/tkey-react-native-sdk/29", // The external URL
+          label: "Support Forum React Native",
+          href: "https://web3auth.io/community/c/help-core-kit/tkey-react-native-sdk/29",
         },
         {
           type: "link",
-          label: "Release Notes", // The link label
-          href: "https://github.com/tkey/tkey/releases", // The external URL
+          label: "Release Notes",
+          href: "https://github.com/tkey/tkey/releases",
         },
       ],
     },
     {
       type: "category",
       label: "tKey iOS SDK",
-      link: { type: "doc", id: "sdk/core-kit/tkey-ios/tkey-ios" },
       items: [
+        "sdk/core-kit/tkey-ios/tkey-ios",
         "sdk/core-kit/tkey-ios/install",
         "sdk/core-kit/tkey-ios/initialize",
         "sdk/core-kit/tkey-ios/usage",
         {
           type: "category",
           label: "Modules",
-          link: { type: "doc", id: "sdk/core-kit/tkey-ios/modules/modules" },
           items: [
+            "sdk/core-kit/tkey-ios/modules/modules",
             "sdk/core-kit/tkey-ios/modules/private-keys",
             "sdk/core-kit/tkey-ios/modules/security-questions",
             "sdk/core-kit/tkey-ios/modules/seed-phrase",
@@ -1007,29 +967,29 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "link",
-          label: "Support Forum", // The link label
-          href: "https://web3auth.io/community/c/help-core-kit/core-kit-tkey-ios/27", // The external URL
+          label: "Support Forum",
+          href: "https://web3auth.io/community/c/help-core-kit/core-kit-tkey-ios/27",
         },
         {
           type: "link",
-          label: "Release Notes", // The link label
-          href: "https://github.com/tkey/tkey-ios/releases", // The external URL
+          label: "Release Notes",
+          href: "https://github.com/tkey/tkey-ios/releases",
         },
       ],
     },
     {
       type: "category",
       label: "tKey Android SDK",
-      link: { type: "doc", id: "sdk/core-kit/tkey-android/tkey-android" },
       items: [
+        "sdk/core-kit/tkey-android/tkey-android",
         "sdk/core-kit/tkey-android/install",
         "sdk/core-kit/tkey-android/initialize",
         "sdk/core-kit/tkey-android/usage",
         {
           type: "category",
           label: "Modules",
-          link: { type: "doc", id: "sdk/core-kit/tkey-android/modules/modules" },
           items: [
+            "sdk/core-kit/tkey-android/modules/modules",
             "sdk/core-kit/tkey-android/modules/private-keys",
             "sdk/core-kit/tkey-android/modules/security-questions",
             "sdk/core-kit/tkey-android/modules/seed-phrase",
@@ -1039,13 +999,13 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "link",
-          label: "Support Forum", // The link label
-          href: "https://web3auth.io/community/c/help-core-kit/tkey-android/28", // The external URL
+          label: "Support Forum",
+          href: "https://web3auth.io/community/c/help-core-kit/tkey-android/28",
         },
         {
           type: "link",
-          label: "Release Notes", // The link label
-          href: "https://github.com/tkey/tkey-android/releases", // The external URL
+          label: "Release Notes",
+          href: "https://github.com/tkey/tkey-android/releases",
         },
       ],
     },
@@ -1058,126 +1018,126 @@ const sidebars: SidebarsConfig = {
         {
           type: "category",
           label: "SFA Web SDK",
-          link: { type: "doc", id: "sdk/core-kit/sfa-web/sfa-web" },
           items: [
+            "sdk/core-kit/sfa-web/sfa-web",
             "sdk/core-kit/sfa-web/install",
             "sdk/core-kit/sfa-web/initialize",
             "sdk/core-kit/sfa-web/authentication",
             "sdk/core-kit/sfa-web/usage",
             {
               type: "link",
-              label: "Support Forum", // The link label
-              href: "https://web3auth.io/community/c/help-core-kit/core-kit-sfa-web/22", // The external URL
+              label: "Support Forum",
+              href: "https://web3auth.io/community/c/help-core-kit/core-kit-sfa-web/22",
             },
             {
               type: "link",
-              label: "Release Notes", // The link label
-              href: "https://github.com/web3auth/single-factor-auth-web/releases", // The external URL
+              label: "Release Notes",
+              href: "https://github.com/web3auth/single-factor-auth-web/releases",
             },
           ],
         },
         {
           type: "category",
           label: "SFA Node SDK",
-          link: { type: "doc", id: "sdk/core-kit/sfa-node/sfa-node" },
           items: [
+            "sdk/core-kit/sfa-node/sfa-node",
             "sdk/core-kit/sfa-node/install",
             "sdk/core-kit/sfa-node/initialize",
             "sdk/core-kit/sfa-node/authentication",
             "sdk/core-kit/sfa-node/usage",
             {
               type: "link",
-              label: "Support Forum", // The link label
-              href: "https://web3auth.io/community/c/help-core-kit/core-kit-sfa-node/23", // The external URL
+              label: "Support Forum",
+              href: "https://web3auth.io/community/c/help-core-kit/core-kit-sfa-node/23",
             },
             {
               type: "link",
-              label: "Release Notes", // The link label
-              href: "https://github.com/web3auth/web3auth-backend/releases", // The external URL
+              label: "Release Notes",
+              href: "https://github.com/web3auth/web3auth-backend/releases",
             },
           ],
         },
         {
           type: "category",
           label: "SFA Android SDK",
-          link: { type: "doc", id: "sdk/core-kit/sfa-android/sfa-android" },
           items: [
+            "sdk/core-kit/sfa-android/sfa-android",
             "sdk/core-kit/sfa-android/install",
             "sdk/core-kit/sfa-android/initialize",
             "sdk/core-kit/sfa-android/authentication",
             "sdk/core-kit/sfa-android/usage",
             {
               type: "link",
-              label: "Support Forum", // The link label
-              href: "https://web3auth.io/community/c/help-core-kit/core-kit-sfa-android/26", // The external URL
+              label: "Support Forum",
+              href: "https://web3auth.io/community/c/help-core-kit/core-kit-sfa-android/26",
             },
             {
               type: "link",
-              label: "Release Notes", // The link label
-              href: "https://github.com/web3auth/single-factor-auth-android/releases", // The external URL
+              label: "Release Notes",
+              href: "https://github.com/web3auth/single-factor-auth-android/releases",
             },
           ],
         },
         {
           type: "category",
           label: "SFA iOS SDK",
-          link: { type: "doc", id: "sdk/core-kit/sfa-ios/sfa-ios" },
           items: [
+            "sdk/core-kit/sfa-ios/sfa-ios",
             "sdk/core-kit/sfa-ios/install",
             "sdk/core-kit/sfa-ios/initialize",
             "sdk/core-kit/sfa-ios/authentication",
             "sdk/core-kit/sfa-ios/usage",
             {
               type: "link",
-              label: "Support Forum", // The link label
-              href: "https://web3auth.io/community/c/help-core-kit/sfa-swift-sdk/30", // The external URL
+              label: "Support Forum",
+              href: "https://web3auth.io/community/c/help-core-kit/sfa-swift-sdk/30",
             },
             {
               type: "link",
-              label: "Release Notes", // The link label
-              href: "https://github.com/web3auth/single-factor-auth-swift/releases", // The external URL
+              label: "Release Notes",
+              href: "https://github.com/web3auth/single-factor-auth-swift/releases",
             },
           ],
         },
         {
           type: "category",
           label: "SFA React Native SDK",
-          link: { type: "doc", id: "sdk/core-kit/sfa-react-native/sfa-react-native" },
           items: [
+            "sdk/core-kit/sfa-react-native/sfa-react-native",
             "sdk/core-kit/sfa-react-native/install",
             "sdk/core-kit/sfa-react-native/initialize",
             "sdk/core-kit/sfa-react-native/authentication",
             "sdk/core-kit/sfa-react-native/usage",
             {
               type: "link",
-              label: "Support Forum", // The link label
-              href: "https://web3auth.io/community/c/help-core-kit/sfa-react-native-sdk/32", // The external URL
+              label: "Support Forum",
+              href: "https://web3auth.io/community/c/help-core-kit/sfa-react-native-sdk/32",
             },
             {
               type: "link",
-              label: "Release Notes", // The link label
-              href: "https://github.com/Web3Auth/single-factor-auth-react-native/releases", // The external URL
+              label: "Release Notes",
+              href: "https://github.com/Web3Auth/single-factor-auth-react-native/releases",
             },
           ],
         },
         {
           type: "category",
           label: "SFA Flutter SDK",
-          link: { type: "doc", id: "sdk/core-kit/sfa-flutter/sfa-flutter" },
           items: [
+            "sdk/core-kit/sfa-flutter/sfa-flutter",
             "sdk/core-kit/sfa-flutter/install",
             "sdk/core-kit/sfa-flutter/initialize",
             "sdk/core-kit/sfa-flutter/authentication",
             "sdk/core-kit/sfa-flutter/usage",
             {
               type: "link",
-              label: "Support Forum", // The link label
-              href: "https://web3auth.io/community/c/help-core-kit/sfa-flutter-sdk/31", // The external URL
+              label: "Support Forum",
+              href: "https://web3auth.io/community/c/help-core-kit/sfa-flutter-sdk/31",
             },
             {
               type: "link",
-              label: "Release Notes", // The link label
-              href: "https://github.com/web3auth/single-factor-auth-flutter/releases", // The external URL
+              label: "Release Notes",
+              href: "https://github.com/web3auth/single-factor-auth-flutter/releases",
             },
           ],
         },
