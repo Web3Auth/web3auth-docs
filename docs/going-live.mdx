@@ -1,0 +1,159 @@
+---
+title: Going Live with Web3Auth Plug and Play
+sidebar_label: Going Live Checklist
+displayed_sidebar: docs
+description: "Going Live with Plug and Play Web3Auth | Documentation - Web3Auth"
+---
+
+Before going live with Web3Auth Plug and Play SDKs, please make sure you have completed the following steps:
+
+### 1. Create a Web3Auth Production Client ID
+
+Make sure your client id for Web3Auth is on the Sapphire Mainnet Network. The Sapphire Mainnet is our geo-distributed, horizontally scalable network.
+If you have certain specific requirements for the network configurations for scalability, please reach out to us at our
+[Community Portal](https://community.web3auth.io).
+
+:::info
+
+You need to create a Sapphire Devnet client id for the same name before creating a production client id. This is to ensure that your testing and
+production environments are separate and the wallets generated for the end users remain safe.
+
+:::
+
+:::warning
+
+Make sure your Web3Auth Network in the SDK initialization is the **same** as your client id network, otherwise you find see errors while logging your
+users in.
+
+:::
+
+### 2. Create a Web3Auth Production Verifier
+
+While using the [Custom Authentication Feature](/pnp/features/custom-authentication) in the Plug and Play SDKs, you will need to create a verifier.
+Make sure the network of the verifier is the same as the network of the client id.
+
+:::warning
+
+All new verifiers produce **different wallets/ accounts** for users, it is not possible to rename a verifier once you have created it. The person who
+has created the verifier can only edit it afterwards. This is a limitation even when you have a team setup. This is because a verifier is a smart
+contract and the address editing it cannot be changed. The only way to change this is to create a new verifier.
+
+:::
+
+### 3. Update your Web3Auth SDKs to the latest version
+
+We are constantly updating our SDKs to make sure they are secure and performant. Make sure you are using the latest version of the SDKs. Please do not
+actively use the pre release versions, rather wait for the latest stable release.
+
+### 4. Use a production RPC Endpoint for your respective blockchains
+
+For testing purposes, our examples and SDKs use public RPC endpoints. Make sure you are using a production RPC endpoint (by providers like Infura,
+Quicknode, Alchemy etc.) for your production environment before going live. This can be done by updating the
+[`rpcTarget`](/sdk/pnp/web/modal/initialize#chainconfig) value in the `Web3Auth` object in the SDK initialisation in Web SDKs and updating the
+provider URL in mobile SDKs.
+
+### 5. Audit the UX for your Web3Auth Login flow
+
+From the icon showing up in the Web3Auth Modal to the [whitelabel setting](/pnp/features/whitelabel/) for the intermediary pages that are shown to the
+user, make sure you have checked your branding and customisations. Checking all the possible flows is recommended.
+
+### 6. Check your interoperability flow
+
+If you're using [interoperability with Torus Wallet](/pnp/features/interoperability#using-web3auth-dashboard-toggles) on the dashboard settings, you
+need to use Web3Auth in the `mainnet` network. It is recommended that you audit that flow before going live. Your app name shown in the Torus Wallet
+login screen is the app name of your Client Id so make sure you have updated that.
+
+If you're using [WalletConnect or Web3Auth Plugins based interoperability flow](/pnp/features/interoperability#interoperability-with-plugins), make
+sure you have tested the flow before going live.
+
+### 7. Check in multiple browsers and devices
+
+The Web3Auth SDKs are built to work in all [major browsers and devices](/troubleshooting/supported-browsers). Make sure you have tested your login
+flow in all major browsers and devices. If you're facing any issues with any particular browser or device, please make sure they're compatible with
+the Web3Auth SDKs.
+
+### 8. Upgrade your Web3Auth Plan
+
+Finally, make sure you're on the correct [Web3Auth Plan](https://web3auth.io/pricing.html) according to the features you're looking to use in the
+production environment. Additionally make sure to add a credit card in the Web3Auth Dashboard so that your services are not stopped once the MAW cap
+has reached.
+
+Before going live with Web3Auth Core Kit SDKs, please make sure you have completed the following steps:
+
+### 1. Create a Web3Auth Production Client ID
+
+Make sure your client id for Web3Auth is on the Sapphire Mainnet Network. The Sapphire Mainnet is our geo-distributed, horizontally scalable network.
+If you have certain specific requirements for the network configurations for scalability, please reach out to us at our
+[Community Portal](https://community.web3auth.io).
+
+:::info
+
+You need to create a Sapphire Devnet client id for the same name before creating a production client id. This is to ensure that your testing and
+production environments are separate and the wallets generated for the end users remain safe.
+
+:::
+
+:::warning
+
+All networks produce **different wallets/ accounts** for users, it is not possible to switch networks once you have created a client id.
+
+:::
+
+### 2. Create a Web3Auth Production Verifier
+
+It is mandatory to create a verifier, while using Web3Auth Core Kit. Make sure the network of the verifier is the same as the network of the client
+id.
+
+:::warning
+
+All new verifiers produce **different wallets/ accounts** for users, it is not possible to rename a verifier once you have created it.
+
+:::
+
+### 3. Update your Web3Auth SDKs to the latest version
+
+We are constantly updating our SDKs to make sure they are secure and performant. Make sure you are using the latest version of the SDKs. Please do not
+actively use the pre release versions, rather wait for the latest stable release.
+
+### 4. Use a production RPC Endpoint for your respective blockchains
+
+For testing purposes, our examples and SDKs use public RPC endpoints. Make sure you are using a production RPC endpoint (by providers like Infura,
+Quicknode, Alchemy etc.) for your production environment before going live. This can be done by updating the provider URL in SDKs added for blockchain
+calls.
+
+### 5. Audit the UX for your Web3Auth Login flow
+
+One of the major features of Web3Auth Core Kit is that you have full control of the UX end to end. Web3Auth itself is totally invisible. However, this
+can come up with risks of losing wallets if the flow is not audited properly. Make sure you have audited the UX for your login flow before going live.
+Test every possible user interaction with your app and the login flow and Web3Auth calls.
+
+:::warning
+
+If you're using Manual Metadata Sync, make sure your data is properly being synced when the user setups up new shares and makes any changes in their
+existing shares.
+
+:::
+
+### 6. Check your interoperability flow
+
+If you've added [Web3Auth PNP plugins into your Core Kit Flow](/pnp/features/interoperability#interoperability-with-plugins) for interoperability,
+make sure you have tested the flow before going live.
+
+### 7. Check in multiple browsers and devices
+
+The Web3Auth SDKs are built to work in all [major browsers and devices](/troubleshooting/supported-browsers). Make sure you have tested your login
+flow in all major browsers and devices. If you're facing any issues with any particular browser or device, please make sure they're compatible with
+the Web3Auth SDKs.
+
+### 8. Upgrade your Web3Auth Plan
+
+Finally, make sure you're on the correct [Web3Auth Plan](https://web3auth.io/pricing.html) according to the features you're looking to use in the
+production environment. Additionally make sure to add a credit card in the Web3Auth Dashboard so that your services are not stopped once the MAW cap
+has reached.
+
+:::info
+
+While using Core Kit, we recommend you to either on the [Scale or Enterprise Plan](https://web3auth.io/pricing.html) of Web3Auth so that we can help
+you audit and optimize your login flow for max performance and avoid the loss of any wallets.
+
+:::

@@ -153,7 +153,7 @@ const config: Config = {
       {
         docs: {
           routeBasePath: "/",
-          breadcrumbs: false,
+          breadcrumbs: true,
           editUrl: githubEditUrl,
           sidebarPath: require.resolve("./sidebars.js"),
           remarkPlugins: [remarkMath, [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
@@ -495,16 +495,55 @@ const config: Config = {
             from: "/account-abstraction/safeauth",
             to: "/sdk/wallet-ecosystems/safeauth",
           },
+          {
+            from: "/user-flow",
+            to: "/features/mfa",
+          },
+          {
+            from: "/product-fit/partner-products",
+            to: "/features/account-abstraction",
+          },
+          {
+            from: "/product-fit/enterprise",
+            to: "/product/wallet-ecosystems",
+          },
+          {
+            from: "/product-fit/pnp-vs-core-kit",
+            to: "/product/pnp",
+          },
+          {
+            from: "/product-fit/web3auth-for-wallets",
+            to: "/product/#web3auth-for-wallets",
+          },
+          {
+            from: "/product-fit/web3auth-for-dapps",
+            to: "/product/#web3auth-for-dapps",
+          },
+          {
+            from: "/pnp/features/connect-external-wallets",
+            to: "/features/wallet-aggregation",
+          },
+          {
+            from: "/pnp/features/dapp-share",
+            to: "/features/mfa",
+          },
         ],
         createRedirects(existingPath) {
           if (existingPath.includes("/guides/")) {
             return [existingPath.replace("/guides/", "/content-hub/guides/")];
           }
-          existingPath.replace("https://blog.web3auth.io", "/blogs/");
-          existingPath.replace("https://blog.web3auth.io", "/blog/");
-          existingPath.replace("https://blog.web3auth.io/", "/content-hub/blog/");
-          existingPath.replace("https://blog.web3auth.io", "/content-hub/blogs/");
-
+          if (existingPath.includes("/features/whitelabel")) {
+            return [existingPath.replace("/pnp/features/whitelabel/", "/features/whitelabel")];
+          }
+          if (existingPath.includes("/features/server-side-verification")) {
+            return [existingPath.replace("/pnp/features/server-side-verification/", "/features/server-side-verification")];
+          }
+          if (existingPath.includes("/product/")) {
+            return [existingPath.replace("/product-fit/", "/product/")];
+          }
+          if (existingPath.includes("/features/")) {
+            return [existingPath.replace("/pnp/features/", "/features/")];
+          }
           if (existingPath.includes("/sdk")) {
             return [existingPath.replace("/sdk", "/api-reference"), existingPath.replace("/sdk", "/sdk-reference")];
           }

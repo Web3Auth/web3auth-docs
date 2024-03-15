@@ -1,0 +1,79 @@
+---
+title: Wallet Aggregation
+image: "images/docs-meta-cards/documentation-card.png"
+displayed_sidebar: docs
+description: "Wallet Aggregation | Documentation - Web3Auth"
+---
+
+Web3Auth's modular structure for its Plug and Play SDKs includes the capability for multiple external wallet connections within the modal,
+facilitating seamless onboarding for both crypto-native and non-crypto native users. This feature underscores Web3Auth's dedication to supporting all
+required authentication flows through a simple integration process.
+
+## Key Features of Wallet Aggregation
+
+Web3Auth's wallet aggregation is made possible through the use of adapters, which are essentially connectors allowing for direct communication between
+Web3Auth and various external wallet providers, such as MetaMask, WalletConnect, Coinbase, and more.
+
+:::note
+
+This feature is currently available for Web SDKs only. Mobile and Gaming SDK adapters are in development.
+
+:::
+
+:::info Integrate the wallet of your choice
+
+Currently Web3Auth support the following wallets, please go to their respective SDK References to integrate them into your project:
+
+- [Torus EVM Wallet](/sdk/pnp/web/adapters/torus-evm)
+- [Torus Solana Wallet](/sdk/pnp/web/adapters/torus-solana)
+- [MetaMask](/sdk/pnp/web/adapters/metamask)
+- [Phantom Wallet](/sdk/pnp/web/adapters/phantom)
+- [WalletConnect V1](/sdk/pnp/web/adapters/wallet-connect-v1)
+- [Coinbase Wallet](/sdk/pnp/web/adapters/coinbase)
+- [Slope Wallet](/sdk/pnp/web/adapters/slope)
+- [Solflare Wallet](/sdk/pnp/web/adapters/solflare)
+
+:::
+
+## Understanding Adapters
+
+Adapters are essentially connectors between Web3Auth and the underlying wallet provider. For example, an adapter for connecting with torus wallet is
+available under web3auth as [@web3auth/torus-evm-adapter](/sdk/pnp/web/adapters/torus-evm). Every adapter follows a common interface which is required
+by Web3Auth to communicate with the wallet.
+
+An adapter emits certain events like `CONNECTED`, `CONNECTING` and `DISCONNECTED` etc during login lifecycle of a user. Each adapter exposes provider
+on successful user login that can be used to invoke RPC calls on wallet and on connected blockchain.
+
+### Currently Available Wallet Adapters
+
+By default Web3Auth's modal UI supports a set of default adapters depending on the `authMode` being used. By default, Web3Auth requires basic
+configuration `client_id`, and registering a redirect if you are using CustomAuth adapter from the dashboard.
+
+The table below summarizes all the available adapters and their properties
+
+| Adapter            | AuthMode         | ChainNamespace    | Default | Package Name                                                                     |
+| ------------------ | ---------------- | ----------------- | ------- | -------------------------------------------------------------------------------- |
+| `openlogin`        | `WALLET`, `DAPP` | `EIP155`,`SOLANA` | `YES`   | [`@web3auth/openlogin-adapter`](/sdk/pnp/web/adapters/openlogin)                 |
+| `torus-evm`        | `DAPP`           | `EIP155`          | `YES`   | [`@web3auth/torus-evm-adapter`](/sdk/pnp/web/adapters/torus-evm)                 |
+| `torus-solana`     | `DAPP`           | `SOLANA`          | `YES`   | [`@web3auth/torus-solana-adapter`](/sdk/pnp/web/adapters/torus-solana)           |
+| `metamask`         | `DAPP`           | `EIP155`          | `YES`   | [`@web3auth/metamask-adapter`](/sdk/pnp/web/adapters/metamask)                   |
+| `phantom`          | `DAPP`           | `SOLANA`          | `YES`   | [`@web3auth/phantom-adapter`](/sdk/pnp/web/adapters/phantom)                     |
+| `walletconnect-v1` | `DAPP`           | `EIP155`          | `YES`   | [`@web3auth/wallet-connect-v1-adapter`](/sdk/pnp/web/adapters/wallet-connect-v1) |
+| `coinbase`         | `DAPP`           | `EIP155`          | `YES`   | [`@web3auth/coinbase`](/sdk/pnp/web/adapters/coinbase)                           |
+| `slope`            | `DAPP`           | `SOLANA`          | `YES`   | [`@web3auth/slope`](/sdk/pnp/web/adapters/slope)                                 |
+| `solflare`         | `DAPP`           | `SOLANA`          | `YES`   | [`@web3auth/solflare`](/sdk/pnp/web/adapters/solflare)                           |
+
+## Extending Wallet Aggregation
+
+In addition to Web3Auth's native adapters, developers can also leverage Web3Auth with other wallet aggregation libraries such as `wagmi`. This
+integration enables the use of Web3Auth within popular frameworks and products, enhancing the flexibility and reach of Web3Auth's authentication
+capabilities.
+
+### Integrating with Wagmi
+
+Web3Auth's compatibility with wagmi, via the @web3auth/web3auth-wagmi-connector, allows for seamless integration of Web3Auth's features within wagmi's
+comprehensive React Hooks for Ethereum. This connector supports both modal and no-modal packages of Web3Auth, enabling integration within products
+like Rainbow Kit, Connect Kit, and Web3Modal.
+
+By embracing wallet aggregation with Web3Auth, developers can offer their users a versatile and inclusive authentication experience, supporting a
+variety of wallets and enhancing the overall usability of Web3 applications.

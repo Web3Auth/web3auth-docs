@@ -1,0 +1,57 @@
+---
+title: SFA Flutter SDK - v1 to v2
+displayed_sidebar: docs
+description: "SFA Flutter SDK - v1 to v2 | Documentation - Web3Auth"
+sidebar_label: v1 to v2
+---
+
+# Migration Guide from v1 to v2 for SFA Flutter SDK
+
+## Overview
+
+This migration guide provides steps for upgrading from version v1 to v2 of the Web3Auth No Modal SDK. The guide outlines breaking changes in the
+return type of the methods of `SingleFactAuthFlutter` class.
+
+## Changes in Detail
+
+### Return type update for methods
+
+In v2, we try to improve the developer experience by changing the return type for the `initialize`, `getKey`, and `getAggregateKey` methods.
+
+#### `initialize` method
+
+In v2, the `initialize` method will return the `Future<TorusKey?>` instead of `Future<String>`. The method will return `null` if the user doesn't have
+any active session present.
+
+```dart
+final TorusKey? torusKey = await _singleFactorAuthFlutterPlugin.initialize();
+```
+
+### `getKey` method
+
+In v2, the `getKey` method will return the `Future<TorusKey>` instead of `Future<String>`.
+
+```dart
+final torusKey = _singleFactorAuthFlutterPlugin.getKey(
+    LoginParams(
+        verifier: 'torus-test-health',
+        verifierId: 'hello@tor.us',
+        idToken: Utils().es256Token("hello@tor.us"),
+    ),
+);
+```
+
+### `getAggregateKey` method
+
+In v2, the `getAggregateKey` method will return the `Future<TorusKey>` instead of `Future<String>`.
+
+```dart
+final torusKey = _singleFactorAuthFlutterPlugin.getAggregateKey(
+    LoginParams(
+        verifier: 'torus-test-health',
+        verifierId: 'hello@tor.us',
+        idToken: Utils().es256Token("hello@tor.us"),
+        aggregateVerifier: 'torus-test-health-aggregate',
+    ),
+);
+```

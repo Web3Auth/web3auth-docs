@@ -1,0 +1,185 @@
+---
+title: Choosing the Correct Web3Auth Product
+displayed_sidebar: docs
+description: "Deciding your Product Fit | Documentation - Web3Auth"
+---
+
+Deciding on the right product for your needs can often be a critical part of ensuring the success of your launch. If you're considering Web3Auth for
+your project, the following qualifying questions will help you understand which of our products best fits your requirements.
+
+Choosing the right Web3Auth product involves a careful analysis of what each option offers.
+
+:::warning Pre Planning Product Requirements
+
+This document helps you understand the differences between the products and helps you make the right choice for your project. This is a very important
+step in the Web3Auth Integration process, please make sure you're making the right choice for your project. **We would recommend you to the SDKs in
+the same stack of products within Web3Auth to minimize the migration efforts.**
+
+:::
+
+## Choosing the Right SDK
+
+- **Plug and Play SDKs** are designed for quick, easy integration, offering a predefined UI/UX suitable for projects with speed as a priority.
+
+- **Core-Kit SDKs** provide a customizable and hands-on approach for developers who want full control over the UI/UX and authentication flows, ideal
+  for enterprises and in-depth customizations.
+
+- **Wallet Ecosystems** offer a blend of integration ease and ecosystem-specific advantages, perfect for projects looking to integrate closely with
+  existing wallet platforms and their communities.
+
+:::tip
+
+If you're considering using the **Core Kit Multi Factor Auth SDKs** in the future and want a quick integration to start of, we recommend you to use
+the Single Factor Auth SDKs right now and then move to the Multi Factor Auth SDKs later. This will help you minimize the migration efforts from Plug
+and Play to Core Kit.
+
+In a case, where you have already integrated Web3Auth Plug and Play SDKs and want to move to Core Kit, we recommend you to read our
+[Troubleshooting Document around Key Migrations](/troubleshooting/different-private-key#migrating-between-sdks).
+
+:::
+
+## Comparison Table
+
+|                            | Plug and Play                                                                    | Core-Kit                                                                               | Wallet Ecosystems                                                                    |
+| -------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| **UI & UX**                | Predefined login UX and UI, with whitelabeling options                           | Build and maintain your own UI & UX for login and MFA                                  | Tailored integration with specific Wallet Ecosystems, leveraging their UI/UX         |
+| **Recoverability**         | Easier through `auth.web3auth.io`, requires redirection for key management flows | Build flows for key recovery and management within the application                     | Dependent on the specific Wallet Ecosystem's protocols and tools                     |
+| **Key Custodiality**       | Non Custodial by design                                                          | Integrating application determines the custodiality of the key                         | Dependent on the ecosystem experience, generally fully non-custodial.                |
+| **Authentication**         | Out of the box Auth, with options to integrate existing authentication           | Auth setup to be maintained at your end, with integration options for existing systems | Utilizes the authentication mechanisms of the chosen Wallet Ecosystem                |
+| **Setup**                  | Quick and easy setup for projects aiming for rapid launch                        | Suited for enterprises and builders desiring customizable UX flow                      | Integration complexity varies by Wallet Ecosystem and desired customization level    |
+| **Platform Compatibility** | Available for all major Web, Mobile, and Gaming platforms                        | Available for Web, React Native, iOS, and Android                                      | Dependent on the Wallet Ecosystem's support and integration capabilities             |
+| **Wallet Services**        | Available across all SDKs.                                                       | Will be available soon across all SDKs                                                 | Available across all SDKs, with additional features specific to the Wallet Ecosystem |
+
+:::info Schedule a demo
+
+[Schedule a Demo Call](https://calendly.com/web3auth/meeting-with-web3auth) with our team to discuss your project requirements and find out which
+Web3Auth product is the best fit for you.
+
+:::
+
+Choosing the right Web3Auth product is key to a successful project launch. The following qualifying questions aim to guide you through the
+decision-making process. They cater to diverse project requirements and explore various key considerations. By reflecting on these questions, you'll
+be better equipped to make an informed decision that ensures your selected Web3Auth product aligns seamlessly with your needs, laying a solid
+foundation for your project's success.
+
+We've divided the questions into the following categories:
+
+- [Basic Product Questions](#basic-product-questions)
+- [UI/ UX Questions](#ui-ux-questions)
+- [Infrastructure Questions](#infrastructure-questions)
+- [SSS vs MPC Questions](#sss-vs-mpc-questions)
+
+## Basic Product Questionaire
+
+### What are you building? A dApp or a Wallet?
+
+- If you're building a Wallet, our Web3Auth Plug and Play SDKs can provide a quick and effective solution, although a better user experience for a
+  wallet might come from our Core Kit SDKs, where Web3Auth is hidden. You just need put in additional engineering efforts to build the UX flows. You
+  can switch between any of our SDKs in the future, however, it is important to consider you're choosing the right configuration for the future
+  migration to be easier.
+
+  :::tip
+
+  Read More about integrating [Web3Auth in Wallets](/product/#web3auth-for-wallets/).
+
+  :::
+
+- If you're building a dApp any of our products can be useful, however, with Web3Auth PnP or Core Kit Solutions, you would need to manage the UX Flows
+  and Interoperability yourself. Plug and Play can be quite useful as it contains some pre made flows to make the integration easier. Torus Wallet is
+  a great integration too, but it is an independent wallet, so any of the UX flows will not be in your control.
+
+  :::tip
+
+  Read More about integrating [Web3Auth in dApps](/product/#web3auth-for-dapps/).
+
+  :::
+
+### What chain are you building on?
+
+- The good news is that Web3Auth is chain agnostic. That means you can build on any chain you prefer. We support `SECP256K1` and `ED25519` keys curves
+  out of the box, and with private key manipulation, one can connect any chain. There are specialized providers for EVM, Solana and XRPL.
+- Wallet Ecosystems are available across specific chains, please read across their particular integrations.
+
+### What platform are you using?
+
+- Plug and Play SDKs support Web, Mobile (Android and iOS), Hybrid (React Native and Flutter) and Gaming (Unity and Unreal) environments.
+- Core Kit SDKs support Web, Mobile (Android and iOS), and React Native environments.
+- Wallet Ecosystems differ based on the specific Wallet Ecosystem's support and integration capabilities.
+
+### What level of interoperability do you need?
+
+- For a fully interoperable flow, use Wallet Ecosystems products which give you exception interoperability features across their own ecosystem and
+  your dApp.
+
+- Using Wallet Services, you can have your own PnP or Core Kit integration fully interoperable using Wallet Connect or any Wallet Ecosystem as well.
+  use the Torus wallet in your application.
+
+## UI/ UX Questions
+
+### Do you require a prebuilt UI/UX for Login/MFA?
+
+- If you want a ready-made solution, use our Web3Auth Plug and Play SDKs.
+- If you prefer to craft your own UI/UX for your users, the Web3Auth Core-Kit SDKs are the way to go.
+- Wallet Ecosystems offer a tailored integration with specific Wallet Ecosystems, leveraging their UI/UX.
+
+### Do you need auto-signing?
+
+- By auto-signing, we mean that the UX for approving the transaction is controlled by the application itself. This can only be done when the
+  application has access to the private key/ user signature.
+- Both Plug and Play SDKs and Core-Kit SDKs feature auto signing, removing the need for your users to approve each transaction.
+- Wallet Ecosystems do not support auto-signing, as the user has to approve the transaction in the wallet itself.
+
+## Infrastructure Questions
+
+### Do you want to manage the MFA Infrastructure?
+
+- If you'd like to maintain ownership of the MFA Infrastructure, our Core-Kit SDKs are the best choice for you.
+
+### Do you want to manage the Login Infrastructure ie. use any existing Social Logins (e.g. Google, FB, etc…) , or a passwordless login of your own?
+
+- Both our Plug and Play and Core Kit SDKs allow you to manage your own Login Infrastructure. It is a feature called Custom Authentication in Plug and
+  Play SDKs and a requirement for Core Kit SDKs.
+- Wallet Ecosystems do not support managing the login infrastructure, as they rely on the Wallet Ecosystem's authentication mechanisms.
+
+### Do you want to customize the storage and threshold of the user key shares?
+
+- The Web3Auth Plug and Play SDK gives you the standard way of storing the user key shares. If you want to customise the storage of the user key
+  shares, you can use our Core Kit SDKs.
+- With Core Kit SDKs, you can customize the threshold and the number of shares required to recover the user key. You can also customise the storage of
+  the user key shares. From Devices share storage to Social Recovery, QR backups, Email Backups, Database encrypted storage etc. you can choose the
+  flow you want to use.
+- Wallet Ecosystems do not support customizing the storage and threshold of the user key shares, as they rely on the Wallet Ecosystem's protocols and
+  tools.
+
+## SSS vs MPC Questions
+
+### Do you want the user key to be present in the application frontend?
+
+- If you're looking to keep the user key in the frontend, our traditional SDKs, powered by Shamir's Secret Sharing Scheme, can be a good choice for
+  you.
+- If you prefer to keep the user's keys divided the whole time and only have a temporary sign generated when the user is signing, our new SDKs,
+  powered by the Threshold Signature Scheme, are the way to go.
+
+### Do you want to import keys from other wallets?
+
+- If you want to import keys from other wallets, you can use our Core Kit SDKs.
+- The Core Kit SDKs have the option of key import, however, it has the trade off of key generation integrity. This is because to maintain non
+  custodiality, we make sure that key imported is encrypted by the Web3Auth generated key, and stored on the metadata server. It is not possible to
+  directly import a key and distribute into multiple parts within the Shamir Secret Sharing infrastructure.
+- The best place to import keys can be the MPC Infrastructure. With the import key API in our MPC SDKs, it is possible to import upto 4 keys directly
+  into the MPC infrastructure. However, as you import multiple keys, the user interaction tends to become slower.
+
+### Do you want your user to be able export their key?
+
+- If you want your users to be able to export their key, you can any of our SDKs.
+- With SSS based SDKs, the key is reconstructed on every login, so the user can export the key at any point of time.
+- With MPC based SDKs, the key reconstruction never happens, hence the process of exporting the key is a bit more complex. Exports can be done via an
+  opensource external script that can be locally run. Alternatively we’re in the midst of developing a simple binary which could be operated to
+  combine the factors.
+
+:::info Schedule a demo
+
+Still confused? Feel free to [schedule a demo call](https://calendly.com/web3auth/meeting-with-web3auth) with our team to discuss your project
+requirements and find out which Web3Auth product is the best fit for you.
+
+:::
