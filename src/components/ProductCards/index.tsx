@@ -30,7 +30,7 @@ export default function QuickNavigation() {
             <h5>Plug and Play Embedded Wallet SDKs</h5>
             <p>Integrate a non custodial embeded wallet within your app within seconds.</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}product/pnp`}>Explore Integration{chevron}</a>
+              <a href={`${baseUrl}product/pnp`}>Explore Product{chevron}</a>
               <a href={`${baseUrl}sdk/pnp/web/modal`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Web+Modal+SDK`}>Examples{chevron}</a>
             </div>
@@ -58,10 +58,10 @@ export default function QuickNavigation() {
             </svg>
           </div>
           <div className={styles.cardContent}>
-            <h5>Core Kit Wallet Management SDKs</h5>
-            <p>Personalise your dApp experience with our integrated wallet solution</p>
+            <h5>Core Kit Integrated Wallet SDKs</h5>
+            <p>Personalise your dApp experience with our built-in SDKs where Web3Auth is completely hidden.</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}product/core-kit`}>Explore Integration{chevron}</a>
+              <a href={`${baseUrl}product/core-kit`}>Explore Product{chevron}</a>
               <a href={`${baseUrl}sdk/core-kit/sfa-web`}>SDK Reference{chevron}</a>
               <a href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+Web+SDK`}>Examples{chevron}</a>
             </div>
@@ -85,7 +85,7 @@ export default function QuickNavigation() {
             <h5>Wallet Services</h5>
             <p>Get Modular access to pre built wallet UI, interoperability methods, fiat on-ramps, NFT services and much more.</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}product/wallet-services`}>Explore Integration{chevron}</a>
+              <a href={`${baseUrl}product/wallet-services`}>Explore Product{chevron}</a>
               <a href={`${baseUrl}sdk/wallet-services`}>SDK Reference{chevron}</a>
             </div>
           </div>
@@ -106,7 +106,7 @@ export default function QuickNavigation() {
             <h5>Wallet Ecosystems</h5>
             <p>Connect directly with flagship integrations of Web3Auth from established communities.</p>
             <div className={styles.links}>
-              <a href={`${baseUrl}product/wallet-ecosystems`}>Explore Integration{chevron}</a>
+              <a href={`${baseUrl}product/wallet-ecosystems`}>Explore Product{chevron}</a>
               <a href={`${baseUrl}sdk/wallet-ecosystems/safeauth`}>SDK Reference{chevron}</a>
             </div>
           </div>

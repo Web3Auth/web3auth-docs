@@ -15,6 +15,8 @@ export const nodejs = "Node.js";
 export const weblist = [reactJS, angular, vue, nextjs];
 
 export const pnp = "Plug and Play";
+export const walletecosystems = "Wallet Ecosystems";
+export const helpersdks = "Helper SDKs";
 export const pnpwebmodal = "Plug and Play Web Modal SDK";
 export const pnpwebnomodal = "Plug and Play Web No Modal SDK";
 export const pnpandroid = "Plug and Play Android SDK";
@@ -35,6 +37,8 @@ export const pnplist = [
 ];
 
 export const corekit = "Core Kit";
+export const corekitsfa = "Core Kit SFA";
+export const corekitmfa = "Core Kit MFA";
 export const tkeyjs = "tKey JS SDK";
 export const tkeyios = "tKey iOS SDK";
 export const tkeyandroid = "tKey Android SDK";
