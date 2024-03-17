@@ -513,37 +513,6 @@ const config: Config = {
           if (existingPath.includes("quickstart")) {
             return [existingPath.replace("quickstart", "quick-start")];
           }
-          if (existingPath.includes("/providers")) {
-            return [existingPath.replace("/providers", "/web/providers")];
-          }
-          if (existingPath.includes("/pnp")) {
-            return [
-              existingPath.replace("/pnp/web", "/web"),
-              existingPath.replace("/pnp/android", "/android"),
-              existingPath.replace("/pnp/ios", "/ios"),
-              existingPath.replace("/pnp/react-native", "/react-native"),
-              existingPath.replace("/pnp/flutter", "/flutter"),
-              existingPath.replace("/pnp/unity", "/unity"),
-              existingPath.replace("/pnp/unreal", "/unreal"),
-            ];
-          }
-          if (existingPath.includes("/core-kit")) {
-            return [
-              existingPath.replace("/core-kit/sfa-node", "/node"),
-              existingPath.replace("/core-kit/sfa-node", "/core-kit/node"),
-              existingPath.replace("/core-kit/sfa-web", "/single-factor-auth"),
-              existingPath.replace("/core-kit/sfa-web", "/core-kit/single-factor-auth"),
-              existingPath.replace("/core-kit/sfa-android", "/single-factor-auth-android"),
-              existingPath.replace("/core-kit/sfa-android", "/core-kit/single-factor-auth-android"),
-              existingPath.replace("/core-kit/tkey", "/tkey"),
-              existingPath.replace("/core-kit/mpc-core-kit", "/mpc-core-kit"),
-              existingPath.replace("/core-kit/introduction", "/self-host/"),
-              existingPath.replace("/core-kit/introduction", "/self-hosting"),
-            ];
-          }
-          if (existingPath.includes("/connect-blockchain/evm/ethereum")) {
-            return [existingPath.replace("/connect-blockchain/evm/ethereum", "/connect-blockchain/evm/ethereum")];
-          }
           return undefined; // Return a falsy value: no redirect created
         },
       },
