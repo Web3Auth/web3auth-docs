@@ -250,26 +250,6 @@ const config: Config = {
             to: "/how-web3auth-works",
           },
           {
-            from: "/overview/web3auth-and-wallets",
-            to: "/product-fit/web3auth-for-wallets",
-          },
-          {
-            from: "/overview/web3auth-for-wallets",
-            to: "/product-fit/web3auth-for-wallets",
-          },
-          {
-            from: "/overview/web3auth-for-dapps",
-            to: "/product-fit/web3auth-for-dapps",
-          },
-          {
-            from: "/overview/user-flow",
-            to: "/user-flow",
-          },
-          {
-            from: "/product-fit/user-flow",
-            to: "/user-flow",
-          },
-          {
             from: "/overview/key-management/",
             to: "/infrastructure/",
           },
@@ -284,50 +264,6 @@ const config: Config = {
           {
             from: "/infrastructure/technical-architecture/",
             to: "/infrastructure/",
-          },
-          {
-            from: "/whitelabeling",
-            to: "/pnp/features/whitelabel/",
-          },
-          {
-            from: "/whitelabel/",
-            to: "/pnp/features/whitelabel/",
-          },
-          {
-            from: "/interoperability",
-            to: "/pnp/features/interoperability",
-          },
-          {
-            from: "/dapp-share",
-            to: "/pnp/features/dapp-share",
-          },
-          {
-            from: "/authenticating-users/",
-            to: "/pnp/features/server-side-verification/",
-          },
-          {
-            from: "/authenticating-users/overview",
-            to: "/pnp/features/server-side-verification/",
-          },
-          {
-            from: "/server-side-verification/",
-            to: "/pnp/features/server-side-verification/",
-          },
-          {
-            from: "/server-side-verification/social-login-users",
-            to: "/pnp/features/server-side-verification/social-login-users",
-          },
-          {
-            from: "/server-side-verification/external-wallets",
-            to: "/pnp/features/server-side-verification/external-wallets",
-          },
-          {
-            from: "/developing-with-web3auth/adapters",
-            to: "/pnp/features/connect-external-wallets",
-          },
-          {
-            from: "/connect-external-wallets",
-            to: "/pnp/features/connect-external-wallets",
           },
           {
             from: "/developer-dashboard/",
