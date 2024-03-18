@@ -28,7 +28,7 @@ export default function QuickNavigation() {
           </div>
           <div className={styles.cardContent}>
             <h5>Plug and Play Embedded Wallet SDKs</h5>
-            <p>Integrate a non custodial embeded wallet within your app within seconds.</p>
+            <p>Integrate a non-custodial embedded wallet within your app within seconds.</p>
             <div className={styles.links}>
               <a href={`${baseUrl}product/pnp`}>Explore Product{chevron}</a>
               <a href={`${baseUrl}sdk/pnp/web/modal`}>SDK Reference{chevron}</a>
@@ -59,7 +59,7 @@ export default function QuickNavigation() {
           </div>
           <div className={styles.cardContent}>
             <h5>Core Kit Integrated Wallet SDKs</h5>
-            <p>Personalise your dApp experience with our built-in SDKs where Web3Auth is completely hidden.</p>
+            <p>Personalize your dApp experience with our built-in SDKs where Web3Auth is completely hidden.</p>
             <div className={styles.links}>
               <a href={`${baseUrl}product/core-kit`}>Explore Product{chevron}</a>
               <a href={`${baseUrl}sdk/core-kit/sfa-web`}>SDK Reference{chevron}</a>
@@ -83,7 +83,7 @@ export default function QuickNavigation() {
           </div>
           <div className={styles.cardContent}>
             <h5>Wallet Services</h5>
-            <p>Get Modular access to pre built wallet UI, interoperability methods, fiat on-ramps, NFT services and much more.</p>
+            <p>Get Modular access to a prebuilt wallet UI, interoperability methods, fiat on-ramps, NFT services, and much more.</p>
             <div className={styles.links}>
               <a href={`${baseUrl}product/wallet-services`}>Explore Product{chevron}</a>
               <a href={`${baseUrl}sdk/wallet-services`}>SDK Reference{chevron}</a>
@@ -124,12 +124,13 @@ export default function QuickNavigation() {
                   fill="currentColor"
                 />
               </svg>
-              <b>Find out which SDK suits your usecase</b>
+              <b>Find out which SDK suits your use case.</b>
             </span>
             <p>
-              Unsure about which of our product bet fits your requirements? Discover which product you should use for your use case with some
-              qualifying questions
+              Unsure about which of our product bet fits your requirements? With some qualifying questions, discover which product you should use for
+              your use case.
             </p>
+
             <div className={styles.btnContainerAlert}>
               Find out More
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
