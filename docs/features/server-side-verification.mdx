@@ -1,7 +1,7 @@
 ---
-title: Server Side Verification
+title: Server-Side Verification
 displayed_sidebar: docs
-description: "Server Side Verification | Documentation - Web3Auth"
+description: "Server-Side Verification | Documentation - Web3Auth"
 ---
 
 import TabItem from "@theme/TabItem";
@@ -27,7 +27,7 @@ To implement server-side verification with Web3Auth:
 
 ## Getting the JWT ID Token
 
-After a user is logged in using one of the supported Wallets, One can obtain the `idToken` by calling `authenticateUser` function of Web3Auth.
+After a user is logged in using one of the supported Wallets, One can obtain the `idToken` by calling the `authenticateUser` function of Web3Auth.
 
 ```tsx
 await web3auth.authenticateUser();
@@ -43,7 +43,7 @@ await web3auth.authenticateUser();
 
 :::tip Extending Beyond Social Logins
 
-Web3Auth's server-side verification extends not only to users authenticated via the provided social logins but also to those using external wallets.
+Web3Auth's server-side verification extends not only to users authenticated via the provided social logins, but also to those using external wallets.
 This flexibility ensures that dApps can authenticate Web3Auth users in their backend systems, regardless of the authentication method used on the
 frontend.
 
@@ -56,8 +56,8 @@ For Web3Auth integrated wallet adapters and social logins, the flow is built int
 
 :::warning
 
-The External Wallet's `idToken` payload is different than the Social login's `idToken`. In social logins we get the user's pub key and in external
-wallet we get their address.
+The External Wallet's `idToken` payload is different than the Social login's `idToken`. During Social logins, we get the user's pub key, and in
+external wallet we get their address.
 
 :::
 
@@ -111,7 +111,7 @@ wallet we get their address.
 
 :::info
 
-By default Web3Auth returns an `idToken` which contains the `public_key` in `secp256k1` form.
+By default, Web3Auth returns an `idToken` which contains the `public_key` in the `secp256k1` form.
 
 :::
 
@@ -159,8 +159,8 @@ const openloginAdapter = new OpenloginAdapter({
 - **JWT Validation:** The associated public key, available on a hosted website provided by Web3Auth, allows you to verify the token's authenticity and
   integrity. A JWT that can be successfully verified with this public key confirms that the information it contains is trustworthy and has not been
   altered.
-- **Proof of Wallet Ownership:** The JWT includes a claim that certifies the user's ownership of a specific wallet public address, enabling a reliable
-  method of user authentication on the server side.
+- **Proof of Wallet Ownership:** The JWT includes a claim that certifies the user's ownership of a specific wallet's public address, enabling a
+  reliable method of user authentication on the server side.
 
 :::info JWKS endpoint
 
@@ -179,7 +179,7 @@ from the `authenticateUser` function.
 
 :::info
 
-- App scoped wallet will be obtained from the frontend once the user is logged in.
+- App scoped wallet will be obtained from the front-end once the user is logged in.
 - Public Key derivation depends on the curve (refer to the code snippets above).
 
 :::
