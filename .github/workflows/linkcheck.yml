@@ -3,17 +3,20 @@ name: Check External links
 on:
   push:
     branches:
-    - master
+      - master
   pull_request:
-    tags:
-    - 'check-links'
+    types: [labeled]
 
 jobs:
   markdown-link-check:
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'check-links') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: gaurav-nelson/github-action-markdown-link-check@v1
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Check markdown links
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
           file-extension: .mdx
           use-quiet-mode: yes
