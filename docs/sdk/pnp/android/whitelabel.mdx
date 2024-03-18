@@ -7,14 +7,15 @@ description: "Web3Auth PnP Android SDK - Whitelabel | Documentation - Web3Auth"
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
+import WhiteLabelShowcase from "@site/src/common/sdk/pnp/_whitelabel_showcase.mdx";
 
 For defining custom UI, branding, and translations for your brand, you just need to specify an additional parameter within the `Web3AuthOptions`
 object called `whiteLabel`. This parameter takes object called `WhiteLabelData`.
 
 :::note
 
-This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the
-**Growth Plan**. You can use this feature in the development environment for free.
+This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the **Growth
+Plan**. You can use this feature in the development environment for free.
 
 :::
 
@@ -32,16 +33,16 @@ This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricin
 
 <TabItem value="table">
 
-| Parameter          | Type                       | Description                                                                                                                                                                                                                                                                                                                                           | Default                                                           | Mandatory |
-| ------------------ | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | --------- |
-| `appName?`         | `String`                   | App name to be displayed in the User Flow Screens.                                                                                                                                                                                                                                                                                                    | dApp's Website URL                                                | No        |
-| `appUrl?`          | `String`                   | App URL to be displayed in the User Flow Screens.                                                                                                                                                                                                                                                                                                     | dApp's Website URL                                                | No        |
-| `logoLight?`       | `String`                   | App logo to be shown on the dark background (dark theme)                                                                                                                                                                                                                                                                                              | [web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg) | No        |
-| `logoDark?`        | `String`                   | App logo to be shown on the light background (light theme)                                                                                                                                                                                                                                                                                            | [web3auth-logo.svg](https://images.web3auth.io/web3auth-logo.svg) | No        |
-| `defaultLanguage?` | `Language`                 | Default Language to use. <br/> Choose from: <ul><li>`Language.EN` - English</li><li>`Language.DE` - German</li><li>`Language.JA` - Japanese</li><li>`Language.KO` - Korean</li><li>`Language.ZH` - Mandarin</li><li>`Language.ES` - Spanish</li><li>`Language.FR` - French</li><li>`Language.PT` - Portuguese</li><li>`Language.NL` - Dutch</li></ul> | `Language.EN`                                                     | No        |
-| `mode?`            | `ThemeModes`               | Choose between `AUTO`, `LIGHT` or `DARK` modes.                                                                                                                                                                                                                                                                                                       | `ThemeModes.AUTO`                                                 | No        |
-| `theme?`           | `HashMap<String, String>?` | Used to customize the theme of the login modal with the following options <br /> `'primary'` - To customize the primary color of the modal's content                                                                                                                                                                                                  | `#0364FF`                                                         | No        |
-| `useLogoLoader`    | `Boolean`                  | Loads the logo when loading                                                                                                                                                                                                                                                                                                                           | false                                                             | No        |
+| Parameter          | Description                                                                                                                                                              |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `appName?`         | Display name for the app in the UI.                                                                                                                                      |
+| `logoLight?`       | App logo to be used in dark mode. It accepts url in `String` as a value.                                                                                                 |
+| `logoDark?`        | App logo to be used in light mode. It accepts url in `String` as a value.                                                                                                |
+| `defaultLanguage?` | Language which will be used by Web3Auth, app will use browser language if not specified. Default language is `Language.EN`. Checkout `Language` for supported languages. |
+| `mode?`            | Theme mode for the login modal. Choose between `ThemeModes.AUTO`, `ThemeModes.LIGHT` or `ThemeModes.DARK` background modes. Default value is `ThemeModes.AUTO`.          |
+| `theme?`           | Used to customize the theme of the login modal. It accepts `HashMap` as a value.                                                                                         |
+| `appUrl?`          | Url to be used in the Modal. It accepts url in `String` as a value.                                                                                                      |
+| `useLogoLoader?`   | Use logo loader. If `logoDark` and `logoLight` are null, the default Web3Auth logo will be used for the loader. Default value is false.                                  |
 
 </TabItem>
 
@@ -61,8 +62,11 @@ data class WhiteLabelData(
 ```
 
 </TabItem>
-
 </Tabs>
+
+<WhiteLabelShowcase />
+
+### Example
 
 ```kotlin title="Usage"
 web3Auth = Web3Auth (

@@ -35,15 +35,15 @@ selected providers in the [provider](#provider) section.
 
 <TabItem value="table">
 
-| Parameter           | Type                | Mandatory | Description                                                                                                                                                                                                           |
-| ------------------- | ------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginProvider`     | `enum` `Provider`   | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`, `EMAIL_PASSWORD`, `JWT` |
-| `dappShare`         | `string`            | No        | Dapp share can be used to pass dapp share url, default is `null`                                                                                                                                                      |
-| `extraLoginOptions` | `ExtraLoginOptions` | No        | You can pass various OAuth supported options, default is `null`                                                                                                                                                       |
-| `redirectUrl`       | `Uri`               | No        | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                                           |
-| `appState`          | `string`            | No        | appState can be used to keep track of the app state when user will be redirected to app after login, default is `null`                                                                                                |
-| `mfaLevel`          | `MFALevel`          | No        | MFA level can be used to pass 2FA screen shown during login, default is `mfaLevel.DEFAULT`, shown every 3rd login.                                                                                                    |
-| `curve`             | `Curve`             | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum                                                                                                                            |
+| Parameter            | Description                                                                                                                                                                                                                                     |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginProvider`      | It sets the OAuth login method to be used. You can use any of the supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`. |
+| `extraLoginOptions?` | It can be used to set the OAuth login options for corresponding `loginProvider`. For instance, you'll need to pass user's email address as. Default value for the field is `null`, and it accepts `FExtraLoginOptions` as a value.              |
+| `redirectUrl?`       | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated. Default value for the field is `null`, and accepts `FString` as a value.                              |
+| `appState?`          | It can be used to keep track of the app state when user will be redirected to app after login. Default is `null`, and accepts `FString` as a value.                                                                                             |
+| `mfaLevel?`          | Customize the MFA screen shown to the user during OAuth authentication. Default value for field is `MFALevel.DEFAULT`, which shows MFA screen every 3rd login. It accepts `FMFALevel` as a value.                                               |
+| `dappShare?`         | Custom verifier logins can get a dapp share returned to them post successful login. This is useful if the dapps want to use this share to allow users to login seamlessly. It accepts `FString` as a value.                                     |
+| `curve?`             | It will be used to determine the public key encoded in the jwt token which returned in `getUserInfo` function after user login. The default value is `FCurve::speck256k1`.                                                                      |
 
 </TabItem>
 
@@ -145,27 +145,28 @@ passwordless login etc. This parameter can be considered as advanced login optio
 
 <TabItem value="table">
 
-| Parameter                 | Type      | Mandatory | Description                                           |
-| ------------------------- | --------- | --------- | ----------------------------------------------------- |
-| domain                    | `string`  | No        | Domain of the app                                     |
-| client_id                 | `string`  | No        | client_id from Web3Auth Dashboard                     |
-| leeway                    | `string`  | No        | leeway                                                |
-| verifierIdField           | `string`  | No        | verifierIdField                                       |
-| isVerifierIdCaseSensitive | `bool`    | No        | Boolean to confirm the case sensitivity of VerifierId |
-| display                   | `Display` | No        | Display                                               |
-| prompt                    | `Prompt`  | No        | Prompt                                                |
-| max_age                   | `string`  | No        | max_age                                               |
-| ui_locales                | `string`  | No        | ui_locales to be shown on the modal                   |
-| id_token_hint             | `string`  | No        | ID Token hint                                         |
-| login_hint                | `string`  | No        | Email used for EMAIL_PASSWORDLESS                     |
-| acr_values                | `string`  | No        | acc_values                                            |
-| scope                     | `string`  | No        | scope                                                 |
-| audience                  | `string`  | No        | audience                                              |
-| connection                | `string`  | No        | connection                                            |
-| state                     | `string`  | No        | state                                                 |
-| response_type             | `string`  | No        | response_type                                         |
-| nonce                     | `string`  | No        | nonce                                                 |
-| redirect_uri              | `string`  | No        | redirect_uri                                          |
+| Parameter                    | Description                                                                                                                                                                                                                      |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `domain?`                    | Your custom authentication domain in `FString` format. For example, if you are using Auth0, it can be example.au.auth0.com.                                                                                                      |
+| `client_id?`                 | Client id in `FString` format, provided by your login provider used for custom verifier.                                                                                                                                         |
+| `leeway?`                    | The value used to account for clock skew in JWT expirations. The value is in the seconds, and ideally should no more than 60 seconds or 120 seconds at max. It takes `FString` as a value.                                       |
+| `verifierIdField?`           | The field in JWT token which maps to verifier id. Please make sure you selected correct JWT verifier id in the developer dashboard. It takes `FString` as a value.                                                               |
+| `isVerifierIdCaseSensitive?` | Boolean to confirm Whether the verifier id field is case sensitive or not.                                                                                                                                                       |
+| `display?`                   | Allows developers the configure the display of UI. It takes `FDisplay` as a value.                                                                                                                                               |
+| `prompt?`                    | Prompt shown to the user during authentication process. It takes `FPrompt` as a value.                                                                                                                                           |
+| `max_age?`                   | Max time allowed without reauthentication. If the last time user authenticated is greater than this value, then user must reauthenticate. It takes `FString` as a value.                                                         |
+| `ui_locales?`                | The space separated list of language tags, ordered by preference. For instance `fr-CA fr en`.                                                                                                                                    |
+| `id_token_hint?`             | It denotes the previously issued ID token. It takes `FString` as a value.                                                                                                                                                        |
+| `id_token?`                  | JWT (ID Token) to be passed for login.                                                                                                                                                                                           |
+| `login_hint?`                | It is used to send the user's email address during Email Passwordless login. It takes `FString` as a value.                                                                                                                      |
+| `acr_values?`                | acc_values                                                                                                                                                                                                                       |
+| `scope?`                     | The default scope to be used on authentication requests. The defaultScope defined in the Auth0Client is included along with this scope. It takes `FString` as a value.                                                           |
+| `audience?`                  | The audience, presented as the aud claim in the access token, defines the intended consumer of the token. It takes `FString` as a value.                                                                                         |
+| `connection?`                | The name of the connection configured for your application. If null, it will redirect to the Auth0 Login Page and show the Login Widget. It takes `FString` as a value.                                                          |
+| `state?`                     | state                                                                                                                                                                                                                            |
+| `response_type?`             | Defines which grant to execute for the authorization server. It takes `FString` as a value.                                                                                                                                      |
+| `nonce?`                     | nonce                                                                                                                                                                                                                            |
+| `redirect_uri?`              | It can be used to specify the default url, where your custom jwt verifier can redirect your browser to with the result. If you are using Auth0, it must be whitelisted in the Allowed Callback URLs in your Auth0's application. |
 
 </TabItem>
 

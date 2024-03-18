@@ -33,15 +33,15 @@ the login method for specific social logins such as GOOGLE, APPLE, FACEBOOK, etc
 
 <TabItem value="table">
 
-| Parameter           | Type                | Mandatory | Description                                                                                                                                                                                         |
-| ------------------- | ------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginProvider`     | `Provider`          | Yes       | Login provider, supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`, `JWT` |
-| `dappShare`         | `String`            | No        | Dapp share can be used to pass dapp share url, default is `null`                                                                                                                                    |
-| `extraLoginOptions` | `ExtraLoginOptions` | No        | You can pass various oauth supported options, default is `null`                                                                                                                                     |
-| `redirectUrl`       | `Uri`               | No        | Uri where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated, default is `null`                                         |
-| `appState`          | `String`            | No        | appState can be used to keep track of the app state when user will be redirected to app after login, default is `null`                                                                              |
-| `mfaLevel`          | `MFALevel`          | No        | MFA level can be used to pass 2FA screen shown during login, default is `mfaLevel.DEFAULT`, shown every 3rd login.                                                                                  |
-| `curve`             | `Curve`             | No        | Curve can be used to pass curve options, `ED25519` for Solana and `SECP256K1` for Ethereum                                                                                                          |
+| Parameter            | Description                                                                                                                                                                                                                                                                                                                                                             |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginProvider`      | It sets the OAuth login method to be used. You can use any of the supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`.                                                                                                                         |
+| `extraLoginOptions?` | It can be used to set the OAuth login options for corresponding `loginProvider`. For instance, you'll need to pass user's email address as. Default value for the field is `null`, and it accepts `ExtraLoginOptions` as a value.                                                                                                                                       |
+| `redirectUrl?`       | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated. Default value for the field is `null`, and accepts `Uri` as a value.                                                                                                                                                          |
+| `appState?`          | It can be used to keep track of the app state when user will be redirected to app after login. Default is `null`, and accepts `String` as a value.                                                                                                                                                                                                                      |
+| `mfaLevel?`          | Customize the MFA screen shown to the user during OAuth authentication. Default value for field is `MFALevel.DEFAULT`, which shows MFA screen every 3rd login. It accepts `MFALevel` as a value.                                                                                                                                                                        |
+| `dappShare?`         | Custom verifier logins can get a dapp share returned to them post successful login. This is useful if the dapps want to use this share to allow users to login seamlessly. It accepts `String` as a value.                                                                                                                                                              |
+| `curve?`             | It will be used to determine the public key encoded in the jwt token which returned in `getUserInfo` function after user login. This parameter won't change format of private key returned by We3Auth. Private key returned by `getPrivKey` is always secp256k1. To get the ed25519 key you can use `getEd25519PrivKey` method. The default value is `Curve.SECP256K1`. |
 
 </TabItem>
 
@@ -363,91 +363,6 @@ class MainActivity : AppCompatActivity() {
 ```
 
 </TabItem>
-
-</Tabs>
-
-## ExtraLoginOptions
-
-### Arguments
-
-`ExtraLoginOptions`
-
-```kotlin
-web3Auth.login(
-    LoginParams(
-        selectedLoginProvider,
-        extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")
-    )
-)
-```
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Class", value: "class" },
-  ]}
->
-
-<TabItem value="table">
-
-| Parameter                   | Type                       | Mandatory | Description                                                       |
-| --------------------------- | -------------------------- | --------- | ----------------------------------------------------------------- |
-| `additionalParams`          | `HashMap\<String, String>` | No        | additionalParams, use id_token(JWT) to authenticate with web3auth |
-| `domain`                    | `String`                   | No        | Domain of the app                                                 |
-| `client_id`                 | `String`                   | No        | client_id from Web3Auth Dashboard                                 |
-| `leeway`                    | `String`                   | No        | leeway                                                            |
-| `verifierIdField`           | `String`                   | No        | verifierIdField                                                   |
-| `isVerifierIdCaseSensitive` | `Boolean`                  | No        | Boolean to confirm the case sensitivity of VerifierId             |
-| `display`                   | `Display`                  | No        | Display                                                           |
-| `prompt`                    | `Prompt`                   | No        | Prompt                                                            |
-| `max_age`                   | `String`                   | No        | max_age                                                           |
-| `ui_locales`                | `String`                   | No        | ui_locales to be shown on the modal                               |
-| `id_token`                  | `String`                   | No        | JWT (ID Token) to be passed for Login.                            |
-| `id_token_hint`             | `String`                   | No        | Previously issued ID Token.                                       |
-| `login_hint`                | `String`                   | No        | Email used for EMAIL_PASSWORDLESS                                 |
-| `acr_values`                | `String`                   | No        | acc_values                                                        |
-| `scope`                     | `String`                   | No        | scope                                                             |
-| `audience`                  | `String`                   | No        | audience                                                          |
-| `connection`                | `String`                   | No        | connection                                                        |
-| `state`                     | `String`                   | No        | state                                                             |
-| `response_type`             | `String`                   | No        | response_type                                                     |
-| `nonce`                     | `String`                   | No        | nonce                                                             |
-| `redirect_uri`              | `String`                   | No        | redirect_uri                                                      |
-
-</TabItem>
-
-<TabItem value="class">
-
-```kotlin
-data class ExtraLoginOptions(
-    private var additionalParams : HashMap<String, String>? = null,
-    private var domain : String? = null,
-    private var client_id : String? = null,
-    private var leeway : String? = null,
-    private var verifierIdField : String? =null,
-    private var isVerifierIdCaseSensitive : Boolean? = null,
-    private var display : Display? = null,
-    private var prompt : Prompt? = null,
-    private var max_age : String? = null,
-    private var ui_locales : String? = null,
-    private var id_token : String? = null,
-    private var id_token_hint : String? = null,
-    private var login_hint : String? = null,
-    private var acr_values : String? = null,
-    private var scope : String? = null,
-    private var audience : String? = null,
-    private var connection : String? = null,
-    private var state : String? = null,
-    private var response_type : String? = null,
-    private var nonce : String? = null,
-    private var redirect_uri : String? = null
-)
-
-```
-
-</TabItem>
-
 </Tabs>
 
 ## Selecting Curve
@@ -654,17 +569,17 @@ The `launchWalletServices` method launches a WebView which allows you to use the
 
 <TabItem value="table">
 
-| Parameter          | Type             | Mandatory | Description                                                                                                                 |
-| ------------------ | ---------------- | --------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `chainNamespace`   | `ChainNamespace` | No        | Custom configuration for your preferred blockchain. As of now only EVM supported. Default value is `ChainNamespace.EIP155`. |
-| `decimals`         | `Int`            | No        | Number of decimals for the currency ticker. Default value is 18                                                             |
-| `blockExplorerUrl` | `String`         | No        | Blockchain's explorer URL. (eg: `https://etherscan.io`)                                                                     |
-| `chainId`          | `String`         | Yes       | The chain id of the selected blockchain in `hex`.                                                                           |
-| `displayName`      | `String`         | No        | Display Name for the chain.                                                                                                 |
-| `logo`             | `String`         | No        | Logo for the selected `chainNamespace` & `chainId`.                                                                         |
-| `rpcTarget`        | `String`         | Yes       | RPC Target URL for the selected `chainNamespace` & `chainId`.                                                               |
-| `ticker`           | `String`         | Yes       | Default currency ticker of the network (e.g: `ETH`)                                                                         |
-| `tickerName`       | `String`         | No        | Name for currency ticker (e.g: `Ethereum`)                                                                                  |
+| Parameter           | Description                                                                                                                 |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `chainNamespace`    | Custom configuration for your preferred blockchain. As of now only EVM supported. Default value is `ChainNamespace.EIP155`. |
+| `decimals`          | Number of decimals for the currency ticker. Default value is 18, and accepts `Int` as value.                                |
+| `blockExplorerUrl?` | Blockchain's explorer URL. (eg: `https://etherscan.io`)                                                                     |
+| `chainId`           | The chain id of the selected blockchain in hex `String`.                                                                    |
+| `displayName?`      | Display Name for the chain.                                                                                                 |
+| `logo?`             | Logo for the selected `chainNamespace` & `chainId`.                                                                         |
+| `rpcTarget`         | RPC Target URL for the selected `chainNamespace` & `chainId`.                                                               |
+| `ticker`            | Default currency ticker of the network (e.g: `ETH`)                                                                         |
+| `tickerName?`       | Name for currency ticker (e.g: `Ethereum`)                                                                                  |
 
 </TabItem>
 

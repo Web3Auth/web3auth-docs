@@ -88,16 +88,16 @@ The Web3Auth Constructor takes a class `Web3AuthOptions` as input. This class ha
 
 <TabItem value="table">
 
-| Parameter        | Type                                  | Mandatory | Description                                                                                                                                                     |
-| ---------------- | ------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `clientId`       | `string`                              | Yes       | Your Web3Auth Project ID                                                                                                                                        |
-| `network`        | enum Web3Auth.Network                 | Yes       | Network to run Web3Auth, either SAPPHIRE_MAINNET, SAPPHIRE_DEVNET, MAINNET, CYAN, AQUA or TESTNET                                                               |
-| `redirectUrl`    | `Uri`                                 | No        | URL that Web3Auth will redirect API responses, default is `null`                                                                                                |
-| `whiteLabel`     | `WhiteLabelData`                      | No        | A configuration optional object to customize UI, branding, and translations for your brand. Refer [WhiteLabel](/pnp/features/whitelabel) section for more info. |
-| `loginConfig`    | `Dictionary<string, LoginConfigItem>` | No        | A configuration optional object to use custom authentication. Refer [Custom Authentication](/pnp/features/custom-authentication) for more info.                 |
-| `useCoreKitKey`  | `bool`                                | No        | A configuration optional object to use coreKitKey.                                                                                                              |
-| `chainNamespace` | `ChainNamespace`                      | No        | A configuration optional object to use chainNamespace.                                                                                                          |
-| `mfaSettings`    | `MfaSettings`                         | No        | A configuration optional object to use mfaSettings.                                                                                                             |
+| Parameter         | Description                                                                                                                                                      |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`        | Your Web3Auth Client ID. You can get it from Web3Auth [Dashboard](https://dashboard.web3auth.io/) under project details. It's a mandatory field of type `string` |
+| `network`         | Defines the Web3Auth network. It's a mandatory field of type Network.                                                                                            |
+| `redirectUrl`     | URL that Web3Auth will redirect API responses upon successful authentication from browser. It's a mandatory field of type `Uri`.                                 |
+| `whiteLabel?`     | WhiteLabel options for web3auth. It helps you define custom UI, branding, and translations for your brand app. It takes `WhiteLabelData` as a value.             |
+| `loginConfig?`    | Login config for the custom verifiers. It takes `Dictionary<string, LoginConfigItem>` as a value.                                                                |
+| `useCoreKitKey?`  | Use CoreKit Key to get core kit key. It's an optional field with default value as `false`.                                                                       |
+| `chainNamespace?` | Chain Namespace [`EIP155` and `SOLANA`]. It takes `Web3Auth.ChainNamespace` as a value.                                                                          |
+| `mfaSettings?`    | Allows developers to configure the Mfa settings for authentication. It takes `MfaSettings` as a value.                                                           |
 
 </TabItem>
 
@@ -106,7 +106,7 @@ The Web3Auth Constructor takes a class `Web3AuthOptions` as input. This class ha
 ```cs
 class Web3AuthOptions {
   string clientId;  // Your Web3Auth project ID
-  public Web3Auth.Network network;    // Network to run Web3Auth, either MAINNET, TESTNET, AQUA or CYAN
+  public Web3Auth.Network network;    // Network to run Web3Auth, either SAPPHIRE_MAINNET, SAPPHIRE_DEVNET, MAINNET, TESTNET, AQUA or CYAN
   public Uri redirectUrl;  // URL that Web3Auth will redirect API responses
   public WhiteLabelData? whiteLabel;  // Optional param to configure look
   public Dictionary<string, LoginConfigItem> loginConfig;  // Optional
