@@ -4,10 +4,10 @@ displayed_sidebar: docs
 description: "Multi Factor Authentication | Documentation - Web3Auth"
 ---
 
-At the core, Web3Auth enables simple Web2 flows for Web3 onboarding. However, as simple as it sounds, maintaining non custodiality in such a setup is
+At the core, Web3Auth enables simple Web2 flows for Web3 onboarding. However, as simple as it sounds, maintaining non-custodiality in such a setup is
 extremely difficult. Hence, we came up with a unique offering ie. Multi-Factor Keys, an extension to Multi Factor Authentication (MFA) where your keys
-are tied to different authentication methods. These keys are extracted from the user's social accounts, devices, and recovery phrases etc. and are
-used to get the user's account.
+are tied to different authentication methods. These keys are extracted from the user's social accounts, devices, recovery phrases etc. and are used to
+get the user's account.
 
 While this adds an extra layer of security, it also ensures that the user is in control of their keys and can recover them if they lose access to one
 of the factors. To ensure ownership, you must provide two or more different backup factors. Once you create sufficient recovery factors, MFA is
@@ -21,7 +21,7 @@ users and developers and they can choose the best flows according to their needs
 ## One-Click Login (Single Factor Auth)
 
 This is the simplest flow for a user to onboard with Web3Auth. The user just needs to click on the login button, connect to their favorite social
-account (OAuth) or any passwordless flow, like email passwordless, biometric authentication etc., and a wallet is generated for them. This flow has a
+account (OAuth) or any passwordless flow, like email-passwordless, biometric authentication etc., and a wallet is generated for them. This flow has a
 1/1 Key Share setup and the whole key via Web3Auth Auth Network key shares. This flow is still non-custodial since the nodes in the Web3Auth network
 have a 5/9 consensus mechanism to generate the key shares.
 
@@ -33,7 +33,7 @@ flow.**
 
 :::
 
-:::info technical insignt
+:::info technical insight
 
 In our One Click Flow, we add a `nonce` value, stored in our encrypted metadata server, to the social login share to keep the threshold 2/2, while it
 feels like 1/1. This is done to ensure that the application has the flexibility to move to a 2/n MFA flow in the future if they want to. As the
@@ -86,7 +86,7 @@ only using the Core Kit SDKs. The Plug and Play SDKs come with a default thresho
 
 | Parameter                                                                                                                                              | restricting to 2/2 shares                                                                                                                                                                                                                                                                                                    | allowing ≥ 2/3 shares                                                                                                                                                                                                                         |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Non-Custodiality:** Ownership/access to a user key and/or Ability to grief?                                                                          | “Semi-custodial” - Never has access but nodes/ network always can grieve in this setup, as they always own one of the only factors.                                                                                                                                                                                          | More fully non-custodial, can’t grief, a user can ALWAYS reconstruct their key pair                                                                                                                                                           |
+| **Non-Custodiality:** Ownership/access to a user key and/or Ability to grief?                                                                          | “Semi-custodial” - Never has access but nodes/networks always can grieve in this setup, as they always own one of the only factors.                                                                                                                                                                                          | More fully non-custodial, can’t grief, a user can ALWAYS reconstruct their key pair                                                                                                                                                           |
 | **Redundancy:** The ability to ensure that users never lose their key. Conversely the likelihood of a user’s key being lost, due to a loss of factors. | In a 2/2 setup, the nodes become even more important. If nodes go down/lose factor due to issues users lose their keys. Users get redundancy on their side by copying the factor/share that they have across their devices.                                                                                                  | In a ≥ 2/3 setup, users can get redundancy in the same way as 2/2 (by copying the same factors) or by increasing the threshold 2/4, 2/5.                                                                                                      |
 | **Control vs Security:** Restricted access means greater practical security from the network/cloud provider                                            | When we restrict things to the 2/2 flow, we can be certain that the user cannot transact without the node network. While it acts as a sword towards non-custodial, it can be a strong shield. For example, we can not allow a tx that withdraws all the user's money from the user (unless they do extra validation with us) | in the 2/3 flow, the user always has full access to the key. We can still do the same restrictions, but we don’t have the guarantee that the user won’t transact without us cause they can always reconstruct the key.                        |
 | **Exportability vs Security:** Exporting keys from the system                                                                                          | To have a restricted 2/2 flow is to restrict exportability. Still can be done with extra validation.                                                                                                                                                                                                                         | Always exportable all the time. This could be a detriment as, if we give the ability to transport and reshare the key out (without extra validation/restriction) it's as good as v1 technically as a hacker can always reshare the user keys. |
@@ -130,8 +130,8 @@ when to trigger your MFA flow. This has to be done manually in the Core Kit SDKs
 
 ### The dApp Share in PnP SDKs
 
-Once a user logs in, with their MFA enabled accounts their details can be accessed by utilizing the `getUserInfo()` function. Within the response,
-Web3Auth return a field called `dappShare`, which is a 24-word seed phrase that can be used to reconstruct the private key.
+Once a user logs in, with their MFA-enabled accounts, their details can be accessed by utilizing the `getUserInfo()` function. Within the response,
+Web3Auth returns a field called `dappShare`, which is a 24-word seed phrase that can be used to reconstruct the private key.
 
 These dappShares supplement Share B and makeup half of the private key. The application can securely store the dApp share in its local storage. Users
 can use their social media accounts to obtain one share when logging in. The application provides the dApp Share, eliminating the need to store the
