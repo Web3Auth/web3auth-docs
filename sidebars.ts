@@ -715,6 +715,11 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "link",
+              label: "Playground",
+              href: "https://w3a.link/pnp-playground",
+            },
+            {
+              type: "link",
               label: "Support Forum",
               href: "https://web3auth.io/community/c/help-pnp/pnp-modal/7",
             },
@@ -878,6 +883,16 @@ const sidebars: SidebarsConfig = {
           collapsed: false,
           label: "Additional Settings",
           items: ["sdk/pnp/flutter/whitelabel", "sdk/pnp/flutter/custom-authentication", "sdk/pnp/flutter/mfa", "sdk/pnp/flutter/dapp-share"],
+        },
+        {
+          type: "link",
+          label: "Playground Android",
+          href: "https://w3a.link/pnp-flutter-android-playground",
+        },
+        {
+          type: "link",
+          label: "Playground iOS",
+          href: "https://w3a.link/pnp-flutter-ios-playground",
         },
         {
           type: "link",
