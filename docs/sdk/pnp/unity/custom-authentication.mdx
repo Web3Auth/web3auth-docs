@@ -8,18 +8,18 @@ description: "Web3Auth PnP Unity SDK - Using Custom Authentication | Documentati
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-Custom Authentication is a way to authenticate users with your own custom authentication service. For example, while authenticating with Google, you
-have the ability to use your own Google Client ID and Dashboard to authenticate users directly. To login using your own custom JWT issuers like Auth0,
-AWS Cognito, or Firebase, you can add the your configuration to the `loginConfig` field of the `Web3AuthOptions` class.
+Custom Authentication is a way to authenticate users usign your own custom authentication service. For example, while authenticating with Google, you
+can use your own Google Client ID and Dashboard to authenticate users directly. To login with your own custom JWT issuers like Auth0, AWS Cognito, or
+Firebase, you can add the your configuration to the `loginConfig` field of the `Web3AuthOptions` class.
 
-The `loginConfig` field is a key value map. The key should be one of the `Web3AuthProvider` in its string form, and the value should be a
+The `loginConfig` field is a key-value map. The key should be one of the `Web3AuthProvider` in its string form, and the value should be a
 `LoginConfigItem` struct instance.
 
 First, configure your own verifier in the Web3Auth Dashboard to use custom authentication.
 
 :::tip
 
-Check out how to create [Custom Verifier](/auth-provider-setup/verifiers) on Web3Auth Dashboard.
+Check out how to create a [Custom Verifier](/auth-provider-setup/verifiers) on Web3Auth Dashboard.
 
 :::
 
@@ -28,7 +28,7 @@ Then, you should specify the details of your verifier in the `LoginConfigItem` s
 :::note
 
 This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the **Growth
-Plan**. You can use this feature in the development environment for free.
+Plan**. You can use this feature for free in the development environment.
 
 :::
 
@@ -46,21 +46,21 @@ Plan**. You can use this feature in the development environment for free.
 
 <TabItem value="table">
 
-| Parameter                | Description                                                                                                                                                                                                                                                                                                                       |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `verifier`               | The name of the verifier that you have registered on the Web3Auth Dashboard. It's a mandatory field, and accepts `string` as a value.                                                                                                                                                                                             |
-| `typeOfLogin`            | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose `google`, a Google sign-in flow will be used. If you choose `jwt`, you should be providing your own JWT token, no sign-in flow will be presented. It's a mandatory field, and accepts `TypeOfLogin` as a value. |
-| `clientId`               | Client id provided by your login provider used for custom verifier. e.g. Google's Client ID or Web3Auth's client Id if using 'jwt' as TypeOfLogin. It's a mandatory field, and accepts `string` as a value.                                                                                                                       |
-| `name?`                  | Display name for the verifier. If null, the default name is used. It accepts `string` as a value.                                                                                                                                                                                                                                 |
-| `description?`           | Description for the button. If provided, it renders as a full length button. else, icon button. It accepts `string` as a value.                                                                                                                                                                                                   |
-| `verifierSubIdentifier?` | The field in JWT token which maps to verifier id. Please make sure you selected correct JWT verifier id in the developer dashboard. It accepts `string` as a value.                                                                                                                                                               |
-| `logoHover?`             | Logo to be shown on mouse hover. It accepts `string` as a value.                                                                                                                                                                                                                                                                  |
-| `logoLight?`             | Light logo for dark background. It accepts `string` as a value.                                                                                                                                                                                                                                                                   |
-| `logoDark?`              | Dark logo for light background. It accepts `string` as a value.                                                                                                                                                                                                                                                                   |
-| `mainOption?`            | Show login button on the main list. It accepts `bool` as a value. Default value is false.                                                                                                                                                                                                                                         |
-| `showOnModal?`           | Whether to show the login button on modal or not. Default value is true.                                                                                                                                                                                                                                                          |
-| `showOnDesktop?`         | Whether to show the login button on desktop. Default value is true.                                                                                                                                                                                                                                                               |
-| `showOnMobile?`          | Whether to show the login button on mobile. Default value is true.                                                                                                                                                                                                                                                                |
+| Parameter                | Description                                                                                                                                                                                                                                                                                                                   |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `verifier`               | The name of the verifier that you have registered on the Web3Auth Dashboard. It's a mandatory field, and accepts `string` as a value.                                                                                                                                                                                         |
+| `typeOfLogin`            | Type of login for this verifier, this value will affect the login flow that is adapted. For example, if you choose `google`, a Google sign-in flow will be used. If you choose `jwt`, you should provide your own JWT token, no sign-in flow will be presented. It's a mandatory field, and accepts `TypeOfLogin` as a value. |
+| `clientId`               | Client id provided by your login provider used for custom verifier. e.g. Google's Client ID or Web3Auth's client Id if using 'jwt' as TypeOfLogin. It's a mandatory field, and accepts `string` as a value.                                                                                                                   |
+| `name?`                  | Display name for the verifier. If null, the default name is used. It accepts `string` as a value.                                                                                                                                                                                                                             |
+| `description?`           | Description for the button. If provided, it renders as a full length button. else, icon button. It accepts `string` as a value.                                                                                                                                                                                               |
+| `verifierSubIdentifier?` | The field in JWT token which maps to verifier id. Please make sure you selected correct JWT verifier id in the developer dashboard. It accepts `string` as a value.                                                                                                                                                           |
+| `logoHover?`             | Logo to be shown on mouse hover. It accepts `string` as a value.                                                                                                                                                                                                                                                              |
+| `logoLight?`             | Light logo for dark background. It accepts `string` as a value.                                                                                                                                                                                                                                                               |
+| `logoDark?`              | Dark logo for light background. It accepts `string` as a value.                                                                                                                                                                                                                                                               |
+| `mainOption?`            | Show login button on the main list. It accepts `bool` as a value. Default value is false.                                                                                                                                                                                                                                     |
+| `showOnModal?`           | Whether to show the login button on modal or not. Default value is true.                                                                                                                                                                                                                                                      |
+| `showOnDesktop?`         | Whether to show the login button on desktop. Default value is true.                                                                                                                                                                                                                                                           |
+| `showOnMobile?`          | Whether to show the login button on mobile. Default value is true.                                                                                                                                                                                                                                                            |
 
 </TabItem>
 
