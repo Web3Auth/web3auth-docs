@@ -1271,7 +1271,7 @@ const sidebars: SidebarsConfig = {
       defaultStyle: true,
     },
     "sdk/wallet-ecosystems/safeauth",
-    "sdk/wallet-ecosystems/mocaverse",
+    // "sdk/wallet-ecosystems/mocaverse",
     {
       type: "html",
       value: "<span class='sidebarHeading'>Helper SDKs</span>",
