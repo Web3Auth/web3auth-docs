@@ -653,12 +653,20 @@ const sidebars: SidebarsConfig = {
         {
           type: "category",
           label: "Plug and Play Modal SDK",
-          items: ["migration-guides/modal-v7-to-v8", "migration-guides/modal-v6-to-v7", "migration-guides/modal-v5-to-v6"],
+          items: [
+            "migration-guides/modal-v7-to-v8",
+            "migration-guides/modal-v6-to-v7",
+            "migration-guides/modal-v5-to-v6",
+          ],
         },
         {
           type: "category",
           label: "Plug and Play No Modal SDK",
-          items: ["migration-guides/no-modal-v7-to-v8", "migration-guides/no-modal-v6-to-v7", "migration-guides/no-modal-v5-to-v6"],
+          items: [
+            "migration-guides/no-modal-v7-to-v8",
+            "migration-guides/no-modal-v6-to-v7",
+            "migration-guides/no-modal-v5-to-v6",
+          ],
         },
         {
           type: "category",
@@ -682,6 +690,7 @@ const sidebars: SidebarsConfig = {
         },
       ],
     },
+    // "going-live",
     {
       type: "html",
       value: "<span class='sidebarHeading'>Plug and Play</span>",
@@ -796,7 +805,12 @@ const sidebars: SidebarsConfig = {
           collapsible: true,
           collapsed: false,
           label: "Additional Settings",
-          items: ["sdk/pnp/android/whitelabel", "sdk/pnp/android/custom-authentication", "sdk/pnp/android/mfa", "sdk/pnp/android/dapp-share"],
+          items: [
+            "sdk/pnp/android/whitelabel",
+            "sdk/pnp/android/custom-authentication",
+            "sdk/pnp/android/mfa",
+            "sdk/pnp/android/dapp-share",
+          ],
         },
         {
           type: "link",
@@ -823,7 +837,12 @@ const sidebars: SidebarsConfig = {
           collapsible: true,
           collapsed: false,
           label: "Additional Settings",
-          items: ["sdk/pnp/ios/whitelabel", "sdk/pnp/ios/custom-authentication", "sdk/pnp/ios/mfa", "sdk/pnp/ios/dapp-share"],
+          items: [
+            "sdk/pnp/ios/whitelabel",
+            "sdk/pnp/ios/custom-authentication",
+            "sdk/pnp/ios/mfa",
+            "sdk/pnp/ios/dapp-share",
+          ],
         },
         {
           type: "link",
@@ -882,7 +901,12 @@ const sidebars: SidebarsConfig = {
           collapsible: true,
           collapsed: false,
           label: "Additional Settings",
-          items: ["sdk/pnp/flutter/whitelabel", "sdk/pnp/flutter/custom-authentication", "sdk/pnp/flutter/mfa", "sdk/pnp/flutter/dapp-share"],
+          items: [
+            "sdk/pnp/flutter/whitelabel",
+            "sdk/pnp/flutter/custom-authentication",
+            "sdk/pnp/flutter/mfa",
+            "sdk/pnp/flutter/dapp-share",
+          ],
         },
         {
           type: "link",
@@ -919,7 +943,12 @@ const sidebars: SidebarsConfig = {
           collapsible: true,
           collapsed: false,
           label: "Additional Settings",
-          items: ["sdk/pnp/unity/whitelabel", "sdk/pnp/unity/custom-authentication", "sdk/pnp/unity/mfa", "sdk/pnp/unity/dapp-share"],
+          items: [
+            "sdk/pnp/unity/whitelabel",
+            "sdk/pnp/unity/custom-authentication",
+            "sdk/pnp/unity/mfa",
+            "sdk/pnp/unity/dapp-share",
+          ],
         },
         {
           type: "link",
@@ -946,7 +975,11 @@ const sidebars: SidebarsConfig = {
           collapsible: true,
           collapsed: false,
           label: "Additional Settings",
-          items: ["sdk/pnp/unreal/whitelabel", "sdk/pnp/unreal/custom-authentication", "sdk/pnp/unreal/mfa"],
+          items: [
+            "sdk/pnp/unreal/whitelabel",
+            "sdk/pnp/unreal/custom-authentication",
+            "sdk/pnp/unreal/mfa",
+          ],
         },
         {
           type: "link",
