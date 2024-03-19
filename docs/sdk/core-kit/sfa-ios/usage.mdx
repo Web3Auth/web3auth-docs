@@ -20,13 +20,13 @@ The SingleFactorAuth instance natively provides the following functions:
 
 To obtain a user's Torus key using the Web3Auth SFA iOS SDK, you can call the `getKey()` function.
 
-| Variable      | Type     | Description      | Mandatory |
-| ------------- | -------- | ---------------- | --------- |
-| `loginParams` | `object` | Login Parameters | Yes       |
+| Variable      | Description                                                    |
+| ------------- | -------------------------------------------------------------- |
+| `loginParams` | Parameters for the login. It takes `LoginParams` as the value. |
 
 #### Returns
 
-```tsx
+```swift
 public func getKey(loginParams: LoginParams) async throws -> TorusKey
 ```
 
@@ -44,12 +44,12 @@ public func getKey(loginParams: LoginParams) async throws -> TorusKey
 
 <TabItem value="table">
 
-| Parameter               | Type                     | Description                                                                                                         | Mandatory |
-| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- | --------- |
-| `verifier`              | `string`                 | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                                  | Yes       |
-| `verifierId`            | `string`                 | Verifier ID's value, `sub` or `email` value present in the idToken.                                                 | Yes       |
-| `idToken`               | `string`                 | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. | Yes       |
-| `subVerifierInfoArray?` | `TorusSubVerifierInfo[]` | Sub verifier info                                                                                                   | No        |
+| Parameter               | Description                                                                                                   |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `verifier`              | The verifier obtained from the Web3Auth Dashboard. It's a mandatory field and takes `String` as a value.      |
+| `verifierId`            | The verifierId used for the verification. It takes `String` as a value.                                       |
+| `idToken`               | The idToken of the user obtained from login provider. It takes `String` as a value.                           |
+| `subVerifierInfoArray?` | Sub verifier info. Usually used during aggregate verifier. It takes `Array<TorusSubVerifierInfo>` as a value. |
 
 </TabItem>
 
@@ -83,7 +83,7 @@ public class LoginParams {
 
 </Tabs>
 
-```tsx title="Usage"
+```swift title="Usage"
 let loginParams = LoginParams(verifier: "YOUR_VERIFIER_NAME", verifierId: "YOUR_VERIFIER_ID", idToken: "YOUR_ID_TOKEN")
 let torusKey = try await singleFactoreAuth.getKey(loginParams: loginParams)
 ```
