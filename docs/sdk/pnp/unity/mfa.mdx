@@ -5,6 +5,9 @@ displayed_sidebar: sdk
 description: "Web3Auth PnP Unity SDK - Multi Factor Authentication | Documentation - Web3Auth"
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 MFA is an extra layer of protection that verifies your identity when accessing your account. To ensure ownership, you must provide two or more
 different backup factors. You have the option to choose from the device, social, backup factor (seed phrase), and password factors to guarantee access
 to your Web3 account. Once you create a recovery factor, MFA is enabled, and your keys are divided into three shares for off-chain multi-sig, making
@@ -82,6 +85,27 @@ Plan**. You can use this feature for free in the development environment.
 
 :::
 
+`MfaSetting`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter    | Description                                                                     |
+| ------------ | ------------------------------------------------------------------------------- |
+| `enable`     | Enable/Disable MFA. It accepts `bool` as a value.                               |
+| `priority?`  | Priority of MFA. It accepts `int` as a value, where valid range is from 1 to 4. |
+| `mandatory?` | Mandatory/Optional MFA. It acccepts `bool` as a value.                          |
+
+</TabItem>
+<TabItem value="class">
+
 ```cs
 public class MfaSetting
 {
@@ -98,6 +122,9 @@ public class MfaSetting
     }
 }
 ```
+
+</TabItem>
+</Tabs>
 
 ```cs title="Usage"
 using System;
