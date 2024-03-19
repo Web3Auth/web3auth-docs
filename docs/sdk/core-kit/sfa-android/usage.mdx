@@ -20,21 +20,23 @@ The SingleFactorAuth instance natively provides the following functions:
 
 To obtain a user's Torus key using the Web3Auth SFA Android SDK, you can call the `getKey()` function.
 
-| Variable      | Type     | Description      | Mandatory |
-| ------------- | -------- | ---------------- | --------- |
-| `loginParams` | `object` | Login Parameters | Yes       |
+| Variable      | Description                                                                                                                                      |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `loginParams` | Parameters for the login. It takes `LoginParams` as the value.                                                                                   |
+| `context?`    | Android activity context                                                                                                                         |
+| `sessionTime` | `sessionTime` parameter is used for session management. The default value is 1 day ~ 86400, and max value is 7 days. It takes `Long` as a value. |
 
 #### Returns
 
-```tsx
-public CompletableFuture<TorusKey> getKey(LoginParams loginParams)
+```kotlin
+public CompletableFuture<TorusKey> getKey(loginParams: LoginParams, context: Context? = null, sessionTime: Long = 86400)`
 ```
 
 On successful call, the `getKey()` function returns a `CompletableFuture` instance.
 
 #### `LoginParams`
 
-`getKey(loginParams: LoginParams)`
+`getKey(loginParams: LoginParams, context: Context? = null, sessionTime: Long = 86400)`
 
 <Tabs
   defaultValue="table"
@@ -46,31 +48,49 @@ On successful call, the `getKey()` function returns a `CompletableFuture` instan
 
 <TabItem value="table">
 
-| Parameter               | Type                     | Description                                                                                                         | Mandatory |
-| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- | --------- |
-| `verifier`              | `string`                 | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                                  | Yes       |
-| `verifierId`            | `string`                 | Verifier ID's value, `sub` or `email` value present in the idToken.                                                 | Yes       |
-| `idToken`               | `string`                 | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. | Yes       |
-| `subVerifierInfoArray?` | `TorusSubVerifierInfo[]` | Sub verifier info                                                                                                   | No        |
+| Parameter               | Description                                                                                                   |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `verifier`              | The verifier obtained from the Web3Auth Dashboard. It's a mandatory field and takes `String` as a value.      |
+| `verifierId`            | The verifierId used for the verification. It takes `String` as a value.                                       |
+| `idToken`               | The idToken of the user obtained from login provider. It takes `String` as a value.                           |
+| `subVerifierInfoArray?` | Sub verifier info. Usually used during aggregate verifier. It takes `Array<TorusSubVerifierInfo>` as a value. |
 
 </TabItem>
 
 <TabItem value="type">
 
-```javascript
-export type LoginParams = {
-  verifier: string,
-  verifierId: string,
-  idToken: string,
-  subVerifierInfoArray?: TorusSubVerifierInfo[],
-};
+```kotlin
+class LoginParams {
+    val verifier: String
+    val verifierId: String
+    val idToken: String
+    var subVerifierInfoArray: Array<TorusSubVerifierInfo>? = null
+
+    constructor(verifier: String, verifierId: String, idToken: String) {
+        this.verifier = verifier
+        this.verifierId = verifierId
+        this.idToken = idToken
+    }
+
+    constructor(
+        verifier: String,
+        verifierId: String,
+        idToken: String,
+        subVerifierInfoArray: Array<TorusSubVerifierInfo>
+    ) {
+        this.verifier = verifier
+        this.verifierId = verifierId
+        this.idToken = idToken
+        this.subVerifierInfoArray = subVerifierInfoArray
+    }
+}
 ```
 
 </TabItem>
 
 </Tabs>
 
-```tsx title="Usage"
+```kotlin title="Usage"
 loginParams = LoginParams("YOUR_VERIFIER_NAME", "YOUR_VERIFIER_ID", "YOUR_ID_TOKEN");
 torusKey = singleFactorAuth.getKey(loginParams).get();
 ```
