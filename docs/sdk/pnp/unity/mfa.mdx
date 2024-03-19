@@ -5,13 +5,16 @@ displayed_sidebar: sdk
 description: "Web3Auth PnP Unity SDK - Multi Factor Authentication | Documentation - Web3Auth"
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 MFA is an extra layer of protection that verifies your identity when accessing your account. To ensure ownership, you must provide two or more
 different backup factors. You have the option to choose from the device, social, backup factor (seed phrase), and password factors to guarantee access
 to your Web3 account. Once you create a recovery factor, MFA is enabled, and your keys are divided into three shares for off-chain multi-sig, making
 the key self-custodial. With backup factors, you can easily recover your account if you lose access to your original device or help login into a new
 device.
 
-For a dApp, we provide various options to set up Multi-Factor Authentication. You can customize the MFA screen by setting the `mfaLevel` argument. You
+For a dApp, we provide several options to set up Multi-Factor Authentication. You can customize the MFA screen by setting the `mfaLevel` argument. You
 can enable or disable a backup factor and change their order. Currently, there are four values for `mfaLevel`:
 
 - `default`: presents the MFA screen every third login
@@ -37,8 +40,8 @@ Choose the best options that suit your needs to ensure a safe and secure Web3 ex
 
 :::note Minimum Growth plan required
 
-This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the
-**Growth Plan**. You can use this feature in the development environment for free.
+This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the **Growth
+Plan**. You can use this feature for free in the development environment.
 
 :::
 
@@ -78,9 +81,30 @@ public void login()
 :::note Minimum SCALE plan required
 
 This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the **SCALE
-Plan**. You can use this feature in the development environment for free.
+Plan**. You can use this feature for free in the development environment.
 
 :::
+
+`MfaSetting`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter    | Description                                                                     |
+| ------------ | ------------------------------------------------------------------------------- |
+| `enable`     | Enable/Disable MFA. It accepts `bool` as a value.                               |
+| `priority?`  | Priority of MFA. It accepts `int` as a value, where valid range is from 1 to 4. |
+| `mandatory?` | Mandatory/Optional MFA. It acccepts `bool` as a value.                          |
+
+</TabItem>
+<TabItem value="class">
 
 ```cs
 public class MfaSetting
@@ -98,6 +122,9 @@ public class MfaSetting
     }
 }
 ```
+
+</TabItem>
+</Tabs>
 
 ```cs title="Usage"
 using System;
