@@ -38,7 +38,8 @@ const config: Config = {
     },
     announcementBar: {
       id: "sign_up_for_wallets_ux_unconference",
-      content: '<a href="https://w3a.link/community-call" target="_blank">Secure your spot for the next community call! Sign up now →</a>',
+      content:
+        '<a href="https://w3a.link/community-call" target="_blank">Secure your spot for the next community call! Sign up now →</a>',
       isCloseable: true,
     },
     colorMode: {
@@ -158,7 +159,10 @@ const config: Config = {
           breadcrumbs: true,
           editUrl: githubEditUrl,
           sidebarPath: require.resolve("./sidebars.js"),
-          remarkPlugins: [remarkMath, [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
+          remarkPlugins: [
+            remarkMath,
+            [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
+          ],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
         },
         theme: {
@@ -171,9 +175,17 @@ const config: Config = {
           path: "src/pages",
           routeBasePath: "/",
           include: ["**/**.{js,jsx,ts,tsx,md,mdx}"],
-          exclude: ["**/_*.{js,jsx,ts,tsx,md,mdx}", "**/_*/**", "**/*.test.{js,jsx,ts,tsx}", "**/__tests__/**"],
+          exclude: [
+            "**/_*.{js,jsx,ts,tsx,md,mdx}",
+            "**/_*/**",
+            "**/*.test.{js,jsx,ts,tsx}",
+            "**/__tests__/**",
+          ],
           mdxPageComponent: "@theme/MDXPage",
-          remarkPlugins: [remarkMath, [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
+          remarkPlugins: [
+            remarkMath,
+            [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
+          ],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
           beforeDefaultRemarkPlugins: [],
           beforeDefaultRehypePlugins: [],
@@ -187,7 +199,10 @@ const config: Config = {
   ],
   plugins: [
     path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
-    [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: ".integrationBuilderCache" }],
+    [
+      path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"),
+      { rootDir: ".integrationBuilderCache" },
+    ],
     path.resolve(__dirname, "plugins", "node-polyfills"),
     [
       "@docusaurus/plugin-client-redirects",
@@ -462,6 +477,14 @@ const config: Config = {
             to: "/features/mfa",
           },
           {
+            from: "/pnp/going-live",
+            to: "/going-live",
+          },
+          {
+            from: "/core-kit/going-live",
+            to: "/going-live",
+          },
+          {
             from: "/auth-provider-setup/federated-identity-providers",
             to: "/auth-provider-setup/authentication-service-providers",
           },
@@ -478,7 +501,12 @@ const config: Config = {
             return [existingPath.replace("/pnp/features/whitelabel/", "/features/whitelabel")];
           }
           if (existingPath.includes("/features/server-side-verification")) {
-            return [existingPath.replace("/pnp/features/server-side-verification/", "/features/server-side-verification")];
+            return [
+              existingPath.replace(
+                "/pnp/features/server-side-verification/",
+                "/features/server-side-verification",
+              ),
+            ];
           }
           if (existingPath.includes("/product/")) {
             return [existingPath.replace("/product-fit/", "/product/")];
@@ -487,22 +515,34 @@ const config: Config = {
             return [existingPath.replace("/pnp/features/", "/features/")];
           }
           if (existingPath.includes("/sdk")) {
-            return [existingPath.replace("/sdk", "/api-reference"), existingPath.replace("/sdk", "/sdk-reference")];
+            return [
+              existingPath.replace("/sdk", "/api-reference"),
+              existingPath.replace("/sdk", "/sdk-reference"),
+            ];
           }
           if (existingPath.includes("/sdk")) {
             return [
               existingPath.replace("/migration-guide/", "/migration-guides/no-modal-v5-to-v6"),
-              existingPath.replace("/migration-guide/migrating-to-v6-from-v5", "/migration-guides/no-modal-v5-to-v6"),
+              existingPath.replace(
+                "/migration-guide/migrating-to-v6-from-v5",
+                "/migration-guides/no-modal-v5-to-v6",
+              ),
             ];
           }
           if (existingPath.includes("/auth-provider-setup")) {
             return [existingPath.replace("/auth-provider-setup", "/custom-authentication")];
           }
           if (existingPath.includes("/sdk/web/no-modal")) {
-            return [existingPath.replace("/sdk/web/no-modal", "/sdk/web/core"), existingPath.replace("/sdk/web/no-modal", "/sdk/web/customloginui")];
+            return [
+              existingPath.replace("/sdk/web/no-modal", "/sdk/web/core"),
+              existingPath.replace("/sdk/web/no-modal", "/sdk/web/customloginui"),
+            ];
           }
           if (existingPath.includes("/sdk/web/modal")) {
-            return [existingPath.replace("/sdk/web/modal", "/sdk/web/web3auth"), existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay")];
+            return [
+              existingPath.replace("/sdk/web/modal", "/sdk/web/web3auth"),
+              existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay"),
+            ];
           }
           if (existingPath.includes("/sdk/tkey")) {
             return [existingPath.replace("/sdk/tkey", "/sdk/self-host")];
