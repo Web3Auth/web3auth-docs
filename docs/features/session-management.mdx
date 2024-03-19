@@ -1,0 +1,60 @@
+---
+title: Session Management
+displayed_sidebar: docs
+description: "Session Management | Documentation - Web3Auth"
+---
+
+Web3Auth SDKs offer a comprehensive session management feature designed to enhance the user experience by minimizing the need for repeated logins.
+This feature ensures that once users authenticate, their login state is maintained for a specified duration, allowing for seamless interaction within
+the application.
+
+## Benefits of Session Management
+
+- **Enhanced User Experience:** By reducing the frequency of logins, session management provides a more fluid and user-friendly experience within the
+  application.
+- **Speed and Efficiency:** Session restoration is a rapid process, occurring in milliseconds, which ensures that users have immediate access to their
+  authenticated state.
+- **Seamless Integration:** The implementation of session management is designed to be straightforward, with minimal impact on the existing user flow
+  and application design.
+
+## Detailed Overview of Session Management
+
+The essence of session management in Web3Auth revolves around securely maintaining a user's authenticated state using a sophisticated encryption and
+storage mechanism. Here's a closer look at how this process unfolds:
+
+### Generating and Storing the Session Key
+
+1. **Session Key Generation:** Upon successful user login, a unique session key is generated on the front-end. This key plays a crucial role in
+   encrypting the user's login state, ensuring that it remains secure throughout its lifecycle.
+
+2. **Encryption of User State:** The user's login state is encrypted using the session key. This encrypted state encapsulates all necessary
+   information to maintain the user's session, safeguarding it against unauthorized access.
+
+3. **Metadata Server Storage:** The encrypted user state is then transmitted and stored on the Web3Auth metadata server. The storage duration is
+   determined by the `sessionTime` parameter, which developers can configure based on the application's requirements.
+
+### Secure Session Key Storage
+
+The session key is securely stored within the client's environment. For web applications, this typically involves using the browser's local storage.
+Mobile applications, on the other hand, leverage platform-specific secure storage solutions like Android Encrypted Shared Preferences and iOS Keychain
+Services.
+
+### Session Restoration Process
+
+1. **Retrieving the Session Key:** When the SDK is initialized, it first attempts to retrieve the session key from the client's secure storage.
+
+2. **Communicating with the Metadata Server:** With the session key, the SDK reaches out to the Web3Auth metadata server, requesting the restoration
+   of the stored user state if an active session exists.
+
+3. **Decrypting the User State:** If a valid session is identified, the encrypted user state is retrieved from the server and decrypted using the
+   session key. This decrypted state is then used to automatically log the user back into the application.
+
+4. **Fallback to Standard Login:** In cases where no active session is found (either because it has expired or does not exist), the user is directed
+   to proceed with the standard login process.
+
+## Customizing Session Duration
+
+Developers have the flexibility to define the duration of the session through the `sessionTime` parameter, setting it anywhere from 1 day to a maximum
+of 7 days. This allows for a balance between convenience for the user and security considerations for the application. It is recommended to initiate
+the Web3Auth SDKs at the start of your application (e.g., in the constructor) to ensure that users benefit from an uninterrupted experience, with
+their login state ready and waiting as they engage with your application.

@@ -8,34 +8,7 @@ export default function QuickNavigation() {
   const { baseUrl } = siteConfig;
   return (
     <div className={styles.container}>
-      <h2 className={styles.heading}>What is Web3Auth</h2>
-      <p>
-        Web3Auth is a pluggable wallet infrastructure for Web3 wallets and applications. It streamlines the onboarding of both mainstream and crypto
-        native users in under a minute by providing experiences that they're most comfortable with. With support for all OAuth based logins systems,
-        web & mobile native platforms, Web3Auth provides a seamless onboarding experience for your users.
-      </p>
-      <h2 className={styles.heading}>Resources</h2>
-      <p>
-        We have a varied collection of guides, references and examples to help you around anywhere with your Web3Auth Integration. Deep dive into the
-        different aspects of web3 authentication and make your own customised integration.
-      </p>
       <div className={styles.cardContainer}>
-        <Link className={styles.card} to={`${baseUrl}sdk/`}>
-          <div className={styles.cardIconContainer}>
-            <svg viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M10.0498 13.4C10.0498 12.5116 10.4027 11.6595 11.031 11.0312C11.6592 10.403 12.5113 10.05 13.3998 10.05H53.5998C54.4883 10.05 55.3404 10.403 55.9686 11.0312C56.5969 11.6595 56.9498 12.5116 56.9498 13.4V20.1C56.9498 20.9885 56.5969 21.8406 55.9686 22.4689C55.3404 23.0971 54.4883 23.45 53.5998 23.45H13.3998C12.5113 23.45 11.6592 23.0971 11.031 22.4689C10.4027 21.8406 10.0498 20.9885 10.0498 20.1V13.4ZM10.0498 33.5C10.0498 32.6116 10.4027 31.7595 11.031 31.1312C11.6592 30.503 12.5113 30.15 13.3998 30.15H33.4998C34.3883 30.15 35.2404 30.503 35.8686 31.1312C36.4969 31.7595 36.8498 32.6116 36.8498 33.5V53.6001C36.8498 54.4885 36.4969 55.3406 35.8686 55.9689C35.2404 56.5971 34.3883 56.9501 33.4998 56.9501H13.3998C12.5113 56.9501 11.6592 56.5971 11.031 55.9689C10.4027 55.3406 10.0498 54.4885 10.0498 53.6001V33.5ZM46.8998 30.15C46.0113 30.15 45.1592 30.503 44.531 31.1312C43.9028 31.7595 43.5498 32.6116 43.5498 33.5V53.6001C43.5498 54.4885 43.9028 55.3406 44.531 55.9689C45.1592 56.5971 46.0113 56.9501 46.8998 56.9501H53.5998C54.4883 56.9501 55.3404 56.5971 55.9686 55.9689C56.5969 55.3406 56.9498 54.4885 56.9498 53.6001V33.5C56.9498 32.6116 56.5969 31.7595 55.9686 31.1312C55.3404 30.503 54.4883 30.15 53.5998 30.15H46.8998Z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
-          <div className={styles.cardContent}>
-            <h5>SDK Reference</h5>
-            <p>Deep dive into the Web3Auth SDKs and get started with your customised integration.</p>
-          </div>
-        </Link>
         <Link className={styles.card} to={`${baseUrl}auth-provider-setup/`}>
           <div className={styles.cardIconContainer}>
             <svg className={styles.cardIcon} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -49,11 +22,9 @@ export default function QuickNavigation() {
           </div>
           <div className={styles.cardContent}>
             <h5>Auth Provider Setup</h5>
-            <p>Set up your Auth Provider to use it with Web3Auth.</p>
+            <p>Guidance on configuring authentication providers to integrate seamlessly with Web3Auth for secure user verification.</p>
           </div>
         </Link>
-      </div>
-      <div className={styles.cardContainer}>
         <Link className={styles.card} to={`${baseUrl}connect-blockchain/`}>
           <div className={styles.cardIconContainer}>
             <svg className={styles.cardIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -66,10 +37,12 @@ export default function QuickNavigation() {
             </svg>
           </div>
           <div className={styles.cardContent}>
-            <h5>Connect Blockchain</h5>
-            <p>Connect to the blockchain of your choice.</p>
+            <h5>Connect any blockchain</h5>
+            <p>Detailed instructions for integrating Web3Auth with various blockchains, ensuring seamless connectivity for your dApp.</p>
           </div>
         </Link>
+      </div>
+      <div className={styles.cardContainer}>
         <Link className={styles.card} to={`${baseUrl}examples`}>
           <div className={styles.cardIconContainer}>
             <svg viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
@@ -83,54 +56,23 @@ export default function QuickNavigation() {
           </div>
           <div className={styles.cardContent}>
             <h5>Examples</h5>
-            <p>Explore the range of examples across all our SDKs.</p>
+            <p>Discover our collection of examples and sample applications to see our SDKs in action across various use cases.</p>
           </div>
         </Link>
-      </div>
-      <div className={styles.cardContainer}>
-        <Link className={styles.card} to="https://toruslabs.medium.com/">
+        <Link className={styles.card} to={`${baseUrl}infrastructure`}>
           <div className={styles.cardIconContainer}>
-            <svg viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
+            <svg width="67" height="68" viewBox="0 0 67 68" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
               <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M6.7 16.7498C6.7 14.9729 7.40589 13.2687 8.66238 12.0122C9.91887 10.7557 11.623 10.0498 13.4 10.0498H40.2C41.9769 10.0498 43.6811 10.7557 44.9376 12.0122C46.1941 13.2687 46.9 14.9729 46.9 16.7498V50.2498C46.9 52.0268 47.6059 53.7309 48.8624 54.9874C50.1189 56.2439 51.823 56.9498 53.6 56.9498H13.4C11.623 56.9498 9.91887 56.2439 8.66238 54.9874C7.40589 53.7309 6.7 52.0268 6.7 50.2498V16.7498ZM16.75 20.0998H36.85V33.4998H16.75V20.0998ZM36.85 40.1998H16.75V46.8998H36.85V40.1998Z"
-                fill="currentColor"
-              />
-              <path
-                d="M50.25 23.4502H53.6C55.377 23.4502 57.0811 24.1561 58.3376 25.4126C59.5941 26.6691 60.3 28.3732 60.3 30.1502V48.5752C60.3 49.9079 59.7706 51.186 58.8282 52.1284C57.8858 53.0708 56.6077 53.6002 55.275 53.6002C53.9423 53.6002 52.6642 53.0708 51.7218 52.1284C50.7794 51.186 50.25 49.9079 50.25 48.5752V23.4502Z"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M6.69922 16.8479C6.69922 15.0709 7.40511 13.3668 8.6616 12.1103C9.9181 10.8538 11.6223 10.1479 13.3992 10.1479H53.5992C55.3762 10.1479 57.0803 10.8538 58.3368 12.1103C59.5933 13.3668 60.2992 15.0709 60.2992 16.8479V23.5479C60.2992 25.3248 59.5933 27.029 58.3368 28.2855C57.0803 29.542 55.3762 30.2479 53.5992 30.2479H13.3992C11.6223 30.2479 9.9181 29.542 8.6616 28.2855C7.40511 27.029 6.69922 25.3248 6.69922 23.5479V16.8479ZM53.5992 20.1979C53.5992 21.0864 53.2463 21.9384 52.618 22.5667C51.9898 23.1949 51.1377 23.5479 50.2492 23.5479C49.3607 23.5479 48.5087 23.1949 47.8804 22.5667C47.2522 21.9384 46.8992 21.0864 46.8992 20.1979C46.8992 19.3094 47.2522 18.4573 47.8804 17.8291C48.5087 17.2008 49.3607 16.8479 50.2492 16.8479C51.1377 16.8479 51.9898 17.2008 52.618 17.8291C53.2463 18.4573 53.5992 19.3094 53.5992 20.1979ZM6.69922 43.6479C6.69922 41.8709 7.40511 40.1668 8.6616 38.9103C9.9181 37.6538 11.6223 36.9479 13.3992 36.9479H53.5992C55.3762 36.9479 57.0803 37.6538 58.3368 38.9103C59.5933 40.1668 60.2992 41.8709 60.2992 43.6479V50.3479C60.2992 52.1248 59.5933 53.829 58.3368 55.0855C57.0803 56.342 55.3762 57.0479 53.5992 57.0479H13.3992C11.6223 57.0479 9.9181 56.342 8.6616 55.0855C7.40511 53.829 6.69922 52.1248 6.69922 50.3479V43.6479ZM53.5992 46.9979C53.5992 47.8864 53.2463 48.7384 52.618 49.3667C51.9898 49.9949 51.1377 50.3479 50.2492 50.3479C49.3607 50.3479 48.5087 49.9949 47.8804 49.3667C47.2522 48.7384 46.8992 47.8864 46.8992 46.9979C46.8992 46.1094 47.2522 45.2573 47.8804 44.6291C48.5087 44.0008 49.3607 43.6479 50.2492 43.6479C51.1377 43.6479 51.9898 44.0008 52.618 44.6291C53.2463 45.2573 53.5992 46.1094 53.5992 46.9979Z"
                 fill="currentColor"
               />
             </svg>
           </div>
           <div className={styles.cardContent}>
-            <h5>Blog</h5>
-            <p>
-              Learn from the best in the wallet infra market. Product announcements, comparisons, thought leadership articles from Web3Auth just a
-              click away.
-            </p>
-          </div>
-        </Link>
-        <Link className={styles.card} to={`${baseUrl}guides`}>
-          <div className={styles.cardIconContainer}>
-            <svg viewBox="0 0 57 56" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.cardIcon}>
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M25.3674 5.59998C24.6248 5.59998 23.9126 5.89497 23.3875 6.42008C22.8624 6.94518 22.5674 7.65737 22.5674 8.39998C22.5674 9.14258 22.8624 9.85477 23.3875 10.3799C23.9126 10.905 24.6248 11.2 25.3674 11.2H30.9674C31.71 11.2 32.4222 10.905 32.9473 10.3799C33.4724 9.85477 33.7674 9.14258 33.7674 8.39998C33.7674 7.65737 33.4724 6.94518 32.9473 6.42008C32.4222 5.89497 31.71 5.59998 30.9674 5.59998H25.3674Z"
-                fill="currentColor"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M11.3672 14C11.3672 12.5148 11.9572 11.0904 13.0074 10.0402C14.0576 8.99002 15.482 8.40002 16.9672 8.40002C16.9672 10.6278 17.8522 12.7644 19.4275 14.3397C21.0028 15.915 23.1394 16.8 25.3672 16.8H30.9672C33.195 16.8 35.3316 15.915 36.9069 14.3397C38.4822 12.7644 39.3672 10.6278 39.3672 8.40002C40.8524 8.40002 42.2768 8.99002 43.327 10.0402C44.3772 11.0904 44.9672 12.5148 44.9672 14V44.8C44.9672 46.2852 44.3772 47.7096 43.327 48.7598C42.2768 49.81 40.8524 50.4 39.3672 50.4H16.9672C15.482 50.4 14.0576 49.81 13.0074 48.7598C11.9572 47.7096 11.3672 46.2852 11.3672 44.8V14ZM19.7672 25.2C19.0246 25.2 18.3124 25.495 17.7873 26.0201C17.2622 26.5452 16.9672 27.2574 16.9672 28C16.9672 28.7426 17.2622 29.4548 17.7873 29.9799C18.3124 30.505 19.0246 30.8 19.7672 30.8H19.7952C20.5378 30.8 21.25 30.505 21.7751 29.9799C22.3002 29.4548 22.5952 28.7426 22.5952 28C22.5952 27.2574 22.3002 26.5452 21.7751 26.0201C21.25 25.495 20.5378 25.2 19.7952 25.2H19.7672ZM28.1672 25.2C27.4246 25.2 26.7124 25.495 26.1873 26.0201C25.6622 26.5452 25.3672 27.2574 25.3672 28C25.3672 28.7426 25.6622 29.4548 26.1873 29.9799C26.7124 30.505 27.4246 30.8 28.1672 30.8H36.5672C37.3098 30.8 38.022 30.505 38.5471 29.9799C39.0722 29.4548 39.3672 28.7426 39.3672 28C39.3672 27.2574 39.0722 26.5452 38.5471 26.0201C38.022 25.495 37.3098 25.2 36.5672 25.2H28.1672ZM19.7672 36.4C19.0246 36.4 18.3124 36.695 17.7873 37.2201C17.2622 37.7452 16.9672 38.4574 16.9672 39.2C16.9672 39.9426 17.2622 40.6548 17.7873 41.1799C18.3124 41.705 19.0246 42 19.7672 42H19.7952C20.5378 42 21.25 41.705 21.7751 41.1799C22.3002 40.6548 22.5952 39.9426 22.5952 39.2C22.5952 38.4574 22.3002 37.7452 21.7751 37.2201C21.25 36.695 20.5378 36.4 19.7952 36.4H19.7672ZM28.1672 36.4C27.4246 36.4 26.7124 36.695 26.1873 37.2201C25.6622 37.7452 25.3672 38.4574 25.3672 39.2C25.3672 39.9426 25.6622 40.6548 26.1873 41.1799C26.7124 41.705 27.4246 42 28.1672 42H36.5672C37.3098 42 38.022 41.705 38.5471 41.1799C39.0722 40.6548 39.3672 39.9426 39.3672 39.2C39.3672 38.4574 39.0722 37.7452 38.5471 37.2201C38.022 36.695 37.3098 36.4 36.5672 36.4H28.1672Z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
-          <div className={styles.cardContent}>
-            <h5>Guides</h5>
-            <p>Set up your Auth Provider to use it with Web3Auth.</p>
+            <h5>Infrastructure</h5>
+            <p>Comprehensive documentation detailing the architecture and setup managing Web3Auth's infrastructure.</p>
           </div>
         </Link>
       </div>

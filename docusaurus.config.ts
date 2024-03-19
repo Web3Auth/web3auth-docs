@@ -38,7 +38,8 @@ const config: Config = {
     },
     announcementBar: {
       id: "sign_up_for_wallets_ux_unconference",
-      content: '<a href="https://w3a.link/community-call" target="_blank">Secure your spot for the next community call! Sign up now →</a>',
+      content:
+        '<a href="https://w3a.link/community-call" target="_blank">Secure your spot for the next community call! Sign up now →</a>',
       isCloseable: true,
     },
     colorMode: {
@@ -73,6 +74,7 @@ const config: Config = {
         {
           label: "Resources",
           type: "dropdown",
+          to: "/resources",
           position: "left",
           items: [
             {
@@ -99,6 +101,7 @@ const config: Config = {
         {
           label: "Help",
           type: "dropdown",
+          to: "/troubleshooting",
           position: "left",
           items: [
             {
@@ -153,10 +156,13 @@ const config: Config = {
       {
         docs: {
           routeBasePath: "/",
-          breadcrumbs: false,
+          breadcrumbs: true,
           editUrl: githubEditUrl,
           sidebarPath: require.resolve("./sidebars.js"),
-          remarkPlugins: [remarkMath, [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
+          remarkPlugins: [
+            remarkMath,
+            [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
+          ],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
         },
         theme: {
@@ -169,9 +175,17 @@ const config: Config = {
           path: "src/pages",
           routeBasePath: "/",
           include: ["**/**.{js,jsx,ts,tsx,md,mdx}"],
-          exclude: ["**/_*.{js,jsx,ts,tsx,md,mdx}", "**/_*/**", "**/*.test.{js,jsx,ts,tsx}", "**/__tests__/**"],
+          exclude: [
+            "**/_*.{js,jsx,ts,tsx,md,mdx}",
+            "**/_*/**",
+            "**/*.test.{js,jsx,ts,tsx}",
+            "**/__tests__/**",
+          ],
           mdxPageComponent: "@theme/MDXPage",
-          remarkPlugins: [remarkMath, [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
+          remarkPlugins: [
+            remarkMath,
+            [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
+          ],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
           beforeDefaultRemarkPlugins: [],
           beforeDefaultRehypePlugins: [],
@@ -185,7 +199,10 @@ const config: Config = {
   ],
   plugins: [
     path.resolve(__dirname, "plugins", "docusaurus-plugin-guides"),
-    [path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"), { rootDir: ".integrationBuilderCache" }],
+    [
+      path.resolve(__dirname, "plugins", "docusaurus-plugin-virtual-files"),
+      { rootDir: ".integrationBuilderCache" },
+    ],
     path.resolve(__dirname, "plugins", "node-polyfills"),
     [
       "@docusaurus/plugin-client-redirects",
@@ -206,10 +223,6 @@ const config: Config = {
           {
             from: "/developing-with-web3auth/",
             to: "/quick-start",
-          },
-          {
-            from: "/sdk/web/plugins/torus-wallet",
-            to: "/sdk/helper-sdks/plugins/evm-wallet",
           },
           {
             from: "/sdk/web/modal/wagmi-connector",
@@ -252,26 +265,6 @@ const config: Config = {
             to: "/how-web3auth-works",
           },
           {
-            from: "/overview/web3auth-and-wallets",
-            to: "/product-fit/web3auth-for-wallets",
-          },
-          {
-            from: "/overview/web3auth-for-wallets",
-            to: "/product-fit/web3auth-for-wallets",
-          },
-          {
-            from: "/overview/web3auth-for-dapps",
-            to: "/product-fit/web3auth-for-dapps",
-          },
-          {
-            from: "/overview/user-flow",
-            to: "/user-flow",
-          },
-          {
-            from: "/product-fit/user-flow",
-            to: "/user-flow",
-          },
-          {
             from: "/overview/key-management/",
             to: "/infrastructure/",
           },
@@ -286,50 +279,6 @@ const config: Config = {
           {
             from: "/infrastructure/technical-architecture/",
             to: "/infrastructure/",
-          },
-          {
-            from: "/whitelabeling",
-            to: "/pnp/features/whitelabel/",
-          },
-          {
-            from: "/whitelabel/",
-            to: "/pnp/features/whitelabel/",
-          },
-          {
-            from: "/interoperability",
-            to: "/pnp/features/interoperability",
-          },
-          {
-            from: "/dapp-share",
-            to: "/pnp/features/dapp-share",
-          },
-          {
-            from: "/authenticating-users/",
-            to: "/pnp/features/server-side-verification/",
-          },
-          {
-            from: "/authenticating-users/overview",
-            to: "/pnp/features/server-side-verification/",
-          },
-          {
-            from: "/server-side-verification/",
-            to: "/pnp/features/server-side-verification/",
-          },
-          {
-            from: "/server-side-verification/social-login-users",
-            to: "/pnp/features/server-side-verification/social-login-users",
-          },
-          {
-            from: "/server-side-verification/external-wallets",
-            to: "/pnp/features/server-side-verification/external-wallets",
-          },
-          {
-            from: "/developing-with-web3auth/adapters",
-            to: "/pnp/features/connect-external-wallets",
-          },
-          {
-            from: "/connect-external-wallets",
-            to: "/pnp/features/connect-external-wallets",
           },
           {
             from: "/developer-dashboard/",
@@ -372,8 +321,8 @@ const config: Config = {
             to: "/sdk/pnp/web/modal/mfa",
           },
           {
-            from: "/sdk/helper-sdks/providers/other",
-            to: "/sdk/helper-sdks/providers/common",
+            from: "/sdk/providers/other",
+            to: "/sdk/providers/common",
           },
           {
             from: "/sdk/tkey/initialization",
@@ -495,33 +444,105 @@ const config: Config = {
             from: "/account-abstraction/safeauth",
             to: "/sdk/wallet-ecosystems/safeauth",
           },
+          {
+            from: "/user-flow",
+            to: "/features/mfa",
+          },
+          {
+            from: "/product-fit/partner-products",
+            to: "/features/account-abstraction",
+          },
+          {
+            from: "/product-fit/enterprise",
+            to: "/product/wallet-ecosystems",
+          },
+          {
+            from: "/product-fit/pnp-vs-core-kit",
+            to: "/product/pnp",
+          },
+          {
+            from: "/product-fit/web3auth-for-wallets",
+            to: "/product/#web3auth-for-wallets",
+          },
+          {
+            from: "/product-fit/web3auth-for-dapps",
+            to: "/product/#web3auth-for-dapps",
+          },
+          {
+            from: "/pnp/features/connect-external-wallets",
+            to: "/features/wallet-aggregation",
+          },
+          {
+            from: "/pnp/features/dapp-share",
+            to: "/features/mfa",
+          },
+          {
+            from: "/pnp/going-live",
+            to: "/going-live",
+          },
+          {
+            from: "/core-kit/going-live",
+            to: "/going-live",
+          },
+          {
+            from: "/auth-provider-setup/federated-identity-providers",
+            to: "/auth-provider-setup/authentication-service-providers",
+          },
+          {
+            from: "/auth-provider-setup/byo-jwt-providers",
+            to: "/auth-provider-setup/byo-jwt-provider",
+          },
         ],
         createRedirects(existingPath) {
           if (existingPath.includes("/guides/")) {
             return [existingPath.replace("/guides/", "/content-hub/guides/")];
           }
-          existingPath.replace("https://blog.web3auth.io", "/blogs/");
-          existingPath.replace("https://blog.web3auth.io", "/blog/");
-          existingPath.replace("https://blog.web3auth.io/", "/content-hub/blog/");
-          existingPath.replace("https://blog.web3auth.io", "/content-hub/blogs/");
-
+          if (existingPath.includes("/features/whitelabel")) {
+            return [existingPath.replace("/pnp/features/whitelabel/", "/features/whitelabel")];
+          }
+          if (existingPath.includes("/features/server-side-verification")) {
+            return [
+              existingPath.replace(
+                "/pnp/features/server-side-verification/",
+                "/features/server-side-verification",
+              ),
+            ];
+          }
+          if (existingPath.includes("/product/")) {
+            return [existingPath.replace("/product-fit/", "/product/")];
+          }
+          if (existingPath.includes("/features/")) {
+            return [existingPath.replace("/pnp/features/", "/features/")];
+          }
           if (existingPath.includes("/sdk")) {
-            return [existingPath.replace("/sdk", "/api-reference"), existingPath.replace("/sdk", "/sdk-reference")];
+            return [
+              existingPath.replace("/sdk", "/api-reference"),
+              existingPath.replace("/sdk", "/sdk-reference"),
+            ];
           }
           if (existingPath.includes("/sdk")) {
             return [
               existingPath.replace("/migration-guide/", "/migration-guides/no-modal-v5-to-v6"),
-              existingPath.replace("/migration-guide/migrating-to-v6-from-v5", "/migration-guides/no-modal-v5-to-v6"),
+              existingPath.replace(
+                "/migration-guide/migrating-to-v6-from-v5",
+                "/migration-guides/no-modal-v5-to-v6",
+              ),
             ];
           }
           if (existingPath.includes("/auth-provider-setup")) {
             return [existingPath.replace("/auth-provider-setup", "/custom-authentication")];
           }
           if (existingPath.includes("/sdk/web/no-modal")) {
-            return [existingPath.replace("/sdk/web/no-modal", "/sdk/web/core"), existingPath.replace("/sdk/web/no-modal", "/sdk/web/customloginui")];
+            return [
+              existingPath.replace("/sdk/web/no-modal", "/sdk/web/core"),
+              existingPath.replace("/sdk/web/no-modal", "/sdk/web/customloginui"),
+            ];
           }
           if (existingPath.includes("/sdk/web/modal")) {
-            return [existingPath.replace("/sdk/web/modal", "/sdk/web/web3auth"), existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay")];
+            return [
+              existingPath.replace("/sdk/web/modal", "/sdk/web/web3auth"),
+              existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay"),
+            ];
           }
           if (existingPath.includes("/sdk/tkey")) {
             return [existingPath.replace("/sdk/tkey", "/sdk/self-host")];
@@ -531,40 +552,6 @@ const config: Config = {
           }
           if (existingPath.includes("quickstart")) {
             return [existingPath.replace("quickstart", "quick-start")];
-          }
-          if (existingPath.includes("/helper-sdks/providers")) {
-            return [existingPath.replace("/helper-sdks/providers", "/web/providers")];
-          }
-          if (existingPath.includes("/helper-sdks/plugins")) {
-            return [existingPath.replace("/helper-sdks/plugins", "/web/plugins")];
-          }
-          if (existingPath.includes("/pnp")) {
-            return [
-              existingPath.replace("/pnp/web", "/web"),
-              existingPath.replace("/pnp/android", "/android"),
-              existingPath.replace("/pnp/ios", "/ios"),
-              existingPath.replace("/pnp/react-native", "/react-native"),
-              existingPath.replace("/pnp/flutter", "/flutter"),
-              existingPath.replace("/pnp/unity", "/unity"),
-              existingPath.replace("/pnp/unreal", "/unreal"),
-            ];
-          }
-          if (existingPath.includes("/core-kit")) {
-            return [
-              existingPath.replace("/core-kit/sfa-node", "/node"),
-              existingPath.replace("/core-kit/sfa-node", "/core-kit/node"),
-              existingPath.replace("/core-kit/sfa-web", "/single-factor-auth"),
-              existingPath.replace("/core-kit/sfa-web", "/core-kit/single-factor-auth"),
-              existingPath.replace("/core-kit/sfa-android", "/single-factor-auth-android"),
-              existingPath.replace("/core-kit/sfa-android", "/core-kit/single-factor-auth-android"),
-              existingPath.replace("/core-kit/tkey", "/tkey"),
-              existingPath.replace("/core-kit/mpc-core-kit", "/mpc-core-kit"),
-              existingPath.replace("/core-kit/introduction", "/self-host/"),
-              existingPath.replace("/core-kit/introduction", "/self-hosting"),
-            ];
-          }
-          if (existingPath.includes("/connect-blockchain/evm/ethereum")) {
-            return [existingPath.replace("/connect-blockchain/evm/ethereum", "/connect-blockchain/evm/ethereum")];
           }
           return undefined; // Return a falsy value: no redirect created
         },
