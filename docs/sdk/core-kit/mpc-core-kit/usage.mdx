@@ -5,10 +5,12 @@ displayed_sidebar: sdk
 description: "Web3Auth MPC Core Kit Web SDK - Usage | Documentation - Web3Auth"
 ---
 
-Once you've installed and successfully initialized `Web3AuthMPCCoreKit`, you can use it to authenticate your users. Further, you can use the native
-provider given by Web3Auth to sign transactions and interact with the blockchain.
+Once you've installed and successfully initialized `Web3AuthMPCCoreKit`, you can use it to
+authenticate your users. Further, you can use the native provider given by Web3Auth to sign
+transactions and interact with the blockchain.
 
-Natively, the instance of `Web3AuthMPCCoreKit` (referred to as `coreKitInstance` in our examples) returns the following functions:
+Natively, the instance of `Web3AuthMPCCoreKit` (referred to as `coreKitInstance` in our examples)
+returns the following functions:
 
 Authentication and Handling Functions:
 
@@ -19,7 +21,8 @@ Authentication and Handling Functions:
 
 :::tip
 
-Checkout the [Authentication section](/sdk/core-kit/mpc-core-kit/authentication) of the SDK Reference to learn more about these functions.
+Check out the [Authentication section](/sdk/core-kit/mpc-core-kit/authentication) of the SDK
+Reference to learn more about these functions.
 
 :::
 
@@ -29,7 +32,8 @@ Handling Factors:
 - `getPublicSync()` - Returns the Public Sync of the User's account.
 - `enableMFA()` - Enable MFA for the user. Deletes the Hashed Factor and generates a new Factor Key.
 - `inputFactorKey()` - Inputs the Factor Key to recover the User's account.
-- `getCurrentFactorKey()` - Returns the current Factor Key of the User's account, present in the state of the SDK.
+- `getCurrentFactorKey()` - Returns the current Factor Key of the User's account, present in the
+  state of the SDK.
 - `createFactor()` - Creates a new Factor for the User's account.
 - `deleteFactor()` - Deletes a Factor from the User's account.
 
@@ -48,7 +52,8 @@ Additional Helper Functions:
   - `setSecurityQuestion()` - Sets the Security Question Factor for the User's account.
   - `changeSecurityQuestion()` - Changes the Security Question for the User's account.
   - `deleteSecurityQuestion()` - Deletes the Security Question for the User's account.
-  - `recoverFactor()` - Recovers the Security Question Factor for the User's account using the given password.
+  - `recoverFactor()` - Recovers the Security Question Factor for the User's account using the given
+    password.
   - `getQuestion()` - Returns the Security Question for the User's account.
 - Conversion from Mnemonic
   - `mnemonicToKey()` - Converts a Mnemonic to a BN.
@@ -58,15 +63,17 @@ Additional Helper Functions:
 
 #### `setTssWalletIndex(accountIndex: number): void;`
 
-Sets the TSS Wallet Index for the User's account. This function can be used to deterministically derive different wallet addresses by using account
-indexes. Using this function you can add multi-address account support to your application.
+Sets the TSS Wallet Index for the User's account. This function can be used to deterministically
+derive different wallet addresses by using account indexes. Using this function you can add
+multi-address account support to your application.
 
 :::note
 
 As an application, you need to persist this account index in the application state.
 
-This feature is still in [pre-release](https://github.com/Web3Auth/mpc-core-kit/releases/tag/v2.3.0-0), so there can be some **breaking changes in
-upcoming versions.**
+You can either choose to persist the account index temporarily using the state variable or use a
+more permanent storage like `localStorage`. Whenever you add, delete or update a share, you need to
+set the account index again.
 
 :::
 
@@ -84,8 +91,8 @@ This function returns the final public key of the user.
 
 :::info NOTE
 
-The public key returned will depend on the account index set using the `setTssWalletIndex()` function. A different account indexes will return a
-different public key.
+The public key returned will depend on the account index set using the `setTssWalletIndex()`
+function. A different account index will return a different public key.
 
 :::
 
@@ -99,8 +106,9 @@ await coreKitInstance.getPublicSync();
 
 #### `enableMFA(enableMFAParams: EnableMFAParams): Promise<string>;`
 
-Enables MFA for the user. It creates a device factor and stores it in the local storage. It also creates a backup factor and returns it to the user.
-You can also pass a factor key that can be used for the backup factor. If you don't pass a factor key, a new factor key will be generated.
+Enables MFA for the user. It creates a device factor and stores it in the local storage. It also
+creates a backup factor and returns it to the user. You can also pass a factor key that can be used
+for the backup factor. If you don't pass a factor key, a new factor key will be generated.
 
 Most importantly, this function deletes the Hashed Factor Key enabling a non-custodial flow.
 
@@ -138,15 +146,18 @@ export enum FactorKeyTypeShareDescription {
 const factorKey = await coreKitInstance.enableMFA({});
 const factorKeyMnemonic = keyToMnemonic(factorKey);
 
-uiConsole("MFA enabled, device factor stored in local store, deleted hashed cloud key, your backup factor key: ", factorKeyMnemonic);
+uiConsole(
+  "MFA enabled, device factor stored in local store, deleted hashed cloud key, your backup factor key: ",
+  factorKeyMnemonic,
+);
 ```
 
 ## Input Factor Key
 
 #### `inputFactorKey(factorKey: BN): Promise<void>;`
 
-Inputs the Factor Key into the SDK. This function is used to recover the User's account using the Factor Key. If the factor key is correct, the SDK
-initializes the User's account and logs them in.
+Inputs the Factor Key into the SDK. This function is used to recover the User's account using the
+Factor Key. If the factor key is correct, the SDK initializes the User's account and logs them in.
 
 If you want to change the factor key in the current state of the SDK, you can use this function.
 
@@ -171,8 +182,8 @@ const factorKey = coreKitInstance.getCurrentFactorKey();
 
 ## Create Factor
 
-A low-level function, helps you to create a backup factor key based on the type of TSS Share you want to create. You can pass your own factor key or
-let the SDK generate one for you.
+A low-level function, helps you to create a backup factor key based on the type of TSS Share you
+want to create. You can pass your own factor key or let the SDK generate one for you.
 
 ### Parameters
 
@@ -229,10 +240,12 @@ await coreKitInstance.createFactor({
 
 #### `deleteFactor(factorPub: TkeyPoint): Promise<void>;`
 
-Deletes the Factor, respective to the factorPub provided for the User's account. You can get the factor Pubs by using the `getKeyDetails()` function.
+Deletes the Factor, respective to the factorPub provided for the User's account. You can get the
+factor Pubs by using the `getKeyDetails()` function.
 
-It will throw an error if you try to delete the factor that is currently active within the state of the SDK. Use the `inputFactorKey()` function to
-change the factor key in the current state of the SDK to be able to delete that factor.
+It will throw an error if you try to delete the factor that is currently active within the state of
+the SDK. Use the `inputFactorKey()` function to change the factor key in the current state of the
+SDK to be able to delete that factor.
 
 #### Usage
 
@@ -312,7 +325,8 @@ const keyDetails = coreKitInstance?.getKeyDetails();
 
 #### `commitChanges(): Promise<void>;`
 
-Syncs the local metadata with the web3auth metadata server. This function is only to be used while in manual sync mode.
+Syncs the local metadata with the web3auth metadata server. This function is only to be used while
+in manual sync mode.
 
 #### Usage
 
@@ -327,7 +341,8 @@ await coreKitInstance?.commitChanges();
   - `setSecurityQuestion()` - Sets the Security Question Factor for the User's account.
   - `changeSecurityQuestion()` - Changes the Security Question for the User's account.
   - `deleteSecurityQuestion()` - Deletes the Security Question for the User's account.
-  - `recoverFactor()` - Recovers the Security Question Factor for the User's account using the given password.
+  - `recoverFactor()` - Recovers the Security Question Factor for the User's account using the given
+    password.
   - `getQuestion()` - Returns the Security Question for the User's account.
 - Conversion from Mnemonic
   - `mnemonicToKey()` - Converts a Mnemonic to a BN.
@@ -354,7 +369,13 @@ const browserData = {
   browserVersion: browserInfo.browser.version,
   deviceName: browserInfo.os.name,
 };
-const deviceFactorKey = new BN(await coreKitInstance.createFactor({ shareType: TssShareType.DEVICE, additionalMetadata: browserData }), "hex");
+const deviceFactorKey = new BN(
+  await coreKitInstance.createFactor({
+    shareType: TssShareType.DEVICE,
+    additionalMetadata: browserData,
+  }),
+  "hex",
+);
 storeWebBrowserFactor(deviceFactorKey, coreKitInstance);
 ```
 
@@ -404,7 +425,12 @@ import { TssSecurityQuestion } from "@web3auth/mpc-core-kit";
 
 const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
 
-await securityQuestion.setSecurityQuestion({ mpcCoreKit: coreKitInstance, question, answer, shareType: TssShareType.RECOVERY });
+await securityQuestion.setSecurityQuestion({
+  mpcCoreKit: coreKitInstance,
+  question,
+  answer,
+  shareType: TssShareType.RECOVERY,
+});
 ```
 
 ### Change Security Question
@@ -422,8 +448,9 @@ export interface changeSecurityQuestionParams {
 }
 ```
 
-Changes the Security Question Share of the User's account. This helps you change the password if the user has lost it somehow. However, this function
-can only be used if the user has already logged in within the application while meeting the minimum share threshold.
+Changes the Security Question Share of the User's account. This helps you change the password if the
+user has lost it somehow. However, this function can only be used if the user has already logged in
+within the application while meeting the minimum share threshold.
 
 #### Usage
 
@@ -432,15 +459,20 @@ import { TssSecurityQuestion } from "@web3auth/mpc-core-kit";
 
 const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
 
-await securityQuestion.changeSecurityQuestion({ mpcCoreKit: coreKitInstance, newQuestion, newAnswer, answer });
+await securityQuestion.changeSecurityQuestion({
+  mpcCoreKit: coreKitInstance,
+  newQuestion,
+  newAnswer,
+  answer,
+});
 ```
 
 ### Delete Security Question Share
 
 #### `deleteSecurityQuestion(mpcCoreKit: Web3AuthMPCCoreKit, deleteFactorKey?: boolean): Promise<void>;`
 
-Deletes the Security Question Share of the User's account. This function can only be used if the user has already logged in within the application
-while meeting the minimum share threshold.
+Deletes the Security Question Share of the User's account. This function can only be used if the
+user has already logged in within the application while meeting the minimum share threshold.
 
 #### Usage
 
