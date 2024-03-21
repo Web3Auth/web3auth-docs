@@ -1,0 +1,37 @@
+```kotlin
+// checkout the Connect Blockchain > Ethereum > Android to get full code.
+private fun sendTransaction(amount: Double, recipientAddress: String): String? {
+  val ethGetTransactionCount: EthGetTransactionCount = web3.ethGetTransactionCount(credentials.address, DefaultBlockParameterName.LATEST).sendAsync().get()
+  val nonce: BigInteger = ethGetTransactionCount.transactionCount
+  val value: BigInteger = Convert.toWei(amount.toString(), Convert.Unit.ETHER).toBigInteger()
+  val gasLimit: BigInteger = BigInteger.valueOf(21000)
+  val chainId: EthChainId = web3.ethChainId().sendAsync().get()
+
+  // Raw Transaction
+  val rawTransaction: RawTransaction = RawTransaction.createTransaction(
+    chainId.chainId.toLong(),
+    nonce,
+    gasLimit,
+    recipientAddress,
+    value,
+    "",
+    BigInteger.valueOf(5000000000),
+    BigInteger.valueOf(6000000000000)
+  )
+
+  val signedMessage: ByteArray = TransactionEncoder.signMessage(rawTransaction, credentials)
+  val hexValue: String = Numeric.toHexString(signedMessage)
+  val ethSendTransaction: EthSendTransaction = web3.ethSendRawTransaction(hexValue).sendAsync().get()
+  return if(ethSendTransaction.error != null) {
+    println("Tx Error: ${ethSendTransaction.error.message}")
+    ethSendTransaction.error.message
+  } else {
+    println("Tx Hash: ${ethSendTransaction.transactionHash}")
+    ethSendTransaction.transactionHash
+  }
+}
+
+// Setup UI and event handlers
+val sendTransactionButton = findViewById<Button>(R.id.sendTransactionButton)
+sendTransactionButton.setOnClickListener { sendTransaction() }
+```

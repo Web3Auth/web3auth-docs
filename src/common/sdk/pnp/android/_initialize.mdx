@@ -1,0 +1,23 @@
+```kotlin
+web3Auth = Web3Auth(
+  Web3AuthOptions(
+    context = this,
+    clientId = getString(R.string.web3auth_project_id), // pass over your Web3Auth Client ID from Developer Dashboard
+    network = Network.MAINNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN or AQUA or SAPPHIRE_MAINNET or SAPPHIRE_TESTNET)
+    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"), // your app's redirect URL
+  )
+)
+
+// Handle user signing in when app is not alive
+web3Auth.setResultUrl(intent?.data)
+```
+
+Add the below line to your `app/res/values/strings.xml` file:
+
+```xml
+<resources>
+    <!-- -->
+    <string name="web3auth_project_id">CLIENT_ID_FROM_WEB3AUTH_DASHBOARD</string>
+    <!-- -->
+</resources>
+```

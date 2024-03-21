@@ -1,0 +1,27 @@
+```dart
+Future<void> initWeb3Auth() async {
+
+  late final Uri redirectUrl;
+
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
+  } else {
+    redirectUrl = Uri.parse('{bundleId}://auth');
+    // com.example.w3aflutter://auth
+  }
+
+  // highlight-start
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId: "WEB3AUTH_CLIENT_ID",
+    network: Network.sapphire_mainnet,
+    redirectUrl: redirectUrl,
+  ));
+
+  // highlight-end
+
+  // Just after init method, invoke the initialize function
+  await Web3AuthFlutter.initialize();
+}
+```

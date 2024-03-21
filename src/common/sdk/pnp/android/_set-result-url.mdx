@@ -1,0 +1,11 @@
+Whenever user initiates a login flow, a new intent of CustomTabs is launched. It’s necessary step to
+use `setResultUrl` in `onNewIntent` to successful track the login process.
+
+```kotlin
+override fun onNewIntent(intent: Intent?) {
+  super.onNewIntent(intent)
+
+  // Handle user signing in when app is active
+  web3Auth.setResultUrl(intent?.data)
+}
+```

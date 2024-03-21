@@ -1,0 +1,26 @@
+Open your app's `AndroidManifest.xml` file and add the following deep link intent filter to your
+Main activity
+
+```xml
+<intent-filter>
+  <action android:name="android.intent.action.VIEW" />
+
+  <category android:name="android.intent.category.DEFAULT" />
+  <category android:name="android.intent.category.BROWSABLE" />
+
+  // highlight-next-line
+  <data android:scheme="{scheme}" android:host="{YOUR_APP_PACKAGE_NAME}" android:path="/auth" />
+  <!-- Accept URIs: w3a://com.example.w3aflutter -->
+</intent-filter>
+```
+
+Make sure your Main activity launchMode is set to **singleTop** in your `AndroidManifest.xml`
+
+```xml
+<activity
+// highlight-next-line
+  android:launchMode="singleTop"
+  android:name=".YourActivity">
+  // ...
+</activity>
+```

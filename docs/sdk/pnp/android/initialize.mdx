@@ -5,6 +5,9 @@ displayed_sidebar: sdk
 description: "Web3Auth PnP Android SDK - Initialize | Documentation - Web3Auth"
 ---
 
+import Initialization from "@site/src/common/sdk/pnp/android/_initialize.mdx";
+import SetResultUrl from "@site/src/common/sdk/pnp/android/_set-result-url.mdx";
+
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
@@ -15,8 +18,9 @@ However, Initialization is a two-step process:
 1. [Creating a Web3Auth Instance](#create-web3auth-instance)
 2. [Setting a Result URL](#set-result-url)
 
-Please note that these are the most critical steps where you must pass on different parameters according to the preference of your project.
-Additionally, You must configure Whitelabeling and Custom Authentication within this step if you wish to customize your Web3Auth Instance.
+Please note that these are the most critical steps where you must pass on different parameters
+according to the preference of your project. Additionally, You must configure Whitelabeling and
+Custom Authentication within this step if you wish to customize your Web3Auth Instance.
 
 ## Create Web3Auth Instance
 
@@ -82,34 +86,13 @@ data class Web3AuthOptions(
 
 ### Instance
 
-```kotlin
-web3Auth = Web3Auth(
-  Web3AuthOptions(
-    context = this,
-    clientId = getString(R.string.web3auth_project_id), // pass over your Web3Auth Client ID from Developer Dashboard
-    network = Network.MAINNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN or AQUA or SAPPHIRE_MAINNET or SAPPHIRE_TESTNET)
-    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"), // your app's redirect URL
-  )
-)
-
-// Handle user signing in when app is not alive
-web3Auth.setResultUrl(intent?.data)
-```
-
-Add the below line to your `app/res/values/strings.xml` file:
-
-```xml
-<resources>
-    <!-- -->
-    <string name="web3auth_project_id">CLIENT_ID_FROM_WEB3AUTH_DASHBOARD</string>
-    <!-- -->
-</resources>
-```
+<Initialization />
 
 ### Session Management
 
-The Session Management feature allows you to check the existing sessions with Web3Auth. The `sessionResponse()` will allow users to remain
-authenticated with Web3Auth for up to 1 day default, or a maximum of 7 days, or until they logout or session data is cleared. To change the default
+The Session Management feature allows you to check the existing sessions with Web3Auth. The
+`sessionResponse()` will allow users to remain authenticated with Web3Auth for up to 1 day default,
+or a maximum of 7 days, or until they logout or session data is cleared. To change the default
 session time, you can pass `sessionTime` in `Web3AuthOptions`.
 
 ```kotlin
@@ -128,20 +111,14 @@ sessionResponse.whenComplete { _, error ->
 
 :::note
 
-If you're looking for `refreshToken` to maintain the JWT session, use this method instead to extend the session.
+If you're looking for `refreshToken` to maintain the JWT session, use this method instead to extend
+the session.
 
 :::
 
 ## Set Result URL
 
-```kotlin
-override fun onNewIntent(intent: Intent?) {
-  super.onNewIntent(intent)
-
-  // Handle user signing in when app is active
-  web3Auth.setResultUrl(intent?.data)
-}
-```
+<SetResultUrl />
 
 ## Example
 
@@ -209,6 +186,7 @@ class MainActivity : AppCompatActivity() {
 
 :::tip sample app
 
-Get started with a [sample application found here](/examples?product=Plug+and+Play&sdk=Plug+and+Play+Android+SDK).
+Get started with a
+[sample application found here](/examples?product=Plug+and+Play&sdk=Plug+and+Play+Android+SDK).
 
 :::

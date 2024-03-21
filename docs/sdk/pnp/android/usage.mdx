@@ -8,15 +8,18 @@ description: "Web3Auth PnP Android SDK - Usage | Documentation - Web3Auth"
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import AndroidResponse from "@site/src/common/sdk/pnp/_userinfo_response.mdx";
+import LogOut from "@site/src/common/sdk/pnp/android/_logout.mdx";
 
-Web3Auth's Android SDK is a set of libraries and tools that allow you to easily integrate Web3 with Android applications.
+Web3Auth's Android SDK is a set of libraries and tools that allow you to easily integrate Web3 with
+Android applications.
 
 ## Logging in a User
 
 ### `web3Auth.login(LoginParams)`
 
-Trigger login flow will navigate the user to a browser model allowing the user to login into the service. You can pass in the supported providers to
-the login method for specific social logins such as GOOGLE, APPLE, FACEBOOK, etc., and do whitelabel login. The `login` function takes in
+Trigger login flow will navigate the user to a browser model allowing the user to login into the
+service. You can pass in the supported providers to the login method for specific social logins such
+as GOOGLE, APPLE, FACEBOOK, etc., and do whitelabel login. The `login` function takes in
 `LoginParams` as a required input.
 
 #### Arguments
@@ -65,12 +68,13 @@ data class LoginParams(
 
 ### `web3Auth.getPrivkey()`
 
-Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private key which can be used to sign transactions on EVM
-compatible chains.
+Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private
+key which can be used to sign transactions on EVM compatible chains.
 
 ### `web3Auth.getEd25519PrivKey()`
 
-Use getEd25519PrivKey() to get the Ed25519 private key of the user. This private key can be used to sign transactions on Solana.
+Use getEd25519PrivKey() to get the Ed25519 private key of the user. This private key can be used to
+sign transactions on Solana.
 
 ### `web3Auth.getUserInfo()`
 
@@ -367,7 +371,8 @@ class MainActivity : AppCompatActivity() {
 
 ## Selecting Curve
 
-The `web3Auth.login()` method accepts a `curve` parameter. This parameter can be used to select the elliptic curve to use for the signature.
+The `web3Auth.login()` method accepts a `curve` parameter. This parameter can be used to select the
+elliptic curve to use for the signature.
 
 ```kotlin
 web3Auth.login(LoginParams(selectedLoginProvider, curve = Curve.SECP256K1)) // Can be ED25519, SECP256K1
@@ -475,45 +480,13 @@ class MainActivity : AppCompatActivity() {
 
 ## Logging out a user
 
-### `web3Auth.logout()`
-
-The `logout()` method is used to log out a user from Web3Auth. This method will clear the session data and the user will be logged out from Web3Auth.
-
-```kotlin title="Usage"
-import android.widget.Button
-import com.web3auth.core.Web3Auth
-import android.os.Bundle
-
-class MainActivity : AppCompatActivity() {
-    private lateinit var web3Auth: Web3Auth
-
-    private fun signOut() {
-        // highlight-next-line
-        val logoutCompletableFuture =  web3Auth.logout()
-        logoutCompletableFuture.whenComplete { _, error ->
-            if (error == null) {
-                // render logout UI
-            } else {
-                // render error UI
-            }
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        ...
-        // Setup UI and event handlers
-        val signOutButton = findViewById<Button>(R.id.signOutButton)
-        signOutButton.setOnClickListener { signOut() }
-        ...
-    }
-    ...
-}
-```
+<LogOut />
 
 ## Enable MFA for a user
 
-The `enableMFA` method is used to trigger MFA setup flow for users. The method takes `LoginParams` which will used during custom verifiers. If you are
-using default login providers, you don't need to pass `LoginParams`. If you are using custom jwt verifiers, you need to pass the JWT token in
+The `enableMFA` method is used to trigger MFA setup flow for users. The method takes `LoginParams`
+which will used during custom verifiers. If you are using default login providers, you don't need to
+pass `LoginParams`. If you are using custom jwt verifiers, you need to pass the JWT token in
 `loginParams` as well.
 
 ```kotlin title="Usage"
@@ -552,8 +525,9 @@ class MainActivity : AppCompatActivity() {
 
 ## Launch Wallet Services
 
-The `launchWalletServices` method launches a WebView which allows you to use the templated wallet UI services. The method takes `LoginParams` and
-`ChainConfig` as the required input.Wallet Services is currently only available for EVM chains.
+The `launchWalletServices` method launches a WebView which allows you to use the templated wallet UI
+services. The method takes `LoginParams` and `ChainConfig` as the required input.Wallet Services is
+currently only available for EVM chains.
 
 ### Arguments
 
@@ -631,7 +605,8 @@ completableFuture.whenComplete{_, error ->
 
 :::note Minimum Scale plan required
 
-Access to Wallet Services is gated. You can use this feature in the development environment for free. The minimum
-[pricing plan](https://web3auth.io/pricing.html) to use this feature in a production environment is the **Scale Plan**.
+Access to Wallet Services is gated. You can use this feature in the development environment for
+free. The minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a
+production environment is the **Scale Plan**.
 
 :::
