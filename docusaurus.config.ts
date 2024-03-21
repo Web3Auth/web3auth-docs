@@ -449,26 +449,6 @@ const config: Config = {
             to: "/features/mfa",
           },
           {
-            from: "/product-fit/partner-products",
-            to: "/features/account-abstraction",
-          },
-          {
-            from: "/product-fit/enterprise",
-            to: "/product/wallet-ecosystems",
-          },
-          {
-            from: "/product-fit/pnp-vs-core-kit",
-            to: "/product/pnp",
-          },
-          {
-            from: "/product-fit/web3auth-for-wallets",
-            to: "/product/#web3auth-for-wallets",
-          },
-          {
-            from: "/product-fit/web3auth-for-dapps",
-            to: "/product/#web3auth-for-dapps",
-          },
-          {
             from: "/pnp/features/connect-external-wallets",
             to: "/features/wallet-aggregation",
           },
@@ -492,27 +472,48 @@ const config: Config = {
             from: "/auth-provider-setup/byo-jwt-providers",
             to: "/auth-provider-setup/byo-jwt-provider",
           },
+          {
+            from: "/product-fit",
+            to: "/product/product-fit",
+          },
+          {
+            from: "/product-fit/pnp-vs-core-kit",
+            to: "/product/product-fit",
+          },
+          {
+            from: "/product-fit/partner-products",
+            to: "/product/wallet-ecosystems",
+          },
+          {
+            from: "/product-fit/enterprise",
+            to: "/product/wallet-ecosystems",
+          },
+          {
+            from: "/product-fit/web3auth-for-wallets",
+            to: "/product/#web3auth-for-wallets",
+          },
+          {
+            from: "/product-fit/web3auth-for-dapps",
+            to: "/product/#web3auth-for-dapps",
+          },
+          {
+            from: "/pnp/features/custom-authentication",
+            to: "/features/custom-authentication",
+          },
+          {
+            from: "/pnp/features/mfa",
+            to: "/features/mfa",
+          },
         ],
         createRedirects(existingPath) {
           if (existingPath.includes("/guides/")) {
             return [existingPath.replace("/guides/", "/content-hub/guides/")];
           }
-          if (existingPath.includes("/features/whitelabel")) {
-            return [existingPath.replace("/pnp/features/whitelabel/", "/features/whitelabel")];
+          if (existingPath.includes("/pnp/features/whitelabel/")) {
+            return [existingPath.replace("/features/whitelabel", "/pnp/features/whitelabel/")];
           }
-          if (existingPath.includes("/features/server-side-verification")) {
-            return [
-              existingPath.replace(
-                "/pnp/features/server-side-verification/",
-                "/features/server-side-verification",
-              ),
-            ];
-          }
-          if (existingPath.includes("/product/")) {
-            return [existingPath.replace("/product-fit/", "/product/")];
-          }
-          if (existingPath.includes("/features/")) {
-            return [existingPath.replace("/pnp/features/", "/features/")];
+          if (existingPath.includes("/pnp-features/")) {
+            return [existingPath.replace("/features/", "/pnp-features/")];
           }
           if (existingPath.includes("/sdk")) {
             return [
@@ -529,9 +530,9 @@ const config: Config = {
               ),
             ];
           }
-          if (existingPath.includes("/auth-provider-setup")) {
-            return [existingPath.replace("/auth-provider-setup", "/custom-authentication")];
-          }
+          // if (existingPath.includes("/auth-provider-setup")) {
+          //   return [existingPath.replace("/auth-provider-setup", "/custom-authentication")];
+          // }
           if (existingPath.includes("/sdk/web/no-modal")) {
             return [
               existingPath.replace("/sdk/web/no-modal", "/sdk/web/core"),
@@ -544,14 +545,14 @@ const config: Config = {
               existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay"),
             ];
           }
-          if (existingPath.includes("/sdk/tkey")) {
+          if (existingPath.includes("/sdk/self-host")) {
             return [existingPath.replace("/sdk/tkey", "/sdk/self-host")];
           }
-          if (existingPath.includes("integration-builder")) {
-            return [existingPath.replace("integration-builder", "quick-start")];
+          if (existingPath.includes("/integration-builder")) {
+            return [existingPath.replace("/quick-start", "/integration-builder")];
           }
           if (existingPath.includes("quickstart")) {
-            return [existingPath.replace("quickstart", "quick-start")];
+            return [existingPath.replace("quick-start", "quickstart")];
           }
           return undefined; // Return a falsy value: no redirect created
         },
