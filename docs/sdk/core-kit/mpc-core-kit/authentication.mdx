@@ -9,22 +9,27 @@ import ServiceWorkerCode from "@site/src/common/sdk/core-kit/tkey/_sw-js.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-There are two ways to login your users, depending on the type of authentication method you've chosen. If you are looking for an Implicit
-Authentication Flow in your application (like Auth0 SPA Flow), you can use the `loginWithOAuth()` function. If you are looking to pass a JWT based Id
-Token to the SDK from in your application (like Auth0 RWA Flow), you can use the `loginWithJWT()` function.
+There are two ways to login your users, depending on the type of authentication method you've
+chosen. If you are looking for an Authentication Flow in your application (like Auth0 SPA Flow), you
+can use the `loginWithOAuth()` function. If you are looking to pass a JWT-based IdToken to the SDK
+from your application (like Auth0 RWA Flow or even BYOA JWT provider), you can use the
+`loginWithJWT()` function.
 
-As a prerequisite, before triggering the login function, you need to create a verifier for your login method on the
-[Web3Auth Dashboard](https://dashboard.web3auth.io).
+As a prerequisite, before triggering the login function, you need to create a verifier for your
+login method on the [Web3Auth Dashboard](https://dashboard.web3auth.io).
 
 ## Creating a Verifier
 
-Since this a Core Kit SDK, it does not provide any default authentication methods. You need to create a custom verifier in order to use this SDK. This
-means that you need to authenticate users with your own custom authentication service. For example, while authenticating with Google, you have to use
-your own Google Client ID and Dashboard to authenticate users directly, or use aggregate services like Auth0, Firebase, AWS Cognito etc. Additionally,
-you can make your own JWT token authentication system and pass over the ID Token to the Web3Auth to generate a private key for them.
+Since this is a Core Kit SDK, it does not provide any default authentication methods. You need to
+create a custom verifier to use this SDK. This means that you need to authenticate users with your
+own custom authentication service. For example, while authenticating with Google, you have to use
+your own Google Client ID and Dashboard to authenticate users directly or use aggregate services
+like Auth0, Firebase, AWS Cognito etc. Additionally, you can make your own JWT token authentication
+system and pass over the ID Token to Web3Auth to generate a private key for them.
 
-For enabling this, you need [Create a Verifier](/auth-provider-setup/verifiers) from the **Custom Auth** section of the
-[Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired configuration.
+For enabling this, you need [Create a Verifier](/auth-provider-setup/verifiers) from the **Custom
+Auth** section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your
+desired configuration.
 
 :::tip
 
@@ -35,11 +40,12 @@ If you want to know more about setting up a verifier and how to use it, please r
 
 :::warning
 
-Core Kit SDK only supports Sapphire Mainnet and Devnet networks. The other networks don't support MPC functionalities.
+Core Kit SDK only supports Sapphire Mainnet and Devnet networks. The other networks don't support
+MPC functionalities.
 
 :::
 
-## Log In with OAuth (Implicit Flow)
+## Log In with OAuth
 
 #### `loginWithOauth(loginParams: OauthLoginParams): Promise<void>;`
 
@@ -100,7 +106,8 @@ export declare const AGGREGATE_VERIFIER: {
 
 #### `SubVerifierDetails`
 
-Contains the details of verifier the app needs to connect to. Use this in case of a single verifier.
+Contains the details of the verifier the app needs to connect to. Use this in the case of a single
+verifier.
 
 <Tabs
   defaultValue="table"
@@ -160,7 +167,8 @@ export declare const LOGIN: {
 
 #### `AggregateVerifierLoginParams`
 
-Contains the details of an aggregate verifier the app needs to connect to. Use this in case of an aggregate verifier.
+Contains the details of an aggregate verifier the app needs to connect to. Use this in case of an
+aggregate verifier.
 
 <Tabs
   defaultValue="table"
@@ -176,7 +184,7 @@ Contains the details of an aggregate verifier the app needs to connect to. Use t
 | ----------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------- |
 | `aggregateVerifierIdentifier` | `string`                  | The name of your aggregate verifier                                                                                 | Yes       |
 | `subVerifierDetailsArray`     | `SubVerifierDetails[]`    | An array containing the details of your sub verifiers.                                                              | Yes       |
-| `aggregateVerifierType?`      | `AGGREGATE_VERIFIER_TYPE` | What kind of aggregation is needed for your aggregate verifier. Use `"single_id_verifier"` by default in most cases | No        |
+| `aggregateVerifierType?`      | `AGGREGATE_VERIFIER_TYPE` | What kind of aggregation is needed for your aggregate verifier? Use `"single_id_verifier"` by default in most cases | No        |
 
 </TabItem>
 
@@ -234,43 +242,50 @@ await coreKitInstance.loginWithOauth(verifierConfig);
 
 ### Popup Mode
 
-If you're using the popup mode (default) in your application, while logging in, you need to have a service worker running, which essential catches the
-login redirect and sends it back to the main DOM with the parameters. These parameters are then used to login the user with Web3Auth.
+If you're using the popup mode (default) in your application, while logging in, you need to have a
+service worker running, which essentially catches the login redirect and sends it back to the main
+DOM with the parameters. These parameters are then used to log in the user with Web3Auth.
 
 #### Service Worker
 
-A service worker is a script that is run by the browser. It does not have any direct relationship with the DOM and provides many out of the box
-network-related features. Web3Auth Core Kit tKey SDK needs a service worker relative to `baseUrl` to capture the auth redirect at `redirectPathName`
+A service worker is a script that is run by the browser. It does not have any direct relationship
+with the DOM and provides many out-of-the-box network-related features. Web3Auth Core Kit tKey SDK
+needs a service worker relative to `baseUrl` to capture the auth redirect at `redirectPathName`
 path.
 
-For example, while using service worker if `baseUrl` is `http://localhost:3000/serviceworker` then user will be redirected to
-`http://localhost:3000/serviceworker/redirect` page after login where service worker will capture the results and send it back to original window
+For example, while using service worker if `baseUrl` is `https://your-domain.com/serviceworker` then
+the user will be redirected to the `https://your-domain.com/serviceworker/redirect` page after
+logging in where the service worker will capture the results and send it back to the original window
 where login was initiated.
 
 :::tip
 
-- Using service worker is required only in the popup flow.
+- Using a service worker is required only in the popup flow.
 
-- Service worker is needed if you are using `popup` uxMode within your MPC Core Kit Configuration.
+- A service worker is needed if you are using `popup` uxMode within your MPC Core Kit Configuration.
 
-- For browsers where service workers are not supported, or in the case you wish to not use service workers, create and serve redirect page (i.e
-  `redirect.html` file).
+- For browsers where service workers are not supported, or in the case you wish to not use service
+  workers, create and serve redirect page (i.e. `redirect.html` file).
 
 :::
 
 #### Service Worker Setup
 
-- If you're using React, to setup service worker, you need to create a `sw.js` file in your public folder and register it in your `index.html` file.
-  You can find more information about it in [this blog](https://blog.bitsrc.io/using-service-workers-with-react-27a4c5e2d1a9).
+- If you're using React, to set up service worker, you need to create a `sw.js` file in your public
+  folder and register it in your `index.html` file. You can find more information about it in
+  [this blog](https://blog.bitsrc.io/using-service-workers-with-react-27a4c5e2d1a9).
 
-- For Angular, [this guide](https://angular.io/guide/service-worker-getting-started) will be helpful in setting up the service worker.
+- For Angular, [this guide](https://angular.io/guide/service-worker-getting-started) will be helpful
+  in setting up the service worker.
 
-- For Vue, [this guide](https://www.360learntocode.com/2020/12/how-to-use-and-customize-service-worker-in-vuejs-pwa.html) is a great way to get
-  started with service workers.
+- For Vue,
+  [this guide](https://www.360learntocode.com/2020/12/how-to-use-and-customize-service-worker-in-vuejs-pwa.html)
+  is a great way to get started with service workers.
 
 #### Service Worker Code
 
-You can directly copy the service worker file code from here and paste in your respective folder. You can also find the code in our
+You can directly copy the service worker file code from here and paste it into your respective
+folder. You can also find the code in our
 [MPC Core Kit Example (Popup Flow)](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/intrinsic-flow-examples/mpc-core-kit-popup-flow-example).
 
 <details>
@@ -280,13 +295,14 @@ You can directly copy the service worker file code from here and paste in your r
 
 ### Redirect Mode
 
-If you are using the redirect mode, don't have to use service worker or `redirect.html` file. You can get login result by calling `init()` function on
-redirected page mount.
+If you are using the redirect mode, don't have to use the service worker or `redirect.html` file.
+You can get login results by calling the `init()` function on the redirected page mount.
 
-For example, if `baseUrl` is `http://localhost:3000` and `redirectPathName` is `auth` then user will be redirected to `http://localhost:3000/auth`
-page after login where you can get login result by calling `init()` function on redirected page mount.
+For example, if `baseUrl` is `https://your-domain.com` and `redirectPathName` is `auth` then the
+user will be redirected to the `https://your-domain.com/auth` page after logging in where you can
+get login result by calling `init()` function on redirected page mount.
 
-## Log In with JWT (IdToken Flow)
+## Log In with JWT (BYOA)
 
 #### `loginWithJWT(idTokenLoginParams: IdTokenLoginParams): Promise<void>;`
 
@@ -306,14 +322,14 @@ page after login where you can get login result by calling `init()` function on 
 
 <TabItem value="table">
 
-| Parameter              | Type                  | Mandatory | Description                                                                                                                                 |
-| ---------------------- | --------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `verifier`             | `string`              | Yes       | Name of the verifier created on Web3Auth Dashboard. In case of Aggregate Verifier, the name of the top level aggregate verifier.            |
-| `verifierId`           | `string`              | Yes       | Unique Identifier for the User. The verifier identifier field set for the verifier/ sub verifier. E.g. "sub" field in your on jwt id token. |
-| `idToken`              | `string`              | Yes       | The idToken received from the Auth Provider.                                                                                                |
-| `subVerifier?`         | `string`              | No        | Name of the sub verifier in case of aggregate verifier setup. This field is mandatory in case of an aggregate verifier.                     |
-| `extraVerifierParams?` | `WebAuthnExtraParams` | No        | Extra verifier params in case of a WebAuthn verifier type.                                                                                  |
-| `additionalParams?`    | `ExtraParams`         | No        | Any additional parameter (key value pair) you'd like to pass to the login function.                                                         |
+| Parameter              | Type                  | Mandatory | Description                                                                                                                                |
+| ---------------------- | --------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `verifier`             | `string`              | Yes       | Name of the verifier created on Web3Auth Dashboard. In the case of Aggregate Verifier, the name of the top-level aggregate verifier.       |
+| `verifierId`           | `string`              | Yes       | Unique Identifier for the User. The verifier identifier field is set for the verifier/sub verifier. E.g. "sub" field in your JWT ID Token. |
+| `idToken`              | `string`              | Yes       | The idToken received from the Auth Provider.                                                                                               |
+| `subVerifier?`         | `string`              | No        | Name of the sub verifier in case of aggregate verifier setup. This field is mandatory in the case of an aggregate verifier.                |
+| `extraVerifierParams?` | `WebAuthnExtraParams` | No        | Extra verifier params in case of a WebAuthn verifier type.                                                                                 |
+| `additionalParams?`    | `ExtraParams`         | No        | Any additional parameter (key-value pair) you'd like to pass to the login function.                                                        |
 
 </TabItem>
 
