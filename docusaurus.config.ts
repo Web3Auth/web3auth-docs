@@ -500,6 +500,10 @@ const config: Config = {
             from: "/pnp/features/custom-authentication",
             to: "/features/custom-authentication",
           },
+          {
+            from: "/pnp/features/mfa",
+            to: "/features/mfa",
+          },
         ],
         createRedirects(existingPath) {
           if (existingPath.includes("/guides/")) {
