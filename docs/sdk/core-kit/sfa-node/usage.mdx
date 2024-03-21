@@ -10,10 +10,12 @@ import Tabs from "@theme/Tabs";
 import SFANodeCustomJWTExample from "@site/src/common/sdk/core-kit/sfa/_sfa_node_custom_jwt_example.mdx";
 import SFANodeJWTExample from "@site/src/common/sdk/core-kit/sfa/_sfa_node_jwt_example.mdx";
 
-Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users. Further, you can use the native provider given
-by Web3Auth to connect the users to the respective blockchain network.
+Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your
+users. Further, you can use the native provider given by Web3Auth to connect the users to the
+respective blockchain network.
 
-Natively, the instance of Web3Auth (referred to as web3auth in our examples) returns the following functions:
+Natively, the instance of Web3Auth (referred to as web3auth in our examples) returns the following
+functions:
 
 - `connect()` - Logs in the User using the `verifier`, `verifierId` & `idToken`.
 
@@ -33,9 +35,9 @@ To login a user in the Web3Auth SFA Node.js SDK, you need to call `connect()` fu
 
 <TabItem value="table">
 
-| Variable      | Type     | Description      | Mandatory |
-| ------------- | -------- | ---------------- | --------- |
-| `loginParams` | `object` | Login Parameters | Yes       |
+| Variable      | Description                |
+| ------------- | -------------------------- |
+| `loginParams` | Mandatory login parameters |
 
 </TabItem>
 
@@ -102,8 +104,9 @@ One needs to re-initialize the SDK for each new user.
 
 :::
 
-On successful login, the `connect()` function returns a `SafeEventEmitterProvider` instance. This instance contains the respective provider
-corresponding to your selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
+On successful login, the `connect()` function returns a `SafeEventEmitterProvider` instance. This
+instance contains the respective provider corresponding to your selected blockchain. You can use
+this provider to connect your user to the blockchain and make transactions.
 
 On unsuccessful login, this function will return a `null` value.
 
@@ -121,12 +124,12 @@ On unsuccessful login, this function will return a `null` value.
 
 <TabItem value="table">
 
-| Parameter               | Type                     | Description                                                                                                         | Mandatory |
-| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------- | --------- |
-| `verifier`              | `string`                 | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.)                                  | Yes       |
-| `verifierId`            | `string`                 | Verifier ID's value, `sub` or `email` value present in the idToken and **not the string `sub` or `email`**.         | Yes       |
-| `idToken`               | `string`                 | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. | Yes       |
-| `subVerifierInfoArray?` | `TorusSubVerifierInfo[]` | Sub verifier info                                                                                                   | No        |
+| Parameter               | Description                                                                                                                                                 |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `verifier`              | Details of the verifier (verifier type, ie. `torus`, `metamask`, `openlogin` etc.). It's a mandatory parameter as a string.                                 |
+| `verifierId`            | Verifier ID's value, `sub` or `email` value present in the idToken and **not the string `sub` or `email`**. It's a mandatory parameter as a string.         |
+| `idToken`               | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. It's a mandatory parameter as a string. |
+| `subVerifierInfoArray?` | Sub verifier info. It's an optional parameter as a TorusSubVerifierInfo[].                                                                                  |
 
 </TabItem>
 
@@ -161,7 +164,8 @@ await web3auth.connect({
 
 :::danger MFA enabled users
 
-For MFA enabled users, you'll see `Error("User has already enabled mfa, please use the @webauth/webauth-web sdk for login with mfa");`
+For MFA enabled users, you'll see
+`Error("User has already enabled mfa, please use the @webauth/webauth-web sdk for login with mfa");`
 
 :::
 
