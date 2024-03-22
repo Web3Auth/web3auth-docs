@@ -122,6 +122,16 @@ const sidebars: SidebarsConfig = {
     "features/wallet-aggregation",
     "features/whitelabel",
     {
+      type: "html",
+      value: "<span class='sidebarHeading'>Additional Reading</span>",
+      defaultStyle: true,
+    },
+    {
+      type: "link",
+      label: "Troubleshooting",
+      href: "/troubleshooting",
+    },
+    {
       type: "category",
       label: "Contribute",
       items: ["contribute/contribute", "contribute/bug-bounty"],
