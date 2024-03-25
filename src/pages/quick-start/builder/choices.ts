@@ -28,6 +28,7 @@ export const MPC_CORE_KIT = "MPC_CORE_KIT";
 // Platform choices
 export const REACT = "REACT";
 export const NEXTJS = "NEXTJS";
+export const NUXT = "NUXT";
 export const VUE = "VUE";
 export const ANGULAR = "ANGULAR";
 export const HTML = "HTML";
@@ -65,6 +66,7 @@ export const LANGS_WEB: DisplayChoice[] = [
   { key: VUE, displayName: "Vue" },
   { key: ANGULAR, displayName: "Angular" },
   { key: HTML, displayName: "Vanilla JS" },
+  { key: NUXT, displayName: "Nuxt" },
 ];
 
 export const LANGS_WEB_MPC_CORE_KIT: DisplayChoice[] = [

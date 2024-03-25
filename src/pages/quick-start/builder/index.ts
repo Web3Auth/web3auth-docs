@@ -48,11 +48,13 @@ import pnp_unity from "./pnp/unity";
 import pnp_web_modal_angular from "./pnp/web_modal/angular";
 import pnp_web_modal_html from "./pnp/web_modal/html";
 import pnp_web_modal_nextjs from "./pnp/web_modal/nextjs";
+import pnp_web_modal_nuxt from "./pnp/web_modal/nuxt";
 import pnp_web_modal_react from "./pnp/web_modal/react";
 import pnp_web_modal_vue from "./pnp/web_modal/vue";
 import pnp_web_no_modal_angular from "./pnp/web_no_modal/angular";
 import pnp_web_no_modal_html from "./pnp/web_no_modal/html";
 import pnp_web_no_modal_nextjs from "./pnp/web_no_modal/nextjs";
+import pnp_web_no_modal_nuxt from "./pnp/web_no_modal/nuxt";
 import pnp_web_no_modal_react from "./pnp/web_no_modal/react";
 import pnp_web_no_modal_vue from "./pnp/web_no_modal/vue";
 
@@ -61,11 +63,13 @@ const sdks = {
   PNP_MODAL_ANGULAR: pnp_web_modal_angular,
   PNP_MODAL_HTML: pnp_web_modal_html,
   PNP_MODAL_NEXTJS: pnp_web_modal_nextjs,
+  PNP_MODAL_NUXT: pnp_web_modal_nuxt,
   PNP_MODAL_REACT: pnp_web_modal_react,
   PNP_MODAL_VUE: pnp_web_modal_vue,
   // PNP No Modal SDK
   PNP_NO_MODAL_ANGULAR: pnp_web_no_modal_angular,
   PNP_NO_MODAL_NEXTJS: pnp_web_no_modal_nextjs,
+  PNP_NO_MODAL_NUXT: pnp_web_no_modal_nuxt,
   PNP_NO_MODAL_REACT: pnp_web_no_modal_react,
   PNP_NO_MODAL_VUE: pnp_web_no_modal_vue,
   PNP_NO_MODAL_HTML: pnp_web_no_modal_html,
@@ -112,6 +116,7 @@ const embed_links = {
   PNP_MODAL_ANGULAR: "https://w3a.link/pnp-angular-modal-quick-start",
   PNP_MODAL_HTML: "https://w3a.link/pnp-vanillajs-modal-quick-start",
   PNP_MODAL_NEXTJS: "https://w3a.link/pnp-nextjs-modal-quick-start",
+  PNP_MODAL_NUXT: "https://w3a.link/pnp-nuxt-modal-quick-start",
   PNP_MODAL_REACT: "https://w3a.link/pnp-react-modal-quick-start",
   PNP_MODAL_VUE: "https://w3a.link/pnp-vue-modal-quick-start",
   // PNP No Modal SDK
@@ -120,6 +125,7 @@ const embed_links = {
   PNP_NO_MODAL_REACT: "https://w3a.link/pnp-react-no-modal-quick-start",
   PNP_NO_MODAL_VUE: "https://w3a.link/pnp-vue-no-modal-quick-start",
   PNP_NO_MODAL_HTML: "https://w3a.link/pnp-vanillajs-no-modal-quick-start",
+  PNP_NO_MODAL_NUXT: "https://w3a.link/pnp-nuxt-no-modal-quick-start",
   // PNP Android SDK
   PNP_ANDROID_ANDROID: "https://w3a.link/pnp-android-quick-start",
   // PNP iOS SDK
