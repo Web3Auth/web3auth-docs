@@ -1,9 +1,9 @@
 ---
-title: Integrating RainbowKit with Web3Auth PnP SDK for Authentication
-image: "guides/banners/rainbow-kit.png"
+title: Integrating Rainbow Kit with Web3Auth PnP SDK for Authentication
+image: "guides/banners/rainbowkit-guide.png"
 description: Learn how to integrate Rainbowkit and Web3auth for authentication.
 type: guide
-tags: [rainbowkit, authentication, pnp]
+tags: [rainbowkit, authentication, pnp, wagmi]
 date: March 13, 2024
 author: Web3Auth Team
 order: 5
@@ -17,12 +17,12 @@ import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisit
 <SEO
   title="Integrating RainbowKit with Web3Auth for Authentication"
   description="Learn how to integrate Rainbowkit and Web3auth for authentication."
-  image="https://web3auth.io/docs/guides/banners/ainbow-kit.png"
+  image="https://web3auth.io/docs/guides/banners/rainbowkit-guide.png"
   slug="/guides/rainbow-kit-guide"
 />
 
-Integrating RainbowKit with Web3Auth PnP (Plug and Play) SDK enables decentralized application
-(dApp) developers to leverage Web3Auth's streamlined authentication processes alongside RainbowKit's
+Uniting RainbowKit with Web3Auth PnP (Plug and Play) SDK enables decentralized application (dApp)
+developers to leverage Web3Auth's streamlined authentication processes alongside RainbowKit's
 user-friendly wallet management interface. This integration utilizes Web3Auth's
 @web3auth/web3auth-wagmi-connector to bridge RainbowKit with Web3Auth, facilitating a secure and
 efficient authentication mechanism for users.
@@ -45,27 +45,29 @@ https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/wag
 
 <SetupWeb3AuthDashboard />
 
-## Rainbow Connector
+## Rainbow + Web3Auth Connector
 
 Using rainbow kit with web3auth is very straitforward. You will need to create a connector that will
-connect the rainbow kit with web3auth. This connector will be used in the wagmi provider. If you get
-lost you can always check the full example in both SDK and see how the are working.
+connect the rainbow kit with web3auth. This connector will be used in the wagmi provider.
 
 You will need to use mainly 8 libraries in this project: `@web3auth/web3auth-wagmi-connector`,
-`@rainbow-me/rainbowkit` and `@web3auth/modal`. Also we would need in the project `@web3auth/base`,
-"@web3auth/ethereum-provider", `viem`, `wagmi` and `@web3auth/openlogin-adapter`.
+`@rainbow-me/rainbowkit` and `@web3auth/modal` or `@web3auth/no-modal`. Also we would need in the
+project `@web3auth/base`, "@web3auth/ethereum-provider", `viem`, `wagmi` and
+`@web3auth/openlogin-adapter`.
 
 To install them, run:
 `npm install @web3auth/web3auth-wagmi-connector @rainbow-me/rainbowkit @web3auth/modal @web3auth/base @web3auth/ethereum-provider @web3auth/openlogin-adapter`
 
-\*\* you can replace modal with no-modal if you want to use it.
+\* you can replace modal with no-modal
 
-## Rainbow + Web3Auth Connector
-
-The rainbow connector is the key that connect rainbowkit with web3auth. So in this file you will
-exporting the connector with the web3auth instance.
+The rainbow connector is the key that connect rainbowkit with web3auth. So in this file you will be
+exporting the connector with the web3auth instance on it.
 
 ```jsx
+import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
+
+...
+
 const web3AuthInstance = new Web3Auth({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
