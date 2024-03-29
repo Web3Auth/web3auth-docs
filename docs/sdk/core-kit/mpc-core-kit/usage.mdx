@@ -12,97 +12,141 @@ transactions and interact with the blockchain.
 Natively, the instance of `Web3AuthMPCCoreKit` (referred to as `coreKitInstance` in our examples)
 returns the following functions:
 
-Authentication and Handling Functions:
+**[Authentication Functions:](#authentication-functions)**
 
-- `loginWithOAuth()` - Logs in the user in OAuth Implicit Flow.
-- `loginWithJWT()` - Logs in the user with a JWT-based ID Token.
-- `logout()` - Logs out the User.
-- `handleRedirectResult()` - Handles the redirect result from the OAuth Implicit Flow.
+- [`loginWithOAuth()`](./authentication#log-in-with-oauth) - Logs in the user using OAuth Flow.
+- [`loginWithJWT()`](./authentication#log-in-with-jwt-byoa) - Logs in the user with a JWT-based ID
+  Token.
+- `handleRedirectResult()` - Handles the redirect result from the OAuth Flow.
+- [`inputFactorKey()`](#input-factor-key) - Inputs the Factor Key to recover the User's account in
+  case they don't have enough factors.
+- [`logout()`](./authentication#logging-out-the-user) - Logs out the User.
 
-:::tip
+:::info Get help with Authentication
 
-Check out the [Authentication section](/sdk/core-kit/mpc-core-kit/authentication) of the SDK
+Check out the [**Authentication**](/sdk/core-kit/mpc-core-kit/authentication) section of the SDK
 Reference to learn more about these functions.
 
 :::
 
-Handling Factors:
+**[Manual Sync Function:](#manual-sync-function)**
 
-- `setTssWalletIndex()` - Sets the TSS Wallet Index for the User's account.
-- `getPublicSync()` - Returns the Public Sync of the User's account.
-- `enableMFA()` - Enable MFA for the user. Deletes the Hashed Factor and generates a new Factor Key.
-- `inputFactorKey()` - Inputs the Factor Key to recover the User's account.
-- `getCurrentFactorKey()` - Returns the current Factor Key of the User's account, present in the
-  state of the SDK.
-- `createFactor()` - Creates a new Factor for the User's account.
-- `deleteFactor()` - Deletes a Factor from the User's account.
+- [`commitChanges()`](#commit-changes) - Commits the changes made to the User's account while in
+  manual sync mode.
 
-User Functions:
+  > To use this function, you'll need to configure the manual sync in the
+  > [initialization](./initialize#instantiating-web3auth) step.
 
-- `getUserInfo()` - Returns the User's information received from the ID Token.
-- `getKeyDetails()` - Returns the User's Key Details.
-- `commitChanges()` - Commits the changes made to the User's account while in manual sync mode.
+**[Factor Handling Functions:](#factor-handling-functions)**
 
-Additional Helper Functions:
+account, present in the state of the SDK.
 
-- Web Storage
-  - `storeWebBrowserFactor()` - Stores a Factor in the Web Local/ Session Storage.
-  - `getWebBrowserFactor()` - Returns the Factor from the Web Local/ Session Storage.
-- Security Questions
-  - `setSecurityQuestion()` - Sets the Security Question Factor for the User's account.
-  - `changeSecurityQuestion()` - Changes the Security Question for the User's account.
-  - `deleteSecurityQuestion()` - Deletes the Security Question for the User's account.
-  - `recoverFactor()` - Recovers the Security Question Factor for the User's account using the given
-    password.
-  - `getQuestion()` - Returns the Security Question for the User's account.
-- Conversion from Mnemonic
-  - `mnemonicToKey()` - Converts a Mnemonic to a BN.
-  - `keyToMnemonic()` - Converts a hex string to a Mnemonic.
+- [`enableMFA()`](#enable-mfa) - Enable MFA for the user. Deletes the Hashed Factor and generates a
+  new Factor Key.
+- [`createFactor()`](#create-factor) - Creates a new Factor for the User's account to increase the
+  factors of your account. It can be of type Device(`index:2`) or Recovery(`index:3`).
+- [`deleteFactor()`](#delete-factor) - Deletes a Factor from the User's account.
+- [`getCurrentFactorKey()`](#get-current-factor-key) - Returns the current Factor Key of the User's
 
-## Set TSS Wallet Index
+:::danger Note
 
-#### `setTssWalletIndex(accountIndex: number): void;`
-
-Sets the TSS Wallet Index for the User's account. This function can be used to deterministically
-derive different wallet addresses by using account indexes. Using this function you can add
-multi-address account support to your application.
-
-:::note
-
-As an application, you need to persist this account index in the application state.
-
-You can either choose to persist the account index temporarily using the state variable or use a
-more permanent storage like `localStorage`. Whenever you add, delete or update a share, you need to
-set the account index again.
+You shouldn't create too many factors, we recommend a **maximum of 10 factors**.
 
 :::
+
+**[User & Wallet Account Functions:](#user--wallet-account-functions)**
+
+- [`setTssWalletIndex()`](#get-key-details) - Sets the TSS Wallet Index for the User's account.
+- [`getPublicSync()`](#get-public-sync) - Returns the Public Address of the user in a Synchronous
+  call.
+- [`getUserInfo()`](#get-user-info) - Returns the User's information received from the ID Token.
+- [`getKeyDetails()`](#get-key-details) - Returns the User's Key Details.
+
+**[Additional Helper Functions:](#additional-helper-functions)**
+
+- [Web Storage](#web-storage-helper-functions)
+  - [`storeWebBrowserFactor()`](#store-web-browser-factor) - Stores a Factor in the Web Local/
+    Session Storage.
+  - [`getWebBrowserFactor()`](#get-web-browser-factor) - Returns the Factor from the Web Local/
+    Session Storage.
+- [Security Questions](#security-question)
+  - [`setSecurityQuestion()`](#set-security-question) - Sets the Security Question Factor for the
+    User's account.
+  - [`changeSecurityQuestion()`](#change-security-question) - Changes the Security Question for the
+    User's account.
+  - [`deleteSecurityQuestion()`](#delete-security-question-share) - Deletes the Security Question
+    for the User's account.
+  - [`recoverFactor()`](#get-factor-key-from-security-question) - Recovers the Security Question
+    Factor for the User's account using the given password.
+  - [`getQuestion()`](#get-security-question-for-users-account) - Returns the Security Question for
+    the User's account.
+- [Conversion from Mnemonic](#mnemonic-conversations)
+  - [`mnemonicToKey()`](#mnemonic-to-key) - Converts a Mnemonic to a BN.
+  - [`keyToMnemonic()`](#key-to-mnemonic) - Converts a hex string to a Mnemonic.
+
+## Authentication Functions
+
+---
+
+### [Login with OAuth](./authentication#log-in-with-oauth)
+
+- [`loginWithOAuth()`](./authentication#log-in-with-oauth) - Logs in the user using OAuth flow.
+
+### [Login with JWT](./authentication#log-in-with-jwt-byoa)
+
+- [`loginWithJWT()`](./authentication#log-in-with-jwt-byoa) - Logs in the user with a JWT-based ID
+  Token.
+
+### Handle Redirect Result
+
+- `handleRedirectResult()` - Handles the redirect result from the OAuth Flow.
+
+### Input Factor Key
+
+#### `inputFactorKey(factorKey: BN): Promise<void>;`
+
+Inputs the Factor Key into the SDK. This function is used to recover the User's account using the
+Factor Key. If the factor key is correct, the SDK initializes the User's account and logs them in.
+
+If you want to change the factor key in the current state of the SDK, you can use this function.
 
 #### Usage
 
 ```tsx
-await coreKitInstance.setTssWalletIndex(index);
+const factorKey = new BN(backupFactorKey, "hex");
+await coreKitInstance.inputFactorKey(factorKey);
 ```
 
-## Get Public Sync
+### [Logout](./authentication#logging-out-the-user)
 
-#### `getPublicSync()`
+#### `logout(): Promise<void>;`
 
-This function returns the final public key of the user.
+Logs out the User from the application and clears the local storage.
 
-:::info NOTE
+- [`logout()`](./authentication#logging-out-the-user) - Logs out the User.
 
-The public key returned will depend on the account index set using the `setTssWalletIndex()`
-function. A different account index will return a different public key.
+## Manual Sync Function
 
-:::
+---
+
+### Commit Changes
+
+#### `commitChanges(): Promise<void>;`
+
+Syncs the local metadata with the web3auth metadata server. This function is only to be used while
+in manual sync mode.
 
 #### Usage
 
-```ts
-await coreKitInstance.getPublicSync();
+```tsx
+await coreKitInstance?.commitChanges();
 ```
 
-## Enable MFA
+## Factor Handling Functions
+
+---
+
+### Enable MFA
 
 #### `enableMFA(enableMFAParams: EnableMFAParams): Promise<string>;`
 
@@ -112,7 +156,7 @@ for the backup factor. If you don't pass a factor key, a new factor key will be 
 
 Most importantly, this function deletes the Hashed Factor Key enabling a non-custodial flow.
 
-### Parameters
+#### Parameters
 
 ```js
 export interface EnableMFAParams {
@@ -152,40 +196,12 @@ uiConsole(
 );
 ```
 
-## Input Factor Key
-
-#### `inputFactorKey(factorKey: BN): Promise<void>;`
-
-Inputs the Factor Key into the SDK. This function is used to recover the User's account using the
-Factor Key. If the factor key is correct, the SDK initializes the User's account and logs them in.
-
-If you want to change the factor key in the current state of the SDK, you can use this function.
-
-#### Usage
-
-```tsx
-const factorKey = new BN(backupFactorKey, "hex");
-await coreKitInstance.inputFactorKey(factorKey);
-```
-
-## Get Current Factor Key
-
-#### `getCurrentFactorKey(): IFactorKey;`
-
-Returns the current factor key in usage within the state of the SDK.
-
-#### Usage
-
-```tsx
-const factorKey = coreKitInstance.getCurrentFactorKey();
-```
-
-## Create Factor
+### Create Factor
 
 A low-level function, helps you to create a backup factor key based on the type of TSS Share you
 want to create. You can pass your own factor key or let the SDK generate one for you.
 
-### Parameters
+#### Parameters
 
 ```tsx
 export interface CreateFactorParams extends EnableMFAParams {
@@ -236,7 +252,7 @@ await coreKitInstance.createFactor({
 });
 ```
 
-## Delete Factor
+### Delete Factor
 
 #### `deleteFactor(factorPub: TkeyPoint): Promise<void>;`
 
@@ -255,7 +271,66 @@ const pub = Point.fromBufferSEC1(pubBuffer);
 await coreKitInstance.deleteFactor(pub.toTkeyPoint());
 ```
 
-## Get User Info
+### Get Current Factor Key
+
+#### `getCurrentFactorKey(): IFactorKey;`
+
+Returns the current factor key in usage within the state of the SDK.
+
+#### Usage
+
+```tsx
+const factorKey = coreKitInstance.getCurrentFactorKey();
+```
+
+## User & Wallet Account Functions
+
+---
+
+### Set TSS Wallet Index
+
+#### `setTssWalletIndex(accountIndex: number): void;`
+
+Sets the TSS Wallet Index for the User's account. This function can be used to deterministically
+derive different wallet addresses by using account indexes. Using this function you can add
+multi-address account support to your application.
+
+:::note
+
+As an application, you need to persist this account index in the application state.
+
+You can either choose to persist the account index temporarily using the state variable or use a
+more permanent storage like `localStorage`. Whenever you add, delete or update a share, you need to
+set the account index again.
+
+:::
+
+#### Usage
+
+```tsx
+await coreKitInstance.setTssWalletIndex(index);
+```
+
+### Get Public Sync
+
+#### `getPublicSync()`
+
+This function returns the final public key of the user in a synchronous call.
+
+:::info NOTE
+
+When you use the `setTssWalletIndex()` function to establish your account index, a unique public key
+is generated! **Remember that each account index you set will result in a different public key.**
+
+:::
+
+#### Usage
+
+```ts
+await coreKitInstance.getPublicSync();
+```
+
+### Get User Info
 
 #### `getUserInfo(): UserInfo;`
 
@@ -293,7 +368,7 @@ export interface LoginWindowResponse {
 const user = coreKitInstance?.getUserInfo();
 ```
 
-## Get Key Details
+### Get Key Details
 
 #### `getKeyDetails(): MPCKeyDetails;`
 
@@ -321,32 +396,9 @@ export type ShareDescriptionMap = {
 const keyDetails = coreKitInstance?.getKeyDetails();
 ```
 
-## Commit Changes
+## Additional Helper Functions
 
-#### `commitChanges(): Promise<void>;`
-
-Syncs the local metadata with the web3auth metadata server. This function is only to be used while
-in manual sync mode.
-
-#### Usage
-
-```tsx
-await coreKitInstance?.commitChanges();
-```
-
-- Web Storage
-  - `storeWebBrowserFactor()` - Stores a Factor in the Web Local/ Session Storage.
-  - `getWebBrowserFactor()` - Returns the Factor from the Web Local/ Session Storage.
-- Security Questions
-  - `setSecurityQuestion()` - Sets the Security Question Factor for the User's account.
-  - `changeSecurityQuestion()` - Changes the Security Question for the User's account.
-  - `deleteSecurityQuestion()` - Deletes the Security Question for the User's account.
-  - `recoverFactor()` - Recovers the Security Question Factor for the User's account using the given
-    password.
-  - `getQuestion()` - Returns the Security Question for the User's account.
-- Conversion from Mnemonic
-  - `mnemonicToKey()` - Converts a Mnemonic to a BN.
-  - `keyToMnemonic()` - Converts a hex string to a Mnemonic.
+---
 
 ## Web Storage Helper Functions
 

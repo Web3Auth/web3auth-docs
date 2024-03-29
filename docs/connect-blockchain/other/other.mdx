@@ -1,6 +1,6 @@
 ---
 title: Connect Web3Auth with Other Blockchains
-sidebar_label: Algorand
+sidebar_label: Non EVM Blockchains
 image: "images/docs-meta-cards/documentation-card.png"
 displayed_sidebar: resources
 keywords: [web3auth, authentication, blockchain, agnostic]
@@ -9,40 +9,47 @@ description: "Connect Web3Auth with any Blockchain - Chain Agnostic | Documentat
 
 import Tiles from "@theme/Tiles";
 
-While using the Web3Auth Non MPC SDKs for non-EVM chains, other than Solana and XRPL, we use the Common Private Key Provider. This provider is a basic
-wrapper around the private key, helping us export it on demand. The private key returned by this provider is of the curve `secp256k1` & `ed25519`
-based on the particular requests. While these key curves serve the majority of blockchains out there, certain blockchains have different curve
-implementations of their own.
+While using the Web3Auth Non MPC SDKs for non-EVM chains, other than Solana and XRPL, we use the
+Common Private Key Provider. This provider is a basic wrapper around the private key, helping us
+export it on demand. The private key returned by this provider is of the curve `secp256k1` &
+`ed25519` based on the particular requests. While these key curves serve the majority of blockchains
+out there, certain blockchains have different curve implementations of their own.
 
 ## Standard Approach for connecting with Non EVM Chains
 
-For connecting with different blockchains to make blockchain calls like getting the user's `account`, fetch `balance`, `sign transaction`,
-`send transaction`, `read` from and `write` to the smart contract, etc., you need to find particular libraries that can help you achieve the
-following:
+For connecting with different blockchains to make blockchain calls like getting the user's
+`account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the
+smart contract, etc., you need to find particular libraries that can help you achieve the following:
 
 1. Connect to an RPC endpoint and make the standard calls to the blockchain
-2. Use the private key returned by Web3Auth to create a key pair and signer for the particular chain.
+2. Use the private key returned by Web3Auth to create a key pair and signer for the particular
+   chain.
 
-While the first is generally quite straightforward and well documented, the second point generally can take certain different methods depending upon
-what key curve and signer methods the blockchain supports. These methods can use one of the following approaches:
+While the first is generally quite straightforward and well documented, the second point generally
+can take certain different methods depending upon what key curve and signer methods the blockchain
+supports. These methods can use one of the following approaches:
 
-- If the key curve supported by the blockchain is either `secp256k1` or `ed25519`, you can use their key pair libraries to directly get the account
-  and key details to connect with and initialize the client-side libraries for making calls.
+- If the key curve supported by the blockchain is either `secp256k1` or `ed25519`, you can use their
+  key pair libraries to directly get the account and key details to connect with and initialize the
+  client-side libraries for making calls.
 
   :::tip
 
-  You can refer to our [**StarkEx**](/connect-blockchain/other/starkex) or [**Aptos**](/connect-blockchain/other/aptos) examples for this approach.
+  You can refer to our [**StarkEx**](/connect-blockchain/other/starkex) or
+  [**Aptos**](/connect-blockchain/other/aptos) examples for this approach.
 
   :::
 
-- If the key curve supported by the blockchain is different, you can either derive a subkey in the particular curve or use the Web3Auth key as an
-  extropy to derive a mnemonic for the particular chain. You can use the mnemonic to derive a private key. Either approaches give you a private key in
-  the respective curve of the blockchain. Finally, using this key, you can get the key pair and initialize the client-side libraries accordingly.
+- If the key curve supported by the blockchain is different, you can either derive a subkey in the
+  particular curve or use the Web3Auth key as an extropy to derive a mnemonic for the particular
+  chain. You can use the mnemonic to derive a private key. Either approaches give you a private key
+  in the respective curve of the blockchain. Finally, using this key, you can get the key pair and
+  initialize the client-side libraries accordingly.
 
   :::tip
 
-  You can find this approach followed on our [**Tezos**](/connect-blockchain/other/tezos) and [**Algorand**](/connect-blockchain/other/algorand)
-  examples
+  You can find this approach followed on our [**Tezos**](/connect-blockchain/other/tezos) and
+  [**Algorand**](/connect-blockchain/other/algorand) examples
 
   :::
 
@@ -123,7 +130,7 @@ export const OtherChains = [
 
 ## Non EVM Chain guides
 
-You can checkout the following guides we've written for certain non evm blockchains. The approach mentioned in this doc is very similar to the one
-followed in each one of them.
+You can checkout the following guides we've written for certain non evm blockchains. The approach
+mentioned in this doc is very similar to the one followed in each one of them.
 
 <Tiles tileGroups={OtherChains} />
