@@ -12,10 +12,16 @@ communityPortalTopicId: 43
 
 import FirebaseAndroidSetup from "@site/src/common/guides/_firebase-android-setup.mdx";
 import FirebasePrerequisites from "@site/src/common/guides/_firebase-prerequisites.mdx";
+import Installation from "@site/src/common/guides/_android-installlation.mdx";
+import SetResultUrl from "@site/src/common/sdk/pnp/android/_set-result-url.mdx";
+import FetchBalance from "@site/src/common/sdk/pnp/android/_android-evm-balance.mdx";
+import PrepareAccount from "@site/src/common/sdk/pnp/android/_android-evm-account.mdx";
+import SendTransaction from "@site/src/common/sdk/pnp/android/_android-evm-transaction.mdx";
+import LogOut from "@site/src/common/sdk/pnp/android/_logout.mdx";
 import FirebaseSetup from "@site/src/common/guides/_firebase-setup.mdx";
 import FirebaseVerifierSetup from "@site/src/common/guides/_firebase-verifier-setup.mdx";
 import FirebaseWorking from "@site/src/common/guides/_firebase-working.mdx";
-import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard-android.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
 import AndroidResponse from "@site/src/common/sdk/pnp/android/_response.mdx";
 import SEO from "@site/src/components/SEO";
@@ -27,11 +33,14 @@ import SEO from "@site/src/components/SEO";
   slug="/guides/android-firebase"
 />
 
-This guide will cover the basics of how to use the Web3Auth Android SDK in your Android application with Firebase.
+This guide will cover the basics of how to use the Web3Auth Android SDK in your Android application
+with Firebase.
 
-**Demo APK:** [Download](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/android/android-firebase-example/app-debug.apk)
+**Demo APK:**
+[Download](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/android/android-firebase-example/app-debug.apk)
 
-Repository: https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/android/android-firebase-example
+Repository:
+https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/android/android-firebase-example
 
 **[Live Demo](https://w3a.link/android-firebase-example)**
 
@@ -73,74 +82,9 @@ When integrating Web3Auth Android SDK with Social Login the flow looks something
 
 <FirebaseVerifierSetup />
 
-### Configure Deep Link
-
-Open your app's `AndroidManifest.xml` file and add the following deep link intent filter to your sign-in activity:
-
-```xml
-<intent-filter>
-  <action android:name="android.intent.action.VIEW" />
-
-  <category android:name="android.intent.category.DEFAULT" />
-  <category android:name="android.intent.category.BROWSABLE" />
-
-  <!-- Accept URIs: {YOUR_APP_PACKAGE_NAME}://* -->
-  <data android:scheme="{YOUR_APP_PACKAGE_NAME}" />
-</intent-filter>
-```
-
-Make sure your sign-in activity launchMode is set to **singleTop** in your `AndroidManifest.xml`
-
-```xml
-<activity
-  android:launchMode="singleTop"
-  android:name=".YourActivity">
-  <!-- ... -->
-</activity>
-```
-
 ## Using the Web3Auth SDK
 
-To use the Web3Auth SDK, you'll need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the
-available SDKs, please have a look at [our SDK page](/sdk).
-
-For this guide, we will be using the [Web3Auth Android SDK](/sdk/pnp/android).
-
-### Installation
-
-#### Add Web3Auth to Gradle
-
-In your project-level `settings.gradle` file, add JitPack repository:
-
-```groovy
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-        maven { url "https://jitpack.io" } // <-- Add this line
-    }
-}
-```
-
-Then, in your app-level `build.gradle` dependencies section, add the following:
-
-```groovy
-dependencies {
-    // ...
-    implementation 'com.github.Web3Auth:web3auth-android-sdk:4.0.8'
-}
-```
-
-#### Permissions
-
-Open your app's `AndroidManifest.xml` file and add the following permission:
-
-```xml
-<uses-permission android:name="android.permission.INTERNET" />
-```
-
-> Note: The `<uses-permission>` element must be a direct child of the `<manifest>` root element
+<Installation />
 
 ### Initialization
 
@@ -149,8 +93,9 @@ Initialization is a two-step process:
 1. [Creating a Web3Auth Instance](#create-web3auth-instance)
 2. [Setting a Result URL](#set-result-url)
 
-Please note that these are the most critical steps where you must pass on different parameters according to the preference of your project.
-Additionally, You must configure Whitelabeling and Custom Authentication within this step if you wish to customize your Web3Auth Instance.
+Please note that these are the most critical steps where you must pass on different parameters
+according to the preference of your project. Additionally, You must configure Whitelabeling and
+Custom Authentication within this step if you wish to customize your Web3Auth Instance.
 
 #### Create Web3Auth Instance
 
@@ -191,21 +136,14 @@ Read more about initializing the Android SDK [here](/sdk/pnp/android/initialize)
 
 #### Set Result URL
 
-```kotlin
-override fun onNewIntent(intent: Intent?) {
-  super.onNewIntent(intent)
-
-  // Handle user signing in when app is active
-  web3Auth.setResultUrl(intent?.data)
-}
-```
+<SetResultUrl />
 
 ### Authentication
 
 #### Logging in
 
-Once initialized, you can use the `web3Auth.login(LoginParams("{selectedLoginProvider}"))` function to authenticate the user when they click the login
-button.
+Once initialized, you can use the `web3Auth.login(LoginParams("{selectedLoginProvider}"))` function
+to authenticate the user when they click the login button.
 
 ```kotlin
 private fun signIn() {
@@ -244,8 +182,8 @@ private fun signIn() {
 }
 ```
 
-When connecting, the `login` function takes the LoginParams arguments for the login. See the [LoginParams](/sdk/pnp/android/usage#arguments) for more
-details.
+When connecting, the `login` function takes the LoginParams arguments for the login. See the
+[LoginParams](/sdk/pnp/android/usage#arguments) for more details.
 
 #### Sample loginResponse
 
@@ -258,11 +196,13 @@ details.
 val userInfo = web3AuthResponse.userInfo
 ```
 
-Using the `web3Auth.login` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
-network.
+Using the `web3Auth.login` function, you can get the details of the logged in user. Please note that
+these details are not stored anywhere in Web3Auth network.
 
-If you wish you **[add Multi Factor Authentication](/sdk/pnp/android/mfa)**, **[use dApp Share](/sdk/pnp/android/dapp-share)** or
-**[select Curve](/sdk/pnp/android/usage#selecting-curve)** for your Android application, read the linked documentation.
+If you wish you **[add Multi Factor Authentication](/sdk/pnp/android/mfa)**,
+**[use dApp Share](/sdk/pnp/android/dapp-share)** or
+**[select Curve](/sdk/pnp/android/usage#selecting-curve)** for your Android application, read the
+linked documentation.
 
 - [Multi Factor Authentication](/sdk/pnp/android/mfa)
 - [Using dApp Share](/sdk/pnp/android/dapp-share)
@@ -270,104 +210,34 @@ If you wish you **[add Multi Factor Authentication](/sdk/pnp/android/mfa)**, **[
 
 ### Logout
 
-```kotlin
-private fun signOut() {
-  val logoutCompletableFuture =  web3Auth.logout()
-  logoutCompletableFuture.whenComplete { _, error ->
-  if (error == null) {
-    // render logout UI
-  } else {
-    // render error UI
-  }
-}
-}
-```
-
-Logging out your user is as simple as calling the `web3Auth.logout()` function.
+<LogOut />
 
 ## Interacting with the Blockchain
 
 :::success Blockchain calls
 
-Checkout the full codes to interact with the **[ETH Blockchain](/connect-blockchain/evm/ethereum/android)**.
+Checkout the full codes to interact with the
+**[ETH Blockchain](/connect-blockchain/evm/ethereum/android)**.
 
 :::
 
 ### Get Account
 
-```kotlin
-// checkout the Connect Blockchain > Ethereum > Android to get full code.
-private fun getAddress(): String {
-  println("Address:, ${credentials.address}")
-  return credentials.address
-}
-
-// Setup UI and event handlers
-val getBalanceButton = findViewById<Button>(R.id.getBalanceButton)
-getBalanceButton.setOnClickListener { getAddress() }
-```
+<PrepareAccount />
 
 ### Get Balance
 
-```kotlin
-// checkout the Connect Blockchain > Ethereum > Android to get full code.
-private fun getBalance(): BigInteger? {
-  val publicAddress = credentials.address
-  val ethBalance: EthGetBalance = web3.ethGetBalance(publicAddress, DefaultBlockParameterName.LATEST).sendAsync().get()
-  println("Balance: ${ethBalance.balance}")
-  return ethBalance.balance
-}
-
-// Setup UI and event handlers
-val getBalanceButton = findViewById<Button>(R.id.getBalanceButton)
-getBalanceButton.setOnClickListener { getBalance() }
-```
+<FetchBalance />
 
 ### Send Transaction
 
-```kotlin
-// checkout the Connect Blockchain > Ethereum > Android to get full code.
-private fun sendTransaction(amount: Double, recipientAddress: String): String? {
-  val ethGetTransactionCount: EthGetTransactionCount = web3.ethGetTransactionCount(credentials.address, DefaultBlockParameterName.LATEST).sendAsync().get()
-  val nonce: BigInteger = ethGetTransactionCount.transactionCount
-  val value: BigInteger = Convert.toWei(amount.toString(), Convert.Unit.ETHER).toBigInteger()
-  val gasLimit: BigInteger = BigInteger.valueOf(21000)
-  val chainId: EthChainId = web3.ethChainId().sendAsync().get()
-
-  // Raw Transaction
-  val rawTransaction: RawTransaction = RawTransaction.createTransaction(
-    chainId.chainId.toLong(),
-    nonce,
-    gasLimit,
-    recipientAddress,
-    value,
-    "",
-    BigInteger.valueOf(5000000000),
-    BigInteger.valueOf(6000000000000)
-  )
-
-  val signedMessage: ByteArray = TransactionEncoder.signMessage(rawTransaction, credentials)
-  val hexValue: String = Numeric.toHexString(signedMessage)
-  val ethSendTransaction: EthSendTransaction = web3.ethSendRawTransaction(hexValue).sendAsync().get()
-  return if(ethSendTransaction.error != null) {
-    println("Tx Error: ${ethSendTransaction.error.message}")
-    ethSendTransaction.error.message
-  } else {
-    println("Tx Hash: ${ethSendTransaction.transactionHash}")
-    ethSendTransaction.transactionHash
-  }
-}
-
-// Setup UI and event handlers
-val sendTransactionButton = findViewById<Button>(R.id.sendTransactionButton)
-sendTransactionButton.setOnClickListener { sendTransaction() }
-```
+<SendTransaction />
 
 ## Example code
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth Android Firebase Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/android/android-firebase-example). Check it out and
-try running it locally yourself!
+[Web3Auth Android Firebase Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/android/android-firebase-example).
+Check it out and try running it locally yourself!
 
 Also, checkout other examples:
 

@@ -1,0 +1,15 @@
+Logging out your user is as simple as calling the `logout()` function. This method will clear the
+session data and the user will be logged out from Web3Auth.
+
+```kotlin
+private fun logOut() {
+  val logoutCompletableFuture =  web3Auth.logout()
+  logoutCompletableFuture.whenComplete { _, error ->
+  if (error == null) {
+    // render logout UI
+  } else {
+    // render error UI
+  }
+  }
+}
+```

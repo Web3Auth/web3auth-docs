@@ -5,49 +5,29 @@ displayed_sidebar: sdk
 description: "Web3Auth PnP Flutter SDK - Initialization | Documentation - Web3Auth"
 ---
 
+import Initialization from "@site/src/common/sdk/pnp/flutter/_initialization.mdx";
+
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-After installation, the next step to use Web3Auth is to initialize the SDK. We can initialize the SDK using `init` and `initialize` function.
+After installation, the next step to use Web3Auth is to initialize the SDK. We can initialize the
+SDK using `init` and `initialize` function.
 
-Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
-Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customize your Web3Auth Instance.
+Please note that these are the most critical steps where you need to pass on different parameters
+according to the preference of your project. Additionally, Whitelabeling and Custom Authentication
+have to be configured within this step, if you wish to customize your Web3Auth Instance.
 
 ## Using the `init` function
 
-Initialize the `Web3AuthFlutter` plugin and configure the whiteLabel and custom authentication as per your use.
+Initialize the `Web3AuthFlutter` plugin and configure the whiteLabel and custom authentication as
+per your use.
 
-```dart
-Future<void> initWeb3Auth() async {
-
-  late final Uri redirectUrl;
-
-  if (Platform.isAndroid) {
-    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
-    // w3a://com.example.w3aflutter/auth
-  } else {
-    redirectUrl = Uri.parse('{bundleId}://auth');
-    // com.example.w3aflutter://auth
-  }
-
-  // highlight-start
-
-  await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId: "WEB3AUTH_CLIENT_ID",
-    network: Network.sapphire_mainnet,
-    redirectUrl: redirectUrl,
-  ));
-
-  // highlight-end
-
-  // Just after init method, invoke the initialize function
-  await Web3AuthFlutter.initialize();
-}
-```
+<Initialization />
 
 ### Web3AuthOptions
 
-The `Web3AuthFlutter` takes an object called `Web3AuthOptions` as input. Below are the available fields of the `Web3AuthOptions` class.
+The `Web3AuthFlutter` takes an object called `Web3AuthOptions` as input. Below are the available
+fields of the `Web3AuthOptions` class.
 
 <Tabs
   defaultValue="table"

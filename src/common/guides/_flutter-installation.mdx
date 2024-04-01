@@ -1,10 +1,3 @@
----
-title: "Installing PnP Flutter SDK"
-sidebar_label: "Install"
-displayed_sidebar: sdk
-description: "Installing Web3Auth PnP Flutter SDK | Documentation - Web3Auth"
----
-
 import FlutterInstallation from "@site/src/common/sdk/pnp/flutter/_installation.mdx";
 
 import AndroidCompileSDKVersion from "@site/src/common/sdk/pnp/android/_update-compile-sdk-version.mdx";
@@ -18,60 +11,66 @@ import SPM from "@site/src/common/sdk/pnp/ios/_spm.mdx";
 import Cocoapods from "@site/src/common/sdk/pnp/ios/_cocoapods.mdx";
 import IOSWhitelist from "@site/src/common/sdk/pnp/ios/ios-whitelist.mdx";
 
-## `web3auth_flutter`
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
 
 <FlutterInstallation />
 
-## Android
+<Tabs
+  defaultValue="android"
+  values={[
+    { label: "Android", value: "android" },
+    { label: "iOS", value: "ios" },
+  ]}
+>
 
-Once we have install Web3Auth Flutter SDK, we also need add the configuration for Android.
+<TabItem value="android">
 
-### Update compileSdkVersion
+#### Update compileSdkVersion
 
 <AndroidCompileSDKVersion />
 
-### Add Web3Auth to Gradle
+#### Add Web3Auth to Gradle
 
 <UpdateGradle />
 
-### Permissions
+#### Permissions
 
 <AndroidPermission />
 
-### Configuration
+#### Configuration
 
 Once the gradles and permission has been updated, we need to configure Web3Auth project by
 whitelisting you scheme and package name.
 
-#### Configure Web3Auth project
+##### Configure a Plug n Play project
 
 <AndroidWhitelist />
 
-#### Configure Deep Link
+##### Configure Deep Link
 
 <AndroidDeepLinking />
 
-## iOS
+</TabItem>
 
-Once we have configured the Android SDK, we also need add the configuration for iOS.
+<TabItem value="ios">
 
-### Update global iOS platform
-
-<IOSPlatform />
-
-### Add dependencies
+#### Add dependencies
 
 In order to build iOS for Web3Auth project, we also need to add the Web3Auth SDK in iOS. You can
 either add it using Swift Package Manager or Cocoapods.
 
-#### Swift Package Manager
+##### Swift Package Manager
 
 <SPM />
 
-#### Cocoapods
+##### Cocoapods
 
 <Cocoapods />
 
-### Configuration
+#### Configuration
 
 <IOSWhitelist />
+
+</TabItem>
+</Tabs>
