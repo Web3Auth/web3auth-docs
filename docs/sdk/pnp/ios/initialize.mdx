@@ -5,57 +5,33 @@ displayed_sidebar: sdk
 description: "Web3Auth PnP iOS SDK - Initialization | Documentation - Web3Auth"
 ---
 
-After installation, the next step to use Web3Auth is to initialize the SDK. However, the initialization can be done in two ways,
+import PlistInitialization from "@site/src/common/sdk/pnp/ios/_plist-initialization.mdx";
+import Initialization from "@site/src/common/sdk/pnp/ios/_initialize.mdx";
+
+After installation, the next step to use Web3Auth is to initialize the SDK. However, the
+initialization can be done in two ways,
 
 - [Creating `Web3Auth.plist`](#creating-web3authplist)
 - [Using `Web3Auth` instance](#using-web3auth-instance)
 
-Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
-Additionally, Whitelabeling and Custom Authentication have to be configured within this step, if you wish to customize your Web3Auth Instance.
+Please note that these are the most critical steps where you need to pass on different parameters
+according to the preference of your project. Additionally, Whitelabeling and Custom Authentication
+have to be configured within this step, if you wish to customize your Web3Auth Instance.
 
 ## Creating `Web3Auth.plist`
 
 ### Setup `Web3Auth.plist`
 
-In your application bundle add a plist file named `Web3Auth.plist` with the following information:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>ClientId</key>
-    <string>YOUR_WEB3AUTH_CLIENT_ID</string>
-  <key>Network</key>
-  <string>sapphire_mainnet | sapphire_devnet | mainnet | cyan | aqua | testnet</string>
-</dict>
-</plist>
-```
-
-When you have a Web3Auth.plist and have specified your Web3Auth configuration there, you can simply construct your Web3Auth instance with
-
-```swift
-import Web3Auth
-
-let web3auth = Web3Auth()
-```
+<PlistInitialization />
 
 ## Using `Web3Auth` instance
 
-If you don't want to create a plist file and want to use optional configuration parameters, you can construct the Web3Auth instance with
-
-```swift
-import Web3Auth
-
-let web3auth = Web3Auth(W3AInitParams(
-  clientId: "<your clientId>",
-  network: .sapphire_mainnet,
-))
-```
+<Initialization />
 
 ### `W3AInitParams` object
 
-The `Web3Auth` constructor takes an object called `W3AInitParams` as input. Below are the available fields of the `W3AInitParams` object.
+The `Web3Auth` constructor takes an object called `W3AInitParams` as input. Below are the available
+fields of the `W3AInitParams` object.
 
 | Parameter         | Description                                                                                                                                                             |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
