@@ -304,6 +304,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Astar zKyoto",
+              items: [
+                "connect-blockchain/evm/zkyoto/zkyoto",
+                "connect-blockchain/evm/zkyoto/web",
+                "connect-blockchain/evm/zkyoto/android",
+                "connect-blockchain/evm/zkyoto/ios",
+                "connect-blockchain/evm/zkyoto/react-native",
+                "connect-blockchain/evm/zkyoto/flutter",
+                "connect-blockchain/evm/zkyoto/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Avalanche",
               items: [
                 "connect-blockchain/evm/avalanche/avalanche",
