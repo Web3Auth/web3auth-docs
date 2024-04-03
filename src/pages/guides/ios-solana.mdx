@@ -1,0 +1,136 @@
+---
+title: Integrating Solana with Web3Auth iOS SDK
+image: "guides/banners/iOS-solana.png"
+description: Learn how to integrate Solana with Web3Auth iOS SDK.
+type: guide
+tags: [mobile, iOS, whitelabel, solana, blockchain]
+date: March 2nd April, 2024
+author: Web3Auth Team
+order: 1
+---
+
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard-android.mdx";
+import AndroidInstallation from "@site/src/common/guides/_android-installlation.mdx";
+import Initialization from "@site/src/common/sdk/pnp/android/_initialize.mdx";
+import AndroidResponse from "@site/src/common/sdk/pnp/android/_response.mdx";
+import SEO from "@site/src/components/SEO";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<SEO
+  title="Integrating Solana with Web3Auth iOS SDK"
+  description="Learn how to integrate Solana with Web3Auth iOS SDK"
+  image="https://web3auth.io/docs/guides/banners/iOS-solana.png"
+  slug="/guides/iOS-solana"
+/>
+
+Web3Auth has been chain agnostic since inception, and this guide will talk about using Web3Auth SDK
+in iOS, and integrating Solana chain to fetch the user's account, balance, sign transactions, and
+broadcast a transaction. For this guide, we'll be using Web3Auth's default verifier.
+
+:::info
+
+If you prefer to deep dive into the code used for this guide, please head over to our pnp examples
+repo. Repository: https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/ios/ios-solana-example
+
+:::
+
+## Before you being
+
+1. Learn about [Web3Auth's high level architecture](/docs/how-web3auth-works.mdx)
+2. [Check the iOS prerequisites](/docs/sdk/pnp/ios#requirements)
+3. [Setup your Web3Auth Dashboard](/docs/dashboard-setup/projects-and-analytics.mdx)
+4. [Install Web3Auth iOS SDK](/docs/sdk/pnp/ios/install.mdx)
+5. [Initialize WebAuth iOS SDK](/docs/sdk/pnp/ios/initialize.mdx)
+
+## Interacting with the Blockchain
+
+This guide assumes you have already initialized Web3Auth SDK and authenticated the user. If you are
+new to Web3Auth, you can checkout our [Web3Auth iOS intergration guide](/src/pages/guides/ios.mdx).
+
+To interact with Solana, we are going to use the
+[solana-swift](https://github.com/p2p-org/solana-swift) SDK.
+
+### Private Key
+
+For the Solana chain, we'll be retriving the ed25519 private key. The ed25519 returns the keypair,
+from which we can use the first 32 byte for the private key.
+
+```swift
+let privateKey: String = try web3Auth.getEd25519PrivKey();
+```
+
+### Get Account
+
+In this step, we'll create the account from the user's private key and use `KeyPair` to create
+Solana KeyPair. The `KeyPair` can retrieve the user's EOA address and sign the transactions.
+
+```swift title="Create KeyPair"
+do {
+   let privateKey: String = try Web3Auth.getEd25519PrivKey();
+   let keyPair: KeyPair = try KeyPair(secretKey: Data(hex: privateKey))
+   let address = keyPair.publicKey.base58EncodedString
+} catch let error {
+    // Handle error
+}
+```
+
+### Get Balance
+
+Once we have created the `KeyPair`, we can retrieve the EOA address and fetch the user's SOL
+balance. To fetch the user's balance, we'll create the `JSONRPCAPIClient` which will help us
+interact with Solana blockchain.
+
+For this guide, we are using the Devnet network, but you can use the Mainnet or Testnet. Check out
+the [Solana public RPCs](https://solana.com/rpc).
+
+```swift title="Get SOL balance"
+let endpoint = APIEndPoint(
+    address: "https://api.devnet.solana.com",
+    network: .devnet
+)
+
+let solanaJSONRPCClient = JSONRPCAPIClient(endpoint: endpoint)
+
+do {
+    let balanceResponse = try await solanaJSONRPCClient.getBalance(
+        account: keyPair.publicKey.base58EncodedString
+    )
+
+    let solBalance = balanceResponse.convertToBalance(decimals: 9).description
+} catch let error {
+    // Handle error
+}
+```
+
+### Send Transaction
+
+For sending SOL, we'll create a `BlockchainClient` instance, which will help us broadcast a signed
+transaction on the Solana.
+
+```swift title="Send transaction"
+let endpoint = APIEndPoint(
+    address: "https://api.devnet.solana.com",
+    network: .devnet
+)
+
+let solanaJSONRPCClient = JSONRPCAPIClient(endpoint: endpoint)
+let blockchainClient = BlockchainClient(apiClient: solanaJSONRPCClient)
+
+do {
+    let transaction = try await blockchainClient.prepareSendingNativeSOL(
+        from: keyPair,
+        to: "2idRaWFin4Zn5WY9or6XBhcoF6cyfDWSbJQ26jAtptxD",
+        amount: 0.01.toLamport(decimals: 9)
+    )
+
+    let hash = try await blockchainClient.sendTransaction(preparedTransaction: transaction)
+} catch let error {
+    // Handle error
+}
+```
+
+## Questions?
+
+Ask us on [Web3Auth's Community Support Portal](https://web3auth.io/community)

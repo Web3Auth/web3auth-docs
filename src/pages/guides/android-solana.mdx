@@ -1,0 +1,366 @@
+---
+title: Integrating Solana with Web3Auth Android SDK
+image: "guides/banners/android-solana.png"
+description: Learn how to integrate Solana with Web3Auth Android SDK.
+type: guide
+tags: [mobile, android, whitelabel, solana, blockchain]
+date: March 30th, 2024
+author: Web3Auth Team
+order: 1
+---
+
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard-android.mdx";
+import AndroidInstallation from "@site/src/common/guides/_android-installlation.mdx";
+import Initialization from "@site/src/common/sdk/pnp/android/_initialize.mdx";
+import AndroidResponse from "@site/src/common/sdk/pnp/android/_response.mdx";
+import SEO from "@site/src/components/SEO";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<SEO
+  title="Integrating Solana with Web3Auth Android SDK"
+  description="Learn how to integrate Solana with Web3Auth Android SDK"
+  image="https://web3auth.io/docs/guides/banners/android-solana.png"
+  slug="/guides/android-solana"
+/>
+
+Web3Auth has been chain agnostic since inception, and this guide will talk about using Web3Auth SDK
+in Android, and integrating Solana chain to fetch the user's account, balance, sign transactions,
+and broadcast a transaction. For this guide, we'll be using Web3Auth's default verifier.
+
+:::info
+
+If you prefer to deep dive into the code used for this guide, please head over to our pnp examples
+repo. Repository:
+https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/android/android-solana-example
+
+:::
+
+## Quick Start
+
+```bash
+npx degit Web3Auth/web3auth-pnp-examples/android/android-solana-example w3a-android-solana-demo
+```
+
+```bash
+cd w3a-android-solana-demo
+```
+
+## How it works?
+
+When integrating Web3Auth Android SDK with Social Login, the flow looks something like this:
+
+![Web3Auth Core - Social Login Flow](/images/implicit-flow.svg)
+
+- When a user logs in with `Google`, Google sends a JWT `id_token` to the app. This JWT token is
+  sent to the Web3Auth SDK's login function.
+
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for
+  the user, in a self custodial way, resulting in easy onboarding for your user to the application.
+
+## Prerequisites
+
+- Web3Auth account. [Create Web3AuthAccount](https://dashboard.web3auth.io/login)
+- Android API version 24 or newer.
+- For Android build: compileSdkVersion needs to be 34. Check `android/app/build.gradle` in your
+  Android project to change it.
+
+## Setup
+
+### Setup your Web3Auth Dashboard
+
+<SetupWeb3AuthDashboard />
+
+## Using the Web3Auth SDK
+
+To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth
+to your project. To know more about the available SDKs, please have a look at this
+[documentation page](/sdk).
+
+For this guide, we will be using the **[Web3Auth Android SDK](/sdk/pnp/android)**.
+
+### Installation
+
+<AndroidInstallation />
+
+### Initialization
+
+Initialization is a two-step process:
+
+1. [Creating a Web3Auth Instance](#create-web3auth-instance)
+2. [Setting a Result URL](#set-result-url)
+
+Please note that these are the most critical steps where you must pass on different parameters
+according to the preference of your project. Additionally, You must configure Whitelabeling and
+Custom Authentication within this step if you wish to customize your Web3Auth Instance.
+
+#### Create Web3Auth Instance
+
+We'll initialize the `Web3Auth` instance in the Koin `module` and make it a singleton component. We
+have also defined a `Web3AuthHelper` to interact with a `Web3Auth` instance, which also makes it
+easier to write mocks for unit testing.
+
+```kotlin
+val appModule = module {
+    single {
+        getWeb3AuthHelper(get())
+    }
+
+    /// Additional code
+}
+
+private fun getWeb3AuthHelper(context: Context): Web3AuthHelper {
+    val web3Auth: Web3Auth = Web3Auth(
+        Web3AuthOptions(
+            clientId = "<Your Client Id>",
+            context = context,
+            network = Network.SAPPHIRE_MAINNET,
+            redirectUrl = Uri.parse( "com.example.androidsolanaexample://auth")
+        )
+    )
+
+    return Web3AuthHelperImpl(web3Auth)
+}
+```
+
+Read more about initializing the Android SDK [here](/sdk/pnp/android/initialize).
+
+### Authentication
+
+After initializing the SDK, the next step is to write a method to authenticate when the user clicks
+the login button. Upon successful login, we'll navigate to `HomeScreen`. We'll create a `ViewModel`
+class to encapsulate the business logic for Web3Auth and Solana.
+
+Once, the user has successfully authenticated, we'll also create a Solana `Keypair` to help us
+retrieve user's EOA account, and sign the transaction.
+
+```kotlin title="MainViewModel"
+@OptIn(ExperimentalStdlibApi::class)
+class MainViewModel(private val web3AuthHelper: Web3AuthHelper, private val solanaUseCase: SolanaUseCase): ViewModel() {
+
+    private val _isLoggedIn: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isLoggedIn: StateFlow<Boolean> = _isLoggedIn
+
+    /// Additional code
+
+    lateinit var solanaKeyPair: Keypair
+
+    private fun prepareKeyPair() {
+        solanaKeyPair = Keypair.fromSecretKey(solanaPrivateKey().hexToByteArray())
+    }
+
+    fun login(){
+        val loginParams = LoginParams(loginProvider = Provider.GOOGLE)
+        viewModelScope.launch {
+            try {
+                web3AuthHelper.login(loginParams = loginParams).await()
+                prepareKeyPair()
+                _isLoggedIn.emit(true)
+            } catch (error: Exception){
+                _isLoggedIn.emit(false)
+                throw error
+            }
+        }
+    }
+
+    /// Additional code
+}
+```
+
+```kotlin title="LoginScreen"
+@Composable
+fun LoginScreen(viewModel: MainViewModel) {
+    val context = LocalContext.current
+    Column(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text = "Web3Auth Android Solana Example",
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.headlineSmall
+        )
+
+        LoginButton {
+            try {
+                viewModel.login()
+            } catch (e: Exception) {
+                Toast.makeText(context, e.localizedMessage, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+}
+
+@Composable
+fun LoginButton(onClick: () -> Unit) {
+    Button(onClick = { onClick() }) {
+        Text("Login with Google")
+    }
+}
+```
+
+### Sample Login Response
+
+<AndroidResponse />
+
+### Get the User Profile
+
+```kotlin
+// Assuming the user is logged in, get the user profile from the Web3AuthResponse
+// or use Web3Auth.getUserInfo() method.
+
+val web3AuthInfo = await Web3Auth.getUserInfo();
+```
+
+Using the `Web3Auth.getUserInfo()` function, you can get the details of the logged in user. Please
+note that these details are not stored anywhere in Web3Auth network.
+
+If you wish you **[add Multi Factor Authentication](/sdk/pnp/android/mfa)**,
+**[use dApp Share](/sdk/pnp/android/dapp-share)** or
+**[select Curve](/sdk/pnp/android/usage#selecting-curve)** for your Android application, read the
+linked documentation.
+
+- [Multi Factor Authentication](/sdk/pnp/android/mfa)
+- [Using dApp Share](/sdk/pnp/android/dapp-share)
+- [Selecting Curve](/sdk/pnp/android/usage#selecting-curve)
+
+### Private Key
+
+For the Solana chain, we'll be retriving the ed25519 private key. The ed25519 returns the keypair,
+from which we can use the first 32 byte for the private key.
+
+```kotlin
+val privateKey = await Web3Auth.getEd25519PrivKey();
+```
+
+### Logout
+
+Loggin out your user from the application is as easy as calling the `Web3Auth.logOut()` function.
+We'll create a new `logOut` method in `MainViewModel`. Upon successful logout, we'll redirect user
+to login page.
+
+```kotlin title="MainViewModel"
+@OptIn(ExperimentalStdlibApi::class)
+class MainViewModel(private val web3AuthHelper: Web3AuthHelper, private val solanaUseCase: SolanaUseCase): ViewModel() {
+
+    private val _isLoggedIn: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isLoggedIn: StateFlow<Boolean> = _isLoggedIn
+
+    /// Additional code
+
+    fun logOut() {
+        viewModelScope.launch {
+            try {
+                web3AuthHelper.logOut().await()
+                _isLoggedIn.emit(true)
+            } catch (e: Exception) {
+                _isLoggedIn.emit(false)
+            }
+        }
+    }
+
+    /// Additional code
+}
+```
+
+## Interacting with the Blockchain
+
+To interact with Solana, we are going to use the [sol4K SDK](https://github.com/sol4k/sol4k).
+
+To use the Solana RPC, we'll make a UseCase class which will help us interact with Solana. The class
+will help us to retive balance, and also transfer SOL to another account.
+
+### Get Account
+
+In this step, we'll fetch the account from user's private key and use `Keypair` to create Solana
+keypair. The `Keypair` can be used to retive the user's EOA address, and sign the transactions.
+
+```kotlin title="MainViewModel"
+class MainViewModel(private val web3AuthHelper: Web3AuthHelper, private val solanaUseCase: SolanaUseCase): ViewModel() {
+    lateinit var solanaKeyPair: Keypair
+    /// Additional code
+
+    fun solanaPrivateKey(): String {
+        return web3AuthHelper.getSolanaPrivateKey()
+    }
+
+    private fun prepareKeyPair() {
+        solanaKeyPair = Keypair.fromSecretKey(solanaPrivateKey().hexToByteArray())
+    }
+
+    /// Additional code
+}
+```
+
+To retrieve the EOA address, you can `solanaKeyPair.publicKey`.
+
+### Get Balance
+
+Once we have created the `Keypair`, we can retive the EOA address and fetch the user's SOL balance.
+We'll create a new helper method `getBalance` for `SolanaUseCaseImpl`.
+
+```kotlin title="SolanaUseCaseImpl"
+
+class SolanaUseCaseImpl(
+    private val connection: Connection
+) : SolanaUseCase {
+
+    override suspend fun getBalance(publicKey: PublicKey): String = withContext(Dispatchers.IO) {
+       try {
+           val balanceResponse = connection.getBalance(publicKey).toBigDecimal()
+           balanceResponse.divide(BigDecimal.TEN.pow(9)).toString()
+       } catch (e: Exception) {
+           throw e
+       }
+    }
+
+    /// Additional code
+}
+```
+
+### Send Transaction
+
+For sending SOL, we'll create few helper methods for `SolanaUseCaseImpl`.
+
+- `prepareSignedTransaction`: This method helps us prepare, and sign transfer transaction.
+- `signAndSendSol`: This method internally calls `prepareSignedTransaction` to get the signature for
+  transaction and brodacast on the chain.
+
+```kotlin title="SolanaUseCaseImpl"
+class SolanaUseCaseImpl(
+    private val connection: Connection
+) : SolanaUseCase {
+
+   /// Additional code
+
+    override suspend fun signAndSendSol(sender: Keypair): String = withContext(Dispatchers.IO) {
+        try {
+            val transaction = prepareSignedTransaction(sender)
+            connection.sendTransaction(transaction = transaction)
+        } catch (e:Exception) {
+            throw e
+        }
+    }
+
+    /// Additional code
+
+    private suspend fun prepareSignedTransaction(sender: Keypair) : Transaction = withContext(Dispatchers.IO) {
+       try {
+           val blockHash = connection.getLatestBlockhash()
+           val instruction = TransferInstruction(sender.publicKey, sender.publicKey, lamports = 10000000)
+           val transaction = Transaction(blockHash, instruction, feePayer = sender.publicKey)
+           transaction.sign(sender)
+           transaction
+       }catch (e: Exception) {
+           throw e
+       }
+    }
+
+}
+```
+
+## Questions?
+
+Ask us on [Web3Auth's Community Support Portal](https://web3auth.io/community)

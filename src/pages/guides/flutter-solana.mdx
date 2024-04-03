@@ -1,0 +1,431 @@
+---
+title: Integrating Solana with Web3Auth Flutter SDK
+image: "guides/banners/flutter-solana.png"
+description: Learn how to integrate Solana with Web3Auth Flutter SDK.
+type: guide
+tags: [mobile, flutter, whitelabel, solana, blockchain]
+date: March 30th, 2024
+author: Web3Auth Team
+order: 1
+---
+
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard-flutter.mdx";
+import FlutterInstallation from "@site/src/common/guides/_flutter-installation.mdx";
+import Initialization from "@site/src/common/sdk/pnp/flutter/_initialization.mdx";
+import FlutterResponse from "@site/src/common/sdk/pnp/flutter/_response.mdx";
+import SEO from "@site/src/components/SEO";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<SEO
+  title="Integrating Solana with Web3Auth Flutter SDK"
+  description="Learn how to integrate Solana with Web3Auth Flutter SDK"
+  image="https://web3auth.io/docs/guides/banners/flutter-solana.png"
+  slug="/guides/flutter-solana"
+/>
+
+Web3Auth has been chain agnostic since inception, and this guide will talk about using Web3Auth SDK
+in Flutter, and integrating Solana chain to fetch the user's account, balance, sign transactions,
+and broadcast a transaction. For this guide, we'll be using Web3Auth's default verifier.
+
+:::info
+
+If you prefer to deep dive into the code used for this guide, please head over to our pnp examples
+repo. Repository:
+https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/flutter/flutter-solana-example
+
+:::
+
+## Quick Start
+
+```bash
+npx degit Web3Auth/web3auth-pnp-examples/flutter/flutter-solana-example w3a-flutter-solana-demo
+```
+
+```bash
+cd w3a-flutter-solana-demo
+
+# Run the example
+flutter pub get
+flutter run
+```
+
+## How it works?
+
+When integrating Web3Auth Flutter SDK with Social Login, the flow looks something like this:
+
+![Web3Auth Core - Social Login Flow](/images/implicit-flow.svg)
+
+- When a user logs in with `Google`, Google sends a JWT `id_token` to the app. This JWT token is
+  sent to the Web3Auth SDK's login function.
+
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for
+  the user, in a self custodial way, resulting in easy onboarding for your user to the application.
+
+## Prerequisites
+
+- Web3Auth account. [Create Web3AuthAccount](https://dashboard.web3auth.io/login)
+- Android API version 24 or newer.
+- For Android build: compileSdkVersion needs to be 34. Check `android/app/build.gradle` in your
+  Flutter project to change it.
+- iOS 14+
+- Xcode 11.4+ / 12.x
+- Swift 4.x / 5.x
+- For iOS build: `platform :ios` needs to be 14.0. Check `ios/Podfile` in your Flutter project to
+  change it.
+
+## Setup
+
+### Setup your Web3Auth Dashboard
+
+<SetupWeb3AuthDashboard />
+
+## Using the Web3Auth SDK
+
+To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth
+to your project. To know more about the available SDKs, please have a look at this
+[documentation page](/sdk).
+
+For this guide, we will be using the **[Web3Auth Flutter SDK](/sdk/pnp/flutter)**.
+
+### Installation
+
+<FlutterInstallation />
+
+### Initialization
+
+After Installation, the next step to use Web3Auth is to Initialize the SDK. This can be achieved by
+using the `init()` function.
+
+Please note that these are the most critical steps where you need to pass on different parameters
+according to the preference of your project. Additionally, Whitelabeling and Custom Authentication
+have to be configured within this step, if you wish to customise your Web3Auth Instance.
+
+#### Create Web3Auth Instance
+
+In your `main.dart` file, initialize the `Web3AuthFlutter` plugin at the very beginning such as in
+the overriden `main` function. We have additionlly initialize `ServiceLocator` for dependency
+injection.
+
+```dart
+uture<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  ServiceLocator.init();
+  final Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl =
+        Uri.parse('w3aexample://com.example.flutter_solana_example/auth');
+  } else {
+    redirectUrl = Uri.parse('com.web3auth.fluttersolanasample://auth');
+  }
+
+  await Web3AuthFlutter.init(
+    Web3AuthOptions(
+      clientId: "<<Your client id>>",
+      network: Network.sapphire_mainnet,
+      redirectUrl: redirectUrl,
+      whiteLabel: WhiteLabelData(
+        appName: "Solana Web3Auth Flutter",
+        mode: ThemeModes.dark,
+      ),
+    ),
+  );
+
+  await Web3AuthFlutter.initialize();
+
+  runApp(const MainApp());
+}
+```
+
+Read more about initializing the Flutter SDK [here](/sdk/pnp/flutter/initialize).
+
+### Authentication
+
+After initializing the SDK, the next step is to write a method to authenticate when the user clicks
+the login button. Upon successful login, we'll navigate to `HomeScreen`. For authentication
+purposes, we have given two options, users can either authenticate using Email-Passwordless, or
+Google.
+
+```dart
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
+  late final TextEditingController textEditingController;
+  late final GlobalKey<FormState> formKey;
+
+  Widget get verticalGap => const SizedBox(height: 16);
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    textEditingController = TextEditingController();
+    formKey = GlobalKey<FormState>();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(final AppLifecycleState state) {
+    // This is important to trigger the user cancellation on Android.
+    if (state == AppLifecycleState.resumed) {
+      Web3AuthFlutter.setResultUrl();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ///
+    /// Additional UI code
+    ///
+  }
+
+  Future<void> _login(
+    BuildContext context,
+    Provider loginProvider,
+  ) async {
+    try {
+      final bool isEmailPasswordLessLogin =
+          loginProvider == Provider.email_passwordless;
+
+      if (isEmailPasswordLessLogin) {
+        if (!formKey.currentState!.validate()) {
+          return;
+        }
+      }
+
+      final userEmail = textEditingController.text;
+
+      await Web3AuthFlutter.login(
+        LoginParams(
+          loginProvider: loginProvider,
+          mfaLevel: MFALevel.DEFAULT,
+          extraLoginOptions: isEmailPasswordLessLogin
+              ? ExtraLoginOptions(login_hint: userEmail)
+              : null,
+        ),
+      );
+
+      if (context.mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) {
+            return const HomeScreen();
+          }),
+        );
+      }
+    } catch (e, _) {
+      if (context.mounted) {
+        showInfoDialog(context, e.toString());
+      }
+    }
+  }
+}
+```
+
+### Sample loginResponse
+
+<FlutterResponse />
+
+### Get the User Profile
+
+```dart
+// Assuming the user is logged in, get the user profile from the Web3AuthResponse
+// or use Web3AuthFlutter.getUserInfo() method.
+
+final web3AuthInfo = await Web3AuthFlutter.getUserInfo();
+```
+
+Using the `Web3AuthFlutter.getUserInfo()` function, you can get the details of the logged in user.
+Please note that these details are not stored anywhere in Web3Auth network.
+
+If you wish you **[add Multi Factor Authentication](/sdk/pnp/flutter/mfa)**,
+**[use dApp Share](/sdk/pnp/flutter/dapp-share)** or
+**[select Curve](/sdk/pnp/flutter/usage#selecting-curve)** for your Flutter application, read the
+linked documentation.
+
+- [Multi Factor Authentication](/sdk/pnp/flutter/mfa)
+- [Using dApp Share](/sdk/pnp/flutter/dapp-share)
+- [Selecting Curve](/sdk/pnp/flutter/usage#selecting-curve)
+
+### Private Key
+
+For the Solana chain, we'll be retriving the ed25519 private key. The ed25519 returns the keypair,
+from which we can use the first 32 byte for the private key.
+
+```dart
+final privateKey = await Web3AuthFlutter.getEd25519PrivKey();
+```
+
+### Logout
+
+Loggin out your user from the application is as easy as calling the `Web3AuthFlutter.logOut()`
+function. Upon successful logout, we'll redirect user to login page.
+
+```dart
+ Future<void> logOut(BuildContext context) async {
+    showLoader(context);
+
+    try {
+      await Web3AuthFlutter.logout();
+      if (context.mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) {
+            return const LoginScreen();
+          }),
+        );
+      }
+    } catch (e, _) {
+      if (context.mounted) {
+        removeDialog(context);
+        showInfoDialog(context, e.toString());
+      }
+    }
+  }
+```
+
+## Interacting with the Blockchain
+
+To interact with Solana, we are going to use the [solana package](https://pub.dev/packages/solana).
+
+To use the Solana RPC, we'll make a provider class which will help us interact with Solana. The
+class will help us to retive balance, and also transfer SOL to another account.
+
+### Get Account
+
+In this step, we'll fetch the account from user's private key and use `Ed25519HDKeyPair` to create
+Solana keypair. The `Ed25519HDKeyPair` can be used to retive the user's EOA address, and sign the
+transactions.
+
+```dart
+try {
+      final privateKey = await Web3AuthFlutter.getEd25519PrivKey();
+
+      /// The ED25519 PrivateKey returns a key pair from
+      /// which we only require first 32 byte.
+      keyPair = await Ed25519HDKeyPair.fromPrivateKeyBytes(
+        privateKey: privateKey.hexToBytes.take(32).toList(),
+      );
+    } catch (e, _) {
+      if (context.mounted) {
+        showInfoDialog(context, e.toString());
+      }
+    }
+```
+
+### Get Balance
+
+Once we have created the `Ed25519HDKeyPair`, we can retive the EOA address and fetch the user's SOL
+balance. We'll create a new helper method `getBalance` for `SolanaProvider`.
+
+```dart
+import 'dart:math';
+
+import 'package:solana/dto.dart';
+import 'package:solana/solana.dart';
+
+const int tokenDecimals = 9;
+
+class SolanaProvider {
+  final SolanaClient solanaClient;
+
+  SolanaProvider(this.solanaClient);
+
+  Future<double> getBalance(String address) async {
+    final balanceResponse = await solanaClient.rpcClient.getBalance(
+      address,
+    );
+
+    /// We are dividing the balance by 10^9, because Solana's
+    /// token decimals is set to be 9;
+    return balanceResponse.value / pow(10, tokenDecimals);
+  }
+
+  // Additional code
+}
+```
+
+### Send Transaction
+
+For sending SOL, we'll create few helper methods for `SolanaProvider`.
+
+- `getRecentBlockhash`: This method helps us to get the recent block hash which is used to create a
+  transfer instruction.
+- `signSendTransaction`: This method helps us prepare, and sign a transfer instruction.
+- `sendSol`: This method helps us broadcast the signed transfer message on Solana chain.
+
+```dart
+import 'dart:math';
+
+import 'package:solana/dto.dart';
+import 'package:solana/solana.dart';
+
+const int tokenDecimals = 9;
+
+class SolanaProvider {
+  final SolanaClient solanaClient;
+
+  SolanaProvider(this.solanaClient);
+
+  /// Additional code
+
+  Future<String> sendSol({
+    required Ed25519HDKeyPair keyPair,
+    required String destination,
+    required double value,
+  }) async {
+    /// Converting user input to the lamports, which are smallest value
+    /// in Solana.
+    final num lamports = value * pow(10, tokenDecimals);
+    final transactionHash = await solanaClient.transferLamports(
+      source: keyPair,
+      destination: Ed25519HDPublicKey.fromBase58(destination),
+      lamports: lamports.toInt(),
+    );
+
+    return transactionHash;
+  }
+
+  Future<String> signSendTransaction({
+    required Ed25519HDKeyPair keyPair,
+    required String destination,
+    required double value,
+  }) async {
+    /// Converting user input to the lamports, which are smallest value
+    /// in Solana.
+    final num lamports = value * pow(10, tokenDecimals);
+
+    final message = Message(instructions: [
+      SystemInstruction.transfer(
+        fundingAccount: keyPair.publicKey,
+        recipientAccount: Ed25519HDPublicKey.fromBase58(destination),
+        lamports: lamports.toInt(),
+      ),
+    ]);
+
+    final recentBlockHash = await getRecentBlockhash();
+
+    final signedTx = await signTransaction(recentBlockHash, message, [keyPair]);
+    return signedTx.signatures.first.toBase58();
+  }
+
+  Future<RecentBlockhash> getRecentBlockhash() async {
+    return await solanaClient.rpcClient
+        .getRecentBlockhash(commitment: Commitment.finalized)
+        .value;
+  }
+}
+```
+
+## Questions?
+
+Ask us on [Web3Auth's Community Support Portal](https://web3auth.io/community)
