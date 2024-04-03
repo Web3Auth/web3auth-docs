@@ -31,8 +31,8 @@ export default function Guides({ content }: Props) {
   const [sortedGuides, setSortedGuides] = useState<any>(
     completeGuides.sort((a: any, b: any) => {
       //if pinned == 1, the is the first
-      if (a.pinned === 1 && b.pinned !== 1) return -1;
-      if (a.pinned !== 1 && b.pinned === 1) return 1;
+      if (a.pinned && !b.pinned) return -1;
+      if (!a.pinned && b.pinned) return 1;
       // Convert date strings to Date objects for comparison
       const aDate = new Date(a.date);
       const bDate = new Date(b.date);
