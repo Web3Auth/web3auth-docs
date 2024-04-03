@@ -5,23 +5,22 @@ displayed_sidebar: sdk
 description: "Installing Web3Auth PnP Flutter SDK | Documentation - Web3Auth"
 ---
 
+import FlutterInstallation from "@site/src/common/sdk/pnp/flutter/_installation.mdx";
+
+import AndroidCompileSDKVersion from "@site/src/common/sdk/pnp/android/_update-compile-sdk-version.mdx";
+import UpdateGradle from "@site/src/common/sdk/pnp/android/_update-gradle.mdx";
+import AndroidPermission from "@site/src/common/sdk/pnp/android/_android-permissions.mdx";
+import AndroidDeepLinking from "@site/src/common/sdk/pnp/android/_android-deep-linking.mdx";
+import AndroidWhitelist from "@site/src/common/sdk/pnp/android/_android-whitelist.mdx";
+
+import IOSPlatform from "@site/src/common/sdk/pnp/ios/_ios-platform.mdx";
+import SPM from "@site/src/common/sdk/pnp/ios/_spm.mdx";
+import Cocoapods from "@site/src/common/sdk/pnp/ios/_cocoapods.mdx";
+import IOSWhitelist from "@site/src/common/sdk/pnp/ios/ios-whitelist.mdx";
+
 ## `web3auth_flutter`
 
-To install the `web3auth_flutter` package, you have two options. You can either manually add the package in the `pubspec.yaml` file, or you can use
-the `flutter pub add` command.
-
-Add `web3auth_flutter` as a dependency to your `pubspec.yaml`.
-
-```yaml
-dependencies:
-  web3auth_flutter: ^3.1.6
-```
-
-Add `web3auth_flutter` using `flutter pub add command`.
-
-```sh
-flutter pub add web3auth_flutter
-```
+<FlutterInstallation />
 
 ## Android
 
@@ -29,83 +28,28 @@ Once we have install Web3Auth Flutter SDK, we also need add the configuration fo
 
 ### Update compileSdkVersion
 
-For Android build `compileSdkVersion` needs to be `34`.
-
-- Check your app module gradle file in your project to change it.
-
-```groovy
-android {
-    namespace "com.example.flutter_solana_example"
-    compileSdkVersion 34
-    ndkVersion flutter.ndkVersion
-
-   // ..
-}
-```
+<AndroidCompileSDKVersion />
 
 ### Add Web3Auth to Gradle
 
-In your project-level gradle file add JitPack repository:
-
-```groovy
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-        // highlight-next-line
-        maven { url "https://jitpack.io" } // <-- Add this line
-    }
-}
-```
+<UpdateGradle />
 
 ### Permissions
 
-Open your app's `AndroidManifest.xml` file and add the following permission:
-
-```xml
-<uses-permission android:name="android.permission.INTERNET" />
-```
-
-> Note: The `<uses-permission>` element must be a direct child of the `<manifest>` root element.
+<AndroidPermission />
 
 ### Configuration
 
-Once the gradles and permission has been updated, we need to configure Web3Auth project by whitelisting you scheme and package name.
+Once the gradles and permission has been updated, we need to configure Web3Auth project by
+whitelisting you scheme and package name.
 
 #### Configure Web3Auth project
 
-- Go to [Developer Dashboard](https://dashboard.web3auth.io/), create or select a Web3Auth project.
-- Add `{SCHEME}://{YOUR_APP_PACKAGE_NAME}` to **Whitelist URLs**. eg. `w3a://com.example.w3aflutter`
-- Copy the `Client ID` from Project Details for initilization usage later.
+<AndroidWhitelist />
 
 #### Configure Deep Link
 
-Open your app's `AndroidManifest.xml` file and add the following deep link intent filter to your Main activity
-
-```xml
-<intent-filter>
-  <action android:name="android.intent.action.VIEW" />
-
-  <category android:name="android.intent.category.DEFAULT" />
-  <category android:name="android.intent.category.BROWSABLE" />
-
-  // highlight-next-line
-  <data android:scheme="{scheme}" android:host="{YOUR_APP_PACKAGE_NAME}" android:path="/auth" />
-  <!-- Accept URIs: w3a://com.example.w3aflutter -->
-</intent-filter>
-```
-
-Make sure your Main activity launchMode is set to **singleTop** in your `AndroidManifest.xml`
-
-```xml
-<activity
-// highlight-next-line
-  android:launchMode="singleTop"
-  android:name=".YourActivity">
-  // ...
-</activity>
-```
+<AndroidDeepLinking />
 
 ## iOS
 
@@ -113,49 +57,21 @@ Once we have configured the Android SDK, we also need add the configuration for 
 
 ### Update global iOS platform
 
-For iOS build global platform needs to be 14.0.
-
-- Check `Podfile` in your Flutter project to change the global platform.
-
-```
-platform :ios, '14.0'
-
-```
+<IOSPlatform />
 
 ### Add dependencies
 
-In order to build iOS for Web3Auth project, we also need to add the Web3Auth SDK in iOS. You can either add it using Swift Package Manager or
-Cocoapods.
+In order to build iOS for Web3Auth project, we also need to add the Web3Auth SDK in iOS. You can
+either add it using Swift Package Manager or Cocoapods.
 
 #### Swift Package Manager
 
-1. In Xcode, with your app project open, navigate to **File > Add Package Dependencies**.
-
-2. When prompted, add the Web3Auth iOS SDK repository:
-
-   ```sh
-   https://github.com/Web3Auth/web3auth-swift-sdk
-   ```
-
-   From the `Dependency Rule` dropdown, select `Exact Version` and enter `7.5.0` as the version.
-
-3. When finished, Xcode will automatically begin resolving and downloading your dependencies in the background.
+<SPM />
 
 #### Cocoapods
 
-To install the Web3Auth SDK using Cocoapods, follow the below steps:
-
-1. Open the Podfile, and add the Web3Auth pod:
-
-```sh
-pod 'Web3Auth', '~> 7.5.0'
-```
-
-2. Once added, use `pod install` command to download the Web3Auth dependency.
+<Cocoapods />
 
 ### Configuration
 
-To use Web3Auth for iOS you need to Whitelist your bundleId your project.
-
-- Go to [Web3Auth Developer Dashboard](https://dashboard.web3auth.io), and create or open an existing Web3Auth project.
-- Whitelist `(bundleId)://auth` in the developer dashboard. This step is mandatory for the redirect to work.
+<IOSWhitelist />

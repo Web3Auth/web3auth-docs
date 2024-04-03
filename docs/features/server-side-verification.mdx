@@ -1,0 +1,326 @@
+---
+title: Server-Side Verification
+displayed_sidebar: docs
+description: "Server-Side Verification | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import Tiles from "@theme/Tiles";
+
+Web3Auth's server-side verification feature enables developers to securely authenticate users on the backend by validating the ownership of a wallet
+address. This process involves the use of a JSON Web Token (JWT) issued upon user authentication, which contains claims about the end user, including
+proof of ownership over a wallet public address.
+
+Upon a user's successful connection of their wallet, Web3Auth generates a JWT, signed with a private key using the RS256 algorithm, that is unique to
+your application. This token serves as a verifiable credential that you can use to authenticate the user on your backend.
+
+## Implementing Server-Side Verification
+
+To implement server-side verification with Web3Auth:
+
+1. **Retrieve the JWT (`idToken`):** After a user authenticates, capture the `idToken` issued by Web3Auth.
+2. **Verify the JWT:** Use the public key provided by Web3Auth to verify the JWT's authenticity. This step confirms that the token is valid and the
+   information it contains about the user can be trusted.
+3. **Authenticate the User:** Based on the verified claims within the JWT, including wallet address ownership, authenticate the user in your backend
+   system.
+
+## Getting the JWT ID Token
+
+After a user is logged in using one of the supported Wallets, One can obtain the `idToken` by calling the `authenticateUser` function of Web3Auth.
+
+```tsx
+await web3auth.authenticateUser();
+```
+
+#### Returns
+
+```json
+{
+  "idToken": "<jwtToken issued by Web3Auth>"
+}
+```
+
+:::tip Extending Beyond Social Logins
+
+Web3Auth's server-side verification extends not only to users authenticated via the provided social logins, but also to those using external wallets.
+This flexibility ensures that dApps can authenticate Web3Auth users in their backend systems, regardless of the authentication method used on the
+frontend.
+
+For Web3Auth integrated wallet adapters and social logins, the flow is built into the SDKs, for external wallets, please use the
+[Sign in With Web3](https://siww.web3auth.io/) library built by us to get the `idToken` and verify it on your backend.
+
+:::
+
+### Sample ID Token payload
+
+:::warning
+
+The External Wallet's `idToken` payload is different than the Social login's `idToken`. During Social logins, we get the user's pub key, and in
+external wallet we get their address.
+
+:::
+
+<Tabs
+  defaultValue="social"
+  values={[
+    { label: "Social Logins", value: "social" },
+    { label: "External Wallets", value: "external" },
+  ]}
+>
+
+<TabItem value="social">
+
+```json
+{
+  "iat": 1655835494,
+  "aud": "BCtbnOamqh0cJFEUYA0NB5YkvBECZ3HLZsKfvSRBvew2EiiKW3UxpyQASSR0artjQkiUOCHeZ_ZeygXpYpxZjOs",
+  "iss": "https://api-auth.web3auth.io/",
+  "email": "xyz@xyz.com",
+  "name": "John Doe",
+  "profileImage": "https://lh3.googleusercontent.com/a/AATXAJx3lnGmHiM4K97uLo9Rb0AxOceH-dQCBSRqGbck=s96-c",
+  "verifier": "torus",
+  "verifierId": "xyz@xyz.com",
+  "aggregateVerifier": "tkey-google-lrc",
+  "exp": 1655921894,
+  "wallets": [
+    {
+      "public_key": "035143318b83eb5d31611f8c03582ab1200494f66f5e11a67c34f5581f48c1b70b",
+      "type": "web3auth_key",
+      "curve": "secp256k1"
+    }
+  ]
+}
+```
+
+| Parameter           | Type     | Description                                                                                                                                                                                                                                                                                                                                                |
+| ------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `iat`               | `number` | The "iat" (issued at) claim identifies the time at which the JWT was issued.                                                                                                                                                                                                                                                                               |
+| `aud`               | `string` | The "aud" (audience) claim identifies the recipients that the JWT is intended for. (Here, it's the dapp `client_id`)                                                                                                                                                                                                                                       |
+| `iss`               | `string` | The "iss" (issuer) claim identifies who issued the JWT. (Here, it's Web3Auth `https://api.openlogin.com/`)                                                                                                                                                                                                                                                 |
+| `email`             | `string` | The email address of the user (optional)                                                                                                                                                                                                                                                                                                                   |
+| `name`              | `string` | The name of the user (optional)                                                                                                                                                                                                                                                                                                                            |
+| `profileImage`      | `string` | The profile image of the user (optional)                                                                                                                                                                                                                                                                                                                   |
+| `verifier`          | `string` | Web3auth's verifier used while user login                                                                                                                                                                                                                                                                                                                  |
+| `verifierId`        | `string` | Unique user id given by OAuth login provider                                                                                                                                                                                                                                                                                                               |
+| `aggregateVerifier` | `string` | Name of the verifier if you are using a single id verifier (aggregateVerifier) (optional)                                                                                                                                                                                                                                                                  |
+| `exp`               | `number` | The "exp" (expiration time) claim identifies the expiration time on or after which the _JWT MUST NOT be accepted for processing_.                                                                                                                                                                                                                          |
+| `wallets`           | `array`  | list of wallets for which this token is issued: <ul><li>`curve` "secp256k1" (default) or "ed25519" <br/> You can specify which curve you want use for the encoded public key in the login parameters<br/></li><li>`type` "web3auth_key" incase of social logins</li><li>`public_key` compressed public key derived based on the specified curve </li></ul> |
+
+#### Changing the Public Key Curve
+
+:::info
+
+By default, Web3Auth returns an `idToken` which contains the `public_key` in the `secp256k1` form.
+
+:::
+
+If you want to encode the public_key in `ed25519` format then you have to pass the curve parameter in OpenloginAdapter as:
+
+```tsx
+const openloginAdapter = new OpenloginAdapter({
+  loginSettings: {
+    curve: "ed25519", // allowed values "secp256k1" (default) or "ed25519"
+  },
+});
+```
+
+</TabItem>
+
+<TabItem value="external">
+
+```json
+{
+  "iat": 1661158877,
+  "iss": "<issuer-name>",
+  "aud": "https://requesting.website",
+  "wallets": [
+    {
+      "address": "0x809d4310d578649d8539e718030ee11e603ee8f3",
+      "type": "ethereum"
+    }
+  ],
+  "exp": 1661245277
+}
+```
+
+| Parameter | Type     | Description                                                                                                                                                                                             |
+| --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `iat`     | `number` | The "iat" (issued at) claim identifies the time at which the JWT was issued.                                                                                                                            |
+| `aud`     | `string` | The "audience" claim identifies the recipients that the JWT is intended for. (Here, it's `website's url`)                                                                                               |
+| `iss`     | `string` | The "issuer" claim identifies who issued the JWT. <br/> Here, issuer could be `torus-evm`, `torus-solana`, `metamask`, `phantom`, `walletconnect-v1`, `coinbase`, `slope`, `solflare`                   |
+| `wallets` | `array`  | list of wallets for which this token is issued: <ul><li>`address` : Wallet public address</li><li>`type` Network Type such as "ethereum", "solana" or "starkware" incase of external wallets </li></ul> |
+
+</TabItem>
+</Tabs>
+
+## Utilizing the JWT for Verification
+
+- **JWT Validation:** The associated public key, available on a hosted website provided by Web3Auth, allows you to verify the token's authenticity and
+  integrity. A JWT that can be successfully verified with this public key confirms that the information it contains is trustworthy and has not been
+  altered.
+- **Proof of Wallet Ownership:** The JWT includes a claim that certifies the user's ownership of a specific wallet's public address, enabling a
+  reliable method of user authentication on the server side.
+
+:::info JWKS endpoint
+
+Please note, the JWKS endpoint for External wallets **is different** from Social logins.
+
+- JWKS Endpoint for External Wallets: `https://authjs.web3auth.io/jwks`
+
+- JWKS Endpoint for Social Logins: `https://api-auth.web3auth.io/jwks`
+
+:::
+
+### Social Login Verification
+
+In order to verify the JWT Token(`idToken`) you need the compressed **app_pub_key** (derived from _**app_scoped_privkey**_) and the `idToken` obtained
+from the `authenticateUser` function.
+
+:::info
+
+- App scoped wallet will be obtained from the front-end once the user is logged in.
+- Public Key derivation depends on the curve (refer to the code snippets above).
+
+:::
+
+#### Getting `app_pub_key` and `idToken` in Frontend
+
+```typescript
+// Incase of ed25519 curve, get the app_pub_key
+import { getED25519Key } from "@toruslabs/openlogin-ed25519";
+const app_scoped_privkey = await web3auth.provider?.request({
+  method: "solanaPrivateKey",
+});
+const ed25519Key = getED25519Key(Buffer.from(app_scoped_privkey.padStart(64, "0"), "hex"));
+const app_pub_key = ed25519Key.pk.toString("hex");
+
+// Incase of secp256k1 curve, get the app_pub_key
+import { getPublicCompressed } from "@toruslabs/eccrypto";
+const app_scoped_privkey = await web3auth.provider?.request({
+  method: "eth_private_key", // use "private_key" for other non-evm chains
+});
+const app_pub_key = getPublicCompressed(Buffer.from(app_scoped_privkey.padStart(64, "0"), "hex")).toString("hex");
+
+/* Assuming user is logged in, get the userInfo containtaing idToken */
+const user = await web3auth.getUserInfo();
+
+/*
+OR
+const token = await web3auth.authenticateUser();
+ */
+
+// Verify idToken at your backend server
+const res = await fetch("/api/verify", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + user.idToken, // or token.idToken
+  },
+  body: JSON.stringify({ appPubKey: app_pub_key }),
+});
+```
+
+#### Verifying `idToken` in Backend
+
+:::info JWKS endpoint
+
+Please note, the JWKS endpoint for External wallets **is different** from Social logins.
+
+- JWKS Endpoint for External Wallets: `https://authjs.web3auth.io/jwks`
+
+- JWKS Endpoint for Social Logins: `https://api-auth.web3auth.io/jwks`
+
+:::
+
+```javascript
+// JWT verification using JWKS
+
+import * as jose from "jose"
+
+// passed from the frontend in the Authorization header
+const idToken = req.headers.authorization?.split(' ')[1];
+
+// passed from the frontend in the request body
+const app_pub_key = req.body.appPubKey;
+
+// Get the JWK set used to sign the JWT issued by Web3Auth
+// highlight-next-line
+const jwks = jose.createRemoteJWKSet(new URL("https://api-auth.web3auth.io/jwks")); // for social logins
+
+// Verify the JWT using Web3Auth's JWKS
+const jwtDecoded = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] });
+
+// Checking `app_pub_key` against the decoded JWT wallet's public_key
+if ((jwtDecoded.payload as any).wallets[0].public_key.toLowerCase() === app_pub_key.toLowerCase()) {
+  // Verified
+  res.status(200).json({name: 'Verification Successful'})
+} else {
+  res.status(400).json({name: 'Verification Failed'})
+}
+```
+
+### External Wallet Verification
+
+In order to verify the JWT Token(`idToken`) you need the wallet's `address` and the `idToken` obtained from the `authenticateUser()`.
+
+#### Getting `address` and `idToken` in Frontend
+
+```typescript
+// Get user's Ethereum public address
+const address = (await web3.eth.getAccounts())[0];
+// Get user's Solana public address
+const address = await solanaWallet.requestAccounts();
+
+// For other chains, please refer to https://web3auth.io/docs/connect-blockchain/
+
+/* Assuming user is logged in, get the token containtaing idToken */
+const token = await web3auth.authenticateUser();
+
+// Verify idToken at your backend server
+const res = await fetch("/api/verify", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + token.idToken,
+  },
+  body: JSON.stringify({ public_address: address }),
+});
+```
+
+#### Verifying `idToken` in Backend
+
+:::info JWKS endpoint
+
+Please note, the JWKS endpoint for External wallets are different from Social logins.
+
+- JWKS Endpoint: `https://authjs.web3auth.io/jwks`
+
+:::
+
+```javascript
+import * as jose from "jose"
+
+// passed from the frontend in the Authorization header
+const idToken = req.headers.authorization?.split(' ')[1];
+
+// passed from the frontend in the request body
+const publicAddress = req.body.public_address;
+
+// Get the JWK set used to sign the JWT issued by Web3Auth
+// highlight-next-line
+const jwks = jose.createRemoteJWKSet(new URL("https://authjs.web3auth.io/jwks"));
+
+// Verify the JWT using Web3Auth's JWKS
+const jwtDecoded = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] });
+
+// Incase of Non-Torus Users
+// Checking Wallet's `publicAddress` against the decoded JWT wallet's address
+if ((jwtDecoded.payload as any).wallets[0].address.toLowerCase() === publicAddress.toLowerCase()) {
+  // Verified
+  res.status(200).json({name: 'Verification Successful'})
+} else {
+  res.status(400).json({name: 'Verification Failed'})
+}
+
+```

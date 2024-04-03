@@ -8,7 +8,7 @@ import fs from "fs";
 // Use "openssl genrsa -out privateKey.pem 2048" to generate a private key
 // Also, use this private key to generate a public key using "openssl rsa -in privateKey.pem -pubout -out publicKey.pem"
 // Convert PEM to JWKS and expose it on a public URL, and make a web3auth verifier using that.
-// Check out https://web3auth.io/docs/auth-provider-setup/byo-jwt-providers for more details.
+// Check out https://web3auth.io/docs/auth-provider-setup/byo-jwt-provider for more details.
 var privateKey = fs.readFileSync("privateKey.pem");
 
 // Define the chain config according to the chain you want to connect to
@@ -58,7 +58,7 @@ const web3authSfaprovider = await web3auth.connect({
       exp: Math.floor(Date.now() / 1000) + 60 * 60,
     },
     privateKey, // <-- privateKey to sign the JWT Token
-    { algorithm: "RS256", keyid: "1bb9605c36e69386830202b2d" }
+    { algorithm: "RS256", keyid: "1bb9605c36e69386830202b2d" },
   ), // or replace it with your newly created unused JWT Token.
 });
 

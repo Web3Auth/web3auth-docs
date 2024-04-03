@@ -1,0 +1,76 @@
+import FlutterInstallation from "@site/src/common/sdk/pnp/flutter/_installation.mdx";
+
+import AndroidCompileSDKVersion from "@site/src/common/sdk/pnp/android/_update-compile-sdk-version.mdx";
+import UpdateGradle from "@site/src/common/sdk/pnp/android/_update-gradle.mdx";
+import AndroidPermission from "@site/src/common/sdk/pnp/android/_android-permissions.mdx";
+import AndroidDeepLinking from "@site/src/common/sdk/pnp/android/_android-deep-linking.mdx";
+import AndroidWhitelist from "@site/src/common/sdk/pnp/android/_android-whitelist.mdx";
+
+import IOSPlatform from "@site/src/common/sdk/pnp/ios/_ios-platform.mdx";
+import SPM from "@site/src/common/sdk/pnp/ios/_spm.mdx";
+import Cocoapods from "@site/src/common/sdk/pnp/ios/_cocoapods.mdx";
+import IOSWhitelist from "@site/src/common/sdk/pnp/ios/ios-whitelist.mdx";
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<FlutterInstallation />
+
+<Tabs
+  defaultValue="android"
+  values={[
+    { label: "Android", value: "android" },
+    { label: "iOS", value: "ios" },
+  ]}
+>
+
+<TabItem value="android">
+
+#### Update compileSdkVersion
+
+<AndroidCompileSDKVersion />
+
+#### Add Web3Auth to Gradle
+
+<UpdateGradle />
+
+#### Permissions
+
+<AndroidPermission />
+
+#### Configuration
+
+Once the gradles and permission has been updated, we need to configure Web3Auth project by
+whitelisting you scheme and package name.
+
+##### Configure a Plug n Play project
+
+<AndroidWhitelist />
+
+##### Configure Deep Link
+
+<AndroidDeepLinking />
+
+</TabItem>
+
+<TabItem value="ios">
+
+#### Add dependencies
+
+In order to build iOS for Web3Auth project, we also need to add the Web3Auth SDK in iOS. You can
+either add it using Swift Package Manager or Cocoapods.
+
+##### Swift Package Manager
+
+<SPM />
+
+##### Cocoapods
+
+<Cocoapods />
+
+#### Configuration
+
+<IOSWhitelist />
+
+</TabItem>
+</Tabs>

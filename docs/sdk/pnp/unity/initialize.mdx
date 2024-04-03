@@ -10,19 +10,19 @@ import Tabs from "@theme/Tabs";
 
 import web3authCS from "@site/static/guides/sdk/unity/web3authCS.png";
 
-After Installation, the next step to using Web3Auth is to Initialize the SDK.
+After installation, the next step in using Web3Auth is to initialize the SDK.
 
-However, Initialization is a two-step process:
+However, initialization is a two-step process:
 
-1. [Creating a Web3Auth Instance](#create-web3auth-instance)
-2. [Setting up Web3Auth Options](#setting-up-web3auth-options)
+1. [Creating a Web3Auth instance](#create-web3auth-instance)
+2. [Setting up Web3Auth options](#setting-up-web3auth-options)
 
-Please note that these are the most critical steps where you must pass on different parameters according to the preference of your project.
-Additionally, You must configure Whitelabeling and Custom Authentication within this step if you wish to customize your Web3Auth Instance.
+Please note that these are the most critical steps where you will need to pass different parameters according to your project's preference.
+Additionally, you must configure whitelabeling and custom authentication within this step if you want to customize your Web3Auth instance.
 
 ## Create Web3Auth Instance
 
-Attach a `Web3Auth.cs` script to your game object where you are planning to write your authentication code.
+Attach a `Web3Auth.cs` script to your game object where you want to write your authentication code.
 
 :::tip
 
@@ -55,7 +55,7 @@ Within your script, import the `Web3Auth` component in your class.
 Web3Auth web3Auth;
 ```
 
-Next create an instance within your `Start()` function by creating an instance of the component you just imported.
+Next, you need to create an instance within your `Start()` function by creating an instance of the component you just imported.
 
 ```cs
 web3Auth = GetComponent<Web3Auth>();
@@ -66,8 +66,7 @@ web3Auth = GetComponent<Web3Auth>();
 After instantiation, within your `Start()` function, set up the Web3Auth Options as follows:
 
 ```cs
-web3Auth.setOptions(new Web3AuthOptions()
-{
+web3Auth.setOptions(new Web3AuthOptions(){
 
 });
 ```
@@ -88,16 +87,16 @@ The Web3Auth Constructor takes a class `Web3AuthOptions` as input. This class ha
 
 <TabItem value="table">
 
-| Parameter         | Description                                                                                                                                                      |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `clientId`        | Your Web3Auth Client ID. You can get it from Web3Auth [Dashboard](https://dashboard.web3auth.io/) under project details. It's a mandatory field of type `string` |
-| `network`         | Defines the Web3Auth network. It's a mandatory field of type Network.                                                                                            |
-| `redirectUrl`     | URL that Web3Auth will redirect API responses upon successful authentication from browser. It's a mandatory field of type `Uri`.                                 |
-| `whiteLabel?`     | WhiteLabel options for web3auth. It helps you define custom UI, branding, and translations for your brand app. It takes `WhiteLabelData` as a value.             |
-| `loginConfig?`    | Login config for the custom verifiers. It takes `Dictionary<string, LoginConfigItem>` as a value.                                                                |
-| `useCoreKitKey?`  | Use CoreKit Key to get core kit key. It's an optional field with default value as `false`.                                                                       |
-| `chainNamespace?` | Chain Namespace [`EIP155` and `SOLANA`]. It takes `Web3Auth.ChainNamespace` as a value.                                                                          |
-| `mfaSettings?`    | Allows developers to configure the Mfa settings for authentication. It takes `MfaSettings` as a value.                                                           |
+| Parameter         | Description                                                                                                                                                          |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`        | Your Web3Auth Client ID. You can get it from the Web3Auth [Dashboard](https://dashboard.web3auth.io/) under project details. It's a mandatory field of type `string` |
+| `network`         | Defines the Web3Auth network. It's a mandatory field of type Network.                                                                                                |
+| `redirectUrl`     | URL that Web3Auth will redirect API responses upon successful authentication from browser. It's a mandatory field of type `Uri`.                                     |
+| `whiteLabel?`     | WhiteLabel options for web3auth. It helps you define custom UI, branding, and translations for your brand app. It takes `WhiteLabelData` as a value.                 |
+| `loginConfig?`    | Login config for the custom verifiers. It takes `Dictionary<string, LoginConfigItem>` as a value.                                                                    |
+| `useCoreKitKey?`  | Use CoreKit Key to get core kit key. It's an optional field with default value as `false`.                                                                           |
+| `chainNamespace?` | Chain Namespace [`EIP155` and `SOLANA`]. It takes `Web3Auth.ChainNamespace` as a value.                                                                              |
+| `mfaSettings?`    | Allows developers to configure the MFA settings for authentication. It takes `MfaSettings` as a value.                                                               |
 
 </TabItem>
 
@@ -122,7 +121,8 @@ class Web3AuthOptions {
 
 :::tip
 
-You can also configure your `client_id`, `redirect_url` and `network` within the script setting in Unity Editor. It will look something like this:
+You can also configure your `client_id`, `redirect_url` and `network` within the script settings in the Unity Editor. It will look something like
+this:
 
 <img src={web3authCS} style={{ alignSelf: "center", maxWidth: "100%" }} />
 
