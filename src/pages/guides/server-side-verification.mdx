@@ -6,7 +6,6 @@ type: guide
 tags: [ethereum, web3auth core, google, next.js, server side verification]
 date: July 26, 2022
 author: Web3Auth Team
-order: 16
 communityPortalTopicId: 65
 ---
 
@@ -31,8 +30,8 @@ import SEO from "@site/src/components/SEO";
   slug="/guides/server-side-verification"
 />
 
-This guide will cover the basics of how to use Web3Auth's Server Side Verification to verify the `idToken` received in the `web3auth.getUserInfo()`
-method of Web3Auth.
+This guide will cover the basics of how to use Web3Auth's Server Side Verification to verify the
+`idToken` received in the `web3auth.getUserInfo()` method of Web3Auth.
 
 ## Quick Start
 
@@ -44,7 +43,8 @@ npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/server-side-verificati
 
 <Web3AuthPrerequisites />
 
-- A [Google Developer](https://console.developers.google.com) account to be used as Login provider for Web3Auth Custom Authentication.
+- A [Google Developer](https://console.developers.google.com) account to be used as Login provider
+  for Web3Auth Custom Authentication.
 
 ## Setup
 
@@ -64,11 +64,14 @@ npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/server-side-verificati
 
 ## Using the Web3Auth SDK
 
-To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
-SDKs, please have a look at this [documentation page](/sdk).
+To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth
+to your project. To know more about the available SDKs, please have a look at this
+[documentation page](/sdk).
 
-For this guide, we will be talking through the [Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and using the
-[OpenLogin Provider](/sdk/pnp/web/adapters/openlogin) alongside it to enable Custom Authentication through Google Login.
+For this guide, we will be talking through the
+[Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and using the
+[OpenLogin Provider](/sdk/pnp/web/adapters/openlogin) alongside it to enable Custom Authentication
+through Google Login.
 
 <SetupBaseProject />
 
@@ -80,8 +83,9 @@ For this guide, we will be talking through the [Web3Auth Plug and Play No Modal 
 
 <InitializationIntro />
 
-For this guide, we're only focusing on the Instantiation, Configuration for the Openlogin Adapter (the default adapter that enables social logins) and
-Initialization of the Web3Auth SDK. To know more about the other things you can do with Web3Auth, check out our
+For this guide, we're only focusing on the Instantiation, Configuration for the Openlogin Adapter
+(the default adapter that enables social logins) and Initialization of the Web3Auth SDK. To know
+more about the other things you can do with Web3Auth, check out our
 [SDK Reference](/sdk/pnp/web/no-modal).
 
 #### Instantiating Web3Auth
@@ -92,8 +96,9 @@ Initialization of the Web3Auth SDK. To know more about the other things you can 
 
 <OpenloginConfigCodeGoogle />
 
-Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom Auth `verifierName` and AWS Cognito `clientId` in
-the loginConfig object. This makes sure that the Openlogin Adapter can connect to the correct verifier and AWS Cognito server.
+Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom
+Auth `verifierName` and AWS Cognito `clientId` in the loginConfig object. This makes sure that the
+Openlogin Adapter can connect to the correct verifier and AWS Cognito server.
 
 <InitializationWeb3Auth />
 
@@ -101,7 +106,8 @@ the loginConfig object. This makes sure that the Openlogin Adapter can connect t
 
 #### Logging in
 
-Once initialized, you can use the `connectTo()` function to authenticate the user when they click the login button.
+Once initialized, you can use the `connectTo()` function to authenticate the user when they click
+the login button.
 
 ```tsx
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
@@ -111,7 +117,8 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 });
 ```
 
-When connecting, your `connectTo` function takes the arguments for the adapter you want to connect to and the `loginProvider` for the login.
+When connecting, your `connectTo` function takes the arguments for the adapter you want to connect
+to and the `loginProvider` for the login.
 
 ### Get the User Profile
 
@@ -120,8 +127,9 @@ const user = await web3auth.getUserInfo();
 console.log("User info", user);
 ```
 
-Using the `getUserInfo` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
-network, but are fetched from the id_token you received from AWS Cognito and live in the frontend context.
+Using the `getUserInfo` function, you can get the details of the logged in user. Please note that
+these details are not stored anywhere in Web3Auth network, but are fetched from the id_token you
+received from AWS Cognito and live in the frontend context.
 
 ### Logout
 

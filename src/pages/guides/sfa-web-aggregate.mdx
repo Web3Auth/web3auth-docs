@@ -20,7 +20,6 @@ tags:
   ]
 date: 14 November, 2023
 author: Web3Auth Team
-order: 5
 communityPortalTopicId: 22
 ---
 
@@ -44,8 +43,9 @@ import SEO from "@site/src/components/SEO";
   slug="/guides/sfa-web-aggregate"
 />
 
-This guide will cover the basics of how to set up your Web3Auth SDK, Auth0 and Google account for the integration and provide you with the links on
-how to develop a basic web application on the blockchain of your choice.
+This guide will cover the basics of how to set up your Web3Auth SDK, Auth0 and Google account for
+the integration and provide you with the links on how to develop a basic web application on the
+blockchain of your choice.
 
 ## Quick Start
 
@@ -55,19 +55,26 @@ npx degit Web3Auth/web3auth-core-kit-examples/single-factor-auth-web/sfa-web-agg
 
 ## How it works?
 
-Single Factor Auth SDKs allow for the integration of a single factor of authentication, such as social login, into your dApp. They are designed to be
-simple to use and can be integrated into your dApp with minimal effort, allowing you to directly use the Web3Auth Network for Wallet Management. This
-is one of the most common use cases of Web3Auth, however, it is semi-custodial in nature, since the key is custodial to the Auth Provider and the
-Web3Auth Network.
+Single Factor Auth SDKs allow for the integration of a single factor of authentication, such as
+social login, into your dApp. They are designed to be simple to use and can be integrated into your
+dApp with minimal effort, allowing you to directly use the Web3Auth Network for Wallet Management.
+This is one of the most common use cases of Web3Auth, however, it is semi-custodial in nature, since
+the key is custodial to the Auth Provider and the Web3Auth Network.
 
-<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={SFAInfra} alt="Single Factor Auth SDK Infrastructure" />
+<img
+  style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
+  src={SFAInfra}
+  alt="Single Factor Auth SDK Infrastructure"
+/>
 
-- The first step for the application is to get the user authenticated by a login provider(here, Google) and get the user's `idToken`.
-- Once the social login is successful, depending on whether the user has enabled **Multi-Factor Authentication(MFA)** or not, the key is generated.
-- If the user has not enabled MFA, we use the `@web3auth/single-factor-auth` SDK to retrieve the private key shares from the Web3Auth auth network
-  nodes and reconstruct the private key.
-- If the user has enabled MFA, an error message is shown that the user has enabled MFA and in this case, they should be using the Web3Auth Plug and
-  Play Web SDKs.
+- The first step for the application is to get the user authenticated by a login provider(here,
+  Google) and get the user's `idToken`.
+- Once the social login is successful, depending on whether the user has enabled **Multi-Factor
+  Authentication(MFA)** or not, the key is generated.
+- If the user has not enabled MFA, we use the `@web3auth/single-factor-auth` SDK to retrieve the
+  private key shares from the Web3Auth auth network nodes and reconstruct the private key.
+- If the user has enabled MFA, an error message is shown that the user has enabled MFA and in this
+  case, they should be using the Web3Auth Plug and Play Web SDKs.
 
 ## Prerequisites
 
@@ -109,8 +116,9 @@ npm install --save @web3auth/single-factor-auth @web3auth/ethereum-provider @web
 
 ##### `@web3auth/base`
 
-Since we're using typescript, we need the **`@web3auth/base`** package to provide the types of the different variables we'll be using throughout the
-app-building process. This reduces errors to a very large extent.
+Since we're using typescript, we need the **`@web3auth/base`** package to provide the types of the
+different variables we'll be using throughout the app-building process. This reduces errors to a
+very large extent.
 
 ```shell
 npm install --save @web3auth/base
@@ -118,7 +126,8 @@ npm install --save @web3auth/base
 
 ##### `@web3auth/ethereum-provider`
 
-This package is used to provide the Ethereum provider to the Web3Auth SDK. This is required to interact with the blockchain.
+This package is used to provide the Ethereum provider to the Web3Auth SDK. This is required to
+interact with the blockchain.
 
 ```shell
 npm install --save @web3auth/ethereum-provider
@@ -134,7 +143,8 @@ npm install --save @web3auth/single-factor-auth
 
 ##### `@auth0/auth0-react`
 
-This package is used to provide the Auth0 SDK to the app. This is required to retrieve the `idToken` from Auth0 as the login provider.
+This package is used to provide the Auth0 SDK to the app. This is required to retrieve the `idToken`
+from Auth0 as the login provider.
 
 ```shell
 npm install --save @auth0/auth0-react
@@ -142,7 +152,8 @@ npm install --save @auth0/auth0-react
 
 ##### `@react-oauth/google`
 
-This package is used to provide the Google SDK to the app. This is required to retrieve the `idToken` from Google as the login provider.
+This package is used to provide the Google SDK to the app. This is required to retrieve the
+`idToken` from Google as the login provider.
 
 ```shell
 npm install --save @react-oauth/google
@@ -158,8 +169,9 @@ npm install --save web3
 
 ### Wrapping component with `GoogleOAuthProvider` and `Auth0Provider`
 
-To use the Auth0 and Google SDK, we need to wrap our app with the `GoogleOAuthProvider` and `Auth0Provider` components. This component provides the
-Google `clientId` and the Auth0 `domain`, `clientId` and `authorizationParams` to the app.
+To use the Auth0 and Google SDK, we need to wrap our app with the `GoogleOAuthProvider` and
+`Auth0Provider` components. This component provides the Google `clientId` and the Auth0 `domain`,
+`clientId` and `authorizationParams` to the app.
 
 ```tsx
 import ReactDOM from "react-dom/client";
@@ -186,8 +198,8 @@ root.render(
 
 ### Initialization
 
-Once installed, your Web3Auth application needs to be initialized. Initialization is a multi-step process where we add all the config details for
-Web3Auth SDK:
+Once installed, your Web3Auth application needs to be initialized. Initialization is a multi-step
+process where we add all the config details for Web3Auth SDK:
 
 ##### Importing the packages
 
@@ -199,8 +211,8 @@ import { GoogleLogin, CredentialResponse, googleLogout } from "@react-oauth/goog
 import { useAuth0 } from "@auth0/auth0-react";
 ```
 
-Alongside the `Web3Auth` and `OpenloginAdapter` you need the above-mentioned packages from `@web3auth/base` for different initializations mentioned
-further in this guide.
+Alongside the `Web3Auth` and `OpenloginAdapter` you need the above-mentioned packages from
+`@web3auth/base` for different initializations mentioned further in this guide.
 
 ##### Instantiate the Web3Auth SFA Web SDK
 
@@ -211,7 +223,8 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { GoogleLogin, CredentialResponse, googleLogout } from "@react-oauth/google";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId =
+  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 const chainConfig = {
   chainId: "0x1",
@@ -237,12 +250,14 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 });
 ```
 
-Here, we're using the `chainConfig` property to set the `chainId` and `chainNamespace` among other parameters. The `chainId` and `chainNamespace` are
-the id and the namespace respectively of the chain you're connecting to. We've initialized them for EVM for this guide. You can find the list of
+Here, we're using the `chainConfig` property to set the `chainId` and `chainNamespace` among other
+parameters. The `chainId` and `chainNamespace` are the id and the namespace respectively of the
+chain you're connecting to. We've initialized them for EVM for this guide. You can find the list of
 available providers [here](/sdk/providers/) to select from.
 
-Additionally, sometimes you might face clogging in the network because the test network is a bit clogged at that point. To avoid this, we can use the
-property `rpcTarget` and pass over the URL of the node you want to connect to.
+Additionally, sometimes you might face clogging in the network because the test network is a bit
+clogged at that point. To avoid this, we can use the property `rpcTarget` and pass over the URL of
+the node you want to connect to.
 
 #### Initializing the Web3Auth SDK
 
@@ -315,7 +330,8 @@ Add this to your login page:
 
 #### Initializing the Web3Auth SDK
 
-The next step is to initialize the Web3Auth SDK. We now have all the parameters that are needed to call the `connect` method of the Web3Auth SDK.
+The next step is to initialize the Web3Auth SDK. We now have all the parameters that are needed to
+call the `connect` method of the Web3Auth SDK.
 
 ```tsx
 await web3authSfa.connect({
@@ -327,8 +343,8 @@ await web3authSfa.connect({
 
 :::info
 
-Since we are directly using Single Factor Auth SDK to log in, the Web3Auth `getUserInfo` function won't work. We need to get the user details directly
-from the `idToken`.
+Since we are directly using Single Factor Auth SDK to log in, the Web3Auth `getUserInfo` function
+won't work. We need to get the user details directly from the `idToken`.
 
 :::
 
@@ -354,7 +370,8 @@ The code for the example can be found
 
 ## Questions?
 
-Ask us on [Web3Auth Community Portal](https://web3auth.io/community/c/help-core-kit/core-kit-sfa-web/22).
+Ask us on
+[Web3Auth Community Portal](https://web3auth.io/community/c/help-core-kit/core-kit-sfa-web/22).
 
 ```
 
