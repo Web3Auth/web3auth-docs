@@ -711,6 +711,11 @@ const sidebars: SidebarsConfig = {
           label: "Single Factor Auth Flutter SDK",
           items: ["migration-guides/sfa-flutter-v1-to-v2"],
         },
+        {
+          type: "category",
+          label: "Single Factor Auth iOS SDK",
+          items: ["migration-guides/sfa-ios-v2-to-v4"],
+        },
       ],
     },
     // "going-live",
