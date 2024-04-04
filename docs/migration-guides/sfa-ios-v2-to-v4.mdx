@@ -11,16 +11,16 @@ sidebar_label: v2 to v4
 
 This migration guide provides steps for upgrading from version v2 to v4 of the Web3Auth
 SingleFactorAuth iOS SDK. The guide outlines breaking changes for the parameter type, and addition
-of new parameter in `SingleFactorAuthArgs` class.
+of new parameter in `SingleFactorAuthArgs` constructor.
 
 ## Changes in Detail
 
-### Return type update for methods
-
 In v4, we try to improve the developer experience by changing the return type for the `getKey`,
-adding new parameter for `SingleFactorAuthArgs` class.
+adding new parameter for `SingleFactorAuthArgs` constructor.
 
-#### `SingleFactorAuthArgs` method
+### Constructor changes
+
+#### `SingleFactorAuthArgs` class
 
 In v4, the `SingleFactorAuthArgs` construct now accepts a new required parameter `web3AuthClientId`,
 and the type of `network` is changed from `TorusNetwork` to `Web3AuthNetwork`.
@@ -33,7 +33,9 @@ let singleFactorAuthArgs = SingleFactorAuthArgs(
 let singleFactoreAuth = SingleFactorAuth(singleFactorAuthArgs: singleFactorAuthArgs)
 ```
 
-### `getKey` method
+### Return type update for method
+
+#### `getKey` method
 
 In v4, the `getKey` method will return the `TorusSFAKey` instead of `TorusKey`.
 
