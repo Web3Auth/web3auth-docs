@@ -6,8 +6,8 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.flutterQuickStart,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.SFA_FLUTTER_AUTH_SERVICE_DART,
-        files[hostedFileLinks.SFA_FLUTTER_AUTH_SERVICE_DART],
+        hostedFileLinks.SFA_FLUTTER_WEB3AUTH_SFA_DART,
+        files[hostedFileLinks.SFA_FLUTTER_WEB3AUTH_SFA_DART],
         "Quick Start",
       ),
     },
@@ -38,32 +38,32 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.createVerifier,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.SFA_FLUTTER_AUTH_SERVICE_DART,
-        files[hostedFileLinks.SFA_FLUTTER_AUTH_SERVICE_DART],
+        hostedFileLinks.SFA_FLUTTER_WEB3AUTH_SFA_DART,
+        files[hostedFileLinks.SFA_FLUTTER_WEB3AUTH_SFA_DART],
         "Verifier Creation",
       ),
     },
     {
       ...STEPS.initialization,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.SFA_FLUTTER_AUTH_SERVICE_DART,
-        files[hostedFileLinks.SFA_FLUTTER_AUTH_SERVICE_DART],
+        hostedFileLinks.SFA_FLUTTER_WEB3AUTH_SFA_DART,
+        files[hostedFileLinks.SFA_FLUTTER_WEB3AUTH_SFA_DART],
         "Initialize Web3Auth SFA",
       ),
     },
     {
       ...STEPS.authProviderLogin,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.SFA_FLUTTER_AUTH_SERVICE_DART,
-        files[hostedFileLinks.SFA_FLUTTER_AUTH_SERVICE_DART],
+        hostedFileLinks.SFA_FLUTTER_FIREBASE_DART,
+        files[hostedFileLinks.SFA_FLUTTER_FIREBASE_DART],
         "Auth Provider Login",
       ),
     },
     {
       ...STEPS.login,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.SFA_FLUTTER_AUTH_SERVICE_DART,
-        files[hostedFileLinks.SFA_FLUTTER_AUTH_SERVICE_DART],
+        hostedFileLinks.SFA_FLUTTER_FIREBASE_DART,
+        files[hostedFileLinks.SFA_FLUTTER_FIREBASE_DART],
         "Get Key",
       ),
     },
