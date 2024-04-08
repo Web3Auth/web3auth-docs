@@ -1,0 +1,13 @@
+```kotlin
+// checkout the Connect Blockchain > Ethereum > Android to get full code.
+private fun getBalance(): BigInteger? {
+  val publicAddress = credentials.address
+  val ethBalance: EthGetBalance = web3.ethGetBalance(publicAddress, DefaultBlockParameterName.LATEST).sendAsync().get()
+  println("Balance: ${ethBalance.balance}")
+  return ethBalance.balance
+}
+
+// Setup UI and event handlers
+val getBalanceButton = findViewById<Button>(R.id.getBalanceButton)
+getBalanceButton.setOnClickListener { getBalance() }
+```

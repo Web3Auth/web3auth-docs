@@ -1,0 +1,45 @@
+---
+title: SFA iOS SDK - v2 to v4
+displayed_sidebar: sdk
+description: "SFA iOS SDK - v2 to v4 | Documentation - Web3Auth"
+sidebar_label: v2 to v4
+---
+
+# Migration Guide from v2 to v4 for SFA iOS SDK
+
+## Overview
+
+This migration guide provides steps for upgrading from version v2 to v4 of the Web3Auth
+SingleFactorAuth iOS SDK. The guide outlines breaking changes for the parameter type, and addition
+of new parameter in `SingleFactorAuthArgs` constructor.
+
+## Changes in Detail
+
+In v4, we try to improve the developer experience by changing the return type for the `getKey`,
+adding new parameter for `SingleFactorAuthArgs` constructor.
+
+### Constructor changes
+
+#### `SingleFactorAuthArgs` class
+
+In v4, the `SingleFactorAuthArgs` construct now accepts a new required parameter `web3AuthClientId`,
+and the type of `network` is changed from `TorusNetwork` to `Web3AuthNetwork`.
+
+```swift
+let singleFactorAuthArgs = SingleFactorAuthArgs(
+  web3AuthClientId: "<Your Web3Auth Client Id>",
+  network: Web3AuthNetwork.SAPPHIRE_MAINNET
+)
+let singleFactoreAuth = SingleFactorAuth(singleFactorAuthArgs: singleFactorAuthArgs)
+```
+
+### Return type update for method
+
+#### `getKey` method
+
+In v4, the `getKey` method will return the `TorusSFAKey` instead of `TorusKey`.
+
+```swift
+let loginParams = LoginParams(verifier: "YOUR_VERIFIER_NAME", verifierId: "YOUR_VERIFIER_ID", idToken: "YOUR_ID_TOKEN")
+let torusKey: TorusSFAKey = try await singleFactoreAuth.getKey(loginParams: loginParams)
+```

@@ -122,6 +122,16 @@ const sidebars: SidebarsConfig = {
     "features/wallet-aggregation",
     "features/whitelabel",
     {
+      type: "html",
+      value: "<span class='sidebarHeading'>Additional Reading</span>",
+      defaultStyle: true,
+    },
+    {
+      type: "link",
+      label: "Troubleshooting",
+      href: "/troubleshooting",
+    },
+    {
       type: "category",
       label: "Contribute",
       items: ["contribute/contribute", "contribute/bug-bounty"],
@@ -290,6 +300,19 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/zkevm/react-native",
                 "connect-blockchain/evm/zkevm/flutter",
                 "connect-blockchain/evm/zkevm/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "Astar zKyoto",
+              items: [
+                "connect-blockchain/evm/zkyoto/zkyoto",
+                "connect-blockchain/evm/zkyoto/web",
+                "connect-blockchain/evm/zkyoto/android",
+                "connect-blockchain/evm/zkyoto/ios",
+                "connect-blockchain/evm/zkyoto/react-native",
+                "connect-blockchain/evm/zkyoto/flutter",
+                "connect-blockchain/evm/zkyoto/unity",
               ],
             },
             {
@@ -687,6 +710,11 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Single Factor Auth Flutter SDK",
           items: ["migration-guides/sfa-flutter-v1-to-v2"],
+        },
+        {
+          type: "category",
+          label: "Single Factor Auth iOS SDK",
+          items: ["migration-guides/sfa-ios-v2-to-v4"],
         },
       ],
     },
