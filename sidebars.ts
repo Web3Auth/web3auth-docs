@@ -1882,6 +1882,27 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "category",
+      label: "MPC Core Kit iOS SDK",
+      items: [
+        "sdk/core-kit/mpc-core-kit-ios/mpc-core-kit-ios",
+        "sdk/core-kit/mpc-core-kit-ios/install",
+        "sdk/core-kit/mpc-core-kit-ios/initialize",
+        "sdk/core-kit/mpc-core-kit-ios/authentication",
+        "sdk/core-kit/mpc-core-kit-ios/usage",
+        {
+          type: "link",
+          label: "Support Forum",
+          href: "https://github.com/Web3Auth/mpc-core-kit-swift/releases",
+        },
+        {
+          type: "link",
+          label: "Release Notes",
+          href: "https://github.com/Web3Auth/mpc-core-kit-swift/releases",
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "tKey iOS SDK",
       items: [
         "sdk/infra/tkey-ios/tkey-ios",

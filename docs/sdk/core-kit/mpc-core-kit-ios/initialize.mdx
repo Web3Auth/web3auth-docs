@@ -1,0 +1,105 @@
+---
+title: "Initializing MPC Core Kit iOS SDK"
+sidebar_label: "Initialize"
+displayed_sidebar: sdk
+description: "Web3Auth MPC Core Kit iOS SDK - Initialize | Documentation - Web3Auth"
+---
+
+import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
+import Web3AuthOptions from "@site/src/common/sdk/pnp/web/_web3authcore-options.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+After Installation, the next step to use Web3Auth MPC Core Kit iOS is to initialize the SDK.
+
+## Instantiating MpcCoreKit
+
+### Creating a class to conform ILocalStorage
+
+MpcCoreKit takes `ILocalStorage` as an input parameter. The package uses it to store and retrieve
+the device factor. `ILocalStorage` being a `protocol` gives us the freedom to choose the local
+storage of our choice.
+
+Here we are using `UserDefaults`, but you can choose the storage of your choice.
+
+```swift
+import Foundation
+import mpc_core_kit_swift
+
+class UserStorage : ILocalStorage {
+    func get(key: String) async throws -> Data {
+        guard let data = UserDefaults().value(forKey: key) as? Data else  {
+            return Data()
+        }
+        return data
+    }
+
+    func set(key: String, payload: Data) async throws {
+        UserDefaults().setValue(payload, forKey: key)
+    }
+}
+
+let storage = UserStorage()
+```
+
+### Creating MpcCoreKit instance
+
+Once, we have created a class to conform `ILocalStorage` we are good to create an instance of
+`MpcCoreKit`. If you want to disable the hashed cloud factor, you can set `disableHashFactor` to
+true during the initialization.
+
+```swift
+ let mpcCoreKit = MpcCoreKit(
+    web3AuthClientId: "Your Web3Auth Client ID" // Get it from Web3Auth Dashboard,
+    web3AuthNetwork: .SAPPHIRE_MAINNET,
+    localStorage: UserStorage()
+)
+```
+
+#### Arguments
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter           | Description                                                                                                                                                                                                                                                 |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `web3AuthClientId`  | Your Web3Auth Client Id from [Web3Auth Dashboard](https://dashboard.web3auth.io/).                                                                                                                                                                          |
+| `web3AuthNetwork`   | The Web3auth network to be used for MPC Wallet Management. Supported values are `Web3AuthNetwork.SAPPHIRE_MAINNET`, `Web3AuthNetwork.SAPPHIRE_DEVNET`, `Web3AuthNetwork.MAINNET`, `Web3AuthNetwork.TESTNET`, `Web3AuthNetwork.CYAN`, `Web3AuthNetwork.AQUA` |
+| `disableHashFactor` | Defines whether to use hashed cloud factor or not. Default value is `false`.                                                                                                                                                                                |
+| `localStorage`      | A class which conforms to `ILocalStorage`. Used by the SDK internally to store and retrieve device share.                                                                                                                                                   |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```swift
+public struct MpcCoreKit {
+ public init(web3AuthClientId : String , web3AuthNetwork: Web3AuthNetwork, disableHashFactor : Bool = false, localStorage: ILocalStorage ) {
+        self.option = .init(disableHashFactor: disableHashFactor , Web3AuthClientId: web3AuthClientId, network: web3AuthNetwork)
+        self.appState = CoreKitAppState.init()
+
+        self.network = web3AuthNetwork
+
+        self.torusUtils = TorusUtils(
+            enableOneKey: true,
+            network: self.network.toTorusNetwork(),
+            clientId: web3AuthClientId
+            )
+
+        self.nodeDetailsManager = NodeDetailManager(network: self.network.toTorusNetwork())
+
+        self.coreKitStorage = .init(storeKey: self.storeKey, storage: localStorage)
+
+    }
+}
+```
+
+</TabItem>
+</Tabs>
