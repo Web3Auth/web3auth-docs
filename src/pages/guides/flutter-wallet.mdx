@@ -9,6 +9,8 @@ date: April 5, 2024
 author: Web3Auth Team
 ---
 
+import SEO from "@site/src/components/SEO";
+
 <SEO
   title="Build your own Chain Agnostic Web3 wallet in Flutter"
   description=" Learn how to use Web3Auth PnP Flutter SDK to build Chain Agnostic Web3 wallet in Flutter"
@@ -39,4 +41,166 @@ Web3Auth Dashboard.
 ## Integrating Web3Auth in Flutter
 
 Once, you have setup the Web3Auth Dashboard, and created a new project, it's time to integrate
-Web3Auth in Flutter. For
+Web3Auth in Flutter. For the implementation, we'll use the "web3auth_flutter package". This package
+facilitates integration with Web3Auth. This way you can easily manage embedded wallet in your
+Flutter application.
+
+### Installation
+
+To install the web3auth_flutter package package, you have two options. You can either manually add
+the package in the `pubspec.yaml` file, or you can use the `flutter pub add` command.
+
+### Initialization
+
+After successfully installing the package, the next step is to initialize Web3Auth in your Flutter
+app. This sets up the necessary configurations using Client Id and prepares Web3Auth. Learn more
+about Web3Auth initiliation.
+
+```dart
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Addditional code
+
+  final Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl =
+        Uri.parse('w3aexample://com.example.flutter_solana_example/auth');
+  } else {
+    redirectUrl = Uri.parse('com.web3auth.fluttersolanasample://auth');
+  }
+
+  await Web3AuthFlutter.init(
+    Web3AuthOptions(
+      clientId:
+          "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+      network: Network.sapphire_mainnet,
+      redirectUrl: redirectUrl,
+      whiteLabel: WhiteLabelData(
+        appName: "Solana Web3Auth Flutter",
+        mode: ThemeModes.dark,
+      ),
+    ),
+  );
+
+  await Web3AuthFlutter.initialize();
+
+  runApp(const MainApp());
+}
+```
+
+### Session Management
+
+To check whether the user is authenticated, you can use the `getPrivateKey` or `getEd25519PrivKey`
+method. For a user already authenticated, the result would be a non-empty `String`. You can navigate
+to different views based on the result. If the user is already authenticated, we'll navigate them to
+`HomeScreen`. In case of no active session, we'll navigate to `LoginScreen` to authenticate again.
+Learn more about Web3Auth session management.
+
+```dart
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  late final Future<String> privateKeyFuture;
+  @override
+  void initState() {
+    super.initState();
+    privateKeyFuture = Web3AuthFlutter.getEd25519PrivKey();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: FutureBuilder<String>(
+        future: privateKeyFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              if (snapshot.data!.isNotEmpty) {
+                return const HomeScreen();
+              }
+            }
+            return const LoginScreen();
+          }
+          return const Center(
+            child: CircularProgressIndicator.adaptive(),
+          );
+        },
+      ),
+    );
+  }
+}
+```
+
+### Authentication
+
+If the user is not authenticated, you should utilize the `login` method. For the Wallet, we will add
+two login options, Google, and Email Passwordless login. In Web3Auth, you can choose between a
+Single Page Authentication flow or a Regular Web Application flow. For this guide, we'll be using a
+Single Page Authentication flow. We'll create a helper function, `_login` inside `LoginScreen`. The
+login method is pretty straightforward in Web3Auth and takes `LoginParams` as input. After
+successfully logging in, we'll navigate the user to `HomeScreen`.
+
+```dart
+class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
+  // Additional Code
+
+  @override
+  void didChangeAppLifecycleState(final AppLifecycleState state) {
+    // This is important to trigger the user cancellation on Android.
+    if (state == AppLifecycleState.resumed) {
+      Web3AuthFlutter.setResultUrl();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Login View
+  }
+
+  Future<void> _login(
+    BuildContext context,
+    Provider loginProvider,
+  ) async {
+    try {
+      final bool isEmailPasswordLessLogin =
+          loginProvider == Provider.email_passwordless;
+
+      if (isEmailPasswordLessLogin) {
+        if (!formKey.currentState!.validate()) {
+          return;
+        }
+      }
+
+      final userEmail = textEditingController.text;
+
+      await Web3AuthFlutter.login(
+        LoginParams(
+          loginProvider: loginProvider,
+          mfaLevel: MFALevel.DEFAULT,
+          extraLoginOptions: isEmailPasswordLessLogin
+              ? ExtraLoginOptions(login_hint: userEmail)
+              : null,
+        ),
+      );
+
+      if (context.mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) {
+            return const HomeScreen();
+          }),
+        );
+      }
+    } catch (e, _) {
+      if (context.mounted) {
+        showInfoDialog(context, e.toString());
+      }
+    }
+  }
+}
+```
