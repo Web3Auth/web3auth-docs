@@ -6,7 +6,6 @@ type: guide
 tags: [web, "@web3auth/no-modal", "@web3auth/modal", browser extension, chrome, react, ethereum]
 date: January 18, 2023
 author: Web3Auth Team
-order: 17
 communityPortalTopicId: 46
 ---
 
@@ -26,7 +25,8 @@ import Tabs from "@theme/Tabs";
   slug="/guides/browser-extension"
 />
 
-This guide will walk you through the process of building a browser extension with Web3Auth Plug and Play No Modal SDK.
+This guide will walk you through the process of building a browser extension with Web3Auth Plug and
+Play No Modal SDK.
 
 Repository:
 [Google Chrome Browser Extension Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/chrome-extension-no-modal-example)
@@ -45,17 +45,26 @@ The extension should now be installed and you can click on the extension icon to
 
 End product of this guide:
 
-<img style={{ display: "block", maxHeight: "400px", margin: "20px auto" }} alt="" src={ExtensionImage} />
+<img
+  style={{ display: "block", maxHeight: "400px", margin: "20px auto" }}
+  alt=""
+  src={ExtensionImage}
+/>
 
-Once logged in you can have all the features Web3Auth provides and along with blockchain libraries like `ethers.js`, `web3.js`, etc you can interact
-with the blockchain.
+Once logged in you can have all the features Web3Auth provides and along with blockchain libraries
+like `ethers.js`, `web3.js`, etc you can interact with the blockchain.
 
-<img style={{ display: "block", maxHeight: "400px", margin: "20px auto" }} alt="" src={ExtensionLoggedInImage} />
+<img
+  style={{ display: "block", maxHeight: "400px", margin: "20px auto" }}
+  alt=""
+  src={ExtensionLoggedInImage}
+/>
 
 ## How it works?
 
-We can integrate `@web3auth/no-modal` as well as `@web3auth/modal` to build a browser extension with Web3Auth. You can read more about both the SDKs
-in the [SDKs](/sdk/pnp/web) section. The login flow of the user is as follows:
+We can integrate `@web3auth/no-modal` as well as `@web3auth/modal` to build a browser extension with
+Web3Auth. You can read more about both the SDKs in the [SDKs](/sdk/pnp/web) section. The login flow
+of the user is as follows:
 
 ![Web3Auth Core - Social Login Flow](/images/implicit-flow.svg)
 
@@ -75,8 +84,9 @@ We will be building the Chrome extension with `create-react-app` in this guide.
 
 :::note
 
-Once you have the build folder ready for the extension, you will need to go to `chrome://extensions/` and load the unpacked extension from the build
-folder. That will give you the extension ID which you would need to add to the Web3Auth Dashboard.
+Once you have the build folder ready for the extension, you will need to go to
+`chrome://extensions/` and load the unpacked extension from the build folder. That will give you the
+extension ID which you would need to add to the Web3Auth Dashboard.
 
 Add `chrome-extension://<extension-id>` to the Whitelisted URLs in the Web3Auth Dashboard.
 
@@ -95,7 +105,8 @@ values={[
 >
 <TabItem value="no-modal">
 
-Install `@web3auth/no-modal`, `@web3auth/openlogin-adapter`, `@web3auth/ethereum-provider` & `@web3auth/base`
+Install `@web3auth/no-modal`, `@web3auth/openlogin-adapter`, `@web3auth/ethereum-provider` &
+`@web3auth/base`
 
 ```bash npm2yarn
 npm install @web3auth/no-modal @web3auth/base @web3auth/openlogin-adapter @web3auth/ethereum-provider
@@ -135,12 +146,14 @@ import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
 
 #### Fixing Webpack 5 issues
 
-While using create-react-app, you may run into issues building. This is because NodeJS polyfills are not included in the latest version of Webpack 5.
-To solve this, please have a look at this [troubleshooting page](/troubleshooting/webpack-issues) where we have added the resolution.
+While using create-react-app, you may run into issues building. This is because NodeJS polyfills are
+not included in the latest version of Webpack 5. To solve this, please have a look at this
+[troubleshooting page](/troubleshooting/webpack-issues) where we have added the resolution.
 
 ### Initialization
 
-Create the Web3Auth instance and configure the Openlogin adapter, in case of no-modal SDK, as per your requirements.
+Create the Web3Auth instance and configure the Openlogin adapter, in case of no-modal SDK, as per
+your requirements.
 
 <Tabs
 defaultValue="modal"
@@ -152,7 +165,8 @@ values={[
 <TabItem value="no-modal">
 
 ```tsx title="src/App.tsx"
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId =
+  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0x1",
@@ -185,7 +199,8 @@ await web3auth.init();
 <TabItem value="modal">
 
 ```tsx title="src/App.tsx"
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId =
+  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0x1",
@@ -261,8 +276,8 @@ await web3auth.logout();
 ## Example code
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth Browser Extension](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/chrome-extension-no-modal-example). Check it
-out and try running it locally yourself!
+[Web3Auth Browser Extension](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/chrome-extension-no-modal-example).
+Check it out and try running it locally yourself!
 
 ## Questions?
 
