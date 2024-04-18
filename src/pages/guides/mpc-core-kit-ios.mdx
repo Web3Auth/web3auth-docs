@@ -1,0 +1,842 @@
+---
+title: Build a MPC wallet in iOS
+image: "guides/banners/mpc-wallet-ios.png"
+description: Learn how to use Web3Auth MPC Core-kit ios SDK to build a MPC wallet in iOS
+type: guide
+tags: [ios, corekit, mpc, google, ethereum]
+date: April 17, 2024
+author: Web3Auth Team
+---
+
+import SEO from "@site/src/components/SEO";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<SEO
+  title="Build a MPC wallet in iOS"
+  description="Learn how to use Web3Auth MPC Core-kit ios SDK to build a MPC wallet in iOS"
+  image="https://web3auth.io/docs/guides/banners/mpc-wallet-ios.png"
+  slug="/guides/mpc-core-kit-ios"
+/>
+
+In this guide, we'll talk about how we can use Web3Auth to build your MPC wallet in iOS for
+Ethereum.
+
+As an overview, the app is quite simple, with functionality to log in, display user details, add new
+MPC factor, and perform blockchain interactions. The signing of the blockchain transactions is done
+through the MPC wallet. You can check out the infrastructure docs,
+["Web3Auth MPC Wallet Infrastructure"](/docs/infrastructure/infrastructure) for a high-level
+overview of the Web3Auth MPC architecture and implementation. For those who want to skip straight to
+the code, you can find it on [GitHub](https://github.com/Web3Auth/web3auth-core-kit-examples/).
+
+## How to set up Web3Auth Dashboard
+
+If you haven't already, you should start by setting up Web3Auth Dashboard. It's pretty simple.
+
+Head to [Web3Auth's documentation](/docs/dashboard-setup) for more on setting up Web3Auth Dashboard.
+
+## Integrating MPC Core Kit in iOS
+
+Once, you have set up the Web3Auth Dashboard, and created a new project, it's time to integrate
+Web3Auth's MPC Core Kit in iOS. For the implementation, we'll use the "mpc-core-kit-swift" package.
+This package facilitates integration with Web3Auth MPC infrastructure. This way you can easily
+manage the MPC wallet in your iOS application.
+
+### Installation
+
+To install the mpc-core-kit-swift package, you have two options. You can either manually add the
+package in the Pod file, or you can use the Swift Package Manager - SPM.
+
+<Tabs defaultValue = "cocoapods"
+  values={[
+    { label: "Cocoapods", value: "cocoapods", },
+    { label: "Swift Package Manager", value: "spm", },
+  ]}
+>
+
+<TabItem value="cocoapods">
+To install the Web3Auth MPC Core Kit SDK  using Cocoapods, open the Podfile, and add the Web3Auth pod:
+
+```console
+pod 'Web3Auth MPC Core Kit SDK', '~> 1.0.0'
+```
+
+Once added, use pod install command to download the Web3Auth MPC Core Kit SDK dependency.
+
+</TabItem>
+
+<TabItem value="spm">
+In Xcode, with your app project open, navigate to File > Add Package Dependencies. When prompted, add the
+Web3Auth MPC Core Kit SDK repository:
+
+```console
+https://github.com/Web3Auth/mpc-core-kit-swift
+```
+
+From the Dependency Rule dropdown, select "Exact Version" and enter 1.0.0 as the version. When
+finished, Xcode will automatically begin resolving and downloading your dependencies in the
+background.
+
+</TabItem>
+</Tabs>
+
+### Initialization
+
+After successfully installing the package, the next step is to initialize the MPC Core Kit in your
+iOS app. It sets up the necessary configurations using Web3Auth Client ID and prepares MpcCoreKit
+for usage. [Learn more about Web3Auth initiliation](/docs/sdk/core-kit/mpc-core-kit-ios/initialize).
+
+Given the sample follows MVVM architecture, we'll create a `MainViewModel` for the application.
+Create a new method, `initialize`, to initialize the `MpcCoreKit` and other dependencies.
+
+`MpcCoreKit` takes `ILocalStorage` as a parameter. The SDK uses it to store and retrieve the device
+factor. `ILocalStorage` being a `protocol` gives us the freedom to choose the local storage of our
+choice.
+
+Here we are using `UserDefaults` but you can choose the storage of your choice.
+
+```swift
+class UserStorage : ILocalStorage {
+    func get(key: String) async throws -> Data {
+        print(key)
+        guard let data = UserDefaults().value(forKey: key) as? Data else  {
+            return Data()
+        }
+        return data
+    }
+
+    func set(key: String, payload: Data) async throws {
+        UserDefaults().setValue(payload, forKey: key)
+    }
+}
+```
+
+Once we created the `UserStorage` we can now use it initialize the `MpcCoreKit`.
+
+```swift
+class MainViewModel: ObservableObject {
+    // Additional parameters and variables
+
+    private var mpcCoreKit: MpcCoreKit!
+    private var ethereumClient: EthereumClient!
+
+    // initialize method can be used to initialize the dependencies and MainViewModel
+    // by using onViewAppear
+    func initialize() {
+        mpcCoreKit = MpcCoreKit(
+            // Get the Web3Auth Client Id from the dashbaord
+            web3AuthClientId: "Your Web3Auth Client Id",
+            web3AuthNetwork: .SAPPHIRE_MAINNET,
+            localStorage: UserStorage()
+        )
+
+        // Additional initialization code
+    }
+
+    // Additional code
+}
+```
+
+### Authentication
+
+For the authentication, you should utilize the `loginWithOAuth` or `loginWithJWT` method. For the
+Wallet, we will use Google login. In MPC Core Kit, you can choose between a Single Page
+Authentication flow - `loginWithOauth` or a Regular Web Application flow - `loginWithJWT`. For this
+guide, we'll be using a Single Page Authentication flow. We'll create a helper method,
+`loginWithOAuth` for `MainViewModel`. The method is pretty straightforward in MpcCoreKit, it takes
+`loginProvider`, `clientId` which is Google's client id. and `verifier`. After successfully logging
+in, we'll navigate the user to `HomeView`.
+
+After successful login, we'll also check the `requiredFactors`. If the value is greater than zero,
+that means the SDK is in read mode, and the MPC threshold has not been satisfied. For such cases,
+you can show the recovery view.
+
+Learn more about MpcCoreKit's [loginWithOAuth parameters](/docs/sdk/pnp/flutter/usage#arguments).
+
+```swift
+class MainViewModel: ObservableObject {
+    // This isLoggedIn variable is used to switch between views.
+    // If the isLoggedIn is true, we show HomeView, or else we show
+    // LoginView.
+    @Published var isLoggedIn: Bool = false
+
+    // The isRecoveryRequired variable is used to show the recovery view.
+    // If the SDK is in read mode, that means the MPC factor threshold has not been met,
+    // and we'll show a recovery view.
+    @Published var isRecoveryRequired: Bool = false
+
+    // Additional code
+
+    func loginWithOAuth() {
+        Task {
+            do {
+                let result = try await mpcCoreKit.loginWithOAuth(
+                    loginProvider: .google,
+                    clientId: "Your google client id",
+                    verifier: "w3a-google-demo"
+
+                )
+
+                DispatchQueue.main.async {
+                    self.isRecoveryRequired = result.requiredFactors > 0
+                }
+
+                try await login()
+
+            } catch let error {
+                DispatchQueue.main.async {
+                    self.isRecoveryRequired.toggle()
+                }
+                print(error.localizedDescription)
+            }
+        }
+    }
+}
+```
+
+Once, we have created the `loginWithOAuth` method, we'll use the `isLoggedIn` and
+`isRecoveryRequired` in the `ContentView` to define the navgation for the application.
+
+```swift
+struct ContentView: View {
+    @StateObject var viewModel: MainViewModel
+
+    var body: some View {
+        NavigationView {
+            if viewModel.isLoggedIn {
+                if viewModel.isRecoveryRequired {
+                    RecoveryView(viewModel: viewModel)
+                } else {
+                    HomeView(viewModel: viewModel)
+                }
+
+            } else if viewModel.isRecoveryRequired {
+                RecoveryView(viewModel: viewModel)
+            } else {
+                LoginView(viewModel: viewModel)
+            }
+        }
+    }
+}
+```
+
+## Set up MPC Core Kit Operations
+
+Once we have successfully authenticated the user, we'll give user options to create a new factor,
+delete a factor, reset account, enable MFA, and input factor. These operations are important when
+building a MPC wallet.
+
+### Enable MFA
+
+Let's add a new option to enable the MFA. By default, the SDK initializes with 2/2 flow, where the
+first factor is the OAuth, and the second factor is the hashed cloud key. When a user logs in for
+the first time, the SDK internally creates a new hashed key, so that the user can access the account
+the next time they authenticate.
+
+The above flow is semi-custodial, to make it custodial, we will use `MpcCoreKit.enableMFA` function.
+Whenever the user enables the MFA, the SDK creates a device factor and a recovery factor. Along with
+that it also deletes the hashed key factor which makes it fully custodial.
+
+The option to create the recovery factor while enabling MFA is completely optional. Learn more about
+the enableMFA.
+
+Now that we have understood the usage of enable MFA, let's create a new `enableMFA` function for the
+`MainViewModel`. Once, MFA is enabled, we'll also refresh the factor pubs. Factor pubs are the
+PubKey for the factor keys used for account.
+
+```swift
+class MainViewModel: ObservableObject {
+    // Used to display on PubKeys on the UI.
+    @Published var factorPubs: [String] = []
+
+    func enableMFA() {
+        Task {
+            do {
+                _ = try await mpcCoreKit.enableMFA()
+                refreshFactorPubs()
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    // Refreshes the Factor PubKey to be shown on the UI.
+    private func refreshFactorPubs() {
+        Task {
+            do {
+                let localFactorPubs = try await mpcCoreKit.getAllFactorPubs()
+                DispatchQueue.main.async {
+                    self.factorPubs = localFactorPubs
+                }
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+    }
+}
+```
+
+### Create new Factor
+
+After adding the functionality to enable MFA, let's see how we can create a new factor for the MPC.
+To create a new factor for the account is as simple as calling the `MpcCoreKit.createFactor` method.
+
+Let's create a new function, `createNewTssFactor` for `MainViewModel`. The method returns the seed
+phrase/mnemonics, which helps for recovery in the future. For the sample, we are creating a factor
+of type recovery, but it gives you the freedom to decide the factor type. Read more about
+`createFactor`.
+
+```swift
+class MainViewModel: ObservableObject {
+    func createNewTssFactor() {
+        Task {
+            do {
+                let factor = try await mpcCoreKit.createFactor(
+                    tssShareIndex: .RECOVERY,
+                    factorKey: nil,
+                    factorDescription: .SeedPhrase
+                )
+
+                guard let seedPhrase = mpcCoreKit.keyToMnemonic(
+                    factorKey: factor,
+                    format: "mnemonic"
+                ) else {
+                    return
+                }
+
+                print(seedPhrase)
+
+                UIPasteboard.general.string = seedPhrase
+                refreshFactorPubs()
+            }
+        }
+    }
+}
+```
+
+### Delete Factor
+
+After adding the option to create a factor, let's check out how we can give the option to delete the
+factor for the account. Deleting factors comes in handy if the user feels like their factor is
+compromised.
+
+When deleting factors, one should proceed with caution. If the number of factors is less than 2, the
+user won't be able to recover the account since MPC has a threshold of 2. To delete a factor, we can
+utilize the MpcCoreKit's `deleteFactor` method.
+
+To delete the factor, we can either use the PubKey for the factor key or the factor key itself.
+Let's add a function, `deleteFactor` for `MainViewModel`.
+
+```swift
+class MainViewModel: ObservableObject {
+    func deleteFactor(factorPub: String) {
+        Task {
+            do {
+                try await mpcCoreKit.deleteFactor(deleteFactorPub: factorPub)
+                refreshFactorPubs()
+
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+    }
+}
+```
+
+### Input Factor
+
+After adding the functionality to enable MFA and create a new factor, let's cover how to recover the
+account using that factor. As discussed earlier, there should be at least two factors to satisfy the
+threshold and access the account. Let's consider a scenario where the user logs into a new device.
+Since it's a new device, it will not have the device factor. In this case, the threshold will not be
+satisfied, and the user won't be able to access the account.
+
+For such cases, we can use the input factor. Considering that the user has securely stored the seed
+phrase/mnemonics of the recovery factor, they can use it to recover the account and satisfy the
+threshold.
+
+Let's create a new method, `recoverUsingSeedPhrase` for `MainViewModel`. The method will take a seed
+phrase as an input. To input a factor, we can utilize the `MpcCoreKit.inputFactor`. Since
+`inputFactor` takes the hex of the factor key, we can utilize the MpcCoreKit helper method
+`mnemonicToKey` to retrieve the factor key hex.
+
+```swift
+class MainViewModel: ObservableObject {
+    func recoverUsingSeedPhrase(seedPhrase: String) {
+        Task {
+            do {
+                guard let factorKey = mpcCoreKit.mnemonicToKey(
+                    shareMnemonic: seedPhrase,
+                    format: "mnemonic"
+                ) else {
+                    return
+                }
+
+                try await mpcCoreKit.inputFactor(
+                    factorKey: factorKey
+                )
+
+                DispatchQueue.main.async {
+                    self.isRecoveryRequired.toggle()
+                }
+
+                try await login()
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+    }
+}
+```
+
+### Reset Account
+
+Sometimes, there can be cases in which a user has deleted all the factors or doesn't remember the
+seed phrase for the recovery factor. In such cases, `resetAccount` method comes in handy. One should
+proceed with caution as a last resort. After resetting, the account is forever lost. A new account
+is created upon the next login.
+
+Resetting an account is as simple as invoking `MpcCoreKit.resetAccount`. After resetting, we'll
+navigate user to the login screen for authentication.
+
+```swift
+class MainViewModel: ObservableObject {
+    func resetAccount() {
+        Task {
+            do {
+                try await mpcCoreKit.resetAccount()
+                DispatchQueue.main.async {
+                    self.isRecoveryRequired.toggle()
+                }
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+    }
+}
+```
+
+## Blockchain Interactions
+
+Once we have setup MpcCoreKit operations, the next step is to setup chain interactions for retrieve
+wallet address, signing message, signing transaction. For Blockchain interactions, Web3Auth provides
+[web3-swift-mpc-provider](https://github.com/tkey/web3-swift-mpc-provider). This package gives
+access to tss signing capabilities to be used with mpc-core-kit-swift. This comes in handy by
+providing you with a standard way of retriving user's address and interacting with blockchain. As of
+now, it only supports Ethereum.
+
+### Installation
+
+To install the web3-swift-mpc-provider package, you have two options. You can either manually add
+the package in the Pod file, or you can use the Swift Package Manager - SPM.
+
+<Tabs defaultValue = "cocoapods"
+  values={[
+    { label: "Cocoapods", value: "cocoapods", },
+    { label: "Swift Package Manager", value: "spm", },
+  ]}
+>
+
+<TabItem value="cocoapods">
+To install the Web3Auth Web3 Swift MPC Provider SDK  using Cocoapods, open the Podfile, and add the Web3 Swift MPC Provider pod:
+
+```console
+pod 'Web3 Swift MPC Provider', '~> 1.0.0'
+```
+
+Once added, use pod install command to download the Web3Auth's Web3 Swift MPC Provider SDK
+dependency.
+
+</TabItem>
+
+<TabItem value="spm">
+In Xcode, with your app project open, navigate to File > Add Package Dependencies. When prompted, add the
+Web3Auth's Web3 Swift MPC Provider repository:
+
+```console
+https://github.com/tkey/web3-swift-mpc-provider
+```
+
+From the Dependency Rule dropdown, select "Exact Version" and enter 1.0.0 as the version. When
+finished, Xcode will automatically begin resolving and downloading your dependencies in the
+background.
+
+</TabItem>
+</Tabs>
+
+### Retreive Wallet Address
+
+After successful installation, the first step would be to retrieve the address for the MPC wallet.
+It can be easily achieved using helper extensions from Web3 Swift MPC Provider SDK.
+
+Let's create a new variable inside `MainViewModel` to hold the value of the address upon successful
+login. We'll update the private method `login` to retrieve the address and update the variable.
+
+```swift
+import MPCEthereumProvider
+
+class MainViewModel: ObservableObject {
+    var publicAddress: String!
+
+    private func login() async throws {
+
+        let address = mpcCoreKit.address
+
+        publicAddress = address.asString()
+        refreshFactorPubs()
+        toggleIsLoggedIn()
+    }
+}
+```
+
+### Sign Message
+
+Once we have successfully retrieved the wallet address, let's check out how to sign a message in the
+MPC wallet. For signing the message, we'll use the `signMessage` extension method. Let's create a
+new function, `signMessage` for `MainViewModel` which returns the hex value of the signature upon
+success.
+
+```swift
+class MainViewModel: ObservableObject {
+     func signMessage(onSigned: @escaping (_ signedMessage: String?, _ error: String?) -> ()){
+            Task {
+                do {
+                    let signature = try mpcCoreKit.signedMessage(
+                        data: "0x013"
+                    )
+                    onSigned(signature.toHexString(), nil)
+                } catch let error  {
+                    onSigned(nil, error.localizedDescription)
+                }
+            }
+        }
+}
+```
+
+The above method returns the ECDSA signature, which is EIP 191 compatible.
+[Learn more about EIP 191](https://eips.ethereum.org/EIPS/eip-191).
+
+### Send transaction
+
+After successfully adding functionality to sign the message, let's look at how to sign and submit
+transactions on the blockchain. For simplicity, we'll demonstrate the self-transfer of ETH. The
+general implementation of send transaction can be used with any EVM transaction.
+
+Before adding functionality to sign the transaction, we must understand that preparing an Ethereum
+transaction requires additional fields such as nonce, gas, and gas prices. Let's create a helper
+class, `EthereumClient`. This class will be responsible for retrieving nonce, gas, and gas prices
+and submitting transactions on the chain. To interact with blockchain, we'll use
+[web3 package](https://github.com/argentlabs/web3.swift).
+
+The `EthereumHttpClient` used for chain interactions will require the chainId and RPC. For this
+guide, we will use Ethereum Sepolia. You can use any EVM chain of your choice. For production,
+please use the paid RPC to avoid network congestion.
+
+```swift
+import Foundation
+import Foundation
+import web3
+import BigInt
+
+struct EthereumClient {
+    let web3Client: EthereumHttpClient!
+    var networkId: String = "11155111"
+
+    init() {
+        self.web3Client = EthereumHttpClient(
+            url: URL(string: "https://1rpc.io/sepolia")!,
+            network: .fromString(networkId)
+        )
+    }
+
+    func getNonce(address: EthereumAddress) async throws -> Int{
+        do {
+           let nonce = try await web3Client.eth_getTransactionCount(
+                address: address, block: .Latest
+            )
+            return nonce + 1
+        } catch let error {
+            throw error
+        }
+    }
+
+    func getGasPrice() async throws -> BigUInt {
+        do {
+            let gasPrice = try await web3Client.eth_gasPrice()
+            return gasPrice
+        } catch let error {
+            throw error
+        }
+    }
+
+    func getGasLimit(transaction: EthereumTransaction) async throws -> BigUInt {
+        do {
+            let gasLimit = try await web3Client.eth_estimateGas(transaction)
+            return gasLimit
+        } catch let error {
+            throw error
+        }
+    }
+
+    func broadcastSignedTransaction(transaction: SignedTransaction) async throws -> String {
+        do {
+            guard let transactionHex = transaction.raw?.web3.hexString else {
+                throw EthereumClientError.encodeIssue
+            }
+
+            let data = try await web3Client.networkProvider.send(
+                method: "eth_sendRawTransaction",
+                params: [transactionHex],
+                receive: String.self
+            )
+
+            if let hash = data as? String {
+                return hash
+            } else {
+                throw EthereumClientError.unexpectedReturnValue
+            }
+        } catch let error {
+            throw error
+        }
+    }
+
+    func getChainId() -> String {
+        return networkId
+    }
+}
+```
+
+Once we have `EthereumClient` in place, it's time to implement the `sendTransaction` method for
+`MainViewModel`. For signing the Ethereum transaction, we'll use the `sign` extension method, which
+accepts `EthereumTransaction`. Upon success, we'll return the transaction hash.
+
+```swift
+class MainViewModel: ObservableObject {
+    func sendTransaction(onSend: @escaping (String?, String?) -> ()) {
+        Task {
+            do {
+
+                let address = EthereumAddress(
+                    stringLiteral: self.publicAddress
+                )
+                let transaction = EthereumTransaction.init(
+                    to: address,
+                    data: Data.init(hex: "0x")
+                )
+
+                let gasLimit = try await self.ethereumClient.getGasLimit(
+                    transaction: transaction
+                )
+                let gasPrice = try await self.ethereumClient.getGasPrice()
+                let nonce = try await self.ethereumClient.getNonce(address: address)
+
+                let finalTransaction = EthereumTransaction(
+                    from: address,
+                    to: address,
+                    value: TorusWeb3Utils.toWei(ether: 0.001),
+                    data: transaction.data,
+                    nonce: nonce,
+                    gasPrice: gasPrice,
+                    gasLimit: gasLimit,
+                    chainId: Int(self.ethereumClient.getChainId())
+                )
+
+                let signedTransaction = try mpcCoreKit.sign(
+                    transaction: finalTransaction
+                )
+
+                let hash = try await ethereumClient.broadcastSignedTransaction(
+                    transaction: signedTransaction
+                )
+
+                onSend(hash, nil)
+
+
+            } catch let error {
+                print(error.localizedDescription)
+                onSend(nil, error.localizedDescription)
+            }
+        }
+    }
+}
+```
+
+## Wallet Implementation
+
+Once, we have set up the MPC core kit operations, and supported chain interactions, it's time to
+integrate and plug them into the wallet.
+
+### Seting up HomeView
+
+Let's create a new `HomeView` view to show user details such as the wallet address, MPC Core Kit
+operation methods, and blockchain interaction methods. We'll use the `MainViewModel` to help us show
+details, perform mpc core kit operations, and interact with Blockchain.
+
+```swift
+import SwiftUI
+
+struct HomeView: View {
+    @StateObject var viewModel: MainViewModel
+    @State private var signedMessage: String?
+    @State private var hash: String?
+
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(header: Text("Public Address")) {
+                    Button(
+                        action: {
+                            UIPasteboard.general.string = viewModel.publicAddress
+                        }, label: {
+                            Text(viewModel.publicAddress)
+                        })
+
+                }
+
+                Section(header: Text("Chain Interactions")) {
+                    Button(
+                        action: {
+                            viewModel.signMessage{
+                                result, error in
+                                if result != nil {
+                                    signedMessage = result
+                                }
+                            }
+                        },
+                        label: {
+                            Text("Sign Message")
+                        }
+                    )
+
+                    if signedMessage != nil {
+                        Text(signedMessage!)
+                    }
+
+                    Button(
+                        action: {
+                            viewModel.sendTransaction{
+                                result, error in
+                                if result != nil {
+                                    hash = result
+                                }
+                            }
+                        },
+                        label: {
+                            Text("Send 0.001 ETH")
+                        }
+                    )
+
+                    if(hash != nil) {
+                        Link(
+                            hash!,
+                            destination: URL(
+                                string: "https://sepolia.etherscan.io/tx/\(hash!)"
+                            )!
+                        ).underline()
+                    }
+
+                    Text("The sample uses Eth Sepolia, you can choose any EVM network of your choice. Send 0.001 ETH will perform self transfer of ETH. You'll need to have Sepolia faucet to perform transaction.").font(.caption)
+
+                }
+
+                if(!viewModel.factorPubs.isEmpty) {
+                    Section(header: Text("TSS Factors PubKey")) {
+                        ForEach(Array(viewModel.factorPubs), id: \.self) { factorPub in
+                            HStack(
+                                alignment: .top,
+                                spacing: 24,
+                                content: {
+                                    Text(factorPub)
+                                    Button(action: {
+                                        withAnimation {
+                                            viewModel.deleteFactor(
+                                                factorPub: factorPub
+                                            )
+                                        }
+                                    }) {
+                                        Label("",systemImage: "trash")
+                                    }
+                                }
+                            )
+                        }
+                    }
+                }
+
+                Section(
+                    header: Text("TSS Operations")
+                ) {
+                    Button(
+                        action: {
+                            viewModel.enableMFA()
+                        },
+                        label: {
+                            Text("Enable MFA")
+                        }
+                    )
+                    Button(
+                        action: {
+                            viewModel.createNewTssFactor()
+                        },
+                        label: {
+                            Text("Create new Factor")
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+```
+
+### Setting up RecoveryView
+
+After we have set up `HomeView`, let's create a `RecoveryView` view to allow users to recover the
+account using the seed phrase and reset the account. We'll use the already defined methods in
+`MainViewModel` for both operations.
+
+```swift
+import SwiftUI
+
+struct RecoveryView: View {
+    @StateObject var viewModel: MainViewModel
+    @State private var seedPhrase: String = ""
+
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(header: Text("Recovery Options")) {
+                    TextField("Enter your seed phrase", text: $seedPhrase)
+                    Button(action: {
+                        viewModel.recoverUsingSeedPhrase(seedPhrase: seedPhrase)
+                    }, label: {
+                        Text("Recover using seed phrase")
+                    })
+                }
+
+                Section(
+                    header: Text("Reset"), content: {
+                        Text("Please continue with cautious, this will reset the account.")
+                        Button(
+                            role: .destructive,
+                            action: {
+                                viewModel.resetAccount()
+                            }, label: {
+                                Text("Reset Account")
+                            }
+                        )
+                    }
+                )
+            }
+        }
+    }
+}
+```
+
+## Conclusion
+
+Voila, you have build a MPC Web3 wallet for iOS. This guide only gives you an overview of how to
+create your MPC wallet with EVM ecosystem support. The general idea of the guide can be used for any
+of the EVM blockchain.
+
+If you are interested in learning more about Web3Auth MPC Core Kit SDK, please checkout our
+documentation for iOS. You can find the code used for the guide on our examples repo.
