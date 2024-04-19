@@ -6,7 +6,6 @@ type: guide
 tags: [microsoft, oauth, authentication, github]
 date: Febreaury 28, 2024
 author: Web3Auth Team
-order: 5
 communityPortalTopicId:
 ---
 
@@ -19,12 +18,14 @@ import SEO from "@site/src/components/SEO";
   slug="/guides/microsoft-github-oauth"
 />
 
-This guide will cover the basics of how to integrate Web3Auth with OAuth 2.0, using Microsoft Github authentication. Trying to explain all the flow
-and covering all the problems that can happen during the integration. Web3Auth is employed to provide Ethereum private key access and public address.
+This guide will cover the basics of how to integrate Web3Auth with OAuth 2.0, using Microsoft Github
+authentication. Trying to explain all the flow and covering all the problems that can happen during
+the integration. Web3Auth is employed to provide Ethereum private key access and public address.
 
 Full example: https://github.com/web3auth/web3auth-byoa/microsoft-oauth-connection
 
-We use two web3auth libraries in this project: `@web3auth/ethereum-provider` and `@web3auth/node-sdk`.
+We use two web3auth libraries in this project: `@web3auth/ethereum-provider` and
+`@web3auth/node-sdk`.
 
 To install them, run: `npm install @web3auth/ethereum-provider @web3auth/node-sdk`
 
@@ -34,22 +35,25 @@ When integrating Web3Auth with Microsoft Login the flow looks something like thi
 
 ![Microsoft flow](/images/oauth/microsoft-oauth-flow.jpg)
 
-- When a user logs in with `Microsoft`, Microsoft sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
+- When a user logs in with `Microsoft`, Microsoft sends a JWT `id_token` to the app. This JWT token
+  is sent to the Web3Auth SDK's login function.
 
-- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
-  easy onboarding for your user to the application.
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for
+  the user, in a self custodial way, resulting in easy onboarding for your user to the application.
 
 ## Create a JWKS file
 
-A JWKS stands for JSON Web Key Set. It is a set of keys containing the public keys that should be used to verify any JSON Web Token (JWT) issued by
-the authorization server and signed using the RS256 signing algorithm.
+A JWKS stands for JSON Web Key Set. It is a set of keys containing the public keys that should be
+used to verify any JSON Web Token (JWT) issued by the authorization server and signed using the
+RS256 signing algorithm.
 
 If you don't know how to create a JWKS, you can follow this
-[web3auth tutorial](https://web3auth.io/docs/auth-provider-setup/byo-jwt-provider#how-to-create-jwks). This file must be located on a public endpoint.
-To test the example, you will need to modify the file located in the root directory of the project.
+[web3auth tutorial](https://web3auth.io/docs/auth-provider-setup/byo-jwt-provider#how-to-create-jwks).
+This file must be located on a public endpoint. To test the example, you will need to modify the
+file located in the root directory of the project.
 
-Both the private and the public keys, that you used to create the JWKS, must be in the server directory. In our project, they are called `private.pem`
-and `public.pem`.
+Both the private and the public keys, that you used to create the JWKS, must be in the server
+directory. In our project, they are called `private.pem` and `public.pem`.
 
 ## Set up Custom JWT Verifier
 
@@ -57,41 +61,50 @@ and `public.pem`.
 
 To create a custom verifier for your JWT Provider, you'll need the follow this steps:
 
-1. The verifier Identifier, which would be the name. This name should be used in your .ENV file as `WEB3AUTH_VERIFIER`.
+1. The verifier Identifier, which would be the name. This name should be used in your .ENV file as
+   `WEB3AUTH_VERIFIER`.
 
-2. **JWT Verifier ID**: JWT Verifier ID is the unique identifier to publicly represent a user on a verifier. e.g: `sub`, `email`, or even a custom
-   field of your JWT payload that is unique in your system for each user. In this case, we are using the `sub` field.
+2. **JWT Verifier ID**: JWT Verifier ID is the unique identifier to publicly represent a user on a
+   verifier. e.g: `sub`, `email`, or even a custom field of your JWT payload that is unique in your
+   system for each user. In this case, we are using the `sub` field.
 
-3. **JWK Endpoint**: An endpoint containing the JWKS used to sign the JWT. In my example I'm using a static github url file.
+3. **JWK Endpoint**: An endpoint containing the JWKS used to sign the JWT. In my example I'm using a
+   static github url file.
 
 4. In the Select JWT Validation. You will add `iss` and `aud` fields.
    - The `iss` field is the issuer of the JWT. In this case "https://login.microsoftonline.com/"
-   - The `aud` field is the audience of the JWT. In this case "http://login.microsoftonline.com/{AZURE_TENANT_ID}/v2.0/token"
+   - The `aud` field is the audience of the JWT. In this case
+     "http://login.microsoftonline.com/{AZURE_TENANT_ID}/v2.0/token"
 
 ![Custom JWT Provider in Web3Auth Dashboard](/images/dashboard/custom-JWT-provider-validate.png)
 
 ## Configure a new Application in Microsoft Entra.
 
-After creating the app, you'll need the Application (client) ID and the Directory (tenant) ID into the .ENV file. Then you can add a redirect URI (in
-our example is http://localhost:5005/ms/callback)
+After creating the app, you'll need the Application (client) ID and the Directory (tenant) ID into
+the .ENV file. Then you can add a redirect URI (in our example is http://localhost:5005/ms/callback)
 
 ![Custom JWT Provider on Web3Auth Dashboard](/images/oauth/microsoft-redirect.png)
 
-Finally in "Certificates & secrets" -> Client Secret -> New client secret and copy the value to the .ENV file as `AZURE_CLIENT_SECRET`.
+Finally in "Certificates & secrets" -> Client Secret -> New client secret and copy the value to the
+.ENV file as `AZURE_CLIENT_SECRET`.
 
 ## Create a Proof Key of Code Exchange (PKCE)
 
-The Proof Key of Code Exchange (PKCE) is an extension of the standard authorization code grant OAuth flow. It is designed to be a secure substitute
-for the implicit flow for single-page applications (SPA) or native applications. SPAs and native applications are vulnerable to reverse engineering
-practices. To create one you can go to this [PKCE generator](https://tonyxu-io.github.io/pkce-generator/). First click on "generate code Verfier" and
-then into "Generate Code Challenge". Both values will be used in the .ENV file as `AZURE_CODE_VERIFIER` and `AZURE_CODE_CHALLENGE`.
+The Proof Key of Code Exchange (PKCE) is an extension of the standard authorization code grant OAuth
+flow. It is designed to be a secure substitute for the implicit flow for single-page applications
+(SPA) or native applications. SPAs and native applications are vulnerable to reverse engineering
+practices. To create one you can go to this
+[PKCE generator](https://tonyxu-io.github.io/pkce-generator/). First click on "generate code
+Verfier" and then into "Generate Code Challenge". Both values will be used in the .ENV file as
+`AZURE_CODE_VERIFIER` and `AZURE_CODE_CHALLENGE`.
 
 ## Running the example
 
-Execute `npm run dev`. To initiate the Microsoft OAuth flow, Open your browser to `http://localhost:5005/ms/login`
+Execute `npm run dev`. To initiate the Microsoft OAuth flow, Open your browser to
+`http://localhost:5005/ms/login`
 
-Finally, after loginning in as a result, you will receive in the callback url a JSON with the user data, the JWT token, the Ethereum address and
-private key.
+Finally, after loginning in as a result, you will receive in the callback url a JSON with the user
+data, the JWT token, the Ethereum address and private key.
 
 ```json
 {
@@ -156,7 +169,8 @@ app.get("/ms/callback", async (req: any, res: any) => {
 });
 ```
 
-In the `getPrivateKey` function, we use Web3auth to establish a connection with the provider and get both the address and the private key.
+In the `getPrivateKey` function, we use Web3auth to establish a connection with the provider and get
+both the address and the private key.
 
 ```javascript
 const getPrivateKey = async (idToken: string, verifierId: string) => {
@@ -183,6 +197,7 @@ References
 
 ## Conclusion
 
-By following the steps outlined here, developers can seamlessly incorporate Web3Auth into their applications. This guide serves as a comprehensive
-resource for developers seeking to integrate Web3Auth and Microsoft Github users authenticate with OAuth 2.0 Flow. Also can be a starting point for
-developers who want to integrate Web3Auth with other OAuth providers.
+By following the steps outlined here, developers can seamlessly incorporate Web3Auth into their
+applications. This guide serves as a comprehensive resource for developers seeking to integrate
+Web3Auth and Microsoft Github users authenticate with OAuth 2.0 Flow. Also can be a starting point
+for developers who want to integrate Web3Auth with other OAuth providers.

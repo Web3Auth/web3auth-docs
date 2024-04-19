@@ -6,7 +6,6 @@ type: guide
 tags: [web, "@web3auth/no-modal", twitch, custom authentication, react, ethereum]
 date: July 18, 2022
 author: Web3Auth Team
-order: 12
 communityPortalTopicId: 67
 ---
 
@@ -29,8 +28,9 @@ import SEO from "@site/src/components/SEO";
   slug="/guides/twitch"
 />
 
-This guide will cover the basics of how to set up your Web3Auth SDK and Twitch Login for custom authentication and provide you the steps on how to
-develop a basic web application on the Ethereum blockchain.
+This guide will cover the basics of how to set up your Web3Auth SDK and Twitch Login for custom
+authentication and provide you the steps on how to develop a basic web application on the Ethereum
+blockchain.
 
 **Live Demo:** https://web3auth-core-twitch-demo.vercel.app
 
@@ -46,16 +46,18 @@ When integrating Web3Auth with Twitch Login the flow looks something like this:
 
 ![Web3Auth Core - Twitch Login Flow](/images/implicit-flow.svg)
 
-- When a user logs in with `Twitch`, Twitch sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login function.
+- When a user logs in with `Twitch`, Twitch sends a JWT `id_token` to the app. This JWT token is
+  sent to the Web3Auth SDK's login function.
 
-- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self-custodial way, resulting in
-  easy onboarding for your user to the application.
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for
+  the user, in a self-custodial way, resulting in easy onboarding for your user to the application.
 
 ## Prerequisites
 
 <Web3AuthPrerequisites />
 
-- A [Twitch Developer](https://dev.twitch.tv/console/apps/create) account to be used as Login provider for Web3Auth Custom Authentication.
+- A [Twitch Developer](https://dev.twitch.tv/console/apps/create) account to be used as Login
+  provider for Web3Auth Custom Authentication.
 
 ## Setup
 
@@ -67,25 +69,31 @@ When integrating Web3Auth with Twitch Login the flow looks something like this:
 
 <SetupWeb3AuthDashboard />
 
-- Create a **Verifier** from the **Custom Authentication** tab of your Web3Auth project with the following configuration:
+- Create a **Verifier** from the **Custom Authentication** tab of your Web3Auth project with the
+  following configuration:
 
   - Choose a name of your choice for the verifier identifier. `eg. web3auth-twitch-demo`
   - Select environment: `sapphire_devnet`, or `sapphire_mainnet` as per your requirement.
-  - Select `Twitch` from the **Login Provider**. ![Twitch - Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier.png)
+  - Select `Twitch` from the **Login Provider**.
+    ![Twitch - Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier.png)
   - Paste the **Client ID** from the Twitch App(above) to the `Client ID` field.
     ![Twitch Client ID on Web3Auth Dashboard](/images/dashboard/create-verifier-twitch.png)
-  - Click on the `Create` button to create your verifier. It may take up to 10 minutes to deploy the verifier. You'll receive an email once it's
-    complete.
+  - Click on the `Create` button to create your verifier. It may take up to 10 minutes to deploy the
+    verifier. You'll receive an email once it's complete.
 
-- You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and Play Project.
+- You will require the `verifierName` of the newly created verifier and `clientId` of the Plug and
+  Play Project.
 
 ## Using the Web3Auth SDK
 
-To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
-SDKs, please have a look at this [documentation page](/sdk).
+To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth
+to your project. To know more about the available SDKs, please have a look at this
+[documentation page](/sdk).
 
-For this guide, we will be talking through the [Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and using the
-[OpenLogin Provider](/sdk/pnp/web/adapters/openlogin) alongside it to enable Custom Authentication through Twitch Login.
+For this guide, we will be talking through the
+[Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and using the
+[OpenLogin Provider](/sdk/pnp/web/adapters/openlogin) alongside it to enable Custom Authentication
+through Twitch Login.
 
 <SetupBaseProject />
 
@@ -97,8 +105,10 @@ For this guide, we will be talking through the [Web3Auth Plug and Play No Modal 
 
 <InitializationIntro />
 
-For this guide, we're only focusing on the Instantiation, Configuration for the Openlogin Adapter (the default adapter that enables social logins) and
-Initialization of the Web3Auth SDK. To know more about the other things you can do with Web3Auth, checkout our [SDK Reference](/sdk/pnp/web/no-modal).
+For this guide, we're only focusing on the Instantiation, Configuration for the Openlogin Adapter
+(the default adapter that enables social logins) and Initialization of the Web3Auth SDK. To know
+more about the other things you can do with Web3Auth, checkout our
+[SDK Reference](/sdk/pnp/web/no-modal).
 
 #### Instantiating Web3Auth
 
@@ -108,8 +118,9 @@ Initialization of the Web3Auth SDK. To know more about the other things you can 
 
 <OpenloginConfigCodeTwitch />
 
-Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom Auth `verifierName` and AWS Cognito `clientId` in
-the loginConfig object. This makes sure that the Openlogin Adapter can connect to the correct verifier and AWS Cognito server.
+Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom
+Auth `verifierName` and AWS Cognito `clientId` in the loginConfig object. This makes sure that the
+Openlogin Adapter can connect to the correct verifier and AWS Cognito server.
 
 <InitializationWeb3Auth />
 
@@ -117,7 +128,8 @@ the loginConfig object. This makes sure that the Openlogin Adapter can connect t
 
 #### Logging in
 
-Once initialized, you can use the `connectTo()` function to authenticate the user when they click the login button.
+Once initialized, you can use the `connectTo()` function to authenticate the user when they click
+the login button.
 
 ```tsx
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
@@ -127,7 +139,8 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 });
 ```
 
-When connecting, your `connectTo` function takes the arguments for the adapter you want to connect to and the `loginProvider` for the login.
+When connecting, your `connectTo` function takes the arguments for the adapter you want to connect
+to and the `loginProvider` for the login.
 
 ### Get the User Profile
 
@@ -136,8 +149,9 @@ const user = await web3auth.getUserInfo();
 console.log("User info", user);
 ```
 
-Using the `getUserInfo` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
-network, but are fetched from the id_token you received from AWS Cognito and lives in the frontend context.
+Using the `getUserInfo` function, you can get the details of the logged in user. Please note that
+these details are not stored anywhere in Web3Auth network, but are fetched from the id_token you
+received from AWS Cognito and lives in the frontend context.
 
 ### Logout
 

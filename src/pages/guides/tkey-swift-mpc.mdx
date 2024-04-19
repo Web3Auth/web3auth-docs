@@ -6,7 +6,6 @@ type: guide
 tags: [web, corekit, mpc, swift, iOS, ethereum]
 date: Aug 15, 2023
 author: Web3Auth Team
-order: 7
 communityPortalTopicId:
 ---
 
@@ -19,16 +18,19 @@ import SEO from "@site/src/components/SEO";
   slug="/ios-mpc"
 />
 
-This guide will help you make an iOS application using Web3Auth MPC Swift SDK, covering the basic functionality on how to use it.
+This guide will help you make an iOS application using Web3Auth MPC Swift SDK, covering the basic
+functionality on how to use it.
 
-The Web3Auth's MPC [tKey MPC Swift SDK](https://github.com/tkey/tkey-mpc-swift) is a client-side library you can use with your iOS app to authenticate
-users using Web3Auth. This authentication can be achieved using any social logins Web3Auth provides or a custom authentication flow. For using
+The Web3Auth's MPC [tKey MPC Swift SDK](https://github.com/tkey/tkey-mpc-swift) is a client-side
+library you can use with your iOS app to authenticate users using Web3Auth. This authentication can
+be achieved using any social logins Web3Auth provides or a custom authentication flow. For using
 Web3Auth's tKey natively in iOS, Web3Auth provides a tKey iOS SDK written in Swift.
 
 :::note
 
-This is an advanced guide, meant for enterprise developers and contains multiple moving parts that might be difficult to understand. Please contact
-our team if you're looking to integrate this SDK, and we'll be happy to help you out.
+This is an advanced guide, meant for enterprise developers and contains multiple moving parts that
+might be difficult to understand. Please contact our team if you're looking to integrate this SDK,
+and we'll be happy to help you out.
 
 :::
 
@@ -62,7 +64,8 @@ cd mpc-ios-example
 
    From the `Dependency Rule` dropdown, select `Branch` and type `alpha` as the branch.
 
-1. When finished, Xcode will automatically begin resolving and downloading your dependencies in the background.
+1. When finished, Xcode will automatically begin resolving and downloading your dependencies in the
+   background.
 
 ### Add the [CustomAuth Swift SDK](https://github.com/torusresearch/customauth-swift-sdk/)
 
@@ -76,7 +79,8 @@ cd mpc-ios-example
 
    From the `Dependency Rule` dropdown, select `Branch` and type `alpha` as the branch.
 
-1. When finished, Xcode will automatically begin resolving and downloading your dependencies in the background.
+1. When finished, Xcode will automatically begin resolving and downloading your dependencies in the
+   background.
 
 ### Add the [TSS Client Swift SDK](https://github.com/torusresearch/tss-client-swift)
 
@@ -90,12 +94,13 @@ cd mpc-ios-example
 
    From the `Dependency Rule` dropdown, select `Exact` and enter `1.0.6` as the version.
 
-1. When finished, Xcode will automatically begin resolving and downloading your dependencies in the background.
+1. When finished, Xcode will automatically begin resolving and downloading your dependencies in the
+   background.
 
 ## Initialization
 
-Once you have installed the Web3Auth Core Kit tKey SDK, the next step is to initialize it. This involves a few steps, such as initiating the tKey SDK
-with the service provider and modules.
+Once you have installed the Web3Auth Core Kit tKey SDK, the next step is to initialize it. This
+involves a few steps, such as initiating the tKey SDK with the service provider and modules.
 
 - [Configuration of Service Provider](#configuring-service-provider)
 - [Initializing Service Provider](#initialization-1)
@@ -103,11 +108,13 @@ with the service provider and modules.
 
 ### Configuring Service Provider
 
-Service Provider in `tKey` generates a [**Share A**](/sdk/core-kit/tkey), i.e., the private key share managed by a wallet service provider via their
-authentication flows. This share in our [wallet infrastructure](/infrastructure/) refers to the social login aspect, where we associate a private key
-share with the user's social login, enabling the seamless login experience.
+Service Provider in `tKey` generates a [**Share A**](/sdk/core-kit/tkey), i.e., the private key
+share managed by a wallet service provider via their authentication flows. This share in our
+[wallet infrastructure](/infrastructure/) refers to the social login aspect, where we associate a
+private key share with the user's social login, enabling the seamless login experience.
 
-To configure your service provider, you must use [CustomAuth Swift SDK](https://github.com/torusresearch/customauth-swift-sdk). Please note that this
+To configure your service provider, you must use
+[CustomAuth Swift SDK](https://github.com/torusresearch/customauth-swift-sdk). Please note that this
 SDK is not automatically installed with tKey iOS SDK, so you must install it first.
 
 #### Initialization
@@ -159,7 +166,8 @@ let tdsdk = CustomAuth(
 
 ### Getting User Data from Custom Auth
 
-1. `triggerLogin()` returns a promise that resolve with a Dictionary that contain `finalKeyData` field to be used to initialize the tKey.
+1. `triggerLogin()` returns a promise that resolve with a Dictionary that contain `finalKeyData`
+   field to be used to initialize the tKey.
 
 ```swift
 tdsdk.triggerLogin().done{ data in
@@ -258,12 +266,14 @@ tssEndpoint = nodeDetails!.torusNodeTSSEndpoints
 
 ## `ThresholdKey`
 
-The login with the tKey SDK is a two-step process. First, you need to trigger the login process by calling the `triggerLogin()` function of the
-CustomAuth SDK. Using the returned information, use the `initialize()` function of the tKey to generate the Threshold Key corresponding to the user.
+The login with the tKey SDK is a two-step process. First, you need to trigger the login process by
+calling the `triggerLogin()` function of the CustomAuth SDK. Using the returned information, use the
+`initialize()` function of the tKey to generate the Threshold Key corresponding to the user.
 
-However, before starting this process, you must set up Custom Authentication on your Web3Auth Dashboard. You must
-[Create a Verifier](/auth-provider-setup/verifiers) from the **Custom Auth** section of the
-[Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired configuration.
+However, before starting this process, you must set up Custom Authentication on your Web3Auth
+Dashboard. You must [Create a Verifier](/auth-provider-setup/verifiers) from the **Custom Auth**
+section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired
+configuration.
 
 :::tip
 
@@ -359,8 +369,8 @@ threshold_key = thresholdKey
 
 #### `threshold_key.initialize(params?)`
 
-Once you have triggered the login process, you're ready to initialize the tKey. This will generate a Threshold Key corresponding to your login
-provider.
+Once you have triggered the login process, you're ready to initialize the tKey. This will generate a
+Threshold Key corresponding to your login provider.
 
 #### Parameters
 
@@ -776,6 +786,8 @@ try await TssModule.delete_factor_pub(threshold_key: threshold_key, tss_tag: sel
 
 :::info example
 
-Explore our [**example application**](https://github.com/torusresearch/tkey-rust-ios-example/tree/alpha) and try the SDK yourself.
+Explore our
+[**example application**](https://github.com/torusresearch/tkey-rust-ios-example/tree/alpha) and try
+the SDK yourself.
 
 :::
