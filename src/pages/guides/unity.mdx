@@ -6,7 +6,6 @@ type: guide
 tags: [gaming, unity, whitelabel, custom authentication, dapp share]
 date: August 12, 2022
 author: Web3Auth Team
-order: 10
 communityPortalTopicId: 68
 ---
 
@@ -24,8 +23,8 @@ import web3authCS from "@site/static/guides/sdk/unity/web3authCS.png";
   slug="/guides/unity"
 />
 
-This guide will cover the basics of how to use the Web3Auth Unity SDK in your preferred platform. Before starting you can try out the sample
-application as mentioned in quick start.
+This guide will cover the basics of how to use the Web3Auth Unity SDK in your preferred platform.
+Before starting you can try out the sample application as mentioned in quick start.
 
 ## Quick Start
 
@@ -40,11 +39,11 @@ When integrating Web3Auth Unity SDK with Social Login the flow looks something l
 
 ![Web3Auth Core - Social Login Flow](/images/implicit-flow.svg)
 
-- When a user logs in with a login provider like `Google`, it sends a JWT `id_token` to the app. This JWT token is sent to the Web3Auth SDK's login
-  function.
+- When a user logs in with a login provider like `Google`, it sends a JWT `id_token` to the app.
+  This JWT token is sent to the Web3Auth SDK's login function.
 
-- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for the user, in a self custodial way, resulting in
-  easy onboarding for your user to the application.
+- Finally, on successful validation of the JWT token, Web3Auth SDK will generate a private key for
+  the user, in a self custodial way, resulting in easy onboarding for your user to the application.
 
 ## Prerequisites
 
@@ -60,21 +59,24 @@ When integrating Web3Auth Unity SDK with Social Login the flow looks something l
 
 <SetupWeb3AuthDashboard />
 
-- Add `{{SCHEMA}}://{YOUR_APP_PACKAGE_NAME}://auth` to **Whitelist URLs** field of the Web3Auth Dashboard.
+- Add `{{SCHEMA}}://{YOUR_APP_PACKAGE_NAME}://auth` to **Whitelist URLs** field of the Web3Auth
+  Dashboard.
 
 - Copy the `Client ID` for usage later.
 
 ## Using the Web3Auth SDK
 
-To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To know more about the available
-SDKs, please have a look at this [documentation page](/sdk).
+To use the Web3Auth SDK, you need to add the dependency of the respective platform SDK of Web3Auth
+to your project. To know more about the available SDKs, please have a look at this
+[documentation page](/sdk).
 
 For this guide here, we will be talking through the [Web3Auth Unity SDK](/sdk/pnp/unity).
 
 ### Installation
 
-Download [.unitypackage](https://github.com/Web3Auth/web3auth-unity-sdk/releases/tag/Web3Auth-Unity-SDK) from our latest release and import the
-package file into your existing Unity3D project.
+Download
+[.unitypackage](https://github.com/Web3Auth/web3auth-unity-sdk/releases/tag/Web3Auth-Unity-SDK) from
+our latest release and import the package file into your existing Unity3D project.
 
 :::warning
 
@@ -82,7 +84,8 @@ You may encounter errors when importing this package into your existing project.
 
 `The type or namespace name 'Newtonsoft' could not be found (are you missing a using directive or an assembly reference?)`
 
-To fix this problem you need to add the following line into dependencies object which is inside the `Packages/manifest.json` file.
+To fix this problem you need to add the following line into dependencies object which is inside the
+`Packages/manifest.json` file.
 
 ```json title="/Packages/manifest.json"
 "com.unity.nuget.newtonsoft-json": "3.2.1"
@@ -92,10 +95,13 @@ To fix this problem you need to add the following line into dependencies object 
 
 ### Configure Deep Link (for Android and iOS)
 
-Unity SDK works on unity deep linking features to redirect the callback from Web3Auth. Before building the application for Android/IOS you need to
-register the redirect_uri that can be done easily by the tool provided inside the SDK. To achieve that, you need to follow the steps mentioned below.
+Unity SDK works on unity deep linking features to redirect the callback from Web3Auth. Before
+building the application for Android/IOS you need to register the redirect_uri that can be done
+easily by the tool provided inside the SDK. To achieve that, you need to follow the steps mentioned
+below.
 
-- Open deep link generator tool provided by Web3Auth Unity SDK from `Window > Web3Auth > Deep Link Generator`
+- Open deep link generator tool provided by Web3Auth Unity SDK from
+  `Window > Web3Auth > Deep Link Generator`
 
   <img src={deepLinkGenerator} style={{ alignSelf: "center", maxWidth: "100%" }} />
 
@@ -103,8 +109,8 @@ register the redirect_uri that can be done easily by the tool provided inside th
 
 :::tip
 
-We're using `torusapp://com.torus.Web3AuthUnity/auth` as the `redirect_url` in our example just to give you a reference on how your app's
-`redirect_url` should look like.
+We're using `torusapp://com.torus.Web3AuthUnity/auth` as the `redirect_url` in our example just to
+give you a reference on how your app's `redirect_url` should look like.
 
 :::
 
@@ -117,12 +123,14 @@ However, Initialization is a two-step process:
 1. [Creating a Web3Auth Instance](#create-web3auth-instance)
 2. [Setting up Web3Auth Options](#setting-up-web3auth-options)
 
-Please note that these are the most critical steps where you must pass on different parameters according to the preference of your project.
-Additionally, You must configure Whitelabeling and Custom Authentication within this step if you wish to customize your Web3Auth Instance.
+Please note that these are the most critical steps where you must pass on different parameters
+according to the preference of your project. Additionally, You must configure Whitelabeling and
+Custom Authentication within this step if you wish to customize your Web3Auth Instance.
 
 ### Create Web3Auth Instance
 
-Attach a `Web3Auth.cs` script to your game object where you are planning to write your authentication code.
+Attach a `Web3Auth.cs` script to your game object where you are planning to write your
+authentication code.
 
 :::tip
 
@@ -155,7 +163,8 @@ Within your script, import the `Web3Auth` component in your class.
 Web3Auth web3Auth;
 ```
 
-Next create an instance within your `Start()` function by creating an instance of the component you just imported.
+Next create an instance within your `Start()` function by creating an instance of the component you
+just imported.
 
 ```cs
 web3Auth = GetComponent<Web3Auth>();
@@ -176,7 +185,8 @@ web3Auth.setOptions(new Web3AuthOptions()
 
 :::tip
 
-You can also configure your `client_id`, `redirect_url` and `network` within the script setting in Unity Editor. It will look something like this:
+You can also configure your `client_id`, `redirect_url` and `network` within the script setting in
+Unity Editor. It will look something like this:
 
 <img src={web3authCS} style={{ alignSelf: "center", maxWidth: "100%" }} />
 
@@ -184,12 +194,13 @@ You can also configure your `client_id`, `redirect_url` and `network` within the
 
 ## Authentication
 
-Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users.
+Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your
+users.
 
 ### Logging in
 
-The `web3Auth.login(LoginParams)` function helps your user to trigger the login process. The login flow will be triggered based on the selected
-provider.
+The `web3Auth.login(LoginParams)` function helps your user to trigger the login process. The login
+flow will be triggered based on the selected provider.
 
 ```cs
 public void login()
@@ -203,8 +214,8 @@ public void login()
 }
 ```
 
-When connecting, the `login` function takes the LoginParams arguments for the login. See the [LoginParams](/sdk/pnp/unity/usage#arguments) for more
-details.
+When connecting, the `login` function takes the LoginParams arguments for the login. See the
+[LoginParams](/sdk/pnp/unity/usage#arguments) for more details.
 
 #### Sample loginResponse
 
@@ -212,7 +223,8 @@ details.
 
 ### Get the User Profile
 
-You can associate a function to be triggerred on successful login. This function will receive the user's profile as a parameter.
+You can associate a function to be triggerred on successful login. This function will receive the
+user's profile as a parameter.
 
 ```cs
 void Start()
@@ -233,11 +245,12 @@ private void onLogin(Web3AuthResponse response)
 //highlight-end
 ```
 
-Using the `web3Auth.login` function, you can get the details of the logged in user. Please note that these details are not stored anywhere in Web3Auth
-network.
+Using the `web3Auth.login` function, you can get the details of the logged in user. Please note that
+these details are not stored anywhere in Web3Auth network.
 
-If you wish you **[add Multi Factor Authentication](/sdk/pnp/unity/mfa)**, **[use dApp Share](/sdk/pnp/unity/dapp-share)** or
-**[select Curve](/sdk/pnp/unity/usage#curve)** for your Unity Game, read the linked documentation.
+If you wish you **[add Multi Factor Authentication](/sdk/pnp/unity/mfa)**,
+**[use dApp Share](/sdk/pnp/unity/dapp-share)** or **[select Curve](/sdk/pnp/unity/usage#curve)**
+for your Unity Game, read the linked documentation.
 
 - [Multi Factor Authentication](/sdk/pnp/unity/mfa)
 - [Using dApp Share](/sdk/pnp/unity/dapp-share)
@@ -283,7 +296,8 @@ private void onLogout()
 ## Example code
 
 The code for the application we developed in this guide can be found in the
-[Web3Auth Unity Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/unity). Check it out and try running it locally yourself!
+[Web3Auth Unity Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/unity). Check
+it out and try running it locally yourself!
 
 For your reference, here's the Web3Auth.cs file we developed during the course of this guide.
 

@@ -11,22 +11,26 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
 
-The Wallet Ecosystems Mocaverse Embed SDK for [Mocaverse](https://www.mocaverse.xyz/), developed by Web3Auth with Animoca Brands, represents a
-groundbreaking integration of Multi-Party Computation (MPC) technology with Account Abstraction, setting a new standard in secure and user-centric
-blockchain wallet solutions. The Mocaverse Embed SDK is a powerful tool for developers to integrate seamless social logins based easy onboarding that
-not only prioritizes security but also prioritizes user convenience, driving forward the adoption of blockchain technology within the Mocaverse
+The Wallet Ecosystems Mocaverse Embed SDK for [Mocaverse](https://www.mocaverse.xyz/), developed by
+Web3Auth with Animoca Brands, represents a groundbreaking integration of Multi-Party Computation
+(MPC) technology with Account Abstraction, setting a new standard in secure and user-centric
+blockchain wallet solutions. The Mocaverse Embed SDK is a powerful tool for developers to integrate
+seamless social logins based easy onboarding that not only prioritizes security but also prioritizes
+user convenience, driving forward the adoption of blockchain technology within the Mocaverse
 ecosystem and beyond.
 
 :::tip
 
-Check out our [**example app**](https://github.com/Web3Auth/wallet-ecosystems-examples/tree/main/mocaverse-embed/) for an end-to-end Mocaverse Embed
-integrations.
+Check out our
+[**example app**](https://github.com/Web3Auth/wallet-ecosystems-examples/tree/main/mocaverse-embed/)
+for an end-to-end Mocaverse Embed integrations.
 
 :::
 
 ## Installation
 
-To get started, install the [`@web3auth/mocaverse-embed`](https://www.npmjs.com/package/@web3auth/mocaverse-embed) SDK.
+To get started, install the
+[`@web3auth/mocaverse-embed`](https://www.npmjs.com/package/@web3auth/mocaverse-embed) SDK.
 
 ```bash npm2yarn
 npm i @web3auth/mocaverse-embed
@@ -34,8 +38,9 @@ npm i @web3auth/mocaverse-embed
 
 ## Instantiate Mocaverse Embed
 
-To integrate SafeAuth into your application, start by creating an instance of the `MocaEmbed` class from the
-[`@web3auth/mocaverse-embed`](https://www.npmjs.com/package/@web3auth/mocaverse-embed) package.
+To integrate SafeAuth into your application, start by creating an instance of the `MocaEmbed` class
+from the [`@web3auth/mocaverse-embed`](https://www.npmjs.com/package/@web3auth/mocaverse-embed)
+package.
 
 ```typescript
 import MocaEmbed from "@web3auth/mocaverse-embed";
@@ -95,8 +100,9 @@ export interface CtorArgs {
 
 ## Initialise MocaEmbed SDK
 
-After creating an instance of the `MocaEmbed` class, you should always call the `init()` method before trying to login into the embedded wallet. The
-`init` method should be called within the constructor of your application.
+After creating an instance of the `MocaEmbed` class, you should always call the `init()` method
+before trying to login into the embedded wallet. The `init` method should be called within the
+constructor of your application.
 
 ```tsx
 await mocaEmbed.init({
@@ -118,12 +124,12 @@ await mocaEmbed.init({
 
 <TabItem value="table">
 
-| Parameter       | Description                                                                                                                        |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `chainConfig`   | Details of the chain you wish to connect. Currently only Polygon Mainnet, Polygon Mumbai Testnet & Optimism Mainnet are supported. |
-| `buildEnv`      | Build Environment details of the hosted wallet. Default "production". Please use the parameter ONLY while testing the SDK.         |
-| `enableLogging` | Enables or disables logging. Defaults to false in prod and true in other environments                                              |
-| `whiteLabel`    | Allows you to customize the look & feel of the widget                                                                              |
+| Parameter       | Description                                                                                                                      |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `chainConfig`   | Details of the chain you wish to connect. Currently only Polygon Mainnet, Polygon Amoy Testnet & Optimism Mainnet are supported. |
+| `buildEnv`      | Build Environment details of the hosted wallet. Default "production". Please use the parameter ONLY while testing the SDK.       |
+| `enableLogging` | Enables or disables logging. Defaults to false in prod and true in other environments                                            |
+| `whiteLabel`    | Allows you to customize the look & feel of the widget                                                                            |
 
 </TabItem>
 
@@ -202,8 +208,8 @@ export interface WsEmbedParams {
 
 :::warning
 
-The Mocaverse Embed only works with the **Polygon Mainnet (Chain ID: 137), Polygon Mumbai Testnet (Chain ID: 80001 ) & Optimism Mainnet (Chain
-ID: 10)**.
+The Mocaverse Embed only works with the **Polygon Mainnet (Chain ID: 137), Polygon Amoy Testnet
+(Chain ID: 80002 ) & Optimism Mainnet (Chain ID: 10)**.
 
 :::
 
@@ -211,7 +217,8 @@ ID: 10)**.
 
 ### Whitelabeing the Mocaverse Embed
 
-Within the `init` method, you can customize the look and feel of the Mocaverse Embed widget by passing the `whiteLabel` parameter.
+Within the `init` method, you can customize the look and feel of the Mocaverse Embed widget by
+passing the `whiteLabel` parameter.
 
 #### `whiteLabel`
 
@@ -366,8 +373,9 @@ export declare const BUTTON_POSITION: {
 
 ## Usage
 
-Once you've installed and successfully initialized MocaEmbed, you can use it to authenticate your users. Further, you can use the native provider
-given by the SDK to connect the users to the respective blockchain network.
+Once you've installed and successfully initialized MocaEmbed, you can use it to authenticate your
+users. Further, you can use the native provider given by the SDK to connect the users to the
+respective blockchain network.
 
 Natively, the instance of `MocaEmbed` rreturns the following functions:
 
@@ -377,18 +385,21 @@ Natively, the instance of `MocaEmbed` rreturns the following functions:
 - `getUserInfo()` - Getting the User's Information
 - `hideTorusButton()` - Disables the Widget Button
 - `showTorusButton()` - Enabled the Widget Button
-- `showWalletConnectScanner()` - Shows the Wallet Connect Scanner for connecting to other dapps using Wallet Connect
+- `showWalletConnectScanner()` - Shows the Wallet Connect Scanner for connecting to other dapps
+  using Wallet Connect
 - `showWalletUi()` - Show the Wallet UI
 - `showCheckout()` - Shows the Checkout Window for Fiat to Crypto Transactions
 
 ### `login()`
 
-Helps you to Login your user into the Mocaverse Embed Wallet. While this function is as simple as just calling a basic instance, you can pass over
-more variables to customize the login flow. This function returns your an array of accounts associated with the user. Generally for Mocaverse, you
+Helps you to Login your user into the Mocaverse Embed Wallet. While this function is as simple as
+just calling a basic instance, you can pass over more variables to customize the login flow. This
+function returns your an array of accounts associated with the user. Generally for Mocaverse, you
 will get two accounts:
 
 - Smart Contract Wallet Account - account[0] - The main address used for all transaction
-- Externally Owned Account - account[1] - The address used for signing transactions, which manages the Smart Contract Wallet Account.
+- Externally Owned Account - account[1] - The address used for signing transactions, which manages
+  the Smart Contract Wallet Account.
 
 #### `LoginParams`
 
@@ -492,8 +503,8 @@ export interface UserInfo {
 
 ### `showWalletConnectScanner()`
 
-Shows the Wallet Connect Scanner to connect with dApps having Wallet Connect login option. This is useful for interoperability with dApps having
-Wallet Connect login option.
+Shows the Wallet Connect Scanner to connect with dApps having Wallet Connect login option. This is
+useful for interoperability with dApps having Wallet Connect login option.
 
 ### `showCheckout()`
 
@@ -505,12 +516,14 @@ Shows the Wallet Services modal UI to be used as a wallet UI.
 
 ## Connecting with Wagmi
 
-For connecting with Wagmi, you need to use the Mocaverse Wagmi Connector SDK. The SDK is a simple wrapper around the Mocaverse Embed SDK, which
-extends the functionality to connect with Wagmi.
+For connecting with Wagmi, you need to use the Mocaverse Wagmi Connector SDK. The SDK is a simple
+wrapper around the Mocaverse Embed SDK, which extends the functionality to connect with Wagmi.
 
 ### Installation
 
-To get started, install the [`@web3auth/mocaverse-wagmi-connector`](https://www.npmjs.com/package/@web3auth/mocaverse-wagmi-connector) SDK.
+To get started, install the
+[`@web3auth/mocaverse-wagmi-connector`](https://www.npmjs.com/package/@web3auth/mocaverse-wagmi-connector)
+SDK.
 
 ```bash npm2yarn
 npm i @web3auth/mocaverse-wagmi-connector
@@ -518,8 +531,9 @@ npm i @web3auth/mocaverse-wagmi-connector
 
 ### Instantiate Mocaverse Wagmi Connector
 
-The instantiation process for Wagmi Connector is quite similar, just that you need to provide all contructor, initialisation and login parameters at
-once within the instance. This is because all these functions are called internally via the wagmi library.
+The instantiation process for Wagmi Connector is quite similar, just that you need to provide all
+contructor, initialisation and login parameters at once within the instance. This is because all
+these functions are called internally via the wagmi library.
 
 #### Arguments
 
@@ -578,12 +592,12 @@ export interface CtorArgs {
 
 ### Usage
 
-You can simply pass over the instance of the Mocaverse Wagmi Connector to the Wagmi Config and it will handle the rest of the process for you
-automatically.
+You can simply pass over the instance of the Mocaverse Wagmi Connector to the Wagmi Config and it
+will handle the rest of the process for you automatically.
 
 ```js
 import { WagmiProvider, createConfig, http } from "wagmi";
-import { polygon, optimism, polygonMumbai } from "wagmi/chains";
+import { polygon, optimism } from "wagmi/chains";
 import { MocaverseConnector } from "@web3auth/mocaverse-wagmi-connector";
 
 import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
@@ -605,11 +619,10 @@ const chainConfig = {
 
 // Set up client
 const config = createConfig({
-  chains: [polygon, optimism, polygonMumbai],
+  chains: [polygon, optimism],
   transports: {
     [polygon.id]: http(),
     [optimism.id]: http(),
-    [polygonMumbai.id]: http(),
   },
   connectors: [
     MocaverseConnector({
@@ -629,7 +642,8 @@ const config = createConfig({
 
 :::tip
 
-Checkout the examples in our [examples repository](https://github.com/Web3Auth/wallet-ecosystems-examples/)
+Checkout the examples in our
+[examples repository](https://github.com/Web3Auth/wallet-ecosystems-examples/)
 
 :::
 
@@ -643,7 +657,8 @@ import Web3 from "web3";
 
 import "./App.css";
 
-const web3AuthClientId = "BANbxuTYFGeYi8HxUzaPQkvQlSAXiKRtUqb1vqsXbsZsZKrNr05PEPCM2J2PhUJZpIYl0XzQa6jxUjnYzSU9LXY"; // get from https://dashboard.web3auth.io
+const web3AuthClientId =
+  "BANbxuTYFGeYi8HxUzaPQkvQlSAXiKRtUqb1vqsXbsZsZKrNr05PEPCM2J2PhUJZpIYl0XzQa6jxUjnYzSU9LXY"; // get from https://dashboard.web3auth.io
 
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -849,7 +864,7 @@ export default App;
 // WAGMI Libraries
 import { WagmiProvider, createConfig, http, useAccount, useConnect, useDisconnect } from "wagmi";
 import { coinbaseWallet, walletConnect } from "wagmi/connectors";
-import { polygon, optimism, polygonMumbai } from "wagmi/chains";
+import { polygon, optimism } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MocaverseConnector } from "@web3auth/mocaverse-wagmi-connector";
 
@@ -858,7 +873,8 @@ import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
 
 const queryClient = new QueryClient();
 
-const web3AuthClientId = "BANbxuTYFGeYi8HxUzaPQkvQlSAXiKRtUqb1vqsXbsZsZKrNr05PEPCM2J2PhUJZpIYl0XzQa6jxUjnYzSU9LXY";
+const web3AuthClientId =
+  "BANbxuTYFGeYi8HxUzaPQkvQlSAXiKRtUqb1vqsXbsZsZKrNr05PEPCM2J2PhUJZpIYl0XzQa6jxUjnYzSU9LXY";
 
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -873,11 +889,10 @@ const chainConfig = {
 
 // Set up client
 const config = createConfig({
-  chains: [polygon, optimism, polygonMumbai],
+  chains: [polygon, optimism],
   transports: {
     [polygon.id]: http(),
     [optimism.id]: http(),
-    [polygonMumbai.id]: http(),
   },
   connectors: [
     walletConnect({
