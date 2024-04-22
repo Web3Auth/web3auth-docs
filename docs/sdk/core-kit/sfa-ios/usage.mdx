@@ -8,7 +8,8 @@ description: "Web3Auth Core Kit Single Factor Auth iOS SDK - Usage | Documentati
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-After successfully installing and initializing SingleFactorAuth, you can use it to authenticate your users and obtain their private and public keys.
+After successfully installing and initializing SingleFactorAuth, you can use it to authenticate your
+users and obtain their private and public keys.
 
 The SingleFactorAuth instance natively provides the following functions:
 
@@ -27,7 +28,7 @@ To obtain a user's Torus key using the Web3Auth SFA iOS SDK, you can call the `g
 #### Returns
 
 ```swift
-public func getKey(loginParams: LoginParams) async throws -> TorusKey
+public func getKey(loginParams: LoginParams) async throws -> TorusSFAKey
 ```
 
 #### `LoginParams`
@@ -106,12 +107,6 @@ For MFA enabled users, you'll see an Error message.
 import SingleFactorAuth
 import JWTDecode
 
-/*
-.
-.
-.
-*/
-
 let jwt = try decode(jwt: id_token)
 let result = try await SingleFactorAuth(singleFactorAuthArgs: .init(network: .CYAN)).getKey(loginParams: .init(verifier: "web3auth-firebase-examples", verifierId: jwt.subject ?? "YOUR_VERIFIER_ID", idToken: id_token))
 
@@ -123,8 +118,9 @@ await MainActor.run(body: {
 
 ## Session Management
 
-We have also included Session Management in this SDK, so calling the initialize function to get the TorusKey value without re-logging in the user if a
-user has an active session will return the TorusKey struct; otherwise, it will return nil.
+We have also included Session Management in this SDK, so calling the initialize function to get the
+`TorusSFAKey` value without re-logging in the user if a user has an active session will return the
+`TorusSFAKey` struct; otherwise, it will return nil.
 
 ```swift
 if let savedKey = try await singleFactoreAuth.initialize() {

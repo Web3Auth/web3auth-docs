@@ -6,11 +6,12 @@ description: "Installing Web3Auth PnP Unity SDK | Documentation - Web3Auth"
 ---
 
 import deepLinkGenerator from "@site/static/guides/sdk/unity/deepLinkGenerator.png";
+import web3uthConfigUnity from "@site/static/images/web3auth-unity.jpg";
 
 ## Download the Unity Package
 
-Download [.unitypackage](https://github.com/Web3Auth/web3auth-unity-sdk/releases/tag/2.0.0) from our latest release and import the package file into
-your existing Unity3D project.
+Download [.unitypackage](https://github.com/Web3Auth/web3auth-unity-sdk/releases/tag/2.1.1) from our
+latest release and import the package file into your existing Unity3D project.
 
 :::warning
 
@@ -18,7 +19,8 @@ You may encounter errors when importing this package into your existing project.
 
 `The type or namespace name 'Newtonsoft' could not be found (are you missing a using directive or an assembly reference?)`
 
-To fix this problem you need to add the following line into the dependencies object which is inside the `Packages/manifest.json` file.
+To fix this problem you need to add the following line into the dependencies object which is inside
+the `Packages/manifest.json` file.
 
 ```json title="/Packages/manifest.json"
 "com.unity.nuget.newtonsoft-json": "3.2.1"
@@ -28,8 +30,10 @@ To fix this problem you need to add the following line into the dependencies obj
 
 :::tip
 
-We recommend you use the [Nethereum Library](https://docs.nethereum.com/en/latest/unity3d-introduction/) for making the blockchain calls. You can
-check our documentation on how to integrate Nethereum it with Web3Auth [here](/connect-blockchain/evm/ethereum/unity).
+We recommend you use the
+[Nethereum Library](https://docs.nethereum.com/en/latest/unity3d-introduction/) for making the
+blockchain calls. You can check our documentation on how to integrate Nethereum it with Web3Auth
+[here](/connect-blockchain/evm/ethereum/unity).
 
 :::
 
@@ -45,22 +49,40 @@ check our documentation on how to integrate Nethereum it with Web3Auth [here](/c
 
 ### Configure Deep Link (for Mobile Devices)
 
-Unity SDK works on Unity deep linking features to redirect the callback from Web3Auth. Before building the application for Android/IOS you need to
-register the redirect_uri, which can be easily done using the tool provided inside the SDK. To achieve that, you need to follow the steps mentioned
+Unity SDK works on Unity deep linking features to redirect the callback from Web3Auth. Before
+building the application for Android/IOS you need to register the redirect_uri, which can be easily
+done using the tool provided inside the SDK. To achieve that, you need to follow the steps mentioned
 below.
 
-- Open the "Deep Link Generator" tool provided by Web3Auth Unity SDK from `Window > Web3Auth > Deep Link Generator`
+- Open the "Deep Link Generator" tool provided by Web3Auth Unity SDK from
+  `Window > Web3Auth > Deep Link Generator`
 
-  <img src={deepLinkGenerator} style={{ alignSelf: "center", maxWidth: "100%" }} alt="Deep Link Generator" />
+  <img
+    src={deepLinkGenerator}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Deep Link Generator"
+  />
 
 - Enter the `redirect_url` `{{SCHEMA}}://{YOUR_APP_PACKAGE_NAME}/auth` and click generate.
 
 :::tip
 
-We're using `torusapp://com.torus.Web3AuthUnity/auth` as the `redirect_url` in our example just to give you a reference on how your app's
-`redirect_url` should look like.
+We're using `torusapp://com.torus.Web3AuthUnity/auth` as the `redirect_url` in our example just to
+give you a reference on how your app's `redirect_url` should look like.
 
 :::
+
+#### Add Web3auth Configuration Script to the scene
+
+- Inside `Project > Assets > Plugins > Web3AuthSDK` there is a file called `Web3auth` that must be
+  dragged to the component in the scene. In our examples we are using a canvas. So you can now
+  configure you clientId, rediretUrl and Network from the UI.
+
+  <img
+    src={web3uthConfigUnity}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Config Web3Auth"
+  />
 
 #### Android
 
