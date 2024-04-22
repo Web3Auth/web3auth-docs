@@ -4,13 +4,14 @@ image: "guides/banners/mpc-wallet-ios.png"
 description: Learn how to use Web3Auth MPC Core-kit ios SDK to build a MPC wallet in iOS
 type: guide
 tags: [ios, corekit, mpc, google, ethereum]
-date: April 17, 2024
+date: April 22, 2024
 author: Web3Auth Team
 ---
 
 import SEO from "@site/src/components/SEO";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
+import DashboardSetup from "@site/src/common/guides/_web3auth_dashboard_setup.mdx";
 
 <SEO
   title="Build a MPC wallet in iOS"
@@ -27,13 +28,12 @@ MPC factor, and perform blockchain interactions. The signing of the blockchain t
 through the MPC wallet. You can check out the infrastructure docs,
 ["Web3Auth MPC Wallet Infrastructure"](/docs/infrastructure/infrastructure) for a high-level
 overview of the Web3Auth MPC architecture and implementation. For those who want to skip straight to
-the code, you can find it on [GitHub](https://github.com/Web3Auth/web3auth-core-kit-examples/).
+the code, you can find it on
+[GitHub](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-ios/mpc-core-kit-ios-quick-start).
 
 ## How to set up Web3Auth Dashboard
 
-If you haven't already, you should start by setting up Web3Auth Dashboard. It's pretty simple.
-
-Head to [Web3Auth's documentation](/docs/dashboard-setup) for more on setting up Web3Auth Dashboard.
+<DashboardSetup />
 
 ## Integrating MPC Core Kit in iOS
 
@@ -151,7 +151,7 @@ After successful login, we'll also check the `requiredFactors`. If the value is 
 that means the SDK is in read mode, and the MPC threshold has not been satisfied. For such cases,
 you can show the recovery view.
 
-Learn more about MpcCoreKit's [loginWithOAuth parameters](/docs/sdk/pnp/flutter/usage#arguments).
+Learn more about MpcCoreKit's [loginWithOAuth parameters](/docs/sdk/core-kit/mpc-core-kit-ios/).
 
 ```swift
 class MainViewModel: ObservableObject {
@@ -172,8 +172,8 @@ class MainViewModel: ObservableObject {
             do {
                 let result = try await mpcCoreKit.loginWithOAuth(
                     loginProvider: .google,
-                    clientId: "Your google client id",
-                    verifier: "w3a-google-demo"
+                    clientId: "YOUR_GOOGLE_CLIENT_ID",
+                    verifier: "YOUR_VERIFIER_NAME"
 
                 )
 
@@ -839,4 +839,6 @@ create your MPC wallet with EVM ecosystem support. The general idea of the guide
 of the EVM blockchain.
 
 If you are interested in learning more about Web3Auth MPC Core Kit SDK, please checkout our
-documentation for iOS. You can find the code used for the guide on our examples repo.
+[documentation for iOS](/docs/sdk/core-kit/mpc-cre-kit-ios/mpc-core-kit-ios.mdx). You can find the
+code used for the guide on our
+[examples repo](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-ios/mpc-core-kit-ios-quick-start).
