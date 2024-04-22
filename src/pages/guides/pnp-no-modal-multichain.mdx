@@ -1,12 +1,11 @@
 ---
 title: Creating a Multichain Connection with Web3Auth and React PnP no-modal SDK
 image: "guides/banners/multi.png"
-description: Learn how to connect to different blockchain using Web3Auth.
+description: Learn how to connect to different blockchains using Web3Auth.
 type: guide
-tags: [multichain, polkadot, evm, cosmos, no-modal]
-date: Febreaury 9, 2024
+tags: [multichain, polkadot, EVM, cosmos, no-modal]
+date: February 9, 2024
 author: Web3Auth Team
-order: 1
 communityPortalTopicId:
 ---
 
@@ -14,7 +13,7 @@ import SEO from "@site/src/components/SEO";
 
 <SEO
   title="Creating a Multichain Connection with Web3Auth and PnP no-modal SDK"
-  description="Learn how to connect to different blockchain using Web3Auth."
+  description="Learn how to connect to different blockchains using Web3Auth."
   image="https://web3auth.io/docs/guides/banners/multi.png"
   slug="/guides/pnp-no-modal-multichain-connection"
 />
@@ -23,14 +22,14 @@ import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisit
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
 import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
 
-This guide will cover the basics of how to integrate Web3Auth with different blockchains at the same time. In this demo you will be able to
+This guide will cover the basics of how to integrate Web3Auth with different blockchains at the same time. In this demo, you will be able to
 authenticate with different social logins and different addresses from each blockchain. Of course, you can interact and sign transactions with any of
 them.
 
 You will be able to make calls like get the user's `account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and `write` to
 smart contracts, etc.
 
-**The Web3Auth Web SDK supports all blockchains that follow the `secp256k1` & `ed25519` curves**. This includes all EVM like (Ethereum, Polygon
+**The Web3Auth Web SDK supports all blockchains that follow the `secp256k1` & `ed25519` curves**. This includes all EVMs like (Ethereum, Polygon
 Binance Smart Chain, etc) and non-EVM like (Aptos, Cosmos, Polkadot, Solana, Tezos, etc) blockchains.
 
 :::note
@@ -60,7 +59,7 @@ npx degit Web3Auth/web3auth-pnp-examples/web-no-modal-sdk/blockchain-connection-
 To use the Web3Auth Plug and Play No Modal SDK, you need to add the dependency of the respective platform SDK of Web3Auth to your project. To learn
 more about the available SDKs, please have a look at this [documentation page](/sdk).
 
-For the purpose of this guide, we will discuss the [Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and the different blockchain
+For this guide, we will discuss the [Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and the different blockchain
 providers.
 
 <SetupBaseProject />
@@ -100,7 +99,7 @@ import { Keyring } from "@polkadot/api";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
 ```
 
-Call `init` when the app is loads, it will initialize the Web3Auth instance . Also don't forget to propertly configure the `clientId`,
+Call `init` when the app is loaded, it will initialize the Web3Auth instance. Also don't forget to properly configure the `clientId`,
 `web3AuthConfig` and `openloginAdapterConfig` objects in the `config` directory.
 
 ```tsx
@@ -135,11 +134,11 @@ const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 });
 ```
 
-### Get Public Address from different blockchains
+### Get Public Addresses from different blockchains
 
 For each blockchain you want to connect to, you need to call the `getAddress` function and with the private key, we will generate the public address.
 
-## EVM (Polygon mumbai testnet)
+## EVM (Polygon Amoy testnet)
 
 ```tsx
 const rpc = new RPC(provider);
@@ -149,10 +148,10 @@ const polygonPrivateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig: {
       chainNamespace: CHAIN_NAMESPACES.EIP155,
-      chainId: "0x13881",
-      rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
-      displayName: "Polygon Mumbai",
-      blockExplorerUrl: "https://mumbai.polygonscan.com/",
+      chainId: "0x13882",
+      rpcTarget: "https://rpc.ankr.com/polygon_amoy",
+      displayName: "Polygon Amoy",
+      blockExplorerUrl: "https://amoy.polygonscan.com/",
       ticker: "MATIC",
       tickerName: "MATIC",
       logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
@@ -236,7 +235,7 @@ return address;
 As you can see in the full example, we get the public address from each blockchain. In this case, It's clear that you can interact with different
 blockchains at the same time.
 
-And in Web3auth we have
+In Web3auth we have
 [several examples](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples) of how to interact
 with [any blockchain](https://web3auth.io/docs/connect-blockchain#mpc-providers).
 
@@ -255,7 +254,7 @@ extend their applications to support a wide range of blockchains.
 As the blockchain ecosystem continues to evolve, tools like Web3Auth will play a crucial role in simplifying access and interaction with blockchain
 technologies.
 
-If you want to interact with a specific blockchain and you are having trouble with the code, pleaes contact us in our
+If you want to interact with a specific blockchain and you are having trouble with the code, please contact us in our
 [community](https://web3auth.io/community/).
 
 ### References
