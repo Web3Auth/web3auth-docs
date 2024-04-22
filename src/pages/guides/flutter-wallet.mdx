@@ -42,21 +42,23 @@ Here are few screenshots of the application.
 
 ## How to set up Web3Auth Dashboard
 
-If you haven't already, you should start by setting up Web3Auth Dashboard. It's pretty simple.
-
-Head to [Web3Auth's documentation](/docs/dashboard-setup) for more on setting up Web3Auth Dashboard.
+If you haven't already, sign up on the Web3Auth platform. It is free and gives you access to the
+Web3Auth's base plan. After the basic setup, explore other features and functionalities offered by
+the Web3Auth Dashboard. It includes custom verifiers, whitelabeling, analytics, and more. Head to
+[Web3Auth's documentation](/docs/dashboard-setup) page for detailed instructions on setting up the
+Web3Auth Dashboard.
 
 ## Integrating Web3Auth in Flutter
 
 Once, you have set up the Web3Auth Dashboard, and created a new project, it's time to integrate
-Web3Auth in Flutter. For the implementation, we'll use the "web3auth_flutter package". This package
-facilitates integration with Web3Auth. This way you can easily manage embedded wallet in your
-Flutter application.
+Web3Auth in your Flutter application. For the implementation, we'll use the "web3auth_flutter
+package". This package facilitates integration with Web3Auth. This way you can easily manage
+embedded wallet in your Flutter application.
 
 ### Installation
 
-To install the web3auth_flutter package package, you have two options. You can either manually add
-the package in the `pubspec.yaml` file, or you can use the `flutter pub add` command.
+To install the web3auth_flutter package, you have two options. You can either manually add the
+package in the `pubspec.yaml` file, or you can use the `flutter pub add` command.
 
 <Tabs defaultValue = "console"
   values={[
@@ -66,7 +68,7 @@ the package in the `pubspec.yaml` file, or you can use the `flutter pub add` com
 >
 
 <TabItem value="console">
-Add `web3auth_flutter` using `flutter pub add command`.
+Add `web3auth_flutter` using `flutter pub add` command.
 
 ```sh
 flutter pub add web3auth_flutter
@@ -89,7 +91,7 @@ dependencies:
 
 After successfully installing the package, the next step is to initialize Web3Auth in your Flutter
 app. This sets up the necessary configurations using Client Id and prepares Web3Auth.
-[Learn more about Web3Auth initiliation](/docs/sdk/pnp/flutter/initialize).
+[Learn more about Web3Auth Initialization](/docs/sdk/pnp/flutter/initialize).
 
 ```dart
 Future<void> main() async {
@@ -240,7 +242,7 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
 
 ## Set up Blockchain Providers
 
-Once we have successfully authenticated user, the next step would be to fetch the user details,
+Once we have successfully authenticated the user, the next step would be to fetch the user details,
 retrieve wallet address and prepare blockchain providers for interactions. For this guide, we are
 supporting only Ethereum and Solana ecosystem, but the general idea can be used for any blockchain
 ecosystem.
@@ -250,9 +252,9 @@ we'll want to create an abstract layer to interact with the Blockchain providers
 will help us easily expand the blockchain support while isolate it from the rest of the application.
 
 For interacting ethereum chains, we'll use the [web3dart](https://pub.dev/packages/web3dart)
-package. Similary for solana, we'll use the "solana" package. To install the packages, you have two
-options. You can either manually add the packages in the `pubspec.yaml` file, or you can use the
-`flutter pub add` command.
+package. Similary for solana, we'll use the [solana](https://pub.dev/packages/solana) package. To
+install the packages, you have two options. You can either manually add the packages in the
+`pubspec.yaml` file, or you can use the `flutter pub add` command.
 
 <Tabs defaultValue = "console"
   values={[
@@ -262,20 +264,22 @@ options. You can either manually add the packages in the `pubspec.yaml` file, or
 >
 
 <TabItem value="console">
-Add `web3dart` using `flutter pub add command`.
+Add `web3dart` and `solana` using `flutter pub add` command.
 
 ```sh
 flutter pub add web3dart
+flutter pub add solana
 ```
 
 </TabItem>
 
 <TabItem value="pubspec">
-Add `web3dart` as a dependency to your `pubspec.yaml`.
+Add `web3dart` and `solana` as a dependency to your `pubspec.yaml`.
 
 ```yaml
 dependencies:
   web3dart: ^2.7.3
+  solana: ^0.30.4
 ```
 
 </TabItem>
@@ -286,8 +290,8 @@ we'll create a new class, `ChainProvider`, which will used as a base class for `
 and `SolanaProvider`. If you wish to support any additional ecosystem, you can extend the
 `ChainProvider` and implement the methods.
 
-If you want to learn, how you can intergrate different blockchain with Web3Auth, you can checkout
-our [Connect Blockchain resources](docs/connect-blockchain).
+If you want to learn, how you can integrate different blockchain with Web3Auth, you can checkout our
+[Connect Blockchain resources](docs/connect-blockchain).
 
 ```dart
 abstract class ChainProvider {
@@ -308,8 +312,8 @@ abstract class ChainProvider {
 }
 ```
 
-Generally for any blockchain provider, you'll only require the `getBalance`, `sendTransaction`, and
-`signMessage`. The `readContract` and `writeContract` specific to Ethereum ecosystem.
+Generally, for any blockchain provider, you'll only require the `getBalance`, `sendTransaction`, and
+`signMessage`. The `readContract` and `writeContract` can be used to interact with SmartContract.
 
 ### Ethereum Provider
 
@@ -519,7 +523,7 @@ class SolanaProvider extends ChainProvider {
 
 ## Set up Supported Chains
 
-After having our blockchain proivders are place, the next step on the list to define the supported
+After having our blockchain proivders in place, the next step on the list to define the supported
 chains. To keep things simple, we'll simply a create a new file `chain_configs` with list of Map to
 define the supported chains.
 
@@ -1004,5 +1008,6 @@ Voila, you have build a chain agnostic Web3 wallet. This guide only gives you an
 create your wallet with EVM and Solana ecosystem support. The general idea of the guide can be used
 for any of the blockchain ecosystem.
 
-If you are interested in learning more about Web3Auth, please checkout our documentation for
-Flutter. You can find the code used for the guide on our examples repo.
+If you are interested in learning more about Web3Auth, please checkout our
+[documentation for Flutter](/docs/sdk/pnp/flutter). You can find the code used for the guide on our
+[examples repo](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/flutter/flutter-playground).
