@@ -14,8 +14,9 @@ import Tabs from "@theme/Tabs";
 
 ### `login()`
 
-Trigger login flow will navigate the user to a browser model allowing the user to login into the service. You can pass in the supported providers to
-the login method for specific social logins such as Google, Apple, Facebook, etc., and do whitelabel login. `Web3Auth.login()` takes in
+Trigger login flow will navigate the user to a browser model allowing the user to login into the
+service. You can pass in the supported providers to the login method for specific social logins such
+as Google, Apple, Facebook, etc., and do whitelabel login. `Web3Auth.login()` takes in
 `W3ALoginParams` as a required input.
 
 #### Arguments
@@ -74,12 +75,13 @@ public struct W3ALoginParams: Codable {
 
 ### `getPrivkey()`
 
-Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private key which can be used to sign transactions on EVM
-compatible chains.
+Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private
+key which can be used to sign transactions on EVM compatible chains.
 
 ### `getEd25519PrivKey()`
 
-Use getEd25519PrivKey() to get the Ed25519 private key of the user. This private key can be used to sign transactions on Solana.
+Use getEd25519PrivKey() to get the Ed25519 private key of the user. This private key can be used to
+sign transactions on Solana.
 
 ### `getUserInfo()`
 
@@ -223,8 +225,9 @@ login(provider: .JWT)
 
 ## Session Management
 
-The Session Management feature allows you to check the existing sessions with Web3Auth. The `Web3AuthState` will allow users to remain authenticated
-with Web3Auth for 1 day by default, or a maximum of 7 days, or until the user logout or session data is cleared.
+The Session Management feature allows you to check the existing sessions with Web3Auth. The
+`Web3AuthState` will allow users to remain authenticated with Web3Auth for 1 day by default, or a
+maximum of 7 days, or until the user logout or session data is cleared.
 
 The `Web3Auth` initialization accepts a `sessionTime` parameter.
 
@@ -303,8 +306,8 @@ class ViewModel: ObservableObject {
 
 ## Selecting Curve
 
-The `Web3Auth().login(W3ALoginParams)` method accepts a `curve` parameter. This parameter can be used to select the elliptic curve to use for the
-signature.
+The `Web3Auth().login(W3ALoginParams)` method accepts a `curve` parameter. This parameter can be
+used to select the elliptic curve to use for the signature.
 
 ```swift
 let result = try await Web3Auth().login(
@@ -378,9 +381,107 @@ login(provider: .GOOGLE)
 
 ### `Web3Auth().logout()`
 
-This method will logout the user and remove the session id from the device. The user will need to login again to use the dApp next time the dApp is
-opened.
+This method will logout the user and remove the session id from the device. The user will need to
+login again to use the dApp next time the dApp is opened.
 
 ```swift
 await Web3Auth().logout()
+```
+
+## Enable MFA for a user
+
+The `enableMFA` method is used to trigger MFA setup flow for users. The method takes
+`W3ALoginParams` which will used during custom verifiers. If you are using default login providers,
+you don't need to pass `W3ALoginParams`. If you are using custom jwt verifiers, you need to pass the
+valid JWT token in `W3ALoginParams` as well.
+
+```swift title="Usage"
+do {
+	let loginParams = W3ALoginParams(loginProvider: .GOOGLE)
+	let isMFAEnabled = try await self.web3Auth.enableMFA(loginParams)
+} catch {
+	print(error.localizedDescription)
+	// Handle Error
+}
+```
+
+## Launch Wallet Services
+
+The `launchWalletServices` method launches a WebView which allows you to use the templated wallet UI
+services. The method takes `W3ALoginParams` and `ChainConfig` as the required input. Wallet Services
+is currently only available for EVM chains.
+
+:::note Minimum Scale plan required
+
+Access to Wallet Services is gated. You can use this feature in the development environment for
+free. The minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a
+production environment is the **Scale Plan**.
+
+:::
+
+### Arguments
+
+`ChainConfig`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter           | Description                                                                                                                 |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `chainNamespace`    | Custom configuration for your preferred blockchain. As of now only EVM supported. Default value is `ChainNamespace.eip155`. |
+| `decimals?`         | Number of decimals for the currency ticker. Default value is 18, and accepts `Int` as value.                                |
+| `blockExplorerUrl?` | Blockchain's explorer URL. (eg: `https://etherscan.io`)                                                                     |
+| `chainId`           | The chain id of the selected blockchain `String`.                                                                           |
+| `displayName?`      | Display Name for the chain.                                                                                                 |
+| `logo?`             | Logo for the selected `chainNamespace` & `chainId`.                                                                         |
+| `rpcTarget`         | RPC Target URL for the selected `chainNamespace` & `chainId`.                                                               |
+| `ticker?`           | Default currency ticker of the network (e.g: `ETH`)                                                                         |
+| `tickerName?`       | Name for currency ticker (e.g: `Ethereum`)                                                                                  |
+
+</TabItem>
+
+<TabItem value="class">
+
+```swift
+public struct ChainConfig: Codable {
+    public init(chainNamespace: ChainNamespace = ChainNamespace.eip155, decimals: Int? = 18, blockExplorerUrl: String? = nil, chainId: String, displayName: String? = nil, logo: String? = nil, rpcTarget: String, ticker: String? = nil, tickerName: String? = nil) {
+        self.chainNamespace = chainNamespace
+        self.decimals = decimals
+        self.blockExplorerUrl = blockExplorerUrl
+        self.chainId = chainId
+        self.displayName = displayName
+        self.logo = logo
+        self.rpcTarget = rpcTarget
+        self.ticker = ticker
+        self.tickerName = tickerName
+    }
+}
+
+```
+
+</TabItem>
+</Tabs>
+
+```swift title="Usage"
+let loginParams = W3ALoginParams(loginProvider: .GOOGLE)
+
+do {
+	try await web3Auth!.launchWalletServices(
+		loginParams,
+		chainConfig: ChainConfig(
+			chainId: "11155111",
+			rpcTarget: "https://eth-sepolia.public.blastapi.io"
+		)
+	)
+} catch {
+	print(error.localizedDescription)
+	// Handle error
+}
 ```
