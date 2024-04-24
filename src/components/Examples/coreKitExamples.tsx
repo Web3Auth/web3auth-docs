@@ -44,6 +44,18 @@ export const MPCCK = [
         icon: "logo-react.png",
         path: `${baseURL}mpc-core-kit-web/mpc-core-kit-aggregate-verifier-example`,
       },
+      {
+        key: "mpc-core-kit-rn-auth0",
+        title: "MPC Core Kit React Native Auth0 Example",
+        icon: "logo-react.png",
+        path: `${baseURL}mpc-core-kit-react-native/mpc-core-kit-rn-auth0`,
+      },
+      {
+        key: "mpc-core-kit-rn-quick-start",
+        title: "MPC Core Kit React Native Firebase Quick Start",
+        icon: "logo-react.png",
+        path: `${baseURL}mpc-core-kit-react-native/mpc-core-kit-rn-quick-start`,
+      },
     ],
   },
 ];
