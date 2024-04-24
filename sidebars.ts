@@ -1160,7 +1160,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "category",
-      label: "MPC Core Kit SDK",
+      label: "MPC Core Kit JS SDK",
       items: [
         "sdk/core-kit/mpc-core-kit/mpc-core-kit",
         "sdk/core-kit/mpc-core-kit/install",
@@ -1311,7 +1311,12 @@ const sidebars: SidebarsConfig = {
       label: "Providers",
       items: [
         "sdk/providers/providers",
-        "sdk/providers/evm",
+        {
+          type: "category",
+          label: "EVM",
+          items: ["sdk/providers/evm", "sdk/providers/evm-mpc"],
+          collapsed: false,
+        },
         "sdk/providers/solana",
         "sdk/providers/xrpl",
         "sdk/providers/common",

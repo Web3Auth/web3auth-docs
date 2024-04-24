@@ -1,14 +1,16 @@
 ---
-title: XRPL Provider
+title: XRPL Private Key Provider
 displayed_sidebar: sdk
 description: "XRPL Provider | Documentation - Web3Auth"
 ---
 
 ## [`@web3auth/xrpl-provider`](https://npmjs.com/package/@web3auth/xrpl-provider)
 
-The `@web3auth/xrpl-provider` is a Web3Auth provider that simplifies interaction with the XRPL Blockchain by serving as a wrapper around the
-[XRPL JSON RPC API](https://xrpl.org/request-formatting.html). It is used to interact with the XRPL blockchain and perform various operations like
-getting user's account, balance, signing a transaction, sending a transaction etc.
+The `@web3auth/xrpl-provider` is a Web3Auth provider that simplifies interaction with the XRPL
+Blockchain by serving as a wrapper around the
+[XRPL JSON RPC API](https://xrpl.org/request-formatting.html). It is used to interact with the XRPL
+blockchain and perform various operations like getting user's account, balance, signing a
+transaction, sending a transaction etc.
 
 In this section we'll explore more about how you can use this provider with our SDKs.
 
@@ -30,7 +32,8 @@ import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
 
 ### Assign the `XrplPrivateKeyProvider` class to a variable
 
-After creating your Web3Auth instance, you need to initialize the Torus Wallet UI Plugin and add it to a class for further usage.
+After creating your Web3Auth instance, you need to initialize the Torus Wallet UI Plugin and add it
+to a class for further usage.
 
 ```javascript
 const privateKeyProvider = new XrplPrivateKeyProvider({ config: XrplPrivKeyProviderConfig });
@@ -96,7 +99,8 @@ export interface BaseConfig {
 
 ### Chain Config
 
-For getting the Chain Config for XRPL Chain, you need to use the `getXRPLChainConfig` function from `@web3auth/xrpl-provider`.
+For getting the Chain Config for XRPL Chain, you need to use the `getXRPLChainConfig` function from
+`@web3auth/xrpl-provider`.
 
 ```tsx
 export declare const getXRPLChainConfig: (
@@ -105,8 +109,8 @@ export declare const getXRPLChainConfig: (
 ) => CustomChainConfig & Pick<CustomChainConfig, "wsTarget">;
 ```
 
-In this function, you can pass over your custom config as well as just the network type for web3auth to generate a standard config according to your
-requirement.
+In this function, you can pass over your custom config as well as just the network type for web3auth
+to generate a standard config according to your requirement.
 
 #### Example
 
@@ -120,8 +124,8 @@ const xrplProvider: any = new XrplPrivateKeyProvider({
 
 ### For Web3Auth PnP Web SDKs
 
-If you are using `chainNamespace: "other"` while initializing `Web3Auth` or `Web3AuthNoModal` with the `OpenloginAdapter`, you need to add the
-`privateKeyProvider` to the OpenLogin instance.
+If you are using `chainNamespace: "other"` while initializing `Web3Auth` or `Web3AuthNoModal` with
+the `OpenloginAdapter`, you need to add the `privateKeyProvider` to the OpenLogin instance.
 
 ```tsx
 import { Web3Auth } from "@web3auth/modal";
@@ -158,8 +162,9 @@ const web3authProvider = await web3auth.connect();
 
 ---
 
-After configuring the provider, you may utilize various functions from the `@web3auth/xrpl-provider` library for tasks such as obtaining the user's
-account, executing transactions, and signing messages. Below are a few sample use cases to assist you in getting started:
+After configuring the provider, you may utilize various functions from the `@web3auth/xrpl-provider`
+library for tasks such as obtaining the user's account, executing transactions, and signing
+messages. Below are a few sample use cases to assist you in getting started:
 
 ### Get User Account and Balance
 
@@ -241,8 +246,8 @@ try {
 
 #### `xrpl_submitTransaction`
 
-The purpose of this function is to sign and broadcast a transaction onto the blockchain. Upon successful execution, it will return the signature of
-the broadcasted transaction.
+The purpose of this function is to sign and broadcast a transaction onto the blockchain. Upon
+successful execution, it will return the signature of the broadcasted transaction.
 
 #### Example:
 
