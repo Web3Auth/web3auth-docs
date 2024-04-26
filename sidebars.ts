@@ -589,6 +589,7 @@ const sidebars: SidebarsConfig = {
         "troubleshooting/vite-issues",
         "troubleshooting/svelte-issues",
         "troubleshooting/metro-issues",
+        "troubleshooting/metro-issues-mpc",
         "troubleshooting/jwt-errors",
         "troubleshooting/supported-browsers",
         "troubleshooting/react-big-int-error",
