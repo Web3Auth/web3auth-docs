@@ -86,16 +86,24 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.enableMFA,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_REACT_APP_TSX,
-        files[hostedFileLinks.MPC_CORE_KIT_REACT_APP_TSX],
+        hostedFileLinks.MPC_CORE_KIT_ANGULAR_APP_COMPONENT_TS,
+        files[hostedFileLinks.MPC_CORE_KIT_ANGULAR_APP_COMPONENT_TS],
         "Enable Multi Factor Authentication",
+      ),
+    },
+    {
+      ...STEPS.socialRecoveryFactor,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_ANGULAR_APP_COMPONENT_TS,
+        files[hostedFileLinks.MPC_CORE_KIT_ANGULAR_APP_COMPONENT_TS],
+        "Export Social Account Factor",
       ),
     },
     {
       ...STEPS.recoverAccount,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_REACT_APP_TSX,
-        files[hostedFileLinks.MPC_CORE_KIT_REACT_APP_TSX],
+        hostedFileLinks.MPC_CORE_KIT_ANGULAR_APP_COMPONENT_TS,
+        files[hostedFileLinks.MPC_CORE_KIT_ANGULAR_APP_COMPONENT_TS],
         "Recover MFA Enabled Account",
       ),
     },

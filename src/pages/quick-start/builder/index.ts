@@ -29,6 +29,7 @@ import mpc_core_kit_angular from "./core_kit/mpc_core_kit/angular";
 import mpc_core_kit_nextjs from "./core_kit/mpc_core_kit/nextjs";
 import mpc_core_kit_react from "./core_kit/mpc_core_kit/react";
 import mpc_core_kit_vue from "./core_kit/mpc_core_kit/vue";
+import mpc_core_kit_react_native from "./core_kit/mpc_core_kit/react_native";
 import sfa_android from "./core_kit/sfa/android";
 import sfa_ios from "./core_kit/sfa/ios";
 import sfa_flutter from "./core_kit/sfa/flutter";
@@ -105,6 +106,7 @@ const sdks = {
   MPC_CORE_KIT_NEXTJS: mpc_core_kit_nextjs,
   MPC_CORE_KIT_REACT: mpc_core_kit_react,
   MPC_CORE_KIT_VUE: mpc_core_kit_vue,
+  MPC_CORE_KIT_REACT_NATIVE: mpc_core_kit_react_native,
 };
 
 const embed_links = {
@@ -156,6 +158,7 @@ const embed_links = {
   MPC_CORE_KIT_NEXTJS: "https://w3a.link/mpc-core-kit-nextjs-quick-start",
   MPC_CORE_KIT_REACT: "https://w3a.link/mpc-core-kit-react-quick-start",
   MPC_CORE_KIT_VUE: "https://w3a.link/mpc-core-kit-vue-quick-start",
+  MPC_CORE_KIT_REACT_NATIVE: "https://w3a.link/mpc-core-kit-rn-quick-start",
 };
 
 const builder: IntegrationBuilder = {

@@ -92,6 +92,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.socialRecoveryFactor,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_REACT_NATIVE_APP_TSX,
+        files[hostedFileLinks.MPC_CORE_KIT_REACT_NATIVE_APP_TSX],
+        "Export Social Account Factor",
+      ),
+    },
+    {
       ...STEPS.recoverAccount,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.MPC_CORE_KIT_REACT_APP_TSX,
