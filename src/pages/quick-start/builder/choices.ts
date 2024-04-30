@@ -72,6 +72,7 @@ export const LANGS_WEB_MPC_CORE_KIT: DisplayChoice[] = [
   { key: NEXTJS, displayName: "Next JS" },
   { key: VUE, displayName: "Vue" },
   { key: ANGULAR, displayName: "Angular" },
+  { key: REACT_NATIVE, displayName: "React Native" },
 ];
 
 const android = { key: ANDROID, displayName: "Android" };
