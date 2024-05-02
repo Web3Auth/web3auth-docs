@@ -1,4 +1,4 @@
-import * as hostedFileLinks from "../../../../../../../common/hostedFileLinks.json";
+import hostedFileLinks from "../../../../../../../common/hostedFileLinks.json";
 import STEPS from "../stepContent";
 
 export default function getSteps(steps, files, replacementAggregator) {
@@ -61,7 +61,11 @@ export default function getSteps(steps, files, replacementAggregator) {
     },
     {
       ...STEPS.login,
-      pointer: replacementAggregator.highlightRange(hostedFileLinks.SFA_WEB_REACT_APP_TSX, files[hostedFileLinks.SFA_WEB_REACT_APP_TSX], "Login"),
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.SFA_WEB_REACT_APP_TSX,
+        files[hostedFileLinks.SFA_WEB_REACT_APP_TSX],
+        "Login",
+      ),
     },
     {
       ...STEPS.getUserInfo,
@@ -81,7 +85,11 @@ export default function getSteps(steps, files, replacementAggregator) {
     },
     {
       ...STEPS.logout,
-      pointer: replacementAggregator.highlightRange(hostedFileLinks.SFA_WEB_REACT_APP_TSX, files[hostedFileLinks.SFA_WEB_REACT_APP_TSX], "Logout"),
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.SFA_WEB_REACT_APP_TSX,
+        files[hostedFileLinks.SFA_WEB_REACT_APP_TSX],
+        "Logout",
+      ),
     },
   );
 }

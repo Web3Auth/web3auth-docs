@@ -1,4 +1,4 @@
-import * as hostedFileLinks from "../../../../../common/hostedFileLinks.json";
+import hostedFileLinks from "../../../../../common/hostedFileLinks.json";
 import STEPS from "./stepContent";
 
 export default function getSteps(steps, files, replacementAggregator) {
@@ -45,7 +45,11 @@ export default function getSteps(steps, files, replacementAggregator) {
     },
     {
       ...STEPS.login,
-      pointer: replacementAggregator.highlightRange(hostedFileLinks.PNP_IOS_VIEWMODEL_SWIFT, files[hostedFileLinks.PNP_IOS_VIEWMODEL_SWIFT], "Login"),
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_IOS_VIEWMODEL_SWIFT,
+        files[hostedFileLinks.PNP_IOS_VIEWMODEL_SWIFT],
+        "Login",
+      ),
     },
     {
       ...STEPS.getUserInfo,

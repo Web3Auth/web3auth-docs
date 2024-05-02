@@ -1,4 +1,4 @@
-import * as hostedFileLinks from "../../../../../../common/hostedFileLinks.json";
+import hostedFileLinks from "../../../../../../common/hostedFileLinks.json";
 import STEPS from "../stepContent";
 
 export default function getSteps(steps, files, replacementAggregator) {
@@ -29,7 +29,11 @@ export default function getSteps(steps, files, replacementAggregator) {
     },
     {
       ...STEPS.login,
-      pointer: replacementAggregator.highlightRange(hostedFileLinks.MODAL_HTML_SCRIPT_JS, files[hostedFileLinks.MODAL_HTML_SCRIPT_JS], "Login"),
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MODAL_HTML_SCRIPT_JS,
+        files[hostedFileLinks.MODAL_HTML_SCRIPT_JS],
+        "Login",
+      ),
     },
     {
       ...STEPS.getUserInfo,
@@ -49,7 +53,11 @@ export default function getSteps(steps, files, replacementAggregator) {
     },
     {
       ...STEPS.logout,
-      pointer: replacementAggregator.highlightRange(hostedFileLinks.MODAL_HTML_SCRIPT_JS, files[hostedFileLinks.MODAL_HTML_SCRIPT_JS], "Logout"),
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MODAL_HTML_SCRIPT_JS,
+        files[hostedFileLinks.MODAL_HTML_SCRIPT_JS],
+        "Logout",
+      ),
     },
   );
 }

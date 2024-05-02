@@ -1,11 +1,15 @@
-import * as hostedFileLinks from "../../../../../../common/hostedFileLinks.json";
+import hostedFileLinks from "../../../../../../common/hostedFileLinks.json";
 import STEPS from "./stepContent";
 
 export default function getSteps(steps, files, replacementAggregator) {
   steps.push(
     {
       ...STEPS.nodeQuickStart,
-      pointer: replacementAggregator.highlightRange(hostedFileLinks.SFA_NODE_INDEX_JS, files[hostedFileLinks.SFA_NODE_INDEX_JS], "Quick Start"),
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.SFA_NODE_INDEX_JS,
+        files[hostedFileLinks.SFA_NODE_INDEX_JS],
+        "Quick Start",
+      ),
     },
     {
       ...STEPS.installation,
@@ -25,7 +29,11 @@ export default function getSteps(steps, files, replacementAggregator) {
     },
     {
       ...STEPS.createVerifier,
-      pointer: replacementAggregator.highlightRange(hostedFileLinks.SFA_NODE_INDEX_JS, files[hostedFileLinks.SFA_NODE_INDEX_JS], "Verifier Creation"),
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.SFA_NODE_INDEX_JS,
+        files[hostedFileLinks.SFA_NODE_INDEX_JS],
+        "Verifier Creation",
+      ),
     },
     {
       ...STEPS.initialization,
@@ -45,7 +53,11 @@ export default function getSteps(steps, files, replacementAggregator) {
     },
     {
       ...STEPS.login,
-      pointer: replacementAggregator.highlightRange(hostedFileLinks.SFA_NODE_INDEX_JS, files[hostedFileLinks.SFA_NODE_INDEX_JS], "Login"),
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.SFA_NODE_INDEX_JS,
+        files[hostedFileLinks.SFA_NODE_INDEX_JS],
+        "Login",
+      ),
     },
   );
 }
