@@ -1,46 +1,58 @@
 ---
-title: "Web3Auth MPC Core Kit Web SDK"
+title: "Web3Auth MPC Core Kit JS SDK"
 displayed_sidebar: sdk
 sidebar_label: Overview
-description: "Web3Auth MPC Core Kit Web SDK | Documentation - Web3Auth"
+description: "Web3Auth MPC Core Kit JS SDK | Documentation - Web3Auth"
 ---
 
 import Image1 from "@site/static/images/tkey-mpc-flow.png";
 
 Web3Auth's [`@web3auth/mpc-core-kit`](https://github.com/Web3Auth/mpc-core-kit) SDK is simple and
-easy-to-use SDK, which helps you implement the Web3Auth MPC Features while giving you the
-flexibility to customize the UI and UX of the authentication process.
+easy-to-use SDK, that helps you implement Web3Auth's MPC features while giving you the flexibility
+to customize the UI and UX of the authentication process.
 
-## This Documentation is based on [`2.3.0`](https://github.com/Web3Auth/mpc-core-kit/releases) SDK Version.
+## This Documentation is based on [`2.3.0`](https://github.com/Web3Auth/mpc-core-kit/releases/tag/v2.3.0) version of the SDK.
 
 ## Requirements
 
-- This is a frontend SDK and can only run in a browser environment
+### Web
+
 - Basic knowledge of JavaScipt
-- Supports all major JavaScript Frameworks, Libraries and Bundlers
+- This is a frontend SDK and can only run in a browser environment.
+
+### React Native
+
+- React Native Release 0.71 and above (for Bare React Native Workflow)
+- iOS Platform Target Version 14 and above
+- Android Target SDK Version 31 and above
 
 :::note
 
 The minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production
 environment is the **Enterprise Plan**. However, you can use this SDK with all features enabled in
-the development environment for free.
+the **development environment for free**.
 
 :::
 
 ## Web3Auth MPC Infrastructure Components
 
-With the Web3Auth infrastructure, your key is divided into multiple parts and stored across your
-devices and our Auth Network. This ensures that your key is always available and never stored in a
-single place. While in the traditional Web3Auth SDK, your key was dynamically reconstructed in the
-frontend using threshold signatures, with the new Web3Auth MPC (Multi Party Computation)
-architecture, it is **never reconstructed**. Instead, these partial keys are stored across different
-locations, and your device is used to make partial signatures for your message/ transaction. These
-are finally returned to the frontend where using TSS (Threshold Signature Scheme), these signatures
-are combined to make a final signature. You can use this finally signed message/transaction to make
-a transaction on the blockchain.
+The Web3Auth infrastructure is designed to ensure the security of user keys. Instead of being stored
+in a single location, the key is divided into multiple parts and distributed across the user's
+devices and our Auth Network. This means that the key is always available and never in danger of
+being compromised.
+
+The traditional Web3Auth SDK uses threshold signatures to dynamically reconstruct the key in the
+frontend. However, with the new Web3Auth MPC (Multi Party Computation) architecture, this is no
+longer necessary. Instead, partial keys are stored in different locations, and the user's device is
+used to make partial signatures for messages and transactions.
+
+These partial signatures are then combined using the TSS (Threshold Signature Scheme) to create a
+final signature, which can be used to make a transaction on the blockchain. The result is a more
+secure and user-friendly authentication process that helps to protect against key theft and other
+types of security breaches.
 
 The Threshold Signature Scheme (TSS) is a cryptographic primitive for distributed key generation and
-signing. The use of TSS in Web3Auth's Auth network is a new paradigm that can provide numerous
+signing. The use of TSS in Web3Auth's Auth Network is a new paradigm that can provide numerous
 benefits, especially in terms of security.
 
 <img
@@ -161,3 +173,11 @@ device seamlessly without having to generate a new factor.
 This package gives access to common types and interfaces for Web3Auth. This comes in handy by
 providing you with a standard way of importing the values you need to work with the SDKs. We highly
 recommend using it while working with Typescript.
+
+### MPC Providers
+
+#### [`@web3auth/ethereum-mpc-provider`](https://npmjs.com/package/@web3auth/ethereum-mpc-provider)
+
+The `@web3auth/ethereum-mpc-provider` is a Web3Auth provider that simplifies interaction with the
+EIP1193 based EVM blockchains. It is used to interact with the EVM blockchain and perform various
+operations like getting user's account, balance, signing a transaction, sending a transaction etc.

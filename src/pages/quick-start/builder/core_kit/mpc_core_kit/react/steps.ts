@@ -1,4 +1,4 @@
-import * as hostedFileLinks from "../../../../../../common/hostedFileLinks.json";
+import hostedFileLinks from "../../../../../../common/hostedFileLinks.json";
 import STEPS from "../stepContent";
 
 export default function getSteps(steps, files, replacementAggregator) {
@@ -89,6 +89,14 @@ export default function getSteps(steps, files, replacementAggregator) {
         hostedFileLinks.MPC_CORE_KIT_REACT_APP_TSX,
         files[hostedFileLinks.MPC_CORE_KIT_REACT_APP_TSX],
         "Enable Multi Factor Authentication",
+      ),
+    },
+    {
+      ...STEPS.socialRecoveryFactor,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_REACT_APP_TSX,
+        files[hostedFileLinks.MPC_CORE_KIT_REACT_APP_TSX],
+        "Export Social Account Factor",
       ),
     },
     {

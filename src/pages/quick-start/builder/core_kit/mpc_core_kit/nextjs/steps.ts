@@ -1,4 +1,4 @@
-import * as hostedFileLinks from "../../../../../../common/hostedFileLinks.json";
+import hostedFileLinks from "../../../../../../common/hostedFileLinks.json";
 import STEPS from "../stepContent";
 
 export default function getSteps(steps, files, replacementAggregator) {
@@ -78,16 +78,24 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.enableMFA,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_REACT_APP_TSX,
-        files[hostedFileLinks.MPC_CORE_KIT_REACT_APP_TSX],
+        hostedFileLinks.MPC_CORE_KIT_NEXT_PAGE_TSX,
+        files[hostedFileLinks.MPC_CORE_KIT_NEXT_PAGE_TSX],
         "Enable Multi Factor Authentication",
+      ),
+    },
+    {
+      ...STEPS.socialRecoveryFactor,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_NEXT_PAGE_TSX,
+        files[hostedFileLinks.MPC_CORE_KIT_NEXT_PAGE_TSX],
+        "Export Social Account Factor",
       ),
     },
     {
       ...STEPS.recoverAccount,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_REACT_APP_TSX,
-        files[hostedFileLinks.MPC_CORE_KIT_REACT_APP_TSX],
+        hostedFileLinks.MPC_CORE_KIT_NEXT_PAGE_TSX,
+        files[hostedFileLinks.MPC_CORE_KIT_NEXT_PAGE_TSX],
         "Recover MFA Enabled Account",
       ),
     },

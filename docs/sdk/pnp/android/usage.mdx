@@ -529,6 +529,14 @@ The `launchWalletServices` method launches a WebView which allows you to use the
 services. The method takes `LoginParams` and `ChainConfig` as the required input.Wallet Services is
 currently only available for EVM chains.
 
+:::note Minimum Scale plan required
+
+Access to Wallet Services is gated. You can use this feature in the development environment for
+free. The minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a
+production environment is the **Scale Plan**.
+
+:::
+
 ### Arguments
 
 `ChainConfig`
@@ -603,10 +611,50 @@ completableFuture.whenComplete{_, error ->
 }
 ```
 
-:::note Minimum Scale plan required
+## Request signature
 
-Access to Wallet Services is gated. You can use this feature in the development environment for
-free. The minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a
-production environment is the **Scale Plan**.
+The `request` method facilitates the use of templated transaction screens for signing transactions.
+Upon successful completion, you can retrieve the signature for the request using the
+`getSignResponse` static method.
 
-:::
+Please check the list of [JSON RPC methods](docs.metamask.io/wallet/reference/json-rpc-api/), noting
+that the request method currently supports only the signing methods.
+
+### Arguments
+
+| Arguments       | Description                                                                                                                                                                                                                                                          |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginParams`   | Takes in `LoginParams` used for authenticating the user. If you are using a custom verifier, please make sure to pass the valid JWT token in `LoginParams`.                                                                                                          |
+| `method`        | JSON RPC method name in `String`. Currently, the request method only supports the singing methods.                                                                                                                                                                   |
+| `requestParams` | Parameters for the corresponding method. The parameters should be in the list and correct sequence. Take a look at [RPC methods](<[https://docs.metamask.io/wallet/reference/json-rpc-api/](https://docs.metamask.io/wallet/reference/json-rpc-api/)>) to know more. |
+
+### Usage
+
+```kotlin title="Usage"
+
+val params = JsonArray().apply {
+    // Message to be signed
+    add("Hello, World!")
+    // User's EOA address
+    add(address)
+}
+
+val loginParams = LoginParams(Provider.GOOGLE)
+
+val signMsgCompletableFuture = web3Auth.request(
+    loginParams = loginParams,
+    "personal_sign",
+    requestParams = params
+)
+
+signMsgCompletableFuture.whenComplete { _, error ->
+    if (error == null) {
+        Log.d("MainActivity_Web3Auth", "Message signed successfully")
+        val signResult = Web3Auth.getSignResponse()
+        Log.d("MainActivity_Web3Auth", signResult.toString())
+
+    } else {
+        Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
+    }
+}
+```

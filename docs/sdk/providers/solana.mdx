@@ -1,5 +1,5 @@
 ---
-title: Solana Provider
+title: Solana Private Key Provider
 displayed_sidebar: sdk
 description: "Solana Provider | Documentation - Web3Auth"
 ---
@@ -9,8 +9,9 @@ import Tabs from "@theme/Tabs";
 
 ## [`@web3auth/solana-provider`](https://npmjs.com/package/@web3auth/solana-provider)
 
-The Solana Blockchain Provider is basically a wrapper around the [Solana JSON RPC API](https://solana.com/docs/rpc) making it easier to interact with
-the Solana Blockchain.
+The Solana Blockchain Provider is basically a wrapper around the
+[Solana JSON RPC API](https://solana.com/docs/rpc) making it easier to interact with the Solana
+Blockchain.
 
 In this section we'll explore more about how you can use this provider with our SDKs.
 
@@ -32,7 +33,8 @@ import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 
 ### Assign the `SolanaPrivateKeyProvider` class to a variable
 
-After creating your Web3Auth instance, you need to initialize the Torus Wallet UI Plugin and add it to a class for further usage.
+After creating your Web3Auth instance, you need to initialize the Torus Wallet UI Plugin and add it
+to a class for further usage.
 
 ```javascript
 const privateKeyProvider = new SolanaPrivateKeyProvider({ config: SolanaPrivKeyProviderConfig });
@@ -98,8 +100,8 @@ export interface BaseConfig {
 
 ### Chain Config
 
-While connecting your preferred chain, you need to pass the chainConfig as a parameter. For solana you can use one of the following chain configs
-according to your use case.
+While connecting your preferred chain, you need to pass the chainConfig as a parameter. For solana
+you can use one of the following chain configs according to your use case.
 
 <Tabs
   defaultValue="mainnet"
@@ -182,8 +184,8 @@ const privateKeyProvider = new SolanaPrivateKeyProvider({
 
 ### For Web3Auth PnP Web SDKs
 
-If you are using `chainNamespace: "solana"` while initializing `Web3Auth` or `Web3AuthNoModal` with the `OpenloginAdapter`, you need to add the
-`privateKeyProvider` to the OpenLogin instance.
+If you are using `chainNamespace: "solana"` while initializing `Web3Auth` or `Web3AuthNoModal` with
+the `OpenloginAdapter`, you need to add the `privateKeyProvider` to the OpenLogin instance.
 
 ```tsx
 const chainConfig = {
@@ -226,7 +228,8 @@ const web3authProvider = await web3auth.connectTo(
 
 ### For Single Factor Auth Web SDK
 
-While using the SFA Web SDK, you need to pass the provider during the initialisation of SDK, while calling the init() function.
+While using the SFA Web SDK, you need to pass the provider during the initialisation of SDK, while
+calling the init() function.
 
 ```tsx
 const chainConfig = {
@@ -263,8 +266,9 @@ const web3authProvider = await web3authSFAuth.connect({
 
 ### For tKey JS SDK
 
-In tKey JS SDK, there is not internal method of passing the provider directly. Hence, you need to setup the provider using the private key generated
-from tKey, using the setupProvider function of the SolanaPrivateKeyProvider.
+In tKey JS SDK, there is not internal method of passing the provider directly. Hence, you need to
+setup the provider using the private key generated from tKey, using the setupProvider function of
+the SolanaPrivateKeyProvider.
 
 ```tsx
 setupProvider(privKey: string): Promise<void>;
@@ -300,8 +304,8 @@ provider = privateKeyProvider.provider;
 
 ## Using the provider
 
-On connection, you can use `web3auth.provider` as a solana provider with `@web3auth/solana-provider` along with
-[@solana/web3.js](https://solana-labs.github.io/solana-web3.js/) library.
+On connection, you can use `web3auth.provider` as a solana provider with `@web3auth/solana-provider`
+along with [@solana/web3.js](https://solana-labs.github.io/solana-web3.js/) library.
 
 ```tsx
 import { SolanaWallet } from "@web3auth/solana-provider";
@@ -309,13 +313,14 @@ import { SolanaWallet } from "@web3auth/solana-provider";
 const solanaWallet = new SolanaWallet(provider);
 ```
 
-Once you have setup the provider, you can use the standard functions in the `solana/web3.js` library to get user's account, perform transaction, sign
-a message etc. Here we have listed a few examples to help you get started there:
+Once you have setup the provider, you can use the standard functions in the `solana/web3.js` library
+to get user's account, perform transaction, sign a message etc. Here we have listed a few examples
+to help you get started there:
 
 :::info
 
-All the RPC methods which are available by default on Solana Blockchain are also available on the Solana Provider. Although, for the case of `phantom`
-adapter they are not available.
+All the RPC methods which are available by default on Solana Blockchain are also available on the
+Solana Provider. Although, for the case of `phantom` adapter they are not available.
 
 You can refer to standard RPC calls for Solana [here](https://solana.com/docs/rpc)
 
@@ -330,7 +335,13 @@ This method is used fetch the address of connected account.
 #### Example
 
 ```tsx
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import {
+  Connection,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 import { SolanaWallet } from "@web3auth/solana-provider";
 
 const solanaWallet = new SolanaWallet(provider);
@@ -353,12 +364,19 @@ const balance = await connection.getBalance(new PublicKey(accounts[0]));
 
 #### `signTransaction`
 
-This method is used to sign a single serialized transaction and it returns a signed `Transaction` object.
+This method is used to sign a single serialized transaction and it returns a signed `Transaction`
+object.
 
 #### Example
 
 ```tsx
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import {
+  Connection,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 import { SolanaWallet } from "@web3auth/solana-provider";
 
 const solanaWallet = new SolanaWallet(provider);
@@ -390,12 +408,19 @@ console.log(signedTx.signature);
 
 #### `signAllTransactions`
 
-This method is used to sign a list of serialized transactions and it returns back list of signed of `Transaction` objects.
+This method is used to sign a list of serialized transactions and it returns back list of signed of
+`Transaction` objects.
 
 #### Example:
 
 ```tsx
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import {
+  Connection,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 import { SolanaWallet } from "@web3auth/solana-provider";
 
 const solanaWallet = new SolanaWallet(provider);
@@ -427,12 +452,19 @@ console.log(signedTx.signature);
 
 #### `signAndSendTransaction`
 
-This function is used to sign and broadcast the transaction on chain. It returns the signature of broadcasted transaction.
+This function is used to sign and broadcast the transaction on chain. It returns the signature of
+broadcasted transaction.
 
 #### Example:
 
 ```tsx
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import {
+  Connection,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 import { SolanaWallet } from "@web3auth/solana-provider";
 
 const solanaWallet = new SolanaWallet(provider);
@@ -467,7 +499,13 @@ This method is used sign any message from connected wallet.
 #### Example
 
 ```tsx
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import {
+  Connection,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 import { SolanaWallet } from "@web3auth/solana-provider";
 
 const solanaWallet = new SolanaWallet(provider);
@@ -481,7 +519,8 @@ console.log(result.toString());
 
 #### `solanaPrivateKey`
 
-This method is used to fetch the private key of logged in user. It is only available for `in-app` adapters like `openlogin`.
+This method is used to fetch the private key of logged in user. It is only available for `in-app`
+adapters like `openlogin`.
 
 #### Example
 

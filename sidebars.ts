@@ -589,6 +589,7 @@ const sidebars: SidebarsConfig = {
         "troubleshooting/vite-issues",
         "troubleshooting/svelte-issues",
         "troubleshooting/metro-issues",
+        "troubleshooting/metro-issues-mpc",
         "troubleshooting/jwt-errors",
         "troubleshooting/supported-browsers",
         "troubleshooting/react-big-int-error",
@@ -804,6 +805,9 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Adapters",
           items: [
+            "sdk/pnp/web/adapters/adapters",
+            "sdk/pnp/web/adapters/default-evm-adapter",
+            "sdk/pnp/web/adapters/default-solana-adapter",
             "sdk/pnp/web/adapters/adapters",
             "sdk/pnp/web/adapters/openlogin",
             "sdk/pnp/web/adapters/torus-evm",
@@ -1160,7 +1164,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "category",
-      label: "MPC Core Kit SDK",
+      label: "MPC Core Kit JS SDK",
       items: [
         "sdk/core-kit/mpc-core-kit/mpc-core-kit",
         "sdk/core-kit/mpc-core-kit/install",
@@ -1311,7 +1315,12 @@ const sidebars: SidebarsConfig = {
       label: "Providers",
       items: [
         "sdk/providers/providers",
-        "sdk/providers/evm",
+        {
+          type: "category",
+          label: "EVM",
+          items: ["sdk/providers/evm", "sdk/providers/evm-mpc"],
+          collapsed: false,
+        },
         "sdk/providers/solana",
         "sdk/providers/xrpl",
         "sdk/providers/common",
