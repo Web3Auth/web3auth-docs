@@ -6,6 +6,7 @@ import Tabs from "@theme/Tabs";
   values={[
     { label: "Google", value: "google" },
     { label: "Auth0", value: "auth0" },
+    { label: "Farcaster", value: "farcaster" },
     { label: "JWT", value: "jwt" },
     { label: "Facebook", value: "facebook" },
     { label: "Discord", value: "discord" },
@@ -40,6 +41,18 @@ const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
     verifierIdField: "sub", // same as your JWT Verifier ID
     domain: "https://YOUR-APPLICATION-DOMAIN", // your service provider domain, e.g. Auth0
   },
+});
+```
+
+</TabItem>
+
+<TabItem value="farcaster">
+
+```tsx
+import { WALLET_ADAPTERS } from "@web3auth/base";
+// inside your async function with on click handler
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  loginProvider: "farcaster",
 });
 ```
 

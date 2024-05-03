@@ -129,17 +129,13 @@ Some of the commonly used L2s and the Ethereum chain ids are listed below.
 ```tsx
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1",
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io",
+  chainId: "0xaa36a7", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io/",
   ticker: "ETH",
   tickerName: "Ethereum",
 };
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
 ```
 
 ## Setting up the provider
@@ -154,7 +150,9 @@ const coreKitInstance = new Web3AuthMPCCoreKit({
   chainConfig,
   manualSync: true, // This is the recommended approach
 });
-evmProvider.setupProvider(coreKitInstance);
+
+const provider = new EthereumSigningProvider({ config: { chainConfig } });
+provider.setupProvider(coreKitInstance);
 ```
 
 ## Using the provider

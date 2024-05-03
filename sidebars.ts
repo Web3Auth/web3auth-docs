@@ -589,6 +589,7 @@ const sidebars: SidebarsConfig = {
         "troubleshooting/vite-issues",
         "troubleshooting/svelte-issues",
         "troubleshooting/metro-issues",
+        "troubleshooting/metro-issues-mpc",
         "troubleshooting/jwt-errors",
         "troubleshooting/supported-browsers",
         "troubleshooting/react-big-int-error",
@@ -804,6 +805,9 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Adapters",
           items: [
+            "sdk/pnp/web/adapters/adapters",
+            "sdk/pnp/web/adapters/default-evm-adapter",
+            "sdk/pnp/web/adapters/default-solana-adapter",
             "sdk/pnp/web/adapters/adapters",
             "sdk/pnp/web/adapters/openlogin",
             "sdk/pnp/web/adapters/torus-evm",

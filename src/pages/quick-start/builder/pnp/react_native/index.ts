@@ -1,4 +1,4 @@
-import * as hostedFileLinks from "../../../../../common/hostedFileLinks.json";
+import hostedFileLinks from "../../../../../common/hostedFileLinks.json";
 import { ReplaceFileAggregator } from "../../../utils";
 import getSteps from "./steps";
 
