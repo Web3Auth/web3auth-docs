@@ -235,6 +235,7 @@ const sidebars: SidebarsConfig = {
             "auth-provider-setup/social-providers/twitch",
             "auth-provider-setup/social-providers/discord",
             "auth-provider-setup/social-providers/apple",
+            "auth-provider-setup/social-providers/kakao",
             "auth-provider-setup/social-providers/linkedin",
             "auth-provider-setup/social-providers/github",
             "auth-provider-setup/social-providers/line",
