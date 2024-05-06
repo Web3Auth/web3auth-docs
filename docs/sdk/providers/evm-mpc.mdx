@@ -158,13 +158,15 @@ provider.setupProvider(coreKitInstance);
 ## Using the provider
 
 On connection, you can use this `provider` as an
-[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider with `web3.js` or `ethers` library.
+[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider with `web3.js`, `ethers` or `viem`
+library.
 
 <Tabs
   defaultValue="web3"
   values={[
     { label: "web3.js", value: "web3" },
     { label: "ethers.js", value: "ethers" },
+    { label: "viem", value: "viem" },
   ]}
 >
 
@@ -188,6 +190,17 @@ const provider = new ethers.providers.Web3Provider(provider);
 
 </TabItem>
 
+<TabItem value="viem">
+
+```tsx
+import { createWalletClient } from "viem";
+
+const walletClient = createWalletClient({
+  transport: custom(provider),
+});
+```
+
+</TabItem>
 </Tabs>
 
 Once you have set up the provider, you can use the standard functions in the web3 library to get
