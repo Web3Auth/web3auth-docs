@@ -110,7 +110,7 @@ const sdks = {
   MPC_CORE_KIT_REACT_NATIVE: mpc_core_kit_react_native,
 };
 
-const embed_links = {
+export const embed_links = {
   // PNP Modal SDK
   PNP_MODAL_ANGULAR: "https://w3a.link/pnp-angular-modal-quick-start",
   PNP_MODAL_HTML: "https://w3a.link/pnp-vanillajs-modal-quick-start",
