@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useHistory, useLocation } from "@docusaurus/router";
 
 import { corekitsfa, corekitmfa, pnp, walletecosystems, helpersdks } from "../../common/SDKOptions";
 import styles from "./styles.module.css";
@@ -1335,7 +1336,21 @@ export const providers = (
 );
 
 export default function QuickNavigation() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const history = useHistory();
   const [product, setProduct] = useState<string>(pnp);
+
+  useEffect(() => {
+    history.push({ search: `product=${product}` });
+  }, [product]);
+
+  useEffect(() => {
+    const URLProduct = queryParams.get("product");
+    if (URLProduct) {
+      setProduct(URLProduct);
+    }
+  }, []);
 
   return (
     <div className={styles.container}>
