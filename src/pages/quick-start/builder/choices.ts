@@ -33,6 +33,7 @@ export const ANGULAR = "ANGULAR";
 export const HTML = "HTML";
 export const ANDROID = "ANDROID";
 export const IOS = "IOS";
+export const WEBGL = "WEBGL";
 export const REACT_NATIVE = "REACT_NATIVE";
 export const FLUTTER = "FLUTTER";
 export const UNITY = "UNITY";
@@ -77,6 +78,7 @@ export const LANGS_WEB_MPC_CORE_KIT: DisplayChoice[] = [
 
 const android = { key: ANDROID, displayName: "Android" };
 const ios = { key: IOS, displayName: "iOS/Swift" };
+const webgl = { key: WEBGL, displayName: "WebGL" };
 
 export const LANGS_ANDROID: DisplayChoice[] = [android];
 
@@ -86,7 +88,7 @@ export const LANGS_REACT_NATIVE: DisplayChoice[] = [ios, android];
 
 export const LANGS_FLUTTER: DisplayChoice[] = [android, ios];
 
-export const LANGS_UNITY: DisplayChoice[] = [android, ios];
+export const LANGS_UNITY: DisplayChoice[] = [android, ios, webgl];
 
 export const LANGS_NODE: DisplayChoice[] = [{ key: NODE, displayName: "NodeJS" }];
 
