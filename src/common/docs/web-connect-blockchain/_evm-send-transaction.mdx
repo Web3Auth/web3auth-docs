@@ -6,6 +6,7 @@ import Tabs from "@theme/Tabs";
   values={[
     { label: "web3.js", value: "web3" },
     { label: "ethers.js", value: "ethers" },
+    { label: "viem", value: "viem" },
   ]}
 >
 <TabItem value="web3">
@@ -56,6 +57,41 @@ const tx = await signer.sendTransaction({
 
 // Wait for the transaction to be mined
 const receipt = await tx.wait();
+```
+
+</TabItem>
+<TabItem value="viem">
+
+```tsx
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const publicClient = createPublicClient({
+  chain: mainnet, // for mainnet
+  transport: custom(this.provider),
+});
+
+const walletClient = createWalletClient({
+  chain: mainnet, // for mainnet
+  transport: custom(this.provider),
+});
+
+// data for the transaction
+const destination = "<ADDRESS>";
+const amount = parseEther("0.0001");
+const address = await this.getAccounts();
+
+const address = await walletClient.getAddresses();
+
+// Submit transaction to the blockchain
+const hash = await walletClient.sendTransaction({
+  account: address[0],
+  to: destination,
+  value: amount,
+});
+
+const receipt = await publicClient.waitForTransactionReceipt({ hash });
 ```
 
 </TabItem>

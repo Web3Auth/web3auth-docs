@@ -6,6 +6,7 @@ import Tabs from "@theme/Tabs";
   values={[
     { label: "web3.js", value: "web3" },
     { label: "ethers.js", value: "ethers" },
+    { label: "viem", value: "viem" },
   ]}
 >
 <TabItem value="web3">
@@ -40,6 +41,35 @@ const signer = await provider.getSigner();
 const originalMessage = "YOUR_MESSAGE";
 
 const signedMessage = await signer.signMessage(originalMessage);
+```
+
+</TabItem>
+<TabItem value="viem">
+
+```tsx
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const publicClient = createPublicClient({
+  chain: mainnet, // for mainnet
+  transport: custom(this.provider),
+});
+
+const walletClient = createWalletClient({
+  chain: mainnet, // for mainnet
+  transport: custom(this.provider),
+});
+
+// data for signing
+const address = await walletClient.getAddresses();
+const originalMessage = "YOUR_MESSAGE";
+
+// Sign the message
+const hash = await walletClient.signMessage({
+  account: address[0],
+  message: originalMessage,
+});
 ```
 
 </TabItem>
