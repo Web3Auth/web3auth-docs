@@ -12,7 +12,7 @@ import MoonLoader from "react-spinners/BeatLoader";
 
 import SEO from "../../components/SEO";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
-import builder from "./builder";
+import builder, { embed_links } from "./builder";
 import { CORE_KIT, PNP } from "./builder/choices";
 import styles from "./styles.module.css";
 
@@ -22,7 +22,9 @@ const getWindowLocation = () => {
 };
 
 const getDefaultBuilderOptions = () => {
-  const defaultOpts = Object.fromEntries(Object.entries(builder.options).map(([key, option]) => [key, option.default]));
+  const defaultOpts = Object.fromEntries(
+    Object.entries(builder.options).map(([key, option]) => [key, option.default]),
+  );
   const url = new URL(getWindowLocation());
 
   const urlOpts = {};
@@ -41,14 +43,21 @@ const getURLFromBuilderOptions = (opts: Record<string, string>, stepIndex): stri
 };
 
 export default function IntegrationBuilderPage({ files }: { files: Record<string, any> }) {
-  const [builderOptions, setBuilderOptions] = useState<Record<string, string>>(getDefaultBuilderOptions());
+  const [builderOptions, setBuilderOptions] = useState<Record<string, string>>(
+    getDefaultBuilderOptions(),
+  );
   const [isLinkCopied, setLinkCopied] = useState<boolean>(false);
   const [builderView, setBuilderView] = useState<boolean>(true);
   const [showPreviewModal, setShowPreviewModal] = useState<boolean>(false);
   const url = new URL(getWindowLocation());
-  const [stepIndex, setStepIndex] = useState(parseInt(url.searchParams.get("stepIndex") || "0", 10));
+  const [stepIndex, setStepIndex] = useState(
+    parseInt(url.searchParams.get("stepIndex") || "0", 10),
+  );
   const [loading, setLoading] = useState<boolean>(false);
-  const integration = useMemo(() => builder.build(builderOptions, files, stepIndex), [builderOptions, files, stepIndex]);
+  const integration = useMemo(
+    () => builder.build(builderOptions, files, stepIndex),
+    [builderOptions, files, stepIndex],
+  );
   const [selectedFilename, setSelectedFilename] = useState(integration.filenames[0]);
 
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -117,7 +126,11 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     }
   };
 
-  const togglePreviewModal = () => {
+  const togglePreviewModal = (link?: string) => {
+    if (link === embed_links.PNP_UNITY_WEBGL) {
+      window.open(link, "_blank");
+      return;
+    }
     if (showPreviewModal) {
       setShowPreviewModal(false);
     } else {
@@ -135,7 +148,9 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
       if (builder.options[optionKey]) {
         const check = builder.options[optionKey].choices.flatMap((choice) => choice.key);
         if (!check.includes(builderOptions[optionKey])) {
-          const option = Object.fromEntries(Object.entries(builder.options).map(([key, optioning]) => [key, optioning.default]));
+          const option = Object.fromEntries(
+            Object.entries(builder.options).map(([key, optioning]) => [key, optioning.default]),
+          );
           onChangeDropdown(optionKey, option[optionKey]);
         }
       }
@@ -157,7 +172,10 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
         return (
           <div key={key} className={styles.list}>
             <h3>{option.displayName}</h3>
-            <select value={builderOptions[key]} onChange={(event) => onChangeDropdown(key, event.target.value)}>
+            <select
+              value={builderOptions[key]}
+              onChange={(event) => onChangeDropdown(key, event.target.value)}
+            >
               {option.choices.map((value) => (
                 <option value={value.key} key={key}>
                   {value.displayName}
@@ -174,13 +192,18 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
               {option.choices.map((value) => (
                 <>
                   {value.key === PNP && (
-                    <div className={builderOptions[key] === PNP ? styles.selectedCard : styles.card} onClick={() => onChangeDropdown(key, value.key)}>
+                    <div
+                      className={builderOptions[key] === PNP ? styles.selectedCard : styles.card}
+                      onClick={() => onChangeDropdown(key, value.key)}
+                    >
                       <h5 className={styles.cardTitle}>{value.displayName}</h5>
                     </div>
                   )}
                   {value.key === CORE_KIT && (
                     <div
-                      className={builderOptions[key] === CORE_KIT ? styles.selectedCard : styles.card}
+                      className={
+                        builderOptions[key] === CORE_KIT ? styles.selectedCard : styles.card
+                      }
                       onClick={() => onChangeDropdown(key, value.key)}
                     >
                       <h5 className={styles.cardTitle}>{value.displayName}</h5>
@@ -214,12 +237,22 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
       />
       <div className={styles.container}>
         {showPreviewModal && (
-          <div className={styles.previewModalContainer} onClick={togglePreviewModal}>
+          <div className={styles.previewModalContainer} onClick={() => togglePreviewModal()}>
             <div className={styles.previewModal} onClick={handleModalClick}>
               <div className={styles.optionsHeader}>
                 <h2 className={styles.optionsHeaderText}>Preview</h2>
-                <button className={styles.hideButton} onClick={togglePreviewModal} type="button">
-                  <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <button
+                  className={styles.hideButton}
+                  onClick={() => togglePreviewModal()}
+                  type="button"
+                >
+                  <svg
+                    width="20"
+                    height="21"
+                    viewBox="0 0 20 21"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       fill-rule="evenodd"
                       clip-rule="evenodd"
@@ -236,7 +269,9 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                     <MoonLoader
                       loading={loading}
                       size={20}
-                      color={getComputedStyle(document.body).getPropertyValue("--ifm-color-primary")}
+                      color={getComputedStyle(document.body).getPropertyValue(
+                        "--ifm-color-primary",
+                      )}
                       aria-label="Loading"
                       speedMultiplier={0.85}
                     />
@@ -263,7 +298,13 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
               {builderView ? (
                 <>
                   Hide
-                  <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="20"
+                    height="21"
+                    viewBox="0 0 20 21"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       fill-rule="evenodd"
                       clip-rule="evenodd"
@@ -275,7 +316,13 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
               ) : (
                 <>
                   Expand{" "}
-                  <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="20"
+                    height="21"
+                    viewBox="0 0 20 21"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       fill-rule="evenodd"
                       clip-rule="evenodd"
@@ -289,16 +336,28 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
           </div>
 
           <div className={styles.optionsContainer}>
-            <div className={styles.builderContainer}>{Object.entries(builder.options).map(([key, option]) => optionRender(key, option))}</div>
+            <div className={styles.builderContainer}>
+              {Object.entries(builder.options).map(([key, option]) => optionRender(key, option))}
+            </div>
 
             <div className={styles.utilityButtonsContainer}>
               {integration.embedLink && (
-                <button className={styles.previewButton} onClick={togglePreviewModal} type="button">
+                <button
+                  className={styles.previewButton}
+                  onClick={() => togglePreviewModal(integration.embedLink)}
+                  type="button"
+                >
                   Preview
                 </button>
               )}
               <button className={styles.copyButton} onClick={onClickCopyLink} type="button">
-                <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 17 17"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     fill-rule="evenodd"
                     clip-rule="evenodd"
@@ -337,7 +396,11 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
             <IntegrationBuilderCodeView
               filenames={integration.filenames}
               fileContents={integration.files}
-              highlight={steps[stepIndex] && steps[stepIndex].pointer?.filename === selectedFilename && steps[stepIndex].pointer?.range}
+              highlight={
+                steps[stepIndex] &&
+                steps[stepIndex].pointer?.filename === selectedFilename &&
+                steps[stepIndex].pointer?.range
+              }
               selectedFilename={selectedFilename}
               onClickFilename={(filename: string) => setSelectedFilename(filename)}
             />
