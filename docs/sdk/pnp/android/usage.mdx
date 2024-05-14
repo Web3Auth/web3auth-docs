@@ -526,8 +526,8 @@ class MainActivity : AppCompatActivity() {
 ## Launch Wallet Services
 
 The `launchWalletServices` method launches a WebView which allows you to use the templated wallet UI
-services. The method takes `LoginParams` and `ChainConfig` as the required input.Wallet Services is
-currently only available for EVM chains.
+services. The method takes`ChainConfig` as the required input. Wallet Services is currently only
+available for EVM chains.
 
 :::note Minimum Scale plan required
 
@@ -585,7 +585,6 @@ data class ChainConfig(
 </Tabs>
 
 ```kotlin title="Usage"
-val loginParams = LoginParams(Provider.GOOGLE)
 
 // highlight-start
 val chainConfig = ChainConfig(
@@ -597,7 +596,7 @@ val chainConfig = ChainConfig(
 // highlight-end
 
 val completableFuture = web3Auth.launchWalletServices(
-    loginParams, chainConfig
+    chainConfig
 )
 
 completableFuture.whenComplete{_, error ->

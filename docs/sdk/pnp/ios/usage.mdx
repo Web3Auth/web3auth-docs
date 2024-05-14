@@ -408,8 +408,8 @@ do {
 ## Launch Wallet Services
 
 The `launchWalletServices` method launches a WebView which allows you to use the templated wallet UI
-services. The method takes `W3ALoginParams` and `ChainConfig` as the required input. Wallet Services
-is currently only available for EVM chains.
+services. The method takes `ChainConfig` as the required input. Wallet Services is currently only
+available for EVM chains.
 
 :::note Minimum Scale plan required
 
@@ -470,11 +470,8 @@ public struct ChainConfig: Codable {
 </Tabs>
 
 ```swift title="Usage"
-let loginParams = W3ALoginParams(loginProvider: .GOOGLE)
-
 do {
 	try await web3Auth!.launchWalletServices(
-		loginParams,
 		chainConfig: ChainConfig(
 			chainId: "11155111",
 			rpcTarget: "https://eth-sepolia.public.blastapi.io"

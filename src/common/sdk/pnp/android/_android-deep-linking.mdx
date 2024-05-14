@@ -24,3 +24,18 @@ Make sure your Main activity launchMode is set to **singleTop** in your `Android
   // ...
 </activity>
 ```
+
+From version **7.1.2**, please make sure to set `android:allowBackup` to `false`, and add
+`tools:replace="android:fullBackupContent"` in your `AndroidManifest.xml` file.
+
+```xml
+<application
+        // highlight-start
+        android:allowBackup="false"
+        tools:replace="android:fullBackupContent"
+        // highlight-end
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher">
+</application>
+```
