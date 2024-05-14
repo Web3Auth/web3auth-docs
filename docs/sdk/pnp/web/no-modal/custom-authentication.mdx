@@ -10,21 +10,20 @@ import ConnectToExample from "@site/src/common/sdk/pnp/web/_connect-to-example.m
 import CustomAuthenticationCoreExample from "@site/src/common/sdk/pnp/web/_custom-authentication-core-example.mdx";
 import ExtraLoginOptions from "@site/src/common/sdk/pnp/web/_extra-login-options.mdx";
 import LoginConfig from "@site/src/common/sdk/pnp/web/_login-config.mdx";
+import GrowthPlanNote from "@site/src/common/docs/_growth_plan_note.mdx";
 
-Custom Authentication is a way to authenticate users with your custom authentication service. For example, while authenticating with Google, you can
-use your own Google Client ID and Dashboard to authenticate users directly or use aggregate services like Auth0, Firebase, AWS Cognito etc.
-Additionally, you can make your own JWT token authentication system and pass over the ID Token to Web3Auth to generate a private key for them.
+Custom Authentication is a way to authenticate users with your custom authentication service. For
+example, while authenticating with Google, you can use your own Google Client ID and Dashboard to
+authenticate users directly or use aggregate services like Auth0, Firebase, AWS Cognito etc.
+Additionally, you can make your own JWT token authentication system and pass over the ID Token to
+Web3Auth to generate a private key for them.
 
-For enabling this, you need [Create a Verifier](/auth-provider-setup/verifiers) from the **Custom Auth** section of the
+For enabling this, you need [Create a Verifier](/auth-provider-setup/verifiers) from the **Custom
+Auth** section of the
 
 [Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired configuration.
 
-:::note
-
-This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the **Growth
-Plan**. You can use this feature in the development environment for free.
-
-:::
+<GrowthPlanNote />
 
 :::tip
 
@@ -37,8 +36,9 @@ If you want to know more about setting up a verifier and how to use it, please r
 
 ---
 
-Social logins in Web3Auth are enabled by the [`openlogin-adapter`](/sdk/pnp/web/adapters/openlogin). Natively, it is already present and preconfigured
-within the Plug and Play SDK, but for custom configurations, you need to install the adapter package.
+Social logins in Web3Auth are enabled by the [`openlogin-adapter`](/sdk/pnp/web/adapters/openlogin).
+Natively, it is already present and preconfigured within the Plug and Play SDK, but for custom
+configurations, you need to install the adapter package.
 
 ```bash npm2yarn
 npm install --save @web3auth/openlogin-adapter
@@ -46,51 +46,57 @@ npm install --save @web3auth/openlogin-adapter
 
 ## Configuring Openlogin Adapter
 
-While instantiating the Openlogin Adapter, you can pass some configuration objects to the constructor. One of these configurations is the
-`adapterSettings` configuration which enables you to make changes in the adapter, enabling you to do things like Whitelabeling and Custom
-Authentication among other things.
+While instantiating the Openlogin Adapter, you can pass some configuration objects to the
+constructor. One of these configurations is the `adapterSettings` configuration which enables you to
+make changes in the adapter, enabling you to do things like Whitelabeling and Custom Authentication
+among other things.
 
 :::tip
 
-Checkout the [`openlogin-adapter`](/sdk/pnp/web/adapters/openlogin) SDK Reference for more details on different configurations you can pass for
-customizations.
+Checkout the [`openlogin-adapter`](/sdk/pnp/web/adapters/openlogin) SDK Reference for more details
+on different configurations you can pass for customizations.
 
 :::
 
 #### `loginConfig`
 
-The `loginConfig` parameter of `adapterSettings` in `openlogin-adapter` contains the following properties:
+The `loginConfig` parameter of `adapterSettings` in `openlogin-adapter` contains the following
+properties:
 
 <LoginConfig />
 
 ## Logging in through your Custom JWT Token
 
-While using the Web3Auth Plug and Play No Modal SDK, you have the option to use the `connectTo` function, which enables you to customize the login
-process according to the parameters you have for your custom authentication service.
+While using the Web3Auth Plug and Play No Modal SDK, you have the option to use the `connectTo`
+function, which enables you to customize the login process according to the parameters you have for
+your custom authentication service.
 
 <ConnectTo />
 
 :::tip
 
-Know more about the `connectTo` function in the [`Usage SDK Reference`](/sdk/pnp/web/no-modal/usage#logging-in-the-user)
+Know more about the `connectTo` function in the
+[`Usage SDK Reference`](/sdk/pnp/web/no-modal/usage#logging-in-the-user)
 
 :::
 
 :::important
 
-It is mandatory to pass the `idToken` parameter in the `extraLoginOptions` object when logging in through your custom JWT token.
+It is mandatory to pass the `idToken` parameter in the `extraLoginOptions` object when logging in
+through your custom JWT token.
 
 :::
 
-Further, to enable Custom Authentication, the `loginParams` parameter takes in another object called `extraLoginOptions` which contains the following
-properties:
+Further, to enable Custom Authentication, the `loginParams` parameter takes in another object called
+`extraLoginOptions` which contains the following properties:
 
 <ExtraLoginOptions />
 
 ## Example
 
-Since we're using the `@web3auth/no-modal`, ie. the Plug and Play No Modal SDK, the `loginConfig` can include custom JWT-based authentication as well.
-This way, we can use any of our preferred login providers and further setup their configs while logging the user in and passing over the
+Since we're using the `@web3auth/no-modal`, ie. the Plug and Play No Modal SDK, the `loginConfig`
+can include custom JWT-based authentication as well. This way, we can use any of our preferred login
+providers and further setup their configs while logging the user in and passing over the
 `extraLoginOptions` in the `connectTo` function.
 
 <CustomAuthenticationCoreExample />
