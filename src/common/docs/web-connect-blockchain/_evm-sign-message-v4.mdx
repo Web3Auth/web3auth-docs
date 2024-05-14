@@ -11,6 +11,9 @@ import Tabs from "@theme/Tabs";
 <TabItem value="web3">
 
 ```tsx
+import { Eip712TypedData } from "web3/lib/types"
+...
+
 /*
   Sign Typed Data v4 adds support for
   arrays and recursive data types.
@@ -27,9 +30,9 @@ import Tabs from "@theme/Tabs";
 // Get user's Ethereum public address
 const fromAddress = (await web3.eth.getAccounts())[0];
 
-const originalMessage = JSON.stringify({
+const originalMessage:Eip712TypedData = {
   domain: {
-    // Defining the chain aka Sepolia testnet or Ethereum Main Net
+    // Defining the same active chain Id
     chainId: 11155111, // 1 for mainnet
     // Give a user friendly name to the specific contract you are signing for.
     name: "Ether Mail",
@@ -91,15 +94,9 @@ const originalMessage = JSON.stringify({
       { name: "wallets", type: "address[]" },
     ],
   },
-});
-const params = [fromAddress, originalMessage];
-const method = "eth_signTypedData_v4";
+};
 
-const signedMessage = await web3.currentProvider.sendAsync({
-  method,
-  params,
-  fromAddress,
-});
+const signedMessage = await web3.eth.signTypedData(fromAddress, originalMessage)
 ```
 
 </TabItem>
@@ -141,7 +138,10 @@ const originalMessage = JSON.stringify({
     attachedMoneyInEth: 4.2,
     from: {
       name: "Cow",
-      wallets: ["0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826", "0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF"],
+      wallets: [
+        "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
+        "0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF",
+      ],
     },
     to: [
       {
