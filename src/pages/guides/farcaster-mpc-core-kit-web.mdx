@@ -1,0 +1,252 @@
+---
+title: Integrate Sign In with Farcaster with Web3Auth MPC CoreKit Web SDK
+image: "guides/banners/farcaster-mpc-ck-web.png"
+description: Learn how to use Sign In with Farcaster with Web3Auth MPC CoreKit Web SDK
+type: guide
+tags: ["@web3auth/mpc-core-kit", mpc, mpc-core-kit-web, farcaster, react, ethereum, next.js]
+date: May 8, 2024
+author: Web3Auth Team
+communityPortalTopicId:
+pinned: false
+---
+
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Integrate Sign In with Farcaster with Web3Auth MPC CoreKit Web SDK"
+  description="Learn how to use Sign In with Farcaster with Web3Auth MPC CoreKit Web SDK"
+  image="https://web3auth.io/docs/guides/banners/farcaster-mpc-ck-web.png"
+  slug="/guides/farcaster-mpc-core-kit-web"
+/>
+
+### Prerequisites:
+
+- Basic understanding of React and Next.js
+- Familiarity with JavaScript and TypeScript
+- Basic knowledge of authentication and JWT tokens
+
+### Step 1: Install and Configure Sign In with Farcaster
+
+a. **Install Dependencies**: Install `auth-kit` and its peer dependency `viem` using npm.
+
+```bash
+npm install @farcaster/auth-kit viem
+```
+
+Note: `auth-kit` is a React library. If you're using a different framework, take a look at the
+[client library](https://docs.farcaster.xyz/auth-kit/client/introduction) instead.
+
+b. **Import Libraries**: Import `auth-kit` and its CSS styles into your React component.
+
+```tsx
+import "@farcaster/auth-kit/styles.css";
+import { AuthKitProvider, SignInButton, useProfile } from "@farcaster/auth-kit";
+```
+
+c. **Configure Provider**: Set up a provider with your desired configuration including the RPC URL,
+domain, and login URL.
+
+```tsx
+const config = {
+  rpcUrl: "https://mainnet.optimism.io",
+  domain: "example.com",
+  siweUri: "https://example.com/login",
+};
+```
+
+d. **Integrate Sign-In Button**: Render the `SignInButton` component in your UI to prompt users to
+sign in.
+
+```tsx
+const App = () => {
+  return (
+    <AuthKitProvider config={config}>
+      {/* Your App */}
+      <SignInButton />
+    </AuthKitProvider>
+  );
+};
+```
+
+### Step 2: Verify Signatures on Backend
+
+We will be using `NextAuth` to implement Authorization logic.
+
+a. **Create a NextAuth API**: Create an API route using NextAuth to handle authentication and
+signature verification.
+
+`pages/api/auth/[...nextauth].ts`
+
+```tsx
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { createAppClient, viemConnector } from "@farcaster/auth-client";
+```
+
+b. **Authorization Logic**: Implement authorization logic to verify user signatures and credentials.
+
+```tsx
+ async authorize(credentials) {
+     const { body: { csrfToken } } = req;
+
+     const appClient = createAppClient({
+         ethereum: viemConnector(),
+     });
+
+     const verifyResponse = await appClient.verifySignInMessage({
+         message: credentials?.message as string,
+         signature: credentials?.signature as `0x${string}`,
+         domain: "example.com",
+         nonce: csrfToken,
+     });
+     const { success, fid } = verifyResponse;
+
+     if (!success) {
+         return null;
+     }
+
+     return {
+         id: fid.toString(),
+         name: credentials?.name,
+         image: credentials?.pfp,
+     };
+ },
+```
+
+### Step 3: Generate a JWT Token using Farcaster User's data
+
+a. **Create a JWT Token**: Create an API endpoint to generate JWT tokens containing user's data from
+Farcaster.
+[Follow these steps to setup your Custom Verifier with Web3Auth](https://web3auth.io/docs/auth-provider-setup/byo-jwt-provider#set-up-custom-jwt-verifier).
+`pages/api/login.ts`
+
+```tsx
+import jwt from "jsonwebtoken";
+```
+
+b. **JWT Signing**: Sign the JWT token using a
+[private key](https://web3auth.io/docs/auth-provider-setup/byo-jwt-provider#using-rsa-for-jwt-signing)
+and include necessary user data that you get from Farcaster.
+
+```tsx
+const userData = req.body.userData;
+// Get RS256 key of length 2048
+const privateKey = process.env.PRIVATE_KEY!;
+
+const jwtToken = jwt.sign(
+  {
+    sub: userData?.fid.toString(),
+    name: userData?.displayName,
+    username: userData?.username,
+    profileImage: userData?.pfpUrl,
+    custody: userData?.custody,
+    aud: "w3a:farcaster-server",
+    iss: "https://web3auth.io",
+    iat: Math.floor(Date.now() / 1000),
+    exp: Math.floor(Date.now() / 1000) + 60 * 60,
+  },
+  privateKey,
+  { algorithm: "RS256", keyid: "REPLACE_KEY_ID" },
+);
+```
+
+### Step 4: Authenticate with Web3Auth
+
+a. **Initialize Web3Auth MPC CoreKit Web SDK**: Set up Web3Auth instance and configure it with
+necessary parameters.
+
+```tsx
+import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK, parseToken } from "@web3auth/mpc-core-kit";
+import { EthereumSigningProvider } from "@web3auth/ethereum-mpc-provider";
+
+const coreKitInstance = new Web3AuthMPCCoreKit({
+  web3AuthClientId, // Your Web3Auth Client ID
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // Web3Auth Network
+  setupProviderOnInit: false, // if needed to skip the provider setup
+  manualSync: true, // This is the recommended approach since it allows you to control the sync process
+});
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorer: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
+evmProvider.setupProvider(coreKitInstance);
+
+await coreKitInstance.init();
+```
+
+b. **Get idToken from your backend**:
+
+```tsx
+const response = await fetch("/api/login", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ userData: res }),
+});
+const data = await response.json();
+const token = data.token;
+```
+
+c. **Initiate Web3Auth Login**:
+
+Implement login functionality using the generated JWT token.
+
+```tsx
+const login = async (idToken: any) => {
+  // Login logic
+  if (!coreKitInstance) {
+    throw new Error("Web3Auth CoreKit not initialized");
+  }
+  const { payload } = parseToken(idToken);
+
+  await coreKitInstance.loginWithJWT({
+    verifier, // Your verifier name from Web3Auth Dashboard
+    verifierId: (payload as any).sub, // based on your setup
+    idToken, // JWT token from your backend
+  });
+  if (coreKitInstance.status === COREKIT_STATUS.LOGGED_IN) {
+    await coreKitInstance.commitChanges(); // Needed to commit for new accounts, when using manualSync: true
+  }
+};
+```
+
+### Step 5 (Optional): Additional Features
+
+a. **Blockchain Interactions**: Include optional features like checking balances, signing messages,
+and sending transactions.
+
+```tsx
+const getBalance = async (provider: IProvider) => {
+  // Get balance logic
+};
+```
+
+b. **Logout Functionality**: Implement logout functionality for users.
+
+```tsx
+const logOut = async () => {
+  await coreKitInstance.logout();
+  await signOut();
+};
+```
+
+### Full Implementation Example
+
+Here's
+[an example of how to integrate the above steps into your Next.js application](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/mpc-core-kit-farcaster)
+
+---
+
+This guide should provide a clear structure and step-by-step instructions for integrating
+[`Sign In with Farcaster`](https://docs.farcaster.xyz/auth-kit/installation) using
+[Web3Auth SFA Web SDK](https://web3auth.io/docs/sdk/core-kit/sfa-web). Let me know if you need
+further clarification on any part!
