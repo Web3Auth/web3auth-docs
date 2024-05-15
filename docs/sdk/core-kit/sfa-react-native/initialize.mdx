@@ -2,7 +2,8 @@
 title: "Initializing Core Kit SFA React Native SDK"
 sidebar_label: "Initialize"
 displayed_sidebar: sdk
-description: "Web3Auth Core Kit Single Factor Auth React Native SDK - Initialize | Documentation - Web3Auth"
+description:
+  "Web3Auth Core Kit Single Factor Auth React Native SDK - Initialize | Documentation - Web3Auth"
 ---
 
 import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
@@ -11,7 +12,8 @@ import InstantiatingProvider from "@site/src/common/sdk/core-kit/sfa/_instantiat
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-After Installation, the next step to use Web3Auth Single Factor Auth Web SDK is to Initialize the SDK.
+After Installation, the next step to use Web3Auth Single Factor Auth Web SDK is to Initialize the
+SDK.
 
 However, the Initialization is a two-step process, ie.
 
@@ -23,7 +25,7 @@ However, the Initialization is a two-step process, ie.
 #### Import the `Web3Auth` class from `@web3auth/single-factor-auth-react-native` package.
 
 ```js
-import { Web3Auth } from "@web3auth/single-factor-auth-react-native";
+import Web3Auth from "@web3auth/single-factor-auth-react-native";
 ```
 
 #### Assign the `Web3Auth` class to a variable
@@ -40,12 +42,13 @@ import { Web3Auth } from "@web3auth/single-factor-auth-react-native";
 
 ```javascript
 import * as SecureStore from "expo-secure-store";
-import { Web3Auth } from "@web3auth/single-factor-auth-react-native";
+import Web3Auth from "@web3auth/single-factor-auth-react-native";
 
 const web3auth = new Web3Auth(SecureStore, SdkInitOptions);
 ```
 
-The react native SFA Web3Auth constructor takes `SecureStore` and an object with `SdkInitOptions` as parameters for the expo-managed workflow.
+The react native SFA Web3Auth constructor takes `SecureStore` and an object with `SdkInitOptions` as
+parameters for the expo-managed workflow.
 
 </TabItem>
 
@@ -53,12 +56,13 @@ The react native SFA Web3Auth constructor takes `SecureStore` and an object with
 
 ```javascript
 import EncryptedStorage from "react-native-encrypted-storage";
-import { Web3Auth } from "@web3auth/single-factor-auth-react-native";
+import Web3Auth from "@web3auth/single-factor-auth-react-native";
 
 const web3auth = new Web3Auth(EncryptedStorage, SdkInitOptions);
 ```
 
-The react native SFA Web3Auth constructor takes `EncryptedStorage` and an object with `SdkInitOptions` as parameters for the bare workflow.
+The react native SFA Web3Auth constructor takes `EncryptedStorage` and an object with
+`SdkInitOptions` as parameters for the bare workflow.
 
 </TabItem>
 </Tabs>
@@ -172,8 +176,9 @@ const web3auth = new Web3Auth(EncryptedStorage, {
 
 #### `init()`
 
-To complete the initialization process, we need to initialize the `Web3Auth` instance, which we named `web3auth`. This is achieved by calling the
-`init()` function of the previously created `web3auth` instance, using a **private key provider**.
+To complete the initialization process, we need to initialize the `Web3Auth` instance, which we
+named `web3auth`. This is achieved by calling the `init()` function of the previously created
+`web3auth` instance, using a **private key provider**.
 
 ```ts
 await web3auth.init(privateKeyProvider);
@@ -193,9 +198,9 @@ await web3auth.init(privateKeyProvider);
 
 ```ts
 import * as SecureStore from "expo-secure-store";
-import { Web3Auth } from "@web3auth/single-factor-auth-react-native";
+import Web3Auth from "@web3auth/single-factor-auth-react-native";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
 
 // Swap with a different provider if you want to use a different blockchain
 const privateKeyProvider = new EthereumPrivateKeyProvider({
@@ -214,7 +219,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 
 const web3auth = new Web3Auth(SecureStore, {
   clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from the Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
+  web3AuthNetwork: WEB3AUTH_NETWORK_SAPPHIRE_MAINNET,
   usePnPKey: false, // By default, this sdk returns CoreKitKey
 });
 
@@ -227,9 +232,9 @@ await web3auth.init(privateKeyProvider);
 
 ```ts
 import EncryptedStorage from "react-native-encrypted-storage";
-import { Web3Auth } from "@web3auth/single-factor-auth-react-native";
+import Web3Auth from "@web3auth/single-factor-auth-react-native";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
 
 // Swap with a different provider if you want to use a different blockchain
 const privateKeyProvider = new EthereumPrivateKeyProvider({
@@ -248,7 +253,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 
 const web3auth = new Web3Auth(EncryptedStorage, {
   clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from the Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
+  web3AuthNetwork: WEB3AUTH_NETWORK_SAPPHIRE_MAINNET,
   usePnPKey: false, // By default, this sdk returns CoreKitKey
 });
 
