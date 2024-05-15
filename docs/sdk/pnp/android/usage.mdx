@@ -584,20 +584,21 @@ data class ChainConfig(
 </TabItem>
 </Tabs>
 
-```kotlin title="Usage"
+### Usage
 
-// highlight-start
+```kotlin title="Usage"
 val chainConfig = ChainConfig(
     chainId = "0x1",
     rpcTarget = "https://rpc.ankr.com/eth",
     ticker = "ETH",
     chainNamespace = ChainNamespace.EIP155
 )
-// highlight-end
 
+// highlight-start
 val completableFuture = web3Auth.launchWalletServices(
     chainConfig
 )
+// highlight-end
 
 completableFuture.whenComplete{_, error ->
     if(error == null) {
@@ -630,7 +631,6 @@ that the request method currently supports only the signing methods.
 ### Usage
 
 ```kotlin title="Usage"
-
 val params = JsonArray().apply {
     // Message to be signed
     add("Hello, World!")
@@ -645,15 +645,18 @@ val chainConfig = ChainConfig(
     chainNamespace = ChainNamespace.EIP155
 )
 
+// highlight-start
 val signMsgCompletableFuture = web3Auth.request(
     chainConfig = chainConfig,
     "personal_sign",
     requestParams = params
 )
+// highlight-end
 
 signMsgCompletableFuture.whenComplete { _, error ->
     if (error == null) {
         Log.d("MainActivity_Web3Auth", "Message signed successfully")
+        // highlight-next-line
         val signResult = Web3Auth.getSignResponse()
         Log.d("MainActivity_Web3Auth", signResult.toString())
 

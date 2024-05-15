@@ -397,8 +397,8 @@ valid JWT token in `W3ALoginParams` as well.
 
 ```swift title="Usage"
 do {
-	let loginParams = W3ALoginParams(loginProvider: .GOOGLE)
-	let isMFAEnabled = try await self.web3Auth.enableMFA(loginParams)
+	// highlight-next-line
+	let isMFAEnabled = try await self.web3Auth.enableMFA()
 } catch {
 	print(error.localizedDescription)
 	// Handle Error
@@ -469,14 +469,18 @@ public struct ChainConfig: Codable {
 </TabItem>
 </Tabs>
 
+### Usage
+
 ```swift title="Usage"
 do {
+	// highlight-start
 	try await web3Auth!.launchWalletServices(
 		chainConfig: ChainConfig(
 			chainId: "11155111",
 			rpcTarget: "https://eth-sepolia.public.blastapi.io"
 		)
 	)
+	// highlight-end
 } catch {
 	print(error.localizedDescription)
 	// Handle error
@@ -510,12 +514,18 @@ do {
 	// User's EOA address
 	params.append(address)
 
+	// highlight-start
 	try await self.web3Auth?.request(
-		loginParams,
+		chainConfig: ChainConfig(
+			chainId: "11155111",
+			rpcTarget: "https://eth-sepolia.public.blastapi.io"
+		),
 		method: "personal_sign",
 		requestParams: params
 	)
+	// highlight-end
 
+	// highlight-next-line
 	let response = try Web3Auth.getSignResponse()
 
 	if response!.success {
