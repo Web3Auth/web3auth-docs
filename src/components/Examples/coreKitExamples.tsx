@@ -1,4 +1,5 @@
 export const baseURL = "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/";
+export const baseURLtKey = "https://github.com/tkey/tkey-examples/tree/main/";
 
 export const CKTkey = [
   {
@@ -9,13 +10,13 @@ export const CKTkey = [
         key: "tkey-react-redirect-example",
         title: "tKey in Redirect Flow",
         icon: "logo-react.png",
-        path: `${baseURL}tkey-web/intrinsic-flow-examples/tkey-redirect-flow-example`,
+        path: `${baseURLtKey}tkey-web/tkey-redirect-flow-example`,
       },
       {
         key: "tkey-react-popup-example",
         title: "tKey in Popup Flow",
         icon: "logo-react.png",
-        path: `${baseURL}tkey-web/intrinsic-flow-examples/tkey-popup-flow-example`,
+        path: `${baseURLtKey}tkey-web/tkey-popup-flow-example`,
       },
     ],
   },

@@ -9,40 +9,46 @@ image: "images/docs-meta-cards/documentation-card.png"
 import EVMChains from "@site/src/common/docs/_evm-chains.mdx";
 import OtherChains from "@site/src/common/docs/_other-chains.mdx";
 
-Web3Auth is the frontend authentication system for your dApp. Once the user is authenticated, the Web3Auth SDK returns a provider. A provider is how
-libraries like web3.js & ethers.js talk to the blockchain. Providers take JSON-RPC requests and return the response. This is normally done by
-submitting the request to an HTTP or IPC socket-based server. With Web3Auth, you get two types of providers, depending on the product you use:
+Web3Auth is the frontend authentication system for your dApp. Once the user is authenticated, the
+Web3Auth SDK returns a provider. A provider is how libraries like web3.js & ethers.js talk to the
+blockchain. Providers take JSON-RPC requests and return the response. This is normally done by
+submitting the request to an HTTP or IPC socket-based server. With Web3Auth, you get two types of
+providers, depending on the product you use:
 
 1. [Shamir Secret Sharing based Private Key Providers](#private-key-providers-non-mpc)
 2. [Threshold Signature Scheme based MPC Providers](#mpc-providers)
 
 ## Web3Auth is Chain Agnostic
 
-By default, Web3Auth supports the `secp256k1` and `ed25519` key curves. While these key curves serve the majority of blockchains out there, certain
-blockchains have different curve implementations of their own. While for our MPC products, you need dedicated providers to interact with certain
+By default, Web3Auth supports the `secp256k1` and `ed25519` key curves. While these key curves serve
+the majority of blockchains out there, certain blockchains have different curve implementations of
+their own. While for our MPC products, you need dedicated providers to interact with certain
 blockchains, with **Web3Auth non-MPC products you can interact with any blockchain of your choice**.
 
-In Web3Auth non-MPC Products, the ability to export the user's private key comes in handy. This private key can be utilized by the dApp to interact
-with the chain.
+In Web3Auth non-MPC Products, the ability to export the user's private key comes in handy. This
+private key can be utilized by the dApp to interact with the chain.
 
 You can read more about this in our [Connect with Other Blockchains](./other/) section.
 
 :::info
 
-Web3Auth is composable - you can combine it with meta-transaction flows, multisigs, and other cryptographic protocols. It is easy to build on top of,
-and generally fits in with most other technology stacks, including but not limited to; your favorite scalability solutions, meta transactions, smart
-contract wallets, different elliptic curve pairs and even RSA.
+Web3Auth is composable - you can combine it with meta-transaction flows, multisigs, and other
+cryptographic protocols. It is easy to build on top of, and generally fits in with most other
+technology stacks, including but not limited to; your favorite scalability solutions, meta
+transactions, smart contract wallets, different elliptic curve pairs and even RSA.
 
 :::
 
 ## Private Key Providers (non-MPC)
 
-The Private Key Providers work with the majority of Web3Auth products, including Plug and Play SDKs, Single Factor Auth SDKs, and tKey SSS (v1) SDKs.
-As the name suggests these providers are a wrapper around the user's private key, which is dynamically reconstructed with Shamir's Secret Sharing and
+The Private Key Providers work with the majority of Web3Auth products, including Plug and Play SDKs,
+Single Factor Auth SDKs, and tKey SSS (v1) SDKs. As the name suggests these providers are a wrapper
+around the user's private key, which is dynamically reconstructed with Shamir's Secret Sharing and
 is present in the user's frontend.
 
-Once the authentication happens, the returned result from the Web3Auth network is taken up by the provider to give a common interface to interact with
-the blockchain of your choice. Currently, Web3Auth supports the following private key providers for Web SDKs:
+Once the authentication happens, the returned result from the Web3Auth network is taken up by the
+provider to give a common interface to interact with the blockchain of your choice. Currently,
+Web3Auth supports the following private key providers for Web SDKs:
 
 - [EIP1193 Private Key Provider](/sdk/providers/evm): For connecting to EVM based chains
 - [Solana Private Key Provider](/sdk/providers/solana): For connecting with Solana Blockchain
@@ -51,9 +57,10 @@ the blockchain of your choice. Currently, Web3Auth supports the following privat
 
 ## MPC Providers
 
-The Threshold Signature Scheme-based MPC Providers work with our MPC Core Kit SDK. These providers generate a signature of the particular key curve
-the provider is configured for and accordingly gives you the interface to initialize with the blockchain it is configured for. Currently, Web3Auth MPC
-Core Kit supports the following providers:
+The Threshold Signature Scheme-based MPC Providers work with our MPC Core Kit SDK. These providers
+generate a signature of the particular key curve the provider is configured for and accordingly
+gives you the interface to initialize with the blockchain it is configured for. Currently, Web3Auth
+MPC Core Kit supports the following providers:
 
 - EIP1193 MPC Provider: For connecting with EVM-based chains [Available by default within the SDK]
 - Bitcoin MPC Provider (coming soon)
@@ -61,8 +68,8 @@ Core Kit supports the following providers:
 
 ## Reference Guides for Blockchain Connections
 
-You can check out the following guides we've written for certain blockchains. We have covered a wide variety of EVM and EVM Chains, supported by
-multiple web3auth providers.
+You can check out the following guides we've written for certain blockchains. We have covered a wide
+variety of EVM and EVM Chains, supported by multiple web3auth providers.
 
 ### EVM Chain Guides
 
@@ -73,28 +80,67 @@ multiple web3auth providers.
 
 ## Adding JSON RPC APIs
 
-Web3Auth providers give you a standard way of interacting with the blockchain. However, alongside that, it is recommended to use JSON RPC APIs, which
-help you connect to the blockchain without the need to run your own instance/ nodes. There are many services which offer a web API for accessing
+Web3Auth providers give you a standard way of interacting with the blockchain. However, alongside
+that, it is recommended to use JSON RPC APIs, which help you connect to the blockchain without the
+need to run your own instance/ nodes. There are many services which offer a web API for accessing
 different blockchains:
 
 #### Infura
 
-[Infura](https://infura.io) is the leading platform for Ethereum infrastructure. It provides a gateway to the Ethereum network, allowing developers to
-build and scale decentralized applications without having to run their own infrastructure. Most of the Web3Auth backend infrastructure runs on Infura
-APIs.
+[Infura](https://infura.io) is the leading platform for Ethereum infrastructure. It provides a
+gateway to the Ethereum network, allowing developers to build and scale decentralized applications
+without having to run their own infrastructure. Most of the Web3Auth backend infrastructure runs on
+Infura APIs.
 
 #### Quicknode
 
-[Quicknode](https://www.quicknode.com/) is a managed blockchain node service that provides high-performance access to 15+ blockchains, including
-Ethereum, Gnosis (xDAI), Polygon, Binance Smart Chain, Avalanche, Fantom, Solana, Optimism, Arbitrum (+Nova), Algorand, Harmony, Celo, Terra and
-Bitcoin networks. They're the biggest node providers for the Solana Ecosystem, and our major partners for Solana infrastructure.
+[Quicknode](https://www.quicknode.com/) is a managed blockchain node service that provides
+high-performance access to 15+ blockchains, including Ethereum, Gnosis (xDAI), Polygon, Binance
+
+Smart Chain, Avalanche, Fantom, Solana, Optimism, Arbitrum (+Nova), Algorand, Harmony, Celo, Neon,
+Terra and Bitcoin networks. They're the biggest node providers for the Solana Ecosystem, and our
+major partners for Solana infrastructure.
 
 #### Alchemy
 
-As a developer platform, [Alchemy](https://www.alchemy.com/) provides a suite of developer toolings and abstractions including JSON RPC APIs across
-all major chains, an ethers.js SDK, and a library of [enhanced APIs](https://docs.alchemy.com/reference/enhanced-apis-overview) like their NFT APIs.
+As a developer platform, [Alchemy](https://www.alchemy.com/) provides a suite of developer toolings
+and abstractions including JSON RPC APIs across all major chains, an ethers.js SDK, and a library of
+[enhanced APIs](https://docs.alchemy.com/reference/enhanced-apis-overview) like their NFT APIs.
 
 #### Ankr
 
-[Ankr](https://www.ankr.com/) is a decentralized cloud computing platform that provides a full suite of infrastructure services for blockchain
-developers. Most of the examples in our documentation use Ankr's Public JSON RPC APIs, to help you kickstart.
+[Ankr](https://www.ankr.com/) is a decentralized cloud computing platform that provides a full suite
+of infrastructure services for blockchain developers. Most of the examples in our documentation use
+Ankr's Public JSON RPC APIs, to help you kickstart.
+
+## Faucets for Different Blockchains
+
+Faucets are services that provide users with a small amount of cryptocurrency for free. These are
+often used for testing purposes or to onboard new users to a blockchain network. Here are some
+popular faucet services for different test blockchains:
+
+- Amoy Polygon faucet
+  - https://faucet.polygon.technology/
+  - https://www.alchemy.com/faucets/polygon-amoy
+  - https://faucet.quicknode.com/polygon/amoy
+- Avalanche
+  - https://faucet.avax.network/
+- Base Sepolia Faucet
+  - https://www.alchemy.com/faucets/base-sepolia
+- Binance Smart Chain Faucet
+  - https://www.bnbchain.org/en/testnet-faucet
+- Cosmos
+  - https://stakely.io/en/faucet/cosmos-atom
+- Optimism
+  - https://app.optimism.io/faucet
+- Polkadot Rococo / Westend / Paseo
+  - https://faucet.polkadot.io/
+- Sepolia Ethereum Faucet
+  - https://www.infura.io/faucet/sepolia
+  - https://www.alchemy.com/faucets/ethereum-sepolia
+  - (Sepolia PoW Faucet)[https://sepolia-faucet.pk910.de/]
+  - https://faucet.quicknode.com/ethereum/sepolia
+  - https://faucets.chain.link/
+- Solana
+  - https://faucet.solana.com/
+

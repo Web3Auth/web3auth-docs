@@ -461,6 +461,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Neon",
+              items: [
+                "connect-blockchain/evm/neon/neon",
+                "connect-blockchain/evm/neon/web",
+                "connect-blockchain/evm/neon/android",
+                "connect-blockchain/evm/neon/ios",
+                "connect-blockchain/evm/neon/react-native",
+                "connect-blockchain/evm/neon/flutter",
+                "connect-blockchain/evm/neon/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Optimism",
               items: [
                 "connect-blockchain/evm/optimism/optimism",
