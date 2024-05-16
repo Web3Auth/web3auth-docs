@@ -526,8 +526,8 @@ class MainActivity : AppCompatActivity() {
 ## Launch Wallet Services
 
 The `launchWalletServices` method launches a WebView which allows you to use the templated wallet UI
-services. The method takes `LoginParams` and `ChainConfig` as the required input.Wallet Services is
-currently only available for EVM chains.
+services. The method takes`ChainConfig` as the required input. Wallet Services is currently only
+available for EVM chains.
 
 :::note Minimum Scale plan required
 
@@ -585,7 +585,6 @@ data class ChainConfig(
 </Tabs>
 
 ```kotlin title="Usage"
-val loginParams = LoginParams(Provider.GOOGLE)
 
 // highlight-start
 val chainConfig = ChainConfig(
@@ -597,7 +596,7 @@ val chainConfig = ChainConfig(
 // highlight-end
 
 val completableFuture = web3Auth.launchWalletServices(
-    loginParams, chainConfig
+    chainConfig
 )
 
 completableFuture.whenComplete{_, error ->
@@ -624,7 +623,7 @@ that the request method currently supports only the signing methods.
 
 | Arguments       | Description                                                                                                                                                                                                                                                          |
 | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginParams`   | Takes in `LoginParams` used for authenticating the user. If you are using a custom verifier, please make sure to pass the valid JWT token in `LoginParams`.                                                                                                          |
+| `chainConifg`   | Defines the chain to be used for signature request.                                                                                                                                                                                                                  |
 | `method`        | JSON RPC method name in `String`. Currently, the request method only supports the singing methods.                                                                                                                                                                   |
 | `requestParams` | Parameters for the corresponding method. The parameters should be in the list and correct sequence. Take a look at [RPC methods](<[https://docs.metamask.io/wallet/reference/json-rpc-api/](https://docs.metamask.io/wallet/reference/json-rpc-api/)>) to know more. |
 
@@ -639,10 +638,15 @@ val params = JsonArray().apply {
     add(address)
 }
 
-val loginParams = LoginParams(Provider.GOOGLE)
+val chainConfig = ChainConfig(
+    chainId = "0x1",
+    rpcTarget = "https://rpc.ankr.com/eth",
+    ticker = "ETH",
+    chainNamespace = ChainNamespace.EIP155
+)
 
 val signMsgCompletableFuture = web3Auth.request(
-    loginParams = loginParams,
+    chainConfig = chainConfig,
     "personal_sign",
     requestParams = params
 )
