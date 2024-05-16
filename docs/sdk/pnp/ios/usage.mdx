@@ -9,6 +9,7 @@ import IosResponse from "@site/src/common/sdk/pnp/_userinfo_response.mdx";
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
+import SMSPasswordless from "@site/src/common/sdk/pnp/ios/_sms_passwordless.mdx";
 
 ## Logging in a User
 
@@ -35,7 +36,7 @@ as Google, Apple, Facebook, etc., and do whitelabel login. `Web3Auth.login()` ta
 
 | Parameter            | Description                                                                                                                                                                                                                                                                                                                                                                            |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginProvider`      | It sets the OAuth login method to be used. You can use any of the supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`.                                                                                                                                        |
+| `loginProvider`      | It sets the OAuth login method to be used. You can use any of the supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`, `SMS_PASSWORDLESS`, and `FARCASTER`.                                                                                                   |
 | `extraLoginOptions?` | It can be used to set the OAuth login options for corresponding `loginProvider`. For instance, you'll need to pass user's email address as. Default value for the field is `nil`, and it accepts `ExtraLoginOptions` as a value.                                                                                                                                                       |
 | `redirectUrl?`       | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated. Default value for the field is `nil`, and accepts `URL` as a value.                                                                                                                                                                          |
 | `appState?`          | It can be used to keep track of the app state when user will be redirected to app after login. Default is `nil`, and accepts `String` as a value.                                                                                                                                                                                                                                      |
@@ -66,6 +67,26 @@ public struct W3ALoginParams: Codable {
 	let appState: String?
 	let mfaLevel: MFALevel?
 	let curve: SUPPORTED_KEY_CURVES
+}
+
+public enum Web3AuthProvider: String, Codable {
+    case GOOGLE = "google"
+    case FACEBOOK = "facebook"
+    case REDDIT = "reddit"
+    case DISCORD = "discord"
+    case TWITCH = "twitch"
+    case APPLE = "apple"
+    case LINE = "line"
+    case GITHUB = "github"
+    case KAKAO = "kakao"
+    case LINKEDIN = "linkedin"
+    case TWITTER = "twitter"
+    case WEIBO = "weibo"
+    case WECHAT = "wechat"
+    case EMAIL_PASSWORDLESS = "email_passwordless"
+    case JWT = "jwt"
+    case SMS_PASSWORDLESS = "sms_passwordless"
+    case FARCASTER = "farcaster"
 }
 ```
 
@@ -99,6 +120,8 @@ Use getUserInfo() to get the user info of the user.
     { label: "Discord", value: "discord" },
     { label: "Twitch", value: "twitch" },
     { label: "Email Passwordless", value: "email_passwordless" },
+	{ label: "SMS Passwordless", value: "sms_passwordless" },
+	{ label: "Farcaster", value: "farcaster" },
 	{ label: "JWT", value: "jwt" }
   ]}
 >
@@ -180,12 +203,15 @@ login(provider: .TWITCH)
 </TabItem>
 
 <TabItem value="email_passwordless">
-
 ```swift title="Usage"
 func login(provider: Web3AuthProvider) {
 	Task {
 		do {
-			let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
+			let result = try await Web3Auth().login(
+				W3ALoginParams(
+					loginProvider: provider,
+					extraLoginOptions: .init(loginHint: "hello@web3auth.io")
+					))
 			// Perform action upon success
 		} catch {
 			print("Error")
@@ -195,7 +221,21 @@ func login(provider: Web3AuthProvider) {
 // highlight-next-line
 login(provider: .EMAIL_PASSWORDLESS)
 ```
+</TabItem>
 
+<TabItem value="sms_passwordless">
+  <SMSPasswordless />
+</TabItem>
+
+<TabItem value="farcaster">
+```swift title="Usage"
+do {
+	let result = try await Web3Auth().login(W3ALoginParams(loginProvider: .Farcaster))
+	// Perform action upon success
+} catch {
+	print("Error")
+}
+```
 </TabItem>
 
 <TabItem value="jwt">
@@ -395,6 +435,16 @@ The `enableMFA` method is used to trigger MFA setup flow for users. The method t
 you don't need to pass `W3ALoginParams`. If you are using custom jwt verifiers, you need to pass the
 valid JWT token in `W3ALoginParams` as well.
 
+<Tabs
+  defaultValue="default-verifier"
+  values={[
+    { label: "Default Verifier", value: "default-verifier" },
+    { label: "Custom JWT Verifier", value: "custom-jwt-verifier" },
+  ]}
+>
+
+<TabItem value = "default-verifier">
+
 ```swift title="Usage"
 do {
 	// highlight-next-line
@@ -404,6 +454,26 @@ do {
 	// Handle Error
 }
 ```
+
+</TabItem>
+
+<TabItem value = "custom-jwt-verifier">
+```swift title="Usage"
+do {
+	let loginParams = W3ALoginParams(
+		.JWT,
+		extraLoginOptions: .init(id_token: "your_jwt_token")
+  	)
+
+    // highlight-next-line
+    let isMFAEnabled = try await self.web3Auth.enableMFA(loginParams)
+
+} catch { print(error.localizedDescription) // Handle Error }
+
+````
+</TabItem>
+
+</Tabs>
 
 ## Launch Wallet Services
 
@@ -464,7 +534,7 @@ public struct ChainConfig: Codable {
     }
 }
 
-```
+````
 
 </TabItem>
 </Tabs>

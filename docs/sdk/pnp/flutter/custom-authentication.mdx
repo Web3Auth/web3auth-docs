@@ -8,6 +8,7 @@ description: "Web3Auth PnP Flutter SDK - Using Custom Authentication | Documenta
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import GrowthPlanNote from "@site/src/common/docs/_growth_plan_note.mdx";
+import SMSPasswordless from "@site/src/common/sdk/pnp/flutter/_sms_passwordless.mdx";
 
 To use custom authentication (Using Social providers or Login providers like Auth0, AWS Cognito,
 Firebase etc. or even your own custom JWT login) you can add the configuration to the `loginConfig`
@@ -148,7 +149,9 @@ enum TypeOfLogin {
   line,
   email_passwordless,
   email_password,
-  jwt
+  jwt,
+  sms_passwordless,
+  farcaster,
 }
 ```
 
@@ -541,7 +544,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 ### Email Passwordless
 
-To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` parameter of
+To use the Email Passwordless login, you need to put the email into the `login_hint` parameter of
 the `ExtraLoginOptions`. By default, the login flow will be `code` flow, if you want to use the
 `link` flow, you need to put `flow_type` into the `additionalParams` parameter of the
 `ExtraLoginOptions`.
@@ -568,7 +571,7 @@ Future<void> initWeb3Auth() async {
   await Web3AuthFlutter.init(
     Web3AuthOptions(
       clientId: "WEB3AUTH_CLIENT_ID",
-      network: Network.testnet,
+      network: Network.sapphire_mainnet,
       redirectUrl: redirectUrl,
     ),
   );
@@ -586,3 +589,11 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
   ),
 );
 ```
+
+### SMS Passwordless
+
+To use the SMS Passwordless login, send the phone number as the `login_hint` parameter of the
+`ExtraLoginOptions`. Please make sure the phone number is in the format of
++\{country_code}-\{phone_number}, i.e. (+91-09xx901xx1).
+
+<SMSPasswordless />
