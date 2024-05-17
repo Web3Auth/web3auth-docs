@@ -723,6 +723,11 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "category",
+          label: "Plug and Play Flutter SDK",
+          items: ["migration-guides/flutter-v3-to-v4"],
+        },
+        {
+          type: "category",
           label: "Single Factor Auth Flutter SDK",
           items: ["migration-guides/sfa-flutter-v1-to-v2"],
         },
