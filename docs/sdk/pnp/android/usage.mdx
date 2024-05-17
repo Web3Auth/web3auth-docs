@@ -9,6 +9,8 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import AndroidResponse from "@site/src/common/sdk/pnp/_userinfo_response.mdx";
 import LogOut from "@site/src/common/sdk/pnp/android/_logout.mdx";
+import SMSPasswordless from "@site/src/common/sdk/pnp/android/_sms_passwordless.mdx";
+import EnableMFAMethod from "@site/src/common/sdk/pnp/android/_enable-mfa.mdx";
 
 Web3Auth's Android SDK is a set of libraries and tools that allow you to easily integrate Web3 with
 Android applications.
@@ -38,7 +40,7 @@ as GOOGLE, APPLE, FACEBOOK, etc., and do whitelabel login. The `login` function 
 
 | Parameter            | Description                                                                                                                                                                                                                                                                                                                                                             |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginProvider`      | It sets the OAuth login method to be used. You can use any of the supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`.                                                                                                                         |
+| `loginProvider`      | It sets the OAuth login method to be used. You can use any of the supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`, `JWT`, `SMS_PASSWORDLESS`, and `FARCASTER`.                                                                             |
 | `extraLoginOptions?` | It can be used to set the OAuth login options for corresponding `loginProvider`. For instance, you'll need to pass user's email address as. Default value for the field is `null`, and it accepts `ExtraLoginOptions` as a value.                                                                                                                                       |
 | `redirectUrl?`       | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated. Default value for the field is `null`, and accepts `Uri` as a value.                                                                                                                                                          |
 | `appState?`          | It can be used to keep track of the app state when user will be redirected to app after login. Default is `null`, and accepts `String` as a value.                                                                                                                                                                                                                      |
@@ -60,6 +62,43 @@ data class LoginParams(
     val mfaLevel: MFALevel? = null,
     val curve: Curve? = Curve.SECP256K1
 )
+
+enum class Provider {
+    @SerializedName("google")
+    GOOGLE,
+    @SerializedName("facebook")
+    FACEBOOK,
+    @SerializedName("reddit")
+    REDDIT,
+    @SerializedName("discord")
+    DISCORD,
+    @SerializedName("twitch")
+    TWITCH,
+    @SerializedName("apple")
+    APPLE,
+    @SerializedName("line")
+    LINE,
+    @SerializedName("github")
+    GITHUB,
+    @SerializedName("kakao")
+    KAKAO,
+    @SerializedName("linkedin")
+    LINKEDIN,
+    @SerializedName("twitter")
+    TWITTER,
+    @SerializedName("weibo")
+    WEIBO,
+    @SerializedName("wechat")
+    WECHAT,
+    @SerializedName("email_passwordless")
+    EMAIL_PASSWORDLESS,
+    @SerializedName("jwt")
+    JWT,
+    @SerializedName("sms_passwordless")
+    SMS_PASSWORDLESS,
+    @SerializedName("farcaster")
+    FARCASTER
+}
 ```
 
 </TabItem>
@@ -92,6 +131,8 @@ Use getUserInfo() to get the user info of the user.
     { label: "Discord", value: "discord" },
     { label: "Twitch", value: "twitch" },
     { label: "Email Passwordless", value: "email_passwordless" },
+    { label: "SMS Passwordless", value: "sms_passwordles" },
+    { label: "Farcaster", value: "farcaster" },
     { label: "JWT", value: "jwt" },
   ]}
 >
@@ -317,6 +358,21 @@ class MainActivity : AppCompatActivity() {
 
 </TabItem>
 
+<TabItem value="sms_passwordless">
+  <SMSPasswordless />
+</TabItem>
+
+<TabItem value="farcaster">
+```kotlin title="Usage"
+val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
+  LoginParams(
+    // highlight-next-line
+    Provider.farcaster,
+  )
+)
+```
+</TabItem>
+
 <TabItem value="jwt">
 
 ```kotlin title="Usage"
@@ -484,44 +540,7 @@ class MainActivity : AppCompatActivity() {
 
 ## Enable MFA for a user
 
-The `enableMFA` method is used to trigger MFA setup flow for users. The method takes `LoginParams`
-which will used during custom verifiers. If you are using default login providers, you don't need to
-pass `LoginParams`. If you are using custom jwt verifiers, you need to pass the JWT token in
-`loginParams` as well.
-
-```kotlin title="Usage"
-import android.widget.Button
-import com.web3auth.core.Web3Auth
-import android.os.Bundle
-
-class MainActivity : AppCompatActivity() {
-    private lateinit var web3Auth: Web3Auth
-
-     private fun enableMFA() {
-       // highlight-next-line
-       val completableFuture = web3Auth.enableMFA()
-
-        completableFuture.whenComplete{_, error ->
-            if (error == null) {
-                Log.d("MainActivity_Web3Auth", "Launched successfully")
-                // Add your logic
-            } else {
-                // Add your logic on error
-                Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
-            }
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        ...
-        // Setup UI and event handlers
-        val enableMFAButton = findViewById<Button>(R.id.enableMFAButton)
-        enableMFAButton.setOnClickListener { enableMFA() }
-        ...
-    }
-    ...
-}
-```
+<EnableMFAMethod />
 
 ## Launch Wallet Services
 
@@ -584,20 +603,21 @@ data class ChainConfig(
 </TabItem>
 </Tabs>
 
-```kotlin title="Usage"
+### Usage
 
-// highlight-start
+```kotlin title="Usage"
 val chainConfig = ChainConfig(
     chainId = "0x1",
     rpcTarget = "https://rpc.ankr.com/eth",
     ticker = "ETH",
     chainNamespace = ChainNamespace.EIP155
 )
-// highlight-end
 
+// highlight-start
 val completableFuture = web3Auth.launchWalletServices(
     chainConfig
 )
+// highlight-end
 
 completableFuture.whenComplete{_, error ->
     if(error == null) {
@@ -630,7 +650,6 @@ that the request method currently supports only the signing methods.
 ### Usage
 
 ```kotlin title="Usage"
-
 val params = JsonArray().apply {
     // Message to be signed
     add("Hello, World!")
@@ -645,15 +664,18 @@ val chainConfig = ChainConfig(
     chainNamespace = ChainNamespace.EIP155
 )
 
+// highlight-start
 val signMsgCompletableFuture = web3Auth.request(
     chainConfig = chainConfig,
     "personal_sign",
     requestParams = params
 )
+// highlight-end
 
 signMsgCompletableFuture.whenComplete { _, error ->
     if (error == null) {
         Log.d("MainActivity_Web3Auth", "Message signed successfully")
+        // highlight-next-line
         val signResult = Web3Auth.getSignResponse()
         Log.d("MainActivity_Web3Auth", signResult.toString())
 
