@@ -7,24 +7,25 @@ description: "Web3Auth PnP Flutter SDK - Multi Factor Authentication | Documenta
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
+import MFAMinimumPlan from "@site/src/common/docs/_mfa_minimum_plan.mdx";
+import EnableMFAMethod from "@site/src/common/sdk/pnp/flutter/_enable-mfa.mdx";
 
-At Web3Auth, we prioritize your security by offering Multi-Factor Authentication (MFA). MFA is an extra layer of protection that verifies your
-identity when accessing your account. To ensure ownership, you must provide two or more different backup factors. You have the option to choose from
-the device, social, backup factor (seed phrase), and password factors to guarantee access to your Web3 account. Once you create a recovery factor, MFA
-is enabled, and your keys are divided into three shares for off-chain multi-sig, making the key self-custodial. With backup factors, you can easily
-recover your account if you lose access to your original device or helps login into a new device.
+At Web3Auth, we prioritize your security by offering Multi-Factor Authentication (MFA). MFA is an
+extra layer of protection that verifies your identity when accessing your account. To ensure
+ownership, you must provide two or more different backup factors. You have the option to choose from
+the device, social, backup factor (seed phrase), and password factors to guarantee access to your
+Web3 account. Once you create a recovery factor, MFA is enabled, and your keys are divided into
+three shares for off-chain multi-sig, making the key self-custodial. With backup factors, you can
+easily recover your account if you lose access to your original device or helps login into a new
+device.
 
-:::note Minimum Growth plan required
-
-This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the **Growth
-Plan**. You can use this feature in the development environment for free.
-
-:::
+<MFAMinimumPlan />
 
 ## Using the `mfaLevel` to enable MFA
 
-For a dApp, we provide various options to set up Multi-Factor Authentication. You can customize the MFA screen by setting the `mfaLevel` argument. You
-can enable or disable a backup factor and change their order. Currently, there are four values for `mfaLevel`:
+For a dApp, we provide various options to set up Multi-Factor Authentication. You can customize the
+MFA screen by setting the `mfaLevel` argument. You can enable or disable a backup factor and change
+their order. Currently, there are four values for `mfaLevel`:
 
 - `default`: presents the MFA screen every third login
 - `optional`: presents the MFA screen on every login, but you can skip it
@@ -33,8 +34,9 @@ can enable or disable a backup factor and change their order. Currently, there a
 
 :::caution Note
 
-If you are using default verifiers, your users may have set up MFA on other dApps that also use default Web3Auth verifiers. In this case, the MFA
-screen will continue to appear if the user has enabled MFA on other dApps. This is because MFA cannot be turned off once it is enabled.
+If you are using default verifiers, your users may have set up MFA on other dApps that also use
+default Web3Auth verifiers. In this case, the MFA screen will continue to appear if the user has
+enabled MFA on other dApps. This is because MFA cannot be turned off once it is enabled.
 
 :::
 
@@ -84,12 +86,14 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 ### Using the `mfaSettings` to configure MFA Order
 
-You can configure the order of MFA, and enable or disable MFA type by passing the `mfaSettings` object in `Web3AuthOptions`.
+You can configure the order of MFA, and enable or disable MFA type by passing the `mfaSettings`
+object in `Web3AuthOptions`.
 
 :::note Minimum SCALE plan required
 
-This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the **SCALE
-Plan**. You can use this feature in the development environment for free.
+This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this
+SDK in a production environment is the **SCALE Plan**. You can use this feature in the development
+environment for free.
 
 :::
 
@@ -229,3 +233,7 @@ Future<void> initWeb3Auth() async {
   await Web3AuthFlutter.initialize();
 }
 ```
+
+## Using `enableMFA` method to trigger MFA setup flow for users
+
+<EnableMFAMethod />

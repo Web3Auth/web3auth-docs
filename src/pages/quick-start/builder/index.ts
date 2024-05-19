@@ -29,6 +29,7 @@ import mpc_core_kit_angular from "./core_kit/mpc_core_kit/angular";
 import mpc_core_kit_nextjs from "./core_kit/mpc_core_kit/nextjs";
 import mpc_core_kit_react from "./core_kit/mpc_core_kit/react";
 import mpc_core_kit_vue from "./core_kit/mpc_core_kit/vue";
+import mpc_core_kit_react_native from "./core_kit/mpc_core_kit/react_native";
 import sfa_android from "./core_kit/sfa/android";
 import sfa_ios from "./core_kit/sfa/ios";
 import sfa_flutter from "./core_kit/sfa/flutter";
@@ -82,6 +83,7 @@ const sdks = {
   // PNP Unity SDK
   PNP_UNITY_ANDROID: pnp_unity,
   PNP_UNITY_IOS: pnp_unity,
+  PNP_UNITY_WEBGL: pnp_unity,
   // SFA Web SDK
   SFA_WEB_ANGULAR: sfa_web_angular,
   SFA_WEB_NEXTJS: sfa_web_nextjs,
@@ -105,9 +107,10 @@ const sdks = {
   MPC_CORE_KIT_NEXTJS: mpc_core_kit_nextjs,
   MPC_CORE_KIT_REACT: mpc_core_kit_react,
   MPC_CORE_KIT_VUE: mpc_core_kit_vue,
+  MPC_CORE_KIT_REACT_NATIVE: mpc_core_kit_react_native,
 };
 
-const embed_links = {
+export const embed_links = {
   // PNP Modal SDK
   PNP_MODAL_ANGULAR: "https://w3a.link/pnp-angular-modal-quick-start",
   PNP_MODAL_HTML: "https://w3a.link/pnp-vanillajs-modal-quick-start",
@@ -133,6 +136,7 @@ const embed_links = {
   // PNP Unity SDK
   PNP_UNITY_ANDROID: "https://w3a.link/pnp-unity-android-quick-start",
   PNP_UNITY_IOS: "", // "https://w3a.link/pnp-unity-ios-quick-start"
+  PNP_UNITY_WEBGL: "https://w3a.link/pnp-unity-webgl-quick-start",
   // SFA Web SDK
   SFA_WEB_ANGULAR: "https://w3a.link/sfa-angular-quick-start",
   SFA_WEB_NEXTJS: "https://w3a.link/sfa-nextjs-quick-start",
@@ -156,6 +160,7 @@ const embed_links = {
   MPC_CORE_KIT_NEXTJS: "https://w3a.link/mpc-core-kit-nextjs-quick-start",
   MPC_CORE_KIT_REACT: "https://w3a.link/mpc-core-kit-react-quick-start",
   MPC_CORE_KIT_VUE: "https://w3a.link/mpc-core-kit-vue-quick-start",
+  MPC_CORE_KIT_REACT_NATIVE: "https://w3a.link/mpc-core-kit-rn-quick-start",
 };
 
 const builder: IntegrationBuilder = {

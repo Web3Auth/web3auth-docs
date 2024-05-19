@@ -1,11 +1,15 @@
-import * as hostedFileLinks from "../../../../../../common/hostedFileLinks.json";
+import hostedFileLinks from "../../../../../../common/hostedFileLinks.json";
 import STEPS from "../stepContent";
 
 export default function getSteps(steps, files, replacementAggregator) {
   steps.push(
     {
       ...STEPS.reactQuickStart,
-      pointer: replacementAggregator.highlightRange(hostedFileLinks.MODAL_REACT_APP_TSX, files[hostedFileLinks.MODAL_REACT_APP_TSX], "Quick Start"),
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MODAL_REACT_APP_TSX,
+        files[hostedFileLinks.MODAL_REACT_APP_TSX],
+        "Quick Start",
+      ),
     },
     {
       ...STEPS.installation,
@@ -41,7 +45,11 @@ export default function getSteps(steps, files, replacementAggregator) {
     },
     {
       ...STEPS.login,
-      pointer: replacementAggregator.highlightRange(hostedFileLinks.MODAL_REACT_APP_TSX, files[hostedFileLinks.MODAL_REACT_APP_TSX], "Login"),
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MODAL_REACT_APP_TSX,
+        files[hostedFileLinks.MODAL_REACT_APP_TSX],
+        "Login",
+      ),
     },
     {
       ...STEPS.getUserInfo,
@@ -61,7 +69,11 @@ export default function getSteps(steps, files, replacementAggregator) {
     },
     {
       ...STEPS.logout,
-      pointer: replacementAggregator.highlightRange(hostedFileLinks.MODAL_REACT_APP_TSX, files[hostedFileLinks.MODAL_REACT_APP_TSX], "Logout"),
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MODAL_REACT_APP_TSX,
+        files[hostedFileLinks.MODAL_REACT_APP_TSX],
+        "Logout",
+      ),
     },
   );
 }

@@ -77,4 +77,40 @@ const signedMessage = await signer.provider.send(method, params);
 ```
 
 </TabItem>
+<TabItem value="viem">
+
+```tsx
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const walletClient = createWalletClient({
+  chain: mainnet,
+  transport: custom(this.provider),
+});
+
+const address = await walletClient.getAddresses();
+
+// Get user's Ethereum public address
+const fromAddress = await signer.getAddress();
+
+const originalMessage = [
+  {
+    type: "string",
+    name: "fullName",
+    value: "Satoshi Nakamoto",
+  },
+  {
+    type: "uint32",
+    name: "userId",
+    value: "1212",
+  },
+];
+await walletClient.signTypedData({
+  account: address,
+  message: originalMessage,
+});
+```
+
+</TabItem>
 </Tabs>

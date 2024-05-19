@@ -6,6 +6,7 @@ defaultValue="web3"
 values={[
   { label: "web3.js", value: "web3" },
   { label: "ethers.js", value: "ethers.js" },
+  { label: "viem", value: "viem" },
 ]}
 >
 <TabItem value="web3">
@@ -51,6 +52,27 @@ const address = signer.getAddress();
 const balance = ethers.utils.formatEther(
   await provider.getBalance(address), // Balance is in wei
 );
+```
+
+</TabItem>
+<TabItem value="viem">
+
+```tsx
+const publicClient = createPublicClient({
+  chain: mainnet, // for mainnet
+  transport: custom(this.provider),
+});
+
+const walletClient = createWalletClient({
+  chain: mainnet,
+  transport: custom(this.provider),
+});
+
+// Get user's Ethereum public address
+const address = await walletClient.getAddresses();
+
+// Get user's balance in ether
+const balance = await publicClient.getBalance({ address: address[0] });
 ```
 
 </TabItem>

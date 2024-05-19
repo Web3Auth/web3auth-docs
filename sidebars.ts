@@ -235,6 +235,7 @@ const sidebars: SidebarsConfig = {
             "auth-provider-setup/social-providers/twitch",
             "auth-provider-setup/social-providers/discord",
             "auth-provider-setup/social-providers/apple",
+            "auth-provider-setup/social-providers/kakao",
             "auth-provider-setup/social-providers/linkedin",
             "auth-provider-setup/social-providers/github",
             "auth-provider-setup/social-providers/line",
@@ -460,6 +461,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Neon",
+              items: [
+                "connect-blockchain/evm/neon/neon",
+                "connect-blockchain/evm/neon/web",
+                "connect-blockchain/evm/neon/android",
+                "connect-blockchain/evm/neon/ios",
+                "connect-blockchain/evm/neon/react-native",
+                "connect-blockchain/evm/neon/flutter",
+                "connect-blockchain/evm/neon/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Optimism",
               items: [
                 "connect-blockchain/evm/optimism/optimism",
@@ -589,6 +603,7 @@ const sidebars: SidebarsConfig = {
         "troubleshooting/vite-issues",
         "troubleshooting/svelte-issues",
         "troubleshooting/metro-issues",
+        "troubleshooting/metro-issues-mpc",
         "troubleshooting/jwt-errors",
         "troubleshooting/supported-browsers",
         "troubleshooting/react-big-int-error",
@@ -708,6 +723,11 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "category",
+          label: "Plug and Play Flutter SDK",
+          items: ["migration-guides/flutter-v3-to-v4"],
+        },
+        {
+          type: "category",
           label: "Single Factor Auth Flutter SDK",
           items: ["migration-guides/sfa-flutter-v1-to-v2"],
         },
@@ -804,6 +824,9 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Adapters",
           items: [
+            "sdk/pnp/web/adapters/adapters",
+            "sdk/pnp/web/adapters/default-evm-adapter",
+            "sdk/pnp/web/adapters/default-solana-adapter",
             "sdk/pnp/web/adapters/adapters",
             "sdk/pnp/web/adapters/openlogin",
             "sdk/pnp/web/adapters/torus-evm",

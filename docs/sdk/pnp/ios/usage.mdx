@@ -9,13 +9,16 @@ import IosResponse from "@site/src/common/sdk/pnp/_userinfo_response.mdx";
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
+import SMSPasswordless from "@site/src/common/sdk/pnp/ios/_sms_passwordless.mdx";
+import EnableMFAMethod from "@site/src/common/sdk/pnp/ios/_enable-mfa.mdx";
 
 ## Logging in a User
 
 ### `login()`
 
-Trigger login flow will navigate the user to a browser model allowing the user to login into the service. You can pass in the supported providers to
-the login method for specific social logins such as Google, Apple, Facebook, etc., and do whitelabel login. `Web3Auth.login()` takes in
+Trigger login flow will navigate the user to a browser model allowing the user to login into the
+service. You can pass in the supported providers to the login method for specific social logins such
+as Google, Apple, Facebook, etc., and do whitelabel login. `Web3Auth.login()` takes in
 `W3ALoginParams` as a required input.
 
 #### Arguments
@@ -34,7 +37,7 @@ the login method for specific social logins such as Google, Apple, Facebook, etc
 
 | Parameter            | Description                                                                                                                                                                                                                                                                                                                                                                            |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginProvider`      | It sets the OAuth login method to be used. You can use any of the supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`.                                                                                                                                        |
+| `loginProvider`      | It sets the OAuth login method to be used. You can use any of the supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`, `SMS_PASSWORDLESS`, and `FARCASTER`.                                                                                                   |
 | `extraLoginOptions?` | It can be used to set the OAuth login options for corresponding `loginProvider`. For instance, you'll need to pass user's email address as. Default value for the field is `nil`, and it accepts `ExtraLoginOptions` as a value.                                                                                                                                                       |
 | `redirectUrl?`       | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated. Default value for the field is `nil`, and accepts `URL` as a value.                                                                                                                                                                          |
 | `appState?`          | It can be used to keep track of the app state when user will be redirected to app after login. Default is `nil`, and accepts `String` as a value.                                                                                                                                                                                                                                      |
@@ -66,6 +69,26 @@ public struct W3ALoginParams: Codable {
 	let mfaLevel: MFALevel?
 	let curve: SUPPORTED_KEY_CURVES
 }
+
+public enum Web3AuthProvider: String, Codable {
+    case GOOGLE = "google"
+    case FACEBOOK = "facebook"
+    case REDDIT = "reddit"
+    case DISCORD = "discord"
+    case TWITCH = "twitch"
+    case APPLE = "apple"
+    case LINE = "line"
+    case GITHUB = "github"
+    case KAKAO = "kakao"
+    case LINKEDIN = "linkedin"
+    case TWITTER = "twitter"
+    case WEIBO = "weibo"
+    case WECHAT = "wechat"
+    case EMAIL_PASSWORDLESS = "email_passwordless"
+    case JWT = "jwt"
+    case SMS_PASSWORDLESS = "sms_passwordless"
+    case FARCASTER = "farcaster"
+}
 ```
 
 </TabItem>
@@ -74,12 +97,13 @@ public struct W3ALoginParams: Codable {
 
 ### `getPrivkey()`
 
-Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private key which can be used to sign transactions on EVM
-compatible chains.
+Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private
+key which can be used to sign transactions on EVM compatible chains.
 
 ### `getEd25519PrivKey()`
 
-Use getEd25519PrivKey() to get the Ed25519 private key of the user. This private key can be used to sign transactions on Solana.
+Use getEd25519PrivKey() to get the Ed25519 private key of the user. This private key can be used to
+sign transactions on Solana.
 
 ### `getUserInfo()`
 
@@ -97,6 +121,8 @@ Use getUserInfo() to get the user info of the user.
     { label: "Discord", value: "discord" },
     { label: "Twitch", value: "twitch" },
     { label: "Email Passwordless", value: "email_passwordless" },
+	{ label: "SMS Passwordless", value: "sms_passwordless" },
+	{ label: "Farcaster", value: "farcaster" },
 	{ label: "JWT", value: "jwt" }
   ]}
 >
@@ -178,12 +204,15 @@ login(provider: .TWITCH)
 </TabItem>
 
 <TabItem value="email_passwordless">
-
 ```swift title="Usage"
 func login(provider: Web3AuthProvider) {
 	Task {
 		do {
-			let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
+			let result = try await Web3Auth().login(
+				W3ALoginParams(
+					loginProvider: provider,
+					extraLoginOptions: .init(loginHint: "hello@web3auth.io")
+					))
 			// Perform action upon success
 		} catch {
 			print("Error")
@@ -193,7 +222,21 @@ func login(provider: Web3AuthProvider) {
 // highlight-next-line
 login(provider: .EMAIL_PASSWORDLESS)
 ```
+</TabItem>
 
+<TabItem value="sms_passwordless">
+  <SMSPasswordless />
+</TabItem>
+
+<TabItem value="farcaster">
+```swift title="Usage"
+do {
+	let result = try await Web3Auth().login(W3ALoginParams(loginProvider: .Farcaster))
+	// Perform action upon success
+} catch {
+	print("Error")
+}
+```
 </TabItem>
 
 <TabItem value="jwt">
@@ -223,8 +266,9 @@ login(provider: .JWT)
 
 ## Session Management
 
-The Session Management feature allows you to check the existing sessions with Web3Auth. The `Web3AuthState` will allow users to remain authenticated
-with Web3Auth for 1 day by default, or a maximum of 7 days, or until the user logout or session data is cleared.
+The Session Management feature allows you to check the existing sessions with Web3Auth. The
+`Web3AuthState` will allow users to remain authenticated with Web3Auth for 1 day by default, or a
+maximum of 7 days, or until the user logout or session data is cleared.
 
 The `Web3Auth` initialization accepts a `sessionTime` parameter.
 
@@ -303,8 +347,8 @@ class ViewModel: ObservableObject {
 
 ## Selecting Curve
 
-The `Web3Auth().login(W3ALoginParams)` method accepts a `curve` parameter. This parameter can be used to select the elliptic curve to use for the
-signature.
+The `Web3Auth().login(W3ALoginParams)` method accepts a `curve` parameter. This parameter can be
+used to select the elliptic curve to use for the signature.
 
 ```swift
 let result = try await Web3Auth().login(
@@ -378,9 +422,148 @@ login(provider: .GOOGLE)
 
 ### `Web3Auth().logout()`
 
-This method will logout the user and remove the session id from the device. The user will need to login again to use the dApp next time the dApp is
-opened.
+This method will logout the user and remove the session id from the device. The user will need to
+login again to use the dApp next time the dApp is opened.
 
 ```swift
 await Web3Auth().logout()
+```
+
+## Enable MFA for a user
+
+<EnableMFAMethod />
+
+## Launch Wallet Services
+
+The `launchWalletServices` method launches a WebView which allows you to use the templated wallet UI
+services. The method takes `ChainConfig` as the required input. Wallet Services is currently only
+available for EVM chains.
+
+:::note Minimum Scale plan required
+
+Access to Wallet Services is gated. You can use this feature in the development environment for
+free. The minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a
+production environment is the **Scale Plan**.
+
+:::
+
+### Arguments
+
+`ChainConfig`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter           | Description                                                                                                                 |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `chainNamespace`    | Custom configuration for your preferred blockchain. As of now only EVM supported. Default value is `ChainNamespace.eip155`. |
+| `decimals?`         | Number of decimals for the currency ticker. Default value is 18, and accepts `Int` as value.                                |
+| `blockExplorerUrl?` | Blockchain's explorer URL. (eg: `https://etherscan.io`)                                                                     |
+| `chainId`           | The chain id of the selected blockchain `String`.                                                                           |
+| `displayName?`      | Display Name for the chain.                                                                                                 |
+| `logo?`             | Logo for the selected `chainNamespace` & `chainId`.                                                                         |
+| `rpcTarget`         | RPC Target URL for the selected `chainNamespace` & `chainId`.                                                               |
+| `ticker?`           | Default currency ticker of the network (e.g: `ETH`)                                                                         |
+| `tickerName?`       | Name for currency ticker (e.g: `Ethereum`)                                                                                  |
+
+</TabItem>
+
+<TabItem value="class">
+
+```swift
+public struct ChainConfig: Codable {
+    public init(chainNamespace: ChainNamespace = ChainNamespace.eip155, decimals: Int? = 18, blockExplorerUrl: String? = nil, chainId: String, displayName: String? = nil, logo: String? = nil, rpcTarget: String, ticker: String? = nil, tickerName: String? = nil) {
+        self.chainNamespace = chainNamespace
+        self.decimals = decimals
+        self.blockExplorerUrl = blockExplorerUrl
+        self.chainId = chainId
+        self.displayName = displayName
+        self.logo = logo
+        self.rpcTarget = rpcTarget
+        self.ticker = ticker
+        self.tickerName = tickerName
+    }
+}
+
+```
+
+</TabItem>
+</Tabs>
+
+### Usage
+
+```swift title="Usage"
+do {
+	// highlight-start
+	try await web3Auth!.launchWalletServices(
+		chainConfig: ChainConfig(
+			chainId: "11155111",
+			rpcTarget: "https://eth-sepolia.public.blastapi.io"
+		)
+	)
+	// highlight-end
+} catch {
+	print(error.localizedDescription)
+	// Handle error
+}
+```
+
+## Request signature
+
+The `request` method facilitates the use of templated transaction screens for signing transactions.
+Upon successful completion, you can retrieve the signature for the request using the
+`getSignResponse` static method.
+
+Please check the list of [JSON RPC methods](docs.metamask.io/wallet/reference/json-rpc-api/), noting
+that the request method currently supports only the signing methods.
+
+### Arguments
+
+| Arguments       | Description                                                                                                                                                                                                                                                          |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `chainConfig`   | Defines the chain to be used for signature.                                                                                                                                                                                                                          |
+| `method`        | JSON RPC method name in `String`. Currently, the request method only supports the singing methods.                                                                                                                                                                   |
+| `requestParams` | Parameters for the corresponding method. The parameters should be in the list and correct sequence. Take a look at [RPC methods](<[https://docs.metamask.io/wallet/reference/json-rpc-api/](https://docs.metamask.io/wallet/reference/json-rpc-api/)>) to know more. |
+
+### Usage
+
+```swift title="Usage"
+do {
+	var params = [Any]()
+	// Message to be signed
+	params.append("Hello, Web3Auth from iOS!")
+	// User's EOA address
+	params.append(address)
+
+	// highlight-start
+	try await self.web3Auth?.request(
+		chainConfig: ChainConfig(
+			chainId: "11155111",
+			rpcTarget: "https://eth-sepolia.public.blastapi.io"
+		),
+		method: "personal_sign",
+		requestParams: params
+	)
+	// highlight-end
+
+	// highlight-next-line
+	let response = try Web3Auth.getSignResponse()
+
+	if response!.success {
+		print(response!.result!)
+	} else {
+		// Handle Error
+		print(response!.error!)
+	}
+} catch {
+	print(error.localizedDescription)
+	// Handle error
+}
 ```

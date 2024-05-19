@@ -9,18 +9,24 @@ import * as vueBundlerIssues from "../../../../commonSteps/vueBundlerIssues.mdx"
 import { toSteps } from "../../../../utils";
 import * as enableMFA from "./enableMFA.mdx";
 import * as initialization from "./initializeMPCCK.mdx";
+import * as reactNativeBundlerIssues from "../../../../commonSteps/reactNativeBundlerIssues.mdx";
 import * as installation from "./installationMPCCK.mdx";
 import * as login from "./login.mdx";
 import * as logout from "./logout.mdx";
 import * as angularQuickStart from "./mpcckAngularQuickStart.mdx";
 import * as nextQuickStart from "./mpcckNextQuickStart.mdx";
 import * as reactQuickStart from "./mpcckReactQuickStart.mdx";
+import * as rnQuickStart from "./mpcckReactNativeQuickStart.mdx";
 import * as vueQuickStart from "./mpcckVueQuickStart.mdx";
 import * as recoverAccount from "./recoverAccount.mdx";
+import * as requirementsAndroid from "./requirementsAndroid.mdx";
+import * as requirementsIOS from "./requirementsIOS.mdx";
+import * as socialRecoveryFactor from "./socialRecoveryFactor.mdx";
 
 const STEPS = toSteps({
   recoverAccount,
   reactQuickStart,
+  rnQuickStart,
   installation,
   reactBundlerIssues,
   registerApp,
@@ -37,6 +43,10 @@ const STEPS = toSteps({
   vueQuickStart,
   vueBundlerIssues,
   angularBundlerIssues,
+  requirementsAndroid,
+  requirementsIOS,
+  reactNativeBundlerIssues,
+  socialRecoveryFactor,
 });
 
 export default STEPS;

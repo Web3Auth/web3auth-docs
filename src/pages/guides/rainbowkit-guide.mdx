@@ -1,0 +1,170 @@
+---
+title: Integrate Rainbow Kit with Web3Auth PnP SDK for Authentication
+image: "guides/banners/rainbowkit-guide.png"
+description:
+  Discover how to effortlessly integrate Rainbow Kit with Web3Auth for a seamless authentication
+  experience.
+type: guide
+tags: [rainbowkit, authentication, pnp, wagmi]
+date: March 13, 2024
+author: Web3Auth Team
+order: 5
+communityPortalTopicId:
+---
+
+import SEO from "@site/src/components/SEO";
+import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
+import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
+import DashboardSetup from "@site/src/common/guides/_web3auth_dashboard_setup.mdx";
+
+<SEO
+  title="Integrate Rainbow Kit with Web3Auth PnP SDK for Authentication"
+  description="Discover how to effortlessly integrate Rainbow Kit with Web3Auth for a seamless authentication experience."
+  image="https://web3auth.io/docs/guides/banners/rainbowkit-guide.png"
+  slug="/guides/rainbow-kit-guide"
+/>
+
+Merging RainbowKit with Web3Auth PnP (Plug and Play) SDK enables decentralized application (dApp)
+developers to leverage Web3Auth's streamlined authentication processes alongside RainbowKit's
+user-friendly wallet management interface. This integration utilizes Web3Auth's
+[@web3auth/web3auth-wagmi-connector](https://web3auth.io/docs/sdk/pnp/web/wagmi-connector) to bridge
+RainbowKit with Web3Auth, facilitating a secure and efficient authentication mechanism for users.
+
+## Full examples in PnP SDK
+
+Full Modal example:
+https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/wagmi-examples/rainbowkit-modal-example
+
+Full No-Modal example:
+https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/wagmi/rainbowkit-no-modal-example
+
+![Rainbowkit](/guides/rainbowkit/gif-rainbow.gif)
+
+## Prerequisites
+
+<Web3AuthPrerequisites />
+
+## How to set up Web3Auth Dashboard
+
+<DashboardSetup />
+
+## Rainbow + Web3Auth Connector
+
+Using rainbow kit with web3auth is very straightforward. You will need to create a connector that
+will connect the rainbow kit with web3auth. This connector will be used in the wagmi provider.
+
+You will need to use mainly 8 libraries in this project: `@web3auth/web3auth-wagmi-connector`,
+`@rainbow-me/rainbowkit` and `@web3auth/modal` or `@web3auth/no-modal`. Also we would need in the
+project `@web3auth/base`, "@web3auth/ethereum-provider", `viem`, `wagmi` and
+`@web3auth/openlogin-adapter`.
+
+To install them, run:
+
+```bash
+npm install @web3auth/web3auth-wagmi-connector @rainbow-me/rainbowkit @web3auth/modal @web3auth/base @web3auth/ethereum-provider @web3auth/openlogin-adapter
+```
+
+\* you can replace modal with no-modal
+
+The rainbow connector is the key that connect rainbowkit with web3auth. So in this file you will be
+exporting the connector with the web3auth instance on it.
+
+```jsx
+import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
+
+...
+
+const web3AuthInstance = new Web3Auth({
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+  ... // all the config you need
+  }
+});
+
+export const rainbowWeb3AuthConnector = (): Wallet => ({
+  id: "web3auth",
+  name: "web3auth",
+  rdns: "web3auth",
+  iconUrl: "https://web3auth.io/images/web3authlog.png",
+  iconBackground: "#fff",
+  installed: true,
+  downloadUrls: {},
+  createConnector: (walletDetails: WalletDetailsParams) =>
+    createWagmiConnector((config) => ({
+      ...Web3AuthConnector({
+        web3AuthInstance,
+      })(config),
+      ...walletDetails,
+    })),
+});
+```
+
+## Implementing Chains and Providers
+
+To ensure that your dApp supports various blockchain networks, you'll need to import and configure
+the chains you intend to use, such as Ethereum's Mainnet, Polygon, or others. This step is crucial
+for setting up the environment for transactions and interactions with the blockchain.
+
+![Chains](/guides/rainbowkit/chains.jpg)
+
+```jsx
+import { sepolia, mainnet, polygon } from "wagmi/chains";
+
+...
+
+const config = getDefaultConfig({
+  appName: 'My RainbowKit App Name',
+  projectId: '<code>',
+  chains: [mainnet, sepolia, polygon],
+  transports: {
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
+    [polygon.id]: http(),
+  },
+  wallets: [{
+    groupName: 'Recommended',
+    wallets: [
+      rainbowWallet,
+      rainbowWeb3AuthConnector,
+      metaMaskWallet,
+    ],
+  }],
+});
+```
+
+## Integrating with the UI
+
+In the initial react screen you will need to create the wagmi provider with the QueryClientProvider
+and the RainbowKitProvider inside.
+
+The final step involves integrating the RainbowKitProvider and ConnectButton into your application's
+UI. This is typically done at the root level of your application to ensure that the wallet
+connection functionality is accessible throughout the dApp. The WagmiProvider and
+QueryClientProvider wrap around the RainbowKit components, establishing the necessary context for
+managing blockchain interactions and state.
+
+```jsx
+<WagmiProvider config={config}>
+  <QueryClientProvider client={queryClient}>
+    <RainbowKitProvider>
+      <ConnectButton />
+    </RainbowKitProvider>
+  </QueryClientProvider>
+</WagmiProvider>
+```
+
+![Chains](/guides/rainbowkit/connected.jpg)
+
+## Conclusion
+
+If you're using RainbowKit in your dApp, integrating Web3Auth is incredibly straightforward and
+enhances your application's user experience significantly. The seamless integration process means
+that you can provide your users with a more secure and efficient authentication mechanism without
+compromising on the user-friendly interface that RainbowKit offers.
+
+RainbowKit, known for its ease of wallet management, when combined with Web3Auth's authentication
+solutions, essentially offers the best of both worlds. Web3Auth, with its Plug and Play (PnP) SDK,
+simplifies the complex authentication processes often associated with decentralized applications.
+This means that even developers with a basic understanding of JavaScript can integrate sophisticated
+authentication mechanisms into their dApps.

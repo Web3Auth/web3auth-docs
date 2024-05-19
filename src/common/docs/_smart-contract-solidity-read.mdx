@@ -6,6 +6,7 @@ import Tabs from "@theme/Tabs";
   values={[
     { label: "web3.js", value: "web3" },
     { label: "ethers.js", value: "ethers" },
+    { label: "viem", value: "viem" },
   ]}
 >
 <TabItem value="web3">
@@ -18,8 +19,18 @@ import Tabs from "@theme/Tabs";
 // web3 is const web3 = new Web3(web3authProvider); from above.
 
 const contractABI = [
-  { inputs: [{ internalType: "string", name: "initMessage", type: "string" }], stateMutability: "nonpayable", type: "constructor" },
-  { inputs: [], name: "message", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
+  {
+    inputs: [{ internalType: "string", name: "initMessage", type: "string" }],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    inputs: [],
+    name: "message",
+    outputs: [{ internalType: "string", name: "", type: "string" }],
+    stateMutability: "view",
+    type: "function",
+  },
   {
     inputs: [{ internalType: "string", name: "newMessage", type: "string" }],
     name: "update",
@@ -48,8 +59,18 @@ const message = await contract.methods.message().call();
 const signer = await provider.getSigner();
 
 const contractABI = [
-  { inputs: [{ internalType: "string", name: "initMessage", type: "string" }], stateMutability: "nonpayable", type: "constructor" },
-  { inputs: [], name: "message", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
+  {
+    inputs: [{ internalType: "string", name: "initMessage", type: "string" }],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    inputs: [],
+    name: "message",
+    outputs: [{ internalType: "string", name: "", type: "string" }],
+    stateMutability: "view",
+    type: "function",
+  },
   {
     inputs: [{ internalType: "string", name: "newMessage", type: "string" }],
     name: "update",
@@ -59,10 +80,59 @@ const contractABI = [
   },
 ];
 const contractAddress = "0x04cA407965D60C2B39d892a1DFB1d1d9C30d0334";
-const contract = new ethers.Contract(contractAddress, JSON.parse(JSON.stringify(contractABI)), signer);
+const contract = new ethers.Contract(
+  contractAddress,
+  JSON.parse(JSON.stringify(contractABI)),
+  signer,
+);
 
 // Read message from smart contract
 const message = await contract.message();
+```
+
+</TabItem>
+<TabItem value="viem">
+
+```tsx
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const contractABI = [
+  {
+    inputs: [{ internalType: "string", name: "initMessage", type: "string" }],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    inputs: [],
+    name: "message",
+    outputs: [{ internalType: "string", name: "", type: "string" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "string", name: "newMessage", type: "string" }],
+    name: "update",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
+
+const publicClient = createPublicClient({
+  chain: mainnet, // for mainnet
+  transport: custom(this.provider),
+});
+
+const contractAddress = "0x04cA407965D60C2B39d892a1DFB1d1d9C30d0334";
+
+// Read message from smart contract
+const message = await publicClient.readContract({
+  address: contractAddress,
+  abi: JSON.parse(JSON.stringify(contractABI)),
+  functionName: "message",
+});
 ```
 
 </TabItem>

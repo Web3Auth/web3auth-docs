@@ -2,7 +2,8 @@
 title: "Installing Core Kit SFA React Native SDK"
 sidebar_label: "Install"
 displayed_sidebar: sdk
-description: "Web3Auth Core Kit Single Factor Auth React Native SDK - Install | Documentation - Web3Auth"
+description:
+  "Web3Auth Core Kit Single Factor Auth React Native SDK - Install | Documentation - Web3Auth"
 ---
 
 import TabItem from "@theme/TabItem";
@@ -15,22 +16,25 @@ In React Native, you have the choice to use one of the following workflows:
 
 ### Expo Managed Workflow
 
-Your Expo app is built on your Expo's cloud, so you don't have control over the native modules used in the app. Developers build managed workflow apps
-using `expo-cli` on their computers and a development client on their mobile devices. Managed workflow apps typically use one or more Expo services,
-such as push notifications, builds, and updates.
+Your Expo app is built on your Expo's cloud, so you don't have control over the native modules used
+in the app. Developers build managed workflow apps using `expo-cli` on their computers and a
+development client on their mobile devices. Managed workflow apps typically use one or more Expo
+services, such as push notifications, builds, and updates.
 
 <ExpoWarning />
 
 ### Bare React Native Workflow
 
-Your Bare React Native app is entirely built on your machine. In this workflow, the developer has complete control, along with the complexity that
-comes with that. Configuration with `app.json` / `app.config.js` is mostly not supported in this context; instead, you will need to configure each
-native project directly with Swift/Kotlin native modules. Check out the [troubleshooting section](/sdk/pnp/react-native/install#troubleshooting) for
-fixing common issues.
+Your Bare React Native app is entirely built on your machine. In this workflow, the developer has
+complete control, along with the complexity that comes with that. Configuration with `app.json` /
+`app.config.js` is mostly not supported in this context; instead, you will need to configure each
+native project directly with Swift/Kotlin native modules. Check out the
+[troubleshooting section](/sdk/pnp/react-native/install#troubleshooting) for fixing common issues.
 
 :::tip
 
-You can read more about different workflows in the [Expo documentation](https://docs.expo.dev/archive/managed-vs-bare/).
+You can read more about different workflows in the
+[Expo documentation](https://docs.expo.dev/archive/managed-vs-bare/).
 
 :::
 
@@ -44,8 +48,8 @@ npm install --save @web3auth/single-factor-auth-react-native
 
 ### Adding a `Storage` Module
 
-Now with v4, we need to pass a `Storage` parameter to the SDK, which will be used for session management without storing the private keys of the user
-in the device.
+Now with v4, we need to pass a `Storage` parameter to the SDK, which will be used for session
+management without storing the private keys of the user in the device.
 
 <Tabs
   defaultValue="bare"
@@ -59,11 +63,11 @@ in the device.
 
 #### Expo Secure Store
 
-When using our SDK with an Expo-based React Native app (aka managed workflow), you have to install the `expo-secure-store` package as a `Storage`
-implementation.
+When using our SDK with an Expo-based React Native app (aka managed workflow), you have to install
+the `expo-secure-store` package as a `Storage` implementation.
 
 ```shell
-expo install expo-secure-store
+npx expo install expo-secure-store
 ```
 
 </TabItem>
@@ -72,7 +76,8 @@ expo install expo-secure-store
 
 #### React Native Encrypted Storage
 
-When using our SDK with a bare workflow React Native app, you have to install a `Storage` implementation provided by react-native.
+When using our SDK with a bare workflow React Native app, you have to install a `Storage`
+implementation provided by react-native.
 
 ```bash npm2yarn
 npm install --save react-native-encrypted-storage
@@ -83,14 +88,15 @@ npm install --save react-native-encrypted-storage
 
 ## Configuration
 
-After you have installed the files needed for your workflow, you'll have to configure the SDK with some additional steps to be able to use the SDK
-properly.
+After you have installed the files needed for your workflow, you'll have to configure the SDK with
+some additional steps to be able to use the SDK properly.
 
 ### Expo Managed Workflow
 
 - Adding URL scheme to `app.json`
 
-To allow the Expo-based SDK to work with exported Expo Android apps, you need to add the designated scheme into `app.json`
+To allow the Expo-based SDK to work with exported Expo Android apps, you need to add the designated
+scheme into `app.json`
 
 ```json title="app.json"
 {
@@ -102,13 +108,16 @@ To allow the Expo-based SDK to work with exported Expo Android apps, you need to
 
 :::tip
 
-You may refer to [these example apps](/examples?product=Core+Kit&sdk=Single+Factor+Auth+React+Native+SDK) and try it out yourself.
+You may refer to
+[these example apps](/examples?product=Core+Kit&sdk=Single+Factor+Auth+React+Native+SDK) and try it
+out yourself.
 
 :::
 
 ### Bare React Native Workflow
 
-For the bare workflow, you need to perform additional installation steps, alongside specific configurations for Android and iOS separately.
+For the bare workflow, you need to perform additional installation steps, alongside specific
+configurations for Android and iOS separately.
 
 #### Android
 
@@ -136,7 +145,8 @@ targetSdkVersion = 31
 </intent-filter>
 ```
 
-- SDK version 31 requires you to explicitly define `android:exported="true"` in `AndroidManifest.xml`, check whether it is correctly present or not.
+- SDK version 31 requires you to explicitly define `android:exported="true"` in
+  `AndroidManifest.xml`, check whether it is correctly present or not.
 
 ```xml title="android/app/src/main/AndroidManifest.xml"
 <activity
@@ -166,7 +176,9 @@ pod install
 
 :::tip
 
-You may refer to **[these example apps](/examples?product=Core+Kit&sdk=Single+Factor+Auth+React+Native+SDK)** and try it out yourself.
+You may refer to
+**[these example apps](/examples?product=Core+Kit&sdk=Single+Factor+Auth+React+Native+SDK)** and try
+it out yourself.
 
 :::
 
@@ -174,6 +186,8 @@ You may refer to **[these example apps](/examples?product=Core+Kit&sdk=Single+Fa
 
 ### Bundler Issues: Missing Dependencies
 
-You might face issues mentioning that certain dependencies are missing within the React Native environment. These are node dependencies that need to
-be polyfilled in your application, to enable Web3Auth functionalities. Furthermore, your bundler needs to be reconfigured to use them while building
-the app. Please check out our **[React Native Troubleshooting Guide](/troubleshooting/metro-issues)**
+You might face issues mentioning that certain dependencies are missing within the React Native
+environment. These are node dependencies that need to be polyfilled in your application, to enable
+Web3Auth functionalities. Furthermore, your bundler needs to be reconfigured to use them while
+building the app. Please check out our
+**[React Native Troubleshooting Guide](/troubleshooting/metro-issues)**
