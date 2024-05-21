@@ -8,6 +8,7 @@ description: "Web3Auth PnP iOS SDK - Using Custom Authentication | Documentation
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import GrowthPlanNote from "@site/src/common/docs/_growth_plan_note.mdx";
+import SMSPasswordless from "@site/src/common/sdk/pnp/ios/_sms_passwordless.mdx";
 
 To use custom authentication (Using Social providers or Login providers like Auth0, AWS Cognito,
 Firebase etc. or even your own custom JWT login) you can add the configuration to the `loginConfig`
@@ -327,7 +328,7 @@ web3Auth = await Web3Auth(
 
 let result = await web3Auth.login(
   W3ALoginParams(
-    selectedLoginProvider,
+    Web3AuthProvider.JWT,
     // highlight-next-line
     extraLoginOptions: .init(domain:"your-domain", id_token: "your_jwt_token")
   )
@@ -340,8 +341,17 @@ let result = await web3Auth.login(
   the `extraLoginOptions`.
 
 ```swift
-let result = await Web3Auth().login(W3ALoginParams(selectedLoginProvider,
+let result = await Web3Auth().login(W3ALoginParams(
+  Web3AuthProvider.EMAIL_PASSWORDLESS,
   // highlight-next-line
   extraLoginOptions: .init(loginHint: "hello@web3auth.io")
 ))
 ```
+
+### SMS Passwordless
+
+To use the SMS Passwordless login, send the phone number as the `login_hint` parameter of the
+`ExtraLoginOptions`. Please make sure the phone number is in the format of
++\{country_code}-\{phone_number}, i.e. (+91-09xx901xx1).
+
+<SMSPasswordless />

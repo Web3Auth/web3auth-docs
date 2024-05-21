@@ -8,6 +8,7 @@ description: "Web3Auth PnP Android SDK - Multi Factor Authentication | Documenta
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import MFAMinimumPlan from "@site/src/common/docs/_mfa_minimum_plan.mdx";
+import EnableMFAMethod from "@site/src/common/sdk/pnp/android/_enable-mfa.mdx";
 
 At Web3Auth, we prioritize your security by offering Multi-Factor Authentication (MFA). MFA is an
 extra layer of protection that verifies your identity when accessing your account. To ensure
@@ -191,7 +192,7 @@ You can configure the order of MFA or enable/disable MFA type by passing the `mf
 			       // highlight-start
                mfaSettings = MfaSettings(
                    deviceShareFactor = MfaSetting(true, 1, true),
-                   socialBackupFactor = MfaSetting(true, 2, false),
+                   socialBackupFactor = MfaSetting(true, 2, true),
                    passwordFactor = MfaSetting(true, 3, false),
                    backUpShareFactor = MfaSetting(true, 4, false),
                )
@@ -200,3 +201,22 @@ You can configure the order of MFA or enable/disable MFA type by passing the `mf
            )
        )
 ```
+
+:::note Note
+
+- At least two factors are mandatory when setting up the mfaSettings.
+- If you set `mandatory: true` for all factors, the user must set up all four factors.
+- If you set `mandatory: false` for all factors, the user can skip setting up MFA. But at least two
+  factors are mandatory.
+- If you set `mandatory: true` for some factors and `mandatory: false` for others, the user must set
+  up the mandatory factors and can skip the optional factors. But, the user must set up at least two
+  factors.
+- The `priority` field is used to set the order of the factors. The factor with the lowest priority
+  will be the first factor to be set up. The factor with the highest priority will be the last
+  factor to be set up.
+
+:::
+
+## Using `enableMFA` method to trigger MFA setup flow for users
+
+<EnableMFAMethod />

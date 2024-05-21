@@ -8,13 +8,16 @@ description: "Web3Auth PnP Flutter SDK - Usage | Documentation - Web3Auth"
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import FlutterResponse from "@site/src/common/sdk/pnp/_userinfo_response.mdx";
+import SMSPasswordless from "@site/src/common/sdk/pnp/flutter/_sms_passwordless.mdx";
+import EnableMFAMethod from "@site/src/common/sdk/pnp/flutter/_enable-mfa.mdx";
 
 ## Logging in a User
 
 ### `login(LoginParams)`
 
-Trigger login flow will navigate the user to a browser model allowing the user to login into the service. You can pass in the supported providers to
-the login method for specific social logins such as GOOGLE, APPLE, FACEBOOK, etc., and do whitelabel login. The `login` function takes in
+Trigger login flow will navigate the user to a browser model allowing the user to login into the
+service. You can pass in the supported providers to the login method for specific social logins such
+as GOOGLE, APPLE, FACEBOOK, etc., and do whitelabel login. The `login` function takes in
 `LoginParams` as a required input.
 
 #### Arguments
@@ -33,7 +36,7 @@ the login method for specific social logins such as GOOGLE, APPLE, FACEBOOK, etc
 
 | Parameter            | Description                                                                                                                                                                                                                                                                                                                                                             |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginProvider`      | It sets the oAuth login method to be used. You can use any of the supported values are `GOOGLE`, `FACEBOOK`, `REDDIT`, `DISCORD`, `TWITCH`, `APPLE`, `LINE`, `GITHUB`, `KAKAO`, `LINKEDIN`, `TWITTER`, `WEIBO`, `WECHAT`, `EMAIL_PASSWORDLESS`.                                                                                                                         |
+| `loginProvider`      | It sets the oAuth login method to be used. You can use any of the supported values are `google`, `facebook`, `reddit`, `discord`, `twitch`, `apple`, `line`, `github`, `kakao`, `linkedin`, `twitter`, `email_passwordless`, `jwt`, `sms_passwordless`, `email_password`, and `farcaster`.                                                                              |
 | `extraLoginOptions?` | It can be used to set the OAuth login options for corresponding `loginProvider`. For instance, you'll need to pass user's email address as. Default value for the field is `null`, and it accepts `ExtraLoginOptions` as a value.                                                                                                                                       |
 | `redirectUrl?`       | Url where user will be redirected after successfull login. By default user will be redirected to same page where login will be initiated. Default value for the field is `null`                                                                                                                                                                                         |
 | `appState?`          | It can be used to keep track of the app state when user will be redirected to app after login. Default is `null`, and accepts `String` as a value.                                                                                                                                                                                                                      |
@@ -75,6 +78,24 @@ class LoginParams {
     "mfaLevel": mfaLevel?.type,
   };
 }
+
+enum Provider {
+  google,
+  facebook,
+  reddit,
+  discord,
+  twitch,
+  github,
+  apple,
+  linkedin,
+  twitter,
+  line,
+  kakao,
+  email_passwordless,
+  jwt,
+  sms_passwordless,
+  farcaster,
+}
 ```
 
 </TabItem>
@@ -82,12 +103,13 @@ class LoginParams {
 
 ### `getPrivkey()`
 
-Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private key which can be used to sign transactions on EVM
-compatible chains.
+Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private
+key which can be used to sign transactions on EVM compatible chains.
 
 ### `getEd25519PrivKey()`
 
-Use getEd25519PrivKey() to get the Ed25519 private key of the user. This private key can be used to sign transactions on Solana.
+Use getEd25519PrivKey() to get the Ed25519 private key of the user. This private key can be used to
+sign transactions on Solana.
 
 ### `getUserInfo()`
 
@@ -105,6 +127,8 @@ Use getUserInfo() to get the user info of the user.
     { label: "Discord", value: "discord" },
     { label: "Twitch", value: "twitch" },
     { label: "Email Passwordless", value: "email_passwordless" },
+    { label: "SMS Passwordless", value: "sms_passwordless" },
+    { label: "Farcaster", value: "farcaster" },
     { label: "JWT", value: "jwt" },
   ]}
 >
@@ -288,6 +312,44 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 </TabItem>
 
+<TabItem value="sms_passwordless">
+  <SMSPasswordless />
+</TabItem>
+
+<TabItem value="farcaster">
+
+```dart title="Usage"
+Future<void> initWeb3Auth() async {
+  Uri redirectUrl;
+
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('{bundleId}://auth');
+    // com.example.w3aflutter://openlogin
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId: "WEB3AUTH_CLIENT_ID",
+    network: Network.sapphire_mainnet,
+    redirectUrl: redirectUrl,
+  ));
+
+  await Web3AuthFlutter.initialize();
+}
+
+// Login
+final Web3AuthResponse response = await Web3AuthFlutter.login(
+  // highlight-next-line
+  LoginParams(loginProvider: Provider.farcaster)
+);
+```
+
+</TabItem>
+
 <TabItem value="jwt">
 
 ```dart title="Usage"
@@ -344,7 +406,8 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 
 ## Selecting Curve
 
-The `LoginParams` class has a `curve` parameter. This parameter can be used to select the elliptic curve to use for the signature.
+The `LoginParams` class has a `curve` parameter. This parameter can be used to select the elliptic
+curve to use for the signature.
 
 ```dart
 final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
@@ -436,8 +499,8 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
 
 ### `logout()`
 
-This method will logout the user and remove the session id from the device. The user will need to login again to use the dApp next time the dApp is
-opened.
+This method will logout the user and remove the session id from the device. The user will need to
+login again to use the dApp next time the dApp is opened.
 
 ```dart
 await Web3AuthFlutter.logout();
@@ -445,61 +508,166 @@ await Web3AuthFlutter.logout();
 
 :::tip sample-app
 
-Get started with a sample app found [here](/examples?product=Plug+and+Play&sdk=Plug+and+Play+Flutter+SDK).
+Get started with a sample app found
+[here](/examples?product=Plug+and+Play&sdk=Plug+and+Play+Flutter+SDK).
 
 :::
 
-## Triggering Login exceptions
+## Enable MFA for a user
 
-### `setResultUrl()`
+<EnableMFAMethod />
 
-This method will trigger login exceptions for Android. For iOS, you don't need this method to trigger the login exceptions. The Android SDK uses the
-custom tabs and from current implementation of chrome custom tab, it's not possible to add a listener directly to chrome custom tab close button and
-trigger login exceptions.
+## Launch Wallet Services
 
-Hence, it's necessary to user `setResultUrl` method in your login screen to trigger exceptions.
+The `launchWalletServices` method launches a WebView which allows you to use the templated wallet UI
+services. The method takes `ChainConfig` as the required input. Wallet Services is currently only
+available for EVM chains.
+
+:::note Minimum Scale plan required
+
+Access to Wallet Services is gated. You can use this feature in the development environment for
+free. The minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a
+production environment is the **Scale Plan**.
+
+:::
+
+### Arguments
+
+`ChainConfig`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter           | Description                                                                                                                 |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `chainNamespace`    | Custom configuration for your preferred blockchain. As of now only EVM supported. Default value is `ChainNamespace.eip155`. |
+| `decimals?`         | Number of decimals for the currency ticker. Default value is 18, and accepts `int` as value.                                |
+| `blockExplorerUrl?` | Blockchain's explorer URL. (eg: `https://etherscan.io`)                                                                     |
+| `chainId`           | The chain id of the selected blockchain in hex `String`.                                                                    |
+| `displayName?`      | Display Name for the chain.                                                                                                 |
+| `logo?`             | Logo for the selected `chainNamespace` & `chainId`.                                                                         |
+| `rpcTarget`         | RPC Target URL for the selected `chainNamespace` & `chainId`.                                                               |
+| `ticker?`           | Default currency ticker of the network (e.g: `ETH`)                                                                         |
+| `tickerName?`       | Name for currency ticker (e.g: `Ethereum`)                                                                                  |
+
+</TabItem>
+
+<TabItem value="class">
 
 ```dart
-class LoginScreen extends State<T> with WidgetsBindingObserver {
+class ChainConfig {
+  final ChainNamespace chainNamespace;
+  final int? decimals;
+  final String? blockExplorerUrl;
+  final String chainId;
+  final String? displayName;
+  final String? logo;
+  final String rpcTarget;
+  final String? ticker;
+  final String? tickerName;
 
-  @override
-  void initState() {
-    super.initState();
-    // highlight-next-line
-    WidgetsBinding.instance.addObserver(this);
-  }
+  ChainConfig({
+    this.chainNamespace = ChainNamespace.eip155,
+    this.decimals = 18,
+    this.blockExplorerUrl,
+    required this.chainId,
+    this.displayName,
+    this.logo,
+    required this.rpcTarget,
+    this.ticker,
+    this.tickerName,
+  });
 
-  @override
-  void dispose() {
-    super.dispose();
-    // highlight-next-line
-    WidgetsBinding.instance.removeObserver(this);
+  Map<String, dynamic> toJson() {
+    return {
+      'chainNamespace': chainNamespace.name,
+      'decimals': decimals,
+      'blockExplorerUrl': blockExplorerUrl,
+      'chainId': chainId,
+      'displayName': displayName,
+      'logo': logo,
+      'rpcTarget': rpcTarget,
+      'ticker': ticker,
+      'tickerName': tickerName
+    };
   }
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Usage
+
+```dart title="Usage"
+try {
+  // highlight-start
+  await Web3AuthFlutter.launchWalletServices(
+    ChainConfig(
+      chainId: "0x1",
+      rpcTarget: "https://mainnet.infura.io/v3/$key",
+    ),
+  );
+  // highlight-end
+} on UserCancelledException {
+  log("User cancelled.");
+} catch(e) {
+  log("Unknown exception occurred");
+}
+```
+
+## Request signature
+
+The `request` method facilitates the use of templated transaction screens for signing transactions.
+Upon successful completion, you can retrieve the signature for the request using the
+`getSignResponse` static method.
+
+Please check the list of [JSON RPC methods](docs.metamask.io/wallet/reference/json-rpc-api/), noting
+that the request method currently supports only the signing methods.
+
+### Arguments
+
+| Arguments       | Description                                                                                                                                                                                                                                                          |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `chainConfig`   | Defines the chain to be used for signature.                                                                                                                                                                                                                          |
+| `method`        | JSON RPC method name in `String`. Currently, the request method only supports the singing methods.                                                                                                                                                                   |
+| `requestParams` | Parameters for the corresponding method. The parameters should be in the list and correct sequence. Take a look at [RPC methods](<[https://docs.metamask.io/wallet/reference/json-rpc-api/](https://docs.metamask.io/wallet/reference/json-rpc-api/)>) to know more. |
+
+### Usage
+
+```dart title="Usage"
+
+try {
+  List<dynamic> params = [];
+  // Message to be signed
+  params.add("Hello, Web3Auth from Flutter!");
+  // User's EOA address
+  params.add("<User Address in Hex>");
 
   // highlight-start
-  @override
-  void didChangeAppLifecycleState(final AppLifecycleState state) {
-    // This is important to trigger the user cancellation on Android.
-    if (state == AppLifecycleState.resumed) {
-      Web3AuthFlutter.setResultUrl();
-    }
-  }
+  await Web3AuthFlutter.request(
+    ChainConfig(
+      chainId: "0x1",
+      rpcTarget: "https://mainnet.infura.io/v3/$key",
+    ),
+    "personal_sign",
+    params,
+  );
   // highlight-end
+} on UserCancelledException {
+  log("User cancelled.");
+} catch(e) {
+  log("Unknown exception occurred");
+}
 
-   @override
-  Widget build(BuildContext context) {
-    // Your UI code
-  }
-
-  Future<void> _login() async {
-    try {
-      await Web3AuthFlutter.login(LoginParams(loginProvider: Provider.google));
-    } on UserCancelledException {
-        log("User cancelled.");
-    } on UnKnownException {
-        log("Unknown exception occurred");
-    } catch (e) {
-        log(e.toString());
-    }
-  }
+// highlight-next-line
+final signResponse = await Web3AuthFlutter.getSignResponse();
+log(signResponse.toString())
 ```
