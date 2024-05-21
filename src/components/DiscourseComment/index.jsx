@@ -6,15 +6,22 @@ export default function DiscourseComment(props) {
   useEffect(() => {
     window.DiscourseEmbed = {
       discourseUrl: "https://web3auth.io/community/",
-      topicId,
+      discourseEmbedUrl: '{{url absolute="true"}}',
     };
 
     const d = document.createElement("script");
     d.type = "text/javascript";
     d.async = true;
     d.src = `${window.DiscourseEmbed.discourseUrl}javascripts/embed.js`;
-    (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(d);
+    (
+      document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]
+    ).appendChild(d);
   }, []);
 
-  return <div id="discourse-comments" />;
+  return (
+    <>
+      <meta name="discourse-username" content="shahbaz"></meta>
+      <div id="discourse-comments" />
+    </>
+  );
 }
