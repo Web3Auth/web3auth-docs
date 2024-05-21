@@ -36,22 +36,22 @@ For more information on React hooks, refer to the
 
 <TabItem value="table">
 
-| Parameter            | Description                                                                                                                     |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `isConnected`        | Indicates if a user is currently connected.                                                                                     |
-| `provider`           | The current provider, or `null` if not connected.                                                                               |
-| `userInfo`           | Information about the connected user.                                                                                           |
-| `isMFAEnabled`       | Indicates if Multi-Factor Authentication (MFA) is enabled.                                                                      |
-| `isInitialized`      | Indicates if Web3Auth has been initialized.                                                                                     |
-| `status`             | The current status of the Web3Auth adapter.                                                                                     |
-| `enableMFA(params?)` | Enables Multi-Factor Authentication for the user. Returns a Promise.                                                            |
-| `logout(params?)`    | Logs out the user, with an optional cleanup parameter. Returns a Promise.                                                       |
-| `addAndSwitchChain`  | Adds and switches to a new blockchain. Takes `chainConfig` of type `CustomChainConfig` as a parameter. Returns a Promise.       |
-| `addPlugin`          | Adds a plugin to the Web3Auth instance. Takes a `plugin` of type `IPlugin` as a parameter.                                      |
-| `getPlugin`          | Retrieves a plugin by name. Takes `pluginName` of type `string` as parameter. Returns an `IPlugin` or `null`.                   |
-| `authenticateUser`   | Authenticates the connected user. Returns a Promise of `UserAuthInfo`.                                                          |
-| `addChain`           | Adds a new blockchain configuration. Takes `chainConfig` of type `CustomChainConfig` as a parameter. Returns a Promise.         |
-| `switchChain`        | Switches to a specified blockchain by chain ID. Takes `params` of type `{ chainId: string }` as a parameter. Returns a Promise. |
+| Parameter            | Description                                                                                                                                |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `isConnected`        | Indicates whether a user is currently logged in or not.                                                                                    |
+| `provider`           | The current provider, or `null` if not connected.                                                                                          |
+| `userInfo`           | Information about the logged-in user.                                                                                                      |
+| `isMFAEnabled`       | Indicates whether Multi-Factor Authentication (MFA) is enabled or not.                                                                     |
+| `isInitialized`      | Indicates whether Web3Auth has been initialized or not.                                                                                    |
+| `status`             | The current status of Web3Auth. Can take the following values: `NOT_READY`, `READY`, `CONNECTING`, `CONNECTED`, `DISCONNECTED`, `ERRORED`. |
+| `enableMFA(params?)` | Enables Multi-Factor Authentication for the user. Returns a Promise.                                                                       |
+| `logout(params?)`    | Logs out the user, with an optional cleanup parameter. Returns a Promise.                                                                  |
+| `addAndSwitchChain`  | Adds and switches to a new blockchain. Takes `chainConfig` of type `CustomChainConfig` as a parameter. Returns a Promise.                  |
+| `addPlugin`          | Adds a plugin to the Web3Auth instance. Takes a `plugin` of type `IPlugin` as a parameter.                                                 |
+| `getPlugin`          | Retrieves a plugin by name. Takes `pluginName` of type `string` as parameter. Returns an `IPlugin` or `null`.                              |
+| `authenticateUser`   | Retrieves the idToken for the logged-in user. Returns a Promise.                                                                           |
+| `addChain`           | Adds a new blockchain configuration. Takes `chainConfig` of type `CustomChainConfig` as a parameter. Returns a Promise.                    |
+| `switchChain`        | Switches to a specified blockchain by chain ID. Takes `params` of type `{ chainId: string }` as a parameter. Returns a Promise.            |
 
 </TabItem>
 
@@ -60,7 +60,7 @@ For more information on React hooks, refer to the
 ```tsx
 interface IBaseWeb3AuthHookContext {
   /**
-   * Indicates if a user is currently connected.
+   * Indicates whether a user is currently logged in or not.
    */
   isConnected: boolean;
   /**
@@ -68,15 +68,15 @@ interface IBaseWeb3AuthHookContext {
    */
   provider: IProvider | null;
   /**
-   * Information about the connected user.
+   * Information about the logged-in user.
    */
   userInfo: Partial<OpenloginUserInfo> | null;
   /**
-   * Indicates if Multi-Factor Authentication (MFA) is enabled.
+   * Indicates whether Multi-Factor Authentication (MFA) is enabled or not.
    */
   isMFAEnabled: boolean;
   /**
-   * Indicates if Web3Auth has been initialized.
+   * Indicates whether Web3Auth has been initialized or not.
    */
   isInitialized: boolean;
   /**
@@ -113,7 +113,7 @@ interface IBaseWeb3AuthHookContext {
    */
   getPlugin(pluginName: string): IPlugin | null;
   /**
-   * Authenticates the connected user.
+   * Retrieves the idToken for the logged-in user.
    * @returns A Promise that resolves with the authenticated user's information.
    */
   authenticateUser(): Promise<UserAuthInfo>;
