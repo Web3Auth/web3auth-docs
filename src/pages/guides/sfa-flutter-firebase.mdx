@@ -192,10 +192,22 @@ final userCredential = await firebaseHelper.signInWithEmailAndPassword(
     'Testing@123',
 );
 
-final torusSFAKey = await singleFactorAuthFlutter.getKey(userCredential.user);
+final user = userCredential.user;
+final token = await user.getIdToken(true);
 
-log(torusSFAKey.privateKey);
-log(torusSFAKey.publicAddress);
+final loginParams = LoginParams(
+  // Replace with your verifier
+  verifier: 'web3auth-firebase-examples',
+  // Replace with the verifierId value, can be email, sub, or custom
+  verifierId: 'sfa.flutter@w3a.link',
+  idToken: token!,
+)
+
+// highlight-next-line
+final torusKey = await singleFactAuthFlutter.getKey(loginParams);
+
+log(torusKey.privateKey);
+log(torusKey.publicAddress);
 ```
 
 ## Set up Blockchain Providers
@@ -260,4 +272,4 @@ Voila, you have learned how to use Web3Auth SFA SDK with Flutter application.
 If you are interested in learning more about SFA SDK, please checkout our
 [documentation for Flutter SFA SDK](/docs/sdk/core-kit/sfa-flutter/). You can find the code used for
 the guide on our
-[examples repo](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-flutter/sfa-flutter-quick-start).
+[examples repo](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-flutter/sfa_flutter_quick_start).
