@@ -709,12 +709,25 @@ const sidebars: SidebarsConfig = {
         {
           type: "category",
           label: "Plug and Play Android SDK",
-          items: ["migration-guides/android-v4-to-v5"],
+          items: [
+            "migration-guides/android-v4-to-v5",
+            "migration-guides/android-v5-to-v6",
+            "migration-guides/android-v6-to-v6.1",
+            "migration-guides/android-v7.1.1-to-v7.1.2",
+            "migration-guides/android-v7.1.2-to-v7.2",
+            "migration-guides/android-v7.2-to-v7.3",
+          ],
         },
         {
           type: "category",
           label: "Plug and Play iOS SDK",
-          items: ["migration-guides/ios-v6-to-v7"],
+          items: [
+            "migration-guides/ios-v6-to-v7",
+            "migration-guides/ios-v7-to-v8",
+            "migration-guides/ios-v8-to-v8.1",
+            "migration-guides/ios-v8.1-to-v8.2",
+            "migration-guides/ios-v8.2-to-v8.3",
+          ],
         },
         {
           type: "category",
