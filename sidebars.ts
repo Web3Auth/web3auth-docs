@@ -770,7 +770,7 @@ const sidebars: SidebarsConfig = {
             "sdk/pnp/web/modal/install",
             "sdk/pnp/web/modal/initialize",
             "sdk/pnp/web/modal/usage",
-            "sdk/pnp/web/modal/hooks/hooks-introduction",
+            "sdk/pnp/web/modal/modal-hooks",
             {
               type: "category",
               collapsible: true,
@@ -809,6 +809,7 @@ const sidebars: SidebarsConfig = {
             "sdk/pnp/web/no-modal/install",
             "sdk/pnp/web/no-modal/initialize",
             "sdk/pnp/web/no-modal/usage",
+            "sdk/pnp/web/no-modal/no-modal-hooks",
             {
               type: "category",
               collapsible: true,
