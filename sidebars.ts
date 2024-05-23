@@ -1343,7 +1343,11 @@ const sidebars: SidebarsConfig = {
       value: "<span class='sidebarHeading'>Helper SDKs</span>",
       defaultStyle: true,
     },
-    "sdk/wallet-services/wallet-services",
+    {
+      type: "category",
+      label: "Wallet Services",
+      items: ["sdk/wallet-services/wallet-services", "sdk/wallet-services/wallet-services-hooks"],
+    },
     {
       type: "category",
       label: "Providers",
