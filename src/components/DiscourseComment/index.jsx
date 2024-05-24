@@ -2,13 +2,13 @@ import { useEffect } from "react";
 
 export default function DiscourseComment(props) {
   // Get the current page URL
-  const url = window.location.href;
+  // const url = window.location.href;
   // eslint-disable-next-line react/prop-types
-  const { topicId } = props;
+  // const { topicId } = props;
   useEffect(() => {
     window.DiscourseEmbed = {
       discourseUrl: "https://web3auth.io/community/",
-      discourseEmbedUrl: `${url}`,
+      discourseEmbedUrl: `${window.location.href} absolute="true"`,
     };
 
     const d = document.createElement("script");
