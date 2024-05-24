@@ -4,11 +4,11 @@ export default function DiscourseComment(props) {
   // Get the current page URL
   // const url = window.location.href;
   // eslint-disable-next-line react/prop-types
-  // const { topicId } = props;
+  const { postUrl } = props;
   useEffect(() => {
     window.DiscourseEmbed = {
       discourseUrl: "https://web3auth.io/community/",
-      discourseEmbedUrl: `${window.location.href}`,
+      discourseEmbedUrl: postUrl,
     };
 
     const d = document.createElement("script");

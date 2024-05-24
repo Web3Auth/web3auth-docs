@@ -167,7 +167,7 @@ export default function MDXPage(props: ComponentProps<typeof OriginalMDXPage>) {
                     )}
                   </BrowserOnly>
                 </div>
-                <DiscourseComment />
+                <DiscourseComment postUrl={url} />
               </div>
               {MDXPageContent.toc && (
                 <div className="col col--3" style={{ paddingRight: "30px" }}>
