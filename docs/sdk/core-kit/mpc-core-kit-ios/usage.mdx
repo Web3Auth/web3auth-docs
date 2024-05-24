@@ -238,6 +238,44 @@ Returns the current factor key in usage within the state of the SDK.
 let factorKey = try mpcCoreKit.getCurrentFactorKey();
 ```
 
+## User & Wallet Account Functions
+
+---
+
+### getUserInfo()
+
+The function returns the `NSDictonary` containing the user information. The information can be
+different depending on the login provider and method used.
+
+#### Usage
+
+```swift
+let userInfo: [String: Any] = try mpcCoreKit.getUserInfo()
+```
+
+### getKeyDetails()
+
+The function return `MpcKeyDetails` containing the information regarding threshold, public key, and
+user's shares. For more details, please check the table below.
+
+#### MpcKeyDetails Class
+
+| Name                | Description                                                                                                                                                                                                                                                                                      |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `tssPubKey`         | TSS Public Key for the user's account.                                                                                                                                                                                                                                                           |
+| `metadataPubKey`    | Metadata Public Key for the user's account.                                                                                                                                                                                                                                                      |
+| `requiredFactors`   | `requiredFactors` denotes the factors required for the SDK to be in write state. If the value is greater than 0, the SDK will be in read state. The variable can be used to check the required factors after using the login methods to verify if user has enough factors to access the account. |
+| `threshold`         | `threshold` defines the total number factors required for write state.                                                                                                                                                                                                                           |
+| `shareDescriptions` | Returns the description for the shares.                                                                                                                                                                                                                                                          |
+| `totalShares`       | Returns the total number shares for the account.                                                                                                                                                                                                                                                 |
+| `totalFactors`      | Returns the total number of factors for the account.                                                                                                                                                                                                                                             |
+
+#### Usage
+
+```swift
+let keyDetails: MpcKeyDetails = try await mpcCoreKit.getKeyDetails()
+```
+
 ## Mnemonic Conversations
 
 ---
