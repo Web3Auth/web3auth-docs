@@ -770,6 +770,7 @@ const sidebars: SidebarsConfig = {
             "sdk/pnp/web/modal/install",
             "sdk/pnp/web/modal/initialize",
             "sdk/pnp/web/modal/usage",
+            "sdk/pnp/web/modal/modal-hooks",
             {
               type: "category",
               collapsible: true,
@@ -808,6 +809,7 @@ const sidebars: SidebarsConfig = {
             "sdk/pnp/web/no-modal/install",
             "sdk/pnp/web/no-modal/initialize",
             "sdk/pnp/web/no-modal/usage",
+            "sdk/pnp/web/no-modal/no-modal-hooks",
             {
               type: "category",
               collapsible: true,
@@ -1341,7 +1343,11 @@ const sidebars: SidebarsConfig = {
       value: "<span class='sidebarHeading'>Helper SDKs</span>",
       defaultStyle: true,
     },
-    "sdk/wallet-services/wallet-services",
+    {
+      type: "category",
+      label: "Wallet Services",
+      items: ["sdk/wallet-services/wallet-services", "sdk/wallet-services/wallet-services-hooks"],
+    },
     {
       type: "category",
       label: "Providers",
