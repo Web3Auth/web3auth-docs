@@ -8,7 +8,7 @@ export default function DiscourseComment(props) {
   useEffect(() => {
     window.DiscourseEmbed = {
       discourseUrl: "https://web3auth.io/community/",
-      discourseEmbedUrl: `${window.location.href} absolute="true"`,
+      discourseEmbedUrl: `${window.location.href}`,
     };
 
     const d = document.createElement("script");
