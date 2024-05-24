@@ -11,15 +11,17 @@ import Tabs from "@theme/Tabs";
 
 <TabItem value="table">
 
-| Parameter          | Description                                                                                                                                                   |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `clientId`         | Client id for web3auth. You can obtain your client ID from the web3auth developer dashboard. You can set any random string for this on localhost.             |
-| `web3AuthNetwork`  | Web3Auth Network to use for login. The default value is `mainnet`.                                                                                            |
-| `enableLogging`    | Setting to true will enable logs. The default value is `false`.                                                                                               |
-| `usePnPKey`        | Setting this to true returns the same key as web SDK (i.e., plug-n-play key). By default, this SDK returns CoreKitKey.                                        |
-| `sessionTime`      | How long should a login session last at a minimum in seconds? The default value is `86400` seconds. The max value of sessionTime can be `7 * 86400` (7 days). |
-| `storageKey`       | Setting to "local" will persist the social login session across browser tabs. The default value is `local`.                                                   |
-| `storageServerUrl` | Specify a custom storage server URL. The default value is `https://session.web3auth.io`.                                                                      |
+| Parameter            | Description                                                                                                                                                   |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`           | Client id for web3auth. You can obtain your client ID from the web3auth developer dashboard. You can set any random string for this on localhost.             |
+| `web3AuthNetwork`    | Web3Auth Network to use for login. The default value is `mainnet`.                                                                                            |
+| `privateKeyProvider` | Private key provider for your chain namespace.                                                                                                                |
+| `enableLogging?`     | Setting to true will enable logs. The default value is `false`.                                                                                               |
+| `usePnPKey?`         | Setting this to true returns the same key as web SDK (i.e., plug-n-play key). By default, this SDK returns CoreKitKey.                                        |
+| `sessionTime?`       | How long should a login session last at a minimum in seconds? The default value is `86400` seconds. The max value of sessionTime can be `7 * 86400` (7 days). |
+| `storageKey?`        | Setting to "local" will persist the social login session across browser tabs. The default value is `local`.                                                   |
+| `storageServerUrl?`  | Specify a custom storage server URL. The default value is `https://session.web3auth.io`.                                                                      |
+| `serverTimeOffset?`  | Specify a custom server time offset. The default value is `0`.                                                                                                |
 
 </TabItem>
 
@@ -67,6 +69,17 @@ export interface Web3AuthOptions {
    * @defaultValue https://session.web3auth.io
    */
   storageServerUrl?: string;
+  /**
+   * Specify a custom server time offset.
+   *
+   * @defaultValue 0
+   */
+  serverTimeOffset?: number;
+
+  /**
+   * Private key provider for your chain namespace
+   */
+  privateKeyProvider: IBaseProvider<string>;
 }
 ```
 
