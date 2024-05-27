@@ -39,13 +39,13 @@ This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
 
 <Web3AuthOptions />
 
-#### Usage
-
-<SFAInstanceExample />
-
-## Instantiating Provider
+### Instantiating Provider
 
 <InstantiatingProvider />
+
+### Usage
+
+<SFAInstanceExample />
 
 ## Initializing Web3Auth
 
@@ -53,10 +53,10 @@ This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
 
 To complete the initialization process, we need to initialize the `Web3Auth` instance, which we
 named `web3auth`. This is achieved by calling the `init()` function of the previously created
-`web3auth` instance, using a **private key provider**.
+`web3auth` instance.
 
 ```javascript
-web3auth.init(privateKeyProvider);
+await web3auth.init();
 ```
 
 ## Example
@@ -84,8 +84,9 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 const web3auth = new Web3Auth({
   clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from the Web3Auth Dashboard
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
   usePnPKey: false, // By default, this SDK returns CoreKitKey by default.
 });
 
-web3auth.init(privateKeyProvider);
+await web3auth.init();
 ```
