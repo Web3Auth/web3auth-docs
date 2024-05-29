@@ -1348,6 +1348,7 @@ const sidebars: SidebarsConfig = {
       label: "Wallet Services",
       items: ["sdk/wallet-services/wallet-services", "sdk/wallet-services/wallet-services-hooks"],
     },
+    "sdk/passkeys-sfa/passkeys-sfa",
     {
       type: "category",
       label: "Providers",
