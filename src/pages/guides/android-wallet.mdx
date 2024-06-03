@@ -32,7 +32,7 @@ Web3Auth architecture and implementation. For those who want to skip straight to
 find it on
 [GitHub](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/android/android-playground).
 
-Here are few screenshots of the application.
+Here are a few screenshots of the application.
 
 <img
   style={{ display: "block", margin: "20px auto" }}
@@ -53,7 +53,7 @@ Web3Auth Dashboard.
 Once, you have set up the Web3Auth Dashboard, and created a new project, it's time to integrate
 Web3Auth in your Android application. For the implementation, we'll use the
 ["web3auth-android-sdk"](https://github.com/Web3Auth/web3auth-android-sdk) SDK. This SDK facilitates
-integration with Web3Auth. This way you can easily manage embedded wallet in your Android
+integration with Web3Auth. This way you can easily manage an embedded wallet in your Android
 application.
 
 ### Installation
@@ -141,8 +141,8 @@ class Web3AuthHelperImpl(
 }
 ```
 
-Once we have the created `Web3AuthHelper`, next is to initialize the `Web3Auth` instance in the Koin
-module and make it a singleton component.
+Once we have the created `Web3AuthHelper`, the next is to initialize the `Web3Auth` instance in the
+Koin module and make it a singleton component.
 
 ```kotlin
 val appModule = module {
@@ -177,13 +177,13 @@ private fun getWeb3AuthHelper(context: Context): Web3AuthHelper {
 
 To check whether the user is authenticated, you can use the `getPrivateKey` or `getEd25519PrivKey`
 method. For a user already authenticated, the result would be a non-empty `String`. You can navigate
-to different views based on the result. If the user is already authenticated, we'll generate prepare
-the `Credentials`, important to interact with blockchain. Along with that, we'll retrieve user info,
-and navigate them to `HomeScreen`. In case of no active session, we'll navigate to `LoginScreen` to
-authenticate again.
+to different views based on the result. If the user is already authenticated, we'll generate and
+prepare the `Credentials`, important to interact with the blockchain. Along with that, we'll
+retrieve user info, and navigate them to `HomeScreen`. In case of no active session, we'll navigate
+to `LoginScreen` to authenticate again.
 [Learn more about Web3Auth session management](/docs/features/session-management).
 
-Since, we are using the MVVM architecture, we'll create a `ViewModel` class to encapsulate the
+Since we are using the MVVM architecture, we'll create a `ViewModel` class to encapsulate the
 business logic for Web3Auth and Ethereum chain interaction.
 
 ```kotlin
@@ -246,11 +246,11 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
 
 ### Authentication
 
-If the user is not authenticated, we can utilize the `login` method to authenticate user. For the
-Wallet, we will addEmail Passwordless login. We'll create a helper function, `login` inside
+If the user is not authenticated, we can utilize the `login` method to authenticate the user. For
+the Wallet, we will add an Email Passwordless login. We'll create a helper function, `login` inside
 `MainViewModel`. The login method is pretty straightforward in Web3Auth and takes `LoginParams` as
-input. After successfully logging in, we'll generate prepare the `Credentials`, important to
-interact with blockchain. Along with that, we'll retrieve user info, and navigate them to
+input. After successfully logging in, we'll generate and prepare the `Credentials`, important to
+interact with the blockchain. Along with that, we'll retrieve user info, and navigate them to
 `HomeScreen`.
 
 Learn more about [Web3Auth LoginParams](/docs/sdk/pnp/android/usage#arguments).
@@ -288,17 +288,19 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
 ## Set up Blockchain Providers
 
 Once we have successfully authenticated the user, the next step would be to fetch the user details,
-retrieve wallet address and prepare blockchain providers for interactions. For this guide, we are
-supporting only Ethereum ecosystem, but the general idea can be used for any blockchain ecosystem.
+retrieve the wallet address, and prepare blockchain providers for interactions. For this guide, we
+are supporting only the Ethereum ecosystem, but the general idea can be used for any blockchain
+ecosystem.
 
-Given that the project follows MVVM architecture pattern, we'll want to create an UseCase to
-interact with the Blockchain. This UseCase will help us easily expand the blockchain support while
-isolate it from the rest of the application.
+Given that the project follows MVVM architecture pattern, we'll want to create a UseCase to interact
+with the Blockchain. This UseCase will help us easily expand the blockchain support while isolating
+it from the rest of the application.
 
-For interacting ethereum chains, we'll use the [web3j](https://github.com/hyperledger/web3j) SDK.
+For interacting with Ethereum chains, we'll use the [web3j](https://github.com/hyperledger/web3j)
+SDK.
 
 To install the web3j SDK, in your module-level `build.gradle` or `settings.gradle` file, add `web3j`
-in your app level dependencies.
+in your app-level dependencies.
 
 ```groovy
 dependencies {
@@ -313,8 +315,8 @@ a new class, `EthereumUseCase` interface, which will used as a base class for `E
 If you wish to support any additional ecosystem, you can create the chain-agnostic UseCase and
 implement the methods.
 
-If you want to learn, how you can integrate different blockchain with Web3Auth, you can checkout our
-[Connect Blockchain resources](/docs/connect-blockchain/).
+If you want to learn, how you can integrate different blockchains with Web3Auth, you can check out
+our [Connect Blockchain resources](/docs/connect-blockchain/).
 
 ```kotlin
 interface EthereumUseCase {
@@ -329,8 +331,8 @@ interface EthereumUseCase {
 
 Generally, for any blockchain provider, you'll only require the `getBalance`, `sendTransaction`, and
 `signMessage`. The `getBalance` and `approve` can be used to interact with smart contracts. To
-interact with smart contracts, we'll require to generate smart contract function wrappers in Java
-from Solidity ABI files.
+interact with smart contracts, we'll be required to generate smart contract function wrappers in
+Java from Solidity ABI files.
 
 ### Smart Contract Wrappers
 
@@ -369,9 +371,9 @@ interface IERC20 {
 }
 ```
 
-After creating the interface for the ERC-20 token, the next step is to compile the solidity file,
-and generate the abi and bin files to generate the wrappers. To compile the solidity file, we'll use
-the [solc](https://docs.soliditylang.org/en/latest/installing-solidity.html).
+After creating the interface for the ERC-20 token, the next step is to compile the solidity file and
+generate the abi and bin files to generate the wrappers. To compile the solidity file, we'll use the
+[solc](https://docs.soliditylang.org/en/latest/installing-solidity.html).
 
 To install the solc we'll require the npm or yarn. If you have the npm already installed, you can
 use the below command to install the solc package globally.
@@ -395,8 +397,8 @@ web3j generate solidity -b /path/to/Tokne.bin -a /path/to/Token..abi -o /path/to
 ```
 
 Once you run the command, it'll create a wrapper `Token.java` which extends the `Contract`. You can
-use this class to interact with the smart contracts. Please make sure to compile and regrenerate
-wrappers if you make any changes in the smart conract.
+use this class to interact with the smart contracts. Please make sure to compile and regenerate
+wrappers if you make any changes in the smart contract.
 
 ### Ethereum UseCase Implementation
 
@@ -404,10 +406,10 @@ Once we have generated `Token` wrapper, we'll create `EthereumUseCaseImpl` and i
 methods. To create the `Web3j` instance, you'll require the rpcTarget URL. If you are using public
 RPCs, you can face some network congestion. It's ideal to use paid RPCs for production.
 
-The `getBalance`, and `approve` methods are used to interact with smart contracts on Ethereum
-ecosystem. The `getBalance` is used to read the balance from the ERC-20 smart contracts, where as
-the `approve` is used to change the approval to zero for the ERC-20. For the `getBalance` and
-`approve` we'll be using the `Token` wrapper.
+The `getBalance`, and `approve` methods are used to interact with smart contracts in the Ethereum
+ecosystem. The `getBalance` is used to read the balance from the ERC-20 smart contracts, whereas the
+`approve` is used to change the approval to zero for the ERC-20. For the `getBalance` and `approve`
+we'll be using the `Token` wrapper.
 
 ```kotlin
 class EthereumUseCaseImpl(
@@ -505,14 +507,14 @@ val appModule = module {
 
 ## Set up Supported Chains
 
-After having our blockchain UseCase in place, the next step on the list to define the supported
-chains. To keep things simple, we'll simply a create a new file `ChainConfigList` with array of
+After having our blockchain UseCase in place, the next step on the list is to define the supported
+chains. To keep things simple, we'll simply create a new file `ChainConfigList` with an array of
 ChainConfig to define the supported chains.
 
 For the guide, we have added the support for Ethereum Sepolia, and Arbitrum Sepolia. If you wish to
 support more chains in your wallet, you can simply add the config with the required details in the
-list below. Along with that you can also add the desired chain using the add custom chain feature in
-the app.
+list below. Along with that, you can also add the desired chain using the add custom chain feature
+in the app.
 
 ```kotlin
 var chainConfigList = arrayOf(
@@ -542,16 +544,16 @@ var chainConfigList = arrayOf(
 ## Wallet Implementation
 
 Once, we have set up the EthereumUseCase, and supported chains, it's time to integrate and plug them
-into the wallet. Since, we have already created `MainViewModel` before, we'll add the other features
+into the wallet. Since we have already created `MainViewModel` before, we'll add the other features
 inside it.
 
-This will help us to seperate business logic from UI.
+This will help us to separate business logic from UI.
 
 ### Set up MainViewModel
 
-Once we have set up supported chains, the next on list is to add more functionality in
-`MinaViewModel` to help us maange the state & functionality of the wallet. It will help us manage
-the state of currently selected chain, fetch balance, sign transactions, and access other
+Once we have set up supported chains, the next on the list is to add more functionality in
+`MinaViewModel` to help us manage the state & functionality of the wallet. It will help us manage
+the state of the currently selected chain, fetch balance, sign transactions, and access other
 functionalities of Web3Auth.
 
 ```kotlin
@@ -721,10 +723,10 @@ Once, we have our view model ready, we create a new `HomeScreen` to show user de
 address, wallet address, user's balance for selectedChain, and blockchain interaction methods.
 
 To get the user's balance, we'll use `getBalance` method from the `MainViewModel`. The method
-internally uses `EthereumUseCaseImpl` to retrieve user's wallet address, and fetch the wallet
-balance for the address. Checkout `EthereumUseCaseImpl` implementation for more details.
+internally uses `EthereumUseCaseImpl` to retrieve the user's wallet address and fetch the wallet
+balance for the address. Check out `EthereumUseCaseImpl` implementation for more details.
 
-For the bottom navigation, we have created `TabBarView`, please checkout TabBarView.kt file for more
+For the bottom navigation, we have created `TabBarView`, please check TabBarView.kt file for more
 details on UI implementation.
 
 ```kotlin
@@ -934,10 +936,10 @@ fun AccountView(viewModel: MainViewModel) {
 
 ### Chain Interactions
 
-Once we have setup `HomeScreen` and `AccountView`, the next step is to setup chain interactions for
-signing message, signing transaction, reading from contracts, and writing on contracts. For signing
-message and transaction, we'll create a new `TransactionScreen` widget and utilize `signMessage` and
-`sendTransaction` from `MainViewModel` for respective functionality.
+Once we have set up `HomeScreen` and `AccountView`, the next step is to set up chain interactions
+for signing messages, signing transactions, reading from contracts, and writing on contracts. For
+signing messages and transaction, we'll create a new `TransactionScreen` widget and utilize
+`signMessage` and `sendTransaction` from `MainViewModel` for the respective functionality.
 
 ```kotlin
 @OptIn(ExperimentalPagerApi::class)
@@ -1053,7 +1055,7 @@ fun TransactionView(viewModel: MainViewModel) {
 }
 ```
 
-Once we have set up `TransactionScreen`, next is to create `SmartContractsScreen` for fetching
+Once we have set up `TransactionScreen`, the next is to create `SmartContractsScreen` for fetching
 ERC-20 token balance, and revoking approval. We'll utilize the `getTokenBalance` and
 `revokeApproval` methods from `MainViewModel` for the above functionality.
 
