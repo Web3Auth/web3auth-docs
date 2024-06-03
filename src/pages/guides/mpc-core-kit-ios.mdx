@@ -420,15 +420,15 @@ class MainViewModel: ObservableObject {
 
 Once we have setup MpcCoreKit operations, the next step is to setup chain interactions for retrieve
 wallet address, signing message, signing transaction. For Blockchain interactions, Web3Auth provides
-[web3-swift-mpc-provider](https://github.com/tkey/web3-swift-mpc-provider). This package gives
-access to tss signing capabilities to be used with mpc-core-kit-swift. This comes in handy by
-providing you with a standard way of retriving user's address and interacting with blockchain. As of
-now, it only supports Ethereum.
+[MpcProviderSwift](https://github.com/tkey/MpcProviderSwift). This package gives access to tss
+signing capabilities to be used with mpc-core-kit-swift. This comes in handy by providing you with a
+standard way of retriving user's address and interacting with blockchain. As of now, it only
+supports Ethereum.
 
 ### Installation
 
-To install the web3-swift-mpc-provider package, you have two options. You can either manually add
-the package in the Pod file, or you can use the Swift Package Manager - SPM.
+To install the MpcProviderSwift package, you have two options. You can either manually add the
+package in the Pod file, or you can use the Swift Package Manager - SPM.
 
 <Tabs defaultValue = "cocoapods"
   values={[
@@ -438,23 +438,22 @@ the package in the Pod file, or you can use the Swift Package Manager - SPM.
 >
 
 <TabItem value="cocoapods">
-To install the Web3Auth Web3 Swift MPC Provider SDK  using Cocoapods, open the Podfile, and add the Web3 Swift MPC Provider pod:
+To install the Web3Auth MpcProviderSwift SDK  using Cocoapods, open the Podfile, and add the Web3 Swift MPC Provider pod:
 
 ```console
-pod 'Web3 Swift MPC Provider', '~> 1.0.0'
+pod 'MpcProviderSwift', '~> 1.0.0'
 ```
 
-Once added, use pod install command to download the Web3Auth's Web3 Swift MPC Provider SDK
-dependency.
+Once added, use pod install command to download the Web3Auth's MpcProviderSwift SDK dependency.
 
 </TabItem>
 
 <TabItem value="spm">
 In Xcode, with your app project open, navigate to File > Add Package Dependencies. When prompted, add the
-Web3Auth's Web3 Swift MPC Provider repository:
+Web3Auth's MpcProviderSwift repository:
 
 ```console
-https://github.com/tkey/web3-swift-mpc-provider
+https://github.com/tkey/MpcProviderSwift
 ```
 
 From the Dependency Rule dropdown, select "Exact Version" and enter 1.0.0 as the version. When
@@ -464,12 +463,40 @@ background.
 </TabItem>
 </Tabs>
 
+### Set up MpcProviderSwift
+
+After successful installation, the first step would be to create the `MPCEthereumProvider` instance
+to interact with EVM chains. Instantiating `MPCEthereumProvider` is pretty straightforward, it takes
+a class which conforms to `EvmSigner`.
+
+Let's create an extension for the `MpcCoreKit` to conform `EvmSigner` and use it to instantiate
+`MPCEthereumProvider`.
+
+```swift
+extension MpcCoreKit : EvmSigner {
+    // Method use to sign the trasnactions
+    public func sign(message: Data) throws -> Data {
+        let data =  try self.tssSign(message: message)
+        return data
+    }
+
+    // publicKey should be uncompressed public key which can be used
+    // to generate the user's EOA address.
+    public var publicKey: Data {
+        let fullAddress = try! KeyPoint(
+            address: self.getTssPubKey().hexString
+        ).getPublicKey(format: .FullAddress)
+
+       return Data(hex: fullAddress).suffix(64)
+    }
+}
+```
+
 ### Retreive Wallet Address
 
-After successful installation, the first step would be to retrieve the address for the MPC wallet.
-It can be easily achieved using helper extensions from Web3 Swift MPC Provider SDK.
-
-Let's create a new variable inside `MainViewModel` to hold the value of the address upon successful
+Once, we have created the extension to conform `EvmSigner`, we can use `MpcCoreKit` isntance to
+instantiate `MPCEthereumProvider` and retrive the user's EOA address. Let's create new variables
+inside `MainViewModel` to hold the value of the mpcEthereumProvider, and address upon successful
 login. We'll update the private method `login` to retrieve the address and update the variable.
 
 ```swift
@@ -477,12 +504,14 @@ import MPCEthereumProvider
 
 class MainViewModel: ObservableObject {
     var publicAddress: String!
+    private var mpcEthereumProvider: MPCEthereumProvider!
 
     private func login() async throws {
 
         let address = mpcCoreKit.address
+        mpcEthereumProvider = MPCEthereumProvider(evmSigner: mpcCoreKit)
+        publicAddress = mpcEthereumProvider.address.toChecksumAddress();
 
-        publicAddress = address.asString()
         refreshFactorPubs()
         toggleIsLoggedIn()
     }
@@ -492,8 +521,8 @@ class MainViewModel: ObservableObject {
 ### Sign Message
 
 Once we have successfully retrieved the wallet address, let's check out how to sign a message in the
-MPC wallet. For signing the message, we'll use the `signMessage` extension method. Let's create a
-new function, `signMessage` for `MainViewModel` which returns the hex value of the signature upon
+MPC wallet. For signing the message, we'll use the `signMessage` method. Let's create a new
+function, `signMessage` for `MainViewModel` which returns the hex value of the signature upon
 success.
 
 ```swift
@@ -501,7 +530,7 @@ class MainViewModel: ObservableObject {
      func signMessage(onSigned: @escaping (_ signedMessage: String?, _ error: String?) -> ()){
             Task {
                 do {
-                    let signature = try mpcCoreKit.signedMessage(
+                    let signature = try mpcEthereumProvider.signedMessage(
                         data: "0x013"
                     )
                     onSigned(signature.toHexString(), nil)
@@ -607,8 +636,8 @@ struct EthereumClient {
 ```
 
 Once we have `EthereumClient` in place, it's time to implement the `sendTransaction` method for
-`MainViewModel`. For signing the Ethereum transaction, we'll use the `sign` extension method, which
-accepts `EthereumTransaction`. Upon success, we'll return the transaction hash.
+`MainViewModel`. For signing the Ethereum transaction, we'll use the `sign` method, which accepts
+`EthereumTransaction`. Upon success, we'll return the transaction hash.
 
 ```swift
 class MainViewModel: ObservableObject {
@@ -633,7 +662,7 @@ class MainViewModel: ObservableObject {
                 let finalTransaction = EthereumTransaction(
                     from: address,
                     to: address,
-                    value: TorusWeb3Utils.toWei(ether: 0.001),
+                    value: 1000000000000000,
                     data: transaction.data,
                     nonce: nonce,
                     gasPrice: gasPrice,
@@ -641,7 +670,7 @@ class MainViewModel: ObservableObject {
                     chainId: Int(self.ethereumClient.getChainId())
                 )
 
-                let signedTransaction = try mpcCoreKit.sign(
+                let signedTransaction = try mpcEthereumProvider.sign(
                     transaction: finalTransaction
                 )
 
