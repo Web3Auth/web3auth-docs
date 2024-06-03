@@ -310,6 +310,7 @@ export default class EthereumRPC{
   values={[
     { label: "App.tsx", value: "app" },
     { label: "solanaRPC.ts", value: "solana" },
+    { label: "ethRPC-web3.ts", value: "web3" },
   ]}
 >
   <TabItem value="app">
@@ -362,6 +363,33 @@ export default class SolanaRPC {
 
 ````
 </TabItem>
+<TabItem value="web3">
+  ```tsx
+export default class EthereumRPC{
+    private provider: IProvider
+
+    constructor(provider: IProvider) {
+      this.provider = provider
+    }
+
+    // Get user's Ethereum private key
+    async getPrivateKey(): Promise<any> {
+      try {
+        const privateKey = await this.provider.request({
+          method: 'eth_private_key',
+        })
+
+        return privateKey
+      } catch (error) {
+        return error as string
+      }
+    }
+
+}
+
+````
+
+</TabItem>
 </Tabs>
 ## Tezos
 
@@ -370,6 +398,7 @@ export default class SolanaRPC {
   values={[
     { label: "App.tsx", value: "app" },
     { label: "tezosRPC.ts", value: "tezos" },
+    { label: "ethRPC-web3.ts", value: "web3" },
   ]}
 >
   <TabItem value="app">
@@ -380,6 +409,7 @@ export default class SolanaRPC {
     // Get user's Tezos public address
     const tezosRPC = new TezosRPC(privateKey);
     const tezos_address = await tezosRPC.getAccounts();
+
 ````
 
 </TabItem>
@@ -404,6 +434,34 @@ export default class TezosRPC {
 }
 
 ````
+
+</TabItem>
+<TabItem value="web3">
+  ```tsx
+export default class EthereumRPC{
+    private provider: IProvider
+
+    constructor(provider: IProvider) {
+      this.provider = provider
+    }
+
+    // Get user's Ethereum private key
+    async getPrivateKey(): Promise<any> {
+      try {
+        const privateKey = await this.provider.request({
+          method: 'eth_private_key',
+        })
+
+        return privateKey
+      } catch (error) {
+        return error as string
+      }
+    }
+
+}
+
+````
+
 </TabItem>
 </Tabs>
 
@@ -414,6 +472,7 @@ export default class TezosRPC {
   values={[
     { label: "App.tsx", value: "app" },
     { label: "starknexRPC.ts", value: "StarkEx" },
+    { label: "ethRPC-web3.ts", value: "web3" },
   ]}
 >
   <TabItem value="app">
@@ -424,6 +483,7 @@ export default class TezosRPC {
     // Get user's starkNet public address
     const starkNetRPC = new StartkNetRPC(privateKey);
     const stark_address = await starkNetRPC.getAccounts();
+
 ````
 
   </TabItem>
@@ -447,7 +507,35 @@ export default class StartkNetRPC {
 }
 
 ````
+
   </TabItem>
+  <TabItem value="web3">
+  ```tsx
+export default class EthereumRPC{
+    private provider: IProvider
+
+    constructor(provider: IProvider) {
+      this.provider = provider
+    }
+
+    // Get user's Ethereum private key
+    async getPrivateKey(): Promise<any> {
+      try {
+        const privateKey = await this.provider.request({
+          method: 'eth_private_key',
+        })
+
+        return privateKey
+      } catch (error) {
+        return error as string
+      }
+    }
+
+}
+
+````
+
+</TabItem>
 </Tabs>
 ## Polkadot
 <Tabs
@@ -455,6 +543,7 @@ export default class StartkNetRPC {
   values={[
     { label: "App.tsx", value: "app" },
     { label: "polkadotRPC.ts", value: "polkadot" },
+    { label: "ethRPC-web3.ts", value: "web3" },
   ]}
 >
   <TabItem value="app">
@@ -465,7 +554,9 @@ export default class StartkNetRPC {
     // Get user's Polkadot public address
     const polkadotRPC = new PolkadotRPC(privateKey);
     const polkadot_address = await polkadotRPC.getAccounts();
-```
+
+````
+
 </TabItem>
 <TabItem value="polkadot">
   ```tsx
@@ -478,7 +569,7 @@ export default class PolkadotRPC {
       this.privateKey = privateKey;
     }
 
-    // Get user's Polkadot public address
+    // Get user's Polkadot public key
     async getAccounts(): Promise<any> {
         await cryptoWaitReady();
 
@@ -488,11 +579,39 @@ export default class PolkadotRPC {
         const address = keyPair.address;
         return address;
     }
+
 }
 
 ````
 
   </TabItem>
+  <TabItem value="web3">
+  ```tsx
+export default class EthereumRPC{
+    private provider: IProvider
+
+    constructor(provider: IProvider) {
+      this.provider = provider
+    }
+
+    // Get user's Ethereum private key
+    async getPrivateKey(): Promise<any> {
+      try {
+        const privateKey = await this.provider.request({
+          method: 'eth_private_key',
+        })
+
+        return privateKey
+      } catch (error) {
+        return error as string
+      }
+    }
+
+}
+
+````
+
+</TabItem>
 </Tabs>
 
 ### Get all the public wallets
@@ -539,3 +658,8 @@ contact us in our [community](https://web3auth.io/community/).
 ```
 
 ```
+
+```
+
+```
+````
