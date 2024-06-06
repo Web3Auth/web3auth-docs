@@ -26,7 +26,7 @@ import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dash
 import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
 
 This guide will cover the basics of how to integrate Web3Auth with different blockchains at the same
-time. In this demo, you will be able to authenticate with different social logins and different
+time. In this demo, you will be able to authenticate with different social logins and get different
 addresses from each blockchain. Of course, you can interact and sign transactions with any of them.
 
 You will be able to make calls like get the user's `account`, fetch `balance`, `sign transaction`,
@@ -179,36 +179,36 @@ export const openloginAdapterConfig: OpenloginAdapterOptions ={
 // StarkEx and StarkNet
 //@ts-ignore
 import { ec } from "@starkware-industries/starkware-crypto-utils";
-````
+```
 </TabItem>
 <TabItem value="EthereumRPC">
 ```tsx
 import type {IProvider} from '@web3auth/base'
 import Web3 from 'web3'
-````
+```
 </TabItem>
 <TabItem value="SolanaRPC">
 ```tsx
 import { SolanaPrivateKeyProvider, SolanaWallet } from "@web3auth/solana-provider";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
-````
+```
 </TabItem>
 <TabItem value="TezosRPC">
-````tsx
+```tsx
 // Tezos
 //@ts-ignore
 import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
 import { hex2buf } from "@taquito/utils";
 import { TezosToolkit } from "@taquito/taquito";
-````
+```
 </TabItem>
 <TabItem value="PolkadotRPC">
 ```tsx
 // Polkadot
 import { Keyring, ApiPromise, WsProvider } from "@polkadot/api";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
-````
+```
 </TabItem>
 
 </Tabs>
@@ -253,8 +253,8 @@ const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 ### Get Public Addresses from different blockchains
 
 For each blockchain you want to connect to, you need to call the `getAccounts` function. Every RPC
-Class blockchain, expect Ethereum you would need to provide the private key in order to get the
-public address.
+Class blockchain, except Ethereum you would need to provide the private key to get the public
+address.
 
 ## EVM (Ethereum)
 
@@ -581,7 +581,6 @@ export default class PolkadotRPC {
     }
 
 }
-
 ````
 
   </TabItem>
@@ -609,7 +608,7 @@ export default class EthereumRPC{
 
 }
 
-````
+```
 
 </TabItem>
 </Tabs>
@@ -631,7 +630,7 @@ StarkNet and XRPL.
 
 This guide has walked you through the seamless process of creating a multichain connection using
 Web3Auth and the React PnP no-modal SDK. By integrating Web3Auth, developers are empowered to build
-applications that are not only blockchain agnostic but also user-friendly, leveraging social logins
+applications that are not only blockchain-agnostic but also user-friendly, leveraging social logins
 for authentication across multiple blockchains.
 
 The provided examples and code snippets have shown how to initialize Web3Auth, configure adapters,
@@ -652,14 +651,3 @@ contact us in our [community](https://web3auth.io/community/).
 - https://web3auth.io/docs/examples?product=Plug+and+Play&sdk=Plug+and+Play+Web+Modal+SDK
 
 ```
-
-```
-
-```
-
-```
-
-```
-
-```
-````
