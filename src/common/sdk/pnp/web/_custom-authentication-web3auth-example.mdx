@@ -6,8 +6,13 @@ import Tabs from "@theme/Tabs";
   values={[
     { label: "Google", value: "google" },
     { label: "Facebook", value: "facebook" },
-    {label:"Discord", value:"discord"},
-    {label:"Twitch", value:"twitch"},
+    { label: "Discord", value: "discord" },
+    { label: "Twitch", value: "twitch" },
+    { label: "Twitter", value: "twitter" },
+    { label: "LinkedIn", value: "linkedin"},
+    { label: "Github", value: "github"},
+    { label: "Apple", value: "apple"},
+    { label: "Line", value: "line"},
   ]}
 >
 
@@ -18,8 +23,6 @@ import OpenloginAdapter from "@web3auth/openlogin-adapter";
 
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
-    clientId, //Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
-    uxMode: "popup",
     // highlight-start
     loginConfig: {
       // Google login
@@ -45,8 +48,6 @@ import OpenloginAdapter from "@web3auth/openlogin-adapter";
 
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
-    clientId, //Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
-    uxMode: "popup",
     // highlight-start
     loginConfig: {
       // Facebook login
@@ -72,8 +73,6 @@ import OpenloginAdapter from "@web3auth/openlogin-adapter";
 
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
-    clientId, //Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
-    uxMode: "popup",
     // highlight-start
     loginConfig: {
       // Discord login
@@ -99,8 +98,6 @@ import OpenloginAdapter from "@web3auth/openlogin-adapter";
 
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
-    clientId, //Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
-    uxMode: "popup",
     // highlight-start
     loginConfig: {
       // Facebook login
@@ -108,6 +105,156 @@ const openloginAdapter = new OpenloginAdapter({
         verifier: "YOUR_TWITCH_VERIFIER_NAME", // Please create a verifier on the developer dashboard and pass the name here
         typeOfLogin: "twitch", // Pass on the login provider of the verifier you've created
         clientId: "TWITCH_CLIENT_ID_1234567890", //use your app client id you got from twitch
+      },
+    },
+    // highlight-end
+  },
+  privateKeyProvider,
+});
+web3auth.configureAdapter(openloginAdapter);
+```
+
+</TabItem>
+
+<TabItem value="twitter">
+
+```tsx
+import OpenloginAdapter from "@web3auth/openlogin-adapter";
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    // highlight-start
+    loginConfig: {
+      // Twitter login
+      twitter: {
+        verifier: "YOUR_AUTH0_VERIFIER_NAME", // Since twitter login is not supported directly, you can use Auth0 as a verifier
+        typeOfLogin: "twitter",
+        clientId: "YOUR_AUTH0_CLIENT_ID", //use your app client id from Auth0, since twitter login is not supported directly
+        jwtParameters: {
+          domain: "YOUR_AUTH0_DOMAIN",
+          verifierIdField: "YOUR_AUTH0_VERIFIER_ID_FIELD",
+          isVerifierIdCaseSensitive: true, // only if the verifier id is case sensitive
+        },
+      },
+    },
+    // highlight-end
+  },
+  privateKeyProvider,
+});
+web3auth.configureAdapter(openloginAdapter);
+```
+
+</TabItem>
+
+<TabItem value="linkedin">
+
+```tsx
+import OpenloginAdapter from "@web3auth/openlogin-adapter";
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    // highlight-start
+    loginConfig: {
+      // LinkedIn login
+      linkedin: {
+        verifier: "YOUR_AUTH0_VERIFIER_NAME", // Since linkedin login is not supported directly, you can use Auth0 as a verifier
+        typeOfLogin: "linkedin",
+        clientId: "YOUR_AUTH0_CLIENT_ID", //use your app client id from Auth0, since linkedin login is not supported directly
+        jwtParameters: {
+          domain: "YOUR_AUTH0_DOMAIN",
+          verifierIdField: "YOUR_AUTH0_VERIFIER_ID_FIELD",
+          isVerifierIdCaseSensitive: true, // only if the verifier id is case sensitive
+        },
+      },
+    },
+    // highlight-end
+  },
+  privateKeyProvider,
+});
+web3auth.configureAdapter(openloginAdapter);
+```
+
+</TabItem>
+
+<TabItem value="github">
+
+```tsx
+import OpenloginAdapter from "@web3auth/openlogin-adapter";
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    // highlight-start
+    loginConfig: {
+      // Github login
+      github: {
+        verifier: "YOUR_AUTH0_VERIFIER_NAME", // Since github login is not supported directly, you can use Auth0 as a verifier
+        typeOfLogin: "github",
+        clientId: "YOUR_AUTH0_CLIENT_ID", //use your app client id from Auth0, since github login is not supported directly
+        jwtParameters: {
+          domain: "YOUR_AUTH0_DOMAIN",
+          verifierIdField: "YOUR_AUTH0_VERIFIER_ID_FIELD",
+          isVerifierIdCaseSensitive: true, // only if the verifier id is case sensitive
+        },
+      },
+    },
+    // highlight-end
+  },
+  privateKeyProvider,
+});
+web3auth.configureAdapter(openloginAdapter);
+```
+
+</TabItem>
+
+<TabItem value="apple">
+
+```tsx
+import OpenloginAdapter from "@web3auth/openlogin-adapter";
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    // highlight-start
+    loginConfig: {
+      // Apple login
+      apple: {
+        verifier: "YOUR_AUTH0_VERIFIER_NAME", // Since apple login is not supported directly, you can use Auth0 as a verifier
+        typeOfLogin: "apple",
+        clientId: "YOUR_AUTH0_CLIENT_ID", //use your app client id from Auth0, since apple login is not supported directly
+        jwtParameters: {
+          domain: "YOUR_AUTH0_DOMAIN",
+          verifierIdField: "YOUR_AUTH0_VERIFIER_ID_FIELD",
+          isVerifierIdCaseSensitive: true, // only if the verifier id is case sensitive
+        },
+      },
+    },
+    // highlight-end
+  },
+  privateKeyProvider,
+});
+web3auth.configureAdapter(openloginAdapter);
+```
+
+</TabItem>
+
+<TabItem value="line">
+
+```tsx
+import OpenloginAdapter from "@web3auth/openlogin-adapter";
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    // highlight-start
+    loginConfig: {
+      // Line login
+      line: {
+        verifier: "YOUR_AUTH0_VERIFIER_NAME", // Since line login is not supported directly, you can use Auth0 as a verifier
+        typeOfLogin: "line",
+        clientId: "YOUR_AUTH0_CLIENT_ID", //use your app client id from Auth0, since line login is not supported directly
+        jwtParameters: {
+          domain: "YOUR_AUTH0_DOMAIN",
+          verifierIdField: "YOUR_AUTH0_VERIFIER_ID_FIELD",
+          isVerifierIdCaseSensitive: true, // only if the verifier id is case sensitive
+        },
       },
     },
     // highlight-end
