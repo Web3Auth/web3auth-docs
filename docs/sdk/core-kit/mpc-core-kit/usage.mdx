@@ -62,6 +62,7 @@ account, present in the state of the SDK.
   factors of your account. It can be of type Device(`index:2`) or Recovery(`index:3`).
 - [`deleteFactor()`](#delete-factor) - Deletes a Factor from the User's account.
 - [`getCurrentFactorKey()`](#get-current-factor-key) - Returns the current Factor Key of the User's
+- [`getDeviceFactor()`](#get-device-factor) - Returns the user's device factor if available.
 
 :::danger Note
 
@@ -72,18 +73,15 @@ You shouldn't create too many factors, we recommend a **maximum of 10 factors**.
 **[User & Wallet Account Functions:](#user--wallet-account-functions)**
 
 - [`setTssWalletIndex()`](#get-key-details) - Sets the TSS Wallet Index for the User's account.
-- [`getPublicSync()`](#get-public-sync) - Returns the Public Address of the user in a Synchronous
-  call.
+- [`getPubKey()`](#get-sec1-public-key) - Returns the SEC1 Public Address of the user in a
+  Synchronous call.
+- [`getPubKeyEd25519()`](#get-ed25519-public-key) - Returns the Public Address of the user in a
+  Synchronous call.
 - [`getUserInfo()`](#get-user-info) - Returns the User's information received from the ID Token.
 - [`getKeyDetails()`](#get-key-details) - Returns the User's Key Details.
 
 **[Additional Helper Functions:](#additional-helper-functions)**
 
-- [Web Storage](#web-storage-helper-functions)
-  - [`storeWebBrowserFactor()`](#store-web-browser-factor) - Stores a Factor in the Web Local/
-    Session Storage.
-  - [`getWebBrowserFactor()`](#get-web-browser-factor) - Returns the Factor from the Web Local/
-    Session Storage.
 - [Security Questions](#security-question)
   - [`setSecurityQuestion()`](#set-security-question) - Sets the Security Question Factor for the
     User's account.
@@ -298,6 +296,18 @@ Returns the current factor key in usage within the state of the SDK.
 const factorKey = coreKitInstance.getCurrentFactorKey();
 ```
 
+### Get Device Factor
+
+#### `getDeviceFactor(): Promise<string | undefined>`
+
+Returns the user's device factor if available.
+
+#### Usage
+
+```tsx
+const factorKey = await coreKitInstance!.getDeviceFactor();
+```
+
 ## User & Wallet Account Functions
 
 ---
@@ -318,6 +328,8 @@ You can either choose to persist the account index temporarily using the state v
 more permanent storage like `localStorage`. Whenever you add, delete or update a share, you need to
 set the account index again.
 
+Please note, the function is only supported for secp256k1 KeyType.
+
 :::
 
 #### Usage
@@ -326,11 +338,11 @@ set the account index again.
 await coreKitInstance.setTssWalletIndex(index);
 ```
 
-### Get Public Sync
+### Get SEC1 Public Key
 
-#### `getPublicSync()`
+#### `getPubKey()`
 
-This function returns the final public key of the user in a synchronous call.
+This function returns the final secp256k1 public key of the user in a synchronous call.
 
 :::info NOTE
 
@@ -342,7 +354,25 @@ is generated! **Remember that each account index you set will result in a differ
 #### Usage
 
 ```ts
-await coreKitInstance.getPublicSync();
+const pubKey = coreKitInstance.getPubKey();
+```
+
+### Get ed25519 Public Key
+
+#### `getPubKeyEd25519()`
+
+This function returns the final ed25519 public key of the user in a synchronous call.
+
+:::info NOTE
+
+When you use the `setTssWalletIndex()` function is only supported for secp256k1 key type.
+
+:::
+
+#### Usage
+
+```ts
+const pubKey = coreKitInstance.getPubKeyEd25519();
 ```
 
 ### Get User Info
@@ -414,51 +444,6 @@ const keyDetails = coreKitInstance?.getKeyDetails();
 ## Additional Helper Functions
 
 ---
-
-## Web Storage Helper Functions
-
-### Store Web Browser Factor
-
-#### `storeWebBrowserFactor(factorKey: BN, mpcCoreKit: ICoreKit, storageKey: "local" | "session" = "local"): Promise<void>`
-
-Helps you store a web browser factor in the local/ session storage.
-
-#### Usage
-
-```tsx
-import bowser from "bowser";
-import { storeWebBrowserFactor } from "@web3auth/mpc-core-kit";
-
-const browserInfo = bowser.parse(navigator.userAgent);
-const browserName = `${browserInfo.browser.name}`;
-const browserData = {
-  browserName,
-  browserVersion: browserInfo.browser.version,
-  deviceName: browserInfo.os.name,
-};
-const deviceFactorKey = new BN(
-  await coreKitInstance.createFactor({
-    shareType: TssShareType.DEVICE,
-    additionalMetadata: browserData,
-  }),
-  "hex",
-);
-storeWebBrowserFactor(deviceFactorKey, coreKitInstance);
-```
-
-### Get Web Browser Factor
-
-#### `getWebBrowserFactor(mpcCoreKit: ICoreKit, storageKey: "local" | "session" = "local")`
-
-Get the web browser factor from the local/ session storage.
-
-#### Usage
-
-```tsx
-import { getWebBrowserFactor } from "@web3auth/mpc-core-kit";
-
-const factorKey = await getWebBrowserFactor(coreKitInstance!);
-```
 
 ## Security Question
 
