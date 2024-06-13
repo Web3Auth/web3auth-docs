@@ -7,6 +7,9 @@ description: "Installing Web3Auth PnP Unity SDK | Documentation - Web3Auth"
 
 import deepLinkGenerator from "@site/static/guides/sdk/unity/deepLinkGenerator.png";
 import web3uthConfigUnity from "@site/static/images/web3auth-unity.jpg";
+import unityManifest from "@site/static/images/unityManifest.jpg";
+import unityiOS from "@site/static/images/unity-iOS.jpg";
+import unityiOSapprove from "@site/static/images/unityApproveSigner.jpg";
 
 ## Download the Unity Package
 
@@ -86,4 +89,71 @@ give you a reference on how your app's `redirect_url` should look like.
 
 #### Android
 
-- You can create an android manifest in unity
+- Create an Android manifest in Unity by navigating to Edit > Project Settings > Player > Publishing
+  Settings and clik over the "Custom Main Manifest" checkbox.
+
+  <img
+    src={unityManifest}
+    style={{ alignSelf: "center", maxWidth: "100%" }}
+    alt="Unity Add manifest"
+  />
+
+This is our AndroidManifest.xml file for our examples:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.unity3d.player"
+    xmlns:tools="http://schemas.android.com/tools">
+    <application>
+        <activity android:name="com.unity3d.player.UnityPlayerActivity"
+                  android:theme="@style/UnityThemeSelector">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="torusapp" android:host="com.torus.Web3AuthUnity"
+                    android:pathPrefix="/auth"
+                    android:pathPattern="/*" />
+
+            </intent-filter>
+            <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
+        </activity>
+    </application>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <queries>
+        <intent>
+            <action android:name=
+                "android.support.customtabs.action.CustomTabsService" />
+        </intent>
+    </queries>
+</manifest>
+```
+
+#### iOS
+
+Once you build the unity project for iOS. You would need to open with the xCode and you would see
+and error informing that you have to choose a user certificate to sign the app. When you click on
+the error you will have to choose it with the configuration that you see in the image.
+
+<img
+  src={unityiOS}
+  style={{ alignSelf: "center", maxWidth: "100%" }}
+  alt="iOS Unity Team selection"
+/>
+
+After running the app, when testing on your iPhone/iPad, you need to approve the signer certificate
+on your device to run the apps. For this purpose on your device, go to
+`General > VPN & Device Manager > Developer App`.
+
+<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+  <img
+    src={unityiOSapprove}
+    style={{ width: window.innerWidth > window.innerHeight ? "40%" : "80%" }}
+    alt="iOS Unity Approve certificate"
+  />
+</div>
