@@ -9,28 +9,21 @@ import CustomAuthenticationWeb3AuthExample from "@site/src/common/sdk/pnp/web/_c
 import LoginConfig from "@site/src/common/sdk/pnp/web/_login-config.mdx";
 import GrowthPlanNote from "@site/src/common/docs/_growth_plan_note.mdx";
 
-Custom Authentication is a way to authenticate users with your own custom authentication service.
-For example, while authenticating with Google, you have the ability to use your own Google Client ID
-and Dashboard to authenticate users directly.
+[Custom Authentication](/features/custom-authentication) is a way to authenticate users with your
+custom authentication service. For example, while authenticating with Google, you can use your own
+Google Client ID to authenticate users directly.
+
+To enable this, you need to [Create a Verifier](/auth-provider-setup/verifiers) from the **Custom
+Authentication** tab of your project from the
+[Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired configuration.
 
 <GrowthPlanNote />
 
 :::warning
 
-For a Custom JWT based authentication services you need to use the
-[`Web3Auth Plug and Play No Modal SDK`](/sdk/pnp/web/no-modal), since the Web3Auth Modal will only
+For Custom JWT-based authentication services, you need to use the
+[`Web3Auth Plug and Play NoModal SDK`](/sdk/pnp/web/no-modal), since the Web3Auth Modal will only
 help you configure the social logins present within the Modal UI.
-
-:::
-
-For enabling this, you need [Create a Verifier](/auth-provider-setup/verifiers) from the **Custom
-Auth** section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your
-desired configuration.
-
-:::tip
-
-If you want to know more about setting up a verifier and how to use it, please refer to the
-[Custom Authentication Documentation](/features/custom-authentication).
 
 :::
 
@@ -56,23 +49,13 @@ among other things.
 :::tip
 
 Checkout the [`openlogin-adapter`](/sdk/pnp/web/adapters/openlogin) SDK Reference for more details
-on different configurations you can pass for customisations.
+on different configurations, you can pass for customizations.
 
 :::
 
-Further, the `loginConfig` parameter of the `adapterSettings` configuration helps us to customise
+Further, the `loginConfig` parameter of the `adapterSettings` configuration helps us to customize
 the social logins. Since we're using the `@web3auth/modal`, ie. the Plug and Play Modal SDK, the
-`loginConfig` should be corresponding to the socials mentioned in the modal. This means you can use
-your own authentication services for the following services:
-
-`google` | `facebook` | `discord` | `twitch` |
-
-:::info
-
-You can customise all or few of the social logins and other will remain default. You can also remove
-the ones you don't want using the whitelabeling option.
-
-:::
+`loginConfig` should correspond to the socials mentioned in the modal.
 
 #### `loginConfig`
 
@@ -83,8 +66,44 @@ properties:
 
 ## Example
 
-Since we're using the `@web3auth/modal` ie. the Plug and Play Modal SDK, the `loginConfig` should be
-corresponding to the socials mentioned in the modal. Here, we're customising Google and Facebook to
-be custom verified, rest all other socials will be default.
+Since we're using the `@web3auth/modal` ie. the Plug and Play Modal SDK, the `loginConfig` should
+correspond to the socials mentioned in the modal.
+
+### Single Verifier
 
 <CustomAuthenticationWeb3AuthExample />
+
+### Aggregate Verifier
+
+```tsx
+import OpenloginAdapter from "@web3auth/openlogin-adapter";
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    // highlight-start
+    loginConfig: {
+      // Google login
+      google: {
+        verifier: "YOUR_AGGREGATE_VERIFIER_NAME", // Please create an aggregate verifier on the developer dashboard and pass the name here
+        verifierSubIdentifier: "YOUR_SUB_VERIFIER_NAME", // Pass in the sub verifier name here
+        typeOfLogin: "google", // Pass on the login provider of the verifier you've created
+        clientId: "YOUR_GOOGLE_CLIENT_ID", // based on sub verifier, pass in the clientId of the login provider here - Please note this differs from the Web3Auth ClientID.
+      },
+      github: {
+        verifier: "YOUR_AGGREGATE_VERIFIER_NAME", // Please create an aggregate verifier on the developer dashboard and pass the name here
+        verifierSubIdentifier: "YOUR_SUB_VERIFIER_NAME", // Pass in the sub verifier name here
+        typeOfLogin: "github", // Pass on the login provider of the verifier you've created
+        clientId: "YOUR_GITHUB_CLIENT_ID", // based on sub verifier, pass in the clientId of the login provider here - Please note this differs from the Web3Auth ClientID.
+        jwtParameters: {
+          domain: "YOUR_AUTH0_DOMAIN",
+          verifierIdField: "YOUR_AUTH0_VERIFIER_ID_FIELD",
+          isVerifierIdCaseSensitive: true, // only if the verifier id is case sensitive
+        },
+      },
+    },
+    // highlight-end
+  },
+  privateKeyProvider,
+});
+web3auth.configureAdapter(openloginAdapter);
+```

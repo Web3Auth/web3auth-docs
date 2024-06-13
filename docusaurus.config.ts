@@ -466,7 +466,7 @@ const config: Config = {
           },
           {
             from: "/auth-provider-setup/federated-identity-providers",
-            to: "/auth-provider-setup/authentication-service-providers",
+            to: "/auth-provider-setup/authentication-service-providers/auth0-service-provider",
           },
           {
             from: "/auth-provider-setup/byo-jwt-providers",
