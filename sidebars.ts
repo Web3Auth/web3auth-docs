@@ -759,6 +759,11 @@ const sidebars: SidebarsConfig = {
           label: "Single Factor Auth iOS SDK",
           items: ["migration-guides/sfa-ios-v2-to-v4"],
         },
+        {
+          type: "category",
+          label: "MPC CoreKit Web SDK",
+          items: ["migration-guides/mpc-core-kit-web-v2-to-v3"],
+        },
       ],
     },
     // "going-live",
