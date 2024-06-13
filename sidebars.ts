@@ -114,6 +114,7 @@ const sidebars: SidebarsConfig = {
     "features/mfa",
     "features/mpc",
     "features/mobile",
+    "features/nft-services",
     // "features/passkeys",
     "features/server-side-verification",
     "features/session-management",
