@@ -797,7 +797,7 @@ const sidebars: SidebarsConfig = {
             {
               type: "link",
               label: "Playground",
-              href: "https://w3a.link/pnp-playground",
+              href: "https://pnp-modal-playground.vercel.app",
             },
             {
               type: "link",
@@ -832,6 +832,11 @@ const sidebars: SidebarsConfig = {
                 "sdk/pnp/web/no-modal/initiate-topup",
                 "sdk/pnp/web/no-modal/show-wallet-connect",
               ],
+            },
+            {
+              type: "link",
+              label: "Playground",
+              href: "https://pnp-no-modal-playground.vercel.app",
             },
             {
               type: "link",
