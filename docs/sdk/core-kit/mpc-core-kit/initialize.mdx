@@ -307,50 +307,6 @@ const coreKitInstance = new Web3AuthMPCCoreKit({
 });
 ```
 
-## Instantiating Provider
-
-As a next step, you need to set up the particular signing provider from Web3Auth and pass the
-`coreKitInstance` into it. This provider is used to make calls to the selected blockchain.
-Currently, Web3Auth exposes the following signing provider packages to be integrated within the SDK:
-
-- [EthereumSigningProvider](/sdk/providers/evm-mpc)
-
-#### Adding a Custom Chain Configuration
-
-#### `chainConfig`
-
-<ChainConfig />
-
-<Tabs
-  defaultValue="eth"
-  values={[
-    { label: "ETH", value: "eth" },
-  ]}
->
-
-<TabItem value="eth">
-
-```javascript title="Usage"
-import { EthereumSigningProvider } from "@web3auth/ethereum-mpc-provider";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
-
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xaa36a7", // Please use 0x1 for Mainnet
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-  displayName: "Ethereum Sepolia Testnet",
-  blockExplorerUrl: "https://sepolia.etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-};
-
-const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
-evmProvider.setupProvider(coreKitInstance);
-```
-
-</TabItem>
-</Tabs>
-
 ## Initializing Web3Auth
 
 #### `init(params?: InitParams)`

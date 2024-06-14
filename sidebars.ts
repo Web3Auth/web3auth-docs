@@ -1220,6 +1220,7 @@ const sidebars: SidebarsConfig = {
         "sdk/core-kit/mpc-core-kit/initialize",
         "sdk/core-kit/mpc-core-kit/authentication",
         "sdk/core-kit/mpc-core-kit/usage",
+        "sdk/core-kit/mpc-core-kit/signing",
         {
           type: "link",
           label: "Support Forum",
