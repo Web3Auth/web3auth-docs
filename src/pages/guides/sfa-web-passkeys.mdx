@@ -1,266 +1,260 @@
 ---
 title: Using Passkeys with Web3Auth SFA Web SDK
-image: "content-hub/guides/banners/auth0.png"
-description: Learn how to use Web3Auth Single Factor Auth Web SDK with Passkeys in your React Application.
+image: "guides/banners/passkeys-sfa.png"
+description:
+  Web3Auth Single Factor Authentication (SFA) Web SDK with Passkeys enables secure and easy
+  authentication using passkeys. The process involves setting up the Web3Auth SFA SDK, initializing
+  the Passkeys SFA Plugin, and managing passkey registration and login.
 type: guide
-tags:
-  [
-    web,
-    "@web3auth/single-factor-auth",
-    passkeys,
-    custom authentication,
-    react,
-    ethereum,
-    sms,
-    email,
-    sms passwordless,
-    email passwordless,
-    passwordless,
-    sms otp,
-  ]
-date: 30 January, 2024
+tags: [web, passkeys, SFA]
+date: June 25, 2024
 author: Web3Auth Team
-order: 3
-communityPortalTopicId: 22
 ---
 
-import Auth0Prerequisites from "@site/src/common/guides/_auth0-prerequisites.mdx";
-import Auth0Setup from "@site/src/common/guides/_auth0-setup.mdx";
-import Auth0VerifierSetup from "@site/src/common/guides/_auth0-verifier-setup.mdx";
-import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
-import ParseIdtokenGetSub from "@site/src/common/guides/_parse-idtoken-get-sub.mdx";
-import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
-import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
-import SfaWebAuth0Intialization from "@site/src/common/guides/_sfa-web-auth0-initialization.mdx";
-import UserInfoFromIdtoken from "@site/src/common/guides/_user-info-from-idtoken.mdx";
-import SFAWebInstantiation from "@site/src/common/guides/_w3a-sfa-web-instantiation-auth0.mdx";
-import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
-import SFAInfra from "@site/static/images/sfa-infra.png";
 import SEO from "@site/src/components/SEO";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
 
 <SEO
-  title="Using Auth0 with Web3Auth SFA Web"
-  description="Learn how to use Web3Auth Single Factor Auth with Auth0 in your React Application."
-  image="https://web3auth.io/docs/content-hub/guides/banners/auth0.png"
-  slug="/content-hub/guides/sfa-web-auth0"
+  title="Using Passkeys with Web3Auth SFA SDK"
+  description="Learn how to use Web3Auth Single Factor Auth with Passkeys in your web application."
+  image="https://web3auth.io/docs/guides/banners/passkeys-sfa.png"
+  slug="/guides/passkeys-sfa"
 />
 
-This guide will cover the basics of how to set up Passkeys with let's say, Web3Auth SFA Web SDK, for the integration and provide you with the links on
-how to develop a basic web application on the blockchain of your choice.
+Passkeys are an innovative feature that offers a convenient, secure, and passwordless authentication
+method, enhancing the user experience while maintaining robust security. Leveraging the WebAuthn
+standard, passkeys eliminate the need for traditional passwords, making the authentication process
+seamless and user-friendly. Web3Auth supports passkeys through its Single Factor Auth (SFA) Web SDK,
+providing a smooth integration for developers.
 
-## Quick Start
+## Key Benefits of Passkeys
+
+### Convenience
+
+- **Passwordless Login:** Users can authenticate without the need for passwords, reducing friction
+  and improving the overall user experience.
+- **Biometric Authentication:** Passkeys support biometric methods such as fingerprint or facial
+  recognition, offering a quick and secure way to log in.
+
+### Security
+
+- **Phishing Resistant:** Passkeys are inherently phishing-resistant, as they use public-key
+  cryptography and are bound to the origin they were created for, making it difficult for attackers
+  to intercept or misuse them.
+- **Strong Authentication:** Passkeys provide a strong form of authentication, leveraging the
+  security features of the user's device.
+
+## How Passkeys Work
+
+### Introduction
+
+Passkeys are a new way of authenticating applications and websites. Instead of having to remember a
+password, a third-party service provider (e.g., Google or Apple) generates and stores a
+cryptographic key pair that is bound to a website domain. Since you have access to the service
+provider, you have access to the keys, which you can then use to log in.
+
+### The Hype: Why It’s a Game-Changer
+
+- **Easy to Use:** Creating and using passkeys is as simple as consenting to save and use them. No
+  need to create a password.
+- **Enhanced Security:** Access to passkeys is gated with OS-level biometrics like faceID, touchID,
+  and lock screen patterns. Passkeys are bound to the web domain that creates them, preventing
+  phishing attacks. They rely on public key cryptography, where private keys are never disclosed to
+  websites or apps, making them harder to steal. Only public keys are sent, and to authenticate,
+  passkeys sign messages with their private keys, providing signatures as proofs.
+- **Automatically Unique Per-Service:** By design, passkeys are unique per-service, eliminating the
+  chance of reuse.
+
+### Phases in a Passkeys Flow
+
+- **Attestation:** The registration phase when first signing up for a service, generating a passkey
+  instead of an email and password.
+- **Assertion:** The login phase after registration, using the generated passkey to authenticate.
+
+### Types of Passkey Credentials
+
+- **Discoverable Credentials:** Self-contained key pairs stored on the end-user's device, easily
+  synced and used across devices independently.
+- **Non-Discoverable Credentials:** Partially stored on the end-user's device, requiring the
+  relaying party to store the generated credential ID.
+
+### OS and Device Support
+
+Almost every modern browser supports passkeys, except Firefox. Support varies by operating system.
+
+## Web3Auth SFA SDK Compatibility
+
+:::info Web3Auth SFA SDK Compatibility
+
+For now, passkeys support is available for the Web3Auth Single Factor Auth (SFA) Web SDK through the
+Passkeys SFA Plugin package. Support for additional SDKs is coming soon.
+
+:::
+
+## Installation
+
+To get started, install the Passkeys SFA Plugin using npm:
+
+```bash npm2yarn
+npm install --save @web3auth/passkeys-sfa-plugin
+```
+
+## Initialization
+
+Import the `PasskeysPlugin` class from `@web3auth/passkeys-sfa-plugin` and initialize it with the
+required options. After creating your Web3Auth SFA instance, you need to initialize the Passkeys
+Plugin and add it to the class for further usage.
+
+```javascript
+import { PasskeysPlugin } from "@web3auth/passkeys-sfa-plugin";
+
+const passkeysPlugin = new PasskeysPlugin({
+  rpID: "your.app.xyz",
+  rpName: "Your App",
+});
+
+web3auth.addPlugin(passkeysPlugin);
+```
+
+## Using Passkeys SFA Plugin
+
+### Registering a New Passkey
+
+Registers a new passkey for the user. The passkey will be saved with the specified username.
+
+```javascript
+await passkeysPlugin.registerPasskey({
+  username: "user@example.com",
+});
+```
+
+### Logging in with an Existing Passkey
+
+Logs in the user with an existing passkey.
+
+```javascript
+await passkeysPlugin.loginWithPasskey({
+  authenticatorId: "authenticator_id",
+});
+```
+
+### Listing All Registered Passkeys
+
+Lists all passkeys registered for the user.
+
+```javascript
+const passkeys = await passkeysPlugin.listAllPasskeys();
+console.log(passkeys);
+```
+
+## Example Implementation with Web3Auth SFA SDK
+
+To illustrate how to use the Passkeys SFA Plugin with Web3Auth SFA Web SDK, here is a complete
+example.
+
+### Setup
+
+First, ensure you have installed the necessary packages:
 
 ```bash
-npx degit Web3Auth/web3auth-core-kit-examples/single-factor-auth-web/sfa-web-passkeys-example sfa-web-passkeys-demo && cd sfa-web-passkeys-demo && npm install && npm run start
-```
-
-## How it works?
-
-Single Factor Auth SDKs allow for the integration of a single factor of authentication, such as social login, into your dApp. They are designed to be
-simple to use and can be integrated into your dApp with minimal effort, allowing you to directly use the Web3Auth Network for Wallet Management. This
-is one of the most common use cases of Web3Auth, however, it is semi-custodial in nature, since the key is custodial to the Auth Provider and the
-Web3Auth Network.
-
-<img style={{ display: "block", maxHeight: "600px", margin: "20px auto" }} src={SFAInfra} alt="Single Factor Auth SDK Infrastructure" />
-
-- The first step for the application is to get the user authenticated by a login provider(here, Google) and get the user's `idToken`.
-- Once the social login is successful, depending on whether the user has enabled **Multi-Factor Authentication(MFA)** or not, the key is generated.
-- If the user has not enabled MFA, we use the `@web3auth/single-factor-auth` SDK to retrieve the private key shares from the Web3Auth auth network
-  nodes and reconstruct the private key.
-- If the user has enabled MFA, an error message is shown that the user has enabled MFA and in this case, they should be using the Web3Auth Plug and
-  Play Web SDKs.
-
-## Prerequisites
-
-<Web3AuthPrerequisites />
-
-## Setup your Web3Auth Dashboard
-
-<SetupWeb3AuthDashboard />
-
-## Using the Web3Auth SFA Web SDK
-
-To use the Web3Auth SFA Web SDK, you need to add `@web3auth/single-factor-auth` to your project.
-
-<SetupBaseProject />
-
-### Installation
-
-For this project, you need to add the following Web3Auth dependencies to your package.json
-
-```shell
-npm install --save @web3auth/single-factor-auth @web3auth/ethereum-provider @web3auth/base web3 @simplewebauthn/browser @toruslabs/http-helpers
-```
-
-#### Understanding the Dependencies
-
-##### `@web3auth/base`
-
-Since we're using typescript, we need the **`@web3auth/base`** package to provide the types of the different variables we'll be using throughout the
-app-building process. This reduces errors to a very large extent.
-
-```shell
-npm install --save @web3auth/base
-```
-
-##### `@web3auth/ethereum-provider`
-
-This package is used to provide the Ethereum provider to the Web3Auth SDK. This is required to interact with the blockchain.
-
-```shell
-npm install --save @web3auth/ethereum-provider
-```
-
-##### `@web3auth/single-factor-auth`
-
-This package is the core package for Single Factor Auth Web SDK.
-
-```shell
-npm install --save @web3auth/single-factor-auth
-```
-
-##### `@simplewebauthn/browser`
-
-This package is required for passkey registration and login.
-
-```shell
-npm install --save @simplewebauthn/browser
-```
-
-##### `web3`
-
-This package is used to interact with the blockchain.
-
-```shell
-npm install --save web3
-```
-
-##### `@toruslabs/http-helpers`
-
-This package is used to make HTTP requests, both GET or POST.
-
-```shell
-npm install --save @toruslabs/http-helpers
-```
-
-### Triggering registration for Passkeys
-
-Once we get the email from the user, it's time to trigger the registration process for the user. This is done by calling the `startRegistration`
-function from the `@simplewebauthn/browser` package.
-
-```tsx
-import { browserSupportsWebAuthn, startAuthentication, startRegistration } from "@simplewebauthn/browser";
-import { get, post } from "@toruslabs/http-helpers";
-
-const [email, setEmail] = useState<string>("");
-const isWebAuthnSupported = browserSupportsWebAuthn();
-const [isWebAuthnLoginEnabled, setIsWebAuthnLoginEnabled] = useState(false);
-const [isWebAuthnRegistrationEnabled, setIsWebAuthnRegistrationEnabled] = useState(false);
-
-const triggerPassKeyRegistration = async () => {
-  try {
-    const url = new URL("https://wc-admin.web3auth.com/api/v2/webauthn-generate-registration-options");
-    url.searchParams.append("email", email);
-    const resp = await get(url.href);
-    const attestationResponse = await startRegistration(resp as any);
-    const url2 = new URL("https://wc-admin.web3auth.com/api/v2/webauthn-verify-registration");
-    const resp2 = await post<{ verified: boolean }>(url2.href, { attestationResponse, email });
-    if (resp2.verified) {
-      setIsWebAuthnRegistrationEnabled(false);
-      setIsWebAuthnLoginEnabled(true);
-      console.log("Registration successful, Proceed to Login");
-    } else {
-      throw new Error("Registration failed");
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
+npm install --save @web3auth/single-factor-auth @web3auth/passkeys-sfa-plugin
 ```
 
 ### Initialization
 
-Once installed, your Web3Auth application needs to be initialized. Initialization is a multi-step process where we add all the config details for
-Web3Auth SDK:
+Initialize the Web3Auth instance along with the Passkeys Plugin:
 
-<SFAWebInstantiation />
-
-#### Initializing the Web3Auth SDK
-
-```tsx
-web3authSfa.init(privateKeyProvider);
-```
-
-### Authentication
-
-#### Getting the `idToken` from Passkeys server upon login
-
-```tsx
-import { browserSupportsWebAuthn, startAuthentication, startRegistration } from "@simplewebauthn/browser";
+```javascript
 import { Web3Auth } from "@web3auth/single-factor-auth";
-import { get, post } from "@toruslabs/http-helpers";
+import { PasskeysPlugin } from "@web3auth/passkeys-sfa-plugin";
 
-const [web3Auth, setWeb3Auth] = useState<Web3Auth | null>(null);
-const [provider, setProvider] = useState<any | null>(null);
-const [connected, setConnected] = useState<boolean>(false);
+const web3auth = new Web3Auth({
+  clientId: "YOUR_CLIENT_ID",
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1",
+    rpcTarget: "https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID",
+  },
+});
 
-const login = async () => {
-  if (!web3Auth) {
-    uiConsole("web3auth not initialized yet");
-    return;
-  }
+const passkeysPlugin = new PasskeysPlugin({
+  rpID: "your.app.xyz",
+  rpName: "Your App",
+});
 
-  if (isWebAuthnLoginEnabled) {
-    const idToken = await triggerPassKeyLogin();
-    await web3Auth.connect({
-      verifier,
-      idToken: idToken!,
-      verifierId: email!,
-    });
-    if (web3Auth.status === "connected") {
-      setConnected(true);
-      setProvider(web3Auth.provider);
-    }
-  } else {
-    uiConsole("Please register first");
-  }
-};
+web3auth.addPlugin(passkeysPlugin);
 
-const triggerPassKeyLogin = async () => {
+await web3auth.init();
+```
+
+### Register a Passkey
+
+Use the following function to register a new passkey for a user:
+
+```javascript
+async function registerPasskey(username) {
   try {
-    const url = new URL("https://wc-admin.web3auth.com/api/v2/webauthn-generate-authentication-options");
-    url.searchParams.append("email", email);
-    const resp = await get(url.href);
-    const attestationResponse = await startAuthentication(resp as any);
-    const url2 = new URL("https://wc-admin.web3auth.com/api/v2/webauthn-verify-authentication");
-    const resp2 = await post<{ verified: boolean; id_token: string }>(url2.href, { attestationResponse, email });
-    if (resp2.verified) {
-      return resp2.id_token;
-    }
-    throw new Error("Login failed");
+    await passkeysPlugin.registerPasskey({
+      username: username,
+    });
+    console.log("Passkey registered successfully");
   } catch (error) {
-    console.error(error);
+    console.error("Error registering passkey:", error);
   }
-};
+}
 ```
 
-### Logout
+### Login with a Passkey
 
-Logging out your user is as simple as calling the `logout` function on the Web3Auth SDK.
+Use the following function to log in a user with an existing passkey:
 
-```tsx
-await web3authSfa.logout();
+```javascript
+async function loginWithPasskey(authenticatorId) {
+  try {
+    const user = await passkeysPlugin.loginWithPasskey({
+      authenticatorId: authenticatorId,
+    });
+    console.log("User logged in successfully:", user);
+  } catch (error) {
+    console.error("Error logging in with passkey:", error);
+  }
+}
 ```
 
-## Interacting with the Blockchain
+### List All Passkeys
 
-<InteractingWithBlockchain />
+Use the following function to list all registered passkeys for a user:
 
-## Example Code
+```javascript
+async function listAllPasskeys() {
+  try {
+    const passkeys = await passkeysPlugin.listAllPasskeys();
+    console.log("Registered passkeys:", passkeys);
+  } catch (error) {
+    console.error("Error listing passkeys:", error);
+  }
+}
+```
 
-The code for the example can be found
-[here](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/sfa-web-auth0-example).
+## Caveats of Using Passkeys
 
-## Questions?
+- **Device and Browser Limitations:** Passkeys aren't supported on every device. Implementations may
+  vary between native apps and Webview environments. Ensure to provide fallbacks for unsupported
+  devices and browsers.
 
-Ask us on [Web3Auth Community Portal](https://web3auth.io/community/c/help-core-kit/core-kit-sfa-web/22).
+- **Domain Restrictions:** Passkeys are currently restricted to the domain they were set up on.
+  While this enhances security, it also limits their usability across multiple domains.
+
+- **Passkeys Storage Risks:** Passkeys are often linked to Apple or Google accounts and are synced
+  across devices. If these accounts are compromised, users could lose access to their
+  passkey-secured accounts.
+
+- **Providing Fallback Options:** It's crucial to provide options like email OTP, SMS OTP, or social
+  logins as backups. These are necessary for users on devices or browsers that don't support
+  passkeys, or if the passkey flow is canceled.
+
+## Learn More
+
+For detailed documentation and implementation guides, please refer to the
+[Passkeys SFA Plugin Documentation](/docs/sdk/passkeys-sfa/passkeys-sfa.mdx).
