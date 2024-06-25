@@ -117,9 +117,31 @@ const { address, output } = payments.p2tr({
 ```
 
 The code above uses the `privateKey` to create a `keyPair` using the `ECPair` class from the
-`bitcoinjs-lib` library. The `keyPair` is then used to derive the `xOnlyPubKey` and
+`bitcoinjs-lib` library. The `keyPair` is then used to derive the `xOnlyPubKey`, and
 `tweakedChildNode` using the `tweak` method. The `address` and `output` are then generated using the
 `payments.p2tr` method.
+
+**Key Points**:
+
+- **`keyPair`**: This is the Bitcoin key pair derived from the provided private key from Web3Auth
+  using the `ECPair` class. The key pair consists of the private key and the public key. The private
+  key is used to sign transactions, while the public key is used to generate the Bitcoin address.
+
+- **`xOnlyPubKey`**: This represents the x-coordinate of the public key, excluding the prefix byte.
+  Taproot uses Schnorr signatures, which require only the x-coordinate of the public key. This
+  x-only format is more efficient and is a key aspect of the Taproot design.
+
+- **`tweakedChildNode`**: This is the resulting key after tweaking the original public key. Taproot
+  involves tweaking the public key using a tagged hash, which modifies the public key in a way that
+  remains cryptographically secure but incorporates additional data or functionality.
+
+- **`address`**: This is the Bitcoin Taproot address derived from the provided public key. It is
+  used to receive Bitcoin.
+
+- **`output`**: This is the output script associated with the address. In Bitcoin transactions, an
+  output script (also known as a scriptPubKey) defines the conditions that must be met to spend the
+  funds sent to an address. For Taproot addresses, the output script enforces the spending
+  conditions defined by the Taproot upgrade.
 
 ## Get Balance
 
