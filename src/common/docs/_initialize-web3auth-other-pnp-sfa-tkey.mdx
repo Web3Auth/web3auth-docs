@@ -17,10 +17,10 @@ import TabItem from "@theme/TabItem";
 ```tsx
 import { Web3Auth } from "@web3auth/modal";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
-import { WEB3AUTH_NETWORK } from "@web3auth/base";
+import { WEB3AUTH_NETWORK, CHAIN_NAMESPACES } from "@web3auth/base";
 
 const privateKeyProvider = new CommonPrivateKeyProvider({
-  config: { chainConfig: chainConfig }
+  config: { chainConfig: chainConfig },
 });
 
 const web3auth = new Web3Auth({
@@ -40,10 +40,10 @@ const web3auth = new Web3Auth({
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
-import { WEB3AUTH_NETWORK } from "@web3auth/base";
+import { WEB3AUTH_NETWORK, CHAIN_NAMESPACES } from "@web3auth/base";
 
 const privateKeyProvider = new CommonPrivateKeyProvider({
-  config: {chainConfig},
+  config: { chainConfig },
 });
 
 const web3auth = new Web3AuthNoModal({
@@ -63,10 +63,11 @@ web3auth.configureAdapter(openloginAdapter);
 ```tsx
 import { Web3Auth } from "@web3auth/single-factor-auth";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
+import { WEB3AUTH_NETWORK, CHAIN_NAMESPACES } from "@web3auth/base";
 
 const web3auth = new Web3Auth({
   clientId, // Get your Client ID from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
 });
 
 const privateKeyProvider = new CommonPrivateKeyProvider({
@@ -82,6 +83,7 @@ const privateKeyProvider = new CommonPrivateKeyProvider({
 ```tsx
 import { SfaServiceProvider } from "@tkey/service-provider-sfa";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
 
 // Initialization of private key provider
 const privateKeyProvider = new CommonPrivateKeyProvider({
