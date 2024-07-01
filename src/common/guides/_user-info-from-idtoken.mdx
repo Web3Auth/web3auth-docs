@@ -1,11 +1,12 @@
 ### Get the User Profile
 
 ```tsx
+import { safeatob } from "@toruslabs/openlogin-utils";
+
 const parseToken = (token: any) => {
   try {
-    const base64Url = token.split(".")[1];
-    const base64 = base64Url.replace("-", "+").replace("_", "/");
-    return JSON.parse(window.atob(base64 || ""));
+    const token = token.split(".")[1]; // payload
+    return JSON.parse(safeatob(token));
   } catch (err) {
     console.error(err);
     return null;

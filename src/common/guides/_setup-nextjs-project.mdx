@@ -1,4 +1,5 @@
-If you're looking to create a nextjs application, follow the [get started on Next.js](https://nextjs.org/docs/getting-started).
+If you're looking to create a nextjs application, follow the
+[get started on Next.js](https://nextjs.org/docs/getting-started).
 
 #### Install the JWT library to decode the idToken
 
@@ -48,12 +49,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 Once your API endpoint is ready, you can validate the idToken from frontend with the following code:
 
 ```tsx
+import { safeatob } from "@toruslabs/openlogin-utils";
+
 const user = await web3auth.getUserInfo();
 
 // parse the idToken from the user object
-const base64Url = user?.idToken.split(".")[1];
-const base64 = base64Url.replace("-", "+").replace("_", "/");
-const parsedToken = JSON.parse(window.atob(base64));
+const token = user?.idToken.split(".")[1]; // payload
+const parsedToken = JSON.parse(safeatob(token));
 
 // Validate idToken with server
 const res = await fetch("/api/hello", {

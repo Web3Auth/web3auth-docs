@@ -557,6 +557,7 @@ const sidebars: SidebarsConfig = {
             "connect-blockchain/other/other",
             "connect-blockchain/other/algorand",
             "connect-blockchain/other/aptos",
+            "connect-blockchain/other/bitcoin",
             "connect-blockchain/other/cosmos",
             "connect-blockchain/other/immutablex",
             "connect-blockchain/other/near",
