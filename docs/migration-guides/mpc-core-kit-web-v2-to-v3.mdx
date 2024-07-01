@@ -10,15 +10,16 @@ sidebar_label: v2 to v3
 ## Overview
 
 This migration guide provides steps for upgrading from version v2 to v3 of the Web3Auth MPC CoreKit
-Web SDK. The guide outlines significant changes and enhancements, including the support of ed25519.
+Web SDK. The guide outlines significant changes and enhancements, including the support of
+`ed25519`.
 
 ## Changes in Detail
 
-### ed25519 Support
+### `ed25519` Support
 
-We are happy to announce that with v3, Web3AuthMPCCoreKit will support the ed25519 curve. Starting
+We are happy to announce that with v3, Web3AuthMPCCoreKit will support the `ed25519` curve. Starting
 from v3, developers can use the MPC TSS capabilities with the Blockchain ecosystem which uses the
-ed25519 curve.
+`ed25519` curve.
 
 ```tsx
 // Important to use tss-frost-lib for ed25519 KeyType
@@ -46,10 +47,12 @@ const sig = await this.coreKitInstance.sign(msg);
 ### Breaking change in Web3AuthOptions
 
 In v3, we try to improve the developer experience by removing `chainConfig`, `setupProviderOnInit`,
-`storageKey`, and `asyncStorageKey` parameters. Developers can now use the mandatory `storage`
+`storageKey`, and `asyncStorageKey` parameters. Developers must now use the mandatory `storage`
 parameter for both async storage and local storage.
 
 Along with that, `tssLib` is now a mandatory parameter to define the tss signing library to use.
+This helps us make the integration consistent across web and react native and make the library
+lighter
 
 #### Before (v2):
 
@@ -77,8 +80,8 @@ const coreKitInstance = new Web3AuthMPCCoreKit({
 
 ### `getWebBrowserFactor` method
 
-In v3, the `getWebBrowserFactor` is removed. Developers can now use `getDeviceFactor` to retrieve
-user's device factor if available.
+In v3, the `getWebBrowserFactor` is removed. Developers can now use `getDeviceFactor` the common
+method for web and react-native, to retrieve user's device factor if available.
 
 #### Before (v2):
 
