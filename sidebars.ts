@@ -1050,7 +1050,6 @@ const sidebars: SidebarsConfig = {
             "sdk/pnp/unity/whitelabel",
             "sdk/pnp/unity/custom-authentication",
             "sdk/pnp/unity/mfa",
-            "sdk/pnp/unity/show-wallet-UI",
             "sdk/pnp/unity/dapp-share",
           ],
         },
