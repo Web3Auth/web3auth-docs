@@ -48,241 +48,6 @@ Now that we've discussed the advantages of Web3Auth, let's explore the steps to 
 to Web3Auth. We'll cover most scenarios, but if we miss any, please don't hesitate to reach out to
 us in comments.
 
-### External Wallets
-
-If you are using Privy with external wallets and are looking to integrate with Web3Auth, the
-migration process is quite straightforward. Web3Auth offers external wallet adapters to connect with
-external wallets, along with social login options for added convenience. Along with external
-wallets, Web3Auth also supports application wallets like Torus wallet.
-
-If you are using EVM external wallets previously with Privy, you can simply configure the
-`@web3auth/default-evm-adapter` for your Web3Auth instance.
-[Read more about default-evm-adapter](/docs/sdk/pnp/web/adapters/default-evm-adapter).
-
-```tsx
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-
-// This can be your custom chain as well.
-const chainConfig = {
-  chainId: "0x1",
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/eth.svg",
-};
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-
-const web3AuthOptions: Web3AuthOptions = {
-  "YOUR_WEB3AUTH_CLIENT_ID",
-  chainConfig: { ...chainConfig, chainNamespace: CHAIN_NAMESPACES.EIP155 },
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider: privateKeyProvider,
-};
-
-const web3Auth = new Web3Auth(web3AuthOptions);
-
-// highlight-start
-const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
-
-adapters.forEach((adapter) => {
-  web3auth.configureAdapter(adapter);
-});
-// highlight-end
-```
-
-If you are a fan boy of wagmi-connector, we have got your covered. You can use our
-web3auth-wagmi-connector to initialize a wagmi client that will seamlessly manage the interaction of
-your dApp with
-Web3Auth.[Read more about web3auth-wagmi-connector](/docs/sdk/pnp/web/wagmi-connector).
-
-```tsx
-import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
-import { Web3Auth } from "@web3auth/modal";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, WALLET_ADAPTERS } from "@web3auth/base";
-import { Chain } from "wagmi/chains";
-import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
-
-export default function Web3AuthConnectorInstance(chains: Chain[]) {
-  const chainConfig = {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x" + chains[0].id.toString(16),
-    rpcTarget: chains[0].rpcUrls.default.http[0],
-    displayName: chains[0].name,
-    tickerName: chains[0].nativeCurrency?.name,
-    ticker: chains[0].nativeCurrency?.symbol,
-    blockExplorerUrl: chains[0].blockExplorers?.default.url[0] as string,
-  };
-
-  const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-
-  const web3AuthInstance = new Web3Auth({
-    clientId: "YOUR_WEB3AUTH_CLIENT_ID",
-    chainConfig,
-    privateKeyProvider,
-    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-    enableLogging: true,
-  });
-
-  const modalConfig = {
-    [WALLET_ADAPTERS.OPENLOGIN]: {
-      label: "openlogin",
-      loginMethods: {
-        facebook: {
-          // It will hide the facebook option from the Web3Auth modal.
-          name: "facebook login",
-          showOnModal: false,
-        },
-      },
-      // Setting it to false will hide all social login methods from modal.
-      showOnModal: true,
-    },
-  };
-
-  return Web3AuthConnector({
-    web3AuthInstance,
-    modalConfig,
-  });
-}
-```
-
-The above code snippet is for [Web3Auth Modal SDK](https://web3auth.io/docs/sdk/pnp/web/modal), if
-you are looking [No Modal SDK](https://web3auth.io/docs/sdk/pnp/web/no-modal/), you can
-[checkout wagmi no modal sample](https://github.com/Web3Auth/web3auth-pnp-examples/blob/main/web-no-modal-sdk/wagmi/wagmi-no-modal-example/src/Web3AuthConnectorInstance.tsx).
-
-### AA Wallet
-
-Web3Auth is compatible with all major Account Abstraction (AA) SDKs, including Alchemy, Biconomy,
-Pimlico, ZeroDev, and Safe. To learn more,
-[please check out our AA Demo](https://w3a-aa-gasless-demo.vercel.app/).
-
-If you are using a Privy embedded wallet as a signer for an ERC 4337 (Account Abstraction) wallet,
-you can easily add the Web3Auth embedded wallet as an additional signer. This will enable existing
-users to seamlessly migrate to the Web3Auth embedded wallet. Alternatively, you can prompt users to
-remove the Privy signer if preferred.
-
-<Tabs
-  defaultValue="zerodev"
-  values={[
-    { label: "ZeroDev", value: "zerodev" },
-    { label: "Biconomy", value: "biconomy" },
-    { label: "AccountKit (Alchmey)", value: "accountkit" },
-  ]}
->
-
-<TabItem value="zerodev">
-Considering you have already created the `ECDSAProvider` instance using Privy signer, you can simply use the `changeOwner` method to change the
-Smart Account owner.
-
-Learn more about
-[transfering ownership of Smart account in ZeroDev](https://docs-v4.zerodev.app/use-wallets/change-wallet-owner).
-
-```tsx
-import { providerToSmartAccountSigner } from "permissionless";
-import { EIP1193Provider } from "viem";
-
-const { hash } = await privyEcdsaProvider.changeOwner("WEB3AUTH_EMBEDDED_WALLET_ADDRESS");
-
-// Considering you have setup the Web3Auth instance
-const web3authProvider = web3auth.provider;
-
-if (!web3authProvider) {
-  throw new Error("No provider found");
-}
-
-// Create the smart account signer from the provider and signer address
-const smartAccountSigner = await providerToSmartAccountSigner(web3authProvider as EIP1193Provider);
-
-// Generate the ZeroDev wallet for new signer.
-const web3AuthEcdsaProvider = await signerToEcdsaValidator(publicClient, {
-  signer: smartAccountSigner,
-  entryPoint: ENTRYPOINT_ADDRESS_V07,
-});
-```
-
-</TabItem>
-
-<TabItem value="biconomy">
-Considering you have already created the smart account instance using Privy signer, you can simply use the `transferOwnership` method to change the
-Smart Account owner.
-
-Learn more about
-[transfering ownership of Smart account in Biconomy](https://docs.biconomy.io/tutorials/utils/transferOwnership).
-
-```tsx
-// Considering you have setup the Web3Auth instance
-const provider = new ethers.providers.Web3Provider(web3Auth.provider);
-const web3AuthSigner = await ethersProvider.getSigner();
-const newOwner = web3AuthSigner.getAddress();
-
-const smartAccountAddress = await privySmartAccount.getAccountAddress();
-
-const response = await smartAccount.transferOwnership(newOwner, DEFAULT_ECDSA_OWNERSHIP_MODULE, {
-  paymasterServiceData: { mode: PaymasterMode.SPONSORED },
-});
-
-const receipt = await response.wait();
-
-// Recreate the smart account client with the new owner and specify the address of the smart account
-let smartAccount = await createSmartAccountClient({
-  signer: web3AuthSigner,
-  paymasterUrl,
-  bundlerUrl,
-  accountAddress: smartAccountAddress,
-});
-```
-
-</TabItem>
-
-<TabItem value="accountkit">
-Considering you have already created the `LightAccount` instance using Privy signer, you can simply use the `transferOwnership` method to change the
-Smart Account owner.
-
-Learn more about
-[transfering ownership of Smart account in AccountKit(Alchemy)](https://accountkit.alchemy.com/using-smart-accounts/transfer-ownership/light-account#usage).
-
-```tsx
-import { Web3AuthSigner } from "@alchemy/aa-signers/web3auth";
-
-// Learn more about Web3AuthSigner: https://accountkit.alchemy.com/packages/aa-signers/web3auth/constructor
-const web3AuthSigner = const web3AuthSigner = new Web3AuthSigner({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
-  chainConfig: {
-    chainNamespace: "eip155",
-  },
-});
-
-const newOwner = web3AuthSigner.getAddress();
-
-const accountAddress = privyLightAccountClient.getAddress();
-
-const hash = lightAccountClient.transferOwnership({
-  newOwner,
-  waitForTxn: true,
-});
-
-// After transaction is mined on the network,
-// create a new light account client for the transferred Light Account
-const transferredClient = await createLightAccountClient({
-  transport: custom(privyLightAccountClient),
-  chain: privyLightAccountClient.chain,
-  signer: web3AuthSigner,
-  // NOTE: You MUST specify the original smart account address to connect using the new owner/signer
-  accountAddress,
-  // NOTE: If the version of the light account is not v1.1.0, it must be specified here
-  version: "v2.0.0",
-});
-```
-
-</TabItem>
-</Tabs>
-
-If we have missed any AA provider, please don't hesitate to reach out to us in comments.
-
 ### Embedded Wallet
 
 If you are using Privy embedded wallet, there are couple of options which can be preferred for the
@@ -299,10 +64,11 @@ For existing users with non-empty wallets, you have two options:
 ##### Migration tool
 
 You can create a migration tool to transfer funds to the newly generated Web3Auth embedded wallet.
-To facilitate the fund transfer using the migration tool, you can utilize our Wallet Pregeneration
-feature to determine the user's wallet address without integrating our SDKs. By leveraging wallet
-pregeneration, you can handle the migration in the backend seamlessly. Afterward, you can use the
-PnP/ SFA SDK to log users in through Web3Auth.
+To facilitate the fund transfer using the migration tool, you can utilize our
+[Wallet Pregeneration feature](/docs/features/wallet-pregeneration) to determine the user's wallet
+address without integrating our SDKs. By leveraging wallet pregeneration, you can handle the
+migration in the backend seamlessly. Afterward, you can use the PnP/ SFA SDK to log users in through
+Web3Auth.
 
 Let's see how you can use the Wallet Pregeneration API.
 
@@ -426,6 +192,245 @@ const coreKitInstance = new Web3AuthMPCCoreKit({
 await coreKitInstance.init();
 await coreKitInstance.loginWithJWT(idTokenLoginParams);
 ```
+
+### AA Wallet
+
+Web3Auth is compatible with all major Account Abstraction (AA) SDKs, including Alchemy, Biconomy,
+Pimlico, ZeroDev, and Safe. To learn more,
+[please check out our AA Demo](https://w3a-aa-gasless-demo.vercel.app/).
+
+If you are using a Privy embedded wallet as a signer for an ERC 4337 (Account Abstraction) wallet,
+you can easily add the Web3Auth embedded wallet as an additional signer. This will enable existing
+users to seamlessly migrate to the Web3Auth embedded wallet. Alternatively, you can prompt users to
+remove the Privy signer if preferred.
+
+<Tabs
+  defaultValue="zerodev"
+  values={[
+    { label: "ZeroDev", value: "zerodev" },
+    { label: "Biconomy", value: "biconomy" },
+    { label: "AccountKit (Alchmey)", value: "accountkit" },
+  ]}
+>
+
+<TabItem value="zerodev">
+Considering you have already created the `ECDSAProvider` instance using Privy signer, you can simply use the `changeOwner` method to change the
+Smart Account owner.
+
+Learn more about
+[transfering ownership of Smart account in ZeroDev](https://docs-v4.zerodev.app/use-wallets/change-wallet-owner).
+
+```tsx
+import { providerToSmartAccountSigner } from "permissionless";
+import { EIP1193Provider } from "viem";
+
+const { hash } = await privyEcdsaProvider.changeOwner("WEB3AUTH_EMBEDDED_WALLET_ADDRESS");
+
+// Considering you have setup the Web3Auth instance
+const web3authProvider = web3auth.provider;
+
+if (!web3authProvider) {
+  throw new Error("No provider found");
+}
+
+// Create the smart account signer from the provider and signer address
+const smartAccountSigner = await providerToSmartAccountSigner(web3authProvider as EIP1193Provider);
+
+// Generate the ZeroDev wallet for new signer.
+const web3AuthEcdsaProvider = await signerToEcdsaValidator(publicClient, {
+  signer: smartAccountSigner,
+  entryPoint: ENTRYPOINT_ADDRESS_V07,
+});
+```
+
+</TabItem>
+
+<TabItem value="biconomy">
+Considering you have already created the smart account instance using Privy signer, you can simply use the `transferOwnership` method to change the
+Smart Account owner.
+
+Learn more about
+[transfering ownership of Smart account in Biconomy](https://docs.biconomy.io/tutorials/utils/transferOwnership).
+
+```tsx
+// Considering you have setup the Web3Auth instance
+const provider = new ethers.providers.Web3Provider(web3Auth.provider);
+const web3AuthSigner = await ethersProvider.getSigner();
+const newOwner = web3AuthSigner.getAddress();
+
+const smartAccountAddress = await privySmartAccount.getAccountAddress();
+
+const response = await privySmartAccount.transferOwnership(
+  newOwner,
+  DEFAULT_ECDSA_OWNERSHIP_MODULE,
+  {
+    paymasterServiceData: { mode: PaymasterMode.SPONSORED },
+  },
+);
+
+const receipt = await response.wait();
+
+// Recreate the smart account client with the new owner and specify the address of the smart account
+let smartAccount = await createSmartAccountClient({
+  signer: web3AuthSigner,
+  paymasterUrl,
+  bundlerUrl,
+  accountAddress: smartAccountAddress,
+});
+```
+
+</TabItem>
+
+<TabItem value="accountkit">
+Considering you have already created the `LightAccount` instance using Privy signer, you can simply use the `transferOwnership` method to change the
+Smart Account owner.
+
+Learn more about
+[transfering ownership of Smart account in AccountKit(Alchemy)](https://accountkit.alchemy.com/using-smart-accounts/transfer-ownership/light-account#usage).
+
+```tsx
+import { Web3AuthSigner } from "@alchemy/aa-signers/web3auth";
+
+// Learn more about Web3AuthSigner: https://accountkit.alchemy.com/packages/aa-signers/web3auth/constructor
+const web3AuthSigner = const web3AuthSigner = new Web3AuthSigner({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  chainConfig: {
+    chainNamespace: "eip155",
+  },
+});
+
+const newOwner = web3AuthSigner.getAddress();
+
+const accountAddress = privyLightAccountClient.getAddress();
+
+const hash = privyLightAccountClient.transferOwnership({
+  newOwner,
+  waitForTxn: true,
+});
+
+// After transaction is mined on the network,
+// create a new light account client for the transferred Light Account
+const transferredClient = await createLightAccountClient({
+  transport: custom(privyLightAccountClient),
+  chain: privyLightAccountClient.chain,
+  signer: web3AuthSigner,
+  // NOTE: You MUST specify the original smart account address to connect using the new owner/signer
+  accountAddress,
+  // NOTE: If the version of the light account is not v1.1.0, it must be specified here
+  version: "v2.0.0",
+});
+```
+
+</TabItem>
+</Tabs>
+
+If we have missed any AA provider, please don't hesitate to reach out to us in comments.
+
+### External Wallets
+
+If you are using Privy with external wallets and are looking to integrate with Web3Auth, the
+migration process is quite straightforward. Web3Auth offers external wallet adapters to connect with
+external wallets, along with social login options for added convenience. Along with external
+wallets, Web3Auth also supports application wallets like Torus wallet.
+
+If you are using EVM external wallets previously with Privy, you can simply configure the
+`@web3auth/default-evm-adapter` for your Web3Auth instance.
+[Read more about default-evm-adapter](/docs/sdk/pnp/web/adapters/default-evm-adapter).
+
+```tsx
+import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+// This can be your custom chain as well.
+const chainConfig = {
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://images.toruswallet.io/eth.svg",
+};
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+const web3AuthOptions: Web3AuthOptions = {
+  "YOUR_WEB3AUTH_CLIENT_ID",
+  chainConfig: { ...chainConfig, chainNamespace: CHAIN_NAMESPACES.EIP155 },
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider: privateKeyProvider,
+};
+
+const web3Auth = new Web3Auth(web3AuthOptions);
+
+// highlight-start
+const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
+
+adapters.forEach((adapter) => {
+  web3auth.configureAdapter(adapter);
+});
+// highlight-end
+```
+
+If you are a fan boy of wagmi-connector, we have got your covered. You can use our
+web3auth-wagmi-connector to initialize a wagmi client that will seamlessly manage the interaction of
+your dApp with
+Web3Auth.[Read more about web3auth-wagmi-connector](/docs/sdk/pnp/web/wagmi-connector).
+
+```tsx
+import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
+import { Web3Auth } from "@web3auth/modal";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, WALLET_ADAPTERS } from "@web3auth/base";
+import { Chain } from "wagmi/chains";
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
+
+export default function Web3AuthConnectorInstance(chains: Chain[]) {
+  const chainConfig = {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x" + chains[0].id.toString(16),
+    rpcTarget: chains[0].rpcUrls.default.http[0],
+    displayName: chains[0].name,
+    tickerName: chains[0].nativeCurrency?.name,
+    ticker: chains[0].nativeCurrency?.symbol,
+    blockExplorerUrl: chains[0].blockExplorers?.default.url[0] as string,
+  };
+
+  const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+  const web3AuthInstance = new Web3Auth({
+    clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+    chainConfig,
+    privateKeyProvider,
+    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+    enableLogging: true,
+  });
+
+  const modalConfig = {
+    [WALLET_ADAPTERS.OPENLOGIN]: {
+      label: "openlogin",
+      loginMethods: {
+        facebook: {
+          // It will hide the facebook option from the Web3Auth modal.
+          name: "facebook login",
+          showOnModal: false,
+        },
+      },
+      // Setting it to false will hide all social login methods from modal.
+      showOnModal: true,
+    },
+  };
+
+  return Web3AuthConnector({
+    web3AuthInstance,
+    modalConfig,
+  });
+}
+```
+
+The above code snippet is for [Web3Auth Modal SDK](https://web3auth.io/docs/sdk/pnp/web/modal), if
+you are looking [No Modal SDK](https://web3auth.io/docs/sdk/pnp/web/no-modal/), you can
+[checkout wagmi no modal sample](https://github.com/Web3Auth/web3auth-pnp-examples/blob/main/web-no-modal-sdk/wagmi/wagmi-no-modal-example/src/Web3AuthConnectorInstance.tsx).
 
 ## Conclusion
 
