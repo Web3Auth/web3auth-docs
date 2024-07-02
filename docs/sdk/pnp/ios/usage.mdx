@@ -343,80 +343,8 @@ class ViewModel: ObservableObject {
             })
         }
     }
-```
-
-## Selecting Curve
-
-The `Web3Auth().login(W3ALoginParams)` method accepts a `curve` parameter. This parameter can be
-used to select the elliptic curve to use for the signature.
-
-```swift
-let result = try await Web3Auth().login(
-	W3ALoginParams(
-		loginProvider: provider,
-		curve: SUPPORTED_KEY_CURVES.SECP256K1
-	))
-```
-
-<Tabs
-  defaultValue="secp256k1"
-  values={[
-    { label: "SECP256K1", value: "secp256k1" },
-    { label: "ED25519", value: "ed25519" },
-  ]}
->
-
-<TabItem value="secp256k1">
-
-```swift title="Usage"
-
-func login(provider: Web3AuthProvider) {
-	Task {
-		do {
-			let result = try await Web3Auth().login(W3ALoginParams(
-				loginProvider: provider,
-				// highlight-next-line
-				curve: SUPPORTED_KEY_CURVES.SECP256K1
-			))
-			// Perform action on success
-		} catch {
-			print("Error")
-		}
-	}
-}
-
-login(provider: .GOOGLE)
 
 ```
-
-</TabItem>
-
-<TabItem value="ed25519">
-
-```swift title="Usage"
-
-func login(provider: Web3AuthProvider) {
-	Task {
-		do {
-			let result = try await Web3Auth().login(W3ALoginParams(
-				loginProvider: provider,
-				// highlight-next-line
-				curve: SUPPORTED_KEY_CURVES.ED25519
-			))
-			// Perform action on success
-		} catch {
-			print("Error")
-		}
-	}
-}
-
-login(provider: .GOOGLE)
-
-```
-
-</TabItem>
-
-</Tabs>
 
 ## Logging out a user
 
