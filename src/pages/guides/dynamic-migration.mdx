@@ -248,9 +248,13 @@ const newOwner = web3AuthSigner.getAddress();
 
 const smartAccountAddress = await dynamicSmartAccount.getAccountAddress();
 
-const response = await smartAccount.transferOwnership(newOwner, DEFAULT_ECDSA_OWNERSHIP_MODULE, {
-  paymasterServiceData: { mode: PaymasterMode.SPONSORED },
-});
+const response = await dynamicSmartAccount.transferOwnership(
+  newOwner,
+  DEFAULT_ECDSA_OWNERSHIP_MODULE,
+  {
+    paymasterServiceData: { mode: PaymasterMode.SPONSORED },
+  },
+);
 
 const receipt = await response.wait();
 
@@ -287,7 +291,7 @@ const newOwner = web3AuthSigner.getAddress();
 
 const accountAddress = dynamicLightAccountClient.getAddress();
 
-const hash = lightAccountClient.transferOwnership({
+const hash = dynamicLightAccountClient.transferOwnership({
   newOwner,
   waitForTxn: true,
 });
