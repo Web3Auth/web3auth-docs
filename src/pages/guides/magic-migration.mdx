@@ -33,14 +33,14 @@ Both Web3Auth and Magic have made significant strides in addressing the Web3 onb
 However, Web3Auth stands out by offering more customizable authentication options, along with
 superior support for multi-chain and multi-platform integrations.
 
-|       Parameter        |                                               Magic                                               |                                                                                    Web3Auth                                                                                    |
-| :--------------------: | :-----------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-|   Wallet Management    | Magic uses the HSM wallet to manage user's private key which doesn't make it fully non-custodial. |                                    Web3Auth uses SSS and MPC TSS to manage user's private key, which is fully non custodial implementation.                                    |
-|  Multi-chain support   |                 Magic as of now only supports 25+ blockchains as per their docs.                  |               Web3Auth is chain agnostic, it supports both secp256k1 and ed25519 curves which means it can be integrated with any chain that uses these curves.                |
-| Multi-platform support |   Magic supports multi-platform including Web, Android, Flutter, iOS, Unity, and React native.    |            Web3Auth supports multiple platforms, including Web, React Native, Unity, Unreal, Flutter, Swift, and Android. Checkout documentation for more details.             |
-|  Additional Features   |         Magic provides additional features as NFT services for free minting and checkout.         | Web3Auth also offers additional services such as NFT checkout, Fiat On Ramp, and Prebuilt Wallet UI. All of these services could be added in your project with few lines code. |
-|  Ease of Integration   |           Magic is easy to integrate where basic integration takes less than 15 minutes           |                                             Web3Auth is also easy to integrate where basic integration takes less than 15 minutes.                                             |
-|       Whitelabel       |                            Magic has limited white-labelling options.                             |                                                             Web3Auth also has end to end white-labelling options.                                                              |
+| Parameter              | Magic                                                                                             | Web3Auth                                                                                                                                                                                       |
+| ---------------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Wallet Management      | Magic uses the HSM wallet to manage user's private key which doesn't make it fully non-custodial. | Web3Auth uses SSS and MPC TSS to manage user's private key, which is fully non custodial implementation.                                                                                       |
+| Multi-chain support    | Magic as of now only supports 25+ blockchains as per their docs.                                  | Web3Auth is chain agnostic, it supports both secp256k1 and ed25519 curves which means it can be integrated with any chain that uses these curves.                                              |
+| Multi-platform support | Magic supports multi-platform including Web, Android, Flutter, iOS, Unity, and React native.      | Web3Auth supports multiple platforms, including Web, React Native, Unity, Unreal, Flutter, Swift, and Android. [Checkout documentation for more details](/docs/sdk?product=Plug%20and%20Play). |
+| Additional Features    | Magic provides additional features as NFT services for free minting and checkout.                 | Web3Auth also offers additional services such as NFT checkout, Fiat On Ramp, and Prebuilt Wallet UI. All of these services could be added in your project with few lines code.                 |
+| Ease of Integration    | Magic is easy to integrate where basic integration takes less than 15 minutes                     | Web3Auth is also easy to integrate where basic integration takes less than 15 minutes.                                                                                                         |
+| Whitelabel             | Magic has limited white-labelling options.                                                        | Web3Auth also has end to end white-labelling options.                                                                                                                                          |
 
 ## How to migrate to Web3Auth
 
@@ -48,112 +48,141 @@ Now that we've discussed the advantages of Web3Auth, let's explore the steps to 
 to Web3Auth. We'll cover most scenarios, but if we miss any, please don't hesitate to reach out to
 us in comments.
 
-### External Wallets
+### Embedded Wallet/ Dedicated Wallet
 
-If you are using external wallet(Third Party Wallets) using Magic's Embedded Plug & Play Widget, and
-are looking to integrate with Web3Auth, the migration process is quite straightforward. Web3Auth
-offers external multiple adapters to connect with external wallets, along with social login options
-for added convenience. Along with external wallets, Web3Auth also supports application wallets like
-Torus wallet.
+If you are using Magic's embedded wallet/ dedicated wallet, there are couple of options which can be
+preferred for the migration.
 
-If you are using EVM external wallets previously with Magic, you can simply configure the
-`@web3auth/default-evm-adapter` for your Web3Auth instance.
-[Read more about default-evm-adapter](/docs/sdk/pnp/web/adapters/default-evm-adapter).
+#### Using Plug And Play SDK
+
+If you want to use the Plug and Play SDK, you can first check whether the user is an existing user
+or if they have any wallet balance. For new users or those with empty wallets, you can simply
+generate a new wallet for them to replace the old one.
+
+For existing users with non-empty wallets, you have two options:
+
+##### Migration tool
+
+You can create a migration tool to transfer funds to the newly generated Web3Auth embedded wallet.
+To facilitate the fund transfer using the migration tool, you can utilize our
+[Wallet Pregeneration feature](/docs/features/wallet-pregeneration) to determine the user's wallet
+address without integrating our SDKs. By leveraging wallet pregeneration, you can handle the
+migration in the backend seamlessly. Afterward, you can use the PnP/ SFA SDK to log users in through
+Web3Auth.
+
+Let's see how you can use the Wallet Pregeneration API.
 
 ```tsx
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+const apiUrl = "https://lookup.web3auth.io/lookup";
 
-// This can be your custom chain as well.
-const chainConfig = {
-  chainId: "0x1",
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/eth.svg",
-};
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-
-const web3AuthOptions: Web3AuthOptions = {
-  "YOUR_WEB3AUTH_CLIENT_ID",
-  chainConfig: { ...chainConfig, chainNamespace: CHAIN_NAMESPACES.EIP155 },
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider: privateKeyProvider,
-};
-
-const web3Auth = new Web3Auth(web3AuthOptions);
-
-// highlight-start
-const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
-
-adapters.forEach((adapter) => {
-  web3auth.configureAdapter(adapter);
+const params = new URLSearchParams({
+  verifier: "YOUR_VERIFIER_NAME",
+  verifierId: "YOUR_VERIFIER_ID",
+  web3AuthNetwork: "sapphire_mainnet",
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
 });
-// highlight-end
+
+const url = `${apiUrl}?${params.toString()}`;
+
+// Response
+// {
+//   "data": {
+//     "evmAddress": "0x172b0Ca9405BcE41A0D6FB3B44f91098d3a4AB14",
+//     "X": "a3350640a380f772434a18952fa53c6a8c200e9e3d30e1097edbd92be6dd9fe0",
+//     "Y": "1ded08adccba8e394f9a9d7ee55658aab8f2aef17866983c0bdcd68d31b59341",
+//     "isMfaEnabled": false
+//   },
+//   "success": true
+// }
 ```
 
-If you are a fan boy of wagmi-connector, we have got your covered. You can use our
-web3auth-wagmi-connector to initialize a wagmi client that will seamlessly manage the interaction of
-your dApp with
-Web3Auth.[Read more about web3auth-wagmi-connector](/docs/sdk/pnp/web/wagmi-connector).
+Please ensure that the useCoreKitKey parameter is set to true when using the Wallet Pregeneration
+API and the PnP SDK. This will ensure that the same address is generated when user logs in for the
+first time.
 
 ```tsx
-import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
-import { Web3Auth } from "@web3auth/modal";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, WALLET_ADAPTERS } from "@web3auth/base";
-import { Chain } from "wagmi/chains";
-import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
+const chainConfig = YOUR_CUSTOM_CHAIN_CONFIG;
 
-export default function Web3AuthConnectorInstance(chains: Chain[]) {
-  const chainConfig = {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x" + chains[0].id.toString(16),
-    rpcTarget: chains[0].rpcUrls.default.http[0],
-    displayName: chains[0].name,
-    tickerName: chains[0].nativeCurrency?.name,
-    ticker: chains[0].nativeCurrency?.symbol,
-    blockExplorerUrl: chains[0].blockExplorers?.default.url[0] as string,
-  };
+const ethereumPrivateKeyProvider = EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
 
-  const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+const web3auth = new Web3Auth({
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider: ethereumPrivateKeyProvider,
+  // highlight-next-line
+  useCoreKitKey: true,
+});
+```
 
-  const web3AuthInstance = new Web3Auth({
-    clientId: "YOUR_WEB3AUTH_CLIENT_ID",
-    chainConfig,
-    privateKeyProvider,
-    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-    enableLogging: true,
-  });
+##### Manual Migration
 
-  const modalConfig = {
-    [WALLET_ADAPTERS.OPENLOGIN]: {
-      label: "openlogin",
-      loginMethods: {
-        facebook: {
-          // It will hide the facebook option from the Web3Auth modal.
-          name: "facebook login",
-          showOnModal: false,
-        },
-      },
-      // Setting it to false will hide all social login methods from modal.
-      showOnModal: true,
-    },
-  };
+The other option would be to show a prompt to users, asking them to migrate their funds from the old
+wallet to the new Web3Auth embedded wallet. It's totally upto users how they want to migrate.
 
-  return Web3AuthConnector({
-    web3AuthInstance,
-    modalConfig,
-  });
+You can also suggest your users to use tools like [Token Bulksender](https://bulksender.app/).
+Again, DYOR.
+
+#### Using MPC Core Kit SDK
+
+Using the MPC Core Kit is the recommended approach for migrating users. If you have existing users
+with a Magic's embedded wallet, you can seamlessly transition them to Web3Auth while retaining the
+same account.
+
+The first step is to export the Magic's embedded wallet private key. To do this, you can use the
+`revealPrivateKey` method. This will open the modal for users to copy their private key.
+[For more details on exporting accounts, learn more here](https://magic.link/docs/wallets/features/key-export).
+
+Please note that there is no internal method to export the private key in Magic. Only the user can
+access their full private key. When you use the `revealPrivateKey` method, it will display the reval
+private key modal for the user to copy their private key. Once the key is copied, you can prompt
+them to import it using an input field.
+
+```tsx
+import { Magic } from "magic-sdk";
+
+const magic = new Magic("PUBLISHABLE_API_KEY");
+
+try {
+  await magic.user.revealPrivateKey();
+} catch {
+  // Handle errors if required!
 }
 ```
 
-The above code snippet is for [Web3Auth Modal SDK](https://web3auth.io/docs/sdk/pnp/web/modal), if
-you are looking [No Modal SDK](https://web3auth.io/docs/sdk/pnp/web/no-modal/), you can
-[checkout wagmi no modal sample](https://github.com/Web3Auth/web3auth-pnp-examples/blob/main/web-no-modal-sdk/wagmi/wagmi-no-modal-example/src/Web3AuthConnectorInstance.tsx).
+You can now show the prompt to enter the private key they copied. Once you have the private key, you
+can simply import it into `Web3AuthMpCoreKit`. When you import the private key, it is split into
+multiple partial keys, which are never stored together in one place. Furthermore, in the MPC
+architecture, the private key is never reconstructed, enhancing security. The partial keys are
+stored in different locations and the user's device. These partial keys are used to create partial
+signatures for messages and transactions. These partial signatures are then combined using Threshold
+Signature Scheme (TSS) to produce a final signature, which can be used for transactions on the
+blockchain. MPC Core Kit supports both secp256k1 and ed25519 curves, so you can generate both ECDSA
+and EdDSA signatures.
+
+[Learn more about MPC Core Kit](/docs/sdk/core-kit/mpc-core-kit).
+
+```tsx
+// Your own logic to retrive google login id Token
+const idTokenLoginParams = {
+  verifier: "w3a-google-demo",
+  verifierId: parsedIdToken.email,
+  idToken: parsedIdToken,
+  // Use the exported private key from previous step
+  // highlight-next-line
+  importTssKey: magicPrivateKey,
+} as IdTokenLoginParams;
+
+const coreKitInstance = new Web3AuthMPCCoreKit({
+  web3AuthClientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.DEVNET,
+  baseUrl: "http://localhost:3000",
+});
+
+await coreKitInstance.init();
+await coreKitInstance.loginWithJWT(idTokenLoginParams);
+```
 
 ### AA Wallet
 
@@ -288,140 +317,112 @@ const transferredClient = await createLightAccountClient({
 
 If we have missed any AA provider, please don't hesitate to reach out to us in comments.
 
-### Embedded Wallet/ Dedicated Wallet
+### External Wallets
 
-If you are using Magic's embedded wallet/ dedicated wallet, there are couple of options which can be
-preferred for the migration.
+If you are using external wallet(Third Party Wallets) using Magic's Embedded Plug & Play Widget, and
+are looking to integrate with Web3Auth, the migration process is quite straightforward. Web3Auth
+offers external multiple adapters to connect with external wallets, along with social login options
+for added convenience. Along with external wallets, Web3Auth also supports application wallets like
+Torus wallet.
 
-#### Using Plug And Play SDK
-
-If you want to use the Plug and Play SDK, you can first check whether the user is an existing user
-or if they have any wallet balance. For new users or those with empty wallets, you can simply
-generate a new wallet for them to replace the old one.
-
-For existing users with non-empty wallets, you have two options:
-
-##### Migration tool
-
-You can create a migration tool to transfer funds to the newly generated Web3Auth embedded wallet.
-To facilitate the fund transfer using the migration tool, you can utilize our Wallet Pregeneration
-feature to determine the user's wallet address without integrating our SDKs. By leveraging wallet
-pregeneration, you can handle the migration in the backend seamlessly. Afterward, you can use the
-PnP/ SFA SDK to log users in through Web3Auth.
-
-Let's see how you can use the Wallet Pregeneration API.
+If you are using EVM external wallets previously with Magic, you can simply configure the
+`@web3auth/default-evm-adapter` for your Web3Auth instance.
+[Read more about default-evm-adapter](/docs/sdk/pnp/web/adapters/default-evm-adapter).
 
 ```tsx
-const apiUrl = "https://lookup.web3auth.io/lookup";
+import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
-const params = new URLSearchParams({
-  verifier: "YOUR_VERIFIER_NAME",
-  verifierId: "YOUR_VERIFIER_ID",
-  web3AuthNetwork: "sapphire_mainnet",
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
-});
+// This can be your custom chain as well.
+const chainConfig = {
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://images.toruswallet.io/eth.svg",
+};
 
-const url = `${apiUrl}?${params.toString()}`;
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
-// Response
-// {
-//   "data": {
-//     "evmAddress": "0x172b0Ca9405BcE41A0D6FB3B44f91098d3a4AB14",
-//     "X": "a3350640a380f772434a18952fa53c6a8c200e9e3d30e1097edbd92be6dd9fe0",
-//     "Y": "1ded08adccba8e394f9a9d7ee55658aab8f2aef17866983c0bdcd68d31b59341",
-//     "isMfaEnabled": false
-//   },
-//   "success": true
-// }
-```
-
-Please ensure that the useCoreKitKey parameter is set to true when using the Wallet Pregeneration
-API and the PnP SDK. This will ensure that the same address is generated when user logs in for the
-first time.
-
-```tsx
-const chainConfig = YOUR_CUSTOM_CHAIN_CONFIG;
-
-const ethereumPrivateKeyProvider = EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+const web3AuthOptions: Web3AuthOptions = {
+  "YOUR_WEB3AUTH_CLIENT_ID",
+  chainConfig: { ...chainConfig, chainNamespace: CHAIN_NAMESPACES.EIP155 },
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider: ethereumPrivateKeyProvider,
-  // highlight-next-line
-  useCoreKitKey: true,
+  privateKeyProvider: privateKeyProvider,
+};
+
+const web3Auth = new Web3Auth(web3AuthOptions);
+
+// highlight-start
+const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
+
+adapters.forEach((adapter) => {
+  web3auth.configureAdapter(adapter);
 });
+// highlight-end
 ```
 
-##### Manual Migration
-
-The other option would be to show a prompt to users, asking them to migrate their funds from the old
-wallet to the new Web3Auth embedded wallet. It's totally upto users how they want to migrate.
-
-You can also suggest your users to use tools like [Token Bulksender](https://bulksender.app/).
-Again, DYOR.
-
-#### Using MPC Core Kit SDK
-
-Using the MPC Core Kit is the recommended approach for migrating users. If you have existing users
-with a Magic's embedded wallet, you can seamlessly transition them to Web3Auth while retaining the
-same account.
-
-The first step is to export the Magic's embedded wallet private key. To do this, you can use the
-`revealPrivateKey` method. This will open the modal for users to copy their private key.
-[For more details on exporting accounts, learn more here](https://magic.link/docs/wallets/features/key-export).
-
-Please note that there is no internal method to export the private key in Magic. Only the user can
-access their full private key. When you use the `revealPrivateKey` method, it will display the reval
-private key modal for the user to copy their private key. Once the key is copied, you can prompt
-them to import it using an input field.
+If you are a fan boy of wagmi-connector, we have got your covered. You can use our
+web3auth-wagmi-connector to initialize a wagmi client that will seamlessly manage the interaction of
+your dApp with
+Web3Auth.[Read more about web3auth-wagmi-connector](/docs/sdk/pnp/web/wagmi-connector).
 
 ```tsx
-import { Magic } from "magic-sdk";
+import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
+import { Web3Auth } from "@web3auth/modal";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, WALLET_ADAPTERS } from "@web3auth/base";
+import { Chain } from "wagmi/chains";
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
-const magic = new Magic("PUBLISHABLE_API_KEY");
+export default function Web3AuthConnectorInstance(chains: Chain[]) {
+  const chainConfig = {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x" + chains[0].id.toString(16),
+    rpcTarget: chains[0].rpcUrls.default.http[0],
+    displayName: chains[0].name,
+    tickerName: chains[0].nativeCurrency?.name,
+    ticker: chains[0].nativeCurrency?.symbol,
+    blockExplorerUrl: chains[0].blockExplorers?.default.url[0] as string,
+  };
 
-try {
-  await magic.user.revealPrivateKey();
-} catch {
-  // Handle errors if required!
+  const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+  const web3AuthInstance = new Web3Auth({
+    clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+    chainConfig,
+    privateKeyProvider,
+    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+    enableLogging: true,
+  });
+
+  const modalConfig = {
+    [WALLET_ADAPTERS.OPENLOGIN]: {
+      label: "openlogin",
+      loginMethods: {
+        facebook: {
+          // It will hide the facebook option from the Web3Auth modal.
+          name: "facebook login",
+          showOnModal: false,
+        },
+      },
+      // Setting it to false will hide all social login methods from modal.
+      showOnModal: true,
+    },
+  };
+
+  return Web3AuthConnector({
+    web3AuthInstance,
+    modalConfig,
+  });
 }
 ```
 
-You can now show the prompt to enter the private key they copied. Once you have the private key, you
-can simply import it into `Web3AuthMpCoreKit`. When you import the private key, it is split into
-multiple partial keys, which are never stored together in one place. Furthermore, in the MPC
-architecture, the private key is never reconstructed, enhancing security. The partial keys are
-stored in different locations and the user's device. These partial keys are used to create partial
-signatures for messages and transactions. These partial signatures are then combined using Threshold
-Signature Scheme (TSS) to produce a final signature, which can be used for transactions on the
-blockchain. MPC Core Kit supports both secp256k1 and ed25519 curves, so you can generate both ECDSA
-and EdDSA signatures.
-
-[Learn more about MPC Core Kit](/docs/sdk/core-kit/mpc-core-kit).
-
-```tsx
-// Your own logic to retrive google login id Token
-const idTokenLoginParams = {
-  verifier: "w3a-google-demo",
-  verifierId: parsedIdToken.email,
-  idToken: parsedIdToken,
-  // Use the exported private key from previous step
-  // highlight-next-line
-  importTssKey: magicPrivateKey,
-} as IdTokenLoginParams;
-
-const coreKitInstance = new Web3AuthMPCCoreKit({
-  web3AuthClientId: "YOUR_WEB3AUTH_CLIENT_ID",
-  web3AuthNetwork: WEB3AUTH_NETWORK.DEVNET,
-  baseUrl: "http://localhost:3000",
-});
-
-await coreKitInstance.init();
-await coreKitInstance.loginWithJWT(idTokenLoginParams);
-```
+The above code snippet is for [Web3Auth Modal SDK](https://web3auth.io/docs/sdk/pnp/web/modal), if
+you are looking [No Modal SDK](https://web3auth.io/docs/sdk/pnp/web/no-modal/), you can
+[checkout wagmi no modal sample](https://github.com/Web3Auth/web3auth-pnp-examples/blob/main/web-no-modal-sdk/wagmi/wagmi-no-modal-example/src/Web3AuthConnectorInstance.tsx).
 
 ## Conclusion
 
