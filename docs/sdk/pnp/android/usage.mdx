@@ -527,7 +527,6 @@ class MainActivity : AppCompatActivity() {
     ...
 
 }
-
 ```
 
 </TabItem>
@@ -541,6 +540,36 @@ class MainActivity : AppCompatActivity() {
 ## Enable MFA for a user
 
 <EnableMFAMethod />
+
+## Triggering Login exceptions
+
+The `setCustomTabsClosed` method can be used to trigger login exceptions for Android. The Android
+SDK uses the custom tabs and from current implementation of chrome custom tab, it's not possible to
+add a listener directly to chrome custom tab close button and trigger login exceptions.
+
+Hence, it's necessary to use `setCustomTabsClosed` method in your login screen to trigger
+exceptions.
+
+### Usage
+
+```kt
+class MainActivity : AppCompatActivity() {
+    // Additional code
+
+    override fun onResume() {
+        super.onResume()
+        // highlight-start
+        if (Web3Auth.getCustomTabsClosed()) {
+            Toast.makeText(this, "User closed the browser.", Toast.LENGTH_SHORT).show()
+            web3Auth.setResultUrl(null)
+            Web3Auth.setCustomTabsClosed(false)
+        }
+        // highlight-end
+    }
+
+    // Additional code
+}
+```
 
 ## Launch Wallet Services
 
