@@ -192,7 +192,6 @@ process where we add all the config details for Web3Auth SDK:
 import "@ethersproject/shims";
 import auth from "@react-native-firebase/auth";
 import EncryptedStorage from "react-native-encrypted-storage";
-import { decode as atob } from "base-64";
 
 import Web3Auth from "@web3auth/single-factor-auth-react-native";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -205,7 +204,6 @@ import { ethers } from "ethers";
 import "@ethersproject/shims";
 import auth from "@react-native-firebase/auth";
 import EncryptedStorage from "react-native-encrypted-storage";
-import { decode as atob } from "base-64";
 
 import Web3Auth from "@web3auth/single-factor-auth-react-native";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -257,6 +255,8 @@ await web3auth.init(privateKeyProvider);
 #### Getting the `idToken` and initializing Web3Auth
 
 ```tsx
+import { safeatob } from "@toruslabs/openlogin-utils";
+
 async function signInWithEmailPassword() {
   try {
     const res = await auth().signInWithEmailAndPassword("custom+jwt@firebase.login", "Testing@123");
@@ -268,9 +268,8 @@ async function signInWithEmailPassword() {
 
 const parseToken = (token: any) => {
   try {
-    const base64Url = token.split(".")[1];
-    const base64 = base64Url.replace("-", "+").replace("_", "/");
-    return JSON.parse(atob(base64 || ""));
+    const payload = token.split(".")[1]; // payload
+    return JSON.parse(safeatob(payload));
   } catch (err) {
     console.log(err);
     return null;
