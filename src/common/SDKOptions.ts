@@ -2,6 +2,7 @@ export const reactJS = "React";
 export const angular = "Angular";
 export const vue = "Vue";
 export const nextjs = "Next JS";
+export const web = "Web";
 export const android = "Android";
 export const ios = "iOS";
 export const reactnative = "React Native";
@@ -10,7 +11,7 @@ export const rnexpo = "React Native Expo";
 export const rnlist = [rnbare, rnexpo];
 export const flutter = "Flutter";
 export const unity = "Unity";
-export const unreal = "Unreal";
+export const unreal = "Unreal Engine";
 export const nodejs = "Node.js";
 export const weblist = [reactJS, angular, vue, nextjs];
 
@@ -42,20 +43,20 @@ export const corekitmfa = "Core Kit MFA";
 export const tkeyjs = "tKey JS SDK";
 export const tkeyios = "tKey iOS SDK";
 export const tkeyandroid = "tKey Android SDK";
-export const singlefactorauth = "Single Factor Auth Web SDK";
-export const singlefactorauthandroid = "Single Factor Auth Android SDK";
-export const singlefactorauthios = "Single Factor Auth iOS SDK";
-export const singlefactorauthrn = "Single Factor Auth React Native SDK";
-export const singlefactorauthflutter = "Single Factor Auth Flutter SDK";
-export const corekitnodejs = "Node.js SDK";
-export const mpccorekit = "MPC Core Kit";
+export const singlefactorauth = "SFA Web SDK";
+export const singlefactorauthandroid = "SFA Android SDK";
+export const singlefactorauthios = "SFA iOS SDK";
+export const singlefactorauthrn = "SFA React Native SDK";
+export const singlefactorauthflutter = "SFA Flutter SDK";
+export const corekitnodejs = "SFA Node.js SDK";
+export const mpccorekit = "MPC Core Kit JS SDK";
 
 export const corekitlist = [
   { label: "tKey JS SDK", value: tkeyjs, platforms: [reactJS, reactnative] },
   { label: "MPC Core Kit", value: mpccorekit, platforms: [...weblist] },
   { label: "tKey Android SDK", value: tkeyandroid, platforms: [android] },
   { label: "tKey iOS SDK", value: tkeyios, platforms: [ios] },
-  { label: "Single Factor Auth Web SDK", value: singlefactorauth, platforms: [...weblist] },
+  { label: "SFA Web SDK", value: singlefactorauth, platforms: [...weblist] },
   { label: "SFA Node.js SDK", value: corekitnodejs, platforms: [nodejs] },
   { label: "SFA Android SDK", value: singlefactorauthandroid, platforms: [android] },
   { label: "SFA iOS SDK", value: singlefactorauthios, platforms: [ios] },
