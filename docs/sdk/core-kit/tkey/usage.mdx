@@ -1,7 +1,6 @@
 ---
 title: Using tKey JS SDK
 sidebar_label: Usage
-displayed_sidebar: sdk
 description: "Web3Auth Core Kit tKey JS SDK - Usage | Documentation - Web3Auth"
 ---
 
@@ -11,8 +10,9 @@ import ThresholdKey from "@site/src/common/sdk/core-kit/tkey/_threshold-key.mdx"
 import TkeyInitParams from "@site/src/common/sdk/core-kit/tkey/_tkey-init-params.mdx";
 import TkeyKeyDetailsReturn from "@site/src/common/sdk/core-kit/tkey/_tkey-key-details-return.mdx";
 
-Once you've installed all packages, instantiated tKey and initialized the service provider instance in your constructor, you can use it to
-authenticate your users and generate their tKey shares. Further, you can use a variety of functions exposed by the tKey SDK and its modules to manage
+Once you've installed all packages, instantiated tKey and initialized the service provider instance
+in your constructor, you can use it to authenticate your users and generate their tKey shares.
+Further, you can use a variety of functions exposed by the tKey SDK and its modules to manage
 different aspects of your users' authentication needs.
 
 We'll be talking in-depth about the following operations:
@@ -35,33 +35,38 @@ The login with the tKey SDK is a 3-step process.
 2. Use the OAuth ID Token to connect to the Web3Auth Service Provider to generate the OAuth Key
 3. Once the OAuth Key is generated, initialize the tKey Instance
 
-However, before starting this process, you need to set up Custom Authentication on your Web3Auth Dashboard. For this, you need to
-[Create a Verifier](/auth-provider-setup/verifiers) within the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired
-configuration.
+However, before starting this process, you need to set up Custom Authentication on your Web3Auth
+Dashboard. For this, you need to [Create a Verifier](/auth-provider-setup/verifiers) within the
+[Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired configuration.
 
 :::tip
 
-If you want to know more about setting up a verifier and how to use it, please refer to the [Auth Provider Setup Documentation](/auth-provider-setup).
+If you want to know more about setting up a verifier and how to use it, please refer to the
+[Auth Provider Setup Documentation](/auth-provider-setup).
 
 :::
 
 ### Login using OAuth
 
-You can choose any OAuth Provider of your choice and login using their standard process. You can check out
-[our examples](https://github.com/Web3Auth/web3auth-core-kit-examples/) where we have used the most common OAuth providers like Google, Auth0,
-Firebase etc. Additionally, you can checkout our documentation around OAuth Provider setup [here](/auth-provider-setup).
+You can choose any OAuth Provider of your choice and login using their standard process. You can
+check out [our examples](https://github.com/Web3Auth/web3auth-core-kit-examples/) where we have used
+the most common OAuth providers like Google, Auth0, Firebase etc. Additionally, you can checkout our
+documentation around OAuth Provider setup [here](/auth-provider-setup).
 
 :::tip Implicit Auth Flow
 
-If you prefer using an implicit login method with your OAuth Provider, you can do so by using the `TorusServiceProvider`. You can check out the
-[additional reading section](/sdk/core-kit/tkey/intrinsic-flow) for more information. This provider doesn't work in a React Native environment.
+If you prefer using an implicit login method with your OAuth Provider, you can do so by using the
+`TorusServiceProvider`. You can check out the
+[additional reading section](/sdk/core-kit/tkey/intrinsic-flow) for more information. This provider
+doesn't work in a React Native environment.
 
 :::
 
 ### Generating OAuth Key
 
-This setup helps you generate a private key which will be needed by the tKey Instance to generate the OAuth Share. This is done by calling the
-`connect()` function within the `tKey` instance's `serviceProvider`.
+This setup helps you generate a private key which will be needed by the tKey Instance to generate
+the OAuth Share. This is done by calling the `connect()` function within the `tKey` instance's
+`serviceProvider`.
 
 ```tsx
 tKeyInstance.serviceProvider.connect(params: LoginParams): Promise<BN>;
@@ -83,8 +88,8 @@ const OAuthShareKey = await(tKeyInstance.serviceProvider as SfaServiceProvider).
 
 #### `tKey.initialize(params?)`
 
-Once you have triggered the login process, you're ready to initialize the tKey. This will generate a Threshold Key corresponding to your login
-provider.
+Once you have triggered the login process, you're ready to initialize the tKey. This will generate a
+Threshold Key corresponding to your login provider.
 
 #### Parameters
 
@@ -98,8 +103,9 @@ provider.
 
 #### `tKey.getKeyDetails()`
 
-The function `getKeyDetails()` returns the details of the keys present generated for the specific user. This includes the public key X & Y of the
-user, alongside the shares details and the threshold.
+The function `getKeyDetails()` returns the details of the keys present generated for the specific
+user. This includes the public key X & Y of the user, alongside the shares details and the
+threshold.
 
 ### Sample Key Details Return
 
@@ -107,15 +113,18 @@ user, alongside the shares details and the threshold.
 
 From here, you can know whether the user key can be reconstructed or not.
 
-- If the `requiredShares` is greater than 0, then the key cannot be reconstructed, because this means that the user has not yet generated enough
-  shares to meet the threshold.
-- Once the `requiredShares` is 0 or less than that, then the key can be reconstructed, and the user can use the shares to generate the private key and
-  make further operations on the tKey and manipulate their keys.
+- If the `requiredShares` is greater than 0, then the key cannot be reconstructed, because this
+  means that the user has not yet generated enough shares to meet the threshold.
+- Once the `requiredShares` is 0 or less than that, then the key can be reconstructed, and the user
+  can use the shares to generate the private key and make further operations on the tKey and
+  manipulate their keys.
 
 ```tsx title="Example"
 const { requiredShares } = tKey.getKeyDetails();
 if (requiredShares <= 0) {
-  console.log("All shares are present, you can reconstruct your private key and do operations on the tKey");
+  console.log(
+    "All shares are present, you can reconstruct your private key and do operations on the tKey",
+  );
 } else {
   console.log("You need to generate more shares to reconstruct your private key");
 }
@@ -125,8 +134,8 @@ if (requiredShares <= 0) {
 
 #### `tKey.reconstructKey()`
 
-The function `reconstructKey()` reconstructs the private key of the user from the shares generated. This function returns the private key of the user
-once the threshold has been met.
+The function `reconstructKey()` reconstructs the private key of the user from the shares generated.
+This function returns the private key of the user once the threshold has been met.
 
 ```tsx
 reconstructKey(_reconstructKeyMiddleware?: boolean): Promise<ReconstructedKeyResult>;
@@ -151,7 +160,8 @@ if (requiredShares <= 0) {
 
 #### `tKey.generateNewShare()`
 
-The function `generateNewShare()` generates a new share on the same threshold set by the user. This function returns the new share generated.
+The function `generateNewShare()` generates a new share on the same threshold set by the user. This
+function returns the new share generated.
 
 ```tsx
 generateNewShare(): Promise<GenerateNewShareResult>;
@@ -172,7 +182,8 @@ console.log("New Share Stored on the Browser Local Storage: ", shareStore.newSha
 
 #### `tKey.deleteShare(shareIndex: BNString)`
 
-The function `deleteShare()` deletes a share from the user's shares. This function returns the updated shareStore after the share has been deleted.
+The function `deleteShare()` deletes a share from the user's shares. This function returns the
+updated shareStore after the share has been deleted.
 
 ```tsx
 deleteShare(shareIndex: BNString): Promise<DeleteShareResult>;
@@ -189,30 +200,32 @@ console.log("Share has been deleted", shareStore);
 
 ## Using Modules
 
-For making advanced operations on tKey and to manipulate the keys, you can use the modules provided by tKey. As mentioned in the
-[initialisation](/sdk/core-kit/tkey/initialize) section, you need to configure the modules beforehand to make it work with tKey. Once that is done,
-the instance of the respective module is available within your tKey instance and can be used for further operations.
+For making advanced operations on tKey and to manipulate the keys, you can use the modules provided
+by tKey. As mentioned in the [initialisation](/sdk/core-kit/tkey/initialize) section, you need to
+configure the modules beforehand to make it work with tKey. Once that is done, the instance of the
+respective module is available within your tKey instance and can be used for further operations.
 
 :::tip
 
-Checkout the [Modules](/sdk/core-kit/tkey/modules) section where we have listed all the available modules alongside the functions that can be used
-within them.
+Checkout the [Modules](/sdk/core-kit/tkey/modules) section where we have listed all the available
+modules alongside the functions that can be used within them.
 
 :::
 
 ## Making Blockchain Calls
 
-Once you have generated the private key, you can use it to make blockchain calls. The key generated by tKey is of type `secp256k1`, which is
-compatible with EVM-based blockchains like Ethereum, Polygon, and many others that use the same curve. However, you can also convert this key into
-other curves and utilize it. For example, we have a dedicated package for converting this module to the `ed25519` curve for usage in Solana and other
-blockchains that use this curve.
+Once you have generated the private key, you can use it to make blockchain calls. The key generated
+by tKey is of type `secp256k1`, which is compatible with EVM-based blockchains like Ethereum,
+Polygon, and many others that use the same curve. However, you can also convert this key into other
+curves and utilize it. For example, we have a dedicated package for converting this module to the
+`ed25519` curve for usage in Solana and other blockchains that use this curve.
 
-In addition to that, we have dedicated provider packages for EVM, Solana and XRPL libraries. You can check out their respective documentation in the
-[Providers Section](/sdk/providers/).
+In addition to that, we have dedicated provider packages for EVM, Solana and XRPL libraries. You can
+check out their respective documentation in the [Providers Section](/sdk/providers/).
 
 :::tip
 
-You can checkout our [Connect Blockchain](/connect-blockchain) documentation which has a detailed guide on how to connect to major blockchains out
-there.
+You can checkout our [Connect Blockchain](/connect-blockchain) documentation which has a detailed
+guide on how to connect to major blockchains out there.
 
 :::

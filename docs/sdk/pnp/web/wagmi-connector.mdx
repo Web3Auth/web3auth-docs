@@ -1,7 +1,6 @@
 ---
 title: Wagmi Connector for Web3Auth PnP Web SDKs
 sidebar_label: Wagmi Connector
-displayed_sidebar: sdk
 description: Wagmi Connector for Web3Auth PnP Web SDKs | Documentation - Web3Auth
 ---
 
@@ -11,19 +10,22 @@ import ModalConfig from "@site/src/common/sdk/pnp/web/_modal-config.mdx";
 
 ## [`@web3auth/web3auth-wagmi-connector`](https://npmjs.com/package/@web3auth/web3auth-wagmi-connector)
 
-**wagmi** is a collection of React Hooks containing everything you need to start working with Ethereum. `@web3auth/web3auth-wagmi-connector` is a
-connector for the popular [wagmi](https://github.com/tmm/wagmi) library to help you integrate web3auth plug and play packages. It works with both the
-`@web3auth/no-modal` as well as the `@web3auth/modal` packages.
+**wagmi** is a collection of React Hooks containing everything you need to start working with
+Ethereum. `@web3auth/web3auth-wagmi-connector` is a connector for the popular
+[wagmi](https://github.com/tmm/wagmi) library to help you integrate web3auth plug and play packages.
+It works with both the `@web3auth/no-modal` as well as the `@web3auth/modal` packages.
 
-This package can be used to initialize a [wagmi client](https://wagmi.sh) that will seamlessly manage the interaction(wallet connection state and
-configuration, such as: auto-connection, connectors, and ethers providers) of your dApp with Web3Auth.
+This package can be used to initialize a [wagmi client](https://wagmi.sh) that will seamlessly
+manage the interaction(wallet connection state and configuration, such as: auto-connection,
+connectors, and ethers providers) of your dApp with Web3Auth.
 
 #### This Documentation is based on the `6.0.0` SDK Version.
 
 :::tip DEMO
 
-Checkout the [Modal](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/wagmi-examples) Example Apps to see how wagmi works
-with Web3Auth.
+Checkout the
+[Modal](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/wagmi-examples)
+Example Apps to see how wagmi works with Web3Auth.
 
 :::
 
@@ -89,15 +91,18 @@ export interface Web3AuthConnectorParams {
 
 ## Usage
 
-Since this package acts like a connector, it basically takes in your whole Web3Auth instance and makes it readable for the wagmi library. While
-connecting the web3auth web packages, you need to initialize the Web3Auth Instance as mentioned in the
-[modal docs](/sdk/pnp/web/modal/initialize#example) and [no-modal docs](/sdk/pnp/web/no-modal/initialize#example). You can configure this instance
-with all the options available in Web3Auth Modal package and set it up as you wish.
+Since this package acts like a connector, it basically takes in your whole Web3Auth instance and
+makes it readable for the wagmi library. While connecting the web3auth web packages, you need to
+initialize the Web3Auth Instance as mentioned in the
+[modal docs](/sdk/pnp/web/modal/initialize#example) and
+[no-modal docs](/sdk/pnp/web/no-modal/initialize#example). You can configure this instance with all
+the options available in Web3Auth Modal package and set it up as you wish.
 
 ### Modal SDK
 
-While all the parameters can be passed directly to the instance, the only parameters that remain during the initialisation remains (passed on to the
-`initModal()` function). You can pass these parameters to the `modalConfig` object in the `Web3AuthConnector` class.
+While all the parameters can be passed directly to the instance, the only parameters that remain
+during the initialisation remains (passed on to the `initModal()` function). You can pass these
+parameters to the `modalConfig` object in the `Web3AuthConnector` class.
 
 ```tsx
 modalConfig: {
@@ -117,13 +122,15 @@ modalConfig: {
 
 ### No Modal SDK
 
-While all the parameters can be passed directly to the instance, the only parameters that remain during the login remains (passed on to the
-`connectTo()` function). You can pass these parameters to the `loginParams` object in the `Web3AuthConnector` class.
+While all the parameters can be passed directly to the instance, the only parameters that remain
+during the login remains (passed on to the `connectTo()` function). You can pass these parameters to
+the `loginParams` object in the `Web3AuthConnector` class.
 
 :::warning
 
-It is mandatory to pass `loginParams` object while using the connector with Web3Auth Core package. This is because the `connectTo()` function requires
-params to connect to the adapter/ social login desired by the user.
+It is mandatory to pass `loginParams` object while using the connector with Web3Auth Core package.
+This is because the `connectTo()` function requires params to connect to the adapter/ social login
+desired by the user.
 
 :::
 
@@ -304,12 +311,14 @@ loginParams: {
 
 :::tip examples
 
-Checkout the various [examples](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/wagmi/wagmi-no-modal-example) made for
-the wagmi connector using various UI Kits for better integration and user experience
+Checkout the various
+[examples](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/wagmi/wagmi-no-modal-example)
+made for the wagmi connector using various UI Kits for better integration and user experience
 
 :::
 
-Here are a few examples of a wagmi client using both the `Web3AuthConnector` and the default `InjectedConnector` respectively.
+Here are a few examples of a wagmi client using both the `Web3AuthConnector` and the default
+`InjectedConnector` respectively.
 
 ### Modal SDK
 
@@ -337,7 +346,8 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
   const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
   const web3AuthInstance = new Web3Auth({
-    clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+    clientId:
+      "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
     chainConfig,
     privateKeyProvider,
     uiConfig: {
@@ -390,7 +400,8 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
   const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
   const web3AuthInstance = new Web3AuthNoModal({
-    clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+    clientId:
+      "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
     privateKeyProvider,
     web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   });

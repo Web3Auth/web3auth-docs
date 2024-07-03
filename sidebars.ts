@@ -338,7 +338,6 @@ const sidebars: SidebarsConfig = {
         "auth-provider-setup/auth-provider-setup",
         "auth-provider-setup/verifiers",
         "auth-provider-setup/aggregate-verifier",
-        "auth-provider-setup/authentication-service-providers",
         "auth-provider-setup/byo-jwt-provider",
         {
           type: "category",

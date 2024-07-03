@@ -1,6 +1,6 @@
 ---
 title: Server-Side Verification
-displayed_sidebar: docs
+
 description: "Server-Side Verification | Documentation - Web3Auth"
 ---
 
@@ -8,26 +8,31 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import Tiles from "@theme/Tiles";
 
-Web3Auth's server-side verification feature enables developers to securely authenticate users on the backend by validating the ownership of a wallet
-address. This process involves the use of a JSON Web Token (JWT) issued upon user authentication, which contains claims about the end user, including
+Web3Auth's server-side verification feature enables developers to securely authenticate users on the
+backend by validating the ownership of a wallet address. This process involves the use of a JSON Web
+Token (JWT) issued upon user authentication, which contains claims about the end user, including
 proof of ownership over a wallet public address.
 
-Upon a user's successful connection of their wallet, Web3Auth generates a JWT, signed with a private key using the RS256 algorithm, that is unique to
-your application. This token serves as a verifiable credential that you can use to authenticate the user on your backend.
+Upon a user's successful connection of their wallet, Web3Auth generates a JWT, signed with a private
+key using the RS256 algorithm, that is unique to your application. This token serves as a verifiable
+credential that you can use to authenticate the user on your backend.
 
 ## Implementing Server-Side Verification
 
 To implement server-side verification with Web3Auth:
 
-1. **Retrieve the JWT (`idToken`):** After a user authenticates, capture the `idToken` issued by Web3Auth.
-2. **Verify the JWT:** Use the public key provided by Web3Auth to verify the JWT's authenticity. This step confirms that the token is valid and the
-   information it contains about the user can be trusted.
-3. **Authenticate the User:** Based on the verified claims within the JWT, including wallet address ownership, authenticate the user in your backend
-   system.
+1. **Retrieve the JWT (`idToken`):** After a user authenticates, capture the `idToken` issued by
+   Web3Auth.
+2. **Verify the JWT:** Use the public key provided by Web3Auth to verify the JWT's authenticity.
+   This step confirms that the token is valid and the information it contains about the user can be
+   trusted.
+3. **Authenticate the User:** Based on the verified claims within the JWT, including wallet address
+   ownership, authenticate the user in your backend system.
 
 ## Getting the JWT ID Token
 
-After a user is logged in using one of the supported Wallets, One can obtain the `idToken` by calling the `authenticateUser` function of Web3Auth.
+After a user is logged in using one of the supported Wallets, One can obtain the `idToken` by
+calling the `authenticateUser` function of Web3Auth.
 
 ```tsx
 await web3auth.authenticateUser();
@@ -43,12 +48,14 @@ await web3auth.authenticateUser();
 
 :::tip Extending Beyond Social Logins
 
-Web3Auth's server-side verification extends not only to users authenticated via the provided social logins, but also to those using external wallets.
-This flexibility ensures that dApps can authenticate Web3Auth users in their backend systems, regardless of the authentication method used on the
-frontend.
+Web3Auth's server-side verification extends not only to users authenticated via the provided social
+logins, but also to those using external wallets. This flexibility ensures that dApps can
+authenticate Web3Auth users in their backend systems, regardless of the authentication method used
+on the frontend.
 
-For Web3Auth integrated wallet adapters and social logins, the flow is built into the SDKs, for external wallets, please use the
-[Sign in With Web3](https://siww.web3auth.io/) library built by us to get the `idToken` and verify it on your backend.
+For Web3Auth integrated wallet adapters and social logins, the flow is built into the SDKs, for
+external wallets, please use the [Sign in With Web3](https://siww.web3auth.io/) library built by us
+to get the `idToken` and verify it on your backend.
 
 :::
 
@@ -56,8 +63,8 @@ For Web3Auth integrated wallet adapters and social logins, the flow is built int
 
 :::warning
 
-The External Wallet's `idToken` payload is different than the Social login's `idToken`. During Social logins, we get the user's pub key, and in
-external wallet we get their address.
+The External Wallet's `idToken` payload is different than the Social login's `idToken`. During
+Social logins, we get the user's pub key, and in external wallet we get their address.
 
 :::
 
@@ -115,7 +122,8 @@ By default, Web3Auth returns an `idToken` which contains the `public_key` in the
 
 :::
 
-If you want to encode the public_key in `ed25519` format then you have to pass the curve parameter in OpenloginAdapter as:
+If you want to encode the public_key in `ed25519` format then you have to pass the curve parameter
+in OpenloginAdapter as:
 
 ```tsx
 const openloginAdapter = new OpenloginAdapter({
@@ -156,11 +164,13 @@ const openloginAdapter = new OpenloginAdapter({
 
 ## Utilizing the JWT for Verification
 
-- **JWT Validation:** The associated public key, available on a hosted website provided by Web3Auth, allows you to verify the token's authenticity and
-  integrity. A JWT that can be successfully verified with this public key confirms that the information it contains is trustworthy and has not been
-  altered.
-- **Proof of Wallet Ownership:** The JWT includes a claim that certifies the user's ownership of a specific wallet's public address, enabling a
-  reliable method of user authentication on the server side.
+- **JWT Validation:** The associated public key, available on a hosted website provided by Web3Auth,
+  allows you to verify the token's authenticity and integrity. A JWT that can be successfully
+  verified with this public key confirms that the information it contains is trustworthy and has not
+  been altered.
+- **Proof of Wallet Ownership:** The JWT includes a claim that certifies the user's ownership of a
+  specific wallet's public address, enabling a reliable method of user authentication on the server
+  side.
 
 :::info JWKS endpoint
 
@@ -174,8 +184,8 @@ Please note, the JWKS endpoint for External wallets **is different** from Social
 
 ### Social Login Verification
 
-In order to verify the JWT Token(`idToken`) you need the compressed **app_pub_key** (derived from _**app_scoped_privkey**_) and the `idToken` obtained
-from the `authenticateUser` function.
+In order to verify the JWT Token(`idToken`) you need the compressed **app_pub_key** (derived from
+_**app_scoped_privkey**_) and the `idToken` obtained from the `authenticateUser` function.
 
 :::info
 
@@ -200,7 +210,9 @@ import { getPublicCompressed } from "@toruslabs/eccrypto";
 const app_scoped_privkey = await web3auth.provider?.request({
   method: "eth_private_key", // use "private_key" for other non-evm chains
 });
-const app_pub_key = getPublicCompressed(Buffer.from(app_scoped_privkey.padStart(64, "0"), "hex")).toString("hex");
+const app_pub_key = getPublicCompressed(
+  Buffer.from(app_scoped_privkey.padStart(64, "0"), "hex"),
+).toString("hex");
 
 /* Assuming user is logged in, get the userInfo containtaing idToken */
 const user = await web3auth.getUserInfo();
@@ -262,7 +274,8 @@ if ((jwtDecoded.payload as any).wallets[0].public_key.toLowerCase() === app_pub_
 
 ### External Wallet Verification
 
-In order to verify the JWT Token(`idToken`) you need the wallet's `address` and the `idToken` obtained from the `authenticateUser()`.
+In order to verify the JWT Token(`idToken`) you need the wallet's `address` and the `idToken`
+obtained from the `authenticateUser()`.
 
 #### Getting `address` and `idToken` in Frontend
 
