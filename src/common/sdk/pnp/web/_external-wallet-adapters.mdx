@@ -1,47 +1,34 @@
 #### `configureAdapter(ADAPTER)`
 
-To configure an adapter, create the instance of adapter by using its corresponding package and pass the returned `adapter` instance in
-`configureAdapter` function.
+To configure an adapter, create the instance of the adapter by using its corresponding package and
+pass the returned `adapter` instance in the `configureAdapter` function.
 
 :::tip
 
-Refer to the [Adapters documentation](/sdk/pnp/web/adapters) to know more deeply about what adapters are available and how to configure them.
+Refer to the [Adapters documentation](/sdk/pnp/web/adapters) to know more deeply about what adapters
+are available and how to configure them.
 
 :::
 
 #### Example
 
-If you want to configure the Torus EVM Wallet Adapter
+If you want to configure the Default External Adapter for Solana
 
-- Import the `TorusWalletAdapter` from `@web3auth/torus-evm-adapter` package
-- Create an instance of the adapter along with the configuration
-- Pass the returned instance in to `web3auth.configureAdapter`
+- Import the `getDefaultExternalAdapters` from `@web3auth/default-solana-adapter` package
+- Get all the adapters in the `adapters` variable as an array of `IAdapter`.
+- Iterate over the `adapters` array and configure each adapter using `configureAdapter` function.
 
 ```javascript
-import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
+import { getDefaultExternalAdapters } from "@web3auth/default-solana-adapter"; // All default Solana Adapters
 
-const torusAdapter = new TorusWalletAdapter({
-  adapterSettings: {
-    clientId, //Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
-    buttonPosition: "bottom-left",
-  },
-  loginSettings: {
-    verifier: "google",
-  },
-  initParams: {
-    buildEnv: "testing",
-  },
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth", // This is the mainnet RPC we have added, please pass on your own endpoint while creating an app
-    displayName: "Ethereum Mainnet",
-    blockExplorerUrl: "https://etherscan.io/",
-    ticker: "ETH",
-    tickerName: "Ethereum",
-    logo: "https://images.toruswallet.io/eth.svg",
+// Setup external adapters
+const adapters = await getDefaultExternalAdapters({
+  options: {
+    clientId,
+    chainConfig,
   },
 });
-
-web3auth.configureAdapter(torusAdapter);
+adapters.forEach((adapter) => {
+  web3auth.configureAdapter(adapter);
+});
 ```
