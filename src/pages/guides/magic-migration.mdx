@@ -33,14 +33,14 @@ Both Web3Auth and Magic have made significant strides in addressing the Web3 onb
 However, Web3Auth stands out by offering more customizable authentication options, along with
 superior support for multi-chain and multi-platform integrations.
 
-| Parameter              | Magic                                                                                             | Web3Auth                                                                                                                                                                                       |
-| ---------------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Wallet Management      | Magic uses the HSM wallet to manage user's private key which doesn't make it fully non-custodial. | Web3Auth uses SSS and MPC TSS to manage user's private key, which is fully non custodial implementation.                                                                                       |
-| Multi-chain support    | Magic as of now only supports 25+ blockchains as per their docs.                                  | Web3Auth is chain agnostic, it supports both secp256k1 and ed25519 curves which means it can be integrated with any chain that uses these curves.                                              |
-| Multi-platform support | Magic supports multi-platform including Web, Android, Flutter, iOS, Unity, and React native.      | Web3Auth supports multiple platforms, including Web, React Native, Unity, Unreal, Flutter, Swift, and Android. [Checkout documentation for more details](/docs/sdk?product=Plug%20and%20Play). |
-| Additional Features    | Magic provides additional features as NFT services for free minting and checkout.                 | Web3Auth also offers additional services such as NFT checkout, Fiat On Ramp, and Prebuilt Wallet UI. All of these services could be added in your project with few lines code.                 |
-| Ease of Integration    | Magic is easy to integrate where basic integration takes less than 15 minutes                     | Web3Auth is also easy to integrate where basic integration takes less than 15 minutes.                                                                                                         |
-| Whitelabel             | Magic has limited white-labelling options.                                                        | Web3Auth also has end to end white-labelling options.                                                                                                                                          |
+| Parameter              | Magic                                                                                                                              | Web3Auth                                                                                                                                                                                       |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Wallet Management      | Magic uses the HSM wallet to manage user's private key which doesn't make it fully non-custodial, and has single point of failure. | Web3Auth supports SSS and MPC TSS based key management, distributed across a network of nodes, with no single point of failure.                                                                |
+| Multi-chain support    | Magic as of now only supports 25+ blockchains as per their docs.                                                                   | Web3Auth is chain agnostic. Moreover, Web3Auth MPC TSS also supports both curves to integrate all supported chains using secp256k1 and ed25519 curves                                          |
+| Multi-platform support | Magic supports multi-platform including Web, Android, Flutter, iOS, Unity, and React native.                                       | Web3Auth supports multiple platforms, including Web, React Native, Unity, Unreal, Flutter, Swift, and Android. [Checkout documentation for more details](/docs/sdk?product=Plug%20and%20Play). |
+| Additional Features    | Magic provides additional features as NFT services for free minting and checkout.                                                  | Web3Auth also offers additional services such as NFT checkout, Fiat On Ramp, and Prebuilt Wallet UI. All of these services could be added in your project with few lines code.                 |
+| Ease of Integration    | Magic is easy to integrate where basic integration takes less than 15 minutes                                                      | Web3Auth is also easy to integrate where basic integration takes less than 15 minutes.                                                                                                         |
+| Whitelabel             | Magic has limited white-labelling options.                                                                                         | Web3Auth also has end to end white-labelling options.                                                                                                                                          |
 
 ## How to migrate to Web3Auth
 
@@ -126,9 +126,15 @@ Again, DYOR.
 
 #### Using MPC Core Kit SDK
 
-Using the MPC Core Kit is the recommended approach for migrating users. If you have existing users
-with a Magic's embedded wallet, you can seamlessly transition them to Web3Auth while retaining the
-same account.
+If you have existing users with a Magic's embedded wallet, you can seamlessly transition them to
+Web3Auth while retaining the same account.
+
+:::note
+
+Using the MPC Core Kit is the recommended approach for migrating users from Magic's embedded wallet
+to Web3Auth.
+
+:::
 
 The first step is to export the Magic's embedded wallet private key. To do this, you can use the
 `revealPrivateKey` method. This will open the modal for users to copy their private key.
