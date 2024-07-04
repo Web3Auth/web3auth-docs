@@ -10,6 +10,8 @@ import ShowWCScanner from "@site/src/common/sdk/pnp/web/_plugin-showwcscanner.md
 import ShowWalletUi from "@site/src/common/sdk/pnp/web/_plugin-show-wallet-ui.mdx";
 import PluginWhitelabelConfig from "@site/src/common/sdk/pnp/web/_plugin-whitelabel-config.mdx";
 import PluginsExample from "@site/src/common/sdk/pnp/web/_plugins-example.mdx";
+import UIConfirmation from "@site/src/common/sdk/pnp/web/_plugin-ui-confirmation.mdx";
+import ChainConfigDropdown from "@site/docs/sdk/wallet-services/ChainConfigDropdown";
 
 ### [`@web3auth/wallet-services-plugin`](https://npmjs.com/package/@web3auth/wallet-services-plugin)
 
@@ -17,7 +19,7 @@ Wallet Services Plugin Enable allows your application to use templated wallet UI
 control of and personalize the wallet interface, and optionally, activate an embedded wallet for
 your users.
 
-**This Documentation is based on the `8.6.1` SDK Version.**
+**This Documentation is based on the `8.7.0` SDK Version.**
 
 :::note Note
 
@@ -87,6 +89,34 @@ web3AuthInstance.addPlugin(walletServicesPlugin);
 
 <ShowWalletUi />
 
+### `personal-sign` with UI confirmation screen
+
+<UIConfirmation />
+
+### Private Key export with Wallet Services
+
+Go to `Privacy & Security` under `Settings` in the Wallet UI to export your private key. Available
+from version `8.7.0`.
+
+![Private Key export screen](/images/ws-pvt-key-export.png)
+
+### Toggle testnet visibility in Wallet Services
+
+You can toggle the testnet visibility in the Wallet Services UI by going to `Settings`, then
+`General`. Available from version `8.7.0`.
+
+![Testnet visibility toggle](/images/ws-ui-toggle-testnet.png)
+
+:::info
+
+If you don't pass the `name` and `chainId` for a specific chain as listed in the dropdown below, the
+chain will appear twice in the wallet services UI dropdown: once by default and once with the name
+you provided.
+
+<ChainConfigDropdown />
+
+:::
+
 ## Using with Web3Auth Modal
 
 ```javascript
@@ -118,7 +148,11 @@ const web3AuthOptions = {
 
 const web3auth = new Web3Auth(web3AuthOptions as Web3AuthOptions);
 
-const walletServicesPlugin = new WalletServicesPlugin();
+const walletServicesPlugin = new WalletServicesPlugin({
+  walletInitOptions: {
+    confirmationStrategy: "modal",
+  },
+});
 web3auth.addPlugin(walletServicesPlugin); // Add the plugin to web3auth
 
 // Show the wallet services plugin
@@ -129,4 +163,24 @@ await walletServicesPlugin.showWalletConnectScanner();
 
 // Show the checkout
 await walletServicesPlugin.showCheckout();
+
+// Sign a message using the `personal_sign` method with a UI confirmation screen
+const signMessageUi = async () => {
+  if (!web3auth.provider) {
+    console.log("provider not initialized yet");
+    return;
+  }
+  const message = "Example `personal_sign` message";
+  const accounts = await web3auth.provider.request<never, string[]>({ method: "eth_accounts" });
+  const from = accounts[0];
+  const signedMessage = await walletServicesPlugin?.proxyProvider?.request<
+    [string, string],
+    string
+  >({
+    method: "personal_sign",
+    params: [message, from],
+  });
+  console.log(signedMessage);
+};
+await signMessageUi();
 ```
