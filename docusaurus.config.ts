@@ -509,6 +509,12 @@ const config: Config = {
           if (existingPath.includes("/guides/")) {
             return [existingPath.replace("/guides/", "/content-hub/guides/")];
           }
+          if (existingPath.includes("/sdk/pnp/web/providers/")) {
+            return [existingPath.replace("/sdk/pnp/web/providers/", "/sdk/providers/")];
+          }
+          if (existingPath.includes("/sdk/pnp/web/wallet-services/")) {
+            return [existingPath.replace("/sdk/pnp/web/wallet-services/", "/sdk/wallet-services/")];
+          }
           if (existingPath.includes("/pnp/features/whitelabel/")) {
             return [existingPath.replace("/features/whitelabel", "/pnp/features/whitelabel/")];
           }
@@ -519,15 +525,6 @@ const config: Config = {
             return [
               existingPath.replace("/sdk", "/api-reference"),
               existingPath.replace("/sdk", "/sdk-reference"),
-            ];
-          }
-          if (existingPath.includes("/sdk")) {
-            return [
-              existingPath.replace("/migration-guide/", "/migration-guides/no-modal-v5-to-v6"),
-              existingPath.replace(
-                "/migration-guide/migrating-to-v6-from-v5",
-                "/migration-guides/no-modal-v5-to-v6",
-              ),
             ];
           }
           // if (existingPath.includes("/auth-provider-setup")) {

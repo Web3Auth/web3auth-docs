@@ -115,6 +115,44 @@ function coreKitTopNavButton(selectedSDK: string): string {
     </div>`;
 }
 
+const sdkQuickLinks: any = [
+  {
+    type: "html",
+    value: "<span class='sidebarHeading'>Additional Reading</span>",
+    defaultStyle: true,
+  },
+  {
+    type: "link",
+    label: "Quick Start",
+    href: "/quick-start",
+  },
+  {
+    type: "link",
+    label: "Examples",
+    href: "/examples",
+  },
+  {
+    type: "link",
+    label: "Auth Provider Setup",
+    href: "/auth-provider-setup",
+  },
+  {
+    type: "link",
+    label: "Connect Blockchain",
+    href: "/connect-blockchain",
+  },
+  {
+    type: "link",
+    label: "Troubleshooting",
+    href: "/troubleshooting",
+  },
+  {
+    type: "link",
+    label: "Dashboard Setup",
+    href: "/dashboard-setup",
+  },
+];
+
 const sidebars: SidebarsConfig = {
   docs: [
     {
@@ -174,7 +212,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "html",
-      value: `<a class='sidebarLink' href="/docs/sdk/pnp">
+      value: `<a class='sidebarLink' href="/docs/sdk">
 
       <svg width="20" height="21" viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -311,7 +349,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "html",
-      value: `<a class='sidebarLink' href="/docs/sdk/pnp">
+      value: `<a class='sidebarLink' href="/docs/sdk">
 
       <svg width="20" height="21" viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -339,6 +377,17 @@ const sidebars: SidebarsConfig = {
         "auth-provider-setup/verifiers",
         "auth-provider-setup/aggregate-verifier",
         "auth-provider-setup/byo-jwt-provider",
+        {
+          type: "category",
+          label: "Authentication Service Providers",
+          items: [
+            "auth-provider-setup/authentication-service-providers/auth0-service-provider",
+            "auth-provider-setup/authentication-service-providers/aws-cognito-service-provider",
+            "auth-provider-setup/authentication-service-providers/firebase-service-provider",
+          ],
+          collapsible: true,
+          collapsed: false,
+        },
         {
           type: "category",
           label: "Social Providers",
@@ -661,6 +710,7 @@ const sidebars: SidebarsConfig = {
             "connect-blockchain/other/other",
             "connect-blockchain/other/algorand",
             "connect-blockchain/other/aptos",
+            "connect-blockchain/other/bitcoin",
             "connect-blockchain/other/cosmos",
             "connect-blockchain/other/immutablex",
             "connect-blockchain/other/near",
@@ -741,6 +791,7 @@ const sidebars: SidebarsConfig = {
         "sdk/pnp/web/modal/install",
         "sdk/pnp/web/modal/initialize",
         "sdk/pnp/web/modal/usage",
+        "sdk/pnp/web/modal/modal-hooks",
         {
           type: "category",
           collapsible: true,
@@ -754,16 +805,6 @@ const sidebars: SidebarsConfig = {
             "sdk/pnp/web/modal/show-wallet-connect",
           ],
         },
-        {
-          type: "link",
-          label: "Support Forum",
-          href: "https://web3auth.io/community/c/help-pnp/pnp-modal/7",
-        },
-        {
-          type: "link",
-          label: "Release Notes",
-          href: "https://github.com/Web3Auth/web3auth-web/releases",
-        },
       ],
     },
     {
@@ -774,6 +815,7 @@ const sidebars: SidebarsConfig = {
         "sdk/pnp/web/no-modal/install",
         "sdk/pnp/web/no-modal/initialize",
         "sdk/pnp/web/no-modal/usage",
+        "sdk/pnp/web/no-modal/no-modal-hooks",
         {
           type: "category",
           collapsible: true,
@@ -786,16 +828,6 @@ const sidebars: SidebarsConfig = {
             "sdk/pnp/web/no-modal/initiate-topup",
             "sdk/pnp/web/no-modal/show-wallet-connect",
           ],
-        },
-        {
-          type: "link",
-          label: "Support Forum",
-          href: "https://web3auth.io/community/c/help-pnp/pnp-no-modal/15",
-        },
-        {
-          type: "link",
-          label: "Release Notes",
-          href: "https://github.com/Web3Auth/web3auth-web/releases",
         },
       ],
     },
@@ -819,34 +851,42 @@ const sidebars: SidebarsConfig = {
         "sdk/pnp/web/adapters/solflare",
       ],
     },
+    {
+      type: "category",
+      label: "Wallet Services Plugin",
+      items: [
+        "sdk/pnp/web/wallet-services/wallet-services",
+        "sdk/pnp/web/wallet-services/usage",
+        "sdk/pnp/web/wallet-services/wallet-services-hooks",
+      ],
+    },
+    {
+      type: "category",
+      label: "Providers",
+      items: [
+        "sdk/pnp/web/providers/providers",
+        "sdk/pnp/web/providers/evm",
+        "sdk/pnp/web/providers/solana",
+        "sdk/pnp/web/providers/xrpl",
+        "sdk/pnp/web/providers/common",
+      ],
+    },
     "sdk/pnp/web/wagmi-connector",
-    "sdk/wallet-services/wallet-services",
+
     {
       type: "link",
       label: "Playground",
       href: "https://w3a.link/pnp-playground",
     },
     {
-      type: "category",
-      label: "Providers",
-      collapsed: false,
-      items: [
-        "sdk/providers/providers",
-        "sdk/providers/evm",
-        "sdk/providers/solana",
-        "sdk/providers/xrpl",
-        "sdk/providers/common",
-        {
-          type: "link",
-          label: "Support Forum",
-          href: "https://web3auth.io/community/c/help-pnp/4",
-        },
-        {
-          type: "link",
-          label: "Release Notes",
-          href: "https://github.com/Web3Auth/web3auth-web/releases",
-        },
-      ],
+      type: "link",
+      label: "Support Forum",
+      href: "https://web3auth.io/community/c/help-pnp/pnp-web/7",
+    },
+    {
+      type: "link",
+      label: "Release Notes",
+      href: "https://github.com/Web3Auth/web3auth-web/releases",
     },
     {
       type: "category",
@@ -872,6 +912,7 @@ const sidebars: SidebarsConfig = {
         },
       ],
     },
+    ...sdkQuickLinks,
   ],
   sdk_pnp_android: [
     {
@@ -897,6 +938,11 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "link",
+      label: "Playground",
+      href: "https://w3a.link/pnp-android-playground",
+    },
+    {
+      type: "link",
       label: "Support Forum",
       href: "https://web3auth.io/community/c/help-pnp/pnp-android/16",
     },
@@ -917,6 +963,7 @@ const sidebars: SidebarsConfig = {
         "migration-guides/android-v7.2-to-v7.3",
       ],
     },
+    ...sdkQuickLinks,
   ],
   sdk_pnp_ios: [
     {
@@ -942,6 +989,11 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "link",
+      label: "Playground",
+      href: "https://w3a.link/pnp-ios-playground",
+    },
+    {
+      type: "link",
       label: "Support Forum",
       href: "https://web3auth.io/community/c/help-pnp/pnp-ios/17",
     },
@@ -961,6 +1013,7 @@ const sidebars: SidebarsConfig = {
         "migration-guides/ios-v8.2-to-v8.3",
       ],
     },
+    ...sdkQuickLinks,
   ],
   sdk_pnp_react_native: [
     {
@@ -985,6 +1038,17 @@ const sidebars: SidebarsConfig = {
       ],
     },
     {
+      type: "category",
+      label: "Providers",
+      items: [
+        "sdk/pnp/react-native/providers/providers",
+        "sdk/pnp/react-native/providers/evm",
+        "sdk/pnp/react-native/providers/solana",
+        "sdk/pnp/react-native/providers/xrpl",
+        "sdk/pnp/react-native/providers/common",
+      ],
+    },
+    {
       type: "link",
       label: "Support Forum",
       href: "https://web3auth.io/community/c/help-pnp/pnp-rn/19",
@@ -994,11 +1058,22 @@ const sidebars: SidebarsConfig = {
       label: "Release Notes",
       href: "https://github.com/Web3Auth/web3auth-react-native-sdk/releases",
     },
+    // {
+    //   type: "link",
+    //   label: "Playground Android",
+    //   href: "https://w3a.link/pnp-rn-android-playground",
+    // },
+    // {
+    //   type: "link",
+    //   label: "Playground iOS",
+    //   href: "https://w3a.link/pnp-rn-ios-playground",
+    // },
     {
       type: "category",
       label: "Migration Guides",
       items: ["migration-guides/rn-v4-to-v5", "migration-guides/rn-v3-to-v4"],
     },
+    ...sdkQuickLinks,
   ],
   sdk_pnp_flutter: [
     {
@@ -1047,6 +1122,7 @@ const sidebars: SidebarsConfig = {
       label: "Migration Guides",
       items: ["migration-guides/flutter-v3-to-v4"],
     },
+    ...sdkQuickLinks,
   ],
   sdk_pnp_unity: [
     {
@@ -1080,6 +1156,7 @@ const sidebars: SidebarsConfig = {
       label: "Release Notes",
       href: "https://github.com/Web3Auth/web3auth-unity-sdk/releases",
     },
+    ...sdkQuickLinks,
   ],
   sdk_pnp_unreal: [
     {
@@ -1112,6 +1189,7 @@ const sidebars: SidebarsConfig = {
       label: "Release Notes",
       href: "https://github.com/Web3Auth/web3auth-unreal-sdk/releases",
     },
+    ...sdkQuickLinks,
   ],
   sdk_core_kit_sfa_web: [
     {
@@ -1124,22 +1202,31 @@ const sidebars: SidebarsConfig = {
     "sdk/core-kit/sfa-web/initialize",
     "sdk/core-kit/sfa-web/authentication",
     "sdk/core-kit/sfa-web/usage",
+    "sdk/core-kit/sfa-web/passkeys-sfa",
+    {
+      type: "category",
+      label: "Providers",
+      items: [
+        "sdk/core-kit/sfa-web/providers/providers",
+        "sdk/core-kit/sfa-web/providers/evm",
+        "sdk/core-kit/sfa-web/providers/solana",
+        "sdk/core-kit/sfa-web/providers/xrpl",
+        "sdk/core-kit/sfa-web/providers/common",
+      ],
+    },
+    {
+      type: "category",
+      label: "Wallet Services Plugin",
+      items: [
+        "sdk/core-kit/sfa-web/wallet-services/wallet-services",
+        "sdk/core-kit/sfa-web/wallet-services/usage",
+        "sdk/core-kit/sfa-web/wallet-services/wallet-services-hooks",
+      ],
+    },
     {
       type: "link",
       label: "Playground",
       href: "https://demo-sfa.web3auth.io",
-    },
-    {
-      type: "category",
-      label: "Providers",
-      collapsed: false,
-      items: [
-        "sdk/providers/providers",
-        "sdk/providers/evm",
-        "sdk/providers/solana",
-        "sdk/providers/xrpl",
-        "sdk/providers/common",
-      ],
     },
     {
       type: "link",
@@ -1151,6 +1238,7 @@ const sidebars: SidebarsConfig = {
       label: "Release Notes",
       href: "https://github.com/web3auth/single-factor-auth-web/releases",
     },
+    ...sdkQuickLinks,
   ],
   sdk_core_kit_sfa_android: [
     {
@@ -1173,6 +1261,7 @@ const sidebars: SidebarsConfig = {
       label: "Release Notes",
       href: "https://github.com/web3auth/single-factor-auth-android/releases",
     },
+    ...sdkQuickLinks,
   ],
   sdk_core_kit_sfa_ios: [
     {
@@ -1201,6 +1290,7 @@ const sidebars: SidebarsConfig = {
       label: "Migration Guides",
       items: ["migration-guides/sfa-ios-v2-to-v4"],
     },
+    ...sdkQuickLinks,
   ],
   sdk_core_kit_sfa_react_native: [
     {
@@ -1214,6 +1304,17 @@ const sidebars: SidebarsConfig = {
     "sdk/core-kit/sfa-react-native/authentication",
     "sdk/core-kit/sfa-react-native/usage",
     {
+      type: "category",
+      label: "Providers",
+      items: [
+        "sdk/core-kit/sfa-react-native/providers/providers",
+        "sdk/core-kit/sfa-react-native/providers/evm",
+        "sdk/core-kit/sfa-react-native/providers/solana",
+        "sdk/core-kit/sfa-react-native/providers/xrpl",
+        "sdk/core-kit/sfa-react-native/providers/common",
+      ],
+    },
+    {
       type: "link",
       label: "Support Forum",
       href: "https://web3auth.io/community/c/help-core-kit/sfa-react-native-sdk/32",
@@ -1223,6 +1324,7 @@ const sidebars: SidebarsConfig = {
       label: "Release Notes",
       href: "https://github.com/Web3Auth/single-factor-auth-react-native/releases",
     },
+    ...sdkQuickLinks,
   ],
   sdk_core_kit_sfa_flutter: [
     {
@@ -1251,6 +1353,7 @@ const sidebars: SidebarsConfig = {
       label: "Migration Guides",
       items: ["migration-guides/sfa-flutter-v1-to-v2"],
     },
+    ...sdkQuickLinks,
   ],
   sdk_core_kit_sfa_node: [
     {
@@ -1273,6 +1376,7 @@ const sidebars: SidebarsConfig = {
       label: "Release Notes",
       href: "https://github.com/web3auth/web3auth-backend/releases",
     },
+    ...sdkQuickLinks,
   ],
   sdk_core_kit_mpc_js: [
     {
@@ -1289,8 +1393,10 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Providers",
-      collapsed: false,
-      items: ["sdk/providers/providers", "sdk/providers/evm-mpc"],
+      items: [
+        "sdk/core-kit/mpc-core-kit/providers/providers",
+        "sdk/core-kit/mpc-core-kit/providers/evm",
+      ],
     },
     {
       type: "link",
@@ -1307,6 +1413,7 @@ const sidebars: SidebarsConfig = {
       label: "Migration Guides",
       items: ["migration-guides/mpc-core-kit-web-v2-to-v3"],
     },
+    ...sdkQuickLinks,
   ],
   sdk_core_kit_tkey_js: [
     {
@@ -1357,6 +1464,7 @@ const sidebars: SidebarsConfig = {
       label: "Release Notes",
       href: "https://github.com/tkey/tkey/releases",
     },
+    ...sdkQuickLinks,
   ],
   sdk_core_kit_tkey_ios: [
     {
@@ -1390,6 +1498,7 @@ const sidebars: SidebarsConfig = {
       label: "Release Notes",
       href: "https://github.com/tkey/tkey-ios/releases",
     },
+    ...sdkQuickLinks,
   ],
   sdk_core_kit_tkey_android: [
     {
@@ -1423,6 +1532,7 @@ const sidebars: SidebarsConfig = {
       label: "Release Notes",
       href: "https://github.com/tkey/tkey-android/releases",
     },
+    ...sdkQuickLinks,
   ],
 
   wallet_ecosystems: [
