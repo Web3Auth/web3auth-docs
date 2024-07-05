@@ -1,0 +1,273 @@
+---
+title: MPC CoreKit Web SDK - v2 to v3
+displayed_sidebar: sdk
+description: "MPC CoreKit Web SDK - v2 to v3 | Documentation - Web3Auth"
+sidebar_label: v2 to v3
+---
+
+# Migration Guide from v2 to v3 for MPC CoreKit Web SDK
+
+## Overview
+
+This migration guide provides steps for upgrading from version v2 to v3 of the Web3Auth MPC CoreKit
+Web SDK. The guide outlines significant changes and enhancements, including the support of
+`ed25519`.
+
+## Changes in Detail
+
+### `ed25519` Support
+
+We are happy to announce that with v3, Web3AuthMPCCoreKit will support the `ed25519` curve. Starting
+from v3, developers can use the MPC TSS capabilities with the Blockchain ecosystem which uses the
+`ed25519` curve.
+
+```tsx
+// Important to use tss-frost-lib for ed25519 KeyType
+import { tssLib } from "@toruslabs/tss-frost-lib";
+
+const coreKitInstance = new Web3AuthMPCCoreKit({
+  web3AuthClientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  storage: window.localStorage,
+  manualSync: true,
+  tssLib,
+});
+
+// Get ed25519 PublicKey
+const pubKey = coreKitInstance.getPubKeyEd25519();
+
+// Solana address
+const address = base58.encode(Uint8Array.from(pubKey));
+
+// Sign message
+const msg = Buffer.from("Welcome to Web3Auth");
+const sig = await this.coreKitInstance.sign(msg);
+```
+
+### Breaking change in Web3AuthOptions
+
+In v3, we try to improve the developer experience by removing `chainConfig`, `setupProviderOnInit`,
+`storageKey`, and `asyncStorageKey` parameters. Developers must now use the mandatory `storage`
+parameter for both async storage and local storage.
+
+Along with that, `tssLib` is now a mandatory parameter to define the tss signing library to use.
+This helps us make the integration consistent across web and react native and make the library
+lighter
+
+#### Before (v2):
+
+```tsx
+const coreKitInstance = new Web3AuthMPCCoreKit({
+  web3AuthClientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  manualSync: true,
+});
+```
+
+#### After (v3):
+
+```tsx
+const coreKitInstance = new Web3AuthMPCCoreKit({
+  web3AuthClientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  manualSync: true, // This is the recommended approach
+  // highlight-start
+  tssLib: tssLib,
+  storage: window.storage,
+  // highlight-end
+});
+```
+
+### `getWebBrowserFactor` method
+
+In v3, the `getWebBrowserFactor` is removed. Developers can now use `getDeviceFactor` the common
+method for web and react-native, to retrieve user's device factor if available.
+
+#### Before (v2):
+
+In v2, we used `getWebBrowserFactor` to retrieve the factor from the Web Local/Session Storage.
+
+```tsx
+import { getWebBrowserFactor } from "@web3auth/mpc-core-kit";
+
+const factorKey = await getWebBrowserFactor(coreKitInstance!);
+```
+
+#### After (v3):
+
+In v3, you can now use the `getDeviceFactor` method to retrive user's device factor.
+
+```tsx
+const factor = await coreKitInstance.getDeviceFactor();
+```
+
+### `storeWebBrowserFactor` method
+
+In v3, the `storeWebBrowserFactor` is removed. Developers can now use `setDeviceFactor` to store the
+user's device factor.
+
+#### Before (v2):
+
+In v2, we used `storeWebBrowserFactor` to store the device factor in the Web Local/Session Storage.
+
+```tsx
+import bowser from "bowser";
+import { storeWebBrowserFactor } from "@web3auth/mpc-core-kit";
+
+const browserInfo = bowser.parse(navigator.userAgent);
+const browserName = `${browserInfo.browser.name}`;
+const browserData = {
+  browserName,
+  browserVersion: browserInfo.browser.version,
+  deviceName: browserInfo.os.name,
+};
+
+const deviceFactorKey = new BN(
+  await coreKitInstance.createFactor({
+    shareType: TssShareType.DEVICE,
+    additionalMetadata: browserData,
+  }),
+  "hex",
+);
+
+storeWebBrowserFactor(deviceFactorKey, coreKitInstance);
+```
+
+#### After (v3):
+
+In v3, you can now use the `setDeviceFactor` method to store user's device factor.
+
+```tsx
+import bowser from "bowser";
+
+const browserInfo = bowser.parse(navigator.userAgent);
+const browserName = `${browserInfo.browser.name}`;
+const browserData = {
+  browserName,
+  browserVersion: browserInfo.browser.version,
+  deviceName: browserInfo.os.name,
+};
+
+const deviceFactorKey = new BN(
+  await coreKitInstance.createFactor({
+    shareType: TssShareType.DEVICE,
+    additionalMetadata: browserData,
+  }),
+  "hex",
+);
+
+// highlight-next-line
+const factor = await coreKitInstance.setDeviceFactor(deviceFactorKey);
+```
+
+### `metadatakey` property
+
+In v3, the `metadatakey` is now removed. Developers can now use `Web3AuthState.postBoxKey` to access
+the postBoxKey for the account.
+
+#### Before (v2):
+
+In v2, we used `Web3AuthMPCCoreKit.metadatakey` to retrieve the user's postBoxKey.
+
+```tsx
+const key = await coreKitInstance.metadatakey;
+```
+
+#### After (v3):
+
+In v3, you can now use the `Web3AuthState.postBoxKey` property to retrive user's postBoxKey.
+
+```tsx
+const key = await coreKitInstance.state.postBoxKey;
+```
+
+### `loginWithOauth` method
+
+In v3, the `loginWithOauth` is now renamed to `loginWithOAuth`.
+
+#### Before (v2):
+
+```tsx
+import { Web3AuthMPCCoreKit, SubVerifierDetailsParams } from "@web3auth/mpc-core-kit";
+
+const verifierConfig = {
+  subVerifierDetails: {
+    typeOfLogin: "google",
+    verifier: "w3a-google-demo",
+    clientId: "YOUR_GOOGLE_CLIENT_ID",
+  },
+} as SubVerifierDetailsParams;
+
+await coreKitInstance.loginWithOauth(verifierConfig);
+```
+
+#### After (v3):
+
+```tsx
+import { Web3AuthMPCCoreKit, SubVerifierDetailsParams } from "@web3auth/mpc-core-kit";
+
+const verifierConfig = {
+  subVerifierDetails: {
+    typeOfLogin: "google",
+    verifier: "w3a-google-demo",
+    clientId: "YOUR_GOOGLE_CLIENT_ID",
+  },
+} as SubVerifierDetailsParams;
+
+// highlight-next-line
+await coreKitInstance.loginWithOAuth(verifierConfig);
+```
+
+### `loginWithJWT` method
+
+In v3, the `IdTokenLoginParams` accepted by `loginWithJWT` method is now renamed to
+`JWTLoginParams`.
+
+#### Before (v2):
+
+```tsx
+const idTokenLoginParams = {
+  verifier: "w3a-firebase-demo",
+  verifierId: parsedToken.email,
+  idToken,
+} as IdTokenLoginParams;
+
+await coreKitInstance.loginWithJWT(idTokenLoginParams);
+```
+
+#### After (v3):
+
+```tsx
+const jwtLoginParams = {
+  verifier: "w3a-firebase-demo",
+  verifierId: parsedToken.email,
+  idToken,
+} as JWTLoginParams;
+
+await coreKitInstance.loginWithJWT(jwtLoginParams);
+```
+
+### EthereumSigningProvider
+
+Starting v3, `setupProvider` method will accept `EthereumSigner` interface with `sign`, and
+`getPublic` methods. Additionally to make it easy for developers we have added `makeEthereumSigner`
+helper function.
+
+#### Before (v2):
+
+```tsx
+import { EthereumSigningProvider } from "@web3auth/ethereum-mpc-provider";
+
+const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
+evmProvider.setupProvider(coreKitInstance);
+```
+
+#### After (v3):
+
+```tsx
+import { makeEthereumSigner } from "@web3auth/mpc-core-kit";
+import { EthereumSigningProvider } from "@web3auth/ethereum-mpc-provider";
+
+const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
+evmProvider.setupProvider(makeEthereumSigner(coreKitInstance));
+```

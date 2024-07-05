@@ -5,43 +5,62 @@ displayed_sidebar: sdk
 description: "Web3Auth MPC Core Kit JS SDK - Install | Documentation - Web3Auth"
 ---
 
-## [`@web3auth/mpc-core-kit`](https://npmjs.com/package/@web3auth/mpc-core-kit)
+The MPC Core Kit JS SDK contains multiple packages that are needed to enable different
+functionalities of the MPC Core Kit JS SDK. You can choose the packages you want to install
+according to the functionalities you want to enable in your application. In this doc we have
+highlighted all of the packages and their functionalities.
 
-```bash npm2yarn
-npm install --save @web3auth/mpc-core-kit
-```
+## Base MPC Core Kit Package
 
 This package gives access to common types and interfaces for Web3Auth. This comes in handy by
 providing you a standard way of importing the values you need to work with the SDKs. We highly
 recommend using it while working with `Typescript`.
 
-## Helper SDKs
+```bash npm2yarn
+npm install @web3auth/mpc-core-kit
+```
 
-### Provider packages
-
-For making RPC calls within your dApp, Web3Auth exposes respective providers for different chains.
-This provider can be used to interact with the connected chain using exposed functions within the
-provider.
-
-:::tip
-
-Checkout the [Providers SDK Reference](/sdk/providers) to learn more.
-
-- [For EVM based Chains `@web3auth/ethereum-mpc-provider`](/sdk/providers/evm-mpc)
-
-:::
-
-### Common Types and Interfaces
-
-#### [`@web3auth/base`](https://npmjs.com/package/@web3auth/base)
+## Common Types and Interfaces
 
 This package gives access to common types and interfaces for Web3Auth. This comes in handy by
 providing you a standard way of importing the values you need to work with the SDKs. We highly
 recommend using it while working with Typescript.
 
-## Troubleshooting
+```bash npm2yarn
+npm install @web3auth/base
+```
 
-### Bundler Issues: Missing Dependencies
+## ECDSA Signing
+
+This packages gives you support for DKLS threshold signing which is used to generate the ECSDA
+signature. The ECDSA signatures can be used for blockchain applications which uses secp256k1 curve
+such as Bitcoin, Ethereum, and etc.
+
+```bash npm2yarn
+npm install @toruslabs/tss-dkls-lib
+```
+
+## EthereumSigningProvider
+
+This package gives EIP1193 compatible Ethereum signing provider. This provider is used to make calls
+to the selected blockchain, and can be used with `web3.js`, `ethers.js`, or `viem` to make
+integration with Ethereum-compatible chains more easier.
+
+```bash npm2yarn
+npm install @web3auth/ethereum-mpc-provider
+```
+
+## EdDSA Signing
+
+This packages gives you support for FROST threshold signing which is used to generate the EdDSA
+signature. The EdDSA signature can be used for blockchain applications which use ed25519 curve such
+as Solana, Aptos, and etc.
+
+```bash npm2yarn
+npm install @toruslabs/tss-frost-lib
+```
+
+## Troubleshooting
 
 You might face issues mentioning that certain dependencies are missing within the browser
 environment. These are node dependencies that need to be polyfilled in your application, to enable
