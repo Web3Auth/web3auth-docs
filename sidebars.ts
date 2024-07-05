@@ -115,7 +115,7 @@ const sidebars: SidebarsConfig = {
     "features/mpc",
     "features/mobile",
     "features/nft-services",
-    // "features/passkeys",
+    "features/passkeys",
     "features/server-side-verification",
     "features/session-management",
     "features/user-management",
@@ -761,6 +761,11 @@ const sidebars: SidebarsConfig = {
           label: "Single Factor Auth iOS SDK",
           items: ["migration-guides/sfa-ios-v2-to-v4"],
         },
+        {
+          type: "category",
+          label: "MPC CoreKit Web SDK",
+          items: ["migration-guides/mpc-core-kit-web-v2-to-v3"],
+        },
       ],
     },
     // "going-live",
@@ -1246,6 +1251,7 @@ const sidebars: SidebarsConfig = {
         "sdk/core-kit/mpc-core-kit/install",
         "sdk/core-kit/mpc-core-kit/initialize",
         "sdk/core-kit/mpc-core-kit/authentication",
+        "sdk/core-kit/mpc-core-kit/signing",
         "sdk/core-kit/mpc-core-kit/usage",
         {
           type: "link",
