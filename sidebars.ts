@@ -838,7 +838,6 @@ const sidebars: SidebarsConfig = {
         "sdk/pnp/web/adapters/adapters",
         "sdk/pnp/web/adapters/default-evm-adapter",
         "sdk/pnp/web/adapters/default-solana-adapter",
-        "sdk/pnp/web/adapters/adapters",
         "sdk/pnp/web/adapters/openlogin",
         "sdk/pnp/web/adapters/torus-evm",
         "sdk/pnp/web/adapters/torus-solana",
