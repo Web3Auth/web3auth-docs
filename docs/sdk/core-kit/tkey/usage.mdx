@@ -10,10 +10,10 @@ import ThresholdKey from "@site/src/common/sdk/core-kit/tkey/_threshold-key.mdx"
 import TkeyInitParams from "@site/src/common/sdk/core-kit/tkey/_tkey-init-params.mdx";
 import TkeyKeyDetailsReturn from "@site/src/common/sdk/core-kit/tkey/_tkey-key-details-return.mdx";
 
-Once you've installed all packages, instantiated tKey and initialized the service provider instance
-in your constructor, you can use it to authenticate your users and generate their tKey shares.
-Further, you can use a variety of functions exposed by the tKey SDK and its modules to manage
-different aspects of your users' authentication needs.
+Once you've installed all packages, and instantiated tKey instance in your constructor, you can use
+it to authenticate your users and generate their tKey shares. Further, you can use a variety of
+functions exposed by the tKey SDK and its modules to manage different aspects of your users'
+authentication needs.
 
 We'll be talking in-depth about the following operations:
 
@@ -49,8 +49,8 @@ If you want to know more about setting up a verifier and how to use it, please r
 ### Login using OAuth
 
 You can choose any OAuth Provider of your choice and login using their standard process. You can
-check out [our examples](https://github.com/Web3Auth/web3auth-core-kit-examples/) where we have used
-the most common OAuth providers like Google, Auth0, Firebase etc. Additionally, you can checkout our
+check out [our examples](https://github.com/tkey/tkey-examples/web) where we have used the most
+common OAuth providers like Google, Auth0, Firebase etc. Additionally, you can checkout our
 documentation around OAuth Provider setup [here](/auth-provider-setup).
 
 :::tip Implicit Auth Flow
@@ -86,7 +86,7 @@ const OAuthShareKey = await(tKeyInstance.serviceProvider as SfaServiceProvider).
 
 ### Initializing tKey
 
-#### `tKey.initialize(params?)`
+#### `initialize(params?: TKeyInitArgs)`
 
 Once you have triggered the login process, you're ready to initialize the tKey. This will generate a
 Threshold Key corresponding to your login provider.
@@ -103,9 +103,8 @@ Threshold Key corresponding to your login provider.
 
 #### `tKey.getKeyDetails()`
 
-The function `getKeyDetails()` returns the details of the keys present generated for the specific
-user. This includes the public key X & Y of the user, alongside the shares details and the
-threshold.
+The function `getKeyDetails()` returns the details of the keys generated for the specific user. This
+includes the public key X & Y of the user, alongside the shares details and the threshold.
 
 ### Sample Key Details Return
 
@@ -142,6 +141,7 @@ reconstructKey(_reconstructKeyMiddleware?: boolean): Promise<ReconstructedKeyRes
 
 export type ReconstructedKeyResult = {
     privKey: BN;
+    ed25519Seed?: Buffer;
     seedPhrase?: BN[];
     allKeys?: BN[];
 };
@@ -149,9 +149,10 @@ export type ReconstructedKeyResult = {
 
 ```tsx title="Example"
 const { requiredShares } = tKey.getKeyDetails();
+
 if (requiredShares <= 0) {
   const reconstructedKeyResult = await tKey.reconstructKey();
-  const privateKey = reconstructedKeyResult?.privKey.toString("hex"));
+  const privateKey = reconstructedKeyResult?.privKey.toString("hex");
   console.log("Private Key: ", privateKey);
 }
 ```
@@ -173,17 +174,19 @@ export type GenerateNewShareResult = {
 ```
 
 ```tsx title="Example"
-const shareStore = await tKey.generateNewShare();
-await(tKey.modules.webStorage as WebStorageModule).storeDeviceShare(shareStore.newShareStores[1]);
-console.log("New Share Stored on the Browser Local Storage: ", shareStore.newShareIndex.toString());
+const generateShareResult = await tKey.generateNewShare();
+const share = await tKey.outputShareStore(generateShareResult.newShareIndex);
+
+await(tKey.modules.webStorage as WebStorageModule).storeDeviceShare(share);
+console.log("New Share Stored on the Browser Local Storage: ", share);
 ```
 
 ## Delete a Share
 
 #### `tKey.deleteShare(shareIndex: BNString)`
 
-The function `deleteShare()` deletes a share from the user's shares. This function returns the
-updated shareStore after the share has been deleted.
+The function `deleteShare()` deletes the user's given share. This function returns the updated
+shareStore after the share has been deleted.
 
 ```tsx
 deleteShare(shareIndex: BNString): Promise<DeleteShareResult>;
@@ -216,12 +219,12 @@ modules alongside the functions that can be used within them.
 
 Once you have generated the private key, you can use it to make blockchain calls. The key generated
 by tKey is of type `secp256k1`, which is compatible with EVM-based blockchains like Ethereum,
-Polygon, and many others that use the same curve. However, you can also convert this key into other
-curves and utilize it. For example, we have a dedicated package for converting this module to the
-`ed25519` curve for usage in Solana and other blockchains that use this curve.
+Polygon, and many others that use the same curve. From v13, tKey also generates a `ed25519` key
+which is compatible with blockchains like Solana, Aptos, and etc. However, you can also convert
+`secp256k1` key into other curves and utilize it.
 
 In addition to that, we have dedicated provider packages for EVM, Solana and XRPL libraries. You can
-check out their respective documentation in the [Providers Section](/sdk/pnp/web/providers/).
+check out their respective documentation in the [Providers Section](/sdk/providers/).
 
 :::tip
 
