@@ -1,0 +1,301 @@
+---
+title: "Usage of MPC Core Kit iOS SDK"
+sidebar_label: "Usage"
+displayed_sidebar: sdk
+description: "Web3Auth MPC Core Kit iOS SDK - Usage | Documentation - Web3Auth"
+---
+
+Once you've installed and successfully initialized `MpcCoreKit`, you can use it to authenticate your
+users. Further, you can use the Web3 Swift provider given by Web3Auth to sign transactions and
+interact with the blockchain.
+
+## Authentication Functions
+
+---
+
+### [loginWithOAuth()](./authentication#log-in-with-oauth)
+
+If you are looking for an Authentication Flow in your application (like Auth0 SPA Flow), you can use
+the `loginWithOAuth()` function.
+
+#### Usage
+
+```swift
+let result = try await mpcCoreKit.loginWithOAuth(
+    loginProvider: .google,
+    clientId: "Your Google Client id",
+    verifier: "Your Custom Verifier name"
+);
+```
+
+### [loginWithJWT()](./authentication#log-in-with-jwt-byoa)
+
+If you are looking to pass a JWT-based IdToken to the SDK from your application, you can use the
+`loginWithJWT()` function.
+
+#### Usage
+
+```swift
+let result = try await mpcCoreKit.loginWithJwt(
+    verifier: "Your verifier name from Web3Auth Dashboard",
+    verifierId: "Your verifierd Id value",
+    idToken: "Your JWT id Token"
+)
+```
+
+### inputFactorKey()
+
+Inputs the Factor Key into the SDK. This function is used to recover the User's account using the
+Factor Key. If the factor key is correct, the SDK initializes the User's account and logs them in.
+
+If you want to change the current active factor key in the current state of the SDK, you can use
+this function.
+
+#### Usage
+
+```swift
+try await mpcCoreKit.inputFactor(
+    factorKey: factorKey
+)
+```
+
+### [logout()](./authentication#logging-out-the-user)
+
+Logs out the User.
+
+#### Usage
+
+```swift
+try await mpcCoreKit.logout();
+```
+
+## Factor Handling Functions
+
+---
+
+### enableMFA()
+
+Enables MFA for the user. It creates a device factor and stores it in the local storage. It also
+creates a backup factor and returns it to the user. You can also pass a factor key that can be used
+for the backup factor. If you don't pass a factor key, a new factor key will be generated. To pass
+the factor key you can use `enableMFA` arguement.
+
+Most importantly, this function deletes the Hashed Factor Key enabling a non-custodial flow.
+
+#### Usage
+
+```swift
+let factor = try await mpcCoreKit.enableMFA();
+```
+
+#### Arguments
+
+| Argument         | Description                                                                                                         |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `enableMFA`      | If you wish to set a custom factor key, you can use `enableMFA` argument. By default, SDK will handle this for you. |
+| `recoveryFactor` | Defines whether to create recovery factor along with device factor. Default value is `true`.                        |
+
+#### `enableMFARecoveryFactor` struct
+
+```swift
+public struct enableMFARecoveryFactor {
+    public var factorKey: String?
+    public var factorTypeDescription: FactorDescriptionTypeModule
+    public var additionalMetadata: [String:Any]
+
+    public init(factorKey: String? = nil, factorTypeDescription: FactorDescriptionTypeModule = .Other, additionalMetadata: [String : Any] = [:]) {
+        self.factorKey = factorKey
+        self.factorTypeDescription = factorTypeDescription
+        self.additionalMetadata = additionalMetadata
+    }
+}
+
+public enum FactorDescriptionTypeModule {
+    case HashedShare
+    case SecurityQuestions
+    case DeviceShare
+    case SeedPhrase
+    case PasswordShare
+    case SocialShare
+    case Other
+
+    public func toString () -> String {
+        switch self {
+
+        case .HashedShare: return "hashedShare"
+        case .SecurityQuestions: return "tssSecurityQuestions"
+        case .DeviceShare: return "deviceShare"
+        case .SeedPhrase: return "seedPhrase"
+        case .PasswordShare: return "passwordShare"
+        case .SocialShare: return "socialShare"
+        case .Other: return "Other"
+        }
+    }
+}
+```
+
+### createFactor()
+
+A low-level function, helps you to create a backup factor key based on the type of TSS Share you
+want to create. You can pass your own factor key or let the SDK generate one for you.
+
+#### Usage
+
+```swift
+let factor = try await mpcCoreKit.createFactor(
+    tssShareIndex: .DEVICE,
+    factorKey: nil,
+    factorDescription: .DeviceShare
+)
+```
+
+#### Arguments
+
+| Argument             | Description                                                                                                                                                                   |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tssShareIndex`      | Defines the index of share. It can be either 2, or 3. You can use `TssShareType` to set the share index.                                                                      |
+| `factorKey?`         | If you wish to pass the custom factor key for creation of factor, you can use `factorKey`. If value is nil, and SDK will internally create a new factory key for you.         |
+| `factorDescription`  | Defines which type of share you are using as a factor. Checkout `FactorDescriptionTypeModule` for available options.                                                          |
+| `additionalMetadata` | If you wish to store any additional meta data on metadata layer, you can pass it using `additionalMetadata`. It takes `[String: Any]` as a value. The default value is `[:]`. |
+
+#### Interfaces
+
+```swift
+
+public enum TssShareType {
+    case DEVICE
+    case RECOVERY
+
+    public func toInt32 () -> Int32 {
+        switch self {
+
+        case .DEVICE: return 2
+        case .RECOVERY: return 3
+        }
+    }
+    public func toString () -> String {
+        switch self {
+
+        case .DEVICE: return "2"
+        case .RECOVERY: return "3"
+        }
+    }
+}
+
+public enum FactorDescriptionTypeModule {
+    case HashedShare
+    case SecurityQuestions
+    case DeviceShare
+    case SeedPhrase
+    case PasswordShare
+    case SocialShare
+    case Other
+
+    public func toString () -> String {
+        switch self {
+
+        case .HashedShare: return "hashedShare"
+        case .SecurityQuestions: return "tssSecurityQuestions"
+        case .DeviceShare: return "deviceShare"
+        case .SeedPhrase: return "seedPhrase"
+        case .PasswordShare: return "passwordShare"
+        case .SocialShare: return "socialShare"
+        case .Other: return "Other"
+        }
+    }
+}
+```
+
+### deleteFactor()
+
+Deletes the Factor, respective to the factorPub provided for the User's account. You can get the
+factor Pubs by using the `getAllFactorPubs()` function.
+
+It will throw an error if you try to delete the factor that is currently active within the state of
+the SDK. Use the `inputFactorKey()` function to change the factor key in the current state of the
+SDK to be able to delete that factor.
+
+#### Usage
+
+```swift
+try await mpcCoreKit.deleteFactor(deleteFactorPub: "Factor's PubKey")
+```
+
+#### Arguments
+
+| Argument          | Description                                                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `deleteFactorPub` | The PubKey for the factor key you want to delete. The SDK internally will retrieve the corresponding factory key and delete it. |
+| `factorKey?`      | The factorKey you want to delete. The default value is `nil`.                                                                   |
+
+### getCurrentFactorKey()
+
+Returns the current factor key in usage within the state of the SDK.
+
+#### Usage
+
+```swift
+let factorKey = try mpcCoreKit.getCurrentFactorKey();
+```
+
+## User & Wallet Account Functions
+
+---
+
+### getUserInfo()
+
+The function returns the `NSDictonary` containing the user information. The information can be
+different depending on the login provider and method used.
+
+#### Usage
+
+```swift
+let userInfo: [String: Any] = try mpcCoreKit.getUserInfo()
+```
+
+### getKeyDetails()
+
+The function return `MpcKeyDetails` containing the information regarding threshold, public key, and
+user's shares. For more details, please check the table below.
+
+#### MpcKeyDetails Class
+
+| Name                | Description                                                                                                                                                                                                                                                                                      |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `tssPubKey`         | TSS Public Key for the user's account.                                                                                                                                                                                                                                                           |
+| `metadataPubKey`    | Metadata Public Key for the user's account.                                                                                                                                                                                                                                                      |
+| `requiredFactors`   | `requiredFactors` denotes the factors required for the SDK to be in write state. If the value is greater than 0, the SDK will be in read state. The variable can be used to check the required factors after using the login methods to verify if user has enough factors to access the account. |
+| `threshold`         | `threshold` defines the total number factors required for write state.                                                                                                                                                                                                                           |
+| `shareDescriptions` | Returns the description for the shares.                                                                                                                                                                                                                                                          |
+| `totalShares`       | Returns the total number shares for the account.                                                                                                                                                                                                                                                 |
+| `totalFactors`      | Returns the total number of factors for the account.                                                                                                                                                                                                                                             |
+
+#### Usage
+
+```swift
+let keyDetails: MpcKeyDetails = try await mpcCoreKit.getKeyDetails()
+```
+
+## Mnemonic Conversations
+
+---
+
+### mnemonicToKey()
+
+Converts a Mnemonic to a hex representation of Big Number used for factor key.
+
+#### Usage
+
+```swift
+let factorKeyHex = mpcCoreKit.mnemonicToKey(shareMnemonic: "Mnemonics", format: "mnemonic");
+```
+
+### keyToMnemonic()
+
+Converts a factor key hex string to a Mnemonic.
+
+#### Usage
+
+```swift
+let factorKeyMnemonics = mpcCoreKit.mnemonicToKey(factorKey: "Factor key in hex", format: "mnemonic");
+```

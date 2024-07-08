@@ -1,0 +1,183 @@
+---
+title: "Authentication in MPC Core Kit iOS SDK"
+sidebar_label: "Authentication"
+displayed_sidebar: sdk
+description: "Web3Auth MPC Core Kit iOS SDK - Authentication | Documentation - Web3Auth"
+---
+
+import ServiceWorkerCode from "@site/src/common/sdk/core-kit/tkey/_sw-js.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+There are two ways to login your users, depending on the type of authentication method you've
+chosen. If you are looking for an Authentication Flow in your application (like Auth0 SPA Flow), you
+can use the `loginWithOAuth()` function. If you are looking to pass a JWT-based IdToken to the SDK
+from your application (like Auth0 RWA Flow or even BYOA JWT provider), you can use the
+`loginWithJWT()` function.
+
+As a prerequisite, before triggering the login function, you need to create a verifier for your
+login method on the [Web3Auth Dashboard](https://dashboard.web3auth.io).
+
+## Creating a Verifier
+
+Since this is a Core Kit SDK, it does not provide any default authentication methods. You need to
+create a custom verifier to use this SDK. This means that you need to authenticate users with your
+own custom authentication service. For example, while authenticating with Google, you have to use
+your own Google Client ID and Dashboard to authenticate users directly or use aggregate services
+like Auth0, Firebase, AWS Cognito etc. Additionally, you can make your own JWT token authentication
+system and pass over the ID Token to Web3Auth to generate a private key for them.
+
+For enabling this, you need [Create a Verifier](/auth-provider-setup/verifiers) from the **Custom
+Auth** section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your
+desired configuration.
+
+:::tip
+
+If you want to know more about setting up a verifier and how to use it, please refer to the
+[Custom Authentication Documentation](/features/custom-authentication).
+
+:::
+
+:::warning
+
+Core Kit SDK only supports Sapphire Mainnet and Devnet networks. The other networks don't support
+MPC functionalities.
+
+:::
+
+## Log In with OAuth
+
+If you wish to have SPA flow, similar to Auth0, you can use `loginWithOAuth` function.
+
+### Usage
+
+```swift
+let result = try await mpcCoreKit.loginWithOAuth(
+    loginProvider: .google,
+    clientId: "Your Google Client id",
+    verifier: "Your Custom Verifier name"
+);
+```
+
+### Arguements
+
+| Variable             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginProvider`      | Defines the login provider to be used. Supported values are `LoginProviders.google`, `LoginProviders.facebook`, `LoginProviders.twitch`, `LoginProviders.reddit`, `LoginProviders.discord`, `LoginProviders.apple`, `LoginProviders.github`, `LoginProviders.linkedin`, `LoginProviders.kakao`, `LoginProviders.twitter`, `LoginProviders.weibo`, `LoginProviders.line`, `LoginProviders.wechat`, `LoginProviders.email_password`, `LoginProviders.jwt` |
+| `clientId`           | Client id for respective `loginProvider`. For instance google client id, auth0 client id, and etc.                                                                                                                                                                                                                                                                                                                                                      |
+| `verifier`           | Verifier name from the Web3Auth Dashboard.                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `jwtParams`          | JWT parameters. It takes `[Stirng: Stirng]` as an input. The default value is `[:]`.                                                                                                                                                                                                                                                                                                                                                                    |
+| `redirectURL`        |                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `browserRedirectURL` |                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+
+### Result
+
+The `loginWith0Auth`returns `MpcKeyDetails` upon success, which has infomration regarding
+thresholds, required factors, and etc.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter         | Description                                                                                                                                                                                                                 |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tssPubKey`       | It holds the value for the TSS PubKey in compressed form. The type of `tssPubKey` is `String`.                                                                                                                              |
+| `metadataPubKey`  | It holds the value for metadata PubKey which is used for interacting with metadata layer.                                                                                                                                   |
+| `requiredFactors` | It defines the total factors still required for SDK to be in write mode. If required factors are greater than 0, the SDK will be in read mode. You can use `inputFactor` function to input factor and refresh the instance. |
+| `threshold`       | Defines the threshold set by the SDK. Ideally it would be 2.                                                                                                                                                                |
+| `total_shares`    | Defines the total number of shares for user. Initially if the hashed cloud factor is set, it would be 2.                                                                                                                    |
+
+</TabItem>
+
+<TabItem value = "class">
+```swift
+public struct MpcKeyDetails : Codable {
+    public let tssPubKey : String
+    public let metadataPubKey: String
+    public let requiredFactors: Int32
+    public let threshold: UInt32
+    public let shareDescriptions : String
+    public let total_shares: UInt32
+}
+```
+</TabItem>
+</Tabs>
+
+## Log In with JWT (BYOA)
+
+If you are looking to pass a JWT-based IdToken to the SDK from your application, you can use the
+`loginWithJWT()` function.
+
+### Usage
+
+```swift
+let result = try await mpcCoreKit.loginWithJwt(
+    verifier: "Your verifier name from Web3Auth Dashboard",
+    verifierId: "Your verifierd Id value",
+    idToken: "Your JWT id Token"
+)
+```
+
+### Arguements
+
+| Argument     | Description                                                                                                                            |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `verifier`   | Your verifier name from Web3Auth dashboard.                                                                                            |
+| `verifierId` | Your verifier id value, i.e. email, sub or custom. Make sure you have selected correct verifier id while creating the custom verifier. |
+| `idToken`    | Your JWT id token for verification.                                                                                                    |
+
+### Result
+
+The `loginWithJWT`returns `MpcKeyDetails` upon success, which has infomration regarding thresholds,
+required factors, and etc.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter         | Description                                                                                                                                                                                                                 |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tssPubKey`       | It holds the value for the TSS PubKey in compressed form. The type of `tssPubKey` is `String`.                                                                                                                              |
+| `metadataPubKey`  | It holds the value for metadata PubKey which is used for interacting with metadata layer.                                                                                                                                   |
+| `requiredFactors` | It defines the total factors still required for SDK to be in write mode. If required factors are greater than 0, the SDK will be in read mode. You can use `inputFactor` function to input factor and refresh the instance. |
+| `threshold`       | Defines the threshold set by the SDK. Ideally it would be 2.                                                                                                                                                                |
+| `total_shares`    | Defines the total number of shares for user. Initially if the hashed cloud factor is set, it would be 2.                                                                                                                    |
+
+</TabItem>
+
+<TabItem value = "class">
+```swift
+public struct MpcKeyDetails : Codable {
+    public let tssPubKey : String
+    public let metadataPubKey: String
+    public let requiredFactors: Int32
+    public let threshold: UInt32
+    public let shareDescriptions : String
+    public let total_shares: UInt32
+}
+```
+</TabItem>
+</Tabs>
+
+## Logging out the User
+
+To disconnect user's connected wallet/ provider and log them out of the Web3Auth MPC Core Kit SDK
+you can use `logout` function.
+
+### Usage
+
+```swift
+try await mpcCoreKit.logout();
+```
