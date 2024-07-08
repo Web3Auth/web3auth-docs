@@ -1,7 +1,6 @@
 ---
 title: Using PnP Web No Modal SDK
 sidebar_label: Usage
-displayed_sidebar: sdk
 description: "Web3Auth PnP Web No Modal SDK - Usage | Documentation - Web3Auth"
 ---
 
@@ -18,14 +17,18 @@ import OpenloginLoginParams from "@site/src/common/sdk/pnp/web/_openlogin-login-
 import SwitchChain from "@site/src/common/sdk/pnp/web/_switch-chain.mdx";
 import WalletAdapters from "@site/src/common/sdk/pnp/web/_wallet-adapters.mdx";
 
-Once you've installed and successfully initialized `Web3AuthNoModal`, you can use it to authenticate your users. Further, you can use the native
-provider given by `Web3AuthNoModal` to connect the users to the respective blockchain network.
+Once you've installed and successfully initialized `Web3AuthNoModal`, you can use it to authenticate
+your users. Further, you can use the native provider given by `Web3AuthNoModal` to connect the users
+to the respective blockchain network.
 
-Natively, the instance of `Web3AuthNoModal` _(referred to as `web3auth` in our examples)_ returns the following functions:
+Natively, the instance of `Web3AuthNoModal` _(referred to as `web3auth` in our examples)_ returns
+the following functions:
 
 - `connectTo()` - Logging in the User with the given Wallet Adapter and respective Login Parameters
-- `provider()` - Returns the native provider that can be used to make different blockchain transactions.
-- `connected()` - Returns `true` or `false` depending on whether the web3auth instance is available or not.
+- `provider()` - Returns the native provider that can be used to make different blockchain
+  transactions.
+- `connected()` - Returns `true` or `false` depending on whether the web3auth instance is available
+  or not.
 - `getUserInfo()` - Getting the User's Information
 - `authenticateUser()` - Getting the idToken from Web3Auth
 - `addChain()` - Add chain config details to the connected adapter.
@@ -46,8 +49,9 @@ Natively, the instance of `Web3AuthNoModal` _(referred to as `web3auth` in our e
 connectTo<T>(walletName: WALLET_ADAPTER_TYPE, loginParams?: T): Promise<IProvider | null>;
 ```
 
-On successful login, the `connectTo()` function returns a `IProvider` instance. This instance contains the respective provider corresponding to your
-selected blockchain. You can use this provider to connect your user to the blockchain and make transactions.
+On successful login, the `connectTo()` function returns a `IProvider` instance. This instance
+contains the respective provider corresponding to your selected blockchain. You can use this
+provider to connect your user to the blockchain and make transactions.
 
 On unsuccessful login, this function will return a `null` value.
 
@@ -55,8 +59,9 @@ On unsuccessful login, this function will return a `null` value.
 
 :::tip
 
-You can use the `connectTo()` function to connect to the custom authentication verifiers you might have deployed on the Web3Auth Dashboard, as well as
-the default ones that Web3Auth provides. For the default verifiers, you don't need to provide any additional parameters, just pass on the login
+You can use the `connectTo()` function to connect to the custom authentication verifiers you might
+have deployed on the Web3Auth Dashboard, as well as the default ones that Web3Auth provides. For the
+default verifiers, you don't need to provide any additional parameters, just pass on the login
 provider type.
 
 :::
@@ -65,7 +70,8 @@ provider type.
 
 :::tip
 
-Read more about connecting your users with the selected blockchain in the [Providers SDK Reference](/sdk/providers).
+Read more about connecting your users with the selected blockchain in the
+[Providers SDK Reference](/sdk/providers).
 
 :::
 
@@ -75,14 +81,16 @@ Read more about connecting your users with the selected blockchain in the [Provi
 
 #### `loginParams`
 
-The `loginParams` are specific for each and every function. Please refer to the [Adapters SDK Reference](/sdk/pnp/web/adapters) to know more about the
-login parameters specific to each wallet adapter.
+The `loginParams` are specific for each and every function. Please refer to the
+[Adapters SDK Reference](/sdk/pnp/web/adapters) to know more about the login parameters specific to
+each wallet adapter.
 
 For `openlogin-adapter` which enables social logins, you can refer to the following `loginParams`.
 
 <OpenloginLoginParams />
 
-Further, for Custom Authentication, `ExtraLoginOptions` can be used to pass the standard OAuth login options.
+Further, for Custom Authentication, `ExtraLoginOptions` can be used to pass the standard OAuth login
+options.
 
 <ExtraLoginOptions />
 

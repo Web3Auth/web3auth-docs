@@ -1,7 +1,6 @@
 ---
 title: Wallet Connect V2 Adapter
 sidebar_label: Wallet Connect V2
-displayed_sidebar: sdk
 description: "Web3Auth PnP Web Adapter SDKs - Wallet Connect v2 | Documentation - Web3Auth"
 ---
 
@@ -12,7 +11,8 @@ import Tabs from "@theme/Tabs";
 
 ## [`@web3auth/wallet-connect-v2-adapter`](https://npmjs.com/package/@web3auth/wallet-connect-v2-adapter)
 
-Wallet connect v2 adapter allows you to log in with wallet connect v2. You can read more about Walletconnect [here](https://docs.walletconnect.com/).
+Wallet connect v2 adapter allows you to log in with wallet connect v2. You can read more about
+Walletconnect [here](https://docs.walletconnect.com/).
 
 ## Basic Details
 
@@ -77,8 +77,8 @@ interface BaseAdapterSettings {
 
 :::warning
 
-While you can pass your `chainConfig` here, it is not required since you can directly pass it over to the `Web3Auth`/ `Web3AuthNoModal` configuration
-while instantiating it.
+While you can pass your `chainConfig` here, it is not required since you can directly pass it over
+to the `Web3Auth`/ `Web3AuthNoModal` configuration while instantiating it.
 
 Read more about it in their respective sections:
 
@@ -89,7 +89,8 @@ Read more about it in their respective sections:
 
 :::warning
 
-If you pass `chainConfig` in an Adapter, it overwrites the `chainConfig` passed over to the `Web3Auth`/ `Web3AuthNoModal` constructor.
+If you pass `chainConfig` in an Adapter, it overwrites the `chainConfig` passed over to the
+`Web3Auth`/ `Web3AuthNoModal` constructor.
 
 :::
 
@@ -115,7 +116,8 @@ interface OpenOptions {
 
 ## getWalletConnectV2Settings
 
-You can get walletConnectV2 settings by calling the `getWalletConnectV2Settings()` function with its required arguments.
+You can get walletConnectV2 settings by calling the `getWalletConnectV2Settings()` function with its
+required arguments.
 
 ### Arguments
 
@@ -132,7 +134,7 @@ You can get walletConnectV2 settings by calling the `getWalletConnectV2Settings(
 | Parameter   | type                                                                   |
 | ----------- | ---------------------------------------------------------------------- |
 | `namespace` | `ChainNamespaceType`, e.g. (`eip155`)                                  |
-| `chainIds`  | `string[]` e.g. ["1"]                                                    |
+| `chainIds`  | `string[]` e.g. ["1"]                                                  |
 | `projectID` | WalletConnect Project ID, get one from https://cloud.walletconnect.com |
 
 </TabItem>
@@ -162,10 +164,19 @@ export interface IAdapterSettings {
 
 ```tsx
 import { WalletConnectModal } from "@walletconnect/modal";
-import { getWalletConnectV2Settings, WalletConnectV2Adapter } from "@web3auth/wallet-connect-v2-adapter";
+import {
+  getWalletConnectV2Settings,
+  WalletConnectV2Adapter,
+} from "@web3auth/wallet-connect-v2-adapter";
 
-const defaultWcSettings = await getWalletConnectV2Settings("eip155", ["1"], "04309ed1007e77d1f119b85205bb779d");
-const walletConnectModal = new WalletConnectModal({ projectId: "04309ed1007e77d1f119b85205bb779d" });
+const defaultWcSettings = await getWalletConnectV2Settings(
+  "eip155",
+  ["1"],
+  "04309ed1007e77d1f119b85205bb779d",
+);
+const walletConnectModal = new WalletConnectModal({
+  projectId: "04309ed1007e77d1f119b85205bb779d",
+});
 const walletConnectV2Adapter = new WalletConnectV2Adapter({
   adapterSettings: { qrcodeModal: walletConnectModal, ...defaultWcSettings.adapterSettings },
   loginSettings: { ...defaultWcSettings.loginSettings },
