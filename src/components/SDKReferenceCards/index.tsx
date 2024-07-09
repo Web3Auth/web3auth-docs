@@ -1021,7 +1021,6 @@ export const safeauthkit = (
           <h3 className={styles.title}>SafeAuth Kit</h3>
           <div className={styles.links}>
             <a href={`${baseUrl}sdk/wallet-ecosystems/safeauth`}>SDK Reference{chevron}</a>
-            {/* <a href={`${baseUrl}examples?product=Core+Kit&sdk=Node.js+SDK`}>Examples{chevron}</a> */}
           </div>
         </div>
       </div>
@@ -1060,7 +1059,6 @@ export const mocaverse = (
           <h3 className={styles.title}>Mocaverse Embed</h3>
           <div className={styles.links}>
             <a href={`${baseUrl}sdk/wallet-ecosystems/mocaverse`}>SDK Reference{chevron}</a>
-            {/* <a href={`${baseUrl}examples?product=Core+Kit&sdk=Node.js+SDK`}>Examples{chevron}</a> */}
           </div>
         </div>
       </div>
@@ -1099,7 +1097,6 @@ export const toruswallets = (
           <h3 className={styles.title}>Torus EVM Wallet</h3>
           <div className={styles.links}>
             <a href={`https://docs.tor.us/wallet/get-started`}>SDK Reference{chevron}</a>
-            {/* <a href={`${baseUrl}examples?product=Core+Kit&sdk=Node.js+SDK`}>Examples{chevron}</a> */}
           </div>
         </div>
       </div>
@@ -1123,7 +1120,6 @@ export const toruswallets = (
           <h3 className={styles.title}>Torus Solana Wallet</h3>
           <div className={styles.links}>
             <a href={`https://docs.tor.us/solana-wallet/get-started`}>SDK Reference{chevron}</a>
-            {/* <a href={`${baseUrl}examples?product=Core+Kit&sdk=Node.js+SDK`}>Examples{chevron}</a> */}
           </div>
         </div>
       </div>
@@ -1147,7 +1143,6 @@ export const toruswallets = (
           <h3 className={styles.title}>Torus XRPL Wallet</h3>
           <div className={styles.links}>
             <a href={`https://docs.tor.us/xrpl-wallet/`}>SDK Reference{chevron}</a>
-            {/* <a href={`${baseUrl}examples?product=Core+Kit&sdk=Node.js+SDK`}>Examples{chevron}</a> */}
           </div>
         </div>
       </div>
@@ -1185,10 +1180,40 @@ export const walletservices = (
         </div>
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>Wallet Services Plugin</h3>
-          <p>Plugin to extend Wallet Services features to Web3Auth PnP Web SDKs.</p>
+          <p>Plugin to extend Wallet Services features to Web3Auth Web SDKs.</p>
           <div className={styles.links}>
-            <a href={`${baseUrl}sdk/wallet-services/`}>SDK Reference{chevron}</a>
-            {/* <a href={`${baseUrl}examples?product=Core+Kit&sdk=Node.js+SDK`}>Examples{chevron}</a> */}
+            <a href={`${baseUrl}sdk/pnp/web/wallet-services/`}>PnP Web SDKs{chevron}</a>
+            <a href={`${baseUrl}sdk/core-kit/sfa-web/wallet-services/`}>SFA Web SDK{chevron}</a>
+          </div>
+        </div>
+      </div>
+      <div className={styles.cardContent}>
+        <div className={styles.sdkIconContainer}>
+          <svg
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className={styles.sdkIcon}
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M4.083 9H6.029C6.118 7.454 6.412 6.03 6.866 4.882C6.13501 5.32992 5.50842 5.92919 5.02838 6.6395C4.54834 7.34982 4.22598 8.1547 4.083 9ZM10 2C7.87827 2 5.84344 2.84285 4.34315 4.34315C2.84285 5.84344 2 7.87827 2 10C2 12.1217 2.84285 14.1566 4.34315 15.6569C5.84344 17.1571 7.87827 18 10 18C12.1217 18 14.1566 17.1571 15.6569 15.6569C17.1571 14.1566 18 12.1217 18 10C18 7.87827 17.1571 5.84344 15.6569 4.34315C14.1566 2.84285 12.1217 2 10 2ZM10 4C9.924 4 9.768 4.032 9.535 4.262C9.297 4.496 9.038 4.885 8.798 5.444C8.409 6.351 8.125 7.586 8.032 9H11.968C11.875 7.586 11.591 6.351 11.202 5.444C10.962 4.884 10.702 4.496 10.465 4.262C10.232 4.032 10.076 4 10 4ZM13.971 9C13.882 7.454 13.588 6.03 13.134 4.882C13.865 5.32992 14.4916 5.92919 14.9716 6.6395C15.4517 7.34982 15.774 8.1547 15.917 9H13.971ZM11.968 11H8.032C8.125 12.414 8.409 13.649 8.798 14.556C9.038 15.116 9.298 15.504 9.535 15.738C9.768 15.968 9.924 16 10 16C10.076 16 10.232 15.968 10.465 15.738C10.703 15.504 10.963 15.115 11.202 14.556C11.591 13.649 11.875 12.414 11.968 11ZM13.134 15.118C13.588 13.971 13.882 12.546 13.971 11H15.917C15.774 11.8453 15.4517 12.6502 14.9716 13.3605C14.4916 14.0708 13.865 14.6701 13.134 15.118ZM6.866 15.118C6.412 13.97 6.118 12.546 6.03 11H4.083C4.22598 11.8453 4.54834 12.6502 5.02838 13.3605C5.50842 14.0708 6.13501 14.6701 6.866 15.118Z"
+              fill="currentColor"
+            />
+          </svg>
+        </div>
+        <div className={styles.cardContentText}>
+          <h3 className={styles.title}>Built in feature within Mobile SDKs</h3>
+          <p>Dedicated functions within PnP Mobile SDKs to extend Wallet Services Features</p>
+          <div className={styles.links}>
+            <a href={`${baseUrl}sdk/pnp/android/usage#launch-wallet-services`}>Android{chevron}</a>
+            <a href={`${baseUrl}sdk/pnp/ios/usage#launch-wallet-services`}>iOS{chevron}</a>
+            <a href={`${baseUrl}sdk/pnp/react-native/usage#launching-wallet-services-ui`}>
+              React Native{chevron}
+            </a>
+            <a href={`${baseUrl}sdk/pnp/flutter/usage#launch-wallet-services`}>Flutter{chevron}</a>
+            <a href={`${baseUrl}sdk/pnp/unity/usage#launch-wallet-services`}>Unity{chevron}</a>
           </div>
         </div>
       </div>
@@ -1199,10 +1224,8 @@ export const walletservices = (
 export const providers = (
   <div className={styles.card}>
     <div className={styles.cardContainerIntro}>
-      <h3 className={styles.title}>Private Key Providers</h3>
-      <p>
-        Wrappers around the private key generated by Web3Auth for simple access to the blockchain.
-      </p>
+      <h3 className={styles.title}>Blockchain Providers</h3>
+      <p>Wrappers around the wallet generated by Web3Auth for simple access to the blockchain.</p>
       {webIcons}
     </div>
     <ul className={styles.cardContainer}>
@@ -1223,11 +1246,15 @@ export const providers = (
           </svg>
         </div>
         <div className={styles.cardContentText}>
-          <h3 className={styles.title}>EVM Signing Provider for MPC SDKs</h3>
-          <p>For connecting to any EVM compatible chain. Follows the EIP1193 specifications.</p>
+          <h3 className={styles.title}>EVM Signing Provider for MPC Core Kit SDK</h3>
+          <p>
+            MPC Provider for connecting to any EVM compatible chain. Follows the EIP1193
+            specifications.
+          </p>
           <div className={styles.links}>
-            <a href={`${baseUrl}sdk/providers/evm-mpc`}>SDK Reference{chevron}</a>
-            {/* <a href={`${baseUrl}examples?product=Core+Kit&sdk=Node.js+SDK`}>Examples{chevron}</a> */}
+            <a href={`${baseUrl}sdk/core-kit/mpc-core-kit/providers/evm`}>
+              MPC Core Kit SDK{chevron}
+            </a>
           </div>
         </div>
       </div>
@@ -1249,10 +1276,19 @@ export const providers = (
         </div>
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>EVM Private Key Provider</h3>
-          <p>For connecting to any EVM compatible chain. Follows the EIP1193 specifications.</p>
+          <p>
+            SSS based provider for connecting to any EVM compatible chain. Follows the EIP1193
+            specifications.
+          </p>
           <div className={styles.links}>
-            <a href={`${baseUrl}sdk/providers/evm`}>SDK Reference{chevron}</a>
-            {/* <a href={`${baseUrl}examples?product=Core+Kit&sdk=Node.js+SDK`}>Examples{chevron}</a> */}
+            <a href={`${baseUrl}sdk/pnp/web/providers/evm`}>PnP Web SDKs{chevron}</a>
+            <a href={`${baseUrl}sdk/pnp/react-native/providers/evm`}>
+              PnP React Native SDK{chevron}
+            </a>
+            <a href={`${baseUrl}sdk/core-kit/sfa-web/providers/evm`}>SFA Web SDK{chevron}</a>
+            <a href={`${baseUrl}sdk/core-kit/sfa-react-native/providers/evm`}>
+              SFA React Native SDK{chevron}
+            </a>
           </div>
         </div>
       </div>
@@ -1274,10 +1310,16 @@ export const providers = (
         </div>
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>Solana Private Key Provider</h3>
-          <p>Extends easy methods to connect to the Solana Blockchain.</p>
+          <p>SSS based provider extending easy methods to connect to the Solana Blockchain.</p>
           <div className={styles.links}>
-            <a href={`${baseUrl}sdk/providers/solana`}>SDK Reference{chevron}</a>
-            {/* <a href={`${baseUrl}examples?product=Core+Kit&sdk=Node.js+SDK`}>Examples{chevron}</a> */}
+            <a href={`${baseUrl}sdk/pnp/web/providers/solana`}>PnP Web SDKs{chevron}</a>
+            <a href={`${baseUrl}sdk/pnp/react-native/providers/solana`}>
+              PnP React Native SDK{chevron}
+            </a>
+            <a href={`${baseUrl}sdk/core-kit/sfa-web/providers/solana`}>SFA Web SDK{chevron}</a>
+            <a href={`${baseUrl}sdk/core-kit/sfa-react-native/providers/solana`}>
+              SFA React Native SDK{chevron}
+            </a>{" "}
           </div>
         </div>
       </div>
@@ -1299,10 +1341,16 @@ export const providers = (
         </div>
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>XRPL Private Key Provider</h3>
-          <p>Provides a direct integration with the XRP Ledger</p>
+          <p>SSS based provider for a direct integration with the XRP Ledger</p>
           <div className={styles.links}>
-            <a href={`${baseUrl}sdk/providers/xrpl`}>SDK Reference{chevron}</a>
-            {/* <a href={`${baseUrl}examples?product=Core+Kit&sdk=Node.js+SDK`}>Examples{chevron}</a> */}
+            <a href={`${baseUrl}sdk/pnp/web/providers/xrpl`}>PnP Web SDKs{chevron}</a>
+            <a href={`${baseUrl}sdk/pnp/react-native/providers/xrpl`}>
+              PnP React Native SDK{chevron}
+            </a>
+            <a href={`${baseUrl}sdk/core-kit/sfa-web/providers/xrpl`}>SFA Web SDK{chevron}</a>
+            <a href={`${baseUrl}sdk/core-kit/sfa-react-native/providers/xrpl`}>
+              SFA React Native SDK{chevron}
+            </a>
           </div>
         </div>
       </div>
@@ -1324,10 +1372,16 @@ export const providers = (
         </div>
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>Common Private Key Provider</h3>
-          <p>The base provider used to extend Web3Auth connection to non evm chains.</p>
+          <p>The base SSS provider used to extend Web3Auth connection to non evm chains.</p>
           <div className={styles.links}>
-            <a href={`${baseUrl}sdk/providers/common`}>SDK Reference{chevron}</a>
-            {/* <a href={`${baseUrl}examples?product=Core+Kit&sdk=Node.js+SDK`}>Examples{chevron}</a> */}
+            <a href={`${baseUrl}sdk/pnp/web/providers/common`}>PnP Web SDKs{chevron}</a>
+            <a href={`${baseUrl}sdk/pnp/react-native/providers/common`}>
+              PnP React Native SDK{chevron}
+            </a>
+            <a href={`${baseUrl}sdk/core-kit/sfa-web/providers/common`}>SFA Web SDK{chevron}</a>
+            <a href={`${baseUrl}sdk/core-kit/sfa-react-native/providers/common`}>
+              SFA React Native SDK{chevron}
+            </a>
           </div>
         </div>
       </div>

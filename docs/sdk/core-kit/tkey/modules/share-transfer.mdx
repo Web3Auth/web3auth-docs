@@ -1,7 +1,6 @@
 ---
 title: Share Transfer Module - tKey JS SDK
 sidebar_label: Share Transfer
-displayed_sidebar: sdk
 description: "Core Kit tKey SDK - Modules - Share Transfer Module  | Documentation - Web3Auth"
 ---
 
@@ -24,7 +23,8 @@ const shareTransferModule = new ShareTransferModule();
 
 ## Usage
 
-With the `ShareTransferModule`, you have access to the multiple functions as mentioned in the type reference, however, the most important ones are:
+With the `ShareTransferModule`, you have access to the multiple functions as mentioned in the type
+reference, however, the most important ones are:
 
 ### Request a New Share from a Device
 
@@ -47,10 +47,9 @@ requestNewShare(
 #### Example
 
 ```tsx
-const result_requestNewShare = await(tKey.modules.shareTransfer as ShareTransferModule).requestNewShare(
-  navigator.userAgent,
-  tKey.getCurrentShareIndexes()
-);
+const result_requestNewShare = await(
+  tKey.modules.shareTransfer as ShareTransferModule,
+).requestNewShare(navigator.userAgent, tKey.getCurrentShareIndexes());
 ```
 
 ### Look for Requests from Another Device
@@ -104,7 +103,7 @@ declare class ShareTransferModule implements IModule {
   static refreshShareTransferMiddleware(
     generalStore: unknown,
     oldShareStores: ShareStoreMap,
-    newShareStores: ShareStoreMap
+    newShareStores: ShareStoreMap,
   ): ShareTransferStorePointer;
   setModuleReferences(tbSDK: ITKeyApi): void;
   setRequestStatusCheckInterval(interval: number): void;
@@ -112,7 +111,7 @@ declare class ShareTransferModule implements IModule {
   requestNewShare(
     userAgent: string,
     availableShareIndexes: Array<string>,
-    callback?: (err?: ITkeyError, shareStore?: ShareStore) => void
+    callback?: (err?: ITkeyError, shareStore?: ShareStore) => void,
   ): Promise<string>;
   addCustomInfoToShareRequest(encPubKeyX: string, customInfo: string): Promise<void>;
   lookForRequests(): Promise<Array<string>>;
@@ -120,7 +119,10 @@ declare class ShareTransferModule implements IModule {
   approveRequestWithShareIndex(encPubKeyX: string, shareIndex: string): Promise<void>;
   getShareTransferStore(): Promise<ShareTransferStore>;
   setShareTransferStore(shareTransferStore: ShareTransferStore): Promise<void>;
-  startRequestStatusCheck(encPubKeyX: string, deleteRequestAfterCompletion: boolean): Promise<ShareStore>;
+  startRequestStatusCheck(
+    encPubKeyX: string,
+    deleteRequestAfterCompletion: boolean,
+  ): Promise<ShareStore>;
   cancelRequestStatusCheck(): Promise<void>;
   deleteShareTransferStore(encPubKey: string): Promise<void>;
   resetShareTransferStore(): Promise<void>;

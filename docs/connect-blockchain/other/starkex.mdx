@@ -2,7 +2,7 @@
 title: Integrate Web3Auth with the StarkEx Blockchain
 sidebar_label: StarkEx
 image: "guides/banners/starkex.png"
-displayed_sidebar: resources
+
 keywords: [starkex, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the StarkEx Blockchain | Documentation - Web3Auth"
 ---
@@ -10,16 +10,19 @@ description: "Integrate Web3Auth with the StarkEx Blockchain | Documentation - W
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
 import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-other-pnp-sfa-tkey.mdx";
 
-While using the Web3Auth Web SDK for a non-EVM chain like [StarkEx](https://starkware.co/starkex/) you get a standard provider from which you can get
-the private key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting
-the user's `account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted
-a few methods here to get you started quickly on that.
+While using the Web3Auth Web SDK for a non-EVM chain like [StarkEx](https://starkware.co/starkex/)
+you get a standard provider from which you can get the private key of the user. Using this private
+key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting
+the user's `account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and
+`write` to the smart contract, etc. We have highlighted a few methods here to get you started
+quickly on that.
 
 :::note
 
-This reference is for the `Web`, however, you can use StarkEx on other Mobile and Gaming Platforms as well. Please follow our reference for
-[EVM Blockchains](/connect-blockchain/evm/), and similarly use StarkEx libraries that support the platforms to use the private key and make blockchain
-calls accordingly.
+This reference is for the `Web`, however, you can use StarkEx on other Mobile and Gaming Platforms
+as well. Please follow our reference for [EVM Blockchains](/connect-blockchain/evm/), and similarly
+use StarkEx libraries that support the platforms to use the private key and make blockchain calls
+accordingly.
 
 :::
 
@@ -89,16 +92,19 @@ const chainConfig = {
 
 ## Get Account and Key
 
-Once a user logs in, the Web3Auth SDK returns a provider. Even though StarkEx is a layer 2 on Ethereum, it is not EVM compatible. Hence to use it, one
-cannot use the native [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider that Web3Auth gives for EVM blockchains. Hence we need to directly
-use the private key to make the calls.
+Once a user logs in, the Web3Auth SDK returns a provider. Even though StarkEx is a layer 2 on
+Ethereum, it is not EVM compatible. Hence to use it, one cannot use the native
+[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider that Web3Auth gives for EVM
+blockchains. Hence we need to directly use the private key to make the calls.
 
-Using the function, `web3auth.provider.request({method: "private_key"})` from Web3Auth provider, the application can have access to the user's private
-key. However, we cannot use this key with StarkEx EC Curve specific signing functions, hence, we first derive the Stark Key using the `getStarkKey()`
+Using the function, `web3auth.provider.request({method: "private_key"})` from Web3Auth provider, the
+application can have access to the user's private key. However, we cannot use this key with StarkEx
+EC Curve specific signing functions, hence, we first derive the Stark Key using the `getStarkKey()`
 function.
 
-On the underhood, it uses the `starkwareCrypto.ec.keyFromPrivate()` function, where we pass our Private key with the `hex` argument, since it is hex
-encoded. Further we get the public key from this using the `starkwareCrypto.ec.keyFromPublic()` function, and we take its X-coordinate using
+On the underhood, it uses the `starkwareCrypto.ec.keyFromPrivate()` function, where we pass our
+Private key with the `hex` argument, since it is hex encoded. Further we get the public key from
+this using the `starkwareCrypto.ec.keyFromPublic()` function, and we take its X-coordinate using
 `.pub.getX()` which is our `starkKey`. We use this starkKey on `StarkEx` transactions.
 
 ```tsx

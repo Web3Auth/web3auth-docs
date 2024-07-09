@@ -1,8 +1,8 @@
 ---
 title: Openlogin Adapter for Social Logins
 sidebar_label: Openlogin (Social Logins)
-displayed_sidebar: sdk
-description: "Web3Auth PnP Web Adapter SDKs - Openlogin Adapter for Social Logins | Documentation - Web3Auth"
+description:
+  "Web3Auth PnP Web Adapter SDKs - Openlogin Adapter for Social Logins | Documentation - Web3Auth"
 ---
 
 import TabItem from "@theme/TabItem";
@@ -23,10 +23,12 @@ import ConnectToExample from "@site/src/common/sdk/pnp/web/_connect-to-example.m
 ## [`@web3auth/openlogin-adapter`](https://npmjs.com/package/@web3auth/openlogin-adapter)
 
 The default adapter of Web3Auth is the `openlogin-adapter`. This adapter is a wrapper around the
-[`openlogin`](https://github.com/torusresearch/OpenLoginSdk) library from Web3Auth and enables the social login features. By default, Web3Auth has
-certain configurations set to enable a quick integration, however, for customizing features, like [Whitelabel](/features/whitelabel),
-[Custom Authentication](/features/custom-authentication), etc. you need to configure the Openlogin Adapter. With the Openlogin Adapter package
-installed and instantiated, you can explore several options and customize the login experience of the user as per your needs.
+[`openlogin`](https://github.com/torusresearch/OpenLoginSdk) library from Web3Auth and enables the
+social login features. By default, Web3Auth has certain configurations set to enable a quick
+integration, however, for customizing features, like [Whitelabel](/features/whitelabel),
+[Custom Authentication](/features/custom-authentication), etc. you need to configure the Openlogin
+Adapter. With the Openlogin Adapter package installed and instantiated, you can explore several
+options and customize the login experience of the user as per your needs.
 
 ## Basic Details
 
@@ -112,10 +114,12 @@ interface OpenloginAdapterOptions extends BaseAdapterSettings {
 
 :::warning
 
-While you can pass your `chainConfig` to `OpenloginAdapter`, it is not required for `web3auth/no-modal` ie. The Web3Auth Plug and Play No Modal
-package, since you can directly pass `loginParams` over to the `connectTo` function.
+While you can pass your `chainConfig` to `OpenloginAdapter`, it is not required for
+`web3auth/no-modal` ie. The Web3Auth Plug and Play No Modal package, since you can directly pass
+`loginParams` over to the `connectTo` function.
 
-Either way, both of these methods will work the same. Please note that the `connectTo` function params will override the `OpenloginAdapter` settings.
+Either way, both of these methods will work the same. Please note that the `connectTo` function
+params will override the `OpenloginAdapter` settings.
 
 Read more about how to pass `loginParams` to `connectTo` in its respective section:
 [`web3auth/no-modal`](/sdk/pnp/web/no-modal/usage#logging-in-the-user)
@@ -126,14 +130,18 @@ Read more about how to pass `loginParams` to `connectTo` in its respective secti
 
 ## Multi-Factor Authentication
 
-At Web3Auth, we prioritize your security by offering Multi-Factor Authentication (MFA). MFA is an extra layer of protection that verifies your
-identity when accessing your account. To ensure ownership, you must provide two or more different backup factors. You have the option to choose from
-the device, social, backup factor (seed phrase), and password factors to guarantee access to your Web3 account. Once you create a recovery factor, MFA
-is enabled, and your keys are divided into three shares for off-chain multi-sig, making the key self-custodial. With backup factors, you can easily
-recover your account if you lose access to your original device or help log into a new device.
+At Web3Auth, we prioritize your security by offering Multi-Factor Authentication (MFA). MFA is an
+extra layer of protection that verifies your identity when accessing your account. To ensure
+ownership, you must provide two or more different backup factors. You have the option to choose from
+the device, social, backup factor (seed phrase), and password factors to guarantee access to your
+Web3 account. Once you create a recovery factor, MFA is enabled, and your keys are divided into
+three shares for off-chain multi-sig, making the key self-custodial. With backup factors, you can
+easily recover your account if you lose access to your original device or help log into a new
+device.
 
-For a dApp, we provide various options to set up Multi-Factor Authentication. You can customize the MFA screen by setting the `mfaLevel` argument. You
-can enable or disable a backup factor and change their order. Currently, there are four values for `mfaLevel`:
+For a dApp, we provide various options to set up Multi-Factor Authentication. You can customize the
+MFA screen by setting the `mfaLevel` argument. You can enable or disable a backup factor and change
+their order. Currently, there are four values for `mfaLevel`:
 
 - `default`: presents the MFA screen every third login
 - `optional`: presents the MFA screen on every login, but you can skip it
@@ -184,8 +192,10 @@ const openloginAdapter = new OpenloginAdapter({
 
 ## Whitelabel
 
-Web3Auth's Social Logins and Email Login run using the OpenLogin Flow. The whole OpenLogin user experience can also be whitelabeled using OpenLogin
-Adapter settings. For this, you need to pass on the `whiteLabel` configuration parameter to the `adapterSettings` property of the `openlogin-adapter`.
+Web3Auth's Social Logins and Email Login run using the OpenLogin Flow. The whole OpenLogin user
+experience can also be whitelabeled using OpenLogin Adapter settings. For this, you need to pass on
+the `whiteLabel` configuration parameter to the `adapterSettings` property of the
+`openlogin-adapter`.
 
 <OpenloginWhiteLabelConfig />
 
@@ -195,28 +205,31 @@ Adapter settings. For this, you need to pass on the `whiteLabel` configuration p
 
 ## Custom Authentication
 
-While instantiating the Openlogin Adapter, you can pass some configuration objects to the constructor. One of these configurations is the
-`adapterSettings` configuration which enables you to make changes in the adapter, enabling you to do things like Whitelabeling and Custom
-Authentication among other things.
+While instantiating the Openlogin Adapter, you can pass some configuration objects to the
+constructor. One of these configurations is the `adapterSettings` configuration which enables you to
+make changes in the adapter, enabling you to do things like Whitelabeling and Custom Authentication
+among other things.
 
 #### `loginConfig`
 
-The `loginConfig` parameter of `adapterSettings` in `openlogin-adapter` contains the following properties:
+The `loginConfig` parameter of `adapterSettings` in `openlogin-adapter` contains the following
+properties:
 
 <LoginConfig />
 
 ### Custom Authentication within Web3Auth Modal
 
-When we're using the `@web3auth/modal`, ie. the Plug and Play Modal SDK, the `loginConfig` should correspond to the socials mentioned in the modal.
-This means you can use your own authentication services for the following services:
+When we're using the `@web3auth/modal`, ie. the Plug and Play Modal SDK, the `loginConfig` should
+correspond to the socials mentioned in the modal. This means you can use your own authentication
+services for the following services:
 
-`google` | `facebook` | `twitter` | `reddit` | `discord` | `twitch` | `apple` | `line` | `github` | `kakao` | `linkedin` | `weibo` | `wechat` |
-`passwordless`
+`google` | `facebook` | `twitter` | `reddit` | `discord` | `twitch` | `apple` | `line` | `github` |
+`kakao` | `linkedin` | `weibo` | `wechat` | `passwordless`
 
 :::info
 
-You can customize all or a few of the social logins and others will remain default. You can also remove the ones you don't want using the
-whitelabeling option.
+You can customize all or a few of the social logins and others will remain default. You can also
+remove the ones you don't want using the whitelabeling option.
 
 :::
 
@@ -226,19 +239,21 @@ whitelabeling option.
 
 ### Logging in through your Custom JWT Token
 
-When we are using `@web3auth/no-modal`, ie. Web3Auth Plug and Play No Modal SDK, we have the option to use the `connectTo` function, which enables you
-to customize the login process according to the parameters you have for your custom authentication service.
+When we are using `@web3auth/no-modal`, ie. Web3Auth Plug and Play No Modal SDK, we have the option
+to use the `connectTo` function, which enables you to customize the login process according to the
+parameters you have for your custom authentication service.
 
 <ConnectTo />
 
 :::tip
 
-Know more about the `connectTo` function in the [`Usage SDK Reference`](/sdk/pnp/web/no-modal/usage#logging-in-the-user)
+Know more about the `connectTo` function in the
+[`Usage SDK Reference`](/sdk/pnp/web/no-modal/usage#logging-in-the-user)
 
 :::
 
-Further, to enable Custom Authentication, the `loginParams` parameter takes in another object called `extraLoginOptions` which contains the following
-properties:
+Further, to enable Custom Authentication, the `loginParams` parameter takes in another object called
+`extraLoginOptions` which contains the following properties:
 
 <ExtraLoginOptions />
 
@@ -257,8 +272,10 @@ web3auth.configureAdapter(openloginAdapter);
 
 ## Change Adapter Settings
 
-You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter instance. This function takes the below-mentioned
-parameters as well as <b>[Openlogin Adapter Settings](#openlogin-adapter-settings)</b>.
+You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter
+instance. This function takes the below-mentioned parameters as well as
+
+<b>[Openlogin Adapter Settings](#openlogin-adapter-settings)</b>.
 
 ### Arguments
 

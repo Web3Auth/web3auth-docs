@@ -1,7 +1,6 @@
 ---
 title: Share Serialization Module - tKey JS SDK
 sidebar_label: Share Serialization
-displayed_sidebar: sdk
 description: "Core Kit tKey SDK - Modules -  Share Serialization | Documentation - Web3Auth"
 ---
 
@@ -24,8 +23,8 @@ const shareSerializationModule = new ShareSerializationModule();
 
 ## Usage
 
-With the `ShareSerializationModule`, you have access to the multiple functions as mentioned in the type reference, however, the most important ones
-are:
+With the `ShareSerializationModule`, you have access to the multiple functions as mentioned in the
+type reference, however, the most important ones are:
 
 ### Serialize a Share
 
@@ -40,7 +39,9 @@ are:
 ```tsx
 const generateShareResult = await tKeyInstance.generateNewShare();
 const share = await tKeyInstance.outputShareStore(generateShareResult.newShareIndex).share.share;
-const mnemonic = await(tKeyInstance.modules.shareSerialization as ShareSerializationModule).serialize(share, "mnemonic");
+const mnemonic = await(
+  tKeyInstance.modules.shareSerialization as ShareSerializationModule,
+).serialize(share, "mnemonic");
 ```
 
 ### Deserialize a Share
@@ -54,7 +55,9 @@ const mnemonic = await(tKeyInstance.modules.shareSerialization as ShareSerializa
 #### Example
 
 ```tsx
-const share = await(tKeyInstance.modules.shareSerialization as ShareSerializationModule).deserialize(mnemonic, "mnemonic");
+const share = await(
+  tKeyInstance.modules.shareSerialization as ShareSerializationModule,
+).deserialize(mnemonic, "mnemonic");
 await tKeyInstance.inputShare(share);
 ```
 

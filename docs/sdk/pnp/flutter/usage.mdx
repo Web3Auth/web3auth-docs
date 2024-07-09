@@ -1,7 +1,6 @@
 ---
 title: Usage of PnP Flutter SDK
 sidebar_label: Usage
-displayed_sidebar: sdk
 description: "Web3Auth PnP Flutter SDK - Usage | Documentation - Web3Auth"
 ---
 
@@ -402,97 +401,6 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 ```
 
 </TabItem>
-</Tabs>
-
-## Selecting Curve
-
-The `LoginParams` class has a `curve` parameter. This parameter can be used to select the elliptic
-curve to use for the signature.
-
-```dart
-final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
-  loginProvider: Provider.google,
-  // highlight-next-line
-  curve: Curve.secp256k1 // Can be ed25519, secp256k1
-));
-```
-
-<Tabs
-  defaultValue="secp256k1"
-  values={[
-    { label: "SECP256K1", value: "secp256k1" },
-    { label: "ED25519", value: "ed25519" },
-  ]}
->
-
-<TabItem value="secp256k1">
-
-```dart title="Usage"
-Future<void> initWeb3Auth() async {
-
-  Uri redirectUrl;
-  if (Platform.isAndroid) {
-    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
-    // w3a://com.example.w3aflutter/auth
-  } else if (Platform.isIOS) {
-    redirectUrl = Uri.parse('{bundleId}://auth');
-    // com.example.w3aflutter://openlogin
-  } else {
-    throw UnKnownException('Unknown platform');
-  }
-
-  await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId: "WEB3AUTH_CLIENT_ID",
-    network: Network.sapphire_mainnet,
-    redirectUrl: redirectUrl,
-  ));
-
-  await Web3AuthFlutter.initialize();
-}
-
-final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
-  loginProvider: Provider.google,
-  // highlight-next-line
-  curve: Curve.secp256k1 // Can be ed25519, secp256k1
-));
-```
-
-</TabItem>
-
-<TabItem value="ed25519">
-
-```dart title="Usage"
-Future<void> initWeb3Auth() async {
-
-  Uri redirectUrl;
-  if (Platform.isAndroid) {
-    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
-    // w3a://com.example.w3aflutter/auth
-  } else if (Platform.isIOS) {
-    redirectUrl = Uri.parse('{bundleId}://auth');
-    // com.example.w3aflutter://openlogin
-  } else {
-    throw UnKnownException('Unknown platform');
-  }
-
-  await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId: "WEB3AUTH_CLIENT_ID",
-    network: Network.testnet,
-    redirectUrl: redirectUrl
-  ));
-
-  await Web3AuthFlutter.initialize();
-}
-
-final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
-  loginProvider: Provider.google,
-  // highlight-next-line
-  curve: Curve.ed25519 // Can be ed25519, secp256k1
-));
-```
-
-</TabItem>
-
 </Tabs>
 
 ## Logging out a user

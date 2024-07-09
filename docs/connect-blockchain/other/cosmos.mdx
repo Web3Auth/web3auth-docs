@@ -2,7 +2,7 @@
 title: Integrate Web3Auth with the Cosmos Blockchain
 sidebar_label: Cosmos
 image: "guides/banners/cosmos.png"
-displayed_sidebar: resources
+
 keywords: [cosmos, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Cosmos Blockchain | Documentation - Web3Auth"
 ---
@@ -10,15 +10,18 @@ description: "Integrate Web3Auth with the Cosmos Blockchain | Documentation - We
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
 import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-other-pnp-sfa-tkey.mdx";
 
-While using the Web3Auth Web SDK for a non-EVM chain like [Cosmos](https://cosmos.network/) you get a standard provider from which you can get the
-private key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting the
-user's `account`, `chain ID`, fetch `balance`, `send transaction`, etc. We have highlighted a few methods here to get you started quickly on that.
+While using the Web3Auth Web SDK for a non-EVM chain like [Cosmos](https://cosmos.network/) you get
+a standard provider from which you can get the private key of the user. Using this private key, you
+can use the corresponding libraries of the blockchain to make blockchain calls like getting the
+user's `account`, `chain ID`, fetch `balance`, `send transaction`, etc. We have highlighted a few
+methods here to get you started quickly on that.
 
 :::note
 
-This reference is for the `Web`, however, you can use Cosmos on other Mobile and Gaming Platforms as well. Please follow our reference for
-[EVM Blockchains](/connect-blockchain/evm/), and similarly use Cosmos libraries that support the platforms to use the private key and make blockchain
-calls accordingly.
+This reference is for the `Web`, however, you can use Cosmos on other Mobile and Gaming Platforms as
+well. Please follow our reference for [EVM Blockchains](/connect-blockchain/evm/), and similarly use
+Cosmos libraries that support the platforms to use the private key and make blockchain calls
+accordingly.
 
 :::
 
@@ -88,19 +91,22 @@ const chainConfig = {
 
 ## Get ChainID
 
-Once a user logs in, the Web3Auth SDK returns a provider. Since Web3Auth doesn't have a native provider for Cosmos, we need to directly use the
-private key to make the RPC calls.
+Once a user logs in, the Web3Auth SDK returns a provider. Since Web3Auth doesn't have a native
+provider for Cosmos, we need to directly use the private key to make the RPC calls.
 
 ### CosmJS Libraries
 
-`@cosmjs/stargate` A client library for the Cosmos SDK 0.40+. Provides a high-level client for querying, signing and broadcasting. This is an npm
-library that provides a JavaScript/TypeScript interface to interact with the Cosmos SDK blockchain via the Tendermint RPC interface.
+`@cosmjs/stargate` A client library for the Cosmos SDK 0.40+. Provides a high-level client for
+querying, signing and broadcasting. This is an npm library that provides a JavaScript/TypeScript
+interface to interact with the Cosmos SDK blockchain via the Tendermint RPC interface.
 
-`@cosmjs/proto-signing` It is an npm library for signing messages using protobuf serialization, which is commonly used in Cosmos SDK-based
-blockchains. It provides a simple API for generating and verifying signatures using different algorithms and key types.
+`@cosmjs/proto-signing` It is an npm library for signing messages using protobuf serialization,
+which is commonly used in Cosmos SDK-based blockchains. It provides a simple API for generating and
+verifying signatures using different algorithms and key types.
 
-In order to get the ChainId, we connect to the RPC using StargateClient and make a call using the Cosmos RPC client to get the chainId. You can get
-the private key using `this.provider.request({method: "private_key",})`.
+In order to get the ChainId, we connect to the RPC using StargateClient and make a call using the
+Cosmos RPC client to get the chainId. You can get the private key using
+`this.provider.request({method: "private_key",})`.
 
 ```tsx
 import type { IProvider } from "@web3auth/base";
@@ -142,7 +148,8 @@ export default class CosmosRPC {
 
 ## Get Account
 
-Using `DirectSecp256k1Wallet.fromKey()` we can get the accounts via the private key we get through the provider.
+Using `DirectSecp256k1Wallet.fromKey()` we can get the accounts via the private key we get through
+the provider.
 
 ```tsx
 import type { IProvider } from "@web3auth/base";
@@ -171,7 +178,8 @@ export default class CosmosRPC {
 
 ## Get Balance
 
-Using the account address we received in the previous step, we can fetch the balance using an RPC call to `client.getAllBalances(address)`.
+Using the account address we received in the previous step, we can fetch the balance using an RPC
+call to `client.getAllBalances(address)`.
 
 ```tsx
 import type { IProvider } from "@web3auth/base";
@@ -233,10 +241,15 @@ export default class CosmosRPC {
 
       const signingClient = await SigningStargateClient.connectWithSigner(rpc, signer);
 
-      const result = await signingClient.sendTokens(fromAddress, destination, [{ denom: "uatom", amount: "250" }], {
-        amount: [{ denom: "uatom", amount: "250" }],
-        gas: "100000",
-      });
+      const result = await signingClient.sendTokens(
+        fromAddress,
+        destination,
+        [{ denom: "uatom", amount: "250" }],
+        {
+          amount: [{ denom: "uatom", amount: "250" }],
+          gas: "100000",
+        },
+      );
       const transactionHash = result.transactionHash;
       const height = result.height;
       return { transactionHash, height };

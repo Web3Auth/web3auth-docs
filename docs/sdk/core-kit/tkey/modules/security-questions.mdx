@@ -1,7 +1,6 @@
 ---
 title: Security Questions Module - tKey JS SDK
 sidebar_label: Security Questions
-displayed_sidebar: sdk
 description: "Core Kit tKey SDK - Modules - Security Questions  | Documentation - Web3Auth"
 ---
 
@@ -30,8 +29,8 @@ const securityQuestionsModule = new SecurityQuestionsModule();
 
 ## Usage
 
-With the `SecurityQuestionsModule`, you have access to the multiple functions as mentioned in the type reference, however, the most important ones
-are:
+With the `SecurityQuestionsModule`, you have access to the multiple functions as mentioned in the
+type reference, however, the most important ones are:
 
 ### Generate New Share with Question and Answer
 
@@ -43,7 +42,9 @@ are:
 #### Example
 
 ```tsx
-await(tKeyInstance.modules.securityQuestions as SecurityQuestionsModule).generateNewShareWithSecurityQuestions(password, "whats your password?");
+await(
+  tKeyInstance.modules.securityQuestions as SecurityQuestionsModule,
+).generateNewShareWithSecurityQuestions(password, "whats your password?");
 ```
 
 ### Input Existing Security Questions Share into tKey Instance
@@ -68,7 +69,10 @@ await(tKeyInstance.modules.securityQuestions as any).inputShareFromSecurityQuest
 #### Example
 
 ```tsx
-await(tKeyInstance.modules.securityQuestions as any).changeSecurityQuestionAndAnswer(password, "whats your password?");
+await(tKeyInstance.modules.securityQuestions as any).changeSecurityQuestionAndAnswer(
+  password,
+  "whats your password?",
+);
 ```
 
 ## Type Reference
@@ -81,10 +85,17 @@ class SecurityQuestionsModule implements IModule {
   tbSDK: ITKeyApi;
   saveAnswers: boolean;
   constructor(saveAnswers?: boolean);
-  static refreshSecurityQuestionsMiddleware(generalStore: unknown, oldShareStores: ShareStoreMap, newShareStores: ShareStoreMap): unknown;
+  static refreshSecurityQuestionsMiddleware(
+    generalStore: unknown,
+    oldShareStores: ShareStoreMap,
+    newShareStores: ShareStoreMap,
+  ): unknown;
   setModuleReferences(tbSDK: ITKeyApi): void;
   initialize(): Promise<void>;
-  generateNewShareWithSecurityQuestions(answerString: string, questions: string): Promise<GenerateNewShareResult>;
+  generateNewShareWithSecurityQuestions(
+    answerString: string,
+    questions: string,
+  ): Promise<GenerateNewShareResult>;
   getSecurityQuestions(): string;
   inputShareFromSecurityQuestions(answerString: string): Promise<void>;
   changeSecurityQuestionAndAnswer(newAnswerString: string, newQuestions: string): Promise<void>;

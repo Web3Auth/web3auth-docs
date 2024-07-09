@@ -1,7 +1,6 @@
 ---
 title: Initializing PnP Web Modal SDK
 sidebar_label: Initialize
-displayed_sidebar: sdk
 description: "@web3auth/modal initialize | Documentation - Web3Auth"
 ---
 
@@ -24,16 +23,17 @@ import InitiateTopUp from "@site/src/common/sdk/pnp/web/_plugin-initiate-topup.m
 import ShowWCScanner from "@site/src/common/sdk/pnp/web/_plugin-showwcscanner.mdx";
 import WhiteLabelData from "@site/src/common/sdk/pnp/web/_openlogin-whitelabel-config.mdx";
 
-After Installation, the next step to use Web3Auth is to Initialize the SDK. However, the Initialization is a two-step process, with an additional two
-steps for customizations, i.e.
+After Installation, the next step to use Web3Auth is to Initialize the SDK. However, the
+Initialization is a two-step process, with an additional two steps for customizations, i.e.
 
 - [Instantiation of Web3Auth](#instantiating-web3auth)
 - [Configuration of Adapters](#configuring-adapters) _(optional)_
 - [Configuration of Plugins](#configuring-plugins) _(optional)_
 - [Initialization of Modal](#initializing-modal)
 
-Please note that these are the most critical steps where you need to pass on different parameters according to the preference of your project.
-Additionally, If you wish to customize your Web3Auth Instance, Whitelabeling and Custom Authentication have to be configured within this step.
+Please note that these are the most critical steps where you need to pass on different parameters
+according to the preference of your project. Additionally, If you wish to customize your Web3Auth
+Instance, Whitelabeling and Custom Authentication have to be configured within this step.
 
 ## Instantiating Web3Auth
 
@@ -61,13 +61,14 @@ This Web3Auth constructor takes an object with `Web3AuthOptions` as input.
 
 #### `privateKeyProvider`
 
-`privateKeyProvider` parameter helps you to connect with various wallet SDKs. These are preconfigured RPC clients for different blockchains used to
-interact with the respective blockchain networks.
+`privateKeyProvider` parameter helps you to connect with various wallet SDKs. These are
+preconfigured RPC clients for different blockchains used to interact with the respective blockchain
+networks.
 
 :::note
 
-It's mandatory to provide `privateKeyProvider` for your corresponding chain namespace. To know more in-depth about providers, have a look at your
-[Providers reference](/sdk/providers).
+It's mandatory to provide `privateKeyProvider` for your corresponding chain namespace. To know more
+in-depth about providers, have a look at your [Providers reference](/sdk/providers).
 
 :::
 
@@ -101,12 +102,14 @@ const web3auth = new Web3Auth({
 
 ### Whitelabeling
 
-Within the `uiConfig` parameter, you can configure the Web3Auth Modal according to your application's requirements.
+Within the `uiConfig` parameter, you can configure the Web3Auth Modal according to your
+application's requirements.
 
 :::tip
 
-This is just one of the aspects of whitelabeling you can achieve with Web3Auth. To know more in-depth about how you can Whitelabel your application
-with Web3Auth Plug and Play Modal SDK, have a look at our [Whitelabeling SDK Reference](/sdk/pnp/web/modal/whitelabel).
+This is just one of the aspects of whitelabeling you can achieve with Web3Auth. To know more
+in-depth about how you can Whitelabel your application with Web3Auth Plug and Play Modal SDK, have a
+look at our [Whitelabeling SDK Reference](/sdk/pnp/web/modal/whitelabel).
 
 :::
 
@@ -168,18 +171,20 @@ const web3auth = new Web3Auth({
 
 ## Configuring Adapters
 
-An adapter is a pluggable package that implements an `IAdapter` interface for a wallet within Web3Auth. An adapter can be plugged in and out of
-web3auth modal. Each adapter exposes the provider on successful user login that can be used to invoke RPC calls on the wallet and on the connected
-blockchain. Web3Auth's modal UI supports a set of default adapters depending on the [`authMode`](/sdk/pnp/web/modal/initialize#web3authoptions) being
-used.
+An adapter is a pluggable package that implements an `IAdapter` interface for a wallet within
+Web3Auth. An adapter can be plugged in and out of web3auth modal. Each adapter exposes the provider
+on successful user login that can be used to invoke RPC calls on the wallet and on the connected
+blockchain. Web3Auth's modal UI supports a set of default adapters depending on the
+[`authMode`](/sdk/pnp/web/modal/initialize#web3authoptions) being used.
 
 :::info
 
-This step is generally optional. You don't have to configure any default adapter unless you want to override default configs for the adapter.
+This step is generally optional. You don't have to configure any default adapter unless you want to
+override default configs for the adapter.
 
 Only those adapters that are marked are nondefault
-[in this table on the Adapters Documentation](/sdk/pnp/web/adapters/#currently-available-wallet-adapters) are required to be configured always based
-on the `authMode` you are using.
+[in this table on the Adapters Documentation](/sdk/pnp/web/adapters/#currently-available-wallet-adapters)
+are required to be configured always based on the `authMode` you are using.
 
 :::
 
@@ -189,8 +194,9 @@ on the `authMode` you are using.
 
 ##### Example
 
-Since we're using the `@web3auth/modal`, ie. the Plug and Play Modal SDK, the `loginConfig` should correspond to the socials mentioned in the modal.
-Here, we're customizing Google and Facebook to be custom verified, rest of all other socials will be the default. You can customize other social
+Since we're using the `@web3auth/modal`, ie. the Plug and Play Modal SDK, the `loginConfig` should
+correspond to the socials mentioned in the modal. Here, we're customizing Google and Facebook to be
+custom verified, rest of all other socials will be the default. You can customize other social
 logins or remove them using the whitelabeling option.
 
 <CustomAuthenticationWeb3AuthExample />
@@ -287,8 +293,8 @@ params?: {
 }
 ```
 
-This `params` object further takes a `modalConfig` object using which you can configure the visibility of each adapter within the modal. Each modal
-config has the following configurations:
+This `params` object further takes a `modalConfig` object using which you can configure the
+visibility of each adapter within the modal. Each modal config has the following configurations:
 
 ##### `modalConfig`
 

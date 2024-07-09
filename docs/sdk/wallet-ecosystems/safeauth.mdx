@@ -2,7 +2,7 @@
 title: SafeAuth Kit SDK
 sidebar_label: SafeAuth
 image: "guides/banners/safeauth.png"
-displayed_sidebar: sdk
+
 keywords: [safe, safeauth kit, safeauth, web3auth, authentication, blockchain]
 description: "SafeAuth Kit | Wallet Ecosystems | Documentation - Web3Auth"
 ---
@@ -10,23 +10,27 @@ description: "SafeAuth Kit | Wallet Ecosystems | Documentation - Web3Auth"
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-[Safe](https://safe.global/) is a platform that makes it possible for anyone to own a digital account. It establishes universal and transparent
-standards for the storage of digital assets, data, and identity. With **[SafeAuth Kit](https://www.npmjs.com/package/@safe-global/auth-kit)**, you can
-easily create smart wallets that work seamlessly with [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337), using the user's EOA as the smart wallet's
-signer. This simplifies the process of incorporating [Account Abstraction](https://ethereum.org/en/roadmap/account-abstraction/) features into your
+[Safe](https://safe.global/) is a platform that makes it possible for anyone to own a digital
+account. It establishes universal and transparent standards for the storage of digital assets, data,
+and identity. With **[SafeAuth Kit](https://www.npmjs.com/package/@safe-global/auth-kit)**, you can
+easily create smart wallets that work seamlessly with
+[ERC-4337](https://eips.ethereum.org/EIPS/eip-4337), using the user's EOA as the smart wallet's
+signer. This simplifies the process of incorporating
+[Account Abstraction](https://ethereum.org/en/roadmap/account-abstraction/) features into your
 application.
 
 :::tip
 
 Check out our [**example app**](https://w3a-safe-demo.vercel.app/) and
-[**repository**](https://github.com/Web3Auth/wallet-ecosystems-examples/tree/main/safeauth-embed/safe-react-example) for an end-to-end **Web3Auth**
-and **SafeAuth Kit integration**.
+[**repository**](https://github.com/Web3Auth/wallet-ecosystems-examples/tree/main/safeauth-embed/safe-react-example)
+for an end-to-end **Web3Auth** and **SafeAuth Kit integration**.
 
 :::
 
 ## Install SafeAuth Kit
 
-To get started, install the [`@safe-global/auth-kit`](https://www.npmjs.com/package/@safe-global/auth-kit) SDK from Safe.
+To get started, install the
+[`@safe-global/auth-kit`](https://www.npmjs.com/package/@safe-global/auth-kit) SDK from Safe.
 
 ```bash
 npm i @safe-global/auth-kit
@@ -34,9 +38,9 @@ npm i @safe-global/auth-kit
 
 ## Create a SafeAuthPack instance
 
-To integrate SafeAuth into your application, start by creating an instance of the `SafeAuthPack` class from the
-[`@safe-global/auth-kit`](https://www.npmjs.com/package/@safe-global/auth-kit) package. This instance will be the entry point for managing
-authentication and transactions.
+To integrate SafeAuth into your application, start by creating an instance of the `SafeAuthPack`
+class from the [`@safe-global/auth-kit`](https://www.npmjs.com/package/@safe-global/auth-kit)
+package. This instance will be the entry point for managing authentication and transactions.
 
 ```typescript
 import { SafeAuthPack, SafeAuthConfig, SafeAuthInitOptions } from "@safe-global/auth-kit";
@@ -57,22 +61,26 @@ const safeAuthPack = new SafeAuthPack();
 await safeAuthPack.init(safeAuthInitOptions);
 ```
 
-You should always call the `init()` method afterward before interacting with the pack. The init method initializes the provided Web3Auth SDK and Safe
-services. It creates an embedded browser wallet within an iframe, establishing communication through the internally generated EIP-1193 provider.
+You should always call the `init()` method afterward before interacting with the pack. The init
+method initializes the provided Web3Auth SDK and Safe services. It creates an embedded browser
+wallet within an iframe, establishing communication through the internally generated EIP-1193
+provider.
 
 ## Sign in to an Ethereum account
 
 ### Sign In
 
-To start the authentication process, simply call the `signIn()` method. This method is usually triggered when a user clicks on a `Sign In` button on
-your web application. Once the user has successfully signed in, a new Ethereum Wallet will be created. This wallet will be utilized for all future
-logins and can be **shared across different applications**.
+To start the authentication process, simply call the `signIn()` method. This method is usually
+triggered when a user clicks on a `Sign In` button on your web application. Once the user has
+successfully signed in, a new Ethereum Wallet will be created. This wallet will be utilized for all
+future logins and can be **shared across different applications**.
 
 ```typescript
 const safeAuthSignInResponse = await safeAuthPack.signIn();
 ```
 
-The returned safeAuthSignInResponse contains the user's Ethereum address and associated Safe addresses.
+The returned safeAuthSignInResponse contains the user's Ethereum address and associated Safe
+addresses.
 
 > This method retrieves Safe addresses owned by the EOA, but does not create a Safe.
 
@@ -85,8 +93,9 @@ AuthKitSignInData {
 
 ### Create Safe
 
-> Creation of a Safe is done by using the SafeFactory from the [Protocol Kit](https://www.npmjs.com/package/@safe-global/protocol-kit). The Protocol
-> Kit is a library that provides a set of tools to interact with the Safe smart contract.
+> Creation of a Safe is done by using the SafeFactory from the
+> [Protocol Kit](https://www.npmjs.com/package/@safe-global/protocol-kit). The Protocol Kit is a
+> library that provides a set of tools to interact with the Safe smart contract.
 
 **To create a Safe, use the following code:**
 
@@ -110,7 +119,8 @@ console.log("SAFE Created!", await safe.getAddress());
 
 ### Provider
 
-After authentication, use `getProvider()` to obtain the Ethereum provider instance, compatible with **EIP-1193**.
+After authentication, use `getProvider()` to obtain the Ethereum provider instance, compatible with
+**EIP-1193**.
 
 ```typescript
 safeAuthPack.getProvider();
@@ -208,4 +218,5 @@ await signer.sendTransaction(tx);
 </TabItem>
 </Tabs>
 
-The integration makes use of Web3Auth Wallet Services to offer users a secure and hassle-free authentication experience.
+The integration makes use of Web3Auth Wallet Services to offer users a secure and hassle-free
+authentication experience.

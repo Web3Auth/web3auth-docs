@@ -1,0 +1,126 @@
+## [`@web3auth/base-provider`](https://npmjs.com/package/@web3auth/base-provider)
+
+For connecting to blockchains other than EVM, Solana, and XRPL, you need to use the private key from
+Web3Auth and manually make RPC calls to the blockchain. This flow is facilitated by
+`@web3auth/base-provider` package.
+
+In this section, we'll explore more about how you can use this provider with our SDKs.
+
+## Installation
+
+#### [`@web3auth/base-provider`](https://npmjs.com/package/@web3auth/base-provider)
+
+```bash npm2yarn
+npm install --save @web3auth/base-provider
+```
+
+## Initialisation
+
+Import the `CommonPrivateKeyProvider` **class** from `@web3auth/base-provider`.
+
+```javascript
+import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
+```
+
+### Assign the `CommonPrivateKeyProvider` class to a variable
+
+After creating your Web3Auth instance, you need to initialize the CommonPrivateKeyProvider and add
+it to a class for further usage.
+
+```javascript
+const privateKeyProvider = new CommonPrivateKeyProvider();
+```
+
+:::info Note
+
+- The common private key provider only exposes one RPC method (i.e. 'private_key') to get the
+  private key of the logged-in user.
+
+:::
+
+## Setting up the provider
+
+### For Web3Auth PnP Web SDKs
+
+If you are using `chainNamespace: "other"` while initializing `Web3Auth` or `Web3AuthNoModal` with
+the `OpenloginAdapter`, you need to add the `privateKeyProvider` to the OpenLogin instance.
+
+```tsx
+const chainConfig = {
+    chainId: "0x1",
+    chainNamespace: CHAIN_NAMESPACES.OTHER,
+    rpcTarget: "https://any-rpc-endpoint.com",
+};
+
+const web3auth = new Web3AuthNoModal({
+  clientId,
+  chainConfig,
+  web3AuthNetwork: "sapphire_mainnet",
+});
+
+const privateKeyProvider = new CommonPrivateKeyProvider(config: chainConfig);
+
+const openloginAdapter = new OpenloginAdapter({
+  privateKeyProvider,
+  adapterSettings: {...},
+  mfaSettings: {...},
+  loginSettings: {...},
+});
+web3auth.configureAdapter(openloginAdapter);
+
+const web3authProvider = await web3auth.connectTo(
+  WALLET_ADAPTERS.OPENLOGIN,
+  {
+    loginProvider: "google",
+  }
+);
+
+// Use this provider to export the private key of the user
+```
+
+### For Single Factor Auth Web SDK
+
+While using the SFA Web SDK, you need to pass the provider during the initialization of SDK, while
+calling the init() function.
+
+```tsx
+const chainConfig = {
+  chainId: "0x1",
+  chainNamespace: CHAIN_NAMESPACES.OTHER,
+  rpcTarget: "https://any-rpc-endpoint.com",
+};
+
+const web3authSfa = new Web3Auth({
+  clientId, // Get your Client ID from the Web3Auth Dashboard
+  chainConfig,
+  web3AuthNetwork: "sapphire_mainnet",
+  usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
+});
+
+const privateKeyProvider = new CommonPrivateKeyProvider(config: chainConfig);
+
+web3authSfa.init(privateKeyProvider);
+
+const web3authSfaprovider = await web3auth.connect({
+  verifier: "web3auth-sfa-verifier", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+  verifierId: "name@email.com", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
+  idToken: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlRZT2dnXy01RU9FYmxhWS1WVlJZcVZhREFncHRuZktWNDUzNU1aUEMwdzAifQ.eyJpYXQiOjE2ODY4OTMzMzYsImF1ZCI6IkJIcl9kS2N4QzBlY0tuXzJkWlFtUWVOZGpQZ1d5a01rY29kRUhrVnZQTW83MXF6T1Y2U2d0b044S0N2RmRMTjdiZjM0Sk9tODl2V1FNTEZtU2ZJbzg0QSIsIm5vbmNlIjoiMDM0MGU2MDJlYzM4YTE2YzE1N2MzMDA3Yjk5YjFmZGNmMzU3MzFjNjIwOTVjMmMzMTk4ZDllNThhYWQwODVhMTZmIiwiaXNzIjoiaHR0cHM6Ly9hcGkub3BlbmxvZ2luLmNvbSIsIndhbGxldHMiOlt7InB1YmxpY19rZXkiOiIwMjcxNTk2YTkyZjJmZjM4ZDZhMTU1ZmIwZjMwNjcxMzZhMzQ4MTUwODY1NjlmMTgzYjZlYzQwZWEzNjA4OTI3NjEiLCJ0eXBlIjoid2ViM2F1dGhfYXBwX2tleSIsImN1cnZlIjoic2VjcDI1NmsxIn1dLCJlbWFpbCI6InNoYWhiYXpAdG9yLnVzIiwibmFtZSI6Ik1vaGFtbWFkIFNoYWhiYXogQWxhbSIsInByb2ZpbGVJbWFnZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBY0hUdGNOWmFacUkwNjQyXzJVdjBiSDFDeHEwQVZtX09ES09KNnR2THpXPXM5Ni1jIiwidmVyaWZpZXIiOiJ0b3J1cyIsInZlcmlmaWVySWQiOiJzaGFoYmF6QHRvci51cyIsImFnZ3JlZ2F0ZVZlcmlmaWVyIjoidGtleS1nb29nbGUtbHJjIiwiZXhwIjoxNjg2OTc5NzM2fQ.uoRbO9fvLyYEq3-X-osNlP4pda7aASKko0dm7EsmQvA-uq7cKFJWgAD8S9jC8ZogiEtJ6MRnjDYY8UdTwBL7mQ", // replace with your newly created unused JWT Token.
+});
+
+// use this provider to export the private key of the user
+```
+
+## Usage
+
+On connection, you can use this `provider` as a private key provider to expose the user's private
+key in the frontend context
+
+```tsx
+//Assuming the user is already logged in.
+async getPrivateKey() {
+    const privateKey = await web3authSfaprovider.request({
+        method: "private_key"
+    });
+    //Do something with privateKey
+}
+```

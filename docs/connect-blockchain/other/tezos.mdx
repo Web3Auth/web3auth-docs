@@ -2,7 +2,7 @@
 title: Integrate Web3Auth with the Tezos Blockchain
 sidebar_label: Tezos
 image: "guides/banners/tezos.png"
-displayed_sidebar: resources
+
 keywords: [tezos, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Tezos Blockchain | Documentation - Web3Auth"
 ---
@@ -10,16 +10,18 @@ description: "Integrate Web3Auth with the Tezos Blockchain | Documentation - Web
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
 import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-other-pnp-sfa-tkey.mdx";
 
-While using the Web3Auth Web SDK for a non EVM chain like [Tezos](https://tezos.com/) you get a standard provider from which you can get the private
-key of the user. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting user's
-`account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a few
-methods here for getting you started quickly on that.
+While using the Web3Auth Web SDK for a non EVM chain like [Tezos](https://tezos.com/) you get a
+standard provider from which you can get the private key of the user. Using this private key, you
+can use the corresponding libraries of the blockchain to make blockchain calls like getting user's
+`account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and `write` to the
+smart contract, etc. We have highlighted a few methods here for getting you started quickly on that.
 
 :::note
 
-This reference is for the `Web`, however, you can use Tezos on other Mobile and Gaming Platforms as well. Please follow our reference for
-[EVM Blockchains](/connect-blockchain/evm/), and similarly use Tezos libraries that support the platforms to use the private key and make blockchain
-calls accordingly.
+This reference is for the `Web`, however, you can use Tezos on other Mobile and Gaming Platforms as
+well. Please follow our reference for [EVM Blockchains](/connect-blockchain/evm/), and similarly use
+Tezos libraries that support the platforms to use the private key and make blockchain calls
+accordingly.
 
 :::
 
@@ -86,7 +88,8 @@ import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
 const web3auth = new Web3Auth({
-  clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
+  clientId:
+    "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from Web3Auth Dashboard
   web3AuthNetwork: "sapphire_mainnet",
   chainConfig: {
     chainNamespace: "other", // for all non EVM and SOLANA chains, use "other"
@@ -117,15 +120,17 @@ const web3authProvider = await web3auth.connect(); // web3auth.provider
 
 ## Get Account, Balance and Key
 
-Once a user logs in, the Web3Auth SDK returns a provider. Since Web3Auth doesn't have a native provider for Tezos, we need to directly use the private
-key to make the RPC calls.
+Once a user logs in, the Web3Auth SDK returns a provider. Since Web3Auth doesn't have a native
+provider for Tezos, we need to directly use the private key to make the RPC calls.
 
-Using the function, `web3auth.provider.request({method: "private_key"})` from Web3Auth provider, the application can have access to the user's private
-key. However, we cannot use this key with Tezos EC Curve specific signing functions, hence, we first derive the Tezos Key using the
-`getTezosKeyPair()` function.
+Using the function, `web3auth.provider.request({method: "private_key"})` from Web3Auth provider, the
+application can have access to the user's private key. However, we cannot use this key with Tezos EC
+Curve specific signing functions, hence, we first derive the Tezos Key using the `getTezosKeyPair()`
+function.
 
-On the underhood, it uses the `tezosCrypto.utils.seedToKeyPair()` function, where we need to pass the `hex2buf(privateKey)`, ie. the hexadecimal to
-byteArray converted private key. We can use the returned private key pair from this and use on Tezos transactions.
+On the underhood, it uses the `tezosCrypto.utils.seedToKeyPair()` function, where we need to pass
+the `hex2buf(privateKey)`, ie. the hexadecimal to byteArray converted private key. We can use the
+returned private key pair from this and use on Tezos transactions.
 
 ```tsx
 import * as tezosCrypto from "@tezos-core-tools/crypto-utils";

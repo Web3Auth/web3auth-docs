@@ -321,10 +321,6 @@ const config: Config = {
             to: "/sdk/pnp/web/modal/mfa",
           },
           {
-            from: "/sdk/providers/other",
-            to: "/sdk/providers/common",
-          },
-          {
             from: "/sdk/tkey/initialization",
             to: "/sdk/core-kit/tkey/initialize",
           },
@@ -341,64 +337,64 @@ const config: Config = {
             to: "/sdk/core-kit/tkey/install",
           },
           {
-            from: "/connect-blockchain/polygon",
-            to: "/connect-blockchain/evm/polygon",
+            from: "/connect-blockchain/polygon/",
+            to: "/connect-blockchain/evm/polygon/",
           },
           {
-            from: "/connect-blockchain/base",
-            to: "/connect-blockchain/evm/base",
+            from: "/connect-blockchain/base/",
+            to: "/connect-blockchain/evm/base/",
           },
           {
-            from: "/connect-blockchain/bnb",
-            to: "/connect-blockchain/evm/bnb",
+            from: "/connect-blockchain/bnb/",
+            to: "/connect-blockchain/evm/bnb/",
           },
           {
-            from: "/connect-blockchain/avalanche",
-            to: "/connect-blockchain/evm/avalanche",
+            from: "/connect-blockchain/avalanche/",
+            to: "/connect-blockchain/evm/avalanche/",
           },
           {
-            from: "/connect-blockchain/arbitrum",
-            to: "/connect-blockchain/evm/arbitrum",
+            from: "/connect-blockchain/arbitrum/",
+            to: "/connect-blockchain/evm/arbitrum/",
           },
           {
-            from: "/connect-blockchain/optimism",
-            to: "/connect-blockchain/evm/optimism",
+            from: "/connect-blockchain/optimism/",
+            to: "/connect-blockchain/evm/optimism/",
           },
           {
-            from: "/connect-blockchain/cronos",
-            to: "/connect-blockchain/evm/cronos",
+            from: "/connect-blockchain/cronos/",
+            to: "/connect-blockchain/evm/cronos/",
           },
           {
-            from: "/connect-blockchain/harmony",
-            to: "/connect-blockchain/evm/harmony",
+            from: "/connect-blockchain/harmony/",
+            to: "/connect-blockchain/evm/harmony/",
           },
           {
-            from: "/connect-blockchain/celo",
-            to: "/connect-blockchain/evm/celo",
+            from: "/connect-blockchain/celo/",
+            to: "/connect-blockchain/evm/celo/",
           },
           {
-            from: "/connect-blockchain/moonbeam",
-            to: "/connect-blockchain/evm/moonbeam",
+            from: "/connect-blockchain/moonbeam/",
+            to: "/connect-blockchain/evm/moonbeam/",
           },
           {
-            from: "/connect-blockchain/moonriver",
-            to: "/connect-blockchain/evm/moonriver",
+            from: "/connect-blockchain/moonriver/",
+            to: "/connect-blockchain/evm/moonriver/",
           },
           {
-            from: "/connect-blockchain/klaytn",
+            from: "/connect-blockchain/klaytn/",
             to: "/connect-blockchain/evm/klaytn/",
           },
           {
-            from: "/connect-blockchain/flare",
-            to: "/connect-blockchain/evm/flare",
+            from: "/connect-blockchain/flare/",
+            to: "/connect-blockchain/evm/flare/",
           },
           {
-            from: "/connect-blockchain/songbird",
-            to: "/connect-blockchain/evm/songbird",
+            from: "/connect-blockchain/songbird/",
+            to: "/connect-blockchain/evm/songbird/",
           },
           {
-            from: "/connect-blockchain/skale",
-            to: "/connect-blockchain/evm/skale",
+            from: "/connect-blockchain/skale/",
+            to: "/connect-blockchain/evm/skale/",
           },
           {
             from: "/connect-blockchain/starkex",
@@ -506,55 +502,27 @@ const config: Config = {
           },
         ],
         createRedirects(existingPath) {
-          if (existingPath.includes("/guides/")) {
-            return [existingPath.replace("/guides/", "/content-hub/guides/")];
-          }
-          if (existingPath.includes("/pnp/features/whitelabel/")) {
-            return [existingPath.replace("/features/whitelabel", "/pnp/features/whitelabel/")];
-          }
-          if (existingPath.includes("/pnp-features/")) {
-            return [existingPath.replace("/features/", "/pnp-features/")];
-          }
-          if (existingPath.includes("/sdk")) {
-            return [
-              existingPath.replace("/sdk", "/api-reference"),
-              existingPath.replace("/sdk", "/sdk-reference"),
-            ];
-          }
-          if (existingPath.includes("/sdk")) {
-            return [
-              existingPath.replace("/migration-guide/", "/migration-guides/no-modal-v5-to-v6"),
-              existingPath.replace(
-                "/migration-guide/migrating-to-v6-from-v5",
-                "/migration-guides/no-modal-v5-to-v6",
-              ),
-            ];
-          }
-          // if (existingPath.includes("/auth-provider-setup")) {
-          //   return [existingPath.replace("/auth-provider-setup", "/custom-authentication")];
-          // }
-          if (existingPath.includes("/sdk/web/no-modal")) {
-            return [
-              existingPath.replace("/sdk/web/no-modal", "/sdk/web/core"),
-              existingPath.replace("/sdk/web/no-modal", "/sdk/web/customloginui"),
-            ];
-          }
-          if (existingPath.includes("/sdk/web/modal")) {
-            return [
-              existingPath.replace("/sdk/web/modal", "/sdk/web/web3auth"),
-              existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay"),
-            ];
-          }
-          if (existingPath.includes("/sdk/self-host")) {
-            return [existingPath.replace("/sdk/tkey", "/sdk/self-host")];
-          }
-          if (existingPath.includes("/integration-builder")) {
-            return [existingPath.replace("/quick-start", "/integration-builder")];
-          }
-          if (existingPath.includes("quickstart")) {
-            return [existingPath.replace("quick-start", "quickstart")];
-          }
-          return undefined; // Return a falsy value: no redirect created
+          return [
+            existingPath.replace("/sdk", "/api-reference"),
+            existingPath.replace("/sdk", "/sdk-reference"),
+            existingPath.replace("/guides/", "/content-hub/guides/"),
+            existingPath.replace("/sdk/pnp/web/providers/", "/sdk/providers/"),
+            existingPath.replace("/sdk/pnp/web/wallet-services/", "/sdk/wallet-services/"),
+            existingPath.replace("/features/whitelabel", "/pnp/features/whitelabel/"),
+            existingPath.replace("/sdk/web/no-modal", "/sdk/web/core"),
+            existingPath.replace("/sdk/web/no-modal", "/sdk/web/customloginui"),
+            existingPath.replace("/sdk/web/modal", "/sdk/web/web3auth"),
+            existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay"),
+            existingPath.replace("/sdk/tkey", "/sdk/self-host"),
+            existingPath.replace(
+              "/connect-blockchain/evm/astar-zkyoto/",
+              "/connect-blockchain/evm/zkyoto/",
+            ),
+            existingPath.replace(
+              "/connect-blockchain/evm/astar-zkevm/",
+              "/connect-blockchain/evm/zkevm/",
+            ),
+          ];
         },
       },
     ],
