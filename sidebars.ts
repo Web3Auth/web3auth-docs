@@ -599,6 +599,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Linea zkEVM",
+              items: [
+                "connect-blockchain/evm/linea/linea",
+                "connect-blockchain/evm/linea/web",
+                "connect-blockchain/evm/linea/android",
+                "connect-blockchain/evm/linea/ios",
+                "connect-blockchain/evm/linea/react-native",
+                "connect-blockchain/evm/linea/flutter",
+                "connect-blockchain/evm/linea/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Moonbeam",
               items: [
                 "connect-blockchain/evm/moonbeam/moonbeam",
