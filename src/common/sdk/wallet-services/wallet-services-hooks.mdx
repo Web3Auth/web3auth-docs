@@ -1,0 +1,107 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+Web3Auth provides essential React hooks for the Wallet Services Plugin SDK for managing wallet
+services such as WalletConnect, TopUp, and Wallet UI. These hooks can be directly imported from the
+`@web3auth/wallet-services-plugin-react-hooks` package. Here's an example of how to import them:
+
+```jsx
+import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
+```
+
+For more information on React hooks, refer to the
+[official React documentation](https://react.dev/learn/reusing-logic-with-custom-hooks).
+
+### Available Hooks
+
+- `useWalletServicesPlugin`: Provides access to the Wallet Services Plugin context initialized via
+  the `WalletServicesProvider` component.
+
+### Hook Context Interface
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter                  | Description                                                                                                                                                                   |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `isPluginConnected`        | Indicates whether the plugin is connected and ready to be used.                                                                                                               |
+| `showWalletConnectScanner` | Shows the Wallet Connect Scanner to connect with dApps having Wallet Connect login option. This is useful for interoperability with dApps having Wallet Connect login option. |
+| `showCheckout`             | Shows the TopUp modal to select local currency and amount to top up the wallet.                                                                                               |
+| `showWalletUI`             | Shows the Wallet Services modal UI to be used as a wallet UI.                                                                                                                 |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface IBaseWalletServicesHookContext {
+  /**
+   * Indicates whether the plugin is connected and ready to be used.
+   */
+  isPluginConnected: boolean;
+  /**
+   * Shows the Wallet Connect Scanner to connect with dApps having Wallet Connect login option.
+   * This is useful for interoperability with dApps having Wallet Connect login option.
+   * @returns A Promise that resolves when the Wallet Connect Scanner is shown.
+   */
+  showWalletConnectScanner(): Promise<void>;
+  /**
+   * Shows the TopUp modal to select local currency and amount to top up the wallet.
+   * @returns A Promise that resolves when the TopUp modal is shown.
+   */
+  showCheckout(): Promise<void>;
+  /**
+   * Shows the Wallet Services modal UI to be used as a wallet UI.
+   * @returns A Promise that resolves when the Wallet Services modal UI is shown.
+   */
+  showWalletUI(): Promise<void>;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Web3AuthProvider
+
+The `Web3AuthProvider` component wraps the main component and injects the Web3Auth-related context
+into it. For more details on the `Web3AuthProvider`, please refer to the
+[Web3AuthProvider documentation](/sdk/pnp/web/modal/modal-hooks#web3authprovider).
+
+### Wallet Services Plugin Methods
+
+- **`isPluginConnected`**: Indicates whether the plugin is connected and ready to be used.
+
+  ```javascript
+  const { isPluginConnected } = useWalletServicesPlugin();
+  ```
+
+- **`showWalletConnectScanner`**: Shows the Wallet Connect Scanner to connect with dApps having
+  Wallet Connect login option. This is useful for interoperability with dApps having Wallet Connect
+  login option.
+
+  ```javascript
+  const { showWalletConnectScanner } = useWalletServicesPlugin();
+  await showWalletConnectScanner();
+  ```
+
+- **`showCheckout`**: Shows the TopUp modal to select local currency and amount to top up the
+  wallet.
+
+  ```javascript
+  const { showCheckout } = useWalletServicesPlugin();
+  await showCheckout();
+  ```
+
+- **`showWalletUI`**: Shows the Wallet Services modal UI to be used as a wallet UI.
+  ```javascript
+  const { showWalletUI } = useWalletServicesPlugin();
+  await showWalletUI();
+  ```
