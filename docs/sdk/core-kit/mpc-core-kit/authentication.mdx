@@ -46,11 +46,11 @@ MPC functionalities.
 
 ## Log In with OAuth
 
-#### `loginWithOAuth(loginParams: OAuthLoginParams): Promise<void>;`
+#### `loginWithOauth(loginParams: OauthLoginParams): Promise<void>;`
 
-| Variable      | Description      |
-| ------------- | ---------------- |
-| `loginParams` | Login Parameters |
+| Variable      | Type     | Description      | Mandatory |
+| ------------- | -------- | ---------------- | --------- |
+| `loginParams` | `object` | Login Parameters | Yes       |
 
 :::tip React Native
 
@@ -61,7 +61,7 @@ token from the auth provider.
 
 :::
 
-### `OAuthLoginParams`
+### `OauthLoginParams`
 
 <Tabs
   defaultValue="table"
@@ -73,18 +73,18 @@ token from the auth provider.
 
 <TabItem value="table">
 
-| Parameter                      | Description                                                                                                                             |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `subVerifierDetails`           | Details of the verifier the app needs to connect to. This is named a "sub verifier" to accommodate for aggregate verifiers as well.     |
-| `aggregateVerifierIdentifier?` | Identifier/ Name of the aggregate verifier you've made on the Web3Auth Dashboard. Not needed if you're connecting to a single verifier. |
-| `subVerifierDetailsArray?`     | Array of the details of verifiers the app needs to connect to.                                                                          |
+| Parameter                      | Type                   | Description                                                                                                                             | Mandatory |
+| ------------------------------ | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `subVerifierDetails`           | `SubVerifierDetails`   | Details of the verifier the app needs to connect to. This is named a "sub verifier" to accommodate for aggregate verifiers as well.     | Yes       |
+| `aggregateVerifierIdentifier?` | `string`               | Identifier/ Name of the aggregate verifier you've made on the Web3Auth Dashboard. Not needed if you're connecting to a single verifier. | No        |
+| `subVerifierDetailsArray?`     | `SubVerifierDetails[]` | Array of the details of verifiers the app needs to connect to.                                                                          | No        |
 
 </TabItem>
 
 <TabItem value="type">
 
 ```javascript
-export type OAuthLoginParams = SubVerifierDetailsParams | AggregateVerifierLoginParams;
+export type OauthLoginParams = SubVerifierDetailsParams | AggregateVerifierLoginParams;
 
 export interface SubVerifierDetailsParams extends BaseLoginParams {
   subVerifierDetails: SubVerifierDetails;
@@ -127,11 +127,11 @@ verifier.
 
 <TabItem value="table">
 
-| Parameter     | Description                                                                                                                                                                                                                                                         |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `typeOfLogin` | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose `google`, a Google sign-in flow will be used. If you choose `jwt`, you should be providing your own JWT token, no sign-in flow will be presented. |
-| `verifier`    | Name/ Identifier of the verifier/ sub verifier in case of aggregate verifiers, you'd like your app to connect to.                                                                                                                                                   |
-| `clientId`    | Client Id given by the auth provider. Pass a random string in case you're connecting to a JWT based setup.                                                                                                                                                          |
+| Parameter   | Type          | Description                                                                                                                                                                                                                                                         | Mandatory |
+| ----------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| typeOfLogin | `TypeOfLogin` | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose `google`, a Google sign-in flow will be used. If you choose `jwt`, you should be providing your own JWT token, no sign-in flow will be presented. | Yes       |
+| `verifier`  | `string`      | Name/ Identifier of the verifier/ sub verifier in case of aggregate verifiers, you'd like your app to connect to.                                                                                                                                                   | Yes       |
+| `clientId`  | `string`      | Client Id given by the auth provider. Pass a random string in case you're connecting to a JWT based setup.                                                                                                                                                          | Yes       |
 
 </TabItem>
 
@@ -188,11 +188,11 @@ aggregate verifier.
 
 <TabItem value="table">
 
-| Parameter                     | Description                                                                                                         |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `aggregateVerifierIdentifier` | The name of your aggregate verifier                                                                                 |
-| `subVerifierDetailsArray`     | An array containing the details of your sub verifiers.                                                              |
-| `aggregateVerifierType?`      | What kind of aggregation is needed for your aggregate verifier? Use `"single_id_verifier"` by default in most cases |
+| Parameter                     | Type                      | Description                                                                                                         | Mandatory |
+| ----------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------- |
+| `aggregateVerifierIdentifier` | `string`                  | The name of your aggregate verifier                                                                                 | Yes       |
+| `subVerifierDetailsArray`     | `SubVerifierDetails[]`    | An array containing the details of your sub verifiers.                                                              | Yes       |
+| `aggregateVerifierType?`      | `AGGREGATE_VERIFIER_TYPE` | What kind of aggregation is needed for your aggregate verifier? Use `"single_id_verifier"` by default in most cases | No        |
 
 </TabItem>
 
@@ -226,7 +226,7 @@ const verifierConfig = {
   },
 } as SubVerifierDetailsParams;
 
-await coreKitInstance.loginWithOAuth(verifierConfig);
+await coreKitInstance.loginWithOauth(verifierConfig);
 ```
 
 ### Aggregate Verifier
@@ -245,7 +245,7 @@ const verifierConfig = {
   ],
 } as AggregateVerifierLoginParams;
 
-await coreKitInstance.loginWithOAuth(verifierConfig);
+await coreKitInstance.loginWithOauth(verifierConfig);
 ```
 
 ### Popup Mode
@@ -312,13 +312,13 @@ get login result by calling `init()` function on redirected page mount.
 
 ## Log In with JWT (BYOA)
 
-#### `loginWithJWT(loginParams: JWTLoginParams): Promise<void>`
+#### `loginWithJWT(idTokenLoginParams: IdTokenLoginParams): Promise<void>;`
 
-| Variable      | Description      |
-| ------------- | ---------------- |
-| `loginParams` | Login Parameters |
+| Variable             | Type     | Description      | Mandatory |
+| -------------------- | -------- | ---------------- | --------- |
+| `idTokenLoginParams` | `object` | Login Parameters | Yes       |
 
-### `JWTLoginParams`
+### `IdTokenLoginParams`
 
 <Tabs
   defaultValue="table"
@@ -330,57 +330,50 @@ get login result by calling `init()` function on redirected page mount.
 
 <TabItem value="table">
 
-| Parameter                | Description                                                                                                                                |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `verifier`               | Name of the verifier created on Web3Auth Dashboard. In the case of Aggregate Verifier, the name of the top-level aggregate verifier.       |
-| `verifierId`             | Unique Identifier for the User. The verifier identifier field is set for the verifier/sub verifier. E.g. "sub" field in your JWT ID Token. |
-| `idToken`                | The idToken received from the Auth Provider.                                                                                               |
-| `subVerifier?`           | Name of the sub verifier in case of aggregate verifier setup. This field is mandatory in the case of an aggregate verifier.                |
-| `extraVerifierParams?`   | Extra verifier params in case of a WebAuthn verifier type.                                                                                 |
-| `additionalParams?`      | Any additional parameter (key-value pair) you'd like to pass to the login function.                                                        |
-| `importTssKey?`          | Key to import key into Tss during first time login.                                                                                        |
-| `prefetchTssPublicKeys?` | Number of TSS public keys to prefetch.                                                                                                     |
+| Parameter              | Type                  | Mandatory | Description                                                                                                                                |
+| ---------------------- | --------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `verifier`             | `string`              | Yes       | Name of the verifier created on Web3Auth Dashboard. In the case of Aggregate Verifier, the name of the top-level aggregate verifier.       |
+| `verifierId`           | `string`              | Yes       | Unique Identifier for the User. The verifier identifier field is set for the verifier/sub verifier. E.g. "sub" field in your JWT ID Token. |
+| `idToken`              | `string`              | Yes       | The idToken received from the Auth Provider.                                                                                               |
+| `subVerifier?`         | `string`              | No        | Name of the sub verifier in case of aggregate verifier setup. This field is mandatory in the case of an aggregate verifier.                |
+| `extraVerifierParams?` | `WebAuthnExtraParams` | No        | Extra verifier params in case of a WebAuthn verifier type.                                                                                 |
+| `additionalParams?`    | `ExtraParams`         | No        | Any additional parameter (key-value pair) you'd like to pass to the login function.                                                        |
 
 </TabItem>
 
 <TabItem value="type">
 
-```tsx
-interface JWTLoginParams {
+```javascript
+export interface IdTokenLoginParams {
   /**
    * Name of the verifier created on Web3Auth Dashboard. In case of Aggregate Verifier, the name of the top level aggregate verifier.
    */
   verifier: string;
+
   /**
    * Unique Identifier for the User. The verifier identifier field set for the verifier/ sub verifier. E.g. "sub" field in your on jwt id token.
    */
   verifierId: string;
+
   /**
    * The idToken received from the Auth Provider.
    */
   idToken: string;
+
   /**
    * Name of the sub verifier in case of aggregate verifier setup. This field should only be provided in case of an aggregate verifier.
    */
   subVerifier?: string;
+
   /**
    * Extra verifier params in case of a WebAuthn verifier type.
    */
-  extraVerifierParams?: PasskeyExtraParams;
+  extraVerifierParams?: WebAuthnExtraParams;
+
   /**
    * Any additional parameter (key value pair) you'd like to pass to the login function.
    */
   additionalParams?: ExtraParams;
-  /**
-   * Key to import key into Tss during first time login.
-   */
-  importTssKey?: string;
-  /**
-   * Number of TSS public keys to prefetch. For the best performance, set it to
-   * the number of factors you want to create. Set it to 0 for an existing user.
-   * Default is 1, maximum is 3.
-   */
-  prefetchTssPublicKeys?: number;
 }
 
 export interface ExtraParams {
@@ -388,14 +381,14 @@ export interface ExtraParams {
 }
 
 export type WebAuthnExtraParams = {
-  signature?: string;
-  clientDataJSON?: string;
-  authenticatorData?: string;
-  publicKey?: string;
-  challenge?: string;
-  rpOrigin?: string;
-  credId?: string;
-  transports?: AuthenticatorTransport[];
+  signature?: string,
+  clientDataJSON?: string,
+  authenticatorData?: string,
+  publicKey?: string,
+  challenge?: string,
+  rpOrigin?: string,
+  credId?: string,
+  transports?: AuthenticatorTransport[],
 };
 
 type AuthenticatorTransport = "ble" | "hybrid" | "internal" | "nfc" | "usb";
@@ -410,38 +403,38 @@ type AuthenticatorTransport = "ble" | "hybrid" | "internal" | "nfc" | "usb";
 ### General Verifier
 
 ```tsx
-import { Web3AuthMPCCoreKit, JWTLoginParams } from "@web3auth/mpc-core-kit";
+import { Web3AuthMPCCoreKit, idTokenLoginParams } from "@web3auth/mpc-core-kit";
 
 const loginRes = await signInWithGoogle();
 const idToken = await loginRes.user.getIdToken(true);
 const parsedToken = parseToken(idToken);
 
-const jwtLoginParams = {
+const idTokenLoginParams = {
   verifier: "w3a-firebase-demo",
   verifierId: parsedToken.email,
   idToken,
-} as JWTLoginParams;
+} as IdTokenLoginParams;
 
-await coreKitInstance.loginWithJWT(jwtLoginParams);
+await coreKitInstance.loginWithJWT(idTokenLoginParams);
 ```
 
 ### Aggregate Verifier
 
 ```tsx
-import { Web3AuthMPCCoreKit, JWTLoginParams } from "@web3auth/mpc-core-kit";
+import { Web3AuthMPCCoreKit, idTokenLoginParams } from "@web3auth/mpc-core-kit";
 
 const loginRes = await signInWithGoogle();
 const idToken = await loginRes.user.getIdToken(true);
 const parsedToken = parseToken(idToken);
 
-const jwtLoginParams = {
+const idTokenLoginParams = {
   verifier: "aggregate-sapphire"
   subVerifier: "w3a-google",
   verifierId: parsedToken.email,
   idToken,
-} as JWTLoginParams;
+} as IdTokenLoginParams;
 
-await coreKitInstance.loginWithJWT(jwtLoginParams);
+await coreKitInstance.loginWithJWT(idTokenLoginParams);
 ```
 
 ## Logging out the User
