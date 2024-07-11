@@ -1404,7 +1404,6 @@ const sidebars: SidebarsConfig = {
     "sdk/core-kit/mpc-core-kit/install",
     "sdk/core-kit/mpc-core-kit/initialize",
     "sdk/core-kit/mpc-core-kit/authentication",
-    "sdk/core-kit/mpc-core-kit/signing",
     "sdk/core-kit/mpc-core-kit/usage",
     {
       type: "category",
