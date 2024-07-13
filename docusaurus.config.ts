@@ -518,6 +518,7 @@ const config: Config = {
             existingPath.replace("/sdk/web/modal", "/sdk/web/web3auth"),
             existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay"),
             existingPath.replace("/sdk/tkey", "/sdk/self-host"),
+            existingPath.replace("/sdk/tkey", "/sdk/self-host"),
             existingPath.replace(
               "/connect-blockchain/evm/astar-zkyoto/",
               "/connect-blockchain/evm/zkyoto/",
@@ -526,6 +527,8 @@ const config: Config = {
               "/connect-blockchain/evm/astar-zkevm/",
               "/connect-blockchain/evm/zkevm/",
             ),
+            existingPath.replace("/product/core-kit", "/core-kit/"),
+            existingPath.replace("/product/pnp", "/pnp/"),
           ];
         },
       },
