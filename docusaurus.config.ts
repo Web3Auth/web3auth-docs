@@ -437,6 +437,10 @@ const config: Config = {
             to: "/connect-blockchain/other/polymesh",
           },
           {
+            from: "/connect-blockchain/sui",
+            to: "/connect-blockchain/other/sui",
+          },
+          {
             from: "/account-abstraction/safeauth",
             to: "/sdk/wallet-ecosystems/safeauth",
           },
