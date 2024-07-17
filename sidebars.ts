@@ -1273,6 +1273,11 @@ const sidebars: SidebarsConfig = {
       label: "Release Notes",
       href: "https://github.com/web3auth/single-factor-auth-android/releases",
     },
+    {
+      type: "category",
+      label: "Migration Guides",
+      items: ["migration-guides/sfa-android-v0.1.0-to-v0.3.0"],
+    },
     ...sdkQuickLinks,
   ],
   sdk_core_kit_sfa_ios: [
