@@ -397,6 +397,10 @@ const config: Config = {
             to: "/connect-blockchain/evm/skale/",
           },
           {
+            from: "/connect-blockcahin/tron/",
+            to: "/connect-blockchain/evm/tron/",
+          },
+          {
             from: "/connect-blockchain/starkex",
             to: "/connect-blockchain/other/starkex",
           },
