@@ -701,6 +701,11 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/songbird/unity",
               ],
             },
+            {
+              type: "category",
+              label: "Tron",
+              items: ["connect-blockchain/evm/tron/web"],
+            },
           ],
         },
         {
