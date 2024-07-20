@@ -1,0 +1,41 @@
+---
+title: SFA Flutter SDK - v2 to v3
+description: "SFA Flutter SDK - v2 to v3 | Documentation - Web3Auth"
+sidebar_label: v2 to v3
+---
+
+# Migration Guide from v2 to v3 for SFA Andriod SDK
+
+## Overview
+
+This migration guide provides steps for upgrading from version v2 to v3 of the Web3Auth Single
+Factor Auth Flutter SDK. The guide outlines breaking changes in the `init` method.
+
+## Changes in Detail
+
+### `init` method changes
+
+After v3, the `init` method takes in `SFAParams` object instead of `Web3AuthNetwork` object.
+
+#### Before (v2)
+
+```dart
+final singleFactorAuth = SingleFactAuthFlutter();
+
+singleFactorAuth.init(
+    Web3AuthNetwork(network: TorusNetwork.cyan),
+);
+```
+
+#### After (v3)
+
+```dart
+final singleFactorAuth = SingleFactAuthFlutter();
+
+singleFactorAuth.init(
+    SFAParams(
+        network: Web3AuthNetwork.mainnet,
+        clientid: "YOUR_WEB3AUTH_CLIENT_ID",
+    ),
+);
+```
