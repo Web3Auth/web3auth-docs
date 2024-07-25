@@ -2,12 +2,65 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
 <Tabs
-  defaultValue="web3"
+  defaultValue="viem"
   values={[
+    { label: "viem", value: "viem" },
     { label: "web3.js", value: "web3" },
     { label: "ethers.js", value: "ethers" },
   ]}
 >
+<TabItem value="viem">
+
+```tsx
+// SignTypedData in viem
+// https://viem.sh/docs/actions/wallet/signTypedData
+
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const walletClient = createWalletClient({
+  chain: mainnet,
+  transport: custom(this.provider),
+});
+
+const address = await walletClient.getAddresses();
+
+const signature = await walletClient.signTypedData({
+  account: address[0],
+  domain: {
+    name: "Ether Mail",
+    version: "1",
+    chainId: 1,
+    verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+  },
+  types: {
+    Person: [
+      { name: "name", type: "string" },
+      { name: "wallet", type: "address" },
+    ],
+    Mail: [
+      { name: "from", type: "Person" },
+      { name: "to", type: "Person" },
+      { name: "contents", type: "string" },
+    ],
+  },
+  primaryType: "Mail",
+  message: {
+    from: {
+      name: "Cow",
+      wallet: "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
+    },
+    to: {
+      name: "Bob",
+      wallet: "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB",
+    },
+    contents: "Hello, Bob!",
+  },
+});
+```
+
+</TabItem>
 <TabItem value="web3">
 
 ```tsx

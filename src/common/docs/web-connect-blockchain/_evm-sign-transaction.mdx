@@ -42,11 +42,6 @@ const receipt = await web3.eth.signTransaction({
   Use code from the above Initializing Provider here
 */
 
-const publicClient = createPublicClient({
-  chain: mainnet, // for mainnet
-  transport: custom(this.provider),
-});
-
 const walletClient = createWalletClient({
   chain: mainnet, // for mainnet
   transport: custom(this.provider),
@@ -59,14 +54,18 @@ const address = await this.getAccounts();
 
 const address = await walletClient.getAddresses();
 
-// Submit transaction to the blockchain
-const hash = await walletClient.signTransaction({
+// Prepare transaction
+const request = await walletClient.prepareTransactionRequest({
   account: address[0],
   to: destination,
   value: amount,
 });
 
-const receipt = await publicClient.waitForTransactionReceipt({ hash });
+// Sign transaction
+const signature = await walletClient.signTransaction(request);
+
+// Submit transaction to the blockchain
+const hash = await walletClient.sendRawTransaction(signature);
 ```
 
 </TabItem>
