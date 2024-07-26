@@ -2,11 +2,11 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
 <Tabs
-  defaultValue="web3"
+  defaultValue="viem"
   values={[
+    { label: "viem", value: "viem" },
     { label: "web3.js", value: "web3" },
     { label: "ethers.js", value: "ethers" },
-    { label: "viem", value: "viem" },
   ]}
 >
 <TabItem value="web3">
@@ -98,8 +98,8 @@ const receipt = await contract.deployed();
   Use code from the above Initializing Provider here
 */
 
-const publicClient = createPublicClient({
-  chain: mainnet, // for mainnet
+const walletClient = createWalletClient({
+  chain: mainnet,
   transport: custom(this.provider),
 });
 
@@ -132,9 +132,6 @@ const hash = await walletClient.deployContract({
   contractByteCode: contractByteCode,
   contractParams: ["Hello World!"],
 });
-
-// Wait for deployment to finish
-const receipt = await walletClient.waitForTransaction(hash);
 ```
 
 </TabItem>
