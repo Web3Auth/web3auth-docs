@@ -397,6 +397,10 @@ const config: Config = {
             to: "/connect-blockchain/evm/skale/",
           },
           {
+            from: "/connect-blockcahin/tron/",
+            to: "/connect-blockchain/evm/tron/",
+          },
+          {
             from: "/connect-blockchain/starkex",
             to: "/connect-blockchain/other/starkex",
           },
@@ -435,6 +439,10 @@ const config: Config = {
           {
             from: "/connect-blockchain/polymesh",
             to: "/connect-blockchain/other/polymesh",
+          },
+          {
+            from: "/connect-blockchain/sui",
+            to: "/connect-blockchain/other/sui",
           },
           {
             from: "/account-abstraction/safeauth",
@@ -514,6 +522,7 @@ const config: Config = {
             existingPath.replace("/sdk/web/modal", "/sdk/web/web3auth"),
             existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay"),
             existingPath.replace("/sdk/tkey", "/sdk/self-host"),
+            existingPath.replace("/sdk/tkey", "/sdk/self-host"),
             existingPath.replace(
               "/connect-blockchain/evm/astar-zkyoto/",
               "/connect-blockchain/evm/zkyoto/",
@@ -522,6 +531,8 @@ const config: Config = {
               "/connect-blockchain/evm/astar-zkevm/",
               "/connect-blockchain/evm/zkevm/",
             ),
+            existingPath.replace("/product/core-kit", "/core-kit/"),
+            existingPath.replace("/product/pnp", "/pnp/"),
           ];
         },
       },

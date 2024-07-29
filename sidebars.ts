@@ -701,6 +701,11 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/songbird/unity",
               ],
             },
+            {
+              type: "category",
+              label: "Tron",
+              items: ["connect-blockchain/evm/tron/web"],
+            },
           ],
         },
         {
@@ -731,8 +736,8 @@ const sidebars: SidebarsConfig = {
             "connect-blockchain/other/polymesh",
             "connect-blockchain/other/starkex",
             "connect-blockchain/other/starknet",
-            "connect-blockchain/other/tezos",
             "connect-blockchain/other/sui",
+            "connect-blockchain/other/tezos",
           ],
           collapsible: true,
           collapsed: false,
