@@ -651,6 +651,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Nibiru",
+              items: [
+                "connect-blockchain/evm/nibiru/nibiru",
+                "connect-blockchain/evm/nibiru/web",
+                "connect-blockchain/evm/nibiru/android",
+                "connect-blockchain/evm/nibiru/ios",
+                "connect-blockchain/evm/nibiru/react-native",
+                "connect-blockchain/evm/nibiru/flutter",
+                "connect-blockchain/evm/nibiru/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Optimism",
               items: [
                 "connect-blockchain/evm/optimism/optimism",
