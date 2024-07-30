@@ -2,11 +2,11 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
 <Tabs
-  defaultValue="web3"
+  defaultValue="viem"
   values={[
+    { label: "viem", value: "viem" },
     { label: "web3.js", value: "web3" },
     { label: "ethers.js", value: "ethers" },
-    { label: "viem", value: "viem" },
   ]}
 >
 <TabItem value="web3">
@@ -125,12 +125,12 @@ const publicClient = createPublicClient({
   transport: custom(this.provider),
 });
 
-const contractAddress = "0x04cA407965D60C2B39d892a1DFB1d1d9C30d0334";
+const contractAddress = "0x8AA6820B3F197384874fAdb355361758258cb981"; // On Sepolia, replace with your contract address
 
 // Read message from smart contract
 const message = await publicClient.readContract({
   address: contractAddress,
-  abi: JSON.parse(JSON.stringify(contractABI)),
+  abi: contractABI,
   functionName: "message",
 });
 ```

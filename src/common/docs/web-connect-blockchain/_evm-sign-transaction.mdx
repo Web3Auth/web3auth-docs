@@ -1,3 +1,15 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<Tabs
+  defaultValue="viem"
+  values={[
+    { label: "viem", value: "viem" },
+    { label: "web3.js", value: "web3" },
+  ]}
+>
+<TabItem value="web3">
+
 ```tsx
 /*
   Use code from the above Initializing Provider here
@@ -20,3 +32,41 @@ const receipt = await web3.eth.signTransaction({
   maxFeePerGas: "6000000000000", // Max fee per gas
 });
 ```
+
+</TabItem>
+
+<TabItem value="viem">
+
+```tsx
+/*
+  Use code from the above Initializing Provider here
+*/
+
+const walletClient = createWalletClient({
+  chain: mainnet, // for mainnet
+  transport: custom(this.provider),
+});
+
+// data for the transaction
+const destination = "<ADDRESS>";
+const amount = parseEther("0.0001");
+const address = await this.getAccounts();
+
+const address = await walletClient.getAddresses();
+
+// Prepare transaction
+const request = await walletClient.prepareTransactionRequest({
+  account: address[0],
+  to: destination,
+  value: amount,
+});
+
+// Sign transaction
+const signature = await walletClient.signTransaction(request);
+
+// Submit transaction to the blockchain
+const hash = await walletClient.sendRawTransaction(signature);
+```
+
+</TabItem>
+</Tabs>
