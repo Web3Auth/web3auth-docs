@@ -1101,7 +1101,11 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/rn-v4-to-v5", "migration-guides/rn-v3-to-v4"],
+      items: [
+        "migration-guides/rn-v5-to-v6",
+        "migration-guides/rn-v4-to-v5",
+        "migration-guides/rn-v3-to-v4",
+      ],
     },
     ...sdkQuickLinks,
   ],

@@ -1,25 +1,18 @@
-In this example, we're adding the `WalletServicesPlugin` with a very basic configuration.
+With WalletServicesPlugin `v8.7.0`, you can now sign a message using the `personal_sign` method with
+a UI confirmation screen.
 
-```javascript
+![Confirmation screen](/images/ws-ui-confirmation-screen.png)
+
+```typescript
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
 const walletServicesPlugin = new WalletServicesPlugin({
   walletInitOptions: {
-    confirmationStrategy: "modal", // pass this to use the UI modal confirmation while signing
+    confirmationStrategy: "modal",
   },
 });
-web3auth.addPlugin(walletServicesPlugin);
+web3auth.addPlugin(walletServicesPlugin); // Add the plugin to web3auth
 
-// Show the wallet services plugin
-await walletServicesPlugin.showWalletUi();
-
-// Show the wallet connect scanner
-await walletServicesPlugin.showWalletConnectScanner();
-
-// Show the checkout
-await walletServicesPlugin.showCheckout();
-
-// Sign a message using the `personal_sign` method with a UI confirmation screen
 const signMessageUi = async () => {
   if (!web3auth.provider) {
     console.log("provider not initialized yet");
@@ -37,5 +30,4 @@ const signMessageUi = async () => {
   });
   console.log(signedMessage);
 };
-await signMessageUi();
 ```
