@@ -80,21 +80,27 @@ Social logins, we get the user's pub key, and in external wallet we get their ad
 
 ```json
 {
-  "iat": 1655835494,
-  "aud": "BCtbnOamqh0cJFEUYA0NB5YkvBECZ3HLZsKfvSRBvew2EiiKW3UxpyQASSR0artjQkiUOCHeZ_ZeygXpYpxZjOs",
-  "iss": "https://api-auth.web3auth.io/",
+  "iat": 1722394613,
+  "aud": "BHgArYmWwSeq21czpcarYh0EVq2WWOzflX-NTK-tY1-1pauPzHKRRLgpABkmYiIV_og9jAvoIxQ8L3Smrwe04Lw",
+  "iss": "https://api-auth.web3auth.io",
+  "nonce": "036256d2a4055cea253e250c3e3158bf86576477d944fd5ee23f92454e13098267",
   "email": "xyz@xyz.com",
   "name": "John Doe",
   "profileImage": "https://lh3.googleusercontent.com/a/AATXAJx3lnGmHiM4K97uLo9Rb0AxOceH-dQCBSRqGbck=s96-c",
-  "verifier": "torus",
+  "verifier": "web3auth",
   "verifierId": "xyz@xyz.com",
-  "aggregateVerifier": "tkey-google-lrc",
-  "exp": 1655921894,
+  "aggregateVerifier": "web3auth-google-sapphire-devnet",
+  "exp": 1722481013,
   "wallets": [
     {
-      "public_key": "035143318b83eb5d31611f8c03582ab1200494f66f5e11a67c34f5581f48c1b70b",
-      "type": "web3auth_key",
-      "curve": "secp256k1"
+      "public_key": "578970a884b44bbe0cf479d633fe7fa20cfc92dd4ac05eabdb298f4a6413064c", // PnP_Key, when using usePnPKey: true
+      "type": "web3auth_app_key",
+      "curve": "ed25519"
+    },
+    {
+      "public_key": "218a3a9eb7febe18daa126902080a5a84c3952810d86d6f4d54c283007f2f868", // CoreKit_Key, when using useCoreKitKey: true
+      "type": "web3auth_threshold_key",
+      "curve": "ed25519"
     }
   ]
 }
@@ -264,6 +270,7 @@ const jwks = jose.createRemoteJWKSet(new URL("https://api-auth.web3auth.io/jwks"
 const jwtDecoded = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] });
 
 // Checking `app_pub_key` against the decoded JWT wallet's public_key
+// use wallets[0].public_key for the PnP_Key and wallets[1].public_key for the CoreKit_Key
 if ((jwtDecoded.payload as any).wallets[0].public_key.toLowerCase() === app_pub_key.toLowerCase()) {
   // Verified
   res.status(200).json({name: 'Verification Successful'})
