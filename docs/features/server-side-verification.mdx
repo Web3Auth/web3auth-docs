@@ -93,12 +93,12 @@ Social logins, we get the user's pub key, and in external wallet we get their ad
   "exp": 1722481013,
   "wallets": [
     {
-      "public_key": "578970a884b44bbe0cf479d633fe7fa20cfc92dd4ac05eabdb298f4a6413064c", // PnP_Key, when using usePnPKey: true
+      "public_key": "578970a884b44bbe0cf479d633fe7fa20cfc92dd4ac05eabdb298f4a6413064c",
       "type": "web3auth_app_key",
       "curve": "ed25519"
     },
     {
-      "public_key": "218a3a9eb7febe18daa126902080a5a84c3952810d86d6f4d54c283007f2f868", // CoreKit_Key, when using useCoreKitKey: true
+      "public_key": "218a3a9eb7febe18daa126902080a5a84c3952810d86d6f4d54c283007f2f868",
       "type": "web3auth_threshold_key",
       "curve": "ed25519"
     }
@@ -270,8 +270,7 @@ const jwks = jose.createRemoteJWKSet(new URL("https://api-auth.web3auth.io/jwks"
 const jwtDecoded = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] });
 
 // Checking `app_pub_key` against the decoded JWT wallet's public_key
-// use wallets[0].public_key for the PnP_Key and wallets[1].public_key for the CoreKit_Key
-if ((jwtDecoded.payload as any).wallets[0].public_key.toLowerCase() === app_pub_key.toLowerCase()) {
+if ((jwtDecoded.payload as any).wallets.find((x: { type: string }) => x.type === "web3auth_app_key").public_key.toLowerCase() === app_pub_key.toLowerCase()) {
   // Verified
   res.status(200).json({name: 'Verification Successful'})
 } else {
