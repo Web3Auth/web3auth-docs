@@ -3,11 +3,7 @@ In this example, we're adding the `WalletServicesPlugin` with a very basic confi
 ```javascript
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 
-const walletServicesPlugin = new WalletServicesPlugin({
-  walletInitOptions: {
-    confirmationStrategy: "modal", // pass this to use the UI modal confirmation while signing
-  },
-});
+const walletServicesPlugin = new WalletServicesPlugin();
 web3auth.addPlugin(walletServicesPlugin);
 
 // Show the wallet services plugin
@@ -18,24 +14,4 @@ await walletServicesPlugin.showWalletConnectScanner();
 
 // Show the checkout
 await walletServicesPlugin.showCheckout();
-
-// Sign a message using the `personal_sign` method with a UI confirmation screen
-const signMessageUi = async () => {
-  if (!web3auth.provider) {
-    console.log("provider not initialized yet");
-    return;
-  }
-  const message = "Example `personal_sign` message";
-  const accounts = await web3auth.provider.request<never, string[]>({ method: "eth_accounts" });
-  const from = accounts[0];
-  const signedMessage = await walletServicesPlugin?.proxyProvider?.request<
-    [string, string],
-    string
-  >({
-    method: "personal_sign",
-    params: [message, from],
-  });
-  console.log(signedMessage);
-};
-await signMessageUi();
 ```
