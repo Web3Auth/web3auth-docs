@@ -1,7 +1,7 @@
 ---
-title: Create an EVM Web3 wallet in Android
+title: Create an Ethereum Web3 wallet in Android
 image: "guides/banners/android-wallet.png"
-description: Empower your Android app with a EVM Web3 wallet using the Web3Auth PnP SDK.
+description: Empower your Android app with a Ethereum Web3 wallet using the Web3Auth PnP SDK.
 type: guide
 tags: [mobile, android, ethereum]
 date: May 27, 2024
@@ -14,15 +14,15 @@ import Tabs from "@theme/Tabs";
 import WalletPreview from "@site/static/guides/android-wallet-preview.png";
 
 <SEO
-  title="Build your own EVM Web3 wallet in Android"
-  description="Empower your Android app with a EVM Web3 wallet using the Web3Auth PnP SDK."
+  title="Build your own Ethereum Web3 wallet in Android"
+  description="Empower your Android app with a Ethereum Web3 wallet using the Web3Auth PnP SDK."
   image="https://web3auth.io/docs/guides/banners/android-wallet.png"
   slug="/guides/android-wallet"
 />
 
-In this guide, we'll talk about how we can use Web3Auth to build your EVM Web3 wallet in Android.
-The wallet will only support the Ethereum ecosystem, but functionality can be extended with any
-blockchain ecosystem.
+In this guide, we'll talk about how we can use Web3Auth to build your Ethereum Web3 wallet in
+Android. The wallet will only support the Ethereum ecosystem, but functionality can be extended with
+any blockchain ecosystem.
 
 As an overview, the app is quite simple, with functionality to log in, display user details, and
 perform blockchain interactions. The signing of the blockchain transactions is done through the
@@ -112,7 +112,7 @@ class Web3AuthHelperImpl(
         return web3Auth.logout()
     }
 
-    // Returns the EVM compatible private key.
+    // Returns the Ethereum compatible private key.
     override fun getPrivateKey(): String {
       return web3Auth.getPrivkey()
     }
@@ -581,7 +581,7 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
     lateinit var credentials: Credentials
     lateinit var userInfo: UserInfo
 
-    // EthereumUseCaseImpl to interact with the selected EVM ChainConfig.
+    // EthereumUseCaseImpl to interact with the selected Ethereum ChainConfig.
     private var ethereumUseCase: EthereumUseCase = EthereumUseCaseImpl(
         Web3j.build(
             HttpService(
@@ -590,7 +590,7 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
         )
     )
 
-    // User's EVM compatible private key.
+    // User's Ethereum compatible private key.
     private fun privateKey(): String {
         return web3AuthHelper.getPrivateKey()
     }
@@ -1172,9 +1172,9 @@ fun WriteContractView(viewModel: MainViewModel) {
 
 ## Conclusion
 
-Voila, you have build a EVM Web3 wallet. This guide only gives you an overview of how to create your
-wallet with EVM ecosystem support. The general idea of the guide can be used for any of the
-blockchain ecosystem.
+Voila, you have build a Ethereum Web3 wallet. This guide only gives you an overview of how to create
+your wallet with Ethereum ecosystem support. The general idea of the guide can be used for any of
+the blockchain ecosystem.
 
 If you are interested in learning more about Web3Auth, please checkout our
 [documentation for Android](/docs/sdk/pnp/android). You can find the code used for the guide on our
