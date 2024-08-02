@@ -1,4 +1,4 @@
-export const pnpWebVersion = `8.7.x`;
+export const pnpWebVersion = `8.12.x`;
 export const pnpAndroidVersion = `8.0.1`;
 export const pnpIOSVersion = `9.0.0`;
 export const pnpRNVersion = `7.0.x`;

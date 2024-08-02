@@ -11,39 +11,35 @@ import Tabs from "@theme/Tabs";
 
 <TabItem value="table">
 
-| Parameter            | Description                                                                                                                                                                                                                                                                                         |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `clientId`           | Your Web3Auth Client ID. You can get it from Web3Auth [Dashboard](https://dashboard.web3auth.io/) under project details. It's a mandatory field of type `string`                                                                                                                                    |
-| `web3AuthNetwork`    | Defines the Web3Auth network. It's a mandatory field of type `OPENLOGIN_NETWORK_TYPE`.                                                                                                                                                                                                              |
-| `useCoreKitKey?`     | Use CoreKit Key to get core kit key. It's an optional field with default value as `false`.                                                                                                                                                                                                          |
-| `sessionTime?`       | It allows developers to configure the session management time. Session Time is in seconds, default is 86400 seconds which is 1 day. `sessionTime` can be max 7 days                                                                                                                                 |
-| `authMode?`          | Web3Auth instance provides different adapters for different type of usages. If you are a dApp and want to use external wallets like metamask, then you can use the `DAPP` authMode. If you are a wallet and only want to use you own wallet implementations, then you should use `WALLET` authMode. |
-| `uiConfig?`          | WhiteLabel options for web3auth. It helps you define custom UI, branding, and translations for your brand app. It takes `Omit<UIConfig, "adapterListener">` as a value.                                                                                                                             |
-| `storageKey?`        | Setting to "local" will persist social login session across browser tabs.                                                                                                                                                                                                                           |
-| `privateKeyProvider` | Private key provider for your chain namespace. It takes `IBaseProvider` as a value.                                                                                                                                                                                                                 |
+| Parameter          | Description                                                                                                                                       |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| clientId           | Client id for web3auth. You can obtain your client id from the web3auth developer dashboard. You can set any random string for this on localhost. |
+| chainConfig        | custom chain configuration for chainNamespace.                                                                                                    |
+| enableLogging      | setting to true will enable logs.                                                                                                                 |
+| storageKey         | setting to "local" will persist social login session across browser tabs.                                                                         |
+| sessionTime        | sessionTime (in seconds) for idToken issued by Web3Auth for server side verification.                                                             |
+| web3AuthNetwork    | Web3Auth Network to use for the session & the issued idToken.                                                                                     |
+| useCoreKitKey      | Uses core-kit key with web3auth provider.                                                                                                         |
+| uiConfig           | WhiteLabel options for web3auth.                                                                                                                  |
+| privateKeyProvider | Private key provider for your chain namespace.                                                                                                    |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```tsx
-interface Web3AuthOptions extends Web3AuthNoModalOptions {
-  /**
-   * web3auth instance provides different adapters for different type of usages. If you are dapp and want to
-   * use external wallets like metamask, then you can use the `DAPP` authMode.
-   * If you are a wallet and only want to use you own wallet implementations along with openlogin,
-   * then you should use `WALLET` authMode.
-   *
-   * @defaultValue `DAPP`
-   */
-  authMode?: "DAPP" | "WALLET";
+export interface Web3AuthOptions extends IWeb3AuthCoreOptions {
   /**
    * Config for configuring modal ui display properties
    */
   uiConfig?: Omit<UIConfig, "adapterListener">;
+  /**
+   * Private key provider for your chain namespace
+   */
+  privateKeyProvider: IBaseProvider<string>;
 }
 
-interface Web3AuthNoModalOptions {
+export interface IWeb3AuthCoreOptions {
   /**
    * Client id for web3auth.
    * You can obtain your client id from the web3auth developer dashboard.
@@ -55,7 +51,7 @@ interface Web3AuthNoModalOptions {
    *
    * @defaultValue mainnet config of provided chainNamespace
    */
-  chainConfig: Partial<CustomChainConfig> & Pick<CustomChainConfig, "chainNamespace">;
+  chainConfig?: CustomChainConfig;
   /**
    * setting to true will enable logs
    *
@@ -63,7 +59,7 @@ interface Web3AuthNoModalOptions {
    */
   enableLogging?: boolean;
   /**
-   * setting to "local" will persist social login session accross browser tabs.
+   * setting to "local" will persist social login session across browser tabs.
    *
    * @defaultValue "local"
    */

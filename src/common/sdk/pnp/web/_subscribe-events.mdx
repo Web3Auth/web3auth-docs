@@ -1,9 +1,11 @@
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-Subscribing to events help you trigger responses based on the status of the connection of the user. An adapter emits certain events like `CONNECTED`,
-`CONNECTING` and `DISCONNECTED` etc during login lifecycle of a user. For example, you can use this to show an error message, if the user is not
-connected to the network. Generally, this is not a required step and should be done only if needed in particular cases.
+Subscribing to events help you trigger responses based on the status of the connection of the user.
+An adapter emits certain events like `CONNECTED`, `CONNECTING` and `DISCONNECTED` etc during login
+lifecycle of a user. For example, you can use this to show an error message, if the user is not
+connected to the network. Generally, this is not a required step and should be done only if needed
+in particular cases.
 
 :::info
 
@@ -13,9 +15,11 @@ This step is totally optional. If you don't want to use any plugins, feel free t
 
 :::tip
 
-If you're using the `uxMode: "redirect"` option within your [`openlogin-adapter`](/sdk/pnp/web/adapters/openlogin) configuration, you need to
-subscribe to the event to handle the logging in implicitly. This is because, when redirected to a different application, the app state is not updated
-as per the login status. Using a lifecycle method to check this, one can easily handle the login status within the constructor function.
+If you're using the `uxMode: "redirect"` option within your
+[`openlogin-adapter`](/sdk/pnp/web/adapters/openlogin) configuration, you need to subscribe to the
+event to handle the logging in implicitly. This is because, when redirected to a different
+application, the app state is not updated as per the login status. Using a lifecycle method to check
+this, one can easily handle the login status within the constructor function.
 
 :::
 
@@ -35,23 +39,25 @@ Web3Auth provides the following lifecycle event to check the login status:
 
 <TabItem value="table">
 
-| Event                  | Trigger with `@web3auth/base` package | Trigger without package  | Description                                                  |
-| ---------------------- | ------------------------------------- | ------------------------ | ------------------------------------------------------------ |
-| `ADAPTER_DATA_UPDATED` | `ADAPTER_EVENTS.ADAPTER_DATA_UPDATED` | `"adapter_data_updated"` | Adapter data is updated within the dApp                      |
-| `NOT_READY`            | `ADAPTER_EVENTS.NOT_READY`            | `"not_ready"`            | Adapter is not yet ready for login                           |
-| `READY`                | `ADAPTER_EVENTS.READY`                | `"ready"`                | Adapter is ready for login                                   |
-| `CONNECTING`           | `ADAPTER_EVENTS.CONNECTING`           | `"connecting"`           | User is connecting to the dApp/ login process is in progress |
-| `CONNECTED`            | `ADAPTER_EVENTS.CONNECTED`            | `"connected"`            | User is logged in and connected with the dApp                |
-| `DISCONNECTED`         | `ADAPTER_EVENTS.DISCONNECTED`         | `"disconnected"`         | User is logged out and disconnected from the dApp            |
-| `ERRORED`              | `ADAPTER_EVENTS.ERRORED`              | `"errored"`              | There has been some error in connecting the user to the dApp |
+| Event                  | Trigger with `@web3auth/base` package | Trigger without package | Description                                                |
+| ---------------------- | ------------------------------------- | ----------------------- | ---------------------------------------------------------- |
+| `CONNECTED`            | `CONNECTED_EVENT_DATA`                | `CONNECTED_EVENT_DATA`  | Triggered when the user is connected to the wallet.        |
+| `CONNECTING`           | `void`                                | `void`                  | Triggered when the user is connecting to the wallet.       |
+| `DISCONNECTED`         | `void`                                | `void`                  | Triggered when the user is disconnected from the wallet.   |
+| `ERRORED`              | `Error`                               | `Error`                 | Triggered when an error occurs during the login lifecycle. |
+| `NOT_READY`            | `void`                                | `void`                  | Triggered when the adapter is not ready.                   |
+| `READY`                | `void`                                | `void`                  | Triggered when the adapter is ready.                       |
+| `CACHE_CLEAR`          | `void`                                | `void`                  | Triggered when the cache is cleared.                       |
+| `ADAPTER_DATA_UPDATED` | `void`                                | `void`                  | Triggered when the adapter data is updated.                |
 
 </TabItem>
 
 <TabItem value="type">
 
 ```tsx
-declare const ADAPTER_EVENTS: {
+export declare const ADAPTER_EVENTS: {
   readonly ADAPTER_DATA_UPDATED: "adapter_data_updated";
+  readonly CACHE_CLEAR: "cache_clear";
   readonly NOT_READY: "not_ready";
   readonly READY: "ready";
   readonly CONNECTING: "connecting";
@@ -74,7 +80,7 @@ import { ADAPTER_EVENTS } from "@web3auth/base";
 const subscribeAuthEvents = (web3auth: Web3Auth) => {
   web3auth.on(ADAPTER_EVENTS.CONNECTED, (data: CONNECTED_EVENT_DATA) => {
     console.log("connected to wallet", data);
-    // web3auth.provider will be available here after user is connected
+    // web3auth.provider will be available here after the user is connected
   });
   web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
     console.log("connecting");
@@ -82,8 +88,11 @@ const subscribeAuthEvents = (web3auth: Web3Auth) => {
   web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
     console.log("disconnected");
   });
-  web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
-    console.log("error", error);
+  web3auth.on(ADAPTER_EVENTS.READY, () => {
+    console.log("ready");
+  });
+  web3auth.on(ADAPTER_EVENTS.NOT_READY, () => {
+    console.log("not ready");
   });
   web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
     console.log("error", error);
