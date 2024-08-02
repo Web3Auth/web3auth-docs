@@ -56,7 +56,9 @@ await(
 - `answerString`: Answer corresponding to a security question
 
 ```tsx
-await(tKeyInstance.modules.securityQuestions as any).inputShareFromSecurityQuestions(password);
+await(
+  tKeyInstance.modules.securityQuestions as SecurityQuestionsModule,
+).inputShareFromSecurityQuestions(password);
 ```
 
 ### Change Security Question and Answer
@@ -69,10 +71,9 @@ await(tKeyInstance.modules.securityQuestions as any).inputShareFromSecurityQuest
 #### Example
 
 ```tsx
-await(tKeyInstance.modules.securityQuestions as any).changeSecurityQuestionAndAnswer(
-  password,
-  "whats your password?",
-);
+await(
+  tKeyInstance.modules.securityQuestions as SecurityQuestionsModule,
+).changeSecurityQuestionAndAnswer(password, "whats your password?");
 ```
 
 ## Type Reference
@@ -111,9 +112,11 @@ declare type GenerateNewShareResult = {
   newShareStores: ShareStoreMap;
   newShareIndex: BN;
 };
+
 export declare type ShareStoreMap = {
   [shareIndex: string]: ShareStore;
 };
+
 declare class ShareStore implements ISerializable {
   share: Share;
   polynomialID: PolynomialID;

@@ -1,8 +1,6 @@
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-#### `params`
-
 The `initialize` function accepts the following optional parameters:
 
 <Tabs
@@ -15,31 +13,33 @@ The `initialize` function accepts the following optional parameters:
 
 <TabItem value="table">
 
-| Parameter                           | Type                       | Description                                                                                                                                              | Mandatory |
-| ----------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| `withShare?`                        | `ShareStore`               | Initialize tkey with an existing share store. This allows you to directly initialize tKey without using the service provider login.                      | No        |
-| `importKey?`                        | `BN`                       | Import a key into tkey for initialisation.                                                                                                               | No        |
-| `neverInitializeNewKey?`            | `boolean`                  | Never initialize using a new key if the shares are already formed                                                                                        | No        |
-| `transitionMetadata?`               | `Metadata`                 | If we've been provided with transition metadata we use that as the current metadata instead as we want to maintain state before and after serialization. | No        |
-| `previouslyFetchedCloudMetadata?`   | `Metadata`                 | Pass the previous cloud metadata                                                                                                                         | No        |
-| `previousLocalMetadataTransitions?` | `LocalMetadataTransitions` | Pass the previous transition metadata                                                                                                                    | No        |
+| Parameter                           | Description                                                                                                                                 |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `withShare?`                        | Initializes tKey with an existing share store. This allows you to directly initialize tKey without using the service provider login.        |
+| `importKey?`                        | Imports a SEC1 key into tKey for initialization.                                                                                            |
+| `importEd25519Seed?`                | Imports a Ed25519 seed into tKey for initialization.                                                                                        |
+| `neverInitializeNewKey?`            | Never initialize using a new key if the shares are already formed                                                                           |
+| `transitionMetadata?`               | If transition metadata has been provided, it uses that as the current metadata instead of maintaining state before and after serialization. |
+| `previouslyFetchedCloudMetadata?`   | Pass the previous cloud metadata                                                                                                            |
+| `previousLocalMetadataTransitions?` | Pass the previous transition metadata                                                                                                       |
+| `delete1OutOf1?`                    |                                                                                                                                             |
 
 </TabItem>
 
 <TabItem value="type">
 
 ```tsx
-initialize(params?: {
-    withShare?: ShareStore;
-    importKey?: BN;
-    neverInitializeNewKey?: boolean;
-    transitionMetadata?: Metadata;
-    previouslyFetchedCloudMetadata?: Metadata;
-    previousLocalMetadataTransitions?: LocalMetadataTransitions;
-    delete1OutOf1?: boolean;
-}): Promise<KeyDetails>;
+export type TKeyInitArgs = {
+  withShare?: ShareStore;
+  importKey?: BN;
+  importEd25519Seed?: Buffer;
+  neverInitializeNewKey?: boolean;
+  transitionMetadata?: IMetadata;
+  previouslyFetchedCloudMetadata?: IMetadata;
+  previousLocalMetadataTransitions?: LocalMetadataTransitions;
+  delete1OutOf1?: boolean;
+};
 ```
 
 </TabItem>
-
 </Tabs>

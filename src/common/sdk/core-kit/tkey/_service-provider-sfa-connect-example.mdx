@@ -1,33 +1,20 @@
 ```tsx
-import { safeatob } from "@toruslabs/openlogin-utils";
+try {
+  // Login with Firebase
+  const loginRes = await signInWithGoogle();
 
-const loginRes = await signInWithEmailPassword(); // Logging in via email and password
-const idToken = await loginRes!.user.getIdToken(true); // Getting ID Token from the Login Provider
-const parsedToken = parseToken(idToken); // Parsing the ID Token
+  // Get the id token from Firebase
+  const idToken = await loginRes.user.getIdToken(true);
+  const userInfo = parseToken(idToken);
 
-// function to Parse Id Token
-const parseToken = (token: any) => {
-  try {
-    const token = token.split(".")[1]; // payload
-    return JSON.parse(safeatob(token));
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-};
+  await(tKey.serviceProvider as SfaServiceProvider).connect({
+    verifier,
+    verifierId: userInfo.sub,
+    idToken,
+  });
 
-console.log("User Information:", parsedToken);
-
-// Connecting to the service provider
-const verifier = "web3auth-firebase-examples";
-const verifierId = parsedToken.sub;
-const OAuthShareKey = await (tKeyInstance.serviceProvider as SfaServiceProvider).connect({
-  verifier,
-  verifierId,
-  idToken,
-});
-
-console.log("OAuth Share:", OAuthShareKey);
-
-await tKeyInstance.initialize();
+  await tKey.initialize();
+} catch (error) {
+  // Handle error
+}
 ```
