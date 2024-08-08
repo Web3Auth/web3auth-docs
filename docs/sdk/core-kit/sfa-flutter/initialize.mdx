@@ -8,16 +8,14 @@ description:
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-After Installation, the next step to use Web3Auth SFA Flutter is to Initialize the SDK and is
+After installation, the next step to use Web3Auth SFA Flutter is to initialize the SDK and is
 achieved by `init()` function. This step requires passing various parameters that align with your
 project preferences. It's important to note that the initialization process is critical to the
 successful use of Web3Auth SFA Flutter.
 
 ## Arguments
 
-Construct and configure the init function with the params as follows
-
-`Web3AuthNetwork`
+Construct and configure the `init` method with the `SFAParams`
 
 <Tabs
   defaultValue="table"
@@ -29,46 +27,53 @@ Construct and configure the init function with the params as follows
 
 <TabItem value="table">
 
-| Parameter | Description                                                                                                                                               |
-| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `network` | The Web3auth network to be used by the SDK. Supported values are `TorusNetwork.mainnet`, `TorusNetwork.testnet`, `TorusNetwork.cyan`, `TorusNetwork.aqua` |
+| Parameter  | Description                                                                                                                                                                  |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `network`  | The Web3auth network is to be used by the SDK. Supported values are `Web3AuthNetwork.MAINNET`, `Web3AuthNetwork.TESTNET`, `Web3AuthNetwork.CYAN`, and `Web3AuthNetwork.AQUA` |
+| `clientid` | The client id for your Web3Auth project. You can get it from [Web3Auth dashboard](<[https://dashboard.web3auth.io/](https://dashboard.web3auth.io/login)>).                  |
 
 </TabItem>
 
 <TabItem value="class">
 
 ```dart
-class Web3AuthNetwork {
-  final TorusNetwork network;
+class SFAParams {
+  final Web3AuthNetwork network;
+  final String clientid;
 
-  Web3AuthNetwork({required this.network});
+  SFAParams({required this.network, required this.clientid});
 
   Map<String, dynamic> toJson() {
     return {
       'network': network.name,
+      'clientid': clientid,
     };
   }
 }
 
-enum TorusNetwork { mainnet, testnet, cyan, aqua }
+enum Web3AuthNetwork { mainnet, testnet, cyan, aqua, celeste }
 ```
 
 </TabItem>
 
 </Tabs>
 
-## Using the `init()` function
+## Using the `init` method
 
 Initialize the `Web3AuthFlutter` plugin at the very beginning such as in the overriden `initState`
 function
 
 ```dart title="Usage"
 import 'package:single_factor_auth_flutter/single_factor_auth_flutter.dart';
+
 final _singleFactorAuthFlutterPlugin = SingleFactAuthFlutter();
 
 Future<void> init() async {
-    await _singleFactorAuthFlutterPlugin.init(
-      Web3AuthNetwork(network: torusNetwork),
-    );
-  }
+  await _singleFactorAuthFlutterPlugin.init(
+    SFAParams(
+      network: Web3AuthNetwork.mainnet,
+      clientid: "YOUR_WEB3AUTH_CLIENT_ID",
+    ),
+  );
+}
 ```

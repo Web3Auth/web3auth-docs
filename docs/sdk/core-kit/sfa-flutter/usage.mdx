@@ -12,26 +12,16 @@ users and obtain their private and public keys.
 
 The SingleFactorAuth instance natively provides the following functions:
 
-- `getKey(LoginParams)` - Returns the private key using the `verifier`, `verifierId` & `idToken`.
-- `getAggregateKey(LoginParams)` - Returns the aggregate private key using the `verifier`,
-  `verifierId` & `idToken`.
-
 ## `getKey()`
 
-To obtain a user's private key using the Web3Auth SFA Flutter SDK, you can call the `getKey()`
-function.
+To obtain a user's private key using the Web3Auth SFA Flutter SDK, you can call the `getKey` method.
+The method accepts `LoginParams`, and returns `TorusKey`.
+
+### Arguments
 
 | Variable      | Description                                                    |
 | ------------- | -------------------------------------------------------------- |
 | `loginParams` | Parameters for the login. It takes `LoginParams` as the value. |
-
-#### Returns
-
-```dart
-Future<TorusKey> getKey(LoginParams loginParams)
-```
-
-On successful call, the `getKey()` function returns a `Future<TorusKey>` instance.
 
 #### `LoginParams`
 
@@ -79,28 +69,14 @@ class LoginParams {
     };
   }
 }
-
-Future<TorusKey> getKey(LoginParams loginParams) async {
-  try {
-    Map<String, dynamic> loginParamsJson = loginParams.toJson();
-    loginParamsJson.removeWhere((key, value) => value == null);
-    final String torusKeyJson = await _channel.invokeMethod(
-      'getTorusKey',
-      jsonEncode(loginParams),
-    );
-
-    return torusKeyFromJson(torusKeyJson);
-  } on PlatformException catch (e) {
-    throw _hanldePlatformException(e);
-  }
-}
 ```
 
 </TabItem>
-
 </Tabs>
 
-```dart title="Usage"
+### Usage
+
+```dart
 Future<TorusKey> getKey() {
   return _singleFactorAuthFlutterPlugin.getKey(LoginParams(
     verifier: 'YOUR_VERIFIER_NAME',
@@ -113,20 +89,14 @@ Future<TorusKey> getKey() {
 
 ## `getAggregateKey()`
 
-To obtain a user's Torus key using the Web3Auth SFA Flutter SDK, you can call the
-`getAggregateKey()` function.
+To obtain a user's Torus key using the Web3Auth SFA Flutter SDK, you can call the `getAggregateKey`
+method. The method accepts `LoginParams`, and returns `TorusKey`.
+
+### Arguments
 
 | Variable      | Description                                                    |
 | ------------- | -------------------------------------------------------------- |
 | `loginParams` | Parameters for the login. It takes `LoginParams` as the value. |
-
-#### Returns
-
-```dart
-Future<TorusKey> getAggregateKey(LoginParams loginParams)
-```
-
-On successful call, the `getAggregateKey()` function returns a `Future<TorusKey>` instance.
 
 #### `LoginParams`
 
@@ -174,29 +144,14 @@ class LoginParams {
     };
   }
 }
-
-Future<TorusKey> getAggregateKey(LoginParams loginParams) async {
-  try {
-    Map<String, dynamic> loginParamsJson = loginParams.toJson();
-    loginParamsJson.removeWhere((key, value) => value == null);
-
-    final String torusKeyJson = await _channel.invokeMethod(
-      'getAggregateTorusKey',
-      jsonEncode(loginParams),
-    );
-
-    return torusKeyFromJson(torusKeyJson);
-  } on PlatformException catch (e) {
-    throw _hanldePlatformException(e);
-  }
-}
 ```
 
 </TabItem>
-
 </Tabs>
 
-```dart title="Usage"
+### Usage
+
+```dart
 Future<TorusKey> getAggregateKey() {
   return _singleFactorAuthFlutterPlugin.getAggregateKey(LoginParams(
     verifier: 'YOUR_VERIFIER_NAME',
