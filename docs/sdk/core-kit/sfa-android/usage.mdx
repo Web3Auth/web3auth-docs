@@ -7,37 +7,25 @@ description: "Web3Auth Core Kit Single Factor Auth Android SDK - Usage | Documen
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-After successfully installing and initializing SingleFactorAuth, you can use it to authenticate your
-users and obtain their private and public keys.
+After successfully installing and initializing `SingleFactorAuth`, you can use it to authenticate
+your users and obtain their private and public keys.
 
-The SingleFactorAuth instance natively provides the following functions:
+The `SingleFactorAuth` instance natively provides the following functions:
 
-- `getKey()` - Returns the torus key using the `verifier`, `verifierId` & `idToken`.
+## `getKey` method
 
-## `getKey()`
+The `getKey` method returns the torus key using the `verifier`, `verifierId` & `idToken`. On a
+successful call the function returns a `TorusKey` instance.
 
-`getKey()`
+### Arguments
 
-To obtain a user's Torus key using the Web3Auth SFA Android SDK, you can call the `getKey()`
-function.
-
-| Variable      | Description                                                                                                                                      |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `loginParams` | Parameters for the login. It takes `LoginParams` as the value.                                                                                   |
-| `context?`    | Android activity context                                                                                                                         |
-| `sessionTime` | `sessionTime` parameter is used for session management. The default value is 1 day ~ 86400, and max value is 7 days. It takes `Long` as a value. |
-
-#### Returns
-
-```kotlin
-public CompletableFuture<TorusKey> getKey(loginParams: LoginParams, context: Context? = null, sessionTime: Long = 86400)`
-```
-
-On a successful call, the `getKey()` function returns a `CompletableFuture` instance.
+| Variable      | Description                                                                                                                                          |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginParams` | Parameters for the login. It takes `LoginParams` as the value.                                                                                       |
+| `context?`    | Android activity context                                                                                                                             |
+| `sessionTime` | The `sessionTime` parameter is used for session management. The default value is 1 day ~ 86400, and max value is 7 days. It takes `Long` as a value. |
 
 #### `LoginParams`
-
-`getKey(loginParams: LoginParams, context: Context? = null, sessionTime: Long = 86400)`
 
 <Tabs
   defaultValue="table"
@@ -91,24 +79,21 @@ class LoginParams {
 
 </Tabs>
 
+### Usage
+
 ```kotlin title="Usage"
-loginParams = LoginParams("YOUR_VERIFIER_NAME", "YOUR_VERIFIER_ID_VALUE", "YOUR_ID_TOKEN");
-torusKey = singleFactorAuth.getKey(loginParams).get();
+val loginParams = LoginParams("YOUR_VERIFIER_NAME", "YOUR_VERIFIER_ID_VALUE", "YOUR_ID_TOKEN");
+val torusKey = singleFactorAuth.getKey(loginParams).get();
 ```
 
 :::tip Note
 
-Web3Auth SFA Android SDK only works for users who have **not enabled MFA**.
+Web3Auth SFA Android SDK only works for users who have **not enabled MFA**. For MFA enabled users,
+you'll see an Error message.
 
 :::
 
-:::danger MFA enabled users
-
-For MFA enabled users, you'll see an Error message.
-
-:::
-
-## Example
+### Example
 
 ```kotlin
 import android.widget.Button
@@ -131,7 +116,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
-    singleFactorAuthArgs = SingleFactorAuthArgs(TorusNetwork.TESTNET)
+    singleFactorAuthArgs = SingleFactorAuthArgs(Web3AuthNetwork.MAINNET)
     singleFactorAuth = SingleFactorAuth(singleFactorAuthArgs)
 
     // Setup UI and event handlers
@@ -142,7 +127,7 @@ class MainActivity : AppCompatActivity() {
   private fun signIn() {
     val jwt = JWT(idToken) // idToken is the JWT token obtained from auth provider or your custom JWT provider
     val sub = jwt.getClaim("sub").asString() // get sub claims
-    loginParams = LoginParams("web3auth-firebase-examples", "$sub", "$idToken")
+    loginParams = LoginParams("w3a-firebase-demo", "$sub", "$idToken")
     try {
         torusKey = singleFactorAuth.getKey(loginParams).get()
     } catch (e: ExecutionException) {
@@ -159,8 +144,7 @@ class MainActivity : AppCompatActivity() {
 
 :::info Example
 
-You can have a look at the
-**[this example](/examples?product=Core+Kit&sdk=Single+Factor+Auth+Android+SDK)** made on top of
-this SDK and try it out yourself.
+You can have a look at the **[this example](/examples?product=Core+Kit&sdk=SFA+Android)** made on
+top of this SDK and try it out yourself.
 
 :::
