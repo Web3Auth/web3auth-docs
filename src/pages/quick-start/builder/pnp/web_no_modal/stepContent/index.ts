@@ -6,6 +6,7 @@ import * as registerApp from "../../../../commonSteps/registerApp.mdx";
 import * as vueBundlerIssues from "../../../../commonSteps/vueBundlerIssues.mdx";
 import { toSteps } from "../../../../utils";
 import * as initialization from "./initializePnPNoModal.mdx";
+import * as chainConfig from "./chainConfigPnPNoModal.mdx";
 import * as installation from "./installationPnPNoModal.mdx";
 import * as login from "./login.mdx";
 import * as logout from "./logout.mdx";
@@ -20,6 +21,7 @@ const STEPS = toSteps({
   installation,
   reactBundlerIssues,
   registerApp,
+  chainConfig,
   initialization,
   htmlQuickStart,
   login,

@@ -6,6 +6,7 @@ import * as registerApp from "../../../../commonSteps/registerApp.mdx";
 import * as vueBundlerIssues from "../../../../commonSteps/vueBundlerIssues.mdx";
 import { toSteps } from "../../../../utils";
 import * as initialization from "./initializePnPModal.mdx";
+import * as chainConfig from "./chainConfigPnPModal.mdx";
 import * as installation from "./installationPnPModal.mdx";
 import * as login from "./login.mdx";
 import * as logout from "./logout.mdx";
@@ -21,6 +22,7 @@ const STEPS = toSteps({
   reactBundlerIssues,
   registerApp,
   initialization,
+  chainConfig,
   login,
   getUserInfo,
   blockchainCalls,
