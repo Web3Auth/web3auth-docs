@@ -151,8 +151,8 @@ const coreKitInstance = new Web3AuthMPCCoreKit({
   manualSync: true, // This is the recommended approach
 });
 
-const provider = new EthereumSigningProvider({ config: { chainConfig } });
-provider.setupProvider(coreKitInstance);
+const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
+evmProvider.setupProvider(makeEthereumSigner(coreKitInstance));
 ```
 
 ## Using the provider
