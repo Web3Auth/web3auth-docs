@@ -651,6 +651,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Nibiru",
+              items: [
+                "connect-blockchain/evm/nibiru/nibiru",
+                "connect-blockchain/evm/nibiru/web",
+                "connect-blockchain/evm/nibiru/android",
+                "connect-blockchain/evm/nibiru/ios",
+                "connect-blockchain/evm/nibiru/react-native",
+                "connect-blockchain/evm/nibiru/flutter",
+                "connect-blockchain/evm/nibiru/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Optimism",
               items: [
                 "connect-blockchain/evm/optimism/optimism",
@@ -1088,7 +1101,11 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/rn-v4-to-v5", "migration-guides/rn-v3-to-v4"],
+      items: [
+        "migration-guides/rn-v5-to-v6",
+        "migration-guides/rn-v4-to-v5",
+        "migration-guides/rn-v3-to-v4",
+      ],
     },
     ...sdkQuickLinks,
   ],

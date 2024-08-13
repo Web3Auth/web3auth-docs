@@ -11,20 +11,21 @@ import Tabs from "@theme/Tabs";
 
 <TabItem value="table">
 
-| Parameter               | Description                                                                                                                                                                                                                                                                                    |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginMethodsOrder?`    | The list of login methods can be reordered with this parameter. Those methods specified will be first on the list. Default value is ["google", "facebook", "twitter", "reddit", "discord", "twitch", "apple", "line", "github", "kakao", "linkedin", "weibo", "wechat", "email_passwordless"]. |
-| `modalZIndex?`          | Z-index of the modal and iframe. The default value is `99998` and accepts a `string` as a value.                                                                                                                                                                                               |
-| `displayErrorsOnModal?` | Whether to show errors on Web3Auth modal. Default value is `true`.                                                                                                                                                                                                                             |
-| `loginGridCol?`         | Number of columns to display the Social Login buttons. Default value is 3, available options are 2 or 3.                                                                                                                                                                                       |
-| `primaryButton?`        | Decides which button will be displayed as primary button in modal. Only one button will be primary and other buttons in modal will be secondary. Default value is `socialLogin`. Available options are `externalLogin`, `socialLogin`, and `emailLogin`.                                       |
+| Parameter              | Description                                           |
+| ---------------------- | ----------------------------------------------------- |
+| `loginMethodsOrder`    | order of how login methods are shown                  |
+| `modalZIndex`          | Z-index of the modal and iframe                       |
+| `displayErrorsOnModal` | Whether to show errors on Web3Auth modal.             |
+| `loginGridCol`         | number of columns to display the Social Login buttons |
+| `primaryButton`        | Decides which button will be the focus of the modal   |
+| `uxMode`               | UX Mode for the openlogin adapter                     |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```tsx
-interface UIConfig extends WhiteLabelData {
+export interface UIConfig extends WhiteLabelData {
   /**
    * order of how login methods are shown
    *
@@ -49,12 +50,17 @@ interface UIConfig extends WhiteLabelData {
    */
   loginGridCol?: 2 | 3;
   /**
-   * decides which button will be displayed as primary button in modal
-   * only one button will be primary and other buttons in modal will be secondary
+   * Decides which button will be the focus of the modal
+   * For `socialLogin` the social icon will be colored
+   * For other options like `emailLogin` and `externalLogin` the respective buttons will be coverted into a primary button
    *
    * @defaultValue `socialLogin`
    */
   primaryButton?: "externalLogin" | "socialLogin" | "emailLogin";
+  /**
+   * UX Mode for the openlogin adapter
+   */
+  uxMode?: UX_MODE_TYPE;
 }
 ```
 
