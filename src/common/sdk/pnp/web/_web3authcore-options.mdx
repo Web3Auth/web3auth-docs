@@ -11,24 +11,24 @@ import Tabs from "@theme/Tabs";
 
 <TabItem value="table">
 
-| Parameter             | Description                                                                                                                                                          |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `chainConfig`         | Custom configuration for your preferred blockchain. Read more about it [here](#chainconfig).                                                                         |
-| `clientId`            | Your Web3Auth Client ID. You can get it from Web3Auth [Dashboard](https://dashboard.web3auth.io/) under project details. It's a mandatory field of type `string`     |
-| `web3AuthNetwork?`    | Defines the Web3Auth network. It accepts `OPENLOGIN_NETWORK_TYPE`.                                                                                                   |
-| `useCoreKitKey?`      | Use CoreKit Key to get core kit key. It's an optional field with default value as `false`.                                                                           |
-| `sessionTime?`        | It allows developers to configure the session management time. Session Time is in seconds, default is 86400 seconds which is 1 day. `sessionTime` can be max 7 days. |
-| `uiConfig?`           | WhiteLabel options for web3auth. It helps you define custom UI, branding, and translations for your brand app. It takes `WhiteLabelData` as a value.                 |
-| `storageKey?`         | Setting to "local" will persist social login session across browser tabs.                                                                                            |
-| `privateKeyProvider?` | Private key provider for your chain namespace. It takes `IBaseProvider` as a value.                                                                                  |
-| `enableLogging`       | Setting to true will enable logs. Default value is `false`.                                                                                                          |
+| Parameter          | Description                                                                                                                                       |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| clientId           | Client id for web3auth. You can obtain your client id from the web3auth developer dashboard. You can set any random string for this on localhost. |
+| chainConfig        | custom chain configuration for chainNamespace.                                                                                                    |
+| enableLogging      | setting to true will enable logs.                                                                                                                 |
+| storageKey         | setting to "local" will persist social login session across browser tabs.                                                                         |
+| sessionTime        | sessionTime (in seconds) for idToken issued by Web3Auth for server side verification.                                                             |
+| web3AuthNetwork    | Web3Auth Network to use for the session & the issued idToken.                                                                                     |
+| useCoreKitKey      | Uses core-kit key with web3auth provider.                                                                                                         |
+| uiConfig           | WhiteLabel options for web3auth.                                                                                                                  |
+| privateKeyProvider | Private key provider for your chain namespace.                                                                                                    |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```tsx
-interface Web3AuthNoModalOptions {
+export interface IWeb3AuthCoreOptions {
   /**
    * Client id for web3auth.
    * You can obtain your client id from the web3auth developer dashboard.
@@ -40,7 +40,7 @@ interface Web3AuthNoModalOptions {
    *
    * @defaultValue mainnet config of provided chainNamespace
    */
-  chainConfig: Partial<CustomChainConfig> & Pick<CustomChainConfig, "chainNamespace">;
+  chainConfig?: CustomChainConfig;
   /**
    * setting to true will enable logs
    *
