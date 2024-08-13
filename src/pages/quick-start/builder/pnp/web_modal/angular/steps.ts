@@ -36,6 +36,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.chainConfig,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MODAL_ANGULAR_APP_COMPONENT_TS,
+        files[hostedFileLinks.MODAL_ANGULAR_APP_COMPONENT_TS],
+        "Chain Config",
+      ),
+    },
+    {
       ...STEPS.initialization,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.MODAL_ANGULAR_APP_COMPONENT_TS,
