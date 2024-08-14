@@ -78,9 +78,6 @@ You shouldn't create too many factors, we recommend a **maximum of 10 factors**.
   Synchronous call.
 - [`getUserInfo()`](#get-user-info) - Returns the user's information received from the ID Token.
 - [`getKeyDetails()`](#get-key-details) - Returns the user's Key Details.
-- [`_UNSAFE_exportTssKey()`](#export-tss-key) - Returns the user's secp256k1 tss private key.
-- [`_UNSAFE_exportTssEd25519Seed()`](#export-tss-ed25519-seed) - Returns the user's ed25519 tss
-  seed.
 
 **[Additional Helper Functions:](#additional-helper-functions)**
 
@@ -441,31 +438,6 @@ export type ShareDescriptionMap = {
 
 ```tsx
 const keyDetails = coreKitInstance?.getKeyDetails();
-```
-
-### Export TSS key
-
-#### `_UNSAFE_exportTssKey(): Promise<string>`
-
-Returns the user's secp256k1 tss private key.
-
-#### Usage
-
-```tsx
-const key = await coreKitInstance._UNSAFE_exportTssKey();
-```
-
-### Export TSS ed25519 seed
-
-#### `_UNSAFE_exportTssEd25519Seed(): Promise<Buffer>`
-
-Returns the user's ed25519 seed. Please note, the seed is only return when user imports the seed
-while creating a new account. If TSS seed is not imported, the function will throw an error.
-
-#### Usage
-
-```tsx
-const seed = await coreKitInstance._UNSAFE_exportTssEd25519Seed();
 ```
 
 ## Additional Helper Functions
