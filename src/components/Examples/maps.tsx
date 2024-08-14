@@ -277,7 +277,7 @@ export const pnpModalExamples = [
     title: "Custom Authentication in PnP Modal SDK",
     description:
       "Implementing custom authentication in Plug and Play Modal SDK with Google, Facebook, Discord, Auth0 Twitter and Aggregate Verifier support",
-    image: "banners/javascript.png",
+    image: "banners/auth0.png",
     type: SAMPLE_APP,
     tags: [
       "pnp",
@@ -301,7 +301,7 @@ export const pnpModalExamples = [
     title: "Integrate PnP Modal SDK with EVM based chains",
     description:
       "Use any EVM Blockchain like Ethereum, Polygon, Arbitrum, Base etc. with Plug and Play Modal SDK",
-    image: "banners/javascript.png",
+    image: "banners/ethereum.png",
     type: SAMPLE_APP,
     tags: [
       "pnp",
@@ -443,7 +443,7 @@ export const pnpNoModalExamples = [
     title: "Integrate PnP No Modal SDK with EVM based chains",
     description:
       "Use any EVM Blockchain like Ethereum, Polygon, Arbitrum, Base etc. with Plug and Play No Modal SDK",
-    image: "banners/javascript.png",
+    image: "banners/ethereum.png",
     type: SAMPLE_APP,
     tags: [
       "pnp",
@@ -1000,7 +1000,7 @@ export const pnpReactNativeExamples = [
     title: "Web3Auth PnP React Native SDK Quick Start",
     description:
       "A quick integration of Web3Auth Plug and Play React Native SDK in Android and iOS",
-    image: "banners/react.png",
+    image: "banners/react-native.png",
     type: QUICK_START,
     tags: ["pnp", "javascript", "android", "ios", "react-native"],
     link: "https://w3a.link/pnp-react-native-ios-quick-start",
@@ -1461,7 +1461,7 @@ export const coreKitSfaReactNativeExamples = [
     title: "Web3Auth Core Kit SFA React Native SDK Quick Start",
     description:
       "A quick integration of Web3Auth Core Kit Single Factor Auth React Native SDK in Android and iOS",
-    image: "banners/react.png",
+    image: "banners/react-native.png",
     type: QUICK_START,
     tags: ["core-kit", "sfa", "javascript", "android", "ios", "react-native"],
     link: "https://w3a.link/sfa-react-native-ios-quick-start",
@@ -1636,7 +1636,7 @@ export const coreKitMPCReactNativeExamples = [
     title: "Web3Auth MPC Core Kit SDK Quick Start in React Native",
     description:
       "A quick integration of Web3Auth Multi Party Computation Core Kit in React Native for Android and iOS",
-    image: "banners/react.png",
+    image: "banners/react-native.png",
     type: QUICK_START,
     tags: ["core-kit", "mpc", "javascript", "android", "ios", "react-native"],
     link: "https://w3a.link/mpc-core-kit-rn-quick-start",
