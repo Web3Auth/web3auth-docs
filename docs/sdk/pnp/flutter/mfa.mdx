@@ -1,7 +1,6 @@
 ---
 title: Multi Factor Authentication in PnP Flutter SDK
 sidebar_label: Multi Factor Authentication
-displayed_sidebar: sdk
 description: "Web3Auth PnP Flutter SDK - Multi Factor Authentication | Documentation - Web3Auth"
 ---
 
@@ -89,7 +88,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 You can configure the order of MFA, and enable or disable MFA type by passing the `mfaSettings`
 object in `Web3AuthOptions`.
 
-:::note Minimum SCALE plan required
+:::note
 
 This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this
 SDK in a production environment is the **SCALE Plan**. You can use this feature in the development
@@ -209,7 +208,7 @@ Future<void> initWeb3Auth() async {
       deviceShareFactor: MfaSetting(
         enable: true,
         priority: 4,
-        mandatory: false,
+        mandatory: true,
       ),
       backUpShareFactor: MfaSetting(
         enable: true,
@@ -233,6 +232,21 @@ Future<void> initWeb3Auth() async {
   await Web3AuthFlutter.initialize();
 }
 ```
+
+:::note Note
+
+- At least two factors are mandatory when setting up the mfaSettings.
+- If you set `mandatory: true` for all factors, the user must set up all four factors.
+- If you set `mandatory: false` for all factors, the user can skip setting up MFA. But at least two
+  factors are mandatory.
+- If you set `mandatory: true` for some factors and `mandatory: false` for others, the user must set
+  up the mandatory factors and can skip the optional factors. But, the user must set up at least two
+  factors.
+- The `priority` field is used to set the order of the factors. The factor with the lowest priority
+  will be the first factor to be set up. The factor with the highest priority will be the last
+  factor to be set up.
+
+:::
 
 ## Using `enableMFA` method to trigger MFA setup flow for users
 

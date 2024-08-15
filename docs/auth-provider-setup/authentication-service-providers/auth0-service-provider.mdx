@@ -1,0 +1,132 @@
+---
+title: Auth0 Service Provider Set up
+sidebar_label: Auth0
+description: "Auth0 Service Provider Set up | Documentation - Web3Auth"
+---
+
+import Tiles from "@theme/Tiles";
+import AuthProviderSetupDescription from "@site/src/common/docs/_auth-provider-setup-desc.mdx";
+
+<AuthProviderSetupDescription />
+
+This guide will help you to set up Auth0 service prvoider:
+
+## Set up Auth0
+
+If you haven't already, set up Auth0 for your project. It is the mandatory step before we proceed
+further. After the basic setup, we'll learn how to create a custom verifier for the Web3Auth
+project. You can follow the link below to set up Auth0 for your project. If we are missing any
+platform/framework, you can always
+[check out Auth0 documentation](https://auth0.com/docs/quickstart/native#webapp).
+
+export const Auth0Setup = [
+  {
+    name: "",
+    description: "",
+    tiles: [
+      {
+        key: "web",
+        title: "Web",
+        icon: "logo-js.png",
+        path: "https://auth0.com/docs/quickstart/spa/vanillajs/interactive",
+      },
+      {
+        key: "android",
+        title: "Android (Kotlin)",
+        icon: "logo-android.png",
+        path: "https://auth0.com/docs/quickstart/native/android/interactive",
+      },
+      {
+        key: "ios",
+        title: "iOS",
+        icon: "logo-apple.png",
+        path: "https://auth0.com/docs/quickstart/native/ios-swift/interactive",
+      },
+      {
+        key: "flutter",
+        title: "Flutter",
+        icon: "logo-flutter.png",
+        path: "https://auth0.com/docs/quickstart/native/flutter/interactive",
+      },
+      {
+        key: "react-native",
+        title: "React Native",
+        icon: "logo-react.png",
+        path: "https://auth0.com/docs/quickstart/native/react-native/interactive",
+      },
+    ],
+  },
+];
+
+<Tiles tileGroups={Auth0Setup} />
+
+## Set up a Custom Verifier
+
+1. Create an Auth0 verifier by choosing `Social Login Providers` and selecting `Auth0` from the
+   **Login Provider** dropdown.
+   ![Auth0 - Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/create-auth0-verifier.png)
+2. Select the `Authentication Type` from the dropdown based on your application needs.
+   ![Auth0 Authentication Type list on Web3Auth Dashboard](/dashboard/verifiers/create-a0-v-auth-type.png)
+
+   > Note: For Email Password and Email Passwordless authentication, the `email_verified = true`
+   > condition is added to the JWT verification. To avoid JWT params mismatch error, you can use any
+   > other Authentication Type.
+
+3. Enter the `Auth0 Client ID` and `Auth0 Domain` from your Auth0 application. See how to create a
+   new Auth0 application [here](https://auth0.com/docs/quickstart/webapp/).
+
+   ![Auth0 - Domain and Client ID from Auth0 Dashboard](/guides/auth0/auth0-guide-clientid.png)
+
+4. Fill the `Auth0 Client ID` and `Auth0 Domain` details and select `Sub` or `Email` as the JWT
+   Verifier ID.
+   ![Auth0 Client ID and Domain on Web3Auth Dashboard](/dashboard/verifiers/create-a0-details.png)
+
+5. Click on the `Create Verifier` button to create your Auth0 verifier.
+
+## Integration
+
+After you have set up Auth0 and the corresponding Custom verifier in the Web3Auth Dashboard, you can
+follow the guides to integrate it into your project. The support for using a custom verifier is not
+limited to the below SDKs and platforms. You can check out our SDK references to learn how to use a
+custom verifier.
+
+export const Auth0Guides = [
+  {
+    name: "",
+    description: "",
+    tiles: [
+      {
+        key: "web",
+        title: "Web",
+        icon: "logo-js.png",
+        path: "/docs/guides/auth0",
+      },
+      {
+        key: "android",
+        title: "Android (Kotlin)",
+        icon: "logo-android.png",
+        path: "/docs/guides/android-auth0",
+      },
+      {
+        key: "ios",
+        title: "iOS (Swift)",
+        icon: "logo-apple.png",
+        path: "/docs/guides/ios-auth0",
+      },
+      {
+        key: "flutter",
+        title: "Flutter",
+        icon: "logo-flutter.png",
+        path: "/docs/guides/flutter-auth0",
+      },
+      {
+        key: "react-native",
+        title: "React Native",
+        icon: "logo-react.png",
+        path: "/docs/guides/react-native-auth0",
+      },
+    ],
+  },
+];
+
+<Tiles tileGroups={Auth0Guides} />

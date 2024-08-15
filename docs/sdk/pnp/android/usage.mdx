@@ -1,7 +1,6 @@
 ---
 title: Usage of PnP Android SDK
 sidebar_label: Usage
-displayed_sidebar: sdk
 description: "Web3Auth PnP Android SDK - Usage | Documentation - Web3Auth"
 ---
 
@@ -425,115 +424,6 @@ class MainActivity : AppCompatActivity() {
 </TabItem>
 </Tabs>
 
-## Selecting Curve
-
-The `web3Auth.login()` method accepts a `curve` parameter. This parameter can be used to select the
-elliptic curve to use for the signature.
-
-```kotlin
-web3Auth.login(LoginParams(selectedLoginProvider, curve = Curve.SECP256K1)) // Can be ED25519, SECP256K1
-```
-
-<Tabs
-  defaultValue="secp256k1"
-  values={[
-    { label: "SECP256K1", value: "secp256k1" },
-    { label: "ED25519", value: "ed25519" },
-  ]}
->
-
-<TabItem value="secp256k1">
-
-```kotlin title="Usage"
-import android.widget.Button
-import com.web3auth.core.Web3Auth
-import android.os.Bundle
-
-class MainActivity : AppCompatActivity() {
-    private lateinit var web3Auth: Web3Auth
-
-    private fun signIn() {
-
-        val selectedLoginProvider = Provider.GOOGLE
-        // Can be GOOGLE, FACEBOOK, TWITCH etc.
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            web3Auth.login(LoginParams(selectedLoginProvider,
-                // highlight-next-line
-                curve = Curve.SECP256K1))
-
-        loginCompletableFuture.whenComplete { loginResponse, error ->
-            if (error == null) {
-                // render logged in UI
-            } else {
-                // render error UI
-            }
-
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        ...
-        // Setup UI and event handlers
-        val signInButton = findViewById<Button>(R.id.signInButton)
-        signInButton.setOnClickListener { signIn() }
-        ...
-    }
-    ...
-}
-```
-
-</TabItem>
-
-<TabItem value="ed25519">
-
-```kotlin title="Usage"
-import android.widget.Button
-import com.web3auth.core.Web3Auth
-import android.os.Bundle
-
-class MainActivity : AppCompatActivity() {
-    private lateinit var web3Auth: Web3Auth
-
-    private fun signIn() {
-
-        val selectedLoginProvider = Provider.GOOGLE
-        // Can be GOOGLE, FACEBOOK, TWITCH etc.
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            web3Auth.login(
-                LoginParams(
-                    selectedLoginProvider,
-                // highlight-next-line
-                    curve = Curve.ED25519
-                )
-            )
-
-        loginCompletableFuture.whenComplete { loginResponse, error ->
-            if (error == null) {
-                // render logged in UI
-            } else {
-                // render error UI
-            }
-
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        ...
-        // Setup UI and event handlers
-        val signInButton = findViewById<Button>(R.id.signInButton)
-        signInButton.setOnClickListener { signIn() }
-        ...
-    }
-    ...
-
-}
-
-```
-
-</TabItem>
-
-</Tabs>
-
 ## Logging out a user
 
 <LogOut />
@@ -542,13 +432,43 @@ class MainActivity : AppCompatActivity() {
 
 <EnableMFAMethod />
 
+## Triggering Login exceptions
+
+The `setCustomTabsClosed` method can be used to trigger login exceptions for Android. The Android
+SDK uses the custom tabs and from current implementation of chrome custom tab, it's not possible to
+add a listener directly to chrome custom tab close button and trigger login exceptions.
+
+Hence, it's necessary to use `setCustomTabsClosed` method in your login screen to trigger
+exceptions.
+
+### Usage
+
+```kt
+class MainActivity : AppCompatActivity() {
+    // Additional code
+
+    override fun onResume() {
+        super.onResume()
+        // highlight-start
+        if (Web3Auth.getCustomTabsClosed()) {
+            Toast.makeText(this, "User closed the browser.", Toast.LENGTH_SHORT).show()
+            web3Auth.setResultUrl(null)
+            Web3Auth.setCustomTabsClosed(false)
+        }
+        // highlight-end
+    }
+
+    // Additional code
+}
+```
+
 ## Launch Wallet Services
 
 The `launchWalletServices` method launches a WebView which allows you to use the templated wallet UI
 services. The method takes`ChainConfig` as the required input. Wallet Services is currently only
 available for EVM chains.
 
-:::note Minimum Scale plan required
+:::note
 
 Access to Wallet Services is gated. You can use this feature in the development environment for
 free. The minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a
@@ -636,16 +556,17 @@ The `request` method facilitates the use of templated transaction screens for si
 Upon successful completion, you can retrieve the signature for the request using the
 `getSignResponse` static method.
 
-Please check the list of [JSON RPC methods](docs.metamask.io/wallet/reference/json-rpc-api/), noting
-that the request method currently supports only the signing methods.
+Please check the list of
+[JSON RPC methods](https://docs.metamask.io/wallet/reference/json-rpc-api/), noting that the request
+method currently supports only the signing methods.
 
 ### Arguments
 
-| Arguments       | Description                                                                                                                                                                                                                                                          |
-| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `chainConifg`   | Defines the chain to be used for signature request.                                                                                                                                                                                                                  |
-| `method`        | JSON RPC method name in `String`. Currently, the request method only supports the singing methods.                                                                                                                                                                   |
-| `requestParams` | Parameters for the corresponding method. The parameters should be in the list and correct sequence. Take a look at [RPC methods](<[https://docs.metamask.io/wallet/reference/json-rpc-api/](https://docs.metamask.io/wallet/reference/json-rpc-api/)>) to know more. |
+| Arguments       | Description                                                                                                                                                                                             |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `chainConifg`   | Defines the chain to be used for signature request.                                                                                                                                                     |
+| `method`        | JSON RPC method name in `String`. Currently, the request method only supports the singing methods.                                                                                                      |
+| `requestParams` | Parameters for the corresponding method. The parameters should be in the list and correct sequence. Take a look at [RPC methods](https://docs.metamask.io/wallet/reference/json-rpc-api/) to know more. |
 
 ### Usage
 

@@ -28,6 +28,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.chainConfig,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.NO_MODAL_NEXT_PAGE_TSX,
+        files[hostedFileLinks.NO_MODAL_NEXT_PAGE_TSX],
+        "Chain Config",
+      ),
+    },
+    {
       ...STEPS.initialization,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.NO_MODAL_NEXT_PAGE_TSX,

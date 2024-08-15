@@ -1,7 +1,7 @@
 ---
 title: JWT Errors
 image: "images/docs-meta-cards/troubleshoot-card.png"
-displayed_sidebar: resources
+
 description: "JWT Errors | Documentation - Web3Auth"
 ---
 
@@ -11,13 +11,13 @@ import JWTVerifierID from "@site/static/images/jwt-verifier-id.png";
 
 :::warning
 
-To ensure proper authentication with Web3Auth, it is necessary for the JWT header to have the `kid` field, while the payload data should have the
-`iat` field.
+To ensure proper authentication with Web3Auth, it is necessary for the JWT header to have the `kid`
+field, while the payload data should have the `iat` field.
 
 :::
 
-When configuring Web3Auth's Custom Authentication, you may encounter JWT errors. Below is a list of these errors and the necessary steps to resolve
-them.
+When configuring Web3Auth's Custom Authentication, you may encounter JWT errors. Below is a list of
+these errors and the necessary steps to resolve them.
 
 - [Invalid JWT Verifiers ID field](#invalid-jwt-verifiers-id-field)
   - Error occurred while verifying params could not verify identity
@@ -34,11 +34,16 @@ them.
 
 ### Error occurred while verifying params could not verify identity
 
-"Error occurred while verifying params could not verify identity" error could be because the `verifierIdField` of `extraLoginOptions` is different
-from the one you have set up during the creation of Verifiers (`JWT Verifiers ID`) on the Web3Auth dashboard.
+"Error occurred while verifying params could not verify identity" error could be because the
+`verifierIdField` of `extraLoginOptions` is different from the one you have set up during the
+creation of Verifiers (`JWT Verifiers ID`) on the Web3Auth dashboard.
 
 - This is the `JWT Verifiers ID` field on the `Verifier Modal` of the Web3Auth dashboard.
-  <img style={{ display: "block", maxHeight: "200px", marginBottom: "20px" }} src={JWTVerifierID} alt="JWT Verifier ID - Troubleshoot" />
+  <img
+    style={{ display: "block", maxHeight: "200px", marginBottom: "20px" }}
+    src={JWTVerifierID}
+    alt="JWT Verifier ID - Troubleshoot"
+  />
 - Make sure, this matched with your code.
 
   ```tsx
@@ -59,13 +64,20 @@ from the one you have set up during the creation of Verifiers (`JWT Verifiers ID
 
 ### Error occurred while verifying params unable to verify jwt token
 
-"Error occurred while verifying params unable to verify jwt token" error could be because of the following reasons:
+"Error occurred while verifying params unable to verify jwt token" error could be because of the
+following reasons:
 
-- The verifier for your OpenLoginAdapter might be wrong. Check to make sure the `verifier` field is set correctly.
+- The verifier for your OpenLoginAdapter might be wrong. Check to make sure the `verifier` field is
+  set correctly.
 - The JWT is not signed with the correct key(JWK).
 - The JWKS endpoint is not reachable or doesn't return a valid JWK that was used to sign the JWT.
-- The JWKS endpoint is incorrect on the Web3Auth Dashboard. Double check to confirm the correct JWKS endpoint.
-  <img style={{ display: "block", maxHeight: "200px", marginBottom: "20px" }} src={JWKSEndpoint} alt="JWKS Endpoint Field - Troubleshoot" />
+- The JWKS endpoint is incorrect on the Web3Auth Dashboard. Double check to confirm the correct JWKS
+  endpoint.
+  <img
+    style={{ display: "block", maxHeight: "200px", marginBottom: "20px" }}
+    src={JWKSEndpoint}
+    alt="JWKS Endpoint Field - Troubleshoot"
+  />
 - The JWKS is missing the `kid` field.
 - The `kid` present in the JWT header is not present in the JWKS.
 
@@ -92,7 +104,8 @@ from the one you have set up during the creation of Verifiers (`JWT Verifiers ID
 
 ### Could not get result from torus nodes Duplicate token found
 
-- "Could not get result from torus nodes Duplicate token found" error is thrown when the JWT is sent twice in the same request.
+- "Could not get result from torus nodes Duplicate token found" error is thrown when the JWT is sent
+  twice in the same request.
 
   ```tsx
   await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
@@ -110,14 +123,15 @@ from the one you have set up during the creation of Verifiers (`JWT Verifiers ID
 
 :::warning
 
-Web3Auth accepts only those JWTs whose `iat` is less than the current time and is not greater than `60s` from current time. Regardless of the `exp`
-field of the JWT.
+Web3Auth accepts only those JWTs whose `iat` is less than the current time and is not greater than
+`60s` from current time. Regardless of the `exp` field of the JWT.
 
 - In short, the JWT is considered expired if the `iat` is greater than `60s` from current time.
 
 :::
 
-"Error occurred while verifying paramstimesigned is more than 1m0s ago 2022-02-24 13:46:05 +0000 UTC" error could be because:
+"Error occurred while verifying paramstimesigned is more than 1m0s ago 2022-02-24 13:46:05 +0000
+UTC" error could be because:
 
 - JWT is expired.
 - The JWT's `exp` field is less than the current time.
@@ -125,24 +139,32 @@ field of the JWT.
 
 ## Mismatch JWT Validation field
 
-This error occurred when the validation field in the JWT is not matching with the validation field entered during the creation of Verifiers on the
-Web3Auth dashboard.
+This error occurred when the validation field in the JWT is not matching with the validation field
+entered during the creation of Verifiers on the Web3Auth dashboard.
 
 - This is the `JWT Validation` field on the `Verifier Modal` of the Web3Auth configuration.
-  <img style={{ display: "block", maxHeight: "200px", marginBottom: "20px" }} src={JWTValidation} alt="JWT Validation Field - Troubleshoot" />
+  <img
+    style={{ display: "block", maxHeight: "200px", marginBottom: "20px" }}
+    src={JWTValidation}
+    alt="JWT Validation Field - Troubleshoot"
+  />
 - Make sure, these fields are present in the JWT Payload and matches with the JWT.
 
 ## Looking for Refresh Tokens?
 
-A Refresh Token is a unique token that is used to obtain additional access tokens from an Authentication Service Provider. With Web3Auth, we verify
-the validity of the **id_token** and compare its payload value to the JWKS provided by either the Auth provider or your custom JWKS. And with Refresh
-Token, one can get a new id_token. And that id_token will be passed to Web3Auth, essentially making another login request.
+A Refresh Token is a unique token that is used to obtain additional access tokens from an
+Authentication Service Provider. With Web3Auth, we verify the validity of the **id_token** and
+compare its payload value to the JWKS provided by either the Auth provider or your custom JWKS. And
+with Refresh Token, one can get a new id_token. And that id_token will be passed to Web3Auth,
+essentially making another login request.
 
 #### What problem does the Refresh Token solve?
 
-It enables users to maintain longer authentication sessions without the need for constant re-login. Although we do not support Refresh Tokens to
-maintain longer sessions, we do offer session management. The **Session Management** feature allows checking and maintaining existing sessions with
-Web3Auth.
+It enables users to maintain longer authentication sessions without the need for constant re-login.
+Although we do not support Refresh Tokens to maintain longer sessions, we do offer session
+management. The **Session Management** feature allows checking and maintaining existing sessions
+with Web3Auth.
 
-During login with Web3Auth, pass the `sessionTime` parameter. It will **allow users to stay authenticated with Web3Auth for up to 1 day by default or
-a maximum of 7 days** until they log out or their session data is cleared.
+During login with Web3Auth, pass the `sessionTime` parameter. It will **allow users to stay
+authenticated with Web3Auth for up to 1 day by default or a maximum of 7 days** until they log out
+or their session data is cleared.

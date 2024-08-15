@@ -2,7 +2,7 @@
 title: Integrate Web3Auth with the Near Protocol
 sidebar_label: Near
 image: "guides/banners/near.png"
-displayed_sidebar: resources
+
 keywords: [near, near protocol, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Near Protocol | Documentation - Web3Auth"
 ---
@@ -10,9 +10,11 @@ description: "Integrate Web3Auth with the Near Protocol | Documentation - Web3Au
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
 import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-other-pnp-sfa-tkey.mdx";
 
-While using the Web3Auth Web SDK for a non-EVM chain like [NEAR](https://near.org/), you get a standard provider from which you can get the user's
-private key. Using this private key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting a user's
-`account`, fetching `balance`, performing `send transaction`, etc. To help you get started, we've outlined some methods for you to use.
+While using the Web3Auth Web SDK for a non-EVM chain like [NEAR](https://near.org/), you get a
+standard provider from which you can get the user's private key. Using this private key, you can use
+the corresponding libraries of the blockchain to make blockchain calls like getting a user's
+`account`, fetching `balance`, performing `send transaction`, etc. To help you get started, we've
+outlined some methods for you to use.
 
 ## Installation
 
@@ -80,12 +82,14 @@ const chainConfig = {
 
 ## Get Key Pair and Account
 
-After a user logs in, they receive a provider from the Web3Auth SDK. However, there is no native provider for Near in Web3Auth, so we must use the
-private key to make RPC calls directly.
+After a user logs in, they receive a provider from the Web3Auth SDK. However, there is no native
+provider for Near in Web3Auth, so we must use the private key to make RPC calls directly.
 
-To access the user's private key, the application can use the function `web3auth.provider.request({method: "private_key"})` from the Web3Auth
-provider. Yet, this key cannot be used with Near since it requires the `ed25519` key. Therefore, we must use the `getED25519Key()` function from
-`@toruslabs/openlogin-ed25519` to convert the `secp256k1` key to an `ed25519` key.
+To access the user's private key, the application can use the function
+`web3auth.provider.request({method: "private_key"})` from the Web3Auth provider. Yet, this key
+cannot be used with Near since it requires the `ed25519` key. Therefore, we must use the
+`getED25519Key()` function from `@toruslabs/openlogin-ed25519` to convert the `secp256k1` key to an
+`ed25519` key.
 
 ```tsx
 import { connect, KeyPair, keyStores, utils } from "near-api-js";

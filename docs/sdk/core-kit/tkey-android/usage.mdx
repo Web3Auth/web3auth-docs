@@ -1,26 +1,29 @@
 ---
 title: Usage tKey Android SDK
 sidebar_label: Usage
-displayed_sidebar: sdk
 description: "Core Kit tKey iOS SDK - Usage | Documentation - Web3Auth"
 ---
 
-Once you've installed and successfully instantiated tKey and initialized the service provider in your constructor, you can use it to authenticate your
-users and generate their tKey shares. Further, you can use various functions exposed by the tKey SDK and its modules to manage different aspects of
+Once you've installed and successfully instantiated tKey and initialized the service provider in
+your constructor, you can use it to authenticate your users and generate their tKey shares. Further,
+you can use various functions exposed by the tKey SDK and its modules to manage different aspects of
 your users' authentication needs.
 
 ### `ThresholdKey`
 
-Natively, the instance of `tKey`, (i.e., `ThresholdKey`) returns many functions. However, we have documented a few relevant ones here.
+Natively, the instance of `tKey`, (i.e., `ThresholdKey`) returns many functions. However, we have
+documented a few relevant ones here.
 
 ## Log In
 
-The login with the tKey SDK is a two-step process. First, you need to trigger the login process by calling the `triggerLogin()` function of the
-CustomAuth SDK. Using the returned information, use the `initialize()` function of the tKey to generate the Threshold Key corresponding to the user.
+The login with the tKey SDK is a two-step process. First, you need to trigger the login process by
+calling the `triggerLogin()` function of the CustomAuth SDK. Using the returned information, use the
+`initialize()` function of the tKey to generate the Threshold Key corresponding to the user.
 
-However, before starting this process, you must set up Custom Authentication on your Web3Auth Dashboard. You must
-[Create a Verifier](/auth-provider-setup/verifiers) from the **Custom Auth** section of the
-[Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired configuration.
+However, before starting this process, you must set up Custom Authentication on your Web3Auth
+Dashboard. You must [Create a Verifier](/auth-provider-setup/verifiers) from the **Custom Auth**
+section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with your desired
+configuration.
 
 :::tip
 
@@ -80,8 +83,8 @@ activity.tkeyProvider = new ServiceProvider(
   postboxKey: activity.postboxKey);
 ```
 
-Generating a private key is an essential step for the tKey to create its share. The `triggerLogin()` function of the `CustomAuth` is called to
-accomplish this.
+Generating a private key is an essential step for the tKey to create its share. The `triggerLogin()`
+function of the `CustomAuth` is called to accomplish this.
 
 #### `SubVerifierDetails`
 
@@ -161,8 +164,8 @@ activity.appKey = new ThresholdKey(
 
 #### `initialize(params?)`
 
-Once you have triggered the login process, you're ready to initialize the tKey. This will generate a Threshold Key corresponding to your login
-provider.
+Once you have triggered the login process, you're ready to initialize the tKey. This will generate a
+Threshold Key corresponding to your login provider.
 
 ### Parameters
 
@@ -181,8 +184,9 @@ activity.appKey.initialize(activity.postboxKey, null, false, false, result -> {}
 
 `getKeyDetails()`
 
-The `getKeyDetails()` function provides information about the keys created for a particular user. It includes the user's public key X and Y, as well
-as the share descriptions, number of required shares, total shares, and threshold.
+The `getKeyDetails()` function provides information about the keys created for a particular user. It
+includes the user's public key X and Y, as well as the share descriptions, number of required
+shares, total shares, and threshold.
 
 #### Usage Sample
 
@@ -204,15 +208,17 @@ keyDetails.getShareDescriptions() // This is a json object in string format
 
 From here, you can know whether the user key can be reconstructed or not.
 
-- If the value of `keyDetails.getRequiredShares()` is more than zero, it implies that the threshold hasn't been met yet, and as a result, the key
-  can't be reconstructed since the user hasn't generated enough shares.
-- When the value of `keyDetails.getRequiredShares()` is 0 or less, the user can reconstruct the key. They can then use the shares to generate their
-  private key and carry out additional operations on the tKey to manage their keys.
+- If the value of `keyDetails.getRequiredShares()` is more than zero, it implies that the threshold
+  hasn't been met yet, and as a result, the key can't be reconstructed since the user hasn't
+  generated enough shares.
+- When the value of `keyDetails.getRequiredShares()` is 0 or less, the user can reconstruct the key.
+  They can then use the shares to generate their private key and carry out additional operations on
+  the tKey to manage their keys.
 
 ## Reconstruct Private Key
 
-The function `reconstruct()` reconstructs the private key of the user from the shares. This function returns the private key of the user once the
-threshold has been met.
+The function `reconstruct()` reconstructs the private key of the user from the shares. This function
+returns the private key of the user once the threshold has been met.
 
 ```java
 activity.appKey.reconstruct(result -> {
@@ -250,7 +256,8 @@ activity.appKey.reconstruct(result -> {
 
 ## Generate a New Share
 
-The function `generateNewShare()` generates a new share on the same threshold (e.g, 2/3 -> 2/4). This function returns the new share generated.
+The function `generateNewShare()` generates a new share on the same threshold (e.g, 2/3 -> 2/4).
+This function returns the new share generated.
 
 ```java
 activity.appKey.generateNewShare(result -> {});
@@ -258,7 +265,8 @@ activity.appKey.generateNewShare(result -> {});
 
 ## Delete a Share
 
-The function `deleteShare()` deletes a share from the user's shares. This function returns the updated shareStore after the share has been deleted.
+The function `deleteShare()` deletes a share from the user's shares. This function returns the
+updated shareStore after the share has been deleted.
 
 ```java
 activity.appKey.deleteShare(shareIndex, result -> {});
@@ -266,13 +274,15 @@ activity.appKey.deleteShare(shareIndex, result -> {});
 
 ## Using Modules for Further Operations
 
-To perform advanced operations and manipulate keys, tKey offers modules that can be utilized. As previously stated in the
-[initialization](/sdk/core-kit/tkey-android/initialize) section, modules need to be configured beforehand to function properly with tKey. After
-configuration, the respective module's instance is accessible within your tKey instance and can be utilized for additional operations.
+To perform advanced operations and manipulate keys, tKey offers modules that can be utilized. As
+previously stated in the [initialization](/sdk/core-kit/tkey-android/initialize) section, modules
+need to be configured beforehand to function properly with tKey. After configuration, the respective
+module's instance is accessible within your tKey instance and can be utilized for additional
+operations.
 
 :::info Modules
 
-Please visit the [**Modules**](/sdk/core-kit/tkey-android/modules) section to view a comprehensive list of available modules and their respective
-functions.
+Please visit the [**Modules**](/sdk/core-kit/tkey-android/modules) section to view a comprehensive
+list of available modules and their respective functions.
 
 :::

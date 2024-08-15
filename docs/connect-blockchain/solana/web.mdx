@@ -2,9 +2,21 @@
 title: Integrate Web3Auth with the Solana Blockchain in Javascript
 sidebar_label: Web
 image: "guides/banners/solana.png"
-displayed_sidebar: resources
-keywords: [solana, web3auth, authentication, blockchain]
-description: "Integrate Web3Auth with the Solana Blockchain in Javascript | Documentation - Web3Auth"
+keywords:
+  [
+    solana,
+    wallet,
+    integration,
+    web3auth,
+    API,
+    SDK,
+    authentication,
+    blockchain,
+    solution,
+    development,
+  ]
+description:
+  "Integrate Web3Auth with the Solana Blockchain in Javascript | Documentation - Web3Auth"
 ---
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
@@ -12,22 +24,25 @@ import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-other
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-While using the Web3Auth Web SDK for [Solana](https://solana.com/) you get a standard provider for Solana containing functions to help you make
-blockchain calls via the [`@solana/web3.js`](https://solana-labs.github.io/solana-web3.js/) library. We have highlighted a few methods here for
-getting you started quickly on that.
+While using the Web3Auth Web SDK for [Solana](https://solana.com/) you get a standard provider for
+Solana containing functions to help you make blockchain calls via the
+[`@solana/web3.js`](https://solana-labs.github.io/solana-web3.js/) library. We have highlighted a
+few methods here for getting you started quickly on that.
 
 :::note
 
-This reference is for the `Web`, however, you can use Solana on `React Native`, as well, quite similarly. Please follow our reference for
-[EVM Chains](/connect-blockchain/evm/), and similarly use Solana libraries that support the platforms to use the private key and make blockchain calls
+This reference is for the `Web`, however, you can use Solana on `React Native`, as well, quite
+similarly. Please follow our reference for [EVM Chains](/connect-blockchain/evm/), and similarly use
+Solana libraries that support the platforms to use the private key and make blockchain calls
 accordingly.
 
 :::
 
 ## Installation
 
-To interact with the Solana blockchain, you can use [`@solana/web3.js`](https://solana-labs.github.io/solana-web3.js/) library with Web3Auth along
-with `@web3auth/solana-provider` package.
+To interact with the Solana blockchain, you can use
+[`@solana/web3.js`](https://solana-labs.github.io/solana-web3.js/) library with Web3Auth along with
+`@web3auth/solana-provider` package.
 
 ### Getting the `chainConfig`
 
@@ -181,7 +196,13 @@ await (tKey.serviceProvider as SfaServiceProvider).init(privateKeyProvider);
 ## Get Account and Balance
 
 ```tsx
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import {
+  Connection,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 
 const solanaWallet = new SolanaWallet(web3auth.provider);
 
@@ -202,7 +223,13 @@ const balance = await connection.getBalance(new PublicKey(accounts[0]));
 ## Sign a Transaction
 
 ```tsx
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import {
+  Connection,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 
 // solanaWallet is from above
 const connectionConfig = await solanaWallet.request({
@@ -238,7 +265,13 @@ console.log(signedTx.signature);
 ## Sign all Transactions
 
 ```tsx
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import {
+  Connection,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 
 // solanaWallet is from above
 const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
@@ -265,8 +298,14 @@ const TransactionInstruction2 = SystemProgram.transfer({
   lamports: 0.02 * LAMPORTS_PER_SOL,
 });
 
-const transaction1 = new Transaction({ recentBlockhash: blockhash, feePayer: new PublicKey(pubKey[0]) }).add(TransactionInstruction1);
-const transaction2 = new Transaction({ recentBlockhash: blockhash, feePayer: new PublicKey(pubKey[0]) }).add(TransactionInstruction2);
+const transaction1 = new Transaction({
+  recentBlockhash: blockhash,
+  feePayer: new PublicKey(pubKey[0]),
+}).add(TransactionInstruction1);
+const transaction2 = new Transaction({
+  recentBlockhash: blockhash,
+  feePayer: new PublicKey(pubKey[0]),
+}).add(TransactionInstruction2);
 
 const signedTx = await solanaWallet.signAllTransactions([transaction1, transaction2]);
 console.log(signedTx);
@@ -275,7 +314,13 @@ console.log(signedTx);
 ## Sign and Send a Transaction
 
 ```tsx
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import {
+  Connection,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 
 // solanaWallet is from above
 const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
@@ -308,7 +353,13 @@ console.log(signature);
 ## Sign Message
 
 ```tsx
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import {
+  Connection,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 
 // solanaWallet is from above
 const msg = Buffer.from("Test Signing Message", "utf8");
@@ -318,7 +369,8 @@ console.log(result.toString());
 
 ## Fetch User's Private Key
 
-`solanaPrivateKey` is used to fetch the private key of the logged in user. It is only available for `in-app` adapters like `openlogin`.
+`solanaPrivateKey` is used to fetch the private key of the logged in user. It is only available for
+`in-app` adapters like `openlogin`.
 
 ```tsx
 // Assuming user is already logged in.
@@ -333,9 +385,11 @@ async getPrivateKey() {
 
 ## Gasless Transactions
 
-To do gasless transactions in Solana, use [Solana labs's Octane](https://github.com/solana-labs/octane).
+To do gasless transactions in Solana, use
+[Solana labs's Octane](https://github.com/solana-labs/octane).
 
-Octane is a gasless transaction relayer for Solana. Octane accepts transactions via an HTTP API, signs them if they satisfy certain conditions and
-broadcasts to the network.
+Octane is a gasless transaction relayer for Solana. Octane accepts transactions via an HTTP API,
+signs them if they satisfy certain conditions and broadcasts to the network.
 
-Follow [this guide](https://github.com/solana-labs/octane/blob/master/docs/example-integration.md) to run your first transaction through Octane.
+Follow [this guide](https://github.com/solana-labs/octane/blob/master/docs/example-integration.md)
+to run your first transaction through Octane.

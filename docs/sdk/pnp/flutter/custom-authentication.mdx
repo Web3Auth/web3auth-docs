@@ -1,7 +1,6 @@
 ---
 title: Using Custom Authentication in PnP Flutter SDK
 sidebar_label: Custom Authentication
-displayed_sidebar: sdk
 description: "Web3Auth PnP Flutter SDK - Using Custom Authentication | Documentation - Web3Auth"
 ---
 
@@ -433,6 +432,8 @@ class ExtraLoginOptions {
 </TabItem>
 </Tabs>
 
+## Single Verifier
+
 ### Using Auth0 Login
 
 Auth0 has a special login flow, called the SPA flow. This flow requires a `client_id` and `domain`
@@ -597,3 +598,60 @@ To use the SMS Passwordless login, send the phone number as the `login_hint` par
 +\{country_code}-\{phone_number}, i.e. (+91-09xx901xx1).
 
 <SMSPasswordless />
+
+## Aggregate Verifier
+
+You can use aggregate verifier to combine multiple login methods to get the same address for the
+users regardless of their login providers. For example, combining a Google and Email Passwordless
+login, or Google and GitHub via Auth0 to access the same address for your user.
+
+```dart
+// highlight-start
+final loginConfig = HashMap<String, LoginConfigItem>();
+
+loginConfig['google'] = LoginConfigItem(
+  verifier: "aggregate-sapphire",
+  verifierSubIdentifier: "w3a-google",
+  typeOfLogin: TypeOfLogin.google,
+  clientId: "YOUR_GOOGLE_CLIENT_ID",
+);
+
+loginConfig['jwt'] = LoginConfigItem(
+  verifier: "aggregate-sapphire",
+  verifierSubIdentifier: "w3a-a0-github",
+  typeOfLogin: TypeOfLogin.jwt,
+  clientId: "YOUR_AUTHO_CLIENT_ID",
+);
+// highlight-end
+
+await Web3AuthFlutter.init(
+  Web3AuthOptions(
+    clientId: 'YOUR_WEB3AUTH_CLIENT_ID',
+    network: Network.sapphire_mainnet,
+    redirectUrl: redirectUrl,
+    // highlight-next-line
+    loginConfig: loginConfig,
+  ),
+);
+
+await Web3AuthFlutter.initialize();
+
+// Login with Google
+// highlight-next-line
+await Web3AuthFlutter.login(LoginParams(loginProvider: Provider.google));
+
+// Login With GitHub
+// highlight-start
+await Web3AuthFlutter.login(
+  LoginParams(
+    loginProvider: Provider.jwt,
+    extraLoginOptions: ExtraLoginOptions(
+      domain: 'https://web3auth.au.auth0.com',
+      verifierIdField: 'email',
+      connection: 'github',
+      isVerifierIdCaseSensitive: false,
+    ),
+  ),
+);
+// highlight-end
+```

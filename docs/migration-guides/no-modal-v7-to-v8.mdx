@@ -1,6 +1,6 @@
 ---
 title: PnP No Modal SDK - v7 to v8
-displayed_sidebar: sdk
+
 description: "PnP No Modal SDK - v6 to v7 | Documentation - Web3Auth"
 sidebar_label: v7 to v8
 ---
@@ -9,9 +9,10 @@ sidebar_label: v7 to v8
 
 ## Overview
 
-This migration guide provides steps for upgrading from version 7 (v7) to version 8 (v8) of the Web3Auth No Modal SDK. The guide outlines significant
-changes and enhancements, including simplification of the whitelabeling process, introduction of `getDefaultExternalAdapters` for easy adapter
-management, and updates to the `CustomChainConfig` interface.
+This migration guide provides steps for upgrading from version 7 (v7) to version 8 (v8) of the
+Web3Auth No Modal SDK. The guide outlines significant changes and enhancements, including
+simplification of the whitelabeling process, introduction of `getDefaultExternalAdapters` for easy
+adapter management, and updates to the `CustomChainConfig` interface.
 
 ## Changes in Detail
 
@@ -19,7 +20,8 @@ management, and updates to the `CustomChainConfig` interface.
 
 #### Before (v7):
 
-Whitelabel configuration was passed directly to the `OpenLoginAdapter`. This often required importing the `OpenLoginAdapter` just for this purpose.
+Whitelabel configuration was passed directly to the `OpenLoginAdapter`. This often required
+importing the `OpenLoginAdapter` just for this purpose.
 
 ```tsx
 // v7 code
@@ -37,7 +39,8 @@ const openloginAdapter = new OpenloginAdapter({
 
 #### After (v8):
 
-The whitelabel configuration can now be passed to the `uiConfig` parameter, streamlining the process and reducing unnecessary imports.
+The whitelabel configuration can now be passed to the `uiConfig` parameter, streamlining the process
+and reducing unnecessary imports.
 
 ```tsx
 // v8 code
@@ -70,7 +73,8 @@ Adapters were manually configured and instantiated.
 
 #### After (v8):
 
-Adapters can be automatically fetched and configured using the `getDefaultExternalAdapters` method, streamlining the setup process.
+Adapters can be automatically fetched and configured using the `getDefaultExternalAdapters` method,
+streamlining the setup process.
 
 ```tsx
 // v8 code
@@ -89,7 +93,8 @@ adapters.forEach((adapter) => {
 
 #### Before (v7):
 
-`ChainConfig` did not require a `logo` parameter, and `blockExplorer` was used for the block explorer URL.
+`ChainConfig` did not require a `logo` parameter, and `blockExplorer` was used for the block
+explorer URL.
 
 ```tsx
 const chainConfig: CustomChainConfig = {
@@ -105,13 +110,15 @@ const chainConfig: CustomChainConfig = {
 
 #### After (v8):
 
-`ChainConfig` now requires a `logo` parameter for the chain's logo and the parameter formerly called `blockExplorer` has been renamed to
-`blockExplorerUrl`. Additionally, `isTestnet` has been introduced which can be used to define whether the network is testnet or not.
+`ChainConfig` now requires a `logo` parameter for the chain's logo and the parameter formerly called
+`blockExplorer` has been renamed to `blockExplorerUrl`. Additionally, `isTestnet` has been
+introduced which can be used to define whether the network is testnet or not.
 
 :::note
 
-From v8, parameters apart from `chainId`, `rpcTarget`, and `chainNamespace` are now optional. Please note, while using
-[Wallet Services](/sdk/wallet-services) you have to also pass the optional parameters.
+From v8, parameters apart from `chainId`, `rpcTarget`, and `chainNamespace` are now optional. Please
+note, while using [Wallet Services](/sdk/wallet-services) you have to also pass the optional
+parameters.
 
 :::
 
@@ -154,7 +161,8 @@ Earlier, the `privateKeyProvider` provider was not mandatory, and `chainConfig` 
 
 #### After (v8):
 
-In v8, the `privateKeyProvider` is introduced to `Web3AuthNoModalOptions`, and `chainConfig` is now optional.
+In v8, the `privateKeyProvider` is introduced to `Web3AuthNoModalOptions`, and `chainConfig` is now
+optional.
 
 ```tsx
 const chainConfig = {
@@ -188,8 +196,8 @@ const web3auth = new Web3Auth({
 
 #### `@web3auth/default-solana-adapter`
 
-Default Solana adapter allows you to create & configure external adapters for SOLANA namespace, like `@web3auth/torus-solana`, and `@web3auth/phantom`
-easily.
+Default Solana adapter allows you to create & configure external adapters for SOLANA namespace, like
+`@web3auth/torus-solana`, and `@web3auth/phantom` easily.
 
 ##### Installation
 
@@ -234,4 +242,5 @@ Migrating from v7 to v8 of the Web3Auth No Modal SDK involves:
 
 - Moving whitelabel configuration to the `uiConfig` parameter.
 - Utilizing `getDefaultExternalAdapters` for streamlined adapter configuration.
-- Updating `ChainConfig` to include the `logo` parameter and renaming `blockExplorer` to `blockExplorerUrl`.
+- Updating `ChainConfig` to include the `logo` parameter and renaming `blockExplorer` to
+  `blockExplorerUrl`.

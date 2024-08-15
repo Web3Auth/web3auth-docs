@@ -1,26 +1,29 @@
 ---
 title: Using of PnP Unity SDK
 sidebar_label: Usage
-displayed_sidebar: sdk
 description: "Web3Auth PnP Unity SDK - Usage | Documentation - Web3Auth"
 ---
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import UnityResponse from "@site/src/common/sdk/pnp/unity/_response.mdx";
+import EnableMFAMethod from "@site/src/common/sdk/pnp/flutter/_enable-mfa.mdx";
 
-Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users.
+Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your
+users.
 
 ## Logging in a User
 
 #### `web3Auth.login(LoginParams)`
 
-This function helps your users to trigger the login process. The login flow is triggered based on the selected provider. You can view the list of
-selected providers in the [provider](#provider) section.
+This function helps your users to trigger the login process. The login flow is triggered based on
+the selected provider. You can view the list of selected providers in the [provider](#provider)
+section.
 
 :::tip
 
-Additionally, you can associate a function to be triggered on successful login. This function receives the user's profile as a parameter.
+Additionally, you can associate a function to be triggered on successful login. This function
+receives the user's profile as a parameter.
 
 ```cs
 void Start()
@@ -136,8 +139,9 @@ public enum Provider
 
 ### `ExtraLoginOptions`
 
-The `LoginParams` class accepts the `ExtraLoginOptions` as an optional input, containing advanced options for custom authentication, email
-passwordless login, etc. This parameter can be considered as advanced login options needed for specific cases.
+The `LoginParams` class accepts the `ExtraLoginOptions` as an optional input, containing advanced
+options for custom authentication, email passwordless login, etc. This parameter can be considered
+as advanced login options needed for specific cases.
 
 ```cs
 LoginParams() { selectedLoginProvider, extraLoginOptions = ExtraLoginOptions() }
@@ -213,7 +217,8 @@ public class ExtraLoginOptions {
 
 ### `Curve`
 
-The `LoginParams` class accepts a `curve` parameter. This parameter can be used to select the elliptic curve to use for the signature.
+The `LoginParams` class accepts a `curve` parameter. This parameter can be used to select the
+elliptic curve to use for the signature.
 
 ```cs
 LoginParams() { selectedLoginProvider, curve = Curve.SECP256K1 }
@@ -389,12 +394,168 @@ public void login()
 
 </Tabs>
 
+## Session Management
+
+The Session Management feature allows you to check the existing sessions with Web3Auth. The
+`Web3AuthState` will allow users to remain authenticated with Web3Auth for 1 day by default, or a
+maximum of 7 days, or until the user logout or session data is cleared.
+
+The Web3Auth `login` function accepts a `sessionTime` parameter.
+
+```csharp
+public void login()
+{
+    var selectedProvider = Provider.GOOGLE;
+    var options = new LoginParams()
+    {
+        loginProvider = selectedProvider,
+        sessionTime = 86400,
+    };
+    web3Auth.login(options);
+}
+```
+
+## Enable MFA for a user
+
+The `enableMFA` method is used to trigger MFA setup flow for users. The method takes `LoginParams`
+which will used during custom verifiers. If you are using default login providers, you don't need to
+pass `LoginParams`. If you are using custom jwt verifiers, you need to pass the JWT token in
+`loginParams` as well.
+
+<Tabs
+  defaultValue="default-verifier"
+  values={[
+    { label: "Default Verifier", value: "default-verifier" },
+    { label: "Custom JWT Verifier", value: "custom-jwt-verifier" },
+  ]}
+>
+
+<TabItem value="default-verifier">
+
+```csharp title="Usage"
+{
+    var selectedProvider = Provider.GOOGLE;
+
+    var options = new LoginParams()
+    {
+        loginProvider = selectedProvider,
+    };
+
+    web3Auth.enableMFA(options);
+}
+```
+
+</ TabItem>
+
+<TabItem value="custom-jwt-verifier">
+
+```csharp title="Usage"
+{
+    var selectedProvider = Provider.JWT;
+
+    var options = new LoginParams()
+    {
+        loginProvider = selectedProvider,
+        extraLoginOptions = new ExtraLoginOptions()
+        {
+            domain = "https://web3auth.au.auth0.com",
+            verifierIdField = "sub",
+            prompt = Prompt.LOGIN,
+        }
+    };
+
+    web3Auth.enableMFA(options);
+}
+
+```
+
+</ TabItem>
+</ Tabs>
+
+## Launch Wallet Services
+
+The `launchWalletServices` method launches a WebView which allows you to use the templated wallet UI
+services. The method takes `ChainConfig` as the required input. Wallet Services is currently only
+available for EVM chains.
+
+:::note
+
+Access to Wallet Services is gated. You can use this feature in the development environment for
+free. The minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a
+production environment is the **Scale Plan**.
+
+:::
+
+### Arguments
+
+`ChainConfig`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter           | Description                                                                                                                 |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `chainNamespace`    | Custom configuration for your preferred blockchain. As of now only EVM supported. Default value is `ChainNamespace.eip155`. |
+| `decimals?`         | Number of decimals for the currency ticker. Default value is 18, and accepts `int` as value.                                |
+| `blockExplorerUrl?` | Blockchain's explorer URL. (eg: `https://etherscan.io`)                                                                     |
+| `chainId`           | The chain id of the selected blockchain in hex `String`.                                                                    |
+| `displayName?`      | Display Name for the chain.                                                                                                 |
+| `logo?`             | Logo for the selected `chainNamespace` & `chainId`.                                                                         |
+| `rpcTarget`         | RPC Target URL for the selected `chainNamespace` & `chainId`.                                                               |
+| `ticker?`           | Default currency ticker of the network (e.g: `ETH`)                                                                         |
+| `tickerName?`       | Name for currency ticker (e.g: `Ethereum`)                                                                                  |
+
+</TabItem>
+
+<TabItem value="class">
+
+```csharp
+using System.Collections.Generic;
+#nullable enable
+public class ChainConfig {
+    public Web3Auth.ChainNamespace? chainNamespace { get; set; } = Web3Auth.ChainNamespace.EIP155;
+    public int decimals { get; set; } = 18;
+    public string blockExplorerUrl { get; set; } = null;
+    public string chainId { get; set; }
+    public string displayName { get; set; } = null;
+    public string logo { get; set; } = null;
+    public string rpcTarget { get; set; }
+    public string ticker { get; set; } = null;
+    public string tickerName { get; set; } = null;
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Usage
+
+```dart title="Usage"
+{
+    var chainConfig = new ChainConfig()
+    {
+        chainId = "0x1",
+        rpcTarget = rpcURL,
+        ticker = "ETH",
+        chainNamespace = Web3Auth.ChainNamespace.EIP155
+    };
+    web3Auth.launchWalletServices(chainConfig);
+}
+```
+
 ## Logging out a user
 
 ### `web3Auth.logout()`
 
-Trigger logout flow. This function doesn't take parameters. A completable future containing a void object will be returned on successfull logout
-otherwise an error response is returned.
+Trigger logout flow. This function doesn't take parameters. A completable future containing a void
+object will be returned on successfull logout otherwise an error response is returned.
 
 :::tip
 
@@ -434,55 +595,231 @@ public void logout()
 ## Working Example
 
 ```cs title="/Assets/Web3Auth.cs"
-using System;
-using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using TMPro;
+using Nethereum.Web3;
+using Nethereum.Util;
+using Nethereum.Signer;
+using Nethereum.Hex.HexConvertors.Extensions;
+using Nethereum.ABI.Encoders;
+using Nethereum.Hex.HexTypes;
+using Nethereum.Web3.Accounts;
+using Nethereum.Web3.Accounts.Managed;
 
-public class Web3custom : MonoBehaviour
+public class Web3AuthScript : MonoBehaviour
 {
     Web3Auth web3Auth;
+    public TextMeshProUGUI console;
+    private string userEmail = "";
+    private string privateKey;
+    private string userInfo;
+    private Account account;
+    Web3 web3;
+    const string rpcURL = "https://rpc.ankr.com/eth";
 
     // Start is called before the first frame update
     void Start()
     {
+        // IMP START - Quick Start
         web3Auth = GetComponent<Web3Auth>();
+        // IMP END - Quick Start
+
+        // IMP START - SDK Initialization
+        // IMP START - Dashboard Registration
+        var clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // Get your Web3Auth Client ID on https://dashboard.web3auth.io
+        // IMP END - Dashboard Registration
+
         web3Auth.setOptions(new Web3AuthOptions()
         {
-            redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
-            clientId = "BAwFgL-r7wzQKmtcdiz2uHJKNZdK7gzEf2q-m55xfzSZOw8jLOyIi4AVvvzaEQO5nv2dFLEmf9LBkF8kaq3aErg",
-            network = Web3Auth.Network.TESTNET,
+            clientId = clientId,
+            redirectUrl = new System.Uri("w3aexample://com.web3auth.unityexample/auth"),
+            network = Web3Auth.Network.SAPPHIRE_MAINNET,
+
         });
+        // IMP END - SDK Initialization
         web3Auth.onLogin += onLogin;
         web3Auth.onLogout += onLogout;
+
+        updateConsole("Ready to Login!");
+    }
+
+    public void GrabEmailFromInputField(string input)
+    {
+        userEmail = input;
     }
 
     public void login()
     {
-        var selectedProvider = Provider.GOOGLE;
+        if (userEmail == "")
+        {
+            Debug.Log("Please enter your email.");
+            updateConsole("Please enter your email.");
+            return;
+        }
+        // IMP START - Login
+        var selectedProvider = Provider.EMAIL_PASSWORDLESS;
+
         var options = new LoginParams()
         {
-            loginProvider = selectedProvider
+            loginProvider = selectedProvider,
+            extraLoginOptions = new ExtraLoginOptions()
+            {
+                login_hint = userEmail
+            }
         };
+
         web3Auth.login(options);
+        // IMP END - Login
     }
 
     private void onLogin(Web3AuthResponse response)
     {
-        var userInfo = JsonConvert.SerializeObject(response.userInfo, Formatting.Indented);
+        // IMP START - Get User Information
+        userInfo = JsonConvert.SerializeObject(response.userInfo, Formatting.Indented);
+        // IMP END - Get User Information
+        // IMP START - Blockchain Calls
+        privateKey = response.privKey;
+        var newAccount = new Account(privateKey);
+        account = newAccount;
+
+        var rpc = new Nethereum.JsonRpc.Client.RpcClient(new System.Uri(rpcURL));
+        web3 = new Web3(account, rpc);
+        // IMP END - Blockchain Calls
+
+        Debug.Log(JsonConvert.SerializeObject(response, Formatting.Indented));
+        updateConsole(JsonConvert.SerializeObject(response, Formatting.Indented));
+    }
+
+    public void getUserInfo()
+    {
+        if (account == null)
+        {
+            Debug.Log("Please Login First");
+            updateConsole("Please Login First");
+            return;
+        }
         Debug.Log(userInfo);
+        updateConsole(userInfo);
     }
 
     public void logout()
     {
+        // IMP START - Logout
         web3Auth.logout();
+        // IMP END - Logout
     }
 
     private void onLogout()
     {
+        privateKey = null;
+        userInfo = null;
+        account = null;
+
         Debug.Log("Logged out!");
+        updateConsole("Logged out!");
+    }
+
+    // IMP START - Blockchain Calls
+    public void getAccount()
+    {
+        if (account == null)
+        {
+            Debug.Log("Please Login First");
+            updateConsole("Please Login First");
+            return;
+        }
+        Debug.Log(account.Address);
+        updateConsole(account.Address);
+    }
+
+    public void getBalance()
+    {
+        if (account == null)
+        {
+            Debug.Log("Please Login First");
+            updateConsole("Please Login First");
+            return;
+        }
+        var balance = web3.Eth.GetBalance.SendRequestAsync(account.Address).Result.Value;
+
+        Debug.Log(balance);
+        updateConsole(balance.ToString());
+    }
+
+    public void signMessage()
+    {
+        if (account == null)
+        {
+            Debug.Log("Please Login First");
+            updateConsole("Please Login First");
+            return;
+        }
+        var msg = "wee test message 18/09/2017 02:55PM";
+        var signer = new EthereumMessageSigner();
+        var signature = signer.EncodeUTF8AndSign(msg, new EthECKey(privateKey));
+
+        Debug.Log(signature);
+        updateConsole(signature.ToString());
+    }
+    // IMP END - Blockchain Calls
+
+    public void updateConsole(string message)
+    {
+        console.text = message;
+    }
+
+    // IMP START - Enable MFA
+
+        public void enableMFA()
+    {
+        var selectedProvider = Provider.JWT;
+
+        var options = new LoginParams()
+        {
+            loginProvider = selectedProvider,
+            extraLoginOptions = new ExtraLoginOptions()
+            {
+                domain = "https://web3auth.au.auth0.com",
+                verifierIdField = "sub",
+                prompt = Prompt.LOGIN,
+            }
+        };
+
+        web3Auth.enableMFA(options);
+    }
+
+    // IMP END - Enable MFA
+
+    private void onMFASetup(bool response)
+    {
+        Debug.Log("MFA Setup: " + response);
+    }
+
+    // IMP START - Launch Wallet Services
+
+    public void launchWalletServices()
+    {
+        var chainConfig = new ChainConfig()
+        {
+            chainId = "0x1",
+            rpcTarget = rpcURL,
+            ticker = "ETH",
+            chainNamespace = Web3Auth.ChainNamespace.EIP155
+        };
+        web3Auth.launchWalletServices(chainConfig);
+    }
+
+    // IMP END - Launch Wallet Services
+
+
+    // Update is called once per frame
+    void Update()
+    {
+
     }
 }
 

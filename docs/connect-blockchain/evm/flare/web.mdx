@@ -2,7 +2,7 @@
 title: Integrate Web3Auth with the Flare Blockchain in JavaScript
 sidebar_label: Web
 image: "guides/banners/flare.png"
-displayed_sidebar: resources
+
 keywords: [flare, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Flare Blockchain in JavaScript | Documentation - Web3Auth"
 ---
@@ -33,11 +33,14 @@ import SEO from "@site/src/components/SEO";
   slug="/connect-blockchain/evm/flare/web"
 />
 
-While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider, similar to the
-[Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html). This provider can be used with libraries like
-[`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html), [`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
-[Flare](https://www.flare.network) blockchain calls like getting the user's `account`, fetching `balance`, `sign transaction`, `send transaction`,
-`read` from and `write` to the smart contract, etc. We have highlighted a few here to get you started quickly on that.
+While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193)
+provider, similar to the [Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html).
+This provider can be used with libraries like
+[`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html),
+[`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
+[Flare](https://www.flare.network) blockchain calls like getting the user's `account`, fetching
+`balance`, `sign transaction`, `send transaction`, `read` from and `write` to the smart contract,
+etc. We have highlighted a few here to get you started quickly on that.
 
 ## Installation
 
@@ -47,8 +50,9 @@ To interact with the Flare blockchain, you can use either library with Web3Auth.
 
 ## Initializing Provider
 
-Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible
-provider as **`web3auth.provider`** after successful authentication.
+Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
+[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
+after successful authentication.
 
 ### Getting the `chainConfig`
 
@@ -163,7 +167,8 @@ const chainConfig = {
 
 ## Read the current Bitcoin price from the FTSO system
 
-Flare provides a native decentralized oracle system called FTSO (Flare Time Series Oracle) to fetch the current price of an asset.
+Flare provides a native decentralized oracle system called FTSO (Flare Time Series Oracle) to fetch
+the current price of an asset.
 
 <Tabs
   defaultValue="web3"
@@ -187,7 +192,9 @@ const contractAddress = "0x13DC2b5053857AE17a4f95aFF55530b267F3E040";
 const contract = new web3.eth.Contract(JSON.parse(contractABI), contractAddress);
 
 // Read current pricing data from FTSO system
-const [btcPriceInfo, flarePriceInfo] = await contract.methods.getCurrentPricesBySymbols(["BTC", "FLR"]).call();
+const [btcPriceInfo, flarePriceInfo] = await contract.methods
+  .getCurrentPricesBySymbols(["BTC", "FLR"])
+  .call();
 const btcPrice = btcPriceInfo.price;
 const flarePrice = flarePriceInfo.price;
 ```

@@ -2,11 +2,11 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
 <Tabs
-  defaultValue="web3"
+  defaultValue="viem"
   values={[
+    { label: "viem", value: "viem" },
     { label: "web3.js", value: "web3" },
     { label: "ethers.js", value: "ethers" },
-    { label: "viem", value: "viem" },
   ]}
 >
 <TabItem value="web3">
@@ -16,7 +16,7 @@ import Tabs from "@theme/Tabs";
   Use code from the above Initializing Provider here
 */
 
-// web3 is const web3 = new Web3(web3authProvider); from above.
+// web3 is const web3 = new Web3(web3Auth.provider); from above.
 
 // Get user's Ethereum public address
 const fromAddress = (await web3.eth.getAccounts())[0];
@@ -34,7 +34,7 @@ const signedMessage = await web3.eth.personal.sign(originalMessage, fromAddress)
   Use code from the above Initializing Provider here
 */
 
-const provider = new ethers.providers.Web3Provider(web3authProvider);
+const provider = new ethers.providers.Web3Provider(web3Auth.provider);
 
 const signer = await provider.getSigner();
 

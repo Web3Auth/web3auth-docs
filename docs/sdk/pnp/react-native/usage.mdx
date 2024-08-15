@@ -1,31 +1,38 @@
 ---
 title: Using of PnP React Native SDK
 sidebar_label: Usage
-displayed_sidebar: sdk
 description: "Web3Auth PnP React Native SDK - Usage | Documentation - Web3Auth"
 ---
 
 import RNResponse from "@site/src/common/sdk/pnp/react-native/_get-user-info.mdx";
 import PrivateKey from "@site/src/common/sdk/pnp/react-native/_get-priv-key.mdx";
 import ED25519Key from "@site/src/common/sdk/pnp/react-native/_get-ed25519-priv-key.mdx";
+import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your users.
+Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your
+users.
 
 Web3Auth returns the following functions:
 
 - `login()` - Logs in the User using the particular configuration you require for authentication.
 - `logout()` - Logs out the User.
-- `userInfo()` - After logging in, the Web3Auth instance will provide you with information regarding the user that is logged in.
+- `userInfo()` - After logging in, the Web3Auth instance will provide you with information regarding
+  the user that is logged in.
 - `privKey()` - After login, gets the private key of the user (default is `secp256k1` key).
 - `ed25519Key()` - After login, gets the `ed25519` key.
+- `enableMFA()` - Takes your user to the MFA enabling flow, helping them set up MFA.
+- `launchWalletServices()` - Launches the Wallet Services UI for the user to interact with their
+  wallet.
+- `request()` - Pops up the signature request modal for the user to sign a message.
 
 ## Logging in a User
 
-### `login()`
+#### `login(loginParams: SdkLoginParams): Promise<void>;`
 
-Trigger the login flow that navigates the user to a browser model that allows them to log in with the selected login provider.
+Trigger the login flow that navigates the user to a browser model that allows them to log in with
+the selected login provider.
 
 #### Arguments
 
@@ -158,7 +165,9 @@ await web3auth.login({
 
 ### Selecting Curve
 
-The `web3auth.login()` method accepts a `curve` parameter. This parameter can be used to select the elliptic curve to use for the signature.
+The `web3auth.login()` method accepts a `curve` parameter. This parameter can be used to select the
+elliptic curve to use for deriving the address of the key within the jwt returned by Web3Auth for
+Server Side Verification.
 
 ```typescript
 await web3auth.login({
@@ -209,15 +218,17 @@ await web3auth.login({
 
 ## Logging out a user
 
-### `logout()`
+#### `logout(): Promise<void>;`
 
 :::info
 
-Trigger the logout flow. It is not advised to be used in iOS since it will trigger a system dialog that asks if users want to allow a Login operation.
+Trigger the logout flow. It is not advised to be used in iOS since it will trigger a system dialog
+that asks if users want to allow a Login operation.
 
 :::
 
-This method has no input and returns a `Promise` that resolves if the operation is successful, and rejects if the operation failed.
+This method has no input and returns a `Promise` that resolves if the operation is successful, and
+rejects if the operation failed.
 
 #### Example
 
@@ -227,7 +238,10 @@ await web3auth.logout();
 
 ## Getting the User Information
 
-To get the information of the user, extracted from the id token, you can call the `userInfo` method in the web3auth instance.
+#### `userInfo(): State["userInfo"];`
+
+To get the information of the user, extracted from the id token, you can call the `userInfo` method
+in the web3auth instance.
 
 ```tsx
 const userInfo = web3auth.userInfo();
@@ -236,6 +250,8 @@ const userInfo = web3auth.userInfo();
 <RNResponse />
 
 ## Getting the `secp256k1` private key
+
+#### `get privKey(): string;`
 
 Using the `privKey()` method in the web3auth instance you can get the `secp256k1` private key.
 
@@ -247,6 +263,8 @@ const privateKey = web3auth.privKey();
 
 ## Getting the `ed25519` private key
 
+#### `get ed25519Key(): string;`
+
 Using the `ed25519Key()` method in the web3auth instance you can get the `ed25519` private key.
 
 ```tsx
@@ -254,3 +272,168 @@ const ed25519Key = web3auth.ed25519Key();
 ```
 
 <ED25519Key />
+
+## Enabling MFA
+
+#### `enableMFA(): Promise<boolean>;`
+
+This method is used to enable MFA for the user. It takes no arguments and returns a `Promise` that
+resolves if the operation is successful, and rejects if the operation failed.
+
+#### Example
+
+```typescript
+await web3auth.enableMFA();
+```
+
+## Launching Wallet Services UI
+
+#### `launchWalletServices(chainConfig: ChainConfig, path?: string | null): Promise<void>;`
+
+The `launchWalletServices` method launches a Secure Web Browser which allows you to use the
+templated wallet UI services. The method takes `ChainConfig` as the required input. Wallet Services
+is currently only available for EVM chains.
+
+<ChainConfig />
+
+:::note
+
+Access to Wallet Services is gated. You can use this feature in the development environment for
+free. The minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a
+production environment is the **Scale Plan**.
+
+:::
+
+#### Example
+
+```typescript
+const chainConfig = {
+  chainNamespace: ChainNamespace.EIP155,
+  chainId: "0xaa36a7",
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  decimals: 18,
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+};
+
+await web3auth.launchWalletServices(chainConfig);
+```
+
+## Requesting a Signature
+
+#### `request(chainConfig: ChainConfig, method: string, params: unknown[], path?: string): Promise<string>;`
+
+The `request` method facilitates the use of templated transaction screens for signing transactions.
+This function returns a promise of the signature that can be used to broadcast the transaction.
+
+Please check the list of
+[JSON RPC methods](https://docs.metamask.io/wallet/reference/json-rpc-api/), noting that the request
+method currently supports only the signing methods.
+
+### Arguments
+
+| Arguments       | Description                                                                                                                                                                                            |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `chainConfig`   | Defines the chain to be used for signature.                                                                                                                                                            |
+| `method`        | JSON RPC method name in `string`. Currently, the request method only supports the singing methods.                                                                                                     |
+| `requestParams` | Parameters for the corresponding method. The parameters should be in the list and correct sequence. Take a look at [RPC methods](https://docs.metamask.io/wallet/reference/json-rpc-api) to know more. |
+
+#### Example
+
+##### Personal Sign
+
+```tsx
+const params = [
+  {
+    challenge: "Hello World",
+    address,
+  },
+  null,
+];
+const res = await web3auth.request(chainConfig, "personal_sign", params);
+```
+
+##### Personal Sign Shorthand
+
+```tsx
+const params = ["Hello World", address];
+const res = await web3auth.request(chainConfig, "personal_sign", params);
+```
+
+##### Sign Type 4
+
+```tsx
+const params = [
+  address,
+  {
+    types: {
+      EIP712Domain: [
+        {
+          name: "name",
+          type: "string",
+        },
+        {
+          name: "version",
+          type: "string",
+        },
+        {
+          name: "chainId",
+          type: "uint256",
+        },
+        {
+          name: "verifyingContract",
+          type: "address",
+        },
+      ],
+      Person: [
+        {
+          name: "name",
+          type: "string",
+        },
+        {
+          name: "wallet",
+          type: "address",
+        },
+      ],
+      Mail: [
+        {
+          name: "from",
+          type: "Person",
+        },
+        {
+          name: "to",
+          type: "Person",
+        },
+        {
+          name: "contents",
+          type: "string",
+        },
+      ],
+    },
+    primaryType: "Mail",
+    domain: {
+      name: "Ether Mail",
+      version: "1",
+      chainId: chainConfig.chainId,
+      verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+    },
+    message: {
+      from: {
+        name: "Cow",
+        wallet: address,
+      },
+      to: {
+        name: "Bob",
+        wallet: "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB",
+      },
+      contents: "Hello, Bob!",
+    },
+  },
+];
+const res = await web3auth.request(chainConfig, "eth_signTypedData_v4", params);
+```

@@ -1,7 +1,6 @@
 ---
 title: Using Custom Authentication in PnP iOS SDK
 sidebar_label: Custom Authentication
-displayed_sidebar: sdk
 description: "Web3Auth PnP iOS SDK - Using Custom Authentication | Documentation - Web3Auth"
 ---
 
@@ -264,6 +263,8 @@ public struct ExtraLoginOptions: Codable {
 
 </Tabs>
 
+## Single Verifier
+
 ### Using Auth0 Login
 
 Auth0 has a special login flow, called the SPA flow. This flow requires a `client_id` and `domain`
@@ -355,3 +356,56 @@ To use the SMS Passwordless login, send the phone number as the `login_hint` par
 +\{country_code}-\{phone_number}, i.e. (+91-09xx901xx1).
 
 <SMSPasswordless />
+
+## Aggregate Verifier
+
+You can use aggregate verifier to combine multiple login methods to get the same address for the
+users regardless of their login providers. For example, combining a Google and Email Passwordless
+login, or Google and GitHub via Auth0 to access the same address for your user.
+
+```swift
+
+let web3Auth = await Web3Auth(W3AInitParams(
+  clientId: clientId,
+  network: network,
+  redirectUrl: "web3auth.ios-aggregate-example://auth",
+  // highlight-start
+  loginConfig: [
+    TypeOfLogin.google.rawValue: .init(
+      verifier: "aggregate-sapphire",
+      typeOfLogin: .google,
+      name: "Web3Auth-Aggregate-Verifier-Google-Example",
+      clientId: "YOUR_GOOGLE_CLIENT_ID",
+      verifierSubIdentifier: "w3a-google"
+    ),
+    TypeOfLogin.jwt.rawValue: .init(
+      verifier: "aggregate-sapphire",
+      typeOfLogin: .jwt,
+      clientId: "YOUR_AUTH0_CLIENT_ID",
+      verifierSubIdentifier: "w3a-a0-github"
+    )
+  ],
+  // highlight-end
+))
+
+func loginWithGoogle() async {
+  // highlight-start
+  let result = try await web3Auth?.login(
+    W3ALoginParams(
+      loginProvider: .GOOGLE,
+    )
+  )
+  // highlight-end
+}
+
+func loginWithGitHub() async {
+  // highlight-start
+  let result = try await web3Auth?.login(
+    W3ALoginParams(
+      loginProvider: .JWT,
+      extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: "github", domain: "https://web3auth.au.auth0.com", client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: "email", isVerifierIdCaseSensitive: false, additionalParams: nil),
+    )
+  )
+  // highlight-end
+}
+```

@@ -1,7 +1,6 @@
 ---
 title: Initializing PnP Unity SDK
 sidebar_label: Initialize
-displayed_sidebar: sdk
 description: "Web3Auth PnP Unity SDK - Initialize | Documentation - Web3Auth"
 ---
 
@@ -17,8 +16,9 @@ However, initialization is a two-step process:
 1. [Creating a Web3Auth instance](#create-web3auth-instance)
 2. [Setting up Web3Auth options](#setting-up-web3auth-options)
 
-Please note that these are the most critical steps where you will need to pass different parameters according to your project's preference.
-Additionally, you must configure whitelabeling and custom authentication within this step if you want to customize your Web3Auth instance.
+Please note that these are the most critical steps where you will need to pass different parameters
+according to your project's preference. Additionally, you must configure whitelabeling and custom
+authentication within this step if you want to customize your Web3Auth instance.
 
 ## Create Web3Auth Instance
 
@@ -55,7 +55,8 @@ Within your script, import the `Web3Auth` component in your class.
 Web3Auth web3Auth;
 ```
 
-Next, you need to create an instance within your `Start()` function by creating an instance of the component you just imported.
+Next, you need to create an instance within your `Start()` function by creating an instance of the
+component you just imported.
 
 ```cs
 web3Auth = GetComponent<Web3Auth>();
@@ -75,7 +76,8 @@ web3Auth.setOptions(new Web3AuthOptions(){
 
 #### `Web3AuthOptions`
 
-The Web3Auth Constructor takes a class `Web3AuthOptions` as input. This class has the following arguments.
+The Web3Auth Constructor takes a class `Web3AuthOptions` as input. This class has the following
+arguments.
 
 <Tabs
   defaultValue="table"
@@ -97,6 +99,8 @@ The Web3Auth Constructor takes a class `Web3AuthOptions` as input. This class ha
 | `useCoreKitKey?`  | Use CoreKit Key to get core kit key. It's an optional field with default value as `false`.                                                                           |
 | `chainNamespace?` | Chain Namespace [`EIP155` and `SOLANA`]. It takes `Web3Auth.ChainNamespace` as a value.                                                                              |
 | `mfaSettings?`    | Allows developers to configure the MFA settings for authentication. It takes `MfaSettings` as a value.                                                               |
+| `sessionTime?`    | Session time in seconds. It's an optional field with default value as `86400`.                                                                                       |
+| `chainConfig?`    | Chain Config for the custom chain. It takes `ChainConfig` as a value. Useful for using Wallet Services.                                                              |
 
 </TabItem>
 
@@ -112,6 +116,8 @@ class Web3AuthOptions {
   public bool? useCoreKitKey ; // Optional
   public Web3Auth.ChainNamespace? chainNamespace; // Optional, default is "EIP155"
   public MfaSettings? mfaSettings; // Optional
+  public int sessionTime { get; set; } = 86400; // Optional
+  public ChainConfig? chainConfig { get; set; } // Optional
 }
 ```
 
@@ -121,8 +127,8 @@ class Web3AuthOptions {
 
 :::tip
 
-You can also configure your `client_id`, `redirect_url` and `network` within the script settings in the Unity Editor. It will look something like
-this:
+You can also configure your `client_id`, `redirect_url` and `network` within the script settings in
+the Unity Editor. It will look something like this:
 
 <img src={web3authCS} style={{ alignSelf: "center", maxWidth: "100%" }} />
 

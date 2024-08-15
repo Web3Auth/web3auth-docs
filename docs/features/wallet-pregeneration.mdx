@@ -1,46 +1,62 @@
 ---
 title: Wallet Pregeneration
-displayed_sidebar: docs
+
 description: "Wallet Pregeneration | Documentation - Web3Auth"
 ---
 
 import PregenerateWallet from "@site/src/components/PregenerateWallet";
 
-Pre-generated wallets are a strategic feature within Web3Auth, designed to streamline the onboarding process by allowing developers to create wallet
-addresses for users before their initial login. This feature offers flexibility in how and when you introduce users to wallet functionalities,
-enhancing the user experience and engagement.
+Pre-generated wallets are a strategic feature within Web3Auth, designed to streamline the onboarding
+process by allowing developers to create wallet addresses for users before their initial login. This
+feature offers flexibility in how and when you introduce users to wallet functionalities, enhancing
+the user experience and engagement.
 
 ## Capabilities of Pre-generated Wallets
 
-The ability to pre-generate wallets opens up a variety of use cases, making it easier to integrate Web3 features into your application's user journey:
+The ability to pre-generate wallets opens up a variety of use cases, making it easier to integrate
+Web3 features into your application's user journey:
 
-- **Early Wallet Creation:** Initiate wallet creation as part of the user invite or onboarding flow, even before the user has logged into your app for
-  the first time.
-- **Deferred Login Setup:** Delay the setup of wallet access management, such as OAuth login or passkeys, until the user is ready for their first
-  on-chain transaction, simplifying initial engagement.
-- **Wallet Prefunding:** Reward users with tokens for off-chain activities, allowing them to claim these rewards when they access their pre-generated
-  wallet.
+- **Early Wallet Creation:** Initiate wallet creation as part of the user invite or onboarding flow,
+  even before the user has logged into your app for the first time.
+- **Deferred Login Setup:** Delay the setup of wallet access management, such as OAuth login or
+  passkeys, until the user is ready for their first on-chain transaction, simplifying initial
+  engagement.
+- **Wallet Prefunding:** Reward users with tokens for off-chain activities, allowing them to claim
+  these rewards when they access their pre-generated wallet.
+
+:::note
+
+Access to Wallet Pregeneration is gated. You can use this feature in the development environment for
+free. The minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a
+production environment is the **Scale Plan**.
+
+:::
 
 ## Utilizing the Pre-generated Wallet API
 
-Web3Auth provides a straightforward API to facilitate the creation of pre-generated wallets. You can integrate this API into your user signup flow,
-either after a user verifies their email or independently by supplying their email or unique identifier to the API.
+Web3Auth provides a straightforward API to facilitate the creation of pre-generated wallets. You can
+integrate this API into your user signup flow, either after a user verifies their email or
+independently by supplying their email or unique identifier to the API.
 
 :::warning
 
-This API only returns the Core Kit Key wallet addresses. To use the wallet addresses with the Web3Auth SDKs, you will need to either use the
-`useCoreKitKey` flag in our PnP SDKs or use any of our Core Kit SFA SDKs
+This API only returns the Core Kit Key wallet addresses. To use the wallet addresses with the
+Web3Auth SDKs, you will need to either use the `useCoreKitKey` flag in our PnP SDKs or use any of
+our Core Kit SFA SDKs
 
-Learn more about how [keys can change within different Web3Auth Products](/docs/troubleshooting/different-private-key#product)
+Learn more about how
+[keys can change within different Web3Auth Products](/docs/troubleshooting/different-private-key#product)
 
 :::
 
 ### Implementation Steps:
 
-1. **Identify Users:** Determine the unique identifier or email for the user within your system. This will be the `verifierId` used to create the
-   wallet.
-2. **API Call:** Use the provided API to submit the user's identifier. You'll need to specify parameters from the Web3Auth dashboard, specifically the
-   Verifier Name, Web3Auth Network, and Client Id.
-3. **Receive Wallet Address:** The API response will include the new wallet address, ready for use by the user upon their first login.
+1. **Identify Users:** Determine the unique identifier or email for the user within your system.
+   This will be the `verifierId` used to create the wallet.
+2. **API Call:** Use the provided API to submit the user's identifier. You'll need to specify
+   parameters from the Web3Auth dashboard, specifically the Verifier Name, Web3Auth Network, and
+   Client Id.
+3. **Receive Wallet Address:** The API response will include the new wallet address, ready for use
+   by the user upon their first login.
 
 <PregenerateWallet />

@@ -1,7 +1,6 @@
 ---
 title: Using Custom Authentication in PnP Android SDK
 sidebar_label: Custom Authentication
-displayed_sidebar: sdk
 description: "Web3Auth PnP Android SDK - Using Custom Authentication | Documentation - Web3Auth"
 ---
 
@@ -313,6 +312,8 @@ data class ExtraLoginOptions(
 
 </Tabs>
 
+## Single Verifier
+
 ### Using Auth0 Login
 
 Auth0 has a special login flow, called the SPA flow. This flow requires a `client_id` and `domain`
@@ -355,7 +356,7 @@ server, you need to put the jwt token into the `id_token` field of the `extraLog
 additionally, you need to pass over the `domain` field as well, which is mandatory. If you don't
 have a domain, just passover a string in that field.
 
-```tsx
+```kotlin
 web3Auth = Web3Auth (
   Web3AuthOptions (
     context = this,
@@ -404,3 +405,56 @@ To use the SMS Passwordless login, send the phone number as the `login_hint` par
 +\{country_code}-\{phone_number}, i.e. (+91-09xx901xx1).
 
 <SMSPasswordless />
+
+## Aggregate Verifier
+
+You can use aggregate verifier to combine multiple login methods to get the same address for the
+users regardless of their login providers. For example, combining a Google and Email Passwordless
+login, or Google and GitHub via Auth0 to access the same address for your user.
+
+```kotlin
+web3Auth = Web3Auth (
+  Web3AuthOptions (
+    context = this,
+    clientId = getString (R.string.web3auth_project_id),
+    network = Network.SAPPHIRE_MAINNET,
+    redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
+    // Optional loginConfig object
+    // highlight-start
+    loginConfig = hashMapOf(
+      "google" to LoginConfigItem(
+        verifier = "aggregate-sapphire",
+        verifierSubIdentifier= "w3a-google",
+        typeOfLogin = TypeOfLogin.GOOGLE,
+        name = "Aggregate Login",
+        clientId = getString(R.string.web3auth_google_client_id)
+      ),
+      "jwt" to LoginConfigItem(
+        verifier = "aggregate-sapphire",
+        verifierSubIdentifier= "w3a-a0-email-passwordless",
+        typeOfLogin = TypeOfLogin.JWT,
+        name = "Aggregate Login",
+        clientId = getString(R.string.web3auth_auth0_client_id)
+      )
+    )
+    // highlight-end
+  )
+)
+
+// Google Login
+// highlight-start
+web3Auth.login(LoginParams(Provider.GOOGLE))
+// highlight-end
+
+// Auth0 Login
+// highlight-start
+web3Auth.login(LoginParams(
+  Provider.JWT,
+  extraLoginOptions = ExtraLoginOptions(
+    domain = "https://web3auth.au.auth0.com",
+    verifierIdField = "email",
+    isVerifierIdCaseSensitive = false)
+  )
+)
+// highlight-end
+```

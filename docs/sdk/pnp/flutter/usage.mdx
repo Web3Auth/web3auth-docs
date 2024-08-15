@@ -1,7 +1,6 @@
 ---
 title: Usage of PnP Flutter SDK
 sidebar_label: Usage
-displayed_sidebar: sdk
 description: "Web3Auth PnP Flutter SDK - Usage | Documentation - Web3Auth"
 ---
 
@@ -404,97 +403,6 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 </TabItem>
 </Tabs>
 
-## Selecting Curve
-
-The `LoginParams` class has a `curve` parameter. This parameter can be used to select the elliptic
-curve to use for the signature.
-
-```dart
-final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
-  loginProvider: Provider.google,
-  // highlight-next-line
-  curve: Curve.secp256k1 // Can be ed25519, secp256k1
-));
-```
-
-<Tabs
-  defaultValue="secp256k1"
-  values={[
-    { label: "SECP256K1", value: "secp256k1" },
-    { label: "ED25519", value: "ed25519" },
-  ]}
->
-
-<TabItem value="secp256k1">
-
-```dart title="Usage"
-Future<void> initWeb3Auth() async {
-
-  Uri redirectUrl;
-  if (Platform.isAndroid) {
-    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
-    // w3a://com.example.w3aflutter/auth
-  } else if (Platform.isIOS) {
-    redirectUrl = Uri.parse('{bundleId}://auth');
-    // com.example.w3aflutter://openlogin
-  } else {
-    throw UnKnownException('Unknown platform');
-  }
-
-  await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId: "WEB3AUTH_CLIENT_ID",
-    network: Network.sapphire_mainnet,
-    redirectUrl: redirectUrl,
-  ));
-
-  await Web3AuthFlutter.initialize();
-}
-
-final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
-  loginProvider: Provider.google,
-  // highlight-next-line
-  curve: Curve.secp256k1 // Can be ed25519, secp256k1
-));
-```
-
-</TabItem>
-
-<TabItem value="ed25519">
-
-```dart title="Usage"
-Future<void> initWeb3Auth() async {
-
-  Uri redirectUrl;
-  if (Platform.isAndroid) {
-    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
-    // w3a://com.example.w3aflutter/auth
-  } else if (Platform.isIOS) {
-    redirectUrl = Uri.parse('{bundleId}://auth');
-    // com.example.w3aflutter://openlogin
-  } else {
-    throw UnKnownException('Unknown platform');
-  }
-
-  await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId: "WEB3AUTH_CLIENT_ID",
-    network: Network.testnet,
-    redirectUrl: redirectUrl
-  ));
-
-  await Web3AuthFlutter.initialize();
-}
-
-final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
-  loginProvider: Provider.google,
-  // highlight-next-line
-  curve: Curve.ed25519 // Can be ed25519, secp256k1
-));
-```
-
-</TabItem>
-
-</Tabs>
-
 ## Logging out a user
 
 ### `logout()`
@@ -517,13 +425,70 @@ Get started with a sample app found
 
 <EnableMFAMethod />
 
+## Triggering Login exceptions
+
+The `setCustomTabsClosed` method can be used to trigger login exceptions for Android. For iOS, you
+don't need this method to trigger the login exceptions. The Android SDK uses the custom tabs and
+from current implementation of chrome custom tab, it's not possible to add a listener directly to
+chrome custom tab close button and trigger login exceptions.
+
+Hence, it's necessary to use `setCustomTabsClosed` method in your login screen to trigger
+exceptions.
+
+### Usage
+
+```dart
+class LoginScreen extends State<T> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    // highlight-next-line
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // highlight-next-line
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  // highlight-start
+  @override
+  void didChangeAppLifecycleState(final AppLifecycleState state) {
+    // This is important to trigger the user cancellation on Android.
+    if (state == AppLifecycleState.resumed) {
+      Web3AuthFlutter.setCustomTabsClosed();
+    }
+  }
+  // highlight-end
+
+   @override
+  Widget build(BuildContext context) {
+    // Your UI code
+  }
+
+  Future<void> _login() async {
+    try {
+      await Web3AuthFlutter.login(LoginParams(loginProvider: Provider.google));
+    } on UserCancelledException {
+        log("User cancelled.");
+    } on UnKnownException {
+        log("Unknown exception occurred");
+    } catch (e) {
+        log(e.toString());
+    }
+  }
+}
+```
+
 ## Launch Wallet Services
 
 The `launchWalletServices` method launches a WebView which allows you to use the templated wallet UI
 services. The method takes `ChainConfig` as the required input. Wallet Services is currently only
 available for EVM chains.
 
-:::note Minimum Scale plan required
+:::note
 
 Access to Wallet Services is gated. You can use this feature in the development environment for
 free. The minimum [pricing plan](https://web3auth.io/pricing.html) to use this feature in a
@@ -629,16 +594,17 @@ The `request` method facilitates the use of templated transaction screens for si
 Upon successful completion, you can retrieve the signature for the request using the
 `getSignResponse` static method.
 
-Please check the list of [JSON RPC methods](docs.metamask.io/wallet/reference/json-rpc-api/), noting
-that the request method currently supports only the signing methods.
+Please check the list of
+[JSON RPC methods](https://docs.metamask.io/wallet/reference/json-rpc-api/), noting that the request
+method currently supports only the signing methods.
 
 ### Arguments
 
-| Arguments       | Description                                                                                                                                                                                                                                                          |
-| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `chainConfig`   | Defines the chain to be used for signature.                                                                                                                                                                                                                          |
-| `method`        | JSON RPC method name in `String`. Currently, the request method only supports the singing methods.                                                                                                                                                                   |
-| `requestParams` | Parameters for the corresponding method. The parameters should be in the list and correct sequence. Take a look at [RPC methods](<[https://docs.metamask.io/wallet/reference/json-rpc-api/](https://docs.metamask.io/wallet/reference/json-rpc-api/)>) to know more. |
+| Arguments       | Description                                                                                                                                                                                            |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `chainConfig`   | Defines the chain to be used for signature.                                                                                                                                                            |
+| `method`        | JSON RPC method name in `String`. Currently, the request method only supports the singing methods.                                                                                                     |
+| `requestParams` | Parameters for the corresponding method. The parameters should be in the list and correct sequence. Take a look at [RPC methods](https://docs.metamask.io/wallet/reference/json-rpc-api) to know more. |
 
 ### Usage
 

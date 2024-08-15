@@ -125,8 +125,10 @@ export default function QuickNavigation() {
               NFT services, and much more.
             </p>
             <div className={styles.links}>
-              <a href={`${baseUrl}product/wallet-services`}>Explore Product{chevron}</a>
-              <a href={`${baseUrl}sdk/wallet-services`}>SDK Reference{chevron}</a>
+              <a href={`${baseUrl}features/wallet-ui`}>Embedded Wallet UI{chevron}</a>
+              <a href={`${baseUrl}features/topup`}>Fiat on Ramp{chevron}</a>
+              <a href={`${baseUrl}features/nft-services`}>NFT Services{chevron}</a>
+              <a href={`${baseUrl}features/wallet-pregeneration`}>Wallet Pregeneration{chevron}</a>
             </div>
           </div>
         </div>
@@ -156,7 +158,6 @@ export default function QuickNavigation() {
             </p>
             <div className={styles.links}>
               <a href={`${baseUrl}product/wallet-ecosystems`}>Explore Product{chevron}</a>
-              <a href={`${baseUrl}sdk/wallet-ecosystems/safeauth`}>SDK Reference{chevron}</a>
             </div>
           </div>
         </div>

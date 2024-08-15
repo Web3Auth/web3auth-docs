@@ -22,8 +22,8 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.reactBundlerIssues,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MODAL_REACT_CONFIG_OVERRIDES,
-        files[hostedFileLinks.MODAL_REACT_CONFIG_OVERRIDES],
+        hostedFileLinks.MODAL_REACT_VITE_CONFIG,
+        files[hostedFileLinks.MODAL_REACT_VITE_CONFIG],
         "Bundler Issues",
       ),
     },
@@ -33,6 +33,14 @@ export default function getSteps(steps, files, replacementAggregator) {
         hostedFileLinks.MODAL_REACT_APP_TSX,
         files[hostedFileLinks.MODAL_REACT_APP_TSX],
         "Dashboard Registration",
+      ),
+    },
+    {
+      ...STEPS.chainConfig,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MODAL_REACT_APP_TSX,
+        files[hostedFileLinks.MODAL_REACT_APP_TSX],
+        "Chain Config",
       ),
     },
     {
