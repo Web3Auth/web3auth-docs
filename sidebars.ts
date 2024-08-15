@@ -1667,6 +1667,11 @@ const sidebars: SidebarsConfig = {
       label: "Release Notes",
       href: "https://github.com/tkey/tkey/releases",
     },
+    {
+      type: "category",
+      label: "Migration Guides",
+      items: ["migration-guides/tkey-v13-to-v15"],
+    },
     ...sdkQuickLinks,
   ],
   sdk_core_kit_tkey_ios: [
