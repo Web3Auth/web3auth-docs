@@ -145,14 +145,15 @@ it.
 
 ```tsx
 const coreKitInstance = new Web3AuthMPCCoreKit({
-  web3AuthClientId,
+  web3AuthClientId: "YOUR_CLIENT_ID",
   web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
-  chainConfig,
   manualSync: true, // This is the recommended approach
+  tssLib: tssLib,
+  storage: window.storage,
 });
 
-const provider = new EthereumSigningProvider({ config: { chainConfig } });
-provider.setupProvider(coreKitInstance);
+const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
+evmProvider.setupProvider(makeEthereumSigner(coreKitInstance));
 ```
 
 ## Using the provider
