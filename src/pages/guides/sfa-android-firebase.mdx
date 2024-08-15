@@ -85,7 +85,7 @@ section, add the `single-factor-auth-android`.
 dependencies {
     // ...
     // highlight-next-line
-    implementation 'com.github.web3auth:single-factor-auth-android:0.0.6'
+    implementation 'com.github.web3auth:single-factor-auth-android:0.4.0'
 }
 ```
 
@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // highlight-start
-        singleFactorAuthArgs = SingleFactorAuthArgs(TorusNetwork.TESTNET)
+        singleFactorAuthArgs = SingleFactorAuthArgs(Web3AuthNetwork.TESTNET, "YOUR_WEB3AUTH_CLIENT_ID")
         singleFactorAuth = SingleFactorAuth(singleFactorAuthArgs)
         // highlight-end
       }
@@ -133,7 +133,7 @@ val sessionResponse: CompletableFuture<TorusKey> = singleFactorAuth.initialize(
 sessionResponse.whenComplete {
     torusKey, error ->
     if (torusKey != null) {
-        publicAddress = torusKey?.publicAddress.toString()
+        publicAddress = torusKey.publicAddress.toString()
         println("""Private Key: ${torusKey.privateKey?.toString(16)}""".trimIndent())
     } else {
         Log.d("MainActivity_SFA", error.message ?: "Something went wrong")
