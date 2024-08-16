@@ -14,68 +14,25 @@ that the initialization process is critical to the successful use of Web3Auth.
 
 ## Create Web3Auth Instance
 
-In your activity, create a `SingleFactorAuth` instance with `singleFactorAuthArgs`.
-
-```kotlin
-singleFactorAuth = SingleFactorAuth(singleFactorAuthArgs)
-```
+In your activity, create a `SingleFactorAuth` instance with `SingleFactorAuthArgs`.
 
 ### Arguments
 
-#### `singleFactorAuthArgs`
+#### `SingleFactorAuthArgs`
 
-The SingleFactorAuth Constructor takes `singleFactorAuthArgs` as input.
+The SingleFactorAuth Constructor takes `SingleFactorAuthArgs` as input.
 
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Function Defination", value: "function" },
-  ]}
->
-
-<TabItem value="table">
-
-| Parameter | Description                                                                                                                                               |
-| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `network` | The Web3auth network to be used by the SDK. Supported values are `TorusNetwork.MAINNET`, `TorusNetwork.TESTNET`, `TorusNetwork.CYAN`, `TorusNetwork.AQUA` |
-
-</TabItem>
-
-<TabItem value="function">
-
-```kotlin
-public enum TorusNetwork {
-    MAINNET("mainnet"),
-    TESTNET("testnet"),
-    CYAN("cyan"),
-    AQUA("aqua"),
-
-    private final String val;
-
-    TorusNetwork(String s) {
-        this.val = s;
-    }
-
-    public String toString() {
-        return val;
-    }
-}
-
-public SingleFactorAuthArgs(TorusNetwork network) {
-  this.network = network;
-}
-```
-
-</TabItem>
-
-</Tabs>
+| Parameter  | Description                                                                                                                                                                  |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `network`  | The Web3auth network is to be used by the SDK. Supported values are `Web3AuthNetwork.MAINNET`, `Web3AuthNetwork.TESTNET`, `Web3AuthNetwork.CYAN`, and `Web3AuthNetwork.AQUA` |
+| `clientId` | The clientId for your Web3Auth project. You can get it from [Web3Auth dashboard](<[https://dashboard.web3auth.io/](https://dashboard.web3auth.io/login)>).                   |
 
 ### Instance
 
 ```kotlin
-singleFactorAuthArgs = SingleFactorAuthArgs(TorusNetwork.TESTNET)
-singleFactorAuth = SingleFactorAuth(singleFactorAuthArgs)
+// You can get the client id for your Web3Auth project from Web3Auth dashboard.
+val singleFactorAuthArgs = SingleFactorAuthArgs(Web3AuthNetwork.MAINNET, "YOUR_WEB3AUTH_CLIENT_ID")
+val singleFactorAuth = SingleFactorAuth(singleFactorAuthArgs)
 ```
 
 ## Example
@@ -92,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
-    singleFactorAuthArgs = SingleFactorAuthArgs(TorusNetwork.TESTNET)
+    singleFactorAuthArgs = SingleFactorAuthArgs(Web3AuthNetwork.MAINNET, "YOUR_WEB3AUTH_CLIENT_ID")
     singleFactorAuth = SingleFactorAuth(singleFactorAuthArgs)
 
     // Setup UI and event handlers
@@ -102,6 +59,7 @@ class MainActivity : AppCompatActivity() {
 
   private fun signIn() {
     loginParams = LoginParams("web3auth-firebase-examples", "sub_value", "id_token")
+
     try {
         torusKey = singleFactorAuth.getKey(loginParams).get()
     } catch (e: ExecutionException) {
@@ -109,8 +67,9 @@ class MainActivity : AppCompatActivity() {
     } catch (e: InterruptedException) {
         e.printStackTrace()
     }
-    println("""Private Key: ${torusKey!!.privateKey.toString(16)}""".trimIndent())
-    println("""Public Address: ${torusKey!!.publicAddress}""".trimIndent())
+
+    println("""Private Key: ${torusKey.privateKey?.toString(16)}""".trimIndent())
+    println("""Public Address: ${torusKey.publicAddress}""".trimIndent())
   }
   //...
 }
