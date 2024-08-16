@@ -441,8 +441,9 @@ app.get("/callback", async (req, res) => {
     // getPriavteKey function is defined below
     // highlight-next-line
     const ethData = await getPrivateKey(JWTtoken, user.id.toString());
-
-    res.json(ethData);
+    // Use ethData as per your requirement
+    console.log("Ethereum Data:", ethData);
+    res.json("Ethereum Data is generated on your server.");
   } catch (error) {
     console.error("Error validating Telegram data:", error);
     res.status(400).send("Invalid Telegram data");
