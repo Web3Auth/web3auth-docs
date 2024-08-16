@@ -1,22 +1,16 @@
 import Link from "@docusaurus/Link";
-import { useState } from "react";
-import {
-  blockchainMap,
-  featuresMap,
-  languageMap,
-  platformMap,
-  Props,
-  exampleMap,
-  typeMap,
-} from "./maps";
-import { Modal } from "../../components/Modal";
+import { useEffect, useState } from "react";
+import { blockchainMap, platformMap, exampleMap, typeMap, productMap } from "./maps";
 import styles from "./styles.module.css";
+import Select, { StylesConfig } from "react-select";
 
-export default function Examples({ content }: Props) {
+export default function Examples() {
   const completeExampleMap = exampleMap;
   const [searchInput, setSearchInput] = useState<string>("");
-  const [showModal, setShowModal] = useState<boolean>(false);
   const [tags, setTags] = useState<string[]>([]);
+  const [productFilter, setProductFilter] = useState<string[]>([]);
+  const [platformFilter, setPlatformFilter] = useState<string[]>([]);
+  const [blockchainFilter, setBlockchainFilter] = useState<string[]>([]);
 
   const [sortedExampleMap, setSortedExampleMap] = useState<any>(
     completeExampleMap.sort(
@@ -38,26 +32,42 @@ export default function Examples({ content }: Props) {
     </svg>
   );
 
-  function filterByTags() {
-    let examples;
-    if (tags.length === 0) {
-      examples = exampleMap;
-    } else {
+  useEffect(() => {
+    function filterByTags() {
+      let examples;
       examples = completeExampleMap.filter((item) => {
-        return tags.some((tag) => item.tags.includes(tag));
+        const prodFil =
+          productFilter.length === 0 || productFilter.some((tag) => item.tags.includes(tag));
+        const platFil =
+          platformFilter.length === 0 || platformFilter.some((tag) => item.tags.includes(tag));
+        const blockFil =
+          blockchainFilter.length === 0 || blockchainFilter.some((tag) => item.tags.includes(tag));
+
+        return [prodFil, platFil, blockFil].every((result) => result === true);
       });
-    }
 
-    setSortedExampleMap(examples);
-  }
-
-  function onChangeFilter(e) {
-    if (tags.includes(e)) {
-      setTags(tags.filter((tag) => tag !== e));
-    } else {
-      setTags([...tags, e]);
+      setSortedExampleMap(examples);
     }
-  }
+    filterByTags();
+  }, [productFilter, platformFilter, blockchainFilter]);
+
+  const onChangeProduct = (e) => {
+    const filterValue = e.map((item) => item.value);
+    setProductFilter(filterValue);
+    setTags([...platformFilter, ...filterValue, ...blockchainFilter]);
+  };
+
+  const onChangePlatform = (e) => {
+    const filterValue = e.map((item) => item.value);
+    setPlatformFilter(filterValue);
+    setTags([...productFilter, ...filterValue, ...blockchainFilter]);
+  };
+
+  const onChangeBlockchain = (e) => {
+    const filterValue = e.map((item) => item.value);
+    setBlockchainFilter(filterValue);
+    setTags([...productFilter, ...filterValue, ...platformFilter]);
+  };
 
   function highlightSearchText(text) {
     if (searchInput === "") {
@@ -100,7 +110,16 @@ export default function Examples({ content }: Props) {
       );
     }
     if (input === "") {
-      filterByTags();
+      let examples;
+      if (tags.length === 0) {
+        examples = exampleMap;
+      } else {
+        examples = completeExampleMap.filter((item) => {
+          return tags.some((tag) => item.tags.includes(tag));
+        });
+      }
+
+      setSortedExampleMap(examples);
     } else {
       const finalSortedExampleMap = completeExampleMap.filter((item) => searchFilter(item));
       setSortedExampleMap(finalSortedExampleMap);
@@ -215,124 +234,29 @@ export default function Examples({ content }: Props) {
             </button>
           )) || <div className={styles.searchClearButton} />}
         </div>
-        <button className={styles.filterButton} type="button" onClick={() => setShowModal(true)}>
-          Filter by Tags
-        </button>
+        <Select
+          options={productMap}
+          isMulti
+          styles={customSelectButtonStyles}
+          onChange={onChangeProduct}
+          placeholder="Select Product"
+        />
+        <Select
+          options={platformMap}
+          isMulti
+          styles={customSelectButtonStyles}
+          onChange={onChangePlatform}
+          placeholder="Select Platform"
+        />
+        <Select
+          options={blockchainMap}
+          isMulti
+          styles={customSelectButtonStyles}
+          onChange={onChangeBlockchain}
+          placeholder="Select Blockchain"
+          closeMenuOnSelect={false}
+        />
       </div>
-      {showModal && (
-        <Modal close={() => setShowModal(false)}>
-          <div className={styles.modal}>
-            <div className={styles.modalHeader}>
-              <h2>Filter by Tags</h2>
-            </div>
-            <div className={styles.modalBody}>
-              <div className={styles.modalTagList}>
-                <h3>Web3Auth Features</h3>
-                {featuresMap.map((item) => (
-                  <div
-                    className={styles.checkBoxContainer}
-                    key={item.tag}
-                    onClick={() => onChangeFilter(item.tag)}
-                  >
-                    <div className={styles.checkBoxInputContainer}>
-                      <input
-                        type="checkbox"
-                        id={item.tag}
-                        name={item.tag}
-                        value={item.tag}
-                        className={styles.checkBox}
-                        onChange={() => onChangeFilter(item.tag)}
-                        checked={tags.includes(item.tag)}
-                      />
-                    </div>
-                    <div className={styles.checkBoxLabelContainer}>{item.title}</div>
-                  </div>
-                ))}
-                <h3>Language</h3>
-                {languageMap.map((item) => (
-                  <div
-                    className={styles.checkBoxContainer}
-                    key={item.tag}
-                    onClick={() => onChangeFilter(item.tag)}
-                  >
-                    <div className={styles.checkBoxInputContainer}>
-                      <input
-                        type="checkbox"
-                        id={item.tag}
-                        name={item.tag}
-                        value={item.tag}
-                        className={styles.checkBox}
-                        onChange={() => onChangeFilter(item.tag)}
-                        checked={tags.includes(item.tag)}
-                      />
-                    </div>
-                    <div className={styles.checkBoxLabelContainer}>{item.title}</div>
-                  </div>
-                ))}
-              </div>
-              <div className={styles.modalTagList}>
-                <h3>Platforms</h3>
-                {platformMap.map((item) => (
-                  <div
-                    className={styles.checkBoxContainer}
-                    key={item.tag}
-                    onClick={() => onChangeFilter(item.tag)}
-                  >
-                    <div className={styles.checkBoxInputContainer}>
-                      <input
-                        type="checkbox"
-                        id={item.tag}
-                        name={item.tag}
-                        value={item.tag}
-                        className={styles.checkBox}
-                        onChange={() => onChangeFilter(item.tag)}
-                        checked={tags.includes(item.tag)}
-                      />
-                    </div>
-                    <div className={styles.checkBoxLabelContainer}>{item.title}</div>
-                  </div>
-                ))}
-                <h3>Blockchain</h3>
-                {blockchainMap.map((item) => (
-                  <div
-                    className={styles.checkBoxContainer}
-                    key={item.tag}
-                    onClick={() => onChangeFilter(item.tag)}
-                  >
-                    <div className={styles.checkBoxInputContainer}>
-                      <input
-                        type="checkbox"
-                        id={item.tag}
-                        name={item.tag}
-                        value={item.tag}
-                        className={styles.checkBox}
-                        onChange={() => onChangeFilter(item.tag)}
-                        checked={tags.includes(item.tag)}
-                      />
-                    </div>
-                    <div className={styles.checkBoxLabelContainer}>{item.title}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className={styles.modalFooter}>
-              <button className={styles.modalClearButton} type="button" onClick={() => setTags([])}>
-                Clear All
-              </button>
-              <button
-                className={styles.modalSaveButton}
-                type="button"
-                onClick={() => {
-                  filterByTags();
-                  setShowModal(false);
-                }}
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </Modal>
-      )}
       <div className={styles.container}>
         {sortedExampleMap.map((item) => renderArticle(item))}
         {sortedExampleMap.length === 0 && (
@@ -344,3 +268,70 @@ export default function Examples({ content }: Props) {
     </>
   );
 }
+
+const customSelectButtonStyles: StylesConfig<true> = {
+  container: (provided) => ({
+    ...provided,
+    width: "max-content",
+    minHeight: "42px",
+    maxWidth: "275px",
+    fontWeight: "400",
+    fontSize: "14px",
+    lineHeight: "125%",
+  }),
+  control: (provided) => ({
+    ...provided,
+    background: "var(--ifm-background-surface-color);",
+    color: "var(--w3a-color-icon-gray)",
+    border: "1px solid var(--ifm-color-emphasis-300)",
+    borderRadius: "8px",
+    minHeight: "42px",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    background: "var(--ifm-background-surface-color);",
+    border: "1px solid var(--ifm-color-emphasis-300)",
+    borderRadius: "8px",
+  }),
+  option: (provided, { isDisabled, isFocused, isSelected }) => ({
+    ...provided,
+    backgroundColor: isDisabled
+      ? undefined
+      : isSelected
+        ? "var(--ifm-color-emphasis-300)"
+        : isFocused
+          ? "var(--ifm-color-primary-lightest)"
+          : undefined,
+    cursor: isDisabled ? "not-allowed" : "default",
+  }),
+  multiValue: (styles, { data }) => ({
+    ...styles,
+    color: "var(--ifm-color-primary)",
+    backgroundColor: "var(--ifm-color-primary-lightest)",
+    fontWeight: "600",
+    fontSize: "12px",
+    lineHeight: "125%",
+    borderWidth: "0",
+    borderRadius: "8px",
+  }),
+  multiValueLabel: (styles, { data }) => ({
+    ...styles,
+    color: "var(--ifm-color-primary)",
+    backgroundColor: "var(--ifm-color-primary-lightest)",
+    fontWeight: "600",
+    fontSize: "12px",
+    lineHeight: "125%",
+    borderWidth: "0",
+    borderRadius: "8px",
+  }),
+  multiValueRemove: (styles, { data }) => ({
+    ...styles,
+    color: "var(--ifm-color-primary)",
+    backgroundColor: "var(--ifm-color-primary-lightest)",
+    fontWeight: "600",
+    fontSize: "12px",
+    lineHeight: "125%",
+    borderWidth: "0",
+    borderRadius: "8px",
+  }),
+};

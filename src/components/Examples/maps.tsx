@@ -1,3 +1,4 @@
+import { embed_links } from "../../pages/quick-start/builder/index";
 export interface Props {
   content: Record<
     string,
@@ -15,176 +16,112 @@ export interface Props {
   >;
 }
 
-export const featuresMap = [
+export const productMap = [
   {
-    title: "Web3Auth Plug and Play Modal",
-    tag: "@web3auth/modal",
+    label: "Plug and Play",
+    value: "pnp",
   },
   {
-    title: "Web3Auth Plug and Play No Modal",
-    tag: "@web3auth/no-modal",
-  },
-  {
-    title: "Web3Auth Core Kit tKey SDK",
-    tag: "tkey",
-  },
-  {
-    title: "Web3Auth Single Factor Auth",
-    tag: "@web3auth/single-factor-auth",
-  },
-  {
-    title: "Web3Auth MPC",
-    tag: "mpc",
-  },
-  {
-    title: "Custom Authentication",
-    tag: "custom authentication",
-  },
-  {
-    title: "Whitelabel",
-    tag: "whitelabel",
-  },
-  {
-    title: "dApp Share",
-    tag: "dapp share",
-  },
-  {
-    title: "Server Side Verification",
-    tag: "server side verification",
+    label: "Core Kit",
+    value: "core-kit",
   },
 ];
 
-export const languageMap = [
+export const platformMap = [
   {
-    title: "React",
-    tag: "react",
+    label: "Web",
+    value: "web",
   },
   {
-    title: "Next JS",
-    tag: "next.js",
+    label: "Android",
+    value: "android",
   },
   {
-    title: "Vue",
-    tag: "vue",
+    label: "iOS/ Swift",
+    value: "ios",
   },
   {
-    title: "Angular",
-    tag: "angular",
+    label: "React Native",
+    value: "react native",
   },
   {
-    title: "HTML/ JavaScript",
-    tag: "html/js",
+    label: "Flutter",
+    value: "flutter",
   },
   {
-    title: "Android",
-    tag: "android",
+    label: "Unity",
+    value: "unity",
   },
   {
-    title: "iOS/ Swift",
-    tag: "ios",
-  },
-  {
-    title: "React Native",
-    tag: "react native",
-  },
-  {
-    title: "Flutter",
-    tag: "flutter",
+    label: "Unreal Engine",
+    value: "unreal",
   },
 ];
 
 export const blockchainMap = [
   {
-    title: "Ethereum",
-    tag: "ethereum",
+    label: "Ethereum/ EVM Compatible Chains",
+    value: "evm",
   },
   {
-    title: "Solana",
-    tag: "solana",
+    label: "Solana",
+    value: "solana",
   },
   {
-    title: "EVM Compatible Chains",
-    tag: "evm",
+    label: "Connect Multiple Chains",
+    value: "multi-chain",
   },
   {
-    title: "StarkEx",
-    tag: "starkex",
+    label: "XRPL",
+    value: "xrpl",
   },
   {
-    title: "StarkNet",
-    tag: "starknet",
+    label: "Algorand",
+    value: "algorand",
   },
   {
-    title: "Polygon",
-    tag: "polygon",
+    label: "Aptos",
+    value: "aptos",
   },
   {
-    title: "BNB Chain",
-    tag: "bnb",
+    label: "Bitcoin",
+    value: "bitcoin",
   },
   {
-    title: "Avalanche",
-    tag: "avalanche",
+    label: "Cosmos",
+    value: "cosmos",
   },
   {
-    title: "Arbitrum",
-    tag: "arbitrum",
+    label: "ImmutableX",
+    value: "immutablex",
   },
   {
-    title: "Optimism",
-    tag: "optimism",
+    label: "Near",
+    value: "near",
   },
   {
-    title: "Cronos",
-    tag: "cronos",
+    label: "Polkadot",
+    value: "polkadot",
   },
   {
-    title: "Harmony",
-    tag: "harmony",
+    label: "Polymesh",
+    value: "polymesh",
   },
   {
-    title: "Celo",
-    tag: "celo",
+    label: "StarkEx",
+    value: "starkex",
   },
   {
-    title: "Moonbeam",
-    tag: "moonbeam",
+    label: "StarkNet",
+    value: "starknet",
   },
   {
-    title: "Moonriver",
-    tag: "moonriver",
+    label: "Sui",
+    value: "sui",
   },
   {
-    title: "Tezos",
-    tag: "tezos",
-  },
-  {
-    title: "Algorand",
-    tag: "algorand",
-  },
-  {
-    title: "ImmutableX",
-    tag: "immutablex",
-  },
-  {
-    title: "Polkadot",
-    tag: "polkadot",
-  },
-];
-export const platformMap = [
-  {
-    title: "Web",
-    tag: "web",
-  },
-
-  {
-    title: "Mobile",
-    tag: "mobile",
-  },
-
-  {
-    title: "Gaming",
-    tag: "gaming",
+    label: "Tezos",
+    value: "tezos",
   },
 ];
 
@@ -214,7 +151,7 @@ export const pnpModalExamples = [
     image: "banners/react.png",
     type: QUICK_START,
     tags: ["pnp", "web", "@web3auth/modal", "javascript", "react"],
-    link: "https://react-modal-quick-start.vercel.app/",
+    link: embed_links.PNP_MODAL_REACT,
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/react-modal-quick-start",
     qsLink: "/quick-start?product=PNP&sdk=PNP_MODAL&framework=REACT&stepIndex=0",
@@ -225,7 +162,7 @@ export const pnpModalExamples = [
     image: "banners/angular.png",
     type: QUICK_START,
     tags: ["pnp", "web", "@web3auth/modal", "javascript", "angular"],
-    link: "https://angular-modal-quick-start.vercel.app/",
+    link: embed_links.PNP_MODAL_ANGULAR,
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/angular-modal-quick-start",
     qsLink: "/quick-start?product=PNP&sdk=PNP_MODAL&framework=ANGULAR&stepIndex=0",
@@ -236,7 +173,7 @@ export const pnpModalExamples = [
     image: "banners/vue.png",
     type: QUICK_START,
     tags: ["pnp", "web", "@web3auth/modal", "javascript", "vue"],
-    link: "https://vue-modal-quick-start.vercel.app/",
+    link: embed_links.PNP_MODAL_VUE,
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/vue-modal-quick-start",
     qsLink: "/quick-start?product=PNP&sdk=PNP_MODAL&framework=VUE&stepIndex=0",
@@ -247,7 +184,7 @@ export const pnpModalExamples = [
     image: "banners/next.js.png",
     type: QUICK_START,
     tags: ["pnp", "web", "@web3auth/modal", "javascript", "nextjs"],
-    link: "https://nextjs-modal-quick-start.vercel.app/",
+    link: embed_links.PNP_MODAL_NEXTJS,
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/nextjs-modal-quick-start",
     qsLink: "/quick-start?product=PNP&sdk=PNP_MODAL&framework=NEXTJS&stepIndex=0",
@@ -268,7 +205,7 @@ export const pnpModalExamples = [
     image: "banners/htmljs.png",
     type: QUICK_START,
     tags: ["pnp", "web", "@web3auth/modal", "javascript"],
-    link: "https://vanillajs-modal-quick-start.vercel.app/",
+    link: embed_links.PNP_MODAL_HTML,
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/quick-starts/vanillajs-modal-quick-start",
     qsLink: "/quick-start?product=PNP&sdk=PNP_MODAL&framework=HTML&stepIndex=0&stepIndex=0",
@@ -303,18 +240,7 @@ export const pnpModalExamples = [
       "Use any EVM Blockchain like Ethereum, Polygon, Arbitrum, Base etc. with Plug and Play Modal SDK",
     image: "banners/ethereum.png",
     type: SAMPLE_APP,
-    tags: [
-      "pnp",
-      "web",
-      "@web3auth/modal",
-      "javascript",
-      "evm",
-      "ethereum",
-      "polygon",
-      "arbitrum",
-      "base",
-      "secp256k1",
-    ],
+    tags: ["pnp", "web", "@web3auth/modal", "javascript", "evm"],
     link: "https://evm-modal-example.vercel.app/",
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/blockchain-connection-examples/evm-modal-example",
@@ -380,7 +306,7 @@ export const pnpNoModalExamples = [
     image: "banners/react.png",
     type: QUICK_START,
     tags: ["pnp", "web", "@web3auth/no-modal", "javascript", "react"],
-    link: "https://react-no-modal-quick-start.vercel.app/",
+    link: embed_links.PNP_NO_MODAL_REACT,
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/react-no-modal-quick-start",
     qsLink: "/quick-start?product=PNP&sdk=PNP_NO_MODAL&framework=REACT&stepIndex=0",
@@ -391,7 +317,7 @@ export const pnpNoModalExamples = [
     image: "banners/angular.png",
     type: QUICK_START,
     tags: ["pnp", "web", "@web3auth/no-modal", "javascript", "angular"],
-    link: "https://angular-no-modal-quick-start.vercel.app/",
+    link: embed_links.PNP_NO_MODAL_ANGULAR,
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/angular-no-modal-quick-start",
     qsLink: "/quick-start?product=PNP&sdk=PNP_NO_MODAL&framework=ANGULAR&stepIndex=0",
@@ -402,7 +328,7 @@ export const pnpNoModalExamples = [
     image: "banners/vue.png",
     type: QUICK_START,
     tags: ["pnp", "web", "@web3auth/no-modal", "javascript", "vue"],
-    link: "https://vue-no-modal-quick-start.vercel.app/",
+    link: embed_links.PNP_NO_MODAL_VUE,
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/vue-no-modal-quick-start",
     qsLink: "/quick-start?product=PNP&sdk=PNP_NO_MODAL&framework=VUE&stepIndex=0",
@@ -413,7 +339,7 @@ export const pnpNoModalExamples = [
     image: "banners/next.js.png",
     type: QUICK_START,
     tags: ["pnp", "web", "@web3auth/no-modal", "javascript", "nextjs"],
-    link: "https://nextjs-no-modal-quick-start.vercel.app/",
+    link: embed_links.PNP_NO_MODAL_NEXTJS,
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/nextjs-no-modal-quick-start",
     qsLink: "/quick-start?product=PNP&sdk=PNP_NO_MODAL&framework=NEXTJS&stepIndex=0",
@@ -434,7 +360,7 @@ export const pnpNoModalExamples = [
     image: "banners/htmljs.png",
     type: QUICK_START,
     tags: ["pnp", "web", "@web3auth/no-modal", "javascript"],
-    link: "https://vanillajs-no-modal-quick-start.vercel.app/",
+    link: embed_links.PNP_NO_MODAL_HTML,
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/quick-starts/vanillajs-no-modal-quick-start",
     qsLink: "/quick-start?product=PNP&sdk=PNP_NO_MODAL&framework=HTML&stepIndex=0&stepIndex=0",
@@ -445,18 +371,7 @@ export const pnpNoModalExamples = [
       "Use any EVM Blockchain like Ethereum, Polygon, Arbitrum, Base etc. with Plug and Play No Modal SDK",
     image: "banners/ethereum.png",
     type: SAMPLE_APP,
-    tags: [
-      "pnp",
-      "web",
-      "@web3auth/no-modal",
-      "javascript",
-      "evm",
-      "ethereum",
-      "polygon",
-      "arbitrum",
-      "base",
-      "secp256k1",
-    ],
+    tags: ["pnp", "web", "@web3auth/no-modal", "javascript", "evm"],
     link: "https://evm-no-modal-example.vercel.app/",
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/evm-no-modal-example",
@@ -511,7 +426,7 @@ export const pnpNoModalExamples = [
     description: "Use Cosmos with Plug and Play No Modal SDK",
     image: "banners/cosmos.png",
     type: SAMPLE_APP,
-    tags: ["pnp", "web", "@web3auth/no-modal", "javascript", "cosmos", "secp256k1"],
+    tags: ["pnp", "web", "@web3auth/no-modal", "javascript", "cosmos"],
     link: "https://cosmos-no-modal-example.vercel.app/",
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/cosmos-no-modal-example",
@@ -533,7 +448,18 @@ export const pnpNoModalExamples = [
     description: "Use Multiple Chains at once with Plug and Play No Modal SDK",
     image: "banners/multichain.png",
     type: SAMPLE_APP,
-    tags: ["pnp", "web", "@web3auth/no-modal", "javascript", "multi-chain", "secp256k1", "ed25519"],
+    tags: [
+      "pnp",
+      "web",
+      "@web3auth/no-modal",
+      "javascript",
+      "multi-chain",
+      "evm",
+      "solana",
+      "tezos",
+      "starknet",
+      "polkadot",
+    ],
     link: "https://multi-chain-no-modal-example.vercel.app/",
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/multi-chain-no-modal-example",
@@ -829,7 +755,7 @@ export const pnpiOSExamples = [
     image: "banners/ios-swift.png",
     type: QUICK_START,
     tags: ["pnp", "ios", "swift"],
-    link: "https://w3a.link/pnp-ios-quick-start",
+    link: embed_links.PNP_IOS_IOS,
     githubLink: "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/ios/ios-quick-start",
     qsLink: "/quick-start?product=PNP&sdk=PNP_IOS&framework=IOS&stepIndex=0",
   },
@@ -849,18 +775,7 @@ export const pnpiOSExamples = [
     description: "A playground to test all the features of Plug and Play iOS SDK",
     image: "banners/ios-swift.png",
     type: PLAYGROUND,
-    tags: [
-      "pnp",
-      "ios",
-      "swift",
-      "solana",
-      "evm",
-      "ethereum",
-      "polygon",
-      "arbitrum",
-      "base",
-      "secp256k1",
-    ],
+    tags: ["pnp", "ios", "swift", "solana", "evm", "secp256k1"],
     link: "https://w3a.link/pnp-ios-playground",
     githubLink: "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/ios/ios-playground",
   },
@@ -914,7 +829,7 @@ export const pnpAndroidExamples = [
     image: "banners/android.png",
     type: QUICK_START,
     tags: ["pnp", "android", "kotlin"],
-    link: "https://w3a.link/pnp-android-quick-start",
+    link: embed_links.PNP_ANDROID_ANDROID,
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/android/android-quick-start",
     qsLink: "/quick-start?product=PNP&sdk=PNP_ANDROID&framework=ANDROID&stepIndex=0&stepIndex=0",
@@ -935,18 +850,7 @@ export const pnpAndroidExamples = [
     description: "A playground to test all the features of Plug and Play Android SDK",
     image: "banners/android.png",
     type: PLAYGROUND,
-    tags: [
-      "pnp",
-      "android",
-      "kotlin",
-      "solana",
-      "evm",
-      "ethereum",
-      "polygon",
-      "arbitrum",
-      "base",
-      "secp256k1",
-    ],
+    tags: ["pnp", "android", "kotlin", "solana", "evm", "secp256k1"],
     link: "https://w3a.link/pnp-android-playground",
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/android/android-playground",
@@ -1003,7 +907,7 @@ export const pnpReactNativeExamples = [
     image: "banners/react-native.png",
     type: QUICK_START,
     tags: ["pnp", "javascript", "android", "ios", "react-native"],
-    link: "https://w3a.link/pnp-react-native-ios-quick-start",
+    link: embed_links.PNP_REACT_NATIVE_IOS,
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/react-native/rn-bare-quick-start",
     qsLink: "/quick-start?product=PNP&sdk=PNP_REACT_NATIVE&framework=IOS&stepIndex=0",
@@ -1063,7 +967,7 @@ export const pnpFlutterExamples = [
     image: "banners/flutter.png",
     type: QUICK_START,
     tags: ["pnp", "flutter", "ios", "android", "dart"],
-    link: "https://w3a.link/pnp-flutter-quick-start",
+    link: embed_links.PNP_FLUTTER_ANDROID,
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/flutter/flutter-quick-start",
     qsLink: "/quick-start?product=PNP&sdk=PNP_ANDROID&framework=ANDROID&stepIndex=0&stepIndex=0",
@@ -1085,20 +989,7 @@ export const pnpFlutterExamples = [
       "A playground to test all the features of Plug and Play Flutter SDK for Android and iOS",
     image: "banners/flutter.png",
     type: PLAYGROUND,
-    tags: [
-      "pnp",
-      "flutter",
-      "ios",
-      "android",
-      "dart",
-      "solana",
-      "evm",
-      "ethereum",
-      "polygon",
-      "arbitrum",
-      "base",
-      "secp256k1",
-    ],
+    tags: ["pnp", "flutter", "ios", "android", "dart", "solana", "evm", "secp256k1"],
     link: "https://w3a.link/pnp-flutter-ios-playground",
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/flutter/flutter-playground",
@@ -1168,7 +1059,7 @@ export const pnpUnityExamples = [
     image: "banners/unity.png",
     type: QUICK_START,
     tags: ["pnp", "unity", "csharp", "android", "ios", "webgl"],
-    link: "https://w3a.link/pnp-unity-ios-quick-start",
+    link: embed_links.PNP_UNITY_ANDROID,
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/unity/unity-quick-start",
     qsLink: "/quick-start?product=PNP&sdk=PNP_UNITY&framework=ANDROID&stepIndex=0",
@@ -1227,7 +1118,7 @@ export const coreKitSfaWebExamples = [
       "react",
       "id token login",
     ],
-    link: "https://sfa-react-quick-start.vercel.app/",
+    link: embed_links.SFA_WEB_REACT,
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/quick-starts/sfa-react-quick-start",
     qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_WEB&framework=REACT&stepIndex=0",
@@ -1246,7 +1137,7 @@ export const coreKitSfaWebExamples = [
       "angular",
       "id token login",
     ],
-    link: "https://sfa-angular-quick-start.vercel.app/",
+    link: embed_links.SFA_WEB_ANGULAR,
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/quick-starts/sfa-angular-quick-start",
     qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_WEB&framework=ANGULAR&stepIndex=0",
@@ -1265,7 +1156,7 @@ export const coreKitSfaWebExamples = [
       "vue",
       "id token login",
     ],
-    link: "https://sfa-vue-quick-start.vercel.app/",
+    link: embed_links.SFA_WEB_VUE,
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/quick-starts/sfa-vue-quick-start",
     qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_WEB&framework=VUE&stepIndex=0",
@@ -1284,7 +1175,7 @@ export const coreKitSfaWebExamples = [
       "nextjs",
       "id token login",
     ],
-    link: "https://sfa-nextjs-quick-start.vercel.app/",
+    link: embed_links.SFA_WEB_NEXTJS,
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/quick-starts/sfa-nextjs-quick-start",
     qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_WEB&framework=NEXTJS&stepIndex=0",
@@ -1302,7 +1193,7 @@ export const coreKitSfaWebExamples = [
       "javascript",
       "id token login",
     ],
-    link: "https://sfa-vanillajs-quick-start.vercel.app/",
+    link: embed_links.SFA_WEB_HTML,
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/quick-starts/sfa-vanillajs-quick-start",
     qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_WEB&framework=HTML&stepIndex=0",
@@ -1450,7 +1341,7 @@ export const coreKitSfaAndroidExamples = [
     image: "banners/android.png",
     type: QUICK_START,
     tags: ["core-kit", "sfa", "android", "kotlin"],
-    link: "https://w3a.link/sfa-flutter-android-quick-start",
+    link: embed_links.SFA_ANDROID_ANDROID,
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/android/android-quick-start",
     qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_ANDROID&framework=ANDROID&stepIndex=0",
@@ -1464,7 +1355,7 @@ export const coreKitSfaReactNativeExamples = [
     image: "banners/react-native.png",
     type: QUICK_START,
     tags: ["core-kit", "sfa", "javascript", "android", "ios", "react-native"],
-    link: "https://w3a.link/sfa-react-native-ios-quick-start",
+    link: embed_links.SFA_REACT_NATIVE_IOS,
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-react-native/sfa-rn-bare-quick-start",
     qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_REACT_NATIVE&framework=IOS&stepIndex=0",
@@ -1488,7 +1379,7 @@ export const coreKitSfaFlutterExamples = [
     image: "banners/flutter.png",
     type: QUICK_START,
     tags: ["core-kit", "sfa", "flutter", "ios", "android", "dart"],
-    link: "https://w3a.link/sfa-flutter-android-quick-start",
+    link: embed_links.SFA_FLUTTER_ANDROID,
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-flutter/sfa_flutter_quick_start",
     qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_FLUTTER&framework=ANDROID&stepIndex=0",
@@ -1500,7 +1391,7 @@ export const coreKitSfaFlutterExamples = [
     image: "banners/flutter-solana.png",
     type: SAMPLE_APP,
     tags: ["core-kit", "sfa", "flutter", "ios", "android", "dart", "solana", "ed25519"],
-    link: "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/flutter/flutter-solana-example",
+    link: "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-flutter/sfa_flutter_solana",
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-flutter/sfa_flutter_solana",
     guideLink: "/connect-blockchain/solana/flutter",
@@ -1522,7 +1413,7 @@ export const coreKitMPCWebExamples = [
       "react",
       "id token login",
     ],
-    link: "https://mpc-core-kit-react-quick-start.vercel.app/",
+    link: embed_links.MPC_CORE_KIT_REACT,
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/quick-starts/mpc-core-kit-react-quick-start",
     qsLink:
@@ -1542,7 +1433,7 @@ export const coreKitMPCWebExamples = [
       "angular",
       "id token login",
     ],
-    link: "https://mpc-core-kit-angular-quick-start.vercel.app/",
+    link: embed_links.MPC_CORE_KIT_ANGULAR,
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/quick-starts/mpc-core-kit-angular-quick-start",
     qsLink:
@@ -1562,7 +1453,7 @@ export const coreKitMPCWebExamples = [
       "vue",
       "id token login",
     ],
-    link: "https://mpc-core-kit-vue-quick-start.vercel.app/",
+    link: embed_links.MPC_CORE_KIT_VUE,
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/quick-starts/mpc-core-kit-vue-quick-start",
     qsLink: "/quick-start?product=CORE_KIT&sdk=MPC_CORE_KIT&framework=VUE&stepIndex=0&stepIndex=0",
@@ -1581,7 +1472,7 @@ export const coreKitMPCWebExamples = [
       "nextjs",
       "id token login",
     ],
-    link: "https://mpc-core-kit-nextjs-quick-start.vercel.app/",
+    link: embed_links.MPC_CORE_KIT_NEXTJS,
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/quick-starts/mpc-core-kit-nextjs-quick-start",
     qsLink:
@@ -1639,7 +1530,7 @@ export const coreKitMPCReactNativeExamples = [
     image: "banners/react-native.png",
     type: QUICK_START,
     tags: ["core-kit", "mpc", "javascript", "android", "ios", "react-native"],
-    link: "https://w3a.link/mpc-core-kit-rn-quick-start",
+    link: embed_links.MPC_CORE_KIT_REACT_NATIVE,
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-react-native/mpc-core-kit-rn-quick-start",
     qsLink: "/quick-start?product=CORE_KIT&sdk=MPC_CORE_KIT&framework=REACT_NATIVE&stepIndex=0",
