@@ -418,11 +418,14 @@ web3auth.init({ provider: privateKeyProvider });
 
 #### Initiate the Telegram OAuth flow
 
-The `/login` route will initiate the Telegram OAuth flow. The code snippet remains the same. For
-`/callback`, update the function to use `getPrivateKey()` to generate the Ethereum private key. The
-`getPrivateKey()` is a helper function that uses the JWT token and Telegram user ID to generate the
-Ethereum private key. For simplicity, we are returning the Ethereum private key and public address
-to callback but you can modify it as per your requirement.
+The "/login" route will start the Telegram OAuth flow. The code snippet remains the same for this
+part. When handling the "/callback" route, update the function to utilize the "getPrivateKey()"
+function for generating the Ethereum private key. "getPrivateKey()" is a helper function that uses
+the JWT token and Telegram user ID to produce the Ethereum private key. This is necessary because we
+are working in a server environment and don't have access to web3 libraries at the server level.
+Therefore, we are using a provider to obtain the Ethereum private and public keys. For simplicity,
+we are logging the Ethereum private key and public address to the express server, but you can
+customize this according to your needs.
 
 Here's the updated code snippet:
 
