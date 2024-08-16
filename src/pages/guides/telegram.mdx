@@ -23,11 +23,9 @@ import TabItem from "@theme/TabItem";
 
 This guide will explain the basic steps of integrating the
 [Telegram Login Widget](https://core.telegram.org/widgets/login) _aka_ Telegram OAuth with Web3Auth
-for authentication. We will utilize the Telegram Login Widget for user authentication and then
-employ Web3Auth to create Ethereum private keys and public addresses. In this guide, you will learn
-how to create a Telegram bot, generate a JWKS file, and establish a custom JWT verifier on Web3Auth.
-Finally, we will demonstrate how to implement the Telegram OAuth flow for user authentication and
-generate Ethereum/Solana keys using
+for authentication. In this guide, you will learn how to create a Telegram bot, generate a JWKS
+file, and establish a custom JWT verifier on Web3Auth. Finally, we will demonstrate how to implement
+the Telegram OAuth flow for user authentication and generate Ethereum/Solana keys using
 [Web3Auth Plug and Play](https://web3auth.io/docs/sdk/pnp/web/no-modal/install) and
 [Single Factor Auth](https://web3auth.io/docs/sdk/core-kit/sfa-web/install) SDKs.
 
@@ -91,6 +89,16 @@ In order to build the server, you will use the `express`, `jsonwebtoken`, and
 based on the user data received from Telegram. The `/callback` route will validate the Telegram data
 using the `AuthDataValidator` class and generate the JWT token, which will then be sent to the
 frontend.
+
+**What each packages do**:
+
+- `express` - A Node.js web application framework that provides a robust set of features for web and
+  mobile applications.
+
+- `jsonwebtoken` - An implementation of JSON Web Tokens (JWT) to generate and verify JWT tokens.
+
+- `@telegram-auth/server` - A package that provides a utility class to validate the Telegram data
+  received from the Telegram Login Widget.
 
 The server will utilize the `login.html` file to display the Telegram Login Widget. This HTML file
 will dynamically create the Telegram Login Widget using the Telegram bot username and the callback
@@ -225,16 +233,6 @@ and the live demo [here](https://w3a-telegram-server.vercel.app/login).
 
 ## Edit Telegram Bot to set the domain
 
-To ensure that the Telegram Login Widget works correctly, you'll need to set the domain of your
-server.
-
-[Check this guide on editing the Telegram Bot](https://core.telegram.org/bots/features#edit-bots) to
-set the domain.
-
-Simply select your Bot from the BotFather and click on the `Bot Settings` option. Then, click on the
-`Domain` option, then click on `Set Domain` and enter the domain of your server. You'll see a
-message saying `Success! Domain updated.`.
-
 To ensure that the Telegram Login Widget works correctly, you will need to set the domain of your
 server.
 
@@ -250,17 +248,22 @@ set the domain.
 
 ## Using Telegram Login with Web3Auth
 
+The Telegram OAuth server mentioned above will authenticate users and generate a JWT token. This
+token can be utilized with Web3Auth's Plug and Play SDK or Single Factor Auth SDK. In the upcoming
+sections, we will illustrate how to use the Web3Auth SDKs with the JWT token.
+
 ### Web3Auth Plug and Play SDK
 
 To use the Web3Auth Plug and Play SDK with the Telegram OAuth flow, you'll need to first configure
-web3auth based on your project and Telegram verifier. Then, initiate the login by redirecting the
+Web3auth based on your project and Telegram verifier. Then, initiate the login by redirecting the
 user to the `/login` route of your Express server. After the user logs in and is redirected back to
 the frontend, you can extract the JWT token from the URL and pass it to the Web3Auth SDK to initiate
 the login process with Web3Auth.
 
 #### Set up the Web3Auth PnP SDK
 
-Import the required packages and configure the Web3Auth SDK with the Telegram verifier.
+[Install the PnP packages](https://web3auth.io/docs/sdk/pnp/web/no-modal/install) and then import it
+and configure the Web3Auth PnP No Modal SDK with the Telegram verifier.
 
 ```js
 import { Web3AuthNoModal } from "@web3auth/no-modal";
@@ -381,7 +384,8 @@ by calling the `connect` method with the verifier details along with the JWT tok
 
 #### Set up the Web3Auth SFA Node SDK
 
-Import the required packages and configure the Web3Auth SDK with the Telegram verifier.
+[Install the SFA Node packages](https://web3auth.io/docs/sdk/core-kit/sfa-node/install) and then
+import it and configure the Web3Auth SFA Node SDK with the Telegram verifier.
 
 Note: For this, you can continue to use the Express server setup from the previous section. Simply
 update with the below code snippet.
@@ -415,10 +419,18 @@ web3auth.init({ provider: privateKeyProvider });
 #### Initiate the Telegram OAuth flow
 
 The `/login` route will initiate the Telegram OAuth flow. The code snippet remains the same. For
-`/callback`, update the function to use `getPrivateKey()` to generate the Ethereum private key.
+`/callback`, update the function to use `getPrivateKey()` to generate the Ethereum private key. The
+`getPrivateKey()` is a helper function that uses the JWT token and Telegram user ID to generate the
+Ethereum private key. For simplicity, we are returning the Ethereum private key and public address
+to callback but you can modify it as per your requirement.
+
 Here's the updated code snippet:
 
 ```js
+app.get("/login", (req, res) => {
+  res.sendFile(resolve(__dirname, "login.html"));
+});
+
 app.get("/callback", async (req, res) => {
   const validator = new AuthDataValidator({ botToken: process.env.TELEGRAM_BOT_API_TOKEN }); // Use environment variable for bot token
   const data = objectToAuthDataMap(req.query || {});
@@ -472,8 +484,9 @@ the login by calling the `connect` method with the verifier details along with t
 
 #### Set up the Web3Auth SFA Web SDK
 
-Import the required packages and configure the Web3Auth SDK with the Telegram verifier in your React
-or any other frontend project.
+[Install the SFA Web packages](https://web3auth.io/docs/sdk/core-kit/sfa-web/install) and then
+import it and configure the Web3Auth SFA Web SDK with the Telegram verifier in your React or any
+other frontend project.
 
 ```js
 import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
