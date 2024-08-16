@@ -1566,6 +1566,17 @@ export const coreKitMPCWebExamples = [
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/mpc-core-kit-farcaster",
     guideLink: "/guides/farcaster-mpc-core-kit-web",
   },
+  {
+    title: "Integrate MPC Core Kit SDK with Solana Blockchain",
+    description: "Use Solana with MPC Core Kit SDK",
+    image: "banners/solana.png",
+    type: SAMPLE_APP,
+    tags: ["core-kit", "web", "@web3auth/mpc-core-kit", "javascript", "solana", "ed25519"],
+    link: "https://mpc-core-kit-solana.vercel.app/",
+    githubLink:
+      "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/mpc-core-kit-solana",
+    guideLink: "https://web3auth.io/docs/sdk/core-kit/mpc-core-kit/signing#solana",
+  },
 ];
 export const coreKitMPCReactNativeExamples = [
   {
