@@ -1103,6 +1103,51 @@ export const pnpUnityExamples = [
   },
 ];
 
+export const pnpUnrealExamples = [
+  {
+    title: "Web3Auth PnP Unreal Engine SDK Quick Start",
+    description: "A quick integration of Web3Auth Plug and Play Unreal Engine SDK in Android & iOS",
+    image: "banners/unreal.png",
+    type: QUICK_START,
+    tags: ["pnp", "unreal", "csharp", "android", "ios"],
+    link: "https://github.com/Web3Auth/web3auth-unreal-example/tree/master",
+    githubLink: "https://github.com/Web3Auth/web3auth-unreal-example/tree/master",
+  },
+  {
+    title: "Using Auth0 with Web3Auth PnP Unreal Engine SDK",
+    description:
+      "Using Auth0 Single Page App (Implicit Mode) in Web3Auth Plug and Play Unreal Engine SDK in Android & iOS",
+    image: "banners/unreal-auth0.png",
+    type: SAMPLE_APP,
+    tags: ["pnp", "unreal", "android", "ios", "auth0", "implicit mode"],
+    link: "https://github.com/Web3Auth/web3auth-unreal-example/tree/auth0-example",
+    githubLink: "https://github.com/Web3Auth/web3auth-unreal-example/tree/auth0-example",
+    guideLink: "/sdk/pnp/unreal/custom-authentication",
+  },
+  {
+    title: "Using Google in Web3Auth PnP Unreal Engine SDK",
+    description:
+      "Using Google Custom Authentication in Web3Auth Plug and Play Unreal Engine SDK for Android & iOS",
+    image: "banners/unreal-google.png",
+    type: SAMPLE_APP,
+    tags: [
+      "pnp",
+      "unreal",
+      "android",
+      "ios",
+      "aggregate verifier",
+      "implicit mode",
+      "auth0",
+      "google",
+      "github",
+      "facebook",
+    ],
+    link: "https://github.com/Web3Auth/web3auth-unreal-example/tree/custom-google",
+    githubLink: "https://github.com/Web3Auth/web3auth-unreal-example/tree/custom-google",
+    guideLink: "/sdk/pnp/unreal/custom-authentication",
+  },
+];
+
 export const coreKitSfaWebExamples = [
   {
     title: "Single Factor Auth React Quick Start",
@@ -1565,6 +1610,7 @@ export const exampleMap = [
   ...pnpReactNativeExamples,
   ...pnpFlutterExamples,
   ...pnpUnityExamples,
+  ...pnpUnrealExamples,
   ...coreKitSfaWebExamples,
   ...coreKitSfaiOSExamples,
   ...coreKitSfaAndroidExamples,
