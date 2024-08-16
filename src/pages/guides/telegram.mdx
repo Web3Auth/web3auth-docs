@@ -438,6 +438,7 @@ app.get("/callback", async (req, res) => {
   try {
     const user = await validator.validate(data);
     const JWTtoken = generateJwtToken(user);
+    // getPriavteKey function is defined below
     // highlight-next-line
     const ethData = await getPrivateKey(JWTtoken, user.id.toString());
 
