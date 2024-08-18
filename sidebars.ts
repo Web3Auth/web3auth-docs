@@ -732,6 +732,19 @@ const sidebars: SidebarsConfig = {
               label: "Tron",
               items: ["connect-blockchain/evm/tron/web"],
             },
+            {
+              type: "category",
+              label: "Zetachain",
+              items: [
+                "connect-blockchain/evm/zetachain/zetachain",
+                "connect-blockchain/evm/zetachain/web",
+                "connect-blockchain/evm/zetachain/android",
+                "connect-blockchain/evm/zetachain/ios",
+                "connect-blockchain/evm/zetachain/react-native",
+                "connect-blockchain/evm/zetachain/flutter",
+                "connect-blockchain/evm/zetachain/unity",
+              ],
+            },
           ],
         },
         {
