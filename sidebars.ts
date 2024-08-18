@@ -1296,6 +1296,11 @@ const sidebars: SidebarsConfig = {
       label: "Release Notes",
       href: "https://github.com/web3auth/single-factor-auth-android/releases",
     },
+    {
+      type: "category",
+      label: "Migration Guides",
+      items: ["migration-guides/sfa-android-v0.1.0-to-v0.3.0"],
+    },
     ...sdkQuickLinks,
   ],
   sdk_core_kit_sfa_ios: [
@@ -1386,7 +1391,7 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/sfa-flutter-v1-to-v2"],
+      items: ["migration-guides/sfa-flutter-v1-to-v2", "migration-guides/sfa-flutter-v2-to-v4"],
     },
     ...sdkQuickLinks,
   ],
