@@ -1,11 +1,11 @@
 ---
-title: Integrate Web3Auth with the Nibiru Blockchain in Javascript"
+title: Integrate Web3Auth with the Zetachain Blockchain in JavaScript
 sidebar_label: Web
-image: "guides/banners/nibiru.png"
+image: "guides/banners/zetachain.png"
 
-keywords: [nibiru, web3auth, authentication, blockchain] description: "Integrate Web3Auth with the Nibiru
-Blockchain in JavaScript | Documentation - Web3Auth"
-
+keywords: [zetachain, web3auth, authentication, blockchain]
+description:
+  "Integrate Web3Auth with the Zetachain Blockchain in JavaScript | Documentation - Web3Auth"
 ---
 
 import InstallationSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-installation.mdx";
@@ -28,24 +28,24 @@ import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
 
 <SEO
-  title="Integrate Web3Auth with the Nibiru Blockchain in JavaScript"
-  description="Integrate Web3Auth with the Nibiru Blockchain in JavaScript | Documentation - Web3Auth"
-  image="https://web3auth.io/docs/guides/banners/nibiru.png"
-  slug="/connect-blockchain/evm/nibiru/web"
+  title="Integrate Web3Auth with the Zetachain Blockchain in JavaScript"
+  description="Integrate Web3Auth with the Zetachain Blockchain in JavaScript | Documentation - Web3Auth"
+  image="https://web3auth.io/docs/guides/banners/zetachain.png"
+  slug="/connect-blockchain/evm/zetachain/web"
 />
 
 While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193)
 provider, similar to the [Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html).
 This provider can be used with libraries like
 [`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html),
-[`ethers.js`](https://docs.ethers.io/v5/getting-started/), [`viem`](https://viem.sh/) etc. to make
-[Nibiru](https://nibiru.fi/) blockchain calls like getting the user's `account`, fetching `balance`,
-`sign transaction`, `send transaction`, `read` from and `write` to the smart contract, etc. We have
-highlighted a few here to get you started quickly on that.
+[`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
+[Zetachain (formerly Matic)](https://zetachain.technology/) blockchain calls like getting the user's
+`account`, fetching `balance`, `sign transaction`, `send transaction`, `read` from and `write` to
+the smart contract, etc. We have highlighted a few here to get you started quickly on that.
 
 ## Installation
 
-To interact with the Nibiru blockchain, you can use either library with Web3Auth.
+To interact with the Zetachain blockchain, you can use either library with Web3Auth.
 
 <InstallationSnippet />
 
@@ -57,42 +57,50 @@ after successful authentication.
 
 ### Getting the `chainConfig`
 
-:::note
-
-Nibiru is EVM compatible only for localnet for now. Kindly refer to the
-[Nibiru documentation](https://nibiru.fi/docs/dev/evm/) and
-[Nibiru Networks](https://nibiru.fi/docs/dev/networks/#evm-network-configs) for the latest updates
-and EVM-related configs.
-
-:::
-
-:::info
-
-For Nibiru, the steps for creating a local block explorer are mentioned
-[here](https://nibiru.fi/docs/dev/evm/quickstart.html#_4-local-explorer-optional).
-
-:::
-
 <Tabs
- defaultValue="localnet"
+ defaultValue="mainnet"
   values={[
-    { label: "Localnet", value: "localnet", },
+    { label: "Mainnet", value: "mainnet", },
+    { label: "Testnet", value: "testnet", },
   ]}
 >
 <TabItem
-  value="localnet"
+  value="mainnet"
 >
 
 ```typescript
 const chainConfig = {
   chainNamespace: "eip155",
-  chainId: "0x100", // 420 for Mainnet, 256 for Localnet
-  rpcTarget: "http://127.0.0.1:8545",
-  displayName: "Nibiru Localnet",
-  blockExplorerUrl: "http://localhost:8080", // See the info placard above
-  ticker: "NIBI",
-  tickerName: "Nibiru Chain",
-  logo: "https://nibiru.fi/_astro/nibi-logomark-profile-pic.DoOUhpoa.svg",
+  chainId: "0x89", // hex of 137, zetachain mainnet
+  rpcTarget: "https://rpc.ankr.com/zetachain",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Zetachain Mainnet",
+  blockExplorerUrl: "https://zetachainscan.com",
+  ticker: "MATIC",
+  tickerName: "MATIC",
+  logo: "https://cryptologos.cc/logos/zetachain-matic-logo.png",
+};
+```
+
+</TabItem>
+
+<TabItem
+  value="testnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x13882", // hex of 80002, zetachain testnet
+  rpcTarget: "https://rpc.ankr.com/zetachain_amoy",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Zetachain Amoy Testnet",
+  blockExplorerUrl: "https://amoy.zetachainscan.com/",
+  ticker: "MATIC",
+  tickerName: "MATIC",
+  logo: "https://cryptologos.cc/logos/zetachain-matic-logo.png",
 };
 ```
 
