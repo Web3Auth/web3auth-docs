@@ -1,6 +1,6 @@
 import Link from "@docusaurus/Link";
 import { useEffect, useState } from "react";
-import { blockchainMap, platformMap, exampleMap, typeMap, productMap } from "./maps";
+import { blockchainMap, platformMap, exampleMap, typeMap, productMap } from "../../common/maps";
 import styles from "./styles.module.css";
 import Select, { StylesConfig } from "react-select";
 
