@@ -63,13 +63,12 @@ If you don't have a JWKS endpoint already, you can create one by following these
    ```javascript
    const express = require("express");
    const fs = require("fs");
-   const path = require("path");
+   const { resolve } = require("path");
 
    const app = express();
 
    app.get("/.well-known/jwks.json", (req, res) => {
-     const jwks = JSON.parse(fs.readFileSync(path.resolve(__dirname, "jwks.json"), "utf-8"));
-     res.json(jwks);
+     res.sendFile(resolve(__dirname, "jwks.json"));
    });
 
    app.listen(3000, () => {
