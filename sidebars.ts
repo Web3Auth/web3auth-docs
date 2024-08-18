@@ -691,6 +691,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Saakuru",
+              items: [
+                "connect-blockchain/evm/saakuru/saakuru",
+                "connect-blockchain/evm/saakuru/web",
+                "connect-blockchain/evm/saakuru/android",
+                "connect-blockchain/evm/saakuru/ios",
+                "connect-blockchain/evm/saakuru/react-native",
+                "connect-blockchain/evm/saakuru/flutter",
+                "connect-blockchain/evm/saakuru/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "SKALE",
               items: [
                 "connect-blockchain/evm/skale/skale",
@@ -719,6 +732,19 @@ const sidebars: SidebarsConfig = {
               type: "category",
               label: "Tron",
               items: ["connect-blockchain/evm/tron/web"],
+            },
+            {
+              type: "category",
+              label: "Zetachain",
+              items: [
+                "connect-blockchain/evm/zetachain/zetachain",
+                "connect-blockchain/evm/zetachain/web",
+                "connect-blockchain/evm/zetachain/android",
+                "connect-blockchain/evm/zetachain/ios",
+                "connect-blockchain/evm/zetachain/react-native",
+                "connect-blockchain/evm/zetachain/flutter",
+                "connect-blockchain/evm/zetachain/unity",
+              ],
             },
           ],
         },
