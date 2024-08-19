@@ -574,6 +574,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Fhenix",
+              items: [
+                "connect-blockchain/evm/fhenix/fhenix",
+                "connect-blockchain/evm/fhenix/web",
+                "connect-blockchain/evm/fhenix/android",
+                "connect-blockchain/evm/fhenix/ios",
+                "connect-blockchain/evm/fhenix/react-native",
+                "connect-blockchain/evm/fhenix/flutter",
+                "connect-blockchain/evm/fhenix/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Harmony",
               items: [
                 "connect-blockchain/evm/harmony/harmony",
