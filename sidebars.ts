@@ -395,6 +395,7 @@ const sidebars: SidebarsConfig = {
             "auth-provider-setup/social-providers/social-providers",
             "auth-provider-setup/social-providers/twitter",
             "auth-provider-setup/social-providers/google",
+            "auth-provider-setup/social-providers/telegram",
             "auth-provider-setup/social-providers/facebook",
             "auth-provider-setup/social-providers/twitch",
             "auth-provider-setup/social-providers/discord",
@@ -703,6 +704,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Shardeum",
+              items: [
+                "connect-blockchain/evm/shardeum/shardeum",
+                "connect-blockchain/evm/shardeum/web",
+                "connect-blockchain/evm/shardeum/android",
+                "connect-blockchain/evm/shardeum/ios",
+                "connect-blockchain/evm/shardeum/react-native",
+                "connect-blockchain/evm/shardeum/flutter",
+                "connect-blockchain/evm/shardeum/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "SKALE",
               items: [
                 "connect-blockchain/evm/skale/skale",
@@ -777,6 +791,7 @@ const sidebars: SidebarsConfig = {
             "connect-blockchain/other/starknet",
             "connect-blockchain/other/sui",
             "connect-blockchain/other/tezos",
+            "connect-blockchain/other/ton",
           ],
           collapsible: true,
           collapsed: false,

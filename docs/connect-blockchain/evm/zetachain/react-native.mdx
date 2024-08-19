@@ -1,11 +1,11 @@
 ---
-title: Integrate Web3Auth with the Polygon Blockchain in React Native
+title: Integrate Web3Auth with the ZetaChain Blockchain in React Native
 sidebar_label: React Native
-image: "guides/banners/polygon.png"
+image: "banners/zetachain.png"
 
-keywords: [react-native, polygon, web3auth, authentication, blockchain]
+keywords: [react-native, zetachain, web3auth, authentication, blockchain]
 description:
-  "Integrate Web3Auth with the Polygon Blockchain in React Native | Documentation - Web3Auth"
+  "Integrate Web3Auth with the ZetaChain Blockchain in React Native | Documentation - Web3Auth"
 ---
 
 import InstallationSnippet from "@site/src/common/docs/react-native-connect-blockchain/_evm-installation.mdx";
@@ -20,20 +20,11 @@ import TabItem from "@theme/TabItem";
 import SEO from "@site/src/components/SEO";
 
 <SEO
-  title="Integrate Web3Auth with the Polygon Blockchain in React Native"
-  description="Integrate Web3Auth with the Polygon Blockchain in React Native | Documentation - Web3Auth"
-  image="https://web3auth.io/docs/guides/banners/polygon.png"
-  slug="/connect-blockchain/evm/polygon/react-native"
+  title="Integrate Web3Auth with the ZetaChain Blockchain in React Native"
+  description="Integrate Web3Auth with the ZetaChain Blockchain in React Native | Documentation - Web3Auth"
+  image="https://web3auth.io/docs/banners/zetachain.png"
+  slug="/connect-blockchain/evm/zetachain/react-native"
 />
-
-While using the Web3Auth React Native SDK, you get a
-[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider, similar to the
-[Metamask Provider](https://docs.metamask.io/guide/ethereum-provider.html). This provider can be
-used with libraries like [`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html),
-[`ethers.js`](https://docs.ethers.io/v5/getting-started/) etc. to make
-[Polygon (formerly Matic)](https://polygon.technology/) blockchain calls like getting the user's
-`account`, fetching `balance`, `sign transaction`, `send transaction`, `read` from and `write` to
-the smart contract, etc. We have highlighted a few here to get you started quickly on that.
 
 ## Installation
 
@@ -41,54 +32,26 @@ the smart contract, etc. We have highlighted a few here to get you started quick
 
 ## Initializing Provider
 
-Using `eip155` as `chainNamespace` while initializing `web3auth` will provide an
-[`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) compatible provider as **`web3auth.provider`**
-after successful authentication.
-
-### Getting the `chainConfig`
-
 <Tabs
  defaultValue="mainnet"
   values={[
     { label: "Mainnet", value: "mainnet", },
-    { label: "Testnet", value: "testnet", },
   ]}
 >
+
 <TabItem
   value="mainnet"
 >
 
 ```typescript
 const chainConfig = {
-  chainNamespace: "eip155",
-  chainId: "0x89", // hex of 137, polygon mainnet
-  rpcTarget: "https://rpc.ankr.com/polygon",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
-  displayName: "Polygon Mainnet",
-  blockExplorer: "https://polygonscan.com",
-  ticker: "MATIC",
-  tickerName: "Matic",
-};
-```
-
-</TabItem>
-
-<TabItem
-  value="testnet"
->
-
-```typescript
-const chainConfig = {
-  chainNamespace: "eip155",
-  chainId: "0x13882", // hex of 80002, polygon testnet
-  rpcTarget: "https://rpc.ankr.com/polygon_amoy",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
-  displayName: "Polygon Amoy Testnet",
-  blockExplorer: "https://amoy.polygonscan.com/",
-  ticker: "MATIC",
-  tickerName: "Matic",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1B58",
+  rpcTarget: "https://zetachain-mainnet.g.allthatnode.com/archive/evm",
+  displayName: "ZetaChain Mainnet",
+  blockExplorer: "https://zetachain.blockscout.com/",
+  ticker: "ZETA",
+  tickerName: "ZETA",
 };
 ```
 
