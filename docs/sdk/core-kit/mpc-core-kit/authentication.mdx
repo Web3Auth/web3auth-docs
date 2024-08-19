@@ -252,8 +252,11 @@ await coreKitInstance.loginWithOAuth(verifierConfig);
 ### Importing an existing account.
 
 During the first-time login with `Web3AuthMPCCoreKit`, you can import an existing account using the
-`importTssKey` parameter. To import a secp256k1 chain account, be sure to provide the private key.
-For an ed25519 chain account, make sure to pass the seed.
+`importTssKey` parameter. To import a secp256k1 chain account, be sure to provide the private key in
+hex format. For an ed25519 chain account, you need to pass the seed. By default, the ed25519 key is
+formatted in base64 and is 64 bytes long. This consists of the first 32 bytes as the seed (also
+known as the private key) and the last 32 bytes as the public key. Ensure that the first 32 bytes
+are provided in hexadecimal format when using the ed25519 seed.
 
 ```tsx
 const verifierConfig = {
@@ -466,8 +469,11 @@ await coreKitInstance.loginWithJWT(jwtLoginParams);
 ### Importing an existing account.
 
 During the first-time login with `Web3AuthMPCCoreKit`, you can import an existing account using the
-`importTssKey` parameter. To import a secp256k1 chain account, be sure to provide the private key.
-For an ed25519 chain account, make sure to pass the seed.
+`importTssKey` parameter. To import a secp256k1 chain account, be sure to provide the private key in
+hex format. For an ed25519 chain account, you need to pass the seed. By default, the ed25519 key is
+formatted in base64 and is 64 bytes long. This consists of the first 32 bytes as the seed (also
+known as the private key) and the last 32 bytes as the public key. Ensure that the first 32 bytes
+are provided in hexadecimal format when using the ed25519 seed.
 
 ```tsx
 const jwtLoginParams = {
