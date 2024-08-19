@@ -704,6 +704,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Shardeum",
+              items: [
+                "connect-blockchain/evm/shardeum/shardeum",
+                "connect-blockchain/evm/shardeum/web",
+                "connect-blockchain/evm/shardeum/android",
+                "connect-blockchain/evm/shardeum/ios",
+                "connect-blockchain/evm/shardeum/react-native",
+                "connect-blockchain/evm/shardeum/flutter",
+                "connect-blockchain/evm/shardeum/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "SKALE",
               items: [
                 "connect-blockchain/evm/skale/skale",
