@@ -6,17 +6,11 @@
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
-// import { request } from "graphql-request";
-import { useState } from "react";
+import { Props, blockchainMap, platformMap, productMap } from "../../common/maps";
 
-import {
-  blockchainMap,
-  featuresMap,
-  languageMap,
-  platformMap,
-  Props,
-} from "../../components/GuidesMaps";
-import { Modal } from "../../components/Modal";
+import Select, { StylesConfig } from "react-select";
+// import { request } from "graphql-request";
+import { useState, useEffect } from "react";
 import SEO from "../../components/SEO";
 import styles from "./styles.module.css";
 
@@ -26,8 +20,9 @@ export default function Guides({ content }: Props) {
     return {};
   });
   const [searchInput, setSearchInput] = useState<string>("");
-  const [showModal, setShowModal] = useState<boolean>(false);
   const [tags, setTags] = useState<string[]>([]);
+  const [productFilter, setProductFilter] = useState<string[]>([]);
+  const [platformFilter, setPlatformFilter] = useState<string[]>([]);
   const [sortedGuides, setSortedGuides] = useState<any>(
     completeGuides.sort((a: any, b: any) => {
       //if pinned == 1, the is the first
@@ -45,26 +40,37 @@ export default function Guides({ content }: Props) {
   const { siteConfig } = useDocusaurusContext();
   const { baseUrl } = siteConfig;
 
-  function filterByTags() {
-    let guides;
-    if (tags.length === 0) {
-      guides = completeGuides.sort((a: any, b: any) => a.order - b.order);
-    } else {
-      guides = completeGuides.filter((item: any) => {
-        return tags.some((tag) => item.tags.includes(tag));
+  useEffect(() => {
+    function filterByTags() {
+      let guides;
+      console.log("productFilter", productFilter);
+      console.log("platformFilter", platformFilter);
+      console.log("tags", tags);
+      guides = completeGuides.filter((item) => {
+        const prodFil =
+          productFilter.length === 0 || productFilter.some((tag) => item.tags.includes(tag));
+        const platFil =
+          platformFilter.length === 0 || platformFilter.some((tag) => item.tags.includes(tag));
+
+        return [prodFil, platFil].every((result) => result === true);
       });
-    }
 
-    setSortedGuides(guides);
-  }
-
-  function onChangeFilter(e) {
-    if (tags.includes(e)) {
-      setTags(tags.filter((tag) => tag !== e));
-    } else {
-      setTags([...tags, e]);
+      setSortedGuides(guides.sort((a: any, b: any) => a.order - b.order));
     }
-  }
+    filterByTags();
+  }, [productFilter, platformFilter]);
+
+  const onChangeProduct = (e) => {
+    const filterValue = e.map((item) => item.value);
+    setProductFilter(filterValue);
+    setTags([...platformFilter, ...filterValue]);
+  };
+
+  const onChangePlatform = (e) => {
+    const filterValue = e.map((item) => item.value);
+    setPlatformFilter(filterValue);
+    setTags([...productFilter, ...filterValue]);
+  };
 
   function highlightSearchText(text) {
     if (searchInput === "") {
@@ -107,7 +113,16 @@ export default function Guides({ content }: Props) {
       );
     }
     if (input === "") {
-      filterByTags();
+      let guides;
+      if (tags.length === 0) {
+        guides = completeGuides.sort((a: any, b: any) => a.order - b.order);
+      } else {
+        guides = completeGuides.filter((item) => {
+          return tags.some((tag) => item.tags.includes(tag));
+        });
+      }
+
+      setSortedGuides(guides);
     } else {
       const finalSortedGuide = completeGuides.filter((item) => searchFilter(item));
 
@@ -133,7 +148,7 @@ export default function Guides({ content }: Props) {
             article.tags.map((tag) => {
               if (tags.includes(tag) || searchInput.split(" ").includes(tag)) {
                 return (
-                  <div key={tag} className={styles.tagActive} onClick={() => setShowModal(true)}>
+                  <div key={tag} className={styles.tagActive}>
                     {tag}
                   </div>
                 );
@@ -144,7 +159,7 @@ export default function Guides({ content }: Props) {
             article.tags.map((tag) => {
               if (!(tags.includes(tag) || searchInput.split(" ").includes(tag))) {
                 return (
-                  <div key={tag} className={styles.tag} onClick={() => setShowModal(true)}>
+                  <div key={tag} className={styles.tag}>
                     {tag}
                   </div>
                 );
@@ -223,130 +238,23 @@ export default function Guides({ content }: Props) {
                 </button>
               )) || <div className={styles.searchClearButton} />}
             </div>
-            <button
-              className={styles.filterButton}
-              type="button"
-              onClick={() => setShowModal(true)}
-            >
-              Filter by Tags
-            </button>
+            <Select
+              options={productMap}
+              isMulti
+              styles={customSelectButtonStyles}
+              onChange={onChangeProduct}
+              placeholder="Select Product"
+            />
+            <Select
+              options={platformMap}
+              isMulti
+              styles={customSelectButtonStyles}
+              onChange={onChangePlatform}
+              placeholder="Select Platform"
+            />
           </div>
         </div>
       </header>
-      {showModal && (
-        <Modal close={() => setShowModal(false)}>
-          <div className={styles.modal}>
-            <div className={styles.modalHeader}>
-              <h2>Filter by Tags</h2>
-            </div>
-            <div className={styles.modalBody}>
-              <div className={styles.modalTagList}>
-                <h3>Web3Auth Features</h3>
-                {featuresMap.map((item) => (
-                  <div
-                    className={styles.checkBoxContainer}
-                    key={item.tag}
-                    onClick={() => onChangeFilter(item.tag)}
-                  >
-                    <div className={styles.checkBoxInputContainer}>
-                      <input
-                        type="checkbox"
-                        id={item.tag}
-                        name={item.tag}
-                        value={item.tag}
-                        className={styles.checkBox}
-                        onChange={() => onChangeFilter(item.tag)}
-                        checked={tags.includes(item.tag)}
-                      />
-                    </div>
-                    <div className={styles.checkBoxLabelContainer}>{item.title}</div>
-                  </div>
-                ))}
-                <h3>Language</h3>
-                {languageMap.map((item) => (
-                  <div
-                    className={styles.checkBoxContainer}
-                    key={item.tag}
-                    onClick={() => onChangeFilter(item.tag)}
-                  >
-                    <div className={styles.checkBoxInputContainer}>
-                      <input
-                        type="checkbox"
-                        id={item.tag}
-                        name={item.tag}
-                        value={item.tag}
-                        className={styles.checkBox}
-                        onChange={() => onChangeFilter(item.tag)}
-                        checked={tags.includes(item.tag)}
-                      />
-                    </div>
-                    <div className={styles.checkBoxLabelContainer}>{item.title}</div>
-                  </div>
-                ))}
-              </div>
-              <div className={styles.modalTagList}>
-                <h3>Platforms</h3>
-                {platformMap.map((item) => (
-                  <div
-                    className={styles.checkBoxContainer}
-                    key={item.tag}
-                    onClick={() => onChangeFilter(item.tag)}
-                  >
-                    <div className={styles.checkBoxInputContainer}>
-                      <input
-                        type="checkbox"
-                        id={item.tag}
-                        name={item.tag}
-                        value={item.tag}
-                        className={styles.checkBox}
-                        onChange={() => onChangeFilter(item.tag)}
-                        checked={tags.includes(item.tag)}
-                      />
-                    </div>
-                    <div className={styles.checkBoxLabelContainer}>{item.title}</div>
-                  </div>
-                ))}
-                <h3>Blockchain</h3>
-                {blockchainMap.map((item) => (
-                  <div
-                    className={styles.checkBoxContainer}
-                    key={item.tag}
-                    onClick={() => onChangeFilter(item.tag)}
-                  >
-                    <div className={styles.checkBoxInputContainer}>
-                      <input
-                        type="checkbox"
-                        id={item.tag}
-                        name={item.tag}
-                        value={item.tag}
-                        className={styles.checkBox}
-                        onChange={() => onChangeFilter(item.tag)}
-                        checked={tags.includes(item.tag)}
-                      />
-                    </div>
-                    <div className={styles.checkBoxLabelContainer}>{item.title}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className={styles.modalFooter}>
-              <button className={styles.modalClearButton} type="button" onClick={() => setTags([])}>
-                Clear All
-              </button>
-              <button
-                className={styles.modalSaveButton}
-                type="button"
-                onClick={() => {
-                  filterByTags();
-                  setShowModal(false);
-                }}
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </Modal>
-      )}
 
       <div className={styles.container}>
         {sortedGuides.map((item) => renderArticle(item))}
@@ -359,3 +267,70 @@ export default function Guides({ content }: Props) {
     </Layout>
   );
 }
+
+const customSelectButtonStyles: StylesConfig<true> = {
+  container: (provided) => ({
+    ...provided,
+    width: "max-content",
+    minHeight: "42px",
+    maxWidth: "275px",
+    fontWeight: "400",
+    fontSize: "14px",
+    lineHeight: "125%",
+  }),
+  control: (provided) => ({
+    ...provided,
+    background: "var(--ifm-background-surface-color);",
+    color: "var(--w3a-color-icon-gray)",
+    border: "1px solid var(--ifm-color-emphasis-300)",
+    borderRadius: "8px",
+    minHeight: "42px",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    background: "var(--ifm-background-surface-color);",
+    border: "1px solid var(--ifm-color-emphasis-300)",
+    borderRadius: "8px",
+  }),
+  option: (provided, { isDisabled, isFocused, isSelected }) => ({
+    ...provided,
+    backgroundColor: isDisabled
+      ? undefined
+      : isSelected
+        ? "var(--ifm-color-emphasis-300)"
+        : isFocused
+          ? "var(--ifm-color-primary-lightest)"
+          : undefined,
+    cursor: isDisabled ? "not-allowed" : "default",
+  }),
+  multiValue: (styles, { data }) => ({
+    ...styles,
+    color: "var(--ifm-color-primary)",
+    backgroundColor: "var(--ifm-color-primary-lightest)",
+    fontWeight: "600",
+    fontSize: "12px",
+    lineHeight: "125%",
+    borderWidth: "0",
+    borderRadius: "8px",
+  }),
+  multiValueLabel: (styles, { data }) => ({
+    ...styles,
+    color: "var(--ifm-color-primary)",
+    backgroundColor: "var(--ifm-color-primary-lightest)",
+    fontWeight: "600",
+    fontSize: "12px",
+    lineHeight: "125%",
+    borderWidth: "0",
+    borderRadius: "8px",
+  }),
+  multiValueRemove: (styles, { data }) => ({
+    ...styles,
+    color: "var(--ifm-color-primary)",
+    backgroundColor: "var(--ifm-color-primary-lightest)",
+    fontWeight: "600",
+    fontSize: "12px",
+    lineHeight: "125%",
+    borderWidth: "0",
+    borderRadius: "8px",
+  }),
+};

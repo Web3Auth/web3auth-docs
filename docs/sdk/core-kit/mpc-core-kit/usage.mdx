@@ -17,7 +17,7 @@ returns the following functions:
 - [`loginWithJWT()`](./authentication#log-in-with-jwt-byoa) - Logs in the user with a JWT-based ID
   Token.
 - `handleRedirectResult()` - Handles the redirect result from the OAuth Flow.
-- [`inputFactorKey()`](#input-factor-key) - Inputs the Factor Key to recover the User's account in
+- [`inputFactorKey()`](#input-factor-key) - Inputs the Factor Key to recover the user's account in
   case they don't have enough factors.
 - [`logout()`](./authentication#logging-out-the-user) - Logs out the User.
 
@@ -30,7 +30,7 @@ Reference to learn more about these functions.
 
 **[Manual Sync Function:](#manual-sync-function)**
 
-- [`commitChanges()`](#commit-changes) - Commits the changes made to the User's account while in
+- [`commitChanges()`](#commit-changes) - Commits the changes made to the user's account while in
   manual sync mode.
 
   > To use this function, you'll need to configure the manual sync in the
@@ -38,15 +38,15 @@ Reference to learn more about these functions.
 
 :::tip Prefer using Manual Sync Mode
 
-We recommend using the Manual Sync Mode to handle the factors and keys of the User's account. This
+We recommend using the Manual Sync Mode to handle the factors and keys of the user's account. This
 enables you to have a fined grained control over the API calls made to the metadata server from the
 SDK.
 
-This is especially useful when you want to handle the factors and keys of the User's account in a
+This is especially useful when you want to handle the factors and keys of the user's account in a
 more controlled manner, enabling a much faster and safer experience for the User.
 
 During manual sync mode, you need to call the `commitChanges()` function to sync the local metadata
-to the web3auth metadata server. This helps you to keep the User's account in sync with the metadata
+to the web3auth metadata server. This helps you to keep the user's account in sync with the metadata
 server, after they have successfully configured everything in the local.
 
 :::
@@ -57,10 +57,10 @@ account, present in the state of the SDK.
 
 - [`enableMFA()`](#enable-mfa) - Enable MFA for the user. Deletes the Hashed Factor and generates a
   new Factor Key.
-- [`createFactor()`](#create-factor) - Creates a new Factor for the User's account to increase the
+- [`createFactor()`](#create-factor) - Creates a new Factor for the user's account to increase the
   factors of your account. It can be of type Device(`index:2`) or Recovery(`index:3`).
-- [`deleteFactor()`](#delete-factor) - Deletes a Factor from the User's account.
-- [`getCurrentFactorKey()`](#get-current-factor-key) - Returns the current Factor Key of the User's
+- [`deleteFactor()`](#delete-factor) - Deletes a Factor from the user's account.
+- [`getCurrentFactorKey()`](#get-current-factor-key) - Returns the current Factor Key of the user's
 - [`getDeviceFactor()`](#get-device-factor) - Returns the user's device factor if available.
 
 :::danger Note
@@ -71,27 +71,27 @@ You shouldn't create too many factors, we recommend a **maximum of 10 factors**.
 
 **[User & Wallet Account Functions:](#user--wallet-account-functions)**
 
-- [`setTssWalletIndex()`](#get-key-details) - Sets the TSS Wallet Index for the User's account.
+- [`setTssWalletIndex()`](#get-key-details) - Sets the TSS Wallet Index for the user's account.
 - [`getPubKey()`](#get-sec1-public-key) - Returns the SEC1 Public Address of the user in a
   Synchronous call.
 - [`getPubKeyEd25519()`](#get-ed25519-public-key) - Returns the Public Address of the user in a
   Synchronous call.
-- [`getUserInfo()`](#get-user-info) - Returns the User's information received from the ID Token.
-- [`getKeyDetails()`](#get-key-details) - Returns the User's Key Details.
+- [`getUserInfo()`](#get-user-info) - Returns the user's information received from the ID Token.
+- [`getKeyDetails()`](#get-key-details) - Returns the user's Key Details.
 
 **[Additional Helper Functions:](#additional-helper-functions)**
 
 - [Security Questions](#security-question)
   - [`setSecurityQuestion()`](#set-security-question) - Sets the Security Question Factor for the
-    User's account.
+    user's account.
   - [`changeSecurityQuestion()`](#change-security-question) - Changes the Security Question for the
-    User's account.
+    user's account.
   - [`deleteSecurityQuestion()`](#delete-security-question-share) - Deletes the Security Question
-    for the User's account.
+    for the user's account.
   - [`recoverFactor()`](#get-factor-key-from-security-question) - Recovers the Security Question
-    Factor for the User's account using the given password.
+    Factor for the user's account using the given password.
   - [`getQuestion()`](#get-security-question-for-users-account) - Returns the Security Question for
-    the User's account.
+    the user's account.
 - [Conversion from Mnemonic](#mnemonic-conversations)
   - [`mnemonicToKey()`](#mnemonic-to-key) - Converts a Mnemonic to a BN.
   - [`keyToMnemonic()`](#key-to-mnemonic) - Converts a hex string to a Mnemonic.
@@ -117,8 +117,8 @@ You shouldn't create too many factors, we recommend a **maximum of 10 factors**.
 
 #### `inputFactorKey(factorKey: BN): Promise<void>;`
 
-Inputs the Factor Key into the SDK. This function is used to recover the User's account using the
-Factor Key. If the factor key is correct, the SDK initializes the User's account and logs them in.
+Inputs the Factor Key into the SDK. This function is used to recover the user's account using the
+Factor Key. If the factor key is correct, the SDK initializes the user's account and logs them in.
 
 If you want to change the factor key in the current state of the SDK, you can use this function.
 
@@ -268,7 +268,7 @@ await coreKitInstance.createFactor({
 
 #### `deleteFactor(factorPub: TkeyPoint): Promise<void>;`
 
-Deletes the Factor, respective to the factorPub provided for the User's account. You can get the
+Deletes the Factor, respective to the factorPub provided for the user's account. You can get the
 factor Pubs by using the `getKeyDetails()` function.
 
 It will throw an error if you try to delete the factor that is currently active within the state of
@@ -315,7 +315,7 @@ const factorKey = await coreKitInstance!.getDeviceFactor();
 
 #### `setTssWalletIndex(accountIndex: number): void;`
 
-Sets the TSS Wallet Index for the User's account. This function can be used to deterministically
+Sets the TSS Wallet Index for the user's account. This function can be used to deterministically
 derive different wallet addresses by using account indexes. Using this function you can add
 multi-address account support to your application.
 
@@ -378,7 +378,7 @@ const pubKey = coreKitInstance.getPubKeyEd25519();
 
 #### `getUserInfo(): UserInfo;`
 
-Gives you the User's information received from the ID Token.
+Gives you the user's information received from the ID Token.
 
 #### Returns
 
@@ -416,7 +416,7 @@ const user = coreKitInstance?.getUserInfo();
 
 #### `getKeyDetails(): MPCKeyDetails;`
 
-Gives you the details of the keys and factors held by the User's account.
+Gives you the details of the keys and factors held by the user's account.
 
 #### Returns
 
@@ -448,7 +448,7 @@ const keyDetails = coreKitInstance?.getKeyDetails();
 
 ### Set Security Question
 
-#### `setSecurityQuestion(params: setSecurityQuestionParams): Promise<string>;`
+#### `setSecurityQuestion(params: setSecurityQuestionParams): Promise<string>`
 
 #### Parameters
 
@@ -499,7 +499,7 @@ export interface changeSecurityQuestionParams {
 }
 ```
 
-Changes the Security Question Share of the User's account. This helps you change the password if the
+Changes the Security Question Share of the user's account. This helps you change the password if the
 user has lost it somehow. However, this function can only be used if the user has already logged in
 within the application while meeting the minimum share threshold.
 
@@ -522,7 +522,7 @@ await securityQuestion.changeSecurityQuestion({
 
 #### `deleteSecurityQuestion(mpcCoreKit: Web3AuthMPCCoreKit, deleteFactorKey?: boolean): Promise<void>;`
 
-Deletes the Security Question Share of the User's account. This function can only be used if the
+Deletes the Security Question Share of the user's account. This function can only be used if the
 user has already logged in within the application while meeting the minimum share threshold.
 
 #### Usage
@@ -551,7 +551,7 @@ const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
 const factorKey = await securityQuestion.recoverFactor(coreKitInstance, answer);
 ```
 
-### Get Security Question for User's Account
+### Get Security Question for user's Account
 
 #### `getQuestion(mpcCoreKit: Web3AuthMPCCoreKit): string;`
 

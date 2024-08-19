@@ -8,14 +8,14 @@ export const pnpUnrealVersion = `4.1.x`;
 
 export const sfaWebVersion = `8.0.x`;
 export const sfaAndroidVersion = `0.0.6`;
-export const sfaIOSVersion = `5.0.0`;
+export const sfaIOSVersion = `6.0.0`;
 export const sfaRNVersion = `2.0.x`;
-export const sfaFlutterVersion = `2.0.1`;
+export const sfaFlutterVersion = `4.1.0`;
 export const sfaNodeJSVersion = `7.4.x`;
 export const tkeyJSVersion = `12.x.x`;
 export const tkeyAndroidVersion = `0.0.5`;
 export const tkeyIOSVersion = `0.0.4`;
-export const mpcCoreKitVersion = `2.3.x`;
+export const mpcCoreKitVersion = `3.0.0`;
 
 import {
   web,

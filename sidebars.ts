@@ -395,6 +395,7 @@ const sidebars: SidebarsConfig = {
             "auth-provider-setup/social-providers/social-providers",
             "auth-provider-setup/social-providers/twitter",
             "auth-provider-setup/social-providers/google",
+            "auth-provider-setup/social-providers/telegram",
             "auth-provider-setup/social-providers/facebook",
             "auth-provider-setup/social-providers/twitch",
             "auth-provider-setup/social-providers/discord",
@@ -690,6 +691,32 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Saakuru",
+              items: [
+                "connect-blockchain/evm/saakuru/saakuru",
+                "connect-blockchain/evm/saakuru/web",
+                "connect-blockchain/evm/saakuru/android",
+                "connect-blockchain/evm/saakuru/ios",
+                "connect-blockchain/evm/saakuru/react-native",
+                "connect-blockchain/evm/saakuru/flutter",
+                "connect-blockchain/evm/saakuru/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "Shardeum",
+              items: [
+                "connect-blockchain/evm/shardeum/shardeum",
+                "connect-blockchain/evm/shardeum/web",
+                "connect-blockchain/evm/shardeum/android",
+                "connect-blockchain/evm/shardeum/ios",
+                "connect-blockchain/evm/shardeum/react-native",
+                "connect-blockchain/evm/shardeum/flutter",
+                "connect-blockchain/evm/shardeum/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "SKALE",
               items: [
                 "connect-blockchain/evm/skale/skale",
@@ -718,6 +745,19 @@ const sidebars: SidebarsConfig = {
               type: "category",
               label: "Tron",
               items: ["connect-blockchain/evm/tron/web"],
+            },
+            {
+              type: "category",
+              label: "Zetachain",
+              items: [
+                "connect-blockchain/evm/zetachain/zetachain",
+                "connect-blockchain/evm/zetachain/web",
+                "connect-blockchain/evm/zetachain/android",
+                "connect-blockchain/evm/zetachain/ios",
+                "connect-blockchain/evm/zetachain/react-native",
+                "connect-blockchain/evm/zetachain/flutter",
+                "connect-blockchain/evm/zetachain/unity",
+              ],
             },
           ],
         },
@@ -1295,6 +1335,11 @@ const sidebars: SidebarsConfig = {
       label: "Release Notes",
       href: "https://github.com/web3auth/single-factor-auth-android/releases",
     },
+    {
+      type: "category",
+      label: "Migration Guides",
+      items: ["migration-guides/sfa-android-v0.1.0-to-v0.3.0"],
+    },
     ...sdkQuickLinks,
   ],
   sdk_core_kit_sfa_ios: [
@@ -1385,7 +1430,7 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/sfa-flutter-v1-to-v2"],
+      items: ["migration-guides/sfa-flutter-v1-to-v2", "migration-guides/sfa-flutter-v2-to-v4"],
     },
     ...sdkQuickLinks,
   ],
@@ -1422,6 +1467,7 @@ const sidebars: SidebarsConfig = {
     "sdk/core-kit/mpc-core-kit/install",
     "sdk/core-kit/mpc-core-kit/initialize",
     "sdk/core-kit/mpc-core-kit/authentication",
+    "sdk/core-kit/mpc-core-kit/signing",
     "sdk/core-kit/mpc-core-kit/usage",
     {
       type: "category",

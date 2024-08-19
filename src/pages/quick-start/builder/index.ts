@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { IntegrationBuilder, IntegrationStep } from "../interfaces";
+import { quickStartHostedLinks } from "../../../common/maps";
 import {
   LANGS_ANDROID,
   LANGS_FLUTTER,
@@ -108,59 +109,6 @@ const sdks = {
   MPC_CORE_KIT_REACT: mpc_core_kit_react,
   MPC_CORE_KIT_VUE: mpc_core_kit_vue,
   MPC_CORE_KIT_REACT_NATIVE: mpc_core_kit_react_native,
-};
-
-export const embed_links = {
-  // PNP Modal SDK
-  PNP_MODAL_ANGULAR: "https://w3a.link/pnp-angular-modal-quick-start",
-  PNP_MODAL_HTML: "https://w3a.link/pnp-vanillajs-modal-quick-start",
-  PNP_MODAL_NEXTJS: "https://w3a.link/pnp-nextjs-modal-quick-start",
-  PNP_MODAL_REACT: "https://w3a.link/pnp-react-modal-quick-start",
-  PNP_MODAL_VUE: "https://w3a.link/pnp-vue-modal-quick-start",
-  // PNP No Modal SDK
-  PNP_NO_MODAL_ANGULAR: "https://w3a.link/pnp-angular-no-modal-quick-start",
-  PNP_NO_MODAL_NEXTJS: "https://w3a.link/pnp-nextjs-no-modal-quick-start",
-  PNP_NO_MODAL_REACT: "https://w3a.link/pnp-react-no-modal-quick-start",
-  PNP_NO_MODAL_VUE: "https://w3a.link/pnp-vue-no-modal-quick-start",
-  PNP_NO_MODAL_HTML: "https://w3a.link/pnp-vanillajs-no-modal-quick-start",
-  // PNP Android SDK
-  PNP_ANDROID_ANDROID: "https://w3a.link/pnp-android-quick-start",
-  // PNP iOS SDK
-  PNP_IOS_IOS: "https://w3a.link/pnp-ios-quick-start", // https://w3a.link/pnp-ios-quick-start",
-  // PNP React Native SDK
-  PNP_REACT_NATIVE_ANDROID: "https://w3a.link/pnp-react-native-android-quick-start",
-  PNP_REACT_NATIVE_IOS: "https://w3a.link/pnp-react-native-ios-quick-start",
-  // PNP Flutter SDK
-  PNP_FLUTTER_ANDROID: "https://w3a.link/pnp-flutter-android-quick-start",
-  PNP_FLUTTER_IOS: "https://w3a.link/pnp-flutter-ios-quick-start",
-  // PNP Unity SDK
-  PNP_UNITY_ANDROID: "https://w3a.link/pnp-unity-android-quick-start",
-  PNP_UNITY_IOS: "", // "https://w3a.link/pnp-unity-ios-quick-start"
-  PNP_UNITY_WEBGL: "https://w3a.link/pnp-unity-webgl-quick-start",
-  // SFA Web SDK
-  SFA_WEB_ANGULAR: "https://w3a.link/sfa-angular-quick-start",
-  SFA_WEB_NEXTJS: "https://w3a.link/sfa-nextjs-quick-start",
-  SFA_WEB_REACT: "https://w3a.link/sfa-react-quick-start",
-  SFA_WEB_VUE: "https://w3a.link/sfa-vue-quick-start",
-  SFA_WEB_HTML: "https://w3a.link/sfa-vanillajs-quick-start",
-  // SFA React Native SDK
-  SFA_REACT_NATIVE_ANDROID: "https://w3a.link/sfa-react-native-android-quick-start",
-  SFA_REACT_NATIVE_IOS: "https://w3a.link/sfa-react-native-ios-quick-start",
-  // SFA Android SDK
-  SFA_ANDROID_ANDROID: "https://w3a.link/sfa-android-quick-start",
-  // SFA iOS SDK
-  SFA_IOS_IOS: "", // "https://w3a.link/sfa-ios-quick-start",
-  // SFA Flutter SDK
-  SFA_FLUTTER_ANDROID: "https://w3a.link/sfa-flutter-android-quick-start",
-  SFA_FLUTTER_IOS: "", //"https://w3a.link/sfa-flutter-ios-quick-start",
-  // SFA Node SDK
-  SFA_NODE_NODE: "",
-  // MPC Core Kit SDK
-  MPC_CORE_KIT_ANGULAR: "https://w3a.link/mpc-core-kit-angular-quick-start",
-  MPC_CORE_KIT_NEXTJS: "https://w3a.link/mpc-core-kit-nextjs-quick-start",
-  MPC_CORE_KIT_REACT: "https://w3a.link/mpc-core-kit-react-quick-start",
-  MPC_CORE_KIT_VUE: "https://w3a.link/mpc-core-kit-vue-quick-start",
-  MPC_CORE_KIT_REACT_NATIVE: "https://w3a.link/mpc-core-kit-rn-quick-start",
 };
 
 const builder: IntegrationBuilder = {
@@ -292,7 +240,7 @@ const builder: IntegrationBuilder = {
         pointer: it.pointer ? { ...it.pointer, filename: `${it.pointer.filename}` } : undefined,
       })),
       stepIndex,
-      embedLink: embed_links[selectedSDK],
+      embedLink: quickStartHostedLinks[selectedSDK],
     };
   },
 };
