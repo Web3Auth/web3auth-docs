@@ -262,9 +262,10 @@ are provided in hexadecimal format when using the ed25519 seed.
 const verifierConfig = {
   subVerifierDetails: {
     typeOfLogin: "google",
-    verifier: "YOUR_VERIFIER_NAME",
-    clientId: "YOUR_GOOGLE_CLIENT_ID",
+    verifier: "w3a-google-demo",
+    clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com",
   },
+  // highlight-next-line
   importTssKey: "SECP256K1_PRIVATE_KEY_OR_ED25519_SEED",
 } as SubVerifierDetailsParams;
 
@@ -476,10 +477,18 @@ known as the private key) and the last 32 bytes as the public key. Ensure that t
 are provided in hexadecimal format when using the ed25519 seed.
 
 ```tsx
+import { Web3AuthMPCCoreKit, JWTLoginParams } from "@web3auth/mpc-core-kit";
+
+const loginRes = await signInWithGoogle();
+const idToken = await loginRes.user.getIdToken(true);
+const parsedToken = parseToken(idToken);
+
 const jwtLoginParams = {
-  verifier: "YOUR_VERIFIER_NAME"
-  verifierId: "VERIFIER_ID",
+  verifier: "aggregate-sapphire"
+  subVerifier: "w3a-google",
+  verifierId: parsedToken.email,
   idToken,
+  // highlight-next-line
   importTssKey: "SECP256K1_PRIVATE_KEY_OR_ED25519_SEED"
 } as JWTLoginParams;
 
@@ -496,4 +505,63 @@ Disconnect the user's connected wallet/ provider and log them out of the Web3Aut
 
 ```tsx
 await coreKitInstance.logout();
+```
+
+## Backend verification
+
+To verify the user in the backend, you can retrieve the user's signature from frontend, and validate
+it using the `SignatureValidator` from the
+[@toruslabs/signature-validator](https://www.npmjs.com/package/@toruslabs/signature-validator)
+package in the backend.
+
+### Retrieve user's signature
+
+To retrieve user's signature you can use the `signatures` getter from `Web3AuthMPCCoreKit`.
+
+```tsx
+const signatures = await coreKitInstance.signatures;
+
+// Send these signatures to backend through an API
+```
+
+### Verify the signatures in backend
+
+For verification you'll need to install couple of packages,
+[@toruslabs/signature-validator](https://www.npmjs.com/package/@toruslabs/signature-validator) and
+[@toruslabs/fnd-base](https://www.npmjs.com/package/@toruslabs/fnd-base), and use
+`SignatureValidator` to validate the signatures.
+
+```js
+const { fetchLocalConfig } = require("@toruslabs/fnd-base");
+const { SignatureValidator } = require("@toruslabs/signature-validator");
+
+// Here network can be "sapphire_mainnet" or "sapphire_testnet", since MPC doesn't support
+// legacy networks.
+const network = "sapphire_mainnet";
+
+// Fetch the node details
+const nodeDetails = fetchLocalConfig(network, "secp256k1");
+
+const nodePubX = [];
+const nodePubY = [];
+
+nodeDetails.torusNodePub.forEach((key) => {
+  nodePubX.push(key.X);
+  nodePubY.push(key.Y);
+});
+
+// Create the SignatureValidator object
+const sigValidator = new SignatureValidator({
+  nodePubKeyX: nodePubX.join(","),
+  nodePubKeyY: nodePubY.join(","),
+});
+
+// Get the signatures from the frontend & validate the signatures
+const result = sigValidator.authenticate(signatures, { skipExpValidation: false });
+
+if (!result) {
+  // Handle invalid singature
+}
+
+// Handle the valid signature
 ```

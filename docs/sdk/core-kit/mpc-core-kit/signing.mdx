@@ -21,7 +21,7 @@ an overview of how you can generate ECDSA signature for Ethereum.
 
 ### Ethereum
 
-As discussed earlier, to generate the ECSDA signature for Ethereum, we will utilize
+As discussed earlier, to generate the ECDSA signature for Ethereum, we will utilize
 `@toruslabs/tss-dkls-lib` to instantiate Web3AuthMPCCoreKit with secp256k1 KeyType. This package
 contains all the necessary functionalities and logic required for TSS signing. Along with that,
 we'll also use `@web3auth/ethereum-mpc-provider` which is a helper package. This package will
@@ -156,12 +156,12 @@ const uncompressedPubKey = pubKeyPoint.toSEC1(secp256k1).subarray(1);
 #### Signing
 
 To sign the transaction for secp256k1 curve, you can use the `sign` method. The method will return
-the ECSDA signature.
+the ECDSA signature.
 
 ```tsx
 const msg = Buffer.from("Welcome to Web3Auth");
 
-// Returns the ECSDA signature bytes.
+// Returns the ECDSA signature bytes.
 const signature = coreKitInstance.sign(msg);
 ```
 
