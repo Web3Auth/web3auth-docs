@@ -7,7 +7,7 @@ import TabItem from "@theme/TabItem";
     { label: "PnP Modal SDK", value: "modal", },
     { label: "PnP NoModal SDK", value: "no-modal", },
     { label: "CoreKit SFA Web SDK", value: "sfa", },
-    { label: "CoreKit MFA tKey JS SDK", value: "tkey", },
+    { label: "MPC CoreKit JS SDK", value: "mpc", },
   ]}
 >
 <TabItem
@@ -20,7 +20,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { WEB3AUTH_NETWORK } from "@web3auth/base";
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig: chainConfig }
+  config: { chainConfig: chainConfig },
 });
 
 const web3auth = new Web3Auth({
@@ -43,7 +43,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { WEB3AUTH_NETWORK } from "@web3auth/base";
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: {chainConfig},
+  config: { chainConfig },
 });
 
 const web3auth = new Web3AuthNoModal({
@@ -76,21 +76,26 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 
 </TabItem>
 <TabItem
-  value="tkey"
+  value="mpc"
 >
 
 ```tsx
-import { SfaServiceProvider } from "@tkey/service-provider-sfa";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK, makeEthereumSigner } from "@web3auth/mpc-core-kit";
+import { EthereumSigningProvider } from "@web3auth/ethereum-mpc-provider";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { tssLib } from "@toruslabs/tss-dkls-lib";
 
-// Initialization of private key provider
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: {
-    chainConfig,
-  },
+const coreKitInstance = new Web3AuthMPCCoreKit({
+  web3AuthClientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  storage: window.localStorage,
+  manualSync: true, // This is the recommended approach
+  tssLib: tssLib,
 });
 
-await (tKey.serviceProvider as SfaServiceProvider).init(privateKeyProvider);
+// Setup provider for EVM Chain
+const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
+evmProvider.setupProvider(makeEthereumSigner(coreKitInstance));
 ```
 
 </TabItem>

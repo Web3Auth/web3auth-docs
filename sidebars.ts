@@ -575,6 +575,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Fhenix",
+              items: [
+                "connect-blockchain/evm/fhenix/fhenix",
+                "connect-blockchain/evm/fhenix/web",
+                "connect-blockchain/evm/fhenix/android",
+                "connect-blockchain/evm/fhenix/ios",
+                "connect-blockchain/evm/fhenix/react-native",
+                "connect-blockchain/evm/fhenix/flutter",
+                "connect-blockchain/evm/fhenix/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Harmony",
               items: [
                 "connect-blockchain/evm/harmony/harmony",
@@ -584,6 +597,32 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/harmony/react-native",
                 "connect-blockchain/evm/harmony/flutter",
                 "connect-blockchain/evm/harmony/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "Hedera",
+              items: [
+                "connect-blockchain/evm/hedera/hedera",
+                "connect-blockchain/evm/hedera/web",
+                "connect-blockchain/evm/hedera/android",
+                "connect-blockchain/evm/hedera/ios",
+                "connect-blockchain/evm/hedera/react-native",
+                "connect-blockchain/evm/hedera/flutter",
+                "connect-blockchain/evm/hedera/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "Kinto",
+              items: [
+                "connect-blockchain/evm/kinto/kinto",
+                "connect-blockchain/evm/kinto/web",
+                "connect-blockchain/evm/kinto/android",
+                "connect-blockchain/evm/kinto/ios",
+                "connect-blockchain/evm/kinto/react-native",
+                "connect-blockchain/evm/kinto/flutter",
+                "connect-blockchain/evm/kinto/unity",
               ],
             },
             {
@@ -640,6 +679,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Morph",
+              items: [
+                "connect-blockchain/evm/morph/morph",
+                "connect-blockchain/evm/morph/web",
+                "connect-blockchain/evm/morph/android",
+                "connect-blockchain/evm/morph/ios",
+                "connect-blockchain/evm/morph/react-native",
+                "connect-blockchain/evm/morph/flutter",
+                "connect-blockchain/evm/morph/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Neon",
               items: [
                 "connect-blockchain/evm/neon/neon",
@@ -688,6 +740,19 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/polygon/react-native",
                 "connect-blockchain/evm/polygon/flutter",
                 "connect-blockchain/evm/polygon/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "Rootstock",
+              items: [
+                "connect-blockchain/evm/rootstock/rootstock",
+                "connect-blockchain/evm/rootstock/web",
+                "connect-blockchain/evm/rootstock/android",
+                "connect-blockchain/evm/rootstock/ios",
+                "connect-blockchain/evm/rootstock/react-native",
+                "connect-blockchain/evm/rootstock/flutter",
+                "connect-blockchain/evm/rootstock/unity",
               ],
             },
             {
