@@ -1,12 +1,12 @@
 ---
 title: Integrate Firebase with Web3Auth Android SFA SDK
-image: "guides/banners/sfa-android-firebase.png"
+image: "guides-banners/sfa-android-firebase.png"
 description:
   Web3Auth Single Factor Authentication (SFA) Android SDK with Firebase enables secure blockchain
   authentication using Email and Password login. The process involves setting up Firebase and
   Web3Auth, initializing the SDK, and interacting with the Ethereum blockchain.
 type: guide
-tags: [mobile, android, ethereum, SFA]
+tags: [core kit, android, evm, sfa, firebase, custom authentication]
 date: May 19, 2024
 author: Web3Auth Team
 ---
@@ -18,7 +18,7 @@ import Tabs from "@theme/Tabs";
 <SEO
   title=" Integrate Firebase with Web3Auth Android SFA SDK"
   description="Learn how to use Web3Auth Single Factor Auth with Firebase in your Android Application."
-  image="https://web3auth.io/docs/guides/banners/sfa-android-firebase.png"
+  image="https://web3auth.io/docs/guides-banners/sfa-android-firebase.png"
   slug="/guides/sfa-android-firebase"
 />
 
@@ -85,7 +85,7 @@ section, add the `single-factor-auth-android`.
 dependencies {
     // ...
     // highlight-next-line
-    implementation 'com.github.web3auth:single-factor-auth-android:0.0.6'
+    implementation 'com.github.web3auth:single-factor-auth-android:0.4.0'
 }
 ```
 
@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // highlight-start
-        singleFactorAuthArgs = SingleFactorAuthArgs(TorusNetwork.TESTNET)
+        singleFactorAuthArgs = SingleFactorAuthArgs(Web3AuthNetwork.TESTNET, "YOUR_WEB3AUTH_CLIENT_ID")
         singleFactorAuth = SingleFactorAuth(singleFactorAuthArgs)
         // highlight-end
       }
@@ -133,7 +133,7 @@ val sessionResponse: CompletableFuture<TorusKey> = singleFactorAuth.initialize(
 sessionResponse.whenComplete {
     torusKey, error ->
     if (torusKey != null) {
-        publicAddress = torusKey?.publicAddress.toString()
+        publicAddress = torusKey.publicAddress.toString()
         println("""Private Key: ${torusKey.privateKey?.toString(16)}""".trimIndent())
     } else {
         Log.d("MainActivity_SFA", error.message ?: "Something went wrong")

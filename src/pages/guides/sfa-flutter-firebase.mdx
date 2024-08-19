@@ -1,12 +1,12 @@
 ---
 title: Integrate Firebase with Web3Auth Flutter SFA SDK
-image: "guides/banners/sfa-flutter-firebase.png"
+image: "guides-banners/sfa-flutter-firebase.png"
 description:
   Web3Auth Single Factor Authentication (SFA) Flutter SDK with Firebase enables secure blockchain
   authentication using Email and Password login. The process involves setting up Firebase and
   Web3Auth, initializing the SDK, and interacting with the Ethereum blockchain.
 type: guide
-tags: [mobile, flutter, ethereum, SFA]
+tags: [core kit, flutter, evm, sfa, firebase, custom authentication]
 date: May 19, 2024
 author: Web3Auth Team
 ---
@@ -18,7 +18,7 @@ import Tabs from "@theme/Tabs";
 <SEO
   title="Integrate Firebase with Web3Auth Flutter SFA SDK"
   description="Learn how to use Web3Auth Single Factor Auth with Firebase in your Flutter Application."
-  image="https://web3auth.io/docs/guides/banners/sfa-flutter-firebase.png"
+  image="https://web3auth.io/docs/guides-banners/sfa-flutter-firebase.png"
   slug="/guides/sfa-flutter-firebase"
 />
 
@@ -88,7 +88,7 @@ Add `single_factor_auth_flutter` as a dependency to your `pubspec.yaml`.
 
 ```yaml
 dependencies:
-  single_factor_auth_flutter: ^2.0.1
+  single_factor_auth_flutter: ^4.1.0
 ```
 
 </TabItem>
@@ -105,7 +105,10 @@ SDK.
 final singleFactorAuthFlutter = SingleFactAuthFlutter();
 
 await singleFactAuthFlutter.init(
-    Web3AuthNetwork(network: TorusNetwork.cyan),
+  SFAParams(
+    network: Web3AuthNetwork.cyan,
+    clientid: "YOUR_WEB3AUTH_CLIENT_ID",
+  ),
 );
 ```
 
@@ -117,15 +120,15 @@ based on the result.
 
 ```dart
 try {
-    final TorusKey? torusKey = await singleFactAuthFlutter.initialize();
+  final TorusKey? torusKey = await singleFactAuthFlutter.initialize();
 
-    if (torusKey != null) {
-        log('Active session found. Private Key: ${torusKey.privateKey}');
-    } else {
-        log("No active session found.")
-    }
+  if (torusKey != null) {
+    log('Active session found. Private Key: ${torusKey.privateKey}');
+  } else {
+    log("No active session found.")
+  }
 } catch (e) {
-    log("Error initializing SFA: $e");
+  log("Error initializing SFA: $e");
 }
 ```
 

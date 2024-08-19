@@ -1,208 +1,337 @@
-/* eslint-disable no-restricted-globals */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-import Tiles from "@theme/Tiles";
+import Link from "@docusaurus/Link";
 import { useEffect, useState } from "react";
-
-import {
-  corekit,
-  corekitlist,
-  corekitnodejs,
-  getOptionsfromURL,
-  mpccorekit,
-  pnp,
-  pnpandroid,
-  pnpflutter,
-  pnpios,
-  pnplist,
-  pnprn,
-  pnpunity,
-  pnpunreal,
-  pnpwebmodal,
-  pnpwebnomodal,
-  setURLfromOptions,
-  singlefactorauth,
-  singlefactorauthandroid,
-  singlefactorauthflutter,
-  singlefactorauthios,
-  singlefactorauthrn,
-  tkeyandroid,
-  tkeyios,
-  tkeyjs,
-} from "../../common/SDKOptions";
-import {
-  CKNode,
-  CKSFA,
-  CKSFAAndroid,
-  CKSFAFlutter,
-  CKSFAiOS,
-  CKSFARN,
-  CKTkey,
-  CKTkeyAndroid,
-  CKTkeyiOS,
-  MPCCK,
-  MPCCKRN,
-} from "./coreKitExamples";
-import { PNPUnity, PNPUnreal } from "./pnpGamingExamples";
-import { PNPAndroid, PNPFlutter, PNPIos, PNPRN } from "./pnpMobileExamples";
-import { PNPModalWebExample } from "./pnpModalExamples";
-import { PNPNoModalWebExample } from "./pnpNoModalExamples";
+import { blockchainMap, platformMap, exampleMap, typeMap, productMap } from "../../common/maps";
 import styles from "./styles.module.css";
+import Select, { StylesConfig } from "react-select";
 
-export default function QuickNavigation() {
-  const [product, setProduct] = useState<string>(pnp);
-  const [sdk, setSdk] = useState<string>(pnpwebmodal);
+export default function Examples() {
+  const completeExampleMap = exampleMap;
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [productFilter, setProductFilter] = useState<string[]>([]);
+  const [platformFilter, setPlatformFilter] = useState<string[]>([]);
+  const [blockchainFilter, setBlockchainFilter] = useState<string[]>([]);
+
+  const [sortedExampleMap, setSortedExampleMap] = useState<any>(
+    completeExampleMap.sort(
+      (a, b) =>
+        typeMap.find((obj) => obj.type === a.type).id -
+        typeMap.find((obj) => obj.type === b.type).id,
+    ),
+  );
+
+  const chevron = (
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M6 3.33301L10.6667 7.99967L6 12.6663"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
 
   useEffect(() => {
-    const options = getOptionsfromURL();
-    let productState: string;
-    let sdkState: string;
+    function filterByTags() {
+      let examples;
+      examples = completeExampleMap.filter((item) => {
+        const prodFil =
+          productFilter.length === 0 || productFilter.some((tag) => item.tags.includes(tag));
+        const platFil =
+          platformFilter.length === 0 || platformFilter.some((tag) => item.tags.includes(tag));
+        const blockFil =
+          blockchainFilter.length === 0 || blockchainFilter.some((tag) => item.tags.includes(tag));
 
-    if (!options.product) {
-      history.pushState({}, "", setURLfromOptions({ product: pnp, sdk: pnpwebmodal }));
-      productState = pnp;
-      sdkState = pnpwebmodal;
-    } else if (!options.sdk && options.product in [pnp, corekit]) {
-      let sdkValue = pnpwebmodal;
-      if (options.product === corekit) {
-        sdkValue = tkeyjs;
-      }
-      history.pushState({}, "", setURLfromOptions({ product: options.product, sdk: sdkValue }));
-      productState = options.product;
-      sdkState = sdkValue;
-    } else {
-      productState = options.product;
-      sdkState = options.sdk;
+        return [prodFil, platFil, blockFil].every((result) => result === true);
+      });
+
+      setSortedExampleMap(examples);
     }
+    filterByTags();
+  }, [productFilter, platformFilter, blockchainFilter]);
 
-    setProduct(productState);
-    setSdk(sdkState);
-  }, []);
-
-  function changeProduct(productValue) {
-    let sdkValue = pnpwebmodal;
-    if (productValue === corekit) {
-      sdkValue = tkeyjs;
-    }
-    setProduct(productValue);
-    setSdk(sdkValue);
-    history.pushState({}, "", setURLfromOptions({ product: productValue, sdk: sdkValue }));
-  }
-  const changeSDK = (event) => {
-    setSdk(event.target.value);
-    history.pushState({}, "", setURLfromOptions({ product, sdk: event.target.value }));
+  const onChangeProduct = (e) => {
+    const filterValue = e.map((item) => item.value);
+    setProductFilter(filterValue);
+    setTags([...platformFilter, ...filterValue, ...blockchainFilter]);
   };
 
-  return (
-    <div className="markdown">
-      <h3 className={styles.heading}>
-        1. Select the Web3Auth Product you would like to build upon
-      </h3>
-      <div className={styles.container}>
-        <div
-          className={product === pnp ? styles.selectedCard : styles.card}
-          onClick={() => changeProduct(pnp)}
-        >
-          <div>
-            <div className={styles.cardIconContainer}>
-              <svg
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className={styles.cardIcon}
-              >
-                <path
-                  d="M10 3.5C10 3.10218 10.158 2.72064 10.4393 2.43934C10.7206 2.15804 11.1022 2 11.5 2C11.8978 2 12.2794 2.15804 12.5607 2.43934C12.842 2.72064 13 3.10218 13 3.5V4C13 4.26522 13.1054 4.51957 13.2929 4.70711C13.4804 4.89464 13.7348 5 14 5H17C17.2652 5 17.5196 5.10536 17.7071 5.29289C17.8946 5.48043 18 5.73478 18 6V9C18 9.26522 17.8946 9.51957 17.7071 9.70711C17.5196 9.89464 17.2652 10 17 10H16.5C16.1022 10 15.7206 10.158 15.4393 10.4393C15.158 10.7206 15 11.1022 15 11.5C15 11.8978 15.158 12.2794 15.4393 12.5607C15.7206 12.842 16.1022 13 16.5 13H17C17.2652 13 17.5196 13.1054 17.7071 13.2929C17.8946 13.4804 18 13.7348 18 14V17C18 17.2652 17.8946 17.5196 17.7071 17.7071C17.5196 17.8946 17.2652 18 17 18H14C13.7348 18 13.4804 17.8946 13.2929 17.7071C13.1054 17.5196 13 17.2652 13 17V16.5C13 16.1022 12.842 15.7206 12.5607 15.4393C12.2794 15.158 11.8978 15 11.5 15C11.1022 15 10.7206 15.158 10.4393 15.4393C10.158 15.7206 10 16.1022 10 16.5V17C10 17.2652 9.89464 17.5196 9.70711 17.7071C9.51957 17.8946 9.26522 18 9 18H6C5.73478 18 5.48043 17.8946 5.29289 17.7071C5.10536 17.5196 5 17.2652 5 17V14C5 13.7348 4.89464 13.4804 4.70711 13.2929C4.51957 13.1054 4.26522 13 4 13H3.5C3.10218 13 2.72064 12.842 2.43934 12.5607C2.15804 12.2794 2 11.8978 2 11.5C2 11.1022 2.15804 10.7206 2.43934 10.4393C2.72064 10.158 3.10218 10 3.5 10H4C4.26522 10 4.51957 9.89464 4.70711 9.70711C4.89464 9.51957 5 9.26522 5 9V6C5 5.73478 5.10536 5.48043 5.29289 5.29289C5.48043 5.10536 5.73478 5 6 5H9C9.26522 5 9.51957 4.89464 9.70711 4.70711C9.89464 4.51957 10 4.26522 10 4V3.5Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-            <h5 className={styles.title}>{pnp}</h5>
-          </div>
-          <p>Use pre configured UX flows and integrate your Web3Auth instance quickly.</p>
-        </div>
+  const onChangePlatform = (e) => {
+    const filterValue = e.map((item) => item.value);
+    setPlatformFilter(filterValue);
+    setTags([...productFilter, ...filterValue, ...blockchainFilter]);
+  };
 
-        <div
-          className={product === corekit ? styles.selectedCard : styles.card}
-          onClick={() => changeProduct(corekit)}
-        >
-          <div>
-            <div className={styles.cardIconContainer}>
+  const onChangeBlockchain = (e) => {
+    const filterValue = e.map((item) => item.value);
+    setBlockchainFilter(filterValue);
+    setTags([...productFilter, ...filterValue, ...platformFilter]);
+  };
+
+  function highlightSearchText(text) {
+    if (searchInput === "") {
+      return text;
+    }
+    let inputKeywords = searchInput.split(" ");
+    inputKeywords = inputKeywords.filter((keyword) => keyword !== "");
+    const keywords = inputKeywords
+      .map((keyword) => {
+        return `(${keyword})`;
+      })
+      .join("|");
+    const regex = new RegExp(keywords, "gi");
+    const matches = text.match(regex);
+    const parts = text.split(regex);
+    if (matches) {
+      return (
+        <span>
+          {parts.filter(String).map((part, i) => {
+            return regex.test(part) ? <mark key={i}>{part}</mark> : <span key={i}>{part}</span>;
+          })}
+        </span>
+      );
+    }
+    return text;
+  }
+
+  function onChangeSearch(input) {
+    setSearchInput(input);
+
+    const inputKeywords = input.trim().split(" ");
+
+    function searchFilter(item) {
+      return (
+        inputKeywords.every((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
+        inputKeywords.every((key) => item.description.toLowerCase().includes(key.toLowerCase())) ||
+        inputKeywords.every((key) =>
+          item.tags.map((tag) => tag.includes(key.toLowerCase())).includes(true),
+        )
+      );
+    }
+    if (input === "") {
+      let examples;
+      if (tags.length === 0) {
+        examples = exampleMap;
+      } else {
+        examples = completeExampleMap.filter((item) => {
+          return tags.some((tag) => item.tags.includes(tag));
+        });
+      }
+
+      setSortedExampleMap(examples);
+    } else {
+      const finalSortedExampleMap = completeExampleMap.filter((item) => searchFilter(item));
+      setSortedExampleMap(finalSortedExampleMap);
+    }
+  }
+
+  function renderArticle(article) {
+    return (
+      <div key={article.link} className={styles.article}>
+        <Link to={article.link} className={styles.articleContent}>
+          <img src={article.image} alt="Banner" />
+          <h3>{highlightSearchText(article.title)}</h3>
+          <div className={styles.pillPrimary}>{article.type}</div>
+          <p>{highlightSearchText(article.description)}</p>
+        </Link>
+        {article.githubLink || article.qsLink || article.guideLink ? (
+          <div className={styles.pillContainer}>
+            {article.githubLink ? (
+              <Link className={styles.pill} to={article.githubLink}>
+                Source Code{chevron}
+              </Link>
+            ) : null}
+            {article.qsLink ? (
+              <Link className={styles.pill} to={article.qsLink}>
+                Integration Builder{chevron}
+              </Link>
+            ) : null}
+            {article.guideLink ? (
+              <Link className={styles.pill} to={article.guideLink}>
+                Guide{chevron}
+              </Link>
+            ) : null}
+          </div>
+        ) : null}
+
+        <div className={styles.tagContainer}>
+          {article.tags &&
+            article.tags.map((tag) => {
+              if (tags.includes(tag) || searchInput.split(" ").includes(tag)) {
+                return (
+                  <div key={tag} className={styles.tagActive}>
+                    {tag}
+                  </div>
+                );
+              }
+              return null;
+            })}
+
+          {article.tags &&
+            article.tags.map((tag) => {
+              if (!(tags.includes(tag) || searchInput.split(" ").includes(tag))) {
+                return (
+                  <div key={tag} className={styles.tag}>
+                    {tag}
+                  </div>
+                );
+              }
+              return null;
+            })}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className={styles.searchArea}>
+        <div className={styles.searchBox}>
+          <div className={styles.searchIcon}>
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M21.8534 20.8006L16.8119 15.7689C16.7338 15.6909 16.6165 15.6519 16.4993 15.6519H16.0694C17.4372 14.1697 18.2579 12.2584 18.2579 10.1131C18.2579 5.6665 14.5843 2 10.129 2C5.63459 2 2 5.6665 2 10.1131C2 14.5987 5.63459 18.2262 10.129 18.2262C12.2394 18.2262 14.1935 17.4071 15.6395 16.0809V16.471C15.6395 16.627 15.6786 16.744 15.7567 16.822L20.7982 21.8537C20.9936 22.0488 21.2672 22.0488 21.4626 21.8537L21.8534 21.4637C22.0489 21.2686 22.0489 20.9956 21.8534 20.8006ZM10.129 16.9781C6.29897 16.9781 3.25061 13.9356 3.25061 10.1131C3.25061 6.3296 6.29897 3.24817 10.129 3.24817C13.9199 3.24817 17.0073 6.3296 17.0073 10.1131C17.0073 13.9356 13.9199 16.9781 10.129 16.9781Z"
+                fill="currentColor"
+                fillOpacity="1"
+              />
+            </svg>
+          </div>
+          <input
+            placeholder="Quick search for anything"
+            value={searchInput}
+            onChange={(event) => onChangeSearch(event.target.value)}
+            type="text"
+            className={styles.searchTerm}
+          />
+          {(searchInput && (
+            <button
+              onClick={() => onChangeSearch("")}
+              className={styles.searchClearButton}
+              type="button"
+            >
               <svg
+                width="20"
+                height="20"
                 viewBox="0 0 20 20"
                 fill="none"
+                stroke="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className={styles.cardIcon}
               >
                 <path
-                  d="M3 12V15C3 16.657 6.134 18 10 18C13.866 18 17 16.657 17 15V12C17 13.657 13.866 15 10 15C6.134 15 3 13.657 3 12Z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M3 7V10C3 11.657 6.134 13 10 13C13.866 13 17 11.657 17 10V7C17 8.657 13.866 10 10 10C6.134 10 3 8.657 3 7Z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M17 5C17 6.657 13.866 8 10 8C6.134 8 3 6.657 3 5C3 3.343 6.134 2 10 2C13.866 2 17 3.343 17 5Z"
-                  fill="currentColor"
+                  d="M18.8702 6.54951L13.3932 11.9734L19.9528 18.5331C20.0032 18.5835 20.032 18.7 19.9398 18.832L18.8318 19.94C18.6997 20.0323 18.5832 20.0035 18.5328 19.9531L17.4502 18.8705L12.0263 13.3934L5.46663 19.9531C5.41628 20.0035 5.29978 20.0323 5.16769 19.94L4.05969 18.832C3.96743 18.7 3.99626 18.5835 4.04662 18.5331L10.6062 11.9736L4.04637 5.46666C3.99617 5.41617 3.96758 5.29984 4.05969 5.16797L5.16769 4.05997C5.29978 3.9677 5.41628 3.99654 5.46663 4.04689L12.0262 10.6064L18.5331 4.04666C18.5836 3.99645 18.6999 3.96785 18.8318 4.05997L19.9398 5.16797C20.032 5.30006 20.0032 5.41655 19.9528 5.46691L18.8702 6.54951Z"
+                  fill="var(--ifm-color-primary)"
+                  fillOpacity="1"
                 />
               </svg>
-            </div>
-            <h5 className={styles.title}>{corekit}</h5>
-          </div>
-          <p>Build on top of the Web3Auth infrastructural layer and build your own UX flows.</p>
+            </button>
+          )) || <div className={styles.searchClearButton} />}
         </div>
+        <Select
+          options={productMap}
+          isMulti
+          styles={customSelectButtonStyles}
+          onChange={onChangeProduct}
+          placeholder="Select Product"
+        />
+        <Select
+          options={platformMap}
+          isMulti
+          styles={customSelectButtonStyles}
+          onChange={onChangePlatform}
+          placeholder="Select Platform"
+        />
+        <Select
+          options={blockchainMap}
+          isMulti
+          styles={customSelectButtonStyles}
+          onChange={onChangeBlockchain}
+          placeholder="Select Blockchain"
+          closeMenuOnSelect={false}
+        />
       </div>
-      <h3 className={styles.heading}>2. Select which SDK and platform you intend to use</h3>
       <div className={styles.container}>
-        <div className={styles.list}>
-          <h3>Select which SDK to use</h3>
-          <select value={sdk} onChange={changeSDK}>
-            {product === pnp
-              ? pnplist.map((option) => (
-                  <option value={option.value} key={option.value}>
-                    {option.label}
-                  </option>
-                ))
-              : corekitlist.map((option) => (
-                  <option value={option.value} key={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-          </select>
-        </div>
+        {sortedExampleMap.map((item) => renderArticle(item))}
+        {sortedExampleMap.length === 0 && (
+          <div className={styles.noResults}>
+            <p>No Results Found</p>
+          </div>
+        )}
       </div>
-      <br />
-      <br />
-      <h1>Sample Apps using Web3Auth {sdk}</h1>
-      {sdk === pnpwebmodal ? (
-        <>
-          <h2>Blockchain React Examples</h2>
-          <Tiles tileGroups={PNPModalWebExample} />
-        </>
-      ) : null}
-      {sdk === pnpwebnomodal ? (
-        <>
-          <h2>Blockchain React Examples</h2>
-          <Tiles tileGroups={PNPNoModalWebExample} />
-        </>
-      ) : null}
-      {sdk === pnpandroid ? <Tiles tileGroups={PNPAndroid} /> : null}
-      {sdk === pnpunity ? <Tiles tileGroups={PNPUnity} /> : null}
-      {sdk === pnpios ? <Tiles tileGroups={PNPIos} /> : null}
-      {sdk === pnprn ? <Tiles tileGroups={PNPRN} /> : null}
-      {sdk === pnpflutter ? <Tiles tileGroups={PNPFlutter} /> : null}
-      {sdk === tkeyjs ? <Tiles tileGroups={CKTkey} /> : null}
-      {sdk === tkeyios ? <Tiles tileGroups={CKTkeyiOS} /> : null}
-      {sdk === tkeyandroid ? <Tiles tileGroups={CKTkeyAndroid} /> : null}
-      {sdk === mpccorekit ? <Tiles tileGroups={MPCCK} /> : null}
-      {sdk === corekitnodejs ? <Tiles tileGroups={CKNode} /> : null}
-      {sdk === singlefactorauth ? <Tiles tileGroups={CKSFA} /> : null}
-      {sdk === singlefactorauthandroid ? <Tiles tileGroups={CKSFAAndroid} /> : null}
-      {sdk === singlefactorauthios ? <Tiles tileGroups={CKSFAiOS} /> : null}
-      {sdk === singlefactorauthrn ? <Tiles tileGroups={CKSFARN} /> : null}
-      {sdk === singlefactorauthflutter ? <Tiles tileGroups={CKSFAFlutter} /> : null}
-      {sdk === pnpunreal ? <Tiles tileGroups={PNPUnreal} /> : null}
-    </div>
+    </>
   );
 }
+
+const customSelectButtonStyles: StylesConfig<true> = {
+  container: (provided) => ({
+    ...provided,
+    width: "max-content",
+    minHeight: "42px",
+    maxWidth: "275px",
+    fontWeight: "400",
+    fontSize: "14px",
+    lineHeight: "125%",
+  }),
+  control: (provided) => ({
+    ...provided,
+    background: "var(--ifm-background-surface-color);",
+    color: "var(--w3a-color-icon-gray)",
+    border: "1px solid var(--ifm-color-emphasis-300)",
+    borderRadius: "8px",
+    minHeight: "42px",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    background: "var(--ifm-background-surface-color);",
+    border: "1px solid var(--ifm-color-emphasis-300)",
+    borderRadius: "8px",
+  }),
+  option: (provided, { isDisabled, isFocused, isSelected }) => ({
+    ...provided,
+    backgroundColor: isDisabled
+      ? undefined
+      : isSelected
+        ? "var(--ifm-color-emphasis-300)"
+        : isFocused
+          ? "var(--ifm-color-primary-lightest)"
+          : undefined,
+    cursor: isDisabled ? "not-allowed" : "default",
+  }),
+  multiValue: (styles, { data }) => ({
+    ...styles,
+    color: "var(--ifm-color-primary)",
+    backgroundColor: "var(--ifm-color-primary-lightest)",
+    fontWeight: "600",
+    fontSize: "12px",
+    lineHeight: "125%",
+    borderWidth: "0",
+    borderRadius: "8px",
+  }),
+  multiValueLabel: (styles, { data }) => ({
+    ...styles,
+    color: "var(--ifm-color-primary)",
+    backgroundColor: "var(--ifm-color-primary-lightest)",
+    fontWeight: "600",
+    fontSize: "12px",
+    lineHeight: "125%",
+    borderWidth: "0",
+    borderRadius: "8px",
+  }),
+  multiValueRemove: (styles, { data }) => ({
+    ...styles,
+    color: "var(--ifm-color-primary)",
+    backgroundColor: "var(--ifm-color-primary-lightest)",
+    fontWeight: "600",
+    fontSize: "12px",
+    lineHeight: "125%",
+    borderWidth: "0",
+    borderRadius: "8px",
+  }),
+};
