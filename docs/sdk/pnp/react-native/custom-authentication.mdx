@@ -9,147 +9,95 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import GrowthPlanNote from "@site/src/common/docs/_growth_plan_note.mdx";
 
-Custom Authentication is a way to authenticate users with your own custom authentication service.
-For example, while authenticating with Google, you have the ability to use your own Google Client ID
-and Dashboard to authenticate users directly. To login using your own custom JWT issuers like Auth0,
-AWS Cognito, or Firebase, you can add the your configuration to the `loginConfig` field of the
-`SdkInitParams` object. The `loginConfig` field is a key value map. The key should be one of the
-`LOGIN_PROVIDER` in its string form, and the value should be a JS Object specified below.
+## Overview
 
-First, configure your own verifier in the Web3Auth Dashboard to use custom authentication.
+Custom Authentication allows you to authenticate users using your own custom authentication service
+or third-party providers like Google, Auth0, AWS Cognito, or Firebase. This guide will walk you
+through the process of integrating custom authentication into your React Native app using the
+Web3Auth PnP React Native SDK.
+
+## Prerequisites
+
+Before you start, ensure you have configured a custom verifier in the Web3Auth Dashboard. This
+verifier will be used to facilitate custom authentication.
 
 <GrowthPlanNote />
 
-:::tip Create Custom Verifier
+:::tip
 
-Check out how to create a **[Custom Verifier](/auth-provider-setup/verifiers)** on the Web3Auth
-Dashboard.
+Create Custom Verifier Check out how to create a
+**[Custom Verifier](/auth-provider-setup/verifiers)** on the Web3Auth Dashboard.
 
 :::
 
 :::info using dapp share
 
-- dApp Share is only returned for the Custom verifiers.
-- Also, 2FA should be enabled for the account using it. Use `mfaLevel = MFALevel.MANDATORY` in the
+- dApp Share is only returned for Custom verifiers.
+- 2FA should be enabled for accounts using it. Use `mfaLevel = MFALevel.MANDATORY` in the
   `LoginParams` during login. See **[MFA](/sdk/pnp/react-native/mfa)** for more details.
 
 :::
 
-Then, you should specify the details of your verifier in the value of the `LoginConfig` map, the
-details of this map are as follows.
+## Single Verifier
 
-## `LoginConfig`
+### Step 1: Configure the `LoginConfig`
 
-### Arguments
+To use custom authentication with a single verifier, add the configuration to the `loginConfig`
+parameter of the `SdkInitParams` object during initialization. The `loginConfig` parameter is a
+key-value map where the key should be one of the `LOGIN_PROVIDER` in its string form, and the value
+should be a `LoginConfig` object.
 
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
+```javascript
+import * as WebBrowser from "@toruslabs/react-native-web-browser";
+import Web3Auth, {
+  OPENLOGIN_NETWORK,
+  LOGIN_PROVIDER,
+  TypeOfLogin,
+} from "@web3auth/react-native-sdk";
 
-<TabItem value="table">
-
-| Parameter                | Description                                                                                                                                                                                                                                                                                                                       |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `verifier`               | The name of the verifier that you have registered on the Web3Auth Dashboard. It's a mandatory field, and accepts `string` as a value.                                                                                                                                                                                             |
-| `typeOfLogin`            | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose `google`, a Google sign-in flow will be used. If you choose `jwt`, you should be providing your own JWT token, no sign-in flow will be presented. It's a mandatory field, and accepts `TypeOfLogin` as a value. |
-| `clientId`               | Client id provided by your login provider used for custom verifier. e.g. Google's Client ID or Web3Auth's client Id if using 'jwt' as TypeOfLogin. It's a mandatory field, and accepts `string` as a value.                                                                                                                       |
-| `name?`                  | Display name for the verifier. If null, the default name is used. It accepts `string` as a value.                                                                                                                                                                                                                                 |
-| `description?`           | Description for the button. If provided, it renders as a full length button. else, icon button. It accepts `string` as a value.                                                                                                                                                                                                   |
-| `verifierSubIdentifier?` | The field in JWT token which maps to verifier id. Please make sure you selected correct JWT verifier id in the developer dashboard. It accepts `string` as a value.                                                                                                                                                               |
-| `logoHover?`             | Logo to be shown on mouse hover. It accepts `string` as a value.                                                                                                                                                                                                                                                                  |
-| `logoLight?`             | Light logo for dark background. It accepts `string` as a value.                                                                                                                                                                                                                                                                   |
-| `logoDark?`              | Dark logo for light background. It accepts `string` as a value.                                                                                                                                                                                                                                                                   |
-| `mainOption?`            | Show login button on the main list. It accepts `oolean` as a value. Default value is false.                                                                                                                                                                                                                                       |
-| `showOnModal?`           | Whether to show the login button on modal or not. Default value is true.                                                                                                                                                                                                                                                          |
-| `showOnDesktop?`         | Whether to show the login button on desktop. Default value is true.                                                                                                                                                                                                                                                               |
-| `showOnMobile?`          | Whether to show the login button on mobile. Default value is true.                                                                                                                                                                                                                                                                |
-| `jwtParameters`          | Custom jwt parameters to configure the login. Useful for Auth0 configuration. It accepts `JwtParameters` as a value.                                                                                                                                                                                                              |
-
-</TabItem>
-
-<TabItem value="interface">
-
-```tsx
-export type LoginConfig = Record<
-  string,
-  {
-    verifier: string;
-
-    /**
-     * The type of login. Refer to enum `LOGIN_TYPE`
-     */
-    typeOfLogin: TypeOfLogin;
-
-    /**
-     * Display Name. If not provided, we use the default for openlogin app
-     */
-    name?: string;
-
-    /**
-     * Description for button. If provided, it renders as a full length button. else, icon button
-     */
-    description?: string;
-
-    /**
-     * Custom client_id. If not provided, we use the default for openlogin app
-     */
-    clientId?: string;
-
-    verifierSubIdentifier?: string;
-
-    /**
-     * Logo to be shown on mouse hover. If not provided, we use the default for openlogin app
-     */
-    logoHover?: string;
-
-    /**
-     * Logo to be shown on dark background (dark theme). If not provided, we use the default for openlogin app
-     */
-    logoLight?: string;
-
-    /**
-     * Logo to be shown on light background (light theme). If not provided, we use the default for openlogin app
-     */
-    logoDark?: string;
-
-    /**
-     * Show login button on the main list
-     */
-    mainOption?: boolean;
-
-    /**
-     * Whether to show the login button on modal or not
-     */
-    showOnModal?: boolean;
-
-    /**
-     * Whether to show the login button on desktop
-     */
-    showOnDesktop?: boolean;
-
-    /**
-     * Whether to show the login button on mobile
-     */
-    showOnMobile?: boolean;
-    /**
-     * Custom jwt parameters to configure the login. Useful for Auth0 configuration
-     */
-    jwtParameters?: JwtParameters;
-  }
->;
+const web3auth = new Web3Auth(WebBrowser, {
+  clientId: "YOUR_CLIENT_ID", // web3auth's client id
+  network: OPENLOGIN_NETWORK.MAINNET, // or other networks
+  loginConfig: {
+    google: {
+      verifier: "google-verifier", // Get this from the Web3Auth Dashboard
+      typeOfLogin: TypeOfLogin.GOOGLE,
+      clientId: "GOOGLE_CLIENT_ID", // Google's client id
+    },
+    jwt: {
+      verifier: "jwt-verifier", // Get this from the Web3Auth Dashboard
+      typeOfLogin: TypeOfLogin.JWT,
+      clientId: "JWT_CLIENT_ID", // Custom JWT client id
+    },
+  },
+});
 ```
 
-</TabItem>
+### Step 2: `LoginConfig` Object Structure
 
-</Tabs>
+The `LoginConfig` object contains various parameters that define the behavior of the custom
+authentication process. Below are the details of the `LoginConfig` object:
 
-### `typeOfLogin`
+| Parameter                | Description                                                                                                                                                                                                                                                                                                   |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `verifier`               | The name of the verifier that you have registered on the Web3Auth Dashboard. It's a mandatory field and accepts a `string` as a value.                                                                                                                                                                        |
+| `typeOfLogin`            | Type of login for this verifier. This value will affect the login flow. For example, if you choose `google`, a Google sign-in flow will be used. If you choose `jwt`, you should provide your own JWT token, and no sign-in flow will be presented. It's a mandatory field and accepts a `TypeOfLogin` value. |
+| `clientId`               | The client ID provided by your login provider, e.g., Google's Client ID or Web3Auth's client ID if using `jwt` as `typeOfLogin`. It's a mandatory field and accepts a `string` as a value.                                                                                                                    |
+| `name?`                  | Display name for the verifier. If null, the default name is used. It accepts a `string` as a value.                                                                                                                                                                                                           |
+| `description?`           | Description for the button. If provided, it renders as a full-length button; otherwise, an icon button is shown. It accepts a `string` as a value.                                                                                                                                                            |
+| `verifierSubIdentifier?` | The field in the JWT token that maps to the verifier ID. Ensure you selected the correct JWT verifier ID in the developer dashboard. It accepts a `string` as a value.                                                                                                                                        |
+| `logoHover?`             | Logo to be shown on mouse hover. It accepts a `string` as a value.                                                                                                                                                                                                                                            |
+| `logoLight?`             | Light logo for dark backgrounds. It accepts a `string` as a value.                                                                                                                                                                                                                                            |
+| `logoDark?`              | Dark logo for light backgrounds. It accepts a `string` as a value.                                                                                                                                                                                                                                            |
+| `mainOption?`            | Shows the login button on the main list. It accepts a `boolean` as a value. The default value is `false`.                                                                                                                                                                                                     |
+| `showOnModal?`           | Whether to show the login button on the modal. The default value is `true`.                                                                                                                                                                                                                                   |
+| `showOnDesktop?`         | Whether to show the login button on the desktop. The default value is `true`.                                                                                                                                                                                                                                 |
+| `showOnMobile?`          | Whether to show the login button on mobile. The default value is `true`.                                                                                                                                                                                                                                      |
+| `jwtParameters?`         | Custom JWT parameters to configure the login. Useful for Auth0 configuration. It accepts `JwtParameters` as a value.                                                                                                                                                                                          |
 
-```tsx
+### Step 3: `TypeOfLogin` Enum
+
+```typescript
 export type TypeOfLogin =
   | "google"
   | "facebook"
@@ -186,328 +134,103 @@ export const LOGIN_PROVIDER = {
 } as const;
 ```
 
-### Example
+### Step 4: Example Implementations
 
-<Tabs
-  defaultValue="google"
-  values={[
-    { label: "Google", value: "google" },
-    { label: "Facebook", value: "facebook" },
-    { label: "JWT", value: "jwt" },
-  ]}
->
+#### Using Google Login
 
-<TabItem value="google">
-
-```tsx
-import * as WebBrowser from "@toruslabs/react-native-web-browser";
-// or  import * as WebBrowser from "expo-web-browser"; (for expo)
-
-const web3auth = new Web3Auth(WebBrowser, {
-  clientId:
-    "BC5bANkU4-fil7C5s1uKzRfF0VGqbuaxDQiLnQ8WgF7SEA32lGegAhu7dk4dZf3Rk397blIvfWytXwsRvs9dOaQ",
-  network: Network.TESTNET,
-  // highlight-start
-  loginConfig: {
-    google: {
-      verifier: "verifier-name", // get it from web3auth dashboard
-      typeOfLogin: TypeOfLogin.GOOGLE,
-      clientId: "google_client_id", // google's client id
-    },
+```javascript
+web3auth.login({
+  loginProvider: LOGIN_PROVIDER.GOOGLE,
+  redirectUrl: `${scheme}://openlogin`,
+  extraLoginOptions: {
+    login_hint: "user@example.com", // Optional: pre-fill the email field
   },
-  // highlight-end
 });
 ```
 
-</TabItem>
+#### Using JWT Login (e.g., Auth0)
 
-<TabItem value="facebook">
-
-```tsx
-import * as WebBrowser from "@toruslabs/react-native-web-browser";
-// or  import * as WebBrowser from "expo-web-browser"; (for expo)
-
-const web3auth = new Web3Auth(WebBrowser, {
-  clientId:
-    "BC5bANkU4-fil7C5s1uKzRfF0VGqbuaxDQiLnQ8WgF7SEA32lGegAhu7dk4dZf3Rk397blIvfWytXwsRvs9dOaQ",
-  network: Network.TESTNET,
-  // highlight-start
-  loginConfig: {
-    facebook: {
-      verifier: "verifier-name", // get it from web3auth dashboard
-      typeOfLogin: TypeOfLogin.FACEBOOK,
-      clientId: "facebook_client_id", // facebook's client id
-    },
-  },
-  // highlight-end
-});
-```
-
-</TabItem>
-
-<TabItem value="jwt">
-
-```tsx
-import * as WebBrowser from "@toruslabs/react-native-web-browser";
-// or  import * as WebBrowser from "expo-web-browser"; (for expo)
-
-const web3auth = new Web3Auth(WebBrowser, {
-  clientId:
-    "BC5bANkU4-fil7C5s1uKzRfF0VGqbuaxDQiLnQ8WgF7SEA32lGegAhu7dk4dZf3Rk397blIvfWytXwsRvs9dOaQ",
-  network: Network.TESTNET,
-  // highlight-start
-  loginConfig: {
-    jwt: {
-      verifier: "verifier-name", // get it from web3auth dashboard
-      typeOfLogin: TypeOfLogin.JWT,
-      clientId: "web3auth's client id", // web3auth's client id
-    },
-  },
-  // highlight-end
-});
-```
-
-</TabItem>
-
-</Tabs>
-
-## `ExtraLoginOptions` for special login methods
-
-In addition to the `LoginConfig` you can pass extra options to the `login` function to configure the
-login flow for cases requiring additional info for enabling login. The `ExtraLoginOptions` accepts
-the following parameters:
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
-
-<TabItem value="table">
-
-| Parameter                    | Description                                                                                                                                                                                                                      |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `additionalParams?`          | Additional params in `[key: string]` format for OAuth login, use id_token(JWT) to authenticate with web3auth.                                                                                                                    |
-| `domain?`                    | Your custom authentication domain in `string` format. For example, if you are using Auth0, it can be example.au.auth0.com.                                                                                                       |
-| `client_id?`                 | Client id in `string` format, provided by your login provider used for custom verifier.                                                                                                                                          |
-| `leeway?`                    | The value used to account for clock skew in JWT expirations. The value is in the seconds, and ideally should no more than 60 seconds or 120 seconds at max. It takes `string` as a value.                                        |
-| `verifierIdField?`           | The field in JWT token which maps to verifier id. Please make sure you selected correct JWT verifier id in the developer dashboard. It takes `string` as a value.                                                                |
-| `isVerifierIdCaseSensitive?` | `boolean` to confirm Whether the verifier id field is case sensitive or not.                                                                                                                                                     |
-| `display?`                   | Allows developers the configure the display of UI. It takes `string` as a value.                                                                                                                                                 |
-| `prompt?`                    | Prompt shown to the user during authentication process. It takes `string` as a value.                                                                                                                                            |
-| `max_age?`                   | Max time allowed without reauthentication. If the last time user authenticated is greater than this value, then user must reauthenticate. It takes `string` as a value.                                                          |
-| `ui_locales?`                | The space separated list of language tags, ordered by preference. For instance `fr-CA fr en`.                                                                                                                                    |
-| `id_token_hint?`             | It denotes the previously issued ID token. It takes `string` as a value.                                                                                                                                                         |
-| `id_token?`                  | JWT (ID Token) to be passed for login.                                                                                                                                                                                           |
-| `login_hint?`                | It is used to send the user's email address during Email Passwordless login. It takes `string` as a value.                                                                                                                       |
-| `acr_values?`                | acc_values                                                                                                                                                                                                                       |
-| `scope?`                     | The default scope to be used on authentication requests. The defaultScope defined in the Auth0Client is included along with this scope. It takes `string` as a value.                                                            |
-| `audience?`                  | The audience, presented as the aud claim in the access token, defines the intended consumer of the token. It takes `string` as a value.                                                                                          |
-| `connection?`                | The name of the connection configured for your application. If null, it will redirect to the Auth0 Login Page and show the Login Widget. It takes `string` as a value.                                                           |
-| `redirect_uri?`              | It can be used to specify the default url, where your custom jwt verifier can redirect your browser to with the result. If you are using Auth0, it must be whitelisted in the Allowed Callback URLs in your Auth0's application. |
-
-</TabItem>
-
-<TabItem value="interface">
-  <Tabs
-  defaultValue="extra"
-  values={[
-    { label: "ExtraLoginOptions", value: "extra" },
-    { label: "BaseLoginOptions", value: "base" },
-  ]}
->
-
-<TabItem value="extra">
-
-```tsx
-export interface ExtraLoginOptions extends BaseLoginOptions {
-  /**
-   * Your Auth0 account domain such as `'example.auth0.com'`,
-   * `'example.eu.auth0.com'` or , `'example.mycompany.com'`
-   * (when using [custom domains](https://auth0.com/docs/custom-domains))
-   */
-  domain?: string;
-  /**
-   * The Client ID found on your Application settings page
-   */
-  client_id?: string;
-  /**
-   * The default URL where Auth0 will redirect your browser to with
-   * the authentication result. It must be whitelisted in
-   * the "Allowed Callback URLs" field in your Auth0 Application's
-   * settings. If not provided here, it should be provided in the other
-   * methods that provide authentication.
-   */
-  redirect_uri?: string;
-  /**
-   * The value in seconds used to account for clock skew in JWT expirations.
-   * Typically, this value is no more than a minute or two at maximum.
-   * Defaults to 60s.
-   */
-  leeway?: number;
-  /**
-   * The field in jwt token which maps to verifier id
-   */
-  verifierIdField?: string;
-  /**
-   * Whether the verifier id field is case sensitive
-   * @defaultValue true
-   */
-  isVerifierIdCaseSensitive?: boolean;
-}
-```
-
-</TabItem>
-
-<TabItem value="base">
-
-```tsx
-export interface BaseLoginOptions {
-  /**
-   * If you need to send custom parameters to the Authorization Server,
-   * make sure to use the original parameter name.
-   */
-  [key: string]: unknown;
-  /**
-   * - `'page'`: displays the UI with a full page view
-   * - `'popup'`: displays the UI with a popup window
-   * - `'touch'`: displays the UI in a way that leverages a touch interface
-   * - `'wap'`: displays the UI with a "feature phone" type interface
-   */
-  display?: "page" | "popup" | "touch" | "wap" | string;
-  /**
-   * - `'none'`: do not prompt user for login or consent on re-authentication
-   * - `'login'`: prompt user for re-authentication
-   * - `'consent'`: prompt user for consent before processing request
-   * - `'select_account'`: prompt user to select an account
-   */
-  prompt?: "none" | "login" | "consent" | "select_account" | string;
-  /**
-   * Maximum allowable elapsed time (in seconds) since authentication.
-   * If the last time the user authenticated is greater than this value,
-   * the user must be re-authenticated.
-   */
-  max_age?: string | number;
-  /**
-   * The space-separated list of language tags, ordered by preference.
-   * For example: `'fr-CA fr en'`.
-   */
-  ui_locales?: string;
-  /**
-   * Previously issued ID Token.
-   */
-  id_token_hint?: string;
-  /**
-   * The user's email address or other identifier. When your app knows
-   * which user is trying to authenticate, you can provide this parameter
-   * to pre-fill the email box or select the right session for sign-in.
-   *
-   * This currently only affects the classic Lock experience.
-   */
-  login_hint?: string;
-  acr_values?: string;
-  /**
-   * The default scope to be used on authentication requests.
-   * The defaultScope defined in the Auth0Client is included
-   * along with this scope
-   */
-  scope?: string;
-  /**
-   * The default audience to be used for requesting API access.
-   */
-  audience?: string;
-  /**
-   * The name of the connection configured for your application.
-   * If null, it will redirect to the Auth0 Login Page and show
-   * the Login Widget.
-   */
-  connection?: string;
-}
-```
-
-</TabItem>
-</Tabs>
-</TabItem>
-</Tabs>
-
-### Using Auth0 Login
-
-Auth0 has a special login flow, called the SPA flow. This flow requires a `client_id` and `domain`
-to be passed, and Web3Auth will get the JWT `id_token` from Auth0 directly. You can pass these
-configurations in the `ExtraLoginOptions` object in the login function.
-
-```tsx
-const web3auth = new Web3Auth(WebBrowser, {
-  clientId: "YOUR_CLIENT_ID", // web3auth's client id
-  network: OPENLOGIN_NETWORK.TESTNET, // or other networks
-  //highlight-start
-  loginConfig: {
-    jwt: {
-      verifier: "verifier-name", // get it from web3auth dashboard for auth0 configuration
-      typeOfLogin: "jwt",
-      clientId: "your auth0 client id", // get it from auth0 dashboard
-    },
-  },
-  //highlight-end
-});
+```javascript
 web3auth.login({
   loginProvider: LOGIN_PROVIDER.JWT,
-  redirectUrl: resolvedRedirectUrl, // redirect url after login
-  //highlight-start
+  redirectUrl: `${scheme}://openlogin`,
   extraLoginOptions: {
-    domain: "example.com", // domain of your auth0 app
-    verifierIdField: "sub", // The field in jwt token which maps to verifier id.
+    id_token: "YOUR_JWT_ID_TOKEN", // JWT ID token
+    domain: "https://example.auth0.com", // Auth0 domain
+    verifierIdField: "sub", // The field in JWT token mapping to verifier id
   },
-  //highlight-end
 });
 ```
 
-### Custom JWT Login
+## Aggregate Verifier
 
-If you're using any other provider like Firebase/ AWS Cognito or deploying your own Custom JWT
-server, you need to put the jwt token into the `id_token` field of the `extraLoginOptions`.
+You can use an aggregate verifier to combine multiple login methods, allowing users to log in using
+different providers but receive the same address.
 
-```tsx
+### Step 1: Configure the `LoginConfig`
+
+To use aggregate verifiers, set up the `loginConfig` object with multiple providers under a single
+verifier.
+
+```javascript
 const web3auth = new Web3Auth(WebBrowser, {
-  clientId: "YOUR_CLIENT_ID", // web3auth's client id
-  network: Network.TESTNET,
-  //highlight-start
+  clientId: "YOUR_CLIENT_ID", // Web3Auth's client id
+  network: OPENLOGIN_NETWORK.MAINNET, // or other networks
   loginConfig: {
-    jwt: {
-      verifier: "verifier-name", // get it from web3auth dashboard
+    google: {
+      verifier: "aggregate-verifier",
+      verifierSubIdentifier: "google-sub-id",
+      typeOfLogin: TypeOfLogin.GOOGLE,
+      clientId: "GOOGLE_CLIENT_ID",
+    },
+    auth0emailpasswordless: {
+      verifier: "aggregate-verifier",
+      verifierSubIdentifier: "auth0-sub-id",
       typeOfLogin: TypeOfLogin.JWT,
-      clientId: "YOUR_CLIENT_ID", // web3auth's client id
+      clientId: "AUTH0_CLIENT_ID",
+      jwtParameters: {
+        domain: "https://example.auth0.com",
+        verifierIdField: "email",
+        isVerifierIdCaseSensitive: false,
+      },
     },
   },
-  //highlight-end
-});
-web3auth.login({
-  loginProvider: LoginProvider.JWT,
-  redirectUrl: resolvedRedirectUrl, // redirect url after login
-  //highlight-start
-  extraLoginOptions: {
-    id_token: "your JWT id token",
-    verifierIdField: "sub", // auth0 generally uses sub as unique identifier
-  },
-  //highlight-end
 });
 ```
 
-### Email Passwordless
+### Step 2: Example Implementations
 
-To use the `EMAIL_PASSWORDLESS` login, you need to put the email into the `login_hint` field of the
-`extraLoginOptions`.
+#### Using Google and Auth0 Combined Login
 
-```tsx
+```javascript
 web3auth.login({
-  loginProvider: LoginProvider.EMAIL_PASSWORDLESS,
-  redirectUrl: resolvedRedirectUrl,
-  //highlight-start
-  extraLoginOptions: {
-    login_hint: "hello@web3auth.io",
-  },
-  //highlight-end
+  loginProvider: LOGIN_PROVIDER.GOOGLE, // or LOGIN_PROVIDER.JWT
+  redirectUrl: `${scheme}://openlogin`,
 });
 ```
+
+## Extra Login Options for Special Cases
+
+The `extraLoginOptions` parameter can be used to pass additional options required by specific login
+providers.
+
+| Parameter                    | Description                                                                                                                                                                                                                                                 |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `additionalParams?`          | Additional params in `[key: string]` format for OAuth login. Use `id_token` (JWT) to authenticate with Web3Auth.                                                                                                                                            |
+| `domain?`                    | Your custom authentication domain in `string` format. For example, if you are using Auth0, it can be `example.auth0.com`.                                                                                                                                   |
+| `client_id?`                 | Client ID in `string` format, provided by your login provider and used for the custom verifier.                                                                                                                                                             |
+| `leeway?`                    | The value used to account for clock skew in JWT expirations. The value is in seconds, ideally no more than 60 seconds or 120 seconds at max. It takes a `string` as a value.                                                                                |
+| `verifierIdField?`           | The field in JWT token which maps to verifier ID. Ensure you select the correct JWT verifier ID in the developer dashboard. It takes a `string` as a value.                                                                                                 |
+| `isVerifierIdCaseSensitive?` | Boolean to confirm whether the verifier ID field is case-sensitive or not.                                                                                                                                                                                  |
+| `display?`                   | Allows developers to configure the display of UI. It takes a `string` as a value.                                                                                                                                                                           |
+| `prompt?`                    | Prompt shown to the user during the authentication process. It takes a `string` as a value.                                                                                                                                                                 |
+| `max_age?`                   | Maximum allowable elapsed time (in seconds) since authentication. If the last time user authenticated is greater than this value, the user must reauthenticate. It takes a `string` as a value.                                                             |
+| `ui_locales?`                | The space-separated list of language tags, ordered by preference. For example `fr-CA fr en`.                                                                                                                                                                |
+| `id_token_hint?`             | It denotes the previously issued ID token. It takes a `string` as a value.                                                                                                                                                                                  |
+| `id_token?`                  | JWT (ID Token) to be passed for login.                                                                                                                                                                                                                      |
+| `login_hint?`                | It is used to send the user's email address during Email Passwordless login. It takes a `string` as a value.                                                                                                                                                |
+| `acr_values?`                | `acr_values` is a space-separated string that specifies the desired Authentication Context Class Reference values.                                                                                                                                          |
+| `scope?`                     | The default scope to be used on authentication requests. The `defaultScope` defined in the Auth0Client is included along with this scope. It takes a `string` as a value.                                                                                   |
+| `audience?`                  | The audience, presented as the `aud` claim in the access token, defines the intended consumer of the token. It takes a `string` as a value.                                                                                                                 |
+| `connection?`                | The name of the connection configured for your application. If null, it will redirect to the Auth0 Login Page and show the Login Widget. It takes a `string` as a value.                                                                                    |
+| `redirect_uri?`              | It can be used to specify the default URL where your custom JWT verifier can redirect your browser with the result. If using Auth0, it must be whitelisted in the Allowed Callback URLs in your Auth0 application settings. It takes a `string` as a value. |
