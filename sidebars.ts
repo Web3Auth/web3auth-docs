@@ -587,6 +587,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Hedera",
+              items: [
+                "connect-blockchain/evm/hedera/hedera",
+                "connect-blockchain/evm/hedera/web",
+                "connect-blockchain/evm/hedera/android",
+                "connect-blockchain/evm/hedera/ios",
+                "connect-blockchain/evm/hedera/react-native",
+                "connect-blockchain/evm/hedera/flutter",
+                "connect-blockchain/evm/hedera/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Kinto",
               items: [
                 "connect-blockchain/evm/kinto/kinto",

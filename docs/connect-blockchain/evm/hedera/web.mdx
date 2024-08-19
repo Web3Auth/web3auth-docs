@@ -1,11 +1,11 @@
 ---
-title: Integrate Web3Auth with the Rootstock Blockchain in JavaScript
+title: Integrate Web3Auth with the Hedera Blockchain in JavaScript
 sidebar_label: Web
-image: "banners/rootstock.png"
+image: "banners/hedera.png"
 
-keywords: [rootstock, web3auth, authentication, blockchain]
+keywords: [hedera, web3auth, authentication, blockchain]
 description:
-  "Integrate Web3Auth with the Rootstock Blockchain in JavaScript | Documentation - Web3Auth"
+  "Integrate Web3Auth with the Hedera Blockchain in JavaScript | Documentation - Web3Auth"
 ---
 
 import InstallationSnippet from "@site/src/common/docs/web-connect-blockchain/_evm-installation.mdx";
@@ -26,10 +26,10 @@ import Tabs from "@theme/Tabs";
 import SEO from "@site/src/components/SEO";
 
 <SEO
-  title="Integrate Web3Auth with the Rootstock Blockchain in JavaScript"
-  description="Integrate Web3Auth with the Rootstock Blockchain in JavaScript | Documentation - Web3Auth"
-  image="https://web3auth.io/docs/banners/rootstock.png"
-  slug="/connect-blockchain/evm/rootstock/web"
+  title="Integrate Web3Auth with the Hedera Blockchain in JavaScript"
+  description="Integrate Web3Auth with the Hedera Blockchain in JavaScript | Documentation - Web3Auth"
+  image="https://web3auth.io/docs/banners/hedera.png"
+  slug="/connect-blockchain/evm/hedera/web"
 />
 
 While using the Web3Auth Web SDK, you get a [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193)
@@ -37,14 +37,14 @@ provider, similar to the [Metamask Provider](https://docs.metamask.io/guide/ethe
 This provider can be used with libraries like
 [`web3.js`](https://web3js.readthedocs.io/en/v1.2.8/getting-started.html),
 [`ethers.js`](https://docs.ethers.io/v5/getting-started/),
-[`viem`](https://viem.sh/docs/getting-started) etc. to make [Rootstock](https://rootstock.com/)
-blockchain calls like getting the user's `account`, fetching `balance`, `sign transaction`,
-`send transaction`, `read` from and `write` to the smart contract, etc. We have highlighted a few
-here to get you started quickly on that.
+[`viem`](https://viem.sh/docs/getting-started) etc. to make [Hedera](https://hedera.com/) blockchain
+calls like getting the user's `account`, fetching `balance`, `sign transaction`, `send transaction`,
+`read` from and `write` to the smart contract, etc. We have highlighted a few here to get you
+started quickly on that.
 
 ## Installation
 
-To interact with the Rootstock blockchain, you can use either library with Web3Auth.
+To interact with the Hedera blockchain, you can use either library with Web3Auth.
 
 <InstallationSnippet />
 
@@ -61,7 +61,9 @@ after successful authentication.
   values={[
     { label: "Mainnet", value: "mainnet", },
     { label: "Testnet", value: "testnet", },
-  ]}
+    { label: "Previewnet", value: "previewnet", },
+]}
+
 >
 
 <TabItem
@@ -71,13 +73,13 @@ after successful authentication.
 ```typescript
 const chainConfig = {
   chainNamespace: "eip155",
-  chainId: "0x1e",
-  rpcTarget: "https://rootstock.drpc.org",
-  displayName: "Rootstock Mainnet",
-  blockExplorerUrl: "https://explorer.rootstock.io/",
-  ticker: "RBTC",
-  tickerName: "RBTC",
-  logo: "https://pbs.twimg.com/profile_images/1592915327343624195/HPPSuVx3_400x400.jpg",
+  chainId: "0x127",
+  rpcTarget: "https://mainnet.hashio.io/api",
+  displayName: "Hedera Mainnet",
+  blockExplorerUrl: "https://hashscan.io/mainnet/",
+  ticker: "HBAR",
+  tickerName: "HBAR",
+  logo: "https://cryptologos.cc/logos/hedera-hbar-logo.png?v=033",
 };
 ```
 
@@ -89,13 +91,31 @@ const chainConfig = {
 ```typescript
 const chainConfig = {
   chainNamespace: "eip155",
-  chainId: "0x1f",
-  rpcTarget: "https://public-node.testnet.rsk.co",
-  displayName: "Rootstock Testnet",
-  blockExplorerUrl: "https://explorer.testnet.rootstock.io/",
-  ticker: "tRBTC",
-  tickerName: "tRBTC",
-  logo: "https://pbs.twimg.com/profile_images/1592915327343624195/HPPSuVx3_400x400.jpg",
+  chainId: "0x128",
+  rpcTarget: "https://testnet.hashio.io/api",
+  displayName: "Hedera Testnet",
+  blockExplorerUrl: "https://hashscan.io/testnet/",
+  ticker: "HBAR",
+  tickerName: "HBAR",
+  logo: "https://cryptologos.cc/logos/hedera-hbar-logo.png?v=033",
+};
+```
+
+</TabItem>
+<TabItem
+  value="previewnet"
+>
+
+```typescript
+const chainConfig = {
+  chainNamespace: "eip155",
+  chainId: "0x129",
+  rpcTarget: "https://previewnet.hashio.io/api",
+  displayName: "Hedera Previewnet",
+  blockExplorerUrl: "https://hashscan.io/previewnet/",
+  ticker: "HBAR",
+  tickerName: "HBAR",
+  logo: "https://cryptologos.cc/logos/hedera-hbar-logo.png?v=033",
 };
 ```
 
