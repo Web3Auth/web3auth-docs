@@ -652,6 +652,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Morph",
+              items: [
+                "connect-blockchain/evm/morph/morph",
+                "connect-blockchain/evm/morph/web",
+                "connect-blockchain/evm/morph/android",
+                "connect-blockchain/evm/morph/ios",
+                "connect-blockchain/evm/morph/react-native",
+                "connect-blockchain/evm/morph/flutter",
+                "connect-blockchain/evm/morph/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Neon",
               items: [
                 "connect-blockchain/evm/neon/neon",
