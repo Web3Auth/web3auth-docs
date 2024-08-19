@@ -587,6 +587,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Kinto",
+              items: [
+                "connect-blockchain/evm/kinto/kinto",
+                "connect-blockchain/evm/kinto/web",
+                "connect-blockchain/evm/kinto/android",
+                "connect-blockchain/evm/kinto/ios",
+                "connect-blockchain/evm/kinto/react-native",
+                "connect-blockchain/evm/kinto/flutter",
+                "connect-blockchain/evm/kinto/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Klaytn",
               items: [
                 "connect-blockchain/evm/klaytn/klaytn",
