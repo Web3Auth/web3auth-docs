@@ -717,6 +717,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Rootstock",
+              items: [
+                "connect-blockchain/evm/rootstock/rootstock",
+                "connect-blockchain/evm/rootstock/web",
+                "connect-blockchain/evm/rootstock/android",
+                "connect-blockchain/evm/rootstock/ios",
+                "connect-blockchain/evm/rootstock/react-native",
+                "connect-blockchain/evm/rootstock/flutter",
+                "connect-blockchain/evm/rootstock/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Saakuru",
               items: [
                 "connect-blockchain/evm/saakuru/saakuru",
