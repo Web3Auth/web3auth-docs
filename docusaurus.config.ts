@@ -191,7 +191,7 @@ const config: Config = {
           beforeDefaultRehypePlugins: [],
         },
         sitemap: {
-          changefreq: "weekly" as any,
+          changefreq: "daily" as any,
           priority: 0.8,
         },
       } satisfies Preset.Options,
