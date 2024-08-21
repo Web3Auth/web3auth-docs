@@ -124,10 +124,25 @@ const tKey = new TKeyDefault({
 });
 ```
 
-### `privyKey` is now renamed to `secp256k1Key` in TKey
+### `privKey` is now renamed to `secp256k1Key` in `TKey` and `ReconstructedKeyResult`
 
-The `privyKey` getter which used to return the secp256k1 curve private key is now renamed to
-`secp256k1Key`.
+The `privKey` getter in `Tkey` which used to return the secp256k1 curve private key is now renamed
+to `secp256k1Key`.
+
+#### Before (v13):
+
+```tsx
+const privateKey = tKey.privKey?.toString("hex");
+```
+
+#### After (v15):
+
+```tsx
+const privateKey = tKey.secp256k1Key?.toString("hex");
+```
+
+Similar to `Tkey`, the `privyKey` in `ReconstructedKeyResult` is now renamed to `secp256k1Key`. This
+has been done to improve developer experience.
 
 #### Before (v13):
 

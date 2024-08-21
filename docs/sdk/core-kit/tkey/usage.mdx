@@ -140,11 +140,11 @@ This function returns the private key of the user once the threshold has been me
 reconstructKey(_reconstructKeyMiddleware?: boolean): Promise<ReconstructedKeyResult>;
 
 export type ReconstructedKeyResult = {
-    privKey: BN;
+    secp256k1Key: BN;
     ed25519Seed?: Buffer;
     seedPhrase?: BN[];
     allKeys?: BN[];
-};
+};;
 ```
 
 ```tsx title="Example"
@@ -152,7 +152,7 @@ const { requiredShares } = tKey.getKeyDetails();
 
 if (requiredShares <= 0) {
   const reconstructedKeyResult = await tKey.reconstructKey();
-  const privateKey = reconstructedKeyResult?.privKey.toString("hex");
+  const privateKey = reconstructedKeyResult?.secp256k1Key.toString("hex");
   console.log("Private Key: ", privateKey);
 }
 ```
