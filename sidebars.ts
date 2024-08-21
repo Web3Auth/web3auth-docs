@@ -984,7 +984,6 @@ const sidebars: SidebarsConfig = {
         "sdk/pnp/web/adapters/wallet-connect-v1",
         "sdk/pnp/web/adapters/wallet-connect-v2",
         "sdk/pnp/web/adapters/coinbase",
-        "sdk/pnp/web/adapters/slope",
         "sdk/pnp/web/adapters/solflare",
       ],
     },
