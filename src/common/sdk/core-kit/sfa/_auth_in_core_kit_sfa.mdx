@@ -1,45 +1,74 @@
-Let's look at the general authentication flow at Web3Auth.
+## How Authentication works
 
-When a user logs in with Web3Auth, the user's account can be in two states:
+The Single Factor Auth (SFA) SDK enables the creation of embedded wallets using your preferred
+authentication provider. Unlike the traditional auth service flow, where users are redirected to
+Web3Auth's user flow screens for verification, the SFA SDK facilitates seamless authentication
+without requiring a redirect. For a clearer understanding, please refer to the user flow screens
+below.
 
-- **Account Without MFA**: When the User logs in with only a social login and the key is secured by
-  the Web3Auth network.
-- **Account With MFA**: When the User enables MFA by adding other shares like password, backup
-  share, device share, etc. to their existing account.
+![Web3Auth Auth Services Flow](/images/whitelabel/user-flow-screens.gif)
 
-:::warning warning
+Since SFA handles authentication without redirect, you'll need to create a verifier and manage the
+OAuth login yourself. After setting up the verifier and completing the OAuth login, pass the JWT
+token, verifier name, and JWT verifier ID. These details are sent to the Web3Auth network, where
+they are verified using the JWKS and authentication fields specified in your verifier.
 
-This SDK only works for users who have **not enabled MFA**.
+On the Web3Auth network, there are nine nodes that independently verify these details. Verification
+is considered successful when at least five out of the nine nodes confirm the details. Once
+authentication is successful, you can use the private key to derive the user's public key and
+perform on-chain transactions.
 
-For MFA-enabled users, you'll see
-`Error("User has already enabled MFA, please use the Web3Auth PnP Web or Mobile SDKs for login with mfa");`
+Now that you understand how authentication works in the SFA SDK, let's explore how to create a
+verifier.
 
-:::
+## Create Verifier
 
-### Without Openlogin Redirection Flow
+Web3Auth providers
 
-By default, to reconstruct the key in both states, Web3Auth SDKs redirect the user to
-`https://auth.web3auth.io`. Where all the computation to reconstruct the key is done. The advantage
-of this approach is that it makes it easy for applications to integrate web3auth SDK without having
-to worry about the key reconstruction process. But sometimes, applications want to reconstruct the
-key in their application context, where the authentication flow described can be used with this SDK.
+- Social Login Providers: Social Login Providers allows you to easily integrate popular social login
+  providers like Google, Auth0, Facebook, Discord, and Twitch.
+  - Custom Provider: Custom Provider allows you to bring your own OAuth provider of your choice to
+    Web3Auth. This set up is particularly useful for applications integrating federated identity
+    providers like Firebase, Cognito, or Okta, allowing for a tailored authentication experience. If
+    you want to integrate your in house authentication provider, you can choose Custom Provider.
+  - Aggregate Multiple Providers: Since addresses generated for the users are specific to the
+    verifiers, you can create an aggregate verifier to combine Google and Email Passwordless logins
+    under a single verifier ensure that users receive the same private key regardless of their
+    chosen method.
 
-## Create `Custom Auth` Verifier
+1. Go to the [Web3Auth dashboard](https://dashboard.web3auth.io) and select your project. Click on
+   the `Custom Authentication` tab and then click on the `Create Verifier` button to make a new
+   verifier.
 
-Once you click on the `Create Verifier` button on the Web3Auth Dashboard, you'll see a toggle
-similar to these, where you can create a custom verifier for your use case.
+   ![Custom Authentication Dashboard](/images/dashboard/custom-authentication.png)
 
-![Web3Auth Plug and Play Login Modal](/dashboard/verifiers/create-verifiers.gif)
+1. Give a unique name to your verifier in the `Verifier Identifier` field. e.g., `sfa-verifier`.
 
-Visit [Auth Provider Setup](/auth-provider-setup/byo-jwt-provider#set-up-custom-jwt-verifier) to
-learn more about creating custom verifiers.
+1. From the list of Login Providers, you can select the right one. Here we have selected Custom
+   Providers, and entered the JWKS (JSON Web Key Set) endpoint URL in the JWKS Endpoint field. e.g.,
+   `https://your-domain/.well-known/jwks.json`
 
-## Filled Custom JWT Verifier
+   ![Create Verifier on Web3Auth Dashboard](/images/dashboard/create-verifier-sfa.png)
 
-![Custom JSON Web Token Provider on Web3Auth Dashboard](/dashboard/verifiers/custom-jsonwebtoken-verifier.png)
+1. (Optional) If you have already have s sample of JWT token using that will be generated through
+   OAuth, you can paste a sample JWT token in the `Paste a JWT Token here` field. This is optional,
+   but it helps you select the correct JWT validation rules.
 
-:::note
+   ![Paste JWT token](/images/dashboard/paste-jwt-token.png)
 
-These verifier details will be used in the next step.
+1. Select the JWT Verifier ID from the dropdown list of `JWT Verifier ID`.
 
-:::
+   ![Select the JWT Verifier ID](/images/dashboard/telegram-verifier-sub.png)
+
+1. Next, click on `Add Custom Validation` in the `Select JWT validation` section. Then, input `iss`
+   in the Field and `https://api.telegram.org` in the Value field. And click on the `Add Validation`
+   button.
+
+   ![Telegram Verifier validation rules on Web3Auth Dashboard](/images/dashboard/telegram-verifier-validation.png)
+
+1. Finally, click on the `Create` button to create the Telegram Custom Authentication verifier.
+
+   ![Telegram Verifier on Web3Auth Dashboard](/images/dashboard/telegram-verifier-click-create.png)
+
+   It typically takes 5-10 minutes for the verifier to go live. Once deployed & live, you'll receive
+   an email and the dashboard will display the 'Live' status for the verifier.
