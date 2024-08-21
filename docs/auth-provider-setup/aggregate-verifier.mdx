@@ -1,45 +1,64 @@
 ---
-title: Creating Aggregate Verifier on the Web3Auth Dashboard
+title: Creating Aggregate Verifier on Web3Auth Dashboard
 sidebar_label: Aggregate Verifier
-
-description: "Creating Aggregate Verifier on the Web3Auth Dashboard | Documentation - Web3Auth"
+description:
+  "Creating Aggregate Verifier on the Web3Auth Dashboard | Auth Provider Setup | Documentation -
+  Web3Auth"
 image: "images/docs-meta-cards/documentation-card.png"
 ---
 
-Developers can create `Aggregate Multiple Provider` from the Web3Auth Dashboard by combining
-multiple login methods to create a verifier to get the same address for their user regardless of
-their login providers. For example, combining a `Google` and `Email Passwordless` login or `Google`
-and `GitHub` via Auth0 to access the same address for your user. These login methods should share
-the same Verifier ID, e.g., `email`; Such verifiers are called `Single ID Verifiers`.
+import CreateVerifierFirstStep from "@site/src/common/docs/_create-verifier-first-step.mdx";
+
+Developers can create an `Aggregate Multiple Provider` verifier from the Web3Auth Dashboard by
+combining multiple login methods. This enables them to create a verifier that retrieves the same
+address for their user, regardless of the login providers used. For example, developers can combine
+a `Google` and `Email Passwordless` login, or a `Google` and `GitHub` login via Auth0, to access the
+same address for their user. These login methods should share the same Verifier ID, such as `email`,
+which is unique to the user regardless of the login method used, resulting in the same address for
+the user.
 
 :::note
 
-Access to creating a verifier is gated, hence creating an aggregate verifier requires a minimum
-[Growth Plan](https://web3auth.io/pricing.html). You can use this feature for projects on
-`sapphire_devnet` for free.
+Access to creating a verifier is gated. Therefore, creating an aggregate verifier
+[**requires a minimum Growth Plan**](https://web3auth.io/pricing.html).
+
+You can utilize this feature for projects on `sapphire_devnet` network for free.
 
 :::
 
 ### Set up an Aggregate Verifier
 
-1. Create an aggregate verifier for your application by selecting `Aggregate Multiple Providers` as
-   the Login provider from the login providers.
+<CreateVerifierFirstStep />
+
+1. Give a unique name to your verifier in the `Verifier Identifier` field. e.g.,
+   `web3auth-aggregate-verifier`.
+
+1. Select `Aggregate Multiple Providers` as the Login provider.
    ![Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate.png)
-2. Click on `Add Sub Verifiers` to add a new sub-verifier.
+1. Click on `Add Sub Verifiers` to add a new sub-verifier.
    ![Add first sub-verifier on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate-add-sub.png)
-3. Select any social login provider from the list to start with. Here we're selecting `Google`.
+1. Select any social login provider from the list to start with. Here we're selecting `Google`.
+
    Paste the **Client ID** from the Google App to the `Client ID` field and click on
    `Add Sub Verifiers`.
    ![Select Google from Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate-google.png)
-4. Next, create the second sub-verifier. Click on `Add Sub Verifiers` to add a new sub-verifier.
-5. Select `Auth0` on the dropdown or choose `Custom Providers` from the radio buttons. We're
-   selecting `Auth0` in this example.
+
+1. Next, create the second sub-verifier by clicking on the `Add Sub Verifiers` button.
+
+1. This time, you can select Social Login Providers like `Auth0` or `Google`, or `Custom Providers`
+   from the dropdown list. We're selecting `Auth0` in this example.
+
    ![Auth0 as sub verifier on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate-add-second-sub.png)
-6. Select the `Authentication Type` based on your application need on the dropdown. We're selecting
-   `GitHub` in this example.
+
+   _Note: You can combine two or more Google logins as needed for web and mobile apps._
+
+1. Select the `Authentication Type` based on your application need from the dropdown. We're
+   selecting `GitHub` in this example.
+
    ![Create Aggregate Verifiier on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate-auth0-github.png)
-7. Select `Email` as the **JWT Verifier ID** and enter the `Auth0 Client ID` and `Auth0 Domain` from
-   your Auth0 application. See how to create a new Auth0 application
+
+1. Next, select `Email` as the **JWT Verifier ID** and enter the `Auth0 Client ID` and
+   `Auth0 Domain` from your Auth0 application. See how to create a new Auth0 application
    [here](https://auth0.com/docs/quickstart/webapp/).
 
    ![Create GitHub Sub Verifiier on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate-auth0-github-filled.png)
@@ -56,10 +75,15 @@ Access to creating a verifier is gated, hence creating an aggregate verifier req
 
    :::
 
-8. Similarly, create a third sub-verifier for `Email Passwordless` via Auth0. Follow the above steps
-   from 5 to 8, and select `Email Passwordless` in place of `GitHub`.
+1. Similarly, create a third sub-verifier for `Email Passwordless` via Auth0. Follow the above steps
+   for creating a sub verifier, and then select `Email Passwordless` in place of `GitHub`.
+
    ![Create Email Passwordless Sub Verifiier on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate-auth0-email-passwordless-filled.png)
-9. Finally, click on `Create` to deploy the verifier.
+
+1. Finally, click on `Create` to deploy the verifier.
+
+   It typically takes 5-10 minutes for the verifier to go live. Once deployed & live, you'll receive
+   an email and the dashboard will display the 'Live' status for the verifier.
 
 :::note NOTE
 
