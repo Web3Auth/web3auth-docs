@@ -51,21 +51,34 @@ export const quickStartHostedLinks = {
   MPC_CORE_KIT_REACT_NATIVE: "https://w3a.link/mpc-core-kit-rn-quick-start",
 };
 
-export interface Props {
+export interface GuidesInterface {
   content: Record<
     string,
     {
       title: string;
-      description: string;
       image: string;
+      description: string;
       type: string;
       tags: string[];
-      link: string;
-      githubLink?: string;
-      qsLink?: string;
-      guideLink?: string;
+      date: string;
+      author: string;
+      communityPortalTopicId: string;
+      pinned: string;
     }
   >;
+}
+
+export interface ExamplesInterface {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  type: string;
+  tags: string[];
+  link: string;
+  githubLink: string;
+  qsLink?: string;
+  guideLink?: string;
 }
 
 export const tags = {
@@ -384,7 +397,7 @@ export const pnpModalExamples = [
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/wagmi-examples/rainbowkit-modal-example",
   },
 ];
-export const pnpNoModalExamples = [
+export const pnpNoModalExamples: ExamplesInterface[] = [
   {
     title: "PnP No Modal SDK React Quick Start",
     description: "A quick integration of Plug and Play No Modal SDK in React",
@@ -847,7 +860,7 @@ export const pnpNoModalExamples = [
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/wagmi/rainbowkit-no-modal-example",
   },
 ];
-export const pnpiOSExamples = [
+export const pnpiOSExamples: ExamplesInterface[] = [
   {
     title: "Web3Auth PnP iOS SDK Quick Start",
     description: "A quick integration of Web3Auth Plug and Play iOS SDK",
@@ -922,7 +935,7 @@ export const pnpiOSExamples = [
     guideLink: "/sdk/pnp/ios/custom-authentication",
   },
 ];
-export const pnpAndroidExamples = [
+export const pnpAndroidExamples: ExamplesInterface[] = [
   {
     title: "Web3Auth PnP Android SDK Quick Start",
     description: "A quick integration of Web3Auth Plug and Play Android SDK",
@@ -1008,7 +1021,7 @@ export const pnpAndroidExamples = [
     guideLink: "/sdk/pnp/android/custom-authentication",
   },
 ];
-export const pnpReactNativeExamples = [
+export const pnpReactNativeExamples: ExamplesInterface[] = [
   {
     title: "Web3Auth PnP React Native SDK Quick Start",
     description:
@@ -1079,7 +1092,7 @@ export const pnpReactNativeExamples = [
     guideLink: "/guides/react-native-expo",
   },
 ];
-export const pnpFlutterExamples = [
+export const pnpFlutterExamples: ExamplesInterface[] = [
   {
     title: "Web3Auth PnP Flutter SDK Quick Start",
     description: "A quick integration of Web3Auth Plug and Play Flutter SDK for Android and iOS",
@@ -1190,7 +1203,7 @@ export const pnpFlutterExamples = [
     guideLink: "/sdk/pnp/flutter/custom-authentication",
   },
 ];
-export const pnpUnityExamples = [
+export const pnpUnityExamples: ExamplesInterface[] = [
   {
     title: "Web3Auth PnP Unity SDK Quick Start",
     description:
@@ -1252,8 +1265,7 @@ export const pnpUnityExamples = [
     guideLink: "/sdk/pnp/unity/custom-authentication",
   },
 ];
-
-export const pnpUnrealExamples = [
+export const pnpUnrealExamples: ExamplesInterface[] = [
   {
     title: "Web3Auth PnP Unreal Engine SDK Quick Start",
     description: "A quick integration of Web3Auth Plug and Play Unreal Engine SDK in Android & iOS",
@@ -1298,8 +1310,7 @@ export const pnpUnrealExamples = [
     guideLink: "/sdk/pnp/unreal/custom-authentication",
   },
 ];
-
-export const coreKitSfaWebExamples = [
+export const coreKitSfaWebExamples: ExamplesInterface[] = [
   {
     title: "Single Factor Auth React Quick Start",
     description: "A quick integration of Core Kit Single Factor Auth SDK in React",
@@ -1519,7 +1530,7 @@ export const coreKitSfaWebExamples = [
     guideLink: "/auth-provider-setup/authentication-service-providers/firebase-service-provider",
   },
 ];
-export const coreKitSfaiOSExamples = [
+export const coreKitSfaiOSExamples: ExamplesInterface[] = [
   {
     title: "Web3Auth Core Kit SFA iOS SDK Quick Start",
     description: "A quick integration of Core Kit Single Factor Auth iOS SDK",
@@ -1532,7 +1543,7 @@ export const coreKitSfaiOSExamples = [
     qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_IOS&framework=IOS&stepIndex=0",
   },
 ];
-export const coreKitSfaAndroidExamples = [
+export const coreKitSfaAndroidExamples: ExamplesInterface[] = [
   {
     title: "Web3Auth Core Kit SFA Android SDK Quick Start",
     description: "A quick integration of Web3Auth Core Kit Single Factor Auth Android SDK",
@@ -1569,7 +1580,7 @@ export const coreKitSfaReactNativeExamples = [
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-react-native/sfa-rn-expo-auth0-example",
   },
 ];
-export const coreKitSfaFlutterExamples = [
+export const coreKitSfaFlutterExamples: ExamplesInterface[] = [
   {
     title: "Web3Auth Core Kit SFA Flutter SDK Quick Start",
     description:
@@ -1604,8 +1615,7 @@ export const coreKitSfaFlutterExamples = [
     guideLink: "/connect-blockchain/solana/flutter",
   },
 ];
-
-export const coreKitMPCWebExamples = [
+export const coreKitMPCWebExamples: ExamplesInterface[] = [
   {
     title: "MPC Core Kit React Quick Start",
     description: "A quick integration of Multi Party Computation Core Kit SDK in React",
@@ -1746,7 +1756,7 @@ export const coreKitMPCWebExamples = [
     guideLink: "https://web3auth.io/docs/sdk/core-kit/mpc-core-kit/signing#solana",
   },
 ];
-export const coreKitMPCReactNativeExamples = [
+export const coreKitMPCReactNativeExamples: ExamplesInterface[] = [
   {
     title: "Web3Auth MPC Core Kit SDK Quick Start in React Native",
     description:
@@ -1782,7 +1792,7 @@ export const coreKitMPCReactNativeExamples = [
   },
 ];
 
-export const exampleMap = [
+export const exampleMap: ExamplesInterface[] = [
   ...pnpModalExamples,
   ...pnpNoModalExamples,
   ...pnpiOSExamples,
