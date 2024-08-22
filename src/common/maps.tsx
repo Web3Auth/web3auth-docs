@@ -93,6 +93,7 @@ export const tags = {
   ios: "ios",
   reactNative: "react native",
   flutter: "flutter",
+  node: "node",
   unity: "unity",
   unreal: "unreal engine",
   evm: "evm",
@@ -152,6 +153,10 @@ export const platformMap = [
   {
     label: "Unreal Engine",
     value: tags.unreal,
+  },
+  {
+    label: "Node.js",
+    value: tags.node,
   },
 ];
 
@@ -1644,7 +1649,54 @@ export const coreKitSfaAndroidExamples: ExamplesInterface[] = [
     qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_ANDROID&framework=ANDROID&stepIndex=0",
   },
 ];
-export const coreKitSfaReactNativeExamples = [
+export const coreKitSfaNodeExamples: ExamplesInterface[] = [
+  {
+    id: "sfa-node-quick-start",
+    title: "Web3Auth Core Kit SFA Node SDK Quick Start",
+    description: "A quick integration of Web3Auth Core Kit Single Factor Auth Node SDK",
+    image: "banners/nodejs.png",
+    type: QUICK_START,
+    tags: [tags.coreKit, "sfa", tags.node, tags.evm],
+    link: "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-node/sfa-node-quick-start",
+    githubLink:
+      "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-node/sfa-node-quick-start",
+    qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_NODE&framework=NODE&stepIndex=0",
+  },
+  {
+    id: "sfa-telegram-oauth-server",
+    title: "Using Telegram Login with Web3Auth Core Kit SFA Node SDK",
+    description: "Use Telegram Login in your backend with Core Kit Single Factor Auth Node SDK",
+    image: "banners/telegram.png",
+    type: SAMPLE_APP,
+    tags: [tags.coreKit, "sfa", tags.node, tags.evm, "telegram"],
+    link: "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-node/sfa-telegram-oauth-server",
+    githubLink:
+      "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-node/sfa-telegram-oauth-server",
+  },
+  {
+    id: "microsoft-oauth-connection",
+    title: "Using Microsoft Login with Web3Auth Core Kit SFA Node SDK",
+    description: "Use Microsoft Login in your backend with Core Kit Single Factor Auth Node SDK",
+    image: "banners/microsoft.png",
+    type: SAMPLE_APP,
+    tags: [tags.coreKit, "sfa", tags.node, tags.evm, "microsoft"],
+    link: "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-node/microsoft-oauth-connection",
+    githubLink:
+      "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-node/microsoft-oauth-connection",
+  },
+  {
+    id: "github-oauth-connection",
+    title: "Using GitHub Login with Web3Auth Core Kit SFA Node SDK",
+    description: "Use GitHub Login in your backend with Core Kit Single Factor Auth Node SDK",
+    image: "banners/github.png",
+    type: SAMPLE_APP,
+    tags: [tags.coreKit, "sfa", tags.node, tags.evm, "github"],
+    link: "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-node/github-oauth-connection",
+    githubLink:
+      "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-node/github-oauth-connection",
+  },
+];
+export const coreKitSfaReactNativeExamples: ExamplesInterface[] = [
   {
     id: "sfa-rn-bare-quick-start",
     title: "Web3Auth Core Kit SFA React Native SDK Quick Start",
