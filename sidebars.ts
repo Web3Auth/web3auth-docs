@@ -376,21 +376,9 @@ const sidebars: SidebarsConfig = {
         "auth-provider-setup/auth-provider-setup",
         "auth-provider-setup/verifiers",
         "auth-provider-setup/aggregate-verifier",
-        "auth-provider-setup/byo-jwt-provider",
         {
           type: "category",
-          label: "Authentication Service Providers",
-          items: [
-            "auth-provider-setup/authentication-service-providers/auth0-service-provider",
-            "auth-provider-setup/authentication-service-providers/aws-cognito-service-provider",
-            "auth-provider-setup/authentication-service-providers/firebase-service-provider",
-          ],
-          collapsible: true,
-          collapsed: false,
-        },
-        {
-          type: "category",
-          label: "Social Providers",
+          label: "Social Connections",
           items: [
             "auth-provider-setup/social-providers/social-providers",
             "auth-provider-setup/social-providers/twitter",
@@ -417,6 +405,18 @@ const sidebars: SidebarsConfig = {
           collapsible: true,
           collapsed: false,
         },
+        {
+          type: "category",
+          label: "Authentication Service Providers",
+          items: [
+            "auth-provider-setup/authentication-service-providers/auth0-service-provider",
+            "auth-provider-setup/authentication-service-providers/aws-cognito-service-provider",
+            "auth-provider-setup/authentication-service-providers/firebase-service-provider",
+          ],
+          collapsible: true,
+          collapsed: false,
+        },
+        "auth-provider-setup/byo-jwt-provider",
       ],
     },
 
@@ -984,7 +984,6 @@ const sidebars: SidebarsConfig = {
         "sdk/pnp/web/adapters/wallet-connect-v1",
         "sdk/pnp/web/adapters/wallet-connect-v2",
         "sdk/pnp/web/adapters/coinbase",
-        "sdk/pnp/web/adapters/slope",
         "sdk/pnp/web/adapters/solflare",
       ],
     },
