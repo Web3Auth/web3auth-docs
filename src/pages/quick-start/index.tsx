@@ -12,9 +12,10 @@ import MoonLoader from "react-spinners/BeatLoader";
 
 import SEO from "../../components/SEO";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
-import builder, { embed_links } from "./builder";
+import builder from "./builder";
 import { CORE_KIT, PNP } from "./builder/choices";
 import styles from "./styles.module.css";
+import { quickStartHostedLinks } from "../../common/maps";
 
 const getWindowLocation = () => {
   if (typeof window !== "undefined") return window.location.href;
@@ -127,7 +128,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
   };
 
   const togglePreviewModal = (link?: string) => {
-    if (link === embed_links.PNP_UNITY_WEBGL) {
+    if (link === quickStartHostedLinks.PNP_UNITY_WEBGL) {
       window.open(link, "_blank");
       return;
     }
