@@ -18,57 +18,8 @@ is considered successful when at least five out of the nine nodes confirm the de
 authentication is successful, you can use the private key to derive the user's public key and
 perform on-chain transactions.
 
-Now that you understand how authentication works in the SFA SDK, let's explore how to create a
-verifier.
+## Create a verifier
 
-## Create Verifier
-
-Web3Auth providers
-
-- Social Login Providers: Social Login Providers allows you to easily integrate popular social login
-  providers like Google, Auth0, Facebook, Discord, and Twitch.
-  - Custom Provider: Custom Provider allows you to bring your own OAuth provider of your choice to
-    Web3Auth. This set up is particularly useful for applications integrating federated identity
-    providers like Firebase, Cognito, or Okta, allowing for a tailored authentication experience. If
-    you want to integrate your in house authentication provider, you can choose Custom Provider.
-  - Aggregate Multiple Providers: Since addresses generated for the users are specific to the
-    verifiers, you can create an aggregate verifier to combine Google and Email Passwordless logins
-    under a single verifier ensure that users receive the same private key regardless of their
-    chosen method.
-
-1. Go to the [Web3Auth dashboard](https://dashboard.web3auth.io) and select your project. Click on
-   the `Custom Authentication` tab and then click on the `Create Verifier` button to make a new
-   verifier.
-
-   ![Custom Authentication Dashboard](/images/dashboard/custom-authentication.png)
-
-1. Give a unique name to your verifier in the `Verifier Identifier` field. e.g., `sfa-verifier`.
-
-1. From the list of Login Providers, you can select the right one. Here we have selected Custom
-   Providers, and entered the JWKS (JSON Web Key Set) endpoint URL in the JWKS Endpoint field. e.g.,
-   `https://your-domain/.well-known/jwks.json`
-
-   ![Create Verifier on Web3Auth Dashboard](/images/dashboard/create-verifier-sfa.png)
-
-1. (Optional) If you have already have s sample of JWT token using that will be generated through
-   OAuth, you can paste a sample JWT token in the `Paste a JWT Token here` field. This is optional,
-   but it helps you select the correct JWT validation rules.
-
-   ![Paste JWT token](/images/dashboard/paste-jwt-token.png)
-
-1. Select the JWT Verifier ID from the dropdown list of `JWT Verifier ID`.
-
-   ![Select the JWT Verifier ID](/images/dashboard/telegram-verifier-sub.png)
-
-1. Next, click on `Add Custom Validation` in the `Select JWT validation` section. Then, input `iss`
-   in the Field and `https://api.telegram.org` in the Value field. And click on the `Add Validation`
-   button.
-
-   ![Telegram Verifier validation rules on Web3Auth Dashboard](/images/dashboard/telegram-verifier-validation.png)
-
-1. Finally, click on the `Create` button to create the Telegram Custom Authentication verifier.
-
-   ![Telegram Verifier on Web3Auth Dashboard](/images/dashboard/telegram-verifier-click-create.png)
-
-   It typically takes 5-10 minutes for the verifier to go live. Once deployed & live, you'll receive
-   an email and the dashboard will display the 'Live' status for the verifier.
+For Single Factor Auth(SFA) SDK you'll need to create your own verifier choosing your preferred
+provider, and appropriate details. To create a verifier,
+[please checkout our documentation on how to create a verifier](/docs/auth-provider-setup/verifiers.mdx).
