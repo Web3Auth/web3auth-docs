@@ -1,6 +1,6 @@
 ---
 title: Creating Verifier on Web3Auth Dashboard
-sidebar_label: Verifiers
+sidebar_label: Create Verifier
 description:
   Creating Verifier on the Web3Auth Dashboard | Auth Provider Setup | Documentation - Web3Auth"
 image: "images/docs-meta-cards/documentation-card.png"
@@ -9,87 +9,6 @@ image: "images/docs-meta-cards/documentation-card.png"
 A verifier is essentially a configuration that contains information about the OAuth provider you've
 chosen for your application. It acts as a bridge between Web3Auth and the OAuth provider, enabling
 the Auth Network nodes to query and validate JWT tokens effectively.
-
-A verifier contains the necessary information for Web3Auth's network nodes to validate the JWT token
-provided by an authentication service. This process ensures that the login attempt is legitimate and
-that the user controls the associated social or external account.
-
-## Types of Verifiers
-
-Web3Auth's design accommodates a variety of authentication scenarios through three primary verifier
-types, each catering to different integration needs and offering distinct advantages:
-
-### Default Verifiers
-
-For the basic integration of Web3Auth Plug and Play, we shield you from the complexities of creating
-and managing verifiers. This is done by providing default verifiers for the most popular social
-login providers, such as Google, Facebook, Twitter, and more. These default verifiers are
-pre-configured and ready to use, allowing you to get started with Web3Auth quickly and easily.
-
-However, it is highly recommended to create custom verifiers for your application, as they offer
-more flexibility and control over the authentication flow. Some other caveats of using default
-verifiers are:
-
-- **Migration from Default Verifiers to Custom Verifiers is not possible**: Once the keys are
-  assigned for a particular verifier, they cannot be changed.
-- **Aggregation of the default verifier is not possible**: If you want to aggregate two/more social
-  providers, like Google and Email Passwordless, you will need to create an Aggregate Verifier,
-  which is not possible if you start with:
-  - a Default Verifier
-  - Social Login Providers
-  - Custom Providers
-
-### Social Login Verifiers
-
-These verifiers simplify the integration of popular social login options - Google, Facebook,
-Discord, Twitch, and through Auth0, an array of additional services. This straightforward approach
-is especially beneficial for applications employing an implicit login flow, ensuring a hassle-free
-setup for both developers and users. Head over to the particular documentation for the social login
-provider you want to integrate with Web3Auth.
-
-### Custom Verifiers
-
-For those seeking greater control or needing to integrate authentication services not directly
-supported within Web3Auth's dashboard, custom verifiers offer a solution. Whether you're leveraging
-your own backend authentication system or connecting to various social login providers, custom
-verifiers provide the flexibility to manually configure your authentication flow. This setup is
-particularly useful for applications integrating federated identity providers like Firebase,
-Cognito, or Okta, allowing for a tailored authentication experience.
-
-### Aggregate Verifiers
-
-The digital landscape often requires users to authenticate via multiple methods. However, with
-multiple providers, you'll need to create multiple verifiers. However, the
-[wallet generated for each user is specific to a verifier](/troubleshooting/different-private-key#verifier).
-
-Aggregate verifiers address this need by enabling a unified identity across different login
-mechanisms. For instance, combining Google and Email Passwordless logins under a single verifier
-ensure that users receive the same private key regardless of their chosen method. These login
-methods should share the same verifier identifier, e.g., email or username which is unique to the
-user.
-
-This process involves creating an aggregate verifier, followed by sub-verifiers for each login
-method.
-
-:::info
-
-Learn how to create an [Aggregate Verifier](/auth-provider-setup/aggregate-verifier).
-
-:::
-
-:::tip
-
-- It is advisable to create an `Aggregate Multiple Providers` verifier even if you're using just one
-  login method for now. This will help you in the future if you want to add more login methods to
-  use the [**Aggregate Verifier**](/auth-provider-setup/aggregate-verifier) feature of Web3Auth in
-  your application.
-- This is because we can't migrate from a single verifier(Social/Custom login methods) to an
-  aggregate verifier without changing the wallet addresses.
-
-:::
-
-You can read more about verifiers
-[in this GitHub discussion](https://github.com/orgs/Web3Auth/discussions/427#discussioncomment-3442052).
 
 ## Create Verifier
 
@@ -128,3 +47,13 @@ Click on the verifier or the three dots next to the verifier you wish to edit an
 
 The `Edit Verifier` page will appear with previously filled information. Make the necessary changes
 and click on the `Update Verifier` button on the bottom.
+
+## Archive Verifier
+
+To archive a verifier from the existing list, click on the three dots next to the verifier you wish
+to archive, and then select "Archive Verifier" from the dropdown.
+
+When you archive a verifier, it will no longer be available for use in your application. However,
+you can always unarchive it later from the Archive page in the dashboard.
+
+![Verifier Options](/images/dashboard/archive-verifier.png)
