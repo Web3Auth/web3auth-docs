@@ -33,57 +33,32 @@ with Auth0, but this can be done with any other Federated/JWT providers.
 ### Example
 
 ```tsx
-import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
-// get it from https://dashboard.web3auth.io by creating a project.
-
-const chainConfig = {
-  chainNamespace: "eip155",
-  chainId: "0x1",
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/ethereum.svg",
-};
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-const web3auth = new Web3AuthNoModal({
-  clientId,
-  web3AuthNetwork: "sapphire_mainnet",
-  privateKeyProvider: privateKeyProvider,
-});
-
+// Create OpenloginAdapter instance once you have created Web3AuthNoModal instance
 const openloginAdapter = new OpenloginAdapter({
-  privateKeyProvider,
   adapterSettings: {
     uxMode: "redirect",
     loginConfig: {
+      // highlight-start
       jwt: {
         verifier: "w3a-auth0-jp-demo", // Pass the Verifier name here
         typeOfLogin: "jwt", // Pass on the login provider of the verifier you've created
         clientId: "N9jnKM2Fo8PFRj8rYM9I7rWX1FW6X5xx", // Pass on the Auth0 `Client ID` here
       },
+      // highlight-end
     },
   },
 });
 
-web3auth.configureAdapter(openloginAdapter);
-setWeb3auth(web3auth);
+web3AuthNoModalInstance.configureAdapter(openloginAdapter);
 
 // Initialize
-await web3auth.init();
+await web3AuthNoModalInstance.init();
 
 // Login with Spotify
-await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+// highlight-start
+await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {
     domain: "https://web3auth.jp.auth0.com", // Pass on the Auth0 `Domain` here
@@ -91,4 +66,5 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
     connection: "spotify", // Use this to skip Auth0 Modal for Spotify login
   },
 });
+// highlight-end
 ```
