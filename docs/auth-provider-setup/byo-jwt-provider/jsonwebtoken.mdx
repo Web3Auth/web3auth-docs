@@ -6,6 +6,7 @@ description: "Create JWT using jsonwebtoken pacakge | Documentation - Web3Auth"
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
+import CreateJWKS from "@site/src/common/docs/_byo-jwt-create-jwks.mdx";
 
 For your custom JWT provider, you can create JWT token using package of your choice, one of which is
 `jsonwebtoken` package. [Learn more about jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken).
@@ -135,17 +136,4 @@ console.log(token);
 
 ## Create JWKS
 
-Once you have created the script to sign the JWT, it's time to convert `publicKey.pem` file to
-`jwk(s)` format. One of the tool you can use to convert is https://pem2jwk.vercel.app/.
-
-- Select the correct signing algorithm
-- Select Public Key use: `Signing`
-- Key ID: `paste-your` or leave it blank to generate a random one.
-- PEM encoded key: `{paste-the-publicKey-pem-file-s-content-here}`
-- Click on the `Convert to JWK` button.
-
-![JWKS Convert Tool](https://web3auth.io/community/uploads/default/optimized/2X/3/3e58a3b7378b9778b0b2d646ec2a3cf47c56ee5e_2_690x448.jpeg)
-
-To complete the process, you need to save the output as a `.json` file, host it on your server, and
-make sure it's publicly accessible. This will give you the `JWKS Endpoint`, which is required when
-setting up a `Custom JWT Verifier` on the Web3Auth Dashboard.
+<CreateJWKS />
