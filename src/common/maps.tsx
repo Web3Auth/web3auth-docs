@@ -310,9 +310,9 @@ export const blockchainMap = [
   },
 ];
 
-const PLAYGROUND = "PLAYGROUND";
-const QUICK_START = "QUICK START";
-const SAMPLE_APP = "SAMPLE APP";
+export const PLAYGROUND = "PLAYGROUND";
+export const QUICK_START = "QUICK START";
+export const SAMPLE_APP = "SAMPLE APP";
 
 export const typeMap = [
   {
@@ -2015,3 +2015,27 @@ export const exampleMap: ExamplesInterface[] = [
   ...coreKitMPCReactNativeExamples,
   ...coreKitSfaNodeExamples,
 ];
+
+function arrayToObjectById(array) {
+  return array.reduce((acc, obj) => {
+    acc[obj.id] = obj;
+    return acc;
+  }, {});
+}
+
+export const pnpModalExamplesMap = arrayToObjectById(pnpModalExamples);
+export const pnpNoModalExamplesMap = arrayToObjectById(pnpNoModalExamples);
+export const pnpiOSExamplesMap = arrayToObjectById(pnpiOSExamples);
+export const pnpAndroidExamplesMap = arrayToObjectById(pnpAndroidExamples);
+export const pnpReactNativeExamplesMap = arrayToObjectById(pnpReactNativeExamples);
+export const pnpFlutterExamplesMap = arrayToObjectById(pnpFlutterExamples);
+export const pnpUnityExamplesMap = arrayToObjectById(pnpUnityExamples);
+export const pnpUnrealExamplesMap = arrayToObjectById(pnpUnrealExamples);
+export const coreKitSfaWebExamplesMap = arrayToObjectById(coreKitSfaWebExamples);
+export const coreKitSfaiOSExamplesMap = arrayToObjectById(coreKitSfaiOSExamples);
+export const coreKitSfaAndroidExamplesMap = arrayToObjectById(coreKitSfaAndroidExamples);
+export const coreKitSfaNodeExamplesMap = arrayToObjectById(coreKitSfaNodeExamples);
+export const coreKitSfaReactNativeExamplesMap = arrayToObjectById(coreKitSfaReactNativeExamples);
+export const coreKitSfaFlutterExamplesMap = arrayToObjectById(coreKitSfaFlutterExamples);
+export const coreKitMPCWebExamplesMap = arrayToObjectById(coreKitMPCWebExamples);
+export const coreKitMPCReactNativeExamplesMap = arrayToObjectById(coreKitMPCReactNativeExamples);
