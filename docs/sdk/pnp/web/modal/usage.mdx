@@ -8,13 +8,15 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import AddChain from "@site/src/common/sdk/pnp/web/_add-chain.mdx";
 import ConnectBlockchain from "@site/src/common/sdk/pnp/web/_connect-blockchain.mdx";
-import ConnectedAdapterName from "@site/src/common/sdk/pnp/web/_connectedAdapterName.mdx";
 import GetIdTokenInfo from "@site/src/common/sdk/pnp/web/_get-idtoken-info.mdx";
 import GetUserInfo from "@site/src/common/sdk/pnp/web/_get-user-info.mdx";
 import EnableMFA from "@site/src/common/sdk/pnp/web/_enable-mfa.mdx";
 import LogOut from "@site/src/common/sdk/pnp/web/_logout.mdx";
 import SwitchChain from "@site/src/common/sdk/pnp/web/_switch-chain.mdx";
-import SubscribeEvents from "@site/src/common/sdk/pnp/web/_subscribe-events.mdx";
+import Status from "@site/src/common/sdk/pnp/web/_status-method.mdx";
+import Provider from "@site/src/common/sdk/pnp/web/_provider-method.mdx";
+import ConnectedAdapterName from "@site/src/common/sdk/pnp/web/_connected-adapter-name-method.mdx";
+import Connected from "@site/src/common/sdk/pnp/web/_connected-method.mdx";
 import InitiateTopUp from "@site/src/common/sdk/pnp/web/_plugin-initiate-topup.mdx";
 import ShowWCScanner from "@site/src/common/sdk/pnp/web/_plugin-showwcscanner.mdx";
 
@@ -77,115 +79,19 @@ Read more about connecting your users with the selected blockchain in the
 
 ### Check if the user is connected
 
-#### `connected`
-
-You can check if the user is connected to the blockchain by calling the `connected` method on the
-`web3auth` instance. This property method a `boolean` value.
-
-```javascript
-const isConnected = web3auth.connected;
-```
-
-#### Returns
-
-```tsx
-connected: boolean;
-```
-
-:::tip
-
-If you're using the `uxMode: "redirect"` option within your configuration, you need to check this
-event to handle the logging in implicitly. This is because, when redirected to a different
-application, the app state is not updated as per the login status.
-
-Using this method, you can check if the user is connected and update the app state accordingly
-within the constructor.
-
-:::
+<Connected />
 
 ### Check which adapter is connected
 
-#### `connectedAdapterName`
-
-This function gives you the name of the connected adapter. This can be used to check which adapter
-is connected to the user.
-
-```javascript
-const adapter = web3auth.connectedAdapterName;
-```
-
-#### Returns
-
-```javascript
-connectedAdapterName: WALLET_ADAPTER_TYPE | null;
-
-export type WALLET_ADAPTER_TYPE = (typeof WALLET_ADAPTERS)[keyof typeof WALLET_ADAPTERS];
-
-export const WALLET_ADAPTERS = {
-  ...EVM_ADAPTERS,
-  ...SOLANA_ADAPTERS,
-};
-export const SOLANA_ADAPTERS = {
-  TORUS_SOLANA: "torus-solana",
-  PHANTOM: "phantom",
-  SOLFLARE: "solflare",
-  ...MULTI_CHAIN_ADAPTERS,
-};
-
-export const EVM_ADAPTERS = {
-  TORUS_EVM: "torus-evm",
-  METAMASK: "metamask",
-  COINBASE: "coinbase",
-  ...MULTI_CHAIN_ADAPTERS,
-};
-export const MULTI_CHAIN_ADAPTERS = {
-  OPENLOGIN: "openlogin",
-  WALLET_CONNECT_V2: "wallet-connect-v2",
-  SFA: "sfa",
-};
-```
-
-- If a user is connected, it will return the name of the adapter via which the login has happened.
-- If connecting via MIPD (EIP6163) in default evm/ solana adapters, it will return the name of the
-  wallet connected.
-- If no user is connected, this function will return a `null` value.
+<ConnectedAdapterName />
 
 ### Get the connected provider
 
-#### `provider`
-
-Returns the private key provider connected to the `web3auth` instance.
-
-#### Returns
-
-```js
-provider: IProvider | null;
-```
-
-- If a user is connected, it will return the provider instance connected to the user.
-- If no user is connected, however, the initialisation of the `web3auth` instance is done, it will
-  return the provider instance, however the provider cannot be used for any operations.
-- If no user is connected and the `web3auth` instance is not initialised, it will return a `null`
-  value.
-
-:::note
-
-To know more in-depth about providers, have a look at the
-[Providers reference](/sdk/pnp/web/providers).
-
-:::
+<Provider />
 
 ### Know the current status of the instance
 
-#### `status`
-
-Returns the current status of the `web3auth` instance.
-
-```javascript
-const status = web3auth.status;
-```
-
-<SubscribeEvents />
+<Status />
 
 ## Get User's Information
 
@@ -217,13 +123,13 @@ const status = web3auth.status;
 
 ## Wallet Services Plugin Methods
 
-YOu can use the Wallet Services Plugin to enable additional functionalities like showing the Wallet
+You can use the Wallet Services Plugin to enable additional functionalities like showing the Wallet
 UI Screen, Wallet Connect Scanner, and initiating topup for the user.
 
 :::tip
 
 Learn more about the Wallet Services Plugin in the
-[Wallet Services SDK Reference](/sdk/pnp/web/wallet-services/).
+[Wallet Services SDK Reference](../wallet-services/).
 
 :::
 

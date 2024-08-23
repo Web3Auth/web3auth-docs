@@ -8,7 +8,11 @@ import AddChain from "@site/src/common/sdk/pnp/web/_add-chain.mdx";
 import ConnectBlockchain from "@site/src/common/sdk/pnp/web/_connect-blockchain.mdx";
 import ConnectTo from "@site/src/common/sdk/pnp/web/_connect-to.mdx";
 import ConnectToExample from "@site/src/common/sdk/pnp/web/_connect-to-example.mdx";
-import ConnectedAdapterName from "@site/src/common/sdk/pnp/web/_connectedAdapterName.mdx";
+import Status from "@site/src/common/sdk/pnp/web/_status-method.mdx";
+import Provider from "@site/src/common/sdk/pnp/web/_provider-method.mdx";
+import ConnectedAdapterName from "@site/src/common/sdk/pnp/web/_connected-adapter-name-method.mdx";
+import Connected from "@site/src/common/sdk/pnp/web/_connected-method.mdx";
+import EnableMFA from "@site/src/common/sdk/pnp/web/_enable-mfa.mdx";
 import ExtraLoginOptions from "@site/src/common/sdk/pnp/web/_extra-login-options.mdx";
 import GetIdTokenInfo from "@site/src/common/sdk/pnp/web/_get-idtoken-info.mdx";
 import GetUserInfo from "@site/src/common/sdk/pnp/web/_get-user-info.mdx";
@@ -25,19 +29,25 @@ Natively, the instance of `Web3AuthNoModal` _(referred to as `web3auth` in our e
 the following functions:
 
 - `connectTo()` - Logging in the User with the given Wallet Adapter and respective Login Parameters
-- `provider()` - Returns the native provider that can be used to make different blockchain
-  transactions.
-- `connected()` - Returns `true` or `false` depending on whether the web3auth instance is available
-  or not.
 - `getUserInfo()` - Getting the User's Information
+- `enableMFA()` - Enable Multi Factor Authentication for the user
 - `authenticateUser()` - Getting the idToken from Web3Auth
 - `addChain()` - Add chain config details to the connected adapter.
 - `switchChain()` - Switch chain as per chainId already added to chain config.
-- `getAdapter()` - Get the connected adapter instance.
-- `configureAdapter()` - Configure the adapter instance.
-- `clearCache()` - Clear the cache.
-- `addPlugin()` - Add a plugin to Web3Auth.
 - `logout()` - Logging out the User
+
+Additionally the following methods are available to get information about the current state of the
+instance:
+
+- `connected` - Returns `true` or `false` depending on whether the user is connected or not.
+- `status` - Returns the current status of the web3auth instance.
+- `provider` - Returns the currently connected provider to the web3auth instance.
+- `connectedAdapterName` - Returns the currently connected provider to the web3auth instance.
+
+Finally, with the Wallet Services Plugin, you can enable additional functionalities like:
+
+- `initiateTopup()` - Initiate Topup for the user.
+- `showWalletConnectScanner()` - Show WalletConnect QR Code Scanner.
 
 ## Logging in the User
 
@@ -49,13 +59,15 @@ the following functions:
 connectTo<T>(walletName: WALLET_ADAPTER_TYPE, loginParams?: T): Promise<IProvider | null>;
 ```
 
-On successful login, the `connectTo()` function returns a `IProvider` instance. This instance
-contains the respective provider corresponding to your selected blockchain. You can use this
-provider to connect your user to the blockchain and make transactions.
+- On successful login, the `connectTo()` function returns a `IProvider` instance. This instance
+  contains the respective provider corresponding to your selected blockchain. You can use this
+  provider to connect your user to the blockchain and make transactions.
 
-On unsuccessful login, this function will return a `null` value.
+- On unsuccessful login, this function will return a `null` value.
 
-#### Example
+### Usage
+
+<ConnectToExample />
 
 :::tip
 
@@ -66,8 +78,6 @@ provider type.
 
 :::
 
-<ConnectToExample />
-
 :::tip
 
 Read more about connecting your users with the selected blockchain in the
@@ -75,9 +85,13 @@ Read more about connecting your users with the selected blockchain in the
 
 :::
 
+### Wallet Adapter Name
+
 #### `walletName`
 
 <WalletAdapters />
+
+### Login Parameters
 
 #### `loginParams`
 
@@ -94,33 +108,28 @@ options.
 
 <ExtraLoginOptions />
 
-## Get a native provider
+## Check if the user is connected
 
-`provider()`
+<Connected />
 
-Returns the native provider that can be used to make different blockchain transactions.
+## Check which adapter is connected
 
-#### Returns
+<ConnectedAdapterName />
 
-```js
-get provider(): IProvider | null;
-```
+## Get the connected provider
 
-## Get connected status
+<Provider />
 
-`connected()`
+## Know the current status of the instance
 
-Returns `true` or `false` depending on whether the web3auth instance is available or not.
-
-#### Returns
-
-```js
-get connected(): boolean;
-```
-
+<Status />
 ## Get User's Information
 
 <GetUserInfo />
+
+## Enable Multi Factor Authentication (MFA)
+
+<EnableMFA />
 
 ## Get idToken
 
@@ -134,43 +143,6 @@ get connected(): boolean;
 
 <SwitchChain />
 
-## Get Adapter
-
-Get the adapter connected by passing the name of the adapter.
-
-```tsx
-export declare const WALLET_ADAPTERS: {
-  OPENLOGIN: string;
-  WALLET_CONNECT_V2: string;
-  TORUS_SOLANA: string;
-  PHANTOM: string;
-  SOLFLARE: string;
-  TORUS_EVM: string;
-  METAMASK: string;
-  COINBASE: string;
-};
-```
-
-```tsx
-getAdapter(adapterName: WALLET_ADAPTER_TYPE): IAdapter<unknown> | null;
-```
-
-## Configure Adapter
-
-Configure an adapter instance to Web3Auth.
-
-```tsx
-configureAdapter(adapter: IAdapter<unknown>): Web3AuthNoModal;
-```
-
-## Clear Cache
-
-Clear the cache.
-
-```tsx
-clearCache(): void;
-```
-
 ## Logging out the User
 
 <LogOut />
@@ -182,3 +154,27 @@ clearCache(): void;
 ## Fetching the Connected Adapter
 
 <ConnectedAdapterName />
+
+## Wallet Services Plugin Methods
+
+You can use the Wallet Services Plugin to enable additional functionalities like showing the Wallet
+UI Screen, Wallet Connect Scanner, and initiating topup for the user.
+
+:::tip
+
+Learn more about the Wallet Services Plugin in the
+[Wallet Services SDK Reference](../wallet-services/).
+
+:::
+
+### Show WalletConnect Scanner
+
+#### `showWalletConnectScanner()`
+
+<ShowWCScanner />
+
+### Fiat On Ramp
+
+#### `initiateTopup()`
+
+<InitiateTopUp />

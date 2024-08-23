@@ -4,27 +4,30 @@ sidebar_label: Initialize
 description: "@web3auth/no-modal initialize | Documentation - Web3Auth"
 ---
 
-import InstantiatingProvider from "@site/src/common/sdk/core-kit/sfa/_instantiating_provider.mdx";
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import ExampleCards from "@theme/ExampleCards";
+import { pnpNoModalExamples, QUICK_START } from "@site/src/common/maps";
+import UIConfig from "@site/src/common/sdk/pnp/web/_ui-config.mdx";
+import UIConfigWhitelabelExample from "@site/src/common/sdk/pnp/web/_ui-config-whitelabel-example.mdx";
 import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
 import CustomAuthenticationCoreExample from "@site/src/common/sdk/pnp/web/_custom-authentication-core-example.mdx";
 import ExternalWalletAdapters from "@site/src/common/sdk/pnp/web/_external-wallet-adapters.mdx";
 import OpenloginAdapterIntro from "@site/src/common/sdk/pnp/web/_openlogin-adapter-intro.mdx";
-import InitiateTopUp from "@site/src/common/sdk/pnp/web/_plugin-initiate-topup.mdx";
-import ShowWCScanner from "@site/src/common/sdk/pnp/web/_plugin-showwcscanner.mdx";
 import PluginsIntro from "@site/src/common/sdk/pnp/web/_plugins-intro.mdx";
-import SubscribeEvents from "@site/src/common/sdk/pnp/web/_subscribe-events.mdx";
 import Web3AuthNoModalOptions from "@site/src/common/sdk/pnp/web/_web3authcore-options.mdx";
 
-After Installation, the next step to use Web3Auth is to Initialize the SDK. However, the
-Initialization is a two-step process, with an additional two steps for customizations, ie.
+After Installation, the next step to use Web3Auth is to Initialize the SDK.
 
 - [Instantiation of Web3AuthNoModal](#instantiating-web3authnomodal)
+- [Configuration of Adapters](#configuring-adapters)
 - [Configuration of Plugins](#configuring-plugins) _(optional)_
 - [Initialization of Web3Auth](#initializing-web3auth)
 
 Please note that these are the most critical steps where you need to pass on different parameters
-according to the preference of your project. Additionally, Whitelabeling and Custom Authentication
-have to be configured within this step, if you wish to customize your Web3Auth Instance.
+according to the preference of your project. Additionally, Whitelabeling, Multi Factor
+Authentication and Custom Authentication have to be configured within this step, if you wish to
+customize your Web3Auth Instance.
 
 ## Instantiating Web3AuthNoModal
 
@@ -54,85 +57,141 @@ This Web3AuthNoModal constructor takes an object with `Web3AuthNoModalOptions` a
 
 <ChainConfig />
 
-### Returns
+:::tip
 
-- `Object`: The web3auth instance with all its methods and events.
+Get the **Chain Config** for your preferred Blockchain from the
+[Connect Blockchain Reference](/connect-blockchain#reference-guides-for-blockchain-connections).
 
-### Instantiating a Provider
+:::
 
-<InstantiatingProvider />
+### Adding a Private Key Provider
+
+#### `privateKeyProvider`
+
+`privateKeyProvider` parameter helps you to connect with various wallet SDKs. These are
+preconfigured RPC clients for different blockchains used to interact with the respective blockchain
+networks.
+
+:::note
+
+It's mandatory to provide `privateKeyProvider` for your corresponding chain namespace. To know more
+in-depth about providers, have a look at the [Providers reference](/sdk/pnp/web/providers).
+
+:::
+
+You can choose between the following providers based on your usecase.
+
+- [EIP1193 Private Key Provider for EVM Compatible Chains](/sdk/pnp/web/providers/evm)
+- [Solana Private Key Provider for Solana Blockchain](/sdk/pnp/web/providers/solana)
+- [XRPL Private Key Provider for XRPL Blockchain](/sdk/pnp/web/providers/xrpl)
+- [Common Private Key Provider for Connecting to any Blockchain](/sdk/pnp/web/providers/common)
+
+<Tabs
+  defaultValue="evm"
+  values={[
+    { label: "EIP1193 Provider", value: "evm" },
+    { label: "Solana Provider", value: "solana" },
+    { label: "XRPL Provider", value: "xrpl" },
+    { label: "Common Provider", value: "common" },
+  ]}
+>
+
+<TabItem value="evm">
+
+```ts
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3AuthNoModal({
+  clientId: "", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+});
+```
+
+</TabItem>
+
+<TabItem value="solana">
+
+```ts
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+
+const privateKeyProvider = new SolanaPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3AuthNoModal({
+  clientId: "", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+});
+```
+
+</TabItem>
+
+<TabItem value="xrpl">
+
+```ts
+import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
+
+const privateKeyProvider = new XrplPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3AuthNoModal({
+  clientId: "", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+});
+```
+
+</TabItem>
+
+<TabItem value="common">
+
+```ts
+import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
+
+const privateKeyProvider = new CommonPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3AuthNoModal({
+  clientId: "", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+});
+```
+
+</TabItem>
+
+</Tabs>
 
 ### Whitelabeling
 
-#### `uiConfig`
-
-For customizing the redirect screens while logging in and constructing the key, you need to pass on
-`WhiteLabelData` in the `uiConfig` parameter to the `uiConfig` property of Web3Auth.
+Within the `uiConfig` parameter, you can configure the Web3Auth Modal according to your
+application's requirements.
 
 :::tip
 
 This is just one of the aspects of whitelabeling you can achieve with Web3Auth. To know more
-in-depth about how you can Whitelabel your application with Web3Auth, have a look at our
-[Whitelabeling SDK Reference](/features/whitelabel).
+in-depth about how you can Whitelabel your application with Web3Auth Plug and Play Modal SDK, have a
+look at our [Whitelabeling SDK Reference](/sdk/pnp/web/modal/whitelabel).
 
 :::
 
-##### Example
+#### `uiConfig`
 
-```tsx
-const uiConfig: WhiteLabelData = {
-  appName: "My App",
-  appURL: "https://example.com",
-  logoLight: "https://example.com/logo-light.png",
-  logoDark: "https://example.com/logo-dark.png",
-  defaultLanguage: LANGUAGES.en,
-  mode: "light",
-  useLogoLoader: true,
-  theme: {
-    primary: "#FF0000",
-    secondary: "#00FF00",
-    warning: "#FFA500",
-  },
-  tncLink: "https://example.com/terms",
-  privacyPolicy: "https://example.com/privacy",
-};
+<UIConfig />
 
-const web3auth = new Web3AuthNoModal({
-  clientId: "", // Get your Client ID from the Web3Auth Dashboard
-  chainConfig,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider,
-  uiConfig,
-});
-```
+<UIConfigWhitelabelExample />
 
-### Example
+### Returns
 
-```tsx
-const chainConfig: CustomChainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1",
-  displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  rpcTarget: "https://rpc.ankr.com/eth", // This is the mainnet RPC we have added, please pass on your own endpoint while creating an app
-};
-const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
-const web3auth = new Web3AuthNoModal({
-  clientId: "", // Get your Client ID from the Web3Auth Dashboard
-  chainConfig,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider,
-  uiConfig: {
-    theme: {
-      primaryColor: "#FF0000",
-      secondaryColor: "#00FF00",
-      textColor: "#0000FF",
-    },
-  },
-});
-```
+##### `Object`: The web3auth instance with all its methods and events.
 
 ## Configuring Adapters
 
@@ -142,11 +201,7 @@ provider on successful user login that can be used to invoke RPC calls on the wa
 blockchain. You can configure and use any of the adapters provided by Web3Auth, by just configuring
 them while initializing Web3AuthNoModal.
 
-### Instantiating a Provider
-
-<InstantiatingProvider />
-
-### Configuring Openlogin Adapter
+### Configuring Openlogin Adapter [Social Logins]
 
 <OpenloginAdapterIntro />
 
@@ -164,21 +219,15 @@ providers and further setup their configs while logging the user in and passing 
 
 <ExternalWalletAdapters />
 
-## Subscribing the Lifecycle Events
-
-<SubscribeEvents />
-
 ## Configuring Plugins
 
+:::info
+
+This step is totally optional. If you don't want to use any plugins, feel free to skip this section.
+
+:::
+
 <PluginsIntro />
-
-### `showWalletConnectScanner()`
-
-<ShowWCScanner />
-
-### `initiateTopup()`
-
-<InitiateTopUp />
 
 ## Initializing Web3Auth
 
@@ -195,3 +244,7 @@ await web3auth.init();
 
 This is a simple function, that doesn't take any input, nor does return anything. It just makes sure
 that the `web3auth` instance is initialized and ready for the user to log in.
+
+## Quick Starts
+
+<ExampleCards exampleMap={pnpNoModalExamples.filter((obj) => obj.type === QUICK_START)} />
