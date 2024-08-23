@@ -929,6 +929,7 @@ const sidebars: SidebarsConfig = {
         "sdk/pnp/web/modal/install",
         "sdk/pnp/web/modal/initialize",
         "sdk/pnp/web/modal/usage",
+        "sdk/pnp/web/modal/examples",
         "sdk/pnp/web/modal/modal-hooks",
         {
           type: "category",
@@ -953,6 +954,7 @@ const sidebars: SidebarsConfig = {
         "sdk/pnp/web/no-modal/install",
         "sdk/pnp/web/no-modal/initialize",
         "sdk/pnp/web/no-modal/usage",
+        "sdk/pnp/web/no-modal/examples",
         "sdk/pnp/web/no-modal/no-modal-hooks",
         {
           type: "category",
@@ -1060,6 +1062,7 @@ const sidebars: SidebarsConfig = {
     "sdk/pnp/android/install",
     "sdk/pnp/android/initialize",
     "sdk/pnp/android/usage",
+    "sdk/pnp/android/examples",
     {
       type: "category",
       collapsible: true,
@@ -1111,6 +1114,7 @@ const sidebars: SidebarsConfig = {
     "sdk/pnp/ios/install",
     "sdk/pnp/ios/initialize",
     "sdk/pnp/ios/usage",
+    "sdk/pnp/ios/examples",
     {
       type: "category",
       collapsible: true,
@@ -1161,6 +1165,7 @@ const sidebars: SidebarsConfig = {
     "sdk/pnp/react-native/install",
     "sdk/pnp/react-native/initialize",
     "sdk/pnp/react-native/usage",
+    "sdk/pnp/react-native/examples",
     {
       type: "category",
       collapsible: true,
@@ -1225,6 +1230,7 @@ const sidebars: SidebarsConfig = {
     "sdk/pnp/flutter/install",
     "sdk/pnp/flutter/initialize",
     "sdk/pnp/flutter/usage",
+    "sdk/pnp/flutter/examples",
     {
       type: "category",
       collapsible: true,
@@ -1274,6 +1280,7 @@ const sidebars: SidebarsConfig = {
     "sdk/pnp/unity/install",
     "sdk/pnp/unity/initialize",
     "sdk/pnp/unity/usage",
+    "sdk/pnp/unity/examples",
     {
       type: "category",
       collapsible: true,
@@ -1308,6 +1315,7 @@ const sidebars: SidebarsConfig = {
     "sdk/pnp/unreal/install",
     "sdk/pnp/unreal/initialize",
     "sdk/pnp/unreal/usage",
+    "sdk/pnp/unreal/examples",
     {
       type: "category",
       collapsible: true,
@@ -1342,6 +1350,7 @@ const sidebars: SidebarsConfig = {
     "sdk/core-kit/sfa-web/initialize",
     "sdk/core-kit/sfa-web/authentication",
     "sdk/core-kit/sfa-web/usage",
+    "sdk/core-kit/sfa-web/examples",
     "sdk/core-kit/sfa-web/passkeys-sfa",
     {
       type: "category",
@@ -1356,7 +1365,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "category",
-      label: "Wallet Services Plugin",
+      label: "Plugins",
       items: [
         "sdk/core-kit/sfa-web/wallet-services/wallet-services",
         "sdk/core-kit/sfa-web/wallet-services/usage",
@@ -1391,6 +1400,7 @@ const sidebars: SidebarsConfig = {
     "sdk/core-kit/sfa-android/initialize",
     "sdk/core-kit/sfa-android/authentication",
     "sdk/core-kit/sfa-android/usage",
+    "sdk/core-kit/sfa-android/examples",
     {
       type: "link",
       label: "Support Forum",
@@ -1419,7 +1429,7 @@ const sidebars: SidebarsConfig = {
     "sdk/core-kit/sfa-ios/initialize",
     "sdk/core-kit/sfa-ios/authentication",
     "sdk/core-kit/sfa-ios/usage",
-
+    "sdk/core-kit/sfa-ios/examples",
     {
       type: "link",
       label: "Support Forum",
@@ -1448,6 +1458,7 @@ const sidebars: SidebarsConfig = {
     "sdk/core-kit/sfa-react-native/initialize",
     "sdk/core-kit/sfa-react-native/authentication",
     "sdk/core-kit/sfa-react-native/usage",
+    "sdk/core-kit/sfa-react-native/examples",
     {
       type: "category",
       label: "Providers",
@@ -1482,7 +1493,7 @@ const sidebars: SidebarsConfig = {
     "sdk/core-kit/sfa-flutter/initialize",
     "sdk/core-kit/sfa-flutter/authentication",
     "sdk/core-kit/sfa-flutter/usage",
-
+    "sdk/core-kit/sfa-flutter/examples",
     {
       type: "link",
       label: "Support Forum",
@@ -1511,6 +1522,7 @@ const sidebars: SidebarsConfig = {
     "sdk/core-kit/sfa-node/initialize",
     "sdk/core-kit/sfa-node/authentication",
     "sdk/core-kit/sfa-node/usage",
+    "sdk/core-kit/sfa-node/examples",
     {
       type: "link",
       label: "Support Forum",
@@ -1535,6 +1547,7 @@ const sidebars: SidebarsConfig = {
     "sdk/core-kit/mpc-core-kit/authentication",
     "sdk/core-kit/mpc-core-kit/signing",
     "sdk/core-kit/mpc-core-kit/usage",
+    "sdk/core-kit/mpc-core-kit/examples",
     {
       type: "category",
       label: "Providers",

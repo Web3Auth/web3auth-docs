@@ -1,5 +1,8 @@
 #### `configureAdapter(ADAPTER)`
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
 To configure an adapter, create the instance of the adapter by using its corresponding package and
 pass the returned `adapter` instance in the `configureAdapter` function.
 
@@ -10,25 +13,65 @@ are available and how to configure them.
 
 :::
 
-#### Example
+<Tabs
+  defaultValue="evm"
+  values={[
+    { label: "Default EVM Adapters", value: "evm" },
+    { label: "Default Solana Adapters", value: "solana" },
+  ]}
+>
 
-If you want to configure the Default External Adapter for Solana
+<TabItem value="evm">
+
+If you want to support All EVM External Wallets, your should use the Default External Adapter for
+EVM. This adapter supports MIPD (EIP6163) so all available wallets in the browser will automatically
+be detected as well.
+
+- Import the `getDefaultExternalAdapters` from `@web3auth/default-evm-adapter` package
+- Get all the adapters in the `adapters` variable as an array of `IAdapter`.
+- Iterate over the `adapters` array and configure each adapter using `configureAdapter` function.
+
+```javascript
+import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+
+const adapters = await getDefaultExternalAdapters({
+  options: {
+    clientId,
+    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+    privateKeyProvider,
+  },
+});
+
+adapters.forEach((adapter) => {
+  web3auth.configureAdapter(adapter);
+});
+```
+
+</TabItem>
+<TabItem value="solana">
+
+If you want to support All Solana External Wallets, your should use the Default External Adapter for
+Solana.
 
 - Import the `getDefaultExternalAdapters` from `@web3auth/default-solana-adapter` package
 - Get all the adapters in the `adapters` variable as an array of `IAdapter`.
 - Iterate over the `adapters` array and configure each adapter using `configureAdapter` function.
 
 ```javascript
-import { getDefaultExternalAdapters } from "@web3auth/default-solana-adapter"; // All default Solana Adapters
+import { getDefaultExternalAdapters } from "@web3auth/default-solana-adapter";
 
-// Setup external adapters
 const adapters = await getDefaultExternalAdapters({
   options: {
     clientId,
-    chainConfig,
+    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+    privateKeyProvider,
   },
 });
+
 adapters.forEach((adapter) => {
   web3auth.configureAdapter(adapter);
 });
 ```
+
+</TabItem>
+</Tabs>

@@ -6,7 +6,7 @@
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
-import { Props, blockchainMap, platformMap, productMap } from "../../common/maps";
+import { GuidesInterface, platformMap, productMap } from "../../common/maps";
 
 import Select, { StylesConfig } from "react-select";
 // import { request } from "graphql-request";
@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import SEO from "../../components/SEO";
 import styles from "./styles.module.css";
 
-export default function Guides({ content }: Props) {
+export default function Guides({ content }: GuidesInterface) {
   const completeGuides = Object.entries(content).map(([key, value]) => {
     if (value.type === "guide") return { ...value, link: `/guides/${key}` };
     return {};

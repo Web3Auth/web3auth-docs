@@ -4,13 +4,21 @@ sidebar_label: Usage
 description: "@web3auth/modal Usage | Documentation - Web3Auth"
 ---
 
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
 import AddChain from "@site/src/common/sdk/pnp/web/_add-chain.mdx";
 import ConnectBlockchain from "@site/src/common/sdk/pnp/web/_connect-blockchain.mdx";
-import ConnectedAdapterName from "@site/src/common/sdk/pnp/web/_connectedAdapterName.mdx";
 import GetIdTokenInfo from "@site/src/common/sdk/pnp/web/_get-idtoken-info.mdx";
 import GetUserInfo from "@site/src/common/sdk/pnp/web/_get-user-info.mdx";
+import EnableMFA from "@site/src/common/sdk/pnp/web/_enable-mfa.mdx";
 import LogOut from "@site/src/common/sdk/pnp/web/_logout.mdx";
 import SwitchChain from "@site/src/common/sdk/pnp/web/_switch-chain.mdx";
+import Status from "@site/src/common/sdk/pnp/web/_status-method.mdx";
+import Provider from "@site/src/common/sdk/pnp/web/_provider-method.mdx";
+import ConnectedAdapterName from "@site/src/common/sdk/pnp/web/_connected-adapter-name-method.mdx";
+import Connected from "@site/src/common/sdk/pnp/web/_connected-method.mdx";
+import InitiateTopUp from "@site/src/common/sdk/pnp/web/_plugin-initiate-topup.mdx";
+import ShowWCScanner from "@site/src/common/sdk/pnp/web/_plugin-showwcscanner.mdx";
 
 Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your
 users. Further, you can use the native provider given by Web3Auth to connect the users to the
@@ -20,19 +28,25 @@ Natively, the instance of `Web3Auth` _(referred to as `web3auth` in our examples
 following functions:
 
 - `connect()` - Showing the Modal and Logging in the User
-- `provider()` - Returns the native provider that can be used to make different blockchain
-  transactions.
-- `connected()` - Returns `true` or `false` depending on whether the web3auth instance is available
-  or not.
 - `getUserInfo()` - Getting the User's Information
+- `enableMFA()` - Enable Multi Factor Authentication for the user
 - `authenticateUser()` - Getting the idToken from Web3Auth
 - `addChain()` - Add chain config details to the connected adapter.
 - `switchChain()` - Switch chain as per chainId already added to chain config.
-- `getAdapter()` - Get the connected adapter instance.
-- `configureAdapter()` - Configure the adapter instance.
-- `clearCache()` - Clear the cache.
-- `addPlugin()` - Add a plugin to Web3Auth.
 - `logout()` - Logging out the User
+
+Additionally the following methods are available to get information about the current state of the
+instance:
+
+- `connected` - Returns `true` or `false` depending on whether the user is connected or not.
+- `status` - Returns the current status of the web3auth instance.
+- `provider` - Returns the currently connected provider to the web3auth instance.
+- `connectedAdapterName` - Returns the currently connected provider to the web3auth instance.
+
+Finally, with the Wallet Services Plugin, you can enable additional functionalities like:
+
+- `initiateTopup()` - Initiate Topup for the user.
+- `showWalletConnectScanner()` - Show WalletConnect QR Code Scanner.
 
 ## Logging in the User
 
@@ -51,11 +65,10 @@ await web3auth.connect();
 connect(): Promise<IProvider | null>;
 ```
 
-On successful login, the `connect()` function returns a `IProvider` instance. This instance contains
-the respective provider corresponding to your selected blockchain. You can use this provider to
-connect your user to the blockchain and make transactions.
-
-On unsuccessful login, this function will return a `null` value.
+- On successful login, the `connect()` function returns a `IProvider` instance. This instance
+  contains the respective provider corresponding to your selected blockchain. You can use this
+  provider to connect your user to the blockchain and make transactions.
+- On unsuccessful login, this function will return a `null` value.
 
 :::tip
 
@@ -64,43 +77,39 @@ Read more about connecting your users with the selected blockchain in the
 
 :::
 
-## Get a native provider
+### Check if the user is connected
 
-`provider()`
+<Connected />
 
-Returns the native provider that can be used to make different blockchain transactions.
+### Check which adapter is connected
 
-#### Returns
+<ConnectedAdapterName />
 
-```js
-get provider(): IProvider | null;
-```
+### Get the connected provider
 
-## Get connected status
+<Provider />
 
-`connected()`
+### Know the current status of the instance
 
-Returns `true` or `false` depending on whether the web3auth instance is available or not.
-
-#### Returns
-
-```js
-get connected(): boolean;
-```
+<Status />
 
 ## Get User's Information
 
 <GetUserInfo />
 
-## Get idToken
+## Enable Multi Factor Authentication (MFA)
+
+<EnableMFA />
+
+## Get idToken for Backend Verification
 
 <GetIdTokenInfo />
 
-## Add Chain
+## Add EVM Blockchain to Instance
 
 <AddChain />
 
-## Switch Chain
+## Switch to an EVM Blockchain
 
 <SwitchChain />
 
@@ -112,6 +121,26 @@ get connected(): boolean;
 
 <ConnectBlockchain />
 
-## Fetching the Connected Adapter
+## Wallet Services Plugin Methods
 
-<ConnectedAdapterName />
+You can use the Wallet Services Plugin to enable additional functionalities like showing the Wallet
+UI Screen, Wallet Connect Scanner, and initiating topup for the user.
+
+:::tip
+
+Learn more about the Wallet Services Plugin in the
+[Wallet Services SDK Reference](../wallet-services/).
+
+:::
+
+### Show WalletConnect Scanner
+
+#### `showWalletConnectScanner()`
+
+<ShowWCScanner />
+
+### Fiat On Ramp
+
+#### `initiateTopup()`
+
+<InitiateTopUp />
