@@ -17,16 +17,16 @@ const chevron = (
   </svg>
 );
 
-export default function ExampleCards(props: { examplesMap: ExamplesInterface[] }) {
-  const { examplesMap } = props;
-  examplesMap.forEach((example) => {
+export default function ExampleCards(props: { exampleMap: ExamplesInterface[] }) {
+  const { exampleMap } = props;
+  exampleMap.forEach((example) => {
     example.image = useBaseUrl(example.image);
     return example;
   });
 
   return (
     <div className={styles.exampleGroupContent}>
-      {examplesMap.map((example: ExamplesInterface) => (
+      {exampleMap.map((example: ExamplesInterface) => (
         <div key={example.link} className={styles.example}>
           <Link to={example.link} className={styles.exampleContent}>
             <img src={example.image} alt="Banner" />
