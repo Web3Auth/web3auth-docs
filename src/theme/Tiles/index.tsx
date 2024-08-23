@@ -19,12 +19,6 @@ export interface TileGroup {
 
 export default function Tiles(props: { tileGroups: TileGroup[] }) {
   const { tileGroups } = props;
-  tileGroups.forEach((groups) => {
-    groups.tiles.forEach((tile) => {
-      tile.icon = useBaseUrl(`/logos/${tile.icon}`);
-      return tile;
-    });
-  });
   return (
     <>
       {tileGroups.map((group: TileGroup) => (
@@ -35,7 +29,11 @@ export default function Tiles(props: { tileGroups: TileGroup[] }) {
             {group.tiles.map((tile: Tile) => (
               <Link key={tile.key} className={styles.tile} to={tile.path}>
                 {tile.icon ? (
-                  <img className={styles.tileIcon} src={tile.icon} alt={tile.title} />
+                  <img
+                    className={styles.tileIcon}
+                    src={useBaseUrl(`/logos/${tile.icon}`)}
+                    alt={tile.icon}
+                  />
                 ) : (
                   <div />
                 )}
