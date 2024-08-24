@@ -29,6 +29,7 @@ const config: Config = {
   favicon: "images/favicon.ico",
   organizationName: githubOrg,
   projectName: githubRepo,
+  themes: ["@markprompt/docusaurus-theme-search"],
   themeConfig: {
     docs: {
       sidebar: {
@@ -41,6 +42,10 @@ const config: Config = {
       content:
         '<a href="https://w3a.link/community-call" target="_blank">Secure your spot for the next community call! Sign up now →</a>',
       isCloseable: true,
+    },
+    markprompt: {
+      projectKey: "YOUR-PROJECT-KEY",
+      trigger: { floating: true },
     },
     colorMode: {
       defaultMode: "dark",
