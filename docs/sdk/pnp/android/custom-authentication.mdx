@@ -155,13 +155,13 @@ web3Auth = Web3Auth (
     network = Network.MAINNET,
     redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
     // Optional loginConfig object
-    // highlight-start
+    // focus-start
     loginConfig = hashMapOf("google" to LoginConfigItem(
       verifier = "verifier-name", // get it from web3auth dashboard
       typeOfLogin = TypeOfLogin.GOOGLE,
       clientId = getString(R.string.google_client_id) // google's client id
     ))
-    // highlight-end
+    // focus-end
   )
 )
 ```
@@ -178,13 +178,13 @@ web3Auth = Web3Auth (
     network = Network.MAINNET,
     redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
     // Optional loginConfig object
-    // highlight-start
+    // focus-start
     loginConfig = hashMapOf("facebook" to LoginConfigItem(
       verifier = "verifier-name", // get it from web3auth dashboard
       typeOfLogin = TypeOfLogin.FACEBOOK,
       clientId = getString(R.string.facebook_client_id) // facebook's client id
     ))
-    // highlight-end
+    // focus-end
   )
 )
 ```
@@ -201,13 +201,13 @@ web3Auth = Web3Auth (
     network = Network.MAINNET,
     redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
     // Optional loginConfig object
-    // highlight-start
+    // focus-start
     loginConfig = hashMapOf("jwt" to LoginConfigItem(
       verifier = "verifier-name", // get it from web3auth dashboard
       typeOfLogin = TypeOfLogin.JWT,
       clientId = getString (R.string.auth0_project_id) // auth0's client id
     ))
-    // highlight-end
+    // focus-end
   )
 )
 ```
@@ -224,12 +224,12 @@ web3Auth = Web3Auth (
     network = Network.MAINNET,
     redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
     // Optional loginConfig object
-    // highlight-start
+    // focus-start
     loginConfig = hashMapOf("jwt" to LoginConfigItem(
       verifier = "verifier-name", // get it from web3auth dashboard
       typeOfLogin = TypeOfLogin.JWT,
     ))
-    // highlight-end
+    // focus-end
   )
 )
 ```
@@ -328,24 +328,24 @@ web3Auth = Web3Auth (
     network = Network.MAINNET,
     redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
     // Optional loginConfig object
-    // highlight-start
+    // focus-start
     loginConfig = hashMapOf("jwt" to LoginConfigItem(
       verifier = "verifier-name", // get it from web3auth dashboard for auth0 configuration
       typeOfLogin = TypeOfLogin.JWT,
       clientId = getString (R.string.auth0_client_id) // auth0's client id, get it from auth0 dashboard
     ))
-    // highlight-end
+    // focus-end
   )
 )
 
 val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
     web3Auth.login(LoginParams(Provider.JWT,
-      // highlight-start
+      // focus-start
       extraLoginOptions = ExtraLoginOptions(
         domain: "https://username.us.auth0.com", // domain of your auth0 app
         verifierIdField: "sub", // The field in jwt token which maps to verifier id.
       )
-      // highlight-end
+      // focus-end
     ))
 ```
 
@@ -364,22 +364,22 @@ web3Auth = Web3Auth (
     network = Network.MAINNET,
     redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
     // Optional loginConfig object
-    // highlight-start
+    // focus-start
     loginConfig = hashMapOf("jwt" to LoginConfigItem(
       verifier = "verifier-name", // get it from web3auth dashboard for auth0 configuration
       typeOfLogin = TypeOfLogin.JWT,
     ))
-    // highlight-end
+    // focus-end
   )
 )
 
 val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
     web3Auth.login(LoginParams(Provider.JWT,
-      // highlight-start
+      // focus-start
       extraLoginOptions = ExtraLoginOptions(
         id_token: "Your JWT id token",
       )
-      // highlight-end
+      // focus-end
     ))
 ```
 
@@ -420,7 +420,7 @@ web3Auth = Web3Auth (
     network = Network.SAPPHIRE_MAINNET,
     redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
     // Optional loginConfig object
-    // highlight-start
+    // focus-start
     loginConfig = hashMapOf(
       "google" to LoginConfigItem(
         verifier = "aggregate-sapphire",
@@ -437,17 +437,17 @@ web3Auth = Web3Auth (
         clientId = getString(R.string.web3auth_auth0_client_id)
       )
     )
-    // highlight-end
+    // focus-end
   )
 )
 
 // Google Login
-// highlight-start
+// focus-start
 web3Auth.login(LoginParams(Provider.GOOGLE))
-// highlight-end
+// focus-end
 
 // Auth0 Login
-// highlight-start
+// focus-start
 web3Auth.login(LoginParams(
   Provider.JWT,
   extraLoginOptions = ExtraLoginOptions(
@@ -456,5 +456,5 @@ web3Auth.login(LoginParams(
     isVerifierIdCaseSensitive = false)
   )
 )
-// highlight-end
+// focus-end
 ```

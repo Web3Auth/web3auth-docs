@@ -298,7 +298,7 @@ Future<void> initPlatformState() async {
   } else {
     throw UnKnownException('Unknown platform');
   }
-  // highlight-start
+  // focus-start
   final loginConfig = HashMap<String, LoginConfigItem>();
   loginConfig['jwt'] = LoginConfigItem(
     verifier: "VERIFIER-NAME", // get it from web3auth dashboard
@@ -313,7 +313,7 @@ Future<void> initPlatformState() async {
     redirectUri: redirectUrl,
     loginConfig: loginConfig
   ));
-  // highlight-end
+  // focus-end
 
   await Web3AuthFlutter.initialize();
 }
@@ -347,14 +347,14 @@ VoidCallback _login(Future<Web3AuthResponse> Function() method) {
 }
 
 Future<Web3AuthResponse> _withAuth0() {
-  // highlight-start
+  // focus-start
   return Web3AuthFlutter.login(LoginParams(
     loginProvider: Provider.jwt,
     mfaLevel: MFALevel.OPTIONAL,
     extraLoginOptions: ExtraLoginOptions(
       domain: 'YOUR_AUTH0_DOMAIN', // eg. https://torus.us.auth0.com
       verifierIdField: 'sub')));
-  // highlight-end
+  // focus-end
 }
 ```
 

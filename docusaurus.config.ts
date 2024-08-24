@@ -14,7 +14,6 @@ const { themes } = require("prism-react-renderer");
 const resourcesDropdown = fs.readFileSync("./src/components/navDropdown/resources.html", "utf-8");
 const helpDropdown = fs.readFileSync("./src/components/navDropdown/help.html", "utf-8");
 const sdkDropdown = fs.readFileSync("./src/components/navDropdown/sdk.html", "utf-8");
-
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 
@@ -49,6 +48,23 @@ const config: Config = {
     },
     prism: {
       additionalLanguages: ["groovy", "java", "kotlin", "swift", "dart", "csharp"],
+      magicComments: [
+        {
+          className: "theme-code-block-highlighted-line",
+          line: "highlight-next-line",
+          block: { start: "highlight-start", end: "highlight-end" },
+        },
+        {
+          className: "code-unfocus",
+          line: "unfocus-next-line",
+          block: { start: "unfocus-start", end: "unfocus-end" },
+        },
+        {
+          className: "code-focus",
+          line: "focus-next-line",
+          block: { start: "focus-start", end: "focus-end" },
+        },
+      ],
     },
     navbar: {
       title: "Documentation",
@@ -148,6 +164,10 @@ const config: Config = {
       src: baseUrl + "js/fix-trailing-slash.js",
       async: false,
       defer: false,
+    },
+    {
+      src: baseUrl + "js/code-focus.js",
+      async: true,
     },
   ],
   presets: [
