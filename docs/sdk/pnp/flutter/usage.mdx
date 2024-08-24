@@ -297,7 +297,7 @@ Future<void> initWeb3Auth() async {
 
 // Login
 final Web3AuthResponse response = await Web3AuthFlutter.login(
-  // highlight-start
+  // focus-start
   LoginParams(
     loginProvider: Provider.email_passwordless,
     extraLoginOptions: ExtraLoginOptions(
@@ -305,7 +305,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
       additionalParams: additionalParams
     )
   ),
-  // highlight-end
+  // focus-end
 );
 ```
 
@@ -354,7 +354,7 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 ```dart title="Usage"
 Future<void> initPlatformState() async {
 
-  // highlight-start
+  // focus-start
   final loginConfig = new HashMap<String, LoginConfigItem>();
   loginConfig['jwt'] = LoginConfigItem(
     // get it from web3auth dashboard
@@ -363,7 +363,7 @@ Future<void> initPlatformState() async {
     // Auth0, Google, Facebook, Twitch, Discord or Web3Auth Client ID
     client_id: "CLIENT_ID",
   );
-  // highlight-end
+  // focus-end
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -390,12 +390,12 @@ Future<void> initPlatformState() async {
 // Login
 final Web3AuthResponse response = await Web3AuthFlutter.login(
   LoginParams(
-    // highlight-start
+    // focus-start
     loginProvider: Provider.jwt,
     extraLoginOptions: ExtraLoginOptions(
       id_token: "YOUR_JWT_TOKEN",
     )
-    // highlight-end
+    // focus-end
   )
 );
 ```
@@ -453,7 +453,7 @@ class LoginScreen extends State<T> with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
   }
 
-  // highlight-start
+  // focus-start
   @override
   void didChangeAppLifecycleState(final AppLifecycleState state) {
     // This is important to trigger the user cancellation on Android.
@@ -461,7 +461,7 @@ class LoginScreen extends State<T> with WidgetsBindingObserver {
       Web3AuthFlutter.setCustomTabsClosed();
     }
   }
-  // highlight-end
+  // focus-end
 
    @override
   Widget build(BuildContext context) {
@@ -573,14 +573,14 @@ class ChainConfig {
 
 ```dart title="Usage"
 try {
-  // highlight-start
+  // focus-start
   await Web3AuthFlutter.launchWalletServices(
     ChainConfig(
       chainId: "0x1",
       rpcTarget: "https://mainnet.infura.io/v3/$key",
     ),
   );
-  // highlight-end
+  // focus-end
 } on UserCancelledException {
   log("User cancelled.");
 } catch(e) {
@@ -617,7 +617,7 @@ try {
   // User's EOA address
   params.add("<User Address in Hex>");
 
-  // highlight-start
+  // focus-start
   await Web3AuthFlutter.request(
     ChainConfig(
       chainId: "0x1",
@@ -626,7 +626,7 @@ try {
     "personal_sign",
     params,
   );
-  // highlight-end
+  // focus-end
 } on UserCancelledException {
   log("User cancelled.");
 } catch(e) {

@@ -170,14 +170,14 @@ Future<void> initWeb3Auth() async {
   final themeMap = HashMap<String, String>();
   themeMap['primary'] = "#229954";
 
-  // highlight-start
+  // focus-start
   final loginConfig = new HashMap<String, LoginConfigItem>();
   loginConfig['google'] = LoginConfigItem(
     verifier: "verifier-name", // get it from web3auth dashboard
     typeOfLogin: TypeOfLogin.google,
     clientId: "google_client_id" // google's client id
   );
-  // highlight-end
+  // focus-end
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -217,14 +217,14 @@ Future<void> initWeb3Auth() async {
   final themeMap = HashMap<String, String>();
   themeMap['primary'] = "#229954";
 
-  // highlight-start
+  // focus-start
   final loginConfig = new HashMap<String, LoginConfigItem>();
   loginConfig['facebook'] = LoginConfigItem(
     verifier: "verifier-name", // get it from web3auth dashboard
     typeOfLogin: TypeOfLogin.facebook,
     clientId: "facebook_client_id" // facebook's client id
   );
-  // highlight-end
+  // focus-end
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -264,14 +264,14 @@ Future<void> initWeb3Auth() async {
   final themeMap = HashMap<String, String>();
   themeMap['primary'] = "#229954";
 
-  // highlight-start
+  // focus-start
   final loginConfig = new HashMap<String, LoginConfigItem>();
   loginConfig['jwt'] = LoginConfigItem(
     verifier: "verifier-name", // get it from web3auth dashboard
     typeOfLogin: TypeOfLogin.jwt,
     clientId: "web3auth_client_id" // web3auth's plug and play client id
   );
-  // highlight-end
+  // focus-end
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -298,12 +298,12 @@ Future<void> initWeb3Auth() async {
 // Login
 final Web3AuthResponse response = await Web3AuthFlutter.login(
   LoginParams(
-    // highlight-start
+    // focus-start
     loginProvider: Provider.jwt,
     extraLoginOptions: ExtraLoginOptions(
       id_token: "YOUR_JWT_TOKEN"
     )
-    // highlight-end
+    // focus-end
   )
 );
 ```
@@ -445,14 +445,14 @@ Future<void> initWeb3Auth() async {
   final themeMap = HashMap<String, String>();
   themeMap['primary'] = "#229954";
 
-  // highlight-start
+  // focus-start
   final loginConfig = new HashMap<String, LoginConfigItem>();
   loginConfig['jwt'] = LoginConfigItem(
     verifier: "verifier-name", // get it from web3auth dashboard for auth0 configuration
     typeOfLogin: TypeOfLogin.jwt,
     clientId: "auth0_client_id" // get it from auth0 dashboard
   );
-  // highlight-end
+  // focus-end
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -479,13 +479,13 @@ Future<void> initWeb3Auth() async {
 // Login
 final Web3AuthResponse response = await Web3AuthFlutter.login(
   LoginParams(
-    // highlight-start
+    // focus-start
     loginProvider: Provider.jwt,
     extraLoginOptions: ExtraLoginOptions(
       domain: "https://tenant-name.us.auth0.com", // Domain of your auth0 app
       verifierIdField: "sub", // The field in jwt token which maps to verifier id.
     )
-    // highlight-end
+    // focus-end
   )
 );
 ```
@@ -500,13 +500,13 @@ Future<void> initWeb3Auth() async {
   final themeMap = HashMap<String, String>();
   themeMap['primary'] = "#229954";
 
-  // highlight-start
+  // focus-start
   final loginConfig = new HashMap<String, LoginConfigItem>();
   loginConfig['jwt'] = LoginConfigItem(
     verifier: "verifier-name", // get it from web3auth dashboard
     typeOfLogin: TypeOfLogin.jwt,
   );
-  // highlight-end
+  // focus-end
 
   Uri redirectUrl;
   if (Platform.isAndroid) {
@@ -533,12 +533,12 @@ Future<void> initWeb3Auth() async {
 // Login
 final Web3AuthResponse response = await Web3AuthFlutter.login(
   LoginParams(
-    // highlight-start
+    // focus-start
     loginProvider: Provider.jwt,
     extraLoginOptions: ExtraLoginOptions(
       id_token: "YOUR_ID_TOKEN",
     )
-    // highlight-end
+    // focus-end
   )
 );
 ```
@@ -581,12 +581,12 @@ Future<void> initWeb3Auth() async {
 // Login
 final Web3AuthResponse response = await Web3AuthFlutter.login(
   LoginParams(loginProvider: Provider.email_passwordless,
-    // highlight-start
+    // focus-start
     extraLoginOptions: ExtraLoginOptions(
       login_hint: "hello@web3auth.io",
       additionalParams: additionalParams
     ),
-    // highlight-end
+    // focus-end
   ),
 );
 ```
@@ -606,7 +606,7 @@ users regardless of their login providers. For example, combining a Google and E
 login, or Google and GitHub via Auth0 to access the same address for your user.
 
 ```dart
-// highlight-start
+// focus-start
 final loginConfig = HashMap<String, LoginConfigItem>();
 
 loginConfig['google'] = LoginConfigItem(
@@ -622,7 +622,7 @@ loginConfig['jwt'] = LoginConfigItem(
   typeOfLogin: TypeOfLogin.jwt,
   clientId: "YOUR_AUTHO_CLIENT_ID",
 );
-// highlight-end
+// focus-end
 
 await Web3AuthFlutter.init(
   Web3AuthOptions(
@@ -641,7 +641,7 @@ await Web3AuthFlutter.initialize();
 await Web3AuthFlutter.login(LoginParams(loginProvider: Provider.google));
 
 // Login With GitHub
-// highlight-start
+// focus-start
 await Web3AuthFlutter.login(
   LoginParams(
     loginProvider: Provider.jwt,
@@ -653,5 +653,5 @@ await Web3AuthFlutter.login(
     ),
   ),
 );
-// highlight-end
+// focus-end
 ```
