@@ -2023,19 +2023,4 @@ function arrayToObjectById(array) {
   }, {});
 }
 
-export const pnpModalExamplesMap = arrayToObjectById(pnpModalExamples);
-export const pnpNoModalExamplesMap = arrayToObjectById(pnpNoModalExamples);
-export const pnpiOSExamplesMap = arrayToObjectById(pnpiOSExamples);
-export const pnpAndroidExamplesMap = arrayToObjectById(pnpAndroidExamples);
-export const pnpReactNativeExamplesMap = arrayToObjectById(pnpReactNativeExamples);
-export const pnpFlutterExamplesMap = arrayToObjectById(pnpFlutterExamples);
-export const pnpUnityExamplesMap = arrayToObjectById(pnpUnityExamples);
-export const pnpUnrealExamplesMap = arrayToObjectById(pnpUnrealExamples);
-export const coreKitSfaWebExamplesMap = arrayToObjectById(coreKitSfaWebExamples);
-export const coreKitSfaiOSExamplesMap = arrayToObjectById(coreKitSfaiOSExamples);
-export const coreKitSfaAndroidExamplesMap = arrayToObjectById(coreKitSfaAndroidExamples);
-export const coreKitSfaNodeExamplesMap = arrayToObjectById(coreKitSfaNodeExamples);
-export const coreKitSfaReactNativeExamplesMap = arrayToObjectById(coreKitSfaReactNativeExamples);
-export const coreKitSfaFlutterExamplesMap = arrayToObjectById(coreKitSfaFlutterExamples);
-export const coreKitMPCWebExamplesMap = arrayToObjectById(coreKitMPCWebExamples);
-export const coreKitMPCReactNativeExamplesMap = arrayToObjectById(coreKitMPCReactNativeExamples);
+export const examples = arrayToObjectById(exampleMap);
