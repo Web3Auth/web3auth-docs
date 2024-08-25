@@ -14,6 +14,7 @@ const { themes } = require("prism-react-renderer");
 const resourcesDropdown = fs.readFileSync("./src/components/navDropdown/resources.html", "utf-8");
 const helpDropdown = fs.readFileSync("./src/components/navDropdown/help.html", "utf-8");
 const sdkDropdown = fs.readFileSync("./src/components/navDropdown/sdk.html", "utf-8");
+const RehypePlugin = require("./static/js/remark-html-to-jsx");
 
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
@@ -162,6 +163,7 @@ const config: Config = {
           remarkPlugins: [
             remarkMath,
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
+            RehypePlugin,
           ],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
         },
@@ -185,6 +187,7 @@ const config: Config = {
           remarkPlugins: [
             remarkMath,
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
+            RehypePlugin,
           ],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
           beforeDefaultRemarkPlugins: [],
@@ -195,6 +198,12 @@ const config: Config = {
           priority: 0.8,
         },
       } satisfies Preset.Options,
+    ],
+    [
+      "docusaurus-preset-shiki-twoslash",
+      {
+        themes: ["nord"],
+      },
     ],
   ],
   plugins: [
