@@ -124,37 +124,24 @@ Some of the commonly used L2s and the Ethereum chain ids are listed below.
 | 0xE      | 14       | Flare                       |
 | 0x13     | 19       | Songbird                    |
 
-#### Example
-
 ```tsx
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xaa36a7", // Please use 0x1 for Mainnet
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-  displayName: "Ethereum Sepolia Testnet",
-  blockExplorerUrl: "https://sepolia.etherscan.io/",
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io",
   ticker: "ETH",
   tickerName: "Ethereum",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
 ```
 
-## Setting up the provider
+### Setting up the provider
 
-Once you have initialised the provider, you can set it up by passing in the MPC SDK instance into
-it.
-
-```tsx
-const coreKitInstance = new Web3AuthMPCCoreKit({
-  web3AuthClientId: "YOUR_CLIENT_ID",
-  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
-  manualSync: true, // This is the recommended approach
-  tssLib: tssLib,
-  storage: window.storage,
-});
-
-const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
-evmProvider.setupProvider(makeEthereumSigner(coreKitInstance));
-```
+<InitializeWeb3Auth />
 
 ## Using the provider
 
@@ -216,199 +203,9 @@ you get started.
 
 :::
 
-### Get User account and Balance
+:::tip
 
-#### `web3.eth.getAccounts()`
+Please refer to our [EVM Connect Blockchain Reference](/connect-blockchain/evm) for more
+information.
 
-This method is used to fetch the address of the connected account.
-
-```tsx
-// Get user's Ethereum public address
-const address = (await web3.eth.getAccounts())[0];
-
-// Get user's balance in ether
-const balance = web3.utils.fromWei(
-  await web3.eth.getBalance(address), // Balance is in wei
-);
-```
-
-### Send Transaction
-
-#### `web3.eth.sendTransaction(object)`
-
-This function is used to broadcast a transaction on chain.
-
-```tsx
-// Get user's Ethereum public address
-const fromAddress = (await web3.eth.getAccounts())[0];
-
-const destination = "0xE0cef4417a772512E6C95cEf366403839b0D6D6D";
-const amount = web3.utils.toWei(1); // Convert 1 ether to wei
-
-// Submit transaction to the blockchain and wait for it to be mined
-const receipt = await web3.eth.sendTransaction({
-  from: fromAddress,
-  to: destination,
-  value: amount,
-});
-```
-
-### Sign a message
-
-The following example shows how to sign different types of messages with the connected user's
-private key.
-
-#### Personal Sign
-
-#### `web3.eth.personal.sign(originalMessage, fromAddress)`
-
-```tsx
-// Get user's Ethereum public address
-const fromAddress = (await web3.eth.getAccounts())[0];
-
-const originalMessage = "YOUR_MESSAGE";
-
-const signedMessage = await web3.eth.personal.sign(originalMessage, fromAddress);
-```
-
-#### Sign Typed Data V1
-
-#### `eth_signTypedData`
-
-```tsx
-// Get user's Ethereum public address
-const fromAddress = (await web3.eth.getAccounts())[0];
-
-const originalMessage = [
-  {
-    type: "string",
-    name: "fullName",
-    value: "John Doe",
-  },
-  {
-    type: "uint32",
-    name: "userId",
-    value: "1234",
-  },
-];
-const params = [originalMessage, fromAddress];
-const method = "eth_signTypedData";
-
-const signedMessage = await web3.currentProvider.sendAsync({
-  id: 1,
-  method,
-  params,
-  fromAddress,
-});
-```
-
-#### Sign Typed Data v3
-
-#### `eth_signTypedData_v3`
-
-```tsx
-// Get user's Ethereum public address
-const fromAddress = (await web3.eth.getAccounts())[0];
-
-const originalMessage = {
-  types: {
-    EIP712Domain: [
-      {
-        name: "name",
-        type: "string",
-      },
-      {
-        name: "version",
-        type: "string",
-      },
-      {
-        name: "verifyingContract",
-        type: "address",
-      },
-    ],
-    Greeting: [
-      {
-        name: "contents",
-        type: "string",
-      },
-    ],
-  },
-  primaryType: "Greeting",
-  domain: {
-    name: "web3auth",
-    version: "1",
-    verifyingContract: "0xE0cef4417a772512E6C95cEf366403839b0D6D6D",
-  },
-  message: {
-    contents: "Hello, from web3auth!",
-  },
-};
-const params = [fromAddress, originalMessage];
-const method = "eth_signTypedData_v3";
-
-const signedMessage = await web3.currentProvider.sendAsync({
-  id: 1,
-  method,
-  params,
-  fromAddress,
-});
-```
-
-#### Sign Typed Data v4
-
-#### `eth_signTypedData_v4`
-
-```tsx
-/*
-  Sign Typed Data v4 adds support for
-  arrays and recursive data types.
-
-  Otherwise, it works the same as Sign Typed Data v3.
-*/
-
-// Get user's Ethereum public address
-const fromAddress = (await web3.eth.getAccounts())[0];
-
-const originalMessage = {
-  types: {
-    EIP712Domain: [
-      {
-        name: "name",
-        type: "string",
-      },
-      {
-        name: "version",
-        type: "string",
-      },
-      {
-        name: "verifyingContract",
-        type: "address",
-      },
-    ],
-    Greeting: [
-      {
-        name: "contents",
-        type: "string",
-      },
-    ],
-  },
-  primaryType: "Greeting",
-  domain: {
-    name: "web3auth",
-    version: "1",
-    verifyingContract: "0xE0cef4417a772512E6C95cEf366403839b0D6D6D",
-  },
-  message: {
-    contents: "Hello, from web3auth!",
-  },
-};
-const params = [fromAddress, originalMessage];
-const method = "eth_signTypedData_v4";
-
-const signedMessage = await web3.currentProvider.sendAsync({
-  id: 1,
-  method,
-  params,
-  fromAddress,
-});
-```
+:::

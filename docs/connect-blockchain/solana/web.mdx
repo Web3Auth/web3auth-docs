@@ -20,9 +20,8 @@ description:
 ---
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
-import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-other-pnp-sfa-tkey.mdx";
-import TabItem from "@theme/TabItem";
-import Tabs from "@theme/Tabs";
+import SolanaProviderSetup from "@site/src/common/docs/_solana-provider-setup.mdx";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-other-pnp-sfa.mdx";
 
 While using the Web3Auth Web SDK for [Solana](https://solana.com/) you get a standard provider for
 Solana containing functions to help you make blockchain calls via the
@@ -44,130 +43,7 @@ To interact with the Solana blockchain, you can use
 [`@solana/web3.js`](https://solana-labs.github.io/solana-web3.js/) library with Web3Auth along with
 `@web3auth/solana-provider` package.
 
-### Getting the `chainConfig`
-
-<Tabs
- defaultValue="mainnet"
-  values={[
-    { label: "Mainnet", value: "mainnet", },
-    { label: "Testnet", value: "testnet", },
-  ]}
->
-<TabItem
-  value="mainnet"
->
-
-```typescript
-const chainConfig: {
-  chainNamespace: "solana";
-  chainId: "0x1"; // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-  rpcTarget: "https://rpc.ankr.com/solana";
-  displayName: "Solana Mainnet";
-  blockExplorerUrl: "https://explorer.solana.com";
-  ticker: "SOL";
-  tickerName: "Solana";
-  logo: "https://images.toruswallet.io/solana.svg";
-};
-```
-
-</TabItem>
-
-<TabItem
-  value="testnet"
->
-
-```typescript
-const chainConfig: {
-  chainNamespace: "solana";
-  chainId: "0x2"; // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
-  rpcTarget: "https://api.testnet.solana.com";
-  displayName: "Solana Testnet";
-  blockExplorerUrl: "https://explorer.solana.com";
-  ticker: "SOL";
-  tickerName: "Solana";
-  logo: "https://images.toruswallet.io/solana.svg";
-};
-```
-
-</TabItem>
-</Tabs>
-
-### Initializing and instantiating the Web3Auth SDK
-
-<Tabs
-  defaultValue="modal"
-  values={[
-    { label: "PnP Modal SDK", value: "modal", },
-    { label: "PnP NoModal SDK", value: "no-modal", },
-    { label: "CoreKit SFA Web SDK", value: "sfa", },
-  ]}
->
-<TabItem
-  value="modal"
->
-
-```tsx
-import { Web3Auth } from "@web3auth/modal";
-import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
-import { WEB3AUTH_NETWORK } from "@web3auth/base";
-
-const privateKeyProvider = new SolanaPrivateKeyProvider({
-  config: { chainConfig: chainConfig },
-});
-
-const web3auth = new Web3Auth({
-  // Get it from Web3Auth Dashboard
-  clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider: privateKeyProvider,
-});
-```
-
-</TabItem>
-<TabItem
-  value="no-modal"
->
-
-```tsx
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
-import { WEB3AUTH_NETWORK } from "@web3auth/base";
-
-const privateKeyProvider = new SolanaPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-const web3auth = new Web3AuthNoModal({
-  clientId, // Get it from Web3Auth Dashboard
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-});
-
-const openloginAdapter = new OpenloginAdapter();
-web3auth.configureAdapter(openloginAdapter);
-```
-
-</TabItem>
-<TabItem
-  value="sfa"
->
-
-```tsx
-import { Web3Auth } from "@web3auth/single-factor-auth";
-import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
-
-const web3auth = new Web3Auth({
-  clientId, // Get your Client ID from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-});
-
-const privateKeyProvider = new SolanaPrivateKeyProvider({
-  config: { chainConfig },
-});
-```
-
-</TabItem>
-</Tabs>
+<SolanaProviderSetup />
 
 ## Get User Info
 

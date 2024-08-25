@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { IntegrationBuilder, IntegrationStep } from "../interfaces";
-import { quickStartHostedLinks } from "../../../common/maps";
+import { quickStartHostedLinks, quickStartSourceCode } from "../../../common/maps";
 import {
   LANGS_ANDROID,
   LANGS_FLUTTER,
@@ -25,6 +25,7 @@ import {
   SFA_FLUTTER,
   SFA_NODE,
   SFA_REACT_NATIVE,
+  REACT_NATIVE,
 } from "./choices";
 import mpc_core_kit_angular from "./core_kit/mpc_core_kit/angular";
 import mpc_core_kit_nextjs from "./core_kit/mpc_core_kit/nextjs";
@@ -223,6 +224,16 @@ const builder: IntegrationBuilder = {
 
     selectedSDK = `${finalValues.sdk}_${finalValues.framework}`;
 
+    let sourceCodeLink;
+
+    if (LANGS_WEB.map((it) => it.key).includes(finalValues.framework)) {
+      sourceCodeLink = quickStartSourceCode[selectedSDK];
+    } else if (finalValues.sdk === MPC_CORE_KIT && finalValues.framework === REACT_NATIVE) {
+      sourceCodeLink = quickStartSourceCode[selectedSDK];
+    } else {
+      sourceCodeLink = quickStartSourceCode[finalValues.sdk];
+    }
+
     sdks[selectedSDK].build({ ...finalValues, filenames, files: newFiles, steps });
 
     if (stepIndex >= steps.length) {
@@ -241,6 +252,7 @@ const builder: IntegrationBuilder = {
       })),
       stepIndex,
       embedLink: quickStartHostedLinks[selectedSDK],
+      sourceCodeLink,
     };
   },
 };

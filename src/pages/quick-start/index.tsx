@@ -351,6 +351,13 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                   Preview
                 </button>
               )}
+              <button
+                className={styles.copyButton}
+                onClick={() => window.open(integration.sourceCodeLink, "_blank")}
+                type="button"
+              >
+                Source Code
+              </button>
               <button className={styles.copyButton} onClick={onClickCopyLink} type="button">
                 <svg
                   width="17"
