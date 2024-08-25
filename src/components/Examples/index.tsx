@@ -1,24 +1,41 @@
 import Link from "@docusaurus/Link";
 import { useEffect, useState } from "react";
-import { blockchainMap, platformMap, exampleMap, typeMap, productMap } from "../../common/maps";
+import {
+  blockchainMap,
+  platformMap,
+  typeMap,
+  productMap,
+  ExamplesInterface,
+} from "../../common/maps";
+
 import styles from "./styles.module.css";
 import Select, { StylesConfig } from "react-select";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 
-export default function Examples() {
-  const completeExampleMap = exampleMap;
+export default function Examples(props: {
+  exampleMap: ExamplesInterface[];
+  showProductFilter: boolean;
+  showPlatformFilter: boolean;
+  showBlockchainFilter: boolean;
+}) {
+  const { showProductFilter, showPlatformFilter, showBlockchainFilter } = props;
+  const sortedExamples: ExamplesInterface[] = props.exampleMap.sort(
+    (a, b) =>
+      typeMap.find((obj) => obj.type === a.type).id - typeMap.find((obj) => obj.type === b.type).id,
+  );
+  sortedExamples.forEach((example) => {
+    example.image = useBaseUrl(example.image);
+    return example;
+  });
   const [searchInput, setSearchInput] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [productFilter, setProductFilter] = useState<string[]>([]);
   const [platformFilter, setPlatformFilter] = useState<string[]>([]);
   const [blockchainFilter, setBlockchainFilter] = useState<string[]>([]);
-
-  const [sortedExampleMap, setSortedExampleMap] = useState<any>(
-    completeExampleMap.sort(
-      (a, b) =>
-        typeMap.find((obj) => obj.type === a.type).id -
-        typeMap.find((obj) => obj.type === b.type).id,
-    ),
-  );
+  const [tagFilteredExampleMap, setTagFilteredExampleMap] =
+    useState<ExamplesInterface[]>(sortedExamples);
+  const [searchFilteredExampleMap, setSearchFilteredExampleMap] =
+    useState<ExamplesInterface[]>(tagFilteredExampleMap);
 
   const chevron = (
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,7 +52,12 @@ export default function Examples() {
   useEffect(() => {
     function filterByTags() {
       let examples;
-      examples = completeExampleMap.filter((item) => {
+      if (searchInput.length === 0) {
+        examples = sortedExamples;
+      } else {
+        examples = searchFilteredExampleMap;
+      }
+      examples = examples.filter((item) => {
         const prodFil =
           productFilter.length === 0 || productFilter.some((tag) => item.tags.includes(tag));
         const platFil =
@@ -45,11 +67,10 @@ export default function Examples() {
 
         return [prodFil, platFil, blockFil].every((result) => result === true);
       });
-
-      setSortedExampleMap(examples);
+      setTagFilteredExampleMap(examples);
     }
     filterByTags();
-  }, [productFilter, platformFilter, blockchainFilter]);
+  }, [productFilter, platformFilter, blockchainFilter, searchFilteredExampleMap]);
 
   const onChangeProduct = (e) => {
     const filterValue = e.map((item) => item.value);
@@ -112,17 +133,17 @@ export default function Examples() {
     if (input === "") {
       let examples;
       if (tags.length === 0) {
-        examples = exampleMap;
+        examples = sortedExamples;
       } else {
-        examples = completeExampleMap.filter((item) => {
+        examples = tagFilteredExampleMap.filter((item) => {
           return tags.some((tag) => item.tags.includes(tag));
         });
       }
 
-      setSortedExampleMap(examples);
+      setSearchFilteredExampleMap(examples);
     } else {
-      const finalSortedExampleMap = completeExampleMap.filter((item) => searchFilter(item));
-      setSortedExampleMap(finalSortedExampleMap);
+      const examples = sortedExamples.filter((item) => searchFilter(item));
+      setSearchFilteredExampleMap(examples);
     }
   }
 
@@ -234,32 +255,38 @@ export default function Examples() {
             </button>
           )) || <div className={styles.searchClearButton} />}
         </div>
-        <Select
-          options={productMap}
-          isMulti
-          styles={customSelectButtonStyles}
-          onChange={onChangeProduct}
-          placeholder="Select Product"
-        />
-        <Select
-          options={platformMap}
-          isMulti
-          styles={customSelectButtonStyles}
-          onChange={onChangePlatform}
-          placeholder="Select Platform"
-        />
-        <Select
-          options={blockchainMap}
-          isMulti
-          styles={customSelectButtonStyles}
-          onChange={onChangeBlockchain}
-          placeholder="Select Blockchain"
-          closeMenuOnSelect={false}
-        />
+        {showProductFilter && (
+          <Select
+            options={productMap as any}
+            isMulti
+            styles={customSelectButtonStyles}
+            onChange={onChangeProduct}
+            placeholder="Select Product"
+          />
+        )}
+        {showPlatformFilter && (
+          <Select
+            options={platformMap as any}
+            isMulti
+            styles={customSelectButtonStyles}
+            onChange={onChangePlatform}
+            placeholder="Select Platform"
+          />
+        )}
+        {showBlockchainFilter && (
+          <Select
+            options={blockchainMap as any}
+            isMulti
+            styles={customSelectButtonStyles}
+            onChange={onChangeBlockchain}
+            placeholder="Select Blockchain"
+            closeMenuOnSelect={false}
+          />
+        )}
       </div>
       <div className={styles.container}>
-        {sortedExampleMap.map((item) => renderArticle(item))}
-        {sortedExampleMap.length === 0 && (
+        {tagFilteredExampleMap.map((item) => renderArticle(item))}
+        {tagFilteredExampleMap.length === 0 && (
           <div className={styles.noResults}>
             <p>No Results Found</p>
           </div>

@@ -20,17 +20,66 @@ This package gives access to common types and interfaces for Web3Auth. This come
 providing you with a standard way of importing the values you need to work with the SDKs. We highly
 recommend using it while working with `Typescript`.
 
-### Add `@web3auth/ethereum-provider` to your project
+### Add a Provider to your project
+
+The `@web3auth/modal` package requires a private key provider to facilitate interaction with your
+preferred blockchain network. You can choose between the following providers based on your usecase.
+
+- [EIP1193 Private Key Provider for EVM Compatible Chains](/sdk/pnp/web/providers/evm)
+- [Solana Private Key Provider for Solana Blockchain](/sdk/pnp/web/providers/solana)
+- [XRPL Private Key Provider for XRPL Blockchain](/sdk/pnp/web/providers/xrpl)
+- [Common Private Key Provider for Connecting to any Blockchain](/sdk/pnp/web/providers/common)
+
+:::note
+
+It's mandatory to provide `privateKeyProvider` for your corresponding chain namespace. To know more
+in-depth about providers, have a look at the [Providers reference](/sdk/pnp/web/providers).
+
+:::
+
+<Tabs
+  defaultValue="evm"
+  values={[
+    { label: "EIP1193 Provider", value: "evm" },
+    { label: "Solana Provider", value: "solana" },
+    { label: "XRPL Provider", value: "xrpl" },
+    { label: "Common Provider", value: "common" },
+  ]}
+>
+
+<TabItem value="evm">
 
 ```bash npm2yarn
 npm install --save @web3auth/ethereum-provider
 ```
 
-This package gives access to `EthereumPrivateKeyProvider` class, which accepts a secp251k1 private
-key and returns an EIP1193 compatible provider. The EIP1193 provider can be used with various wallet
-SDKs. This reference guide demonstrates the use of Web3Auth with EVM-compatible blockchains. To use
-Web3Auth with different blockchain ecosystems like Solana, XRPL, and others please use their
-respective providers.
+</TabItem>
+
+<TabItem value="solana">
+
+```bash npm2yarn
+npm install --save @web3auth/solana-provider
+```
+
+</TabItem>
+
+<TabItem value="xrpl">
+
+```bash npm2yarn
+npm install --save @web3auth/xrpl-provider
+```
+
+</TabItem>
+
+<TabItem value="common">
+
+```bash npm2yarn
+npm install --save @web3auth/base-provider
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Troubleshooting
 
