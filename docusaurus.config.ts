@@ -398,7 +398,7 @@ const config: Config = {
           },
           {
             from: "/connect-blockcahin/tron/",
-            to: "/connect-blockchain/evm/tron/",
+            to: "/connect-blockchain/evm/tron/web",
           },
           {
             from: "/connect-blockchain/starkex",
