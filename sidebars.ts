@@ -810,7 +810,7 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "Tron",
-              items: ["connect-blockchain/evm/tron/web"],
+              items: ["connect-blockchain/evm/tron/tron", "connect-blockchain/evm/tron/web"],
             },
             {
               type: "category",
