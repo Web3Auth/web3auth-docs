@@ -273,6 +273,7 @@ const sidebars: SidebarsConfig = {
     "features/session-management",
     "features/user-management",
     "features/wallet-pregeneration",
+    "features/mipd",
     "features/wallet-aggregation",
     "features/whitelabel",
     {
