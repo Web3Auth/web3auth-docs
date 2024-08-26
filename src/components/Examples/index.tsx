@@ -130,21 +130,11 @@ export default function Examples(props: {
         )
       );
     }
-    if (input === "") {
-      let examples;
-      if (tags.length === 0) {
-        examples = sortedExamples;
-      } else {
-        examples = tagFilteredExampleMap.filter((item) => {
-          return tags.some((tag) => item.tags.includes(tag));
-        });
-      }
-
-      setSearchFilteredExampleMap(examples);
-    } else {
-      const examples = sortedExamples.filter((item) => searchFilter(item));
-      setSearchFilteredExampleMap(examples);
+    let examples = tagFilteredExampleMap;
+    if (input !== "") {
+      examples = tagFilteredExampleMap.filter((item) => searchFilter(item));
     }
+    setSearchFilteredExampleMap(examples);
   }
 
   function renderArticle(article) {

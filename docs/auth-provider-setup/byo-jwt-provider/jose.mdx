@@ -1,0 +1,71 @@
+---
+title: Create JWT using jose package
+sidebar_label: jose
+description: "Create JWT using jose pacakge | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import CreateJWKS from "@site/src/common/docs/_byo-jwt-create-jwks.mdx";
+
+For your custom JWT provider, you can create JWT token using package of your choice, one of which is
+`jose` package. Learn more about [jose](https://www.npmjs.com/package/jose).
+
+## Installation
+
+```bash npm2yarn
+$ npm i jose
+```
+
+## Generate Private key
+
+Paste the below command in terminal to generate a new file `privateKey.pem` with the key details.
+The generated key will be used to sign the token.
+
+```bash
+openssl genrsa -out privateKey.pem 2048
+```
+
+Once you have generated private key, you can get the public key which can be used to verify the JWT.
+
+```bash
+openssl rsa -in privateKey.pem -pubout -out publicKey.pem
+```
+
+## Generate JWT
+
+Create an index.js file and paste the below code to generate the JWT using RSA algorithm.
+
+```tsx
+import * as jose from "jose";
+import fs from "fs";
+var privateKey = fs.readFileSync("privateKey.pem");
+var publicKey = fs.readFileSync("publicKey.pem");
+
+const jwt = await new jose.SignJWT({ "urn:example:claim": true })
+  .setProtectedHeader({ alg: "RS256", kid: "1bb9605c36e69386830202b2d" }) // <-- Replace it with your kid. This has to be present in the JWKS endpoint.
+  .setIssuedAt()
+  .setIssuer("https://my-authz-server")
+  .setAudience("urn:my-resource-server")
+  .setExpirationTime("2h")
+  .sign(privateKey);
+
+console.log(jwt);
+
+// Verifying the JWT using Remote JWK Set.
+// This is just to show how the Verify works, look above to set-up custom jwt verifier on the Web3Auth Dashboard.
+// Check the steps below to see how once can generate the JWKS
+const JWKS = jose.createRemoteJWKSet(new URL("https://my-authz-server/.well-known/jwks.json"));
+
+const { payload, protectedHeader } = await jose.jwtVerify(jwt, JWKS, {
+  issuer: "https://my-authz-server",
+  audience: "urn:my-resource-server",
+});
+
+console.log(protectedHeader);
+console.log(payload);
+```
+
+## Create JWKS
+
+<CreateJWKS />

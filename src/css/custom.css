@@ -288,14 +288,14 @@
   --w3a-banner-background: var(--ifm-color-emphasis-100);
   --w3a-border-color: var(--ifm-color-emphasis-200);
   --w3a-border-light-color: var(--ifm-color-emphasis-200);
-  --ifm-h1-font-size: 32px;
+  --ifm-h1-font-size: 30px;
   --ifm-h1-font-weight: 600 !important;
-  --ifm-h2-font-size: 28px;
-  --ifm-h3-font-size: 24px;
-  --ifm-h4-font-size: 22px;
-  --ifm-h5-font-size: 20px;
-  --ifm-h6-font-size: 18px;
-  --ifm-h7-font-size: 16px;
+  --ifm-h2-font-size: 26px;
+  --ifm-h3-font-size: 22px;
+  --ifm-h4-font-size: 20px;
+  --ifm-h5-font-size: 18px;
+  --ifm-h6-font-size: 16px;
+  --ifm-h7-font-size: 14px;
 }
 
 html[data-theme="dark"] {
@@ -356,7 +356,7 @@ html[data-theme="dark"] {
 }
 
 .markdown h1:first-child {
-  --ifm-h1-font-size: 38px;
+  --ifm-h1-font-size: 36px;
 }
 
 /* .markdown > h2:after {
@@ -428,7 +428,7 @@ html[data-theme="dark"] {
   color: var(--ifm-color-emphasis-700);
   /* leading-loose/text-sm/font-normal */
   font-family: Inter;
-  font-size: 16px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 400;
   margin-left: 6px;
@@ -638,9 +638,9 @@ a:any-link:hover {
 
 .quick-links-sidebar-heading {
   font-family: var(--ifm-font-family-base);
-  font-size: 1.5rem;
+  font-size: 15px;
   font-weight: 500 !important;
-  line-height: 1.5;
+  line-height: 150%;
   color: var(--ifm-color-primary);
   margin-bottom: var(--ifm-spacing-vertical);
 }
@@ -1083,7 +1083,7 @@ html[data-theme="dark"] .theme-doc-sidebar-container div[title="Expand sidebar"]
 .sidebarHeading {
   display: block;
   font-weight: 600 !important;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 150%;
   color: var(--ifm-color-emphasis-900);
   padding: 12px;
@@ -1126,7 +1126,7 @@ html[data-theme="dark"] .theme-doc-sidebar-container div[title="Expand sidebar"]
 
 .sidebarLinkText {
   color: var(--ifm-color-emphasis-700);
-  font-size: 16px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 400;
   line-height: 150%;
@@ -1134,7 +1134,7 @@ html[data-theme="dark"] .theme-doc-sidebar-container div[title="Expand sidebar"]
 
 .sidebarLinkTextBold {
   color: var(--ifm-color-emphasis-700);
-  font-size: 16px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 600;
   line-height: 150%;
@@ -1230,4 +1230,39 @@ html[data-theme="dark"] .theme-doc-sidebar-container div[title="Expand sidebar"]
   color: var(--ifm-color-emphasis-600);
   font-size: 14px;
   font-weight: 400;
+}
+
+/* code-unfocus
+/* UnFocused lines should be blurred */
+.code-unfocus {
+  filter: blur(0.5px);
+  transition: filter 0.2s ease, opacity 0.2s ease;
+  opacity: 0.3;
+}
+
+/* On hover, remove the blur effect */
+code:hover .code-unfocus {
+  filter: none;
+  opacity: 1;
+}
+
+/* code-focus
+/* Focused lines should not be blurred */
+.blurred-code .token-line:not(.code-focus) {
+  filter: blur(0.5px);
+  transition: filter 0.2s ease, opacity 0.2s ease;
+  opacity: 0.3;
+}
+
+/* On hover, remove the blur effect */
+.blurred-code .code-focus {
+  filter: none;
+  opacity: 1;
+}
+
+
+/* On hover, remove the blur effect */
+.blurred-code:hover .token-line:not(.code-focus) {
+  filter: none;
+  opacity: 1;
 }
