@@ -1,11 +1,11 @@
 ```kotlin
 class MainActivity : AppCompatActivity() {
-  // highlight-start
+  // focus-start
   private lateinit var web3Auth: Web3Auth
   private lateinit var web3: Web3j
   private lateinit var credentials: Credentials
   private val rpcUrl = "" // RPC URL of EVM Chain
-  // highlight-end
+  // focus-end
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -60,11 +60,11 @@ class MainActivity : AppCompatActivity() {
       if (error == null) {
         // render logged in UI
         println(loginResponse)
-        // highlight-start
+        // focus-start
         // Set the sessionId from Web3Auth in App State
         credentials = Credentials.create(web3Auth.getPrivkey())
         web3 = Web3j.build(HttpService(rpcUrl))
-        // highlight-end
+        // focus-end
       } else {
         // render error UI
       }
