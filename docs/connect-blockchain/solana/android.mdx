@@ -115,7 +115,7 @@ will throw error in case if user is not authenticated.
 
 ```kotlin
 try {
-    // highlight-next-line
+    // focus-next-line
     val userInfo = web3Auth.getUserInfo()!!
 } catch(e: Exception) {
     // Perform suitable error handling
@@ -133,7 +133,7 @@ sign the Solana transactions.
 val ed25519PrivateKey = web3Auth.getEd25519PrivKey()
 val solanaKeyPair = Keypair.fromSecretKey(ed25519PrivateKey.hexToByteArray())
 
-// highlight-next-line
+// focus-next-line
 val userAccount = solanaKeyPair.publicKey.toBase58()
 ```
 
@@ -149,7 +149,7 @@ try {
     // Use solanaPrivateKey from above
     val publicKey = solanaPrivateKey.publicKey;
 
-    // highlight-next-line
+    // focus-next-line
     val balanceResponse = connection.getBalance(publicKey).toBigDecimal()
 
     // We are dividing the balance by 10^9, because Solana's
@@ -189,7 +189,7 @@ transaction, and serialize it to get Base58 signature.
 ```kotlin
  try {
     val transaction = prepareSignedTransaction(sender)
-    // highlight-next-line
+    // focus-next-line
     val signedTransaction = Base58.encode(transaction.serialize())
 } catch (e:Exception) {
     // Perform error handling

@@ -103,14 +103,14 @@ it will be more accurate, based on the specific oAuth provider you're working wi
   "wallets": [
     {
       // This is your PnP Key
-      // highlight-next-line
+      // focus-next-line
       "public_key": "578970a884b44bbe0cf479d633fe7fa20cfc92dd4ac05eabdb298f4a6413064c",
       "type": "web3auth_app_key",
       "curve": "secp256k1" // or "ed25519"
     },
     {
       // This is your CoreKit Key
-      // highlight-next-line
+      // focus-next-line
       "public_key": "218a3a9eb7febe18daa126902080a5a84c3952810d86d6f4d54c283007f2f868",
       "type": "web3auth_threshold_key",
       "curve": "secp256k1" // or "ed25519"
@@ -225,7 +225,7 @@ Get the `app_pub_key` and `idToken` in the frontend of your application.
 import { getPublicCompressed } from "@toruslabs/eccrypto";
 
 const app_scoped_privkey = await web3auth.provider?.request({
-  // highlight-next-line
+  // focus-next-line
   method: "eth_private_key", // use "private_key" for other non-evm chains
 });
 
@@ -242,7 +242,7 @@ const app_pub_key = getPublicCompressed(
 import { getED25519Key } from "@toruslabs/openlogin-ed25519";
 
 const app_scoped_privkey = await web3auth.provider?.request({
-  // highlight-next-line
+  // focus-next-line
   method: "solanaPrivateKey",
 });
 
@@ -302,14 +302,14 @@ const idToken = req.headers.authorization?.split(' ')[1];
 const app_pub_key = req.body.appPubKey;
 
 // Get the JWKS used to sign the JWT issued by Web3Auth
-// highlight-next-line
+// focus-next-line
 const jwks = jose.createRemoteJWKSet(new URL("https://api-auth.web3auth.io/jwks")); // for social logins
 
 // Verify the JWT using Web3Auth's JWKS
 const jwtDecoded = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] });
 
 // Checking `app_pub_key` against the decoded JWT wallet's public_key
-// highlight-next-line
+// focus-next-line
 // use type === web3auth_threshold_key when working with CoreKitKey
 if ((jwtDecoded.payload as any).wallets.find((x: { type: string }) => x.type === "web3auth_app_key").public_key.toLowerCase() === app_pub_key.toLowerCase()) {
   // Verified
@@ -378,7 +378,7 @@ const idToken = req.headers.authorization?.split(' ')[1];
 const publicAddress = req.body.public_address;
 
 // Get the JWK set used to sign the JWT issued by Web3Auth
-// highlight-next-line
+// focus-next-line
 const jwks = jose.createRemoteJWKSet(new URL("https://authjs.web3auth.io/jwks"));
 
 // Verify the JWT using Web3Auth's JWKS
@@ -386,7 +386,7 @@ const jwtDecoded = await jose.jwtVerify(idToken, jwks, { algorithms: ["ES256"] }
 
 // Incase of Non-Torus Users
 // Checking Wallet's `publicAddress` against the decoded JWT wallet's address
-// highlight-next-line
+// focus-next-line
 // use type === ethereum for Ethereum wallets, solana for Solana wallets, default is ethereum
 if((jwtDecoded.payload as any).wallets.find((x: { type: string }) => x.type === "ethereum").address.toLowerCase() === publicAddress.toLowerCase()) {
   // Verified

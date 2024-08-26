@@ -67,7 +67,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        // highlight-next-line
+        // focus-next-line
         maven { url "https://jitpack.io" } // <-- Add this line
     }
 }
@@ -79,7 +79,7 @@ section, add the `web3auth-android-sdk`.
 ```groovy
 dependencies {
     // ...
-    // highlight-next-line
+    // focus-next-line
     implementation 'com.github.web3auth:web3auth-android-sdk:7.4.0'
 }
 ```
@@ -200,19 +200,19 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
 
     // Function to retrieve private key.
     private fun privateKey(): String {
-        // highlight-next-line
+        // focus-next-line
         return web3AuthHelper.getPrivateKey()
     }
 
     // prepareCredentials uses the private key to create Ethereum credentials which
     // can be used to retrieve the EOA address, and sign the transactions.
     private fun prepareCredentials() {
-        // highlight-next-line
+        // focus-next-line
         credentials = Credentials.create(privateKey())
     }
 
     private fun prepareUserInfo() {
-        // highlight-next-line
+        // focus-next-line
         userInfo = web3AuthHelper.getUserInfo()
     }
 
@@ -268,7 +268,7 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
         // focus-end
         viewModelScope.launch {
             try {
-                // highlight-next-line
+                // focus-next-line
                 web3AuthHelper.login(loginParams = loginParams).await()
                 // Functions from Session Management code snippets
                 prepareCredentials()
@@ -305,7 +305,7 @@ in your app-level dependencies.
 ```groovy
 dependencies {
     // ...
-    // highlight-next-line
+    // focus-next-line
     implementation 'org.web3j:core:4.8.7-android'
 }
 ```
@@ -499,7 +499,7 @@ instance in the Koin module.
 val appModule = module {
     // Additional code
 
-    // highlight-next-line
+    // focus-next-line
     factory<EthereumUseCase> { EthereumUseCaseImpl(Web3j.build(HttpService(chainConfigList.first().rpcTarget))) }
 
     // Additonal code

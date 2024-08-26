@@ -20,7 +20,7 @@ private fun sendTransaction(amount: Double, recipientAddress: String): String? {
 
   val signedMessage: ByteArray = TransactionEncoder.signMessage(rawTransaction, credentials)
   val hexValue: String = Numeric.toHexString(signedMessage)
-  // highlight-next-line
+  // focus-next-line
   val ethSendTransaction: EthSendTransaction = web3.ethSendRawTransaction(hexValue).sendAsync().get()
   return if(ethSendTransaction.error != null) {
     println("Tx Error: ${ethSendTransaction.error.message}")

@@ -43,13 +43,13 @@ import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
     loginConfig: {
-      // highlight-start
+      // focus-start
       jwt: {
         verifier: "w3a-auth0-demo", // Pass the Verifier name here
         typeOfLogin: "jwt", // Pass on the login provider of the verifier you've created
         clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O", // Pass on the Auth0 `Client ID` here
       },
-      // highlight-end
+      // focus-end
     },
   },
 });
@@ -60,7 +60,7 @@ web3AuthNoModalInstance.configureAdapter(openloginAdapter);
 await web3AuthNoModalInstance.init();
 
 // Trigger login with Twitter / X
-// highlight-start
+// focus-start
 await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {
@@ -69,7 +69,7 @@ await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
     connection: "twitter", // Use this to skip Auth0 Modal for Twitter / X login
   },
 });
-// highlight-end
+// focus-end
 ```
 
 ## Set up [Twitter via Firebase](https://firebase.google.com/docs/auth/web/twitter-login)
@@ -108,13 +108,13 @@ const firebaseConfig = {
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
     loginConfig: {
-      // highlight-start
+      // focus-start
       jwt: {
         verifier: "web3auth-firebase-examples", // Pass your verifier name here
         typeOfLogin: "jwt",
         clientId,
       },
-      // highlight-end
+      // focus-end
     },
   },
 });
@@ -176,10 +176,10 @@ const signInWithTwitter = async (): Promise<UserCredential> => {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // highlight-start
+    // focus-start
     const twitterProvider = new TwitterAuthProvider();
     const res = await signInWithPopup(auth, twitterProvider);
-    // highlight-end
+    // focus-end
 
     console.log(res);
     return res;
@@ -198,13 +198,13 @@ const idToken = await loginRes.user.getIdToken(true);
 const userInfo = parseToken(idToken);
 
 // Login in SFA SDK with Twitter / X idToken
-// highlight-start
+// focus-start
 const web3authProvider = await web3auth.connect({
   verifier: "w3a-firebase-demo",
   verifierId: userInfo.sub,
   idToken,
 });
-// highlight-end
+// focus-end
 ```
 
 </TabItem>

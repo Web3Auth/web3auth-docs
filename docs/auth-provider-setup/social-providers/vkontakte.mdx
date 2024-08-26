@@ -41,13 +41,13 @@ const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
     uxMode: "redirect",
     loginConfig: {
-      // highlight-start
+      // focus-start
       jwt: {
         verifier: "w3a-auth0-uk-demo", // Pass the Verifier name here
         typeOfLogin: "jwt", // Pass on the login provider of the verifier you've created
         clientId: "OfDAVldBEGslU9wjiWyQ1LPWOWNnnzim", // Pass on the Auth0 `Client ID` here
       },
-      // highlight-end
+      // focus-end
     },
   },
 });
@@ -58,7 +58,7 @@ web3AuthInstance.configureAdapter(openloginAdapter);
 await web3AuthInstance.init();
 
 // Login with ВКонтакте (vKontakte)
-// highlight-start
+// focus-start
 await web3AuthInstance.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {
@@ -67,5 +67,5 @@ await web3AuthInstance.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
     connection: "vkontakte", // Use this to skip Auth0 Modal for ВКонтакте (vKontakte) login
   },
 });
-// highlight-end
+// focus-end
 ```
