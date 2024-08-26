@@ -1231,3 +1231,38 @@ html[data-theme="dark"] .theme-doc-sidebar-container div[title="Expand sidebar"]
   font-size: 14px;
   font-weight: 400;
 }
+
+/* code-unfocus
+/* UnFocused lines should be blurred */
+.code-unfocus {
+  filter: blur(0.5px);
+  transition: filter 0.2s ease, opacity 0.2s ease;
+  opacity: 0.3;
+}
+
+/* On hover, remove the blur effect */
+code:hover .code-unfocus {
+  filter: none;
+  opacity: 1;
+}
+
+/* code-focus
+/* Focused lines should not be blurred */
+.blurred-code .token-line:not(.code-focus) {
+  filter: blur(0.5px);
+  transition: filter 0.2s ease, opacity 0.2s ease;
+  opacity: 0.3;
+}
+
+/* On hover, remove the blur effect */
+.blurred-code .code-focus {
+  filter: none;
+  opacity: 1;
+}
+
+
+/* On hover, remove the blur effect */
+.blurred-code:hover .token-line:not(.code-focus) {
+  filter: none;
+  opacity: 1;
+}

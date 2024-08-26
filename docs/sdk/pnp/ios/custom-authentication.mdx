@@ -134,7 +134,7 @@ web3Auth = await Web3Auth(
   W3AInitParams(
     clientId: "YOUR_CLIENT_ID",
     network: .sapphire_mainnet,
-    // highlight-start
+    // focus-start
     loginConfig: [
       Web3AuthProvider.JWT.rawValue: .init(
         verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard
@@ -142,7 +142,7 @@ web3Auth = await Web3Auth(
         clientId: "YOUR_GOOGLE_CLIENT_ID",
       )
     ]
-    // highlight-end
+    // focus-end
 ))
 ```
 
@@ -155,7 +155,7 @@ web3Auth = await Web3Auth(
   W3AInitParams(
     clientId: "YOUR_CLIENT_ID",
     network: .sapphire_mainnet,
-    // highlight-start
+    // focus-start
     loginConfig: [
       Web3AuthProvider.JWT.rawValue: .init(
         verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard
@@ -163,7 +163,7 @@ web3Auth = await Web3Auth(
         clientId: "YOUR_FACEBOOK_CLIENT_ID",
       )
     ]
-    // highlight-end
+    // focus-end
 ))
 ```
 
@@ -176,7 +176,7 @@ web3Auth = await Web3Auth(
   W3AInitParams(
     clientId:"YOUR_CLIENT_ID",
     network: .sapphire_mainnet,
-    // highlight-start
+    // focus-start
     loginConfig: [
       Web3AuthProvider.JWT.rawValue: .init(
         verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard
@@ -184,7 +184,7 @@ web3Auth = await Web3Auth(
         clientId: "YOUR_CLIENT_ID", // get it from web3auth dashboard
       )
     ]
-    // highlight-end
+    // focus-end
 ))
 ```
 
@@ -277,7 +277,7 @@ web3Auth = await Web3Auth(
     clientId:"YOUR_CLIENT_ID",
     network: .sapphire_mainnet,
     // Optional loginConfig object
-    //highlight-start
+    //focus-start
     loginConfig: [
       Web3AuthProvider.JWT.rawValue: .init(
         verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard for auth0 configuration
@@ -285,19 +285,19 @@ web3Auth = await Web3Auth(
         clientId: "YOUR_AUTH0_CLIENT_ID", // auth0's client id, get it from auth0 dashboard
       )
     ]
-    //highlight-end
+    //focus-end
   )
 )
 
 let result  = await web3Auth.login(W3ALoginParams(selectedLoginProvider,
-    // highlight-start
+    // focus-start
     extraLoginOptions: .init(
       // Domain of your auth0 app
       domain:"https://username.us.auth0.com",
       // The field in jwt token which maps to verifier id
       verifierIdField: "sub",
     )
-    // highlight-end
+    // focus-end
 ))
 ```
 
@@ -315,7 +315,7 @@ web3Auth = await Web3Auth(
     clientId:"YOUR_CLIENT_ID",
     network: .testnet,
     // Optional loginConfig object
-    // highlight-start
+    // focus-start
     loginConfig: [
       Web3AuthProvider.JWT.rawValue: .init(
         verifier: "YOUR_VERIFIER_NAME", // get it from web3auth dashboard
@@ -323,7 +323,7 @@ web3Auth = await Web3Auth(
         clientId: "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ", // get it from web3auth dashboard
       )
     ]
-    //highlight-end
+    //focus-end
   )
 )
 
@@ -369,7 +369,7 @@ let web3Auth = await Web3Auth(W3AInitParams(
   clientId: clientId,
   network: network,
   redirectUrl: "web3auth.ios-aggregate-example://auth",
-  // highlight-start
+  // focus-start
   loginConfig: [
     TypeOfLogin.google.rawValue: .init(
       verifier: "aggregate-sapphire",
@@ -385,27 +385,27 @@ let web3Auth = await Web3Auth(W3AInitParams(
       verifierSubIdentifier: "w3a-a0-github"
     )
   ],
-  // highlight-end
+  // focus-end
 ))
 
 func loginWithGoogle() async {
-  // highlight-start
+  // focus-start
   let result = try await web3Auth?.login(
     W3ALoginParams(
       loginProvider: .GOOGLE,
     )
   )
-  // highlight-end
+  // focus-end
 }
 
 func loginWithGitHub() async {
-  // highlight-start
+  // focus-start
   let result = try await web3Auth?.login(
     W3ALoginParams(
       loginProvider: .JWT,
       extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: "github", domain: "https://web3auth.au.auth0.com", client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: "email", isVerifierIdCaseSensitive: false, additionalParams: nil),
     )
   )
-  // highlight-end
+  // focus-end
 }
 ```
