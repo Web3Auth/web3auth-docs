@@ -427,7 +427,18 @@ const sidebars: SidebarsConfig = {
           collapsible: true,
           collapsed: false,
         },
-        "auth-provider-setup/byo-jwt-provider",
+        {
+          type: "category",
+          label: "Bring your own custom JWT Provider",
+          items: [
+            "auth-provider-setup/byo-jwt-provider/byo-jwt-provider",
+            "auth-provider-setup/byo-jwt-provider/jsonwebtoken",
+            "auth-provider-setup/byo-jwt-provider/jose",
+            "auth-provider-setup/byo-jwt-provider/passport-jwt",
+          ],
+          collapsible: true,
+          collapsed: false,
+        },
       ],
     },
 
