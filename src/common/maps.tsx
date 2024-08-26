@@ -475,7 +475,7 @@ export const pnpModalExamples: ExamplesInterface[] = [
     type: PLAYGROUND,
     tags: [tags.pnp, tags.web, tags.modal, "javascript", tags.evm, "react", "hooks"],
     link: "https://pnp-modal-playground.vercel.app/",
-    id: "pnp-modal-playground",
+    id: "react-modal-playground",
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/react-modal-playground",
   },
