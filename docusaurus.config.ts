@@ -494,7 +494,7 @@ const config: Config = {
           },
           {
             from: "/auth-provider-setup/byo-jwt-providers",
-            to: "/auth-provider-setup/byo-jwt-provider",
+            to: "/auth-provider-setup/byo-jwt-provider/",
           },
           {
             from: "/product-fit",

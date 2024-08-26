@@ -1,0 +1,139 @@
+---
+title: Create JWT using jsonwebtoken package
+sidebar_label: jsonwebtoken
+description: "Create JWT using jsonwebtoken pacakge | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import CreateJWKS from "@site/src/common/docs/_byo-jwt-create-jwks.mdx";
+
+For your custom JWT provider, you can create JWT token using package of your choice, one of which is
+`jsonwebtoken` package. [Learn more about jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken).
+
+## Installation
+
+```bash npm2yarn
+$ npm i jsonwebtoken
+```
+
+## Generate Private key
+
+<Tabs
+defaultValue="rsa"
+values={[
+  { label: "RSA256", value: "rsa" },
+  { label: "ECDSA", value: "ecdsa" },
+]}
+>
+<TabItem value="rsa">
+Paste the below command in terminal to generate a new file `privateKey.pem` with the key details.
+The generated key will be used to sign the token.
+
+```bash
+openssl genrsa -out privateKey.pem 2048
+```
+
+Once you have generated private key, you can get the public key which can be used to verify the JWT.
+
+```bash
+openssl rsa -in privateKey.pem -pubout -out publicKey.pem
+```
+
+</TabItem>
+
+<TabItem value="ecdsa">
+Paste the below command in terminal to generate a new file `privateKey.pem` with the key details.
+The generated key will be used to sign the token.
+
+```bash
+openssl ecparam -name secp256k1 -genkey -noout -out ec-secp256k1-privateKey.pem
+```
+
+Once you have generated private key, you can get the public key which can be used to verify the JWT.
+
+```bash
+openssl ec -in ec-secp256k1-privateKey.pem -pubout -out ec-secp256k1-publicKey.pem
+```
+
+</TabItem>
+</Tabs>
+
+## Generate JWT
+
+For jsonwebtoken we have documented RSA256 and ECDSA, two of the most popular algorithms used to
+generate the JWT. For the list of supported algorithms by jsonwebtoken, you can
+[checkout their documentation](https://www.npmjs.com/package/jsonwebtoken#algorithms-supported).
+
+<Tabs
+defaultValue="rsa"
+values={[
+  { label: "RSA256", value: "rsa" },
+  { label: "ECDSA", value: "ecdsa" },
+]}
+>
+<TabItem value="rsa">
+
+### Using RSA for JWT Signing
+
+Create an index.js file and paste the below code to generate the JWT using RSA algorithm.
+
+```tsx
+import jwt from "jsonwebtoken";
+import fs from "fs";
+
+var privateKey = fs.readFileSync("privateKey.pem");
+
+var token = jwt.sign(
+  {
+    sub: "faj2720i2fdG7NsqznOKrthDvq43", // must be unique to each user
+    name: "Mohammad Shahbaz Alam",
+    email: "shahbaz@web3auth.io",
+    aud: "urn:my-resource-server", // -> to be used in Custom Authentication as JWT Field
+    iss: "https://my-authz-server", // -> to be used in Custom Authentication as JWT Field
+    iat: Math.floor(Date.now() / 1000),
+    exp: Math.floor(Date.now() / 1000) + 60 * 60,
+  },
+  privateKey,
+  { algorithm: "RS256", keyid: "1bb9605c36e69386830202b2d" }, // <-- Replace it with your kid. This has to be present in the JWKS endpoint.
+);
+
+console.log(token);
+```
+
+</TabItem>
+<TabItem value="ecdsa">
+
+### Using ECDSA for JWT Signing
+
+Create an index.js file and paste the below code to generate the JWT using ECDSA algorithm.
+
+```tsx
+import jwt from "jsonwebtoken";
+import fs from "fs";
+
+var privateKey = fs.readFileSync("ec-secp256k1-privateKey.pem");
+
+var token = jwt.sign(
+  {
+    sub: "faj2720i2fdG7NsqzncndijwnKrthDvq43",
+    name: "Mohammad Shahbaz Alam",
+    email: "shahbaz@web3auth.io",
+    aud: "urn:my-resource-server", // -> to be used in Custom Authentication as JWT Field
+    iss: "https://my-authz-server", // -> to be used in Custom Authentication as JWT Field
+    iat: Math.floor(Date.now() / 1000),
+    exp: Math.floor(Date.now() / 1000) + 60 * 60,
+  },
+  privateKey,
+  { algorithm: "ECDSA", keyid: "1bb9605c36e69386830202b2d" }, // <-- Replace it with your kid. This has to be present in the JWKS endpoint.
+);
+
+console.log(token);
+```
+
+</TabItem>
+</Tabs>
+
+## Create JWKS
+
+<CreateJWKS />

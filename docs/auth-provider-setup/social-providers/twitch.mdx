@@ -32,61 +32,38 @@ import SetupTwitch from "@site/src/common/guides/_setup-twitch.mdx";
 <Tabs
 defaultValue="modal"
 values={[
-  { label: "Modal", value: "modal" },
-  { label: "NoModal", value: "nomodal" },
+  { label: "Modal SDK", value: "modal" },
+  { label: "No Modal SDK", value: "nomodal" },
 ]}
 >
 <TabItem value="modal">
 
 ```tsx
-import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 
-const clientId = "YOUR_WEB3AUTH_CLIENT_ID";
-// get it from https://dashboard.web3auth.io by creating a Plug n Play project.
-
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1",
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/ethereum.svg",
-};
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-const web3auth = new Web3Auth({
-  clientId,
-  web3AuthNetwork: "sapphire_mainnet",
-  privateKeyProvider: privateKeyProvider,
-});
-
+// Create OpenloginAdapter instance once you have created Web3Auth instance
 const openloginAdapter = new OpenloginAdapter({
   adapterSettings: {
     loginConfig: {
-      // Twitch login
+      // highlight-start
       twitch: {
         verifier: "w3a-twitch-demo", // Pass the Verifier name here
         typeOfLogin: "twitch", // Pass on the login provider of the verifier you've created
         clientId: "3k7e70gowvxjaxg71hjnc8h8ih3bpf", // Pass on the Twitch `Client ID` here
       },
+      // highlight-end
     },
   },
 });
 
-web3auth.configureAdapter(openloginAdapter);
+web3AuthInstance.configureAdapter(openloginAdapter);
 
 // Initialize Modal
-await web3auth.initModal();
+await web3AuthInstance.initModal();
 
 // Login with Twitch
-await web3auth.connect();
+await web3AuthInstance.connect();
 ```
 
 </TabItem>
@@ -94,142 +71,35 @@ await web3auth.connect();
 <TabItem value="nomodal">
 
 ```tsx
-import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
 
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
-// get it from https://dashboard.web3auth.io by creating a project.
-
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1",
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/ethereum.svg",
-};
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-const web3auth = new Web3AuthNoModal({
-  clientId,
-  web3AuthNetwork: "sapphire_mainnet",
-  privateKeyProvider: privateKeyProvider,
-});
-
+// Create OpenloginAdapter instance once you have created Web3AuthNoModal instance
 const openloginAdapter = new OpenloginAdapter({
-  privateKeyProvider,
   adapterSettings: {
     loginConfig: {
+      // highlight-start
       twitch: {
         verifier: "w3a-twitch-demo", // Pass the Verifier name here
         typeOfLogin: "twitch", // Pass on the login provider of the verifier you've created
         clientId: "3k7e70gowvxjaxg71hjnc8h8ih3bpf", // Pass on the Twitch `Client ID` here
       },
+      // highlight-end
     },
   },
 });
 
-web3auth.configureAdapter(openloginAdapter);
-setWeb3auth(web3auth);
+web3AuthNoModalInstance.configureAdapter(openloginAdapter);
 
 // Initialize
-await web3auth.init();
+await web3AuthNoModalInstance.init();
 
 // Login with Twitch
-await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+// highlight-start
+await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "twitch",
 });
+// highlight-end
 ```
 
 </TabItem>
-
 </Tabs>
-
-## Set up [Twitch](https://marketplace.auth0.com/integrations/twitch-social-connection) via Auth0
-
-1. Create a verifier for your Auth0 application by selecting `Auth0` as the Login provider from this
-   modal.
-   ![Twitch - Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier-auth0.png)
-2. Select the `Twitch` as the **Authentication Type** based on the dropdown.
-   ![Twitch - Auth0 Authentication Type list on Web3Auth Dashboard](/images/dashboard/create-verifier-google.png)
-3. Enter the `Auth0 Client ID` and `Auth0 Domain` from your Auth0 application. See how to create a
-   new Auth0 application [here](https://auth0.com/docs/quickstart/webapp/).
-
-   ![Twitch - Domain and Client ID from Auth0 Dashboard](/images/dashboard/create-verifier-auth0-filled-common.png)
-   ![Twitch - Auth0 Client ID and Auth0 Domain on Web3Auth Dashboard](/images/dashboard/create-verifier-auth0-unfilled.png)
-
-4. Add the
-   [Twitch Social Connection](https://marketplace.auth0.com/integrations/twitch-social-connection)
-   to your Auth0 application.
-5. Click on the `Create` button to create `Twitch` Custom Authentication via Auth0 verifier.
-
-### Example
-
-```tsx
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
-
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
-// get it from https://dashboard.web3auth.io by creating a project.
-
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1",
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/ethereum.svg",
-};
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-const web3auth = new Web3AuthNoModal({
-  clientId,
-  web3AuthNetwork: "sapphire_mainnet",
-  privateKeyProvider: privateKeyProvider,
-});
-
-const openloginAdapter = new OpenloginAdapter({
-  privateKeyProvider,
-  adapterSettings: {
-    loginConfig: {
-      jwt: {
-        verifier: "w3a-auth0-jp-demo", // Pass the Verifier name here
-        typeOfLogin: "jwt", // Pass on the login provider of the verifier you've created
-        clientId: "N9jnKM2Fo8PFRj8rYM9I7rWX1FW6X5xx", // Pass on the Auth0 `Client ID` here
-      },
-    },
-  },
-});
-
-web3auth.configureAdapter(openloginAdapter);
-setWeb3auth(web3auth);
-
-// Initialize
-await web3auth.init();
-
-// Login with Twitch
-await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-  loginProvider: "jwt",
-  extraLoginOptions: {
-    domain: "https://web3auth.jp.auth0.com", // Pass on the Auth0 `Domain` here
-    verifierIdField: "sub", // Pass on the field name of the `sub` field in the JWT
-    connection: "twitch", // Use this to skip Auth0 Modal for Twitch login
-  },
-});
-```

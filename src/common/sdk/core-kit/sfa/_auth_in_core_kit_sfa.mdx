@@ -1,45 +1,25 @@
-Let's look at the general authentication flow at Web3Auth.
+## How Authentication works
 
-When a user logs in with Web3Auth, the user's account can be in two states:
+The Single Factor Auth (SFA) SDK enables the creation of embedded wallets using your preferred
+authentication provider. Unlike the traditional auth service flow, where users are redirected to
+Web3Auth's user flow screens for verification, the SFA SDK facilitates seamless authentication
+without requiring a redirect. For a clearer understanding, please refer to the user flow screens
+below.
 
-- **Account Without MFA**: When the User logs in with only a social login and the key is secured by
-  the Web3Auth network.
-- **Account With MFA**: When the User enables MFA by adding other shares like password, backup
-  share, device share, etc. to their existing account.
+![Web3Auth Auth Services Flow](/images/whitelabel/user-flow-screens.gif)
 
-:::warning warning
+Since SFA handles authentication without redirect, you'll need to create a verifier and manage the
+OAuth login yourself. After setting up the verifier and completing the OAuth login, pass the JWT
+token, verifier name, and JWT verifier ID. These details are sent to the Web3Auth network, where
+they are verified using the JWKS and authentication fields specified in your verifier.
 
-This SDK only works for users who have **not enabled MFA**.
+On the Web3Auth network, there are nine nodes that independently verify these details. Verification
+is considered successful when at least five out of the nine nodes confirm the details. Once
+authentication is successful, you can use the private key to derive the user's public key and
+perform on-chain transactions.
 
-For MFA-enabled users, you'll see
-`Error("User has already enabled MFA, please use the Web3Auth PnP Web or Mobile SDKs for login with mfa");`
+## Create a verifier
 
-:::
-
-### Without Openlogin Redirection Flow
-
-By default, to reconstruct the key in both states, Web3Auth SDKs redirect the user to
-`https://auth.web3auth.io`. Where all the computation to reconstruct the key is done. The advantage
-of this approach is that it makes it easy for applications to integrate web3auth SDK without having
-to worry about the key reconstruction process. But sometimes, applications want to reconstruct the
-key in their application context, where the authentication flow described can be used with this SDK.
-
-## Create `Custom Auth` Verifier
-
-Once you click on the `Create Verifier` button on the Web3Auth Dashboard, you'll see a toggle
-similar to these, where you can create a custom verifier for your use case.
-
-![Web3Auth Plug and Play Login Modal](/dashboard/verifiers/create-verifiers.gif)
-
-Visit [Auth Provider Setup](/auth-provider-setup/byo-jwt-provider#set-up-custom-jwt-verifier) to
-learn more about creating custom verifiers.
-
-## Filled Custom JWT Verifier
-
-![Custom JSON Web Token Provider on Web3Auth Dashboard](/dashboard/verifiers/custom-jsonwebtoken-verifier.png)
-
-:::note
-
-These verifier details will be used in the next step.
-
-:::
+For Single Factor Auth(SFA) SDK you'll need to create your own verifier choosing your preferred
+provider, and appropriate details. To create a verifier,
+[please checkout our documentation on how to create a verifier](/docs/auth-provider-setup/verifiers).

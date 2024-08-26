@@ -27,7 +27,7 @@ const web3auth = new Web3Auth({
   // Get it from Web3Auth Dashboard
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider: privateKeyProvider,
+  privateKeyProvider,
 });
 ```
 
@@ -49,9 +49,12 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 const web3auth = new Web3AuthNoModal({
   clientId, // Get it from Web3Auth Dashboard
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
 });
 
-const openloginAdapter = new OpenloginAdapter();
+const openloginAdapter = new OpenloginAdapter({
+  privateKeyProvider,
+});
 web3auth.configureAdapter(openloginAdapter);
 ```
 
@@ -64,13 +67,14 @@ web3auth.configureAdapter(openloginAdapter);
 import { Web3Auth } from "@web3auth/single-factor-auth";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
 const web3auth = new Web3Auth({
   clientId, // Get your Client ID from Web3Auth Dashboard
   web3AuthNetwork: "sapphire_mainnet",
-});
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
+  privateKeyProvider,
 });
 ```
 

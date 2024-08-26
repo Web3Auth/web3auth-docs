@@ -1,5 +1,6 @@
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
+import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-evm-pnp-sfa.mdx";
 
 ## [`@web3auth/ethereum-provider`](https://npmjs.com/package/@web3auth/ethereum-provider)
 
@@ -116,142 +117,24 @@ Some of the commonly used L2s and the Ethereum chain ids are listed below.
 | 0xE      | 14       | Flare                       |
 | 0x13     | 19       | Songbird                    |
 
-#### Example
-
 ```tsx
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0x1",
   rpcTarget: "https://rpc.ankr.com/eth",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
   displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io",
+  blockExplorerUrl: "https://etherscan.io",
   ticker: "ETH",
   tickerName: "Ethereum",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
 ```
 
-## Setting up the provider
+### Setting up the provider
 
-### For Web3Auth PnP Web SDKs
-
-If you are using `chainNamespace: "eip155"` while initializing `Web3Auth` or `Web3AuthNoModal` with
-the `OpenloginAdapter`, you need to add the `privateKeyProvider` to the OpenLogin instance.
-
-```tsx
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1",
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-};
-
-const web3auth = new Web3AuthNoModal({
-  clientId,
-  chainConfig,
-  web3AuthNetwork: "sapphire_mainnet",
-});
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-const openloginAdapter = new OpenloginAdapter({
-  privateKeyProvider,
-  adapterSettings: {...},
-  mfaSettings: {...},
-  loginSettings: {...},
-});
-web3auth.configureAdapter(openloginAdapter);
-
-const web3authProvider = await web3auth.connectTo(
-  WALLET_ADAPTERS.OPENLOGIN,
-  {
-    loginProvider: "google",
-  }
-);
-
-// use this provider to interact with the blockchain
-```
-
-### For Single Factor Auth Web SDK
-
-While using the SFA Web SDK, you need to pass the provider during the initialisation of SDK, while
-calling the init() function.
-
-```tsx
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1",
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-};
-
-const web3authSfa = new Web3Auth({
-  clientId, // Get your Client ID from the Web3Auth Dashboard
-  chainConfig,
-  web3AuthNetwork: "sapphire_mainnet",
-  usePnPKey: false, // Setting this to true returns the same key as PnP Web SDK, By default, this SDK returns CoreKitKey.
-});
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-web3authSfa.init(privateKeyProvider);
-
-const web3authProvider = await web3authSFAuth.connect({
-  verifier,
-  verifierId: sub,
-  idToken,
-});
-
-// use this provider to interact with the blockchain
-```
-
-### For tKey JS SDK
-
-In tKey JS SDK, there is not internal method of passing the provider directly. Hence, you need to
-setup the provider using the private key generated from tKey, using the setupProvider function of
-the EthereumPrivateKeyProvider.
-
-```tsx
-setupProvider(privKey: string): Promise<void>;
-```
-
-```tsx
-// please complete the tKey setup and login before this.
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1",
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorer: "https://etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-};
-
-const reconstructedKey = await tKey.reconstructKey();
-privateKey = reconstructedKey?.privKey.toString("hex");
-
-const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-await ethereumPrivateKeyProvider.setupProvider(privateKey);
-provider = ethereumPrivateKeyProvider.provider;
-
-// use this provider to interact with the blockchain
-```
+<InitializeWeb3Auth />
 
 ## Using the provider
 
@@ -314,216 +197,9 @@ you get started.
 
 :::
 
-### Get User account and Balance
+:::tip
 
-#### `web3.eth.getAccounts()`
+Please refer to our [EVM Connect Blockchain Reference](/connect-blockchain/evm) for more
+information.
 
-This method is used to fetch the address of the connected account.
-
-```tsx
-// Get user's Ethereum public address
-const address = (await web3.eth.getAccounts())[0];
-
-// Get user's balance in ether
-const balance = web3.utils.fromWei(
-  await web3.eth.getBalance(address), // Balance is in wei
-);
-```
-
-### Send Transaction
-
-#### `web3.eth.sendTransaction(object)`
-
-This function is used to broadcast a transaction on chain.
-
-```tsx
-// Get user's Ethereum public address
-const fromAddress = (await web3.eth.getAccounts())[0];
-
-const destination = "0xE0cef4417a772512E6C95cEf366403839b0D6D6D";
-const amount = web3.utils.toWei(1); // Convert 1 ether to wei
-
-// Submit transaction to the blockchain and wait for it to be mined
-const receipt = await web3.eth.sendTransaction({
-  from: fromAddress,
-  to: destination,
-  value: amount,
-});
-```
-
-### Sign a message
-
-The following example shows how to sign different types of messages with the connected user's
-private key.
-
-#### Personal Sign
-
-#### `web3.eth.personal.sign(originalMessage, fromAddress)`
-
-```tsx
-// Get user's Ethereum public address
-const fromAddress = (await web3.eth.getAccounts())[0];
-
-const originalMessage = "YOUR_MESSAGE";
-
-const signedMessage = await web3.eth.personal.sign(originalMessage, fromAddress);
-```
-
-#### Sign Typed Data V1
-
-#### `eth_signTypedData`
-
-```tsx
-// Get user's Ethereum public address
-const fromAddress = (await web3.eth.getAccounts())[0];
-
-const originalMessage = [
-  {
-    type: "string",
-    name: "fullName",
-    value: "John Doe",
-  },
-  {
-    type: "uint32",
-    name: "userId",
-    value: "1234",
-  },
-];
-const params = [originalMessage, fromAddress];
-const method = "eth_signTypedData";
-
-const signedMessage = await web3.currentProvider.sendAsync({
-  id: 1,
-  method,
-  params,
-  fromAddress,
-});
-```
-
-#### Sign Typed Data v3
-
-#### `eth_signTypedData_v3`
-
-```tsx
-// Get user's Ethereum public address
-const fromAddress = (await web3.eth.getAccounts())[0];
-
-const originalMessage = {
-  types: {
-    EIP712Domain: [
-      {
-        name: "name",
-        type: "string",
-      },
-      {
-        name: "version",
-        type: "string",
-      },
-      {
-        name: "verifyingContract",
-        type: "address",
-      },
-    ],
-    Greeting: [
-      {
-        name: "contents",
-        type: "string",
-      },
-    ],
-  },
-  primaryType: "Greeting",
-  domain: {
-    name: "web3auth",
-    version: "1",
-    verifyingContract: "0xE0cef4417a772512E6C95cEf366403839b0D6D6D",
-  },
-  message: {
-    contents: "Hello, from web3auth!",
-  },
-};
-const params = [fromAddress, originalMessage];
-const method = "eth_signTypedData_v3";
-
-const signedMessage = await web3.currentProvider.sendAsync({
-  id: 1,
-  method,
-  params,
-  fromAddress,
-});
-```
-
-#### Sign Typed Data v4
-
-#### `eth_signTypedData_v4`
-
-```tsx
-/*
-  Sign Typed Data v4 adds support for
-  arrays and recursive data types.
-
-  Otherwise, it works the same as Sign Typed Data v3.
-*/
-
-// Get user's Ethereum public address
-const fromAddress = (await web3.eth.getAccounts())[0];
-
-const originalMessage = {
-  types: {
-    EIP712Domain: [
-      {
-        name: "name",
-        type: "string",
-      },
-      {
-        name: "version",
-        type: "string",
-      },
-      {
-        name: "verifyingContract",
-        type: "address",
-      },
-    ],
-    Greeting: [
-      {
-        name: "contents",
-        type: "string",
-      },
-    ],
-  },
-  primaryType: "Greeting",
-  domain: {
-    name: "web3auth",
-    version: "1",
-    verifyingContract: "0xE0cef4417a772512E6C95cEf366403839b0D6D6D",
-  },
-  message: {
-    contents: "Hello, from web3auth!",
-  },
-};
-const params = [fromAddress, originalMessage];
-const method = "eth_signTypedData_v4";
-
-const signedMessage = await web3.currentProvider.sendAsync({
-  id: 1,
-  method,
-  params,
-  fromAddress,
-});
-```
-
-### Fetch User's Private Key
-
-#### `eth_private_key`
-
-This method is used to fetch the private key of logged in user. It is only available for `in-app`
-adapters like `openlogin`.
-
-```tsx
-//Assuming user is already logged in.
-async getPrivateKey() {
-  const privateKey = await web3auth.provider.request({
-    method: "eth_private_key"
-  });
-  //Do something with privateKey
-}
-```
+:::

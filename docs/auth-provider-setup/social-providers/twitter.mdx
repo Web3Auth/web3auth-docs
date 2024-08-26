@@ -37,57 +37,31 @@ with Auth0 & Firebase, but this can be done with any other Federated/JWT provide
 ### Example
 
 ```tsx
-import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
 
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
-// get it from https://dashboard.web3auth.io by creating a project.
-
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1",
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/ethereum.svg",
-};
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-const web3auth = new Web3AuthNoModal({
-  clientId,
-  web3AuthNetwork: "sapphire_mainnet",
-  privateKeyProvider: privateKeyProvider,
-});
-
+// Create OpenloginAdapter instance once you have created Web3AuthNoModal instance
 const openloginAdapter = new OpenloginAdapter({
-  privateKeyProvider,
   adapterSettings: {
     loginConfig: {
+      // highlight-start
       jwt: {
         verifier: "w3a-auth0-demo", // Pass the Verifier name here
         typeOfLogin: "jwt", // Pass on the login provider of the verifier you've created
         clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O", // Pass on the Auth0 `Client ID` here
       },
+      // highlight-end
     },
   },
 });
 
-web3auth.configureAdapter(openloginAdapter);
-setWeb3auth(web3auth);
+web3AuthNoModalInstance.configureAdapter(openloginAdapter);
 
 // Initialize
-await web3auth.init();
+await web3AuthNoModalInstance.init();
 
-// Login with Twitter / X
-await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+// Trigger login with Twitter / X
+// highlight-start
+await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {
     domain: "https://web3auth.au.auth0.com", // Pass on the Auth0 `Domain` here
@@ -95,6 +69,7 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
     connection: "twitter", // Use this to skip Auth0 Modal for Twitter / X login
   },
 });
+// highlight-end
 ```
 
 ## Set up [Twitter via Firebase](https://firebase.google.com/docs/auth/web/twitter-login)
@@ -106,9 +81,8 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 <Tabs
   defaultValue="no-modal"
   values={[
-    { label: "PnP NoModal", value: "no-modal", },
-    { label: "CoreKit SFA", value: "sfa", },
-    { label: "CoreKit MFA (tKey)", value: "tkey", },
+    { label: "No Modal SDK", value: "no-modal", },
+    { label: "SFA Web SDK", value: "sfa", },
   ]}
 >
 <TabItem
@@ -116,15 +90,9 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 >
 
 ```tsx
-import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { initializeApp } from "firebase/app";
 import { TwitterAuthProvider, getAuth, signInWithPopup, UserCredential } from "firebase/auth";
-
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
-// get it from https://dashboard.web3auth.io by creating a project.
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -136,52 +104,32 @@ const firebaseConfig = {
   appId: "1:461819774167:web:e74addfb6cc88f3b5b9c92", // Replace with your Firebase project's app ID
 };
 
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1",
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/ethereum.svg"
-};
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-
-const web3auth = new Web3AuthNoModal({
-  clientId,
-  web3AuthNetwork: "sapphire_mainnet",
-  privateKeyProvider: privateKeyProvider,
-});
-
-
+// Create OpenloginAdapter instance once you have created Web3AuthNoModal instance
 const openloginAdapter = new OpenloginAdapter({
-  privateKeyProvider,
   adapterSettings: {
     loginConfig: {
+      // highlight-start
       jwt: {
-        verifier: "web3auth-firebase-examples", // Pass the Verifier name here
+        verifier: "web3auth-firebase-examples", // Pass your verifier name here
         typeOfLogin: "jwt",
         clientId,
       },
+      // highlight-end
     },
   },
 });
 
-web3auth.configureAdapter(openloginAdapter);
-setWeb3auth(web3auth);
+web3AuthNoModalInstance.configureAdapter(openloginAdapter);
 
 // Initialize
-await web3auth.init();
+await web3AuthNoModalInstance.init();
 
+// Create a function to handle Twitter/X login via Firebase.
 const signInWithTwitter = async (): Promise<UserCredential> => {
     try {
       const app = initializeApp(firebaseConfig);
       const auth = getAuth(app);
+
       const twitterProvider = new TwitterAuthProvider();
       const res = await signInWithPopup(auth, twitterProvider);
       console.log(res);
@@ -190,13 +138,14 @@ const signInWithTwitter = async (): Promise<UserCredential> => {
       console.error(err);
       throw err;
     }
-  };
+};
 
+// Trigger Twitter/X login
 const loginRes = await signInWithTwitter();
 
 const idToken = await loginRes.user.getIdToken(true);
 
-// Login with Twitter / X
+// Login in No Modal SDK with Twitter / X idToken
 await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   WALLET_ADAPTERS.OPENLOGIN,
   {
@@ -215,43 +164,23 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 >
 
 ```tsx
-import { Web3Auth } from "@web3auth/single-factor-auth";
 import { ADAPTER_EVENTS, CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { TwitterAuthProvider, getAuth, signInWithPopup, UserCredential } from "firebase/auth";
 
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+// Initialize
+await web3AuthSFAInstance.init();
 
-const verifier = "w3a-firebase-demo";
-
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1", // Please use 0x1 for Mainnet
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-};
-
-const web3auth = new Web3Auth({
-  clientId, // Get your Client ID from Web3Auth Dashboard
-  web3AuthNetwork: "sapphire_mainnet",
-});
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-await web3auth.init(privateKeyProvider);
-
+// Create a function to handle Twitter/X login via Firebase.
 const signInWithTwitter = async (): Promise<UserCredential> => {
   try {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+
+    // highlight-start
     const twitterProvider = new TwitterAuthProvider();
     const res = await signInWithPopup(auth, twitterProvider);
+    // highlight-end
+
     console.log(res);
     return res;
   } catch (err) {
@@ -260,107 +189,23 @@ const signInWithTwitter = async (): Promise<UserCredential> => {
   }
 };
 
+// Trigger Twitter/x Login
 const loginRes = await signInWithTwitter();
 
 const idToken = await loginRes.user.getIdToken(true);
-// parse the id token to get the user info
-const userInfo = parseToken(idToken); // parseToken is a function to parse the id token
 
+// Parse the idToken to retrive the user information
+const userInfo = parseToken(idToken);
+
+// Login in SFA SDK with Twitter / X idToken
+// highlight-start
 const web3authProvider = await web3auth.connect({
-  verifier,
+  verifier: "w3a-firebase-demo",
   verifierId: userInfo.sub,
   idToken,
 });
-```
-
-</TabItem>
-<TabItem
-  value="tkey"
->
-
-```tsx
-import ThresholdKey from "@tkey/core";
-import SFAServiceProvider from "@tkey/service-provider-sfa";
-import TorusStorageLayer from "@tkey/storage-layer-torus";
-import { ShareSerializationModule } from "@tkey/share-serialization";
-import { SfaServiceProvider } from "@tkey/service-provider-sfa";
-import { WebStorageModule } from "@tkey/web-storage";
-import { Web3 } from "web3";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { IProvider } from "@web3auth/base";
-import { TwitterAuthProvider, getAuth, signInWithPopup, UserCredential } from "firebase/auth";
-
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-
-const verifier = "w3a-firebase-demo";
-
-// Configuration of Service Provider
-const serviceProvider = new SFAServiceProvider({ web3AuthOptions });
-
-// Instantiation of Storage Layer
-const storageLayer = new TorusStorageLayer({
-  hostUrl: "https://metadata.tor.us",
-});
-
-// Configuration of Modules
-const webStorage = new WebStorageModule();
-const shareSerialization = new ShareSerializationModule();
-
-// Instantiation of tKey
-const tKey = new ThresholdKey({
-  serviceProvider,
-  storageLayer,
-  modules: {
-    shareSerialization,
-    webStorage,
-  },
-});
-
-// Initialization of private key provider
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: {
-    chainConfig,
-  },
-});
-
-await (tKey.serviceProvider as SfaServiceProvider).init(privateKeyProvider);
-
-// login with Firebase
-const signInWithTwitter = async (): Promise<UserCredential> => {
-  try {
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const twitterProvider = new TwitterAuthProvider();
-    const res = await signInWithPopup(auth, twitterProvider);
-    console.log(res);
-    return res;
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
-};
-
-const loginRes = await signInWithTwitter();
-
-const idToken = await loginRes.user.getIdToken(true);
-const userInfo = parseToken(idToken); // parseToken is a function to parse the id token
-
-await (tKey.serviceProvider as SfaServiceProvider).connect({
-  verifier,
-  verifierId: userInfo.sub,
-  idToken,
-});
-
-await tKey.initialize();
+// highlight-end
 ```
 
 </TabItem>
 </Tabs>
-
-:::tip Example
-
-You can find a working example of
-[**Twitter login via Firebase with Web3Auth here**](https://github.com/Web3Auth/web3auth-pnp-examples/blob/main/web-no-modal-sdk/custom-authentication/single-verifier-examples/firebase-no-modal-example/src/App.tsx).
-
-:::
