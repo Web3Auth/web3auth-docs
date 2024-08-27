@@ -126,12 +126,12 @@ const config: Config = {
             },
           ],
         },
-        // {
-        //   position: "right",
-        //   href: githubOrgUrl,
-        //   className: "navbar-github-link",
-        //   "aria-label": "GitHub Organization",
-        // },
+        {
+          position: "right",
+          href: githubOrgUrl,
+          className: "navbar-github-link",
+          "aria-label": "GitHub Organization",
+        },
         {
           type: "search",
           position: "right",
@@ -154,6 +154,7 @@ const config: Config = {
       apiKey: "425a1e860cb4b9b4ce1f7d9b117c7a81",
       indexName: "docs-web3auth",
       contextualSearch: true,
+      insights: true,
     },
     customFields: {
       baseUrl,
@@ -166,8 +167,13 @@ const config: Config = {
       defer: false,
     },
     {
-      src: baseUrl + "js/code-focus.js",
+      src: "https://polyfill.io/v3/polyfill.min.js?features=MutationObserver",
       async: true,
+    },
+    {
+      src: baseUrl + "js/code-focus.js",
+      async: false,
+      defer: true,
     },
   ],
   presets: [
