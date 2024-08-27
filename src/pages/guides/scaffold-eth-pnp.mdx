@@ -27,9 +27,8 @@ user-friendly wallet management interface.
 As an overview, we'll use
 [Web3Auth Wagmi Connector](https://web3auth.io/docs/sdk/pnp/web/wagmi-connector) to bridge Web3Auth
 with RainbowKit, facilitating a secure and efficient authentication mechanism for users. For those
-who want to skip straight to the code, you can find it on GitHub -
-[Scaffold ETH Modal Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/wagmi-examples/scaffold-eth-modal-example),
-[Scaffold ETH No Modal Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/wagmi-examples/scaffold-eth-no-modal-example).
+who want to skip straight to the code,
+[you can find it on GitHub](https://github.com/Web3Auth/scaffold-eth-modal-example/).
 
 ## How to set up Web3Auth Dashboard
 
@@ -69,8 +68,13 @@ $ npm i @web3auth/web3auth-wagmi-connector
 >
 
 <TabItem value="modal">
-  ``` bash npm2yarn $ npm i @web3auth/base $ npm i @web3auth/ethereum-provider $ npm i
-  @web3auth/modal ```
+
+```bash npm2yarn
+  $ npm i @web3auth/base
+  $ npm i @web3auth/ethereum-provider
+  $ npm i @web3auth/modal
+```
+
 </TabItem>
 
 <TabItem value="nomodal">
@@ -126,7 +130,8 @@ export const rainbowWeb3AuthConnector = (): Wallet => ({
 ```
 
 To checkout the whole code, please checkout this file. Once you have implemented
-`rainbowWeb3AuthConnector`, you can simply update the wallets list inside `wagmicConnectors` file.
+`rainbowWeb3AuthConnector`, you can simply update the wallets list inside `wagmicConnectors.tsx`
+file.
 
 ```tsx
 const wallets = [
@@ -138,10 +143,11 @@ const wallets = [
 ];
 ```
 
-### Create Connector for Modal SDK
+### Create Connector for No Modal SDK
 
 Once you have install the relevant packages for No Modal SDk, let's look at creating a connector
-using Web3Auth Wagmi Connector package.
+using Web3Auth Wagmi Connector package. The code from above remains the same, only instead of
+`Web3Auth` instance we use `Web3AuthNoModal` instance.
 
 We'll use the `scaffoldConfig` to get the targated networks, and use the first one to create
 `chainConfig` for `EthereumPrivateKeyProvider`. Once you have created `Web3AuthNoModal` instance,
@@ -180,8 +186,8 @@ export const rainbowWeb3AuthConnector = (): Wallet => ({
 });
 ```
 
-To checkout the whole code, please checkout this file. Once you have implemented
-`rainbowWeb3AuthConnector`, you can simply update the wallets list inside `wagmiConnectors` file.
+Once you have implemented `rainbowWeb3AuthConnector`, you can simply update the wallets list inside
+`wagmiConnectors.tsx` file.
 
 ```tsx
 const wallets = [
@@ -199,4 +205,5 @@ Voila, you have now added Web3Auth support in Scaffold-ETH 2 project. You can no
 and see Web3Auth in action.
 
 If you are interested in learning more about Web3Auth, please checkout our documentation for Web
-SDK. You can find the code used for the guide on our examples repo.
+SDK. You can find the code used for the guide on our
+[scaffold-eth-modal-example repo](https://github.com/Web3Auth/scaffold-eth-modal-example/).
