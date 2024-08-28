@@ -819,6 +819,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Soneium",
+              items: [
+                "connect-blockchain/evm/soneium/soneium",
+                "connect-blockchain/evm/soneium/web",
+                "connect-blockchain/evm/soneium/android",
+                "connect-blockchain/evm/soneium/ios",
+                "connect-blockchain/evm/soneium/react-native",
+                "connect-blockchain/evm/soneium/flutter",
+                "connect-blockchain/evm/soneium/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Songbird",
               items: [
                 "connect-blockchain/evm/songbird/songbird",
