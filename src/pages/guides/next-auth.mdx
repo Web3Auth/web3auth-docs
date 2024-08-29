@@ -78,7 +78,7 @@ sign-out methods, and more.
          import NextAuth from "next-auth";
 
          export const { handlers, signIn, signOut, auth } = NextAuth({
-         providers: [],
+            providers: [],
          });
          ```
 
@@ -139,10 +139,23 @@ auth.ts.
 
 ```tsx
 import NextAuth from "next-auth";
+// focus-next-line
 import Google from "next-auth/providers/google";
+
+declare module "next-auth" {
+  // focus-start
+  interface User {
+    idToken?: string;
+  }
+  interface Session {
+    idToken?: string | undefined;
+  }
+  // focus-end
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
+    // focus-start
     Google({
       authorization: {
         params: {
@@ -155,7 +168,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
       },
     }),
+    // focus-end
   ],
+  callbacks: {
+    // focus-start
+    async jwt({ token, account }) {
+      if (account) {
+        token.idToken = account.id_token;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.idToken = token.idToken as string;
+      return session;
+    },
+    // focus-end
+  },
 });
 ```
 
@@ -207,9 +235,10 @@ This sets up and configures Web3Auth for authentication and interaction with the
 testnet, enabling web3 functionality in your application.
 
 ```tsx title="./lib/web3auth.tsx"
-import { Web3Auth, decodeToken } from "@web3auth/single-factor-auth";
 import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+// focus-next-line
+import { Web3Auth, decodeToken } from "@web3auth/single-factor-auth";
 
 // Get this from .env file
 const clientId = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID ?? "";
@@ -228,7 +257,7 @@ const chainConfig = {
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: { chainConfig },
 });
-
+// focus-start
 export const web3auth = new Web3Auth({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
@@ -236,6 +265,7 @@ export const web3auth = new Web3Auth({
 });
 
 export { decodeToken };
+// focus-end
 ```
 
 ### SignIn Button
@@ -329,10 +359,11 @@ to it:
 import Image from "next/image";
 import { Session } from "next-auth";
 import { useEffect, useState } from "react";
-
+// focus-start
 import { web3auth, decodeToken } from "@/lib/web3auth";
-import Loading from "@/components/loading";
 import SignOut from "@/components/auth/signout-button";
+// focus-end
+import Loading from "@/components/loading";
 
 type UserInfoProps = {
   session: Session | null;
@@ -346,6 +377,7 @@ export default function UserInfo({ session }: UserInfoProps) {
   useEffect(() => {
     const init = async () => {
       try {
+        // focus-start
         if (web3auth.status === "not_ready") {
           await web3auth.init();
         }
@@ -360,12 +392,13 @@ export default function UserInfo({ session }: UserInfoProps) {
         } else if (session?.idToken) {
           const { payload } = decodeToken(session.idToken);
           const provider = await web3auth.connect({
-            verifier: "next-auth-w3a",
-            verifierId: (payload as any).email,
+            verifier: "next-auth-w3a", // Use your verifier name here
+            verifierId: (payload as any).email, // and based on it, the verifierId
             idToken: session.idToken,
           });
           setProvider(provider);
         }
+        // focus-end
       } catch (error) {
         console.error("Error initializing & connecting to web3auth:", error);
         setProvider(null);
@@ -378,11 +411,13 @@ export default function UserInfo({ session }: UserInfoProps) {
     if (session) {
       init();
     }
-  }, [session]);
+    // focus-next-line
+  }, [session, provider]);
 
   if (!session) return null;
 
   return (
+    // focus-start
     <div className="bg-white dark:bg-zinc-800/30 shadow-lg rounded-lg p-8 max-w-md w-full mx-auto mt-10">
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
@@ -411,6 +446,7 @@ export default function UserInfo({ session }: UserInfoProps) {
         )
       )}
     </div>
+    // focus-end
   );
 }
 ```
@@ -444,11 +480,14 @@ Update the `page.tsx` file in the `app` directory with the following content:
 
 ```tsx title="./app/page.tsx"
 import Image from "next/image";
+// focus-start
 import SignIn from "@/components/auth/signin-button";
 import Profile from "@/components/profile";
 import { auth } from "@/auth";
+// focus-end
 
 export default async function Home() {
+  // focus-next-line
   const session = await auth();
 
   return (
@@ -466,10 +505,17 @@ export default async function Home() {
             rel="noopener noreferrer"
           >
             By{" "}
-            <Image src="/web3auth-dark.svg" alt="Web3Auth Logo" width={100} height={24} priority />
+            <Image
+              src="https://web3auth.io/images/web3auth-logo---Dark.svg"
+              alt="Web3Auth Logo"
+              width={100}
+              height={24}
+              priority
+            />
           </a>
         </div>
       </div>
+      // focus-next-line
       {!session ? <SignIn /> : <Profile session={session} />}
     </main>
   );
