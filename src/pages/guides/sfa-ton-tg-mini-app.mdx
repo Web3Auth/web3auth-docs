@@ -28,22 +28,30 @@ In this guide, we will walk you through the process of integrating Web3Auth with
 for a Telegram Mini App. The guide covers everything from setting up the development environment to
 deploying your application.
 
-As an overview, this guide will enable secure user authentication using GitHub, powered by Web3Auth
-SFA SDK, and interaction with the TON blockchain. For those who want to skip straight to the code,
-you can find it on
+As an overview, this guide will demonstrate how to implement secure user authentication using GitHub
+(via Auth0), powered by the Web3Auth SFA SDK, and enable interaction with the TON blockchain. For
+those who want to skip straight to the code, you can find it on
 [GitHub](https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/sfa-web-ton-telegram-example).
 
 ### Prerequisites
 
 - Basic knowledge of React, TypeScript, and working with npm.
-- A Telegram bot token.
-- Access to Web3Auth and Auth0 dashboards.
+- [A Telegram bot token](#step-7-setting-up-a-telegram-bot).
+- [Access to Web3Auth and Auth0 dashboards](#step-1-set-up-auth0-and-web3auth-verifiers).
 
 ### Step 1: Set Up Auth0 and Web3Auth Verifiers
 
 Before diving into the code, it's crucial to set up your Auth0 dashboard and configure verifiers on
 the Web3Auth dashboard. These steps are essential to ensure that your authentication process works
 smoothly with the Web3Auth SFA Web SDK.
+
+:::info What are Auth0 and Web3Auth verifiers?
+
+Auth0 is an identity platform that provides secure authentication services, while Web3Auth verifiers
+are components that validate user credentials. Together, they ensure a secure and seamless login
+process for your decentralized application.
+
+:::
 
 For detailed instructions on setting up the Auth0 dashboard and configuring verifiers for the SFA
 Web SDK, refer to the [SFA Web Auth0 guide](https://web3auth.io/docs/guides/sfa-web-auth0). This
@@ -60,6 +68,16 @@ Assuming your React project is already created, start by installing the necessar
 npm install @twa-dev/sdk @web3auth/single-factor-auth @web3auth/base @web3auth/base-provider @orbs-network/ton-access tonweb @auth0/auth0-react
 ```
 
+:::note Note on authentication methods
+
+When integrating Auth0 with Web3Auth, you'll encounter two primary options for handling the login
+process: `loginWithPopup` and `loginWithRedirect`. For Telegram Mini Apps, we recommend using
+`loginWithRedirect` to ensure the authentication flow remains within the app environment. This
+method redirects users to the Auth0 login page and back to your application, allowing for a smoother
+experience in the Telegram Mini App context.
+
+:::
+
 ### Step 3: Add the `@twa-dev/sdk`
 
 The `@twa-dev/sdk` package allows you to work with the SDK as an npm package with TypeScript
@@ -69,6 +87,13 @@ The `WebApp.ready()` method informs the Telegram app that the Mini App is ready 
 is recommended to call this method as early as possible, as soon as all essential interface elements
 are loaded. Once this method is called, the loading placeholder is hidden, and the Mini App is
 shown.
+
+:::info What is Telegram Mini App?
+
+Telegram Mini Apps are lightweight web applications that run inside the Telegram messenger,
+providing a seamless user experience without leaving the chat interface.
+
+:::
 
 **Code Example:**
 
@@ -82,9 +107,9 @@ import reportWebVitals from "./reportWebVitals";
 // focus-start
 import WebApp from "@twa-dev/sdk";
 import { Auth0Provider } from "@auth0/auth0-react";
-// focus-end
 
 WebApp.ready();
+// focus-end
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
@@ -110,10 +135,54 @@ reportWebVitals();
 
 ### Step 4: Setup TON Blockchain Connection
 
-To integrate the TON blockchain into your app, visit the
-[TON Connect Blockchain](https://web3auth.io/docs/connect-blockchain/other/ton) page provided by
-Web3Auth. This page provides a complete `tonRpc` implementation that you can use directly in your
+To integrate the TON blockchain into your app, you'll need to set up a connection to the TON
+network. Below is a basic example of how to implement the `TonRPC` class, which handles blockchain
+interactions such as getting account details and balances.
+
+:::tip
+
+The `tonRpc` implementation includes the use of top-level `await`. To avoid any unexpected errors,
+ensure that your `tsconfig.json` is configured with `"target": "ES2020"` or later and
+`"module": "ESNext"`. This configuration allows TypeScript to support top-level `await` in your
 project.
+
+:::
+
+**Basic Code Example:**
+
+```typescript
+const rpc = await getHttpEndpoint({
+  network: "testnet",
+  protocol: "json-rpc",
+});
+
+class TonRPC {
+  private provider: IProvider;
+  private tonweb: TonWeb;
+
+  constructor(provider: IProvider) {
+    this.provider = provider;
+    this.tonweb = new TonWeb(new TonWeb.HttpProvider(rpc));
+  }
+
+  async getAccounts(): Promise<string> {
+    const privateKey = await this.getPrivateKey();
+    const keyPair = this.getKeyPairFromPrivateKey(privateKey);
+    const WalletClass = this.tonweb.wallet.all["v3R2"];
+    const wallet = new WalletClass(this.tonweb.provider, {
+      publicKey: keyPair.publicKey,
+    });
+    const address = await wallet.getAddress();
+    return address.toString(true, true, true);
+  }
+
+  // ... more methods like getBalance, sendTransaction, signMessage
+}
+```
+
+For the complete code and additional functionalities such as sending transactions or signing
+messages, please refer to the full implementation provided on the
+[TON Connect Blockchain](https://web3auth.io/docs/connect-blockchain/other/ton) page.
 
 ### Step 5: Web3Auth Integration
 
@@ -159,6 +228,7 @@ const privateKeyProvider = new CommonPrivateKeyProvider({
   config: { chainConfig },
 });
 
+// Initialize Web3Auth with necessary configurations
 const web3authSfa = new Web3Auth({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
@@ -217,24 +287,28 @@ const login = async () => {
   await loginWithRedirect();
 };
 
+// Attempt to connect to Web3Auth when authenticated
 const connectWeb3Auth = async () => {
   if (isAuthenticated && !loggedIn && web3authSfa.status === "ready") {
     try {
       setIsLoggingIn(true);
       // focus-next-line
-      const idToken = (await getIdTokenClaims())?.__raw;
+      const idToken = (await getIdTokenClaims())?.__raw; // Retrieve raw ID token from Auth0
       if (!idToken) {
         console.error("No ID token found");
         return;
       }
-      const { payload } = decodeToken(idToken);
+      const { payload } = decodeToken(idToken); // Decode the token to access its payload
       // focus-start
+
+      // Connect to Web3Auth using the verifier, verifierId, and idToken
       await web3authSfa.connect({
         verifier,
         verifierId: (payload as any).sub,
         idToken: idToken,
       });
       // focus-end
+      // Update state to reflect successful login
       setIsLoggingIn(false);
       setLoggedIn(true);
       setProvider(web3authSfa.provider);
@@ -251,6 +325,24 @@ useEffect(() => {
 }, [isAuthenticated, loggedIn, getIdTokenClaims]);
 // focus-end
 ```
+
+:::info Understanding the `idToken` Logic
+
+There's a lot happening in this single line, but let's break it down:
+
+```typescript
+const idToken = (await getIdTokenClaims())?.__raw;
+```
+
+This line retrieves the raw ID token from Auth0, which is crucial for our Web3Auth integration. The
+`getIdTokenClaims()` function comes from the Auth0 SDK and returns a promise. When resolved, it
+gives us an object packed with the user's identity information. We're specifically after the `__raw`
+property, which contains the complete, encoded JWT (JSON Web Token). The `?.` (optional chaining)
+operator is our safety net here – it gracefully handles cases where `getIdTokenClaims()` might
+return null or undefined, preventing potential errors. This raw token is what we've used to connect
+with Web3Auth in the next step.
+
+:::
 
 #### Render the UI
 
