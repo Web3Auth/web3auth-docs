@@ -15,16 +15,12 @@ import SEO from "../../components/SEO";
 import styles from "./styles.module.css";
 
 export default function Guides({ content }: GuidesInterface) {
-  const completeGuides = Object.entries(content).map(([key, value]) => {
-    if (value.type === "guide") return { ...value, link: `/guides/${key}` };
-    return {};
-  });
-  const [searchInput, setSearchInput] = useState<string>("");
-  const [tags, setTags] = useState<string[]>([]);
-  const [productFilter, setProductFilter] = useState<string[]>([]);
-  const [platformFilter, setPlatformFilter] = useState<string[]>([]);
-  const [sortedGuides, setSortedGuides] = useState<any>(
-    completeGuides.sort((a: any, b: any) => {
+  const completeGuides = Object.entries(content)
+    .map(([key, value]) => {
+      if (value.type === "guide") return { ...value, link: `/guides/${key}` };
+      return {};
+    })
+    .sort((a: any, b: any) => {
       //if pinned == 1, the is the first
       if (a.pinned && !b.pinned) return -1;
       if (!a.pinned && b.pinned) return 1;
@@ -34,19 +30,28 @@ export default function Guides({ content }: GuidesInterface) {
 
       // If dates are equal, or as a fallback, sort by 'order' if needed
       return +bDate - +aDate;
-    }),
-  );
-
+    });
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [productFilter, setProductFilter] = useState<string[]>([]);
+  const [platformFilter, setPlatformFilter] = useState<string[]>([]);
+  const [tagFilteredGuides, setTagFilteredGuides] = useState(completeGuides);
+  const [searchFilteredGuides, setSearchFilteredGuides] = useState(tagFilteredGuides);
   const { siteConfig } = useDocusaurusContext();
   const { baseUrl } = siteConfig;
 
   useEffect(() => {
     function filterByTags() {
       let guides;
+      if (searchInput.length === 0) {
+        guides = completeGuides;
+      } else {
+        guides = searchFilteredGuides;
+      }
       console.log("productFilter", productFilter);
       console.log("platformFilter", platformFilter);
       console.log("tags", tags);
-      guides = completeGuides.filter((item) => {
+      guides = guides.filter((item) => {
         const prodFil =
           productFilter.length === 0 || productFilter.some((tag) => item.tags.includes(tag));
         const platFil =
@@ -55,10 +60,10 @@ export default function Guides({ content }: GuidesInterface) {
         return [prodFil, platFil].every((result) => result === true);
       });
 
-      setSortedGuides(guides.sort((a: any, b: any) => a.order - b.order));
+      setTagFilteredGuides(guides.sort((a: any, b: any) => a.order - b.order));
     }
     filterByTags();
-  }, [productFilter, platformFilter]);
+  }, [productFilter, platformFilter, searchFilteredGuides]);
 
   const onChangeProduct = (e) => {
     const filterValue = e.map((item) => item.value);
@@ -112,22 +117,11 @@ export default function Guides({ content }: GuidesInterface) {
         )
       );
     }
-    if (input === "") {
-      let guides;
-      if (tags.length === 0) {
-        guides = completeGuides.sort((a: any, b: any) => a.order - b.order);
-      } else {
-        guides = completeGuides.filter((item) => {
-          return tags.some((tag) => item.tags.includes(tag));
-        });
-      }
-
-      setSortedGuides(guides);
-    } else {
-      const finalSortedGuide = completeGuides.filter((item) => searchFilter(item));
-
-      setSortedGuides(finalSortedGuide);
+    let guides = tagFilteredGuides;
+    if (input !== "") {
+      guides = tagFilteredGuides.filter((item) => searchFilter(item));
     }
+    setSearchFilteredGuides(guides);
   }
 
   function renderArticle(article) {
@@ -257,8 +251,8 @@ export default function Guides({ content }: GuidesInterface) {
       </header>
 
       <div className={styles.container}>
-        {sortedGuides.map((item) => renderArticle(item))}
-        {sortedGuides.length === 0 && (
+        {tagFilteredGuides.map((item) => renderArticle(item))}
+        {tagFilteredGuides.length === 0 && (
           <div className={styles.noResults}>
             <p>No result</p>
           </div>

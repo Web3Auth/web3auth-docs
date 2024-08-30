@@ -32,56 +32,31 @@ with Auth0, but this can be done with any other Federated/JWT providers.
 ### Example
 
 ```tsx
-import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { CHAIN_NAMESPACES } from "@web3auth/base";
 
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
-// get it from https://dashboard.web3auth.io by creating a project.
-
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1",
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/ethereum.svg",
-};
-
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-const web3auth = new Web3AuthNoModal({
-  clientId,
-  web3AuthNetwork: "sapphire_mainnet",
-  privateKeyProvider: privateKeyProvider,
-});
-
+// Create OpenloginAdapter instance once you have created Web3AuthNoModal instance
 const openloginAdapter = new OpenloginAdapter({
-  privateKeyProvider,
   adapterSettings: {
     loginConfig: {
+      // focus-start
       jwt: {
         verifier: "w3a-auth0-uk-demo", // Pass the Verifier name here
         typeOfLogin: "jwt", // Pass on the login provider of the verifier you've created
         clientId: "OfDAVldBEGslU9wjiWyQ1LPWOWNnnzim", // Pass on the Auth0 `Client ID` here
       },
+      // focus-end
     },
   },
 });
-web3auth.configureAdapter(openloginAdapter);
-setWeb3auth(web3auth);
+
+web3AuthNoModalInstance.configureAdapter(openloginAdapter);
 
 // Initialize
-await web3auth.init();
+await web3AuthNoModalInstance.init();
 
 // Login with Slack
-await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+// focus-start
+await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
   loginProvider: "jwt",
   extraLoginOptions: {
     domain: "https://web3auth.uk.auth0.com", // Pass on the Auth0 `Domain` here
@@ -89,4 +64,5 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
     connection: "sign-in-with-slack", // Use this to skip Auth0 Modal for Slack login
   },
 });
+// focus-end
 ```

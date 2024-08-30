@@ -41,7 +41,7 @@ locator.
 ```dart
 import 'package:flutter_solana_example/core/solana/solana_provider.dart';
 import 'package:get_it/get_it.dart';
-// highlight-next-line
+// focus-next-line
 import 'package:solana/solana.dart';
 
 class ServiceLocator {
@@ -50,12 +50,12 @@ class ServiceLocator {
   static GetIt get getIt => GetIt.instance;
 
   static Future<void> init() async {
-    // highlight-start
+    // focus-start
     final solanaClient = SolanaClient(
       rpcUrl: Uri.parse('https://api.devnet.solana.com'),
       websocketUrl: Uri.parse('ws://api.devnet.solana.com'),
     );
-     // highlight-end
+     // focus-end
 
     // Register SolanaClient to be accessed using service locator
     getIt.registerLazySingleton<SolanaClient>(() => solanaClient);
@@ -92,7 +92,7 @@ Future<void> main() async {
     redirectUrl = Uri.parse('com.web3auth.fluttersolanasample://auth');
   }
 
-  // highlight-start
+  // focus-start
   await Web3AuthFlutter.init(
     Web3AuthOptions(
       clientId:
@@ -102,7 +102,7 @@ Future<void> main() async {
     ),
   );
 
-  // highlight-end
+  // focus-end
 
   runApp(const MainApp());
 }
@@ -129,7 +129,7 @@ class _MainAppState extends State<MainApp> {
         future: privateKeyFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            // highlight-start
+            // focus-start
             if (snapshot.hasData) {
               // Check if user is already authenticated. If user is already
               // authenticated the snapshot.data will be non empty string
@@ -139,7 +139,7 @@ class _MainAppState extends State<MainApp> {
               }
             }
             return const LoginScreen();
-            // highlight-end
+            // focus-end
           }
           return const Center(
             child: CircularProgressIndicator.adaptive(),
@@ -168,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late final Ed25519HDKeyPair keyPair;
   late final SolanaProvider provider;
   late double balance;
-  // highlight-next-line
+  // focus-next-line
   late final dynamic web3AuthInfo;
 
   @override
@@ -186,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // getUserInfo method can be used to fetch the user information
       // such as email, name, isMFA enabled. Checkout documentation
       // to know more.
-      // highlight-next-line
+      // focus-next-line
       web3AuthInfo = await Web3AuthFlutter.getUserInfo();
 
       // ..
@@ -225,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     balance.toString(),
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
-                  // highlight-start
+                  // focus-start
                   if (web3AuthInfo.email != null) ...[
                     verticalGap,
                     Text(
@@ -233,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: Theme.of(context).textTheme.bodyLarge,
                     )
                   ],
-                  // highlight-end
+                  // focus-end
 
                   // ..
                   // Additional code
@@ -242,7 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   verticalGap,
 
                   // Logs the user information in the console
-                  // highlight-start
+                  // focus-start
                   OutlinedButton(
                     onPressed: () async {
                      showInfoDialog(
@@ -253,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: const Text("Get user info"),
                   ),
-                  // highlight-end
+                  // focus-end
                 ],
               ),
             );
@@ -289,7 +289,7 @@ class SolanaProvider {
 
   SolanaProvider(this.solanaClient);
 
-  // highlight-start
+  // focus-start
   Future<double> getBalance(String address) async {
     final balanceResponse = await solanaClient.rpcClient.getBalance(
       address,
@@ -299,7 +299,7 @@ class SolanaProvider {
     /// token decimals is set to be 9;
     return balanceResponse.value / pow(10, tokenDecimals);
   }
-  // highlight-end
+  // focus-end
 
    // ..
   // Additional methods
@@ -324,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     isAccountLoaded = ValueNotifier<bool>(false);
-    // highlight-next-line
+    // focus-next-line
     provider = ServiceLocator.getIt<SolanaProvider>();
     loadAccount(context);
   }
@@ -339,12 +339,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
       /// The ED25519 PrivateKey returns a key pair from
       /// which we only require first 32 byte.
-      // highlight-start
+      // focus-start
       keyPair = await Ed25519HDKeyPair.fromPrivateKeyBytes(
         privateKey: privateKey.hexToBytes.take(32).toList(),
       );
       balance = await provider.getBalance(keyPair.address);
-      // highlight-end
+      // focus-end
       isAccountLoaded.value = true;
     } catch (e, _) {
       if (context.mounted) {
@@ -364,16 +364,16 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // highlight-start
+                  // focus-start
                   Text(
                     balance.toString(),
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
-                  // highlight-end
+                  // focus-end
                   // ..
                   // Additional code
                   // ..
-                  // highlight-start
+                  // focus-start
                   Row(
                     children: [
                       const Spacer(),
@@ -393,7 +393,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       const Spacer(),
                     ],
                   ),
-                  // highlight-end
+                  // focus-end
                   // ..
                   // Additional code
                   // ..
@@ -421,7 +421,7 @@ class SolanaProvider {
 
   SolanaProvider(this.solanaClient);
 
-  // highlight-start
+  // focus-start
   Future<String> signSendTransaction({
     required Ed25519HDKeyPair keyPair,
     required String destination,
@@ -444,7 +444,7 @@ class SolanaProvider {
     final signedTx = await signTransaction(recentBlockHash, message, [keyPair]);
     return signedTx.signatures.first.toBase58();
   }
-  // highlight-end
+  // focus-end
 
   Future<RecentBlockhash> getRecentBlockhash() async {
     return await solanaClient.rpcClient
@@ -466,7 +466,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     isAccountLoaded = ValueNotifier<bool>(false);
-    // highlight-next-line
+    // focus-next-line
     provider = ServiceLocator.getIt<SolanaProvider>();
     loadAccount(context);
   }
@@ -487,7 +487,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // highlight-start
+                  // focus-start
                   OutlinedButton(
                     onPressed: () {
                       signSelfTransfer(context);
@@ -496,7 +496,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       "Sign Self transfer 0.0001 Sol",
                     ),
                   ),
-                  // highlight-end
+                  // focus-end
                 ],
               ),
             );
@@ -507,7 +507,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // highlight-start
+  // focus-start
   Future<void> signSelfTransfer(BuildContext context) async {
     showLoader(context);
     try {
@@ -527,7 +527,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
   }
-  // highlight-end
+  // focus-end
 }
 
 ```
@@ -542,7 +542,7 @@ class SolanaProvider {
 
   SolanaProvider(this.solanaClient);
 
-  // highlight-start
+  // focus-start
   Future<String> sendSol({
     required Ed25519HDKeyPair keyPair,
     required String destination,
@@ -559,7 +559,7 @@ class SolanaProvider {
 
     return transactionHash;
   }
-  // highlight-end
+  // focus-end
 }
 ```
 
@@ -619,7 +619,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   // ..
                   verticalGap,
-                  // highlight-start
+                  // focus-start
                   OutlinedButton(
                     onPressed: () {
                       selfTransfer(context);
@@ -628,7 +628,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       "Self transfer 0.0001 Sol",
                     ),
                   ),
-                  // highlight-end
+                  // focus-end
                   // ..
                 ],
               ),
@@ -640,7 +640,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // highlight-start
+  // focus-start
   Future<void> selfTransfer(BuildContext context) async {
     showLoader(context);
     try {
@@ -661,6 +661,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
   }
-  // highlight-end
+  // focus-end
 }
 ```

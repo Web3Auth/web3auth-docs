@@ -33,10 +33,10 @@ the Telegram OAuth flow for user authentication and generate Ethereum/Solana key
 
 1. [Create a Telegram bot](https://core.telegram.org/bots/features#creating-a-new-bot) and
    [generate an API Token](https://core.telegram.org/bots/features#generating-an-authentication-token).
-2. [Create a JWKS file for your public key used for JWT signing](https://web3auth.io/docs/auth-provider-setup/byo-jwt-provider#how-to-convert-pem-to-jwks)
+2. [Create a JWKS file for your public key used for JWT signing](/docs/auth-provider-setup/byo-jwt-provider/#how-to-convert-pem-to-jwks)
    and host it on a public endpoint.
-3. [Set up a Telegram custom JWT verifier](https://web3auth.io/docs/auth-provider-setup/social-providers/telegram)
-   for Telegram on the Web3Auth Dashboard.
+3. [Set up a Telegram custom JWT verifier](/docs/auth-provider-setup/social-providers/telegram) for
+   Telegram on the Web3Auth Dashboard.
 4. Implement the Telegram OAuth flow for user authentication.
 5. Use user data from Telegram to generate the JWT token.
 6. Pass the JWT token to Web3Auth for generating Ethereum/Solana keys using the Web3Auth Plug and
@@ -302,7 +302,7 @@ const openloginAdapter = new OpenloginAdapter({
     uxMode: UX_MODE.REDIRECT,
     loginConfig: {
       jwt: {
-        // highlight-next-line
+        // focus-next-line
         verifier: "w3a-telegram-oauth-demo", // Replace with your verifier name
         typeOfLogin: "jwt",
         clientId,
@@ -336,7 +336,7 @@ useEffect(() => {
   const params = new URLSearchParams(window.location.search);
   const jwtToken = params.get("token");
   if (jwtToken) {
-    // highlight-next-line
+    // focus-next-line
     loginWithWeb3Auth(jwtToken);
     window.history.replaceState({}, document.title, window.location.pathname);
   }
@@ -354,7 +354,7 @@ const loginWithWeb3Auth = async (token: string) => {
    const web3authProvider = await web3auth?.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
    loginProvider: "jwt",
    extraLoginOptions: {
-      // highlight-next-line
+      // focus-next-line
       id_token: token,
       verifierIdField: "sub", // Based on the verifier's verifierIdField
    },
@@ -440,7 +440,7 @@ app.get("/callback", async (req, res) => {
     const user = await validator.validate(data);
     const JWTtoken = generateJwtToken(user);
     // getPriavteKey function is defined below
-    // highlight-next-line
+    // focus-next-line
     const ethData = await getPrivateKey(JWTtoken, user.id.toString());
     // Use ethData as per your requirement
     console.log("Ethereum Data:", ethData);
@@ -537,7 +537,7 @@ useEffect(() => {
   const params = new URLSearchParams(window.location.search);
   const jwtToken = params.get("token");
   if (jwtToken) {
-    // highlight-next-line
+    // focus-next-line
     loginWithWeb3Auth(jwtToken);
     window.history.replaceState({}, document.title, window.location.pathname);
   }
@@ -552,7 +552,7 @@ Use the JWT token in the `connect()` method to initiate the login process with W
 const loginWithWeb3Auth = async (token: string) => {
   const decodedToken = decodeToken(token);
   const verifierId = decodedToken.sub;
-  // highlight-next-line
+  // focus-next-line
   const web3authProvider = await web3auth.connect({
     verifier: "WEB3AUTH_VERIFIER_NAME", // Replace with your verifier name
     verifierId,

@@ -11,7 +11,7 @@
               // Get Balance
               ElevatedButton(
                 onPressed: () async {
-                  // highlight-start
+                  // focus-start
                   final prefs = await SharedPreferences.getInstance();
                   final privateKey = prefs.getString('privateKey') ?? '0';
                   final credentials = EthPrivateKey.fromHex(privateKey);
@@ -20,7 +20,7 @@
                   final address = credentials.address;
                   final balance = await client.getBalance(address);
                   debugPrint("Balance, ${balance}");
-                  // highlight-end
+                  // focus-end
                 },
                 child: const Text('Get Balance'),
               ),

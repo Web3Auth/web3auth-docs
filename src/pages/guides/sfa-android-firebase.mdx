@@ -72,7 +72,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        // highlight-next-line
+        // focus-next-line
         maven { url "https://jitpack.io" } // <-- Add this line
     }
 }
@@ -84,7 +84,7 @@ section, add the `single-factor-auth-android`.
 ```groovy
 dependencies {
     // ...
-    // highlight-next-line
+    // focus-next-line
     implementation 'com.github.web3auth:single-factor-auth-android:0.4.0'
 }
 ```
@@ -109,10 +109,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // highlight-start
+        // focus-start
         singleFactorAuthArgs = SingleFactorAuthArgs(Web3AuthNetwork.TESTNET, "YOUR_WEB3AUTH_CLIENT_ID")
         singleFactorAuth = SingleFactorAuth(singleFactorAuthArgs)
-        // highlight-end
+        // focus-end
       }
 
     // Additional code
@@ -183,13 +183,13 @@ auth.signInWithEmailAndPassword("android@firebase.com", "Android@Web3Auth")
 
                     try {
                         // Save the TorusKey for future use to interact with Blockchain.
-                        // highlight-start
+                        // focus-start
                         torusKey = singleFactorAuth.getKey(
                             loginParams,
                             this.applicationContext,
                             86400
                         ).get()
-                        // highlight-end
+                        // focus-end
 
                     } catch (e: ExecutionException) {
                         e.printStackTrace()
@@ -238,7 +238,7 @@ address, and interact with blockchain. To retrive the user's private key, we'll 
 instance.
 
 ```kotlin
-// highlight-next-line
+// focus-next-line
 val credentials: Credentials = Credentials.create(torusKey!.privateKey!.toString(16))
 
 // User's EOA address

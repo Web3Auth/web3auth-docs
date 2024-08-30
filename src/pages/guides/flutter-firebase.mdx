@@ -145,7 +145,7 @@ Future<void> initPlatformState() async {
   } else {
     throw UnKnownException('Unknown platform');
   }
-  // highlight-start
+  // focus-start
   final loginConfig = HashMap<String, LoginConfigItem>();
   loginConfig['jwt'] = LoginConfigItem(
 		verifier: "VERIFIER_NAME", // get it from web3auth dashboard
@@ -160,7 +160,7 @@ Future<void> initPlatformState() async {
     redirectUri: redirectUrl,
 		loginConfig: loginConfig
   ));
-  // highlight-end
+  // focus-end
 
   await Web3AuthFlutter.initialize();
 }
@@ -194,7 +194,7 @@ VoidCallback _login(Future<Web3AuthResponse> Function() method) {
 }
 
 Future<Web3AuthResponse> _withFirebase() {
-  // highlight-start
+  // focus-start
 	var idToken = "";
 	try {
 		final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -213,7 +213,7 @@ Future<Web3AuthResponse> _withFirebase() {
     mfaLevel: MFALevel.OPTIONAL,
 		extraLoginOptions: ExtraLoginOptions(id_token: idToken, domain: 'firebase')
   ));
-  // highlight-end
+  // focus-end
 }
 ```
 
@@ -246,7 +246,7 @@ If you wish you **[add Multi Factor Authentication](/sdk/pnp/flutter/mfa)**,
 VoidCallback _logout() {
   return () async {
     try {
-      // highlight-next-line
+      // focus-next-line
       await Web3AuthFlutter.logout();
       setState(() {
         _result = '<empty>';

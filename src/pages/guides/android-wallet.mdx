@@ -67,7 +67,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        // highlight-next-line
+        // focus-next-line
         maven { url "https://jitpack.io" } // <-- Add this line
     }
 }
@@ -79,7 +79,7 @@ section, add the `web3auth-android-sdk`.
 ```groovy
 dependencies {
     // ...
-    // highlight-next-line
+    // focus-next-line
     implementation 'com.github.web3auth:web3auth-android-sdk:7.4.0'
 }
 ```
@@ -146,11 +146,11 @@ Koin module and make it a singleton component.
 
 ```kotlin
 val appModule = module {
-    // highlight-start
+    // focus-start
     single {
         getWeb3AuthHelper(get())
     }
-    // highlight-end
+    // focus-end
 
     // Additional code
 
@@ -158,7 +158,7 @@ val appModule = module {
 }
 
 private fun getWeb3AuthHelper(context: Context): Web3AuthHelper {
-    // highlight-start
+    // focus-start
     val web3Auth = Web3Auth(
         Web3AuthOptions(
             clientId = "WEB3AUTH_CLIENT_ID",
@@ -167,7 +167,7 @@ private fun getWeb3AuthHelper(context: Context): Web3AuthHelper {
             redirectUrl = Uri.parse("w3a://com.example.android_playground/auth")
         )
     )
-    // highlight-end
+    // focus-end
 
     return Web3AuthHelperImpl(web3Auth)
 }
@@ -200,19 +200,19 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
 
     // Function to retrieve private key.
     private fun privateKey(): String {
-        // highlight-next-line
+        // focus-next-line
         return web3AuthHelper.getPrivateKey()
     }
 
     // prepareCredentials uses the private key to create Ethereum credentials which
     // can be used to retrieve the EOA address, and sign the transactions.
     private fun prepareCredentials() {
-        // highlight-next-line
+        // focus-next-line
         credentials = Credentials.create(privateKey())
     }
 
     private fun prepareUserInfo() {
-        // highlight-next-line
+        // focus-next-line
         userInfo = web3AuthHelper.getUserInfo()
     }
 
@@ -228,14 +228,14 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
     private fun isUserLoggedIn() {
         viewModelScope.launch {
             try {
-                 // highlight-start
+                 // focus-start
                 val isLoggedIn = web3AuthHelper.isUserAuthenticated()
                 if (isLoggedIn) {
                     prepareCredentials()
                     prepareUserInfo()
                 }
                 _isLoggedIn.emit(isLoggedIn)
-                // highlight-end
+                // focus-end
             } catch (e: Exception) {
                 _isLoggedIn.emit(false)
             }
@@ -260,15 +260,15 @@ class MainViewModel(private val web3AuthHelper: Web3AuthHelper) : ViewModel() {
     // Additional code
 
     fun login(email: String) {
-        // highlight-start
+        // focus-start
         val loginParams = LoginParams(
             loginProvider = Provider.EMAIL_PASSWORDLESS,
             extraLoginOptions = ExtraLoginOptions(login_hint = email)
         )
-        // highlight-end
+        // focus-end
         viewModelScope.launch {
             try {
-                // highlight-next-line
+                // focus-next-line
                 web3AuthHelper.login(loginParams = loginParams).await()
                 // Functions from Session Management code snippets
                 prepareCredentials()
@@ -305,7 +305,7 @@ in your app-level dependencies.
 ```groovy
 dependencies {
     // ...
-    // highlight-next-line
+    // focus-next-line
     implementation 'org.web3j:core:4.8.7-android'
 }
 ```
@@ -499,7 +499,7 @@ instance in the Koin module.
 val appModule = module {
     // Additional code
 
-    // highlight-next-line
+    // focus-next-line
     factory<EthereumUseCase> { EthereumUseCaseImpl(Web3j.build(HttpService(chainConfigList.first().rpcTarget))) }
 
     // Additonal code
@@ -995,7 +995,7 @@ fun SigningView(viewModel: MainViewModel) {
         .padding(horizontal = 16.dp)) {
         // Additional UI code
         Button(onClick = {
-            // highlight-start
+            // focus-start
             // Signs the message and show the signature
             viewModel.signMessage(messageText, onSign = {
                 signature, error ->
@@ -1008,7 +1008,7 @@ fun SigningView(viewModel: MainViewModel) {
 
                 }
             })
-            // highlight-end
+            // focus-end
         }, shape = RoundedCornerShape(4.dp), modifier = Modifier.fillMaxWidth()) {
             Text("Sign Message")
         }
@@ -1035,7 +1035,7 @@ fun TransactionView(viewModel: MainViewModel) {
         .padding(horizontal = 16.dp)) {
         // Additional UI code
         Button(onClick = {
-            // highlight-start
+            // focus-start
             // Performs transfer transaction and displays the hash for the transaction
             viewModel.sendTransaction(valueText, addressText, onSign = {
                     hash, error ->
@@ -1047,7 +1047,7 @@ fun TransactionView(viewModel: MainViewModel) {
                     openAlertDialog.value = true
                 }
             })
-            // highlight-end
+            // focus-end
         }, shape = RoundedCornerShape(4.dp), modifier = Modifier.fillMaxWidth()) {
             Text("Send transaction")
         }
@@ -1112,7 +1112,7 @@ fun ReadContractView(viewModel: MainViewModel) {
         .padding(horizontal = 16.dp)) {
         // Additional code
         Button(onClick = {
-            // highlight-start
+            // focus-start
             // Retrieves ERC-20 token balance for the user's EOA address
             viewModel.getTokenBalance(contractAddressText, onSuccess = {
                 balance, error ->
@@ -1124,7 +1124,7 @@ fun ReadContractView(viewModel: MainViewModel) {
                     openAlertDialog.value = true
                 }
             })
-            // highlight-end
+            // focus-end
         }, shape = RoundedCornerShape(4.dp), modifier = Modifier.fillMaxWidth()) {
             Text("Fetch Balance")
         }
@@ -1149,7 +1149,7 @@ fun WriteContractView(viewModel: MainViewModel) {
         .padding(horizontal = 16.dp)) {
         // Additional code
         Button(onClick = {
-            // highlight-start
+            // focus-start
             // Revokes the approval of ERC-20 token for respective spenderAddress.
             viewModel.revokeApproval(contractAddressText, spenderAddressText, onRevoke = {
                 hash, error ->
@@ -1161,7 +1161,7 @@ fun WriteContractView(viewModel: MainViewModel) {
                     openAlertDialog.value = true
                 }
             })
-            // highlight-end
+            // focus-end
         }, shape = RoundedCornerShape(4.dp), modifier = Modifier.fillMaxWidth()) {
             Text("Revoke Approval")
         }

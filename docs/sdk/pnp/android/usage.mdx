@@ -147,11 +147,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var web3Auth: Web3Auth
 
     private fun signIn() {
-        // highlight-next-line
+        // focus-next-line
         val selectedLoginProvider = Provider.GOOGLE
         // Can be REDDIT, TWITTER, GITHUB etc.
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            // highlight-next-line
+            // focus-next-line
             web3Auth.login(LoginParams(selectedLoginProvider))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
@@ -190,11 +190,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var web3Auth: Web3Auth
 
     private fun signIn() {
-        // highlight-next-line
+        // focus-next-line
         val selectedLoginProvider = Provider.FACEBOOK
         // Can be APPLE, LINE, KAKAO, LINKEDIN etc.
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            // highlight-next-line
+            // focus-next-line
             web3Auth.login(LoginParams(selectedLoginProvider))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
@@ -233,11 +233,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var web3Auth: Web3Auth
 
     private fun signIn() {
-        // highlight-next-line
+        // focus-next-line
         val selectedLoginProvider = Provider.DISCORD
         // Can be WECHAT, WEIBO, LINE etc.
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            // highlight-next-line
+            // focus-next-line
             web3Auth.login(LoginParams(selectedLoginProvider))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
@@ -276,11 +276,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var web3Auth: Web3Auth
 
     private fun signIn() {
-        // highlight-next-line
+        // focus-next-line
         val selectedLoginProvider = Provider.TWITCH
         // Can be GOOGLE, FACEBOOK, TWITCH etc.
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            // highlight-next-line
+            // focus-next-line
             web3Auth.login(LoginParams(selectedLoginProvider))
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
@@ -319,18 +319,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var web3Auth: Web3Auth
 
     private fun signIn() {
-        // highlight-next-line
+        // focus-next-line
         val selectedLoginProvider = Provider.EMAIL_PASSWORDLESS
         // extraLoginOptions = ExtraLoginOptions(login_hint = "email address")
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            // highlight-start
+            // focus-start
             web3Auth.login(
                 LoginParams(
                     selectedLoginProvider,
                     extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")
                 )
             )
-            // highlight-end
+            // focus-end
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
@@ -365,7 +365,7 @@ class MainActivity : AppCompatActivity() {
 ```kotlin title="Usage"
 val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
   LoginParams(
-    // highlight-next-line
+    // focus-next-line
     Provider.farcaster,
   )
 )
@@ -383,20 +383,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var web3Auth: Web3Auth
 
     private fun signIn() {
-        // highlight-next-line
+        // focus-next-line
         val selectedLoginProvider = Provider.JWT
         // extraLoginOptions = ExtraLoginOptions(id_token = "jwt_token")
         val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            // highlight-start
+            // focus-start
             web3Auth.login(
                 LoginParams(
                     selectedLoginProvider,
                     extraLoginOptions = ExtraLoginOptions(id_token = "your_jwt_token")
                 )
             )
-            // highlight-end
+            // focus-end
         // Use this for login with your generated JWT token,
-        // please refer to https://web3auth.io/docs/auth-provider-setup/byo-jwt-provider to learn more
+        // please refer to https://web3auth.io/docs/auth-provider-setup/byo-jwt-provider/ to learn more
 
         loginCompletableFuture.whenComplete { loginResponse, error ->
             if (error == null) {
@@ -449,13 +449,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // highlight-start
+        // focus-start
         if (Web3Auth.getCustomTabsClosed()) {
             Toast.makeText(this, "User closed the browser.", Toast.LENGTH_SHORT).show()
             web3Auth.setResultUrl(null)
             Web3Auth.setCustomTabsClosed(false)
         }
-        // highlight-end
+        // focus-end
     }
 
     // Additional code
@@ -533,11 +533,11 @@ val chainConfig = ChainConfig(
     chainNamespace = ChainNamespace.EIP155
 )
 
-// highlight-start
+// focus-start
 val completableFuture = web3Auth.launchWalletServices(
     chainConfig
 )
-// highlight-end
+// focus-end
 
 completableFuture.whenComplete{_, error ->
     if(error == null) {
@@ -585,18 +585,18 @@ val chainConfig = ChainConfig(
     chainNamespace = ChainNamespace.EIP155
 )
 
-// highlight-start
+// focus-start
 val signMsgCompletableFuture = web3Auth.request(
     chainConfig = chainConfig,
     "personal_sign",
     requestParams = params
 )
-// highlight-end
+// focus-end
 
 signMsgCompletableFuture.whenComplete { _, error ->
     if (error == null) {
         Log.d("MainActivity_Web3Auth", "Message signed successfully")
-        // highlight-next-line
+        // focus-next-line
         val signResult = Web3Auth.getSignResponse()
         Log.d("MainActivity_Web3Auth", signResult.toString())
 

@@ -1,5 +1,6 @@
-You get the user information after a successful login returned from the `login` method. The `userInfo` object contains the user information, whereas
-the `privKey` object contains the private key that can be used to make blockchain calls.
+You get the user information after a successful login returned from the `login` method. The
+`userInfo` object contains the user information, whereas the `privKey` object contains the private
+key that can be used to make blockchain calls.
 
 ```dart
 // Use codes from Initialization here,
@@ -14,15 +15,15 @@ the `privKey` object contains the private key that can be used to make blockchai
               // Get Account
               ElevatedButton(
                 onPressed: () async {
-                  // highlight-start
+                  // focus-start
                   // Upon ligin, gets the UserInfo along with priavteKey.
                   final response = await Web3AuthFlutter.login(
                     LoginParams(loginProvider: Provider.google)
                     );
                   debugPrint("UserInfo, ${response?.userinfo?.toString()}");
-                  // highlight-end
+                  // focus-end
                   final prefs = await SharedPreferences.getInstance();
-                  // highlight-next-line
+                  // focus-next-line
                   await prefs.setString('privateKey', response?.privKey.toString());
                   // Setting the privateKey to shared_preferences
                 },

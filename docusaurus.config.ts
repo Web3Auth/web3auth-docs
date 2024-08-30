@@ -14,7 +14,6 @@ const { themes } = require("prism-react-renderer");
 const resourcesDropdown = fs.readFileSync("./src/components/navDropdown/resources.html", "utf-8");
 const helpDropdown = fs.readFileSync("./src/components/navDropdown/help.html", "utf-8");
 const sdkDropdown = fs.readFileSync("./src/components/navDropdown/sdk.html", "utf-8");
-
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 
@@ -39,7 +38,7 @@ const config: Config = {
     announcementBar: {
       id: "sign_up_for_wallets_ux_unconference",
       content:
-        '<a href="https://w3a.link/community-call" target="_blank">Secure your spot for the next community call! Sign up now →</a>',
+        '<a href="https://web3auth.io/community/t/web3auth-developer-office-hours/8777" target="_blank">Stuck somewhere in the integration? Join the biweekly Web3Auth Office Hours →</a>',
       isCloseable: true,
     },
     colorMode: {
@@ -49,6 +48,23 @@ const config: Config = {
     },
     prism: {
       additionalLanguages: ["groovy", "java", "kotlin", "swift", "dart", "csharp"],
+      magicComments: [
+        {
+          className: "theme-code-block-highlighted-line",
+          line: "highlight-next-line",
+          block: { start: "highlight-start", end: "highlight-end" },
+        },
+        {
+          className: "code-unfocus",
+          line: "unfocus-next-line",
+          block: { start: "unfocus-start", end: "unfocus-end" },
+        },
+        {
+          className: "code-focus",
+          line: "focus-next-line",
+          block: { start: "focus-start", end: "focus-end" },
+        },
+      ],
     },
     navbar: {
       title: "Documentation",
@@ -110,12 +126,12 @@ const config: Config = {
             },
           ],
         },
-        // {
-        //   position: "right",
-        //   href: githubOrgUrl,
-        //   className: "navbar-github-link",
-        //   "aria-label": "GitHub Organization",
-        // },
+        {
+          position: "right",
+          href: githubOrgUrl,
+          className: "navbar-github-link",
+          "aria-label": "GitHub Organization",
+        },
         {
           type: "search",
           position: "right",
@@ -138,6 +154,7 @@ const config: Config = {
       apiKey: "425a1e860cb4b9b4ce1f7d9b117c7a81",
       indexName: "docs-web3auth",
       contextualSearch: true,
+      insights: true,
     },
     customFields: {
       baseUrl,
@@ -148,6 +165,15 @@ const config: Config = {
       src: baseUrl + "js/fix-trailing-slash.js",
       async: false,
       defer: false,
+    },
+    {
+      src: "https://polyfill.io/v3/polyfill.min.js?features=MutationObserver",
+      async: true,
+    },
+    {
+      src: baseUrl + "js/code-focus.js",
+      async: false,
+      defer: true,
     },
   ],
   presets: [
@@ -429,8 +455,8 @@ const config: Config = {
             to: "/connect-blockchain/other/cosmos",
           },
           {
-            from: "/connect-blockchain/near",
-            to: "/connect-blockchain/other/near",
+            from: "/connect-blockchain/other/near",
+            to: "/connect-blockchain/near/",
           },
           {
             from: "/connect-blockchain/polkadot",
@@ -474,7 +500,7 @@ const config: Config = {
           },
           {
             from: "/auth-provider-setup/byo-jwt-providers",
-            to: "/auth-provider-setup/byo-jwt-provider",
+            to: "/auth-provider-setup/byo-jwt-provider/",
           },
           {
             from: "/product-fit",

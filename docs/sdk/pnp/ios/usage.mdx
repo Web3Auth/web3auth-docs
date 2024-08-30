@@ -139,7 +139,7 @@ func login(provider: Web3AuthProvider) {
 		}
 	}
 }
-// highlight-next-line
+// focus-next-line
 login(provider: .GOOGLE)
 ```
 
@@ -158,7 +158,7 @@ func login(provider: Web3AuthProvider) {
 		}
 	}
 }
-// highlight-next-line
+// focus-next-line
 login(provider: .FACEBOOK)
 ```
 
@@ -177,7 +177,7 @@ func login(provider: Web3AuthProvider) {
 		}
 	}
 }
-// highlight-next-line
+// focus-next-line
 login(provider: .DISCORD)
 ```
 
@@ -196,7 +196,7 @@ func login(provider: Web3AuthProvider) {
 		}
 	}
 }
-// highlight-next-line
+// focus-next-line
 login(provider: .TWITCH)
 ```
 
@@ -218,7 +218,7 @@ func login(provider: Web3AuthProvider) {
 		}
 	}
 }
-// highlight-next-line
+// focus-next-line
 login(provider: .EMAIL_PASSWORDLESS)
 ```
 </TabItem>
@@ -246,7 +246,7 @@ func login(provider: Web3AuthProvider) {
 		do {
 			let result = try await Web3Auth().login(W3ALoginParams(
 				selectedLoginProvider,
-      		// highlight-next-line
+      		// focus-next-line
       			extraLoginOptions: .init(domain:"your-domain", id_token: "your_jwt_token")
   			))
 
@@ -256,7 +256,7 @@ func login(provider: Web3AuthProvider) {
 		}
 	}
 }
-// highlight-next-line
+// focus-next-line
 login(provider: .JWT)
 ```
 
@@ -299,14 +299,14 @@ class ViewModel: ObservableObject {
         web3Auth = await Web3Auth(W3AInitParams(
             clientId: "<Your client id>",
 			network: .sapphire_mainnet,
-			// highlight-next-line
+			// focus-next-line
 			sessionTime: 86400, // 1 day
 
         ))
 
         await MainActor.run(body: {
             if self.web3Auth?.state != nil {
-				// highlight-next-line
+				// focus-next-line
                 user = web3Auth?.state
                 loggedIn = true
             }
@@ -428,14 +428,14 @@ public struct ChainConfig: Codable {
 
 ```swift title="Usage"
 do {
-	// highlight-start
+	// focus-start
 	try await web3Auth!.launchWalletServices(
 		chainConfig: ChainConfig(
 			chainId: "11155111",
 			rpcTarget: "https://eth-sepolia.public.blastapi.io"
 		)
 	)
-	// highlight-end
+	// focus-end
 } catch {
 	print(error.localizedDescription)
 	// Handle error
@@ -470,7 +470,7 @@ do {
 	// User's EOA address
 	params.append(address)
 
-	// highlight-start
+	// focus-start
 	try await self.web3Auth?.request(
 		chainConfig: ChainConfig(
 			chainId: "11155111",
@@ -479,9 +479,9 @@ do {
 		method: "personal_sign",
 		requestParams: params
 	)
-	// highlight-end
+	// focus-end
 
-	// highlight-next-line
+	// focus-next-line
 	let response = try Web3Auth.getSignResponse()
 
 	if response!.success {

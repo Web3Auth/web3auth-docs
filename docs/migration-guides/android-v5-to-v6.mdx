@@ -41,7 +41,7 @@ import android.os.Bundle
 class MainActivity : AppCompatActivity() { private lateinit var web3Auth: Web3Auth
 
      private fun enableMFA() {
-       // highlight-next-line
+       // focus-next-line
        val completableFuture = web3Auth.enableMFA()
 
         completableFuture.whenComplete{_, error ->
@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() { private lateinit var web3Auth: Web3Au
             extraLoginOptions = ExtraLoginOptions(id_token = "your_jwt_token")
         )
 
-        // highlight-next-line
+        // focus-next-line
         val completableFuture = web3Auth.enableMFA(loginParams)
 
         completableFuture.whenComplete{_, error ->
@@ -143,7 +143,7 @@ production environment is the **Scale Plan**.
 #### Usage
 
 ```kotlin title="Usage"
-// highlight-start
+// focus-start
 val launchWalletCompletableFuture = web3Auth.launchWalletServices(
     loginParams = LoginParams(
         selectedLoginProvider,
@@ -158,7 +158,7 @@ val launchWalletCompletableFuture = web3Auth.launchWalletServices(
         chainNamespace = ChainNamespace.EIP155
     )
 )
-// highlight-end
+// focus-end
 
 launchWalletCompletableFuture.whenComplete { _, error ->
     if (error == null) {

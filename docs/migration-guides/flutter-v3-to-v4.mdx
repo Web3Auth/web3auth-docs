@@ -44,7 +44,7 @@ in users.
 <TabItem value="default-verifier">
 ```dart title="Usage"
 try {
-  // highlight-next-line
+  // focus-next-line
   await Web3AuthFlutter.enableMFA();
 } on UserCancelledException {
   log("User cancelled.");
@@ -64,7 +64,7 @@ try {
         ),
     );
 
-    // highlight-next-line
+    // focus-next-line
     await Web3AuthFlutter.enableMFA(loginParams);
 
 } on UserCancelledException { log("User cancelled."); } catch(e) { log("Unknown exceptionoccurred");
@@ -105,14 +105,14 @@ production environment is the **Scale Plan**.
 
 ```dart title="Usage"
 try {
-  // highlight-start
+  // focus-start
   await Web3AuthFlutter.launchWalletServices(
     ChainConfig(
       chainId: "0x1",
       rpcTarget: "https://mainnet.infura.io/v3/$key",
     ),
   );
-  // highlight-end
+  // focus-end
 } on UserCancelledException {
   log("User cancelled.");
 } catch(e) {
@@ -134,7 +134,7 @@ try {
   // User's EOA address
   params.add("<User Address in Hex>");
 
-  // highlight-start
+  // focus-start
   await Web3AuthFlutter.request(
     ChainConfig(
       chainId: "0x1",
@@ -143,14 +143,14 @@ try {
     "personal_sign",
     params,
   );
-  // highlight-end
+  // focus-end
 } on UserCancelledException {
   log("User cancelled.");
 } catch(e) {
   log("Unknown exception occurred");
 }
 
-// highlight-next-line
+// focus-next-line
 final signResponse = await Web3AuthFlutter.getSignResponse();
 log(signResponse.toString())
 ```
@@ -168,7 +168,7 @@ options.
 
 ```dart title="Usage"
 final Web3AuthResponse response = await Web3AuthFlutter.login(
-  // highlight-next-line
+  // focus-next-line
   LoginParams(loginProvider: Provider.farcaster)
 );
 ```

@@ -195,6 +195,8 @@ export const tags = {
   starknet: "starknet",
   sui: "sui",
   tezos: "tezos",
+  tron: "tron",
+  ton: "ton",
 };
 
 export const productMap = [
@@ -307,6 +309,14 @@ export const blockchainMap = [
   {
     label: "Tezos",
     value: tags.tezos,
+  },
+  {
+    label: "TRON",
+    value: tags.tron,
+  },
+  {
+    label: "TON",
+    value: tags.ton,
   },
 ];
 
@@ -465,7 +475,7 @@ export const pnpModalExamples: ExamplesInterface[] = [
     type: PLAYGROUND,
     tags: [tags.pnp, tags.web, tags.modal, "javascript", tags.evm, "react", "hooks"],
     link: "https://pnp-modal-playground.vercel.app/",
-    id: "pnp-modal-playground",
+    id: "react-modal-playground",
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/react-modal-playground",
   },
@@ -479,17 +489,6 @@ export const pnpModalExamples: ExamplesInterface[] = [
     id: "wagmi-modal-example",
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/wagmi-examples/wagmi-modal-example",
-  },
-  {
-    title: "Using PnP Modal SDK with Rainbow Kit",
-    description: "Using Plug and Play Modal SDK with Rainbow Kit",
-    image: "banners/rainbowkit.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.modal, "javascript", "wagmi", tags.evm, "rainbow"],
-    link: "https://rainbowkit-modal-example.vercel.app/",
-    id: "rainbowkit-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/wagmi-examples/rainbowkit-modal-example",
   },
 ];
 export const pnpNoModalExamples: ExamplesInterface[] = [
@@ -739,6 +738,52 @@ export const pnpNoModalExamples: ExamplesInterface[] = [
     guideLink: "/connect-blockchain/other/tezos/",
   },
   {
+    title: "Integrate PnP No Modal SDK with TON",
+    description: "Use TON with Plug and Play No Modal SDK",
+    image: "banners/ton.png",
+    type: SAMPLE_APP,
+    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.ton],
+    link: "https://ton-no-modal-example.vercel.app/",
+    id: "ton-no-modal-example",
+    githubLink:
+      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/ton-no-modal-example",
+    guideLink: "/connect-blockchain/other/ton/",
+  },
+  {
+    title: "Integrate PnP No Modal SDK with TRON",
+    description: "Use TRON with Plug and Play No Modal SDK",
+    image: "banners/tron.png",
+    type: SAMPLE_APP,
+    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.tron],
+    link: "https://tron-no-modal-example.vercel.app/",
+    id: "tron-no-modal-example",
+    githubLink:
+      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/blockchain-connection-examples/tron-no-modal-example",
+    guideLink: "/connect-blockchain/evm/tron/",
+  },
+  {
+    title: "Integrate PnP No Modal SDK with XMTP",
+    description: "Use XMTP with Plug and Play No Modal SDK",
+    image: "banners/xmtp.png",
+    type: SAMPLE_APP,
+    tags: [tags.pnp, tags.web, tags.noModal, "javascript", "xmtp", tags.evm],
+    link: "https://xmtp-no-modal-example.vercel.app/",
+    id: "xmtp-no-modal-example",
+    githubLink:
+      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/other/xmtp-no-modal-example",
+  },
+  {
+    title: "Integrate PnP No Modal SDK with Sign Protocol",
+    description: "Use Sign Protocol with Plug and Play No Modal SDK",
+    image: "banners/sign-protocol.png",
+    type: SAMPLE_APP,
+    tags: [tags.pnp, tags.web, tags.noModal, "javascript", "sign-protocol", tags.evm],
+    link: "https://sign-protocol-no-modal-example.vercel.app/",
+    id: "sign-protocol-no-modal-example",
+    githubLink:
+      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/other/sign-protocol-no-modal-example",
+  },
+  {
     title: "Integrate PnP No Modal SDK in a Chrome Extension",
     description: "Use Plug and Play No Modal SDK withih a Chrome Extension",
     image: "banners/chrome-extension.png",
@@ -972,17 +1017,6 @@ export const pnpNoModalExamples: ExamplesInterface[] = [
     id: "wagmi-no-modal-example",
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/wagmi/wagmi-no-modal-example",
-  },
-  {
-    title: "Using PnP No Modal SDK with Rainbow Kit",
-    description: "Using Plug and Play No Modal SDK with Rainbow Kit",
-    image: "banners/rainbowkit.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.web, tags.noModal, "javascript", tags.evm, "wagmi", "react", "rainbow"],
-    link: "https://rainbowkit-no-modal-example.vercel.app/",
-    id: "rainbowkit-no-modal-example",
-    githubLink:
-      "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/wagmi/rainbowkit-no-modal-example",
   },
 ];
 export const pnpiOSExamples: ExamplesInterface[] = [
