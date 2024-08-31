@@ -38,7 +38,7 @@ const config: Config = {
     announcementBar: {
       id: "sign_up_for_wallets_ux_unconference",
       content:
-        '<a href="https://w3a.link/community-call" target="_blank">Secure your spot for the next community call! Sign up now →</a>',
+        '<a href="https://web3auth.io/community/t/web3auth-developer-office-hours/8777" target="_blank">Stuck somewhere in the integration? Join the biweekly Web3Auth Office Hours →</a>',
       isCloseable: true,
     },
     colorMode: {
