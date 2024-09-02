@@ -7,7 +7,6 @@ description: "Web3Auth PnP Unity SDK - Usage | Documentation - Web3Auth"
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import UnityResponse from "@site/src/common/sdk/pnp/unity/_response.mdx";
-import EnableMFAMethod from "@site/src/common/sdk/pnp/flutter/_enable-mfa.mdx";
 
 Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your
 users.
@@ -422,6 +421,31 @@ which will used during custom verifiers. If you are using default login provider
 pass `LoginParams`. If you are using custom jwt verifiers, you need to pass the JWT token in
 `loginParams` as well.
 
+:::tip
+
+Additionally you can associate a function to be triggered on successful MFA Enabled.
+
+```cs
+void Start()
+{
+    web3Auth = GetComponent<Web3Auth>();
+    web3Auth.setOptions(new Web3AuthOptions()
+    {
+
+    });
+    // focus-next-line
+    web3Auth.onMFASetup += onMFASetup;
+}
+//focus-start
+private void onMFASetup(bool response)
+{
+    // Functions to be called after user logs out
+}
+//focus-end
+```
+
+:::
+
 <Tabs
   defaultValue="default-verifier"
   values={[
@@ -548,6 +572,82 @@ public class ChainConfig {
     };
     web3Auth.launchWalletServices(chainConfig);
 }
+```
+
+## Request signature
+
+### `web3Auth.request()`
+
+The `request` method facilitates the use of templated transaction screens for signing transactions.
+
+Please check the list of
+[JSON RPC methods](https://docs.metamask.io/wallet/reference/json-rpc-api/), noting that the request
+method currently supports only the signing methods.
+
+### Arguments
+
+| Arguments       | Description                                                                                                                                                                                            |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `chainConfig`   | Defines the chain to be used for signature.                                                                                                                                                            |
+| `method`        | JSON RPC method name in `String`. Currently, the request method only supports the singing methods.                                                                                                     |
+| `requestParams` | Parameters for the corresponding method. The parameters should be in the list and correct sequence. Take a look at [RPC methods](https://docs.metamask.io/wallet/reference/json-rpc-api) to know more. |
+
+:::tip
+
+Additionally you can associate a `getSignResponse` function to retrieve the signature for the
+request.
+
+```cs
+void Start()
+{
+    web3Auth = GetComponent<Web3Auth>();
+    web3Auth.setOptions(new Web3AuthOptions()
+    {
+
+    });
+    // focus-next-line
+    web3Auth.onSignResponse += onSignResponse;
+}
+//focus-start
+private void onSignResponse(SignResponse signResponse)
+{
+    // Functions to be called after user logs out
+}
+//focus-end
+```
+
+:::
+
+### Example
+
+```cs
+ public void PopupSignMessageUI() {
+    var chainConfig = new ChainConfig()
+    {
+        chainId = "0xaa36a7",
+        rpcTarget = "https://rpc.ankr.com/eth_sepolia",
+        ticker = "ETH",
+        chainNamespace = Web3Auth.ChainNamespace.EIP155
+    };
+
+    JArray paramsArray = new JArray
+    {
+            "Hello World",
+            account.Address,
+            "Android"
+    };
+
+    web3Auth.request(chainConfig, "personal_sign", paramsArray);
+}
+
+
+private void onSignResponse(SignResponse signResponse)
+
+{
+    Debug.Log("Retrieved SignResponse: " + signResponse);
+    updateConsole("Retrieved SignResponse: " + signResponse);
+}
+
 ```
 
 ## Logging out a user

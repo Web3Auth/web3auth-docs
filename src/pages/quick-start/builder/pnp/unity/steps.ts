@@ -68,6 +68,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.enableMFA,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS,
+        files[hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS],
+        "Enable MFA",
+      ),
+    },
+    {
       ...STEPS.blockchainCalls,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.PNP_UNITY_WEB3AUTHSCRIPT_CS,
