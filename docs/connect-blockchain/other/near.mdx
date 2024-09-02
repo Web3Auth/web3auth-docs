@@ -2,7 +2,6 @@
 title: Integrate Web3Auth with the Near Protocol
 sidebar_label: Near
 image: "banners/near.png"
-
 keywords: [near, near protocol, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Near Protocol | Documentation - Web3Auth"
 ---
@@ -21,7 +20,7 @@ outlined some methods for you to use.
 ## Installation
 
 ```bash npm2yarn
-npm install --save near-api-js
+npm install --save near-api-js@4.0.4
 ```
 
 ## Initializing Provider
@@ -103,6 +102,8 @@ import { connect, KeyPair, keyStores, utils } from "near-api-js";
 const privateKey = await web3authProvider.request({ method: "private_key" });
 
 // Convert the secp256k1 key to ed25519 key
+// When starting your application with "solana" namespace, you can skip the below two lines
+// and pass the privateKey directly to buffer.
 const { getED25519Key } = await import("@toruslabs/openlogin-ed25519");
 const privateKeyEd25519 = getED25519Key(privateKey).sk.toString("hex");
 
@@ -113,13 +114,13 @@ const privateKeyEd25519Buffer = Buffer.from(privateKeyEd25519, "hex");
 const bs58encode = utils.serialize.base_encode(privateKeyEd25519Buffer);
 
 // Convert the base58 private key to KeyPair
-const keyPair = KeyPair.fromString(bs58encode);
+const keyPair = KeyPair.fromString(`ed25519:${bs58encode}`);
 
 // publicAddress
-const publicAddress = keyPair?.getPublicKey().toString();
+const publicAddress = keyPair?.getPublicKey().data || [];
 
-// accountId is the account address which is where funds will be sent to.
-const accountId = utils.serialize.base_decode(pk58.split(":")[1]).toString("hex");
+// accountId is the account address on Near which is where funds will be sent to.
+const accountId = Buffer.from(pk58 || []).toString("hex");
 ```
 
 ## Get Balance
