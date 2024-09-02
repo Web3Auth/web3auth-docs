@@ -455,8 +455,8 @@ const config: Config = {
             to: "/connect-blockchain/other/cosmos",
           },
           {
-            from: "/connect-blockchain/near",
-            to: "/connect-blockchain/other/near",
+            from: "/connect-blockchain/other/near",
+            to: "/connect-blockchain/near/",
           },
           {
             from: "/connect-blockchain/polkadot",

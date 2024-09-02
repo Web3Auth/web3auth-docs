@@ -4,6 +4,12 @@ sidebar_label: "Signing"
 description: "Web3Auth MPC Core Kit JS SDK - Signing | Documentation - Web3Auth"
 ---
 
+import Ed25519Installation from "@site/src/common/sdk/core-kit/mpc-core-kit/_solana-installation.mdx";
+import Ed25519Initialization from "@site/src/common/sdk/core-kit/mpc-core-kit/_ed25519-initialization.mdx";
+import SolanaAccount from "@site/src/common/sdk/core-kit/mpc-core-kit/_solana-account.mdx";
+import SolanaSignMessage from "@site/src/common/sdk/core-kit/mpc-core-kit/_solana-sign-message.mdx";
+import SolanaSignTransaction from "@site/src/common/sdk/core-kit/mpc-core-kit/_solana-sign-transaction.mdx";
+
 Web3Auth's MPC Core Kit SDK supports both secp256k1 and ed25519 cryptographic curves. The secp256k1
 curve enables the retrieval of public keys and the signing of transactions on blockchains compatible
 with secp256k1, such as Bitcoin and Ethereum. Meanwhile, the ed25519 curve provides the same
@@ -189,110 +195,23 @@ transaction bytes, verify the message, and interact with Solana.
 The first step would be to install the helper packages which are required to integrate
 Web3AuthMPCCoreKit with Solana chain.
 
-```bash npm2yarn
-$ npm install @toruslabs/tss-frost-lib
-$ npm install @solana/web3.js
-```
+<Ed25519Installation />
 
 #### Create Web3AuthMPCCoreKit instance
 
-Considering you have already installed the `@toruslabs/tss-frost-lib` package, let's use the
-`tssLib` to create Web3AuthMPCCoreKit instance.
-
-```tsx
-import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK } from "@web3auth/mpc-core-kit";
-// focus-next-line
-import { tssLib } from "@toruslabs/tss-frost-lib";
-
-const coreKitInstance = new Web3AuthMPCCoreKit({
-  web3AuthClientId: "YOUR_CLIENT_ID",
-  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
-  manualSync: true, // This is the recommended approach
-  // focus-next-line
-  tssLib: tssLib,
-  storage: window.storage,
-});
-```
+<Ed25519Initialization />
 
 #### Get a User Account
 
-Once you have an `Web3AuthMPCCoreKit` instance, it can be used as along with `solana/web3.js`
-package.
-
-To generate the Solana EOA address, you can use the `getPubKeyEd25519` method to retrieve the
-ed25519 curve compatible pubKey. Since solana uses the base58 enocded address, you can simply encode
-pubKey with base58 to get the user's EOA address.
-
-```tsx
-import { base58 } from "@scure/base";
-
-const address = base58.encode(Uint8Array.from(coreKitInstance.getPubKeyEd25519()));
-```
-
-If you want to verify that the public key is on ed25519 curve, you can create a new `PublicKey`
-instance using the generated `address`. Once you have the `PublicKey` instance, you can use the
-`isOnCurve` static method to verify the curve.
-
-```tsx
-import { PublicKey } from "@solana/web3.js";
-
-const publicKey = new PublicKey(address);
-
-// Returns whether the public is on ed25519 curve
-const isValidAddress = PublicKey.isOnCurve(publicKey.toBytes());
-```
+<SolanaAccount />
 
 #### Sign a message
 
-Signing a message for Solana is pretty straight forward. You can simply use the `sign` method to
-generate the EdDSA signature.
-
-```tsx
-const msg = Buffer.from("Welcome to Web3Auth");
-const sig = await this.coreKitInstance.sign(msg);
-```
+<SolanaSignMessage />
 
 #### Sign a Transaction
 
-To sign a Solana transaction, you can use `Transaction` class to get a buffer of the transaction
-data to sign, and add geerated signature to the transaction. The public key must correspond to
-either the fee payer or a signer account in the transaction instructions.
-
-```tsx
-const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
-
-const lamportsToSend = 1_000_000;
-const getRecentBlockhash = await this.connection.getLatestBlockhash("confirmed");
-
-const transferTransaction = new Transaction().add(
-  // Self transfer tokens
-  SystemProgram.transfer({
-    fromPubkey: this.publicKey,
-    toPubkey: this.publicKey,
-    lamports: lamportsToSend,
-  }),
-);
-
-transferTransaction.recentBlockhash = getRecentBlockhash.blockhash;
-transferTransaction.feePayer = this.publicKey;
-
-// Sign the serialize message
-const sig = await this.coreKitInstance.sign(transferTransaction.serializeMessage());
-
-// Append the signature to the transaction
-transferTransaction.addSignature(this.publicKey, sig);
-
-// Signature of the transaction in wire format which can be broadcasted on Solana chain.
-const transferTransactionSignature = transferTransaction.serialize();
-```
-
-To broadcast the signed transaction, you can utilize the `Connection.sendRawTransaction` method.
-
-```tsx
-// Returns the hash, for connection and transferTransactionSignature, check above
-// code snippets
-let hash = await connection.sendRawTransaction(transferTransactionSignature);
-```
+<SolanaSignTransaction />
 
 ### Others
 

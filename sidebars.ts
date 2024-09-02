@@ -869,12 +869,21 @@ const sidebars: SidebarsConfig = {
           items: [
             "connect-blockchain/solana/solana",
             "connect-blockchain/solana/web",
+            "connect-blockchain/solana/web-mpc",
             "connect-blockchain/solana/flutter",
             "connect-blockchain/solana/android",
             "connect-blockchain/solana/ios",
           ],
         },
-
+        {
+          type: "category",
+          label: "Near",
+          items: [
+            "connect-blockchain/near/near",
+            "connect-blockchain/near/web",
+            "connect-blockchain/near/web-mpc",
+          ],
+        },
         "connect-blockchain/xrpl",
         {
           type: "category",
@@ -886,7 +895,6 @@ const sidebars: SidebarsConfig = {
             "connect-blockchain/other/bitcoin",
             "connect-blockchain/other/cosmos",
             "connect-blockchain/other/immutablex",
-            "connect-blockchain/other/near",
             "connect-blockchain/other/polkadot",
             "connect-blockchain/other/polymesh",
             "connect-blockchain/other/starkex",

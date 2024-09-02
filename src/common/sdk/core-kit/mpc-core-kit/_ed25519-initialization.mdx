@@ -1,0 +1,17 @@
+Considering you have already installed the `@toruslabs/tss-frost-lib` package, let's use the tssLib
+to create `Web3AuthMPCCoreKit` instance.
+
+```tsx
+import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK } from "@web3auth/mpc-core-kit";
+// focus-next-line
+import { tssLib } from "@toruslabs/tss-frost-lib";
+
+const coreKitInstance = new Web3AuthMPCCoreKit({
+  web3AuthClientId: "YOUR_CLIENT_ID",
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  manualSync: true, // This is the recommended approach
+  // focus-next-line
+  tssLib: tssLib,
+  storage: window.storage,
+});
+```
