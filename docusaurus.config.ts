@@ -69,6 +69,11 @@ const config: Config = {
           line: "remove-next-line",
           block: { start: "remove-start", end: "remove-end" },
         },
+        {
+          className: "git-diff-add",
+          line: "add-next-line",
+          block: { start: "add-start", end: "add-end" },
+        },
       ],
     },
     navbar: {
