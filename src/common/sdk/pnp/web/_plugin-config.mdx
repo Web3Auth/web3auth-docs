@@ -1,9 +1,6 @@
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-While initializing the Wallet Services plugin, you need to pass on the following parameters to the
-constructor:
-
 <Tabs
   defaultValue="table"
   values={[
@@ -23,7 +20,7 @@ constructor:
 
 <TabItem value="interface">
 
-```
+```tsx
 constructor(options?: {
   wsEmbedOpts?: Partial<CtorArgs>;
   walletInitOptions?: Partial<WsEmbedParams>;
@@ -51,11 +48,11 @@ Wallet Services. It takes the `CtorArgs` object as input which contains the foll
 
 `CtorArgs`
 
-| Parameter          | Description                                                                  |
-| ------------------ | ---------------------------------------------------------------------------- |
-| `modalZIndex?`     | Z-index of the modal and iframe. Default value is 99999                      |
-| `web3AuthClientId` | Web3Auth Client ID in `string`.                                              |
-| `web3AuthNetwork`  | Web3auth network to be used. It accepts `OPENLOGIN_NETWORK_TYPE` as a value. |
+| Parameter          | Description                                                                      |
+| ------------------ | -------------------------------------------------------------------------------- |
+| `modalZIndex?`     | Z-index of the modal and iframe. Default value is `99999`.                       |
+| `web3AuthClientId` | Web3Auth Client ID in `string`. You can obtain this from the Web3Auth dashboard. |
+| `web3AuthNetwork`  | Web3Auth network to use. Accepts `OPENLOGIN_NETWORK_TYPE`.                       |
 
 </TabItem>
 
@@ -78,17 +75,6 @@ export interface CtorArgs {
    */
   web3AuthNetwork: OPENLOGIN_NETWORK_TYPE;
 }
-
-export type OPENLOGIN_NETWORK_TYPE = (typeof OPENLOGIN_NETWORK)[keyof typeof OPENLOGIN_NETWORK];
-export declare const OPENLOGIN_NETWORK: {
-  readonly MAINNET: "mainnet";
-  readonly TESTNET: "testnet";
-  readonly CYAN: "cyan";
-  readonly AQUA: "aqua";
-  readonly CELESTE: "celeste";
-  readonly SAPPHIRE_DEVNET: "sapphire_devnet";
-  readonly SAPPHIRE_MAINNET: "sapphire_mainnet";
-};
 ```
 
 </TabItem>
@@ -97,9 +83,9 @@ export declare const OPENLOGIN_NETWORK: {
 
 #### `walletInitOptions`
 
-The `walletInitOptions` from Wallet Services is an optional parameter that allows you to customise
+The `walletInitOptions` from Wallet Services is an optional parameter that allows you to customize
 your Wallet Services UI within the application. It takes the object `WsEmbedParams` as input which
-contains multiple parameters that allow you to customise the UI of the plugin.
+contains multiple parameters that allow you to customize the UI of the plugin.
 
 <Tabs
   defaultValue="table"
@@ -156,37 +142,98 @@ export interface WsEmbedParams {
    */
   walletUrls?: Partial<Record<WS_EMBED_BUILD_ENV_TYPE, WalletUrlConfig>>;
   /**
-   * Determines how to show confirmation screens
-   *
-   * @defaultValue none for wallet services
-   * @defaultValue popup for safe-auth, mocaverse
-   */
-  /**
    * Allows you to customize the look & feel of the widget
    */
-  whiteLabel?: {
-    /**
-     * whether to show/hide ws-embed widget.
-     *
-     * Defaults to true
-     * @defaultValue true
-     */
-    showWidgetButton?: boolean;
-    /**
-     * Determines where the wsEmbed widget is visible on the page.
-     * @defaultValue bottom-left
-     */
-    buttonPosition?: BUTTON_POSITION_TYPE;
-    hideNftDisplay?: boolean;
-    hideTokenDisplay?: boolean;
-    hideTransfers?: boolean;
-    hideTopup?: boolean;
-    hideReceive?: boolean;
-    defaultPortfolio?: "token" | "nft";
-  } & WhiteLabelData;
+  whiteLabel?: WhiteLabelParams;
 }
 ```
 
 </TabItem>
 
 </Tabs>
+
+#### `whiteLabel`
+
+The `whiteLabel` object provides additional options for customizing the appearance and behavior of
+Wallet Services UI.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter           | Description                                                                  |
+| ------------------- | ---------------------------------------------------------------------------- |
+| `showWidgetButton?` | Show or hide the wallet widget button. Default is `true`.                    |
+| `buttonPosition?`   | Position of the widget button on the screen. Default is `bottom-left`.       |
+| `hideNftDisplay?`   | Hide or show NFT display in the wallet. Default is `false`.                  |
+| `hideTokenDisplay?` | Hide or show token display in the wallet. Default is `false`.                |
+| `hideTransfers?`    | Hide or show the transfer option in the wallet. Default is `false`.          |
+| `hideTopup?`        | Hide or show the top-up option in the wallet. Default is `false`.            |
+| `hideReceive?`      | Hide or show the receive option in the wallet. Default is `false`.           |
+| `defaultPortfolio?` | Set the default portfolio type. Either `token` or `nft`. Default is `token`. |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface WhiteLabelParams {
+  /**
+   * Show or hide the wallet widget button.
+   * @defaultValue true
+   */
+  showWidgetButton?: boolean;
+  /**
+   * Position of the widget button.
+   * @defaultValue bottom-left
+   */
+  buttonPosition?: BUTTON_POSITION_TYPE;
+  /**
+   * Hide or show NFT display in the wallet.
+   * @defaultValue false
+   */
+  hideNftDisplay?: boolean;
+  /**
+   * Hide or show token display in the wallet.
+   * @defaultValue false
+   */
+  hideTokenDisplay?: boolean;
+  /**
+   * Hide or show the transfer option in the wallet.
+   * @defaultValue false
+   */
+  hideTransfers?: boolean;
+  /**
+   * Hide or show the top-up option in the wallet.
+   * @defaultValue false
+   */
+  hideTopup?: boolean;
+  /**
+   * Hide or show the receive option in the wallet.
+   * @defaultValue false
+   */
+  hideReceive?: boolean;
+  /**
+   * Set the default portfolio type.
+   * @defaultValue token
+   */
+  defaultPortfolio?: "token" | "nft";
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+:::note
+
+For more information on customizing the whitelabel options using the `WhiteLabelData` object, refer
+to the [whitelabel documentation](/sdk/pnp/web/modal/whitelabel#whitelabeldata).
+
+:::
