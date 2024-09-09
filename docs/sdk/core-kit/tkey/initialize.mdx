@@ -13,8 +13,8 @@ import TKeyArgs from "@site/src/common/sdk/core-kit/tkey/_tkey-args.mdx";
 import TKeyInstanceExample from "@site/src/common/sdk/core-kit/tkey/_tkey-instance-example.mdx";
 import Web3AuthOptions from "@site/src/common/sdk/core-kit/tkey/_web3auth-sfa-service-provider-options.mdx";
 
-After installation, the next step to using Web3Auth Core Kit tKey SDK is to Initialize the SDK. The
-Initialization takes a few steps, including initiating the tKey SDK with the service provider and
+After installation, the next step to using Web3Auth Core Kit tKey SDK is to initialize the SDK. The
+initialization takes a few steps, including initiating the tKey SDK with the service provider and
 modules.
 
 - [Configuration of Service Provider](#configuring-service-provider)
@@ -87,16 +87,16 @@ However, if you want to own the storage layer, you can contact
 
 ## Instantiating tKey
 
-#### Import the `ThresholdKey` class from `@tkey/default`
+#### Import the `TKey` class from `@tkey/core`
 
 ```javascript
-import ThresholdKey from "@tkey/core";
+import { TKey } from "@tkey/core";
 ```
 
-#### Assign the `ThresholdKey` class to a variable
+#### Assign the `TKey` class to a variable
 
 ```javascript
-const tKey = new ThresholdKey(TKeyArgs);
+const tKey = new TKey(TKeyArgs);
 ```
 
 This ThresholdKey constructor takes an object with `TKeyArgs` as input.
@@ -108,24 +108,3 @@ This ThresholdKey constructor takes an object with `TKeyArgs` as input.
 ### Example
 
 <TKeyInstanceExample />
-
-## Initializing Service Provider
-
-You need to initialize your Service Provider within your constructor function to use it while
-logging your user in through the social accounts. This is done by calling the `init()` function
-within the `tKey` instance's `serviceProvider` property.
-
-```javascript
-tKeyInstance.serviceProvider.init(params: PrivateKeyProvider);
-```
-
-### Parameters
-
-#### `PrivateKeyProvider`
-
-The `init` function in SFAServiceProvider needs a `PrivateKeyProvider` as a parameter. It can accept
-any of the providers mentioned in our [Providers](/sdk/pnp/web/providers/) documentation
-
-### Example
-
-<SFAInitExample />

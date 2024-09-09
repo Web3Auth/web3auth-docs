@@ -63,7 +63,7 @@ const result_requestNewShare = await(
 #### Example
 
 ```tsx
-const requests = await (tKey.modules.shareTransfer ShareTransferModule).lookForRequests();
+const requests = await(tKey.modules.shareTransfer as ShareTransferModule).lookForRequests();
 ```
 
 ### Approve request from Another Device
@@ -85,6 +85,7 @@ try {
   const newShare = await tKey.generateNewShare();
   shareToShare = newShare.newShareStores[newShare.newShareIndex.toString("hex")];
 }
+
 await(tKey.modules.shareTransfer as ShareTransferModule).approveRequest(requests[0], shareToShare);
 ```
 
@@ -140,6 +141,7 @@ class ShareStore implements ISerializable {
   static fromJSON(value: StringifiedType): ShareStore;
   toJSON(): StringifiedType;
 }
+
 interface ISerializable {
   toJSON(): StringifiedType;
 }

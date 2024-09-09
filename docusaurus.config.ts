@@ -544,6 +544,10 @@ const config: Config = {
             from: "/pnp/features/mfa",
             to: "/features/mfa",
           },
+          {
+            from: "/sdk/core-kit/tkey/intrinsic-flow",
+            to: "/sdk/core-kit/tkey/implicit-flow",
+          },
         ],
         createRedirects(existingPath) {
           return [

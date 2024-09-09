@@ -41,22 +41,21 @@ npm install --save @tkey/service-provider-torus
 ### Parameters
 
 ```tsx
-declare class TorusServiceProvider extends ServiceProviderBase {
-  directWeb: CustomAuth;
+class TorusServiceProvider extends ServiceProviderBase {
+  customAuthInstance: CustomAuth;
   singleLoginKey: BN;
+  torusKey: TorusKey;
+  migratableKey: BN | null;
   customAuthArgs: CustomAuthArgs;
   constructor({ enableLogging, postboxKey, customAuthArgs }: TorusServiceProviderArgs);
   static fromJSON(value: StringifiedType): TorusServiceProvider;
   init(params: InitParams): Promise<void>;
-  triggerLogin(params: SubVerifierDetails): Promise<TorusLoginResponse>;
+  triggerLogin(params: SubVerifierDetails): Promise<TorusLoginResponse | null>;
   triggerAggregateLogin(params: AggregateLoginParams): Promise<TorusAggregateLoginResponse>;
   triggerHybridAggregateLogin(
     params: HybridAggregateLoginParams,
   ): Promise<TorusHybridAggregateLoginResponse>;
   toJSON(): StringifiedType;
-}
-export interface TorusServiceProviderArgs extends ServiceProviderArgs {
-  customAuthArgs: CustomAuthArgs;
 }
 ```
 
