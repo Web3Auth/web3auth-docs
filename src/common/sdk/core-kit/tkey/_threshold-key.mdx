@@ -47,15 +47,10 @@ declare class ThresholdKey implements ITKey {
   lastFetchedCloudMetadata: Metadata;
   metadata: Metadata;
   manualSync: boolean;
-  _localMetadataTransitions: LocalMetadataTransitions;
-  _refreshMiddleware: RefreshMiddlewareMap;
-  _reconstructKeyMiddleware: ReconstructKeyMiddlewareMap;
-  _shareSerializationMiddleware: ShareSerializationMiddleware;
   storeDeviceShare: (
     deviceShareStore: ShareStore,
     customDeviceInfo?: StringifiedType,
   ) => Promise<void>;
-  haveWriteMetadataLock: string;
   serverTimeOffset?: number;
   private privKey;
   private _ed25519Seed?;
@@ -125,25 +120,10 @@ declare class ThresholdKey implements ITKey {
   }): Promise<unknown>;
   acquireWriteMetadataLock(): Promise<number>;
   releaseWriteMetadataLock(): Promise<void>;
-  _syncShareMetadata(adjustScopedStore?: (ss: unknown) => unknown): Promise<void>;
   syncMultipleShareMetadata(
     shares: BN[],
     adjustScopedStore?: (ss: unknown) => unknown,
   ): Promise<void>;
-  _addRefreshMiddleware(
-    moduleName: string,
-    middleware: (
-      generalStore: unknown,
-      oldShareStores: ShareStoreMap,
-      newShareStores: ShareStoreMap,
-    ) => unknown,
-  ): void;
-  _addReconstructKeyMiddleware(moduleName: string, middleware: () => Promise<BN[]>): void;
-  _addShareSerializationMiddleware(
-    serialize: (share: BN, type: string) => Promise<unknown>,
-    deserialize: (serializedShare: unknown, type: string) => Promise<BN>,
-  ): void;
-  _setDeviceStorage(storeDeviceStorage: (deviceShareStore: ShareStore) => Promise<void>): void;
   addShareDescription(
     shareIndex: string,
     description: string,
@@ -162,8 +142,6 @@ declare class ThresholdKey implements ITKey {
   ): Promise<void>;
   encrypt(data: Buffer): Promise<EncryptedMessage>;
   decrypt(encryptedMessage: EncryptedMessage): Promise<Buffer>;
-  _setTKeyStoreItem(moduleName: string, data: TkeyStoreItemType): Promise<void>;
-  _deleteTKeyStoreItem(moduleName: string, id: string): Promise<void>;
   getTKeyStore(moduleName: string): Promise<TkeyStoreItemType[]>;
   getTKeyStoreItem(moduleName: string, id: string): Promise<TkeyStoreItemType>;
   outputShare(shareIndex: BNString, type?: string): Promise<unknown>;
@@ -171,13 +149,6 @@ declare class ThresholdKey implements ITKey {
   toJSON(): StringifiedType;
   getAllShareStoresForLatestPolynomial(): ShareStore[];
   CRITICAL_deleteTkey(): Promise<void>;
-  getApi(): ITKeyApi;
-  private setModuleReferences;
-  private initializeModules;
-  private _refreshShares;
-  private _initializeNewKey;
-  private importEd25519Seed;
-  private setupEd25519Seed;
 }
 ```
 

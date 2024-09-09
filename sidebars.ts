@@ -1650,7 +1650,7 @@ const sidebars: SidebarsConfig = {
       label: "Additional Reading",
       collapsible: true,
       collapsed: false,
-      items: ["sdk/core-kit/tkey/intrinsic-flow"],
+      items: ["sdk/core-kit/tkey/implicit-flow"],
     },
     {
       type: "link",
@@ -1670,7 +1670,7 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/tkey-v13-to-v15"],
+      items: ["migration-guides/tkey-v11-to-v15"],
     },
     ...sdkQuickLinks,
   ],
