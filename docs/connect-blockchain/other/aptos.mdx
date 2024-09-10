@@ -9,6 +9,7 @@ description: "Integrate Web3Auth with the Aptos Blockchain | Documentation - Web
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
 import InitializeWeb3Auth from "@site/src/common/docs/_initialize-web3auth-other-pnp-sfa.mdx";
+import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
@@ -88,9 +89,9 @@ const chainConfig = {
 
 <InitializeWeb3Auth />
 
-## Get User Info
+## Getting the Web3Auth provider
 
-<GetUserInfoSnippet />
+<GetWeb3AuthProvider />
 
 ## Get Account and Key
 
@@ -108,10 +109,9 @@ On the underhood, it uses the helper functions from the `aptos` library to deriv
 import { AptosAccount, AptosClient } from "aptos";
 
 /*
-  Use code from the above Initializing Provider here
+  Use code from the above InitializeWeb3Auth and get provider steps
 */
 
-// web3authProvider is web3auth.provider from above
 const privateKey = await web3authProvider.request({ method: "private_key" });
 const privateKeyUint8Array = new Uint8Array(
   privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16)),
@@ -126,10 +126,9 @@ const aptosAccountAddress = aptosAccount.address();
 import { AptosAccount, AptosClient } from "aptos";
 
 /*
-  Use code from the above Initializing Provider here
+  Use code from the above InitializeWeb3Auth and get provider steps
 */
 
-// web3authProvider is web3auth.provider from above
 const privateKey = await web3authProvider.request({ method: "private_key" });
 const privateKeyUint8Array = new Uint8Array(
   privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16)),
@@ -153,10 +152,9 @@ let balance = parseInt((accountResource?.data as any).coin.value);
 import { AptosAccount, FaucetClient, AptosClient } from "aptos";
 
 /*
-  Use code from the above Initializing Provider here
+  Use code from the above InitializeWeb3Auth and get provider steps
 */
 
-// web3authProvider is web3auth.provider from above
 const privateKey = await web3authProvider.request({ method: "private_key" });
 const privateKeyUint8Array = new Uint8Array(
   privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16)),
