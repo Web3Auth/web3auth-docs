@@ -14,22 +14,45 @@ Web SDK. The guide outlines significant changes and enhancements, including the 
 
 ## Breaking Changes
 
-### Web3AuthOptions
+### Changes in `Web3AuthOptions` Constructor Parameters
 
-In v3, we try to improve the developer experience by removing `chainConfig`, `setupProviderOnInit`,
-`storageKey`, and `asyncStorageKey` parameters. Developers must now use the mandatory `storage`
-parameter for both async storage and local storage.
+In v3, we try to improve the developer experience by removing following parameters:
 
-Along with that, `tssLib` is now a mandatory parameter to define the tss signing library to use.
-Based on the `tssLib`, the `keyType` will be defined for the `Web3AuthMPCCoreKit` instance. For
-generating ECDSA signature, you should use
-[@toruslabs/tss-dkls-lib](https://www.npmjs.com/package/@toruslabs/tss-dkls-lib), and for generating
-EdDSA signature you should use
-[@toruslabs/tss-frost-lib](https://www.npmjs.com/package/@toruslabs/tss-frost-lib).
+- `setupProviderOnInit` was used to internally setup provider after successful login. In latest
+  version provider is not setup internally, and developers will need to explicitly setup provider.
+  Please check [EthereumSigningProvider Set up](#ethereumsigningprovider-set-up)
+- `chainConfig` was used internally use to setup provider after successful login. Since,
+  `setupProviderOnInit` is removed, `chainConfig` became obsolete.
+- `storageKey` was used to define the local storage type of SDK. This is now removed in support for
+  `storage` parameter to improve developer experience.
+- `asyncStorageKey` was used to provide custom storage for the SDK. This is now removed in support
+  for `storage` parameter to improve developer experience.
+
+Along with removing the above parameters, following mandatory parameters are now added in v3.
+
+- `storage`: Developers can now use storage for both, local and async storage.
+
+  - If you didn't use to pass any argument to `storageKey`, and `asyncStorageKey`, you need to use
+    `window.localStorage`.
+  - If you used to pass `local` for the `SupportedStorageType`, you need to use
+    `window.localStorage`.
+  - If you used to pass `session` for the `SupportedStorageType`, you need to use
+    `window.sessionStorage`.
+  - If you used to pass `memory` for the `SupportedStorageType`, you need to pass a new instance of
+    `MemoryStorage`.
+  - If you used `asyncStorageKey`, you can need to pass `IAsyncStorage` instance.
+
+- `tssLib` is now a mandatory parameter to define the tss signing library to use. Based on the
+  `tssLib`, the `keyType` will be defined for the `Web3AuthMPCCoreKit` instance.
+  - For generating ECDSA signature, you should use
+    [@toruslabs/tss-dkls-lib](https://www.npmjs.com/package/@toruslabs/tss-dkls-lib)
+  - For generating EdDSA signature, you should use
+    [@toruslabs/tss-frost-lib](https://www.npmjs.com/package/@toruslabs/tss-frost-lib).
 
 ```tsx
 // focus-start
 // For sec256K1 key type and TSS ECDSA signatures
+// add-next-line
 import { tssLib } from "@toruslabs/tss-dkls-lib";
 // focus-end
 const coreKitInstance = new Web3AuthMPCCoreKit({
@@ -45,7 +68,9 @@ const coreKitInstance = new Web3AuthMPCCoreKit({
 });
 ```
 
-### `getWebBrowserFactor` method
+### Changes in Device Factor functions
+
+#### `getWebBrowserFactor` method
 
 In v3, the `getWebBrowserFactor` is removed. Developers can now use `getDeviceFactor` the common
 method for web and react-native, to retrieve user's device factor if available.
@@ -61,7 +86,7 @@ const factorKey = await getWebBrowserFactor(coreKitInstance!);
 const factor = await coreKitInstance.getDeviceFactor();
 ```
 
-### `storeWebBrowserFactor` method
+#### `storeWebBrowserFactor` method
 
 In v3, the `storeWebBrowserFactor` is removed. Developers can now use `setDeviceFactor` to store the
 user's device factor.
@@ -94,7 +119,7 @@ await coreKitInstance.setDeviceFactor(deviceFactorKey);
 // focus-end
 ```
 
-### `metadatakey` property
+### Metadata Key is renamed to PostBox key
 
 In v3, the `metadatakey` is now removed. Developers can now use `Web3AuthState.postBoxKey` to access
 the postBoxKey for the account.
@@ -106,7 +131,9 @@ const key = coreKitInstance.metadatakey;
 const key = coreKitInstance.state.postBoxKey;
 ```
 
-### `loginWithOauth` method
+### Standardizing Naming Convention
+
+#### `loginWithOauth` method
 
 In v3, the `loginWithOauth` is now renamed to `loginWithOAuth`.
 
@@ -129,7 +156,7 @@ await coreKitInstance.loginWithOAuth(verifierConfig);
 // focus-end
 ```
 
-### `loginWithJWT` method
+#### `loginWithJWT` method
 
 In v3, the `IdTokenLoginParams` accepted by `loginWithJWT` method is now renamed to
 `JWTLoginParams`.
@@ -150,11 +177,11 @@ const loginParams = {
 await coreKitInstance.loginWithJWT(loginParams);
 ```
 
-### EthereumSigningProvider
+### EthereumSigningProvider Set up
 
 Starting v3, `setupProvider` method will accept `EthereumSigner` interface with `sign`, and
 `getPublic` methods. Additionally to make it easy for developers we have added `makeEthereumSigner`
-helper function.
+helper function to create `EthereumSigner`.
 
 ```tsx
 // add-next-line
@@ -169,7 +196,7 @@ evmProvider.setupProvider(coreKitInstance);
 evmProvider.setupProvider(makeEthereumSigner(coreKitInstance));
 ```
 
-## Introducing Ed25519 Support
+## New Feature: Ed25519 Signing
 
 We are happy to announce that with v3, Web3AuthMPCCoreKit will support the `ed25519` curve. Starting
 from v3, developers can use the MPC TSS capabilities with the Blockchain ecosystem which uses the
