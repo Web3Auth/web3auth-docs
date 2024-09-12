@@ -21,10 +21,17 @@ In v3, we try to improve the developer experience by removing `chainConfig`, `se
 parameter for both async storage and local storage.
 
 Along with that, `tssLib` is now a mandatory parameter to define the tss signing library to use.
-This helps us make the integration consistent across web and react native and make the library
-lighter
+Based on the `tssLib`, the `keyType` will be defined for the `Web3AuthMPCCoreKit` instance. For
+generating ECDSA signature, you should use
+[@toruslabs/tss-dkls-lib](https://www.npmjs.com/package/@toruslabs/tss-dkls-lib), and for generating
+EdDSA signature you should use
+[@toruslabs/tss-frost-lib](https://www.npmjs.com/package/@toruslabs/tss-frost-lib).
 
 ```tsx
+// focus-start
+// For sec256K1 key type and TSS ECDSA signatures
+import { tssLib } from "@toruslabs/tss-dkls-lib";
+// focus-end
 const coreKitInstance = new Web3AuthMPCCoreKit({
   web3AuthClientId: "YOUR_CLIENT_ID",
   web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
