@@ -468,6 +468,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Ancient8",
+              items: [
+                "connect-blockchain/evm/ancient8/ancient8",
+                "connect-blockchain/evm/ancient8/web",
+                "connect-blockchain/evm/ancient8/android",
+                "connect-blockchain/evm/ancient8/ios",
+                "connect-blockchain/evm/ancient8/react-native",
+                "connect-blockchain/evm/ancient8/flutter",
+                "connect-blockchain/evm/ancient8/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Arbitrum",
               items: [
                 "connect-blockchain/evm/arbitrum/arbitrum",
@@ -676,6 +689,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Manta",
+              items: [
+                "connect-blockchain/evm/manta/manta",
+                "connect-blockchain/evm/manta/web",
+                "connect-blockchain/evm/manta/android",
+                "connect-blockchain/evm/manta/ios",
+                "connect-blockchain/evm/manta/react-native",
+                "connect-blockchain/evm/manta/flutter",
+                "connect-blockchain/evm/manta/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Moonbeam",
               items: [
                 "connect-blockchain/evm/moonbeam/moonbeam",
@@ -859,6 +885,19 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/zetachain/react-native",
                 "connect-blockchain/evm/zetachain/flutter",
                 "connect-blockchain/evm/zetachain/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "Zilliqa",
+              items: [
+                "connect-blockchain/evm/zilliqa/zilliqa",
+                "connect-blockchain/evm/zilliqa/web",
+                "connect-blockchain/evm/zilliqa/android",
+                "connect-blockchain/evm/zilliqa/ios",
+                "connect-blockchain/evm/zilliqa/react-native",
+                "connect-blockchain/evm/zilliqa/flutter",
+                "connect-blockchain/evm/zilliqa/unity",
               ],
             },
           ],
