@@ -7,286 +7,174 @@ keywords: [tron, web3auth, authentication, blockchain]
 description: "Integrate Web3Auth with the Tron Blockchain in JavaScript | Documentation - Web3Auth"
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 ## Overview
 
-This guide will help you integrate Web3Auth with the Tron blockchain using JavaScript. You'll be
-using the `TronRpc` class that interacts with the Tron blockchain via the TronWeb library, allowing
-you to perform various operations like getting the user's account, fetching balances, sending
-transactions, and signing messages.
+While using the Web3Auth Web SDK, you get an EIP1193-compatible provider, similar to the MetaMask
+provider. This provider can be used with libraries like TronWeb to make blockchain calls such as
+getting the user's account, fetching balances, signing transactions, sending transactions, etc. We
+have highlighted a few examples to get you started quickly.
+
+---
 
 ## Installation
 
-First, you need to install the required dependencies:
+To interact with the Tron blockchain, you can use the Web3Auth provider and TronWeb.
+
+### NPM Installation
 
 ```bash
-npm install @web3auth/base tronweb
+npm install @web3auth/no-modal @web3auth/ethereum-provider @web3auth/openlogin-adapter @web3auth/wallet-services-plugin tronweb
 ```
 
-## Creating the `TronRpc` Class
+---
 
-Here’s the `TronRpc` class that you will use to interact with the Tron blockchain:
+## Getting the ChainConfig
 
-```typescript
-import TronWeb from "tronweb";
-import type { IProvider } from "@web3auth/base";
+For different Tron networks, you can use the appropriate chain configuration.
 
-export default class TronRpc {
-  private tronWeb: TronWeb | null = null;
-  private provider: IProvider;
+<Tabs defaultValue="testnet" groupId="chainConfig">
+  <TabItem value="mainnet" label="Mainnet">
+    ```typescript
+    const TRON_MAINNET = {
+      chainNamespace: "eip155",
+      chainId: "0x2b6653dc", // Tron Mainnet Chain ID
+      rpcTarget: "https://api.trongrid.io",
+      displayName: "TRON Mainnet",
+      blockExplorerUrl: "https://tronscan.org",
+      ticker: "TRX",
+      tickerName: "TRON",
+      logo: "https://cryptologos.cc/logos/tron-trx-logo.png",
+    };
+    ```
+  </TabItem>
+  <TabItem value="testnet" label="Testnet (Shasta)">
+    ```typescript
+    const TRON_SHASTA_TESTNET = {
+      chainNamespace: "eip155",
+      chainId: "0x94a9059e", // Tron Shasta Testnet Chain ID
+      rpcTarget: "https://api.shasta.trongrid.io/jsonrpc",
+      displayName: "TRON Shasta Testnet",
+      blockExplorerUrl: "https://shasta.tronscan.org",
+      ticker: "TRX",
+      tickerName: "TRON",
+      logo: "https://cryptologos.cc/logos/tron-trx-logo.png",
+    };
+    ```
+  </TabItem>
+</Tabs>
 
-  constructor(provider: IProvider) {
-    this.provider = provider;
-  }
+---
 
-  async init(): Promise<void> {
-    try {
-      const privateKey = await this.getPrivateKey();
-      if (!privateKey) throw new Error("Private key is not available.");
+## Initializing and Instantiating the Web3Auth SDK
 
-      this.tronWeb = new TronWeb({
-        fullHost: "https://api.shasta.trongrid.io",
-        privateKey,
-      });
-    } catch (error) {
-      console.error("Error initializing TronWeb:", error);
-    }
-  }
-
-  async getPrivateKey(): Promise<string | null> {
-    try {
-      const privateKey = await this.provider.request<string, string>({
-        method: "eth_private_key",
-      });
-
-      if (!privateKey || typeof privateKey !== "string")
-        throw new Error("Invalid private key received.");
-
-      return privateKey;
-    } catch (error) {
-      console.error("Failed to get private key:", error);
-      return null;
-    }
-  }
-
-  async getChainId(): Promise<string> {
-    try {
-      return this.provider.chainId;
-    } catch (error) {
-      console.error("Failed to get chain ID:", error);
-      throw error;
-    }
-  }
-
-  async getAccounts(): Promise<string[]> {
-    this.ensureTronWebInitialized();
-    const address = this.tronWeb!.defaultAddress.base58;
-    return [address];
-  }
-
-  async getBalance(): Promise<string> {
-    this.ensureTronWebInitialized();
-    const address = this.tronWeb!.defaultAddress.base58;
-    const balance = await this.tronWeb!.trx.getBalance(address);
-    return this.tronWeb!.fromSun(balance); // Convert from SUN to TRX
-  }
-
-  async sendTransaction(): Promise<object> {
-    try {
-      if (!this.tronWeb) throw new Error("TronWeb not initialized");
-
-      const fromAddress = this.tronWeb.defaultAddress.base58;
-      const destination = "TKCq1vaJqpoXN5dhcPyWv8y7gug7XaNkEx";
-      const amount = 1000000; // 1 TRX = 1,000,000 SUN
-
-      const transaction = await this.tronWeb.transactionBuilder.sendTrx(
-        destination,
-        amount,
-        fromAddress,
-      );
-      const signedTransaction = await this.tronWeb.trx.sign(transaction);
-      const receipt = await this.tronWeb.trx.sendRawTransaction(signedTransaction);
-
-      const response = {
-        from: fromAddress,
-        to: destination,
-        success: receipt.result,
-        explorerLink: `https://shasta.tronscan.org/#/transaction/${receipt.txid}`,
-      };
-
-      return response;
-    } catch (error) {
-      console.error("Failed to send transaction:", error);
-      throw error;
-    }
-  }
-
-  async signMessage(): Promise<string> {
-    this.ensureTronWebInitialized();
-    const message = "YOUR_MESSAGE";
-    const signedMessage = await this.tronWeb!.trx.sign(this.tronWeb!.toHex(message));
-    return signedMessage;
-  }
-
-  private ensureTronWebInitialized(): void {
-    if (!this.tronWeb) {
-      throw new Error("TronWeb not initialized");
-    }
-  }
-}
-```
-
-## Initializing and Using the `TronRpc` Class
-
-### 1. Initialize Web3Auth and `TronRpc`
-
-Before interacting with the Tron blockchain, you need to initialize Web3Auth and the `TronRpc`
-class:
+We will now initialize Web3Auth with the TRON configuration.
 
 ```typescript
-import Web3Auth from "@web3auth/web3auth";
-import TronRpc from "./TronRpc"; // Adjust the path based on your project structure
+import { Web3AuthNoModal } from "@web3auth/no-modal";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { TRON_SHASTA_TESTNET } from "./chainConfig";
+import TronRpc from "./tronRPC";
 
-const web3auth = new Web3Auth({
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
-  chainConfig: {
-    chainNamespace: "eip155",
-    chainId: "0x2b6653dc", // Tron Mainnet
-    rpcTarget: "https://api.trongrid.io",
-  },
+const clientId = "YOUR_CLIENT_ID"; // Replace with your Web3Auth client ID
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig: TRON_SHASTA_TESTNET },
 });
 
-await web3auth.initModal();
+const web3auth = new Web3AuthNoModal({
+  clientId, // Your Web3Auth Client ID
+  chainConfig: TRON_SHASTA_TESTNET, // Using Tron Shasta Testnet
+  privateKeyProvider,
+});
 
-if (web3auth.provider) {
-  const tronRpc = new TronRpc(web3auth.provider);
-  await tronRpc.init();
-
-  // You can now call the methods of tronRpc to interact with the blockchain
-}
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    uxMode: "redirect",
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+await web3auth.init();
 ```
 
-### 2. Getting the Private Key
+---
 
-To interact with the Tron blockchain, you'll need the user's private key. The `getPrivateKey` method
-in the `TronRpc` class handles this:
+## Getting the Web3Auth Provider
+
+After initializing Web3Auth, the next step is to authenticate and retrieve the provider to interact
+with the Tron blockchain.
 
 ```typescript
-async getPrivateKey(): Promise<string | null> {
-  try {
-    const privateKey = await this.provider.request<string, string>({
-      method: "eth_private_key",
-    });
+await web3auth.connect();
 
-    if (!privateKey || typeof privateKey !== 'string') throw new Error("Invalid private key received.");
-
-    return privateKey;
-  } catch (error) {
-    console.error("Failed to get private key:", error);
-    return null;
-  }
-}
+// Get the provider
+const provider = web3auth.provider;
 ```
 
-This method requests the private key from the Web3Auth provider.
+Once logged in, Web3Auth provides a JWT token and access to the Tron provider.
 
-### 3. Getting the Chain ID
+---
 
-To retrieve the chain ID for the Tron blockchain, use the `getChainId` method:
+## Fetching User Info
+
+After logging in, you can retrieve information about the user.
 
 ```typescript
-async getChainId(): Promise<string> {
-  try {
-    return this.provider.chainId;
-  } catch (error) {
-    console.error("Failed to get chain ID:", error);
-    throw error;
-  }
-}
+const user = await web3auth.getUserInfo();
+console.log(user);
 ```
 
-This method returns the chain ID of the connected blockchain.
+---
 
-### 4. Fetching User Accounts
+## Get Account and Balance
 
-The `getAccounts` method retrieves the user's Tron account address:
+Once logged in, we can use `tronRpc.ts` to fetch the user’s account and balance.
 
 ```typescript
-async getAccounts(): Promise<string[]> {
-  this.ensureTronWebInitialized();
-  const address = this.tronWeb!.defaultAddress.base58;
-  return [address];
-}
+// tronRpc.ts should be implemented as per previous example
+const tronRpc = new TronRpc(provider);
+await tronRpc.init();
+
+// Get the user's Tron account address
+const accounts = await tronRpc.getAccounts();
+console.log("Account: ", accounts[0]);
+
+// Get the balance
+const balance = await tronRpc.getBalance();
+console.log("Balance: ", balance);
 ```
 
-This method ensures that TronWeb is initialized and then fetches the user's account address.
+---
 
-### 5. Getting Account Balance
+## Send Transaction
 
-To fetch the balance of the user's account in TRX, use the `getBalance` method:
+You can send a transaction using the user's private key.
 
 ```typescript
-async getBalance(): Promise<string> {
-  this.ensureTronWebInitialized();
-  const address = this.tronWeb!.defaultAddress.base58;
-  const balance = await this.tronWeb!.trx.getBalance(address);
-  return this.tronWeb!.fromSun(balance); // Convert from SUN to TRX
-}
+const transaction = await tronRpc.sendTransaction();
+console.log("Transaction Hash: ", transaction);
 ```
 
-This method retrieves the balance in SUN (the smallest unit of TRX) and converts it to TRX.
+This will send a transaction from the user's Tron account.
 
-### 6. Sending a Transaction
+---
 
-The `sendTransaction` method allows you to send TRX from the user's account:
+## Sign a Message
+
+You can also sign a message using the private key of the logged-in user.
 
 ```typescript
-async sendTransaction(): Promise<object> {
-  try {
-    if (!this.tronWeb) throw new Error("TronWeb not initialized");
-
-    const fromAddress = this.tronWeb.defaultAddress.base58;
-    const destination = "TKCq1vaJqpoXN5dhcPyWv8y7gug7XaNkEx";
-    const amount = 1000000; // 1 TRX = 1,000,000 SUN
-
-    const transaction = await this.tronWeb.transactionBuilder.sendTrx(destination, amount, fromAddress);
-    const signedTransaction = await this.tronWeb.trx.sign(transaction);
-    const receipt = await this.tronWeb.trx.sendRawTransaction(signedTransaction);
-
-    const response = {
-      from: fromAddress,
-      to: destination,
-      success: receipt.result,
-      explorerLink: `https://shasta.tronscan.org/#/transaction/${receipt.txid}`,
-    };
-
-    return response;
-  } catch (error) {
-    console.error("Failed to send transaction:", error);
-    throw error;
-  }
-}
+const signedMessage = await tronRpc.signMessage("Hello Tron!");
+console.log("Signed Message: ", signedMessage);
 ```
 
-This method constructs, signs, and sends a transaction on the Tron blockchain, then returns the
-transaction details.
-
-### 7. Signing a Message
-
-To sign a message with the user's private key, use the `signMessage` method:
-
-```typescript
-async signMessage(): Promise<string> {
-  this.ensureTronWebInitialized();
-  const message = "YOUR_MESSAGE";
-  const signedMessage = await this.tronWeb!.trx.sign(this.tronWeb!.toHex(message));
-  return signedMessage;
-}
-```
-
-This method signs a message and returns the signed message in hexadecimal format.
+This will return the signature of the message.
 
 ## Conclusion
 
-With the `TronRpc` class and Web3Auth integration, you can easily interact with the Tron blockchain
-in your JavaScript applications. Each method in the `TronRpc` class corresponds to a specific
-blockchain operation, and this guide provides detailed instructions on how to use them.
+With Web3Auth, you can easily integrate Tron blockchain capabilities into your application. By using
+the TronWeb library, you can perform various blockchain operations such as fetching accounts,
+sending transactions, signing messages, and interacting with smart contracts.
