@@ -16,21 +16,22 @@ Web SDK. The guide outlines significant changes and enhancements, including the 
 
 ### Changes in `Web3AuthOptions` Constructor Parameters
 
-In v3, we try to improve the developer experience by removing following parameters:
+In v3, we try to improve the developer experience by removing the following parameters:
 
-- `setupProviderOnInit` was used to internally setup provider after successful login. In latest
-  version provider is not setup internally, and developers will need to explicitly setup provider.
-  Please check [EthereumSigningProvider Set up](#ethereumsigningprovider-set-up)
-- `chainConfig` was used internally use to setup provider after successful login. Since,
-  `setupProviderOnInit` is removed, `chainConfig` became obsolete.
+- `setupProviderOnInit` was used to set up the provider internally after a successful login. In
+  latest version provider is not set up internally, and developers will need to set up the provider
+  explicitly. Please check [EthereumSigningProvider Set up](#ethereumsigningprovider-set-up)
+- `chainConfig` was used internally to set up the provider after successful login. Since,
+  `setupProviderOnInit` is removed, the `chainConfig` becomes obsolete.
 - `storageKey` was used to define the local storage type of SDK. This is now removed in support for
   `storage` parameter to improve developer experience.
 - `asyncStorageKey` was used to provide custom storage for the SDK. This is now removed in support
-  for `storage` parameter to improve developer experience.
+  of `storage` parameter to improve the developer experience.
 
-Along with removing the above parameters, following mandatory parameters are now added in v3.
+Along with removing the above parameters, the following mandatory parameters are now added in v3.
 
-- `storage`: Developers can now use storage for both, local and async storage.
+- `storage` is used to define the storage for `Web3AuthMPCCoreKit` instance. Developers can either
+  choose local or async storage.
 
   - If you didn't use to pass any argument to `storageKey`, and `asyncStorageKey`, you need to use
     `window.localStorage`.
@@ -40,13 +41,13 @@ Along with removing the above parameters, following mandatory parameters are now
     `window.sessionStorage`.
   - If you used to pass `memory` for the `SupportedStorageType`, you need to pass a new instance of
     `MemoryStorage`.
-  - If you used `asyncStorageKey`, you can need to pass `IAsyncStorage` instance.
+  - If you used `asyncStorageKey`, you should pass `IAsyncStorage` instance.
 
-- `tssLib` is now a mandatory parameter to define the tss signing library to use. Based on the
+- `tssLib` is now a mandatory parameter to define the TSS signing library to use. Based on the
   `tssLib`, the `keyType` will be defined for the `Web3AuthMPCCoreKit` instance.
-  - For generating ECDSA signature, you should use
+  - For generating an ECDSA signature, you should use
     [@toruslabs/tss-dkls-lib](https://www.npmjs.com/package/@toruslabs/tss-dkls-lib)
-  - For generating EdDSA signature, you should use
+  - For generating an EdDSA signature, you should use
     [@toruslabs/tss-frost-lib](https://www.npmjs.com/package/@toruslabs/tss-frost-lib).
 
 ```tsx
@@ -73,7 +74,7 @@ const coreKitInstance = new Web3AuthMPCCoreKit({
 #### `getWebBrowserFactor` method
 
 In v3, the `getWebBrowserFactor` is removed. Developers can now use `getDeviceFactor` the common
-method for web and react-native, to retrieve user's device factor if available.
+method for web and react-native to retrieve the user's device factor if available.
 
 ```tsx
 // remove-start
@@ -122,7 +123,7 @@ await coreKitInstance.setDeviceFactor(deviceFactorKey);
 ### Metadata Key is renamed to PostBox key
 
 In v3, the `metadatakey` is now removed. Developers can now use `Web3AuthState.postBoxKey` to access
-the postBoxKey for the account.
+the postBoxKey for the account. It was renamed to maintain consistency across SDKs.
 
 ```tsx
 // remove-next-line
@@ -179,8 +180,8 @@ await coreKitInstance.loginWithJWT(loginParams);
 
 ### EthereumSigningProvider Set up
 
-Starting v3, `setupProvider` method will accept `EthereumSigner` interface with `sign`, and
-`getPublic` methods. Additionally to make it easy for developers we have added `makeEthereumSigner`
+Starting v3, the `setupProvider` method will accept the `EthereumSigner` interface with `sign`, and
+`getPublic` methods. Additionally, to make it easy for developers we have added `makeEthereumSigner`
 helper function to create `EthereumSigner`.
 
 ```tsx
