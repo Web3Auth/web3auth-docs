@@ -702,6 +702,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Metis",
+              items: [
+                "connect-blockchain/evm/metis/metis",
+                "connect-blockchain/evm/metis/web",
+                "connect-blockchain/evm/metis/android",
+                "connect-blockchain/evm/metis/ios",
+                "connect-blockchain/evm/metis/react-native",
+                "connect-blockchain/evm/metis/flutter",
+                "connect-blockchain/evm/metis/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Moonbeam",
               items: [
                 "connect-blockchain/evm/moonbeam/moonbeam",
