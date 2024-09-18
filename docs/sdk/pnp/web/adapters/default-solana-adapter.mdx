@@ -11,8 +11,8 @@ import Tabs from "@theme/Tabs";
 
 ## [`@web3auth/default-solana-adapter`](https://npmjs.com/package/@web3auth/default-solana-adapter)
 
-Default Solana adapter allows you to seamlessly identify injected Solana wallets and interact with
-them with a single line of code.
+The default Solana adapter enables seamless detection of injected Solana wallets, allowing
+interaction with just a single line of code.
 
 ## Basic Details
 
@@ -32,7 +32,13 @@ them with a single line of code.
 npm install --save @web3auth/default-solana-adapter
 ```
 
-## Arguments
+## Injected Wallets
+
+To automatically fetch all the available Solana wallets in browser context, you can use the
+`getInjectedAdapters`, or `getDefaultExternalAdapters` function. This function uses Wallet Standard
+for Solana so all available wallets in the browser will automatically be detected.
+
+### Parameters
 
 <Tabs
   defaultValue="table"
@@ -44,17 +50,21 @@ npm install --save @web3auth/default-solana-adapter
 
 <TabItem value="table">
 
-| Parameter | type                     |
-| --------- | ------------------------ |
-| `options` | `Web3AuthNoModalOptions` |
+| Parameter | Description                                                         |
+| --------- | ------------------------------------------------------------------- |
+| `options` | Accepts `IWeb3AuthCoreOptions` used to initialize the Web3Auth SDK. |
 
 </TabItem>
 
-<TabItem value="function">
+<TabItem value="interface">
 
 ```tsx
 export declare const getDefaultExternalAdapters: (params: {
-  options: Web3AuthNoModalOptions;
+  options: IWeb3AuthCoreOptions;
+}) => Promise<IAdapter<unknown>[]>;
+
+export declare const getInjectedAdapters: (params: {
+  options: IWeb3AuthCoreOptions;
 }) => Promise<IAdapter<unknown>[]>;
 ```
 
@@ -62,37 +72,91 @@ export declare const getDefaultExternalAdapters: (params: {
 
 </Tabs>
 
-## Example
+### Usage
+
+<Tabs
+  defaultValue="getDefaultExternalAdapters"
+  values={[
+    { label: "getDefaultExternalAdapters", value: "getDefaultExternalAdapters" },
+    { label: "getInjectedAdapters", value: "getInjectedAdapters" },
+  ]}
+>
+
+<TabItem value="getDefaultExternalAdapters">
 
 ```tsx
+// focus-start
 import { getDefaultExternalAdapters } from "@web3auth/default-solana-adapter";
+// focus-end
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 
 const chainConfig = {
-  chainId: "0x3",
-  displayName: "Solana Testnet",
+  chainId: "0x2",
   chainNamespace: CHAIN_NAMESPACES.SOLANA,
+  rpcTarget: "https://api.devnet.solana.com",
   tickerName: "SOLANA",
   ticker: "SOL",
-  decimals: 18,
-  rpcTarget: "https://api.testnet.solana.com",
-  blockExplorerUrl: "https://explorer.solana.com/?cluster=testnet",
+  decimals: 9,
+  blockExplorerUrl: "https://explorer.solana.com/?cluster=devnet",
   logo: "https://images.toruswallet.io/sol.svg",
-  isTestnet: true,
 };
 
 const privateKeyProvider = new SolanaPrivateKeyProvider({ config: { chainConfig } });
 
 const web3AuthOptions: Web3AuthOptions = {
   clientId,
-  chainConfig: { ...chainConfig, chainNamespace: CHAIN_NAMESPACES.SOLANA },
+  chainConfig,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider: privateKeyProvider,
 };
 
+// focus-start
 const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
 
 adapters.forEach((adapter) => {
   web3auth.configureAdapter(adapter);
 });
+// focus-end
 ```
+
+</TabItem>
+
+<TabItem value="getInjectedAdapters">
+
+```tsx
+// focus-start
+import { getInjectedAdapters } from "@web3auth/default-solana-adapter";
+// focus-end
+import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
+
+const chainConfig = {
+  chainId: "0x2",
+  chainNamespace: CHAIN_NAMESPACES.SOLANA,
+  rpcTarget: "https://api.devnet.solana.com",
+  tickerName: "SOLANA",
+  ticker: "SOL",
+  decimals: 9,
+  blockExplorerUrl: "https://explorer.solana.com/?cluster=devnet",
+  logo: "https://images.toruswallet.io/sol.svg",
+};
+
+const privateKeyProvider = new SolanaPrivateKeyProvider({ config: { chainConfig } });
+
+const web3AuthOptions: Web3AuthOptions = {
+  clientId,
+  chainConfig,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider: privateKeyProvider,
+};
+
+// focus-start
+const adapters = await getInjectedAdapters({ options: web3AuthOptions });
+
+adapters.forEach((adapter) => {
+  web3auth.configureAdapter(adapter);
+});
+// focus-end
+```
+
+</TabItem>
+</Tabs>
