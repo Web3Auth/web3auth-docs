@@ -9,10 +9,10 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
 import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
-import OpenloginOptions from "@site/src/common/sdk/pnp/web/_auth-options.mdx";
+import AuthOptions from "@site/src/common/sdk/pnp/web/_auth-options.mdx";
 import LoginSettings from "@site/src/common/sdk/pnp/web/_auth-login-params.mdx";
-import OpenloginWhiteLabelConfig from "@site/src/common/sdk/pnp/web/_auth-whitelabel-config.mdx";
-import OpenloginWhiteLabelExample from "@site/src/common/sdk/pnp/web/_auth-whitelabel-example.mdx";
+import AuthWhiteLabelConfig from "@site/src/common/sdk/pnp/web/_auth-whitelabel-config.mdx";
+import AuthWhiteLabelExample from "@site/src/common/sdk/pnp/web/_auth-whitelabel-example.mdx";
 import LoginConfig from "@site/src/common/sdk/pnp/web/_login-config.mdx";
 import ConnectTo from "@site/src/common/sdk/pnp/web/_connect-to.mdx";
 import ExtraLoginOptions from "@site/src/common/sdk/pnp/web/_extra-login-options.mdx";
@@ -20,25 +20,21 @@ import CustomAuthenticationCoreExample from "@site/src/common/sdk/pnp/web/_custo
 import CustomAuthenticationWeb3AuthExample from "@site/src/common/sdk/pnp/web/_custom-authentication-web3auth-example.mdx";
 import ConnectToExample from "@site/src/common/sdk/pnp/web/_connect-to-example.mdx";
 
-## [`@web3auth/openlogin-adapter`](https://npmjs.com/package/@web3auth/openlogin-adapter)
+## [`@web3auth/auth-adapter`](https://npmjs.com/package/@web3auth/auth-adapter)
 
-The default adapter of Web3Auth is the `openlogin-adapter`. This adapter is a wrapper around the
-[`openlogin`](https://github.com/torusresearch/OpenLoginSdk) library from Web3Auth and enables the
-social login features. By default, Web3Auth has certain configurations set to enable a quick
-integration, however, for customizing features, like [Whitelabel](/features/whitelabel),
-[Custom Authentication](/features/custom-authentication), etc. you need to configure the Openlogin
-Adapter. With the Openlogin Adapter package installed and instantiated, you can explore several
-options and customize the login experience of the user as per your needs.
+The default adapter of Web3Auth is the `auth-adapter`. This adapter is a wrapper around the
+[`auth`](https://www.npmjs.com/package/@web3auth/auth) library from Web3Auth (previously Torus) and
+enables the main social login features of Web3Auth. By default, Web3Auth has certain configuration
+set to enable a quick integration, however, for customising features, like Whitelabel, Custom
+Authentication, etc. you need to customise the Auth Adapter. With the Auth Adapter package installed
+and instantiated, you can explore a number of options and can customise the login experience of the
+user as per your needs.
 
 ## Basic Details
 
-#### Adapter Name: `openlogin`
+#### Adapter Name: `auth`
 
-#### Package Name: [`@web3auth/openlogin-adapter`](https://npmjs.com/package/@web3auth/openlogin-adapter)
-
-#### authMode: `WALLET`, `DAPP`
-
-#### chainNamespace: `EIP155`, `SOLANA`
+#### Package Name: [`@web3auth/auth-adapter`](https://npmjs.com/package/@web3auth/auth-adapter)
 
 #### Default: `YES`
 
@@ -50,23 +46,23 @@ npm install --save @web3auth/auth-adapter
 
 ## Instantiation
 
-#### Import the `OpenloginAdapter` class from `@web3auth/openlogin-adapter`
+#### Import the `AuthAdapter` class from `@web3auth/auth-adapter`
 
 ```tsx
 import { AuthAdapter } from "@web3auth/auth-adapter";
 ```
 
-#### Assign the `OpenloginAdapter` class to a variable
+#### Assign the `AuthAdapter` class to a variable
 
 ```tsx
-const openloginAdapter = new OpenloginAdapter(OpenloginAdapterOptions);
+const authAdapter = new AuthAdapter(AuthAdapterOptions);
 ```
 
-This OpenloginAdapter constructor takes an object with `OpenloginAdapterOptions` as input.
+This AuthAdapter constructor takes an object with `AuthAdapterOptions` as input.
 
 ## Arguments
 
-#### `OpenloginAdapterOptions`
+#### `AuthAdapterOptions`
 
 <Tabs
   defaultValue="table"
@@ -78,21 +74,19 @@ This OpenloginAdapter constructor takes an object with `OpenloginAdapterOptions`
 
 <TabItem value="table">
 
-| Parameter             | type                                            |
-| --------------------- | ----------------------------------------------- |
-| `adapterSettings?`    | [OpenLoginOptions](#openlogin-adapter-settings) |
-| `loginSettings?`      | [LoginSettings](#loginsettings)                 |
-| `privateKeyProvider?` | [PrivateKeyProvider](#loginsettings)            |
+| Parameter             | type                                  |
+| --------------------- | ------------------------------------- |
+| `adapterSettings?`    | [authOptions](#auth-adapter-settings) |
+| `loginSettings?`      | [LoginSettings](#loginsettings)       |
+| `privateKeyProvider?` | [PrivateKeyProvider](#loginsettings)  |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```tsx
-interface OpenloginAdapterOptions extends BaseAdapterSettings {
-  adapterSettings?: MakeOptional<OpenLoginOptions, "clientId" | "network"> & {
-    useCoreKitKey?: boolean;
-  };
+export interface AuthAdapterOptions extends BaseAdapterSettings {
+  adapterSettings?: MakeOptional<AuthOptions, "clientId" | "network">;
   loginSettings?: LoginSettings;
   privateKeyProvider?: PrivateKeyProvider;
 }
@@ -102,11 +96,11 @@ interface OpenloginAdapterOptions extends BaseAdapterSettings {
 
 </Tabs>
 
-### Openlogin Adapter Settings
+### Auth Adapter Settings
 
 #### `adapterSettings`
 
-<OpenloginOptions />
+<AuthOptions />
 
 ### Login Settings
 
@@ -114,12 +108,12 @@ interface OpenloginAdapterOptions extends BaseAdapterSettings {
 
 :::warning
 
-While you can pass your `chainConfig` to `OpenloginAdapter`, it is not required for
-`web3auth/no-modal` ie. The Web3Auth Plug and Play No Modal package, since you can directly pass
-`loginParams` over to the `connectTo` function.
+While you can pass your `chainConfig` to `AuthAdapter`, it is not required for `web3auth/no-modal`
+ie. The Web3Auth Plug and Play No Modal package, since you can directly pass `loginParams` over to
+the `connectTo` function.
 
 Either way, both of these methods will work the same. Please note that the `connectTo` function
-params will override the `OpenloginAdapter` settings.
+params will override the `AuthAdapter` settings.
 
 Read more about how to pass `loginParams` to `connectTo` in its respective section:
 [`web3auth/no-modal`](/sdk/pnp/web/no-modal/usage#logging-in-the-user)
@@ -192,27 +186,26 @@ const authAdapter = new AuthAdapter({
 
 ## Whitelabel
 
-Web3Auth's Social Logins and Email Login run using the OpenLogin Flow. The whole OpenLogin user
-experience can also be whitelabeled using OpenLogin Adapter settings. For this, you need to pass on
-the `whiteLabel` configuration parameter to the `adapterSettings` property of the
-`openlogin-adapter`.
+Web3Auth's Social Logins and Email Login run using the Auth Flow. The whole Auth user experience can
+also be whitelabeled using Auth Adapter settings. For this, you need to pass on the `whiteLabel`
+configuration parameter to the `adapterSettings` property of the `auth-adapter`.
 
-<OpenloginWhiteLabelConfig />
+<AuthWhiteLabelConfig />
 
 ### Example
 
-<OpenloginWhiteLabelExample />
+<AuthWhiteLabelExample />
 
 ## Custom Authentication
 
-While instantiating the Openlogin Adapter, you can pass some configuration objects to the
-constructor. One of these configurations is the `adapterSettings` configuration which enables you to
-make changes in the adapter, enabling you to do things like Whitelabeling and Custom Authentication
-among other things.
+While instantiating the Auth Adapter, you can pass some configuration objects to the constructor.
+One of these configurations is the `adapterSettings` configuration which enables you to make changes
+in the adapter, enabling you to do things like Whitelabeling and Custom Authentication among other
+things.
 
 #### `loginConfig`
 
-The `loginConfig` parameter of `adapterSettings` in `openlogin-adapter` contains the following
+The `loginConfig` parameter of `adapterSettings` in `auth-adapter` contains the following
 properties:
 
 <LoginConfig />
@@ -264,7 +257,7 @@ Further, to enable Custom Authentication, the `loginParams` parameter takes in a
 
 ## Initialization
 
-Finally, once all the configurations are set, you need to initialize the Openlogin Adapter.
+Finally, once all the configurations are set, you need to initialize the Auth Adapter.
 
 ```tsx
 web3auth.configureAdapter(authAdapter);
@@ -275,7 +268,7 @@ web3auth.configureAdapter(authAdapter);
 You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter
 instance. This function takes the below-mentioned parameters as well as
 
-<b>[Openlogin Adapter Settings](#openlogin-adapter-settings)</b>.
+<b>[Auth Adapter Settings](#auth-adapter-settings)</b>.
 
 ### Arguments
 
@@ -289,23 +282,190 @@ instance. This function takes the below-mentioned parameters as well as
 
 <TabItem value="table">
 
-| Parameter          | type                     |
-| ------------------ | ------------------------ |
-| `clientId?`        | `string`                 |
-| `sessionTime?`     | `number`                 |
-| `chainConfig?`     | `CustomChainConfig`      |
-| `web3AuthNetwork?` | `OPENLOGIN_NETWORK_TYPE` |
+`AuthOptions`
+
+| Parameter               | type                       |
+| ----------------------- | -------------------------- |
+| `clientId`              | `string`                   |
+| `network`               | `WEB3AUTH_NETWORK_TYPE`    |
+| `buildEnv?`             | `BUILD_ENV_TYPE`           |
+| `redirectUrl?`          | `string`                   |
+| `uxMode?`               | `UX_MODE_TYPE`             |
+| `replaceUrlOnRedirect?` | `boolean`                  |
+| `originData?`           | `OriginData`               |
+| `loginConfig?`          | `LoginConfig`              |
+| `webauthnTransports?`   | `AuthenticatorTransport[]` |
+| `whiteLabel?`           | `WhiteLabelData`           |
+| `storageServerUrl?`     | `string`                   |
+| `storageKey?`           | `"session"                 |
+| `sessionTime?`          | `number`                   |
+| `sessionNamespace?`     | `string`                   |
+| `mfaSettings?`          | `MfaSettings`              |
+| `useMpc?`               | `boolean`                  |
+| `useCoreKitKey?`        | `boolean`                  |
+
+`BaseAdapterSettings`
+
+| Parameter         | type                    |
+| ----------------- | ----------------------- |
+| `clientId`        | `string`                |
+| `sessionTime`     | `number`                |
+| `chainConfig`     | `CustomChainConfig`     |
+| `web3AuthNetwork` | `WEB3AUTH_NETWORK_TYPE` |
+| `useCoreKitKey`   | `boolean`               |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```tsx
-interface BaseAdapterSettings {
+setAdapterSettings(adapterSettings: Partial<AuthOptions & BaseAdapterSettings> & {
+        privateKeyProvider?: PrivateKeyProvider;
+}): void;
+
+export type PrivateKeyProvider = IBaseProvider<string>;
+
+export type AuthOptions = {
+  /**
+   * You can get your clientId/projectId by registering your
+   * dapp on {@link "https://dashboard.web3auth.io"| developer dashboard}
+   */
+  clientId: string;
+  /**
+   * network specifies the web3auth network to be used.
+   */
+  network: WEB3AUTH_NETWORK_TYPE;
+  /**
+   * This parameter will be used to change the build environment of auth sdk.
+   * @defaultValue production
+   */
+  buildEnv?: BUILD_ENV_TYPE;
+  /**
+   * redirectUrl is the dapp's url where user will be redirected after login.
+   *
+   * @remarks
+   * Register this url at {@link "https://dashboard.web3auth.io"| developer dashboard}
+   * else initialization will give error.
+   */
+  redirectUrl?: string;
+  /**
+   * two uxModes are supported:-
+   * - `'POPUP'`: In this uxMode, a popup will be shown to user for login.
+   * - `'REDIRECT'`: In this uxMode, user will be redirected to a new window tab for login.
+   *
+   * @defaultValue `'POPUP'`
+   * @remarks
+   *
+   * Use of `'REDIRECT'` mode is recommended in browsers where popups might get blocked.
+   */
+  uxMode?: UX_MODE_TYPE;
+  /**
+   * replaceUrlOnRedirect removes the params from the redirected url after login
+   *
+   * @defaultValue true
+   */
+  replaceUrlOnRedirect?: boolean;
+  /**
+   * originData is used to verify the origin of dapp by iframe.
+   *
+   * @internal
+   * @remarks
+   * You don't have to pass originData explicitly if you have registered your dapp at
+   * {@link "https://dashboard.web3auth.io"| developer dashboard}.
+   *
+   * originData contains a signature of dapp's origin url which is generated using
+   * project's secret.
+   */
+  originData?: OriginData;
+  /**
+   * loginConfig enables you to pass your own login verifiers configuration for various
+   * loginProviders.
+   *
+   * loginConfig is key value map where each key should be a valid loginProvider and value
+   * should be custom configuration for that loginProvider
+   *
+   * @remarks
+   * You can deploy your own verifiers from {@link "https://dashboard.web3auth.io"| developer dashboard}
+   * to use here.
+   *
+   */
+  loginConfig?: LoginConfig;
+  /**
+   * webauthnTransport enables you to configure the transport type user can use
+   * for saving their share.
+   *
+   * @defaultValue ["internal"]
+   *
+   * @remarks
+   * This is only available for v1 users.
+   */
+  webauthnTransports?: AuthenticatorTransport[];
+  /**
+   * sdkUrl is for internal development use only and is used to override the
+   * `network` parameter.
+   * @internal
+   */
+  sdkUrl?: string;
+  /**
+   * dashboardUrl is for internal development use only and is used to override the
+   * `buildEnv` parameter.
+   * @internal
+   */
+  dashboardUrl?: string;
+  /**
+   * options for whitelabling default auth modal.
+   */
+  whiteLabel?: WhiteLabelData;
+  /**
+   * Specify a custom storage server url
+   * @defaultValue https://session.web3auth.io
+   * @internal
+   */
+  storageServerUrl?: string;
+  /**
+   * setting to "local" will persist social login session across browser tabs.
+   *
+   * @defaultValue "local"
+   */
+  storageKey?: "session" | "local";
+  /**
+   * How long should a login session last at a minimum in seconds
+   *
+   * @defaultValue 86400 seconds
+   * @remarks Max value of sessionTime can be 7 * 86400 (7 days)
+   */
+  sessionTime?: number;
+  /**
+   * This option is for internal use only in torus wallet and has no effect
+   * on user's login on other dapps.
+   * @internal
+   */
+  sessionNamespace?: string;
+  /**
+   * This parameter will be used to enable mfa factors and set priority on UI listing.
+   * List of factors available
+   * backUpShareFactor | socialFactor | passwordFactor | authenticatorFactor
+   * @defaultValue false
+   */
+  mfaSettings?: MfaSettings;
+  /**
+   * This parameter will be used to use auth mpc
+   * @defaultValue false
+   */
+  useMpc?: boolean;
+  /**
+   * This parameter will be used to select core kit key.
+   * @defaultValue false
+   */
+  useCoreKitKey?: boolean;
+};
+
+export interface BaseAdapterSettings {
   clientId?: string;
   sessionTime?: number;
   chainConfig?: CustomChainConfig;
-  web3AuthNetwork?: OPENLOGIN_NETWORK_TYPE;
+  web3AuthNetwork?: WEB3AUTH_NETWORK_TYPE;
+  useCoreKitKey?: boolean;
 }
 ```
 
@@ -375,7 +535,7 @@ web3auth.configureAdapter(authAdapter);
 
 // You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter instance.
 
-openloginAdapter.setAdapterSettings({
+authAdapter.setAdapterSettings({
   web3AuthNetwork: "sapphire_mainnet",
   sessionTime: 3600, // 1 hour in seconds
   chainConfig: {
@@ -443,7 +603,7 @@ web3auth.configureAdapter(authAdapter);
 
 // You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter instance.
 
-openloginAdapter.setAdapterSettings({
+authAdapter.setAdapterSettings({
   web3AuthNetwork: "sapphire_mainnet",
   sessionTime: 3600, // 1 hour in seconds
   chainConfig: {

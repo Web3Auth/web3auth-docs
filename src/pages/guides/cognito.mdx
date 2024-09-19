@@ -23,7 +23,7 @@ import InitializationIntro from "@site/src/common/guides/_initialization-intro.m
 import InitializationWeb3Auth from "@site/src/common/guides/_initialization-web3auth.mdx";
 import InstantiationWeb3Auth from "@site/src/common/guides/_instantiation-web3auth.mdx";
 import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
-import OpenloginConfigCode from "@site/src/common/guides/_auth-config-code.mdx";
+import AuthConfigCode from "@site/src/common/guides/_auth-config-code.mdx";
 import SetupAWSCognitoVerifier from "@site/src/common/guides/_setup-aws-cognito-verifier.mdx";
 
 <SEO
@@ -112,8 +112,8 @@ to your project. To know more about the available SDKs, please have a look at th
 
 For this guide, we will be talking through the
 [Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and using the
-[OpenLogin Provider](/sdk/pnp/web/adapters/auth) alongside it to enable Custom Authentication
-through AWS Cognito.
+[Auth Adapter](/sdk/pnp/web/adapters/auth) alongside it to enable Custom Authentication through AWS
+Cognito.
 
 <SetupBaseProject />
 
@@ -125,22 +125,22 @@ through AWS Cognito.
 
 <InitializationIntro />
 
-For this guide, we're only focusing on the Instantiation, Configuration for the Openlogin Adapter
-(the default adapter that enables social logins) and Initialization of the Web3Auth SDK. To know
-more about the other things you can do with Web3Auth, check out our
+For this guide, we're only focusing on the Instantiation, Configuration for the Auth Adapter (the
+default adapter that enables social logins) and Initialization of the Web3Auth SDK. To know more
+about the other things you can do with Web3Auth, check out our
 [SDK Reference](/sdk/pnp/web/no-modal).
 
 #### Instantiating Web3Auth
 
 <InstantiationWeb3Auth />
 
-#### Initializing the Openlogin Adapter
+#### Initializing the Auth Adapter
 
-<OpenloginConfigCode />
+<AuthConfigCode />
 
 Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom
 Auth `verifierName` and AWS Cognito `clientId` in the loginConfig object. This makes sure that the
-Openlogin Adapter can connect to the correct verifier and AWS Cognito server.
+Auth Adapter can connect to the correct verifier and AWS Cognito server.
 
 <InitializationWeb3Auth />
 
@@ -211,15 +211,15 @@ window.open("
 
 In the **Implicit** flow, the frontend gets the JWT `id_token` from AWS Cognito directly. This flow
 is leveraged by the Web3Auth SDK, which handles all the callbacks by itself and the user just needs
-to set the `OpenloginAdapter` and connect to the Web3Auth SDK, adding the AWS Cognito `client_id` in
-it. Hence, this is the implicit flow and is the most suitable flow for setting up your
-authentication via AWS Cognito and Web3Auth.
+to set the `AuthAdapter` and connect to the Web3Auth SDK, adding the AWS Cognito `client_id` in it.
+Hence, this is the implicit flow and is the most suitable flow for setting up your authentication
+via AWS Cognito and Web3Auth.
 
 In the **Authorization code** flow, you have to spin up a server on your own where you'll receive
 the `authorisation code` from AWS Cognito. For Web3Auth, still requires an `id_token` to be sent to
-the OpenloginAdapter to log the user in the frontend context. This is where you need to make another
-call from the backend server to AWS Cognito to get the `id_token` and pass it over to your frontend
-where you can send it to the Web3Auth SDK.
+the AuthAdapter to log the user in the frontend context. This is where you need to make another call
+from the backend server to AWS Cognito to get the `id_token` and pass it over to your frontend where
+you can send it to the Web3Auth SDK.
 
 ### Setting up your application with Authorization code Flow
 

@@ -10,104 +10,170 @@ import Tabs from "@theme/Tabs";
 
 <TabItem value="table">
 
-| Variable                | Description                                                                                                                                                                                                                                                                                                                                                                                                |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `clientId?`             | Client ID for web3auth. Obtain your `clientId` from the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/). Not required if you're passing the clientId in the web3auth core constructor. It accepts `string` as a value.                                                                                                                                                                      |
-| `network`               | Network specifies the openlogin iframe url url to be used. <ul><li>`'mainnet'`: https://app.openlogin.com will be used which is the production version.</li><li>`'cyan'`: https://cyan.openlogin.com will be used which is the production cyan version.</li><li>`'testnet'`: https://beta.openlogin.com will be used which is the beta version.</li></ul>. It accepts `OPENLOGIN_NETWORK_TYPE` as a value. |
-| `redirectUrl?`          | redirectUrl is the dapp's url where user will be redirected after login. Register this url on the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io/) else initialization will give error. It accepts `string` as a value.                                                                                                                                                                      |
-| `uxMode?`               | Two uxModes are supported: <ul><li> `'POPUP'`: In this uxMode, a popup will be shown to user for login.</li><li>`'REDIRECT'`: In this uxMode, user will be redirected to a new window tab for login.</li></ul>. Default value is "POPUP".                                                                                                                                                                  |
-| `replaceUrlOnRedirect?` | `replaceUrlOnRedirect` removes the params from the redirected url after login. Default value is `true`.                                                                                                                                                                                                                                                                                                    |
-| `loginConfig?`          | `loginConfig` enables you to pass your own login verifiers configuration for various loginProviders. loginConfig is key value map where each key should be a valid loginProvider and value should be custom configuration for that loginProvider.                                                                                                                                                          |
-| `whiteLabel?`           | Options for whitelabling default openlogin modal. It accepts `WhiteLabelData` as a value.                                                                                                                                                                                                                                                                                                                  |
-| `useCoreKitKey?`        | Use `useCoreKitKey` as `true`, if you're using this SDK with the Single Factor Auth Web SDK. Default value is `false`.                                                                                                                                                                                                                                                                                     |
-| `mfaSettings?`          | MFA Settings for the user. `SCALE and above plan only feature`. It accepts `MfaSettings` as a value.                                                                                                                                                                                                                                                                                                       |
+| Variable               | Description                                                                                                                                                                                                                                                                                                                                              |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`             | You can get your clientId/projectId by registering your dapp on [developer dashboard](https://dashboard.web3auth.io)                                                                                                                                                                                                                                     |
+| `network`              | network specifies the web3auth network to be used.                                                                                                                                                                                                                                                                                                       |
+| `buildEnv`             | This parameter will be used to change the build environment of auth sdk.                                                                                                                                                                                                                                                                                 |
+| `redirectUrl`          | redirectUrl is the dapp's url where user will be redirected after login. Register this url at [developer dashboard](https://dashboard.web3auth.io) else initialization will give error.                                                                                                                                                                  |
+| `uxMode`               | two uxModes are supported:- - `'POPUP'`: In this uxMode, a popup will be shown to user for login. - `'REDIRECT'`: In this uxMode, user will be redirected to a new window tab for login. Use of `'REDIRECT'` mode is recommended in browsers where popups might get blocked.                                                                             |
+| `replaceUrlOnRedirect` | replaceUrlOnRedirect removes the params from the redirected url after login                                                                                                                                                                                                                                                                              |
+| `originData`           | originData is used to verify the origin of dapp by iframe. You don't have to pass originData explicitly if you have registered your dapp at [developer dashboard](https://dashboard.web3auth.io). originData contains a signature of dapp's origin url which is generated using project's secret.                                                        |
+| `loginConfig`          | loginConfig enables you to pass your own login verifiers configuration for various loginProviders. loginConfig is key value map where each key should be a valid loginProvider and value should be custom configuration for that loginProvider. You can deploy your own verifiers from [developer dashboard](https://dashboard.web3auth.io) to use here. |
+| `webauthnTransports`   | webauthnTransport enables you to configure the transport type user can use for saving their share. This is only available for v1 users.                                                                                                                                                                                                                  |
+| `sdkUrl`               | sdkUrl is for internal development use only and is used to override the `network` parameter.                                                                                                                                                                                                                                                             |
+| `dashboardUrl`         | dashboardUrl is for internal development use only and is used to override the `buildEnv` parameter.                                                                                                                                                                                                                                                      |
+| `whiteLabel`           | options for whitelabling default auth modal.                                                                                                                                                                                                                                                                                                             |
+| `storageServerUrl`     | Specify a custom storage server url                                                                                                                                                                                                                                                                                                                      |
+| `storageKey`           | setting to "local" will persist social login session across browser tabs. How long should a login session last at a minimum in seconds                                                                                                                                                                                                                   |
+| `sessionTime`          | How long should a login session last at a minimum in seconds                                                                                                                                                                                                                                                                                             |
+| `sessionNamespace`     | This option is for internal use only in torus wallet and has no effect on user's login on other dapps.                                                                                                                                                                                                                                                   |
+| `mfaSettings`          | This parameter will be used to enable mfa factors and set priority on UI listing. List of factors available backUpShareFactor \| socialFactor \| passwordFactor \| authenticatorFactor                                                                                                                                                                   |
+| `useMpc`               | This parameter will be used to use auth mpc                                                                                                                                                                                                                                                                                                              |
+| `useCoreKitKey`        | This parameter will be used to select core kit key.                                                                                                                                                                                                                                                                                                      |
 
 </TabItem>
 
 <TabItem value="type">
 
 ```tsx
-adapterSettings?: MakeOptional<OpenLoginOptions, "clientId" | "network"> & {
+adapterSettings?: MakeOptional<AuthOptions, "clientId" | "network"> & {
     useCoreKitKey?: boolean;
 };
 
-export type OpenLoginOptions = {
-  /**
-   * You can get your clientId/projectId by registering your
-   * dapp on {@link "https://dashboard.web3auth.io"| developer dashboard}
-   */
-  clientId: string;
-  /**
-   * network specifies the openlogin sdk url to be used.
-   *
-   * - `'mainnet'`: https://auth.web3auth.io will be used which is the production version.
-   * - `'cyan'`: https://cyan.openlogin.com will be used which is the production cyan version.
-   * - `'testnet'`: https://testing.openlogin.com will be used which is the testing version.
-   * - `'development'`: http://localhost:3000 will be used for development purpose.
-   */
-  network: OPENLOGIN_NETWORK_TYPE;
-  /**
-   * redirectUrl is the dapp's url where user will be redirected after login.
-   *
-   * @remarks
-   * Register this url at {@link "https://dashboard.web3auth.io"| developer dashboard}
-   * else initialization will give error.
-   */
-  redirectUrl?: string;
-  /**
-   * two uxModes are supported:-
-   * - `'POPUP'`: In this uxMode, a popup will be shown to user for login.
-   * - `'REDIRECT'`: In this uxMode, user will be redirected to a new window tab for login.
-   *
-   * @defaultValue `'POPUP'`
-   * @remarks
-   *
-   * Use of `'REDIRECT'` mode is recommended in browsers where popups might get blocked.
-   */
-  uxMode?: UX_MODE_TYPE;
-  /**
-   * replaceUrlOnRedirect removes the params from the redirected url after login
-   *
-   * @defaultValue true
-   */
-  replaceUrlOnRedirect?: boolean;
-  /**
-   * loginConfig enables you to pass your own login verifiers configuration for various
-   * loginProviders.
-   *
-   * loginConfig is key value map where each key should be a valid loginProvider and value
-   * should be custom configuration for that loginProvider
-   *
-   * @remarks
-   * You can deploy your own verifiers from {@link "https://dashboard.web3auth.io"| developer dashboard}
-   * to use here.
-   *
-   */
-  loginConfig?: LoginConfig;
-  /**
-   * options for whitelabling default openlogin modal.
-   */
-  whiteLabel?: WhiteLabelData;
-  /**
-   * setting to "local" will persist social login session accross browser tabs.
-   *
-   * @defaultValue "local"
-   */
-  storageKey?: "session" | "local";
-  /**
-   * How long should a login session last at a minimum in seconds
-   *
-   * @defaultValue 86400 seconds
-   * @remarks Max value of sessionTime can be 7 * 86400 (7 days)
-   */
-  sessionTime?: number;
-  /**
-   * This parameter will be used to enable mfa factors and set priority on UI listing.
-   * List of factors available
-   * backUpShareFactor | socialFactor | passwordFactor
-   * @defaultValue false
-   */
-  mfaSettings?: MfaSettings;
+export type AuthOptions = {
+    /**
+     * You can get your clientId/projectId by registering your
+     * dapp on {@link "https://dashboard.web3auth.io"| developer dashboard}
+     */
+    clientId: string;
+    /**
+     * network specifies the web3auth network to be used.
+     */
+    network: WEB3AUTH_NETWORK_TYPE;
+    /**
+     * This parameter will be used to change the build environment of auth sdk.
+     * @defaultValue production
+     */
+    buildEnv?: BUILD_ENV_TYPE;
+    /**
+     * redirectUrl is the dapp's url where user will be redirected after login.
+     *
+     * @remarks
+     * Register this url at {@link "https://dashboard.web3auth.io"| developer dashboard}
+     * else initialization will give error.
+     */
+    redirectUrl?: string;
+    /**
+     * two uxModes are supported:-
+     * - `'POPUP'`: In this uxMode, a popup will be shown to user for login.
+     * - `'REDIRECT'`: In this uxMode, user will be redirected to a new window tab for login.
+     *
+     * @defaultValue `'POPUP'`
+     * @remarks
+     *
+     * Use of `'REDIRECT'` mode is recommended in browsers where popups might get blocked.
+     */
+    uxMode?: UX_MODE_TYPE;
+    /**
+     * replaceUrlOnRedirect removes the params from the redirected url after login
+     *
+     * @defaultValue true
+     */
+    replaceUrlOnRedirect?: boolean;
+    /**
+     * originData is used to verify the origin of dapp by iframe.
+     *
+     * @internal
+     * @remarks
+     * You don't have to pass originData explicitly if you have registered your dapp at
+     * {@link "https://dashboard.web3auth.io"| developer dashboard}.
+     *
+     * originData contains a signature of dapp's origin url which is generated using
+     * project's secret.
+     */
+    originData?: OriginData;
+    /**
+     * loginConfig enables you to pass your own login verifiers configuration for various
+     * loginProviders.
+     *
+     * loginConfig is key value map where each key should be a valid loginProvider and value
+     * should be custom configuration for that loginProvider
+     *
+     * @remarks
+     * You can deploy your own verifiers from {@link "https://dashboard.web3auth.io"| developer dashboard}
+     * to use here.
+     *
+     */
+    loginConfig?: LoginConfig;
+    /**
+     * webauthnTransport enables you to configure the transport type user can use
+     * for saving their share.
+     *
+     * @defaultValue ["internal"]
+     *
+     * @remarks
+     * This is only available for v1 users.
+     */
+    webauthnTransports?: AuthenticatorTransport[];
+    /**
+     * sdkUrl is for internal development use only and is used to override the
+     * `network` parameter.
+     * @internal
+     */
+    sdkUrl?: string;
+    /**
+     * dashboardUrl is for internal development use only and is used to override the
+     * `buildEnv` parameter.
+     * @internal
+     */
+    dashboardUrl?: string;
+    /**
+     * options for whitelabling default auth modal.
+     */
+    whiteLabel?: WhiteLabelData;
+    /**
+     * Specify a custom storage server url
+     * @defaultValue https://session.web3auth.io
+     * @internal
+     */
+    storageServerUrl?: string;
+    /**
+     * setting to "local" will persist social login session across browser tabs.
+     *
+     * @defaultValue "local"
+     */
+    storageKey?: "session" | "local";
+    /**
+     * How long should a login session last at a minimum in seconds
+     *
+     * @defaultValue 86400 seconds
+     * @remarks Max value of sessionTime can be 7 * 86400 (7 days)
+     */
+    sessionTime?: number;
+    /**
+     * This option is for internal use only in torus wallet and has no effect
+     * on user's login on other dapps.
+     * @internal
+     */
+    sessionNamespace?: string;
+    /**
+     * This parameter will be used to enable mfa factors and set priority on UI listing.
+     * List of factors available
+     * backUpShareFactor | socialFactor | passwordFactor | authenticatorFactor
+     * @defaultValue false
+     */
+    mfaSettings?: MfaSettings;
+    /**
+     * This parameter will be used to use auth mpc
+     * @defaultValue false
+     */
+    useMpc?: boolean;
+    /**
+     * This parameter will be used to select core kit key.
+     * @defaultValue false
+     */
+    useCoreKitKey?: boolean;
 };
 
 export type LoginConfig = Record<string, {
@@ -117,7 +183,7 @@ export type LoginConfig = Record<string, {
      */
     typeOfLogin: TypeOfLogin;
     /**
-     * Display Name. If not provided, we use the default for openlogin app
+     * Display Name. If not provided, we use the default for auth app
      */
     name?: string;
     /**
@@ -125,20 +191,20 @@ export type LoginConfig = Record<string, {
      */
     description?: string;
     /**
-     * Custom client_id. If not provided, we use the default for openlogin app
+     * Custom client_id. If not provided, we use the default for auth app
      */
     clientId?: string;
     verifierSubIdentifier?: string;
     /**
-     * Logo to be shown on mouse hover. If not provided, we use the default for openlogin app
+     * Logo to be shown on mouse hover. If not provided, we use the default for auth app
      */
     logoHover?: string;
     /**
-     * Logo to be shown on dark background (dark theme). If not provided, we use the default for openlogin app
+     * Logo to be shown on dark background (dark theme). If not provided, we use the default for auth app
      */
     logoLight?: string;
     /**
-     * Logo to be shown on light background (light theme). If not provided, we use the default for openlogin app
+     * Logo to be shown on light background (light theme). If not provided, we use the default for auth app
      */
     logoDark?: string;
     /**
@@ -197,6 +263,7 @@ export type WhiteLabelData = {
      * fr: french
      * pt: portuguese
      * nl: dutch
+     * tr: turkish
      *
      * @defaultValue en
      */
@@ -204,7 +271,7 @@ export type WhiteLabelData = {
     /**
      theme
      *
-     * @defaultValue auto
+     * @defaultValue light
      */
     mode?: THEME_MODE_TYPE;
     /**
@@ -214,20 +281,9 @@ export type WhiteLabelData = {
      */
     useLogoLoader?: boolean;
     /**
-     * Used to customize theme of the login modal with following options
-     * `'primary'` - To customize primary color of modal's content.
+     * Used to customize your theme
      */
-    theme?: {
-        primary?: string;
-        gray?: string;
-        red?: string;
-        green?: string;
-        success?: string;
-        warning?: string;
-        error?: string;
-        info?: string;
-        white?: string;
-    };
+    theme?: WHITE_LABEL_THEME;
     /**
      * Language specific link for terms and conditions on torus-website. See (examples/vue-app) to configure
      * e.g.
@@ -248,12 +304,13 @@ export type WhiteLabelData = {
     privacyPolicy?: Partial<Record<LANGUAGE_TYPE, string>>;
 };
 
-export type MfaSettings = Partial<Record<MFA_FACTOR_TYPE, MFA_SETTINGS>>;
 export declare const MFA_FACTOR: {
     readonly DEVICE: "deviceShareFactor";
     readonly BACKUP_SHARE: "backUpShareFactor";
     readonly SOCIAL_BACKUP: "socialBackupFactor";
     readonly PASSWORD: "passwordFactor";
+    readonly PASSKEYS: "passkeysFactor";
+    readonly AUTHENTICATOR: "authenticatorFactor";
 };
 export type MFA_FACTOR_TYPE = (typeof MFA_FACTOR)[keyof typeof MFA_FACTOR];
 export type MFA_SETTINGS = {
@@ -261,6 +318,7 @@ export type MFA_SETTINGS = {
     priority?: number;
     mandatory?: boolean;
 };
+export type MfaSettings = Partial<Record<MFA_FACTOR_TYPE, MFA_SETTINGS>>;
 
 ```
 
