@@ -75,10 +75,10 @@ You can utilize this feature for projects on `sapphire_devnet` network for free.
 
    :::
 
-1. Similarly, create a third sub-verifier for `Email Passwordless` via Auth0. Follow the above steps
-   for creating a sub verifier, and then select `Email Passwordless` in place of `GitHub`.
+1. Similarly, create a third sub-verifier for `Email Passwordless`. Click on `Social Login Provider`
+   and then select `Email Passwordless` as the Login provider from the dropdown list
 
-   ![Create Email Passwordless Sub Verifiier on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate-auth0-email-passwordless-filled.png)
+   ![Create Email Passwordless Sub Verifiier on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate-email-passwordless.png)
 
 1. Finally, click on `Create` to deploy the verifier.
 
@@ -127,24 +127,23 @@ const authAdapter = new AuthAdapter({
     loginConfig: {
       // Google login
       google: {
-        verifier: "aggregate-sapphire", // Pass the Verifier name here. eg. w3a-agg-example
+        verifier: "aggregate-sapphire", // Pass the Verifier name here. eg. aggregate-sapphire
         verifierSubIdentifier: "w3a-google", // Pass the Sub-Verifier here. eg w3a-google
         typeOfLogin: "google", // Pass the type of login provider.
         clientId: "519228911939-cri01h55lsjbsia1k7ll6qpalrus75ps.apps.googleusercontent.com", // Pass the Google `Client ID` here.
       },
       // GitHub Login via Auth0
       github: {
-        verifier: "aggregate-sapphire", // Pass the Verifier name here. eg. w3a-agg-example
+        verifier: "aggregate-sapphire", // Pass the Verifier name here. eg. aggregate-sapphire
         verifierSubIdentifier: "w3a-a0-github", // Pass the Sub-Verifier here. eg w3a-a0-github
         typeOfLogin: "jwt", // Pass the type of login provider. For Auth0, it's jwt and not Auth0.
         clientId: "hiLqaop0amgzCC0AXo4w0rrG9abuJTdu", // Pass the Auth0 `Client ID` here.
       },
       // Email Password Login via Auth0
-      emailpasswordless: {
-        verifier: "aggregate-sapphire", // Pass the Verifier name here. eg. w3a-agg-example
-        verifierSubIdentifier: "w3a-a0-email-passwordless", // Pass the Sub-Verifier here. eg w3a-a0-email-passwordless
-        typeOfLogin: "jwt", // Pass the type of login provider. For Auth0, it's jwt and not Auth0.
-        clientId: "QiEf8qZ9IoasbZsbHvjKZku4LdnRC1Ct", // Pass the `Client ID` of your Auth0 Application.
+      email_passwordless: {
+        verifier: "aggregate-sapphire", // Pass the Verifier name here. eg. aggregate-sapphire
+        verifierSubIdentifier: "w3a-email-passwordless", // Pass the Sub-Verifier here. eg w3a-email-passwordless
+        typeOfLogin: "email_passwordless", // Pass the type of login provider. For Auth0, it's jwt and not Auth0.
       },
     },
   },
@@ -163,12 +162,9 @@ const web3authProvider = await web3auth.connectTo("openlogin", {
 
 // When user clicks Email Passwordless button, use this to Login with Email Passwordless via Auth0
 const web3authProvider = await web3auth.connectTo("openlogin", {
-  loginProvider: "emailpasswordless",
+  loginProvider: "email_passwordless",
   extraLoginOptions: {
-    domain: "https://web3auth.au.auth0.com", // Pass the Auth0 Domain here, eg. https://web3auth.au.auth0.com
-    // This corresponds to the field inside jwt which must be used to uniquely identify the user.
-    verifierIdField: "email", // This is mapped b/w google and github logins.
-    isVerifierIdCaseSensitive: false,
+    login_hint: email.trim(),
   },
 });
 
