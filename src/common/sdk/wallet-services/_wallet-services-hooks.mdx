@@ -70,26 +70,12 @@ component, use the `useWalletServicesPlugin` function.
 
 ```tsx
 export interface IBaseWalletServicesHookContext {
-  /**
-   * Indicates whether the plugin is connected and ready to be used.
-   */
   isPluginConnected: boolean;
-  /**
-   * Shows the Wallet Connect Scanner to connect with dApps having Wallet Connect login option.
-   * This is useful for interoperability with dApps having Wallet Connect login option.
-   * @returns A Promise that resolves when the Wallet Connect Scanner is shown.
-   */
-  showWalletConnectScanner(): Promise<void>;
-  /**
-   * Shows the TopUp modal to select local currency and amount to top up the wallet.
-   * @returns A Promise that resolves when the TopUp modal is shown.
-   */
-  showCheckout(): Promise<void>;
-  /**
-   * Shows the Wallet Services modal UI to be used as a wallet UI.
-   * @returns A Promise that resolves when the Wallet Services modal UI is shown.
-   */
-  showWalletUI(): Promise<void>;
+  showWalletConnectScanner(
+    showWalletConnectParams?: BaseEmbedControllerState["showWalletConnect"],
+  ): Promise<void>;
+  showCheckout(showCheckoutParams?: BaseEmbedControllerState["showCheckout"]): Promise<void>;
+  showWalletUI(showWalletUiParams?: BaseEmbedControllerState["showWalletUi"]): Promise<void>;
 }
 ```
 
