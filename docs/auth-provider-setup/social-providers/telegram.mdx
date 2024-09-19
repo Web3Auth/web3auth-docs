@@ -145,7 +145,7 @@ If you don't have a JWKS endpoint already, you can create one by following these
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES, UX_MODE, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 
 const clientId =
   "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
@@ -172,7 +172,7 @@ const web3auth = new Web3AuthNoModal({
   privateKeyProvider: privateKeyProvider,
 });
 
-const openloginAdapter = new OpenloginAdapter({
+const authAdapter = new AuthAdapter({
   adapterSettings: {
     uxMode: UX_MODE.REDIRECT,
     loginConfig: {
@@ -186,7 +186,7 @@ const openloginAdapter = new OpenloginAdapter({
   },
 });
 
-web3auth.configureAdapter(openloginAdapter);
+web3auth.configureAdapter(authAdapter);
 setWeb3auth(web3auth);
 
 // Initialize
@@ -208,7 +208,7 @@ const idToken = params.get("token");
 // To know more about how to generate the JWT token, refer to the linked guide.
 
 // Login with Telegram with Web3Auth using received JWT token
-await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
   loginProvider: "jwt",
   extraLoginOptions: {
     // focus-next-line

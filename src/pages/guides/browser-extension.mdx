@@ -119,7 +119,7 @@ import { useEffect, useState } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { CHAIN_NAMESPACES, IProvider } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 ```
 
 </TabItem>
@@ -182,14 +182,12 @@ const web3auth = new Web3AuthNoModal({
   web3AuthNetwork: "sapphire_mainnet",
 });
 
-// refer to https://web3auth.io/docs/sdk/pnp/web/adapters/openlogin to learn more about configuring the adapter
+// refer to https://web3auth.io/docs/sdk/pnp/web/adapters/auth to learn more about configuring the adapter
 const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
-const openloginAdapter = new OpenloginAdapter({
-  privateKeyProvider,
-});
+const authAdapter = new AuthAdapter({ privateKeyProvider });
 
-web3auth.configureAdapter(openloginAdapter);
+web3auth.configureAdapter(authAdapter);
 
 await web3auth.init();
 ```
@@ -236,7 +234,7 @@ values={[
 Once initialized, you can use the `connectTo` method to authenticate the user.
 
 ```tsx
-const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
   loginProvider: "google",
 });
 ```

@@ -1,15 +1,15 @@
-import OpenloginWhiteLabelExample from "./_openlogin-whitelabel-example.mdx";
+import AuthWhiteLabelExample from "./_auth-whitelabel-example.mdx";
 
-The default adapter of Web3Auth is the [`openlogin-adapter`](/sdk/pnp/web/adapters/openlogin). This
-adapter is a wrapper around the [`openlogin`](/sdk/pnp/web/adapters/openlogin) library from Web3Auth
-and enables the social login features. For customising features of the main Web3Auth flow, like
+The default adapter of Web3Auth is the [`auth-adapter`](/sdk/pnp/web/adapters/auth). This adapter is
+a wrapper around the [`auth`](/sdk/pnp/web/adapters/auth) library from Web3Auth and enables the
+social login features. For customising features of the main Web3Auth flow, like
 [Whitelabel](/features/whitelabel), [Custom Authentication](/features/custom-authentication), etc.
-you need to customise the Openlogin Adapter.
+you need to customise the Auth Adapter.
 
 :::tip
 
-Checkout the [`openlogin-adapter`](/sdk/pnp/web/adapters/openlogin) SDK Reference for more details
-on different configurations you can pass for customisations.
+Checkout the [`auth-adapter`](/sdk/pnp/web/adapters/auth) SDK Reference for more details on
+different configurations you can pass for customisations.
 
 :::
 
@@ -19,7 +19,7 @@ on different configurations you can pass for customisations.
 
 For customising the redirect screens while logging in and constructing the key, you need to pass on
 `whiteLabel` configurations to the `adapterSettings` property of the
-[`openlogin-adapter`](/sdk/pnp/web/adapters/openlogin).
+[`auth-adapter`](/sdk/pnp/web/adapters/auth).
 
 :::tip
 
@@ -29,7 +29,7 @@ depth about how you can Whitelabel your application with Web3Auth, have a look a
 
 :::
 
-<OpenloginWhiteLabelExample />
+<AuthWhiteLabelExample />
 
 #### Multi Factor Authentication
 
@@ -45,9 +45,9 @@ their order. Currently, there are four values for `mfaLevel`:
 - `none`: skips the MFA setup screen
 
 ```tsx
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 
-const openloginAdapter = new OpenloginAdapter({
+const authAdapter = new AuthAdapter({
   loginSettings: {
     //focus-start
     mfaLevel: "mandatory", // default, optional, mandatory, none
@@ -58,9 +58,8 @@ const openloginAdapter = new OpenloginAdapter({
 
 :::caution Note
 
-If you are using default verifiers, your users may have set up MFA on other dApps that also use
-default Web3Auth verifiers. In this case, the MFA screen will continue to appear if the user has
-enabled MFA on other dApps. This is because MFA cannot be turned off once it is enabled.
+Users of default Web3Auth verifiers may see MFA prompts across all dApps using these verifiers if
+they've enabled MFA on any one of them. This MFA can't be turned off once activated.
 
 :::
 
@@ -76,9 +75,9 @@ Read more about `mfaSettings` in the [Multi Factor Authentication Section](./mfa
 :::
 
 ```tsx
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 
-const openloginAdapter = new OpenloginAdapter({
+const authAdapter = new AuthAdapter({
   adapterSettings: {
     //focus-start
     // SCALE and above plan only feature
@@ -117,9 +116,9 @@ With Web3Auth, you have the option to configure logins using your own authentica
 adding your own authentication, you have to first configure your verifiers in the Web3Auth
 Dashboard.
 
-Custom Authentication in Web3Auth is supported by the Openlogin Adapter, which is the default
-adapter for the Web3Auth SDK. For this, you need to configure the `loginConfig` parameter in the
-`adapterSettings` of the `openlogin-adapter` package.
+Custom Authentication in Web3Auth is supported by the Auth Adapter, which is the default adapter for
+the Web3Auth SDK. For this, you need to configure the `loginConfig` parameter in the
+`adapterSettings` of the `auth-adapter` package.
 
 :::tip
 

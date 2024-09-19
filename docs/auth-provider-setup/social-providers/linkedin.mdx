@@ -33,10 +33,10 @@ this with Auth0, but this can be done with any other Federated/JWT providers.
 ### Example
 
 ```tsx
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 
-// Create OpenloginAdapter instance once you have created Web3AuthNoModal instance
-const openloginAdapter = new OpenloginAdapter({
+// Create AuthAdapter instance once you have created Web3AuthNoModal instance
+const authAdapter = new AuthAdapter({
   adapterSettings: {
     loginConfig: {
       // focus-start
@@ -50,14 +50,14 @@ const openloginAdapter = new OpenloginAdapter({
   },
 });
 
-web3AuthNoModalInstance.configureAdapter(openloginAdapter);
+web3AuthNoModalInstance.configureAdapter(authAdapter);
 
 // Initialize
 await web3AuthNoModalInstance.init();
 
 // Login with LinkedIn
 // focus-start
-await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.AUTH, {
   loginProvider: "jwt",
   extraLoginOptions: {
     domain: "https://web3auth.au.auth0.com", // Pass on the Auth0 `Domain` here

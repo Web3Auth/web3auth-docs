@@ -125,7 +125,7 @@ Import the required modules for web3auth and any providers you want to use.
 ```tsx
 
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { web3AuthConfig, openloginAdapterConfig } from "./config/web3auth";
@@ -224,7 +224,7 @@ const init = async () => {
     setWeb3auth(web3auth);
 
     const openloginAdapter = new OpenloginAdapter(openloginAdapterConfig);
-    web3auth.configureAdapter(openloginAdapter);
+    web3auth.configureAdapter(authAdapter);
 
     await web3auth.init();
 
@@ -241,11 +241,10 @@ const init = async () => {
 ### Login with Web3Auth
 
 You must call this function to start the login process. You can change the `loginProvider` to any of
-the
-[available social logins](https://web3auth.io/docs/sdk/pnp/web/adapters/openlogin#loginsettings).
+the [available social logins](https://web3auth.io/docs/sdk/pnp/web/adapters/auth#loginsettings).
 
 ```tsx
-const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
   loginProvider: "google",
 });
 ```

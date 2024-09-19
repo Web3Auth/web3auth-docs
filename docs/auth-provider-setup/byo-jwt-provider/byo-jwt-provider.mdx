@@ -109,10 +109,10 @@ Once you have setup JWKS, and created Custom JWT verifier in Web3Auth dashboard,
 below example to use it with No Modal SDK.
 
 ```tsx title="No Modal Example"
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 
-// Create OpenloginAdapter instance once you have created Web3AuthNoModal instance
-const openloginAdapter = new OpenloginAdapter({
+// Create AuthAdapter instance once you have created Web3AuthNoModal instance
+const authAdapter = new AuthAdapter({
   adapterSettings: {
     uxMode: "redirect", // redirect or popup
     loginConfig: {
@@ -127,7 +127,7 @@ const openloginAdapter = new OpenloginAdapter({
   },
 });
 
-await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
   // focus-start
   loginProvider: "jwt",
   extraLoginOptions: {
