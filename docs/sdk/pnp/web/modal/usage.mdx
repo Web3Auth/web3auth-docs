@@ -17,8 +17,6 @@ import Status from "@site/src/common/sdk/pnp/web/_status-method.mdx";
 import Provider from "@site/src/common/sdk/pnp/web/_provider-method.mdx";
 import ConnectedAdapterName from "@site/src/common/sdk/pnp/web/_connected-adapter-name-method.mdx";
 import Connected from "@site/src/common/sdk/pnp/web/_connected-method.mdx";
-import InitiateTopUp from "@site/src/common/sdk/pnp/web/_plugin-initiate-topup.mdx";
-import ShowWCScanner from "@site/src/common/sdk/pnp/web/_plugin-showwcscanner.mdx";
 
 Once you've installed and successfully initialized Web3Auth, you can use it to authenticate your
 users. Further, you can use the native provider given by Web3Auth to connect the users to the
@@ -45,12 +43,11 @@ instance:
 
 Finally, with the Wallet Services Plugin, you can enable additional functionalities like:
 
-- `initiateTopup()` - Initiate Topup for the user.
+- `showCheckout()` - Initiate Topup for the user.
 - `showWalletConnectScanner()` - Show WalletConnect QR Code Scanner.
+- `showWalletUI()` - Show Embedded Wallet UI.
 
 ## Logging in the User
-
-#### `connect()`
 
 You can show the modal in the browser by calling `connect()` function on `web3auth` instance. Your
 user can choose their preferred login method and access your application.
@@ -135,12 +132,24 @@ Learn more about the Wallet Services Plugin in the
 
 ### Show WalletConnect Scanner
 
-#### `showWalletConnectScanner()`
-
-<ShowWCScanner />
+You can use the `showWalletConnectScanner` function to show the Wallet Connect Scanner, and connect
+with dApps having Wallet Connect login option. This is useful for interoperability with dApps having
+Wallet Connect login option.
+[Learn more about `showWalletConnectScanner`](/docs/sdk/pnp/web/wallet-services/usage#connect-dapps-with-wallet-connect).
 
 ### Fiat On Ramp
 
-#### `initiateTopup()`
+You can use the `showCheckout` function to show the TopUp modal, allowing users to select their
+local currency and specify the token to top up their wallet.
+[Learn more about `showCheckout`](/docs/sdk/pnp/web/wallet-services/usage#fiat-on-ramp).
 
-<InitiateTopUp />
+### Embedded Wallet UI
+
+You can use the `showWalletUI` function to show the templated wallet UI services.
+[Learn more about `showWalletUI`](/docs/sdk/pnp/web/wallet-services/usage#show-wallet-embedded-ui).
+
+### Transaction Confirmatons Screen
+
+You can use the wallet services provider to integrate prebuilt transaction confirmation screens into
+your application. Upon successful completion, you can retrieve the signature for the request.
+[Learn more about transaction confirmation screens](/docs/sdk/pnp/web/wallet-services/usage#transaction-confirmation-screens).

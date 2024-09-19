@@ -11,8 +11,8 @@ import Tabs from "@theme/Tabs";
 
 ## [`@web3auth/default-evm-adapter`](https://npmjs.com/package/@web3auth/default-evm-adapter)
 
-Default EVM adapter allows you to seamlessly identify injected EVM wallets and interact with them
-with a single line of code.
+The default EVM adapter enables seamless detection of injected EVM wallets and
+WalletConnect-supported wallets, allowing interaction with just a single line of code.
 
 ## Basic Details
 
@@ -32,7 +32,13 @@ with a single line of code.
 npm install --save @web3auth/default-evm-adapter
 ```
 
-## Arguments
+## Injected Wallets
+
+To automatically fetch all the available EVM wallets in browser context, you should use the
+`getInjectedAdapters` function. This function uses MIPD (EIP6163) so all available wallets in the
+browser will automatically be detected.
+
+### Parameter
 
 <Tabs
   defaultValue="table"
@@ -44,17 +50,17 @@ npm install --save @web3auth/default-evm-adapter
 
 <TabItem value="table">
 
-| Parameter | type                     |
-| --------- | ------------------------ |
-| `options` | `Web3AuthNoModalOptions` |
+| Parameter | Description                                                         |
+| --------- | ------------------------------------------------------------------- |
+| `options` | Accepts `IWeb3AuthCoreOptions` used to initialize the Web3Auth SDK. |
 
 </TabItem>
 
-<TabItem value="function">
+<TabItem value="interface">
 
 ```tsx
-export declare const getDefaultExternalAdapters: (params: {
-  options: Web3AuthNoModalOptions;
+export declare const getInjectedAdapters: (params: {
+  options: IWeb3AuthCoreOptions;
 }) => Promise<IAdapter<unknown>[]>;
 ```
 
@@ -62,34 +68,112 @@ export declare const getDefaultExternalAdapters: (params: {
 
 </Tabs>
 
-## Example
+### Usage
 
 ```tsx
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+// focus-start
+import { getInjectedAdapters } from "@web3auth/default-evm-adapter";
+// focus-end
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 const chainConfig = {
-  chainId: "0x1", // Please use 0x1 for Mainnet
-  rpcTarget: "https://rpc.ankr.com/eth",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io/",
+  chainId: "0xaa36a7",
+  displayName: "Ethereum Sepolia",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  tickerName: "Ethereum Sepolia",
   ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/eth.svg",
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  blockExplorerUrl: "https://sepolia.etherscan.io",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 const web3AuthOptions: Web3AuthOptions = {
   clientId,
-  chainConfig: { ...chainConfig, chainNamespace: CHAIN_NAMESPACES.EIP155 },
+  chainConfig
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider: privateKeyProvider,
 };
 
+// focus-start
+const adapters = await getInjectedAdapters({ options: web3AuthOptions });
+
+adapters.forEach((adapter) => {
+  web3auth.configureAdapter(adapter);
+});
+// focus-end
+```
+
+## WalletConnect-supported Wallets
+
+To list all the wallets supported by the WalletConnect list, you can use the
+`getDefaultExternalAdapters` function. It provides an option to use the WalletConnect v2 wallet
+list. In case if the wallet is not installed, user can use the WalletConnect to connect.
+
+### Parameter
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter | Description                                                         |
+| --------- | ------------------------------------------------------------------- |
+| `options` | Accepts `IWeb3AuthCoreOptions` used to initialize the Web3Auth SDK. |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export declare const getDefaultExternalAdapters: (params: {
+  options: IWeb3AuthCoreOptions;
+}) => Promise<IAdapter<unknown>[]>;
+```
+
+</TabItem>
+
+</Tabs>
+
+### Usage
+
+```tsx
+// focus-start
+import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+// focus-end
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+const chainConfig = {
+  chainId: "0xaa36a7",
+  displayName: "Ethereum Sepolia",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  tickerName: "Ethereum Sepolia",
+  ticker: "ETH",
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  blockExplorerUrl: "https://sepolia.etherscan.io",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+};
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
+
+const web3AuthOptions: Web3AuthOptions = {
+  clientId,
+  chainConfig
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider: privateKeyProvider,
+};
+
+// focus-start
 const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
 
 adapters.forEach((adapter) => {
   web3auth.configureAdapter(adapter);
 });
+// focus-end
 ```

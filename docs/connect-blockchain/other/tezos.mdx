@@ -87,7 +87,7 @@ const chainConfig = {
 
 ```tsx
 import { Web3Auth } from "@web3auth/modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 
 const web3auth = new Web3Auth({
   clientId:
@@ -104,12 +104,12 @@ const web3auth = new Web3Auth({
 });
 
 // "other" is supported through @web3auth/openlogin-adapter package.
-const openloginAdapter = new OpenloginAdapter({
+const authAdapter = new AuthAdapter({
   adapterSettings: {
     uxMode: "popup",
   },
 });
-web3auth.configureAdapter(openloginAdapter);
+web3auth.configureAdapter(authAdapter);
 
 await web3auth.initModal();
 

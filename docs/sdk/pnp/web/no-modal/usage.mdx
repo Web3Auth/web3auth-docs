@@ -17,7 +17,7 @@ import ExtraLoginOptions from "@site/src/common/sdk/pnp/web/_extra-login-options
 import GetIdTokenInfo from "@site/src/common/sdk/pnp/web/_get-idtoken-info.mdx";
 import GetUserInfo from "@site/src/common/sdk/pnp/web/_get-user-info.mdx";
 import LogOut from "@site/src/common/sdk/pnp/web/_logout.mdx";
-import OpenloginLoginParams from "@site/src/common/sdk/pnp/web/_openlogin-login-params.mdx";
+import AuthLoginParams from "@site/src/common/sdk/pnp/web/_auth-login-params.mdx";
 import SwitchChain from "@site/src/common/sdk/pnp/web/_switch-chain.mdx";
 import WalletAdapters from "@site/src/common/sdk/pnp/web/_wallet-adapters.mdx";
 import InitiateTopUp from "@site/src/common/sdk/pnp/web/_plugin-initiate-topup.mdx";
@@ -30,24 +30,34 @@ to the respective blockchain network.
 Natively, the instance of `Web3AuthNoModal` _(referred to as `web3auth` in our examples)_ returns
 the following functions:
 
-- `connectTo()` - Logging in the User with the given Wallet Adapter and respective Login Parameters
-- `getUserInfo()` - Getting the User's Information
-- `enableMFA()` - Enable Multi Factor Authentication for the user
-- `authenticateUser()` - Getting the idToken from Web3Auth
+- `connectTo()` - Logging in the User with the given Wallet Adapter and respective Login Parameters.
+- `getUserInfo()` - Getting the User's Information.
+- `enableMFA()` - Enable Multi Factor Authentication for the user.
+- `authenticateUser()` - Getting the idToken from Web3Auth.
 - `addChain()` - Add chain config details to the connected adapter.
-- `switchChain()` - Switch chain as per chainId already added to chain config.
-- `logout()` - Logging out the User
+- `switchChain()` - Switch chain as per chainId already added to the chain config.
+- `logout()` - Logging out the User.
+- `getAdapter()` - Retrieve a specific wallet adapter by its name.
+- `configureAdapter()` - Configure a new or existing adapter.
+- `clearCache()` - Clear cached session information.
 
-Additionally the following methods are available to get information about the current state of the
-instance:
+Additionally, the following methods and properties are available to get or modify information about
+the current state of the instance:
 
 - `connected` - Returns `true` or `false` depending on whether the user is connected or not.
 - `status` - Returns the current status of the web3auth instance.
-- `provider` - Returns the currently connected provider to the web3auth instance.
-- `connectedAdapterName` - Returns the currently connected provider to the web3auth instance.
+- `provider` (getter/setter) - Returns or sets the currently connected provider to the web3auth
+  instance.
+- `connectedAdapterName` - Returns the name of the currently connected adapter.
+
+You can also extend functionality by using the following plugin management functions:
+
+- `addPlugin()` - Add a plugin to extend the functionality of the Web3Auth instance.
+- `getPlugin()` - Retrieve an added plugin by name.
 
 Finally, with the Wallet Services Plugin, you can enable additional functionalities like:
 
+- `showWalletUI()` - Show Wallet UI Screen.
 - `initiateTopup()` - Initiate Topup for the user.
 - `showWalletConnectScanner()` - Show WalletConnect QR Code Scanner.
 
@@ -101,9 +111,9 @@ The `loginParams` are specific for each and every function. Please refer to the
 [Adapters SDK Reference](/sdk/pnp/web/adapters) to know more about the login parameters specific to
 each wallet adapter.
 
-For `openlogin-adapter` which enables social logins, you can refer to the following `loginParams`.
+For `auth-adapter` which enables social logins, you can refer to the following `loginParams`.
 
-<OpenloginLoginParams />
+<AuthLoginParams />
 
 Further, for Custom Authentication, `ExtraLoginOptions` can be used to pass the standard OAuth login
 options.
@@ -125,6 +135,7 @@ options.
 ## Know the current status of the instance
 
 <Status />
+
 ## Get User's Information
 
 <GetUserInfo />
@@ -171,12 +182,24 @@ Learn more about the Wallet Services Plugin in the
 
 ### Show WalletConnect Scanner
 
-#### `showWalletConnectScanner()`
-
-<ShowWCScanner />
+You can use the `showWalletConnectScanner` function to show the Wallet Connect Scanner, and connect
+with dApps having Wallet Connect login option. This is useful for interoperability with dApps having
+Wallet Connect login option.
+[Learn more about `showWalletConnectScanner`](/docs/sdk/pnp/web/wallet-services/usage#connect-dapps-with-wallet-connect).
 
 ### Fiat On Ramp
 
-#### `initiateTopup()`
+You can use the `showCheckout` function to show the TopUp modal, allowing users to select their
+local currency and specify the token to top up their wallet.
+[Learn more about `showCheckout`](/docs/sdk/pnp/web/wallet-services/usage#fiat-on-ramp).
 
-<InitiateTopUp />
+### Embedded Wallet UI
+
+You can use the `showWalletUI` function to show the templated wallet UI services.
+[Learn more about `showWalletUI`](/docs/sdk/pnp/web/wallet-services/usage#show-wallet-embedded-ui).
+
+### Transaction Confirmatons Screen
+
+You can use the wallet services provider to integrate prebuilt transaction confirmation screens into
+your application. Upon successful completion, you can retrieve the signature for the request.
+[Learn more about transaction confirmation screens](/docs/sdk/pnp/web/wallet-services/usage#transaction-confirmation-screens).

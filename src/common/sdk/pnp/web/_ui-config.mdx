@@ -11,66 +11,24 @@ import Tabs from "@theme/Tabs";
 
 <TabItem value="table">
 
-| Parameter              | Description                                                                                                                                                                                                                                                                                                           |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginMethodsOrder`    | order of how login methods are shown                                                                                                                                                                                                                                                                                  |
-| `modalZIndex`          | Z-index of the modal and iframe                                                                                                                                                                                                                                                                                       |
-| `displayErrorsOnModal` | Whether to show errors on Web3Auth modal.                                                                                                                                                                                                                                                                             |
-| `loginGridCol`         | number of columns to display the Social Login buttons                                                                                                                                                                                                                                                                 |
-| `primaryButton`        | Decides which button will be the focus of the modal                                                                                                                                                                                                                                                                   |
-| `uxMode`               | UX Mode for the openlogin adapter                                                                                                                                                                                                                                                                                     |
-| `appName?`             | App name to be displayed in the User Flow Screens. It accepts `string` as a value.                                                                                                                                                                                                                                    |
-| `appUrl?`              | App URL to be displayed in the User Flow Screens. It accepts `string` as a value.                                                                                                                                                                                                                                     |
-| `logoLight?`           | App logo to be shown on the light background (light theme). It accepts `string` as a value.                                                                                                                                                                                                                           |
-| `logoDark?`            | App logo to be shown on the dark background (dark theme). It accepts `string` as a value.                                                                                                                                                                                                                             |
-| `defaultLanguage?`     | Default Language to use. <br/> Choose from: <ul><li>`en` - English</li><li>`de` - German</li><li>`ja` - Japanese</li><li>`ko` - Korean</li><li>`zh` - Mandarin</li><li>`es` - Spanish</li><li>`fr` - French</li><li>`pt` - Portuguese</li><li>`nl` - Dutch</li><li>`tr` - Turkish</li></ul>. Default language is `en` |
-| `mode?`                | Choose between `auto`, `light` or `dark` background modes. Default is `auto`.                                                                                                                                                                                                                                         |
-| `theme?`               | Used to customize the theme of the login modal with the following options <br /> `'primary'` - To customize the primary color of the modal's content. It accepts `Record` as a value.                                                                                                                                 |
-| `tncLink?`             | Language specific link for terms and conditions on torus-website. See (examples/vue-app) to configure e.g. tncLink: `{en: "http://example.com/tnc/en", ja: "http://example.com/tnc/ja"}`                                                                                                                              |
-| `privacyPolicy?`       | Language specific link for privacy policy on torus-website. See (examples/vue-app) to configure e.g. `privacyPolicy: { en: "http://example.com/tnc/en", ja: "http://example.com/tnc/ja", }`                                                                                                                           |
+| Parameter         | Description                                                                                                                            |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `appName`         | App name to display in the UI                                                                                                          |
+| `appUrl`          | App url                                                                                                                                |
+| `logoLight`       | App logo to use in light mode                                                                                                          |
+| `logoDark`        | App logo to use in dark mode                                                                                                           |
+| `defaultLanguage` | language which will be used by web3auth. app will use browser language if not specified. if language is not supported it will use "en" |
+| `mode`            | theme                                                                                                                                  |
+| `useLogoLoader`   | Use logo loader                                                                                                                        |
+| `theme`           | Used to customize your theme                                                                                                           |
+| `tncLink`         | Language specific link for terms and conditions on torus-website. See (examples/vue-app) to configure                                  |
+| `privacyPolicy`   | Language specific link for privacy policy on torus-website. See (examples/vue-app) to configure                                        |
 
 </TabItem>
 
 <TabItem value="interface">
 
 ```tsx
-export interface UIConfig extends WhiteLabelData {
-  /**
-   * order of how login methods are shown
-   *
-   * @defaultValue `["google", "facebook", "twitter", "reddit", "discord", "twitch", "apple", "line", "github", "kakao", "linkedin", "weibo", "wechat", "email_passwordless"]`
-   */
-  loginMethodsOrder?: string[];
-  /**
-   * Z-index of the modal and iframe
-   * @defaultValue 99998
-   */
-  modalZIndex?: string;
-  /**
-   * Whether to show errors on Web3Auth modal.
-   *
-   * @defaultValue `true`
-   */
-  displayErrorsOnModal?: boolean;
-  /**
-   * number of columns to display the Social Login buttons
-   *
-   * @defaultValue `3`
-   */
-  loginGridCol?: 2 | 3;
-  /**
-   * Decides which button will be the focus of the modal
-   * For `socialLogin` the social icon will be colored
-   * For other options like `emailLogin` and `externalLogin` the respective buttons will be coverted into a primary button
-   *
-   * @defaultValue `socialLogin`
-   */
-  primaryButton?: "externalLogin" | "socialLogin" | "emailLogin";
-  /**
-   * UX Mode for the openlogin adapter
-   */
-  uxMode?: UX_MODE_TYPE;
-}
 export type WhiteLabelData = {
   /**
    * App name to display in the UI
@@ -99,6 +57,7 @@ export type WhiteLabelData = {
    * fr: french
    * pt: portuguese
    * nl: dutch
+   * tr: turkish
    *
    * @defaultValue en
    */
@@ -106,7 +65,7 @@ export type WhiteLabelData = {
   /**
      theme
      *
-     * @defaultValue auto
+     * @defaultValue light
      */
   mode?: THEME_MODE_TYPE;
   /**
@@ -116,20 +75,9 @@ export type WhiteLabelData = {
    */
   useLogoLoader?: boolean;
   /**
-   * Used to customize theme of the login modal with following options
-   * `'primary'` - To customize primary color of modal's content.
+   * Used to customize your theme
    */
-  theme?: {
-    primary?: string;
-    gray?: string;
-    red?: string;
-    green?: string;
-    success?: string;
-    warning?: string;
-    error?: string;
-    info?: string;
-    white?: string;
-  };
+  theme?: WHITE_LABEL_THEME;
   /**
    * Language specific link for terms and conditions on torus-website. See (examples/vue-app) to configure
    * e.g.
@@ -148,6 +96,40 @@ export type WhiteLabelData = {
    * }
    */
   privacyPolicy?: Partial<Record<LANGUAGE_TYPE, string>>;
+};
+
+export declare const LANGUAGES: {
+  readonly en: "en";
+  readonly ja: "ja";
+  readonly ko: "ko";
+  readonly de: "de";
+  readonly zh: "zh";
+  readonly es: "es";
+  readonly fr: "fr";
+  readonly pt: "pt";
+  readonly nl: "nl";
+  readonly tr: "tr";
+};
+export type LANGUAGE_TYPE = (typeof LANGUAGES)[keyof typeof LANGUAGES];
+
+export declare const THEME_MODES: {
+  readonly light: "light";
+  readonly dark: "dark";
+  readonly auto: "auto";
+};
+export type THEME_MODE_TYPE = (typeof THEME_MODES)[keyof typeof THEME_MODES];
+
+export type WHITE_LABEL_THEME = {
+  /**
+   * `primary` color that represents your brand
+   * Will be applied to elements such as primary button, nav tab(selected), loader, input focus, etc.
+   */
+  primary?: string;
+  /**
+   * `onPrimary` color that is meant to contrast with the primary color
+   * Applies to elements such as the text in a primary button or nav tab(selected), blocks of text on top of a primary background, etc.
+   */
+  onPrimary?: string;
 };
 ```
 

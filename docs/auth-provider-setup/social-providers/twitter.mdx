@@ -37,10 +37,10 @@ with Auth0 & Firebase, but this can be done with any other Federated/JWT provide
 ### Example
 
 ```tsx
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 
-// Create OpenloginAdapter instance once you have created Web3AuthNoModal instance
-const openloginAdapter = new OpenloginAdapter({
+// Create AuthAdapter instance once you have created Web3AuthNoModal instance
+const authAdapter = new AuthAdapter({
   adapterSettings: {
     loginConfig: {
       // focus-start
@@ -54,14 +54,14 @@ const openloginAdapter = new OpenloginAdapter({
   },
 });
 
-web3AuthNoModalInstance.configureAdapter(openloginAdapter);
+web3AuthNoModalInstance.configureAdapter(authAdapter);
 
 // Initialize
 await web3AuthNoModalInstance.init();
 
 // Trigger login with Twitter / X
 // focus-start
-await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.AUTH, {
   loginProvider: "jwt",
   extraLoginOptions: {
     domain: "https://web3auth.au.auth0.com", // Pass on the Auth0 `Domain` here
@@ -90,7 +90,7 @@ await web3AuthNoModalInstance.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 >
 
 ```tsx
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import { initializeApp } from "firebase/app";
 import { TwitterAuthProvider, getAuth, signInWithPopup, UserCredential } from "firebase/auth";
 
@@ -104,9 +104,8 @@ const firebaseConfig = {
   appId: "1:461819774167:web:e74addfb6cc88f3b5b9c92", // Replace with your Firebase project's app ID
 };
 
-// Create OpenloginAdapter instance once you have created Web3AuthNoModal instance
-const openloginAdapter = new OpenloginAdapter({
-  adapterSettings: {
+// Create AuthAdapter instance once you have created Web3AuthNoModal instance
+const authAdapter = new AuthAdapter({  adapterSettings: {
     loginConfig: {
       // focus-start
       jwt: {
@@ -119,7 +118,7 @@ const openloginAdapter = new OpenloginAdapter({
   },
 });
 
-web3AuthNoModalInstance.configureAdapter(openloginAdapter);
+web3AuthNoModalInstance.configureAdapter(authAdapter);
 
 // Initialize
 await web3AuthNoModalInstance.init();
@@ -146,8 +145,8 @@ const loginRes = await signInWithTwitter();
 const idToken = await loginRes.user.getIdToken(true);
 
 // Login in No Modal SDK with Twitter / X idToken
-await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-  WALLET_ADAPTERS.OPENLOGIN,
+await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
+  WALLET_ADAPTERS.AUTH,
   {
     loginProvider: "jwt",
     extraLoginOptions: {
