@@ -1131,6 +1131,7 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Plug and Play Modal SDK",
           items: [
+            "migration-guides/modal-v8-to-v9",
             "migration-guides/modal-v7-to-v8",
             "migration-guides/modal-v6-to-v7",
             "migration-guides/modal-v5-to-v6",
@@ -1140,6 +1141,7 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Plug and Play No Modal SDK",
           items: [
+            "migration-guides/no-modal-v8-to-v9",
             "migration-guides/no-modal-v7-to-v8",
             "migration-guides/no-modal-v6-to-v7",
             "migration-guides/no-modal-v5-to-v6",
