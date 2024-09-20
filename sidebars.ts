@@ -1080,12 +1080,8 @@ const sidebars: SidebarsConfig = {
         "sdk/pnp/web/adapters/auth",
         "sdk/pnp/web/adapters/torus-evm",
         "sdk/pnp/web/adapters/torus-solana",
-        "sdk/pnp/web/adapters/metamask",
-        "sdk/pnp/web/adapters/phantom",
-        "sdk/pnp/web/adapters/wallet-connect-v1",
         "sdk/pnp/web/adapters/wallet-connect-v2",
         "sdk/pnp/web/adapters/coinbase",
-        "sdk/pnp/web/adapters/solflare",
       ],
     },
     {

@@ -39,21 +39,23 @@ const loginAdapter = new AuthAdapter(AuthAdapterOptions);
 In v9, the functionality of `getDefaultExternalAdapters` has changed. Previously, it displayed
 injected wallets available in the browser. Starting from v9, it will now show a list of
 WalletConnect-compatible wallets, enabling users to connect via WalletConnect if a wallet is not
-already installed.
+already installed. Please look at the image below.
 
-If you wish to show only injected wallets, you can now use `getInjectedAdapters`.
+![getDefaultExternalAdapters image](/images/default-adapter.png)
+
+Additionally, a new `getInjectedAdapters` function has been introduced, which detects injected
+wallets and, if none are available, prompts users with an option to install one. Refer to the image
+below for details: ![getInjectedAdapters image](/images/injected-adapter.png)
+
+The key difference between `getInjectedAdapters` and `getDefaultExternalAdapters` lies in their
+handling of missing wallets. While `getInjectedAdapters` provides users with an installation option
+when no wallet is found, `getDefaultExternalAdapters` allows users to connect via WalletConnect in
+the absence of an installed wallet.
 
 #### Show Injected Wallets
 
 ```ts
-// remove-next-line
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
-// add-next-line
 import { getInjectedAdapters } from "@web3auth/default-evm-adapter";
-
-// remove-next-line
-const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
-// add-next-line
 const adapters = await getInjectedAdapters({ options: web3AuthOptions });
 
 adapters.forEach((adapter) => {
@@ -81,11 +83,11 @@ the default EVM adapter, there is no functionality change for `getDefaultExterna
 
 ### External Wallet Adapters Deprecation
 
-Starting with v9, external wallet adapters for Metamask, Phantom, and Solflare are deprecated in
-favor of the Default EVM Adapter and Default Solana Adapter. These new adapters use MIPD to
+Starting with v9, external wallet adapters for Metamask, Phantom, Solflare, and Slope are deprecated
+in favor of the Default EVM Adapter and Default Solana Adapter. These new adapters use MIPD to
 automatically detect injected wallets.
 
-#### Metmask Adapter Migration
+#### Metamask Adapter Migration
 
 ```ts
 // remove-next-line
@@ -94,7 +96,7 @@ import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { getInjectedAdapters } from "@web3auth/default-evm-adapter";
 
 // remove-next-line
-const metamaskAdapter = new MetamaskAdapter({});
+const metamaskAdapter = new MetamaskAdapter();
 // add-start
 const adapters = await getInjectedAdapters({ options: web3AuthOptions });
 const metamaskAdapter = adapters.find((e) => e.name == "metamask");
@@ -112,7 +114,7 @@ import { PhantomAdapter } from "@web3auth/phantom-adapter";
 import { getInjectedAdapters } from "@web3auth/default-solana-adapter";
 
 // remove-next-line
-const phantomAdapter = new PhantomAdapter({});
+const phantomAdapter = new PhantomAdapter();
 // add-start
 const adapters = await getInjectedAdapters({ options: web3AuthOptions });
 const phantomAdapter = adapters.find((e) => e.name == "phantom");
@@ -130,7 +132,7 @@ import { SolflareAdapter } from "@web3auth/solflare-adapter";
 import { getInjectedAdapters } from "@web3auth/default-solana-adapter";
 
 // remove-next-line
-const solflareAdapter = new SolflareAdapter({});
+const solflareAdapter = new SolflareAdapter();
 // add-start
 const adapters = await getInjectedAdapters({ options: web3AuthOptions });
 const solflareAdapter = adapters.find((e) => e.name == "solflare");
@@ -139,14 +141,30 @@ const solflareAdapter = adapters.find((e) => e.name == "solflare");
 web3auth.configureAdapter(solflareAdapter);
 ```
 
+#### Slope Adapter Migration
+
+```ts
+// remove-next-line
+import { SlopeAdapter } from "@web3auth/slope-adapter";
+// add-next-line
+import { getInjectedAdapters } from "@web3auth/default-solana-adapter";
+
+// remove-next-line
+const slopeAdapter = new SlopeAdapter();
+// add-start
+const adapters = await getInjectedAdapters({ options: web3AuthOptions });
+const slopeAdapter = adapters.find((e) => e.name == "slope");
+// add-end
+
+web3auth.configureAdapter(slopeAdapter);
+```
+
 ### Hooks Auto Init
 
 Starting with v9, the `initModal` method for initializing the Modal SDK has been removed.
 Initialization is now handled internally by the hooks.
 
-The modal config instead of `initModal` now needs to be passed in `Web3AuthContextConfig`.
-
-```ts
+```ts title="App.tsx"
 // remove-start
 const { initModal } = useWeb3Auth();
 await initModal(params: {
@@ -163,7 +181,11 @@ await initModal(params: {
   },
 });
 // remove-end
+```
 
+The modal config instead of `initModal` now needs to be passed in `Web3AuthContextConfig`.
+
+```ts title="web3AuthProviderProps.ts"
 const web3AuthContextConfig: Web3AuthContextConfig = {
   web3AuthOptions,
   // add-start
@@ -179,9 +201,9 @@ const web3AuthContextConfig: Web3AuthContextConfig = {
     },
   },
   // add-end
-  adapters: [openloginAdapter, metamask!],
+  adapters: [openloginAdapter],
   plugins: [walletServicesPlugin],
-}
+};
 ```
 
 ### Minor Changes

@@ -37,23 +37,22 @@ const loginAdapter = new AuthAdapter(AuthAdapterOptions);
 ### Default EVM Adapter Enhancements
 
 In v9, the functionality of `getDefaultExternalAdapters` has changed. Previously, it displayed
-injected wallets available in the browser. Starting from v9, it will now show a list of
-WalletConnect-compatible wallets, enabling users to connect via WalletConnect if a wallet is not
-already installed.
+injected wallets available in the browser. Starting from v9, it will now show an option to connect
+with WalletConnect modal, enabling users to connect via WalletConnect if a wallet is not already
+installed.
 
 If you wish to show only injected wallets, you can now use `getInjectedAdapters`.
+
+The key difference between `getInjectedAdapters` and `getDefaultExternalAdapters` lies in their
+handling of missing wallets. While `getInjectedAdapters` will return an empty list when no wallet is
+found, `getDefaultExternalAdapters` allows users to connect via WalletConnect in the absence of
+installed wallet.
 
 #### Show Injected Wallets
 
 ```ts
-// remove-next-line
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
-// add-next-line
 import { getInjectedAdapters } from "@web3auth/default-evm-adapter";
 
-// remove-next-line
-const adapters = await getDefaultExternalAdapters({ options: web3AuthOptions });
-// add-next-line
 const adapters = await getInjectedAdapters({ options: web3AuthOptions });
 
 adapters.forEach((adapter) => {
@@ -61,7 +60,7 @@ adapters.forEach((adapter) => {
 });
 ```
 
-#### Show WalletConnect-Compatible Wallets
+#### Show Injected Wallets & WalletConnect Modal
 
 ```ts
 import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
@@ -81,11 +80,11 @@ the default EVM adapter, there is no functionality change for `getDefaultExterna
 
 ### External Wallet Adapters Deprecation
 
-Starting with v9, external wallet adapters for Metamask, Phantom, and Solflare are deprecated in
-favor of the Default EVM Adapter and Default Solana Adapter. These new adapters use MIPD to
+Starting with v9, external wallet adapters for Metamask, Phantom, Solflare, and Slope are deprecated
+in favor of the Default EVM Adapter and Default Solana Adapter. These new adapters use MIPD to
 automatically detect injected wallets.
 
-#### Metmask Adapter Migration
+#### Metamask Adapter Migration
 
 ```ts
 // remove-next-line
@@ -137,6 +136,24 @@ const solflareAdapter = adapters.find((e) => e.name == "solflare");
 // add-end
 
 web3auth.configureAdapter(solflareAdapter);
+```
+
+#### Slope Adapter Migration
+
+```ts
+// remove-next-line
+import { SlopeAdapter } from "@web3auth/slope-adapter";
+// add-next-line
+import { getInjectedAdapters } from "@web3auth/default-solana-adapter";
+
+// remove-next-line
+const slopeAdapter = new SlopeAdapter();
+// add-start
+const adapters = await getInjectedAdapters({ options: web3AuthOptions });
+const slopeAdapter = adapters.find((e) => e.name == "slope");
+// add-end
+
+web3auth.configureAdapter(slopeAdapter);
 ```
 
 ### Hooks Auto Init
