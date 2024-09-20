@@ -1604,7 +1604,11 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/sfa-flutter-v1-to-v2", "migration-guides/sfa-flutter-v2-to-v4"],
+      items: [
+        "migration-guides/sfa-flutter-v4-to-v5",
+        "migration-guides/sfa-flutter-v2-to-v4",
+        "migration-guides/sfa-flutter-v1-to-v2",
+      ],
     },
     ...sdkQuickLinks,
   ],
