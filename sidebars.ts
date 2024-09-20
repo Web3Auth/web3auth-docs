@@ -393,6 +393,8 @@ const sidebars: SidebarsConfig = {
           label: "Social Connections",
           items: [
             "auth-provider-setup/social-providers/social-providers",
+            "auth-provider-setup/social-providers/email-passwordless",
+            "auth-provider-setup/social-providers/sms-passwordless",
             "auth-provider-setup/social-providers/twitter",
             "auth-provider-setup/social-providers/google",
             "auth-provider-setup/social-providers/telegram",
