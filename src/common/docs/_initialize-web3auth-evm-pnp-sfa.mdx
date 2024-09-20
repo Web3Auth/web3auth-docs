@@ -38,7 +38,7 @@ const web3auth = new Web3Auth({
 
 ```tsx
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { WEB3AUTH_NETWORK } from "@web3auth/base";
 
@@ -52,10 +52,8 @@ const web3auth = new Web3AuthNoModal({
   privateKeyProvider,
 });
 
-const openloginAdapter = new OpenloginAdapter({
-  privateKeyProvider,
-});
-web3auth.configureAdapter(openloginAdapter);
+const authAdapter = new AuthAdapter({ privateKeyProvider });
+web3auth.configureAdapter(authAdapter);
 ```
 
 </TabItem>

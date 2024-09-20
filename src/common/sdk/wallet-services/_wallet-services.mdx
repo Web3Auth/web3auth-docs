@@ -1,11 +1,11 @@
 import PluginConfig from "@site/src/common/sdk/pnp/web/_plugin-config.mdx";
 import PluginsExample from "@site/src/common/sdk/pnp/web/_plugins-example.mdx";
 
-### [`@web3auth/wallet-services-plugin`](https://npmjs.com/package/@web3auth/wallet-services-plugin)
-
-Wallet Services Plugin Enable allows your application to use templated wallet UI screens. Take
-control of and personalize the wallet interface, and optionally, activate an embedded wallet for
-your users.
+The [Wallet Services Plugin](https://npmjs.com/package/@web3auth/wallet-services-plugin) enables
+your application to integrate essential features like wallet top-ups, WalletConnect, and
+customizable wallet and transaction UI screens. You gain full control to personalize the wallet
+interface to suit your brand, while also having the option to embed a seamless wallet experience
+directly for your users.
 
 :::note Note
 
@@ -24,36 +24,19 @@ npm install --save @web3auth/wallet-services-plugin
 
 ## Initialization
 
-Import the `WalletServicesPlugin` **class** from `@web3auth/wallet-services-plugin`.
-
-```javascript
-import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
-```
-
-#### Assign the `WalletServicesPlugin` class to a variable
-
 After creating your Web3Auth instance, you need to initialize the Wallet Services Plugin and add it
-to a class for further usage.
+to the Web3Auth instance for further usage.
 
-```javascript
-const walletServicesPlugin = new WalletServicesPlugin(options);
-```
-
-This constructor takes an object with `wsEmbedOpts` & `walletInitOptions` as input.
-
-### Arguments
+### Parameters
 
 <PluginConfig />
 
-## Add the `walletServicesPlugin` class to your `Web3Auth` instance
-
-After initializing the `walletServicesPlugin`, use the `addPlugin()` function to your Web3Auth
-instance, you can use the Wallet Services Plugin for your dApp.
-
-```
-web3AuthInstance.addPlugin(walletServicesPlugin);
-```
-
 ### Example
 
-<PluginsExample />
+```ts
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
+
+const walletServicesPlugin = new WalletServicesPlugin();
+// Use the existing Web3Auth instance
+web3auth.addPlugin(walletServicesPlugin);
+```

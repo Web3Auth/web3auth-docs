@@ -83,7 +83,7 @@ We need many dependencies to make this work::
   <TabItem value="npm">
     ```bash
 
-    npm install @web3auth/base @web3auth/no-modal @web3auth/openlogin-adapter @web3auth/ethereum-provider @web3auth/solana-provider @polkadot/api @polkadot/util-crypto @taquito/signer @taquito/taquito @taquito/utils @tezos-core-tools/crypto-utils @starkware-industries/starkware-crypto-utils web3 ethers
+    npm install @web3auth/base @web3auth/no-modal @web3auth/auth-adapter @web3auth/ethereum-provider @web3auth/solana-provider @polkadot/api @polkadot/util-crypto @taquito/signer @taquito/taquito @taquito/utils @tezos-core-tools/crypto-utils @starkware-industries/starkware-crypto-utils web3 ethers
 
     ```
 
@@ -91,7 +91,7 @@ We need many dependencies to make this work::
   <TabItem value="yarn">
     ```bash
 
-    yarn add @web3auth/base @web3auth/no-modal @web3auth/openlogin-adapter @web3auth/ethereum-provider @web3auth/solana-provider @polkadot/api @polkadot/util-crypto @taquito/signer @taquito/taquito @taquito/utils @tezos-core-tools/crypto-utils @starkware-industries/starkware-crypto-utils web3 ethers
+    yarn add @web3auth/base @web3auth/no-modal @web3auth/auth-adapter @web3auth/ethereum-provider @web3auth/solana-provider @polkadot/api @polkadot/util-crypto @taquito/signer @taquito/taquito @taquito/utils @tezos-core-tools/crypto-utils @starkware-industries/starkware-crypto-utils web3 ethers
 
     ```
 
@@ -99,7 +99,7 @@ We need many dependencies to make this work::
   <TabItem value="pnpm">
     ```bash
 
-    pnpm add @web3auth/base @web3auth/no-modal @web3auth/openlogin-adapter @web3auth/ethereum-provider @web3auth/solana-provider @polkadot/api @polkadot/util-crypto @taquito/signer @taquito/taquito @taquito/utils @tezos-core-tools/crypto-utils @starkware-industries/starkware-crypto-utils web3 ethers
+    pnpm add @web3auth/base @web3auth/no-modal @web3auth/auth-adapter @web3auth/ethereum-provider @web3auth/solana-provider @polkadot/api @polkadot/util-crypto @taquito/signer @taquito/taquito @taquito/utils @tezos-core-tools/crypto-utils @starkware-industries/starkware-crypto-utils web3 ethers
 
     ```
 
@@ -125,10 +125,10 @@ Import the required modules for web3auth and any providers you want to use.
 ```tsx
 
 import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { web3AuthConfig, openloginAdapterConfig } from "./config/web3auth";
+import { web3AuthConfig, authAdapterConfig } from "./config/web3auth";
 
 import StartkNetRPC from "./RPC/startkNetRPC"; // for using starkex
 import EthereumRPC from "./RPC/ethRPC-web3"; // for using web3.js
@@ -141,7 +141,7 @@ import PolkadotRPC from "./RPC/polkadotRPC"; // for using polkadot
 <TabItem value="web3auth">
 ```tsx
 import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, UX_MODE, Web3AuthNoModalOptions } from "@web3auth/base";
-import { OpenloginAdapterOptions } from "@web3auth/openlogin-adapter";
+import { AuthAdapterOptions } from "@web3auth/auth-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
@@ -166,7 +166,7 @@ export const web3AuthConfig: Web3AuthNoModalOptions = {
 };
 
 
-export const openloginAdapterConfig: OpenloginAdapterOptions ={
+export const authAdapterConfig: AuthAdapterOptions ={
     adapterSettings: {
       uxMode: UX_MODE.REDIRECT,
     },
@@ -214,8 +214,8 @@ import { cryptoWaitReady } from "@polkadot/util-crypto";
 </Tabs>
 
 Call `init` when the app is loaded, it will initialize the Web3Auth instance. Also don't forget to
-properly configure the `clientId`, `web3AuthConfig` and `openloginAdapterConfig` objects in the
-`config` directory.
+properly configure the `clientId`, `web3AuthConfig` and `authAdapterConfig` objects in the `config`
+directory.
 
 ```tsx
 const init = async () => {
@@ -223,8 +223,8 @@ const init = async () => {
     const web3auth = new Web3AuthNoModal(web3AuthConfig);
     setWeb3auth(web3auth);
 
-    const openloginAdapter = new OpenloginAdapter(openloginAdapterConfig);
-    web3auth.configureAdapter(openloginAdapter);
+    const authAdapter = new AuthAdapter(authAdapterConfig);
+    web3auth.configureAdapter(authAdapter);
 
     await web3auth.init();
 
@@ -241,11 +241,10 @@ const init = async () => {
 ### Login with Web3Auth
 
 You must call this function to start the login process. You can change the `loginProvider` to any of
-the
-[available social logins](https://web3auth.io/docs/sdk/pnp/web/adapters/openlogin#loginsettings).
+the [available social logins](https://web3auth.io/docs/sdk/pnp/web/adapters/auth#loginsettings).
 
 ```tsx
-const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
   loginProvider: "google",
 });
 ```

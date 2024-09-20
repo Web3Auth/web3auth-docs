@@ -26,7 +26,7 @@ To interact with the Tron blockchain, you can use the Web3Auth provider and Tron
 ### NPM Installation
 
 ```bash
-npm install @web3auth/no-modal @web3auth/ethereum-provider @web3auth/openlogin-adapter @web3auth/wallet-services-plugin tronweb
+npm install @web3auth/no-modal @web3auth/ethereum-provider @web3auth/auth-adapter @web3auth/wallet-services-plugin tronweb
 ```
 
 ---
@@ -75,7 +75,7 @@ We will now initialize Web3Auth with the TRON configuration.
 ```typescript
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 import { TRON_SHASTA_TESTNET } from "./chainConfig";
 import TronRpc from "./tronRPC";
 
@@ -91,12 +91,12 @@ const web3auth = new Web3AuthNoModal({
   privateKeyProvider,
 });
 
-const openloginAdapter = new OpenloginAdapter({
+const authAdapter = new AuthAdapter({
   adapterSettings: {
     uxMode: "redirect",
   },
 });
-web3auth.configureAdapter(openloginAdapter);
+web3auth.configureAdapter(authAdapter);
 await web3auth.init();
 ```
 

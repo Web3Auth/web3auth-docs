@@ -5,6 +5,8 @@ sidebar_label: vKontakte
 description: "ВКонтакте (vKontakte) Login with Web3Auth | Documentation - Web3Auth"
 ---
 
+import CreateVerifierFirstStep from "@site/src/common/docs/_create-verifier-first-step.mdx";
+
 :::note
 
 vKontakte login can be performed in various ways, depending on the use case. We have demonstrated
@@ -12,18 +14,19 @@ this with Auth0, but this can be done with any other Federated/JWT providers.
 
 :::
 
-## Set up [ВКонтакте (vKontakte)](https://marketplace.auth0.com/integrations/vkontakte-social-connection) via Auth0
+## Create a ВКонтакте (vKontakte) verifier
 
+<CreateVerifierFirstStep />
 1. Create a verifier for your Auth0 application by selecting `Auth0` as the Login provider from this
-   modal.
-   ![ВКонтакте (vKontakte) - Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier-auth0.png)
-2. Select the `Other` as the **Authentication Type** based on the dropdown.
-   ![ВКонтакте (vKontakte) - Auth0 Authentication Type list on Web3Auth Dashboard](/images/dashboard/create-verifier-google.png)
-3. Enter the `Auth0 Client ID` and `Auth0 Domain` from your Auth0 application. See how to create a
-   new Auth0 application [here](https://auth0.com/docs/quickstart/webapp/).
+modal. ![ВКонтакте (vKontakte) - Login Providers list on Web3Auth
+Dashboard](/images/dashboard/create-verifier-auth0.png) 2. Select the `Other` as the
+**Authentication Type** based on the dropdown. ![ВКонтакте (vKontakte) - Auth0 Authentication Type
+list on Web3Auth Dashboard](/images/dashboard/create-verifier-google.png) 3. Enter the `Auth0 Client
+ID` and `Auth0 Domain` from your Auth0 application. See how to create a new Auth0 application
+[here](https://auth0.com/docs/quickstart/webapp/).
 
-   ![ВКонтакте (vKontakte) - Domain and Client ID from Auth0 Dashboard](/images/dashboard/create-verifier-auth0-filled-common.png)
-   ![ВКонтакте (vKontakte) - Auth0 Client ID and Auth0 Domain on Web3Auth Dashboard](/images/dashboard/create-verifier-auth0-unfilled.png)
+![ВКонтакте (vKontakte) - Domain and Client ID from Auth0 Dashboard](/images/dashboard/create-verifier-auth0-filled-common.png)
+![ВКонтакте (vKontakte) - Auth0 Client ID and Auth0 Domain on Web3Auth Dashboard](/images/dashboard/create-verifier-auth0-unfilled.png)
 
 4. Add the
    [ВКонтакте (vKontakte) Social Connection](https://marketplace.auth0.com/integrations/vkontakte-social-connection)
@@ -31,13 +34,13 @@ this with Auth0, but this can be done with any other Federated/JWT providers.
 5. Click on the `Create` button to create `ВКонтакте (vKontakte)` Custom Authentication via Auth0
    verifier.
 
-### Example
+## Example
 
 ```tsx
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 
-// Create OpenloginAdapter instance once you have created Web3AuthNoModal instance
-const openloginAdapter = new OpenloginAdapter({
+// Create AuthAdapter instance once you have created Web3AuthNoModal instance
+const authAdapter = new AuthAdapter({
   adapterSettings: {
     uxMode: "redirect",
     loginConfig: {
@@ -52,14 +55,14 @@ const openloginAdapter = new OpenloginAdapter({
   },
 });
 
-web3AuthInstance.configureAdapter(openloginAdapter);
+web3AuthInstance.configureAdapter(authAdapter);
 
 // Initialize
 await web3AuthInstance.init();
 
 // Login with ВКонтакте (vKontakte)
 // focus-start
-await web3AuthInstance.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+await web3AuthInstance.connectTo(WALLET_ADAPTERS.AUTH, {
   loginProvider: "jwt",
   extraLoginOptions: {
     domain: "https://web3auth.uk.auth0.com", // Pass on the Auth0 `Domain` here
