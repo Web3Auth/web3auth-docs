@@ -9,11 +9,11 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
 After installation, the next step to use Web3Auth SFA Flutter is to initialize the SDK and is
-achieved by `init()` function. This step requires passing various parameters that align with your
+achieved by `init` method. This step requires passing various parameters that align with your
 project preferences. It's important to note that the initialization process is critical to the
 successful use of Web3Auth SFA Flutter.
 
-## Arguments
+## Parameters
 
 Construct and configure the `init` method with the `SFAParams`
 
@@ -27,10 +27,11 @@ Construct and configure the `init` method with the `SFAParams`
 
 <TabItem value="table">
 
-| Parameter  | Description                                                                                                                                                                  |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `network`  | The Web3auth network is to be used by the SDK. Supported values are `Web3AuthNetwork.MAINNET`, `Web3AuthNetwork.TESTNET`, `Web3AuthNetwork.CYAN`, and `Web3AuthNetwork.AQUA` |
-| `clientid` | The client id for your Web3Auth project. You can get it from [Web3Auth dashboard](https://dashboard.web3auth.io).                                                            |
+| Parameter     | Description                                                                                                                                                                                                                                     |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `network`     | The Web3auth network to be used by the SDK. Supported values are `Web3AuthNetwork.sapphire_mainnet`, `Web3AuthNetwork.sapphire_devnet`,`Web3AuthNetwork.mainnet`, `Web3AuthNetwork.testnet`, `Web3AuthNetwork.cyan`, and `Web3AuthNetwork.aqua` |
+| `clientId`    | The client id for your Web3Auth project. You can get it from [Web3Auth dashboard](https://dashboard.web3auth.io/).                                                                                                                              |
+| `sessionTime` | Specifies the session duration in seconds. By default, the value is set to 86400 seconds (1 day), with a maximum session duration of up to 7 days.                                                                                              |
 
 </TabItem>
 
@@ -39,31 +40,44 @@ Construct and configure the `init` method with the `SFAParams`
 ```dart
 class SFAParams {
   final Web3AuthNetwork network;
-  final String clientid;
+  final String clientId;
+  final int sessionTime;
 
-  SFAParams({required this.network, required this.clientid});
+  SFAParams(
+      {required this.network,
+      required this.clientId,
+      this.sessionTime = 86400});
 
   Map<String, dynamic> toJson() {
     return {
       'network': network.name,
-      'clientid': clientid,
+      'clientId': clientId,
+      'sessionTime': sessionTime,
     };
   }
 }
 
-enum Web3AuthNetwork { mainnet, testnet, cyan, aqua, celeste }
+enum Web3AuthNetwork {
+  mainnet,
+  testnet,
+  cyan,
+  aqua,
+  celeste,
+  sapphire_testnet,
+  sapphire_mainnet
+}
 ```
 
 </TabItem>
 
 </Tabs>
 
-## Using the `init` method
+## Initialize Web3AuthFlutter
 
 Initialize the `Web3AuthFlutter` plugin at the very beginning such as in the overriden `initState`
-function
+function.
 
-```dart title="Usage"
+```dart
 import 'package:single_factor_auth_flutter/single_factor_auth_flutter.dart';
 
 final _singleFactorAuthFlutterPlugin = SingleFactAuthFlutter();
@@ -72,7 +86,7 @@ Future<void> init() async {
   await _singleFactorAuthFlutterPlugin.init(
     SFAParams(
       network: Web3AuthNetwork.mainnet,
-      clientid: "YOUR_WEB3AUTH_CLIENT_ID",
+      clientId: "YOUR_WEB3AUTH_CLIENT_ID",
     ),
   );
 }
