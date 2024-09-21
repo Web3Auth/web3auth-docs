@@ -1,11 +1,18 @@
-```javascript
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+```tsx
+import { AuthAdapter, WHITE_LABEL_THEME, WhiteLabelData } from "@web3auth/auth-adapter";
+import {
+  CHAIN_NAMESPACES,
+  IProvider,
+  UX_MODE,
+  WALLET_ADAPTERS,
+  WEB3AUTH_NETWORK,
+} from "@web3auth/base";
 
-const openloginAdapter = new OpenloginAdapter({
+const authAdapter = new AuthAdapter({
   adapterSettings: {
     clientId, //Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
-    network: "sapphire_mainnet", // Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
-    uxMode: "popup",
+    network: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
+    uxMode: UX_MODE.REDIRECT,
     // focus-start
     whiteLabel: {
       appName: "W3A Heroes",
@@ -16,12 +23,12 @@ const openloginAdapter = new OpenloginAdapter({
       mode: "dark", // whether to enable dark mode. defaultValue: auto
       theme: {
         primary: "#00D1B2",
-      },
+      } as WHITE_LABEL_THEME,
       useLogoLoader: true,
-    },
+    } as WhiteLabelData,
     // focus-end
   },
   privateKeyProvider,
 });
-web3auth.configureAdapter(openloginAdapter);
+web3auth.configureAdapter(authAdapter);
 ```

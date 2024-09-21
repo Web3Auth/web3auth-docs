@@ -273,7 +273,7 @@ import {
   UX_MODE,
   WEB3AUTH_NETWORK,
 } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { AuthAdapter } from "@web3auth/auth-adapter";
 
 const clientId =
   "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
@@ -297,7 +297,7 @@ const web3auth = new Web3AuthNoModal({
   privateKeyProvider,
 });
 
-const openloginAdapter = new OpenloginAdapter({
+const authAdapter = new AuthAdapter({
   adapterSettings: {
     uxMode: UX_MODE.REDIRECT,
     loginConfig: {
@@ -310,7 +310,7 @@ const openloginAdapter = new OpenloginAdapter({
     },
   },
 });
-web3auth.configureAdapter(openloginAdapter);
+web3auth.configureAdapter(authAdapter);
 
 await web3auth?.init();
 ```
@@ -351,7 +351,7 @@ verifierIdField set to `sub` or any other field based on the verifier's configur
 ```js
 const loginWithWeb3Auth = async (token: string) => {
    await web3auth?.init();
-   const web3authProvider = await web3auth?.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+   const web3authProvider = await web3auth?.connectTo(WALLET_ADAPTERS.AUTH, {
    loginProvider: "jwt",
    extraLoginOptions: {
       // focus-next-line

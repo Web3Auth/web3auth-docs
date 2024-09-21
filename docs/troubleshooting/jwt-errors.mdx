@@ -49,7 +49,7 @@ creation of Verifiers (`JWT Verifiers ID`) on the Web3Auth dashboard.
   ```tsx
   import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
 
-  await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
     loginProvider: "jwt",
     extraLoginOptions: {
       domain: "YOUR-AUTH0-DOMAIN",
@@ -67,8 +67,8 @@ creation of Verifiers (`JWT Verifiers ID`) on the Web3Auth dashboard.
 "Error occurred while verifying params unable to verify jwt token" error could be because of the
 following reasons:
 
-- The verifier for your OpenLoginAdapter might be wrong. Check to make sure the `verifier` field is
-  set correctly.
+- The verifier for your AuthAdapter might be wrong. Check to make sure the `verifier` field is set
+  correctly.
 - The JWT is not signed with the correct key(JWK).
 - The JWKS endpoint is not reachable or doesn't return a valid JWK that was used to sign the JWT.
 - The JWKS endpoint is incorrect on the Web3Auth Dashboard. Double check to confirm the correct JWKS
@@ -108,7 +108,7 @@ following reasons:
   twice in the same request.
 
   ```tsx
-  await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+  await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
     loginProvider: "jwt",
     extraLoginOptions: {
       id_token: "ID_TOKEN", // <-- JWT should be unique for each request.

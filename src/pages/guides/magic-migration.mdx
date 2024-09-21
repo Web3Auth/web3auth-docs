@@ -170,24 +170,27 @@ and EdDSA signatures.
 [Learn more about MPC Core Kit](/docs/sdk/core-kit/mpc-core-kit).
 
 ```tsx
+import { tssLib } from "@toruslabs/tss-dkls-lib";
 // Your own logic to retrive google login id Token
-const idTokenLoginParams = {
+const jwtLoginParams = {
   verifier: "w3a-google-demo",
   verifierId: parsedIdToken.email,
   idToken: parsedIdToken,
   // Use the exported private key from previous step
   // focus-next-line
   importTssKey: magicPrivateKey,
-} as IdTokenLoginParams;
+} as JWTLoginParams;
 
 const coreKitInstance = new Web3AuthMPCCoreKit({
   web3AuthClientId: "YOUR_WEB3AUTH_CLIENT_ID",
   web3AuthNetwork: WEB3AUTH_NETWORK.DEVNET,
-  baseUrl: "http://localhost:3000",
+  manualSync: true,
+  tssLib: tssLib,
+  storage: window.storage,
 });
 
 await coreKitInstance.init();
-await coreKitInstance.loginWithJWT(idTokenLoginParams);
+await coreKitInstance.loginWithJWT(jwtLoginParams);
 ```
 
 ### AA Wallet
@@ -406,8 +409,8 @@ export default function Web3AuthConnectorInstance(chains: Chain[]) {
   });
 
   const modalConfig = {
-    [WALLET_ADAPTERS.OPENLOGIN]: {
-      label: "openlogin",
+    [WALLET_ADAPTERS.AUTH]: {
+      label: "auth",
       loginMethods: {
         facebook: {
           // It will hide the facebook option from the Web3Auth modal.

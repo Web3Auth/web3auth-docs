@@ -1,4 +1,4 @@
-export const pnpWebVersion = `8.13.x`;
+export const pnpWebVersion = `9.0.x`;
 export const pnpAndroidVersion = `8.0.1`;
 export const pnpIOSVersion = `9.0.0`;
 export const pnpRNVersion = `7.0.x`;
@@ -8,9 +8,9 @@ export const pnpUnrealVersion = `4.1.x`;
 
 export const sfaWebVersion = `8.0.x`;
 export const sfaAndroidVersion = `0.0.6`;
-export const sfaIOSVersion = `6.0.0`;
+export const sfaIOSVersion = `8.0.0`;
 export const sfaRNVersion = `2.0.x`;
-export const sfaFlutterVersion = `4.1.0`;
+export const sfaFlutterVersion = `5.1.0`;
 export const sfaNodeJSVersion = `7.4.x`;
 export const tkeyJSVersion = `15.x.x`;
 export const tkeyAndroidVersion = `0.0.5`;

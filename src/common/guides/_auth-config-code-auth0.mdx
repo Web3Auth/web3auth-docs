@@ -3,21 +3,20 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: { chainConfig },
 });
 
-const openloginAdapter = new OpenloginAdapter({
+const authAdapter = new AuthAdapter({
   adapterSettings: {
     clientId: "YOUR-WEB3AUTH-CLIENT-ID", //Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
     uxMode: "popup",
     loginConfig: {
-      facebook: {
-        name: "Name of your choice",
+      jwt: {
         verifier: "YOUR-VERIFIER-NAME-ON-WEB3AUTH-DASHBOARD",
-        typeOfLogin: "facebook",
-        clientId: "YOUR-CLIENTID-FROM-FACEBOOK",
+        typeOfLogin: "jwt",
+        clientId: "YOUR-AUTH0-CLIENT-ID-FROM-AUTH0-DASHBOARD",
       },
     },
   },
   privateKeyProvider,
 });
 
-web3auth.configureAdapter(openloginAdapter);
+web3auth.configureAdapter(authAdapter);
 ```

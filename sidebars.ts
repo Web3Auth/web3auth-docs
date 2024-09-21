@@ -393,6 +393,8 @@ const sidebars: SidebarsConfig = {
           label: "Social Connections",
           items: [
             "auth-provider-setup/social-providers/social-providers",
+            "auth-provider-setup/social-providers/email-passwordless",
+            "auth-provider-setup/social-providers/sms-passwordless",
             "auth-provider-setup/social-providers/twitter",
             "auth-provider-setup/social-providers/google",
             "auth-provider-setup/social-providers/telegram",
@@ -1075,15 +1077,11 @@ const sidebars: SidebarsConfig = {
         "sdk/pnp/web/adapters/adapters",
         "sdk/pnp/web/adapters/default-evm-adapter",
         "sdk/pnp/web/adapters/default-solana-adapter",
-        "sdk/pnp/web/adapters/openlogin",
+        "sdk/pnp/web/adapters/auth",
         "sdk/pnp/web/adapters/torus-evm",
         "sdk/pnp/web/adapters/torus-solana",
-        "sdk/pnp/web/adapters/metamask",
-        "sdk/pnp/web/adapters/phantom",
-        "sdk/pnp/web/adapters/wallet-connect-v1",
         "sdk/pnp/web/adapters/wallet-connect-v2",
         "sdk/pnp/web/adapters/coinbase",
-        "sdk/pnp/web/adapters/solflare",
       ],
     },
     {
@@ -1131,6 +1129,7 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Plug and Play Modal SDK",
           items: [
+            "migration-guides/modal-v8-to-v9",
             "migration-guides/modal-v7-to-v8",
             "migration-guides/modal-v6-to-v7",
             "migration-guides/modal-v5-to-v6",
@@ -1140,6 +1139,7 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Plug and Play No Modal SDK",
           items: [
+            "migration-guides/no-modal-v8-to-v9",
             "migration-guides/no-modal-v7-to-v8",
             "migration-guides/no-modal-v6-to-v7",
             "migration-guides/no-modal-v5-to-v6",
@@ -1604,7 +1604,11 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/sfa-flutter-v1-to-v2", "migration-guides/sfa-flutter-v2-to-v4"],
+      items: [
+        "migration-guides/sfa-flutter-v4-to-v5",
+        "migration-guides/sfa-flutter-v2-to-v4",
+        "migration-guides/sfa-flutter-v1-to-v2",
+      ],
     },
     ...sdkQuickLinks,
   ],

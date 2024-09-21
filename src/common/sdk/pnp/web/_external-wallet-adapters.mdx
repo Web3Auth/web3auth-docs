@@ -1,10 +1,26 @@
-#### `configureAdapter(ADAPTER)`
-
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-To configure an adapter, create the instance of the adapter by using its corresponding package and
-pass the returned `adapter` instance in the `configureAdapter` function.
+External Adapters helps you to connect with external wallets like Metamask, Coinbase, Phantom, and
+more. To configure an adapter, create the instance of the adapter and pass the instance in the
+`configureAdapter` function.
+
+#### Default EVM Adapter
+
+The [@web3auth/default-evm-adapter](https://npmjs.com/package/@web3auth/default-evm-adapter) package
+enables seamless detection of injected EVM wallets and WalletConnect-supported wallets, allowing
+interaction with just a single line of code. Learn more about
+[Default EVM Adapter](/docs/sdk/pnp/web/adapters/default-evm-adapter).
+
+#### Default Solana Adapter
+
+The
+[@web3auth/default-solana-adapter](https://www.npmjs.com/package/@web3auth/default-solana-adapter)
+enables seamless detection of injected Solana wallets, allowing interaction with just a single line
+of code. Learn more about
+[Default Solana Adapter](/docs/sdk/pnp/web/adapters/default-solana-adapter).
+
+####
 
 :::tip
 
@@ -12,66 +28,3 @@ Refer to the [Adapters documentation](/sdk/pnp/web/adapters) to know more deeply
 are available and how to configure them.
 
 :::
-
-<Tabs
-  defaultValue="evm"
-  values={[
-    { label: "Default EVM Adapters", value: "evm" },
-    { label: "Default Solana Adapters", value: "solana" },
-  ]}
->
-
-<TabItem value="evm">
-
-If you want to support All EVM External Wallets, your should use the Default External Adapter for
-EVM. This adapter supports MIPD (EIP6163) so all available wallets in the browser will automatically
-be detected as well.
-
-- Import the `getDefaultExternalAdapters` from `@web3auth/default-evm-adapter` package
-- Get all the adapters in the `adapters` variable as an array of `IAdapter`.
-- Iterate over the `adapters` array and configure each adapter using `configureAdapter` function.
-
-```javascript
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
-
-const adapters = await getDefaultExternalAdapters({
-  options: {
-    clientId,
-    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-    privateKeyProvider,
-  },
-});
-
-adapters.forEach((adapter) => {
-  web3auth.configureAdapter(adapter);
-});
-```
-
-</TabItem>
-<TabItem value="solana">
-
-If you want to support All Solana External Wallets, your should use the Default External Adapter for
-Solana.
-
-- Import the `getDefaultExternalAdapters` from `@web3auth/default-solana-adapter` package
-- Get all the adapters in the `adapters` variable as an array of `IAdapter`.
-- Iterate over the `adapters` array and configure each adapter using `configureAdapter` function.
-
-```javascript
-import { getDefaultExternalAdapters } from "@web3auth/default-solana-adapter";
-
-const adapters = await getDefaultExternalAdapters({
-  options: {
-    clientId,
-    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-    privateKeyProvider,
-  },
-});
-
-adapters.forEach((adapter) => {
-  web3auth.configureAdapter(adapter);
-});
-```
-
-</TabItem>
-</Tabs>

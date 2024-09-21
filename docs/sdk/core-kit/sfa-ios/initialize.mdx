@@ -11,20 +11,19 @@ preference of your project.
 ```swift
 import SingleFactorAuth
 
-let singleFactorAuthArgs = SingleFactorAuthArgs(
-  web3AuthClientId: "<Your Web3Auth Client Id>",
-  network: Web3AuthNetwork.SAPPHIRE_MAINNET
+let sfaParams = SFAParams(
+  web3AuthClientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  network: .sapphire(.SAPPHIRE_MAINNET)
 )
-let singleFactoreAuth = SingleFactorAuth(singleFactorAuthArgs: singleFactorAuthArgs)
+let singleFactoreAuth = try! SingleFactorAuth(params: sfaParams)
 ```
 
-### `SingleFactorAuthArgs`
+### `SFAParams`
 
 The `singleFactoreAuth` constructor takes an object called `SingleFactorAuthArgs` as input. The
 below are the aviliable fields of the `SingleFactorAuthArgs` object.
 
-| Parameter          | Description                                                                                                                                                                                                                                  |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `web3AuthClientId` | Your Web3Auth Client Id from [Web3Auth Dashboard](https://dashboard.web3auth.io/).                                                                                                                                                           |
-| `network`          | The Web3auth network to be used by the SDK. Supported values are `Web3AuthNetwork.SAPPHIRE_MAINNET`, `Web3AuthNetwork.SAPPHIRE_DEVNET`, `Web3AuthNetwork.MAINNET`, `Web3AuthNetwork.TESTNET`, `Web3AuthNetwork.CYAN`, `Web3AuthNetwork.AQUA` |
-| `networkUrl`       | Custom network url for Web3Auth network. Used for internal testing purposes.                                                                                                                                                                 |
+| Parameter          | Description                                                                                                                                                                                               |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `web3AuthClientId` | Your Web3Auth Client Id from [Web3Auth Dashboard](https://dashboard.web3auth.io/).                                                                                                                        |
+| `network`          | The Web3auth network to be used by the SDK. Supported values are `.sapphire(.SAPPHIRE_MAINNET)`, `.sapphire(.SAPPHIRE_DEVNET)`, `.legacy(.MAINNET)`, `.legacy(TESTNET)`, `.legacy(CYAN)`, `.legacy(AQUA)` |

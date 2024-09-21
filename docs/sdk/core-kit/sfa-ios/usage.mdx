@@ -12,13 +12,13 @@ users and obtain their private and public keys.
 
 The SingleFactorAuth instance natively provides the following functions:
 
-- `getKey()` - Returns the torus key using the `verifier`, `verifierId` & `idToken`.
+- `connect()` - Returns the SFA key using the `verifier`, `verifierId` & `idToken`.
 
-## `getKey()`
+## `connect()`
 
-`getKey()`
+`connect()`
 
-To obtain a user's Torus key using the Web3Auth SFA iOS SDK, you can call the `getKey()` function.
+To obtain a user's SFA key using the Web3Auth SFA iOS SDK, you can call the `connect()` function.
 
 | Variable      | Description                                                    |
 | ------------- | -------------------------------------------------------------- |
@@ -27,12 +27,12 @@ To obtain a user's Torus key using the Web3Auth SFA iOS SDK, you can call the `g
 #### Returns
 
 ```swift
-public func getKey(loginParams: LoginParams) async throws -> TorusSFAKey
+public func connect(loginParams: LoginParams) async throws -> SFAKey
 ```
 
 #### `LoginParams`
 
-`getKey(loginParams: LoginParams)`
+`connect(loginParams: LoginParams)`
 
 <Tabs
   defaultValue="table"
@@ -85,7 +85,7 @@ public class LoginParams {
 
 ```swift title="Usage"
 let loginParams = LoginParams(verifier: "YOUR_VERIFIER_NAME", verifierId: "YOUR_VERIFIER_ID", idToken: "YOUR_ID_TOKEN")
-let torusKey = try await singleFactoreAuth.getKey(loginParams: loginParams)
+let sfaKey = try await singleFactoreAuth.connect(loginParams: loginParams)
 ```
 
 :::tip NOTE
@@ -107,7 +107,7 @@ import SingleFactorAuth
 import JWTDecode
 
 let jwt = try decode(jwt: id_token)
-let result = try await SingleFactorAuth(singleFactorAuthArgs: .init(network: .CYAN)).getKey(loginParams: .init(verifier: "web3auth-firebase-examples", verifierId: jwt.subject ?? "YOUR_VERIFIER_ID", idToken: id_token))
+let result = try await SingleFactorAuth(singleFactorAuthArgs: .init(network: .legacy(.CYAN))).connect(loginParams: .init(verifier: "web3auth-firebase-examples", verifierId: jwt.subject ?? "YOUR_VERIFIER_ID", idToken: id_token))
 
 await MainActor.run(body: {
     privateKey = result.getPrivateKey()
@@ -118,8 +118,8 @@ await MainActor.run(body: {
 ## Session Management
 
 We have also included Session Management in this SDK, so calling the initialize function to get the
-`TorusSFAKey` value without re-logging in the user if a user has an active session will return the
-`TorusSFAKey` struct; otherwise, it will return nil.
+`SFAKey` value without re-logging in the user if a user has an active session will return the
+`SFAKey` struct; otherwise, it will return nil.
 
 ```swift
 if let savedKey = try await singleFactoreAuth.initialize() {

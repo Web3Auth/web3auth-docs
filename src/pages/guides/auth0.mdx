@@ -27,7 +27,7 @@ import InitializationIntro from "@site/src/common/guides/_initialization-intro.m
 import InitializationWeb3Auth from "@site/src/common/guides/_initialization-web3auth.mdx";
 import InstantiationWeb3Auth from "@site/src/common/guides/_instantiation-web3auth.mdx";
 import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
-import OpenloginConfigCode from "@site/src/common/guides/_openlogin-config-code-auth0.mdx";
+import AuthConfigCode from "@site/src/common/guides/_auth-config-code-auth0.mdx";
 
 <SEO
   title="Learn how to use Auth0 with Web3Auth"
@@ -105,8 +105,8 @@ at this [documentation page](/sdk).
 
 For this guide, we will be talking through the
 [Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and using the
-[OpenLogin Provider](/sdk/pnp/web/adapters/openlogin) alongside it to enable Custom Authentication
-through Auth0.
+[Auth Adapter](/sdk/pnp/web/adapters/auth) alongside it to enable Custom Authentication through
+Auth0.
 
 <SetupBaseProject />
 
@@ -118,22 +118,22 @@ through Auth0.
 
 <InitializationIntro />
 
-For this guide, we're only focusing on the Instantiation, Configuration for the Openlogin Adapter
-(the default adapter that enables social logins) and Initialization of the Web3Auth SDK. To know
-more about the other things you can do with Web3Auth, check out our
+For this guide, we're only focusing on the Instantiation, Configuration for the Auth Adapter (the
+default adapter that enables social logins) and Initialization of the Web3Auth SDK. To know more
+about the other things you can do with Web3Auth, check out our
 [SDK Reference](/sdk/pnp/web/no-modal).
 
 #### Instantiating Web3Auth
 
 <InstantiationWeb3Auth />
 
-#### Initializing the Openlogin Adapter
+#### Initializing the Auth Adapter
 
-<OpenloginConfigCode />
+<AuthConfigCode />
 
 Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom
-Auth `verifierName` and Auth0 `clientId` in the `loginConfig` object. This makes sure that the
-Openlogin Adapter can connect to the correct verifier and Auth0 server.
+Auth `verifierName` and Auth0 `clientId` in the `loginConfig` object. This makes sure that the Auth
+Adapter can connect to the correct verifier and Auth0 server.
 
 <InitializationWeb3Auth />
 
@@ -155,7 +155,7 @@ values={[
 ```tsx
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
 
-await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
   loginProvider: "jwt",
   extraLoginOptions: {
     domain: "https://web3auth.au.auth0.com", // Please append "https://" before your domain
@@ -170,7 +170,7 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 ```tsx
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
 
-await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
   loginProvider: "jwt",
   extraLoginOptions: {
     domain: "https://web3auth.au.auth0.com", // Please append "https://" before your domain
@@ -185,7 +185,7 @@ await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
 ```tsx
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
 
-await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
   loginProvider: "jwt",
   extraLoginOptions: {
     domain: "https://web3auth.au.auth0.com", // Please append "https://" before your domain
@@ -232,13 +232,13 @@ Logging out your user is as simple as calling the `logout` function.
 
 In the SPA flow, the frontend gets the JWT `id_token` from Auth0 directly. This flow is leveraged by
 the Web3Auth SDK, which handles all the callbacks by itself and the user just needs to set up the
-`OpenloginAdapter` and connect to the Web3Auth SDK, adding in the Auth0 `client_id` in it. Hence,
-this is the implicit flow and is the most suitable flow for setting up your authentication via Auth0
-and Web3Auth.
+`AuthAdapter` and connect to the Web3Auth SDK, adding in the Auth0 `client_id` in it. Hence, this is
+the implicit flow and is the most suitable flow for setting up your authentication via Auth0 and
+Web3Auth.
 
 In the RWA flow, you have to spin up a server on your own where you'll receive the authorization
-code from Auth0. Web3Auth still requires an `id_token` to be sent to the OpenloginAdapter to log the
-user in the frontend context. This is where you need to make another call from the backend server to
+code from Auth0. Web3Auth still requires an `id_token` to be sent to the AuthAdapter to log the user
+in the frontend context. This is where you need to make another call from the backend server to
 Auth0 to get the `id_token` and pass it over to your frontend where you can send it to the Web3Auth
 SDK.
 
@@ -288,7 +288,7 @@ app.get('/callback', (req, res) => {
 - In the frontend, pass on this `id_token` to the Web3Auth SDK to authenticate the user
 
 ```tsx
-await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
   loginProvider: "jwt",
   extraLoginOptions: {
     id_token: "YOUR_ID_TOKEN_FETCHED_FROM_BACKEND_SERVER",

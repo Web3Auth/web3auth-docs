@@ -16,7 +16,7 @@ import InitializationWeb3Auth from "@site/src/common/guides/_initialization-web3
 import Installation from "@site/src/common/guides/_installation.mdx";
 import InstantiationWeb3Auth from "@site/src/common/guides/_instantiation-web3auth.mdx";
 import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with-blockchain.mdx";
-import OpenloginConfigCodeGoogle from "@site/src/common/guides/_openlogin-config-code-google.mdx";
+import AuthConfigCodeGoogle from "@site/src/common/guides/_auth-config-code-google.mdx";
 import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
 import SetupNextjsProject from "@site/src/common/guides/_setup-nextjs-project.mdx";
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
@@ -70,8 +70,8 @@ to your project. To know more about the available SDKs, please have a look at th
 
 For this guide, we will be talking through the
 [Web3Auth Plug and Play No Modal SDK](/sdk/pnp/web/no-modal) and using the
-[OpenLogin Provider](/sdk/pnp/web/adapters/openlogin) alongside it to enable Custom Authentication
-through Google Login.
+[Auth Adapter](/sdk/pnp/web/adapters/auth) alongside it to enable Custom Authentication through
+Google Login.
 
 <SetupBaseProject />
 
@@ -83,22 +83,22 @@ through Google Login.
 
 <InitializationIntro />
 
-For this guide, we're only focusing on the Instantiation, Configuration for the Openlogin Adapter
-(the default adapter that enables social logins) and Initialization of the Web3Auth SDK. To know
-more about the other things you can do with Web3Auth, check out our
+For this guide, we're only focusing on the Instantiation, Configuration for the Auth Adapter (the
+default adapter that enables social logins) and Initialization of the Web3Auth SDK. To know more
+about the other things you can do with Web3Auth, check out our
 [SDK Reference](/sdk/pnp/web/no-modal).
 
 #### Instantiating Web3Auth
 
 <InstantiationWeb3Auth />
 
-#### Initializing the Openlogin Adapter
+#### Initializing the Auth Adapter
 
-<OpenloginConfigCodeGoogle />
+<AuthConfigCodeGoogle />
 
 Here, you need to pass over your Web3Auth `clientId` in the adapterSettings object and your Custom
 Auth `verifierName` and AWS Cognito `clientId` in the loginConfig object. This makes sure that the
-Openlogin Adapter can connect to the correct verifier and AWS Cognito server.
+Auth Adapter can connect to the correct verifier and AWS Cognito server.
 
 <InitializationWeb3Auth />
 
@@ -112,7 +112,7 @@ the login button.
 ```tsx
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES } from "@web3auth/base";
 
-await web3auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+await web3auth.connectTo(WALLET_ADAPTERS.AUTH, {
   loginProvider: "google",
 });
 ```

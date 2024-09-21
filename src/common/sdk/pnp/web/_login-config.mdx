@@ -15,23 +15,23 @@ import Tabs from "@theme/Tabs";
 
 `params`
 
-| Parameter                   | Description                                                                                                                                                                                                                                                                                                                       |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `verifier`                  | The name of the verifier that you have registered on the Web3Auth Dashboard. It's a mandatory field, and accepts `string` as a value.                                                                                                                                                                                             |
-| `typeOfLogin`               | Type of login of this verifier, this value will affect the login flow that is adapted. For example, if you choose `google`, a Google sign-in flow will be used. If you choose `jwt`, you should be providing your own JWT token, no sign-in flow will be presented. It's a mandatory field, and accepts `TypeOfLogin` as a value. |
-| `clientId`                  | Client id provided by your login provider used for custom verifier. e.g. Google's Client ID or Web3Auth's client Id if using 'jwt' as TypeOfLogin. It's a mandatory field, and accepts `string` as a value.                                                                                                                       |
-| `name?`                     | Display name for the verifier. If null, the default name is used. It accepts `string` as a value.                                                                                                                                                                                                                                 |
-| `description?`              | Description for the button. If provided, it renders as a full length button. else, icon button. It accepts `string` as a value.                                                                                                                                                                                                   |
-| `verifierSubIdentifier?`    | The field in JWT token which maps to verifier id. Please make sure you selected correct JWT verifier id in the developer dashboard. It accepts `string` as a value.                                                                                                                                                               |
-| `logoHover?`                | Logo to be shown on mouse hover. It accepts `string` as a value.                                                                                                                                                                                                                                                                  |
-| `logoLight?`                | Light logo for dark background. It accepts `string` as a value.                                                                                                                                                                                                                                                                   |
-| `logoDark?`                 | Dark logo for light background. It accepts `string` as a value.                                                                                                                                                                                                                                                                   |
-| `mainOption?`               | Show login button on the main list. It accepts `boolean` as a value. Default value is false.                                                                                                                                                                                                                                      |
-| `showOnModal?`              | Whether to show the login button on modal or not. Default value is true.                                                                                                                                                                                                                                                          |
-| `showOnDesktop?`            | Whether to show the login button on desktop. Default value is true.                                                                                                                                                                                                                                                               |
-| `showOnMobile?`             | Whether to show the login button on mobile. Default value is true.                                                                                                                                                                                                                                                                |
-| `showOnSocialBackupFactor?` | If we are using social logins as a backup factor, then this option will be used to show the type of social login on the social backup login screen.                                                                                                                                                                               |
-| `jwtParameters?`            | Custom jwt parameters to configure the login. Useful for Auth0 configuration. It accepts `JwtParameters` as a value.                                                                                                                                                                                                              |
+| Parameter                  | Description                                                                                                                                                         |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `verifier`                 |                                                                                                                                                                     |
+| `typeOfLogin`              | The type of login. Refer to enum `LOGIN_TYPE`                                                                                                                       |
+| `name`                     | Display Name. If not provided, we use the default for auth app                                                                                                      |
+| `description`              | Description for button. If provided, it renders as a full length button. else, icon button                                                                          |
+| `clientId`                 | Custom client_id. If not provided, we use the default for auth app                                                                                                  |
+| `verifierSubIdentifier`    | The field in JWT token which maps to verifier id. Please make sure you selected correct JWT verifier id in the developer dashboard. It accepts `string` as a value. |
+| `logoHover`                | Logo to be shown on mouse hover. If not provided, we use the default for auth app                                                                                   |
+| `logoLight`                | Logo to be shown on dark background (dark theme). If not provided, we use the default for auth app                                                                  |
+| `logoDark`                 | Logo to be shown on light background (light theme). If not provided, we use the default for auth app                                                                |
+| `mainOption`               | Show login button on the main list                                                                                                                                  |
+| `showOnModal`              | Whether to show the login button on modal or not                                                                                                                    |
+| `showOnDesktop`            | Whether to show the login button on desktop                                                                                                                         |
+| `showOnMobile`             | Whether to show the login button on mobile                                                                                                                          |
+| `showOnSocialBackupFactor` | If we are using social logins as a backup factor, then this option will be used to show the type of social login on the social backup login screen.                 |
+| `jwtParameters`            | Custom jwt parameters to configure the login. Useful for Auth0 configuration                                                                                        |
 
 </TabItem>
 
@@ -47,7 +47,7 @@ export type LoginConfig = Record<
      */
     typeOfLogin: TypeOfLogin;
     /**
-     * Display Name. If not provided, we use the default for openlogin app
+     * Display Name. If not provided, we use the default for auth app
      */
     name?: string;
     /**
@@ -55,20 +55,20 @@ export type LoginConfig = Record<
      */
     description?: string;
     /**
-     * Custom client_id. If not provided, we use the default for openlogin app
+     * Custom client_id. If not provided, we use the default for auth app
      */
     clientId?: string;
     verifierSubIdentifier?: string;
     /**
-     * Logo to be shown on mouse hover. If not provided, we use the default for openlogin app
+     * Logo to be shown on mouse hover. If not provided, we use the default for auth app
      */
     logoHover?: string;
     /**
-     * Logo to be shown on dark background (dark theme). If not provided, we use the default for openlogin app
+     * Logo to be shown on dark background (dark theme). If not provided, we use the default for auth app
      */
     logoLight?: string;
     /**
-     * Logo to be shown on light background (light theme). If not provided, we use the default for openlogin app
+     * Logo to be shown on light background (light theme). If not provided, we use the default for auth app
      */
     logoDark?: string;
     /**
@@ -115,8 +115,9 @@ export type TypeOfLogin =
   | "email_password"
   | "passwordless"
   | "jwt"
-  | "farcaster"
-  | "webauthn";
+  | "passkeys"
+  | "email_passwordless"
+  | "sms_passwordless";
 ```
 
 </TabItem>
