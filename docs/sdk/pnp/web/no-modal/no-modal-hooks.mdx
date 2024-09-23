@@ -71,7 +71,7 @@ interface IBaseWeb3AuthHookContext {
   /**
    * Information about the logged-in user.
    */
-  userInfo: Partial<UserInfo> | null;
+  userInfo: Partial<AuthUserInfo> | null;
   /**
    * Indicates whether Multi-Factor Authentication (MFA) is enabled or not.
    */
@@ -86,25 +86,25 @@ interface IBaseWeb3AuthHookContext {
   status: ADAPTER_STATUS_TYPE | null;
   /**
    * Enables Multi-Factor Authentication for the user.
-   * @param params Optional parameters for enabling MFA.
-   * @returns A Promise that resolves when MFA is enabled.
+   * @param params - Optional login parameters.
+   * @returns A Promise that resolves when the MFA is enabled.
    */
   enableMFA(params?: LoginParams): Promise<void>;
   /**
-   * Logs out the user, with an optional cleanup parameter.
-   * @param params Optional parameters for logging out.
+   * Logs out the user, optionally performing cleanup.
+   * @param params - Optional cleanup parameter.
    * @returns A Promise that resolves when the user is logged out.
    */
   logout(params?: { cleanup: boolean }): Promise<void>;
   /**
-   * Adds and switches to a new blockchain.
-   * @param chainConfig Configuration for the new blockchain.
-   * @returns A Promise that resolves when the chain is added and switched.
+   * Adds a new blockchain configuration and switches to it.
+   * @param chainConfig - The configuration for the new blockchain.
+   * @returns A Promise that resolves when the chain is added and switched to.
    */
   addAndSwitchChain(chainConfig: CustomChainConfig): Promise<void>;
   /**
    * Adds a plugin to the Web3Auth instance.
-   * @param plugin The plugin to add.
+   * @param plugin - The plugin to add.
    */
   addPlugin(plugin: IPlugin): void;
   /**
@@ -168,10 +168,21 @@ export interface Web3AuthProviderProps {
 }
 
 export type Web3AuthContextConfig = {
-  web3AuthOptions: IWeb3AuthCoreOptions;
+  web3AuthOptions: Web3AuthOptions;
   adapters?: IAdapter<unknown>[];
   plugins?: IPlugin[];
 };
+
+export interface Web3AuthOptions extends IWeb3AuthCoreOptions {
+  /**
+   * Config for configuring modal ui display properties
+   */
+  uiConfig?: Omit<UIConfig, "adapterListener">;
+  /**
+   * Private key provider for your chain namespace
+   */
+  privateKeyProvider: IBaseProvider<string>;
+}
 
 export interface IWeb3AuthCoreOptions {
   clientId: string;
@@ -183,6 +194,45 @@ export interface IWeb3AuthCoreOptions {
   useCoreKitKey?: boolean;
   uiConfig?: WhiteLabelData;
   privateKeyProvider?: IBaseProvider<string>;
+}
+
+export interface UIConfig extends WhiteLabelData {
+  /**
+   * order of how login methods are shown
+   *
+   * @defaultValue `["google", "facebook", "twitter", "reddit", "discord", "twitch", "apple", "line", "github", "kakao", "linkedin", "weibo", "wechat", "email_passwordless"]`
+   */
+  loginMethodsOrder?: string[];
+  /**
+   * Z-index of the modal and iframe
+   * @defaultValue 99998
+   */
+  modalZIndex?: string;
+  /**
+   * Whether to show errors on Web3Auth modal.
+   *
+   * @defaultValue `true`
+   */
+  displayErrorsOnModal?: boolean;
+  /**
+   * number of columns to display the Social Login buttons
+   *
+   * @defaultValue `3`
+   */
+  loginGridCol?: 2 | 3;
+  /**
+   * Decides which button will be the focus of the modal
+   * For `socialLogin` the social icon will be colored
+   * For other options like `emailLogin` and `externalLogin` the respective buttons will be coverted into a primary button
+   *
+   * @defaultValue `socialLogin`
+   */
+  primaryButton?: "externalLogin" | "socialLogin" | "emailLogin";
+  adapterListener: SafeEventEmitter;
+  /**
+   * UX Mode for the openlogin adapter
+   */
+  uxMode?: UX_MODE_TYPE;
 }
 ```
 
