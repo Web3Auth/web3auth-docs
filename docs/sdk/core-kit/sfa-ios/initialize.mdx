@@ -8,6 +8,19 @@ After Installation, the next step to use Web3Auth is to Initialize the SDK. Plea
 are the most critical steps where you need to pass on different parameters according to the
 preference of your project.
 
+## Parameters
+
+The `SingleFactoreAuth` constructor takes an object called `SingleFactorAuthArgs` as input. The
+constructor parameters are listed below
+
+| Parameter          | Description                                                                                                                                                                                                      |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `web3AuthClientId` | Your Web3Auth Client Id from [Web3Auth Dashboard](https://dashboard.web3auth.io/).                                                                                                                               |
+| `network`          | The Web3auth network to be used by the SDK. Supported values are `.sapphire(.SAPPHIRE_MAINNET)`, `.sapphire(.SAPPHIRE_DEVNET)`, `.legacy(.MAINNET)`, `.legacy(.TESTNET)`, `.legacy(.CYAN)`, and `.legacy(.AQUA)` |
+| `sessionTime`      | Specifies the session duration in seconds. By default, the value is set to 86400 seconds (1 day), with a maximum session duration of up to 7 days.                                                               |
+
+## Initialize SingleFactorAuth
+
 ```swift
 import SingleFactorAuth
 
@@ -15,15 +28,10 @@ let sfaParams = SFAParams(
   web3AuthClientId: "YOUR_WEB3AUTH_CLIENT_ID",
   network: .sapphire(.SAPPHIRE_MAINNET)
 )
-let singleFactoreAuth = try! SingleFactorAuth(params: sfaParams)
+
+do {
+  let singleFactoreAuth = try SingleFactorAuth(params: sfaParams)
+} catch {
+  // Handle error
+}
 ```
-
-### `SFAParams`
-
-The `singleFactoreAuth` constructor takes an object called `SingleFactorAuthArgs` as input. The
-below are the aviliable fields of the `SingleFactorAuthArgs` object.
-
-| Parameter          | Description                                                                                                                                                                                               |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `web3AuthClientId` | Your Web3Auth Client Id from [Web3Auth Dashboard](https://dashboard.web3auth.io/).                                                                                                                        |
-| `network`          | The Web3auth network to be used by the SDK. Supported values are `.sapphire(.SAPPHIRE_MAINNET)`, `.sapphire(.SAPPHIRE_DEVNET)`, `.legacy(.MAINNET)`, `.legacy(TESTNET)`, `.legacy(CYAN)`, `.legacy(AQUA)` |
