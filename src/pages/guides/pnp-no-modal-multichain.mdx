@@ -348,9 +348,8 @@ export default class SolanaRPC {
     }
 
     async getAccounts(): Promise<any> {
-      const { getED25519Key } = await import("@toruslabs/openlogin-ed25519");
+      const { getED25519Key } = await import("@web3auth/auth-adapter");
       const ed25519key = getED25519Key(this.privateKey).sk.toString("hex");
-      console.log(ed25519key);
       // Get user's Solana's public address
       await this.provider.setupProvider(ed25519key);
       const solanaWallet = new SolanaWallet(this.provider as SolanaPrivateKeyProvider);

@@ -97,6 +97,7 @@ cannot be used with Near since it requires the `ed25519` key. Therefore, we must
 
 ```tsx
 import { connect, KeyPair, keyStores, utils } from "near-api-js";
+import { getED25519Key } from "@web3auth/auth-adapter";
 /*
   Use code from the above Initializing Provider here
 */
@@ -107,7 +108,6 @@ const privateKey = await web3authProvider.request({ method: "private_key" });
 // Convert the secp256k1 key to ed25519 key
 // When starting your application with "solana" namespace, you can skip the below two lines
 // and pass the privateKey directly to buffer.
-const { getED25519Key } = await import("@toruslabs/openlogin-ed25519");
 const privateKeyEd25519 = getED25519Key(privateKey).sk.toString("hex");
 
 // Convert the private key to Buffer
