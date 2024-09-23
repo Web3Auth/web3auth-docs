@@ -1511,7 +1511,10 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/sfa-android-v0.1.0-to-v0.3.0"],
+      items: [
+        "migration-guides/sfa-android-v0.4.0-to-v1",
+        "migration-guides/sfa-android-v0.1.0-to-v0.3.0",
+      ],
     },
     ...sdkQuickLinks,
   ],

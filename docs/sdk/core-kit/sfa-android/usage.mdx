@@ -7,25 +7,28 @@ description: "Web3Auth Core Kit Single Factor Auth Android SDK - Usage | Documen
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-After successfully installing and initializing `SingleFactorAuth`, you can use it to authenticate
-your users and obtain their private and public keys.
+After successfully installing and initializing SingleFactorAuth, you can use it to authenticate your
+users and obtain their private and public keys.
 
-The `SingleFactorAuth` instance natively provides the following functions:
+:::tip NOTE
 
-## `getKey` method
+Web3Auth SFA iOS SDK only works for users who have **not enabled MFA**. For MFA enabled users,
+you'll see an Error message.
 
-The `getKey` method returns the torus key using the `verifier`, `verifierId` & `idToken`. On a
-successful call the function returns a `TorusKey` instance.
+:::
 
-### Arguments
+The SingleFactorAuth instance natively provides the following methods:
 
-| Variable      | Description                                                                                                                                          |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginParams` | Parameters for the login. It takes `LoginParams` as the value.                                                                                       |
-| `context?`    | Android activity context                                                                                                                             |
-| `sessionTime` | The `sessionTime` parameter is used for session management. The default value is 1 day ~ 86400, and max value is 7 days. It takes `Long` as a value. |
+- [connect](#login-user) - Use to login user and retrive private key pair.
+- [initialize](#session-management) - This method helps to achieve session management. It
+  authenticates user if the session is present, avoiding re-logging.
 
-#### `LoginParams`
+## Login User
+
+To obtain a user's private key using the Web3Auth SFA Android SDK, you can call the `connect`
+method. The method accepts `LoginParams`, and returns `SFAKey`.
+
+### Parameters
 
 <Tabs
   defaultValue="table"
@@ -50,29 +53,34 @@ successful call the function returns a `TorusKey` instance.
 
 ```kotlin
 class LoginParams {
-    val verifier: String
-    val verifierId: String
-    val idToken: String
-    var subVerifierInfoArray: Array<TorusSubVerifierInfo>? = null
+  val verifier: String
+  val verifierId: String
+  val idToken: String
+  var subVerifierInfoArray: Array<TorusSubVerifierInfo>? = null
 
-    constructor(verifier: String, verifierId: String, idToken: String) {
-        this.verifier = verifier
-        this.verifierId = verifierId
-        this.idToken = idToken
-    }
+  constructor(verifier: String, verifierId: String, idToken: String) {
+    this.verifier = verifier
+    this.verifierId = verifierId
+    this.idToken = idToken
+  }
 
-    constructor(
-        verifier: String,
-        verifierId: String,
-        idToken: String,
-        subVerifierInfoArray: Array<TorusSubVerifierInfo>
-    ) {
-        this.verifier = verifier
-        this.verifierId = verifierId
-        this.idToken = idToken
-        this.subVerifierInfoArray = subVerifierInfoArray
+  constructor(
+    verifier: String,
+    verifierId: String,
+    idToken: String,
+    subVerifierInfoArray: Array<TorusSubVerifierInfo>
+  ) {
+      this.verifier = verifier
+      this.verifierId = verifierId
+      this.idToken = idToken
+      this.subVerifierInfoArray = subVerifierInfoArray
     }
 }
+
+class TorusSubVerifierInfo(
+  var verifier: String,
+  var idToken: String
+)
 ```
 
 </TabItem>
@@ -81,70 +89,30 @@ class LoginParams {
 
 ### Usage
 
-```kotlin title="Usage"
-val loginParams = LoginParams("YOUR_VERIFIER_NAME", "YOUR_VERIFIER_ID_VALUE", "YOUR_ID_TOKEN");
-val torusKey = singleFactorAuth.getKey(loginParams).get();
+```kotlin
+val loginParams = LoginParams(
+  "YOUR_VERIFIER_NAME",
+  "YOUR_VERIFIER_ID_VALUE",
+  "YOUR_ID_TOKEN"
+);
+// focus-next-line
+val sfaKey = singleFactorAuth.connect(loginParams);
 ```
 
-:::tip Note
+## Session Management
 
-Web3Auth SFA Android SDK only works for users who have **not enabled MFA**. For MFA enabled users,
-you'll see an Error message.
+We have included Session Management in this SDK, so calling the initialize function to get the
+SFAKey value without re-logging in the user if a user has an active session will return the SFAKey,
+otherwise, it will throw an error.
 
-:::
+### Parameter
 
-### Example
+| Parameter | Description                        |
+| --------- | ---------------------------------- |
+| `ctx`     | Takes in android activity context. |
+
+### Usage
 
 ```kotlin
-import android.widget.Button
-import android.os.Bundle
-import com.github.web3auth.singlefactorauth.SingleFactorAuth
-import com.github.web3auth.singlefactorauth.types.SingleFactorAuthArgs
-import com.github.web3auth.singlefactorauth.types.LoginParams
-import com.github.web3auth.singlefactorauth.types.TorusKey
-import org.torusresearch.fetchnodedetails.types.TorusNetwork
-import com.auth0.android.jwt.JWT
-
-class MainActivity : AppCompatActivity() {
-  // ...
-  private lateinit var singleFactorAuth: SingleFactorAuth
-  private lateinit var singleFactorAuthArgs: SingleFactorAuthArgs
-  private lateinit var loginParams: LoginParams
-  private var torusKey: TorusKey? = null
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
-
-    singleFactorAuthArgs = SingleFactorAuthArgs(Web3AuthNetwork.MAINNET)
-    singleFactorAuth = SingleFactorAuth(singleFactorAuthArgs)
-
-    // Setup UI and event handlers
-    val signInButton = findViewById<Button>(R.id.signIn)
-    signInButton.setOnClickListener { signIn() }
-  }
-
-  private fun signIn() {
-    val jwt = JWT(idToken) // idToken is the JWT token obtained from auth provider or your custom JWT provider
-    val sub = jwt.getClaim("sub").asString() // get sub claims
-    loginParams = LoginParams("w3a-firebase-demo", "$sub", "$idToken")
-    try {
-        torusKey = singleFactorAuth.getKey(loginParams).get()
-    } catch (e: ExecutionException) {
-        e.printStackTrace()
-    } catch (e: InterruptedException) {
-        e.printStackTrace()
-    }
-    println("""Private Key: ${torusKey!!.privateKey.toString(16)}""".trimIndent())
-    println("""Public Address: ${torusKey!!.publicAddress}""".trimIndent())
-  }
-  //...
-}
+val sfakey = singleFactorAuth.initialize(this.applicationContext)
 ```
-
-:::info Example
-
-You can have a look at the **[this example](/examples?product=Core+Kit&sdk=SFA+Android)** made on
-top of this SDK and try it out yourself.
-
-:::
