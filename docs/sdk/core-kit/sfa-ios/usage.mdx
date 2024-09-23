@@ -10,29 +10,25 @@ import Tabs from "@theme/Tabs";
 After successfully installing and initializing SingleFactorAuth, you can use it to authenticate your
 users and obtain their private and public keys.
 
-The SingleFactorAuth instance natively provides the following functions:
+:::tip NOTE
 
-- `connect()` - Returns the SFA key using the `verifier`, `verifierId` & `idToken`.
+Web3Auth SFA iOS SDK only works for users who have **not enabled MFA**. For MFA enabled users,
+you'll see an Error message.
 
-## `connect()`
+:::
 
-`connect()`
+The SingleFactorAuth instance natively provides the following methods:
 
-To obtain a user's SFA key using the Web3Auth SFA iOS SDK, you can call the `connect()` function.
+- [connect](#login-user) - Use to login user and retrive private key pair.
+- [initialize](#session-management) - This method helps to achieve session management. It
+  authenticates user if the session is present, avoiding re-logging.
 
-| Variable      | Description                                                    |
-| ------------- | -------------------------------------------------------------- |
-| `loginParams` | Parameters for the login. It takes `LoginParams` as the value. |
+## Login User
 
-#### Returns
+To obtain a user's private key using the Web3Auth SFA Flutter SDK, you can call the `connect`
+method. The method accepts `LoginParams`, and returns `SFAKey`.
 
-```swift
-public func connect(loginParams: LoginParams) async throws -> SFAKey
-```
-
-#### `LoginParams`
-
-`connect(loginParams: LoginParams)`
+### Parameters
 
 <Tabs
   defaultValue="table"
@@ -44,12 +40,12 @@ public func connect(loginParams: LoginParams) async throws -> SFAKey
 
 <TabItem value="table">
 
-| Parameter               | Description                                                                                                   |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `verifier`              | The verifier obtained from the Web3Auth Dashboard. It's a mandatory field and takes `String` as a value.      |
-| `verifierId`            | The verifierId used for the verification. It takes `String` as a value.                                       |
-| `idToken`               | The idToken of the user obtained from login provider. It takes `String` as a value.                           |
-| `subVerifierInfoArray?` | Sub verifier info. Usually used during aggregate verifier. It takes `Array<TorusSubVerifierInfo>` as a value. |
+| Parameter               | Description                                                                                              |
+| ----------------------- | -------------------------------------------------------------------------------------------------------- |
+| `verifier`              | The verifier obtained from the Web3Auth Dashboard. It's a mandatory field and takes `String` as a value. |
+| `verifierId`            | The verifierId used for the verification. It takes `String` as a value.                                  |
+| `idToken`               | The idToken of the user obtained from login provider. It takes `String` as a value.                      |
+| `subVerifierInfoArray?` | Sub verifier info. Usually used during aggregate verifier. It takes `[TorusSubVerifierInfo]` as a value. |
 
 </TabItem>
 
@@ -66,10 +62,10 @@ public class LoginParams {
         self.verifier = verifier
         self.verifierId = verifierId
         self.idToken = idToken
-        self.subVerifierInfoArray = nil
+        subVerifierInfoArray = nil
     }
 
-    init(verifier: String, verifierId: String, idToken: String, subVerifierInfoArray: [TorusSubVerifierInfo]) {
+    public init(verifier: String, verifierId: String, idToken: String, subVerifierInfoArray: [TorusSubVerifierInfo]) {
         self.verifier = verifier
         self.verifierId = verifierId
         self.idToken = idToken
@@ -77,53 +73,44 @@ public class LoginParams {
     }
 }
 
+public struct TorusSubVerifierInfo {
+    public var verifier: String
+    public var idToken: String
+
+    public init(verifier: String, idToken: String) {
+        self.verifier = verifier
+        self.idToken = idToken
+    }
+}
 ```
 
 </TabItem>
-
 </Tabs>
 
-```swift title="Usage"
-let loginParams = LoginParams(verifier: "YOUR_VERIFIER_NAME", verifierId: "YOUR_VERIFIER_ID", idToken: "YOUR_ID_TOKEN")
-let sfaKey = try await singleFactoreAuth.connect(loginParams: loginParams)
-```
-
-:::tip NOTE
-
-Web3Auth SFA iOS SDK only works for users who have **not enabled MFA**.
-
-:::
-
-:::danger MFA enabled users
-
-For MFA enabled users, you'll see an Error message.
-
-:::
-
-## Example
+### Usage
 
 ```swift
-import SingleFactorAuth
-import JWTDecode
-
-let jwt = try decode(jwt: id_token)
-let result = try await SingleFactorAuth(singleFactorAuthArgs: .init(network: .legacy(.CYAN))).connect(loginParams: .init(verifier: "web3auth-firebase-examples", verifierId: jwt.subject ?? "YOUR_VERIFIER_ID", idToken: id_token))
-
-await MainActor.run(body: {
-    privateKey = result.getPrivateKey()
-    publicAddress = result.getPublicAddress()
-})
+let loginParams = LoginParams(verifier: "YOUR_VERIFIER_NAME", verifierId: "YOUR_VERIFIER_ID", idToken: "YOUR_ID_TOKEN")
+do {
+  let sfaKey = try await singleFactoreAuth.connect(loginParams: loginParams)
+} catch {
+  // Handle error
+}
 ```
 
 ## Session Management
 
-We have also included Session Management in this SDK, so calling the initialize function to get the
-`SFAKey` value without re-logging in the user if a user has an active session will return the
-`SFAKey` struct; otherwise, it will return nil.
+We have included Session Management in this SDK, so calling the initialize function to get the
+SFAKey value without re-logging in the user if a user has an active session will return the SFAKey,
+otherwise, it will throw an error.
+
+### Usage
 
 ```swift
-if let savedKey = try await singleFactoreAuth.initialize() {
-  print(savedKey.getPrivateKey())
-  print(savedKey.getPublicAddress())
+do {
+  let result = try await singleFactorAuth.initialize()
+  // Handle Success
+} catch let error {
+  // Handle Error
 }
 ```
