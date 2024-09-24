@@ -470,6 +470,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Aleph Zero",
+              items: [
+                "connect-blockchain/evm/aleph-zero/aleph-zero",
+                "connect-blockchain/evm/aleph-zero/web",
+                "connect-blockchain/evm/aleph-zero/android",
+                "connect-blockchain/evm/aleph-zero/ios",
+                "connect-blockchain/evm/aleph-zero/react-native",
+                "connect-blockchain/evm/aleph-zero/flutter",
+                "connect-blockchain/evm/aleph-zero/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Ancient8",
               items: [
                 "connect-blockchain/evm/ancient8/ancient8",
@@ -717,6 +730,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Mint",
+              items: [
+                "connect-blockchain/evm/mint/mint",
+                "connect-blockchain/evm/mint/web",
+                "connect-blockchain/evm/mint/android",
+                "connect-blockchain/evm/mint/ios",
+                "connect-blockchain/evm/mint/react-native",
+                "connect-blockchain/evm/mint/flutter",
+                "connect-blockchain/evm/mint/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Moonbeam",
               items: [
                 "connect-blockchain/evm/moonbeam/moonbeam",
@@ -913,6 +939,19 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/zilliqa/react-native",
                 "connect-blockchain/evm/zilliqa/flutter",
                 "connect-blockchain/evm/zilliqa/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "Zircuit",
+              items: [
+                "connect-blockchain/evm/zircuit/zircuit",
+                "connect-blockchain/evm/zircuit/web",
+                "connect-blockchain/evm/zircuit/android",
+                "connect-blockchain/evm/zircuit/ios",
+                "connect-blockchain/evm/zircuit/react-native",
+                "connect-blockchain/evm/zircuit/flutter",
+                "connect-blockchain/evm/zircuit/unity",
               ],
             },
           ],
