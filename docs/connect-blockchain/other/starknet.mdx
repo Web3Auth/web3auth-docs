@@ -1,10 +1,10 @@
 ---
-title: Integrate Web3Auth with the StarkNet Blockchain
-sidebar_label: StarkNet
+title: Integrate Web3Auth with the Starknet Blockchain
+sidebar_label: Starknet
 image: "banners/starknet.png"
 
 keywords: [starknet, web3auth, authentication, blockchain]
-description: "Integrate Web3Auth with the StarkNet Blockchain | Documentation - Web3Auth"
+description: "Integrate Web3Auth with the Starknet Blockchain | Documentation - Web3Auth"
 ---
 
 import GetUserInfoSnippet from "@site/src/common/docs/_get-userinfo.mdx";
@@ -13,18 +13,18 @@ import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.md
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-While using the Web3Auth Web SDK for a non EVM chain like [StarkNet](https://starkware.co/starknet/)
-you get a standard provider from which you can get the private key of the user. Using this private
-key, you can use the corresponding libraries of the blockchain to make blockchain calls like getting
+While using the Web3Auth Web SDK for a non EVM chain like [Starknet](https://www.starknet.io/) you
+get a standard provider from which you can get the private key of the user. Using this private key,
+you can use the corresponding libraries of the blockchain to make blockchain calls like getting
 user's `account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and `write`
 to the smart contract, etc. We have highlighted a few methods here for getting you started quickly
 on that.
 
 :::note
 
-This reference is for the `Web`, however, you can use StarkNet on other Mobile and Gaming Platforms
+This reference is for the `Web`, however, you can use Starknet on other Mobile and Gaming Platforms
 as well. Please follow our reference for [EVM Blockchains](/connect-blockchain/evm/), and similarly
-use StarkNet libraries that support the platforms to use the private key and make blockchain calls
+use Starknet libraries that support the platforms to use the private key and make blockchain calls
 accordingly.
 
 :::
@@ -56,10 +56,10 @@ const chainConfig = {
   chainId: "0x1", //
   rpcTarget: "https://rpc.ankr.com/eth",
   // Avoid using public rpcTarget in production.
-  displayName: "StarkNet Mainnet",
+  displayName: "Starknet Mainnet",
   blockExplorerUrl: "https://explorer.immutable.com",
   ticker: "STRK",
-  tickerName: "StarkNet",
+  tickerName: "Starknet",
 };
 ```
 
@@ -75,10 +75,10 @@ const chainConfig = {
   chainId: "0xaa36a7", //
   rpcTarget: "https://rpc.ankr.com/eth_sepolia",
   // Avoid using public rpcTarget in production.
-  displayName: "StarkNet Testnet",
+  displayName: "Starknet Testnet",
   blockExplorerUrl: "https://sepolia.etherscan.io",
   ticker: "STRK",
-  tickerName: "StarkNet",
+  tickerName: "Starknet",
 };
 ```
 
@@ -97,20 +97,20 @@ const chainConfig = {
 
 ## Get Account and Key
 
-Once a user logs in, the Web3Auth SDK returns a provider. Even though StarkNet is a layer 2 on
+Once a user logs in, the Web3Auth SDK returns a provider. Even though Starknet is a layer 2 on
 Ethereum, it is not EVM compatible. Hence to use it, one cannot use the native
 [`EIP1193`](https://eips.ethereum.org/EIPS/eip-1193) provider that Web3Auth gives for EVM
 blockchains. Hence we need to directly use the private key to make the calls here.
 
 Using the function, `web3auth.provider.request({method: "private_key"})` from Web3Auth provider, the
-application can have access to the user's private key. However, we cannot use this key with StarkNet
+application can have access to the user's private key. However, we cannot use this key with Starknet
 EC Curve specific signing functions, hence, we first derive the Stark Key using the `getStarkKey()`
 function.
 
 On the underhood, it uses the `starkwareCrypto.ec.keyFromPrivate()` function, where we pass our
 Private key with the `hex` argument since it is hex encoded. Further, we get the public key from
 this using the `starkwareCrypto.ec.keyFromPublic()` function, and we take its X-coordinate using
-`.pub.getX()` which is our `starkKey`. We use this `starkKey` on StarkNet transactions.
+`.pub.getX()` which is our `starkKey`. We use this `starkKey` on Starknet transactions.
 
 For the `deployAccount()`, we use the file `ArgentAccount.json` which gives us the ABI of the
 compiled contract. We use that contract in Starknet's `defaultProvider.deployContract()` function to
@@ -131,7 +131,7 @@ const keyPair = starkwareCrypto.ec.keyFromPrivate(privateKey, "hex");
 // get the account address from the public key
 const account = starkwareCrypto.ec.keyFromPublic(keyPair.getPublic(true, "hex"), "hex");
 
-// Use this key for the StarkNet transactions
+// Use this key for the Starknet transactions
 const startKey = account.pub.getX().toString("hex");
 ```
 
