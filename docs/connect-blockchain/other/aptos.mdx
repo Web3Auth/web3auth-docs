@@ -13,26 +13,46 @@ import GetWeb3AuthProvider from "@site/src/common/docs/_get-web3auth-provider.md
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-While using the Web3Auth Web SDK for a non-EVM chain like [Aptos](https://aptos.dev/) you get a
-standard provider from which you can get the private key of the user. Using this private key, you
-can use the corresponding libraries of the blockchain to make blockchain calls like getting the
-user's `account`, fetch `balance`, `sign transaction`, `send transaction`, `read` from and `write`
-to the smart contract, etc. We have highlighted a few methods here to get you started quickly on
-that.
+While using the Web3Auth Web SDK for a non-EVM chain like [Aptos](https://aptos.dev/), you get a
+standard provider from which you can obtain the private key of the user. Using this private key, you
+can utilize the corresponding libraries of the blockchain to make calls like fetching the user's
+`account`, retrieving `balance`, `signing transactions`, `sending transactions`, or interacting with
+smart contracts. We will focus on Testnet for this guide.
 
-:::note
+## Aptos Configuration and Enums
 
-This reference is for the `Web`, however, you can use Aptos on other Mobile and Gaming Platforms as
-well. Please follow our reference for [EVM Blockchains](/connect-blockchain/evm/), and similarly use
-Aptos libraries that support the platforms to use the private key and make blockchain calls
-accordingly.
+For configuring Aptos, we will use the `AptosConfig` class from the `@aptos-labs/ts-sdk` package.
+The network parameter in `AptosConfig` uses an enum, which allows us to select the network
+environment (e.g., **Testnet**).
 
-:::
+Here are the available networks in the enum:
+
+```typescript
+declare enum Network {
+  MAINNET = "mainnet",
+  TESTNET = "testnet",
+  DEVNET = "devnet",
+  LOCAL = "local",
+  CUSTOM = "custom",
+}
+```
+
+For this guide, we'll be using the `TESTNET` network.
+
+```typescript
+import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
+
+// Initialize the Aptos SDK with Testnet configuration
+const config = new AptosConfig({ network: Network.TESTNET });
+const aptos = new Aptos(config);
+```
 
 ## Installation
 
+To begin, install the Aptos SDK:
+
 ```bash npm2yarn
-npm install --save aptos
+npm install --save @aptos-labs/ts-sdk
 ```
 
 ## Initializing Provider
@@ -53,11 +73,10 @@ npm install --save aptos
 ```typescript
 const chainConfig = {
   chainNamespace: "other",
-  chainId: "0x1", //
+  chainId: "0x1",
   rpcTarget: "https://rpc.ankr.com/http/aptos/v1",
-  // Avoid using public rpcTarget in production.
   displayName: "Aptos Mainnet",
-  blockExplorerUrl: "https://algoexplorer.io",
+  blockExplorerUrl: "https://explorer.aptoslabs.com/",
   ticker: "APT",
   tickerName: "Aptos",
 };
@@ -72,11 +91,10 @@ const chainConfig = {
 ```typescript
 const chainConfig = {
   chainNamespace: "other",
-  chainId: "0x7E6", //
+  chainId: "0x7E6",
   rpcTarget: "https://rpc.ankr.com/http/aptos_testnet/v1",
-  // Avoid using public rpcTarget in production.
   displayName: "Aptos Testnet",
-  blockExplorerUrl: "https://testnet.algoexplorer.io",
+  blockExplorerUrl: "https://explorer.aptoslabs.com/testnet",
   ticker: "APT",
   tickerName: "Aptos",
 };
@@ -106,7 +124,7 @@ Curve specific signing functions, hence, we first derive the Aptos Account using
 On the underhood, it uses the helper functions from the `aptos` library to derive the key pair.
 
 ```tsx
-import { AptosAccount, AptosClient } from "aptos";
+import { Account, Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 
 /*
   Use code from the above InitializeWeb3Auth and get provider steps
@@ -116,14 +134,14 @@ const privateKey = await web3authProvider.request({ method: "private_key" });
 const privateKeyUint8Array = new Uint8Array(
   privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16)),
 );
-const aptosAccount = new AptosAccount(privateKeyUint8Array);
-const aptosAccountAddress = aptosAccount.address();
+const aptosAccount = Account.fromPrivateKey({ privateKey: privateKeyUint8Array });
+const aptosAccountAddress = aptosAccount.accountAddress.toString();
 ```
 
 ## Get Balance
 
 ```tsx
-import { AptosAccount, AptosClient } from "aptos";
+import { Account, Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 
 /*
   Use code from the above InitializeWeb3Auth and get provider steps
@@ -133,23 +151,20 @@ const privateKey = await web3authProvider.request({ method: "private_key" });
 const privateKeyUint8Array = new Uint8Array(
   privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16)),
 );
-const aptosAccount = new AptosAccount(privateKeyUint8Array);
-const aptosAccountAddress = aptosAccount.address();
+const aptosAccount = Account.fromPrivateKey({ privateKey: privateKeyUint8Array });
+const aptosAccountAddress = aptosAccount.accountAddress.toString();
 
-const NODE_URL = "https://fullnode.devnet.aptoslabs.com";
-const aptosCoinStore = "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>";
+const aptos = new Aptos(new AptosConfig({ network: Network.TESTNET }));
 
-const client = new AptosClient(NODE_URL);
-
-let resources = await client.getAccountResources(aptosAccount.address());
-let accountResource = resources.find((r) => r.type === aptosCoinStore);
-let balance = parseInt((accountResource?.data as any).coin.value);
+let resources = await aptos.account.getAccountResources({ accountAddress: aptosAccountAddress });
+let coinResource = resources.find((resource) => resource.type.includes("0x1::coin::CoinStore"));
+let balance = parseInt(coinResource.data.coin.value);
 ```
 
 ## Send Transaction
 
 ```tsx
-import { AptosAccount, FaucetClient, AptosClient } from "aptos";
+import { Account, Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 
 /*
   Use code from the above InitializeWeb3Auth and get provider steps
@@ -159,22 +174,74 @@ const privateKey = await web3authProvider.request({ method: "private_key" });
 const privateKeyUint8Array = new Uint8Array(
   privateKey.match(/.{1,2}/g)!.map((byte: any) => parseInt(byte, 16)),
 );
-const aptosAccount = new AptosAccount(privateKeyUint8Array);
-const aptosAccountAddress = aptosAccount.address();
+const aptosAccount = Account.fromPrivateKey({ privateKey: privateKeyUint8Array });
+const aptosAccountAddress = aptosAccount.accountAddress.toString();
 
-const NODE_URL = "https://fullnode.devnet.aptoslabs.com";
-const aptosCoinStore = "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>";
+const aptos = new Aptos(new AptosConfig({ network: Network.TESTNET }));
 
-const client = new AptosClient(NODE_URL);
+const transaction = await aptos.transaction.build.simple({
+  sender: aptosAccountAddress,
+  data: {
+    function: "0x1::coin::transfer",
+    typeArguments: ["0x1::aptos_coin::AptosCoin"],
+    functionArguments: [aptosAccountAddress, "717"],
+  },
+});
 
-const payload = {
-  type: "entry_function_payload",
-  function: "0x1::coin::transfer",
-  type_arguments: ["0x1::aptos_coin::AptosCoin"],
-  arguments: [aptosAccount.address().hex(), 717], // sending funds to self
-};
-const txnRequest = await client.generateTransaction(aptosAccount.address(), payload);
-const signedTxn = await client.signTransaction(aptosAccount, txnRequest);
-const transactionRes = await client.submitTransaction(signedTxn);
-const hash = transactionRes.hash;
+const senderAuthenticator = await aptos.transaction.sign({
+  signer: aptosAccount,
+  transaction,
+});
+
+const committedTxn = await aptos.transaction.submit.simple({
+  transaction,
+  senderAuthenticator,
+});
+
+await aptos.waitForTransaction({ transactionHash: committedTxn.hash });
 ```
+
+## Airdrop Request
+
+You can request test tokens (Aptos coins) for your account by using the `getAirdrop` method in the
+testnet environment. This allows you to receive a certain amount of AptosCoin for testing purposes.
+
+Here is how you can implement it:
+
+```tsx
+import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
+
+/*
+  Use code from the above InitializeWeb3Auth and get provider steps
+*/
+
+const aptos = new Aptos(new AptosConfig({ network: Network.TESTNET }));
+
+async function requestAirdrop(accountAddress: string, amount: number) {
+  console.log(`Requesting airdrop for account: ${accountAddress} with amount: ${amount}`);
+
+  const transaction = await aptos.fundAccount({
+    accountAddress: accountAddress,
+    amount: amount,
+  });
+
+  console.log(`Airdrop transaction hash: ${transaction.hash}`);
+
+  const executedTransaction = await aptos.waitForTransaction({
+    transactionHash: transaction.hash,
+  });
+
+  console.log("Airdrop executed:", executedTransaction);
+  return executedTransaction;
+}
+```
+
+This method will provide your account with test APT from Aptos Testnet, which can be used to test
+transactions and other operations.
+
+## Conclusion
+
+With Web3Auth and Aptos integration, you can easily set up authentication for your Aptos dApps, get
+account information, check balances, and even send transactions. This makes Web3Auth a powerful tool
+for handling Web2 to Web3 user onboarding seamlessly while utilizing the benefits of a secure and
+scalable blockchain like Aptos.
