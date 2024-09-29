@@ -15,6 +15,10 @@ import SEO from "@site/src/components/SEO";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
+import Install from "@site/src/common/sdk/core-kit/sfa/android/_sfa-android-install.mdx";
+import Initialization from "@site/src/common/sdk/core-kit/sfa/android/_sfa-android-initialization.mdx";
+import SessionManagement from "@site/src/common/sdk/core-kit/sfa/android/_sfa-android-session-management.mdx";
+
 <SEO
   title=" Integrate Firebase with Web3Auth Android SFA SDK"
   description="Learn how to use Web3Auth Single Factor Auth with Firebase in your Android Application."
@@ -64,30 +68,7 @@ Android application.
 
 ### Installation
 
-In your module-level `build.gradle` or `settings.gradle` file, add JitPack repository:
-
-```groovy
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-        // focus-next-line
-        maven { url "https://jitpack.io" } // <-- Add this line
-    }
-}
-```
-
-Once, you have added the JitPack repository, then in your app-level `build.gradle` dependencies
-section, add the `single-factor-auth-android`.
-
-```groovy
-dependencies {
-    // ...
-    // focus-next-line
-    implementation 'com.github.web3auth:single-factor-auth-android:0.4.0'
-}
-```
+<Install />
 
 For the prerequisites, and other mandatory configuration of the SDK, please head to our
 [installation documentation](/docs/sdk/core-kit/sfa-android/install).
@@ -98,55 +79,22 @@ After successfully installing the package, the next step is to initialize `Singl
 Android app. This sets up the necessary configurations using Web3Auth network and prepares the SDK.
 [Learn more about SingleFactorAuth Initialization](/docs/sdk/core-kit/sfa-android/initialize).
 
-```kotlin
-class MainActivity : AppCompatActivity() {
-    private lateinit var singleFactorAuth: SingleFactorAuth
-    private lateinit var singleFactorAuthArgs: SingleFactorAuthArgs
-
-    // Additional code
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        // focus-start
-        singleFactorAuthArgs = SingleFactorAuthArgs(Web3AuthNetwork.TESTNET, "YOUR_WEB3AUTH_CLIENT_ID")
-        singleFactorAuth = SingleFactorAuth(singleFactorAuthArgs)
-        // focus-end
-      }
-
-    // Additional code
-}
-```
+<Initialization />
 
 ### Session Management
 
 To check whether the user is authenticated, you can use the `initialize` method. For a user already
-authenticated, the result would be a non-nullable `TorusKey`. You can navigate to different views
+authenticated, the result would be a non-nullable `SFAKey`. You can navigate to different views
 based on the result.
 
-```kotlin
-val sessionResponse: CompletableFuture<TorusKey> = singleFactorAuth.initialize(
-    this.applicationContext
-)
-
-sessionResponse.whenComplete {
-    torusKey, error ->
-    if (torusKey != null) {
-        publicAddress = torusKey.publicAddress.toString()
-        println("""Private Key: ${torusKey.privateKey?.toString(16)}""".trimIndent())
-    } else {
-        Log.d("MainActivity_SFA", error.message ?: "Something went wrong")
-    }
-}
-```
+<SessionManagement />
 
 ### Authentication
 
-If the user is not authenticated, you should utilize the `getKey` method. For the guide, we will add
-Email Password login using Firebase. The `getKey` method is pretty straightforward in
+If the user is not authenticated, you should utilize the `connect` method. For the guide, we will
+add Email Password login using Firebase. The `connect` method is pretty straightforward in
 SingleFactorAuth and takes `LoginParams` as input. After successfully logging in, the method will
-return the `TorusKey`.
+return the `SFAKey`.
 
 Learn more about [SingleFactorAuth LoginParams](/docs/sdk/core-kit/sfa-android/usage#loginparams).
 To more about Firebase login methods, please
@@ -174,6 +122,7 @@ auth.signInWithEmailAndPassword("android@firebase.com", "Android@Web3Auth")
                 if (idToken != null) {
                    val sub = user!!.id
 
+                    // focus-start
                    val loginParams = LoginParams(
                         // Replace with your custom verifier name
                         "web3auth-firebase-examples",
@@ -182,9 +131,8 @@ auth.signInWithEmailAndPassword("android@firebase.com", "Android@Web3Auth")
                     )
 
                     try {
-                        // Save the TorusKey for future use to interact with Blockchain.
-                        // focus-start
-                        torusKey = singleFactorAuth.getKey(
+                        // Save the SFAKey for future use to interact with Blockchain.
+                        sfaKey = singleFactorAuth.connect(
                             loginParams,
                             this.applicationContext,
                             86400
@@ -197,9 +145,9 @@ auth.signInWithEmailAndPassword("android@firebase.com", "Android@Web3Auth")
                         e.printStackTrace()
                     }
 
-                    publicAddress = torusKey?.publicAddress.toString()
+                    publicAddress = sfaKey?.publicAddress.toString()
 
-                    println("""Private Key: ${torusKey?.privateKey?.toString(16)}""".trimIndent())
+                    println("""Private Key: ${sfaKey?.privateKey?.toString(16)}""".trimIndent())
                     println("""Public Address: $publicAddress""".trimIndent())
 
                     // Additional code
@@ -234,12 +182,12 @@ dependencies {
 ```
 
 After successfully installing SDK, it's time to create `Credentials` instance to retrive user's EOA
-address, and interact with blockchain. To retrive the user's private key, we'll use the `TorusKey`
+address, and interact with blockchain. To retrive the user's private key, we'll use the `SFAkey`
 instance.
 
 ```kotlin
 // focus-next-line
-val credentials: Credentials = Credentials.create(torusKey!.privateKey!.toString(16))
+val credentials: Credentials = Credentials.create(sfaKey!.privateKey!.toString(16))
 
 // User's EOA address
 Log.d(TAG, credentials.address)
