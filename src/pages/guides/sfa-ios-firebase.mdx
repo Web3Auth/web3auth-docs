@@ -15,6 +15,11 @@ import SEO from "@site/src/components/SEO";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
+import SPM from "@site/src/common/sdk/core-kit/sfa/ios/_sfa-ios-spm.mdx";
+import Cocoapods from "@site/src/common/sdk/core-kit/sfa/ios/_sfa-ios-cocoapods.mdx";
+import Initialize from "@site/src/common/sdk/core-kit/sfa/ios/_sfa-ios-initialization.mdx";
+import SessionManagement from "@site/src/common/sdk/core-kit/sfa/ios/_sfa-ios-session-management.mdx";
+
 <SEO
   title="How to integrate Firebase with Web3Auth iOS SFA SDK"
   description="Learn how to use Web3Auth Single Factor Auth with Firebase in your iOS Application."
@@ -74,30 +79,16 @@ Package Manager, or you can install using Cocoapods.
 
 <TabItem value="spm">
 
-1. In Xcode, with your app project open, navigate to **File > Add Packages**.
-
-2. When prompted, add the single-factor-auth-swift package repository:
-
-   ```sh
-   https://github.com/Web3Auth/single-factor-auth-swift
-   ```
-
-   From the `Dependency Rule` dropdown, select `Exact Version` and enter `5.0.0` as the version.
-
-3. When finished, Xcode will automatically begin resolving and downloading your dependencies in the
-   background.
+<SPM />
 
 </TabItem>
 
 <TabItem value="pods">
-Add `SingleFactorAuth` as a dependency to your `Podfile`.
 
-```sh
-pod 'SingleFactorAuth', '~> 6.0.0'
-```
+<Cocoapods />
 
-</TabItem>
-</Tabs>
+</ TabItem>
+</ Tabs>
 
 ### Initialization
 
@@ -105,34 +96,22 @@ After successfully installing the package, the next step is to initialize `Singl
 iOS app. This sets up the necessary configurations using Web3Auth network and prepares the SDK.
 [Learn more about SingleFactorAuth Initialization](/docs/sdk/core-kit/sfa-ios/initialize).
 
-```swift
-var singleFactorAuth = SingleFactorAuth(
-    singleFactorAuthArgs: .init(
-        web3AuthClientId: "YOUR_WEB3AUTH_CLIENT_ID",
-        network: Web3AuthNetwork.SAPPHIRE_MAINNET
-    )
-)
-```
+<Initialize />
 
 ### Session Management
 
 To check whether the user is authenticated, you can use the `initialize` method. For a user already
-authenticated, the result would be a non-nullable `TorusSFAKey`. You can navigate to different views
+authenticated, the result would be a non-nullable `SFAKey`. You can navigate to different views
 based on the result.
 
-```swift
-if let torusKey = try await singleFactoreAuth.initialize() {
-  print(torusKey.getPrivateKey())
-  print(torusKey.getPublicAddress())
-}
-```
+<SessionManagement />
 
 ### Authentication
 
-If the user is not authenticated, you should utilize the `getKey` method. For the guide, we will add
-Email Password login using Firebase. The `getKey` method is pretty straightforward in
+If the user is not authenticated, you should utilize the `connect` method. For the guide, we will
+add Email Password login using Firebase. The `connect` method is pretty straightforward in
 SingleFactorAuth and takes `LoginParams` as input. After successfully logging in, the method will
-return the `TorusSFAKey`.
+return the `SFAKey`.
 
 Learn more about [SingleFactorAuth LoginParams](/docs/sdk/core-kit/sfa-ios/usage#loginparams). To
 more about Firebase login methods, please
@@ -149,7 +128,7 @@ do {
     let verifierName = "w3a-firebase-demo"
 
     // focus-start
-    let torusSFAKey = try await singleFactorAuth.getKey(
+    let sfaKey = try await singleFactorAuth.connect(
         loginParams: .init(
             verifier: verifierName,
             verifierId: res.user.uid,
@@ -207,11 +186,11 @@ pod 'web3.swift', '~> 1.6.1'
 </TabItem>
 </Tabs>
 
-After successfully installing package, it's time to create an extension for `TorusSFAKey` which
-conforms to `EthereumSingleKeyStorageProtocol`.
+After successfully installing package, it's time to create an extension for `SFAKey` which conforms
+to `EthereumSingleKeyStorageProtocol`.
 
 ```swift
-extension TorusSFAKey: EthereumSingleKeyStorageProtocol {
+extension SFAKey: EthereumSingleKeyStorageProtocol {
     public func storePrivateKey(key: Data) throws {}
 
     public func loadPrivateKey() throws -> Data {
@@ -229,7 +208,7 @@ address, and sign the transactions.
 
 ```swift
 let ethereumAccount = try! EthereumAccount(
-  keyStorage: torusSFAKey as EthereumSingleKeyStorageProtocol
+  keyStorage: sfaKey as EthereumSingleKeyStorageProtocol
 )
 
 let address = ethereumAccount.address
