@@ -15,6 +15,10 @@ import SEO from "@site/src/components/SEO";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
+import Pubspec from "@site/src/common/sdk/core-kit/sfa/flutter/_sfa-flutter-pubspec-install.mdx";
+import Initialization from "@site/src/common/sdk/core-kit/sfa/flutter/_sfa-flutter-initialization.mdx";
+import SessionManagement from "@site/src/common/sdk/core-kit/sfa/flutter/_sfa-flutter-session-management.mdx";
+
 <SEO
   title="Integrate Firebase with Web3Auth Flutter SFA SDK"
   description="Learn how to use Web3Auth Single Factor Auth with Firebase in your Flutter Application."
@@ -86,10 +90,7 @@ flutter pub add single_factor_auth_flutter
 <TabItem value="pubspec">
 Add `single_factor_auth_flutter` as a dependency to your `pubspec.yaml`.
 
-```yaml
-dependencies:
-  single_factor_auth_flutter: ^4.1.0
-```
+<Pubspec />
 
 </TabItem>
 </Tabs>
@@ -101,43 +102,22 @@ your Flutter app. This sets up the necessary configurations using Web3Auth netwo
 SDK.
 [Learn more about SingleFactAuthFlutter Initialization](/docs/sdk/core-kit/sfa-flutter/initialize).
 
-```dart
-final singleFactorAuthFlutter = SingleFactAuthFlutter();
-
-await singleFactAuthFlutter.init(
-  SFAParams(
-    network: Web3AuthNetwork.cyan,
-    clientid: "YOUR_WEB3AUTH_CLIENT_ID",
-  ),
-);
-```
+<Initialization />
 
 ### Session Management
 
 To check whether the user is authenticated, you can use the `initialize` method. For a user already
-authenticated, the result would be a non-nullable `TorusKey`. You can navigate to different views
+authenticated, the result would be a non-nullable `SFAKey`. You can navigate to different views
 based on the result.
 
-```dart
-try {
-  final TorusKey? torusKey = await singleFactAuthFlutter.initialize();
-
-  if (torusKey != null) {
-    log('Active session found. Private Key: ${torusKey.privateKey}');
-  } else {
-    log("No active session found.")
-  }
-} catch (e) {
-  log("Error initializing SFA: $e");
-}
-```
+<SessionManagement />
 
 ### Authentication
 
-If the user is not authenticated, you should utilize the `getKey` method. For the guide, we will add
-Email Password login using Firebase. The `getKey` method is pretty straightforward in
+If the user is not authenticated, you should utilize the `connect` method. For the guide, we will
+add Email Password login using Firebase. The `connect` method is pretty straightforward in
 `SingleFactAuthFlutter` and takes `LoginParams` as input. After successfully logging in, the method
-will return the `TorusKey`.
+will return the `SFAKey`.
 
 Learn more about
 [SingleFactAuthFlutter LoginParams](/docs/sdk/core-kit/sfa-flutter/usage#loginparams). For
@@ -183,7 +163,7 @@ class FirebaseHelper {
 ```
 
 Once we hace created the FirebaseHelper class, we can use it login the user, and get the idToken.
-Once we have the idToken, we can use it to `getKey` method to authenticate user. To more about
+Once we have the idToken, we can use it to `connect` method to authenticate user. To more about
 Firebase login methods, please
 [checkout the Firebase documentation](https://firebase.google.com/docs/auth/flutter/start).
 
@@ -198,6 +178,7 @@ final userCredential = await firebaseHelper.signInWithEmailAndPassword(
 final user = userCredential.user;
 final token = await user.getIdToken(true);
 
+// focus-start
 final loginParams = LoginParams(
   // Replace with your verifier
   verifier: 'web3auth-firebase-examples',
@@ -206,11 +187,11 @@ final loginParams = LoginParams(
   idToken: token!,
 )
 
-// focus-next-line
-final torusKey = await singleFactAuthFlutter.getKey(loginParams);
+final sfaKey = await singleFactAuthFlutter.connect(loginParams);
+// focus-end
 
-log(torusKey.privateKey);
-log(torusKey.publicAddress);
+log(sfaKey.privateKey);
+log(sfaKey.publicAddress);
 ```
 
 ## Set up Blockchain Providers
@@ -251,12 +232,12 @@ dependencies:
 </Tabs>
 
 After successfully installing package, it's time to create `Credentials` instance to retrive user's
-EOA address, and sign the transactions. To retrive the user's private key, we'll use the `TorusKey`
+EOA address, and sign the transactions. To retrive the user's private key, we'll use the `SFAKey`
 instance.
 
 ```dart
 // focus-next-line
-final credentials = EthPrivateKey.fromHex(torusKey.privateKey);
+final credentials = EthPrivateKey.fromHex(sfaKey.privateKey);
 
 // User's EOA address
 log(credentials.address)
