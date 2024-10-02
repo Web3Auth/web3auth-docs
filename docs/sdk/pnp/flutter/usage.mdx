@@ -12,16 +12,14 @@ import EnableMFAMethod from "@site/src/common/sdk/pnp/flutter/_enable-mfa.mdx";
 
 ## Logging in a User
 
-### `login(LoginParams)`
+To login in a user, you can use the `login` method. It will trigger login flow will navigate the
+user to a browser model allowing the user to login into the service. You can pass in the supported
+providers to the login method for specific social logins such as GOOGLE, APPLE, FACEBOOK, etc., and
+do whitelabel login.
 
-Trigger login flow will navigate the user to a browser model allowing the user to login into the
-service. You can pass in the supported providers to the login method for specific social logins such
-as GOOGLE, APPLE, FACEBOOK, etc., and do whitelabel login. The `login` function takes in
-`LoginParams` as a required input.
+### Parameters
 
-#### Arguments
-
-`LoginParams`
+The `login` method takes in `LoginParams` as a required input.
 
 <Tabs
   defaultValue="table"
@@ -100,23 +98,15 @@ enum Provider {
 </TabItem>
 </Tabs>
 
-### `getPrivkey()`
+### Usage
 
-Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private
-key which can be used to sign transactions on EVM compatible chains.
+```dart
+final Web3AuthResponse response = await Web3AuthFlutter.login(
+  LoginParams(loginProvider: Provider.google)
+);
+```
 
-### `getEd25519PrivKey()`
-
-Use getEd25519PrivKey() to get the Ed25519 private key of the user. This private key can be used to
-sign transactions on Solana.
-
-### `getUserInfo()`
-
-Use getUserInfo() to get the user info of the user.
-
-#### UserInfo Response
-
-<FlutterResponse />
+### Examples
 
 <Tabs
   defaultValue="google"
@@ -348,7 +338,6 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 ```
 
 </TabItem>
-
 <TabItem value="jwt">
 
 ```dart title="Usage"
@@ -403,23 +392,56 @@ final Web3AuthResponse response = await Web3AuthFlutter.login(
 </TabItem>
 </Tabs>
 
+## Retrieve Private Key
+
+Web3Auth supports two widely used cryptographic curves, Secp256k1 and Ed25519, making it
+chain-agnostic and compatible with multiple blockchain networks.
+[Learn more about how to connect different blockchains](/docs/connect-blockchain).
+
+### Secp256k1 Private Key
+
+To retrieve the secp256k1 private key of the user., use `getPrivkey` method. The method returns an
+EVM compatible private key which can be used to sign transactions on EVM compatible chains.
+
+```dart
+final privateKey = await Web3AuthFlutter.getPrivKey();
+```
+
+### Ed25519 Private Key
+
+To retrieve the secp256k1 private key of the user., use `getEd25519PrivKey` method. This private key
+can be used to sign transactions on Solana.
+
+```dart
+final privateKey = await Web3AuthFlutter.getEd25519PrivKey();
+```
+
+## Retrive User Information
+
+You can use the `getUserInfo` method to retrieve various details about the user, such as their login
+type, whether multi-factor authentication (MFA) is enabled, profile image, name, and other relevant
+information.
+
+### Usage
+
+```dart
+final userInfo = Web3AuthFlutter.getUserInfo();
+```
+
+### UserInfo Response
+
+<FlutterResponse />
+
 ## Logging out a user
 
-### `logout()`
+To logout the user and remove the session id from the device you can use the `logout` method. The
+user will need to login again to use the dApp next time the dApp is opened.
 
-This method will logout the user and remove the session id from the device. The user will need to
-login again to use the dApp next time the dApp is opened.
+### Usage
 
 ```dart
 await Web3AuthFlutter.logout();
 ```
-
-:::tip sample-app
-
-Get started with a sample app found
-[here](/examples?product=Plug+and+Play&sdk=Plug+and+Play+Flutter+SDK).
-
-:::
 
 ## Enable MFA for a user
 
