@@ -16,33 +16,33 @@ valid JWT token in `W3ALoginParams` as well.
 
 <TabItem value = "default-verifier">
 
-```swift title="Usage"
+```swift
 do {
 	// focus-next-line
-	let isMFAEnabled = try await self.web3Auth.enableMFA()
+  let isMFAEnabled = try await web3Auth.enableMFA()
 } catch {
-	print(error.localizedDescription)
-	// Handle Error
+  print(error.localizedDescription)
+  // Handle Error
 }
 ```
 
 </TabItem>
 
 <TabItem value = "custom-jwt-verifier">
-```swift title="Usage"
+```swift
 do {
-	let loginParams = W3ALoginParams(
-		.JWT,
-		extraLoginOptions: .init(id_token: "your_jwt_token")
-  	)
+  let loginParams = W3ALoginParams(
+    .JWT,
+    extraLoginOptions: .init(id_token: "your_jwt_token")
+   )
 
     // focus-next-line
-    let isMFAEnabled = try await self.web3Auth.enableMFA(loginParams)
+
+let isMFAEnabled = try await web3Auth.enableMFA(loginParams)
 
 } catch { print(error.localizedDescription) // Handle Error }
 
 ```
-
 </TabItem>
 </Tabs>
 ```
