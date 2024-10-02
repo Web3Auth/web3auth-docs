@@ -470,6 +470,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "5ire",
+              items: [
+                "connect-blockchain/evm/5ire/5ire",
+                "connect-blockchain/evm/5ire/web",
+                "connect-blockchain/evm/5ire/android",
+                "connect-blockchain/evm/5ire/ios",
+                "connect-blockchain/evm/5ire/react-native",
+                "connect-blockchain/evm/5ire/flutter",
+                "connect-blockchain/evm/5ire/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Aleph Zero",
               items: [
                 "connect-blockchain/evm/aleph-zero/aleph-zero",
