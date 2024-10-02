@@ -13,6 +13,8 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import WalletPreview from "@site/static/guides/flutter-wallet-preview.png";
 
+import PubspecInstallation from "@site/src/common/sdk/pnp/flutter/_flutter-pubspec-installation.mdx";
+
 <SEO
   title="Build your own Chain Agnostic Web3 wallet in Flutter"
   description="Empower your Flutter app with a Chain Agnostic Web3 wallet using the Web3Auth PnP SDK."
@@ -78,10 +80,7 @@ flutter pub add web3auth_flutter
 <TabItem value="pubspec">
 Add `web3auth_flutter` as a dependency to your `pubspec.yaml`.
 
-```yaml
-dependencies:
-  web3auth_flutter: ^3.1.7
-```
+<PubspecInstallation />
 
 </TabItem>
 </Tabs>
@@ -108,14 +107,9 @@ Future<void> main() async {
 
   await Web3AuthFlutter.init(
     Web3AuthOptions(
-      clientId:
-          "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+      clientId: "YOUR_WEB3AUTH_CLIENT_ID",
       network: Network.sapphire_mainnet,
       redirectUrl: redirectUrl,
-      whiteLabel: WhiteLabelData(
-        appName: "Solana Web3Auth Flutter",
-        mode: ThemeModes.dark,
-      ),
     ),
   );
 
@@ -192,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(final AppLifecycleState state) {
     // This is important to trigger the user cancellation on Android.
     if (state == AppLifecycleState.resumed) {
-      Web3AuthFlutter.setResultUrl();
+      Web3AuthFlutter.setCustomTabsClosed();
     }
   }
 
