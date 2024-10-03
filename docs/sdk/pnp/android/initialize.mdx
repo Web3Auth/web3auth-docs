@@ -17,21 +17,13 @@ However, Initialization is a two-step process:
 1. [Creating a Web3Auth Instance](#create-web3auth-instance)
 2. [Setting a Result URL](#set-result-url)
 
+## Create Web3Auth Instance
+
 Please note that these are the most critical steps where you must pass on different parameters
 according to the preference of your project. Additionally, You must configure Whitelabeling and
 Custom Authentication within this step if you wish to customize your Web3Auth Instance.
 
-## Create Web3Auth Instance
-
-In your activity, create a `Web3Auth` instance with your Web3Auth project's configurations.
-
-```kotlin
-web3Auth = Web3Auth(Web3AuthOptions)
-```
-
-### Arguments
-
-#### `Web3AuthOptions`
+### Parameters
 
 The Web3Auth Constructor takes an object with `Web3AuthOptions` as input.
 
@@ -80,112 +72,12 @@ data class Web3AuthOptions(
 ```
 
 </TabItem>
-
 </Tabs>
 
-### Instance
+### Initialize Web3Auth
 
 <Initialization />
-
-### Session Management
-
-The Session Management feature allows you to check the existing sessions with Web3Auth. The
-`sessionResponse()` will allow users to remain authenticated with Web3Auth for up to 1 day default,
-or a maximum of 7 days, or until they logout or session data is cleared. To change the default
-session time, you can pass `sessionTime` in `Web3AuthOptions`.
-
-```kotlin
-// Call sessionResponse() in onCreate() to check for any existing session.
-val sessionResponse: CompletableFuture<Void> = web3Auth.initialize()
-sessionResponse.whenComplete { _, error ->
-    if (error == null) {
-          Log.d("MainActivity_Web3Auth", "User already logged in")
-          // Add your logic
-    } else {
-        Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
-        // Ideally, you should initiate the login function here.
-    }
-}
-```
-
-:::note
-
-If you're looking for `refreshToken` to maintain the JWT session, use this method instead to extend
-the session.
-
-:::
 
 ## Set Result URL
 
 <SetResultUrl />
-
-## Example
-
-```kotlin
-class MainActivity : AppCompatActivity() {
-  // ...
-  private lateinit var web3Auth: Web3Auth
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
-
-    web3Auth = Web3Auth(
-      Web3AuthOptions(context = this,
-        clientId = getString(R.string.web3auth_project_id),
-        network = Network.MAINNET,
-        redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth")
-      )
-    )
-
-    // Handle user signing in when app is not alive
-    web3Auth.setResultUrl(intent?.data)
-
-    // Calls sessionResponse() to check for any existing session.
-    val sessionResponse: CompletableFuture<Void> = web3Auth.initialize()
-    sessionResponse.whenComplete { _, error ->
-        if (error == null) {
-            Log.d("MainActivity_Web3Auth", "User already logged in")
-          // Add your logic
-        } else {
-            Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
-            // Ideally, you should initiate the login function here.
-        }
-    }
-
-    // Setup UI and event handlers
-    val signInButton = findViewById<Button>(R.id.signInButton)
-    signInButton.setOnClickListener { signIn() }
-  }
-
-  override fun onNewIntent(intent: Intent?) {
-    super.onNewIntent(intent)
-
-    // Handle user signing in when app is active
-    web3Auth.setResultUrl(intent?.data)
-  }
-
-  private fun signIn() {
-    val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
-    val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            web3Auth.login(LoginParams(selectedLoginProvider))
-
-    loginCompletableFuture.whenComplete { loginResponse, error ->
-      if (error == null) {
-        // render logged in UI
-        println(loginResponse)
-      } else {
-        // render error UI
-      }
-    }
-  }
-  //...
-}
-```
-
-:::tip sample app
-
-Get started with a
-[sample application found here](/examples?product=Plug+and+Play&sdk=Plug+and+Play+Android+SDK).
-
-:::
