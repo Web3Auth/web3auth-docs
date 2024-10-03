@@ -18,19 +18,13 @@ three shares for off-chain multi-sig, making the key self-custodial. With backup
 easily recover your account if you lose access to your original device or helps login into a new
 device.
 
-You can set the mfaLevel within the `loginParams` to customize when mfa screen should be shown to
-user. It currently accepts 4 values:
+<MFAMinimumPlan />
 
-- **`default`** - Setting the mfaLevel to default will present the MFA screen to user on every third
-  login. `mfaLevel = MFALevel.DEFAULT`
-- **`optional`** - Setting mfaLevel to optional will present the MFA screen to user on every login
-  but user will have the option to skip it. `mfaLevel = MFALevel.OPTIONAL`
-- **`mandatory`** - Setting mfaLevel to mandatory will make it mandatory for user to setup MFA after
-  login. `mfaLevel = MFALevel.MANDATORY`
-- **`none`** - Setting mfaLevel to none will skip the mfa setup screen totally.
-  `mfaLevel = MFALevel.NONE`
+## Enable using the MFA Level
 
-To trigger the MFA flow after authentication, you can use `enableMFA` method.
+For a dApp, we provide various options to set up Multi-Factor Authentication. You can customize the
+MFA screen by passing the `mfaLevel` parameter in `login` method. You can enable or disable a backup
+factor and change their order. Currently, there are four values for MFA level.
 
 :::caution Note
 
@@ -40,66 +34,54 @@ enabled MFA on other dApps. This is because MFA cannot be turned off once it is 
 
 :::
 
-<MFAMinimumPlan />
+### MFA Level Options
+
+| MFA Level | Description                                                |
+| --------- | ---------------------------------------------------------- |
+| DEFAULT   | Shows the MFA screen every third login.                    |
+| OPTIONAL  | Shows the MFA screen on every login, but user can skip it. |
+| MANDATORY | Makes it mandatory to set up MFA after first login.        |
+| NONE      | Skips the MFA setup screen                                 |
+
+### Usage
 
 ```kotlin
-web3Auth.login(LoginParams(selectedLoginProvider, mfaLevel = MFALevel.MANDATORY))
+val loginResponse = web3Auth.login(
+  LoginParams(
+    Proider.GOOGLE,
+    // focus-next-line
+    mfaLevel = MFALevel.MANDATORY
+  )
+)
 ```
 
-```kotlin title="Usage"
-import android.widget.Button
-import com.web3auth.core.Web3Auth
-import android.os.Bundle
+## Explicitly Enable MFA
 
-class MainActivity : AppCompatActivity() {
-	private lateinit var web3Auth: Web3Auth
+<EnableMFAMethod />
 
-	private fun signIn() {
-		val selectedLoginProvider = Provider.GOOGLE
-		// Can be GOOGLE, FACEBOOK, TWITCH etc.
+## Configure MFA Settings
 
-		// MFA Level is set Mandatory here.
-		// `mfaLevel = MFALevel.MANDATORY`
-		val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-				web3Auth.login(LoginParams(selectedLoginProvider,
-						// focus-next-line
-						mfaLevel = MFALevel.MANDATORY))
+You can configure the order of MFA or enable/disable MFA type by passing the `mfaSettings` parameter
+in `Web3AuthOptions`.
 
-		loginCompletableFuture.whenComplete { loginResponse, error ->
-			if (error == null) {
-				// render logged in UI
-			} else {
-				// render error UI
-			}
+:::note Note
 
-		}
-	}
-
-	override fun onCreate(savedInstanceState: Bundle?) {
-		// ...
-	    // Setup UI and event handlers
-		val signInButton = findViewById<Button>(R.id.signInButton)
-		signInButton.setOnClickListener { signIn() }
-		// ...
-	}
-	// ...
-}
-```
-
-## Using the `mfaSettings` to configure MFA Order
-
-:::note
-
-This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this
-SDK in a production environment is the **SCALE Plan**. You can use this feature in `sapphire_devnet`
-for free.
+- At least two factors are mandatory when setting up the mfaSettings.
+- If you set `mandatory: true` for all factors, the user must set up all four factors.
+- If you set `mandatory: false` for all factors, the user can skip setting up MFA. But at least two
+  factors are mandatory.
+- If you set `mandatory: true` for some factors and `mandatory: false` for others, the user must set
+  up the mandatory factors and can skip the optional factors. But, the user must set up at least two
+  factors.
+- The `priority` field is used to set the order of the factors. The factor with the lowest priority
+  will be the first factor to be set up. The factor with the highest priority will be the last
+  factor to be set up.
 
 :::
 
-You can configure the order of MFA or enable/disable MFA type by passing the `mfaSettings` object in
-`Web3AuthOptions`.
+### Parameters - MfaSettings
 
-`MfaSettings`
+`MfaSettings` allows you to set the type of the MFA.
 
 <Tabs
   defaultValue="table"
@@ -134,7 +116,9 @@ You can configure the order of MFA or enable/disable MFA type by passing the `mf
 </TabItem>
 </Tabs>
 
-`MfaSetting`
+### Parameters - MfaSetting
+
+`MfaSetting` allows you to setup MFA setting for a particular MFA type.
 
 <Tabs
   defaultValue="table"
@@ -157,65 +141,44 @@ You can configure the order of MFA or enable/disable MFA type by passing the `mf
 <TabItem value="class">
 
 ```kotlin
-	data class MfaSetting(
-		var enable: Boolean,
-		var priority: Int?,
-		var mandatory: Boolean?
-	)
+data class MfaSetting(
+	var enable: Boolean,
+	var priority: Int?,
+	var mandatory: Boolean?
+)
 ```
 
 </TabItem>
 </Tabs>
 
+### Usage
+
 ```kotlin
-	web3Auth = Web3Auth(
-           Web3AuthOptions(
-               context = this,
-               clientId = getString(R.string.web3auth_project_id), // pass over your Web3Auth Client ID from Developer Dashboard
-               network = Network.SAPPHIRE_MAINNET, // pass over the network you want to use (MAINNET or TESTNET or CYAN, AQUA, SAPPHIRE_MAINNET or SAPPHIRE_TESTNET)
-               buildEnv = BuildEnv.PRODUCTION,
-               redirectUrl = Uri.parse("com.w3a.web3authdemoapp://auth"), // your app's redirect URL
-               // Optional parameters
-               whiteLabel = WhiteLabelData(
-                   "Web3Auth Android FireBase Example",
-                   null,
-                   null,
-                   null,
-                   Language.EN,
-                   ThemeModes.LIGHT,
-                   true,
-                   hashMapOf(
-                       "primary" to "#eb5424"
-                   )
-               ),
-			       // focus-start
-               mfaSettings = MfaSettings(
-                   deviceShareFactor = MfaSetting(true, 1, true),
-                   socialBackupFactor = MfaSetting(true, 2, true),
-                   passwordFactor = MfaSetting(true, 3, false),
-                   backUpShareFactor = MfaSetting(true, 4, false),
-               )
-			      // focus-end
-				... // add your loginconfig
-           )
-       )
+import com.web3auth.core.Web3Auth
+import com.web3auth.core.types.Web3AuthOptions
+
+val web3Auth = Web3Auth(
+  Web3AuthOptions(
+    context = this,
+    clientId = "YOUR_WEB3AUTH_CLIENT_ID", // Pass over your Web3Auth Client ID from Developer Dashboard
+    network = Network.MAINNET,
+    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+    // focus-start
+    mfaSettings = MfaSettings(
+      deviceShareFactor = MfaSetting(true, 1, true),
+      socialBackupFactor = MfaSetting(true, 2, true),
+      passwordFactor = MfaSetting(true, 3, false),
+      backUpShareFactor = MfaSetting(true, 4, false),
+    )
+    // focus-end
+  )
+)
+
+val loginResponse = web3Auth.login(
+  LoginParams(
+    Proider.GOOGLE,
+    // focus-next-line
+    mfaLevel = MFALevel.MANDATORY
+  )
+)
 ```
-
-:::note Note
-
-- At least two factors are mandatory when setting up the mfaSettings.
-- If you set `mandatory: true` for all factors, the user must set up all four factors.
-- If you set `mandatory: false` for all factors, the user can skip setting up MFA. But at least two
-  factors are mandatory.
-- If you set `mandatory: true` for some factors and `mandatory: false` for others, the user must set
-  up the mandatory factors and can skip the optional factors. But, the user must set up at least two
-  factors.
-- The `priority` field is used to set the order of the factors. The factor with the lowest priority
-  will be the first factor to be set up. The factor with the highest priority will be the last
-  factor to be set up.
-
-:::
-
-## Using `enableMFA` method to trigger MFA setup flow for users
-
-<EnableMFAMethod />
