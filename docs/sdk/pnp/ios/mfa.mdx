@@ -9,23 +9,22 @@ import Tabs from "@theme/Tabs";
 import MFAMinimumPlan from "@site/src/common/docs/_mfa_minimum_plan.mdx";
 import EnableMFAMethod from "@site/src/common/sdk/pnp/ios/_enable-mfa.mdx";
 
-The Multi Factor Authentication feature refers to the ability of the user to create a backup share
-(recovery phrase). This helps them login into a new device and also to recover their account if they
-lose their original device.
+At Web3Auth, we prioritize your security by offering Multi-Factor Authentication (MFA). MFA is an
+extra layer of protection that verifies your identity when accessing your account. To ensure
+ownership, you must provide two or more different backup factors. You have the option to choose from
+the device, social, backup factor (seed phrase), and password factors to guarantee access to your
+Web3 account. Once you create a recovery factor, MFA is enabled, and your keys are divided into
+three shares for off-chain multi-sig, making the key self-custodial. With backup factors, you can
+easily recover your account if you lose access to your original device or helps login into a new
+device.
 
 <MFAMinimumPlan />
 
-You can set the mfaLevel within the `loginParams` to customize when mfa screen should be shown to
-user. It currently accepts 4 values:
+## Enable using the MFA Level
 
-- **`default`** - Setting the mfaLevel to default will present the MFA screen to user on every third
-  login. `mfaLevel = MFALevel.DEFAULT`
-- **`optional`** - Setting mfaLevel to optional will present the MFA screen to user on every login
-  but user will have the option to skip it. `mfaLevel = MFALevel.OPTIONAL`
-- **`mandatory`** - Setting mfaLevel to mandatory will make it mandatory for user to setup MFA after
-  login. `mfaLevel = MFALevel.MANDATORY`
-- **`none`** - Setting mfaLevel to none will skip the mfa setup screen totally.
-  `mfaLevel = MFALevel.NONE`
+For a dApp, we provide various options to set up Multi-Factor Authentication. You can customize the
+MFA screen by passing the `mfaLevel` parameter in `login` method. You can enable or disable a backup
+factor and change their order. Currently, there are four values for MFA level.
 
 :::caution Note
 
@@ -35,78 +34,62 @@ enabled MFA on other dApps. This is because MFA cannot be turned off once it is 
 
 :::
 
-```swift
-Web3Auth().login(W3ALoginParams(loginProvider: provider, mfaLevel = MFALevel.MANDATORY))
-```
+### MFA Level Options
 
-```swift title="Usage"
-import Foundation
+| MFA Level | Description                                                |
+| --------- | ---------------------------------------------------------- |
+| DEFAULT   | Shows the MFA screen every third login.                    |
+| OPTIONAL  | Shows the MFA screen on every login, but user can skip it. |
+| MANDATORY | Makes it mandatory to set up MFA after first login.        |
+| NONE      | Skips the MFA setup screen                                 |
+
+### Usage
+
+```swift
 import Web3Auth
 
-class ViewModel: ObservableObject {
-    var web3Auth: Web3Auth?
-    @Published var loggedIn: Bool = false
-    @Published var user: Web3AuthState?
-    @Published var isLoading = false
-    @Published var navigationTitle: String = ""
+let web3auth = Web3Auth(W3AInitParams(
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  network: .sapphire_mainnet,
+  redirectUrl: "bundleId://auth"
+))
 
-    func setup() async {
-        guard web3Auth == nil else { return }
-        await MainActor.run(body: {
-            isLoading = true
-            navigationTitle = "Loading"
-        })
-        web3Auth = await Web3Auth(W3AInitParams(
-            clientId: clientId, network: network
-        ))
-        await MainActor.run(body: {
-            if self.web3Auth?.state != nil {
-                user = web3Auth?.state
-                loggedIn = true
-            }
-            isLoading = false
-            navigationTitle = loggedIn ? "UserInfo" : "SignIn"
-        })
-    }
-
-    func login(provider: Web3AuthProvider) {
-        Task {
-            do {
-                let result = try await web3Auth.login(
-					W3ALoginParams(
-                        // provider can be .GOOGLE, .FACEBOOK, .APPLE etc
-						loginProvider: provider,
-						// focus-next-line
-                        mfaLevel: MFALevel.MANDATORY
-					))
-                await MainActor.run(body: {
-                    user = result
-                    loggedIn = true
-                })
-
-            } catch {
-                print("Error")
-            }
-        }
-    }
-}
-
+let result = try await web3Auth.login(
+  W3ALoginParams(
+    loginProvider: .GOOGLE,
+    // focus-next-line
+    mfaLevel: .MANDATORY
+  )
+)
 ```
 
-## Using the `mfaSettings` to configure MFA Order
+## Explicitly enable MFA
 
-:::note
+<EnableMFAMethod />
 
-This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this
-SDK in a production environment is the **SCALE Plan**. You can use this feature in `sapphire_devnet`
-for free.
-
-:::
+## Configure MFA Settings
 
 You can configure the order of MFA or enable/disable MFA type by passing the `mfaSettings` object in
 `Web3AuthOptions`.
 
-`MfaSettings`
+:::note Note
+
+- At least two factors are mandatory when setting up the mfaSettings.
+- If you set `mandatory: true` for all factors, the user must set up all four factors.
+- If you set `mandatory: false` for all factors, the user can skip setting up MFA. But at least two
+  factors are mandatory.
+- If you set `mandatory: true` for some factors and `mandatory: false` for others, the user must set
+  up the mandatory factors and can skip the optional factors. But, the user must set up at least two
+  factors.
+- The `priority` field is used to set the order of the factors. The factor with the lowest priority
+  will be the first factor to be set up. The factor with the highest priority will be the last
+  factor to be set up.
+
+:::
+
+### Parameters - MfaSettings
+
+`MfaSettings` allows you to set the type of the MFA.
 
 <Tabs
   defaultValue="table"
@@ -148,7 +131,9 @@ You can configure the order of MFA or enable/disable MFA type by passing the `mf
 </TabItem>
 </Tabs>
 
-`MfaSettings`
+### Parameters - MfaSetting
+
+`MfaSetting` allows you to setup MFA setting for a particular MFA type.
 
 <Tabs
   defaultValue="table"
@@ -187,63 +172,34 @@ You can configure the order of MFA or enable/disable MFA type by passing the `mf
 ```
 
 </TabItem>
-
 </Tabs>
 
+### Usage
+
 ```swift
-let result = try await Web3Auth(
-    W3AInitParams(
-        clientId: "YOUR_CLIENT_ID",
-        network: .sapphire_devnet,
-        loginConfig: [
-            TypeOfLogin.google.rawValue: .init(
-                // Get it from Web3Auth Dashboard
-                verifier: "YOUR_VERIFIER_ID",
-                typeOfLogin: .google,
-                name: "Web3Auth-Aggregate-Verifier-Google-Example",
-                clientId: "YOUR_GOOGLE_CLIENT_ID",
-                // Get it from Web3Auth Dashboard
-                verifierSubIdentifier: "YOUR_VERIFIER_SUB_ID"
-            )
-        ],
-        whiteLabel: W3AWhiteLabelData(
-            appName: "Web3Auth Stub",
-            logoLight: "https://images.web3auth.io/web3auth-logo-w.svg",
-            logoDark: "https://images.web3auth.io/web3auth-logo-w.svg",
-            defaultLanguage: .en, // en, de, ja, ko, zh, es, fr, pt, nl
-            mode: .dark,
-            theme: ["primary": "#d53f8c"]),
-            mfaSettings: MfaSettings(
-                deviceShareFactor: MfaSetting(enable: true, priority: 1),
-                backUpShareFactor: MfaSetting(enable: true, priority: 2),
-                socialBackupFactor: MfaSetting(enable: true, priority: 3),
-                passwordFactor: MfaSetting(enable: true, priority: 4)
-        )
-    )).login(
-        W3ALoginParams(
-        loginProvider: .GOOGLE,
-        dappShare: nil,
-        extraLoginOptions: ExtraLoginOptions(display: nil, prompt: nil, max_age: nil, ui_locales: nil, id_token_hint: nil, id_token: nil, login_hint: nil, acr_values: nil, scope: nil, audience: nil, connection: nil, domain: nil, client_id: nil, redirect_uri: nil, leeway: nil, verifierIdField: nil, isVerifierIdCaseSensitive: nil, additionalParams: nil),
-            mfaLevel: .DEFAULT,
-            curve: .SECP256K1
-    ))
+import Web3Auth
+
+let web3auth = Web3Auth(W3AInitParams(
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  network: .sapphire_mainnet,
+  redirectUrl: "bundleId://auth",
+  // focus-start
+  whiteLabel: W3AWhiteLabelData(
+    mfaSettings: MfaSettings(
+      deviceShareFactor: MfaSetting(enable: true, priority: 1),
+      backUpShareFactor: MfaSetting(enable: true, priority: 2),
+      socialBackupFactor: MfaSetting(enable: true, priority: 3),
+      passwordFactor: MfaSetting(enable: true, priority: 4)
+    )
+  )
+  // focus-end
+))
+
+let result = try await web3Auth.login(
+  W3ALoginParams(
+    loginProvider: .GOOGLE,
+    // focus-next-line
+    mfaLevel: .MANDATORY
+  )
+)
 ```
-
-:::note Note
-
-- At least two factors are mandatory when setting up the mfaSettings.
-- If you set `mandatory: true` for all factors, the user must set up all four factors.
-- If you set `mandatory: false` for all factors, the user can skip setting up MFA. But at least two
-  factors are mandatory.
-- If you set `mandatory: true` for some factors and `mandatory: false` for others, the user must set
-  up the mandatory factors and can skip the optional factors. But, the user must set up at least two
-  factors.
-- The `priority` field is used to set the order of the factors. The factor with the lowest priority
-  will be the first factor to be set up. The factor with the highest priority will be the last
-  factor to be set up.
-
-:::
-
-## Using `enableMFA` method to trigger MFA setup flow for users
-
-<EnableMFAMethod />
