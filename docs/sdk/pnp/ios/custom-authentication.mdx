@@ -63,6 +63,7 @@ After creating the verifier, you can use the following parameters in the `W3ALog
 </TabItem>
 
 <TabItem value="struct">
+
 ```swift
 public struct W3ALoginConfig: Codable {
   let verifier: String
@@ -80,15 +81,30 @@ public struct W3ALoginConfig: Codable {
   let showOnMobile: Bool?
 }
 
-public enum TypeOfLogin: String, Codable { case google case facebook case reddit case discord case
-twitch case apple case github case linkedin case twitter case weibo case line case email_password
-case passwordless case jwt }
+public enum TypeOfLogin: String, Codable {
+  case google
+  case facebook
+  case reddit
+  case discord
+  case twitch
+  case apple
+  case github
+  case linkedin
+  case twitter
+  case weibo
+  case line
+  case email_password
+  case passwordless
+  case jwt
+}
 
-````
+```
+
 </TabItem>
 </Tabs>
 
 ### Usage
+
 <Tabs
   defaultValue="google"
   values={[
@@ -118,23 +134,37 @@ let web3Auth = try await Web3Auth(
     // focus-end
   )
 )
-````
+```
 
 </TabItem>
 
 <TabItem value="facebook">
+
 ```swift
 import Web3Auth
 
-let web3Auth = try await Web3Auth( W3AInitParams( clientId: "YOUR_CLIENT_ID", network:
-.sapphire_mainnet, // focus-start loginConfig: [ Web3AuthProvider.JWT.rawValue: .init(
-verifier: "YOUR_VERIFIER_NAME", // Get it from web3auth dashboard typeOfLogin: TypeOfLogin.facebook,
-clientId: "YOUR_FACEBOOK_CLIENT_ID", ) ] // focus-end ) )
+let web3Auth = try await Web3Auth(
+  W3AInitParams(
+    clientId: "YOUR_CLIENT_ID",
+    network: .sapphire_mainnet,
+    // focus-start
+    loginConfig: [
+      Web3AuthProvider.JWT.rawValue: .init(
+        verifier: "YOUR_VERIFIER_NAME", // Get it from web3auth dashboard
+        typeOfLogin: TypeOfLogin.facebook,
+        clientId: "YOUR_FACEBOOK_CLIENT_ID",
+      )
+    ]
+    // focus-end
+  )
+)
 
-````
+```
+
 </TabItem>
 
 <TabItem value="jwt">
+
 ```swift
 import Web3Auth
 
@@ -153,7 +183,7 @@ let web3Auth = try await Web3Auth(
     // focus-end
   )
 )
-````
+```
 
 </TabItem>
 
