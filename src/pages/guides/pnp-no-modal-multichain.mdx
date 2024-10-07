@@ -121,9 +121,10 @@ Import the required modules for web3auth and any providers you want to use.
     { label: "TezosRPC.ts", value: "TezosRPC" },
     { label: "PolkadotRPC.ts", value: "PolkadotRPC" },
   ]}>
-  <TabItem value="app">
-```tsx
 
+<TabItem value="app">
+
+```tsx
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { AuthAdapter } from "@web3auth/auth-adapter";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS } from "@web3auth/base";
@@ -135,43 +136,49 @@ import EthereumRPC from "./RPC/ethRPC-web3"; // for using web3.js
 import SolanaRPC from "./RPC/solanaRPC"; // for using solana
 import TezosRPC from "./RPC/tezosRPC"; // for using tezos
 import PolkadotRPC from "./RPC/polkadotRPC"; // for using polkadot
+```
 
-````
 </TabItem>
 <TabItem value="web3auth">
+
 ```tsx
-import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, UX_MODE, Web3AuthNoModalOptions } from "@web3auth/base";
+import {
+  CHAIN_NAMESPACES,
+  WEB3AUTH_NETWORK,
+  UX_MODE,
+  Web3AuthNoModalOptions,
+} from "@web3auth/base";
 import { AuthAdapterOptions } from "@web3auth/auth-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
-const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
+const clientId =
+  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
 
 const chainConfig = {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth",
-    displayName: "Ethereum Mainnet",
-    blockExplorerUrl: "https://etherscan.io",
-    ticker: "ETH",
-    tickerName: "Ethereum",
-    logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-  };
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0x1",
+  rpcTarget: "https://rpc.ankr.com/eth",
+  displayName: "Ethereum Mainnet",
+  blockExplorerUrl: "https://etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+};
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
 export const web3AuthConfig: Web3AuthNoModalOptions = {
-    clientId,
+  clientId,
   privateKeyProvider,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
 };
 
-
-export const authAdapterConfig: AuthAdapterOptions ={
-    adapterSettings: {
-      uxMode: UX_MODE.REDIRECT,
-    },
-  };
-````
+export const authAdapterConfig: AuthAdapterOptions = {
+  adapterSettings: {
+    uxMode: UX_MODE.REDIRECT,
+  },
+};
+```
 
 </TabItem>
 <TabItem value="StartkNetRPC">
@@ -264,41 +271,39 @@ address.
     { label: "ethRPC-web3.ts", value: "web3" },
   ]}
 >
-  <TabItem value="app">
-    ```tsx
+<TabItem value="app">
 
-    const rpcETH = new EthereumRPC(provider!);
-    const address = await rpcETH.getAccounts();
+```tsx
+const rpcETH = new EthereumRPC(provider!);
+const address = await rpcETH.getAccounts();
+```
 
-    ```
+</TabItem>
+<TabItem value="web3">
 
-  </TabItem>
-  <TabItem value="web3">
-  ```tsx
-export default class EthereumRPC{
-    private provider: IProvider
+```tsx
+export default class EthereumRPC {
+  private provider: IProvider;
 
-    constructor(provider: IProvider) {
-      this.provider = provider
+  constructor(provider: IProvider) {
+    this.provider = provider;
+  }
+
+  // Get user's Ethereum public address
+  public async getAccounts(): Promise<any> {
+    try {
+      const web3 = new Web3(this.provider as any);
+
+      // Get user's Ethereum public address
+      const address = (await web3.eth.getAccounts())[0];
+
+      return address;
+    } catch (error) {
+      return error;
     }
-
-    // Get user's Ethereum public address
-    public async getAccounts(): Promise<any> {
-      try {
-        const web3 = new Web3(this.provider as any)
-
-        // Get user's Ethereum public address
-        const address = (await web3.eth.getAccounts())[0]
-
-        return address
-      } catch (error) {
-        return error
-      }
-    }
-
+  }
 }
-
-````
+```
 
 </TabItem>
 </Tabs>
@@ -312,80 +317,80 @@ export default class EthereumRPC{
     { label: "ethRPC-web3.ts", value: "web3" },
   ]}
 >
-  <TabItem value="app">
-```tsx
-    const rpcETH = new EthereumRPC(provider!);
-    const privateKey = await rpcETH.getPrivateKey();
+<TabItem value="app">
 
-    // Get user's Solana public address
-    const solanaRPC = new SolanaRPC(privateKey);
-    const solana_address = await solanaRPC.getAccounts();
-````
+```tsx
+const rpcETH = new EthereumRPC(provider!);
+const privateKey = await rpcETH.getPrivateKey();
+
+// Get user's Solana public address
+const solanaRPC = new SolanaRPC(privateKey);
+const solana_address = await solanaRPC.getAccounts();
+```
 
 </TabItem>
 <TabItem value="solana">
+
 ```tsx
 export default class SolanaRPC {
-    private provider: SolanaPrivateKeyProvider;
-    private privateKey: string;
+  private provider: SolanaPrivateKeyProvider;
+  private privateKey: string;
 
-    constructor(privateKey: string) {
-       this.provider = new SolanaPrivateKeyProvider({
-            config: {
-                chainConfig: {
-                chainNamespace: CHAIN_NAMESPACES.SOLANA,
-                chainId: "0x3",
-                rpcTarget: "https://api.devnet.solana.com",
-                displayName: "Solana Mainnet",
-                blockExplorerUrl: "https://explorer.solana.com/",
-                ticker: "SOL",
-                tickerName: "Solana",
-                logo: "",
-                },
-            },
-            });
-      this.privateKey = privateKey;
-    }
+  constructor(privateKey: string) {
+    this.provider = new SolanaPrivateKeyProvider({
+      config: {
+        chainConfig: {
+          chainNamespace: CHAIN_NAMESPACES.SOLANA,
+          chainId: "0x3",
+          rpcTarget: "https://api.devnet.solana.com",
+          displayName: "Solana Mainnet",
+          blockExplorerUrl: "https://explorer.solana.com/",
+          ticker: "SOL",
+          tickerName: "Solana",
+          logo: "",
+        },
+      },
+    });
+    this.privateKey = privateKey;
+  }
 
-    async getAccounts(): Promise<any> {
-      const { getED25519Key } = await import("@web3auth/auth-adapter");
-      const ed25519key = getED25519Key(this.privateKey).sk.toString("hex");
-      // Get user's Solana's public address
-      await this.provider.setupProvider(ed25519key);
-      const solanaWallet = new SolanaWallet(this.provider as SolanaPrivateKeyProvider);
-      const solana_address = await solanaWallet.requestAccounts();
-      return solana_address[0];
-    }
-
+  async getAccounts(): Promise<any> {
+    const { getED25519Key } = await import("@web3auth/auth-adapter");
+    const ed25519key = getED25519Key(this.privateKey).sk.toString("hex");
+    // Get user's Solana's public address
+    await this.provider.setupProvider(ed25519key);
+    const solanaWallet = new SolanaWallet(this.provider as SolanaPrivateKeyProvider);
+    const solana_address = await solanaWallet.requestAccounts();
+    return solana_address[0];
+  }
 }
+```
 
-````
 </TabItem>
 <TabItem value="web3">
-  ```tsx
-export default class EthereumRPC{
-    private provider: IProvider
 
-    constructor(provider: IProvider) {
-      this.provider = provider
+```tsx
+export default class EthereumRPC {
+  private provider: IProvider;
+
+  constructor(provider: IProvider) {
+    this.provider = provider;
+  }
+
+  // Get user's Ethereum private key
+  async getPrivateKey(): Promise<any> {
+    try {
+      const privateKey = await this.provider.request({
+        method: "eth_private_key",
+      });
+
+      return privateKey;
+    } catch (error) {
+      return error as string;
     }
-
-    // Get user's Ethereum private key
-    async getPrivateKey(): Promise<any> {
-      try {
-        const privateKey = await this.provider.request({
-          method: 'eth_private_key',
-        })
-
-        return privateKey
-      } catch (error) {
-        return error as string
-      }
-    }
-
+  }
 }
-
-````
+```
 
 </TabItem>
 </Tabs>
@@ -399,66 +404,64 @@ export default class EthereumRPC{
     { label: "ethRPC-web3.ts", value: "web3" },
   ]}
 >
-  <TabItem value="app">
+<TabItem value="app">
+
 ```tsx
-    const rpcETH = new EthereumRPC(provider!);
-    const privateKey = await rpcETH.getPrivateKey();
+const rpcETH = new EthereumRPC(provider!);
+const privateKey = await rpcETH.getPrivateKey();
 
-    // Get user's Tezos public address
-    const tezosRPC = new TezosRPC(privateKey);
-    const tezos_address = await tezosRPC.getAccounts();
-
-````
+// Get user's Tezos public address
+const tezosRPC = new TezosRPC(privateKey);
+const tezos_address = await tezosRPC.getAccounts();
+```
 
 </TabItem>
 <TabItem value="tezos">
+
 ```tsx
 export default class TezosRPC {
-    private provider: TezosToolkit;
-    private privateKey: string;
+  private provider: TezosToolkit;
+  private privateKey: string;
 
-    constructor(privateKey: string) {
-      this.privateKey = privateKey;
-      this.provider = new TezosToolkit("https://ghostnet.ecadinfra.com");
-    }
+  constructor(privateKey: string) {
+    this.privateKey = privateKey;
+    this.provider = new TezosToolkit("https://ghostnet.ecadinfra.com");
+  }
 
-    async getAccounts(): Promise<any> {
-      // Get user's Tezos public address
-      const keyPairTezos = tezosCrypto.utils.seedToKeyPair(hex2buf(this.privateKey));
-      const address = keyPairTezos?.pkh;
-      return address;
-    }
-
+  async getAccounts(): Promise<any> {
+    // Get user's Tezos public address
+    const keyPairTezos = tezosCrypto.utils.seedToKeyPair(hex2buf(this.privateKey));
+    const address = keyPairTezos?.pkh;
+    return address;
+  }
 }
-
-````
+```
 
 </TabItem>
 <TabItem value="web3">
-  ```tsx
-export default class EthereumRPC{
-    private provider: IProvider
 
-    constructor(provider: IProvider) {
-      this.provider = provider
+```tsx
+export default class EthereumRPC {
+  private provider: IProvider;
+
+  constructor(provider: IProvider) {
+    this.provider = provider;
+  }
+
+  // Get user's Ethereum private key
+  async getPrivateKey(): Promise<any> {
+    try {
+      const privateKey = await this.provider.request({
+        method: "eth_private_key",
+      });
+
+      return privateKey;
+    } catch (error) {
+      return error as string;
     }
-
-    // Get user's Ethereum private key
-    async getPrivateKey(): Promise<any> {
-      try {
-        const privateKey = await this.provider.request({
-          method: 'eth_private_key',
-        })
-
-        return privateKey
-      } catch (error) {
-        return error as string
-      }
-    }
-
+  }
 }
-
-````
+```
 
 </TabItem>
 </Tabs>
@@ -473,69 +476,70 @@ export default class EthereumRPC{
     { label: "ethRPC-web3.ts", value: "web3" },
   ]}
 >
-  <TabItem value="app">
+
+<TabItem value="app">
+
 ```tsx
-    const rpcETH = new EthereumRPC(provider!);
-    const privateKey = await rpcETH.getPrivateKey();
+const rpcETH = new EthereumRPC(provider!);
+const privateKey = await rpcETH.getPrivateKey();
 
-    // Get user's starkNet public address
-    const starkNetRPC = new StartkNetRPC(privateKey);
-    const stark_address = await starkNetRPC.getAccounts();
+// Get user's starkNet public address
+const starkNetRPC = new StartkNetRPC(privateKey);
+const stark_address = await starkNetRPC.getAccounts();
+```
 
-````
+</TabItem>
+<TabItem value="StarkEx">
 
-  </TabItem>
-  <TabItem value="StarkEx">
-  ```tsx
+```tsx
 export default class StartkNetRPC {
-    private privateKey: string;
+  private privateKey: string;
 
-    constructor(privateKey: string) {
-      this.privateKey = privateKey;
-    }
+  constructor(privateKey: string) {
+    this.privateKey = privateKey;
+  }
 
-    // Get user's starkNet public address
-    async getAccounts(): Promise<any> {
-          const keyPairStarkNet = ec.keyFromPrivate(this.privateKey, "hex");
-          const starknet_account = ec.keyFromPublic(keyPairStarkNet.getPublic(true, "hex"), "hex");
-          const address = starknet_account.pub.getX().toString("hex");
-          return address;
-    }
-
+  // Get user's starkNet public address
+  async getAccounts(): Promise<any> {
+    const keyPairStarkNet = ec.keyFromPrivate(this.privateKey, "hex");
+    const starknet_account = ec.keyFromPublic(keyPairStarkNet.getPublic(true, "hex"), "hex");
+    const address = starknet_account.pub.getX().toString("hex");
+    return address;
+  }
 }
+```
 
-````
+</TabItem>
+<TabItem value="web3">
 
-  </TabItem>
-  <TabItem value="web3">
-  ```tsx
-export default class EthereumRPC{
-    private provider: IProvider
+```tsx
+export default class EthereumRPC {
+  private provider: IProvider;
 
-    constructor(provider: IProvider) {
-      this.provider = provider
+  constructor(provider: IProvider) {
+    this.provider = provider;
+  }
+
+  // Get user's Ethereum private key
+  async getPrivateKey(): Promise<any> {
+    try {
+      const privateKey = await this.provider.request({
+        method: "eth_private_key",
+      });
+
+      return privateKey;
+    } catch (error) {
+      return error as string;
     }
-
-    // Get user's Ethereum private key
-    async getPrivateKey(): Promise<any> {
-      try {
-        const privateKey = await this.provider.request({
-          method: 'eth_private_key',
-        })
-
-        return privateKey
-      } catch (error) {
-        return error as string
-      }
-    }
-
+  }
 }
-
-````
+```
 
 </TabItem>
 </Tabs>
+
 ## Polkadot
+
 <Tabs
   defaultValue="app"
   values={[
@@ -544,68 +548,67 @@ export default class EthereumRPC{
     { label: "ethRPC-web3.ts", value: "web3" },
   ]}
 >
-  <TabItem value="app">
+<TabItem value="app">
+
 ```tsx
-    const rpcETH = new EthereumRPC(provider!);
-    const privateKey = await rpcETH.getPrivateKey();
+const rpcETH = new EthereumRPC(provider!);
+const privateKey = await rpcETH.getPrivateKey();
 
-    // Get user's Polkadot public address
-    const polkadotRPC = new PolkadotRPC(privateKey);
-    const polkadot_address = await polkadotRPC.getAccounts();
-
-````
+// Get user's Polkadot public address
+const polkadotRPC = new PolkadotRPC(privateKey);
+const polkadot_address = await polkadotRPC.getAccounts();
+```
 
 </TabItem>
 <TabItem value="polkadot">
-  ```tsx
+
+```tsx
 export default class PolkadotRPC {
-    private provider: WsProvider;
-    private privateKey: string;
+  private provider: WsProvider;
+  private privateKey: string;
 
-    constructor(privateKey: string) {
-      this.provider = new WsProvider('wss://rpc.polkadot.io'); // Kusama	wss://kusama-rpc.polkadot.io
-      this.privateKey = privateKey;
-    }
+  constructor(privateKey: string) {
+    this.provider = new WsProvider("wss://rpc.polkadot.io"); // Kusama	wss://kusama-rpc.polkadot.io
+    this.privateKey = privateKey;
+  }
 
-    // Get user's Polkadot public key
-    async getAccounts(): Promise<any> {
-        await cryptoWaitReady();
+  // Get user's Polkadot public key
+  async getAccounts(): Promise<any> {
+    await cryptoWaitReady();
 
-        const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
+    const keyring = new Keyring({ ss58Format: 42, type: "sr25519" });
 
-        const keyPair = keyring.addFromUri("0x" + this.privateKey);
-        const address = keyPair.address;
-        return address;
-    }
-
+    const keyPair = keyring.addFromUri("0x" + this.privateKey);
+    const address = keyPair.address;
+    return address;
+  }
 }
-````
+```
 
   </TabItem>
   <TabItem value="web3">
-  ```tsx
-export default class EthereumRPC{
-    private provider: IProvider
 
-    constructor(provider: IProvider) {
-      this.provider = provider
+```tsx
+export default class EthereumRPC {
+  private provider: IProvider;
+
+  constructor(provider: IProvider) {
+    this.provider = provider;
+  }
+
+  // Get user's Ethereum private key
+  async getPrivateKey(): Promise<any> {
+    try {
+      const privateKey = await this.provider.request({
+        method: "eth_private_key",
+      });
+
+      return privateKey;
+    } catch (error) {
+      return error as string;
     }
-
-    // Get user's Ethereum private key
-    async getPrivateKey(): Promise<any> {
-      try {
-        const privateKey = await this.provider.request({
-          method: 'eth_private_key',
-        })
-
-        return privateKey
-      } catch (error) {
-        return error as string
-      }
-    }
-
+  }
 }
-
 ```
 
 </TabItem>
@@ -647,5 +650,7 @@ contact us in our [community](https://web3auth.io/community/).
 - https://web3auth.io/docs/sdk/pnp/web/no-modal/
 - https://web3auth.io/docs/sdk/helper-sdks/providers/
 - https://web3auth.io/docs/examples?product=Plug+and+Play&sdk=Plug+and+Play+Web+Modal+SDK
+
+```
 
 ```

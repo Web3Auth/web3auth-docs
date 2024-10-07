@@ -267,18 +267,27 @@ val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login
 </TabItem>
 
 <TabItem value="farcaster">
+
 ```kotlin
 import com.web3auth.core.Web3Auth
 import com.web3auth.core.types.Web3AuthOptions
 
-val web3Auth = Web3Auth( Web3AuthOptions( context = this, clientId = "YOUR_WEB3AUTH_CLIENT_ID", //
-Pass over your Web3Auth Client ID from Developer Dashboard network = Network.MAINNET, redirectUrl =
-Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"), ) )
+val web3Auth = Web3Auth(
+  Web3AuthOptions(
+    context = this,
+    clientId = "YOUR_WEB3AUTH_CLIENT_ID", // Pass over your Web3Auth Client ID from Developer Dashboard
+    network = Network.MAINNET,
+    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+  )
+)
 
-// focus-start val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
-LoginParams(Provider.Farcaster) ) // focus-end
+// focus-start
+val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
+  LoginParams(Provider.Farcaster)
+)
+// focus-end
+```
 
-````
 </TabItem>
 
 <TabItem value="jwt">
@@ -304,7 +313,7 @@ val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login
     )
 )
 // focus-end
-````
+```
 
 </TabItem>
 </Tabs>
