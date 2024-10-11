@@ -1088,6 +1088,7 @@ const sidebars: SidebarsConfig = {
           collapsed: false,
           label: "Additional Settings",
           items: [
+            "sdk/pnp/web/modal/account-abstraction",
             "sdk/pnp/web/modal/whitelabel",
             "sdk/pnp/web/modal/custom-authentication",
             "sdk/pnp/web/modal/mfa",
@@ -1113,6 +1114,7 @@ const sidebars: SidebarsConfig = {
           collapsed: false,
           label: "Additional Settings",
           items: [
+            "sdk/pnp/web/no-modal/account-abstraction",
             "sdk/pnp/web/no-modal/whitelabel",
             "sdk/pnp/web/no-modal/custom-authentication",
             "sdk/pnp/web/no-modal/mfa",

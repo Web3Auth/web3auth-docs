@@ -1,0 +1,82 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+Web3Auth offers the flexibility to choose your preferred Account Abstraction (AA) provider.
+Currently, we support Safe, Kernel, and Biconomy.
+
+<Tabs
+defaultValue="safe"
+values={[
+  { label: "Safe", value: "safe" },
+  { label: "Kernel", value: "kernel" },
+  { label: "Biconomy", value: "biconomy" },
+]}
+>
+
+<TabItem value="safe">
+
+```ts
+import {
+  AccountAbstractionProvider,
+  SafeSmartAccount,
+} from "@web3auth/account-abstraction-provider";
+
+const accountAbstractionProvider = new AccountAbstractionProvider({
+  config: {
+    chainConfig,
+    bundlerConfig: {
+      // Get the pimlico API Key from dashboard.pimlico.io
+      url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
+    },
+    // focus-next-line
+    smartAccountInit: new SafeSmartAccount(),
+  },
+});
+```
+
+</TabItem>
+
+<TabItem value="kernel">
+
+```ts
+import {
+  AccountAbstractionProvider,
+  KernelSmartAccount,
+} from "@web3auth/account-abstraction-provider";
+const accountAbstractionProvider = new AccountAbstractionProvider({
+  config: {
+    chainConfig,
+    bundlerConfig: {
+      // Get the pimlico API Key from dashboard.pimlico.io
+      url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
+    },
+    // focus-next-line
+    smartAccountInit: new KernelSmartAccount(),
+  },
+});
+```
+
+</TabItem>
+
+<TabItem value="biconomy">
+
+```ts
+import {
+  AccountAbstractionProvider,
+  BiconomySmartAccount,
+} from "@web3auth/account-abstraction-provider";
+const accountAbstractionProvider = new AccountAbstractionProvider({
+  config: {
+    chainConfig,
+    bundlerConfig: {
+      // Get the pimlico API Key from dashboard.pimlico.io
+      url: `https://api.pimlico.io/v2/11155111/rpc?apikey=${pimlicoAPIKey}`,
+    },
+    // focus-next-line
+    smartAccountInit: new BiconomySmartAccount(),
+  },
+});
+```
+
+</TabItem>
+</Tabs>
