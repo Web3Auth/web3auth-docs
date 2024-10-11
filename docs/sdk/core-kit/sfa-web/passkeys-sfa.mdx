@@ -125,8 +125,8 @@ web3auth.addPlugin(passkeysPlugin); // Add the plugin to web3auth
 // Register a new passkey
 await passkeysPlugin.registerPasskey({ username: "user@example.com" });
 
-// Login with an existing passkey
-await passkeysPlugin.loginWithPasskey({ authenticatorId: "authenticator_id" });
+// Login with a passkey
+await passkeysPlugin.loginWithPasskey();
 
 // List all registered passkeys
 const passkeys = await passkeysPlugin.listAllPasskeys();
@@ -135,8 +135,11 @@ console.log(passkeys);
 
 :::note Note
 
-First, a user needs to log in the usual way, and then register a passkey. The next time, they can
-log in using a passkey.
+Here’s the refined version:
+
+First, users need to log in with their authentication provider. Once logged in, they can register a
+passkey. The next time they log in, they can seamlessly use the registered passkey with a
+passkey-enabled authentication device.
 
 :::
 
@@ -153,7 +156,7 @@ Registers a new passkey for the user.
 | `authenticatorAttachment?` | Option to restrict the type of authenticators that can be registered.                                |
 | `username?`                | The passkey in the user device will be saved with this name. Default is `loginProvider\|verifierId.` |
 
-#### Example
+#### Usage
 
 ```javascript
 await passkeysPlugin.registerPasskey({
@@ -168,11 +171,11 @@ Logs in the user with an existing passkey.
 
 #### Parameters
 
-| Parameter          | Description                                   |
-| ------------------ | --------------------------------------------- |
-| `authenticatorId?` | The ID of the authenticator to use for login. |
+| Parameter          | Description                                                                                                   |
+| ------------------ | ------------------------------------------------------------------------------------------------------------- |
+| `authenticatorId?` | The ID of the specific authenticator you want to log in with, useful when multiple authenticators are set up. |
 
-#### Example
+#### Usage
 
 ```javascript
 await passkeysPlugin.loginWithPasskey({
@@ -180,11 +183,38 @@ await passkeysPlugin.loginWithPasskey({
 });
 ```
 
+:::tip
+
+When you call `listAllPasskeys()`, the `credential_id` from the response is the authenticator ID
+that can be used for logging in with a specific passkey. This improves UX by reducing the number of
+prompts the user has to face when multiple authenticators are set up. Here’s a sample output for
+`listAllPasskeys()`:
+
+```json
+{
+  "id": "123",
+  // focus-next-line
+  "credential_id": "abc123def456ghi789jkl012mno345pqr678stu901vwx234yz",
+  "verifier_id": "verifier987zyx654wvu321tsr098qpo765nml432kji109gfe",
+  "browser": "Chrome",
+  "browser_version": "126.0.0.0",
+  "transport": "hybrid,internal",
+  "os": "macOS",
+  "os_version": "12.5.1",
+  "platform": "desktop",
+  "provider_name": "Samsung Pass",
+  "created_at": "2024-06-25T07:41:38.000Z",
+  "updated_at": "2024-06-25T07:41:38.000Z"
+}
+```
+
+:::
+
 ### `listAllPasskeys()`
 
 Lists all registered passkeys for the user.
 
-#### Example
+#### Usage
 
 ```javascript
 const passkeys = await passkeysPlugin.listAllPasskeys();
@@ -262,8 +292,8 @@ if (!result.isBrowserSupported) {
   // Register a new passkey
   await passkeysPlugin.registerPasskey({ username: "user@example.com" });
 
-  // Login with an existing passkey
-  await passkeysPlugin.loginWithPasskey({ authenticatorId: "authenticator_id" });
+  // Login with a passkey
+  await passkeysPlugin.loginWithPasskey();
 
   // List all registered passkeys
   const passkeys = await passkeysPlugin.listAllPasskeys();
