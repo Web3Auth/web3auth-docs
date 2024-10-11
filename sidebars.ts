@@ -1153,6 +1153,7 @@ const sidebars: SidebarsConfig = {
       items: [
         "sdk/pnp/web/providers/providers",
         "sdk/pnp/web/providers/evm",
+        "sdk/pnp/web/providers/aa-provider",
         "sdk/pnp/web/providers/solana",
         "sdk/pnp/web/providers/xrpl",
         "sdk/pnp/web/providers/common",
