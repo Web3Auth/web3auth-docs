@@ -5,6 +5,7 @@ export const nextjs = "Next JS";
 export const web = "Web";
 export const android = "Android";
 export const ios = "iOS";
+export const macOS = "macOS";
 export const reactnative = "React Native";
 export const rnbare = "React Native Bare";
 export const rnexpo = "React Native Expo";
@@ -45,7 +46,7 @@ export const tkeyios = "tKey iOS";
 export const tkeyandroid = "tKey Android";
 export const singlefactorauth = "SFA Web";
 export const singlefactorauthandroid = "SFA Android";
-export const singlefactorauthios = "SFA iOS";
+export const singlefactorauthios = "SFA Swift";
 export const singlefactorauthrn = "SFA React Native";
 export const singlefactorauthflutter = "SFA Flutter";
 export const corekitnodejs = "SFA Node.js";
@@ -59,7 +60,7 @@ export const corekitlist = [
   { label: "SFA Web", value: singlefactorauth, platforms: [...weblist] },
   { label: "SFA Node.js", value: corekitnodejs, platforms: [nodejs] },
   { label: "SFA Android", value: singlefactorauthandroid, platforms: [android] },
-  { label: "SFA iOS", value: singlefactorauthios, platforms: [ios] },
+  { label: "SFA Swift", value: singlefactorauthios, platforms: [ios, macOS] },
   { label: "SFA React Native", value: singlefactorauthrn, platforms: [...rnlist] },
   { label: "SFA Flutter", value: singlefactorauthflutter, platforms: [flutter] },
 ];

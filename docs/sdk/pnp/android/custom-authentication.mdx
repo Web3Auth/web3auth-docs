@@ -164,24 +164,41 @@ val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login
 </TabItem>
 
 <TabItem value="facebook">
+
 ```kotlin
 import com.web3auth.core.Web3Auth
 import com.web3auth.core.types.Web3AuthOptions
 
-val web3Auth = Web3Auth( Web3AuthOptions( context = this, clientId = "YOUR_WEB3AUTH_CLIENT_ID", //
-Pass over your Web3Auth Client ID from Developer Dashboard network = Network.MAINNET, redirectUrl =
-Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"), // focus-start loginConfig = hashMapOf("facebook" to
-LoginConfigItem( verifier = "verifier-name", // Get it from Web3Auth dashboard typeOfLogin =
-TypeOfLogin.FACEBOOK, clientId = getString(R.string.facebook_client_id) // Facebook's client id ))
-// focus-end ) )
+val web3Auth = Web3Auth(
+  Web3AuthOptions(
+    context = this,
+    clientId = "YOUR_WEB3AUTH_CLIENT_ID", // Pass over your Web3Auth Client ID from Developer Dashboard
+    network = Network.MAINNET,
+    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+    // focus-start
+    loginConfig = hashMapOf(
+      "facebook" to LoginConfigItem(
+        verifier = "verifier-name", // Get it from Web3Auth dashboard
+        typeOfLogin = TypeOfLogin.FACEBOOK,
+        clientId = getString(R.string.facebook_client_id) // Facebook's client id
+      )
+    )
+    // focus-end
+  )
+)
 
-// focus-start val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
-LoginParams(Provider.Facebook) ) // focus-end
+// focus-start
+val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
+  LoginParams(Provider.Facebook)
+)
+// focus-end
 
-````
+```
+
 </TabItem>
 
 <TabItem value="auth0">
+
 ```kotlin
 import com.web3auth.core.Web3Auth
 import com.web3auth.core.types.Web3AuthOptions
@@ -207,25 +224,41 @@ val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login
     LoginParams(Provider.JWT)
 )
 // focus-end
-````
+```
 
 </TabItem>
 
 <TabItem value="jwt">
+
 ```kotlin
 import com.web3auth.core.Web3Auth
 import com.web3auth.core.types.Web3AuthOptions
 
-val web3Auth = Web3Auth( Web3AuthOptions( context = this, clientId = "YOUR_WEB3AUTH_CLIENT_ID", //
-Pass over your Web3Auth Client ID from Developer Dashboard network = Network.MAINNET, redirectUrl =
-Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"), // focus-start loginConfig = hashMapOf("jwt" to
-LoginConfigItem( verifier = "verifier-name", // Get it from Web3Auth dashboard typeOfLogin =
-TypeOfLogin.JWT, )) // focus-end ) )
+val web3Auth = Web3Auth(
+  Web3AuthOptions(
+    context = this,
+    clientId = "YOUR_WEB3AUTH_CLIENT_ID", // Pass over your Web3Auth Client ID from Developer Dashboard
+    network = Network.MAINNET,
+    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+    // focus-start
+    loginConfig = hashMapOf(
+      "jwt" to LoginConfigItem(
+        verifier = "verifier-name", // Get it from Web3Auth dashboard
+        typeOfLogin = TypeOfLogin.JWT,
+      )
+    )
+    // focus-end
+  )
+)
 
-// focus-start val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
-LoginParams(Provider.JWT) ) // focus-end
+// focus-start
+val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
+  LoginParams(Provider.JWT)
+)
+// focus-end
 
-````
+```
+
 </TabItem>
 </Tabs>
 
@@ -299,7 +332,7 @@ data class ExtraLoginOptions(
   private var nonce : String? = null,
   private var redirect_uri : String? = null
 )
-````
+```
 
 </TabItem>
 </Tabs>

@@ -22,6 +22,12 @@ Future<void> initWeb3Auth() async {
   // focus-end
 
   // Just after init method, invoke the initialize function
-  await Web3AuthFlutter.initialize();
+  // to use any active session. If no active session are
+  // present, the method will throw an error.
+  try {
+    await Web3AuthFlutter.initialize();
+  } catch (e) {
+    // Handle/Swallow Error
+  }
 }
 ```

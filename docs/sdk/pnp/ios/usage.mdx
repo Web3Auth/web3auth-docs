@@ -96,7 +96,7 @@ public enum Web3AuthProvider: String, Codable {
 ```swift
 import Web3Auth
 
-let web3auth = Web3Auth(W3AInitParams(
+let web3auth = try await Web3Auth(W3AInitParams(
   clientId: "YOUR_WEB3AUTH_CLIENT_ID",
   network: .sapphire_mainnet,
   redirectUrl: "bundleId://auth"
@@ -127,7 +127,7 @@ let result = try await web3Auth.login(W3ALoginParams(loginProvider: .GOOGLE))
 ```swift
 import Web3Auth
 
-let web3auth = Web3Auth(W3AInitParams(
+let web3auth = try await Web3Auth(W3AInitParams(
   clientId: "YOUR_WEB3AUTH_CLIENT_ID",
   network: .sapphire_mainnet,
   redirectUrl: "bundleId://auth"
@@ -144,7 +144,7 @@ let result = try await web3Auth.login(W3ALoginParams(loginProvider: .GOOGLE))
 ```swift
 import Web3Auth
 
-let web3auth = Web3Auth(W3AInitParams(
+let web3auth = try await Web3Auth(W3AInitParams(
   clientId: "YOUR_WEB3AUTH_CLIENT_ID",
   network: .sapphire_mainnet,
   redirectUrl: "bundleId://auth"
@@ -161,7 +161,7 @@ let result = try await web3Auth.login(W3ALoginParams(loginProvider: .FACEBOOK))
 ```swift
 import Web3Auth
 
-let web3auth = Web3Auth(W3AInitParams(
+let web3auth = try await Web3Auth(W3AInitParams(
   clientId: "YOUR_WEB3AUTH_CLIENT_ID",
   network: .sapphire_mainnet,
   redirectUrl: "bundleId://auth"
@@ -178,7 +178,7 @@ let result = try await web3Auth.login(W3ALoginParams(loginProvider: .DISCORD))
 ```swift
 import Web3Auth
 
-let web3auth = Web3Auth(W3AInitParams(
+let web3auth = try await Web3Auth(W3AInitParams(
   clientId: "YOUR_WEB3AUTH_CLIENT_ID",
   network: .sapphire_mainnet,
   redirectUrl: "bundleId://auth"
@@ -191,16 +191,28 @@ let result = try await web3Auth.login(W3ALoginParams(loginProvider: .TWITCH))
 </TabItem>
 
 <TabItem value="email_passwordless">
+
 ```swift
 import Web3Auth
 
-let web3auth = Web3Auth(W3AInitParams( clientId: "YOUR_WEB3AUTH_CLIENT_ID", network:
-.sapphire_mainnet, redirectUrl: "bundleId://auth" ))
+let web3auth = try await Web3Auth(
+  W3AInitParams(
+    clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+    network:.sapphire_mainnet,
+    redirectUrl: "bundleId://auth"
+  )
+)
 
-// focus-start let result = try await web3Auth.login( W3ALoginParams( loginProvider:
-.EMAIL_PASSWORDLESS, extraLoginOptions: .init(loginHint: "hello@web3auth.io") ) ) // focus-end
+// focus-start
+let result = try await web3Auth.login(
+  W3ALoginParams(
+    loginProvider: .EMAIL_PASSWORDLESS,
+    extraLoginOptions: .init(loginHint: "hello@web3auth.io")
+  )
+)
+// focus-end
+```
 
-````
 </TabItem>
 
 <TabItem value="sms_passwordless">
@@ -208,18 +220,22 @@ let web3auth = Web3Auth(W3AInitParams( clientId: "YOUR_WEB3AUTH_CLIENT_ID", netw
 </TabItem>
 
 <TabItem value="farcaster">
+
 ```swift
 import Web3Auth
 
-let web3auth = Web3Auth(W3AInitParams(
-  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
-  network: .sapphire_mainnet,
-  redirectUrl: "bundleId://auth"
-))
+let web3auth = try await Web3Auth(
+  W3AInitParams(
+    clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+    network: .sapphire_mainnet,
+    redirectUrl: "bundleId://auth"
+  )
+)
 
 // focus-next-line
 let result = try await web3Auth.login(W3ALoginParams(loginProvider: .FARCASTER))
-````
+
+```
 
 </TabItem>
 
@@ -228,7 +244,7 @@ let result = try await web3Auth.login(W3ALoginParams(loginProvider: .FARCASTER))
 ```swift
 import Web3Auth
 
-let web3auth = Web3Auth(W3AInitParams(
+let web3auth = try await Web3Auth(W3AInitParams(
   clientId: "YOUR_WEB3AUTH_CLIENT_ID",
   network: .sapphire_mainnet,
   redirectUrl: "bundleId://auth"
@@ -300,7 +316,7 @@ The `W3AInitParams` initialization accepts a `sessionTime` parameter.
 ```swift
 import Web3Auth
 
-let web3auth = Web3Auth(W3AInitParams(
+let web3auth = try await Web3Auth(W3AInitParams(
   clientId: "YOUR_WEB3AUTH_CLIENT_ID",
   network: .sapphire_mainnet,
   redirectUrl: "bundleId://auth",
