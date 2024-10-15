@@ -277,7 +277,8 @@ blockNumber, blockHash and transactionHash.
 const bundlerClient = accountAbstractionProvider.bundlerClient!;
 const smartAccount = accountAbstractionProvider.smartAccount!;
 
-const amount = ethers.parseEther("0.00001");
+// 0.00001 ETH in WEI format
+const amount = 10000000000000n;
 
 const userOperationHash = await bundlerClient.sendUserOperation({
   account: smartAccount,
@@ -325,7 +326,11 @@ const pimlicoPaymasterAddress = "0x0000000000000039cd5e8aE05257CE51C473ddd1";
 // USDC address on Ethereum Sepolia
 const usdcAddress = "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238";
 
-const amount = ethers.parseEther("0.00001");
+// 0.00001 ETH in WEI format
+const amount = 10000000000000n;
+
+// 10 USDC in WEI format. Since USDC has 6 decimals, 10 * 10^6
+const approvalAmount = 10000000n;
 
 const userOpHash = await bundlerClient.sendUserOperation({
   account: smartAccount,
@@ -335,7 +340,7 @@ const userOpHash = await bundlerClient.sendUserOperation({
       to: usdcAddress,
       abi: parseAbi(["function approve(address,uint)"]),
       functionName: "approve",
-      args: [pimlicoPaymasterAddress, maxUint256],
+      args: [pimlicoPaymasterAddress, approvalAmount],
     },
     {
       to: "DESTINATION_ADDRESS",
