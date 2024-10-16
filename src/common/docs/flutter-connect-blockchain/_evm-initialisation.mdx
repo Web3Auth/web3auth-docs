@@ -1,58 +1,11 @@
+We'll initialize the `Web3Client` with the RPC URL of the network you want to connect to. This
+client allows us to interact with the blockchain. To get the public RPC URL, you can checkout
+[chainlist.org](https://chainlist.org/).
+
 ```dart
-import 'package:flutter/material.dart';
-// focus-next-line
-import 'package:web3auth_flutter/web3auth_flutter.dart';
-import 'package:web3auth_flutter/enums.dart';
-import 'package:web3auth_flutter/input.dart';
-import 'package:web3auth_flutter/output.dart';
-import 'package:http/http.dart';
-// focus-next-line
 import 'package:web3dart/web3dart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-
-  // focus-next-line
-  String rpcUrl = ""; // EVM chain RPC URL
-
-  @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
-
-  Future<void> initPlatformState() async {
-    Uri redirectUrl;
-    if (Platform.isAndroid) {
-      redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
-      // w3a://com.example.w3aflutter/auth
-    } else if (Platform.isIOS) {
-      redirectUrl = Uri.parse('{bundleId}://auth');
-      // com.example.w3aflutter://openlogin
-    } else {
-      throw UnKnownException('Unknown platform');
-    }
-
-    // focus-start
-    await Web3AuthFlutter.init(Web3AuthOptions(
-        clientId: 'WEB3AUTH_CLIENT_ID_FROM_DASHBOARD',
-        network: Network.testnet,
-        redirectUrl: redirectUrl));
-    // focus-end
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // Your page
-  }
-}
+// Please avoid using public RPC URL in production, use services
+// like Infura, Quicknode, etc.
+final client = Web3Client("YOUR_RPC_URL", Client());
 ```
