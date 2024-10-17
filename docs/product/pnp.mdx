@@ -5,8 +5,28 @@ sidebar_label: Plug and Play
 description: "Plug and Play | Documentation - Web3Auth"
 ---
 
-import ModalAnim from "@site/src/components/ModalAnim";
-import { pnpweb, pnpmobile, pnpgaming } from "@site/src/components/SDKReferenceCards";
+import BrowserOnly from "@docusaurus/BrowserOnly";
+
+export const PnPContent = () => (
+  <BrowserOnly>
+    {() => {
+      const SDKReferenceCards = require('@site/src/components/SDKReferenceCards').default;
+      return (
+        <>
+          <h2>Web3Auth Plug and Play Web SDKs</h2>
+          <SDKReferenceCards type="pnpweb" />
+
+          <h2>Web3Auth Plug and Play Mobile SDKs</h2>
+          <SDKReferenceCards type="pnpmobile" />
+
+          <h2>Web3Auth Plug and Play Gaming SDKs</h2>
+          <SDKReferenceCards type="pnpgaming" />
+        </>
+      );
+    }}
+
+  </BrowserOnly>
+);
 
 Web3Auth's Plug and Play (PnP) SDKs are engineered to redefine the key management integration for
 wallets and dApps, focusing on efficiency, user convenience, and security. These SDKs are not just
@@ -19,7 +39,12 @@ non-custodial solution by default. It offers a predefined UI/UX flow, with full 
 options, and is available for all major platforms. This helps you to focus on your core product,
 while we take care of the wallet management and user authentication.
 
-<ModalAnim />
+<BrowserOnly>
+  {() => {
+    const ModalAnim = require("@site/src/components/ModalAnim").default;
+    return <ModalAnim />;
+  }}
+</BrowserOnly>
 
 ## Key Features
 
@@ -52,20 +77,4 @@ embedded wallets with a focus on security, user experience, and ease of integrat
 MPC-based key management and customizable features, it establishes a new standard for dApp
 development.
 
-## Web3Auth Plug and Play Web SDKs
-
----
-
-{ pnpweb }
-
-## Web3Auth Plug and Play Mobile SDKs
-
----
-
-{ pnpmobile }
-
-## Web3Auth Plug and Play Gaming SDKs
-
----
-
-{ pnpgaming }
+<PnPContent />
