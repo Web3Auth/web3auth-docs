@@ -1,75 +1,12 @@
+We'll initialize the Web3j instance with the RPC URL of the network you want to connect to. This
+client allows us to interact with the blockchain. To get the public RPC URL, you can checkout
+[ChainList](https://chainlist.org/).
+
 ```kotlin
-class MainActivity : AppCompatActivity() {
-  // focus-start
-  private lateinit var web3Auth: Web3Auth
-  private lateinit var web3: Web3j
-  private lateinit var credentials: Credentials
-  private val rpcUrl = "" // RPC URL of EVM Chain
-  // focus-end
+import org.web3j.protocol.Web3j
+import org.web3j.protocol.http.HttpService
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
-
-    web3Auth = Web3Auth(
-      Web3AuthOptions(context = this,
-        clientId = getString(R.string.web3auth_project_id),
-        network = Network.MAINNET,
-        redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth")
-      )
-    )
-
-    // Handle user signing in when app is not alive
-    web3Auth.setResultUrl(intent?.data)
-
-    // Call initialize() in onCreate() to check for any existing session.
-        val sessionResponse: CompletableFuture<Void> = web3Auth.initialize()
-        sessionResponse.whenComplete { _, error ->
-            if (error == null) {
-                reRender()
-                println("PrivKey: " + web3Auth.getPrivkey())
-                println("ed25519PrivKey: " + web3Auth.getEd25519PrivKey())
-                println("Web3Auth UserInfo" + web3Auth.getUserInfo())
-                credentials = Credentials.create(web3Auth.getPrivkey())
-                web3 = Web3j.build(HttpService(rpcUrl))
-            } else {
-                Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
-                // Ideally, you should initiate the login function here.
-            }
-        }
-
-
-    // Setup UI and event handlers
-    val signInButton = findViewById<Button>(R.id.signInButton)
-    signInButton.setOnClickListener { signIn() }
-  }
-
-  override fun onNewIntent(intent: Intent?) {
-    super.onNewIntent(intent)
-
-    // Handle user signing in when app is active
-    web3Auth.setResultUrl(intent?.data)
-  }
-
-  private fun signIn() {
-    val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
-    val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            web3Auth.login(LoginParams(selectedLoginProvider))
-
-    loginCompletableFuture.whenComplete { loginResponse, error ->
-      if (error == null) {
-        // render logged in UI
-        println(loginResponse)
-        // focus-start
-        // Set the sessionId from Web3Auth in App State
-        credentials = Credentials.create(web3Auth.getPrivkey())
-        web3 = Web3j.build(HttpService(rpcUrl))
-        // focus-end
-      } else {
-        // render error UI
-      }
-    }
-  }
-  //...
-}
+// Please avoid using public RPC URL in production, use services
+// like Infura, Quicknode, etc.
+val web3 = Web3j.build(HttpService("YOUR_RPC_URL"))
 ```

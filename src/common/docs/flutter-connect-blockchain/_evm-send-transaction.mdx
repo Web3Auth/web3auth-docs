@@ -1,38 +1,22 @@
+If you wish to sign, and also broadcast the transaction, you can use the
+`Web3Client.sendTransaction` method.
+
+This method prepares the transaction, and signs similar to `signTransaction` method. The only
+difference is, it also broadcasts the transaction to the network, and returns the transaction
+receipt.
+
 ```dart
-// Use codes from Initialization here,
-// and replace the `Widget build` from the below code:
+import 'package:web3dart/web3dart.dart';
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-            child:
-            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              // Send Transaction
-              ElevatedButton(
-                onPressed: () async {
-                  final prefs = await SharedPreferences.getInstance();
-                  final privateKey = prefs.getString('privateKey') ?? '0';
-                  final client = Web3Client(rpcUrl, Client());
-                  final credentials = EthPrivateKey.fromHex(privateKey);
-                  final address = credentials.address;
-                  // focus-start
-                  final receipt = await client.sendTransaction(
-                      credentials,
-                      Transaction(
-                        from: address,
-                        to: EthereumAddress.fromHex(
-                            '0x809D4310d578649D8539e718030EE11e603Ee8f3'),
-                        value: EtherAmount.fromUnitAndValue(
-                            EtherUnit.gwei, 50000000), // 0.05 ETH
-                      ),
-                      chainId: 5); // change chainId as per your chain.
-                  debugPrint("Receipt, ${receipt}");
-                  // focus-end
-                },
-                child: const Text('Send Transaction'),
-              ),
-            ])));
-  }
-
+// Use client, address, and credentials from previous code snippets
+final receipt = await client.sendTransaction(
+  credentials,
+  Transaction(
+    from: address,
+    to: EthereumAddress.fromHex('0x809D4310d578649D8539e718030EE11e603Ee8f3'),
+    value: EtherAmount.fromUnitAndValue(EtherUnit.gwei, 50000000), // 0.05 ETH
+    chainId: null,
+    fetchChainIdFromNetworkId: true,
+  ),
+);
 ```
