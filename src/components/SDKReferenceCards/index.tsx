@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useHistory, useLocation } from "@docusaurus/router";
 
 import { corekitsfa, corekitmfa, pnp, walletecosystems, helpersdks } from "../../common/SDKOptions";
