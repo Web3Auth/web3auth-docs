@@ -447,63 +447,6 @@ await Web3AuthFlutter.logout();
 
 <EnableMFAMethod />
 
-## Triggering Login exceptions
-
-The `setCustomTabsClosed` method can be used to trigger login exceptions for Android. For iOS, you
-don't need this method to trigger the login exceptions. The Android SDK uses the custom tabs and
-from current implementation of chrome custom tab, it's not possible to add a listener directly to
-chrome custom tab close button and trigger login exceptions.
-
-Hence, it's necessary to use `setCustomTabsClosed` method in your login screen to trigger
-exceptions.
-
-### Usage
-
-```dart
-class LoginScreen extends State<T> with WidgetsBindingObserver {
-  @override
-  void initState() {
-    super.initState();
-    // focus-next-line
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    // focus-next-line
-    WidgetsBinding.instance.removeObserver(this);
-  }
-
-  // focus-start
-  @override
-  void didChangeAppLifecycleState(final AppLifecycleState state) {
-    // This is important to trigger the user cancellation on Android.
-    if (state == AppLifecycleState.resumed) {
-      Web3AuthFlutter.setCustomTabsClosed();
-    }
-  }
-  // focus-end
-
-   @override
-  Widget build(BuildContext context) {
-    // Your UI code
-  }
-
-  Future<void> _login() async {
-    try {
-      await Web3AuthFlutter.login(LoginParams(loginProvider: Provider.google));
-    } on UserCancelledException {
-        log("User cancelled.");
-    } on UnKnownException {
-        log("Unknown exception occurred");
-    } catch (e) {
-        log(e.toString());
-    }
-  }
-}
-```
-
 ## Launch Wallet Services
 
 The `launchWalletServices` method launches a WebView which allows you to use the templated wallet UI

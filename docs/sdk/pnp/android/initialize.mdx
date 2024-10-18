@@ -10,18 +10,20 @@ import SetResultUrl from "@site/src/common/sdk/pnp/android/_set-result-url.mdx";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-After installation, the next step to use Web3Auth is to initialize the SDK.
+After installation, the next step to use Web3Auth is to configure & initialize the SDK.
 
-However, Initialization is a two-step process:
+However, configuring and initializing is a four-step process:
 
 1. [Creating a Web3Auth Instance](#create-web3auth-instance)
 2. [Setting a Result URL](#set-result-url)
+3. [Triggering Login exceptions](#triggering-login-exceptions)
+4. [Initialize Web3Auth](#initialize-web3auth)
 
 ## Create Web3Auth Instance
 
-Please note that these are the most critical steps where you must pass on different parameters
-according to the preference of your project. Additionally, You must configure Whitelabeling and
-Custom Authentication within this step if you wish to customize your Web3Auth Instance.
+The first step is to create the Web3Auth instance, and configure the Whitelabeling, Session time,
+and Custom Authentication. Please note that these are the most critical steps where you need to pass
+on different parameters according to the preference of your project.
 
 ### Parameters
 
@@ -74,10 +76,66 @@ data class Web3AuthOptions(
 </TabItem>
 </Tabs>
 
-### Initialize Web3Auth
+### Instantiate Web3Auth
 
 <Initialization />
 
 ## Set Result URL
 
 <SetResultUrl />
+
+## Triggering Login exceptions
+
+The `setCustomTabsClosed` method can be used to trigger login exceptions for Android. The Android
+SDK uses the custom tabs and from current implementation of chrome custom tab, it's not possible to
+add a listener directly to chrome custom tab close button and trigger login exceptions.
+
+Hence, it's necessary to use `setCustomTabsClosed` method in your login screen to trigger
+exceptions.
+
+```kotlin
+class MainActivity : AppCompatActivity() {
+    // Additional code
+
+    override fun onResume() {
+        super.onResume()
+        // focus-start
+        if (Web3Auth.getCustomTabsClosed()) {
+            Toast.makeText(this, "User closed the browser.", Toast.LENGTH_SHORT).show()
+            web3Auth.setResultUrl(null)
+            Web3Auth.setCustomTabsClosed(false)
+        }
+        // focus-end
+    }
+
+    // Additional code
+}
+```
+
+## Initialize Web3Auth
+
+After instantiating Web3Auth, the next step is to initialize it using the `initialize` method. This
+method is essential for setting up the SDK, checking for any active sessions, and fetching the
+whitelabel configuration from your dashboard.
+
+Once the `initialize` method executes successfully, you can use the `getPrivKey` or
+`getEd25519PrivKey` methods to verify if an active session exists. If there is no active session,
+these methods will return an empty string; otherwise, they will return the respective private key.
+
+Note that if the API call to fetch the project configuration fails, the method will throw an error.
+
+```kotlin
+val sessionResponse: CompletableFuture<Void> = web3Auth.initialize()
+sessionResponse.whenComplete { _, error ->
+  if (error == null) {
+    // Check for the active session
+    if(web3Auth.getPrivKey()isNotEmpty()) {
+      // Active session found
+    }
+    // No active session is not present
+
+  } else {
+    // Handle the error
+  }
+}
+```
