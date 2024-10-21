@@ -1,0 +1,78 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+You can use your signer to submit on-chain transactions, while the Account Abstraction Provider
+handles the creation and submission of the UserOperation. You only need to pass `to`, `data`, and
+`value`; other parameters will be discarded and overridden by the provider.
+
+The bundler client determines `maxFeePerGas` and `maxPriorityFeePerGas` to prevent transaction
+rejections. If you'd like to specify custom values, you can use
+`AccountAbstractionProvider.bundlerClient` to create and send the transaction.
+
+Smart Accounts are basically smart contract deployed on chain. Therefore, the user's first
+transaction also deploys the smart contract for their wallet.
+
+<Tabs
+  defaultValue="viem"
+  values={[
+    { label: "Viem", value: "viem" },
+    { label: "Ethers", value: "ethers" },
+    { label: "Web3", value: "web3" },
+  ]}
+>
+
+<TabItem value="web3">
+
+```tsx
+// Convert 1 ether to WEI format
+const amount = web3.utils.toWei(1);
+
+// Submits a user operation to the blockchain
+const receipt = await web3.eth.sendTransaction({
+  to: "DESTINATION_ADDRESS",
+  value: amount,
+  // This will perform the transfer of ETH
+  data: "0x",
+});
+```
+
+</TabItem>
+<TabItem value="ethers">
+
+```tsx
+// Convert 1 ether to WEI format
+const amount = ethers.parseEther("1.0");
+
+// Submits a user operation to the blockchain
+const transaction = await signer.sendTransaction({
+  to: "DESTINATION_ADDRESS",
+  value: amount,
+  // This will perform the transfer of ETH
+  data: "0x",
+});
+
+// Wait for the transaction to be mined
+const receipt = await transaction.wait();
+```
+
+</TabItem>
+<TabItem value="viem">
+
+```tsx
+// Convert 1 ether to WEI format
+const amount = parseEther("1");
+
+// Submits a user operation to the blockchain
+const hash = await walletClient.sendTransaction({
+  to: "DESTINATION_ADDRESS",
+  value: amount,
+  // This will perform the transfer of ETH
+  data: "0x",
+});
+
+// Wait for the transaction to be mined
+const receipt = await publicClient.waitForTransactionReceipt({ hash });
+```
+
+</TabItem>
+</Tabs>

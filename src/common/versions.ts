@@ -1,8 +1,8 @@
-export const pnpWebVersion = `9.0.x`;
-export const pnpAndroidVersion = `8.0.1`;
+export const pnpWebVersion = `9.2.x`;
+export const pnpAndroidVersion = `8.0.3`;
 export const pnpIOSVersion = `9.0.0`;
 export const pnpRNVersion = `7.0.x`;
-export const pnpFlutterVersion = `5.0.3`;
+export const pnpFlutterVersion = `5.0.4`;
 export const pnpUnityVersion = `5.x.x`;
 export const pnpUnrealVersion = `4.1.x`;
 

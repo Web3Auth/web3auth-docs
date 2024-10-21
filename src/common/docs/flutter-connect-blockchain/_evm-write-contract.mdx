@@ -1,18 +1,21 @@
-```dart
-final prefs = await SharedPreferences.getInstance();
-final privateKey = prefs.getString('privateKey') ?? '0';
-final client = Web3Client(rpcUrl, Client());
-final credential = EthPrivateKey.fromHex(privateKey);
+Similary, you can write to the contract using the `sendTransaction` method of Web3Client. In this
+sample, we'll update the message in the contract we deployed previously.
 
+```dart
+import 'package:web3dart/web3dart.dart';
+// Use the client, address, contractAbi and credentials from previous code snippets
 final contract = DeployedContract(
-  ContractAbi.fromJson(TestContract.contractAbi, ''),
-  TestContract.deployedAddress);
+    ContractAbi.fromJson(contractAbi, ''),
+    "ADDRESS_OF_DEPLOYED_CONTRACT_IN_HEX",
+);
+
 final updateFunction = contract.function('update');
-var transactionId = await client.sendTransaction(
-  credential,
+final receipt = await client.sendTransaction(
+  credentials,
   Transaction.callContract(
     contract: contract,
     function: updateFunction,
-    parameters: ["NEW_MESSAGE"]));
-debugPrint("Transaction Id, $transactionId");
+    parameters: ["YOUR_NEW_MESSAGE"]
+  )
+);
 ```

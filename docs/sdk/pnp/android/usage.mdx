@@ -16,16 +16,14 @@ Android applications.
 
 ## Logging in a User
 
-### `web3Auth.login(LoginParams)`
+To login in a user, you can use the `login` method. It will trigger login flow will navigate the
+user to a browser model allowing the user to login into the service. You can pass in the supported
+providers to the login method for specific social logins such as GOOGLE, APPLE, FACEBOOK, etc., and
+do whitelabel login.
 
-Trigger login flow will navigate the user to a browser model allowing the user to login into the
-service. You can pass in the supported providers to the login method for specific social logins such
-as GOOGLE, APPLE, FACEBOOK, etc., and do whitelabel login. The `login` function takes in
-`LoginParams` as a required input.
+### Parameters
 
-#### Arguments
-
-`LoginParams`
+The `login` method takes in `LoginParams` as a required input.
 
 <Tabs
   defaultValue="table"
@@ -101,26 +99,31 @@ enum class Provider {
 ```
 
 </TabItem>
-
 </Tabs>
 
-### `web3Auth.getPrivkey()`
+### Usage
 
-Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private
-key which can be used to sign transactions on EVM compatible chains.
+```kotlin
+import com.web3auth.core.Web3Auth
+import com.web3auth.core.types.Web3AuthOptions
 
-### `web3Auth.getEd25519PrivKey()`
+val web3Auth = Web3Auth(
+  Web3AuthOptions(
+    context = this,
+    clientId = "YOUR_WEB3AUTH_CLIENT_ID", // Pass over your Web3Auth Client ID from Developer Dashboard
+    network = Network.MAINNET,
+    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+  )
+)
 
-Use getEd25519PrivKey() to get the Ed25519 private key of the user. This private key can be used to
-sign transactions on Solana.
+// focus-start
+val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
+    LoginParams(Provider.GOOGLE)
+)
+// focus-end
+```
 
-### `web3Auth.getUserInfo()`
-
-Use getUserInfo() to get the user info of the user.
-
-#### UserInfo Response
-
-<AndroidResponse />
+### Examples
 
 <Tabs
   defaultValue="google"
@@ -138,221 +141,123 @@ Use getUserInfo() to get the user info of the user.
 
 <TabItem value="google">
 
-```kotlin title="Usage"
-import android.widget.Button
+```kotlin
 import com.web3auth.core.Web3Auth
-import android.os.Bundle
+import com.web3auth.core.types.Web3AuthOptions
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var web3Auth: Web3Auth
+val web3Auth = Web3Auth(
+  Web3AuthOptions(
+    context = this,
+    clientId = "YOUR_WEB3AUTH_CLIENT_ID", // Pass over your Web3Auth Client ID from Developer Dashboard
+    network = Network.MAINNET,
+    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+  )
+)
 
-    private fun signIn() {
-        // focus-next-line
-        val selectedLoginProvider = Provider.GOOGLE
-        // Can be REDDIT, TWITTER, GITHUB etc.
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            // focus-next-line
-            web3Auth.login(LoginParams(selectedLoginProvider))
-
-        loginCompletableFuture.whenComplete { loginResponse, error ->
-            if (error == null) {
-                // render logged in UI
-                println("PrivKey: " + web3Auth.getPrivkey())
-                println("ed25519PrivKey: " + web3Auth.getEd25519PrivKey())
-            } else {
-                // render error UI
-            }
-
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        ...
-        // Setup UI and event handlers
-        val signInButton = findViewById<Button>(R.id.signInButton)
-        signInButton.setOnClickListener { signIn() }
-        ...
-    }
-    ...
-}
+// focus-start
+val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
+    LoginParams(Provider.GOOGLE)
+)
+// focus-end
 ```
 
 </TabItem>
 
 <TabItem value="facebook">
 
-```kotlin title="Usage"
-import android.widget.Button
+```kotlin
 import com.web3auth.core.Web3Auth
-import android.os.Bundle
+import com.web3auth.core.types.Web3AuthOptions
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var web3Auth: Web3Auth
+val web3Auth = Web3Auth(
+  Web3AuthOptions(
+    context = this,
+    clientId = "YOUR_WEB3AUTH_CLIENT_ID", // Pass over your Web3Auth Client ID from Developer Dashboard
+    network = Network.MAINNET,
+    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+  )
+)
 
-    private fun signIn() {
-        // focus-next-line
-        val selectedLoginProvider = Provider.FACEBOOK
-        // Can be APPLE, LINE, KAKAO, LINKEDIN etc.
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            // focus-next-line
-            web3Auth.login(LoginParams(selectedLoginProvider))
-
-        loginCompletableFuture.whenComplete { loginResponse, error ->
-            if (error == null) {
-                // render logged in UI
-                println("PrivKey: " + web3Auth.getPrivkey())
-                println("ed25519PrivKey: " + web3Auth.getEd25519PrivKey())
-            } else {
-                // render error UI
-            }
-
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        ...
-        // Setup UI and event handlers
-        val signInButton = findViewById<Button>(R.id.signInButton)
-        signInButton.setOnClickListener { signIn() }
-        ...
-    }
-    ...
-}
+// focus-start
+val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
+    LoginParams(Provider.FACEBOOK)
+)
+// focus-end
 ```
 
 </TabItem>
 
 <TabItem value="discord">
 
-```kotlin title="Usage"
-import android.widget.Button
+```kotlin
 import com.web3auth.core.Web3Auth
-import android.os.Bundle
+import com.web3auth.core.types.Web3AuthOptions
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var web3Auth: Web3Auth
+val web3Auth = Web3Auth(
+  Web3AuthOptions(
+    context = this,
+    clientId = "YOUR_WEB3AUTH_CLIENT_ID", // Pass over your Web3Auth Client ID from Developer Dashboard
+    network = Network.MAINNET,
+    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+  )
+)
 
-    private fun signIn() {
-        // focus-next-line
-        val selectedLoginProvider = Provider.DISCORD
-        // Can be WECHAT, WEIBO, LINE etc.
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            // focus-next-line
-            web3Auth.login(LoginParams(selectedLoginProvider))
-
-        loginCompletableFuture.whenComplete { loginResponse, error ->
-            if (error == null) {
-                // render logged in UI
-                println("PrivKey: " + web3Auth.getPrivkey())
-                println("ed25519PrivKey: " + web3Auth.getEd25519PrivKey())
-            } else {
-                // render error UI
-            }
-
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        ...
-        // Setup UI and event handlers
-        val signInButton = findViewById<Button>(R.id.signInButton)
-        signInButton.setOnClickListener { signIn() }
-        ...
-    }
-    ...
-}
+// focus-start
+val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
+    LoginParams(Provider.DISCORD)
+)
+// focus-end
 ```
 
 </TabItem>
 
 <TabItem value="twitch">
 
-```kotlin title="Usage"
-import android.widget.Button
+```kotlin
 import com.web3auth.core.Web3Auth
-import android.os.Bundle
+import com.web3auth.core.types.Web3AuthOptions
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var web3Auth: Web3Auth
+val web3Auth = Web3Auth(
+  Web3AuthOptions(
+    context = this,
+    clientId = "YOUR_WEB3AUTH_CLIENT_ID", // Pass over your Web3Auth Client ID from Developer Dashboard
+    network = Network.MAINNET,
+    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+  )
+)
 
-    private fun signIn() {
-        // focus-next-line
-        val selectedLoginProvider = Provider.TWITCH
-        // Can be GOOGLE, FACEBOOK, TWITCH etc.
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            // focus-next-line
-            web3Auth.login(LoginParams(selectedLoginProvider))
-
-        loginCompletableFuture.whenComplete { loginResponse, error ->
-            if (error == null) {
-                // render logged in UI
-                println("PrivKey: " + web3Auth.getPrivkey())
-                println("ed25519PrivKey: " + web3Auth.getEd25519PrivKey())
-            } else {
-                // render error UI
-            }
-
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        ...
-        // Setup UI and event handlers
-        val signInButton = findViewById<Button>(R.id.signInButton)
-        signInButton.setOnClickListener { signIn() }
-        ...
-    }
-    ...
-}
+// focus-start
+val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
+    LoginParams(Provider.TWITCH)
+)
+// focus-end
 ```
 
 </TabItem>
 
 <TabItem value="email_passwordless">
 
-```kotlin title="Usage"
-import android.widget.Button
+```kotlin
 import com.web3auth.core.Web3Auth
-import android.os.Bundle
+import com.web3auth.core.types.Web3AuthOptions
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var web3Auth: Web3Auth
+val web3Auth = Web3Auth(
+  Web3AuthOptions(
+    context = this,
+    clientId = "YOUR_WEB3AUTH_CLIENT_ID", // Pass over your Web3Auth Client ID from Developer Dashboard
+    network = Network.MAINNET,
+    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+  )
+)
 
-    private fun signIn() {
-        // focus-next-line
-        val selectedLoginProvider = Provider.EMAIL_PASSWORDLESS
-        // extraLoginOptions = ExtraLoginOptions(login_hint = "email address")
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            // focus-start
-            web3Auth.login(
-                LoginParams(
-                    selectedLoginProvider,
-                    extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")
-                )
-            )
-            // focus-end
-
-        loginCompletableFuture.whenComplete { loginResponse, error ->
-            if (error == null) {
-                // render logged in UI
-                println("PrivKey: " + web3Auth.getPrivkey())
-                println("ed25519PrivKey: " + web3Auth.getEd25519PrivKey())
-            } else {
-                // render error UI
-            }
-
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        ...
-        // Setup UI and event handlers
-        val signInButton = findViewById<Button>(R.id.signInButton)
-        signInButton.setOnClickListener { signIn() }
-        ...
-    }
-    ...
-}
+// focus-start
+val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
+    LoginParams(
+        Provider.EMAIL_PASSWORDLESS,
+        extraLoginOptions = ExtraLoginOptions(login_hint = "hello@web3auth.io")
+    )
+)
+// focus-end
 ```
 
 </TabItem>
@@ -362,67 +267,96 @@ class MainActivity : AppCompatActivity() {
 </TabItem>
 
 <TabItem value="farcaster">
-```kotlin title="Usage"
-val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
-  LoginParams(
-    // focus-next-line
-    Provider.farcaster,
+
+```kotlin
+import com.web3auth.core.Web3Auth
+import com.web3auth.core.types.Web3AuthOptions
+
+val web3Auth = Web3Auth(
+  Web3AuthOptions(
+    context = this,
+    clientId = "YOUR_WEB3AUTH_CLIENT_ID", // Pass over your Web3Auth Client ID from Developer Dashboard
+    network = Network.MAINNET,
+    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
   )
 )
+
+// focus-start
+val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
+  LoginParams(Provider.Farcaster)
+)
+// focus-end
 ```
+
 </TabItem>
 
 <TabItem value="jwt">
 
 ```kotlin title="Usage"
-import android.widget.Button
 import com.web3auth.core.Web3Auth
-import android.os.Bundle
+import com.web3auth.core.types.Web3AuthOptions
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var web3Auth: Web3Auth
+val web3Auth = Web3Auth(
+  Web3AuthOptions(
+    context = this,
+    clientId = "YOUR_WEB3AUTH_CLIENT_ID", // Pass over your Web3Auth Client ID from Developer Dashboard
+    network = Network.MAINNET,
+    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+  )
+)
 
-    private fun signIn() {
-        // focus-next-line
-        val selectedLoginProvider = Provider.JWT
-        // extraLoginOptions = ExtraLoginOptions(id_token = "jwt_token")
-        val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
-            // focus-start
-            web3Auth.login(
-                LoginParams(
-                    selectedLoginProvider,
-                    extraLoginOptions = ExtraLoginOptions(id_token = "your_jwt_token")
-                )
-            )
-            // focus-end
-        // Use this for login with your generated JWT token,
-        // please refer to https://web3auth.io/docs/auth-provider-setup/byo-jwt-provider/ to learn more
-
-        loginCompletableFuture.whenComplete { loginResponse, error ->
-            if (error == null) {
-                // render logged in UI
-                println("PrivKey: " + web3Auth.getPrivkey())
-                println("ed25519PrivKey: " + web3Auth.getEd25519PrivKey())
-            } else {
-                // render error UI
-            }
-
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        ...
-        // Setup UI and event handlers
-        val signInButton = findViewById<Button>(R.id.signInButton)
-        signInButton.setOnClickListener { signIn() }
-        ...
-    }
-    ...
-}
+// focus-start
+val loginCompletableFuture: CompletableFuture<Web3AuthResponse> = web3Auth.login(
+    LoginParams(
+        Provider.JWT,
+        extraLoginOptions = ExtraLoginOptions(id_token = "your_jwt_token")
+    )
+)
+// focus-end
 ```
 
 </TabItem>
 </Tabs>
+
+## Retrieve Private Key
+
+Web3Auth supports two widely used cryptographic curves, Secp256k1 and Ed25519, making it
+chain-agnostic and compatible with multiple blockchain networks.
+[Learn more about how to connect different blockchains](/docs/connect-blockchain).
+
+### Secp256k1 Private Key
+
+To retrieve the secp256k1 private key of the user., use `getPrivkey` method. The method returns an
+EVM compatible private key which can be used to sign transactions on EVM compatible chains.
+
+```kotlin
+val privateKey = web3Auth.getPrivKey()
+```
+
+### Ed25519 Private Key
+
+To retrieve the secp256k1 private key of the user., use `getEd25519PrivKey` method. This private key
+can be used to sign transactions on Solana.
+
+```kotlin
+val privateKey = web3Auth.getEd25519PrivKey()
+```
+
+## Retrive User Information
+
+You can use the `getUserInfo` method to retrieve various details about the user, such as their login
+type, whether multi-factor authentication (MFA) is enabled, profile image, name, and other relevant
+information.
+
+### Usage
+
+```kotlin
+val userInfo = web3Auth.getUserInfo()
+```
+
+### UserInfo Response
+
+<AndroidResponse />
 
 ## Logging out a user
 
@@ -431,36 +365,6 @@ class MainActivity : AppCompatActivity() {
 ## Enable MFA for a user
 
 <EnableMFAMethod />
-
-## Triggering Login exceptions
-
-The `setCustomTabsClosed` method can be used to trigger login exceptions for Android. The Android
-SDK uses the custom tabs and from current implementation of chrome custom tab, it's not possible to
-add a listener directly to chrome custom tab close button and trigger login exceptions.
-
-Hence, it's necessary to use `setCustomTabsClosed` method in your login screen to trigger
-exceptions.
-
-### Usage
-
-```kt
-class MainActivity : AppCompatActivity() {
-    // Additional code
-
-    override fun onResume() {
-        super.onResume()
-        // focus-start
-        if (Web3Auth.getCustomTabsClosed()) {
-            Toast.makeText(this, "User closed the browser.", Toast.LENGTH_SHORT).show()
-            web3Auth.setResultUrl(null)
-            Web3Auth.setCustomTabsClosed(false)
-        }
-        // focus-end
-    }
-
-    // Additional code
-}
-```
 
 ## Launch Wallet Services
 
@@ -476,9 +380,7 @@ environment is the **Scale Plan**.
 
 :::
 
-### Arguments
-
-`ChainConfig`
+### Parameters
 
 <Tabs
   defaultValue="table"
@@ -525,7 +427,7 @@ data class ChainConfig(
 
 ### Usage
 
-```kotlin title="Usage"
+```kotlin
 val chainConfig = ChainConfig(
     chainId = "0x1",
     rpcTarget = "https://rpc.ankr.com/eth",
@@ -538,16 +440,6 @@ val completableFuture = web3Auth.launchWalletServices(
     chainConfig
 )
 // focus-end
-
-completableFuture.whenComplete{_, error ->
-    if(error == null) {
-        // Add your logic
-        Log.d("MainActivity_Web3Auth", "Wallet services launched successfully")
-    } else {
-        // Add your logic for error
-        Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
-    }
-}
 ```
 
 ## Request signature
@@ -560,9 +452,9 @@ Please check the list of
 [JSON RPC methods](https://docs.metamask.io/wallet/reference/json-rpc-api/), noting that the request
 method currently supports only the signing methods.
 
-### Arguments
+### Parameters
 
-| Arguments       | Description                                                                                                                                                                                             |
+| Parameter       | Description                                                                                                                                                                                             |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `chainConifg`   | Defines the chain to be used for signature request.                                                                                                                                                     |
 | `method`        | JSON RPC method name in `String`. Currently, the request method only supports the singing methods.                                                                                                      |
@@ -570,7 +462,7 @@ method currently supports only the signing methods.
 
 ### Usage
 
-```kotlin title="Usage"
+```kotlin
 val params = JsonArray().apply {
     // Message to be signed
     add("Hello, World!")

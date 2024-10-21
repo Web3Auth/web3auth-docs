@@ -13,16 +13,14 @@ import EnableMFAMethod from "@site/src/common/sdk/pnp/ios/_enable-mfa.mdx";
 
 ## Logging in a User
 
-### `login()`
+To login in a user, you can use the `login` method. It will trigger login flow will navigate the
+user to a browser model allowing the user to login into the service. You can pass in the supported
+providers to the login method for specific social logins such as GOOGLE, APPLE, FACEBOOK, etc., and
+do whitelabel login.
 
-Trigger login flow will navigate the user to a browser model allowing the user to login into the
-service. You can pass in the supported providers to the login method for specific social logins such
-as Google, Apple, Facebook, etc., and do whitelabel login. `Web3Auth.login()` takes in
-`W3ALoginParams` as a required input.
+### Parameters
 
-#### Arguments
-
-`W3ALoginParams`
+The login method accepts `W3ALoginParams` as a required parameter.
 
 <Tabs
   defaultValue="table"
@@ -91,26 +89,24 @@ public enum Web3AuthProvider: String, Codable {
 ```
 
 </TabItem>
-
 </Tabs>
 
-### `getPrivkey()`
+### Usage
 
-Use getPrivkey() to get the private key of the user. The method returns an EVM compatible private
-key which can be used to sign transactions on EVM compatible chains.
+```swift
+import Web3Auth
 
-### `getEd25519PrivKey()`
+let web3auth = try await Web3Auth(W3AInitParams(
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  network: .sapphire_mainnet,
+  redirectUrl: "bundleId://auth"
+))
 
-Use getEd25519PrivKey() to get the Ed25519 private key of the user. This private key can be used to
-sign transactions on Solana.
+// focus-next-line
+let result = try await web3Auth.login(W3ALoginParams(loginProvider: .GOOGLE))
+```
 
-### `getUserInfo()`
-
-Use getUserInfo() to get the user info of the user.
-
-#### UserInfo Response
-
-<IosResponse />
+### Examples
 
 <Tabs
   defaultValue="google"
@@ -128,99 +124,95 @@ Use getUserInfo() to get the user info of the user.
 
 <TabItem value="google">
 
-```swift title="Usage"
-func login(provider: Web3AuthProvider) {
-	Task {
-		do {
-			let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
-			// Perform action upon success
-		} catch {
-			print("Error")
-		}
-	}
-}
+```swift
+import Web3Auth
+
+let web3auth = try await Web3Auth(W3AInitParams(
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  network: .sapphire_mainnet,
+  redirectUrl: "bundleId://auth"
+))
+
 // focus-next-line
-login(provider: .GOOGLE)
+let result = try await web3Auth.login(W3ALoginParams(loginProvider: .GOOGLE))
 ```
 
 </TabItem>
 
 <TabItem value="facebook">
 
-```swift title="Usage"
-func login(provider: Web3AuthProvider) {
-	Task {
-		do {
-			let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
-			// Perform action upon success
-		} catch {
-			print("Error")
-		}
-	}
-}
+```swift
+import Web3Auth
+
+let web3auth = try await Web3Auth(W3AInitParams(
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  network: .sapphire_mainnet,
+  redirectUrl: "bundleId://auth"
+))
+
 // focus-next-line
-login(provider: .FACEBOOK)
+let result = try await web3Auth.login(W3ALoginParams(loginProvider: .FACEBOOK))
 ```
 
 </TabItem>
 
 <TabItem value="discord">
 
-```swift title="Usage"
-func login(provider: Web3AuthProvider) {
-	Task {
-		do {
-			let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
-			// Perform action upon success
-		} catch {
-			print("Error")
-		}
-	}
-}
+```swift
+import Web3Auth
+
+let web3auth = try await Web3Auth(W3AInitParams(
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  network: .sapphire_mainnet,
+  redirectUrl: "bundleId://auth"
+))
+
 // focus-next-line
-login(provider: .DISCORD)
+let result = try await web3Auth.login(W3ALoginParams(loginProvider: .DISCORD))
 ```
 
 </TabItem>
 
 <TabItem value="twitch">
 
-```swift title="Usage"
-func login(provider: Web3AuthProvider) {
-	Task {
-		do {
-			let result = try await Web3Auth().login(W3ALoginParams(loginProvider: provider))
-			// Perform action upon success
-		} catch {
-			print("Error")
-		}
-	}
-}
+```swift
+import Web3Auth
+
+let web3auth = try await Web3Auth(W3AInitParams(
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  network: .sapphire_mainnet,
+  redirectUrl: "bundleId://auth"
+))
+
 // focus-next-line
-login(provider: .TWITCH)
+let result = try await web3Auth.login(W3ALoginParams(loginProvider: .TWITCH))
 ```
 
 </TabItem>
 
 <TabItem value="email_passwordless">
-```swift title="Usage"
-func login(provider: Web3AuthProvider) {
-	Task {
-		do {
-			let result = try await Web3Auth().login(
-				W3ALoginParams(
-					loginProvider: provider,
-					extraLoginOptions: .init(loginHint: "hello@web3auth.io")
-					))
-			// Perform action upon success
-		} catch {
-			print("Error")
-		}
-	}
-}
-// focus-next-line
-login(provider: .EMAIL_PASSWORDLESS)
+
+```swift
+import Web3Auth
+
+let web3auth = try await Web3Auth(
+  W3AInitParams(
+    clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+    network:.sapphire_mainnet,
+    redirectUrl: "bundleId://auth"
+  )
+)
+
+// focus-start
+let result = try await web3Auth.login(
+  W3ALoginParams(
+    loginProvider: .EMAIL_PASSWORDLESS,
+    extraLoginOptions: .init(loginHint: "hello@web3auth.io")
+  )
+)
+// focus-end
 ```
+
 </TabItem>
 
 <TabItem value="sms_passwordless">
@@ -228,40 +220,88 @@ login(provider: .EMAIL_PASSWORDLESS)
 </TabItem>
 
 <TabItem value="farcaster">
-```swift title="Usage"
-do {
-	let result = try await Web3Auth().login(W3ALoginParams(loginProvider: .Farcaster))
-	// Perform action upon success
-} catch {
-	print("Error")
-}
+
+```swift
+import Web3Auth
+
+let web3auth = try await Web3Auth(
+  W3AInitParams(
+    clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+    network: .sapphire_mainnet,
+    redirectUrl: "bundleId://auth"
+  )
+)
+
+// focus-next-line
+let result = try await web3Auth.login(W3ALoginParams(loginProvider: .FARCASTER))
+
 ```
+
 </TabItem>
 
 <TabItem value="jwt">
 
-```swift title="Usage"
-func login(provider: Web3AuthProvider) {
-	Task {
-		do {
-			let result = try await Web3Auth().login(W3ALoginParams(
-				selectedLoginProvider,
-      		// focus-next-line
-      			extraLoginOptions: .init(domain:"your-domain", id_token: "your_jwt_token")
-  			))
+```swift
+import Web3Auth
 
-			// Perform action upon success
-		} catch {
-			print("Error")
-		}
-	}
-}
-// focus-next-line
-login(provider: .JWT)
+let web3auth = try await Web3Auth(W3AInitParams(
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  network: .sapphire_mainnet,
+  redirectUrl: "bundleId://auth"
+))
+
+// focus-start
+let result = try await web3Auth.login(
+  W3ALoginParams(
+    loginProvider: .JWT,
+    extraLoginOptions: .init(domain:"your-domain", id_token: "your_jwt_token")
+  )
+)
+// focus-end
 ```
 
 </TabItem>
 </Tabs>
+
+## Retrieve Private Key
+
+Web3Auth supports two widely used cryptographic curves, Secp256k1 and Ed25519, making it
+chain-agnostic and compatible with multiple blockchain networks.
+[Learn more about how to connect different blockchains](/docs/connect-blockchain).
+
+### Secp256k1 Private Key
+
+To retrieve the secp256k1 private key of the user, use `getPrivkey` method. The method returns an
+EVM compatible private key which can be used to sign transactions on EVM compatible chains.
+
+```swift
+let privateKey = web3Auth.getPrivKey();
+```
+
+### Ed25519 Private Key
+
+To retrieve the secp256k1 private key of the user., use `getEd25519PrivKey` method. This private key
+can be used to sign transactions on Solana.
+
+```swift
+let privateKey = web3Auth.getEd25519PrivKey();
+```
+
+## Retrive User Information
+
+You can use the `getUserInfo` method to retrieve various details about the user, such as their login
+type, whether multi-factor authentication (MFA) is enabled, profile image, name, and other relevant
+information.
+
+### Usage
+
+```swift
+let web3AuthUserInfo = web3Auth.getUserInfo();
+```
+
+### UserInfo Response
+
+<IosResponse />
 
 ## Session Management
 
@@ -269,91 +309,29 @@ The Session Management feature allows you to check the existing sessions with We
 `Web3AuthState` will allow users to remain authenticated with Web3Auth for 1 day by default, or a
 maximum of 7 days, or until the user logout or session data is cleared.
 
-The `Web3Auth` initialization accepts a `sessionTime` parameter.
+The `W3AInitParams` initialization accepts a `sessionTime` parameter.
+
+### Usage
 
 ```swift
-let sessionTime = 86400 // 1 day
-```
-
-```swift title="Usage"
-import Foundation
-// IMP START - Quick Start
 import Web3Auth
-// IMP END - Quick Start
 
-class ViewModel: ObservableObject {
-    var web3Auth: Web3Auth?
-    @Published var loggedIn: Bool = false
-    @Published var user: Web3AuthState?
-    @Published var isLoading = false
-    @Published var navigationTitle: String = ""
-
-    func setup() async {
-        guard web3Auth == nil else { return }
-        await MainActor.run(body: {
-            isLoading = true
-            navigationTitle = "Loading"
-        })
-
-
-        web3Auth = await Web3Auth(W3AInitParams(
-            clientId: "<Your client id>",
-			network: .sapphire_mainnet,
-			// focus-next-line
-			sessionTime: 86400, // 1 day
-
-        ))
-
-        await MainActor.run(body: {
-            if self.web3Auth?.state != nil {
-				// focus-next-line
-                user = web3Auth?.state
-                loggedIn = true
-            }
-            isLoading = false
-            navigationTitle = loggedIn ? "UserInfo" : "SignIn"
-        })
-    }
-
-    func login(provider: Web3AuthProvider) {
-        Task {
-            do {
-
-                let result = try await web3Auth?.login(
-                    W3ALoginParams(loginProvider: provider)
-                )
-
-                await MainActor.run(body: {
-                    user = result
-                    loggedIn = true
-                })
-
-            } catch {
-                print("Error")
-            }
-        }
-    }
-
-    func logout() throws {
-        Task {
-            try await web3Auth?.logout()
-            await MainActor.run(body: {
-                loggedIn = false
-            })
-        }
-    }
-
+let web3auth = try await Web3Auth(W3AInitParams(
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+  network: .sapphire_mainnet,
+  redirectUrl: "bundleId://auth",
+  // focus-next-line
+  sessionTime: 86400 // 1 Day
+))
 ```
 
 ## Logging out a user
 
-### `Web3Auth().logout()`
-
-This method will logout the user and remove the session id from the device. The user will need to
-login again to use the dApp next time the dApp is opened.
+To logout the user and remove the session id from the device you can use the `logout` method. The
+user will need to login again to use the dApp next time the dApp is opened.
 
 ```swift
-await Web3Auth().logout()
+try await web3auth.logout()
 ```
 
 ## Enable MFA for a user
@@ -374,9 +352,7 @@ environment is the **Scale Plan**.
 
 :::
 
-### Arguments
-
-`ChainConfig`
+### Parameters
 
 <Tabs
   defaultValue="table"
@@ -426,19 +402,19 @@ public struct ChainConfig: Codable {
 
 ### Usage
 
-```swift title="Usage"
+```swift
 do {
 	// focus-start
-	try await web3Auth!.launchWalletServices(
-		chainConfig: ChainConfig(
-			chainId: "11155111",
-			rpcTarget: "https://eth-sepolia.public.blastapi.io"
-		)
-	)
+  try await web3Auth!.launchWalletServices(
+    chainConfig: ChainConfig(
+      chainId: "11155111",
+      rpcTarget: "https://eth-sepolia.public.blastapi.io"
+    )
+   )
 	// focus-end
 } catch {
-	print(error.localizedDescription)
-	// Handle error
+  print(error.localizedDescription)
+  // Handle error
 }
 ```
 
@@ -452,9 +428,9 @@ Please check the list of
 [JSON RPC methods](https://docs.metamask.io/wallet/reference/json-rpc-api/), noting that the request
 method currently supports only the signing methods.
 
-### Arguments
+### Parameters
 
-| Arguments       | Description                                                                                                                                                                                             |
+| Parameter       | Description                                                                                                                                                                                             |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `chainConfig`   | Defines the chain to be used for signature.                                                                                                                                                             |
 | `method`        | JSON RPC method name in `String`. Currently, the request method only supports the singing methods.                                                                                                      |
@@ -462,36 +438,36 @@ method currently supports only the signing methods.
 
 ### Usage
 
-```swift title="Usage"
+```swift
 do {
-	var params = [Any]()
-	// Message to be signed
-	params.append("Hello, Web3Auth from iOS!")
-	// User's EOA address
-	params.append(address)
+  var params = [Any]()
+  // Message to be signed
+  params.append("Hello, Web3Auth from iOS!")
+  // User's EOA address
+  params.append(address)
 
-	// focus-start
-	try await self.web3Auth?.request(
-		chainConfig: ChainConfig(
-			chainId: "11155111",
-			rpcTarget: "https://eth-sepolia.public.blastapi.io"
-		),
-		method: "personal_sign",
-		requestParams: params
-	)
-	// focus-end
+  // focus-start
+  try await self.web3Auth?.request(
+    chainConfig: ChainConfig(
+      chainId: "11155111",
+      rpcTarget: "https://eth-sepolia.public.blastapi.io"
+    ),
+    method: "personal_sign",
+    requestParams: params
+  )
+  // focus-end
 
-	// focus-next-line
-	let response = try Web3Auth.getSignResponse()
+  // focus-next-line
+  let response = try Web3Auth.getSignResponse()
 
-	if response!.success {
-		print(response!.result!)
-	} else {
-		// Handle Error
-		print(response!.error!)
-	}
+   if response!.success {
+     print(response!.result!)
+   } else {
+     // Handle Error
+     print(response!.error!)
+   }
 } catch {
-	print(error.localizedDescription)
-	// Handle error
+  print(error.localizedDescription)
+  // Handle error
 }
 ```

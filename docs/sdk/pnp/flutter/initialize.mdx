@@ -9,8 +9,15 @@ import Initialization from "@site/src/common/sdk/pnp/flutter/_initialization.mdx
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-After installation, the next step to use Web3Auth is to initialize the SDK. We can initialize the
-SDK using `init` method.
+After installation, the next step to use Web3Auth is to configure & initialize the SDK.
+
+However, configuring & initializing is a three-step process:
+
+1. [Configure the Web3Auth Instance](#configure-web3auth-instance)
+2. [Triggering Login exceptions](#triggering-login-exceptions)
+3. [Initialize Web3Auth](#initialize-web3auth)
+
+## Configure Web3Auth instance
 
 Please note that these are the most critical steps where you need to pass on different parameters
 according to the preference of your project. Additionally, Whitelabeling and Custom Authentication
@@ -96,6 +103,77 @@ class Web3AuthOptions {
 </TabItem>
 </Tabs>
 
-## Initialize Web3AuthFlutter
+### Configure Web3AuthFlutter
 
 <Initialization />
+
+## Triggering Login exceptions
+
+The `setCustomTabsClosed` method can be used to trigger login exceptions for Android. For iOS, you
+don't need this method to trigger the login exceptions. The Android SDK uses the custom tabs and
+from current implementation of chrome custom tab, it's not possible to add a listener directly to
+chrome custom tab close button and trigger login exceptions.
+
+Hence, it's necessary to use `setCustomTabsClosed` method in your login screen to trigger
+exceptions.
+
+```dart
+class LoginScreen extends State<T> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    // focus-next-line
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // focus-next-line
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  // focus-start
+  @override
+  void didChangeAppLifecycleState(final AppLifecycleState state) {
+    // This is important to trigger the user cancellation on Android.
+    if (state == AppLifecycleState.resumed) {
+      Web3AuthFlutter.setCustomTabsClosed();
+    }
+  }
+  // focus-end
+
+   @override
+  Widget build(BuildContext context) {
+    // Your UI code
+  }
+}
+```
+
+## Initialize Web3Auth
+
+After configuring Web3Auth, the next step is to initialize it using the `initialize` method. This
+method is essential for setting up the SDK, checking for any active sessions, and fetching the
+whitelabel configuration from your dashboard.
+
+Once the `initialize` method executes successfully, you can use the `getPrivKey` or
+`getEd25519PrivKey` methods to verify if an active session exists. If there is no active session,
+these methods will return an empty string; otherwise, they will return the respective private key.
+
+Note that if the API call to fetch the project configuration fails, the method will throw an error.
+
+```dart
+try {
+  await Web3AuthFlutter.initialize();
+} catch (e) {
+  // Handle/Swallow Error
+}
+
+final privateKey = await Web3AuthFlutter.getPrivKey();
+
+// Check if the session is present or not
+if(privateKey.isNotEmpty) {
+  // Active session present
+}
+// No active session present
+```

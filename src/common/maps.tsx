@@ -1064,17 +1064,17 @@ export const pnpiOSExamples: ExamplesInterface[] = [
     githubLink:
       "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/ios/ios-firebase-example",
   },
-  {
-    title: "Integrate Auth0 SPA in PnP iOS SDK",
-    description: "Use Auth0 Single Page App (Implicit Mode) with Plug and Play iOS SDK",
-    image: "banners/ios-auth0.png",
-    type: SAMPLE_APP,
-    tags: [tags.pnp, tags.ios, "swift", "auth0", "email passwordless", tags.evm, "implicit mode"],
-    link: "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/ios/ios-auth0-example",
-    id: "ios-auth0-example",
-    githubLink: "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/ios/ios-auth0-example",
-    guideLink: "/guides/ios-auth0",
-  },
+  // {
+  //   title: "Integrate Auth0 SPA in PnP iOS SDK",
+  //   description: "Use Auth0 Single Page App (Implicit Mode) with Plug and Play iOS SDK",
+  //   image: "banners/ios-auth0.png",
+  //   type: SAMPLE_APP,
+  //   tags: [tags.pnp, tags.ios, "swift", "auth0", "email passwordless", tags.evm, "implicit mode"],
+  //   link: "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/ios/ios-auth0-example",
+  //   id: "ios-auth0-example",
+  //   githubLink: "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/ios/ios-auth0-example",
+  //   guideLink: "/guides/ios-auth0",
+  // },
   {
     title: "Using Aggregate Verifiers in Web3Auth PnP iOS SDK",
     description:
