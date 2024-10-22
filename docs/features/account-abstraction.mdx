@@ -4,11 +4,11 @@ description: "Account Abstraction | Documentation - Web3Auth"
 ---
 
 Account abstraction is a term commonly used to address the use of smart contract wallets. These
-smart contract wallets are based on the ERC-4337 which aims at improving the user onboarding journey
-and enabling more sophisticated transaction patterns by abstracting details like validation, gas
-payment, and execution from the user.
+smart contract wallets are based on the [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) which
+aims at improving the user onboarding journey and enabling more sophisticated transaction patterns
+by abstracting details like validation, gas payment, and execution from the user.
 
-Before exploring the details of account abstraction, it's i mportant to first understand the
+Before exploring the details of account abstraction, it's important to first understand the
 limitations of Externally Owned Accounts (EOAs), like MetaMask and Rainbow, and how account
 abstraction addresses these challenges.
 
@@ -18,7 +18,7 @@ Since the beginning of Web3, wallets have been a crucial component for interacti
 blockchain. The most common type of wallet is the Externally Owned Account (EOA), which is a wallet
 controlled by a private key.
 
-Altough it still fails to onboard new users due to non intuitive user experience of navigating the
+Although it still fails to onboard new users due to non intuitive user experience of navigating the
 blockchain ecosystem and managing the wallets. EOA wallets, regardless of type, can only be accessed
 through private keys.
 
@@ -32,9 +32,9 @@ sponsored transactions, etc.
 
 ## Why Smart Contracts Wallets?
 
-Smart contract wallets solve the problem of onboarding by allowing users to use social logins or
-other web2 authentication for account management, and recovery. Moreover, SCWs provide more granular
-control and programmability like
+Smart contract wallets(SCWs) solve the problem of onboarding by allowing users to use social logins
+or other web2 authentication for account management, and recovery. Moreover, SCWs provide more
+granular control and programmability like
 
 ### Batch transactions
 
@@ -55,7 +55,7 @@ users pay the transaction fees in USDC/supported ERC-20 token.
 ### Programmable
 
 Smart contract wallets are programmable. They can perform certain functions on autopilot - for
-instance swap ETH to USDT token, when ETH price is $2700, adding limit to their spendings and
+instance swap ETH to USDT token, when ETH price is $10K, adding limit to their spendings and
 advanced multi-signature accounts. Developers can also create their own smart contract wallets with
 custom logic.
 
@@ -71,6 +71,29 @@ abstraction.
 A UserOperation is the transaction object for the smart contract wallets, and was introduced to
 avoid the changes on the EVM. Unlike EOA wallets, where the user signs the transaction, in smart
 contract wallets, the user signs a UserOperation.
+
+<details>
+<summary> UserOperation Structure </summary>
+
+| Field                           | Type      | Description                                                                              |
+| ------------------------------- | --------- | ---------------------------------------------------------------------------------------- |
+| `sender`                        | `address` | The address of the sender smart account                                                  |
+| `nonce`                         | `uint256` | Anti-replay parameter                                                                    |
+| `factory`                       | `address` | Contract address for the Factory contract used to deploy new account, if not deployed.   |
+| `factoryData`                   | `bytes`   | Data to be used during deploying the new account through Factory.                        |
+| `callData`                      | `bytes`   | The data to pass to the smart account during the main execution phase                    |
+| `callGasLimit`                  | `uint256` | The amount of gas to allocate the main execution call                                    |
+| `verificationGasLimit`          | `uint256` | The amount of gas to allocate for the verification step                                  |
+| `preVerificationGas`            | `uint256` | Extra gas to pay the bundler                                                             |
+| `maxFeePerGas`                  | `uint256` | Maximum fee per gas (see [EIP-1559](https://eips.ethereum.org/EIPS/eip-1559))            |
+| `maxPriorityFeePerGas`          | `uint256` | Maximum priority fee per gas (see EIP-1559)                                              |
+| `paymaster`                     | `address` | Address of paymaster contract. Should be empty if account is paying for the fees itself. |
+| `paymasterVerificationGasLimit` | `uint256` | The amount of gas to allocate for the paymaster validation code.                         |
+| `paymasterPostOpGasLimit`       | `uint256` | The amount of gas to allocate for the paymaster post-operation code.                     |
+| `paymasterData`                 | `bytes`   | Data for paymaster, only if the paymaster is used                                        |
+| `signature`                     | `bytes`   | Data passed into the account to verify authorization                                     |
+
+</details>
 
 ### UserOp Mempool
 
