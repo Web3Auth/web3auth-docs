@@ -20,7 +20,7 @@ import TelegramMiniAppFlowDiagram from "@site/static/images/telegram-mini-app-fl
   slug="/guides/telegram-miniapp-server"
 />
 
-### **What You Will Learn**
+### **Objectives**
 
 This guide is part of a two-part series aimed at helping you build a fully functioning Telegram Mini
 App that uses Web3Auth for decentralized authentication. By the end of this series, you will have:
@@ -42,12 +42,11 @@ them to interact with decentralized applications via their wallet on the TON blo
 
    - This will include setting up an Express server, handling Telegram login requests, validating
      `initData`, and generating JWT tokens for users.
-
    - You will also see how to mock data during development for easy testing and debugging.
 
-2. **Part 2**: Focuses on the client-side integration with Web3Auth, where you will use the JWT
-   tokens generated in Part 1 to authenticate users and retrieve their wallet information from
-   Web3Auth.
+2. **[Part 2](/guides/telegram-miniapp-client)**: Focuses on the client-side integration with
+   Web3Auth, where you will use the JWT tokens generated in Part 1 to authenticate users and
+   retrieve their wallet information from Web3Auth.
 
    - You will implement the Web3Auth SDK and handle interactions between the Telegram Mini App and
      Web3Auth to access TON wallet details.
@@ -57,7 +56,8 @@ them to interact with decentralized applications via their wallet on the TON blo
 :::info Already completed this guide?
 
 You can continue to Part 2, where we implement the client-side app and integrate Web3Auth for
-authentication. [Go to Part 2](#) to continue your journey in creating a working Telegram Mini App.
+authentication. [Go to Part 2](/guides/telegram-miniapp-client) to continue your journey in creating
+a working Telegram Mini App.
 
 :::
 
@@ -113,13 +113,25 @@ App environment while allowing them access to their decentralized wallet informa
 npm install express jsonwebtoken @telegram-apps/init-data-node dotenv cors
 ```
 
+#### **Package Usage:**
+
+- **express**: Used to create and manage the server.
+- **jsonwebtoken**: Required for generating and verifying JWT tokens, which are essential for
+  authenticating users.
+- **@telegram-apps/init-data-node**: Provides the utility to validate Telegram's `initData` to
+  ensure data integrity and prevent tampering.
+- **dotenv**: Allows you to securely manage environment variables like your bot token and JWT
+  secret.
+- **cors**: Used to configure Cross-Origin Resource Sharing (CORS), which ensures that your app can
+  securely communicate with other domains like your front-end app.
+
 ---
 
 ### Step 2: Environment Variables Setup
 
 Create a `.env` file to store your sensitive data.
 
-```
+```env
 TELEGRAM_BOT_TOKEN=your_bot_token_here
 JWT_SECRET=your_secret_key
 NODE_ENV=development
@@ -162,8 +174,8 @@ create a custom JWT verifier and generate the necessary keys. You can find the g
 [Custom JWT Providers](/docs/auth-provider-setup/byo-jwt-provider).
 
 This step is crucial if you're using your own custom login providers, as you'll need to register
-this verifier on the Web3Auth dashboard, which we will use in **Part 2** when setting up the
-client-side app.
+this verifier on the Web3Auth dashboard, which we will use in
+**[Part 2](/guides/telegram-miniapp-client)** when setting up the client-side app.
 
 :::
 
@@ -205,6 +217,14 @@ app.use((req, res, next) => {
 
 Here, we are configuring CORS (Cross-Origin Resource Sharing) to only allow requests from specific
 origins (your app’s URL). Be sure to add your app’s URL to the `allowedOrigins` array.
+
+:::tip
+
+After deploying your client-side app in **[Part 2](/guides/telegram-miniapp-client)**, don't forget
+to add its URL to the `allowedOrigins` array to ensure proper communication between the client and
+the server.
+
+:::
 
 ---
 
@@ -258,9 +278,8 @@ const generateJwtToken = (userData) => {
 };
 ```
 
-This function creates a JWT using the `userData` and
-
-signs it with your private key. This JWT will be used for user authentication.
+This function creates a JWT using the `userData` and signs it with your private key. This JWT will
+be used for user authentication.
 
 ---
 
@@ -337,22 +356,16 @@ You can now run your server and verify its operation by sending requests to the 
 
 ---
 
-Once you deploy your app (which you'll build in **Part 2**), you can replace the `APP_URL` with your
-deployed app’s URL.
+Once you deploy your app (which you'll build in **[Part 2](/guides/telegram-miniapp-client)**), you
+can replace the `APP_URL` with your deployed app’s URL.
 
 For custom JWT login (getting the JWKS and more), follow the guide here:
 [Custom JWT Providers](https://web3auth.io/docs/auth-provider-setup/byo-jwt-provider). This will
-also help you create a verifier on the Web3Auth dashboard, which you'll use in **Part 2**.
-
----
-
-### Debugging a Telegram Mini App
-
-For detailed steps on debugging your Telegram Mini App, refer to this
-[official guide](https://docs.ton.org/develop/dapps/telegram-apps/testing-apps).
+also help you create a verifier on the Web3Auth dashboard, which you'll use in
+**[Part 2](/guides/telegram-miniapp-client)**.
 
 ---
 
 This guide sets up the server-side logic for validating Telegram logins and generating JWT tokens.
-To continue the journey, head over to [Part 2](#), where we integrate Web3Auth into the client-side
-app for a complete solution.
+To continue the journey, head over to [Part 2](/guides/telegram-miniapp-client), where we integrate
+Web3Auth into the client-side app for a complete solution.
