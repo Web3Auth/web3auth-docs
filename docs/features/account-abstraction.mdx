@@ -1,169 +1,190 @@
 ---
 title: Account Abstraction
-
 description: "Account Abstraction | Documentation - Web3Auth"
 ---
 
-import SafeAuthDescription from "@site/src/common/docs/wallet-ecosystems/_safeauth-description.mdx";
-import MocaverseDescription from "@site/src/common/docs/wallet-ecosystems/_mocaverse-description.mdx";
-import { safeauthkit, mocaverse } from "@site/src/components/SDKReferenceCards";
+Account abstraction is a term commonly used to address the use of smart contract wallets. These
+smart contract wallets are based on the [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) which
+aims at improving the user onboarding journey and enabling more sophisticated transaction patterns
+by abstracting details like validation, gas payment, and execution from the user.
 
-Account Abstraction (AA) revolutionizes Web3 authentication by integrating externally owned accounts
-(EOAs) and smart contracts, offering a more seamless and secure way for decentralized applications
-(dApps) to interact with users. These AA-powered smart contract wallets have multiple benefits:
+Before exploring the details of account abstraction, it's important to first understand the
+limitations of Externally Owned Accounts (EOAs), like MetaMask and Rainbow, and how account
+abstraction addresses these challenges.
 
-- **Ecosystem Evolution** Driven by the ERC-4337 proposal, AA aims for its adoption across the
-  Ethereum network, striving for universal account abstraction.
-- **Decentralized Integrity:** Maintains decentralization and censorship resistance, core principles
-  of blockchain technology, through the application of AA.
-- **Gas Fee Sponsorship:** Offers the ability for users to perform gasless transactions, with fees
-  sponsored by the dApp developers, reducing the barrier to entry for users.
-- **Sophisticated Recovery and Transfer Options:** Smart contract-based wallets can implement
-  complex recovery methods and ownership transfer mechanisms, offering enhanced security and
-  flexibility.
+## Problem with EOAs
 
-## Understanding EOAs & Smart Contract Wallets
+Since the beginning of Web3, wallets have been a crucial component for interacting with the
+blockchain. The most common type of wallet is the Externally Owned Account (EOA), which is a wallet
+controlled by a private key.
 
-[EOA, or an externally-owned account](https://ethereum.org/en/developers/docs/accounts/) is a type
-of Ethereum account that is controlled by a private key. EOAs can be created through
-Web3Auth-powered social logins, or by using external wallets such as MetaMask, Coinbase Wallet,
-Rainbow Wallet, etc.
+Although it still fails to onboard new users due to non intuitive user experience of navigating the
+blockchain ecosystem and managing the wallets. EOA wallets, regardless of type, can only be accessed
+through private keys.
 
-On the other hand, there are <b>contract accounts</b> that are controlled by smart contract codes
-and do not have their own private key. Safe's smart wallet is a contract account that has
+You must have heard the quote, “Not your keys, not your crypto”. The user is solely responsible for
+safeguarding the private key with the best practices, which can often be overwhelming for the
+general non tech savvy users. Once the private key is compromised or lost, EOA wallet cannot recover
+the account and can result in irreversible loss of assets.
 
-<a href="https://ethereum.org/en/roadmap/account-abstraction/" target="_blank">
-  {" "}
-  enhanced capabilities, such as gas sponsorship and batched transactions.{" "}
-</a>
+Moreover the EOA wallets doesn't support advanced transaction patterns like batch transactions,
+sponsored transactions, etc.
 
-Since contract accounts do not have their own private key, they require a <b>signer</b> to initiate
-transaction flows and produce signatures. Signers are usually EOAs that authorize actions taken by
-the contract account via a signature.
+## Why Smart Contracts Wallets?
 
-## Web3Auth's approach to Account Abstraction
+Smart contract wallets(SCWs) solve the problem of onboarding by allowing users to use social logins
+or other web2 authentication for account management, and recovery. Moreover, SCWs provide more
+granular control and programmability like
 
-Web3Auth leverages the combination of Multi-Party Computation based social login EOAs with AA-based
-smart contract wallet accounts. By incorporating MPC, AA's security and functionality are
-significantly enhanced. MPC distributes the validation process across multiple entities, ensuring no
-single party can dominate transaction processes, thus bolstering security while maintaining
-user-friendliness. This results in:
+### Batch transactions
 
-- **Enhanced Recoverability and UX:** Utilizes social login-based MPC EOAs to offer superior
-  recoverability and a streamlined user experience, negating the need for external wallet
-  management.
-- **Simplified Access and Management:** Facilitates easier account access and management through
-  social logins and advanced recovery mechanisms, promoting broader Web3 adoption.
+Smart contract wallets allow users to perform batch transactions, where user can perform multiple
+transactions in a single call. In traditional EOA wallets, if you want to swap Token A to Token B,
+you need to first approve the Token A, and perform the swap operation. Here you had to sign twice,
+and execute two different transactions. In SCWs, you can perform all these transactions in a single
+call. Learn how to perform
+[batch transactions with Smart Contract Wallets](/docs/sdk/pnp/web/providers/aa-provider#send-batch-transaction).
 
-## Using Account Abstraction with Web3Auth
+### Gas Sponsorship
 
-Web3Auth's AA integration is designed to be developer-friendly, offering a range of tools and
-resources to simplify the process. All the major Account Abstraction providers have integrated
-Web3Auth into their login stacks, enhancing the accessibility and security of their platforms.
-Web3Auth is proud to be a part of this transformative movement, working closely with leading AA
-providers to ensure a seamless, secure login experience. Below are highlights from a few of these
-collaborations:
+For transactions performed through EOA wallets, the user has to pay the gas fees in native token of
+the chain which makes it difficult to onboard new users who are not familiar with the ecosystem.
+Smart contract wallets solve this problem by using paymaster to sponsor the gas fees, or let the
+users pay the transaction fees in USDC/supported ERC-20 token.
 
-### SafeAuth Kit
+### Programmable
 
-<SafeAuthDescription />
+Smart contract wallets are programmable. They can perform certain functions on autopilot - for
+instance swap ETH to USDT token, when ETH price is $10K, adding limit to their spendings and
+advanced multi-signature accounts. Developers can also create their own smart contract wallets with
+custom logic.
 
-With extensive assets under its management, Safe promises robust Smart Account Infrastructure Safe
-champions open contract standards for the digital ownership of assets, data, and identity. Their
-modular Smart Account framework encourages developers to innovate diverse applications and wallets.
-The Safe\{Core} AA SDK offers kits to simplify smart contract account operations, complete with
-guides on integration.
+## Components of ERC 4337
 
-:::tip
+Smart contract wallets did exist before ERC 4337 but lacked a standardization across the ecosystem
+which reduced the interoperability. ERC 4337 helps to standardize account abstraction across all the
+Ethereum compatible chains. ERC 4337 consists of a few main components which help us achieve account
+abstraction.
 
-Check out Safe\{Core} AA SDK documentation
-https://docs.safe.global/safe-core-aa-sdk/auth-kit/guides/safe-auth
+### UserOperation
 
-:::
+A UserOperation is the transaction object for the smart contract wallets, and was introduced to
+avoid the changes on the EVM. Unlike EOA wallets, where the user signs the transaction, in smart
+contract wallets, the user signs a UserOperation.
 
-{ safeauthkit }
+<details>
+<summary> UserOperation Structure </summary>
 
-### Alchemy Account Kit
+| Field                           | Type      | Description                                                                              |
+| ------------------------------- | --------- | ---------------------------------------------------------------------------------------- |
+| `sender`                        | `address` | The address of the sender smart account                                                  |
+| `nonce`                         | `uint256` | Anti-replay parameter                                                                    |
+| `factory`                       | `address` | Contract address for the Factory contract used to deploy new account, if not deployed.   |
+| `factoryData`                   | `bytes`   | Data to be used during deploying the new account through Factory.                        |
+| `callData`                      | `bytes`   | The data to pass to the smart account during the main execution phase                    |
+| `callGasLimit`                  | `uint256` | The amount of gas to allocate the main execution call                                    |
+| `verificationGasLimit`          | `uint256` | The amount of gas to allocate for the verification step                                  |
+| `preVerificationGas`            | `uint256` | Extra gas to pay the bundler                                                             |
+| `maxFeePerGas`                  | `uint256` | Maximum fee per gas (see [EIP-1559](https://eips.ethereum.org/EIPS/eip-1559))            |
+| `maxPriorityFeePerGas`          | `uint256` | Maximum priority fee per gas (see EIP-1559)                                              |
+| `paymaster`                     | `address` | Address of paymaster contract. Should be empty if account is paying for the fees itself. |
+| `paymasterVerificationGasLimit` | `uint256` | The amount of gas to allocate for the paymaster validation code.                         |
+| `paymasterPostOpGasLimit`       | `uint256` | The amount of gas to allocate for the paymaster post-operation code.                     |
+| `paymasterData`                 | `bytes`   | Data for paymaster, only if the paymaster is used                                        |
+| `signature`                     | `bytes`   | Data passed into the account to verify authorization                                     |
 
-The Alchemy Account Kit is a comprehensive solution designed to seamlessly integrate account
-abstraction into your Web3 application. Account Kit equips developers with a suite of tools to
-implement smart accounts, offering enhanced functionalities like social login, gas sponsorship, and
-batched transactions. With just a few lines of code, you can deploy smart accounts and streamline
-user operations in your app.
+</details>
 
-Account Kit includes five components:
+### UserOp Mempool
 
-- **aa-sdk**: A simple, powerful interface to integrate, deploy, and use smart accounts. The aa-sdk
-  orchestrates everything under the hood to make development easy.
-- **Modular Account**: Secure, audited, modular smart accounts. It is easy to deploy when your users
-  need them and extend with EIP-6900 plugins.
-- **Signer**: Integrations with the most popular wallet providers. Secure your accounts with email,
-  social login, passkeys, or a self-custodial wallet Signer.
-- **Gas Manager API**: A programmable API to sponsor gas for UserOps that meets your criteria.
-- **Bundler API**: The most reliable ERC-4337 Bundler. Land your UserOps on-chain, batch operations,
-  and sponsor gas at a massive scale.
+Mempools for User Operation are separate from the regular blockchain transaction mempool.ERC 4337
+introduces an alternative to the mempool, called UserOp Mempool, which helps to keep track of
+pending UserOperations. It acts as a waiting room and helps bundlers to keep track of
+UserOperations.
 
-:::tip
+### Bundler
 
-Check out Alchemy Account Kit Documentation
-https://accountkit.alchemy.com/signers/guides/web3auth.html
+Unlike the RPC nodes responsible for validating the transactions and submitting them to the
+blockchain, bundlers are third party nodes that bundles the UserOperations, perform the validation,
+and runs the simulations before submitting them on-chain.
 
-:::
+The bundler is also responsible to validate that the Paymaster has enough balance to sponsor the gas
+fees for the batch transactions. For aggregated UserOperations, the bundler also ensures that the
+aggregated signature is created, and the UserOperations are updated with the same. The aggregated
+signatures are used to improve the efficiency and scalability of transaction processing by bundler.
 
-### Biconomy SDK
+### EntryPoint
 
-A pioneer in leveraging EIP4337 and gas abstraction, the Biconomy SDK is built firmly on the ERC4337
-solution, offering a full spectrum of tools tailored for dApps. It enhances the dApp user experience
-in a non-custodial manner. Key features include:
+The EntryPoint contract, as its name suggests, serves as the global singleton that manages
+UserOperations by validating and executing them. When a UserOperation is submitted, the EntryPoint
+performs the following key tasks:
 
-- Seamless user onboarding with social login, account setup & recovery.
-- An in-dApp fiat gateway for buying/selling crypto.
-- Gasless transactions, allowing dApps to cover gas fees.
-- Paying gas fees using ERC20 tokens.
-- Custom transaction bundling to streamline multiple operations.
+![EntryPoint](/images/entrypoint.png)
 
-:::tip
+- If the UserOperations are bundled into a single transaction, the EntryPoint validates the
+  aggregated signature to ensure its validity.
 
-Check out Biconomy documentation https://docs.biconomy.io/account/signers/web3auth
+- The EntryPoint checks if the user's account is already deployed. If it isn't, the contract deploys
+  the account using the CREATE2Factory. Afterwards, the EntryPoint uses the Account contract to
+  validate the UserOperation.
 
-:::
+- If a Paymaster is involved in the UserOperation, the EntryPoint verifies that the Paymaster has
+  agreed to cover the transaction fees by validating its signature. If no Paymaster is used, the
+  EntryPoint ensures that the user has sufficient balance to pay for the gas fees.
 
-### Keyp
+- After successfully validating the UserOperation and Paymaster details, the EntryPoint proceeds to
+  execute the transaction.
 
-Specifically crafted for game developers and NFT enthusiasts, Keyp offers tools to enhance the web3
-onboarding experience. They envision a world where users hold control over their digital assets.
+### Smart Account
 
-:::tip
+Smart accounts are user facing accounts deployed through the CREATE2Factory. Each smart account
+contains a key function called `validateUserOp`, which validates the UserOperation. This function is
+triggered by the EntryPoint contract during the operation validation phase.
 
-Check out Keyp documentation https://docs.usekeyp.com/
+Beyond basic functionality, smart accounts can incorporate advanced features like account recovery,
+autopilot execution, spend limits, and other customizable, programmable capabilities.
 
-:::
+### Paymaster
 
-### ZeroDev
+The paymaster component of the ERC 4337 is responsible for sponsoring the gas fees for the
+UserOperations. The paymaster contract also allows the user to pay the gas fees with the supported
+ERC-20 tokens.
 
-ZeroDev focuses on offering the most straightforward developer experience for AA, supported by a
-robust smart wallet framework. It facilitates easy smart wallet creation, provides essential smart
-wallet features, and allows for customized extensions using a plugin framework. Whether you're
-creating a wallet or a DApp, ZeroDev promises to elevate the Web3 user experience.
+The paymaster contract must implement the `validatePaymasterUserOp` function which is called by the
+EntryPoint contract during the validation phase. The paymaster also has additional `postOp` function
+which is called by the EntryPoint contract after the transaction is executed. This function handles
+the additional logic required by the paymaster. For instance, withdraw the ERC-20 token from the
+user's account after the transaction is executed.
 
-:::tip
+### Aggregator
 
-Check out ZeroDev documentation https://docs.zerodev.app/sdk/signers/web3auth
+As the name suggests, the aggregator contract is responsible for aggregating the signatures of the
+UserOperations. The aggregator contract must implement the `aggregateSignatures` function which
+takes in a list of signatures and returns the aggregated signature. The signatues are usually
+aggregated by the bundler to improve improve the efficiency and scalability of transaction
+processing, as it allows bundler to submit multiple UserOperations in a single transaction.
 
-:::
+For validating the aggregated signature, the Aggregator also has the `validateSignatures` function
+used by the EntryPoint contract during the validation phase.
 
-### Gelato
+## Native Account Abstraction
 
-Committed to delivering the finest user experiences with gas abstraction, Gelato acts as web3's
-decentralized backbone. It offers a host of services:
+Web3Auth offers seamless integration of Account Abstraction with just a few lines of code, making it
+easier than ever to onboard users into decentralized applications. Our goal is to simplify and
+streamline the entire process while ensuring users benefit from advanced functionality.
 
-- Web3 functions connecting smart contracts to off-chain data.
-- Reliable automated smart contract transactions.
-- Gasless transaction relays via an intuitive API.
-- A Gasless Wallet SDK in collaboration with Safe's Smart Contract Wallet.
+If you are already using the Web3Auth PnP Web SDK with
+[EthereumPrivateKeyProvider](/docs/sdk/pnp/web/providers/evm), you can now easily use account
+abstraction by just configuring the
+[AccountAbstractionProvider](/docs/sdk/pnp/web/providers/aa-provider), and passing to the Web3Auth
+instance. Previously to use account abstraction, developers had to maintain the additional flow for
+account abstraction using third party packages.
 
-:::tip
+With native account abstraction, you can create and manage smart accounts using your favorite
+libraries like Viem, Ethers, and Web3.js. This allows you to effortlessly create ERC-4337 compatible
+Smart Contract Wallets (SCWs), and give users the ability to perform batch transactions and
+efficiently manage gas sponsorship.
 
-Check out Gelato documentation https://docs.gelato.network/developer-services/account-abstraction
-
-:::
+Web3Auth's native account abstraction gives you the flexibility to choose your preferred account
+abstraction provider, configure your bundler client, and integrate your paymaster. Learn how to use
+[Web3Auth with Account Abstraction](/docs/sdk/pnp/web/providers/aa-provider).
