@@ -284,25 +284,24 @@ instance. This function takes the below-mentioned parameters as well as
 
 `AuthOptions`
 
-| Parameter               | type                       |
-| ----------------------- | -------------------------- |
-| `clientId`              | `string`                   |
-| `network`               | `WEB3AUTH_NETWORK_TYPE`    |
-| `buildEnv?`             | `BUILD_ENV_TYPE`           |
-| `redirectUrl?`          | `string`                   |
-| `uxMode?`               | `UX_MODE_TYPE`             |
-| `replaceUrlOnRedirect?` | `boolean`                  |
-| `originData?`           | `OriginData`               |
-| `loginConfig?`          | `LoginConfig`              |
-| `webauthnTransports?`   | `AuthenticatorTransport[]` |
-| `whiteLabel?`           | `WhiteLabelData`           |
-| `storageServerUrl?`     | `string`                   |
-| `storageKey?`           | `"session"                 |
-| `sessionTime?`          | `number`                   |
-| `sessionNamespace?`     | `string`                   |
-| `mfaSettings?`          | `MfaSettings`              |
-| `useMpc?`               | `boolean`                  |
-| `useCoreKitKey?`        | `boolean`                  |
+| Parameter               | type                       | description                                                                                                                                                        |
+| ----------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `clientId`              | `string`                   | Your projectId/clientId from the [dashboard](https://dashboard.web3auth.io)                                                                                        |
+| `network`               | `WEB3AUTH_NETWORK_TYPE`    | Network specifies the web3auth network to be used.                                                                                                                 |
+| `buildEnv?`             | `BUILD_ENV_TYPE`           | This parameter will be used to change the build environment of auth sdk.                                                                                           |
+| `redirectUrl?`          | `string`                   | redirectUrl is the dapp's url where user will be redirected after login. Register this url at "https://dashboard.web3auth.io" else initialization will give error. |
+| `uxMode?`               | `UX_MODE_TYPE`             | Either of the two `uxMode` values: `popup` or `redirect`. Use of `REDIRECT` mode is recommended in browsers where popups might get blocked.                        |
+| `replaceUrlOnRedirect?` | `boolean`                  | `replaceUrlOnRedirect` removes the params from the redirected url after login                                                                                      |
+| `originData?`           | `OriginData`               | `originData` contains a signature of dapp's origin url which is generated using project's secret.                                                                  |
+| `loginConfig?`          | `LoginConfig`              | `loginConfig` is key value map where each key should be a valid loginProvider and value should be custom configuration for that loginProvider.                     |
+| `webauthnTransports?`   | `AuthenticatorTransport[]` | `webauthnTransports` enables you to configure the transport type user can use for saving their share.                                                              |
+| `whiteLabel?`           | `WhiteLabelData`           | `whiteLabel` is for whitelabling default auth modal.                                                                                                               |
+| `storageServerUrl?`     | `string`                   | `storageServerUrl` specifies a custom storage server url                                                                                                           |
+| `storageKey?`           | `"session" \| "local"`     | `storageKey` setting to `local` will persist social login session across browser tabs.                                                                             |
+| `sessionTime?`          | `number`                   | How long should a login session last at a minimum in seconds. Maximum value of sessionTime can be 7 \* 86400 (7 days)                                              |
+| `mfaSettings?`          | `MfaSettings`              | This parameter will be used to enable mfa factors and set priority on UI listing.                                                                                  |
+| `useMpc?`               | `boolean`                  | This parameter will be used to use auth mpc                                                                                                                        |
+| `useCoreKitKey?`        | `boolean`                  | This parameter will be used to select core kit key.                                                                                                                |
 
 `BaseAdapterSettings`
 
