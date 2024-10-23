@@ -37,13 +37,13 @@ const chainConfig = {
 const accountAbstractionProvider = new AccountAbstractionProvider({
   config: {
     chainConfig,
+    smartAccountInit: new SafeSmartAccount(),
     // focus-start
     bundlerConfig: {
       // Get the pimlico API Key from dashboard.pimlico.io
       url: `https://api.pimlico.io/v2/${chainId}/rpc?apikey=${pimlicoAPIKey}`,
     },
     // focus-end
-    smartAccountInit: new SafeSmartAccount(),
   },
 });
 ```
@@ -72,12 +72,13 @@ const chainConfig = {
 const accountAbstractionProvider = new AccountAbstractionProvider({
   config: {
     chainConfig,
+    smartAccountInit: new KernelSmartAccount(),
     // focus-start
     bundlerConfig: {
+      // Get the ZeroDev API from https://dashboard.zerodev.app/
       url: `https://rpc.zerodev.app/api/v2/bundler/${projectId}`,
     },
     // focus-end
-    smartAccountInit: new KernelSmartAccount(),
   },
 });
 ```
@@ -106,13 +107,13 @@ const chainConfig = {
 const accountAbstractionProvider = new AccountAbstractionProvider({
   config: {
     chainConfig,
+    smartAccountInit: new SafeSmartAccount(),
     // focus-start
     bundlerConfig: {
       // Get the Stackup API from app.stackup.sh
       url: `https://public.stackup.sh/api/v1/node/ethereum-sepolia`,
     },
     // focus-end
-    smartAccountInit: new SafeSmartAccount(),
   },
 });
 ```
