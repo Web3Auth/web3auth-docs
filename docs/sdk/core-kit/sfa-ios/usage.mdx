@@ -22,13 +22,15 @@ you'll see an Error message.
 The SingleFactorAuth instance natively provides the following methods:
 
 - [connect](#login-user) - Use to login user and retrive private key pair.
-- [initialize](#session-management) - This method helps to achieve session management. It
-  authenticates user if the session is present, avoiding re-logging.
+- [logout](#logout-user) - Use to logout existing user.
+- [getSessionData](#get-session-data) - This method helps to get the session data if exists. You can
+  use it to check if the user is logged in or not.
 
 ## Login User
 
-To obtain a user's private key using the Web3Auth SFA Flutter SDK, you can call the `connect`
-method. The method accepts `LoginParams`, and returns `SFAKey`.
+To obtain a user's private key using the Web3Auth SFA iOS SDK, you can call the `connect` method.
+The method accepts `LoginParams`, and returns `SessionData`.
+[Please checkout the SessionData response for more details](#response).
 
 ### Parameters
 
@@ -94,18 +96,52 @@ public struct TorusSubVerifierInfo {
 ```swift
 let loginParams = LoginParams(verifier: "YOUR_VERIFIER_NAME", verifierId: "YOUR_VERIFIER_ID", idToken: "YOUR_ID_TOKEN")
 do {
-  let sfaKey = try await singleFactoreAuth.connect(loginParams: loginParams)
+  let sfaKey = try await singleFactorAuth.connect(loginParams: loginParams)
 } catch {
   // Handle error
 }
 ```
 
-## Session Management
+## Logout User
 
-We have included Session Management in this SDK, so calling the initialize function to get the
-SFAKey value without re-logging in the user if a user has an active session will return the SFAKey,
-otherwise, it will throw an error.
+To logout the current user, you can use the `logout` method. Please note, the method will not logout
+the user from the authentication provider, it'll only delete the session from the local storage.
 
 ### Usage
 
-<SessionManagement />
+```swift
+do {
+  try await singleFactorAuth.logout()
+} catch {
+  // Handle error
+}
+```
+
+## Get Session Data
+
+We have included Session Management in this SDK, so calling the `getSessionData` will retrive the
+user's `SessionData` without re-logging in the user if a user has an active session. Otherwise, it
+will return `nil`.
+
+### Usage
+
+```swift
+let sessionData = singleFactorAuth.getSessionData()
+
+if(sessionData != nil) {
+  // User is logged in
+} else {
+  // User is not logged in
+}
+```
+
+### Response
+
+The `SessionData` has the following four functions to retrive the relevant session information.
+
+| Function Name      | Description                                                               |
+| ------------------ | ------------------------------------------------------------------------- |
+| `getPrivateKey`    | Retrieves the user's private key.                                         |
+| `getPublicAddress` | Retrieves the user's public address.                                      |
+| `getUserInfo`      | Retrieves the user's information like email, name, verifier id, and more. |
+| `getSignatures`    | Retrieves the signatures.                                                 |
