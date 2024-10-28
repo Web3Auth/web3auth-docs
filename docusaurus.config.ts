@@ -550,30 +550,38 @@ const config: Config = {
           },
         ],
         createRedirects(existingPath) {
-          return [
-            existingPath.replace("/sdk", "/api-reference"),
-            existingPath.replace("/sdk", "/sdk-reference"),
-            existingPath.replace("/guides/", "/content-hub/guides/"),
-            existingPath.replace("/sdk/pnp/web/providers/", "/sdk/providers/"),
-            existingPath.replace("/sdk/pnp/web/wallet-services/", "/sdk/wallet-services/"),
-            existingPath.replace("/features/whitelabel", "/pnp/features/whitelabel/"),
-            existingPath.replace("/sdk/web/no-modal", "/sdk/web/core"),
-            existingPath.replace("/sdk/web/no-modal", "/sdk/web/customloginui"),
-            existingPath.replace("/sdk/web/modal", "/sdk/web/web3auth"),
-            existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay"),
-            existingPath.replace("/sdk/tkey", "/sdk/self-host"),
-            existingPath.replace("/sdk/tkey", "/sdk/self-host"),
-            existingPath.replace(
-              "/connect-blockchain/evm/astar-zkyoto/",
-              "/connect-blockchain/evm/zkyoto/",
-            ),
-            existingPath.replace(
-              "/connect-blockchain/evm/astar-zkevm/",
-              "/connect-blockchain/evm/zkevm/",
-            ),
-            existingPath.replace("/product/core-kit", "/core-kit/"),
-            existingPath.replace("/product/pnp", "/pnp/"),
-          ];
+          // Only create redirects if the path matches certain patterns
+          if (
+            existingPath.includes("/sdk/") ||
+            existingPath.includes("/guides/") ||
+            existingPath.includes("/features/") ||
+            existingPath.includes("/product/")
+          ) {
+            return [
+              existingPath.replace("/sdk", "/api-reference"),
+              existingPath.replace("/sdk", "/sdk-reference"),
+              existingPath.replace("/guides/", "/content-hub/guides/"),
+              existingPath.replace("/sdk/pnp/web/providers/", "/sdk/providers/"),
+              existingPath.replace("/sdk/pnp/web/wallet-services/", "/sdk/wallet-services/"),
+              existingPath.replace("/features/whitelabel", "/pnp/features/whitelabel/"),
+              existingPath.replace("/sdk/web/no-modal", "/sdk/web/core"),
+              existingPath.replace("/sdk/web/no-modal", "/sdk/web/customloginui"),
+              existingPath.replace("/sdk/web/modal", "/sdk/web/web3auth"),
+              existingPath.replace("/sdk/web/modal", "/sdk/web/plugnplay"),
+              existingPath.replace("/sdk/tkey", "/sdk/self-host"),
+              existingPath.replace("/product/core-kit", "/core-kit/"),
+              existingPath.replace("/product/pnp", "/pnp/"),
+              existingPath.replace(
+                "/connect-blockchain/evm/astar-zkyoto/",
+                "/connect-blockchain/evm/zkyoto/",
+              ),
+              existingPath.replace(
+                "/connect-blockchain/evm/astar-zkevm/",
+                "/connect-blockchain/evm/zkevm/",
+              ),
+            ].filter((redirect) => redirect !== existingPath); // Remove any redirects that point to the same path
+          }
+          return []; // Return empty array for paths that don't need redirects
         },
       },
     ],
