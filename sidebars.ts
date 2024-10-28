@@ -930,6 +930,11 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "XDC Network",
+              items: ["connect-blockchain/evm/xdc/xdc", "connect-blockchain/evm/xdc/web"],
+            },
+            {
+              type: "category",
               label: "Zetachain",
               items: [
                 "connect-blockchain/evm/zetachain/zetachain",
