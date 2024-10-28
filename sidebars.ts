@@ -931,7 +931,15 @@ const sidebars: SidebarsConfig = {
             {
               type: "category",
               label: "XDC Network",
-              items: ["connect-blockchain/evm/xdc/xdc", "connect-blockchain/evm/xdc/web"],
+              items: [
+                "connect-blockchain/evm/xdc/xdc",
+                "connect-blockchain/evm/xdc/web",
+                "connect-blockchain/evm/xdc/android",
+                "connect-blockchain/evm/xdc/ios",
+                "connect-blockchain/evm/xdc/react-native",
+                "connect-blockchain/evm/xdc/flutter",
+                "connect-blockchain/evm/xdc/unity",
+              ],
             },
             {
               type: "category",
