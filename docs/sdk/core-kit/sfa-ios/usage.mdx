@@ -23,8 +23,8 @@ The SingleFactorAuth instance natively provides the following methods:
 
 - [connect](#login-user) - Use to login user and retrive private key pair.
 - [logout](#logout-user) - Use to logout existing user.
-- [getSessionData](#get-session-data) - This method helps to get the session data if exists. You can
-  use it to check if the user is logged in or not.
+- [connected](#check-users-logged-in-status) - Use to check whether the user is logged in or not.
+- [getSessionData](#get-session-data) - This method helps to get the session data for valid session.
 
 ## Login User
 
@@ -50,6 +50,7 @@ The method accepts `LoginParams`, and returns `SessionData`.
 | `verifierId`            | The verifierId used for the verification. It takes `String` as a value.                                  |
 | `idToken`               | The idToken of the user obtained from login provider. It takes `String` as a value.                      |
 | `subVerifierInfoArray?` | Sub verifier info. Usually used during aggregate verifier. It takes `[TorusSubVerifierInfo]` as a value. |
+| `serverTimeOffset?`     | Specifies the server time offset in seconds.                                                             |
 
 </TabItem>
 
@@ -61,19 +62,16 @@ public class LoginParams {
     public let verifierId: String
     public let idToken: String
     public let subVerifierInfoArray: [TorusSubVerifierInfo]?
+    public let serverTimeOffset: Int?
+    public let fallbackUserInfo: UserInfo?
 
-    public init(verifier: String, verifierId: String, idToken: String) {
-        self.verifier = verifier
-        self.verifierId = verifierId
-        self.idToken = idToken
-        subVerifierInfoArray = nil
-    }
-
-    public init(verifier: String, verifierId: String, idToken: String, subVerifierInfoArray: [TorusSubVerifierInfo]) {
+    public init(verifier: String, verifierId: String, idToken: String, subVerifierInfoArray: [TorusSubVerifierInfo]? = nil, serverTimeOffset: Int? = nil, fallbackUserInfo: UserInfo? = nil) {
         self.verifier = verifier
         self.verifierId = verifierId
         self.idToken = idToken
         self.subVerifierInfoArray = subVerifierInfoArray
+        self.serverTimeOffset = serverTimeOffset
+        self.fallbackUserInfo = fallbackUserInfo
     }
 }
 
@@ -105,7 +103,7 @@ do {
 ## Logout User
 
 To logout the current user, you can use the `logout` method. Please note, the method will not logout
-the user from the authentication provider, it'll only delete the session from the local storage.
+the user from the authentication provider, it'll only logout and invalidate the Web3Auth session.
 
 ### Usage
 
@@ -115,6 +113,18 @@ do {
 } catch {
   // Handle error
 }
+```
+
+## Check User's Logged In Status
+
+You can use the `connected` method to check whether the user is logged in Web3Auth or not. Please
+note, you should call this method after the `initialize` method if you want to check the user's
+connection status for an existing session.
+
+### Usage
+
+```swift
+let isConnected = singleFactorAuth.connected()
 ```
 
 ## Get Session Data
@@ -144,4 +154,4 @@ The `SessionData` has the following four functions to retrive the relevant sessi
 | `getPrivateKey`    | Retrieves the user's private key.                                         |
 | `getPublicAddress` | Retrieves the user's public address.                                      |
 | `getUserInfo`      | Retrieves the user's information like email, name, verifier id, and more. |
-| `getSignatures`    | Retrieves the signatures.                                                 |
+| `getSignatures`    | Retrieves the node's signatures that are returned for request.            |
