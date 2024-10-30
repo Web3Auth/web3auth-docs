@@ -1716,7 +1716,16 @@ const sidebars: SidebarsConfig = {
     "sdk/core-kit/mpc-core-kit/mpc-core-kit",
     "sdk/core-kit/mpc-core-kit/install",
     "sdk/core-kit/mpc-core-kit/initialize",
-    "sdk/core-kit/mpc-core-kit/authentication",
+    "sdk/core-kit/mpc-core-kit/initialize-rn",
+    {
+      type: "category",
+      label: "Authentication",
+      items: [
+        "sdk/core-kit/mpc-core-kit/authentication/authentication",
+        "sdk/core-kit/mpc-core-kit/authentication/login-jwt",
+        "sdk/core-kit/mpc-core-kit/authentication/login-oauth",
+      ],
+    },
     "sdk/core-kit/mpc-core-kit/signing",
     "sdk/core-kit/mpc-core-kit/usage",
     "sdk/core-kit/mpc-core-kit/examples",

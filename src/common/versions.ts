@@ -15,7 +15,7 @@ export const sfaNodeJSVersion = `7.4.x`;
 export const tkeyJSVersion = `15.x.x`;
 export const tkeyAndroidVersion = `0.0.5`;
 export const tkeyIOSVersion = `0.0.4`;
-export const mpcCoreKitVersion = `3.1.1`;
+export const mpcCoreKitVersion = `3.2.x`;
 
 import {
   web,
