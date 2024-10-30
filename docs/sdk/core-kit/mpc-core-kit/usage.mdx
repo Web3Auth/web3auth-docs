@@ -165,7 +165,7 @@ You can also opt to not create a backup factor by setting `recoveryFactor` to `f
 | Parameter Name     | Description                                                                                                                                                                                                                                                                                         |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `enableMFAParams?` | This parameter helps to configure the back up factor of your choice like social recovery, security question, authenticator or more. By default, it'll generate a 24 words mnemonic, and use it as back up factor. Please checkout the [EnableMFAParams](#enablemfaparams) section for more details. |
-| `recvoeryFactor`   | This helps you disable the backup factor generation during enableMFA flow. If set to false, the enableMFA will on generate a device factor, and flow would be 2/2 instead 2/3. By default, the value is true.                                                                                       |
+| `recoveryFactor`   | This helps you disable the backup factor generation during enableMFA flow. If set to false, the enableMFA will on generate a device factor, and flow would be 2/2 instead 2/3. By default, the value is true.                                                                                       |
 
 #### EnableMFAParams
 
@@ -327,7 +327,6 @@ import { generateFactorKey } from "@web3auth/mpc-core-kit";
 
 const factorKey = generateFactorKey();
 
-// focus-next-line
 await coreKitInstance.createFactor({
   shareType: TssShareType.RECOVERY,
   factorKey: factorKey.private,
