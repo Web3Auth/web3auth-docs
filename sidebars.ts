@@ -1611,7 +1611,11 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/sfa-ios-v7-to-v8", "migration-guides/sfa-ios-v2-to-v4"],
+      items: [
+        "migration-guides/sfa-ios-v8-to-v9",
+        "migration-guides/sfa-ios-v7-to-v8",
+        "migration-guides/sfa-ios-v2-to-v4",
+      ],
     },
     ...sdkQuickLinks,
   ],

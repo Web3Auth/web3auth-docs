@@ -12,27 +12,33 @@ Before exploring the details of account abstraction, it's important to first und
 limitations of Externally Owned Accounts (EOAs), like MetaMask and Rainbow, and how account
 abstraction addresses these challenges.
 
-## Problem with EOAs
+## Web3Auth's Native Account Abstraction
 
-Since the beginning of Web3, wallets have been a crucial component for interacting with the
-blockchain. The most common type of wallet is the Externally Owned Account (EOA), which is a wallet
-controlled by a private key.
+Web3Auth offers seamless integration of Account Abstraction with just a few lines of code, making it
+easier than ever to onboard users into decentralized applications. Our goal is to simplify and
+streamline the entire process while ensuring users benefit from advanced functionality.
 
-Although it still fails to onboard new users due to non intuitive user experience of navigating the
-blockchain ecosystem and managing the wallets. EOA wallets, regardless of type, can only be accessed
-through private keys.
+If you are already using the Web3Auth PnP Web SDK with
+[EthereumPrivateKeyProvider](/docs/sdk/pnp/web/providers/evm), you can now easily use account
+abstraction by just configuring the
+[AccountAbstractionProvider](/docs/sdk/pnp/web/providers/aa-provider), and passing to the Web3Auth
+instance. Previously to use account abstraction, developers had to maintain the additional flow for
+account abstraction using third party packages.
 
-You must have heard the quote, “Not your keys, not your crypto”. The user is solely responsible for
-safeguarding the private key with the best practices, which can often be overwhelming for the
-general non tech savvy users. Once the private key is compromised or lost, EOA wallet cannot recover
-the account and can result in irreversible loss of assets.
+With native account abstraction, you can create and manage smart accounts using your favorite
+libraries like Viem, Ethers, and Web3.js. This allows you to effortlessly create ERC-4337 compatible
+Smart Contract Wallets (SCWs), and give users the ability to perform batch transactions and
+efficiently manage gas sponsorship.
 
-Moreover the EOA wallets doesn't support advanced transaction patterns like batch transactions,
-sponsored transactions, etc.
+### Getting Started
+
+Web3Auth's native account abstraction gives you the flexibility to choose your preferred account
+abstraction provider, configure your bundler client, and integrate your paymaster. Learn how to use
+[Web3Auth with Account Abstraction](/docs/sdk/pnp/web/providers/aa-provider).
 
 ## Why Smart Contracts Wallets?
 
-Smart contract wallets(SCWs) solve the problem of onboarding by allowing users to use social logins
+Smart contract wallets(SCWs) solves the problem of onboarding by allowing users to use social logins
 or other web2 authentication for account management, and recovery. Moreover, SCWs provide more
 granular control and programmability like
 
@@ -166,25 +172,3 @@ allows bundler to submit multiple UserOperations in a single transaction.
 
 For validating the aggregated signature, the Aggregator also has the `validateSignatures` function
 used by the EntryPoint contract during the validation phase.
-
-## Native Account Abstraction
-
-Web3Auth offers seamless integration of Account Abstraction with just a few lines of code, making it
-easier than ever to onboard users into decentralized applications. Our goal is to simplify and
-streamline the entire process while ensuring users benefit from advanced functionality.
-
-If you are already using the Web3Auth PnP Web SDK with
-[EthereumPrivateKeyProvider](/docs/sdk/pnp/web/providers/evm), you can now easily use account
-abstraction by just configuring the
-[AccountAbstractionProvider](/docs/sdk/pnp/web/providers/aa-provider), and passing to the Web3Auth
-instance. Previously to use account abstraction, developers had to maintain the additional flow for
-account abstraction using third party packages.
-
-With native account abstraction, you can create and manage smart accounts using your favorite
-libraries like Viem, Ethers, and Web3.js. This allows you to effortlessly create ERC-4337 compatible
-Smart Contract Wallets (SCWs), and give users the ability to perform batch transactions and
-efficiently manage gas sponsorship.
-
-Web3Auth's native account abstraction gives you the flexibility to choose your preferred account
-abstraction provider, configure your bundler client, and integrate your paymaster. Learn how to use
-[Web3Auth with Account Abstraction](/docs/sdk/pnp/web/providers/aa-provider).
