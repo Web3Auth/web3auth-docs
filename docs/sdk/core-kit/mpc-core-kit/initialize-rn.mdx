@@ -1,7 +1,7 @@
 ---
-title: "Initializing MPC Core Kit JS SDK for Web"
-sidebar_label: "Initialize Web"
-description: "Web3Auth MPC Core Kit JS SDK - Initialize for Web | Documentation - Web3Auth"
+title: "Initializing MPC Core Kit JS SDK for React Native"
+sidebar_label: "Initialize React Native"
+description: "Web3Auth MPC Core Kit JS SDK - Initialize for React Native | Documentation - Web3Auth"
 ---
 
 import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
@@ -11,8 +11,39 @@ import Tabs from "@theme/Tabs";
 
 After installation, the next step to use Web3Auth MPC Core Kit is to configure & initialize the SDK.
 
-1. [Configure Web3AuthMPCCoreKit instance](#configure-instance)
-2. [Initialize Web3AuthMPCCoreKit](#initialize-web3authmpccorekit)
+1. [Configure React Native environment](#configure-react-native-environment)
+2. [Configure Web3AuthMPCCoreKit instance](#configure-instance)
+3. [Initialize Web3AuthMPCCoreKit](#initialize-web3authmpccorekit)
+
+## Configure React Native Environment
+
+In order to make this SDK compatible with the React Native development environment, you need to
+additionally import the following packages:
+
+```tsx
+import EncryptedStorage from "react-native-encrypted-storage"; // Used to store the session & device factor keys
+import * as TssLibRN from "@toruslabs/react-native-tss-lib-bridge"; // The TSS library for React Native
+import { Bridge } from "@toruslabs/react-native-tss-lib-bridge"; // A bridge to be imported to the React Native environment
+```
+
+While initializing the SDK, you need to pass the `EncryptedStorage` and `TssLibRN` as arguments to
+the `Web3AuthOptions` object. The `Bridge` is used to bridge the TSS library to the React Native
+environment, it has to be imported in the React Native environment, at the end of the page.
+
+```tsx title="App.tsx"
+import { Bridge } from "@toruslabs/react-native-tss-lib-bridge";
+
+export default function App() {
+  // Misc App related functions
+  return (
+    <View>
+      {/* <YOUR APP GOES HERE> */}
+      // focus-next-line
+      <Bridge /> // <- Add this line
+    </View>
+  );
+}
+```
 
 ## Configure Instance
 

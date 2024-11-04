@@ -29,9 +29,15 @@ an overview of how you can generate ECDSA signature for Ethereum.
 
 As discussed earlier, to generate the ECDSA signature for Ethereum, we will utilize
 `@toruslabs/tss-dkls-lib` to instantiate Web3AuthMPCCoreKit with secp256k1 KeyType. This package
-contains all the necessary functionalities and logic required for TSS signing. Along with that,
-we'll also use `@web3auth/ethereum-mpc-provider` which is a helper package. This package will
-provide a wrapper to sign the message using the partial keys and generate a TSS signature.
+contains all the necessary functionalities and logic required for TSS signing.
+
+Along with that, we'll also use `@web3auth/ethereum-mpc-provider` which is a helper package. This
+package will provide a wrapper to sign the message using the partial keys and generate a TSS
+signature.
+
+The package providers an EIP1193 compatible provider which can be used with web3.js, ethers, or viem
+package offering capabilities like account management, and TSS transaction signing, and blockchain
+interaction.
 
 #### Installation
 
@@ -89,7 +95,7 @@ to get a user's account, perform transactions, sign a message, etc. Read more ab
 ```tsx
 import Web3 from "web3";
 
-const web3 = new Web3(provider);
+const web3 = new Web3(ethereumProvider);
 
 // Get user's EOA address
 const address = (await web3.eth.getAccounts())[0];
@@ -161,14 +167,15 @@ const uncompressedPubKey = pubKeyPoint.toSEC1(secp256k1).subarray(1);
 
 #### Signing
 
-To sign the transaction for secp256k1 curve, you can use the `sign` method. The method will return
-the ECDSA signature.
+To sign the transaction for secp256k1 curve, you can use the `sign` method. The sign method supports
+both secp256k1 and ed25519 curve. Using the method dkls-lib this function will return ECDSA
+signature and using frost-lib, it will return EDDSA sginature.
 
 ```tsx
 const msg = Buffer.from("Welcome to Web3Auth");
 
 // Returns the ECDSA signature bytes.
-const signature = coreKitInstance.sign(msg);
+const signature = await coreKitInstance.sign(msg);
 ```
 
 ## EdDSA Signature
@@ -239,12 +246,13 @@ const pubKey = coreKitInstance.getPubKeyEd25519();
 
 #### Signing
 
-To sign the transaction or a message for ed25519 curve, you can use the `sign` method. The method
-will return the EdDSA signature.
+To sign the transaction for ed25519 curve, you can use the `sign` method. The sign method supports
+both secp256k1 and ed25519 curve. Using the method dkls-lib this function will return ECDSA
+signature and using frost-lib, it will return EDDSA sginature.
 
 ```tsx
 const msg = Buffer.from("Welcome to Web3Auth");
 
 // Returns the EdDSA signature bytes.
-const signature = coreKitInstance.sign(msg);
+const signature = await coreKitInstance.sign(msg);
 ```
