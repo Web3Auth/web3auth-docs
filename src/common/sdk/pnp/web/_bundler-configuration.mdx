@@ -11,7 +11,6 @@ defaultValue="pimlico"
 values={[
   { label: "Pimlico", value: "pimlico" },
   { label: "ZeroDev", value: "zerodev" },
-  { label: "Stackup", value: "stackup" },
 ]}
 >
 
@@ -84,40 +83,4 @@ const accountAbstractionProvider = new AccountAbstractionProvider({
 ```
 
 </TabItem>
-
-<TabItem value="stackup">
-
-```ts
-import {
-  AccountAbstractionProvider,
-  SafeSmartAccount,
-} from "@web3auth/account-abstraction-provider";
-
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xaa36a7",
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-  displayName: "Ethereum Sepolia Testnet",
-  blockExplorerUrl: "https://sepolia.etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-};
-
-const accountAbstractionProvider = new AccountAbstractionProvider({
-  config: {
-    chainConfig,
-    smartAccountInit: new SafeSmartAccount(),
-    // focus-start
-    bundlerConfig: {
-      // Get the Stackup API from app.stackup.sh
-      url: `https://public.stackup.sh/api/v1/node/ethereum-sepolia`,
-    },
-    // focus-end
-  },
-});
-```
-
-</TabItem>
-
 </Tabs>

@@ -4,16 +4,6 @@ import Tabs from "@theme/Tabs";
 When using an ERC-20 paymaster, ensure you include the approval transaction, as Web3Auth does not
 handle the approval internall.
 
-<Tabs
-defaultValue="pimlico"
-values={[
-  { label: "Pimlico", value: "pimlico" },
-  { label: "Stackup", value: "stackup" },
-]}
->
-
-<TabItem value="pimlico">
-
 For Pimlico, you can specify the token you want to use in the paymasterContext. If you want to set
 up sponsorship policies, you can define those in the paymasterContext as well.
 [Checkout the supported tokens for ERC-20 Paymaster on Pimlico](https://docs.pimlico.io/infra/paymaster/erc20-paymaster/supported-tokens).
@@ -57,55 +47,3 @@ const accountAbstractionProvider = new AccountAbstractionProvider({
   },
 });
 ```
-
-</TabItem>
-
-<TabItem value="stackup">
-
-For Stackup, you need to explicitly specify the type of paymaster you want to use in the
-paymasterContext.
-[Checkout the supported tokens for ERC-20 Paymaster on Stackup](https://docs.stackup.sh/docs/supported-erc-20-tokens).
-
-```ts
-import {
-  AccountAbstractionProvider,
-  SafeSmartAccount,
-} from "@web3auth/account-abstraction-provider";
-
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xaa36a7",
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-  displayName: "Ethereum Sepolia Testnet",
-  blockExplorerUrl: "https://sepolia.etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-};
-
-const accountAbstractionProvider = new AccountAbstractionProvider({
-  config: {
-    chainConfig,
-    bundlerConfig: {
-      // Get the Stackup API from app.stackup.sh
-      url: `https://public.stackup.sh/api/v1/node/ethereum-sepolia`,
-      // focus-start
-      paymasterContext: {
-        type: "erc20token",
-        token: "SUPPORTED_TOKEN_CONTRACT_ADDRESS",
-      },
-      // focus-end
-    },
-    smartAccountInit: new SafeSmartAccount(),
-    // focus-start
-    paymasterConfig: {
-      // Get the Stackup API key from app.stackup.sh
-      url: `https://api.stackup.sh/v1/paymaster/${apiKey}`,
-    },
-    // focus-end
-  },
-});
-```
-
-</TabItem>
-</Tabs>
