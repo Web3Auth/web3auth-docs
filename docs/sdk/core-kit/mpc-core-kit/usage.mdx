@@ -22,9 +22,9 @@ Please, note we for the simplicity, we use the `coreKitInstance` to refer to the
 | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | [loginWithJWT](#login-with-jwt)                 | Logs in the user with a JWT-based ID Token. We recommend using this method to authenticate users for better performance. |
 | [loginWithOAuth](#login-with-oauth)             | Logs in the user using OAuth Flow, this function underneaths uses the CustomAuth flow to authenticate the user.          |
-| [inputFactorKey](#input-factor-key)             | This method can be used to input the factor key, for instance when threshold is not satisfied.                           |
-| [logout](#logout)                               | This methods logs out the user and invalidates the session.                                                              |
 | [handleRedirectResult](#handle-redirect-result) | Handles the redirect result from OAuth Flow.                                                                             |
+| [inputFactorKey](#login-with-existing-factor)   | This method can be used to login with the exisitng factor key, for instance when threshold is not satisfied.             |
+| [logout](#logout)                               | This methods logs out the user and invalidates the session.                                                              |
 
 :::info Get help with Authentication
 
@@ -79,16 +79,10 @@ SDK.
 
 ### Login with OAuth
 
-This method helps to Log in the user using OAuth flow. Please refer to the
+This method helps to Log in the user using OAuth flow. You can choose your preferred social auth
+providers with 0Auth login flow. Please refer to the
 [authentication section](/sdk/core-kit/mpc-core-kit/authentication/login-oauth) section for more
 details.
-
-### Login with JWT
-
-Logs in the user with a JWT-based ID Token. We recommend using this method to authenticate users for
-better performance. For this method, you'll have to manage the authentication yourself, and Web3Auth
-will only verify the idToken passed. Please refer to the
-[authentication section](/sdk/core-kit/mpc-core-kit/authentication/login-jwt) for more details.
 
 ### Handle Redirect Result
 
@@ -97,7 +91,14 @@ By default, you won't require to use this method since we handle the redirect re
 can set the `handleRedirectResult` to false during initialization, and use this method to handle the
 redirect result.
 
-### Input Factor Key
+### Login With JWT
+
+Logs in the user with a JWT-based ID Token. We recommend using this method to authenticate users for
+better performance. For this method, you'll have to manage the authentication yourself, and Web3Auth
+will only verify the idToken passed. Please refer to the
+[authentication section](/sdk/core-kit/mpc-core-kit/authentication/login-jwt) for more details.
+
+### Login With Existing Factor
 
 This method can be used to input the factor key, for instance when threshold is not satisfied. For
 example, if user's device factor is not present, this method can be used to input the back up factor

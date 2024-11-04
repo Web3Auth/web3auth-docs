@@ -7,18 +7,21 @@ description: "Web3Auth MPC Core Kit JS SDK | Documentation - Web3Auth"
 import Image1 from "@site/static/images/tkey-mpc-flow.png";
 
 Web3Auth's [`@web3auth/mpc-core-kit`](https://github.com/Web3Auth/mpc-core-kit) SDK is simple and
-easy-to-use SDK, that helps you implement Web3Auth's MPC features while giving you the flexibility
-to customize the UI and UX of the authentication process.
+easy-to-use SDK, that helps you implement Web3Auth's MPC Threshold Signature Scheme (TSS) features
+in which the private key is never reconstructed.
 
-Compared to other Web3Auth SDKs, such as Plug and Play(PnP), and Single Factor Auth(SFA) SDKs, the
-private key is never reconstructed in the MPC Core Kit. Instead it uses the TSS (Threshold Signature
-Scheme) to generate the final signature.
+Compared to other Web3Auth SDKs, such as Plug and Play(PnP), and Single Factor Auth(SFA) SDKs where
+the private key is securely reconstructed on user's device, and is used to sign transactions. In the
+MPC TSS architecture, the private key is never reconstructed.
+
+Instead, the partial key shares are stored at different locations which are used to generate the
+partial signatures. The final signature is generated combining the partial signatures using the TSS.
+Since the private key is never reconstructed, it's more secure approach.
 
 :::info
 
-The minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production
-environment is the **Enterprise Plan**. However, you can use this SDK with all features enabled in
-`sapphire_devnet` for free.
+The SDK is only available for the [Enterprise Plan](https://web3auth.io/pricing.html). However, you
+can test the SDK with all features enabled in the `sapphire_devnet`.
 
 :::
 
@@ -58,10 +61,10 @@ transactions on the blockchain. Let's understand each of these stages in detail.
 
 ### Hashed Cloud Factor
 
-The MPC Core Kit SDK starts in a 2/2 flow by default. This means that the user will have to generate
-a social login factor and SDK will generate a hashed cloud factor. This hashed cloud factor is
-derived on the SDK front end and stored in the encrypted metadata server. This enables the user to
-start the login process from any device without creating an MFA factor.
+The MPC Core Kit SDK starts in a 2/2 flow by default. This means when user's logs in, a social login
+factor is generated and at the same time SDK will generate a hashed cloud factor. This hashed cloud
+factor is derived on the front end and stored in the encrypted metadata server. Please refer to the
+above architecture to understand more about factors.
 
 This is done to make sure the user can access their account from any device without having to
 generate a new factor. The hashed cloud factor is deleted when the user enables the MFA.

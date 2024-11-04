@@ -48,13 +48,13 @@ in the case of a single verifier.
 
 <TabItem value="table">
 
-| Parameter           | Description                                                                                                                                                                                                                                                                       |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `typeOfLogin`       | Type of login of this verifier, this value will affect the login flow that is adapted. Available options are `google`, `facebook`, `reddit`, `discord`, `twitch`, `apple`, `github`, `linkedin`, `twitter`, `weibo`, `line`, `email_password`, `passwordless`, `jwt`, `webauthn`. |
-| `verifier`          | Name/ Identifier of the verifier/ sub verifier in case of aggregate verifiers, you'd like your app to use for authentication.                                                                                                                                                     |
-| `clientId`          | Client Id given by the auth provider. Pass a random string in case you're connecting to a JWT based setup.                                                                                                                                                                        |
-| `jwtParams?`        | Additional parameters for the Auth0 login provider.                                                                                                                                                                                                                               |
-| `serverTimeOffset?` | The server time offset in seconds. Default value is 0.                                                                                                                                                                                                                            |
+| Parameter           | Description                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `typeOfLogin`       | Type of login of this verifier, this value will affect the login flow that is adapted. Available options are `LOGIN_TYPE.GOOGLE`, `LOGIN_TYPE.FACEBOOK`, `LOGIN_TYPE.REDDIT`, `LOGIN_TYPE.DISCORD`, `LOGIN_TYPE.TWITCH`, `LOGIN_TYPE.APPLE`, `LOGIN_TYPE.GITHUB`, `LOGIN_TYPE.LINKEDIN`, `LOGIN_TYPE.TWITTER`, `LOGIN_TYPE.WEIBO`, `LOGIN_TYPE.LINE`, and `LOGIN_TYPE.PASSWORDLESS`. |
+| `verifier`          | Name/ Identifier of the verifier/ sub verifier in case of aggregate verifiers, you'd like your app to use for authentication.                                                                                                                                                                                                                                                        |
+| `clientId`          | Client Id given by the auth provider. Pass a random string in case you're connecting to a JWT based setup.                                                                                                                                                                                                                                                                           |
+| `jwtParams?`        | Additional parameters for the Auth0 login provider.                                                                                                                                                                                                                                                                                                                                  |
+| `serverTimeOffset?` | The server time offset in seconds. Default value is 0.                                                                                                                                                                                                                                                                                                                               |
 
 </TabItem>
 
@@ -115,11 +115,11 @@ use this in case of an aggregate verifier.
 
 <TabItem value="table">
 
-| Parameter                     | Description                                                                                                                |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `aggregateVerifierIdentifier` | The name of your aggregate verifier. Get it from the [dashboard](https://dashboard.web3auth.io/).                          |
-| `subVerifierDetailsArray`     | An array containing the details of your sub verifiers.                                                                     |
-| `aggregateVerifierType?`      | Defines the type of aggregation required for your aggregate verifier. Use `"single_id_verifier"` by default in most cases. |
+| Parameter                     | Description                                                                                                                                                                                                                  |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `aggregateVerifierIdentifier` | The name of your aggregate verifier. Get it from the [dashboard](https://dashboard.web3auth.io/).                                                                                                                            |
+| `subVerifierDetailsArray`     | An array containing the details of your sub verifiers.                                                                                                                                                                       |
+| `aggregateVerifierType?`      | Defines the type of aggregation required for your aggregate verifier. You need to use `single_id_verifier` by default in most cases. This parameter allows you define the number of verifier ids to be used for aggregation. |
 
 </TabItem>
 
@@ -143,6 +143,10 @@ export type AGGREGATE_VERIFIER_TYPE = (typeof AGGREGATE_VERIFIER)[keyof typeof A
 
 ### Single Verifier
 
+To login with a single verifier, you will require to create a custom verifier in the Web3Auth
+dashboard. If you haven't already created one,
+[learn how to create a verifier](/docs/auth-provider-setup/verifiers).
+
 ```tsx
 import { SubVerifierDetailsParams } from "@web3auth/mpc-core-kit";
 
@@ -158,6 +162,10 @@ await coreKitInstance.loginWithOAuth(verifierConfig);
 ```
 
 ### Aggregate Verifier
+
+To login with an aggregate verifier, you will require to create an aggregate verifier in the
+Web3Auth dashboard. If you haven't already created one,
+[learn how to create an aggregate verifier](/docs/auth-provider-setup/aggregate-verifier#set-up-an-aggregate-verifier).
 
 ```tsx
 import { AggregateVerifierLoginParams } from "@web3auth/mpc-core-kit";
