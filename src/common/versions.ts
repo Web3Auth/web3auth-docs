@@ -6,7 +6,7 @@ export const pnpFlutterVersion = `5.0.4`;
 export const pnpUnityVersion = `5.x.x`;
 export const pnpUnrealVersion = `4.1.x`;
 
-export const sfaWebVersion = `8.0.x`;
+export const sfaWebVersion = `9.2.x`;
 export const sfaAndroidVersion = `1.2.0`;
 export const sfaIOSVersion = `9.0.2`;
 export const sfaRNVersion = `2.0.x`;
@@ -15,7 +15,7 @@ export const sfaNodeJSVersion = `7.4.x`;
 export const tkeyJSVersion = `15.x.x`;
 export const tkeyAndroidVersion = `0.0.5`;
 export const tkeyIOSVersion = `0.0.4`;
-export const mpcCoreKitVersion = `3.2.x`;
+export const mpcCoreKitJSVersion = `3.2.x`;
 
 import {
   web,
@@ -25,13 +25,11 @@ import {
   flutter,
   unity,
   unreal,
-  corekitnodejs,
-  mpccorekit,
-  singlefactorauth,
+  mpccorekitjs,
+  singlefactorauthjs,
   singlefactorauthandroid,
   singlefactorauthflutter,
   singlefactorauthios,
-  singlefactorauthrn,
   tkeyandroid,
   tkeyios,
   tkeyjs,
@@ -65,8 +63,8 @@ export function getCoreKitVersion(sdk: string) {
   if (sdk === tkeyjs) {
     return tkeyJSVersion;
   }
-  if (sdk === mpccorekit) {
-    return mpcCoreKitVersion;
+  if (sdk === mpccorekitjs) {
+    return mpcCoreKitJSVersion;
   }
   if (sdk === tkeyandroid) {
     return tkeyAndroidVersion;
@@ -74,20 +72,14 @@ export function getCoreKitVersion(sdk: string) {
   if (sdk === tkeyios) {
     return tkeyIOSVersion;
   }
-  if (sdk === singlefactorauth) {
+  if (sdk === singlefactorauthjs) {
     return sfaWebVersion;
-  }
-  if (sdk === corekitnodejs) {
-    return sfaNodeJSVersion;
   }
   if (sdk === singlefactorauthandroid) {
     return sfaAndroidVersion;
   }
   if (sdk === singlefactorauthios) {
     return sfaIOSVersion;
-  }
-  if (sdk === singlefactorauthrn) {
-    return sfaRNVersion;
   }
   if (sdk === singlefactorauthflutter) {
     return sfaFlutterVersion;

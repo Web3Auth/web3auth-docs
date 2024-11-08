@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useHistory, useLocation } from "@docusaurus/router";
 
-import { sfa, corekit, pnp, infra } from "../../common/SDKOptions";
+import { sfa, mpccorekit, pnp, infra } from "../../common/SDKOptions";
 import styles from "./styles.module.css";
 
 const baseUrl = "/docs/";
@@ -709,7 +709,7 @@ export const sfamobile = (
   </div>
 );
 
-export const mpccorekit = (
+export const mpccorekitjs = (
   <div className={styles.card}>
     <div className={styles.cardContainerIntro}>
       <h3 className={styles.title}>MPC Core Kit JS SDK</h3>
@@ -889,10 +889,10 @@ export default function QuickNavigation() {
             {sfa}
           </div>
           <div
-            className={product === corekit ? styles.selectedTab : styles.tab}
-            onClick={() => setProduct(corekit)}
+            className={product === mpccorekit ? styles.selectedTab : styles.tab}
+            onClick={() => setProduct(mpccorekit)}
           >
-            {corekit}
+            {mpccorekit}
           </div>
           <div
             className={product === infra ? styles.selectedTab : styles.tab}
@@ -907,7 +907,7 @@ export default function QuickNavigation() {
       {product === pnp && pnpgaming}
       {product === sfa && sfaweb}
       {product === sfa && sfamobile}
-      {product === corekit && mpccorekit}
+      {product === mpccorekit && mpccorekitjs}
       {product === infra && infrasdks}
     </div>
   );

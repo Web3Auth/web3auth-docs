@@ -8,8 +8,8 @@ import {
   flutter,
   unity,
   unreal,
-  mpccorekit,
-  singlefactorauth,
+  mpccorekitjs,
+  singlefactorauthjs,
   singlefactorauthandroid,
   singlefactorauthflutter,
   singlefactorauthios,
@@ -68,7 +68,7 @@ function sfaTopNavButton(selectedSDK: string): string {
   const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
 
   var coreKitSDKs = {
-    [singlefactorauth]: `${baseUrl}sdk/sfa/sfa`,
+    [singlefactorauthjs]: `${baseUrl}sdk/sfa/sfa`,
     [singlefactorauthandroid]: `${baseUrl}sdk/sfa/sfa-android`,
     [singlefactorauthios]: `${baseUrl}sdk/sfa/sfa-ios`,
     [singlefactorauthflutter]: `${baseUrl}sdk/sfa/sfa-flutter`,
@@ -107,7 +107,7 @@ function sfaTopNavButton(selectedSDK: string): string {
 
 function mpcckTopNavButton(): string {
   const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
-  var sdkVersion = getCoreKitVersion(mpccorekit);
+  var sdkVersion = getCoreKitVersion(mpccorekitjs);
 
   return `
     <div class="sdk-sidebar-container">
@@ -120,7 +120,7 @@ function mpcckTopNavButton(): string {
         <span class="sdk-sidebar-description">One click login, without redirection, all natively within your app.</span>
       </a>
       <div class="sdk-sidebar-option-selected">
-        MPC Core Kit SDK  [v${sdkVersion}]
+        MPC Core Kit SDK - v${sdkVersion}
         <span class="sdk-sidebar-description">Build your own MPC wallet with Web3Auth Infra layer SDK</span>
       </div>
     </div>`;
@@ -1519,7 +1519,7 @@ const sidebars: SidebarsConfig = {
   sdk_core_kit_sfa_web: [
     {
       type: "html",
-      value: sfaTopNavButton(singlefactorauth),
+      value: sfaTopNavButton(singlefactorauthjs),
       defaultStyle: true,
     },
     "sdk/sfa/sfa-js/sfa-js",
