@@ -522,7 +522,7 @@ const config: Config = {
           },
           {
             from: "/product-fit/pnp-vs-core-kit",
-            to: "/product/product-fit",
+            to: "/product-fit",
           },
           {
             from: "/product-fit/partner-products",
