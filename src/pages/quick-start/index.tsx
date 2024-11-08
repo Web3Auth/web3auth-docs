@@ -13,7 +13,7 @@ import MoonLoader from "react-spinners/BeatLoader";
 import SEO from "../../components/SEO";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
 import builder from "./builder";
-import { CORE_KIT, PNP } from "./builder/choices";
+import { SFA, MPC_CORE_KIT, PNP } from "./builder/choices";
 import styles from "./styles.module.css";
 import { quickStartHostedLinks } from "../../common/maps";
 
@@ -200,10 +200,18 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                       <h5 className={styles.cardTitle}>{value.displayName}</h5>
                     </div>
                   )}
-                  {value.key === CORE_KIT && (
+                  {value.key === SFA && (
+                    <div
+                      className={builderOptions[key] === SFA ? styles.selectedCard : styles.card}
+                      onClick={() => onChangeDropdown(key, value.key)}
+                    >
+                      <h5 className={styles.cardTitle}>{value.displayName}</h5>
+                    </div>
+                  )}
+                  {value.key === MPC_CORE_KIT && (
                     <div
                       className={
-                        builderOptions[key] === CORE_KIT ? styles.selectedCard : styles.card
+                        builderOptions[key] === MPC_CORE_KIT ? styles.selectedCard : styles.card
                       }
                       onClick={() => onChangeDropdown(key, value.key)}
                     >

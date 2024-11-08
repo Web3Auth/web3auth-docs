@@ -38,25 +38,32 @@ export const pnplist = [
   { label: "Unreal", value: pnpunreal, platforms: [unreal] },
 ];
 
-export const corekit = "MPC Core Kit";
+export const mpccorekit = "MPC Core Kit";
 export const tkeyjs = "tKey JS";
 export const tkeyios = "tKey iOS";
 export const tkeyandroid = "tKey Android";
-export const singlefactorauth = "SFA JS";
+export const singlefactorauth = "Single Factor Auth";
+export const singlefactorauthjs = "SFA JS";
 export const singlefactorauthandroid = "SFA Android";
 export const singlefactorauthios = "SFA Swift";
 export const singlefactorauthflutter = "SFA Flutter";
-export const mpccorekit = "MPC Core Kit JS";
+export const mpccorekitjs = "MPC Core Kit JS";
 
-export const corekitlist = [
-  { label: "tKey JS", value: tkeyjs, platforms: [reactJS, reactnative] },
-  { label: "MPC Core Kit", value: mpccorekit, platforms: [...weblist] },
-  { label: "tKey Android", value: tkeyandroid, platforms: [android] },
-  { label: "tKey iOS", value: tkeyios, platforms: [ios] },
-  { label: "SFA JS", value: singlefactorauth, platforms: [...weblist] },
+export const sfalist = [
+  { label: "SFA JS", value: singlefactorauthjs, platforms: [...weblist, reactnative, nodejs] },
   { label: "SFA Android", value: singlefactorauthandroid, platforms: [android] },
   { label: "SFA Swift", value: singlefactorauthios, platforms: [ios, macOS] },
   { label: "SFA Flutter", value: singlefactorauthflutter, platforms: [flutter] },
+];
+
+export const mpccorekitlist = [
+  { label: "MPC Core Kit", value: mpccorekit, platforms: [...weblist, reactnative, nodejs] },
+];
+
+export const infralist = [
+  { label: "tKey JS", value: tkeyjs, platforms: [reactJS, reactnative] },
+  { label: "tKey Android", value: tkeyandroid, platforms: [android] },
+  { label: "tKey iOS", value: tkeyios, platforms: [ios] },
 ];
 
 const getWindowLocation = () => {
