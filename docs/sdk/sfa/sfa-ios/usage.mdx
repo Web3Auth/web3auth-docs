@@ -1,0 +1,157 @@
+---
+title: "Using Single Factor Auth Swift SDK"
+sidebar_label: "Usage"
+description: "Web3Auth Single Factor Auth Swift SDK - Usage | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+import SessionManagement from "@site/src/common/sdk/sfa/ios/_sfa-ios-session-management.mdx";
+
+After successfully installing and initializing SingleFactorAuth, you can use it to authenticate your
+users and obtain their private and public keys.
+
+:::tip NOTE
+
+Web3Auth SFA Swift SDK only works for users who have **not enabled MFA**. For MFA enabled users,
+you'll see an Error message.
+
+:::
+
+The SingleFactorAuth instance natively provides the following methods:
+
+- [connect](#login-user) - Use to login user and retrive private key pair.
+- [logout](#logout-user) - Use to logout existing user.
+- [connected](#check-users-logged-in-status) - Use to check whether the user is logged in or not.
+- [getSessionData](#get-session-data) - This method helps to get the session data for valid session.
+
+## Login User
+
+To obtain a user's private key using the Web3Auth SFA iOS SDK, you can call the `connect` method.
+The method accepts `LoginParams`, and returns `SessionData`.
+[Please checkout the SessionData response for more details](#response).
+
+### Parameters
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Type", value: "type" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter               | Description                                                                                              |
+| ----------------------- | -------------------------------------------------------------------------------------------------------- |
+| `verifier`              | The verifier obtained from the Web3Auth Dashboard. It's a mandatory field and takes `String` as a value. |
+| `verifierId`            | The verifierId used for the verification. It takes `String` as a value.                                  |
+| `idToken`               | The idToken of the user obtained from login provider. It takes `String` as a value.                      |
+| `subVerifierInfoArray?` | Sub verifier info. Usually used during aggregate verifier. It takes `[TorusSubVerifierInfo]` as a value. |
+| `serverTimeOffset?`     | Specifies the server time offset in seconds.                                                             |
+
+</TabItem>
+
+<TabItem value="type">
+
+```swift
+public class LoginParams {
+    public let verifier: String
+    public let verifierId: String
+    public let idToken: String
+    public let subVerifierInfoArray: [TorusSubVerifierInfo]?
+    public let serverTimeOffset: Int?
+    public let fallbackUserInfo: UserInfo?
+
+    public init(verifier: String, verifierId: String, idToken: String, subVerifierInfoArray: [TorusSubVerifierInfo]? = nil, serverTimeOffset: Int? = nil, fallbackUserInfo: UserInfo? = nil) {
+        self.verifier = verifier
+        self.verifierId = verifierId
+        self.idToken = idToken
+        self.subVerifierInfoArray = subVerifierInfoArray
+        self.serverTimeOffset = serverTimeOffset
+        self.fallbackUserInfo = fallbackUserInfo
+    }
+}
+
+public struct TorusSubVerifierInfo {
+    public var verifier: String
+    public var idToken: String
+
+    public init(verifier: String, idToken: String) {
+        self.verifier = verifier
+        self.idToken = idToken
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Usage
+
+```swift
+let loginParams = LoginParams(verifier: "YOUR_VERIFIER_NAME", verifierId: "YOUR_VERIFIER_ID", idToken: "YOUR_ID_TOKEN")
+do {
+  let sfaKey = try await singleFactorAuth.connect(loginParams: loginParams)
+} catch {
+  // Handle error
+}
+```
+
+## Logout User
+
+To logout the current user, you can use the `logout` method. Please note, the method will not logout
+the user from the authentication provider, it'll only logout and invalidate the Web3Auth session.
+
+### Usage
+
+```swift
+do {
+  try await singleFactorAuth.logout()
+} catch {
+  // Handle error
+}
+```
+
+## Check User's Logged In Status
+
+You can use the `connected` method to check whether the user is logged in Web3Auth or not. Please
+note, you should call this method after the `initialize` method if you want to check the user's
+connection status for an existing session.
+
+### Usage
+
+```swift
+let isConnected = singleFactorAuth.connected()
+```
+
+## Get Session Data
+
+We have included Session Management in this SDK, so calling the `getSessionData` will retrive the
+user's `SessionData` without re-logging in the user if a user has an active session. Otherwise, it
+will return `nil`.
+
+### Usage
+
+```swift
+let sessionData = singleFactorAuth.getSessionData()
+
+if(sessionData != nil) {
+  // User is logged in
+} else {
+  // User is not logged in
+}
+```
+
+### Response
+
+The `SessionData` has the following four functions to retrive the relevant session information.
+
+| Function Name      | Description                                                               |
+| ------------------ | ------------------------------------------------------------------------- |
+| `getPrivateKey`    | Retrieves the user's private key.                                         |
+| `getPublicAddress` | Retrieves the user's public address.                                      |
+| `getUserInfo`      | Retrieves the user's information like email, name, verifier id, and more. |
+| `getSignatures`    | Retrieves the node's signatures that are returned for request.            |

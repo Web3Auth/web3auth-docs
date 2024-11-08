@@ -1,0 +1,85 @@
+---
+title: Single Factor Auth
+description: "Single Factor Auth | Documentation - Web3Auth"
+---
+
+The **Core-Kit Wallet Management SDKs** cater towards a more hands-on, customizable approach while
+creating your own experience toward user onboarding. Tailored for developers who prioritize direct
+control and customization over their authentication flows, the Core-Kit allows for the creation of
+sophisticated, user-centric authentication processes, where Web3Auth operates seamlessly in the
+background, invisible to the end user.
+
+## Key Features
+
+- **Customizable UI & UX:** Empowers developers to design and implement their own user interfaces
+  and experiences for login and multi-factor authentication (MFA), ensuring a seamless and cohesive
+  brand presentation.
+
+- **Owning the Infrastructure:** Provides the flexibility for developers to fully control the wallet
+  management and authentication flows, aligning with specific project requirements and enhancing
+  security.
+
+- **No Redirection:** Distinguishes itself from the Plug and Play model by eliminating the need for
+  user redirection to `auth.web3auth.io` for authentication. This integration ensures all
+  authentication flows are contained within your application, offering a more integrated and
+  uninterrupted user experience.
+
+- **Platform Compatibility:** Maintains broad support across major platforms, including Web, React
+  Native, iOS, and Android, ensuring developers can leverage Core Kit's capabilities regardless of
+  the target environment.
+
+Core Kit is meticulously segmented into two distinct parts: **Single Factor Authentication (SFA)**
+and **Multi-Factor Authentication (MFA)**, each designed to cater to varying levels of security and
+user interaction preferences within your application framework. While SFA offers a streamlined
+onboarding process, MFA introduces a more robust security mechanism by employing a 2 out of 3 (2/3)
+Key Share setup, enhancing the authentication's non-custodial nature.
+
+## Single Factor Authentication (SFA)
+
+The SFA SDKs provide the most streamlined process for user onboarding within the Web3Auth ecosystem.
+This straightforward approach allows users to quickly gain access by simply clicking on the login
+button and connecting to their preferred social account through OAuth, or opting for a passwordless
+flow such as email-passwordless or biometric authentication. Upon successful authentication, a
+private key is generated and securely delivered to your application, reconstructed within its
+environment.
+
+This process employs a 1/1 Key Share setup, where the complete key, facilitated by the Web3Auth Auth
+Network's key shares, is directly integrated into your application. Despite its simplicity, this
+flow adheres to non-custodial principles, thanks to the Web3Auth network's 5/9 consensus mechanism
+for generating key shares. However, it's worth noting that, due to the reliance on OAuth provider
+credentials for key generation, this method could be considered semi-custodial.
+
+To enhance security and ensure a fully non-custodial experience, it's recommended that users
+activate MFA. This additional layer introduces a 2/3 Key Share setup, solidifying the authentication
+process's non-custodial nature and offering an elevated level of security and control to the user.
+
+## Multi-Factor Authentication (MFA)
+
+The MFA component of the Core Kit is designed for heightened security and user control. In this 2/3
+setup, users are endowed with three key shares: ShareA, ShareB, and ShareC, each serving a distinct
+role in the authentication process:
+
+- **ShareA:** This share is managed and distributed within Web3Auth's Auth Network. Users can access
+  this share through an OAuth login provider that they own, such as a Google account. This ensures
+  that one of the key components of their authentication is tied to a familiar and secure service.
+
+- **ShareB:** Designed to reside directly on the user's device, ShareB's storage method is
+  inherently tied to the device and operating system's capabilities. For example, on mobile devices,
+  this share might be secured in device storage protected by biometric authentication, providing
+  both convenience and security.
+
+- **ShareC:** Acting as a recovery share, ShareC offers an additional layer of security. Users can
+  choose to store this share on a different device, download it for offline keeping, or even base it
+  on user input such as a password, security questions, or even a physical hardware device.
+
+To access their wallet, users must demonstrate ownership of at least two of these three shares, akin
+to traditional Two-Factor Authentication (2FA) systems. This requirement ensures a robust security
+framework, significantly mitigating the risk of unauthorized access while still offering flexibility
+and recovery options for the user.
+
+The Core-Kit Wallet Management SDKs are designed for projects that require a tailored approach to
+authentication, providing the tools and flexibility necessary to build advanced, secure, and
+integrated authentication systems. This approach not only enhances the user experience by keeping
+all interactions within the native application environment but also gives developers the
+unprecedented ability to mold and adapt the authentication process to meet the exact needs of their
+user base.
