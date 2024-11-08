@@ -1,0 +1,128 @@
+---
+title: "Using Single Factor Auth Flutter SDK"
+sidebar_label: "Usage"
+description: "Web3Auth Single Factor Auth Flutter SDK - Usage | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+import SessionManagement from "@site/src/common/sdk/sfa/flutter/_sfa-flutter-session-management.mdx";
+
+After successfully installing and initializing SingleFactorAuth, you can use it to authenticate your
+users and obtain their private and public keys.
+
+:::tip Note
+
+Web3Auth SFA Flutter SDK only works for users who have **not enabled MFA**. For MFA enabled users,
+you'll see an Error message.
+
+:::
+
+The SingleFactorAuth instance natively provides the following methods:
+
+- [connect](#login-user) - Use to login user and retrive private key pair.
+- [initialize](#session-management) - This method helps to achieve session management. It
+  authenticates user if the session is present, avoiding re-logging.
+
+## Login User
+
+To obtain a user's private key using the Web3Auth SFA Flutter SDK, you can call the `connect`
+method. The method accepts `LoginParams`, and returns `SFAKey`.
+
+### Parameters
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter            | Description                                                                                              |
+| -------------------- | -------------------------------------------------------------------------------------------------------- |
+| `verifier`           | The verifier obtained from the Web3Auth Dashboard. It's a mandatory field and takes `String` as a value. |
+| `verifierId`         | The verifierId used for the verification. It takes `String` as a value.                                  |
+| `idToken`            | The idToken of the user obtained from login provider. It takes `String` as a value.                      |
+| `aggregateVerifier?` | The aggregate verifier obtained from the Web3Auth Dashboard. It takes `String` as a value.               |
+
+</TabItem>
+
+<TabItem value="class">
+
+```dart
+class LoginParams {
+  final String verifier;
+  final String verifierId;
+  final String idToken;
+  final String? aggregateVerifier;
+
+  LoginParams({
+    required this.verifier,
+    required this.verifierId,
+    required this.idToken,
+    this.aggregateVerifier,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'verifier': verifier,
+      'verifierId': verifierId,
+      'idToken': idToken,
+      'aggregateVerifier': aggregateVerifier,
+    };
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Usage
+
+<Tabs
+  defaultValue="single-verifier"
+  values={[
+    { label: "Single verifier", value: "single-verifier" },
+    { label: "Aggregate verifier", value: "aggregate-verifier" },
+  ]}
+>
+
+<TabItem value="single-verifier">
+```dart
+Future<SFAKey> connect() {
+  return _singleFactorAuthFlutterPlugin.connect(LoginParams(
+    verifier: 'YOUR_VERIFIER_NAME',
+    verifierId: 'YOUR_VERIFIER_ID',
+    idToken: 'YOUR_ID_TOKEN',
+    ),
+  );
+}
+```
+</TabItem>
+<TabItem value="aggregate-verifier">
+```dart
+Future<SFAKey> connect() {
+  return _singleFactorAuthFlutterPlugin.connect(LoginParams(
+    verifier: 'YOUR_VERIFIER_NAME',
+    verifierId: 'YOUR_VERIFIER_ID',
+    idToken: 'YOUR_ID_TOKEN',
+    aggregateVerifier: 'YOUR_AGGREGATE_VERIFIER_NAME',
+  ));
+}
+```
+</TabItem>
+</Tabs>
+
+## Session Management
+
+We have included Session Management in this SDK, so calling the initialize function to get the
+SFAKey value without re-logging in the user if a user has an active session will return the SFAKey,
+otherwise, it will throw an error.
+
+### Usage
+
+<SessionManagement />
