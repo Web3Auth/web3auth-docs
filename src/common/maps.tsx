@@ -25,7 +25,7 @@ export const quickStartHostedLinks = {
   PNP_UNITY_ANDROID: "https://w3a.link/pnp-unity-android-quick-start",
   PNP_UNITY_IOS: "", // "https://w3a.link/pnp-unity-ios-quick-start"
   PNP_UNITY_WEBGL: "https://w3a.link/pnp-unity-webgl-quick-start",
-  // SFA Web SDK
+  // SFA JS SDK
   SFA_WEB_ANGULAR: "https://w3a.link/sfa-angular-quick-start",
   SFA_WEB_NEXTJS: "https://w3a.link/sfa-nextjs-quick-start",
   SFA_WEB_REACT: "https://w3a.link/sfa-react-quick-start",
@@ -94,7 +94,7 @@ export const quickStartSourceCode = {
   PNP_UNITY: "https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/unity/unity-quick-start",
   // PNP Unity SDK
   PNP_UNREAL: "https://github.com/Web3Auth/web3auth-unreal-example/tree/master",
-  // SFA Web SDK
+  // SFA JS SDK
   SFA_WEB_REACT:
     "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-web/quick-starts/sfa-react-quick-start",
   SFA_WEB_ANGULAR:
@@ -1495,7 +1495,7 @@ export const pnpUnrealExamples: ExamplesInterface[] = [
 export const coreKitSfaWebExamples: ExamplesInterface[] = [
   {
     title: "Single Factor Auth React Quick Start",
-    description: "A quick integration of Core Kit Single Factor Auth SDK in React",
+    description: "A quick integration of Single Factor Auth SDK in React",
     image: "banners/react.png",
     type: QUICK_START,
     tags: [
@@ -1515,7 +1515,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
   },
   {
     title: "Single Factor Auth Angular Quick Start",
-    description: "A quick integration of Core Kit Single Factor Auth SDK in angular",
+    description: "A quick integration of Single Factor Auth SDK in angular",
     image: "banners/angular.png",
     type: QUICK_START,
     tags: [
@@ -1535,7 +1535,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
   },
   {
     title: "Single Factor Auth Vue Quick Start",
-    description: "A quick integration of Core Kit Single Factor Auth SDK in Vue",
+    description: "A quick integration of Single Factor Auth SDK in Vue",
     image: "banners/vue.png",
     type: QUICK_START,
     tags: [
@@ -1555,7 +1555,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
   },
   {
     title: "Single Factor Auth NextJS Quick Start",
-    description: "A quick integration of Core Kit Single Factor Auth SDK in NextJS",
+    description: "A quick integration of Single Factor Auth SDK in NextJS",
     image: "banners/next.js.png",
     type: QUICK_START,
     tags: [
@@ -1575,7 +1575,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
   },
   {
     title: "Single Factor Auth Vanilla JS Quick Start",
-    description: "A quick integration of Core Kit Single Factor Auth SDK in Vanilla JS",
+    description: "A quick integration of Single Factor Auth SDK in Vanilla JS",
     image: "banners/htmljs.png",
     type: QUICK_START,
     tags: [tags.coreKit, "sfa", tags.web, tags.sfa, "javascript", tags.evm, "id token login"],
@@ -1585,8 +1585,8 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_WEB&framework=HTML&stepIndex=0",
   },
   {
-    title: "Use Aggregate Verifiers in Core Kit SFA SDK",
-    description: "Aggregate Google, Auth0 GitHub in Core Kit Single Factor Auth SDK",
+    title: "Use Aggregate Verifiers in Single Factor Auth SDK",
+    description: "Aggregate Google, Auth0 GitHub in Single Factor Auth SDK",
     image: "banners/auth0.png",
     type: SAMPLE_APP,
     tags: [
@@ -1609,8 +1609,8 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     guideLink: "/auth-provider-setup/aggregate-verifier",
   },
   {
-    title: "Integrate Core Kit SFA SDK with Bitcoin",
-    description: "Use Bitcoin with Core Kit Single Factor Auth SDK",
+    title: "Integrate Single Factor Auth SDK with Bitcoin",
+    description: "Use Bitcoin with Single Factor Auth SDK",
     image: "banners/bitcoin.png",
     type: SAMPLE_APP,
     tags: [
@@ -1630,9 +1630,8 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     guideLink: "/connect-blockchain/other/bitcoin/",
   },
   {
-    title: "Integrate Custom JWT based Login in Core Kit SFA SDK",
-    description:
-      "Use your own Custom JWT Express Server Login with Core Kit Single Factor Auth SDK",
+    title: "Integrate Custom JWT based Login in Single Factor Auth SDK",
+    description: "Use your own Custom JWT Express Server Login with Single Factor Auth SDK",
     image: "banners/jwt.png",
     type: SAMPLE_APP,
     tags: [
@@ -1654,8 +1653,8 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     guideLink: "/auth-provider-setup/byo-jwt-provider",
   },
   {
-    title: "Integrate Google Login in Core Kit SFA SDK",
-    description: "Use Google with Core Kit Single Factor Auth SDK",
+    title: "Integrate Google Login in Single Factor Auth SDK",
+    description: "Use Google with Single Factor Auth SDK",
     image: "banners/google.png",
     type: SAMPLE_APP,
     tags: [
@@ -1675,8 +1674,8 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     guideLink: "/guides/sfa-web-google",
   },
   {
-    title: "Integrate Farcaster Login in Core Kit SFA SDK",
-    description: "Use Farcaster with Core Kit Single Factor Auth SDK",
+    title: "Integrate Farcaster Login in Single Factor Auth SDK",
+    description: "Use Farcaster with Single Factor Auth SDK",
     image: "banners/farcaster.png",
     type: SAMPLE_APP,
     tags: [
@@ -1696,8 +1695,8 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     guideLink: "/guides/farcaster-sfa-web",
   },
   {
-    title: "Integrate Email Passwordless Login in Core Kit SFA SDK",
-    description: "Use Firebase Email Passwordless login with Core Kit Single Factor Auth SDK",
+    title: "Integrate Email Passwordless Login in Single Factor Auth SDK",
+    description: "Use Firebase Email Passwordless login with Single Factor Auth SDK",
     image: "banners/firebase.png",
     type: SAMPLE_APP,
     tags: [
@@ -1720,8 +1719,8 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
 ];
 export const coreKitSfaiOSExamples: ExamplesInterface[] = [
   {
-    title: "Web3Auth Core Kit SFA iOS SDK Quick Start",
-    description: "A quick integration of Core Kit Single Factor Auth iOS SDK",
+    title: "Web3Auth Single Factor Auth iOS SDK Quick Start",
+    description: "A quick integration of Single Factor Auth iOS SDK",
     image: "banners/ios-swift.png",
     type: QUICK_START,
     tags: [tags.coreKit, "sfa", tags.ios, tags.evm, "swift"],
@@ -1733,8 +1732,8 @@ export const coreKitSfaiOSExamples: ExamplesInterface[] = [
 ];
 export const coreKitSfaAndroidExamples: ExamplesInterface[] = [
   {
-    title: "Web3Auth Core Kit SFA Android SDK Quick Start",
-    description: "A quick integration of Web3Auth Core Kit Single Factor Auth Android SDK",
+    title: "Web3Auth Single Factor Auth Android SDK Quick Start",
+    description: "A quick integration of Web3Auth Single Factor Auth Android SDK",
     image: "banners/android.png",
     type: QUICK_START,
     tags: [tags.coreKit, "sfa", tags.android, tags.evm, "kotlin"],
@@ -1747,8 +1746,8 @@ export const coreKitSfaAndroidExamples: ExamplesInterface[] = [
 export const coreKitSfaNodeExamples: ExamplesInterface[] = [
   {
     id: "sfa-node-quick-start",
-    title: "Web3Auth Core Kit SFA Node SDK Quick Start",
-    description: "A quick integration of Web3Auth Core Kit Single Factor Auth Node SDK",
+    title: "Web3Auth Single Factor Auth Node SDK Quick Start",
+    description: "A quick integration of Web3Auth Single Factor Auth Node SDK",
     image: "banners/nodejs.png",
     type: QUICK_START,
     tags: [tags.coreKit, "sfa", tags.node, tags.evm],
@@ -1758,8 +1757,8 @@ export const coreKitSfaNodeExamples: ExamplesInterface[] = [
   },
   {
     id: "sfa-telegram-oauth-server",
-    title: "Using Telegram Login with Web3Auth Core Kit SFA Node SDK",
-    description: "Use Telegram Login in your backend with Core Kit Single Factor Auth Node SDK",
+    title: "Using Telegram Login with Web3Auth Single Factor Auth Node SDK",
+    description: "Use Telegram Login in your backend with Single Factor Auth Node SDK",
     image: "banners/telegram.png",
     type: SAMPLE_APP,
     tags: [tags.coreKit, "sfa", tags.node, tags.evm, "telegram"],
@@ -1769,8 +1768,8 @@ export const coreKitSfaNodeExamples: ExamplesInterface[] = [
   },
   {
     id: "microsoft-oauth-connection",
-    title: "Using Microsoft Login with Web3Auth Core Kit SFA Node SDK",
-    description: "Use Microsoft Login in your backend with Core Kit Single Factor Auth Node SDK",
+    title: "Using Microsoft Login with Web3Auth Single Factor Auth Node SDK",
+    description: "Use Microsoft Login in your backend with Single Factor Auth Node SDK",
     image: "banners/microsoft.png",
     type: SAMPLE_APP,
     tags: [tags.coreKit, "sfa", tags.node, tags.evm, "microsoft"],
@@ -1780,8 +1779,8 @@ export const coreKitSfaNodeExamples: ExamplesInterface[] = [
   },
   {
     id: "github-oauth-connection",
-    title: "Using GitHub Login with Web3Auth Core Kit SFA Node SDK",
-    description: "Use GitHub Login in your backend with Core Kit Single Factor Auth Node SDK",
+    title: "Using GitHub Login with Web3Auth Single Factor Auth Node SDK",
+    description: "Use GitHub Login in your backend with Single Factor Auth Node SDK",
     image: "banners/github.png",
     type: SAMPLE_APP,
     tags: [tags.coreKit, "sfa", tags.node, tags.evm, "github"],
@@ -1793,9 +1792,9 @@ export const coreKitSfaNodeExamples: ExamplesInterface[] = [
 export const coreKitSfaReactNativeExamples: ExamplesInterface[] = [
   {
     id: "sfa-rn-bare-quick-start",
-    title: "Web3Auth Core Kit SFA React Native SDK Quick Start",
+    title: "Web3Auth Single Factor Auth React Native SDK Quick Start",
     description:
-      "A quick integration of Web3Auth Core Kit Single Factor Auth React Native SDK in Android and iOS",
+      "A quick integration of Web3Auth Single Factor Auth React Native SDK in Android and iOS",
     image: "banners/react-native.png",
     type: QUICK_START,
     tags: [tags.coreKit, "sfa", "javascript", tags.android, tags.ios, tags.evm, tags.reactNative],
@@ -1805,8 +1804,8 @@ export const coreKitSfaReactNativeExamples: ExamplesInterface[] = [
   },
   {
     id: "sfa-rn-expo-auth0-example",
-    title: "Using Web3Auth Core Kit SFA React Native SDK in Expo",
-    description: "Using Web3Auth Core Kit Single Factor Auth React Native SDK in an Expo App",
+    title: "Using Web3Auth Single Factor Auth React Native SDK in Expo",
+    description: "Using Web3Auth Single Factor Auth React Native SDK in an Expo App",
     image: "banners/expo.png",
     type: SAMPLE_APP,
     tags: [tags.coreKit, "sfa", tags.android, tags.ios, tags.reactNative, "expo"],
@@ -1818,9 +1817,9 @@ export const coreKitSfaReactNativeExamples: ExamplesInterface[] = [
 export const coreKitSfaFlutterExamples: ExamplesInterface[] = [
   {
     id: "sfa_flutter_quick_start",
-    title: "Web3Auth Core Kit SFA Flutter SDK Quick Start",
+    title: "Web3Auth Single Factor Auth Flutter SDK Quick Start",
     description:
-      "A quick integration of Web3Auth Core Kit Single Factor Auth Flutter SDK for Android and iOS",
+      "A quick integration of Web3Auth Single Factor Auth Flutter SDK for Android and iOS",
     image: "banners/flutter.png",
     type: QUICK_START,
     tags: [tags.coreKit, "sfa", tags.flutter, tags.ios, tags.android, tags.evm, "dart"],
@@ -1830,9 +1829,8 @@ export const coreKitSfaFlutterExamples: ExamplesInterface[] = [
   },
   {
     id: "sfa_flutter_solana",
-    title: "Integrate Web3Auth Core Kit SFA Flutter SDK with Solana Blockchain",
-    description:
-      "Use Solana Blockchain with Core Kit Single Factor Auth Flutter SDK for Android and iOS",
+    title: "Integrate Web3Auth Single Factor Auth Flutter SDK with Solana Blockchain",
+    description: "Use Solana Blockchain with Single Factor Auth Flutter SDK for Android and iOS",
     image: "banners/flutter-solana.png",
     type: SAMPLE_APP,
     tags: [
@@ -1992,7 +1990,7 @@ export const coreKitMPCWebExamples: ExamplesInterface[] = [
     id: "mpc-core-kit-solana",
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/mpc-core-kit-solana",
-    guideLink: "https://web3auth.io/docs/sdk/core-kit/mpc-core-kit/signing#solana",
+    guideLink: "https://web3auth.io/docs/sdk/mpc-core-kit/signing#solana",
   },
 ];
 export const coreKitMPCReactNativeExamples: ExamplesInterface[] = [
