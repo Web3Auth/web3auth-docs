@@ -9,6 +9,7 @@ import classNames from "classnames";
 import copyToClipboard from "copy-to-clipboard";
 import { UIEvent, useEffect, useMemo, useState, useRef } from "react";
 import MoonLoader from "react-spinners/BeatLoader";
+import { Tooltip } from "react-tooltip";
 
 import SEO from "../../components/SEO";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
@@ -197,7 +198,12 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                       className={builderOptions[key] === PNP ? styles.selectedCard : styles.card}
                       onClick={() => onChangeDropdown(key, value.key)}
                     >
-                      <h5 className={styles.cardTitle}>{value.displayName}</h5>
+                      <Tooltip anchorSelect=".pnp-descrption" place="bottom-start">
+                        Integrate Web3Auth in just 4 lines of Code.
+                      </Tooltip>
+                      <h5 className={classNames(styles.cardTitle, "pnp-descrption")}>
+                        {value.displayName}
+                      </h5>
                     </div>
                   )}
                   {value.key === SFA && (
@@ -205,7 +211,12 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                       className={builderOptions[key] === SFA ? styles.selectedCard : styles.card}
                       onClick={() => onChangeDropdown(key, value.key)}
                     >
-                      <h5 className={styles.cardTitle}>{value.displayName}</h5>
+                      <Tooltip anchorSelect=".sfa-descrption" place="bottom-start">
+                        Single click login with zero web3 components.
+                      </Tooltip>
+                      <h5 className={classNames(styles.cardTitle, "sfa-descrption")}>
+                        {value.displayName}
+                      </h5>
                     </div>
                   )}
                   {value.key === MPC_CORE_KIT && (
@@ -215,7 +226,12 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                       }
                       onClick={() => onChangeDropdown(key, value.key)}
                     >
-                      <h5 className={styles.cardTitle}>{value.displayName}</h5>
+                      <Tooltip anchorSelect=".mpc-descrption" place="bottom-start">
+                        Build custom UX flows on Web3Auth's MPC Infrastructure.
+                      </Tooltip>
+                      <h5 className={classNames(styles.cardTitle, "mpc-descrption")}>
+                        {value.displayName}
+                      </h5>
                     </div>
                   )}
                 </>

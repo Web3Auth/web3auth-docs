@@ -9,39 +9,46 @@ import {
   LANGS_REACT_NATIVE,
   LANGS_UNITY,
   LANGS_WEB,
-  LANGS_WEB_MPC_CORE_KIT,
-  MPC_CORE_KIT,
+  LANGS_WEB_WITHOUT_HTML,
   PNP,
+  PNP_MODAL,
+  PNP_NO_MODAL,
   PNP_ANDROID,
   PNP_FLUTTER,
   PNP_IOS,
   PNP_REACT_NATIVE,
   PNP_UNITY,
   PRODUCTS,
-  SDKS_CORE_KIT,
+  SDKS_MPC_CORE_KIT,
   SDKS_PNP,
+  SDKS_SFA,
+  SFA_WEB,
   SFA_ANDROID,
   SFA_IOS,
   SFA_FLUTTER,
   SFA_NODE,
   SFA_REACT_NATIVE,
-  REACT_NATIVE,
+  MPC_CORE_KIT_WEB,
+  MPC_CORE_KIT_NODE,
+  MPC_CORE_KIT_REACT_NATIVE,
+  SFA,
 } from "./choices";
-import mpc_core_kit_angular from "./core_kit/mpc_core_kit/angular";
-import mpc_core_kit_nextjs from "./core_kit/mpc_core_kit/nextjs";
-import mpc_core_kit_react from "./core_kit/mpc_core_kit/react";
-import mpc_core_kit_vue from "./core_kit/mpc_core_kit/vue";
-import mpc_core_kit_react_native from "./core_kit/mpc_core_kit/react_native";
-import sfa_android from "./core_kit/sfa/android";
-import sfa_ios from "./core_kit/sfa/ios";
-import sfa_flutter from "./core_kit/sfa/flutter";
-import sfa_node from "./core_kit/sfa/node";
-import sfa_react_native from "./core_kit/sfa/react_native";
-import sfa_web_angular from "./core_kit/sfa/web/angular";
-import sfa_web_html from "./core_kit/sfa/web/html";
-import sfa_web_nextjs from "./core_kit/sfa/web/nextjs";
-import sfa_web_react from "./core_kit/sfa/web/react";
-import sfa_web_vue from "./core_kit/sfa/web/vue";
+import mpc_core_kit_web_angular from "./mpc_core_kit/web/angular";
+import mpc_core_kit_web_nextjs from "./mpc_core_kit/web/nextjs";
+import mpc_core_kit_web_react from "./mpc_core_kit/web/react";
+import mpc_core_kit_web_vue from "./mpc_core_kit/web/vue";
+import mpc_core_kit_react_native from "./mpc_core_kit/react_native";
+import mpc_core_kit_node from "./mpc_core_kit/node";
+import sfa_android from "./sfa/android";
+import sfa_ios from "./sfa/ios";
+import sfa_flutter from "./sfa/flutter";
+import sfa_node from "./sfa/node";
+import sfa_react_native from "./sfa/react_native";
+import sfa_web_angular from "./sfa/web/angular";
+import sfa_web_html from "./sfa/web/html";
+import sfa_web_nextjs from "./sfa/web/nextjs";
+import sfa_web_react from "./sfa/web/react";
+import sfa_web_vue from "./sfa/web/vue";
 import highlight from "./highlight";
 import pnp_android from "./pnp/android";
 import pnp_flutter from "./pnp/flutter";
@@ -86,7 +93,7 @@ const sdks = {
   PNP_UNITY_ANDROID: pnp_unity,
   PNP_UNITY_IOS: pnp_unity,
   PNP_UNITY_WEBGL: pnp_unity,
-  // SFA Web SDK
+  // SFA JS SDK
   SFA_WEB_ANGULAR: sfa_web_angular,
   SFA_WEB_NEXTJS: sfa_web_nextjs,
   SFA_WEB_REACT: sfa_web_react,
@@ -105,11 +112,13 @@ const sdks = {
   // SFA Node SDK
   SFA_NODE_NODE: sfa_node,
   // MPC Core Kit SDK
-  MPC_CORE_KIT_ANGULAR: mpc_core_kit_angular,
-  MPC_CORE_KIT_NEXTJS: mpc_core_kit_nextjs,
-  MPC_CORE_KIT_REACT: mpc_core_kit_react,
-  MPC_CORE_KIT_VUE: mpc_core_kit_vue,
-  MPC_CORE_KIT_REACT_NATIVE: mpc_core_kit_react_native,
+  MPC_CORE_KIT_WEB_ANGULAR: mpc_core_kit_web_angular,
+  MPC_CORE_KIT_WEB_NEXTJS: mpc_core_kit_web_nextjs,
+  MPC_CORE_KIT_WEB_REACT: mpc_core_kit_web_react,
+  MPC_CORE_KIT_WEB_VUE: mpc_core_kit_web_vue,
+  MPC_CORE_KIT_REACT_NATIVE_ANDROID: mpc_core_kit_react_native,
+  MPC_CORE_KIT_REACT_NATIVE_IOS: mpc_core_kit_react_native,
+  MPC_CORE_KIT_NODE_NODE: mpc_core_kit_node,
 };
 
 const builder: IntegrationBuilder = {
@@ -150,8 +159,10 @@ const builder: IntegrationBuilder = {
 
     if (finalValues.product === PNP) {
       sdkChoices = SDKS_PNP;
+    } else if (finalValues.product === SFA) {
+      sdkChoices = SDKS_SFA;
     } else {
-      sdkChoices = SDKS_CORE_KIT;
+      sdkChoices = SDKS_MPC_CORE_KIT;
     }
 
     switch (finalValues.sdk) {
@@ -182,8 +193,23 @@ const builder: IntegrationBuilder = {
       case PNP_UNITY:
         frameworkChoices = LANGS_UNITY;
         break;
-      case MPC_CORE_KIT:
-        frameworkChoices = LANGS_WEB_MPC_CORE_KIT;
+      case PNP_MODAL:
+        frameworkChoices = LANGS_WEB;
+        break;
+      case PNP_NO_MODAL:
+        frameworkChoices = LANGS_WEB;
+        break;
+      case SFA_WEB:
+        frameworkChoices = LANGS_WEB;
+        break;
+      case MPC_CORE_KIT_WEB:
+        frameworkChoices = LANGS_WEB_WITHOUT_HTML;
+        break;
+      case MPC_CORE_KIT_REACT_NATIVE:
+        frameworkChoices = LANGS_REACT_NATIVE;
+        break;
+      case MPC_CORE_KIT_NODE:
+        frameworkChoices = LANGS_NODE;
         break;
       case SFA_NODE:
         frameworkChoices = LANGS_NODE;
@@ -227,8 +253,6 @@ const builder: IntegrationBuilder = {
     let sourceCodeLink;
 
     if (LANGS_WEB.map((it) => it.key).includes(finalValues.framework)) {
-      sourceCodeLink = quickStartSourceCode[selectedSDK];
-    } else if (finalValues.sdk === MPC_CORE_KIT && finalValues.framework === REACT_NATIVE) {
       sourceCodeLink = quickStartSourceCode[selectedSDK];
     } else {
       sourceCodeLink = quickStartSourceCode[finalValues.sdk];
