@@ -6,72 +6,76 @@ description: "Web3Auth Product Stack | Documentation - Web3Auth"
 ---
 
 import ProductCards from "@site/src/components/ProductCards";
-import Image1 from "@site/static/guides/web3auth-architecture.png";
+import PnPCoreKitFlowDark from "@site/static/images/pnp-core-kit-flow-dark.png";
+import PnPCoreKitFlowLight from "@site/static/images/pnp-core-kit-flow-light.png";
 
 Our extensive product suite covers everything from pre-onboarding to post-onboarding and
 authentication, enabling you to craft a seamless end-to-end experience for your Web3 dApp/ Wallet.
 
 ## Web3Auth for Wallets
 
-One of the most important use cases of Web3Auth is to integrate it within wallets. This is because
-Web3Auth itself is not a wallet, it is wallet infrastructure that can be plugged into your own
-wallet. Web3Auth results in a standard cryptographic key provider specific to the user and
-application. This key provider can be used to sign transactions, and messages, or make any other
-wallet transaction.
+Web3Auth is designed to be integrated into wallets as a key management infrastructure. It provides a
+secure, user-specific cryptographic key provider that can be used for transaction signing, message
+signing, and other wallet operations.
 
-A wallet is a wrapper around the user's private key, helping them manage their account on a much
-better level. With Web3Auth, you can make the UI flow according to your own needs and requirements,
-while not thinking about the key generation and management part. Web3Auth will take care of that for
-you. You can even save additional private keys safely within your application with Web3Auth.
+As a wallet developer, you can focus on building your custom UI and user experience while Web3Auth
+handles the complexities of key generation, management and storage behind the scenes. The wallet
+acts as a user-friendly interface to manage private keys and accounts, with Web3Auth powering the
+core key infrastructure.
 
-### Advantages of using Web3Auth Wallet Key Management
+#### Advantages of using Web3Auth Wallet Management
 
-1. The wallet owns the whole experience, with minimal external branding. You can even surpass that
-   (have **zero Web3Auth Branding**) if you use [**Web3Auth Core Kit**](/product/core-kit).
-2. Ability to use your **own OAuth 2.0 / Single Sign-On** or any other flow for validating your
-   user. You just need to provide Web3Auth with a JWT `id_token` and it will handle the key
-   generation for you.
-3. Create your wallet for **any chain**, depending on your needs. Web3Auth generates the private key
-   that can be used for any chain.
-4. Add security and key recoverability features like **MPC**, **Account Abstraction**, and more to
-   your wallet, natively.
-5. You can choose a platform of your choice. Web3Auth SDKs are available for most mobile, web and
-   gaming platforms.
+- **Full control over branding and UX** - even remove Web3Auth branding completely.
+- **Use your own authentication** - integrate any OAuth 2.0/SSO flow by providing a JWT Token.
+- **Chain-agnostic** - generated wallets work across any blockchain
+- **Built-in security** - native support for **MPC**, **Account Abstraction**, and key recovery
+- **Cross-platform support** - SDKs available for web, mobile and gaming platforms
+
+:::tip
+
+We recommend using [Single Factor Auth](./sfa) and [MPC Core Kit](./mpc-core-kit) products for the
+best user experience, in wallet integrations.
+
+:::
 
 ## Web3Auth for dApps
 
-As a decentralized application, if you're looking for more customized flows for your application,
-Web3Auth is the way for you to go. While using a wallet might be the easiest way for you to handle
-blockchain transactions, it comes with the cost of sacrificing the control of the user flow and
-trusting them with the understanding of how to make a blockchain transaction. This also comes with
-the cost of losing users to complex terminologies and flows, which can be easily avoided if you're
-customizing flows according to your needs. While using Web3Auth, you have the flexibility of
-creating your embedded wallet within your application or using one of our **Wallet Ecosystems** that
-can handle the complexity of linking your application to a wallet.
+Web3Auth enables dApps to create customized authentication and wallet flows, giving you full control
+over the user experience. Instead of relying on external wallets and complex blockchain terminology
+that can confuse users, you can build streamlined flows tailored to your application's needs.
+Web3Auth lets you either create an embedded wallet all within your application.
 
-1. The dApp owns the whole experience, with minimal external branding. You can even surpass that
-   (have **zero Web3Auth Branding**) if you use [**Web3Auth Core Kit**](/product/core-kit).
-2. First-time users don't need the mental overhead of understanding the concept of a "wallet" to use
-   your application. Just a standard Web2 login, they're onboarded using Web3Auth.
-3. Quick integrations with **Wallet Ecosystems**, like **SafeAuth**, **Torus Wallets**, and more.
-4. **Embedded Wallets** within your application, with the ability to use your own OAuth 2.0 / Single
-   Sign-On or any other flow for validating your user.
-5. You can create your application for **any chain**, depending on your needs. Web3Auth generates
-   the private key that can be used for any chain.
-6. You can have users interact with their wallet and make transactions within your application,
-   making the **whole experience more seamless and specific to your app**.
-7. You can use the variety of **interoperability** flows provided by Web3Auth to make your
-   application's private key more accessible to users.
+#### Key Benefits
+
+- **Seamless User Experience** - Familiar web2-style login flows with no blockchain knowledge
+  required
+- **Complete Brand Control** - Customize the entire authentication experience to match your app
+- **Built-in Embedded Wallet** - Focus on your app features while we handle wallet management,
+  including pre-built wallet UI, fiat on-ramps, and other wallet services
+- **Multi-Chain Support** - Deploy your app on any blockchain with our chain-agnostic architecture
+- **In-App Transactions** - Enable users to interact with your app without leaving the interface
+- **Flexible Integration** - Choose between embedded wallets or connect with external ones
+
+:::tip
+
+We recommend using [Plug and Play](./pnp) and [Single Factor Auth](./sfa) products for the best
+all-round experience for dApp developers.
+
+:::
 
 ## Relationship between Web3Auth SDK and Integrating dApp/ Wallet
 
-When a user logs in with a login provider like Google, it sends a JWT id_token to the app. This JWT
-token is sent to the Web3Auth SDK's login function. The Web3Auth SDK will then validate the JWT
+When a user logs in with a login provider like Google, it sends a JWT `id_token` to the app. This
+JWT token is sent to the Web3Auth SDK's login function. The Web3Auth SDK will then validate the JWT
 token with the set parameters in the Web3Auth Dashboard and accordingly generate a private key, in a
 self-custodial way, resulting in easy onboarding for your user to the application.
 
-<img
-  style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
-  src={Image1}
-  alt="This diagram describes the relationship between the Web3Auth SDK and integrating wallet"
-/>
+<picture>
+  <source srcset={PnPCoreKitFlowLight} media="(prefers-color-scheme: light)" />
+  <source srcset={PnPCoreKitFlowDark} media="(prefers-color-scheme: dark)" />
+  <img
+    src={PnPCoreKitFlowLight}
+    style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
+    alt="This diagram describes the relationship between the Web3Auth SDK and integrating application"
+  />
+</picture>

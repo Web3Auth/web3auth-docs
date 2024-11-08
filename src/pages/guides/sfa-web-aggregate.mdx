@@ -2,8 +2,8 @@
 title: How to use aggregate verifier in Web3Auth SFA JS SDK
 image: "guides-banners/sfa-auth0-google.png"
 description:
-  Integrate Auth0 and Google with the Web3Auth Single Factor Authentication (SFA) Web SDK to
-  streamline user authentication and wallet management for your Ethereum dApp.
+  Integrate Auth0 and Google with the Web3Auth Single Factor Auth(SFA) Web SDK to streamline user
+  authentication and wallet management for your Ethereum dApp.
 type: guide
 tags: [core kit, web, sfa, auth0, custom authentication, evm]
 date: 14 November, 2023
@@ -19,7 +19,9 @@ import InteractingWithBlockchain from "@site/src/common/guides/_interacting-with
 import ParseIdtokenGetEmail from "@site/src/common/guides/_parse-idtoken-get-email.mdx";
 import SetupBaseProject from "@site/src/common/guides/_setup-base-project.mdx";
 import SetupWeb3AuthDashboard from "@site/src/common/guides/_setup-web3auth-dashboard.mdx";
-import SFAInfra from "@site/static/images/sfa-infra.png";
+
+import SFAInfraDark from "@site/static/images/sfa-infra-dark.png";
+import SFAInfraLight from "@site/static/images/sfa-infra-light.png";
 import UserInfoFromIdtoken from "@site/src/common/guides/_user-info-from-idtoken.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
 import SEO from "@site/src/components/SEO";
@@ -49,11 +51,15 @@ dApp with minimal effort, allowing you to directly use the Web3Auth Network for 
 This is one of the most common use cases of Web3Auth, however, it is semi-custodial in nature, since
 the key is custodial to the Auth Provider and the Web3Auth Network.
 
-<img
-  style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
-  src={SFAInfra}
-  alt="Single Factor Auth SDK Infrastructure"
-/>
+<picture>
+  <source srcset={SFAInfraLight} media="(prefers-color-scheme: light)" />
+  <source srcset={SFAInfraDark} media="(prefers-color-scheme: dark)" />
+  <img
+    src={SFAInfraLight}
+    style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
+    alt="This diagram describes the relationship between the Web3Auth SDK and integrating application"
+  />
+</picture>
 
 - The first step for the application is to get the user authenticated by a login provider(here,
   Google) and get the user's `idToken`.

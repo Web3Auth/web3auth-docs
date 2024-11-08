@@ -27,7 +27,7 @@ export default function QuickNavigation() {
             </span>
             <p>
               Web3Auth simplifies Web3 access with easy-to-use social logins, customizable wallet
-              UI, and advanced security options, with non custodial MPC key management. Create a
+              UI, and advanced security options, with non custodial MPC wallet management. Create a
               user-friendly, secure entry point for crypto-native users and non-crypto users alike.
             </p>
           </div>
