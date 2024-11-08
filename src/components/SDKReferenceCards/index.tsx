@@ -787,7 +787,7 @@ export const infrasdks = (
         </div>
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>tKey JS SDK for Web</h3>
-          <p>The SSS based Web3Auth Internal SDK for key management.</p>
+          <p>The SSS based Web3Auth Internal SDK for wallet management.</p>
           <div className={styles.links}>
             {/* <a href={`${baseUrl}quick-start`}>Quick Start{chevron}</a> */}
             <a href={`${baseUrl}sdk/infra/tkey/`}>SDK Reference{chevron}</a>

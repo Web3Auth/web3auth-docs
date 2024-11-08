@@ -5,11 +5,8 @@ image: "images/docs-meta-cards/documentation-card.png"
 description: "How Web3Auth Works? | Documentation - Web3Auth"
 ---
 
-import TkeyIntroduction from "@site/src/common/docs/_tkey-intro.mdx";
-import Web3AuthWorking from "@site/static/guides/web3auth-pnp-working.png";
-import KeyManagement from "@site/static/images/key-management.png";
-import PnPCoreKitFlow from "@site/static/images/pnp-core-kit-flow.png";
-import SFAInfra from "@site/static/images/sfa-infra.png";
+import PnPCoreKitFlowDark from "@site/static/images/pnp-core-kit-flow-dark.png";
+import PnPCoreKitFlowLight from "@site/static/images/pnp-core-kit-flow-light.png";
 
 Web3Auth operates as a wallet infrastructure, providing enhanced flexibility and security for
 decentralized applications (dApps) and blockchain wallets. Throughout this documentation, we'll
@@ -25,94 +22,15 @@ The diagram below describes the relationship between the Web3Auth SDKs and integ
 It also depicts the difference between the products Web3Auth offers, to enable a developer-friendly
 integration of this infrastructure.
 
-<img
-  style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
-  src={PnPCoreKitFlow}
-  alt="This diagram describes the relationship between the Web3Auth SDK and integrating application"
-/>
-
-### Plug and Play SDKs
-
-A Web3Auth Plug and Play integration process is designed to be developer-friendly, requiring only
-the initialization of the Web3Auth SDKs and the set up of necessary configurations. Once integrated
-into your application, the SDK facilitates the embedding of the login function. This allows
-developers to utilize the SDK to authenticate users by invoking the connect function, which can be
-activated via a login button or any user-triggered event.
-
-Once the user starts the process:
-
-1. User is redirected to our portal (`auth.web3auth.io`)
-2. Our portal, `auth.web3auth.io`, then handles the initial process of login
-3. The user is redirected to the login/OAuth provider and carries out the authentication process
-   concerning their auth provider
-4. The user is redirected back to our portal, which then handles the reconstruction of the user’s
-   key
-5. Finally, once the user is successfully authenticated, they are redirected back to the
-   application, with a derived key specific to the application/wallet
-
-##### Here's a diagram showing this process:
-
-<img
-  style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
-  src={Web3AuthWorking}
-  alt="Web3Auth working"
-/>
-
-### Core Kit SDKs
-
-The Core Kit SDKs serve as the backbone of the Web3Auth Plug n Play (PnP) SDKs. They form the
-essence of the Web3Auth infrastructure and allow for direct usage within decentralized applications
-(dApps) to foster deeper integration. They are further divided into two types of SDKs:
-
-1. Single Factor Auth SDKs
-2. Multi-Factor SDKs, like tKey SDK
-
-#### Single Factor Auth SDKs
-
-These SDKs allow for the integration of a single factor of authentication, such as social login,
-into your dApp. They are designed to be simple to use and can be integrated into your dApp with
-minimal effort, allowing you to directly use the Web3Auth Network for Wallet Management. This is one
-of the most common use cases of Web3Auth, however, it is semi-custodial in nature, since the key is
-custodial to the Auth Provider and the Web3Auth Network.
-
-<img
-  style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
-  src={SFAInfra}
-  alt="Single Factor Auth SDK Infrastructure"
-/>
-
-#### Multi-Factor Auth SDKs
-
-An integral part of this infrastructure is the tKey SDK, the foundational SDK utilized for the
-implementation of Web3Auth PnP and Core-Kit.
-
-<TkeyIntroduction />
-
-### MPC SDKs
-
-With the Web3Auth infrastructure, your key is divided into multiple parts and stored across your
-devices and our Auth Network. This ensures that your key is always available and never stored in a
-single place. While in the traditional Web3Auth SDK, your key was dynamically reconstructed in the
-front end using shamir secret sharing.
-
-With the new Web3Auth MPC (Multi-Party Computation) architecture, it is **never reconstructed**.
-Instead, these partial keys are stored across different locations, and your device is used to make
-partial signatures for your message/ transaction. These are finally returned to the front end where
-using TSS (Threshold Signature Scheme), these signatures are combined to make a final signature. You
-can use this finally signed message/transaction to make a transaction on the blockchain.
-
-The Threshold Signature Scheme (TSS) is a cryptographic primitive for distributed key generation and
-signing. The use of TSS in Web3Auth's Auth network is a new paradigm that can provide numerous
-benefits, especially in terms of security.
-
-<img
-  style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
-  src={KeyManagement}
-  alt="Showing How Web3Auth Key Generation works"
-/>
-
-As you can notice in this diagram above, the final output for the right side TSS architecture are
-the signatures that can be used to make transactions on the blockchain.
+<picture>
+  <source srcset={PnPCoreKitFlowLight} media="(prefers-color-scheme: light)" />
+  <source srcset={PnPCoreKitFlowDark} media="(prefers-color-scheme: dark)" />
+  <img
+    src={PnPCoreKitFlowLight}
+    style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
+    alt="This diagram describes the relationship between the Web3Auth SDK and integrating application"
+  />
+</picture>
 
 ## Web3Auth Wallet Management Infrastructure
 

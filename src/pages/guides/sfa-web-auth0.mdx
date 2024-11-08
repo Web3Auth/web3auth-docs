@@ -22,7 +22,9 @@ import SfaWebAuth0Intialization from "@site/src/common/guides/_sfa-web-auth0-ini
 import UserInfoFromIdtoken from "@site/src/common/guides/_user-info-from-idtoken.mdx";
 import SFAWebInstantiation from "@site/src/common/guides/_w3a-sfa-web-instantiation-auth0.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
-import SFAInfra from "@site/static/images/sfa-infra.png";
+
+import SFAInfraDark from "@site/static/images/sfa-infra-dark.png";
+import SFAInfraLight from "@site/static/images/sfa-infra-light.png";
 import SEO from "@site/src/components/SEO";
 
 <SEO
@@ -50,11 +52,15 @@ dApp with minimal effort, allowing you to directly use the Web3Auth Network for 
 This is one of the most common use cases of Web3Auth, however, it is semi-custodial in nature, since
 the key is custodial to the Auth Provider and the Web3Auth Network.
 
-<img
-  style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
-  src={SFAInfra}
-  alt="Single Factor Auth SDK Infrastructure"
-/>
+<picture>
+  <source srcset={SFAInfraLight} media="(prefers-color-scheme: light)" />
+  <source srcset={SFAInfraDark} media="(prefers-color-scheme: dark)" />
+  <img
+    src={SFAInfraLight}
+    style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
+    alt="This diagram describes the relationship between the Web3Auth SDK and integrating application"
+  />
+</picture>
 
 - The first step for the application is to get the user authenticated by a login provider(here,
   Google) and get the user's `idToken`.
