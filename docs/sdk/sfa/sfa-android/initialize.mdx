@@ -7,24 +7,35 @@ description: "Web3Auth Single Factor Auth Android SDK - Initialize | Documentati
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-import Initialization from "@site/src/common/sdk/sfa/android/_sfa-android-initialization.mdx";
+import Initialization from "@site/src/common/sdk/core-kit/sfa/android/_sfa-android-initialization.mdx";
+import SessionManagement from "@site/src/common/sdk/core-kit/sfa/android/_sfa-android-session-management.mdx";
 
 Once you have installed the Web3Auth SDK, the next crucial step is to initialize it. This step
 requires passing various parameters that align with your project preferences. It's important to note
 that the initialization process is critical to the successful use of Web3Auth.
 
-### Parameters
+## Parameters
 
-In your activity, create a `SingleFactorAuth` instance with `SFAParams`. You can define the Web3Auth
-network, client id, and other parameters during initialization.
+In your activity, create a `SingleFactorAuth` instance with `Web3AuthOptions`. You can define the
+Web3Auth network, client id, and other parameters during initialization.
 
-| Parameter          | Description                                                                                                                                                                                                                                         |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `network`          | The Web3auth network is to be used by the SDK. Supported values are `Web3AuthNetwork.SAPPHIRE_MAINNET`, `Web3AuthNetwork.SAPPHIRE_DEVNET` ,`Web3AuthNetwork.MAINNET`, `Web3AuthNetwork.TESTNET`, `Web3AuthNetwork.CYAN`, and `Web3AuthNetwork.AQUA` |
-| `clientId`         | The clientId for your Web3Auth project. You can get it from [Web3Auth dashboard](https://dashboard.web3auth.io/).                                                                                                                                   |
-| `sessionTime`      | Specifies the session duration in seconds. By default, the value is set to 86400 seconds (1 day), with a maximum session duration of up to 7 days.                                                                                                  |
-| `serverTimeOffset` | Specify a custom server time offset. The default value is 0.                                                                                                                                                                                        |
+| Parameter           | Description                                                                                                                                                                                                                                         |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `network`           | The Web3auth network is to be used by the SDK. Supported values are `Web3AuthNetwork.SAPPHIRE_MAINNET`, `Web3AuthNetwork.SAPPHIRE_DEVNET` ,`Web3AuthNetwork.MAINNET`, `Web3AuthNetwork.TESTNET`, `Web3AuthNetwork.CYAN`, and `Web3AuthNetwork.AQUA` |
+| `clientId`          | The clientId for your Web3Auth project. You can get it from [Web3Auth dashboard](https://dashboard.web3auth.io/).                                                                                                                                   |
+| `sessionTime`       | Specifies the session duration in seconds. By default, the value is set to 86400 seconds (1 day), with a maximum session duration of up to 7 days.                                                                                                  |
+| `serverTimeOffset`  | Specify a custom server time offset. The default value is 0.                                                                                                                                                                                        |
+| `storageServerUrl?` | Specifies the storage server URL. The default value is `https://session.web3auth.io`.                                                                                                                                                               |
 
-### Initialize SingleFactorAuth
+## Create Instance
 
 <Initialization />
+
+## Initialize
+
+To initialize the SDK, you can use the `initialize` method. We have included Session Management in
+this SDK, so you can use the method to get the `SessionData` without re-logging in the user. If a
+user has an active session, it will return the `SessionData`, otherwise, it will throw an error for
+inactive session.
+
+<SessionManagement />
