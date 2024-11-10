@@ -358,6 +358,31 @@ val userInfo = web3Auth.getUserInfo()
 
 <AndroidResponse />
 
+## Session Management
+
+The Session Management feature allows you to check the existing sessions with Web3Auth. The SDK will
+allow users to remain authenticated with Web3Auth for 1 day by default, or a maximum of 7 days, or
+until the user logout or session data is cleared.
+
+The `Web3AuthOptions` initialization accepts a `sessionTime` parameter.
+
+### Usage
+
+```kotlin
+import com.web3auth.core.Web3Auth
+import com.web3auth.core.types.Web3AuthOptions
+
+val web3Auth = Web3Auth(
+  Web3AuthOptions(
+    context = this,
+    clientId = "YOUR_WEB3AUTH_CLIENT_ID", // Pass over your Web3Auth Client ID from Developer Dashboard
+    network = Network.MAINNET,
+    redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth"),
+    sessionTime = 172800 // 2 Days
+  )
+)
+```
+
 ## Logging out a user
 
 <LogOut />
