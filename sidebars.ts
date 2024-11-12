@@ -283,6 +283,7 @@ const sidebars: SidebarsConfig = {
     "features/passkeys",
     "features/server-side-verification",
     "features/session-management",
+    "features/smart-accounts",
     "features/user-management",
     "features/wallet-pregeneration",
     "features/mipd",
