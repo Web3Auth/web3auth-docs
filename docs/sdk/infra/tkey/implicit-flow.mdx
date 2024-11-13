@@ -1,0 +1,260 @@
+---
+title: Enabling Implicit Authentication Flow in tKey
+sidebar_label: Implicit Auth Flow
+description: "Web3Auth Core Kit tKey SDK - Implicit Flow  | Documentation - Web3Auth"
+---
+
+import TorusServiceProviderArg from "@site/src/common/sdk/infra/tkey/_service-provider-torus-arg.mdx";
+import TorusServiceProviderExample from "@site/src/common/sdk/infra/tkey/_service-provider-torus-example.mdx";
+import TorusServiceProviderInitParams from "@site/src/common/sdk/infra/tkey/_service-provider-torus-init-params.mdx";
+import SubVerifierDetails from "@site/src/common/sdk/infra/tkey/_sub-verifier-details.mdx";
+import ServiceWorkerCode from "@site/src/common/sdk/infra/tkey/_sw-js.mdx";
+import TorusLoginResponse from "@site/src/common/sdk/infra/tkey/_torus-login-response.mdx";
+
+If you're looking for using an implicit authentication flow in your application, you can use the
+Torus Service Provider SDK to do so. The Torus Service Provider is built on top of the `CustomAuth`
+SDK from Web3Auth, which is an internal library used in the PnP SDKs to provide a common interface
+for authentication. Here, you need to do some additional setup to enable the SDK to be able to catch
+the authentication redirect.
+
+This guide will help you in setting up the Torus Service Provider SDK in your application. It is a 3
+step process in general:
+
+- Instantiating the Torus Service Provider
+- Initiating the Service Provider Instance within tKey
+- Handling the OAuth Redirection
+- Triggering Login
+
+## Instantiation
+
+Service Provider in `tKey` is used for generating a [**Share A**](/sdk/infra/tkey), i.e. the private
+key share managed by a wallet service provider via their authentication flows. This share in our
+[wallet infrastructure](/infrastructure/) refers to the social login aspect, where we associate a
+private key share with the user's social login, enabling the seamless login experience.
+
+#### [`@tkey/service-provider-torus`](https://npmjs.com/package/@tkey/service-provider-torus)
+
+```bash npm2yarn
+npm install --save @tkey/service-provider-torus
+```
+
+### Parameters
+
+```tsx
+class TorusServiceProvider extends ServiceProviderBase {
+  customAuthInstance: CustomAuth;
+  singleLoginKey: BN;
+  torusKey: TorusKey;
+  migratableKey: BN | null;
+  customAuthArgs: CustomAuthArgs;
+  constructor({ enableLogging, postboxKey, customAuthArgs }: TorusServiceProviderArgs);
+  static fromJSON(value: StringifiedType): TorusServiceProvider;
+  init(params: InitParams): Promise<void>;
+  triggerLogin(params: SubVerifierDetails): Promise<TorusLoginResponse | null>;
+  triggerAggregateLogin(params: AggregateLoginParams): Promise<TorusAggregateLoginResponse>;
+  triggerHybridAggregateLogin(
+    params: HybridAggregateLoginParams,
+  ): Promise<TorusHybridAggregateLoginResponse>;
+  toJSON(): StringifiedType;
+}
+```
+
+<TorusServiceProviderArg />
+
+#### Usage
+
+<TorusServiceProviderExample />
+
+## Initializing Service Provider
+
+You need to initialize your Service Provider within your constructor function to use it while
+logging your user in through the social accounts. This is done by calling the `init()` function
+within the `tKey` instance's `serviceProvider` property.
+
+```
+tKey.serviceProvider.init(initParams);
+```
+
+### Parameters
+
+<TorusServiceProviderInitParams />
+
+#### Usage
+
+```tsx
+useEffect(() => {
+  const init = async () => {
+    // Initialization of Service Provider
+    try {
+      await (tKey.serviceProvider as any).init();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  init();
+}, []);
+```
+
+## Handling Redirection
+
+In the Implicit Flow, you need to set up a redirect page to capture the authentication redirect.
+This is needed since the authentication redirect contains the authentication information of the
+user, which is needed to generate the OAuthKey. The redirect page is used to capture this
+information and pass it over to the Torus Service Provider.
+
+The `uxMode` parameter in the `customAuthArgs` object is used to determine the type of redirect page
+to be used. There are two types of redirect
+
+- **Popup Mode (default):** We deploy a service worker to capture the redirect.
+- **Redirect Mode:** You need to create a redirect page to capture the redirect.
+
+### Redirect Page
+
+You can get login result by calling `getRedirectResult` on redirected page mount. For example, if
+baseUrl is `http://localhost:3000` and `redirectPathName` is `auth` then user will be redirected to
+`http://localhost:3000/auth` page after login where you can get login result by calling
+`getRedirectResult` on redirected page mount.
+
+#### Usage
+
+```tsx
+useEffect(() => {
+  const init = async () => {
+    // Initialization of Service Provider
+    try {
+      // Init is required for Redirect Flow but skip fetching sw.js and redirect.html )
+      (tKey.serviceProvider as any).init({ skipInit: true });
+      if (window.location.pathname === "/auth" && window.location.hash.includes("#state")) {
+        let result = await (tKey.serviceProvider as any).directWeb.getRedirectResult();
+        tKey.serviceProvider.postboxKey = new BN((result.result as any).privateKey!, "hex");
+        await tKey.initialize();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  init();
+}, []);
+```
+
+### Service Worker
+
+A service worker is a scripts that is run by the browser. It does not have any direct relationship
+with the DOM and provides many out of the box network-related features. Web3Auth Core Kit tKey SDK
+needs a service worker relative to `baseUrl` to capture the auth redirect at `redirectPathName`
+path.
+
+For example, while using service worker if `baseUrl` is `http://localhost:3000/serviceworker` then
+user will be redirected to `http://localhost:3000/serviceworker/redirect` page after login where
+service worker will capture the results and send it back to original window where login was
+initiated.
+
+:::tip
+
+- Using service worker is optional, but highly recommended. You can skip it by passing `skipSw`
+  param while [initializing tKey](/sdk/infra/tkey/initialize).
+
+- Service worker is needed if you are using `popup` uxMode within your
+  [Service Provider configuration](/sdk/infra/tkey/initialize#configuring-service-provider).
+
+- For browsers where service workers are not supported, or in the case you wish to not use service
+  workers, create and serve redirect page (i.e `redirect.html` file).
+
+:::
+
+#### Service Worker Setup
+
+- If you're using React, to setup service worker, you need to create a `sw.js` file in your public
+  folder and register it in your `index.html` file. You can find more information about it in
+  [this blog](https://blog.bitsrc.io/using-service-workers-with-react-27a4c5e2d1a9).
+
+- For Angular, [this guide](https://angular.io/guide/service-worker-getting-started) will be helpful
+  in setting up the service worker.
+
+- For Vue,
+  [this guide](https://www.360learntocode.com/2020/12/how-to-use-and-customize-service-worker-in-vuejs-pwa.html)
+  is a great way to get started with service workers.
+
+#### Service Worker Code
+
+You can directly copy the service worker file code from here and paste in your respective folder.
+You can also find the code in our
+[tKey JS Examples (Popup Flow)](/examples?product=Core+Kit&sdk=tKey+JS+SDK).
+
+<details>
+  <summary>Service Worker Code</summary>
+  <div>
+    <ServiceWorkerCode />
+  </div>
+</details>
+
+## Log In
+
+The login with the tKey SDK is a two step process. First, you need to trigger the login process by
+calling the `triggerLogin()` function of the Service Provider. Following which using the returned
+information, use the `initialize()` function of the tKey to generate the Threshold Key corresponding
+to the user.
+
+However, before starting this process, you need to set up Custom Authentication on your Web3Auth
+Dashboard. For this, you need to [Create a Verifier](/auth-provider-setup/verifiers) from the
+**Custom Auth** section of the [Web3Auth Developer Dashboard](https://dashboard.web3auth.io) with
+your desired configuration.
+
+:::tip
+
+If you want to know more about setting up a verifier and how to use it, please refer to the
+[Custom Authentication Documentation](/features/custom-authentication).
+
+:::
+
+### Triggering Login
+
+#### `tKey.serviceProvider.triggerLogin(SubVerifierDetails)`
+
+This is a needed step since this will generate a private key which will be needed by the tKey to
+generate it's share. This is done by calling the `triggerLogin()` function within the `tKey`
+instance's `serviceProvider`.
+
+<SubVerifierDetails />
+
+#### Usage
+
+```tsx
+const loginResponse = await(tKey.serviceProvider as any).triggerLogin({
+  typeOfLogin: "google", // "google","facebook","reddit","discord","twitch", etc.
+  verifier: "google-tkey-w3a",
+  clientId: "774338308167-q463s7kpvja16l4l0kko3nb925ikds2p.apps.googleusercontent.com",
+});
+const user = loginResponse.userInfo;
+console.log("User Details: ", user);
+```
+
+### Get User Information
+
+```tsx
+triggerLogin(params: SubVerifierDetails): Promise<TorusLoginResponse>;
+```
+
+The tKey Service Provider returns a `TorusLoginResponse` object which contains the user's
+information and details about the login. You can access the `userInfo` property within it to get the
+user details from the login provider.
+
+<TorusLoginResponse />
+
+### Trigger Login using Aggregate Verifier
+
+#### `triggerAggregateLogin()`
+
+```javascript
+await (tKey.serviceProvider as TorusServiceProvider).triggerAggregateLogin(AggregateLoginParams)
+```
+
+Takes in the aggregate verifier details as `AggregateLoginParams`.
+
+```tsx
+interface AggregateLoginParams {
+  aggregateVerifierType: AGGREGATE_VERIFIER_TYPE;
+  verifierIdentifier: string;
+  subVerifierDetailsArray: SubVerifierDetails[];
+}
+```

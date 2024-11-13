@@ -13,6 +13,7 @@ import PluginConfig from "@site/src/common/sdk/pnp/web/_plugin-config.mdx";
 import PluginsExample from "@site/src/common/sdk/pnp/web/_plugins-example.mdx";
 import UIConfig from "@site/src/common/sdk/pnp/web/_ui-config.mdx";
 import UIConfigWhitelabelExample from "@site/src/common/sdk/pnp/web/_ui-config-whitelabel-example.mdx";
+import WhiteLabelData from "@site/src/common/sdk/pnp/web/_auth-whitelabel-config.mdx";
 
 Web3Auth is fully whitelabelable with application branding to have a consistent user experience. For
 Whitelabeling, there are three different aspects available for you. Web3Auth gives you the ability
@@ -124,3 +125,223 @@ different configurations you can pass for customizations.
 ### Example
 
 <AuthWhiteLabelExample />
+
+## Example
+
+The Web3Auth Plug and Play Modal offers a user-friendly interface that enables your dApp to connect
+with various login methods and adapters provided by Web3Auth. By whitelabeling the Login Modal, your
+dApp can maintain a consistent user experience. You can customize the theme, choose from 8+
+languages supported and provide your dApp name and brand logo, along with other options for detailed
+customization across all our offerings.
+
+![Web3Auth Plug and Play Login Modal](/images/whitelabel/modal/whitelable-login-modal.gif)
+
+## Arguments
+
+`uiConfig`
+
+You can pass the `uiConfig` parameters to `@web3auth/modal` to whitelabel your Web3Auth Login Modal.
+
+<UIConfig />
+
+`WhiteLabelData`
+
+<WhiteLabelData />
+
+## Example
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+const web3auth = new Web3Auth({
+  // type uiConfig
+  // focus-start
+  uiConfig: {
+    appName: "W3A",
+    theme: {
+      primary: "red",
+    },
+    mode: "dark",
+    logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+    logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
+    defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl
+    loginGridCol: 3,
+    primaryButton: "externalLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+  },
+  // focus-end
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+  clientId:
+    "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+  web3AuthNetwork: "sapphire_mainnet",
+});
+```
+
+## uiConfig
+
+### appName
+
+![appName](/images/whitelabel/modal/appName.png)
+
+### appLogo
+
+![appLogo](/images/whitelabel/modal/appLogo.png)
+
+### theme
+
+![theme](/images/whitelabel/modal/theme.png)
+
+### loginMethodsOrder
+
+![loginMethodsOrder](/images/whitelabel/modal/loginMethodsOrder.png)
+
+### defaultLanguage
+
+#### en - English
+
+![en](/images/whitelabel/modal/en.png)
+
+#### de - German
+
+![de](/images/whitelabel/modal/de.png)
+
+#### ja - Japanese
+
+![ja](/images/whitelabel/modal/ja.png)
+
+#### ko - Korean
+
+![ko](/images/whitelabel/modal/ko.png)
+
+#### zh - Chinese (Mandarin)
+
+![zh](/images/whitelabel/modal/zh.png)
+
+#### es - Spanish
+
+![es](/images/whitelabel/modal/es.png)
+
+#### fr - French
+
+![fr](/images/whitelabel/modal/fr.png)
+
+#### pt - Portuguese
+
+![pt](/images/whitelabel/modal/pt.png)
+
+#### nl - Dutch
+
+![nl](/images/whitelabel/modal/nl.png)
+
+### loginGridCol
+
+![loginGridCol](/images/whitelabel/modal/loginGridCol.png)
+
+### primaryButton
+
+![primaryButton](/images/whitelabel/modal/primaryButton.png)
+
+## More customization
+
+`initModal`
+
+### Disable few Social Login Methods
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3auth = new Web3Auth({
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+  clientId:
+    "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+  web3AuthNetwork: "sapphire_mainnet",
+});
+
+// focus-start
+await web3auth.initModal({
+  modalConfig: {
+    [WALLET_ADAPTERS.AUTH]: {
+      label: "auth",
+      loginMethods: {
+        // Disable facebook and reddit
+        facebook: {
+          name: "facebook",
+          showOnModal: false,
+        },
+        reddit: {
+          name: "reddit",
+          showOnModal: false,
+        },
+      },
+    },
+  },
+});
+// focus-end
+```
+
+### Disable Email or SMS Login Methods
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3auth = new Web3Auth({
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+  clientId:
+    "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+  web3AuthNetwork: "sapphire_mainnet",
+});
+
+// focus-start
+await web3auth.initModal({
+  modalConfig: {
+    [WALLET_ADAPTERS.AUTH]: {
+      label: "auth",
+      loginMethods: {
+        // Disable email_passwordless and sms_passwordless
+        email_passwordless: {
+          name: "email_passwordless",
+          showOnModal: false,
+        },
+        sms_passwordless: {
+          name: "sms_passwordless",
+          showOnModal: false,
+        },
+      },
+    },
+  },
+});
+// focus-end
+```
+
+### Disable External Wallet Options
+
+```tsx
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from "@web3auth/base";
+
+const web3auth = new Web3Auth({
+  chainConfig: { chainNamespace: CHAIN_NAMESPACES.EIP155 },
+  clientId:
+    "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+  web3AuthNetwork: "sapphire_mainnet",
+});
+
+// focus-start
+await web3auth.initModal({
+  modalConfig: {
+    // Disable Wallet Connect V2
+    [WALLET_ADAPTERS.WALLET_CONNECT_V2]: {
+      label: "wallet_connect",
+      showOnModal: false,
+    },
+    // Disable Metamask
+    [WALLET_ADAPTERS.METAMASK]: {
+      label: "metamask",
+      showOnModal: false,
+    },
+  },
+});
+// focus-end
+```

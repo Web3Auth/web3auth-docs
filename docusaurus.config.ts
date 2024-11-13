@@ -120,8 +120,8 @@ const config: Config = {
           position: "left",
         },
         {
-          label: "Blog",
-          to: "https://blog.web3auth.io",
+          label: "Examples",
+          to: "/examples",
           position: "left",
         },
         {
@@ -358,11 +358,11 @@ const config: Config = {
           },
           {
             from: "/sdk/tkey/initialization",
-            to: "/sdk/core-kit/tkey/initialize",
+            to: "/sdk/infra/tkey/initialize",
           },
           {
             from: "/sdk/tkey/initialisation",
-            to: "/sdk/core-kit/tkey/initialize",
+            to: "/sdk/infra/tkey/initialize",
           },
           {
             from: "/troubleshooting/different-wallet-address-issue",
@@ -370,7 +370,7 @@ const config: Config = {
           },
           {
             from: "/sdk/tkey/installation",
-            to: "/sdk/core-kit/tkey/install",
+            to: "/sdk/infra/tkey/install",
           },
           {
             from: "/connect-blockchain/polygon/",
@@ -513,12 +513,16 @@ const config: Config = {
             to: "/auth-provider-setup/byo-jwt-provider/",
           },
           {
-            from: "/product-fit",
-            to: "/product/product-fit",
+            from: "/product/product-fit",
+            to: "/product-fit",
+          },
+          {
+            from: "/product/core-kit",
+            to: "/product/mpc-core-kit",
           },
           {
             from: "/product-fit/pnp-vs-core-kit",
-            to: "/product/product-fit",
+            to: "/product-fit",
           },
           {
             from: "/product-fit/partner-products",
@@ -545,14 +549,15 @@ const config: Config = {
             to: "/features/mfa",
           },
           {
-            from: "/sdk/core-kit/tkey/intrinsic-flow",
-            to: "/sdk/core-kit/tkey/implicit-flow",
+            from: "/sdk/infra/tkey/intrinsic-flow",
+            to: "/sdk/infra/tkey/implicit-flow",
           },
         ],
         createRedirects(existingPath) {
           // Only create redirects if the path matches certain patterns
           if (
             existingPath.includes("/sdk/") ||
+            existingPath.includes("/sdk/sfa/sfa-js/") ||
             existingPath.includes("/guides/") ||
             existingPath.includes("/features/") ||
             existingPath.includes("/product/")
@@ -560,6 +565,7 @@ const config: Config = {
             return [
               existingPath.replace("/sdk", "/api-reference"),
               existingPath.replace("/sdk", "/sdk-reference"),
+              existingPath.replace("/sdk/sfa/sfa-js/", "/sdk/sfa/sfa-web/"),
               existingPath.replace("/guides/", "/content-hub/guides/"),
               existingPath.replace("/sdk/pnp/web/providers/", "/sdk/providers/"),
               existingPath.replace("/sdk/pnp/web/wallet-services/", "/sdk/wallet-services/"),

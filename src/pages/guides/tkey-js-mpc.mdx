@@ -3,7 +3,7 @@ title: How to integrate Web3Auth tKey MPC SDK
 image: "guides-banners/mpc-web.png"
 description: Learn how to use the Web3Auth tKey JS MPC SDK in your React Application
 type: guide
-tags: [legacy]
+tags: [infra]
 date: March 15, 2023
 author: Web3Auth Team
 communityPortalTopicId: 57
@@ -11,7 +11,9 @@ communityPortalTopicId: 57
 
 import TkeyMPCUtils from "@site/src/common/guides/_tkey-mpc-utils.mdx";
 import SEO from "@site/src/components/SEO";
-import Image1 from "@site/static/images/tkey-mpc-flow.png";
+
+import TkeyMpcFlowDark from "@site/static/images/tkey-mpc-flow-dark.png";
+import TkeyMpcFlowLight from "@site/static/images/tkey-mpc-flow-light.png";
 
 <SEO
   title="How to integrate Web3Auth tKey MPC SDK"
@@ -31,8 +33,8 @@ This is an advanced guide, meant for enterprise developers and contains multiple
 might be difficult to understand. Please contact our team if you're looking to integrate this SDK,
 and we'll be happy to help you out.
 
-For general integrations, [MPC Core Kit](/sdk/core-kit/mpc-core-kit) is the best alternative to be
-used.
+For general integrations, [MPC Core Kit](/sdk/mpc-core-kit/mpc-core-kit-js) is the best alternative
+to be used.
 
 :::
 
@@ -60,11 +62,15 @@ The Threshold Signature Scheme (TSS) is a cryptographic primitive for distribute
 signing. The use of TSS in Web3Auth's Auth network is a new paradigm that can provide numerous
 benefits, especially in terms of security.
 
-<img
-  style={{ display: "block", margin: "20px auto" }}
-  src={Image1}
-  alt="Web3Auth Wallet Management"
-/>
+<picture>
+  <source srcset={TkeyMpcFlowLight} media="(prefers-color-scheme: light)" />
+  <source srcset={TkeyMpcFlowDark} media="(prefers-color-scheme: dark)" />
+  <img
+    src={TkeyMpcFlowLight}
+    style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
+    alt="This diagram describes the relationship between the Web3Auth SDK and integrating application"
+  />
+</picture>
 
 As you can notice in this diagram above, the final output, i.e., the User's TSS Account, is
 generated in multiple stages within the infrastructure. Since this is a TSS- MPC based
@@ -295,7 +301,7 @@ following packages highlighted in the package.json file:
 
 These packages are quite similar to our current tKey JS SDK, however contain some additional
 parameters and functions needed for MPC. You can also refer to our
-[tKey JS SDK Reference](/sdk/core-kit/tkey) for more details on the conventional functions involved.
+[tKey JS SDK Reference](/sdk/infra/tkey) for more details on the conventional functions involved.
 
 ### Understanding the Dependencies
 

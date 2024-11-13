@@ -24,17 +24,22 @@ choice. A simple integration for some of the popular blockchains will look like 
 <TabItem value="evm">
 
 ```tsx
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+//focus-start
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x1", // Please use 0x1 for Ethereum Mainnet
+  chainId: "0x1",
   rpcTarget: "https://rpc.ankr.com/eth",
   // Avoid using public rpcTarget in production.
   // Use services like Infura, Quicknode etc
   displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://etherscan.io/",
+  blockExplorerUrl: "https://etherscan.io",
   ticker: "ETH",
   tickerName: "Ethereum",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
+//focus-end
 ```
 
 </TabItem>
@@ -42,15 +47,22 @@ const chainConfig = {
 <TabItem value="polygon">
 
 ```tsx
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+
+//focus-start
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x89",
+  chainId: "0x89", // hex of 137, polygon mainnet
   rpcTarget: "https://rpc.ankr.com/polygon",
+  // Avoid using public rpcTarget in production.
+  // Use services like Infura, Quicknode etc
   displayName: "Polygon Mainnet",
-  blockExplorerUrl: "https://polygon.etherscan.io",
+  blockExplorerUrl: "https://polygonscan.com",
   ticker: "POL",
   tickerName: "Polygon Ecosystem Token",
+  logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
 };
+//focus-end
 ```
 
 </TabItem>
@@ -60,16 +72,20 @@ const chainConfig = {
 ```tsx
 import { SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 import { AuthAdapter } from "@web3auth/auth-adapter";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
 
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.SOLANA,
-  chainId: "0x1",
-  rpcTarget: "https://api.devnet.solana.com",
-  displayName: "Solana Mainnet",
-  blockExplorerUrl: "https://explorer.solana.com/",
-  ticker: "SOL",
-  tickerName: "Solana",
+//focus-start
+const chainConfig: {
+  chainNamespace: CHAIN_NAMESPACES.SOLANA;
+  chainId: "0x1"; // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+  rpcTarget: "https://rpc.ankr.com/solana";
+  displayName: "Solana Mainnet";
+  blockExplorerUrl: "https://explorer.solana.com";
+  ticker: "SOL";
+  tickerName: "Solana";
+  logo: "https://images.toruswallet.io/solana.svg";
 };
+//focus-end
 
 const privateKeyProvider = new SolanaPrivateKeyProvider({
   config: { chainConfig },
@@ -85,12 +101,20 @@ web3auth.configureAdapter(authAdapter);
 ```tsx
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import { AuthAdapter } from "@web3auth/auth-adapter";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
 
+//focus-start
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.OTHER,
-  chainId: "0x1",
-  rpcTarget: "RPC_URL",
+  chainId: "0x4e454152",
+  rpcTarget: "https://mainnet.aurora.dev",
+  // Avoid using public rpcTarget in production.
+  displayName: "Near",
+  blockExplorerUrl: "https://aurorascan.dev",
+  ticker: "NEAR",
+  tickerName: "NEAR",
 };
+//focus-end
 
 const privateKeyProvider = new CommonPrivateKeyProvider({
   config: { chainConfig },

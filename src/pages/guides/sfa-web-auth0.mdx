@@ -1,5 +1,5 @@
 ---
-title: How to integrate Auth0 with Web3Auth SFA Web SDK
+title: How to integrate Auth0 with Web3Auth SFA JS SDK
 image: "guides-banners/sfa-web-auth0.png"
 description:
   This guide provides a step-by-step process for integrating the Web3Auth Single Factor Auth (SFA)
@@ -22,11 +22,13 @@ import SfaWebAuth0Intialization from "@site/src/common/guides/_sfa-web-auth0-ini
 import UserInfoFromIdtoken from "@site/src/common/guides/_user-info-from-idtoken.mdx";
 import SFAWebInstantiation from "@site/src/common/guides/_w3a-sfa-web-instantiation-auth0.mdx";
 import Web3AuthPrerequisites from "@site/src/common/guides/_web3auth-prerequisites.mdx";
-import SFAInfra from "@site/static/images/sfa-infra.png";
+
+import SFAInfraDark from "@site/static/images/sfa-infra-dark.png";
+import SFAInfraLight from "@site/static/images/sfa-infra-light.png";
 import SEO from "@site/src/components/SEO";
 
 <SEO
-  title="How to integrate Auth0 with Web3Auth SFA Web SDK"
+  title="How to integrate Auth0 with Web3Auth SFA JS SDK"
   description="Learn how to use Web3Auth Single Factor Auth with Auth0 in your React Application."
   image="https://web3auth.io/docs/guides-banners/sfa-web-auth0.png"
   slug="/guides/sfa-web-auth0"
@@ -50,11 +52,15 @@ dApp with minimal effort, allowing you to directly use the Web3Auth Network for 
 This is one of the most common use cases of Web3Auth, however, it is semi-custodial in nature, since
 the key is custodial to the Auth Provider and the Web3Auth Network.
 
-<img
-  style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
-  src={SFAInfra}
-  alt="Single Factor Auth SDK Infrastructure"
-/>
+<picture>
+  <source srcset={SFAInfraLight} media="(prefers-color-scheme: light)" />
+  <source srcset={SFAInfraDark} media="(prefers-color-scheme: dark)" />
+  <img
+    src={SFAInfraLight}
+    style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
+    alt="This diagram describes the relationship between the Web3Auth SDK and integrating application"
+  />
+</picture>
 
 - The first step for the application is to get the user authenticated by a login provider(here,
   Google) and get the user's `idToken`.
@@ -83,9 +89,9 @@ the key is custodial to the Auth Provider and the Web3Auth Network.
 
 <Auth0VerifierSetup />
 
-## Using the Web3Auth SFA Web SDK
+## Using the Web3Auth SFA JS SDK
 
-To use the Web3Auth SFA Web SDK, you need to add `@web3auth/single-factor-auth` to your project.
+To use the Web3Auth SFA JS SDK, you need to add `@web3auth/single-factor-auth` to your project.
 
 <SetupBaseProject />
 
@@ -120,7 +126,7 @@ npm install --save @web3auth/ethereum-provider
 
 ##### `@web3auth/single-factor-auth`
 
-This package is the core package for Single Factor Auth Web SDK.
+This package is the core package for Single Factor Auth JS SDK.
 
 ```shell
 npm install --save @web3auth/single-factor-auth

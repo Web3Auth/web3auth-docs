@@ -4,8 +4,9 @@ title: Multi-Party Computation
 description: "Multi-Party Computation | Documentation - Web3Auth"
 ---
 
-import KeyManagement from "@site/static/images/key-management.png";
-import { corekitmfamobile, corekitmfaweb } from "@site/src/components/SDKReferenceCards";
+import KeyManagementDark from "@site/static/images/key-management-dark.png";
+import KeyManagementLight from "@site/static/images/key-management-light.png";
+import { mpccorekitjs } from "@site/src/components/SDKReferenceCards";
 
 Multi-Party Computation (MPC) forms the backbone of Web3Auth's advanced wallet infrastructure,
 offering a secure and non-custodial way to manage digital assets. This document provides a
@@ -64,16 +65,18 @@ Web3Auth's MPC is implemented in two main forms:
    signature generations instead of key reconstructions, maintaining the integrity of the
    distributed private key.
 
-{" "}
-
-<img
-  style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
-  src={KeyManagement}
-  alt="Showing How Web3Auth Key Generation works"
-/>
+<picture>
+  <source srcset={KeyManagementLight} media="(prefers-color-scheme: light)" />
+  <source srcset={KeyManagementDark} media="(prefers-color-scheme: dark)" />
+  <img
+    src={KeyManagementLight}
+    style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
+    alt="This diagram describes the relationship between the Web3Auth SDK and integrating application"
+  />
+</picture>
 
 Both methods adhere to the core concept of threshold-based security but differ in their approach to
-key management and signature generation.
+wallet management and signature generation.
 
 ## Web3Auth Wallet Management Infrastructure
 
@@ -103,4 +106,4 @@ manage wallets, please refer to our
 Our Core Kit MFA SDKs use Web3Auth's MPC to provide a seamless and secure multi-factor
 authentication experience.
 
-{ corekitmfaweb } {corekitmfamobile}
+{mpccorekitjs}

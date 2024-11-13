@@ -432,6 +432,36 @@ final userInfo = Web3AuthFlutter.getUserInfo();
 
 <FlutterResponse />
 
+## Session Management
+
+The Session Management feature allows you to check the existing sessions with Web3Auth. The SDK will
+allow users to remain authenticated with Web3Auth for 1 day by default, or a maximum of 7 days, or
+until the user logout or session data is cleared.
+
+The `Web3AuthOptions` initialization accepts a `sessionTime` parameter.
+
+### Usage
+
+```dart
+late final Uri redirectUrl;
+
+if (Platform.isAndroid) {
+  redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+  // w3a://com.example.w3aflutter/auth
+} else {
+  redirectUrl = Uri.parse('{bundleId}://auth');
+  // com.example.w3aflutter://auth
+}
+
+
+await Web3AuthFlutter.init(Web3AuthOptions(
+  clientId: "WEB3AUTH_CLIENT_ID",
+  network: Network.sapphire_mainnet,
+  redirectUrl: redirectUrl,
+  sessionTime: 172800 // 2 Days
+));
+```
+
 ## Logging out a user
 
 To logout the user and remove the session id from the device you can use the `logout` method. The
