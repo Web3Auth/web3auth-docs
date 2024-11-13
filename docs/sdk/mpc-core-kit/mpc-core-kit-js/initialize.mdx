@@ -1,7 +1,7 @@
 ---
-title: "Initializing MPC Core Kit JS SDK for React Native"
-sidebar_label: "Initialize React Native"
-description: "Web3Auth MPC Core Kit JS SDK - Initialize for React Native | Documentation - Web3Auth"
+title: "Initializing MPC Core Kit JS SDK for Web"
+sidebar_label: "Initialize Web"
+description: "Web3Auth MPC Core Kit JS SDK - Initialize for Web | Documentation - Web3Auth"
 ---
 
 import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
@@ -11,39 +11,8 @@ import Tabs from "@theme/Tabs";
 
 After installation, the next step to use Web3Auth MPC Core Kit is to configure & initialize the SDK.
 
-1. [Configure React Native environment](#configure-react-native-environment)
-2. [Configure Web3AuthMPCCoreKit instance](#configure-instance)
-3. [Initialize Web3AuthMPCCoreKit](#initialize-web3authmpccorekit)
-
-## Configure React Native Environment
-
-In order to make this SDK compatible with the React Native development environment, you need to
-additionally import the following packages:
-
-```tsx
-import EncryptedStorage from "react-native-encrypted-storage"; // Used to store the session & device factor keys
-import * as TssLibRN from "@toruslabs/react-native-tss-lib-bridge"; // The TSS library for React Native
-import { Bridge } from "@toruslabs/react-native-tss-lib-bridge"; // A bridge to be imported to the React Native environment
-```
-
-While initializing the SDK, you need to pass the `EncryptedStorage` and `TssLibRN` as arguments to
-the `Web3AuthOptions` object. The `Bridge` is used to bridge the TSS library to the React Native
-environment, it has to be imported in the React Native environment, at the end of the page.
-
-```tsx title="App.tsx"
-import { Bridge } from "@toruslabs/react-native-tss-lib-bridge";
-
-export default function App() {
-  // Misc App related functions
-  return (
-    <View>
-      {/* <YOUR APP GOES HERE> */}
-      // focus-next-line
-      <Bridge /> // <- Add this line
-    </View>
-  );
-}
-```
+1. [Configure Web3AuthMPCCoreKit instance](#configure-instance)
+2. [Initialize Web3AuthMPCCoreKit](#initialize-web3authmpccorekit)
 
 ## Configure Instance
 
@@ -77,7 +46,7 @@ configure the SDK.
 | `redirectPathName?`         | Specifies the url path where user will be redirected after login. Redirect Uri for OAuth is `baseUrl/redirectPathName`.                                                                                                                                                                                                                                                                                                                                   |
 | `disableHashedFactorKey?`   | Disables the Hashed Key, making the sure user logs in always in a non-custodial mode. Recommended only if you have proper MFA flow setup for the user while creating the account. Default value is false.                                                                                                                                                                                                                                                 |
 | `tssLib`                    | The threshold signing library to use: <ul><li>For secp256k1 keyType, you can use the `@toruslabs/tss-dkls-lib`</li><li> For ed25519 keyType you can use `@toruslabs/tss-frost-lib`</li></ul>                                                                                                                                                                                                                                                              |
-| `hashedFactorNonce?`        | Nonce for the hashed factor. Default value is `web3AuthClientId`. [Learn more about hashed factor](/docs/sdk/core-kit/mpc-core-kit/#hashed-cloud-factor).                                                                                                                                                                                                                                                                                                 |
+| `hashedFactorNonce?`        | Nonce for the hashed factor. Default value is `web3AuthClientId`. [Learn more about hashed factor](/docs/sdk/mpc-core-kit/mpc-core-kit-js/#hashed-cloud-factor).                                                                                                                                                                                                                                                                                          |
 | `storage`                   | Defines the storage for MPC Core Kit's state.                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `useDKG?`                   | Specifies whether to use DKG or not. If set to false, the key would be securely generated on the client side, and imported to Web3Auth network. If set to true, the key would be generated using a distributed network.Setting the flag to false, and generating a key on the client side significantly improves the speed of first-time login. The default value secp256k1 is `true`. Please note, it is not supported for ed25519, and is always false. |
 | `useClientGeneratedTSSKey?` | Specifies whether to use client generated TSS key or not. The default value is set to `false` for secp256k1 and `true` for ed25519. The default value is set to `true` for ed25519 as it allows users to export the ed25519 key.                                                                                                                                                                                                                          |

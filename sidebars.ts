@@ -57,7 +57,7 @@ function pnpTopNavButton(selectedSDK: string): string {
         Single Factor Auth SDKs
         <span class="sdk-sidebar-description">One click login, without redirection, all natively within your app.</span>
       </a>
-      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mpc-core-kit">
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mpc-core-kit/mpc-core-kit-js">
         MPC Core Kit SDK
         <span class="sdk-sidebar-description">Build your own MPC wallet with Web3Auth Infra layer SDK</span>
       </a>
@@ -1673,26 +1673,29 @@ const sidebars: SidebarsConfig = {
       value: mpcckTopNavButton(),
       defaultStyle: true,
     },
-    "sdk/mpc-core-kit/mpc-core-kit",
-    "sdk/mpc-core-kit/install",
-    "sdk/mpc-core-kit/initialize",
-    "sdk/mpc-core-kit/initialize-rn",
+    "sdk/mpc-core-kit/mpc-core-kit-js/mpc-core-kit-js",
+    "sdk/mpc-core-kit/mpc-core-kit-js/install",
+    "sdk/mpc-core-kit/mpc-core-kit-js/initialize",
+    "sdk/mpc-core-kit/mpc-core-kit-js/initialize-rn",
     {
       type: "category",
       label: "Authentication",
       items: [
-        "sdk/mpc-core-kit/authentication/authentication",
-        "sdk/mpc-core-kit/authentication/login-jwt",
-        "sdk/mpc-core-kit/authentication/login-oauth",
+        "sdk/mpc-core-kit/mpc-core-kit-js/authentication/authentication",
+        "sdk/mpc-core-kit/mpc-core-kit-js/authentication/login-jwt",
+        "sdk/mpc-core-kit/mpc-core-kit-js/authentication/login-oauth",
       ],
     },
-    "sdk/mpc-core-kit/signing",
-    "sdk/mpc-core-kit/usage",
-    "sdk/mpc-core-kit/examples",
+    "sdk/mpc-core-kit/mpc-core-kit-js/signing",
+    "sdk/mpc-core-kit/mpc-core-kit-js/usage",
+    "sdk/mpc-core-kit/mpc-core-kit-js/examples",
     {
       type: "category",
       label: "Providers",
-      items: ["sdk/mpc-core-kit/providers/providers", "sdk/mpc-core-kit/providers/evm"],
+      items: [
+        "sdk/mpc-core-kit/mpc-core-kit-js/providers/providers",
+        "sdk/mpc-core-kit/mpc-core-kit-js/providers/evm",
+      ],
     },
     {
       type: "link",

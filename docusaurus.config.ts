@@ -121,7 +121,7 @@ const config: Config = {
         },
         {
           label: "Examples",
-          to: "/Examples",
+          to: "/examples",
           position: "left",
         },
         {

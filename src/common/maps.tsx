@@ -1988,7 +1988,7 @@ export const coreKitMPCWebExamples: ExamplesInterface[] = [
     id: "mpc-core-kit-solana",
     githubLink:
       "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/mpc-core-kit-web/mpc-core-kit-solana",
-    guideLink: "https://web3auth.io/docs/sdk/mpc-core-kit/signing#solana",
+    guideLink: "https://web3auth.io/docs/sdk/mpc-core-kit/mpc-core-kit-js/signing#solana",
   },
 ];
 export const coreKitMPCReactNativeExamples: ExamplesInterface[] = [
