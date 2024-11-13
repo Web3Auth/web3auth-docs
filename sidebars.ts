@@ -1350,6 +1350,7 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       label: "Additional Settings",
       items: [
+        "sdk/pnp/react-native/account-abstraction",
         "sdk/pnp/react-native/whitelabel",
         "sdk/pnp/react-native/custom-authentication",
         "sdk/pnp/react-native/mfa",
@@ -1362,6 +1363,7 @@ const sidebars: SidebarsConfig = {
       items: [
         "sdk/pnp/react-native/providers/providers",
         "sdk/pnp/react-native/providers/evm",
+        "sdk/pnp/react-native/providers/aa-provider",
         "sdk/pnp/react-native/providers/solana",
         "sdk/pnp/react-native/providers/xrpl",
         "sdk/pnp/react-native/providers/common",
@@ -1530,13 +1532,25 @@ const sidebars: SidebarsConfig = {
     "sdk/sfa/sfa-js/authentication",
     "sdk/sfa/sfa-js/usage",
     "sdk/sfa/sfa-js/examples",
-    "sdk/sfa/sfa-js/passkeys-sfa",
+    {
+      type: "category",
+      collapsible: true,
+      collapsed: false,
+      label: "Additional Settings",
+      items: [
+        "sdk/sfa/sfa-js/passkeys-sfa",
+        "sdk/sfa/sfa-js/account-abstraction",
+        "sdk/sfa/sfa-js/initiate-topup",
+        "sdk/sfa/sfa-js/show-wallet-connect",
+      ],
+    },
     {
       type: "category",
       label: "Providers",
       items: [
         "sdk/sfa/sfa-js/providers/providers",
         "sdk/sfa/sfa-js/providers/evm",
+        "sdk/sfa/sfa-js/providers/aa-provider",
         "sdk/sfa/sfa-js/providers/solana",
         "sdk/sfa/sfa-js/providers/xrpl",
         "sdk/sfa/sfa-js/providers/common",
@@ -1544,7 +1558,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "category",
-      label: "Plugins",
+      label: "Wallet Services Plugin",
       items: [
         "sdk/sfa/sfa-js/wallet-services/wallet-services",
         "sdk/sfa/sfa-js/wallet-services/usage",
