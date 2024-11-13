@@ -38,9 +38,17 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.createVerifier,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.SFA_WEB_REACT_APP_TSX,
-        files[hostedFileLinks.SFA_WEB_REACT_APP_TSX],
+        hostedFileLinks.SFA_WEB_ANGULAR_APP_COMPONENT_TS,
+        files[hostedFileLinks.SFA_WEB_ANGULAR_APP_COMPONENT_TS],
         "Verifier Creation",
+      ),
+    },
+    {
+      ...STEPS.chainConfig,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.SFA_WEB_ANGULAR_APP_COMPONENT_TS,
+        files[hostedFileLinks.SFA_WEB_ANGULAR_APP_COMPONENT_TS],
+        "Chain Config",
       ),
     },
     {
@@ -54,8 +62,8 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.authProviderLogin,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.SFA_WEB_REACT_APP_TSX,
-        files[hostedFileLinks.SFA_WEB_REACT_APP_TSX],
+        hostedFileLinks.SFA_WEB_ANGULAR_APP_COMPONENT_TS,
+        files[hostedFileLinks.SFA_WEB_ANGULAR_APP_COMPONENT_TS],
         "Auth Provider Login",
       ),
     },

@@ -38,9 +38,17 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.createVerifier,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX,
-        files[hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX],
+        hostedFileLinks.MPC_CORE_KIT_WEB_VUE_HOME_VUE,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_VUE_HOME_VUE],
         "Verifier Creation",
+      ),
+    },
+    {
+      ...STEPS.chainConfig,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_WEB_VUE_HOME_VUE,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_VUE_HOME_VUE],
+        "Chain Config",
       ),
     },
     {
@@ -54,8 +62,8 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.authProviderLogin,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX,
-        files[hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX],
+        hostedFileLinks.MPC_CORE_KIT_WEB_VUE_HOME_VUE,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_VUE_HOME_VUE],
         "Auth Provider Login",
       ),
     },
@@ -84,26 +92,26 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
-      ...STEPS.enableMFA,
+      ...STEPS.socialRecoveryFactor,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX,
-        files[hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX],
-        "Enable Multi Factor Authentication",
+        hostedFileLinks.MPC_CORE_KIT_WEB_VUE_HOME_VUE,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_VUE_HOME_VUE],
+        "Export Social Account Factor",
       ),
     },
     {
-      ...STEPS.socialRecoveryFactor,
+      ...STEPS.enableMFA,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.MPC_CORE_KIT_REACT_NATIVE_APP_TSX],
-        "Export Social Account Factor",
+        hostedFileLinks.MPC_CORE_KIT_WEB_VUE_HOME_VUE,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_VUE_HOME_VUE],
+        "Enable Multi Factor Authentication",
       ),
     },
     {
       ...STEPS.recoverAccount,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX,
-        files[hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX],
+        hostedFileLinks.MPC_CORE_KIT_WEB_VUE_HOME_VUE,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_VUE_HOME_VUE],
         "Recover MFA Enabled Account",
       ),
     },

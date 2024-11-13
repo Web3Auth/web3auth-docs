@@ -8,6 +8,9 @@ const framework = {
     getSteps(steps, files, replacementAggregator);
     filenames.push(hostedFileLinks.MPC_CORE_KIT_WEB_NEXT_PAGE_TSX);
     filenames.push(hostedFileLinks.MPC_CORE_KIT_WEB_NEXT_PACKAGE_JSON);
+    filenames.push(hostedFileLinks.ETHERSRPC_TS);
+    filenames.push(hostedFileLinks.VIEMRPC_TS);
+    filenames.push(hostedFileLinks.WEB3RPC_TS);
 
     return { filenames, files, steps };
   },

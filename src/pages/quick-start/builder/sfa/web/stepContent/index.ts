@@ -16,6 +16,7 @@ import * as htmlQuickStart from "./sfaWebHTMLQuickStart.mdx";
 import * as nextQuickStart from "./sfaWebNextQuickStart.mdx";
 import * as reactQuickStart from "./sfaWebReactQuickStart.mdx";
 import * as vueQuickStart from "./sfaWebVueQuickStart.mdx";
+import * as chainConfig from "../../../../commonSteps/chainConfig.mdx";
 
 const STEPS = toSteps({
   reactQuickStart,
@@ -35,6 +36,7 @@ const STEPS = toSteps({
   vueBundlerIssues,
   angularBundlerIssues,
   htmlQuickStart,
+  chainConfig,
 });
 
 export default STEPS;

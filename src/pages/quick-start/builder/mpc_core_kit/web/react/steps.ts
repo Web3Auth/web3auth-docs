@@ -22,8 +22,8 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.reactBundlerIssues,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_WEB_REACT_CONFIG_OVERRIDES,
-        files[hostedFileLinks.MPC_CORE_KIT_WEB_REACT_CONFIG_OVERRIDES],
+        hostedFileLinks.MPC_CORE_KIT_WEB_REACT_VITE_CONFIG,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_REACT_VITE_CONFIG],
         "Bundler Issues",
       ),
     },
@@ -41,6 +41,14 @@ export default function getSteps(steps, files, replacementAggregator) {
         hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX,
         files[hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX],
         "Verifier Creation",
+      ),
+    },
+    {
+      ...STEPS.chainConfig,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX],
+        "Chain Config",
       ),
     },
     {
@@ -84,19 +92,19 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
-      ...STEPS.enableMFA,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX,
-        files[hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX],
-        "Enable Multi Factor Authentication",
-      ),
-    },
-    {
       ...STEPS.socialRecoveryFactor,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX,
         files[hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX],
         "Export Social Account Factor",
+      ),
+    },
+    {
+      ...STEPS.enableMFA,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX],
+        "Enable Multi Factor Authentication",
       ),
     },
     {

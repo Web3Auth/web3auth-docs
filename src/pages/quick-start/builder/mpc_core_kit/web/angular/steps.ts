@@ -38,9 +38,17 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.createVerifier,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX,
-        files[hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX],
+        hostedFileLinks.MPC_CORE_KIT_WEB_ANGULAR_APP_COMPONENT_TS,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_ANGULAR_APP_COMPONENT_TS],
         "Verifier Creation",
+      ),
+    },
+    {
+      ...STEPS.chainConfig,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_WEB_ANGULAR_APP_COMPONENT_TS,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_ANGULAR_APP_COMPONENT_TS],
+        "Chain Config",
       ),
     },
     {
@@ -54,8 +62,8 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.authProviderLogin,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX,
-        files[hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX],
+        hostedFileLinks.MPC_CORE_KIT_WEB_ANGULAR_APP_COMPONENT_TS,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_ANGULAR_APP_COMPONENT_TS],
         "Auth Provider Login",
       ),
     },
@@ -84,19 +92,19 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
-      ...STEPS.enableMFA,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_WEB_ANGULAR_APP_COMPONENT_TS,
-        files[hostedFileLinks.MPC_CORE_KIT_WEB_ANGULAR_APP_COMPONENT_TS],
-        "Enable Multi Factor Authentication",
-      ),
-    },
-    {
       ...STEPS.socialRecoveryFactor,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.MPC_CORE_KIT_WEB_ANGULAR_APP_COMPONENT_TS,
         files[hostedFileLinks.MPC_CORE_KIT_WEB_ANGULAR_APP_COMPONENT_TS],
         "Export Social Account Factor",
+      ),
+    },
+    {
+      ...STEPS.enableMFA,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_WEB_ANGULAR_APP_COMPONENT_TS,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_ANGULAR_APP_COMPONENT_TS],
+        "Enable Multi Factor Authentication",
       ),
     },
     {

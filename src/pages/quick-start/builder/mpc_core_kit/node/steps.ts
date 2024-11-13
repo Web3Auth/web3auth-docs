@@ -36,6 +36,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.chainConfig,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_NODE_INDEX_JS,
+        files[hostedFileLinks.MPC_CORE_KIT_NODE_INDEX_JS],
+        "Chain Config",
+      ),
+    },
+    {
       ...STEPS.initialization,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.MPC_CORE_KIT_NODE_INDEX_JS,
@@ -57,6 +65,46 @@ export default function getSteps(steps, files, replacementAggregator) {
         hostedFileLinks.MPC_CORE_KIT_NODE_INDEX_JS,
         files[hostedFileLinks.MPC_CORE_KIT_NODE_INDEX_JS],
         "Login",
+      ),
+    },
+    {
+      ...STEPS.getUserInfo,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_NODE_INDEX_JS,
+        files[hostedFileLinks.MPC_CORE_KIT_NODE_INDEX_JS],
+        "Get User Information",
+      ),
+    },
+    {
+      ...STEPS.blockchainCalls,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_NODE_INDEX_JS,
+        files[hostedFileLinks.MPC_CORE_KIT_NODE_INDEX_JS],
+        "Blockchain Calls",
+      ),
+    },
+    {
+      ...STEPS.socialRecoveryFactor,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_NODE_INDEX_JS,
+        files[hostedFileLinks.MPC_CORE_KIT_NODE_INDEX_JS],
+        "Export Social Account Factor",
+      ),
+    },
+    {
+      ...STEPS.enableMFA,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_NODE_INDEX_JS,
+        files[hostedFileLinks.MPC_CORE_KIT_NODE_INDEX_JS],
+        "Enable Multi Factor Authentication",
+      ),
+    },
+    {
+      ...STEPS.logout,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_NODE_INDEX_JS,
+        files[hostedFileLinks.MPC_CORE_KIT_NODE_INDEX_JS],
+        "Logout",
       ),
     },
   );

@@ -22,8 +22,8 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.reactBundlerIssues,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.SFA_WEB_REACT_CONFIG_OVERRIDES,
-        files[hostedFileLinks.SFA_WEB_REACT_CONFIG_OVERRIDES],
+        hostedFileLinks.SFA_WEB_REACT_VITE_CONFIG,
+        files[hostedFileLinks.SFA_WEB_REACT_VITE_CONFIG],
         "Bundler Issues",
       ),
     },
@@ -41,6 +41,14 @@ export default function getSteps(steps, files, replacementAggregator) {
         hostedFileLinks.SFA_WEB_REACT_APP_TSX,
         files[hostedFileLinks.SFA_WEB_REACT_APP_TSX],
         "Verifier Creation",
+      ),
+    },
+    {
+      ...STEPS.chainConfig,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.SFA_WEB_REACT_APP_TSX,
+        files[hostedFileLinks.SFA_WEB_REACT_APP_TSX],
+        "Chain Config",
       ),
     },
     {

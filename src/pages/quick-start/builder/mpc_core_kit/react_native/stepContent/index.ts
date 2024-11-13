@@ -7,7 +7,6 @@ import * as reactBundlerIssues from "../../../../commonSteps/reactBundlerIssues.
 import * as registerApp from "../../../../commonSteps/registerApp.mdx";
 import * as vueBundlerIssues from "../../../../commonSteps/vueBundlerIssues.mdx";
 import { toSteps } from "../../../../utils";
-import * as enableMFA from "./enableMFA.mdx";
 import * as initialization from "./initializeMPCCK.mdx";
 import * as reactNativeBundlerIssues from "../../../../commonSteps/reactNativeBundlerIssues.mdx";
 import * as installation from "./installationMPCCK.mdx";
@@ -18,10 +17,12 @@ import * as nextQuickStart from "./mpcckNextQuickStart.mdx";
 import * as reactQuickStart from "./mpcckReactQuickStart.mdx";
 import * as rnQuickStart from "./mpcckReactNativeQuickStart.mdx";
 import * as vueQuickStart from "./mpcckVueQuickStart.mdx";
-import * as recoverAccount from "./recoverAccount.mdx";
 import * as requirementsAndroid from "./requirementsAndroid.mdx";
 import * as requirementsIOS from "./requirementsIOS.mdx";
-import * as socialRecoveryFactor from "./socialRecoveryFactor.mdx";
+import * as chainConfig from "./chainConfigMPC.mdx";
+import * as enableMFA from "../../../../commonSteps/enableMFAMPC.mdx";
+import * as recoverAccount from "../../../../commonSteps/recoverAccount.mdx";
+import * as socialRecoveryFactor from "../../../../commonSteps/socialRecoveryFactor.mdx";
 
 const STEPS = toSteps({
   recoverAccount,
@@ -35,6 +36,7 @@ const STEPS = toSteps({
   authProviderLogin,
   initialization,
   login,
+  chainConfig,
   getUserInfo,
   blockchainCalls,
   logout,

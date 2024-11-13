@@ -52,6 +52,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.chainConfig,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.SFA_REACT_NATIVE_APP_TSX,
+        files[hostedFileLinks.SFA_REACT_NATIVE_APP_TSX],
+        "Chain Config",
+      ),
+    },
+    {
       ...STEPS.createVerifier,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.SFA_REACT_NATIVE_APP_TSX,

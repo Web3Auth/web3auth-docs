@@ -49,6 +49,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     getDefaultBuilderOptions(),
   );
   const [isLinkCopied, setLinkCopied] = useState<boolean>(false);
+  const [IBCountdown, setIBCountdown] = useState<number>(5);
   const [builderView, setBuilderView] = useState<boolean>(true);
   const [showPreviewModal, setShowPreviewModal] = useState<boolean>(false);
   const url = new URL(getWindowLocation());
@@ -167,6 +168,15 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
       window.location.href = `#step-${stepIndex}`;
     }
   }, []);
+
+  useEffect(() => {
+    if (IBCountdown > 0) {
+      setTimeout(() => setIBCountdown(IBCountdown - 1), 1000);
+    }
+    if (IBCountdown === 0) {
+      toggleBuilderView();
+    }
+  }, [IBCountdown]);
 
   const optionRender = (key, option) => {
     switch (option.type) {
@@ -322,7 +332,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
             <button className={styles.hideButton} onClick={toggleBuilderView} type="button">
               {builderView ? (
                 <>
-                  Hide
+                  Hide {IBCountdown ? `in ${IBCountdown}s` : ""}
                   <svg
                     width="20"
                     height="21"
@@ -364,7 +374,6 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
             <div className={styles.builderContainer}>
               {Object.entries(builder.options).map(([key, option]) => optionRender(key, option))}
             </div>
-
             <div className={styles.utilityButtonsContainer}>
               {integration.embedLink && (
                 <button

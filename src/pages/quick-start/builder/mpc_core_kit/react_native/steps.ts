@@ -60,6 +60,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.chainConfig,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_WEB_VUE_HOME_VUE,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_VUE_HOME_VUE],
+        "Chain Config",
+      ),
+    },
+    {
       ...STEPS.initialization,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.MPC_CORE_KIT_REACT_NATIVE_APP_TSX,
@@ -100,19 +108,19 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
-      ...STEPS.enableMFA,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_REACT_NATIVE_APP_TSX,
-        files[hostedFileLinks.MPC_CORE_KIT_REACT_NATIVE_APP_TSX],
-        "Enable Multi Factor Authentication",
-      ),
-    },
-    {
       ...STEPS.socialRecoveryFactor,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.MPC_CORE_KIT_REACT_NATIVE_APP_TSX,
         files[hostedFileLinks.MPC_CORE_KIT_REACT_NATIVE_APP_TSX],
         "Export Social Account Factor",
+      ),
+    },
+    {
+      ...STEPS.enableMFA,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_REACT_NATIVE_APP_TSX,
+        files[hostedFileLinks.MPC_CORE_KIT_REACT_NATIVE_APP_TSX],
+        "Enable Multi Factor Authentication",
       ),
     },
     {

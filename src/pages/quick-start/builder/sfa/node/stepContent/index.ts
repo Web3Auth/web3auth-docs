@@ -9,6 +9,7 @@ import * as initialization from "./initializeReactNative.mdx";
 import * as installation from "./installationReactNative.mdx";
 import * as login from "./login.mdx";
 import * as nodeQuickStart from "./nodeQuickStart.mdx";
+import * as chainConfig from "../../../../commonSteps/chainConfig.mdx";
 
 const STEPS = toSteps({
   nodeQuickStart,
@@ -21,6 +22,7 @@ const STEPS = toSteps({
   login,
   getUserInfo,
   blockchainCalls,
+  chainConfig,
 });
 
 export default STEPS;

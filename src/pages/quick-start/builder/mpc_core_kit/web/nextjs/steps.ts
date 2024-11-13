@@ -30,9 +30,17 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.createVerifier,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX,
-        files[hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX],
+        hostedFileLinks.MPC_CORE_KIT_WEB_NEXT_PAGE_TSX,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_NEXT_PAGE_TSX],
         "Verifier Creation",
+      ),
+    },
+    {
+      ...STEPS.chainConfig,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_WEB_NEXT_PAGE_TSX,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_NEXT_PAGE_TSX],
+        "Chain Config",
       ),
     },
     {
@@ -46,8 +54,8 @@ export default function getSteps(steps, files, replacementAggregator) {
     {
       ...STEPS.authProviderLogin,
       pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX,
-        files[hostedFileLinks.MPC_CORE_KIT_WEB_REACT_APP_TSX],
+        hostedFileLinks.MPC_CORE_KIT_WEB_NEXT_PAGE_TSX,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_NEXT_PAGE_TSX],
         "Auth Provider Login",
       ),
     },
@@ -76,19 +84,19 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
-      ...STEPS.enableMFA,
-      pointer: replacementAggregator.highlightRange(
-        hostedFileLinks.MPC_CORE_KIT_WEB_NEXT_PAGE_TSX,
-        files[hostedFileLinks.MPC_CORE_KIT_WEB_NEXT_PAGE_TSX],
-        "Enable Multi Factor Authentication",
-      ),
-    },
-    {
       ...STEPS.socialRecoveryFactor,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.MPC_CORE_KIT_WEB_NEXT_PAGE_TSX,
         files[hostedFileLinks.MPC_CORE_KIT_WEB_NEXT_PAGE_TSX],
         "Export Social Account Factor",
+      ),
+    },
+    {
+      ...STEPS.enableMFA,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MPC_CORE_KIT_WEB_NEXT_PAGE_TSX,
+        files[hostedFileLinks.MPC_CORE_KIT_WEB_NEXT_PAGE_TSX],
+        "Enable Multi Factor Authentication",
       ),
     },
     {
