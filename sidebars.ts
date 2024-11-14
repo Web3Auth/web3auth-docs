@@ -587,6 +587,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "BitKub",
+              items: [
+                "connect-blockchain/evm/bitkub/bitkub",
+                "connect-blockchain/evm/bitkub/web",
+                "connect-blockchain/evm/bitkub/android",
+                "connect-blockchain/evm/bitkub/ios",
+                "connect-blockchain/evm/bitkub/react-native",
+                "connect-blockchain/evm/bitkub/flutter",
+                "connect-blockchain/evm/bitkub/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "BNB Chain",
               items: [
                 "connect-blockchain/evm/bnb/bnb",
