@@ -43,7 +43,12 @@ export const tileGroupsData = [
         icon: "logo-binance.png",
         path: "./connect-blockchain/bnb",
       },
-
+      {
+        key: "bitkub",
+        title: "BitKub",
+        icon: "logo-bitkub.png",
+        path: "./connect-blockchain/bitkub",
+      },
       {
         key: "avalanche",
         title: "Avalanche",
