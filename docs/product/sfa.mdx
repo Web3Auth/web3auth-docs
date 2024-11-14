@@ -1,0 +1,74 @@
+---
+title: Single Factor Auth SDKs
+sidebar_label: Single Factor Auth
+description: "Single Factor Auth | Documentation - Web3Auth"
+---
+
+import TkeyIntroduction from "@site/src/common/docs/_tkey-intro.mdx";
+
+import SFAInfraDark from "@site/static/images/sfa-infra-dark.png";
+import SFAInfraLight from "@site/static/images/sfa-infra-light.png";
+
+Single Factor Auth(SFA) provides the most seamless Web3 onboarding experience possible by making it
+feel completely like Web2. Users can access your application with just one click through their
+existing social accounts or passwordless methods, while Web3Auth works invisibly in the background
+to generate their wallet. There's no redirection - everything happens within your application
+interface, making it feel native and familiar to all users Web2/ Web3 alike.
+
+## How Single Factor Auth Works
+
+The authentication flow is straightforward yet secure:
+
+1. Users click to login with their preferred method (social login, email, biometrics etc.), hosted
+   by the application itself
+2. Web3Auth silently generates a wallet using Shamir's Secret Sharing
+3. The private key is split into shares, distributed across the Web3Auth Auth Network (using a 5/9
+   consensus mechanism) and derived from the user's identity after authentication.
+4. The complete wallet is reconstructed within your application environment
+
+The diagram below illustrates how Web3Auth's SFA infrastructure seamlessly integrates within your
+application:
+
+<picture>
+  <source srcset={SFAInfraLight} media="(prefers-color-scheme: light)" />
+  <source srcset={SFAInfraDark} media="(prefers-color-scheme: dark)" />
+  <img
+    src={SFAInfraLight}
+    style={{ display: "block", maxHeight: "600px", margin: "20px auto" }}
+    alt="This diagram describes the relationship between the Web3Auth SDK and integrating application"
+  />
+</picture>
+
+:::info
+
+This 1/1 key share setup, while simple, maintains security through Web3Auth's distributed network.
+The process is semi-custodial since it relies on OAuth provider credentials, but users can upgrade
+to full non-custodial security by activating Multi-Factor Authentication (MFA) which introduces a
+2/3 key share setup.
+
+:::
+
+## Key Features
+
+- **Full UI Control:** Build custom login interfaces and authentication flows that match your brand
+  identity perfectly.
+
+- **Direct Integration:** Manage wallet infrastructure directly in your application without external
+  dependencies.
+
+- **No Redirects:** Keep users in your app - no redirects to external auth pages needed.
+
+- **Multi-Platform:** Available for Web, React Native, iOS, Android and Flutter applications.
+
+- **Comprehensive Authentication:** Support for social logins (Google, Twitter, etc.) plus
+  passwordless options including SMS, email, authenticator apps, and passkeys. Extend your existing
+  auth system seamlessly.
+
+- **Native Account Abstraction:** Built-in support for smart contract wallets and gasless
+  transactions across multiple chains.
+
+- **Complete Wallet Services:** Access fiat on-ramps, token swaps, NFT displays, transaction
+  history, and more through our pre-built wallet UI components.
+
+- **WalletConnect Integration:** Enable seamless interoperability with the broader Web3 ecosystem
+  through native WalletConnect support.

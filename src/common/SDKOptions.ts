@@ -17,8 +17,8 @@ export const nodejs = "Node.js";
 export const weblist = [reactJS, angular, vue, nextjs];
 
 export const pnp = "Plug and Play";
-export const walletecosystems = "Wallet Ecosystems";
-export const helpersdks = "Helper SDKs";
+export const sfa = "Single Factor Auth";
+export const infra = "Infra SDKs";
 export const pnpwebmodal = "Plug and Play Web Modal";
 export const pnpwebnomodal = "Plug and Play Web No Modal";
 export const pnpandroid = "Plug and Play Android";
@@ -38,31 +38,32 @@ export const pnplist = [
   { label: "Unreal", value: pnpunreal, platforms: [unreal] },
 ];
 
-export const corekit = "Core Kit";
-export const corekitsfa = "Core Kit SFA";
-export const corekitmfa = "Core Kit MFA";
+export const mpccorekit = "MPC Core Kit";
 export const tkeyjs = "tKey JS";
 export const tkeyios = "tKey iOS";
 export const tkeyandroid = "tKey Android";
-export const singlefactorauth = "SFA Web";
+export const singlefactorauth = "Single Factor Auth";
+export const singlefactorauthjs = "SFA JS";
 export const singlefactorauthandroid = "SFA Android";
 export const singlefactorauthios = "SFA Swift";
-export const singlefactorauthrn = "SFA React Native";
 export const singlefactorauthflutter = "SFA Flutter";
-export const corekitnodejs = "SFA Node.js";
-export const mpccorekit = "MPC Core Kit JS";
+export const mpccorekitjs = "MPC Core Kit JS";
 
-export const corekitlist = [
-  { label: "tKey JS", value: tkeyjs, platforms: [reactJS, reactnative] },
-  { label: "MPC Core Kit", value: mpccorekit, platforms: [...weblist] },
-  { label: "tKey Android", value: tkeyandroid, platforms: [android] },
-  { label: "tKey iOS", value: tkeyios, platforms: [ios] },
-  { label: "SFA Web", value: singlefactorauth, platforms: [...weblist] },
-  { label: "SFA Node.js", value: corekitnodejs, platforms: [nodejs] },
+export const sfalist = [
+  { label: "SFA JS", value: singlefactorauthjs, platforms: [...weblist, reactnative, nodejs] },
   { label: "SFA Android", value: singlefactorauthandroid, platforms: [android] },
   { label: "SFA Swift", value: singlefactorauthios, platforms: [ios, macOS] },
-  { label: "SFA React Native", value: singlefactorauthrn, platforms: [...rnlist] },
   { label: "SFA Flutter", value: singlefactorauthflutter, platforms: [flutter] },
+];
+
+export const mpccorekitlist = [
+  { label: "MPC Core Kit", value: mpccorekit, platforms: [...weblist, reactnative, nodejs] },
+];
+
+export const infralist = [
+  { label: "tKey JS", value: tkeyjs, platforms: [reactJS, reactnative] },
+  { label: "tKey Android", value: tkeyandroid, platforms: [android] },
+  { label: "tKey iOS", value: tkeyios, platforms: [ios] },
 ];
 
 const getWindowLocation = () => {

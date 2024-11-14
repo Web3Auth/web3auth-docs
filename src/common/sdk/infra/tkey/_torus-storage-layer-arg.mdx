@@ -1,0 +1,42 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+The `@tkey/storage-layer-torus` is a the package that helps you configure the metadata server url
+for tKey configuration. It contains the following parameters:
+
+#### `TorusStorageLayerArgs`
+
+The `TorusStorageLayerArgs` object is the mandatory object needed to be passed within the
+`TorusStorageLayer` constructor. It contains the following parameters:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter           | Type      | Description                                                                         | Mandatory |
+| ------------------- | --------- | ----------------------------------------------------------------------------------- | --------- |
+| `enableLogging?`    | `boolean` | This option is used to specify whether to enable logging.                           | No        |
+| `hostUrl?`          | `string`  | URL on which the metadata is hosted. We recommend using `"https://metadata.tor.us"` | No        |
+| `serverTimeOffset?` | `number`  | Time offset to account for delay in information received from the metadata          | No        |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export type TorusStorageLayerArgs = {
+  enableLogging?: boolean;
+  hostUrl?: string;
+  serverTimeOffset?: number;
+};
+```
+
+</TabItem>
+
+</Tabs>

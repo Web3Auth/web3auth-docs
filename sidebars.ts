@@ -8,16 +8,11 @@ import {
   flutter,
   unity,
   unreal,
-  corekitnodejs,
-  mpccorekit,
-  singlefactorauth,
+  mpccorekitjs,
+  singlefactorauthjs,
   singlefactorauthandroid,
   singlefactorauthflutter,
   singlefactorauthios,
-  singlefactorauthrn,
-  tkeyandroid,
-  tkeyios,
-  tkeyjs,
 } from "./src/common/SDKOptions";
 
 import { getPnPVersion, getCoreKitVersion } from "./src/common/versions";
@@ -58,28 +53,25 @@ function pnpTopNavButton(selectedSDK: string): string {
           v${sdkVersion}
         </div>
       </div>
-      <a class="sdk-sidebar-option" href="${baseUrl}sdk/core-kit/sfa-web">
-        Core Kit SDKs
-        <span class="sdk-sidebar-description">Low Level SDKs where Web3Auth is Completely Hidden</span>
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/sfa/sfa-js">
+        Single Factor Auth SDKs
+        <span class="sdk-sidebar-description">One click login, without redirection, all natively within your app.</span>
+      </a>
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mpc-core-kit/mpc-core-kit-js">
+        MPC Core Kit SDK
+        <span class="sdk-sidebar-description">Build your own MPC wallet with Web3Auth Infra layer SDK</span>
       </a>
     </div>`;
 }
 
-function coreKitTopNavButton(selectedSDK: string): string {
+function sfaTopNavButton(selectedSDK: string): string {
   const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
 
   var coreKitSDKs = {
-    [singlefactorauth]: `${baseUrl}sdk/core-kit/sfa-web`,
-    [singlefactorauthandroid]: `${baseUrl}sdk/core-kit/sfa-android`,
-    [singlefactorauthios]: `${baseUrl}sdk/core-kit/sfa-ios`,
-    [singlefactorauthrn]: `${baseUrl}sdk/core-kit/sfa-react-native`,
-    [singlefactorauthflutter]: `${baseUrl}sdk/core-kit/sfa-flutter`,
-    [corekitnodejs]: `${baseUrl}sdk/core-kit/sfa-node`,
-    [mpccorekit]: `${baseUrl}sdk/core-kit/mpc-core-kit`,
-    [tkeyjs]: `${baseUrl}sdk/core-kit/tkey`,
-    [tkeyandroid]: `${baseUrl}sdk/core-kit/tkey-android`,
-    [tkeyios]: `${baseUrl}sdk/core-kit/tkey-ios`,
-    // "tKey iOS MPC": `${baseUrl}sdk/core-kit/mpc-tkey-ios`,
+    [singlefactorauthjs]: `${baseUrl}sdk/sfa/sfa`,
+    [singlefactorauthandroid]: `${baseUrl}sdk/sfa/sfa-android`,
+    [singlefactorauthios]: `${baseUrl}sdk/sfa/sfa-ios`,
+    [singlefactorauthflutter]: `${baseUrl}sdk/sfa/sfa-flutter`,
   };
   if (coreKitSDKs.hasOwnProperty(selectedSDK)) {
     delete coreKitSDKs[selectedSDK];
@@ -92,25 +84,44 @@ function coreKitTopNavButton(selectedSDK: string): string {
     <div class="sdk-sidebar-container">
       <a class="sdk-sidebar-option" href="${baseUrl}sdk/pnp/web">
         Plug and Play SDKs
-        <span class="sdk-sidebar-description">Embedded Wallets with Prebuilt UI Components</span>
+        <span class="sdk-sidebar-description">Integrate Web3Auth with 4 lines of code.</span>
       </a>
       <div class="sdk-sidebar-option-selected">
-        Core Kit SDKs
+        Single Factor Auth SDKs
                 <div class="sdk-sidebar-dropdown-container">
         <select class="sdk-sidebar-dropdown" onchange="location.href=this.value">
             <option value="">${selectedSDK}</option>
             <option value="${sdkLinks[0]}">${sdkNames[0]}</option>
             <option value="${sdkLinks[1]}">${sdkNames[1]}</option>
             <option value="${sdkLinks[2]}">${sdkNames[2]}</option>
-            <option value="${sdkLinks[3]}">${sdkNames[3]}</option>
-            <option value="${sdkLinks[4]}">${sdkNames[4]}</option>
-            <option value="${sdkLinks[5]}">${sdkNames[5]}</option>
-            <option value="${sdkLinks[6]}">${sdkNames[6]}</option>
-            <option value="${sdkLinks[7]}">${sdkNames[7]}</option>
-            <option value="${sdkLinks[8]}">${sdkNames[8]}</option>
         </select>
                   v${sdkVersion}
                   </div>
+      </div>
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mpc-core-kit">
+        MPC Core Kit SDK
+        <span class="sdk-sidebar-description">Build your own MPC wallet with Web3Auth Infra layer SDK</span>
+      </a>
+    </div>`;
+}
+
+function mpcckTopNavButton(): string {
+  const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
+  var sdkVersion = getCoreKitVersion(mpccorekitjs);
+
+  return `
+    <div class="sdk-sidebar-container">
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/pnp/web">
+        Plug and Play SDKs
+        <span class="sdk-sidebar-description">Integrate Web3Auth with 4 lines of code.</span>
+      </a>
+       <a class="sdk-sidebar-option" href="${baseUrl}sdk/sfa/sfa-js">
+        Single Factor Auth SDKs
+        <span class="sdk-sidebar-description">One click login, without redirection, all natively within your app.</span>
+      </a>
+      <div class="sdk-sidebar-option-selected">
+        MPC Core Kit SDK - v${sdkVersion}
+        <span class="sdk-sidebar-description">Build your own MPC wallet with Web3Auth Infra layer SDK</span>
       </div>
     </div>`;
 }
@@ -246,12 +257,13 @@ const sidebars: SidebarsConfig = {
           id: "product/product",
         },
         "product/pnp",
-        "product/core-kit",
+        "product/sfa",
+        "product/mpc-core-kit",
         "product/wallet-services",
         "product/wallet-ecosystems",
-        "product/product-fit",
       ],
     },
+    "product-fit",
     {
       type: "html",
       value: "<span class='sidebarHeading'>Features</span>",
@@ -271,6 +283,7 @@ const sidebars: SidebarsConfig = {
     "features/passkeys",
     "features/server-side-verification",
     "features/session-management",
+    "features/smart-accounts",
     "features/user-management",
     "features/wallet-pregeneration",
     "features/mipd",
@@ -570,6 +583,19 @@ const sidebars: SidebarsConfig = {
                 "connect-blockchain/evm/base/react-native",
                 "connect-blockchain/evm/base/flutter",
                 "connect-blockchain/evm/base/unity",
+              ],
+            },
+            {
+              type: "category",
+              label: "BitKub",
+              items: [
+                "connect-blockchain/evm/bitkub/bitkub",
+                "connect-blockchain/evm/bitkub/web",
+                "connect-blockchain/evm/bitkub/android",
+                "connect-blockchain/evm/bitkub/ios",
+                "connect-blockchain/evm/bitkub/react-native",
+                "connect-blockchain/evm/bitkub/flutter",
+                "connect-blockchain/evm/bitkub/unity",
               ],
             },
             {
@@ -1337,6 +1363,7 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       label: "Additional Settings",
       items: [
+        "sdk/pnp/react-native/account-abstraction",
         "sdk/pnp/react-native/whitelabel",
         "sdk/pnp/react-native/custom-authentication",
         "sdk/pnp/react-native/mfa",
@@ -1349,6 +1376,7 @@ const sidebars: SidebarsConfig = {
       items: [
         "sdk/pnp/react-native/providers/providers",
         "sdk/pnp/react-native/providers/evm",
+        "sdk/pnp/react-native/providers/aa-provider",
         "sdk/pnp/react-native/providers/solana",
         "sdk/pnp/react-native/providers/xrpl",
         "sdk/pnp/react-native/providers/common",
@@ -1378,6 +1406,7 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Migration Guides",
       items: [
+        "migration-guides/rn-v7-to-v8",
         "migration-guides/rn-v5-to-v6",
         "migration-guides/rn-v4-to-v5",
         "migration-guides/rn-v3-to-v4",
@@ -1507,34 +1536,46 @@ const sidebars: SidebarsConfig = {
   sdk_core_kit_sfa_web: [
     {
       type: "html",
-      value: coreKitTopNavButton(singlefactorauth),
+      value: sfaTopNavButton(singlefactorauthjs),
       defaultStyle: true,
     },
-    "sdk/core-kit/sfa-web/sfa-web",
-    "sdk/core-kit/sfa-web/install",
-    "sdk/core-kit/sfa-web/initialize",
-    "sdk/core-kit/sfa-web/authentication",
-    "sdk/core-kit/sfa-web/usage",
-    "sdk/core-kit/sfa-web/examples",
-    "sdk/core-kit/sfa-web/passkeys-sfa",
+    "sdk/sfa/sfa-js/sfa-js",
+    "sdk/sfa/sfa-js/install",
+    "sdk/sfa/sfa-js/initialize",
+    "sdk/sfa/sfa-js/authentication",
+    "sdk/sfa/sfa-js/usage",
+    "sdk/sfa/sfa-js/examples",
     {
       type: "category",
-      label: "Providers",
+      collapsible: true,
+      collapsed: false,
+      label: "Additional Settings",
       items: [
-        "sdk/core-kit/sfa-web/providers/providers",
-        "sdk/core-kit/sfa-web/providers/evm",
-        "sdk/core-kit/sfa-web/providers/solana",
-        "sdk/core-kit/sfa-web/providers/xrpl",
-        "sdk/core-kit/sfa-web/providers/common",
+        "sdk/sfa/sfa-js/passkeys-sfa",
+        "sdk/sfa/sfa-js/account-abstraction",
+        "sdk/sfa/sfa-js/initiate-topup",
+        "sdk/sfa/sfa-js/show-wallet-connect",
       ],
     },
     {
       type: "category",
-      label: "Plugins",
+      label: "Providers",
       items: [
-        "sdk/core-kit/sfa-web/wallet-services/wallet-services",
-        "sdk/core-kit/sfa-web/wallet-services/usage",
-        "sdk/core-kit/sfa-web/wallet-services/wallet-services-hooks",
+        "sdk/sfa/sfa-js/providers/providers",
+        "sdk/sfa/sfa-js/providers/evm",
+        "sdk/sfa/sfa-js/providers/aa-provider",
+        "sdk/sfa/sfa-js/providers/solana",
+        "sdk/sfa/sfa-js/providers/xrpl",
+        "sdk/sfa/sfa-js/providers/common",
+      ],
+    },
+    {
+      type: "category",
+      label: "Wallet Services Plugin",
+      items: [
+        "sdk/sfa/sfa-js/wallet-services/wallet-services",
+        "sdk/sfa/sfa-js/wallet-services/usage",
+        "sdk/sfa/sfa-js/wallet-services/wallet-services-hooks",
       ],
     },
     {
@@ -1545,7 +1586,7 @@ const sidebars: SidebarsConfig = {
     {
       type: "link",
       label: "Support Forum",
-      href: "https://web3auth.io/community/c/help-core-kit/core-kit-sfa-web/22",
+      href: "https://web3auth.io/community/c/help-core-kit/core-kit-sfa/22",
     },
     {
       type: "link",
@@ -1557,15 +1598,15 @@ const sidebars: SidebarsConfig = {
   sdk_core_kit_sfa_android: [
     {
       type: "html",
-      value: coreKitTopNavButton(singlefactorauthandroid),
+      value: sfaTopNavButton(singlefactorauthandroid),
       defaultStyle: true,
     },
-    "sdk/core-kit/sfa-android/sfa-android",
-    "sdk/core-kit/sfa-android/install",
-    "sdk/core-kit/sfa-android/initialize",
-    "sdk/core-kit/sfa-android/authentication",
-    "sdk/core-kit/sfa-android/usage",
-    "sdk/core-kit/sfa-android/examples",
+    "sdk/sfa/sfa-android/sfa-android",
+    "sdk/sfa/sfa-android/install",
+    "sdk/sfa/sfa-android/initialize",
+    "sdk/sfa/sfa-android/authentication",
+    "sdk/sfa/sfa-android/usage",
+    "sdk/sfa/sfa-android/examples",
     {
       type: "link",
       label: "Support Forum",
@@ -1580,6 +1621,7 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Migration Guides",
       items: [
+        "migration-guides/sfa-android-v1.2.0-to-v2.0.0",
         "migration-guides/sfa-android-v0.4.0-to-v1",
         "migration-guides/sfa-android-v0.1.0-to-v0.3.0",
       ],
@@ -1589,15 +1631,15 @@ const sidebars: SidebarsConfig = {
   sdk_core_kit_sfa_ios: [
     {
       type: "html",
-      value: coreKitTopNavButton(singlefactorauthios),
+      value: sfaTopNavButton(singlefactorauthios),
       defaultStyle: true,
     },
-    "sdk/core-kit/sfa-ios/sfa-ios",
-    "sdk/core-kit/sfa-ios/install",
-    "sdk/core-kit/sfa-ios/initialize",
-    "sdk/core-kit/sfa-ios/authentication",
-    "sdk/core-kit/sfa-ios/usage",
-    "sdk/core-kit/sfa-ios/examples",
+    "sdk/sfa/sfa-ios/sfa-ios",
+    "sdk/sfa/sfa-ios/install",
+    "sdk/sfa/sfa-ios/initialize",
+    "sdk/sfa/sfa-ios/authentication",
+    "sdk/sfa/sfa-ios/usage",
+    "sdk/sfa/sfa-ios/examples",
     {
       type: "link",
       label: "Support Forum",
@@ -1619,53 +1661,18 @@ const sidebars: SidebarsConfig = {
     },
     ...sdkQuickLinks,
   ],
-  sdk_core_kit_sfa_react_native: [
-    {
-      type: "html",
-      value: coreKitTopNavButton(singlefactorauthrn),
-      defaultStyle: true,
-    },
-    "sdk/core-kit/sfa-react-native/sfa-react-native",
-    "sdk/core-kit/sfa-react-native/install",
-    "sdk/core-kit/sfa-react-native/initialize",
-    "sdk/core-kit/sfa-react-native/authentication",
-    "sdk/core-kit/sfa-react-native/usage",
-    "sdk/core-kit/sfa-react-native/examples",
-    {
-      type: "category",
-      label: "Providers",
-      items: [
-        "sdk/core-kit/sfa-react-native/providers/providers",
-        "sdk/core-kit/sfa-react-native/providers/evm",
-        "sdk/core-kit/sfa-react-native/providers/solana",
-        "sdk/core-kit/sfa-react-native/providers/xrpl",
-        "sdk/core-kit/sfa-react-native/providers/common",
-      ],
-    },
-    {
-      type: "link",
-      label: "Support Forum",
-      href: "https://web3auth.io/community/c/help-core-kit/sfa-react-native-sdk/32",
-    },
-    {
-      type: "link",
-      label: "Release Notes",
-      href: "https://github.com/Web3Auth/single-factor-auth-react-native/releases",
-    },
-    ...sdkQuickLinks,
-  ],
   sdk_core_kit_sfa_flutter: [
     {
       type: "html",
-      value: coreKitTopNavButton(singlefactorauthflutter),
+      value: sfaTopNavButton(singlefactorauthflutter),
       defaultStyle: true,
     },
-    "sdk/core-kit/sfa-flutter/sfa-flutter",
-    "sdk/core-kit/sfa-flutter/install",
-    "sdk/core-kit/sfa-flutter/initialize",
-    "sdk/core-kit/sfa-flutter/authentication",
-    "sdk/core-kit/sfa-flutter/usage",
-    "sdk/core-kit/sfa-flutter/examples",
+    "sdk/sfa/sfa-flutter/sfa-flutter",
+    "sdk/sfa/sfa-flutter/install",
+    "sdk/sfa/sfa-flutter/initialize",
+    "sdk/sfa/sfa-flutter/authentication",
+    "sdk/sfa/sfa-flutter/usage",
+    "sdk/sfa/sfa-flutter/examples",
     {
       type: "link",
       label: "Support Forum",
@@ -1687,58 +1694,34 @@ const sidebars: SidebarsConfig = {
     },
     ...sdkQuickLinks,
   ],
-  sdk_core_kit_sfa_node: [
-    {
-      type: "html",
-      value: coreKitTopNavButton(corekitnodejs),
-      defaultStyle: true,
-    },
-    "sdk/core-kit/sfa-node/sfa-node",
-    "sdk/core-kit/sfa-node/install",
-    "sdk/core-kit/sfa-node/initialize",
-    "sdk/core-kit/sfa-node/authentication",
-    "sdk/core-kit/sfa-node/usage",
-    "sdk/core-kit/sfa-node/examples",
-    {
-      type: "link",
-      label: "Support Forum",
-      href: "https://web3auth.io/community/c/help-core-kit/core-kit-sfa-node/23",
-    },
-    {
-      type: "link",
-      label: "Release Notes",
-      href: "https://github.com/web3auth/web3auth-backend/releases",
-    },
-    ...sdkQuickLinks,
-  ],
   sdk_core_kit_mpc_js: [
     {
       type: "html",
-      value: coreKitTopNavButton(mpccorekit),
+      value: mpcckTopNavButton(),
       defaultStyle: true,
     },
-    "sdk/core-kit/mpc-core-kit/mpc-core-kit",
-    "sdk/core-kit/mpc-core-kit/install",
-    "sdk/core-kit/mpc-core-kit/initialize",
-    "sdk/core-kit/mpc-core-kit/initialize-rn",
+    "sdk/mpc-core-kit/mpc-core-kit-js/mpc-core-kit-js",
+    "sdk/mpc-core-kit/mpc-core-kit-js/install",
+    "sdk/mpc-core-kit/mpc-core-kit-js/initialize",
+    "sdk/mpc-core-kit/mpc-core-kit-js/initialize-rn",
     {
       type: "category",
       label: "Authentication",
       items: [
-        "sdk/core-kit/mpc-core-kit/authentication/authentication",
-        "sdk/core-kit/mpc-core-kit/authentication/login-jwt",
-        "sdk/core-kit/mpc-core-kit/authentication/login-oauth",
+        "sdk/mpc-core-kit/mpc-core-kit-js/authentication/authentication",
+        "sdk/mpc-core-kit/mpc-core-kit-js/authentication/login-jwt",
+        "sdk/mpc-core-kit/mpc-core-kit-js/authentication/login-oauth",
       ],
     },
-    "sdk/core-kit/mpc-core-kit/signing",
-    "sdk/core-kit/mpc-core-kit/usage",
-    "sdk/core-kit/mpc-core-kit/examples",
+    "sdk/mpc-core-kit/mpc-core-kit-js/signing",
+    "sdk/mpc-core-kit/mpc-core-kit-js/usage",
+    "sdk/mpc-core-kit/mpc-core-kit-js/examples",
     {
       type: "category",
       label: "Providers",
       items: [
-        "sdk/core-kit/mpc-core-kit/providers/providers",
-        "sdk/core-kit/mpc-core-kit/providers/evm",
+        "sdk/mpc-core-kit/mpc-core-kit-js/providers/providers",
+        "sdk/mpc-core-kit/mpc-core-kit-js/providers/evm",
       ],
     },
     {
@@ -1758,128 +1741,126 @@ const sidebars: SidebarsConfig = {
     },
     ...sdkQuickLinks,
   ],
-  sdk_core_kit_tkey_js: [
-    {
-      type: "html",
-      value: coreKitTopNavButton(tkeyjs),
-      defaultStyle: true,
-    },
-    "sdk/core-kit/tkey/tkey",
-    "sdk/core-kit/tkey/install",
-    "sdk/core-kit/tkey/initialize",
-    "sdk/core-kit/tkey/usage",
+  sdk_infra: [
     {
       type: "category",
-      label: "Modules",
-      collapsible: true,
-      collapsed: false,
+      label: "tKey JS SDK",
       items: [
-        "sdk/core-kit/tkey/modules/modules",
-        "sdk/core-kit/tkey/modules/web-storage",
-        "sdk/core-kit/tkey/modules/react-native-storage",
-        "sdk/core-kit/tkey/modules/chrome-storage",
-        "sdk/core-kit/tkey/modules/security-questions",
-        "sdk/core-kit/tkey/modules/share-transfer",
-        "sdk/core-kit/tkey/modules/share-serialization",
-        "sdk/core-kit/tkey/modules/seed-phrase",
-        "sdk/core-kit/tkey/modules/private-keys",
+        "sdk/infra/tkey/tkey",
+        "sdk/infra/tkey/install",
+        "sdk/infra/tkey/initialize",
+        "sdk/infra/tkey/usage",
+        {
+          type: "category",
+          label: "Modules",
+          collapsible: true,
+          collapsed: false,
+          items: [
+            "sdk/infra/tkey/modules/modules",
+            "sdk/infra/tkey/modules/web-storage",
+            "sdk/infra/tkey/modules/react-native-storage",
+            "sdk/infra/tkey/modules/chrome-storage",
+            "sdk/infra/tkey/modules/security-questions",
+            "sdk/infra/tkey/modules/share-transfer",
+            "sdk/infra/tkey/modules/share-serialization",
+            "sdk/infra/tkey/modules/seed-phrase",
+            "sdk/infra/tkey/modules/private-keys",
+          ],
+        },
+        {
+          type: "category",
+          label: "Additional Reading",
+          collapsible: true,
+          collapsed: false,
+          items: ["sdk/infra/tkey/implicit-flow"],
+        },
+        {
+          type: "link",
+          label: "Support Forum Web",
+          href: "https://web3auth.io/community/c/help-core-kit/core-kit-tkey/8",
+        },
+        {
+          type: "link",
+          label: "Support Forum React Native",
+          href: "https://web3auth.io/community/c/help-core-kit/tkey-react-native-sdk/29",
+        },
+        {
+          type: "link",
+          label: "Release Notes",
+          href: "https://github.com/tkey/tkey/releases",
+        },
+        {
+          type: "category",
+          label: "Migration Guides",
+          items: ["migration-guides/tkey-v11-to-v15"],
+        },
       ],
     },
     {
       type: "category",
-      label: "Additional Reading",
-      collapsible: true,
-      collapsed: false,
-      items: ["sdk/core-kit/tkey/implicit-flow"],
-    },
-    {
-      type: "link",
-      label: "Support Forum Web",
-      href: "https://web3auth.io/community/c/help-core-kit/core-kit-tkey/8",
-    },
-    {
-      type: "link",
-      label: "Support Forum React Native",
-      href: "https://web3auth.io/community/c/help-core-kit/tkey-react-native-sdk/29",
-    },
-    {
-      type: "link",
-      label: "Release Notes",
-      href: "https://github.com/tkey/tkey/releases",
-    },
-    {
-      type: "category",
-      label: "Migration Guides",
-      items: ["migration-guides/tkey-v11-to-v15"],
-    },
-    ...sdkQuickLinks,
-  ],
-  sdk_core_kit_tkey_ios: [
-    {
-      type: "html",
-      value: coreKitTopNavButton(tkeyios),
-      defaultStyle: true,
-    },
-    "sdk/core-kit/tkey-ios/tkey-ios",
-    "sdk/core-kit/tkey-ios/install",
-    "sdk/core-kit/tkey-ios/initialize",
-    "sdk/core-kit/tkey-ios/usage",
-    {
-      type: "category",
-      label: "Modules",
+      label: "tKey iOS SDK",
       items: [
-        "sdk/core-kit/tkey-ios/modules/modules",
-        "sdk/core-kit/tkey-ios/modules/private-keys",
-        "sdk/core-kit/tkey-ios/modules/security-questions",
-        "sdk/core-kit/tkey-ios/modules/seed-phrase",
-        "sdk/core-kit/tkey-ios/modules/share-serialization",
-        "sdk/core-kit/tkey-ios/modules/share-transfer",
+        "sdk/infra/tkey-ios/tkey-ios",
+        "sdk/infra/tkey-ios/install",
+        "sdk/infra/tkey-ios/initialize",
+        "sdk/infra/tkey-ios/usage",
+        {
+          type: "category",
+          label: "Modules",
+          items: [
+            "sdk/infra/tkey-ios/modules/modules",
+            "sdk/infra/tkey-ios/modules/private-keys",
+            "sdk/infra/tkey-ios/modules/security-questions",
+            "sdk/infra/tkey-ios/modules/seed-phrase",
+            "sdk/infra/tkey-ios/modules/share-serialization",
+            "sdk/infra/tkey-ios/modules/share-transfer",
+          ],
+        },
+        {
+          type: "link",
+          label: "Support Forum",
+          href: "https://web3auth.io/community/c/help-core-kit/core-kit-tkey-ios/27",
+        },
+        {
+          type: "link",
+          label: "Release Notes",
+          href: "https://github.com/tkey/tkey-ios/releases",
+        },
       ],
     },
     {
-      type: "link",
-      label: "Support Forum",
-      href: "https://web3auth.io/community/c/help-core-kit/core-kit-tkey-ios/27",
-    },
-    {
-      type: "link",
-      label: "Release Notes",
-      href: "https://github.com/tkey/tkey-ios/releases",
-    },
-    ...sdkQuickLinks,
-  ],
-  sdk_core_kit_tkey_android: [
-    {
-      type: "html",
-      value: coreKitTopNavButton(tkeyandroid),
-      defaultStyle: true,
-    },
-    "sdk/core-kit/tkey-android/tkey-android",
-    "sdk/core-kit/tkey-android/install",
-    "sdk/core-kit/tkey-android/initialize",
-    "sdk/core-kit/tkey-android/usage",
-    {
       type: "category",
-      label: "Modules",
+      label: "tKey Android SDK",
       items: [
-        "sdk/core-kit/tkey-android/modules/modules",
-        "sdk/core-kit/tkey-android/modules/private-keys",
-        "sdk/core-kit/tkey-android/modules/security-questions",
-        "sdk/core-kit/tkey-android/modules/seed-phrase",
-        "sdk/core-kit/tkey-android/modules/share-serialization",
-        "sdk/core-kit/tkey-android/modules/share-transfer",
+        "sdk/infra/tkey-android/tkey-android",
+        "sdk/infra/tkey-android/install",
+        "sdk/infra/tkey-android/initialize",
+        "sdk/infra/tkey-android/usage",
+        {
+          type: "category",
+          label: "Modules",
+          items: [
+            "sdk/infra/tkey-android/modules/modules",
+            "sdk/infra/tkey-android/modules/private-keys",
+            "sdk/infra/tkey-android/modules/security-questions",
+            "sdk/infra/tkey-android/modules/seed-phrase",
+            "sdk/infra/tkey-android/modules/share-serialization",
+            "sdk/infra/tkey-android/modules/share-transfer",
+          ],
+        },
+        {
+          type: "link",
+          label: "Support Forum",
+          href: "https://web3auth.io/community/c/help-core-kit/tkey-android/28",
+        },
+        {
+          type: "link",
+          label: "Release Notes",
+          href: "https://github.com/tkey/tkey-android/releases",
+        },
       ],
     },
-    {
-      type: "link",
-      label: "Support Forum",
-      href: "https://web3auth.io/community/c/help-core-kit/tkey-android/28",
-    },
-    {
-      type: "link",
-      label: "Release Notes",
-      href: "https://github.com/tkey/tkey-android/releases",
-    },
+    "sdk/infra/tkey-ios-mpc",
     ...sdkQuickLinks,
   ],
 

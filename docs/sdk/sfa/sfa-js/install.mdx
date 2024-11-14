@@ -1,0 +1,211 @@
+---
+title: "Installing Single Factor Auth JS SDK"
+sidebar_label: "Install"
+description: "Web3Auth Single Factor Auth JS SDK - Install | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+import ExpoWarning from "@site/src/common/docs/_expo-warning.mdx";
+
+### [`@web3auth/single-factor-auth`](https://npmjs.com/package/@web3auth/single-factor-auth)
+
+```bash npm2yarn
+npm install --save @web3auth/single-factor-auth
+```
+
+## Add a Provider to your project
+
+The `@web3auth/single-factor-auth` package requires a private key provider to facilitate interaction
+with your preferred blockchain network. You can choose between the following providers based on your
+usecase.
+
+- [EIP1193 Private Key Provider for EVM Compatible Chains](/sdk/sfa/sfa-js/providers/evm)
+- [Solana Private Key Provider for Solana Blockchain](/sdk/sfa/sfa-js/providers/solana)
+- [XRPL Private Key Provider for XRPL Blockchain](/sdk/sfa/sfa-js/providers/xrpl)
+- [Common Private Key Provider for Connecting to any Blockchain](/sdk/sfa/sfa-js/providers/common)
+
+## Common Types and Interfaces
+
+### [`@web3auth/base`](https://npmjs.com/package/@web3auth/base)
+
+This package gives access to common types and interfaces for Web3Auth. This comes in handy by
+providing you with a standard way of importing the values you need to work with the SDKs. We highly
+recommend using it while working with `Typescript`.
+
+```bash npm2yarn
+npm install --save @web3auth/base
+```
+
+## Web - Bundler Configuration
+
+You may run into problems where certain dependencies are missing within the browser environment.
+These are node dependencies that need to be polyfilled in your application, to enable Web3Auth
+functionalities. Furthermore, your bundler needs to be reconfigured to use them while building the
+app. We have created guides for different bundlers to help you with this issue:
+
+- Please check out our **[Webpack 5 Troubleshooting Guide](/troubleshooting/webpack-issues)**
+- Please check out our **[Vite Troubleshooting Guide](/troubleshooting/vite-issues)**
+
+## React Native - Bare React Native Workflow
+
+Your Bare React Native app is entirely built on your machine. In this workflow, the developer has
+complete control, along with the complexity that comes with that. Configuration with `app.json` /
+`app.config.js` is mostly not supported in this context; instead, you will need to configure each
+native project directly with Swift/Kotlin native modules. Check out the
+[troubleshooting section](/sdk/pnp/react-native/install#troubleshooting) for fixing common issues.
+
+:::tip
+
+You can read more about different workflows in the
+[Expo documentation](https://docs.expo.dev/archive/managed-vs-bare/).
+
+:::
+
+### Adding a `Storage` Module
+
+We need to pass a `Storage` parameter to the SDK, which will be used for session management without
+storing the private keys of the user in the device. When using our SDK with a bare workflow React
+Native app, you have to install a `Storage` implementation provided by react-native.
+
+```bash npm2yarn
+npm install --save react-native-encrypted-storage
+```
+
+### Configuration
+
+After you have installed the files needed for your workflow, you'll have to configure the SDK with
+some additional steps to be able to use the SDK properly.
+
+For the bare workflow, you need to perform additional installation steps, alongside specific
+configurations for Android and iOS separately.
+
+<Tabs
+  defaultValue="android"
+  values={[
+    { label: "Android", value: "android" },
+    { label: "iOS", value: "ios" },
+  ]}
+>
+
+<TabItem value="android">
+
+- Make sure that the minimum SDK compile version in `build.gradle` is 31 or more.
+
+```gradle title="android/build.gradle"
+buildToolsVersion = "31.0.0"
+minSdkVersion = 21
+# focus-next-line
+compileSdkVersion = 31
+# focus-next-line
+targetSdkVersion = 31
+```
+
+- Add the intent filter with `scheme` defined in your `AndroidManifest.xml`
+
+```xml title="android/app/src/main/AndroidManifest.xml"
+<intent-filter>
+  <action android:name="android.intent.action.VIEW" />
+  <category android:name="android.intent.category.DEFAULT" />
+  <category android:name="android.intent.category.BROWSABLE" />
+  # replace with your own scheme
+  # focus-next-line
+  <data android:scheme="web3authrnexample" />
+</intent-filter>
+```
+
+- SDK version 31 requires you to explicitly define `android:exported="true"` in
+  `AndroidManifest.xml`, check whether it is correctly present or not.
+
+```xml title="android/app/src/main/AndroidManifest.xml"
+<activity
+  android:name=".MainActivity"
+  android:label="@string/app_name"
+  android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+  android:launchMode="singleTask"
+  android:windowSoftInputMode="adjustResize"
+# focus-next-line
+  android:exported="true">
+```
+
+</TabItem>
+
+<TabItem value="ios">
+
+- Make sure that the minimum SDK compile version in `Podfile` is 14 or more.
+
+```Podfile title="ios/Podfile"
+platform :ios, '14'
+```
+
+- Install the Cocoa Pods within your project directory.
+
+```shell
+cd ios
+pod install
+```
+
+:::tip
+
+You may refer to
+**[these example apps](/examples?product=Core+Kit&sdk=Single+Factor+Auth+React+Native+SDK)** and try
+it out yourself.
+
+:::
+
+</TabItem>
+</Tabs>
+
+## React Native - Expo Managed Workflow
+
+Your Expo app is built on your Expo's cloud, so you don't have control over the native modules used
+in the app. Developers build managed workflow apps using `expo-cli` on their computers and a
+development client on their mobile devices. Managed workflow apps typically use one or more Expo
+services, such as push notifications, builds, and updates.
+
+<ExpoWarning />
+
+### Adding a `Storage` Module
+
+We need to pass a `Storage` parameter to the SDK, which will be used for session management without
+storing the private keys of the user in the device. When using our SDK with an Expo-based React
+Native app (aka managed workflow), you have to install the `expo-secure-store` package as a
+`Storage` implementation.
+
+```shell
+npx expo install expo-secure-store
+```
+
+### Configuration
+
+After you have installed the files needed for your workflow, you'll have to configure the SDK with
+some additional steps to be able to use the SDK properly.
+
+- Adding URL scheme to `app.json`
+
+To allow the Expo-based SDK to work with exported Expo Android apps, you need to add the designated
+scheme into `app.json`
+
+```json title="app.json"
+{
+  "expo": {
+    "scheme": "web3authexpoexample" // replace with your own scheme
+  }
+}
+```
+
+:::tip
+
+You may refer to
+[these example apps](/examples?product=Core+Kit&sdk=Single+Factor+Auth+React+Native+SDK) and try it
+out yourself.
+
+:::
+
+### Bundler Issues: Missing Dependencies
+
+You might face issues mentioning that certain dependencies are missing within the React Native
+environment. These are node dependencies that need to be polyfilled in your application, to enable
+Web3Auth functionalities. Furthermore, your bundler needs to be reconfigured to use them while
+building the app. Please check out our
+**[React Native Troubleshooting Guide](/troubleshooting/metro-issues)**

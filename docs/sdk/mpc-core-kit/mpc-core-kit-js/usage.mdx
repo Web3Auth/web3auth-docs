@@ -1,0 +1,667 @@
+---
+title: "Usage of MPC Core Kit JS SDK"
+sidebar_label: "Usage"
+description: "Web3Auth MPC Core Kit JS SDK - Usage | Documentation - Web3Auth"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Once you've installed and successfully initialized `Web3AuthMPCCoreKit`, you can use it to
+authenticate your users, add factors to their account, generate TSS signatures for transactions and
+interact with the blockchain.
+
+Please, note we for the simplicity, we use the `coreKitInstance` to refer to the instance of
+`Web3AuthMPCCoreKit`.
+
+## Functionality Overview
+
+### Authentication Methods
+
+| Method Name                                     | Description                                                                                                              |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| [loginWithJWT](#login-with-jwt)                 | Logs in the user with a JWT-based ID Token. We recommend using this method to authenticate users for better performance. |
+| [loginWithOAuth](#login-with-oauth)             | Logs in the user using OAuth Flow, this function underneaths uses the CustomAuth flow to authenticate the user.          |
+| [handleRedirectResult](#handle-redirect-result) | Handles the redirect result from OAuth Flow.                                                                             |
+| [inputFactorKey](#login-with-existing-factor)   | This method can be used to login with the exisitng factor key, for instance when threshold is not satisfied.             |
+| [logout](#logout)                               | This methods logs out the user and invalidates the session.                                                              |
+
+:::info Get help with Authentication
+
+Check out the [**Authentication**](/sdk/mpc-core-kit/mpc-core-kit-js/authentication) section of the
+SDK Reference to learn more about these functions.
+
+:::
+
+### Manual Sync Method
+
+We recommend using the Manual Sync Mode to handle the factors and keys of the user's account. This
+enables you to have a fined grained control over the API calls made to the metadata server from the
+SDK.
+
+| Method Name                      | Description                                                                                                                                                                                              |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [commitChanges](#commit-changes) | Commits the changes made to the user's account while in manual sync mode. To use this function, you'll need to enable the manual sync while [configuring the instance](./initialize#configure-instance). |
+
+### Factor Handling Methods
+
+| Method Name                                    | Description                                                                                                                                                                                                          |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [enableMFA](#enable-mfa)                       | By default, the SDK starts with 2/2 flow unless the `disableHashedFactorKey` is set to true during initialisation. To make the flow completely non-custodial, and have 2/3 flow, you can use the enableMFA function. |
+| [createFactor](#create-factor)                 | Creates a new TSS Factor for the user's account to increase. You can configure the type of factor, it can either be a device factor, or backup factor.                                                               |
+| [deleteFactor](#delete-factor)                 | This method allows you to deletes a TSS factor for the user. Please make sure user has enough factors to recover the account.                                                                                        |
+| [getCurrentFactorKey](#get-current-factor-key) | This methods returns the current factor key used along with social factor to log in.                                                                                                                                 |
+| [getDeviceFactor](#get-device-factor)          | This methods returns the device factor if available.                                                                                                                                                                 |
+
+### User & Wallet Account Methods
+
+| Method Name                                 | Description                                                                                                                                                                                                                                |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [setTssWalletIndex](#set-tss-wallet-index)  | This method allows you to set the TSS wallet index for secp256k1 curve. For secpk256k1 curve, we do support HD Wallet, and you can change the index for HD Wallet using this method. Please note, this is not supported for ed25519 curve. |
+| [getPubKey](#get-secp256k1-public-key)      | Returns the TSS PubKey in SEC1 format which can be used for the secp256k1 curve to derive the EOA address.                                                                                                                                 |
+| [getPubKeyEd25519](#get-ed25519-public-key) | Returns the ed25519 public key which can be used to derive the EOA address for the chains supporting ed25519 curve.                                                                                                                        |
+| [getUserInfo](#get-user-info)               | Returns the user information such as name, verifier, email, and other details.                                                                                                                                                             |
+| [getKeyDetails](#get-key-details)           | Returns the key details for the user account, these key details has information like total factors, and threshold.                                                                                                                         |
+
+### Additional Helper Methods
+
+| Method Name                                               | Description                                                                                                                                                             |
+| --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [setSecurityQuestion](#set-security-question)             | By default the SDK provides a module to set the security question as backup factor, this method can be used to set the Security Question Factor for the user's account. |
+| [changeSecurityQuestion](#change-security-question)       | This method helps you to change the security question for the account.                                                                                                  |
+| [deleteSecurityQuestion](#delete-security-question-share) | Helps you to delete the security question, and corresponding TSS factor.                                                                                                |
+| [recoverFactor](#get-factor-key-from-security-question)   | Helps to recover the security question factor given the correct password by the user.                                                                                   |
+| [getQuestion](#get-security-question-for-users-account)   | Helps to recover the security question set by the user.                                                                                                                 |
+| [mnemonicToKey](#mnemonic-to-key)                         | This method helps you to convert 24 word mnemonic(seed phrase) into corresponding factor key.                                                                           |
+| [keyToMnemonic](#key-to-mnemonic)                         | This method helps you to convert the factor key to corresponding 24 mnemonic.                                                                                           |
+
+## Authentication Methods
+
+### Login with OAuth
+
+This method helps to Log in the user using OAuth flow. You can choose your preferred social auth
+providers with 0Auth login flow. Please refer to the
+[authentication section](/sdk/mpc-core-kit/mpc-core-kit-js/authentication/login-oauth) section for
+more details.
+
+### Handle Redirect Result
+
+This method helps you hanlde the redirect result form the OAuth Flow when the ux mode is redirect.
+By default, you won't require to use this method since we handle the redirect result internally. You
+can set the `handleRedirectResult` to false during initialization, and use this method to handle the
+redirect result.
+
+### Login With JWT
+
+Logs in the user with a JWT-based ID Token. We recommend using this method to authenticate users for
+better performance. For this method, you'll have to manage the authentication yourself, and Web3Auth
+will only verify the idToken passed. Please refer to the
+[authentication section](/sdk/mpc-core-kit/mpc-core-kit-js/authentication/login-jwt) for more
+details.
+
+### Login With Existing Factor
+
+This method can be used to input the factor key, for instance when threshold is not satisfied. For
+example, if user's device factor is not present, this method can be used to input the back up factor
+key, and recover the account. If the factor key is correct, the SDK initializes the user's account
+and logs them in.
+
+If you want to change the factor key in the current state of the SDK, you can use this method.
+Please make sure to convert your factor key to BN before passing it to this method.
+
+```tsx
+import { BN } from "bn.js";
+
+const factorKey = new BN("backupFactorKey", "hex");
+await coreKitInstance.inputFactorKey(factorKey);
+```
+
+### Logout
+
+This method logs out the user, and invalidates the session.
+
+```tsx
+await coreKitInstance.logout();
+```
+
+## Manual Sync Method
+
+### Commit Changes
+
+This method helps you syncs the local metadata with the Web3Auth's Metadata server. This function is
+only to be used while in manual sync mode. We recommend using the Manual Sync Mode to handle the
+factors and keys of the user's account. This enables you to have a fined grained control over the
+API calls made to the metadata server from the SDK.
+
+This is especially useful when you want to handle the factors and keys of the user's account in a
+more controlled manner, enabling a much faster and safer experience for the User.
+
+During manual sync mode, you need to call the `commitChanges` function to sync the local metadata to
+the web3auth metadata server. This helps you to keep the user's account in sync with the metadata
+server, after they have successfully configured everything in the local.
+
+#### Usage
+
+```tsx
+await coreKitInstance.commitChanges();
+```
+
+## Factor Handling Methods
+
+### Enable MFA
+
+By default, the SDK starts with 2/2 flow unless the `disableHashedFactorKey` is set to true during
+initialisation. To make the flow completely non-custodial, and have 2/3 flow, you can use the
+enableMFA method.
+
+It creates a device factor and stores it in the local storage. It also creates a backup factor and
+returns it to the user. The default backup factor is 24 words mnemonic. You can configure the backup
+factor to be social recovery, password recovery, authenticator app, or back up of your choice.
+
+Most importantly, this method also deletes the Hashed Factor Key enabling a non-custodial flow. The
+method takes in `enableMFAParams` which allows you to configure the backup factor of your choice.
+You can also opt to not create a backup factor by setting `recoveryFactor` to `false`.
+
+#### Function Parameters
+
+| Parameter Name     | Description                                                                                                                                                                                                                                                                                         |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `enableMFAParams?` | This parameter helps to configure the back up factor of your choice like social recovery, security question, authenticator or more. By default, it'll generate a 24 words mnemonic, and use it as back up factor. Please checkout the [EnableMFAParams](#enablemfaparams) section for more details. |
+| `recoveryFactor`   | This helps you disable the backup factor generation during enableMFA flow. If set to false, the enableMFA will on generate a device factor, and flow would be 2/2 instead 2/3. By default, the value is true.                                                                                       |
+
+#### EnableMFAParams
+
+<Tabs
+defaultValue="table"
+values={[
+  { label: "Table", value: "table" },
+  { label: "Class", value: "class" },
+]}
+>
+<TabItem value="table">
+
+| Name                  | Description                                                                                                                                                                                                                                                                                                                                                                                     |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `factorKey?`          | A BN to be used for the back up factor. You can pass the BN generated from social recovery, or any other back up factor like authenticator app.                                                                                                                                                                                                                                                 |
+| `shareDescription?`   | The share description to be stored in Metadata. Available values are `FactorKeyTypeShareDescription.HashedShare`,`FactorKeyTypeShareDescription.SecurityQuestions`, `FactorKeyTypeShareDescription.DeviceShare`, `FactorKeyTypeShareDescription.SeedPhrase`, `FactorKeyTypeShareDescription.PasswordShare`, `FactorKeyTypeShareDescription.SocialShare`, `FactorKeyTypeShareDescription.Other`. |
+| `additionalMetadata?` | You can use this parameter if you wish to store additional metadata for the factor. It takes `Record<string, string>`                                                                                                                                                                                                                                                                           |
+
+</TabItem>
+
+<TabItem value="class">
+
+```tsx
+export interface EnableMFAParams {
+  /**
+   * A BN used for encrypting your Device/ Recovery TSS Key Share. You can generate it using `generateFactorKey()` function or use an existing one.
+   */
+  factorKey?: BN;
+  /**
+   * Setting the Description of Share - Security Questions, Device Share, Seed Phrase, Password Share, Social Share, Other. Default is Other.
+   */
+  shareDescription?: FactorKeyTypeShareDescription;
+  /**
+   * Additional metadata information you want to be stored alongside this factor for easy identification.
+   */
+  additionalMetadata?: Record<string, string>;
+}
+export enum FactorKeyTypeShareDescription {
+  HashedShare = "hashedShare",
+  SecurityQuestions = "tssSecurityQuestions",
+  DeviceShare = "deviceShare",
+  SeedPhrase = "seedPhrase",
+  PasswordShare = "passwordShare",
+  SocialShare = "socialShare",
+  Other = "Other",
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### Usage
+
+In this sample we enable MFA with a 24 words mnemonic as the backup factor, and device factor.
+
+```tsx
+import { keyToMnemonic } from "@web3auth/mpc-core-kit";
+
+// focus-next-line
+const factorKey = await coreKitInstance.enableMFA({});
+// Convert the factor key to 24 words mneonic
+const factorKeyMnemonic = keyToMnemonic(factorKey);
+
+console.log(
+  "MFA enabled, device factor stored in local store, deleted hashed cloud key, your backup factor key: ",
+  factorKeyMnemonic,
+);
+```
+
+### Create Factor
+
+To create a factor, you can use the `createFactor` method. This is a low-level function to help you
+to create a backup factor key based on the type of TSS Share you want to create. You can pass your
+own factor key or let the SDK generate one for you.
+
+This method helps you add additional factor to the user's account such as device factor, social
+recovery, SMS OTP, authenticator, and more.
+
+:::danger Note
+
+You shouldn't create too many factors, we recommend a **maximum of 10 factors**.
+
+:::
+
+#### Parameters
+
+The method takes in `CreateFactorParams` which helps you configure the type of share to be created.
+
+<Tabs
+defaultValue="table"
+values={[
+  { label: "Table", value: "table" },
+  { label: "Class", value: "class" },
+]}
+>
+<TabItem value="table">
+
+| Name                  | Description                                                                                                                                                                                                                                                                                                                                                                                     |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `factorKey?`          | A BN to be used for the back up factor. You can pass the BN generated from social recovery, or any other back up factor like authenticator app.                                                                                                                                                                                                                                                 |
+| `shareDescription?`   | The share description to be stored in Metadata. Available values are `FactorKeyTypeShareDescription.HashedShare`,`FactorKeyTypeShareDescription.SecurityQuestions`, `FactorKeyTypeShareDescription.DeviceShare`, `FactorKeyTypeShareDescription.SeedPhrase`, `FactorKeyTypeShareDescription.PasswordShare`, `FactorKeyTypeShareDescription.SocialShare`, `FactorKeyTypeShareDescription.Other`. |
+| `additionalMetadata?` | You can use this parameter if you wish to store additional metadata for the factor. It takes `Record<string, string>`                                                                                                                                                                                                                                                                           |
+| `shareType`           | The type of share to be created. Available values are `TssShareType.DEVICE`, `TssShareType.RECOVERY`.                                                                                                                                                                                                                                                                                           |
+
+</TabItem>
+
+<TabItem value="class">
+
+```tsx
+export interface CreateFactorParams extends EnableMFAParams {
+  /**
+   * Setting the Type of Share - Device or Recovery.
+   **/
+  shareType: TssShareType;
+}
+
+export enum TssShareType {
+  DEVICE = 2,
+  RECOVERY = 3,
+}
+
+export interface EnableMFAParams {
+  /**
+   * A BN used for encrypting your Device/ Recovery TSS Key Share. You can generate it using `generateFactorKey()` function or use an existing one.
+   */
+  factorKey?: BN;
+  /**
+   * Setting the Description of Share - Security Questions, Device Share, Seed Phrase, Password Share, Social Share, Other. Default is Other.
+   */
+  shareDescription?: FactorKeyTypeShareDescription;
+  /**
+   * Additional metadata information you want to be stored alongside this factor for easy identification.
+   */
+  additionalMetadata?: Record<string, string>;
+}
+
+export enum FactorKeyTypeShareDescription {
+  HashedShare = "hashedShare",
+  SecurityQuestions = "tssSecurityQuestions",
+  DeviceShare = "deviceShare",
+  SeedPhrase = "seedPhrase",
+  PasswordShare = "passwordShare",
+  SocialShare = "socialShare",
+  Other = "Other",
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### Usage
+
+In this sample we create a new factor of type recovery using random factor key generated by the SDK.
+You can also pass your own factor key obtained from other sources like social recovery,
+authenticator app, etc.
+
+```tsx
+import { generateFactorKey } from "@web3auth/mpc-core-kit";
+
+const factorKey = generateFactorKey();
+
+await coreKitInstance.createFactor({
+  shareType: TssShareType.RECOVERY,
+  factorKey: factorKey.private,
+});
+```
+
+### Delete Factor
+
+To delete a factor you can use the `deleteFactor` method. This method helps you delete the factor,
+respective to the factor pub provided for the user's account.
+
+You can get the factor pubs by using the `getKeyDetails` method. It will throw an error if you try
+to delete the factor that is currently active within the state of the SDK.
+
+Use the `inputFactorKey` method to change the factor key in the current state of the SDK before
+deleting the current active factor.
+
+#### Usage
+
+In this sample we delete the social recovery factor from the user's account. To delete the device
+factor you can replace the `FactorKeyTypeShareDescription.SocialShare` with
+`FactorKeyTypeShareDescription.DeviceShare`.
+
+```tsx
+import { FactorKeyTypeShareDescription } from "@web3auth/mpc-core-kit";
+import { Point, secp256k1 } from "@tkey/common-types";
+
+let factorPub: string | undefined;
+for (const [key, value] of Object.entries(coreKitInstance.getKeyDetails().shareDescriptions)) {
+  if (value.length > 0) {
+    const parsedData = JSON.parse(value[0]);
+    if (parsedData.module === FactorKeyTypeShareDescription.SocialShare) {
+      factorPub = key;
+    }
+  }
+}
+
+if (factorPub) {
+  const pub = Point.fromSEC1(secp256k1, factorPub);
+  // focus-next-line
+  await coreKitInstance.deleteFactor(pub);
+  // This is required to sync the changes to the metadata server.
+  await coreKitInstance.commitChanges();
+} else {
+  console.log("No social factor found to delete");
+}
+```
+
+### Get Current Factor Key
+
+To retrieve the currently active factor within the state of the SDK you can use the
+`getCurrentFactorKey` method.
+
+```tsx
+const currentFactorKey = coreKitInstance.getCurrentFactorKey();
+```
+
+### Get Device Factor
+
+This methods returns the device factor key hex string if available.
+
+```tsx
+// focus-next-line
+const deviceFactorHex = await coreKitInstance.getDeviceFactor();
+
+if (deviceFactorHex) {
+  console.log("Device factor key hex string: ", deviceFactorHex);
+} else {
+  console.log("No device factor key found");
+}
+```
+
+## User & Wallet Account Functions
+
+### Set TSS Wallet Index
+
+To set the TSS Wallet index, you can use the `setTssWalletIndex` method.It allows you to set the TSS
+wallet index for secp256k1 curve. For secpk256k1 curve, we do support HD Wallet, and you can change
+the index for HD Wallet using this method. Learn more about
+[HD Wallet](https://learnmeabitcoin.com/technical/keys/hd-wallets/).
+
+As an application, you need to persist this account index in the application state.
+
+You can either choose to persist the account index temporarily using the state variable or use a
+more permanent storage like `localStorage`. Whenever you add, delete or update a share, you need to
+set the account index again.
+
+:::info
+
+This method is only supported for Secp256k1 curve, and not supported for Ed25519 curve.
+
+:::
+
+```tsx
+coreKitInstance.setTssWalletIndex(index);
+```
+
+### Get Secp256k1 Public Key
+
+To retrieve the Secp256k1 public key, you can use the `getPubKey` method. You can use this public
+key to derive the EOA address.
+
+When you use the `setTssWalletIndex` method to set your account index, a unique public key is
+generated! Remember that each account index you set will result in a different public key.
+
+```ts
+const pubKey = coreKitInstance.getPubKey();
+```
+
+### Get Ed25519 Public Key
+
+To retrive the ed25519 public key, you can use the `getPubKeyEd25519`method. You can use this public
+key to retrive the EOA address for the chains suporting the Ed25519 curve.
+
+```ts
+const pubKey = coreKitInstance.getPubKeyEd25519();
+```
+
+### Get User Info
+
+To retrive the user's information you can use the `getUserInfo` method. The methods returns the
+user's information based on the idToken, and Web3Auth metadata like verifier, verifier Id.
+
+```tsx
+import { UserInfo } from "@web3auth/mpc-core-kit";
+const userInfo: UserInfo = coreKitInstance.getUserInfo();
+```
+
+### Get Key Details
+
+To retieve the MPCKeyDetails for the user account you can use the `getKeyDetails` methods. These key
+details has information like total factors, required factors, and threshold. Learn more about the
+[MPCKeyDetails](#mpckeydetails).
+
+#### Usage
+
+```tsx
+import { MPCKeyDetails } from "@web3auth/mpc-core-kit";
+
+const keyDetails: MPCKeyDetails = coreKitInstance.getKeyDetails();
+```
+
+#### MPCKeyDetails
+
+| Name                | Description                                                                                                                                                          |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `metadataPubKey`    | Holds the information for the metadataPubKey.                                                                                                                        |
+| `threshold`         | Defines the number of threshold set by the user, for instance is it 2/2. or 2/n.                                                                                     |
+| `requiredFactors`   | Defines the number of factors required to access the account after authentication flow. User won't be able to access the account, unless the requiredFactors is `0`. |
+| `totalFactors`      | Defines the total factors created by the user.                                                                                                                       |
+| `shareDescriptions` | Holds a map of TSS shares descriptions.                                                                                                                              |
+| `tssPubKey?`        | The TSS PubKey, you can also get the TSS PubKey using the `getPubKey` method. The PubKey is in SEC1 format.                                                          |
+
+## Security Question
+
+### Set Security Question
+
+To set a security question, and create a security question factor you can use the
+`setSecurityQuestion` method. The security question can be used to recover the account in case the
+user changes the device and doesn't have access to the other factors.
+
+#### Parameters
+
+<Tabs
+defaultValue="table"
+values={[
+  { label: "Table", value: "table" },
+  { label: "Class", value: "class" },
+]}
+>
+<TabItem value="table">
+
+| Name           | Description                                                                                                          |
+| -------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `mpcCoreKit`   | Pass the Web3AuthMPCCoreKit instance.                                                                                |
+| `question`     | Question user wants to set.                                                                                          |
+| `answer`       | Answer user wants to set for the question.                                                                           |
+| `shareType?`   | Defines the share type you want to set, the available options are `TssShareType.DEVICE` and `TssShareType.RECOVERY`. |
+| `description?` | Additional description you want to store in the metadata for the share.                                              |
+| `tssIndex?`    | Defines the TSS Share index, either 2, or 3, i.e `TssShareType.DEVICE`, and `TssShareType.RECOVERY` respectively.    |
+
+</TabItem>
+
+<TabItem value="class">
+
+```tsx
+export interface setSecurityQuestionParams {
+  mpcCoreKit: Web3AuthMPCCoreKit;
+  question: string;
+  answer: string;
+  shareType?: TssShareType;
+  description?: Record<string, string>;
+  tssIndex?: TssShareType;
+}
+
+export enum TssShareType {
+  DEVICE = 2,
+  RECOVERY = 3,
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### Usage
+
+```tsx
+import { TssSecurityQuestion } from "@web3auth/mpc-core-kit";
+
+const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
+
+await securityQuestion.setSecurityQuestion({
+  mpcCoreKit: coreKitInstance,
+  question: "YOUR_QUESTION",
+  answer: "YOUR_ANSWER",
+  shareType: TssShareType.RECOVERY,
+});
+```
+
+### Change Security Question
+
+To change the security question for the user you can use the `changeSecurityQuestion` method.
+
+#### Parameters
+
+<Tabs
+defaultValue="table"
+values={[
+  { label: "Table", value: "table" },
+  { label: "Class", value: "class" },
+]}
+>
+
+<TabItem value="table">
+
+| Name          | Description                                    |
+| ------------- | ---------------------------------------------- |
+| `mpcCoreKit`  | Pass the Web3AuthMPCCoreKit instance.          |
+| `newQuestion` | New question user wants to set.                |
+| `newAnswer`   | New answer user wants to set for the question. |
+| `answer`      | Answer to the current security question.       |
+
+</TabItem>
+
+<TabItem value="class">
+
+```tsx
+export interface changeSecurityQuestionParams {
+  mpcCoreKit: Web3AuthMPCCoreKit;
+  newQuestion: string;
+  newAnswer: string;
+  answer: string;
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### Usage
+
+```tsx
+import { TssSecurityQuestion } from "@web3auth/mpc-core-kit";
+
+const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
+
+await securityQuestion.changeSecurityQuestion({
+  mpcCoreKit: coreKitInstance,
+  newQuestion: "NEW_QUESTION",
+  newAnswer: "NEW_ANSWER",
+  answer: "PREVIOUS_ANSWER",
+});
+```
+
+### Delete Security Question Share
+
+Deletes the Security Question Share of the user's account. This function can only be used if the
+user has already logged in with in the application while meeting the required share threshold.
+
+```tsx
+import { TssSecurityQuestion } from "@web3auth/mpc-core-kit";
+
+const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
+
+await securityQuestion.deleteSecurityQuestion(coreKitInstance);
+```
+
+### Get Factor Key from Security Question
+
+To rretive the factory key from the security question, you cna use the `recoverFactor` method. The
+method takes in coreKitInstance, and answer for the security question.
+
+This factor key later can be used to input the factor key in the current state of the SDK, and
+recover the account.
+
+```tsx
+import { TssSecurityQuestion } from "@web3auth/mpc-core-kit";
+
+const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
+
+const factorKey = await securityQuestion.recoverFactor(coreKitInstance, answer);
+```
+
+### Get Security Question for User's Account
+
+To retrieve the security question for the user's account, you can use the `getQuestion` method. You
+can only use this method, once user has completed the authentication flow.
+
+```tsx
+import { TssSecurityQuestion } from "@web3auth/mpc-core-kit";
+
+const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
+
+const question = securityQuestion.getQuestion(coreKitInstance);
+```
+
+### Mnemonic to Key
+
+To convert 24 word mnemonic(seed phrase) into corresponding factor key, you can use the
+`mnemonicToKey` method. This is helpful when you want to convert the 24 words mnemonic backup factor
+to factor key.
+
+```tsx
+import { mnemonicToKey } from "@web3auth/mpc-core-kit";
+
+const factorKeyHex = mnemonicToKey(factorKeyMnemonic);
+```
+
+### Key to Mnemonic
+
+To convert the factor key hex string to a 24 words mnemonic, you can use the `keyToMnemonic` method.
+
+```tsx
+import { keyToMnemonic } from "@web3auth/mpc-core-kit";
+
+const factorKeyMnemonic = keyToMnemonic(factorKeyHex);
+```

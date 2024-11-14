@@ -1,0 +1,20 @@
+```kotlin
+import android.content.Context
+
+val context: Context = "YOUR_APPLICATION_CONTEXT"
+val sessionDataCF = singleFactorAuth.initialize(context)
+
+sessionDataCF.whenComplete {sessionData, error ->
+    if(error != null) {
+        // Session is no longer valid, or something went wrong
+        // Initiate the login flow again
+    } else if(sessionData == null) {
+        // No active session found
+    } else {
+        // Session is present
+        // You can use the sessionData to get the public address, private key,
+        // userInfo, and signatures.
+        Log.i("Public address", sessionData.publicAddress)
+    }
+}
+```

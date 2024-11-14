@@ -9,11 +9,12 @@ import classNames from "classnames";
 import copyToClipboard from "copy-to-clipboard";
 import { UIEvent, useEffect, useMemo, useState, useRef } from "react";
 import MoonLoader from "react-spinners/BeatLoader";
+import { Tooltip } from "react-tooltip";
 
 import SEO from "../../components/SEO";
 import IntegrationBuilderCodeView from "../../theme/IntegrationBuilderCodeView";
 import builder from "./builder";
-import { CORE_KIT, PNP } from "./builder/choices";
+import { SFA, MPC_CORE_KIT, PNP } from "./builder/choices";
 import styles from "./styles.module.css";
 import { quickStartHostedLinks } from "../../common/maps";
 
@@ -48,6 +49,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     getDefaultBuilderOptions(),
   );
   const [isLinkCopied, setLinkCopied] = useState<boolean>(false);
+  const [IBCountdown, setIBCountdown] = useState<number>(5);
   const [builderView, setBuilderView] = useState<boolean>(true);
   const [showPreviewModal, setShowPreviewModal] = useState<boolean>(false);
   const url = new URL(getWindowLocation());
@@ -167,6 +169,15 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
     }
   }, []);
 
+  useEffect(() => {
+    if (IBCountdown > 0) {
+      setTimeout(() => setIBCountdown(IBCountdown - 1), 1000);
+    }
+    if (IBCountdown === 0) {
+      toggleBuilderView();
+    }
+  }, [IBCountdown]);
+
   const optionRender = (key, option) => {
     switch (option.type) {
       case "dropdown":
@@ -197,17 +208,40 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
                       className={builderOptions[key] === PNP ? styles.selectedCard : styles.card}
                       onClick={() => onChangeDropdown(key, value.key)}
                     >
-                      <h5 className={styles.cardTitle}>{value.displayName}</h5>
+                      <Tooltip anchorSelect=".pnp-descrption" place="bottom-start">
+                        Integrate Web3Auth in just 4 lines of Code.
+                      </Tooltip>
+                      <h5 className={classNames(styles.cardTitle, "pnp-descrption")}>
+                        {value.displayName}
+                      </h5>
                     </div>
                   )}
-                  {value.key === CORE_KIT && (
+                  {value.key === SFA && (
+                    <div
+                      className={builderOptions[key] === SFA ? styles.selectedCard : styles.card}
+                      onClick={() => onChangeDropdown(key, value.key)}
+                    >
+                      <Tooltip anchorSelect=".sfa-descrption" place="bottom-start">
+                        Single click login with zero web3 components.
+                      </Tooltip>
+                      <h5 className={classNames(styles.cardTitle, "sfa-descrption")}>
+                        {value.displayName}
+                      </h5>
+                    </div>
+                  )}
+                  {value.key === MPC_CORE_KIT && (
                     <div
                       className={
-                        builderOptions[key] === CORE_KIT ? styles.selectedCard : styles.card
+                        builderOptions[key] === MPC_CORE_KIT ? styles.selectedCard : styles.card
                       }
                       onClick={() => onChangeDropdown(key, value.key)}
                     >
-                      <h5 className={styles.cardTitle}>{value.displayName}</h5>
+                      <Tooltip anchorSelect=".mpc-descrption" place="bottom-start">
+                        Build custom UX flows on Web3Auth's MPC Infrastructure.
+                      </Tooltip>
+                      <h5 className={classNames(styles.cardTitle, "mpc-descrption")}>
+                        {value.displayName}
+                      </h5>
                     </div>
                   )}
                 </>
@@ -298,7 +332,7 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
             <button className={styles.hideButton} onClick={toggleBuilderView} type="button">
               {builderView ? (
                 <>
-                  Hide
+                  Hide {IBCountdown ? `in ${IBCountdown}s` : ""}
                   <svg
                     width="20"
                     height="21"
@@ -340,7 +374,6 @@ export default function IntegrationBuilderPage({ files }: { files: Record<string
             <div className={styles.builderContainer}>
               {Object.entries(builder.options).map(([key, option]) => optionRender(key, option))}
             </div>
-
             <div className={styles.utilityButtonsContainer}>
               {integration.embedLink && (
                 <button

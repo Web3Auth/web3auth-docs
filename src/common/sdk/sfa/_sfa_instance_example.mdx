@@ -1,0 +1,29 @@
+```javascript
+import { Web3Auth } from "@web3auth/single-factor-auth";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+
+const chainConfig = {
+  chainId: "0x1",
+  displayName: "Ethereum Mainnet",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  tickerName: "Ethereum",
+  ticker: "ETH",
+  decimals: 18,
+  rpcTarget: "https://rpc.ankr.com/eth",
+  blockExplorerUrl: "https://etherscan.io",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+};
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+// focus-start
+const web3auth = new Web3Auth({
+  clientId: "WEB3AUTH_CLIENT_ID", // Get your Client ID from the Web3Auth Dashboard
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider: privateKeyProvider,
+  usePnPKey: false, // By default, this SDK returns CoreKitKey
+});
+// focus-end
+```

@@ -8,6 +8,12 @@ import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 import ExpoWarning from "@site/src/common/docs/_expo-warning.mdx";
 
+#### [`@web3auth/react-native-sdk`](https://github.com/web3auth/web3auth-react-native-sdk)
+
+```bash npm2yarn
+npm install --save @web3auth/react-native-sdk
+```
+
 ## Selecting your Workflow
 
 In React Native, you have the choice to use one of the following workflows:
@@ -36,13 +42,7 @@ You can read more about different workflows in the
 
 :::
 
-## Installation
-
-#### [`@web3auth/react-native-sdk`](https://github.com/web3auth/web3auth-react-native-sdk)
-
-```bash npm2yarn
-npm install --save @web3auth/react-native-sdk
-```
+## Installing Helper Modules
 
 ### Adding a Web Browser Module
 
@@ -60,8 +60,6 @@ bare workflow or managed workflow.
 
 <TabItem value="expo">
 
-#### Expo Web Browser
-
 When using our SDK with an Expo-based React Native app (aka managed workflow), you have to install
 the `expo-web-browser` package as a `WebBrowser` implementation.
 
@@ -72,8 +70,6 @@ expo install expo-web-browser
 </TabItem>
 
 <TabItem value="bare">
-
-#### React Native Web Browser
 
 When using our SDK with a bare workflow React Native app, you have to install a `WebBrowser`
 implementation made by us.
@@ -100,8 +96,6 @@ management without storing the private keys of the user in the device.
 
 <TabItem value="expo">
 
-#### Expo Secure Store
-
 When using our SDK with an Expo-based React Native app (aka managed workflow), you have to install
 the `expo-secure-store` package as a `Storage` implementation.
 
@@ -113,8 +107,6 @@ expo install expo-secure-store
 
 <TabItem value="bare">
 
-#### React Native Encrypted Storage
-
 When using our SDK with a bare workflow React Native app, you have to install a `Storage`
 implementation provided by react-native.
 
@@ -124,6 +116,17 @@ npm install --save react-native-encrypted-storage
 
 </TabItem>
 </Tabs>
+
+### Add a Provider to your project
+
+The `@web3auth/react-native` package requires a private key provider to facilitate interaction with
+your preferred blockchain network. You can choose between the following providers based on your
+usecase.
+
+- [EIP1193 Private Key Provider for EVM Compatible Chains](/sdk/pnp/react-native/providers/evm)
+- [Solana Private Key Provider for Solana Blockchain](/sdk/pnp/react-native/providers/solana)
+- [XRPL Private Key Provider for XRPL Blockchain](/sdk/pnp/react-native/providers/xrpl)
+- [Common Private Key Provider for Connecting to any Blockchain](/sdk/pnp/react-native/providers/common)
 
 ## Configuration
 
@@ -234,12 +237,12 @@ targetSdkVersion = 31
 
 - Your `redirectUrl` is your defined scheme following some identifier or your choice. For example,
   if your scheme is `web3authrnexample`, you can define your `redirectUrl` as
-  `web3authrnexample://openlogin`. Make sure you register this `redirectUrl` in the
+  `web3authrnexample://auth`. Make sure you register this `redirectUrl` in the
   [Web3Auth Developer Dashboard](https://dashboard.web3auth.io).
 
 ```tsx title="App.js"
 const scheme = "web3authrnexample"; // Or your desired app redirection scheme
-const resolvedRedirectUrl = `${scheme}://openlogin`;
+const resolvedRedirectUrl = `${scheme}://auth`;
 ```
 
 #### iOS

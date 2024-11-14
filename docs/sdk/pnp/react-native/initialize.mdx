@@ -6,7 +6,7 @@ description: "Web3Auth PnP React Native SDK - Initialization  | Documentation - 
 
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
-import InstantiatingProvider from "@site/src/common/sdk/core-kit/sfa/_instantiating_provider.mdx";
+import InstantiatingProvider from "@site/src/common/sdk/sfa/_instantiating_provider.mdx";
 import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
 
 After Installation, the next step to use Web3Auth is to Initialize the SDK. The Initialization is a
@@ -27,7 +27,7 @@ have to be configured within this step, if you wish to customize your Web3Auth I
 You may also import additional types from the SDK to help in the development process.
 
 ```typescript
-import Web3Auth, { OPENLOGIN_NETWORK, LOGIN_PROVIDER } from "@web3auth/react-native-sdk";
+import Web3Auth, { WEB3AUTH_NETWORK, LOGIN_PROVIDER } from "@web3auth/react-native-sdk";
 ```
 
 ### Importing a `WebBrowser` implementation
@@ -134,18 +134,20 @@ an argument. The fields of such objects are listed below.
 
 <TabItem value="table">
 
-| Parameter           | Description                                                                                                                                                         |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `clientId`          | Your Web3Auth Client ID. You can get it from Web3Auth [Dashboard](https://dashboard.web3auth.io/) under project details. It's a mandatory field of type `string`    |
-| `network`           | Defines the Web3Auth network. It's a mandatory field of type `OPENLOGIN_NETWORK_TYPE`.                                                                              |
-| `redirectUrl`       | URL that Web3Auth will redirect API responses upon successful authentication from browser. It's a mandatory field of type `string`.                                 |
-| `whiteLabel?`       | WhiteLabel options for web3auth. It helps you define custom UI, branding, and translations for your brand app. It takes `WhiteLabelData` as a value.                |
-| `loginConfig?`      | Login config for the custom verifiers. It takes `LoginConfig` as a value.                                                                                           |
-| `useCoreKitKey?`    | Use CoreKit Key to get core kit key. It's an optional field with default value as `false`.                                                                          |
-| `mfaSettings?`      | Allows developers to configure the Mfa settings for authentication. It takes `MfaSettings` as a value.                                                              |
-| `sessionTime?`      | It allows developers to configure the session management time. Session Time is in seconds, default is 86400 seconds which is 1 day. `sessionTime` can be max 7 days |
-| `storageServerUrl?` | Specify a custom storage url. Default value is `https://broadcast-server.tor.us`.                                                                                   |
-| `storageKey?`       | Specify the storage key. Setting to "local" will persist social login session accross browser tabs. Available options are "local" and "session".                    |
+| Parameter                     | Description                                                                                                                                                         |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`                    | Your Web3Auth Client ID. You can get it from Web3Auth [Dashboard](https://dashboard.web3auth.io/) under project details. It's a mandatory field of type `string`    |
+| `network`                     | Defines the Web3Auth network. It's a mandatory field of type `WEB3AUTH_NETWORK_TYPE`.                                                                               |
+| `redirectUrl`                 | URL that Web3Auth will redirect API responses upon successful authentication from browser. It's a mandatory field of type `string`.                                 |
+| `privateKeyProvider`          | Private key provider for your chain namespace.                                                                                                                      |
+| `accountAbstractionProvider?` | Account abstraction provider for your preferred chain and provider.                                                                                                 |
+| `whiteLabel?`                 | WhiteLabel options for web3auth. It helps you define custom UI, branding, and translations for your brand app. It takes `WhiteLabelData` as a value.                |
+| `loginConfig?`                | Login config for the custom verifiers. It takes `LoginConfig` as a value.                                                                                           |
+| `useCoreKitKey?`              | Use CoreKit Key to get core kit key. It's an optional field with default value as `false`.                                                                          |
+| `mfaSettings?`                | Allows developers to configure the Mfa settings for authentication. It takes `MfaSettings` as a value.                                                              |
+| `sessionTime?`                | It allows developers to configure the session management time. Session Time is in seconds, default is 86400 seconds which is 1 day. `sessionTime` can be max 7 days |
+| `storageServerUrl?`           | Specify a custom storage url. Default value is `https://broadcast-server.tor.us`.                                                                                   |
+| `storageKey?`                 | Specify the storage key. Setting to "local" will persist social login session accross browser tabs. Available options are "local" and "session".                    |
 
 </TabItem>
 
@@ -158,9 +160,9 @@ export type SdkInitParams = {
    * dapp on {@link "https://dashboard.web3auth.io"| developer dashboard}
    */
   clientId: string;
-  network: OPENLOGIN_NETWORK_TYPE;
+  network: WEB3AUTH_NETWORK_TYPE;
   /**
-   * This parameter will be used to change the build environment of openlogin sdk.
+   * This parameter will be used to change the build environment of auth sdk.
    * @defaultValue production
    */
   buildEnv?: BUILD_ENV_TYPE;
@@ -186,7 +188,7 @@ export type SdkInitParams = {
    */
   loginConfig?: LoginConfig;
   /**
-   * options for whitelabling default openlogin modal.
+   * options for whitelabling default auth modal.
    */
   whiteLabel?: WhiteLabelData;
   /**
@@ -216,11 +218,20 @@ export type SdkInitParams = {
    */
   mfaSettings?: MfaSettings;
   /**
-   * This parameter will be used to use openlogin mpc
+   * This parameter will be used to use auth mpc
    * @defaultValue false
    */
   enableLogging?: boolean;
   useCoreKitKey?: boolean;
+  walletSdkURL?: string;
+  /**
+   * Private key provider for your chain namespace
+   */
+  privateKeyProvider: IBaseProvider<string>;
+  /**
+   * Account abstraction provider for your chain namespace
+   */
+  accountAbstractionProvider?: IBaseProvider<IProvider>;
 };
 ```
 
@@ -228,17 +239,24 @@ export type SdkInitParams = {
 
 </Tabs>
 
-## Instantiating a Provider
-
-<InstantiatingProvider />
-
-### Adding a Custom Chain Configuration
+## Adding a Custom Chain Configuration
 
 #### `chainConfig`
 
 <ChainConfig />
 
-## Example
+:::tip
+
+Get the **Chain Config** for your preferred Blockchain from the
+[Connect Blockchain Reference](/connect-blockchain#reference-guides-for-blockchain-connections).
+
+:::
+
+## Instantiating a Provider
+
+<InstantiatingProvider />
+
+### Usage
 
 <Tabs
   defaultValue="bare"
@@ -256,13 +274,13 @@ import * as WebBrowser from "@toruslabs/react-native-web-browser";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Web3Auth, {
   LOGIN_PROVIDER,
-  OPENLOGIN_NETWORK,
+  WEB3AUTH_NETWORK,
   ChainNamespace,
 } from "@web3auth/react-native-sdk";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 const scheme = "web3authrnexample"; // Or your desired app redirection scheme
-const redirectUrl = `${scheme}://openlogin`;
+const redirectUrl = `${scheme}://auth`;
 
 const clientId =
   "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
@@ -281,7 +299,7 @@ const chainConfig = {
   logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
 
-const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig,
   },
@@ -290,7 +308,8 @@ const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
 const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
   redirectUrl,
-  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
+  network: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or other networks
+  privateKeyProvider,
 });
 ```
 
@@ -302,7 +321,7 @@ const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
 import * as WebBrowser from "expo-web-browser";
 import * as SecureStore from "expo-secure-store";
 import Web3Auth, {
-  OPENLOGIN_NETWORK,
+  WEB3AUTH_NETWORK,
   LOGIN_PROVIDER,
   ChainNamespace,
 } from "@web3auth/react-native-sdk";
@@ -329,7 +348,7 @@ const chainConfig = {
   logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
 
-const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig,
   },
@@ -338,7 +357,8 @@ const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
 const web3auth = new Web3Auth(WebBrowser, SecureStore, {
   clientId,
   redirectUrl,
-  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
+  network: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or other networks
+  privateKeyProvider,
 });
 ```
 
@@ -351,13 +371,13 @@ import * as WebBrowser from "@toruslabs/react-native-web-browser";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Web3Auth, {
   LOGIN_PROVIDER,
-  OPENLOGIN_NETWORK,
+  WEB3AUTH_NETWORK,
   ChainNamespace,
 } from "@web3auth/react-native-sdk";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
 const scheme = "web3authrnbareauth0example"; // Or your desired app redirection scheme
-const redirectUrl = `${scheme}://openlogin`;
+const redirectUrl = `${scheme}://auth`;
 const clientId =
   "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
 
@@ -375,7 +395,7 @@ const chainConfig = {
   logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
 };
 
-const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
+const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: {
     chainConfig,
   },
@@ -383,9 +403,10 @@ const ethereumPrivateKeyProvider = new EthereumPrivateKeyProvider({
 
 const web3auth = new Web3Auth(WebBrowser, EncryptedStorage, {
   clientId,
-  network: OPENLOGIN_NETWORK.SAPPHIRE_MAINNET, // or other networks
+  network: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET, // or other networks
   redirectUrl,
   useCoreKitKey: true,
+  privateKeyProvider,
   loginConfig: {
     jwt: {
       verifier: "w3a-auth0-demo",
