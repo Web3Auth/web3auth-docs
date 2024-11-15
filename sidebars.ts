@@ -665,6 +665,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Flow",
+              items: [
+                "connect-blockchain/evm/flow/flow",
+                "connect-blockchain/evm/flow/web",
+                "connect-blockchain/evm/flow/android",
+                "connect-blockchain/evm/flow/ios",
+                "connect-blockchain/evm/flow/react-native",
+                "connect-blockchain/evm/flow/flutter",
+                "connect-blockchain/evm/flow/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Fhenix",
               items: [
                 "connect-blockchain/evm/fhenix/fhenix",

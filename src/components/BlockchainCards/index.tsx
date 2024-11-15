@@ -153,6 +153,12 @@ export const tileGroupsData = [
         path: "./connect-blockchain/flare",
       },
       {
+        key: "flow",
+        title: "Flow",
+        icon: "logo-flow.png",
+        path: "./connect-blockchain/flow",
+      },
+      {
         key: "songbird",
         title: "Songbird",
         icon: "logo-songbird.png",
