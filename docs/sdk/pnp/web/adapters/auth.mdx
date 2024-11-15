@@ -19,6 +19,7 @@ import ExtraLoginOptions from "@site/src/common/sdk/pnp/web/_extra-login-options
 import CustomAuthenticationCoreExample from "@site/src/common/sdk/pnp/web/_custom-authentication-core-example.mdx";
 import CustomAuthenticationWeb3AuthExample from "@site/src/common/sdk/pnp/web/_custom-authentication-web3auth-example.mdx";
 import ConnectToExample from "@site/src/common/sdk/pnp/web/_connect-to-example.mdx";
+import MFAMinimumPlan from "@site/src/common/docs/_mfa_minimum_plan.mdx";
 
 ## [`@web3auth/auth-adapter`](https://npmjs.com/package/@web3auth/auth-adapter)
 
@@ -144,10 +145,14 @@ their order. Currently, there are four values for `mfaLevel`:
 
 We offer the following backup factors under `mfaSettings`:
 
+<MFAMinimumPlan />
+
 - `deviceShareFactor`,
 - `backUpShareFactor`,
-- `socialBackupFactor`, and
-- `passwordFactor`.
+- `socialBackupFactor`,
+- `passwordFactor`,
+- `authenticatorFactor`, and
+- `passkeysFactor`.
 
 ### Example
 
@@ -177,6 +182,16 @@ const authAdapter = new AuthAdapter({
       passwordFactor: {
         enable: true,
         priority: 4,
+        mandatory: false,
+      },
+      authenticatorFactor: {
+        enable: true,
+        priority: 5,
+        mandatory: false,
+      },
+      passkeysFactor: {
+        enable: true,
+        priority: 6,
         mandatory: false,
       },
     },
