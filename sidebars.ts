@@ -639,6 +639,19 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: "category",
+              label: "Chiliz",
+              items: [
+                "connect-blockchain/evm/chiliz/chiliz",
+                "connect-blockchain/evm/chiliz/web",
+                "connect-blockchain/evm/chiliz/android",
+                "connect-blockchain/evm/chiliz/ios",
+                "connect-blockchain/evm/chiliz/react-native",
+                "connect-blockchain/evm/chiliz/flutter",
+                "connect-blockchain/evm/chiliz/unity",
+              ],
+            },
+            {
+              type: "category",
               label: "Cronos",
               items: [
                 "connect-blockchain/evm/cronos/cronos",
