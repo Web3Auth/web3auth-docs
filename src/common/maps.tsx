@@ -168,7 +168,7 @@ export interface ExamplesInterface {
 }
 
 export const tags = {
-  pnp: "pnp",
+  pnp: "plug and play",
   mpcCoreKit: "mpc core kit",
   sfa: "single factor auth",
   modal: "@web3auth/modal",
@@ -210,7 +210,7 @@ export const productMap = [
   },
   {
     label: "Single Factor Auth",
-    value: tags.sfaJS,
+    value: tags.sfa,
   },
   {
     label: "MPC Core Kit",
