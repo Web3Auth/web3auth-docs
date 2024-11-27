@@ -71,7 +71,7 @@ On unsuccessful login, this function will return a `null` value.
 
 | Parameter  | Description                                                                                                                                              |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `verifier` | Details of the verifier (verifier type, ie. `torus`, `metamask`, `auth` etc.). It's a `string` mandatory parameter.                                      |
+| `verifier` | Name of the verifier. It's a `string` mandatory parameter.                                                                                               |
 | `idToken`  | A newly created `JWT Token` that has not already been sent to Web3Auth or a `Duplicate Token` error will be thrown. It's a `string` mandatory parameter. |
 
 </TabItem>
@@ -90,6 +90,16 @@ export interface TorusSubVerifierInfo {
 
 #### Usage
 
+<Tabs
+  defaultValue="single"
+  values={[
+    { label: "Single Verifier", value: "single" },
+    { label: "Aggregate Verifier", value: "aggregate" },
+  ]}
+>
+
+<TabItem value="single">
+
 ```js
 await web3auth.connect({
   verifier: "verifier-name", // e.g. `web3auth-sfa-verifier` replace with your verifier name, and it has to be on the same network passed in init().
@@ -97,6 +107,28 @@ await web3auth.connect({
   idToken: "JWT Token", // replace with your newly created unused JWT Token.
 });
 ```
+
+</TabItem>
+
+<TabItem value="aggregate">
+
+```js
+await web3auth.connect({
+  verifier: "aggregate-verifier-name", // e.g. `web3auth-aggregate-verifier` replace with your verifier name, and it has to be on the same network passed in init().
+  verifierId: "verifier-id-value", // e.g. `Yux1873xnibdui` or `name@email.com` replace with your verifier id(sub or email)'s value.
+  idToken: "JWT Token", // replace with your newly created unused JWT Token.
+  subVerifierInfoArray: [
+    {
+      verifier: "sub-verifier-name", // e.g. `google`
+      idToken: "JWT Token", // replace with your newly created unused JWT Token.
+    },
+  ],
+});
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Get a native provider
 
