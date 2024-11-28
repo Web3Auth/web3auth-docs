@@ -140,15 +140,20 @@ npm install express jsonwebtoken @telegram-apps/init-data-node dotenv cors
 Create a `.env` file to store your sensitive data.
 
 ```env
-TELEGRAM_BOT_TOKEN=your_bot_token_here
-JWT_SECRET=your_secret_key
 NODE_ENV=development
 APP_URL="https://your-app-url.com"
+TELEGRAM_BOT_TOKEN=your_bot_token_here
+JWT_SECRET=your_secret_key
 JWT_KEY_ID=your_key_id
 ```
 
-The `NODE_ENV` environment variable allows you to detect whether the app is running in development
-or production mode.
+- The `NODE_ENV` is the environment in which the app is running.
+- The `APP_URL` is the URL of your deployed app.
+- The `JWT_SECRET` is the private key used to sign the JWT.
+- The `TELEGRAM_BOT_TOKEN` is the Telegram bot token.
+- The `JWT_KEY_ID` is a unique identifier in for the key used to sign the JWT. This ID helps
+  Web3Auth locate the correct public key from your JWKS endpoint for token verification. It must
+  match the `kid` value in your JWKS configuration.
 
 ---
 
