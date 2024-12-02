@@ -43,11 +43,7 @@ export default function Guides({ content }: GuidesInterface) {
   useEffect(() => {
     function filterByTags() {
       let guides;
-      if (searchInput.length === 0) {
-        guides = completeGuides;
-      } else {
-        guides = searchFilteredGuides;
-      }
+      guides = completeGuides;
       console.log("productFilter", productFilter);
       console.log("platformFilter", platformFilter);
       console.log("tags", tags);
@@ -57,7 +53,7 @@ export default function Guides({ content }: GuidesInterface) {
         const platFil =
           platformFilter.length === 0 || platformFilter.some((tag) => item.tags.includes(tag));
 
-        return [prodFil, platFil].every((result) => result === true);
+        return [prodFil, platFil].some((result) => result === true);
       });
 
       setTagFilteredGuides(guides.sort((a: any, b: any) => a.order - b.order));
@@ -106,14 +102,14 @@ export default function Guides({ content }: GuidesInterface) {
   function onChangeSearch(input) {
     setSearchInput(input);
 
-    const inputKeywords = input.trim().split(" ");
+    const inputKeywords = input.trim().split(" ").filter(Boolean);
 
     function searchFilter(item) {
       return (
-        inputKeywords.every((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
-        inputKeywords.every((key) => item.description.toLowerCase().includes(key.toLowerCase())) ||
-        inputKeywords.every((key) =>
-          item.tags.map((tag) => tag.includes(key.toLowerCase())).includes(true),
+        inputKeywords.some((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
+        inputKeywords.some((key) => item.description.toLowerCase().includes(key.toLowerCase())) ||
+        inputKeywords.some((key) =>
+          item.tags.some((tag) => tag.toLowerCase().includes(key.toLowerCase())),
         )
       );
     }
