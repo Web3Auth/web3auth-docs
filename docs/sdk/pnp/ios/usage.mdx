@@ -423,8 +423,7 @@ do {
 ## Request signature
 
 The `request` method facilitates the use of templated transaction screens for signing transactions.
-Upon successful completion, you can retrieve the signature for the request using the
-`getSignResponse` static method.
+The method will return [SignResponse](#signresponse).
 
 Please check the list of
 [JSON RPC methods](https://docs.metamask.io/wallet/reference/json-rpc-api/), noting that the request
@@ -451,7 +450,7 @@ do {
   params.append(address)
 
   // focus-start
-  try await self.web3Auth?.request(
+  let response = try await self.web3Auth?.request(
     chainConfig: ChainConfig(
       chainId: "11155111",
       rpcTarget: "https://eth-sepolia.public.blastapi.io"
@@ -461,17 +460,23 @@ do {
   )
   // focus-end
 
-  // focus-next-line
-  let response = try Web3Auth.getSignResponse()
-
-   if response!.success {
+  if response!.success {
      print(response!.result!)
    } else {
      // Handle Error
      print(response!.error!)
    }
+
 } catch {
   print(error.localizedDescription)
   // Handle error
 }
 ```
+
+### SignResponse
+
+| Name      | Description                                                   |
+| --------- | ------------------------------------------------------------- |
+| `success` | Determines whether the request was successful or not.         |
+| `result?` | Holds the signature for the request when `success` is `true`. |
+| `error?`  | Holds the error for the request when `success` is `false`.    |
