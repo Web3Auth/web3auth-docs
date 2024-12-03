@@ -272,6 +272,7 @@ const sidebars: SidebarsConfig = {
     "features/account-abstraction",
     "features/blockchain-agnostic",
     "features/custom-authentication",
+    "features/ecosystem-wallets",
     "features/wallet-ui",
     "features/topup",
     "features/gaming",
