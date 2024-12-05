@@ -125,8 +125,8 @@ these methods will return an empty string; otherwise, they will return the respe
 Note that if the API call to fetch the project configuration fails, the method will throw an error.
 
 ```kotlin
-val sessionResponse: CompletableFuture<Void> = web3Auth.initialize()
-sessionResponse.whenComplete { _, error ->
+val initializeCF: CompletableFuture<Void> = web3Auth.initialize()
+initializeCF.whenComplete { _, error ->
   if (error == null) {
     // Check for the active session
     if(web3Auth.getPrivKey()isNotEmpty()) {
