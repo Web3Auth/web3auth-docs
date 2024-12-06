@@ -1647,6 +1647,7 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Migration Guides",
       items: [
+        "migration-guides/sfa-android-v2-to-v3",
         "migration-guides/sfa-android-v1.2.0-to-v2.0.0",
         "migration-guides/sfa-android-v0.4.0-to-v1",
         "migration-guides/sfa-android-v0.1.0-to-v0.3.0",
