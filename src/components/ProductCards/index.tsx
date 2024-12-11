@@ -383,15 +383,12 @@ export default function QuickNavigation() {
                 <span className={styles.pill}>Demo{chevron}</span>
               </a>
               <a
-                href={`${baseUrl}quick-start?product=PNP&sdk=PNP_MODAL&framework=REACT&stepIndex=0`}
+                href={`${baseUrl}quick-start?product=PNP&sdk=PNP_MODAL`}
                 className={styles.pillContainer}
               >
                 <span className={styles.pill}>Quick Start{chevron}</span>
               </a>
-              <a
-                href={`${baseUrl}examples?product=Plug+and+Play&sdk=Plug+and+Play+Web+Modal+SDK`}
-                className={styles.pillContainer}
-              >
+              <a href={`${baseUrl}examples`} className={styles.pillContainer}>
                 <span className={styles.pill}>Examples{chevron}</span>
               </a>
             </div>
@@ -445,15 +442,12 @@ export default function QuickNavigation() {
                 <span className={styles.pill}>Demo{chevron}</span>
               </a>
               <a
-                href={`${baseUrl}quick-start?product=CORE_KIT&sdk=SFA_WEB&framework=REACT&stepIndex=0`}
+                href={`${baseUrl}quick-start?product=CORE_KIT&sdk=SFA_WEB`}
                 className={styles.pillContainer}
               >
                 <span className={styles.pill}>Quick Start{chevron}</span>
               </a>
-              <a
-                href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+JS+SDK`}
-                className={styles.pillContainer}
-              >
+              <a href={`${baseUrl}examples`} className={styles.pillContainer}>
                 <span className={styles.pill}>Examples{chevron}</span>
               </a>
               <a href={`https://t.me/w3a_tg_mini_app_bot/`} className={styles.pillContainer}>
@@ -498,15 +492,12 @@ export default function QuickNavigation() {
             {mpcIcons}
             <div className={styles.links}>
               <a
-                href={`${baseUrl}quick-start?product=CORE_KIT&sdk=MPC_CORE_KIT&framework=REACT&stepIndex=0`}
+                href={`${baseUrl}quick-start?product=MPC_CORE_KIT&sdk=MPC_CORE_KIT_WEB`}
                 className={styles.pillContainer}
               >
                 <span className={styles.pill}>Quick Start{chevron}</span>
               </a>
-              <a
-                href={`${baseUrl}examples?product=Core+Kit&sdk=Single+Factor+Auth+JS+SDK`}
-                className={styles.pillContainer}
-              >
+              <a href={`${baseUrl}examples`} className={styles.pillContainer}>
                 <span className={styles.pill}>Examples{chevron}</span>
               </a>
             </div>
