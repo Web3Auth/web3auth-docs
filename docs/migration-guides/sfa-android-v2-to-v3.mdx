@@ -1,0 +1,45 @@
+---
+title: SFA Android SDK - v2.0.0 to v3.0.0
+description: "SFA Android SDK - v2.0.0 to v3.0.0 | Documentation - Web3Auth"
+sidebar_label: v2.0.0 to v3.0.0
+---
+
+This migration guide provides steps for upgrading from version v2.0.0 to v3.0.0 of the SFA Android
+SDK. The guide outlines significant changes and enhancements.
+
+## Breaking Changes
+
+### initialize Method Changes
+
+In v3, the `initialize` method will now return void upon successful initialization instead of
+returning `SessionData`. After successful initialization, you can use the
+[getSessionData](/docs/sdk/sfa/sfa-android/usage/#get-session-data) method to check if the user is
+logged in or not.
+
+```kotlin
+val initializeCF = singleFactoreAuth.initialize(this.applicationContext)
+
+// remove-next-line
+initializeCF.whenComplete { sessionData, error ->
+// add-next-line
+initializeCF.whenComplete {_, error ->
+    if (error != null) {
+        // Handle error
+    }
+    // remove-start
+    else if (sessionData != null) {
+        // User is logged in
+    } else {
+        // User is not logged in
+    }
+    // remove-end
+    // add-start
+    let sessionData = singleFactorAuth.getSessionData()
+    if(sessionData != null) {
+        // User is logged in
+    } else {
+        // User is not logged in
+    }
+    // add-end
+}
+```
