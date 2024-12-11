@@ -52,11 +52,7 @@ export default function Examples(props: {
   useEffect(() => {
     function filterByTags() {
       let examples;
-      if (searchInput.length === 0) {
-        examples = sortedExamples;
-      } else {
-        examples = searchFilteredExampleMap;
-      }
+      examples = sortedExamples;
       examples = examples.filter((item) => {
         const prodFil =
           productFilter.length === 0 || productFilter.some((tag) => item.tags.includes(tag));
@@ -65,7 +61,7 @@ export default function Examples(props: {
         const blockFil =
           blockchainFilter.length === 0 || blockchainFilter.some((tag) => item.tags.includes(tag));
 
-        return [prodFil, platFil, blockFil].every((result) => result === true);
+        return [prodFil, platFil, blockFil].some((result) => result === true);
       });
       setTagFilteredExampleMap(examples);
     }
@@ -119,14 +115,14 @@ export default function Examples(props: {
   function onChangeSearch(input) {
     setSearchInput(input);
 
-    const inputKeywords = input.trim().split(" ");
+    const inputKeywords = input.trim().split(" ").filter(Boolean);
 
     function searchFilter(item) {
       return (
-        inputKeywords.every((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
-        inputKeywords.every((key) => item.description.toLowerCase().includes(key.toLowerCase())) ||
-        inputKeywords.every((key) =>
-          item.tags.map((tag) => tag.includes(key.toLowerCase())).includes(true),
+        inputKeywords.some((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
+        inputKeywords.some((key) => item.description.toLowerCase().includes(key.toLowerCase())) ||
+        inputKeywords.some((key) =>
+          item.tags.map((tag) => tag.toLowerCase().includes(key.toLowerCase())),
         )
       );
     }
