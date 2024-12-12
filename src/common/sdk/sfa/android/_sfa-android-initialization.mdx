@@ -1,16 +1,16 @@
 ```kotlin
 import android.content.Context
-import com.web3auth.singlefactorauth.SingleFactorAuth
-import com.web3auth.singlefactorauth.types.Web3AuthOptions
-import org.torusresearch.fetchnodedetails.types.Web3AuthNetwork
-
-// You can get the client id for your Web3Auth project from Web3Auth dashboard.
-val web3AuthOptions = Web3AuthOptions(
-    "YOUR_WEB3AUTH_CLIENT_ID",
-    Web3AuthNetwork.SAPPHIRE_MAINNET
-)
 
 val context: Context = "YOUR_APPLICATION_CONTEXT"
+val sessionDataCF = singleFactorAuth.initialize(context)
 
-val singleFactorAuth = SingleFactorAuth(web3AuthOptions, context)
+sessionDataCF.whenComplete {sessionData, error ->
+    if(error != null) {
+        // Something went wrong
+        // Initiate the login flow again
+    } else {
+        // You can use the SessionData to check if the user is
+        //logged in or not
+    }
+}
 ```
