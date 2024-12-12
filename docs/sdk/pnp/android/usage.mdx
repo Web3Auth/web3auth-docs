@@ -514,15 +514,13 @@ val signMsgCompletableFuture = web3Auth.request(
 )
 // focus-end
 
-signMsgCompletableFuture.whenComplete { _, error ->
+signMsgCompletableFuture.whenComplete { signResult, error ->
     if (error == null) {
-        Log.d("MainActivity_Web3Auth", "Message signed successfully")
         // focus-next-line
-        val signResult = Web3Auth.getSignResponse()
-        Log.d("MainActivity_Web3Auth", signResult.toString())
+        Log.d("Sign Result", signResult.toString())
 
     } else {
-        Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
+        Log.d("Sign Error", error.message ?: "Something went wrong")
     }
 }
 ```
