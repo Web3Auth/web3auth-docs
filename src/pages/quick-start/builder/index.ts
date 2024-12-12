@@ -32,6 +32,7 @@ import {
   MPC_CORE_KIT_NODE,
   MPC_CORE_KIT_REACT_NATIVE,
   SFA,
+  LANGS_WEB_PNP,
 } from "./choices";
 import mpc_core_kit_web_angular from "./mpc_core_kit/web/angular";
 import mpc_core_kit_web_nextjs from "./mpc_core_kit/web/nextjs";
@@ -59,12 +60,16 @@ import pnp_web_modal_angular from "./pnp/web_modal/angular";
 import pnp_web_modal_html from "./pnp/web_modal/html";
 import pnp_web_modal_nextjs from "./pnp/web_modal/nextjs";
 import pnp_web_modal_react from "./pnp/web_modal/react";
+import pnp_web_modal_react_hooks from "./pnp/web_modal/react_hooks";
 import pnp_web_modal_vue from "./pnp/web_modal/vue";
+import pnp_web_modal_vue_composables from "./pnp/web_modal/vue_composables";
 import pnp_web_no_modal_angular from "./pnp/web_no_modal/angular";
 import pnp_web_no_modal_html from "./pnp/web_no_modal/html";
 import pnp_web_no_modal_nextjs from "./pnp/web_no_modal/nextjs";
 import pnp_web_no_modal_react from "./pnp/web_no_modal/react";
+import pnp_web_no_modal_react_hooks from "./pnp/web_no_modal/react_hooks";
 import pnp_web_no_modal_vue from "./pnp/web_no_modal/vue";
+import pnp_web_no_modal_vue_composables from "./pnp/web_no_modal/vue_composables";
 
 const sdks = {
   // PNP Modal SDK
@@ -72,12 +77,16 @@ const sdks = {
   PNP_MODAL_HTML: pnp_web_modal_html,
   PNP_MODAL_NEXTJS: pnp_web_modal_nextjs,
   PNP_MODAL_REACT: pnp_web_modal_react,
+  PNP_MODAL_REACT_HOOKS: pnp_web_modal_react_hooks,
   PNP_MODAL_VUE: pnp_web_modal_vue,
+  PNP_MODAL_VUE_COMPOSABLES: pnp_web_modal_vue_composables,
   // PNP No Modal SDK
   PNP_NO_MODAL_ANGULAR: pnp_web_no_modal_angular,
   PNP_NO_MODAL_NEXTJS: pnp_web_no_modal_nextjs,
   PNP_NO_MODAL_REACT: pnp_web_no_modal_react,
+  PNP_NO_MODAL_REACT_HOOKS: pnp_web_no_modal_react_hooks,
   PNP_NO_MODAL_VUE: pnp_web_no_modal_vue,
+  PNP_NO_MODAL_VUE_COMPOSABLES: pnp_web_no_modal_vue_composables,
   PNP_NO_MODAL_HTML: pnp_web_no_modal_html,
   // PNP Android SDK
   PNP_ANDROID_ANDROID: pnp_android,
@@ -141,9 +150,9 @@ const builder: IntegrationBuilder = {
     },
     framework: {
       displayName: "Platform/ Framework",
-      default: LANGS_WEB[0].key,
+      default: LANGS_WEB_PNP[0].key,
       type: "dropdown",
-      choices: LANGS_WEB,
+      choices: LANGS_WEB_PNP,
     },
   },
 
@@ -194,10 +203,10 @@ const builder: IntegrationBuilder = {
         frameworkChoices = LANGS_UNITY;
         break;
       case PNP_MODAL:
-        frameworkChoices = LANGS_WEB;
+        frameworkChoices = LANGS_WEB_PNP;
         break;
       case PNP_NO_MODAL:
-        frameworkChoices = LANGS_WEB;
+        frameworkChoices = LANGS_WEB_PNP;
         break;
       case SFA_WEB:
         frameworkChoices = LANGS_WEB;
@@ -252,7 +261,7 @@ const builder: IntegrationBuilder = {
 
     let sourceCodeLink;
 
-    if (LANGS_WEB.map((it) => it.key).includes(finalValues.framework)) {
+    if (LANGS_WEB_PNP.map((it) => it.key).includes(finalValues.framework)) {
       sourceCodeLink = quickStartSourceCode[selectedSDK];
     } else {
       sourceCodeLink = quickStartSourceCode[finalValues.sdk];

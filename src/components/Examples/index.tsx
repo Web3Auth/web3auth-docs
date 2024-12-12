@@ -32,10 +32,7 @@ export default function Examples(props: {
   const [productFilter, setProductFilter] = useState<string[]>([]);
   const [platformFilter, setPlatformFilter] = useState<string[]>([]);
   const [blockchainFilter, setBlockchainFilter] = useState<string[]>([]);
-  const [tagFilteredExampleMap, setTagFilteredExampleMap] =
-    useState<ExamplesInterface[]>(sortedExamples);
-  const [searchFilteredExampleMap, setSearchFilteredExampleMap] =
-    useState<ExamplesInterface[]>(tagFilteredExampleMap);
+  const [filteredExamples, setFilteredExamples] = useState<ExamplesInterface[]>(sortedExamples);
 
   const chevron = (
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -49,15 +46,12 @@ export default function Examples(props: {
     </svg>
   );
 
+  // Apply tag filters first
   useEffect(() => {
-    function filterByTags() {
-      let examples;
-      if (searchInput.length === 0) {
-        examples = sortedExamples;
-      } else {
-        examples = searchFilteredExampleMap;
-      }
-      examples = examples.filter((item) => {
+    let filtered = sortedExamples;
+
+    if (productFilter.length > 0 || platformFilter.length > 0 || blockchainFilter.length > 0) {
+      filtered = sortedExamples.filter((item) => {
         const prodFil =
           productFilter.length === 0 || productFilter.some((tag) => item.tags.includes(tag));
         const platFil =
@@ -65,12 +59,14 @@ export default function Examples(props: {
         const blockFil =
           blockchainFilter.length === 0 || blockchainFilter.some((tag) => item.tags.includes(tag));
 
-        return [prodFil, platFil, blockFil].every((result) => result === true);
+        return prodFil && platFil && blockFil;
       });
-      setTagFilteredExampleMap(examples);
     }
-    filterByTags();
-  }, [productFilter, platformFilter, blockchainFilter, searchFilteredExampleMap]);
+
+    // Reset search when filters change
+    setSearchInput("");
+    setFilteredExamples(filtered);
+  }, [productFilter, platformFilter, blockchainFilter]);
 
   const onChangeProduct = (e) => {
     const filterValue = e.map((item) => item.value);
@@ -87,55 +83,42 @@ export default function Examples(props: {
   const onChangeBlockchain = (e) => {
     const filterValue = e.map((item) => item.value);
     setBlockchainFilter(filterValue);
-    setTags([...productFilter, ...filterValue, ...platformFilter]);
+    setTags([...productFilter, ...platformFilter, ...filterValue]);
   };
 
   function highlightSearchText(text) {
-    if (searchInput === "") {
+    if (!searchInput.trim()) {
       return text;
     }
-    let inputKeywords = searchInput.split(" ");
-    inputKeywords = inputKeywords.filter((keyword) => keyword !== "");
-    const keywords = inputKeywords
-      .map((keyword) => {
-        return `(${keyword})`;
-      })
-      .join("|");
-    const regex = new RegExp(keywords, "gi");
-    const matches = text.match(regex);
+    const searchTerms = searchInput.trim().split(/\s+/);
+    const regex = new RegExp(`(${searchTerms.join("|")})`, "gi");
     const parts = text.split(regex);
-    if (matches) {
-      return (
-        <span>
-          {parts.filter(String).map((part, i) => {
-            return regex.test(part) ? <mark key={i}>{part}</mark> : <span key={i}>{part}</span>;
-          })}
-        </span>
-      );
-    }
-    return text;
+
+    return (
+      <span>
+        {parts.map((part, i) => {
+          return regex.test(part) ? <mark key={i}>{part}</mark> : <span key={i}>{part}</span>;
+        })}
+      </span>
+    );
   }
 
   function onChangeSearch(input) {
     setSearchInput(input);
-
-    const inputKeywords = input.trim().split(" ");
-
-    function searchFilter(item) {
-      return (
-        inputKeywords.every((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
-        inputKeywords.every((key) => item.description.toLowerCase().includes(key.toLowerCase())) ||
-        inputKeywords.every((key) =>
-          item.tags.map((tag) => tag.includes(key.toLowerCase())).includes(true),
-        )
-      );
-    }
-    let examples = tagFilteredExampleMap;
-    if (input !== "") {
-      examples = tagFilteredExampleMap.filter((item) => searchFilter(item));
-    }
-    setSearchFilteredExampleMap(examples);
   }
+
+  // Filter the already filtered examples based on search
+  const displayedExamples = filteredExamples.filter((item) => {
+    if (!searchInput.trim()) return true;
+
+    const searchTerms = searchInput.toLowerCase().trim().split(/\s+/);
+    return searchTerms.every(
+      (term) =>
+        item.title.toLowerCase().includes(term) ||
+        item.description.toLowerCase().includes(term) ||
+        item.tags.some((tag) => tag.toLowerCase().includes(term)),
+    );
+  });
 
   function renderArticle(article) {
     return (
@@ -169,7 +152,7 @@ export default function Examples(props: {
         <div className={styles.tagContainer}>
           {article.tags &&
             article.tags.map((tag) => {
-              if (tags.includes(tag) || searchInput.split(" ").includes(tag)) {
+              if (tags.includes(tag) || searchInput.split(/\s+/).includes(tag)) {
                 return (
                   <div key={tag} className={styles.tagActive}>
                     {tag}
@@ -181,7 +164,7 @@ export default function Examples(props: {
 
           {article.tags &&
             article.tags.map((tag) => {
-              if (!(tags.includes(tag) || searchInput.split(" ").includes(tag))) {
+              if (!(tags.includes(tag) || searchInput.split(/\s+/).includes(tag))) {
                 return (
                   <div key={tag} className={styles.tag}>
                     {tag}
@@ -216,7 +199,7 @@ export default function Examples(props: {
             </svg>
           </div>
           <input
-            placeholder="Quick search for anything"
+            placeholder="Search within filtered results"
             value={searchInput}
             onChange={(event) => onChangeSearch(event.target.value)}
             type="text"
@@ -275,8 +258,8 @@ export default function Examples(props: {
         )}
       </div>
       <div className={styles.container}>
-        {tagFilteredExampleMap.map((item) => renderArticle(item))}
-        {tagFilteredExampleMap.length === 0 && (
+        {displayedExamples.map((item) => renderArticle(item))}
+        {displayedExamples.length === 0 && (
           <div className={styles.noResults}>
             <p>No Results Found</p>
           </div>
