@@ -1486,7 +1486,7 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/flutter-v3-to-v4"],
+      items: ["migration-guides/flutter-v5-to-v6", "migration-guides/flutter-v3-to-v4"],
     },
     ...sdkQuickLinks,
   ],
