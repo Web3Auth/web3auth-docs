@@ -9,7 +9,6 @@ import Layout from "@theme/Layout";
 import { GuidesInterface, platformMap, productMap } from "../../common/maps";
 
 import Select, { StylesConfig } from "react-select";
-// import { request } from "graphql-request";
 import { useState, useEffect } from "react";
 import SEO from "../../components/SEO";
 import styles from "./styles.module.css";
@@ -21,45 +20,40 @@ export default function Guides({ content }: GuidesInterface) {
       return {};
     })
     .sort((a: any, b: any) => {
-      //if pinned == 1, the is the first
       if (a.pinned && !b.pinned) return -1;
       if (!a.pinned && b.pinned) return 1;
-      // Convert date strings to Date objects for comparison
       const aDate = new Date(a.date);
       const bDate = new Date(b.date);
-
-      // If dates are equal, or as a fallback, sort by 'order' if needed
       return +bDate - +aDate;
     });
+
   const [searchInput, setSearchInput] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [productFilter, setProductFilter] = useState<string[]>([]);
   const [platformFilter, setPlatformFilter] = useState<string[]>([]);
-  const [tagFilteredGuides, setTagFilteredGuides] = useState(completeGuides);
-  const [searchFilteredGuides, setSearchFilteredGuides] = useState(tagFilteredGuides);
+  const [filteredGuides, setFilteredGuides] = useState(completeGuides);
   const { siteConfig } = useDocusaurusContext();
   const { baseUrl } = siteConfig;
 
+  // Apply tag filters first
   useEffect(() => {
-    function filterByTags() {
-      let guides;
-      guides = completeGuides;
-      console.log("productFilter", productFilter);
-      console.log("platformFilter", platformFilter);
-      console.log("tags", tags);
-      guides = guides.filter((item) => {
+    let filtered = completeGuides;
+
+    if (productFilter.length > 0 || platformFilter.length > 0) {
+      filtered = completeGuides.filter((item) => {
         const prodFil =
           productFilter.length === 0 || productFilter.some((tag) => item.tags.includes(tag));
         const platFil =
           platformFilter.length === 0 || platformFilter.some((tag) => item.tags.includes(tag));
 
-        return [prodFil, platFil].some((result) => result === true);
+        return prodFil && platFil;
       });
-
-      setTagFilteredGuides(guides.sort((a: any, b: any) => a.order - b.order));
     }
-    filterByTags();
-  }, [productFilter, platformFilter, searchFilteredGuides]);
+
+    // Reset search when filters change
+    setSearchInput("");
+    setFilteredGuides(filtered);
+  }, [productFilter, platformFilter]);
 
   const onChangeProduct = (e) => {
     const filterValue = e.map((item) => item.value);
@@ -74,51 +68,38 @@ export default function Guides({ content }: GuidesInterface) {
   };
 
   function highlightSearchText(text) {
-    if (searchInput === "") {
+    if (!searchInput.trim()) {
       return text;
     }
-    let inputKeywords = searchInput.split(" ");
-    inputKeywords = inputKeywords.filter((keyword) => keyword !== "");
-    const keywords = inputKeywords
-      .map((keyword) => {
-        return `(${keyword})`;
-      })
-      .join("|");
-    const regex = new RegExp(keywords, "gi");
-    const matches = text.match(regex);
+    const searchTerms = searchInput.trim().split(/\s+/);
+    const regex = new RegExp(`(${searchTerms.join("|")})`, "gi");
     const parts = text.split(regex);
-    if (matches) {
-      return (
-        <span>
-          {parts.filter(String).map((part, i) => {
-            return regex.test(part) ? <mark key={i}>{part}</mark> : <span key={i}>{part}</span>;
-          })}
-        </span>
-      );
-    }
-    return text;
+
+    return (
+      <span>
+        {parts.map((part, i) => {
+          return regex.test(part) ? <mark key={i}>{part}</mark> : <span key={i}>{part}</span>;
+        })}
+      </span>
+    );
   }
 
   function onChangeSearch(input) {
     setSearchInput(input);
-
-    const inputKeywords = input.trim().split(" ").filter(Boolean);
-
-    function searchFilter(item) {
-      return (
-        inputKeywords.some((key) => item.title.toLowerCase().includes(key.toLowerCase())) ||
-        inputKeywords.some((key) => item.description.toLowerCase().includes(key.toLowerCase())) ||
-        inputKeywords.some((key) =>
-          item.tags.some((tag) => tag.toLowerCase().includes(key.toLowerCase())),
-        )
-      );
-    }
-    let guides = tagFilteredGuides;
-    if (input !== "") {
-      guides = tagFilteredGuides.filter((item) => searchFilter(item));
-    }
-    setSearchFilteredGuides(guides);
   }
+
+  // Filter the already filtered guides based on search
+  const displayedGuides = filteredGuides.filter((item) => {
+    if (!searchInput.trim()) return true;
+
+    const searchTerms = searchInput.toLowerCase().trim().split(/\s+/);
+    return searchTerms.every(
+      (term) =>
+        item.title.toLowerCase().includes(term) ||
+        item.description.toLowerCase().includes(term) ||
+        item.tags.some((tag) => tag.toLowerCase().includes(term)),
+    );
+  });
 
   function renderArticle(article) {
     return (
@@ -247,8 +228,8 @@ export default function Guides({ content }: GuidesInterface) {
       </header>
 
       <div className={styles.container}>
-        {tagFilteredGuides.map((item) => renderArticle(item))}
-        {tagFilteredGuides.length === 0 && (
+        {displayedGuides.map((item) => renderArticle(item))}
+        {displayedGuides.length === 0 && (
           <div className={styles.noResults}>
             <p>No result</p>
           </div>

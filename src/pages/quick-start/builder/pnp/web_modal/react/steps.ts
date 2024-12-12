@@ -52,6 +52,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.configureExternalWallets,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MODAL_REACT_APP_TSX,
+        files[hostedFileLinks.MODAL_REACT_APP_TSX],
+        "Configuring External Wallets",
+      ),
+    },
+    {
       ...STEPS.login,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.MODAL_REACT_APP_TSX,

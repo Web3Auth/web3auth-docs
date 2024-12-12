@@ -43,6 +43,8 @@ export const FLUTTER = "FLUTTER";
 export const UNITY = "UNITY";
 export const UNREAL = "UNREAL";
 export const NODE = "NODE";
+export const REACT_HOOKS = "REACT_HOOKS";
+export const VUE_COMPOSABLES = "VUE_COMPOSABLES";
 
 export const SDKS_PNP: DisplayChoice[] = [
   { key: PNP_MODAL, displayName: "Web - Modal SDK" },
@@ -70,6 +72,16 @@ export const SDKS_MPC_CORE_KIT: DisplayChoice[] = [
 ];
 
 export const LANGS_WEB: DisplayChoice[] = [
+  { key: REACT, displayName: "React" },
+  { key: NEXTJS, displayName: "Next JS" },
+  { key: VUE, displayName: "Vue" },
+  { key: ANGULAR, displayName: "Angular" },
+  { key: HTML, displayName: "Vanilla JS" },
+];
+
+export const LANGS_WEB_PNP: DisplayChoice[] = [
+  { key: REACT_HOOKS, displayName: "React Hooks" },
+  { key: VUE_COMPOSABLES, displayName: "Vue Composables" },
   { key: REACT, displayName: "React" },
   { key: NEXTJS, displayName: "Next JS" },
   { key: VUE, displayName: "Vue" },

@@ -36,6 +36,14 @@ export default function getSteps(steps, files, replacementAggregator) {
       ),
     },
     {
+      ...STEPS.configureExternalWallets,
+      pointer: replacementAggregator.highlightRange(
+        hostedFileLinks.MODAL_HTML_SCRIPT_JS,
+        files[hostedFileLinks.MODAL_HTML_SCRIPT_JS],
+        "Configuring External Wallets",
+      ),
+    },
+    {
       ...STEPS.login,
       pointer: replacementAggregator.highlightRange(
         hostedFileLinks.MODAL_HTML_SCRIPT_JS,
