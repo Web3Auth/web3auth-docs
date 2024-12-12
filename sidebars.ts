@@ -98,7 +98,7 @@ function sfaTopNavButton(selectedSDK: string): string {
                   v${sdkVersion}
                   </div>
       </div>
-      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mpc-core-kit">
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mpc-core-kit/mpc-core-kit-js">
         MPC Core Kit SDK
         <span class="sdk-sidebar-description">Build your own MPC wallet with Web3Auth Infra layer SDK</span>
       </a>
