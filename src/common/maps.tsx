@@ -4,12 +4,16 @@ export const quickStartHostedLinks = {
   PNP_MODAL_HTML: "https://w3a.link/pnp-vanillajs-modal-quick-start",
   PNP_MODAL_NEXTJS: "https://w3a.link/pnp-nextjs-modal-quick-start",
   PNP_MODAL_REACT: "https://w3a.link/pnp-react-modal-quick-start",
+  PNP_MODAL_REACT_HOOKS: "https://w3a.link/pnp-react-hooks-modal-quick-start",
   PNP_MODAL_VUE: "https://w3a.link/pnp-vue-modal-quick-start",
+  PNP_MODAL_VUE_COMPOSABLES: "https://w3a.link/pnp-vue-composables-modal-quick-start",
   // PNP No Modal SDK
   PNP_NO_MODAL_ANGULAR: "https://w3a.link/pnp-angular-no-modal-quick-start",
   PNP_NO_MODAL_NEXTJS: "https://w3a.link/pnp-nextjs-no-modal-quick-start",
   PNP_NO_MODAL_REACT: "https://w3a.link/pnp-react-no-modal-quick-start",
+  PNP_NO_MODAL_REACT_HOOKS: "https://w3a.link/pnp-react-hooks-no-modal-quick-start",
   PNP_NO_MODAL_VUE: "https://w3a.link/pnp-vue-no-modal-quick-start",
+  PNP_NO_MODAL_VUE_COMPOSABLES: "https://w3a.link/pnp-vue-composables-no-modal-quick-start",
   PNP_NO_MODAL_HTML: "https://w3a.link/pnp-vanillajs-no-modal-quick-start",
   // PNP Android SDK
   PNP_ANDROID_ANDROID: "https://w3a.link/pnp-android-quick-start",
