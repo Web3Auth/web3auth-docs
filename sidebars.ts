@@ -270,6 +270,7 @@ const sidebars: SidebarsConfig = {
       defaultStyle: true,
     },
     "features/account-abstraction",
+    "features/account-dashboard",
     "features/blockchain-agnostic",
     "features/custom-authentication",
     "features/wallet-ui",
