@@ -33,6 +33,7 @@ import {
   MPC_CORE_KIT_REACT_NATIVE,
   SFA,
   LANGS_WEB_PNP,
+  MPC_CORE_KIT,
 } from "./choices";
 import mpc_core_kit_web_angular from "./mpc_core_kit/web/angular";
 import mpc_core_kit_web_nextjs from "./mpc_core_kit/web/nextjs";
@@ -166,12 +167,12 @@ const builder: IntegrationBuilder = {
 
     let sdkDefault, sdkChoices, frameworkDefault, frameworkChoices;
 
-    if (finalValues.product === PNP) {
-      sdkChoices = SDKS_PNP;
-    } else if (finalValues.product === SFA) {
+    if (finalValues.product === SFA) {
       sdkChoices = SDKS_SFA;
-    } else {
+    } else if (finalValues.product === MPC_CORE_KIT) {
       sdkChoices = SDKS_MPC_CORE_KIT;
+    } else {
+      sdkChoices = SDKS_PNP;
     }
 
     switch (finalValues.sdk) {
@@ -226,10 +227,12 @@ const builder: IntegrationBuilder = {
       default:
         frameworkChoices = LANGS_WEB;
     }
-
     sdkDefault = sdkChoices[0].key;
     frameworkDefault = frameworkChoices[0].key;
 
+    if (!sdkChoices.map((item) => item.key).includes(finalValues.sdk)) {
+      finalValues.sdk = sdkDefault;
+    }
     if (!frameworkChoices.map((item) => item.key).includes(finalValues.framework)) {
       finalValues.framework = frameworkDefault;
     }
