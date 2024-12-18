@@ -171,6 +171,18 @@ const builder: IntegrationBuilder = {
       sdkChoices = SDKS_SFA;
     } else if (finalValues.product === MPC_CORE_KIT) {
       sdkChoices = SDKS_MPC_CORE_KIT;
+    } else if (
+      finalValues.product === "CORE_KIT" &&
+      SDKS_SFA.some((sdk) => sdk.key === finalValues.sdk)
+    ) {
+      finalValues.product = SFA;
+      sdkChoices = SDKS_SFA;
+    } else if (
+      finalValues.product === "CORE_KIT" &&
+      SDKS_MPC_CORE_KIT.some((sdk) => sdk.key === finalValues.sdk)
+    ) {
+      finalValues.product = MPC_CORE_KIT;
+      sdkChoices = SDKS_MPC_CORE_KIT;
     } else {
       sdkChoices = SDKS_PNP;
     }
