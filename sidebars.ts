@@ -1772,7 +1772,10 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/mpc-core-kit-web-v2-to-v3"],
+      items: [
+        "migration-guides/mpc-core-kit-web-v2-to-v3",
+        "migration-guides/mpc-core-kit-react-native-migration",
+      ],
     },
     ...sdkQuickLinks,
   ],
