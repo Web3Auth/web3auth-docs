@@ -98,7 +98,7 @@ function sfaTopNavButton(selectedSDK: string): string {
                   v${sdkVersion}
                   </div>
       </div>
-      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mpc-core-kit">
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mpc-core-kit/mpc-core-kit-js">
         MPC Core Kit SDK
         <span class="sdk-sidebar-description">Build your own MPC wallet with Web3Auth Infra layer SDK</span>
       </a>
@@ -270,6 +270,7 @@ const sidebars: SidebarsConfig = {
       defaultStyle: true,
     },
     "features/account-abstraction",
+    "features/account-dashboard",
     "features/blockchain-agnostic",
     "features/custom-authentication",
     "features/wallet-ui",
@@ -1364,11 +1365,12 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Migration Guides",
       items: [
-        "migration-guides/ios-v6-to-v7",
-        "migration-guides/ios-v7-to-v8",
-        "migration-guides/ios-v8-to-v8.1",
-        "migration-guides/ios-v8.1-to-v8.2",
+        "migration-guides/ios-v9-to-v10",
         "migration-guides/ios-v8.2-to-v8.3",
+        "migration-guides/ios-v8.1-to-v8.2",
+        "migration-guides/ios-v8-to-v8.1",
+        "migration-guides/ios-v7-to-v8",
+        "migration-guides/ios-v6-to-v7",
       ],
     },
     ...sdkQuickLinks,
