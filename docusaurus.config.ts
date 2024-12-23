@@ -558,6 +558,7 @@ const config: Config = {
           if (
             existingPath.includes("/sdk/") ||
             existingPath.includes("/sdk/sfa/sfa-js/") ||
+            existingPath.includes("/sdk/mpc-core-kit/mpc-core-kit-js/") ||
             existingPath.includes("/guides/") ||
             existingPath.includes("/features/") ||
             existingPath.includes("/product/")
@@ -566,6 +567,10 @@ const config: Config = {
               existingPath.replace("/sdk", "/api-reference"),
               existingPath.replace("/sdk", "/sdk-reference"),
               existingPath.replace("/sdk/sfa/sfa-js/", "/sdk/sfa/sfa-web/"),
+              existingPath.replace(
+                "/sdk/mpc-core-kit/mpc-core-kit-js/",
+                "/sdk/core-kit/mpc-core-kit/",
+              ),
               existingPath.replace("/guides/", "/content-hub/guides/"),
               existingPath.replace("/sdk/pnp/web/providers/", "/sdk/providers/"),
               existingPath.replace("/sdk/pnp/web/wallet-services/", "/sdk/wallet-services/"),

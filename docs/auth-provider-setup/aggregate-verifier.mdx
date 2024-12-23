@@ -13,9 +13,7 @@ Developers can create an `Aggregate Multiple Provider` verifier from the Web3Aut
 combining multiple login methods. This enables them to create a verifier that retrieves the same
 address for their user, regardless of the login providers used. For example, developers can combine
 a `Google` and `Email Passwordless` login, or a `Google` and `GitHub` login via Auth0, to access the
-same address for their user. These login methods should share the same Verifier ID, such as `email`,
-which is unique to the user regardless of the login method used, resulting in the same address for
-the user.
+same address for their user.
 
 :::note
 
@@ -26,7 +24,80 @@ You can utilize this feature for projects on `sapphire_devnet` network for free.
 
 :::
 
-### Set up an Aggregate Verifier
+## Understanding Login Combinations
+
+Before setting up an aggregate verifier, it's important to understand which login methods can be
+combined. The following table shows all possible combinations of login providers.
+
+:::tip Understanding the Table
+
+- **Rows**: First sub-verifier chosen during aggregate verifier creation
+- **Columns**: Available options for the second sub-verifier
+- ✅ = Supported combination
+- ❌ = Unsupported combination
+
+:::
+
+| First Sub-Verifier | Google | Facebook | Twitch | Discord | Auth0 | Email Passwordless | SMS Passwordless |
+| :----------------- | :----: | :------: | :----: | :-----: | :---: | :----------------: | :--------------: |
+| **Google**         |   ✅   |    ❌    |   ❌   |   ❌    |  ✅   |         ✅         |        ❌        |
+| **Facebook**       |   ❌   |    ❌    |   ❌   |   ❌    |  ✅   |         ❌         |        ❌        |
+| **Twitch**         |   ❌   |    ❌    |   ✅   |   ❌    |  ❌   |         ❌         |        ❌        |
+| **Discord**        |   ❌   |    ❌    |   ❌   |   ✅    |  ❌   |         ❌         |        ❌        |
+| **Email P'less**   |   ✅   |    ❌    |   ❌   |   ❌    |  ✅   |         ✅         |        ❌        |
+| **SMS P'less**     |   ❌   |    ❌    |   ❌   |   ❌    |  ✅   |         ❌         |        ✅        |
+| **Auth0**          |   ✅   |    ✅    |   ❌   |   ❌    |  ✅   |         ✅         |        ✅        |
+
+:::info Important
+
+Some login methods (like Twitch and Discord) cannot be combined with others because they lack a
+**common identifier**, such as an email. This identifier is crucial for connecting user accounts
+across different authentication methods and ensuring reliable user recognition when switching
+between login methods.
+
+:::
+
+### Auth0 Special Capabilities
+
+When using Auth0 as a verifier, you have access to a wide range of authentication methods. After
+selecting Auth0, you can choose from the following **Authentication Types**:
+
+<div className="auth0-options-grid">
+<div>
+
+#### Social Logins
+
+- Google
+- Twitter
+- Reddit
+- Apple
+- GitHub
+- LinkedIn
+
+</div>
+<div>
+
+#### Regional Options
+
+- WeChat
+- Weibo
+- Kakao
+- Line
+
+</div>
+<div>
+
+#### Other Methods
+
+- Email Passwordless
+- Email Password
+- Custom Authentication
+- Additional Options
+
+</div>
+</div>
+
+## Setting up an Aggregate Verifier
 
 <CreateVerifierFirstStep />
 
@@ -35,8 +106,10 @@ You can utilize this feature for projects on `sapphire_devnet` network for free.
 
 1. Select `Aggregate Multiple Providers` as the Login provider.
    ![Login Providers list on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate.png)
+
 1. Click on `Add Sub Verifiers` to add a new sub-verifier.
    ![Add first sub-verifier on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate-add-sub.png)
+
 1. Select any social login provider from the list to start with. Here we're selecting `Google`.
 
    Paste the **Client ID** from the Google App to the `Client ID` field and click on
@@ -47,20 +120,17 @@ You can utilize this feature for projects on `sapphire_devnet` network for free.
 
 1. This time, you can select Social Login Providers like `Auth0` or `Google`, or `Custom Providers`
    from the dropdown list. We're selecting `Auth0` in this example.
-
    ![Auth0 as sub verifier on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate-add-second-sub.png)
 
-   _Note: You can combine two or more Google logins as needed for web and mobile apps._
+   :::note You can combine two or more Google logins as needed for web and mobile apps. :::
 
 1. Select the `Authentication Type` based on your application need from the dropdown. We're
    selecting `GitHub` in this example.
-
    ![Create Aggregate Verifiier on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate-auth0-github.png)
 
 1. Next, select `Email` as the **JWT Verifier ID** and enter the `Auth0 Client ID` and
    `Auth0 Domain` from your Auth0 application. See how to create a new Auth0 application
    [here](https://auth0.com/docs/quickstart/webapp/).
-
    ![Create GitHub Sub Verifiier on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate-auth0-github-filled.png)
    ![Domain and Client ID from Auth0 Dashboard](/dashboard/verifiers/aggregate-verifier/av-a0-github.png)
 
@@ -77,7 +147,6 @@ You can utilize this feature for projects on `sapphire_devnet` network for free.
 
 1. Similarly, create a third sub-verifier for `Email Passwordless`. Click on `Social Login Provider`
    and then select `Email Passwordless` as the Login provider from the dropdown list
-
    ![Create Email Passwordless Sub Verifiier on Web3Auth Dashboard](/images/dashboard/create-verifier-aggregate-email-passwordless.png)
 
 1. Finally, click on `Create` to deploy the verifier.
@@ -85,13 +154,13 @@ You can utilize this feature for projects on `sapphire_devnet` network for free.
    It typically takes 5-10 minutes for the verifier to go live. Once deployed & live, you'll receive
    an email and the dashboard will display the 'Live' status for the verifier.
 
-:::note NOTE
+:::note
 
 You can aggregate two or more verifiers.
 
 :::
 
-### Example
+## Implementation Example
 
 ```tsx
 import { Web3AuthNoModal } from "@web3auth/no-modal";
@@ -100,8 +169,7 @@ import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 
 const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
-// get it from https://dashboard.web3auth.io by creating a Plug n Play project.
+  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get it from https://dashboard.web3auth.io by creating a Plug n Play project.
 
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -187,3 +255,39 @@ Check out the
 [**full example on GitHub**](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/custom-authentication/aggregate-verifier-examples/auth0-google-aggregate-no-modal-example).
 
 :::
+
+<style>
+  {`
+  .auth0-options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+  }
+
+  table {
+    display: table;
+    width: 100%;
+    margin: 1em 0;
+    overflow-x: auto;
+  }
+
+  th {
+    background: var(--ifm-color-primary);
+    color: white;
+    font-weight: 600;
+    padding: 12px;
+    text-align: center;
+  }
+
+  td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid var(--ifm-color-gray-300);
+  }
+
+  tr:nth-child(even) {
+    background: var(--ifm-color-gray-100);
+  }
+`}
+</style>

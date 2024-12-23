@@ -4,12 +4,16 @@ export const quickStartHostedLinks = {
   PNP_MODAL_HTML: "https://w3a.link/pnp-vanillajs-modal-quick-start",
   PNP_MODAL_NEXTJS: "https://w3a.link/pnp-nextjs-modal-quick-start",
   PNP_MODAL_REACT: "https://w3a.link/pnp-react-modal-quick-start",
+  PNP_MODAL_REACT_HOOKS: "https://w3a.link/pnp-react-hooks-modal-quick-start",
   PNP_MODAL_VUE: "https://w3a.link/pnp-vue-modal-quick-start",
+  PNP_MODAL_VUE_COMPOSABLES: "https://w3a.link/pnp-vue-composables-modal-quick-start",
   // PNP No Modal SDK
   PNP_NO_MODAL_ANGULAR: "https://w3a.link/pnp-angular-no-modal-quick-start",
   PNP_NO_MODAL_NEXTJS: "https://w3a.link/pnp-nextjs-no-modal-quick-start",
   PNP_NO_MODAL_REACT: "https://w3a.link/pnp-react-no-modal-quick-start",
+  PNP_NO_MODAL_REACT_HOOKS: "https://w3a.link/pnp-react-hooks-no-modal-quick-start",
   PNP_NO_MODAL_VUE: "https://w3a.link/pnp-vue-no-modal-quick-start",
+  PNP_NO_MODAL_VUE_COMPOSABLES: "https://w3a.link/pnp-vue-composables-no-modal-quick-start",
   PNP_NO_MODAL_HTML: "https://w3a.link/pnp-vanillajs-no-modal-quick-start",
   // PNP Android SDK
   PNP_ANDROID_ANDROID: "https://w3a.link/pnp-android-quick-start",
@@ -1519,7 +1523,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     link: quickStartHostedLinks.SFA_WEB_REACT,
     githubLink: quickStartSourceCode.SFA_WEB_REACT,
     id: "sfa-react-quick-start",
-    qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_WEB&framework=REACT&stepIndex=0",
+    qsLink: "/quick-start?product=SFA&sdk=SFA_WEB&framework=REACT&stepIndex=0",
   },
   {
     title: "Single Factor Auth Angular Quick Start",
@@ -1539,7 +1543,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     link: quickStartHostedLinks.SFA_WEB_ANGULAR,
     githubLink: quickStartSourceCode.SFA_WEB_ANGULAR,
     id: "sfa-angular-quick-start",
-    qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_WEB&framework=ANGULAR&stepIndex=0",
+    qsLink: "/quick-start?product=SFA&sdk=SFA_WEB&framework=ANGULAR&stepIndex=0",
   },
   {
     title: "Single Factor Auth Vue Quick Start",
@@ -1550,7 +1554,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     link: quickStartHostedLinks.SFA_WEB_VUE,
     githubLink: quickStartSourceCode.SFA_WEB_VUE,
     id: "sfa-vue-quick-start",
-    qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_WEB&framework=VUE&stepIndex=0",
+    qsLink: "/quick-start?product=SFA&sdk=SFA_WEB&framework=VUE&stepIndex=0",
   },
   {
     title: "Single Factor Auth NextJS Quick Start",
@@ -1570,7 +1574,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     link: quickStartHostedLinks.SFA_WEB_NEXTJS,
     githubLink: quickStartSourceCode.SFA_WEB_NEXTJS,
     id: "sfa-nextjs-quick-start",
-    qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_WEB&framework=NEXTJS&stepIndex=0",
+    qsLink: "/quick-start?product=SFA&sdk=SFA_WEB&framework=NEXTJS&stepIndex=0",
   },
   {
     title: "Single Factor Auth Vanilla JS Quick Start",
@@ -1581,7 +1585,7 @@ export const coreKitSfaWebExamples: ExamplesInterface[] = [
     link: quickStartHostedLinks.SFA_WEB_HTML,
     githubLink: quickStartSourceCode.SFA_WEB_HTML,
     id: "sfa-vanillajs-quick-start",
-    qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_WEB&framework=HTML&stepIndex=0",
+    qsLink: "/quick-start?product=SFA&sdk=SFA_WEB&framework=HTML&stepIndex=0",
   },
   {
     title: "Use Aggregate Verifiers in Single Factor Auth SDK",
@@ -1726,7 +1730,7 @@ export const coreKitSfaiOSExamples: ExamplesInterface[] = [
     link: "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-ios/sfa-ios-quick-start",
     id: "sfa-ios-quick-start",
     githubLink: quickStartSourceCode.SFA_IOS,
-    qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_IOS&framework=IOS&stepIndex=0",
+    qsLink: "/quick-start?product=SFA&sdk=SFA_IOS&framework=IOS&stepIndex=0",
   },
 ];
 export const coreKitSfaAndroidExamples: ExamplesInterface[] = [
@@ -1739,7 +1743,7 @@ export const coreKitSfaAndroidExamples: ExamplesInterface[] = [
     link: quickStartHostedLinks.SFA_ANDROID_ANDROID,
     id: "sfa-ios-quick-start",
     githubLink: quickStartSourceCode.SFA_ANDROID,
-    qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_ANDROID&framework=ANDROID&stepIndex=0",
+    qsLink: "/quick-start?product=SFA&sdk=SFA_ANDROID&framework=ANDROID&stepIndex=0",
   },
 ];
 export const coreKitSfaNodeExamples: ExamplesInterface[] = [
@@ -1752,7 +1756,7 @@ export const coreKitSfaNodeExamples: ExamplesInterface[] = [
     tags: [tags.sfa, "sfa", tags.node, tags.evm],
     link: "https://github.com/Web3Auth/web3auth-core-kit-examples/tree/main/single-factor-auth-node/sfa-node-quick-start",
     githubLink: quickStartSourceCode.SFA_NODE,
-    qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_NODE&framework=NODE&stepIndex=0",
+    qsLink: "/quick-start?product=SFA&sdk=SFA_NODE&framework=NODE&stepIndex=0",
   },
   {
     id: "sfa-telegram-oauth-server",
@@ -1799,7 +1803,7 @@ export const coreKitSfaReactNativeExamples: ExamplesInterface[] = [
     tags: [tags.sfa, "sfa", "javascript", tags.android, tags.ios, tags.evm, tags.reactNative],
     link: quickStartHostedLinks.SFA_REACT_NATIVE_IOS,
     githubLink: quickStartSourceCode.SFA_REACT_NATIVE,
-    qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_REACT_NATIVE&framework=IOS&stepIndex=0",
+    qsLink: "/quick-start?product=SFA&sdk=SFA_REACT_NATIVE&framework=IOS&stepIndex=0",
   },
   {
     id: "sfa-rn-expo-auth0-example",
@@ -1824,7 +1828,7 @@ export const coreKitSfaFlutterExamples: ExamplesInterface[] = [
     tags: [tags.sfa, "sfa", tags.flutter, tags.ios, tags.android, tags.evm, "dart"],
     link: quickStartHostedLinks.SFA_FLUTTER_ANDROID,
     githubLink: quickStartSourceCode.SFA_FLUTTER,
-    qsLink: "/quick-start?product=CORE_KIT&sdk=SFA_FLUTTER&framework=ANDROID&stepIndex=0",
+    qsLink: "/quick-start?product=SFA&sdk=SFA_FLUTTER&framework=ANDROID&stepIndex=0",
   },
   {
     id: "sfa_flutter_solana",
@@ -1859,7 +1863,7 @@ export const coreKitMPCWebExamples: ExamplesInterface[] = [
     githubLink: quickStartSourceCode.MPC_CORE_KIT_WEB_REACT,
     id: "mpc-core-kit-react-quick-start",
     qsLink:
-      "/quick-start?product=CORE_KIT&sdk=MPC_CORE_KIT&framework=REACT&stepIndex=0&stepIndex=0",
+      "/quick-start?product=MPC_CORE_KIT&sdk=MPC_CORE_KIT_WEB&framework=REACT&stepIndex=0&stepIndex=0",
   },
   {
     title: "MPC Core Kit Angular Quick Start",
@@ -1880,7 +1884,7 @@ export const coreKitMPCWebExamples: ExamplesInterface[] = [
     githubLink: quickStartSourceCode.MPC_CORE_KIT_WEB_ANGULAR,
     id: "mpc-core-kit-angular-quick-start",
     qsLink:
-      "/quick-start?product=CORE_KIT&sdk=MPC_CORE_KIT&framework=ANGULAR&stepIndex=0&stepIndex=0",
+      "/quick-start?product=MPC_CORE_KIT&sdk=MPC_CORE_KIT_WEB&framework=ANGULAR&stepIndex=0&stepIndex=0",
   },
   {
     title: "MPC Core Kit Vue Quick Start",
@@ -1900,7 +1904,8 @@ export const coreKitMPCWebExamples: ExamplesInterface[] = [
     link: quickStartHostedLinks.MPC_CORE_KIT_WEB_VUE,
     githubLink: quickStartSourceCode.MPC_CORE_KIT_WEB_VUE,
     id: "mpc-core-kit-vue-quick-start",
-    qsLink: "/quick-start?product=CORE_KIT&sdk=MPC_CORE_KIT&framework=VUE&stepIndex=0&stepIndex=0",
+    qsLink:
+      "/quick-start?product=MPC_CORE_KIT&sdk=MPC_CORE_KIT_WEB&framework=VUE&stepIndex=0&stepIndex=0",
   },
   {
     title: "MPC Core Kit NextJS Quick Start",
@@ -1921,7 +1926,7 @@ export const coreKitMPCWebExamples: ExamplesInterface[] = [
     githubLink: quickStartSourceCode.MPC_CORE_KIT_WEB_NEXTJS,
     id: "mpc-core-kit-nextjs-quick-start",
     qsLink:
-      "/quick-start?product=CORE_KIT&sdk=MPC_CORE_KIT&framework=NEXTJS&stepIndex=0&stepIndex=0",
+      "/quick-start?product=MPC_CORE_KIT&sdk=MPC_CORE_KIT_WEB&framework=NEXTJS&stepIndex=0&stepIndex=0",
   },
   {
     title: "Use Aggregate Verifiers in MPC Core Kit SDK",

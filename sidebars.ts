@@ -98,7 +98,7 @@ function sfaTopNavButton(selectedSDK: string): string {
                   v${sdkVersion}
                   </div>
       </div>
-      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mpc-core-kit">
+      <a class="sdk-sidebar-option" href="${baseUrl}sdk/mpc-core-kit/mpc-core-kit-js">
         MPC Core Kit SDK
         <span class="sdk-sidebar-description">Build your own MPC wallet with Web3Auth Infra layer SDK</span>
       </a>
@@ -270,6 +270,7 @@ const sidebars: SidebarsConfig = {
       defaultStyle: true,
     },
     "features/account-abstraction",
+    "features/account-dashboard",
     "features/blockchain-agnostic",
     "features/custom-authentication",
     "features/wallet-ui",
@@ -1311,12 +1312,13 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Migration Guides",
       items: [
-        "migration-guides/android-v4-to-v5",
-        "migration-guides/android-v5-to-v6",
-        "migration-guides/android-v6-to-v6.1",
-        "migration-guides/android-v7.1.1-to-v7.1.2",
-        "migration-guides/android-v7.1.2-to-v7.2",
+        "migration-guides/android-v8-to-v9",
         "migration-guides/android-v7.2-to-v7.3",
+        "migration-guides/android-v7.1.2-to-v7.2",
+        "migration-guides/android-v7.1.1-to-v7.1.2",
+        "migration-guides/android-v6-to-v6.1",
+        "migration-guides/android-v5-to-v6",
+        "migration-guides/android-v4-to-v5",
       ],
     },
     ...sdkQuickLinks,
@@ -1363,11 +1365,12 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Migration Guides",
       items: [
-        "migration-guides/ios-v6-to-v7",
-        "migration-guides/ios-v7-to-v8",
-        "migration-guides/ios-v8-to-v8.1",
-        "migration-guides/ios-v8.1-to-v8.2",
+        "migration-guides/ios-v9-to-v10",
         "migration-guides/ios-v8.2-to-v8.3",
+        "migration-guides/ios-v8.1-to-v8.2",
+        "migration-guides/ios-v8-to-v8.1",
+        "migration-guides/ios-v7-to-v8",
+        "migration-guides/ios-v6-to-v7",
       ],
     },
     ...sdkQuickLinks,
@@ -1486,7 +1489,7 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/flutter-v3-to-v4"],
+      items: ["migration-guides/flutter-v5-to-v6", "migration-guides/flutter-v3-to-v4"],
     },
     ...sdkQuickLinks,
   ],
@@ -1647,6 +1650,7 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Migration Guides",
       items: [
+        "migration-guides/sfa-android-v2-to-v3",
         "migration-guides/sfa-android-v1.2.0-to-v2.0.0",
         "migration-guides/sfa-android-v0.4.0-to-v1",
         "migration-guides/sfa-android-v0.1.0-to-v0.3.0",
