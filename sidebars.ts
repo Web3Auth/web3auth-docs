@@ -1613,6 +1613,11 @@ const sidebars: SidebarsConfig = {
       href: "https://demo-sfa.web3auth.io",
     },
     {
+      type: "category",
+      label: "Migration Guides",
+      items: ["migration-guides/sfa-rn-to-sfa-js", "migration-guides/sfa-node-to-sfa-js"],
+    },
+    {
       type: "link",
       label: "Support Forum",
       href: "https://web3auth.io/community/c/help-core-kit/core-kit-sfa/22",
