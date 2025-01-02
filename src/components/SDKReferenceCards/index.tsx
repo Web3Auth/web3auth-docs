@@ -748,7 +748,7 @@ export const mpccorekitjs = (
             >
               Quick Start{chevron}
             </a>
-            <a href={`${baseUrl}sdk/mpc-core-kit`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}sdk/mpc-core-kit/mpc-core-kit-js`}>SDK Reference{chevron}</a>
             <a href={`${baseUrl}examples?product=Core+Kit&sdk=MPC+Core+Kit`}>Examples{chevron}</a>
           </div>
         </div>
