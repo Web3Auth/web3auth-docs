@@ -1,16 +1,16 @@
 export const pnpWebVersion = `9.3.x`;
-export const pnpAndroidVersion = `9.0.1`;
-export const pnpIOSVersion = `10.0.1`;
+export const pnpAndroidVersion = `9.0.3`;
+export const pnpIOSVersion = `11.0.1`;
 export const pnpRNVersion = `7.0.x`;
-export const pnpFlutterVersion = `5.0.4`;
+export const pnpFlutterVersion = `6.1.0`;
 export const pnpUnityVersion = `5.x.x`;
 export const pnpUnrealVersion = `4.1.x`;
 
 export const sfaWebVersion = `9.2.x`;
 export const sfaAndroidVersion = `3.0.0`;
-export const sfaIOSVersion = `9.0.2`;
+export const sfaIOSVersion = `9.0.3`;
 export const sfaRNVersion = `2.0.x`;
-export const sfaFlutterVersion = `5.2.0`;
+export const sfaFlutterVersion = `5.3.0`;
 export const sfaNodeJSVersion = `7.4.x`;
 export const tkeyJSVersion = `15.x.x`;
 export const tkeyAndroidVersion = `0.0.5`;
