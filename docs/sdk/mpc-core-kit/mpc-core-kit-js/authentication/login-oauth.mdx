@@ -33,6 +33,14 @@ An aggregate verifier helps to generate a same account across multiple verifiers
 verification field. For instance if you are using Google, and Email Passwordless, and want to
 genetate the same account across both authentication method, you need to use an aggregate verifier.
 
+The `OAuthLoginParams` has two additional properties which can be used to customize the login flow.
+Please check the table below for more details.
+
+| Parameter                 | Description                                                                                                                                                                                                                                                                                                                         |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `importTssKey?`           | The TSS key to import an existing account.                                                                                                                                                                                                                                                                                          |
+| `registerExistingSFAKey?` | Allows to import the Single Factor Auth(SFA) Key into the MPC Core Kit SDK. Default value is `false`. Please note: <ul><li>Once SFA Key is imported, user won't be able access their account using the SFA SDK.</li><li>SFA import can only be done for the Web3Auth SFA v2 users, and doesn't work old(v1) users of SFA.</li></ul> |
+
 ### SubVerifierDetailsParams
 
 Contains the details of the verifier the app needs to use for authentication. You need to use this
