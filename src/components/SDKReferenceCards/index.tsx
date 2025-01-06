@@ -586,9 +586,7 @@ export const sfaweb = (
         <div className={styles.cardContentText}>
           <h3 className={styles.title}>Single Factor Auth JS SDK</h3>
           <div className={styles.links}>
-            <a
-              href={`${baseUrl}quick-start?product=CORE_KIT&sdk=SFA_WEB&framework=REACT&stepIndex=0`}
-            >
+            <a href={`${baseUrl}quick-start?product=SFA&sdk=SFA_WEB&framework=REACT&stepIndex=0`}>
               Quick Start{chevron}
             </a>
             <a href={`${baseUrl}sdk/sfa/sfa-js`}>SDK Reference{chevron}</a>
@@ -632,7 +630,7 @@ export const sfamobile = (
           </div>
           <div className={styles.links}>
             <a
-              href={`${baseUrl}quick-start?product=CORE_KIT&sdk=SFA_ANDROID&framework=ANDROID&stepIndex=0&stepIndex=0`}
+              href={`${baseUrl}quick-start?product=SFA&sdk=SFA_ANDROID&framework=ANDROID&stepIndex=0&stepIndex=0`}
             >
               Quick Start{chevron}
             </a>
@@ -665,7 +663,7 @@ export const sfamobile = (
           </div>
           <div className={styles.links}>
             <a
-              href={`${baseUrl}quick-start?product=CORE_KIT&sdk=SFA_IOS&framework=IOS&stepIndex=0&stepIndex=0`}
+              href={`${baseUrl}quick-start?product=SFA&sdk=SFA_IOS&framework=IOS&stepIndex=0&stepIndex=0`}
             >
               Quick Start{chevron}
             </a>
@@ -694,7 +692,7 @@ export const sfamobile = (
           <h3 className={styles.title}>Single Factor Auth Flutter SDK</h3>
           <div className={styles.links}>
             <a
-              href={`${baseUrl}quick-start?product=CORE_KIT&sdk=SFA_FLUTTER&framework=IOS&stepIndex=0&stepIndex=0`}
+              href={`${baseUrl}quick-start?product=SFA&sdk=SFA_FLUTTER&framework=IOS&stepIndex=0&stepIndex=0`}
             >
               Quick Start{chevron}
             </a>
@@ -746,11 +744,11 @@ export const mpccorekitjs = (
           </p>
           <div className={styles.links}>
             <a
-              href={`${baseUrl}quick-start?product=CORE_KIT&sdk=MPC_CORE_KIT&framework=REACT&stepIndex=0&stepIndex=0`}
+              href={`${baseUrl}quick-start?product=MPC_CORE_KIT&sdk=MPC_CORE_KIT_WEB&framework=REACT&stepIndex=0&stepIndex=0`}
             >
               Quick Start{chevron}
             </a>
-            <a href={`${baseUrl}sdk/mpc-core-kit`}>SDK Reference{chevron}</a>
+            <a href={`${baseUrl}sdk/mpc-core-kit/mpc-core-kit-js`}>SDK Reference{chevron}</a>
             <a href={`${baseUrl}examples?product=Core+Kit&sdk=MPC+Core+Kit`}>Examples{chevron}</a>
           </div>
         </div>

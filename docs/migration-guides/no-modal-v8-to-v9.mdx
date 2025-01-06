@@ -34,6 +34,31 @@ const loginAdapter = new OpenloginAdapter(OpenloginAdapterOptions);
 const loginAdapter = new AuthAdapter(AuthAdapterOptions);
 ```
 
+### Private Key Provider in now needed in the Web3Auth Constructor
+
+Although not marked as a mandatory param in the SDK, you need to pass the privateKeyProvider in the
+Web3Auth Constructor to avoid unexpected issues.
+
+```tsx
+// add-start
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: {
+    chainConfig,
+  },
+});
+// add-end
+
+const web3AuthOptions: Web3AuthOptions = {
+  chainConfig,
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  // add-next-line
+  privateKeyProvider,
+};
+
+const web3auth = new Web3AuthNoModal(web3AuthOptions);
+```
+
 ### Default EVM Adapter Enhancements
 
 In v9, the functionality of `getDefaultExternalAdapters` has changed. Previously, it displayed

@@ -442,7 +442,7 @@ export default function QuickNavigation() {
                 <span className={styles.pill}>Demo{chevron}</span>
               </a>
               <a
-                href={`${baseUrl}quick-start?product=CORE_KIT&sdk=SFA_WEB`}
+                href={`${baseUrl}quick-start?product=SFA&sdk=SFA_WEB`}
                 className={styles.pillContainer}
               >
                 <span className={styles.pill}>Quick Start{chevron}</span>

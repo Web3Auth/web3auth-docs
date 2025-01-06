@@ -1489,7 +1489,7 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
-      items: ["migration-guides/flutter-v3-to-v4"],
+      items: ["migration-guides/flutter-v5-to-v6", "migration-guides/flutter-v3-to-v4"],
     },
     ...sdkQuickLinks,
   ],
@@ -1611,6 +1611,11 @@ const sidebars: SidebarsConfig = {
       type: "link",
       label: "Playground",
       href: "https://demo-sfa.web3auth.io",
+    },
+    {
+      type: "category",
+      label: "Migration Guides",
+      items: ["migration-guides/sfa-rn-to-sfa-js", "migration-guides/sfa-node-to-sfa-js"],
     },
     {
       type: "link",
