@@ -154,13 +154,52 @@ that the first 32 bytes are provided in hexadecimal format when using the ed2551
 ```tsx
 import { JWTLoginParams } from "@web3auth/mpc-core-kit";
 
-const jwtLoginParams = {
+const jwtLoginParams: JWTLoginParams = {
   verifier: "YOUR_VERIFIER_NAME",
   verifierId: "USER'S_VERIFIER_ID",
   idToken: "USER'S_ID_TOKEN",
   // focus-next-line
   importTssKey: "SECP256K1_PRIVATE_KEY_OR_ED25519_SEED",
-} as JWTLoginParams;
+};
+
+await coreKitInstance.loginWithJWT(jwtLoginParams);
+```
+
+## Importing an existing Single Factor Auth(SFA) Key.
+
+When logging in for the first time, you can import an existing SFA key using the
+`registerExistingSFAKey` parameter. By default, the value of this parameter is `false`.
+
+Additionally, this parameter allows you to leverage the
+[wallet pregeneration API](/docs/features/wallet-pregeneration) to pre-generate a wallet address.
+This approach enhances the user experience by enabling the creation of a wallet without requiring
+end users to initiate or complete an authentication flow.
+
+To use this feature, you need to make sure that you are using the same `verifier` for both the SFA
+SDK/ Wallet Pregeneration API and MPC Core Kit SDK.
+
+:::info
+
+Please keep the following points in mind when using this feature:
+
+1. Once the SFA Key is imported, users will no longer be able to access their account through the
+   SFA SDK.
+2. SFA import is available exclusively for Web3Auth SFA v2 users and is not compatible with older
+   users (v1) of SFA.
+
+:::
+
+```tsx
+import { JWTLoginParams } from "@web3auth/mpc-core-kit";
+
+const jwtLoginParams: JWTLoginParams = {
+  // Please make sure to use the same verifier of the SFA/ Wallet Pregeneration API
+  verifier: "YOUR_VERIFIER_NAME",
+  verifierId: "USER'S_VERIFIER_ID",
+  idToken: "USER'S_ID_TOKEN",
+  // focus-next-line
+  registerExistingSFAKey: true,
+};
 
 await coreKitInstance.loginWithJWT(jwtLoginParams);
 ```
