@@ -36,10 +36,10 @@ genetate the same account across both authentication method, you need to use an 
 The `OAuthLoginParams` has two additional properties which can be used to customize the login flow.
 Please check the table below for more details.
 
-| Parameter                 | Description                                                                                                                                                                                                                                                                                                                                 |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `importTssKey?`           | The TSS key to import an existing account.                                                                                                                                                                                                                                                                                                  |
-| `registerExistingSFAKey?` | Allows to import the Single Factor Auth(SFA) Key into the MPC Core Kit SDK. Default value is `false`. Please note: <ul><li>Once SFA Key is imported, users won't be able to access their account using the SFA SDK.</li><li>SFA import can only be done for the Web3Auth SFA v2 users, and doesn't work for old(v1) users of SFA.</li></ul> |
+| Parameter                 | Description                                                                                                                                                                                                                              |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `importTssKey?`           | The TSS key to import an existing account.                                                                                                                                                                                               |
+| `registerExistingSFAKey?` | Allows to import the [Single Factor Auth(SFA) SDK](/docs/sdk/sfa/sfa-js/) Key into the MPC Core Kit SDK. Default value is `false`. Please note, once SFA Key is imported, users won't be able to access their account using the SFA SDK. |
 
 ### SubVerifierDetailsParams
 
@@ -220,8 +220,8 @@ await coreKitInstance.loginWithOAuth(verifierConfig);
 
 ## Importing an existing Single Factor Auth(SFA) Key.
 
-When logging in for the first time, you can import an existing SFA key using the
-`registerExistingSFAKey` parameter. By default, the value of this parameter is `false`.
+When logging in for the first time, you can import an existing [SFA SDK](/docs/sdk/sfa/sfa-js/)
+using the `registerExistingSFAKey` parameter. By default, the value of this parameter is `false`.
 
 Additionally, this parameter allows you to leverage the
 [wallet pregeneration API](/docs/features/wallet-pregeneration) to pre-generate a wallet address.
@@ -233,12 +233,8 @@ SDK/ Wallet Pregeneration API and MPC Core Kit SDK.
 
 :::info
 
-Please keep the following points in mind when using this feature:
-
-1. Once the SFA Key is imported, users will no longer be able to access their account through the
-   SFA SDK.
-2. SFA import is available exclusively for Web3Auth SFA v2 users and is not compatible with older
-   users (v1) of SFA.
+Please note, once the SFA Key is imported, users will no longer be able to access their account
+through the SFA SDK.
 
 :::
 
