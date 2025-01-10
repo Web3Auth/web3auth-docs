@@ -41,8 +41,8 @@ export default function LookupSCWAPIPage() {
     smartAccountVersion: "",
     nonceKey: "",
     saltNonce: "",
-    entryPointVersion: "0.7",
     factoryAddress: "",
+    entryPointVersion: "0.7",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState<string | null>(null);
@@ -77,7 +77,12 @@ export default function LookupSCWAPIPage() {
     const fetchInitialData = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get(`https://lookup.web3auth.io/lookup/scw`, { params: formData });
+        const filteredFormData = Object.fromEntries(
+          Object.entries(formData).filter(([_, value]) => value !== ""),
+        );
+        const res = await axios.get(`https://lookup.web3auth.io/lookup/scw`, {
+          params: filteredFormData,
+        });
         setResponse(JSON.stringify(res.data, null, 2));
       } catch (err) {
         setError(err.message);
@@ -248,9 +253,12 @@ export default function LookupSCWAPIPage() {
             </tr>
             <tr>
               <td>
-                <code>smartAccountVersion</code>
+                <code>smartAccountVersion?</code>
               </td>
-              <td>Smart Account version for the Smart Account Provider contract.</td>
+              <td>
+                Smart Account version for the Smart Account Provider contract. This parameter is
+                optional.
+              </td>
               <td>
                 <input
                   type="text"
@@ -262,11 +270,11 @@ export default function LookupSCWAPIPage() {
             </tr>
             <tr>
               <td>
-                <code>saltNonce</code>
+                <code>saltNonce?</code>
               </td>
               <td>
                 Salt nonce for the Smart Account to add randomness or predictability when the
-                address is generated.
+                address is generated. This parameter is optional.
               </td>
               <td>
                 <input
@@ -279,12 +287,12 @@ export default function LookupSCWAPIPage() {
             </tr>
             <tr>
               <td>
-                <code>factoryAddress</code>
+                <code>factoryAddress?</code>
               </td>
               <td>
                 Specifies the address of the Factory Contract. While providers typically deploy the
                 factory contract on popular chains, you have the option to deploy your own factory
-                contract on any chain and pass its address.
+                contract on any chain and pass its address. This parameter is optional.
               </td>
               <td>
                 <input
