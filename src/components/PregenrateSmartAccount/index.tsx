@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import styles from "./styles.module.css";
+import styles from "@site/src/components/PregenerateWallet/styles.module.css";
 
 export default function LookupSCWAPIPage() {
   const networkOptions = ["sapphire_mainnet", "sapphire_devnet"];
