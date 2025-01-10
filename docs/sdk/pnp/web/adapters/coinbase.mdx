@@ -9,22 +9,9 @@ description: "Web3Auth PnP Web Adapter SDKs - Coinbase | Documentation - Web3Aut
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
 
-## [`@web3auth/coinbase-adapter`](https://npmjs.com/package/@web3auth/coinbase-adapter)
-
-Coinbase adapter allows you to connect with coinbase wallet. You can read more about coinbase wallet
-here.(https://docs.cloud.coinbase.com/wallet-sdk/docs).
-
-## Basic Details
-
-#### Adapter Name: `coinbase`
-
-#### Package Name: [`@web3auth/coinbase-adapter`](https://npmjs.com/package/@web3auth/coinbase-adapter)
-
-#### authMode: `DAPP`
-
-#### chainNamespace: `EIP155`
-
-#### Default: `YES`
+The [`@web3auth/coinbase-adapter`](https://npmjs.com/package/@web3auth/coinbase-adapter) package
+enables you to connect with Coinbase wallet injected and
+[Smart Wallet](https://www.smartwallet.dev/quick-start).
 
 ## Installation
 
@@ -32,7 +19,7 @@ here.(https://docs.cloud.coinbase.com/wallet-sdk/docs).
 npm install --save @web3auth/coinbase-adapter
 ```
 
-## Arguments
+## Parameters
 
 <Tabs
   defaultValue="table"
@@ -44,13 +31,13 @@ npm install --save @web3auth/coinbase-adapter
 
 <TabItem value="table">
 
-| Parameter          | type                       |
-| ------------------ | -------------------------- |
-| `chainConfig?`     | `CustomChainConfig`        |
-| `adapterSettings?` | `CoinbaseWalletSDKOptions` |
-| `clientId?`        | `string`                   |
-| `sessionTime?`     | `number`                   |
-| `web3AuthNetwork?` | `WEB3AUTH_NETWORK_TYPE`    |
+| Parameter          | Description                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `chainConfig?`     | Custom Chain Configuration you want to connect with. Defaults to `chainConfig` passed to `EthereumPrivateKeyProvider`.                                                                                                                                                                                                                                                                                            |
+| `adapterSettings?` | Adapter settings to fine-tune the connection preferences, you can refer to [CoinbaseWalletSDKOptions](<[https://www.smartwallet.dev/sdk/create-coinbase-wallet-sdk#parameters](https://www.smartwallet.dev/sdk/create-coinbase-wallet-sdk#parameters)>) documentation. The default connection mode is set to "all," which means that users can connect either their Coinbase Injected Wallet or the Smart Wallet. |
+| `clientId?`        | Client Id for Web3Auth. You can get the client id from Web3Auth Dashboard.                                                                                                                                                                                                                                                                                                                                        |
+| `sessionTime?`     | Allows you to configure the connection validity. Defaults to `sessionTime` passed to `Web3AuthOptions`.                                                                                                                                                                                                                                                                                                           |
+| `web3AuthNetwork?` | Allows you to configure the `Web3AuthNetwork`. Defaults to `web3AuthNetwork` passed to `Web3AuthOptions.`                                                                                                                                                                                                                                                                                                         |
 
 </TabItem>
 
@@ -67,104 +54,90 @@ interface CoinbaseAdapterOptions {
 ```
 
 </TabItem>
-
 </Tabs>
 
-### Custom Chain Config
-
-#### `chainConfig`
-
-:::warning
-
-While you can pass your `chainConfig`, it is not required since you can directly pass it over to the
-`Web3Auth`/ `Web3AuthNoModal` configuration while instantiating it.
-
-Read more about it in their respective sections:
-
-- [`web3auth/modal`](/sdk/pnp/web/modal/initialize#adding-a-custom-chain-configuration)
-- [`web3auth/no-modal`](/sdk/pnp/web/no-modal/initialize#adding-a-custom-chain-configuration)
-
-:::
-
-:::warning
-
-If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` passed over to the
-`Web3Auth`/ `Web3AuthNoModal` constructor.
-
-:::
-
-#### `CoinbaseWalletSDKOptions`
-
-Checkout the
-[Coinbase Wallet SDK Documentation](https://docs.cloud.coinbase.com/wallet-sdk/docs/initializing#initializing)
-for these options.
-
-## Change Adapter Settings
-
-You can change the adapter settings by calling the `setAdapterSettings()` function on the adapter
-instance.
-
-### Arguments
-
-<Tabs
-  defaultValue="table"
-  values={[
-    { label: "Table", value: "table" },
-    { label: "Interface", value: "interface" },
-  ]}
->
-
-<TabItem value="table">
-
-| Parameter          | type                    |
-| ------------------ | ----------------------- |
-| `clientId?`        | `string`                |
-| `sessionTime?`     | `number`                |
-| `chainConfig?`     | `CustomChainConfig`     |
-| `web3AuthNetwork?` | `WEB3AUTH_NETWORK_TYPE` |
-
-</TabItem>
-
-<TabItem value="interface">
-
-```tsx
-interface BaseAdapterSettings {
-  clientId?: string;
-  sessionTime?: number;
-  chainConfig?: CustomChainConfig;
-  web3AuthNetwork?: WEB3AUTH_NETWORK_TYPE;
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-## Example
+## Usage
 
 ```tsx
 import { CoinbaseAdapter } from "@web3auth/coinbase-adapter";
-const coinbaseAdapter = new CoinbaseAdapter({
-  clientId:
-    "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
-  sessionTime: 3600, // 1 hour in seconds
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-  },
-  web3AuthNetwork: "sapphire_mainnet",
-});
-web3auth.configureAdapter(coinbaseAdapter);
 
-// You can also change the adapter settings later on
-coinbaseAdapter.setAdapterSettings({
-  sessionTime: 86400, // 1 day in seconds
-  chainConfig: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-  },
-  web3AuthNetwork: "sapphire_mainnet",
+// focus-start
+const coinbaseAdapter = new CoinbaseAdapter({
+  // This will only allow users to connect with Smart Wallet
+  // By default, it's set to "all"
+  adapterSettings: { options: "smartWalletOnly" },
+});
+// focus-end
+
+// Use your existing Web3Auth instance
+web3auth.configureAdapter(coinbaseAdapter);
+```
+
+## Use Smart Wallet Features
+
+The Web3Auth provider which is created using the Coinbase Wallet Adapter will be EIP 1193 compatible
+which means, you won't be able to use the Smart Wallet(ERC 4337) features directly
+
+To use the Smart Wallet ERC 4337 features, you can use the Web3Auth provider to send JSON-RPC
+requests to the Smart Wallet. For batching and paymaster feature, it uses EIP 5792
+`wallet_sendCalls` method. [Learn more about EIP 5792](https://eips.ethereum.org/EIPS/eip-5792).
+
+### Send Batch Requests
+
+```tsx
+// Retrive the Web3Auth provider once the connection is established
+const provider = web3auth.provider;
+
+const response = await provider.request({
+  method: "wallet_sendCalls",
+  params: [
+    {
+      version: "1.0",
+      chainId: "0x01",
+      from: address[0],
+      calls: [
+        {
+          to: "0xd46e8dd67c5d32be8058bb8eb970870f07244567",
+          value: "0x9184e72a",
+          data: "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675",
+        },
+        {
+          to: "0xd46e8dd67c5d32be8058bb8eb970870f07244567",
+          value: "0x182183",
+          data: "0xfbadbaf01",
+        },
+      ],
+    },
+  ],
+});
+```
+
+### Use Paymaster
+
+```tsx
+// Retrive the Web3Auth provider once the connection is established
+const provider = web3auth.provider;
+
+const response = await provider.request({
+  method: "wallet_sendCalls",
+  params: [
+    {
+      version: "1.0",
+      chainId: "0x01",
+      from: address[0],
+      calls: [
+        {
+          to: "0xd46e8dd67c5d32be8058bb8eb970870f07244567",
+          value: "0x9184e72a",
+          data: "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675",
+        },
+      ],
+      capabilities: {
+        paymasterService: {
+          url: "YOUR_PAYMASTER_URL",
+        },
+      },
+    },
+  ],
 });
 ```
