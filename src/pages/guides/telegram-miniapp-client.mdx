@@ -4,7 +4,7 @@ image: "guides-banners/telegram-miniapp-client.png"
 description: |
   Learn how to set up the client-side of a Telegram Mini App using Web3Auth to authenticate users and retrieve wallet details. This guide is the second part of the Telegram Mini App series.
 type: guide
-tags: [client, telegram, authentication, web3auth, ton]
+tags: [client, telegram, authentication, web3auth, blockchain]
 date: October 24, 2024
 author: Web3Auth Team
 ---
@@ -34,8 +34,7 @@ authentication. By the end of this guide, you will:
 
 1. Implement Web3Auth in the **client-side app** to authenticate Telegram users using the JWT tokens
    generated in [Part 1](/guides/telegram-miniapp-server).
-2. Retrieve wallet details (e.g., TON blockchain addresses) via Web3Auth and display them in the
-   app.
+2. Retrieve wallet details (e.g., blockchain addresses) via Web3Auth and display them in the app.
 
 :::tip
 
@@ -59,7 +58,7 @@ before proceeding with this guide.
 
 In this guide, we will implement the client-side part of the Telegram Mini App. The client will
 handle user interaction, manage the login flow using Web3Auth, and retrieve wallet details from the
-TON blockchain.
+blockchain.
 
 We'll be using the JWT token generated in [Part 1](/guides/telegram-miniapp-server) of this guide to
 authenticate users on the client-side and establish a session with Web3Auth to retrieve
@@ -75,7 +74,7 @@ The flow is as follows:
 
 1. The user logs into the Telegram Mini App.
 2. The JWT token (generated from the backend) is passed to Web3Auth for authentication.
-3. Web3Auth authenticates the user and retrieves wallet details (e.g., the user's TON blockchain
+3. Web3Auth authenticates the user and retrieves wallet details (e.g., the user's blockchain
    address).
 4. The client displays the wallet details to the user.
 
@@ -84,7 +83,7 @@ The flow is as follows:
 ### **What You Will Learn:**
 
 1. Integrate Web3Auth into a client-side app to handle user authentication.
-2. Retrieve wallet details (TON blockchain) from Web3Auth.
+2. Retrieve wallet details from Web3Auth.
 3. Mock Telegram environments for local development and testing.
 
 ---
@@ -98,7 +97,7 @@ The flow is as follows:
 Before starting, install the required dependencies for the client-side app.
 
 ```bash
-npm install @web3auth/single-factor-auth @telegram-apps/sdk-react dotenv @orbs-network/ton-access
+npm install @web3auth/single-factor-auth @telegram-apps/sdk-react dotenv
 ```
 
 #### **Brief Overview of Dependencies:**
@@ -110,8 +109,6 @@ npm install @web3auth/single-factor-auth @telegram-apps/sdk-react dotenv @orbs-n
   Telegram environments for testing during development.
 - **dotenv**: Allows loading environment variables from a `.env` file, ensuring secure storage of
   sensitive data such as server URLs.
-- **@orbs-network/ton-access**: Provides access to the TON blockchain RPC endpoint for fetching
-  account information and signing messages on the TON network.
 
 ---
 
@@ -130,7 +127,7 @@ This value will be used to connect the client-side app to your backend server.
 ### Step 3: Import Necessary Packages and Set Up States
 
 In this step, we will import all the necessary packages for our client-side application and set up
-the states that will manage the login flow, user data, and TON blockchain interactions.
+the states that will manage the login flow, user data, and blockchain interactions.
 
 #### Import and State Setup
 
@@ -138,10 +135,9 @@ the states that will manage the login flow, user data, and TON blockchain intera
 import { useEffect, useState } from "react";
 import { Web3Auth, decodeToken } from "@web3auth/single-factor-auth";
 import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
-import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { useLaunchParams } from "@telegram-apps/sdk-react";
 import { useTelegramMock } from "./hooks/useMockTelegramInitData";
-import { getHttpEndpoint } from "@orbs-network/ton-access";
 import "./App.css";
 
 const verifier = "w3a-telegram-demo";
@@ -152,7 +148,7 @@ function App() {
   const [web3authSfa, setWeb3authSfa] = useState<Web3Auth | null>(null);
   const [web3AuthInitialized, setWeb3AuthInitialized] = useState(false);
   const [userData, setUserData] = useState<any | null>(null);
-  const [tonAccountAddress, setTonAccountAddress] = useState<string | null>(null);
+  const [blockchainAddress, setBlockchainAddress] = useState<string | null>(null);
   const [signedMessage, setSignedMessage] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -162,7 +158,7 @@ function App() {
 ```
 
 - **Explanation**: In this step, we import the necessary libraries and set up states like
-  `isLoggingIn`, `web3authSfa`, `web3AuthInitialized`, `userData`, `tonAccountAddress`, and
+  `isLoggingIn`, `web3authSfa`, `web3AuthInitialized`, `userData`, `blockchainAddress`, and
   `signedMessage` that will manage our app's flow.
 
 ---
@@ -179,23 +175,17 @@ connection to our backend server to fetch the ID token generated in
 useEffect(() => {
   const initializeWeb3Auth = async () => {
     try {
-      console.log("Fetching TON Testnet RPC endpoint...");
-      const testnetRpc = await getHttpEndpoint({
-        network: "testnet",
-        protocol: "json-rpc",
-      });
-
       const chainConfig = {
-        chainNamespace: CHAIN_NAMESPACES.OTHER,
-        chainId: "testnet",
-        rpcTarget: testnetRpc,
-        displayName: "TON Testnet",
-        blockExplorerUrl: "https://testnet.tonscan.org",
-        ticker: "TON",
-        tickerName: "Toncoin",
+        chainNamespace: CHAIN_NAMESPACES.EIP155,
+        chainId: "0x1",
+        rpcTarget: "https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID",
+        displayName: "Ethereum Mainnet",
+        blockExplorerUrl: "https://etherscan.io",
+        ticker: "ETH",
+        tickerName: "Ether",
       };
 
-      const privateKeyProvider = new CommonPrivateKeyProvider({
+      const privateKeyProvider = new EthereumPrivateKeyProvider({
         config: { chainConfig },
       });
 
@@ -215,7 +205,7 @@ useEffect(() => {
 
       setWeb3AuthInitialized(true);
     } catch (error) {
-      console.error("Error fetching TON Testnet RPC endpoint: ", error);
+      console.error("Error initializing Web3Auth: ", error);
     }
   };
 
@@ -224,8 +214,10 @@ useEffect(() => {
 ```
 
 - **Explanation**: This block initializes Web3Auth using the **Single Factor Authentication**
-  method. We also fetch the TON blockchain's testnet RPC endpoint, which will allow us to connect to
-  the network and retrieve blockchain data such as the wallet address.
+  method. The `privateKeyProvider` is configured based on the selected blockchain. For this example,
+  Ethereum's provider is used, but for other blockchains (e.g., Solana, XRP, etc.), you should use
+  the respective provider. For getting started with any blockchain, refer to the
+  [connect blockchain](/docs/connect-blockchain) guide.
 
 ---
 
