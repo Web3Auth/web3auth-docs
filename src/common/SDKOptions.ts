@@ -5,6 +5,7 @@ export const nextjs = "Next JS";
 export const web = "Web";
 export const android = "Android";
 export const ios = "iOS";
+export const js = "Javascript";
 export const macOS = "macOS";
 export const reactnative = "React Native";
 export const rnbare = "React Native Bare";
@@ -48,6 +49,7 @@ export const singlefactorauthandroid = "SFA Android";
 export const singlefactorauthios = "SFA Swift";
 export const singlefactorauthflutter = "SFA Flutter";
 export const mpccorekitjs = "MPC Core Kit JS";
+export const mpccorekitreactnative = "MPC Core Kit React Native";
 
 export const sfalist = [
   { label: "SFA JS", value: singlefactorauthjs, platforms: [...weblist, reactnative, nodejs] },

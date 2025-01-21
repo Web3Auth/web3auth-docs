@@ -1,0 +1,107 @@
+---
+title: "Installing MPC Core Kit JS SDK"
+sidebar_label: "Install"
+description: "Web3Auth MPC Core Kit JS SDK - Install | Documentation - Web3Auth"
+---
+
+The MPC Core Kit JS SDK contains multiple packages that are needed to enable different
+functionalities of the MPC Core Kit JS SDK. You can choose the packages you want to install
+according to the functionalities you want to enable in your application. In this doc we have
+highlighted all of the packages and their functionalities.
+
+## Base MPC Core Kit React Native Package
+
+This is the base SDK that helps you implement Web3Auth's MPC TSS features while giving you the
+flexibility to customize the UI and UX of the authentication process.
+
+```bash npm2yarn
+npm install @web3auth/react-native-mpc-core-kit
+```
+
+## Common Types and Interfaces
+
+This package gives access to common types and interfaces for Web3Auth. This comes in handy by
+providing you a standard way of importing the values you need to work with the SDKs. We highly
+recommend using it while working with Typescript.
+
+```bash npm2yarn
+npm install @web3auth/base
+```
+
+## EthereumSigningProvider
+
+This package gives EIP1193 compatible Ethereum signing provider. This provider is used to make calls
+to the selected blockchain, and can be used with `web3.js`, `ethers.js`, or `viem` to make
+integration with Ethereum-compatible chains more easier.
+
+```bash npm2yarn
+npm install @web3auth/ethereum-mpc-provider
+```
+
+## Additional Configuration for React Native
+
+### Add a Custom Transformer
+
+Add a custom transformer to your project by creating a new file called `customTransformer.js` and
+updating your metro config to use it. This transformer is specifically designed to handle the
+polyfills and transformations needed by the MPC Core Kit SDK.
+
+```js title="customTransformer.js"
+const { nodeModulesPolyfillPlugin } = require("esbuild-plugins-node-modules-polyfill");
+const reactNativeReactBridgeTransformer = require("react-native-react-bridge/lib/plugin");
+const esbuildOptions = {
+  plugins: [
+    nodeModulesPolyfillPlugin({
+      globals: {
+        Buffer: true,
+        crypto: true,
+      },
+    }),
+  ],
+};
+module.exports.transform = function ({ src, filename, options }) {
+  const transform = reactNativeReactBridgeTransformer.createTransformer(esbuildOptions);
+  return transform({ src, filename, options });
+};
+```
+
+```js title="metro.config.js"
+const config = getDefaultConfig(__dirname);
+
+// focus-start
+config.transformer.babelTransformerPath = require.resolve("./customTransformer.js");
+// focus-end
+
+config.resolver.extraNodeModules = {
+  ...config.resolver.extraNodeModules,
+
+  assert: require.resolve("empty-module"), // assert can be polyfilled here if needed
+  http: require.resolve("empty-module"), // stream-http can be polyfilled here if needed
+  https: require.resolve("empty-module"), // https-browserify can be polyfilled here if needed
+  os: require.resolve("empty-module"), // os-browserify can be polyfilled here if needed
+  url: require.resolve("empty-module"), // url can be polyfilled here if needed
+  zlib: require.resolve("empty-module"), // browserify-zlib can be polyfilled here if needed
+  path: require.resolve("empty-module"),
+  crypto: require.resolve("empty-module"),
+  buffer: require.resolve("@craftzdog/react-native-buffer"),
+};
+
+module.exports = config;
+```
+
+### Add Buffer in your globals/ entry level file
+
+No need for `react-native-quick-crypto` any longer, just polyfill buffer in your entry file.
+
+```js title="globals.ts"
+global.Buffer = require("buffer").Buffer;
+```
+
+## Troubleshooting
+
+You might face issues mentioning that certain dependencies are missing within the browser
+environment. These are node dependencies that need to be polyfilled in your application, to enable
+Web3Auth functionalities. Furthermore, your bundler needs to be reconfigured to use them while
+building the app. We have created guides for different bundlers to help you with this issue:
+
+- Please check out our **[React Native Troubleshooting Guide](/troubleshooting/metro-issues-mpc)**

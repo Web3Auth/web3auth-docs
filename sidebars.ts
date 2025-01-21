@@ -8,14 +8,10 @@ import {
   flutter,
   unity,
   unreal,
-  mpccorekitjs,
-  singlefactorauthjs,
-  singlefactorauthandroid,
-  singlefactorauthflutter,
-  singlefactorauthios,
+  js,
 } from "./src/common/SDKOptions";
 
-import { getPnPVersion, getCoreKitVersion } from "./src/common/versions";
+import { getPnPVersion, getSFAVersion, getMPCCoreKitVersion } from "./src/common/versions";
 
 function pnpTopNavButton(selectedSDK: string): string {
   const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
@@ -67,18 +63,18 @@ function pnpTopNavButton(selectedSDK: string): string {
 function sfaTopNavButton(selectedSDK: string): string {
   const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
 
-  var coreKitSDKs = {
-    [singlefactorauthjs]: `${baseUrl}sdk/sfa/sfa`,
-    [singlefactorauthandroid]: `${baseUrl}sdk/sfa/sfa-android`,
-    [singlefactorauthios]: `${baseUrl}sdk/sfa/sfa-ios`,
-    [singlefactorauthflutter]: `${baseUrl}sdk/sfa/sfa-flutter`,
+  var sfaSDKs = {
+    [js]: `${baseUrl}sdk/sfa/sfa-js`,
+    [android]: `${baseUrl}sdk/sfa/sfa-android`,
+    [ios]: `${baseUrl}sdk/sfa/sfa-ios`,
+    [flutter]: `${baseUrl}sdk/sfa/sfa-flutter`,
   };
-  if (coreKitSDKs.hasOwnProperty(selectedSDK)) {
-    delete coreKitSDKs[selectedSDK];
+  if (sfaSDKs.hasOwnProperty(selectedSDK)) {
+    delete sfaSDKs[selectedSDK];
   }
-  var sdkNames = Object.keys(coreKitSDKs);
-  var sdkLinks = Object.values(coreKitSDKs);
-  var sdkVersion = getCoreKitVersion(selectedSDK);
+  var sdkNames = Object.keys(sfaSDKs);
+  var sdkLinks = Object.values(sfaSDKs);
+  var sdkVersion = getSFAVersion(selectedSDK);
 
   return `
     <div class="sdk-sidebar-container">
@@ -105,9 +101,19 @@ function sfaTopNavButton(selectedSDK: string): string {
     </div>`;
 }
 
-function mpcckTopNavButton(): string {
+function mpcckTopNavButton(selectedSDK: string): string {
   const baseUrl = process.env.REACT_APP_BASE_URL || "/docs/";
-  var sdkVersion = getCoreKitVersion(mpccorekitjs);
+
+  var mpcCoreKitSDKs = {
+    [js]: `${baseUrl}sdk/mpc-core-kit/mpc-core-kit-js`,
+    [reactnative]: `${baseUrl}sdk/mpc-core-kit/mpc-core-kit-react-native`,
+  };
+  if (mpcCoreKitSDKs.hasOwnProperty(selectedSDK)) {
+    delete mpcCoreKitSDKs[selectedSDK];
+  }
+  var sdkNames = Object.keys(mpcCoreKitSDKs);
+  var sdkLinks = Object.values(mpcCoreKitSDKs);
+  var sdkVersion = getMPCCoreKitVersion(selectedSDK);
 
   return `
     <div class="sdk-sidebar-container">
@@ -120,8 +126,14 @@ function mpcckTopNavButton(): string {
         <span class="sdk-sidebar-description">One click login, without redirection, all natively within your app.</span>
       </a>
       <div class="sdk-sidebar-option-selected">
-        MPC Core Kit SDK - v${sdkVersion}
-        <span class="sdk-sidebar-description">Build your own MPC wallet with Web3Auth Infra layer SDK</span>
+        MPC Core Kit SDKs
+        <div class="sdk-sidebar-dropdown-container">
+          <select class="sdk-sidebar-dropdown" onchange="location.href=this.value">
+              <option value="">${selectedSDK}</option>
+              <option value="${sdkLinks[0]}">${sdkNames[0]}</option>
+          </select>
+          v${sdkVersion}
+        </div>
       </div>
     </div>`;
 }
@@ -1565,7 +1577,7 @@ const sidebars: SidebarsConfig = {
   sdk_core_kit_sfa_web: [
     {
       type: "html",
-      value: sfaTopNavButton(singlefactorauthjs),
+      value: sfaTopNavButton(js),
       defaultStyle: true,
     },
     "sdk/sfa/sfa-js/sfa-js",
@@ -1632,7 +1644,7 @@ const sidebars: SidebarsConfig = {
   sdk_core_kit_sfa_android: [
     {
       type: "html",
-      value: sfaTopNavButton(singlefactorauthandroid),
+      value: sfaTopNavButton(android),
       defaultStyle: true,
     },
     "sdk/sfa/sfa-android/sfa-android",
@@ -1666,7 +1678,7 @@ const sidebars: SidebarsConfig = {
   sdk_core_kit_sfa_ios: [
     {
       type: "html",
-      value: sfaTopNavButton(singlefactorauthios),
+      value: sfaTopNavButton(ios),
       defaultStyle: true,
     },
     "sdk/sfa/sfa-ios/sfa-ios",
@@ -1699,7 +1711,7 @@ const sidebars: SidebarsConfig = {
   sdk_core_kit_sfa_flutter: [
     {
       type: "html",
-      value: sfaTopNavButton(singlefactorauthflutter),
+      value: sfaTopNavButton(flutter),
       defaultStyle: true,
     },
     "sdk/sfa/sfa-flutter/sfa-flutter",
@@ -1732,13 +1744,12 @@ const sidebars: SidebarsConfig = {
   sdk_core_kit_mpc_js: [
     {
       type: "html",
-      value: mpcckTopNavButton(),
+      value: mpcckTopNavButton(js),
       defaultStyle: true,
     },
     "sdk/mpc-core-kit/mpc-core-kit-js/mpc-core-kit-js",
     "sdk/mpc-core-kit/mpc-core-kit-js/install",
     "sdk/mpc-core-kit/mpc-core-kit-js/initialize",
-    "sdk/mpc-core-kit/mpc-core-kit-js/initialize-rn",
     {
       type: "category",
       label: "Authentication",
@@ -1772,10 +1783,45 @@ const sidebars: SidebarsConfig = {
     {
       type: "category",
       label: "Migration Guides",
+      items: ["migration-guides/mpc-core-kit-web-v2-to-v3"],
+    },
+    ...sdkQuickLinks,
+  ],
+  sdk_core_kit_mpc_react_native: [
+    {
+      type: "html",
+      value: mpcckTopNavButton(reactnative),
+      defaultStyle: true,
+    },
+    "sdk/mpc-core-kit/mpc-core-kit-react-native/mpc-core-kit-react-native",
+    "sdk/mpc-core-kit/mpc-core-kit-react-native/install",
+    "sdk/mpc-core-kit/mpc-core-kit-react-native/initialize",
+    "sdk/mpc-core-kit/mpc-core-kit-react-native/authentication",
+    "sdk/mpc-core-kit/mpc-core-kit-react-native/signing",
+    "sdk/mpc-core-kit/mpc-core-kit-react-native/usage",
+    "sdk/mpc-core-kit/mpc-core-kit-react-native/examples",
+    {
+      type: "category",
+      label: "Providers",
       items: [
-        "migration-guides/mpc-core-kit-web-v2-to-v3",
-        "migration-guides/mpc-core-kit-react-native-migration",
+        "sdk/mpc-core-kit/mpc-core-kit-react-native/providers/providers",
+        "sdk/mpc-core-kit/mpc-core-kit-react-native/providers/evm",
       ],
+    },
+    {
+      type: "link",
+      label: "Support Forum",
+      href: "https://web3auth.io/community/c/help-core-kit/mpc-core-kit/33",
+    },
+    {
+      type: "link",
+      label: "Release Notes",
+      href: "https://github.com/Web3Auth/react-nativempc-core-kit/releases",
+    },
+    {
+      type: "category",
+      label: "Migration Guides",
+      items: ["migration-guides/mpc-core-kit-react-native-migration"],
     },
     ...sdkQuickLinks,
   ],
