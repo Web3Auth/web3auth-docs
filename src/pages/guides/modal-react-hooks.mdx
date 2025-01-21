@@ -1,0 +1,264 @@
+---
+title: Integrate Web3Auth Modal React Hooks in Your React Application
+image: "guides-banners/modal-react-hooks.png"
+description:
+  Web3Auth Modal React Hooks enable seamless blockchain authentication and wallet services in React
+  applications. This guide covers setting up Web3Auth, initializing the SDK, and implementing
+  authentication and wallet functionalities using the hooks provided.
+type: guide
+tags: [web3auth, modal, react, hooks, evm, blockchain]
+date: August 24, 2024
+author: Web3Auth Team
+---
+
+import SEO from "@site/src/components/SEO";
+
+<SEO
+  title="Integrate Web3Auth Modal React Hooks in Your React Application"
+  description="Learn how to seamlessly integrate Web3Auth Modal React Hooks into your React application for streamlined blockchain authentication and wallet services management."
+  image="https://web3auth.io/docs/guides-banners/web3auth-modal-react-hooks.png"
+  slug="/guides/modal-react-hooks"
+/>
+
+## Introduction
+
+Web3Auth Modal React Hooks provide a powerful and intuitive way to integrate blockchain
+authentication and wallet services into your React applications. By leveraging React's modern hooks
+architecture, you can manage authentication states, interact with various blockchain networks, and
+offer seamless wallet services to your users with minimal setup and clean code practices.
+
+**Key Benefits:**
+
+- Declarative and Modular Code: Utilize React hooks for cleaner and more maintainable code
+  structures.
+- Easy State Management: Effortlessly manage authentication and wallet states across your
+  application.
+- Seamless Integration: Quickly integrate with multiple blockchain networks and wallet services.
+- Enhanced User Experience: Provide users with smooth and secure authentication and transaction
+  workflows.
+
+## Prerequisites
+
+Before proceeding, ensure you have the following:
+
+- Node.js and npm/yarn installed: To manage dependencies and run your React application.
+- Basic understanding of React and hooks: Familiarity with React components and hooks is essential.
+- Web3Auth account and client ID: Sign up at [Web3Auth Dashboard](https://dashboard.web3auth.io/) to
+  obtain your client ID.
+
+## Full-Fledged Example
+
+For a comprehensive example of integrating Web3Auth Modal React Hooks, refer to the official GitHub
+repository:
+
+**GitHub Repository:**
+[Web3Auth EVM Modal Example](https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-modal-sdk/blockchain-connection-examples/evm-modal-example)
+
+This repository demonstrates a complete setup, including authentication flows and blockchain
+interactions using EVM-compatible networks.
+
+## Installation
+
+Begin by installing the necessary packages using npm:
+
+```bash
+npm install @web3auth/modal-react-hooks @web3auth/wallet-services-plugin-react-hooks @web3auth/ethereum-provider @web3auth/openlogin-adapter
+```
+
+## Setting Up Providers
+
+Wrap your main application component with `Web3AuthProvider` and `WalletServicesProvider` to inject
+the necessary contexts throughout your app.
+
+```jsx title="index.tsx"
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import { Web3AuthProvider } from "@web3auth/modal-react-hooks";
+import { WalletServicesProvider } from "@web3auth/wallet-services-plugin-react-hooks";
+import { web3AuthConfig } from "./web3AuthConfig";
+
+ReactDOM.render(
+  <Web3AuthProvider config={web3AuthConfig}>
+    <WalletServicesProvider>
+      <App />
+    </WalletServicesProvider>
+  </Web3AuthProvider>,
+  document.getElementById("root"),
+);
+```
+
+## Configuring Web3Auth
+
+Create a separate configuration file to manage all Web3Auth-related settings.
+
+```typescript title="web3AuthConfig.ts"
+import { Web3AuthOptions } from "@web3auth/modal";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
+
+const chainConfig = {
+  chainId: "0xaa36a7", // Sepolia Testnet
+  displayName: "Ethereum Sepolia",
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  tickerName: "Ethereum Sepolia",
+  ticker: "ETH",
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  blockExplorerUrl: "https://sepolia.etherscan.io",
+  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+};
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: {
+    chainConfig,
+  },
+});
+
+const web3AuthOptions: Web3AuthOptions = {
+  clientId:
+    "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ",
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  privateKeyProvider,
+};
+
+const openloginAdapter = new OpenloginAdapter();
+
+const walletServicesPlugin = new WalletServicesPlugin({
+  wsEmbedOpts: {},
+  walletInitOptions: { whiteLabel: { showWidgetButton: true } },
+});
+
+export const web3AuthConfig = {
+  web3AuthOptions,
+  adapters: [openloginAdapter],
+  plugins: [walletServicesPlugin],
+};
+```
+
+**Explanation of Configuration:**
+
+- **`chainConfig`:** Specifies the blockchain network details. Adjust the `chainId` and `rpcTarget`
+  according to the network you intend to support.
+- **`web3AuthOptions`:** Contains essential configurations such as `clientId`, network type, and UI
+  customization options.
+- **`OpenloginAdapter`:** Facilitates authentication using various social logins and traditional
+  methods.
+- **`WalletServicesPlugin`:** Provides additional wallet functionalities like WalletConnect
+  integration and fiat on-ramps.
+
+## Implementing Authentication and Wallet Services
+
+Utilize the hooks provided by Web3Auth to manage authentication flows and wallet services within
+your application components.
+
+```jsx title="App.tsx"
+import React, { useEffect, useState } from "react";
+import { useWeb3Auth } from "@web3auth/modal-react-hooks";
+import { useWalletServicesPlugin } from "@web3auth/wallet-services-plugin-react-hooks";
+import RPC from "./rpc"; // Assuming you create a custom RPC class like the full-fledged example
+
+const App = () => {
+  const { initModal, provider, connect, logout, isConnected, userInfo } = useWeb3Auth();
+  const { showWalletConnectScanner, showCheckout, showWalletUI } = useWalletServicesPlugin();
+  const [balance, setBalance] = useState<string>("");
+
+  useEffect(() => {
+    const initialize = async () => {
+      await initModal();
+    };
+    initialize();
+  }, [initModal]);
+
+  const fetchBalance = async () => {
+    if (provider) {
+      const rpc = new RPC(provider as any);
+      const balance = await rpc.getBalance();
+      setBalance(balance);
+    }
+  };
+
+  const sendTransaction = async () => {
+    if (provider) {
+      const rpc = new RPC(provider as any);
+      await rpc.sendTransaction();
+    }
+  };
+
+  return (
+    <div>
+      <h1>Web3Auth Modal React Hooks Example</h1>
+      {!isConnected ? (
+        <button onClick={connect}>Login with Web3Auth</button>
+      ) : (
+        <>
+          <div>
+            <p>Name: {userInfo?.name}</p>
+            <p>Email: {userInfo?.email}</p>
+          </div>
+          <button onClick={fetchBalance}>Fetch Balance</button>
+          {balance && <p>Your Balance: {balance} ETH</p>}
+          <button onClick={sendTransaction}>Send 0.01 ETH</button>
+          <button onClick={showWalletConnectScanner}>Connect to dApp via WalletConnect</button>
+          <button onClick={showCheckout}>Top-up Wallet</button>
+          <button onClick={showWalletUI}>Show Wallet UI</button>
+          <button onClick={logout}>Logout</button>
+        </>
+      )}
+    </div>
+  );
+};
+
+export default App;
+```
+
+**Explanation of Code:**
+
+- **Initialization:** The `initModal` method is called when the app starts to initialize the
+  Web3Auth modal.
+- **Authentication Flow:** Users can log in, view their info, and log out using the `connect` and
+  `logout` methods from `useWeb3Auth`.
+- **Blockchain Interactions:** The app can fetch the user's ETH balance and send transactions using
+  a custom RPC class like in the full-fledged example.
+- **Wallet Services:** Additional wallet functionalities like WalletConnect, wallet top-up, and
+  wallet UI are integrated using `useWalletServicesPlugin`.
+
+For more details on connecting to blockchain networks using custom RPC clients, refer to the
+[Web3Auth Blockchain Connection Documentation](https://web3auth.io/docs/connect-blockchain/evm/ethereum/web).
+
+## Accessing SDK References
+
+For detailed information on all available methods and configurations, refer to the official SDK
+documentation:
+
+- **Modal React Hooks SDK Reference:**
+  [Web3Auth Modal React Hooks Documentation](https://web3auth.io/docs/sdk/pnp/web/modal/modal-hooks)
+- **Wallet Services Hooks SDK Reference:** [Web3Auth Wallet Services
+  Hooks Documentation](https://web3
+
+auth.io/docs/sdk/pnp/web/wallet-services/wallet-services-hooks)
+
+These references provide comprehensive details on all exposed methods, configurations, and advanced
+usage scenarios.
+
+## Conclusion
+
+Integrating Web3Auth Modal React Hooks into your React application provides a seamless and secure
+way to manage blockchain authentication and wallet services. By following this guide and utilizing
+the provided code examples, you can quickly set up and customize authentication flows, interact with
+various blockchain networks, and offer enhanced wallet functionalities to your users.
+
+For further customization and advanced features, explore the full-fledged example and SDK references
+provided. Embrace the power of Web3Auth to deliver a robust and user-friendly blockchain experience
+in your React applications.
+
+---
+
+**Need Help or Have Questions?** Reach out to the Web3Auth community on
+[Discord](https://discord.gg/web3auth) and
+[Web3Auth Community Discourse](https://web3auth.io/community/) or consult the
+[official documentation](https://web3auth.io/docs/).
+
+**Stay Updated:** Follow [Web3Auth on X](https://x.com/Web3Auth) for the latest updates and
+announcements.
