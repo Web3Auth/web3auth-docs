@@ -1,6 +1,6 @@
 ---
 title: "Initializing MPC Core Kit JS SDK for React Native"
-sidebar_label: "Initialize React Native"
+sidebar_label: "Initialize"
 description: "Web3Auth MPC Core Kit JS SDK - Initialize for React Native | Documentation - Web3Auth"
 ---
 
@@ -18,31 +18,55 @@ After installation, the next step to use Web3Auth MPC Core Kit is to configure &
 ## Configure React Native Environment
 
 In order to make this SDK compatible with the React Native development environment, you need to
-additionally import the following packages:
+additionally import the Bridge from the `@web3auth/react-native-mpc-core-kit` package.
 
 ```tsx
-import EncryptedStorage from "react-native-encrypted-storage"; // Used to store the session & device factor keys
-import * as TssLibRN from "@toruslabs/react-native-tss-lib-bridge"; // The TSS library for React Native
-import { Bridge } from "@toruslabs/react-native-tss-lib-bridge"; // A bridge to be imported to the React Native environment
+import { Bridge } from "@web3auth/react-native-mpc-core-kit"; // A bridge to be imported to the React Native environment
 ```
 
-While initializing the SDK, you need to pass the `EncryptedStorage` and `TssLibRN` as arguments to
-the `Web3AuthOptions` object. The `Bridge` is used to bridge the TSS library to the React Native
-environment, it has to be imported in the React Native environment, at the end of the page.
+The `Bridge` is used to bridge the TSS library to the React Native environment, it has to be
+imported in the React Native environment, at the end of the page.
 
 ```tsx title="App.tsx"
-import { Bridge } from "@toruslabs/react-native-tss-lib-bridge";
+import { Bridge } from "@web3auth/react-native-mpc-core-kit";
 
 export default function App() {
   // Misc App related functions
   return (
     <View>
       {/* <YOUR APP GOES HERE> */}
-      // focus-next-line
-      <Bridge /> // <- Add this line
+      // focus-start
+      <Bridge
+        logLevel={"DEBUG"}
+        resolveReady={(ready) => {
+          setBridgeReady(ready);
+        }}
+      />
+      // focus-end
     </View>
   );
 }
+```
+
+### Check for the Bridge State before Initing
+
+The new package of React Native exposes a `resolveReady` callback that notifies when the bridge is
+ready to be used. Use this to init the SDK after the bridge has been configured.
+
+```js
+useEffect(() => {
+  if (bridgeReady) {
+    const init = async () => {
+      try {
+        await coreKitInstance.init();
+      } catch (error: any) {
+        uiConsole(error.message, "mounted caught");
+      }
+      setCoreKitStatus(coreKitInstance.status);
+    };
+    init();
+  }
+}, [bridgeReady]);
 ```
 
 ## Configure Instance
@@ -226,6 +250,16 @@ export declare const UX_MODE: {
 ### Usage
 
 <Tabs
+  defaultValue="bare"
+  values={[
+    { label: "Bare React Native", value: "bare" },
+    { label: "Expo", value: "expo" },
+  ]}
+>
+
+<TabItem value="bare">
+
+<Tabs
   defaultValue="secp256k1"
   values={[
     { label: "Secp256k1", value: "secp256k1" },
@@ -236,16 +270,52 @@ export declare const UX_MODE: {
 <TabItem value="secp256k1">
 
 ```javascript
-import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK } from "@web3auth/mpc-core-kit";
-import { tssLib } from "@toruslabs/tss-dkls-lib";
+import {
+  makeEthereumSigner,
+  mpclib,
+  TssDklsLib,
+  WEB3AUTH_NETWORK,
+  Web3AuthOptions,
+} from "@web3auth/react-native-mpc-core-kit";
+import { EthereumSigningProvider } from "@web3auth/ethereum-mpc-provider";
+import EncryptedStorage from "react-native-encrypted-storage"; // Used to store the session & device factor keys
 
-const coreKitInstance = new Web3AuthMPCCoreKit({
-  web3AuthClientId: "YOUR_CLIENT_ID",
+// setup async storage for react native
+const asyncStorageKey = {
+  getItem: async (key: string) => {
+    return EncryptedStorage.getItem(key);
+  },
+  setItem: async (key: string, value: string) => {
+    return EncryptedStorage.setItem(key, value);
+  },
+};
+
+// focus-start
+const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
+  web3AuthClientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  // setupProviderOnInit: false, // needed to skip the provider setup
+  uxMode: "react-native",
+  tssLib: TssDklsLib, // tss lib bridge for ECDSA
   manualSync: true, // This is the recommended approach
-  tssLib: tssLib,
-  storage: window.storage,
-});
+  storage: asyncStorageKey, // Add the storage property
+} as Web3AuthOptions);
+// focus-end
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0xaa36a7", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io/",
+  blockExplorer: "https://sepolia.etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+// Setup provider for EVM Chain
+const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
+evmProvider.setupProvider(makeEthereumSigner(coreKitInstance));
 ```
 
 </TabItem>
@@ -253,19 +323,142 @@ const coreKitInstance = new Web3AuthMPCCoreKit({
 <TabItem value="ed25519">
 
 ```javascript
-import { Web3AuthMPCCoreKit, WEB3AUTH_NETWORK } from "@web3auth/mpc-core-kit";
-import { tssLib } from "@toruslabs/tss-frost-lib";
+import {
+  mpclib,
+  TssFrostLib,
+  WEB3AUTH_NETWORK,
+  Web3AuthOptions
+} from "@web3auth/react-native-mpc-core-kit";
+import EncryptedStorage from "react-native-encrypted-storage"; // Used to store the session & device factor keys
 
-const coreKitInstance = new Web3AuthMPCCoreKit({
-  web3AuthClientId: "YOUR_CLIENT_ID",
+// setup async storage for react native
+const asyncStorageKey = {
+  getItem: async (key: string) => {
+    return EncryptedStorage.getItem(key);
+  },
+  setItem: async (key: string, value: string) => {
+    return EncryptedStorage.setItem(key, value);
+  },
+};
+
+// focus-start
+const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
+  web3AuthClientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
-  manualSync: true, // This is the recommended approach
-  tssLib: tssLib,
-  storage: window.storage,
-});
+  uxMode: "react-native",
+  tssLib: TssFrostLib, // tss lib bridge for EDDSA
+  manualSync: false, // This is the recommended approach
+  storage: asyncStorageKey, // Add the storage property
+} as Web3AuthOptions);
+// focus-end
 ```
 
 </TabItem>
+</Tabs>
+
+</TabItem>
+
+<TabItem value="expo">
+
+<Tabs
+  defaultValue="secp256k1"
+  values={[
+    { label: "Secp256k1", value: "secp256k1" },
+    { label: "Ed25519", value: "ed25519" },
+  ]}
+>
+
+<TabItem value="secp256k1">
+
+```javascript
+import {
+  makeEthereumSigner,
+  mpclib,
+  TssDklsLib,
+  WEB3AUTH_NETWORK,
+  Web3AuthOptions,
+} from "@web3auth/react-native-mpc-core-kit";
+import { EthereumSigningProvider } from "@web3auth/ethereum-mpc-provider";
+import * as SecureStore from "expo-secure-store"; // Used to store the session & device factor keys
+
+// setup async storage for react native
+const asyncStorageKey = {
+  getItem: async (key: string) => {
+    return SecureStore.getItem(key);
+  },
+  setItem: async (key: string, value: string) => {
+    return SecureStore.setItem(key, value);
+  },
+};
+
+// focus-start
+const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
+  web3AuthClientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  // setupProviderOnInit: false, // needed to skip the provider setup
+  uxMode: "react-native",
+  tssLib: TssDklsLib, // tss lib bridge for ECDSA
+  manualSync: true, // This is the recommended approach
+  storage: asyncStorageKey, // Add the storage property
+} as Web3AuthOptions);
+// focus-end
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0xaa36a7", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io/",
+  blockExplorer: "https://sepolia.etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+// Setup provider for EVM Chain
+const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
+evmProvider.setupProvider(makeEthereumSigner(coreKitInstance));
+```
+
+</TabItem>
+
+<TabItem value="ed25519">
+
+```javascript
+import {
+  mpclib,
+  TssFrostLib,
+  WEB3AUTH_NETWORK,
+  Web3AuthOptions
+} from "@web3auth/react-native-mpc-core-kit";
+import * as SecureStore from "expo-secure-store"; // Used to store the session & device factor keys
+
+// setup async storage for react native
+const asyncStorageKey = {
+  getItem: async (key: string) => {
+    return SecureStore.getItem(key);
+  },
+  setItem: async (key: string, value: string) => {
+    return SecureStore.setItem(key, value);
+  },
+};
+
+// focus-start
+const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
+  web3AuthClientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.MAINNET,
+  uxMode: "react-native",
+  tssLib: TssFrostLib, // tss lib bridge for EDDSA
+  manualSync: false, // This is the recommended approach
+  storage: asyncStorageKey, // Add the storage property
+} as Web3AuthOptions);
+// focus-end
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+
 </Tabs>
 
 ## Initialize Web3AuthMPCCoreKit
