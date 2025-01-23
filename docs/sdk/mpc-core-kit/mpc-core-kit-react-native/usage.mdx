@@ -1,30 +1,33 @@
 ---
-title: "Usage of MPC Core Kit JS SDK"
+title: "Usage of MPC Core Kit React Native SDK"
 sidebar_label: "Usage"
-description: "Web3Auth MPC Core Kit JS SDK - Usage | Documentation - Web3Auth"
+description: "Web3Auth MPC Core Kit React Native SDK - Usage | Documentation - Web3Auth"
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-Once you've installed and successfully initialized `Web3AuthMPCCoreKit`, you can use it to
+Once you've installed and successfully initialized `mpclib.Web3AuthMPCCoreKitRN`, you can use it to
 authenticate your users, add factors to their account, generate TSS signatures for transactions and
 interact with the blockchain.
 
+:::note
+
 Please, note we for the simplicity, we use the `coreKitInstance` to refer to the instance of
-`Web3AuthMPCCoreKit`.
+`mpclib.Web3AuthMPCCoreKitRN`.
+
+:::
 
 ## Functionality Overview
 
 ### Authentication Methods
 
-| Method Name                                     | Description                                                                                                              |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| [loginWithJWT](#login-with-jwt)                 | Logs in the user with a JWT-based ID Token. We recommend using this method to authenticate users for better performance. |
-| [loginWithOAuth](#login-with-oauth)             | Logs in the user using OAuth Flow, this function underneaths uses the CustomAuth flow to authenticate the user.          |
-| [handleRedirectResult](#handle-redirect-result) | Handles the redirect result from OAuth Flow.                                                                             |
-| [inputFactorKey](#login-with-existing-factor)   | This method can be used to login with the exisitng factor key, for instance when threshold is not satisfied.             |
-| [logout](#logout)                               | This methods logs out the user and invalidates the session.                                                              |
+| Method Name                                     | Description                                                                                                  |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| [loginWithJWT](#login-with-jwt)                 | Logs in the user with a JWT-based ID Token.                                                                  |
+| [handleRedirectResult](#handle-redirect-result) | Handles the redirect result from OAuth Flow.                                                                 |
+| [inputFactorKey](#login-with-existing-factor)   | This method can be used to login with the exisitng factor key, for instance when threshold is not satisfied. |
+| [logout](#logout)                               | This methods logs out the user and invalidates the session.                                                  |
 
 :::info Get help with Authentication
 
@@ -65,31 +68,12 @@ SDK.
 
 ### Additional Helper Methods
 
-| Method Name                                               | Description                                                                                                                                                             |
-| --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [setSecurityQuestion](#set-security-question)             | By default the SDK provides a module to set the security question as backup factor, this method can be used to set the Security Question Factor for the user's account. |
-| [changeSecurityQuestion](#change-security-question)       | This method helps you to change the security question for the account.                                                                                                  |
-| [deleteSecurityQuestion](#delete-security-question-share) | Helps you to delete the security question, and corresponding TSS factor.                                                                                                |
-| [recoverFactor](#get-factor-key-from-security-question)   | Helps to recover the security question factor given the correct password by the user.                                                                                   |
-| [getQuestion](#get-security-question-for-users-account)   | Helps to recover the security question set by the user.                                                                                                                 |
-| [mnemonicToKey](#mnemonic-to-key)                         | This method helps you to convert 24 word mnemonic(seed phrase) into corresponding factor key.                                                                           |
-| [keyToMnemonic](#key-to-mnemonic)                         | This method helps you to convert the factor key to corresponding 24 mnemonic.                                                                                           |
+| Method Name                       | Description                                                                                   |
+| --------------------------------- | --------------------------------------------------------------------------------------------- |
+| [mnemonicToKey](#mnemonic-to-key) | This method helps you to convert 24 word mnemonic(seed phrase) into corresponding factor key. |
+| [keyToMnemonic](#key-to-mnemonic) | This method helps you to convert the factor key to corresponding 24 mnemonic.                 |
 
 ## Authentication Methods
-
-### Login with OAuth
-
-This method helps to Log in the user using OAuth flow. You can choose your preferred social auth
-providers with 0Auth login flow. Please refer to the
-[authentication section](/sdk/mpc-core-kit/mpc-core-kit-js/authentication/login-oauth) section for
-more details.
-
-### Handle Redirect Result
-
-This method helps you hanlde the redirect result form the OAuth Flow when the ux mode is redirect.
-By default, you won't require to use this method since we handle the redirect result internally. You
-can set the `handleRedirectResult` to false during initialization, and use this method to handle the
-redirect result.
 
 ### Login With JWT
 
@@ -224,7 +208,7 @@ export enum FactorKeyTypeShareDescription {
 In this sample we enable MFA with a 24 words mnemonic as the backup factor, and device factor.
 
 ```tsx
-import { keyToMnemonic } from "@web3auth/mpc-core-kit";
+import { keyToMnemonic } from "@web3auth/react-native-mpc-core-kit";
 
 // focus-next-line
 const factorKey = await coreKitInstance.enableMFA({});
@@ -325,14 +309,16 @@ You can also pass your own factor key obtained from other sources like social re
 authenticator app, etc.
 
 ```tsx
-import { generateFactorKey } from "@web3auth/mpc-core-kit";
+import { generateFactorKey } from "@web3auth/react-native-mpc-core-kit";
 
 const factorKey = generateFactorKey();
 
+// focus-start
 await coreKitInstance.createFactor({
   shareType: TssShareType.RECOVERY,
   factorKey: factorKey.private,
 });
+// focus-end
 ```
 
 ### Delete Factor
@@ -353,7 +339,7 @@ factor you can replace the `FactorKeyTypeShareDescription.SocialShare` with
 `FactorKeyTypeShareDescription.DeviceShare`.
 
 ```tsx
-import { FactorKeyTypeShareDescription } from "@web3auth/mpc-core-kit";
+import { FactorKeyTypeShareDescription } from "@web3auth/react-native-mpc-core-kit";
 import { Point, secp256k1 } from "@tkey/common-types";
 
 let factorPub: string | undefined;
@@ -453,7 +439,9 @@ To retrive the user's information you can use the `getUserInfo` method. The meth
 user's information based on the idToken, and Web3Auth metadata like verifier, verifier Id.
 
 ```tsx
-import { UserInfo } from "@web3auth/mpc-core-kit";
+import { UserInfo } from "@web3auth/react-native-mpc-core-kit";
+
+// focus-next-line
 const userInfo: UserInfo = coreKitInstance.getUserInfo();
 ```
 
@@ -466,8 +454,9 @@ details has information like total factors, required factors, and threshold. Lea
 #### Usage
 
 ```tsx
-import { MPCKeyDetails } from "@web3auth/mpc-core-kit";
+import { MPCKeyDetails } from "@web3auth/react-native-mpc-core-kit";
 
+// focus-next-line
 const keyDetails: MPCKeyDetails = coreKitInstance.getKeyDetails();
 ```
 
@@ -482,167 +471,7 @@ const keyDetails: MPCKeyDetails = coreKitInstance.getKeyDetails();
 | `shareDescriptions` | Holds a map of TSS shares descriptions.                                                                                                                              |
 | `tssPubKey?`        | The TSS PubKey, you can also get the TSS PubKey using the `getPubKey` method. The PubKey is in SEC1 format.                                                          |
 
-## Security Question
-
-### Set Security Question
-
-To set a security question, and create a security question factor you can use the
-`setSecurityQuestion` method. The security question can be used to recover the account in case the
-user changes the device and doesn't have access to the other factors.
-
-#### Parameters
-
-<Tabs
-defaultValue="table"
-values={[
-  { label: "Table", value: "table" },
-  { label: "Class", value: "class" },
-]}
->
-<TabItem value="table">
-
-| Name           | Description                                                                                                          |
-| -------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `mpcCoreKit`   | Pass the Web3AuthMPCCoreKit instance.                                                                                |
-| `question`     | Question user wants to set.                                                                                          |
-| `answer`       | Answer user wants to set for the question.                                                                           |
-| `shareType?`   | Defines the share type you want to set, the available options are `TssShareType.DEVICE` and `TssShareType.RECOVERY`. |
-| `description?` | Additional description you want to store in the metadata for the share.                                              |
-| `tssIndex?`    | Defines the TSS Share index, either 2, or 3, i.e `TssShareType.DEVICE`, and `TssShareType.RECOVERY` respectively.    |
-
-</TabItem>
-
-<TabItem value="class">
-
-```tsx
-export interface setSecurityQuestionParams {
-  mpcCoreKit: Web3AuthMPCCoreKit;
-  question: string;
-  answer: string;
-  shareType?: TssShareType;
-  description?: Record<string, string>;
-  tssIndex?: TssShareType;
-}
-
-export enum TssShareType {
-  DEVICE = 2,
-  RECOVERY = 3,
-}
-```
-
-</TabItem>
-</Tabs>
-
-#### Usage
-
-```tsx
-import { TssSecurityQuestion } from "@web3auth/mpc-core-kit";
-
-const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
-
-await securityQuestion.setSecurityQuestion({
-  mpcCoreKit: coreKitInstance,
-  question: "YOUR_QUESTION",
-  answer: "YOUR_ANSWER",
-  shareType: TssShareType.RECOVERY,
-});
-```
-
-### Change Security Question
-
-To change the security question for the user you can use the `changeSecurityQuestion` method.
-
-#### Parameters
-
-<Tabs
-defaultValue="table"
-values={[
-  { label: "Table", value: "table" },
-  { label: "Class", value: "class" },
-]}
->
-
-<TabItem value="table">
-
-| Name          | Description                                    |
-| ------------- | ---------------------------------------------- |
-| `mpcCoreKit`  | Pass the Web3AuthMPCCoreKit instance.          |
-| `newQuestion` | New question user wants to set.                |
-| `newAnswer`   | New answer user wants to set for the question. |
-| `answer`      | Answer to the current security question.       |
-
-</TabItem>
-
-<TabItem value="class">
-
-```tsx
-export interface changeSecurityQuestionParams {
-  mpcCoreKit: Web3AuthMPCCoreKit;
-  newQuestion: string;
-  newAnswer: string;
-  answer: string;
-}
-```
-
-</TabItem>
-</Tabs>
-
-#### Usage
-
-```tsx
-import { TssSecurityQuestion } from "@web3auth/mpc-core-kit";
-
-const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
-
-await securityQuestion.changeSecurityQuestion({
-  mpcCoreKit: coreKitInstance,
-  newQuestion: "NEW_QUESTION",
-  newAnswer: "NEW_ANSWER",
-  answer: "PREVIOUS_ANSWER",
-});
-```
-
-### Delete Security Question Share
-
-Deletes the Security Question Share of the user's account. This function can only be used if the
-user has already logged in with in the application while meeting the required share threshold.
-
-```tsx
-import { TssSecurityQuestion } from "@web3auth/mpc-core-kit";
-
-const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
-
-await securityQuestion.deleteSecurityQuestion(coreKitInstance);
-```
-
-### Get Factor Key from Security Question
-
-To rretive the factory key from the security question, you cna use the `recoverFactor` method. The
-method takes in coreKitInstance, and answer for the security question.
-
-This factor key later can be used to input the factor key in the current state of the SDK, and
-recover the account.
-
-```tsx
-import { TssSecurityQuestion } from "@web3auth/mpc-core-kit";
-
-const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
-
-const factorKey = await securityQuestion.recoverFactor(coreKitInstance, answer);
-```
-
-### Get Security Question for User's Account
-
-To retrieve the security question for the user's account, you can use the `getQuestion` method. You
-can only use this method, once user has completed the authentication flow.
-
-```tsx
-import { TssSecurityQuestion } from "@web3auth/mpc-core-kit";
-
-const securityQuestion: TssSecurityQuestion = new TssSecurityQuestion();
-
-const question = securityQuestion.getQuestion(coreKitInstance);
-```
+## Additional Helper Methods
 
 ### Mnemonic to Key
 
@@ -651,8 +480,9 @@ To convert 24 word mnemonic(seed phrase) into corresponding factor key, you can 
 to factor key.
 
 ```tsx
-import { mnemonicToKey } from "@web3auth/mpc-core-kit";
+import { mnemonicToKey } from "@web3auth/react-native-mpc-core-kit";
 
+// focus-next-line
 const factorKeyHex = mnemonicToKey(factorKeyMnemonic);
 ```
 
@@ -661,7 +491,8 @@ const factorKeyHex = mnemonicToKey(factorKeyMnemonic);
 To convert the factor key hex string to a 24 words mnemonic, you can use the `keyToMnemonic` method.
 
 ```tsx
-import { keyToMnemonic } from "@web3auth/mpc-core-kit";
+import { keyToMnemonic } from "@web3auth/react-native-mpc-core-kit";
 
+// focus-next-line
 const factorKeyMnemonic = keyToMnemonic(factorKeyHex);
 ```
