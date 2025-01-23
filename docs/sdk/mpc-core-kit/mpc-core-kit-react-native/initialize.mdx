@@ -1,7 +1,7 @@
 ---
-title: "Initializing MPC Core Kit JS SDK for React Native"
+title: "Initializing MPC Core Kit React Native SDK"
 sidebar_label: "Initialize"
-description: "Web3Auth MPC Core Kit JS SDK - Initialize for React Native | Documentation - Web3Auth"
+description: "Web3Auth MPC Core Kit React Native SDK - Initialize | Documentation - Web3Auth"
 ---
 
 import ChainConfig from "@site/src/common/sdk/pnp/web/_chain-config.mdx";
@@ -48,27 +48,6 @@ export default function App() {
 }
 ```
 
-### Check for the Bridge State before Initing
-
-The new package of React Native exposes a `resolveReady` callback that notifies when the bridge is
-ready to be used. Use this to init the SDK after the bridge has been configured.
-
-```js
-useEffect(() => {
-  if (bridgeReady) {
-    const init = async () => {
-      try {
-        await coreKitInstance.init();
-      } catch (error: any) {
-        uiConsole(error.message, "mounted caught");
-      }
-      setCoreKitStatus(coreKitInstance.status);
-    };
-    init();
-  }
-}, [bridgeReady]);
-```
-
 ## Configure Instance
 
 Please note that these are the most critical steps where you need to pass on different parameters
@@ -76,8 +55,15 @@ according to the preference of your project.
 
 ### Parameters
 
-The Web3AuthMPCCoreKit constructor takes an object with `Web3AuthOptions` as input which helps you
-configure the SDK.
+The `mpclib.Web3AuthMPCCoreKitRN` constructor takes an object with `Web3AuthOptions` as input which
+helps you configure the SDK.
+
+:::note
+
+Please, note we for the simplicity, we use the `coreKitInstance` to refer to the instance of
+`mpclib.Web3AuthMPCCoreKitRN`.
+
+:::
 
 <Tabs
   defaultValue="table"
@@ -271,13 +257,11 @@ export declare const UX_MODE: {
 
 ```javascript
 import {
-  makeEthereumSigner,
   mpclib,
   TssDklsLib,
   WEB3AUTH_NETWORK,
   Web3AuthOptions,
 } from "@web3auth/react-native-mpc-core-kit";
-import { EthereumSigningProvider } from "@web3auth/ethereum-mpc-provider";
 import EncryptedStorage from "react-native-encrypted-storage"; // Used to store the session & device factor keys
 
 // setup async storage for react native
@@ -301,21 +285,6 @@ const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
   storage: asyncStorageKey, // Add the storage property
 } as Web3AuthOptions);
 // focus-end
-
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xaa36a7", // Please use 0x1 for Mainnet
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-  displayName: "Ethereum Sepolia Testnet",
-  blockExplorerUrl: "https://sepolia.etherscan.io/",
-  blockExplorer: "https://sepolia.etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-};
-
-// Setup provider for EVM Chain
-const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
-evmProvider.setupProvider(makeEthereumSigner(coreKitInstance));
 ```
 
 </TabItem>
@@ -372,13 +341,11 @@ const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
 
 ```javascript
 import {
-  makeEthereumSigner,
   mpclib,
   TssDklsLib,
   WEB3AUTH_NETWORK,
   Web3AuthOptions,
 } from "@web3auth/react-native-mpc-core-kit";
-import { EthereumSigningProvider } from "@web3auth/ethereum-mpc-provider";
 import * as SecureStore from "expo-secure-store"; // Used to store the session & device factor keys
 
 // setup async storage for react native
@@ -402,21 +369,6 @@ const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
   storage: asyncStorageKey, // Add the storage property
 } as Web3AuthOptions);
 // focus-end
-
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xaa36a7", // Please use 0x1 for Mainnet
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-  displayName: "Ethereum Sepolia Testnet",
-  blockExplorerUrl: "https://sepolia.etherscan.io/",
-  blockExplorer: "https://sepolia.etherscan.io/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-};
-
-// Setup provider for EVM Chain
-const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
-evmProvider.setupProvider(makeEthereumSigner(coreKitInstance));
 ```
 
 </TabItem>
@@ -460,6 +412,35 @@ const coreKitInstance = new mpclib.Web3AuthMPCCoreKitRN({
 </TabItem>
 
 </Tabs>
+
+## Additional Configuration for EVM Chains
+
+If you are using the SDK with EVM compatible chains, you can use the `EthereumSigningProvider` to
+setup the provider for the EVM chain. This provider is EIP1193 compatible and can be used with
+`web3.js`, `ethers.js`, or `viem` to make integration with EVM compatible chains easier.
+
+You need to pass in the `chainConfig` object to the provider. The `chainConfig` object contains the
+basic details of the chain you are using.
+
+```js
+import { makeEthereumSigner } from "@web3auth/react-native-mpc-core-kit";
+import { EthereumSigningProvider } from "@web3auth/ethereum-mpc-provider";
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0xaa36a7", // Please use 0x1 for Mainnet
+  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+  displayName: "Ethereum Sepolia Testnet",
+  blockExplorerUrl: "https://sepolia.etherscan.io/",
+  blockExplorer: "https://sepolia.etherscan.io/",
+  ticker: "ETH",
+  tickerName: "Ethereum",
+};
+
+// Setup provider for EVM Chain
+const evmProvider = new EthereumSigningProvider({ config: { chainConfig } });
+evmProvider.setupProvider(makeEthereumSigner(coreKitInstance));
+```
 
 ## Initialize Web3AuthMPCCoreKit
 
@@ -511,4 +492,25 @@ export interface InitParams {
 ```ts
 // Web3AuthMPCCoreKit instance from previous steps
 await coreKitInstance.init();
+```
+
+### Check for the Bridge State before Initing
+
+The `Bridge` exposes a `resolveReady` callback that notifies when the SDK's bridge is ready to be
+used. Use this to init the SDK after the bridge has been configured.
+
+```js
+useEffect(() => {
+  if (bridgeReady) {
+    const init = async () => {
+      try {
+        await coreKitInstance.init();
+      } catch (error: any) {
+        uiConsole(error.message, "mounted caught");
+      }
+      setCoreKitStatus(coreKitInstance.status);
+    };
+    init();
+  }
+}, [bridgeReady]);
 ```
