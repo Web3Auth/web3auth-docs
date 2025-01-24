@@ -1,0 +1,91 @@
+---
+title: "Log in with JWT(BYOA)"
+sidebar_label: "Log in with JWT(BYOA)"
+description: "Web3Auth MPC Core Kit Swift SDK - Login with JWT(BYOA) | Documentation - Web3Auth"
+---
+
+To authenticate users using Regular Web Application(RWA) flow, you can use the `loginWithJWT`
+method. This methods takes the details of the verifier, and additional authentication parameters
+like idToken, verifierId, and subVerifierInfoArray.
+
+In JWT login flow, you'll have to manually get the idToken from the auth provider and pass it to the
+method.
+
+The SDK uses method overloading for loginWithJWT method to support both single verifier and
+aggregate verifier.
+
+:::info Recommended
+
+The `loginWithJWT` method is recommended for fast login experience.
+
+:::
+
+## Single Verifier
+
+A single verifier flow operates independently of the other verifiers you've created on the Web3Auth
+dashboard. For example, if you've set up custom verifiers for Google and Apple on the dashboard,
+each verifier will generate a different wallet for the same user.
+
+To login with a single verifier, you will require to create a custom verifier in the Web3Auth
+dashboard. If you haven't already created one,
+[learn how to create a verifier](/docs/auth-provider-setup/byo-jwt-provider/#set-up-custom-jwt-verifier).
+
+### Parameters
+
+| Parameter    | Description                                                                                                                                         |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `verifier`   | Name of the verifier created on Web3Auth Dashboard. In the case of Aggregate Verifier, please provide the name of the top-level aggregate verifier. |
+| `verifierId` | Unique Identifier for the User. The verifier identifier field set for the. E.g. "sub" field in your JWT ID Token.                                   |
+| `idToken`    | The idToken received from the Auth Provider.                                                                                                        |
+
+### Usage
+
+```swift
+do {
+    // Use the existing MPCCoreKit instance
+    let loginResult = try await mpcCoreKit.loginWithJwt(
+      verifier: "YOUR_VERIFIER_NAME",
+      verifierId: "USER'S_VERIFIER_ID",
+      idToken: "USER'S_ID_TOKEN"
+  )
+} catch {
+    // Handle error
+}
+```
+
+## Aggregate Verifier
+
+An aggregate verifier enables you to combine multiple verifiers/ login methods, ensuring that users
+can retrieve the same wallet address regardless of the method they choose to log in.
+[Learn more about aggregate verifiers](/docs/auth-provider-setup/aggregate-verifier).
+
+To login with an aggregate verifier, you will require to create an aggregate verifier in the
+Web3Auth dashboard. If you haven't already created one,
+[learn how to create an aggregate verifier](/docs/auth-provider-setup/aggregate-verifier#setting-up-an-aggregate-verifier).
+
+### Parameters
+
+| Parameter              | Description                                                                                                                                                   |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `verifier`             | Name of the verifier created on Web3Auth Dashboard. In the case of Aggregate Verifier, please provide the name of the top-level aggregate verifier.           |
+| `verifierId`           | Unique Identifier for the User. The verifier identifier field set for the sub verifier. E.g. "sub" field in your JWT ID Token.                                |
+| `idToken`              | The idToken received from the Auth Provider.                                                                                                                  |
+| `subVerifierInfoArray` | It takes an array of `TorusSubVerifierInfo` objects. Each object contains the verifier name and the idToken. The verifier name should be of the sub verifier. |
+
+### Usage
+
+```swift
+do {
+    // Use the existing MPCCoreKit instance
+    let loginResult = try await mpcCoreKit.loginWithJwt(
+      verifier: "YOUR_VERIFIER_NAME",
+      verifierId: "USER'S_VERIFIER_ID",
+      idToken: "USER'S_ID_TOKEN",
+      subVerifierInfoArray: [
+        TorusSubVerifierInfo(verifierName: "SUB_VERIFIER_NAME", idToken: "USER'S_ID_TOKEN")
+      ]
+  )
+} catch {
+    // Handle error
+}
+```

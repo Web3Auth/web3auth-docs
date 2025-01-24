@@ -1776,6 +1776,36 @@ const sidebars: SidebarsConfig = {
     },
     ...sdkQuickLinks,
   ],
+  sdk_core_kit_mpc_ios: [
+    {
+      type: "html",
+      value: mpcckTopNavButton(),
+      defaultStyle: true,
+    },
+    "sdk/mpc-core-kit/mpc-core-kit-ios/mpc-core-kit-ios",
+    "sdk/mpc-core-kit/mpc-core-kit-ios/install",
+    "sdk/mpc-core-kit/mpc-core-kit-ios/initialize",
+    {
+      type: "category",
+      label: "Authentication",
+      items: [
+        "sdk/mpc-core-kit/mpc-core-kit-ios/authentication/authentication",
+        "sdk/mpc-core-kit/mpc-core-kit-ios/authentication/login-jwt",
+        "sdk/mpc-core-kit/mpc-core-kit-ios/authentication/login-oauth",
+      ],
+    },
+    "sdk/mpc-core-kit/mpc-core-kit-ios/usage",
+    {
+      type: "link",
+      label: "Support Forum",
+      href: "https://github.com/Web3Auth/mpc-core-kit-swift/releases",
+    },
+    {
+      type: "link",
+      label: "Release Notes",
+      href: "https://github.com/Web3Auth/mpc-core-kit-swift/releases",
+    },
+  ],
   sdk_infra: [
     {
       type: "category",
